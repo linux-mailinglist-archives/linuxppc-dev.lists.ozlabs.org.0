@@ -2,89 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F54F314470
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 01:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C3331453C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 02:05:42 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DZNLy6MnFzDvX9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 11:00:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DZPpC3ZgVzDsWZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 12:05:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Eb4XMyvh; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=j5O/lJoB; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DZNJt4CBlzDvWP
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 10:58:37 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 118NXEvH155636; Mon, 8 Feb 2021 18:58:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=references : from : to :
- cc : subject : in-reply-to : date : message-id : mime-version :
- content-type; s=pp1; bh=mxn87d4AQHZAkLlT2xU24ah/PVAVDm4ATnnmcY7rvko=;
- b=Eb4XMyvhwDH3HB0LvVSlJxJWsdw9GHkBaxCr2nPW/9jV2Fm01Eaf3AGx6Rtp1yC4Pf6f
- n9A7ZDuUPm08lhlItSkDdQNr1WQEv+AgkLcq9Q3JQglTnPsBrMt8WXTSIt4UVm+hYvtr
- xOZ9d689FLZ/VXL6whLzNecynW4pGNIRtIgYrXHTBn8vY70jHAcu4V3GJUS2orh1wTy7
- M/yqKkkH78ChyWyq9yWEd1xGztKS91ci6KdcdjmNOAkmw0p8bXGEeYihphsQ6D2U3ugw
- CmdhO707cb4pB19U11/sqr/DulUr20pdE3g6IseLZo7PRmktytwRspD2XyEbmT+6Vg51 0w== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36kbsmwe4d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Feb 2021 18:58:13 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 118NmKDr021090;
- Mon, 8 Feb 2021 23:58:13 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma03wdc.us.ibm.com with ESMTP id 36hjr92f6b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Feb 2021 23:58:13 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 118NwCQS26149262
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Feb 2021 23:58:12 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B721DAE063;
- Mon,  8 Feb 2021 23:58:12 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 685ADAE05F;
- Mon,  8 Feb 2021 23:58:09 +0000 (GMT)
-Received: from manicouagan.localdomain (unknown [9.80.224.222])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
- Mon,  8 Feb 2021 23:58:09 +0000 (GMT)
-References: <20201220064959.GB392325@kernel.org>
- <20210122043714.266075-1-bauerman@linux.ibm.com>
- <20210123180911.aafa8404a3a7a30779713456@linux-foundation.org>
- <20210124073421.GG6332@kernel.org>
-User-agent: mu4e 1.4.10; emacs 27.1
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v2 2/2] memblock: do not start bottom-up allocations
- with kernel_end
-In-reply-to: <20210124073421.GG6332@kernel.org>
-Date: Mon, 08 Feb 2021 20:58:07 -0300
-Message-ID: <87ft26yuwg.fsf@manicouagan.localdomain>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DZPln0l79zDvWB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 12:03:32 +1100 (AEDT)
+Received: by mail-pj1-x1031.google.com with SMTP id fa16so617916pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Feb 2021 17:03:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=MfcsXfncKqwyZqj9wo90IfUK1Xuq26ciFpVmdsqb4sw=;
+ b=j5O/lJoB6fWuGf5SzkH1gnTYbuONd+VGpxE2jrItYctPzNsUxG8mTGMkmrLluJHy/n
+ y7VeOhTqRYO5GyfJ7ssgtNKjOo7/uBC6kOplsSlMDX+JeVtMRF/6zlpOHy9N8GBkMNad
+ l3DgNqaSbgzNtR2wQm5SgpzzwlTiDAe6KXxAow5huNWk74TB07u75O61RPaef8g5mwZ3
+ RuazMLkeM9ZaGiRENWKve6/j0E7UCcTiXfpOAtpfed21vZ6xQsgJ6d3aeKS9QBegcIzM
+ 2Tug/R8gr2E/1+Y+ObF77ZS0JXhJFIlLllsIXK7F1c6KqrGXcvKRLGUbeUbMNID9Y12z
+ lwsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=MfcsXfncKqwyZqj9wo90IfUK1Xuq26ciFpVmdsqb4sw=;
+ b=oRzFsmAhipwLaxpd2rDi5Y7Z4w6Kfpy00bkCX+mP5c7fhSvoTQq6SOHH+lxD3WGFlM
+ 91WUuuRISCv2N8xMppGYk9JuPEzPYugI8A/dmDvRhEC4x5YbilyUq4kCHM3mCwOD/Xk+
+ 8BaaxaHW7VN1yNoiJ5lNMrNqfsAlM21O25AWIEQwuoU/TImkSSyTFiV9vbpTYdj4Kfnq
+ kOaW/drDdLl8Cor+6CZaFBHaEUvkDNpjFnPQ3DMcQF/IyEwIR5OI4ilQ/5v+UhPquny/
+ u//7ibbvIt+kofZDa15i/8I0urdiWjANgLRhHMCzCJl6nMGIU3TJakwAKqonpweYZtYa
+ HJyA==
+X-Gm-Message-State: AOAM530LWHvBcLQ+NvofvGSUUxe2A1QGbtF699rk1ebV8ukBJEt4Ge0A
+ tkbh4hBF4SQzDW53TYEnG8Q=
+X-Google-Smtp-Source: ABdhPJxBFTNVbvcjXcaw2456OCXzobbFg3C8PqR3Wy1L83G9v50cVL32RYMQWVwFOK18iqh+ckrFRg==
+X-Received: by 2002:a17:90a:da02:: with SMTP id
+ e2mr1438717pjv.173.1612832608592; 
+ Mon, 08 Feb 2021 17:03:28 -0800 (PST)
+Received: from localhost ([220.240.226.199])
+ by smtp.gmail.com with ESMTPSA id f18sm442920pjq.53.2021.02.08.17.03.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Feb 2021 17:03:27 -0800 (PST)
+Date: Tue, 09 Feb 2021 11:03:21 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v5 00/22] powerpc/32: Implement C syscall entry/exit
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ msuchanek@suse.de, Paul Mackerras <paulus@samba.org>
+References: <cover.1612796617.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <cover.1612796617.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
- definitions=2021-02-08_16:2021-02-08,
- 2021-02-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 adultscore=0 mlxscore=0 impostorscore=0 phishscore=0
- clxscore=1015 malwarescore=0 bulkscore=0 spamscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102080130
+Message-Id: <1612832388.bbrfxby1h0.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,60 +79,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: riel@surriel.com, iamjoonsoo.kim@lge.com, Ram Pai <linuxram@us.ibm.com>,
- linux-kernel@vger.kernel.org, mhocko@kernel.org, linux-mm@kvack.org,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, guro@fb.com,
- Konrad Rzeszutek Wilk <konrad@darnok.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- kernel-team@fb.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Christophe Leroy's message of February 9, 2021 1:10 am:
+> This series implements C syscall entry/exit for PPC32. It reuses
+> the work already done for PPC64.
+>=20
+> This series is based on today's merge-test (b6f72fc05389e3fc694bf5a5fa1bb=
+d33f61879e0)
+>=20
+> In terms on performance we have the following number of cycles on an
+> 8xx running null_syscall benchmark:
+> - mainline: 296 cycles
+> - after patch 4: 283 cycles
+> - after patch 16: 304 cycles
+> - after patch 17: 348 cycles
+> - at the end of the series: 320 cycles
+>=20
+> So in summary, we have a degradation of performance of 8% on null_syscall=
+.
+>=20
+> I think it is not a big degradation, it is worth it.
 
-Mike Rapoport <rppt@kernel.org> writes:
+I guess it's 13% from 283. But it's very nice to use the shared C code.
 
-> On Sat, Jan 23, 2021 at 06:09:11PM -0800, Andrew Morton wrote:
->> On Fri, 22 Jan 2021 01:37:14 -0300 Thiago Jung Bauermann <bauerman@linux.ibm.com> wrote:
->> 
->> > Mike Rapoport <rppt@kernel.org> writes:
->> > 
->> > > > Signed-off-by: Roman Gushchin <guro@fb.com>
->> > > 
->> > > Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
->> > 
->> > I've seen a couple of spurious triggers of the WARN_ONCE() removed by this
->> > patch. This happens on some ppc64le bare metal (powernv) server machines with
->> > CONFIG_SWIOTLB=y and crashkernel=4G, as described in a candidate patch I posted
->> > to solve this issue in a different way:
->> > 
->> > https://lore.kernel.org/linuxppc-dev/20201218062103.76102-1-bauerman@linux.ibm.com/
->> > 
->> > Since this patch solves that problem, is it possible to include it in the next
->> > feasible v5.11-rcX, with the following tag?
->> 
->> We could do this, if we're confident that this patch doesn't depend on
->> [1/2] "mm: cma: allocate cma areas bottom-up"?  I think it is...
->
-> A think it does not depend on cma bottom-up allocation, it's rather the other
-> way around: without this CMA bottom-up allocation could fail with KASLR
-> enabled.
+There might be a few more percent speedup in there we can find later.
 
-I noticed that this patch is now upstream as:
+Thanks,
+Nick
 
-2dcb39645441 memblock: do not start bottom-up allocations with kernel_end
-
-> Still, this patch may need updates to the way x86 does early reservations:
->
-> https://lore.kernel.org/lkml/20210115083255.12744-1-rppt@kernel.org
-
-... but the patches from this link still aren't. Isn't this a potential
-problem for x86?
-
-The patch series on the link above is now superseded by v2:
-
-https://lore.kernel.org/linux-mm/20210128105711.10428-1-rppt@kernel.org/
-
--- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
