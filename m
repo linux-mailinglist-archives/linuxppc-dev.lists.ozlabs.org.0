@@ -2,64 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F02D315EDF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 06:21:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 005D6315F13
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 06:33:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Db7Qd0tJ4zDsfM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 16:21:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Db7hC2Y1RzDvZb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 16:32:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2f;
- helo=mail-io1-xd2f.google.com; envelope-from=pankaj.gupta.linux@gmail.com;
+ smtp.mailfrom=russell.cc (client-ip=64.147.123.20;
+ helo=wout4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rKd/EBgj; dkim-atps=neutral
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com
- [IPv6:2607:f8b0:4864:20::d2f])
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm1 header.b=cHmKUEQH; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm2 header.b=OdAq4dSU; 
+ dkim-atps=neutral
+X-Greylist: delayed 500 seconds by postgrey-1.36 at bilbo;
+ Wed, 10 Feb 2021 16:31:15 AEDT
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com
+ [64.147.123.20])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Db7MX21sNzDskX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 16:18:27 +1100 (AEDT)
-Received: by mail-io1-xd2f.google.com with SMTP id e133so643123iof.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Feb 2021 21:18:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=1QyQ76yM+DRGQIWWpBtZtC+km5KE0GD76W/nCu9/S+0=;
- b=rKd/EBgjCCDOJ6y0MmK+J+IIhH+emTDln0WBMqk5Ga+nP9hQuEJXy30zORZMmvO6CC
- slRGUxFBDg6G3ijaR+YblWEtMn4zINr0uRsTQrLjZ6zD+XFog4ktVfaozxrVRgPjzZ6A
- 6EscNGkb+hZt9b8pB6T5eowKbVqVThgCTR3Is0XV1Hq/KfIc+AtYbbHszi+5PIHuhzle
- R/ka2jLiwTfrrnldXoi2GGYZn4MKf/C5p0PioeOJl+P6EAekwSWZcXI5xMnrKB4pN4vd
- CDKeSz+4/kLoQfDLJzwtPt2XvaHWJ2uz5eVHzNxE93pPxNYRiRjLBHHjEu2ZiLw3RaIE
- er7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=1QyQ76yM+DRGQIWWpBtZtC+km5KE0GD76W/nCu9/S+0=;
- b=OvV6uqgbQJmsNss7YGccArr7lwAtBAFsVyXnc+Ze+sOLKyHtgaYwtYEZrFhrI2dvTq
- 0hGFuCavCMgxwe9TXlPcW85eI4PtoiUBzuQLJqq1tgrdzwUnrTW0+FIBfhwkBb19cu7b
- Xc4M/S9E4ngkuBYZcep6hrxJKQdilcoZpXYPI7Msi1hNGzSp5SLzt7VqLfG7IAeKNwXt
- RnIoHCmIcMShz3iMC4Sq+B8I2MSf3v+cr6QhOixh9TybdtRBfTrOh7X6qOvDUJVYnj/G
- 8yilyOVIM3vIo8OjznXNMsTxU7sECBA8gbkkhM+AZDNdF9pFwgosQtbYNyc08UqetC0A
- 2TQQ==
-X-Gm-Message-State: AOAM532dAgvZ1aSCdJahsrK5sh8ccqk9OoB/a+yXd+7x5pkxEk8tKi9A
- lpxv+h1qpJEFREDwdjygfbgw3O4RE1aJWtiphc8=
-X-Google-Smtp-Source: ABdhPJx0u/s2yMDJCXGg5GpW8Icb6Q+HLJYgJm+ywZibSvppqJS6F1A6PXlRgWFuBlu6qleS949cAy5jAjahVQkOyd4=
-X-Received: by 2002:a6b:c8d0:: with SMTP id y199mr1085841iof.162.1612934302741; 
- Tue, 09 Feb 2021 21:18:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Db7fC6QSqzDrSq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 16:31:15 +1100 (AEDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
+ by mailout.west.internal (Postfix) with ESMTP id 94781E1F;
+ Wed, 10 Feb 2021 00:22:51 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute2.internal (MEProxy); Wed, 10 Feb 2021 00:22:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=fm1; bh=W+5w9HsZU7/hL6m+urnQzcrdAE
+ YaocMSlZx+KMfYvGY=; b=cHmKUEQHVv1433KD5yTFtJLusw+y13AdJFHVJ6aHmU
+ GZ1BFAHDkdUqvv8hAkOfi+wuIN7bOP8Rkdc9M2NkltHQkWL/M8l4ok+hynnCo0Fa
+ CELZoHxjI1V3HJTnW8vGpw69EXf1oaiab5AyaunvrCWvosMvYd12yO3JVYEGWG1n
+ B4+GwbI01YyrtxQ9JGsTJ0ho+0xFVQoAQ8M/A+wTTFN4QMbs6Ax//4s0pfejkSBd
+ vwoF7QAs8AOu7CVzQ8sUmgBR2b4QNiwYynxdacPtIr/tDjunqfvcKNQYuzHxklLy
+ 26sgd+nvmBoYbdkwocDLChPSmof+hDgNvhAv/Ed2NPAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:date:from
+ :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=W+5w9HsZU7/hL6m+u
+ rnQzcrdAEYaocMSlZx+KMfYvGY=; b=OdAq4dSULPtJgLUSIGaBYnUYhTj22PCUD
+ 8PB/26k4nOzuqTiu/IqE7OOa7RebBqd5OEhkdtkq79q46GDGRsEIMZgMon7Ho1b3
+ fM/aeUFDOU/PB/nrgVsINHKscegSq2ZP/exFupMxyNvXpJBjGRRXPkhFYmLDxv7K
+ MWtYkWTZsECYZ8OS1KuColPETcdeb0OaGJ+HN1oKnxUm9bBdqGVb3u9aI5WfwiT8
+ CC7oSc8wfJDNiyoCU+Sk/L52YONfYFdvTSRt/aHoaZiSlfHTJOQI8U3T+M2KkbOQ
+ Ay60FET2urClF0vWsM+IfomaDoVCvoNVaxpOc0CJfBi0JB40G8KTg==
+X-ME-Sender: <xms:qm0jYJA74TbXYJ4IQeGi9ymdjpCUC6NyxKdznHONjKibM8BXocaXqQ>
+ <xme:qm0jYHjYH8oFMEcVDd6hFVrhHvwXhUmlJrwtOhP_gWBsnmkvx23tOVg2KyPwz8HCs
+ q7-6ORNS3LCrbzExQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrheeigdekgecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhephffvuf
+ ffkffoggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicu
+ oehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpeelgeelfe
+ dvffekgeevfeelveeftdeilefgudegkeeuhefhvefgffekuefgffekfeenucfkphepudej
+ vddrudelfedrgeeirdehjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+ grihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdrtggt
+X-ME-Proxy: <xmx:qm0jYElTC0LoN0KjtcdGjRVwLQ0T_HdzSraZoDI1JNhaiutRhnevvw>
+ <xmx:qm0jYDx41aWNgUStJUiwCsKSrKp1WCvYLPEfhNJaHDiaUpwE-b0_vA>
+ <xmx:qm0jYOTdfYEGNKV_u5QIWq9QGoDq_zA55OIHynSK4C5wCoF2yqU5Fg>
+ <xmx:q20jYH4wChUhCzrn203YqKVQMwO-zkOTNclptqMG-41irwx3f-ZbNg>
+Received: from crackle.ozlabs.ibm.com.com (cpe-172-193-46-57.qld.foxtel.net.au
+ [172.193.46.57])
+ by mail.messagingengine.com (Postfix) with ESMTPA id A3D0E1080059;
+ Wed, 10 Feb 2021 00:22:49 -0500 (EST)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] selftests/powerpc: Fix L1D flushing tests for Power10
+Date: Wed, 10 Feb 2021 15:22:42 +1000
+Message-Id: <20210210052242.2862462-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-References: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
-From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date: Wed, 10 Feb 2021 06:18:11 +0100
-Message-ID: <CAM9Jb+gS22vbRrSLfTG=9VhJfrMOGvm4r8HB1nBMS4RK9W06FQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/pmem: Avoid inserting hugepage PTE entry with fsdax if
- hugepage support is disabled
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,92 +91,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux MM <linux-mm@kvack.org>, Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev@lists.ozlabs.org,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Russell Currey <ruscur@russell.cc>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Differentiate between hardware not supporting hugepages and user disabling THP
-> via 'echo never > /sys/kernel/mm/transparent_hugepage/enabled'
->
-> For the devdax namespace, the kernel handles the above via the
-> supported_alignment attribute and failing to initialize the namespace
-> if the namespace align value is not supported on the platform.
->
-> For the fsdax namespace, the kernel will continue to initialize
-> the namespace. This can result in the kernel creating a huge pte
-> entry even though the hardware don't support the same.
->
-> We do want hugepage support with pmem even if the end-user disabled THP
-> via sysfs file (/sys/kernel/mm/transparent_hugepage/enabled). Hence
-> differentiate between hardware/firmware lacking support vs user-controlled
-> disable of THP and prevent a huge fault if the hardware lacks hugepage
-> support.
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  include/linux/huge_mm.h | 15 +++++++++------
->  mm/huge_memory.c        |  6 +++++-
->  2 files changed, 14 insertions(+), 7 deletions(-)
->
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 6a19f35f836b..ba973efcd369 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -78,6 +78,7 @@ static inline vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, pfn_t pfn,
->  }
->
->  enum transparent_hugepage_flag {
-> +       TRANSPARENT_HUGEPAGE_NEVER_DAX,
->         TRANSPARENT_HUGEPAGE_FLAG,
->         TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
->         TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG,
-> @@ -123,6 +124,13 @@ extern unsigned long transparent_hugepage_flags;
->   */
->  static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
->  {
-> +
-> +       /*
-> +        * If the hardware/firmware marked hugepage support disabled.
-> +        */
-> +       if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_NEVER_DAX))
-> +               return false;
-> +
->         if (vma->vm_flags & VM_NOHUGEPAGE)
->                 return false;
->
-> @@ -134,12 +142,7 @@ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
->
->         if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_FLAG))
->                 return true;
-> -       /*
-> -        * For dax vmas, try to always use hugepage mappings. If the kernel does
-> -        * not support hugepages, fsdax mappings will fallback to PAGE_SIZE
-> -        * mappings, and device-dax namespaces, that try to guarantee a given
-> -        * mapping size, will fail to enable
-> -        */
-> +
->         if (vma_is_dax(vma))
->                 return true;
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 9237976abe72..d698b7e27447 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -386,7 +386,11 @@ static int __init hugepage_init(void)
->         struct kobject *hugepage_kobj;
->
->         if (!has_transparent_hugepage()) {
-> -               transparent_hugepage_flags = 0;
-> +               /*
-> +                * Hardware doesn't support hugepages, hence disable
-> +                * DAX PMD support.
-> +                */
-> +               transparent_hugepage_flags = 1 << TRANSPARENT_HUGEPAGE_NEVER_DAX;
->                 return -EINVAL;
->         }
+The rfi_flush and entry_flush selftests work by using the PM_LD_MISS_L1
+perf event to count L1D misses.  The value of this event has changed
+over time:
 
- Reviewed-by: Pankaj Gupta <pankaj.gupta@cloud.ionos.com>
+- Power7 uses 0x400f0
+- Power8 and Power9 use both 0x400f0 and 0x3e054
+- Power10 uses only 0x3e054
+
+Update these selftests to use the value 0x3e054 on P10 and later,
+fixing the tests from finding 0 events.
+
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+---
+ tools/testing/selftests/powerpc/security/entry_flush.c | 4 +++-
+ tools/testing/selftests/powerpc/security/flush_utils.c | 9 +++++++++
+ tools/testing/selftests/powerpc/security/flush_utils.h | 9 ++++++++-
+ tools/testing/selftests/powerpc/security/rfi_flush.c   | 4 +++-
+ 4 files changed, 23 insertions(+), 3 deletions(-)
+
+diff --git a/tools/testing/selftests/powerpc/security/entry_flush.c b/tools/testing/selftests/powerpc/security/entry_flush.c
+index 78cf914fa321..ffcc93be7df1 100644
+--- a/tools/testing/selftests/powerpc/security/entry_flush.c
++++ b/tools/testing/selftests/powerpc/security/entry_flush.c
+@@ -26,6 +26,7 @@ int entry_flush_test(void)
+ 	__u64 l1d_misses_total = 0;
+ 	unsigned long iterations = 100000, zero_size = 24 * 1024;
+ 	unsigned long l1d_misses_expected;
++	unsigned long perf_l1d_miss_event;
+ 	int rfi_flush_orig;
+ 	int entry_flush, entry_flush_orig;
+ 
+@@ -53,7 +54,8 @@ int entry_flush_test(void)
+ 
+ 	entry_flush = entry_flush_orig;
+ 
+-	fd = perf_event_open_counter(PERF_TYPE_RAW, /* L1d miss */ 0x400f0, -1);
++	perf_l1d_miss_event = get_perf_l1d_miss_event();
++	fd = perf_event_open_counter(PERF_TYPE_RAW, perf_l1d_miss_event, -1);
+ 	FAIL_IF(fd < 0);
+ 
+ 	p = (char *)memalign(zero_size, CACHELINE_SIZE);
+diff --git a/tools/testing/selftests/powerpc/security/flush_utils.c b/tools/testing/selftests/powerpc/security/flush_utils.c
+index 0c3c4c40c7fb..7a5ef1a7a228 100644
+--- a/tools/testing/selftests/powerpc/security/flush_utils.c
++++ b/tools/testing/selftests/powerpc/security/flush_utils.c
+@@ -68,3 +68,12 @@ void set_dscr(unsigned long val)
+ 
+ 	asm volatile("mtspr %1,%0" : : "r" (val), "i" (SPRN_DSCR));
+ }
++
++unsigned long get_perf_l1d_miss_event(void)
++{
++	bool is_p10_or_later = ((mfspr(SPRN_PVR) >>  16) & 0xFFFF) >= 0x80;
++
++	if (is_p10_or_later)
++		return PERF_L1D_MISS_P10;
++	return PERF_L1D_MISS_P7;
++}
+diff --git a/tools/testing/selftests/powerpc/security/flush_utils.h b/tools/testing/selftests/powerpc/security/flush_utils.h
+index 07a5eb301466..c60d15f3eb4b 100644
+--- a/tools/testing/selftests/powerpc/security/flush_utils.h
++++ b/tools/testing/selftests/powerpc/security/flush_utils.h
+@@ -7,11 +7,18 @@
+ #ifndef _SELFTESTS_POWERPC_SECURITY_FLUSH_UTILS_H
+ #define _SELFTESTS_POWERPC_SECURITY_FLUSH_UTILS_H
+ 
+-#define CACHELINE_SIZE 128
++#define CACHELINE_SIZE		128
++
++#define SPRN_PVR		287
++
++#define PERF_L1D_MISS_P7	0x400f0
++#define PERF_L1D_MISS_P10	0x3e054
+ 
+ void syscall_loop(char *p, unsigned long iterations,
+ 		  unsigned long zero_size);
+ 
+ void set_dscr(unsigned long val);
+ 
++unsigned long get_perf_l1d_miss_event(void);
++
+ #endif /* _SELFTESTS_POWERPC_SECURITY_FLUSH_UTILS_H */
+diff --git a/tools/testing/selftests/powerpc/security/rfi_flush.c b/tools/testing/selftests/powerpc/security/rfi_flush.c
+index 7565fd786640..edf67c91ef79 100644
+--- a/tools/testing/selftests/powerpc/security/rfi_flush.c
++++ b/tools/testing/selftests/powerpc/security/rfi_flush.c
+@@ -26,6 +26,7 @@ int rfi_flush_test(void)
+ 	__u64 l1d_misses_total = 0;
+ 	unsigned long iterations = 100000, zero_size = 24 * 1024;
+ 	unsigned long l1d_misses_expected;
++	unsigned long perf_l1d_miss_event;
+ 	int rfi_flush_orig, rfi_flush;
+ 	int have_entry_flush, entry_flush_orig;
+ 
+@@ -54,7 +55,8 @@ int rfi_flush_test(void)
+ 
+ 	rfi_flush = rfi_flush_orig;
+ 
+-	fd = perf_event_open_counter(PERF_TYPE_RAW, /* L1d miss */ 0x400f0, -1);
++	perf_l1d_miss_event = get_perf_l1d_miss_event();
++	fd = perf_event_open_counter(PERF_TYPE_RAW, perf_l1d_miss_event, -1);
+ 	FAIL_IF(fd < 0);
+ 
+ 	p = (char *)memalign(zero_size, CACHELINE_SIZE);
+-- 
+2.30.1
+
