@@ -1,103 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6477931728A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 22:42:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F05317302
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 23:14:42 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DbYBg10zHzDvbm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 08:42:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DbYvz3LpfzDwk9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 09:14:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fLVuTXw5; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.41; helo=mail-ot1-f41.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com
+ [209.85.210.41])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DbY8f5Bn3zDvbh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 08:40:34 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 11ALWRbh160883; Wed, 10 Feb 2021 16:40:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=o6TuZSQpcdPy3WLJuSm6eQE5aim7yVvdU9t1MZ9OKtY=;
- b=fLVuTXw5GB0xrlUk9+oUdcgS4Vi41lMR5mxO36IQgNnpvqXZUxXWqWGdeA0m5zvj2Scq
- +udTAdoJOtISM3SBU9htGICE/uGZMMeAza8AluFqtfMB6Z1KD/2lqwHIVs/Ldt0qVzQy
- 6T0qn1V/WUUPT1gqzHKvo8/YQhXm2vVLM1YokVqNYWHUXOT/Doel3iHglMPxEzVmPj1v
- dlLbS2J5sBWqKNlYfhgyBlE8ZY/Ucl8amu08c55zvJ2oiy8PqOPxyXi8g4lPez/Dj9Y3
- os136pOS/Ct+2LPLeGZYnITaB4OQe5LhdP9VRAmEznVx/zQM+omj1OKehdCf+VMC9oD6 Jw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36mqff0b67-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Feb 2021 16:40:08 -0500
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 11ALWXwH161540;
- Wed, 10 Feb 2021 16:40:07 -0500
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36mqff0b4r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Feb 2021 16:40:07 -0500
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11ALQwK2018691;
- Wed, 10 Feb 2021 21:40:05 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma03fra.de.ibm.com with ESMTP id 36hskb2jk4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Feb 2021 21:40:05 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 11ALe2Oq42926414
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Feb 2021 21:40:03 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CECA211C05E;
- Wed, 10 Feb 2021 21:40:02 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A2C2111C04A;
- Wed, 10 Feb 2021 21:39:56 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown
- [9.160.111.148])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 10 Feb 2021 21:39:56 +0000 (GMT)
-Message-ID: <594445d01e085875b97b46be726247f89d1e6661.camel@linux.ibm.com>
-Subject: Re: [PATCH v17 00/10] Carry forward IMA measurement log on kexec on
- ARM64
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Rob Herring <robh@kernel.org>, Lakshmi Ramasubramanian
- <nramas@linux.microsoft.com>
-Date: Wed, 10 Feb 2021 16:39:55 -0500
-In-Reply-To: <cf7930239b93044a1be353556b7dc730e024f658.camel@linux.ibm.com>
-References: <20210209182200.30606-1-nramas@linux.microsoft.com>
- <20210210171500.GA2328209@robh.at.kernel.org>
- <5c002c32-bc49-acda-c641-7b1494ea292d@linux.microsoft.com>
- <CAL_JsqLmdqfFF8u=dE+dQz+6ngv=moWkQF8tpZjUCX-vHuvU_w@mail.gmail.com>
- <cf7930239b93044a1be353556b7dc730e024f658.camel@linux.ibm.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-14.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
- definitions=2021-02-10_10:2021-02-10,
- 2021-02-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 malwarescore=0 suspectscore=0 impostorscore=0
- mlxscore=0 bulkscore=0 adultscore=0 spamscore=0 clxscore=1015
- mlxlogscore=999 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2102100186
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DbYt75MLXzDwj8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 09:13:00 +1100 (AEDT)
+Received: by mail-ot1-f41.google.com with SMTP id r21so3327134otk.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 14:13:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=DTXg6CwDth7i/nqcv+euFr50pt7fVzpIfVZ9mbO1Zq0=;
+ b=LBTAE9CznU3EbIw4UmnR9jUYf+kqlpTj0aKkFrh9EqKTHVVHZ6YF+cRCJFSo/2ZAA/
+ uZU1VzHPntBjkJZDEaY33DVnxx16ZzlWrwc9NT2bp09qQ6dpYNjALkcw0yGlB26mKAD6
+ zdLNkZRMKq1UZUF8d4D/HoP/w7T/sKH9jeYUY93vBGO6m3qCo+9BqBHnd6eZkFJYM6Ik
+ i6UWHvy6/OWHBxOjCkr1i5FQvFballvMtkhkETu7B7UHFbArJxiZhpJRYdIdhAdVKqp3
+ zo54c/Jy4QC2SnM3ViOpZGXNB4RZOzI7xG8FwICrFNtx8I+Du4/Z6YHHazNlqfNyaJk9
+ D3dw==
+X-Gm-Message-State: AOAM532FvrPnuQuSUF73zVLgiVC7CTQcjlp4Z3pcsKRwWbKVgSDTnOc/
+ 8tbmaFn20Qy+0iUHKUNQTQ==
+X-Google-Smtp-Source: ABdhPJzi/+7SeOHhZnHUBL4PJ6P0lIk8i2F6Ep3p3sFUaaO0qUGBJ/J5giqeNfq2byHxecLoX+o25A==
+X-Received: by 2002:a9d:6b1a:: with SMTP id g26mr3792095otp.49.1612995174877; 
+ Wed, 10 Feb 2021 14:12:54 -0800 (PST)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net.
+ [24.155.109.49])
+ by smtp.gmail.com with ESMTPSA id z8sm613408oon.10.2021.02.10.14.12.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 10 Feb 2021 14:12:54 -0800 (PST)
+Received: (nullmailer pid 2893717 invoked by uid 1000);
+ Wed, 10 Feb 2021 22:12:52 -0000
+Date: Wed, 10 Feb 2021 16:12:52 -0600
+From: Rob Herring <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2 3/7] ASoC: dt-bindings: fsl_rpmsg: Add binding doc for
+ rpmsg cpu dai driver
+Message-ID: <20210210221252.GA2885308@robh.at.kernel.org>
+References: <1612693435-31418-1-git-send-email-shengjiu.wang@nxp.com>
+ <1612693435-31418-4-git-send-email-shengjiu.wang@nxp.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1612693435-31418-4-git-send-email-shengjiu.wang@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,45 +67,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, tao.li@vivo.com,
- Paul Mackerras <paulus@samba.org>, vincenzo.frascino@arm.com,
- Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Masahiro Yamada <masahiroy@kernel.org>, James Morris <jmorris@namei.org>,
- "AKASHI, Takahiro" <takahiro.akashi@linaro.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- "Serge E. Hallyn" <serge@hallyn.com>, devicetree@vger.kernel.org,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Will Deacon <will@kernel.org>,
- Prakhar Srivastava <prsriva@linux.microsoft.com>,
- Hsin-Yi Wang <hsinyi@chromium.org>, Allison Randal <allison@lohutok.net>,
- Christophe Leroy <christophe.leroy@c-s.fr>,
- Matthias Brugger <mbrugger@suse.com>, balajib@linux.microsoft.com,
- dmitry.kasatkin@gmail.com,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- James Morse <james.morse@arm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Joe Perches <joe@perches.com>,
- linux-integrity@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, timur@kernel.org,
+ lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com,
+ linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com,
+ broonie@kernel.org, perex@perex.cz, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2021-02-10 at 15:55 -0500, Mimi Zohar wrote:
-> On Wed, 2021-02-10 at 14:42 -0600, Rob Herring wrote:
-> > On Wed, Feb 10, 2021 at 11:33 AM Lakshmi Ramasubramanian
+On Sun, Feb 07, 2021 at 06:23:51PM +0800, Shengjiu Wang wrote:
+> fsl_rpmsg cpu dai driver is driver for rpmsg audio, which is mainly used
+> for getting the user's configuration from device tree and configure the
+> clocks which is used by Cortex-M core. So in this document define the
+> needed property.
 > 
-> > Ideally, we don't apply the same patch in 2 branches. It looks like
-> > there's a conflict but no real dependence on the above patch (the
-> > ima_buffer part). The conflict seems trivial enough that Linus can
-> > resolve it in the merge window.
-> > 
-> > Or Mimi can take the whole thing if preferred?
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  .../devicetree/bindings/sound/fsl,rpmsg.yaml  | 80 +++++++++++++++++++
+>  1 file changed, 80 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
 > 
-> How about I create a topic branch with just the two patches, allowing
-> both of us to merge it?   There shouldn't be a problem with re-writing
-> next-integrity history.
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+> new file mode 100644
+> index 000000000000..2d3ce10d42fc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+> @@ -0,0 +1,80 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/sound/fsl,rpmsg.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP Audio RPMSG CPU DAI Controller
+> +
+> +maintainers:
+> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,imx7ulp-rpmsg
+> +      - fsl,imx8mn-rpmsg
+> +      - fsl,imx8mm-rpmsg
+> +      - fsl,imx8mp-rpmsg
 
-The 2 patches are now in the ima-kexec-fixes branch.
+rpmsg is a protocol. What's the h/w block?
 
-Mimi
+> +
+> +  clocks:
+> +    items:
+> +      - description: Peripheral clock for register access
+> +      - description: Master clock
+> +      - description: DMA clock for DMA register access
+> +      - description: Parent clock for multiple of 8kHz sample rates
+> +      - description: Parent clock for multiple of 11kHz sample rates
+> +    minItems: 5
+> +
+> +  clock-names:
+> +    items:
+> +      - const: ipg
+> +      - const: mclk
+> +      - const: dma
+> +      - const: pll8k
+> +      - const: pll11k
+> +    minItems: 5
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +  fsl,audioindex:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: instance index for rpmsg image
+> +
+> +  fsl,version:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: rpmsg image version index
 
+What are these 2 used for?
+
+> +
+> +  fsl,buffer-size:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: pre allocate dma buffer size
+> +
+> +  fsl,enable-lpa:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: enable low power audio path.
+> +
+> +  fsl,codec-type:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: Sometimes the codec is registered by
+> +                 driver not the device tree, this items
+> +                 can be used to distinguish codecs
+
+0-2^32 are valid values?
+
+> +
+> +required:
+> +  - compatible
+> +  - fsl,audioindex
+> +  - fsl,version
+> +  - fsl,buffer-size
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    rpmsg_audio: rpmsg_audio {
+> +        compatible = "fsl,imx8mn-rpmsg";
+> +        fsl,audioindex = <0> ;
+> +        fsl,version = <2>;
+> +        fsl,buffer-size = <0x6000000>;
+> +        fsl,enable-lpa;
+> +        status = "okay";
+
+Don't show status in examples.
+
+> +    };
+> -- 
+> 2.27.0
+> 
