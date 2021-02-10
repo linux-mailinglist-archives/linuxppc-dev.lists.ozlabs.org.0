@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B7D317458
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 00:27:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8EAD317470
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 00:32:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DbbX45c7fzDwjm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 10:27:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dbbf70FZFzDsjD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 10:32:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,68 +15,68 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=J9rrM279; dkim-atps=neutral
+ header.s=pp1 header.b=aSa2yX//; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DbbV96XJGzDrgc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 10:25:53 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DbbcG5TbfzDrj0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 10:31:10 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 11AN3HZl100879; Wed, 10 Feb 2021 18:25:01 -0500
+ 11ANIMmD033480; Wed, 10 Feb 2021 18:30:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=references : from : to :
  cc : subject : in-reply-to : date : message-id : mime-version :
- content-type; s=pp1; bh=lya6aWx3adNpubBuqfgnGh2PFxWHF1T1ZwnR7eu0Zk4=;
- b=J9rrM279ujDjvj/fUkJzd6OK3OioO03i8GspWCb7gRQ1Bz9r5n1MIYjzJfeeEcb9oUok
- RL+mDDutQwGn6UXo2B/UY1RfNmw7z7VZW6jCV3PZ8G0MyzYRViZERgG2wu4594UBjnGY
- hga5HoV+sDejMNvioGMyMbpIiw0o13sYehXc1p9T9qUwhJ1oTB2CZgv/aeHELGbEJsCM
- ffq0WbxFRn4S0qN+dMGISMAmiVF9ffCxzaBLXmmItZPMoi4lHGn2fQdD4L0GtOXTFLmt
- EylkaYvDeupZdzGgshnoC8ZFN81JhM8Tgm29VNiZiKvSSGg55mX2rSHCmJEFgh3zaLpx Mw== 
+ content-type; s=pp1; bh=WwnxfDfiSUvaoRxLjsUAinYso5jcWLMQITma1Y77IiE=;
+ b=aSa2yX//b5kSC77R8wdXM77GzKfuLxawVVd+SVxyGyw+awLxwdvria14j4FzLGWjALpr
+ tMz6eGziaxLp2/B9S7kLstYHwOYpnntNnuV8JXXCYekh+ne9J+VV6y17gIrl1HMjSbmY
+ 9XezezrwKnU/+XqEP+53Vg2CBNsqBv/86d7Ba1xYTtv7yF+7iab5+uBrnPfGI7uqO86s
+ +4DxlQ6Ff6FHF3E3uTuLyv50QACTDiACCh37ssQ94eamT5E+p15bBrZfhK9KxdB8dVp7
+ bRsYIkyi4LWQFJKJ8N2MNwo+mVWAI5SmpKcDt23K7cawHwCUsfBV31i+vOSTnakX92Tj 5w== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36mqngjb0a-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36ms1w064v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Feb 2021 18:25:01 -0500
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 11AN4BW0105431;
- Wed, 10 Feb 2021 18:25:01 -0500
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36mqngjayx-1
+ Wed, 10 Feb 2021 18:30:52 -0500
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 11ANLLv8052502;
+ Wed, 10 Feb 2021 18:30:51 -0500
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36ms1w064b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Feb 2021 18:25:01 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11ANNW50012293;
- Wed, 10 Feb 2021 23:24:59 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma04wdc.us.ibm.com with ESMTP id 36hjr9hgy7-1
+ Wed, 10 Feb 2021 18:30:51 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11ANSMsD024480;
+ Wed, 10 Feb 2021 23:30:50 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma02dal.us.ibm.com with ESMTP id 36hjraa03g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Feb 2021 23:24:59 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 11ANOxZD31129994
+ Wed, 10 Feb 2021 23:30:50 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11ANUnFN19136844
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Feb 2021 23:24:59 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 30EAAAC05B;
- Wed, 10 Feb 2021 23:24:59 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E9FC2AC059;
- Wed, 10 Feb 2021 23:24:51 +0000 (GMT)
+ Wed, 10 Feb 2021 23:30:49 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CEF0DAE05F;
+ Wed, 10 Feb 2021 23:30:49 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A6960AE05C;
+ Wed, 10 Feb 2021 23:30:42 +0000 (GMT)
 Received: from manicouagan.localdomain (unknown [9.160.95.194])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
- Wed, 10 Feb 2021 23:24:51 +0000 (GMT)
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Wed, 10 Feb 2021 23:30:42 +0000 (GMT)
 References: <20210209182200.30606-1-nramas@linux.microsoft.com>
- <20210209182200.30606-3-nramas@linux.microsoft.com>
+ <20210209182200.30606-4-nramas@linux.microsoft.com>
 User-agent: mu4e 1.4.10; emacs 27.1
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Subject: Re: [PATCH v17 02/10] of: Add a common kexec FDT setup function
-In-reply-to: <20210209182200.30606-3-nramas@linux.microsoft.com>
-Date: Wed, 10 Feb 2021 20:24:49 -0300
-Message-ID: <87y2fvo69q.fsf@manicouagan.localdomain>
+Subject: Re: [PATCH v17 03/10] arm64: Use common of_kexec_alloc_and_setup_fdt()
+In-reply-to: <20210209182200.30606-4-nramas@linux.microsoft.com>
+Date: Wed, 10 Feb 2021 20:30:40 -0300
+Message-ID: <87v9azo5zz.fsf@manicouagan.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-TM-AS-GCONF: 00
@@ -84,11 +84,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
  definitions=2021-02-10_11:2021-02-10,
  2021-02-10 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 malwarescore=0 phishscore=0
- adultscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102100200
+ mlxlogscore=847 mlxscore=0
+ malwarescore=0 priorityscore=1501 phishscore=0 adultscore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102100200
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,34 +120,18 @@ Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
 
 > From: Rob Herring <robh@kernel.org>
 >
-> Both arm64 and powerpc do essentially the same FDT /chosen setup for
-> kexec.  The differences are either omissions that arm64 should have
-> or additional properties that will be ignored.  The setup code can be
-> combined and shared by both powerpc and arm64.
+> The code for setting up the /chosen node in the device tree
+> and updating the memory reservation for the next kernel has been
+> moved to of_kexec_alloc_and_setup_fdt() defined in "drivers/of/kexec.c".
 >
-> The differences relative to the arm64 version:
->  - If /chosen doesn't exist, it will be created (should never happen).
->  - Any old dtb and initrd reserved memory will be released.
->  - The new initrd and elfcorehdr are marked reserved.
->  - "linux,booted-from-kexec" is set.
->
-> The differences relative to the powerpc version:
->  - "kaslr-seed" and "rng-seed" may be set.
->  - "linux,elfcorehdr" is set.
->  - Any existing "linux,usable-memory-range" is removed.
->
-> Combine the code for setting up the /chosen node in the FDT and updating
-> the memory reservation for kexec, for powerpc and arm64, in
-> of_kexec_alloc_and_setup_fdt() and move it to "drivers/of/kexec.c".
+> Use the common of_kexec_alloc_and_setup_fdt() to setup the device tree
+> and update the memory reservation for kexec for arm64.
 >
 > Signed-off-by: Rob Herring <robh@kernel.org>
 > Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
 > ---
->  drivers/of/Makefile |   6 ++
->  drivers/of/kexec.c  | 258 ++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/of.h  |  13 +++
->  3 files changed, 277 insertions(+)
->  create mode 100644 drivers/of/kexec.c
+>  arch/arm64/kernel/machine_kexec_file.c | 180 ++-----------------------
+>  1 file changed, 8 insertions(+), 172 deletions(-)
 
 Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 
