@@ -1,72 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86FFD3160DA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 09:23:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 257DD316158
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 09:47:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DbCSN19nBzDvZl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 19:23:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DbD041NbvzDsVL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 19:47:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
- helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uhCgB6Tt; dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DbCQ84V27zDr2l
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 19:21:04 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id u15so801257plf.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 00:21:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=y9ueWC+qy7zRAnCAZ9+0eKnj/8u9oJqH4nTZhyJhcxU=;
- b=uhCgB6TtwZ04qIdJFahWJ+phR4sQIelHq1yi3fTzolVjT44jmQOapFamwyNDpHmlLJ
- a7aKVWQ2pI52IPboZv8SB/h32ax4C4pdVIC5K85Sqz2tSOIyNrBZZ4sre95+bxqS7YA5
- WP7ELgRpCGjPw65N+g/9E67vlznfbRhBRue440khdfbCI0TWM0R6g4fHY1/fdbY1845t
- eZ42u7T3cdqd48Ku3JDvQsywE3TQy9mw35XXrQ1vvuaBdOR0TrjdGOnbT0A6jLo3UWIT
- z5/UVOHSnZ3bhkXS82hFOlx6Q0uQEUQpNONKM/eNysQz7sKMZpzYzukcI265H8pn9elG
- 4/og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=y9ueWC+qy7zRAnCAZ9+0eKnj/8u9oJqH4nTZhyJhcxU=;
- b=Rm/d1Uh66Xmr7VXd80mrAfUM4vYIxBSbo4WC0Ohe/pxtOYVAlH7tNk14S5pbLYvGMd
- oNHh+Sxtwec1Egd6CVEq0S06sejjPjd80MsNhtQ4sYmAZK36deOp73ZKv3c9DXePmUtB
- JUXn0VEGpsZgtcYLBKY4tVJsEovKSe1GZ0yXpdAhHD1QqePSilGxbz5hG1GohAfcovgj
- O/I5N59gTMiXy/U9iuIqMkk+2nJ/JQgipGpUpHy//OIHTA9DYw2CesSNpE0kqIefF4uh
- tksa4UtnQ/zqCf4lQiY5GqSM06wp1BWJvuPXLMwacPOVIF5DGQ4l8uTsFFm+uletAFpS
- 9LjA==
-X-Gm-Message-State: AOAM533yZ43KgShhigs8wRdTGPEdTdxgTVhSfbesGIcUtofblg++cFF4
- 7/iruwCq0pNYjVO3sM5XO8Er4HX86fs=
-X-Google-Smtp-Source: ABdhPJxX/BPSWkTKCX656F5jzGCJybSd/yRy8Lxrt2741SututWjlFOTlsEMSSSPtSfark+udAsv/g==
-X-Received: by 2002:a17:902:b089:b029:e3:28:b8ee with SMTP id
- p9-20020a170902b089b02900e30028b8eemr2039609plr.84.1612945260944; 
- Wed, 10 Feb 2021 00:21:00 -0800 (PST)
-Received: from localhost (14-201-150-91.tpgi.com.au. [14.201.150.91])
- by smtp.gmail.com with ESMTPSA id b17sm1179361pfl.190.2021.02.10.00.20.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Feb 2021 00:21:00 -0800 (PST)
-Date: Wed, 10 Feb 2021 18:20:54 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: linux-next: build failure after merge of the powerpc tree
-To: PowerPC <linuxppc-dev@lists.ozlabs.org>, Michael Ellerman
- <mpe@ellerman.id.au>, Stephen Rothwell <sfr@canb.auug.org.au>
-References: <20210209211921.777e3053@canb.auug.org.au>
-In-Reply-To: <20210209211921.777e3053@canb.auug.org.au>
-MIME-Version: 1.0
-Message-Id: <1612945076.ng7h3tp2jn.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DbCx22Ly3zDsmK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 19:44:16 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DbCwn5BhRz9v1NH;
+ Wed, 10 Feb 2021 09:44:09 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ZREmQ3qwA8h7; Wed, 10 Feb 2021 09:44:09 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DbCwn4Qsqz9v1NF;
+ Wed, 10 Feb 2021 09:44:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4FD948B7FB;
+ Wed, 10 Feb 2021 09:44:10 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id TXrQUKk5z4R8; Wed, 10 Feb 2021 09:44:10 +0100 (CET)
+Received: from localhost.localdomain (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DF2E68B801;
+ Wed, 10 Feb 2021 09:44:09 +0100 (CET)
+Received: by localhost.localdomain (Postfix, from userid 0)
+ id AE6CE6736C; Wed, 10 Feb 2021 08:44:09 +0000 (UTC)
+Message-Id: <ad0363ff0ff8c125f40e1cdc589a85bbd7e31693.1612946484.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <cover.1612898425.git.christophe.leroy@csgroup.eu>
+References: <cover.1612898425.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v6 3/2] powerpc/syscall: Avoid storing 'current' in another
+ pointer
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com, msuchanek@suse.de
+Date: Wed, 10 Feb 2021 08:44:09 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,112 +60,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Stephen Rothwell's message of February 9, 2021 8:19 pm:
-> Hi all,
->=20
-> After merging the powerpc tree, today's linux-next build (powerpc
-> allyesconfig) failed like this:
->=20
-> arch/powerpc/kernel/head_64.o:(__ftr_alt_97+0x0): relocation truncated to=
- fit: R_PPC64_REL24 (OPD) against symbol `do_page_fault' defined in .opd se=
-ction in arch/powerpc/mm/fault.o
-> arch/powerpc/kernel/head_64.o:(__ftr_alt_97+0x8): relocation truncated to=
- fit: R_PPC64_REL24 (OPD) against symbol `do_page_fault' defined in .opd se=
-ction in arch/powerpc/mm/fault.o
-> arch/powerpc/kernel/head_64.o:(__ftr_alt_97+0x28): relocation truncated t=
-o fit: R_PPC64_REL24 (OPD) against symbol `unknown_exception' defined in .o=
-pd section in arch/powerpc/kernel/traps.o
->=20
-> Not sure exactly which commit caused this, but it is most likkely part
-> of a series in the powerpc tree.
->=20
-> I have left the allyesconfig build broken for today.
+By saving the pointer pointing to thread_info.flags, gcc copies r2
+in a non-volatile register.
 
-Hey Stephen,
+We know 'current' doesn't change, so avoid that intermediaite pointer.
 
-Thanks for that, it's due to .noinstr section being put on the other=20
-side of .text, so all our interrupt handler asm code can't reach them=20
-directly anymore since the ppc interrupt wrappers patch added noinstr
-attribute.
+Reduces null_syscall benchmark by 2 cycles (322 => 320 cycles)
 
-That's not strictly required though, we've used NOKPROBE_SYMBOL okay
-until now. If you can take this patch for now, it should get=20
-allyesconfig to build again. I'll fix it in the powerpc tree before the=20
-merge window.
+On PPC64, gcc seems to know that 'current' is not changing, and it keeps
+it in a non volatile register to avoid multiple read of 'current' in paca.
 
-Thanks,
-Nick
---
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v5: Also in interrupt exit prepare
+v6: Removed change related to booke current->thread.debug
+v7: Rebased on top of "powerpc/32: Handle bookE debugging in C in syscall entry/exit"
+---
+ arch/powerpc/kernel/interrupt.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/as=
-m/interrupt.h
-index 4badb3e51c19..fee1e4dd1e84 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -172,6 +172,8 @@ static inline void interrupt_nmi_exit_prepare(struct pt=
-_regs *regs, struct inter
- #define DECLARE_INTERRUPT_HANDLER_RAW(func)				\
- 	__visible long func(struct pt_regs *regs)
-=20
-+#define ppc_noinstr         noinline notrace __no_kcsan __no_sanitize_addr=
-ess
-+
- /**
-  * DEFINE_INTERRUPT_HANDLER_RAW - Define raw interrupt handler function
-  * @func:	Function name of the entry point
-@@ -198,7 +200,7 @@ static inline void interrupt_nmi_exit_prepare(struct pt=
-_regs *regs, struct inter
- #define DEFINE_INTERRUPT_HANDLER_RAW(func)				\
- static __always_inline long ____##func(struct pt_regs *regs);		\
- 									\
--__visible noinstr long func(struct pt_regs *regs)			\
-+__visible ppc_noinstr long func(struct pt_regs *regs)			\
- {									\
- 	long ret;							\
- 									\
-@@ -228,7 +230,7 @@ static __always_inline long ____##func(struct pt_regs *=
-regs)
- #define DEFINE_INTERRUPT_HANDLER(func)					\
- static __always_inline void ____##func(struct pt_regs *regs);		\
- 									\
--__visible noinstr void func(struct pt_regs *regs)			\
-+__visible ppc_noinstr void func(struct pt_regs *regs)			\
- {									\
- 	struct interrupt_state state;					\
- 									\
-@@ -262,7 +264,7 @@ static __always_inline void ____##func(struct pt_regs *=
-regs)
- #define DEFINE_INTERRUPT_HANDLER_RET(func)				\
- static __always_inline long ____##func(struct pt_regs *regs);		\
- 									\
--__visible noinstr long func(struct pt_regs *regs)			\
-+__visible ppc_noinstr long func(struct pt_regs *regs)			\
- {									\
- 	struct interrupt_state state;					\
- 	long ret;							\
-@@ -297,7 +299,7 @@ static __always_inline long ____##func(struct pt_regs *=
-regs)
- #define DEFINE_INTERRUPT_HANDLER_ASYNC(func)				\
- static __always_inline void ____##func(struct pt_regs *regs);		\
- 									\
--__visible noinstr void func(struct pt_regs *regs)			\
-+__visible ppc_noinstr void func(struct pt_regs *regs)			\
- {									\
- 	struct interrupt_state state;					\
- 									\
-@@ -331,7 +333,7 @@ static __always_inline void ____##func(struct pt_regs *=
-regs)
- #define DEFINE_INTERRUPT_HANDLER_NMI(func)				\
- static __always_inline long ____##func(struct pt_regs *regs);		\
- 									\
--__visible noinstr long func(struct pt_regs *regs)			\
-+__visible ppc_noinstr long func(struct pt_regs *regs)			\
- {									\
- 	struct interrupt_nmi_state state;				\
- 	long ret;							\
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index f93664ad4a5e..398cd86b6ada 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -241,7 +241,6 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 					   struct pt_regs *regs,
+ 					   long scv)
+ {
+-	unsigned long *ti_flagsp = &current_thread_info()->flags;
+ 	unsigned long ti_flags;
+ 	unsigned long ret = 0;
+ 	bool is_not_scv = !IS_ENABLED(CONFIG_PPC_BOOK3S_64) || !scv;
+@@ -257,7 +256,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 	/* Check whether the syscall is issued inside a restartable sequence */
+ 	rseq_syscall(regs);
+ 
+-	ti_flags = *ti_flagsp;
++	ti_flags = current_thread_info()->flags;
+ 
+ 	if (unlikely(r3 >= (unsigned long)-MAX_ERRNO) && is_not_scv) {
+ 		if (likely(!(ti_flags & (_TIF_NOERROR | _TIF_RESTOREALL)))) {
+@@ -271,7 +270,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 			ret = _TIF_RESTOREALL;
+ 		else
+ 			regs->gpr[3] = r3;
+-		clear_bits(_TIF_PERSYSCALL_MASK, ti_flagsp);
++		clear_bits(_TIF_PERSYSCALL_MASK, &current_thread_info()->flags);
+ 	} else {
+ 		regs->gpr[3] = r3;
+ 	}
+@@ -284,7 +283,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 	local_irq_disable();
+ 
+ again:
+-	ti_flags = READ_ONCE(*ti_flagsp);
++	ti_flags = READ_ONCE(current_thread_info()->flags);
+ 	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
+ 		local_irq_enable();
+ 		if (ti_flags & _TIF_NEED_RESCHED) {
+@@ -300,7 +299,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 			do_notify_resume(regs, ti_flags);
+ 		}
+ 		local_irq_disable();
+-		ti_flags = READ_ONCE(*ti_flagsp);
++		ti_flags = READ_ONCE(current_thread_info()->flags);
+ 	}
+ 
+ 	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && IS_ENABLED(CONFIG_PPC_FPU)) {
+@@ -357,7 +356,6 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ #ifndef CONFIG_PPC_BOOK3E_64 /* BOOK3E not yet using this */
+ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned long msr)
+ {
+-	unsigned long *ti_flagsp = &current_thread_info()->flags;
+ 	unsigned long ti_flags;
+ 	unsigned long flags;
+ 	unsigned long ret = 0;
+@@ -380,7 +378,7 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
+ 	local_irq_save(flags);
+ 
+ again:
+-	ti_flags = READ_ONCE(*ti_flagsp);
++	ti_flags = READ_ONCE(current_thread_info()->flags);
+ 	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
+ 		local_irq_enable(); /* returning to user: may enable */
+ 		if (ti_flags & _TIF_NEED_RESCHED) {
+@@ -391,7 +389,7 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
+ 			do_notify_resume(regs, ti_flags);
+ 		}
+ 		local_irq_disable();
+-		ti_flags = READ_ONCE(*ti_flagsp);
++		ti_flags = READ_ONCE(current_thread_info()->flags);
+ 	}
+ 
+ 	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && IS_ENABLED(CONFIG_PPC_FPU)) {
+@@ -443,7 +441,6 @@ void preempt_schedule_irq(void);
+ 
+ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsigned long msr)
+ {
+-	unsigned long *ti_flagsp = &current_thread_info()->flags;
+ 	unsigned long flags;
+ 	unsigned long ret = 0;
+ #ifdef CONFIG_PPC64
+@@ -466,8 +463,8 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
+ 	amr = kuap_get_and_check_amr();
+ #endif
+ 
+-	if (unlikely(*ti_flagsp & _TIF_EMULATE_STACK_STORE)) {
+-		clear_bits(_TIF_EMULATE_STACK_STORE, ti_flagsp);
++	if (unlikely(current_thread_info()->flags & _TIF_EMULATE_STACK_STORE)) {
++		clear_bits(_TIF_EMULATE_STACK_STORE, &current_thread_info()->flags);
+ 		ret = 1;
+ 	}
+ 
+@@ -479,7 +476,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
+ again:
+ 		if (IS_ENABLED(CONFIG_PREEMPT)) {
+ 			/* Return to preemptible kernel context */
+-			if (unlikely(*ti_flagsp & _TIF_NEED_RESCHED)) {
++			if (unlikely(current_thread_info()->flags & _TIF_NEED_RESCHED)) {
+ 				if (preempt_count() == 0)
+ 					preempt_schedule_irq();
+ 			}
+-- 
+2.25.0
+
