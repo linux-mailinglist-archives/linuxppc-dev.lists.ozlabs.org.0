@@ -1,33 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC52316796
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 14:11:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5643167CB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 14:19:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DbKsV1QmRzDvbg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 00:11:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DbL1z6THpzDqwl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 00:19:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DbKY40wRBzDrBq
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DbKY40xv3zDrfK
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 23:57:28 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4DbKY2037Wz9sWR; Wed, 10 Feb 2021 23:57:24 +1100 (AEDT)
+ id 4DbKY26GsFz9sW3; Wed, 10 Feb 2021 23:57:26 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
+To: npiggin@gmail.com, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Paul Mackerras <paulus@samba.org>
-In-Reply-To: <72c7b9879e2e2e6f5c27dadda6486386c2b50f23.1612612022.git.christophe.leroy@csgroup.eu>
-References: <72c7b9879e2e2e6f5c27dadda6486386c2b50f23.1612612022.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 1/3] powerpc/32s: Change mfsrin() into a static inline
- function
-Message-Id: <161296172491.3178259.6717759918429909544.b4-ty@ellerman.id.au>
-Date: Wed, 10 Feb 2021 23:57:24 +1100 (AEDT)
+In-Reply-To: <ad782af87a222efc79cfb06079b0fd23d4224eaf.1612515180.git.christophe.leroy@csgroup.eu>
+References: <ad782af87a222efc79cfb06079b0fd23d4224eaf.1612515180.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/8xx: Fix software emulation interrupt
+Message-Id: <161296172333.3178259.7272491290910741468.b4-ty@ellerman.id.au>
+Date: Wed, 10 Feb 2021 23:57:26 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,19 +43,16 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 6 Feb 2021 11:47:26 +0000 (UTC), Christophe Leroy wrote:
-> mfsrin() is a macro.
+On Fri, 5 Feb 2021 08:56:13 +0000 (UTC), Christophe Leroy wrote:
+> For unimplemented instructions or unimplemented SPRs, the 8xx triggers
+> a "Software Emulation Exception" (0x1000). That interrupt doesn't set
+> reason bits in SRR1 as the "Program Check Exception" does.
 > 
-> Change in into an inline function to avoid conflicts in KVM
-> and make it more evolutive.
+> Go through emulation_assist_interrupt() to set REASON_ILLEGAL.
 
 Applied to powerpc/next.
 
-[1/3] powerpc/32s: Change mfsrin() into a static inline function
-      https://git.kernel.org/powerpc/c/fd659e8f2c6d1e1e96fd5bdb515518801cd02012
-[2/3] powerpc/32s: mfsrin()/mtsrin() become mfsr()/mtsr()
-      https://git.kernel.org/powerpc/c/179ae57dbad1b9a83eec376aa44d54fc24352e37
-[3/3] powerpc/32s: Allow constant folding in mtsr()/mfsr()
-      https://git.kernel.org/powerpc/c/b842d131c7983f8f0b9c9572c073130b5f2bcf11
+[1/1] powerpc/8xx: Fix software emulation interrupt
+      https://git.kernel.org/powerpc/c/903178d0ce6bb30ef80a3604ab9ee2b57869fbc9
 
 cheers
