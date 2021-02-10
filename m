@@ -1,51 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FBA31598A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 23:34:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92403315C43
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 02:31:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DZyP134dZzDwfj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 09:34:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Db2KT0cXbzDvZG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 12:31:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=PmMallxr; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DZyKc37DPzDvYH
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 09:31:16 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B6BB764DEC;
- Tue,  9 Feb 2021 22:31:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1612909871;
- bh=w7T608Q6sIBtugY8EWYFaF2gDmCXirnHsPDnBwKISHU=;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Db2Gf6zcHzDspZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 12:28:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=jmtx5CCE; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4Db2Gd4pBGz9sVJ; Wed, 10 Feb 2021 12:28:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1612920537; bh=BnOJb4ZECVpQ0/TDZLWFgS+PJkwVFMihslRyuD73OY4=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=PmMallxrg49c9T3/O7B24Yc8QF+vHPMUZhsxsmIA3AYTCPjSXBZdttdZWSlrlkF7t
- NYFw3OHI4R8nOXlkGD9kkAbeJZHFvaz1muvqjCOsVryfpvD2NLJDyQQNIwEIFwMnHd
- XDVy126fR8JWavHG/mdG7irrh+6besHVrvPfSsRyURgvjm9p46T9DdVrm7cPdQwyrc
- iE72rodMIU7KJvexaxB+krJyWAmdp9puA+TPnu1y719kZyQysBiyQp6OyBIvkvBHhX
- MZ9eqkXv9gfxDNJSS/uXPe+j6321+ncpNHvE3Q4kLZdh771KSW/2r1eqr4g3lmqn66
- QcR3VVnYsbkfA==
-Date: Tue, 9 Feb 2021 22:30:18 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 1/3] spi: mpc52xx: Avoid using get_tbl()
-Message-ID: <20210209223018.GG4916@sirena.org.uk>
-References: <99bf008e2970de7f8ed3225cda69a6d06ae1a644.1612866360.git.christophe.leroy@csgroup.eu>
+ b=jmtx5CCELjX9ivmdhCV6xHy1KOsfFoVuol8Std0nWY4Q+EbqOS3AWf/lPU7osn5Et
+ 5iyGTrVI7hRGzIlEc1YNdwn/K39dDy/BqkmS/Iss6zlWCK7eJUKTyg7CLmphq/ci+q
+ JGJ/Pwy0cf3too90aD0A0TeiR6mWL5XhezPCPwnRcKtyI/AkYdv7h7r23J+AMJW7sa
+ MEPTzpHZV9whA1txzax1Md0PgiBOkyWciTOkcN5+OspQvnpCa3isiejs+BFHpIb1GA
+ /SpLZiEIx09QQ2RjvcC22IRBAmudiJw8K/A1rqk97yFv3ZAR+tEcshmiO8MXVjt6NR
+ WTXyuDZnLhxmw==
+Date: Wed, 10 Feb 2021 12:28:52 +1100
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 2/4] KVM: PPC: Book3S HV: Fix radix guest SLB side channel
+Message-ID: <20210210012852.GD2854001@thinks.paulus.ozlabs.org>
+References: <20210118062809.1430920-1-npiggin@gmail.com>
+ <20210118062809.1430920-3-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="7lMq7vMTJT4tNk0a"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <99bf008e2970de7f8ed3225cda69a6d06ae1a644.1612866360.git.christophe.leroy@csgroup.eu>
-X-Cookie: Put your trust in those who are worthy.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20210118062809.1430920-3-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,41 +51,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Jan 18, 2021 at 04:28:07PM +1000, Nicholas Piggin wrote:
+> The slbmte instruction is legal in radix mode, including radix guest
+> mode. This means radix guests can load the SLB with arbitrary data.
+> 
+> KVM host does not clear the SLB when exiting a guest if it was a
+> radix guest, which would allow a rogue radix guest to use the SLB as
+> a side channel to communicate with other guests.
 
---7lMq7vMTJT4tNk0a
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+No, because the code currently clears the SLB when entering a radix
+guest, which you remove in the next patch.  I'm OK with moving the SLB
+clearing from guest entry to guest exit, I guess, but I don't see that
+you are in fact fixing anything by doing so.
 
-On Tue, Feb 09, 2021 at 10:26:21AM +0000, Christophe Leroy wrote:
-> get_tbl() is confusing as it returns the content TBL register
-> on PPC32 but the concatenation of TBL and TBU on PPC64.
->=20
-> Use mftb() instead.
->=20
-> This will allow the removal of get_tbl() in a following patch.
-
-Acked-by: Mark Brown <broonie@kernel.org>
-
---7lMq7vMTJT4tNk0a
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmAjDPkACgkQJNaLcl1U
-h9DIDAf+PfQCzvmSV62gREXxoOf6uW42RTKr/G1+QpxhzKRx0uIr/LobLhb7MJWj
-dmwCZP+NqyviQCFy1dsAUZSommXfxd7WbfhSKFRTV+KBZlF/wy4QzfNBTAn+UIC9
-UsDnYBWthhw7d1rJ0FaWU4jn6cewk8VIOoZ0comyvzBdPDGi99YsVukpSlmbKFbf
-fD/uZJdMmdMsQlob6Ajd+h/tUYGr0zLUkBX5vsFwnTJmy9Lv9Y30PNu5mzGOMxo8
-3BT7cZ+DSgJZM4dsd72sW3eN1ER/G3FLjjr5hhffxw9XzVmKTrS01FNeAaGQO0ah
-QFqtkGS40qUehSgnuIac6q0B+yWFbQ==
-=jS1n
------END PGP SIGNATURE-----
-
---7lMq7vMTJT4tNk0a--
+Paul.
