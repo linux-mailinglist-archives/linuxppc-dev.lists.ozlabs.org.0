@@ -1,35 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E99B3316F03
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 19:45:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03A9316FA0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 20:07:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DbTGC5ysXzDwhG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 05:45:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DbTlw3rc2zDwk6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 06:07:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=baikalelectronics.ru (client-ip=87.245.175.226;
- helo=mail.baikalelectronics.ru;
- envelope-from=sergey.semin@baikalelectronics.ru; receiver=<UNKNOWN>)
-Received: from mail.baikalelectronics.ru (mail.baikalelectronics.com
- [87.245.175.226])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DbTD5330MzDwh7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 05:43:16 +1100 (AEDT)
-Date: Wed, 10 Feb 2021 21:43:11 +0300
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH RESEND v6 00/10] dt-bindings: usb: Harmonize
- xHCI/EHCI/OHCI/DWC3 nodes name
-Message-ID: <20210210184311.ouc6zft675kybyjx@mobilestation>
-References: <20210210172850.20849-1-Sergey.Semin@baikalelectronics.ru>
- <e169630f-1255-7597-86f2-63ee8760cc8c@gmail.com>
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::12c;
+ helo=mail-lf1-x12c.google.com; envelope-from=anders.roxell@linaro.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=tdvdvopN; dkim-atps=neutral
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com
+ [IPv6:2a00:1450:4864:20::12c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DbTjW3qjQzDwj5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 06:05:15 +1100 (AEDT)
+Received: by mail-lf1-x12c.google.com with SMTP id v24so4464589lfr.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 11:05:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AUZZJPcdsZ4nXWPrdOtnVl3JVvpEylf0g26f/cJWrEs=;
+ b=tdvdvopNJa/CNXblKmh3zsQ94QYlwXgnTc3W2rw3GKaWji6T1d806HNk5jlGGQsE0d
+ Z3BzOj8nXe/DC40o+NAgzKZEhnAAmT+MybnSvLG2UiVRby+UfPnUmHXxsNbU7/THaivB
+ IJok8KZuYBmdglvY9AXbeqg2N79bWTTZAvbuVrJ/jApGhi9wm0hMJLi3kDsrycTWwkH+
+ KeQqcA/kzuUA1N4LUQGmsMhnfPeZKVkijrSX1wnSYD7t5hFI06+M7TAv4qerUeyHPFAm
+ 84uVebInrFDi44XE03vgB3Mbxtn8cTyAwnIJLm2UKF/hTrvWBymtDXcbDo+kC+Za5e0s
+ IaxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AUZZJPcdsZ4nXWPrdOtnVl3JVvpEylf0g26f/cJWrEs=;
+ b=TvR/inVAk+6acJ8cud9Z1GTvLgL6Ihzhg9vUqVYP8j00IOMRK5UcueWObuE5Hw9ggc
+ E//czF0yAC+tfE/Na0nByVRCMrbYTuWLpOvGULIh0GDGFuNGYGlhtU9Dyng8RlWc7S5h
+ PzTuBtOVoA7+ZPBzxUKbug7IsQ6JRl9P7OXJojSriu/IHJeZr1R5hp7M/Bct0IP19oDU
+ MqTUf0CXZaz9AAVc/UZU0EqnnLDiVlUyN5Juu/NoY+nzYi57wb/d3R/2JVpDLMhEUrth
+ Yi9c68cNl+u/DKyaJISbxgYEo4hRAMsdUxLloOiw4rBZTZVzhz1MdpapsJav/N7+WAQ5
+ ctCw==
+X-Gm-Message-State: AOAM532eKL1jEnikGa6+EZtY4/p/KhzhRrzj430itbsy6nezjUIlyHcn
+ K418JuFwdP337ztQ4mhyA1PJ9Q==
+X-Google-Smtp-Source: ABdhPJx+dGCB5Wuq+4IRhfx1FPsG7SMl/CyZGsYTUvPGsDbtVXH2raDj8I9KusXJvxhAT7I/ejZXMg==
+X-Received: by 2002:a19:4843:: with SMTP id v64mr2309414lfa.178.1612983910472; 
+ Wed, 10 Feb 2021 11:05:10 -0800 (PST)
+Received: from localhost (c-9b28e555.07-21-73746f28.bbcust.telenor.se.
+ [85.229.40.155])
+ by smtp.gmail.com with ESMTPSA id s16sm390025ljc.121.2021.02.10.11.05.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 10 Feb 2021 11:05:09 -0800 (PST)
+From: Anders Roxell <anders.roxell@linaro.org>
+To: soc@kernel.org
+Subject: [PATCH] arm64: defconfig: enable modern virtio pci device
+Date: Wed, 10 Feb 2021 20:05:06 +0100
+Message-Id: <20210210190506.1923684-1-anders.roxell@linaro.org>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <e169630f-1255-7597-86f2-63ee8760cc8c@gmail.com>
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,140 +75,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Amelie Delaunay <amelie.delaunay@st.com>,
- Tony Lindgren <tony@atomide.com>, Bjorn Andersson <bjorn.andersson@linaro.org>,
- Paul Cercueil <paul@crapouillou.net>, Paul Mackerras <paulus@samba.org>,
- Wei Xu <xuwei5@hisilicon.com>, linux-stm32@st-md-mailman.stormreply.com,
- linux-kernel@vger.kernel.org, Alexandre Torgue <alexandre.torgue@st.com>,
- Khuong Dinh <khuong@os.amperecomputing.com>, linux-samsung-soc@vger.kernel.org,
- Gregory Clement <gregory.clement@bootlin.com>,
- Rafal Milecki <zajec5@gmail.com>, Alexey Brodkin <abrodkin@synopsys.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
- Andy Gross <agross@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
- linux-arm-msm@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- devicetree@vger.kernel.org, Jason Cooper <jason@lakedaemon.net>,
- Hauke Mehrtens <hauke@hauke-m.de>, linuxppc-dev@lists.ozlabs.org,
- Maxime Ripard <mripard@kernel.org>, Vladimir Zapolskiy <vz@mleia.com>,
- Rob Herring <robh+dt@kernel.org>, Jun Li <lijun.kernel@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>, linux-omap@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Felipe Balbi <balbi@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- Patrice Chotard <patrice.chotard@st.com>,
- Serge Semin <fancer.lancer@gmail.com>, Li Yang <leoyang.li@nxp.com>,
- Kukjin Kim <kgene@kernel.org>, Benoit Cousson <bcousson@baylibre.com>,
- Vineet Gupta <vgupta@synopsys.com>, linux-mediatek@lists.infradead.org,
- Shawn Guo <shawnguo@kernel.org>
+Cc: chris@zankel.net, tsbogend@alpha.franken.de,
+ Anders Roxell <anders.roxell@linaro.org>, mst@redhat.com, arnd@arndb.de,
+ linuxppc-dev@lists.ozlabs.org, catalin.marinas@arm.com,
+ linux-xtensa@linux-xtensa.org, paul.walmsley@sifive.com,
+ virtualization@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+ linux@armlinux.org.uk, jcmvbkbc@gmail.com, aou@eecs.berkeley.edu,
+ palmer@dabbelt.com, linux-riscv@lists.infradead.org,
+ linux-mips@vger.kernel.org, will@kernel.org, jasowang@redhat.com,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 10, 2021 at 10:21:47AM -0800, Florian Fainelli wrote:
-> On 2/10/21 9:28 AM, Serge Semin wrote:
-> > As the subject states this series is an attempt to harmonize the xHCI,
-> > EHCI, OHCI and DWC USB3 DT nodes with the DT schema introduced in the
-> > framework of the patchset [1].
-> > 
-> > Firstly as Krzysztof suggested we've deprecated a support of DWC USB3
-> > controllers with "synopsys,"-vendor prefix compatible string in favor of
-> > the ones with valid "snps,"-prefix. It's done in all the DTS files,
-> > which have been unfortunate to define such nodes.
-> > 
-> > Secondly we suggest to fix the snps,quirk-frame-length-adjustment property
-> > declaration in the Amlogic meson-g12-common.dtsi DTS file, since it has
-> > been erroneously declared as boolean while having uint32 type. Neil said
-> > it was ok to init that property with 0x20 value.
-> > 
-> > Thirdly the main part of the patchset concern fixing the xHCI, EHCI/OHCI
-> > and DWC USB3 DT nodes name as in accordance with their DT schema the
-> > corresponding node name is suppose to comply with the Generic USB HCD DT
-> > schema, which requires the USB nodes to have the name acceptable by the
-> > regexp: "^usb(@.*)?". Such requirement had been applicable even before we
-> > introduced the new DT schema in [1], but as we can see it hasn't been
-> > strictly implemented for a lot the DTS files. Since DT schema is now
-> > available the automated DTS validation shall make sure that the rule isn't
-> > violated.
-> > 
-> > Note most of these patches have been a part of the last three patches of
-> > [1]. But since there is no way to have them merged in in a combined
-> > manner, I had to move them to the dedicated series and split them up so to
-> > be accepted by the corresponding subsystem maintainers one-by-one.
-> > 
-> > [1] Link: https://lore.kernel.org/linux-usb/20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru/
-> > Changelog v1:
-> > - As Krzysztof suggested I've created a script which checked whether the
-> >   node names had been also updated in all the depended dts files. As a
-> >   result I found two more files which should have been also modified:
-> >   arch/arc/boot/dts/{axc003.dtsi,axc003_idu.dtsi}
-> > - Correct the USB DWC3 nodes name found in
-> >   arch/arm64/boot/dts/apm/{apm-storm.dtsi,apm-shadowcat.dtsi} too.
-> > 
-> > Link: https://lore.kernel.org/linux-usb/20201020115959.2658-1-Sergey.Semin@baikalelectronics.ru
-> > Changelog v2:
-> > - Drop the patch:
-> >   [PATCH 01/29] usb: dwc3: Discard synopsys,dwc3 compatibility string
-> >   and get back the one which marks the "synopsys,dwc3" compatible string
-> >   as deprecated into the DT schema related series.
-> > - Drop the patches:
-> >   [PATCH 03/29] arm: dts: am437x: Correct DWC USB3 compatible string
-> >   [PATCH 04/29] arm: dts: exynos: Correct DWC USB3 compatible string
-> >   [PATCH 07/29] arm: dts: bcm53x: Harmonize EHCI/OHCI DT nodes name
-> >   [PATCH 08/29] arm: dts: stm32: Harmonize EHCI/OHCI DT nodes name
-> >   [PATCH 16/29] arm: dts: bcm5301x: Harmonize xHCI DT nodes name
-> >   [PATCH 19/29] arm: dts: exynos: Harmonize DWC USB3 DT nodes name
-> >   [PATCH 21/29] arm: dts: ls1021a: Harmonize DWC USB3 DT nodes name
-> >   [PATCH 22/29] arm: dts: omap5: Harmonize DWC USB3 DT nodes name
-> >   [PATCH 24/29] arm64: dts: allwinner: h6: Harmonize DWC USB3 DT nodes name
-> >   [PATCH 26/29] arm64: dts: exynos: Harmonize DWC USB3 DT nodes name
-> >   [PATCH 27/29] arm64: dts: layerscape: Harmonize DWC USB3 DT nodes name
-> >   since they have been applied to the corresponding maintainers repos.
-> > - Fix drivers/usb/dwc3/dwc3-qcom.c to be looking for the "usb@"-prefixed
-> >   sub-node and falling back to the "dwc3@"-prefixed one on failure.
-> > 
-> > Link: https://lore.kernel.org/linux-usb/20201111091552.15593-1-Sergey.Semin@baikalelectronics.ru
-> > Changelog v3:
-> > - Drop the patches:
-> >   [PATCH v2 04/18] arm: dts: hisi-x5hd2: Harmonize EHCI/OHCI DT nodes name
-> >   [PATCH v2 06/18] arm64: dts: hisi: Harmonize EHCI/OHCI DT nodes name
-> >   [PATCH v2 07/18] mips: dts: jz47x: Harmonize EHCI/OHCI DT nodes name
-> >   [PATCH v2 08/18] mips: dts: sead3: Harmonize EHCI/OHCI DT nodes name
-> >   [PATCH v2 09/18] mips: dts: ralink: mt7628a: Harmonize EHCI/OHCI DT nodes name
-> >   [PATCH v2 11/18] arm64: dts: marvell: cp11x: Harmonize xHCI DT nodes name
-> >   [PATCH v2 12/18] arm: dts: marvell: armada-375: Harmonize DWC USB3 DT nodes name
-> >   [PATCH v2 16/18] arm64: dts: hi3660: Harmonize DWC USB3 DT nodes name
-> >   since they have been applied to the corresponding maintainers repos.
-> > 
-> > Link: https://lore.kernel.org/linux-usb/20201205155621.3045-1-Sergey.Semin@baikalelectronics.ru
-> > Changelog v4:
-> > - Just resend.
-> > 
-> > Link: https://lore.kernel.org/linux-usb/20201210091756.18057-1-Sergey.Semin@baikalelectronics.ru/
-> > Changelog v5:
-> > - Drop the patch:
-> >   [PATCH v4 02/10] arm64: dts: amlogic: meson-g12: Set FL-adj property value
-> >   since it has been applied to the corresponding maintainers repos.
-> > - Get back the patch:
-> >   [PATCH 21/29] arm: dts: ls1021a: Harmonize DWC USB3 DT nodes name
-> >   as it has been missing in the kernel 5.11-rc7
-> > - Rebase onto the kernel 5.11-rc7
-> > 
-> > Link: https://lore.kernel.org/lkml/20210208135154.6645-1-Sergey.Semin@baikalelectronics.ru/
-> > Changelog v6:
-> > - Just resend and add linux-usb.vger.kernel.org to the list of Ccecipients.
-> 
-> 
+Since patch ("virtio-pci: introduce modern device module") got added it
+is not possible to boot a defconfig kernel in qemu with a virtio pci
+device.  Add CONFIG_VIRTIO_PCI_MODERN=y fragment makes the kernel able
+to boot.
 
-> If this needs to go on, can you drop the people who already took your
-> patches (trying to lower my email amount to something manageable).
-> Thank you.
+Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+---
+ arch/arm/configs/multi_v7_defconfig         | 1 +
+ arch/arm64/configs/defconfig                | 1 +
+ arch/mips/configs/loongson3_defconfig       | 1 +
+ arch/mips/configs/malta_kvm_guest_defconfig | 1 +
+ arch/powerpc/configs/guest.config           | 1 +
+ arch/riscv/configs/defconfig                | 1 +
+ arch/riscv/configs/rv32_defconfig           | 1 +
+ arch/xtensa/configs/virt_defconfig          | 1 +
+ kernel/configs/kvm_guest.config             | 1 +
+ 9 files changed, 9 insertions(+)
 
-Ah, sorry for the noise. I'll clean the Cc-list up in the next attempt
-to have this finally fully accepted.
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index 3823da605430..02297ed49b20 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -972,6 +972,7 @@ CONFIG_DW_DMAC=y
+ CONFIG_RCAR_DMAC=y
+ CONFIG_RENESAS_USB_DMAC=m
+ CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_PCI_MODERN=y
+ CONFIG_VIRTIO_MMIO=y
+ CONFIG_STAGING=y
+ CONFIG_MFD_NVEC=y
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 83c28da85834..8334e9cb4608 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -910,6 +910,7 @@ CONFIG_TI_K3_UDMA_GLUE_LAYER=y
+ CONFIG_VFIO=y
+ CONFIG_VFIO_PCI=y
+ CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_PCI_MODERN=y
+ CONFIG_VIRTIO_BALLOON=y
+ CONFIG_VIRTIO_MMIO=y
+ CONFIG_XEN_GNTDEV=y
+diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
+index 0e79f81217bc..ac5f2dcbffb1 100644
+--- a/arch/mips/configs/loongson3_defconfig
++++ b/arch/mips/configs/loongson3_defconfig
+@@ -324,6 +324,7 @@ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_RTC_DRV_GOLDFISH=y
+ CONFIG_DMADEVICES=y
+ CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_PCI_MODERN=y
+ CONFIG_VIRTIO_BALLOON=m
+ CONFIG_VIRTIO_INPUT=y
+ CONFIG_VIRTIO_MMIO=y
+diff --git a/arch/mips/configs/malta_kvm_guest_defconfig b/arch/mips/configs/malta_kvm_guest_defconfig
+index 9185e0a0aa45..043633cdb406 100644
+--- a/arch/mips/configs/malta_kvm_guest_defconfig
++++ b/arch/mips/configs/malta_kvm_guest_defconfig
+@@ -332,6 +332,7 @@ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_UIO=m
+ CONFIG_UIO_CIF=m
+ CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_PCI_MODERN=y
+ CONFIG_VIRTIO_BALLOON=y
+ CONFIG_VIRTIO_MMIO=y
+ CONFIG_EXT2_FS=y
+diff --git a/arch/powerpc/configs/guest.config b/arch/powerpc/configs/guest.config
+index 209f58515d88..fbff632c8633 100644
+--- a/arch/powerpc/configs/guest.config
++++ b/arch/powerpc/configs/guest.config
+@@ -5,6 +5,7 @@ CONFIG_NET_FAILOVER=y
+ CONFIG_VIRTIO_CONSOLE=y
+ CONFIG_VIRTIO=y
+ CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_PCI_MODERN=y
+ CONFIG_KVM_GUEST=y
+ CONFIG_EPAPR_PARAVIRT=y
+ CONFIG_VIRTIO_BALLOON=y
+diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
+index 8c3d1e451703..b7fa7a1a0c6d 100644
+--- a/arch/riscv/configs/defconfig
++++ b/arch/riscv/configs/defconfig
+@@ -85,6 +85,7 @@ CONFIG_MMC=y
+ CONFIG_MMC_SPI=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_PCI_MODERN=y
+ CONFIG_VIRTIO_BALLOON=y
+ CONFIG_VIRTIO_INPUT=y
+ CONFIG_VIRTIO_MMIO=y
+diff --git a/arch/riscv/configs/rv32_defconfig b/arch/riscv/configs/rv32_defconfig
+index 2c2cda6cc1c5..68296101fa06 100644
+--- a/arch/riscv/configs/rv32_defconfig
++++ b/arch/riscv/configs/rv32_defconfig
+@@ -84,6 +84,7 @@ CONFIG_MMC=y
+ CONFIG_MMC_SPI=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_PCI_MODERN=y
+ CONFIG_VIRTIO_BALLOON=y
+ CONFIG_VIRTIO_INPUT=y
+ CONFIG_VIRTIO_MMIO=y
+diff --git a/arch/xtensa/configs/virt_defconfig b/arch/xtensa/configs/virt_defconfig
+index 6d1387dfa96f..7fad1c2454fd 100644
+--- a/arch/xtensa/configs/virt_defconfig
++++ b/arch/xtensa/configs/virt_defconfig
+@@ -74,6 +74,7 @@ CONFIG_FRAMEBUFFER_CONSOLE=y
+ CONFIG_LOGO=y
+ # CONFIG_USB_SUPPORT is not set
+ CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_PCI_MODERN=y
+ CONFIG_VIRTIO_INPUT=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_EXT3_FS=y
+diff --git a/kernel/configs/kvm_guest.config b/kernel/configs/kvm_guest.config
+index 208481d91090..8dea6df20006 100644
+--- a/kernel/configs/kvm_guest.config
++++ b/kernel/configs/kvm_guest.config
+@@ -22,6 +22,7 @@ CONFIG_S390_GUEST=y
+ CONFIG_VIRTIO=y
+ CONFIG_VIRTIO_MENU=y
+ CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_PCI_MODERN=y
+ CONFIG_VIRTIO_BLK=y
+ CONFIG_VIRTIO_CONSOLE=y
+ CONFIG_VIRTIO_NET=y
+-- 
+2.30.0
 
--Sergey
-
-> -- 
-> Florian
