@@ -1,69 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20162315F91
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 07:37:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD516315FBF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 07:54:43 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Db96s5gkHzDsmD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 17:37:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Db9VQ6kzTzDsq5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 17:54:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::829;
- helo=mail-qt1-x829.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=gondor.apana.org.au (client-ip=216.24.177.18;
+ helo=fornost.hmeau.com; envelope-from=herbert@gondor.apana.org.au;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=U3TeKQmh; dkim-atps=neutral
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com
- [IPv6:2607:f8b0:4864:20::829])
+Received: from fornost.hmeau.com (helcar.hmeau.com [216.24.177.18])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Db94h5Y44zDsjV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 17:35:44 +1100 (AEDT)
-Received: by mail-qt1-x829.google.com with SMTP id c5so850645qth.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Feb 2021 22:35:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=OXavdBpvyb1Dd4oqB+h0ECTg4yI3fOv5ICocqflKLWs=;
- b=U3TeKQmh4y3CaWmZxGHT2aKYLXNMmaTMhX74o7qey2Zqpli88QlRz1Xs6iuoUXdHpp
- vrDeFbsUwEWi9FKGrl/Vq8lyG/053P0M7F+3caw1kPcsncgM7m+SOqRxTLW369Uj/FFq
- A9qAxPNoHSKxxAxQ4h6PCTAT6kKIn8aoSohjxh7M15EiZ2Qlcez9KGqofJ+nPPNs1QUx
- 9wUhYhnS7JNDZoy+WNsipI0nlpIZKUnH+4QuClQMepS8wOkv61BhtZ57FjpYx+xCISVn
- TLP+LLYgiCtBirVf4LfoqCjegiT3D+R7lUdUz6OYnOoczhRPL11mVNSvXNcSxevXYVoh
- +NYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=OXavdBpvyb1Dd4oqB+h0ECTg4yI3fOv5ICocqflKLWs=;
- b=r/JQ/vh0rUNzfgscBL1qOy1b/FlSdFOyA3JOUOMZEDJnaEHQwqBGyvXLWofJwveFHY
- /1RToUdFpeZzLobgHa9m3uQTHhKONPS0rNBmqDvgXwI1ZGCUPOQXbkPPE2YLhfE2M1Wf
- o99NXA9qrJYmacNn/eciA2Z2mGteeDrtKW2KRtTclrwP6ndSJ3KPndhsayXWLtLEt7jv
- XZqje6uvlOx84xfZ/DVM1QP5NQSjF107frakKiBV21VyvJCHoziOBWy0++rS3sdhyUe8
- EgI9dAZPjI3sj2Hrl7WaIja9GI4PC/3T3/gTN++QRr+KPskE6KbEnsJO1p2mk+cK8Cfu
- dzwg==
-X-Gm-Message-State: AOAM530CfnBJOIXqXTUQ55OiD9GuvQan66CrDr1mrnrXLUiu5Z2bNjub
- 2xJp2/JScC6kkmH+5Rd/0vuFswfXgqb8oeM0UMI=
-X-Google-Smtp-Source: ABdhPJxAa/ZPqVfua2S148lPQM0vsrXWY7jYa5ufize6XE/GEpwPCHJc4pF60zzqGbSqwjyqF2HO1qXRtmfQ24UTEcw=
-X-Received: by 2002:ac8:6f06:: with SMTP id g6mr1460808qtv.360.1612938940598; 
- Tue, 09 Feb 2021 22:35:40 -0800 (PST)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Db9S72VmZzDsmf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 17:52:37 +1100 (AEDT)
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
+ by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+ id 1l9jLs-0000uS-0W; Wed, 10 Feb 2021 17:51:53 +1100
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation);
+ Wed, 10 Feb 2021 17:51:51 +1100
+Date: Wed, 10 Feb 2021 17:51:51 +1100
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH 00/20] Rid W=1 warnings in Crypto
+Message-ID: <20210210065151.GA15914@gondor.apana.org.au>
+References: <20210204111000.2800436-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-References: <1612693435-31418-1-git-send-email-shengjiu.wang@nxp.com>
- <1612693435-31418-3-git-send-email-shengjiu.wang@nxp.com>
- <20210208115112.GD8645@sirena.org.uk>
- <CAA+D8AMRGRRk6FzdiqaHAP1=dPJngNgmdGmU59vrroXA9BMyXw@mail.gmail.com>
- <20210209222953.GF4916@sirena.org.uk>
-In-Reply-To: <20210209222953.GF4916@sirena.org.uk>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 10 Feb 2021 14:35:29 +0800
-Message-ID: <CAA+D8AN=SDMLhuNbstzHL_H2p_L6cr+oCXbauNB0gGs2BW5tmA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/7] ASoC: fsl_rpmsg: Add CPU DAI driver for audio base
- on rpmsg
-To: Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210204111000.2800436-1-lee.jones@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,41 +46,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, alsa-devel@alsa-project.org,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Rob Herring <robh+dt@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Aymen Sghaier <aymen.sghaier@nxp.com>, Takashi Iwai <tiwai@suse.de>,
+ Kent Yoder <yoder1@us.ibm.com>, Ayush Sawal <ayush.sawal@chelsio.com>,
+ Joakim Bech <joakim.xx.bech@stericsson.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Andreas Westin <andreas.westin@stericsson.com>,
+ Breno =?iso-8859-1?Q?Leit=E3o?= <leitao@debian.org>,
+ Atul Gupta <atul.gupta@chelsio.com>,
+ Niklas Hernaeus <niklas.hernaeus@stericsson.com>,
+ M R Gowda <yeshaswi@chelsio.com>,
+ Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+ Rohit Maheshwari <rohitm@chelsio.com>, Nayna Jain <nayna@linux.ibm.com>,
+ Manoj Malviya <manojmalviya@chelsio.com>,
+ Ludovic Desroches <ludovic.desroches@microchip.com>,
+ Jonas Linde <jonas.linde@stericsson.com>, Rob Rice <rob.rice@broadcom.com>,
+ Zaibo Xu <xuzaibo@huawei.com>, Harsh Jain <harsh@chelsio.com>,
+ Declan Murphy <declan.murphy@intel.com>,
+ Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+ Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Shujuan Chen <shujuan.chen@stericsson.com>,
+ Henrique Cerri <mhcerri@br.ibm.com>,
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, linux-kernel@vger.kernel.org,
+ Berne Hebark <berne.herbark@stericsson.com>, linux-crypto@vger.kernel.org,
+ Jitendra Lulla <jlulla@chelsio.com>,
+ Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 10, 2021 at 6:30 AM Mark Brown <broonie@kernel.org> wrote:
->
-> On Tue, Feb 09, 2021 at 05:16:16PM +0800, Shengjiu Wang wrote:
-> > On Mon, Feb 8, 2021 at 7:53 PM Mark Brown <broonie@kernel.org> wrote:
->
-> > > hw_params() can be called multiple times and there's no need for it to
-> > > be balanced with hw_free(), I'd move this to a different callback (DAPM
-> > > should work well).
->
-> > Which callback should I use? Is there an example?
->
-> Like I say I'd actually recommend moving this control to DAPM.
+On Thu, Feb 04, 2021 at 11:09:40AM +0000, Lee Jones wrote:
+> This set is part of a larger effort attempting to clean-up W=1
+> kernel builds, which are currently overwhelmingly riddled with
+> niggly little warnings.
+> 
+> This is set 1 of 2 sets required to fully clean Crypto.
+> 
+> Lee Jones (20):
+>   crypto: hisilicon: sec_drv: Supply missing description for
+>     'sec_queue_empty()'s 'queue' param
+>   crypto: bcm: util: Repair a couple of documentation formatting issues
+>   crypto: chelsio: chcr_core: File headers are not good candidates for
+>     kernel-doc
+>   crypto: ux500: hash: hash_core: Fix worthy kernel-doc headers and
+>     remove others
+>   crypto: bcm: spu: Fix formatting and misspelling issues
+>   crypto: keembay: ocs-hcu: Fix incorrectly named functions/structs
+>   crypto: bcm: spu2: Fix a whole host of kernel-doc misdemeanours
+>   crypto: ux500: cryp: Demote some conformant non-kernel headers fix
+>     another
+>   crypto: ux500: cryp_irq: File headers are not good kernel-doc
+>     candidates
+>   crypto: chelsio: chcr_algo: Fix a couple of kernel-doc issues caused
+>     by doc-rot
+>   crypto: ux500: cryp_core: Fix formatting issue and add description for
+>     'session_id'
+>   crypto: atmel-ecc: Struct headers need to start with keyword 'struct'
+>   crypto: bcm: cipher: Provide description for 'req' and fix formatting
+>     issues
+>   crypto: caam: caampkc: Provide the name of the function
+>   crypto: caam: caamalg_qi2: Supply a couple of 'fallback' related
+>     descriptions
+>   crypto: vmx: Source headers are not good kernel-doc candidates
+>   crypto: nx: nx-aes-cbc: Headers comments should not be kernel-doc
+>   crypto: nx: nx_debugfs: Header comments should not be kernel-doc
+>   crypto: nx: Demote header comment and add description for 'nbytes'
+>   crypto: cavium: nitrox_isr: Demote non-compliant kernel-doc headers
 
-I may understand your point, you suggest to use the .set_bias_level
-interface. But in my case I need to enable the clock in earlier stage
-and keep the clock on when system go to suspend.
-
-I am not sure .set_bias_level can met my requirement. we start
-the Chinese new year holiday now, so currently I can't do test for this
-recommendation.
-
-Maybe we can keep current implementation, can we?
-Later after I do the test, I can submit another patch for it.
-
-Best regards
-Wang Shengjiu
+Thanks for doing this.  But please don't split the patches at the
+file level.  Instead split them at the driver level.  For example,
+all of your bcm changes should be one patch.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
