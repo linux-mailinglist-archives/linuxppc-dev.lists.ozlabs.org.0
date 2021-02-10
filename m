@@ -1,31 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C2A316984
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 15:55:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 377BC316993
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 15:59:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DbN9c42XCzDwfc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 01:55:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DbNFp031ZzDsmX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 01:59:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DbKfZ6GT9zDqdW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 00:02:14 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DbKnW4Hs5zDrBg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 00:08:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=hp7UvjEo; 
+ dkim-atps=neutral
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4DbKfM31Pyz9sVv; Thu, 11 Feb 2021 00:02:02 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-In-Reply-To: <20210206025634.521979-1-aneesh.kumar@linux.ibm.com>
-References: <20210206025634.521979-1-aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v3] powerpc/kuap: Allow kernel thread to access userspace
- after kthread_use_mm
-Message-Id: <161296210040.3183074.5691827311091872470.b4-ty@ellerman.id.au>
-Date: Thu, 11 Feb 2021 00:02:02 +1100 (AEDT)
+ id 4DbKnT5MZPz9sXM; Thu, 11 Feb 2021 00:08:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1612962493;
+ bh=myV60sJbxvQOLGBqcKw+G8ipFrxoKWnt/ilJzxeOoY4=;
+ h=From:To:Subject:Date:From;
+ b=hp7UvjEoT5MbJXwZWwpp6+O3HB84rZQM08zVxv+5a/Ca9ad0mIbFYsr2fx4xreaLH
+ 9qdjm1uatsBma7hTx4NQluQ9a5gPe8emFPbN6fBDtWOJgJuiUeQxXuqgwIqDkhglnc
+ ARWzC63JECHVD+jAp5Nu3A0CnsRxb738TrK570WHwdKzjoGf+pSik09UOULKeKsadt
+ w0iY1rAXLHZQY9yINIk9L+vfCeNZYuG5rVxcgPZ+E7xqyFynnc07WtEuMjx8Ysk98b
+ BfDgUSZ7lRb6/fEqUMBLsN1PpuUc9RB9iYQNZL8PFVcpmXVaHfMhShS63grRszY3y9
+ LlzIylNapax+w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/3] powerpc/83xx: Fix build error when CONFIG_PCI=n
+Date: Thu, 11 Feb 2021 00:08:02 +1100
+Message-Id: <20210210130804.3190952-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,46 +50,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, Zorro Lang <zlang@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 6 Feb 2021 08:26:34 +0530, Aneesh Kumar K.V wrote:
-> This fix the bad fault reported by KUAP when io_wqe_worker access userspace.
-> 
->  Bug: Read fault blocked by KUAP!
->  WARNING: CPU: 1 PID: 101841 at arch/powerpc/mm/fault.c:229 __do_page_fault+0x6b4/0xcd0
->  NIP [c00000000009e7e4] __do_page_fault+0x6b4/0xcd0
->  LR [c00000000009e7e0] __do_page_fault+0x6b0/0xcd0
-> ..........
->  Call Trace:
->  [c000000016367330] [c00000000009e7e0] __do_page_fault+0x6b0/0xcd0 (unreliable)
->  [c0000000163673e0] [c00000000009ee3c] do_page_fault+0x3c/0x120
->  [c000000016367430] [c00000000000c848] handle_page_fault+0x10/0x2c
->  --- interrupt: 300 at iov_iter_fault_in_readable+0x148/0x6f0
-> ..........
->  NIP [c0000000008e8228] iov_iter_fault_in_readable+0x148/0x6f0
->  LR [c0000000008e834c] iov_iter_fault_in_readable+0x26c/0x6f0
->  interrupt: 300
->  [c0000000163677e0] [c0000000007154a0] iomap_write_actor+0xc0/0x280
->  [c000000016367880] [c00000000070fc94] iomap_apply+0x1c4/0x780
->  [c000000016367990] [c000000000710330] iomap_file_buffered_write+0xa0/0x120
->  [c0000000163679e0] [c00800000040791c] xfs_file_buffered_aio_write+0x314/0x5e0 [xfs]
->  [c000000016367a90] [c0000000006d74bc] io_write+0x10c/0x460
->  [c000000016367bb0] [c0000000006d80e4] io_issue_sqe+0x8d4/0x1200
->  [c000000016367c70] [c0000000006d8ad0] io_wq_submit_work+0xc0/0x250
->  [c000000016367cb0] [c0000000006e2578] io_worker_handle_work+0x498/0x800
->  [c000000016367d40] [c0000000006e2cdc] io_wqe_worker+0x3fc/0x4f0
->  [c000000016367da0] [c0000000001cb0a4] kthread+0x1c4/0x1d0
->  [c000000016367e10] [c00000000000dbf0] ret_from_kernel_thread+0x5c/0x6c
-> 
-> [...]
+As reported by lkp:
 
-Applied to powerpc/fixes.
+  arch/powerpc/platforms/83xx/km83xx.c:183:19: error: 'mpc83xx_setup_pci' undeclared here (not in a function)
+     183 |  .discover_phbs = mpc83xx_setup_pci,
+	 |                   ^~~~~~~~~~~~~~~~~
+	 |                   mpc83xx_setup_arch
 
-[1/1] powerpc/kuap: Allow kernel thread to access userspace after kthread_use_mm
-      https://git.kernel.org/powerpc/c/8c511eff1827239f24ded212b1bcda7ca5b16203
+There is a stub defined for the CONFIG_PCI=n case, but now that
+mpc83xx_setup_pci() is being assigned to discover_phbs the correct
+empty value is NULL.
 
-cheers
+Fixes: 83f84041ff1c ("powerpc/83xx: Move PHB discovery")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/platforms/83xx/mpc83xx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/platforms/83xx/mpc83xx.h b/arch/powerpc/platforms/83xx/mpc83xx.h
+index f37d04332fc7..a30d30588cf6 100644
+--- a/arch/powerpc/platforms/83xx/mpc83xx.h
++++ b/arch/powerpc/platforms/83xx/mpc83xx.h
+@@ -76,7 +76,7 @@ extern void mpc83xx_ipic_init_IRQ(void);
+ #ifdef CONFIG_PCI
+ extern void mpc83xx_setup_pci(void);
+ #else
+-#define mpc83xx_setup_pci()	do {} while (0)
++#define mpc83xx_setup_pci	NULL
+ #endif
+ 
+ extern int mpc83xx_declare_of_platform_devices(void);
+-- 
+2.25.1
+
