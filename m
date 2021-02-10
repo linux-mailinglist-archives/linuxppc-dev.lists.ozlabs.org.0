@@ -2,29 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C3B3167FD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 14:27:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC52316796
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 14:11:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DbLDC1CpTzDvbh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 00:27:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DbKsV1QmRzDvbg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 00:11:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DbKY34qTzzDr2w
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 23:57:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DbKY40wRBzDrBq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 23:57:28 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4DbKXy4HVgz9sS8; Wed, 10 Feb 2021 23:57:22 +1100 (AEDT)
+ id 4DbKY2037Wz9sWR; Wed, 10 Feb 2021 23:57:24 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, mpe@ellerman.id.au
-In-Reply-To: <1612516492-1428-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-References: <1612516492-1428-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2] powerpc/perf: Record counter overflow always if
- SAMPLE_IP is unset
-Message-Id: <161296172306.3178259.2351405924746629740.b4-ty@ellerman.id.au>
-Date: Wed, 10 Feb 2021 23:57:22 +1100 (AEDT)
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Paul Mackerras <paulus@samba.org>
+In-Reply-To: <72c7b9879e2e2e6f5c27dadda6486386c2b50f23.1612612022.git.christophe.leroy@csgroup.eu>
+References: <72c7b9879e2e2e6f5c27dadda6486386c2b50f23.1612612022.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 1/3] powerpc/32s: Change mfsrin() into a static inline
+ function
+Message-Id: <161296172491.3178259.6717759918429909544.b4-ty@ellerman.id.au>
+Date: Wed, 10 Feb 2021 23:57:24 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,26 +39,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 5 Feb 2021 04:14:52 -0500, Athira Rajeev wrote:
-> While sampling for marked events, currently we record the sample only
-> if the SIAR valid bit of Sampled Instruction Event Register (SIER) is
-> set. SIAR_VALID bit is used for fetching the instruction address from
-> Sampled Instruction Address Register(SIAR). But there are some usecases,
-> where the user is interested only in the PMU stats at each counter
-> overflow and the exact IP of the overflow event is not required.
-> Dropping SIAR invalid samples will fail to record some of the counter
-> overflows in such cases.
+On Sat, 6 Feb 2021 11:47:26 +0000 (UTC), Christophe Leroy wrote:
+> mfsrin() is a macro.
 > 
-> [...]
+> Change in into an inline function to avoid conflicts in KVM
+> and make it more evolutive.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/perf: Record counter overflow always if SAMPLE_IP is unset
-      https://git.kernel.org/powerpc/c/d137845c973147a22622cc76c7b0bc16f6206323
+[1/3] powerpc/32s: Change mfsrin() into a static inline function
+      https://git.kernel.org/powerpc/c/fd659e8f2c6d1e1e96fd5bdb515518801cd02012
+[2/3] powerpc/32s: mfsrin()/mtsrin() become mfsr()/mtsr()
+      https://git.kernel.org/powerpc/c/179ae57dbad1b9a83eec376aa44d54fc24352e37
+[3/3] powerpc/32s: Allow constant folding in mtsr()/mfsr()
+      https://git.kernel.org/powerpc/c/b842d131c7983f8f0b9c9572c073130b5f2bcf11
 
 cheers
