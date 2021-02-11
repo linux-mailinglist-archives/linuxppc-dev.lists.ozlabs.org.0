@@ -1,56 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FEA318AC7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 13:35:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8B9318B0C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 13:47:26 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dbx1Z0cy0zDwq9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 23:35:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DbxGz5KB8zDwkk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 23:47:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DbwqX6HZJzDwfr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 23:27:02 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DbwqL5X0nz9txKd;
- Thu, 11 Feb 2021 13:26:54 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Xo2pm2tx6n44; Thu, 11 Feb 2021 13:26:54 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DbwqL4YRZz9txKb;
- Thu, 11 Feb 2021 13:26:54 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0E3868B827;
- Thu, 11 Feb 2021 13:26:56 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id nAzHr9nVtaFv; Thu, 11 Feb 2021 13:26:55 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D5398B81F;
- Thu, 11 Feb 2021 13:26:55 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Dbx9C3dB4zDrPs
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 23:42:23 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 11BCd8nj001681;
+ Thu, 11 Feb 2021 06:39:08 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 11BCd7qd001680;
+ Thu, 11 Feb 2021 06:39:07 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Thu, 11 Feb 2021 06:39:07 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Subject: Re: [PATCH] powerpc/bug: Remove specific powerpc BUG_ON()
-To: Segher Boessenkool <segher@kernel.crashing.org>
+Message-ID: <20210211123907.GD28121@gate.crashing.org>
 References: <694c7195c81d1bcc781b3c14f452886683d6c524.1613029237.git.christophe.leroy@csgroup.eu>
  <20210211114910.GA28121@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <3b7f3a1e-0355-b6d4-14cd-300bf4d3629a@csgroup.eu>
-Date: Thu, 11 Feb 2021 13:26:12 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
-MIME-Version: 1.0
-In-Reply-To: <20210211114910.GA28121@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+ <3b7f3a1e-0355-b6d4-14cd-300bf4d3629a@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <3b7f3a1e-0355-b6d4-14cd-300bf4d3629a@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,47 +56,24 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Feb 11, 2021 at 01:26:12PM +0100, Christophe Leroy wrote:
+> >What PowerPC cpus implement branch folding?  I know none.
+> 
+> Extract from powerpc mpc8323 reference manual:
+
+> — Zero-cycle branch capability (branch folding)
+
+Yeah, this is not what is traditionally called branch folding (which
+stores the instruction being branched to in some cache, originally the
+instruction cache itself; somewhat similar (but different) to the BTIC
+on 750).  Overloaded terminology :-)
+
+6xx/7xx CPUs had the branch execution unit in the frontend, and it would
+not issue a branch at all if it could be resolved then already.  Power4
+and later predict all branches, and most are not issued at all (those
+that do need to be executed, like bdnz, are).  At completion time it is
+checked if the prediction was correct (and corrective action is taken if
+not).
 
 
-Le 11/02/2021 à 12:49, Segher Boessenkool a écrit :
-> On Thu, Feb 11, 2021 at 07:41:52AM +0000, Christophe Leroy wrote:
->> powerpc BUG_ON() is based on using twnei or tdnei instruction,
->> which obliges gcc to format the condition into a 0 or 1 value
->> in a register.
-> 
-> Huh?  Why is that?
-> 
-> Will it work better if this used __builtin_trap?  Or does the kernel only
-> detect very specific forms of trap instructions?
-> 
->> By using a generic implementation, gcc will generate a branch
->> to the unconditional trap generated by BUG().
-> 
-> That is many more instructions than ideal.
-> 
->> As modern powerpc implement branch folding, that's even more efficient.
-> 
-> What PowerPC cpus implement branch folding?  I know none.
-
-Extract from powerpc mpc8323 reference manual:
-
-High instruction and data throughput
-— Zero-cycle branch capability (branch folding)
-— Programmable static branch prediction on unresolved conditional branches
-— Two integer units with enhanced multipliers in thee300c2 for increased integer instruction
-throughput and a maximum two-cycle latency for multiply instructions
-— Instruction fetch unit capable of fetching two instructions per clock from the instruction cache
-— A six-entry instruction queue (IQ) that provides lookahead capability
-— Independent pipelines with feed-forwarding that reduces data dependencies in hardware
-— 16-Kbyte, four-way set-associative instruction and data caches on the e300c2.
-— Cache write-back or write-through operation programmable on a per-page or per-block basis
-— Features for instruction and data cache locking and protection
-— BPU that performs CR lookahead operations
-— Address translation facilities for 4-Kbyte page size, variable block size, and 256-Mbyte
-segment size
-— A 64-entry, two-way, set-associative ITLB and DTLB
-— Eight-entry data and instruction BAT arrays providing 128-Kbyte to 256-Mbyte blocks
-— Software table search operations and updates supported through fast trap mechanism
-— 52-bit virtual address; 32-bit physical address
-
-Christophe
+Segher
