@@ -1,60 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7069E3195DB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 23:30:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E85EE319603
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 23:49:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DcBCb5YnMzDwtS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 09:30:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DcBdX1tptzDwrN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 09:49:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.54; helo=mail-ot1-f54.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com
- [209.85.210.54])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
+ helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=AsANI1TK; dkim-atps=neutral
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DcB6851nDzDwqG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 09:25:36 +1100 (AEDT)
-Received: by mail-ot1-f54.google.com with SMTP id 100so6714417otg.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 14:25:35 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DcBc821flzDwnc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 09:48:05 +1100 (AEDT)
+Received: by mail-pf1-x434.google.com with SMTP id j12so4622195pfj.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 14:48:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=WGBp0ms4trj4KJqYXx6s0gKRNvvrRpdSE+7mGZ4gKjo=;
+ b=AsANI1TKW9wcXEIi4LEtOUxUNpQayajFoWP7YZ95m7XCh841Ai93sD6PPWxOs1HrCU
+ KLifIGaiusRJ0RLzwKYHEWn7VejMLbo/L/UfSmjd8wD46Df0unMC3iqI/MyxpoW4tA7a
+ 5gPgoIkiyPiYDV1VkPTE+PliqL6iNwUwXcX8UrswcQ09T+gpIyB6rqYoLNPnfTO2EVw7
+ H0xNJpzLjUU1UplPqkM3wz68SsvW4ICrfnA6OHJnQYUn2nvsmywbAN1+gGrDa3YeoSd1
+ bRnNdhxaZWgAEbdWgRE/Ag2lrv76CA99xEAVfwXibiYJRkH8GzPgxqR7vvd7TAF0JkZV
+ 29IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=59hf+6O4K21P81t02yR2JJsizjTVRLh6ZVSrQljA/sc=;
- b=QtzUOeJ0mtto9mopoLywLtRa81QH5TgmAGKdi2KXxi7i+VJwM+jxzWfTvjZ4YsuuDX
- QzhPxxRAzZTP7/78BSS1fIIyj5lgKNvWVCPlaxO8+1iphUqP6UKXyPQS6PcP/pl9bk8b
- 1thlXTz1UjGP2YMEgdKpzLP0cIAJ9nLkARSq7BpnXXtUYv4DIzBim0iSl53JndW6AQIU
- FwYw22rtiF7SKzA2NnoNDsXDsVtBopLDJg7X58gqUh8teWtFqqsQvmvReS/pPx/uYw9g
- yfcSa/G2iB+8amxpo+klxjLLBYL2UNJaRDImpI/3FlCNDtmifdNUa0zYIaXT/KOfPorW
- 24tg==
-X-Gm-Message-State: AOAM532QfbFrgW8tgj3U0ewUtQIolf1M6ph+JhhGaX6QIlaNIyRAqrMc
- 1PxqwBKfYRWkMdTFq6rQEg==
-X-Google-Smtp-Source: ABdhPJyoVcKGRF5I+pIki+Oo8A5jCC9o1Ifs/C5d7kBMPZRLIA+fMwLf/LFw7mtzzAZNV7Q3EHU3YQ==
-X-Received: by 2002:a9d:605a:: with SMTP id v26mr136880otj.275.1613082333675; 
- Thu, 11 Feb 2021 14:25:33 -0800 (PST)
-Received: from xps15.herring.priv (24-155-109-49.dyn.grandenetworks.net.
- [24.155.109.49])
- by smtp.googlemail.com with ESMTPSA id j25sm978030otn.55.2021.02.11.14.25.31
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=WGBp0ms4trj4KJqYXx6s0gKRNvvrRpdSE+7mGZ4gKjo=;
+ b=YqpQ66xSHi/1v97IPlYy4f5G9CEOj2yOPIWMMIecpc8K1EtHNxIkqmp7Xax3y2XJMR
+ vshfgOwZMn6iG2nvb5KSo/0RAkWkJiWJDYU1C+la7hWKXbITLljeqxTgxN13RIItQ80I
+ MXiZ79eSC/U2QYgHwAZ45cOFtyv79fgxB+1VV3m1WVyskqY3iLP6umU+gZrIveQlip2N
+ RiwjsH9uHF/Q5DW2I7rhoOyKh+zhYAeY38LXxMdb18b4nFEYILy0Pnq/avLOzjsGVflW
+ bFfnFOvuyIO7vcJDxVCbc4E8Nct7gWq71nBmzT+W7vylnxqG13gWMscDHfsFkGfBQGt3
+ hhpw==
+X-Gm-Message-State: AOAM5304K1gTTfEHvUIoNcmrs6a1Xt5EU26acOailVVkHE9lO8ZlWulq
+ VjxCi3f40YB1VdsBF3vrRlg=
+X-Google-Smtp-Source: ABdhPJwvz8NkBzT3VZIsgga9RgZijGc00zoDlZLVlsIEeO9JeUJdtdmHJB4GLs8GlIbfIgvcvJeHKg==
+X-Received: by 2002:a62:18c8:0:b029:1d9:6e93:6b22 with SMTP id
+ 191-20020a6218c80000b02901d96e936b22mr339226pfy.28.1613083682147; 
+ Thu, 11 Feb 2021 14:48:02 -0800 (PST)
+Received: from localhost (14-201-150-91.tpgi.com.au. [14.201.150.91])
+ by smtp.gmail.com with ESMTPSA id j9sm6369183pfh.52.2021.02.11.14.48.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Feb 2021 14:25:32 -0800 (PST)
-From: Rob Herring <robh@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>, devicetree@vger.kernel.org
-Subject: [PATCH 2/2] driver core: platform: Drop of_device_node_put() wrapper
-Date: Thu, 11 Feb 2021 16:25:26 -0600
-Message-Id: <20210211222526.1318236-3-robh@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210211222526.1318236-1-robh@kernel.org>
-References: <20210211222526.1318236-1-robh@kernel.org>
+ Thu, 11 Feb 2021 14:48:01 -0800 (PST)
+Date: Fri, 12 Feb 2021 08:47:55 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/bug: Remove specific powerpc BUG_ON()
+To: Segher Boessenkool <segher@kernel.crashing.org>
+References: <694c7195c81d1bcc781b3c14f452886683d6c524.1613029237.git.christophe.leroy@csgroup.eu>
+ <1613036567.zvyupcz926.astroid@bobo.none>
+ <20210211115059.GB28121@gate.crashing.org>
+In-Reply-To: <20210211115059.GB28121@gate.crashing.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <1613083544.ggx0xcefkc.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,69 +79,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Felipe Balbi <balbi@kernel.org>, Michal Marek <michal.lkml@markovi.net>,
- "Rafael J. Wysocki" <rafael@kernel.org>, netdev@vger.kernel.org,
- linux-usb@vger.kernel.org, Nicolas Palix <nicolas.palix@imag.fr>,
- Patrice Chotard <patrice.chotard@st.com>, linux-kernel@vger.kernel.org,
- Julia Lawall <Julia.Lawall@inria.fr>, Gilles Muller <Gilles.Muller@inria.fr>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- cocci@systeme.lip6.fr, linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-of_device_node_put() is just a wrapper for of_node_put(). The platform
-driver core is already polluted with of_node pointers and the only 'get'
-already uses of_node_get() (though typically the get would happen in
-of_device_alloc()).
+Excerpts from Segher Boessenkool's message of February 11, 2021 9:50 pm:
+> On Thu, Feb 11, 2021 at 08:04:55PM +1000, Nicholas Piggin wrote:
+>> It would be nice if we could have a __builtin_trap_if that gcc would use=
+=20
+>> conditional traps with, (and which never assumes following code is=20
+>> unreachable even for constant true, so we can use it with WARN and put=20
+>> explicit unreachable for BUG).
+>=20
+> It automatically does that with just __builtin_trap, see my other mail :-=
+)
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Frank Rowand <frowand.list@gmail.com>
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- drivers/base/platform.c   | 2 +-
- include/linux/of_device.h | 7 -------
- 2 files changed, 1 insertion(+), 8 deletions(-)
+If that is generated without branches (or at least with no more
+branches than existing asm implementation), then it could be usable=20
+without trashing CFAR.
 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 95fd1549f87d..c31bc9e92dd1 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -571,7 +571,7 @@ static void platform_device_release(struct device *dev)
- 	struct platform_object *pa = container_of(dev, struct platform_object,
- 						  pdev.dev);
- 
--	of_device_node_put(&pa->pdev.dev);
-+	of_node_put(&pa->pdev.dev->of_node);
- 	kfree(pa->pdev.dev.platform_data);
- 	kfree(pa->pdev.mfd_cell);
- 	kfree(pa->pdev.resource);
-diff --git a/include/linux/of_device.h b/include/linux/of_device.h
-index d7a407dfeecb..1d7992a02e36 100644
---- a/include/linux/of_device.h
-+++ b/include/linux/of_device.h
-@@ -38,11 +38,6 @@ extern int of_device_request_module(struct device *dev);
- extern void of_device_uevent(struct device *dev, struct kobj_uevent_env *env);
- extern int of_device_uevent_modalias(struct device *dev, struct kobj_uevent_env *env);
- 
--static inline void of_device_node_put(struct device *dev)
--{
--	of_node_put(dev->of_node);
--}
--
- static inline struct device_node *of_cpu_device_node_get(int cpu)
- {
- 	struct device *cpu_dev;
-@@ -94,8 +89,6 @@ static inline int of_device_uevent_modalias(struct device *dev,
- 	return -ENODEV;
- }
- 
--static inline void of_device_node_put(struct device *dev) { }
--
- static inline const struct of_device_id *of_match_device(
- 		const struct of_device_id *matches, const struct device *dev)
- {
--- 
-2.27.0
+Unfortunately I don't think we will be parsing the dwarf information
+to get line numbers from it any time soon, so not a drop in replacement=20
+but maybe one day someone would find a solution.
 
+Thanks,
+Nick
