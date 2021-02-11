@@ -2,56 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A945B318699
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 10:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B03D3187BA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 11:06:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DbrKs619FzDwp3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 20:04:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dbsjp5MFBzDwn2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 21:06:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=p35Rgaoe; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DbrJ26dRLzDwkp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 20:02:52 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DbrHn6YFnz9v1r3;
- Thu, 11 Feb 2021 10:02:45 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id I3uV6Lov9Lcj; Thu, 11 Feb 2021 10:02:45 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DbrHn5jcJz9v1qx;
- Thu, 11 Feb 2021 10:02:45 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D48E48B81A;
- Thu, 11 Feb 2021 10:02:46 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id m6etzR6U-SJI; Thu, 11 Feb 2021 10:02:46 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 469BC8B81B;
- Thu, 11 Feb 2021 10:02:46 +0100 (CET)
-Subject: Re: [PATCH] powerpc/traps: Declare unrecoverable_exception() as
- __noreturn
-To: Gabriel Paubert <paubert@iram.es>
-References: <f46a01750b1a00c9c43725899c9cf8eb6c6a0587.1613025208.git.christophe.leroy@csgroup.eu>
- <20210211074723.GA16987@lt-gp.iram.es>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <51da512b-3d00-fb5e-7abc-60688960df65@csgroup.eu>
-Date: Thu, 11 Feb 2021 10:02:58 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dbsgp1vqmzDwmZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 21:05:06 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id x9so3058900plb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 02:05:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=6LL6HEN/TlIvgjV/qKDhMJslAnmqizgu+vOTXyLuIe0=;
+ b=p35Rgaoe/NHzNcM//KvM2suJwdKoGxwyruZkUwP7/rBRzL6qGUex30LwZjonYIYVVM
+ olRdWmBoKpOUDcUIHLlviqP7cQhkV72X1Z1LSjDlZZ2AY2kZuhoNARwR63ePu1iclq4+
+ 0lmqreZ3NBi28ZdDjQPSYWjhu8hMP3Qu0L+7vRfyd/7GrDnGuJYPvic2faoCIgNsCD9E
+ DpW4zTOzFqQv635bnW4w+vfbL6M1/ECRZgXlus2Hw/MLc1F0RRjXThszMn1FLrFakFX/
+ YOZC+g2WSazUT9PbfxwkQwWeRcMGqsh/3+DIRzab6kk+4v3FKZ0W6Fe2rWAzezQNa63P
+ lymQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=6LL6HEN/TlIvgjV/qKDhMJslAnmqizgu+vOTXyLuIe0=;
+ b=Jy+7gn5txwvFoDh3R37AKiIQHlVpKmcqCoY18laYvP1+lxbqF3Fpe77Z5R/ko3C8Z3
+ A8siYht0AtCziRisP2Kwi5QEv45+KRgwhUeh8fTwI/lcQWMge7FVLOGiShH00WwiJd4u
+ 5Gwm7IvDPNcuPr6Lx7e8mTNtarUWMmYN9gbbo6VfAJnO6gMdizOzOf5juku7vSr7juV2
+ gLHuFRPv+wtwg+IAtFBZZcasguKQu8nKw2stKwHbBglxV58noIKo2qj4PZux3oUibPWQ
+ XUripJSOhQqv+g7ENxBNX0kUgZLad1Bw8i6CINOHcZKnKeMrpzWVjJu/1SaWk+ahb2l8
+ bc0g==
+X-Gm-Message-State: AOAM530BF4vHTQ8ZUHChJq4HBlnkzydeW3T12to6GbCCawf7GMUCFWmS
+ 0nkg6Ni1r21aOMb7nrN8tQQ=
+X-Google-Smtp-Source: ABdhPJw7en9Rdip4b1jO8Tx86JajlxFNgYrdaduyMhSqjEH+ic/FoFQBz2ksbyiZuNfN8ricNnsfSA==
+X-Received: by 2002:a17:90a:f00b:: with SMTP id
+ bt11mr3236187pjb.76.1613037902231; 
+ Thu, 11 Feb 2021 02:05:02 -0800 (PST)
+Received: from localhost (14-201-150-91.tpgi.com.au. [14.201.150.91])
+ by smtp.gmail.com with ESMTPSA id i10sm4851813pgt.85.2021.02.11.02.05.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Feb 2021 02:05:01 -0800 (PST)
+Date: Thu, 11 Feb 2021 20:04:55 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/bug: Remove specific powerpc BUG_ON()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <694c7195c81d1bcc781b3c14f452886683d6c524.1613029237.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <694c7195c81d1bcc781b3c14f452886683d6c524.1613029237.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <20210211074723.GA16987@lt-gp.iram.es>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Message-Id: <1613036567.zvyupcz926.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,167 +79,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Christophe Leroy's message of February 11, 2021 5:41 pm:
+> powerpc BUG_ON() is based on using twnei or tdnei instruction,
+> which obliges gcc to format the condition into a 0 or 1 value
+> in a register.
+>=20
+> By using a generic implementation, gcc will generate a branch
+> to the unconditional trap generated by BUG().
 
+We don't want to do this on 64s because that will lose the useful CFAR
+contents.
 
-Le 11/02/2021 à 08:47, Gabriel Paubert a écrit :
-> On Thu, Feb 11, 2021 at 06:34:43AM +0000, Christophe Leroy wrote:
->> unrecoverable_exception() is never expected to return, most callers
->> have an infiniteloop in case it returns.
->>
->> Ensure it really never returns by terminating it with a BUG(), and
->> declare it __no_return.
->>
->> It always GCC to really simplify functions calling it. In the exemple below,
-> 
-> s/always/allows ?
+Unfortunately the code generation is not great and the registers that=20
+give some useful information about the condition are often mangled :(
 
-Yes
+It would be nice if we could have a __builtin_trap_if that gcc would use=20
+conditional traps with, (and which never assumes following code is=20
+unreachable even for constant true, so we can use it with WARN and put=20
+explicit unreachable for BUG).
 
-> 
-> (Otherwise I can't parse it.)
-> 
->> it avoids the stack frame in the likely fast path and avoids code duplication
->> for the exit.
-> 
-> Indeed, nice code generation improvement.
-> 
->>
->> With this patch:
->>
->> 	00000348 <interrupt_exit_kernel_prepare>:
->> 	 348:	81 43 00 84 	lwz     r10,132(r3)
->> 	 34c:	71 48 00 02 	andi.   r8,r10,2
->> 	 350:	41 82 00 2c 	beq     37c <interrupt_exit_kernel_prepare+0x34>
->> 	 354:	71 4a 40 00 	andi.   r10,r10,16384
->> 	 358:	40 82 00 20 	bne     378 <interrupt_exit_kernel_prepare+0x30>
->> 	 35c:	80 62 00 70 	lwz     r3,112(r2)
->> 	 360:	74 63 00 01 	andis.  r3,r3,1
->> 	 364:	40 82 00 28 	bne     38c <interrupt_exit_kernel_prepare+0x44>
->> 	 368:	7d 40 00 a6 	mfmsr   r10
->> 	 36c:	7c 11 13 a6 	mtspr   81,r0
->> 	 370:	7c 12 13 a6 	mtspr   82,r0
->> 	 374:	4e 80 00 20 	blr
->> 	 378:	48 00 00 00 	b       378 <interrupt_exit_kernel_prepare+0x30>
-> 
-> Infinite loop (seems to be on test of MSR_PR)?
+>=20
+> As modern powerpc implement branch folding, that's even more efficient.
 
-Yes, that's what you get when CONFIG_BUG is not selected.
+I think POWER will speculate conditional traps as non faulting always
+so it should be just as good if not better than the branch.
 
-/include/asm-generic/bug.h:
-
-#ifndef HAVE_ARCH_BUG
-#define BUG() do {} while (1)
-#endif
-
-
-> 
-> 	Gabriel
-> 
->> 	 37c:	94 21 ff f0 	stwu    r1,-16(r1)
->> 	 380:	7c 08 02 a6 	mflr    r0
->> 	 384:	90 01 00 14 	stw     r0,20(r1)
->> 	 388:	48 00 00 01 	bl      388 <interrupt_exit_kernel_prepare+0x40>
->> 				388: R_PPC_REL24	unrecoverable_exception
->> 	 38c:	38 e2 00 70 	addi    r7,r2,112
->> 	 390:	3d 00 00 01 	lis     r8,1
->> 	 394:	7c c0 38 28 	lwarx   r6,0,r7
->> 	 398:	7c c6 40 78 	andc    r6,r6,r8
->> 	 39c:	7c c0 39 2d 	stwcx.  r6,0,r7
->> 	 3a0:	40 a2 ff f4 	bne     394 <interrupt_exit_kernel_prepare+0x4c>
->> 	 3a4:	38 60 00 01 	li      r3,1
->> 	 3a8:	4b ff ff c0 	b       368 <interrupt_exit_kernel_prepare+0x20>
->>
->> Without this patch:
->>
->> 	00000348 <interrupt_exit_kernel_prepare>:
->> 	 348:	94 21 ff f0 	stwu    r1,-16(r1)
->> 	 34c:	93 e1 00 0c 	stw     r31,12(r1)
->> 	 350:	7c 7f 1b 78 	mr      r31,r3
->> 	 354:	81 23 00 84 	lwz     r9,132(r3)
->> 	 358:	71 2a 00 02 	andi.   r10,r9,2
->> 	 35c:	41 82 00 34 	beq     390 <interrupt_exit_kernel_prepare+0x48>
->> 	 360:	71 29 40 00 	andi.   r9,r9,16384
->> 	 364:	40 82 00 28 	bne     38c <interrupt_exit_kernel_prepare+0x44>
->> 	 368:	80 62 00 70 	lwz     r3,112(r2)
->> 	 36c:	74 63 00 01 	andis.  r3,r3,1
->> 	 370:	40 82 00 3c 	bne     3ac <interrupt_exit_kernel_prepare+0x64>
->> 	 374:	7d 20 00 a6 	mfmsr   r9
->> 	 378:	7c 11 13 a6 	mtspr   81,r0
->> 	 37c:	7c 12 13 a6 	mtspr   82,r0
->> 	 380:	83 e1 00 0c 	lwz     r31,12(r1)
->> 	 384:	38 21 00 10 	addi    r1,r1,16
->> 	 388:	4e 80 00 20 	blr
->> 	 38c:	48 00 00 00 	b       38c <interrupt_exit_kernel_prepare+0x44>
->> 	 390:	7c 08 02 a6 	mflr    r0
->> 	 394:	90 01 00 14 	stw     r0,20(r1)
->> 	 398:	48 00 00 01 	bl      398 <interrupt_exit_kernel_prepare+0x50>
->> 				398: R_PPC_REL24	unrecoverable_exception
->> 	 39c:	80 01 00 14 	lwz     r0,20(r1)
->> 	 3a0:	81 3f 00 84 	lwz     r9,132(r31)
->> 	 3a4:	7c 08 03 a6 	mtlr    r0
->> 	 3a8:	4b ff ff b8 	b       360 <interrupt_exit_kernel_prepare+0x18>
->> 	 3ac:	39 02 00 70 	addi    r8,r2,112
->> 	 3b0:	3d 40 00 01 	lis     r10,1
->> 	 3b4:	7c e0 40 28 	lwarx   r7,0,r8
->> 	 3b8:	7c e7 50 78 	andc    r7,r7,r10
->> 	 3bc:	7c e0 41 2d 	stwcx.  r7,0,r8
->> 	 3c0:	40 a2 ff f4 	bne     3b4 <interrupt_exit_kernel_prepare+0x6c>
->> 	 3c4:	38 60 00 01 	li      r3,1
->> 	 3c8:	4b ff ff ac 	b       374 <interrupt_exit_kernel_prepare+0x2c>
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   arch/powerpc/include/asm/interrupt.h | 2 +-
->>   arch/powerpc/kernel/interrupt.c      | 1 -
->>   arch/powerpc/kernel/traps.c          | 2 ++
->>   3 files changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
->> index dcff30e3919b..fa8bfb91f8df 100644
->> --- a/arch/powerpc/include/asm/interrupt.h
->> +++ b/arch/powerpc/include/asm/interrupt.h
->> @@ -411,7 +411,7 @@ DECLARE_INTERRUPT_HANDLER(altivec_assist_exception);
->>   DECLARE_INTERRUPT_HANDLER(CacheLockingException);
->>   DECLARE_INTERRUPT_HANDLER(SPEFloatingPointException);
->>   DECLARE_INTERRUPT_HANDLER(SPEFloatingPointRoundException);
->> -DECLARE_INTERRUPT_HANDLER(unrecoverable_exception);
->> +DECLARE_INTERRUPT_HANDLER(unrecoverable_exception) __noreturn;
->>   DECLARE_INTERRUPT_HANDLER(WatchdogException);
->>   DECLARE_INTERRUPT_HANDLER(kernel_bad_stack);
->>   
->> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
->> index eca3be36c18c..7e7106641ca9 100644
->> --- a/arch/powerpc/kernel/interrupt.c
->> +++ b/arch/powerpc/kernel/interrupt.c
->> @@ -440,7 +440,6 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
->>   	return ret;
->>   }
->>   
->> -void unrecoverable_exception(struct pt_regs *regs);
->>   void preempt_schedule_irq(void);
->>   
->>   notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsigned long msr)
->> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
->> index 2afa05ad21c8..1ff776e9e8e3 100644
->> --- a/arch/powerpc/kernel/traps.c
->> +++ b/arch/powerpc/kernel/traps.c
->> @@ -2173,6 +2173,8 @@ DEFINE_INTERRUPT_HANDLER(unrecoverable_exception)
->>   	pr_emerg("Unrecoverable exception %lx at %lx (msr=%lx)\n",
->>   		 regs->trap, regs->nip, regs->msr);
->>   	die("Unrecoverable exception", regs, SIGABRT);
->> +	/* die() should not return */
->> +	BUG();
->>   }
->>   NOKPROBE_SYMBOL(unrecoverable_exception);
->>   
->> -- 
->> 2.25.0
->>
->   
-> 
+Thanks,
+Nick
