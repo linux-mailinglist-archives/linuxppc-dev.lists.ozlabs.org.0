@@ -2,72 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E85EE319603
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 23:49:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC481319674
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 00:17:43 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DcBdX1tptzDwrN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 09:49:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DcCGF3sZQzDwqP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 10:17:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
- helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=AsANI1TK; dkim-atps=neutral
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DcBc821flzDwnc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 09:48:05 +1100 (AEDT)
-Received: by mail-pf1-x434.google.com with SMTP id j12so4622195pfj.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 14:48:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=WGBp0ms4trj4KJqYXx6s0gKRNvvrRpdSE+7mGZ4gKjo=;
- b=AsANI1TKW9wcXEIi4LEtOUxUNpQayajFoWP7YZ95m7XCh841Ai93sD6PPWxOs1HrCU
- KLifIGaiusRJ0RLzwKYHEWn7VejMLbo/L/UfSmjd8wD46Df0unMC3iqI/MyxpoW4tA7a
- 5gPgoIkiyPiYDV1VkPTE+PliqL6iNwUwXcX8UrswcQ09T+gpIyB6rqYoLNPnfTO2EVw7
- H0xNJpzLjUU1UplPqkM3wz68SsvW4ICrfnA6OHJnQYUn2nvsmywbAN1+gGrDa3YeoSd1
- bRnNdhxaZWgAEbdWgRE/Ag2lrv76CA99xEAVfwXibiYJRkH8GzPgxqR7vvd7TAF0JkZV
- 29IA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=WGBp0ms4trj4KJqYXx6s0gKRNvvrRpdSE+7mGZ4gKjo=;
- b=YqpQ66xSHi/1v97IPlYy4f5G9CEOj2yOPIWMMIecpc8K1EtHNxIkqmp7Xax3y2XJMR
- vshfgOwZMn6iG2nvb5KSo/0RAkWkJiWJDYU1C+la7hWKXbITLljeqxTgxN13RIItQ80I
- MXiZ79eSC/U2QYgHwAZ45cOFtyv79fgxB+1VV3m1WVyskqY3iLP6umU+gZrIveQlip2N
- RiwjsH9uHF/Q5DW2I7rhoOyKh+zhYAeY38LXxMdb18b4nFEYILy0Pnq/avLOzjsGVflW
- bFfnFOvuyIO7vcJDxVCbc4E8Nct7gWq71nBmzT+W7vylnxqG13gWMscDHfsFkGfBQGt3
- hhpw==
-X-Gm-Message-State: AOAM5304K1gTTfEHvUIoNcmrs6a1Xt5EU26acOailVVkHE9lO8ZlWulq
- VjxCi3f40YB1VdsBF3vrRlg=
-X-Google-Smtp-Source: ABdhPJwvz8NkBzT3VZIsgga9RgZijGc00zoDlZLVlsIEeO9JeUJdtdmHJB4GLs8GlIbfIgvcvJeHKg==
-X-Received: by 2002:a62:18c8:0:b029:1d9:6e93:6b22 with SMTP id
- 191-20020a6218c80000b02901d96e936b22mr339226pfy.28.1613083682147; 
- Thu, 11 Feb 2021 14:48:02 -0800 (PST)
-Received: from localhost (14-201-150-91.tpgi.com.au. [14.201.150.91])
- by smtp.gmail.com with ESMTPSA id j9sm6369183pfh.52.2021.02.11.14.48.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Feb 2021 14:48:01 -0800 (PST)
-Date: Fri, 12 Feb 2021 08:47:55 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/bug: Remove specific powerpc BUG_ON()
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <694c7195c81d1bcc781b3c14f452886683d6c524.1613029237.git.christophe.leroy@csgroup.eu>
- <1613036567.zvyupcz926.astroid@bobo.none>
- <20210211115059.GB28121@gate.crashing.org>
-In-Reply-To: <20210211115059.GB28121@gate.crashing.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DcCDV18jVzDvVd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 10:16:10 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=lmS+g0ar; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DcCDT5ktbz9sB4;
+ Fri, 12 Feb 2021 10:16:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1613085369;
+ bh=JbKi0c2idc6mQ5P+7UOfhT57sxfNnkjIaB1g66SBgiI=;
+ h=From:To:Cc:Subject:Date:From;
+ b=lmS+g0ar9/UR2FqRNjQQ4PAjRXry97KjlKNIQLciIzmHujXJrQkLNabzt069V8ywA
+ Zz4I9oST3URr/a19IqfG30YbQspKwT5bNPxHyNyDrcqm1C8sQlX4XGbWuRD++knW67
+ hbNm/CXJjTdmxPOmxyK2MEOYZ/5ugUO+dAUjTU6WV9PjwOfoZqMr9t0QXeCQ18SMqj
+ xFzFDiX80UIY/75GJSi+5vTXshVVFegIFgXc1wEhPGBYaZuwTy1iTgI7bh+AIlHH8C
+ 7pQN39bH/ANxYdT7Llo9ac/cUZMfMoTygI6XoJYNA7hDRzIfSG6+idJVOolFbEvu1v
+ uCXURul9/inOg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.11-8 tag
+Date: Fri, 12 Feb 2021 10:15:59 +1100
+Message-ID: <87blcqnqkw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1613083544.ggx0xcefkc.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,30 +53,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Segher Boessenkool's message of February 11, 2021 9:50 pm:
-> On Thu, Feb 11, 2021 at 08:04:55PM +1000, Nicholas Piggin wrote:
->> It would be nice if we could have a __builtin_trap_if that gcc would use=
-=20
->> conditional traps with, (and which never assumes following code is=20
->> unreachable even for constant true, so we can use it with WARN and put=20
->> explicit unreachable for BUG).
->=20
-> It automatically does that with just __builtin_trap, see my other mail :-=
-)
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-If that is generated without branches (or at least with no more
-branches than existing asm implementation), then it could be usable=20
-without trashing CFAR.
+Hi Linus,
 
-Unfortunately I don't think we will be parsing the dwarf information
-to get line numbers from it any time soon, so not a drop in replacement=20
-but maybe one day someone would find a solution.
+Please pull one final powerpc fix for 5.11:
 
-Thanks,
-Nick
+The following changes since commit 24321ac668e452a4942598533d267805f291fdc9:
+
+  powerpc/64/signal: Fix regression in __kernel_sigtramp_rt64() semantics (2021-02-02 22:14:41 +1100)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.11-8
+
+for you to fetch changes up to 8c511eff1827239f24ded212b1bcda7ca5b16203:
+
+  powerpc/kuap: Allow kernel thread to access userspace after kthread_use_mm (2021-02-06 23:13:04 +1100)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.11 #8
+
+One fix for a regression seen in io_uring, introduced by our support for KUAP
+(Kernel User Access Prevention) with the Hash MMU.
+
+Thanks to: Aneesh Kumar K.V, Zorro Lang.
+
+- ------------------------------------------------------------------
+Aneesh Kumar K.V (1):
+      powerpc/kuap: Allow kernel thread to access userspace after kthread_use_mm
+
+
+ arch/powerpc/include/asm/book3s/64/kup.h   | 16 +++++++++++-----
+ arch/powerpc/include/asm/book3s/64/pkeys.h |  4 ----
+ arch/powerpc/mm/book3s64/pkeys.c           |  1 +
+ 3 files changed, 12 insertions(+), 9 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmAlumMACgkQUevqPMjh
+pYBb9BAAqpyhvEjDiyP0xeHUTQ9UsNMnNUW7Hp03jJYH+EKWC9nT7kb3TY1eNyk5
+KyMBOtXiQsggzWDE31bR32BpH/JChSeRPaCO4HHdDS9t+3ZIo16RTFksdiIhCN6m
+nI4WhnfrdZszstMRsKWzfoLRVDGyNi0hyyQaMS3ypuKvRmozZk6u9K/YNXMa97Wf
+ihhB0lYRdfMNgxMm66uaqEtzYt3Z4dRj9Y24LQirJnp32xK+sNgoleHl4gvvKG3m
+r7CogqHlcExbkD3dl/PPe/SVEesfXpmTrQPCvJmi0qWm9NzkduQWrSEkUkUp1YQD
+T0pBHnCxtI7GAAQpCphBA3gjrz03Og4/RAXmfESgI0JHyh7Vihx91XOwuonuJndn
+5ThY2D9+nkZ2vnlis2/AoLx6ClbNgZysr0iAOsRyd2SYR9Er2CcPZ4OuNHXWTHlz
+G4SmVYiZj9gnSrzqlEGIqBOVWdykV+x+xkLLQx86HUAI+7f1mFV1+dJ4E5NLGKzS
+jB+XwwG2y6q6SnJt2iiybqDu9K1lPWnKFLNeb4at7GfpJ4riKNcRSYrkY9xYxmkR
+kgKyXfW+rNt1RcIoy65kNa3hSnXi4p9wc5Lph7joS7zTkZIKR2E3QUJjGQao85Qa
+rNxccSz3X7ZAL9OEJP/4nE72Zf3VXkzuKbB79D3dhFJ8SJmbPqQ=
+=GDL5
+-----END PGP SIGNATURE-----
