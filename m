@@ -2,46 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC481319674
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 00:17:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5403319676
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 00:19:13 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DcCGF3sZQzDwqP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 10:17:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DcCHy43gzzDwrR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 10:19:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633;
+ helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=vX8f47Wz; dkim-atps=neutral
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
+ [IPv6:2607:f8b0:4864:20::633])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DcCDV18jVzDvVd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 10:16:10 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=lmS+g0ar; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DcCDT5ktbz9sB4;
- Fri, 12 Feb 2021 10:16:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1613085369;
- bh=JbKi0c2idc6mQ5P+7UOfhT57sxfNnkjIaB1g66SBgiI=;
- h=From:To:Cc:Subject:Date:From;
- b=lmS+g0ar9/UR2FqRNjQQ4PAjRXry97KjlKNIQLciIzmHujXJrQkLNabzt069V8ywA
- Zz4I9oST3URr/a19IqfG30YbQspKwT5bNPxHyNyDrcqm1C8sQlX4XGbWuRD++knW67
- hbNm/CXJjTdmxPOmxyK2MEOYZ/5ugUO+dAUjTU6WV9PjwOfoZqMr9t0QXeCQ18SMqj
- xFzFDiX80UIY/75GJSi+5vTXshVVFegIFgXc1wEhPGBYaZuwTy1iTgI7bh+AIlHH8C
- 7pQN39bH/ANxYdT7Llo9ac/cUZMfMoTygI6XoJYNA7hDRzIfSG6+idJVOolFbEvu1v
- uCXURul9/inOg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.11-8 tag
-Date: Fri, 12 Feb 2021 10:15:59 +1100
-Message-ID: <87blcqnqkw.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DcCFf3LnDzDwnv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 10:17:09 +1100 (AEDT)
+Received: by mail-pl1-x633.google.com with SMTP id u15so4174995plf.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 15:17:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=3I9Yg6+Jn4eXnKF9k0n7iaNkXu59at9i04udV7WgS9I=;
+ b=vX8f47WzilwpH+BDW824rjaENUEwDGDfkMfEJjLiaQDfAWti7aWU7Wn//DhIVJXyrs
+ +hDAVwmh9xsgsQyauDoIiHj1QetwunF8TJUBsu1XlA7Ijf5k9DzKFaDMXvGcflL1XKMd
+ dLBiXLhHfesMRdF0wZDaigz2I6Yt+NVDDhUrqmbj4QcZGzC8tz2DCnYu7cODdem4wFR/
+ KVedfn1i/bSZXmiunNgjWoTybP5CRftKqGzKcXPEDpiX6AtBHo6HbeNJZnAS1PkRRPnJ
+ vnfRMEJXnwk4JKcU2nDZ/sfwNTOuePCKgWcJz0kV0vlzzgOpuCVX8c6EcCXt9RHV0Xii
+ txAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=3I9Yg6+Jn4eXnKF9k0n7iaNkXu59at9i04udV7WgS9I=;
+ b=HRdNFtLu28pB4+Ig0TcO6wB5qTCSKOu1SfeTq24XLDK6mdU8VFbCoFZAUTsxEDsRku
+ qDhdrg1vz78ULkNxnrpg+2OG7vd+GHmwc1K7+icaZE+gTfZmD7I729nWLtw2LwcEX9Ly
+ e9M1VN7zo305mgFOnkFBawIlLPGbAoeGDRkGaWlA57nBkV4e0IFcWU8NIpUxTL72znHo
+ EozGukCL2eESH31Y6ewBTq4V3a/c9xFLsE6+ISug34ufo2ADHNSd8DWwJVwhncAg4O2m
+ 2KvkTsh8aD18VARBRPuB4iqahXK81k/GW/w80YJtQ/zM1Q8uZ6m4bzLYTYXOTb5dbJGX
+ CL7g==
+X-Gm-Message-State: AOAM530OtZ50ZRvPWcPz4KaQuZumTu7+bSjv0w8ap7CPU5TU/G2xiJI9
+ uZarUkKrW7jA4CjumaQiTl6qVFRPVUU=
+X-Google-Smtp-Source: ABdhPJxP3+ZGh97Egy5rvKEBIXSDwplyZ9BADMpkA6LjbbyEV2bwC2Il9zcYBfWqwhnlcp8CesirXQ==
+X-Received: by 2002:a17:90a:5208:: with SMTP id v8mr67036pjh.224.1613085425406; 
+ Thu, 11 Feb 2021 15:17:05 -0800 (PST)
+Received: from localhost (14-201-150-91.tpgi.com.au. [14.201.150.91])
+ by smtp.gmail.com with ESMTPSA id x4sm6370614pfm.64.2021.02.11.15.17.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Feb 2021 15:17:04 -0800 (PST)
+Date: Fri, 12 Feb 2021 09:16:58 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 5/6] powerpc/mm/64s/hash: Add real-mode
+ change_memory_range() for hash LPAR
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+References: <20210211135130.3474832-1-mpe@ellerman.id.au>
+ <20210211135130.3474832-5-mpe@ellerman.id.au>
+In-Reply-To: <20210211135130.3474832-5-mpe@ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-Id: <1613084139.rsms9jxmax.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,61 +78,175 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Excerpts from Michael Ellerman's message of February 11, 2021 11:51 pm:
+> When we enabled STRICT_KERNEL_RWX we received some reports of boot
+> failures when using the Hash MMU and running under phyp. The crashes
+> are intermittent, and often exhibit as a completely unresponsive
+> system, or possibly an oops.
+>=20
+> One example, which was caught in xmon:
+>=20
+>   [   14.068327][    T1] devtmpfs: mounted
+>   [   14.069302][    T1] Freeing unused kernel memory: 5568K
+>   [   14.142060][  T347] BUG: Unable to handle kernel instruction fetch
+>   [   14.142063][    T1] Run /sbin/init as init process
+>   [   14.142074][  T347] Faulting instruction address: 0xc000000000004400
+>   cpu 0x2: Vector: 400 (Instruction Access) at [c00000000c7475e0]
+>       pc: c000000000004400: exc_virt_0x4400_instruction_access+0x0/0x80
+>       lr: c0000000001862d4: update_rq_clock+0x44/0x110
+>       sp: c00000000c747880
+>      msr: 8000000040001031
+>     current =3D 0xc00000000c60d380
+>     paca    =3D 0xc00000001ec9de80   irqmask: 0x03   irq_happened: 0x01
+>       pid   =3D 347, comm =3D kworker/2:1
+>   ...
+>   enter ? for help
+>   [c00000000c747880] c0000000001862d4 update_rq_clock+0x44/0x110 (unrelia=
+ble)
+>   [c00000000c7478f0] c000000000198794 update_blocked_averages+0xb4/0x6d0
+>   [c00000000c7479f0] c000000000198e40 update_nohz_stats+0x90/0xd0
+>   [c00000000c747a20] c0000000001a13b4 _nohz_idle_balance+0x164/0x390
+>   [c00000000c747b10] c0000000001a1af8 newidle_balance+0x478/0x610
+>   [c00000000c747be0] c0000000001a1d48 pick_next_task_fair+0x58/0x480
+>   [c00000000c747c40] c000000000eaab5c __schedule+0x12c/0x950
+>   [c00000000c747cd0] c000000000eab3e8 schedule+0x68/0x120
+>   [c00000000c747d00] c00000000016b730 worker_thread+0x130/0x640
+>   [c00000000c747da0] c000000000174d50 kthread+0x1a0/0x1b0
+>   [c00000000c747e10] c00000000000e0f0 ret_from_kernel_thread+0x5c/0x6c
+>=20
+> This shows that CPU 2, which was idle, woke up and then appears to
+> randomly take an instruction fault on a completely valid area of
+> kernel text.
+>=20
+> The cause turns out to be the call to hash__mark_rodata_ro(), late in
+> boot. Due to the way we layout text and rodata, that function actually
+> changes the permissions for all of text and rodata to read-only plus
+> execute.
+>=20
+> To do the permission change we use a hypervisor call, H_PROTECT. On
+> phyp that appears to be implemented by briefly removing the mapping of
+> the kernel text, before putting it back with the updated permissions.
+> If any other CPU is executing during that window, it will see spurious
+> faults on the kernel text and/or data, leading to crashes.
+>=20
+> To fix it we use stop machine to collect all other CPUs, and then have
+> them drop into real mode (MMU off), while we change the mapping. That
+> way they are unaffected by the mapping temporarily disappearing.
+>=20
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/mm/book3s64/hash_pgtable.c | 105 +++++++++++++++++++++++-
+>  1 file changed, 104 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/bo=
+ok3s64/hash_pgtable.c
+> index 3663d3cdffac..01de985df2c4 100644
+> --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
+> @@ -8,6 +8,7 @@
+>  #include <linux/sched.h>
+>  #include <linux/mm_types.h>
+>  #include <linux/mm.h>
+> +#include <linux/stop_machine.h>
+> =20
+>  #include <asm/sections.h>
+>  #include <asm/mmu.h>
+> @@ -400,6 +401,19 @@ EXPORT_SYMBOL_GPL(hash__has_transparent_hugepage);
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+> =20
+>  #ifdef CONFIG_STRICT_KERNEL_RWX
+> +
+> +struct change_memory_parms {
+> +	unsigned long start, end, newpp;
+> +	unsigned int step, nr_cpus, master_cpu;
+> +	atomic_t cpu_counter;
+> +};
+> +
+> +// We'd rather this was on the stack but it has to be in the RMO
+> +static struct change_memory_parms chmem_parms;
+> +
+> +// And therefore we need a lock to protect it from concurrent use
+> +static DEFINE_MUTEX(chmem_lock);
+> +
+>  static void change_memory_range(unsigned long start, unsigned long end,
+>  				unsigned int step, unsigned long newpp)
+>  {
+> @@ -414,6 +428,73 @@ static void change_memory_range(unsigned long start,=
+ unsigned long end,
+>  							mmu_kernel_ssize);
+>  }
+> =20
+> +static int notrace chmem_secondary_loop(struct change_memory_parms *parm=
+s)
+> +{
+> +	unsigned long msr, tmp, flags;
+> +	int *p;
+> +
+> +	p =3D &parms->cpu_counter.counter;
+> +
+> +	local_irq_save(flags);
+> +	__hard_EE_RI_disable();
+> +
+> +	asm volatile (
+> +	// Switch to real mode and leave interrupts off
+> +	"mfmsr	%[msr]			;"
+> +	"li	%[tmp], %[MSR_IR_DR]	;"
+> +	"andc	%[tmp], %[msr], %[tmp]	;"
+> +	"mtmsrd %[tmp]			;"
+> +
+> +	// Tell the master we are in real mode
+> +	"1:				"
+> +	"lwarx	%[tmp], 0, %[p]		;"
+> +	"addic	%[tmp], %[tmp], -1	;"
+> +	"stwcx.	%[tmp], 0, %[p]		;"
+> +	"bne-	1b			;"
+> +
+> +	// Spin until the counter goes to zero
+> +	"2:				;"
+> +	"lwz	%[tmp], 0(%[p])		;"
+> +	"cmpwi	%[tmp], 0		;"
+> +	"bne-	2b			;"
+> +
+> +	// Switch back to virtual mode
+> +	"mtmsrd %[msr]			;"
+> +
+> +	: // outputs
+> +	  [msr] "=3D&r" (msr), [tmp] "=3D&b" (tmp), "+m" (*p)
+> +	: // inputs
+> +	  [p] "b" (p), [MSR_IR_DR] "i" (MSR_IR | MSR_DR)
+> +	: // clobbers
+> +	  "cc", "xer"
+> +	);
+> +
+> +	local_irq_restore(flags);
 
-Hi Linus,
+Hmm. __hard_EE_RI_disable won't get restored by this because it doesn't
+set the HARD_DIS flag. Also we don't want RI disabled here because=20
+tracing will get called first (which might take SLB or HPTE fault).
 
-Please pull one final powerpc fix for 5.11:
+But it's also slightly rude to ever enable EE under an irq soft mask,
+because you don't know if it had been disabled by the masked interrupt=20
+handler. It's not strictly a problem AFAIK because the interrupt would
+just get masked again, but if we try to maintain a good pattern would
+be good. Hmm that means we should add a check for irqs soft masked in
+__hard_irq_enable(), I'm not sure if all existing users would follow
+this rule.
 
-The following changes since commit 24321ac668e452a4942598533d267805f291fdc9:
+Might be better to call hard_irq_disable(); after the local_irq_save();
+and then clear and reset RI inside that region (could just do it at the
+same time as disabling MMU).
 
-  powerpc/64/signal: Fix regression in __kernel_sigtramp_rt64() semantics (2021-02-02 22:14:41 +1100)
+You could possibly pass old_msr and new_msr into asm directly and do
+mfmsr() in C?
 
-are available in the git repository at:
+Clearing RI here unfortuantely I don't think will prevent interrupt
+handlers (sreset or MCE) from trying to go into virtual mode if they
+hit here. It only prevents them trying to return.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.11-8
-
-for you to fetch changes up to 8c511eff1827239f24ded212b1bcda7ca5b16203:
-
-  powerpc/kuap: Allow kernel thread to access userspace after kthread_use_mm (2021-02-06 23:13:04 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.11 #8
-
-One fix for a regression seen in io_uring, introduced by our support for KUAP
-(Kernel User Access Prevention) with the Hash MMU.
-
-Thanks to: Aneesh Kumar K.V, Zorro Lang.
-
-- ------------------------------------------------------------------
-Aneesh Kumar K.V (1):
-      powerpc/kuap: Allow kernel thread to access userspace after kthread_use_mm
-
-
- arch/powerpc/include/asm/book3s/64/kup.h   | 16 +++++++++++-----
- arch/powerpc/include/asm/book3s/64/pkeys.h |  4 ----
- arch/powerpc/mm/book3s64/pkeys.c           |  1 +
- 3 files changed, 12 insertions(+), 9 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmAlumMACgkQUevqPMjh
-pYBb9BAAqpyhvEjDiyP0xeHUTQ9UsNMnNUW7Hp03jJYH+EKWC9nT7kb3TY1eNyk5
-KyMBOtXiQsggzWDE31bR32BpH/JChSeRPaCO4HHdDS9t+3ZIo16RTFksdiIhCN6m
-nI4WhnfrdZszstMRsKWzfoLRVDGyNi0hyyQaMS3ypuKvRmozZk6u9K/YNXMa97Wf
-ihhB0lYRdfMNgxMm66uaqEtzYt3Z4dRj9Y24LQirJnp32xK+sNgoleHl4gvvKG3m
-r7CogqHlcExbkD3dl/PPe/SVEesfXpmTrQPCvJmi0qWm9NzkduQWrSEkUkUp1YQD
-T0pBHnCxtI7GAAQpCphBA3gjrz03Og4/RAXmfESgI0JHyh7Vihx91XOwuonuJndn
-5ThY2D9+nkZ2vnlis2/AoLx6ClbNgZysr0iAOsRyd2SYR9Er2CcPZ4OuNHXWTHlz
-G4SmVYiZj9gnSrzqlEGIqBOVWdykV+x+xkLLQx86HUAI+7f1mFV1+dJ4E5NLGKzS
-jB+XwwG2y6q6SnJt2iiybqDu9K1lPWnKFLNeb4at7GfpJ4riKNcRSYrkY9xYxmkR
-kgKyXfW+rNt1RcIoy65kNa3hSnXi4p9wc5Lph7joS7zTkZIKR2E3QUJjGQao85Qa
-rNxccSz3X7ZAL9OEJP/4nE72Zf3VXkzuKbB79D3dhFJ8SJmbPqQ=
-=GDL5
------END PGP SIGNATURE-----
+Thanks,
+Nick
