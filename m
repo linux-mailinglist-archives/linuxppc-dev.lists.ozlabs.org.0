@@ -2,47 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB51318385
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 03:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84151318467
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 05:43:20 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DbgSM3BLwzDwmK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 13:24:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DbkXQ0T77zDwmF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 15:43:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DbgQX36hJzDwjS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 13:22:56 +1100 (AEDT)
-IronPort-SDR: nKJVtI5dZ+8JTN8uQlFBLwHB5GDytmZX8UEjEmGgjErcV4ucjwhDfEDML08u85Asb+w3WRZr7p
- nbrR5fKtobqw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9891"; a="179625987"
-X-IronPort-AV: E=Sophos;i="5.81,169,1610438400"; d="scan'208";a="179625987"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2021 18:22:52 -0800
-IronPort-SDR: /B/rZVC4Nu6g83bWxAZ1rlEAFDT8FQJjnSUeWGeMclRcUB5vOyttLbOCw5bwjC3QguRbB+KhUH
- pqCx/s6EFxxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,169,1610438400"; d="scan'208";a="399391410"
-Received: from lkp-server02.sh.intel.com (HELO cd560a204411) ([10.239.97.151])
- by orsmga007.jf.intel.com with ESMTP; 10 Feb 2021 18:22:51 -0800
-Received: from kbuild by cd560a204411 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1lA1d4-0003QE-Jr; Thu, 11 Feb 2021 02:22:50 +0000
-Date: Thu, 11 Feb 2021 10:22:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- ea721ec55c8a4a166373978b9c8ce77374d684d6
-Message-ID: <602494f1.IKYEQDwTFB98GZQH%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DbkVm2nQqzDwk4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 15:41:52 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=WHKKAh5P; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DbkVl4Yc9z9s1l;
+ Thu, 11 Feb 2021 15:41:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1613018512;
+ bh=XZIJXgbO1KqMKnW3T+HnSm+5++f1RbxBkJ/WTWFEgPA=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=WHKKAh5PGP6VE6c3UICueTMADK3KXPDFEn8HtzIjHfMt19htL8ODgc7NLf/jkgnSi
+ T7yesfk3kpQXMZkUWHu1DpXFoB6z5DDyDSDB6x0YjPepRPzj3Lh2boNGHptTK6scVe
+ RC1pvbcS0HOLCmhpoj06Nk3wX+HZuPF9d3kquxvDfr3icCZGb/6izJnMolu92ube1Z
+ pe5EMaVKO3c8ZX7ST/g7jMVd6O/xaIGAb03sA1VUamZogOPbhEb6IvHlUMa6B1FRUq
+ 3zJTj+wrPBqQoLNAG7IOryeSZCi3hTLwMtOM83Phu6DM2i8rMvTjeWUa7n5XaBWVf1
+ JiO4iAYNHUsDw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: Declaring unrecoverable_exception() as __noreturn ?
+In-Reply-To: <1613004125.9jpd8u2w0w.astroid@bobo.none>
+References: <5ecc1a9a-92eb-7006-6c94-2b7b700d182a@csgroup.eu>
+ <1613004125.9jpd8u2w0w.astroid@bobo.none>
+Date: Thu, 11 Feb 2021 15:41:48 +1100
+Message-ID: <87mtwbnrlf.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,221 +58,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: ea721ec55c8a4a166373978b9c8ce77374d684d6  selftests/powerpc: Test for spurious kernel memory faults on radix
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Excerpts from Christophe Leroy's message of February 11, 2021 2:44 am:
+>> As far as I can see, almost all callers of unrecoverable_exception() expect it to never return.
+>> 
+>> Can we mark it __noreturn ?
+>
+> I don't see why not, do_exit is noreturn. We could make die() noreturn 
+> as well.
 
-elapsed time: 822m
+I'm always nervous about that, because we can return if a debugger is
+involved:
 
-configs tested: 195
-configs skipped: 2
+DEFINE_INTERRUPT_HANDLER(unrecoverable_exception)
+{
+	pr_emerg("Unrecoverable exception %lx at %lx (msr=%lx)\n",
+		 regs->trap, regs->nip, regs->msr);
+	die("Unrecoverable exception", regs, SIGABRT);
+}
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+void die(const char *str, struct pt_regs *regs, long err)
+{
+	unsigned long flags;
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                         shannon_defconfig
-sh                          rsk7203_defconfig
-sparc                               defconfig
-mips                      bmips_stb_defconfig
-arm                              alldefconfig
-arm                           sama5_defconfig
-riscv                    nommu_virt_defconfig
-m68k                        mvme147_defconfig
-arm                          badge4_defconfig
-sh                        dreamcast_defconfig
-openrisc                         alldefconfig
-arm                         bcm2835_defconfig
-powerpc                    klondike_defconfig
-c6x                         dsk6455_defconfig
-mips                          malta_defconfig
-powerpc                        cell_defconfig
-powerpc                    sam440ep_defconfig
-m68k                          amiga_defconfig
-sh                        apsh4ad0a_defconfig
-arm                           tegra_defconfig
-mips                 decstation_r4k_defconfig
-sh                                  defconfig
-powerpc                     powernv_defconfig
-arm                         palmz72_defconfig
-mips                       bmips_be_defconfig
-mips                        bcm47xx_defconfig
-openrisc                    or1ksim_defconfig
-openrisc                  or1klitex_defconfig
-powerpc                      obs600_defconfig
-m68k                       m5249evb_defconfig
-powerpc                mpc7448_hpc2_defconfig
-arc                        nsimosci_defconfig
-nios2                         3c120_defconfig
-arm                         s3c6400_defconfig
-arm                         vf610m4_defconfig
-arc                              alldefconfig
-c6x                        evmc6474_defconfig
-arc                     haps_hs_smp_defconfig
-mips                         bigsur_defconfig
-mips                      maltaaprp_defconfig
-arc                          axs103_defconfig
-mips                         tb0219_defconfig
-m68k                            q40_defconfig
-mips                        qi_lb60_defconfig
-arm                           sunxi_defconfig
-powerpc                 mpc834x_itx_defconfig
-arm                         socfpga_defconfig
-mips                         db1xxx_defconfig
-m68k                           sun3_defconfig
-powerpc               mpc834x_itxgp_defconfig
-powerpc64                           defconfig
-mips                           xway_defconfig
-mips                            e55_defconfig
-sh                  sh7785lcr_32bit_defconfig
-mips                        nlm_xlp_defconfig
-xtensa                         virt_defconfig
-arm                        magician_defconfig
-mips                           ip32_defconfig
-powerpc                     tqm8540_defconfig
-sh                          kfr2r09_defconfig
-nios2                         10m50_defconfig
-powerpc                  mpc885_ads_defconfig
-arc                         haps_hs_defconfig
-arm                          prima2_defconfig
-powerpc                          g5_defconfig
-arm                  colibri_pxa300_defconfig
-sh                          rsk7269_defconfig
-xtensa                  nommu_kc705_defconfig
-powerpc                           allnoconfig
-powerpc                      bamboo_defconfig
-arm                  colibri_pxa270_defconfig
-sh                             shx3_defconfig
-sh                               allmodconfig
-xtensa                  audio_kc705_defconfig
-arm                    vt8500_v6_v7_defconfig
-arm                        realview_defconfig
-arc                        vdk_hs38_defconfig
-mips                           rs90_defconfig
-powerpc                     sequoia_defconfig
-powerpc                     taishan_defconfig
-alpha                               defconfig
-mips                         tb0287_defconfig
-powerpc                    socrates_defconfig
-mips                            ar7_defconfig
-powerpc                     sbc8548_defconfig
-powerpc                     tqm8555_defconfig
-powerpc                          allmodconfig
-powerpc                         ps3_defconfig
-powerpc                      walnut_defconfig
-powerpc                    mvme5100_defconfig
-sh                         microdev_defconfig
-mips                     loongson1c_defconfig
-nds32                            alldefconfig
-sh                          landisk_defconfig
-arm                           corgi_defconfig
-arm                         at91_dt_defconfig
-ia64                         bigsur_defconfig
-arm                      integrator_defconfig
-sh                           se7750_defconfig
-sh                        sh7763rdp_defconfig
-m68k                       m5275evb_defconfig
-sparc64                          alldefconfig
-powerpc                 mpc836x_mds_defconfig
-nios2                            alldefconfig
-mips                           ip27_defconfig
-powerpc                      katmai_defconfig
-xtensa                       common_defconfig
-riscv                            alldefconfig
-arm                        vexpress_defconfig
-m68k                            mac_defconfig
-arm                             pxa_defconfig
-powerpc                 mpc832x_rdb_defconfig
-sh                           se7751_defconfig
-ia64                      gensparse_defconfig
-m68k                             alldefconfig
-m68k                         apollo_defconfig
-m68k                       bvme6000_defconfig
-mips                           ci20_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-x86_64               randconfig-a006-20210209
-x86_64               randconfig-a001-20210209
-x86_64               randconfig-a005-20210209
-x86_64               randconfig-a004-20210209
-x86_64               randconfig-a002-20210209
-x86_64               randconfig-a003-20210209
-i386                 randconfig-a001-20210209
-i386                 randconfig-a005-20210209
-i386                 randconfig-a003-20210209
-i386                 randconfig-a002-20210209
-i386                 randconfig-a006-20210209
-i386                 randconfig-a004-20210209
-i386                 randconfig-a016-20210209
-i386                 randconfig-a013-20210209
-i386                 randconfig-a012-20210209
-i386                 randconfig-a014-20210209
-i386                 randconfig-a011-20210209
-i386                 randconfig-a015-20210209
-i386                 randconfig-a016-20210210
-i386                 randconfig-a014-20210210
-i386                 randconfig-a012-20210210
-i386                 randconfig-a013-20210210
-i386                 randconfig-a011-20210210
-i386                 randconfig-a015-20210210
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+	/*
+	 * system_reset_excption handles debugger, crash dump, panic, for 0x100
+	 */
+	if (TRAP(regs) != 0x100) {
+		if (debugger(regs))
+			return;
 
-clang tested configs:
-x86_64               randconfig-a013-20210209
-x86_64               randconfig-a014-20210209
-x86_64               randconfig-a015-20210209
-x86_64               randconfig-a012-20210209
-x86_64               randconfig-a016-20210209
-x86_64               randconfig-a011-20210209
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+We obviously don't want to optimise for that case, but it worries me
+slightly if we're marking things noreturn when they can actually return.
+
+cheers
