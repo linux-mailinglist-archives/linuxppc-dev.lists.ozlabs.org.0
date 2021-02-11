@@ -1,44 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617FD3189A3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 12:39:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087663189ED
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 12:57:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DbvmV5Zp3zDwpV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 22:39:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dbw9D16J3zDvZ2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Feb 2021 22:57:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DbvWH2sYLzDwkk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 22:27:55 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=J16G02Ml; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4DbvWF0hYnz9sRf; Thu, 11 Feb 2021 22:27:52 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1613042873;
- bh=81Cjr2r0taGDZmAMMNX6LcWV8d9iipuNOztidsQaUuI=;
- h=From:To:Subject:Date:From;
- b=J16G02MlgZlrJuVPk7GCm6sGajq7oFJKvUPZbJGRUb3Yc4Y4M59ZAfEvOMxWaD7sZ
- KJuN+KuT8iW5yC6h1hiYP/AhQGd3bq8xGkIx4nSgXfykexEsL0HDVQ8E/PkUiPFwj4
- P3waVNASW5yEVs+SzsTxFKq92gVHPCqSXN438VDH+hdWUvdE2kjlMXx2lEBIwE0NFD
- mhjWRaDevbd71Mt3lg084TrQTXLYWpWl4S0weMbuYjxWV77j8+RGEEOBW1rEdpG7io
- 7zVGo9SPekbTIN7B2Lt+bxa5+ExG1/rpLeKzP5j9QvWfIbGpc+SnAMIwn2SZ0u8OiP
- 2bbRodtW5kGkQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/powernv/pci: Use kzalloc() for phb related allocations
-Date: Thu, 11 Feb 2021 22:27:49 +1100
-Message-Id: <20210211112749.3410771-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Dbw3m2bhvzDvX9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 22:52:35 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 11BBnBgY023491;
+ Thu, 11 Feb 2021 05:49:11 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 11BBnA8Q023484;
+ Thu, 11 Feb 2021 05:49:10 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Thu, 11 Feb 2021 05:49:10 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/bug: Remove specific powerpc BUG_ON()
+Message-ID: <20210211114910.GA28121@gate.crashing.org>
+References: <694c7195c81d1bcc781b3c14f452886683d6c524.1613029237.git.christophe.leroy@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <694c7195c81d1bcc781b3c14f452886683d6c524.1613029237.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,81 +47,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As part of commit fbbefb320214 ("powerpc/pci: Move PHB discovery for
-PCI_DN using platforms"), I switched some allocations from
-memblock_alloc() to kmalloc(), otherwise memblock would warn that it
-was being called after slab init.
+On Thu, Feb 11, 2021 at 07:41:52AM +0000, Christophe Leroy wrote:
+> powerpc BUG_ON() is based on using twnei or tdnei instruction,
+> which obliges gcc to format the condition into a 0 or 1 value
+> in a register.
 
-However I missed that the code relied on the allocations being zeroed,
-without which we could end up crashing:
+Huh?  Why is that?
 
-  pci_bus 0000:00: busn_res: [bus 00-ff] end is updated to ff
-  BUG: Unable to handle kernel data access on read at 0x6b6b6b6b6b6b6af7
-  Faulting instruction address: 0xc0000000000dbc90
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA PowerNV
-  ...
-  NIP  pnv_ioda_get_pe_state+0xe0/0x1d0
-  LR   pnv_ioda_get_pe_state+0xb4/0x1d0
-  Call Trace:
-    pnv_ioda_get_pe_state+0xb4/0x1d0 (unreliable)
-    pnv_pci_config_check_eeh.isra.9+0x78/0x270
-    pnv_pci_read_config+0xf8/0x160
-    pci_bus_read_config_dword+0xa4/0x120
-    pci_bus_generic_read_dev_vendor_id+0x54/0x270
-    pci_scan_single_device+0xb8/0x140
-    pci_scan_slot+0x80/0x1b0
-    pci_scan_child_bus_extend+0x94/0x490
-    pcibios_scan_phb+0x1f8/0x3c0
-    pcibios_init+0x8c/0x12c
-    do_one_initcall+0x94/0x510
-    kernel_init_freeable+0x35c/0x3fc
-    kernel_init+0x2c/0x168
-    ret_from_kernel_thread+0x5c/0x70
+Will it work better if this used __builtin_trap?  Or does the kernel only
+detect very specific forms of trap instructions?
 
-Switch them to kzalloc().
+> By using a generic implementation, gcc will generate a branch
+> to the unconditional trap generated by BUG().
 
-Fixes: fbbefb320214 ("powerpc/pci: Move PHB discovery for PCI_DN using platforms")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/platforms/powernv/pci-ioda.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+That is many more instructions than ideal.
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 7ee14ac275bd..f0f901683a2f 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2921,7 +2921,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
- 	phb_id = be64_to_cpup(prop64);
- 	pr_debug("  PHB-ID  : 0x%016llx\n", phb_id);
- 
--	phb = kmalloc(sizeof(*phb), GFP_KERNEL);
-+	phb = kzalloc(sizeof(*phb), GFP_KERNEL);
- 	if (!phb)
- 		panic("%s: Failed to allocate %zu bytes\n", __func__,
- 		      sizeof(*phb));
-@@ -2970,7 +2970,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
- 	else
- 		phb->diag_data_size = PNV_PCI_DIAG_BUF_SIZE;
- 
--	phb->diag_data = kmalloc(phb->diag_data_size, GFP_KERNEL);
-+	phb->diag_data = kzalloc(phb->diag_data_size, GFP_KERNEL);
- 	if (!phb->diag_data)
- 		panic("%s: Failed to allocate %u bytes\n", __func__,
- 		      phb->diag_data_size);
-@@ -3032,7 +3032,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
- 	}
- 	pemap_off = size;
- 	size += phb->ioda.total_pe_num * sizeof(struct pnv_ioda_pe);
--	aux = kmalloc(size, GFP_KERNEL);
-+	aux = kzalloc(size, GFP_KERNEL);
- 	if (!aux)
- 		panic("%s: Failed to allocate %lu bytes\n", __func__, size);
- 
--- 
-2.25.1
+> As modern powerpc implement branch folding, that's even more efficient.
 
+What PowerPC cpus implement branch folding?  I know none.
+
+Some example code generated via __builtin_trap:
+
+void trap(void) { __builtin_trap(); }
+void trap_if_0(int x) { if (x == 0) __builtin_trap(); }
+void trap_if_not_0(int x) { if (x != 0) __builtin_trap(); }
+
+-m64:
+
+trap:
+	trap
+trap_if_0:
+	tdeqi 3,0
+	blr
+trap_if_not_0:
+	tdnei 3,0
+	blr
+
+-m32:
+
+trap:
+	trap
+trap_if_0:
+	tweqi 3,0
+	blr
+trap_if_not_0:
+	twnei 3,0
+	blr
+
+
+Segher
