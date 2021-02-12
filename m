@@ -1,49 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 172B5319928
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 05:33:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C93B331995A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 05:54:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DcLGc0QXKzDwmN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 15:33:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DcLkY62FwzDwyK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 15:54:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::434;
+ helo=mail-pf1-x434.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=VNW3B3XO; dkim-atps=neutral
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DcLDb6mr0zDwlp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 15:31:43 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=UWUD/EHB; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DcLDb0s9Fz9sB4;
- Fri, 12 Feb 2021 15:31:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1613104303;
- bh=itmzlFUyHqeL4s3wEw4G0ZaKppPV6xrZiajsKNwmq5c=;
- h=Date:From:To:Cc:Subject:From;
- b=UWUD/EHB9ckSxYY0kjmpwWrx71QXjtyZnvxMKXWJG/Mq3dYgBM1jv4JgF+Pe30SBl
- bvq6hAflYEWrJgYvTUO2RQokAxjvVhPFjBTqk+gsJLjNvY5t/yRxHtzEf7gBXmKOG4
- 3hEavcGsxOdz135dumfadoXTP2GzhOm6JMmIdqTR7jWcJiwbIruLqHSOrobdoQPnsT
- IkRUG6UnXQ4OOeaLvs500DxCiEaSksEpOFc/6q7vhfJy2KmH51nPpEY2acfHuOLYHy
- 1YW2Is6gTeKUMQc+GHFQ36l4I8RYCD8S7iBDkCpGKdQA7FnaBiYWLmrAV27AUE6YdR
- +lmS6VJETSdVQ==
-Date: Fri, 12 Feb 2021 15:31:42 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Mark Brown <broonie@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: manual merge of the spi tree with the powerpc tree
-Message-ID: <20210212152755.5c82563a@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DcLj23164zDwn7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 15:52:52 +1100 (AEDT)
+Received: by mail-pf1-x434.google.com with SMTP id t29so5083667pfg.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 20:52:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:subject:in-reply-to:references:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Saxit6NqSA+6QYkwaBsjDdtym5gLLpEny89P9JSDncw=;
+ b=VNW3B3XOtb63e446W2UhF+OmjU5Xvvyf9RS8haDSbOWsMqgLkscNb87i613NYxqJti
+ Lbj10TzYxAT0mvXzL8sIxzEkIvG+YiPI5DceOCEcMKE5t7t1n+2vfG+TYMxaGuCQJfdk
+ m40caxf0J6nscLf8uCibEmWgwjDxtNGkMBkjs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:subject:in-reply-to:references:date
+ :message-id:mime-version:content-transfer-encoding;
+ bh=Saxit6NqSA+6QYkwaBsjDdtym5gLLpEny89P9JSDncw=;
+ b=eBMEcmdm73p1TB1loNnlbqfMPMwW5eN+7qHsdIZ4J56seaNBbgK4ldsxsWO3v4DrJd
+ MnrJDGSeISZUotnW/0kUIraGdd4QrBcuPAAsFofnXXLOgV/WCIcTDO3lH5m2GkIkZ2V6
+ a32+bvsqsJZWAIXNEpw2J1qMNDI+ScvIglMQCuO4UVyE3LSd7XeTyQ/20t2iqg/0al7a
+ EdXopYadQfHryOC8oOCXbNAvcxn3J4NYlEIaJTtCnwm4YwiVFs5cJGhd0GzWlZVGAGBV
+ tQ4h2DX5s+t/XwMvnpoX5pHaLW41QzFhTjl2ZqKQXQhA1HDId+gtX9+m8PWiBXeTKMjv
+ CxNA==
+X-Gm-Message-State: AOAM533BdbeSd5Nvpm/Ov+XDO6/lsV2BYDpsJLq7fNyopSQIvuiBvsla
+ KF+JlfE84k+bHBUJJWEc+ObtXA==
+X-Google-Smtp-Source: ABdhPJyt3QQOvR7fm7lu+yfPkbsFAF2ro2m6yTUZwIGfMq5OYZJmNOg7ymfqwU2SsXfE1kKSYDC9GA==
+X-Received: by 2002:a62:2ec3:0:b029:1dd:3eb1:bec9 with SMTP id
+ u186-20020a622ec30000b02901dd3eb1bec9mr1181632pfu.62.1613105568155; 
+ Thu, 11 Feb 2021 20:52:48 -0800 (PST)
+Received: from localhost
+ (2001-44b8-111e-5c00-f9db-27eb-79e2-afa8.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:f9db:27eb:79e2:afa8])
+ by smtp.gmail.com with ESMTPSA id v126sm7278265pfv.163.2021.02.11.20.52.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Feb 2021 20:52:47 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: "Christopher M. Riedl" <cmr@codefail.de>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 04/10] powerpc: Reference param in MSR_TM_ACTIVE() macro
+In-Reply-To: <20210203184323.20792-5-cmr@codefail.de>
+References: <20210203184323.20792-1-cmr@codefail.de>
+ <20210203184323.20792-5-cmr@codefail.de>
+Date: Fri, 12 Feb 2021 15:52:43 +1100
+Message-ID: <877dndevl0.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/QoTe.d1fVIKxU/bYVpVZf7q";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,78 +77,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/QoTe.d1fVIKxU/bYVpVZf7q
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Chris,
 
-Hi all,
+(totally bikeshedding, but I'd use the full word parameter in the
+subject if you have enough spare characters.)
 
-Today's linux-next merge of the spi tree got a conflict in:
+> Unlike the other MSR_TM_* macros, MSR_TM_ACTIVE does not reference or
+> use its parameter unless CONFIG_PPC_TRANSACTIONAL_MEM is defined. This
+> causes an 'unused variable' compile warning unless the variable is also
+> guarded with CONFIG_PPC_TRANSACTIONAL_MEM.
+>
+> Reference but do nothing with the argument in the macro to avoid a
+> potential compile warning.
 
-  drivers/spi/spi-mpc52xx.c
+Andrew asked why we weren't seeing these warnings already.
 
-between commit:
+I was able to reproduce them with CONFIG_PPC_TRANSACTIONAL_MEM off, but
+only if I compiled with W=3D1:
 
-  e10656114d32 ("spi: mpc52xx: Avoid using get_tbl()")
+arch/powerpc/kernel/process.c: In function =E2=80=98enable_kernel_fp=E2=80=
+=99:
+arch/powerpc/kernel/process.c:210:16: error: variable =E2=80=98cpumsr=E2=80=
+=99 set but not used [-Werror=3Dunused-but-set-variable]
+  210 |  unsigned long cpumsr;
+      |                ^~~~~~
 
-from the powerpc tree and commit:
+Having said that, this change seems like a good idea, squashing warnings
+at W=3D1 is still valuable.
 
-  258ea99fe25a ("spi: spi-mpc52xx: Use new structure for SPI transfer delay=
-s")
+Reviewed-by: Daniel Axtens <dja@axtens.net>
 
-from the spi tree.
+Kind regards,
+Daniel
 
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
-BTW Mark: the author's address in 258ea99fe25a uses a non existent domain :=
--(
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc drivers/spi/spi-mpc52xx.c
-index e6a30f232370,36f941500676..000000000000
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@@ -247,8 -247,10 +247,10 @@@ static int mpc52xx_spi_fsmstate_transfe
-  	/* Is the transfer complete? */
-  	ms->len--;
-  	if (ms->len =3D=3D 0) {
- -		ms->timestamp =3D get_tbl();
- +		ms->timestamp =3D mftb();
-- 		ms->timestamp +=3D ms->transfer->delay_usecs * tb_ticks_per_usec;
-+ 		if (ms->transfer->delay.unit =3D=3D SPI_DELAY_UNIT_USECS)
-+ 			ms->timestamp +=3D ms->transfer->delay.value *
-+ 					 tb_ticks_per_usec;
-  		ms->state =3D mpc52xx_spi_fsmstate_wait;
-  		return FSM_CONTINUE;
-  	}
-
---Sig_/QoTe.d1fVIKxU/bYVpVZf7q
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmAmBK4ACgkQAVBC80lX
-0GxwDgf+LQNlltZd+xuYSuIXW0zN7QqigfOzpezCQv4daK7jfPropPYZyTsC87JK
-lj0vZmkheBapZvKKtKbA1VvhJfeqZsy6ojIc2DsegOmFlBtTiv00xvQ8HKsVvYJs
-bumKRtrExhWzPJb4HiUmJ8OgFbOkwzwxULIsRtmDaNjUrElIOHsq0806OjkmMAJ5
-p92zn/KegmuUjHRzcxU9OqUOffOIvsHDbcrFRg7UyPvw4ZHJgkzMtiobqkYk5MRj
-VIdXT8E7WsSrghK+lbqi7hnmyrB8td65QCzllR6z7kitCDgWFQ9S2Hk6MH8XSTnv
-NFYF5HMm8RprUx/cvXw6PhBQ1CHXQg==
-=9ePJ
------END PGP SIGNATURE-----
-
---Sig_/QoTe.d1fVIKxU/bYVpVZf7q--
+> Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
+> ---
+>  arch/powerpc/include/asm/reg.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/re=
+g.h
+> index e40a921d78f9..c5a3e856191c 100644
+> --- a/arch/powerpc/include/asm/reg.h
+> +++ b/arch/powerpc/include/asm/reg.h
+> @@ -124,7 +124,7 @@
+>  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+>  #define MSR_TM_ACTIVE(x) (((x) & MSR_TS_MASK) !=3D 0) /* Transaction act=
+ive? */
+>  #else
+> -#define MSR_TM_ACTIVE(x) 0
+> +#define MSR_TM_ACTIVE(x) ((void)(x), 0)
+>  #endif
+>=20=20
+>  #if defined(CONFIG_PPC_BOOK3S_64)
+> --=20
+> 2.26.1
