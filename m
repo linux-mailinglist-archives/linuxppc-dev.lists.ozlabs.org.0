@@ -2,76 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138BB31A31D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 17:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF0531A36E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 18:20:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DcfhQ1bZkzDwwh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 03:53:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DcgHr1Lz6zDwrK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 04:20:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=63.128.21.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
+ smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
+ helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=LcaYne+p; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=LcaYne+p; 
+ unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
+ header.a=rsa-sha256 header.s=default header.b=UFctr/Cj; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [63.128.21.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dcffx6q4czDwmS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Feb 2021 03:52:06 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1613148723;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HwuucntKVy9+H2UoHo2+dgorK0b8KRqhqcCY+C9nrig=;
- b=LcaYne+p9S+xcJYynlqwkoYc2GuvTHr1nOHLMRGrwiJbc1HapDwNSChkV0DvaSBAo9AMhs
- YK9BmhRnOfoOMiUatquMh3VV5Z3y7cyzVCuHa5Us85lyKs8X7gFdqLt0kNxUVmhkVjTV5n
- bEmdBJdCBrnFBmsfvTTWwvA73Ls9BuI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1613148723;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HwuucntKVy9+H2UoHo2+dgorK0b8KRqhqcCY+C9nrig=;
- b=LcaYne+p9S+xcJYynlqwkoYc2GuvTHr1nOHLMRGrwiJbc1HapDwNSChkV0DvaSBAo9AMhs
- YK9BmhRnOfoOMiUatquMh3VV5Z3y7cyzVCuHa5Us85lyKs8X7gFdqLt0kNxUVmhkVjTV5n
- bEmdBJdCBrnFBmsfvTTWwvA73Ls9BuI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-398-iSWoKwKQMOK8cc1ChY21Lg-1; Fri, 12 Feb 2021 11:52:01 -0500
-X-MC-Unique: iSWoKwKQMOK8cc1ChY21Lg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4AC8479EC2;
- Fri, 12 Feb 2021 16:52:00 +0000 (UTC)
-Received: from [10.36.112.23] (ovpn-112-23.ams2.redhat.com [10.36.112.23])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A4DF45D9FC;
- Fri, 12 Feb 2021 16:51:58 +0000 (UTC)
-Subject: Re: [PATCH] powerpc/pseries: Don't enforce MSI affinity with kdump
-To: Greg Kurz <groug@kaod.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <20210212164132.821332-1-groug@kaod.org>
-From: Laurent Vivier <lvivier@redhat.com>
-Message-ID: <81b4e767-289f-8fb6-9e05-c3fe60beb740@redhat.com>
-Date: Fri, 12 Feb 2021 17:51:57 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DcgFz5VTGzDwqn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Feb 2021 04:19:03 +1100 (AEDT)
+Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
+ [73.42.176.67])
+ by linux.microsoft.com (Postfix) with ESMTPSA id C5C7020B6C40;
+ Fri, 12 Feb 2021 09:19:00 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C5C7020B6C40
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1613150341;
+ bh=ymZC2uSu1WhDmmhzMMk+j693znWvxWsQ0oRGutDXsUU=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=UFctr/CjGfWUVNUkmlcZdiSnRimSYXYpf7boiSafTdIohyW4op8aqXiOPIXG7tD9w
+ 2+CCCjIQwjmCzRCgCyJOtrEfXaan1toeQ6tewZfvQeoz8k1bHJnQ/MjJqkkzxmgjf+
+ fBeDNBT4ANHJIZyDIIuAoR7Wx92T/5Rbhxu+1Yog=
+Subject: Re: [PATCH v17 02/10] of: Add a common kexec FDT setup function
+To: Rob Herring <robh@kernel.org>
+References: <20210209182200.30606-1-nramas@linux.microsoft.com>
+ <20210209182200.30606-3-nramas@linux.microsoft.com>
+ <87k0reozwh.fsf@manicouagan.localdomain>
+ <8a3aa3d2-2eba-549a-9970-a2b0fe3586c9@linux.microsoft.com>
+ <CAL_JsqJ3sDzjsJXtb6EzE77BL+PhUxDJYUngLTqcm0popd7Ajw@mail.gmail.com>
+From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <55685b61-dac0-2f24-f74a-939acf74a4f2@linux.microsoft.com>
+Date: Fri, 12 Feb 2021 09:19:00 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210212164132.821332-1-groug@kaod.org>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <CAL_JsqJ3sDzjsJXtb6EzE77BL+PhUxDJYUngLTqcm0popd7Ajw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,87 +60,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, tao.li@vivo.com,
+ Mimi Zohar <zohar@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ vincenzo.frascino@arm.com, Frank Rowand <frowand.list@gmail.com>,
+ Sasha Levin <sashal@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>,
+ James Morris <jmorris@namei.org>, "AKASHI,
+ Takahiro" <takahiro.akashi@linaro.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, devicetree@vger.kernel.org,
+ Pavel Tatashin <pasha.tatashin@soleen.com>, Will Deacon <will@kernel.org>,
+ Prakhar Srivastava <prsriva@linux.microsoft.com>,
+ Hsin-Yi Wang <hsinyi@chromium.org>, Allison Randal <allison@lohutok.net>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Matthias Brugger <mbrugger@suse.com>, balajib@linux.microsoft.com,
+ dmitry.kasatkin@gmail.com,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ James Morse <james.morse@arm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Joe Perches <joe@perches.com>,
+ linux-integrity@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/02/2021 17:41, Greg Kurz wrote:
-> Depending on the number of online CPUs in the original kernel, it is
-> likely for CPU #0 to be offline in a kdump kernel. The associated IRQs
-> in the affinity mappings provided by irq_create_affinity_masks() are
-> thus not started by irq_startup(), as per-design with managed IRQs.
+On 2/12/21 6:38 AM, Rob Herring wrote:
+> On Thu, Feb 11, 2021 at 7:17 PM Lakshmi Ramasubramanian
+> <nramas@linux.microsoft.com> wrote:
+>>
+>> On 2/11/21 5:09 PM, Thiago Jung Bauermann wrote:
+>>>
+>>> There's actually a complication that I just noticed and needs to be
+>>> addressed. More below.
+>>>
+>>
+>> <...>
+>>
+>>>> +
+>>>> +/*
+>>>> + * of_kexec_alloc_and_setup_fdt - Alloc and setup a new Flattened Device Tree
+>>>> + *
+>>>> + * @image:          kexec image being loaded.
+>>>> + * @initrd_load_addr:       Address where the next initrd will be loaded.
+>>>> + * @initrd_len:             Size of the next initrd, or 0 if there will be none.
+>>>> + * @cmdline:                Command line for the next kernel, or NULL if there will
+>>>> + *                  be none.
+>>>> + *
+>>>> + * Return: fdt on success, or NULL errno on error.
+>>>> + */
+>>>> +void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
+>>>> +                               unsigned long initrd_load_addr,
+>>>> +                               unsigned long initrd_len,
+>>>> +                               const char *cmdline)
+>>>> +{
+>>>> +    void *fdt;
+>>>> +    int ret, chosen_node;
+>>>> +    const void *prop;
+>>>> +    unsigned long fdt_size;
+>>>> +
+>>>> +    fdt_size = fdt_totalsize(initial_boot_params) +
+>>>> +               (cmdline ? strlen(cmdline) : 0) +
+>>>> +               FDT_EXTRA_SPACE;
+>>>
+>>> Just adding 4 KB to initial_boot_params won't be enough for crash
+>>> kernels on ppc64. The current powerpc code doubles the size of
+>>> initial_boot_params (which is normally larger than 4 KB) and even that
+>>> isn't enough. A patch was added to powerpc/next today which uses a more
+>>> precise (but arch-specific) formula:
+>>>
+>>> https://lore.kernel.org/linuxppc-dev/161243826811.119001.14083048209224609814.stgit@hbathini/
+>>>
+>>> So I believe we need a hook here where architectures can provide their
+>>> own specific calculation for the size of the fdt. Perhaps a weakly
+>>> defined function providing a default implementation which an
+>>> arch-specific file can override (a la arch_kexec_kernel_image_load())?
+>>>
+>>> Then the powerpc specific hook would be the kexec_fdt_totalsize_ppc64()
+>>> function from the patch I linked above.
+>>>
+>>
+>> Do you think it'd better to add "fdt_size" parameter to
+>> of_kexec_alloc_and_setup_fdt() so that the caller can provide the
+>> desired FDT buffer size?
 > 
-> This can be a problem with multi-queue block devices driven by blk-mq :
-> such a non-started IRQ is very likely paired with the single queue
-> enforced by blk-mq during kdump (see blk_mq_alloc_tag_set()). This
-> causes the device to remain silent and likely hangs the guest at
-> some point.
+> Yes, I guess so. But please define the param as extra size, not total
+> size. The kernel command line size addition can be in the common code.
+
+Will do. Just to clarify -
+
+The common code will do:
+
+fdt_totalsize(initial_boot_params) + strlen(cmdline) + extra_fdt_size
+
+The caller will pass "extra_fdt_size"
+ARM64 => 4KB
+PPC64 => fdt_totalsize(initial_boot_params) - which will be updated when 
+the patch Thiago had referred to is merged.
+
 > 
-> This is a regression caused by commit 9ea69a55b3b9 ("powerpc/pseries:
-> Pass MSI affinity to irq_create_mapping()"). Note that this only happens
-> with the XIVE interrupt controller because XICS has a workaround to bypass
-> affinity, which is activated during kdump with the "noirqdistrib" kernel
-> parameter.
-> 
-> The issue comes from a combination of factors:
-> - discrepancy between the number of queues detected by the multi-queue
->   block driver, that was used to create the MSI vectors, and the single
->   queue mode enforced later on by blk-mq because of kdump (i.e. keeping
->   all queues fixes the issue)
-> - CPU#0 offline (i.e. kdump always succeed with CPU#0)
-> 
-> Given that I couldn't reproduce on x86, which seems to always have CPU#0
-> online even during kdump, I'm not sure where this should be fixed. Hence
-> going for another approach : fine-grained affinity is for performance
-> and we don't really care about that during kdump. Simply revert to the
-> previous working behavior of ignoring affinity masks in this case only.
-> 
-> Fixes: 9ea69a55b3b9 ("powerpc/pseries: Pass MSI affinity to irq_create_mapping()")
-> Cc: lvivier@redhat.com
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Greg Kurz <groug@kaod.org>
-> ---
->  arch/powerpc/platforms/pseries/msi.c | 24 ++++++++++++++++++++++--
->  1 file changed, 22 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
-> index b3ac2455faad..29d04b83288d 100644
-> --- a/arch/powerpc/platforms/pseries/msi.c
-> +++ b/arch/powerpc/platforms/pseries/msi.c
-> @@ -458,8 +458,28 @@ static int rtas_setup_msi_irqs(struct pci_dev *pdev, int nvec_in, int type)
->  			return hwirq;
->  		}
->  
-> -		virq = irq_create_mapping_affinity(NULL, hwirq,
-> -						   entry->affinity);
-> +		/*
-> +		 * Depending on the number of online CPUs in the original
-> +		 * kernel, it is likely for CPU #0 to be offline in a kdump
-> +		 * kernel. The associated IRQs in the affinity mappings
-> +		 * provided by irq_create_affinity_masks() are thus not
-> +		 * started by irq_startup(), as per-design for managed IRQs.
-> +		 * This can be a problem with multi-queue block devices driven
-> +		 * by blk-mq : such a non-started IRQ is very likely paired
-> +		 * with the single queue enforced by blk-mq during kdump (see
-> +		 * blk_mq_alloc_tag_set()). This causes the device to remain
-> +		 * silent and likely hangs the guest at some point.
-> +		 *
-> +		 * We don't really care for fine-grained affinity when doing
-> +		 * kdump actually : simply ignore the pre-computed affinity
-> +		 * masks in this case and let the default mask with all CPUs
-> +		 * be used when creating the IRQ mappings.
-> +		 */
-> +		if (is_kdump_kernel())
-> +			virq = irq_create_mapping(NULL, hwirq);
-> +		else
-> +			virq = irq_create_mapping_affinity(NULL, hwirq,
-> +							   entry->affinity);
->  
->  		if (!virq) {
->  			pr_debug("rtas_msi: Failed mapping hwirq %d\n", hwirq);
+> The above change is also going to conflict, so I think this may have
+> to wait. Or I'll take the common and arm bits and powerpc can be
+> converted next cycle (or after the merge window).
 > 
 
-Reviewed-by: Laurent Vivier <lvivier@redhat.com>
+thanks.
+
+  -lakshmi
+
 
