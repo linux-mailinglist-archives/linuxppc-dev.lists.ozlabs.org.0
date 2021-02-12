@@ -1,70 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72C63197F2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 02:22:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31E5319822
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 02:59:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DcG2B5D9dzDwhZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 12:22:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DcGrQ1sWvzDwxT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 12:59:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530;
- helo=mail-pg1-x530.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=bqFIiwOI; dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
- [IPv6:2607:f8b0:4864:20::530])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=dJtsM+oz; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DcG0N50llzDsmV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 12:20:51 +1100 (AEDT)
-Received: by mail-pg1-x530.google.com with SMTP id m2so5205070pgq.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 17:20:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=54O96x+hir6UndkmBG1tqcNZSUw2mvpQMhbQiW7lDvc=;
- b=bqFIiwOIkTHtf6iBe6OKqnNLzm89ExegQ63G17Da04WVJuif2d62694rmY4roDJ4/R
- A6OjClLMsCn8uP0cnhdFmVdLqZOawWCq+TKmCtZJaV3cvOgD9pEromXRqGaTsGLPKt2H
- HYLbHgl2iv+9x8+sHxAese7UhihjzXlXkUzym7DwDSmnEqQmeLJ/lJIdhdpRe5Vpstgb
- udqmZJOUIOUT6UYG/hI9LL+cT3s9NSJeaueUTKXR2vctfDWphtKuPl3uOS+jOiLOoglR
- 0fGHtKp9MeiciKEBClXOtw5G+ngPVFncZcIbTo5PBdVewHn+ogRvibXUYH12BRoCVkyl
- lYdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=54O96x+hir6UndkmBG1tqcNZSUw2mvpQMhbQiW7lDvc=;
- b=tdV2PXtyQqG1vsbCJEgTHwwnqVozfKZNBXPJpO1ZsPuEyqlEW/qGAu4V2LlhLrjv2I
- yi/JLaysQef2s5v2CDKgiyduRv4n6crBVyZCG/NWT4+mJBHyDG6X/OwnPNhWLruKthUz
- r0NlMdsJyp46/6IMOgMfty5KNX8vkf11CN3Yk4rF/U3sLfVKr5X5Mr8LlCNJYXjVpm7i
- Y3TkP4NvfJtMAhN/DuwL4xr++2AOHD0dOrzoPRqM9N1d6rr1treaLurBA3/kVzqgj5JV
- vtUbfWtzCSe1T37QvBtHWwXj5yAbIPFAM9lqlZjbm5ZgBEyZTAJkOfjL3WdWr1aCX1J0
- ioBA==
-X-Gm-Message-State: AOAM531L0uzr1qQ2dwjNPEmo2ISjzImnihz9gVWRVGtMeH5E+ZdpH+6U
- TPZL7uMeWpxFKVPOHbJLvpCc+ugwIGw=
-X-Google-Smtp-Source: ABdhPJzVDeJVp88jMoiX61q213qEzjhJU96z1uCrBH6GVqffAEV8xYGQInwXjymdX13ecR1Hoxi5mA==
-X-Received: by 2002:a05:6a00:854:b029:1b7:6233:c5f with SMTP id
- q20-20020a056a000854b02901b762330c5fmr800046pfk.73.1613092847059; 
- Thu, 11 Feb 2021 17:20:47 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (14-201-150-91.tpgi.com.au. [14.201.150.91])
- by smtp.gmail.com with ESMTPSA id fv11sm6623107pjb.18.2021.02.11.17.20.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Feb 2021 17:20:46 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH] powerpc/64s: introduce call_realmode to run C code in
- real-mode
-Date: Fri, 12 Feb 2021 11:20:40 +1000
-Message-Id: <20210212012041.392566-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DcGpj5tRSzDwg6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 12:57:33 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 11C1VgM6115511; Thu, 11 Feb 2021 20:57:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=references : from : to :
+ cc : subject : in-reply-to : date : message-id : mime-version :
+ content-type; s=pp1; bh=uQt06wHvOQrSmS8/kTsCEVHl0OCXE00ZjosONvWuENQ=;
+ b=dJtsM+oz8PBlgKHWc9I6u7tB1tnk9fzYq9JG/7FB6YYz2hz3GMxWnfkl+CIU8GIQmpdv
+ 0wOpyeOK2Tb718DaqUeb/HJlioUtRvi+TcPJS7fukG1EDEgKNz7H/X6uULDl5Gw1pbsf
+ JnUevV7AEWL1Ehw/NmYH+17/pO8oJK0I57dmUgRDKkZKlFLRMMB9x48f61kB6S2iEZnj
+ QbJdpn5rAhs1bFIU5FXCCgCOWSL7M0vAeS2+MkYBqzFw0vhSfl7ZGuldh94bjuCvUTes
+ uM9zPFQ4IT10PTBC8C877CwnHBjW8CZ2ogPfJycm9nEi3/QKyOVCwDKXqYHgoYCdJVxO Cw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36nft9ruj2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Feb 2021 20:57:11 -0500
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 11C1W83n117969;
+ Thu, 11 Feb 2021 20:57:10 -0500
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36nft9rufw-7
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Feb 2021 20:57:10 -0500
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11C1ajOP007264;
+ Fri, 12 Feb 2021 01:39:21 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01dal.us.ibm.com with ESMTP id 36hjra4bc6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Feb 2021 01:39:21 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11C1dLvu42008886
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 12 Feb 2021 01:39:21 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E1331112063;
+ Fri, 12 Feb 2021 01:39:20 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B0F12112064;
+ Fri, 12 Feb 2021 01:39:13 +0000 (GMT)
+Received: from manicouagan.localdomain (unknown [9.85.204.73])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Fri, 12 Feb 2021 01:39:13 +0000 (GMT)
+References: <20210209182200.30606-1-nramas@linux.microsoft.com>
+ <20210209182200.30606-3-nramas@linux.microsoft.com>
+ <87k0reozwh.fsf@manicouagan.localdomain>
+ <8a3aa3d2-2eba-549a-9970-a2b0fe3586c9@linux.microsoft.com>
+User-agent: mu4e 1.4.10; emacs 27.1
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Subject: Re: [PATCH v17 02/10] of: Add a common kexec FDT setup function
+In-reply-to: <8a3aa3d2-2eba-549a-9970-a2b0fe3586c9@linux.microsoft.com>
+Date: Thu, 11 Feb 2021 22:39:11 -0300
+Message-ID: <87h7mioyio.fsf@manicouagan.localdomain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
+ definitions=2021-02-11_07:2021-02-11,
+ 2021-02-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ bulkscore=0 malwarescore=0 priorityscore=1501 suspectscore=0 adultscore=0
+ mlxlogscore=999 impostorscore=0 spamscore=0 mlxscore=0 clxscore=1015
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102120002
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,196 +102,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: mark.rutland@arm.com, tao.li@vivo.com, zohar@linux.ibm.com,
+ paulus@samba.org, vincenzo.frascino@arm.com, frowand.list@gmail.com,
+ sashal@kernel.org, robh@kernel.org, masahiroy@kernel.org, jmorris@namei.org,
+ takahiro.akashi@linaro.org, linux-arm-kernel@lists.infradead.org,
+ catalin.marinas@arm.com, serge@hallyn.com, devicetree@vger.kernel.org,
+ pasha.tatashin@soleen.com, will@kernel.org, prsriva@linux.microsoft.com,
+ hsinyi@chromium.org, allison@lohutok.net, christophe.leroy@c-s.fr,
+ mbrugger@suse.com, balajib@linux.microsoft.com, dmitry.kasatkin@gmail.com,
+ linux-kernel@vger.kernel.org, james.morse@arm.com, gregkh@linuxfoundation.org,
+ joe@perches.com, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The regular kernel stack can not be accessed in real mode in hash
-guest kernels, which prevents the MMU from being disabled in general
-C code. Provide a helper that can call a function pointer in real
-mode using the emergency stack (accessable in real mode).
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/asm-prototypes.h |  1 +
- arch/powerpc/include/asm/book3s/64/mmu.h  |  2 +
- arch/powerpc/include/asm/thread_info.h    | 16 ++++++++
- arch/powerpc/kernel/irq.c                 | 16 --------
- arch/powerpc/kernel/misc_64.S             | 22 +++++++++++
- arch/powerpc/mm/book3s64/pgtable.c        | 48 +++++++++++++++++++++++
- 6 files changed, 89 insertions(+), 16 deletions(-)
+Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
 
-diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
-index d0b832cbbec8..a973023c390a 100644
---- a/arch/powerpc/include/asm/asm-prototypes.h
-+++ b/arch/powerpc/include/asm/asm-prototypes.h
-@@ -126,6 +126,7 @@ extern s64 __ashldi3(s64, int);
- extern s64 __ashrdi3(s64, int);
- extern int __cmpdi2(s64, s64);
- extern int __ucmpdi2(u64, u64);
-+int __call_realmode(int (*fn)(void *arg), void *arg, void *sp);
- 
- /* tracing */
- void _mcount(void);
-diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-index 995bbcdd0ef8..80b0d24415ac 100644
---- a/arch/powerpc/include/asm/book3s/64/mmu.h
-+++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-@@ -274,5 +274,7 @@ static inline unsigned long get_user_vsid(mm_context_t *ctx,
- 	return get_vsid(context, ea, ssize);
- }
- 
-+int call_realmode(int (*fn)(void *arg), void *arg);
-+
- #endif /* __ASSEMBLY__ */
- #endif /* _ASM_POWERPC_BOOK3S_64_MMU_H_ */
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index 3d8a47af7a25..9279e472d51e 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -172,6 +172,22 @@ static inline bool test_thread_local_flags(unsigned int flags)
- #define is_elf2_task() (0)
- #endif
- 
-+static inline void check_stack_overflow(void)
-+{
-+	long sp;
-+
-+	if (!IS_ENABLED(CONFIG_DEBUG_STACKOVERFLOW))
-+		return;
-+
-+	sp = current_stack_pointer & (THREAD_SIZE - 1);
-+
-+	/* check for stack overflow: is there less than 2KB free? */
-+	if (unlikely(sp < 2048)) {
-+		pr_err("do_IRQ: stack overflow: %ld\n", sp);
-+		dump_stack();
-+	}
-+}
-+
- #endif	/* !__ASSEMBLY__ */
- 
- #endif /* __KERNEL__ */
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 6b1eca53e36c..193b47b5b6a5 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -620,22 +620,6 @@ u64 arch_irq_stat_cpu(unsigned int cpu)
- 	return sum;
- }
- 
--static inline void check_stack_overflow(void)
--{
--	long sp;
--
--	if (!IS_ENABLED(CONFIG_DEBUG_STACKOVERFLOW))
--		return;
--
--	sp = current_stack_pointer & (THREAD_SIZE - 1);
--
--	/* check for stack overflow: is there less than 2KB free? */
--	if (unlikely(sp < 2048)) {
--		pr_err("do_IRQ: stack overflow: %ld\n", sp);
--		dump_stack();
--	}
--}
--
- void __do_irq(struct pt_regs *regs)
- {
- 	unsigned int irq;
-diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
-index 070465825c21..5e911d0b0b16 100644
---- a/arch/powerpc/kernel/misc_64.S
-+++ b/arch/powerpc/kernel/misc_64.S
-@@ -27,6 +27,28 @@
- 
- 	.text
- 
-+#ifdef CONFIG_PPC_BOOK3S_64
-+_GLOBAL(__call_realmode)
-+	mflr	r0
-+	std	r0,16(r1)
-+	stdu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r5)
-+	mr	r1,r5
-+	mtctr	r3
-+	mr	r3,r4
-+	mfmsr	r4
-+	xori	r4,r4,(MSR_IR|MSR_DR)
-+	mtmsrd	r4
-+	bctrl
-+	mfmsr	r4
-+	xori	r4,r4,(MSR_IR|MSR_DR)
-+	mtmsrd	r4
-+	ld	r1,0(r1)
-+	ld	r0,16(r1)
-+	mtlr	r0
-+	blr
-+
-+#endif
-+
- _GLOBAL(call_do_softirq)
- 	mflr	r0
- 	std	r0,16(r1)
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 5b3a3bae21aa..aad0e2059305 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -474,6 +474,54 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
- 	return true;
- }
- 
-+/*
-+ * Executing C code in real-mode in general Book3S-64 code can only be done
-+ * via this function that switches the stack to one inside the real-mode-area,
-+ * which may cover only a small first part of real memory on hash guest LPARs.
-+ * fn must be NOKPROBES, must not access vmalloc or anything outside the RMA,
-+ * probably shouldn't enable the MMU or interrupts, etc, and be very careful
-+ * about calling other generic kernel or powerpc functions.
-+ */
-+int call_realmode(int (*fn)(void *arg), void *arg)
-+{
-+	unsigned long flags;
-+	void *cursp, *emsp;
-+	int ret;
-+
-+	if (WARN_ON_ONCE(!(mfmsr() & MSR_DR)))
-+		return -EINVAL;
-+	if (WARN_ON_ONCE(!(mfmsr() & MSR_IR)))
-+		return -EINVAL;
-+
-+	/*
-+	 * The switch to emergency stack is only really required for HPT LPAR,
-+	 * but do it for all to help test coverage of tricky code.
-+	 */
-+	cursp = (void *)(current_stack_pointer & ~(THREAD_SIZE - 1));
-+	emsp = (void *)(local_paca->emergency_sp - THREAD_SIZE);
-+
-+	/*
-+	 * It's probably okay to go to real-mode and call directly in case we
-+	 * are already on the emergency stack, so allow it. But we may want to
-+	 * prevent callers from doing this in future though, so warn.
-+	 */
-+	WARN_ON_ONCE(cursp == emsp);
-+
-+	check_stack_overflow();
-+
-+	local_irq_save(flags);
-+	hard_irq_disable();
-+
-+	if (cursp == emsp)
-+		ret = fn(arg);
-+	else
-+		ret = __call_realmode(fn, arg, emsp);
-+
-+	local_irq_restore(flags);
-+
-+	return ret;
-+}
-+
- /*
-  * Does the CPU support tlbie?
-  */
+> On 2/11/21 5:09 PM, Thiago Jung Bauermann wrote:
+>> There's actually a complication that I just noticed and needs to be
+>> addressed. More below.
+>> 
+>
+> <...>
+>
+>>> +
+>>> +/*
+>>> + * of_kexec_alloc_and_setup_fdt - Alloc and setup a new Flattened Device Tree
+>>> + *
+>>> + * @image:		kexec image being loaded.
+>>> + * @initrd_load_addr:	Address where the next initrd will be loaded.
+>>> + * @initrd_len:		Size of the next initrd, or 0 if there will be none.
+>>> + * @cmdline:		Command line for the next kernel, or NULL if there will
+>>> + *			be none.
+>>> + *
+>>> + * Return: fdt on success, or NULL errno on error.
+>>> + */
+>>> +void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
+>>> +				   unsigned long initrd_load_addr,
+>>> +				   unsigned long initrd_len,
+>>> +				   const char *cmdline)
+>>> +{
+>>> +	void *fdt;
+>>> +	int ret, chosen_node;
+>>> +	const void *prop;
+>>> +	unsigned long fdt_size;
+>>> +
+>>> +	fdt_size = fdt_totalsize(initial_boot_params) +
+>>> +		   (cmdline ? strlen(cmdline) : 0) +
+>>> +		   FDT_EXTRA_SPACE;
+>> Just adding 4 KB to initial_boot_params won't be enough for crash
+>> kernels on ppc64. The current powerpc code doubles the size of
+>> initial_boot_params (which is normally larger than 4 KB) and even that
+>> isn't enough. A patch was added to powerpc/next today which uses a more
+>> precise (but arch-specific) formula:
+>> https://lore.kernel.org/linuxppc-dev/161243826811.119001.14083048209224609814.stgit@hbathini/
+>> So I believe we need a hook here where architectures can provide their
+>> own specific calculation for the size of the fdt. Perhaps a weakly
+>> defined function providing a default implementation which an
+>> arch-specific file can override (a la arch_kexec_kernel_image_load())?
+>> Then the powerpc specific hook would be the kexec_fdt_totalsize_ppc64()
+>> function from the patch I linked above.
+>> 
+>
+> Do you think it'd better to add "fdt_size" parameter to
+> of_kexec_alloc_and_setup_fdt() so that the caller can provide the 
+> desired FDT buffer size?
+
+Yes, that is actually simpler and better than my idea. :-)
+
 -- 
-2.23.0
-
+Thiago Jung Bauermann
+IBM Linux Technology Center
