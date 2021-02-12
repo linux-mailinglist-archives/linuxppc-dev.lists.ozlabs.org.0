@@ -2,30 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196F131976F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 01:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A028D319772
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 01:28:56 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DcDpf2zKyzDwwk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 11:27:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DcDrN6t61zDsVP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 11:28:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DcDf21k5KzDwl6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 11:19:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DcDf36V12zDwlq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 11:19:55 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4DcDf14nxLz9sCD; Fri, 12 Feb 2021 11:19:53 +1100 (AEDT)
+ id 4DcDf21YQpz9sRf; Fri, 12 Feb 2021 11:19:54 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- broonie@kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <99bf008e2970de7f8ed3225cda69a6d06ae1a644.1612866360.git.christophe.leroy@csgroup.eu>
-References: <99bf008e2970de7f8ed3225cda69a6d06ae1a644.1612866360.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 1/3] spi: mpc52xx: Avoid using get_tbl()
-Message-Id: <161308904751.3606979.3399981869225283560.b4-ty@ellerman.id.au>
-Date: Fri, 12 Feb 2021 11:19:53 +1100 (AEDT)
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <5ae4d545e3ac58e133d2599e0deb88843cb494fc.1612768623.git.christophe.leroy@csgroup.eu>
+References: <5ae4d545e3ac58e133d2599e0deb88843cb494fc.1612768623.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/32: Preserve cr1 in exception prolog stack check
+ to fix build error
+Message-Id: <161308904010.3606979.18330739657598413446.b4-ty@ellerman.id.au>
+Date: Fri, 12 Feb 2021 11:19:54 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,27 +38,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 9 Feb 2021 10:26:21 +0000 (UTC), Christophe Leroy wrote:
-> get_tbl() is confusing as it returns the content TBL register
-> on PPC32 but the concatenation of TBL and TBU on PPC64.
+On Mon, 8 Feb 2021 07:17:40 +0000 (UTC), Christophe Leroy wrote:
+> THREAD_ALIGN_SHIFT = THREAD_SHIFT + 1 = PAGE_SHIFT + 1
+> Maximum PAGE_SHIFT is 18 for 256k pages so
+> THREAD_ALIGN_SHIFT is 19 at the maximum.
 > 
-> Use mftb() instead.
+> No need to clobber cr1, it can be preserved when moving r1
+> into CR when we check stack overflow.
 > 
-> This will allow the removal of get_tbl() in a following patch.
+> [...]
 
 Applied to powerpc/next.
 
-[1/3] spi: mpc52xx: Avoid using get_tbl()
-      https://git.kernel.org/powerpc/c/e10656114d32c659768e7ca8aebaaa6ac6e959ab
-[2/3] powerpc/time: Avoid using get_tbl()
-      https://git.kernel.org/powerpc/c/55d68df623eb679cc91f61137f14751e7f369662
-[3/3] powerpc/time: Remove get_tbl()
-      https://git.kernel.org/powerpc/c/132f94f133961d18af615cb3503368e59529e9a8
+[1/1] powerpc/32: Preserve cr1 in exception prolog stack check to fix build error
+      https://git.kernel.org/powerpc/c/3642eb21256a317ac14e9ed560242c6d20cf06d9
 
 cheers
