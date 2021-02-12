@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BBF31A6B3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 22:19:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F5231A6C7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 22:22:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dcmbl3x2LzDwtr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 08:19:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DcmgL1NkYzDwvd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 08:22:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::534;
- helo=mail-pg1-x534.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::52f;
+ helo=mail-pg1-x52f.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=ZPJpfqG8; dkim-atps=neutral
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
- [IPv6:2607:f8b0:4864:20::534])
+ header.s=google header.b=jtrl4rTR; dkim-atps=neutral
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
+ [IPv6:2607:f8b0:4864:20::52f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DcmYs0KpRzDwl4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Feb 2021 08:18:04 +1100 (AEDT)
-Received: by mail-pg1-x534.google.com with SMTP id r38so447326pgk.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 13:18:04 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dcmdc1xW9zDwl9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Feb 2021 08:21:23 +1100 (AEDT)
+Received: by mail-pg1-x52f.google.com with SMTP id t26so492333pgv.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 13:21:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:subject:in-reply-to:references:date:message-id:mime-version;
- bh=npnYCB7PHdPGIH2PRN4TJlk4XUoP3LYnVjcHwGlXOZk=;
- b=ZPJpfqG8kmUHBkC6AZ++qud8t9piM3jY32mSoH1Zt/XcKYin9BlLLHyFtKxBbODjxe
- Hx2CmExnKgTnULtRP7Vwl1sNkG2p1+ZihM5+HMaWqiuSN3G5BRsqvNXj75Oic68WYd9N
- aeL4Fj5PQXG/H10SrsJ/1R+mWtP1IfCR+sMf8=
+ bh=1XvoCECmT3plBnzkkShbH513g0PqtMrwBfSxXnTuz4M=;
+ b=jtrl4rTRTNfdeUfERBe+i8OnVzvNKOFSbA1R2RDlyCReQu/Jtlj5OK/AmjCusU0q+W
+ xX0XiW/dLFnGKqaRkurtus9XYm8GxQFxL4FyVK8TXEVPlysgT0KiWtjD5UYJbmVPQbj1
+ xGYZAiOfNbLS1cC1QOlVbaZ0v1cL8zEZqdqtE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:subject:in-reply-to:references:date
  :message-id:mime-version;
- bh=npnYCB7PHdPGIH2PRN4TJlk4XUoP3LYnVjcHwGlXOZk=;
- b=jaiS10aMKm8lTyrAT/njHPQvIF5rGDLY+ZmW7b6zYz72u9hdJuGgjGPg6yVf/PHpnH
- VMy7taWjVTT0onsJDboHA4HGUACDeEgWWBF8a202p4SPOnTrFC4RRjtIDW9Ba7WIifEI
- Y+J+5T4rGnWBOWERlHBKVCNHvN/eKOjdZTc39170jkvHi69Wl4EqXZguLrUvijsRSoOz
- Z5QhkfnSUt3CiJt+PGQ23HBl2AwnAWjoIDhoaFRiGoWGt9B7lKPx60/6F0fum38UfX2s
- 4M8VBXZNk8VpwGd4YeHtlLGSIJxFX5Up5yqoBR4+K6d79RyjNzEKw1haI7wOyfV9zq7J
- TqDA==
-X-Gm-Message-State: AOAM530xQQG4Nr7lA5mXe6YQuvsl+KQFXCjwoXCcT322P3iHBM5aM56d
- Qo4UR8sjroJPGafpEqBYCZCYpQ==
-X-Google-Smtp-Source: ABdhPJzwuyqFLIOeH4PVe8Jg8xkAR3JzLBVGOEpFqqWq4jWRQXnHlkcNzQHjPaRw1oPc/UI1kYqF8w==
-X-Received: by 2002:a63:4b15:: with SMTP id y21mr5078747pga.234.1613164678067; 
- Fri, 12 Feb 2021 13:17:58 -0800 (PST)
+ bh=1XvoCECmT3plBnzkkShbH513g0PqtMrwBfSxXnTuz4M=;
+ b=QALZx+OQUR+NZqnz9ktVjZjbgjTwxRy0wwfPlXkJl9J0q7R0nA0nEIuQjhyfmmpeG2
+ Cg1AQzyqPOSKiP2Q0Cak7z1Iu3dBnOFBPod3ZC9+xMipcbMhurfKXgclKizeM5SmYuU4
+ h6RYLxUy3RoFydpVh7Zr5pnLBj3aqtiztqXMBnfou8koAsXQVr6Jxh+gT3cNEBkVi6/m
+ Sx7j2Wpei2TN1nzSmLRD4T5tF7nLWMJ1Gg8la5OXrAmpK+YcvEvRjb1dYK9wP0oCBU45
+ Al1x5VQsdiJ2fyZeTwzNlMoOraQKh08CIaT/rc09691C50Ehtb8VR3hhuRChX3CBx4om
+ sH2Q==
+X-Gm-Message-State: AOAM533QQ2N4KZM7KEQ2qrEnOX+/PXg61Rwz/oKvzHLJDsQpAdKeOQsL
+ 9l5yApaQcaMNhz/pT6BsL//1TQ==
+X-Google-Smtp-Source: ABdhPJzJwHbl+rCCaT77OYMjE9995QNqGrh3Kxd0AeXSFpTATlPuMpMIJ44c1e9tj5ZLSfkqupUf2Q==
+X-Received: by 2002:aa7:8a99:0:b029:1a6:c8b8:1414 with SMTP id
+ a25-20020aa78a990000b02901a6c8b81414mr4515942pfc.66.1613164879764; 
+ Fri, 12 Feb 2021 13:21:19 -0800 (PST)
 Received: from localhost
  (2001-44b8-111e-5c00-c245-dfb7-be39-91ab.static.ipv6.internode.on.net.
  [2001:44b8:111e:5c00:c245:dfb7:be39:91ab])
- by smtp.gmail.com with ESMTPSA id o189sm9646588pfd.73.2021.02.12.13.17.57
+ by smtp.gmail.com with ESMTPSA id v9sm7389773pjd.30.2021.02.12.13.21.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Feb 2021 13:17:57 -0800 (PST)
+ Fri, 12 Feb 2021 13:21:19 -0800 (PST)
 From: Daniel Axtens <dja@axtens.net>
 To: "Christopher M. Riedl" <cmr@codefail.de>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 07/10] powerpc/signal64: Replace restore_sigcontext()
- w/ unsafe_restore_sigcontext()
-In-Reply-To: <20210203184323.20792-8-cmr@codefail.de>
+Subject: Re: [PATCH v5 10/10] powerpc/signal64: Use __get_user() to copy
+ sigset_t
+In-Reply-To: <20210203184323.20792-11-cmr@codefail.de>
 References: <20210203184323.20792-1-cmr@codefail.de>
- <20210203184323.20792-8-cmr@codefail.de>
-Date: Sat, 13 Feb 2021 08:17:54 +1100
-Message-ID: <87y2ftc7el.fsf@dja-thinkpad.axtens.net>
+ <20210203184323.20792-11-cmr@codefail.de>
+Date: Sat, 13 Feb 2021 08:21:16 +1100
+Message-ID: <87v9axc78z.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,187 +80,72 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Chris,
+"Christopher M. Riedl" <cmr@codefail.de> writes:
 
-> Previously restore_sigcontext() performed a costly KUAP switch on every
-> uaccess operation. These repeated uaccess switches cause a significant
-> drop in signal handling performance.
->
-> Rewrite restore_sigcontext() to assume that a userspace read access
-> window is open. Replace all uaccess functions with their 'unsafe'
-> versions which avoid the repeated uaccess switches.
->
+> Usually sigset_t is exactly 8B which is a "trivial" size and does not
+> warrant using __copy_from_user(). Use __get_user() directly in
+> anticipation of future work to remove the trivial size optimizations
+> from __copy_from_user(). Calling __get_user() also results in a small
+> boost to signal handling throughput here.
 
-Much of the same comments apply here as to the last patch:
- - the commit message might be improved by adding that you are also
-   changing the calling functions to open the uaccess window before
-   calling into the new unsafe functions
+Modulo the comments from Christophe, this looks good to me. It seems to
+do what it says on the tin.
 
- - I have checked that the safe to unsafe conversions look right.
+Reviewed-by: Daniel Axtens <dja@axtens.net>
 
- - I think you're opening too wide a window in user_read_access_begin,
-   it seems to me that it could be reduced to just the
-   uc_mcontext. (Again, not that it makes a difference with the current
-   HW.)
+Do you know if this patch is responsible for the slightly increase in
+radix performance you observed in your cover letter? The rest of the
+series shouldn't really make things faster than the no-KUAP case...
 
 Kind regards,
 Daniel
 
+>
 > Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
 > ---
->  arch/powerpc/kernel/signal_64.c | 68 ++++++++++++++++++++-------------
->  1 file changed, 41 insertions(+), 27 deletions(-)
+>  arch/powerpc/kernel/signal_64.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
 >
 > diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-> index 4248e4489ff1..d668f8af18fe 100644
+> index 817b64e1e409..42fdc4a7ff72 100644
 > --- a/arch/powerpc/kernel/signal_64.c
 > +++ b/arch/powerpc/kernel/signal_64.c
-> @@ -326,14 +326,14 @@ static long setup_tm_sigcontexts(struct sigcontext __user *sc,
->  /*
->   * Restore the sigcontext from the signal frame.
->   */
-> -
-> -static long restore_sigcontext(struct task_struct *tsk, sigset_t *set, int sig,
-> -			      struct sigcontext __user *sc)
-> +#define unsafe_restore_sigcontext(tsk, set, sig, sc, e) \
-> +	unsafe_op_wrap(__unsafe_restore_sigcontext(tsk, set, sig, sc), e)
-> +static long notrace __unsafe_restore_sigcontext(struct task_struct *tsk, sigset_t *set,
-> +						int sig, struct sigcontext __user *sc)
->  {
->  #ifdef CONFIG_ALTIVEC
->  	elf_vrreg_t __user *v_regs;
->  #endif
-> -	unsigned long err = 0;
->  	unsigned long save_r13 = 0;
->  	unsigned long msr;
->  	struct pt_regs *regs = tsk->thread.regs;
-> @@ -348,27 +348,28 @@ static long restore_sigcontext(struct task_struct *tsk, sigset_t *set, int sig,
->  		save_r13 = regs->gpr[13];
->  
->  	/* copy the GPRs */
-> -	err |= __copy_from_user(regs->gpr, sc->gp_regs, sizeof(regs->gpr));
-> -	err |= __get_user(regs->nip, &sc->gp_regs[PT_NIP]);
-> +	unsafe_copy_from_user(regs->gpr, sc->gp_regs, sizeof(regs->gpr),
-> +			      efault_out);
-> +	unsafe_get_user(regs->nip, &sc->gp_regs[PT_NIP], efault_out);
->  	/* get MSR separately, transfer the LE bit if doing signal return */
-> -	err |= __get_user(msr, &sc->gp_regs[PT_MSR]);
-> +	unsafe_get_user(msr, &sc->gp_regs[PT_MSR], efault_out);
->  	if (sig)
->  		regs->msr = (regs->msr & ~MSR_LE) | (msr & MSR_LE);
-> -	err |= __get_user(regs->orig_gpr3, &sc->gp_regs[PT_ORIG_R3]);
-> -	err |= __get_user(regs->ctr, &sc->gp_regs[PT_CTR]);
-> -	err |= __get_user(regs->link, &sc->gp_regs[PT_LNK]);
-> -	err |= __get_user(regs->xer, &sc->gp_regs[PT_XER]);
-> -	err |= __get_user(regs->ccr, &sc->gp_regs[PT_CCR]);
-> +	unsafe_get_user(regs->orig_gpr3, &sc->gp_regs[PT_ORIG_R3], efault_out);
-> +	unsafe_get_user(regs->ctr, &sc->gp_regs[PT_CTR], efault_out);
-> +	unsafe_get_user(regs->link, &sc->gp_regs[PT_LNK], efault_out);
-> +	unsafe_get_user(regs->xer, &sc->gp_regs[PT_XER], efault_out);
-> +	unsafe_get_user(regs->ccr, &sc->gp_regs[PT_CCR], efault_out);
->  	/* Don't allow userspace to set SOFTE */
->  	set_trap_norestart(regs);
-> -	err |= __get_user(regs->dar, &sc->gp_regs[PT_DAR]);
-> -	err |= __get_user(regs->dsisr, &sc->gp_regs[PT_DSISR]);
-> -	err |= __get_user(regs->result, &sc->gp_regs[PT_RESULT]);
-> +	unsafe_get_user(regs->dar, &sc->gp_regs[PT_DAR], efault_out);
-> +	unsafe_get_user(regs->dsisr, &sc->gp_regs[PT_DSISR], efault_out);
-> +	unsafe_get_user(regs->result, &sc->gp_regs[PT_RESULT], efault_out);
->  
->  	if (!sig)
->  		regs->gpr[13] = save_r13;
->  	if (set != NULL)
-> -		err |=  __get_user(set->sig[0], &sc->oldmask);
-> +		unsafe_get_user(set->sig[0], &sc->oldmask, efault_out);
->  
->  	/*
->  	 * Force reload of FP/VEC.
-> @@ -378,29 +379,28 @@ static long restore_sigcontext(struct task_struct *tsk, sigset_t *set, int sig,
->  	regs->msr &= ~(MSR_FP | MSR_FE0 | MSR_FE1 | MSR_VEC | MSR_VSX);
->  
->  #ifdef CONFIG_ALTIVEC
-> -	err |= __get_user(v_regs, &sc->v_regs);
-> -	if (err)
-> -		return err;
-> +	unsafe_get_user(v_regs, &sc->v_regs, efault_out);
->  	if (v_regs && !access_ok(v_regs, 34 * sizeof(vector128)))
->  		return -EFAULT;
->  	/* Copy 33 vec registers (vr0..31 and vscr) from the stack */
->  	if (v_regs != NULL && (msr & MSR_VEC) != 0) {
-> -		err |= __copy_from_user(&tsk->thread.vr_state, v_regs,
-> -					33 * sizeof(vector128));
-> +		unsafe_copy_from_user(&tsk->thread.vr_state, v_regs,
-> +				      33 * sizeof(vector128), efault_out);
->  		tsk->thread.used_vr = true;
->  	} else if (tsk->thread.used_vr) {
->  		memset(&tsk->thread.vr_state, 0, 33 * sizeof(vector128));
->  	}
->  	/* Always get VRSAVE back */
->  	if (v_regs != NULL)
-> -		err |= __get_user(tsk->thread.vrsave, (u32 __user *)&v_regs[33]);
-> +		unsafe_get_user(tsk->thread.vrsave, (u32 __user *)&v_regs[33],
-> +				efault_out);
->  	else
->  		tsk->thread.vrsave = 0;
->  	if (cpu_has_feature(CPU_FTR_ALTIVEC))
->  		mtspr(SPRN_VRSAVE, tsk->thread.vrsave);
->  #endif /* CONFIG_ALTIVEC */
->  	/* restore floating point */
-> -	err |= copy_fpr_from_user(tsk, &sc->fp_regs);
-> +	unsafe_copy_fpr_from_user(tsk, &sc->fp_regs, efault_out);
->  #ifdef CONFIG_VSX
->  	/*
->  	 * Get additional VSX data. Update v_regs to point after the
-> @@ -409,14 +409,17 @@ static long restore_sigcontext(struct task_struct *tsk, sigset_t *set, int sig,
->  	 */
->  	v_regs += ELF_NVRREG;
->  	if ((msr & MSR_VSX) != 0) {
-> -		err |= copy_vsx_from_user(tsk, v_regs);
-> +		unsafe_copy_vsx_from_user(tsk, v_regs, efault_out);
->  		tsk->thread.used_vsr = true;
->  	} else {
->  		for (i = 0; i < 32 ; i++)
->  			tsk->thread.fp_state.fpr[i][TS_VSRLOWOFFSET] = 0;
->  	}
->  #endif
-> -	return err;
-> +	return 0;
-> +
-> +efault_out:
-> +	return -EFAULT;
+> @@ -97,6 +97,14 @@ static void prepare_setup_sigcontext(struct task_struct *tsk, int ctx_has_vsx_re
+>  #endif /* CONFIG_VSX */
 >  }
 >  
->  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-> @@ -701,8 +704,14 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
->  	if (__copy_from_user(&set, &new_ctx->uc_sigmask, sizeof(set)))
->  		do_exit(SIGSEGV);
->  	set_current_blocked(&set);
-> -	if (restore_sigcontext(current, NULL, 0, &new_ctx->uc_mcontext))
+> +static inline int get_user_sigset(sigset_t *dst, const sigset_t *src)
+> +{
+> +	if (sizeof(sigset_t) <= 8)
+> +		return __get_user(dst->sig[0], &src->sig[0]);
+> +	else
+> +		return __copy_from_user(dst, src, sizeof(sigset_t));
+> +}
 > +
-> +	if (!user_read_access_begin(new_ctx, ctx_size))
-> +		return -EFAULT;
-> +	if (__unsafe_restore_sigcontext(current, NULL, 0, &new_ctx->uc_mcontext)) {
-> +		user_read_access_end();
+>  /*
+>   * Set up the sigcontext for the signal frame.
+>   */
+> @@ -701,8 +709,9 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
+>  	 * We kill the task with a SIGSEGV in this situation.
+>  	 */
+>  
+> -	if (__copy_from_user(&set, &new_ctx->uc_sigmask, sizeof(set)))
+> +	if (get_user_sigset(&set, &new_ctx->uc_sigmask))
 >  		do_exit(SIGSEGV);
-> +	}
-> +	user_read_access_end();
+> +
+>  	set_current_blocked(&set);
 >  
->  	/* This returns like rt_sigreturn */
->  	set_thread_flag(TIF_RESTOREALL);
-> @@ -807,8 +816,13 @@ SYSCALL_DEFINE0(rt_sigreturn)
->  		 * causing a TM bad thing.
->  		 */
->  		current->thread.regs->msr &= ~MSR_TS_MASK;
-> -		if (restore_sigcontext(current, NULL, 1, &uc->uc_mcontext))
-> +		if (!user_read_access_begin(uc, sizeof(*uc)))
-> +			return -EFAULT;
-> +		if (__unsafe_restore_sigcontext(current, NULL, 1, &uc->uc_mcontext)) {
-> +			user_read_access_end();
->  			goto badframe;
-> +		}
-> +		user_read_access_end();
->  	}
+>  	if (!user_read_access_begin(new_ctx, ctx_size))
+> @@ -740,8 +749,9 @@ SYSCALL_DEFINE0(rt_sigreturn)
+>  	if (!access_ok(uc, sizeof(*uc)))
+>  		goto badframe;
 >  
->  	if (restore_altstack(&uc->uc_stack))
+> -	if (__copy_from_user(&set, &uc->uc_sigmask, sizeof(set)))
+> +	if (get_user_sigset(&set, &uc->uc_sigmask))
+>  		goto badframe;
+> +
+>  	set_current_blocked(&set);
+>  
+>  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 > -- 
 > 2.26.1
