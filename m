@@ -1,30 +1,29 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F54231978C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 01:39:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8237431978E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 01:41:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DcF4d5zfqzDx0K
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 11:39:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DcF752JC6zDx04
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 11:41:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DcDf819gszDwlq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 11:20:00 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DcDf92YJ7zDwlq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 11:20:01 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4DcDf70Lx9z9sTD; Fri, 12 Feb 2021 11:19:59 +1100 (AEDT)
+ id 4DcDf85CMnz9sVt; Fri, 12 Feb 2021 11:20:00 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
-In-Reply-To: <20210209095234.837356-1-kjain@linux.ibm.com>
-References: <20210209095234.837356-1-kjain@linux.ibm.com>
-Subject: Re: [PATCH V3] powerpc/perf: Adds support for programming of
- Thresholding in P10
-Message-Id: <161308904941.3606979.12435840058472237094.b4-ty@ellerman.id.au>
-Date: Fri, 12 Feb 2021 11:19:59 +1100 (AEDT)
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210210130804.3190952-1-mpe@ellerman.id.au>
+References: <20210210130804.3190952-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/3] powerpc/83xx: Fix build error when CONFIG_PCI=n
+Message-Id: <161308905035.3606979.9092922959917653953.b4-ty@ellerman.id.au>
+Date: Fri, 12 Feb 2021 11:20:00 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,26 +35,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 9 Feb 2021 15:22:34 +0530, Kajol Jain wrote:
-> Thresholding, a performance monitoring unit feature, can be
-> used to identify marked instructions which take more than
-> expected cycles between start event and end event.
-> Threshold compare (thresh_cmp) bits are programmed in MMCRA
-> register. In Power9, thresh_cmp bits were part of the
-> event code. But in case of P10, thresh_cmp are not part of
-> event code due to inclusion of MMCR3 bits.
+On Thu, 11 Feb 2021 00:08:02 +1100, Michael Ellerman wrote:
+> As reported by lkp:
+> 
+>   arch/powerpc/platforms/83xx/km83xx.c:183:19: error: 'mpc83xx_setup_pci' undeclared here (not in a function)
+>      183 |  .discover_phbs = mpc83xx_setup_pci,
+> 	 |                   ^~~~~~~~~~~~~~~~~
+> 	 |                   mpc83xx_setup_arch
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/perf: Adds support for programming of Thresholding in P10
-      https://git.kernel.org/powerpc/c/82d2c16b350f72aa21ac2a6860c542aa4b43a51e
+[1/3] powerpc/83xx: Fix build error when CONFIG_PCI=n
+      https://git.kernel.org/powerpc/c/5c47c44f157f408c862b144bbd1d1e161a521aa2
+[2/3] powerpc/mm/64s: Fix no previous prototype warning
+      https://git.kernel.org/powerpc/c/2bb421a3d93601aa81bc39af7aac7280303e0761
+[3/3] powerpc/amigaone: Make amigaone_discover_phbs() static
+      https://git.kernel.org/powerpc/c/f30520c64f290589e91461d7326b497c23e7f5fd
 
 cheers
