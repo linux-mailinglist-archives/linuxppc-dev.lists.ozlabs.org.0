@@ -2,71 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4165B3197A3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 01:54:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5413197E9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 02:13:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DcFPP4RSRzDwvJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 11:54:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DcFrF4MmCzDwpr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 12:13:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=g1dfJ+/v; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=XbDVdfjo; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DcF1h561JzDwwh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 11:36:54 +1100 (AEDT)
-Received: by mail-pj1-x102c.google.com with SMTP id l18so4419734pji.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Feb 2021 16:36:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=7stMU8rkICSB42n8HN3vxCUZLDn6j7hn0nIs5uFGH9c=;
- b=g1dfJ+/v/G2LUH0nUr8Fub8O64BXj/LwkvpiJuQ/Xt7IPhKP5Lfr2N0idh6OgeHF24
- wo6LLHOHyBVvrnvVTO8tB2TJuIp4n5VQBpnWjOk6biZigUq+KkX30uXOWW38j4xBNlDT
- RGgsdgk5VMUONJw/yQfaIl3zYX987bAismBfy4T1+kQkWRtiCSwZnI5xs8NOpJ1ieKPb
- Giu/cUDYA2opEi3dYY9x6NkQdzNj8TjgPhxkJeXpQ3hW90QWbWaNTFsja6PagoidWDSh
- sUezH/EJqxZHP0v7m8p0duV5ZUSw+iv/Arya0h2oQnhsTRrF+bK9XztyCwZfyxjJixMm
- HB0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=7stMU8rkICSB42n8HN3vxCUZLDn6j7hn0nIs5uFGH9c=;
- b=eAIojiAQGKBBps80g86sMz9gSOQqZxt8i9hvpCtUGxwHrZrejf7ZwVEjngWNb0bwsP
- SEIwZblTv1jTkqN03VqzveNKab2yqmcVHWfm9q7Bxs8zou7CaFzC6nAs5aEFWxrBq3p9
- EUCwzPm+jueMlt+h59K2DaWR/3gKSaQYr042qHjkJKrn/ceQNXbzGQxQ7FAUSl703V6n
- Am+TGkAzYRlzdU1kgxfLPP5K+YKtBZLQVVX8p7Ebf5voZamxrO3zRm6I479fSAHnZ35D
- JeDU2c5uzXGFzDBNU0gFx2ZPZE/Avk8k9VUsP/mPUgagXx8ji8HXx/qcY6c+NWqzARdU
- jcoA==
-X-Gm-Message-State: AOAM5323vZ1kk+OEtopbmaKx+u1u7wSqB852gOwIuVEwjegkcBk41Hs3
- ywyooWf3TzF1k1vIixeReiW0pJSybTc=
-X-Google-Smtp-Source: ABdhPJwT0LPmkN+QLAUqKznQ3d1OTr15+8H3QwdxGaWqKvBVT6zgVvJliNLt04YnH9a09PCdU/1uvA==
-X-Received: by 2002:a17:90a:8b82:: with SMTP id z2mr327780pjn.25.1613090210495; 
- Thu, 11 Feb 2021 16:36:50 -0800 (PST)
-Received: from localhost (14-201-150-91.tpgi.com.au. [14.201.150.91])
- by smtp.gmail.com with ESMTPSA id me3sm5999542pjb.32.2021.02.11.16.36.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Feb 2021 16:36:49 -0800 (PST)
-Date: Fri, 12 Feb 2021 10:36:43 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 5/6] powerpc/mm/64s/hash: Add real-mode
- change_memory_range() for hash LPAR
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-References: <20210211135130.3474832-1-mpe@ellerman.id.au>
- <20210211135130.3474832-5-mpe@ellerman.id.au>
-In-Reply-To: <20210211135130.3474832-5-mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DcFlp3lHqzDvbC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 12:09:58 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 11C12oKE194214; Thu, 11 Feb 2021 20:09:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=references : from : to :
+ cc : subject : in-reply-to : date : message-id : mime-version :
+ content-type; s=pp1; bh=nmTDub/Ux2hr+XxZPtDhKJc7n/Ne0M1pVdt80JFvfdQ=;
+ b=XbDVdfjo/SU5a0O3VlsI2elV+tb+sDBEh2f+oVr/sVjssPcdCs2ry1DJt9NhPOACCzwG
+ wujbHQX1O9pL9zUeolxtp7Msg2zhC9l3pjUiFL7uRhlLDE9VrXL5Y3NWCB/+VeKPQjWg
+ lw2aZGOIAcK0JSi2m7Jd7j0mmmx8XFAS9wrxd3F/GgvGpH9ecX86udfT5zq6vknNQe54
+ vMDTUlUb1ViVpKDBlO1rWmxT49z6oPddljPHS2qt72RI1WIS0jYVq18P7tw6EoM5qfM0
+ y08ByxfxuQsqYUFeV4j9yqNmBNM9JaW0dO+jQwoqmwqwYd5Bv8LnOjC30/j3QhdTFeSs YQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36nfcpgvw7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Feb 2021 20:09:30 -0500
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 11C13XG3003550;
+ Thu, 11 Feb 2021 20:09:29 -0500
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36nfcpgvvg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Feb 2021 20:09:29 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11C17WSq008415;
+ Fri, 12 Feb 2021 01:09:28 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma04dal.us.ibm.com with ESMTP id 36hjra451h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Feb 2021 01:09:28 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11C19RC912845554
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 12 Feb 2021 01:09:27 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 668D5AE062;
+ Fri, 12 Feb 2021 01:09:27 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 44AA1AE05C;
+ Fri, 12 Feb 2021 01:09:20 +0000 (GMT)
+Received: from manicouagan.localdomain (unknown [9.85.204.73])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Fri, 12 Feb 2021 01:09:20 +0000 (GMT)
+References: <20210209182200.30606-1-nramas@linux.microsoft.com>
+ <20210209182200.30606-3-nramas@linux.microsoft.com>
+User-agent: mu4e 1.4.10; emacs 27.1
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Subject: Re: [PATCH v17 02/10] of: Add a common kexec FDT setup function
+In-reply-to: <20210209182200.30606-3-nramas@linux.microsoft.com>
+Date: Thu, 11 Feb 2021 22:09:18 -0300
+Message-ID: <87k0reozwh.fsf@manicouagan.localdomain>
 MIME-Version: 1.0
-Message-Id: <1613086376.ygjdbhz8p5.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
+ definitions=2021-02-11_07:2021-02-11,
+ 2021-02-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ suspectscore=0 priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0
+ bulkscore=0 mlxscore=0 lowpriorityscore=0 clxscore=1015 phishscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102120002
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,241 +100,185 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com
+Cc: mark.rutland@arm.com, tao.li@vivo.com, zohar@linux.ibm.com,
+ paulus@samba.org, vincenzo.frascino@arm.com, frowand.list@gmail.com,
+ sashal@kernel.org, robh@kernel.org, masahiroy@kernel.org, jmorris@namei.org,
+ takahiro.akashi@linaro.org, linux-arm-kernel@lists.infradead.org,
+ catalin.marinas@arm.com, serge@hallyn.com, devicetree@vger.kernel.org,
+ pasha.tatashin@soleen.com, will@kernel.org, prsriva@linux.microsoft.com,
+ hsinyi@chromium.org, allison@lohutok.net, christophe.leroy@c-s.fr,
+ mbrugger@suse.com, balajib@linux.microsoft.com, dmitry.kasatkin@gmail.com,
+ linux-kernel@vger.kernel.org, james.morse@arm.com, gregkh@linuxfoundation.org,
+ joe@perches.com, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of February 11, 2021 11:51 pm:
-> When we enabled STRICT_KERNEL_RWX we received some reports of boot
-> failures when using the Hash MMU and running under phyp. The crashes
-> are intermittent, and often exhibit as a completely unresponsive
-> system, or possibly an oops.
->=20
-> One example, which was caught in xmon:
->=20
->   [   14.068327][    T1] devtmpfs: mounted
->   [   14.069302][    T1] Freeing unused kernel memory: 5568K
->   [   14.142060][  T347] BUG: Unable to handle kernel instruction fetch
->   [   14.142063][    T1] Run /sbin/init as init process
->   [   14.142074][  T347] Faulting instruction address: 0xc000000000004400
->   cpu 0x2: Vector: 400 (Instruction Access) at [c00000000c7475e0]
->       pc: c000000000004400: exc_virt_0x4400_instruction_access+0x0/0x80
->       lr: c0000000001862d4: update_rq_clock+0x44/0x110
->       sp: c00000000c747880
->      msr: 8000000040001031
->     current =3D 0xc00000000c60d380
->     paca    =3D 0xc00000001ec9de80   irqmask: 0x03   irq_happened: 0x01
->       pid   =3D 347, comm =3D kworker/2:1
->   ...
->   enter ? for help
->   [c00000000c747880] c0000000001862d4 update_rq_clock+0x44/0x110 (unrelia=
-ble)
->   [c00000000c7478f0] c000000000198794 update_blocked_averages+0xb4/0x6d0
->   [c00000000c7479f0] c000000000198e40 update_nohz_stats+0x90/0xd0
->   [c00000000c747a20] c0000000001a13b4 _nohz_idle_balance+0x164/0x390
->   [c00000000c747b10] c0000000001a1af8 newidle_balance+0x478/0x610
->   [c00000000c747be0] c0000000001a1d48 pick_next_task_fair+0x58/0x480
->   [c00000000c747c40] c000000000eaab5c __schedule+0x12c/0x950
->   [c00000000c747cd0] c000000000eab3e8 schedule+0x68/0x120
->   [c00000000c747d00] c00000000016b730 worker_thread+0x130/0x640
->   [c00000000c747da0] c000000000174d50 kthread+0x1a0/0x1b0
->   [c00000000c747e10] c00000000000e0f0 ret_from_kernel_thread+0x5c/0x6c
->=20
-> This shows that CPU 2, which was idle, woke up and then appears to
-> randomly take an instruction fault on a completely valid area of
-> kernel text.
->=20
-> The cause turns out to be the call to hash__mark_rodata_ro(), late in
-> boot. Due to the way we layout text and rodata, that function actually
-> changes the permissions for all of text and rodata to read-only plus
-> execute.
->=20
-> To do the permission change we use a hypervisor call, H_PROTECT. On
-> phyp that appears to be implemented by briefly removing the mapping of
-> the kernel text, before putting it back with the updated permissions.
-> If any other CPU is executing during that window, it will see spurious
-> faults on the kernel text and/or data, leading to crashes.
->=20
-> To fix it we use stop machine to collect all other CPUs, and then have
-> them drop into real mode (MMU off), while we change the mapping. That
-> way they are unaffected by the mapping temporarily disappearing.
->=20
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+
+There's actually a complication that I just noticed and needs to be
+addressed. More below.
+
+Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
+
+> From: Rob Herring <robh@kernel.org>
+>
+> Both arm64 and powerpc do essentially the same FDT /chosen setup for
+> kexec.  The differences are either omissions that arm64 should have
+> or additional properties that will be ignored.  The setup code can be
+> combined and shared by both powerpc and arm64.
+>
+> The differences relative to the arm64 version:
+>  - If /chosen doesn't exist, it will be created (should never happen).
+>  - Any old dtb and initrd reserved memory will be released.
+>  - The new initrd and elfcorehdr are marked reserved.
+>  - "linux,booted-from-kexec" is set.
+>
+> The differences relative to the powerpc version:
+>  - "kaslr-seed" and "rng-seed" may be set.
+>  - "linux,elfcorehdr" is set.
+>  - Any existing "linux,usable-memory-range" is removed.
+>
+> Combine the code for setting up the /chosen node in the FDT and updating
+> the memory reservation for kexec, for powerpc and arm64, in
+> of_kexec_alloc_and_setup_fdt() and move it to "drivers/of/kexec.c".
+>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
 > ---
->  arch/powerpc/mm/book3s64/hash_pgtable.c | 105 +++++++++++++++++++++++-
->  1 file changed, 104 insertions(+), 1 deletion(-)
->=20
-> diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/bo=
-ok3s64/hash_pgtable.c
-> index 3663d3cdffac..01de985df2c4 100644
-> --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-> @@ -8,6 +8,7 @@
->  #include <linux/sched.h>
->  #include <linux/mm_types.h>
->  #include <linux/mm.h>
-> +#include <linux/stop_machine.h>
-> =20
->  #include <asm/sections.h>
->  #include <asm/mmu.h>
-> @@ -400,6 +401,19 @@ EXPORT_SYMBOL_GPL(hash__has_transparent_hugepage);
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
-> =20
->  #ifdef CONFIG_STRICT_KERNEL_RWX
+>  drivers/of/Makefile |   6 ++
+>  drivers/of/kexec.c  | 258 ++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/of.h  |  13 +++
+>  3 files changed, 277 insertions(+)
+>  create mode 100644 drivers/of/kexec.c
+>
+> diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+> index 6e1e5212f058..c13b982084a3 100644
+> --- a/drivers/of/Makefile
+> +++ b/drivers/of/Makefile
+> @@ -14,4 +14,10 @@ obj-$(CONFIG_OF_RESOLVE)  += resolver.o
+>  obj-$(CONFIG_OF_OVERLAY) += overlay.o
+>  obj-$(CONFIG_OF_NUMA) += of_numa.o
+>  
+> +ifdef CONFIG_KEXEC_FILE
+> +ifdef CONFIG_OF_FLATTREE
+> +obj-y	+= kexec.o
+> +endif
+> +endif
 > +
-> +struct change_memory_parms {
-> +	unsigned long start, end, newpp;
-> +	unsigned int step, nr_cpus, master_cpu;
-> +	atomic_t cpu_counter;
-> +};
+>  obj-$(CONFIG_OF_UNITTEST) += unittest-data/
+> diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
+> new file mode 100644
+> index 000000000000..469e09613cdd
+> --- /dev/null
+> +++ b/drivers/of/kexec.c
+> @@ -0,0 +1,258 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2020 Arm Limited
+> + *
+> + * Based on arch/arm64/kernel/machine_kexec_file.c:
+> + *  Copyright (C) 2018 Linaro Limited
+> + *
+> + * And arch/powerpc/kexec/file_load.c:
+> + *  Copyright (C) 2016  IBM Corporation
+> + */
 > +
-> +// We'd rather this was on the stack but it has to be in the RMO
-> +static struct change_memory_parms chmem_parms;
+> +#include <linux/kernel.h>
+> +#include <linux/kexec.h>
+> +#include <linux/libfdt.h>
+> +#include <linux/of.h>
+> +#include <linux/of_fdt.h>
+> +#include <linux/random.h>
+> +#include <linux/types.h>
 > +
-> +// And therefore we need a lock to protect it from concurrent use
-> +static DEFINE_MUTEX(chmem_lock);
+> +/* relevant device tree properties */
+> +#define FDT_PROP_KEXEC_ELFHDR	"linux,elfcorehdr"
+> +#define FDT_PROP_MEM_RANGE	"linux,usable-memory-range"
+> +#define FDT_PROP_INITRD_START	"linux,initrd-start"
+> +#define FDT_PROP_INITRD_END	"linux,initrd-end"
+> +#define FDT_PROP_BOOTARGS	"bootargs"
+> +#define FDT_PROP_KASLR_SEED	"kaslr-seed"
+> +#define FDT_PROP_RNG_SEED	"rng-seed"
+> +#define RNG_SEED_SIZE		128
 > +
->  static void change_memory_range(unsigned long start, unsigned long end,
->  				unsigned int step, unsigned long newpp)
->  {
-> @@ -414,6 +428,73 @@ static void change_memory_range(unsigned long start,=
- unsigned long end,
->  							mmu_kernel_ssize);
->  }
-> =20
-> +static int notrace chmem_secondary_loop(struct change_memory_parms *parm=
-s)
+> +/**
+> + * fdt_find_and_del_mem_rsv - delete memory reservation with given address and size
+> + *
+> + * @fdt:	Flattened device tree for the current kernel.
+> + * @start:	Starting address of the reserved memory.
+> + * @size:	Size of the reserved memory.
+> + *
+> + * Return: 0 on success, or negative errno on error.
+> + */
+> +static int fdt_find_and_del_mem_rsv(void *fdt, unsigned long start, unsigned long size)
 > +{
-> +	unsigned long msr, tmp, flags;
-> +	int *p;
+> +	int i, ret, num_rsvs = fdt_num_mem_rsv(fdt);
 > +
-> +	p =3D &parms->cpu_counter.counter;
+> +	for (i = 0; i < num_rsvs; i++) {
+> +		u64 rsv_start, rsv_size;
 > +
-> +	local_irq_save(flags);
-> +	__hard_EE_RI_disable();
+> +		ret = fdt_get_mem_rsv(fdt, i, &rsv_start, &rsv_size);
+> +		if (ret) {
+> +			pr_err("Malformed device tree.\n");
+> +			return -EINVAL;
+> +		}
 > +
-> +	asm volatile (
-> +	// Switch to real mode and leave interrupts off
-> +	"mfmsr	%[msr]			;"
-> +	"li	%[tmp], %[MSR_IR_DR]	;"
-> +	"andc	%[tmp], %[msr], %[tmp]	;"
-> +	"mtmsrd %[tmp]			;"
+> +		if (rsv_start == start && rsv_size == size) {
+> +			ret = fdt_del_mem_rsv(fdt, i);
+> +			if (ret) {
+> +				pr_err("Error deleting device tree reservation.\n");
+> +				return -EINVAL;
+> +			}
 > +
-> +	// Tell the master we are in real mode
-> +	"1:				"
-> +	"lwarx	%[tmp], 0, %[p]		;"
-> +	"addic	%[tmp], %[tmp], -1	;"
-> +	"stwcx.	%[tmp], 0, %[p]		;"
-> +	"bne-	1b			;"
+> +			return 0;
+> +		}
+> +	}
 > +
-> +	// Spin until the counter goes to zero
-> +	"2:				;"
-> +	"lwz	%[tmp], 0(%[p])		;"
-> +	"cmpwi	%[tmp], 0		;"
-> +	"bne-	2b			;"
+> +	return -ENOENT;
+> +}
 > +
-> +	// Switch back to virtual mode
-> +	"mtmsrd %[msr]			;"
+> +/*
+> + * of_kexec_alloc_and_setup_fdt - Alloc and setup a new Flattened Device Tree
+> + *
+> + * @image:		kexec image being loaded.
+> + * @initrd_load_addr:	Address where the next initrd will be loaded.
+> + * @initrd_len:		Size of the next initrd, or 0 if there will be none.
+> + * @cmdline:		Command line for the next kernel, or NULL if there will
+> + *			be none.
+> + *
+> + * Return: fdt on success, or NULL errno on error.
+> + */
+> +void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
+> +				   unsigned long initrd_load_addr,
+> +				   unsigned long initrd_len,
+> +				   const char *cmdline)
+> +{
+> +	void *fdt;
+> +	int ret, chosen_node;
+> +	const void *prop;
+> +	unsigned long fdt_size;
+> +
+> +	fdt_size = fdt_totalsize(initial_boot_params) +
+> +		   (cmdline ? strlen(cmdline) : 0) +
+> +		   FDT_EXTRA_SPACE;
 
-Pity we don't have something that can switch to emergency stack and
-so we can write this stuff in C.
+Just adding 4 KB to initial_boot_params won't be enough for crash
+kernels on ppc64. The current powerpc code doubles the size of
+initial_boot_params (which is normally larger than 4 KB) and even that
+isn't enough. A patch was added to powerpc/next today which uses a more
+precise (but arch-specific) formula:
 
-How's something like this suit you?
+https://lore.kernel.org/linuxppc-dev/161243826811.119001.14083048209224609814.stgit@hbathini/
 
----
- arch/powerpc/kernel/misc_64.S | 22 +++++++++++++++++++++
- arch/powerpc/kernel/process.c | 37 +++++++++++++++++++++++++++++++++++
- 2 files changed, 59 insertions(+)
+So I believe we need a hook here where architectures can provide their
+own specific calculation for the size of the fdt. Perhaps a weakly
+defined function providing a default implementation which an
+arch-specific file can override (a la arch_kexec_kernel_image_load())?
 
-diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
-index 070465825c21..5e911d0b0b16 100644
---- a/arch/powerpc/kernel/misc_64.S
-+++ b/arch/powerpc/kernel/misc_64.S
-@@ -27,6 +27,28 @@
-=20
- 	.text
-=20
-+#ifdef CONFIG_PPC_BOOK3S_64
-+_GLOBAL(__call_realmode)
-+	mflr	r0
-+	std	r0,16(r1)
-+	stdu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r5)
-+	mr	r1,r5
-+	mtctr	r3
-+	mr	r3,r4
-+	mfmsr	r4
-+	xori	r4,r4,(MSR_IR|MSR_DR)
-+	mtmsrd	r4
-+	bctrl
-+	mfmsr	r4
-+	xori	r4,r4,(MSR_IR|MSR_DR)
-+	mtmsrd	r4
-+	ld	r1,0(r1)
-+	ld	r0,16(r1)
-+	mtlr	r0
-+	blr
-+
-+#endif
-+
- _GLOBAL(call_do_softirq)
- 	mflr	r0
- 	std	r0,16(r1)
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index a66f435dabbf..260d60f665a3 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2197,6 +2197,43 @@ void show_stack(struct task_struct *tsk, unsigned lo=
-ng *stack,
- 	put_task_stack(tsk);
- }
-=20
-+#ifdef CONFIG_PPC_BOOK3S_64
-+int __call_realmode(int (*fn)(void *arg), void *arg, void *sp);
-+
-+/* XXX: find a better place for this
-+ * Executing C code in real-mode in general Book3S-64 code can only be don=
-e
-+ * via this function that switches the stack to one inside the real-mode-a=
-rea,
-+ * which may cover only a small first part of real memory on hash guest LP=
-ARs.
-+ * fn must be NOKPROBES, must not access vmalloc or anything outside the R=
-MA,
-+ * probably shouldn't enable the MMU or interrupts, etc, and be very caref=
-ul
-+ * about calling other generic kernel or powerpc functions.
-+ */
-+int call_realmode(int (*fn)(void *arg), void *arg)
-+{
-+	unsigned long flags;
-+	void *cursp, *emsp;
-+	int ret;
-+
-+	/* Stack switch is only really required for HPT LPAR, but do it for all t=
-o help test coverage of tricky code */
-+	cursp =3D (void *)(current_stack_pointer & ~(THREAD_SIZE - 1));
-+	emsp =3D (void *)(local_paca->emergency_sp - THREAD_SIZE);
-+
-+	/* XXX check_stack_overflow(); */
-+
-+	if (WARN_ON_ONCE(cursp =3D=3D emsp))
-+		return -EBUSY;
-+
-+	local_irq_save(flags);
-+	hard_irq_disable();
-+
-+	ret =3D __call_realmode(fn, arg, emsp);
-+
-+	local_irq_restore(flags);
-+
-+	return ret;
-+}
-+#endif
-+
- #ifdef CONFIG_PPC64
- /* Called with hard IRQs off */
- void notrace __ppc64_runlatch_on(void)
---=20
-2.23.0
+Then the powerpc specific hook would be the kexec_fdt_totalsize_ppc64()
+function from the patch I linked above.
 
+-- 
+Thiago Jung Bauermann
+IBM Linux Technology Center
