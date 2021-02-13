@@ -1,70 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F5231A6C7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Feb 2021 22:22:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B948831A990
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 02:59:56 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DcmgL1NkYzDwvd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 08:22:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dctpq4GkfzDwyX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 12:59:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::52f;
- helo=mail-pg1-x52f.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=jtrl4rTR; dkim-atps=neutral
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
- [IPv6:2607:f8b0:4864:20::52f])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dcmdc1xW9zDwl9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Feb 2021 08:21:23 +1100 (AEDT)
-Received: by mail-pg1-x52f.google.com with SMTP id t26so492333pgv.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Feb 2021 13:21:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:subject:in-reply-to:references:date:message-id:mime-version;
- bh=1XvoCECmT3plBnzkkShbH513g0PqtMrwBfSxXnTuz4M=;
- b=jtrl4rTRTNfdeUfERBe+i8OnVzvNKOFSbA1R2RDlyCReQu/Jtlj5OK/AmjCusU0q+W
- xX0XiW/dLFnGKqaRkurtus9XYm8GxQFxL4FyVK8TXEVPlysgT0KiWtjD5UYJbmVPQbj1
- xGYZAiOfNbLS1cC1QOlVbaZ0v1cL8zEZqdqtE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=1XvoCECmT3plBnzkkShbH513g0PqtMrwBfSxXnTuz4M=;
- b=QALZx+OQUR+NZqnz9ktVjZjbgjTwxRy0wwfPlXkJl9J0q7R0nA0nEIuQjhyfmmpeG2
- Cg1AQzyqPOSKiP2Q0Cak7z1Iu3dBnOFBPod3ZC9+xMipcbMhurfKXgclKizeM5SmYuU4
- h6RYLxUy3RoFydpVh7Zr5pnLBj3aqtiztqXMBnfou8koAsXQVr6Jxh+gT3cNEBkVi6/m
- Sx7j2Wpei2TN1nzSmLRD4T5tF7nLWMJ1Gg8la5OXrAmpK+YcvEvRjb1dYK9wP0oCBU45
- Al1x5VQsdiJ2fyZeTwzNlMoOraQKh08CIaT/rc09691C50Ehtb8VR3hhuRChX3CBx4om
- sH2Q==
-X-Gm-Message-State: AOAM533QQ2N4KZM7KEQ2qrEnOX+/PXg61Rwz/oKvzHLJDsQpAdKeOQsL
- 9l5yApaQcaMNhz/pT6BsL//1TQ==
-X-Google-Smtp-Source: ABdhPJzJwHbl+rCCaT77OYMjE9995QNqGrh3Kxd0AeXSFpTATlPuMpMIJ44c1e9tj5ZLSfkqupUf2Q==
-X-Received: by 2002:aa7:8a99:0:b029:1a6:c8b8:1414 with SMTP id
- a25-20020aa78a990000b02901a6c8b81414mr4515942pfc.66.1613164879764; 
- Fri, 12 Feb 2021 13:21:19 -0800 (PST)
-Received: from localhost
- (2001-44b8-111e-5c00-c245-dfb7-be39-91ab.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:c245:dfb7:be39:91ab])
- by smtp.gmail.com with ESMTPSA id v9sm7389773pjd.30.2021.02.12.13.21.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Feb 2021 13:21:19 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: "Christopher M. Riedl" <cmr@codefail.de>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 10/10] powerpc/signal64: Use __get_user() to copy
- sigset_t
-In-Reply-To: <20210203184323.20792-11-cmr@codefail.de>
-References: <20210203184323.20792-1-cmr@codefail.de>
- <20210203184323.20792-11-cmr@codefail.de>
-Date: Sat, 13 Feb 2021 08:21:16 +1100
-Message-ID: <87v9axc78z.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DctnM2nJLzDwvD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Feb 2021 12:58:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=eCvMYWoh; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DctnH0xtyz9rx8;
+ Sat, 13 Feb 2021 12:58:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1613181509;
+ bh=H/iqb4/Z+4UY6kU+XCeQ5sqbttHmMobg3wFbG3ZbMSA=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=eCvMYWohyum8n0Sxk9UBbdYuJkbqjymit253wql3yKEpz+8eE8Hr345BOfOQj6gta
+ ztmkU0dkWDWWSA7rkzC6lfh0iE1NoPeLM8BXKOU+2xbeOpqRiuhKrYVymgRe1vhULx
+ UY37/d+S1kFXWB3Ox3AVKHGFvcO6LgALotTJT2HhCZdtup/s82uhhYdBZI5y/t4ZGM
+ /lTtTiiwuUptnsGkgsG/HKqi+rTQ3H4iBj6/NngPw+rrRduqOW58qQN28RfoMCK+JE
+ uPg/XHaE81wOarrfH27w0fGE3jbSLLM9CshSpRNTVaXF8P9GNL4Hv+SPUuGHibR6cz
+ jlVM8wK7zVEaw==
+Date: Sat, 13 Feb 2021 12:58:25 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Mark Brown <broonie@kernel.org>
+Subject: Re: linux-next: manual merge of the spi tree with the powerpc tree
+Message-ID: <20210213125825.6aa0da4d@canb.auug.org.au>
+In-Reply-To: <20210212122759.GA6057@sirena.org.uk>
+References: <20210212152755.5c82563a@canb.auug.org.au>
+ <20210212122759.GA6057@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/qv/XSwTuxVuIrfv4MLHh6Xa";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,76 +57,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Christopher M. Riedl" <cmr@codefail.de> writes:
+--Sig_/qv/XSwTuxVuIrfv4MLHh6Xa
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> Usually sigset_t is exactly 8B which is a "trivial" size and does not
-> warrant using __copy_from_user(). Use __get_user() directly in
-> anticipation of future work to remove the trivial size optimizations
-> from __copy_from_user(). Calling __get_user() also results in a small
-> boost to signal handling throughput here.
+Hi Mark,
 
-Modulo the comments from Christophe, this looks good to me. It seems to
-do what it says on the tin.
-
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Do you know if this patch is responsible for the slightly increase in
-radix performance you observed in your cover letter? The rest of the
-series shouldn't really make things faster than the no-KUAP case...
-
-Kind regards,
-Daniel
-
+On Fri, 12 Feb 2021 12:27:59 +0000 Mark Brown <broonie@kernel.org> wrote:
 >
-> Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
-> ---
->  arch/powerpc/kernel/signal_64.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-> index 817b64e1e409..42fdc4a7ff72 100644
-> --- a/arch/powerpc/kernel/signal_64.c
-> +++ b/arch/powerpc/kernel/signal_64.c
-> @@ -97,6 +97,14 @@ static void prepare_setup_sigcontext(struct task_struct *tsk, int ctx_has_vsx_re
->  #endif /* CONFIG_VSX */
->  }
->  
-> +static inline int get_user_sigset(sigset_t *dst, const sigset_t *src)
-> +{
-> +	if (sizeof(sigset_t) <= 8)
-> +		return __get_user(dst->sig[0], &src->sig[0]);
-> +	else
-> +		return __copy_from_user(dst, src, sizeof(sigset_t));
-> +}
-> +
->  /*
->   * Set up the sigcontext for the signal frame.
->   */
-> @@ -701,8 +709,9 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
->  	 * We kill the task with a SIGSEGV in this situation.
->  	 */
->  
-> -	if (__copy_from_user(&set, &new_ctx->uc_sigmask, sizeof(set)))
-> +	if (get_user_sigset(&set, &new_ctx->uc_sigmask))
->  		do_exit(SIGSEGV);
-> +
->  	set_current_blocked(&set);
->  
->  	if (!user_read_access_begin(new_ctx, ctx_size))
-> @@ -740,8 +749,9 @@ SYSCALL_DEFINE0(rt_sigreturn)
->  	if (!access_ok(uc, sizeof(*uc)))
->  		goto badframe;
->  
-> -	if (__copy_from_user(&set, &uc->uc_sigmask, sizeof(set)))
-> +	if (get_user_sigset(&set, &uc->uc_sigmask))
->  		goto badframe;
-> +
->  	set_current_blocked(&set);
->  
->  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-> -- 
-> 2.26.1
+> On Fri, Feb 12, 2021 at 03:31:42PM +1100, Stephen Rothwell wrote:
+>=20
+> > BTW Mark: the author's address in 258ea99fe25a uses a non existent doma=
+in :-( =20
+>=20
+> Ugh, I think that's something gone wrong with b4 :(  A bit late now to
+> try to fix it up.
+
+Not sure about that, the email (following the link to lore from the
+commit) has the same address (...@public.gmane.com) and that domain
+does not exist. In fact the email headers (in lore) look like this:
+
+From: Sergiu Cuciurean <sergiu.cuciurean-OyLXuOCK7orQT0dZR+AlfA@public.gman=
+e.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Sergiu Cuciurean
+	<sergiu.cuciurean-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+
+So I am suprised that it was received by anyone.  Maybe gmane has an
+internal reply system that is screwed.
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/qv/XSwTuxVuIrfv4MLHh6Xa
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmAnMkEACgkQAVBC80lX
+0GzNFQgAmMzKZk5SdO78cr1fRqI6oOzGll9twzHgagqcjZwg9FFtyRIWl414wLQO
+pg3Ssi1yGW/GOhf3EYAU/N01QesP2TSL/LJi8IjwGUqOWvAt0RAkIeb2pNSaW2P6
+erhATifFN/F2xA87A3iXBOJ52JZ9zx5MJlDxLdqwRyVTd4H6W46QfFRHz9tFhz2V
+UwaI/Ri79DA2uBq8RPqxvQy3D4Zoq63heeO9aQqK/pkQwbA2gdDfLuEcPMkEM1kX
+Hym355gGoQt987niv+jsPjmFj7Pmb7nt6D+5W6pA2RME2vyNY6oMk5stCrDDNNjZ
+3zsBX5x5bqMwFXii9zIK5Fk7+68t1g==
+=eq/W
+-----END PGP SIGNATURE-----
+
+--Sig_/qv/XSwTuxVuIrfv4MLHh6Xa--
