@@ -1,51 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B948831A990
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 02:59:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E265C31AADB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 11:22:34 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dctpq4GkfzDwyX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 12:59:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dd5yn5gFXzDqQx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Feb 2021 21:22:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=inria.fr (client-ip=192.134.164.104;
+ helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 65 seconds by postgrey-1.36 at bilbo;
+ Sat, 13 Feb 2021 21:20:29 AEDT
+Received: from mail3-relais-sop.national.inria.fr
+ (mail3-relais-sop.national.inria.fr [192.134.164.104])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DctnM2nJLzDwvD
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Feb 2021 12:58:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=eCvMYWoh; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DctnH0xtyz9rx8;
- Sat, 13 Feb 2021 12:58:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1613181509;
- bh=H/iqb4/Z+4UY6kU+XCeQ5sqbttHmMobg3wFbG3ZbMSA=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=eCvMYWohyum8n0Sxk9UBbdYuJkbqjymit253wql3yKEpz+8eE8Hr345BOfOQj6gta
- ztmkU0dkWDWWSA7rkzC6lfh0iE1NoPeLM8BXKOU+2xbeOpqRiuhKrYVymgRe1vhULx
- UY37/d+S1kFXWB3Ox3AVKHGFvcO6LgALotTJT2HhCZdtup/s82uhhYdBZI5y/t4ZGM
- /lTtTiiwuUptnsGkgsG/HKqi+rTQ3H4iBj6/NngPw+rrRduqOW58qQN28RfoMCK+JE
- uPg/XHaE81wOarrfH27w0fGE3jbSLLM9CshSpRNTVaXF8P9GNL4Hv+SPUuGHibR6cz
- jlVM8wK7zVEaw==
-Date: Sat, 13 Feb 2021 12:58:25 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Mark Brown <broonie@kernel.org>
-Subject: Re: linux-next: manual merge of the spi tree with the powerpc tree
-Message-ID: <20210213125825.6aa0da4d@canb.auug.org.au>
-In-Reply-To: <20210212122759.GA6057@sirena.org.uk>
-References: <20210212152755.5c82563a@canb.auug.org.au>
- <20210212122759.GA6057@sirena.org.uk>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dd5wY2MBNzDwbb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Feb 2021 21:20:28 +1100 (AEDT)
+X-IronPort-AV: E=Sophos;i="5.81,175,1610406000"; d="scan'208";a="372960480"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+ by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-SHA;
+ 13 Feb 2021 11:19:14 +0100
+From: Julia Lawall <Julia.Lawall@inria.fr>
+To: Timur Tabi <timur@kernel.org>
+Subject: [PATCH 4/4] ASoC: fsl: drop unneeded snd_soc_dai_set_drvdata
+Date: Sat, 13 Feb 2021 11:19:07 +0100
+Message-Id: <20210213101907.1318496-5-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210213101907.1318496-1-Julia.Lawall@inria.fr>
+References: <20210213101907.1318496-1-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/qv/XSwTuxVuIrfv4MLHh6Xa";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,61 +46,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Takashi Iwai <tiwai@suse.com>, kernel-janitors@vger.kernel.org,
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/qv/XSwTuxVuIrfv4MLHh6Xa
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+snd_soc_dai_set_drvdata is not needed when the set data comes from
+snd_soc_dai_get_drvdata or dev_get_drvdata.  The problem was fixed
+usingthe following semantic patch: (http://coccinelle.lip6.fr/)
 
-Hi Mark,
+// <smpl>
+@@
+expression x,y,e;
+@@
+	x = dev_get_drvdata(y->dev)
+	... when != x = e
+-	snd_soc_dai_set_drvdata(y,x);
 
-On Fri, 12 Feb 2021 12:27:59 +0000 Mark Brown <broonie@kernel.org> wrote:
->
-> On Fri, Feb 12, 2021 at 03:31:42PM +1100, Stephen Rothwell wrote:
->=20
-> > BTW Mark: the author's address in 258ea99fe25a uses a non existent doma=
-in :-( =20
->=20
-> Ugh, I think that's something gone wrong with b4 :(  A bit late now to
-> try to fix it up.
+@@
+expression x,y,e;
+@@
+	x = snd_soc_dai_get_drvdata(y)
+	... when != x = e
+-	snd_soc_dai_set_drvdata(y,x);
+// </smpl>
 
-Not sure about that, the email (following the link to lore from the
-commit) has the same address (...@public.gmane.com) and that domain
-does not exist. In fact the email headers (in lore) look like this:
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-From: Sergiu Cuciurean <sergiu.cuciurean-OyLXuOCK7orQT0dZR+AlfA@public.gman=
-e.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Cc: Sergiu Cuciurean
-	<sergiu.cuciurean-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+---
+ sound/soc/fsl/fsl_micfil.c |    2 --
+ sound/soc/fsl/fsl_sai.c    |    2 --
+ sound/soc/fsl/fsl_xcvr.c   |    1 -
+ 3 files changed, 5 deletions(-)
 
-So I am suprised that it was received by anyone.  Maybe gmane has an
-internal reply system that is screwed.
---=20
-Cheers,
-Stephen Rothwell
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 8aedf6590b28..fd21017fa2bd 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -423,8 +423,6 @@ static int fsl_micfil_dai_probe(struct snd_soc_dai *cpu_dai)
+ 		return ret;
+ 	}
+ 
+-	snd_soc_dai_set_drvdata(cpu_dai, micfil);
+-
+ 	return 0;
+ }
+ 
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 5e65b456d3e2..8876d0ed37d9 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -727,8 +727,6 @@ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
+ 	snd_soc_dai_init_dma_data(cpu_dai, &sai->dma_params_tx,
+ 				&sai->dma_params_rx);
+ 
+-	snd_soc_dai_set_drvdata(cpu_dai, sai);
+-
+ 	return 0;
+ }
+ 
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index dd228b421e2c..8a3bde718697 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -869,7 +869,6 @@ static int fsl_xcvr_dai_probe(struct snd_soc_dai *dai)
+ 	struct fsl_xcvr *xcvr = snd_soc_dai_get_drvdata(dai);
+ 
+ 	snd_soc_dai_init_dma_data(dai, &xcvr->dma_prms_tx, &xcvr->dma_prms_rx);
+-	snd_soc_dai_set_drvdata(dai, xcvr);
+ 
+ 	snd_soc_add_dai_controls(dai, &fsl_xcvr_mode_kctl, 1);
+ 	snd_soc_add_dai_controls(dai, &fsl_xcvr_arc_mode_kctl, 1);
 
---Sig_/qv/XSwTuxVuIrfv4MLHh6Xa
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmAnMkEACgkQAVBC80lX
-0GzNFQgAmMzKZk5SdO78cr1fRqI6oOzGll9twzHgagqcjZwg9FFtyRIWl414wLQO
-pg3Ssi1yGW/GOhf3EYAU/N01QesP2TSL/LJi8IjwGUqOWvAt0RAkIeb2pNSaW2P6
-erhATifFN/F2xA87A3iXBOJ52JZ9zx5MJlDxLdqwRyVTd4H6W46QfFRHz9tFhz2V
-UwaI/Ri79DA2uBq8RPqxvQy3D4Zoq63heeO9aQqK/pkQwbA2gdDfLuEcPMkEM1kX
-Hym355gGoQt987niv+jsPjmFj7Pmb7nt6D+5W6pA2RME2vyNY6oMk5stCrDDNNjZ
-3zsBX5x5bqMwFXii9zIK5Fk7+68t1g==
-=eq/W
------END PGP SIGNATURE-----
-
---Sig_/qv/XSwTuxVuIrfv4MLHh6Xa--
