@@ -2,97 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E8631C34D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Feb 2021 21:58:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A588231C364
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Feb 2021 22:05:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dfbzq4np6z3cGH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Feb 2021 07:58:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dfc8P3JJxz3bcv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Feb 2021 08:05:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WgI1rCnu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com header.i=@gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=rlpr9Y17;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Void lookup limit
+ of 2 exceeded) smtp.mailfrom=gimpelevich.san-francisco.ca.us
+ (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com;
+ envelope-from=daniel@gimpelevich.san-francisco.ca.us; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=WgI1rCnu; dkim-atps=neutral
-X-Greylist: delayed 326 seconds by postgrey-1.36 at boromir;
- Tue, 16 Feb 2021 07:58:06 AEDT
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com
+ header.i=@gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com
+ header.a=rsa-sha256 header.s=20150623 header.b=rlpr9Y17; 
+ dkim-atps=neutral
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
+ [IPv6:2607:f8b0:4864:20::431])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DfbzL6WnGz30Kt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Feb 2021 07:58:06 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 11FKlcOH080060; Mon, 15 Feb 2021 15:52:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=ix5xI4eV4ktS+Si1szwX06PnD5N08iIL8loUbC9USd4=;
- b=WgI1rCnu55qJBxYlo2+anOSbJE3qo/wP+I5mUyI38JAHlQ9CphTjNZlljRVUKRcmzjJo
- E5FkxrH1tDzo7OvVlCOdFK1N+CPIGtjpzgy42BbdH0wY+SWnz+0GqUSWXh/6chnSN6Jc
- /6XE31qElrQxKhxjAYL89QMl6Zeqfrm2+rclDXOTWREr087Ja6MW1QLmklKM0d46dmoc
- m8WPAkBNaqHBZEbE6pyJZjNDVPWA3Qo2EvLvSpECnTSyFaIAeMnjJPpCr0HUTyAwEOjj
- ty7M6jRwagt2hDlEdD3r4XN3w2HiAb4HX3V+ErmwynAA8v8H3OwtGPN4vHN0T6e9O7O6 Ww== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36r0a9g23a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Feb 2021 15:52:34 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11FKlfxL007425;
- Mon, 15 Feb 2021 20:52:33 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma03wdc.us.ibm.com with ESMTP id 36p6d8skr7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Feb 2021 20:52:33 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 11FKqW7v11600228
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Feb 2021 20:52:32 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 062B978060;
- Mon, 15 Feb 2021 20:52:32 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 895A37805E;
- Mon, 15 Feb 2021 20:52:31 +0000 (GMT)
-Received: from oc6034535106.ibm.com (unknown [9.211.130.226])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 15 Feb 2021 20:52:31 +0000 (GMT)
-Subject: Re: [PATCH 1/4] ibmvfc: simplify handling of sub-CRQ initialization
-To: Tyrel Datwyler <tyreld@linux.ibm.com>,
- james.bottomley@hansenpartnership.com
-References: <20210211185742.50143-1-tyreld@linux.ibm.com>
- <20210211185742.50143-2-tyreld@linux.ibm.com>
-From: Brian King <brking@linux.vnet.ibm.com>
-Message-ID: <a3a7b428-3225-0645-0621-fc4b1c5ec618@linux.vnet.ibm.com>
-Date: Mon, 15 Feb 2021 14:52:31 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
-MIME-Version: 1.0
-In-Reply-To: <20210211185742.50143-2-tyreld@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DfZ4J30CLz30Ky
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Feb 2021 06:32:11 +1100 (AEDT)
+Received: by mail-pf1-x431.google.com with SMTP id k13so4726314pfh.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Feb 2021 11:32:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com; s=20150623;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=L3nj9/R/NkkK99k6HujqpUsnIKZSJ7ODAWop9jG8uEo=;
+ b=rlpr9Y17GqcS3VcCW+l+bS1nW3xiXbddJLqCQV49EqcSpGV+KSbl8a+FrYFs9PvSYs
+ it8iWSpJw1gsM6AGOhmH5Acw2KmSdULF0CtLUbpv1I2R6STtXs02IIl8hkKiuQrTcClp
+ gnpNivl1Mi0M80qg3y9K82mqykBBymTRSXTNI+7NyuKpk2tirw6/VycnssOaap/hbbRM
+ aoyntdpV8PSwl9fmqwLS6X81BO88m0k21D/riSbB2g+a2Jud+lXOz+nB4Ew3UND3WIr2
+ OpusKjkcH5p5Sf2vfYR7Obk5HSn1xhQe1A1Xn5XMmt5nQ6eZnXSjlWHxq4HTxliPGZwx
+ aMBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=L3nj9/R/NkkK99k6HujqpUsnIKZSJ7ODAWop9jG8uEo=;
+ b=S98GH7deIxISfuPKMpl76BwDA3kQLVrr18Vh7RjV4B6YPdblrKIkE37oAr731KW5QP
+ CRGCZWNnsOLO2ewpjJ8azcXydni7T7O7csCQCXJzUeyEKL32xu0ufw18aGCgkIKfXvGw
+ 8VQRBimj5h9meufjeIWHV11bmGj2p+yGRas0+JXv+PgyAefDE63cNj5zVmKxKTMH2Z/0
+ oo1JQuZzd1K8r/r8sGtCaPUMWOMtBNsST+22XU+IsEWMTBHd9LKrjNUVT7FgWdn7Zzgy
+ m/UyuCBMickxE4UgNB0b6xhggEAvmUl1n1bKB/xuIiMaxei0CRcdQpfviQOtxIbXqBFJ
+ Hk+g==
+X-Gm-Message-State: AOAM531iHwf452niZu0gozaAaDpIZFWA+Kr3biNWYX/tQ7feLCxMpWrf
+ tsuSbGkuF7+P4Fc4/1ZPME+0xQ==
+X-Google-Smtp-Source: ABdhPJwYGpgEV2/GV9/dgnc2/rEWjl2dK3GYAnKQrXXgndNQF0w/cYvidbBIhC5ZupXR2KlChWCpFA==
+X-Received: by 2002:a63:181e:: with SMTP id y30mr15574858pgl.324.1613417527139; 
+ Mon, 15 Feb 2021 11:32:07 -0800 (PST)
+Received: from [192.168.72.184] (157-131-244-194.fiber.dynamic.sonic.net.
+ [157.131.244.194])
+ by smtp.gmail.com with ESMTPSA id y1sm196040pjt.37.2021.02.15.11.32.05
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 15 Feb 2021 11:32:06 -0800 (PST)
+Message-ID: <1613417521.3853.5.camel@chimera>
+Subject: Re: [PATCH 1/4] add generic builtin command line
+From: Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
+To: Andrew Morton <akpm@linux-foundation.org>
+Date: Mon, 15 Feb 2021 11:32:01 -0800
+In-Reply-To: <20190321151519.1f4479d92228c8a8738e02cf@linux-foundation.org>
+References: <20190319232448.45964-2-danielwa@cisco.com>
+ <20190320155319.2cd3c0f73ef3cdefb65d5d1e@linux-foundation.org>
+ <20190320232328.3bijcxek2yg43a25@zorba>
+ <20190320201433.6c5c4782f4432d280c0e8361@linux-foundation.org>
+ <20190321151308.yt6uc3mxgppm5zko@zorba>
+ <20190321151519.1f4479d92228c8a8738e02cf@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu2 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-02-15_16:2021-02-12,
- 2021-02-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0
- clxscore=1011 mlxscore=0 bulkscore=0 mlxlogscore=999 priorityscore=1501
- malwarescore=0 phishscore=0 suspectscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102150156
+X-Mailman-Approved-At: Tue, 16 Feb 2021 08:05:33 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,18 +91,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
- linux-kernel@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Maksym Kokhan <maksym.kokhan@globallogic.com>, linux-kernel@vger.kernel.org,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ xe-linux-external@cisco.com, Daniel Walker <dwalker@fifo99.com>,
+ linuxppc-dev@lists.ozlabs.org, Daniel Walker <danielwa@cisco.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
+On Thu, 2019-03-21 at 15:15 -0700, Andrew Morton wrote:
+> On Thu, 21 Mar 2019 08:13:08 -0700 Daniel Walker <danielwa@cisco.com> wrote:
+> > On Wed, Mar 20, 2019 at 08:14:33PM -0700, Andrew Morton wrote:
+> > > The patches (or some version of them) are already in linux-next,
+> > > which messes me up.  I'll disable them for now.
+> >  
+> > Those are from my tree, but I remove them when you picked up the series. The
+> > next linux-next should not have them.
+> 
+> Yup, thanks, all looks good now.
 
-
--- 
-Brian King
-Power Linux I/O
-IBM Linux Technology Center
+This patchset is currently neither in mainline nor in -next. May I ask
+what happened to it? Thanks.
 
