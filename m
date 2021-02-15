@@ -2,57 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8116631B3B9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Feb 2021 01:53:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBC731B571
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Feb 2021 07:44:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Df5FH2RxHz3cHV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Feb 2021 11:53:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DfF2r1SPcz30QM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Feb 2021 17:44:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=SM2AX/TT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qX81qz6B;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.75;
- helo=conuserg-08.nifty.com; envelope-from=masahiroy@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=SM2AX/TT; 
- dkim-atps=neutral
-Received: from conuserg-08.nifty.com (conuserg-08.nifty.com [210.131.2.75])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=qX81qz6B; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Df5Dq030kz2yTs
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Feb 2021 11:52:58 +1100 (AEDT)
-Received: from oscar.flets-west.jp (softbank126026094251.bbtec.net
- [126.26.94.251]) (authenticated)
- by conuserg-08.nifty.com with ESMTP id 11F0mqgC009582;
- Mon, 15 Feb 2021 09:48:57 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com 11F0mqgC009582
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1613350139;
- bh=Do58g+fIWucUZ2Hl9cDGQ5X6Gc6bjsY9y84cwfGvMEs=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=SM2AX/TTCgabZcepPaY+EzPWlVFG07BHed4+vVXzs76ahyRHkYdvjiMaxbo4SciNk
- 99V7vAau2v1CJZ3KHHFtlsyvo6HAayFKsqyE45QYBEFlto50Klgio1cy4dCikELgg4
- jXzbhQlcLnoMztNUY+qoz6gF3IiQTs6LZQECNhrQ3SgQk+5ZjIEOVkvEjNe0kLdvQy
- 5lnx8xIDULhJNVq2q/XmnUdcQ2NkNa26MnbkcPi1iQ03oyTXDlmPZELJWBN+zT1pYk
- 2YZu+JYUWZc3XOFM1ST+sDLb1bwtcZGRc02Yve6q1UW7Z2EZW/5av6DrunsU9tIhyS
- NiEpgCG0PPQ4w==
-X-Nifty-SrcIP: [126.26.94.251]
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: linux-kbuild@vger.kernel.org
-Subject: [PATCH 2/2] arch: syscalls: remove $(srctree)/ prefix from syscall
- tables
-Date: Mon, 15 Feb 2021 09:48:23 +0900
-Message-Id: <20210215004823.440102-2-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210215004823.440102-1-masahiroy@kernel.org>
-References: <20210215004823.440102-1-masahiroy@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DfF1t5gLrz30Hx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Feb 2021 17:44:01 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 11F6XRMY139007; Mon, 15 Feb 2021 01:35:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Zh4tiM0Evde4MAzUmu3bK4AGDwCVMa7MOld1H/rhWhA=;
+ b=qX81qz6B8hrB/rF74rB4DXn9LPrZ1fA6zwB5Hy0E+BYIiS9MPodz4Olmy6g0g7peAbiC
+ 81hJVxcHfgM9h6pO2UAgukmZGSDTPp6yQtThot1Vg9BmpNNuz2iQia4zW1Y2J8YY5D6W
+ +rzLH+juiQC/cCLjxHBH2L3zEHu/rOMedY57/NnViUh9lk6LWOO8m3kzDzdtQyLCbvdD
+ 9b7nLUFGLSPbJfUoCJwBF5w0BUUsEBN9ETlb5cy2SqdbyOupprl9/YhJTIYd/XOaJ5F5
+ 4zZLLtewwOL+46eUwL9e2d5+IMBB/SoUh/UBfU8DRcFdszrVjUEp+/i+3i+IvE5yUV5s yA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36qk3g1145-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Feb 2021 01:35:54 -0500
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 11F6Xg0H140452;
+ Mon, 15 Feb 2021 01:35:53 -0500
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36qk3g1123-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Feb 2021 01:35:53 -0500
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11F6ShdY006357;
+ Mon, 15 Feb 2021 06:35:50 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma05fra.de.ibm.com with ESMTP id 36p6d8gsh1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Feb 2021 06:35:50 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11F6ZlrJ26477006
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 15 Feb 2021 06:35:47 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B0EC042056;
+ Mon, 15 Feb 2021 06:35:47 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0AC2442049;
+ Mon, 15 Feb 2021 06:35:46 +0000 (GMT)
+Received: from bharata.ibmuc.com (unknown [9.85.74.227])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 15 Feb 2021 06:35:45 +0000 (GMT)
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 0/3] Support for H_RPT_INVALIDATE in PowerPC KVM
+Date: Mon, 15 Feb 2021 12:05:39 +0530
+Message-Id: <20210215063542.3642366-1-bharata@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
+ definitions=2021-02-15_02:2021-02-12,
+ 2021-02-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 bulkscore=0
+ priorityscore=1501 phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=793
+ adultscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102150056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,211 +100,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-mips@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
- Fenghua Yu <fenghua.yu@intel.com>, linux-xtensa@linux-xtensa.org,
- linux-m68k@lists.linux-m68k.org, Tony Luck <tony.luck@intel.com>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
- Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Helge Deller <deller@gmx.de>,
- linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
+ Bharata B Rao <bharata@linux.ibm.com>, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The 'syscall' variables are not directly used in the commands.
-Remove the $(srctree)/ prefix because we can rely on VPATH.
+This patchset adds support for the new hcall H_RPT_INVALIDATE
+and replaces the nested tlb flush calls with this new hcall
+if support for the same exists.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+Changes in v4:
+-------------
+- While reusing the tlb flush routines from radix_tlb.c in v3,
+  setting of LPID got missed out. Take care of this by
+  introducing new flush routines that set both PID and LPID
+  when using tlbie instruction. This is required for
+  process-scoped invalidations from guests (both L1 and
+  nested guests). Added a new patch 1/3 for this.
+- Added code to handle H_RPT_INVALIDATE hcall issued
+  by nested guest in L0 nested guest exit path.
 
- arch/alpha/kernel/syscalls/Makefile      | 2 +-
- arch/arm/tools/Makefile                  | 2 +-
- arch/ia64/kernel/syscalls/Makefile       | 2 +-
- arch/m68k/kernel/syscalls/Makefile       | 2 +-
- arch/microblaze/kernel/syscalls/Makefile | 2 +-
- arch/mips/kernel/syscalls/Makefile       | 6 +++---
- arch/parisc/kernel/syscalls/Makefile     | 2 +-
- arch/powerpc/kernel/syscalls/Makefile    | 2 +-
- arch/sh/kernel/syscalls/Makefile         | 2 +-
- arch/sparc/kernel/syscalls/Makefile      | 2 +-
- arch/x86/entry/syscalls/Makefile         | 4 ++--
- arch/xtensa/kernel/syscalls/Makefile     | 2 +-
- 12 files changed, 15 insertions(+), 15 deletions(-)
+v3: https://lore.kernel.org/linuxppc-dev/20210105090557.2150104-1-bharata@linux.ibm.com/T/#t
 
-diff --git a/arch/alpha/kernel/syscalls/Makefile b/arch/alpha/kernel/syscalls/Makefile
-index 1c42d2d2926d..285aaba832d9 100644
---- a/arch/alpha/kernel/syscalls/Makefile
-+++ b/arch/alpha/kernel/syscalls/Makefile
-@@ -5,7 +5,7 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')	\
- 	  $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
- 
--syscall := $(srctree)/$(src)/syscall.tbl
-+syscall := $(src)/syscall.tbl
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
- 
-diff --git a/arch/arm/tools/Makefile b/arch/arm/tools/Makefile
-index 27d8beb7c941..3654f979851b 100644
---- a/arch/arm/tools/Makefile
-+++ b/arch/arm/tools/Makefile
-@@ -11,7 +11,7 @@ uapi := $(gen)/uapi/asm
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- sysnr := $(srctree)/$(src)/syscallnr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
--syscall := $(srctree)/$(src)/syscall.tbl
-+syscall := $(src)/syscall.tbl
- 
- gen-y := $(gen)/calls-oabi.S
- gen-y += $(gen)/calls-eabi.S
-diff --git a/arch/ia64/kernel/syscalls/Makefile b/arch/ia64/kernel/syscalls/Makefile
-index b9bfd186295f..bf4bda0f63eb 100644
---- a/arch/ia64/kernel/syscalls/Makefile
-+++ b/arch/ia64/kernel/syscalls/Makefile
-@@ -5,7 +5,7 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')	\
- 	  $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
- 
--syscall := $(srctree)/$(src)/syscall.tbl
-+syscall := $(src)/syscall.tbl
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
- 
-diff --git a/arch/m68k/kernel/syscalls/Makefile b/arch/m68k/kernel/syscalls/Makefile
-index 1c42d2d2926d..285aaba832d9 100644
---- a/arch/m68k/kernel/syscalls/Makefile
-+++ b/arch/m68k/kernel/syscalls/Makefile
-@@ -5,7 +5,7 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')	\
- 	  $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
- 
--syscall := $(srctree)/$(src)/syscall.tbl
-+syscall := $(src)/syscall.tbl
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
- 
-diff --git a/arch/microblaze/kernel/syscalls/Makefile b/arch/microblaze/kernel/syscalls/Makefile
-index 1c42d2d2926d..285aaba832d9 100644
---- a/arch/microblaze/kernel/syscalls/Makefile
-+++ b/arch/microblaze/kernel/syscalls/Makefile
-@@ -5,7 +5,7 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')	\
- 	  $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
- 
--syscall := $(srctree)/$(src)/syscall.tbl
-+syscall := $(src)/syscall.tbl
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
- 
-diff --git a/arch/mips/kernel/syscalls/Makefile b/arch/mips/kernel/syscalls/Makefile
-index f15842bda464..ed22b711ccb7 100644
---- a/arch/mips/kernel/syscalls/Makefile
-+++ b/arch/mips/kernel/syscalls/Makefile
-@@ -5,9 +5,9 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')	\
- 	  $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
- 
--syscalln32 := $(srctree)/$(src)/syscall_n32.tbl
--syscalln64 := $(srctree)/$(src)/syscall_n64.tbl
--syscallo32 := $(srctree)/$(src)/syscall_o32.tbl
-+syscalln32 := $(src)/syscall_n32.tbl
-+syscalln64 := $(src)/syscall_n64.tbl
-+syscallo32 := $(src)/syscall_o32.tbl
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- sysnr := $(srctree)/$(src)/syscallnr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
-diff --git a/arch/parisc/kernel/syscalls/Makefile b/arch/parisc/kernel/syscalls/Makefile
-index 556fe30a6c8f..283f64407b07 100644
---- a/arch/parisc/kernel/syscalls/Makefile
-+++ b/arch/parisc/kernel/syscalls/Makefile
-@@ -5,7 +5,7 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')	\
- 	  $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
- 
--syscall := $(srctree)/$(src)/syscall.tbl
-+syscall := $(src)/syscall.tbl
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
- 
-diff --git a/arch/powerpc/kernel/syscalls/Makefile b/arch/powerpc/kernel/syscalls/Makefile
-index d609f0040b2a..9e3be295dbba 100644
---- a/arch/powerpc/kernel/syscalls/Makefile
-+++ b/arch/powerpc/kernel/syscalls/Makefile
-@@ -5,7 +5,7 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')	\
- 	  $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
- 
--syscall := $(srctree)/$(src)/syscall.tbl
-+syscall := $(src)/syscall.tbl
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
- 
-diff --git a/arch/sh/kernel/syscalls/Makefile b/arch/sh/kernel/syscalls/Makefile
-index 1c42d2d2926d..285aaba832d9 100644
---- a/arch/sh/kernel/syscalls/Makefile
-+++ b/arch/sh/kernel/syscalls/Makefile
-@@ -5,7 +5,7 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')	\
- 	  $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
- 
--syscall := $(srctree)/$(src)/syscall.tbl
-+syscall := $(src)/syscall.tbl
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
- 
-diff --git a/arch/sparc/kernel/syscalls/Makefile b/arch/sparc/kernel/syscalls/Makefile
-index 556fe30a6c8f..283f64407b07 100644
---- a/arch/sparc/kernel/syscalls/Makefile
-+++ b/arch/sparc/kernel/syscalls/Makefile
-@@ -5,7 +5,7 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')	\
- 	  $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
- 
--syscall := $(srctree)/$(src)/syscall.tbl
-+syscall := $(src)/syscall.tbl
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
- 
-diff --git a/arch/x86/entry/syscalls/Makefile b/arch/x86/entry/syscalls/Makefile
-index e1c7ddb7546b..cf388e9e8989 100644
---- a/arch/x86/entry/syscalls/Makefile
-+++ b/arch/x86/entry/syscalls/Makefile
-@@ -6,8 +6,8 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(out)' ] || mkdir -p '$(out)') \
- 	  $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')
- 
--syscall32 := $(srctree)/$(src)/syscall_32.tbl
--syscall64 := $(srctree)/$(src)/syscall_64.tbl
-+syscall32 := $(src)/syscall_32.tbl
-+syscall64 := $(src)/syscall_64.tbl
- 
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
-diff --git a/arch/xtensa/kernel/syscalls/Makefile b/arch/xtensa/kernel/syscalls/Makefile
-index 1c42d2d2926d..285aaba832d9 100644
---- a/arch/xtensa/kernel/syscalls/Makefile
-+++ b/arch/xtensa/kernel/syscalls/Makefile
-@@ -5,7 +5,7 @@ uapi := arch/$(SRCARCH)/include/generated/uapi/asm
- _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')	\
- 	  $(shell [ -d '$(kapi)' ] || mkdir -p '$(kapi)')
- 
--syscall := $(srctree)/$(src)/syscall.tbl
-+syscall := $(src)/syscall.tbl
- syshdr := $(srctree)/$(src)/syscallhdr.sh
- systbl := $(srctree)/$(src)/syscalltbl.sh
- 
+Bharata B Rao (3):
+  powerpc/book3s64/radix/tlb: tlbie primitives for process-scoped
+    invalidations from guests
+  KVM: PPC: Book3S HV: Add support for H_RPT_INVALIDATE
+  KVM: PPC: Book3S HV: Use H_RPT_INVALIDATE in nested KVM
+
+ Documentation/virt/kvm/api.rst                |  17 ++
+ .../include/asm/book3s/64/tlbflush-radix.h    |  18 +++
+ arch/powerpc/include/asm/kvm_book3s.h         |   3 +
+ arch/powerpc/include/asm/mmu_context.h        |  11 ++
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |  27 +++-
+ arch/powerpc/kvm/book3s_hv.c                  |  91 +++++++++++
+ arch/powerpc/kvm/book3s_hv_nested.c           | 108 ++++++++++++-
+ arch/powerpc/kvm/powerpc.c                    |   3 +
+ arch/powerpc/mm/book3s64/radix_tlb.c          | 147 +++++++++++++++++-
+ include/uapi/linux/kvm.h                      |   1 +
+ 10 files changed, 415 insertions(+), 11 deletions(-)
+
 -- 
-2.27.0
+2.26.2
 
