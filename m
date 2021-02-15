@@ -1,51 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF1931B6BF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Feb 2021 10:52:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E2731B8A3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Feb 2021 13:05:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DfKCB5lGnz3cGT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Feb 2021 20:52:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DfN8W4zBfz3bPV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Feb 2021 23:05:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=v9acLhbX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kaod.org (client-ip=205.139.111.44;
- helo=us-smtp-delivery-44.mimecast.com; envelope-from=groug@kaod.org;
+ host) smtp.mailfrom=kernel.org (client-ip=210.131.2.81;
+ helo=conssluserg-02.nifty.com; envelope-from=masahiroy@kernel.org;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 334 seconds by postgrey-1.36 at boromir;
- Mon, 15 Feb 2021 20:52:04 AEDT
-Received: from us-smtp-delivery-44.mimecast.com
- (us-smtp-delivery-44.mimecast.com [205.139.111.44])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
+ header.s=dec2015msa header.b=v9acLhbX; 
+ dkim-atps=neutral
+Received: from conssluserg-02.nifty.com (conssluserg-02.nifty.com
+ [210.131.2.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DfKBr5fL7z30H7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Feb 2021 20:52:04 +1100 (AEDT)
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-565-ZB_QKXmkNjamOMswugvV1Q-1; Mon, 15 Feb 2021 04:45:11 -0500
-X-MC-Unique: ZB_QKXmkNjamOMswugvV1Q-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 753B91934100;
- Mon, 15 Feb 2021 09:45:09 +0000 (UTC)
-Received: from bahia.redhat.com (ovpn-113-119.ams2.redhat.com [10.36.113.119])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BA8A4682AC;
- Mon, 15 Feb 2021 09:45:07 +0000 (UTC)
-From: Greg Kurz <groug@kaod.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/pseries: Don't enforce MSI affinity with kdump
-Date: Mon, 15 Feb 2021 10:45:06 +0100
-Message-Id: <20210215094506.1196119-1-groug@kaod.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DfN801Qvnz30KM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Feb 2021 23:04:47 +1100 (AEDT)
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com
+ [209.85.210.176]) (authenticated)
+ by conssluserg-02.nifty.com with ESMTP id 11FC4Jai030765
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Feb 2021 21:04:20 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com 11FC4Jai030765
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1613390660;
+ bh=t+cDCI9ijwWCflMyf3HDaiArNB9qVsEf2A2CaoV+044=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=v9acLhbXPPB+XF0EA8XDIgH7r3wlY83CiYt6x+cqseVMlte0TA3RtTnirrlnNjiTr
+ jA68dM/v07+mFKYr5hhJJ86sLpsw1zXAAFWG0nZmD2UgbdqI5dP+4gqjF1Qz7xbVfa
+ TYfiSHRgbmbc9lW8zQRzsdMz3jjzYVDKfFB4cxTgYynvM51/dVbyA9i2oOH7gV2ovM
+ YtIWQQNzBAV80fb0gzeEX8gtOpBFZ35VCH4Vwyh7yA0R4ZVlykAJvDHNQVEJvjuJ9i
+ HE2MhAudNBtepEg/tb2vcKjd/p8qpJ98nhcyuqlk4YI7eTVYjVMGPnzoxSWA17pJYO
+ YzUleR5my8veQ==
+X-Nifty-SrcIP: [209.85.210.176]
+Received: by mail-pf1-f176.google.com with SMTP id z15so4062926pfc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Feb 2021 04:04:19 -0800 (PST)
+X-Gm-Message-State: AOAM533LntBedv3M0pF3JgKdr4WmXnLGFaRj0ETPeMlHXGeG5tww31O2
+ mOHykh/FSy+nW6OzoUJVHAthVmRasGPCpEIXROQ=
+X-Google-Smtp-Source: ABdhPJy8ziEWdbM9CrYgfTkv/bGLkaQWPoSZQQUddzH9UeCJB7fr30mJz6zKbkpruiTgtMQliWenGO50uCpdbS2IR0g=
+X-Received: by 2002:a63:1f1d:: with SMTP id f29mr14654997pgf.47.1613390659105; 
+ Mon, 15 Feb 2021 04:04:19 -0800 (PST)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: kaod.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20210128005110.2613902-1-masahiroy@kernel.org>
+In-Reply-To: <20210128005110.2613902-1-masahiroy@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 15 Feb 2021 21:03:42 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATgZ2xYFV-ow2VrSn_-NWZOjPeZRzrXLdCP8t5OQbC4+w@mail.gmail.com>
+Message-ID: <CAK7LNATgZ2xYFV-ow2VrSn_-NWZOjPeZRzrXLdCP8t5OQbC4+w@mail.gmail.com>
+Subject: Re: [PATCH 00/27] arch: syscalls: unifiy all syscalltbl.sh into
+ scripts/syscalltbl.sh
+To: linux-arch <linux-arch@vger.kernel.org>, X86 ML <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,103 +72,196 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lvivier@redhat.com, Greg Kurz <groug@kaod.org>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "open list:TENSILICA XTENSA PORT \(xtensa\)"
+ <linux-xtensa@linux-xtensa.org>, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>, linux-um@lists.infradead.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-mips@vger.kernel.org, linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ linux-alpha@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Depending on the number of online CPUs in the original kernel, it is
-likely for CPU #0 to be offline in a kdump kernel. The associated IRQs
-in the affinity mappings provided by irq_create_affinity_masks() are
-thus not started by irq_startup(), as per-design with managed IRQs.
+On Thu, Jan 28, 2021 at 9:51 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+>
+> As of v5.11-rc1, 12 architectures duplicate similar shell scripts:
+>
+>   $ find arch -name syscalltbl.sh | sort
+>   arch/alpha/kernel/syscalls/syscalltbl.sh
+>   arch/arm/tools/syscalltbl.sh
+>   arch/ia64/kernel/syscalls/syscalltbl.sh
+>   arch/m68k/kernel/syscalls/syscalltbl.sh
+>   arch/microblaze/kernel/syscalls/syscalltbl.sh
+>   arch/mips/kernel/syscalls/syscalltbl.sh
+>   arch/parisc/kernel/syscalls/syscalltbl.sh
+>   arch/powerpc/kernel/syscalls/syscalltbl.sh
+>   arch/sh/kernel/syscalls/syscalltbl.sh
+>   arch/sparc/kernel/syscalls/syscalltbl.sh
+>   arch/x86/entry/syscalls/syscalltbl.sh
+>   arch/xtensa/kernel/syscalls/syscalltbl.sh
+>
+> This patch set unifies all of them into a single file,
+> scripts/syscalltbl.sh.
+>
+> The code-diff is attractive:
+>
+>  51 files changed, 254 insertions(+), 674 deletions(-)
+>  delete mode 100644 arch/alpha/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/arm/tools/syscalltbl.sh
+>  delete mode 100644 arch/ia64/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/m68k/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/microblaze/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/mips/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/parisc/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/powerpc/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/sh/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/sparc/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/x86/entry/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/xtensa/kernel/syscalls/syscalltbl.sh
+>  create mode 100644 scripts/syscalltbl.sh
+>
+> Also, this includes Makefile fixes, and some x86 fixes and cleanups.
+>
+> My question is, how to merge this series.
+>
+> I am touching all architectures, but the first patch is a prerequisite
+> of the rest of this series.
+>
+> One possibility is to ask the x86 maintainers to pickup the first 5
+> patches for v5.12-rc1, and then send the rest for v5.13-rc1,
+> splitting per-arch.
+>
+> I want the x86 maintainers to check the first 5 patches because
+> I cleaned up the x32 code.
 
-This can be a problem with multi-queue block devices driven by blk-mq :
-such a non-started IRQ is very likely paired with the single queue
-enforced by blk-mq during kdump (see blk_mq_alloc_tag_set()). This
-causes the device to remain silent and likely hangs the guest at
-some point.
 
-This is a regression caused by commit 9ea69a55b3b9 ("powerpc/pseries:
-Pass MSI affinity to irq_create_mapping()"). Note that this only happens
-with the XIVE interrupt controller because XICS has a workaround to bypass
-affinity, which is activated during kdump with the "noirqdistrib" kernel
-parameter.
+Never mind.
 
-The issue comes from a combination of factors:
-- discrepancy between the number of queues detected by the multi-queue
-  block driver, that was used to create the MSI vectors, and the single
-  queue mode enforced later on by blk-mq because of kdump (i.e. keeping
-  all queues fixes the issue)
-- CPU#0 offline (i.e. kdump always succeed with CPU#0)
+Sending too big patch set tends to fail.
 
-Given that I couldn't reproduce on x86, which seems to always have CPU#0
-online even during kdump, I'm not sure where this should be fixed. Hence
-going for another approach : fine-grained affinity is for performance
-and we don't really care about that during kdump. Simply revert to the
-previous working behavior of ignoring affinity masks in this case only.
+I will apply the generic script parts to my tree,
+then split the rest per arch in the next development cycle
+(aim for v5.13-rc1)
 
-Fixes: 9ea69a55b3b9 ("powerpc/pseries: Pass MSI affinity to irq_create_mapp=
-ing()")
-Cc: lvivier@redhat.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Laurent Vivier <lvivier@redhat.com>
-Reviewed-by: C=C3=A9dric Le Goater <clg@kaod.org>
-Signed-off-by: Greg Kurz <groug@kaod.org>
----
 
-v2: - added missing #include <linux/crash_dump.h>
 
- arch/powerpc/platforms/pseries/msi.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/=
-pseries/msi.c
-index b3ac2455faad..637300330507 100644
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -4,6 +4,7 @@
-  * Copyright 2006-2007 Michael Ellerman, IBM Corp.
-  */
-=20
-+#include <linux/crash_dump.h>
- #include <linux/device.h>
- #include <linux/irq.h>
- #include <linux/msi.h>
-@@ -458,8 +459,28 @@ static int rtas_setup_msi_irqs(struct pci_dev *pdev, i=
-nt nvec_in, int type)
- =09=09=09return hwirq;
- =09=09}
-=20
--=09=09virq =3D irq_create_mapping_affinity(NULL, hwirq,
--=09=09=09=09=09=09   entry->affinity);
-+=09=09/*
-+=09=09 * Depending on the number of online CPUs in the original
-+=09=09 * kernel, it is likely for CPU #0 to be offline in a kdump
-+=09=09 * kernel. The associated IRQs in the affinity mappings
-+=09=09 * provided by irq_create_affinity_masks() are thus not
-+=09=09 * started by irq_startup(), as per-design for managed IRQs.
-+=09=09 * This can be a problem with multi-queue block devices driven
-+=09=09 * by blk-mq : such a non-started IRQ is very likely paired
-+=09=09 * with the single queue enforced by blk-mq during kdump (see
-+=09=09 * blk_mq_alloc_tag_set()). This causes the device to remain
-+=09=09 * silent and likely hangs the guest at some point.
-+=09=09 *
-+=09=09 * We don't really care for fine-grained affinity when doing
-+=09=09 * kdump actually : simply ignore the pre-computed affinity
-+=09=09 * masks in this case and let the default mask with all CPUs
-+=09=09 * be used when creating the IRQ mappings.
-+=09=09 */
-+=09=09if (is_kdump_kernel())
-+=09=09=09virq =3D irq_create_mapping(NULL, hwirq);
-+=09=09else
-+=09=09=09virq =3D irq_create_mapping_affinity(NULL, hwirq,
-+=09=09=09=09=09=09=09   entry->affinity);
-=20
- =09=09if (!virq) {
- =09=09=09pr_debug("rtas_msi: Failed mapping hwirq %d\n", hwirq);
---=20
-2.26.2
 
+
+
+
+
+> I know x32 was considered for deprecation, but my motivation is to
+> clean-up scripts across the tree without changing the functionality.
+>
+>
+>
+> Masahiro Yamada (27):
+>   scripts: add generic syscalltbl.sh
+>   x86/syscalls: fix -Wmissing-prototypes warnings from COND_SYSCALL()
+>   x86/build: add missing FORCE and fix 'targets' to make if_changed work
+>   x86/entry/x32: rename __x32_compat_sys_* to __x64_compat_sys_*
+>   x86/syscalls: switch to generic syscalltbl.sh
+>   ARM: syscalls: switch to generic syscalltbl.sh
+>   alpha: add missing FORCE and fix 'targets' to make if_changed work
+>   alpha: syscalls: switch to generic syscalltbl.sh
+>   ia64: add missing FORCE and fix 'targets' to make if_changed work
+>   ia64: syscalls: switch to generic syscalltbl.sh
+>   m68k: add missing FORCE and fix 'targets' to make if_changed work
+>   m68k: syscalls: switch to generic syscalltbl.sh
+>   microblaze: add missing FORCE and fix 'targets' to make if_changed
+>     work
+>   microblaze: syscalls: switch to generic syscalltbl.sh
+>   mips: add missing FORCE and fix 'targets' to make if_changed work
+>   mips: syscalls: switch to generic syscalltbl.sh
+>   parisc: add missing FORCE and fix 'targets' to make if_changed work
+>   parisc: syscalls: switch to generic syscalltbl.sh
+>   sh: add missing FORCE and fix 'targets' to make if_changed work
+>   sh: syscalls: switch to generic syscalltbl.sh
+>   sparc: remove wrong comment from arch/sparc/include/asm/Kbuild
+>   sparc: add missing FORCE and fix 'targets' to make if_changed work
+>   sparc: syscalls: switch to generic syscalltbl.sh
+>   powerpc: add missing FORCE and fix 'targets' to make if_changed work
+>   powerpc: syscalls: switch to generic syscalltbl.sh
+>   xtensa: add missing FORCE and fix 'targets' to make if_changed work
+>   xtensa: syscalls: switch to generic syscalltbl.sh
+>
+>  arch/alpha/kernel/syscalls/Makefile           | 18 +++----
+>  arch/alpha/kernel/syscalls/syscalltbl.sh      | 32 -----------
+>  arch/alpha/kernel/systbls.S                   |  3 +-
+>  arch/arm/kernel/entry-common.S                |  8 +--
+>  arch/arm/tools/Makefile                       |  9 ++--
+>  arch/arm/tools/syscalltbl.sh                  | 22 --------
+>  arch/ia64/kernel/entry.S                      |  3 +-
+>  arch/ia64/kernel/syscalls/Makefile            | 19 +++----
+>  arch/ia64/kernel/syscalls/syscalltbl.sh       | 32 -----------
+>  arch/m68k/kernel/syscalls/Makefile            | 18 +++----
+>  arch/m68k/kernel/syscalls/syscalltbl.sh       | 32 -----------
+>  arch/m68k/kernel/syscalltable.S               |  3 +-
+>  arch/microblaze/kernel/syscall_table.S        |  3 +-
+>  arch/microblaze/kernel/syscalls/Makefile      | 18 +++----
+>  arch/microblaze/kernel/syscalls/syscalltbl.sh | 32 -----------
+>  arch/mips/include/asm/Kbuild                  |  7 ++-
+>  arch/mips/kernel/scall32-o32.S                |  4 +-
+>  arch/mips/kernel/scall64-n32.S                |  3 +-
+>  arch/mips/kernel/scall64-n64.S                |  3 +-
+>  arch/mips/kernel/scall64-o32.S                |  4 +-
+>  arch/mips/kernel/syscalls/Makefile            | 53 ++++++++-----------
+>  arch/mips/kernel/syscalls/syscalltbl.sh       | 36 -------------
+>  arch/parisc/include/asm/Kbuild                |  1 -
+>  arch/parisc/kernel/syscall.S                  | 16 +++---
+>  arch/parisc/kernel/syscalls/Makefile          | 34 +++++-------
+>  arch/parisc/kernel/syscalls/syscalltbl.sh     | 36 -------------
+>  arch/powerpc/include/asm/Kbuild               |  1 -
+>  arch/powerpc/kernel/syscalls/Makefile         | 39 +++++---------
+>  arch/powerpc/kernel/syscalls/syscalltbl.sh    | 36 -------------
+>  arch/powerpc/kernel/systbl.S                  |  5 +-
+>  arch/powerpc/platforms/cell/spu_callbacks.c   |  2 +-
+>  arch/sh/kernel/syscalls/Makefile              | 18 +++----
+>  arch/sh/kernel/syscalls/syscalltbl.sh         | 32 -----------
+>  arch/sparc/include/asm/Kbuild                 |  3 --
+>  arch/sparc/kernel/syscalls/Makefile           | 34 +++++-------
+>  arch/sparc/kernel/syscalls/syscalltbl.sh      | 36 -------------
+>  arch/sparc/kernel/systbls_32.S                |  4 +-
+>  arch/sparc/kernel/systbls_64.S                |  8 +--
+>  arch/x86/entry/syscall_32.c                   | 12 +++--
+>  arch/x86/entry/syscall_64.c                   |  9 ++--
+>  arch/x86/entry/syscall_x32.c                  | 27 ++--------
+>  arch/x86/entry/syscalls/Makefile              | 33 +++++++-----
+>  arch/x86/entry/syscalls/syscalltbl.sh         | 46 ----------------
+>  arch/x86/include/asm/Kbuild                   |  1 +
+>  arch/x86/include/asm/syscall_wrapper.h        | 11 ++--
+>  arch/x86/um/sys_call_table_32.c               |  8 +--
+>  arch/x86/um/sys_call_table_64.c               |  9 ++--
+>  arch/xtensa/kernel/syscall.c                  |  3 +-
+>  arch/xtensa/kernel/syscalls/Makefile          | 18 +++----
+>  arch/xtensa/kernel/syscalls/syscalltbl.sh     | 32 -----------
+>  scripts/syscalltbl.sh                         | 52 ++++++++++++++++++
+>  51 files changed, 254 insertions(+), 674 deletions(-)
+>  delete mode 100644 arch/alpha/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/arm/tools/syscalltbl.sh
+>  delete mode 100644 arch/ia64/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/m68k/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/microblaze/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/mips/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/parisc/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/powerpc/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/sh/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/sparc/kernel/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/x86/entry/syscalls/syscalltbl.sh
+>  delete mode 100644 arch/xtensa/kernel/syscalls/syscalltbl.sh
+>  create mode 100644 scripts/syscalltbl.sh
+>
+> --
+> 2.27.0
+>
+
+
+-- 
+Best Regards
+Masahiro Yamada
