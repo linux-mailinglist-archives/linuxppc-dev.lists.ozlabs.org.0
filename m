@@ -1,32 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F74931C5D3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Feb 2021 04:34:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E78EE31C668
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Feb 2021 06:40:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DfmmV1rTpz3cZ9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Feb 2021 14:34:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DfqYy75KZz30QZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Feb 2021 16:40:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=FIFkH4tI;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Dfmlz6pVjz30R0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Feb 2021 14:33:51 +1100 (AEDT)
-Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 77AE6AE8022A;
- Mon, 15 Feb 2021 22:33:17 -0500 (EST)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel 2/2] powerpc/iommu: Do not immediately panic when
- failed IOMMU table allocation
-Date: Tue, 16 Feb 2021 14:33:07 +1100
-Message-Id: <20210216033307.69863-3-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210216033307.69863-1-aik@ozlabs.ru>
-References: <20210216033307.69863-1-aik@ozlabs.ru>
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::432;
+ helo=mail-pf1-x432.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=FIFkH4tI; dkim-atps=neutral
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
+ [IPv6:2607:f8b0:4864:20::432])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DfqYS55N0z30Gd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Feb 2021 16:39:53 +1100 (AEDT)
+Received: by mail-pf1-x432.google.com with SMTP id y25so2198979pfp.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Feb 2021 21:39:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=jr+gyTBDN4GpRjLzY8XDxkrfLwIUwO/4+yo6uYSRMXM=;
+ b=FIFkH4tIM0oXd/wgZB0MpbuxLgF78eUeo248QeQ247/HeX8YnsKZYv2iN4+d+FpMVR
+ 2aemT0w1RtMVMFRkQlx6S0uymf+t8+DXIH/dBXlT+VRv4hiWZj/kFOTV+6LU2T8clT1B
+ cTx3kBtJYxV6zBdY4E9MIXncjm81OP1jBuUPA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=jr+gyTBDN4GpRjLzY8XDxkrfLwIUwO/4+yo6uYSRMXM=;
+ b=pZUU5+2v2WpevviFRVYxg/KD3XQnx0O+LNp34IBk18DIRdUjPguDWfRsKBrUdVvh2w
+ nP1AcTOWc7Xg2xyZ8VMCOL3CHF71qujYH9PfGteOkxvi4NitODHEHSb0owLUl5eOoMev
+ b5ty3mWcQ/k6Onby3uAlHqo9NvB/UGbTwiwj5zpGiZbH3+C/0E1UsSesDzQf3Zetk5yx
+ 2x8fgH+rtkYEIFTE8Ici7/SmXTWp1CEXhCYfze3FP76ebi1pG/vwHqDjspzia1ThTAls
+ GSrYaVAkZKu0j1/gXwU1lga5lAFNPn350u4f+JuQhs4NCNaPTtejjCdSxXumztLUjCZS
+ V1+g==
+X-Gm-Message-State: AOAM5321DXPrdNj+zdng39+oIhAHphAOK2/hYWOfkB9ybWX9bhPGyTVZ
+ Rri0sECyWwlbIwC8itjy8MX5cgqDtCXeypNu
+X-Google-Smtp-Source: ABdhPJzmDwwaFvcoeIQoBHQ78dVnyJcv2ezrZEkwYpklVEKLs8WHv2ZFAQz3QS/+zK1ovMQgSVX6jw==
+X-Received: by 2002:a65:6a48:: with SMTP id o8mr17653103pgu.424.1613453989375; 
+ Mon, 15 Feb 2021 21:39:49 -0800 (PST)
+Received: from localhost
+ (2001-44b8-1113-6700-7ad2-5bb3-4fd4-d737.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:7ad2:5bb3:4fd4:d737])
+ by smtp.gmail.com with ESMTPSA id y23sm17802224pfo.50.2021.02.15.21.39.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Feb 2021 21:39:48 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 2/6] powerpc/pseries: Add key to flags in
+ pSeries_lpar_hpte_updateboltedpp()
+In-Reply-To: <20210211135130.3474832-2-mpe@ellerman.id.au>
+References: <20210211135130.3474832-1-mpe@ellerman.id.au>
+ <20210211135130.3474832-2-mpe@ellerman.id.au>
+Date: Tue, 16 Feb 2021 16:39:45 +1100
+Message-ID: <87tuqca7vi.fsf@linkitivity.dja.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,168 +78,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, kvm-ppc@vger.kernel.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Most platforms allocate IOMMU table structures (specifically it_map)
-at the boot time and when this fails - it is a valid reason for panic().
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-However the powernv platform allocates it_map after a device is returned
-to the host OS after being passed through and this happens long after
-the host OS booted. It is quite possible to trigger the it_map allocation
-panic() and kill the host even though it is not necessary - the host OS
-can still use the DMA bypass mode (requires a tiny fraction of it_map's
-memory) and even if that fails, the host OS is runnnable as it was without
-the device for which allocating it_map causes the panic.
+> The flags argument to plpar_pte_protect() (aka. H_PROTECT), includes
+> the key in bits 9-13, but currently we always set those bits to zero.
+>
+> In the past that hasn't been a problem because we always used key 0
+> for the kernel, and updateboltedpp() is only used for kernel mappings.
+>
+> However since commit d94b827e89dc ("powerpc/book3s64/kuap: Use Key 3
+> for kernel mapping with hash translation") we are now inadvertently
+> changing the key (to zero) when we call plpar_pte_protect().
+>
+> That hasn't broken anything because updateboltedpp() is only used for
+> STRICT_KERNEL_RWX, which is currently disabled on 64s due to other
+> bugs.
+>
+> But we want to fix that, so first we need to pass the key correctly to
+> plpar_pte_protect(). In the `newpp` value the low 3 bits of the key
+> are already in the correct spot, but the high 2 bits of the key need
+> to be shifted down.
+>
+> Fixes: d94b827e89dc ("powerpc/book3s64/kuap: Use Key 3 for kernel mapping with hash translation")
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/platforms/pseries/lpar.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+> index 764170fdb0f7..8bbbddff7226 100644
+> --- a/arch/powerpc/platforms/pseries/lpar.c
+> +++ b/arch/powerpc/platforms/pseries/lpar.c
+> @@ -976,11 +976,13 @@ static void pSeries_lpar_hpte_updateboltedpp(unsigned long newpp,
+>  	slot = pSeries_lpar_hpte_find(vpn, psize, ssize);
+>  	BUG_ON(slot == -1);
+>  
+> -	flags = newpp & 7;
+> +	flags = newpp & (HPTE_R_PP | HPTE_R_N);
+>  	if (mmu_has_feature(MMU_FTR_KERNEL_RO))
+>  		/* Move pp0 into bit 8 (IBM 55) */
+>  		flags |= (newpp & HPTE_R_PP0) >> 55;
+>  
+> +	flags |= ((newpp & HPTE_R_KEY_HI) >> 48) | (newpp & HPTE_R_KEY_LO);
+> +
 
-Instead of immediately crashing in a powernv/ioda2 system, this prints
-an error and continues. All other platforms still call panic().
+I'm really confused about how these bits are getting packed into the
+flags parameter. It seems to match how they are unpacked in
+kvmppc_h_pr_protect, but I cannot figure out why they are packed in that
+order, and the LoPAR doesn't seem especially illuminating on this topic
+- although I may have missed the relevant section.
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
- arch/powerpc/kernel/iommu.c               |  6 ++++--
- arch/powerpc/platforms/cell/iommu.c       |  3 ++-
- arch/powerpc/platforms/pasemi/iommu.c     |  4 +++-
- arch/powerpc/platforms/powernv/pci-ioda.c | 15 ++++++++-------
- arch/powerpc/platforms/pseries/iommu.c    | 10 +++++++---
- arch/powerpc/sysdev/dart_iommu.c          |  3 ++-
- 6 files changed, 26 insertions(+), 15 deletions(-)
+Kind regards,
+Daniel
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index 8eb6eb0afa97..c1a5c366a664 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -728,8 +728,10 @@ struct iommu_table *iommu_init_table(struct iommu_table *tbl, int nid,
- 	sz = BITS_TO_LONGS(tbl->it_size) * sizeof(unsigned long);
- 
- 	tbl->it_map = vzalloc_node(sz, nid);
--	if (!tbl->it_map)
--		panic("iommu_init_table: Can't allocate %ld bytes\n", sz);
-+	if (!tbl->it_map) {
-+		pr_err("%s: Can't allocate %ld bytes\n", __func__, sz);
-+		return NULL;
-+	}
- 
- 	iommu_table_reserve_pages(tbl, res_start, res_end);
- 
-diff --git a/arch/powerpc/platforms/cell/iommu.c b/arch/powerpc/platforms/cell/iommu.c
-index 2124831cf57c..fa08699aedeb 100644
---- a/arch/powerpc/platforms/cell/iommu.c
-+++ b/arch/powerpc/platforms/cell/iommu.c
-@@ -486,7 +486,8 @@ cell_iommu_setup_window(struct cbe_iommu *iommu, struct device_node *np,
- 	window->table.it_size = size >> window->table.it_page_shift;
- 	window->table.it_ops = &cell_iommu_ops;
- 
--	iommu_init_table(&window->table, iommu->nid, 0, 0);
-+	if (!iommu_init_table(&window->table, iommu->nid, 0, 0))
-+		panic("Failed to initialize iommu table");
- 
- 	pr_debug("\tioid      %d\n", window->ioid);
- 	pr_debug("\tblocksize %ld\n", window->table.it_blocksize);
-diff --git a/arch/powerpc/platforms/pasemi/iommu.c b/arch/powerpc/platforms/pasemi/iommu.c
-index b500a6e47e6b..5be7242fbd86 100644
---- a/arch/powerpc/platforms/pasemi/iommu.c
-+++ b/arch/powerpc/platforms/pasemi/iommu.c
-@@ -146,7 +146,9 @@ static void iommu_table_iobmap_setup(void)
- 	 */
- 	iommu_table_iobmap.it_blocksize = 4;
- 	iommu_table_iobmap.it_ops = &iommu_table_iobmap_ops;
--	iommu_init_table(&iommu_table_iobmap, 0, 0, 0);
-+	if (!iommu_init_table(&iommu_table_iobmap, 0, 0, 0))
-+		panic("Failed to initialize iommu table");
-+
- 	pr_debug(" <- %s\n", __func__);
- }
- 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index f0f901683a2f..66c3c3337334 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1762,7 +1762,8 @@ static void pnv_pci_ioda1_setup_dma_pe(struct pnv_phb *phb,
- 	tbl->it_ops = &pnv_ioda1_iommu_ops;
- 	pe->table_group.tce32_start = tbl->it_offset << tbl->it_page_shift;
- 	pe->table_group.tce32_size = tbl->it_size << tbl->it_page_shift;
--	iommu_init_table(tbl, phb->hose->node, 0, 0);
-+	if (!iommu_init_table(tbl, phb->hose->node, 0, 0))
-+		panic("Failed to initialize iommu table");
- 
- 	pe->dma_setup_done = true;
- 	return;
-@@ -1930,16 +1931,16 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
- 		res_start = pe->phb->ioda.m32_pci_base >> tbl->it_page_shift;
- 		res_end = min(window_size, SZ_4G) >> tbl->it_page_shift;
- 	}
--	iommu_init_table(tbl, pe->phb->hose->node, res_start, res_end);
- 
--	rc = pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
-+	if (iommu_init_table(tbl, pe->phb->hose->node, res_start, res_end))
-+		rc = pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
-+	else
-+		rc = -ENOMEM;
- 	if (rc) {
--		pe_err(pe, "Failed to configure 32-bit TCE table, err %ld\n",
--				rc);
-+		pe_err(pe, "Failed to configure 32-bit TCE table, err %ld\n", rc);
- 		iommu_tce_table_put(tbl);
--		return rc;
-+		tbl = NULL; /* This clears iommu_table_base below */
- 	}
--
- 	if (!pnv_iommu_bypass_disabled)
- 		pnv_pci_ioda2_set_bypass(pe, true);
- 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 9fc5217f0c8e..4d9ac1f181c2 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -638,7 +638,8 @@ static void pci_dma_bus_setup_pSeries(struct pci_bus *bus)
- 
- 	iommu_table_setparms(pci->phb, dn, tbl);
- 	tbl->it_ops = &iommu_table_pseries_ops;
--	iommu_init_table(tbl, pci->phb->node, 0, 0);
-+	if (!iommu_init_table(tbl, pci->phb->node, 0, 0))
-+		panic("Failed to initialize iommu table");
- 
- 	/* Divide the rest (1.75GB) among the children */
- 	pci->phb->dma_window_size = 0x80000000ul;
-@@ -720,7 +721,8 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
- 		iommu_table_setparms_lpar(ppci->phb, pdn, tbl,
- 				ppci->table_group, dma_window);
- 		tbl->it_ops = &iommu_table_lpar_multi_ops;
--		iommu_init_table(tbl, ppci->phb->node, 0, 0);
-+		if (!iommu_init_table(tbl, ppci->phb->node, 0, 0))
-+			panic("Failed to initialize iommu table");
- 		iommu_register_group(ppci->table_group,
- 				pci_domain_nr(bus), 0);
- 		pr_debug("  created table: %p\n", ppci->table_group);
-@@ -749,7 +751,9 @@ static void pci_dma_dev_setup_pSeries(struct pci_dev *dev)
- 		tbl = PCI_DN(dn)->table_group->tables[0];
- 		iommu_table_setparms(phb, dn, tbl);
- 		tbl->it_ops = &iommu_table_pseries_ops;
--		iommu_init_table(tbl, phb->node, 0, 0);
-+		if (!iommu_init_table(tbl, phb->node, 0, 0))
-+			panic("Failed to initialize iommu table");
-+
- 		set_iommu_table_base(&dev->dev, tbl);
- 		return;
- 	}
-diff --git a/arch/powerpc/sysdev/dart_iommu.c b/arch/powerpc/sysdev/dart_iommu.c
-index 6b4a34b36d98..1d33b7a5ea83 100644
---- a/arch/powerpc/sysdev/dart_iommu.c
-+++ b/arch/powerpc/sysdev/dart_iommu.c
-@@ -344,7 +344,8 @@ static void iommu_table_dart_setup(void)
- 	iommu_table_dart.it_index = 0;
- 	iommu_table_dart.it_blocksize = 1;
- 	iommu_table_dart.it_ops = &iommu_dart_ops;
--	iommu_init_table(&iommu_table_dart, -1, 0, 0);
-+	if (!iommu_init_table(&iommu_table_dart, -1, 0, 0))
-+		panic("Failed to initialize iommu table");
- 
- 	/* Reserve the last page of the DART to avoid possible prefetch
- 	 * past the DART mapped area
--- 
-2.17.1
-
+>  	lpar_rc = plpar_pte_protect(flags, slot, 0);
+>  
+>  	BUG_ON(lpar_rc != H_SUCCESS);
+> -- 
+> 2.25.1
