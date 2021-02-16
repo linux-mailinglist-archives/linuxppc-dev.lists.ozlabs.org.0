@@ -2,97 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8F431CCFA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Feb 2021 16:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B920131CF8F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Feb 2021 18:50:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dg4kZ1PG2z30N4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Feb 2021 02:33:42 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=goCISUI7;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dg7md5rrrz3bPC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Feb 2021 04:50:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=goCISUI7; dkim-atps=neutral
-X-Greylist: delayed 2081 seconds by postgrey-1.36 at boromir;
- Wed, 17 Feb 2021 02:33:19 AEDT
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+X-Greylist: delayed 626 seconds by postgrey-1.36 at boromir;
+ Wed, 17 Feb 2021 04:50:24 AEDT
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dg4k74Vmxz30KL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Feb 2021 02:33:18 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 11GEnctk014819; Tue, 16 Feb 2021 09:58:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=vCXzb5OpCKLaHDVmWut1qFi4BxjtzdfHygiEhaPanUU=;
- b=goCISUI7PndlL4FJ7okkCp5O1fn6oUQQueIOCD4PoY0mHq+yJ+QKn1X5J2Ge4r64/YIf
- f5X/vdbFZtgiam/MS6xq1CKdQZSyRsk6F7X+0CNXuyECD7yXHAUFEPymkkC1yYfm1wgF
- q519qcqEqjtuujHWBMQciVDKOiU52IxwtvIlAohS2Dp21XYN7rvyPbF7hsl1BBVmxo/D
- Hek1R2JNM8fQ46GlAnekwLLEa2OhQDO9x0mvO4YL4ieZ/0t8bh1DQz1YZ9apSSm92Wg0
- N58K30S+hgp4q4odfn4yAO43Pt3bDSNT5Vu0gJcbvHwGKHXqa4qgLq4y5ImP5kla/LLS rA== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36rg570716-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Feb 2021 09:58:34 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11GEqYTh018382;
- Tue, 16 Feb 2021 14:58:33 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma02dal.us.ibm.com with ESMTP id 36p6d9mr0s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Feb 2021 14:58:33 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 11GEwWxr33489364
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 Feb 2021 14:58:32 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A70A6112065;
- Tue, 16 Feb 2021 14:58:32 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C46AA112062;
- Tue, 16 Feb 2021 14:58:31 +0000 (GMT)
-Received: from oc6034535106.ibm.com (unknown [9.163.23.155])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 16 Feb 2021 14:58:31 +0000 (GMT)
-Subject: Re: [PATCH 4/4] ibmvfc: store return code of H_FREE_SUB_CRQ during
- cleanup
-To: Tyrel Datwyler <tyreld@linux.ibm.com>,
- james.bottomley@hansenpartnership.com
-References: <20210211185742.50143-1-tyreld@linux.ibm.com>
- <20210211185742.50143-5-tyreld@linux.ibm.com>
-From: Brian King <brking@linux.vnet.ibm.com>
-Message-ID: <94321ded-7970-258c-cee9-222f7b2b511f@linux.vnet.ibm.com>
-Date: Tue, 16 Feb 2021 08:58:31 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dg7mJ0qxLz30KJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Feb 2021 04:50:21 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4Dg7X256vfzB09ZP;
+ Tue, 16 Feb 2021 18:39:46 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id obuZMT7z7GUL; Tue, 16 Feb 2021 18:39:46 +0100 (CET)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Dg7X24HVlzB09ZM;
+ Tue, 16 Feb 2021 18:39:46 +0100 (CET)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 769CB1EC; Tue, 16 Feb 2021 18:42:47 +0100 (CET)
+Received: from 37-171-22-224.coucou-networks.fr
+ (37-171-22-224.coucou-networks.fr [37.171.22.224]) by messagerie.c-s.fr
+ (Horde Framework) with HTTP; Tue, 16 Feb 2021 18:42:47 +0100
+Date: Tue, 16 Feb 2021 18:42:47 +0100
+Message-ID: <20210216184247.Horde.If3nEUb5zLh4eU_4qXZCAw1@messagerie.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
+Subject: Re: [PATCH 1/4] add generic builtin command line
+References: <20190319232448.45964-2-danielwa@cisco.com>
+ <20190320155319.2cd3c0f73ef3cdefb65d5d1e@linux-foundation.org>
+ <20190320232328.3bijcxek2yg43a25@zorba>
+ <20190320201433.6c5c4782f4432d280c0e8361@linux-foundation.org>
+ <20190321151308.yt6uc3mxgppm5zko@zorba>
+ <20190321151519.1f4479d92228c8a8738e02cf@linux-foundation.org>
+ <1613417521.3853.5.camel@chimera>
+In-Reply-To: <1613417521.3853.5.camel@chimera>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-In-Reply-To: <20210211185742.50143-5-tyreld@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-02-16_04:2021-02-16,
- 2021-02-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 clxscore=1015 mlxlogscore=999
- impostorscore=0 bulkscore=0 phishscore=0 adultscore=0 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102160130
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,35 +63,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
- linux-kernel@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, xe-linux-external@cisco.com,
+ linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Maksym Kokhan <maksym.kokhan@globallogic.com>,
+ Daniel Walker <dwalker@fifo99.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, Daniel Walker <danielwa@cisco.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/11/21 12:57 PM, Tyrel Datwyler wrote:
-> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-> index ba6fcf9cbc57..23b803ac4a13 100644
-> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
-> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-> @@ -5670,7 +5670,7 @@ static int ibmvfc_register_scsi_channel(struct ibmvfc_host *vhost,
->  
->  irq_failed:
->  	do {
-> -		plpar_hcall_norets(H_FREE_SUB_CRQ, vdev->unit_address, scrq->cookie);
-> +		rc = plpar_hcall_norets(H_FREE_SUB_CRQ, vdev->unit_address, scrq->cookie);
->  	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
+Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us> a =C3=A9crit=C2=
+=A0:
 
-Other places in the driver where we get a busy return code back we have an msleep(100).
-Should we be doing that here as well?
+> On Thu, 2019-03-21 at 15:15 -0700, Andrew Morton wrote:
+>> On Thu, 21 Mar 2019 08:13:08 -0700 Daniel Walker <danielwa@cisco.com> wr=
+ote:
+>> > On Wed, Mar 20, 2019 at 08:14:33PM -0700, Andrew Morton wrote:
+>> > > The patches (or some version of them) are already in linux-next,
+>> > > which messes me up.  I'll disable them for now.
+>> >
+>> > Those are from my tree, but I remove them when you picked up the=20=20
+>>=20series. The
+>> > next linux-next should not have them.
+>>
+>> Yup, thanks, all looks good now.
+>
+> This patchset is currently neither in mainline nor in -next. May I ask
+> what happened to it? Thanks.
 
-Thanks,
+As far as I remember, there has been a lot of discussion around this series=
+.
 
-Brian
+As of today, it doesn't apply cleanly anymore and would require rebasing.
 
--- 
-Brian King
-Power Linux I/O
-IBM Linux Technology Center
+I'd suggest also to find the good arguments to convince us that this=20=20
+series=20has a real added value, not just "cisco use it in its kernels=20=
+=20
+so=20it is good".
+
+I proposed an alternative at=20=20
+https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1554195798.gi=
+t.christophe.leroy@c-s.fr/=20but never got any feedback so I gave=20=20
+up.
+
+If=20you submit a new series, don't forget to copy ppclinux-dev and=20=20
+linux-arch=20lists.
+
+Christophe
+
 
