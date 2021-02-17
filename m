@@ -2,78 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AD031DFAD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Feb 2021 20:33:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C9831DFDA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Feb 2021 20:54:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dgp0b2ys7z3ck4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Feb 2021 06:33:19 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=kRNTVaud;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DgpSS4fVGz3cVT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Feb 2021 06:54:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::736;
- helo=mail-qk1-x736.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=codefail.de (client-ip=68.65.122.30;
+ helo=mta-10-1.privateemail.com; envelope-from=cmr@codefail.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=kRNTVaud; dkim-atps=neutral
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com
- [IPv6:2607:f8b0:4864:20::736])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from MTA-10-1.privateemail.com (mta-10-1.privateemail.com
+ [68.65.122.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dgp0759q1z3cHl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 06:32:54 +1100 (AEDT)
-Received: by mail-qk1-x736.google.com with SMTP id w19so13913217qki.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Feb 2021 11:32:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=TRLf1G8f2Go1VE645xdlH8BG2DStOsSzPhXA0pRDJR4=;
- b=kRNTVaudWjexbvvommo9ZCKBIqaSKiymVPnn7WIbKB7wtdSdXFkRmnOk5llZOoym5H
- poqHg2pyNXl07F6LJTgvspwqzS8uFVcvxFumlosxKZmIngh5l6Ik5TC5U1SYq0KhOCR8
- 43+cGVU+ZkH3pdyDaVjSkGydOtve2FLlX03pjBrqIeonhg3tVGWhG0h6kESokx0+Ggnb
- SvGTmWEpmrClGZj89P5kWK4/4FiOspRDyZcq7gzfmEqEjo9kYCwBd7ZRRonuCCmSHuAZ
- iInnIbyxgSg6j7fs2RArx5iZvt6IDyt/WXP3NOc9O26UaS4UTchYt/kZ1BmZXriYyWYq
- TwDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=TRLf1G8f2Go1VE645xdlH8BG2DStOsSzPhXA0pRDJR4=;
- b=qntVKnYATHIAyC2jSNyQvqK6CKb2e2qxwSaW3lDSF5j/SKjRliwQZtYPerqic3Tzba
- c7kRRRZu5iGOwCWAsexNNKDU0dm827XITJ1bEaD9d6g9Nde98YEe208JSlGrUyhTYKgD
- +F2vLiH2sJ+5AOrnW2Txxl2++YvzDfgrUiDPu7dkON6DqGyuVwXRgupNhkcNlWZu3PtA
- EFotD4VhhTZ5uxlvIUCQOgX6oyeeHndM/UpzcLgwVQpA2/XYcem42SFxcYzThRgqtZMa
- 0fJ9j2trnuuvXt0uEGEwb+VNc95aPbfbzWZNJWv/T7kIK/wAKUqxX7nkO2UrI9m1YdhA
- NOWw==
-X-Gm-Message-State: AOAM532nB0ZPo8SfDMXoKIOXvvMeoastYvRoopb1242VEtTT6pimOZg/
- zcwDSs9yASx5MHQ7Al75l18=
-X-Google-Smtp-Source: ABdhPJzkR0AEx/9kpX4bJfW097t4PrjwjMgeaNwZpP8gKyBd/1UPcooKJA9XkH/8zFt8KFxkCEWTIA==
-X-Received: by 2002:a37:a395:: with SMTP id m143mr739218qke.439.1613590370927; 
- Wed, 17 Feb 2021 11:32:50 -0800 (PST)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
- (177-131-90-207.dynamic.desktop.com.br. [177.131.90.207])
- by smtp.gmail.com with ESMTPSA id u20sm1914972qtb.63.2021.02.17.11.32.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Feb 2021 11:32:50 -0800 (PST)
-Message-ID: <433396d9ef216aa090e32bb344d42f60de1fb9aa.camel@gmail.com>
-Subject: Re: [PATCH kernel 2/2] powerpc/iommu: Do not immediately panic when
- failed IOMMU table allocation
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-Date: Wed, 17 Feb 2021 16:32:45 -0300
-In-Reply-To: <20210216033307.69863-3-aik@ozlabs.ru>
-References: <20210216033307.69863-1-aik@ozlabs.ru>
- <20210216033307.69863-3-aik@ozlabs.ru>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3 (3.38.3-1.fc33) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DgpS65995z3cHl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 06:53:41 +1100 (AEDT)
+Received: from MTA-10.privateemail.com (localhost [127.0.0.1])
+ by MTA-10.privateemail.com (Postfix) with ESMTP id 8AFF86007F;
+ Wed, 17 Feb 2021 14:53:39 -0500 (EST)
+Received: from localhost (unknown [10.20.151.207])
+ by MTA-10.privateemail.com (Postfix) with ESMTPA id 5372D600FA;
+ Wed, 17 Feb 2021 19:53:39 +0000 (UTC)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 17 Feb 2021 13:53:38 -0600
+Message-Id: <C9C2HOCOHQZW.10KGT1IRO1GOL@oc8246131445.ibm.com>
+Subject: Re: [PATCH v5 10/10] powerpc/signal64: Use __get_user() to copy
+ sigset_t
+From: "Christopher M. Riedl" <cmr@codefail.de>
+To: "Daniel Axtens" <dja@axtens.net>, <linuxppc-dev@lists.ozlabs.org>
+References: <20210203184323.20792-1-cmr@codefail.de>
+ <20210203184323.20792-11-cmr@codefail.de>
+ <87v9axc78z.fsf@dja-thinkpad.axtens.net>
+In-Reply-To: <87v9axc78z.fsf@dja-thinkpad.axtens.net>
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,72 +50,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2021-02-16 at 14:33 +1100, Alexey Kardashevskiy wrote:
-> Most platforms allocate IOMMU table structures (specifically it_map)
-> at the boot time and when this fails - it is a valid reason for panic().
-> 
-> However the powernv platform allocates it_map after a device is returned
-> to the host OS after being passed through and this happens long after
-> the host OS booted. It is quite possible to trigger the it_map allocation
-> panic() and kill the host even though it is not necessary - the host OS
-> can still use the DMA bypass mode (requires a tiny fraction of it_map's
-> memory) and even if that fails, the host OS is runnnable as it was without
-> the device for which allocating it_map causes the panic.
-> 
-> Instead of immediately crashing in a powernv/ioda2 system, this prints
-> an error and continues. All other platforms still call panic().
-> 
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+On Fri Feb 12, 2021 at 3:21 PM CST, Daniel Axtens wrote:
+> "Christopher M. Riedl" <cmr@codefail.de> writes:
+>
+> > Usually sigset_t is exactly 8B which is a "trivial" size and does not
+> > warrant using __copy_from_user(). Use __get_user() directly in
+> > anticipation of future work to remove the trivial size optimizations
+> > from __copy_from_user(). Calling __get_user() also results in a small
+> > boost to signal handling throughput here.
+>
+> Modulo the comments from Christophe, this looks good to me. It seems to
+> do what it says on the tin.
+>
+> Reviewed-by: Daniel Axtens <dja@axtens.net>
+>
+> Do you know if this patch is responsible for the slightly increase in
+> radix performance you observed in your cover letter? The rest of the
+> series shouldn't really make things faster than the no-KUAP case...
 
-Hello Alexey,
+No, this patch just results in a really small improvement overall.
 
-This looks like a good change, that passes panic() decision to platform
-code. Everything looks pretty straightforward, but I have a question
-regarding this:
+I looked over this again and I think the reason for the speedup is that
+my implementation of unsafe_copy_from_user() in this series calls
+__copy_tofrom_user() directly avoiding a barrier_nospec(). This speeds
+up all the unsafe_get_from_user() calls in this version.
 
-> @@ -1930,16 +1931,16 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
->  		res_start = pe->phb->ioda.m32_pci_base >> tbl->it_page_shift;
->  		res_end = min(window_size, SZ_4G) >> tbl->it_page_shift;
->  	}
-> -	iommu_init_table(tbl, pe->phb->hose->node, res_start, res_end);
-> -	rc = pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
-> 
-> +	if (iommu_init_table(tbl, pe->phb->hose->node, res_start, res_end))
-> +		rc = pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
-> +	else
-> +		rc = -ENOMEM;
->  	if (rc) {
-> -		pe_err(pe, "Failed to configure 32-bit TCE table, err %ld\n",
-> -				rc);
-> +		pe_err(pe, "Failed to configure 32-bit TCE table, err %ld\n", rc);
->  		iommu_tce_table_put(tbl);
-> -		return rc;
-> +		tbl = NULL; /* This clears iommu_table_base below */
->  	}
-> -
->  	if (!pnv_iommu_bypass_disabled)
->  		pnv_pci_ioda2_set_bypass(pe, true);
->  
-> 
+Skipping the barrier_nospec() like that is incorrect, but Christophe
+recently sent a patch which moves barrier_nospec() into the uaccess
+allowance helpers. It looks like mpe has already accepted that patch:
 
-If I could understand correctly, previously if iommu_init_table() did
-not panic(), and pnv_pci_ioda2_set_window() returned something other
-than 0, it would return rc in the if (rc) clause, but now it does not
-happen anymore, going through if (!pnv_iommu_bypass_disabled) onwards.
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-February/223959.html
 
-Is that desired?
+That means that my implementation of unsafe_copy_from_user() is _now_
+correct _and_ faster. We do not need to call barrier_nospec() since the
+precondition for the 'unsafe' routine is that we called one of the
+helpers to open up a uaccess window earlier.
 
-As far as I could see, returning rc there seems a good procedure after
-iommu_init_table returning -ENOMEM.
-
-Best regards, 
-Leonardo Bras  
-
-
-
+>
+> Kind regards,
+> Daniel
+>
+> >
+> > Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
+> > ---
+> >  arch/powerpc/kernel/signal_64.c | 14 ++++++++++++--
+> >  1 file changed, 12 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/sign=
+al_64.c
+> > index 817b64e1e409..42fdc4a7ff72 100644
+> > --- a/arch/powerpc/kernel/signal_64.c
+> > +++ b/arch/powerpc/kernel/signal_64.c
+> > @@ -97,6 +97,14 @@ static void prepare_setup_sigcontext(struct task_str=
+uct *tsk, int ctx_has_vsx_re
+> >  #endif /* CONFIG_VSX */
+> >  }
+> > =20
+> > +static inline int get_user_sigset(sigset_t *dst, const sigset_t *src)
+> > +{
+> > +	if (sizeof(sigset_t) <=3D 8)
+> > +		return __get_user(dst->sig[0], &src->sig[0]);
+> > +	else
+> > +		return __copy_from_user(dst, src, sizeof(sigset_t));
+> > +}
+> > +
+> >  /*
+> >   * Set up the sigcontext for the signal frame.
+> >   */
+> > @@ -701,8 +709,9 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user=
+ *, old_ctx,
+> >  	 * We kill the task with a SIGSEGV in this situation.
+> >  	 */
+> > =20
+> > -	if (__copy_from_user(&set, &new_ctx->uc_sigmask, sizeof(set)))
+> > +	if (get_user_sigset(&set, &new_ctx->uc_sigmask))
+> >  		do_exit(SIGSEGV);
+> > +
+> >  	set_current_blocked(&set);
+> > =20
+> >  	if (!user_read_access_begin(new_ctx, ctx_size))
+> > @@ -740,8 +749,9 @@ SYSCALL_DEFINE0(rt_sigreturn)
+> >  	if (!access_ok(uc, sizeof(*uc)))
+> >  		goto badframe;
+> > =20
+> > -	if (__copy_from_user(&set, &uc->uc_sigmask, sizeof(set)))
+> > +	if (get_user_sigset(&set, &uc->uc_sigmask))
+> >  		goto badframe;
+> > +
+> >  	set_current_blocked(&set);
+> > =20
+> >  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+> > --=20
+> > 2.26.1
 
