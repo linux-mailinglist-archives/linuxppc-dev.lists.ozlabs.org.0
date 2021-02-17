@@ -2,51 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48BA731DF17
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Feb 2021 19:26:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6E831DF6F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Feb 2021 20:12:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DgmWq2fYFz3cQN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Feb 2021 05:26:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DgnXN3N5Mz3cXt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Feb 2021 06:12:20 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=GOByrHDK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2a;
+ helo=mail-qv1-xf2a.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=GOByrHDK; dkim-atps=neutral
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com
+ [IPv6:2607:f8b0:4864:20::f2a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DgmWV0G3nz3bcw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 05:26:26 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DgmWG55mjz9txLT;
- Wed, 17 Feb 2021 19:26:18 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 8LdVNlMK3cly; Wed, 17 Feb 2021 19:26:18 +0100 (CET)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DgmWG4G84z9txLS;
- Wed, 17 Feb 2021 19:26:18 +0100 (CET)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id 7DB2E8A0; Wed, 17 Feb 2021 19:29:20 +0100 (CET)
-Received: from 37.166.190.229 ([37.166.190.229]) by messagerie.c-s.fr (Horde
- Framework) with HTTP; Wed, 17 Feb 2021 19:29:20 +0100
-Date: Wed, 17 Feb 2021 19:29:20 +0100
-Message-ID: <20210217192920.Horde.P9DT3EDwJqUmN75mokBDNw1@messagerie.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 2/2] powerpc/uaccess: Move might_fault() into
- user_access_begin()
-References: <20210208135717.2618798-1-mpe@ellerman.id.au>
- <20210208135717.2618798-2-mpe@ellerman.id.au>
- <b1d3af99-2d38-0794-0694-95a735fccbe3@csgroup.eu>
- <87czwzv4io.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87czwzv4io.fsf@mpe.ellerman.id.au>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DgnWx6Qthz3cGN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 06:11:56 +1100 (AEDT)
+Received: by mail-qv1-xf2a.google.com with SMTP id 2so6833444qvd.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Feb 2021 11:11:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :organization:user-agent:mime-version:content-transfer-encoding;
+ bh=u4lbCYpxz+ZW5VAXp7OqgJphBLt/2DDRqGDYxIl7pCc=;
+ b=GOByrHDKbf0jo9325LAy11eGu9UdGoSHB9Zh3C2GU4OV/B8tgkmYuHvwtkbTuvmyyY
+ U0iWJrYrbndtqw4mZNoFuuSH+XfX+AxOt60BsjIpkbFcGN1EfT5XIUtYgZViurCXoHPt
+ uxsld3bU42RukC+lugT01ll25f246GpKu4SK+ccgEWbbWxEGCzc5sRGUieFMkKmmOe09
+ PfBzvCeykj3h1u7qDabvXa33UAR53LQXQjk5POzozIK21xxmwHqKclqdX0vK1GyUxVLH
+ 5LbF+osfrOegLt2XKCfyAb5XAbbfC/JzSjfwN/M6AnHdbZy/PDXfN2AB8yxBJCO5KF0f
+ lIhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:organization:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=u4lbCYpxz+ZW5VAXp7OqgJphBLt/2DDRqGDYxIl7pCc=;
+ b=ABPx0UBiwBehXA6MIhd6A9ONaIYWJiSuXJRqbmhRvFi02FYOj2AztRwqH90zGuypdp
+ r8g1jcVGf6tCOyxM9SsscWY2V61arMpN7bC3h4NFKxHHz9y8p9CjIF2nw2bDXrHvYxk5
+ K7ubOSJDT3PmYJJwdiCDanHon5V5rB3Bev4NjSPRDJQU5zKHE/vxaBy3Pc0PU8kei9m9
+ Y/Ls72tcEmD2jshgmAQ9gcAcEEu7f08NE/rIbr4YBuGjLRRTa101G7H/HJ2Rwxrtv1oG
+ x8/GeIL5dod7pRWHDUxeORJhcG+n/Zhes3qzj0yIn5uhqwgyLVnC11IddNCeXLe/q7pO
+ FQqA==
+X-Gm-Message-State: AOAM5326sajaD0zkWLmpVbwROx1urZ/vDowU9G8kuN5wUwBTabUnq/Av
+ b00FEuB3yFQVWrg9/kBN3Sw=
+X-Google-Smtp-Source: ABdhPJwDTvge1o7b1Uh8lOtIDvJQAvRXNImlZe19CNHjy6g6sOnFGEudFsgHsOfPSYgA80H+olQJlA==
+X-Received: by 2002:a0c:e085:: with SMTP id l5mr769758qvk.38.1613589113366;
+ Wed, 17 Feb 2021 11:11:53 -0800 (PST)
+Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
+ (177-131-90-207.dynamic.desktop.com.br. [177.131.90.207])
+ by smtp.gmail.com with ESMTPSA id s14sm1782694qtq.97.2021.02.17.11.11.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Feb 2021 11:11:52 -0800 (PST)
+Message-ID: <05859751d16e39500cf16641f5578ec5e294afb5.camel@gmail.com>
+Subject: Re: [PATCH kernel 1/2] powerpc/iommu: Allocate it_map by vmalloc
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+Date: Wed, 17 Feb 2021 16:11:48 -0300
+In-Reply-To: <20210216033307.69863-2-aik@ozlabs.ru>
+References: <20210216033307.69863-1-aik@ozlabs.ru>
+ <20210216033307.69863-2-aik@ozlabs.ru>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3 (3.38.3-1.fc33) 
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,102 +84,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org
+Cc: kvm-ppc@vger.kernel.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> a =C3=A9crit=C2=A0:
+On Tue, 2021-02-16 at 14:33 +1100, Alexey Kardashevskiy wrote:
+> The IOMMU table uses the it_map bitmap to keep track of allocated DMA
+> pages. This has always been a contiguous array allocated at either
+> the boot time or when a passed through device is returned to the host OS.
+> The it_map memory is allocated by alloc_pages() which allocates
+> contiguous physical memory.
+> 
+> Such allocation method occasionally creates a problem when there is
+> no big chunk of memory available (no free memory or too fragmented).
+> On powernv/ioda2 the default DMA window requires 16MB for it_map.
+> 
+> This replaces alloc_pages_node() with vzalloc_node() which allocates
+> contiguous block but in virtual memory. This should reduce changes of
+> failure but should not cause other behavioral changes as it_map is only
+> used by the kernel's DMA hooks/api when MMU is on.
+> 
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> Le 08/02/2021 =C3=A0 14:57, Michael Ellerman a =C3=A9crit=C2=A0:
->>> We have a might_fault() check in __unsafe_put_user_goto(), but that is
->>> dangerous as it potentially calls lots of code while user access is
->>> enabled.
->>>
->>> It also triggers the check Alexey added to the irq restore path to
->>> catch cases like that:
->>>
->>>    WARNING: CPU: 30 PID: 1 at=20=20
->>>=20arch/powerpc/include/asm/book3s/64/kup.h:324=20=20
->>>=20arch_local_irq_restore+0x160/0x190
->>>    NIP arch_local_irq_restore+0x160/0x190
->>>    LR  lock_is_held_type+0x140/0x200
->>>    Call Trace:
->>>      0xc00000007f392ff8 (unreliable)
->>>      ___might_sleep+0x180/0x320
->>>      __might_fault+0x50/0xe0
->>>      filldir64+0x2d0/0x5d0
->>>      call_filldir+0xc8/0x180
->>>      ext4_readdir+0x948/0xb40
->>>      iterate_dir+0x1ec/0x240
->>>      sys_getdents64+0x80/0x290
->>>      system_call_exception+0x160/0x280
->>>      system_call_common+0xf0/0x27c
->>>
->>> So remove the might fault check from unsafe_put_user().
->>>
->>> Any call to unsafe_put_user() must be inside a region that's had user
->>> access enabled with user_access_begin(), so move the might_fault() in
->>> there. That also allows us to drop the is_kernel_addr() test, because
->>> there should be no code using user_access_begin() in order to access a
->>> kernel address.
->>
->> x86 and mips only have might_fault() on get_user() and put_user(),
->> neither on __get_user() nor on __put_user() nor on the unsafe
->> alternative.
->
-> Yeah, that's their choice, or perhaps it's by accident.
->
-> arm64 on the other hand has might_fault() in all variants.
->
-> A __get_user() can fault just as much as a get_user(), so there's no
-> reason the check should be omitted from __get_user(), other than perhaps
-> some historical argument about __get_user() being the "fast" case.
->
->> When have might_fault() in __get_user_nocheck() that is used by
->> __get_user() and __get_user_allowed() ie by unsafe_get_user().
->>
->> Shoudln't those be dropped as well ?
->
-> That was handled by Alexey's patch, which I ended up merging with this
-> one:
->
->   https://git.kernel.org/torvalds/c/7d506ca97b665b95e698a53697dad99fae813=
-c1a
->
->
-> ie. we still have might_fault() in __get_user_nocheck(), but it's
-> guarded by a check of do_allow, so we won't call it for
-> __get_user_allowed().
->
-> So I think the code (in my next branch) is correct, we don't have any
-> might_fault() calls in unsafe regions.
->
-> But I'd still be happier if we could simplify our uaccess.h more, it's a
-> bit of a rats nest. We could start by making __get/put_user() =3D=3D
-> get/put_user() the same way arm64 did.
+It looks a very good change, and also makes code much simpler to read.
 
-I agree there are several easy simplifications to do there. I'll look=20=20
-at=20that in the coming weeks.
+FWIW:
 
-I'm not sure it is good to make __get/put_user equal get/put_user as=20=20
-it=20would mean calling access_ok() everytime. But we could most likely=20=
-=20
-make=20something simpler with get_user() calling access_ok() then=20=20
-__get_user().
+Reviewed-by: Leonardo Bras <leobras.c@gmail,com>
 
-I=20think we should also audit our use of the _inatomic variants.=20=20
-might_fault()=20voids when pagefault is disabled so I think the inatomic=20=
-=20
-variants=20should be needed. As far as I can see, powerpc is the only=20=20
-arch=20having that.
-
-Need to also check why we still need that is_kernel_addr() check=20=20
-because=20since the removal of set_fs(), __get/put_user() helpers=20=20
-shouldn't=20be used anymore for kernel addresses
-
-Christophe
-
+> ---
+>  arch/powerpc/kernel/iommu.c | 15 +++------------
+>  1 file changed, 3 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+> index c00214a4355c..8eb6eb0afa97 100644
+> --- a/arch/powerpc/kernel/iommu.c
+> +++ b/arch/powerpc/kernel/iommu.c
+> @@ -719,7 +719,6 @@ struct iommu_table *iommu_init_table(struct iommu_table *tbl, int nid,
+>  {
+>  	unsigned long sz;
+>  	static int welcomed = 0;
+> -	struct page *page;
+>  	unsigned int i;
+>  	struct iommu_pool *p;
+>  
+> 
+> 
+> 
+> @@ -728,11 +727,9 @@ struct iommu_table *iommu_init_table(struct iommu_table *tbl, int nid,
+>  	/* number of bytes needed for the bitmap */
+>  	sz = BITS_TO_LONGS(tbl->it_size) * sizeof(unsigned long);
+>  
+> 
+> 
+> 
+> -	page = alloc_pages_node(nid, GFP_KERNEL, get_order(sz));
+> -	if (!page)
+> +	tbl->it_map = vzalloc_node(sz, nid);
+> +	if (!tbl->it_map)
+>  		panic("iommu_init_table: Can't allocate %ld bytes\n", sz);
+> -	tbl->it_map = page_address(page);
+> -	memset(tbl->it_map, 0, sz);
+>  
+> 
+> 
+> 
+>  	iommu_table_reserve_pages(tbl, res_start, res_end);
+>  
+> 
+> 
+> 
+> @@ -774,8 +771,6 @@ struct iommu_table *iommu_init_table(struct iommu_table *tbl, int nid,
+>  
+> 
+> 
+> 
+>  static void iommu_table_free(struct kref *kref)
+>  {
+> -	unsigned long bitmap_sz;
+> -	unsigned int order;
+>  	struct iommu_table *tbl;
+>  
+> 
+> 
+> 
+>  	tbl = container_of(kref, struct iommu_table, it_kref);
+> @@ -796,12 +791,8 @@ static void iommu_table_free(struct kref *kref)
+>  	if (!bitmap_empty(tbl->it_map, tbl->it_size))
+>  		pr_warn("%s: Unexpected TCEs\n", __func__);
+>  
+> 
+> 
+> 
+> -	/* calculate bitmap size in bytes */
+> -	bitmap_sz = BITS_TO_LONGS(tbl->it_size) * sizeof(unsigned long);
+> -
+>  	/* free bitmap */
+> -	order = get_order(bitmap_sz);
+> -	free_pages((unsigned long) tbl->it_map, order);
+> +	vfree(tbl->it_map);
+>  
+> 
+> 
+> 
+>  	/* free table */
+>  	kfree(tbl);
 
 
