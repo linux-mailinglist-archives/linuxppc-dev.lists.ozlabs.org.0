@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27D031D379
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Feb 2021 01:39:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7601331D37A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Feb 2021 01:40:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DgJrq6YvJz3cm4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Feb 2021 11:39:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DgJsM2LsNz3d3H
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Feb 2021 11:40:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=orX+cYTF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=TF5M0SzF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=orX+cYTF; 
+ header.a=rsa-sha256 header.s=201602 header.b=TF5M0SzF; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DgJqV4mM6z3bNd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Feb 2021 11:38:46 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DgJqW4cN5z30hy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Feb 2021 11:38:47 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1007)
- id 4DgJqT6xFBz9sSC; Wed, 17 Feb 2021 11:38:45 +1100 (AEDT)
+ id 4DgJqV0mNyz9sTD; Wed, 17 Feb 2021 11:38:46 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1613522325;
- bh=SytjlTtvQe3KI3rxB1W/YDnqdGpSQfmDFun03y0tPWc=;
+ d=gibson.dropbear.id.au; s=201602; t=1613522326;
+ bh=wGQ++iT7JUFjfkLLwJnS3Xl8X/IbXFBjYwfE6sAJFD4=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=orX+cYTFI4C34RmUe/rNIHu/b6MRfvZ8nbcmT3+R1y9HPeU8uZNjhvUmAnC7AgaBe
- ltiT7DiEG1IGUI9cW5/BDk6TmPBQakFEVUPZsxjgGWuGNfC6ydc4494iQhjXxERo8b
- e7Ozc0IPTlU0ixGJV8rB4Z1wUPvcwFFM331mwMqg=
-Date: Wed, 17 Feb 2021 11:16:22 +1100
+ b=TF5M0SzFmZ7uZTtMjcZcqhHlT1eXhGpw1ad5dv+n2UlgF1YnuMZ1vlITcheXNU8E1
+ aVsM2Z7mbB9ETeD6sMJoerNIomQ6PNVp7nlp1kIcj5RYa42FaUO/qwFu73yIE+jZ+o
+ NOtBYKcfxBkCUx8vZTpWMCHWLICZYKMafTMtfcUQ=
+Date: Wed, 17 Feb 2021 11:24:48 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel 2/2] powerpc/iommu: Do not immediately panic when
- failed IOMMU table allocation
-Message-ID: <YCxgViVCK08S7BtV@yekko.fritz.box>
-References: <20210216033307.69863-1-aik@ozlabs.ru>
- <20210216033307.69863-3-aik@ozlabs.ru>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v4 1/3] powerpc/book3s64/radix/tlb: tlbie primitives for
+ process-scoped invalidations from guests
+Message-ID: <YCxiUCm/UCJJGOJD@yekko.fritz.box>
+References: <20210215063542.3642366-1-bharata@linux.ibm.com>
+ <20210215063542.3642366-2-bharata@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="E/6FMYZ2DXmP95Q9"
+ protocol="application/pgp-signature"; boundary="7d2ekL/4QIyl31a9"
 Content-Disposition: inline
-In-Reply-To: <20210216033307.69863-3-aik@ozlabs.ru>
+In-Reply-To: <20210215063542.3642366-2-bharata@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,189 +58,275 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
+ kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---E/6FMYZ2DXmP95Q9
+--7d2ekL/4QIyl31a9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 16, 2021 at 02:33:07PM +1100, Alexey Kardashevskiy wrote:
-> Most platforms allocate IOMMU table structures (specifically it_map)
-> at the boot time and when this fails - it is a valid reason for panic().
+On Mon, Feb 15, 2021 at 12:05:40PM +0530, Bharata B Rao wrote:
+> H_RPT_INVALIDATE hcall needs to perform process scoped tlbie
+> invalidations of L1 and nested guests from L0. This needs RS register
+> for TLBIE instruction to contain both PID and LPID. Introduce
+> primitives that execute tlbie instruction with both PID
+> and LPID set in prepartion for H_RPT_INVALIDATE hcall.
 >=20
-> However the powernv platform allocates it_map after a device is returned
-> to the host OS after being passed through and this happens long after
-> the host OS booted. It is quite possible to trigger the it_map allocation
-> panic() and kill the host even though it is not necessary - the host OS
-> can still use the DMA bypass mode (requires a tiny fraction of it_map's
-> memory) and even if that fails, the host OS is runnnable as it was without
-> the device for which allocating it_map causes the panic.
+> While we are here, move RIC_FLUSH definitions to header file
+> and introduce helper rpti_pgsize_to_psize() that will be needed
+> by the upcoming hcall.
 >=20
-> Instead of immediately crashing in a powernv/ioda2 system, this prints
-> an error and continues. All other platforms still call panic().
->=20
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-
+> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
 > ---
->  arch/powerpc/kernel/iommu.c               |  6 ++++--
->  arch/powerpc/platforms/cell/iommu.c       |  3 ++-
->  arch/powerpc/platforms/pasemi/iommu.c     |  4 +++-
->  arch/powerpc/platforms/powernv/pci-ioda.c | 15 ++++++++-------
->  arch/powerpc/platforms/pseries/iommu.c    | 10 +++++++---
->  arch/powerpc/sysdev/dart_iommu.c          |  3 ++-
->  6 files changed, 26 insertions(+), 15 deletions(-)
+>  .../include/asm/book3s/64/tlbflush-radix.h    |  18 +++
+>  arch/powerpc/mm/book3s64/radix_tlb.c          | 122 +++++++++++++++++-
+>  2 files changed, 136 insertions(+), 4 deletions(-)
 >=20
-> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-> index 8eb6eb0afa97..c1a5c366a664 100644
-> --- a/arch/powerpc/kernel/iommu.c
-> +++ b/arch/powerpc/kernel/iommu.c
-> @@ -728,8 +728,10 @@ struct iommu_table *iommu_init_table(struct iommu_ta=
-ble *tbl, int nid,
->  	sz =3D BITS_TO_LONGS(tbl->it_size) * sizeof(unsigned long);
+> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h b/arch/p=
+owerpc/include/asm/book3s/64/tlbflush-radix.h
+> index 94439e0cefc9..aace7e9b2397 100644
+> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+> @@ -4,6 +4,10 @@
 > =20
->  	tbl->it_map =3D vzalloc_node(sz, nid);
-> -	if (!tbl->it_map)
-> -		panic("iommu_init_table: Can't allocate %ld bytes\n", sz);
-> +	if (!tbl->it_map) {
-> +		pr_err("%s: Can't allocate %ld bytes\n", __func__, sz);
-> +		return NULL;
-> +	}
+>  #include <asm/hvcall.h>
 > =20
->  	iommu_table_reserve_pages(tbl, res_start, res_end);
-> =20
-> diff --git a/arch/powerpc/platforms/cell/iommu.c b/arch/powerpc/platforms=
-/cell/iommu.c
-> index 2124831cf57c..fa08699aedeb 100644
-> --- a/arch/powerpc/platforms/cell/iommu.c
-> +++ b/arch/powerpc/platforms/cell/iommu.c
-> @@ -486,7 +486,8 @@ cell_iommu_setup_window(struct cbe_iommu *iommu, stru=
-ct device_node *np,
->  	window->table.it_size =3D size >> window->table.it_page_shift;
->  	window->table.it_ops =3D &cell_iommu_ops;
-> =20
-> -	iommu_init_table(&window->table, iommu->nid, 0, 0);
-> +	if (!iommu_init_table(&window->table, iommu->nid, 0, 0))
-> +		panic("Failed to initialize iommu table");
-> =20
->  	pr_debug("\tioid      %d\n", window->ioid);
->  	pr_debug("\tblocksize %ld\n", window->table.it_blocksize);
-> diff --git a/arch/powerpc/platforms/pasemi/iommu.c b/arch/powerpc/platfor=
-ms/pasemi/iommu.c
-> index b500a6e47e6b..5be7242fbd86 100644
-> --- a/arch/powerpc/platforms/pasemi/iommu.c
-> +++ b/arch/powerpc/platforms/pasemi/iommu.c
-> @@ -146,7 +146,9 @@ static void iommu_table_iobmap_setup(void)
->  	 */
->  	iommu_table_iobmap.it_blocksize =3D 4;
->  	iommu_table_iobmap.it_ops =3D &iommu_table_iobmap_ops;
-> -	iommu_init_table(&iommu_table_iobmap, 0, 0, 0);
-> +	if (!iommu_init_table(&iommu_table_iobmap, 0, 0, 0))
-> +		panic("Failed to initialize iommu table");
+> +#define RIC_FLUSH_TLB 0
+> +#define RIC_FLUSH_PWC 1
+> +#define RIC_FLUSH_ALL 2
 > +
->  	pr_debug(" <- %s\n", __func__);
+>  struct vm_area_struct;
+>  struct mm_struct;
+>  struct mmu_gather;
+> @@ -21,6 +25,20 @@ static inline u64 psize_to_rpti_pgsize(unsigned long p=
+size)
+>  	return H_RPTI_PAGE_ALL;
 >  }
 > =20
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/pla=
-tforms/powernv/pci-ioda.c
-> index f0f901683a2f..66c3c3337334 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -1762,7 +1762,8 @@ static void pnv_pci_ioda1_setup_dma_pe(struct pnv_p=
-hb *phb,
->  	tbl->it_ops =3D &pnv_ioda1_iommu_ops;
->  	pe->table_group.tce32_start =3D tbl->it_offset << tbl->it_page_shift;
->  	pe->table_group.tce32_size =3D tbl->it_size << tbl->it_page_shift;
-> -	iommu_init_table(tbl, phb->hose->node, 0, 0);
-> +	if (!iommu_init_table(tbl, phb->hose->node, 0, 0))
-> +		panic("Failed to initialize iommu table");
-> =20
->  	pe->dma_setup_done =3D true;
->  	return;
-> @@ -1930,16 +1931,16 @@ static long pnv_pci_ioda2_setup_default_config(st=
-ruct pnv_ioda_pe *pe)
->  		res_start =3D pe->phb->ioda.m32_pci_base >> tbl->it_page_shift;
->  		res_end =3D min(window_size, SZ_4G) >> tbl->it_page_shift;
->  	}
-> -	iommu_init_table(tbl, pe->phb->hose->node, res_start, res_end);
-> =20
-> -	rc =3D pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
-> +	if (iommu_init_table(tbl, pe->phb->hose->node, res_start, res_end))
-> +		rc =3D pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
+> +static inline int rpti_pgsize_to_psize(unsigned long page_size)
+> +{
+> +	if (page_size =3D=3D H_RPTI_PAGE_4K)
+> +		return MMU_PAGE_4K;
+> +	if (page_size =3D=3D H_RPTI_PAGE_64K)
+> +		return MMU_PAGE_64K;
+> +	if (page_size =3D=3D H_RPTI_PAGE_2M)
+> +		return MMU_PAGE_2M;
+> +	if (page_size =3D=3D H_RPTI_PAGE_1G)
+> +		return MMU_PAGE_1G;
 > +	else
-> +		rc =3D -ENOMEM;
->  	if (rc) {
-> -		pe_err(pe, "Failed to configure 32-bit TCE table, err %ld\n",
-> -				rc);
-> +		pe_err(pe, "Failed to configure 32-bit TCE table, err %ld\n", rc);
->  		iommu_tce_table_put(tbl);
-> -		return rc;
-> +		tbl =3D NULL; /* This clears iommu_table_base below */
->  	}
-> -
->  	if (!pnv_iommu_bypass_disabled)
->  		pnv_pci_ioda2_set_bypass(pe, true);
-> =20
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platfo=
-rms/pseries/iommu.c
-> index 9fc5217f0c8e..4d9ac1f181c2 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -638,7 +638,8 @@ static void pci_dma_bus_setup_pSeries(struct pci_bus =
-*bus)
-> =20
->  	iommu_table_setparms(pci->phb, dn, tbl);
->  	tbl->it_ops =3D &iommu_table_pseries_ops;
-> -	iommu_init_table(tbl, pci->phb->node, 0, 0);
-> +	if (!iommu_init_table(tbl, pci->phb->node, 0, 0))
-> +		panic("Failed to initialize iommu table");
-> =20
->  	/* Divide the rest (1.75GB) among the children */
->  	pci->phb->dma_window_size =3D 0x80000000ul;
-> @@ -720,7 +721,8 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bu=
-s *bus)
->  		iommu_table_setparms_lpar(ppci->phb, pdn, tbl,
->  				ppci->table_group, dma_window);
->  		tbl->it_ops =3D &iommu_table_lpar_multi_ops;
-> -		iommu_init_table(tbl, ppci->phb->node, 0, 0);
-> +		if (!iommu_init_table(tbl, ppci->phb->node, 0, 0))
-> +			panic("Failed to initialize iommu table");
->  		iommu_register_group(ppci->table_group,
->  				pci_domain_nr(bus), 0);
->  		pr_debug("  created table: %p\n", ppci->table_group);
-> @@ -749,7 +751,9 @@ static void pci_dma_dev_setup_pSeries(struct pci_dev =
-*dev)
->  		tbl =3D PCI_DN(dn)->table_group->tables[0];
->  		iommu_table_setparms(phb, dn, tbl);
->  		tbl->it_ops =3D &iommu_table_pseries_ops;
-> -		iommu_init_table(tbl, phb->node, 0, 0);
-> +		if (!iommu_init_table(tbl, phb->node, 0, 0))
-> +			panic("Failed to initialize iommu table");
+> +		return MMU_PAGE_64K; /* Default */
+> +}
+
+Would it make sense to put the H_RPT_PAGE_ tags into the
+mmu_psize_defs table and scan that here, rather than open coding the
+conversion?
+
 > +
->  		set_iommu_table_base(&dev->dev, tbl);
->  		return;
->  	}
-> diff --git a/arch/powerpc/sysdev/dart_iommu.c b/arch/powerpc/sysdev/dart_=
-iommu.c
-> index 6b4a34b36d98..1d33b7a5ea83 100644
-> --- a/arch/powerpc/sysdev/dart_iommu.c
-> +++ b/arch/powerpc/sysdev/dart_iommu.c
-> @@ -344,7 +344,8 @@ static void iommu_table_dart_setup(void)
->  	iommu_table_dart.it_index =3D 0;
->  	iommu_table_dart.it_blocksize =3D 1;
->  	iommu_table_dart.it_ops =3D &iommu_dart_ops;
-> -	iommu_init_table(&iommu_table_dart, -1, 0, 0);
-> +	if (!iommu_init_table(&iommu_table_dart, -1, 0, 0))
-> +		panic("Failed to initialize iommu table");
+>  static inline int mmu_get_ap(int psize)
+>  {
+>  	return mmu_psize_defs[psize].ap;
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3=
+s64/radix_tlb.c
+> index fb66d154b26c..097402435303 100644
+> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+> @@ -18,10 +18,6 @@
+>  #include <asm/cputhreads.h>
+>  #include <asm/plpar_wrappers.h>
 > =20
->  	/* Reserve the last page of the DART to avoid possible prefetch
->  	 * past the DART mapped area
+> -#define RIC_FLUSH_TLB 0
+> -#define RIC_FLUSH_PWC 1
+> -#define RIC_FLUSH_ALL 2
+> -
+>  /*
+>   * tlbiel instruction for radix, set invalidation
+>   * i.e., r=3D1 and is=3D01 or is=3D10 or is=3D11
+> @@ -128,6 +124,21 @@ static __always_inline void __tlbie_pid(unsigned lon=
+g pid, unsigned long ric)
+>  	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+>  }
+> =20
+> +static __always_inline void __tlbie_pid_lpid(unsigned long pid,
+> +					     unsigned long lpid,
+> +					     unsigned long ric)
+> +{
+> +	unsigned long rb, rs, prs, r;
+> +
+> +	rb =3D PPC_BIT(53); /* IS =3D 1 */
+> +	rs =3D (pid << PPC_BITLSHIFT(31)) | (lpid & ~(PPC_BITMASK(0, 31)));
+> +	prs =3D 1; /* process scoped */
+> +	r =3D 1;   /* radix format */
+> +
+> +	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+> +		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+> +	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+> +}
+>  static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned lo=
+ng ric)
+>  {
+>  	unsigned long rb,rs,prs,r;
+> @@ -188,6 +199,23 @@ static __always_inline void __tlbie_va(unsigned long=
+ va, unsigned long pid,
+>  	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+>  }
+> =20
+> +static __always_inline void __tlbie_va_lpid(unsigned long va, unsigned l=
+ong pid,
+> +					    unsigned long lpid,
+> +					    unsigned long ap, unsigned long ric)
+> +{
+> +	unsigned long rb, rs, prs, r;
+> +
+> +	rb =3D va & ~(PPC_BITMASK(52, 63));
+> +	rb |=3D ap << PPC_BITLSHIFT(58);
+> +	rs =3D (pid << PPC_BITLSHIFT(31)) | (lpid & ~(PPC_BITMASK(0, 31)));
+> +	prs =3D 1; /* process scoped */
+> +	r =3D 1;   /* radix format */
+> +
+> +	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+> +		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+> +	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+> +}
+> +
+>  static __always_inline void __tlbie_lpid_va(unsigned long va, unsigned l=
+ong lpid,
+>  					    unsigned long ap, unsigned long ric)
+>  {
+> @@ -233,6 +261,22 @@ static inline void fixup_tlbie_va_range(unsigned lon=
+g va, unsigned long pid,
+>  	}
+>  }
+> =20
+> +static inline void fixup_tlbie_va_range_lpid(unsigned long va,
+> +					     unsigned long pid,
+> +					     unsigned long lpid,
+> +					     unsigned long ap)
+> +{
+> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
+> +		asm volatile("ptesync" : : : "memory");
+> +		__tlbie_pid_lpid(0, lpid, RIC_FLUSH_TLB);
+> +	}
+> +
+> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+> +		asm volatile("ptesync" : : : "memory");
+> +		__tlbie_va_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
+> +	}
+> +}
+> +
+>  static inline void fixup_tlbie_pid(unsigned long pid)
+>  {
+>  	/*
+> @@ -252,6 +296,25 @@ static inline void fixup_tlbie_pid(unsigned long pid)
+>  	}
+>  }
+> =20
+> +static inline void fixup_tlbie_pid_lpid(unsigned long pid, unsigned long=
+ lpid)
+> +{
+> +	/*
+> +	 * We can use any address for the invalidation, pick one which is
+> +	 * probably unused as an optimisation.
+> +	 */
+> +	unsigned long va =3D ((1UL << 52) - 1);
+> +
+> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
+> +		asm volatile("ptesync" : : : "memory");
+> +		__tlbie_pid_lpid(0, lpid, RIC_FLUSH_TLB);
+> +	}
+> +
+> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+> +		asm volatile("ptesync" : : : "memory");
+> +		__tlbie_va_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
+> +				RIC_FLUSH_TLB);
+> +	}
+> +}
+> =20
+>  static inline void fixup_tlbie_lpid_va(unsigned long va, unsigned long l=
+pid,
+>  				       unsigned long ap)
+> @@ -342,6 +405,31 @@ static inline void _tlbie_pid(unsigned long pid, uns=
+igned long ric)
+>  	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+>  }
+> =20
+> +static inline void _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
+> +				   unsigned long ric)
+> +{
+> +	asm volatile("ptesync" : : : "memory");
+> +
+> +	/*
+> +	 * Workaround the fact that the "ric" argument to __tlbie_pid
+> +	 * must be a compile-time contraint to match the "i" constraint
+> +	 * in the asm statement.
+> +	 */
+> +	switch (ric) {
+> +	case RIC_FLUSH_TLB:
+> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
+> +		fixup_tlbie_pid_lpid(pid, lpid);
+> +		break;
+> +	case RIC_FLUSH_PWC:
+> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
+> +		break;
+> +	case RIC_FLUSH_ALL:
+> +	default:
+> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_ALL);
+> +		fixup_tlbie_pid_lpid(pid, lpid);
+> +	}
+> +	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+> +}
+>  struct tlbiel_pid {
+>  	unsigned long pid;
+>  	unsigned long ric;
+> @@ -467,6 +555,20 @@ static inline void __tlbie_va_range(unsigned long st=
+art, unsigned long end,
+>  	fixup_tlbie_va_range(addr - page_size, pid, ap);
+>  }
+> =20
+> +static inline void __tlbie_va_range_lpid(unsigned long start, unsigned l=
+ong end,
+> +					 unsigned long pid, unsigned long lpid,
+> +					 unsigned long page_size,
+> +					 unsigned long psize)
+> +{
+> +	unsigned long addr;
+> +	unsigned long ap =3D mmu_get_ap(psize);
+> +
+> +	for (addr =3D start; addr < end; addr +=3D page_size)
+> +		__tlbie_va_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
+> +
+> +	fixup_tlbie_va_range_lpid(addr - page_size, pid, lpid, ap);
+> +}
+> +
+>  static __always_inline void _tlbie_va(unsigned long va, unsigned long pi=
+d,
+>  				      unsigned long psize, unsigned long ric)
+>  {
+> @@ -547,6 +649,18 @@ static inline void _tlbie_va_range(unsigned long sta=
+rt, unsigned long end,
+>  	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+>  }
+> =20
+> +static inline void _tlbie_va_range_lpid(unsigned long start, unsigned lo=
+ng end,
+> +					unsigned long pid, unsigned long lpid,
+> +					unsigned long page_size,
+> +					unsigned long psize, bool also_pwc)
+> +{
+> +	asm volatile("ptesync" : : : "memory");
+> +	if (also_pwc)
+> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
+> +	__tlbie_va_range_lpid(start, end, pid, lpid, page_size, psize);
+> +	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+> +}
+> +
+>  static inline void _tlbiel_va_range_multicast(struct mm_struct *mm,
+>  				unsigned long start, unsigned long end,
+>  				unsigned long pid, unsigned long page_size,
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -248,24 +334,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---E/6FMYZ2DXmP95Q9
+--7d2ekL/4QIyl31a9
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmAsYFYACgkQbDjKyiDZ
-s5J80g/+Oq19AnsI6a7CCUiVrhPJlwDr/1s0SpXyJ5W09ifnsc0cMdGs30rGZt4Z
-Niz3s0A+e9NbRf8IaWQUNMqMTeBWefRwB3stmKoh8MbvyCr/KQEJcqK98Te6Xj5E
-TJnYoM9f8bZ5lsldaq5DKp0H23BeqvwBDLUEJaILP+XEAOFwSGLvhIEbmQhkf1Dm
-N+Z6sJ68iuhq+5y1ozye7AO50KYKPYAc6RKqEgu6vFhfny+o7c77h77s5CanEXk5
-pIqstPKLsPiUTrzooZi2qNr18MsOQALx4x9boiyMJ9kTmj1Jhs5PrxCT9Xghkblz
-wenkPtcDEUDLthm8DOlMplKm/0I6wg00WzWkj5IfFbssMfY0NT6m5w7zfwyzP50D
-rHLI5E82HM/C87r8JpROIubBsH4xh/FhADUIh5iMHhrcB/kzwiYnoggozyXymfup
-ZH59Mgv9dtunEldZEvc74fMEXY2M+rfXhuR0jyGkbB51zDWFgeJLUs07udPWXDlW
-7cBYv+zmXWj7RRdQ/kcJ24E9sQAk+W4up/VDoW3S9bJZwpz4KzMobHD1ZAm61RnL
-rLSwhORLP6sgxvBuFOQhj3vRccncglGq2zi4yYmq5Di4u2Dj+8Qxuy7XvbJVmNri
-yFV1HVCD7I1KvfmA5T4W++fHcUw65qs0HlwwhcPo1JvQCt3G9Hk=
-=IrzQ
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmAsYlAACgkQbDjKyiDZ
+s5IMfxAA1USMoHd8r34NuHAbd1oRZFLmPeF0F6/1qqv4nsNOBU0rrt0kLCC6iPTP
+EjzTpBBFuxSg+gr6C+I3YAYU/pROISDKXM0t2CwDw+VlARhSWXArP7Al8fmTiEjJ
+nLkHaoR7kHaOa4TIglk0eV9b2Wp0VcD2EC8nZ8SbJ4joQkdsMhjgpLIs8WKiwYOx
+cd2eTnJBOBDeSvdQk01Yxg8xku699esd/Vi96Afb3WDORWh+WC52L99GM+2sGnEs
+9lREcHoT2WNLJIalkJp9fgnGQlr+iNuG6pVr5mfDUXQm1HWoDPRv3qFBrF3ZO1ED
+dfzrp+mLJo2dl7Ft4rvZPVOrar9Xp686U9t1eaBZF5F/Xh+LFZRscwejhcScMt9k
+xq26ktzTLhwquV9hGEiCPWnhD+d0aMnnavtgU5e9WjuOKciIfxm8b5rxpUadHHcl
+avXvIOHphEZKCQXXm3y9nWha0rKvvweg4VM6hBBUHISPMiXBHxStyiCSyP4wTjuS
+79cVoSfJ8Uj7Rz78jgIbt4epzaggCK45RbxS6eRcZ8nQ4uZi4BdBPXvtfo3WZ2/0
+k1/NxCIcXON3drARiZSCDpMQyf1MnL6WvhWXhAXVHCcT2XX3lztGC5Gd+1ypBYgQ
+J2B1ksnNIayMcDnHE+WQcrjbv9c3Q5shFgLQpeHLRCDCWjU1EgA=
+=rpxL
 -----END PGP SIGNATURE-----
 
---E/6FMYZ2DXmP95Q9--
+--7d2ekL/4QIyl31a9--
