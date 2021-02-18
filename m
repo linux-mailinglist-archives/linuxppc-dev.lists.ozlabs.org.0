@@ -1,55 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ADBA31E887
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Feb 2021 11:45:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6739231E88A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Feb 2021 11:47:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DhBDn2tMJz30QN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Feb 2021 21:45:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DhBHQ3ttWz30MP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Feb 2021 21:47:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OHvydnjH;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YqYRf21K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=OHvydnjH; 
+ header.a=rsa-sha256 header.s=201909 header.b=YqYRf21K; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DhBDG6nmLz30Kw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 21:44:46 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DhBH26lHnz30KT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 21:47:10 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DhBD64vFvz9sBJ;
- Thu, 18 Feb 2021 21:44:38 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DhBH15dZlz9sBy;
+ Thu, 18 Feb 2021 21:47:09 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1613645079;
- bh=ZsNlPzRZrmg4PFm+VJmNAO7Irdgz1Plpmx+SNgFPZsc=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=OHvydnjHKxgHMLUHcND78HFYkWD+xm92BEqIiAhEdc7OJ6TiViZv4g7xrWsiyp+7w
- kBWgxU4fI565Am8ML/cW78MpEwSWxgfWl3mJhalmuJ6QRn7GyqbMH/4orAq+Uo94TK
- TG79AOyTlFWpeTnfBBzDIJlqb/cn83/FIzNPNrtIm2HTcKHU5dvhTRJdy3YwKkFCnF
- RXWK2Sy8wfF4ouZfctD3X2Sa+681bn8Z4F5d6iaeJB8je7D/xdFGI7yvbGRoJStC9X
- r/Txz5Ije+ogYpJRw2IDcNjxKN2YnFlQny3pHD8S9UF2tlc1hBqx75oJZO94PxwXlM
- OsvrGFBDcMWoA==
+ s=201909; t=1613645230;
+ bh=EKQFq6vpmkbDSEblNkTK4SHWV0oMhCYhSsyZaMd0VxM=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=YqYRf21KzNhnXhkea06tmykyfKq5MGeZBu28Tw0DNLix3/W2U02NqzskuCRofYVRI
+ ihuHL6CFfUI5QSULFlhYPhveEfeZkeeCBC8BvpVxYVQ4J6ANpmSDA6Xi+n99Axnvnx
+ zsu8vB1i6Q+tFG+ht4x7QV7bgCGwOJUFuL7BKMDLUhrldTW6CgSCo6WEgtCICh0IKq
+ Ur/WkilsY8FzSy72BjtrIsh9oBtRoEs1QUBlze5iPX1vjwdAcZyCIaMvHZKYTS/qdE
+ RcvYYXBKmerk/Ie5axLVtP+0IKFtORLtUCeO0NO2AmgHGSb6sQIJC4Oj9+8wZo+Bps
+ 7yVlJNJHwor4g==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Rob Herring
- <robherring2@gmail.com>, PowerPC <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: linux-next: manual merge of the devicetree tree with the
- powerpc tree
-In-Reply-To: <20210218144815.5673ae6f@canb.auug.org.au>
-References: <20210218144815.5673ae6f@canb.auug.org.au>
-Date: Thu, 18 Feb 2021 21:44:37 +1100
-Message-ID: <874ki9vene.fsf@mpe.ellerman.id.au>
+To: "Christopher M. Riedl" <cmr@codefail.de>, Daniel Axtens
+ <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 05/10] powerpc/signal64: Remove TM ifdefery in middle
+ of if/else block
+In-Reply-To: <C9C1XKNVRQC4.LHKIIQAIC3L7@oc8246131445.ibm.com>
+References: <20210203184323.20792-1-cmr@codefail.de>
+ <20210203184323.20792-6-cmr@codefail.de>
+ <874kiheu93.fsf@dja-thinkpad.axtens.net>
+ <C9C1XKNVRQC4.LHKIIQAIC3L7@oc8246131445.ibm.com>
+Date: Thu, 18 Feb 2021 21:47:08 +1100
+Message-ID: <871rddvej7.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -63,49 +66,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Hari Bathini <hbathini@linux.ibm.com>, Rob Herring <robh@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> Hi all,
+"Christopher M. Riedl" <cmr@codefail.de> writes:
+> On Thu Feb 11, 2021 at 11:21 PM CST, Daniel Axtens wrote:
+...
+>>
+>> My only concern here was whether it was valid to access
+>> if (__get_user(msr, &uc->uc_mcontext.gp_regs[PT_MSR]))
+>> if CONFIG_PPC_TRANSACTIONAL_MEM was not defined, but I didn't think of
+>> any obvious reason why it wouldn't be...
 >
-> Today's linux-next merge of the devicetree tree got a conflict in:
->
->   arch/powerpc/kexec/elf_64.c
->
-> between commit:
->
->   2377c92e37fe ("powerpc/kexec_file: fix FDT size estimation for kdump kernel")
->
-> from the powerpc tree and commit:
->
->   130b2d59cec0 ("powerpc: Use common of_kexec_alloc_and_setup_fdt()")
->
-> from the devicetree tree.
->
-> I can't easily see how to resolve these, so for now I have just used
-> the latter' changes to this file.
+> Hmm, we don't really need it for the non-TM case and it is another extra
+> uaccess. I will take your suggestion to remove the need for the other
+> ifdefs but might keep this one. Keeping it also makes it very clear this
+> call is only here for TM and possible to remove in a potentially TM-less
+> future :)
 
-I think it just needs this?
-
-diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-index 87e34611f93d..0492ca6003f3 100644
---- a/arch/powerpc/kexec/elf_64.c
-+++ b/arch/powerpc/kexec/elf_64.c
-@@ -104,7 +104,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 
- 	fdt = of_kexec_alloc_and_setup_fdt(image, initrd_load_addr,
- 					   initrd_len, cmdline,
--					   fdt_totalsize(initial_boot_params));
-+					   kexec_fdt_totalsize_ppc64(image));
- 	if (!fdt) {
- 		pr_err("Error setting up the new device tree.\n");
- 		ret = -EINVAL;
-
+Yep I agree.
 
 cheers
