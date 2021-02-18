@@ -2,70 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1812E31EA90
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Feb 2021 14:53:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 692B731F0F5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Feb 2021 21:28:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DhGQC16GZz3cJh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 00:53:39 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=pHcD0ghe;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DhR9M3lgPz3cJL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 07:28:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::634;
- helo=mail-ej1-x634.google.com; envelope-from=robherring2@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=pHcD0ghe; dkim-atps=neutral
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com
- [IPv6:2a00:1450:4864:20::634])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=feng.tang@intel.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir;
+ Fri, 19 Feb 2021 00:05:48 AEDT
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DhGPm1yZ4z30LG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 00:53:13 +1100 (AEDT)
-Received: by mail-ej1-x634.google.com with SMTP id u20so4991203ejb.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 05:53:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=e4WxhpsUCYoI68epWSVeYmZpkTYdeeFLMrDY4wlplfI=;
- b=pHcD0ghentGOj45fVxrfkX0xPlSZvJlC0kd55797B5+7/FDJlRdHC9SkXW6ugmrNgK
- X6hGVuBi8QvWvI67Qz+hZ8U7osHbDuB6KtlpwRBkq/2shwzErWmKsoy3LTn6TQGu1jIl
- Yo64yXGT9VUimy9DnHi719D1gvNEgtvWVw+U68Z7BoJaiOvA9lBI19trc+JMMBa+FlMw
- jq00qgzP+phsfc+PuRwfmT8Ze9o8f5Jm2VJ3YOTcrF6wv+YcRf6K/VpPwCp8M03Q1wRi
- wRrU5a+VkfQ8wMMML5nmr+vFJ64WpquXC8gxvaAl4x4hfAdn1BPVCq86muKBF1COxEvF
- 2AgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=e4WxhpsUCYoI68epWSVeYmZpkTYdeeFLMrDY4wlplfI=;
- b=sNd6OEvIaNDyZ+fXxLrs+8mDdZc1CVjOjhVw5RpQCaneJonzF6WVYJJT2SZKywgcAp
- O5wEUfR9JKfHjYvquAjXS8PHnmUwlPNSD8/A09t8HwvDLBCmpcJQrVJpNQ+3LTqNE6jS
- 2WAU2SOk+630Ty1BxpF9nUEye50cJ3CHqmhbj94PZvwVPUgti4LS88cbY1xwyblSFbhB
- A9H0aVkvq3yreliy3/C80zV7hhBWkIVRyMn7+P+lc7GFbDrSDw500yewcAKJnMY3gMp+
- IONYAHJBSTamCZYuKZwDe3YT8oA6dGgkOI4EZBwYMMnFBvtqdUulP18+n/T++QH0Cjas
- kIYg==
-X-Gm-Message-State: AOAM5319HPUG9EYQuAagNoPoA7E/TisLbQ/7Len/n3MaHvu/c9XXmxj/
- /Kv8IS/X9ohl/RAKQl/IXh+EueRqmXOqdl/4tQ==
-X-Google-Smtp-Source: ABdhPJyjnj3etHjyJP96CAwGNcurZz9kLIYoqEOkH+GezZ/ZGsXaciElTkISu6NL/wj6DRkIqVBz6keGOskaBkyE5vc=
-X-Received: by 2002:a17:906:f85:: with SMTP id
- q5mr4044757ejj.108.1613656386829; 
- Thu, 18 Feb 2021 05:53:06 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DhFM0580Bz30LL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 00:05:48 +1100 (AEDT)
+IronPort-SDR: ST55weyg8DW+Em9Dyj4SIJo1Eno+b+/1QD+xplHRa4+XKhY5m/694o3U3b/EdKhVCHl8yrg2YD
+ 3VezsLszVS0w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9898"; a="183616243"
+X-IronPort-AV: E=Sophos;i="5.81,187,1610438400"; d="scan'208";a="183616243"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2021 05:04:37 -0800
+IronPort-SDR: ZkCv/6vhwx0D2aA6Xqr/eA6dieQwCqGAkZLB9bqJ+JSdYWatqcfLIP+FS86V9fwY8jjMvEUHeS
+ fEVNR0JKLu8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,187,1610438400"; d="scan'208";a="385943177"
+Received: from shbuild999.sh.intel.com (HELO localhost) ([10.239.146.165])
+ by fmsmga008.fm.intel.com with ESMTP; 18 Feb 2021 05:04:35 -0800
+Date: Thu, 18 Feb 2021 21:04:34 +0800
+From: Feng Tang <feng.tang@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/4xx: Fix build errors from mfdcr()
+Message-ID: <20210218130434.GA47750@shbuild999.sh.intel.com>
+References: <20210218123058.748882-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-References: <20210218144815.5673ae6f@canb.auug.org.au>
- <874ki9vene.fsf@mpe.ellerman.id.au>
- <20210218223427.77109d83@canb.auug.org.au>
-In-Reply-To: <20210218223427.77109d83@canb.auug.org.au>
-From: Rob Herring <robherring2@gmail.com>
-Date: Thu, 18 Feb 2021 07:52:52 -0600
-Message-ID: <CAL_JsqJ9Ske4hkWn3uo8-nef29MQ1DkNdtE=gxbqj8CKrtQorg@mail.gmail.com>
-Subject: Re: linux-next: manual merge of the devicetree tree with the powerpc
- tree
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210218123058.748882-1-mpe@ellerman.id.au>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Mailman-Approved-At: Fri, 19 Feb 2021 07:27:49 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,59 +55,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 18, 2021 at 5:34 AM Stephen Rothwell <sfr@canb.auug.org.au> wrote:
->
-> Hi Michael,
->
-> On Thu, 18 Feb 2021 21:44:37 +1100 Michael Ellerman <mpe@ellerman.id.au> wrote:
-> >
-> > I think it just needs this?
-> >
-> > diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-> > index 87e34611f93d..0492ca6003f3 100644
-> > --- a/arch/powerpc/kexec/elf_64.c
-> > +++ b/arch/powerpc/kexec/elf_64.c
-> > @@ -104,7 +104,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
-> >
-> >       fdt = of_kexec_alloc_and_setup_fdt(image, initrd_load_addr,
-> >                                          initrd_len, cmdline,
-> > -                                        fdt_totalsize(initial_boot_params));
-> > +                                        kexec_fdt_totalsize_ppc64(image));
-> >       if (!fdt) {
-> >               pr_err("Error setting up the new device tree.\n");
-> >               ret = -EINVAL;
-> >
->
-> I thought about that, but the last argument to
-> of_kexec_alloc_and_setup_fdt() is extra_fdt_size and the allocation
-> done is for this:
->
-> fdt_size = fdt_totalsize(initial_boot_params) +
->                    (cmdline ? strlen(cmdline) : 0) +
->                    FDT_EXTRA_SPACE +
->                    extra_fdt_size;
->
-> and kexec_fdt_totalsize_ppc64() also includes
-> fdt_totalsize(initial_boot_params) so I was not sure.  Maybe
-> kexec_fdt_totalsize_ppc64() needs modification as well?
+On Thu, Feb 18, 2021 at 11:30:58PM +1100, Michael Ellerman wrote:
+> lkp reported a build error in fsp2.o:
+> 
+>   CC      arch/powerpc/platforms/44x/fsp2.o
+>   {standard input}:577: Error: unsupported relocation against base
+> 
+> Which comes from:
+> 
+>   pr_err("GESR0: 0x%08x\n", mfdcr(base + PLB4OPB_GESR0));
+> 
+> Where our mfdcr() macro is stringifying "base + PLB4OPB_GESR0", and
+> passing that to the assembler, which obviously doesn't work.
+> 
+> The mfdcr() macro already checks that the argument is constant using
+> __builtin_constant_p(), and if not calls the out-of-line version of
+> mfdcr(). But in this case GCC is smart enough to notice that "base +
+> PLB4OPB_GESR0" will be constant, even though it's not something we can
+> immediately stringify into a register number.
+> 
+> Segher pointed out that passing the register number to the inline asm
+> as a constant would be better, and in fact it fixes the build error,
+> presumably because it gives GCC a chance to resolve the value.
+> 
+> While we're at it, change mtdcr() similarly.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Suggested-by: Segher Boessenkool <segher@kernel.crashing.org>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-You're both right. Michael's fix is sufficient for the merge. The only
-risk with a larger size is failing to allocate it, but we're talking
-only 10s of KB. Historically until the commit causing the conflict,
-PPC was just used 2x fdt_totalsize(initial_boot_params). You could
-drop 'fdt_size = fdt_totalsize(initial_boot_params) + (2 *
-COMMAND_LINE_SIZE);' from kexec_fdt_totalsize_ppc64() as well, but
-then the function name is misleading.
+Acked-by: Feng Tang <feng.tang@intel.com>
 
-Lakshmi can send a follow-up patch to fine tune the size and rename
-kexec_fdt_totalsize_ppc64.
+Thanks!
 
-Rob
+> ---
+>  arch/powerpc/include/asm/dcr-native.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/dcr-native.h b/arch/powerpc/include/asm/dcr-native.h
+> index 7141ccea8c94..a92059964579 100644
+> --- a/arch/powerpc/include/asm/dcr-native.h
+> +++ b/arch/powerpc/include/asm/dcr-native.h
+> @@ -53,8 +53,8 @@ static inline void mtdcrx(unsigned int reg, unsigned int val)
+>  #define mfdcr(rn)						\
+>  	({unsigned int rval;					\
+>  	if (__builtin_constant_p(rn) && rn < 1024)		\
+> -		asm volatile("mfdcr %0," __stringify(rn)	\
+> -		              : "=r" (rval));			\
+> +		asm volatile("mfdcr %0, %1" : "=r" (rval)	\
+> +			      : "n" (rn));			\
+>  	else if (likely(cpu_has_feature(CPU_FTR_INDEXED_DCR)))	\
+>  		rval = mfdcrx(rn);				\
+>  	else							\
+> @@ -64,8 +64,8 @@ static inline void mtdcrx(unsigned int reg, unsigned int val)
+>  #define mtdcr(rn, v)						\
+>  do {								\
+>  	if (__builtin_constant_p(rn) && rn < 1024)		\
+> -		asm volatile("mtdcr " __stringify(rn) ",%0"	\
+> -			      : : "r" (v)); 			\
+> +		asm volatile("mtdcr %0, %1"			\
+> +			      : : "n" (rn), "r" (v));		\
+>  	else if (likely(cpu_has_feature(CPU_FTR_INDEXED_DCR)))	\
+>  		mtdcrx(rn, v);					\
+>  	else							\
+> -- 
+> 2.25.1
