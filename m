@@ -1,92 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B7831F389
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 02:14:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E0131F3E5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 03:09:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DhYWb1rmZz3cKS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 12:14:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DhZkx3QRrz3cJK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 13:09:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CAziGYVZ;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=MXNuASox;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::529;
+ helo=mail-pg1-x529.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=CAziGYVZ; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=MXNuASox; dkim-atps=neutral
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
+ [IPv6:2607:f8b0:4864:20::529])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DhYW66yg0z30Hp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 12:13:54 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 11J13XDI040538; Thu, 18 Feb 2021 20:13:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=references : from : to :
- cc : subject : in-reply-to : date : message-id : mime-version :
- content-type; s=pp1; bh=Ol+KgWWKRtwuv1OC4+AQN+FF1AU19KJg+Ck4dmIKSDI=;
- b=CAziGYVZMQVAWN2zL50PRtEUhCVQt13b00RPNlJbvpkc0sg8U62G1edPNACJtZt/pmTd
- afJJeUDoIjyZkVoBlXgKo9WGKNPe1HIaBaYMoCl6UYFuv3bDK5yPPHwDPHnTFRJcJuIy
- 82szrLrwYleH2LLiCVGGjHhkjqvhsMD9NvNzGgggMt30dxy1Tk1HbD1MYXgFeLQh6qEf
- 5IjAJNZnlkiVA4Zcg13B2EhfWCILRwjQqZuktiBNptCUrOj3zSgJO07kVBLH6WRPQ1Fk
- FUm9JZGTryprxGMztZB6oWCkbYI7Q8D3Z4jN29Wv1GAfYvS4w9XkDZvgEFWaRj3qF1Cr yQ== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36t2899qee-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Feb 2021 20:13:31 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11J0vnvh015090;
- Fri, 19 Feb 2021 01:13:30 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma03wdc.us.ibm.com with ESMTP id 36p6d9j2d1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 19 Feb 2021 01:13:30 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 11J1DTxe16056632
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Feb 2021 01:13:29 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C267AC059;
- Fri, 19 Feb 2021 01:13:29 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6177CAC05B;
- Fri, 19 Feb 2021 01:13:25 +0000 (GMT)
-Received: from manicouagan.localdomain (unknown [9.85.141.141])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
- Fri, 19 Feb 2021 01:13:25 +0000 (GMT)
-References: <20210218223305.2044-1-nramas@linux.microsoft.com>
- <c6490f6a126a2f10e3e3445b51ea552a26f896a9.camel@linux.ibm.com>
- <8b8c0b70-c7ab-33f3-b66c-9ea03388497b@linux.microsoft.com>
-User-agent: mu4e 1.4.10; emacs 27.1
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Subject: Re: [PATCH] of: error: 'const struct kimage' has no member named
- 'arch'
-In-reply-to: <8b8c0b70-c7ab-33f3-b66c-9ea03388497b@linux.microsoft.com>
-Date: Thu, 18 Feb 2021 22:13:23 -0300
-Message-ID: <87k0r4yi4s.fsf@manicouagan.localdomain>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DhZkV0RBDz30JL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 13:08:47 +1100 (AEDT)
+Received: by mail-pg1-x529.google.com with SMTP id a4so2592772pgc.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 18:08:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=rb6hQrGASZMQuqqqY6sU+3ZTAJiw5k5xT06+VRCXl60=;
+ b=MXNuASoxWigJ5F00irSauvBp7PeaDX+1nJDpKfbc0Y8iEol/vdar4mR2eeZEdSu8Nd
+ WL7omdjunTwbgw2pR00uPGlxypGdZru9pV6a482AJNllT95MUliCE8MfH19Guvx9K8z2
+ VKAHxR/lVFMcUDW7ol10wwB/6MAohKCRfBfMo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=rb6hQrGASZMQuqqqY6sU+3ZTAJiw5k5xT06+VRCXl60=;
+ b=NVo9bbBNJWMrPD1luiJeAsrUbJmn8O2J+NB1qLoA8ZVXumXzQUaS14oUULgKKuPRF8
+ 3UTPiFSkPTiEYxV9pfYpRqGSJ2V6hgmREGkVmPbKW4DSkMUzF0k/YEFpG6fRHt1AexO6
+ MZ13FyXwJbc9p1gWIf10i+t9n7yETjl5ghgJaUA5wSqw3MlKaXUv/cv3y8NX+RwqQWq1
+ FTRbSxnOxoRF18nXBm1E3sJAejQqp0BrWH4blNltrVPHOGDnOlqG0NMBJAmsDJOZ/FMh
+ ZvTH/QkjMjsVlmkKAxUDPtzZSpOZ4OuSuKeRbQCcSv2qVvmNO6OF6jpLbBrdUjtc33H7
+ 0KeA==
+X-Gm-Message-State: AOAM533BzFptEaRMJqG/kFkHpkRySbIfG7Vj9jxM2eXHfgcbYDPVV9ED
+ imNSpK58cnWcaZWDBtEjeoo7tPWXzc+jucTt
+X-Google-Smtp-Source: ABdhPJzAgdCt8SoAJIlX3J1QPEddoCeyP4Sca4EEVmVgt0VGKw8hx8TZr6sr8mL4+DdT2k1qIVX4+Q==
+X-Received: by 2002:a63:7d13:: with SMTP id y19mr6435440pgc.369.1613700523339; 
+ Thu, 18 Feb 2021 18:08:43 -0800 (PST)
+Received: from localhost
+ (2001-44b8-1113-6700-7c23-3019-42a1-bee8.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:7c23:3019:42a1:bee8])
+ by smtp.gmail.com with ESMTPSA id c15sm7478282pjc.9.2021.02.18.18.08.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Feb 2021 18:08:42 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 4/6] powerpc/mm/64s/hash: Factor out change_memory_range()
+In-Reply-To: <20210211135130.3474832-4-mpe@ellerman.id.au>
+References: <20210211135130.3474832-1-mpe@ellerman.id.au>
+ <20210211135130.3474832-4-mpe@ellerman.id.au>
+Date: Fri, 19 Feb 2021 13:08:39 +1100
+Message-ID: <87k0r4q060.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-02-18_14:2021-02-18,
- 2021-02-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- bulkscore=0 adultscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1011 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102190004
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,91 +77,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sashal@kernel.org, robh@kernel.org, sfr@canb.auug.org.au,
- gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- takahiro.akashi@linaro.org, devicetree@vger.kernel.org, james.morse@arm.com,
- catalin.marinas@arm.com, joe@perches.com, linux-integrity@vger.kernel.org,
- will@kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
-
-> On 2/18/21 4:07 PM, Mimi Zohar wrote:
+> Pull the loop calling hpte_updateboltedpp() out of
+> hash__change_memory_range() into a helper function. We need it to be a
+> separate function for the next patch.
 >
-> Hi Mimi,
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/mm/book3s64/hash_pgtable.c | 23 +++++++++++++++--------
+>  1 file changed, 15 insertions(+), 8 deletions(-)
 >
->> On Thu, 2021-02-18 at 14:33 -0800, Lakshmi Ramasubramanian wrote:
->>> of_kexec_alloc_and_setup_fdt() defined in drivers/of/kexec.c builds
->>> a new device tree object that includes architecture specific data
->>> for kexec system call.  This should be defined only if the architecture
->>> being built defines kexec architecture structure "struct kimage_arch".
->>>
->>> Define a new boolean config OF_KEXEC that is enabled if
->>> CONFIG_KEXEC_FILE and CONFIG_OF_FLATTREE are enabled, and
->>> the architecture is arm64 or powerpc64.  Build drivers/of/kexec.c
->>> if CONFIG_OF_KEXEC is enabled.
->>>
->>> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
->>> Fixes: 33488dc4d61f ("of: Add a common kexec FDT setup function")
->>> Reported-by: kernel test robot <lkp@intel.com>
->>> ---
->>>   drivers/of/Kconfig  | 6 ++++++
->>>   drivers/of/Makefile | 7 +------
->>>   2 files changed, 7 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
->>> index 18450437d5d5..f2e8fa54862a 100644
->>> --- a/drivers/of/Kconfig
->>> +++ b/drivers/of/Kconfig
->>> @@ -100,4 +100,10 @@ config OF_DMA_DEFAULT_COHERENT
->>>   	# arches should select this if DMA is coherent by default for OF devices
->>>   	bool
->>>   +config OF_KEXEC
->>> +	bool
->>> +	depends on KEXEC_FILE
->>> +	depends on OF_FLATTREE
->>> +	default y if ARM64 || PPC64
->>> +
->>>   endif # OF
->>> diff --git a/drivers/of/Makefile b/drivers/of/Makefile
->>> index c13b982084a3..287579dd1695 100644
->>> --- a/drivers/of/Makefile
->>> +++ b/drivers/of/Makefile
->>> @@ -13,11 +13,6 @@ obj-$(CONFIG_OF_RESERVED_MEM) += of_reserved_mem.o
->>>   obj-$(CONFIG_OF_RESOLVE)  += resolver.o
->>>   obj-$(CONFIG_OF_OVERLAY) += overlay.o
->>>   obj-$(CONFIG_OF_NUMA) += of_numa.o
->>> -
->>> -ifdef CONFIG_KEXEC_FILE
->>> -ifdef CONFIG_OF_FLATTREE
->>> -obj-y	+= kexec.o
->>> -endif
->>> -endif
->>> +obj-$(CONFIG_OF_KEXEC) += kexec.o
->>>     obj-$(CONFIG_OF_UNITTEST) += unittest-data/
->> Is it possible to reuse CONFIG_HAVE_IMA_KEXEC here?
->> 
->
-> For ppc64 CONFIG_HAVE_IMA_KEXEC is selected when CONFIG_KEXEC_FILE is enabled.
-> So I don't see a problem in reusing CONFIG_HAVE_IMA_KEXEC for ppc.
->
-> But for arm64, CONFIG_HAVE_IMA_KEXEC is enabled in the final patch in the patch
-> set (the one for carrying forward IMA log across kexec for arm64). arm64 calls
-> of_kexec_alloc_and_setup_fdt() prior to enabling CONFIG_HAVE_IMA_KEXEC and hence
-> breaks the build for arm64.
+> diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
+> index 03819c259f0a..3663d3cdffac 100644
+> --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
+> @@ -400,10 +400,23 @@ EXPORT_SYMBOL_GPL(hash__has_transparent_hugepage);
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>  
+>  #ifdef CONFIG_STRICT_KERNEL_RWX
+> +static void change_memory_range(unsigned long start, unsigned long end,
+> +				unsigned int step, unsigned long newpp)
 
-One problem is that I believe that this patch won't placate the robot,
-because IIUC it generates config files at random and this change still
-allows hppa and s390 to enable CONFIG_OF_KEXEC.
+Looking at the call paths, this gets called only in bare metal, not
+virtualised: should the name reflect that?
 
-Perhaps a new CONFIG_HAVE_KIMAGE_ARCH option? Not having that option
-would still allow building kexec.o, but would be used inside kexec.c to
-avoid accessing kimage.arch members.
+> +{
+> +	unsigned long idx;
+> +
+> +	pr_debug("Changing page protection on range 0x%lx-0x%lx, to 0x%lx, step 0x%x\n",
+> +		 start, end, newpp, step);
+> +
+> +	for (idx = start; idx < end; idx += step)
+> +		/* Not sure if we can do much with the return value */
 
--- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
+Hmm, I realise this comment isn't changed, but it did make me wonder
+what the return value!
+
+It turns out that the function doesn't actually return anything.
+
+Tracking back the history of hpte_updateboltedpp, it looks like it has
+not had a return value since the start of git history:
+
+^1da177e4c3f4 include/asm-ppc64/machdep.h    void            (*hpte_updateboltedpp)(unsigned long newpp, 
+3c726f8dee6f5 include/asm-powerpc/machdep.h                                         unsigned long ea,
+1189be6508d45 include/asm-powerpc/machdep.h                                        int psize, int ssize);
+
+The comment comes from commit cd65d6971334 ("powerpc/mm/hash: Implement
+mark_rodata_ro() for hash") where Balbir added the comment, but again I
+can't figure out what sort of return value there would be to ignore.
+
+Should we drop the comment? (or return something from hpte_updateboltedpp)
+
+> +		mmu_hash_ops.hpte_updateboltedpp(newpp, idx, mmu_linear_psize,
+> +							mmu_kernel_ssize);
+> +}
+> +
+>  static bool hash__change_memory_range(unsigned long start, unsigned long end,
+>  				      unsigned long newpp)
+>  {
+> -	unsigned long idx;
+>  	unsigned int step, shift;
+>  
+>  	shift = mmu_psize_defs[mmu_linear_psize].shift;
+> @@ -415,13 +428,7 @@ static bool hash__change_memory_range(unsigned long start, unsigned long end,
+>  	if (start >= end)
+>  		return false;
+>  
+> -	pr_debug("Changing page protection on range 0x%lx-0x%lx, to 0x%lx, step 0x%x\n",
+> -		 start, end, newpp, step);
+> -
+> -	for (idx = start; idx < end; idx += step)
+> -		/* Not sure if we can do much with the return value */
+> -		mmu_hash_ops.hpte_updateboltedpp(newpp, idx, mmu_linear_psize,
+> -							mmu_kernel_ssize);
+> +	change_memory_range(start, end, step, newpp);
+
+Looking at how change_memory_range is called, step is derived by:
+
+	shift = mmu_psize_defs[mmu_linear_psize].shift;
+	step = 1 << shift;
+
+We probably therefore don't really need to pass step in to
+change_memory_range. Having said that, I'm not sure it would really be that
+much tidier to compute step in change_memory_range, especially since we
+also need step for the other branch in hash__change_memory_range.
+
+Beyond that it all looks reasonable to me!
+
+I also checked that the loop operations made sense, I think they do - we
+cover from start inclusive to end exclusive and the alignment is done
+before we call into change_memory_range.
+
+Regards,
+Daniel
+
+>  	return true;
+>  }
+> -- 
+> 2.25.1
