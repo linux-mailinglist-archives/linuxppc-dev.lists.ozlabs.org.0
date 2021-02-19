@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3337B31F4A3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 06:18:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 078FC31F4F6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 07:03:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dhfxm24qkz3cGl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 16:18:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DhgxJ0Jl0z3cM4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 17:03:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=mCUCsWcN;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=Hq1q4ynu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::629;
- helo=mail-pl1-x629.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::632;
+ helo=mail-pl1-x632.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=mCUCsWcN; dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
+ header.s=google header.b=Hq1q4ynu; dkim-atps=neutral
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
+ [IPv6:2607:f8b0:4864:20::632])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DhfxL0D5qz30Gc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 16:18:27 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id b8so2702191plh.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 21:18:27 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dhgwv2Vg9z30Jj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 17:03:08 +1100 (AEDT)
+Received: by mail-pl1-x632.google.com with SMTP id ba1so2792251plb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 22:03:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=dOSKkRk/bzqzj43v5P9ak3HT+jUMbvevUBEbWD/wiYc=;
- b=mCUCsWcN8EJvFt0JHWA9xAhHK9agA73CiOuRUp0P8McEzqnyBhYK4kgTGDgTJtMy9i
- 1TRAaJ89XPH0H7e2GlnzVaf9wXoEJSx1IF1goGU8GSDYmhgYwl4ewX4uu0bFxcvEEuOE
- YgZUl8I7QqOMeM/xrkfkLScBRWM6pW19lfi30=
+ :mime-version; bh=MYyTS1/wjznlU/v9GaBg3e/Ma7dOx08FztPRQ5y5qlE=;
+ b=Hq1q4ynuFCz5blo4G1nrCE1FA13tIsGAEcqU0lkN+k4W33oAYkmmQHgOCa7bNXvVbd
+ MVjfvll4LGVIGCtuqQdROagYlmtiviaFMc2bRxgJw0yyhYFnAbYHww770ei2jfiZ6aUP
+ y4Nd4OpUHDs/Z7O1NUhr60eM5CWx0rfOt4H38=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
  :message-id:mime-version;
- bh=dOSKkRk/bzqzj43v5P9ak3HT+jUMbvevUBEbWD/wiYc=;
- b=t0DVDqbbJ5RNXfLhqzk7ttBsjfL7q8rD9p65w3GNDidIwHcrCJQazcTNNxWMrxdcrc
- yKqP7NUlvYuSzlv7r9tjA1TpHhFVqLM6iE2SQ4EalmSFvOx8IDLXIgOfnUoGxd7KXxD7
- MWocM/dADYg6j0gsmXGXcGD1+9+L2sznhi8yEfX2W4cFWdk3EDd5HR3WLB8AvzbXzYQR
- QdFtfp6e3QPp6fdrZkz/g/jWIkIb5Agy7Xg8mD1wSk+3EHa6qTrNb4EUOCByVvYJ+u1Z
- 5gVV5dl1vIftI8iR+wIXYZ6M20ZaM2yZDSx3Jj1KhMeNOvl2k+K0dn5CwN0tJ11Xuzf7
- 5uHA==
-X-Gm-Message-State: AOAM531LXp+KZm0r6gbVycotn1tXnCAIyNiW1SiN5GkCzWq/celifwFp
- 82jS0itB/j7gEdzzBS1X1VoFcQ==
-X-Google-Smtp-Source: ABdhPJzqRyzbsmPJm7JLbxU9H49OdN0ac/604fQ1hGBxAeDc5TDke5FrpPWfyXkola5Oo9V4dERBBw==
-X-Received: by 2002:a17:90a:cb8e:: with SMTP id
- a14mr1696085pju.196.1613711902856; 
- Thu, 18 Feb 2021 21:18:22 -0800 (PST)
+ bh=MYyTS1/wjznlU/v9GaBg3e/Ma7dOx08FztPRQ5y5qlE=;
+ b=OCZLm6FhTMDqLkSqFGZb3XKaXT84Z6IZU5RHvJJ5TvAXC4VdFvHkd3Ajjmd8tBHPuI
+ uax+sze+bLQF6aY6MiyxPO79NWvbHgirE+dqhcM0c2QjfgLd17LtuMc8NYH9974XJYjz
+ vqbQWRLizNkaTfwNf861GVfYkMayktV7lmstuoFxugHywRvA7ntVv3qy9xNEtfpBq+T8
+ CUdr6vMsedJ3k6wkiE66U6i44/LKFqPX9MuX/yPvYSzC4SW17BNLstIkhJ3sLEK4gfB2
+ cw2jokKTRVOniisyMam0CJEed9blNGH48ZO91U6z27ZRuiW4XX8m/207xztJ9X36nt3F
+ MYRA==
+X-Gm-Message-State: AOAM531MuJTcmVoHk9AIRwETt+yp04MQEqZz/+CpiZ0a6qrjPBz6ITLM
+ PhxtdvZAaFpT+Y/ZQw9BquNFqg==
+X-Google-Smtp-Source: ABdhPJzvWi0zCztT5Olu5NZaIhs7oxY5snfk/RG6lqe8acnTTpe3q8ceVFCVTXQx18S9P+ZpZ3y0ug==
+X-Received: by 2002:a17:90b:e83:: with SMTP id
+ fv3mr7686838pjb.204.1613714585297; 
+ Thu, 18 Feb 2021 22:03:05 -0800 (PST)
 Received: from localhost
  (2001-44b8-1113-6700-7ad2-5bb3-4fd4-d737.static.ipv6.internode.on.net.
  [2001:44b8:1113:6700:7ad2:5bb3:4fd4:d737])
- by smtp.gmail.com with ESMTPSA id o9sm8081438pfp.21.2021.02.18.21.18.21
+ by smtp.gmail.com with ESMTPSA id p18sm8336399pfn.178.2021.02.18.22.03.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Feb 2021 21:18:22 -0800 (PST)
+ Thu, 18 Feb 2021 22:03:04 -0800 (PST)
 From: Daniel Axtens <dja@axtens.net>
 To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [RFC PATCH 1/9] KVM: PPC: Book3S 64: move KVM interrupt entry to
- a common entry point
-In-Reply-To: <20210202030313.3509446-2-npiggin@gmail.com>
+Subject: Re: [RFC PATCH 2/9] KVM: PPC: Book3S 64: Move GUEST_MODE_SKIP test
+ into KVM
+In-Reply-To: <20210202030313.3509446-3-npiggin@gmail.com>
 References: <20210202030313.3509446-1-npiggin@gmail.com>
- <20210202030313.3509446-2-npiggin@gmail.com>
-Date: Fri, 19 Feb 2021 16:18:19 +1100
-Message-ID: <87o8ggab50.fsf@linkitivity.dja.id.au>
+ <20210202030313.3509446-3-npiggin@gmail.com>
+Date: Fri, 19 Feb 2021 17:03:01 +1100
+Message-ID: <87lfbka92i.fsf@linkitivity.dja.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -86,53 +86,48 @@ Sender: "Linuxppc-dev"
 
 Hi Nick,
 
-> +++ b/arch/powerpc/kvm/book3s_64_entry.S
-> @@ -0,0 +1,34 @@
-> +#include <asm/cache.h>
-> +#include <asm/ppc_asm.h>
-> +#include <asm/kvm_asm.h>
-> +#include <asm/reg.h>
-> +#include <asm/asm-offsets.h>
-> +#include <asm/kvm_book3s_asm.h>
-> +
-> +/*
-> + * We come here from the first-level interrupt handlers.
-> + */
-> +.global	kvmppc_interrupt
-> +.balign IFETCH_ALIGN_BYTES
-> +kvmppc_interrupt:
-> +	/*
-> +	 * Register contents:
-
-Clearly r9 contains some data at this point, and I think it's guest r9
-because of what you say later on in
-book3s_hv_rmhandlers.S::kvmppc_interrupt_hv. Is that right? Should that
-be documented in this comment as well?
-
-> +	 * R12		= (guest CR << 32) | interrupt vector
-> +	 * R13		= PACA
-> +	 * guest R12 saved in shadow VCPU SCRATCH0
-> +	 * guest R13 saved in SPRN_SCRATCH0
-> +	 */
+> +maybe_skip:
+> +	cmpwi	r12,0x200
+> +	beq	1f
+> +	cmpwi	r12,0x300
+> +	beq	1f
+> +	cmpwi	r12,0x380
+> +	beq	1f
 > +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> +	std	r9, HSTATE_SCRATCH2(r13)
-> +	lbz	r9, HSTATE_IN_GUEST(r13)
-> +	cmpwi	r9, KVM_GUEST_MODE_HOST_HV
-> +	beq	kvmppc_bad_host_intr
-> +#ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
-> +	cmpwi	r9, KVM_GUEST_MODE_GUEST
-> +	ld	r9, HSTATE_SCRATCH2(r13)
-> +	beq	kvmppc_interrupt_pr
+> +	/* XXX: cbe stuff? instruction breakpoint? */
+> +	cmpwi	r12,0xe02
+> +	beq	2f
 > +#endif
-> +	b	kvmppc_interrupt_hv
-> +#else
-> +	b	kvmppc_interrupt_pr
+> +	b	no_skip
+> +1:	mfspr	r9,SPRN_SRR0
+> +	addi	r9,r9,4
+> +	mtspr	SPRN_SRR0,r9
+> +	ld	r12,HSTATE_SCRATCH0(r13)
+> +	ld	r9,HSTATE_SCRATCH2(r13)
+> +	GET_SCRATCH0(r13)
+> +	RFI_TO_KERNEL
+> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+> +2:	mfspr	r9,SPRN_HSRR0
+> +	addi	r9,r9,4
+> +	mtspr	SPRN_HSRR0,r9
+> +	ld	r12,HSTATE_SCRATCH0(r13)
+> +	ld	r9,HSTATE_SCRATCH2(r13)
+> +	GET_SCRATCH0(r13)
+> +	HRFI_TO_KERNEL
 > +#endif
 
-Apart from that I had a look and convinced myself that the code will
-behave the same as before. On that basis:
+If I understand correctly, label 1 is the kvmppc_skip_interrupt and
+label 2 is the kvmppc_skip_Hinterrupt. Would it be easier to understand
+if we used symbolic labels, or do you think the RFI_TO_KERNEL vs
+HRFI_TO_KERNEL and other changes are sufficient?
 
-Reviewed-by: Daniel Axtens <dja@axtens.net>
+Apart from that, I haven't checked the precise copy-paste to make sure
+nothing has changed by accident, but I am able to follow the general
+idea of the patch and am vigorously in favour of anything that
+simplifies our exception/interrupt paths!
 
 Kind regards,
 Daniel
+
+> -- 
+> 2.23.0
