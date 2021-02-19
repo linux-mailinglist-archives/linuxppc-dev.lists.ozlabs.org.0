@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B0431F520
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 07:37:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A43A031F523
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 07:37:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dhhh10cknz3cGV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 17:37:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DhhhR586Yz3clh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 17:37:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=JGGcOeTK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Awp7d0Sz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b;
+ helo=mail-pg1-x52b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JGGcOeTK; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+ header.s=20161025 header.b=Awp7d0Sz; dkim-atps=neutral
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
+ [IPv6:2607:f8b0:4864:20::52b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dhhfj677Cz3bPJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 17:35:57 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id d13so2833180plg.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 22:35:57 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dhhfn0qmXz3cHV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 17:36:01 +1100 (AEDT)
+Received: by mail-pg1-x52b.google.com with SMTP id b21so3038405pgk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 22:36:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=b8gwQXsU+oWm28rWdq4cNryrpKLXUAViiB3s2Y4xHIk=;
- b=JGGcOeTKnBFT8mdrOzezl8KdS+W2Y9fxPzHT8b9PZtf7WN3xHO+pu3TQmlzYsuhJGZ
- GNOEPVoDpysQfKnDilHFe4n/EpvZS/UhT1tmbJ5K+VW/Y6+Khgd1/Brak2Alaz8Xsfru
- lp+G9+sjHE4EfPr/1P5huLTM93TgoEqfoLbefh6F4K44LVvCMWL/E9fQYJn8ZxAgoH3m
- kP4L0SBxw6XjrZ8g0UtajAGfDr4PyHl2VKJfaUE3/vC7cAdn7dwpyUCFll/A8yZ4R5YM
- EL74mRwhE9LzahQuHrYMVfbgHYO9KI6Mt6wlhC7Bbqi/gUCN0z3p3TGLvLuQpMFCmpC1
- xayg==
+ bh=VZhKElMmAcxWKYLVW6gD2OsH4YAnkNF8CvR9dzFQpDY=;
+ b=Awp7d0SzPgQ6XK5hl6dIzWewPmyPCyCOOYqfEnzVJh5aAiuWfrKaht8+jsNmKZpPXj
+ 1Q8RpGrWb2jAusPRuw4j8ugExyWeSnLAsKXvQCgFa0npjAB50qUmfABVGe0ZsqCteNaW
+ VdVBjlEAZ1x2oUsY7/7IB+XIbK3Sqf2k522XQ1sZHyuEHGwkEw3mIpIwdPQSEP+fEs3a
+ 55zOecmfvNEDVeEw436tj1tafCGAMyuuR+JWRDh7pmYTcmgF+FvDM6f11jmuZR8fOZy8
+ ymiK9i54fl7prn41OP5QHhjKD+MkIVABT10VOONITAlLg77CMq0frTLKi4NWVHTRzRjV
+ jtlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=b8gwQXsU+oWm28rWdq4cNryrpKLXUAViiB3s2Y4xHIk=;
- b=HfIvVtVDAif3789BpO/ZkqsuoXHNry55JMx2Y/Cjq29ySn7saJ3v4l+hhmpwYhKn5I
- F34677jyhnOVUSzV8/mV810eMQCWe4bBxjWRmUJ2U8A8rXBlmWfqdRhWJKT1L9kUrYV3
- qjVwg5dqCjmYB6M1EA+lvyXUnI1xEGl/1NQKCsQwdoQa1+4I6lqugCxIOaTJ/9qD1bRb
- +N9wfgVmvQ9E7oSqTebV+TREOduUA+H1n0gFV/YO1IALF0nWzFaUQqHFdWOUUhahRVbM
- N4Wm46YPnzeeE/G16DEAILxwjKiG+fwBLManhOMcO53fFE2aMYgy15F/l0laXAxovuGU
- 1KIQ==
-X-Gm-Message-State: AOAM531RAc3FAoUFmk3VUo95sjVcGeckW4BUrtuIWktoyyUt/paWEXmw
- EOVG+sqDJTLVHoZuTrmu3DU=
-X-Google-Smtp-Source: ABdhPJzbHn2NIZSJiZIEFBV8d3q56GiFJlDdhuTXN4418Ep//sYUNuK+itG627a4aUwec0c82QICBA==
-X-Received: by 2002:a17:90a:9f96:: with SMTP id
- o22mr7612271pjp.119.1613716556076; 
- Thu, 18 Feb 2021 22:35:56 -0800 (PST)
+ bh=VZhKElMmAcxWKYLVW6gD2OsH4YAnkNF8CvR9dzFQpDY=;
+ b=ZXZ9347Fa+H9EBf9+A7pGyq8W9+7Sz4Rwb3VyEtK0kHZKdHy9eSJFF4IBi37tmoOxK
+ U/XqQf3C3ZYs/jooMFbriyl/gUg84Q0sCD/R51nOrIEhNZ3/C5DnyUVusqOclUKStxnl
+ 56/mQapi/CNmVPppspcox/Gc4eWpLs1gFYjlPeYd/HoGQpM2GxwfctVxtqba+4zToLZ4
+ EaVEZ98lLRYVWRLoOtXOZW8SE8uEV8dDcmSd+HGnGW1XprK5tmAUIfRd09qKyl3u7l7v
+ yOY6DsFri+dqkH1pa/GgKyiFr82O0diO8eXebVYuIaNgV5dRCGAN9wU42H+/UyUJGBXL
+ 0aFw==
+X-Gm-Message-State: AOAM533mDpQUhrMfEPdsDYKNu5BsZQfQY0R4Yi0NKd/l8L39KxL7dYV4
+ oAUZ7PY0geg5UrcDMKERCXA=
+X-Google-Smtp-Source: ABdhPJz4aYnevNUuieq8Zho6aComunXfjgCrXGaoUj2A1QT9k8k2kQz8VCpjG4hC7hDEunbibjCnng==
+X-Received: by 2002:a63:510:: with SMTP id 16mr7162825pgf.42.1613716558890;
+ Thu, 18 Feb 2021 22:35:58 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (14-201-150-91.tpgi.com.au. [14.201.150.91])
- by smtp.gmail.com with ESMTPSA id v16sm7813099pfu.76.2021.02.18.22.35.53
+ by smtp.gmail.com with ESMTPSA id v16sm7813099pfu.76.2021.02.18.22.35.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Feb 2021 22:35:55 -0800 (PST)
+ Thu, 18 Feb 2021 22:35:58 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH 02/13] powerpc/64s: remove KVM SKIP test from instruction
- breakpoint handler
-Date: Fri, 19 Feb 2021 16:35:31 +1000
-Message-Id: <20210219063542.1425130-3-npiggin@gmail.com>
+Subject: [PATCH 03/13] KVM: PPC: Book3S HV: Ensure MSR[ME] is always set in
+ guest MSR
+Date: Fri, 19 Feb 2021 16:35:32 +1000
+Message-Id: <20210219063542.1425130-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210219063542.1425130-1-npiggin@gmail.com>
 References: <20210219063542.1425130-1-npiggin@gmail.com>
@@ -86,32 +85,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The code being executed in KVM_GUEST_MODE_SKIP is hypervisor code with
-MSR[IR]=0, so the faults of concern are the d-side ones caused by access
-to guest context by the hypervisor.
+Rather than add the ME bit to the MSR when the guest is entered, make
+it clear that the hypervisor does not allow the guest to clear the bit.
 
-Instruction breakpoint interrupts are not a concern here. It's unlikely
-any good would come of causing breaks in this code, but skipping the
-instruction that caused it won't help matters (e.g., skip the mtmsr that
-sets MSR[DR]=0 or clears KVM_GUEST_MODE_SKIP).
+The ME addition is kept in the code for now, but a future patch will
+warn if it's not present.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 1 -
- 1 file changed, 1 deletion(-)
+ arch/powerpc/kvm/book3s_hv_builtin.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 5d0ad3b38e90..5bc689a546ae 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -2597,7 +2597,6 @@ EXC_VIRT_NONE(0x5200, 0x100)
- INT_DEFINE_BEGIN(instruction_breakpoint)
- 	IVEC=0x1300
- #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
--	IKVM_SKIP=1
- 	IKVM_REAL=1
- #endif
- INT_DEFINE_END(instruction_breakpoint)
+diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
+index dad118760a4e..ae8f291c5c48 100644
+--- a/arch/powerpc/kvm/book3s_hv_builtin.c
++++ b/arch/powerpc/kvm/book3s_hv_builtin.c
+@@ -661,6 +661,13 @@ static void kvmppc_end_cede(struct kvm_vcpu *vcpu)
+ 
+ void kvmppc_set_msr_hv(struct kvm_vcpu *vcpu, u64 msr)
+ {
++	/*
++	 * Guest must always run with machine check interrupt
++	 * enabled.
++	 */
++	if (!(msr & MSR_ME))
++		msr |= MSR_ME;
++
+ 	/*
+ 	 * Check for illegal transactional state bit combination
+ 	 * and if we find it, force the TS field to a safe state.
 -- 
 2.23.0
 
