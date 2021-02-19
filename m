@@ -2,72 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078FC31F4F6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 07:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A2E31F519
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 07:36:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DhgxJ0Jl0z3cM4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 17:03:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dhhg56R6jz3cFy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 17:36:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=Hq1q4ynu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=YhOxqAvJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
+ helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=Hq1q4ynu; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=YhOxqAvJ; dkim-atps=neutral
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dhgwv2Vg9z30Jj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 17:03:08 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id ba1so2792251plb.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 22:03:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=MYyTS1/wjznlU/v9GaBg3e/Ma7dOx08FztPRQ5y5qlE=;
- b=Hq1q4ynuFCz5blo4G1nrCE1FA13tIsGAEcqU0lkN+k4W33oAYkmmQHgOCa7bNXvVbd
- MVjfvll4LGVIGCtuqQdROagYlmtiviaFMc2bRxgJw0yyhYFnAbYHww770ei2jfiZ6aUP
- y4Nd4OpUHDs/Z7O1NUhr60eM5CWx0rfOt4H38=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dhhff2QFPz30N1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 17:35:53 +1100 (AEDT)
+Received: by mail-pl1-x62e.google.com with SMTP id z7so2812651plk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 22:35:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=UymbtmbdqSs8j3UG2YdaaaUw62kh30J7HQRbQZoqk44=;
+ b=YhOxqAvJA2J4SAvdzaUv4tDBFzuXDZF1zkP7zX3jz+8qFSCkYd7ZfgZYRdqfe1M2Hy
+ lOdZP8Fw1owFl9bFOqKTlz+RHfv427I4CaOvtCYII5THolZQkdb5Np8f4vD0YmgD5Ae1
+ Jm9Qz5XMj9FkeJLYWlqnuaV+n6sqRlYr7Rucgv2U8oW5H49n8TbxdrTcPCJHnANGEbkV
+ cnwjL5q64FH4YFZO9+GuDnd2/GkdANjld8+8nax98ea4rYAIQb5hq/ZnW9cny1BYRdGw
+ INy30LZBprtcvCnsq5mpQK7x+wCxiIt1epiUubRqe9iyMwJh30EnLCyPDhm/KcYx2JVK
+ MjuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=MYyTS1/wjznlU/v9GaBg3e/Ma7dOx08FztPRQ5y5qlE=;
- b=OCZLm6FhTMDqLkSqFGZb3XKaXT84Z6IZU5RHvJJ5TvAXC4VdFvHkd3Ajjmd8tBHPuI
- uax+sze+bLQF6aY6MiyxPO79NWvbHgirE+dqhcM0c2QjfgLd17LtuMc8NYH9974XJYjz
- vqbQWRLizNkaTfwNf861GVfYkMayktV7lmstuoFxugHywRvA7ntVv3qy9xNEtfpBq+T8
- CUdr6vMsedJ3k6wkiE66U6i44/LKFqPX9MuX/yPvYSzC4SW17BNLstIkhJ3sLEK4gfB2
- cw2jokKTRVOniisyMam0CJEed9blNGH48ZO91U6z27ZRuiW4XX8m/207xztJ9X36nt3F
- MYRA==
-X-Gm-Message-State: AOAM531MuJTcmVoHk9AIRwETt+yp04MQEqZz/+CpiZ0a6qrjPBz6ITLM
- PhxtdvZAaFpT+Y/ZQw9BquNFqg==
-X-Google-Smtp-Source: ABdhPJzvWi0zCztT5Olu5NZaIhs7oxY5snfk/RG6lqe8acnTTpe3q8ceVFCVTXQx18S9P+ZpZ3y0ug==
-X-Received: by 2002:a17:90b:e83:: with SMTP id
- fv3mr7686838pjb.204.1613714585297; 
- Thu, 18 Feb 2021 22:03:05 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-7ad2-5bb3-4fd4-d737.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:7ad2:5bb3:4fd4:d737])
- by smtp.gmail.com with ESMTPSA id p18sm8336399pfn.178.2021.02.18.22.03.03
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=UymbtmbdqSs8j3UG2YdaaaUw62kh30J7HQRbQZoqk44=;
+ b=hBnBOAWvvYCw0GXGAT85N3yn1+K/Vcq2Fux4LQfqM7Cg0afZyA1R/ycUy887siQfKV
+ qMQIU3U1QKZHvi9VoELZQL0DVG3Die+2g1pyICcwu9lwugwDG2rZdTG3Nm65NOCX6SHj
+ Q5QePgw4dZuQqwSQ28a8MhBe5FbN9twz/IUsD3E7DugfUimM4fB7mY/QPP2mbXfDK+pm
+ ZjNC7BbWHdw4b+73omGeQx87XmZAeusFEi698pm7E6PyT+/enZlTKD44kZ2JKuYJyCQK
+ S1r/w7kORmQuzOT60R/donGSFmFtmPZCZjE4eIVOim9tkgkDGHeDmPJ8lziIQfF84smm
+ y2nw==
+X-Gm-Message-State: AOAM531h3gV7a6UTxPZyWcwR15wAg9HTs8li/JLSlZeSxNIROw+/KE3O
+ yPuWjFJQeCskCpiy841YI+A=
+X-Google-Smtp-Source: ABdhPJyPRF0a10TfMG/EtsZivUGEtkgV3v8OiBgHlDh9o99Xn820XzQu15exvkO9OkfpQkmyHOP2bg==
+X-Received: by 2002:a17:902:e5c4:b029:e3:b422:34ef with SMTP id
+ u4-20020a170902e5c4b02900e3b42234efmr455796plf.26.1613716549848; 
+ Thu, 18 Feb 2021 22:35:49 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (14-201-150-91.tpgi.com.au. [14.201.150.91])
+ by smtp.gmail.com with ESMTPSA id v16sm7813099pfu.76.2021.02.18.22.35.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Feb 2021 22:03:04 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [RFC PATCH 2/9] KVM: PPC: Book3S 64: Move GUEST_MODE_SKIP test
- into KVM
-In-Reply-To: <20210202030313.3509446-3-npiggin@gmail.com>
-References: <20210202030313.3509446-1-npiggin@gmail.com>
- <20210202030313.3509446-3-npiggin@gmail.com>
-Date: Fri, 19 Feb 2021 17:03:01 +1100
-Message-ID: <87lfbka92i.fsf@linkitivity.dja.id.au>
+ Thu, 18 Feb 2021 22:35:49 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: kvm-ppc@vger.kernel.org
+Subject: [PATCH 00/13] KVM: PPC: Book3S: C-ify the P9 entry/exit code
+Date: Fri, 19 Feb 2021 16:35:29 +1000
+Message-Id: <20210219063542.1425130-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,50 +83,62 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nick,
+This has a lot more implemented, things tidied up, and more things split
+out. It's also implemented on top of powerpc next and kvm next which
+have a few prerequisite patches (mainly removing EXSLB).
 
-> +maybe_skip:
-> +	cmpwi	r12,0x200
-> +	beq	1f
-> +	cmpwi	r12,0x300
-> +	beq	1f
-> +	cmpwi	r12,0x380
-> +	beq	1f
-> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> +	/* XXX: cbe stuff? instruction breakpoint? */
-> +	cmpwi	r12,0xe02
-> +	beq	2f
-> +#endif
-> +	b	no_skip
-> +1:	mfspr	r9,SPRN_SRR0
-> +	addi	r9,r9,4
-> +	mtspr	SPRN_SRR0,r9
-> +	ld	r12,HSTATE_SCRATCH0(r13)
-> +	ld	r9,HSTATE_SCRATCH2(r13)
-> +	GET_SCRATCH0(r13)
-> +	RFI_TO_KERNEL
-> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> +2:	mfspr	r9,SPRN_HSRR0
-> +	addi	r9,r9,4
-> +	mtspr	SPRN_HSRR0,r9
-> +	ld	r12,HSTATE_SCRATCH0(r13)
-> +	ld	r9,HSTATE_SCRATCH2(r13)
-> +	GET_SCRATCH0(r13)
-> +	HRFI_TO_KERNEL
-> +#endif
+I've got a bunch more things after this including implementing HPT
+guests with radix host in the "new" path -- whether we ever actually
+want to do that, or port the legacy path up to C, or just leave it to
+maintenance mode, I was just testing the waters there and making sure I
+wasn't doing something fundamentally incompatible with hash.
 
-If I understand correctly, label 1 is the kvmppc_skip_interrupt and
-label 2 is the kvmppc_skip_Hinterrupt. Would it be easier to understand
-if we used symbolic labels, or do you think the RFI_TO_KERNEL vs
-HRFI_TO_KERNEL and other changes are sufficient?
+I won't post anything further than this for now because I think it's a
+good start and gets the total asm code for KVM entry and exit down to
+about 160 lines plus the shim for the legacy paths. So would like to
+concentrate on getting this in before juggling things around too much
+or adding new things.
 
-Apart from that, I haven't checked the precise copy-paste to make sure
-nothing has changed by accident, but I am able to follow the general
-idea of the patch and am vigorously in favour of anything that
-simplifies our exception/interrupt paths!
+Thanks,
+Nick
 
-Kind regards,
-Daniel
+Nicholas Piggin (13):
+  powerpc/64s: Remove KVM handler support from CBE_RAS interrupts
+  powerpc/64s: remove KVM SKIP test from instruction breakpoint handler
+  KVM: PPC: Book3S HV: Ensure MSR[ME] is always set in guest MSR
+  KVM: PPC: Book3S 64: remove unused kvmppc_h_protect argument
+  KVM: PPC: Book3S 64: move KVM interrupt entry to a common entry point
+  KVM: PPC: Book3S 64: Move GUEST_MODE_SKIP test into KVM
+  KVM: PPC: Book3S 64: add hcall interrupt handler
+  KVM: PPC: Book3S HV: Move hcall early register setup to KVM
+  KVM: PPC: Book3S HV: Move interrupt early register setup to KVM
+  KVM: PPC: Book3S HV: move bad_host_intr check to HV handler
+  KVM: PPC: Book3S HV: Minimise hcall handler calling convention
+    differences
+  KVM: PPC: Book3S HV: Move radix MMU switching together in the P9 path
+  KVM: PPC: Book3S HV: Implement the rest of the P9 entry/exit handling
+    in C
 
-> -- 
-> 2.23.0
+ arch/powerpc/include/asm/asm-prototypes.h |   3 +-
+ arch/powerpc/include/asm/exception-64s.h  |  13 +
+ arch/powerpc/include/asm/kvm_asm.h        |   3 +-
+ arch/powerpc/include/asm/kvm_book3s_64.h  |   2 +
+ arch/powerpc/include/asm/kvm_ppc.h        |   5 +-
+ arch/powerpc/kernel/exceptions-64s.S      | 257 +++----------------
+ arch/powerpc/kernel/security.c            |   5 +-
+ arch/powerpc/kvm/Makefile                 |   6 +
+ arch/powerpc/kvm/book3s_64_entry.S        | 295 ++++++++++++++++++++++
+ arch/powerpc/kvm/book3s_hv.c              |  69 +++--
+ arch/powerpc/kvm/book3s_hv_builtin.c      |   7 +
+ arch/powerpc/kvm/book3s_hv_interrupt.c    | 208 +++++++++++++++
+ arch/powerpc/kvm/book3s_hv_rm_mmu.c       |   3 +-
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S   | 125 +--------
+ arch/powerpc/kvm/book3s_segment.S         |   7 +
+ arch/powerpc/kvm/book3s_xive.c            |  32 +++
+ 16 files changed, 670 insertions(+), 370 deletions(-)
+ create mode 100644 arch/powerpc/kvm/book3s_64_entry.S
+ create mode 100644 arch/powerpc/kvm/book3s_hv_interrupt.c
+
+-- 
+2.23.0
+
