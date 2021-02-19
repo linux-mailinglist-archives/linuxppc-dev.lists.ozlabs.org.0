@@ -2,74 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D5AF31F410
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 03:43:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE12331F412
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 03:53:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DhbVx2ym9z3bd0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 13:43:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DhbkR6bgKz3cGT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 13:53:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=rNqcvSyb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=i2QNptUy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::635;
- helo=mail-pl1-x635.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
+ helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=rNqcvSyb; dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
- [IPv6:2607:f8b0:4864:20::635])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DhbVW47nCz30HY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 13:43:28 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id e9so2542280plh.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Feb 2021 18:43:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version:content-transfer-encoding;
- bh=7aryp10/VmSwwO8C4xDfYdb1XN+0IB4ZvFHaifg5EDY=;
- b=rNqcvSybCVYJPM8ZBxJhBkkLmzdM2145EWYl1Wyes7CV/A8F4mR70RGQUrFYiT6dp0
- Us7rRZC0AL6G4UP/5ooGcZa78xXzzq8bXOLXG9zeEO8VlzFqY8GpZa+YqPQ2mdZ90t13
- xtIOsVHrtNqN9GX6GCZF7BaO9FfSAchnYoND8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=7aryp10/VmSwwO8C4xDfYdb1XN+0IB4ZvFHaifg5EDY=;
- b=qdHkJbUtKXzicwQVTROXHI9e6sj3uHJ4x6eC5jSIFPkAC7BPEntwcj94XWVS6+84ZP
- NWEIL4eeIlhR7F9H0y7mMCRb5RIml+qMWesjcPDpBgrbhhw+CH5kG3AQJSm47zzUP6qh
- 8mYOXd6SzYKKVxtmimCpJ8O/QHvwEZfEtZ1kIxdFQt0e5JCyWvHdjbqucLdSZqJFQ80k
- HGeSo1PA2WlYJqaTk6G9+cX9H372BQNVUBmPalgTV7vtdADVbJVb0x9j2P2EGxk3hqHs
- Bt1Ea8oBxiHT2+ecdk8tN5khQYJ32DZpjDOP1q3WY0UBFBNtTO08oGobCkJ5uGjfKHMh
- 8LPw==
-X-Gm-Message-State: AOAM530utptIxkfG5yPoSbjS0hNxIHwKtelmFjUA+1wt/dL2hJ0p8AhE
- NZD6Rq/gwwZZjzQxeOIioZrlvg==
-X-Google-Smtp-Source: ABdhPJxaHL4PyEksxAVtVuixHdI2guSBjaLNxscmOrwF7EROddZok1S08WSHqoMPk8ApAdUn5C0jBA==
-X-Received: by 2002:a17:90a:aa8a:: with SMTP id
- l10mr7063175pjq.86.1613702605553; 
- Thu, 18 Feb 2021 18:43:25 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-7c23-3019-42a1-bee8.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:7c23:3019:42a1:bee8])
- by smtp.gmail.com with ESMTPSA id k4sm7511716pfa.191.2021.02.18.18.43.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Feb 2021 18:43:24 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 5/6] powerpc/mm/64s/hash: Add real-mode
- change_memory_range() for hash LPAR
-In-Reply-To: <20210211135130.3474832-5-mpe@ellerman.id.au>
-References: <20210211135130.3474832-1-mpe@ellerman.id.au>
- <20210211135130.3474832-5-mpe@ellerman.id.au>
-Date: Fri, 19 Feb 2021 13:43:22 +1100
-Message-ID: <87h7m8pyk5.fsf@dja-thinkpad.axtens.net>
+ unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
+ header.a=rsa-sha256 header.s=default header.b=i2QNptUy; 
+ dkim-atps=neutral
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Dhbk136bWz30HM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 13:53:29 +1100 (AEDT)
+Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
+ [73.42.176.67])
+ by linux.microsoft.com (Postfix) with ESMTPSA id EC32F20B6C40;
+ Thu, 18 Feb 2021 18:53:26 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EC32F20B6C40
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1613703207;
+ bh=rCbOOt9TGbdpIdg/NY4OSQmhLeB26YL8cZjJbICdaAc=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=i2QNptUyIxtzMh1vzNftJJSIDqPg/Rh8WEDNFdN06ErcAtos6xWdOmUlFKoURpATp
+ KA8dtdlqYXaLfnfAHE3i8qpeURTGNoV9Hh98K2MwZhCzywlFMNZPZWRi702dTjwl6S
+ L3LHxZqzFfjG37gk2b8QJikgab6sr51LHF4dw+Lk=
+Subject: Re: [PATCH] of: error: 'const struct kimage' has no member named
+ 'arch'
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+References: <20210218223305.2044-1-nramas@linux.microsoft.com>
+ <c6490f6a126a2f10e3e3445b51ea552a26f896a9.camel@linux.ibm.com>
+ <8b8c0b70-c7ab-33f3-b66c-9ea03388497b@linux.microsoft.com>
+ <87k0r4yi4s.fsf@manicouagan.localdomain>
+From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <3ca0aa87-ca83-8024-4067-c2382a360db9@linux.microsoft.com>
+Date: Thu, 18 Feb 2021 18:53:26 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <87k0r4yi4s.fsf@manicouagan.localdomain>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,240 +63,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com
+Cc: sashal@kernel.org, robh@kernel.org, sfr@canb.auug.org.au,
+ gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ takahiro.akashi@linaro.org, devicetree@vger.kernel.org, james.morse@arm.com,
+ catalin.marinas@arm.com, joe@perches.com, linux-integrity@vger.kernel.org,
+ will@kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+On 2/18/21 5:13 PM, Thiago Jung Bauermann wrote:
+> 
+> Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
+> 
+>> On 2/18/21 4:07 PM, Mimi Zohar wrote:
+>>
+>> Hi Mimi,
+>>
+>>> On Thu, 2021-02-18 at 14:33 -0800, Lakshmi Ramasubramanian wrote:
+>>>> of_kexec_alloc_and_setup_fdt() defined in drivers/of/kexec.c builds
+>>>> a new device tree object that includes architecture specific data
+>>>> for kexec system call.  This should be defined only if the architecture
+>>>> being built defines kexec architecture structure "struct kimage_arch".
+>>>>
+>>>> Define a new boolean config OF_KEXEC that is enabled if
+>>>> CONFIG_KEXEC_FILE and CONFIG_OF_FLATTREE are enabled, and
+>>>> the architecture is arm64 or powerpc64.  Build drivers/of/kexec.c
+>>>> if CONFIG_OF_KEXEC is enabled.
+>>>>
+>>>> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+>>>> Fixes: 33488dc4d61f ("of: Add a common kexec FDT setup function")
+>>>> Reported-by: kernel test robot <lkp@intel.com>
+>>>> ---
+>>>>    drivers/of/Kconfig  | 6 ++++++
+>>>>    drivers/of/Makefile | 7 +------
+>>>>    2 files changed, 7 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+>>>> index 18450437d5d5..f2e8fa54862a 100644
+>>>> --- a/drivers/of/Kconfig
+>>>> +++ b/drivers/of/Kconfig
+>>>> @@ -100,4 +100,10 @@ config OF_DMA_DEFAULT_COHERENT
+>>>>    	# arches should select this if DMA is coherent by default for OF devices
+>>>>    	bool
+>>>>    +config OF_KEXEC
+>>>> +	bool
+>>>> +	depends on KEXEC_FILE
+>>>> +	depends on OF_FLATTREE
+>>>> +	default y if ARM64 || PPC64
+>>>> +
+>>>>    endif # OF
+>>>> diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+>>>> index c13b982084a3..287579dd1695 100644
+>>>> --- a/drivers/of/Makefile
+>>>> +++ b/drivers/of/Makefile
+>>>> @@ -13,11 +13,6 @@ obj-$(CONFIG_OF_RESERVED_MEM) += of_reserved_mem.o
+>>>>    obj-$(CONFIG_OF_RESOLVE)  += resolver.o
+>>>>    obj-$(CONFIG_OF_OVERLAY) += overlay.o
+>>>>    obj-$(CONFIG_OF_NUMA) += of_numa.o
+>>>> -
+>>>> -ifdef CONFIG_KEXEC_FILE
+>>>> -ifdef CONFIG_OF_FLATTREE
+>>>> -obj-y	+= kexec.o
+>>>> -endif
+>>>> -endif
+>>>> +obj-$(CONFIG_OF_KEXEC) += kexec.o
+>>>>      obj-$(CONFIG_OF_UNITTEST) += unittest-data/
+>>> Is it possible to reuse CONFIG_HAVE_IMA_KEXEC here?
+>>>
+>>
+>> For ppc64 CONFIG_HAVE_IMA_KEXEC is selected when CONFIG_KEXEC_FILE is enabled.
+>> So I don't see a problem in reusing CONFIG_HAVE_IMA_KEXEC for ppc.
+>>
+>> But for arm64, CONFIG_HAVE_IMA_KEXEC is enabled in the final patch in the patch
+>> set (the one for carrying forward IMA log across kexec for arm64). arm64 calls
+>> of_kexec_alloc_and_setup_fdt() prior to enabling CONFIG_HAVE_IMA_KEXEC and hence
+>> breaks the build for arm64.
+> 
+> One problem is that I believe that this patch won't placate the robot,
+> because IIUC it generates config files at random and this change still
+> allows hppa and s390 to enable CONFIG_OF_KEXEC.
 
-> When we enabled STRICT_KERNEL_RWX we received some reports of boot
-> failures when using the Hash MMU and running under phyp. The crashes
-> are intermittent, and often exhibit as a completely unresponsive
-> system, or possibly an oops.
->
-> One example, which was caught in xmon:
->
->   [   14.068327][    T1] devtmpfs: mounted
->   [   14.069302][    T1] Freeing unused kernel memory: 5568K
->   [   14.142060][  T347] BUG: Unable to handle kernel instruction fetch
->   [   14.142063][    T1] Run /sbin/init as init process
->   [   14.142074][  T347] Faulting instruction address: 0xc000000000004400
->   cpu 0x2: Vector: 400 (Instruction Access) at [c00000000c7475e0]
->       pc: c000000000004400: exc_virt_0x4400_instruction_access+0x0/0x80
->       lr: c0000000001862d4: update_rq_clock+0x44/0x110
->       sp: c00000000c747880
->      msr: 8000000040001031
->     current =3D 0xc00000000c60d380
->     paca    =3D 0xc00000001ec9de80   irqmask: 0x03   irq_happened: 0x01
->       pid   =3D 347, comm =3D kworker/2:1
->   ...
->   enter ? for help
->   [c00000000c747880] c0000000001862d4 update_rq_clock+0x44/0x110 (unrelia=
-ble)
->   [c00000000c7478f0] c000000000198794 update_blocked_averages+0xb4/0x6d0
->   [c00000000c7479f0] c000000000198e40 update_nohz_stats+0x90/0xd0
->   [c00000000c747a20] c0000000001a13b4 _nohz_idle_balance+0x164/0x390
->   [c00000000c747b10] c0000000001a1af8 newidle_balance+0x478/0x610
->   [c00000000c747be0] c0000000001a1d48 pick_next_task_fair+0x58/0x480
->   [c00000000c747c40] c000000000eaab5c __schedule+0x12c/0x950
->   [c00000000c747cd0] c000000000eab3e8 schedule+0x68/0x120
->   [c00000000c747d00] c00000000016b730 worker_thread+0x130/0x640
->   [c00000000c747da0] c000000000174d50 kthread+0x1a0/0x1b0
->   [c00000000c747e10] c00000000000e0f0 ret_from_kernel_thread+0x5c/0x6c
->
-> This shows that CPU 2, which was idle, woke up and then appears to
-> randomly take an instruction fault on a completely valid area of
-> kernel text.
->
-> The cause turns out to be the call to hash__mark_rodata_ro(), late in
-> boot. Due to the way we layout text and rodata, that function actually
-> changes the permissions for all of text and rodata to read-only plus
-> execute.
->
-> To do the permission change we use a hypervisor call, H_PROTECT. On
-> phyp that appears to be implemented by briefly removing the mapping of
-> the kernel text, before putting it back with the updated permissions.
-> If any other CPU is executing during that window, it will see spurious
-> faults on the kernel text and/or data, leading to crashes.
+I enabled CONFIG_OF_KEXEC for s390. With my patch applied, 
+CONFIG_OF_KEXEC is removed. So I think the robot enabling this config 
+would not be a problem.
 
-Jordan asked why we saw this on phyp but not under KVM? We had a look at
-book3s_hv_rm_mmu.c but the code is a bit too obtuse for me to reason
-about!
+> 
+> Perhaps a new CONFIG_HAVE_KIMAGE_ARCH option? Not having that option
+> would still allow building kexec.o, but would be used inside kexec.c to
+> avoid accessing kimage.arch members.
+> 
 
-Nick suggests that the KVM hypervisor is invalidating the HPTE, but
-because we run guests in VPM mode, the hypervisor would catch the page
-fault and not reflect it down to the guest. It looks like Linux-as-a-HV
-will take HPTE_V_HVLOCK, and then because it's running in VPM mode, the
-hypervisor will catch the fault and not pass it to the guest. But if
-phyp runs with VPM mode off, the guest will see the fault before the
-hypervisor. (we think this is what's going on anyway.)
+I think this is a good idea - a new CONFIG_HAVE_KIMAGE_ARCH, which will 
+be selected by arm64 and ppc for now. I tried this, and it fixes the 
+build issue.
 
-We spent a while pondering if phyp is doing something buggy or not...
-Looking at the PAPR definition of H_PROTECT, that claims the hypervisor
-will do the 'architected =E2=80=9CModifying a Page Table Entry General Case=
-=E2=80=9D
-sequence'. s 5.10.1.2 of Book IIIS of the ISAv3 defines that, and the
-non-atomic hardware sequence does indeed modify the PTE by going through
-the invalid state. So it looks like if phyp is running without VPM mode
-it's technically not buggy.
+Although, the name for the new config can be misleading since PARISC, 
+for instance, also defines "struct kimage_arch". Perhaps, 
+CONFIG_HAVE_ELF_KIMAGE_ARCH since of_kexec_alloc_and_setup_fdt() is 
+accessing ELF specific fields in "struct kimage_arch"?
 
-Hopefully I'll get to have a look at the rest of the patch shortly!
+Rob/Mimi - please let us know which approach you think is better.
 
-Kind regards,
-Daniel
-
-> To fix it we use stop machine to collect all other CPUs, and then have
-> them drop into real mode (MMU off), while we change the mapping. That
-> way they are unaffected by the mapping temporarily disappearing.
->
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/mm/book3s64/hash_pgtable.c | 105 +++++++++++++++++++++++-
->  1 file changed, 104 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/bo=
-ok3s64/hash_pgtable.c
-> index 3663d3cdffac..01de985df2c4 100644
-> --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-> @@ -8,6 +8,7 @@
->  #include <linux/sched.h>
->  #include <linux/mm_types.h>
->  #include <linux/mm.h>
-> +#include <linux/stop_machine.h>
->=20=20
->  #include <asm/sections.h>
->  #include <asm/mmu.h>
-> @@ -400,6 +401,19 @@ EXPORT_SYMBOL_GPL(hash__has_transparent_hugepage);
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->=20=20
->  #ifdef CONFIG_STRICT_KERNEL_RWX
-> +
-> +struct change_memory_parms {
-> +	unsigned long start, end, newpp;
-> +	unsigned int step, nr_cpus, master_cpu;
-> +	atomic_t cpu_counter;
-> +};
-> +
-> +// We'd rather this was on the stack but it has to be in the RMO
-> +static struct change_memory_parms chmem_parms;
-> +
-> +// And therefore we need a lock to protect it from concurrent use
-> +static DEFINE_MUTEX(chmem_lock);
-> +
->  static void change_memory_range(unsigned long start, unsigned long end,
->  				unsigned int step, unsigned long newpp)
->  {
-> @@ -414,6 +428,73 @@ static void change_memory_range(unsigned long start,=
- unsigned long end,
->  							mmu_kernel_ssize);
->  }
->=20=20
-> +static int notrace chmem_secondary_loop(struct change_memory_parms *parm=
-s)
-> +{
-> +	unsigned long msr, tmp, flags;
-> +	int *p;
-> +
-> +	p =3D &parms->cpu_counter.counter;
-> +
-> +	local_irq_save(flags);
-> +	__hard_EE_RI_disable();
-> +
-> +	asm volatile (
-> +	// Switch to real mode and leave interrupts off
-> +	"mfmsr	%[msr]			;"
-> +	"li	%[tmp], %[MSR_IR_DR]	;"
-> +	"andc	%[tmp], %[msr], %[tmp]	;"
-> +	"mtmsrd %[tmp]			;"
-> +
-> +	// Tell the master we are in real mode
-> +	"1:				"
-> +	"lwarx	%[tmp], 0, %[p]		;"
-> +	"addic	%[tmp], %[tmp], -1	;"
-> +	"stwcx.	%[tmp], 0, %[p]		;"
-> +	"bne-	1b			;"
-> +
-> +	// Spin until the counter goes to zero
-> +	"2:				;"
-> +	"lwz	%[tmp], 0(%[p])		;"
-> +	"cmpwi	%[tmp], 0		;"
-> +	"bne-	2b			;"
-> +
-> +	// Switch back to virtual mode
-> +	"mtmsrd %[msr]			;"
-> +
-> +	: // outputs
-> +	  [msr] "=3D&r" (msr), [tmp] "=3D&b" (tmp), "+m" (*p)
-> +	: // inputs
-> +	  [p] "b" (p), [MSR_IR_DR] "i" (MSR_IR | MSR_DR)
-> +	: // clobbers
-> +	  "cc", "xer"
-> +	);
-> +
-> +	local_irq_restore(flags);
-> +
-> +	return 0;
-> +}
-> +
-> +static int change_memory_range_fn(void *data)
-> +{
-> +	struct change_memory_parms *parms =3D data;
-> +
-> +	if (parms->master_cpu !=3D smp_processor_id())
-> +		return chmem_secondary_loop(parms);
-> +
-> +	// Wait for all but one CPU (this one) to call-in
-> +	while (atomic_read(&parms->cpu_counter) > 1)
-> +		barrier();
-> +
-> +	change_memory_range(parms->start, parms->end, parms->step, parms->newpp=
-);
-> +
-> +	mb();
-> +
-> +	// Signal the other CPUs that we're done
-> +	atomic_dec(&parms->cpu_counter);
-> +
-> +	return 0;
-> +}
-> +
->  static bool hash__change_memory_range(unsigned long start, unsigned long=
- end,
->  				      unsigned long newpp)
->  {
-> @@ -428,7 +509,29 @@ static bool hash__change_memory_range(unsigned long =
-start, unsigned long end,
->  	if (start >=3D end)
->  		return false;
->=20=20
-> -	change_memory_range(start, end, step, newpp);
-> +	if (firmware_has_feature(FW_FEATURE_LPAR)) {
-> +		mutex_lock(&chmem_lock);
-> +
-> +		chmem_parms.start =3D start;
-> +		chmem_parms.end =3D end;
-> +		chmem_parms.step =3D step;
-> +		chmem_parms.newpp =3D newpp;
-> +		chmem_parms.master_cpu =3D smp_processor_id();
-> +
-> +		cpus_read_lock();
-> +
-> +		atomic_set(&chmem_parms.cpu_counter, num_online_cpus());
-> +
-> +		// Ensure state is consistent before we call the other CPUs
-> +		mb();
-> +
-> +		stop_machine_cpuslocked(change_memory_range_fn, &chmem_parms,
-> +					cpu_online_mask);
-> +
-> +		cpus_read_unlock();
-> +		mutex_unlock(&chmem_lock);
-> +	} else
-> +		change_memory_range(start, end, step, newpp);
->=20=20
->  	return true;
->  }
-> --=20
-> 2.25.1
+thanks,
+  -lakshmi
