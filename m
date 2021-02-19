@@ -2,76 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033F631F596
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 09:03:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5753731F613
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 09:52:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dhkc00hCbz3cRC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 19:03:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=tG6Rby36;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DhlhX2v1Wz3cRZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Feb 2021 19:52:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tG6Rby36; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DhkbZ3nnCz30Q8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 19:03:20 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id b8so2913634plh.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 00:03:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=JQX1BGNeD8Fpdj6eenxDBcFHyQY3bVVigApTih5grCs=;
- b=tG6Rby36uL2jzdv2wp0h+OcUEsu10rvV1dOILRDLzmYq85TakGeY+08iKqAbDqrTRv
- erfA291+Wkz+3JdAuXk7+xTHSjNEK0swqdX6ZpIAEGfwuHEmi3r0S96ImXiqvbosFPlv
- inJ37GO0aN6q4Mv75+7y2gy3tlt/eK5o9aTtLmp7NQVuufJkaQzHvWBLazTA1IIhCOYz
- gM3usqbxAyHCV+M6bpO9SBKSO+ghV3CB6wydNE+a0pG3GqNVkKLqoG+n8NWBV34QzYcn
- 2yKsvJBBbZq0JkFeqj49d/fxUZe9AvHfNZflql7OwkPxByXvG/SLzr8tZZiYo84e7oNN
- ohhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=JQX1BGNeD8Fpdj6eenxDBcFHyQY3bVVigApTih5grCs=;
- b=nhWDTJEzYNar8zefP3HYN7KxXAHPAAMIdrJFZs7vr1kkUm6Wzo64qzhtv3kXJVdzZh
- ErxT6lI37fnQdO4nRr4IaucBb6oRfQkL737/2BE5EenEvuQBd7WenI+3eIpGvLO3RKNT
- xkLdWef1FWu+1kUULrQK4JIYHjDDdCiijulk76uQ7pLm9NOfwa3EFV7HDXSLi4nNoJ/c
- dK908kRTSrJlgdKIHQ0fdG5Qj42GJ5OWjSns0qrEU3aeo98CVnvqvGd66UuE/X7IWNYN
- IkztRSq2jRzZtjoVzGA3qrCx2xtLMwdUwxUIYRzzP3UVhyW6EDCqG8wKvc19OnliMmAA
- h/2g==
-X-Gm-Message-State: AOAM5315OWHPFqkAiVqzZMA0fSUKFLBz81p2+ZopwZF7MCGvxq7qA5PM
- bU8BooU+g0xhMmncbSKLKuWhxMSMDT0=
-X-Google-Smtp-Source: ABdhPJxxZ8ie7QAdeAbFf6eX3Q7TwmrmzCVG3hnA1gi2NL84R0Lu2NWEZmoHO98lwPIQjWdom1DB4Q==
-X-Received: by 2002:a17:90b:80f:: with SMTP id
- bk15mr7997174pjb.76.1613721798483; 
- Fri, 19 Feb 2021 00:03:18 -0800 (PST)
-Received: from localhost (14-201-150-91.tpgi.com.au. [14.201.150.91])
- by smtp.gmail.com with ESMTPSA id w3sm7624044pjb.2.2021.02.19.00.03.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Feb 2021 00:03:17 -0800 (PST)
-Date: Fri, 19 Feb 2021 18:03:12 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH 1/9] KVM: PPC: Book3S 64: move KVM interrupt entry to
- a common entry point
-To: Daniel Axtens <dja@axtens.net>, kvm-ppc@vger.kernel.org
-References: <20210202030313.3509446-1-npiggin@gmail.com>
- <20210202030313.3509446-2-npiggin@gmail.com>
- <87o8ggab50.fsf@linkitivity.dja.id.au>
-In-Reply-To: <87o8ggab50.fsf@linkitivity.dja.id.au>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com;
+ envelope-from=dingtianhong@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dhlh96chYz30KW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Feb 2021 19:52:21 +1100 (AEDT)
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Dhldj4s0gzlMgR;
+ Fri, 19 Feb 2021 16:50:17 +0800 (CST)
+Received: from [10.174.177.80] (10.174.177.80) by
+ DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
+ 14.3.498.0; Fri, 19 Feb 2021 16:52:05 +0800
+Subject: Re: [PATCH v12 13/14] mm/vmalloc: Hugepage vmalloc mappings
+To: Nicholas Piggin <npiggin@gmail.com>, Andrew Morton
+ <akpm@linux-foundation.org>, <linux-mm@kvack.org>
+References: <20210202110515.3575274-1-npiggin@gmail.com>
+ <20210202110515.3575274-14-npiggin@gmail.com>
+ <e18ef38c-ecef-b15c-29b1-bd4acf0e7fe5@huawei.com>
+ <1613720396.pnvmwaa8om.astroid@bobo.none>
+From: Ding Tianhong <dingtianhong@huawei.com>
+Message-ID: <913cd34a-453c-ae66-ff87-4b0c74c98eb6@huawei.com>
+Date: Fri, 19 Feb 2021 16:52:05 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-Message-Id: <1613721408.9e7tf7vuqz.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1613720396.pnvmwaa8om.astroid@bobo.none>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.80]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,75 +53,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Daniel Axtens's message of February 19, 2021 3:18 pm:
-> Hi Nick,
->=20
->> +++ b/arch/powerpc/kvm/book3s_64_entry.S
->> @@ -0,0 +1,34 @@
->> +#include <asm/cache.h>
->> +#include <asm/ppc_asm.h>
->> +#include <asm/kvm_asm.h>
->> +#include <asm/reg.h>
->> +#include <asm/asm-offsets.h>
->> +#include <asm/kvm_book3s_asm.h>
->> +
->> +/*
->> + * We come here from the first-level interrupt handlers.
->> + */
->> +.global	kvmppc_interrupt
->> +.balign IFETCH_ALIGN_BYTES
->> +kvmppc_interrupt:
->> +	/*
->> +	 * Register contents:
->=20
-> Clearly r9 contains some data at this point, and I think it's guest r9
-> because of what you say later on in
-> book3s_hv_rmhandlers.S::kvmppc_interrupt_hv. Is that right?
+On 2021/2/19 15:45, Nicholas Piggin wrote:
+> Excerpts from Ding Tianhong's message of February 19, 2021 1:45 pm:
+>> Hi Nicholas:
+>>
+>> I met some problem for this patch, like this:
+>>
+>> kva = vmalloc(3*1024k);
+>>
+>> remap_vmalloc_range(xxx, kva, xxx)
+>>
+>> It failed because that the check for page_count(page) is null so return, it break the some logic for current modules.
+>> because the new huge page is not valid for composed page.
+> 
+> Hey Ding, that's a good catch. How are you testing this stuff, do you 
+> have a particular driver that does this?
+> 
 
-Yes I hope so.
+yes, The driver would get a memory from the vmalloc in kernel space, and then the physical same memory will mmap to the user space. The drivers could not work when applying this patch.
 
-> Should that
-> be documented in this comment as well?
+>> I think some guys really don't get used to the changes for the vmalloc that the small pages was transparency to the hugepage
+>> when the size is bigger than the PMD_SIZE.
+> 
+> I think in this case vmalloc could allocate the large page as a compound
+> page which would solve this problem I think? (without having actually 
+> tested it)
+> 
 
-Normally it can be assumed the registers not explicitly enumerated would=20
-be unchanged from the interrupted context, so they would all contain=20
-guest values. I added the R9 contents comment later because I changed
-it later.
+yes, i think the __GFP_COMP flag could fix this.
 
->=20
->> +	 * R12		=3D (guest CR << 32) | interrupt vector
->> +	 * R13		=3D PACA
->> +	 * guest R12 saved in shadow VCPU SCRATCH0
->> +	 * guest R13 saved in SPRN_SCRATCH0
->> +	 */
->> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
->> +	std	r9, HSTATE_SCRATCH2(r13)
->> +	lbz	r9, HSTATE_IN_GUEST(r13)
->> +	cmpwi	r9, KVM_GUEST_MODE_HOST_HV
->> +	beq	kvmppc_bad_host_intr
->> +#ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
->> +	cmpwi	r9, KVM_GUEST_MODE_GUEST
->> +	ld	r9, HSTATE_SCRATCH2(r13)
->> +	beq	kvmppc_interrupt_pr
->> +#endif
->> +	b	kvmppc_interrupt_hv
->> +#else
->> +	b	kvmppc_interrupt_pr
->> +#endif
->=20
-> Apart from that I had a look and convinced myself that the code will
-> behave the same as before. On that basis:
->=20
-> Reviewed-by: Daniel Axtens <dja@axtens.net>
->=20
-> Kind regards,
-> Daniel
+>> can we think about give a new static huge page to fix it? just like use a a new vmalloc_huge_xxx function to disginguish the current function,
+>> the user could choose to use the transparent hugepage or static hugepage for vmalloc.
+> 
+> Yeah that's a good question, there are a few things in the huge vmalloc 
+> code that accounts things as small pages and you can't assume large or 
+> small. If there is benefit from forcing large pages that could certainly
+> be added.
+> 
 
-Thanks,
-Nick
->=20
+The vmalloc transparent is good, but not fit every user scenes, some guys like to use the deterministic function
+for performance critical area.
+
+Thanks
+Ding
+
+> Interestingly, remap_vmalloc_range in theory could map the pages as 
+> large in userspace as well. That takes more work but if something
+> really needs that for performance, it could be done.
+> 
+> Thanks,
+> Nick
+> .
+> 
+
