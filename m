@@ -1,97 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D2232221E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Feb 2021 23:23:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E12A8322254
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Feb 2021 23:46:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DkxY15mpdz3cc5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 09:23:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dky3Q5Fyvz3cLg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 09:46:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iYab1XVV;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=d9XI9NKA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::12f;
+ helo=mail-lf1-x12f.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=iYab1XVV; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=d9XI9NKA; 
+ dkim-atps=neutral
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com
+ [IPv6:2a00:1450:4864:20::12f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DkxXZ4QG0z30Qf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 09:23:26 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 11MMK8Oo110640; Mon, 22 Feb 2021 17:23:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=UmvtzvfxROJDiscc8m5MKltOL6plKqCJi88n/9n74og=;
- b=iYab1XVVL7eOKV+4CI/Kk+T9SHbQ1l4S7c1pIOMvvsEodWyagqrPi/PhzTuGyNDvvAh6
- pDStjMaPzqyvHjpIyyVjWZHbgcLglMQqQ94XWNKERf0qLZqMkNK19hxljWlVcr+AQ3pS
- oJyD7rTwtUOwt4h/0EwjgEY4Fy3pJ9Q7dy5yrocyji6W787K8T2mulEneKjkwDwdn4aZ
- qB5/mirv/jMcFS2oq5VQyFELRdMcvBNJ8xvRcNTMjZKHRyr3t8/G+WP26+SgE2q+4GMT
- 7kvyU9vFd32m35W3/PHm20a0R78sSb1uoOUuAyhUEgZRk8o2sTQgEoSA+utHjif22d0V jQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36vkg03wj1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Feb 2021 17:23:24 -0500
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 11MMN4sQ125434;
- Mon, 22 Feb 2021 17:23:23 -0500
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36vkg03whu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Feb 2021 17:23:23 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11MMLmW7023049;
- Mon, 22 Feb 2021 22:23:23 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma01wdc.us.ibm.com with ESMTP id 36tt28t83v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Feb 2021 22:23:23 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 11MMNM0e34668976
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Feb 2021 22:23:23 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D8E2AAE063;
- Mon, 22 Feb 2021 22:23:22 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2B1EDAE05C;
- Mon, 22 Feb 2021 22:23:22 +0000 (GMT)
-Received: from localhost (unknown [9.160.141.72])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
- Mon, 22 Feb 2021 22:23:21 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH 03/13] KVM: PPC: Book3S HV: Ensure MSR[ME] is always set
- in guest MSR
-In-Reply-To: <20210219063542.1425130-4-npiggin@gmail.com>
-References: <20210219063542.1425130-1-npiggin@gmail.com>
- <20210219063542.1425130-4-npiggin@gmail.com>
-Date: Mon, 22 Feb 2021 19:23:20 -0300
-Message-ID: <87h7m3yc6f.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dky2z50jkz30Ky
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 09:46:17 +1100 (AEDT)
+Received: by mail-lf1-x12f.google.com with SMTP id z11so8315771lfb.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Feb 2021 14:46:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=r7EOmcELM54UmBvApMBLdEmUEKDMh6qMssHdlFfkwGs=;
+ b=d9XI9NKAdnQUgNlRYZBN0ZMIIfpSm1OKH1zyzI/Vkm8Org+COfvN9rrWRSaY0OwMtj
+ 0MSoqlsN/JtQLNk7i3pGVbZ8w+EBUMGSh5ktQZz7JRYQ4XKzTp810rS1z4q9D8IqBu6M
+ mztM40DrDDZEkydB2ejwi0K1qqZ/Ec4RHWtec=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=r7EOmcELM54UmBvApMBLdEmUEKDMh6qMssHdlFfkwGs=;
+ b=Lwi9aMtf4NR3ogh1TaEVM7jIoi5RDDLg82Kfm4wHlkWfHLQMKcrDNi6QNYytJe1zRk
+ 3RDwuFkyrD415sijQToLIIUKRiqXBOwPUTmJ446WsiqXHlUYjab6CyhML1iPbF9yERvl
+ fbiGgApighb2nf+r0bhw6+9Un1BMvAa87Lm8oNYIngPZ9OqSKyo1/qh1BQo1QKQFdf2y
+ 5Wu11N8NWPfmwEqZTlIkhrbDFqc7CmzovIfjRtJ6DYqGjCy7A8/VQHzXeswSQe787wcG
+ uzh+qS3dNyRENDeOXkQXFjT2GBx9+HGKShJbBZvgE/Y5pymIz7D1KN0SaQ563jzvqwlF
+ EIrQ==
+X-Gm-Message-State: AOAM5306cm6B+VOqzZ3gCfoZiAFtqMuNw00Ce3zOui4H/YCxpxrNR9/r
+ yRO0qIe5arjj7yzF+mffljkNiUtj+Jah4Q==
+X-Google-Smtp-Source: ABdhPJxLvx/KeR9K81kSbHBQk1dOivIXv9rkwSQcZWTgPQbPEGQtJJc7mjmm4t79pbZ2VNcTI6rurw==
+X-Received: by 2002:a05:6512:39c2:: with SMTP id
+ k2mr13979622lfu.69.1614033968085; 
+ Mon, 22 Feb 2021 14:46:08 -0800 (PST)
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com.
+ [209.85.208.173])
+ by smtp.gmail.com with ESMTPSA id b11sm2161805lfd.306.2021.02.22.14.46.07
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Feb 2021 14:46:07 -0800 (PST)
+Received: by mail-lj1-f173.google.com with SMTP id r23so60981705ljh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Feb 2021 14:46:07 -0800 (PST)
+X-Received: by 2002:a19:7f44:: with SMTP id a65mr14452663lfd.41.1614033479451; 
+ Mon, 22 Feb 2021 14:37:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-02-22_07:2021-02-22,
- 2021-02-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 mlxlogscore=985 spamscore=0
- priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102220190
+References: <87o8gctii6.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87o8gctii6.fsf@mpe.ellerman.id.au>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 22 Feb 2021 14:37:43 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wj9nZYEZnTYMpHwVT6B6P+zFXW_P-PWH_bRR5bp-cWbOQ@mail.gmail.com>
+Message-ID: <CAHk-=wj9nZYEZnTYMpHwVT6B6P+zFXW_P-PWH_bRR5bp-cWbOQ@mail.gmail.com>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.12-1 tag
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,42 +84,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: ananth@linux.ibm.com, aik@ozlabs.ru, kernelfans@gmail.com, cmr@codefail.de,
+ Zheng Yongjun <zhengyongjun3@huawei.com>, Oliver O'Halloran <oohall@gmail.com>,
+ sandipan@linux.ibm.com, cy.fan@huawei.com,
+ Markus Elfring <elfring@users.sourceforge.net>,
+ jiapeng.chong@linux.alibaba.com, skirmisher@protonmail.com,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Bhaskar Chowdhury <unixbhaskar@gmail.com>, eerykitty@gmail.com,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, haren@linux.ibm.com,
+ ganeshgr@linux.ibm.com, msuchanek@suse.de, nathanl@linux.ibm.com,
+ Rob Herring <robh@kernel.org>, kjain@linux.ibm.com,
+ Nick Piggin <npiggin@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Qian Cai <cai@lca.pw>, clg@kaod.org, hbathini@linux.ibm.com,
+ Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ fbarrat@linux.ibm.com, Po-Hsu Lin <po-hsu.lin@canonical.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+On Mon, Feb 22, 2021 at 4:06 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Please pull powerpc updates for 5.12.
 
-> Rather than add the ME bit to the MSR when the guest is entered, make
-> it clear that the hypervisor does not allow the guest to clear the bit.
->
-> The ME addition is kept in the code for now, but a future patch will
-> warn if it's not present.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Pulled. However:
 
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+>  mode change 100755 => 100644 tools/testing/selftests/powerpc/eeh/eeh-functions.sh
+>  create mode 100755 tools/testing/selftests/powerpc/eeh/eeh-vf-aware.sh
+>  create mode 100755 tools/testing/selftests/powerpc/eeh/eeh-vf-unaware.sh
 
-> ---
->  arch/powerpc/kvm/book3s_hv_builtin.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-> index dad118760a4e..ae8f291c5c48 100644
-> --- a/arch/powerpc/kvm/book3s_hv_builtin.c
-> +++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-> @@ -661,6 +661,13 @@ static void kvmppc_end_cede(struct kvm_vcpu *vcpu)
->
->  void kvmppc_set_msr_hv(struct kvm_vcpu *vcpu, u64 msr)
->  {
-> +	/*
-> +	 * Guest must always run with machine check interrupt
-> +	 * enabled.
-> +	 */
-> +	if (!(msr & MSR_ME))
-> +		msr |= MSR_ME;
-> +
->  	/*
->  	 * Check for illegal transactional state bit combination
->  	 * and if we find it, force the TS field to a safe state.
+Somebody is being confused.
+
+Why create two new shell scripts with the proper executable bit, and
+then remove the executable bit from an existing one?
+
+That just seems very inconsistent.
+
+             Linus
