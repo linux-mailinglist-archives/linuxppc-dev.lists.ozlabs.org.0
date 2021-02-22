@@ -1,68 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7EA322279
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 00:01:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D98332229A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 00:23:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DkyNV4bfdz3cQd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 10:01:30 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fq4R2dSQ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DkytN4j3bz3cTS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 10:23:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72f;
- helo=mail-qk1-x72f.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=fq4R2dSQ; dkim-atps=neutral
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com
- [IPv6:2607:f8b0:4864:20::72f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 63 seconds by postgrey-1.36 at boromir;
+ Tue, 23 Feb 2021 10:23:38 AEDT
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DkyN32pm9z30QT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 10:01:04 +1100 (AEDT)
-Received: by mail-qk1-x72f.google.com with SMTP id z190so14443310qka.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Feb 2021 15:01:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=EsKV0Pl9cBg0dGkFXYlZCn6qWyBn5vHTyFKd2EuGsKo=;
- b=fq4R2dSQQyl5znQa4yVu7EyaNlBck4uM94y1rknmYjQGUU7Cr8D4pE0iVKYbD2htIN
- pz9KVEK/iiES/PPK8aq+TVtOGkW9pEUmtwl0eMZGizs5ZzIIDnKw3iHpgQUfzxl8feMm
- Ayt/PZGOUMMaEJ/92FCotBtm7b36hJFAt8bqDJirvpeV5gty4+DQaJPkHffXrIYlGjti
- 5ETYr1ncQ1qL2lYxQNBCAivx8QWkGMceq0GET3JI9QrNvpynUb6UaO+XC/pvo7VF5NOr
- k8MCAK59+93GudItyq4PKr8s2b5c+6pDXjI5V27cWHMUuc/roktuuwsMC0J+xNGZVfT3
- /zHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=EsKV0Pl9cBg0dGkFXYlZCn6qWyBn5vHTyFKd2EuGsKo=;
- b=hG96SEKUfS6iP+FjduYODUoujP4OAGUuDb2EFSXpEVRo39m1HHEGHYUBv9YW8MuW15
- NqAMIWcEMS7UDYXTI9P5agCl2X+SteOleceuVwVujeYREiD+c5P1iudeVkYbalC/rbun
- jA2xUG3Hmk3HUDNxOQUaRy2AEBa0oa0WGHKXgRW9K4ixgh2z2KkLuWhxKTzHSkRtEMhh
- HCbwuoS6UFpmY4lqcCl3tXGmzwpfLs0UZlIoGdjhxIdyH+nH2qKpJiJfsC2mVlx3oNNY
- xej/f6nbQQkjDa9gza7YuWvR+Em+SdLP4UPXiVr+mGhR8oS9T6RGrUWVaYJA1tVlPu/m
- qZgQ==
-X-Gm-Message-State: AOAM533AoyedJ8vueDizQn2srLhLBTKD97hbELbozyOLZMI1t6o7d8LG
- r+CXFsVBnWc2bBBUcRwVy3cvAifLXUQFrgj56tE=
-X-Google-Smtp-Source: ABdhPJwWRqCJEdEzHNjaLGBSsRfe2TL5ESD7hupDlSFVSwOcNv+kd6nMpHN6ZC+Q9JkUP1C5K3eyn7pka3B8/q5HiFE=
-X-Received: by 2002:a37:7245:: with SMTP id n66mr24129320qkc.374.1614034860347; 
- Mon, 22 Feb 2021 15:01:00 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dkyt25xsNz30Hh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 10:23:38 +1100 (AEDT)
+IronPort-SDR: 1eKBwe7AASeBY3P3KpkP5FYJKWDUHZTvzJxQskHKrunZvf7E9CnImWE6mABL5bUlds4FolxyyS
+ UvLY73IAbhJw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9903"; a="204043178"
+X-IronPort-AV: E=Sophos;i="5.81,198,1610438400"; d="scan'208";a="204043178"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Feb 2021 15:22:30 -0800
+IronPort-SDR: jIbqd4fulpaGEhhjikco/wN5Xu+PAbFBAFINAqFVcqXp1KmGmtpw8pt9LlpwyvlIK2rXHniz49
+ Nn01HvQ8K65g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,198,1610438400"; d="scan'208";a="441536528"
+Received: from lkp-server01.sh.intel.com (HELO 16660e54978b) ([10.239.97.150])
+ by orsmga001.jf.intel.com with ESMTP; 22 Feb 2021 15:22:21 -0800
+Received: from kbuild by 16660e54978b with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lEKWx-0000ig-2L; Mon, 22 Feb 2021 23:22:19 +0000
+Date: Tue, 23 Feb 2021 07:21:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ a5c2f7d40511976f30de38b4374b8da2b39a073c
+Message-ID: <60343c91.syCBQgc4ZrBxe+yJ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <87o8gctii6.fsf@mpe.ellerman.id.au>
- <CAHk-=wj9nZYEZnTYMpHwVT6B6P+zFXW_P-PWH_bRR5bp-cWbOQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wj9nZYEZnTYMpHwVT6B6P+zFXW_P-PWH_bRR5bp-cWbOQ@mail.gmail.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Tue, 23 Feb 2021 10:00:49 +1100
-Message-ID: <CAOSf1CH67Htam33UvYhaypD7HW7q1xU4tUW0soshao2FKa+Czw@mail.gmail.com>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.12-1 tag
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,53 +56,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Pingfan Liu <kernelfans@gmail.com>,
- cmr@codefail.de, Zheng Yongjun <zhengyongjun3@huawei.com>,
- Po-Hsu Lin <po-hsu.lin@canonical.com>, sandipan@linux.ibm.com,
- cy.fan@huawei.com, Markus Elfring <elfring@users.sourceforge.net>,
- jiapeng.chong@linux.alibaba.com, skirmisher@protonmail.com,
- Florian Fainelli <f.fainelli@gmail.com>,
- Bhaskar Chowdhury <unixbhaskar@gmail.com>, eerykitty@gmail.com,
- Haren Myneni <haren@linux.ibm.com>, ganeshgr@linux.ibm.com,
- Michal Suchanek <msuchanek@suse.de>, Nathan Lynch <nathanl@linux.ibm.com>,
- Rob Herring <robh@kernel.org>, kjain@linux.ibm.com,
- Nick Piggin <npiggin@gmail.com>, Mark Brown <broonie@kernel.org>,
- Qian Cai <cai@lca.pw>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
- Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 23, 2021 at 9:44 AM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Mon, Feb 22, 2021 at 4:06 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
-> >
-> > Please pull powerpc updates for 5.12.
->
-> Pulled. However:
->
-> >  mode change 100755 => 100644 tools/testing/selftests/powerpc/eeh/eeh-functions.sh
-> >  create mode 100755 tools/testing/selftests/powerpc/eeh/eeh-vf-aware.sh
-> >  create mode 100755 tools/testing/selftests/powerpc/eeh/eeh-vf-unaware.sh
->
-> Somebody is being confused.
->
-> Why create two new shell scripts with the proper executable bit, and
-> then remove the executable bit from an existing one?
->
-> That just seems very inconsistent.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: a5c2f7d40511976f30de38b4374b8da2b39a073c  powerpc/4xx: Fix build errors from mfdcr()
 
-eeh-function.sh just provides some helper functions for the other
-scripts and doesn't do anything when executed directly. I thought
-making it non-executable made sense.
+elapsed time: 724m
 
->
->              Linus
+configs tested: 101
+configs skipped: 88
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                           mtx1_defconfig
+mips                malta_qemu_32r6_defconfig
+powerpc                        fsp2_defconfig
+h8300                            alldefconfig
+powerpc                        icon_defconfig
+sh                           se7343_defconfig
+ia64                            zx1_defconfig
+arm                         shannon_defconfig
+arm                        mvebu_v5_defconfig
+powerpc                     kmeter1_defconfig
+sh                         ecovec24_defconfig
+sh                          polaris_defconfig
+powerpc                          g5_defconfig
+mips                          malta_defconfig
+arc                        nsim_700_defconfig
+powerpc                     akebono_defconfig
+powerpc                     ppa8548_defconfig
+powerpc                     mpc5200_defconfig
+arm                     davinci_all_defconfig
+mips                         tb0219_defconfig
+arm                        keystone_defconfig
+sh                  sh7785lcr_32bit_defconfig
+powerpc                      makalu_defconfig
+arm                        realview_defconfig
+powerpc                     taishan_defconfig
+arm                          pxa168_defconfig
+arm                          simpad_defconfig
+mips                           ci20_defconfig
+powerpc                 mpc8560_ads_defconfig
+powerpc                   lite5200b_defconfig
+powerpc                      ppc6xx_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a001-20210222
+x86_64               randconfig-a002-20210222
+x86_64               randconfig-a003-20210222
+x86_64               randconfig-a005-20210222
+x86_64               randconfig-a006-20210222
+x86_64               randconfig-a004-20210222
+i386                 randconfig-a013-20210222
+i386                 randconfig-a012-20210222
+i386                 randconfig-a011-20210222
+i386                 randconfig-a014-20210222
+i386                 randconfig-a016-20210222
+i386                 randconfig-a015-20210222
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a015-20210222
+x86_64               randconfig-a011-20210222
+x86_64               randconfig-a012-20210222
+x86_64               randconfig-a016-20210222
+x86_64               randconfig-a014-20210222
+x86_64               randconfig-a013-20210222
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
