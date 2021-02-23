@@ -1,93 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6443225F0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 07:32:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD56D32262D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 08:11:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dl8P30CmKz3cTp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 17:32:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dl9Fs3gfBz3cLf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 18:11:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eSOSKZm9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=hptsUtsz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=l0Hgz7PP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=russell.cc (client-ip=64.147.123.25;
+ helo=wout2-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=eSOSKZm9; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm1 header.b=hptsUtsz; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm2 header.b=l0Hgz7PP; 
+ dkim-atps=neutral
+X-Greylist: delayed 490 seconds by postgrey-1.36 at boromir;
+ Tue, 23 Feb 2021 18:11:04 AEDT
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
+ [64.147.123.25])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dl8NZ5bLYz30L1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 17:32:13 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 11N63ta6073627; Tue, 23 Feb 2021 01:31:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject : date : message-id; s=pp1;
- bh=UzPebMsriF9mmDI24ZcuVOWL83L84mb/8Ivw+/5u5Oo=;
- b=eSOSKZm9griYI+OKDPkJl3d3lyjJo26YKmapCtPoDfuJ5vQv1PpHxfTORkDeveenXNO1
- N8i9GmLCN5/y1KBW+uHVc3qOtl7L/RSKLa7BS1D1NP0H+5xACHcDujhUAihHJ8xEgIwA
- vEddXl/Dx0PhEf/l+6har4MUn16C63olwFBzppuaHUmHhTnc4/4NYj8+whedqB6LwmuY
- FNKrGPdRR1KcGNvc1ksFq05jD4A34Kf+NOZnkV4ax2cXctqlhjNHAFmSQamH8HR2Fw9Q
- m0oDxa08B3ymr8jgVTT2hcVIcHbwu6DH6FUleXVwO8x0bUIbxreug+56fDk6ZY8DhYU2 EA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36vkfsdqt2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Feb 2021 01:31:58 -0500
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 11N64cKc075465;
- Tue, 23 Feb 2021 01:31:57 -0500
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36vkfsdqs4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Feb 2021 01:31:57 -0500
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11N6SlpM011384;
- Tue, 23 Feb 2021 06:31:55 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma02fra.de.ibm.com with ESMTP id 36tt28977y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Feb 2021 06:31:55 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 11N6VeY634996524
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 23 Feb 2021 06:31:40 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BD6644C044;
- Tue, 23 Feb 2021 06:31:52 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B48CF4C046;
- Tue, 23 Feb 2021 06:31:50 +0000 (GMT)
-Received: from localhost.localdomain.localdomain (unknown [9.124.218.248])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 23 Feb 2021 06:31:50 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/perf: Fix handling of privilege level checks in perf
- interrupt context
-Date: Tue, 23 Feb 2021 01:31:49 -0500
-Message-Id: <1614061909-1734-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-02-23_01:2021-02-22,
- 2021-02-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- mlxlogscore=999 priorityscore=1501 impostorscore=0 lowpriorityscore=0
- phishscore=0 bulkscore=0 spamscore=0 adultscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102230053
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dl9FN2lWJz30N7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 18:11:04 +1100 (AEDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
+ by mailout.west.internal (Postfix) with ESMTP id 5BB6CE07;
+ Tue, 23 Feb 2021 02:02:50 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute2.internal (MEProxy); Tue, 23 Feb 2021 02:02:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=fm1; bh=vJd0FJ/3sS5tFz9cqfc167wISR
+ CmiNfHLC9aLREjXUM=; b=hptsUtszZBkWIT+IlDXiDEsbZL5itI3jckGB/CWIMG
+ MMVOfi+pXuDDI3CSZcnYHJFM2KHA88foOstdZFd7lRqQgmtyxdPvdHIT4GaIgwB6
+ MpnlLplqute6ukrnDEmqQoi5FdV+2flEUzkBAaNFFlhvjhvOvVu+ZOlac8NDqDoX
+ yaCI7yf6aIrZer5TkfRxON50VHebhWtuQU05UjXA0Jq3k8zSRYmrWt8NPub/ERNy
+ GFhSLpLV4eB6MpuaLo27ynomRftN8Cvz+5Kj+QQcbpWSxtexY/fEmo7zqbtCdz4Q
+ mpZiaa/kcrzAwfAUSH79ESb5EIwXxINPVNeyXFj763/A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:date:from
+ :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=vJd0FJ/3sS5tFz9cq
+ fc167wISRCmiNfHLC9aLREjXUM=; b=l0Hgz7PPeZS+VZjOD2lEXyqnHbjTVl4ut
+ pT/MRLLXlJy3H/iJH5AP/6hBha4rItuopiPSvkluO0607Mix+wliWdoMov6cIgk/
+ 8BksvSx0tSHo3QKii1vhCxzv0CYP7eMddFhdlZgTVoBUaaoSccOEftp516+vwpEY
+ 2oakMZ+YkHmM3Y1cefVzPjdOgkzD2QOP0QXQHGu+zPPdRTxshdlTVzacYSKEr2OY
+ 1USlB/MzRExXrWwVC2LC/o2z8E9yaWgRi00j5QkNJvV1g1g+LQiRntBkASjP3AqI
+ 7gH6Ldi0LXxmsd33xuE1JTSSyPd3Evuxi1jBinv/St9EVCqUBEZPQ==
+X-ME-Sender: <xms:mag0YG0BibXnjG5wFfXpSGdzXjw4M65PEw-g2IttU4nxwCsvBVAIfQ>
+ <xme:mag0YJGlD4F2NJ0dp1f7h_teKpryCViJcVrj-k6yuKb6FKf3BtnNPF1SprUZ_uKN1
+ iX29eVfSvtR36edWw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrkeeggddutddvucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlfedtmdenucfjughrpefhvf
+ fufffkofgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhrvgih
+ uceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnhepleegle
+ efvdffkeegveefleevfedtieelgfdugeekueehhfevgfffkeeugfffkeefnecukfhppedu
+ jedvrdduleefrdegiedrheejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+ hmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:mag0YO4cdln-MyqDs9llOS3DjWKaWzX2jj_iCk7lVse53HGUpNizjw>
+ <xmx:mag0YH2Rk4nCpHmkiVO0MmQkTnFywTQbCu7wf392wShnFLdRPOWPig>
+ <xmx:mag0YJEEC-oOgiqfOEaEgSzbr09_rwr2n563NVPteyDeZjKOaga__w>
+ <xmx:mqg0YMOp5AxKWZ-A-ULfKL5yA2k1dY8bIYfxRx6jZlfVAi4s_Wn40g>
+Received: from crackle.ozlabs.ibm.com.com (cpe-172-193-46-57.qld.foxtel.net.au
+ [172.193.46.57])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 69B9B240057;
+ Tue, 23 Feb 2021 02:02:48 -0500 (EST)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] selftests/powerpc: Fix L1D flushing tests for Power10
+Date: Tue, 23 Feb 2021 17:02:27 +1000
+Message-Id: <20210223070227.2916871-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.30.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,142 +95,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, peterz@infradead.org, omosnace@redhat.com,
- acme@kernel.org, jolsa@kernel.org, linuxppc-dev@lists.ozlabs.org,
- kan.liang@linux.intel.com
+Cc: Russell Currey <ruscur@russell.cc>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Running "perf mem record" in powerpc platforms with selinux enabled
-resulted in soft lockup's. Below call-trace was seen in the logs:
+The rfi_flush and entry_flush selftests work by using the PM_LD_MISS_L1
+perf event to count L1D misses.  The value of this event has changed
+over time:
 
-CPU: 58 PID: 3751 Comm: sssd_nss Not tainted 5.11.0-rc7+ #2
-NIP:  c000000000dff3d4 LR: c000000000dff3d0 CTR: 0000000000000000
-REGS: c000007fffab7d60 TRAP: 0100   Not tainted  (5.11.0-rc7+)
-<<>>
-NIP [c000000000dff3d4] _raw_spin_lock_irqsave+0x94/0x120
-LR [c000000000dff3d0] _raw_spin_lock_irqsave+0x90/0x120
-Call Trace:
-[c00000000fd471a0] [c00000000fd47260] 0xc00000000fd47260 (unreliable)
-[c00000000fd471e0] [c000000000b5fbbc] skb_queue_tail+0x3c/0x90
-[c00000000fd47220] [c000000000296edc] audit_log_end+0x6c/0x180
-[c00000000fd47260] [c0000000006a3f20] common_lsm_audit+0xb0/0xe0
-[c00000000fd472a0] [c00000000066c664] slow_avc_audit+0xa4/0x110
-[c00000000fd47320] [c00000000066cff4] avc_has_perm+0x1c4/0x260
-[c00000000fd47430] [c00000000066e064] selinux_perf_event_open+0x74/0xd0
-[c00000000fd47450] [c000000000669888] security_perf_event_open+0x68/0xc0
-[c00000000fd47490] [c00000000013d788] record_and_restart+0x6e8/0x7f0
-[c00000000fd476c0] [c00000000013dabc] perf_event_interrupt+0x22c/0x560
-[c00000000fd477d0] [c00000000002d0fc] performance_monitor_exception+0x4c/0x60
-[c00000000fd477f0] [c00000000000b378] performance_monitor_common_virt+0x1c8/0x1d0
-interrupt: f00 at _raw_spin_lock_irqsave+0x38/0x120
-NIP:  c000000000dff378 LR: c000000000b5fbbc CTR: c0000000007d47f0
-REGS: c00000000fd47860 TRAP: 0f00   Not tainted  (5.11.0-rc7+)
-<<>>
-NIP [c000000000dff378] _raw_spin_lock_irqsave+0x38/0x120
-LR [c000000000b5fbbc] skb_queue_tail+0x3c/0x90
-interrupt: f00
-[c00000000fd47b00] [0000000000000038] 0x38 (unreliable)
-[c00000000fd47b40] [c00000000aae6200] 0xc00000000aae6200
-[c00000000fd47b80] [c000000000296edc] audit_log_end+0x6c/0x180
-[c00000000fd47bc0] [c00000000029f494] audit_log_exit+0x344/0xf80
-[c00000000fd47d10] [c0000000002a2b00] __audit_syscall_exit+0x2c0/0x320
-[c00000000fd47d60] [c000000000032878] do_syscall_trace_leave+0x148/0x200
-[c00000000fd47da0] [c00000000003d5b4] syscall_exit_prepare+0x324/0x390
-[c00000000fd47e10] [c00000000000d76c] system_call_common+0xfc/0x27c
+- Power7 uses 0x400f0
+- Power8 and Power9 use both 0x400f0 and 0x3e054
+- Power10 uses only 0x3e054
 
-The above trace shows that while the CPU was handling a performance
-monitor exception, there was a call to "security_perf_event_open"
-function. In powerpc core-book3s, this function is called from
-'perf_allow_kernel' check during recording of data address in the sample
-via perf_get_data_addr().
+Rather than relying on raw values, configure perf to count L1D read
+misses in the most explicit way available.
 
-Commit da97e18458fb ("perf_event: Add support for LSM and SELinux checks")
-introduced security enhancements to perf. As part of this commit, the new
-security hook for perf_event_open was added in all places where perf
-paranoid check was previously used. In powerpc core-book3s code, originally
-had paranoid checks in 'perf_get_data_addr' and 'power_pmu_bhrb_read'. So
-'perf_paranoid_kernel' checks were replaced with 'perf_allow_kernel' in
-these pmu helper functions as well.
+This fixes the selftests to work on systems without 0x400f0 as
+PM_LD_MISS_L1, and should change no behaviour for systems that the tests
+already worked on.
 
-The intention of paranoid checks in core-book3s is to verify privilege
-access before capturing some of the sample data. Along with paranoid
-checks, 'perf_allow_kernel' also does a 'security_perf_event_open'. Since
-these functions are accessed while recording sample, we end up in calling
-selinux_perf_event_open in PMI context. Some of the security functions
-use spinlock like sidtab_sid2str_put(). If a perf interrupt hits under
-a spin lock and if we end up in calling selinux hook functions in PMI
-handler, this could cause a dead lock.
+The only potential downside is that referring to a specific perf event
+requires PMU support implemented in the kernel for that platform.
 
-Since the purpose of this security hook is to control access to
-perf_event_open, it is not right to call this in interrupt context.
-But in case of powerpc PMU, we need the privilege checks for specific
-samples from branch history ring buffer and sampling register values.
-Reference commits:
-Commit cd1231d7035f ("powerpc/perf: Prevent kernel address leak via
-perf_get_data_addr()")
-Commit bb19af816025 ("powerpc/perf: Prevent kernel address leak to
-userspace via BHRB buffer")
-
-As a fix, patch caches 'perf_allow_kernel' value in event_init in
-'pmu_private' field of perf_event. The cached value is used in the
-PMI code path.
-
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
 ---
- arch/powerpc/perf/core-book3s.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+v2: Move away from raw events as suggested by mpe
 
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 4b4319d8..9e9f67f 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -189,6 +189,11 @@ static inline unsigned long perf_ip_adjust(struct pt_regs *regs)
- 	return 0;
- }
+ tools/testing/selftests/powerpc/security/entry_flush.c | 2 +-
+ tools/testing/selftests/powerpc/security/flush_utils.h | 4 ++++
+ tools/testing/selftests/powerpc/security/rfi_flush.c   | 2 +-
+ 3 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/powerpc/security/entry_flush.c b/tools/testing/selftests/powerpc/security/entry_flush.c
+index 78cf914fa321..68ce377b205e 100644
+--- a/tools/testing/selftests/powerpc/security/entry_flush.c
++++ b/tools/testing/selftests/powerpc/security/entry_flush.c
+@@ -53,7 +53,7 @@ int entry_flush_test(void)
  
-+static bool event_allow_kernel(struct perf_event *event)
-+{
-+	return (bool)event->pmu_private;
-+}
+ 	entry_flush = entry_flush_orig;
+ 
+-	fd = perf_event_open_counter(PERF_TYPE_RAW, /* L1d miss */ 0x400f0, -1);
++	fd = perf_event_open_counter(PERF_TYPE_HW_CACHE, PERF_L1D_READ_MISS_CONFIG, -1);
+ 	FAIL_IF(fd < 0);
+ 
+ 	p = (char *)memalign(zero_size, CACHELINE_SIZE);
+diff --git a/tools/testing/selftests/powerpc/security/flush_utils.h b/tools/testing/selftests/powerpc/security/flush_utils.h
+index 07a5eb301466..7a3d60292916 100644
+--- a/tools/testing/selftests/powerpc/security/flush_utils.h
++++ b/tools/testing/selftests/powerpc/security/flush_utils.h
+@@ -9,6 +9,10 @@
+ 
+ #define CACHELINE_SIZE 128
+ 
++#define PERF_L1D_READ_MISS_CONFIG	((PERF_COUNT_HW_CACHE_L1D) | 		\
++					(PERF_COUNT_HW_CACHE_OP_READ << 8) |	\
++					(PERF_COUNT_HW_CACHE_RESULT_MISS << 16))
 +
- /*
-  * The user wants a data address recorded.
-  * If we're not doing instruction sampling, give them the SDAR
-@@ -222,7 +227,7 @@ static inline void perf_get_data_addr(struct perf_event *event, struct pt_regs *
- 	if (!(mmcra & MMCRA_SAMPLE_ENABLE) || sdar_valid)
- 		*addrp = mfspr(SPRN_SDAR);
+ void syscall_loop(char *p, unsigned long iterations,
+ 		  unsigned long zero_size);
  
--	if (is_kernel_addr(mfspr(SPRN_SDAR)) && perf_allow_kernel(&event->attr) != 0)
-+	if (is_kernel_addr(mfspr(SPRN_SDAR)) && !event_allow_kernel(event))
- 		*addrp = 0;
- }
+diff --git a/tools/testing/selftests/powerpc/security/rfi_flush.c b/tools/testing/selftests/powerpc/security/rfi_flush.c
+index 7565fd786640..f73484a6470f 100644
+--- a/tools/testing/selftests/powerpc/security/rfi_flush.c
++++ b/tools/testing/selftests/powerpc/security/rfi_flush.c
+@@ -54,7 +54,7 @@ int rfi_flush_test(void)
  
-@@ -507,7 +512,7 @@ static void power_pmu_bhrb_read(struct perf_event *event, struct cpu_hw_events *
- 			 * addresses, hence include a check before filtering code
- 			 */
- 			if (!(ppmu->flags & PPMU_ARCH_31) &&
--				is_kernel_addr(addr) && perf_allow_kernel(&event->attr) != 0)
-+			    is_kernel_addr(addr) && !event_allow_kernel(event))
- 				continue;
+ 	rfi_flush = rfi_flush_orig;
  
- 			/* Branches are read most recent first (ie. mfbhrb 0 is
-@@ -2049,6 +2054,13 @@ static int power_pmu_event_init(struct perf_event *event)
- 	if (err)
- 		return -EINVAL;
+-	fd = perf_event_open_counter(PERF_TYPE_RAW, /* L1d miss */ 0x400f0, -1);
++	fd = perf_event_open_counter(PERF_TYPE_HW_CACHE, PERF_L1D_READ_MISS_CONFIG, -1);
+ 	FAIL_IF(fd < 0);
  
-+	/*
-+	 * We (ab)use pmu_private to cache the result of perf_allow_kernel(). We
-+	 * need access to that result at interrupt time, but can't call
-+	 * perf_allow_kernel() directly from interrupt context.
-+	 */
-+	event->pmu_private = (void *)(long)(perf_allow_kernel(&event->attr) == 0);
-+
- 	event->hw.config = events[n];
- 	event->hw.event_base = cflags[n];
- 	event->hw.last_period = event->hw.sample_period;
+ 	p = (char *)memalign(zero_size, CACHELINE_SIZE);
 -- 
-1.8.3.1
+2.30.1
 
