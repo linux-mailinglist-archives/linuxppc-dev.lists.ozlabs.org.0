@@ -1,87 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD56D32262D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 08:11:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35B0322868
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 11:01:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dl9Fs3gfBz3cLf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 18:11:29 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=hptsUtsz;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=l0Hgz7PP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DlF1r4jhrz3cSV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 21:01:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=64.147.123.25;
- helo=wout2-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm1 header.b=hptsUtsz; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=l0Hgz7PP; 
- dkim-atps=neutral
-X-Greylist: delayed 490 seconds by postgrey-1.36 at boromir;
- Tue, 23 Feb 2021 18:11:04 AEDT
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
- [64.147.123.25])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux-m68k.org
+ (client-ip=195.130.137.77; helo=leibniz.telenet-ops.be;
+ envelope-from=geert@linux-m68k.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 417 seconds by postgrey-1.36 at boromir;
+ Tue, 23 Feb 2021 21:01:04 AEDT
+Received: from leibniz.telenet-ops.be (leibniz.telenet-ops.be [195.130.137.77])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dl9FN2lWJz30N7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 18:11:04 +1100 (AEDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
- by mailout.west.internal (Postfix) with ESMTP id 5BB6CE07;
- Tue, 23 Feb 2021 02:02:50 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute2.internal (MEProxy); Tue, 23 Feb 2021 02:02:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding; s=fm1; bh=vJd0FJ/3sS5tFz9cqfc167wISR
- CmiNfHLC9aLREjXUM=; b=hptsUtszZBkWIT+IlDXiDEsbZL5itI3jckGB/CWIMG
- MMVOfi+pXuDDI3CSZcnYHJFM2KHA88foOstdZFd7lRqQgmtyxdPvdHIT4GaIgwB6
- MpnlLplqute6ukrnDEmqQoi5FdV+2flEUzkBAaNFFlhvjhvOvVu+ZOlac8NDqDoX
- yaCI7yf6aIrZer5TkfRxON50VHebhWtuQU05UjXA0Jq3k8zSRYmrWt8NPub/ERNy
- GFhSLpLV4eB6MpuaLo27ynomRftN8Cvz+5Kj+QQcbpWSxtexY/fEmo7zqbtCdz4Q
- mpZiaa/kcrzAwfAUSH79ESb5EIwXxINPVNeyXFj763/A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=vJd0FJ/3sS5tFz9cq
- fc167wISRCmiNfHLC9aLREjXUM=; b=l0Hgz7PPeZS+VZjOD2lEXyqnHbjTVl4ut
- pT/MRLLXlJy3H/iJH5AP/6hBha4rItuopiPSvkluO0607Mix+wliWdoMov6cIgk/
- 8BksvSx0tSHo3QKii1vhCxzv0CYP7eMddFhdlZgTVoBUaaoSccOEftp516+vwpEY
- 2oakMZ+YkHmM3Y1cefVzPjdOgkzD2QOP0QXQHGu+zPPdRTxshdlTVzacYSKEr2OY
- 1USlB/MzRExXrWwVC2LC/o2z8E9yaWgRi00j5QkNJvV1g1g+LQiRntBkASjP3AqI
- 7gH6Ldi0LXxmsd33xuE1JTSSyPd3Evuxi1jBinv/St9EVCqUBEZPQ==
-X-ME-Sender: <xms:mag0YG0BibXnjG5wFfXpSGdzXjw4M65PEw-g2IttU4nxwCsvBVAIfQ>
- <xme:mag0YJGlD4F2NJ0dp1f7h_teKpryCViJcVrj-k6yuKb6FKf3BtnNPF1SprUZ_uKN1
- iX29eVfSvtR36edWw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrkeeggddutddvucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlfedtmdenucfjughrpefhvf
- fufffkofgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhrvgih
- uceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnhepleegle
- efvdffkeegveefleevfedtieelgfdugeekueehhfevgfffkeeugfffkeefnecukfhppedu
- jedvrdduleefrdegiedrheejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
- hmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:mag0YO4cdln-MyqDs9llOS3DjWKaWzX2jj_iCk7lVse53HGUpNizjw>
- <xmx:mag0YH2Rk4nCpHmkiVO0MmQkTnFywTQbCu7wf392wShnFLdRPOWPig>
- <xmx:mag0YJEEC-oOgiqfOEaEgSzbr09_rwr2n563NVPteyDeZjKOaga__w>
- <xmx:mqg0YMOp5AxKWZ-A-ULfKL5yA2k1dY8bIYfxRx6jZlfVAi4s_Wn40g>
-Received: from crackle.ozlabs.ibm.com.com (cpe-172-193-46-57.qld.foxtel.net.au
- [172.193.46.57])
- by mail.messagingengine.com (Postfix) with ESMTPA id 69B9B240057;
- Tue, 23 Feb 2021 02:02:48 -0500 (EST)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] selftests/powerpc: Fix L1D flushing tests for Power10
-Date: Tue, 23 Feb 2021 17:02:27 +1000
-Message-Id: <20210223070227.2916871-1-ruscur@russell.cc>
-X-Mailer: git-send-email 2.30.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DlF1X4NC1z30Qx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 21:01:03 +1100 (AEDT)
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be
+ [IPv6:2a02:1800:120:4::f00:14])
+ by leibniz.telenet-ops.be (Postfix) with ESMTPS id 4DlDsB2QmJzMr3Jt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 10:53:50 +0100 (CET)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:254f:253d:debc:790b])
+ by xavier.telenet-ops.be with bizsmtp
+ id YZto2400E1v7dkx01Ztort; Tue, 23 Feb 2021 10:53:49 +0100
+Received: from rox.of.borg ([192.168.97.57])
+ by ramsan.of.borg with esmtps (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
+ (envelope-from <geert@linux-m68k.org>)
+ id 1lEUO3-0010Q5-Qd; Tue, 23 Feb 2021 10:53:47 +0100
+Received: from geert by rox.of.borg with local (Exim 4.93)
+ (envelope-from <geert@linux-m68k.org>)
+ id 1lEUO2-008yZU-SQ; Tue, 23 Feb 2021 10:53:46 +0100
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Oliver O'Halloran <oohall@gmail.com>
+Subject: [PATCH] powerpc/chrp: Make hydra_init() static
+Date: Tue, 23 Feb 2021 10:53:45 +0100
+Message-Id: <20210223095345.2139416-1-geert@linux-m68k.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -95,79 +56,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Russell Currey <ruscur@russell.cc>, dja@axtens.net
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The rfi_flush and entry_flush selftests work by using the PM_LD_MISS_L1
-perf event to count L1D misses.  The value of this event has changed
-over time:
+Commit 407d418f2fd4c20a ("powerpc/chrp: Move PHB discovery") moved the
+sole call to hydra_init() to the source file where it is defined, so it
+can be made static.
 
-- Power7 uses 0x400f0
-- Power8 and Power9 use both 0x400f0 and 0x3e054
-- Power10 uses only 0x3e054
-
-Rather than relying on raw values, configure perf to count L1D read
-misses in the most explicit way available.
-
-This fixes the selftests to work on systems without 0x400f0 as
-PM_LD_MISS_L1, and should change no behaviour for systems that the tests
-already worked on.
-
-The only potential downside is that referring to a specific perf event
-requires PMU support implemented in the kernel for that platform.
-
-Signed-off-by: Russell Currey <ruscur@russell.cc>
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
-v2: Move away from raw events as suggested by mpe
+Compile-tested only.  My LongTrail died in 2004.
+---
+ arch/powerpc/include/asm/hydra.h  | 2 --
+ arch/powerpc/platforms/chrp/pci.c | 3 +--
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
- tools/testing/selftests/powerpc/security/entry_flush.c | 2 +-
- tools/testing/selftests/powerpc/security/flush_utils.h | 4 ++++
- tools/testing/selftests/powerpc/security/rfi_flush.c   | 2 +-
- 3 files changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/powerpc/security/entry_flush.c b/tools/testing/selftests/powerpc/security/entry_flush.c
-index 78cf914fa321..68ce377b205e 100644
---- a/tools/testing/selftests/powerpc/security/entry_flush.c
-+++ b/tools/testing/selftests/powerpc/security/entry_flush.c
-@@ -53,7 +53,7 @@ int entry_flush_test(void)
+diff --git a/arch/powerpc/include/asm/hydra.h b/arch/powerpc/include/asm/hydra.h
+index ae02eb53d6ef8221..d024447283a0cf3c 100644
+--- a/arch/powerpc/include/asm/hydra.h
++++ b/arch/powerpc/include/asm/hydra.h
+@@ -94,8 +94,6 @@ extern volatile struct Hydra __iomem *Hydra;
+ #define HYDRA_INT_EXT7		18	/* Power Off Request */
+ #define HYDRA_INT_SPARE		19
  
- 	entry_flush = entry_flush_orig;
+-extern int hydra_init(void);
+-
+ #endif /* __KERNEL__ */
  
--	fd = perf_event_open_counter(PERF_TYPE_RAW, /* L1d miss */ 0x400f0, -1);
-+	fd = perf_event_open_counter(PERF_TYPE_HW_CACHE, PERF_L1D_READ_MISS_CONFIG, -1);
- 	FAIL_IF(fd < 0);
+ #endif /* _ASMPPC_HYDRA_H */
+diff --git a/arch/powerpc/platforms/chrp/pci.c b/arch/powerpc/platforms/chrp/pci.c
+index 8c421dc78b28334b..76e6256cb0a788f4 100644
+--- a/arch/powerpc/platforms/chrp/pci.c
++++ b/arch/powerpc/platforms/chrp/pci.c
+@@ -131,8 +131,7 @@ static struct pci_ops rtas_pci_ops =
  
- 	p = (char *)memalign(zero_size, CACHELINE_SIZE);
-diff --git a/tools/testing/selftests/powerpc/security/flush_utils.h b/tools/testing/selftests/powerpc/security/flush_utils.h
-index 07a5eb301466..7a3d60292916 100644
---- a/tools/testing/selftests/powerpc/security/flush_utils.h
-+++ b/tools/testing/selftests/powerpc/security/flush_utils.h
-@@ -9,6 +9,10 @@
+ volatile struct Hydra __iomem *Hydra = NULL;
  
- #define CACHELINE_SIZE 128
- 
-+#define PERF_L1D_READ_MISS_CONFIG	((PERF_COUNT_HW_CACHE_L1D) | 		\
-+					(PERF_COUNT_HW_CACHE_OP_READ << 8) |	\
-+					(PERF_COUNT_HW_CACHE_RESULT_MISS << 16))
-+
- void syscall_loop(char *p, unsigned long iterations,
- 		  unsigned long zero_size);
- 
-diff --git a/tools/testing/selftests/powerpc/security/rfi_flush.c b/tools/testing/selftests/powerpc/security/rfi_flush.c
-index 7565fd786640..f73484a6470f 100644
---- a/tools/testing/selftests/powerpc/security/rfi_flush.c
-+++ b/tools/testing/selftests/powerpc/security/rfi_flush.c
-@@ -54,7 +54,7 @@ int rfi_flush_test(void)
- 
- 	rfi_flush = rfi_flush_orig;
- 
--	fd = perf_event_open_counter(PERF_TYPE_RAW, /* L1d miss */ 0x400f0, -1);
-+	fd = perf_event_open_counter(PERF_TYPE_HW_CACHE, PERF_L1D_READ_MISS_CONFIG, -1);
- 	FAIL_IF(fd < 0);
- 
- 	p = (char *)memalign(zero_size, CACHELINE_SIZE);
+-int __init
+-hydra_init(void)
++static int __init hydra_init(void)
+ {
+ 	struct device_node *np;
+ 	struct resource r;
 -- 
-2.30.1
+2.25.1
 
