@@ -1,56 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA8B322364
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 02:14:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FBA32238D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 02:22:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dl1KN2wJ4z3cSy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 12:14:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dl1Wc0Tr6z3cTN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 12:22:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ib8ZIzG1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qT9uEWGJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sstabellini@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ib8ZIzG1; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=qT9uEWGJ; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dl1Jy0pwMz30LT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 12:13:37 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Dl1Js3xT9z9sS8;
- Tue, 23 Feb 2021 12:13:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1614042816;
- bh=FAcIZ5QF9ArI7FFOyovUOaKnveLQ6XJR1r7QpX3zQzg=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ib8ZIzG1GEbGcHcBE1SB4ZyJSeZWWenriFLSahoMqCiVPPPyFHLBAgI5S9mB7CY4f
- PapNrBrGhVMP01t8FXhxqZABzcaNn6Fk9lwUFdsZqPIqofMSlo7pR5vKA+6Z4ZLrFD
- XOMGiDYTlqtryPeeKOQQj6KkIkXKn3YDo9PMyloUTQhQHk+ZsvHV8z6QWdUfYSwaJD
- SwN2ZD2EfMuNgqpo5bKflJq+gVIQ8/H5HeMjvAgVL61GUvtO4N+bHY/bZbZjOC3aFo
- YuYo9rJ9Z/PFtk13tejf7P5/7o6QzWkaCGANjpMAm+2ErvJ/W3pyG7EBFpjJbiblmM
- iYlCp/DdbhkIw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.12-1 tag
-In-Reply-To: <CAL_Jsq+5u82rS+izM2Ds0jdsQKc9C_MCFLmmRvrxhD_6ofNiJQ@mail.gmail.com>
-References: <87o8gctii6.fsf@mpe.ellerman.id.au>
- <CAL_Jsq+5u82rS+izM2Ds0jdsQKc9C_MCFLmmRvrxhD_6ofNiJQ@mail.gmail.com>
-Date: Tue, 23 Feb 2021 12:13:33 +1100
-Message-ID: <87h7m3twle.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dl1WB2jxfz30N6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 12:22:30 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A8BC86023B;
+ Tue, 23 Feb 2021 01:22:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1614043347;
+ bh=QyNsljerVpDiDO+K9/ltiFTkhVqcxc/0Ay2CXZ1z8vI=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=qT9uEWGJgqYzpURFhCR6u+Wbw6bbsJzfvEpXt+qOvRpZBeHHsRUnipN3HQHDDB3E3
+ gCjXrJz0oOmy8eLfkAtbzisTgVdrdP8aPT65rPgULTDiPO+qGgU3kXayVSCi7szBX/
+ MfxWKKRGZmJ1Y0ya3KFks5fDwYLPA+LP36j6egOWcx+zZZlUCQVI7We8WcL7pgLfTc
+ aFyNR7YKXv/dZO9DLIrqsrZIWF99Xag6MDO0N1HuYflfFdk0rqJHeOrj3VhyML8MHz
+ tVChYYBBryvSqBDuB2Mo5J/NvyYzT12d/wTuwUUZX0GTHVvNU/omP5eYzJ827lYJXw
+ ABjqJ4JGM8RZA==
+Date: Mon, 22 Feb 2021 17:22:24 -0800 (PST)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@sstabellini-ThinkPad-T480s
+To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Subject: Re: [PATCH RFC v1 5/6] xen-swiotlb: convert variables to arrays
+In-Reply-To: <YDAgT2ZIdncNwNlf@Konrads-MacBook-Pro.local>
+Message-ID: <alpine.DEB.2.21.2102221511360.3234@sstabellini-ThinkPad-T480s>
+References: <20210203233709.19819-1-dongli.zhang@oracle.com>
+ <20210203233709.19819-6-dongli.zhang@oracle.com>
+ <20210204084023.GA32328@lst.de> <20210207155601.GA25111@lst.de>
+ <YDAgT2ZIdncNwNlf@Konrads-MacBook-Pro.local>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,46 +61,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ananth@linux.ibm.com, Alexey Kardashevskiy <aik@ozlabs.ru>,
- kernelfans@gmail.com, cmr@codefail.de, zhengyongjun3@huawei.com,
- Oliver O'Halloran <oohall@gmail.com>, sandipan@linux.ibm.com,
- cy.fan@huawei.com, SF Markus Elfring <elfring@users.sourceforge.net>,
- jiapeng.chong@linux.alibaba.com, skirmisher@protonmail.com,
- Florian Fainelli <f.fainelli@gmail.com>,
- Bhaskar Chowdhury <unixbhaskar@gmail.com>, eerykitty@gmail.com,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Haren Myneni <haren@linux.ibm.com>, ganeshgr@linux.ibm.com,
- Michal Suchanek <msuchanek@suse.de>, nathanl@linux.ibm.com,
- kjain@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>,
- Mark Brown <broonie@kernel.org>, Qian Cai <cai@lca.pw>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Hari Bathini <hbathini@linux.ibm.com>, atrajeev@linux.vnet.ibm.com,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- fbarrat@linux.ibm.com, po-hsu.lin@canonical.com,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: ulf.hansson@linaro.org, airlied@linux.ie, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ paulus@samba.org, hpa@zytor.com, Christoph Hellwig <hch@lst.de>,
+ m.szyprowski@samsung.com, sstabellini@kernel.org, adrian.hunter@intel.com,
+ Dongli Zhang <dongli.zhang@oracle.com>, x86@kernel.org, joe.jin@oracle.com,
+ mingo@kernel.org, peterz@infradead.org, mingo@redhat.com, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ matthew.auld@intel.com, thomas.lendacky@amd.com,
+ intel-gfx@lists.freedesktop.org, jani.nikula@linux.intel.com, bp@alien8.de,
+ rodrigo.vivi@intel.com, bhelgaas@google.com,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, chris@chris-wilson.co.uk,
+ jgross@suse.com, tsbogend@alpha.franken.de, nouveau@lists.freedesktop.org,
+ robin.murphy@arm.com, linux-mmc@vger.kernel.org, linux-mips@vger.kernel.org,
+ iommu@lists.linux-foundation.org, tglx@linutronix.de, bauerman@linux.ibm.com,
+ daniel@ffwll.ch, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rob Herring <robh@kernel.org> writes:
-> On Mon, Feb 22, 2021 at 6:05 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> -----BEGIN PGP SIGNED MESSAGE-----
->> Hash: SHA256
->>
->> Hi Linus,
->>
->> Please pull powerpc updates for 5.12.
->>
->> There will be a conflict with the devicetree tree. It's OK to just take their
->> side of the conflict, we'll fix up the minor behaviour change that causes in a
->> follow-up patch.
->
-> The issues turned out to be worse than just this, so I've dropped the
-> conflicting change for 5.12.
+On Fri, 19 Feb 2021, Konrad Rzeszutek Wilk wrote:
+> On Sun, Feb 07, 2021 at 04:56:01PM +0100, Christoph Hellwig wrote:
+> > On Thu, Feb 04, 2021 at 09:40:23AM +0100, Christoph Hellwig wrote:
+> > > So one thing that has been on my mind for a while:  I'd really like
+> > > to kill the separate dma ops in Xen swiotlb.  If we compare xen-swiotlb
+> > > to swiotlb the main difference seems to be:
+> > > 
+> > >  - additional reasons to bounce I/O vs the plain DMA capable
+> > >  - the possibility to do a hypercall on arm/arm64
+> > >  - an extra translation layer before doing the phys_to_dma and vice
+> > >    versa
+> > >  - an special memory allocator
+> > > 
+> > > I wonder if inbetween a few jump labels or other no overhead enablement
+> > > options and possibly better use of the dma_range_map we could kill
+> > > off most of swiotlb-xen instead of maintaining all this code duplication?
+> > 
+> > So I looked at this a bit more.
+> > 
+> > For x86 with XENFEAT_auto_translated_physmap (how common is that?)
+> 
+> Juergen, Boris please correct me if I am wrong, but that XENFEAT_auto_translated_physmap
+> only works for PVH guests?
 
-OK, no worries.
+ARM is always XENFEAT_auto_translated_physmap
 
-cheers
+
+> > pfn_to_gfn is a nop, so plain phys_to_dma/dma_to_phys do work as-is.
+> > 
+> > xen_arch_need_swiotlb always returns true for x86, and
+> > range_straddles_page_boundary should never be true for the
+> > XENFEAT_auto_translated_physmap case.
+> 
+> Correct. The kernel should have no clue of what the real MFNs are
+> for PFNs.
+
+On ARM, Linux knows the MFNs because for local pages MFN == PFN and for
+foreign pages it keeps track in arch/arm/xen/p2m.c. More on this below.
+
+xen_arch_need_swiotlb only returns true on ARM in rare situations where
+bouncing on swiotlb buffers is required. Today it only happens on old
+versions of Xen that don't support the cache flushing hypercall but
+there could be more cases in the future.
+
+
+> > 
+> > So as far as I can tell the mapping fast path for the
+> > XENFEAT_auto_translated_physmap can be trivially reused from swiotlb.
+> > 
+> > That leaves us with the next more complicated case, x86 or fully cache
+> > coherent arm{,64} without XENFEAT_auto_translated_physmap.  In that case
+> > we need to patch in a phys_to_dma/dma_to_phys that performs the MFN
+> > lookup, which could be done using alternatives or jump labels.
+> > I think if that is done right we should also be able to let that cover
+> > the foreign pages in is_xen_swiotlb_buffer/is_swiotlb_buffer, but
+> > in that worst case that would need another alternative / jump label.
+> > 
+> > For non-coherent arm{,64} we'd also need to use alternatives or jump
+> > labels to for the cache maintainance ops, but that isn't a hard problem
+> > either.
+
+With the caveat that ARM is always XENFEAT_auto_translated_physmap, what
+you wrote looks correct. I am writing down a brief explanation on how
+swiotlb-xen is used on ARM.
+
+
+pfn: address as seen by the guest, pseudo-physical address in ARM terminology
+mfn (or bfn): real address, physical address in ARM terminology
+
+
+On ARM dom0 is auto_translated (so Xen sets up the stage2 translation
+in the MMU) and the translation is 1:1. So pfn == mfn for Dom0.
+
+However, when another domain shares a page with Dom0, that page is not
+1:1. Swiotlb-xen is used to retrieve the mfn for the foreign page at
+xen_swiotlb_map_page. It does that with xen_phys_to_bus -> pfn_to_bfn.
+It is implemented with a rbtree in arch/arm/xen/p2m.c.
+
+In addition, swiotlb-xen is also used to cache-flush the page via
+hypercall at xen_swiotlb_unmap_page. That is done because dev_addr is
+really the mfn at unmap_page and we don't know the pfn for it. We can do
+pfn-to-mfn but we cannot do mfn-to-pfn (there are good reasons for it
+unfortunately). The only way to cache-flush by mfn is by issuing a
+hypercall. The hypercall is implemented in arch/arm/xen/mm.c.
+
+The pfn != bfn and pfn_valid() checks are used to detect if the page is
+local (of dom0) or foreign; they work thanks to the fact that Dom0 is
+1:1 mapped.
+
+
+Getting back to what you wrote, yes if we had a way to do MFN lookups in
+phys_to_dma, and a way to call the hypercall at unmap_page if the page
+is foreign (e.g. if it fails a pfn_valid check) then I think we would be
+good from an ARM perspective. The only exception is when
+xen_arch_need_swiotlb returns true, in which case we need to actually
+bounce on swiotlb buffers.
