@@ -1,70 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24633233B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Feb 2021 23:29:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BFA32346A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Feb 2021 00:53:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DlYdD68znz3cSg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Feb 2021 09:29:36 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=lixom-net.20150623.gappssmtp.com header.i=@lixom-net.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=xo47+w6W;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DlbVW3QdWz3cTl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Feb 2021 10:53:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lixom.net
- (client-ip=2607:f8b0:4864:20::d2d; helo=mail-io1-xd2d.google.com;
- envelope-from=olof@lixom.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lixom-net.20150623.gappssmtp.com
- header.i=@lixom-net.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=xo47+w6W; dkim-atps=neutral
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com
- [IPv6:2607:f8b0:4864:20::d2d])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=pvorel@suse.cz;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 1175 seconds by postgrey-1.36 at boromir;
+ Wed, 24 Feb 2021 10:53:39 AEDT
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DlYcp2lpTz30JR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 09:29:11 +1100 (AEDT)
-Received: by mail-io1-xd2d.google.com with SMTP id s24so18929071iob.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Feb 2021 14:29:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=lixom-net.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=XJ/YE11Qof2rHpad0LdA3cz/q37muHTOojoBnUeLw3c=;
- b=xo47+w6WJsjjqLpkg3SvDW/Z+8ZTvIBxZ/0fxFOgGKpKW/6FLkRq8uvG4bMDr4Zfsg
- FPtQNfTgsw3+qG+FVcoPAkVLnb+ROO2oVDnPBxjJz11EWlwQNZbrecsYLn0jagvrLHxu
- lyrtv67hqvbAAmKxoH3VE7ymWnou/XWpTRz2WCQilT9k46l6Q7p+eS38TjB31UMEZSSn
- 0bbMWTysrW1Ele/D8THmZS4CVnxiB+xfoC/iqdukhSivIKWeovwy/LWdyNNma4b32XVD
- tFKYwP+6agUvAan2CUsZJx1qnXAqv13mk2Pb7mS1TWZPiSCUA4dDcVwEvY2iH721JON+
- GZ8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=XJ/YE11Qof2rHpad0LdA3cz/q37muHTOojoBnUeLw3c=;
- b=GK5JcLWhHUED+7GVUQN9PeHefPjdpwJUt0CGVJ6NLX00h6tBmLDqIrRc1xPrWgJwCp
- sedk0tDph+SVTyzxAWuXmvIoD1wJF8wSBz7VWeaNtNEKkhvmiXVqk5i781PzB9pm1UGk
- UmFcNnoyEzjDS2NHg02clmJ2VMRfVjU6Cw2e1CFJDu+BwMQGi4PqwL3IlJW3WJVXGVts
- F79LIv2tRarzae7ppf5OqOBowtMlZQBOzwAdUg+6rLuf6zu3MneD9iBaCuNGYzQegy1J
- MP9GS95YhB7CLVzTwvLRGekJQJtoTVa62SAkxMSGt96Fpm70t+49m+hOk9LdmpZk78Wj
- 1uhA==
-X-Gm-Message-State: AOAM531ShmN/joIBBtxFLBsvada6CCh/pa61szuYz6l6Z1eCJlz5rpw1
- va0sSryfiqquXSLlOqN9HjaMiMzNrDw0Q60OrZRr5g==
-X-Google-Smtp-Source: ABdhPJxba6ibLuWlZU6n7Y+CUT0tsP04A4kPk27UscW8mZaVtWm2AvV8uqPl0B3XNctdvFXfQnKa1X2ktZxKtrnLha8=
-X-Received: by 2002:a6b:d01a:: with SMTP id x26mr21711673ioa.11.1614119347962; 
- Tue, 23 Feb 2021 14:29:07 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DlbVC0Z3Zz30NM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 10:53:38 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 93768AC6E;
+ Tue, 23 Feb 2021 23:34:00 +0000 (UTC)
+Date: Wed, 24 Feb 2021 00:33:58 +0100
+From: Petr Vorel <pvorel@suse.cz>
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Subject: Re: [PATCH v2 1/2] ima: Free IMA measurement buffer on error
+Message-ID: <YDWQ5rBBe8t7+Bs2@pevik>
+References: <20210204174951.25771-1-nramas@linux.microsoft.com>
+ <YB0YdqbbdAdbEOQw@kroah.com>
+ <7000d128-272e-3654-8480-e46bf7dfad74@linux.microsoft.com>
+ <6a5b7a1767265122d21f185c81399692d12191f4.camel@linux.ibm.com>
+ <b8573374-86d0-f679-6c9f-a61b2bc6f7ea@linux.microsoft.com>
 MIME-Version: 1.0
-References: <13741214-bafc-1ee5-4157-854c14dae17c@xenosoft.de>
-In-Reply-To: <13741214-bafc-1ee5-4157-854c14dae17c@xenosoft.de>
-From: Olof Johansson <olof@lixom.net>
-Date: Tue, 23 Feb 2021 14:28:56 -0800
-Message-ID: <CAOesGMgtAXPQRThhkF5QR25R+F68F5C_HSUvFPW0Wk1DcpCwvA@mail.gmail.com>
-Subject: Re: [PASEMI] Nemo board doesn't boot anymore because of moving
- pas_pci_init
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b8573374-86d0-f679-6c9f-a61b2bc6f7ea@linux.microsoft.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,43 +49,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>
+Reply-To: Petr Vorel <pvorel@suse.cz>
+Cc: sashal@kernel.org, Greg KH <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ tyhicks@linux.microsoft.com, ebiederm@xmission.com, dmitry.kasatkin@gmail.com,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Hi all,
 
-On Tue, Feb 23, 2021 at 1:43 PM Christian Zigotzky
-<chzigotzky@xenosoft.de> wrote:
->
-> Hello,
->
-> The Nemo board [1] with a P.A. Semi PA6T SoC doesn't boot anymore
-> because of moving "pas_pci_init" to the device tree adoption [2] in the
-> latest PowerPC updates 5.12-1 [3].
->
-> Unfortunately the Nemo board doesn't have it in its device tree. I
-> reverted this commit and after that the Nemo board boots without any
-> problems.
->
-> What do you think about this ifdef?
->
-> #ifdef CONFIG_PPC_PASEMI_NEMO
->          /*
->           * Check for the Nemo motherboard here, if we are running on one
->           * then pas_pci_init()
->           */
->          if (of_machine_is_compatible("pasemi,nemo")) {
->                  pas_pci_init();
->          }
-> #endif
+<snip>
+> > > > <formletter>
 
-This is not a proper fix for the problem. Someone will need to debug
-what on the pas_pci_init() codepath still needs to happen early in the
-boot, even if the main PCI setup happens later.
+> > > > This is not the correct way to submit patches for inclusion in the
+> > > > stable kernel tree.  Please read:
+> > > >       https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> > > > for how to do this properly.
+
+> > > > </formletter>
 
 
--Olof
+> > > Thanks for the info Greg.
+
+> > > I will re-submit the two patches in the proper format.
+
+> > No need.  I'm testing these patches now.  I'm not exactly sure what the
+> > problem is.  Stable wasn't Cc'ed.  Is it that you sent the patch
+> > directly to Greg or added "Fixes"?
+
+> I had not Cced stable, but had "Fixes" tag in the patch.
+
+> Fixes: 7b8589cc29e7 ("ima: on soft reboot, save the measurement list")
+
+> The problem is that the buffer allocated for forwarding the IMA measurement
+> list is not freed - at the end of the kexec call and also in an error path.
+> Please see the patch description for
+
+> [PATCH v2 2/2] ima: Free IMA measurement buffer after kexec syscall
+
+> IMA allocates kernel virtual memory to carry forward the measurement
+> list, from the current kernel to the next kernel on kexec system call,
+> in ima_add_kexec_buffer() function.  This buffer is not freed before
+> completing the kexec system call resulting in memory leak.
+
+> thanks,
+>  -lakshmi
+
+Mimi, Lakshmi, it looks like these two fixes haven't been submitted to stable kernels.
+Could you please submit them?
+
+Thanks a lot!
+
+Kind regards,
+Petr
