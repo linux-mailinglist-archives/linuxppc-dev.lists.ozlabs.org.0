@@ -2,90 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6194323F28
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Feb 2021 15:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A86323F3E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Feb 2021 15:48:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dlyxn6lbMz3cxW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 01:30:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DlzLm16Zrz3cbx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 01:48:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EAmHmml5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KujFqZfe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=pc@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=EAmHmml5; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=KujFqZfe; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dlywq6nztz30Qn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 01:29:31 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 11OE3Pd4009030; Wed, 24 Feb 2021 09:29:27 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DlzLL24qBz30Ny
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 01:48:09 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 11OEWo1J091110; Wed, 24 Feb 2021 09:48:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=I53WUylt3brFiXO7yMIHgrLtl/sFL5AeWU64AHGly2c=;
- b=EAmHmml5q6p8tigGgIgN8a9jXZGDgyOFxSIW1kyX8/DdhxkcFZ4sWonLY1kuFan+Ihdz
- 8iTKM7UbxixL0aKdanN4lbqxOToW1pmIStue22Ul/WZjsnzavND34vu57C6TQwFpZc1I
- xVzDwj3jXPyaTYqTYygaP9E1Km23q+5maiN4LqArf7dgZwPX0pTWrRfXIqpq0LDjDOTI
- gcEp2VLveDm5us4VazxPRQVV172iGQ7hhPfgtSZtXh1Xj1qIqJjjav/5dDmyWrCOil+Z
- gHrmeqWmwJTTq5MXII+9k5LBNroR49H6XAZMWm1Qb3TLc1FyDVALusoB0JSbfrvRccag Cw== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36wm7hagnk-1
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=5Ni5odoyAPPqY4CgBVr3QXyVYPTEfZXQe5QewEQ2qQ0=;
+ b=KujFqZfeCX0Vdx4zJS1FFVOTJaQfKDXyS9G3d9N1GKY+6DhzI6gKmwB+aanUfZwX9D+S
+ S0ar1gyZ5QA4LDOFAjWr5GG6lV/JaMhBMbDz62eljwoHxRfe8vGFJDDOsi+gVRKfQdNQ
+ yR9Ag0UDu75mabcGym1duBHoNxhLv0xJ74iDZ93u3zfpPvc+hb6rQNAhYpGzi4KRG8nq
+ 2NXAV5kJEONp+zLNM89Id8FTxki8OS0C3Bh4PUe2r/CJ8RrnBPQfduCt0UGmWkhk3G/X
+ QU2uzRf5jrauxLO8M0hOnkjrH1z8vmLlvL6kmL0N2TKvmxA9K7IAdwD8n1G/0Q4FADYr 4w== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36wm1ethbm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Feb 2021 09:29:26 -0500
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11OERHg8005051;
- Wed, 24 Feb 2021 14:29:25 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma01fra.de.ibm.com with ESMTP id 36tt289w65-1
+ Wed, 24 Feb 2021 09:48:02 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11OEc0I1004319;
+ Wed, 24 Feb 2021 14:48:01 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01wdc.us.ibm.com with ESMTP id 36tt297ama-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Feb 2021 14:29:25 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 11OETMaX36700454
+ Wed, 24 Feb 2021 14:48:01 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11OEm1TL21954994
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 24 Feb 2021 14:29:22 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0090DAE051;
- Wed, 24 Feb 2021 14:29:22 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 69555AE053;
- Wed, 24 Feb 2021 14:29:20 +0000 (GMT)
-Received: from Madhavan.PrimaryTP (unknown [9.80.228.132])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 24 Feb 2021 14:29:20 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH 2/2] powerpc/perf: Add platform specific check_attr_config
-Date: Wed, 24 Feb 2021 19:58:40 +0530
-Message-Id: <20210224142840.1170088-2-maddy@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210224142840.1170088-1-maddy@linux.ibm.com>
+ Wed, 24 Feb 2021 14:48:01 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 14101AE060;
+ Wed, 24 Feb 2021 14:48:01 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A3B84AE063;
+ Wed, 24 Feb 2021 14:48:00 +0000 (GMT)
+Received: from li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com (unknown
+ [9.85.196.115]) by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Wed, 24 Feb 2021 14:48:00 +0000 (GMT)
+Date: Wed, 24 Feb 2021 08:47:58 -0600
+From: "Paul A. Clarke" <pc@us.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc/perf: Infrastructure to support checking of
+ attr.config*
+Message-ID: <20210224144758.GA566251@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
 References: <20210224142840.1170088-1-maddy@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210224142840.1170088-1-maddy@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
  definitions=2021-02-24_04:2021-02-24,
  2021-02-24 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=999
- mlxscore=0 impostorscore=0 malwarescore=0 adultscore=0 spamscore=0
- bulkscore=0 suspectscore=0 lowpriorityscore=0 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102240109
+ malwarescore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
+ spamscore=0 bulkscore=0 suspectscore=0 mlxscore=0 phishscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102240114
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,144 +97,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add platform specific attr.config value checks. Patch
-includes checks for power9 and power10 platforms.
+On Wed, Feb 24, 2021 at 07:58:39PM +0530, Madhavan Srinivasan wrote:
+> Introduce code to support the checking of attr.config* for
+> values which are reserved for a given platform.
+> Performance Monitoring Unit (PMU) configuration registers
+> have fileds that are reserved and specific values to bit fields
 
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
- arch/powerpc/perf/isa207-common.c | 41 +++++++++++++++++++++++++++++++
- arch/powerpc/perf/isa207-common.h |  2 ++
- arch/powerpc/perf/power10-pmu.c   | 13 ++++++++++
- arch/powerpc/perf/power9-pmu.c    | 13 ++++++++++
- 4 files changed, 69 insertions(+)
+s/fileds/fields/
 
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index e4f577da33d8..b255799f5b51 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -694,3 +694,44 @@ int isa207_get_alternatives(u64 event, u64 alt[], int size, unsigned int flags,
- 
- 	return num_alt;
- }
-+
-+int isa3_X_check_attr_config(struct perf_event *ev)
-+{
-+	u64 val, sample_mode;
-+	u64 event = ev->attr.config;
-+
-+	val = (event >> EVENT_SAMPLE_SHIFT) & EVENT_SAMPLE_MASK;
-+	sample_mode = val & 0x3;
-+
-+	/*
-+	 * MMCRA[61:62] is Randome Sampling Mode (SM).
-+	 * value of 0b11 is reserved.
-+	 */
-+	if (sample_mode == 0x3)
-+		return -1;
-+
-+	/*
-+	 * Check for all reserved value
-+	 */
-+	switch (val) {
-+	case 0x5:
-+	case 0x9:
-+	case 0xD:
-+	case 0x19:
-+	case 0x1D:
-+	case 0x1A:
-+	case 0x1E:
-+		return -1;
-+	}
-+
-+	/*
-+	 * MMCRA[48:51]/[52:55]) Threshold Start/Stop
-+	 * Events Selection.
-+	 * 0b11110000/0b00001111 is reserved.
-+	 */
-+	val = (event >> EVENT_THR_CTL_SHIFT) & EVENT_THR_CTL_MASK;
-+	if (((val & 0xF0) == 0xF0) || ((val & 0xF) == 0xF))
-+		return -1;
-+
-+	return 0;
-+}
-diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-index 1af0e8c97ac7..ae8eaf05efd1 100644
---- a/arch/powerpc/perf/isa207-common.h
-+++ b/arch/powerpc/perf/isa207-common.h
-@@ -280,4 +280,6 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
- 							struct pt_regs *regs);
- void isa207_get_mem_weight(u64 *weight);
- 
-+int isa3_X_check_attr_config(struct perf_event *ev);
-+
- #endif
-diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-index a901c1348cad..bc64354cab6a 100644
---- a/arch/powerpc/perf/power10-pmu.c
-+++ b/arch/powerpc/perf/power10-pmu.c
-@@ -106,6 +106,18 @@ static int power10_get_alternatives(u64 event, unsigned int flags, u64 alt[])
- 	return num_alt;
- }
- 
-+static int power10_check_attr_config(struct perf_event *ev)
-+{
-+	u64 val;
-+	u64 event = ev->attr.config;
-+
-+	val = (event >> EVENT_SAMPLE_SHIFT) & EVENT_SAMPLE_MASK;
-+	if (val == 0x10 || isa3_X_check_attr_config(ev))
-+		return -1;
-+
-+	return 0;
-+}
-+
- GENERIC_EVENT_ATTR(cpu-cycles,			PM_RUN_CYC);
- GENERIC_EVENT_ATTR(instructions,		PM_RUN_INST_CMPL);
- GENERIC_EVENT_ATTR(branch-instructions,		PM_BR_CMPL);
-@@ -559,6 +571,7 @@ static struct power_pmu power10_pmu = {
- 	.attr_groups		= power10_pmu_attr_groups,
- 	.bhrb_nr		= 32,
- 	.capabilities           = PERF_PMU_CAP_EXTENDED_REGS,
-+	.check_attr_config	= power10_check_attr_config,
- };
- 
- int init_power10_pmu(void)
-diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
-index 2a57e93a79dc..b3b9b226d053 100644
---- a/arch/powerpc/perf/power9-pmu.c
-+++ b/arch/powerpc/perf/power9-pmu.c
-@@ -151,6 +151,18 @@ static int power9_get_alternatives(u64 event, unsigned int flags, u64 alt[])
- 	return num_alt;
- }
- 
-+static int power9_check_attr_config(struct perf_event *ev)
-+{
-+	u64 val;
-+	u64 event = ev->attr.config;
-+
-+	val = (event >> EVENT_SAMPLE_SHIFT) & EVENT_SAMPLE_MASK;
-+	if (val == 0xC || isa3_X_check_attr_config(ev))
-+		return -1;
-+
-+	return 0;
-+}
-+
- GENERIC_EVENT_ATTR(cpu-cycles,			PM_CYC);
- GENERIC_EVENT_ATTR(stalled-cycles-frontend,	PM_ICT_NOSLOT_CYC);
- GENERIC_EVENT_ATTR(stalled-cycles-backend,	PM_CMPLU_STALL);
-@@ -437,6 +449,7 @@ static struct power_pmu power9_pmu = {
- 	.attr_groups		= power9_pmu_attr_groups,
- 	.bhrb_nr		= 32,
- 	.capabilities           = PERF_PMU_CAP_EXTENDED_REGS,
-+	.check_attr_config	= power9_check_attr_config,
- };
- 
- int init_power9_pmu(void)
--- 
-2.26.2
+> as reserved. Writing a none zero values in these fields
 
+Should the previous sentences say something like "required values
+for specific bit fields" or "specific bit fields that are reserved"?
+
+s/none zero/non-zero/
+
+> or writing invalid value to bit fields will have unknown
+> behaviours.
+> 
+> Patch here add a generic call-back function "check_attr_config"
+
+s/add/adds/ or "This patch adds ..." or just "Add ...".
+
+> in "struct power_pmu", to be called in event_init to
+> check for attr.config* values for a given platform.
+> "check_attr_config" is valid only for raw event type.
+> 
+> Suggested-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/perf_event_server.h |  6 ++++++
+>  arch/powerpc/perf/core-book3s.c              | 12 ++++++++++++
+>  2 files changed, 18 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
+> index 00e7e671bb4b..dde97d7d9253 100644
+> --- a/arch/powerpc/include/asm/perf_event_server.h
+> +++ b/arch/powerpc/include/asm/perf_event_server.h
+> @@ -67,6 +67,12 @@ struct power_pmu {
+>  	 * the pmu supports extended perf regs capability
+>  	 */
+>  	int		capabilities;
+> +	/*
+> +	 * Function to check event code for values which are
+> +	 * reserved. Function takes struct perf_event as input,
+> +	 * since event code could be spread in attr.config*
+> +	 */
+> +	int		(*check_attr_config)(struct perf_event *ev);
+>  };
+> 
+>  /*
+> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+> index 6817331e22ff..679d67506299 100644
+> --- a/arch/powerpc/perf/core-book3s.c
+> +++ b/arch/powerpc/perf/core-book3s.c
+> @@ -1958,6 +1958,18 @@ static int power_pmu_event_init(struct perf_event *event)
+> 
+>  		if (ppmu->blacklist_ev && is_event_blacklisted(ev))
+>  			return -EINVAL;
+> +		/*
+> +		 * PMU config registers have fileds that are
+> +		 * reserved and spacific values to bit fileds be reserved.
+
+s/spacific/specific/
+s/fileds/fields/
+Same comment about "specific values to bit fields be reserved", and
+rewording that to be more clear.
+
+> +		 * This call-back will check the event code for same.
+> +		 *
+> +		 * Event type hardware and hw_cache will not value
+> +		 * invalid values in the event code which is not true
+> +		 * for raw event type.
+
+I confess I don't understand what this means. (But it could be just me!)
+
+> +		 */
+> +		if (ppmu->check_attr_config &&
+> +		    ppmu->check_attr_config(event))
+> +			return -EINVAL;
+>  		break;
+>  	default:
+>  		return -ENOENT;
+> -- 
+
+PC
