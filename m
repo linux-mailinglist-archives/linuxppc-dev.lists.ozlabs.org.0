@@ -2,97 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B2C323897
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Feb 2021 09:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CDE323AED
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Feb 2021 12:01:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dlptn4x2Rz3dFT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Feb 2021 19:27:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DltK53BZNz3cjt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Feb 2021 22:01:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sluCuHch;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=PpKt4nXg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2e;
+ helo=mail-yb1-xb2e.google.com; envelope-from=matorola@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=sluCuHch; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=PpKt4nXg; dkim-atps=neutral
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com
+ [IPv6:2607:f8b0:4864:20::b2e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dlps25qfFz3cXM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 19:25:42 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 11O84E74096949; Wed, 24 Feb 2021 03:25:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=gjurBMt1aovZwX6Eh4qDEaWC9/yaIP6mE5GKl9CSl8U=;
- b=sluCuHch/DGgDGl77A0D23N6WRGuN0rXKv2hWdLGvqULakZcEcIVE5m8DhlfUj6jKlLY
- qRD4bf/I064Jtj9hj3JtCNu+HMws3a93HOhDBmeI4D8ICrNoxhWc6Q8r6e8SOQFVmWMB
- 4ESwatoA6uK1XX7FRx0ejeBiOi82aoAORLfTvC2HBlaxj3W6Tt2iGzwSWXnmKYxTJdjq
- y73ZeO8nf8pmasPwRQeX4qPYGJhoCVI2F6rU0nU1fJKho3TcHP6Rqai8d7BBEDjCtnP9
- Bn7iMQUu6EIutu4GBZjLiOaoWO8xNUw/NtcTLb5e5YTXtGNvjlnIPrTh3i22LGL4koCs 9Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36wau9kt14-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Feb 2021 03:25:37 -0500
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 11O84OTD097617;
- Wed, 24 Feb 2021 03:25:36 -0500
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36wau9ksuu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Feb 2021 03:25:36 -0500
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11O8M7jw010867;
- Wed, 24 Feb 2021 08:25:24 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03ams.nl.ibm.com with ESMTP id 36tt283bxy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Feb 2021 08:25:23 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 11O8PKgH41615698
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 24 Feb 2021 08:25:21 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9B4F2A4054;
- Wed, 24 Feb 2021 08:25:20 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 00B61A405B;
- Wed, 24 Feb 2021 08:25:19 +0000 (GMT)
-Received: from bharata.ibmuc.com (unknown [9.199.40.232])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 24 Feb 2021 08:25:18 +0000 (GMT)
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 3/3] KVM: PPC: Book3S HV: Use H_RPT_INVALIDATE in nested KVM
-Date: Wed, 24 Feb 2021 13:55:10 +0530
-Message-Id: <20210224082510.3962423-4-bharata@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210224082510.3962423-1-bharata@linux.ibm.com>
-References: <20210224082510.3962423-1-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DltJf6gQVz30Hr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 22:01:21 +1100 (AEDT)
+Received: by mail-yb1-xb2e.google.com with SMTP id f4so1412541ybk.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 03:01:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=q5EBUPu7DHD+FuA5SGZ+0iNoNfQivrRarTOBbjTJdyk=;
+ b=PpKt4nXgl8dkkxBzxuaLrjlXX0hqqCr8wUyXp2yPXNJFwryHemyu90dCsMWVBumO+n
+ 1RL9h3nYbcv61lEowunFuKgz64z7Yzeh8Lgpc+qhcQk3o47Q8vXTa/1JqCs0I07wh3ha
+ Uz5wfupBLDaMNbhfqzaE3k0qhkd7I5DtWuNC4bkQLJKrI5aDDHXPPyyYB1y2GQNdUs5T
+ 5kHhKZrfhGu76w2/xSocoV9KQw24jWXlmIw0Kwd03g0L4j4RAnepznV2u3xE8Gs6fLMU
+ EAMzIh826mV8TtupQHPvIlfwN+/s/AhkuamaO0KCG5dcOHlst96H3i75lGMtPG9LM+IU
+ /Deg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=q5EBUPu7DHD+FuA5SGZ+0iNoNfQivrRarTOBbjTJdyk=;
+ b=dtHcJ//PZpntdoy1YRBjCF3Wfu39bvCGjI2okGLVG55YIRp5Kkneq34b12H1hSJCTc
+ sy9eTHEHElbE0lxKkSs7n0Q1vvXkZGdYknSQ0eBCpQWtWkzR6QYu3UcTNbiWPbw/Caop
+ wSRztiHarsSwhz2+lpDhRKh7juzqvDsPLwTym75GFeu/NEiQXpM9JvcOX1mJLJIdmUVL
+ xuIneEtEgSSmGf2IVy4yCtXC8BgAbm/5oSyBDF/XtHhb9/XzzMyF7lD0tWX/xWEwkHlN
+ kVNhLf6zhUDrtUKle3Y2beDyILwrepv1SyWzl3bSvFb8e1Rh39wWNNp+Zra5UyjfBxX5
+ brHg==
+X-Gm-Message-State: AOAM530AVbXVfgHrQpjUtc1quF/8m1VL3i6FPBAfUoimQJ2SpSXS3Z98
+ tXGXytIcy+Nk4+HVf7UkrsVpbTIhiZoB8iOtuh4=
+X-Google-Smtp-Source: ABdhPJxhiCfGjIzPOx2Fqgi7qb3IEYMwNvLkNSu5A5vWCLP2a0ja0byv/ganfMSniEGrB2L8iDsLWc4l18D5rmld2Ec=
+X-Received: by 2002:a25:324b:: with SMTP id y72mr46115248yby.233.1614164477289; 
+ Wed, 24 Feb 2021 03:01:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-02-24_02:2021-02-23,
- 2021-02-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- priorityscore=1501 clxscore=1015 lowpriorityscore=0 impostorscore=0
- phishscore=0 mlxscore=0 spamscore=0 malwarescore=0 suspectscore=0
- adultscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2102240062
+References: <20210224072516.74696-1-uwe@kleine-koenig.org>
+In-Reply-To: <20210224072516.74696-1-uwe@kleine-koenig.org>
+From: Anatoly Pugachev <matorola@gmail.com>
+Date: Wed, 24 Feb 2021 14:01:06 +0300
+Message-ID: <CADxRZqzG7jtNwYsdnO1xm8FLes_+GqTB=2naxaUTP2MNkzGG3g@mail.gmail.com>
+Subject: Re: [PATCH v2] vio: make remove callback return void
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <uwe@kleine-koenig.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,106 +75,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
- Bharata B Rao <bharata@linux.ibm.com>, david@gibson.dropbear.id.au
+Cc: Cristobal Forno <cforno12@linux.ibm.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Sparc kernel list <sparclinux@vger.kernel.org>, target-devel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>,
+ =?UTF-8?Q?Breno_Leit=C3=A3o?= <leitao@debian.org>,
+ Peter Huewe <peterhuewe@gmx.de>, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+ Jiri Slaby <jirislaby@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ linux-scsi@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Michael Cyr <mikecyr@linux.ibm.com>,
+ Jakub Kicinski <kuba@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-block@vger.kernel.org,
+ Lijun Pan <ljp@linux.ibm.com>, Matt Mackall <mpm@selenic.com>,
+ Jens Axboe <axboe@kernel.dk>, Steven Royer <seroyer@linux.ibm.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel list <linux-kernel@vger.kernel.org>,
+ Jarkko Sakkinen <jarkko@kernel.org>, linux-crypto@vger.kernel.org,
+ netdev@vger.kernel.org, Dany Madden <drt@linux.ibm.com>,
+ Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the nested KVM case, replace H_TLB_INVALIDATE by the new hcall
-H_RPT_INVALIDATE if available. The availability of this hcall
-is determined from "hcall-rpt-invalidate" string in ibm,hypertas-functions
-DT property.
+On Wed, Feb 24, 2021 at 11:17 AM Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.o=
+rg> wrote:
+>
+> The driver core ignores the return value of struct bus_type::remove()
+> because there is only little that can be done. To simplify the quest to
+> make this function return void, let struct vio_driver::remove() return
+> void, too. All users already unconditionally return 0, this commit makes
+> it obvious that returning an error code is a bad idea and makes it
+> obvious for future driver authors that returning an error code isn't
+> intended.
+>
+> Note there are two nominally different implementations for a vio bus:
+> one in arch/sparc/kernel/vio.c and the other in
+> arch/powerpc/platforms/pseries/vio.c. I didn't care to check which
+> driver is using which of these busses (or if even some of them can be
+> used with both) and simply adapt all drivers and the two bus codes in
+> one go.
 
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_64_mmu_radix.c | 27 +++++++++++++++++++++-----
- arch/powerpc/kvm/book3s_hv_nested.c    | 12 ++++++++++--
- 2 files changed, 32 insertions(+), 7 deletions(-)
+Applied over current git kernel, boots on my sparc64 LDOM (sunvdc
+block driver which uses vio).
+Linux ttip 5.11.0-10201-gc03c21ba6f4e-dirty #189 SMP Wed Feb 24
+13:48:37 MSK 2021 sparc64 GNU/Linux
+boot logs (and kernel config) on [1] for "5.11.0-10201-gc03c21ba6f4e-dirty"=
+.
+Up to you to add "tested-by".
+Thanks.
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index bb35490400e9..7ea5459022cb 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -21,6 +21,7 @@
- #include <asm/pte-walk.h>
- #include <asm/ultravisor.h>
- #include <asm/kvm_book3s_uvmem.h>
-+#include <asm/plpar_wrappers.h>
- 
- /*
-  * Supported radix tree geometry.
-@@ -318,9 +319,19 @@ void kvmppc_radix_tlbie_page(struct kvm *kvm, unsigned long addr,
- 	}
- 
- 	psi = shift_to_mmu_psize(pshift);
--	rb = addr | (mmu_get_ap(psi) << PPC_BITLSHIFT(58));
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(0, 0, 1),
--				lpid, rb);
-+
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE)) {
-+		rb = addr | (mmu_get_ap(psi) << PPC_BITLSHIFT(58));
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(0, 0, 1),
-+					lpid, rb);
-+	} else {
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_TLB,
-+					    psize_to_rpti_pgsize(psi),
-+					    addr, addr + psize);
-+	}
-+
- 	if (rc)
- 		pr_err("KVM: TLB page invalidation hcall failed, rc=%ld\n", rc);
- }
-@@ -334,8 +345,14 @@ static void kvmppc_radix_flush_pwc(struct kvm *kvm, unsigned int lpid)
- 		return;
- 	}
- 
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(1, 0, 1),
--				lpid, TLBIEL_INVAL_SET_LPID);
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE))
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(1, 0, 1),
-+					lpid, TLBIEL_INVAL_SET_LPID);
-+	else
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_PWC, H_RPTI_PAGE_ALL,
-+					    0, -1UL);
- 	if (rc)
- 		pr_err("KVM: TLB PWC invalidation hcall failed, rc=%ld\n", rc);
- }
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index ca43b2d38dce..2a6570e6c2c4 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -19,6 +19,7 @@
- #include <asm/pgalloc.h>
- #include <asm/pte-walk.h>
- #include <asm/reg.h>
-+#include <asm/plpar_wrappers.h>
- 
- static struct patb_entry *pseries_partition_tb;
- 
-@@ -444,8 +445,15 @@ static void kvmhv_flush_lpid(unsigned int lpid)
- 		return;
- 	}
- 
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(2, 0, 1),
--				lpid, TLBIEL_INVAL_SET_LPID);
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE))
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(2, 0, 1),
-+					lpid, TLBIEL_INVAL_SET_LPID);
-+	else
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
-+					    H_RPTI_TYPE_PAT,
-+					    H_RPTI_PAGE_ALL, 0, -1UL);
- 	if (rc)
- 		pr_err("KVM: TLB LPID invalidation hcall failed, rc=%ld\n", rc);
- }
--- 
-2.26.2
+1. https://github.com/mator/sparc64-dmesg
 
+PS: going to check with ppc64 later as well on LPAR (uses vio).
