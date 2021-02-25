@@ -2,70 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161F2324959
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 04:22:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C6C32495A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 04:22:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmJ4H0NVzz3dFh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 14:22:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmJ4k0vhrz3dV3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 14:22:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=dP7rthrQ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=C60knqQj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a;
- helo=mail-pg1-x52a.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
+ helo=mail-pj1-x1034.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=dP7rthrQ; dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
+ header.s=20161025 header.b=C60knqQj; dkim-atps=neutral
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmJ3W4tqrz3d2F
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 14:21:27 +1100 (AEDT)
-Received: by mail-pg1-x52a.google.com with SMTP id e6so2871678pgk.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 19:21:27 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmJ3X6X67z3d2t
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 14:21:28 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id o6so2687731pjf.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 19:21:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=dTjVpAMivgHzsLJrtwPgURH/1GRupUuSvOf9dkxh3TI=;
- b=dP7rthrQN9vuahpn2hIinXu/o42+I57tBnZuAvgYNtXEYzafQJ0gVmGpVmb3UnIrD+
- bfAkbj3YF93pB90u2DjuhvkYrMBjuiiYmHgHqhEZcF1MhZoEPcYwChT4Qvut1e3oBy0S
- eJid8ZXdngwn7IEwynDr42tzTZ/j4Jej74rKe6fwG0JQaoHjM6pYfCzbx3WeGXtYePLM
- lhnA+rtX++ZhwGJLSnRyWbmILCYdoScE4Yg92NnXDZJRZnjeDrjWhK7NicXPqCUFx752
- cVoa/a9V5nRGBaMArlxlrlvGZtynI7PoZ+n83DtvvLQ7RssZyjLnC1bMHHrT8D+/rMNl
- z7yQ==
+ bh=Sx0tNC7dOxaRAkbvxUDLQUDuxGz5eZlIPspZdSojVyE=;
+ b=C60knqQjUBY5yIoih3U/dmpU2w84Udk0wn54rQbwvHx+FFe0iIUBRnZlCzIlTqHApz
+ 5RqDuNUH5wvIrE/S3pTHhhI31tyU48A0dG4R3oB+24Y1q3eVMMm8N8m94a/sAnobonI/
+ siKmrWNE8G8ZGvrj/G+QxMqlRmktGAAAwEJbYqwHREr6g8VOrw+7CBGwL6pYh7fdgRRA
+ tFGsTs7W24MH41JpH5yIshhFfuG0Tq1FydvuJEaDhT1X9K1pmcvzLeNpsEHJzFyW3TQc
+ 2hsVwPW83VzGgXBgyZbt8DQWE+2NGW0PISERlbYXZNJnbmp1Tg3h2hjcyF5LFyeEkImM
+ aq/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=dTjVpAMivgHzsLJrtwPgURH/1GRupUuSvOf9dkxh3TI=;
- b=XwyzsGuNexsiGvQ/iY4gK5q6CGenshZ8W+X3oaJFTCbCfbIEw1D/i2RhVnIogBc2af
- buOhVY46WzNBZ3UVRyHmlxQP/SOzbAXCvFa+HhsLnJclQTjybkDbBflZ6fyijWkcCG6k
- nCEb6/gKGNg4Rd/k8N9FI5aR6iW4m2IFhnU1yPz8t74Fgwpas6Y8/5FAWwFo+oCMeuuQ
- QUNx9CIADqwLfpbDuusEPM0KCtLv00Bn9Hs6xd/OxbL1f0VsYbej+xvN6ZSP46mksnBL
- O0akbnsrJONSgIGryjhLvTOTjVtaIQZ4GQNpi8b6AKvGefChSCOdzWRSH/3zZnsfqck6
- A18A==
-X-Gm-Message-State: AOAM530pnasLKfKOWcUu7fRwCTKifj2yZrvBrBSj5Ou0G4NofapJViaL
- T/MnG7rZaeLf8VC0gQm4cIPc/fh2iIw=
-X-Google-Smtp-Source: ABdhPJzBbcoMsrfXZJtHCPj1cMNOqJ262W5TMjo32kD+savqtOKiu8PYJyi26e38t4mYG9kUjhN8jg==
-X-Received: by 2002:aa7:9e07:0:b029:1e2:6a31:66ee with SMTP id
- y7-20020aa79e070000b02901e26a3166eemr1117242pfq.67.1614223284210; 
- Wed, 24 Feb 2021 19:21:24 -0800 (PST)
+ bh=Sx0tNC7dOxaRAkbvxUDLQUDuxGz5eZlIPspZdSojVyE=;
+ b=XPNhv/BrA0PHz8l/IjhTPSeIgshTUDy3RJfbeBw0F4FvQPqk/DlDbjNav958pbfU/v
+ 2JYYrhCXXZyNN+9wxKCHkEk7HB82zdgtUs9weE9qsX/e0Tnyi0CnkZ3J9e1GCmmd5xmd
+ 2dAPsiixFhT7It0+K2qlLFAiYzBG0mB8uLWNjC+eoL2c40+qIrGLcQ6cQZ9QLWOcTpUc
+ ke5A8Kg1KJ+RVxhMBIHBiYAxtgcIt113q+5fAES9WAwSxy9Mf7VUHZRq7/uZcmZwqQFz
+ IGIw8P1Rqmn++04+9agw2kfJf4qE8oERMeyMuJXK6Eu5ROl/dtbyqINBg4qSBTlJ/Dmp
+ QwuQ==
+X-Gm-Message-State: AOAM531rFvUBUENo3zniqKlZvoUXu6/5r+zgEqlBrXEbcqTnhAolfp1k
+ TCywgVmpUOnxmcSiUyDHKN3TskyNxTU=
+X-Google-Smtp-Source: ABdhPJyt8LX0PcHiDpdsYx9uS4vT/8kOScLvB+MJ8l7kTAE3bKZcMBToLmLxoid+NdCdbZWol/kNGQ==
+X-Received: by 2002:a17:90a:a384:: with SMTP id
+ x4mr1149588pjp.84.1614223286340; 
+ Wed, 24 Feb 2021 19:21:26 -0800 (PST)
 Received: from tee480.ibm.com (159-196-117-139.9fc475.syd.nbn.aussiebb.net.
  [159.196.117.139])
- by smtp.gmail.com with ESMTPSA id b62sm4097993pga.8.2021.02.24.19.21.22
+ by smtp.gmail.com with ESMTPSA id b62sm4097993pga.8.2021.02.24.19.21.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Feb 2021 19:21:23 -0800 (PST)
+ Wed, 24 Feb 2021 19:21:26 -0800 (PST)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/3] selftests/powerpc: Suggest memtrace instead of /dev/mem
- for ci memory
-Date: Thu, 25 Feb 2021 14:21:07 +1100
-Message-Id: <20210225032108.1458352-2-jniethe5@gmail.com>
+Subject: [PATCH 3/3] powerpc/sstep: Always test lmw and stmw
+Date: Thu, 25 Feb 2021 14:21:08 +1100
+Message-Id: <20210225032108.1458352-3-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210225032108.1458352-1-jniethe5@gmail.com>
 References: <20210225032108.1458352-1-jniethe5@gmail.com>
@@ -87,40 +86,154 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The suggested alternative for getting cache-inhibited memory with 'mem='
-and /dev/mem is pretty hacky. Also, PAPR guests do not allow system
-memory to be mapped cache-inhibited so despite /dev/mem being available
-this will not work which can cause confusion.  Instead recommend using
-the memtrace buffers. memtrace is only available on powernv so there
-will not be any chance of trying to do this in a guest.
+Load Multiple Word (lmw) and Store Multiple Word (stmw) will raise an
+Alignment Exception:
+  - Little Endian mode: always
+  - Big Endian mode: address not word aligned
+
+These conditions do not depend on cache inhibited memory. Test the
+alignment handler emulation of these instructions regardless of if there
+is cache inhibited memory available or not.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- .../selftests/powerpc/alignment/alignment_handler.c   | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ .../powerpc/alignment/alignment_handler.c     | 96 ++++++++++++++++++-
+ 1 file changed, 94 insertions(+), 2 deletions(-)
 
 diff --git a/tools/testing/selftests/powerpc/alignment/alignment_handler.c b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-index cb53a8b777e6..f5eb5b85a2cf 100644
+index f5eb5b85a2cf..c3003f95e043 100644
 --- a/tools/testing/selftests/powerpc/alignment/alignment_handler.c
 +++ b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-@@ -10,16 +10,7 @@
-  *
-  * We create two sets of source and destination buffers, one in regular memory,
-  * the other cache-inhibited (by default we use /dev/fb0 for this, but an
-- * alterative path for cache-inhibited memory may be provided).
-- *
-- * One way to get cache-inhibited memory is to use the "mem" kernel parameter
-- * to limit the kernel to less memory than actually exists.  Addresses above
-- * the limit may still be accessed but will be treated as cache-inhibited. For
-- * example, if there is actually 4GB of memory and the parameter "mem=3GB" is
-- * used, memory from address 0xC0000000 onwards is treated as cache-inhibited.
-- * To access this region /dev/mem is used. The kernel should be configured
-- * without CONFIG_STRICT_DEVMEM. In this case use:
-- *         ./alignment_handler /dev/mem 0xc0000000
-+ * alterative path for cache-inhibited memory may be provided, e.g. memtrace).
-  *
-  * We initialise the source buffers, then use whichever set of load/store
-  * instructions is under test to copy bytes from the source buffers to the
+@@ -45,6 +45,7 @@
+ #include <getopt.h>
+ #include <setjmp.h>
+ #include <signal.h>
++#include <errno.h>
+ 
+ #include "utils.h"
+ #include "instructions.h"
+@@ -434,7 +435,6 @@ int test_alignment_handler_integer(void)
+ 	LOAD_DFORM_TEST(ldu);
+ 	LOAD_XFORM_TEST(ldx);
+ 	LOAD_XFORM_TEST(ldux);
+-	LOAD_DFORM_TEST(lmw);
+ 	STORE_DFORM_TEST(stb);
+ 	STORE_XFORM_TEST(stbx);
+ 	STORE_DFORM_TEST(stbu);
+@@ -453,7 +453,6 @@ int test_alignment_handler_integer(void)
+ 	STORE_XFORM_TEST(stdx);
+ 	STORE_DFORM_TEST(stdu);
+ 	STORE_XFORM_TEST(stdux);
+-	STORE_DFORM_TEST(stmw);
+ 
+ 	return rc;
+ }
+@@ -599,6 +598,97 @@ int test_alignment_handler_fp_prefix(void)
+ 	return rc;
+ }
+ 
++int test_alignment_handler_multiple(void)
++{
++	int offset, width, r, rc = 0;
++	void *src1, *dst1, *src2, *dst2;
++
++	rc = posix_memalign(&src1, bufsize, bufsize);
++	if (rc) {
++		printf("\n");
++		return rc;
++	}
++
++	rc = posix_memalign(&dst1, bufsize, bufsize);
++	if (rc) {
++		printf("\n");
++		free(src1);
++		return rc;
++	}
++
++	src2 = malloc(bufsize);
++	if (!src2) {
++		printf("\n");
++		free(src1);
++		free(dst1);
++		return -ENOMEM;
++	}
++
++	dst2 = malloc(bufsize);
++	if (!dst2) {
++		printf("\n");
++		free(src1);
++		free(dst1);
++		free(src2);
++		return -ENOMEM;
++	}
++
++	/* lmw */
++	width = 4;
++	printf("\tDoing lmw:\t");
++	for (offset = 0; offset < width; offset++) {
++		preload_data(src1, offset, width);
++		preload_data(src2, offset, width);
++
++		asm volatile("lmw  31, 0(%0) ; std 31, 0(%1)"
++			     :: "r"(src1 + offset), "r"(dst1 + offset), "r"(0)
++			     : "memory", "r31");
++
++		memcpy(dst2 + offset, src1 + offset, width);
++
++		r = test_memcmp(dst1, dst2, width, offset, "test_lmw");
++		if (r && !debug) {
++			printf("FAILED: Wrong Data\n");
++			break;
++		}
++	}
++
++	if (!r)
++		printf("PASSED\n");
++	else
++		rc |= 1;
++
++	/* stmw */
++	width = 4;
++	printf("\tDoing stmw:\t");
++	for (offset = 0; offset < width; offset++) {
++		preload_data(src1, offset, width);
++		preload_data(src2, offset, width);
++
++		asm volatile("ld  31, 0(%0) ; stmw 31, 0(%1)"
++			     :: "r"(src1 + offset), "r"(dst1 + offset), "r"(0)
++			     : "memory", "r31");
++
++		memcpy(dst2 + offset, src1 + offset, width);
++
++		r = test_memcmp(dst1, dst2, width, offset, "test_stmw");
++		if (r && !debug) {
++			printf("FAILED: Wrong Data\n");
++			break;
++		}
++	}
++	if (!r)
++		printf("PASSED\n");
++	else
++		rc |= 1;
++
++	free(src1);
++	free(src2);
++	free(dst1);
++	free(dst2);
++	return rc;
++}
++
+ void usage(char *prog)
+ {
+ 	printf("Usage: %s [options] [path [offset]]\n", prog);
+@@ -673,5 +763,7 @@ int main(int argc, char *argv[])
+ 			   "test_alignment_handler_fp_206");
+ 	rc |= test_harness(test_alignment_handler_fp_prefix,
+ 			   "test_alignment_handler_fp_prefix");
++	rc |= test_harness(test_alignment_handler_multiple,
++			   "test_alignment_handler_multiple");
+ 	return rc;
+ }
 -- 
 2.25.1
 
