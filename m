@@ -2,60 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3F63257CC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 21:36:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8E53257C5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 21:35:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dml1S5TTdz3dCM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 07:36:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dml0X0nzXz3cb5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 07:35:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Itg1HgnA;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=R+fgiTn8;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=svK53kI/;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=euv5naXl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
+ smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
  helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=Itg1HgnA; 
+ header.s=2020 header.b=svK53kI/; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=R+fgiTn8; 
+ header.a=ed25519-sha256 header.s=2020e header.b=euv5naXl; 
  dkim-atps=neutral
-X-Greylist: delayed 606 seconds by postgrey-1.36 at boromir;
- Fri, 26 Feb 2021 07:34:57 AEDT
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dml013ltgz3cYQ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dml013txFz3cYW
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 07:34:57 +1100 (AEDT)
 From: John Ogness <john.ogness@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1614284679;
+ s=2020; t=1614284685;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=qDVKAKnnfPFs0Dxv5+kX2VVyNzrYE33K+BDYTVeJME8=;
- b=Itg1HgnAQey3puEfZXpKRRf1RkHbrPWXsodppd3f9/agHLs59mQxmZvHrDVfXhn7TF2e+X
- YgctQb8llo4ek4IXOH40pHKrSlSJUv+qmqSuRbNPlwERu5vmF3/VXIexN4FpY+8WHM5d4n
- 3zHVITkWvbjhosz0zzfOytwQyTccmRTsG9uKDQ/PoVKslKdevkHeAS8FY/vBbTk7ZYAmwx
- j9C6lcv4wUAstQLOYdbQOINDWx2UjXbjMRmTNEt/9KnzbRIvSmj2EXQuCLrXAd5jyQHGnB
- 6degQSHuHB1F0v3eFX0HxngBtbRJympKrqQjrUQzvVBIk1MNI805LQYIDMpUAg==
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wAnJIgR/CTnBt9x/EHKtesHS7Vx5fct1XicfsTWpa/Y=;
+ b=svK53kI/q3MoJRtnVKyEA9QIRM7RnbBbT6oE/t37t6hVUt2RspYJL0F0oZjb7FcP+n0UKS
+ y4E6rgYXugMcj//f4+y9g1LgLZ9aBw87rCAB7JzAO7RAgCCc7U6XeWzBZHWLhyKAbUX8Ph
+ HH1QiQlgFouckYMeOqrmy1/1xrNjgkYLpWDuUDjpcLH8S5wU6HpTz/h1axvDI6YjXIpf/H
+ ID7uJPpQOTBsK90vp0pUgRjw7Yxg/AQLlHDWyGn8//JVsK3aHAXRejxL2Lvl3KqrBPPlhr
+ LWzPOtj20R+Vfkflptt/cagFZnp5rxhUEQ1ALCCKtUQgRsk239XmCQTNdyYFug==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1614284679;
+ s=2020e; t=1614284685;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=qDVKAKnnfPFs0Dxv5+kX2VVyNzrYE33K+BDYTVeJME8=;
- b=R+fgiTn80NtyboUkoI+34S01BUhJK8k4MSy2VNzuYCNOKjN83g0YvSMQCLvesqnrTwxeYZ
- t+PogSzB5duz2fCg==
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wAnJIgR/CTnBt9x/EHKtesHS7Vx5fct1XicfsTWpa/Y=;
+ b=euv5naXleiYhIzMoGwsLYwhFgjx5t5FAgtl24pUMCQQSNQ3OtjZOL9hMIEicpxI+1W3yQn
+ +eouYuqb7WvtixBg==
 To: Petr Mladek <pmladek@suse.com>
-Subject: [PATCH next v3 00/15] printk: remove logbuf_lock
-Date: Thu, 25 Feb 2021 21:24:23 +0100
-Message-Id: <20210225202438.28985-1-john.ogness@linutronix.de>
+Subject: [PATCH next v3 11/15] printk: kmsg_dumper: remove @active field
+Date: Thu, 25 Feb 2021 21:24:34 +0100
+Message-Id: <20210225202438.28985-12-john.ogness@linutronix.de>
+In-Reply-To: <20210225202438.28985-1-john.ogness@linutronix.de>
+References: <20210225202438.28985-1-john.ogness@linutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -69,116 +70,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- Vignesh Raghavendra <vigneshr@ti.com>,
- Douglas Anderson <dianders@chromium.org>, linux-mtd@lists.infradead.org,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Meyer <thomas@m3y3r.de>,
- Kees Cook <keescook@chromium.org>,
- Daniel Thompson <daniel.thompson@linaro.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- Richard Weinberger <richard@nod.at>, Anton Vorontsov <anton@enomsg.org>,
- Joel Stanley <joel@jms.id.au>, Jordan Niethe <jniethe5@gmail.com>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>, Wei Li <liwei391@huawei.com>,
- Haiyang Zhang <haiyangz@microsoft.com>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Douglas Anderson <dianders@chromium.org>, Paul Mackerras <paulus@samba.org>,
  Pavel Tatashin <pasha.tatashin@soleen.com>,
- Alistair Popple <alistair@popple.id.au>, Jeff Dike <jdike@addtoit.com>,
- Colin Cross <ccross@android.com>, linux-um@lists.infradead.org,
- Wei Liu <wei.liu@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Davidlohr Bueso <dave@stgolabs.net>, Nicholas Piggin <npiggin@gmail.com>,
- Oleg Nesterov <oleg@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Michael Kelley <mikelley@microsoft.com>,
- Christophe Leroy <christophe.leroy@c-s.fr>, Sumit Garg <sumit.garg@linaro.org>,
- Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>,
+ Wei Li <liwei391@huawei.com>, Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ Kees Cook <keescook@chromium.org>, Alistair Popple <alistair@popple.id.au>,
+ Steven Rostedt <rostedt@goodmis.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ Nicholas Piggin <npiggin@gmail.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Sumit Garg <sumit.garg@linaro.org>, linux-kernel@vger.kernel.org,
  Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
  Jason Wessel <jason.wessel@windriver.com>,
- kgdb-bugreport@lists.sourceforge.net, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+ kgdb-bugreport@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+All 6 kmsg_dumpers do not benefit from the @active flag:
 
-Here is v3 of a series to remove @logbuf_lock, exposing the
-ringbuffer locklessly to both readers and writers. v2 is here [0].
+  (provide their own synchronization)
+  - arch/powerpc/kernel/nvram_64.c
+  - arch/um/kernel/kmsg_dump.c
+  - drivers/mtd/mtdoops.c
+  - fs/pstore/platform.c
 
-Since @logbuf_lock was protecting much more than just the
-ringbuffer, this series clarifies and cleans up the various
-protections using comments, lockless accessors, atomic types, and a
-new finer-grained @syslog_lock.
+  (only dump on KMSG_DUMP_PANIC, which does not require
+  synchronization)
+  - arch/powerpc/platforms/powernv/opal-kmsg.c
+  - drivers/hv/vmbus_drv.c
 
-Removing @logbuf_lock required changing the semantics of the
-kmsg_dumper callback in order to work locklessly. Since this
-involved touching all the kmsg_dump users, we also decided [1] to
-use this opportunity to clean up and clarify the kmsg_dump semantics
-in general.
+The other 2 kmsg_dump users also do not rely on @active:
 
-This series is based on next-20210225.
+  (hard-code @active to always be true)
+  - arch/powerpc/xmon/xmon.c
+  - kernel/debug/kdb/kdb_main.c
 
-Changes since v2:
+Therefore, @active can be removed.
 
-- use get_maintainer.pl to get the full list of developers that
-  should at least see the changes in their respective areas
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+---
+ arch/powerpc/xmon/xmon.c    |  2 +-
+ include/linux/kmsg_dump.h   |  2 --
+ kernel/debug/kdb/kdb_main.c |  2 +-
+ kernel/printk/printk.c      | 10 +---------
+ 4 files changed, 3 insertions(+), 13 deletions(-)
 
-- do not disable interrupts in arch/um kmsg_dumper (because there is
-  no need to)
-
-- protect the mtd/mtdoops kmsg_dumper buffer against concurrent
-  dumps
-
-- update kerneldoc for kmsg_dump_get_line() (@len_out)
-
-- remove ksmg_dump's @active flag
-
-- change kmsg_dumper callback to:
-  void (*dump)(enum kmsg_dump_reason reason);
-
-- rename kmsg_dumper_iter to kmsg_dump_iter
-
-- update kmsg_dumpers to use their own kmsg_dump_iter (and
-  initialize it with kmsg_dump_rewind() if necessary)
-
-John Ogness
-
-[0] https://lkml.kernel.org/r/20210218081817.28849-1-john.ogness@linutronix.de
-[1] https://lkml.kernel.org/r/YDeZAA08NKCHa4s%2F@alley
-
-John Ogness (15):
-  um: synchronize kmsg_dumper
-  mtd: mtdoops: synchronize kmsg_dumper
-  printk: limit second loop of syslog_print_all
-  printk: kmsg_dump: remove unused fields
-  printk: refactor kmsg_dump_get_buffer()
-  printk: consolidate kmsg_dump_get_buffer/syslog_print_all code
-  printk: introduce CONSOLE_LOG_MAX for improved multi-line support
-  printk: use seqcount_latch for clear_seq
-  printk: use atomic64_t for devkmsg_user.seq
-  printk: add syslog_lock
-  printk: kmsg_dumper: remove @active field
-  printk: introduce a kmsg_dump iterator
-  printk: remove logbuf_lock
-  printk: kmsg_dump: remove _nolock() variants
-  printk: console: remove unnecessary safe buffer usage
-
- arch/powerpc/kernel/nvram_64.c             |  14 +-
- arch/powerpc/platforms/powernv/opal-kmsg.c |   3 +-
- arch/powerpc/xmon/xmon.c                   |   6 +-
- arch/um/kernel/kmsg_dump.c                 |  15 +-
- drivers/hv/vmbus_drv.c                     |   7 +-
- drivers/mtd/mtdoops.c                      |  20 +-
- fs/pstore/platform.c                       |   8 +-
- include/linux/kmsg_dump.h                  |  49 +--
- kernel/debug/kdb/kdb_main.c                |  10 +-
- kernel/printk/internal.h                   |   4 +-
- kernel/printk/printk.c                     | 456 ++++++++++-----------
- kernel/printk/printk_safe.c                |  27 +-
- 12 files changed, 309 insertions(+), 310 deletions(-)
-
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 3fe37495f63d..80ed3e1becf9 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -3001,7 +3001,7 @@ print_address(unsigned long addr)
+ static void
+ dump_log_buf(void)
+ {
+-	struct kmsg_dumper dumper = { .active = 1 };
++	struct kmsg_dumper dumper;
+ 	unsigned char buf[128];
+ 	size_t len;
+ 
+diff --git a/include/linux/kmsg_dump.h b/include/linux/kmsg_dump.h
+index 070c994ff19f..84eaa2090efa 100644
+--- a/include/linux/kmsg_dump.h
++++ b/include/linux/kmsg_dump.h
+@@ -36,7 +36,6 @@ enum kmsg_dump_reason {
+  * 		through the record iterator
+  * @max_reason:	filter for highest reason number that should be dumped
+  * @registered:	Flag that specifies if this is already registered
+- * @active:	Flag that specifies if this is currently dumping
+  * @cur_seq:	Points to the oldest message to dump
+  * @next_seq:	Points after the newest message to dump
+  */
+@@ -44,7 +43,6 @@ struct kmsg_dumper {
+ 	struct list_head list;
+ 	void (*dump)(struct kmsg_dumper *dumper, enum kmsg_dump_reason reason);
+ 	enum kmsg_dump_reason max_reason;
+-	bool active;
+ 	bool registered;
+ 
+ 	/* private state of the kmsg iterator */
+diff --git a/kernel/debug/kdb/kdb_main.c b/kernel/debug/kdb/kdb_main.c
+index 930ac1b25ec7..315169d5e119 100644
+--- a/kernel/debug/kdb/kdb_main.c
++++ b/kernel/debug/kdb/kdb_main.c
+@@ -2101,7 +2101,7 @@ static int kdb_dmesg(int argc, const char **argv)
+ 	int adjust = 0;
+ 	int n = 0;
+ 	int skip = 0;
+-	struct kmsg_dumper dumper = { .active = 1 };
++	struct kmsg_dumper dumper;
+ 	size_t len;
+ 	char buf[201];
+ 
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index c2ed7db8930b..45cb3e9c62c5 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -3408,8 +3408,6 @@ void kmsg_dump(enum kmsg_dump_reason reason)
+ 			continue;
+ 
+ 		/* initialize iterator with data about the stored records */
+-		dumper->active = true;
+-
+ 		logbuf_lock_irqsave(flags);
+ 		dumper->cur_seq = latched_seq_read_nolock(&clear_seq);
+ 		dumper->next_seq = prb_next_seq(prb);
+@@ -3417,9 +3415,6 @@ void kmsg_dump(enum kmsg_dump_reason reason)
+ 
+ 		/* invoke dumper which will iterate over records */
+ 		dumper->dump(dumper, reason);
+-
+-		/* reset iterator */
+-		dumper->active = false;
+ 	}
+ 	rcu_read_unlock();
+ }
+@@ -3454,9 +3449,6 @@ bool kmsg_dump_get_line_nolock(struct kmsg_dumper *dumper, bool syslog,
+ 
+ 	prb_rec_init_rd(&r, &info, line, size);
+ 
+-	if (!dumper->active)
+-		goto out;
+-
+ 	/* Read text or count text lines? */
+ 	if (line) {
+ 		if (!prb_read_valid(prb, dumper->cur_seq, &r))
+@@ -3542,7 +3534,7 @@ bool kmsg_dump_get_buffer(struct kmsg_dumper *dumper, bool syslog,
+ 	bool ret = false;
+ 	bool time = printk_time;
+ 
+-	if (!dumper->active || !buf || !size)
++	if (!buf || !size)
+ 		goto out;
+ 
+ 	logbuf_lock_irqsave(flags);
 -- 
 2.20.1
 
