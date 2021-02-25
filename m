@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B1E3258DE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 22:43:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF093258DC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 22:43:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmmW973HGz3d9M
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 08:43:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmmVj3Rtqz3d5Y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 08:43:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GeLh6sQ3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W+VOgw0w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,59 +18,59 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=GeLh6sQ3; dkim-atps=neutral
+ header.s=pp1 header.b=W+VOgw0w; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmmVF3PBGz30RV
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmmVF5PnPz3cKP
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 08:42:45 +1100 (AEDT)
 Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 11PLWcVu042234; Thu, 25 Feb 2021 16:42:42 -0500
+ 11PLWbF8042111; Thu, 25 Feb 2021 16:42:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=nILnawZBkXgE9K7dLnpbGy1lY+tttA4o0oEurj3Me0Q=;
- b=GeLh6sQ3uRhx6ZO4ArSj98AWQSseVLjkGxFG7zq5Qubp4GJlHkG6+PED31UwllbtAOZ3
- XrajU4SM7QbV8IsaferHEase1wPhrpVF089bbBY0QZMWTe3RkXW/xKy0VwA6AF5HBHA1
- eDwIuEOv0wkO6Y/kRV1B0U6E6gHbqXVHipXLT1kAVn8uBUZMmhmcptAyWMpNFg+0prfv
- kEH2B23z1TC7PlXqYwjXUgeMG30onF2tr857DqFQIYDQIr1uF3QVbKqPDzqiXc5Oh+tn
- zKBYF1mvopm9e+Np5y7riYJWMWuOe0drM5Jvg0Cz7Mplq3TcaBVP3z1Tjk6+QNnX5G6E bQ== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36xh8t4x8c-1
+ bh=zdptHZfiTZ1N/0vthNnhC7Y1j816nZgXv1gSX6ZvJ8c=;
+ b=W+VOgw0wvL8XLvXaIfIzEyLivKzm3R1HSfx7YZ+nZnAWkoVyhQYjZEv2WWpEmvh1GQdT
+ raE5vrFiCgiyQLOhy+/HC+XZ1R+DGP0MHD6xcnxVyWv1AHluwEXid025/1SuyFiizaHY
+ nswx5296/Z3rKuPoZwD/XdjrUU5t8Y/tS99gTdw5/c3WfqX3GdbWehgVk0eJ3q7WCQFY
+ hkQCw/OVEjSMlyXNvUqz2mU4Nsg+RIrwy5dV2NjeM76KxEzqZ8H9JC3yE0Brv6VzkFYg
+ vf00kHcMIIU48l+8kmLCJvwwHOp7Z4M4csduW7lfmd47hAXYNB4Srzrlzydu6AqIA3/m QQ== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 36xh8t4x8m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 25 Feb 2021 16:42:42 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11PLS69A017296;
- Thu, 25 Feb 2021 21:42:41 GMT
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11PLUVUl029606;
+ Thu, 25 Feb 2021 21:42:42 GMT
 Received: from b03cxnp07028.gho.boulder.ibm.com
  (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma05wdc.us.ibm.com with ESMTP id 36tt2a9rrq-1
+ by ppma01wdc.us.ibm.com with ESMTP id 36tt29hub7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Feb 2021 21:42:41 +0000
+ Thu, 25 Feb 2021 21:42:42 +0000
 Received: from b03ledav004.gho.boulder.ibm.com
  (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
  by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 11PLgeA529819298
+ 11PLgemb20644174
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 25 Feb 2021 21:42:40 GMT
 Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1EFCF78063;
+ by IMSVA (Postfix) with ESMTP id AD43278069;
  Thu, 25 Feb 2021 21:42:40 +0000 (GMT)
 Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9532678060;
- Thu, 25 Feb 2021 21:42:39 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 390307805C;
+ Thu, 25 Feb 2021 21:42:40 +0000 (GMT)
 Received: from vios4361.aus.stglabs.ibm.com (unknown [9.3.43.61])
  by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 25 Feb 2021 21:42:39 +0000 (GMT)
+ Thu, 25 Feb 2021 21:42:40 +0000 (GMT)
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
 To: james.bottomley@hansenpartnership.com
-Subject: [PATCH v3 1/5] ibmvfc: simplify handling of sub-CRQ initialization
-Date: Thu, 25 Feb 2021 15:42:33 -0600
-Message-Id: <20210225214237.22400-2-tyreld@linux.ibm.com>
+Subject: [PATCH v3 2/5] ibmvfc: fix invalid sub-CRQ handles after hard reset
+Date: Thu, 25 Feb 2021 15:42:34 -0600
+Message-Id: <20210225214237.22400-3-tyreld@linux.ibm.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210225214237.22400-1-tyreld@linux.ibm.com>
 References: <20210225214237.22400-1-tyreld@linux.ibm.com>
@@ -104,83 +104,92 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If ibmvfc_init_sub_crqs() fails ibmvfc_probe() simply parrots
-registration failure reported elsewhere, and futher
-vhost->scsi_scrq.scrq == NULL is indication enough to the driver that it
-has no sub-CRQs available. The mq_enabled check can also be moved into
-ibmvfc_init_sub_crqs() such that each caller doesn't have to gate the
-call with a mq_enabled check. Finally, in the case of sub-CRQ setup
-failure setting do_enquiry can be turned off to putting the driver into
-single queue fallback mode.
+A hard reset results in a complete transport disconnect such that the
+CRQ connection with the partner VIOS is broken. This has the side effect
+of also invalidating the associated sub-CRQs. The current code assumes
+that the sub-CRQs are perserved resulting in a protocol violation after
+trying to reconnect them with the VIOS. This introduces an infinite loop
+such that the VIOS forces a disconnect after each subsequent attempt to
+re-register with invalid handles.
 
-The aforementioned changes also simplify the next patch in the series
-that fixes a hard reset issue, by tying a sub-CRQ setup failure and
-do_enquiry logic into ibmvfc_init_sub_crqs().
+Avoid the aforementioned issue by releasing the sub-CRQs prior to CRQ
+disconnect, and driving a reinitialization of the sub-CRQs once a new
+CRQ is registered with the hypervisor.
 
+fixes: faacf8c5f1d5 ("ibmvfc: add alloc/dealloc routines for SCSI Sub-CRQ Channels")
 Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 Reviewed-by: Brian King <brking@linux.ibm.com>
 ---
- drivers/scsi/ibmvscsi/ibmvfc.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ drivers/scsi/ibmvscsi/ibmvfc.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index 7097028d4cb6..384960036f8b 100644
+index 384960036f8b..2cca55f2e464 100644
 --- a/drivers/scsi/ibmvscsi/ibmvfc.c
 +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -5705,17 +5705,21 @@ static void ibmvfc_deregister_scsi_channel(struct ibmvfc_host *vhost, int index)
- 	LEAVE;
- }
+@@ -158,6 +158,9 @@ static void ibmvfc_npiv_logout(struct ibmvfc_host *);
+ static void ibmvfc_tgt_implicit_logout_and_del(struct ibmvfc_target *);
+ static void ibmvfc_tgt_move_login(struct ibmvfc_target *);
  
--static int ibmvfc_init_sub_crqs(struct ibmvfc_host *vhost)
-+static void ibmvfc_init_sub_crqs(struct ibmvfc_host *vhost)
- {
- 	int i, j;
++static void ibmvfc_release_sub_crqs(struct ibmvfc_host *);
++static void ibmvfc_init_sub_crqs(struct ibmvfc_host *);
++
+ static const char *unknown_error = "unknown error";
  
- 	ENTER;
-+	if (!vhost->mq_enabled)
-+		return;
+ static long h_reg_sub_crq(unsigned long unit_address, unsigned long ioba,
+@@ -926,8 +929,8 @@ static int ibmvfc_reset_crq(struct ibmvfc_host *vhost)
+ 	unsigned long flags;
+ 	struct vio_dev *vdev = to_vio_dev(vhost->dev);
+ 	struct ibmvfc_queue *crq = &vhost->crq;
+-	struct ibmvfc_queue *scrq;
+-	int i;
++
++	ibmvfc_release_sub_crqs(vhost);
  
- 	vhost->scsi_scrqs.scrqs = kcalloc(nr_scsi_hw_queues,
- 					  sizeof(*vhost->scsi_scrqs.scrqs),
- 					  GFP_KERNEL);
--	if (!vhost->scsi_scrqs.scrqs)
--		return -1;
-+	if (!vhost->scsi_scrqs.scrqs) {
-+		vhost->do_enquiry = 0;
-+		return;
-+	}
+ 	/* Close the CRQ */
+ 	do {
+@@ -936,6 +939,8 @@ static int ibmvfc_reset_crq(struct ibmvfc_host *vhost)
+ 		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
+ 	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
  
- 	for (i = 0; i < nr_scsi_hw_queues; i++) {
- 		if (ibmvfc_register_scsi_channel(vhost, i)) {
-@@ -5724,13 +5728,12 @@ static int ibmvfc_init_sub_crqs(struct ibmvfc_host *vhost)
- 			kfree(vhost->scsi_scrqs.scrqs);
- 			vhost->scsi_scrqs.scrqs = NULL;
- 			vhost->scsi_scrqs.active_queues = 0;
--			LEAVE;
--			return -1;
-+			vhost->do_enquiry = 0;
-+			break;
- 		}
- 	}
- 
- 	LEAVE;
--	return 0;
- }
- 
- static void ibmvfc_release_sub_crqs(struct ibmvfc_host *vhost)
-@@ -5997,11 +6000,7 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- 		goto remove_shost;
- 	}
- 
--	if (vhost->mq_enabled) {
--		rc = ibmvfc_init_sub_crqs(vhost);
--		if (rc)
--			dev_warn(dev, "Failed to allocate Sub-CRQs. rc=%d\n", rc);
--	}
 +	ibmvfc_init_sub_crqs(vhost);
++
+ 	spin_lock_irqsave(vhost->host->host_lock, flags);
+ 	spin_lock(vhost->crq.q_lock);
+ 	vhost->state = IBMVFC_NO_CRQ;
+@@ -947,16 +952,6 @@ static int ibmvfc_reset_crq(struct ibmvfc_host *vhost)
+ 	memset(crq->msgs.crq, 0, PAGE_SIZE);
+ 	crq->cur = 0;
  
- 	if (shost_to_fc_host(shost)->rqst_q)
- 		blk_queue_max_segments(shost_to_fc_host(shost)->rqst_q, 1);
+-	if (vhost->scsi_scrqs.scrqs) {
+-		for (i = 0; i < nr_scsi_hw_queues; i++) {
+-			scrq = &vhost->scsi_scrqs.scrqs[i];
+-			spin_lock(scrq->q_lock);
+-			memset(scrq->msgs.scrq, 0, PAGE_SIZE);
+-			scrq->cur = 0;
+-			spin_unlock(scrq->q_lock);
+-		}
+-	}
+-
+ 	/* And re-open it again */
+ 	rc = plpar_hcall_norets(H_REG_CRQ, vdev->unit_address,
+ 				crq->msg_token, PAGE_SIZE);
+@@ -966,6 +961,7 @@ static int ibmvfc_reset_crq(struct ibmvfc_host *vhost)
+ 		dev_warn(vhost->dev, "Partner adapter not ready\n");
+ 	else if (rc != 0)
+ 		dev_warn(vhost->dev, "Couldn't register crq (rc=%d)\n", rc);
++
+ 	spin_unlock(vhost->crq.q_lock);
+ 	spin_unlock_irqrestore(vhost->host->host_lock, flags);
+ 
+@@ -5692,6 +5688,7 @@ static void ibmvfc_deregister_scsi_channel(struct ibmvfc_host *vhost, int index)
+ 
+ 	free_irq(scrq->irq, scrq);
+ 	irq_dispose_mapping(scrq->irq);
++	scrq->irq = 0;
+ 
+ 	do {
+ 		rc = plpar_hcall_norets(H_FREE_SUB_CRQ, vdev->unit_address,
 -- 
 2.27.0
 
