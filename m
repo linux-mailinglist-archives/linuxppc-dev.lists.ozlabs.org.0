@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77AC3250ED
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 14:54:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6563250F6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 14:54:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmZ5Q6fxgz3dL7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 00:54:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmZ5s4pBsz3fQ8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 00:54:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=StdzBC0e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=cZG/TmfI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c;
+ helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=StdzBC0e; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
+ header.s=20161025 header.b=cZG/TmfI; dkim-atps=neutral
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
+ [IPv6:2607:f8b0:4864:20::62c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmYyS6n1wz3d6F
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 00:48:00 +1100 (AEDT)
-Received: by mail-pj1-x102c.google.com with SMTP id b15so3543754pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 05:48:00 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmYyW72Y2z3d6k
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 00:48:03 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id u11so3198288plg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 05:48:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=ZdOYv8+nnZM3a+E6C6u4dc+uTen+WkrGUatgkgkogK4=;
- b=StdzBC0eEVJ9WgNSNszS5UOUmm2MlwItvdM2++qKNG31X+dDJfL8y1/FbivVnxW5R5
- KQx1RYsU9PPY8KpzwB5/RvcXHnVoxFs1+q2vZDiR+QUzqh4aoObq+3afXp7Miu0gF43g
- 6oMVe9FwjgTCs0cwcUUY/dV0RYNvDgWkxRRHy/M87E2UyPtHdBNhYnJYvhJRns4gI4SI
- THmRU0YOTy4LTQvfsp1191QRRtAhHkzjWMAtxwE8gc7MtJh28RfuZGqNUQGJkNZyuHVR
- Pc1QfkBMpmSPFzSzuAQW/U5i30hl1ziOl6C3Tqg9pSJPyOX3jQCq4DZAsUsLfYZXxz3a
- 2uSg==
+ bh=kbXDPVn/6/K9PcQafkWtS0R94LJwb94j0RZ+KsMZVko=;
+ b=cZG/TmfIJYP9ySL3cURRthWTojPynINIW6XqbZoJb+2omF6EgjZKQ61a8JJDuzRdnr
+ x2VV63vHuuObIA/2cChPJyXmZZdlz3zssKpWwv1u+BBAa9OZ/ekPV4Z22dy4TZ7xe4Op
+ RjENg68UGSrRwE+0RTXgFnQVRzkJfLx/3rgCHv/wI/fphgGFf23U+7MJcxCEvgIkQ+PH
+ iKC1pb7XyL7H9L6eiCAoow9XILu+EUvmCmqRWRLjMJYTkISODOPcg9BEXkh3VKv0FwSb
+ R0BI91c1vvduiIZL4dbjl2hXPCWQ2qmgPhskY0/NSBe7/Ux2aJtfIxt2KqJOldHHi/ur
+ DAMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=ZdOYv8+nnZM3a+E6C6u4dc+uTen+WkrGUatgkgkogK4=;
- b=H1LJ/mvemZvUdiEk1uTNfM6EKTqFe8Yi86VTQy1KSskYiDmNmHrmRJxBxuc9dswJjE
- v3N8sTHMrtZkqhPeZAhYJLPtccEiG1XyRPP2zwq2SkkPnfHAuQNRQTnXYegTGhWVJqeU
- GooyMSzpsr3yTNtZaJxFx+WRnO1PX9exPXsgvl1r3hu1g4myz5WQf5ZObYHgC2Ju4QCl
- FqdF4RNfY1Al1GZzKoJkxuGbfIUzaAXow/2p3Gz4On71LziE4JWqm7JHzrXvRUcEiGOg
- 6sxFxncA685JCC282swmqk24RKKnxBM6Ch60aUWMvRtPzVaZSvRMhllYcIH3iLxdWBm8
- JzJw==
-X-Gm-Message-State: AOAM5339R9wwrhxFCN0eIeGAxpbDzS4ZgOPwGUf/2nqPKaSYW+FxblVj
- v/9p65tbrhqtVfa7be7+TAc/6xSjW78=
-X-Google-Smtp-Source: ABdhPJxE4Ai4Jq/cmQXxsnBQq6UKSowfA2PoZk0/AuHyqwVUVi8xPVcj7vR6uqQJ2gOhoQ8FKCmxKA==
-X-Received: by 2002:a17:90b:1c0c:: with SMTP id
- oc12mr3364744pjb.180.1614260878614; 
- Thu, 25 Feb 2021 05:47:58 -0800 (PST)
+ bh=kbXDPVn/6/K9PcQafkWtS0R94LJwb94j0RZ+KsMZVko=;
+ b=Q0Qi5arKcGfi+qW89nnpFDYLc9HkoRZFTVqVFpZfyZ8gzlE0o0n/B/ZNdWsfpoPKpT
+ +itX4aoPA8j3LUv+K/LovT7Lbq6RRmiqiSuYzEHq9clygCQEhF02sAzqzTE8VzFYQAae
+ THhjSVpySp8Evv1u7EsuCKI/rEMydyyrz1s5+O2sspPTqqW9JubmzmGaB7jo+38zVRD5
+ 2S9UP0EnJAFNWnN5yrJaFz5sOqEQ3y3u12ZGnAQCfPszKIfckA9SDrjR4DzkT0slVnzh
+ rMUe35Rw/QHXa0hUQ2n1hANDYk6jJDxw17DMiGncsVy+bhG1xKMiQn/aES2ck8T15zUx
+ 7Szw==
+X-Gm-Message-State: AOAM530xKSkS+FLlj19PXSFWDNHoVh4juNNn+BMzgZM09xaPvP89veiw
+ EyoAtEmjBtWCWQZF00gxC5M=
+X-Google-Smtp-Source: ABdhPJyc5gaQwKOIAt8FWXSy3UqBYnhW/0DQWRY2+1dIg+EUjt5VYmoWzjive5AP27muZzAdO2kOfA==
+X-Received: by 2002:a17:90a:7f87:: with SMTP id
+ m7mr3354890pjl.64.1614260881707; 
+ Thu, 25 Feb 2021 05:48:01 -0800 (PST)
 Received: from bobo.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id a9sm5925868pjq.17.2021.02.25.05.47.55
+ by smtp.gmail.com with ESMTPSA id a9sm5925868pjq.17.2021.02.25.05.47.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Feb 2021 05:47:57 -0800 (PST)
+ Thu, 25 Feb 2021 05:48:01 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 16/37] KVM: PPC: Book3S HV P9: Stop handling hcalls in
- real-mode in the P9 path
-Date: Thu, 25 Feb 2021 23:46:31 +1000
-Message-Id: <20210225134652.2127648-17-npiggin@gmail.com>
+Subject: [PATCH v2 17/37] KVM: PPC: Book3S HV P9: Move setting HDEC after
+ switching to guest LPCR
+Date: Thu, 25 Feb 2021 23:46:32 +1000
+Message-Id: <20210225134652.2127648-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210225134652.2127648-1-npiggin@gmail.com>
 References: <20210225134652.2127648-1-npiggin@gmail.com>
@@ -86,174 +86,64 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the interest of minimising the amount of code that is run in
-"real-mode", don't handle hcalls in real mode in the P9 path.
+LPCR[HDICE]=0 suppresses hypervisor decrementer exceptions on some
+processors, so it must be enabled before HDEC is set.
 
-POWER8 and earlier are much more expensive to exit from HV real mode
-and switch to host mode, because on those processors HV interrupts get
-to the hypervisor with the MMU off, and the other threads in the core
-need to be pulled out of the guest, and SLBs all need to be saved,
-ERATs invalidated, and host SLB reloaded before the MMU is re-enabled
-in host mode. Hash guests also require a lot of hcalls to run. The
-XICS interrupt controller requires hcalls to run.
-
-By contrast, POWER9 has independent thread switching, and in radix mode
-the hypervisor is already in a host virtual memory mode when the HV
-interrupt is taken. Radix + xive guests don't need hcalls to handle
-interrupts or manage translations.
-
-So it's much less important to handle hcalls in real mode in P9.
+Rather than set it in the host LPCR then setting HDEC, move the HDEC
+update to after the guest MMU context (including LPCR) is loaded.
+There shouldn't be much concern with delaying HDEC by some 10s or 100s
+of nanoseconds by setting it a bit later.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/kvm_ppc.h      |  5 +++++
- arch/powerpc/kvm/book3s_hv.c            | 25 ++++++++++++++++++++++---
- arch/powerpc/kvm/book3s_hv_rmhandlers.S |  5 +++++
- arch/powerpc/kvm/book3s_xive.c          | 25 +++++++++++++++++++++++++
- 4 files changed, 57 insertions(+), 3 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-index 73b1ca5a6471..db6646c2ade2 100644
---- a/arch/powerpc/include/asm/kvm_ppc.h
-+++ b/arch/powerpc/include/asm/kvm_ppc.h
-@@ -607,6 +607,7 @@ extern void kvmppc_free_pimap(struct kvm *kvm);
- extern int kvmppc_xics_rm_complete(struct kvm_vcpu *vcpu, u32 hcall);
- extern void kvmppc_xics_free_icp(struct kvm_vcpu *vcpu);
- extern int kvmppc_xics_hcall(struct kvm_vcpu *vcpu, u32 cmd);
-+extern int kvmppc_xive_xics_hcall(struct kvm_vcpu *vcpu, u32 req);
- extern u64 kvmppc_xics_get_icp(struct kvm_vcpu *vcpu);
- extern int kvmppc_xics_set_icp(struct kvm_vcpu *vcpu, u64 icpval);
- extern int kvmppc_xics_connect_vcpu(struct kvm_device *dev,
-@@ -639,6 +640,8 @@ static inline int kvmppc_xics_enabled(struct kvm_vcpu *vcpu)
- static inline void kvmppc_xics_free_icp(struct kvm_vcpu *vcpu) { }
- static inline int kvmppc_xics_hcall(struct kvm_vcpu *vcpu, u32 cmd)
- 	{ return 0; }
-+static inline int kvmppc_xive_xics_hcall(struct kvm_vcpu *vcpu, u32 req)
-+	{ return 0; }
- #endif
- 
- #ifdef CONFIG_KVM_XIVE
-@@ -673,6 +676,7 @@ extern int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
- 			       int level, bool line_status);
- extern void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu);
- extern void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu);
-+extern void kvmppc_xive_cede_vcpu(struct kvm_vcpu *vcpu);
- 
- static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
- {
-@@ -714,6 +718,7 @@ static inline int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 ir
- 				      int level, bool line_status) { return -ENODEV; }
- static inline void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu) { }
- static inline void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu) { }
-+static inline void kvmppc_xive_cede_vcpu(struct kvm_vcpu *vcpu) { }
- 
- static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
- 	{ return 0; }
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 7e23838b7f9b..d4770b222d7e 100644
+index d4770b222d7e..63cc92c45c5d 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1144,7 +1144,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
-  * This has to be done early, not in kvmppc_pseries_do_hcall(), so
-  * that the cede logic in kvmppc_run_single_vcpu() works properly.
-  */
--static void kvmppc_nested_cede(struct kvm_vcpu *vcpu)
-+static void kvmppc_cede(struct kvm_vcpu *vcpu)
- {
- 	vcpu->arch.shregs.msr |= MSR_EE;
- 	vcpu->arch.ceded = 1;
-@@ -3731,15 +3731,34 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 		/* H_CEDE has to be handled now, not later */
- 		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
- 		    kvmppc_get_gpr(vcpu, 3) == H_CEDE) {
--			kvmppc_nested_cede(vcpu);
-+			kvmppc_cede(vcpu);
- 			kvmppc_set_gpr(vcpu, 3, 0);
- 			trap = 0;
- 		}
- 	} else {
- 		kvmppc_xive_push_vcpu(vcpu);
- 		trap = kvmhv_load_hv_regs_and_go(vcpu, time_limit, lpcr);
--		kvmppc_xive_pull_vcpu(vcpu);
-+		/* H_CEDE has to be handled now, not later */
-+		/* XICS hcalls must be handled before xive is pulled */
-+		if (trap == BOOK3S_INTERRUPT_SYSCALL &&
-+		    !(vcpu->arch.shregs.msr & MSR_PR)) {
-+			unsigned long req = kvmppc_get_gpr(vcpu, 3);
- 
-+			if (req == H_CEDE) {
-+				kvmppc_cede(vcpu);
-+				kvmppc_xive_cede_vcpu(vcpu); /* may un-cede */
-+				kvmppc_set_gpr(vcpu, 3, 0);
-+				trap = 0;
-+			}
-+			if (req == H_EOI || req == H_CPPR || req == H_IPI ||
-+			    req == H_IPOLL || req == H_XIRR || req == H_XIRR_X) {
-+				unsigned long ret;
-+				ret = kvmppc_xive_xics_hcall(vcpu, req);
-+				kvmppc_set_gpr(vcpu, 3, ret);
-+				trap = 0;
-+			}
-+		}
-+		kvmppc_xive_pull_vcpu(vcpu);
+@@ -3490,23 +3490,13 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		host_dawrx1 = mfspr(SPRN_DAWRX1);
  	}
  
- 	vcpu->arch.slb_max = 0;
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index c11597f815e4..2d0d14ed1d92 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -1397,9 +1397,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
- 	mr	r4,r9
- 	bge	fast_guest_return
- 2:
-+	/* If we came in through the P9 short path, no real mode hcalls */
-+	lwz	r0, STACK_SLOT_SHORT_PATH(r1)
-+	cmpwi	r0, 0
-+	bne	no_try_real
- 	/* See if this is an hcall we can handle in real mode */
- 	cmpwi	r12,BOOK3S_INTERRUPT_SYSCALL
- 	beq	hcall_try_real_mode
-+no_try_real:
+-	/*
+-	 * P8 and P9 suppress the HDEC exception when LPCR[HDICE] = 0,
+-	 * so set HDICE before writing HDEC.
+-	 */
+-	mtspr(SPRN_LPCR, kvm->arch.host_lpcr | LPCR_HDICE);
+-	isync();
+-
+-	hdec = time_limit - mftb();
+-	if (hdec < 0) {
+-		mtspr(SPRN_LPCR, kvm->arch.host_lpcr);
+-		isync();
++	tb = mftb();
++	hdec = time_limit - tb;
++	if (hdec < 0)
+ 		return BOOK3S_INTERRUPT_HV_DECREMENTER;
+-	}
+-	mtspr(SPRN_HDEC, hdec);
  
- 	/* Hypervisor doorbell - exit only if host IPI flag set */
- 	cmpwi	r12, BOOK3S_INTERRUPT_H_DOORBELL
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index 8632fb998a55..d2266d36a7c7 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -2109,6 +2109,31 @@ static int kvmppc_xive_create(struct kvm_device *dev, u32 type)
- 	return 0;
- }
+ 	if (vc->tb_offset) {
+-		u64 new_tb = mftb() + vc->tb_offset;
++		u64 new_tb = tb + vc->tb_offset;
+ 		mtspr(SPRN_TBU40, new_tb);
+ 		tb = mftb();
+ 		if ((tb & 0xffffff) < (new_tb & 0xffffff))
+@@ -3549,6 +3539,12 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
  
-+int kvmppc_xive_xics_hcall(struct kvm_vcpu *vcpu, u32 req)
-+{
-+	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 	switch_mmu_to_guest_radix(kvm, vcpu, lpcr);
+ 
++	/*
++	 * P9 suppresses the HDEC exception when LPCR[HDICE] = 0,
++	 * so set guest LPCR (with HDICE) before writing HDEC.
++	 */
++	mtspr(SPRN_HDEC, hdec);
 +
-+	switch (req) {
-+	case H_XIRR:
-+		return xive_vm_h_xirr(vcpu);
-+	case H_CPPR:
-+		return xive_vm_h_cppr(vcpu, kvmppc_get_gpr(vcpu, 4));
-+	case H_EOI:
-+		return xive_vm_h_eoi(vcpu, kvmppc_get_gpr(vcpu, 4));
-+	case H_IPI:
-+		return xive_vm_h_ipi(vcpu, kvmppc_get_gpr(vcpu, 4),
-+					  kvmppc_get_gpr(vcpu, 5));
-+	case H_IPOLL:
-+		return xive_vm_h_ipoll(vcpu, kvmppc_get_gpr(vcpu, 4));
-+	case H_XIRR_X:
-+		xive_vm_h_xirr(vcpu);
-+		kvmppc_set_gpr(vcpu, 5, get_tb() + vc->tb_offset);
-+		return H_SUCCESS;
-+	}
-+
-+	return H_UNSUPPORTED;
-+}
-+
- int kvmppc_xive_debug_show_queues(struct seq_file *m, struct kvm_vcpu *vcpu)
- {
- 	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
+ 	mtspr(SPRN_SRR0, vcpu->arch.shregs.srr0);
+ 	mtspr(SPRN_SRR1, vcpu->arch.shregs.srr1);
+ 
 -- 
 2.23.0
 
