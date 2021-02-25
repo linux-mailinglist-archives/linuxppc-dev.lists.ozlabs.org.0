@@ -2,69 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BA9325118
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 15:00:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 037A0325119
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 15:01:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmZFG0gncz3gjJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 01:00:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmZFp05Pwz3gmy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 01:01:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=RtWUGw48;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=bIvzWMw7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
- helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529;
+ helo=mail-pg1-x529.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=RtWUGw48; dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
+ header.s=20161025 header.b=bIvzWMw7; dkim-atps=neutral
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
+ [IPv6:2607:f8b0:4864:20::529])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmYzV1xcxz3dLR
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 00:48:54 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id i14so1912351pjz.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 05:48:54 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmYzY0tXGz3dLw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 00:48:56 +1100 (AEDT)
+Received: by mail-pg1-x529.google.com with SMTP id n10so3798057pgl.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 05:48:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=kUC0xUCe92YtsXcbm6F3+IuMhubuwTkAZ1cDtpWPJRs=;
- b=RtWUGw48QDe1rF3+nvkAD8UlBns0Bq1LCpMQUUv/A5UL1V3GjTuCDBRyxe9IfhkBzI
- +NLOOphilQxLEk+0rCyHVO9HKG4vzCPXhXl7bIcOKZ6Q3jojPrCze27wbGxc2YlPVKZc
- wmByXuCdCRlFlgZ4y6g2aS7uwQ127P36Aq/d94iB0hXzI7DlvCTeDoh5wcMxQMSV9acN
- 0lunDWEKfXR2RYVGmzighm6DqG1LyLnLCxfDUVTh9yvhwBoCKc6lK9OYX8cusWdlBgCL
- 1F114BZOQaToWS3QSAyWZ3CDU6aZaOzgJzbl23l9BSg3letHgVX+3zV16GYk93bWj6Hn
- JcTQ==
+ bh=veJ44tY4H1b4cNQs/+ikD/U07gxfyKVeQOKDpom/Qlo=;
+ b=bIvzWMw7UyfnfE3dxFo/LOmOsyj6lCHMn9htGdUAKrD1h57jVAzaW+cTmRQ6MprAzo
+ LLyROP07D4p09AfGlneIf8mQLUSp9m6C3c6sWlbdp1heDCCCZ73gYVIAs7sPuce9+jm+
+ fvSY7ch69daYTM1WtnyRLkwoTN0CACzuW//5g0Orh4AVzfyu/UuXt554N3qu0lQPdrvw
+ oJlJQ6leXpfEZ5YvHSHxZPUUr1cZUM/TWCblWil0mUD0eOtuIWg51p7g0/2ISSUsWxYN
+ XedrKGPiqh8QZ+k4RpX1k5mNfwRyM7M3yGx3+7rQgo27ZmHQg7HMu1WWFW4BbY5tpJpP
+ uZeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=kUC0xUCe92YtsXcbm6F3+IuMhubuwTkAZ1cDtpWPJRs=;
- b=f+z9pr4t6PTLlsz/dsL3CTTmsCkLE+xdkS8W2ew+AY8eCJwubbBmXY/RL7SvuT90FY
- AYJCqux5q340WkdzzQuztj78/6voqEkFg7w33ivE2B584Briw3ArVPuNBgIRKEkbiXnZ
- +r15cp/Ab6xnmzttsZN9SnSMzuDwk5p7g0sRj538pnjquaCxLvYLlubueDojuQg5fiWo
- JD0qDMozW3zNL1P0ybsfLmE/lBrcOWL68VxpVDqHwW//rwvWuP1O0mXSMKXrcM/7Nj+u
- W50SxOb4iiua5HIequPpYrmy52SxiYkRXXfRfePZQ62BK5T0ssXlaApakmrL/Y7VNwCZ
- z/ow==
-X-Gm-Message-State: AOAM53261zgED6LDpMrPxQwRZ9OGnttl68voMUwWyDL5/C4aBOLxJqn6
- /lRTcUQ+kTf57iYhX2YN27g=
-X-Google-Smtp-Source: ABdhPJxRRtoKmswDfRI27mwf2fhRtlR3vvkjfE6V1GhkJAiKOLjD9myzUnA6gzhm4SN9/9uoyA6YwA==
-X-Received: by 2002:a17:90b:1bc6:: with SMTP id
- oa6mr3520457pjb.86.1614260931994; 
- Thu, 25 Feb 2021 05:48:51 -0800 (PST)
+ bh=veJ44tY4H1b4cNQs/+ikD/U07gxfyKVeQOKDpom/Qlo=;
+ b=fHL/fkIPiStGrb2ToVHbc7HiEUd/+QnFIw6WlDufcfa15v2A+jdd6k1YZNmCR5Wy80
+ jWYQpl2vl15yqFUH4idT6nYaX5v+3ngDkSi7qSnG6Bv6rdIR6vE8EV1Gtr3gdwU+MsZK
+ UUuUt5s6Txeol4Ji8N0282uimUHNJ5E70PO+0xJom6kzxbC1PAeUb7NdQSMliZ/Z2jqT
+ 5jLSbwvi+5izfPKr1dntLYJi7JYHjNp/bUnVsXdvj4Tusg5sOhPpYEzyXRT6YJdZWAp7
+ Ivkuhn0neht0iCfHaqHYTztK/011lTQ23y+7g+oPbm6eXIgzQwsAXmSz3PiTyQ+mtm/i
+ 8HIg==
+X-Gm-Message-State: AOAM530cH8OUtlIX6FSijZDFbhQPvK3nM0zLJW1bfBZOvmOXWnuWQeOD
+ tPUXJBvJAtaqfTHAGoiupk0=
+X-Google-Smtp-Source: ABdhPJxq3tMoWnWb0JY9fjh/na9nQWenmY9OE5PZW5fALA538ouxAlTXUPGyJTgn2rEH91+7PngU5g==
+X-Received: by 2002:a63:2a17:: with SMTP id q23mr3026533pgq.223.1614260935198; 
+ Thu, 25 Feb 2021 05:48:55 -0800 (PST)
 Received: from bobo.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id a9sm5925868pjq.17.2021.02.25.05.48.49
+ by smtp.gmail.com with ESMTPSA id a9sm5925868pjq.17.2021.02.25.05.48.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Feb 2021 05:48:51 -0800 (PST)
+ Thu, 25 Feb 2021 05:48:54 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 32/37] KVM: PPC: Book3S HV: Remove radix guest support from
- P7/8 path
-Date: Thu, 25 Feb 2021 23:46:47 +1000
-Message-Id: <20210225134652.2127648-33-npiggin@gmail.com>
+Subject: [PATCH v2 33/37] KVM: PPC: Book3S HV: small pseries_do_hcall cleanup
+Date: Thu, 25 Feb 2021 23:46:48 +1000
+Message-Id: <20210225134652.2127648-34-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210225134652.2127648-1-npiggin@gmail.com>
 References: <20210225134652.2127648-1-npiggin@gmail.com>
@@ -86,152 +84,131 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The P9 path will run all supported radix guest combinations now, so
-remove support from the old path.
+Functionality should not be changed.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv_rmhandlers.S | 65 ++-----------------------
- 1 file changed, 3 insertions(+), 62 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index 61f71a7df238..a8ce68eed13e 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -899,11 +899,6 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
- 	cmpdi	r3, 512		/* 1 microsecond */
- 	blt	hdec_soon
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 1f27187ff1e7..9d2fa21201c1 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -923,6 +923,7 @@ static int kvmppc_get_yield_count(struct kvm_vcpu *vcpu)
  
--	ld	r6, VCPU_KVM(r4)
--	lbz	r0, KVM_RADIX(r6)
--	cmpwi	r0, 0
--	bne	9f
--
- 	/* For hash guest, clear out and reload the SLB */
- BEGIN_MMU_FTR_SECTION
- 	/* Radix host won't have populated the SLB, so no need to clear */
-@@ -1389,11 +1384,7 @@ guest_exit_cont:		/* r9 = vcpu, r12 = trap, r13 = paca */
- 	patch_site 1b patch__call_kvm_flush_link_stack
+ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ {
++	struct kvm *kvm = vcpu->kvm;
+ 	unsigned long req = kvmppc_get_gpr(vcpu, 3);
+ 	unsigned long target, ret = H_SUCCESS;
+ 	int yield_count;
+@@ -938,7 +939,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		break;
+ 	case H_PROD:
+ 		target = kvmppc_get_gpr(vcpu, 4);
+-		tvcpu = kvmppc_find_vcpu(vcpu->kvm, target);
++		tvcpu = kvmppc_find_vcpu(kvm, target);
+ 		if (!tvcpu) {
+ 			ret = H_PARAMETER;
+ 			break;
+@@ -952,7 +953,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		target = kvmppc_get_gpr(vcpu, 4);
+ 		if (target == -1)
+ 			break;
+-		tvcpu = kvmppc_find_vcpu(vcpu->kvm, target);
++		tvcpu = kvmppc_find_vcpu(kvm, target);
+ 		if (!tvcpu) {
+ 			ret = H_PARAMETER;
+ 			break;
+@@ -968,12 +969,12 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 					kvmppc_get_gpr(vcpu, 6));
+ 		break;
+ 	case H_RTAS:
+-		if (list_empty(&vcpu->kvm->arch.rtas_tokens))
++		if (list_empty(&kvm->arch.rtas_tokens))
+ 			return RESUME_HOST;
  
- 	/* For hash guest, read the guest SLB and save it away */
--	ld	r5, VCPU_KVM(r9)
--	lbz	r0, KVM_RADIX(r5)
- 	li	r5, 0
--	cmpwi	r0, 0
--	bne	0f			/* for radix, save 0 entries */
- 	lwz	r0,VCPU_SLB_NR(r9)	/* number of entries in SLB */
- 	mtctr	r0
- 	li	r6,0
-@@ -1432,23 +1423,6 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_RADIX)
- 	slbmte	r6,r5
- 1:	addi	r8,r8,16
- 	.endr
--	b	guest_bypass
--
--0:	/*
--	 * Malicious or buggy radix guests may have inserted SLB entries
--	 * (only 0..3 because radix always runs with UPRT=1), so these must
--	 * be cleared here to avoid side-channels. slbmte is used rather
--	 * than slbia, as it won't clear cached translations.
--	 */
--	li	r0,0
--	stw	r0,VCPU_SLB_MAX(r9)
--	slbmte	r0,r0
--	li	r4,1
--	slbmte	r0,r4
--	li	r4,2
--	slbmte	r0,r4
--	li	r4,3
--	slbmte	r0,r4
+-		idx = srcu_read_lock(&vcpu->kvm->srcu);
++		idx = srcu_read_lock(&kvm->srcu);
+ 		rc = kvmppc_rtas_hcall(vcpu);
+-		srcu_read_unlock(&vcpu->kvm->srcu, idx);
++		srcu_read_unlock(&kvm->srcu, idx);
  
- guest_bypass:
- 	stw	r12, STACK_SLOT_TRAP(r1)
-@@ -1694,24 +1668,6 @@ BEGIN_FTR_SECTION
- 	mtspr	SPRN_PID, r7
- END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+ 		if (rc == -ENOENT)
+ 			return RESUME_HOST;
+@@ -1060,12 +1061,12 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
  
--#ifdef CONFIG_PPC_RADIX_MMU
--	/*
--	 * Are we running hash or radix ?
--	 */
--	ld	r5, VCPU_KVM(r9)
--	lbz	r0, KVM_RADIX(r5)
--	cmpwi	cr2, r0, 0
--	beq	cr2, 2f
--
--	/*
--	 * Radix: do eieio; tlbsync; ptesync sequence in case we
--	 * interrupted the guest between a tlbie and a ptesync.
--	 */
--	eieio
--	tlbsync
--	ptesync
--#endif /* CONFIG_PPC_RADIX_MMU */
--
- 	/*
- 	 * cp_abort is required if the processor supports local copy-paste
- 	 * to clear the copy buffer that was under control of the guest.
-@@ -1970,8 +1926,6 @@ kvmppc_tm_emul:
-  * reflect the HDSI to the guest as a DSI.
-  */
- kvmppc_hdsi:
--	ld	r3, VCPU_KVM(r9)
--	lbz	r0, KVM_RADIX(r3)
- 	mfspr	r4, SPRN_HDAR
- 	mfspr	r6, SPRN_HDSISR
- BEGIN_FTR_SECTION
-@@ -1979,8 +1933,6 @@ BEGIN_FTR_SECTION
- 	cmpdi	r6, 0x7fff
- 	beq	6f
- END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
--	cmpwi	r0, 0
--	bne	.Lradix_hdsi		/* on radix, just save DAR/DSISR/ASDR */
- 	/* HPTE not found fault or protection fault? */
- 	andis.	r0, r6, (DSISR_NOHPTE | DSISR_PROTFAULT)@h
- 	beq	1f			/* if not, send it to the guest */
-@@ -2057,23 +2009,11 @@ fast_interrupt_c_return:
- 	stb	r0, HSTATE_IN_GUEST(r13)
- 	b	guest_exit_cont
+ 	case H_SET_PARTITION_TABLE:
+ 		ret = H_FUNCTION;
+-		if (nesting_enabled(vcpu->kvm))
++		if (nesting_enabled(kvm))
+ 			ret = kvmhv_set_partition_table(vcpu);
+ 		break;
+ 	case H_ENTER_NESTED:
+ 		ret = H_FUNCTION;
+-		if (!nesting_enabled(vcpu->kvm))
++		if (!nesting_enabled(kvm))
+ 			break;
+ 		ret = kvmhv_enter_nested_guest(vcpu);
+ 		if (ret == H_INTERRUPT) {
+@@ -1080,12 +1081,12 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		break;
+ 	case H_TLB_INVALIDATE:
+ 		ret = H_FUNCTION;
+-		if (nesting_enabled(vcpu->kvm))
++		if (nesting_enabled(kvm))
+ 			ret = kvmhv_do_nested_tlbie(vcpu);
+ 		break;
+ 	case H_COPY_TOFROM_GUEST:
+ 		ret = H_FUNCTION;
+-		if (nesting_enabled(vcpu->kvm))
++		if (nesting_enabled(kvm))
+ 			ret = kvmhv_copy_tofrom_guest_nested(vcpu);
+ 		break;
+ 	case H_PAGE_INIT:
+@@ -1096,7 +1097,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 	case H_SVM_PAGE_IN:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_page_in(vcpu->kvm,
++			ret = kvmppc_h_svm_page_in(kvm,
+ 						   kvmppc_get_gpr(vcpu, 4),
+ 						   kvmppc_get_gpr(vcpu, 5),
+ 						   kvmppc_get_gpr(vcpu, 6));
+@@ -1104,7 +1105,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 	case H_SVM_PAGE_OUT:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_page_out(vcpu->kvm,
++			ret = kvmppc_h_svm_page_out(kvm,
+ 						    kvmppc_get_gpr(vcpu, 4),
+ 						    kvmppc_get_gpr(vcpu, 5),
+ 						    kvmppc_get_gpr(vcpu, 6));
+@@ -1112,12 +1113,12 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 	case H_SVM_INIT_START:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_init_start(vcpu->kvm);
++			ret = kvmppc_h_svm_init_start(kvm);
+ 		break;
+ 	case H_SVM_INIT_DONE:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_init_done(vcpu->kvm);
++			ret = kvmppc_h_svm_init_done(kvm);
+ 		break;
+ 	case H_SVM_INIT_ABORT:
+ 		/*
+@@ -1127,7 +1128,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		 * Instead the kvm->arch.secure_guest flag is checked inside
+ 		 * kvmppc_h_svm_init_abort().
+ 		 */
+-		ret = kvmppc_h_svm_init_abort(vcpu->kvm);
++		ret = kvmppc_h_svm_init_abort(kvm);
+ 		break;
  
--.Lradix_hdsi:
--	std	r4, VCPU_FAULT_DAR(r9)
--	stw	r6, VCPU_FAULT_DSISR(r9)
--.Lradix_hisi:
--	mfspr	r5, SPRN_ASDR
--	std	r5, VCPU_FAULT_GPA(r9)
--	b	guest_exit_cont
--
- /*
-  * Similarly for an HISI, reflect it to the guest as an ISI unless
-  * it is an HPTE not found fault for a page that we have paged out.
-  */
- kvmppc_hisi:
--	ld	r3, VCPU_KVM(r9)
--	lbz	r0, KVM_RADIX(r3)
--	cmpwi	r0, 0
--	bne	.Lradix_hisi		/* for radix, just save ASDR */
- 	andis.	r0, r11, SRR1_ISI_NOPT@h
- 	beq	1f
- 	andi.	r0, r11, MSR_IR		/* instruction relocation enabled? */
-@@ -3217,15 +3157,16 @@ BEGIN_FTR_SECTION
- 	mtspr	SPRN_DAWRX1, r0
- END_FTR_SECTION_IFSET(CPU_FTR_DAWR1)
- 
--	/* Clear hash and radix guest SLB. */
-+	/* Clear guest SLB. */
- 	slbmte	r0, r0
- 	PPC_SLBIA(6)
-+	ptesync
- 
- BEGIN_MMU_FTR_SECTION
- 	b	4f
- END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_RADIX)
- 
--	ptesync
-+	/* load host SLB entries */
- 	ld	r8, PACA_SLBSHADOWPTR(r13)
- 	.rept	SLB_NUM_BOLTED
- 	li	r3, SLBSHADOW_SAVEAREA
+ 	default:
 -- 
 2.23.0
 
