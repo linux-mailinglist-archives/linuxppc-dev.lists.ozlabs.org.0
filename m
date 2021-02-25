@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFDA324949
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 04:12:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2CBF32494B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 04:12:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmHrw5dMlz3dm1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 14:12:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmHsV2q1mz3drm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 14:12:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=knw68kx0;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=IYUJC0kq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::52e;
- helo=mail-pg1-x52e.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::535;
+ helo=mail-pg1-x535.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=knw68kx0; dkim-atps=neutral
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
- [IPv6:2607:f8b0:4864:20::52e])
+ header.s=google header.b=IYUJC0kq; dkim-atps=neutral
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
+ [IPv6:2607:f8b0:4864:20::535])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmHps11f5z3cxc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 14:10:28 +1100 (AEDT)
-Received: by mail-pg1-x52e.google.com with SMTP id a4so2834971pgc.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 19:10:28 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmHpw2rHxz3cbw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 14:10:32 +1100 (AEDT)
+Received: by mail-pg1-x535.google.com with SMTP id b21so2853385pgk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 19:10:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=ydvBmQuT5IBWs8m0kK5hfr/cAJ7yvAd4RsRPvbptl7g=;
- b=knw68kx0cbAuE9zd6AP7YJUER3HYVGP0UY+cXX3cnMwBo4Oz3KoHADh2P5IpgHqZnF
- 565OXf0wgVmY3QlrY0xXA8xJ+c8TFyiGhhLfiG31EuHTJw9lPdeqM26XPfXlAMvfwCLk
- 1bvfJx2IEQb+NzoHAsIldEMlBbi29zmhatXK8=
+ bh=Kzkxy84AZO440EdjAvf8D1GUWNTIW8/8tXHKTWHs58w=;
+ b=IYUJC0kqNfVKiaXoQ02Qa6Z6Tf8Gbfy8UgmcQWNCZ9rRlVveWttq7BZO8Op0FTWo5a
+ Ny2gC3a60hKX11KTLObI1IEHv8NihHV5gwz79M3jucaBH3Vsxf+y0YRJUU5kyUzZbySw
+ jK7xMW/tI3k3xU8fW2VS0m1rk23jfCtuJXgdI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=ydvBmQuT5IBWs8m0kK5hfr/cAJ7yvAd4RsRPvbptl7g=;
- b=Cdy60lOveE1E6SJqH9Ywd/GuzijBTgtdpd9pxkmNCUlFnKxhssM2VLnke+U/YAAk8z
- nthOlV87WvVTMz03RFRcPTuVX6SGiWEto8xhyHHaF6joxgplwZ7V9Jo8xW4js2g9hrTe
- APgbYIiG2IUAmth202bZIqWeIxcIdEZ/iJnrKUdj4SV0GwiFHTETN5FN1iCwdnOcNO8r
- xNvVV7SKPWcEny77uuQEDGjdPsmb9V3djwP6vlZPT9rVLCw2cfFDZMhL4mHh/SPr6nM6
- Pe2E2qMdLDZYnxSlkJwnByAPD9ywrjl6lTwPeuQSW4OoHXy7orP6auY+qDzHSy+0cLSZ
- JICA==
-X-Gm-Message-State: AOAM532C7ml6zYYK4iGCfXq7/irPPjUGWYyZyoSRXWoz8iZ+ccrXi4gj
- I2GIqIwgsXjhNGplxGZMcy0QfG6fayM2NA1D
-X-Google-Smtp-Source: ABdhPJwG/YL8B+zUkmJA8Lxv1EQNLaMEvd40Ef4mxLqg/EpTy8j+2Vuk8g+SL7Bln9iTp8MTJnV5oA==
-X-Received: by 2002:a62:fc12:0:b029:1ed:b7b0:db6e with SMTP id
- e18-20020a62fc120000b02901edb7b0db6emr1090464pfh.45.1614222627006; 
- Wed, 24 Feb 2021 19:10:27 -0800 (PST)
+ bh=Kzkxy84AZO440EdjAvf8D1GUWNTIW8/8tXHKTWHs58w=;
+ b=bxhOYINR0/eEq0GkRwXmprwidNgDlSriqlFEufepywlDs35nWswHz1PGHxplT4J3KC
+ ztg9ZVRT0pon+q0jfcfa37DyfyT3EHbIYh2ydIqB5xZwB9MYEGswhpJEdrdt3VvuWMb6
+ CTKP2ljAU0rRSRpNMI/WufBEw0RK6PJ7uXB2oq3UOYH4BcZqk22he0PwE55O+c4AQaGO
+ 8VOEyb6RxR0pNUzbu7Yun4Xmigw4koLOJ9MK4u5KWs+O/3CoQeC0K0WyI6MdaaWw5n5X
+ GxaiIf/VD1BHMtqO82PQZfc+q358vxuxq/0/wUi59QgoQoe57xjMcjY+jdTf5XPItUzb
+ dgJA==
+X-Gm-Message-State: AOAM531vB4yT1hQ7C8unMSYvWtUdshR7T6XqgbzqaHE6fGNmbpylcYQ+
+ f3dIb7FGHMOXTMJiCzT6PGO2o8PS3AffRL2o
+X-Google-Smtp-Source: ABdhPJyPNvXAgPwLGzn0kvb5rkzbzwWrdZCg1nhwELp1TPCoQtHFWxrLsFhQpxWJwFMVK8uTZ6gk9g==
+X-Received: by 2002:a05:6a00:1756:b029:1de:b761:92ae with SMTP id
+ j22-20020a056a001756b02901deb76192aemr1134938pfc.29.1614222630621; 
+ Wed, 24 Feb 2021 19:10:30 -0800 (PST)
 Received: from localhost
  (2001-44b8-1113-6700-6e65-7e50-8dac-f7ef.static.ipv6.internode.on.net.
  [2001:44b8:1113:6700:6e65:7e50:8dac:f7ef])
- by smtp.gmail.com with ESMTPSA id t189sm3937258pgt.39.2021.02.24.19.10.26
+ by smtp.gmail.com with ESMTPSA id i2sm3993736pgk.79.2021.02.24.19.10.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Feb 2021 19:10:26 -0800 (PST)
+ Wed, 24 Feb 2021 19:10:30 -0800 (PST)
 From: Daniel Axtens <dja@axtens.net>
 To: llvmlinux@lists.linuxfoundation.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 4/8] powerpc/ppc_asm: use plain numbers for registers
-Date: Thu, 25 Feb 2021 14:10:02 +1100
-Message-Id: <20210225031006.1204774-5-dja@axtens.net>
+Subject: [RFC PATCH 5/8] poweprc/lib/quad: Provide macros for lq/stq
+Date: Thu, 25 Feb 2021 14:10:03 +1100
+Message-Id: <20210225031006.1204774-6-dja@axtens.net>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210225031006.1204774-1-dja@axtens.net>
 References: <20210225031006.1204774-1-dja@axtens.net>
@@ -85,89 +85,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is dumb but makes the llvm integrated assembler happy.
-https://github.com/ClangBuiltLinux/linux/issues/764
+For some reason the integrated assembler in clang-11 doesn't recognise
+them. Eventually we should fix it there too.
 
 Signed-off-by: Daniel Axtens <dja@axtens.net>
 ---
- arch/powerpc/include/asm/ppc_asm.h | 64 +++++++++++++++---------------
- 1 file changed, 32 insertions(+), 32 deletions(-)
+ arch/powerpc/include/asm/ppc-opcode.h | 4 ++++
+ arch/powerpc/lib/quad.S               | 4 ++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index 3dceb64fc9af..49da2cf4c2d5 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -509,38 +509,38 @@ END_FTR_SECTION_NESTED(CPU_FTR_CELL_TB_BUG, CPU_FTR_CELL_TB_BUG, 96)
-  * Use R0-31 only when really nessesary.
-  */
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index ed161ef2b3ca..a5249631cb83 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -339,11 +339,13 @@
+ #define PPC_RAW_DARN(t, l)		(0x7c0005e6 | ___PPC_RT(t) | (((l) & 0x3) << 16))
+ #define PPC_RAW_DCBAL(a, b)		(0x7c2005ec | __PPC_RA(a) | __PPC_RB(b))
+ #define PPC_RAW_DCBZL(a, b)		(0x7c2007ec | __PPC_RA(a) | __PPC_RB(b))
++#define PPC_RAW_LQ(t, a, dq)		(0xe0000000 | ___PPC_RT(t) | ___PPC_RA(a) | (((dq) & 0xfff) << 3))
+ #define PPC_RAW_LQARX(t, a, b, eh)	(0x7c000228 | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b) | __PPC_EH(eh))
+ #define PPC_RAW_LDARX(t, a, b, eh)	(0x7c0000a8 | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b) | __PPC_EH(eh))
+ #define PPC_RAW_LWARX(t, a, b, eh)	(0x7c000028 | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b) | __PPC_EH(eh))
+ #define PPC_RAW_PHWSYNC			(0x7c8004ac)
+ #define PPC_RAW_PLWSYNC			(0x7ca004ac)
++#define PPC_RAW_STQ(t, a, ds)		(0xf8000002 | ___PPC_RT(t) | ___PPC_RA(a) | (((ds) & 0xfff) << 3))
+ #define PPC_RAW_STQCX(t, a, b)		(0x7c00016d | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b))
+ #define PPC_RAW_MADDHD(t, a, b, c)	(0x10000030 | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b) | ___PPC_RC(c))
+ #define PPC_RAW_MADDHDU(t, a, b, c)	(0x10000031 | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b) | ___PPC_RC(c))
+@@ -530,9 +532,11 @@
+ #define	PPC_DCBZL(a, b)		stringify_in_c(.long PPC_RAW_DCBZL(a, b))
+ #define	PPC_DIVDE(t, a, b)	stringify_in_c(.long PPC_RAW_DIVDE(t, a, b))
+ #define	PPC_DIVDEU(t, a, b)	stringify_in_c(.long PPC_RAW_DIVDEU(t, a, b))
++#define PPC_LQ(t, a, dq)	stringify_in_c(.long PPC_RAW_LQ(t, a, dq))
+ #define PPC_LQARX(t, a, b, eh)	stringify_in_c(.long PPC_RAW_LQARX(t, a, b, eh))
+ #define PPC_LDARX(t, a, b, eh)	stringify_in_c(.long PPC_RAW_LDARX(t, a, b, eh))
+ #define PPC_LWARX(t, a, b, eh)	stringify_in_c(.long PPC_RAW_LWARX(t, a, b, eh))
++#define PPC_STQ(t, a, ds)	stringify_in_c(.long PPC_RAW_STQ(t, a, ds))
+ #define PPC_STQCX(t, a, b)	stringify_in_c(.long PPC_RAW_STQCX(t, a, b))
+ #define PPC_MADDHD(t, a, b, c)	stringify_in_c(.long PPC_RAW_MADDHD(t, a, b, c))
+ #define PPC_MADDHDU(t, a, b, c)	stringify_in_c(.long PPC_RAW_MADDHDU(t, a, b, c))
+diff --git a/arch/powerpc/lib/quad.S b/arch/powerpc/lib/quad.S
+index da71760e50b5..de802a817992 100644
+--- a/arch/powerpc/lib/quad.S
++++ b/arch/powerpc/lib/quad.S
+@@ -15,7 +15,7 @@
  
--#define	r0	%r0
--#define	r1	%r1
--#define	r2	%r2
--#define	r3	%r3
--#define	r4	%r4
--#define	r5	%r5
--#define	r6	%r6
--#define	r7	%r7
--#define	r8	%r8
--#define	r9	%r9
--#define	r10	%r10
--#define	r11	%r11
--#define	r12	%r12
--#define	r13	%r13
--#define	r14	%r14
--#define	r15	%r15
--#define	r16	%r16
--#define	r17	%r17
--#define	r18	%r18
--#define	r19	%r19
--#define	r20	%r20
--#define	r21	%r21
--#define	r22	%r22
--#define	r23	%r23
--#define	r24	%r24
--#define	r25	%r25
--#define	r26	%r26
--#define	r27	%r27
--#define	r28	%r28
--#define	r29	%r29
--#define	r30	%r30
--#define	r31	%r31
-+#define	r0	0
-+#define	r1	1
-+#define	r2	2
-+#define	r3	3
-+#define	r4	4
-+#define	r5	5
-+#define	r6	6
-+#define	r7	7
-+#define	r8	8
-+#define	r9	9
-+#define	r10	10
-+#define	r11	11
-+#define	r12	12
-+#define	r13	13
-+#define	r14	14
-+#define	r15	15
-+#define	r16	16
-+#define	r17	17
-+#define	r18	18
-+#define	r19	19
-+#define	r20	20
-+#define	r21	21
-+#define	r22	22
-+#define	r23	23
-+#define	r24	24
-+#define	r25	25
-+#define	r26	26
-+#define	r27	27
-+#define	r28	28
-+#define	r29	29
-+#define	r30	30
-+#define	r31	31
+ /* do_lq(unsigned long ea, unsigned long *regs) */
+ _GLOBAL(do_lq)
+-1:	lq	r6, 0(r3)
++1:	PPC_LQ(6, 3, 0)
+ 	std	r6, 0(r4)
+ 	std	r7, 8(r4)
+ 	li	r3, 0
+@@ -26,7 +26,7 @@ _GLOBAL(do_lq)
  
- 
- /* Floating Point Registers (FPRs) */
+ /* do_stq(unsigned long ea, unsigned long val0, unsigned long val1) */
+ _GLOBAL(do_stq)
+-1:	stq	r4, 0(r3)
++1:	PPC_STQ(4, 3, 0)
+ 	li	r3, 0
+ 	blr
+ 2:	li	r3, -EFAULT
 -- 
 2.27.0
 
