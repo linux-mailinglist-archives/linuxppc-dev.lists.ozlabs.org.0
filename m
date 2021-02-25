@@ -2,48 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DB732582B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 21:59:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70354325856
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 22:06:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmlX26xQ4z3ckK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 07:59:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dmlgw39Ysz3cXW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 08:06:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Nin3NxV9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Et7Jb1Xw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Et7Jb1Xw; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmlWY15lnz3cZ5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 07:58:48 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
- Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:In-Reply-To:References;
- bh=Fb28fR8D4293sacImRBpNCIWgpc/QGNK8lBvO/1bYzg=; b=Nin3NxV9mb61KAV3Ka9c6CkJOo
- CO75+0rPm7YtE02SFNN+05E/mv3JMOCIU23JcT5Bwnp222OF4KGYM+j66gP3eoerx0YQ97McoJXWZ
- 6l6aW7GsZ+2hN1d8NSYTQbD39T5RDOpPYrh+1aEjbf+ibrPds5JV6js5BTJt2w4b6r7ItWlCSbo7W
- fSx8yper9oa7cZu6vk4gvqhI9jq1xd2H2hGEs5/Q6iOqdW0PnAojQb2RoytNT+kjWP6RVqwnMQwKj
- KvwwOYuC1F6L/1aiFly2NRckR12/6oVAPbdmFH2x+aJE7pfFZUhb7UQz3jZQXVaQaaLKwRzmXu//l
- tzmdbAyg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
- Linux)) id 1lFNiG-00BAcs-P4; Thu, 25 Feb 2021 20:58:23 +0000
-Date: Thu, 25 Feb 2021 20:58:20 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org
-Subject: Freeing page tables through RCU
-Message-ID: <20210225205820.GC2858050@casper.infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmlgT2QzNz30NL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 08:05:40 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 11PL4Lxv166532; Thu, 25 Feb 2021 16:05:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=pqOo7IEXZuN4o2GJtHjkXskjvWSpvNljjvnukPmdQyc=;
+ b=Et7Jb1Xw5qUZjYtE1oWTeQpGjEs7bT+ZKyRBuhpLtFZ4/57LbkEdVaRdKixq90JVYmp4
+ O2/7vgBOEuwIWSqXnJrTrbU9lLq95N86iS0bJ9tl/zSI1N0KLuYVu26Ii8tkD3fHwgHG
+ dYS6zO8Zju/FGnPamkvcVxSj6YwRCsaXyLHg0VAduhJqwZfe6i+P7nuHfFTiFSAt3Aek
+ +GYKAFl/w+Q/zni/yIZ/M21XqLglRJo4WeVXthQ0dmu6yUMcI77EDFqM1LG+kCzZSTvJ
+ VL8dRWaj6iPOeVIYcl8m26HPCIbj89N3OtjlNNK58QBESu/Xyyl8rtJn6pdtjRRoCZ7b WQ== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36xh8jv328-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Feb 2021 16:05:37 -0500
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11PL26iH021277;
+ Thu, 25 Feb 2021 21:05:36 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma03wdc.us.ibm.com with ESMTP id 36tt29hnmn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Feb 2021 21:05:36 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11PL5ZKw33030518
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 Feb 2021 21:05:35 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B1879AE060;
+ Thu, 25 Feb 2021 21:05:35 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AA767AE05F;
+ Thu, 25 Feb 2021 21:05:34 +0000 (GMT)
+Received: from oc6034535106.ibm.com (unknown [9.211.123.159])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 25 Feb 2021 21:05:34 +0000 (GMT)
+Subject: Re: [PATCH v2 4/5] ibmvfc: store return code of H_FREE_SUB_CRQ during
+ cleanup
+To: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ james.bottomley@hansenpartnership.com
+References: <20210225204824.14570-1-tyreld@linux.ibm.com>
+ <20210225204824.14570-5-tyreld@linux.ibm.com>
+From: Brian King <brking@linux.vnet.ibm.com>
+Message-ID: <46ef110f-238e-50bf-731a-ba3a4392dba6@linux.vnet.ibm.com>
+Date: Thu, 25 Feb 2021 15:05:33 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <20210225204824.14570-5-tyreld@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-02-25_14:2021-02-24,
+ 2021-02-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0
+ clxscore=1015 phishscore=0 malwarescore=0 priorityscore=1501 adultscore=0
+ impostorscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102250161
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,40 +102,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org
+Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In order to walk the page tables without the mmap semaphore, it must
-be possible to prevent them from being freed and reused (eg if munmap()
-races with viewing /proc/$pid/smaps).
+Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
 
-There is various commentary within the mm on how to prevent this.  One way
-is to disable interrupts, relying on that to block rcu_sched or IPIs.
-I don't think the RT people are terribly happy about reading a proc file
-disabling interrupts, and it doesn't work for architectures that free
-page tables directly instead of batching them into an rcu_sched (because
-the IPI may not be sent to this CPU if the task has never run on it).
+-- 
+Brian King
+Power Linux I/O
+IBM Linux Technology Center
 
-See "Fast GUP" in mm/gup.c
-
-Ideally, I'd like rcu_read_lock() to delay page table reuse.  This is
-close to trivial for architectures which use entire pages or multiple
-pages for levels of their page tables as we can use the rcu_head embedded
-in struct page to queue the page for RCU.
-
-s390 and powerpc are the only two architectures I know of that have
-levels of their page table that are smaller than their PAGE_SIZE.
-I'd like to discuss options.  There may be a complicated scheme that
-allows partial pages to be freed via RCU, but I have something simpler
-in mind.  For powerpc in particular, it can have a PAGE_SIZE of 64kB
-and then the MMU wants to see 4kB entries in the PMD.  I suggest that
-instead of allocating each 4kB entry individually, we allocate a 64kB
-page and fill in 16 consecutive PMDs.  This could cost a bit more memory
-(although if you've asked for a CONFIG_PAGE_SIZE of 64kB, you presumably
-don't care too much about it), but it'll make future page faults cheaper
-(as the PMDs will already be present, assuming you have good locality
-of reference).
-
-I'd like to hear better ideas than this.
