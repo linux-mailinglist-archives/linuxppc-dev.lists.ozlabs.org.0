@@ -2,49 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E548A32460A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Feb 2021 23:01:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D1C324912
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 04:05:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dm8xv6pbqz3cKj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 09:01:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmHjM0G1qz3ccD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 14:05:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codefail.de (client-ip=131.153.2.45;
- helo=h4.fbrelay.privateemail.com; envelope-from=cmr@codefail.de;
- receiver=<UNKNOWN>)
-Received: from h4.fbrelay.privateemail.com (h4.fbrelay.privateemail.com
- [131.153.2.45])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dm8xY4yjKz30Hh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 09:00:49 +1100 (AEDT)
-Received: from MTA-12-4.privateemail.com (mta-12.privateemail.com
- [198.54.127.105])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id 660B980218
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 17:00:45 -0500 (EST)
-Received: from mta-12.privateemail.com (localhost [127.0.0.1])
- by mta-12.privateemail.com (Postfix) with ESMTP id 3BCB380071;
- Wed, 24 Feb 2021 17:00:39 -0500 (EST)
-Received: from localhost (unknown [10.20.151.246])
- by mta-12.privateemail.com (Postfix) with ESMTPA id 07A698007F;
- Wed, 24 Feb 2021 22:00:38 +0000 (UTC)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Feb 2021 16:00:38 -0600
-Message-Id: <C9I3KQ1KNCN6.1N1WBLNYBW7Y4@oc8246131445.ibm.com>
-Subject: Re: [PATCH v6 06/10] powerpc/signal64: Replace setup_sigcontext()
- w/ unsafe_setup_sigcontext()
-From: "Christopher M. Riedl" <cmr@codefail.de>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- <linuxppc-dev@lists.ozlabs.org>
-References: <20210221012401.22328-1-cmr@codefail.de>
- <20210221012401.22328-7-cmr@codefail.de>
- <2115850c-8687-6b61-11ca-0f6fab94a14f@csgroup.eu>
-In-Reply-To: <2115850c-8687-6b61-11ca-0f6fab94a14f@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmHj15hrGz30Nh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 14:05:24 +1100 (AEDT)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C2AA7200659;
+ Thu, 25 Feb 2021 04:05:20 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 185C7200943;
+ Thu, 25 Feb 2021 04:05:14 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 5654C402D0;
+ Thu, 25 Feb 2021 04:05:06 +0100 (CET)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+ timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, linuxppc-dev@lists.ozlabs.org, robh+dt@kernel.org,
+ devicetree@vger.kernel.org
+Subject: [PATCH v3 0/7] Add audio driver base on rpmsg on i.MX platform
+Date: Thu, 25 Feb 2021 10:52:36 +0800
+Message-Id: <1614221563-26822-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
 X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,198 +55,64 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Feb 23, 2021 at 11:12 AM CST, Christophe Leroy wrote:
->
->
-> Le 21/02/2021 =C3=A0 02:23, Christopher M. Riedl a =C3=A9crit :
-> > Previously setup_sigcontext() performed a costly KUAP switch on every
-> > uaccess operation. These repeated uaccess switches cause a significant
-> > drop in signal handling performance.
-> >=20
-> > Rewrite setup_sigcontext() to assume that a userspace write access wind=
-ow
-> > is open by replacing all uaccess functions with their 'unsafe' versions=
-.
-> > Modify the callers to first open, call unsafe_setup_sigcontext() and
-> > then close the uaccess window.
->
-> Do you plan to also convert setup_tm_sigcontexts() ?
-> It would allow to then remove copy_fpr_to_user() and
-> copy_ckfpr_to_user() and maybe other functions too.
+On Asymmetric multiprocessor, there is Cortex-A core and Cortex-M core,
+Linux is running on A core, RTOS is running on M core.
+The audio hardware device can be controlled by Cortex-M device,
+So audio playback/capture can be handled by M core.
 
-I don't intend to convert the TM functions as part of this series.
-Partially because I've been "threatened" with TM ownership for touching
-the code :) and also because TM enhancements are a pretty low priority I
-think.
+Rpmsg is the interface for sending and receiving msg to and from M
+core, that we can create a virtual sound on Cortex-A core side.
 
->
-> Christophe
->
-> >=20
-> > Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
-> > ---
-> >   arch/powerpc/kernel/signal_64.c | 71 ++++++++++++++++++++------------=
--
-> >   1 file changed, 44 insertions(+), 27 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/sign=
-al_64.c
-> > index bd8d210c9115..3faaa736ed62 100644
-> > --- a/arch/powerpc/kernel/signal_64.c
-> > +++ b/arch/powerpc/kernel/signal_64.c
-> > @@ -101,9 +101,13 @@ static void prepare_setup_sigcontext(struct task_s=
-truct *tsk)
-> >    * Set up the sigcontext for the signal frame.
-> >    */
-> >  =20
-> > -static long setup_sigcontext(struct sigcontext __user *sc,
-> > -		struct task_struct *tsk, int signr, sigset_t *set,
-> > -		unsigned long handler, int ctx_has_vsx_region)
-> > +#define unsafe_setup_sigcontext(sc, tsk, signr, set, handler,		\
-> > +				ctx_has_vsx_region, e)			\
-> > +	unsafe_op_wrap(__unsafe_setup_sigcontext(sc, tsk, signr, set,	\
-> > +			handler, ctx_has_vsx_region), e)
-> > +static long notrace __unsafe_setup_sigcontext(struct sigcontext __user=
- *sc,
-> > +					struct task_struct *tsk, int signr, sigset_t *set,
-> > +					unsigned long handler, int ctx_has_vsx_region)
-> >   {
-> >   	/* When CONFIG_ALTIVEC is set, we _always_ setup v_regs even if the
-> >   	 * process never used altivec yet (MSR_VEC is zero in pt_regs of
-> > @@ -118,20 +122,19 @@ static long setup_sigcontext(struct sigcontext __=
-user *sc,
-> >   #endif
-> >   	struct pt_regs *regs =3D tsk->thread.regs;
-> >   	unsigned long msr =3D regs->msr;
-> > -	long err =3D 0;
-> >   	/* Force usr to alway see softe as 1 (interrupts enabled) */
-> >   	unsigned long softe =3D 0x1;
-> >  =20
-> >   	BUG_ON(tsk !=3D current);
-> >  =20
-> >   #ifdef CONFIG_ALTIVEC
-> > -	err |=3D __put_user(v_regs, &sc->v_regs);
-> > +	unsafe_put_user(v_regs, &sc->v_regs, efault_out);
-> >  =20
-> >   	/* save altivec registers */
-> >   	if (tsk->thread.used_vr) {
-> >   		/* Copy 33 vec registers (vr0..31 and vscr) to the stack */
-> > -		err |=3D __copy_to_user(v_regs, &tsk->thread.vr_state,
-> > -				      33 * sizeof(vector128));
-> > +		unsafe_copy_to_user(v_regs, &tsk->thread.vr_state,
-> > +				    33 * sizeof(vector128), efault_out);
-> >   		/* set MSR_VEC in the MSR value in the frame to indicate that sc->v=
-_reg)
-> >   		 * contains valid data.
-> >   		 */
-> > @@ -140,12 +143,12 @@ static long setup_sigcontext(struct sigcontext __=
-user *sc,
-> >   	/* We always copy to/from vrsave, it's 0 if we don't have or don't
-> >   	 * use altivec.
-> >   	 */
-> > -	err |=3D __put_user(tsk->thread.vrsave, (u32 __user *)&v_regs[33]);
-> > +	unsafe_put_user(tsk->thread.vrsave, (u32 __user *)&v_regs[33], efault=
-_out);
-> >   #else /* CONFIG_ALTIVEC */
-> > -	err |=3D __put_user(0, &sc->v_regs);
-> > +	unsafe_put_user(0, &sc->v_regs, efault_out);
-> >   #endif /* CONFIG_ALTIVEC */
-> >   	/* copy fpr regs and fpscr */
-> > -	err |=3D copy_fpr_to_user(&sc->fp_regs, tsk);
-> > +	unsafe_copy_fpr_to_user(&sc->fp_regs, tsk, efault_out);
-> >  =20
-> >   	/*
-> >   	 * Clear the MSR VSX bit to indicate there is no valid state attache=
-d
-> > @@ -160,24 +163,27 @@ static long setup_sigcontext(struct sigcontext __=
-user *sc,
-> >   	 */
-> >   	if (tsk->thread.used_vsr && ctx_has_vsx_region) {
-> >   		v_regs +=3D ELF_NVRREG;
-> > -		err |=3D copy_vsx_to_user(v_regs, tsk);
-> > +		unsafe_copy_vsx_to_user(v_regs, tsk, efault_out);
-> >   		/* set MSR_VSX in the MSR value in the frame to
-> >   		 * indicate that sc->vs_reg) contains valid data.
-> >   		 */
-> >   		msr |=3D MSR_VSX;
-> >   	}
-> >   #endif /* CONFIG_VSX */
-> > -	err |=3D __put_user(&sc->gp_regs, &sc->regs);
-> > +	unsafe_put_user(&sc->gp_regs, &sc->regs, efault_out);
-> >   	WARN_ON(!FULL_REGS(regs));
-> > -	err |=3D __copy_to_user(&sc->gp_regs, regs, GP_REGS_SIZE);
-> > -	err |=3D __put_user(msr, &sc->gp_regs[PT_MSR]);
-> > -	err |=3D __put_user(softe, &sc->gp_regs[PT_SOFTE]);
-> > -	err |=3D __put_user(signr, &sc->signal);
-> > -	err |=3D __put_user(handler, &sc->handler);
-> > +	unsafe_copy_to_user(&sc->gp_regs, regs, GP_REGS_SIZE, efault_out);
-> > +	unsafe_put_user(msr, &sc->gp_regs[PT_MSR], efault_out);
-> > +	unsafe_put_user(softe, &sc->gp_regs[PT_SOFTE], efault_out);
-> > +	unsafe_put_user(signr, &sc->signal, efault_out);
-> > +	unsafe_put_user(handler, &sc->handler, efault_out);
-> >   	if (set !=3D NULL)
-> > -		err |=3D  __put_user(set->sig[0], &sc->oldmask);
-> > +		unsafe_put_user(set->sig[0], &sc->oldmask, efault_out);
-> >  =20
-> > -	return err;
-> > +	return 0;
-> > +
-> > +efault_out:
-> > +	return -EFAULT;
-> >   }
-> >  =20
-> >   #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-> > @@ -670,12 +676,15 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __us=
-er *, old_ctx,
-> >  =20
-> >   	if (old_ctx !=3D NULL) {
-> >   		prepare_setup_sigcontext(current);
-> > -		if (!access_ok(old_ctx, ctx_size)
-> > -		    || setup_sigcontext(&old_ctx->uc_mcontext, current, 0, NULL, 0,
-> > -					ctx_has_vsx_region)
-> > -		    || __copy_to_user(&old_ctx->uc_sigmask,
-> > -				      &current->blocked, sizeof(sigset_t)))
-> > +		if (!user_write_access_begin(old_ctx, ctx_size))
-> >   			return -EFAULT;
-> > +
-> > +		unsafe_setup_sigcontext(&old_ctx->uc_mcontext, current, 0, NULL,
-> > +					0, ctx_has_vsx_region, efault_out);
-> > +		unsafe_copy_to_user(&old_ctx->uc_sigmask, &current->blocked,
-> > +				    sizeof(sigset_t), efault_out);
-> > +
-> > +		user_write_access_end();
-> >   	}
-> >   	if (new_ctx =3D=3D NULL)
-> >   		return 0;
-> > @@ -704,6 +713,10 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __use=
-r *, old_ctx,
-> >   	/* This returns like rt_sigreturn */
-> >   	set_thread_flag(TIF_RESTOREALL);
-> >   	return 0;
-> > +
-> > +efault_out:
-> > +	user_write_access_end();
-> > +	return -EFAULT;
-> >   }
-> >  =20
-> >  =20
-> > @@ -854,9 +867,13 @@ int handle_rt_signal64(struct ksignal *ksig, sigse=
-t_t *set,
-> >   	} else {
-> >   		err |=3D __put_user(0, &frame->uc.uc_link);
-> >   		prepare_setup_sigcontext(tsk);
-> > -		err |=3D setup_sigcontext(&frame->uc.uc_mcontext, tsk, ksig->sig,
-> > -					NULL, (unsigned long)ksig->ka.sa.sa_handler,
-> > -					1);
-> > +		if (!user_write_access_begin(&frame->uc.uc_mcontext,
-> > +					     sizeof(frame->uc.uc_mcontext)))
-> > +			return -EFAULT;
-> > +		err |=3D __unsafe_setup_sigcontext(&frame->uc.uc_mcontext, tsk,
-> > +						ksig->sig, NULL,
-> > +						(unsigned long)ksig->ka.sa.sa_handler, 1);
-> > +		user_write_access_end();
-> >   	}
-> >   	err |=3D __copy_to_user(&frame->uc.uc_sigmask, set, sizeof(*set));
-> >   	if (err)
-> >=20
+A core will tell the Cortex-M core sound format/rate/channel,
+where is the data buffer, what is the period size, when to start,
+when to stop and when suspend or resume happen, each of this behavior
+there is defined rpmsg command.
+
+Especially we designed the low power audio case, that is to
+allocate a large buffer and fill the data, then Cortex-A core can go
+to sleep mode, Cortex-M core continue to play the sound, when the
+buffer is consumed, Cortex-M core will trigger the Cortex-A core to
+wakeup to fill data.
+
+changes in v3:
+- add local refcount for clk enablement in hw_params()
+- update the document according Rob's comments
+
+changes in v2:
+- update codes and comments according to Mark's comments
+
+Shengjiu Wang (7):
+  ASoC: soc-component: Add snd_soc_pcm_component_ack
+  ASoC: fsl_rpmsg: Add CPU DAI driver for audio base on rpmsg
+  ASoC: dt-bindings: fsl_rpmsg: Add binding doc for rpmsg cpu dai driver
+  ASoC: imx-audio-rpmsg: Add rpmsg_driver for audio channel
+  ASoC: imx-pcm-rpmsg: Add platform driver for audio base on rpmsg
+  ASoC: imx-rpmsg: Add machine driver for audio base on rpmsg
+  ASoC: dt-bindings: imx-rpmsg: Add binding doc for rpmsg machine driver
+
+ .../devicetree/bindings/sound/fsl,rpmsg.yaml  |  94 ++
+ .../bindings/sound/imx-audio-rpmsg.yaml       |  55 ++
+ include/sound/soc-component.h                 |   3 +
+ sound/soc/fsl/Kconfig                         |  28 +
+ sound/soc/fsl/Makefile                        |   6 +
+ sound/soc/fsl/fsl_rpmsg.c                     | 261 +++++
+ sound/soc/fsl/fsl_rpmsg.h                     |  40 +
+ sound/soc/fsl/imx-audio-rpmsg.c               | 151 +++
+ sound/soc/fsl/imx-pcm-rpmsg.c                 | 919 ++++++++++++++++++
+ sound/soc/fsl/imx-pcm-rpmsg.h                 | 512 ++++++++++
+ sound/soc/fsl/imx-rpmsg.c                     | 148 +++
+ sound/soc/soc-component.c                     |  14 +
+ sound/soc/soc-pcm.c                           |   2 +
+ 13 files changed, 2233 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+ create mode 100644 Documentation/devicetree/bindings/sound/imx-audio-rpmsg.yaml
+ create mode 100644 sound/soc/fsl/fsl_rpmsg.c
+ create mode 100644 sound/soc/fsl/fsl_rpmsg.h
+ create mode 100644 sound/soc/fsl/imx-audio-rpmsg.c
+ create mode 100644 sound/soc/fsl/imx-pcm-rpmsg.c
+ create mode 100644 sound/soc/fsl/imx-pcm-rpmsg.h
+ create mode 100644 sound/soc/fsl/imx-rpmsg.c
+
+-- 
+2.27.0
 
