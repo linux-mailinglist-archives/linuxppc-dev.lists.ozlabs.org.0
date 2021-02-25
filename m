@@ -1,69 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6B332510A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 14:59:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CABBB325115
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 14:59:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmZCc0LbVz3d99
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 00:59:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmZD35bz5z3gXZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 00:59:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=EADf74ji;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=asJulepH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530;
- helo=mail-pg1-x530.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e;
+ helo=mail-pg1-x52e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=EADf74ji; dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
- [IPv6:2607:f8b0:4864:20::530])
+ header.s=20161025 header.b=asJulepH; dkim-atps=neutral
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
+ [IPv6:2607:f8b0:4864:20::52e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmYzJ6ydfz3cmr
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 00:48:44 +1100 (AEDT)
-Received: by mail-pg1-x530.google.com with SMTP id n10so3797709pgl.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 05:48:44 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmYzM5425z3dKD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 00:48:47 +1100 (AEDT)
+Received: by mail-pg1-x52e.google.com with SMTP id b21so3809392pgk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 05:48:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=nFaLjtbHvhG9RPsmAn2L9v8PlI/yIaIQI9IuG70b8yw=;
- b=EADf74jia1v+Dl6Sggk63dBVE/91g56OzdKAcCr7OH87ZEbwTUUsyIYSYtUebnuqut
- RYYC17/N81cipa9HgiuVssN//6TD3rDIDGN1irGlLuJ1m721pGVwnDW5wwwg1dFbp2Ol
- eWRpz6/s54aUApKSIGxi/DdNTFrEhtFzoMVWVUU4kDY4o34RAc0JhuP9BVP7TJOA88pW
- NDWGl5cSGpo8WPjtWxVGgM6/eclmiSBMj9hnAnoDD54m77l5KhxFk2yqCA2zNouz7JGW
- olbzgujULdHZzqDNwVsaXMY7UbfDDxokHWzIWz+0tKBEQGpIzzfN5HqLgUulHtuzhLKF
- wCdA==
+ bh=vNkKwEjppVpjoVv8a8mKAjNqn2HlCTwStuqi2y+CGmg=;
+ b=asJulepHZSVOSdggo9uHfye1fTDK1zueRgrbABTsssDO37MSKeJO7ZWp8elGRfeZOs
+ sG+HQx8JyJBNTAwP22o2e4121T4v1KeNSoZ0O/3ujFlFO/qdOsbgtst4rsxKpoqinofe
+ hkTV8dXVKeHpK1Sanf8tvbbffkKKwCo7BKqk2bK0r9N/06gQBEsEROJDIlL2n+EL7Y65
+ cQfVPTuW8Y4hn1SP01y9N1+GHEWM3bTPhe3RPLGm0ZehqJZN6RZmZq26+HEZVhb7QInb
+ SCh4e7eEzCoPNYo7PhhRgCAaq1dhfVOuM7Q2HdK4qPTdPDchZ6Gn5w9VGvJk5bjVhQ/6
+ UwOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=nFaLjtbHvhG9RPsmAn2L9v8PlI/yIaIQI9IuG70b8yw=;
- b=PtiKYITcYWrXNdDXledLGW3i+3JU1HadAlC28ioKl4Be9QCjJ9qB5x1zOgMw7sJXtU
- m/eyQOntgRzZeJmxfwqaBgvW5Lsin42p+vTslDbbq/cgWGEzAUMbWwq6+8z3c/qBANBQ
- 0BnqkcotRw4M/hVLXcrgAKkSutsW7Qr+Z/8XuX34Iqj8aEg1JaVThimhf9AoEez9Z1Gy
- yrqblQJYxJZL6g7Qw9v11oaA2ATTMaIke6cfkqZEUOFtlhOSSt5XYOhF+TMz6/yNwbec
- sDRw9piMSFFM+CxELdjKSaoOXWuW50UeJskm6Xx8fiXEi2bYTBEnpknRCaJ6fQ+QLQXH
- K/mQ==
-X-Gm-Message-State: AOAM533DYy42CLxVhhlXFDQpDcmL9sw7IuxHUwnppbTVW589fBqflnNe
- r9a03GVqFO8vZX1f2AXrlEQ=
-X-Google-Smtp-Source: ABdhPJwUbThXbDyvaI7aS0Fet3uIuMuLbgnDOCcKp5h4bhbUy/L5JdKF4Iq5km8L76+G2R6KN4SepA==
-X-Received: by 2002:a63:1c13:: with SMTP id c19mr2929117pgc.359.1614260922556; 
- Thu, 25 Feb 2021 05:48:42 -0800 (PST)
+ bh=vNkKwEjppVpjoVv8a8mKAjNqn2HlCTwStuqi2y+CGmg=;
+ b=RkwsNLWMeN0sPXs4hwG0Ia3Zz1iWlhOYRQz/cYB8np0XGwp6SnuIPQMCwY1UFebSfC
+ Y7L91bNziVIG/O9yqXHcJ13ZXcz85i8AP3N+MB2RU/WJpFlLScDMr0btWHPycKMMBNwe
+ kHjptUqkPi5CMEiVlWk76YQEd3+73xGddMMMgSO5W4F0gmjyd7ygZeaRBRiYO58uJuB8
+ +ii7TYshOXnKtrGvj7kVkjTZN9wPkDdWfydmkv0lPncfmcbpcAFGAtl1o1KqAdQaU5Dv
+ t4Zz5XlozhooskD2xj2u0ipvwM6aGX+6X3mVk6BpgeHaDVr1uAgbK2mjoiqqHOhkbTPh
+ Nb9w==
+X-Gm-Message-State: AOAM531g1OdBDvZi8NV9B5gdmB3t4c1QvfdQlcmH43GiDvaj4OEoL2s3
+ WlpOPYE7Tg+EMMH/wWMLDug=
+X-Google-Smtp-Source: ABdhPJxKrS0xPtgYriVmo2v7WcY6tXYRW+KROmQS6gb0W4TtCktzyAezdS7GFA3iXm/Nz90OiWrGvQ==
+X-Received: by 2002:a05:6a00:1e:b029:1ed:b82c:bb64 with SMTP id
+ h30-20020a056a00001eb02901edb82cbb64mr3297740pfk.78.1614260925647; 
+ Thu, 25 Feb 2021 05:48:45 -0800 (PST)
 Received: from bobo.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id a9sm5925868pjq.17.2021.02.25.05.48.39
+ by smtp.gmail.com with ESMTPSA id a9sm5925868pjq.17.2021.02.25.05.48.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Feb 2021 05:48:42 -0800 (PST)
+ Thu, 25 Feb 2021 05:48:45 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 29/37] KVM: PPC: Book3S HV P9: Switch to guest MMU context
- as late as possible
-Date: Thu, 25 Feb 2021 23:46:44 +1000
-Message-Id: <20210225134652.2127648-30-npiggin@gmail.com>
+Subject: [PATCH v2 30/37] KVM: PPC: Book3S HV: Implement radix prefetch
+ workaround by disabling MMU
+Date: Thu, 25 Feb 2021 23:46:45 +1000
+Message-Id: <20210225134652.2127648-31-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210225134652.2127648-1-npiggin@gmail.com>
 References: <20210225134652.2127648-1-npiggin@gmail.com>
@@ -85,97 +86,280 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move WARN_ON traps early so they are less likely to get tangled
-on CPU switching to guest. Move MMU context switch as late as
-reasonably possible to minimise code running with guest context
-switched in. This becomes more important when this code may run
-in real-mode, with later changes.
+Rather than partition the guest PID space and catch and flush a rogue
+guest, instead work around this issue by ensuring the MMU is always
+disabled in HV mode while the guest MMU context is switched in.
+
+This may be a bit less efficient, but it is a lot less complicated and
+allows the P9 path to trivally implement the workaround too. Newer CPUs
+are not subject to this issue.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv_interrupt.c | 40 +++++++++++++-------------
- arch/powerpc/kvm/book3s_hv_nested.c    |  1 +
- 2 files changed, 21 insertions(+), 20 deletions(-)
+ arch/powerpc/include/asm/mmu_context.h   |  6 ----
+ arch/powerpc/kvm/book3s_hv.c             | 10 ++++--
+ arch/powerpc/kvm/book3s_hv_interrupt.c   | 14 ++++++--
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S  | 34 ------------------
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 27 +++++---------
+ arch/powerpc/mm/book3s64/radix_tlb.c     | 46 ------------------------
+ arch/powerpc/mm/mmu_context.c            |  4 +--
+ 7 files changed, 28 insertions(+), 113 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+index 652ce85f9410..bb5c7e5e142e 100644
+--- a/arch/powerpc/include/asm/mmu_context.h
++++ b/arch/powerpc/include/asm/mmu_context.h
+@@ -122,12 +122,6 @@ static inline bool need_extra_context(struct mm_struct *mm, unsigned long ea)
+ }
+ #endif
+ 
+-#if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE) && defined(CONFIG_PPC_RADIX_MMU)
+-extern void radix_kvm_prefetch_workaround(struct mm_struct *mm);
+-#else
+-static inline void radix_kvm_prefetch_workaround(struct mm_struct *mm) { }
+-#endif
+-
+ extern void switch_cop(struct mm_struct *next);
+ extern int use_cop(unsigned long acop, struct mm_struct *mm);
+ extern void drop_cop(unsigned long acop, struct mm_struct *mm);
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index ad16331c3370..c3064075f1d7 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -806,6 +806,10 @@ static int kvmppc_h_set_mode(struct kvm_vcpu *vcpu, unsigned long mflags,
+ 		/* KVM does not support mflags=2 (AIL=2) */
+ 		if (mflags != 0 && mflags != 3)
+ 			return H_UNSUPPORTED_FLAG_START;
++		/* Prefetch bug */
++		if (cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG) &&
++				kvmhv_vcpu_is_radix(vcpu) && mflags == 3)
++			return H_UNSUPPORTED_FLAG_START;
+ 		return H_TOO_HARD;
+ 	default:
+ 		return H_TOO_HARD;
+@@ -4286,8 +4290,7 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
+ 		 * The TLB prefetch bug fixup is only in the kvmppc_run_vcpu
+ 		 * path, which also handles hash and dependent threads mode.
+ 		 */
+-		if (kvm->arch.threads_indep && kvm_is_radix(kvm) &&
+-		    !cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG))
++		if (kvm->arch.threads_indep && kvm_is_radix(kvm))
+ 			r = kvmhv_run_single_vcpu(vcpu, ~(u64)0,
+ 						  vcpu->arch.vcore->lpcr);
+ 		else
+@@ -4914,6 +4917,9 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
+ 		if (!indep_threads_mode && !cpu_has_feature(CPU_FTR_HVMODE)) {
+ 			pr_warn("KVM: Ignoring indep_threads_mode=N in nested hypervisor\n");
+ 			kvm->arch.threads_indep = true;
++		} else if (!indep_threads_mode && cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
++			pr_warn("KVM: Ignoring indep_threads_mode=N on pre-DD2.2 POWER9\n");
++			kvm->arch.threads_indep = true;
+ 		} else {
+ 			kvm->arch.threads_indep = indep_threads_mode;
+ 		}
 diff --git a/arch/powerpc/kvm/book3s_hv_interrupt.c b/arch/powerpc/kvm/book3s_hv_interrupt.c
-index dd0a78a69f49..b93d861d8538 100644
+index b93d861d8538..9784da3f8565 100644
 --- a/arch/powerpc/kvm/book3s_hv_interrupt.c
 +++ b/arch/powerpc/kvm/book3s_hv_interrupt.c
-@@ -143,8 +143,13 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 	if (hdec < 0)
- 		return BOOK3S_INTERRUPT_HV_DECREMENTER;
+@@ -223,6 +223,9 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
  
-+	WARN_ON_ONCE(vcpu->arch.shregs.msr & MSR_HV);
-+	WARN_ON_ONCE(!(vcpu->arch.shregs.msr & MSR_ME));
+ 	mtspr(SPRN_AMOR, ~0UL);
+ 
++	if (cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG))
++		__mtmsrd(msr & ~(MSR_IR|MSR_DR|MSR_RI), 0);
 +
- 	start_timing(vcpu, &vcpu->arch.rm_entry);
+ 	switch_mmu_to_guest_radix(kvm, vcpu, lpcr);
  
-+	vcpu->arch.ceded = 0;
-+
- 	if (vc->tb_offset) {
- 		u64 new_tb = tb + vc->tb_offset;
- 		mtspr(SPRN_TBU40, new_tb);
-@@ -193,26 +198,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 
- 	mtspr(SPRN_HFSCR, vcpu->arch.hfscr);
- 
--	mtspr(SPRN_SPRG0, vcpu->arch.shregs.sprg0);
--	mtspr(SPRN_SPRG1, vcpu->arch.shregs.sprg1);
--	mtspr(SPRN_SPRG2, vcpu->arch.shregs.sprg2);
--	mtspr(SPRN_SPRG3, vcpu->arch.shregs.sprg3);
--
--	mtspr(SPRN_AMOR, ~0UL);
--
--	switch_mmu_to_guest_radix(kvm, vcpu, lpcr);
--
--	/*
--	 * P9 suppresses the HDEC exception when LPCR[HDICE] = 0,
--	 * so set guest LPCR (with HDICE) before writing HDEC.
--	 */
--	mtspr(SPRN_HDEC, hdec);
--
--	vcpu->arch.ceded = 0;
--
--	WARN_ON_ONCE(vcpu->arch.shregs.msr & MSR_HV);
--	WARN_ON_ONCE(!(vcpu->arch.shregs.msr & MSR_ME));
--
- 	mtspr(SPRN_HSRR0, vcpu->arch.regs.nip);
- 	mtspr(SPRN_HSRR1, (vcpu->arch.shregs.msr & ~MSR_HV) | MSR_ME);
- 
-@@ -231,6 +216,21 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	/*
+@@ -231,7 +234,8 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
  	 */
- 	mtspr(SPRN_HDSISR, HDSISR_CANARY);
+ 	mtspr(SPRN_HDEC, hdec);
  
-+	mtspr(SPRN_SPRG0, vcpu->arch.shregs.sprg0);
-+	mtspr(SPRN_SPRG1, vcpu->arch.shregs.sprg1);
-+	mtspr(SPRN_SPRG2, vcpu->arch.shregs.sprg2);
-+	mtspr(SPRN_SPRG3, vcpu->arch.shregs.sprg3);
-+
-+	mtspr(SPRN_AMOR, ~0UL);
-+
-+	switch_mmu_to_guest_radix(kvm, vcpu, lpcr);
-+
-+	/*
-+	 * P9 suppresses the HDEC exception when LPCR[HDICE] = 0,
-+	 * so set guest LPCR (with HDICE) before writing HDEC.
-+	 */
-+	mtspr(SPRN_HDEC, hdec);
-+
- 	__mtmsrd(0, 1); /* clear RI */
+-	__mtmsrd(0, 1); /* clear RI */
++	if (!cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG))
++		__mtmsrd(0, 1); /* clear RI */
  
  	mtspr(SPRN_DAR, vcpu->arch.shregs.dar);
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 0cd0e7aad588..cdf3ee2145ab 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -323,6 +323,7 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
- 	vcpu->arch.shregs.msr = vcpu->arch.regs.msr;
- 	mask = LPCR_DPFD | LPCR_ILE | LPCR_TC | LPCR_AIL | LPCR_LD |
- 		LPCR_LPES | LPCR_MER;
-+	/* XXX: set lpcr in sanitise hv regs? Why is it plumbed through? */
- 	lpcr = (vc->lpcr & ~mask) | (l2_hv.lpcr & mask);
- 	sanitise_hv_regs(vcpu, &l2_hv);
- 	restore_hv_regs(vcpu, &l2_hv);
+ 	mtspr(SPRN_DSISR, vcpu->arch.shregs.dsisr);
+@@ -338,8 +342,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 
+ 	radix_clear_slb();
+ 
+-	__mtmsrd(msr, 0);
+-
+ 	accumulate_time(vcpu, &vcpu->arch.rm_exit);
+ 
+ 	/* Advance host PURR/SPURR by the amount used by guest */
+@@ -406,6 +408,12 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 
+ 	switch_mmu_to_host_radix(kvm, host_pidr);
+ 
++	/*
++	 * If we are in real mode, don't switch MMU on until the MMU is
++	 * switched to host, to avoid the P9 radix prefetch bug.
++	 */
++	__mtmsrd(msr, 0);
++
+ 	end_timing(vcpu);
+ 
+ 	return trap;
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index 6118e8a97ddd..61f71a7df238 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -1710,40 +1710,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+ 	eieio
+ 	tlbsync
+ 	ptesync
+-
+-BEGIN_FTR_SECTION
+-	/* Radix: Handle the case where the guest used an illegal PID */
+-	LOAD_REG_ADDR(r4, mmu_base_pid)
+-	lwz	r3, VCPU_GUEST_PID(r9)
+-	lwz	r5, 0(r4)
+-	cmpw	cr0,r3,r5
+-	blt	2f
+-
+-	/*
+-	 * Illegal PID, the HW might have prefetched and cached in the TLB
+-	 * some translations for the  LPID 0 / guest PID combination which
+-	 * Linux doesn't know about, so we need to flush that PID out of
+-	 * the TLB. First we need to set LPIDR to 0 so tlbiel applies to
+-	 * the right context.
+-	*/
+-	li	r0,0
+-	mtspr	SPRN_LPID,r0
+-	isync
+-
+-	/* Then do a congruence class local flush */
+-	ld	r6,VCPU_KVM(r9)
+-	lwz	r0,KVM_TLB_SETS(r6)
+-	mtctr	r0
+-	li	r7,0x400		/* IS field = 0b01 */
+-	ptesync
+-	sldi	r0,r3,32		/* RS has PID */
+-1:	PPC_TLBIEL(7,0,2,1,1)		/* RIC=2, PRS=1, R=1 */
+-	addi	r7,r7,0x1000
+-	bdnz	1b
+-	ptesync
+-END_FTR_SECTION_IFSET(CPU_FTR_P9_RADIX_PREFETCH_BUG)
+-
+-2:
+ #endif /* CONFIG_PPC_RADIX_MMU */
+ 
+ 	/*
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 98f0b243c1ab..1ea95891a79e 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -357,30 +357,19 @@ static void __init radix_init_pgtable(void)
+ 	}
+ 
+ 	/* Find out how many PID bits are supported */
+-	if (!cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
+-		if (!mmu_pid_bits)
+-			mmu_pid_bits = 20;
+-		mmu_base_pid = 1;
+-	} else if (cpu_has_feature(CPU_FTR_HVMODE)) {
+-		if (!mmu_pid_bits)
+-			mmu_pid_bits = 20;
+-#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
++	if (!cpu_has_feature(CPU_FTR_HVMODE) &&
++			cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
+ 		/*
+-		 * When KVM is possible, we only use the top half of the
+-		 * PID space to avoid collisions between host and guest PIDs
+-		 * which can cause problems due to prefetch when exiting the
+-		 * guest with AIL=3
++		 * Older versions of KVM on these machines perfer if the
++		 * guest only uses the low 19 PID bits.
+ 		 */
+-		mmu_base_pid = 1 << (mmu_pid_bits - 1);
+-#else
+-		mmu_base_pid = 1;
+-#endif
+-	} else {
+-		/* The guest uses the bottom half of the PID space */
+ 		if (!mmu_pid_bits)
+ 			mmu_pid_bits = 19;
+-		mmu_base_pid = 1;
++	} else {
++		if (!mmu_pid_bits)
++			mmu_pid_bits = 20;
+ 	}
++	mmu_base_pid = 1;
+ 
+ 	/*
+ 	 * Allocate Partition table and process table for the
+diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+index 409e61210789..312236a6b085 100644
+--- a/arch/powerpc/mm/book3s64/radix_tlb.c
++++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+@@ -1336,49 +1336,3 @@ void radix__flush_tlb_all(void)
+ 		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(0) : "memory");
+ 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+ }
+-
+-#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+-extern void radix_kvm_prefetch_workaround(struct mm_struct *mm)
+-{
+-	unsigned long pid = mm->context.id;
+-
+-	if (unlikely(pid == MMU_NO_CONTEXT))
+-		return;
+-
+-	if (!cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG))
+-		return;
+-
+-	/*
+-	 * If this context hasn't run on that CPU before and KVM is
+-	 * around, there's a slim chance that the guest on another
+-	 * CPU just brought in obsolete translation into the TLB of
+-	 * this CPU due to a bad prefetch using the guest PID on
+-	 * the way into the hypervisor.
+-	 *
+-	 * We work around this here. If KVM is possible, we check if
+-	 * any sibling thread is in KVM. If it is, the window may exist
+-	 * and thus we flush that PID from the core.
+-	 *
+-	 * A potential future improvement would be to mark which PIDs
+-	 * have never been used on the system and avoid it if the PID
+-	 * is new and the process has no other cpumask bit set.
+-	 */
+-	if (cpu_has_feature(CPU_FTR_HVMODE) && radix_enabled()) {
+-		int cpu = smp_processor_id();
+-		int sib = cpu_first_thread_sibling(cpu);
+-		bool flush = false;
+-
+-		for (; sib <= cpu_last_thread_sibling(cpu) && !flush; sib++) {
+-			if (sib == cpu)
+-				continue;
+-			if (!cpu_possible(sib))
+-				continue;
+-			if (paca_ptrs[sib]->kvm_hstate.kvm_vcpu)
+-				flush = true;
+-		}
+-		if (flush)
+-			_tlbiel_pid(pid, RIC_FLUSH_ALL);
+-	}
+-}
+-EXPORT_SYMBOL_GPL(radix_kvm_prefetch_workaround);
+-#endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
+index 18f20da0d348..7479d39976c9 100644
+--- a/arch/powerpc/mm/mmu_context.c
++++ b/arch/powerpc/mm/mmu_context.c
+@@ -81,9 +81,7 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
+ 	if (cpu_has_feature(CPU_FTR_ALTIVEC))
+ 		asm volatile ("dssall");
+ 
+-	if (new_on_cpu)
+-		radix_kvm_prefetch_workaround(next);
+-	else
++	if (!new_on_cpu)
+ 		membarrier_arch_switch_mm(prev, next, tsk);
+ 
+ 	/*
 -- 
 2.23.0
 
