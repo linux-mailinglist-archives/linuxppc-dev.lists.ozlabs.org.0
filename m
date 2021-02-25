@@ -2,79 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CF13257F2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 21:49:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CABA03257F4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 21:50:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmlK53GvRz3dDM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 07:49:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmlL55n3kz3dQR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 07:50:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pOW8XAtz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OG2GY0dt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=pOW8XAtz; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=OG2GY0dt; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmlHj5jC4z3cZn
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmlHk0HrKz3cZx
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 07:48:33 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 11PKYqB3088524; Thu, 25 Feb 2021 15:48:31 -0500
+ 11PKYrFS137177; Thu, 25 Feb 2021 15:48:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=rHXyDtHziGzaUQkCoKSeHk0dhXhxFPrOV3Zw+wNZyc0=;
- b=pOW8XAtzGoyzLTnKDqc9N/+o8tbdOpOQvXF14k4M8bcJUvvbUPWlggmjWuWGjZrNwYgw
- sDnlvefp2FJHSFU5h6dzCATR2TPCC64DZHTM98KhkPPW518WCl7eXtupl9LlDIdwkbxX
- Htj2pUJvyYF6irBgHLdWgBhBj6yP/jja8M+iEOAOlEheNMfJrvtOCVVeq93V+KGXrp33
- z/fE8+6tRWHXy1apDCPj+qwTqAPORJBZKw0drHbuiaMbMQwrY7i/sKi6e/CvfCFJmKri
- Vterd8It7P2eRiadsNTHp75FHqcddoglyLgK0wsevi/uJVzszVJg2TVuVQVe9iZ5eRC+ Gw== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36xjs0rtj6-1
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=3IT/tt0A/Rt/I15o1zV9S8xLTjI2UhF7KfP/c0y7sbU=;
+ b=OG2GY0dt1Q5m4mw7NJtQvjX8IDlaA0fGXIr6Ir56GEjDWUqc9+hIRClJX6kth8lavzrr
+ jxhiEHZDpwzNtcidQzRl7kDa/Jg/vgH0Ts6WH3jMseoc2tK3Zksxjcr/IOO07QfOSWq/
+ ZDTp82dzRexg2bXZDK4Swf6ZsFSub6d3knFrv1JSfwvUDTx2AJQm/zEWnVyE1UAqClC0
+ +o+T76l1olx8szmb8qGULVkbaYqHJfWzygZDe8rcyBYw18u7zrdmIu4BWM8YHciHyBhf
+ rjNSKI4iPQVvYnae6HqUEycNhipkUeeBVUr1kmNjbwIvXaGYSbjZ7dNziQmndi6RH3lV DA== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36xhw0tgeu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Feb 2021 15:48:31 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11PKkwIL029463;
- Thu, 25 Feb 2021 20:48:30 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02dal.us.ibm.com with ESMTP id 36tt2akwck-1
+ Thu, 25 Feb 2021 15:48:28 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11PKmCHI003426;
+ Thu, 25 Feb 2021 20:48:28 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04wdc.us.ibm.com with ESMTP id 36tt2a1h36-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Feb 2021 20:48:30 +0000
+ Thu, 25 Feb 2021 20:48:28 +0000
 Received: from b03ledav001.gho.boulder.ibm.com
  (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 11PKmSHq26280332
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11PKmQVG13697598
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Feb 2021 20:48:28 GMT
+ Thu, 25 Feb 2021 20:48:26 GMT
 Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B1A1D6E050;
- Thu, 25 Feb 2021 20:48:28 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id D08866E050;
+ Thu, 25 Feb 2021 20:48:26 +0000 (GMT)
 Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6503A6E054;
- Thu, 25 Feb 2021 20:48:28 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 78D8F6E04E;
+ Thu, 25 Feb 2021 20:48:26 +0000 (GMT)
 Received: from vios4361.aus.stglabs.ibm.com (unknown [9.3.43.61])
  by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 25 Feb 2021 20:48:28 +0000 (GMT)
+ Thu, 25 Feb 2021 20:48:26 +0000 (GMT)
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
 To: james.bottomley@hansenpartnership.com
-Subject: [PATCH v2 5/5] ibmvfc: reinitialize sub-CRQs and perform channel
- enquiry after LPM
-Date: Thu, 25 Feb 2021 14:48:24 -0600
-Message-Id: <20210225204824.14570-6-tyreld@linux.ibm.com>
+Subject: [PATCH v2 0/5] ibmvfc: hard reset fixes
+Date: Thu, 25 Feb 2021 14:48:19 -0600
+Message-Id: <20210225204824.14570-1-tyreld@linux.ibm.com>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210225204824.14570-1-tyreld@linux.ibm.com>
-References: <20210225204824.14570-1-tyreld@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
@@ -82,9 +78,9 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
  definitions=2021-02-25_11:2021-02-24,
  2021-02-25 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- mlxlogscore=999 impostorscore=0 lowpriorityscore=0 mlxscore=0 spamscore=0
- adultscore=0 bulkscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ clxscore=1015 mlxlogscore=866
+ malwarescore=0 impostorscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
+ suspectscore=0 phishscore=0 mlxscore=0 priorityscore=1501 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2102250158
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -105,54 +101,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A live partition migration (LPM) results in a CRQ disconnect similar to
-a hard reset. In this LPM case the hypervisor moslty perserves the CRQ
-transport such that it simply needs to be reenabled. However, the
-capabilities may have changed such as fewer channels, or no channels at
-all. Further, its possible that there may be sub-CRQ support, but no
-channel support. The CRQ reenable path currently doesn't take any of
-this into consideration.
+This series contains a minor simplification of ibmvfc_init_sub_crqs() followed
+by a couple fixes for sub-CRQ handling which effect hard reset of the
+client/host adapter CRQ pair.
 
-For simpilicty release and reinitialize sub-CRQs during reenable, and
-set do_enquiry and using_channels with the appropriate values to trigger
-channel renegotiation.
+changes in v2:
+* added Reviewed-by tags for patches 1-3
+* Patch 4: use rtas_busy_delay to test rc and delay correct amount of time
+* Patch 5: (new) similar fix for LPM case where CRQ pair needs re-enablement
 
-Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
----
- drivers/scsi/ibmvscsi/ibmvfc.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Tyrel Datwyler (5):
+  powerpc/pseries: extract host bridge from pci_bus prior to bus removal
+  ibmvfc: simplify handling of sub-CRQ initialization
+  ibmvfc: fix invalid sub-CRQ handles after hard reset
+  ibmvfc: treat H_CLOSED as success during sub-CRQ registration
+  ibmvfc: store return code of H_FREE_SUB_CRQ during cleanup
 
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index 4ac2c442e1e2..9ae6be56e375 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -903,6 +903,9 @@ static int ibmvfc_reenable_crq_queue(struct ibmvfc_host *vhost)
- {
- 	int rc = 0;
- 	struct vio_dev *vdev = to_vio_dev(vhost->dev);
-+	unsigned long flags;
-+
-+	ibmvfc_release_sub_crqs(vhost);
- 
- 	/* Re-enable the CRQ */
- 	do {
-@@ -914,6 +917,16 @@ static int ibmvfc_reenable_crq_queue(struct ibmvfc_host *vhost)
- 	if (rc)
- 		dev_err(vhost->dev, "Error enabling adapter (rc=%d)\n", rc);
- 
-+	spin_lock_irqsave(vhost->host->host_lock, flags);
-+	spin_lock(vhost->crq.q_lock);
-+	vhost->do_enquiry = 1;
-+	vhost->using_channels = 0;
-+
-+	ibmvfc_init_sub_crqs(vhost);
-+
-+	spin_unlock(vhost->crq.q_lock);
-+	spin_unlock_irqrestore(vhost->host->host_lock, flags);
-+
- 	return rc;
- }
- 
+ arch/powerpc/platforms/pseries/pci_dlpar.c |  4 +-
+ drivers/scsi/ibmvscsi/ibmvfc.c             | 49 ++++++++++------------
+ 2 files changed, 26 insertions(+), 27 deletions(-)
+
 -- 
 2.27.0
 
