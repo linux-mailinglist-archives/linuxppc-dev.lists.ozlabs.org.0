@@ -1,47 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F9432499B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 04:54:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A31324A69
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 07:09:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmJnn6GzHz3cjm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 14:54:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmMnh1YFpz3cjZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 17:09:44 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=K+4xpZJm;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codefail.de (client-ip=198.54.122.58;
- helo=mta-08-4.privateemail.com; envelope-from=cmr@codefail.de;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 35586 seconds by postgrey-1.36 at boromir;
- Thu, 25 Feb 2021 14:54:20 AEDT
-Received: from MTA-08-4.privateemail.com (mta-08-4.privateemail.com
- [198.54.122.58])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=K+4xpZJm; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmJnS6dJCz30QK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 14:54:19 +1100 (AEDT)
-Received: from MTA-08.privateemail.com (localhost [127.0.0.1])
- by MTA-08.privateemail.com (Postfix) with ESMTP id 4E32360087;
- Wed, 24 Feb 2021 22:54:16 -0500 (EST)
-Received: from localhost (unknown [10.20.151.235])
- by MTA-08.privateemail.com (Postfix) with ESMTPA id 175AA60080;
- Thu, 25 Feb 2021 03:54:16 +0000 (UTC)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Feb 2021 21:54:15 -0600
-Message-Id: <C9IB3H0UJ9RJ.2BX505RC7K5DQ@oc8246131445.ibm.com>
-Subject: Re: [PATCH v6 07/10] powerpc/signal64: Replace restore_sigcontext()
- w/ unsafe_restore_sigcontext()
-From: "Christopher M. Riedl" <cmr@codefail.de>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- <linuxppc-dev@lists.ozlabs.org>
-References: <20210221012401.22328-1-cmr@codefail.de>
- <20210221012401.22328-8-cmr@codefail.de>
- <67afcec9-6335-2bd5-938b-687ecb61bf3d@csgroup.eu>
-In-Reply-To: <67afcec9-6335-2bd5-938b-687ecb61bf3d@csgroup.eu>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmMnF2drBz30QD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 17:09:20 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 11P64BSS003479; Thu, 25 Feb 2021 01:09:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=8dL06oBDHYCje9bYWS5Rem0wcTfIqAwbRpVgC9rQgPE=;
+ b=K+4xpZJmW0/kHS/VEq0hPeJ16S6YptCVCAQmXpDw4gGCxPhODJNsXq86CBVLq6KViLjt
+ Mc+XqdJT+a72R6Q4QA8tTAWrlzssfeiDdmtEpB9gGvqB6jCQKRCIapEiXH0a+0MPMrMG
+ G2vHfgL57zo/BiWFdwDwhfDO2ZXyNXTnxxs5wEXAkLAuqghMGbo32nTxkK7mDqgT3NVg
+ Jsvp7RhpcQv38IasbuDiEsV+pXBmSoGFsQ9iqJHEnPkgCveducPnUqZldg6h4Ba9cjLs
+ nUjiv/8N1m/9KWLahCkSUs3FS+MkbHvUxAwAGf8akh94+vZxT9gNyPNSEN4BfGQiuuYQ HQ== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36wmfx0bja-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Feb 2021 01:09:15 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11P679R5007495;
+ Thu, 25 Feb 2021 06:09:13 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 36tt28c5sc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Feb 2021 06:09:13 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11P69BeE30409170
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 Feb 2021 06:09:11 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4459EA4051;
+ Thu, 25 Feb 2021 06:09:11 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A9CCFA404D;
+ Thu, 25 Feb 2021 06:09:10 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 25 Feb 2021 06:09:10 +0000 (GMT)
+Received: from intelligence.ibm.com (unknown [9.206.205.112])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 026F560242;
+ Thu, 25 Feb 2021 17:09:07 +1100 (AEDT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] docs: powerpc: Fix tables in syscall64-abi.rst
+Date: Thu, 25 Feb 2021 17:08:57 +1100
+Message-Id: <20210225060857.16083-1-ajd@linux.ibm.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-02-25_01:2021-02-24,
+ 2021-02-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ impostorscore=0 mlxlogscore=999 clxscore=1011 adultscore=0 malwarescore=0
+ lowpriorityscore=0 phishscore=0 mlxscore=0 spamscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102250052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,220 +99,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: mchehab+huawei@kernel.org, corbet@lwn.net, linux-doc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Feb 23, 2021 at 11:36 AM CST, Christophe Leroy wrote:
->
->
-> Le 21/02/2021 =C3=A0 02:23, Christopher M. Riedl a =C3=A9crit :
-> > Previously restore_sigcontext() performed a costly KUAP switch on every
-> > uaccess operation. These repeated uaccess switches cause a significant
-> > drop in signal handling performance.
-> >=20
-> > Rewrite restore_sigcontext() to assume that a userspace read access
-> > window is open by replacing all uaccess functions with their 'unsafe'
-> > versions. Modify the callers to first open, call
-> > unsafe_restore_sigcontext(), and then close the uaccess window.
-> >=20
-> > Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
-> > ---
-> >   arch/powerpc/kernel/signal_64.c | 68 ++++++++++++++++++++------------=
+Commit 209b44c804c ("docs: powerpc: syscall64-abi.rst: fix a malformed
+table") attempted to fix the formatting of tables in syscall64-abi.rst, but
+inadvertently changed some register names.
+
+Redo the tables with the correct register names, and while we're here,
+clean things up to separate the registers into different rows and add
+headings.
+
+Fixes: 209b44c804c ("docs: powerpc: syscall64-abi.rst: fix a malformed table")
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+---
+ Documentation/powerpc/syscall64-abi.rst | 51 ++++++++++++++++---------
+ 1 file changed, 32 insertions(+), 19 deletions(-)
+
+diff --git a/Documentation/powerpc/syscall64-abi.rst b/Documentation/powerpc/syscall64-abi.rst
+index cf9b2857c72a..dabee3729e5a 100644
+--- a/Documentation/powerpc/syscall64-abi.rst
++++ b/Documentation/powerpc/syscall64-abi.rst
+@@ -46,25 +46,38 @@ stack frame LR and CR save fields are not used.
+ 
+ Register preservation rules
+ ---------------------------
+-Register preservation rules match the ELF ABI calling sequence with the
+-following differences:
 -
-> >   1 file changed, 41 insertions(+), 27 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/sign=
-al_64.c
-> > index 3faaa736ed62..76b525261f61 100644
-> > --- a/arch/powerpc/kernel/signal_64.c
-> > +++ b/arch/powerpc/kernel/signal_64.c
-> > @@ -326,14 +326,14 @@ static long setup_tm_sigcontexts(struct sigcontex=
-t __user *sc,
-> >   /*
-> >    * Restore the sigcontext from the signal frame.
-> >    */
-> > -
-> > -static long restore_sigcontext(struct task_struct *tsk, sigset_t *set,=
- int sig,
-> > -			      struct sigcontext __user *sc)
-> > +#define unsafe_restore_sigcontext(tsk, set, sig, sc, e) \
-> > +	unsafe_op_wrap(__unsafe_restore_sigcontext(tsk, set, sig, sc), e)
->
-> unsafe_op_wrap() was not initially meant to be used outside of uaccess.h
->
-> In the begining, it has been copied from include/linux/uaccess.h and was
-> used
-> for unsafe_put_user(), unsafe_get_user() and unsafe_copy_to_user().
-> After other changes, only
-> unsafe_get_user() is still using it and I'm going to drop
-> unsafe_op_wrap() soon.
->
-> I'd prefer if you can do the same as unsafe_save_general_regs() and
-> others in signal_32.c
-
-Sounds good, will change this in the next version (and also the wrapper
-around unsafe_setup_sigcontext()).
-
->
-> > +static long notrace __unsafe_restore_sigcontext(struct task_struct *ts=
-k, sigset_t *set,
-> > +						int sig, struct sigcontext __user *sc)
-> >   {
-> >   #ifdef CONFIG_ALTIVEC
-> >   	elf_vrreg_t __user *v_regs;
-> >   #endif
-> > -	unsigned long err =3D 0;
-> >   	unsigned long save_r13 =3D 0;
-> >   	unsigned long msr;
-> >   	struct pt_regs *regs =3D tsk->thread.regs;
-> > @@ -348,27 +348,28 @@ static long restore_sigcontext(struct task_struct=
- *tsk, sigset_t *set, int sig,
-> >   		save_r13 =3D regs->gpr[13];
-> >  =20
-> >   	/* copy the GPRs */
-> > -	err |=3D __copy_from_user(regs->gpr, sc->gp_regs, sizeof(regs->gpr));
-> > -	err |=3D __get_user(regs->nip, &sc->gp_regs[PT_NIP]);
-> > +	unsafe_copy_from_user(regs->gpr, sc->gp_regs, sizeof(regs->gpr),
-> > +			      efault_out);
->
-> I think it would be better to keep the above on a single line for
-> readability.
-> Nowadays we tolerate 100 chars lines for cases like this one.
-
-Ok, changed this (and the line you mention further below) in the next
-version.
-
->
-> > +	unsafe_get_user(regs->nip, &sc->gp_regs[PT_NIP], efault_out);
-> >   	/* get MSR separately, transfer the LE bit if doing signal return */
-> > -	err |=3D __get_user(msr, &sc->gp_regs[PT_MSR]);
-> > +	unsafe_get_user(msr, &sc->gp_regs[PT_MSR], efault_out);
-> >   	if (sig)
-> >   		regs->msr =3D (regs->msr & ~MSR_LE) | (msr & MSR_LE);
-> > -	err |=3D __get_user(regs->orig_gpr3, &sc->gp_regs[PT_ORIG_R3]);
-> > -	err |=3D __get_user(regs->ctr, &sc->gp_regs[PT_CTR]);
-> > -	err |=3D __get_user(regs->link, &sc->gp_regs[PT_LNK]);
-> > -	err |=3D __get_user(regs->xer, &sc->gp_regs[PT_XER]);
-> > -	err |=3D __get_user(regs->ccr, &sc->gp_regs[PT_CCR]);
-> > +	unsafe_get_user(regs->orig_gpr3, &sc->gp_regs[PT_ORIG_R3], efault_out=
-);
-> > +	unsafe_get_user(regs->ctr, &sc->gp_regs[PT_CTR], efault_out);
-> > +	unsafe_get_user(regs->link, &sc->gp_regs[PT_LNK], efault_out);
-> > +	unsafe_get_user(regs->xer, &sc->gp_regs[PT_XER], efault_out);
-> > +	unsafe_get_user(regs->ccr, &sc->gp_regs[PT_CCR], efault_out);
-> >   	/* Don't allow userspace to set SOFTE */
-> >   	set_trap_norestart(regs);
-> > -	err |=3D __get_user(regs->dar, &sc->gp_regs[PT_DAR]);
-> > -	err |=3D __get_user(regs->dsisr, &sc->gp_regs[PT_DSISR]);
-> > -	err |=3D __get_user(regs->result, &sc->gp_regs[PT_RESULT]);
-> > +	unsafe_get_user(regs->dar, &sc->gp_regs[PT_DAR], efault_out);
-> > +	unsafe_get_user(regs->dsisr, &sc->gp_regs[PT_DSISR], efault_out);
-> > +	unsafe_get_user(regs->result, &sc->gp_regs[PT_RESULT], efault_out);
-> >  =20
-> >   	if (!sig)
-> >   		regs->gpr[13] =3D save_r13;
-> >   	if (set !=3D NULL)
-> > -		err |=3D  __get_user(set->sig[0], &sc->oldmask);
-> > +		unsafe_get_user(set->sig[0], &sc->oldmask, efault_out);
-> >  =20
-> >   	/*
-> >   	 * Force reload of FP/VEC.
-> > @@ -378,29 +379,28 @@ static long restore_sigcontext(struct task_struct=
- *tsk, sigset_t *set, int sig,
-> >   	regs->msr &=3D ~(MSR_FP | MSR_FE0 | MSR_FE1 | MSR_VEC | MSR_VSX);
-> >  =20
-> >   #ifdef CONFIG_ALTIVEC
-> > -	err |=3D __get_user(v_regs, &sc->v_regs);
-> > -	if (err)
-> > -		return err;
-> > +	unsafe_get_user(v_regs, &sc->v_regs, efault_out);
-> >   	if (v_regs && !access_ok(v_regs, 34 * sizeof(vector128)))
-> >   		return -EFAULT;
-> >   	/* Copy 33 vec registers (vr0..31 and vscr) from the stack */
-> >   	if (v_regs !=3D NULL && (msr & MSR_VEC) !=3D 0) {
-> > -		err |=3D __copy_from_user(&tsk->thread.vr_state, v_regs,
-> > -					33 * sizeof(vector128));
-> > +		unsafe_copy_from_user(&tsk->thread.vr_state, v_regs,
-> > +				      33 * sizeof(vector128), efault_out);
-> >   		tsk->thread.used_vr =3D true;
-> >   	} else if (tsk->thread.used_vr) {
-> >   		memset(&tsk->thread.vr_state, 0, 33 * sizeof(vector128));
-> >   	}
-> >   	/* Always get VRSAVE back */
-> >   	if (v_regs !=3D NULL)
-> > -		err |=3D __get_user(tsk->thread.vrsave, (u32 __user *)&v_regs[33]);
-> > +		unsafe_get_user(tsk->thread.vrsave, (u32 __user *)&v_regs[33],
-> > +				efault_out);
->
-> Same, would be better on a single line I think.
->
-> >   	else
-> >   		tsk->thread.vrsave =3D 0;
-> >   	if (cpu_has_feature(CPU_FTR_ALTIVEC))
-> >   		mtspr(SPRN_VRSAVE, tsk->thread.vrsave);
-> >   #endif /* CONFIG_ALTIVEC */
-> >   	/* restore floating point */
-> > -	err |=3D copy_fpr_from_user(tsk, &sc->fp_regs);
-> > +	unsafe_copy_fpr_from_user(tsk, &sc->fp_regs, efault_out);
-> >   #ifdef CONFIG_VSX
-> >   	/*
-> >   	 * Get additional VSX data. Update v_regs to point after the
-> > @@ -409,14 +409,17 @@ static long restore_sigcontext(struct task_struct=
- *tsk, sigset_t *set, int sig,
-> >   	 */
-> >   	v_regs +=3D ELF_NVRREG;
-> >   	if ((msr & MSR_VSX) !=3D 0) {
-> > -		err |=3D copy_vsx_from_user(tsk, v_regs);
-> > +		unsafe_copy_vsx_from_user(tsk, v_regs, efault_out);
-> >   		tsk->thread.used_vsr =3D true;
-> >   	} else {
-> >   		for (i =3D 0; i < 32 ; i++)
-> >   			tsk->thread.fp_state.fpr[i][TS_VSRLOWOFFSET] =3D 0;
-> >   	}
-> >   #endif
-> > -	return err;
-> > +	return 0;
-> > +
-> > +efault_out:
-> > +	return -EFAULT;
-> >   }
-> >  =20
-> >   #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-> > @@ -707,8 +710,14 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __use=
-r *, old_ctx,
-> >   	if (__copy_from_user(&set, &new_ctx->uc_sigmask, sizeof(set)))
-> >   		do_exit(SIGSEGV);
-> >   	set_current_blocked(&set);
-> > -	if (restore_sigcontext(current, NULL, 0, &new_ctx->uc_mcontext))
-> > +
-> > +	if (!user_read_access_begin(new_ctx, ctx_size))
-> > +		return -EFAULT;
-> > +	if (__unsafe_restore_sigcontext(current, NULL, 0, &new_ctx->uc_mconte=
-xt)) {
-> > +		user_read_access_end();
-> >   		do_exit(SIGSEGV);
-> > +	}
-> > +	user_read_access_end();
-> >  =20
-> >   	/* This returns like rt_sigreturn */
-> >   	set_thread_flag(TIF_RESTOREALL);
-> > @@ -811,8 +820,13 @@ SYSCALL_DEFINE0(rt_sigreturn)
-> >   		 * causing a TM bad thing.
-> >   		 */
-> >   		current->thread.regs->msr &=3D ~MSR_TS_MASK;
-> > -		if (restore_sigcontext(current, NULL, 1, &uc->uc_mcontext))
-> > +		if (!user_read_access_begin(&uc->uc_mcontext, sizeof(uc->uc_mcontext=
-)))
-> > +			return -EFAULT;
-> > +		if (__unsafe_restore_sigcontext(current, NULL, 1, &uc->uc_mcontext))=
- {
-> > +			user_read_access_end();
-> >   			goto badframe;
-> > +		}
-> > +		user_read_access_end();
-> >   	}
-> >  =20
-> >   	if (restore_altstack(&uc->uc_stack))
-> >=20
+-+------------------------------------------------------------------------+
+-|        For the sc instruction, differences with the ELF ABI		 |
+-+--------------+--------------+------------------------------------------+
+-| r0           | Volatile     | (System call number.)			 |
+-| rr3          | Volatile     | (Parameter 1, and return value.)	 |
+-| rr4-r8       | Volatile     | (Parameters 2-6.)			 |
+-| rcr0         | Volatile     | (cr0.SO is the return error condition.)	 |
+-| rcr1, cr5-7  | Nonvolatile  |						 |
+-| rlr          | Nonvolatile  |						 |
+-+--------------+--------------+------------------------------------------+
+-|      For the scv 0 instruction, differences with the ELF ABI		 |
+-+--------------+--------------+------------------------------------------+
+-| r0           | Volatile     | (System call number.)			 |
+-| r3           | Volatile     | (Parameter 1, and return value.)	 |
+-| r4-r8        | Volatile     | (Parameters 2-6.)			 |
+-+--------------+--------------+------------------------------------------+
++Register preservation rules match the ELF ABI calling sequence with some
++differences.
++
++For the sc instruction, the differences from the ELF ABI are as follows:
++
+++--------------+--------------------+-----------------------------------------+
++| Register     | Preservation Rules | Purpose                                 |
+++==============+====================+=========================================+
++| r0           | Volatile           | (System call number.)                   |
+++--------------+--------------------+-----------------------------------------+
++| r3           | Volatile           | (Parameter 1, and return value.)        |
+++--------------+--------------------+-----------------------------------------+
++| r4-r8        | Volatile           | (Parameters 2-6.)                       |
+++--------------+--------------------+-----------------------------------------+
++| cr0          | Volatile           | (cr0.SO is the return error condition.) |
+++--------------+--------------------+-----------------------------------------+
++| cr1, cr5-7   | Nonvolatile        |                                         |
+++--------------+--------------------+-----------------------------------------+
++| lr           | Nonvolatile        |                                         |
+++--------------+--------------------+-----------------------------------------+
++
++For the scv 0 instruction, the differences from the ELF ABI are as follows:
++
+++--------------+--------------------+-----------------------------------------+
++| Register     | Preservation Rules | Purpose                                 |
+++==============+====================+=========================================+
++| r0           | Volatile           | (System call number.)                   |
+++--------------+--------------------+-----------------------------------------+
++| r3           | Volatile           | (Parameter 1, and return value.)        |
+++--------------+--------------------+-----------------------------------------+
++| r4-r8        | Volatile           | (Parameters 2-6.)                       |
+++--------------+--------------------+-----------------------------------------+
+ 
+ All floating point and vector data registers as well as control and status
+ registers are nonvolatile.
+-- 
+2.20.1
 
