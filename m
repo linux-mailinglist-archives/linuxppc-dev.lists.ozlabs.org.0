@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729CE3254D5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 18:52:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13EB3254CF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 18:52:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmgNy2x4Gz3dZc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 04:52:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmgNc5mNBz3dV8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 04:52:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,39 +15,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmgLV25qsz3cbj
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmgLV25QWz3cbh
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 04:50:42 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DmgLK5ypCz9v1B5;
- Thu, 25 Feb 2021 18:50:33 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DmgLM0LRyz9v1B6;
+ Thu, 25 Feb 2021 18:50:35 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Z9Pb4fbjnuJQ; Thu, 25 Feb 2021 18:50:33 +0100 (CET)
+ with ESMTP id 723zQETBnfLL; Thu, 25 Feb 2021 18:50:34 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DmgLK3p0zz9v19y;
- Thu, 25 Feb 2021 18:50:33 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DmgLL5YzZz9v19y;
+ Thu, 25 Feb 2021 18:50:34 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5BA528B895;
- Thu, 25 Feb 2021 18:50:35 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 66C3E8B895;
+ Thu, 25 Feb 2021 18:50:36 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id I9ck2BO1wRgn; Thu, 25 Feb 2021 18:50:35 +0100 (CET)
+ with ESMTP id v_z03NBZXZdX; Thu, 25 Feb 2021 18:50:36 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A1758B88B;
- Thu, 25 Feb 2021 18:50:35 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 30D018B88B;
+ Thu, 25 Feb 2021 18:50:36 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 04CD167442; Thu, 25 Feb 2021 17:50:35 +0000 (UTC)
-Message-Id: <66b96f8a598b2835855a0ae26ff47bcfff448e9c.1614275314.git.christophe.leroy@csgroup.eu>
+ id 0C40667442; Thu, 25 Feb 2021 17:50:36 +0000 (UTC)
+Message-Id: <f26059443f3ded51abfe0a5c982b17b5d49341cf.1614275314.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1614275314.git.christophe.leroy@csgroup.eu>
 References: <cover.1614275314.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v1 05/15] powerpc/align: Don't use __get_user_instr() on
- kernel addresses
+Subject: [PATCH v1 06/15] powerpc/uaccess: Call might_fault() inconditionaly
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 25 Feb 2021 17:50:35 +0000 (UTC)
+Date: Thu, 25 Feb 2021 17:50:36 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,41 +63,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the old days, when we didn't have kernel userspace access
-protection and had set_fs(), it was wise to use __get_user()
-and friends to read kernel memory.
+Commit 6bfd93c32a50 ("powerpc: Fix incorrect might_sleep in
+__get_user/__put_user on kernel addresses") added a check to not call
+might_sleep() on kernel addresses. This was to enable the use of
+__get_user() in the alignment exception handler for any address.
 
-Nowadays, get_user() is granting userspace access and is exclusively
-for userspace access.
+Then commit 95156f0051cb ("lockdep, mm: fix might_fault() annotation")
+added a check of the address space in might_fault(), based on
+set_fs() logic. But this didn't solve the powerpc alignment exception
+case as it didn't call set_fs(KERNEL_DS).
 
-In alignment exception handler, use probe_kernel_read_inst()
-instead of __get_user_instr() for reading instructions in kernel.
+Nowadays, set_fs() is gone, previous patch fixed the alignment
+exception handler and __get_user/__put_user are not supposed to be
+used anymore to read kernel memory.
 
-This will allow to remove the is_kernel_addr() check in
-__get/put_user() in a following patch.
+Therefore the is_kernel_addr() check has become useless and can be
+removed.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/align.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/uaccess.h | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
-index 83b199026a1e..55e262627b53 100644
---- a/arch/powerpc/kernel/align.c
-+++ b/arch/powerpc/kernel/align.c
-@@ -305,7 +305,11 @@ int fix_alignment(struct pt_regs *regs)
- 	 */
- 	CHECK_FULL_REGS(regs);
- 
--	if (unlikely(__get_user_instr(instr, (void __user *)regs->nip)))
-+	if (is_kernel_addr(regs->nip))
-+		r = probe_kernel_read_inst(&instr, (void *)regs->nip);
-+	else
-+		r = __get_user_instr(instr, (void __user *)regs->nip);
-+	if (unlikely(r))
- 		return -EFAULT;
- 	if ((regs->msr & MSR_LE) != (MSR_KERNEL & MSR_LE)) {
- 		/* We don't handle PPC little-endian any more... */
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index eaa828a6a419..c4bbc64758a0 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -77,8 +77,7 @@ __pu_failed:							\
+ 	__typeof__(*(ptr)) __pu_val = (x);			\
+ 	__typeof__(size) __pu_size = (size);			\
+ 								\
+-	if (!is_kernel_addr((unsigned long)__pu_addr))		\
+-		might_fault();					\
++	might_fault();						\
+ 	__chk_user_ptr(__pu_addr);				\
+ 	__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err);	\
+ 								\
+@@ -238,12 +237,12 @@ do {								\
+ 	__typeof__(size) __gu_size = (size);			\
+ 								\
+ 	__chk_user_ptr(__gu_addr);				\
+-	if (do_allow && !is_kernel_addr((unsigned long)__gu_addr)) \
++	if (do_allow) {								\
+ 		might_fault();					\
+-	if (do_allow)								\
+ 		__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err);	\
+-	else									\
++	} else {									\
+ 		__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err); \
++	}									\
+ 	(x) = (__typeof__(*(ptr)))__gu_val;			\
+ 								\
+ 	__gu_err;						\
 -- 
 2.25.0
 
