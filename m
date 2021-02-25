@@ -1,71 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6443324A7D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 07:20:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 581C0324A9F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 07:40:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmN216jwTz3cch
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 17:20:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmNSm13jBz3ccL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Feb 2021 17:40:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=hJLZ1hic;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NYqsdxb7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::42e;
- helo=mail-pf1-x42e.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=hJLZ1hic; dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
- [IPv6:2607:f8b0:4864:20::42e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=NYqsdxb7; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmN1Z1jLtz30Qk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 17:19:59 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id r5so2903171pfh.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Feb 2021 22:19:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=pJhYswlu21mX3d9RmmMi0LSudEgv8eUU4kMgRtxiQ3o=;
- b=hJLZ1hicHcjTu9QnPIGROx2A8IgjeCGMSq/ltZ8ZD8BdqHvCPK5hiK9qkR1Uffbf71
- 8X02FeGzvzLNRL6K0YZUAxf92qK6cVy8CnPaOpEWXDSA+XzajkTg1DlHBi1U+aakrECv
- 2/OWCEqvbJ4XozLZRc0S6BrDE7ckZrUbEM4vI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=pJhYswlu21mX3d9RmmMi0LSudEgv8eUU4kMgRtxiQ3o=;
- b=myJGP/gmOSmZhs8TFv5WZ6b4FR02Ur/BnVzCVb5ng7psK7gt9Eb+gOL3g+wdaZJMLn
- FC5FVohy6wP2vT0frEQnhGe2A4GyYObErnesqqFoVvrAws6SPhNWmZL+56Pq/zheuBQx
- F4B9Pe7MrqSCrRCjNO4umjmqduCsOrtcvl9IhYccRi6JNPEnCI4YZkghMftVGnnq9fEw
- 82wgFsX4uMqv6/YpcjO/f+TIHfT89Bkd1BOQbbt3wWkUv5flETRns7azUD1zRDRq7RT4
- HvATlqnsk12zr8X1C15VUjuRsk5KF3ZunWle1UdUcdeECOE7hAJMHWU4R17koKuKaEtO
- mxjw==
-X-Gm-Message-State: AOAM531CabG2jq1TyxBJfkLc1d10e7DcHURtK4C/6cYoDGe1SQKZ0BcU
- t3rebthn+OUVbjksNu5+nPeb4dW+w7pu7cpI
-X-Google-Smtp-Source: ABdhPJx+qVbzNiIi2VlKk5EuJFzoaoCqYz6hIraPqca2YI07Di8kWYAzXkJcYb46pYu6xEEMPAGGRQ==
-X-Received: by 2002:a62:7d8a:0:b029:1ed:7164:291 with SMTP id
- y132-20020a627d8a0000b02901ed71640291mr1780625pfc.65.1614233994115; 
- Wed, 24 Feb 2021 22:19:54 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-6e65-7e50-8dac-f7ef.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:6e65:7e50:8dac:f7ef])
- by smtp.gmail.com with ESMTPSA id e12sm4814473pjj.23.2021.02.24.22.19.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Feb 2021 22:19:53 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] selftests/powerpc: Add uaccess flush test
-Date: Thu, 25 Feb 2021 17:19:49 +1100
-Message-Id: <20210225061949.1213404-1-dja@axtens.net>
-X-Mailer: git-send-email 2.27.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DmNSG1GKnz30Qn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 17:39:41 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 11P6XkqN030121; Thu, 25 Feb 2021 01:39:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=hjUxqf7nEi7fhb5f9+fhBMl0iVly077eH52B28q5eso=;
+ b=NYqsdxb7khviaMnBFCfKWQ+ocL/WqmWctTPVzkxlNxCpIJnk/Dkm8JBouxsjpTkLnGy8
+ EDapdPhUEwxSrdz8UEdpxdGe8sA6cE/flwONKGfzCjLqo+dY36ElxVkThzlZa2mys89r
+ 56OP6fVfe4mfOINTnYYFOG8Y7WMO6hHsb3xekgL8Sc8DaBeE0smfcX4QQC/QrRrEJn+X
+ nq1SiYv+d9ZICws9YVhDw/6hNKBb/idXbZGamNjMz0fk2ag8KgLOjDZ8g334l79gjfZo
+ l+UwMsnZeD7n3C6OgFnYaK3y2EawsdqztIVBs+1tXgATSdx8JEu9diVLtQiymX8ERmJt rw== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 36wvsf7sys-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Feb 2021 01:39:33 -0500
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11P6RN3u023159;
+ Thu, 25 Feb 2021 06:39:31 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma01fra.de.ibm.com with ESMTP id 36tt28a6gs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Feb 2021 06:39:31 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11P6dTu427590972
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 Feb 2021 06:39:29 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0898F4C05C;
+ Thu, 25 Feb 2021 06:39:29 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5CEDC4C040;
+ Thu, 25 Feb 2021 06:39:24 +0000 (GMT)
+Received: from Madhavan.PrimaryTP (unknown [9.85.193.159])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 25 Feb 2021 06:39:24 +0000 (GMT)
+Subject: Re: [PATCH 1/2] powerpc/perf: Infrastructure to support checking of
+ attr.config*
+To: "Paul A. Clarke" <pc@us.ibm.com>
+References: <20210224142840.1170088-1-maddy@linux.ibm.com>
+ <20210224144758.GA566251@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+Message-ID: <6ce2cd93-f3c6-0389-2acb-ae1a32b68c14@linux.ibm.com>
+Date: Thu, 25 Feb 2021 12:09:21 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210224144758.GA566251@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-02-25_01:2021-02-24,
+ 2021-02-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ mlxlogscore=999 mlxscore=0 suspectscore=0 phishscore=0 impostorscore=0
+ clxscore=1015 bulkscore=0 spamscore=0 adultscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102250055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,262 +102,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
- Daniel Axtens <dja@axtens.net>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
 
-Also based on the RFI and entry flush tests, it counts the L1D misses
-by doing a syscall that does user access: uname, in this case.
+On 2/24/21 8:17 PM, Paul A. Clarke wrote:
+> On Wed, Feb 24, 2021 at 07:58:39PM +0530, Madhavan Srinivasan wrote:
+>> Introduce code to support the checking of attr.config* for
+>> values which are reserved for a given platform.
+>> Performance Monitoring Unit (PMU) configuration registers
+>> have fileds that are reserved and specific values to bit fields
+> s/fileds/fields/
+>
+>> as reserved. Writing a none zero values in these fields
+> Should the previous sentences say something like "required values
+> for specific bit fields" or "specific bit fields that are reserved"?
+>
+> s/none zero/non-zero/
+>
+>> or writing invalid value to bit fields will have unknown
+>> behaviours.
+>>
+>> Patch here add a generic call-back function "check_attr_config"
+> s/add/adds/ or "This patch adds ..." or just "Add ...".
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-[dja: forward port, rename function]
-Signed-off-by: Daniel Axtens <dja@axtens.net>
 
----
+Thanks for the review. Will fix it.
 
-This applies on top of Russell's change to use better constants:
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210223070227.2916871-1-ruscur@russell.cc/
 
-It's possible that we could share some more code between the tests, but
-it hardly seems worth it.
----
- .../selftests/powerpc/security/Makefile       |   3 +-
- .../selftests/powerpc/security/flush_utils.c  |  13 ++
- .../selftests/powerpc/security/flush_utils.h  |   3 +
- .../powerpc/security/uaccess_flush.c          | 158 ++++++++++++++++++
- 4 files changed, 176 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/security/uaccess_flush.c
+>
+>> in "struct power_pmu", to be called in event_init to
+>> check for attr.config* values for a given platform.
+>> "check_attr_config" is valid only for raw event type.
+>>
+>> Suggested-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+>> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> ---
+>>   arch/powerpc/include/asm/perf_event_server.h |  6 ++++++
+>>   arch/powerpc/perf/core-book3s.c              | 12 ++++++++++++
+>>   2 files changed, 18 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
+>> index 00e7e671bb4b..dde97d7d9253 100644
+>> --- a/arch/powerpc/include/asm/perf_event_server.h
+>> +++ b/arch/powerpc/include/asm/perf_event_server.h
+>> @@ -67,6 +67,12 @@ struct power_pmu {
+>>   	 * the pmu supports extended perf regs capability
+>>   	 */
+>>   	int		capabilities;
+>> +	/*
+>> +	 * Function to check event code for values which are
+>> +	 * reserved. Function takes struct perf_event as input,
+>> +	 * since event code could be spread in attr.config*
+>> +	 */
+>> +	int		(*check_attr_config)(struct perf_event *ev);
+>>   };
+>>
+>>   /*
+>> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+>> index 6817331e22ff..679d67506299 100644
+>> --- a/arch/powerpc/perf/core-book3s.c
+>> +++ b/arch/powerpc/perf/core-book3s.c
+>> @@ -1958,6 +1958,18 @@ static int power_pmu_event_init(struct perf_event *event)
+>>
+>>   		if (ppmu->blacklist_ev && is_event_blacklisted(ev))
+>>   			return -EINVAL;
+>> +		/*
+>> +		 * PMU config registers have fileds that are
+>> +		 * reserved and spacific values to bit fileds be reserved.
+> s/spacific/specific/
+> s/fileds/fields/
+> Same comment about "specific values to bit fields be reserved", and
+> rewording that to be more clear.
+>
+>> +		 * This call-back will check the event code for same.
+>> +		 *
+>> +		 * Event type hardware and hw_cache will not value
+>> +		 * invalid values in the event code which is not true
+>> +		 * for raw event type.
+> I confess I don't understand what this means. (But it could be just me!)
 
-diff --git a/tools/testing/selftests/powerpc/security/Makefile b/tools/testing/selftests/powerpc/security/Makefile
-index f25e854fe370..844d18cd5f93 100644
---- a/tools/testing/selftests/powerpc/security/Makefile
-+++ b/tools/testing/selftests/powerpc/security/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0+
- 
--TEST_GEN_PROGS := rfi_flush entry_flush spectre_v2
-+TEST_GEN_PROGS := rfi_flush entry_flush uaccess_flush spectre_v2
- top_srcdir = ../../../../..
- 
- CFLAGS += -I../../../../../usr/include
-@@ -13,3 +13,4 @@ $(OUTPUT)/spectre_v2: CFLAGS += -m64
- $(OUTPUT)/spectre_v2: ../pmu/event.c branch_loops.S
- $(OUTPUT)/rfi_flush: flush_utils.c
- $(OUTPUT)/entry_flush: flush_utils.c
-+$(OUTPUT)/uaccess_flush: flush_utils.c
-diff --git a/tools/testing/selftests/powerpc/security/flush_utils.c b/tools/testing/selftests/powerpc/security/flush_utils.c
-index 0c3c4c40c7fb..4d95965cb751 100644
---- a/tools/testing/selftests/powerpc/security/flush_utils.c
-+++ b/tools/testing/selftests/powerpc/security/flush_utils.c
-@@ -13,6 +13,7 @@
- #include <stdlib.h>
- #include <string.h>
- #include <stdio.h>
-+#include <sys/utsname.h>
- #include "utils.h"
- #include "flush_utils.h"
- 
-@@ -35,6 +36,18 @@ void syscall_loop(char *p, unsigned long iterations,
- 	}
- }
- 
-+void syscall_loop_uaccess(char *p, unsigned long iterations,
-+			  unsigned long zero_size)
-+{
-+	struct utsname utsname;
-+
-+	for (unsigned long i = 0; i < iterations; i++) {
-+		for (unsigned long j = 0; j < zero_size; j += CACHELINE_SIZE)
-+			load(p + j);
-+		uname(&utsname);
-+	}
-+}
-+
- static void sigill_handler(int signr, siginfo_t *info, void *unused)
- {
- 	static int warned;
-diff --git a/tools/testing/selftests/powerpc/security/flush_utils.h b/tools/testing/selftests/powerpc/security/flush_utils.h
-index 7a3d60292916..e1e68281f7ac 100644
---- a/tools/testing/selftests/powerpc/security/flush_utils.h
-+++ b/tools/testing/selftests/powerpc/security/flush_utils.h
-@@ -16,6 +16,9 @@
- void syscall_loop(char *p, unsigned long iterations,
- 		  unsigned long zero_size);
- 
-+void syscall_loop_uaccess(char *p, unsigned long iterations,
-+			  unsigned long zero_size);
-+
- void set_dscr(unsigned long val);
- 
- #endif /* _SELFTESTS_POWERPC_SECURITY_FLUSH_UTILS_H */
-diff --git a/tools/testing/selftests/powerpc/security/uaccess_flush.c b/tools/testing/selftests/powerpc/security/uaccess_flush.c
-new file mode 100644
-index 000000000000..cf80f960e38a
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/security/uaccess_flush.c
-@@ -0,0 +1,158 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+/*
-+ * Copyright 2018 IBM Corporation.
-+ * Copyright 2020 Canonical Ltd.
-+ */
-+
-+#define __SANE_USERSPACE_TYPES__
-+
-+#include <sys/types.h>
-+#include <stdint.h>
-+#include <malloc.h>
-+#include <unistd.h>
-+#include <signal.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <stdio.h>
-+#include "utils.h"
-+#include "flush_utils.h"
-+
-+int uaccess_flush_test(void)
-+{
-+	char *p;
-+	int repetitions = 10;
-+	int fd, passes = 0, iter, rc = 0;
-+	struct perf_event_read v;
-+	__u64 l1d_misses_total = 0;
-+	unsigned long iterations = 100000, zero_size = 24 * 1024;
-+	unsigned long l1d_misses_expected;
-+	int rfi_flush_orig;
-+	int entry_flush_orig;
-+	int uaccess_flush, uaccess_flush_orig;
-+
-+	SKIP_IF(geteuid() != 0);
-+
-+	// The PMU event we use only works on Power7 or later
-+	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
-+
-+	if (read_debugfs_file("powerpc/rfi_flush", &rfi_flush_orig) < 0) {
-+		perror("Unable to read powerpc/rfi_flush debugfs file");
-+		SKIP_IF(1);
-+	}
-+
-+	if (read_debugfs_file("powerpc/entry_flush", &entry_flush_orig) < 0) {
-+		perror("Unable to read powerpc/entry_flush debugfs file");
-+		SKIP_IF(1);
-+	}
-+
-+	if (read_debugfs_file("powerpc/uaccess_flush", &uaccess_flush_orig) < 0) {
-+		perror("Unable to read powerpc/entry_flush debugfs file");
-+		SKIP_IF(1);
-+	}
-+
-+	if (rfi_flush_orig != 0) {
-+		if (write_debugfs_file("powerpc/rfi_flush", 0) < 0) {
-+			perror("error writing to powerpc/rfi_flush debugfs file");
-+			FAIL_IF(1);
-+		}
-+	}
-+
-+	if (entry_flush_orig != 0) {
-+		if (write_debugfs_file("powerpc/entry_flush", 0) < 0) {
-+			perror("error writing to powerpc/entry_flush debugfs file");
-+			FAIL_IF(1);
-+		}
-+	}
-+
-+	uaccess_flush = uaccess_flush_orig;
-+
-+	fd = perf_event_open_counter(PERF_TYPE_HW_CACHE, PERF_L1D_READ_MISS_CONFIG, -1);
-+	FAIL_IF(fd < 0);
-+
-+	p = (char *)memalign(zero_size, CACHELINE_SIZE);
-+
-+	FAIL_IF(perf_event_enable(fd));
-+
-+	// disable L1 prefetching
-+	set_dscr(1);
-+
-+	iter = repetitions;
-+
-+	/*
-+	 * We expect to see l1d miss for each cacheline access when entry_flush
-+	 * is set. Allow a small variation on this.
-+	 */
-+	l1d_misses_expected = iterations * (zero_size / CACHELINE_SIZE - 2);
-+
-+again:
-+	FAIL_IF(perf_event_reset(fd));
-+
-+	syscall_loop_uaccess(p, iterations, zero_size);
-+
-+	FAIL_IF(read(fd, &v, sizeof(v)) != sizeof(v));
-+
-+	if (uaccess_flush && v.l1d_misses >= l1d_misses_expected)
-+		passes++;
-+	else if (!uaccess_flush && v.l1d_misses < (l1d_misses_expected / 2))
-+		passes++;
-+
-+	l1d_misses_total += v.l1d_misses;
-+
-+	while (--iter)
-+		goto again;
-+
-+	if (passes < repetitions) {
-+		printf("FAIL (L1D misses with uaccess_flush=%d: %llu %c %lu) [%d/%d failures]\n",
-+		       uaccess_flush, l1d_misses_total, uaccess_flush ? '<' : '>',
-+		       uaccess_flush ? repetitions * l1d_misses_expected :
-+		       repetitions * l1d_misses_expected / 2,
-+		       repetitions - passes, repetitions);
-+		rc = 1;
-+	} else {
-+		printf("PASS (L1D misses with uaccess_flush=%d: %llu %c %lu) [%d/%d pass]\n",
-+		       uaccess_flush, l1d_misses_total, uaccess_flush ? '>' : '<',
-+		       uaccess_flush ? repetitions * l1d_misses_expected :
-+		       repetitions * l1d_misses_expected / 2,
-+		       passes, repetitions);
-+	}
-+
-+	if (uaccess_flush == uaccess_flush_orig) {
-+		uaccess_flush = !uaccess_flush_orig;
-+		if (write_debugfs_file("powerpc/uaccess_flush", uaccess_flush) < 0) {
-+			perror("error writing to powerpc/uaccess_flush debugfs file");
-+			return 1;
-+		}
-+		iter = repetitions;
-+		l1d_misses_total = 0;
-+		passes = 0;
-+		goto again;
-+	}
-+
-+	perf_event_disable(fd);
-+	close(fd);
-+
-+	set_dscr(0);
-+
-+	if (write_debugfs_file("powerpc/rfi_flush", rfi_flush_orig) < 0) {
-+		perror("unable to restore original value of powerpc/rfi_flush debugfs file");
-+		return 1;
-+	}
-+
-+	if (write_debugfs_file("powerpc/entry_flush", entry_flush_orig) < 0) {
-+		perror("unable to restore original value of powerpc/entry_flush debugfs file");
-+		return 1;
-+	}
-+
-+	if (write_debugfs_file("powerpc/uaccess_flush", uaccess_flush_orig) < 0) {
-+		perror("unable to restore original value of powerpc/uaccess_flush debugfs file");
-+		return 1;
-+	}
-+
-+	return rc;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	return test_harness(uaccess_flush_test, "uaccess_flush_test");
-+}
--- 
-2.27.0
 
+My bad. What I wanted to say was, this check is needed only
+
+for raw event type, since tools like fuzzer use it to provide
+
+randomized event code values for test. Will fix the comment
+
+Thanks for the review comments.
+
+
+>
+>> +		 */
+>> +		if (ppmu->check_attr_config &&
+>> +		    ppmu->check_attr_config(event))
+>> +			return -EINVAL;
+>>   		break;
+>>   	default:
+>>   		return -ENOENT;
+>> -- 
+> PC
