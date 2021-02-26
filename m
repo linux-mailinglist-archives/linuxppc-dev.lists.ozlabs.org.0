@@ -1,75 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25A1326A7F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 00:50:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF00326A86
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 00:52:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DnRHS5l0Kz3d2r
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 10:50:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DnRKG6X2kz3d28
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 10:52:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Z8yq0c7k;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=mD3B2eHe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
- helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536;
+ helo=mail-pg1-x536.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Z8yq0c7k; dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
- [IPv6:2607:f8b0:4864:20::636])
+ header.s=20161025 header.b=mD3B2eHe; dkim-atps=neutral
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
+ [IPv6:2607:f8b0:4864:20::536])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DnRH202qSz3cLS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Feb 2021 10:50:20 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id f8so6121106plg.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 15:50:20 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DnRJs0sxxz30N0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Feb 2021 10:51:57 +1100 (AEDT)
+Received: by mail-pg1-x536.google.com with SMTP id o10so7172002pgg.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 15:51:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=ZgDG+DAFXWS90lnwRgCLnPtPK1bMSB9QU23qIicCGtM=;
- b=Z8yq0c7khU84dYB+4wYJ+0RCMVyZ1ebXnB5WK2DAvqhnCJWpFKe+mH4CB/mrrkW7mk
- +mkUj2pMe2B4c/wqmGsFdwrZihKTKvfSE7lEv5siCVaKJTqD3gan4PXM2DGtrJsnXQK/
- cmI/mwUgHLzB1/OAZabpEKik1vHRH7JG1RjmMCHOnYroE6ixcQtk3NHNDiDsd/D09joD
- C0fVKalcsnFzWPS4qfl185r8e20QgpJaPWgCh7KxqB1YPtvPBs1n6YmzXNUB/zmYpfIE
- DVdS2pE6AxxNgr3BUMk59aDfpzMZyvTN/HIHvRGsNjVGZExpUZ5EGx1Xn+xXFDURPiX+
- HvYg==
+ bh=zVCQxsICbHOyHh30iPPaVoEQs8OioKHBSxz33rSHcf4=;
+ b=mD3B2eHeDq/3NzRnAestA7yjVEPuvNOzLGGpB6ngH8PMpjFbJRWc1+pQSN+8AiSqsP
+ DgUAp/1Ms0fEby5Px3CAjG/vPmkcMvmbbqk5y0egLrxKYlc9X8ClhqNWG7MmcU9UcG/J
+ 3qo6vhx7Pp2VjVpktDYOP+jqwqyhWFbudqr3dwDL/lMGWT+09TiDIKw492KItrQxhx3v
+ PEbT0cdoqHvkGaQemT1jufxFZgpNiTPLDuFgWeQKJNG3+H6dHKqKDl9lI74I0bHgx59C
+ ugyhzt5D2IwVWPo7y9tQY/0uvXzWyquvK2CKigQq1RMCRA1mvGEwFzceRkMpsmpCCgCo
+ WhbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=ZgDG+DAFXWS90lnwRgCLnPtPK1bMSB9QU23qIicCGtM=;
- b=O132cskEzsMLFGxkukOVjd5aG7FTw1Mj230PQ3Fuj+KCji2nkZBBGQ3zrrIND49eAJ
- amw9KYetaKt0h/NfeW0HNkMntrfcwOpVh+Jjq7EyHNfP0nn6yXBKEyB4sH1o0qxe6P9D
- 72atmw+ZcPoVZ8L4yLo21kkaGk+hd7ZRyV8oDVv03OExXX24U9H1FVJW7EU9N+3gNNCP
- 2JTxyz6jTe4fyed/bTRAV7/3ADBhyvTwMnH0KEqKKoTCVgYRo5R5buAMNUAOyqEezCA5
- udpOUROuhOaZik0yHEhM+4qyUdvtQ1oO7HvUK+ZUYO5Db1FxXi7ZtikUyA8p9OZwU//E
- GY1Q==
-X-Gm-Message-State: AOAM532kAL6XYd5jwTixHS1fKe7GdhIfjppk9iAwPzSWO/lfG185NpS/
- YYkiVc6RSLkh5uTMQNkIxAk=
-X-Google-Smtp-Source: ABdhPJwFc17Ja+0MIdiQQAo2vQTSyBJLLloXneUgYT1RCrhB5fu6fYZ0ON+O+v+tv9TGTT8kMN5rbw==
-X-Received: by 2002:a17:90a:6a04:: with SMTP id
- t4mr5646719pjj.125.1614383416009; 
- Fri, 26 Feb 2021 15:50:16 -0800 (PST)
+ bh=zVCQxsICbHOyHh30iPPaVoEQs8OioKHBSxz33rSHcf4=;
+ b=EgP/vKmw8V4Ir5VO51tSZw5JmLfPeswUgJ9IR9FNgb8GV+rbc58SwnHcE4J7cWgI3l
+ q7+UPIr40vC4Ei2LysX1VPwlYWI05kh7WOpjISPH48ekAJmgWL+v3dshLyAANr8ZtVFL
+ xBRFDHk3QElUWHTIpmw91hKKX2+4SmA4Ka1iQl39BBLB7Z7Bld8NMc1FTJtsA7cTp2Yn
+ mEOi4G1uwxG8Gi/DvM+ZPgoMKvKcCIWxMTo2IRGWuVqvGK5rP7F1t6pLIDZ41ueUMVQE
+ /vxtIq5yQmiCEr9rhOMGA+69eGPAsoi2eBiDJHPgRNseJJwL85WEFdgKSxmi7mZAbCGn
+ LYZQ==
+X-Gm-Message-State: AOAM532+DT0ZFDtjy1AYxWWDaudnYRlyjkDDUpUlwuMHq4hYEdIyS+In
+ hXgidT3PCWzGa0mxT19DRxk=
+X-Google-Smtp-Source: ABdhPJwZY6m/MjM2b//hidlAPFT6ke+QB6OZJd+f2tGf9SMVLmRqQADn3ixWL0gPxAHUboju5VG5+Q==
+X-Received: by 2002:a63:4c2:: with SMTP id 185mr4857054pge.75.1614383513772;
+ Fri, 26 Feb 2021 15:51:53 -0800 (PST)
 Received: from localhost (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id r123sm10652023pfc.211.2021.02.26.15.50.14
+ by smtp.gmail.com with ESMTPSA id o23sm10796887pfp.89.2021.02.26.15.51.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Feb 2021 15:50:15 -0800 (PST)
-Date: Sat, 27 Feb 2021 09:50:09 +1000
+ Fri, 26 Feb 2021 15:51:53 -0800 (PST)
+Date: Sat, 27 Feb 2021 09:51:47 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 01/37] KVM: PPC: Book3S 64: remove unused
- kvmppc_h_protect argument
+Subject: Re: [PATCH v2 04/37] powerpc/64s: remove KVM SKIP test from
+ instruction breakpoint handler
 To: Daniel Axtens <dja@axtens.net>, kvm-ppc@vger.kernel.org
 References: <20210225134652.2127648-1-npiggin@gmail.com>
- <20210225134652.2127648-2-npiggin@gmail.com>
- <878s7ba0cm.fsf@linkitivity.dja.id.au>
-In-Reply-To: <878s7ba0cm.fsf@linkitivity.dja.id.au>
+ <20210225134652.2127648-5-npiggin@gmail.com>
+ <8735xj9yd4.fsf@linkitivity.dja.id.au>
+In-Reply-To: <8735xj9yd4.fsf@linkitivity.dja.id.au>
 MIME-Version: 1.0
-Message-Id: <1614383256.cikqwycx8o.astroid@bobo.none>
+Message-Id: <1614383420.qkrnr8p53z.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,88 +82,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Daniel Axtens's message of February 26, 2021 3:01 pm:
-> Hi Nick,
+Excerpts from Daniel Axtens's message of February 26, 2021 3:44 pm:
+> Nicholas Piggin <npiggin@gmail.com> writes:
 >=20
->> The va argument is not used in the function or set by its asm caller,
->> so remove it to be safe.
+>> The code being executed in KVM_GUEST_MODE_SKIP is hypervisor code with
+>> MSR[IR]=3D0, so the faults of concern are the d-side ones caused by acce=
+ss
+>> to guest context by the hypervisor.
+>>
+>> Instruction breakpoint interrupts are not a concern here. It's unlikely
+>> any good would come of causing breaks in this code, but skipping the
+>> instruction that caused it won't help matters (e.g., skip the mtmsr that
+>> sets MSR[DR]=3D0 or clears KVM_GUEST_MODE_SKIP).
 >=20
-> Huh, so it isn't. I tracked the original implementation down to commit
-> a8606e20e41a ("KVM: PPC: Handle some PAPR hcalls in the kernel") where
-> paulus first added the ability to handle it in the kernel - there it
-> takes a va argument but even then doesn't do anything with it.
->=20
-> ajd also pointed out that we don't pass a va when linux is running as a
-> guest, and LoPAR does not mention va as an argument.
+> I'm not entirely clear on the example here, but the patch makes sense
+> and I can follow your logic for removing the IKVM_SKIP handler from the
+> instruction breakpoint exception.
 
-Yeah interesting, maybe it was from a pre-release version of PAPR? Who
-knows.
-
-> One small nit: checkpatch is complaining about spaces vs tabs:
-> ERROR: code indent should use tabs where possible
-> #25: FILE: arch/powerpc/include/asm/kvm_ppc.h:770:
-> +                      unsigned long pte_index, unsigned long avpn);$
->=20
-> WARNING: please, no spaces at the start of a line
-> #25: FILE: arch/powerpc/include/asm/kvm_ppc.h:770:
-> +                      unsigned long pte_index, unsigned long avpn);$
-
-All the declarations are using the same style in this file so I think
-I'll leave it for someone to do a cleanup patch on. Okay?
-
->=20
-> Once that is resolved,
->   Reviewed-by: Daniel Axtens <dja@axtens.net>
+The example just means that a breakpoint interrupt on any instruction=20
+inside the guest mode skip region would be skipped, and skipping one of=20
+those (mtmsrd or store that gets us out of guest mode skip) would cause=20
+a crash.
 
 Thanks,
 Nick
 
 >=20
-> Kind regards,
-> Daniel Axtens
+> On that basis:
+> Reviewed-by: Daniel Axtens <dja@axtens.net>
 >=20
+> Kind regards,
+> Daniel
+>=20
+>>
+>> Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
 >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >> ---
->>  arch/powerpc/include/asm/kvm_ppc.h  | 3 +--
->>  arch/powerpc/kvm/book3s_hv_rm_mmu.c | 3 +--
->>  2 files changed, 2 insertions(+), 4 deletions(-)
+>>  arch/powerpc/kernel/exceptions-64s.S | 1 -
+>>  1 file changed, 1 deletion(-)
 >>
->> diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/a=
-sm/kvm_ppc.h
->> index 8aacd76bb702..9531b1c1b190 100644
->> --- a/arch/powerpc/include/asm/kvm_ppc.h
->> +++ b/arch/powerpc/include/asm/kvm_ppc.h
->> @@ -767,8 +767,7 @@ long kvmppc_h_remove(struct kvm_vcpu *vcpu, unsigned=
- long flags,
->>                       unsigned long pte_index, unsigned long avpn);
->>  long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu);
->>  long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
->> -                      unsigned long pte_index, unsigned long avpn,
->> -                      unsigned long va);
->> +                      unsigned long pte_index, unsigned long avpn);
->>  long kvmppc_h_read(struct kvm_vcpu *vcpu, unsigned long flags,
->>                     unsigned long pte_index);
->>  long kvmppc_h_clear_ref(struct kvm_vcpu *vcpu, unsigned long flags,
->> diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book=
-3s_hv_rm_mmu.c
->> index 88da2764c1bb..7af7c70f1468 100644
->> --- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
->> +++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
->> @@ -673,8 +673,7 @@ long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu)
->>  }
->> =20
->>  long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
->> -		      unsigned long pte_index, unsigned long avpn,
->> -		      unsigned long va)
->> +		      unsigned long pte_index, unsigned long avpn)
->>  {
->>  	struct kvm *kvm =3D vcpu->kvm;
->>  	__be64 *hpte;
+>> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/=
+exceptions-64s.S
+>> index a027600beeb1..0097e0676ed7 100644
+>> --- a/arch/powerpc/kernel/exceptions-64s.S
+>> +++ b/arch/powerpc/kernel/exceptions-64s.S
+>> @@ -2553,7 +2553,6 @@ EXC_VIRT_NONE(0x5200, 0x100)
+>>  INT_DEFINE_BEGIN(instruction_breakpoint)
+>>  	IVEC=3D0x1300
+>>  #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+>> -	IKVM_SKIP=3D1
+>>  	IKVM_REAL=3D1
+>>  #endif
+>>  INT_DEFINE_END(instruction_breakpoint)
 >> --=20
 >> 2.23.0
 >=20
