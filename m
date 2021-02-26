@@ -1,63 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5225325E84
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 08:59:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F312C325F8A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 09:59:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dn2B45PPMz3cxd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 18:59:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dn3Vq6mNxz3cxW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 19:59:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=gbarmf2Q;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=oBzcI9hk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TVydO6ai;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
- helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=gbarmf2Q; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=oBzcI9hk; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=TVydO6ai; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dn29c6hqcz3cWJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 18:59:16 +1100 (AEDT)
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1614326352;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=As1fDYfwKrjxkKoe6zW8X2eDIPaM0LZx7cH6HHLoVWs=;
- b=gbarmf2Qo6ckmhKhSwECGeeDceFfmjCgsZgbKbhtGOe/ZVnrkkWOYHfk9EX/OvaW1rRLNX
- 6LDrpfCyyASzExo2fQH3Wk6USh9mNHHsgvWuAZ0ub5xdUjEt5EUT6Vf5DxDGxiufDDA0dD
- kAFR/HOCf19ewbMg3sDq6t6oq6IKm2/gnMZWkiBdDzKAc77Xol8evKFMxq42TLN5Mzy7Uy
- RNyNAhsLGReJ53TJjBHzeNEoYHPjH6oRD0CNEhJq1Rdjk6kLa+SaZ2TLx2X4caPC7LziSo
- LSCkRonnaAQbURvC/8avcnpGuSbPy+eih3OFwIP0fu687A4UJ2O4SpEJooilEQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1614326352;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=As1fDYfwKrjxkKoe6zW8X2eDIPaM0LZx7cH6HHLoVWs=;
- b=oBzcI9hkvNT1WswvpyoaczL8Miw+ylH42+GPWw36ZoSpeUkMPSwywAxm3+Z0cvgGSedn2L
- iPW16K6EswEd9nAg==
-To: Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH next v3 12/15] printk: introduce a kmsg_dump iterator
-In-Reply-To: <20210225202438.28985-13-john.ogness@linutronix.de>
-References: <20210225202438.28985-1-john.ogness@linutronix.de>
- <20210225202438.28985-13-john.ogness@linutronix.de>
-Date: Fri, 26 Feb 2021 08:59:10 +0100
-Message-ID: <87a6rrxnsh.fsf@jogness.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dn3VM6Cy3z3cVn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 19:58:51 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 11Q8Y0af025565; Fri, 26 Feb 2021 03:58:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=X1GrCObucAtuxzgUZJIwUcEe4Q2Ni3AAro0eKrvL1Ww=;
+ b=TVydO6aiqqpdDzMcncqMe3nUWhvGiFn8mT0M6cLsJGFJGBJUqpd+3QJZww+wOglM3zvE
+ +vcp5ar7XKicaelqgY7tXIyY+R7A5bZVB+wI/XJuqUd9t4UDjzTT8xQZHolMyxpaesMN
+ sFRDuQZN9+pq3OHFAxTyYnQuBkxK4/DLIBwmF5M5U8t+iVBHqRWIllzqtglkYSbornPg
+ L2ZKIyL3NLxv7bIxVB60mxy7zDvCE1oCRh82nAOeYBhs70uGqgHZL0X/OpFzkt6J44Ob
+ nyWOwPXLt+XW4rNShAXlNIEZu6ujyW7NfMFPwegrQle3tl7pzRz1qFFq3ddHTGtpw67i MA== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 36xvgy2ggb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Feb 2021 03:58:35 -0500
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11Q8vKRH031645;
+ Fri, 26 Feb 2021 08:58:34 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04fra.de.ibm.com with ESMTP id 36tt28apud-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Feb 2021 08:58:33 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11Q8wUtb45351260
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 Feb 2021 08:58:30 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A1B1552051;
+ Fri, 26 Feb 2021 08:58:30 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id 6B71452059;
+ Fri, 26 Feb 2021 08:58:28 +0000 (GMT)
+Date: Fri, 26 Feb 2021 14:28:27 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH] perf bench numa: Fix the condition checks for max number
+ of numa nodes
+Message-ID: <20210226085827.GF2028034@linux.vnet.ibm.com>
+References: <1614271802-1503-1-git-send-email-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <1614271802-1503-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-02-26_02:2021-02-24,
+ 2021-02-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ mlxlogscore=999 clxscore=1011 bulkscore=0 malwarescore=0 phishscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102260065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,121 +94,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- Douglas Anderson <dianders@chromium.org>, Paul Mackerras <paulus@samba.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Meyer <thomas@m3y3r.de>,
- Vignesh Raghavendra <vigneshr@ti.com>, Wei Liu <wei.liu@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Stephen Hemminger <sthemmin@microsoft.com>, kernel test robot <lkp@intel.com>,
- Anton Vorontsov <anton@enomsg.org>, clang-built-linux@googlegroups.com,
- Joel Stanley <joel@jms.id.au>, Jason Wessel <jason.wessel@windriver.com>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>, Wei Li <liwei391@huawei.com>,
- Haiyang Zhang <haiyangz@microsoft.com>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Kees Cook <keescook@chromium.org>,
- Alistair Popple <alistair@popple.id.au>, Jeff Dike <jdike@addtoit.com>,
- Colin Cross <ccross@android.com>, linux-um@lists.infradead.org,
- Daniel Thompson <daniel.thompson@linaro.org>,
- Steven Rostedt <rostedt@goodmis.org>, Davidlohr Bueso <dave@stgolabs.net>,
- Nicholas Piggin <npiggin@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jordan Niethe <jniethe5@gmail.com>, Michael Kelley <mikelley@microsoft.com>,
- Christophe Leroy <christophe.leroy@c-s.fr>, Tony Luck <tony.luck@intel.com>,
- kbuild-all@lists.01.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Richard Weinberger <richard@nod.at>, kgdb-bugreport@lists.sourceforge.net,
- linux-mtd@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: ravi.bangoria@linux.ibm.com, maddy@linux.ibm.com, peterz@infradead.org,
+ linux-kernel@vger.kernel.org, acme@kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+* Athira Rajeev <atrajeev@linux.vnet.ibm.com> [2021-02-25 11:50:02]:
 
-Thank you kernel test robot!
+> In systems having higher node numbers available like node
+> 255, perf numa bench will fail with SIGABORT.
+> 
+> <<>>
+> perf: bench/numa.c:1416: init: Assertion `!(g->p.nr_nodes > 64 || g->p.nr_nodes < 0)' failed.
+> Aborted (core dumped)
+> <<>>
+> 
 
-Despite all of my efforts to carefully construct and test this series,
-somehome I managed to miss a compile test with CONFIG_MTD_OOPS. That
-kmsg_dumper does require the dumper parameter so that it can use
-container_of().
+Looks good to me.
 
-I will discuss this with the printk team. But most likely we will just
-re-instate the dumper parameter in the callback.
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-I apologize for the lack of care on my part.
-
-John Ogness
-
-On 2021-02-26, kernel test robot <lkp@intel.com> wrote:
-> Hi John,
->
-> I love your patch! Yet something to improve:
->
-> [auto build test ERROR on next-20210225]
->
-> url:    https://github.com/0day-ci/linux/commits/John-Ogness/printk-remove-logbuf_lock/20210226-043457
-> base:    7f206cf3ec2bee4621325cfacb2588e5085c07f5
-> config: arm-randconfig-r024-20210225 (attached as .config)
-> compiler: clang version 13.0.0 (https://github.com/llvm/llvm-project a921aaf789912d981cbb2036bdc91ad7289e1523)
-> reproduce (this is a W=1 build):
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # install arm cross compiling tool for clang build
->         # apt-get install binutils-arm-linux-gnueabi
->         # https://github.com/0day-ci/linux/commit/fc7f655cded40fc98ba5304c200e3a01e8291fb4
->         git remote add linux-review https://github.com/0day-ci/linux
->         git fetch --no-tags linux-review John-Ogness/printk-remove-logbuf_lock/20210226-043457
->         git checkout fc7f655cded40fc98ba5304c200e3a01e8291fb4
->         # save the attached .config to linux build tree
->         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=arm 
->
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
->
-> All errors (new ones prefixed by >>):
->
->>> drivers/mtd/mtdoops.c:277:45: error: use of undeclared identifier 'dumper'
->            struct mtdoops_context *cxt = container_of(dumper,
->                                                       ^
->>> drivers/mtd/mtdoops.c:277:45: error: use of undeclared identifier 'dumper'
->>> drivers/mtd/mtdoops.c:277:45: error: use of undeclared identifier 'dumper'
->    3 errors generated.
->
->
-> vim +/dumper +277 drivers/mtd/mtdoops.c
->
-> 4b23aff083649e Richard Purdie 2007-05-29  274  
-> fc7f655cded40f John Ogness    2021-02-25  275  static void mtdoops_do_dump(enum kmsg_dump_reason reason)
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  276  {
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03 @277  	struct mtdoops_context *cxt = container_of(dumper,
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  278  			struct mtdoops_context, dump);
-> fc7f655cded40f John Ogness    2021-02-25  279  	struct kmsg_dump_iter iter;
-> fc2d557c74dc58 Seiji Aguchi   2011-01-12  280  
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  281  	/* Only dump oopses if dump_oops is set */
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  282  	if (reason == KMSG_DUMP_OOPS && !dump_oops)
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  283  		return;
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  284  
-> fc7f655cded40f John Ogness    2021-02-25  285  	kmsg_dump_rewind(&iter);
-> fc7f655cded40f John Ogness    2021-02-25  286  
-> df92cad8a03e83 John Ogness    2021-02-25  287  	if (test_and_set_bit(0, &cxt->oops_buf_busy))
-> df92cad8a03e83 John Ogness    2021-02-25  288  		return;
-> fc7f655cded40f John Ogness    2021-02-25  289  	kmsg_dump_get_buffer(&iter, true, cxt->oops_buf + MTDOOPS_HEADER_SIZE,
-> e2ae715d66bf4b Kay Sievers    2012-06-15  290  			     record_size - MTDOOPS_HEADER_SIZE, NULL);
-> df92cad8a03e83 John Ogness    2021-02-25  291  	clear_bit(0, &cxt->oops_buf_busy);
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  292  
-> c1cf1d57d14922 Mark Tomlinson 2020-09-03  293  	if (reason != KMSG_DUMP_OOPS) {
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  294  		/* Panics must be written immediately */
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  295  		mtdoops_write(cxt, 1);
-> c1cf1d57d14922 Mark Tomlinson 2020-09-03  296  	} else {
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  297  		/* For other cases, schedule work to write it "nicely" */
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  298  		schedule_work(&cxt->work_write);
-> 2e386e4bac9055 Simon Kagstrom 2009-11-03  299  	}
-> c1cf1d57d14922 Mark Tomlinson 2020-09-03  300  }
-> 4b23aff083649e Richard Purdie 2007-05-29  301  
->
-> ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Thanks and Regards
+Srikar Dronamraju
