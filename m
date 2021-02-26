@@ -1,99 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1293261C9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 12:10:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7B83262C6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 13:35:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dn6QN0nJbz3clF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 22:10:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dn8Hz52Mkz3clJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 23:35:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TL+I5Ykk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=QVWfGSVa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.25;
+ helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TL+I5Ykk; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=QVWfGSVa; 
+ dkim-atps=neutral
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
+ [85.215.255.25])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dn6Px0WDzz3cYD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 22:10:11 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 11QB57fo034145
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 06:10:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : subject : to : cc
- : references : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=fpmjNqhPGNLKnBQWcqmz6kVQORYpp4kfgrHypwVNCQc=;
- b=TL+I5YkkkLf2cX5qLnS7D7q/kdGI+Sdnch6T5+rq7MX4Pp+8XRODZfm8TO0WCwDCAKnS
- Uk6Cn/rqlDE9hth1fQzkEgUQrjI2aPAnogc8OeC3TfZpewRnZ7k5d1DtRx4B/wFjWQPo
- GFdXSoEJuQBlHRLp0bzMp8ADZHChGG+kzj/mQu7FCQxzSrESgParrcjujY0gAo4M+ntp
- 4TE89kxQ2eBPT/QSI6FYNboeJUz+j5UkBr8gOjDXroVJVh1Z1zyaTCs4e7OF7r2+yQ7h
- D87ABBdlcrbsklmRMMDHHf2OdgjAhxAtxR/RlFuRPdL7E/MZRnbTCpxSZVhttFuNs4qx cQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36xseq34b5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 06:10:07 -0500
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 11QB5JRv035613
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 06:10:07 -0500
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36xseq3485-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Feb 2021 06:10:07 -0500
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11QB8Ndo011719;
- Fri, 26 Feb 2021 11:10:04 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma05fra.de.ibm.com with ESMTP id 36tt28ar70-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Feb 2021 11:10:04 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 11QB9m0a27984378
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Feb 2021 11:09:48 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36E675204F;
- Fri, 26 Feb 2021 11:10:01 +0000 (GMT)
-Received: from [9.199.47.21] (unknown [9.199.47.21])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 2D4F352059;
- Fri, 26 Feb 2021 11:09:59 +0000 (GMT)
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/sstep: Fix VSX instruction emulation
-To: Jordan Niethe <jniethe5@gmail.com>
-References: <20210225031946.1458206-1-jniethe5@gmail.com>
-Message-ID: <ea767ee2-5712-ed34-3987-c284908f0a43@linux.ibm.com>
-Date: Fri, 26 Feb 2021 16:39:59 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dn8HS2hJRz3cY9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 23:34:41 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1614342864; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=dw+q1WLmGzOsGMmAJOvfwsS4BTIXf/hkYZF3tiu7RulYKbSl85h9KdMbxlzrnMmuBR
+ X7vU+MBPhKHS+SYNbvqAkHiByXlAwbwPNDrUVAX4oWkatkWInDV2M9Qkg7rRhOj2Rv+l
+ TsushvBh3JLvTfYFVhVdEUI4+E1qnQCpmbffSpYARqyoM+Y/4kRio9R5tdaVtUiFSKZk
+ KSAK2CmAJfMt4wsHS58+KOIaSMWKT5ewNWd7jSaIDf5m9WRWtjg5PnWgb1q7RHemXiqQ
+ tAJJGEURQP4v9b+NjUriLeg3MbrDwO2fB19gfMjzU8VwZpphqWbBb8rYVTdrte3JdBol
+ BJCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1614342864;
+ s=strato-dkim-0002; d=strato.com;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=BqVNl0fLElTLe0UGbmS3ufCrrjrJeu0ku3dq8TET8X4=;
+ b=iiaQr0A459S+0Vh6bBTZw4L8b2nqXLj6j0i/qqThtDkpFC8cvg/5AuZ9IypT2i4TS6
+ J9R1zOKZVfBqPNQgBFCebZtgCVFLtH1mTrz/78g/WSqd1ErT2OmTJp4YgNcc6QpHvhz+
+ AiFlRIkHZhHLTUWZEDT6U8ky+qv8sNe4kQoOFELnFXvH2JWmmOYerazGa9U39uq1SuSR
+ QCjkc/7k2bxixA5IMQjazGhybA5efz7B3OFAj8/UYZzIi1kBoM17wzCN7NPym3qWGGk/
+ ONzPt5kKI9paDoZCbeinYCZvTj/9dj2JtogLnC5W1jBXLjBwPV/iYSnJorDLmnZ01Mwl
+ c/4g==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1614342864;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=BqVNl0fLElTLe0UGbmS3ufCrrjrJeu0ku3dq8TET8X4=;
+ b=QVWfGSVabr3Li1J4vr1AID9HgQ1bQLX9ddtskVT47seWvfB52MsRbBVrHA5IIQoCsk
+ cx+oKkf9aNl03Jx5LLsKQ0fYoqmPYSbgRKY3rl2wjsxs5RbXB0SJOuOXVjXK/H+kMn8R
+ U7xjkSUkwLTE2c1arSmT6WjvZUn5SvezQcyOPEj62dgDLEc71IVP0JS0h3/QEcVD+3H4
+ QQNezJJ2TvK6SlF/fUtL1xp4bvf1Zp8WK8Xl0Z5XaYLzbLPfMxSCpgCl450N4fcwFKKo
+ NGQvh28V9isR5TH5RfOW9VW3HXesKDkPxB3LAWY8YT+oF0hSVLTS1pdtWGPzFZetCGjI
+ zjdQ==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedV4hZUhZXBExZ2DJ7LHPgWa3z87SbrHJ42YbESqWpiG"
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a01:598:a902:b981:30b1:c800:338c:5f10]
+ by smtp.strato.de (RZmta 47.19.0 AUTH)
+ with ESMTPSA id a070ddx1QCYMNSG
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Fri, 26 Feb 2021 13:34:22 +0100 (CET)
+Subject: Latest Git kernel doesn't compile because of the LINUX_VERSION_CODE
+ issue
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <13741214-bafc-1ee5-4157-854c14dae17c@xenosoft.de>
+ <CAOesGMgtAXPQRThhkF5QR25R+F68F5C_HSUvFPW0Wk1DcpCwvA@mail.gmail.com>
+ <877dmythcr.fsf@mpe.ellerman.id.au>
+ <CAOSf1CHQ=QDwH=J4kLYqboe481poa7EdbC6gzq29W7KYHhn1YQ@mail.gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <99f6d05a-d431-7444-bb0a-180c042c2afd@xenosoft.de>
+Date: Fri, 26 Feb 2021 13:34:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210225031946.1458206-1-jniethe5@gmail.com>
+In-Reply-To: <CAOSf1CHQ=QDwH=J4kLYqboe481poa7EdbC6gzq29W7KYHhn1YQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-02-26_02:2021-02-24,
- 2021-02-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- priorityscore=1501 bulkscore=0 spamscore=0 clxscore=1015 malwarescore=0
- mlxscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102260085
+Content-Transfer-Encoding: 8bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,68 +98,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- bala24@linux.ibm.com
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello,
 
+I tried to compile the latest Git kernel today. Unfortunately it doesn't 
+compile.
 
-On 2/25/21 8:49 AM, Jordan Niethe wrote:
-> Commit af99da74333b ("powerpc/sstep: Support VSX vector paired storage
-> access instructions") added loading and storing 32 word long data into
-> adjacent VSRs. However the calculation used to determine if two VSRs
-> needed to be loaded/stored inadvertently prevented the load/storing
-> taking place for instructions with a data length less than 16 words.
-> 
-> This causes the emulation to not function correctly, which can be seen
-> by the alignment_handler selftest:
-> 
-> $ ./alignment_handler
-> [snip]
-> test: test_alignment_handler_vsx_207
-> tags: git_version:powerpc-5.12-1-0-g82d2c16b350f
-> VSX: 2.07B
->          Doing lxsspx:   PASSED
->          Doing lxsiwax:  FAILED: Wrong Data
->          Doing lxsiwzx:  PASSED
->          Doing stxsspx:  PASSED
->          Doing stxsiwx:  PASSED
-> failure: test_alignment_handler_vsx_207
-> test: test_alignment_handler_vsx_300
-> tags: git_version:powerpc-5.12-1-0-g82d2c16b350f
-> VSX: 3.00B
->          Doing lxsd:     PASSED
->          Doing lxsibzx:  PASSED
->          Doing lxsihzx:  PASSED
->          Doing lxssp:    FAILED: Wrong Data
->          Doing lxv:      PASSED
->          Doing lxvb16x:  PASSED
->          Doing lxvh8x:   PASSED
->          Doing lxvx:     PASSED
->          Doing lxvwsx:   FAILED: Wrong Data
->          Doing lxvl:     PASSED
->          Doing lxvll:    PASSED
->          Doing stxsd:    PASSED
->          Doing stxsibx:  PASSED
->          Doing stxsihx:  PASSED
->          Doing stxssp:   PASSED
->          Doing stxv:     PASSED
->          Doing stxvb16x: PASSED
->          Doing stxvh8x:  PASSED
->          Doing stxvx:    PASSED
->          Doing stxvl:    PASSED
->          Doing stxvll:   PASSED
-> failure: test_alignment_handler_vsx_300
-> [snip]
-> 
-> Fix this by making sure all VSX instruction emulation correctly
-> load/store from the VSRs.
-> 
-> Fixes: af99da74333b ("powerpc/sstep: Support VSX vector paired storage access instructions")
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+Error messages:
 
-Yikes!
+   CC      arch/powerpc/kernel/udbg_16550.o
+In file included from ./include/linux/stackprotector.h:10:0,
+                  from arch/powerpc/kernel/smp.c:35:
+./arch/powerpc/include/asm/stackprotector.h: In function 
+‘boot_init_stack_canary’:
+./arch/powerpc/include/asm/stackprotector.h:29:30: error: expected 
+expression before ‘;’ token
+   canary ^= LINUX_VERSION_CODE;
+                               ^
+scripts/Makefile.build:271: recipe for target 
+'arch/powerpc/kernel/smp.o' failed
+make[2]: *** [arch/powerpc/kernel/smp.o] Error 1
 
-Reviewed-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+----
+
+drivers/media/cec/core/cec-api.c: In function ‘cec_adap_g_caps’:
+drivers/media/cec/core/cec-api.c:85:35: error: expected expression 
+before ‘;’ token
+   caps.version = LINUX_VERSION_CODE;
+
+----
+
+I have found the bad commit. It's "Merge tag 'kbuild-v5.12' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild" [1]
+
+The changes in the Makefile (a/Makefile) are responsible for the 
+compiling errors. [2]
+
+I was able to revert this bad commit. After that it compiled without any 
+problems.
+
+Could you please compile the latest Git kernel and confirm this issue?
+
+Thanks,
+Christian
+
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6fbd6cf85a3be127454a1ad58525a3adcf8612ab
+[2] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/Makefile?id=6fbd6cf85a3be127454a1ad58525a3adcf8612ab
