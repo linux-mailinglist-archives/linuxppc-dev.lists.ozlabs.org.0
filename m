@@ -2,74 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F88326A90
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 00:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94585326A93
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 01:00:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DnRTn60Q0z3d30
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 10:59:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DnRVk4bHVz3d6f
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 11:00:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ZqDfPF2O;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=YXHe0DQn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
- helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f;
+ helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZqDfPF2O; dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
- [IPv6:2607:f8b0:4864:20::636])
+ header.s=20161025 header.b=YXHe0DQn; dkim-atps=neutral
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
+ [IPv6:2607:f8b0:4864:20::62f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DnRTP1Q5Sz30Pg
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Feb 2021 10:59:20 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id k22so6130191pll.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 15:59:20 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DnRVG4vqpz30Pg
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Feb 2021 11:00:06 +1100 (AEDT)
+Received: by mail-pl1-x62f.google.com with SMTP id z7so6125988plk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 16:00:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=MdnJV7L+flQpiq1z76Nfmc99kpcCv9yxwq6tbq/YWPU=;
- b=ZqDfPF2Orz1qA8SiA3Q8s1sbgEuwDf94rWDFAJy0GEOesgXrS46keo20LadEPS40Xl
- CAfhaZjZ+iBQI/wCrRyZ1vb2vk5MWyA1aZzy4M80cnSZiUyvNSHYTaTG2Uo6u7KDfEqC
- gMXtBMuxUo2NJEa6xjER7XrAKL7Der+qXYLQYKdeuxOvCbu0d1EqvGamjGv5qWocK/PO
- on9qQUW3m76mWnKtzy4t0GEZyygY/NlAYc/Vi/9EZ7Ds5yOCa//CsPwSJ7nbXyddXpfX
- 2g5NI6+8jidgLOInygKP1ZOvD5eoFqEr/Ci84TLykwq+u43ggHd/khzB2Cig2Fe+Ig2E
- BtHg==
+ bh=q02clYmBzkhA5KqgdXouRwP+oXWTfl58JTIK8ZTCmTY=;
+ b=YXHe0DQn4b6+dqgikiXwYRMKXIV1X+48BP/H/CaXof+vJvD/amZ5QS6A98n+ta0lYy
+ 7kcyZONlhBJYCjHJPBs7tH/lZHx+gbaeYloCx3JA9h6h31AsGu8MmynY446IabBan1CK
+ EQPXahRCRQ4aipd5iwbw1hkBbgSR4ymONQ1+qa5xhJloTYkFs+44VMs83Ny4DLWOhJfc
+ p0WNMZNwn9P48ckU+icl3dR5FU1Soo6/J3kS10SOdSS0D24ZnxcQT7h42NtLSGmp0qJR
+ RZ7l15YV8Ybq/1e89GRD/xHgTGrxVltuuCNVlYxBaELUXfysMYaHdyuCLdRX5pTKiTfy
+ PCPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=MdnJV7L+flQpiq1z76Nfmc99kpcCv9yxwq6tbq/YWPU=;
- b=VhL2UwlXkUQNbZKmLfTXVc8dmTh6nSEKmFXdwlACN06fPhBs/xlL7RiY0ToEAnzSVX
- dEVZ08msGBhLjYJOGGodqD0c7PWjdmZU8TehERsRHGh1BQyNjFNJE3fVsFLEfMEXuguS
- XTeQUUQwZH+aNY/FM9Q09S1cjA7cdLPe87JLHr9sOGbDB2aY7w5fCAOsqOXMlikCbsHs
- adyfZVcfSDqCnUrxQMXBBiCPWdZGh+63iyvZ7WMyPZmjICw8vLo7p7XBqCioGBfVlD0p
- GItc534YcYGXgD9y5XiJQEyxNGsFETAhNYCGepw5nYct4Xjeabmk1qCYqZEPXKn4ITg8
- w/Sg==
-X-Gm-Message-State: AOAM532sd/BaBjSleQs2D5ko9M6Srr3DYl9nfNYyod2BjcWlIKov66qV
- YqWjU0Q/16Oi8N2tPJJREXk=
-X-Google-Smtp-Source: ABdhPJx2q+U+TINlMd/GtxDI/hjQxEfddz0DuKOeRBrxDZgrC3xzdfqi/pfBmwEk9IL5JbwLu4lhAw==
-X-Received: by 2002:a17:90b:2281:: with SMTP id
- kx1mr5717929pjb.113.1614383959303; 
- Fri, 26 Feb 2021 15:59:19 -0800 (PST)
+ bh=q02clYmBzkhA5KqgdXouRwP+oXWTfl58JTIK8ZTCmTY=;
+ b=dyv759tsbjD3rufNCl+Tu0hkANR3JqoPrwpdldyKPtOJaT7vDDU4PcngT5FgA1Li2f
+ bEdUiOUnIcxG6wmGrbFSX977qcht4Sdr1J4Xx5i1vJF+m/3oQYyfid808hwKEYgTlfiG
+ WagYzNErK2o5NUhi4MiA0g/ZVzcIU8SG4OLIYAgp0V5j3MWLkDLQDFUrgFqDJTrXK4y6
+ 9L2LL0V8ALD1wTPP5w83kgU7V66ldYCy9g0imxukagLsM2pW9vab4p3l8FdfxQjiknLl
+ zhD1uUbDx7Mvx+6E7KIQhd8BdEVy8FCh2CpqCMZtkJuwoe1HEePZuIDLkTpPcs7yo26C
+ Rhvw==
+X-Gm-Message-State: AOAM530SkZ4JWPbgnIbYCSWom4TVtnbOIP/yqLCFK5h+dga0QWjb9UqI
+ RZOpGQapusWbWMfBUXw9Plk=
+X-Google-Smtp-Source: ABdhPJzd713AUpA/1Snjwu12meI0pB6TlIXc+LXz9tfvjOqxFXD/6jF06ddyvunz+QQrm+07XdeQFA==
+X-Received: by 2002:a17:90a:8901:: with SMTP id
+ u1mr5689828pjn.21.1614384002713; 
+ Fri, 26 Feb 2021 16:00:02 -0800 (PST)
 Received: from localhost (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id u66sm11621578pfc.72.2021.02.26.15.59.17
+ by smtp.gmail.com with ESMTPSA id gm13sm9940265pjb.47.2021.02.26.16.00.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Feb 2021 15:59:18 -0800 (PST)
-Date: Sat, 27 Feb 2021 09:59:13 +1000
+ Fri, 26 Feb 2021 16:00:02 -0800 (PST)
+Date: Sat, 27 Feb 2021 09:59:57 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 16/37] KVM: PPC: Book3S HV P9: Stop handling hcalls in
- real-mode in the P9 path
-To: =?iso-8859-1?q?C=E9dric?= Le Goater <clg@kaod.org>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH v2 17/37] KVM: PPC: Book3S HV P9: Move setting HDEC after
+ switching to guest LPCR
+To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
 References: <20210225134652.2127648-1-npiggin@gmail.com>
- <20210225134652.2127648-17-npiggin@gmail.com>
- <47ae7b2f-9356-6cff-da38-142eaea773ca@kaod.org>
-In-Reply-To: <47ae7b2f-9356-6cff-da38-142eaea773ca@kaod.org>
+ <20210225134652.2127648-18-npiggin@gmail.com> <8735xiyebs.fsf@linux.ibm.com>
+In-Reply-To: <8735xiyebs.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1614383911.azeq7dbfo9.astroid@bobo.none>
+Message-Id: <1614383980.ftu5gtbvbm.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,70 +87,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from C=C3=A9dric Le Goater's message of February 26, 2021 12:51 am=
-:
-> On 2/25/21 2:46 PM, Nicholas Piggin wrote:
->> In the interest of minimising the amount of code that is run in
->> "real-mode", don't handle hcalls in real mode in the P9 path.
->>=20
->> POWER8 and earlier are much more expensive to exit from HV real mode
->> and switch to host mode, because on those processors HV interrupts get
->> to the hypervisor with the MMU off, and the other threads in the core
->> need to be pulled out of the guest, and SLBs all need to be saved,
->> ERATs invalidated, and host SLB reloaded before the MMU is re-enabled
->> in host mode. Hash guests also require a lot of hcalls to run. The
->> XICS interrupt controller requires hcalls to run.
->>=20
->> By contrast, POWER9 has independent thread switching, and in radix mode
->> the hypervisor is already in a host virtual memory mode when the HV
->> interrupt is taken. Radix + xive guests don't need hcalls to handle
->> interrupts or manage translations.
->>=20
->> So it's much less important to handle hcalls in real mode in P9.
->>=20
+Excerpts from Fabiano Rosas's message of February 27, 2021 2:38 am:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>=20
+>> LPCR[HDICE]=3D0 suppresses hypervisor decrementer exceptions on some
+>> processors, so it must be enabled before HDEC is set.
+>>
+>> Rather than set it in the host LPCR then setting HDEC, move the HDEC
+>> update to after the guest MMU context (including LPCR) is loaded.
+>> There shouldn't be much concern with delaying HDEC by some 10s or 100s
+>> of nanoseconds by setting it a bit later.
+>>
 >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >> ---
->>  arch/powerpc/include/asm/kvm_ppc.h      |  5 +++++
->>  arch/powerpc/kvm/book3s_hv.c            | 25 ++++++++++++++++++++++---
->>  arch/powerpc/kvm/book3s_hv_rmhandlers.S |  5 +++++
->>  arch/powerpc/kvm/book3s_xive.c          | 25 +++++++++++++++++++++++++
->>  4 files changed, 57 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/a=
-sm/kvm_ppc.h
->> index 73b1ca5a6471..db6646c2ade2 100644
->> --- a/arch/powerpc/include/asm/kvm_ppc.h
->> +++ b/arch/powerpc/include/asm/kvm_ppc.h
->> @@ -607,6 +607,7 @@ extern void kvmppc_free_pimap(struct kvm *kvm);
->>  extern int kvmppc_xics_rm_complete(struct kvm_vcpu *vcpu, u32 hcall);
->>  extern void kvmppc_xics_free_icp(struct kvm_vcpu *vcpu);
->>  extern int kvmppc_xics_hcall(struct kvm_vcpu *vcpu, u32 cmd);
->> +extern int kvmppc_xive_xics_hcall(struct kvm_vcpu *vcpu, u32 req);
->>  extern u64 kvmppc_xics_get_icp(struct kvm_vcpu *vcpu);
->>  extern int kvmppc_xics_set_icp(struct kvm_vcpu *vcpu, u64 icpval);
->>  extern int kvmppc_xics_connect_vcpu(struct kvm_device *dev,
->> @@ -639,6 +640,8 @@ static inline int kvmppc_xics_enabled(struct kvm_vcp=
-u *vcpu)
->>  static inline void kvmppc_xics_free_icp(struct kvm_vcpu *vcpu) { }
->>  static inline int kvmppc_xics_hcall(struct kvm_vcpu *vcpu, u32 cmd)
->>  	{ return 0; }
->> +static inline int kvmppc_xive_xics_hcall(struct kvm_vcpu *vcpu, u32 req=
-)
->> +	{ return 0; }
->>  #endif
->> =20
->>  #ifdef CONFIG_KVM_XIVE
->> @@ -673,6 +676,7 @@ extern int kvmppc_xive_set_irq(struct kvm *kvm, int =
-irq_source_id, u32 irq,
->>  			       int level, bool line_status);
->>  extern void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu);
->>  extern void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu);
->> +extern void kvmppc_xive_cede_vcpu(struct kvm_vcpu *vcpu);
+>>  arch/powerpc/kvm/book3s_hv.c | 24 ++++++++++--------------
+>>  1 file changed, 10 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>> index d4770b222d7e..63cc92c45c5d 100644
+>> --- a/arch/powerpc/kvm/book3s_hv.c
+>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>> @@ -3490,23 +3490,13 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_=
+vcpu *vcpu, u64 time_limit,
+>>  		host_dawrx1 =3D mfspr(SPRN_DAWRX1);
+>>  	}
+>>
+>> -	/*
+>> -	 * P8 and P9 suppress the HDEC exception when LPCR[HDICE] =3D 0,
+>> -	 * so set HDICE before writing HDEC.
+>> -	 */
+>> -	mtspr(SPRN_LPCR, kvm->arch.host_lpcr | LPCR_HDICE);
+>> -	isync();
+>> -
+>> -	hdec =3D time_limit - mftb();
 >=20
-> I can not find this routine. Is it missing or coming later in the patchse=
-t ?=20
+> Would it be possible to leave the mftb() in this patch and then replace
+> them all at once in patch 20/37 - "KVM: PPC: Book3S HV P9: Reduce mftb
+> per guest entry/exit"?
 
-Yeah it leaked into a later patch but it belongs here. I'll fix it.
+I suppose that makes sense. I'll see how that looks.
 
 Thanks,
 Nick
