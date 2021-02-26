@@ -1,72 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402F4325CD1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 06:02:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5366325D2B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 06:27:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DmyFP1ykwz3cZx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 16:02:17 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=h+pajDz3;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DmypC6NBXz3cxS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 16:27:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::42c;
- helo=mail-pf1-x42c.google.com; envelope-from=dja@axtens.net;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=h+pajDz3; dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
- [IPv6:2607:f8b0:4864:20::42c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+X-Greylist: delayed 550 seconds by postgrey-1.36 at boromir;
+ Fri, 26 Feb 2021 16:26:58 AEDT
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DmyDz2BPVz3cVn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 16:01:51 +1100 (AEDT)
-Received: by mail-pf1-x42c.google.com with SMTP id v200so5472806pfc.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Feb 2021 21:01:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=ONONQmKKLgRI6txfN7nZzG8ZKShi1zdqEa9NKzPqd3E=;
- b=h+pajDz3m4XZUqTFlaQVxPtcQPzwA7yMI2I9aemClWUrS6jzudQAza5o02EGuf1yRS
- RgYtUH3aeg41kRTdbDJsZ2OSAPDC92Ddd1Ste5BRlQPqcUC/rxZo++g8uywrFKu0P4Lm
- LXF4k/Vs2Q/4CuGhvuP7DCmFBE9WsNL76VbjU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=ONONQmKKLgRI6txfN7nZzG8ZKShi1zdqEa9NKzPqd3E=;
- b=phldHMucPpT2x71XAwANhKaROcgPqp1ND5Oaahx19eHAgD61UKrFS6KqmZKGJwEagW
- d12hq3Y0YuAuhPxl9sHoalysnFHy+6+J3H39VMgLZ1DEWaJoX9GdHeKQ5uDMvYH8x3rO
- 0gRbUCC/u60pPX8ssiIzIDMLl4clOzQutujtTPoVTutwFn91ctstuniC5p/uGJmXi5tN
- lYziA2ig5rFTw1qWayuASsuHvLaX1BJRrQFBERBJlUeD6SFhhywhFBo1Muask+UwAslG
- PmSOkSrywUcHaTjgPJ/1Ddk6fXM0IqQnnL9m1PdL9afUoPk5ozwMWiDAEsmR2b225xIX
- RDpw==
-X-Gm-Message-State: AOAM531r1NyS4Wtkbfb/lMBlq94KknfU754axUfOeszOVUOY7K1Sjo/b
- ms7vW42Kl3pAbU9FBAyCFYIP+g==
-X-Google-Smtp-Source: ABdhPJzgjekTt0EMEqjOTzklf7dGBWjpxXDSUb3/tzvk0WOQlACltMeiroiwrvOEBI7gaeLGoT4BFw==
-X-Received: by 2002:a63:ff53:: with SMTP id s19mr1306250pgk.347.1614315709698; 
- Thu, 25 Feb 2021 21:01:49 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-7ad2-5bb3-4fd4-d737.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:7ad2:5bb3:4fd4:d737])
- by smtp.gmail.com with ESMTPSA id h8sm7251059pfv.154.2021.02.25.21.01.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Feb 2021 21:01:49 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH v2 01/37] KVM: PPC: Book3S 64: remove unused
- kvmppc_h_protect argument
-In-Reply-To: <20210225134652.2127648-2-npiggin@gmail.com>
-References: <20210225134652.2127648-1-npiggin@gmail.com>
- <20210225134652.2127648-2-npiggin@gmail.com>
-Date: Fri, 26 Feb 2021 16:01:45 +1100
-Message-ID: <878s7ba0cm.fsf@linkitivity.dja.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dmynt0k0dz3cXW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 16:26:57 +1100 (AEDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 001F968BEB; Fri, 26 Feb 2021 06:17:40 +0100 (CET)
+Date: Fri, 26 Feb 2021 06:17:40 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Claire Chang <tientzu@chromium.org>
+Subject: Re: [PATCH v4 12/14] swiotlb: Add restricted DMA alloc/free support.
+Message-ID: <20210226051740.GB2072@lst.de>
+References: <20210209062131.2300005-1-tientzu@chromium.org>
+ <20210209062131.2300005-13-tientzu@chromium.org>
+ <CALiNf298+DLjTK6ALe0mYrRuCP_LtztMGuQQCS90ubDctbS0kw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALiNf298+DLjTK6ALe0mYrRuCP_LtztMGuQQCS90ubDctbS0kw@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,72 +46,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: heikki.krogerus@linux.intel.com, peterz@infradead.org, grant.likely@arm.com,
+ paulus@samba.org, Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>, sstabellini@kernel.org,
+ Saravana Kannan <saravanak@google.com>, Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ xen-devel@lists.xenproject.org, Thierry Reding <treding@nvidia.com>,
+ linux-devicetree <devicetree@vger.kernel.org>, Will Deacon <will@kernel.org>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ Rob Herring <robh+dt@kernel.org>, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
+ Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nick,
+On Fri, Feb 26, 2021 at 12:17:50PM +0800, Claire Chang wrote:
+> Do you think I should fix this and rebase on the latest linux-next
+> now? I wonder if there are more factor and clean up coming and I
+> should wait after that.
 
-> The va argument is not used in the function or set by its asm caller,
-> so remove it to be safe.
+Here is my preferred plan:
 
-Huh, so it isn't. I tracked the original implementation down to commit
-a8606e20e41a ("KVM: PPC: Handle some PAPR hcalls in the kernel") where
-paulus first added the ability to handle it in the kernel - there it
-takes a va argument but even then doesn't do anything with it.
+ 1) wait for my series to support the min alignment in swiotlb to
+    land in Linus tree
+ 2) I'll resend my series with the further swiotlb cleanup and
+    refactoring, which includes a slightly rebased version of your
+    patch to add the io_tlb_mem structure
+ 3) resend your series on top of that as a baseline
 
-ajd also pointed out that we don't pass a va when linux is running as a
-guest, and LoPAR does not mention va as an argument.
+This is my current WIP tree for 2:
 
-One small nit: checkpatch is complaining about spaces vs tabs:
-ERROR: code indent should use tabs where possible
-#25: FILE: arch/powerpc/include/asm/kvm_ppc.h:770:
-+                      unsigned long pte_index, unsigned long avpn);$
-
-WARNING: please, no spaces at the start of a line
-#25: FILE: arch/powerpc/include/asm/kvm_ppc.h:770:
-+                      unsigned long pte_index, unsigned long avpn);$
-
-Once that is resolved,
-  Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Kind regards,
-Daniel Axtens
-
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/include/asm/kvm_ppc.h  | 3 +--
->  arch/powerpc/kvm/book3s_hv_rm_mmu.c | 3 +--
->  2 files changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-> index 8aacd76bb702..9531b1c1b190 100644
-> --- a/arch/powerpc/include/asm/kvm_ppc.h
-> +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> @@ -767,8 +767,7 @@ long kvmppc_h_remove(struct kvm_vcpu *vcpu, unsigned long flags,
->                       unsigned long pte_index, unsigned long avpn);
->  long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu);
->  long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
-> -                      unsigned long pte_index, unsigned long avpn,
-> -                      unsigned long va);
-> +                      unsigned long pte_index, unsigned long avpn);
->  long kvmppc_h_read(struct kvm_vcpu *vcpu, unsigned long flags,
->                     unsigned long pte_index);
->  long kvmppc_h_clear_ref(struct kvm_vcpu *vcpu, unsigned long flags,
-> diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> index 88da2764c1bb..7af7c70f1468 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> +++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> @@ -673,8 +673,7 @@ long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu)
->  }
->  
->  long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
-> -		      unsigned long pte_index, unsigned long avpn,
-> -		      unsigned long va)
-> +		      unsigned long pte_index, unsigned long avpn)
->  {
->  	struct kvm *kvm = vcpu->kvm;
->  	__be64 *hpte;
-> -- 
-> 2.23.0
+  http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/swiotlb-struct
