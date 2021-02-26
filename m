@@ -1,91 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1C7325DB7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 07:51:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5225325E84
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 08:59:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dn0gd3hZcz3clh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 17:51:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dn2B45PPMz3cxd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 18:59:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rlvt+WNP;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=gbarmf2Q;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=oBzcI9hk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
+ helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=rlvt+WNP; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=gbarmf2Q; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=oBzcI9hk; 
+ dkim-atps=neutral
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dn0fg6rnQz3cXd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 17:50:51 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 11Q6m6QV062032; Fri, 26 Feb 2021 01:50:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=p7WJh7/ASqeoCdKCY6J33l2T/A0mLBreVtRhnuLK/Iw=;
- b=rlvt+WNPj40yL/npBXE/sXbWAZOn2kte0q3h7H+RdjFfhlAlaj6qdciuk4CuFWsFjdG3
- XaK2itvkz/wBA9eKZfCq/Jn+lWscZ/bJlUkzcEfUkdRUM7DnkF3TskBsrOLFVMuAOTwV
- 0Xtn/h9Xx+qZeQxZJcsnw6ra7vjKMp6kktJodsTUuzM6Ap5HtzS8payPUU4mughTIGiY
- ONvqbLnE4LYx3qKbbBAKpgirb3RluUiJ0Ga3wH6K+9+8bu+X0LeVGNkmBXKda69Reiy9
- pJFtpgPbWl0LMFRacx5TQoNgKx9F+X9K4ffoTqyQWgPtruPbY7DXpP31U6oNBDj486aA Hw== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36xv1s013g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Feb 2021 01:50:45 -0500
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11Q6lap3030997;
- Fri, 26 Feb 2021 06:50:42 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06fra.de.ibm.com with ESMTP id 36tsphanyk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Feb 2021 06:50:42 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 11Q6oQ9S32244212
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Feb 2021 06:50:26 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B413911C052;
- Fri, 26 Feb 2021 06:50:39 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3652711C058;
- Fri, 26 Feb 2021 06:50:38 +0000 (GMT)
-Received: from Madhavan.PrimaryTP (unknown [9.85.180.74])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 26 Feb 2021 06:50:37 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH V2 2/2] powerpc/perf: Add platform specific check_attr_config
-Date: Fri, 26 Feb 2021 12:20:25 +0530
-Message-Id: <20210226065025.1254973-2-maddy@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210226065025.1254973-1-maddy@linux.ibm.com>
-References: <20210226065025.1254973-1-maddy@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dn29c6hqcz3cWJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 18:59:16 +1100 (AEDT)
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1614326352;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=As1fDYfwKrjxkKoe6zW8X2eDIPaM0LZx7cH6HHLoVWs=;
+ b=gbarmf2Qo6ckmhKhSwECGeeDceFfmjCgsZgbKbhtGOe/ZVnrkkWOYHfk9EX/OvaW1rRLNX
+ 6LDrpfCyyASzExo2fQH3Wk6USh9mNHHsgvWuAZ0ub5xdUjEt5EUT6Vf5DxDGxiufDDA0dD
+ kAFR/HOCf19ewbMg3sDq6t6oq6IKm2/gnMZWkiBdDzKAc77Xol8evKFMxq42TLN5Mzy7Uy
+ RNyNAhsLGReJ53TJjBHzeNEoYHPjH6oRD0CNEhJq1Rdjk6kLa+SaZ2TLx2X4caPC7LziSo
+ LSCkRonnaAQbURvC/8avcnpGuSbPy+eih3OFwIP0fu687A4UJ2O4SpEJooilEQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1614326352;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=As1fDYfwKrjxkKoe6zW8X2eDIPaM0LZx7cH6HHLoVWs=;
+ b=oBzcI9hkvNT1WswvpyoaczL8Miw+ylH42+GPWw36ZoSpeUkMPSwywAxm3+Z0cvgGSedn2L
+ iPW16K6EswEd9nAg==
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH next v3 12/15] printk: introduce a kmsg_dump iterator
+In-Reply-To: <20210225202438.28985-13-john.ogness@linutronix.de>
+References: <20210225202438.28985-1-john.ogness@linutronix.de>
+ <20210225202438.28985-13-john.ogness@linutronix.de>
+Date: Fri, 26 Feb 2021 08:59:10 +0100
+Message-ID: <87a6rrxnsh.fsf@jogness.linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-02-26_01:2021-02-24,
- 2021-02-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- malwarescore=0 clxscore=1015 mlxlogscore=999 mlxscore=0 adultscore=0
- phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102260049
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,147 +69,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-hyperv@vger.kernel.org,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Douglas Anderson <dianders@chromium.org>, Paul Mackerras <paulus@samba.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Meyer <thomas@m3y3r.de>,
+ Vignesh Raghavendra <vigneshr@ti.com>, Wei Liu <wei.liu@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Stephen Hemminger <sthemmin@microsoft.com>, kernel test robot <lkp@intel.com>,
+ Anton Vorontsov <anton@enomsg.org>, clang-built-linux@googlegroups.com,
+ Joel Stanley <joel@jms.id.au>, Jason Wessel <jason.wessel@windriver.com>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, Wei Li <liwei391@huawei.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Kees Cook <keescook@chromium.org>,
+ Alistair Popple <alistair@popple.id.au>, Jeff Dike <jdike@addtoit.com>,
+ Colin Cross <ccross@android.com>, linux-um@lists.infradead.org,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ Nicholas Piggin <npiggin@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jordan Niethe <jniethe5@gmail.com>, Michael Kelley <mikelley@microsoft.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, Tony Luck <tony.luck@intel.com>,
+ kbuild-all@lists.01.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ linux-kernel@vger.kernel.org,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Richard Weinberger <richard@nod.at>, kgdb-bugreport@lists.sourceforge.net,
+ linux-mtd@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add platform specific attr.config value checks. Patch
-includes checks for both power9 and power10.
+Hello,
 
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
-Changelog v1:
-- No changes.
+Thank you kernel test robot!
 
- arch/powerpc/perf/isa207-common.c | 41 +++++++++++++++++++++++++++++++
- arch/powerpc/perf/isa207-common.h |  2 ++
- arch/powerpc/perf/power10-pmu.c   | 13 ++++++++++
- arch/powerpc/perf/power9-pmu.c    | 13 ++++++++++
- 4 files changed, 69 insertions(+)
+Despite all of my efforts to carefully construct and test this series,
+somehome I managed to miss a compile test with CONFIG_MTD_OOPS. That
+kmsg_dumper does require the dumper parameter so that it can use
+container_of().
 
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index e4f577da33d8..b255799f5b51 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -694,3 +694,44 @@ int isa207_get_alternatives(u64 event, u64 alt[], int size, unsigned int flags,
- 
- 	return num_alt;
- }
-+
-+int isa3_X_check_attr_config(struct perf_event *ev)
-+{
-+	u64 val, sample_mode;
-+	u64 event = ev->attr.config;
-+
-+	val = (event >> EVENT_SAMPLE_SHIFT) & EVENT_SAMPLE_MASK;
-+	sample_mode = val & 0x3;
-+
-+	/*
-+	 * MMCRA[61:62] is Randome Sampling Mode (SM).
-+	 * value of 0b11 is reserved.
-+	 */
-+	if (sample_mode == 0x3)
-+		return -1;
-+
-+	/*
-+	 * Check for all reserved value
-+	 */
-+	switch (val) {
-+	case 0x5:
-+	case 0x9:
-+	case 0xD:
-+	case 0x19:
-+	case 0x1D:
-+	case 0x1A:
-+	case 0x1E:
-+		return -1;
-+	}
-+
-+	/*
-+	 * MMCRA[48:51]/[52:55]) Threshold Start/Stop
-+	 * Events Selection.
-+	 * 0b11110000/0b00001111 is reserved.
-+	 */
-+	val = (event >> EVENT_THR_CTL_SHIFT) & EVENT_THR_CTL_MASK;
-+	if (((val & 0xF0) == 0xF0) || ((val & 0xF) == 0xF))
-+		return -1;
-+
-+	return 0;
-+}
-diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-index 1af0e8c97ac7..ae8eaf05efd1 100644
---- a/arch/powerpc/perf/isa207-common.h
-+++ b/arch/powerpc/perf/isa207-common.h
-@@ -280,4 +280,6 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
- 							struct pt_regs *regs);
- void isa207_get_mem_weight(u64 *weight);
- 
-+int isa3_X_check_attr_config(struct perf_event *ev);
-+
- #endif
-diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-index a901c1348cad..bc64354cab6a 100644
---- a/arch/powerpc/perf/power10-pmu.c
-+++ b/arch/powerpc/perf/power10-pmu.c
-@@ -106,6 +106,18 @@ static int power10_get_alternatives(u64 event, unsigned int flags, u64 alt[])
- 	return num_alt;
- }
- 
-+static int power10_check_attr_config(struct perf_event *ev)
-+{
-+	u64 val;
-+	u64 event = ev->attr.config;
-+
-+	val = (event >> EVENT_SAMPLE_SHIFT) & EVENT_SAMPLE_MASK;
-+	if (val == 0x10 || isa3_X_check_attr_config(ev))
-+		return -1;
-+
-+	return 0;
-+}
-+
- GENERIC_EVENT_ATTR(cpu-cycles,			PM_RUN_CYC);
- GENERIC_EVENT_ATTR(instructions,		PM_RUN_INST_CMPL);
- GENERIC_EVENT_ATTR(branch-instructions,		PM_BR_CMPL);
-@@ -559,6 +571,7 @@ static struct power_pmu power10_pmu = {
- 	.attr_groups		= power10_pmu_attr_groups,
- 	.bhrb_nr		= 32,
- 	.capabilities           = PERF_PMU_CAP_EXTENDED_REGS,
-+	.check_attr_config	= power10_check_attr_config,
- };
- 
- int init_power10_pmu(void)
-diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
-index 2a57e93a79dc..b3b9b226d053 100644
---- a/arch/powerpc/perf/power9-pmu.c
-+++ b/arch/powerpc/perf/power9-pmu.c
-@@ -151,6 +151,18 @@ static int power9_get_alternatives(u64 event, unsigned int flags, u64 alt[])
- 	return num_alt;
- }
- 
-+static int power9_check_attr_config(struct perf_event *ev)
-+{
-+	u64 val;
-+	u64 event = ev->attr.config;
-+
-+	val = (event >> EVENT_SAMPLE_SHIFT) & EVENT_SAMPLE_MASK;
-+	if (val == 0xC || isa3_X_check_attr_config(ev))
-+		return -1;
-+
-+	return 0;
-+}
-+
- GENERIC_EVENT_ATTR(cpu-cycles,			PM_CYC);
- GENERIC_EVENT_ATTR(stalled-cycles-frontend,	PM_ICT_NOSLOT_CYC);
- GENERIC_EVENT_ATTR(stalled-cycles-backend,	PM_CMPLU_STALL);
-@@ -437,6 +449,7 @@ static struct power_pmu power9_pmu = {
- 	.attr_groups		= power9_pmu_attr_groups,
- 	.bhrb_nr		= 32,
- 	.capabilities           = PERF_PMU_CAP_EXTENDED_REGS,
-+	.check_attr_config	= power9_check_attr_config,
- };
- 
- int init_power9_pmu(void)
--- 
-2.26.2
+I will discuss this with the printk team. But most likely we will just
+re-instate the dumper parameter in the callback.
 
+I apologize for the lack of care on my part.
+
+John Ogness
+
+On 2021-02-26, kernel test robot <lkp@intel.com> wrote:
+> Hi John,
+>
+> I love your patch! Yet something to improve:
+>
+> [auto build test ERROR on next-20210225]
+>
+> url:    https://github.com/0day-ci/linux/commits/John-Ogness/printk-remove-logbuf_lock/20210226-043457
+> base:    7f206cf3ec2bee4621325cfacb2588e5085c07f5
+> config: arm-randconfig-r024-20210225 (attached as .config)
+> compiler: clang version 13.0.0 (https://github.com/llvm/llvm-project a921aaf789912d981cbb2036bdc91ad7289e1523)
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # install arm cross compiling tool for clang build
+>         # apt-get install binutils-arm-linux-gnueabi
+>         # https://github.com/0day-ci/linux/commit/fc7f655cded40fc98ba5304c200e3a01e8291fb4
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review John-Ogness/printk-remove-logbuf_lock/20210226-043457
+>         git checkout fc7f655cded40fc98ba5304c200e3a01e8291fb4
+>         # save the attached .config to linux build tree
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=arm 
+>
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+>
+> All errors (new ones prefixed by >>):
+>
+>>> drivers/mtd/mtdoops.c:277:45: error: use of undeclared identifier 'dumper'
+>            struct mtdoops_context *cxt = container_of(dumper,
+>                                                       ^
+>>> drivers/mtd/mtdoops.c:277:45: error: use of undeclared identifier 'dumper'
+>>> drivers/mtd/mtdoops.c:277:45: error: use of undeclared identifier 'dumper'
+>    3 errors generated.
+>
+>
+> vim +/dumper +277 drivers/mtd/mtdoops.c
+>
+> 4b23aff083649e Richard Purdie 2007-05-29  274  
+> fc7f655cded40f John Ogness    2021-02-25  275  static void mtdoops_do_dump(enum kmsg_dump_reason reason)
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  276  {
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03 @277  	struct mtdoops_context *cxt = container_of(dumper,
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  278  			struct mtdoops_context, dump);
+> fc7f655cded40f John Ogness    2021-02-25  279  	struct kmsg_dump_iter iter;
+> fc2d557c74dc58 Seiji Aguchi   2011-01-12  280  
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  281  	/* Only dump oopses if dump_oops is set */
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  282  	if (reason == KMSG_DUMP_OOPS && !dump_oops)
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  283  		return;
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  284  
+> fc7f655cded40f John Ogness    2021-02-25  285  	kmsg_dump_rewind(&iter);
+> fc7f655cded40f John Ogness    2021-02-25  286  
+> df92cad8a03e83 John Ogness    2021-02-25  287  	if (test_and_set_bit(0, &cxt->oops_buf_busy))
+> df92cad8a03e83 John Ogness    2021-02-25  288  		return;
+> fc7f655cded40f John Ogness    2021-02-25  289  	kmsg_dump_get_buffer(&iter, true, cxt->oops_buf + MTDOOPS_HEADER_SIZE,
+> e2ae715d66bf4b Kay Sievers    2012-06-15  290  			     record_size - MTDOOPS_HEADER_SIZE, NULL);
+> df92cad8a03e83 John Ogness    2021-02-25  291  	clear_bit(0, &cxt->oops_buf_busy);
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  292  
+> c1cf1d57d14922 Mark Tomlinson 2020-09-03  293  	if (reason != KMSG_DUMP_OOPS) {
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  294  		/* Panics must be written immediately */
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  295  		mtdoops_write(cxt, 1);
+> c1cf1d57d14922 Mark Tomlinson 2020-09-03  296  	} else {
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  297  		/* For other cases, schedule work to write it "nicely" */
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  298  		schedule_work(&cxt->work_write);
+> 2e386e4bac9055 Simon Kagstrom 2009-11-03  299  	}
+> c1cf1d57d14922 Mark Tomlinson 2020-09-03  300  }
+> 4b23aff083649e Richard Purdie 2007-05-29  301  
+>
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
