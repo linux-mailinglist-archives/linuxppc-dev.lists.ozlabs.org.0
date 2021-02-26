@@ -1,92 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC7B83262C6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 13:35:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFA13263A3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 15:04:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dn8Hz52Mkz3clJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 23:35:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DnBGm614Pz3cZx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 01:04:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=QVWfGSVa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tZtoehDc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.25;
- helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=pc@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=QVWfGSVa; 
- dkim-atps=neutral
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
- [85.215.255.25])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=tZtoehDc; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dn8HS2hJRz3cY9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 23:34:41 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1614342864; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=dw+q1WLmGzOsGMmAJOvfwsS4BTIXf/hkYZF3tiu7RulYKbSl85h9KdMbxlzrnMmuBR
- X7vU+MBPhKHS+SYNbvqAkHiByXlAwbwPNDrUVAX4oWkatkWInDV2M9Qkg7rRhOj2Rv+l
- TsushvBh3JLvTfYFVhVdEUI4+E1qnQCpmbffSpYARqyoM+Y/4kRio9R5tdaVtUiFSKZk
- KSAK2CmAJfMt4wsHS58+KOIaSMWKT5ewNWd7jSaIDf5m9WRWtjg5PnWgb1q7RHemXiqQ
- tAJJGEURQP4v9b+NjUriLeg3MbrDwO2fB19gfMjzU8VwZpphqWbBb8rYVTdrte3JdBol
- BJCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1614342864;
- s=strato-dkim-0002; d=strato.com;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
- From:Subject:Sender;
- bh=BqVNl0fLElTLe0UGbmS3ufCrrjrJeu0ku3dq8TET8X4=;
- b=iiaQr0A459S+0Vh6bBTZw4L8b2nqXLj6j0i/qqThtDkpFC8cvg/5AuZ9IypT2i4TS6
- J9R1zOKZVfBqPNQgBFCebZtgCVFLtH1mTrz/78g/WSqd1ErT2OmTJp4YgNcc6QpHvhz+
- AiFlRIkHZhHLTUWZEDT6U8ky+qv8sNe4kQoOFELnFXvH2JWmmOYerazGa9U39uq1SuSR
- QCjkc/7k2bxixA5IMQjazGhybA5efz7B3OFAj8/UYZzIi1kBoM17wzCN7NPym3qWGGk/
- ONzPt5kKI9paDoZCbeinYCZvTj/9dj2JtogLnC5W1jBXLjBwPV/iYSnJorDLmnZ01Mwl
- c/4g==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1614342864;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
- From:Subject:Sender;
- bh=BqVNl0fLElTLe0UGbmS3ufCrrjrJeu0ku3dq8TET8X4=;
- b=QVWfGSVabr3Li1J4vr1AID9HgQ1bQLX9ddtskVT47seWvfB52MsRbBVrHA5IIQoCsk
- cx+oKkf9aNl03Jx5LLsKQ0fYoqmPYSbgRKY3rl2wjsxs5RbXB0SJOuOXVjXK/H+kMn8R
- U7xjkSUkwLTE2c1arSmT6WjvZUn5SvezQcyOPEj62dgDLEc71IVP0JS0h3/QEcVD+3H4
- QQNezJJ2TvK6SlF/fUtL1xp4bvf1Zp8WK8Xl0Z5XaYLzbLPfMxSCpgCl450N4fcwFKKo
- NGQvh28V9isR5TH5RfOW9VW3HXesKDkPxB3LAWY8YT+oF0hSVLTS1pdtWGPzFZetCGjI
- zjdQ==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedV4hZUhZXBExZ2DJ7LHPgWa3z87SbrHJ42YbESqWpiG"
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a01:598:a902:b981:30b1:c800:338c:5f10]
- by smtp.strato.de (RZmta 47.19.0 AUTH)
- with ESMTPSA id a070ddx1QCYMNSG
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Fri, 26 Feb 2021 13:34:22 +0100 (CET)
-Subject: Latest Git kernel doesn't compile because of the LINUX_VERSION_CODE
- issue
-To: Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <13741214-bafc-1ee5-4157-854c14dae17c@xenosoft.de>
- <CAOesGMgtAXPQRThhkF5QR25R+F68F5C_HSUvFPW0Wk1DcpCwvA@mail.gmail.com>
- <877dmythcr.fsf@mpe.ellerman.id.au>
- <CAOSf1CHQ=QDwH=J4kLYqboe481poa7EdbC6gzq29W7KYHhn1YQ@mail.gmail.com>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <99f6d05a-d431-7444-bb0a-180c042c2afd@xenosoft.de>
-Date: Fri, 26 Feb 2021 13:34:22 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DnBGH4chnz3cYD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Feb 2021 01:03:50 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 11QE2iM4137022; Fri, 26 Feb 2021 09:03:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=2/89xUzGTiALtQ4njlH/dWXYbNGQOyGMyxLKQ7KkzrU=;
+ b=tZtoehDcB0H6VhYT7gQP9CVLq/89Cb4jio3GO46iLlSy9p/w16RuredoWTcVM2JMEtzQ
+ MffJHy3w9gxycdpu6Y3Ghm3GNJz5+Vakok9PUy0dlnIvmBW3uXlV4ySrtGQM7YMm0I5/
+ qmReDdVsszPR2IvkC9GyspJlXFVzgO6k8J4MjOHkhWSG4K3+Iuio4zWRAv3PNjq0ztOu
+ 6hhThXBrdYWxvT1MNB8euK5WVYIW6mgvxbqso5uHAyGsBJHK4SU/oFOdOHjSoGAD9L0m
+ vrunPkMvvxYq6lz/T3FvB/BLrS+L9r/G/f7Ym3n/bvXWhhpM5NDqJ67nSeIsuq3+/r4M zQ== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36y02svrmg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Feb 2021 09:03:43 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11QE2xlX011714;
+ Fri, 26 Feb 2021 14:03:43 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma02dal.us.ibm.com with ESMTP id 36tt2atp2x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Feb 2021 14:03:43 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 11QE3geP36045210
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 Feb 2021 14:03:42 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 767782805C;
+ Fri, 26 Feb 2021 14:03:42 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 24D0728060;
+ Fri, 26 Feb 2021 14:03:42 +0000 (GMT)
+Received: from li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com (unknown
+ [9.80.207.80]) by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Fri, 26 Feb 2021 14:03:42 +0000 (GMT)
+Date: Fri, 26 Feb 2021 08:03:40 -0600
+From: "Paul A. Clarke" <pc@us.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [PATCH V2 1/2] powerpc/perf: Infrastructure to support checking
+ of attr.config*
+Message-ID: <20210226140340.GA36821@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+References: <20210226065025.1254973-1-maddy@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <CAOSf1CHQ=QDwH=J4kLYqboe481poa7EdbC6gzq29W7KYHhn1YQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210226065025.1254973-1-maddy@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-02-26_02:2021-02-24,
+ 2021-02-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015
+ mlxscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
+ adultscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102260109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,55 +97,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+Another drive-by review... just some minor nits, below...
 
-I tried to compile the latest Git kernel today. Unfortunately it doesn't 
-compile.
+On Fri, Feb 26, 2021 at 12:20:24PM +0530, Madhavan Srinivasan wrote:
+> Introduce code to support the checking of attr.config* for
+> values which are reserved for a given platform.
+> Performance Monitoring Unit (PMU) configuration registers
+> have fields that are reserved and specific value to bit field
 
-Error messages:
+I'd reword to "some specific values for bit fields are reserved".
 
-   CC      arch/powerpc/kernel/udbg_16550.o
-In file included from ./include/linux/stackprotector.h:10:0,
-                  from arch/powerpc/kernel/smp.c:35:
-./arch/powerpc/include/asm/stackprotector.h: In function 
-‘boot_init_stack_canary’:
-./arch/powerpc/include/asm/stackprotector.h:29:30: error: expected 
-expression before ‘;’ token
-   canary ^= LINUX_VERSION_CODE;
-                               ^
-scripts/Makefile.build:271: recipe for target 
-'arch/powerpc/kernel/smp.o' failed
-make[2]: *** [arch/powerpc/kernel/smp.o] Error 1
+> as reserved. For ex., MMCRA[61:62] is Randome Sampling Mode (SM)
 
-----
+s/Randome/Random/
+This occurs here, and below, and in patch 2/2.
 
-drivers/media/cec/core/cec-api.c: In function ‘cec_adap_g_caps’:
-drivers/media/cec/core/cec-api.c:85:35: error: expected expression 
-before ‘;’ token
-   caps.version = LINUX_VERSION_CODE;
+> and value of 0b11 to this field is reserved.
 
-----
+s/to/for/
 
-I have found the bad commit. It's "Merge tag 'kbuild-v5.12' of 
-git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild" [1]
+> Writing a non-zero values in these fields or writing invalid
+> value to bit fields will have unknown behaviours.
 
-The changes in the Makefile (a/Makefile) are responsible for the 
-compiling errors. [2]
+Suggest: Writing non-zero or invalid values in these fields
+will have unknown behaviors. (or "behaviours" ;-)
 
-I was able to revert this bad commit. After that it compiled without any 
-problems.
+PC
 
-Could you please compile the latest Git kernel and confirm this issue?
-
-Thanks,
-Christian
-
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6fbd6cf85a3be127454a1ad58525a3adcf8612ab
-[2] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/Makefile?id=6fbd6cf85a3be127454a1ad58525a3adcf8612ab
+> Patch adds a generic call-back function "check_attr_config"
+> in "struct power_pmu", to be called in event_init to
+> check for attr.config* values for a given platform.
+> "check_attr_config" is valid only for raw event type.
+> 
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> ---
+> Changelog v1:
+> -Fixed commit message and in-code comments
+> 
+>  arch/powerpc/include/asm/perf_event_server.h |  6 ++++++
+>  arch/powerpc/perf/core-book3s.c              | 14 ++++++++++++++
+>  2 files changed, 20 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
+> index 00e7e671bb4b..dde97d7d9253 100644
+> --- a/arch/powerpc/include/asm/perf_event_server.h
+> +++ b/arch/powerpc/include/asm/perf_event_server.h
+> @@ -67,6 +67,12 @@ struct power_pmu {
+>  	 * the pmu supports extended perf regs capability
+>  	 */
+>  	int		capabilities;
+> +	/*
+> +	 * Function to check event code for values which are
+> +	 * reserved. Function takes struct perf_event as input,
+> +	 * since event code could be spread in attr.config*
+> +	 */
+> +	int		(*check_attr_config)(struct perf_event *ev);
+>  };
+> 
+>  /*
+> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+> index 6817331e22ff..c6eeb4fdc5fd 100644
+> --- a/arch/powerpc/perf/core-book3s.c
+> +++ b/arch/powerpc/perf/core-book3s.c
+> @@ -1958,6 +1958,20 @@ static int power_pmu_event_init(struct perf_event *event)
+> 
+>  		if (ppmu->blacklist_ev && is_event_blacklisted(ev))
+>  			return -EINVAL;
+> +		/*
+> +		 * PMU config registers have fields that are
+> +		 * reserved and specific value to bit field as reserved.
+> +		 * For ex., MMCRA[61:62] is Randome Sampling Mode (SM)
+> +		 * and value of 0b11 to this field is reserved.
+> +		 *
+> +		 * This check is needed only for raw event type,
+> +		 * since tools like fuzzer use raw event type to
+> +		 * provide randomized event code values for test.
+> +		 *
+> +		 */
+> +		if (ppmu->check_attr_config &&
+> +		    ppmu->check_attr_config(event))
+> +			return -EINVAL;
+>  		break;
+>  	default:
+>  		return -ENOENT;
+> -- 
+> 2.26.2
+> 
