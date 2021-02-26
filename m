@@ -1,65 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6259832601D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 10:36:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96609326049
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 10:41:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dn4KB2lptz3cy4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 20:35:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dn4S24NZnz3clw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Feb 2021 20:41:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=MXkFn+z7;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YlJGaB2H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=MXkFn+z7; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::72b;
+ helo=mail-qk1-x72b.google.com; envelope-from=tientzu@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=YlJGaB2H; dkim-atps=neutral
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com
+ [IPv6:2607:f8b0:4864:20::72b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dn4Jg4kr7z3cXh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 20:35:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=W1YHXCHuslkzyplkfwCtvRWbMC7QKmPwyjme1/hkYgs=; b=MXkFn+z70vlh7OF/fD0z+fkPLh
- eLDE/4SKXciycwprcA7cHjJdKwwSP3Zm/IJx4qbmBPocxZbgDF2/177Jsj+KpsehtT9lC272xEaZj
- 7/oeV9+wShxG3eYnPd6YpfVs97emH/xhhFUhWGmT8Ygu26Rn1qvRM0DC2a+GDKiOJwWX46WBLqPa1
- +YPgX2SydBUB4ABu5k/hDcGUOdBHsqdCR9ff9sfcWpbSwiW7h7BJhiTSK+6wgItxycLiUbp9taHi5
- svI+ngNDg4Z6cE6eAftyAjZS4Mewyt3jBMWf31aP1ktoz759F5y8UN7TzqJZqqmemiNXkokdXv2HK
- +XADsZ4Q==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lFZWn-0004uu-DI; Fri, 26 Feb 2021 09:35:17 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B7B5F30504E;
- Fri, 26 Feb 2021 10:35:14 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 776942D9ACDCE; Fri, 26 Feb 2021 10:35:14 +0100 (CET)
-Date: Fri, 26 Feb 2021 10:35:14 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2] powerpc/perf: Fix handling of privilege level checks
- in perf interrupt context
-Message-ID: <YDjA0giNnkfHeYM5@hirez.programming.kicks-ass.net>
-References: <1614247839-1428-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dn4Rb2nJ6z30Jb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 20:41:28 +1100 (AEDT)
+Received: by mail-qk1-x72b.google.com with SMTP id q85so8461571qke.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 01:41:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=E8MT/YBSt9+GOAVKSt/z+/x/oAmJs4mba4MVCW+FEPI=;
+ b=YlJGaB2HjeORjhsgYOy8pctb9+8JkGl/ZdIRVJcfQxCMoR62lL7XtrY95NgsqhINjE
+ lSgvnnp9tfO6u1oKErjW0g+HTDOG3GFiOyn5d4dJiyFIJKbzFBupmPEB/V7jXmUb4d2q
+ N9u5qLxflCWFXhFfzUGrtIkZV0aKvT2pOtERk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=E8MT/YBSt9+GOAVKSt/z+/x/oAmJs4mba4MVCW+FEPI=;
+ b=EE4Bes7D3L9U2fIV5Q8wOQNKlRlsqSYQMe9/qZNhu4HsL0ZGFoHbNtvvlyF060FCK9
+ yzSKs/Dw7KqvgSNcSAwZEseOcn2dxXQLRwoTFEU1XetRf7XIW2julSoP5yCcNzOuKGC0
+ KhnPqGAgng8lrReYq5ALWx/3VLddNMR1LYKQPsG9UviRacbhEx++4biPxVfoHIbF+8Fa
+ XDYx2cQp7JWZs+qZNQHJy67x000dFdgb08G0zNM/FSYfgfHBhG+l2oburSiWUMotsO+o
+ 8IB+IkJTif8Ui81NRIzho7VURZleFvl3TyAGML26fGzdguhiCd/Bi8vMqZY7c1htzJpb
+ +FKQ==
+X-Gm-Message-State: AOAM531h9410z6MsSKfpv330n/ndwA/r90iyDLBsN+79T23KOn6NJB7h
+ /BwHjEi5OE+QKALHGJ6MGGEFXFSm9kluXA==
+X-Google-Smtp-Source: ABdhPJxpMrFt/P1VQSCGPDfa8V2ZQxD2WgzsB3R4MYAd0GrZgM4uNlh3v/ZXeS0eYejK3jY9yPo49g==
+X-Received: by 2002:a05:620a:1251:: with SMTP id
+ a17mr1749548qkl.431.1614332481640; 
+ Fri, 26 Feb 2021 01:41:21 -0800 (PST)
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com.
+ [209.85.222.178])
+ by smtp.gmail.com with ESMTPSA id g7sm5569745qtc.39.2021.02.26.01.41.21
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 Feb 2021 01:41:21 -0800 (PST)
+Received: by mail-qk1-f178.google.com with SMTP id n28so6968638qkk.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 01:41:21 -0800 (PST)
+X-Received: by 2002:a02:b61a:: with SMTP id h26mr2057255jam.90.1614332168202; 
+ Fri, 26 Feb 2021 01:36:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1614247839-1428-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+References: <20210209062131.2300005-1-tientzu@chromium.org>
+ <20210209062131.2300005-13-tientzu@chromium.org>
+ <CALiNf298+DLjTK6ALe0mYrRuCP_LtztMGuQQCS90ubDctbS0kw@mail.gmail.com>
+ <20210226051740.GB2072@lst.de>
+In-Reply-To: <20210226051740.GB2072@lst.de>
+From: Claire Chang <tientzu@chromium.org>
+Date: Fri, 26 Feb 2021 17:35:57 +0800
+X-Gmail-Original-Message-ID: <CALiNf29tSQ1R8zh35neQWuWqDPek+Jr8QzyPQQvTsW2cZBMEUw@mail.gmail.com>
+Message-ID: <CALiNf29tSQ1R8zh35neQWuWqDPek+Jr8QzyPQQvTsW2cZBMEUw@mail.gmail.com>
+Subject: Re: [PATCH v4 12/14] swiotlb: Add restricted DMA alloc/free support.
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,34 +85,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, omosnace@redhat.com, acme@kernel.org, jolsa@kernel.org,
- linuxppc-dev@lists.ozlabs.org, kan.liang@linux.intel.com
+Cc: heikki.krogerus@linux.intel.com, peterz@infradead.org, grant.likely@arm.com,
+ paulus@samba.org, Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>, sstabellini@kernel.org,
+ Saravana Kannan <saravanak@google.com>, Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ xen-devel@lists.xenproject.org, Thierry Reding <treding@nvidia.com>,
+ linux-devicetree <devicetree@vger.kernel.org>, Will Deacon <will@kernel.org>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ Rob Herring <robh+dt@kernel.org>, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
+ Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 25, 2021 at 05:10:39AM -0500, Athira Rajeev wrote:
-> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-> index 4b4319d8..c8be44c 100644
-> --- a/arch/powerpc/perf/core-book3s.c
-> +++ b/arch/powerpc/perf/core-book3s.c
-> @@ -222,7 +222,7 @@ static inline void perf_get_data_addr(struct perf_event *event, struct pt_regs *
->  	if (!(mmcra & MMCRA_SAMPLE_ENABLE) || sdar_valid)
->  		*addrp = mfspr(SPRN_SDAR);
->  
-> -	if (is_kernel_addr(mfspr(SPRN_SDAR)) && perf_allow_kernel(&event->attr) != 0)
-> +	if (is_kernel_addr(mfspr(SPRN_SDAR)) && event->attr.exclude_kernel)
->  		*addrp = 0;
->  }
->  
-> @@ -507,7 +507,7 @@ static void power_pmu_bhrb_read(struct perf_event *event, struct cpu_hw_events *
->  			 * addresses, hence include a check before filtering code
->  			 */
->  			if (!(ppmu->flags & PPMU_ARCH_31) &&
-> -				is_kernel_addr(addr) && perf_allow_kernel(&event->attr) != 0)
-> +			    is_kernel_addr(addr) && event->attr.exclude_kernel)
->  				continue;
->  
->  			/* Branches are read most recent first (ie. mfbhrb 0 is
+On Fri, Feb 26, 2021 at 1:17 PM Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Fri, Feb 26, 2021 at 12:17:50PM +0800, Claire Chang wrote:
+> > Do you think I should fix this and rebase on the latest linux-next
+> > now? I wonder if there are more factor and clean up coming and I
+> > should wait after that.
+>
+> Here is my preferred plan:
+>
+>  1) wait for my series to support the min alignment in swiotlb to
+>     land in Linus tree
+>  2) I'll resend my series with the further swiotlb cleanup and
+>     refactoring, which includes a slightly rebased version of your
+>     patch to add the io_tlb_mem structure
+>  3) resend your series on top of that as a baseline
+>
+> This is my current WIP tree for 2:
+>
+>   http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/swiotlb-struct
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Sounds good to me. Thanks!
