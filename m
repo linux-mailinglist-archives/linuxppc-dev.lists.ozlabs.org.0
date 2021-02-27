@@ -2,57 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A514326CB4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 11:31:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C19E326DA4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 16:44:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DnjVy48zGz3d42
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 21:31:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DnrRN3sFtz3d3l
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Feb 2021 02:44:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=zaPKWwVU;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=210.131.2.82;
+ helo=conssluserg-03.nifty.com; envelope-from=masahiroy@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
+ header.s=dec2015msa header.b=zaPKWwVU; 
+ dkim-atps=neutral
+Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com
+ [210.131.2.82])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DnjVd40Hjz30Gl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Feb 2021 21:31:18 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DnjVW038rz9ty5v;
- Sat, 27 Feb 2021 11:31:15 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 4h_HczVVdAdx; Sat, 27 Feb 2021 11:31:14 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DnjVV54hBz9ty5t;
- Sat, 27 Feb 2021 11:31:14 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EC11A8B77A;
- Sat, 27 Feb 2021 11:31:15 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id W-ItOljZNSxg; Sat, 27 Feb 2021 11:31:15 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 186948B75B;
- Sat, 27 Feb 2021 11:31:15 +0100 (CET)
-Subject: Re: [PATCH] powerpc/bug: Remove specific powerpc BUG_ON()
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <694c7195c81d1bcc781b3c14f452886683d6c524.1613029237.git.christophe.leroy@csgroup.eu>
- <20210211114910.GA28121@gate.crashing.org>
- <6126ca14-419a-9e15-7ffa-b295f26a552e@csgroup.eu>
- <20210211143059.GE28121@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <f6f7ae76-c6d9-9a5e-043d-07f6d0270ceb@csgroup.eu>
-Date: Sat, 27 Feb 2021 11:31:08 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DnrQx0CFZz3cYK
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Feb 2021 02:43:36 +1100 (AEDT)
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com
+ [209.85.216.48]) (authenticated)
+ by conssluserg-03.nifty.com with ESMTP id 11RFhBBc006800
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Feb 2021 00:43:12 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 11RFhBBc006800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1614440592;
+ bh=9Bbuya5OLwd9CXPYjZ2K4mJy3xnCZuoMQAuWTWp7Dws=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=zaPKWwVUB4MG14b3VtvOQWR0fOS1fjhsxx4ENWOGanHanpXxh2DfExIsykRuTOnAy
+ 08I6qsePaNCukp7ii+87oYitqj5SOkC34mcUeIjMnKnimfwiXl5/rG4l0VkZk70hEv
+ AEsq9TlM+rswW/aEOEswfEkrvB9A39N1KmHhsj+DVnoNWwM5WAZzYnlZoXNuCVEIqI
+ odRlvIcQc8vOuG7XYAwOJ0AgqQorQGviag9eqxVi+yJDam77byK699v/0LwEhJsIsz
+ ZexkVesAqiMHGHlJUokLTuXtaWr9IYdd/wuBzPt62g4tBesKv/JunT0pJGHn8O8AIR
+ c6KEhGblpnzWg==
+X-Nifty-SrcIP: [209.85.216.48]
+Received: by mail-pj1-f48.google.com with SMTP id e9so5099425pjs.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Feb 2021 07:43:11 -0800 (PST)
+X-Gm-Message-State: AOAM532z58z3A3zWoommTij4VnH/eIxRHuoWEsPMgzciWL05oI+k0RSS
+ cEtKrhYcuNBSWF+obgKdlOf7RlER06jrIu/4vw8=
+X-Google-Smtp-Source: ABdhPJxs4OZng8FebjBpFup2MaFnkLYA4Q00zjjmb4EZz+Lk6aleOqwS9qsrPzbTW+EglUQTTRkktXez2846SGvkoYs=
+X-Received: by 2002:a17:902:bb87:b029:e1:d1f:2736 with SMTP id
+ m7-20020a170902bb87b02900e10d1f2736mr7884830pls.1.1614440591117; Sat, 27 Feb
+ 2021 07:43:11 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20210211143059.GE28121@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <13741214-bafc-1ee5-4157-854c14dae17c@xenosoft.de>
+ <CAOesGMgtAXPQRThhkF5QR25R+F68F5C_HSUvFPW0Wk1DcpCwvA@mail.gmail.com>
+ <877dmythcr.fsf@mpe.ellerman.id.au>
+ <CAOSf1CHQ=QDwH=J4kLYqboe481poa7EdbC6gzq29W7KYHhn1YQ@mail.gmail.com>
+ <99f6d05a-d431-7444-bb0a-180c042c2afd@xenosoft.de>
+ <e73a866b-f755-f227-e60a-4be05f467221@csgroup.eu>
+ <93173e85-3663-8d79-ca4b-f38b505e6e05@xenosoft.de>
+ <80696a7a-44fb-9ce0-76a4-42006ebe2928@csgroup.eu>
+In-Reply-To: <80696a7a-44fb-9ce0-76a4-42006ebe2928@csgroup.eu>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sun, 28 Feb 2021 00:42:34 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASeMc-C6VZ3w=fJZRgfRH2pvZpFoo4XYFcxw8rMLWtEAg@mail.gmail.com>
+Message-ID: <CAK7LNASeMc-C6VZ3w=fJZRgfRH2pvZpFoo4XYFcxw8rMLWtEAg@mail.gmail.com>
+Subject: Re: Latest Git kernel doesn't compile because of the
+ LINUX_VERSION_CODE issue
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,55 +81,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Darren Stevens <darren@stevens-zone.net>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <chzigotzky@xenosoft.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, Feb 27, 2021 at 4:34 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+> Le 27/02/2021 =C3=A0 08:13, Christian Zigotzky a =C3=A9crit :
+> > Hello Christophe,
+> >
+> > Thanks a lot for compiling the latest git kernel.
+> >
+> > I have solved the compiling issue through setting up a value for the SU=
+BLEVEL variable in
+> > "a/Makefile". Before it wasn't necessary to set up a value for the SUBL=
+EVEL variable.
+>
+> I see, so it is a regression introduced by commit 9b82f13e7ef3 ("kbuild: =
+clamp SUBLEVEL to 255").
+>
+> In the past there had already been such a regression at some point, which=
+ had then been fixed by
+> commit cacd54ef49b7 ("kbuild: Fix KERNELVERSION for empty SUBLEVEL or PAT=
+CHLEVEL")
+>
+> Sasha, can you fix it ?
 
 
-Le 11/02/2021 à 15:30, Segher Boessenkool a écrit :
-> On Thu, Feb 11, 2021 at 03:09:43PM +0100, Christophe Leroy wrote:
->> Le 11/02/2021 à 12:49, Segher Boessenkool a écrit :
->>> On Thu, Feb 11, 2021 at 07:41:52AM +0000, Christophe Leroy wrote:
->>>> powerpc BUG_ON() is based on using twnei or tdnei instruction,
->>>> which obliges gcc to format the condition into a 0 or 1 value
->>>> in a register.
->>>
->>> Huh?  Why is that?
->>>
->>> Will it work better if this used __builtin_trap?  Or does the kernel only
->>> detect very specific forms of trap instructions?
->>
->> We already made a try with __builtin_trap() 1,5 year ago, see
->> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20510ce03cc9463f1c9e743c1d93b939de501b53.1566219503.git.christophe.leroy@c-s.fr/
->>
->> The main problems encountered are:
->> - It is only possible to use it for BUG_ON, not for WARN_ON because GCC
->> considers it as noreturn. Is there any workaround ?
-> 
-> A trap is noreturn by definition:
-> 
->   -- Built-in Function: void __builtin_trap (void)
->       This function causes the program to exit abnormally.
-> 
->> - The kernel (With CONFIG_DEBUG_BUGVERBOSE) needs to be able to identify
->> the source file and line corresponding to the trap. How can that be done
->> with __builtin_trap() ?
-> 
-> The DWARF debug info should be sufficient.  Perhaps you can post-process
-> some way?
-> 
-> You can create a trap that falls through yourself (by having a trap-on
-> condition with a condition that is always true, but make the compiler
-> not see that).  This isn't efficient though.
-> 
-> Could you file a feature request (in bugzilla)?  It is probably useful
-> for generic code as well, but we could implement this for powerpc only
-> if needed.
-> 
 
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99299
+Thanks for catching this.
 
-Christophe
+I submitted a patch:
+https://lore.kernel.org/patchwork/patch/1385119/
+
+
+
+
+
+
+> Thanks
+> Christophe
+>
+>
+> >
+> > Cheers,
+> > Christian
+> >
+> > On 26 February 21 at 5:10 pm, Christophe Leroy wrote:
+> >>
+> >>
+> >> Le 26/02/2021 =C3=A0 13:34, Christian Zigotzky a =C3=A9crit :
+> >>> Hello,
+> >>>
+> >>> I tried to compile the latest Git kernel today. Unfortunately it does=
+n't compile.
+> >>
+> >> I have no such problem with latest git kernel.
+> >>
+> >> Christophe
+> >>
+> >>>
+> >>> Error messages:
+> >>>
+> >>>    CC      arch/powerpc/kernel/udbg_16550.o
+> >>> In file included from ./include/linux/stackprotector.h:10:0,
+> >>>                   from arch/powerpc/kernel/smp.c:35:
+> >>> ./arch/powerpc/include/asm/stackprotector.h: In function =E2=80=98boo=
+t_init_stack_canary=E2=80=99:
+> >>> ./arch/powerpc/include/asm/stackprotector.h:29:30: error: expected ex=
+pression before =E2=80=98;=E2=80=99 token
+> >>>    canary ^=3D LINUX_VERSION_CODE;
+> >>>                                ^
+> >>> scripts/Makefile.build:271: recipe for target 'arch/powerpc/kernel/sm=
+p.o' failed
+> >>> make[2]: *** [arch/powerpc/kernel/smp.o] Error 1
+> >>>
+> >>> ----
+> >>>
+> >>> drivers/media/cec/core/cec-api.c: In function =E2=80=98cec_adap_g_cap=
+s=E2=80=99:
+> >>> drivers/media/cec/core/cec-api.c:85:35: error: expected expression be=
+fore =E2=80=98;=E2=80=99 token
+> >>>    caps.version =3D LINUX_VERSION_CODE;
+> >>>
+> >>> ----
+> >>>
+> >>> I have found the bad commit. It's "Merge tag 'kbuild-v5.12' of
+> >>> git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild"=
+ [1]
+> >>>
+> >>> The changes in the Makefile (a/Makefile) are responsible for the comp=
+iling errors. [2]
+> >>>
+> >>> I was able to revert this bad commit. After that it compiled without =
+any problems.
+> >>>
+> >>> Could you please compile the latest Git kernel and confirm this issue=
+?
+> >>>
+> >>> Thanks,
+> >>> Christian
+> >>>
+> >>> [1]
+> >>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
+mmit/?id=3D6fbd6cf85a3be127454a1ad58525a3adcf8612ab
+> >>>
+> >>> [2]
+> >>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/di=
+ff/Makefile?id=3D6fbd6cf85a3be127454a1ad58525a3adcf8612ab
+> >>>
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
