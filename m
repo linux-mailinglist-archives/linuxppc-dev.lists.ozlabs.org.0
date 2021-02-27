@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F3E6326AFA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 02:15:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A2B326AFE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 02:16:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DnT8g73fyz3dYF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 12:14:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DnTB76dCZz3dvH
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Feb 2021 12:16:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,26 +17,26 @@ Received: from h2.fbrelay.privateemail.com (h2.fbrelay.privateemail.com
  [131.153.2.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DnT6g4rNfz3cYJ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DnT6g6Jn9z3cYv
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Feb 2021 12:13:15 +1100 (AEDT)
 Received: from MTA-14-4.privateemail.com (mta-14.privateemail.com
  [198.54.118.205])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id D688180C6E
+ by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id EC39180C6C
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 20:13:10 -0500 (EST)
 Received: from mta-14.privateemail.com (localhost [127.0.0.1])
- by mta-14.privateemail.com (Postfix) with ESMTP id 23DEF8007E
+ by mta-14.privateemail.com (Postfix) with ESMTP id 67D1A80085
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Feb 2021 20:13:08 -0500 (EST)
 Received: from oc8246131445.ibm.com (unknown [10.20.151.203])
- by mta-14.privateemail.com (Postfix) with ESMTPA id E8A0380085
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Feb 2021 01:13:07 +0000 (UTC)
+ by mta-14.privateemail.com (Postfix) with ESMTPA id 37F8B80086
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Feb 2021 01:13:08 +0000 (UTC)
 From: "Christopher M. Riedl" <cmr@codefail.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v7 05/10] powerpc/signal64: Remove TM ifdefery in middle of
- if/else block
-Date: Fri, 26 Feb 2021 19:12:54 -0600
-Message-Id: <20210227011259.11992-6-cmr@codefail.de>
+Subject: [PATCH v7 06/10] powerpc/signal64: Replace setup_sigcontext() w/
+ unsafe_setup_sigcontext()
+Date: Fri, 26 Feb 2021 19:12:55 -0600
+Message-Id: <20210227011259.11992-7-cmr@codefail.de>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20210227011259.11992-1-cmr@codefail.de>
 References: <20210227011259.11992-1-cmr@codefail.de>
@@ -58,200 +58,171 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Both rt_sigreturn() and handle_rt_signal_64() contain TM-related ifdefs
-which break-up an if/else block. Provide stubs for the ifdef-guarded TM
-functions and remove the need for an ifdef in rt_sigreturn().
+Previously setup_sigcontext() performed a costly KUAP switch on every
+uaccess operation. These repeated uaccess switches cause a significant
+drop in signal handling performance.
 
-Rework the remaining TM ifdef in handle_rt_signal64() similar to
-commit f1cf4f93de2f ("powerpc/signal32: Remove ifdefery in middle of if/else").
-
-Unlike in the commit for ppc32, the ifdef can't be removed entirely
-since uc_transact in sigframe depends on CONFIG_PPC_TRANSACTIONAL_MEM.
+Rewrite setup_sigcontext() to assume that a userspace write access window
+is open by replacing all uaccess functions with their 'unsafe' versions.
+Modify the callers to first open, call unsafe_setup_sigcontext() and
+then close the uaccess window.
 
 Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
 ---
- arch/powerpc/kernel/process.c   |   3 +-
- arch/powerpc/kernel/signal_64.c | 102 ++++++++++++++++----------------
- 2 files changed, 54 insertions(+), 51 deletions(-)
+v7:	* Don't use unsafe_op_wrap() since Christophe indicates this
+	  macro may go away in the future.
+---
+ arch/powerpc/kernel/signal_64.c | 72 ++++++++++++++++++++-------------
+ 1 file changed, 45 insertions(+), 27 deletions(-)
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 924d023dad0a..08c3fbe45921 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1117,9 +1117,10 @@ void restore_tm_state(struct pt_regs *regs)
- 	regs->msr |= msr_diff;
- }
- 
--#else
-+#else /* !CONFIG_PPC_TRANSACTIONAL_MEM */
- #define tm_recheckpoint_new_task(new)
- #define __switch_to_tm(prev, new)
-+void tm_reclaim_current(uint8_t cause) {}
- #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
- 
- static inline void save_sprs(struct thread_struct *t)
 diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index 6ca546192cbf..bd8d210c9115 100644
+index bd8d210c9115..78ae4bb4e590 100644
 --- a/arch/powerpc/kernel/signal_64.c
 +++ b/arch/powerpc/kernel/signal_64.c
-@@ -594,6 +594,12 @@ static long restore_tm_sigcontexts(struct task_struct *tsk,
+@@ -101,9 +101,14 @@ static void prepare_setup_sigcontext(struct task_struct *tsk)
+  * Set up the sigcontext for the signal frame.
+  */
  
- 	return err;
- }
-+#else /* !CONFIG_PPC_TRANSACTIONAL_MEM */
-+static long restore_tm_sigcontexts(struct task_struct *tsk, struct sigcontext __user *sc,
-+				   struct sigcontext __user *tm_sc)
-+{
-+	return -EINVAL;
-+}
+-static long setup_sigcontext(struct sigcontext __user *sc,
+-		struct task_struct *tsk, int signr, sigset_t *set,
+-		unsigned long handler, int ctx_has_vsx_region)
++#define unsafe_setup_sigcontext(sc, tsk, signr, set, handler, ctx_has_vsx_region, label)\
++do {											\
++	if (__unsafe_setup_sigcontext(sc, tsk, signr, set, handler, ctx_has_vsx_region))\
++		goto label;								\
++} while (0)
++static long notrace __unsafe_setup_sigcontext(struct sigcontext __user *sc,
++					struct task_struct *tsk, int signr, sigset_t *set,
++					unsigned long handler, int ctx_has_vsx_region)
+ {
+ 	/* When CONFIG_ALTIVEC is set, we _always_ setup v_regs even if the
+ 	 * process never used altivec yet (MSR_VEC is zero in pt_regs of
+@@ -118,20 +123,19 @@ static long setup_sigcontext(struct sigcontext __user *sc,
  #endif
- 
- /*
-@@ -710,9 +716,7 @@ SYSCALL_DEFINE0(rt_sigreturn)
- 	struct pt_regs *regs = current_pt_regs();
- 	struct ucontext __user *uc = (struct ucontext __user *)regs->gpr[1];
- 	sigset_t set;
--#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	unsigned long msr;
--#endif
- 
- 	/* Always make any pending restarted system calls return -EINTR */
- 	current->restart_block.fn = do_no_restart_syscall;
-@@ -724,48 +728,50 @@ SYSCALL_DEFINE0(rt_sigreturn)
- 		goto badframe;
- 	set_current_blocked(&set);
- 
--#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
--	/*
--	 * If there is a transactional state then throw it away.
--	 * The purpose of a sigreturn is to destroy all traces of the
--	 * signal frame, this includes any transactional state created
--	 * within in. We only check for suspended as we can never be
--	 * active in the kernel, we are active, there is nothing better to
--	 * do than go ahead and Bad Thing later.
--	 * The cause is not important as there will never be a
--	 * recheckpoint so it's not user visible.
--	 */
--	if (MSR_TM_SUSPENDED(mfmsr()))
--		tm_reclaim_current(0);
-+	if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM)) {
-+		/*
-+		 * If there is a transactional state then throw it away.
-+		 * The purpose of a sigreturn is to destroy all traces of the
-+		 * signal frame, this includes any transactional state created
-+		 * within in. We only check for suspended as we can never be
-+		 * active in the kernel, we are active, there is nothing better to
-+		 * do than go ahead and Bad Thing later.
-+		 * The cause is not important as there will never be a
-+		 * recheckpoint so it's not user visible.
-+		 */
-+		if (MSR_TM_SUSPENDED(mfmsr()))
-+			tm_reclaim_current(0);
- 
--	/*
--	 * Disable MSR[TS] bit also, so, if there is an exception in the
--	 * code below (as a page fault in copy_ckvsx_to_user()), it does
--	 * not recheckpoint this task if there was a context switch inside
--	 * the exception.
--	 *
--	 * A major page fault can indirectly call schedule(). A reschedule
--	 * process in the middle of an exception can have a side effect
--	 * (Changing the CPU MSR[TS] state), since schedule() is called
--	 * with the CPU MSR[TS] disable and returns with MSR[TS]=Suspended
--	 * (switch_to() calls tm_recheckpoint() for the 'new' process). In
--	 * this case, the process continues to be the same in the CPU, but
--	 * the CPU state just changed.
--	 *
--	 * This can cause a TM Bad Thing, since the MSR in the stack will
--	 * have the MSR[TS]=0, and this is what will be used to RFID.
--	 *
--	 * Clearing MSR[TS] state here will avoid a recheckpoint if there
--	 * is any process reschedule in kernel space. The MSR[TS] state
--	 * does not need to be saved also, since it will be replaced with
--	 * the MSR[TS] that came from user context later, at
--	 * restore_tm_sigcontexts.
--	 */
--	regs->msr &= ~MSR_TS_MASK;
-+		/*
-+		 * Disable MSR[TS] bit also, so, if there is an exception in the
-+		 * code below (as a page fault in copy_ckvsx_to_user()), it does
-+		 * not recheckpoint this task if there was a context switch inside
-+		 * the exception.
-+		 *
-+		 * A major page fault can indirectly call schedule(). A reschedule
-+		 * process in the middle of an exception can have a side effect
-+		 * (Changing the CPU MSR[TS] state), since schedule() is called
-+		 * with the CPU MSR[TS] disable and returns with MSR[TS]=Suspended
-+		 * (switch_to() calls tm_recheckpoint() for the 'new' process). In
-+		 * this case, the process continues to be the same in the CPU, but
-+		 * the CPU state just changed.
-+		 *
-+		 * This can cause a TM Bad Thing, since the MSR in the stack will
-+		 * have the MSR[TS]=0, and this is what will be used to RFID.
-+		 *
-+		 * Clearing MSR[TS] state here will avoid a recheckpoint if there
-+		 * is any process reschedule in kernel space. The MSR[TS] state
-+		 * does not need to be saved also, since it will be replaced with
-+		 * the MSR[TS] that came from user context later, at
-+		 * restore_tm_sigcontexts.
-+		 */
-+		regs->msr &= ~MSR_TS_MASK;
- 
--	if (__get_user(msr, &uc->uc_mcontext.gp_regs[PT_MSR]))
--		goto badframe;
--	if (MSR_TM_ACTIVE(msr)) {
-+		if (__get_user(msr, &uc->uc_mcontext.gp_regs[PT_MSR]))
-+			goto badframe;
-+	}
-+
-+	if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) && MSR_TM_ACTIVE(msr)) {
- 		/* We recheckpoint on return. */
- 		struct ucontext __user *uc_transact;
- 
-@@ -778,9 +784,7 @@ SYSCALL_DEFINE0(rt_sigreturn)
- 		if (restore_tm_sigcontexts(current, &uc->uc_mcontext,
- 					   &uc_transact->uc_mcontext))
- 			goto badframe;
--	} else
--#endif
--	{
-+	} else {
- 		/*
- 		 * Fall through, for non-TM restore
- 		 *
-@@ -818,10 +822,8 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 	unsigned long newsp = 0;
- 	long err = 0;
  	struct pt_regs *regs = tsk->thread.regs;
--#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	/* Save the thread's msr before get_tm_stackpointer() changes it */
  	unsigned long msr = regs->msr;
--#endif
+-	long err = 0;
+ 	/* Force usr to alway see softe as 1 (interrupts enabled) */
+ 	unsigned long softe = 0x1;
  
- 	frame = get_sigframe(ksig, tsk, sizeof(*frame), 0);
- 	if (!access_ok(frame, sizeof(*frame)))
-@@ -836,8 +838,9 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 	/* Create the ucontext.  */
- 	err |= __put_user(0, &frame->uc.uc_flags);
- 	err |= __save_altstack(&frame->uc.uc_stack, regs->gpr[1]);
--#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-+
- 	if (MSR_TM_ACTIVE(msr)) {
-+#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 		/* The ucontext_t passed to userland points to the second
- 		 * ucontext_t (for transactional state) with its uc_link ptr.
+ 	BUG_ON(tsk != current);
+ 
+ #ifdef CONFIG_ALTIVEC
+-	err |= __put_user(v_regs, &sc->v_regs);
++	unsafe_put_user(v_regs, &sc->v_regs, efault_out);
+ 
+ 	/* save altivec registers */
+ 	if (tsk->thread.used_vr) {
+ 		/* Copy 33 vec registers (vr0..31 and vscr) to the stack */
+-		err |= __copy_to_user(v_regs, &tsk->thread.vr_state,
+-				      33 * sizeof(vector128));
++		unsafe_copy_to_user(v_regs, &tsk->thread.vr_state,
++				    33 * sizeof(vector128), efault_out);
+ 		/* set MSR_VEC in the MSR value in the frame to indicate that sc->v_reg)
+ 		 * contains valid data.
  		 */
-@@ -847,9 +850,8 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 					    tsk, ksig->sig, NULL,
- 					    (unsigned long)ksig->ka.sa.sa_handler,
- 					    msr);
--	} else
- #endif
--	{
-+	} else {
+@@ -140,12 +144,12 @@ static long setup_sigcontext(struct sigcontext __user *sc,
+ 	/* We always copy to/from vrsave, it's 0 if we don't have or don't
+ 	 * use altivec.
+ 	 */
+-	err |= __put_user(tsk->thread.vrsave, (u32 __user *)&v_regs[33]);
++	unsafe_put_user(tsk->thread.vrsave, (u32 __user *)&v_regs[33], efault_out);
+ #else /* CONFIG_ALTIVEC */
+-	err |= __put_user(0, &sc->v_regs);
++	unsafe_put_user(0, &sc->v_regs, efault_out);
+ #endif /* CONFIG_ALTIVEC */
+ 	/* copy fpr regs and fpscr */
+-	err |= copy_fpr_to_user(&sc->fp_regs, tsk);
++	unsafe_copy_fpr_to_user(&sc->fp_regs, tsk, efault_out);
+ 
+ 	/*
+ 	 * Clear the MSR VSX bit to indicate there is no valid state attached
+@@ -160,24 +164,27 @@ static long setup_sigcontext(struct sigcontext __user *sc,
+ 	 */
+ 	if (tsk->thread.used_vsr && ctx_has_vsx_region) {
+ 		v_regs += ELF_NVRREG;
+-		err |= copy_vsx_to_user(v_regs, tsk);
++		unsafe_copy_vsx_to_user(v_regs, tsk, efault_out);
+ 		/* set MSR_VSX in the MSR value in the frame to
+ 		 * indicate that sc->vs_reg) contains valid data.
+ 		 */
+ 		msr |= MSR_VSX;
+ 	}
+ #endif /* CONFIG_VSX */
+-	err |= __put_user(&sc->gp_regs, &sc->regs);
++	unsafe_put_user(&sc->gp_regs, &sc->regs, efault_out);
+ 	WARN_ON(!FULL_REGS(regs));
+-	err |= __copy_to_user(&sc->gp_regs, regs, GP_REGS_SIZE);
+-	err |= __put_user(msr, &sc->gp_regs[PT_MSR]);
+-	err |= __put_user(softe, &sc->gp_regs[PT_SOFTE]);
+-	err |= __put_user(signr, &sc->signal);
+-	err |= __put_user(handler, &sc->handler);
++	unsafe_copy_to_user(&sc->gp_regs, regs, GP_REGS_SIZE, efault_out);
++	unsafe_put_user(msr, &sc->gp_regs[PT_MSR], efault_out);
++	unsafe_put_user(softe, &sc->gp_regs[PT_SOFTE], efault_out);
++	unsafe_put_user(signr, &sc->signal, efault_out);
++	unsafe_put_user(handler, &sc->handler, efault_out);
+ 	if (set != NULL)
+-		err |=  __put_user(set->sig[0], &sc->oldmask);
++		unsafe_put_user(set->sig[0], &sc->oldmask, efault_out);
+ 
+-	return err;
++	return 0;
++
++efault_out:
++	return -EFAULT;
+ }
+ 
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+@@ -670,12 +677,15 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
+ 
+ 	if (old_ctx != NULL) {
+ 		prepare_setup_sigcontext(current);
+-		if (!access_ok(old_ctx, ctx_size)
+-		    || setup_sigcontext(&old_ctx->uc_mcontext, current, 0, NULL, 0,
+-					ctx_has_vsx_region)
+-		    || __copy_to_user(&old_ctx->uc_sigmask,
+-				      &current->blocked, sizeof(sigset_t)))
++		if (!user_write_access_begin(old_ctx, ctx_size))
+ 			return -EFAULT;
++
++		unsafe_setup_sigcontext(&old_ctx->uc_mcontext, current, 0, NULL,
++					0, ctx_has_vsx_region, efault_out);
++		unsafe_copy_to_user(&old_ctx->uc_sigmask, &current->blocked,
++				    sizeof(sigset_t), efault_out);
++
++		user_write_access_end();
+ 	}
+ 	if (new_ctx == NULL)
+ 		return 0;
+@@ -704,6 +714,10 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
+ 	/* This returns like rt_sigreturn */
+ 	set_thread_flag(TIF_RESTOREALL);
+ 	return 0;
++
++efault_out:
++	user_write_access_end();
++	return -EFAULT;
+ }
+ 
+ 
+@@ -854,9 +868,13 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 	} else {
  		err |= __put_user(0, &frame->uc.uc_link);
  		prepare_setup_sigcontext(tsk);
- 		err |= setup_sigcontext(&frame->uc.uc_mcontext, tsk, ksig->sig,
+-		err |= setup_sigcontext(&frame->uc.uc_mcontext, tsk, ksig->sig,
+-					NULL, (unsigned long)ksig->ka.sa.sa_handler,
+-					1);
++		if (!user_write_access_begin(&frame->uc.uc_mcontext,
++					     sizeof(frame->uc.uc_mcontext)))
++			return -EFAULT;
++		err |= __unsafe_setup_sigcontext(&frame->uc.uc_mcontext, tsk,
++						ksig->sig, NULL,
++						(unsigned long)ksig->ka.sa.sa_handler, 1);
++		user_write_access_end();
+ 	}
+ 	err |= __copy_to_user(&frame->uc.uc_sigmask, set, sizeof(*set));
+ 	if (err)
 -- 
 2.26.1
 
