@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A40327889
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 08:48:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA14032788B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 08:48:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dpsnp6MJXz3dcX
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 18:48:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DpspF5R34z3dhn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 18:48:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ZdtJkSTQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=dcs28v1g;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,34 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=ZdtJkSTQ; 
+ header.s=casper.20170209 header.b=dcs28v1g; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dpsl403gBz3d3G
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Mar 2021 18:46:08 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dpsl85nk3z3d63
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Mar 2021 18:46:12 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=n4a5R9+ylbvoibBv9Gp4RRSzd949UJhfH+kdgUzXMIA=; b=ZdtJkSTQoBpw/cdu0C97cG13/n
- hnkW6A3RrPzYaXlCcieHyhVXiP8MF2ep7TS+aJyf3GZe66+xpZWgToyCzgiH5ydTo5cY6SWeh6gSp
- eWAP2epI/P5SHOeCxT2yVEQus8aSEgI/HaWdf01Lw1tEj/ySKW/4yU6vt8dK7QexOzT/AK9BnwVJQ
- vkWA9I7c0R9uCfQWQvxfOa4meVFZhWV8w/VdbMi/iGnvdTMEwEiaN3spsgAGnkyV0mYLo6Wst8PQ4
- lqZEwHRsz0EIbqJE4HY4ZT1Oxo8rFdW+q5SvmOCXv0E3WMX1TpKxeP8ykm/dSx13AmIi0JJJusybs
- 1oZ+I7pA==;
+ bh=Nv2PzTFaNuvZMLFLXyjuLWvrF97az/7ZIuedCeQXxXo=; b=dcs28v1gCq97Kg7VGkzZDNtfBS
+ 5/Y9BWSDEFQ0ue8+GeO+pvfl9PH2Fa9smNuJM50LF1Mq+3hEEaB1VHWSyj/dcpsRTIinzTOpuTC5b
+ feXtU4Are3eTutHu0jUVtlOEMlSECtX4EqblBryk1+ow7zc7Ho2mKmJuNtqugq8wrtI9IWLt5URtJ
+ dtiRRCH0oKGw4/2bPQZciYOP1nmZ+lVgZRpEj8aALss9KfVEZMW/4Wav8dkCb6S8RJ4IdMSDjoWBZ
+ yDBMCcgb9k+zD7C6KTqH3FoHhADuq5RVyDNDgVLKekqcZPdb4nQ04/3MhFlJfGsbra7rrfrT2bPfn
+ 8gl8q2lA==;
 Received: from [2001:4bb8:19b:e4b7:cdf9:733f:4874:8eb4] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lGdFa-00FRD5-OZ; Mon, 01 Mar 2021 07:45:56 +0000
+ id 1lGdFg-00FRDV-0p; Mon, 01 Mar 2021 07:46:01 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: [PATCH 07/14] xen-swiotlb: remove xen_set_nslabs
-Date: Mon,  1 Mar 2021 08:44:29 +0100
-Message-Id: <20210301074436.919889-8-hch@lst.de>
+Subject: [PATCH 08/14] xen-swiotlb: remove xen_io_tlb_start and
+ xen_io_tlb_nslabs
+Date: Mon,  1 Mar 2021 08:44:30 +0100
+Message-Id: <20210301074436.919889-9-hch@lst.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210301074436.919889-1-hch@lst.de>
 References: <20210301074436.919889-1-hch@lst.de>
@@ -71,61 +72,152 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The xen_set_nslabs function is a little weird, as it has just one
-caller, that caller passes a global variable as the argument,
-which is then overriden in the function and a derivative of it
-returned.  Just add a cpp symbol for the default size using a readable
-constant and open code the remaining three lines in the caller.
+The xen_io_tlb_start and xen_io_tlb_nslabs variables ar now only used in
+xen_swiotlb_init, so replace them with local variables.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/xen/swiotlb-xen.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/xen/swiotlb-xen.c | 57 +++++++++++++++++----------------------
+ 1 file changed, 25 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index e99f0614dcb979..5352655432e724 100644
+index 5352655432e724..1a31ddf7139799 100644
 --- a/drivers/xen/swiotlb-xen.c
 +++ b/drivers/xen/swiotlb-xen.c
-@@ -138,16 +138,6 @@ xen_swiotlb_fixup(void *buf, size_t size, unsigned long nslabs)
- 	} while (i < nslabs);
- 	return 0;
- }
--static unsigned long xen_set_nslabs(unsigned long nr_tbl)
--{
--	if (!nr_tbl) {
--		xen_io_tlb_nslabs = (64 * 1024 * 1024 >> IO_TLB_SHIFT);
--		xen_io_tlb_nslabs = ALIGN(xen_io_tlb_nslabs, IO_TLB_SEGSIZE);
--	} else
--		xen_io_tlb_nslabs = nr_tbl;
--
--	return xen_io_tlb_nslabs << IO_TLB_SHIFT;
--}
+@@ -40,14 +40,7 @@
  
- enum xen_swiotlb_err {
- 	XEN_SWIOTLB_UNKNOWN = 0,
-@@ -170,6 +160,9 @@ static const char *xen_swiotlb_error(enum xen_swiotlb_err err)
- 	}
- 	return "";
- }
-+
-+#define DEFAULT_NSLABS		ALIGN(SZ_64M >> IO_TLB_SHIFT, IO_TLB_SEGSIZE)
-+
- int __ref xen_swiotlb_init(int verbose, bool early)
- {
- 	unsigned long bytes, order;
-@@ -179,8 +172,10 @@ int __ref xen_swiotlb_init(int verbose, bool early)
+ #include <trace/events/swiotlb.h>
+ #define MAX_DMA_BITS 32
+-/*
+- * Used to do a quick range check in swiotlb_tbl_unmap_single and
+- * swiotlb_tbl_sync_single_*, to see if the memory was in fact allocated by this
+- * API.
+- */
  
- 	xen_io_tlb_nslabs = swiotlb_nr_tbl();
+-static char *xen_io_tlb_start;
+-static unsigned long xen_io_tlb_nslabs;
+ /*
+  * Quick lookup value of the bus address of the IOTLB.
+  */
+@@ -169,75 +162,75 @@ int __ref xen_swiotlb_init(int verbose, bool early)
+ 	int rc = -ENOMEM;
+ 	enum xen_swiotlb_err m_ret = XEN_SWIOTLB_UNKNOWN;
+ 	unsigned int repeat = 3;
++	char *start;
++	unsigned long nslabs;
+ 
+-	xen_io_tlb_nslabs = swiotlb_nr_tbl();
++	nslabs = swiotlb_nr_tbl();
  retry:
--	bytes = xen_set_nslabs(xen_io_tlb_nslabs);
--	order = get_order(xen_io_tlb_nslabs << IO_TLB_SHIFT);
-+	if (!xen_io_tlb_nslabs)
-+		xen_io_tlb_nslabs = DEFAULT_NSLABS;
-+	bytes = xen_io_tlb_nslabs << IO_TLB_SHIFT;
-+	order = get_order(bytes);
+-	if (!xen_io_tlb_nslabs)
+-		xen_io_tlb_nslabs = DEFAULT_NSLABS;
+-	bytes = xen_io_tlb_nslabs << IO_TLB_SHIFT;
++	if (!nslabs)
++		nslabs = DEFAULT_NSLABS;
++	bytes = nslabs << IO_TLB_SHIFT;
+ 	order = get_order(bytes);
  
  	/*
  	 * IO TLB memory already allocated. Just use it.
+ 	 */
+-	if (io_tlb_start != 0) {
+-		xen_io_tlb_start = phys_to_virt(io_tlb_start);
++	if (io_tlb_start != 0)
+ 		goto end;
+-	}
+ 
+ 	/*
+ 	 * Get IO TLB memory from any location.
+ 	 */
+ 	if (early) {
+-		xen_io_tlb_start = memblock_alloc(PAGE_ALIGN(bytes),
++		start = memblock_alloc(PAGE_ALIGN(bytes),
+ 						  PAGE_SIZE);
+-		if (!xen_io_tlb_start)
++		if (!start)
+ 			panic("%s: Failed to allocate %lu bytes align=0x%lx\n",
+ 			      __func__, PAGE_ALIGN(bytes), PAGE_SIZE);
+ 	} else {
+ #define SLABS_PER_PAGE (1 << (PAGE_SHIFT - IO_TLB_SHIFT))
+ #define IO_TLB_MIN_SLABS ((1<<20) >> IO_TLB_SHIFT)
+ 		while ((SLABS_PER_PAGE << order) > IO_TLB_MIN_SLABS) {
+-			xen_io_tlb_start = (void *)xen_get_swiotlb_free_pages(order);
+-			if (xen_io_tlb_start)
++			start = (void *)xen_get_swiotlb_free_pages(order);
++			if (start)
+ 				break;
+ 			order--;
+ 		}
+ 		if (order != get_order(bytes)) {
+ 			pr_warn("Warning: only able to allocate %ld MB for software IO TLB\n",
+ 				(PAGE_SIZE << order) >> 20);
+-			xen_io_tlb_nslabs = SLABS_PER_PAGE << order;
+-			bytes = xen_io_tlb_nslabs << IO_TLB_SHIFT;
++			nslabs = SLABS_PER_PAGE << order;
++			bytes = nslabs << IO_TLB_SHIFT;
+ 		}
+ 	}
+-	if (!xen_io_tlb_start) {
++	if (!start) {
+ 		m_ret = XEN_SWIOTLB_ENOMEM;
+ 		goto error;
+ 	}
+ 	/*
+ 	 * And replace that memory with pages under 4GB.
+ 	 */
+-	rc = xen_swiotlb_fixup(xen_io_tlb_start,
++	rc = xen_swiotlb_fixup(start,
+ 			       bytes,
+-			       xen_io_tlb_nslabs);
++			       nslabs);
+ 	if (rc) {
+ 		if (early)
+-			memblock_free(__pa(xen_io_tlb_start),
++			memblock_free(__pa(start),
+ 				      PAGE_ALIGN(bytes));
+ 		else {
+-			free_pages((unsigned long)xen_io_tlb_start, order);
+-			xen_io_tlb_start = NULL;
++			free_pages((unsigned long)start, order);
++			start = NULL;
+ 		}
+ 		m_ret = XEN_SWIOTLB_EFIXUP;
+ 		goto error;
+ 	}
+ 	if (early) {
+-		if (swiotlb_init_with_tbl(xen_io_tlb_start, xen_io_tlb_nslabs,
++		if (swiotlb_init_with_tbl(start, nslabs,
+ 			 verbose))
+ 			panic("Cannot allocate SWIOTLB buffer");
+ 		rc = 0;
+ 	} else
+-		rc = swiotlb_late_init_with_tbl(xen_io_tlb_start, xen_io_tlb_nslabs);
++		rc = swiotlb_late_init_with_tbl(start, nslabs);
+ 
+ end:
+ 	if (!rc)
+@@ -246,17 +239,17 @@ int __ref xen_swiotlb_init(int verbose, bool early)
+ 	return rc;
+ error:
+ 	if (repeat--) {
+-		xen_io_tlb_nslabs = max(1024UL, /* Min is 2MB */
+-					(xen_io_tlb_nslabs >> 1));
++		nslabs = max(1024UL, /* Min is 2MB */
++					(nslabs >> 1));
+ 		pr_info("Lowering to %luMB\n",
+-			(xen_io_tlb_nslabs << IO_TLB_SHIFT) >> 20);
++			(nslabs << IO_TLB_SHIFT) >> 20);
+ 		goto retry;
+ 	}
+ 	pr_err("%s (rc:%d)\n", xen_swiotlb_error(m_ret), rc);
+ 	if (early)
+ 		panic("%s (rc:%d)", xen_swiotlb_error(m_ret), rc);
+ 	else
+-		free_pages((unsigned long)xen_io_tlb_start, order);
++		free_pages((unsigned long)start, order);
+ 	return rc;
+ }
+ 
 -- 
 2.29.2
 
