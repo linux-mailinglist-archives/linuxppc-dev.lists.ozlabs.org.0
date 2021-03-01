@@ -1,51 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FC13289D2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 19:08:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CEC329471
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 23:03:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dq7Xp55lcz3clm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 05:08:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqDmG6LC2z3clX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 09:03:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=aH1+7x/W;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=RKt8VDYl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::432;
+ helo=mail-pf1-x432.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=aH1+7x/W; dkim-atps=neutral
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=RKt8VDYl; dkim-atps=neutral
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
+ [IPv6:2607:f8b0:4864:20::432])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dq7XN1ddfz30L3
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 05:07:47 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1614622064; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qp4HJtwIT4bWIf+9Fj02wgzG00aspAv7NDE1H9XsKw8=;
- b=aH1+7x/WqqqBgwoXsxJWiMMfixqBzqQo+CHJ0FMCUdP0kn8yxVawZhEsqiOr+QSi7cVRUm
- cH6dvttkUBHzyuxGaLPn0bQ3ilhyaCz7ZY6y77iScN5BUKhqdowr9f4TAygKPghH0VyeHu
- hCUXGbUSrWDF6mn/T5TxstesPyTwCSg=
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id E550DAE3C;
- Mon,  1 Mar 2021 18:07:43 +0000 (UTC)
-Date: Mon, 1 Mar 2021 19:07:41 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: John Ogness <john.ogness@linutronix.de>
-Subject: Re: [PATCH next v3 12/15] printk: introduce a kmsg_dump iterator
-Message-ID: <YD0tbVV+hZOFvWyB@alley>
-References: <20210225202438.28985-1-john.ogness@linutronix.de>
- <20210225202438.28985-13-john.ogness@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqDlp3cqfz30N4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 09:03:00 +1100 (AEDT)
+Received: by mail-pf1-x432.google.com with SMTP id o188so5789052pfg.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Mar 2021 14:03:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=qZ//7UGmglUFd9a+K6I+xp+r8KSLdySqRo4lIorwHRQ=;
+ b=RKt8VDYlVD/hDSLtRtLJB9q7LoGnpuo2sk84bcxbEoSf84NYm/Dj+wlcOat9vUyLvU
+ BpOmRFVA1VNz3TirVy4M4WxwSHOGpHtTr154/1k39CfTegA7vbagTk7V2RuRa6ZDJPip
+ u+VdXHk43FdYsOZLjNk09aa0nZMlFXUv3z6cM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=qZ//7UGmglUFd9a+K6I+xp+r8KSLdySqRo4lIorwHRQ=;
+ b=dIU1G2xCL99+Ft48yhQbaI1IjuSvfRz4sU2Wa71RbWxmTXygwauuHfBD+Ef2O4PIj7
+ XMoHG15eaoo2OasSglMADhPCgksiQUirO92S4B0UVC46hcPb+jR0+fY/3zu8qWAEnlwS
+ H8WLPowEkLx1OF6t/VxaMA81dQ7yiBvdoqA+Sat/0Q71O4TeMxCWUGaM/mXQSHVMxSch
+ uSLbWWZceTV9oXAXGi7pU8BbR5xfzFBLfmXo0PDunsATTjwuWKiitHD2c++zFYLFU3eS
+ TrRF61cc1AL09COi3TwKozS6MnGjIdmBhKm0xUys5chbEzLbQI/x8NeYZGp25Wa18XbG
+ PiVg==
+X-Gm-Message-State: AOAM5326dDiBAkPXT8wD+WXZNRGrJI9yWvGjSYOJ6C2TqaIcNtnrd/Y0
+ ETSoqhWnuA4mwWQODj2c2G5Pvw==
+X-Google-Smtp-Source: ABdhPJwmq0kilOi0JQKkj25v/mVFtfXKLg24Abgr69OrIZbj+HE+w4Zv7SxblC5O8Gv+agxEKcqrxA==
+X-Received: by 2002:a62:5a45:0:b029:1e5:4c81:c59 with SMTP id
+ o66-20020a625a450000b02901e54c810c59mr430011pfb.51.1614636178553; 
+ Mon, 01 Mar 2021 14:02:58 -0800 (PST)
+Received: from localhost
+ (2001-44b8-1113-6700-b18e-89be-e1b2-4959.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:b18e:89be:e1b2:4959])
+ by smtp.gmail.com with ESMTPSA id 16sm5601501pfx.45.2021.03.01.14.02.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Mar 2021 14:02:57 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v1 01/15] powerpc/uaccess: Remove __get_user_allowed() and
+ unsafe_op_wrap()
+In-Reply-To: <e0538c71167bd90224a8727fea9ed5b75612e2d7.1614275314.git.christophe.leroy@csgroup.eu>
+References: <cover.1614275314.git.christophe.leroy@csgroup.eu>
+ <e0538c71167bd90224a8727fea9ed5b75612e2d7.1614275314.git.christophe.leroy@csgroup.eu>
+Date: Tue, 02 Mar 2021 09:02:54 +1100
+Message-ID: <87im6ao7ld.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210225202438.28985-13-john.ogness@linutronix.de>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,151 +81,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- Douglas Anderson <dianders@chromium.org>, Paul Mackerras <paulus@samba.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Meyer <thomas@m3y3r.de>,
- Vignesh Raghavendra <vigneshr@ti.com>, Wei Liu <wei.liu@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Stephen Hemminger <sthemmin@microsoft.com>, Anton Vorontsov <anton@enomsg.org>,
- Joel Stanley <joel@jms.id.au>, Jason Wessel <jason.wessel@windriver.com>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>, Wei Li <liwei391@huawei.com>,
- Haiyang Zhang <haiyangz@microsoft.com>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Kees Cook <keescook@chromium.org>,
- Alistair Popple <alistair@popple.id.au>, Jeff Dike <jdike@addtoit.com>,
- Colin Cross <ccross@android.com>, linux-um@lists.infradead.org,
- Daniel Thompson <daniel.thompson@linaro.org>,
- Steven Rostedt <rostedt@goodmis.org>, Davidlohr Bueso <dave@stgolabs.net>,
- Nicholas Piggin <npiggin@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jordan Niethe <jniethe5@gmail.com>, Michael Kelley <mikelley@microsoft.com>,
- Christophe Leroy <christophe.leroy@c-s.fr>, Tony Luck <tony.luck@intel.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Richard Weinberger <richard@nod.at>, kgdb-bugreport@lists.sourceforge.net,
- linux-mtd@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 2021-02-25 21:24:35, John Ogness wrote:
-> Rather than storing the iterator information in the registered
-> kmsg_dumper structure, create a separate iterator structure. The
-> kmsg_dump_iter structure can reside on the stack of the caller, thus
-> allowing lockless use of the kmsg_dump functions.
-> 
-> This change also means that the kmsg_dumper dump() callback no
-> longer needs to pass in the kmsg_dumper as an argument. If
-> kmsg_dumpers want to access the kernel logs, they can use the new
-> iterator.
-> 
-> Update the kmsg_dumper callback prototype. Update code that accesses
-> the kernel logs using the kmsg_dumper structure to use the new
-> kmsg_dump_iter structure. For kmsg_dumpers, this also means adding a
-> call to kmsg_dump_rewind() to initialize the iterator.
-> 
-> All this is in preparation for removal of @logbuf_lock.
-> 
-> Signed-off-by: John Ogness <john.ogness@linutronix.de>
+
+
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+
+> Those two macros have only one user which is unsafe_get_user().
+>
+> Put everything in one place and remove them.
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  arch/powerpc/kernel/nvram_64.c             | 14 +++---
->  arch/powerpc/platforms/powernv/opal-kmsg.c |  3 +-
->  arch/powerpc/xmon/xmon.c                   |  6 +--
->  arch/um/kernel/kmsg_dump.c                 |  8 +--
->  drivers/hv/vmbus_drv.c                     |  7 +--
->  drivers/mtd/mtdoops.c                      |  8 +--
->  fs/pstore/platform.c                       |  8 +--
->  include/linux/kmsg_dump.h                  | 38 ++++++++-------
->  kernel/debug/kdb/kdb_main.c                | 10 ++--
->  kernel/printk/printk.c                     | 57 ++++++++++------------
->  10 files changed, 81 insertions(+), 78 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/nvram_64.c b/arch/powerpc/kernel/nvram_64.c
-> index 532f22637783..5a64b24a91c2 100644
-> --- a/arch/powerpc/kernel/nvram_64.c
-> +++ b/arch/powerpc/kernel/nvram_64.c
-> @@ -72,8 +72,7 @@ static const char *nvram_os_partitions[] = {
->  	NULL
->  };
+>  arch/powerpc/include/asm/uaccess.h | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+> index 78e2a3990eab..8cbf3e3874f1 100644
+> --- a/arch/powerpc/include/asm/uaccess.h
+> +++ b/arch/powerpc/include/asm/uaccess.h
+> @@ -53,9 +53,6 @@ static inline bool __access_ok(unsigned long addr, unsigned long size)
+>  #define __put_user(x, ptr) \
+>  	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
 >  
-> -static void oops_to_nvram(struct kmsg_dumper *dumper,
-> -			  enum kmsg_dump_reason reason);
-> +static void oops_to_nvram(enum kmsg_dump_reason reason);
+> -#define __get_user_allowed(x, ptr) \
+> -	__get_user_nocheck((x), (ptr), sizeof(*(ptr)), false)
+> -
+>  #define __get_user_inatomic(x, ptr) \
+>  	__get_user_nosleep((x), (ptr), sizeof(*(ptr)))
+>  #define __put_user_inatomic(x, ptr) \
+> @@ -482,8 +479,11 @@ user_write_access_begin(const void __user *ptr, size_t len)
+>  #define user_write_access_begin	user_write_access_begin
+>  #define user_write_access_end		prevent_current_write_to_user
 >  
->  static struct kmsg_dumper nvram_kmsg_dumper = {
->  	.dump = oops_to_nvram
-> @@ -642,11 +641,11 @@ void __init nvram_init_oops_partition(int rtas_partition_exists)
->   * that we think will compress sufficiently to fit in the lnx,oops-log
->   * partition.  If that's too much, go back and capture uncompressed text.
->   */
-> -static void oops_to_nvram(struct kmsg_dumper *dumper,
-> -			  enum kmsg_dump_reason reason)
-> +static void oops_to_nvram(enum kmsg_dump_reason reason)
->  {
->  	struct oops_log_info *oops_hdr = (struct oops_log_info *)oops_buf;
->  	static unsigned int oops_count = 0;
-> +	static struct kmsg_dump_iter iter;
->  	static bool panicking = false;
->  	static DEFINE_SPINLOCK(lock);
->  	unsigned long flags;
-> @@ -681,13 +680,14 @@ static void oops_to_nvram(struct kmsg_dumper *dumper,
->  		return;
+> -#define unsafe_op_wrap(op, err) do { if (unlikely(op)) goto err; } while (0)
+> -#define unsafe_get_user(x, p, e) unsafe_op_wrap(__get_user_allowed(x, p), e)
+> +#define unsafe_get_user(x, p, e) do {					\
+> +	if (unlikely(__get_user_nocheck((x), (p), sizeof(*(p)), false)))\
+> +		goto e;							\
+> +} while (0)
+> +
+
+This seems correct to me.
+
+Checkpatch does have one check that is relevant:
+
+CHECK: Macro argument reuse 'p' - possible side-effects?
+#36: FILE: arch/powerpc/include/asm/uaccess.h:482:
++#define unsafe_get_user(x, p, e) do {					\
++	if (unlikely(__get_user_nocheck((x), (p), sizeof(*(p)), false)))\
++		goto e;							\
++} while (0)
+
+Given that we are already creating a new block, should we do something
+like this (completely untested):
+
+#define unsafe_get_user(x, p, e) do {					\
+        __typeof__(p) __p = (p);
+	if (unlikely(__get_user_nocheck((x), (__p), sizeof(*(__p)), false)))\
+		goto e;							\
+} while (0)
+
+Kind regards,
+Daniel
+
+>  #define unsafe_put_user(x, p, e) \
+>  	__unsafe_put_user_goto((__typeof__(*(p)))(x), (p), sizeof(*(p)), e)
 >  
->  	if (big_oops_buf) {
-> -		kmsg_dump_get_buffer(dumper, false,
-> +		kmsg_dump_rewind(&iter);
-
-It would be nice to get rid of the kmsg_dump_rewind(&iter) calls
-in all callers.
-
-A solution might be to create the following in include/linux/kmsg_dump.h
-
-#define KMSG_DUMP_ITER_INIT(iter) {	\
-	.cur_seq = 0,			\
-	.next_seq = U64_MAX,		\
-	}
-
-#define DEFINE_KMSG_DUMP_ITER(iter)	\
-	struct kmsg_dump_iter iter = KMSG_DUMP_ITER_INIT(iter)
-
-Then we could do the following at the beginning of both
-kmsg_dump_get_buffer() and kmsg_dump_get_line():
-
-	u64 clear_seq = latched_seq_read_nolock(&clear_seq);
-
-	if (iter->cur_seq < clear_seq)
-		cur_seq = clear_seq;
-
-
-I am not completely sure about next_seq:
-
-   + kmsg_dump_get_buffer() will set it for the next call anyway.
-     It reads the blocks of messages from the newest.
-
-   + kmsg_dump_get_line() wants to read the entire buffer anyway.
-     But there is a small risk of an infinite loop when new messages
-     are printed when dumping each line.
-
-It might be better to avoid the infinite loop. We could do the following:
-
-static void check_and_set_iter(struct kmsg_dump_iter)
-{
-	if (iter->cur_seq == 0 && iter->next_seq == U64_MAX) {
-		kmsg_dump_rewind(iter);
-}
-
-and call this at the beginning of both kmsg_dump_get_buffer()
-and kmsg_dump_get_line()
-
-What do you think?
-
-Note that I do not resist on it. But it might make the API easier to
-use from my POV.
-
-Otherwise the patch looks good to me.
-
-Best Regards,
-Petr
+> -- 
+> 2.25.0
