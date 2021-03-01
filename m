@@ -2,101 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D5B327617
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 03:26:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A3F3276A3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 05:21:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dpkfb1GDxz3cbv
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 13:26:47 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SzmW73ko;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DpnC15tMnz3ckp
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 15:21:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=SzmW73ko; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dpkf66GTsz30Ms
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Mar 2021 13:26:21 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 121246hE189660; Sun, 28 Feb 2021 21:26:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=5aUEkC+XhBIU3CBIrTgWSI1d3j2jt9xZ7j9G7TXSIB8=;
- b=SzmW73koYiYGSzY8s7Uv4gywQwa6POvC23Hk5hnjE7yx5pRFsoSI7pPaYv6GjYxgth+W
- Hzwcn59BLqsX3t8NQznDi3M15MBEKLJM0p4sWBdDNezR1wVl/q2XyXuqHYZO1Ptl51In
- 4UBBMNf0HKmtXHHMwdgj8RILEkVAwYfelF5qmFEwXHNW21X3JGFy108thZ91dYu4m9Yr
- pmgsPGRojFIVEsnVUY01WSEIX5TI6oyZdT7qZTJtlWo9yv8xZp7hQpUkq7VTFb75Jhz0
- QO0Yj+zlMfZ1/JPxV+LALJTmJubhEO6x9IpAh8rzJ2zAYhTTcfC9/YLTCGB5d+3zVkNx UA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3704gg665n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Feb 2021 21:26:08 -0500
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12125j2i193698;
- Sun, 28 Feb 2021 21:26:08 -0500
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3704gg664y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 28 Feb 2021 21:26:08 -0500
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1212MVje023394;
- Mon, 1 Mar 2021 02:26:06 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03fra.de.ibm.com with ESMTP id 36ydq80q9p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 01 Mar 2021 02:26:06 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1212Q4wK40239530
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 1 Mar 2021 02:26:04 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1E37EAE045;
- Mon,  1 Mar 2021 02:26:04 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 426ECAE04D;
- Mon,  1 Mar 2021 02:25:42 +0000 (GMT)
-Received: from [9.195.36.63] (unknown [9.195.36.63])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon,  1 Mar 2021 02:25:37 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.4\))
-Subject: Re: [PATCH V2] powerpc/perf: Fix handling of privilege level checks
- in perf interrupt context
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <YDjA0giNnkfHeYM5@hirez.programming.kicks-ass.net>
-Date: Mon, 1 Mar 2021 07:52:27 +0530
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com;
+ envelope-from=chenjun102@huawei.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 997 seconds by postgrey-1.36 at boromir;
+ Mon, 01 Mar 2021 13:34:01 AEDT
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dpkpx3G0Zz30N8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Mar 2021 13:33:58 +1100 (AEDT)
+Received: from dggeml405-hub.china.huawei.com (unknown [172.30.72.56])
+ by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4DpkNH0z2rz140Vj;
+ Mon,  1 Mar 2021 10:14:23 +0800 (CST)
+Received: from DGGEML509-MBX.china.huawei.com ([169.254.1.252]) by
+ dggeml405-hub.china.huawei.com ([10.3.17.49]) with mapi id 14.03.0509.000;
+ Mon, 1 Mar 2021 10:16:55 +0800
+From: "chenjun (AM)" <chenjun102@huawei.com>
+To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Rob Herring
+ <robh+dt@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, "Benjamin
+ Herrenschmidt" <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, 
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: [Reoprt] Some compile warning on ppc dts
+Thread-Topic: [Reoprt] Some compile warning on ppc dts
+Thread-Index: AdcOQPNGmFy3U3BrTyOQctVQlk5NMQ==
+Date: Mon, 1 Mar 2021 02:16:55 +0000
+Message-ID: <CE1E7D7EFA066443B6454A6A5063B50220CCBBE4@dggeml509-mbx.china.huawei.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.174.178.53]
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <47F7754C-9F97-4548-ACA4-E88CA1D393C1@linux.vnet.ibm.com>
-References: <1614247839-1428-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <YDjA0giNnkfHeYM5@hirez.programming.kicks-ass.net>
-To: Peter Zijlstra <peterz@infradead.org>
-X-Mailer: Apple Mail (2.3608.120.23.2.4)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-02-28_12:2021-02-26,
- 2021-02-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- priorityscore=1501 spamscore=0 impostorscore=0 suspectscore=0
- mlxlogscore=999 mlxscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
- bulkscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103010015
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Mon, 01 Mar 2021 15:21:17 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,54 +57,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, omosnace@redhat.com,
- acme@kernel.org, jolsa@kernel.org, linuxppc-dev@lists.ozlabs.org,
- kan.liang@linux.intel.com
+Cc: "Xiangrui \(Euler\)" <rui.xiang@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-> On 26-Feb-2021, at 3:05 PM, Peter Zijlstra <peterz@infradead.org> =
-wrote:
->=20
-> On Thu, Feb 25, 2021 at 05:10:39AM -0500, Athira Rajeev wrote:
->> diff --git a/arch/powerpc/perf/core-book3s.c =
-b/arch/powerpc/perf/core-book3s.c
->> index 4b4319d8..c8be44c 100644
->> --- a/arch/powerpc/perf/core-book3s.c
->> +++ b/arch/powerpc/perf/core-book3s.c
->> @@ -222,7 +222,7 @@ static inline void perf_get_data_addr(struct =
-perf_event *event, struct pt_regs *
->> 	if (!(mmcra & MMCRA_SAMPLE_ENABLE) || sdar_valid)
->> 		*addrp =3D mfspr(SPRN_SDAR);
->>=20
->> -	if (is_kernel_addr(mfspr(SPRN_SDAR)) && =
-perf_allow_kernel(&event->attr) !=3D 0)
->> +	if (is_kernel_addr(mfspr(SPRN_SDAR)) && =
-event->attr.exclude_kernel)
->> 		*addrp =3D 0;
->> }
->>=20
->> @@ -507,7 +507,7 @@ static void power_pmu_bhrb_read(struct perf_event =
-*event, struct cpu_hw_events *
->> 			 * addresses, hence include a check before =
-filtering code
->> 			 */
->> 			if (!(ppmu->flags & PPMU_ARCH_31) &&
->> -				is_kernel_addr(addr) && =
-perf_allow_kernel(&event->attr) !=3D 0)
->> +			    is_kernel_addr(addr) && =
-event->attr.exclude_kernel)
->> 				continue;
->>=20
->> 			/* Branches are read most recent first (ie. =
-mfbhrb 0 is
->=20
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-
-
-Thanks Peter for reviewing the patch.
-
-Athira.=
+Hi=0A=
+=0A=
+After run the following commands=0A=
+make distclean=0A=
+make allmodconfig ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64-linux-gnu-=0A=
+make oldconfig ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64-linux-gnu-=0A=
+make -j64 ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64-linux-gnu-=0A=
+=0A=
+I get some warning:=0A=
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): =0A=
+/pci@f0000d00: missing ranges for PCI bridg=0A=
+e (or not a bridge)=0A=
+arch/powerpc/boot/dts/o2dnt2.dtb: Warning (pci_device_bus_num): Failed =0A=
+prerequisite 'pci_bridge'=0A=
+arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning =0A=
+(spi_bus_bridge): /soc5200@f0000000/psc@2000: node name f=0A=
+or SPI buses should be 'spi'=0A=
+   also defined at arch/powerpc/boot/dts/o2d.dtsi:32.12-43.5=0A=
+arch/powerpc/boot/dts/o2dnt2.dtb: Warning (spi_bus_reg): Failed =0A=
+prerequisite 'spi_bus_bridge'=0A=
+...=0A=
+=0A=
+For the problem about "node name for SPI buses should be 'spi'":=0A=
+Rename the psc@2000 to spi@2000 in arch/powerpc/boot/dts/o2d.dtsi can =0A=
+fix it.=0A=
+diff --git a/arch/powerpc/boot/dts/o2d.dtsi b/arch/powerpc/boot/dts/o2d.dts=
+i=0A=
+index 6661955a2be4..cd3dc70cd72e 100644=0A=
+--- a/arch/powerpc/boot/dts/o2d.dtsi=0A=
++++ b/arch/powerpc/boot/dts/o2d.dtsi=0A=
+@@ -29,7 +29,7 @@ rtc@800 {=0A=
+  >------>------->-------status =3D "disabled";=0A=
+  >------>-------};=0A=
+-=0A=
+->------>-------psc@2000 {>----->-------// PSC1=0A=
++>------>-------spi@2000 {>----->-------// PSC1=0A=
+  >------>------->-------compatible =3D =0A=
+"fsl,mpc5200b-psc-spi","fsl,mpc5200-psc-spi";=0A=
+  >------>------->-------#address-cells =3D <1>;=0A=
+  >------>------->-------#size-cells =3D <0>;=0A=
+---=0A=
+=0A=
+For the problem about "missing ranges for PCI bridge (or not a bridge)":=0A=
+Ranges should be add in arch/powerpc/boot/dts/mpc5200b.dtsi.=0A=
+ >-------pci: pci@f0000d00 {=0A=
+ >------->-------#interrupt-cells =3D <1>;=0A=
+ >------->-------#size-cells =3D <2>;=0A=
+ >------->-------#address-cells =3D <3>;=0A=
+ >------->-------device_type =3D "pci";=0A=
+ >------->-------compatible =3D "fsl,mpc5200b-pci","fsl,mpc5200-pci";=0A=
+ >------->-------reg =3D <0xf0000d00 0x100>;=0A=
+ >------->-------// interrupt-map-mask =3D need to add=0A=
+ >------->-------// interrupt-map =3D need to add=0A=
+ >------->-------clock-frequency =3D <0>; // From boot loader=0A=
+ >------->-------interrupts =3D <2 8 0 2 9 0 2 10 0>;=0A=
+ >------->-------bus-range =3D <0 0>;=0A=
+ >------->-------// ranges =3D need to add=0A=
+ >-------};=0A=
+I think the ranges should be add by someone who knows the mpc5200 better.=
+=0A=
+=0A=
+Can anyone fix this?=0A=
+=0A=
+-- =0A=
+Regards=0A=
+Chen Jun=0A=
