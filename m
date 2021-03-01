@@ -2,40 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F5F232785E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 08:43:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 833C7327870
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 08:46:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dpsh50h7Kz3clG
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 18:43:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dpsl13YDJz3d4P
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Mar 2021 18:46:05 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=rO8ALAJQ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Dpsgm5KzFz30LD
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Mar 2021 18:43:14 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9EFE71FB;
- Sun, 28 Feb 2021 23:43:10 -0800 (PST)
-Received: from [10.163.67.14] (unknown [10.163.67.14])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0BD253F70D;
- Sun, 28 Feb 2021 23:43:07 -0800 (PST)
-Subject: Re: [PATCH] mm: Generalize HUGETLB_PAGE_SIZE_VARIABLE
-To: Christoph Hellwig <hch@lst.de>
-References: <1614577853-7452-1-git-send-email-anshuman.khandual@arm.com>
- <20210301062358.GA25761@lst.de>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <89f2d77c-f4bc-8f7b-a6b0-1c04e422fb77@arm.com>
-Date: Mon, 1 Mar 2021 13:13:41 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+bce9324c41c3486454c7+6399+infradead.org+hch@casper.srs.infradead.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=rO8ALAJQ; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dpsk373FCz30MT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Mar 2021 18:45:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=oZQdON2UeZGDjeY8BOuus4h51xz4D0PS1kfJ4kEC/6s=; b=rO8ALAJQqrZEeZ4iEOjPwi1WE+
+ 6R34dC8dSkDj+qIvIr6UcSiPxULXK+/lCvDQd59+1pjrXB8xmT7INZhQqgIGvc15iyacmBouUpYHq
+ Do7OPE+zdqCAtk9VUQgSfWkGNCcxTuVUCNnmCtbqSRZctaKJeHAXhPDtIpyY5e7l26gK4ai4ARYuQ
+ OrjO3c1J2ThGSimBb9YbvGnJZi0U/G5QKDNtYkU1CeadFjBoTIqGdPxrVjI5KeB/y+kcasXY76qMt
+ ipKwlZlorTKY6C1UI0lpRn30rJKpqd3RD55IINoQG4ssYdZ6Z3/RZxvk8rBrRkpkhd5xp+qwszJTN
+ W0EYGG9g==;
+Received: from [2001:4bb8:19b:e4b7:cdf9:733f:4874:8eb4] (helo=localhost)
+ by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1lGdEK-00FR4S-Vc; Mon, 01 Mar 2021 07:44:43 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Subject: swiotlb cleanups v2
+Date: Mon,  1 Mar 2021 08:44:22 +0100
+Message-Id: <20210301074436.919889-1-hch@lst.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <20210301062358.GA25761@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,61 +62,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: iommu@lists.linux-foundation.org, xen-devel@lists.xenproject.org,
+ Claire Chang <tientzu@chromium.org>, linuxppc-dev@lists.ozlabs.org,
+ Dongli Zhang <dongli.zhang@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Konrad,
 
+this series contains a bunch of swiotlb cleanups, mostly to reduce the
+amount of internals exposed to code outside of swiotlb.c, which should
+helper to prepare for supporting multiple different bounce buffer pools.
 
-On 3/1/21 11:53 AM, Christoph Hellwig wrote:
-> On Mon, Mar 01, 2021 at 11:20:53AM +0530, Anshuman Khandual wrote:
->> HUGETLB_PAGE_SIZE_VARIABLE need not be defined for each individual
->> platform subscribing it. Instead just make it generic.
->>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Christoph Hellwig <hch@lst.de>
->> Cc: linux-ia64@vger.kernel.org
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: linux-mm@kvack.org
->> Cc: linux-kernel@vger.kernel.org
->> Suggested-by: Christoph Hellwig <hch@lst.de>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->> This change was originally suggested in an earilier discussion. This
->> applies on v5.12-rc1 and has been build tested on all applicable
->> platforms i.e ia64 and powerpc.
->>
->> https://patchwork.kernel.org/project/linux-mm/patch/1613024531-19040-3-git-send-email-anshuman.khandual@arm.com/
->>
->>  arch/ia64/Kconfig    | 6 +-----
->>  arch/powerpc/Kconfig | 6 +-----
->>  mm/Kconfig           | 8 ++++++++
->>  3 files changed, 10 insertions(+), 10 deletions(-)
->>
->> diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
->> index 2ad7a8d29fcc..6b3e3f6c29ae 100644
->> --- a/arch/ia64/Kconfig
->> +++ b/arch/ia64/Kconfig
->> @@ -32,6 +32,7 @@ config IA64
->>  	select TTY
->>  	select HAVE_ARCH_TRACEHOOK
->>  	select HAVE_VIRT_CPU_ACCOUNTING
->> +	select HUGETLB_PAGE_SIZE_VARIABLE
-> 
-> doesn't this need a 'if HUGETLB_PAGE'
-
-While making HUGETLB_PAGE_SIZE_VARIABLE a generic option, also made it
-dependent on HUGETLB_PAGE. Should not that gate HUGETLB_PAGE_SIZE_VARIABLE
-when HUGETLB_PAGE is not available irrespective of the select statement on
-the platforms ?
-
-> 
-> or did you verify that HUGETLB_PAGE_SIZE_VARIABLE checks are always
-> nested inside of HUGETLB_PAGE ones?
->
+Changes since v1:
+ - rebased to v5.12-rc1
+ - a few more cleanups
+ - merge and forward port the patch from Claire to move all the global
+   variables into a struct to prepare for multiple instances
