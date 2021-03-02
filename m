@@ -2,52 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1479F32AAD8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 21:01:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB0732ABE9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 21:57:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dqp1P0GbQz3cZS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 07:01:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqqFd1Mk6z3cZp
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 07:57:25 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PUE7dv+w;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.217.49; helo=mail-vs1-f49.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com
- [209.85.217.49])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=PUE7dv+w; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dqp136C2yz30N0
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 07:01:26 +1100 (AEDT)
-Received: by mail-vs1-f49.google.com with SMTP id l192so11282501vsd.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Mar 2021 12:01:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=lzf9U5TyFr8YSgCYbQV0aCCbWT0MRYgraMrf2J/E5OM=;
- b=sydWiZRDE0/0eWMqx/No+yE8eGl8CR+K1kdeCbTFx96X1HC3vP9uOT1HlOpz/PHPfg
- XmqVAWbEBschFUZd2JtPmVU6WRzSSTVj2E4o/mj0IELUI+BOpHp1CSImPdkD5FMxh6LP
- hljjfBlkKE8BGOCm4X0biEecqjp9R0IJwNTAL0aULdked7iyCGrPZcp7x1SLc4nc0wOi
- s1SBc+tRymQiQtCsE/a+8wiuXWe8JaONLhKmjbYQxhhIZIfldmoeTFZZoDL0oSk3T/dm
- MA1BmO8XFBk4gElAQaHrWIzu6FN9G21jJuKJ+hCctJlyfG9BpIlbs8Db8labAHMoBlfi
- 6HMQ==
-X-Gm-Message-State: AOAM531O+m43bjC9VAcaT9WWfUIXLFn0OBn0rYgbavbL9Ompzq/3AWM+
- M2GJiavp8cUery0NJyhuNFoo/CQV/qI0D24NkRA=
-X-Google-Smtp-Source: ABdhPJzRCGpW4RCsZEhpYEAn3MR1Q73gbJHqe3CH+KRCFvVBwE5R/NVI0GIx7VbV9hgc+A3Gg/HXK7gUOE34HM0PfoU=
-X-Received: by 2002:a67:fb86:: with SMTP id n6mr3865292vsr.3.1614715282171;
- Tue, 02 Mar 2021 12:01:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqqFB0q73z30N1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 07:57:01 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 122Ks9jV143629; Tue, 2 Mar 2021 15:56:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=hVR23tAwSFO9yvx7WPzuNPiKXDrwlLnYZqNbmksQv74=;
+ b=PUE7dv+wJIWuyK5t4GfQ4uUar5+qrH7xj7INM95mbiE7LCry68uTJdNPsZRu6//WEg3O
+ oUR/wV8zZFqFfPV2ZXzx7caTT6xd4WbRZFA+22fvrwExxBvGCQXxqKg5nIroFWGijb6n
+ MXO/A//B+AzQ1Cm6xOKhbWRbtOjePfgmG0ztpKcAAKq6s3xXOEQnqI8rYwItfmViNA0r
+ Mt7K2r7x70oIvW4RfH426PWAbTIA5WPv0G1f2VXsTyliSnPcrX9KtzS+fcpXHJ6DwtQt
+ TlKH7XOr5cq5i/5V1ptPg46AKLvOsaOqv1Y2UQQdxvtR/rlJ+pfmSW8raUEWfB6KH/iU MA== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 371vnhge45-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Mar 2021 15:56:48 -0500
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 122KqXxx032371;
+ Tue, 2 Mar 2021 20:55:26 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma03wdc.us.ibm.com with ESMTP id 37128ga3f7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Mar 2021 20:55:26 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 122KtPXK24576266
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 2 Mar 2021 20:55:25 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 50FBA6E04E;
+ Tue,  2 Mar 2021 20:55:25 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 20B236E054;
+ Tue,  2 Mar 2021 20:55:25 +0000 (GMT)
+Received: from suka-w540.localdomain (unknown [9.85.154.76])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue,  2 Mar 2021 20:55:24 +0000 (GMT)
+Received: by suka-w540.localdomain (Postfix, from userid 1000)
+ id 009312E18A5; Tue,  2 Mar 2021 12:55:21 -0800 (PST)
+Date: Tue, 2 Mar 2021 12:55:21 -0800
+From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+To: Michal Suchanek <msuchanek@suse.de>
+Subject: Re: [PATCH] ibmvnic: Fix possibly uninitialized old_num_tx_queues
+ variable warning.
+Message-ID: <20210302205521.GA1260939@us.ibm.com>
+References: <20210302194747.21704-1-msuchanek@suse.de>
 MIME-Version: 1.0
-References: <20210301104316.2766484-1-geert@linux-m68k.org>
- <alpine.DEB.2.22.394.2103011342520.710098@ramsan.of.borg>
- <CADnq5_O-j8EWL+Eb8zK-7WqUuWKWETVWYRQNFdS_ymUSgo1jrg@mail.gmail.com>
-In-Reply-To: <CADnq5_O-j8EWL+Eb8zK-7WqUuWKWETVWYRQNFdS_ymUSgo1jrg@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 2 Mar 2021 21:01:10 +0100
-Message-ID: <CAMuHMdVFstnce-WKmj=4h3ZdtSThJNOLz_f1ervcZxE6hg=KsA@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v5.12-rc1
-To: Alex Deucher <alexdeucher@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210302194747.21704-1-msuchanek@suse.de>
+X-Operating-System: Linux 2.0.32 on an i486
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-02_08:2021-03-01,
+ 2021-03-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1015
+ mlxlogscore=999 suspectscore=0 impostorscore=0 priorityscore=1501
+ spamscore=0 adultscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103020156
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,53 +100,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>,
- amd-gfx list <amd-gfx@lists.freedesktop.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, Lijun Pan <ljp@linux.ibm.com>,
+ Dany Madden <drt@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Alex,
+Michal Suchanek [msuchanek@suse.de] wrote:
+> GCC 7.5 reports:
+> ../drivers/net/ethernet/ibm/ibmvnic.c: In function 'ibmvnic_reset_init':
+> ../drivers/net/ethernet/ibm/ibmvnic.c:5373:51: warning: 'old_num_tx_queues' may be used uninitialized in this function [-Wmaybe-uninitialized]
+> ../drivers/net/ethernet/ibm/ibmvnic.c:5373:6: warning: 'old_num_rx_queues' may be used uninitialized in this function [-Wmaybe-uninitialized]
+> 
+> The variable is initialized only if(reset) and used only if(reset &&
+> something) so this is a false positive. However, there is no reason to
+> not initialize the variables unconditionally avoiding the warning.
 
-On Tue, Mar 2, 2021 at 8:30 PM Alex Deucher <alexdeucher@gmail.com> wrote:
-> On Mon, Mar 1, 2021 at 9:21 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Mon, 1 Mar 2021, Geert Uytterhoeven wrote:
-> > > Below is the list of build error/warning regressions/improvements in
-> > > v5.12-rc1[1] compared to v5.11[2].
-> > >
-> > > Summarized:
-> > >  - build errors: +2/-0
-> >
-> > > [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/fe07bfda2fb9cdef8a4d4008a409bb02f35f1bd8/ (all 192 configs)
-> > > [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/f40ddce88593482919761f74910f42f4b84c004b/ (all 192 configs)
-> > >
-> > >
-> > > *** ERRORS ***
-> > >
-> > > 2 error regressions:
-> > >  + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c: error: implicit declaration of function 'disable_kernel_vsx' [-Werror=implicit-function-declaration]:  => 674:2
-> > >  + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c: error: implicit declaration of function 'enable_kernel_vsx' [-Werror=implicit-function-declaration]:  => 638:2
-> >
-> > powerpc-gcc4.9/ppc64_book3e_allmodconfig
-> >
-> > This was fixed in v5.11-rc1, but reappeared in v5.12-rc1?
->
-> Do you know what fixed in for 5.11?  I guess for PPC64 we depend on CONFIG_VSX?
+Yeah, its a false positive, but initializing doesn't hurt.
+> 
+> Fixes: 635e442f4a48 ("ibmvnic: merge ibmvnic_reset_init and ibmvnic_init")
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 
-Looking at the kisskb build logs for v5.11*, it seems compilation never
-got to drivers/gpu/drm/ due to internal compiler errors that weren't caught
-by my scripts.  So the errors listed above were not really fixed.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Reviewed-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
