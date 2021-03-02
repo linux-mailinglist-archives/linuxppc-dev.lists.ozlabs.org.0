@@ -1,55 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DFA329562
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 01:22:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B1332957A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 02:02:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DqHrJ09fxz3cnn
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 11:22:08 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=YUOQSf4D;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqJkK5jN8z3clY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 12:02:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canb.auug.org.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=YUOQSf4D; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DqHqs1713z30RW
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 11:21:43 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DqHqg0Qjgz9sS8;
- Tue,  2 Mar 2021 11:21:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1614644495;
- bh=8OV61hNxQX0O7/OTVI4qBszDlVyPCO8tx8jUIJVD+Oc=;
- h=Date:From:To:Cc:Subject:From;
- b=YUOQSf4DpL8Xa9EqsjLIKtTubZVkbyrtZL9vHtuFwqSwKioWmwhkvaKWUNAiW5Nhc
- YZMh8iYq7bmsZ37x/QqLYEHmvo9+m3sJolkfzRuOGfbhwUQ2aDfJsu3b67+JqhwbKY
- 3FFDplwmFDdMSS5Oxyxrs6CjkUkwfYGLUM0UQrjgX2u4v0Q4MwjtTo1QQbF2wmwkfR
- 85mRkL0FweYaHO/gKQs9AOZY1t34WWHWE0sr30pvOBFvgx5rPm/5984Q4S6XY3cW8z
- 291OevBPddj3nEk/f/Fer/SkQhkuw8uK4hG3j/S/3c18ea/Y7u3L/3yZaHpioABJiI
- TEy6U0nPCeOzA==
-Date: Tue, 2 Mar 2021 11:21:31 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: build failure after merge of the powerpc-fixes tree
-Message-ID: <20210302112131.5bb7b08b@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqJk00FXxz3cH6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 12:01:37 +1100 (AEDT)
+IronPort-SDR: OqzC19VusdbtOOv4gYsgF9NTemubGmV8qMCw0fDvE2jqz9gojvTbdMVgJaTpb9+6ZyidLRT+rL
+ Btr72bYZxpgg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9910"; a="183246308"
+X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; d="scan'208";a="183246308"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Mar 2021 17:01:17 -0800
+IronPort-SDR: KIyJNSVvL4q5u9fH8FVw1HgUrNLOZM4YGGSzvha8LyZzLdRAzYZ1oly6gPYyjSvMxU9Qbow63N
+ eAOfXHitS4Ag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; d="scan'208";a="366942142"
+Received: from lkp-server01.sh.intel.com (HELO 16660e54978b) ([10.239.97.150])
+ by orsmga003.jf.intel.com with ESMTP; 01 Mar 2021 17:01:16 -0800
+Received: from kbuild by 16660e54978b with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lGtPX-0004qC-ED; Tue, 02 Mar 2021 01:01:15 +0000
+Date: Tue, 02 Mar 2021 09:00:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ e3d773ddb5a1140780a15703b3e0e2618274cce9
+Message-ID: <603d8e33.nXgq5BBHEYwbhRnj%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/D4mqAlbm0wq8Ywvog1l6MM/";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,80 +54,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <uwe@kleine-koenig.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/D4mqAlbm0wq8Ywvog1l6MM/
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: e3d773ddb5a1140780a15703b3e0e2618274cce9  powerpc/sstep: Fix VSX instruction emulation
 
-Hi all,
+elapsed time: 747m
 
-After merging the powerpc-fixes tree, today's linux-next build (powerpc
-allyesconfig) failed like this:
+configs tested: 131
+configs skipped: 3
 
-drivers/net/ethernet/ibm/ibmvnic.c:5399:13: error: conflicting types for 'i=
-bmvnic_remove'
- 5399 | static void ibmvnic_remove(struct vio_dev *dev)
-      |             ^~~~~~~~~~~~~~
-drivers/net/ethernet/ibm/ibmvnic.c:81:12: note: previous declaration of 'ib=
-mvnic_remove' was here
-   81 | static int ibmvnic_remove(struct vio_dev *);
-      |            ^~~~~~~~~~~~~~
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Caused by commit
+gcc tested configs:
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                            allyesconfig
+arm64                               defconfig
+mips                     cu1000-neo_defconfig
+arm                            hisi_defconfig
+sparc64                          alldefconfig
+powerpc                     tqm8560_defconfig
+powerpc                           allnoconfig
+arm                         hackkit_defconfig
+powerpc                      ep88xc_defconfig
+mips                          malta_defconfig
+h8300                               defconfig
+powerpc                    ge_imp3a_defconfig
+mips                      bmips_stb_defconfig
+powerpc                      katmai_defconfig
+arm                      pxa255-idp_defconfig
+mips                        nlm_xlr_defconfig
+powerpc                 linkstation_defconfig
+m68k                        m5272c3_defconfig
+sh                        sh7785lcr_defconfig
+s390                       zfcpdump_defconfig
+xtensa                    xip_kc705_defconfig
+sparc                       sparc32_defconfig
+nios2                         10m50_defconfig
+powerpc                     ep8248e_defconfig
+powerpc                     asp8347_defconfig
+xtensa                  cadence_csp_defconfig
+powerpc                       maple_defconfig
+sh                               alldefconfig
+sh                          kfr2r09_defconfig
+powerpc               mpc834x_itxgp_defconfig
+sh                          landisk_defconfig
+mips                           xway_defconfig
+arm                           stm32_defconfig
+powerpc                     stx_gp3_defconfig
+m68k                       m5475evb_defconfig
+mips                         bigsur_defconfig
+powerpc                     sequoia_defconfig
+powerpc                     mpc5200_defconfig
+mips                         rt305x_defconfig
+arm                             pxa_defconfig
+sh                          rsk7269_defconfig
+mips                       capcella_defconfig
+riscv                            alldefconfig
+arm                           spitz_defconfig
+powerpc                        warp_defconfig
+xtensa                       common_defconfig
+arm                        neponset_defconfig
+sh                     magicpanelr2_defconfig
+sh                            titan_defconfig
+m68k                          sun3x_defconfig
+sparc                       sparc64_defconfig
+powerpc                   currituck_defconfig
+powerpc                  iss476-smp_defconfig
+i386                             alldefconfig
+sh                   secureedge5410_defconfig
+mips                        qi_lb60_defconfig
+powerpc                       eiger_defconfig
+sh                          rsk7201_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+i386                 randconfig-a005-20210301
+i386                 randconfig-a003-20210301
+i386                 randconfig-a002-20210301
+i386                 randconfig-a004-20210301
+i386                 randconfig-a006-20210301
+i386                 randconfig-a001-20210301
+x86_64               randconfig-a015-20210301
+x86_64               randconfig-a014-20210301
+x86_64               randconfig-a013-20210301
+x86_64               randconfig-a016-20210301
+x86_64               randconfig-a012-20210301
+x86_64               randconfig-a011-20210301
+i386                 randconfig-a016-20210301
+i386                 randconfig-a012-20210301
+i386                 randconfig-a014-20210301
+i386                 randconfig-a013-20210301
+i386                 randconfig-a011-20210301
+i386                 randconfig-a015-20210301
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-  1bdd1e6f9320 ("vio: make remove callback return void")
+clang tested configs:
+x86_64               randconfig-a006-20210301
+x86_64               randconfig-a001-20210301
+x86_64               randconfig-a004-20210301
+x86_64               randconfig-a002-20210301
+x86_64               randconfig-a005-20210301
+x86_64               randconfig-a003-20210301
 
-I have applied the following patch for today:
-
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-Date: Tue, 2 Mar 2021 11:06:37 +1100
-Subject: [PATCH] vio: fix for make remove callback return void
-
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/=
-ibmvnic.c
-index eb39318766f6..fe3201ba2034 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -78,7 +78,6 @@ MODULE_LICENSE("GPL");
- MODULE_VERSION(IBMVNIC_DRIVER_VERSION);
-=20
- static int ibmvnic_version =3D IBMVNIC_INITIAL_VERSION;
--static int ibmvnic_remove(struct vio_dev *);
- static void release_sub_crqs(struct ibmvnic_adapter *, bool);
- static int ibmvnic_reset_crq(struct ibmvnic_adapter *);
- static int ibmvnic_send_crq_init(struct ibmvnic_adapter *);
---=20
-2.30.0
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/D4mqAlbm0wq8Ywvog1l6MM/
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmA9hQsACgkQAVBC80lX
-0Gw/tgf/X1mjakb6+92nMtN4BKbLQpllmRKdA+xmN2SHAlJhXDviswVeWKBJa2ue
-/wrRfq97m9m28/frwbTrbLd0pemJ0CjP0ZtNVMPgDiDMfSZMe6W3zJ6vAnwxGtuW
-WcgqphbiQyzt30NHOa0kX0DANyeNS54jiZbupaYEYGZcZBLcEshZniaBzji+6JfX
-ev0OdkJiCeyuHk6uyGgbEuGaMMj+CmEjwnTs/9JSKN061I3E4p999PuIzJ/eBxpn
-5z2QraLWK8pqB1B9IHuG8tHSA9OvZtLcnu5hmfKWKN/TwsarBr7ghL+cEcb9OP3P
-tOFf5HNetbZ1Xek+2xyH7aIlUpf5VA==
-=JDVK
------END PGP SIGNATURE-----
-
---Sig_/D4mqAlbm0wq8Ywvog1l6MM/--
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
