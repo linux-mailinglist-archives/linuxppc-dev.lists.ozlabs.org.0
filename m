@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44B7329D7A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 13:00:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61167329D82
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 13:01:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DqbLS4zfhz3f2w
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 23:00:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqbLw38vTz3f76
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 23:01:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k9z+j+KY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sgpQvl3w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,34 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=k9z+j+KY; 
+ header.s=k20201202 header.b=sgpQvl3w; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DqbHQ1ZfJz3dTk
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 22:58:10 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5975064F8B;
- Tue,  2 Mar 2021 11:58:07 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqbJ63Zd4z3dYB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 22:58:46 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2E20B64F9F;
+ Tue,  2 Mar 2021 11:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1614686288;
- bh=a1VhMGuXQTY3mvMopedWpD+QgpA22n2JQFpGKhSlkX4=;
+ s=k20201202; t=1614686324;
+ bh=RK39yCb+fRJqOssbDdNORXfix3bwYXfcz+g0VnGzLWw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=k9z+j+KYVwUY87inoNciHTWdmMW8emiqF8McTrisSYoCXuQ5RsbnKcthaiLpbgEQa
- PEIsn9vKnmnWWO1O2onRz7GkGkOwZ7p5ajfolxF+sebbngCM4niplIpltOprGPwx2z
- Uk70smUJ/uqwB9/1NmyK2pOUNZ7gApsJaLfppNwCLddnYHezddaFIpk2GxtncEJM8Q
- dQavzy8NfvOen9vXDdpZ2XzGNeP2uWRgQ/3f3+WPLoMgmhSmwb92lI3l4NznRyEAxr
- I9W6xsVKug8C19DBichyJecjqUkEtQZtqWVV7m1ZkLRUU520GEJ3qQoUWjHGCJN9EP
- iMhDktnK8rXXg==
+ b=sgpQvl3w5CiTay9IZflgjVqQV4TURDx0AtZhmpwOEiaPuCVgIAeGG1uIrNHpQZOWa
+ voasQQYuRq2f41TDv1SYM5+au/PS7ooYJBw6zHapRByneKRPh432YYzV825HgWiMHH
+ 5fzLhKj565H6E1EGH8vvEBlPQznSQxLeDYf0ERcq9xVycfQUtz9WYF3Z6+fS4Itatk
+ 1GiNu4cpUAEBkeoUzOKakiwM9eKh6MJkdJDCQFY+FhTIML45rqjwgltKGLAXwVoD6x
+ JX5Oy/gxy9lmWTlvZ9CaJRx53hyAU2SW9wenbBCqd14DAOZ9CBVFziRR7PejxmSyVj
+ D/1wudwzVZTdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 14/33] powerpc/64: Fix stack trace not displaying
- final frame
-Date: Tue,  2 Mar 2021 06:57:30 -0500
-Message-Id: <20210302115749.62653-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 06/21] powerpc/pci: Add ppc_md.discover_phbs()
+Date: Tue,  2 Mar 2021 06:58:20 -0500
+Message-Id: <20210302115835.63269-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210302115749.62653-1-sashal@kernel.org>
-References: <20210302115749.62653-1-sashal@kernel.org>
+In-Reply-To: <20210302115835.63269-1-sashal@kernel.org>
+References: <20210302115835.63269-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,116 +60,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Oliver O'Halloran <oohall@gmail.com>, kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Oliver O'Halloran <oohall@gmail.com>
 
-[ Upstream commit e3de1e291fa58a1ab0f471a4b458eff2514e4b5f ]
+[ Upstream commit 5537fcb319d016ce387f818dd774179bc03217f5 ]
 
-In commit bf13718bc57a ("powerpc: show registers when unwinding
-interrupt frames") we changed our stack dumping logic to show the full
-registers whenever we find an interrupt frame on the stack.
+On many powerpc platforms the discovery and initalisation of
+pci_controllers (PHBs) happens inside of setup_arch(). This is very early
+in boot (pre-initcalls) and means that we're initialising the PHB long
+before many basic kernel services (slab allocator, debugfs, a real ioremap)
+are available.
 
-However we didn't notice that on 64-bit this doesn't show the final
-frame, ie. the interrupt that brought us in from userspace, whereas on
-32-bit it does.
+On PowerNV this causes an additional problem since we map the PHB registers
+with ioremap(). As of commit d538aadc2718 ("powerpc/ioremap: warn on early
+use of ioremap()") a warning is printed because we're using the "incorrect"
+API to setup and MMIO mapping in searly boot. The kernel does provide
+early_ioremap(), but that is not intended to create long-lived MMIO
+mappings and a seperate warning is printed by generic code if
+early_ioremap() mappings are "leaked."
 
-That is due to confusion about the size of that last frame. The code
-in show_stack() calls validate_sp(), passing it STACK_INT_FRAME_SIZE
-to check the sp is at least that far below the top of the stack.
+This is all fixable with dumb hacks like using early_ioremap() to setup
+the initial mapping then replacing it with a real ioremap later on in
+boot, but it does raise the question: Why the hell are we setting up the
+PHB's this early in boot?
 
-However on 64-bit that size is too large for the final frame, because
-it includes the red zone, but we don't allocate a red zone for the
-first frame.
+The old and wise claim it's due to "hysterical rasins." Aside from amused
+grapes there doesn't appear to be any real reason to maintain the current
+behaviour. Already most of the newer embedded platforms perform PHB
+discovery in an arch_initcall and between the end of setup_arch() and the
+start of initcalls none of the generic kernel code does anything PCI
+related. On powerpc scanning PHBs occurs in a subsys_initcall so it should
+be possible to move the PHB discovery to a core, postcore or arch initcall.
 
-So add a new define that encodes the correct size for 32-bit and
-64-bit, and use it in show_stack().
+This patch adds the ppc_md.discover_phbs hook and a core_initcall stub that
+calls it. The core_initcalls are the earliest to be called so this will
+any possibly issues with dependency between initcalls. This isn't just an
+academic issue either since on pseries and PowerNV EEH init occurs in an
+arch_initcall and depends on the pci_controllers being available, similarly
+the creation of pci_dns occurs at core_initcall_sync (i.e. between core and
+postcore initcalls). These problems need to be addressed seperately.
 
-This results in the full trace being shown on 64-bit, eg:
-
-  sysrq: Trigger a crash
-  Kernel panic - not syncing: sysrq triggered crash
-  CPU: 0 PID: 83 Comm: sh Not tainted 5.11.0-rc2-gcc-8.2.0-00188-g571abcb96b10-dirty #649
-  Call Trace:
-  [c00000000a1c3ac0] [c000000000897b70] dump_stack+0xc4/0x114 (unreliable)
-  [c00000000a1c3b00] [c00000000014334c] panic+0x178/0x41c
-  [c00000000a1c3ba0] [c00000000094e600] sysrq_handle_crash+0x40/0x50
-  [c00000000a1c3c00] [c00000000094ef98] __handle_sysrq+0xd8/0x210
-  [c00000000a1c3ca0] [c00000000094f820] write_sysrq_trigger+0x100/0x188
-  [c00000000a1c3ce0] [c0000000005559dc] proc_reg_write+0x10c/0x1b0
-  [c00000000a1c3d10] [c000000000479950] vfs_write+0xf0/0x360
-  [c00000000a1c3d60] [c000000000479d9c] ksys_write+0x7c/0x140
-  [c00000000a1c3db0] [c00000000002bf5c] system_call_exception+0x19c/0x2c0
-  [c00000000a1c3e10] [c00000000000d35c] system_call_common+0xec/0x278
-  --- interrupt: c00 at 0x7fff9fbab428
-  NIP:  00007fff9fbab428 LR: 000000001000b724 CTR: 0000000000000000
-  REGS: c00000000a1c3e80 TRAP: 0c00   Not tainted  (5.11.0-rc2-gcc-8.2.0-00188-g571abcb96b10-dirty)
-  MSR:  900000000280f033 <SF,HV,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 22002884  XER: 00000000
-  IRQMASK: 0
-  GPR00: 0000000000000004 00007fffc3cb8960 00007fff9fc59900 0000000000000001
-  GPR04: 000000002a4b32d0 0000000000000002 0000000000000063 0000000000000063
-  GPR08: 000000002a4b32d0 0000000000000000 0000000000000000 0000000000000000
-  GPR12: 0000000000000000 00007fff9fcca9a0 0000000000000000 0000000000000000
-  GPR16: 0000000000000000 0000000000000000 0000000000000000 00000000100b8fd0
-  GPR20: 000000002a4b3485 00000000100b8f90 0000000000000000 0000000000000000
-  GPR24: 000000002a4b0440 00000000100e77b8 0000000000000020 000000002a4b32d0
-  GPR28: 0000000000000001 0000000000000002 000000002a4b32d0 0000000000000001
-  NIP [00007fff9fbab428] 0x7fff9fbab428
-  LR [000000001000b724] 0x1000b724
-  --- interrupt: c00
-
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+[mpe: Make discover_phbs() static]
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210209141627.2898485-1-mpe@ellerman.id.au
+Link: https://lore.kernel.org/r/20201103043523.916109-1-oohall@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/ptrace.h | 3 +++
- arch/powerpc/kernel/asm-offsets.c | 2 +-
- arch/powerpc/kernel/process.c     | 2 +-
- 3 files changed, 5 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/machdep.h |  3 +++
+ arch/powerpc/kernel/pci-common.c   | 10 ++++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index c41220f4aad9..5a424f867c82 100644
---- a/arch/powerpc/include/asm/ptrace.h
-+++ b/arch/powerpc/include/asm/ptrace.h
-@@ -62,6 +62,9 @@ struct pt_regs
- };
- #endif
+diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+index a47de82fb8e2..bda87cbf106d 100644
+--- a/arch/powerpc/include/asm/machdep.h
++++ b/arch/powerpc/include/asm/machdep.h
+@@ -71,6 +71,9 @@ struct machdep_calls {
+ 	int		(*pcibios_root_bridge_prepare)(struct pci_host_bridge
+ 				*bridge);
  
++	/* finds all the pci_controllers present at boot */
++	void 		(*discover_phbs)(void);
 +
-+#define STACK_FRAME_WITH_PT_REGS (STACK_FRAME_OVERHEAD + sizeof(struct pt_regs))
+ 	/* To setup PHBs when using automatic OF platform driver for PCI */
+ 	int		(*pci_setup_phb)(struct pci_controller *host);
+ 
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index 88e4f69a09e5..74628aca2bf1 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -1671,3 +1671,13 @@ static void fixup_hide_host_resource_fsl(struct pci_dev *dev)
+ }
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MOTOROLA, PCI_ANY_ID, fixup_hide_host_resource_fsl);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_FREESCALE, PCI_ANY_ID, fixup_hide_host_resource_fsl);
 +
- #ifdef __powerpc64__
- 
- /*
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 5c0a1e17219b..af399675248e 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -285,7 +285,7 @@ int main(void)
- 
- 	/* Interrupt register frame */
- 	DEFINE(INT_FRAME_SIZE, STACK_INT_FRAME_SIZE);
--	DEFINE(SWITCH_FRAME_SIZE, STACK_FRAME_OVERHEAD + sizeof(struct pt_regs));
-+	DEFINE(SWITCH_FRAME_SIZE, STACK_FRAME_WITH_PT_REGS);
- 	STACK_PT_REGS_OFFSET(GPR0, gpr[0]);
- 	STACK_PT_REGS_OFFSET(GPR1, gpr[1]);
- 	STACK_PT_REGS_OFFSET(GPR2, gpr[2]);
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index bd0c258a1d5d..c94bba9142e7 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2081,7 +2081,7 @@ void show_stack(struct task_struct *tsk, unsigned long *stack)
- 		 * See if this is an exception frame.
- 		 * We look for the "regshere" marker in the current frame.
- 		 */
--		if (validate_sp(sp, tsk, STACK_INT_FRAME_SIZE)
-+		if (validate_sp(sp, tsk, STACK_FRAME_WITH_PT_REGS)
- 		    && stack[STACK_FRAME_MARKER] == STACK_FRAME_REGS_MARKER) {
- 			struct pt_regs *regs = (struct pt_regs *)
- 				(sp + STACK_FRAME_OVERHEAD);
++
++static int __init discover_phbs(void)
++{
++	if (ppc_md.discover_phbs)
++		ppc_md.discover_phbs();
++
++	return 0;
++}
++core_initcall(discover_phbs);
 -- 
 2.30.1
 
