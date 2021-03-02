@@ -1,60 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA98032A37C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 16:17:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E02632A3F7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 16:26:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dqgj96dyyz3d2p
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 02:17:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dqgvl1qvWz3d2p
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 02:26:27 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=pLLCBLu/;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dqghp5gk7z30Ng
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 02:16:55 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Dqghb2Clsz9v0tm;
- Tue,  2 Mar 2021 16:16:47 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id o6ue3sntJFXZ; Tue,  2 Mar 2021 16:16:47 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Dqghb193vz9v0td;
- Tue,  2 Mar 2021 16:16:47 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 75B788B7B5;
- Tue,  2 Mar 2021 16:16:48 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id NJiP_PO3SpRK; Tue,  2 Mar 2021 16:16:48 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B32E8B75F;
- Tue,  2 Mar 2021 16:16:47 +0100 (CET)
-Subject: Re: [PATCH 0/2] Fix CMDLINE_EXTEND handling for FDT "bootargs"
+ smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
+ helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
+ header.a=rsa-sha256 header.s=default header.b=pLLCBLu/; 
+ dkim-atps=neutral
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DqgvJ2Gq6z2yRh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 02:26:03 +1100 (AEDT)
+Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
+ [73.42.176.67])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 9687820B83EA;
+ Tue,  2 Mar 2021 07:26:00 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9687820B83EA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1614698761;
+ bh=lwnEHkkImr8dT+pu5zA94ImzVDh1eaKp+2wplr8dTxw=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=pLLCBLu/Gt65UbzyLnL9BV31JdFvnxcEvpWZedW6aek9Fr7BAvJMq8pE7+I3D21HR
+ IhAQWA5ZLk63w0dE3FSSr4HbxcROs4K0Ok7obQWUOQTWh9PrLQWbwmnRiQ5oDBMNjX
+ vvxYK8ZzE4nI3spfi8YNiR8jeYbt6avdkMKdo2vQ=
+Subject: Re: [PATCH v19 00/13] Carry forward IMA measurement log on kexec on
+ ARM64
 To: Rob Herring <robh@kernel.org>
-References: <20210225125921.13147-1-will@kernel.org>
- <CAL_JsqJX=TCCs7=gg486r9TN4NYscMTCLNfqJF9crskKPq-bTg@mail.gmail.com>
- <20210301144153.GA16716@willie-the-truck>
- <CAL_JsqJ11D-7a3pwLTVd+rHjqDGBb=b8OU_a6h3Co-at+2qMtQ@mail.gmail.com>
- <bbbf5def-a168-9a4c-1106-b80883dfd389@csgroup.eu>
- <CAL_Jsq+Te5+kQzbAMCzuRCkmoZWBDKGhynUC8BfvOm=R5jT4Jg@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <fe4de021-6bc6-577c-858e-8c79a5ec2340@csgroup.eu>
-Date: Tue, 2 Mar 2021 16:16:38 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+References: <20210221174930.27324-1-nramas@linux.microsoft.com>
+ <CAL_JsqKiOVo2rDhstAA-jUkMJiajHM=uwfj3JQd64h_eEfSjTw@mail.gmail.com>
+From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <7828ec90-a768-f96f-192f-d00dec2344af@linux.microsoft.com>
+Date: Tue, 2 Mar 2021 07:25:29 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <CAL_Jsq+Te5+kQzbAMCzuRCkmoZWBDKGhynUC8BfvOm=R5jT4Jg@mail.gmail.com>
+In-Reply-To: <CAL_JsqKiOVo2rDhstAA-jUkMJiajHM=uwfj3JQd64h_eEfSjTw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,91 +61,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyler Hicks <tyhicks@linux.microsoft.com>, devicetree@vger.kernel.org,
- Marc Zyngier <maz@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Will Deacon <will@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Doug Anderson <dianders@chromium.org>,
- Chris Packham <chris.packham@alliedtelesis.co.nz>,
- Palmer Dabbelt <palmer@dabbelt.com>,
+Cc: Mark Rutland <mark.rutland@arm.com>, tao.li@vivo.com,
+ Mimi Zohar <zohar@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ vincenzo.frascino@arm.com, Frank Rowand <frowand.list@gmail.com>,
+ Sasha Levin <sashal@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Masahiro Yamada <masahiroy@kernel.org>, James Morris <jmorris@namei.org>,
+ "AKASHI, Takahiro" <takahiro.akashi@linaro.org>,
  linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Max Uvarov <muvarov@gmail.com>,
- Android Kernel Team <kernel-team@android.com>,
- Ard Biesheuvel <ardb@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, devicetree@vger.kernel.org,
+ Pavel Tatashin <pasha.tatashin@soleen.com>, Will Deacon <will@kernel.org>,
+ Prakhar Srivastava <prsriva@linux.microsoft.com>,
+ Hsin-Yi Wang <hsinyi@chromium.org>, Allison Randal <allison@lohutok.net>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Matthias Brugger <mbrugger@suse.com>, balajib@linux.microsoft.com,
+ dmitry.kasatkin@gmail.com,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Daniel Walker <danielwa@cisco.com>
+ James Morse <james.morse@arm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Joe Perches <joe@perches.com>,
+ linux-integrity@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 02/03/2021 à 15:56, Rob Herring a écrit :
-> On Mon, Mar 1, 2021 at 11:45 AM Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
+On 3/2/21 7:06 AM, Rob Herring wrote:
+> On Sun, Feb 21, 2021 at 11:49 AM Lakshmi Ramasubramanian
+> <nramas@linux.microsoft.com> wrote:
 >>
+>> On kexec file load Integrity Measurement Architecture (IMA) subsystem
+>> may verify the IMA signature of the kernel and initramfs, and measure
+>> it.  The command line parameters passed to the kernel in the kexec call
+>> may also be measured by IMA.  A remote attestation service can verify
+>> a TPM quote based on the TPM event log, the IMA measurement list, and
+>> the TPM PCR data.  This can be achieved only if the IMA measurement log
+>> is carried over from the current kernel to the next kernel across
+>> the kexec call.
 >>
+>> powerpc already supports carrying forward the IMA measurement log on
+>> kexec.  This patch set adds support for carrying forward the IMA
+>> measurement log on kexec on ARM64.
 >>
->> Le 01/03/2021 à 18:26, Rob Herring a écrit :
->>> +PPC folks and Daniel W
->>>
->>> On Mon, Mar 1, 2021 at 8:42 AM Will Deacon <will@kernel.org> wrote:
->>>>
->>>> On Mon, Mar 01, 2021 at 08:19:32AM -0600, Rob Herring wrote:
->>>>> On Thu, Feb 25, 2021 at 6:59 AM Will Deacon <will@kernel.org> wrote:
->>>>>> We recently [1] enabled support for CMDLINE_EXTEND on arm64, however
->>>>>> when I started looking at replacing Android's out-of-tree implementation [2]
->>>>>
->>>>> Did anyone go read the common, reworked version of all this I
->>>>> referenced that supports prepend and append. Here it is again[1].
->>>>> Maybe I should have been more assertive there and said 'extend' is
->>>>> ambiguous.
->>>>
->>>> I tried reading that, but (a) most of the series is not in the mailing list
->>>> archives and (b) the patch that _is_ doesn't touch CMDLINE_EXTEND at all.
->>>> Right now the code in mainline does the opposite of what it's documented to
->>>> do.
->>>
->>> Actually, there is a newer version I found:
->>>
->>> https://lore.kernel.org/linuxppc-dev/1551469472-53043-1-git-send-email-danielwa@cisco.com/
->>> https://lore.kernel.org/linuxppc-dev/1551469472-53043-2-git-send-email-danielwa@cisco.com/
->>> https://lore.kernel.org/linuxppc-dev/1551469472-53043-3-git-send-email-danielwa@cisco.com/
+>> This patch set moves the platform independent code defined for powerpc
+>> such that it can be reused for other platforms as well.  A chosen node
+>> "linux,ima-kexec-buffer" is added to the DTB for ARM64 to hold
+>> the address and the size of the memory reserved to carry
+>> the IMA measurement log.
 >>
->> This was seen as too much intrusive into powerpc.
+>> This patch set has been tested for ARM64 platform using QEMU.
+>> I would like help from the community for testing this change on powerpc.
+>> Thanks.
+>>
+>> This patch set is based on
+>> commit f31e3386a4e9 ("ima: Free IMA measurement buffer after kexec syscall")
+>> in https://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-integrity.git
+>> "ima-kexec-fixes" branch.
+
+[...]
+
+>>
+>> Lakshmi Ramasubramanian (10):
+>>    kexec: Move ELF fields to struct kimage
+>>    arm64: Use ELF fields defined in 'struct kimage'
+>>    powerpc: Use ELF fields defined in 'struct kimage'
+>>    x86: Use ELF fields defined in 'struct kimage'
+>>    powerpc: Move ima buffer fields to struct kimage
+>>    powerpc: Enable passing IMA log to next kernel on kexec
+>>    powerpc: Move arch independent ima kexec functions to
+>>      drivers/of/kexec.c
+>>    kexec: Use fdt_appendprop_addrrange() to add ima buffer to FDT
+>>    powerpc: Delete unused function delete_fdt_mem_rsv()
+>>    arm64: Enable passing IMA log to next kernel on kexec
+>>
+>> Rob Herring (3):
+>>    of: Add a common kexec FDT setup function
+>>    arm64: Use common of_kexec_alloc_and_setup_fdt()
+>>    powerpc: Use common of_kexec_alloc_and_setup_fdt()
+>>
+>>   arch/arm64/Kconfig                     |   1 +
+>>   arch/arm64/include/asm/kexec.h         |   4 -
+>>   arch/arm64/kernel/machine_kexec_file.c | 194 +----------
+>>   arch/powerpc/Kconfig                   |   2 +-
+>>   arch/powerpc/include/asm/ima.h         |  30 --
+>>   arch/powerpc/include/asm/kexec.h       |  14 +-
+>>   arch/powerpc/kexec/Makefile            |   7 -
+>>   arch/powerpc/kexec/elf_64.c            |  30 +-
+>>   arch/powerpc/kexec/file_load.c         | 183 +---------
+>>   arch/powerpc/kexec/file_load_64.c      |  21 +-
+>>   arch/powerpc/kexec/ima.c               | 219 ------------
+>>   arch/x86/include/asm/kexec.h           |   5 -
+>>   arch/x86/kernel/crash.c                |  14 +-
+>>   arch/x86/kernel/kexec-bzimage64.c      |   2 +-
+>>   arch/x86/kernel/machine_kexec_64.c     |   4 +-
+>>   drivers/of/Makefile                    |   6 +
+>>   drivers/of/kexec.c                     | 458 +++++++++++++++++++++++++
+>>   include/linux/kexec.h                  |   8 +
+>>   include/linux/of.h                     |   7 +
+>>   security/integrity/ima/ima.h           |   4 -
+>>   security/integrity/ima/ima_kexec.c     |   9 +-
+>>   21 files changed, 539 insertions(+), 683 deletions(-)
+>>   delete mode 100644 arch/powerpc/include/asm/ima.h
+>>   delete mode 100644 arch/powerpc/kexec/ima.c
+>>   create mode 100644 drivers/of/kexec.c
 > 
-> It looked like the main issue was string functions for KASAN?
-
-This is one issue yes,
-
-> 
-> As far as being too complex, I think that will be needed if you look
-> at all architectures and non-DT cases.
-
-As far as I remember, I could't understand why we absolutely need to define the command line string 
-in the common part of the code, leading to being obliged to use macros in order to allow the 
-architecture to specify in which section it wants the string.
-
-Why not leave the definition of the string to the architecture and just declare it in the common 
-code, allowing the architecture to put it where it suits it and reducing opacity and allowing use of 
-standard static inline functions instead of uggly macros.
-
-
-> 
->> I proposed an alternative at
->> https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1554195798.git.christophe.leroy@c-s.fr/ but
->> never got any feedback.
-> 
-> Didn't go to a list I subscribe to. In particular, if it had gone to
-> DT list and into PW you would have gotten a reply from me.
+> I fixed up the Fixes tags and applied for 5.13.
 > 
 
-Sorry for that. Original series from Daniel 
-(https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20190319232448.45964-2-danielwa@cisco.com/) 
-was sent only to linuxppc-dev list, and Michael suggested to also send it to linux-arch list, and I 
-also always copy linux-kernel.
+Thanks a lot Rob.
 
-If there is new interest for that functionnality, I can try and rebase my series.
+  -lakshmi
 
-Christophe
+
