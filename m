@@ -1,48 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2C332957B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 02:09:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EEFA32959D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 03:12:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DqJv65SMfz3cnK
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 12:09:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqLHX0xYFz3d9v
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 13:12:24 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=c7K2sovU;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=c7K2sovU; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DqJtn0lqzz3cGs
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 12:09:20 +1100 (AEDT)
-IronPort-SDR: 1nThagE0VpFZOjaOvUsiBhBkx7snh9v1iJBuQUc84kTK2WU94lh7fv7rYcLxPpHbZD0m4Wrf5G
- N4P4pXOVarVQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9910"; a="166525112"
-X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; d="scan'208";a="166525112"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Mar 2021 17:09:17 -0800
-IronPort-SDR: DQ9I6MgOebzhHfYFv/yVI9Wgw4WFKa0XVs46WTyNPs7uv51pVkLYMb59p8ER0dK+b2PjIxaHeB
- 8j0sgAslvc6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; d="scan'208";a="585693631"
-Received: from lkp-server01.sh.intel.com (HELO 16660e54978b) ([10.239.97.150])
- by orsmga005.jf.intel.com with ESMTP; 01 Mar 2021 17:09:16 -0800
-Received: from kbuild by 16660e54978b with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1lGtXH-0004qR-O8; Tue, 02 Mar 2021 01:09:15 +0000
-Date: Tue, 02 Mar 2021 09:09:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 19d767f0429ab26cb3de6c1f7a805a973c5dbd26
-Message-ID: <603d902d.3t3ISwF/beQai6oO%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqLGc4LNYz30Hp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 13:11:36 +1100 (AEDT)
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4DqLGb1p5Sz9sVt; Tue,  2 Mar 2021 13:11:35 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1614651095;
+ bh=9cUWbWxmFz8RGUO2eFgwLm2hQP7G5/Wfu8oqpSqV5ok=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=c7K2sovU4+y+3Bz1BEsk4gx3HvUW/LRzMks5UdP2HNMlrTiSDu2N+FRl1zpa5Kc0W
+ BQlN9qAk/f94p1xpn2x5BY0zAqd6MF8kKalV5sr2Re9O3iD9kBV8jYgAodzv0CxNsZ
+ nYTRNSXIFEcZIk43oq8HLMFRUoI/JX+EPHPqJ2ME=
+Date: Tue, 2 Mar 2021 12:28:34 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v5 1/3] powerpc/book3s64/radix: Add H_RPT_INVALIDATE
+ pgsize encodings to mmu_psize_def
+Message-ID: <YD2UwhaweIpImZDv@yekko.fritz.box>
+References: <20210224082510.3962423-1-bharata@linux.ibm.com>
+ <20210224082510.3962423-2-bharata@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="18DvU1Ut+qwRBBx8"
+Content-Disposition: inline
+In-Reply-To: <20210224082510.3962423-2-bharata@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,137 +58,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
+ kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 19d767f0429ab26cb3de6c1f7a805a973c5dbd26  KVM: PPC: Book3S HV: Convert tbacct/stoltb_lock to raw spinlocks
 
-elapsed time: 751m
+--18DvU1Ut+qwRBBx8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-configs tested: 111
-configs skipped: 2
+On Wed, Feb 24, 2021 at 01:55:08PM +0530, Bharata B Rao wrote:
+> Add a field to mmu_psize_def to store the page size encodings
+> of H_RPT_INVALIDATE hcall. Initialize this while scanning the radix
+> AP encodings. This will be used when invalidating with required
+> page size encoding in the hcall.
+>=20
+> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/book3s/64/mmu.h | 1 +
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 5 +++++
+>  2 files changed, 6 insertions(+)
+>=20
+> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/incl=
+ude/asm/book3s/64/mmu.h
+> index eace8c3f7b0a..c02f42d1031e 100644
+> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
+> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+> @@ -19,6 +19,7 @@ struct mmu_psize_def {
+>  	int		penc[MMU_PAGE_COUNT];	/* HPTE encoding */
+>  	unsigned int	tlbiel;	/* tlbiel supported for that page size */
+>  	unsigned long	avpnm;	/* bits to mask out in AVPN in the HPTE */
+> +	unsigned long   h_rpt_pgsize; /* H_RPT_INVALIDATE page size encoding */
+>  	union {
+>  		unsigned long	sllp;	/* SLB L||LP (exact mask to use in slbmte) */
+>  		unsigned long ap;	/* Ap encoding used by PowerISA 3.0 */
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/b=
+ook3s64/radix_pgtable.c
+> index 98f0b243c1ab..1b749899016b 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -486,6 +486,7 @@ static int __init radix_dt_scan_page_sizes(unsigned l=
+ong node,
+>  		def =3D &mmu_psize_defs[idx];
+>  		def->shift =3D shift;
+>  		def->ap  =3D ap;
+> +		def->h_rpt_pgsize =3D psize_to_rpti_pgsize(idx);
+>  	}
+> =20
+>  	/* needed ? */
+> @@ -560,9 +561,13 @@ void __init radix__early_init_devtree(void)
+>  		 */
+>  		mmu_psize_defs[MMU_PAGE_4K].shift =3D 12;
+>  		mmu_psize_defs[MMU_PAGE_4K].ap =3D 0x0;
+> +		mmu_psize_defs[MMU_PAGE_4K].h_rpt_pgsize =3D
+> +			psize_to_rpti_pgsize(MMU_PAGE_4K);
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Hm.  TBH, I was thinking of this as replacing psize_to_rpti_pgsize() -
+that is, you directly put the correct codes in there, then just have
+psize_to_rpti_pgsize() look them up in the table.
 
-gcc tested configs:
-arm64                            allyesconfig
-arm64                               defconfig
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-ia64                                defconfig
-mips                     cu1000-neo_defconfig
-arm                            hisi_defconfig
-sparc64                          alldefconfig
-powerpc                     tqm8560_defconfig
-powerpc                           allnoconfig
-powerpc                    ge_imp3a_defconfig
-mips                      bmips_stb_defconfig
-mips                          malta_defconfig
-powerpc                      katmai_defconfig
-arm                      pxa255-idp_defconfig
-mips                        nlm_xlr_defconfig
-powerpc                 linkstation_defconfig
-m68k                        m5272c3_defconfig
-sh                        sh7785lcr_defconfig
-powerpc                       maple_defconfig
-sh                               alldefconfig
-sh                          kfr2r09_defconfig
-powerpc               mpc834x_itxgp_defconfig
-powerpc                        warp_defconfig
-sh                        dreamcast_defconfig
-mips                      loongson3_defconfig
-ia64                      gensparse_defconfig
-riscv                            alldefconfig
-arm                           spitz_defconfig
-xtensa                       common_defconfig
-arm                        neponset_defconfig
-sh                     magicpanelr2_defconfig
-sh                            titan_defconfig
-m68k                          sun3x_defconfig
-sparc                       sparc64_defconfig
-powerpc                   currituck_defconfig
-powerpc                  iss476-smp_defconfig
-nios2                            alldefconfig
-powerpc                       ebony_defconfig
-powerpc                 mpc8313_rdb_defconfig
-powerpc                 mpc834x_mds_defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-s390                             allmodconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-i386                 randconfig-a005-20210301
-i386                 randconfig-a003-20210301
-i386                 randconfig-a002-20210301
-i386                 randconfig-a004-20210301
-i386                 randconfig-a006-20210301
-i386                 randconfig-a001-20210301
-x86_64               randconfig-a013-20210301
-x86_64               randconfig-a016-20210301
-x86_64               randconfig-a015-20210301
-x86_64               randconfig-a014-20210301
-x86_64               randconfig-a012-20210301
-x86_64               randconfig-a011-20210301
-i386                 randconfig-a016-20210301
-i386                 randconfig-a012-20210301
-i386                 randconfig-a014-20210301
-i386                 randconfig-a013-20210301
-i386                 randconfig-a011-20210301
-i386                 randconfig-a015-20210301
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+I guess that could be a followup change, though.
 
-clang tested configs:
-x86_64               randconfig-a006-20210301
-x86_64               randconfig-a001-20210301
-x86_64               randconfig-a004-20210301
-x86_64               randconfig-a002-20210301
-x86_64               randconfig-a005-20210301
-x86_64               randconfig-a003-20210301
+> =20
+>  		mmu_psize_defs[MMU_PAGE_64K].shift =3D 16;
+>  		mmu_psize_defs[MMU_PAGE_64K].ap =3D 0x5;
+> +		mmu_psize_defs[MMU_PAGE_64K].h_rpt_pgsize =3D
+> +			psize_to_rpti_pgsize(MMU_PAGE_64K);
+>  	}
+> =20
+>  	/*
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--18DvU1Ut+qwRBBx8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmA9lL8ACgkQbDjKyiDZ
+s5KTSRAAvHF3cyDzkOXLMOCCQFszhE6hM+X6EehG0kHdq6PF1nw1pa3l81CEzdXo
+LQiPU21/Ju83fZrGukMCOTWNQ7wDxYia/BOdUHAsAGKx+vh6KRei3IO1qyq+pUUr
+1jZYtU+zvoR7vm7UZ2alYbgHyZbgtWEwmuVx8Y0B2i5i3mdKzfWu74lEwDmpNuNw
+6TBeS4BdUs6HKnmmF+U5XQfrHkNM+Rrhr+d+C68tJstUptwasmImd818alYDDgji
+kN5BAlLjbWP0TqkdBasFpq5T6UZ5tgLMgBiuYHASs/oNXu44fjKFMikIn3NveYqX
+FMfgg7H1n6RPGOs6Qoi6L8sgGSdaorHxOsfz4ZpYwU7Y3MESnwQK3OiX/oQHZnmL
+0edJARtIw3iYJvm0ZyS0h82uFkIAGiEKHUaUSVjQ3QI2mCnF2/unmey7ljcr7c82
+uqev21VbcbBj2YQTYjU8UVYqbfSp2JqlLcHvoG9+vhveLv86Q8koBnT/cN7Foy9U
+5siQemCC2bcwXnDax+f/x9XpKBhlALRHe3yaMYBXSEOY5jh5KbXICQoCIVmuYQuk
+gLnVMDpyStezFAYoyf3On+KutokhRu+/0i8hoWFdKAzYtXk0PV+QyqL71l1Uash6
+SP2Ieaq8Vettmn0XObjMwty3ACGlW+5DKnFget73dazi2g/I+Ig=
+=smtG
+-----END PGP SIGNATURE-----
+
+--18DvU1Ut+qwRBBx8--
