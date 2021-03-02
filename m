@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46AE7329D8E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 13:02:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E20F329D91
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 13:03:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DqbNq26hQz3dR5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 23:02:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqbPG2nt8z3dTX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 23:03:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iuc4JNiM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OpxKKiOq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=iuc4JNiM; 
+ header.s=k20201202 header.b=OpxKKiOq; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DqbJc3p44z3dhH
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 22:59:12 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F86D64FBC;
- Tue,  2 Mar 2021 11:59:10 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqbJy3B7Sz3dnF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 22:59:30 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5413064FC8;
+ Tue,  2 Mar 2021 11:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1614686350;
- bh=MmzIUQi4WSmgCuB9jJMRQiChPqM8XxCBhyI/NSHeqgc=;
+ s=k20201202; t=1614686368;
+ bh=5mcuKEFICUkVnXLimjy43/nNMeqFVo/2OMkfWdFFrig=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=iuc4JNiM+dibxg1btPq8fH6EQ7cIN+XvmY/Cmo89bBGbU5TFIvVVkuaFCpP8HBrSc
- hmZ2LtULzmq+CP8vmaSZTNz6MM8Ij+nkjkNp5sEIum3WY02TZHTNXeHF7SJpiKwDwF
- GeMtD1mSV0CSovNQXBljuwv8fK70inGMVYHpBhRWvmFwLpbfn65dYR2dtju8z4f0CK
- KMqGxxlSPCsMH6jjlsK/b0+IP0QnWIAGqCD8OguqohQg3T8wRyHA8g+VAcM4VsmJgX
- IRXXCo1agIp2RMXXD60cX49W/cgSKtSNezrBeGBAZsIWVbsKwTl4NYB+vMvi8ni2SZ
- pS0u357s4+aOA==
+ b=OpxKKiOqP2i2StD+8h6TeAwdrRtkNzCi5fyeOhX3KyuU68k88/EGCkzDWzqVBQLy+
+ dbHwzZALm8j1CUA4aoFmvht89YTq3YTccJJrS+vI7Vpke6TlNE5Yq3ZDRGfdyJc2xL
+ 7XiD/pWl6NJ3hlWLtOdOLrgMaRiMH6R+GkFh1y5J7xhOrgmFYLCkV2hLCaiZ1iInGy
+ U1ApxqXpB9WEBpt0XxJfymJDocP64srgElle748t3xUf58NxZDJyxLvlA118Dpgxjj
+ ZTm7t2TIC1EpLR48KD8PEeaR5i149T7+chm7WON99EQqQLjAqOT2goFCB/6nG6VfNS
+ +t3DUYM/eu2vA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 05/13] powerpc/perf: Record counter overflow
+Subject: [PATCH AUTOSEL 4.9 04/10] powerpc/perf: Record counter overflow
  always if SAMPLE_IP is unset
-Date: Tue,  2 Mar 2021 06:58:55 -0500
-Message-Id: <20210302115903.63458-5-sashal@kernel.org>
+Date: Tue,  2 Mar 2021 06:59:15 -0500
+Message-Id: <20210302115921.63636-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210302115903.63458-1-sashal@kernel.org>
-References: <20210302115903.63458-1-sashal@kernel.org>
+In-Reply-To: <20210302115921.63636-1-sashal@kernel.org>
+References: <20210302115921.63636-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -103,10 +103,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 56f16c803590..2669847434b8 100644
+index 1f1ac446ace9..f2d8f35c181f 100644
 --- a/arch/powerpc/perf/core-book3s.c
 +++ b/arch/powerpc/perf/core-book3s.c
-@@ -2055,7 +2055,17 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+@@ -2010,7 +2010,17 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
  			left += period;
  			if (left <= 0)
  				left = period;
@@ -125,7 +125,7 @@ index 56f16c803590..2669847434b8 100644
  			event->hw.last_period = event->hw.sample_period;
  		}
  		if (left < 0x80000000LL)
-@@ -2073,9 +2083,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+@@ -2028,9 +2038,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
  	 * MMCR2. Check attr.exclude_kernel and address to drop the sample in
  	 * these cases.
  	 */
