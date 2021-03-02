@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88289329D74
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 12:59:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22480329D78
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 13:00:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DqbKR410dz3dr4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 22:59:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqbL00jM4z3dHJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 23:00:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MD39hstW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JyhcZE/R;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=MD39hstW; 
+ header.s=k20201202 header.b=JyhcZE/R; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DqbHL1nvJz3dSv
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 22:58:06 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EB31E64F8A;
- Tue,  2 Mar 2021 11:58:03 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqbHM2FKlz3dTD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 22:58:07 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 081BA64F88;
+ Tue,  2 Mar 2021 11:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1614686284;
- bh=VBGEUfM8R1ukHmofVbcqaMFo2bRjl8dukiEr2Udl+Ss=;
+ s=k20201202; t=1614686285;
+ bh=Mccf3R6kHz/HtciRF6yLl1u/jttp5MYGnjXhRjj6s04=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=MD39hstWPP/Pc6bKJDe4pHtNAT5OjYRLelrORNcwIOCGOhJ6SN1q9mor1qCfjmXPz
- 6dQOE38IR5Qh2qmloHiqoteja0rzS3JCbeHoJIJ20OOvfm8ltUePgLVkO5tnuqBQUE
- UzrslcITzfaU9XvZGIVdYYl3NniW1gh72g8OAQUOTMCQKi1b6pnvl183y538ANzXgz
- 99i75KMMMdo9dHLImCKQjAgASInAdRAc9cdYd3qg97DGsc/2LoYfFkK432D5Jm2Cqk
- lX5bXtFPZ5TFJSwBITceokvgnl3z3H0o/LO16xEMB7Rm2J+PbrxoIpSTF1v4VxXvT9
- RvhqJPoW/toJQ==
+ b=JyhcZE/R/BXgBEJFAdZ84bU4XhtDHMDTG+v7BBqy1EQzbqj3WPxGH96rWVrSgXvCh
+ MXIPNwkTSZYPgb4acCOd4L3C0aexmDOXjYKDFv4JE1oMEmnYPXQ6Yi0706htpDtaMT
+ f765amlJF69IyNy816Qc46tRKr+JK8bILPnsn6gUwaGirF429HYR6ZMpQhY0cZv4Fq
+ 1hxyQJ3zRrLxKC4s9ZU/uDhLAcHNliqb2W8sFiGYZP0Sq3h5q4BfBlHopF8rlUZELw
+ hUYykekBVG5KRj6qSASJSEsxvVKMGQvsAGBcdUTJM6RYXeflgI4TN3jdKUdDSfin0Z
+ QfAQI14rgjYhA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 11/33] powerpc: improve handling of unrecoverable
- system reset
-Date: Tue,  2 Mar 2021 06:57:27 -0500
-Message-Id: <20210302115749.62653-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 12/33] powerpc/perf: Record counter overflow
+ always if SAMPLE_IP is unset
+Date: Tue,  2 Mar 2021 06:57:28 -0500
+Message-Id: <20210302115749.62653-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210302115749.62653-1-sashal@kernel.org>
 References: <20210302115749.62653-1-sashal@kernel.org>
@@ -61,45 +61,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+ Athira Rajeev <atrajeev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-[ Upstream commit 11cb0a25f71818ca7ab4856548ecfd83c169aa4d ]
+[ Upstream commit d137845c973147a22622cc76c7b0bc16f6206323 ]
 
-If an unrecoverable system reset hits in process context, the system
-does not have to panic. Similar to machine check, call nmi_exit()
-before die().
+While sampling for marked events, currently we record the sample only
+if the SIAR valid bit of Sampled Instruction Event Register (SIER) is
+set. SIAR_VALID bit is used for fetching the instruction address from
+Sampled Instruction Address Register(SIAR). But there are some
+usecases, where the user is interested only in the PMU stats at each
+counter overflow and the exact IP of the overflow event is not
+required. Dropping SIAR invalid samples will fail to record some of
+the counter overflows in such cases.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Example of such usecase is dumping the PMU stats (event counts) after
+some regular amount of instructions/events from the userspace (ex: via
+ptrace). Here counter overflow is indicated to userspace via signal
+handler, and captured by monitoring and enabling I/O signaling on the
+event file descriptor. In these cases, we expect to get
+sample/overflow indication after each specified sample_period.
+
+Perf event attribute will not have PERF_SAMPLE_IP set in the
+sample_type if exact IP of the overflow event is not requested. So
+while profiling if SAMPLE_IP is not set, just record the counter
+overflow irrespective of SIAR_VALID check.
+
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+[mpe: Reflow comment and if formatting]
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210130130852.2952424-26-npiggin@gmail.com
+Link: https://lore.kernel.org/r/1612516492-1428-1-git-send-email-atrajeev@linux.vnet.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/traps.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/powerpc/perf/core-book3s.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 206032c9b545..ecfa460f66d1 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -513,8 +513,11 @@ out:
- 		die("Unrecoverable nested System Reset", regs, SIGABRT);
- #endif
- 	/* Must die if the interrupt is not recoverable */
--	if (!(regs->msr & MSR_RI))
-+	if (!(regs->msr & MSR_RI)) {
-+		/* For the reason explained in die_mce, nmi_exit before die */
-+		nmi_exit();
- 		die("Unrecoverable System Reset", regs, SIGABRT);
-+	}
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 02fc75ddcbb3..6f013e418834 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2077,7 +2077,17 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 			left += period;
+ 			if (left <= 0)
+ 				left = period;
+-			record = siar_valid(regs);
++
++			/*
++			 * If address is not requested in the sample via
++			 * PERF_SAMPLE_IP, just record that sample irrespective
++			 * of SIAR valid check.
++			 */
++			if (event->attr.sample_type & PERF_SAMPLE_IP)
++				record = siar_valid(regs);
++			else
++				record = 1;
++
+ 			event->hw.last_period = event->hw.sample_period;
+ 		}
+ 		if (left < 0x80000000LL)
+@@ -2095,9 +2105,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 	 * MMCR2. Check attr.exclude_kernel and address to drop the sample in
+ 	 * these cases.
+ 	 */
+-	if (event->attr.exclude_kernel && record)
+-		if (is_kernel_addr(mfspr(SPRN_SIAR)))
+-			record = 0;
++	if (event->attr.exclude_kernel &&
++	    (event->attr.sample_type & PERF_SAMPLE_IP) &&
++	    is_kernel_addr(mfspr(SPRN_SIAR)))
++		record = 0;
  
- 	if (saved_hsrrs) {
- 		mtspr(SPRN_HSRR0, hsrr0);
+ 	/*
+ 	 * Finally record data if requested.
 -- 
 2.30.1
 
