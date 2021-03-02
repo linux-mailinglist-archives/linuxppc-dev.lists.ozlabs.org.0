@@ -1,41 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDD23295CA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 05:01:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 095053295DB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 05:15:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DqNjH62PNz3cbW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 15:01:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqP1D73f3z3cPD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 15:15:12 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I4sJeUtl;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DqNhx2Grlz30Jb
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 15:01:03 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4931BED1;
- Mon,  1 Mar 2021 20:00:59 -0800 (PST)
-Received: from [10.163.67.84] (unknown [10.163.67.84])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 287403F73B;
- Mon,  1 Mar 2021 20:00:55 -0800 (PST)
-Subject: Re: [PATCH] mm: Generalize HUGETLB_PAGE_SIZE_VARIABLE
-To: kernel test robot <lkp@intel.com>, linux-mm@kvack.org
-References: <1614577853-7452-1-git-send-email-anshuman.khandual@arm.com>
- <202103011736.uYkOLJKy-lkp@intel.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <eaa998f0-248f-59d9-c410-873e12a79afe@arm.com>
-Date: Tue, 2 Mar 2021 09:31:29 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=I4sJeUtl; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqP0f5drLz30My
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 15:14:41 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 12244SwS034717; Mon, 1 Mar 2021 23:14:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=Zcq8ZXTWc6KLodUpskIv84w8mifrjaFY9WHFDAzQZJU=;
+ b=I4sJeUtl8PxmfGpnD99YN+3yo6bxt6O4Mc1gJyRPNBQiiKjgnFF5/IZKwxm0xJupE8jL
+ tAB27hvobJW6zQfZv0al3uknKSDIp47Co2AtxEpzQkaBGXfJufjR0HlZ511Afx7V4XpB
+ IGNI20qmpdvXIRmGqtdgYLP6K+kRB4oRN9DpT2kVHt+w2XRiQvo6c5p4Owu2mx1IrnHT
+ daaWO94Ddus08N8jxE2tHtIq0hJc5UoN6LghSywRRs7Q4+xDj+psyShyywEKVQ8h6Lpo
+ PcALNHP53NUssS48bRDErgpl/glGwhJ+GwbI1txtrwh46GAypifDJG30g+lii0CUGsEo 9A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 371c25tu7k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 01 Mar 2021 23:14:37 -0500
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12245cLd037809;
+ Mon, 1 Mar 2021 23:14:36 -0500
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 371c25tu6v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 01 Mar 2021 23:14:36 -0500
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1224EYQY011743;
+ Tue, 2 Mar 2021 04:14:34 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma05fra.de.ibm.com with ESMTP id 3712v508dq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Mar 2021 04:14:34 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1224EV2531916398
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 2 Mar 2021 04:14:31 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E705342041;
+ Tue,  2 Mar 2021 04:14:30 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 68F134203F;
+ Tue,  2 Mar 2021 04:14:29 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.199.51.221])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue,  2 Mar 2021 04:14:29 +0000 (GMT)
+Date: Tue, 2 Mar 2021 09:44:27 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Fabiano Rosas <farosas@linux.ibm.com>
+Subject: Re: [PATCH v5 2/3] KVM: PPC: Book3S HV: Add support for
+ H_RPT_INVALIDATE
+Message-ID: <20210302041427.GA188607@in.ibm.com>
+References: <20210224082510.3962423-1-bharata@linux.ibm.com>
+ <20210224082510.3962423-3-bharata@linux.ibm.com>
+ <87blc9xxth.fsf@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <202103011736.uYkOLJKy-lkp@intel.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87blc9xxth.fsf@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-02_01:2021-03-01,
+ 2021-03-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0
+ mlxlogscore=999 priorityscore=1501 clxscore=1015 mlxscore=0 spamscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103020029
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,97 +105,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, Paul Mackerras <paulus@samba.org>,
- linux-ia64@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Reply-To: bharata@linux.ibm.com
+Cc: aneesh.kumar@linux.ibm.com, npiggin@gmail.com, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Feb 24, 2021 at 12:58:02PM -0300, Fabiano Rosas wrote:
+> > @@ -1590,6 +1662,24 @@ static int kvmppc_handle_nested_exit(struct kvm_vcpu *vcpu)
+> >  		if (!xics_on_xive())
+> >  			kvmppc_xics_rm_complete(vcpu, 0);
+> >  		break;
+> > +	case BOOK3S_INTERRUPT_SYSCALL:
+> > +	{
+> > +		unsigned long req = kvmppc_get_gpr(vcpu, 3);
+> > +
+> > +		/*
+> > +		 * The H_RPT_INVALIDATE hcalls issued by nested
+> > +		 * guests for process scoped invalidations when
+> > +		 * GTSE=0, are handled here in L0.
+> > +		 */
+> > +		if (req == H_RPT_INVALIDATE) {
+> > +			kvmppc_nested_rpt_invalidate(vcpu);
+> > +			r = RESUME_GUEST;
+> > +			break;
+> > +		}
+> 
+> I'm inclined to say this is a bit too early. We're handling the hcall
+> before kvmhv_run_single_vcpu has fully finished and we'll skip some
+> code that has been running in all guest exits:
+> 
+> 	if (trap) {
+> 		if (!nested)
+> 			r = kvmppc_handle_exit_hv(vcpu, current);
+> 		else
+> 			r = kvmppc_handle_nested_exit(vcpu);  <--- we're here
+> 	}
+> 	vcpu->arch.ret = r;
+> 
+>         (...)
+> 
+> 	vcpu->arch.ceded = 0;
+> 
+> 	vc->vcore_state = VCORE_INACTIVE;
+> 	trace_kvmppc_run_core(vc, 1);
+> 
+>  done:
+> 	kvmppc_remove_runnable(vc, vcpu);
+> 	trace_kvmppc_run_vcpu_exit(vcpu);
+> 
+> 	return vcpu->arch.ret;
+> 
+> Especially the kvmppc_remove_runnable function because it sets the
+> vcpu state:
+> 
+>     	vcpu->arch.state = KVMPPC_VCPU_BUSY_IN_HOST;
+> 
+> which should be the case if we're handling a hypercall.
+> 
+> I suggest we do similarly to the L1 exit code and defer the hcall
+> handling until after kvmppc_run_single_vcpu has exited, still inside the
+> is_kvmppc_resume_guest(r) loop.
+> 
+> So we'd set:
+> case BOOK3S_INTERRUPT_SYSCALL:
+> 	vcpu->run->exit_reason = KVM_EXIT_PAPR_HCALL;
+> 	r = RESUME_HOST;
+>         break;
+> 
+> and perhaps introduce a new kvmppc_pseries_do_nested_hcall that's called
+> after kvmppc_run_single_vcpu.
 
+Yes, looks like we should, but I wasn't sure if an exit similar to L1
+exit for hcall handling is needed here too, hence took this approach.
 
-On 3/1/21 3:22 PM, kernel test robot wrote:
-> Hi Anshuman,
-> 
-> Thank you for the patch! Yet something to improve:
-> 
-> [auto build test ERROR on powerpc/next]
-> [also build test ERROR on linus/master v5.12-rc1 next-20210301]
-> [cannot apply to hnaz-linux-mm/master]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
-> 
-> url:    https://github.com/0day-ci/linux/commits/Anshuman-Khandual/mm-Generalize-HUGETLB_PAGE_SIZE_VARIABLE/20210301-135205
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-> config: ia64-randconfig-r003-20210301 (attached as .config)
-> compiler: ia64-linux-gcc (GCC) 9.3.0
-> reproduce (this is a W=1 build):
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # https://github.com/0day-ci/linux/commit/fe78e3508e5221ac13aa288136e2a6506211be68
->         git remote add linux-review https://github.com/0day-ci/linux
->         git fetch --no-tags linux-review Anshuman-Khandual/mm-Generalize-HUGETLB_PAGE_SIZE_VARIABLE/20210301-135205
->         git checkout fe78e3508e5221ac13aa288136e2a6506211be68
->         # save the attached .config to linux build tree
->         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=ia64 
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
->    In file included from arch/ia64/include/asm/pgtable.h:154,
->                     from include/linux/pgtable.h:6,
->                     from include/linux/mm.h:33,
->                     from mm/page_alloc.c:19:
->    arch/ia64/include/asm/mmu_context.h: In function 'reload_context':
->    arch/ia64/include/asm/mmu_context.h:127:41: warning: variable 'old_rr4' set but not used [-Wunused-but-set-variable]
->      127 |  unsigned long rr0, rr1, rr2, rr3, rr4, old_rr4;
->          |                                         ^~~~~~~
->    In file included from include/linux/kconfig.h:7,
->                     from <command-line>:
->    mm/page_alloc.c: At top level:
->>> ./include/generated/autoconf.h:269:36: error: expected identifier or '(' before numeric constant
->      269 | #define CONFIG_FORCE_MAX_ZONEORDER 11
->          |                                    ^~
->    include/linux/mmzone.h:29:19: note: in expansion of macro 'CONFIG_FORCE_MAX_ZONEORDER'
->       29 | #define MAX_ORDER CONFIG_FORCE_MAX_ZONEORDER
->          |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
->    include/linux/pageblock-flags.h:48:27: note: in expansion of macro 'MAX_ORDER'
->       48 | #define pageblock_order  (MAX_ORDER-1)
->          |                           ^~~~~~~~~
->    mm/page_alloc.c:250:14: note: in expansion of macro 'pageblock_order'
->      250 | unsigned int pageblock_order __read_mostly;
->          |              ^~~~~~~~~~~~~~~
->    mm/page_alloc.c:2618:5: warning: no previous prototype for 'find_suitable_fallback' [-Wmissing-prototypes]
->     2618 | int find_suitable_fallback(struct free_area *area, unsigned int order,
->          |     ^~~~~~~~~~~~~~~~~~~~~~
->    mm/page_alloc.c:3596:15: warning: no previous prototype for 'should_fail_alloc_page' [-Wmissing-prototypes]
->     3596 | noinline bool should_fail_alloc_page(gfp_t gfp_mask, unsigned int order)
->          |               ^~~~~~~~~~~~~~~~~~~~~~
->    mm/page_alloc.c:6257:23: warning: no previous prototype for 'memmap_init' [-Wmissing-prototypes]
->     6257 | void __meminit __weak memmap_init(unsigned long size, int nid,
->          |                       ^~~~~~~~~~~
->    mm/page_alloc.c: In function 'set_pageblock_order':
->>> mm/page_alloc.c:6798:6: error: 'HPAGE_SHIFT' undeclared (first use in this function); did you mean 'PAGE_SHIFT'?
->     6798 |  if (HPAGE_SHIFT > PAGE_SHIFT)
->          |      ^~~~~~~~~~~
->          |      PAGE_SHIFT
->    mm/page_alloc.c:6798:6: note: each undeclared identifier is reported only once for each function it appears in
->>> mm/page_alloc.c:6799:11: error: 'HUGETLB_PAGE_ORDER' undeclared (first use in this function)
->     6799 |   order = HUGETLB_PAGE_ORDER;
->          |           ^~~~~~~~~~~~~~~~~~
->>> mm/page_alloc.c:6808:18: error: lvalue required as left operand of assignment
->     6808 |  pageblock_order = order;
->          |                  ^
-> 
-> Kconfig warnings: (for reference only)
->    WARNING: unmet direct dependencies detected for HUGETLB_PAGE_SIZE_VARIABLE
->    Depends on HUGETLB_PAGE
->    Selected by
->    - IA64
+Paul, could you please clarify?
 
-This shows that HUGETLB_PAGE_SIZE_VARIABLE could be selected without HUGETLB_PAGE
-being enabled, which was not intended. The dependency on HUGETLB_PAGE need to be
-explicit for HUGETLB_PAGE_SIZE_VARIABLE.
+Regards,
+Bharata.
