@@ -1,76 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA673295C8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 04:48:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDD23295CA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 05:01:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DqNQY5wsVz3cY4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 14:48:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=TY3+B7+M;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqNjH62PNz3cbW
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 15:01:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=viresh.kumar@linaro.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=TY3+B7+M; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DqNQ76z9cz30Nc
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 14:48:12 +1100 (AEDT)
-Received: by mail-pj1-x1030.google.com with SMTP id o6so1013912pjf.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Mar 2021 19:48:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=rcso78BwGVOEbZ2NnBuym7yv8DVTXrh7hVgCEjGyQuo=;
- b=TY3+B7+M/KvcZe3L7pQoy4X0FdgIq/voYvzOau5FSID24UtVk7v3WE7k/f8iodv8vJ
- LvPLWtETGyGwtpqWEQOFmzZD+S2kYdE5BEfZ+/HUOmKkHyNlBtrV072ZL+C+NTajTC0G
- X5dzGEv9x3caCt++C34TiodYRcYwEAHS6SbsLrC3PGX5G99L79QZ5KdNlJH/IkqmAYZW
- PSaRlQtsJ50wnWAfUR+vF//WXjZgdyQZhSNttorjyfLIcfiKXxSfd1MlmT+9STluUKXC
- xTn82LG52drjqxp1lVKTAzxeXg14nS7IRzuN+C8cW/pHezwOivteZokYW6yWDNjbC8SQ
- UhNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=rcso78BwGVOEbZ2NnBuym7yv8DVTXrh7hVgCEjGyQuo=;
- b=LSqGPZxoLQBVvJyRx/WJFdSPExaWG++01HKMwvHJtipqLMmrTz3DZL4DjeCl9JMSB3
- e1cNPmyiqmryAZDkQimg5eLQlX64DobZDw0fseervbxDo/pPZj2/IzvhmL5cLDTdZieu
- elfT3CAGsBJXKnDNDxb6YDETeqQh19cfZ1HPqVzZm1zYlaQer+N7wtG5PYj7q2gqHzzu
- /Z5bM8En7YMGAP7zY+BE95oLMOidQIAmE9FpbOVR2jtFdg+rL31C2ACPerXDyYQL5ePw
- AbZ/NID/G6gLBOEeTIRhN/QVlQoPAhucBnxmnCSLjgZzp6Vo+lN/IND9DQjMPZs4XQcY
- e0rw==
-X-Gm-Message-State: AOAM530Dj8F7Bs/glVSo8wx+sNX0sAjDKnar6mUqHwuFH+UBXrJBy0Op
- eAcYG1e7pFfH3Fplm7/KbtcU3A==
-X-Google-Smtp-Source: ABdhPJwQKsFEMRoWRT90TATQNSGem8urGVJxtEyweFNWlgRZJY8WyqNn0YwRQh2NawHUw0w9VJDm2Q==
-X-Received: by 2002:a17:90a:7c0c:: with SMTP id
- v12mr2161626pjf.63.1614656887803; 
- Mon, 01 Mar 2021 19:48:07 -0800 (PST)
-Received: from localhost ([122.171.124.15])
- by smtp.gmail.com with ESMTPSA id b26sm15332596pfo.1.2021.03.01.19.48.06
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 01 Mar 2021 19:48:07 -0800 (PST)
-Date: Tue, 2 Mar 2021 09:18:05 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v3 2/2] powerpc: Remove remaining parts of oprofile
-Message-ID: <20210302034805.o7ozib4pxy3t33ly@vireshk-i7>
-References: <50ad16925a66ac53890286ceafbf84f6fc324baa.1614600516.git.christophe.leroy@csgroup.eu>
- <0085280627ee44927fc3f07590a8b4909cf8e56d.1614600516.git.christophe.leroy@csgroup.eu>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DqNhx2Grlz30Jb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 15:01:03 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4931BED1;
+ Mon,  1 Mar 2021 20:00:59 -0800 (PST)
+Received: from [10.163.67.84] (unknown [10.163.67.84])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 287403F73B;
+ Mon,  1 Mar 2021 20:00:55 -0800 (PST)
+Subject: Re: [PATCH] mm: Generalize HUGETLB_PAGE_SIZE_VARIABLE
+To: kernel test robot <lkp@intel.com>, linux-mm@kvack.org
+References: <1614577853-7452-1-git-send-email-anshuman.khandual@arm.com>
+ <202103011736.uYkOLJKy-lkp@intel.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <eaa998f0-248f-59d9-c410-873e12a79afe@arm.com>
+Date: Tue, 2 Mar 2021 09:31:29 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0085280627ee44927fc3f07590a8b4909cf8e56d.1614600516.git.christophe.leroy@csgroup.eu>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <202103011736.uYkOLJKy-lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,32 +47,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Rashmica Gupta <rashmica.g@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: kbuild-all@lists.01.org, Paul Mackerras <paulus@samba.org>,
+ linux-ia64@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01-03-21, 12:09, Christophe Leroy wrote:
-> Commit 9850b6c69356 ("arch: powerpc: Remove oprofile") removed
-> oprofile.
+
+
+On 3/1/21 3:22 PM, kernel test robot wrote:
+> Hi Anshuman,
 > 
-> Remove all remaining parts of it.
+> Thank you for the patch! Yet something to improve:
 > 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/include/asm/cputable.h       |  3 --
->  arch/powerpc/kernel/cputable.c            | 66 +----------------------
->  arch/powerpc/kernel/dt_cpu_ftrs.c         |  4 --
->  arch/powerpc/platforms/cell/spufs/spufs.h |  2 +-
->  4 files changed, 3 insertions(+), 72 deletions(-)
+> [auto build test ERROR on powerpc/next]
+> [also build test ERROR on linus/master v5.12-rc1 next-20210301]
+> [cannot apply to hnaz-linux-mm/master]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Anshuman-Khandual/mm-Generalize-HUGETLB_PAGE_SIZE_VARIABLE/20210301-135205
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+> config: ia64-randconfig-r003-20210301 (attached as .config)
+> compiler: ia64-linux-gcc (GCC) 9.3.0
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://github.com/0day-ci/linux/commit/fe78e3508e5221ac13aa288136e2a6506211be68
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review Anshuman-Khandual/mm-Generalize-HUGETLB_PAGE_SIZE_VARIABLE/20210301-135205
+>         git checkout fe78e3508e5221ac13aa288136e2a6506211be68
+>         # save the attached .config to linux build tree
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=ia64 
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    In file included from arch/ia64/include/asm/pgtable.h:154,
+>                     from include/linux/pgtable.h:6,
+>                     from include/linux/mm.h:33,
+>                     from mm/page_alloc.c:19:
+>    arch/ia64/include/asm/mmu_context.h: In function 'reload_context':
+>    arch/ia64/include/asm/mmu_context.h:127:41: warning: variable 'old_rr4' set but not used [-Wunused-but-set-variable]
+>      127 |  unsigned long rr0, rr1, rr2, rr3, rr4, old_rr4;
+>          |                                         ^~~~~~~
+>    In file included from include/linux/kconfig.h:7,
+>                     from <command-line>:
+>    mm/page_alloc.c: At top level:
+>>> ./include/generated/autoconf.h:269:36: error: expected identifier or '(' before numeric constant
+>      269 | #define CONFIG_FORCE_MAX_ZONEORDER 11
+>          |                                    ^~
+>    include/linux/mmzone.h:29:19: note: in expansion of macro 'CONFIG_FORCE_MAX_ZONEORDER'
+>       29 | #define MAX_ORDER CONFIG_FORCE_MAX_ZONEORDER
+>          |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+>    include/linux/pageblock-flags.h:48:27: note: in expansion of macro 'MAX_ORDER'
+>       48 | #define pageblock_order  (MAX_ORDER-1)
+>          |                           ^~~~~~~~~
+>    mm/page_alloc.c:250:14: note: in expansion of macro 'pageblock_order'
+>      250 | unsigned int pageblock_order __read_mostly;
+>          |              ^~~~~~~~~~~~~~~
+>    mm/page_alloc.c:2618:5: warning: no previous prototype for 'find_suitable_fallback' [-Wmissing-prototypes]
+>     2618 | int find_suitable_fallback(struct free_area *area, unsigned int order,
+>          |     ^~~~~~~~~~~~~~~~~~~~~~
+>    mm/page_alloc.c:3596:15: warning: no previous prototype for 'should_fail_alloc_page' [-Wmissing-prototypes]
+>     3596 | noinline bool should_fail_alloc_page(gfp_t gfp_mask, unsigned int order)
+>          |               ^~~~~~~~~~~~~~~~~~~~~~
+>    mm/page_alloc.c:6257:23: warning: no previous prototype for 'memmap_init' [-Wmissing-prototypes]
+>     6257 | void __meminit __weak memmap_init(unsigned long size, int nid,
+>          |                       ^~~~~~~~~~~
+>    mm/page_alloc.c: In function 'set_pageblock_order':
+>>> mm/page_alloc.c:6798:6: error: 'HPAGE_SHIFT' undeclared (first use in this function); did you mean 'PAGE_SHIFT'?
+>     6798 |  if (HPAGE_SHIFT > PAGE_SHIFT)
+>          |      ^~~~~~~~~~~
+>          |      PAGE_SHIFT
+>    mm/page_alloc.c:6798:6: note: each undeclared identifier is reported only once for each function it appears in
+>>> mm/page_alloc.c:6799:11: error: 'HUGETLB_PAGE_ORDER' undeclared (first use in this function)
+>     6799 |   order = HUGETLB_PAGE_ORDER;
+>          |           ^~~~~~~~~~~~~~~~~~
+>>> mm/page_alloc.c:6808:18: error: lvalue required as left operand of assignment
+>     6808 |  pageblock_order = order;
+>          |                  ^
+> 
+> Kconfig warnings: (for reference only)
+>    WARNING: unmet direct dependencies detected for HUGETLB_PAGE_SIZE_VARIABLE
+>    Depends on HUGETLB_PAGE
+>    Selected by
+>    - IA64
 
-Great, I wasn't sure how the handle the cpu type stuff and so left it
-for the right people to handle. :)
-
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-
--- 
-viresh
+This shows that HUGETLB_PAGE_SIZE_VARIABLE could be selected without HUGETLB_PAGE
+being enabled, which was not intended. The dependency on HUGETLB_PAGE need to be
+explicit for HUGETLB_PAGE_SIZE_VARIABLE.
