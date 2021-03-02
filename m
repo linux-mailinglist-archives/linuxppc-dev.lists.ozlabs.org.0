@@ -1,64 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1391232A2B3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 15:57:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBDF332A33D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 16:05:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DqgGH6dBTz30RM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 01:57:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqgRN6X8Lz3cnn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 02:05:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DfCbgKMq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rbWgZPI+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=DfCbgKMq; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=rbWgZPI+; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DqgFs1lkkz30J3
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 01:57:05 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BB22064F38
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Mar 2021 14:57:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1614697022;
- bh=OYRXFzNNuTlKILRI33Ey1i/DTxNtqM1YKXxKvQKx4N4=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=DfCbgKMqycOYqa6vkIArkKbgCfHn2Gb7ERiOJ8pppKXQRVy6oqjvTte6FY2XtVHS7
- 2YiagAevDAnM4tHoxxStF6A9HFw57amQCKUTprTeKP0z5p/Oj+9PcLS0J9ypUuI3gW
- hu78OzUwNgOuHdvq0W2sXw3lM09NduxfGBAg1Y0S8W/tK9sgxUQ3WXmtNZi/TRZhAL
- 9gCJ3TBiU/EJIWvMwBptzVsvP9Nw8GBFPgiozuRKKiWlkLNRV0AkBmx5RqRMv08+VN
- 0vnky7Ni4d99cNTT6vwdU0x9PyGeUUQWy6djq+/j3395p2GRXxY8wkqIBXnH3hKa7n
- gNOtCibozGmjA==
-Received: by mail-ed1-f42.google.com with SMTP id p1so21072778edy.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Mar 2021 06:57:01 -0800 (PST)
-X-Gm-Message-State: AOAM53153hUTIpqK7zTqtJ1BxuV6VuYJ7nTrQqS+uQS55YRLnwMoWqN0
- 4ockmnWwSOOIMEHbZBYippHBgYZ7Lry6QQ5QCg==
-X-Google-Smtp-Source: ABdhPJyOQjhu8QpzXxm3gjRgsjCtnH1S+FQjObTQigNPRVgE/zOQdHmeMC6USt0SikilodDuu3psdvaEg2aOTatDL9g=
-X-Received: by 2002:a05:6402:c0f:: with SMTP id
- co15mr2856893edb.373.1614697020164; 
- Tue, 02 Mar 2021 06:57:00 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqgQt3kYrz30Ly
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 02:04:53 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 122F3Krc105426; Tue, 2 Mar 2021 10:04:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=7WpMv3KtE7paoEclZjmENr81M1rK2Pl1F+K2QizuVsM=;
+ b=rbWgZPI+Y8Q1b0mYpr+9jhQKuKFm+K1KIaoBn1RYaFyYwppeyf1kqF4TCpgW1HKIjz0D
+ Wh0R+l6/OVGyOcDkazdgBSly/PQ+07tdFIJSb91EVi4eJLnBk+HTdt6aG3Q6IPzmfK+E
+ kxybqqcWsDsan4ArJhiAgmfCbIIa9Y/2kpj6fDu31K8v1ewoa1fo+rBMFiwLC27Tbpxy
+ tKwW6av0klz//0KOgRq8CjyvBQy06FpN9Iru38vWpzk0GbxgSGx0ppC/062K0m5GFxkI
+ 78qnDz2djTqQVipmtU/juCZsfiC/7GWk0RFTHD1MfUMUslGviTcJ/AqtCMPlpvebreMp UQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 371pxk9ukx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Mar 2021 10:04:50 -0500
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 122F4Edh115133;
+ Tue, 2 Mar 2021 10:04:49 -0500
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 371pxk9ukp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Mar 2021 10:04:49 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 122F219F030990;
+ Tue, 2 Mar 2021 15:04:49 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma04wdc.us.ibm.com with ESMTP id 3712phfukc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Mar 2021 15:04:49 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 122F4mEI40305132
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 2 Mar 2021 15:04:48 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A9D4AAC05B;
+ Tue,  2 Mar 2021 15:04:48 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 748F6AC062;
+ Tue,  2 Mar 2021 15:04:47 +0000 (GMT)
+Received: from localhost (unknown [9.211.36.193])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Tue,  2 Mar 2021 15:04:47 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH v2 28/37] KVM: PPC: Book3S HV P9: Add helpers for OS SPR
+ handling
+In-Reply-To: <20210225134652.2127648-29-npiggin@gmail.com>
+References: <20210225134652.2127648-1-npiggin@gmail.com>
+ <20210225134652.2127648-29-npiggin@gmail.com>
+Date: Tue, 02 Mar 2021 12:04:44 -0300
+Message-ID: <87pn0hwq9f.fsf@linux.ibm.com>
 MIME-Version: 1.0
-References: <20210225125921.13147-1-will@kernel.org>
- <CAL_JsqJX=TCCs7=gg486r9TN4NYscMTCLNfqJF9crskKPq-bTg@mail.gmail.com>
- <20210301144153.GA16716@willie-the-truck>
- <CAL_JsqJ11D-7a3pwLTVd+rHjqDGBb=b8OU_a6h3Co-at+2qMtQ@mail.gmail.com>
- <bbbf5def-a168-9a4c-1106-b80883dfd389@csgroup.eu>
-In-Reply-To: <bbbf5def-a168-9a4c-1106-b80883dfd389@csgroup.eu>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 2 Mar 2021 08:56:47 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+Te5+kQzbAMCzuRCkmoZWBDKGhynUC8BfvOm=R5jT4Jg@mail.gmail.com>
-Message-ID: <CAL_Jsq+Te5+kQzbAMCzuRCkmoZWBDKGhynUC8BfvOm=R5jT4Jg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Fix CMDLINE_EXTEND handling for FDT "bootargs"
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-02_06:2021-03-01,
+ 2021-03-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ adultscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
+ mlxscore=0 phishscore=0 clxscore=1015 mlxlogscore=999 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103020123
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,75 +103,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyler Hicks <tyhicks@linux.microsoft.com>, devicetree@vger.kernel.org,
- Marc Zyngier <maz@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Will Deacon <will@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Doug Anderson <dianders@chromium.org>,
- Chris Packham <chris.packham@alliedtelesis.co.nz>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Max Uvarov <muvarov@gmail.com>,
- Android Kernel Team <kernel-team@android.com>,
- Ard Biesheuvel <ardb@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Daniel Walker <danielwa@cisco.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 1, 2021 at 11:45 AM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
+Nicholas Piggin <npiggin@gmail.com> writes:
+
+> This is a first step to wrapping supervisor and user SPR saving and
+> loading up into helpers, which will then be called independently in
+> bare metal and nested HV cases in order to optimise SPR access.
 >
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+
+<snip>
+
+> +/* vcpu guest regs must already be saved */
+> +static void restore_p9_host_os_sprs(struct kvm_vcpu *vcpu,
+> +				    struct p9_host_os_sprs *host_os_sprs)
+> +{
+> +	mtspr(SPRN_PSPB, 0);
+> +	mtspr(SPRN_WORT, 0);
+> +	mtspr(SPRN_UAMOR, 0);
+> +	mtspr(SPRN_PSPB, 0);
+
+Not your fault, but PSPB is set twice here.
+
+> +
+> +	mtspr(SPRN_DSCR, host_os_sprs->dscr);
+> +	mtspr(SPRN_TIDR, host_os_sprs->tidr);
+> +	mtspr(SPRN_IAMR, host_os_sprs->iamr);
+> +
+> +	if (host_os_sprs->amr != vcpu->arch.amr)
+> +		mtspr(SPRN_AMR, host_os_sprs->amr);
+> +
+> +	if (host_os_sprs->fscr != vcpu->arch.fscr)
+> +		mtspr(SPRN_FSCR, host_os_sprs->fscr);
+> +}
+> +
+
+<snip>
+
+> @@ -3605,34 +3666,10 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>  	vcpu->arch.dec_expires = dec + tb;
+>  	vcpu->cpu = -1;
+>  	vcpu->arch.thread_cpu = -1;
+> -	vcpu->arch.ctrl = mfspr(SPRN_CTRLF);
+> -
+> -	vcpu->arch.iamr = mfspr(SPRN_IAMR);
+> -	vcpu->arch.pspb = mfspr(SPRN_PSPB);
+> -	vcpu->arch.fscr = mfspr(SPRN_FSCR);
+> -	vcpu->arch.tar = mfspr(SPRN_TAR);
+> -	vcpu->arch.ebbhr = mfspr(SPRN_EBBHR);
+> -	vcpu->arch.ebbrr = mfspr(SPRN_EBBRR);
+> -	vcpu->arch.bescr = mfspr(SPRN_BESCR);
+> -	vcpu->arch.wort = mfspr(SPRN_WORT);
+> -	vcpu->arch.tid = mfspr(SPRN_TIDR);
+> -	vcpu->arch.amr = mfspr(SPRN_AMR);
+> -	vcpu->arch.uamor = mfspr(SPRN_UAMOR);
+> -	vcpu->arch.dscr = mfspr(SPRN_DSCR);
+> -
+> -	mtspr(SPRN_PSPB, 0);
+> -	mtspr(SPRN_WORT, 0);
+> -	mtspr(SPRN_UAMOR, 0);
+> -	mtspr(SPRN_DSCR, host_dscr);
+> -	mtspr(SPRN_TIDR, host_tidr);
+> -	mtspr(SPRN_IAMR, host_iamr);
+> -	mtspr(SPRN_PSPB, 0);
 >
+> -	if (host_amr != vcpu->arch.amr)
+> -		mtspr(SPRN_AMR, host_amr);
+> +	restore_p9_host_os_sprs(vcpu, &host_os_sprs);
 >
-> Le 01/03/2021 =C3=A0 18:26, Rob Herring a =C3=A9crit :
-> > +PPC folks and Daniel W
-> >
-> > On Mon, Mar 1, 2021 at 8:42 AM Will Deacon <will@kernel.org> wrote:
-> >>
-> >> On Mon, Mar 01, 2021 at 08:19:32AM -0600, Rob Herring wrote:
-> >>> On Thu, Feb 25, 2021 at 6:59 AM Will Deacon <will@kernel.org> wrote:
-> >>>> We recently [1] enabled support for CMDLINE_EXTEND on arm64, however
-> >>>> when I started looking at replacing Android's out-of-tree implementa=
-tion [2]
-> >>>
-> >>> Did anyone go read the common, reworked version of all this I
-> >>> referenced that supports prepend and append. Here it is again[1].
-> >>> Maybe I should have been more assertive there and said 'extend' is
-> >>> ambiguous.
-> >>
-> >> I tried reading that, but (a) most of the series is not in the mailing=
- list
-> >> archives and (b) the patch that _is_ doesn't touch CMDLINE_EXTEND at a=
-ll.
-> >> Right now the code in mainline does the opposite of what it's document=
-ed to
-> >> do.
-> >
-> > Actually, there is a newer version I found:
-> >
-> > https://lore.kernel.org/linuxppc-dev/1551469472-53043-1-git-send-email-=
-danielwa@cisco.com/
-> > https://lore.kernel.org/linuxppc-dev/1551469472-53043-2-git-send-email-=
-danielwa@cisco.com/
-> > https://lore.kernel.org/linuxppc-dev/1551469472-53043-3-git-send-email-=
-danielwa@cisco.com/
+> -	if (host_fscr != vcpu->arch.fscr)
+> -		mtspr(SPRN_FSCR, host_fscr);
+> +	store_spr_state(vcpu);
+
+store_spr_state should come first, right? We want to save the guest
+state before restoring the host state.
+
 >
-> This was seen as too much intrusive into powerpc.
-
-It looked like the main issue was string functions for KASAN?
-
-As far as being too complex, I think that will be needed if you look
-at all architectures and non-DT cases.
-
-> I proposed an alternative at
-> https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1554195798.=
-git.christophe.leroy@c-s.fr/ but
-> never got any feedback.
-
-Didn't go to a list I subscribe to. In particular, if it had gone to
-DT list and into PW you would have gotten a reply from me.
-
-Rob
+>  	msr_check_and_set(MSR_FP | MSR_VEC | MSR_VSX);
+>  	store_fp_state(&vcpu->arch.fp);
