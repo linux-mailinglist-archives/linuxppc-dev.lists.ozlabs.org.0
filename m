@@ -2,68 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831EE32A780
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 18:14:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95DA132A7C3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Mar 2021 18:26:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DqkJL1BLLz3cLS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 04:14:26 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=DewgHEw9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqkYg4PLGz3d97
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 04:25:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.86.74; helo=rcdn-iport-3.cisco.com;
- envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=DewgHEw9; dkim-atps=neutral
-X-Greylist: delayed 63 seconds by postgrey-1.36 at boromir;
- Wed, 03 Mar 2021 04:14:03 AEDT
-Received: from rcdn-iport-3.cisco.com (rcdn-iport-3.cisco.com [173.37.86.74])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DqkHv3K8Zz2y07
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 04:14:03 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=1625; q=dns/txt; s=iport;
- t=1614705243; x=1615914843;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ImvxV88MVdFuksRY57yHoR9ifNWa1nbpC7IuceuHtdI=;
- b=DewgHEw9NnZMJ0nIdls7nLvW2kG/hKPga9abvEycaEXNpmOM0UnCJRl3
- 5CHSeiRpz3Rvl8tzP8TZWuMj/3iKzGj7uL0+MBOyOj49W0ilwPGerKsec
- lYqyJeN4kaYMQCGNfHZgGIq8bP0dQkUpwHKCO3gPNZPWLppSvkIaK+sef M=;
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0BKAwC9cD5g/5RdJa1iHAEBAQEBAQc?=
- =?us-ascii?q?BARIBAQQEAQFAgU+CK3ZWATkxA5Yaj3oWilOBaAsBAQENAQEqCgQBAYRNAoF?=
- =?us-ascii?q?6AiU4EwIDAQELAQEFAQEBAgEGBHGFYQ2GRQEFOjQLEAsYLjwKEQYTgnGDBw+?=
- =?us-ascii?q?sa3SBNIRAAYRigT4GIoEWjUMmHIFJQoQrPoQJARIBg2uCKwSEAYIxQ5MVAYo?=
- =?us-ascii?q?tm3uDBoEfiCCSUjEQgyeQSo9VLZYxiTSWYAIEBgUCFoFrI2dwMxoIGxU7gmk?=
- =?us-ascii?q?TPRkNjisWiGGFZiADLwI2AgYKAQEDCYwTAQE?=
-X-IronPort-AV: E=Sophos;i="5.81,217,1610409600"; d="scan'208";a="842559803"
-Received: from rcdn-core-12.cisco.com ([173.37.93.148])
- by rcdn-iport-3.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 02 Mar 2021 17:12:53 +0000
-Received: from zorba ([10.24.9.198])
- by rcdn-core-12.cisco.com (8.15.2/8.15.2) with ESMTPS id 122HCpOe014626
- (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Tue, 2 Mar 2021 17:12:52 GMT
-Date: Tue, 2 Mar 2021 09:12:51 -0800
-From: Daniel Walker <danielwa@cisco.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 0/2] Fix CMDLINE_EXTEND handling for FDT "bootargs"
-Message-ID: <20210302171251.GB109100@zorba>
-References: <20210225125921.13147-1-will@kernel.org>
- <CAL_JsqJX=TCCs7=gg486r9TN4NYscMTCLNfqJF9crskKPq-bTg@mail.gmail.com>
- <20210301144153.GA16716@willie-the-truck>
- <CAL_JsqJ11D-7a3pwLTVd+rHjqDGBb=b8OU_a6h3Co-at+2qMtQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqJ11D-7a3pwLTVd+rHjqDGBb=b8OU_a6h3Co-at+2qMtQ@mail.gmail.com>
-X-Outbound-SMTP-Client: 10.24.9.198, [10.24.9.198]
-X-Outbound-Node: rcdn-core-12.cisco.com
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqkY00tY6z30N7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 04:25:21 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DqkXq2Y55z9v1By;
+ Tue,  2 Mar 2021 18:25:15 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 3XK1Ji_IwYa7; Tue,  2 Mar 2021 18:25:15 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DqkXq139Yz9v1Bx;
+ Tue,  2 Mar 2021 18:25:15 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D6D058B7B5;
+ Tue,  2 Mar 2021 18:25:16 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id fhn6Nsk8d_7h; Tue,  2 Mar 2021 18:25:16 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 81F848B75F;
+ Tue,  2 Mar 2021 18:25:16 +0100 (CET)
+Received: by localhost.localdomain (Postfix, from userid 0)
+ id 41160674A2; Tue,  2 Mar 2021 17:25:16 +0000 (UTC)
+Message-Id: <cover.1614705851.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 0/7] Improve boot command line handling
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ danielwa@cisco.com, robh@kernel.org, daniel@gimpelevich.san-francisco.ca.us
+Date: Tue,  2 Mar 2021 17:25:16 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,56 +57,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyler Hicks <tyhicks@linux.microsoft.com>, devicetree@vger.kernel.org,
- Android Kernel Team <kernel-team@android.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Frank Rowand <frowand.list@gmail.com>, Marc Zyngier <maz@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Doug Anderson <dianders@chromium.org>,
- Chris Packham <chris.packham@alliedtelesis.co.nz>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Max Uvarov <muvarov@gmail.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: linux-arch@vger.kernel.org, devicetree@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 01, 2021 at 11:26:14AM -0600, Rob Herring wrote:
-> +PPC folks and Daniel W
-> 
-> On Mon, Mar 1, 2021 at 8:42 AM Will Deacon <will@kernel.org> wrote:
-> >
-> > On Mon, Mar 01, 2021 at 08:19:32AM -0600, Rob Herring wrote:
-> > > On Thu, Feb 25, 2021 at 6:59 AM Will Deacon <will@kernel.org> wrote:
-> > > > We recently [1] enabled support for CMDLINE_EXTEND on arm64, however
-> > > > when I started looking at replacing Android's out-of-tree implementation [2]
-> > >
-> > > Did anyone go read the common, reworked version of all this I
-> > > referenced that supports prepend and append. Here it is again[1].
-> > > Maybe I should have been more assertive there and said 'extend' is
-> > > ambiguous.
-> >
-> > I tried reading that, but (a) most of the series is not in the mailing list
-> > archives and (b) the patch that _is_ doesn't touch CMDLINE_EXTEND at all.
-> > Right now the code in mainline does the opposite of what it's documented to
-> > do.
-> 
-> Actually, there is a newer version I found:
-> 
-> https://lore.kernel.org/linuxppc-dev/1551469472-53043-1-git-send-email-danielwa@cisco.com/
-> https://lore.kernel.org/linuxppc-dev/1551469472-53043-2-git-send-email-danielwa@cisco.com/
-> https://lore.kernel.org/linuxppc-dev/1551469472-53043-3-git-send-email-danielwa@cisco.com/
-> 
-> (Once again, there's some weird threading going on)
-> 
+The purpose of this series is to improve and enhance the
+handling of kernel boot arguments.
 
-I'm happy to work with anyone to resubmit the changes. We currently use the
-changes in Cisco, and we have used them for many years.
+It is first focussed on powerpc but also extends the capability
+for other arches.
 
-I was planning to update and resubmit since someone has recently inquired about
-why it wasn't upstream.
+This is based on suggestion from Daniel Walker <danielwa@cisco.com>
 
-Daniel
+Christophe Leroy (7):
+  cmdline: Add generic function to build command line.
+  drivers: of: use cmdline building function
+  powerpc: convert to generic builtin command line
+  cmdline: Add capability to prepend the command line
+  powerpc: add capability to prepend default command line
+  cmdline: Gives architectures opportunity to use generically defined
+    boot cmdline manipulation
+  powerpc: use generic CMDLINE manipulations
+
+ arch/powerpc/Kconfig            | 37 ++-----------------
+ arch/powerpc/kernel/prom_init.c | 35 +++---------------
+ drivers/of/fdt.c                | 23 ++----------
+ include/linux/cmdline.h         | 65 +++++++++++++++++++++++++++++++++
+ init/Kconfig                    | 56 ++++++++++++++++++++++++++++
+ 5 files changed, 133 insertions(+), 83 deletions(-)
+ create mode 100644 include/linux/cmdline.h
+
+-- 
+2.25.0
+
