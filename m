@@ -1,69 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D852532BA09
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 19:53:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 404AC32BA50
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 21:10:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrNSN61Lxz3d2t
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 05:53:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrQ935qdBz3d31
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 07:10:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=XkAcJK6N;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qi+3cdUT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.86.80; helo=rcdn-iport-9.cisco.com;
- envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=XkAcJK6N; dkim-atps=neutral
-Received: from rcdn-iport-9.cisco.com (rcdn-iport-9.cisco.com [173.37.86.80])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrNRy15Dwz3cJy
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 05:53:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=2586; q=dns/txt; s=iport;
- t=1614797598; x=1616007198;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=NhiyH3foSNEt6lkCV9u0ibo4udmRICreeAo5BgksPTA=;
- b=XkAcJK6NhNeY78iRyhtoAH3SVk0CAVzeYOgMiArKKpjaKwxBAcSytKF0
- X2tasKeRxMFTr5kC93ivpnBVtH2og8DzmTJBBpr3unV0rWQdGy8+PPLPo
- +rF+36U0iN1Yhb5Sjpbb8gPwyU3B9+1fsG5P5IoWwk+YdGZSCYukSjXPV g=;
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0BOAwB12j9g/5NdJa1iHAEBAQEBAQc?=
- =?us-ascii?q?BARIBAQQEAQFAgU+CK3ZWATkxlh6PehaMOwsBAQENAQEjEQQBAYEUgzQDAgK?=
- =?us-ascii?q?BegIlOBMCAwEBCwEBBQEBAQIBBgRxhWENhkQBAQEDATIBRhALEgYuPA0OBhM?=
- =?us-ascii?q?bglaCZiEPrT10gTSEPwELAYRTgT4GIoEWjUMmHIFJQoQrPoJcBBeHPASCRoE?=
- =?us-ascii?q?7c4IBkEuCS4otm3uDBoEfiCCSUjEQgyeKT5VQoBKSGg2EOQIEBgUCFoFrI4F?=
- =?us-ascii?q?XMxoIGxU7gjUBMxMMMRkNlyKFZiADLwIBAQEzAgYBCQEBAwmMEwEB?=
-X-IronPort-AV: E=Sophos;i="5.81,220,1610409600"; d="scan'208";a="778466374"
-Received: from rcdn-core-11.cisco.com ([173.37.93.147])
- by rcdn-iport-9.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 03 Mar 2021 18:53:10 +0000
-Received: from zorba ([10.24.1.194])
- by rcdn-core-11.cisco.com (8.15.2/8.15.2) with ESMTPS id 123Ir8xP021729
- (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 3 Mar 2021 18:53:10 GMT
-Date: Wed, 3 Mar 2021 10:53:08 -0800
-From: Daniel Walker <danielwa@cisco.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 0/7] Improve boot command line handling
-Message-ID: <20210303185308.GH109100@zorba>
-References: <cover.1614705851.git.christophe.leroy@csgroup.eu>
- <20210302173523.GE109100@zorba>
- <CAL_JsqJ7U8QAbJe3zkZiFPJN4PveHz5TZoPk2S8qQWB6cm5e5Q@mail.gmail.com>
- <20210303173908.GG109100@zorba>
- <59b054e8-d85b-fd87-c94d-691af748a2f5@csgroup.eu>
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Qi+3cdUT; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrQ8b4zKtz30QC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 07:10:06 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 123K4wlP111324; Wed, 3 Mar 2021 15:10:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=9OGhEF+1wp+X6aXCnnJbnniVj4hg4lKLvZGOTuhrFbo=;
+ b=Qi+3cdUTQtgMNHO5WCs81Nq9V6LF7YVFj5pPZZBBusPbG2fCB7oG+9MPvI/+thN3yUut
+ 0cn74yDuVn0Vbg6RCQH2w+qclPYxt/A+0eXmB7T/lTeRhjtZV9ZQJt9qs4mO2CQcbi3y
+ lD+RRMALRqx75HExfdEDMD3Szm3cBRrIm6OMapcZrsmzs+2qMfKRk21eW2WljRKV95CN
+ lhN3XvtAhWlYvs1yYHP+zOijvwclLBhePKpfdjUBoly3pgj6ZhOm+sfxzLKgxPbHt1E+
+ e0rO/liWG9VCvJFCVlM7qd18XJgHvBSsuAiZWg1qqEtiRv8W3beO6fkycrU5p01vN7up 0w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 372f99434y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Mar 2021 15:10:02 -0500
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 123K8bpa131425;
+ Wed, 3 Mar 2021 15:10:02 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 372f99434k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Mar 2021 15:10:02 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 123K3cFF020048;
+ Wed, 3 Mar 2021 20:10:01 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma02wdc.us.ibm.com with ESMTP id 3711dx26mf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Mar 2021 20:10:01 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 123KA1Au15466856
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 3 Mar 2021 20:10:01 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 521E5112062;
+ Wed,  3 Mar 2021 20:10:01 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3D38B112063;
+ Wed,  3 Mar 2021 20:09:59 +0000 (GMT)
+Received: from localhost (unknown [9.160.139.191])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Wed,  3 Mar 2021 20:09:59 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH v2 34/37] KVM: PPC: Book3S HV: add virtual mode handlers
+ for HPT hcalls and page faults
+In-Reply-To: <20210225134652.2127648-35-npiggin@gmail.com>
+References: <20210225134652.2127648-1-npiggin@gmail.com>
+ <20210225134652.2127648-35-npiggin@gmail.com>
+Date: Wed, 03 Mar 2021 17:09:57 -0300
+Message-ID: <87im68vw16.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <59b054e8-d85b-fd87-c94d-691af748a2f5@csgroup.eu>
-X-Outbound-SMTP-Client: 10.24.1.194, [10.24.1.194]
-X-Outbound-Node: rcdn-core-11.cisco.com
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-03_06:2021-03-03,
+ 2021-03-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxscore=0
+ bulkscore=0 mlxlogscore=999 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 malwarescore=0 suspectscore=0 phishscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103030142
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,81 +103,184 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:GENERIC INCLUDE/ASM HEADER FILES" <linux-arch@vger.kernel.org>,
- Rob Herring <robh@kernel.org>,
- Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- Will Deacon <will@kernel.org>, devicetree@vger.kernel.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 03, 2021 at 07:07:45PM +0100, Christophe Leroy wrote:
-> 
-> 
-> Le 03/03/2021 à 18:39, Daniel Walker a écrit :
-> > On Tue, Mar 02, 2021 at 08:01:01PM -0600, Rob Herring wrote:
-> > > +Will D
-> > > 
-> > > On Tue, Mar 2, 2021 at 11:36 AM Daniel Walker <danielwa@cisco.com> wrote:
-> > > > 
-> > > > On Tue, Mar 02, 2021 at 05:25:16PM +0000, Christophe Leroy wrote:
-> > > > > The purpose of this series is to improve and enhance the
-> > > > > handling of kernel boot arguments.
-> > > > > 
-> > > > > It is first focussed on powerpc but also extends the capability
-> > > > > for other arches.
-> > > > > 
-> > > > > This is based on suggestion from Daniel Walker <danielwa@cisco.com>
-> > > > > 
-> > > > 
-> > > > 
-> > > > I don't see a point in your changes at this time. My changes are much more
-> > > > mature, and you changes don't really make improvements.
-> > > 
-> > > Not really a helpful comment. What we merge here will be from whomever
-> > > is persistent and timely in their efforts. But please, work together
-> > > on a common solution.
-> > > 
-> > > This one meets my requirements of moving the kconfig and code out of
-> > > the arches, supports prepend/append, and is up to date.
-> > 
-> > 
-> > Maintainers are capable of merging whatever they want to merge. However, I
-> > wouldn't make hasty choices. The changes I've been submitting have been deployed
-> > on millions of router instances and are more feature rich.
-> > 
-> > I believe I worked with you on this change, or something like it,
-> > 
-> > https://lkml.org/lkml/2019/3/19/970
-> > 
-> > I don't think Christophe has even addressed this.
-> 
-> I thing I have, see https://patchwork.ozlabs.org/project/linuxppc-dev/patch/3b4291271ce4af4941a771e5af5cbba3c8fa1b2a.1614705851.git.christophe.leroy@csgroup.eu/
-> 
-> If you see something missing in that patch, can you tell me.
- 
-Ok, must have missed that one.
+Nicholas Piggin <npiggin@gmail.com> writes:
 
+> In order to support hash guests in the P9 path (which does not do real
+> mode hcalls or page fault handling), these real-mode hash specific
+> interrupts need to be implemented in virt mode.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 118 +++++++++++++++++++++++++++++++++--
+>  1 file changed, 113 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 9d2fa21201c1..1bbc46f2cfbf 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -935,6 +935,52 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+>  		return RESUME_HOST;
+>
+>  	switch (req) {
+> +	case H_REMOVE:
+> +		ret = kvmppc_h_remove(vcpu, kvmppc_get_gpr(vcpu, 4),
+> +					kvmppc_get_gpr(vcpu, 5),
+> +					kvmppc_get_gpr(vcpu, 6));
+> +		if (ret == H_TOO_HARD)
+> +			return RESUME_HOST;
+> +		break;
+> +	case H_ENTER:
+> +		ret = kvmppc_h_enter(vcpu, kvmppc_get_gpr(vcpu, 4),
+> +					kvmppc_get_gpr(vcpu, 5),
+> +					kvmppc_get_gpr(vcpu, 6),
+> +					kvmppc_get_gpr(vcpu, 7));
+> +		if (ret == H_TOO_HARD)
+> +			return RESUME_HOST;
+> +		break;
+> +	case H_READ:
+> +		ret = kvmppc_h_read(vcpu, kvmppc_get_gpr(vcpu, 4),
+> +					kvmppc_get_gpr(vcpu, 5));
+> +		if (ret == H_TOO_HARD)
+> +			return RESUME_HOST;
+> +		break;
+> +	case H_CLEAR_MOD:
+> +		ret = kvmppc_h_clear_mod(vcpu, kvmppc_get_gpr(vcpu, 4),
+> +					kvmppc_get_gpr(vcpu, 5));
+> +		if (ret == H_TOO_HARD)
+> +			return RESUME_HOST;
+> +		break;
+> +	case H_CLEAR_REF:
+> +		ret = kvmppc_h_clear_ref(vcpu, kvmppc_get_gpr(vcpu, 4),
+> +					kvmppc_get_gpr(vcpu, 5));
+> +		if (ret == H_TOO_HARD)
+> +			return RESUME_HOST;
+> +		break;
+> +	case H_PROTECT:
+> +		ret = kvmppc_h_protect(vcpu, kvmppc_get_gpr(vcpu, 4),
+> +					kvmppc_get_gpr(vcpu, 5),
+> +					kvmppc_get_gpr(vcpu, 6));
+> +		if (ret == H_TOO_HARD)
+> +			return RESUME_HOST;
+> +		break;
+> +	case H_BULK_REMOVE:
+> +		ret = kvmppc_h_bulk_remove(vcpu);
+> +		if (ret == H_TOO_HARD)
+> +			return RESUME_HOST;
+> +		break;
+> +
 
-> > I've converted many
-> > architectures, and Cisco uses my changes on at least 4 different
-> > architecture. With products deployed and tested.
-> 
-> As far as we know, only powerpc was converted in the last series you
-> submitted, see
-> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=98106&state=*
+Some of these symbols need to be exported.
 
+ERROR: modpost: "kvmppc_h_bulk_remove" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+ERROR: modpost: "kvmppc_h_clear_mod" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+ERROR: modpost: "kvmppc_xive_xics_hcall" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+ERROR: modpost: "kvmppc_h_remove" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+ERROR: modpost: "decrementers_next_tb" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+ERROR: modpost: "kvmppc_hpte_hv_fault" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+ERROR: modpost: "kvmppc_h_protect" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+ERROR: modpost: "kvmppc_h_enter" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+ERROR: modpost: "kvmppc_h_clear_ref" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+ERROR: modpost: "kvmppc_h_read" [arch/powerpc/kvm/kvm-hv.ko] undefined!
 
-Me and others submitted my changes many times, and other architectures have been included. The patch
-you submitted I've submitted similar at Rob's request years ago.
-
-Here a fuller submissions some time ago,
-
-https://lore.kernel.org/patchwork/cover/992768/
-
-You've only been involved in prior powerpc only submissions.
-
-Daniel
+>  	case H_CEDE:
+>  		break;
+>  	case H_PROD:
+> @@ -1134,6 +1180,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+>  	default:
+>  		return RESUME_HOST;
+>  	}
+> +	WARN_ON_ONCE(ret == H_TOO_HARD);
+>  	kvmppc_set_gpr(vcpu, 3, ret);
+>  	vcpu->arch.hcall_needed = 0;
+>  	return RESUME_GUEST;
+> @@ -1420,19 +1467,80 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
+>  	 * host page has been paged out.  Any other HDSI/HISI interrupts
+>  	 * have been handled already.
+>  	 */
+> -	case BOOK3S_INTERRUPT_H_DATA_STORAGE:
+> -		r = RESUME_PAGE_FAULT;
+> -		if (vcpu->arch.fault_dsisr == HDSISR_CANARY)
+> +	case BOOK3S_INTERRUPT_H_DATA_STORAGE: {
+> +		unsigned long vsid;
+> +		long err;
+> +
+> +		if (vcpu->arch.fault_dsisr == HDSISR_CANARY) {
+>  			r = RESUME_GUEST; /* Just retry if it's the canary */
+> +			break;
+> +		}
+> +
+> +		if (kvm_is_radix(vcpu->kvm)) {
+> +			r = RESUME_PAGE_FAULT;
+> +			break;
+> +		}
+> +
+> +		if (!(vcpu->arch.fault_dsisr & (DSISR_NOHPTE | DSISR_PROTFAULT))) {
+> +			kvmppc_core_queue_data_storage(vcpu, vcpu->arch.fault_dar, vcpu->arch.fault_dsisr);
+> +			r = RESUME_GUEST;
+> +			break;
+> +		}
+> +		if (!(vcpu->arch.shregs.msr & MSR_DR)) {
+> +			vsid = vcpu->kvm->arch.vrma_slb_v;
+> +		} else {
+> +			vsid = vcpu->arch.fault_gpa;
+> +		}
+> +		err = kvmppc_hpte_hv_fault(vcpu, vcpu->arch.fault_dar,
+> +				vsid, vcpu->arch.fault_dsisr, true);
+> +		if (err == 0) {
+> +			r = RESUME_GUEST;
+> +		} else if (err == -1 || err == -2) {
+> +			r = RESUME_PAGE_FAULT;
+> +		} else {
+> +			kvmppc_core_queue_data_storage(vcpu, vcpu->arch.fault_dar, err);
+> +			r = RESUME_GUEST;
+> +		}
+>  		break;
+> -	case BOOK3S_INTERRUPT_H_INST_STORAGE:
+> +	}
+> +	case BOOK3S_INTERRUPT_H_INST_STORAGE: {
+> +		unsigned long vsid;
+> +		long err;
+> +
+>  		vcpu->arch.fault_dar = kvmppc_get_pc(vcpu);
+>  		vcpu->arch.fault_dsisr = vcpu->arch.shregs.msr &
+>  			DSISR_SRR1_MATCH_64S;
+>  		if (vcpu->arch.shregs.msr & HSRR1_HISI_WRITE)
+>  			vcpu->arch.fault_dsisr |= DSISR_ISSTORE;
+> -		r = RESUME_PAGE_FAULT;
+> +		if (kvm_is_radix(vcpu->kvm)) {
+> +			r = RESUME_PAGE_FAULT;
+> +			break;
+> +		}
+> +
+> +		if (!(vcpu->arch.fault_dsisr & SRR1_ISI_NOPT)) {
+> +			/* XXX: clear DSISR_ISSTORE? */
+> +			kvmppc_core_queue_inst_storage(vcpu, vcpu->arch.fault_dsisr);
+> +			r = RESUME_GUEST;
+> +			break;
+> +		}
+> +		if (!(vcpu->arch.shregs.msr & MSR_DR)) {
+> +			vsid = vcpu->kvm->arch.vrma_slb_v;
+> +		} else {
+> +			vsid = vcpu->arch.fault_gpa;
+> +		}
+> +		err = kvmppc_hpte_hv_fault(vcpu, vcpu->arch.fault_dar,
+> +				vsid, vcpu->arch.fault_dsisr, false);
+> +		if (err == 0) {
+> +			r = RESUME_GUEST;
+> +		} else if (err == -1) {
+> +			r = RESUME_PAGE_FAULT;
+> +		} else {
+> +			kvmppc_core_queue_inst_storage(vcpu, err);
+> +			r = RESUME_GUEST;
+> +		}
+>  		break;
+> +	}
+> +
+>  	/*
+>  	 * This occurs if the guest executes an illegal instruction.
+>  	 * If the guest debug is disabled, generate a program interrupt
