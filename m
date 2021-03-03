@@ -1,72 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE59C32BB54
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 22:21:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB4F32BBB2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 22:31:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrRlK58dJz3d7N
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 08:21:49 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jdGoVQx9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrRy75g4Wz3d3r
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 08:31:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=jdGoVQx9; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrRkt6cMRz30LF
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 08:21:26 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 96E5A64ECF
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 21:21:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1614806484;
- bh=YrRrsHwEAOIJK12LS1aH53vsVBDBIp+9E5YrMknkDfI=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=jdGoVQx9gs0XvfEdIcqE5IX2dbxFK2ZxvCrpOe9F0bXNe+SqrqEjhT9X6oVhynoR0
- WwX9g4aQqyG6ufX0hyN/YLsdtcv1u2Q+at5pPYx45FSlaYdWcZfzRsFIMV2MokUPko
- 32xvSe3H01uUiei+c3tKy3imRbTB3u/Fygql5PuUcCggsUzymJLPB2Ek2TgK28IzFs
- IZCJESuMA8I3BsRhkpUkzhocyBKdYAIHpKfZxPoPoB8rjRlsrtiLfH4boN1vZkVLes
- 2MMi4UCYqzWY8+AI/cUe109L5OCnyLZ0NP6ckt2t43MWjqrYK4YQzxLvyOMYfEtR7Z
- QIa8GyrwbjPJA==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 852446536C; Wed,  3 Mar 2021 21:21:24 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 210749] sysfs: cannot create duplicate filename
- '/bus/nvmem/devices/module-vpd'
-Date: Wed, 03 Mar 2021 21:21:24 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-210749-206035-2OE7Gldw6H@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-210749-206035@https.bugzilla.kernel.org/>
-References: <bug-210749-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrRxp563Mz30Ng
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 08:30:51 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DrRxd2k33z9ttBL;
+ Wed,  3 Mar 2021 22:30:45 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id EOp0jFdqMqTs; Wed,  3 Mar 2021 22:30:45 +0100 (CET)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DrRxd0kG9z9ttRk;
+ Wed,  3 Mar 2021 22:30:45 +0100 (CET)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 6B58D65A; Wed,  3 Mar 2021 22:33:58 +0100 (CET)
+Received: from 37.173.125.231 ([37.173.125.231]) by messagerie.c-s.fr (Horde
+ Framework) with HTTP; Wed, 03 Mar 2021 22:33:58 +0100
+Date: Wed, 03 Mar 2021 22:33:58 +0100
+Message-ID: <20210303223358.Horde.OAg4JN_IZgwz7hkYuMwiTg3@messagerie.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: maqiang <maqianga@uniontech.com>
+Subject: Re: [PATCH] powerpc: remove redundant space
+In-Reply-To: <20210303115710.30886-1-maqianga@uniontech.com>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,26 +53,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D210749
+maqiang <maqianga@uniontech.com> a =C3=A9crit=C2=A0:
 
-Erhard F. (erhard_f@mailbox.org) changed:
+> These one line of code don't meet the kernel coding style,
+> so remove the redundant space.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
- Attachment #294195|0                           |1
-        is obsolete|                            |
+There seems to be several other style issues in this function and in=20=20
+the=20following one too. You should fix them all at once I think.
 
---- Comment #5 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 295621
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D295621&action=3Dedit
-kernel .config (kernel 5.12-rc1, Talos II)
 
---=20
-You may reply to this email to add a comment.
+>
+> Signed-off-by: maqiang <maqianga@uniontech.com>
+> ---
+>  arch/powerpc/kernel/syscalls.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscall=
+s.c
+> index 078608ec2e92..9248288752d5 100644
+> --- a/arch/powerpc/kernel/syscalls.c
+> +++ b/arch/powerpc/kernel/syscalls.c
+> @@ -81,7 +81,7 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, size_t, len,
+>  int
+>  ppc_select(int n, fd_set __user *inp, fd_set __user *outp, fd_set=20=20
+>=20__user *exp, struct __kernel_old_timeval __user *tvp)
+>  {
+> -	if ( (unsigned long)n >=3D 4096 )
+> +	if ((unsigned long)n >=3D 4096)
+>  	{
+>  		unsigned long __user *buffer =3D (unsigned long __user *)n;
+>  		if (!access_ok(buffer, 5*sizeof(unsigned long))
+> --
+> 2.20.1
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+
