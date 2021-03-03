@@ -2,79 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E8A32B993
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 18:49:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1266432B9A6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 18:57:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrM2m71QDz3d9f
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 04:49:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrMCg0P9Tz3dGX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 04:57:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kaod.org (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
- receiver=<UNKNOWN>)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrM250Xwsz3cGV
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 04:49:15 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 123HjvuR142592; Wed, 3 Mar 2021 12:49:09 -0500
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 372f54825v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 03 Mar 2021 12:49:08 -0500
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 123Hh749026977;
- Wed, 3 Mar 2021 17:49:06 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04ams.nl.ibm.com with ESMTP id 3712fmj0he-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 03 Mar 2021 17:49:06 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 123Hn3SS53870972
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 3 Mar 2021 17:49:03 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AFBB8A4054;
- Wed,  3 Mar 2021 17:49:03 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 68560A405C;
- Wed,  3 Mar 2021 17:49:03 +0000 (GMT)
-Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Wed,  3 Mar 2021 17:49:03 +0000 (GMT)
-Received: from yukon.ibmuc.com (unknown [9.171.85.87])
- by smtp.tlslab.ibm.com (Postfix) with ESMTP id C90FF220423;
- Wed,  3 Mar 2021 18:49:02 +0100 (CET)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 8/8] powerpc/xive: Map one IPI interrupt per node
-Date: Wed,  3 Mar 2021 18:48:57 +0100
-Message-Id: <20210303174857.1760393-9-clg@kaod.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210303174857.1760393-1-clg@kaod.org>
-References: <20210303174857.1760393-1-clg@kaod.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrMCL3mGSz30J0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 04:57:16 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DrMCF1XV1z9v4QZ;
+ Wed,  3 Mar 2021 18:57:13 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id QezXv5b5bs7A; Wed,  3 Mar 2021 18:57:13 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DrMCD6mvcz9ttC2;
+ Wed,  3 Mar 2021 18:57:12 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CFC08B7DB;
+ Wed,  3 Mar 2021 18:57:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HfuXNu-LNDVW; Wed,  3 Mar 2021 18:57:13 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3EC2D8B7E6;
+ Wed,  3 Mar 2021 18:57:12 +0100 (CET)
+Subject: Re: [PATCH v2 1/7] cmdline: Add generic function to build command
+ line.
+To: Will Deacon <will@kernel.org>
+References: <cover.1614705851.git.christophe.leroy@csgroup.eu>
+ <d8cf7979ad986de45301b39a757c268d9df19f35.1614705851.git.christophe.leroy@csgroup.eu>
+ <20210303172810.GA19713@willie-the-truck>
+ <a0cfef11-efba-2e5c-6f58-ed63a2c3bfa0@csgroup.eu>
+ <20210303174627.GC19713@willie-the-truck>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <dc6576ac-44ff-7db4-d718-7565b83f50b8@csgroup.eu>
+Date: Wed, 3 Mar 2021 18:57:09 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-03_05:2021-03-03,
- 2021-03-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0
- clxscore=1034 impostorscore=0 spamscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 suspectscore=0 mlxscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103030124
+In-Reply-To: <20210303174627.GC19713@willie-the-truck>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,179 +66,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kurz <groug@kaod.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: linux-arch@vger.kernel.org, robh@kernel.org,
+ daniel@gimpelevich.san-francisco.ca.us, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, danielwa@cisco.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ipistorm [*] can be used to benchmark the raw interrupt rate of an
-interrupt controller by measuring the number of IPIs a system can
-sustain. When applied to the XIVE interrupt controller of POWER9 and
-POWER10 systems, a significant drop of the interrupt rate can be
-observed when crossing the second node boundary.
 
-This is due to the fact that a single IPI interrupt is used for all
-CPUs of the system. The structure is shared and the cache line updates
-impact greatly the traffic between nodes and the overall IPI
-performance.
 
-As a workaround, the impact can be reduced by deactivating the IRQ
-lockup detector ("noirqdebug") which does a lot of accounting in the
-Linux IRQ descriptor structure and is responsible for most of the
-performance penalty.
+Le 03/03/2021 à 18:46, Will Deacon a écrit :
+> On Wed, Mar 03, 2021 at 06:38:16PM +0100, Christophe Leroy wrote:
+>> Le 03/03/2021 à 18:28, Will Deacon a écrit :
+>>> On Tue, Mar 02, 2021 at 05:25:17PM +0000, Christophe Leroy wrote:
+>>>> This code provides architectures with a way to build command line
+>>>> based on what is built in the kernel and what is handed over by the
+>>>> bootloader, based on selected compile-time options.
+>>>>
+>>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>>> ---
+>>>>    include/linux/cmdline.h | 62 +++++++++++++++++++++++++++++++++++++++++
+>>>>    1 file changed, 62 insertions(+)
+>>>>    create mode 100644 include/linux/cmdline.h
+>>>>
+>>>> diff --git a/include/linux/cmdline.h b/include/linux/cmdline.h
+>>>> new file mode 100644
+>>>> index 000000000000..ae3610bb0ee2
+>>>> --- /dev/null
+>>>> +++ b/include/linux/cmdline.h
+>>>> @@ -0,0 +1,62 @@
+>>>> +/* SPDX-License-Identifier: GPL-2.0 */
+>>>> +#ifndef _LINUX_CMDLINE_H
+>>>> +#define _LINUX_CMDLINE_H
+>>>> +
+>>>> +static __always_inline size_t cmdline_strlen(const char *s)
+>>>> +{
+>>>> +	const char *sc;
+>>>> +
+>>>> +	for (sc = s; *sc != '\0'; ++sc)
+>>>> +		; /* nothing */
+>>>> +	return sc - s;
+>>>> +}
+>>>> +
+>>>> +static __always_inline size_t cmdline_strlcat(char *dest, const char *src, size_t count)
+>>>> +{
+>>>> +	size_t dsize = cmdline_strlen(dest);
+>>>> +	size_t len = cmdline_strlen(src);
+>>>> +	size_t res = dsize + len;
+>>>> +
+>>>> +	/* This would be a bug */
+>>>> +	if (dsize >= count)
+>>>> +		return count;
+>>>> +
+>>>> +	dest += dsize;
+>>>> +	count -= dsize;
+>>>> +	if (len >= count)
+>>>> +		len = count - 1;
+>>>> +	memcpy(dest, src, len);
+>>>> +	dest[len] = 0;
+>>>> +	return res;
+>>>> +}
+>>>
+>>> Why are these needed instead of using strlen and strlcat directly?
+>>
+>> Because on powerpc (at least), it will be used in prom_init, it is very
+>> early in the boot and KASAN shadow memory is not set up yet so calling
+>> generic string functions would crash the board.
+> 
+> Hmm. We deliberately setup a _really_ early shadow on arm64 for this, can
+> you not do something similar? Failing that, I think it would be better to
+> offer the option for an arch to implement cmdline_*, but have then point to
+> the normal library routines by default.
 
-As a fix, this proposal allocates an IPI interrupt per node, to be
-shared by all CPUs of that node. It solves the scaling issue, the IRQ
-lockup detector still has an impact but the XIVE interrupt rate scales
-linearly. It also improves the "noirqdebug" case as showed in the
-tables below.
+I don't think it is possible to setup an earlier early shadow.
 
- * P9 DD2.2 - 2s * 64 threads
+At the point we are in prom_init, the code is not yet relocated at the address it was linked for, 
+and it is running with the MMU set by the bootloader, I can't imagine being able to setup MMU 
+entries for the early shadow KASAN yet without breaking everything.
 
-                                               "noirqdebug"
-                        Mint/s                    Mint/s
- chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys
- --------------------------------------------------------------
- 1      0-15     4.984023   4.875405       4.996536   5.048892
-        0-31    10.879164  10.544040      10.757632  11.037859
-        0-47    15.345301  14.688764      14.926520  15.310053
-        0-63    17.064907  17.066812      17.613416  17.874511
- 2      0-79    11.768764  21.650749      22.689120  22.566508
-        0-95    10.616812  26.878789      28.434703  28.320324
-        0-111   10.151693  31.397803      31.771773  32.388122
-        0-127    9.948502  33.139336      34.875716  35.224548
+Is it really worth trying to point to the normal library routines by default ? It is really only a 
+few lines of code hence only not many bytes, and anyway they are in __init section so they get 
+discarded at the end.
 
- * P10 DD1 - 4s (not homogeneous) 352 threads
+> 
+>>>> +/*
+>>>> + * This function will append a builtin command line to the command
+>>>> + * line provided by the bootloader. Kconfig options can be used to alter
+>>>> + * the behavior of this builtin command line.
+>>>> + * @dest: The destination of the final appended/prepended string.
+>>>> + * @src: The starting string or NULL if there isn't one. Must not equal dest.
+>>>> + * @length: the length of dest buffer.
+>>>> + */
+>>>> +static __always_inline void cmdline_build(char *dest, const char *src, size_t length)
+>>>> +{
+>>>> +	if (length <= 0)
+>>>> +		return;
+>>>> +
+>>>> +	dest[0] = 0;
+>>>> +
+>>>> +#ifdef CONFIG_CMDLINE
+>>>> +	if (IS_ENABLED(CONFIG_CMDLINE_FORCE) || !src || !src[0]) {
+>>>> +		cmdline_strlcat(dest, CONFIG_CMDLINE, length);
+>>>> +		return;
+>>>> +	}
+>>>> +#endif
+>>>
+>>> CONFIG_CMDLINE_FORCE implies CONFIG_CMDLINE, and even if it didn't,
+>>> CONFIG_CMDLINE is at worst an empty string. Can you drop the #ifdef?
+>>
+>> Ah yes, since cbe46bd4f510 ("powerpc: remove CONFIG_CMDLINE #ifdef mess") it
+>> is feasible. I can change that now.
+>>
+>>>
+>>>> +	if (dest != src)
+>>>> +		cmdline_strlcat(dest, src, length);
+>>>> +#ifdef CONFIG_CMDLINE
+>>>> +	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) && sizeof(CONFIG_CMDLINE) > 1)
+>>>> +		cmdline_strlcat(dest, " " CONFIG_CMDLINE, length);
+>>>> +#endif
+>>>
+>>> Likewise, but also I'm not sure why the sizeof() is required.
+>>
+>> It is to avoid adding a white space at the end of the command line when
+>> CONFIG_CMDLINE is empty. But maybe it doesn't matter ?
+> 
+> If CONFIG_CMDLINE is empty, I don't think you can select
+> CONFIG_CMDLINE_EXTEND (but even if you could, I don't think it matters).
 
-                                               "noirqdebug"
-                        Mint/s                    Mint/s
- chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys
- --------------------------------------------------------------
- 1      0-15     2.409402   2.364108       2.383303   2.395091
-        0-31     6.028325   6.046075       6.089999   6.073750
-        0-47     8.655178   8.644531       8.712830   8.724702
-        0-63    11.629652  11.735953      12.088203  12.055979
-        0-79    14.392321  14.729959      14.986701  14.973073
-        0-95    12.604158  13.004034      17.528748  17.568095
- 2      0-111    9.767753  13.719831      19.968606  20.024218
-        0-127    6.744566  16.418854      22.898066  22.995110
-        0-143    6.005699  19.174421      25.425622  25.417541
-        0-159    5.649719  21.938836      27.952662  28.059603
-        0-175    5.441410  24.109484      31.133915  31.127996
- 3      0-191    5.318341  24.405322      33.999221  33.775354
-        0-207    5.191382  26.449769      36.050161  35.867307
-        0-223    5.102790  29.356943      39.544135  39.508169
-        0-239    5.035295  31.933051      42.135075  42.071975
-        0-255    4.969209  34.477367      44.655395  44.757074
- 4      0-271    4.907652  35.887016      47.080545  47.318537
-        0-287    4.839581  38.076137      50.464307  50.636219
-        0-303    4.786031  40.881319      53.478684  53.310759
-        0-319    4.743750  43.448424      56.388102  55.973969
-        0-335    4.709936  45.623532      59.400930  58.926857
-        0-351    4.681413  45.646151      62.035804  61.830057
+Ok I'll simplify that when I re-spin.
 
-[*] https://github.com/antonblanchard/ipistorm
-
-Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
----
- arch/powerpc/sysdev/xive/xive-internal.h |  2 --
- arch/powerpc/sysdev/xive/common.c        | 39 ++++++++++++++++++------
- 2 files changed, 30 insertions(+), 11 deletions(-)
-
-diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysd=
-ev/xive/xive-internal.h
-index 9cf57c722faa..b3a456fdd3a5 100644
---- a/arch/powerpc/sysdev/xive/xive-internal.h
-+++ b/arch/powerpc/sysdev/xive/xive-internal.h
-@@ -5,8 +5,6 @@
- #ifndef __XIVE_INTERNAL_H
- #define __XIVE_INTERNAL_H
-=20
--#define XIVE_IPI_HW_IRQ		0 /* interrupt source # for IPIs */
--
- /*
-  * A "disabled" interrupt should never fire, to catch problems
-  * we set its logical number to this
-diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
-/common.c
-index 8eefd152b947..c27f7bb0494b 100644
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@ -65,8 +65,16 @@ static struct irq_domain *xive_irq_domain;
- #ifdef CONFIG_SMP
- static struct irq_domain *xive_ipi_irq_domain;
-=20
--/* The IPIs all use the same logical irq number */
--static u32 xive_ipi_irq;
-+/* The IPIs use the same logical irq number when on the same chip */
-+static struct xive_ipi_desc {
-+	unsigned int irq;
-+	char name[8]; /* enough bytes to fit IPI-XXX */
-+} *xive_ipis;
-+
-+static unsigned int xive_ipi_cpu_to_irq(unsigned int cpu)
-+{
-+	return xive_ipis[cpu_to_node(cpu)].irq;
-+}
- #endif
-=20
- /* Xive state for each CPU */
-@@ -1106,25 +1114,36 @@ static const struct irq_domain_ops xive_ipi_irq_d=
-omain_ops =3D {
-=20
- static void __init xive_request_ipi(void)
- {
--	unsigned int virq;
-+	unsigned int node;
-=20
--	xive_ipi_irq_domain =3D irq_domain_add_linear(NULL, 1,
-+	xive_ipi_irq_domain =3D irq_domain_add_linear(NULL, nr_node_ids,
- 						    &xive_ipi_irq_domain_ops, NULL);
- 	if (WARN_ON(xive_ipi_irq_domain =3D=3D NULL))
- 		return;
-=20
--	/* Initialize it */
--	virq =3D irq_create_mapping(xive_ipi_irq_domain, XIVE_IPI_HW_IRQ);
--	xive_ipi_irq =3D virq;
-+	xive_ipis =3D kcalloc(nr_node_ids, sizeof(*xive_ipis), GFP_KERNEL | __G=
-FP_NOFAIL);
-+	for_each_node(node) {
-+		struct xive_ipi_desc *xid =3D &xive_ipis[node];
-+		irq_hw_number_t node_ipi_hwirq =3D node;
-+
-+		/*
-+		 * Map one IPI interrupt per node for all cpus of that node.
-+		 * Since the HW interrupt number doesn't have any meaning,
-+		 * simply use the node number.
-+		 */
-+		xid->irq =3D irq_create_mapping(xive_ipi_irq_domain, node_ipi_hwirq);
-+		snprintf(xid->name, sizeof(xid->name), "IPI-%d", node);
-=20
--	WARN_ON(request_irq(virq, xive_muxed_ipi_action,
--			    IRQF_PERCPU | IRQF_NO_THREAD, "IPI", NULL));
-+		WARN_ON(request_irq(xid->irq, xive_muxed_ipi_action,
-+				    IRQF_PERCPU | IRQF_NO_THREAD, xid->name, NULL));
-+	}
- }
-=20
- static int xive_setup_cpu_ipi(unsigned int cpu)
- {
- 	struct xive_cpu *xc;
- 	int rc;
-+	unsigned int xive_ipi_irq =3D xive_ipi_cpu_to_irq(cpu);
-=20
- 	pr_debug("Setting up IPI for CPU %d\n", cpu);
-=20
-@@ -1165,6 +1184,8 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
-=20
- static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
- {
-+	unsigned int xive_ipi_irq =3D xive_ipi_cpu_to_irq(cpu);
-+
- 	/* Disable the IPI and free the IRQ data */
-=20
- 	/* Already cleaned up ? */
---=20
-2.26.2
-
+Christophe
