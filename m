@@ -1,92 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BBD32AC8F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 00:08:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CABEE32ACAC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 01:51:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dqt9H70xQz3dd8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 10:08:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C3vS/cZ9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DqwSF4lL5z3d2t
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 11:51:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=C3vS/cZ9; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dqt7Z2RPKz3cXh
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 10:07:22 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 122N3RO6085202; Tue, 2 Mar 2021 18:07:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Owsg7r6i09zRTjczmkzjnuSkxpwtC+uMxU9OVC0fK1M=;
- b=C3vS/cZ9Pl33I7WlaVyjOMiZtwiZi6Xntb/hZxCYXX3f9VOYFT9VPVgYkPPn9XUzur7q
- V0ezDabgFnavsUpCg3PbT1kt90OthZKo9XWUzqHdYN2WBE4L9OYoCK1xGFat3RAdZBY4
- JFfGm09IXCmHjB9FXpIl0w6DluMFFLaN2Bz386bqqMgmmqDEP7sP4PmfGv/L4AjGpjon
- EBx137c6OEM6ftd+Pj/qmK+3gYl7WPLE/nWdUAYbFVApmecavDMy+HMdQ8BX2Vqn6Jtl
- 9uNRorst2LkcvuzMafvh2+ZJ4n3t6ne2ZUFD6DfKDbWEh2nZv/k4QL3H+aQPtHeVGiUc UQ== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 371xmwrg9u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Mar 2021 18:07:18 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 122MwJVW029519;
- Tue, 2 Mar 2021 23:05:49 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma01wdc.us.ibm.com with ESMTP id 36ydq92hv6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Mar 2021 23:05:49 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 122N5lgv10617524
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 2 Mar 2021 23:05:47 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 605516E050;
- Tue,  2 Mar 2021 23:05:47 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 020606E04C;
- Tue,  2 Mar 2021 23:05:47 +0000 (GMT)
-Received: from vios4361.aus.stglabs.ibm.com (unknown [9.3.43.61])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue,  2 Mar 2021 23:05:46 +0000 (GMT)
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-To: james.bottomley@hansenpartnership.com
-Subject: [PATCH v5 5/5] ibmvfc: reinitialize sub-CRQs and perform channel
- enquiry after LPM
-Date: Tue,  2 Mar 2021 17:05:43 -0600
-Message-Id: <20210302230543.9905-6-tyreld@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210302230543.9905-1-tyreld@linux.ibm.com>
-References: <20210302230543.9905-1-tyreld@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DqwRw5McWz30N1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 11:51:34 +1100 (AEDT)
+IronPort-SDR: J0XFmRxw4pe3Et9qGCr9//0PAGkARlIAU/03AXkZV4uq0feuh6UgzhiQGG8sbhIU/HB0l4H4w6
+ UJWuBjOCBsVg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9911"; a="187111409"
+X-IronPort-AV: E=Sophos;i="5.81,218,1610438400"; d="scan'208";a="187111409"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Mar 2021 16:51:30 -0800
+IronPort-SDR: f1NMlvDcnP9CRdf2CwPh3KaliIaTNk6M5oWHX0G0YmjOCD1GRc+ntPG33LJgav1KeA/zpIcfAK
+ Y4jI2SFpADxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,218,1610438400"; d="scan'208";a="506544267"
+Received: from lkp-server02.sh.intel.com (HELO 2482ff9f8ac0) ([10.239.97.151])
+ by fmsmga001.fm.intel.com with ESMTP; 02 Mar 2021 16:51:28 -0800
+Received: from kbuild by 2482ff9f8ac0 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lHFjb-0000mE-7d; Wed, 03 Mar 2021 00:51:27 +0000
+Date: Wed, 03 Mar 2021 08:51:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 5c88a17e15795226b56d83f579cbb9b7a4864f79
+Message-ID: <603edd8a.I8TvZ4mOhGgkxSq8%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-02_08:2021-03-01,
- 2021-03-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0
- adultscore=0 mlxscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 malwarescore=0 bulkscore=0 mlxlogscore=999
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103020170
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,62 +54,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, martin.petersen@oracle.com,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, brking@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A live partition migration (LPM) results in a CRQ disconnect similar to
-a hard reset. In this LPM case the hypervisor moslty perserves the CRQ
-transport such that it simply needs to be reenabled. However, the
-capabilities may have changed such as fewer channels, or no channels at
-all. Further, its possible that there may be sub-CRQ support, but no
-channel support. The CRQ reenable path currently doesn't take any of
-this into consideration.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 5c88a17e15795226b56d83f579cbb9b7a4864f79  powerpc/sstep: Fix VSX instruction emulation
 
-For simpilicty release and reinitialize sub-CRQs during reenable, and
-set do_enquiry and using_channels with the appropriate values to trigger
-channel renegotiation.
+elapsed time: 723m
 
-fixes: 3034ebe26389 ("ibmvfc: add alloc/dealloc routines for SCSI Sub-CRQ Channels")
-Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-Reviewed-by: Brian King <brking@linux.ibm.com>
+configs tested: 104
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+nds32                               defconfig
+arm                          ep93xx_defconfig
+arm                     am200epdkit_defconfig
+powerpc                        warp_defconfig
+powerpc                          allmodconfig
+m68k                        stmark2_defconfig
+powerpc                     pq2fads_defconfig
+arm                        mvebu_v7_defconfig
+arm                  colibri_pxa270_defconfig
+sh                           se7705_defconfig
+i386                             alldefconfig
+arm                           sama5_defconfig
+arm                          iop32x_defconfig
+s390                       zfcpdump_defconfig
+sh                      rts7751r2d1_defconfig
+sparc                               defconfig
+c6x                              alldefconfig
+powerpc                      walnut_defconfig
+powerpc                     sbc8548_defconfig
+powerpc                   currituck_defconfig
+m68k                        mvme147_defconfig
+nios2                            alldefconfig
+arm                       mainstone_defconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                       ppc64_defconfig
+arm                          pxa168_defconfig
+riscv                          rv32_defconfig
+arm                         socfpga_defconfig
+openrisc                  or1klitex_defconfig
+powerpc                      cm5200_defconfig
+xtensa                  audio_kc705_defconfig
+sh                        sh7757lcr_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20210302
+x86_64               randconfig-a001-20210302
+x86_64               randconfig-a004-20210302
+x86_64               randconfig-a002-20210302
+x86_64               randconfig-a005-20210302
+x86_64               randconfig-a003-20210302
+i386                 randconfig-a005-20210302
+i386                 randconfig-a003-20210302
+i386                 randconfig-a002-20210302
+i386                 randconfig-a004-20210302
+i386                 randconfig-a006-20210302
+i386                 randconfig-a001-20210302
+i386                 randconfig-a016-20210302
+i386                 randconfig-a012-20210302
+i386                 randconfig-a014-20210302
+i386                 randconfig-a013-20210302
+i386                 randconfig-a011-20210302
+i386                 randconfig-a015-20210302
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a013-20210302
+x86_64               randconfig-a016-20210302
+x86_64               randconfig-a015-20210302
+x86_64               randconfig-a014-20210302
+x86_64               randconfig-a012-20210302
+x86_64               randconfig-a011-20210302
+
 ---
- drivers/scsi/ibmvscsi/ibmvfc.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index ef03fa559433..1e2ea21713ad 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -903,6 +903,9 @@ static int ibmvfc_reenable_crq_queue(struct ibmvfc_host *vhost)
- {
- 	int rc = 0;
- 	struct vio_dev *vdev = to_vio_dev(vhost->dev);
-+	unsigned long flags;
-+
-+	ibmvfc_release_sub_crqs(vhost);
- 
- 	/* Re-enable the CRQ */
- 	do {
-@@ -914,6 +917,15 @@ static int ibmvfc_reenable_crq_queue(struct ibmvfc_host *vhost)
- 	if (rc)
- 		dev_err(vhost->dev, "Error enabling adapter (rc=%d)\n", rc);
- 
-+	spin_lock_irqsave(vhost->host->host_lock, flags);
-+	spin_lock(vhost->crq.q_lock);
-+	vhost->do_enquiry = 1;
-+	vhost->using_channels = 0;
-+	spin_unlock(vhost->crq.q_lock);
-+	spin_unlock_irqrestore(vhost->host->host_lock, flags);
-+
-+	ibmvfc_init_sub_crqs(vhost);
-+
- 	return rc;
- }
- 
--- 
-2.27.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
