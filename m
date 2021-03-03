@@ -2,67 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C96832B811
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 14:38:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F196E32B852
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 14:49:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrFSt1bhMz3cnP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 00:38:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrFhx6wzGz3clQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 00:49:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=jfBdSINz;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=qi4UC6hU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::133;
- helo=mail-lf1-x133.google.com; envelope-from=festevam@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jfBdSINz; dkim-atps=neutral
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
- [IPv6:2a00:1450:4864:20::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=qi4UC6hU; dkim-atps=neutral
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrFSR4Tk9z30NC
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 00:38:13 +1100 (AEDT)
-Received: by mail-lf1-x133.google.com with SMTP id 18so28567817lff.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Mar 2021 05:38:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=7X3zWC8sv43JidvGXEJ+sxG+iFcCaZnwd3GWkVHn2QA=;
- b=jfBdSINz37HSrdFGnR+6H3pATTxbQpYj2UOeoXb+AdSBeZ9+RTage79zGmlP1tJ27V
- yKuiSaKmTISJjOzC6svcUltAcpl2pCPtZIzF0opf8QtBGTK1tqwrOGqsWaDy8uR/Iz7u
- ffNWNNrSvY7lS5rbtzNDtHVteYBcLJMVcdfM0JHYMP+LZYdzi6pk5utjKw+1ZMtL0Q8a
- 5K3GErMzYf60UFNnXMMZdlmvwhG0c2lRU/mjPMCJsGjIRVXvlgFROVEEFla80cBu+m9k
- X5Rvnw+53pgGzxkoMpR8gOLa92SH45HJp3FsbtY8XQCl8YXJXCshw8JLngX+MOtNP84d
- 1kjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=7X3zWC8sv43JidvGXEJ+sxG+iFcCaZnwd3GWkVHn2QA=;
- b=gjQae+j9NLEMSCaYqFh+X2KHlpkdpFh4oqUE3kv1fZw3rK1F1xn9QF/2PJF5GA/KXs
- KwUogvVQFfkvzBW6iX26NzO6a8ppwkRYpq17FtDXV3e9oaGrs8WS1qD/Q7wXosszrMBn
- fG01CQiUgezk18M60aPb1+1a3nqcmrLKESflJylaXEWd8HmhMVHhR+q4SwNl/akZbpEF
- cz5PWchNQRB1PB4BV2UWbmFHb/+PVlgfRaIs4bXF7Iu1k8zcl7rIwQm4KR2PJj1ce1Nf
- UoPxsvfdORtCAsN1D6dBCLgQv2syF9znbj9qthFFgrK0zIbJm6D6htEfl/vg5ER31UYZ
- Z93A==
-X-Gm-Message-State: AOAM533sk4mXUoXDHRcHi5wPM9uAiYDkBTnmxhQHY5sS8YBt6Ix2EcJJ
- dyqxkPU3ra7jf1gzin6nv87qXGZP5i5tEEwA0BU=
-X-Google-Smtp-Source: ABdhPJxAbpN/v8nH1IMKL/0Yhn98LsdY93KrfCpYhZOjPth1T7NFb3VeIt9Sd5cBNd1j5i9L446+OO+8m4icOEYwBvg=
-X-Received: by 2002:a05:6512:6c3:: with SMTP id
- u3mr14579626lff.443.1614778688677; 
- Wed, 03 Mar 2021 05:38:08 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrFhW0w9Jz3cH7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 00:48:41 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1614779319; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pu/3seYMql33mUGXHcZj1oG0qaMLQn8mcgtStwoiQOY=;
+ b=qi4UC6hUpKVqsIab1ecHkri1SQfudluavf0CINthr1FLnsNtM5q8rG05RSaCJn+Um9pgwR
+ JfB+Vj2/CNZ02GVC22inMEzATHJ+8kPxSW7/R6gewxBgKHq1cQaLnv6iq+ws7baN5OJd9I
+ zx5+UaQymkuoSD+q1Ar5CPG7aqqg87o=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id D9E98AC24;
+ Wed,  3 Mar 2021 13:48:38 +0000 (UTC)
+Date: Wed, 3 Mar 2021 14:48:33 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: John Ogness <john.ogness@linutronix.de>
+Subject: Re: [PATCH next v4 12/15] printk: introduce a kmsg_dump iterator
+Message-ID: <YD+TsR+yiM2RB9Hh@alley>
+References: <20210303101528.29901-1-john.ogness@linutronix.de>
+ <20210303101528.29901-13-john.ogness@linutronix.de>
 MIME-Version: 1.0
-References: <1614761651-86898-1-git-send-email-yang.lee@linux.alibaba.com>
-In-Reply-To: <1614761651-86898-1-git-send-email-yang.lee@linux.alibaba.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 3 Mar 2021 10:37:57 -0300
-Message-ID: <CAOMZO5DhvAX3=Xv=v+yCRyzXhP0g9=016GcsRKOjBzjTvZ9X_w@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: hdmi-codec: fix platform_no_drv_owner.cocci warnings
-To: Yang Li <yang.lee@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210303101528.29901-13-john.ogness@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,34 +57,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel <linux-kernel@vger.kernel.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
- NXP Linux Team <linux-imx@nxp.com>, Sascha Hauer <kernel@pengutronix.de>,
- Shengjiu Wang <shengjiu.wang@gmail.com>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
+Cc: linux-hyperv@vger.kernel.org,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Douglas Anderson <dianders@chromium.org>, Paul Mackerras <paulus@samba.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Meyer <thomas@m3y3r.de>,
+ Vignesh Raghavendra <vigneshr@ti.com>, Wei Liu <wei.liu@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Stephen Hemminger <sthemmin@microsoft.com>, Anton Vorontsov <anton@enomsg.org>,
+ Jason Wessel <jason.wessel@windriver.com>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, Wei Li <liwei391@huawei.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Kees Cook <keescook@chromium.org>,
+ Alistair Popple <alistair@popple.id.au>, Jeff Dike <jdike@addtoit.com>,
+ Colin Cross <ccross@android.com>, linux-um@lists.infradead.org,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ Nicholas Piggin <npiggin@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jordan Niethe <jniethe5@gmail.com>, Michael Kelley <mikelley@microsoft.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, Tony Luck <tony.luck@intel.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Richard Weinberger <richard@nod.at>, kgdb-bugreport@lists.sourceforge.net,
+ linux-mtd@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Yang,
+On Wed 2021-03-03 11:15:25, John Ogness wrote:
+> Rather than storing the iterator information in the registered
+> kmsg_dumper structure, create a separate iterator structure. The
+> kmsg_dump_iter structure can reside on the stack of the caller, thus
+> allowing lockless use of the kmsg_dump functions.
+> 
+> Update code that accesses the kernel logs using the kmsg_dumper
+> structure to use the new kmsg_dump_iter structure. For kmsg_dumpers,
+> this also means adding a call to kmsg_dump_rewind() to initialize
+> the iterator.
+> 
+> All this is in preparation for removal of @logbuf_lock.
+> 
+> Signed-off-by: John Ogness <john.ogness@linutronix.de>
+> Reviewed-by: Kees Cook <keescook@chromium.org> # pstore
 
-On Wed, Mar 3, 2021 at 5:54 AM Yang Li <yang.lee@linux.alibaba.com> wrote:
->
-> ./sound/soc/fsl/imx-hdmi.c:226:3-8: No need to set .owner here. The core
-> will do it.
->
-> Remove .owner field if calls are used which set it automatically
->
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
-The patch looks good, but please send a v2 with the correct Subject.
-
-It should mention imx-hdmi instead of hdmi-codec.
-
-Thanks
+Best Regards,
+Petr
