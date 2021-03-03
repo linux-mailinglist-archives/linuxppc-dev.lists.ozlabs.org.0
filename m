@@ -1,73 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242BC32B7E1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 13:46:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0277832B7F7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 14:19:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrDJv0Z4vz3cb0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 23:46:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrF2J0SJLz3cT9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 00:19:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Sisvz3Nr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=OG2D8K0+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::329;
- helo=mail-wm1-x329.google.com; envelope-from=lee.jones@linaro.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=Sisvz3Nr; dkim-atps=neutral
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com
- [IPv6:2a00:1450:4864:20::329])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=OG2D8K0+; dkim-atps=neutral
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrDJT1XFzz2xy4
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 23:46:13 +1100 (AEDT)
-Received: by mail-wm1-x329.google.com with SMTP id u187so5055237wmg.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Mar 2021 04:46:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=LHIHpoWITKla/9IZBsvp5706Sa7D3rYHp0QL+y3tf4c=;
- b=Sisvz3NrnqtlrK/NrwfvMh2IsHBgzMb+URq0HB3Rp611Z3MFBAI5WPTShD8NSfxQze
- fOkvPU7NbqDykF9U1MaCEBI2w9cA4RQNTKSvg5ksFbOzyVtV9AYLkyMAUtngE/yjJEwt
- slR4phu1ikc8lvCi/eYGq3gZiOGrKR6kEiFl1WpwZsQCbRVAfT5/tdCK08WZokyA+XNh
- wxhUpdYmn2GomjNBXUgYOjaqpOAcVXOfXuvpH9ZgI/N3sJsLQL/WrzMuHKstBKZ+/4dF
- DWbi4+VA9azhmMpCHlnUcAqsArhj5Aquoe+ZMcBUfYcpShEInuLa2qov/7A9rKSqLYQJ
- Ke4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=LHIHpoWITKla/9IZBsvp5706Sa7D3rYHp0QL+y3tf4c=;
- b=WpfZNoGv+vFib/evUHuJH9nEFAtBRz4YBz9+cRDNZIGEeEzypRXkjXRfrnzqSiOovo
- NPnSt2TVKVuEPQyup+FfeTuhJ9UdHiHA8/dh8D8uSjuOH2p+Ils47oubhETfJSyw6qwE
- 1h3D2cXCQc6Va/kTUunLtFOCYNQizx8jugvSALDyj9juuAd/Q1nbBFLiSEvHP+US7PQZ
- 8cfU5+8gnTDNJMwwmiC1mBkwgzIsABhdOaxE59AU7QS6380MYcjQygwHBLcMyi2Zq9OC
- KZXsLMKORJKnVnGq1KNoFauTbZCij2jzQwogLDMj9J/v4J1pGwtFmwMpiOyGp1j1SPr3
- dYXg==
-X-Gm-Message-State: AOAM532BEZKm0Kxfq80mLnDO1dt5omKQfj/crnIJEuX1SD4jvyJaqsJD
- sYNRBju6LaZhjpvTQXwzpaVQ1Q==
-X-Google-Smtp-Source: ABdhPJxvfbyWe0xKuFVo6LR++FxzOh/nkBH2FsnVXfGIznDO0CIRicI/8mERVJR35yjKLHD8RhP8fg==
-X-Received: by 2002:a7b:c5d0:: with SMTP id n16mr9011294wmk.27.1614775566661; 
- Wed, 03 Mar 2021 04:46:06 -0800 (PST)
-Received: from dell.default ([91.110.221.155])
- by smtp.gmail.com with ESMTPSA id 18sm5581353wmj.21.2021.03.03.04.46.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Mar 2021 04:46:06 -0800 (PST)
-From: Lee Jones <lee.jones@linaro.org>
-To: lee.jones@linaro.org
-Subject: [RESEND 1/1] powerpc: asm: hvconsole: Move 'hvc_vio_init_early's
- prototype to shared location
-Date: Wed,  3 Mar 2021 12:46:03 +0000
-Message-Id: <20210303124603.3150175-1-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.27.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrF1s5VR8z30My
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 00:18:40 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1614777516; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fTjwCAs8NFhD6G8Me32PjCtQRtajdWLNU8hPxq2kLwY=;
+ b=OG2D8K0+PfCuA5USdfd+Vx6vvOPTyS3EUyRmE7sqZ415QTN8GcaX9NJMw0mxPVVFu1pGLR
+ m/nhsBzCaOzVYjLB8Jp0BgoRT32O09qY+clnqr6yXiqa/1CU+6464zYukujhq7ChdCD79P
+ 71x09r4i/F0vei3pckPBC7HbLpQl/ms=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 531B1AD29;
+ Wed,  3 Mar 2021 13:18:36 +0000 (UTC)
+Date: Wed, 3 Mar 2021 14:18:29 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: John Ogness <john.ogness@linutronix.de>,
+ Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Subject: lkml delivery: was: Re: [PATCH next v4 00/15] printk: remove
+ logbuf_lock
+Message-ID: <YD+MpccJp4gX6bOP@alley>
+References: <20210303101528.29901-1-john.ogness@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210303101528.29901-1-john.ogness@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,69 +60,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: linux-hyperv@vger.kernel.org,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Douglas Anderson <dianders@chromium.org>, linux-mtd@lists.infradead.org,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Meyer <thomas@m3y3r.de>,
+ Vignesh Raghavendra <vigneshr@ti.com>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Stephen Hemminger <sthemmin@microsoft.com>,
+ Richard Weinberger <richard@nod.at>, Anton Vorontsov <anton@enomsg.org>,
+ Jordan Niethe <jniethe5@gmail.com>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, Wei Li <liwei391@huawei.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Kees Cook <keescook@chromium.org>,
+ Alistair Popple <alistair@popple.id.au>, Jeff Dike <jdike@addtoit.com>,
+ Colin Cross <ccross@android.com>, linux-um@lists.infradead.org,
+ Wei Liu <wei.liu@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, Nicholas Piggin <npiggin@gmail.com>,
+ Oleg Nesterov <oleg@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Michael Kelley <mikelley@microsoft.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, Sumit Garg <sumit.garg@linaro.org>,
+ Tony Luck <tony.luck@intel.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ linux-kernel@vger.kernel.org,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Jason Wessel <jason.wessel@windriver.com>,
+ kgdb-bugreport@lists.sourceforge.net, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixes the following W=1 kernel build warning(s):
+Hi John,
 
- drivers/tty/hvc/hvc_vio.c:385:13: warning: no previous prototype for ‘hvc_vio_init_early’ [-Wmissing-prototypes]
- 385 | void __init hvc_vio_init_early(void)
- | ^~~~~~~~~~~~~~~~~~
+On Wed 2021-03-03 11:15:13, John Ogness wrote:
+> Hello,
+> 
+> Here is v4 of a series to remove @logbuf_lock, exposing the
+> ringbuffer locklessly to both readers and writers. v3 is
+> here [0].
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Have you got some reply from lkml that it has not delivered there,
+please?
+
+I am not able to get the patchset using b4 tool:
+
+$> b4 am -o test 20210303101528.29901-1-john.ogness@linutronix.de
+Looking up https://lore.kernel.org/r/20210303101528.29901-1-john.ogness%40linutronix.de
+Grabbing thread from lore.kernel.org/linux-hyperv
+Analyzing 2 messages in the thread
 ---
- arch/powerpc/include/asm/hvconsole.h     | 3 +++
- arch/powerpc/platforms/pseries/pseries.h | 3 ---
- arch/powerpc/platforms/pseries/setup.c   | 1 +
- 3 files changed, 4 insertions(+), 3 deletions(-)
+Thread incomplete, attempting to backfill
+Grabbing thread from lore.kernel.org/lkml
+Server returned an error: 404
+Grabbing thread from lore.kernel.org/linux-mtd
+Server returned an error: 404
+Grabbing thread from lore.kernel.org/linuxppc-dev
+Loaded 2 messages from https://lore.kernel.org/linuxppc-dev/
+---
+Writing test/v4_20210303_john_ogness_printk_remove_logbuf_lock.mbx
+  ERROR: missing [1/15]!
+  ERROR: missing [2/15]!
+  ERROR: missing [3/15]!
+  ERROR: missing [4/15]!
+  ERROR: missing [5/15]!
+  ERROR: missing [6/15]!
+  ERROR: missing [7/15]!
+  ERROR: missing [8/15]!
+  ERROR: missing [9/15]!
+  ERROR: missing [10/15]!
+  [PATCH next v4 11/15] printk: kmsg_dumper: remove @active field
+  ✓ [PATCH next v4 12/15] printk: introduce a kmsg_dump iterator
+  ERROR: missing [13/15]!
+  [PATCH next v4 14/15] printk: kmsg_dump: remove _nolock() variants
+  ERROR: missing [15/15]!
+---
+Total patches: 3
+---
+WARNING: Thread incomplete!
+Cover: test/v4_20210303_john_ogness_printk_remove_logbuf_lock.cover
+ Link: https://lore.kernel.org/r/20210303101528.29901-1-john.ogness@linutronix.de
+ Base: not found
+       git am test/v4_20210303_john_ogness_printk_remove_logbuf_lock.mbx
 
-diff --git a/arch/powerpc/include/asm/hvconsole.h b/arch/powerpc/include/asm/hvconsole.h
-index 999ed5ac90531..ccb2034506f0f 100644
---- a/arch/powerpc/include/asm/hvconsole.h
-+++ b/arch/powerpc/include/asm/hvconsole.h
-@@ -24,5 +24,8 @@
- extern int hvc_get_chars(uint32_t vtermno, char *buf, int count);
- extern int hvc_put_chars(uint32_t vtermno, const char *buf, int count);
- 
-+/* Provided by HVC VIO */
-+void hvc_vio_init_early(void);
-+
- #endif /* __KERNEL__ */
- #endif /* _PPC64_HVCONSOLE_H */
-diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
-index 4fe48c04c6c20..a13438fca10a8 100644
---- a/arch/powerpc/platforms/pseries/pseries.h
-+++ b/arch/powerpc/platforms/pseries/pseries.h
-@@ -43,9 +43,6 @@ extern void pSeries_final_fixup(void);
- /* Poweron flag used for enabling auto ups restart */
- extern unsigned long rtas_poweron_auto;
- 
--/* Provided by HVC VIO */
--extern void hvc_vio_init_early(void);
--
- /* Dynamic logical Partitioning/Mobility */
- extern void dlpar_free_cc_nodes(struct device_node *);
- extern void dlpar_free_cc_property(struct property *);
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 46e1540abc229..145e3f4c999af 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -71,6 +71,7 @@
- #include <asm/swiotlb.h>
- #include <asm/svm.h>
- #include <asm/dtl.h>
-+#include <asm/hvconsole.h>
- 
- #include "pseries.h"
- #include "../../../../drivers/pci/pci.h"
--- 
-2.27.0
 
+and I do not see it at lore. It has only found copies in linux-hyperv
+and linux-ppcdev mailing lists,
+see https://lore.kernel.org/lkml/20210303101528.29901-2-john.ogness@linutronix.de/
+
+Best Regards,
+Petr
