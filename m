@@ -2,37 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697D732B60B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 09:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0034732B619
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 10:19:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dr79S2wffz3cXY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 19:54:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dr7jZ0Gh0z3d49
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 20:19:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57;
- helo=out30-57.freemail.mail.aliyun.com;
- envelope-from=yang.lee@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-57.freemail.mail.aliyun.com
- (out30-57.freemail.mail.aliyun.com [115.124.30.57])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=canonical.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=colin.king@canonical.com; receiver=<UNKNOWN>)
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dr7974Wqbz30N6
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 19:54:33 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R131e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04420; MF=yang.lee@linux.alibaba.com;
- NM=1; PH=DS; RN=18; SR=0; TI=SMTPD_---0UQD.jdX_1614761652; 
-Received: from
- j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com
- fp:SMTPD_---0UQD.jdX_1614761652) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 03 Mar 2021 16:54:13 +0800
-From: Yang Li <yang.lee@linux.alibaba.com>
-To: timur@kernel.org
-Subject: [PATCH] ASoC: hdmi-codec: fix platform_no_drv_owner.cocci warnings
-Date: Wed,  3 Mar 2021 16:54:11 +0800
-Message-Id: <1614761651-86898-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dr7jD3jznz3cGN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 20:18:55 +1100 (AEDT)
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+ by youngberry.canonical.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <colin.king@canonical.com>)
+ id 1lHNeO-0007ZG-6W; Wed, 03 Mar 2021 09:18:36 +0000
+From: Colin King <colin.king@canonical.com>
+To: Timur Tabi <timur@kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH][next] ASoC: fsl: fsl_easrc: Fix uninitialized variable
+ st2_mem_alloc
+Date: Wed,  3 Mar 2021 09:18:35 +0000
+Message-Id: <20210303091835.5024-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,40 +51,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com,
- s.hauer@pengutronix.de, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz,
- nicoleotsuka@gmail.com, broonie@kernel.org,
- Yang Li <yang.lee@linux.alibaba.com>, linux-imx@nxp.com, kernel@pengutronix.de,
- shawnguo@kernel.org, shengjiu.wang@gmail.com,
- linux-arm-kernel@lists.infradead.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-./sound/soc/fsl/imx-hdmi.c:226:3-8: No need to set .owner here. The core
-will do it.
+From: Colin Ian King <colin.king@canonical.com>
 
-Remove .owner field if calls are used which set it automatically
+A previous cleanup commit removed the ininitialization of st2_mem_alloc.
+Fix this by restoring the original behaviour by initializing it to zero.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: e80382fe721f ("ASoC: fsl: fsl_easrc: remove useless assignments")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/soc/fsl/imx-hdmi.c | 1 -
- 1 file changed, 1 deletion(-)
+ sound/soc/fsl/fsl_easrc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
-index dbbb761..cd0235a 100644
---- a/sound/soc/fsl/imx-hdmi.c
-+++ b/sound/soc/fsl/imx-hdmi.c
-@@ -223,7 +223,6 @@ static int imx_hdmi_probe(struct platform_device *pdev)
- static struct platform_driver imx_hdmi_driver = {
- 	.driver = {
- 		.name = "imx-hdmi",
--		.owner = THIS_MODULE,
- 		.pm = &snd_soc_pm_ops,
- 		.of_match_table = imx_hdmi_dt_ids,
- 	},
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index 725a5d3aaa02..e823c9c13764 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -710,7 +710,7 @@ static int fsl_easrc_max_ch_for_slot(struct fsl_asrc_pair *ctx,
+ 				     struct fsl_easrc_slot *slot)
+ {
+ 	struct fsl_easrc_ctx_priv *ctx_priv = ctx->private;
+-	int st1_mem_alloc = 0, st2_mem_alloc;
++	int st1_mem_alloc = 0, st2_mem_alloc = 0;
+ 	int pf_mem_alloc = 0;
+ 	int max_channels = 8 - slot->num_channel;
+ 	int channels = 0;
 -- 
-1.8.3.1
+2.30.0
 
