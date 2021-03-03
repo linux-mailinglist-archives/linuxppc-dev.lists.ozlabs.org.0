@@ -1,57 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E4932B98F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 18:46:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9A132B995
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 18:50:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrLzN2qjZz3cy9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 04:46:56 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hEUphPQ9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrM3B5vmRz3dGh
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 04:50:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=hEUphPQ9; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kaod.org (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
+ receiver=<UNKNOWN>)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrLyz3nJqz30JP
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 04:46:35 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3E69D64DE8;
- Wed,  3 Mar 2021 17:46:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1614793593;
- bh=zHovqmMgSn4g07KjIGQ3GddG/B+TRQhDfe0NCPpSiOw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=hEUphPQ96zB/JRoKj9iukjVpFhvPt4O78R/PYwyDsJJCuX1/CS7JwuaoOEH35BCPO
- PEMEGix9ooCQgp+hbOQENw6SUK1IIm3A+lgyfgp9fpoN7xLENjzuVQ/IUCSakK6oSK
- XQps8gJRFEm9e2XueANVMhnqazwsU74buqS5004WiXZ5wgyPciFIwXLyh5Azi/QItx
- +AesAOBL75e28NostLCcUZSnCgvmKjyQGAU/RK9j0tJTyNqgkCclwj8OXUwZlNE4qe
- JFgAyqC+yZgWr6PSWugGHZKML8mrpCCSajWidxc5wfwh3wy38w9ngkj0ZCq03C4UCi
- gh11pwSWVe6dQ==
-Date: Wed, 3 Mar 2021 17:46:28 +0000
-From: Will Deacon <will@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 1/7] cmdline: Add generic function to build command
- line.
-Message-ID: <20210303174627.GC19713@willie-the-truck>
-References: <cover.1614705851.git.christophe.leroy@csgroup.eu>
- <d8cf7979ad986de45301b39a757c268d9df19f35.1614705851.git.christophe.leroy@csgroup.eu>
- <20210303172810.GA19713@willie-the-truck>
- <a0cfef11-efba-2e5c-6f58-ed63a2c3bfa0@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrM250pCWz3cJY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 04:49:15 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 123HWOgm055150; Wed, 3 Mar 2021 12:49:04 -0500
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 372eusgjy0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Mar 2021 12:49:04 -0500
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 123HjQcL022155;
+ Wed, 3 Mar 2021 17:49:01 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma02fra.de.ibm.com with ESMTP id 36yj532134-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Mar 2021 17:49:01 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 123Hmj9x33358248
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 3 Mar 2021 17:48:45 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7FE9CA405B;
+ Wed,  3 Mar 2021 17:48:59 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4B88AA4054;
+ Wed,  3 Mar 2021 17:48:59 +0000 (GMT)
+Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed,  3 Mar 2021 17:48:59 +0000 (GMT)
+Received: from yukon.ibmuc.com (unknown [9.171.85.87])
+ by smtp.tlslab.ibm.com (Postfix) with ESMTP id B43FC220423;
+ Wed,  3 Mar 2021 18:48:58 +0100 (CET)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 0/8] powerpc/xive: Map one IPI interrupt per node
+Date: Wed,  3 Mar 2021 18:48:49 +0100
+Message-Id: <20210303174857.1760393-1-clg@kaod.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a0cfef11-efba-2e5c-6f58-ed63a2c3bfa0@csgroup.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-03_05:2021-03-03,
+ 2021-03-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0
+ clxscore=1034 priorityscore=1501 impostorscore=0 malwarescore=0
+ mlxlogscore=999 suspectscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103030124
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,118 +84,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, robh@kernel.org,
- daniel@gimpelevich.san-francisco.ca.us, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, danielwa@cisco.com
+Cc: Greg Kurz <groug@kaod.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 03, 2021 at 06:38:16PM +0100, Christophe Leroy wrote:
-> Le 03/03/2021 à 18:28, Will Deacon a écrit :
-> > On Tue, Mar 02, 2021 at 05:25:17PM +0000, Christophe Leroy wrote:
-> > > This code provides architectures with a way to build command line
-> > > based on what is built in the kernel and what is handed over by the
-> > > bootloader, based on selected compile-time options.
-> > > 
-> > > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > > ---
-> > >   include/linux/cmdline.h | 62 +++++++++++++++++++++++++++++++++++++++++
-> > >   1 file changed, 62 insertions(+)
-> > >   create mode 100644 include/linux/cmdline.h
-> > > 
-> > > diff --git a/include/linux/cmdline.h b/include/linux/cmdline.h
-> > > new file mode 100644
-> > > index 000000000000..ae3610bb0ee2
-> > > --- /dev/null
-> > > +++ b/include/linux/cmdline.h
-> > > @@ -0,0 +1,62 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0 */
-> > > +#ifndef _LINUX_CMDLINE_H
-> > > +#define _LINUX_CMDLINE_H
-> > > +
-> > > +static __always_inline size_t cmdline_strlen(const char *s)
-> > > +{
-> > > +	const char *sc;
-> > > +
-> > > +	for (sc = s; *sc != '\0'; ++sc)
-> > > +		; /* nothing */
-> > > +	return sc - s;
-> > > +}
-> > > +
-> > > +static __always_inline size_t cmdline_strlcat(char *dest, const char *src, size_t count)
-> > > +{
-> > > +	size_t dsize = cmdline_strlen(dest);
-> > > +	size_t len = cmdline_strlen(src);
-> > > +	size_t res = dsize + len;
-> > > +
-> > > +	/* This would be a bug */
-> > > +	if (dsize >= count)
-> > > +		return count;
-> > > +
-> > > +	dest += dsize;
-> > > +	count -= dsize;
-> > > +	if (len >= count)
-> > > +		len = count - 1;
-> > > +	memcpy(dest, src, len);
-> > > +	dest[len] = 0;
-> > > +	return res;
-> > > +}
-> > 
-> > Why are these needed instead of using strlen and strlcat directly?
-> 
-> Because on powerpc (at least), it will be used in prom_init, it is very
-> early in the boot and KASAN shadow memory is not set up yet so calling
-> generic string functions would crash the board.
+Hello,
 
-Hmm. We deliberately setup a _really_ early shadow on arm64 for this, can
-you not do something similar? Failing that, I think it would be better to
-offer the option for an arch to implement cmdline_*, but have then point to
-the normal library routines by default.
+ipistorm [*] can be used to benchmark the raw interrupt rate of an
+interrupt controller by measuring the number of IPIs a system can
+sustain. When applied to the XIVE interrupt controller of POWER9 and
+POWER10 systems, a significant drop of the interrupt rate can be
+observed when crossing the second node boundary.
 
-> > > +/*
-> > > + * This function will append a builtin command line to the command
-> > > + * line provided by the bootloader. Kconfig options can be used to alter
-> > > + * the behavior of this builtin command line.
-> > > + * @dest: The destination of the final appended/prepended string.
-> > > + * @src: The starting string or NULL if there isn't one. Must not equal dest.
-> > > + * @length: the length of dest buffer.
-> > > + */
-> > > +static __always_inline void cmdline_build(char *dest, const char *src, size_t length)
-> > > +{
-> > > +	if (length <= 0)
-> > > +		return;
-> > > +
-> > > +	dest[0] = 0;
-> > > +
-> > > +#ifdef CONFIG_CMDLINE
-> > > +	if (IS_ENABLED(CONFIG_CMDLINE_FORCE) || !src || !src[0]) {
-> > > +		cmdline_strlcat(dest, CONFIG_CMDLINE, length);
-> > > +		return;
-> > > +	}
-> > > +#endif
-> > 
-> > CONFIG_CMDLINE_FORCE implies CONFIG_CMDLINE, and even if it didn't,
-> > CONFIG_CMDLINE is at worst an empty string. Can you drop the #ifdef?
-> 
-> Ah yes, since cbe46bd4f510 ("powerpc: remove CONFIG_CMDLINE #ifdef mess") it
-> is feasible. I can change that now.
-> 
-> > 
-> > > +	if (dest != src)
-> > > +		cmdline_strlcat(dest, src, length);
-> > > +#ifdef CONFIG_CMDLINE
-> > > +	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) && sizeof(CONFIG_CMDLINE) > 1)
-> > > +		cmdline_strlcat(dest, " " CONFIG_CMDLINE, length);
-> > > +#endif
-> > 
-> > Likewise, but also I'm not sure why the sizeof() is required.
-> 
-> It is to avoid adding a white space at the end of the command line when
-> CONFIG_CMDLINE is empty. But maybe it doesn't matter ?
+This is due to the fact that a single IPI interrupt is used for all
+CPUs of the system. The structure is shared and the cache line updates
+impact greatly the traffic between nodes and the overall IPI
+performance.
 
-If CONFIG_CMDLINE is empty, I don't think you can select
-CONFIG_CMDLINE_EXTEND (but even if you could, I don't think it matters).
+As a workaround, the impact can be reduced by deactivating the IRQ
+lockup detector ("noirqdebug") which does a lot of accounting in the
+Linux IRQ descriptor structure and is responsible for most of the
+performance penalty.
 
-Will
+As a fix, this proposal allocates an IPI interrupt per node, to be
+shared by all CPUs of that node. It solves the scaling issue, the IRQ
+lockup detector still has an impact but the XIVE interrupt rate scales
+linearly. It also improves the "noirqdebug" case as showed in the
+tables below.=20
+
+ * P9 DD2.2 - 2s * 64 threads
+
+                                               "noirqdebug"
+                        Mint/s                    Mint/s  =20
+ chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys    =20
+ --------------------------------------------------------------
+ 1      0-15     4.984023   4.875405       4.996536   5.048892
+        0-31    10.879164  10.544040      10.757632  11.037859
+        0-47    15.345301  14.688764      14.926520  15.310053
+        0-63    17.064907  17.066812      17.613416  17.874511
+ 2      0-79    11.768764  21.650749      22.689120  22.566508
+        0-95    10.616812  26.878789      28.434703  28.320324
+        0-111   10.151693  31.397803      31.771773  32.388122
+        0-127    9.948502  33.139336      34.875716  35.224548
+
+
+ * P10 DD1 - 4s (not homogeneous) 352 threads
+
+                                               "noirqdebug"
+                        Mint/s                    Mint/s  =20
+ chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys    =20
+ --------------------------------------------------------------
+ 1      0-15     2.409402   2.364108       2.383303   2.395091
+        0-31     6.028325   6.046075       6.089999   6.073750
+        0-47     8.655178   8.644531       8.712830   8.724702
+        0-63    11.629652  11.735953      12.088203  12.055979
+        0-79    14.392321  14.729959      14.986701  14.973073
+        0-95    12.604158  13.004034      17.528748  17.568095
+ 2      0-111    9.767753  13.719831      19.968606  20.024218
+        0-127    6.744566  16.418854      22.898066  22.995110
+        0-143    6.005699  19.174421      25.425622  25.417541
+        0-159    5.649719  21.938836      27.952662  28.059603
+        0-175    5.441410  24.109484      31.133915  31.127996
+ 3      0-191    5.318341  24.405322      33.999221  33.775354
+        0-207    5.191382  26.449769      36.050161  35.867307
+        0-223    5.102790  29.356943      39.544135  39.508169
+        0-239    5.035295  31.933051      42.135075  42.071975
+        0-255    4.969209  34.477367      44.655395  44.757074
+ 4      0-271    4.907652  35.887016      47.080545  47.318537
+        0-287    4.839581  38.076137      50.464307  50.636219
+        0-303    4.786031  40.881319      53.478684  53.310759
+        0-319    4.743750  43.448424      56.388102  55.973969
+        0-335    4.709936  45.623532      59.400930  58.926857
+        0-351    4.681413  45.646151      62.035804  61.830057
+
+[*] https://github.com/antonblanchard/ipistorm
+
+Thanks,
+
+C.
+
+Changes in v2:
+
+  - extra simplification on xmon
+  - fixes on issues reported by the kernel test robot
+
+C=C3=A9dric Le Goater (8):
+  powerpc/xive: Use cpu_to_node() instead of ibm,chip-id property
+  powerpc/xive: Introduce an IPI interrupt domain
+  powerpc/xive: Remove useless check on XIVE_IPI_HW_IRQ
+  powerpc/xive: Simplify xive_core_debug_show()
+  powerpc/xive: Drop check on irq_data in xive_core_debug_show()
+  powerpc/xive: Simplify the dump of XIVE interrupts under xmon
+  powerpc/xive: Fix xmon command "dxi"
+  powerpc/xive: Map one IPI interrupt per node
+
+ arch/powerpc/include/asm/xive.h          |   1 +
+ arch/powerpc/sysdev/xive/xive-internal.h |   2 -
+ arch/powerpc/sysdev/xive/common.c        | 163 +++++++++++++----------
+ arch/powerpc/xmon/xmon.c                 |  28 +---
+ 4 files changed, 93 insertions(+), 101 deletions(-)
+
+--=20
+2.26.2
+
