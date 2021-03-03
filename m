@@ -1,49 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5534A32B491
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 06:27:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F164B32B492
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 06:28:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dr2Zh2F9wz3d7b
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 16:27:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dr2b76vjBz3dDF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 16:28:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rFORUmuo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=bV4dO9I1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531;
+ helo=mail-pg1-x531.google.com; envelope-from=syl.loop@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=rFORUmuo; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=bV4dO9I1; dkim-atps=neutral
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com
+ [IPv6:2607:f8b0:4864:20::531])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dqp9b397gz30RM
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 07:08:51 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 40A9964F21;
- Tue,  2 Mar 2021 20:08:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1614715728;
- bh=+ZnFHkCt4vxwdfNeetS0nLlA+jw/GbxPFD8wsnXzPjE=;
- h=From:To:Cc:Subject:Date:From;
- b=rFORUmuoN8/sw1fsN52kQIk1QPdI3scUBNK3k0XmymgtXQ5xFn2NROK7ivr4YxPO/
- 1eTkyWWTNkjLInsdr8IhmoOHXsuTpbBx/9M4WL0McXGVpD6Hafo56Kv6LT8ipAvIs0
- b2SiRYcRPNQqY2eSit6+3UGuGsf1qSXwGlaYFSJf9CWWl66sWRu/WGSS28vIXtFo3h
- +MvJuST3FMaXUIx1z+fhSSHYL02hvAjPcKgeatebPykL24rjKs1tq1WhLshXJh8xYd
- KqUSN2kvYRBJ18Ub3QEtjr1jW8JDg7Il7ja7K6z6bxjDxOAm97nh/cHMTQSqWj4PwN
- zfC5dn8pWeOSQ==
-From: Nathan Chancellor <nathan@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/prom: Mark identical_pvr_fixup as __init
-Date: Tue,  2 Mar 2021 13:08:29 -0700
-Message-Id: <20210302200829.2680663-1-nathan@kernel.org>
-X-Mailer: git-send-email 2.31.0.rc0.75.gec125d1bc1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dr21J3G9Wz3cG7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Mar 2021 16:02:25 +1100 (AEDT)
+Received: by mail-pg1-x531.google.com with SMTP id o10so15461920pgg.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Mar 2021 21:02:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=kxs4zdW6EpTQ1WfyGGPHPV1+xFIcOWqo8CYwcjQtMxA=;
+ b=bV4dO9I1oawjEP9Qq7F/QgMlby/KIy4G26dTxfaz6xHrODvzgOMgEIeq9xmT6siMn3
+ kEclcKGR5nSJViY7RKiyLE2BKMcPGytbNemHDqx68z5CYe+QSEuu0w2fYfmZ8crhqHDm
+ adJwkkKwSBiB7qGySwUH0Krn2fdrZuuvfpk0Z4Vm3cE7x/7WY+oqZzgIL/9k4Ot+NjJf
+ uMGtdLJCDPso50e4BXmFwABJ+KbJ+TBk1R/QdgYtieL1aFiOf7IGvU9XCOKs39Ql42TT
+ 28AEHWXQI5Ltd/MfLKyWYlxQFjVmzw7yQJRaRoCCz7k6f2YcMVPa5Vb1SfDwotvwPt5c
+ EPeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=kxs4zdW6EpTQ1WfyGGPHPV1+xFIcOWqo8CYwcjQtMxA=;
+ b=PZ1WFgsAoegU/gxH+doaAfUeu4ESW5+0b9IYnWE3Las5u1pWvOeikjTt2Cf7LN5Wtm
+ AACJ9AHqvhLfvhDNLWf3I2sW9hWVbqPDQXO+zNi4h4cgozLIHlnueUOE1I74dhdHamqQ
+ WteZYS+Kp0xBCYx9DAhP9qTV6u0GUzDfhl3TOwb6P1Cw+6OD7Uz3WSStkWpEnrwqmAbw
+ wsx54k4xiQCzxiCA0mKjxiu8ulcr0hPg0X4JOF2NJW2Zd5kKhlQ0YlqQMHXKNHK6Mq2z
+ TNzkPZsRS5DJrHtA9hk1eNuqhgU8EC7j6BVOh7GSE8fL3xjtMB0VlwLmxW6zOpZStg+8
+ iBHQ==
+X-Gm-Message-State: AOAM531Mm+imv8Zy+4HGvLzfgjea595hx73dxHppf7q9jZZej/A/ceu0
+ CUF4lVVJ9wATzkBSCnIGJYI=
+X-Google-Smtp-Source: ABdhPJzyEC1xG6CI9hXhjtN0nDSDSGYy4pYdU4SzeMAPYfSFTPG+xWIdCLZtmgJuUh4KrQhPr5NCMw==
+X-Received: by 2002:a63:d618:: with SMTP id q24mr21086317pgg.283.1614747735788; 
+ Tue, 02 Mar 2021 21:02:15 -0800 (PST)
+Received: from localhost.localdomain ([116.246.26.51])
+ by smtp.gmail.com with ESMTPSA id a199sm13844738pfa.49.2021.03.02.21.02.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Mar 2021 21:02:15 -0800 (PST)
+From: Youlin Song <syl.loop@gmail.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ christophe.leroy@csgroup.eu
+Subject: [PATCH] powerpc/prom: move the device tree to the right space
+Date: Wed,  3 Mar 2021 13:00:54 +0800
+Message-Id: <20210303050054.3343-1-syl.loop@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Wed, 03 Mar 2021 16:27:13 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -57,60 +79,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
- clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Youlin Song <syl.loop@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If identical_pvr_fixup() is not inlined, there are two modpost warnings:
+If the device tree has been allocated memory and it will
+be in the memblock reserved space.Obviously it is in a
+valid memory declaration and will be mapped by the kernel.
 
-WARNING: modpost: vmlinux.o(.text+0x54e8): Section mismatch in reference
-from the function identical_pvr_fixup() to the function
-.init.text:of_get_flat_dt_prop()
-The function identical_pvr_fixup() references
-the function __init of_get_flat_dt_prop().
-This is often because identical_pvr_fixup lacks a __init
-annotation or the annotation of of_get_flat_dt_prop is wrong.
-
-WARNING: modpost: vmlinux.o(.text+0x551c): Section mismatch in reference
-from the function identical_pvr_fixup() to the function
-.init.text:identify_cpu()
-The function identical_pvr_fixup() references
-the function __init identify_cpu().
-This is often because identical_pvr_fixup lacks a __init
-annotation or the annotation of identify_cpu is wrong.
-
-identical_pvr_fixup() calls two functions marked as __init and is only
-called by a function marked as __init so it should be marked as __init
-as well. At the same time, remove the inline keywork as it is not
-necessary to inline this function. The compiler is still free to do so
-if it feels it is worthwhile since commit 889b3c1245de ("compiler:
-remove CONFIG_OPTIMIZE_INLINING entirely").
-
-Fixes: 14b3d926a22b ("[POWERPC] 4xx: update 440EP(x)/440GR(x) identical PVR issue workaround")
-Link: https://github.com/ClangBuiltLinux/linux/issues/1316
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Youlin Song <syl.loop@gmail.com>
 ---
  arch/powerpc/kernel/prom.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 9a4797d1d40d..a8b2d6bfc1ca 100644
+index 9a4797d1d40d..ef5f93e7d7f2 100644
 --- a/arch/powerpc/kernel/prom.c
 +++ b/arch/powerpc/kernel/prom.c
-@@ -267,7 +267,7 @@ static struct feature_property {
- };
+@@ -121,7 +121,7 @@ static void __init move_device_tree(void)
+ 	size = fdt_totalsize(initial_boot_params);
  
- #if defined(CONFIG_44x) && defined(CONFIG_PPC_FPU)
--static inline void identical_pvr_fixup(unsigned long node)
-+static __init void identical_pvr_fixup(unsigned long node)
- {
- 	unsigned int pvr;
- 	const char *model = of_get_flat_dt_prop(node, "model", NULL);
-
-base-commit: 5c88a17e15795226b56d83f579cbb9b7a4864f79
+ 	if ((memory_limit && (start + size) > PHYSICAL_START + memory_limit) ||
+-	    !memblock_is_memory(start + size - 1) ||
++	    (!memblock_is_memory(start + size - 1) && !memblock_is_reserved(start + size - 1)) ||
+ 	    overlaps_crashkernel(start, size) || overlaps_initrd(start, size)) {
+ 		p = memblock_alloc_raw(size, PAGE_SIZE);
+ 		if (!p)
 -- 
-2.31.0.rc0.75.gec125d1bc1
+2.25.1
 
