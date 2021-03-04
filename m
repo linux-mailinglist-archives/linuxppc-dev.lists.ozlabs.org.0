@@ -2,43 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAD232CB98
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 05:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B459732CB97
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 05:48:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrdgR0vhSz3cb3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 15:49:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Drdfy4lkTz3cc5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 15:48:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=LEwR5m5x;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=I5nBgjLU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.86.78; helo=rcdn-iport-7.cisco.com;
+ smtp.mailfrom=cisco.com (client-ip=173.37.86.79; helo=rcdn-iport-8.cisco.com;
  envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=LEwR5m5x; dkim-atps=neutral
-Received: from rcdn-iport-7.cisco.com (rcdn-iport-7.cisco.com [173.37.86.78])
+ header.s=iport header.b=I5nBgjLU; dkim-atps=neutral
+Received: from rcdn-iport-8.cisco.com (rcdn-iport-8.cisco.com [173.37.86.79])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrdfW3ZhTz3cFy
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrdfW2mTgz3bVf
  for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 15:48:17 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=5087; q=dns/txt; s=iport;
+ d=cisco.com; i=@cisco.com; l=6247; q=dns/txt; s=iport;
  t=1614833299; x=1616042899;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=B7rBp+oAV8HchVJuk5DlnTjEjxhKnuSRrXyBU5WGoEc=;
- b=LEwR5m5xHN+jycGV3h/aNm6FZPfzCaJN5cGkxa9gdCw4TGrAXfHMews8
- 8vGQLgrX9Z+KSpvYxsp9D9E5HfG2lkiWCGeuxYqpeAXaVrfALFT7UJMj0
- mAg8i9g50hNFKZrXKc3NydRpGK3G9IZM+g+nkv5+45fC6dfDSsF+CDeX6 A=;
-X-IronPort-AV: E=Sophos;i="5.81,221,1610409600"; d="scan'208";a="855206698"
+ bh=uPHyrqhndx2XuHWJn770Fcm2MeEJLaI/H/apMZaWTS4=;
+ b=I5nBgjLUwVCxzH18qWhmoJoaugPjdiWTYJO8xFBJjXrKxf+5s+jHZyXF
+ cm3NfIfosmi5JOAai6ToLWFLYEOcSioPZj8+mMslJD9fEn4jO3mZc/L9F
+ t0GUpZJxElujEzCJzoGqbOSol3UWn1wajtEQBVBLyO7ZvIewxLrH3Oi9I 4=;
+X-IronPort-AV: E=Sophos;i="5.81,221,1610409600"; d="scan'208";a="868193947"
 Received: from alln-core-8.cisco.com ([173.36.13.141])
- by rcdn-iport-7.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 04 Mar 2021 04:48:11 +0000
+ by rcdn-iport-8.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
+ 04 Mar 2021 04:48:13 +0000
 Received: from zorba.cisco.com ([10.24.7.178])
- by alln-core-8.cisco.com (8.15.2/8.15.2) with ESMTP id 1244m4Wx015988;
- Thu, 4 Mar 2021 04:48:10 GMT
+ by alln-core-8.cisco.com (8.15.2/8.15.2) with ESMTP id 1244m4X0015988;
+ Thu, 4 Mar 2021 04:48:12 GMT
 From: Daniel Walker <danielwa@cisco.com>
 To: Will Deacon <will@kernel.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -46,12 +46,10 @@ To: Will Deacon <will@kernel.org>,
  Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
  Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
  linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: [PATCH 3/5] CMDLINE: powerpc: convert to generic builtin command line
-Date: Wed,  3 Mar 2021 20:48:00 -0800
-Message-Id: <20210304044803.812204-3-danielwa@cisco.com>
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 4/5] CMDLINE: mips: convert to generic builtin command line
+Date: Wed,  3 Mar 2021 20:48:01 -0800
+Message-Id: <20210304044803.812204-4-danielwa@cisco.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -76,156 +74,176 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This updates the powerpc code to use the CONFIG_GENERIC_CMDLINE
+This updates the mips code to use the CONFIG_GENERIC_CMDLINE
 option.
+
+This deletes the option for MIPS_CMDLINE_BUILTIN_EXTEND
+and replaces the functionality with generic code.
 
 Cc: xe-linux-external@cisco.com
 Signed-off-by: Ruslan Ruslichenko <rruslich@cisco.com>
 Signed-off-by: Ruslan Bilovol <rbilovol@cisco.com>
 Signed-off-by: Daniel Walker <danielwa@cisco.com>
 ---
- arch/powerpc/Kconfig            | 37 +--------------------------------
- arch/powerpc/kernel/prom.c      |  1 +
- arch/powerpc/kernel/prom_init.c | 31 +++++++++++++++------------
- 3 files changed, 20 insertions(+), 49 deletions(-)
+ arch/mips/Kconfig        |  4 +---
+ arch/mips/Kconfig.debug  | 44 ----------------------------------------
+ arch/mips/kernel/setup.c | 37 +++++----------------------------
+ 3 files changed, 6 insertions(+), 79 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 107bb4319e0e..276b06d5c961 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -167,6 +167,7 @@ config PPC
- 	select EDAC_SUPPORT
- 	select GENERIC_ATOMIC64			if PPC32
- 	select GENERIC_CLOCKEVENTS_BROADCAST	if SMP
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 0a17bedf4f0d..7c07b3bca9fc 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -23,6 +23,7 @@ config MIPS
+ 	select CPU_NO_EFFICIENT_FFS if (TARGET_ISA_REV < 1)
+ 	select CPU_PM if CPU_IDLE
+ 	select GENERIC_ATOMIC64 if !64BIT
 +	select GENERIC_CMDLINE
  	select GENERIC_CMOS_UPDATE
  	select GENERIC_CPU_AUTOPROBE
- 	select GENERIC_CPU_VULNERABILITIES	if PPC_BARRIER_NOSPEC
-@@ -906,42 +907,6 @@ config PPC_DENORMALISATION
- 	  Add support for handling denormalisation of single precision
- 	  values.  Useful for bare metal only.  If unsure say Y here.
+ 	select GENERIC_GETTIMEOFDAY
+@@ -3171,9 +3172,6 @@ choice
+ 	config MIPS_CMDLINE_FROM_BOOTLOADER
+ 		bool "Bootloader kernel arguments if available"
  
+-	config MIPS_CMDLINE_BUILTIN_EXTEND
+-		depends on CMDLINE_BOOL
+-		bool "Extend builtin kernel arguments with bootloader arguments"
+ endchoice
+ 
+ endmenu
+diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
+index 7a8d94cdd493..b5a099c74eb6 100644
+--- a/arch/mips/Kconfig.debug
++++ b/arch/mips/Kconfig.debug
+@@ -30,50 +30,6 @@ config EARLY_PRINTK_8250
+ config USE_GENERIC_EARLY_PRINTK_8250
+ 	bool
+ 
+-config CMDLINE_BOOL
+-	bool "Built-in kernel command line"
+-	help
+-	  For most systems, it is firmware or second stage bootloader that
+-	  by default specifies the kernel command line options.  However,
+-	  it might be necessary or advantageous to either override the
+-	  default kernel command line or add a few extra options to it.
+-	  For such cases, this option allows you to hardcode your own
+-	  command line options directly into the kernel.  For that, you
+-	  should choose 'Y' here, and fill in the extra boot arguments
+-	  in CONFIG_CMDLINE.
+-
+-	  The built-in options will be concatenated to the default command
+-	  line if CMDLINE_OVERRIDE is set to 'N'. Otherwise, the default
+-	  command line will be ignored and replaced by the built-in string.
+-
+-	  Most MIPS systems will normally expect 'N' here and rely upon
+-	  the command line from the firmware or the second-stage bootloader.
+-
 -config CMDLINE
--	string "Initial kernel command string"
--	default ""
+-	string "Default kernel command string"
+-	depends on CMDLINE_BOOL
 -	help
 -	  On some platforms, there is currently no way for the boot loader to
--	  pass arguments to the kernel. For these platforms, you can supply
--	  some command-line options at build time by entering them here.  In
--	  most cases you will need to specify the root device here.
+-	  pass arguments to the kernel.  For these platforms, and for the cases
+-	  when you want to add some extra options to the command line or ignore
+-	  the default command line, you can supply some command-line options at
+-	  build time by entering them here.  In other cases you can specify
+-	  kernel args so that you don't have to set them up in board prom
+-	  initialization routines.
 -
--choice
--	prompt "Kernel command line type" if CMDLINE != ""
--	default CMDLINE_FROM_BOOTLOADER
+-	  For more information, see the CMDLINE_BOOL and CMDLINE_OVERRIDE
+-	  options.
 -
--config CMDLINE_FROM_BOOTLOADER
--	bool "Use bootloader kernel arguments if available"
+-config CMDLINE_OVERRIDE
+-	bool "Built-in command line overrides firmware arguments"
+-	depends on CMDLINE_BOOL
 -	help
--	  Uses the command-line options passed by the boot loader. If
--	  the boot loader doesn't provide any, the default kernel command
--	  string provided in CMDLINE will be used.
+-	  By setting this option to 'Y' you will have your kernel ignore
+-	  command line arguments from firmware or second stage bootloader.
+-	  Instead, the built-in command line will be used exclusively.
 -
--config CMDLINE_EXTEND
--	bool "Extend bootloader kernel arguments"
--	help
--	  The command-line arguments provided by the boot loader will be
--	  appended to the default kernel command string.
+-	  Normally, you will choose 'N' here.
 -
--config CMDLINE_FORCE
--	bool "Always use the default kernel command string"
--	help
--	  Always use the default kernel command string, even if the boot
--	  loader passes other arguments to the kernel.
--	  This is useful if you cannot or don't want to change the
--	  command-line options your boot loader passes to the kernel.
--
--endchoice
--
- config EXTRA_TARGETS
- 	string "Additional default image types"
- 	help
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index ae3c41730367..96d0a01be1b4 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -27,6 +27,7 @@
- #include <linux/irq.h>
- #include <linux/memblock.h>
- #include <linux/of.h>
+ config SB1XXX_CORELIS
+ 	bool "Corelis Debugger"
+ 	depends on SIBYTE_SB1xxx_SOC
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 7e1f8e277437..b7e9c1ffffc9 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -23,6 +23,7 @@
+ #include <linux/debugfs.h>
+ #include <linux/kexec.h>
+ #include <linux/sizes.h>
 +#include <linux/cmdline.h>
- #include <linux/of_fdt.h>
- #include <linux/libfdt.h>
- #include <linux/cpu.h>
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index e9d4eb6144e1..d752be688b62 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -27,6 +27,7 @@
- #include <linux/initrd.h>
- #include <linux/bitops.h>
- #include <linux/pgtable.h>
-+#include <linux/cmdline.h>
- #include <asm/prom.h>
- #include <asm/rtas.h>
- #include <asm/page.h>
-@@ -242,15 +243,6 @@ static int __init prom_strcmp(const char *cs, const char *ct)
- 	return 0;
+ #include <linux/device.h>
+ #include <linux/dma-map-ops.h>
+ #include <linux/decompress/generic.h>
+@@ -67,12 +68,6 @@ EXPORT_SYMBOL(mips_machtype);
+ static char __initdata command_line[COMMAND_LINE_SIZE];
+ char __initdata arcs_cmdline[COMMAND_LINE_SIZE];
+ 
+-#ifdef CONFIG_CMDLINE_BOOL
+-static const char builtin_cmdline[] __initconst = CONFIG_CMDLINE;
+-#else
+-static const char builtin_cmdline[] __initconst = "";
+-#endif
+-
+ /*
+  * mips_io_port_base is the begin of the address space to which x86 style
+  * I/O ports are mapped.
+@@ -546,27 +541,7 @@ static void __init bootcmdline_init(void)
+ {
+ 	bool dt_bootargs = false;
+ 
+-	/*
+-	 * If CMDLINE_OVERRIDE is enabled then initializing the command line is
+-	 * trivial - we simply use the built-in command line unconditionally &
+-	 * unmodified.
+-	 */
+-	if (IS_ENABLED(CONFIG_CMDLINE_OVERRIDE)) {
+-		strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+-		return;
+-	}
+-
+-	/*
+-	 * If the user specified a built-in command line &
+-	 * MIPS_CMDLINE_BUILTIN_EXTEND, then the built-in command line is
+-	 * prepended to arguments from the bootloader or DT so we'll copy them
+-	 * to the start of boot_command_line here. Otherwise, empty
+-	 * boot_command_line to undo anything early_init_dt_scan_chosen() did.
+-	 */
+-	if (IS_ENABLED(CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND))
+-		strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+-	else
+-		boot_command_line[0] = 0;
++	boot_command_line[0] = 0;
+ 
+ #ifdef CONFIG_OF_EARLY_FLATTREE
+ 	/*
+@@ -589,12 +564,9 @@ static void __init bootcmdline_init(void)
+ 		bootcmdline_append(arcs_cmdline, COMMAND_LINE_SIZE);
+ 
+ 	/*
+-	 * If the user specified a built-in command line & we didn't already
+-	 * prepend it, we append it to boot_command_line here.
++	 * Use the generic system for builtin prepend and append.
+ 	 */
+-	if (IS_ENABLED(CONFIG_CMDLINE_BOOL) &&
+-	    !IS_ENABLED(CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND))
+-		bootcmdline_append(builtin_cmdline, COMMAND_LINE_SIZE);
++	cmdline_add_builtin(boot_command_line, NULL, COMMAND_LINE_SIZE);
  }
  
--static char __init *prom_strcpy(char *dest, const char *src)
--{
--	char *tmp = dest;
--
--	while ((*dest++ = *src++) != '\0')
--		/* nothing */;
--	return tmp;
--}
--
- static int __init prom_strncmp(const char *cs, const char *ct, size_t count)
- {
- 	unsigned char c1, c2;
-@@ -276,6 +268,19 @@ static size_t __init prom_strlen(const char *s)
- 	return sc - s;
- }
+ /*
+@@ -626,6 +598,7 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	memblock_set_bottom_up(true);
  
-+static size_t __init prom_strlcpy(char *dest, const char *src, size_t size)
-+{
-+	size_t ret = prom_strlen(src);
+ 	bootcmdline_init();
 +
-+	if (size) {
-+		size_t len = (ret >= size) ? size - 1 : ret;
-+		memcpy(dest, src, len);
-+		dest[len] = '\0';
-+	}
-+	return ret;
-+}
-+
-+
- static int __init prom_memcmp(const void *cs, const void *ct, size_t count)
- {
- 	const unsigned char *su1, *su2;
-@@ -778,9 +783,9 @@ static void __init early_cmdline_parse(void)
- 	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE) && (long)prom.chosen > 0)
- 		l = prom_getprop(prom.chosen, "bootargs", p, COMMAND_LINE_SIZE-1);
+ 	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+ 	*cmdline_p = command_line;
  
--	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) || l <= 0 || p[0] == '\0')
--		prom_strlcat(prom_cmd_line, " " CONFIG_CMDLINE,
--			     sizeof(prom_cmd_line));
-+	if (l <= 0 || p[0] == '\0') /* dbl check */
-+		cmdline_add_builtin_custom(prom_cmd_line, NULL, sizeof(prom_cmd_line),
-+					__prombss, &prom_strlcpy, &prom_strlcat);
- 
- 	prom_printf("command line: %s\n", prom_cmd_line);
- 
-@@ -2706,7 +2711,7 @@ static void __init flatten_device_tree(void)
- 
- 	/* Add "phandle" in there, we'll need it */
- 	namep = make_room(&mem_start, &mem_end, 16, 1);
--	prom_strcpy(namep, "phandle");
-+	prom_strlcpy(namep, "phandle", 8);
- 	mem_start = (unsigned long)namep + prom_strlen(namep) + 1;
- 
- 	/* Build string array */
 -- 
 2.25.1
 
