@@ -1,66 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62DB32D1FA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 12:49:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6498E32D210
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 12:56:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Drq0G6GKpz3d8F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 22:49:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Drq8J2TQPz3d6l
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 22:56:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F15kLLvR;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=F15kLLvR; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Drpzy0bN0z30hv
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 22:48:59 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Drpzp3xTYz9v1sK;
- Thu,  4 Mar 2021 12:48:54 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id h-mitI98mN7r; Thu,  4 Mar 2021 12:48:54 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Drpzp2DxPz9v1sG;
- Thu,  4 Mar 2021 12:48:54 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2270C8B7FF;
- Thu,  4 Mar 2021 12:48:56 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id VRrx4alowTpf; Thu,  4 Mar 2021 12:48:56 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 665B48B773;
- Thu,  4 Mar 2021 12:48:55 +0100 (CET)
-Subject: Re: [RFC PATCH v1] powerpc: Enable KFENCE for PPC32
-To: Marco Elver <elver@google.com>
-References: <51c397a23631d8bb2e2a6515c63440d88bf74afd.1614674144.git.christophe.leroy@csgroup.eu>
- <CANpmjNPOJfL_qsSZYRbwMUrxnXxtF5L3k9hursZZ7k9H1jLEuA@mail.gmail.com>
- <b9dc8d35-a3b0-261a-b1a4-5f4d33406095@csgroup.eu>
- <CAG_fn=WFffkVzqC9b6pyNuweFhFswZfa8RRio2nL9-Wq10nBbw@mail.gmail.com>
- <f806de26-daf9-9317-fdaa-a0f7a32d8fe0@csgroup.eu>
- <CANpmjNPGj4C2rr2FbSD+FC-GnWUvJrtdLyX5TYpJE_Um8CGu1Q@mail.gmail.com>
- <08a96c5d-4ae7-03b4-208f-956226dee6bb@csgroup.eu>
- <CANpmjNPYEmLtQEu5G=zJLUzOBaGoqNKwLyipDCxvytdKDKb7mg@mail.gmail.com>
- <ad61cb3a-2b4a-3754-5761-832a1dd0c34e@csgroup.eu>
- <CANpmjNOnVzei7frKcMzMHxaDXh5NvTA-Wpa29C2YC1GUxyKfhQ@mail.gmail.com>
- <f036c53d-7e81-763c-47f4-6024c6c5f058@csgroup.eu>
- <CANpmjNMn_CUrgeSqBgiKx4+J8a+XcxkaLPWoDMUvUEXk8+-jxg@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <7270e1cc-bb6b-99ee-0043-08a027b8d83a@csgroup.eu>
-Date: Thu, 4 Mar 2021 12:48:56 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
-MIME-Version: 1.0
-In-Reply-To: <CANpmjNMn_CUrgeSqBgiKx4+J8a+XcxkaLPWoDMUvUEXk8+-jxg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Drq7r3mqFz3bP5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 22:55:51 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 124Bp6Yb191853; Thu, 4 Mar 2021 06:55:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=9DBGU4lcSJgGd3Vehh5cjdhwwEXUCX54i9v1eFqFRQo=;
+ b=F15kLLvRjk1denBfkfCn0MOoofIEINFcAlYqfVaYARkkG8bU90R5pAPRNGEz798o8inf
+ CtYBeVzLj/3m+33WN5kcXvtTs4tRwbdep+RVQ7lRDPtSma2MT9Jvrl7l8BMYzkR7IRMC
+ yO6y0/9BnnchVn3d7NmVvgbHb1aMi1a+rnN3r5tkm0oleIBIofGXjb4/jSr4BykpKSrz
+ y1NtvkvMuEgYRZxJLdoE1AfNCPLCXvduGO2RrjSz01HLsO56BQnb83ADMoJW3pAevToJ
+ swn8/Qwvo1huxgfNyDzqsZxKi8ycYxb+V9tRu95L1XyznToQthkZ7tEXz4jYPbJBqSL0 XQ== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 372y1fr2aj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Mar 2021 06:55:44 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 124BhB0x021471;
+ Thu, 4 Mar 2021 11:55:42 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06ams.nl.ibm.com with ESMTP id 37293fs1mn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Mar 2021 11:55:42 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 124Btelq46793016
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 4 Mar 2021 11:55:40 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E2D094C046;
+ Thu,  4 Mar 2021 11:55:39 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B971D4C040;
+ Thu,  4 Mar 2021 11:55:38 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.195.34.64])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  4 Mar 2021 11:55:38 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/perf: Fix sampled instruction type for larx/stcx
+Date: Thu,  4 Mar 2021 06:55:37 -0500
+Message-Id: <1614858937-1485-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-04_03:2021-03-03,
+ 2021-03-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxscore=0
+ lowpriorityscore=0 phishscore=0 suspectscore=0 adultscore=0 bulkscore=0
+ impostorscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103040054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,80 +91,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>,
- Alexander Potapenko <glider@google.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Dmitry Vyukov <dvyukov@google.com>
+Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Sampled Instruction Event Register (SIER) field [46:48]
+identifies the sampled instruction type. ISA v3.1 says value
+of 0b111 for this field as reserved, but in POWER10 it denotes
+LARX/STCX type which will hopefully be fixed in ISA v3.1 update.
 
+Patch fixes the functions to handle type value 7 for
+CPU_FTR_ARCH_31.
 
-Le 04/03/2021 à 12:31, Marco Elver a écrit :
-> On Thu, 4 Mar 2021 at 12:23, Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->> Le 03/03/2021 à 11:56, Marco Elver a écrit :
->>>
->>> Somewhat tangentially, I also note that e.g. show_regs(regs) (which
->>> was printed along the KFENCE report above) didn't include the top
->>> frame in the "Call Trace", so this assumption is definitely not
->>> isolated to KFENCE.
->>>
->>
->> Now, I have tested PPC64 (with the patch I sent yesterday to modify save_stack_trace_regs()
->> applied), and I get many failures. Any idea ?
->>
->> [   17.653751][   T58] ==================================================================
->> [   17.654379][   T58] BUG: KFENCE: invalid free in .kfence_guarded_free+0x2e4/0x530
->> [   17.654379][   T58]
->> [   17.654831][   T58] Invalid free of 0xc00000003c9c0000 (in kfence-#77):
->> [   17.655358][   T58]  .kfence_guarded_free+0x2e4/0x530
->> [   17.655775][   T58]  .__slab_free+0x320/0x5a0
->> [   17.656039][   T58]  .test_double_free+0xe0/0x198
->> [   17.656308][   T58]  .kunit_try_run_case+0x80/0x110
->> [   17.656523][   T58]  .kunit_generic_run_threadfn_adapter+0x38/0x50
->> [   17.657161][   T58]  .kthread+0x18c/0x1a0
->> [   17.659148][   T58]  .ret_from_kernel_thread+0x58/0x70
->> [   17.659869][   T58]
->> [   17.663954][   T58] kfence-#77 [0xc00000003c9c0000-0xc00000003c9c001f, size=32, cache=kmalloc-32]
->> allocated by task 58:
->> [   17.666113][   T58]  .__kfence_alloc+0x1bc/0x510
->> [   17.667069][   T58]  .__kmalloc+0x280/0x4f0
->> [   17.667452][   T58]  .test_alloc+0x19c/0x430
->> [   17.667732][   T58]  .test_double_free+0x88/0x198
->> [   17.667971][   T58]  .kunit_try_run_case+0x80/0x110
->> [   17.668283][   T58]  .kunit_generic_run_threadfn_adapter+0x38/0x50
->> [   17.668553][   T58]  .kthread+0x18c/0x1a0
->> [   17.669315][   T58]  .ret_from_kernel_thread+0x58/0x70
->> [   17.669711][   T58]
->> [   17.669711][   T58] freed by task 58:
->> [   17.670116][   T58]  .kfence_guarded_free+0x3d0/0x530
->> [   17.670421][   T58]  .__slab_free+0x320/0x5a0
->> [   17.670603][   T58]  .test_double_free+0xb4/0x198
->> [   17.670827][   T58]  .kunit_try_run_case+0x80/0x110
->> [   17.671073][   T58]  .kunit_generic_run_threadfn_adapter+0x38/0x50
->> [   17.671410][   T58]  .kthread+0x18c/0x1a0
->> [   17.671618][   T58]  .ret_from_kernel_thread+0x58/0x70
->> [   17.671972][   T58]
->> [   17.672638][   T58] CPU: 0 PID: 58 Comm: kunit_try_catch Tainted: G    B
->> 5.12.0-rc1-01540-g0783285cc1b8-dirty #4685
->> [   17.673768][   T58] ==================================================================
->> [   17.677031][   T58]     # test_double_free: EXPECTATION FAILED at mm/kfence/kfence_test.c:380
->> [   17.677031][   T58]     Expected report_matches(&expect) to be true, but is false
->> [   17.684397][    T1]     not ok 7 - test_double_free
->> [   17.686463][   T59]     # test_double_free-memcache: setup_test_cache: size=32, ctor=0x0
->> [   17.688403][   T59]     # test_double_free-memcache: test_alloc: size=32, gfp=cc0, policy=any,
->> cache=1
-> 
-> Looks like something is prepending '.' to function names. We expect
-> the function name to appear as-is, e.g. "kfence_guarded_free",
-> "test_double_free", etc.
-> 
-> Is there something special on ppc64, where the '.' is some convention?
-> 
+Fixes: a64e697cef23 ("powerpc/perf: power10 Performance Monitoring support")
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ arch/powerpc/perf/isa207-common.c | 30 +++++++++++++++++++++++++++---
+ arch/powerpc/perf/isa207-common.h |  1 +
+ 2 files changed, 28 insertions(+), 3 deletions(-)
 
-I think so, see https://refspecs.linuxfoundation.org/ELF/ppc64/PPC-elf64abi.html#FUNC-DES
+diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
+index e4f577da33d8..754f904d8d69 100644
+--- a/arch/powerpc/perf/isa207-common.c
++++ b/arch/powerpc/perf/isa207-common.c
+@@ -266,6 +266,8 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
+ 	u32 sub_idx;
+ 	u64 sier;
+ 	u64 val;
++	u64 mmcra = mfspr(SPRN_MMCRA);
++	u32 op_type;
+ 
+ 	/* Skip if no SIER support */
+ 	if (!(flags & PPMU_HAS_SIER)) {
+@@ -275,12 +277,34 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
+ 
+ 	sier = mfspr(SPRN_SIER);
+ 	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
+-	if (val == 1 || val == 2) {
++	if (val == 1 || val == 2 || (val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
+ 		idx = (sier & ISA207_SIER_LDST_MASK) >> ISA207_SIER_LDST_SHIFT;
+ 		sub_idx = (sier & ISA207_SIER_DATA_SRC_MASK) >> ISA207_SIER_DATA_SRC_SHIFT;
+ 
+ 		dsrc->val = isa207_find_source(idx, sub_idx);
+-		dsrc->val |= (val == 1) ? P(OP, LOAD) : P(OP, STORE);
++		if (val == 7) {
++			/*
++			 * Type 0b111 denotes either larx or stcx instruction. Use the
++			 * MMCRA sampling bits [57:59] along with the type value
++			 * to determine the exact instruction type. If the sampling
++			 * criteria is neither load or store, set the type as default
++			 * to NA.
++			 */
++			op_type = (mmcra >> MMCRA_SAMP_ELIG_SHIFT) & MMCRA_SAMP_ELIG_MASK;
++			switch (op_type) {
++			case 5:
++				dsrc->val |= P(OP, LOAD);
++				break;
++			case 7:
++				dsrc->val |= P(OP, STORE);
++				break;
++			default:
++				dsrc->val |= P(OP, NA);
++				break;
++			}
++		} else {
++			dsrc->val |= (val == 1) ? P(OP, LOAD) : P(OP, STORE);
++		}
+ 	}
+ }
+ 
+@@ -295,7 +319,7 @@ void isa207_get_mem_weight(u64 *weight)
+ 	if (cpu_has_feature(CPU_FTR_ARCH_31))
+ 		mantissa = P10_MMCRA_THR_CTR_MANT(mmcra);
+ 
+-	if (val == 0 || val == 7)
++	if (val == 0 || (val == 7 && !cpu_has_feature(CPU_FTR_ARCH_31)))
+ 		*weight = 0;
+ 	else
+ 		*weight = mantissa << (2 * exp);
+diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
+index 1af0e8c97ac7..7b0242efe4b9 100644
+--- a/arch/powerpc/perf/isa207-common.h
++++ b/arch/powerpc/perf/isa207-common.h
+@@ -220,6 +220,7 @@
+ /* Bits in MMCRA for PowerISA v2.07 */
+ #define MMCRA_SAMP_MODE_SHIFT		1
+ #define MMCRA_SAMP_ELIG_SHIFT		4
++#define MMCRA_SAMP_ELIG_MASK		7
+ #define MMCRA_THR_CTL_SHIFT		8
+ #define MMCRA_THR_SEL_SHIFT		16
+ #define MMCRA_THR_CMP_SHIFT		32
+-- 
+1.8.3.1
 
-Also see commit https://github.com/linuxppc/linux/commit/02424d896
-
-Christophe
