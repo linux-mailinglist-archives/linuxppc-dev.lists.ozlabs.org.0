@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5A732CDB6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 08:38:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4896A32CDB7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 08:39:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrjRN26WJz3d6S
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 18:38:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrjSQ2StQz3d6W
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 18:39:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,28 +15,28 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrjR328DTz2xxx
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 18:38:37 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrjS340VMz3cG6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 18:39:31 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DrjQx2mZjz9tvrS;
- Thu,  4 Mar 2021 08:38:33 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DrjRy4KThz9twqR;
+ Thu,  4 Mar 2021 08:39:26 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id DHqGWtfSMOLu; Thu,  4 Mar 2021 08:38:33 +0100 (CET)
+ with ESMTP id MWMifEXw3Ms1; Thu,  4 Mar 2021 08:39:26 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DrjQx0RNtz9tvrL;
- Thu,  4 Mar 2021 08:38:33 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DrjRw4z9Sz9twqP;
+ Thu,  4 Mar 2021 08:39:24 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 78A6D8B7F6;
- Thu,  4 Mar 2021 08:38:34 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 219428B7F7;
+ Thu,  4 Mar 2021 08:39:26 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 0KzNR-gx8ayW; Thu,  4 Mar 2021 08:38:34 +0100 (CET)
+ with ESMTP id UTjEEXaM4C4M; Thu,  4 Mar 2021 08:39:26 +0100 (CET)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7B1D18B773;
- Thu,  4 Mar 2021 08:38:33 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1F5938B7F6;
+ Thu,  4 Mar 2021 08:39:25 +0100 (CET)
 Subject: Re: [PATCH 3/5] CMDLINE: powerpc: convert to generic builtin command
  line
 To: Daniel Walker <danielwa@cisco.com>, Will Deacon <will@kernel.org>,
@@ -49,8 +49,8 @@ To: Daniel Walker <danielwa@cisco.com>, Will Deacon <will@kernel.org>,
  Paul Mackerras <paulus@samba.org>
 References: <20210304044803.812204-3-danielwa@cisco.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <29d9fd14-7910-e0d6-1ee5-c95e643f7a00@csgroup.eu>
-Date: Thu, 4 Mar 2021 08:38:32 +0100
+Message-ID: <f9f59c24-bfd7-2f8e-b751-3852dcf71bdb@csgroup.eu>
+Date: Thu, 4 Mar 2021 08:39:23 +0100
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.1
 MIME-Version: 1.0
@@ -82,25 +82,23 @@ Le 04/03/2021 à 05:48, Daniel Walker a écrit :
 > This updates the powerpc code to use the CONFIG_GENERIC_CMDLINE
 > option.
 
-In file included from arch/powerpc/kernel/prom_init.c:30:
-arch/powerpc/kernel/prom_init.c: In function 'early_cmdline_parse':
-arch/powerpc/kernel/prom_init.c:788:17: error: lvalue required as unary '&' operand
-   788 |      __prombss, &prom_strlcpy, &prom_strlcat);
-       |                 ^
-./include/linux/cmdline.h:66:3: note: in definition of macro 'cmdline_add_builtin_custom'
-    66 |   strlcpy(dest, src, length);       \
-       |   ^~~~~~~
-At top level:
-arch/powerpc/kernel/prom_init.c:312:22: error: 'prom_strlcat' defined but not used 
-[-Werror=unused-function]
-   312 | static size_t __init prom_strlcat(char *dest, const char *src, size_t count)
-       |                      ^~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[2]: *** [scripts/Makefile.build:279: arch/powerpc/kernel/prom_init.o] Error 1
-make[1]: *** [scripts/Makefile.build:496: arch/powerpc/kernel] Error 2
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1805: arch/powerpc] Error 2
-make: *** Waiting for unfinished jobs....
+CHECK:PARENTHESIS_ALIGNMENT: Alignment should match open parenthesis
+#143: FILE: arch/powerpc/kernel/prom_init.c:788:
++		cmdline_add_builtin_custom(prom_cmd_line, NULL, sizeof(prom_cmd_line),
++					__prombss, &prom_strlcpy, &prom_strlcat);
+
+total: 0 errors, 0 warnings, 1 checks, 117 lines checked
+
+NOTE: For some of the reported defects, checkpatch may be able to
+       mechanically convert to the typical style using --fix or --fix-inplace.
+
+the.patch has style problems, please review.
+
+NOTE: Ignored message types: ARCH_INCLUDE_LINUX BIT_MACRO COMPARISON_TO_NULL DT_SPLIT_BINDING_PATCH 
+EMAIL_SUBJECT FILE_PATH_CHANGES GLOBAL_INITIALISERS LINE_SPACING MULTIPLE_ASSIGNMENTS
+
+NOTE: If any of the errors are false positives, please report
+       them to the maintainer, see CHECKPATCH in MAINTAINERS.
 
 > 
 > Cc: xe-linux-external@cisco.com
