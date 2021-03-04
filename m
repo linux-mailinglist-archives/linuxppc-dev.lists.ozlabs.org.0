@@ -1,85 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8459E32D389
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 13:49:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 849E432D392
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 13:51:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrrKb42X6z3d5r
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 23:49:23 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=mXbcH1kP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrrNC2wMWz3d82
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 23:51:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32e;
- helo=mail-wm1-x32e.google.com; envelope-from=elver@google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=mXbcH1kP; dkim-atps=neutral
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com
- [IPv6:2a00:1450:4864:20::32e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrrK92Vfrz3cZ8
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 23:48:58 +1100 (AEDT)
-Received: by mail-wm1-x32e.google.com with SMTP id l22so7947601wme.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Mar 2021 04:48:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to
- :user-agent; bh=tLUSBdXqsZoskjTYTdXu1BqIlUPP/WrZ7mFGxUMCU0I=;
- b=mXbcH1kPTs6JSHEVOCy+0mhZ4P4dTLu3meBMOJGoaRR86OVwKoIBEKCXpkpD/fKAyP
- 2YTSqNf5sIcN/Bonf5jzBjXTpf+/t8mv4btXE2YKTLgDBO/KBosKQmcyQzKOyrn3sAhZ
- Fu+KmncqhtIScyDzHF5PTydi49B7l8m4+vwN/Va3F/+GzumhXvZWobD/NFPIVKS7RS4b
- WlND1d/P86vFRjwPOaHf75Ci0W3EKZzqtL6J2KhdxF96pIZ434+ZhGxyg+weUbuT54ic
- xHR6sjhoH0aky5jd2frAokdyQ+cVLvXZvY5hYKdCJdGGaJ3vskr5RrLDh3YljgD9pFEe
- U9kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to:user-agent;
- bh=tLUSBdXqsZoskjTYTdXu1BqIlUPP/WrZ7mFGxUMCU0I=;
- b=mq/Aw/O/VLdZJ5psCdJ42nS3vm5J6K5ADgQg0N4TzhOoRcpnyU+LCGwFWWGwTEs0UL
- 71tesPdUG/IVoD5YdMW73B+cTwKWsWwYvbDJEQOu9hGHbusuifNtqrgqMfukGLDcmvQd
- GmxBJUc9AcMQQoyRjbY2CXjfiDDB6KZJL1elqXjeUpRR53pEsNAtbZMzPEIyPZS65DyJ
- bBzXh8cmO3PfG1uiUgMt5MO1Uk4k3dka5g5pK16Nh/xx7bMJVWWhb+WJ63XsrIc/cZHD
- UgMRWJpRcTadStoYOhDtDFH39SrunZqUulPgN7Dgs/sdsC+gpl2W83blfhsKMkE4qFwO
- QqFQ==
-X-Gm-Message-State: AOAM532EGo+JJygA9JKb2rOfYs61omYlDebQxuHXi+FOqgLngcGXZ3cL
- A+PwIvYApiFt0X1KHOaIqE28cA==
-X-Google-Smtp-Source: ABdhPJx42ffsx6t3vXywl/vSnKIFFNJx9RXE5JrQUOddSStzLAxgkV7PNsyFoqZKNBC70+T2V/e7LQ==
-X-Received: by 2002:a7b:cf2f:: with SMTP id m15mr3718425wmg.177.1614862132881; 
- Thu, 04 Mar 2021 04:48:52 -0800 (PST)
-Received: from elver.google.com ([2a00:79e0:15:13:e426:34b7:f237:f8d3])
- by smtp.gmail.com with ESMTPSA id z21sm9778125wma.29.2021.03.04.04.48.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Mar 2021 04:48:52 -0800 (PST)
-Date: Thu, 4 Mar 2021 13:48:39 +0100
-From: Marco Elver <elver@google.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH v1] powerpc: Enable KFENCE for PPC32
-Message-ID: <YEDXJ5JNkgvDFehc@elver.google.com>
-References: <CAG_fn=WFffkVzqC9b6pyNuweFhFswZfa8RRio2nL9-Wq10nBbw@mail.gmail.com>
- <f806de26-daf9-9317-fdaa-a0f7a32d8fe0@csgroup.eu>
- <CANpmjNPGj4C2rr2FbSD+FC-GnWUvJrtdLyX5TYpJE_Um8CGu1Q@mail.gmail.com>
- <08a96c5d-4ae7-03b4-208f-956226dee6bb@csgroup.eu>
- <CANpmjNPYEmLtQEu5G=zJLUzOBaGoqNKwLyipDCxvytdKDKb7mg@mail.gmail.com>
- <ad61cb3a-2b4a-3754-5761-832a1dd0c34e@csgroup.eu>
- <CANpmjNOnVzei7frKcMzMHxaDXh5NvTA-Wpa29C2YC1GUxyKfhQ@mail.gmail.com>
- <f036c53d-7e81-763c-47f4-6024c6c5f058@csgroup.eu>
- <CANpmjNMn_CUrgeSqBgiKx4+J8a+XcxkaLPWoDMUvUEXk8+-jxg@mail.gmail.com>
- <7270e1cc-bb6b-99ee-0043-08a027b8d83a@csgroup.eu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7270e1cc-bb6b-99ee-0043-08a027b8d83a@csgroup.eu>
-User-Agent: Mutt/2.0.5 (2021-01-21)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrrMs0S5hz3cZF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 23:51:17 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DrrMf50jfz9v4Sf;
+ Thu,  4 Mar 2021 13:51:10 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id jLcpcsUjP0qx; Thu,  4 Mar 2021 13:51:10 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DrrMf48Czz9v4SZ;
+ Thu,  4 Mar 2021 13:51:10 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5F88B8B804;
+ Thu,  4 Mar 2021 13:51:12 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id xtR-NddmTOCt; Thu,  4 Mar 2021 13:51:12 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4AE618B773;
+ Thu,  4 Mar 2021 13:51:11 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 0C20A674E4; Thu,  4 Mar 2021 12:51:10 +0000 (UTC)
+Message-Id: <2daa39fa210d971863a6f9ac7c81849764e7a261.1614862233.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2] powerpc/32: remove bogus ppc_select syscall
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ arnd@arndb.de
+Date: Thu,  4 Mar 2021 12:51:10 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,126 +57,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>,
- Alexander Potapenko <glider@google.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Dmitry Vyukov <dvyukov@google.com>
+Cc: halesh.sadashiv@ap.sony.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 04, 2021 at 12:48PM +0100, Christophe Leroy wrote:
-> Le 04/03/2021 à 12:31, Marco Elver a écrit :
-> > On Thu, 4 Mar 2021 at 12:23, Christophe Leroy
-> > <christophe.leroy@csgroup.eu> wrote:
-> > > Le 03/03/2021 à 11:56, Marco Elver a écrit :
-> > > > 
-> > > > Somewhat tangentially, I also note that e.g. show_regs(regs) (which
-> > > > was printed along the KFENCE report above) didn't include the top
-> > > > frame in the "Call Trace", so this assumption is definitely not
-> > > > isolated to KFENCE.
-> > > > 
-> > > 
-> > > Now, I have tested PPC64 (with the patch I sent yesterday to modify save_stack_trace_regs()
-> > > applied), and I get many failures. Any idea ?
-> > > 
-> > > [   17.653751][   T58] ==================================================================
-> > > [   17.654379][   T58] BUG: KFENCE: invalid free in .kfence_guarded_free+0x2e4/0x530
-> > > [   17.654379][   T58]
-> > > [   17.654831][   T58] Invalid free of 0xc00000003c9c0000 (in kfence-#77):
-> > > [   17.655358][   T58]  .kfence_guarded_free+0x2e4/0x530
-> > > [   17.655775][   T58]  .__slab_free+0x320/0x5a0
-> > > [   17.656039][   T58]  .test_double_free+0xe0/0x198
-> > > [   17.656308][   T58]  .kunit_try_run_case+0x80/0x110
-> > > [   17.656523][   T58]  .kunit_generic_run_threadfn_adapter+0x38/0x50
-> > > [   17.657161][   T58]  .kthread+0x18c/0x1a0
-> > > [   17.659148][   T58]  .ret_from_kernel_thread+0x58/0x70
-> > > [   17.659869][   T58]
-[...]
-> > 
-> > Looks like something is prepending '.' to function names. We expect
-> > the function name to appear as-is, e.g. "kfence_guarded_free",
-> > "test_double_free", etc.
-> > 
-> > Is there something special on ppc64, where the '.' is some convention?
-> > 
-> 
-> I think so, see https://refspecs.linuxfoundation.org/ELF/ppc64/PPC-elf64abi.html#FUNC-DES
-> 
-> Also see commit https://github.com/linuxppc/linux/commit/02424d896
+From: Arnd Bergmann <arnd@arndb.de>
 
-Thanks -- could you try the below patch? You'll need to define
-ARCH_FUNC_PREFIX accordingly.
+The ppc_select function was introduced in linux-2.3.48 in order to support
+code confusing the legacy select() calling convention with the standard one.
+Even 24 years ago, all correctly built code should not have done this and
+could have easily been phased out. Nothing that was compiled later should
+actually try to use the old_select interface, and it would have been broken
+already on all ppc64 kernels with the syscall emulation layer.
 
-We think, since there are only very few architectures that add a prefix,
-requiring <asm/kfence.h> to define something like ARCH_FUNC_PREFIX is
-the simplest option. Let me know if this works for you.
+This patch brings the 32 bit compat ABI and the native 32 bit ABI for
+powerpc into a consistent state, by removing support for both the
+old_select system call number and the handler for it.
 
-There an alternative option, which is to dynamically figure out the
-prefix, but if this simpler option is fine with you, we'd prefer it.
+The bug report triggering this came from
+Halesh Sadashiiv <halesh.sadashiv@ap.sony.com>, who discovered that the
+32 bit implementation of ppc_select would in case of a negative number
+of file descriptors incorrectly return -EFAULT instead of -EINVAL.
+There seems to be no way to fix this problem in a way that would
+keep broken pre-1997 binaries running.
 
-Thanks,
--- Marco
-
------- >8 ------
-
-From d118080eb9552073f5dcf1f86198f3d86d5ea850 Mon Sep 17 00:00:00 2001
-From: Marco Elver <elver@google.com>
-Date: Thu, 4 Mar 2021 13:15:51 +0100
-Subject: [PATCH] kfence: fix reports if constant function prefixes exist
-
-Some architectures prefix all functions with a constant string ('.' on
-ppc64). Add ARCH_FUNC_PREFIX, which may optionally be defined in
-<asm/kfence.h>, so that get_stack_skipnr() can work properly.
-
-Link: https://lkml.kernel.org/r/f036c53d-7e81-763c-47f4-6024c6c5f058@csgroup.eu
-Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Halesh Sadashiiv <halesh.sadashiv@ap.sony.com>
+[chleroy: Rebased and updated the number of years elapsed in the commit message]
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- mm/kfence/report.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+First version was in 2008, at that time it was rejected, see
+http://patchwork.ozlabs.org/project/linuxppc-dev/patch/200809240839.14902.arnd@arndb.de/
 
-diff --git a/mm/kfence/report.c b/mm/kfence/report.c
-index 519f037720f5..e3f71451ad9e 100644
---- a/mm/kfence/report.c
-+++ b/mm/kfence/report.c
-@@ -20,6 +20,11 @@
+If we decide to still keep this, then we'll have to:
+- take into account -4096 < fd < 0 case
+- use unsafe_get_user inside a uaccess_begin block
+---
+ arch/powerpc/include/asm/asm-prototypes.h |  3 ---
+ arch/powerpc/kernel/syscalls.c            | 25 -----------------------
+ arch/powerpc/kernel/syscalls/syscall.tbl  |  4 +---
+ 3 files changed, 1 insertion(+), 31 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
+index 939f3c94c8f3..78e0a3bd448a 100644
+--- a/arch/powerpc/include/asm/asm-prototypes.h
++++ b/arch/powerpc/include/asm/asm-prototypes.h
+@@ -63,9 +63,6 @@ long sys_swapcontext(struct ucontext __user *old_ctx,
+ #ifdef CONFIG_PPC32
+ long sys_debug_setcontext(struct ucontext __user *ctx,
+ 			  int ndbg, struct sig_dbg_op __user *dbg);
+-int
+-ppc_select(int n, fd_set __user *inp, fd_set __user *outp, fd_set __user *exp,
+-	   struct __kernel_old_timeval __user *tvp);
+ unsigned long __init early_init(unsigned long dt_ptr);
+ void __init machine_init(u64 dt_ptr);
+ #endif
+diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscalls.c
+index 078608ec2e92..70b0eb5bedfd 100644
+--- a/arch/powerpc/kernel/syscalls.c
++++ b/arch/powerpc/kernel/syscalls.c
+@@ -71,31 +71,6 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, size_t, len,
+ 	return do_mmap2(addr, len, prot, flags, fd, offset, PAGE_SHIFT);
+ }
  
- #include "kfence.h"
- 
-+/* May be overridden by <asm/kfence.h>. */
-+#ifndef ARCH_FUNC_PREFIX
-+#define ARCH_FUNC_PREFIX ""
-+#endif
-+
- extern bool no_hash_pointers;
- 
- /* Helper function to either print to a seq_file or to console. */
-@@ -67,8 +72,9 @@ static int get_stack_skipnr(const unsigned long stack_entries[], int num_entries
- 	for (skipnr = 0; skipnr < num_entries; skipnr++) {
- 		int len = scnprintf(buf, sizeof(buf), "%ps", (void *)stack_entries[skipnr]);
- 
--		if (str_has_prefix(buf, "kfence_") || str_has_prefix(buf, "__kfence_") ||
--		    !strncmp(buf, "__slab_free", len)) {
-+		if (str_has_prefix(buf, ARCH_FUNC_PREFIX "kfence_") ||
-+		    str_has_prefix(buf, ARCH_FUNC_PREFIX "__kfence_") ||
-+		    !strncmp(buf, ARCH_FUNC_PREFIX "__slab_free", len)) {
- 			/*
- 			 * In case of tail calls from any of the below
- 			 * to any of the above.
-@@ -77,10 +83,10 @@ static int get_stack_skipnr(const unsigned long stack_entries[], int num_entries
- 		}
- 
- 		/* Also the *_bulk() variants by only checking prefixes. */
--		if (str_has_prefix(buf, "kfree") ||
--		    str_has_prefix(buf, "kmem_cache_free") ||
--		    str_has_prefix(buf, "__kmalloc") ||
--		    str_has_prefix(buf, "kmem_cache_alloc"))
-+		if (str_has_prefix(buf, ARCH_FUNC_PREFIX "kfree") ||
-+		    str_has_prefix(buf, ARCH_FUNC_PREFIX "kmem_cache_free") ||
-+		    str_has_prefix(buf, ARCH_FUNC_PREFIX "__kmalloc") ||
-+		    str_has_prefix(buf, ARCH_FUNC_PREFIX "kmem_cache_alloc"))
- 			goto found;
- 	}
- 	if (fallback < num_entries)
+-#ifdef CONFIG_PPC32
+-/*
+- * Due to some executables calling the wrong select we sometimes
+- * get wrong args.  This determines how the args are being passed
+- * (a single ptr to them all args passed) then calls
+- * sys_select() with the appropriate args. -- Cort
+- */
+-int
+-ppc_select(int n, fd_set __user *inp, fd_set __user *outp, fd_set __user *exp, struct __kernel_old_timeval __user *tvp)
+-{
+-	if ( (unsigned long)n >= 4096 )
+-	{
+-		unsigned long __user *buffer = (unsigned long __user *)n;
+-		if (!access_ok(buffer, 5*sizeof(unsigned long))
+-		    || __get_user(n, buffer)
+-		    || __get_user(inp, ((fd_set __user * __user *)(buffer+1)))
+-		    || __get_user(outp, ((fd_set  __user * __user *)(buffer+2)))
+-		    || __get_user(exp, ((fd_set  __user * __user *)(buffer+3)))
+-		    || __get_user(tvp, ((struct __kernel_old_timeval  __user * __user *)(buffer+4))))
+-			return -EFAULT;
+-	}
+-	return sys_select(n, inp, outp, exp, tvp);
+-}
+-#endif
+-
+ #ifdef CONFIG_PPC64
+ long ppc64_personality(unsigned long personality)
+ {
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index 0b2480cf3e47..5bb0e90e502e 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -110,9 +110,7 @@
+ 79	common	settimeofday			sys_settimeofday		compat_sys_settimeofday
+ 80	common	getgroups			sys_getgroups
+ 81	common	setgroups			sys_setgroups
+-82	32	select				ppc_select			sys_ni_syscall
+-82	64	select				sys_ni_syscall
+-82	spu	select				sys_ni_syscall
++82	common	select				sys_ni_syscall
+ 83	common	symlink				sys_symlink
+ 84	32	oldlstat			sys_lstat			sys_ni_syscall
+ 84	64	oldlstat			sys_ni_syscall
 -- 
-2.30.1.766.gb4fecdf3b7-goog
+2.25.0
+
