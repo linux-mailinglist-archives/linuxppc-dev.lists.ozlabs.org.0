@@ -1,40 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F9D32CB39
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 05:14:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1624D32CB68
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 05:34:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Drcv34kbvz3d3j
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 15:14:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrdLs7557z3cZ4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 15:34:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=rHqw52UX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Drctk2N66z30MT
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 15:13:48 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EB5D131B;
- Wed,  3 Mar 2021 20:13:44 -0800 (PST)
-Received: from [10.163.67.206] (unknown [10.163.67.206])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D3B883F73B;
- Wed,  3 Mar 2021 20:13:41 -0800 (PST)
-Subject: Re: [PATCH V2] mm: Generalize HUGETLB_PAGE_SIZE_VARIABLE
-To: linux-mm@kvack.org
-References: <1614661987-23881-1-git-send-email-anshuman.khandual@arm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <ced1c02a-2349-c958-9d96-44ec2b7b6b96@arm.com>
-Date: Thu, 4 Mar 2021 09:44:15 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=menglong8.dong@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=rHqw52UX; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrdLR4gQDz30hv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 15:34:22 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id n10so18054745pgl.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Mar 2021 20:34:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=A2hLtjNljNetAkSmo/iHqzzoKnA6pftypZoUWx6FurU=;
+ b=rHqw52UXPF+xdckDBtcyZS3CUYmrMbR3cobcppf35CgyssREqhhCCwzCsoQZc4NiZk
+ thNRdQ4UpMHDphFBeVbcomsCvqOTzmIkp5EV5AmHo23rKGxgVtKNpQQrh7cEzlKrOw6I
+ DEANoc+W9nbATxuLvHTLq54zAAz2jQkvmUJ76Nw/RtPA/5GSq8350zOWNp4fiWBte4/u
+ uuvPjOWfas7a1qQt7pIrIdaaMM+H2o+TChOUmpOhj49HGc9KBDQkciKtQu1on9O23+8f
+ NXSz0J9ZOM3Tf5Er0EkGVlbCpOuTA3XRxI8b3KTG/oxlIRbaPvdlTqYGAkZDHIcs64nt
+ fVCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=A2hLtjNljNetAkSmo/iHqzzoKnA6pftypZoUWx6FurU=;
+ b=tDnvfApquzgrTcVJ8YpuYCGScfdfYyxbmBWzPlDyZ+dOZar14gLhqf/ih1OEp5rByD
+ PP8MNrwqtnOjgV00r1vxAySn9yganQ3fLl5avXpNef0xUGZaeQpG+Qws4DWHkqncNb6Z
+ k03T0hCGFeWk1xApK/a5m1jTaU62gkaGSAA0A0GPx6bEcGeW08QVkbRlCUqTPcKs2ZHR
+ D5Na+0MZ3NCJ8t7xZ8MB4CFyBRew5cEkp84Fe4fuiu5qM1IRPFzU4QLOGE4XGYugxrWP
+ /EVCW8agYagjQyzpByMPg2KESFhs2mPcP6pVZtxN/XRVA7YgAzZzmwpNpU4YmAmeNSKS
+ +k2w==
+X-Gm-Message-State: AOAM5318aAKJd3tcrCcD4mTE3uAOJ1bMss6RxcEHbGZudnpRTp7kP22l
+ FburKBcxCBBXA1trKPyWPhM=
+X-Google-Smtp-Source: ABdhPJxq/ac63Tv3Iihf95Hb63XawyRjE/7qX7mVuyui7LWCpQaK9Sh8ZV3ZihWeAmnZyTRACyOg4Q==
+X-Received: by 2002:aa7:900e:0:b029:1ee:14ea:f719 with SMTP id
+ m14-20020aa7900e0000b02901ee14eaf719mr2115641pfo.46.1614832460444; 
+ Wed, 03 Mar 2021 20:34:20 -0800 (PST)
+Received: from localhost.localdomain ([178.236.46.205])
+ by smtp.gmail.com with ESMTPSA id ha8sm7709078pjb.6.2021.03.03.20.34.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Mar 2021 20:34:19 -0800 (PST)
+From: menglong8.dong@gmail.com
+X-Google-Original-From: zhang.yunkai@zte.com.cn
+To: svaidy@linux.ibm.com
+Subject: [PATCH] arch:powerpc:kernel: remove duplicate include in setup-common
+Date: Wed,  3 Mar 2021 20:34:12 -0800
+Message-Id: <20210304043412.190085-1-zhang.yunkai@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <1614661987-23881-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,121 +79,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Zhang Yunkai <zhang.yunkai@zte.com.cn>,
+ paulus@samba.org, aneesh.kumar@linux.ibm.com, ganeshgr@linux.ibm.com,
+ akpm@linux-foundation.org, jniethe5@gmail.com, elfring@users.sourceforge.net,
+ rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Zhang Yunkai <zhang.yunkai@zte.com.cn>
 
+'asm/udbg.h' included in 'setup-common.c' is duplicated.
+It is also included in the 61th line.
 
-On 3/2/21 10:43 AM, Anshuman Khandual wrote:
-> HUGETLB_PAGE_SIZE_VARIABLE need not be defined for each individual
-> platform subscribing it. Instead just make it generic.
-> 
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Suggested-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> This change was originally suggested in an earilier discussion. This
-> applies on v5.12-rc1 and has been build tested on all applicable
-> platforms i.e ia64 and powerpc.
-> 
-> https://patchwork.kernel.org/project/linux-mm/patch/1613024531-19040-3-git-send-email-anshuman.khandual@arm.com/
-> 
-> Changes in V2:
-> 
-> - Added a description for HUGETLB_PAGE_SIZE_VARIABLE
-> - Added HUGETLB_PAGE dependency while selecting HUGETLB_PAGE_SIZE_VARIABLE
-> 
-> Changes in V1:
-> 
-> https://patchwork.kernel.org/project/linux-mm/patch/1614577853-7452-1-git-send-email-anshuman.khandual@arm.com/
-> 
->  arch/ia64/Kconfig    | 6 +-----
->  arch/powerpc/Kconfig | 6 +-----
->  mm/Kconfig           | 9 +++++++++
->  3 files changed, 11 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-> index 2ad7a8d29fcc..dccf5bfebf48 100644
-> --- a/arch/ia64/Kconfig
-> +++ b/arch/ia64/Kconfig
-> @@ -32,6 +32,7 @@ config IA64
->  	select TTY
->  	select HAVE_ARCH_TRACEHOOK
->  	select HAVE_VIRT_CPU_ACCOUNTING
-> +	select HUGETLB_PAGE_SIZE_VARIABLE if HUGETLB_PAGE
->  	select VIRT_TO_BUS
->  	select GENERIC_IRQ_PROBE
->  	select GENERIC_PENDING_IRQ if SMP
-> @@ -82,11 +83,6 @@ config STACKTRACE_SUPPORT
->  config GENERIC_LOCKBREAK
->  	def_bool n
->  
-> -config HUGETLB_PAGE_SIZE_VARIABLE
-> -	bool
-> -	depends on HUGETLB_PAGE
-> -	default y
-> -
->  config GENERIC_CALIBRATE_DELAY
->  	bool
->  	default y
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 3778ad17f56a..3fdec3e53256 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -232,6 +232,7 @@ config PPC
->  	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
->  	select HAVE_PERF_REGS
->  	select HAVE_PERF_USER_STACK_DUMP
-> +	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
->  	select MMU_GATHER_RCU_TABLE_FREE
->  	select MMU_GATHER_PAGE_SIZE
->  	select HAVE_REGS_AND_STACK_ACCESS_API
-> @@ -416,11 +417,6 @@ config HIGHMEM
->  
->  source "kernel/Kconfig.hz"
->  
-> -config HUGETLB_PAGE_SIZE_VARIABLE
-> -	bool
-> -	depends on HUGETLB_PAGE && PPC_BOOK3S_64
-> -	default y
-> -
->  config MATH_EMULATION
->  	bool "Math emulation"
->  	depends on 4xx || PPC_8xx || PPC_MPC832x || BOOKE
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 24c045b24b95..64f1e0503e4f 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -274,6 +274,15 @@ config ARCH_ENABLE_HUGEPAGE_MIGRATION
->  config ARCH_ENABLE_THP_MIGRATION
->  	bool
->  
-> +config HUGETLB_PAGE_SIZE_VARIABLE
-> +	bool "Allows dynamic pageblock_order"
-> +	def_bool n
-> +	depends on HUGETLB_PAGE
+Signed-off-by: Zhang Yunkai <zhang.yunkai@zte.com.cn>
+---
+ arch/powerpc/kernel/setup-common.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Seems like this dependency on HUGETLB_PAGE is redundant, as it is
-already being ensured on the platforms while selecting the config.
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index bee984b1887b..7221f11acf04 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -69,7 +69,6 @@
+ #include "setup.h"
+ 
+ #ifdef DEBUG
+-#include <asm/udbg.h>
+ #define DBG(fmt...) udbg_printf(fmt)
+ #else
+ #define DBG(fmt...)
+-- 
+2.25.1
 
-> +	help
-> +	  Allows the pageblock_order value to be dynamic instead of just standard
-> +	  HUGETLB_PAGE_ORDER when there are multiple HugeTLB page sizes available
-> +	  on a platform.
-> +
->  config CONTIG_ALLOC
->  	def_bool (MEMORY_ISOLATION && COMPACTION) || CMA
->  
-> 
