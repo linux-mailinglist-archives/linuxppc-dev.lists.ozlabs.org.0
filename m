@@ -1,58 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE8B32C4D3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 01:56:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C38F32CAB9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 04:14:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrXWV521Bz3cZF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 11:56:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrbYt3PXGz3cV7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 14:14:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RmOiUzLt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=jKnyWjMF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=menglong8.dong@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=RmOiUzLt; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=jKnyWjMF; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrXW54dkzz30N0
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 11:56:33 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4CE3C64E86;
- Thu,  4 Mar 2021 00:56:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1614819390;
- bh=HTFsv6Fv1iYZbTyUPYTDVHFZqM3lA61amO6iQi9gLgU=;
- h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
- b=RmOiUzLtiSBt3o6wiPFTH/7CT6WnBQdjuEL4dQjWNhho1+B5vpNaFuEBU1P6uVTlY
- jGXkSWC3Ei62k9+vSdzEEYKWn4LRUPvAvZZNmAgWHa3ahVuIShNcjKbkWKStqZ//uI
- zbCnkL96OGJdTfNcanMJ8tujdTxYJGDmCVzFHL5GNAE4VjAVhxp+VBgNzU7VnkBC53
- U44g+O0RvJ6s3nEao8PxuCphPWOB1GP8HQyz8wzILRFQ3vCkZuxpaFyjfPCbDklEXx
- qvKYf4snK+6fjxHfF5zd6r7R0BAkXs7xGX0p0Ge4hO99r20Z6SImNUx0UVSKElmqcv
- mIILruaj7Jc0A==
-From: Mark Brown <broonie@kernel.org>
-To: Colin King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org,
- Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
- Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>,
- Timur Tabi <timur@kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Takashi Iwai <tiwai@suse.com>
-In-Reply-To: <20210303091835.5024-1-colin.king@canonical.com>
-References: <20210303091835.5024-1-colin.king@canonical.com>
-Subject: Re: [PATCH][next] ASoC: fsl: fsl_easrc: Fix uninitialized variable
- st2_mem_alloc
-Message-Id: <161481924070.9553.9267870549828564094.b4-ty@kernel.org>
-Date: Thu, 04 Mar 2021 00:54:00 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrZt21Qlpz30Pl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 13:43:04 +1100 (AEDT)
+Received: by mail-pj1-x1043.google.com with SMTP id e9so5839863pjj.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Mar 2021 18:43:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=p9XOASjZi/B+/Tdwk2J3ZNUj0y7LUvV1fcbGUGMVUVQ=;
+ b=jKnyWjMFC/FhozUcL9k4EFK6CGCMb8g4drCfBpEMtFEzQz1ZaB65OpQR0DhGOw4I4H
+ dDnK4AGrO8ehFSbDCC78cw/VsKRF9aEgRlrspuUgyEeG1KPNSRzn1wHGjol+KRWFDNnq
+ marKQZUVwgoGZuJZCW9DZb7ePiTqhuC4PITlF3pIXRVjzXpkGLqO6D4BUdhgc9pv5c4t
+ UR5KJZn651nJwuqBu7k4Xs6XW9I21QyKFi0FmKN7X1xvF64cQ3PQc2DWsXR4n4EGd1mw
+ OiemnJrB25gLUWpWShpai57xC9OUYk2zeaI709ZXoXd/SegSHcjcEupXslQB75x4Ym08
+ FbwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=p9XOASjZi/B+/Tdwk2J3ZNUj0y7LUvV1fcbGUGMVUVQ=;
+ b=QFbPMtYec4dcmBFnufiOHH6VxoPym7VuDoP5CZ+3meLvZZlUjvAFamX7zsQhsXTRVa
+ Am9QUG3myc61nV8lKjWOl/BlDIr9x4injlQqOut4FOFXA2uz1EvmO4jZEftrhjpvwzrO
+ rIQeB5CQ0jo/bLsaU6BpV74hR9ZfF24D3l2V4XThokUmj+Ym2A7QJAPLLt4YOhXGcci+
+ VrO2sL0VeYTr3VCFUPFf52RHFauZYDn7rskAzOVluwy8/sUewFcWIr0BjDIjBnBlQngW
+ +eleb3hmk9iZS3hDVcszYjGpLmWjQzNbkOBY+3qIaejvA6KQCEiCLUvfyCDdn0t3/tIg
+ hcuw==
+X-Gm-Message-State: AOAM531caNZo+zryq2/nV6Ix9/llk53w16eCy08dgdtKDrLW/wqJfsJE
+ AvyaJczUR8R91cgCu/NsYec=
+X-Google-Smtp-Source: ABdhPJye1qLaewI6IUQ0dDIT3PhMsjFm31Z9Qc/lnYueo/RHFFUZBjoR84pSVYn8cMj5JyyGFUaJGw==
+X-Received: by 2002:a17:90a:4598:: with SMTP id
+ v24mr2185607pjg.102.1614825780360; 
+ Wed, 03 Mar 2021 18:43:00 -0800 (PST)
+Received: from localhost.localdomain ([178.236.46.205])
+ by smtp.gmail.com with ESMTPSA id h27sm19068913pfq.32.2021.03.03.18.42.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Mar 2021 18:42:59 -0800 (PST)
+From: menglong8.dong@gmail.com
+X-Google-Original-From: zhang.yunkai@zte.com.cn
+To: mpe@ellerman.id.au
+Subject: [PATCH] arch/powerpc/include/asm/book3s/64/: remove duplicate include
+ in mmu-hash.h
+Date: Wed,  3 Mar 2021 18:42:51 -0800
+Message-Id: <20210304024251.187564-1-zhang.yunkai@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 04 Mar 2021 14:13:48 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,39 +81,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: rdunlap@infradead.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
+ zhang.yunkai@zte.com.cn, paulus@samba.org, clg@kaod.org,
+ aneesh.kumar@linux.ibm.com, ganeshgr@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 3 Mar 2021 09:18:35 +0000, Colin King wrote:
-> A previous cleanup commit removed the ininitialization of st2_mem_alloc.
-> Fix this by restoring the original behaviour by initializing it to zero.
+From: Zhang Yunkai <zhang.yunkai@zte.com.cn>
 
-Applied to
+'asm/bug.h' included in 'arch/powerpc/include/asm/book3s/64/mmu-hash.h'
+is duplicated.It is also included in the 12th line.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Signed-off-by: Zhang Yunkai <zhang.yunkai@zte.com.cn>
+---
+ arch/powerpc/include/asm/book3s/64/mmu-hash.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-Thanks!
+diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+index f911bdb68d8b..3004f3323144 100644
+--- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
++++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+@@ -18,7 +18,6 @@
+  * complete pgtable.h but only a portion of it.
+  */
+ #include <asm/book3s/64/pgtable.h>
+-#include <asm/bug.h>
+ #include <asm/task_size_64.h>
+ #include <asm/cpu_has_feature.h>
+ 
+-- 
+2.25.1
 
-[1/1] ASoC: fsl: fsl_easrc: Fix uninitialized variable st2_mem_alloc
-      commit: 84e4eb57ed620adc0371579a5662c4924a72a306
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
