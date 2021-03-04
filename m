@@ -1,37 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAC932CF44
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 10:08:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B12432CFA2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 10:29:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrlQp4Z2pz3d6Y
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 20:08:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Drlv651dtz3cbl
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 20:29:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132;
- helo=out30-132.freemail.mail.aliyun.com;
- envelope-from=yang.lee@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-132.freemail.mail.aliyun.com
- (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+ smtp.mailfrom=linux.alibaba.com (client-ip=47.88.44.36;
+ helo=out4436.biz.mail.alibaba.com;
+ envelope-from=jiapeng.chong@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out4436.biz.mail.alibaba.com (out4436.biz.mail.alibaba.com
+ [47.88.44.36])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrlQT2SZcz30Lq
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 20:08:14 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R201e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e01424; MF=yang.lee@linux.alibaba.com;
- NM=1; PH=DS; RN=18; SR=0; TI=SMTPD_---0UQMz88a_1614848882; 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Drltq0VTGz3cXf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 20:29:18 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R141e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394;
+ MF=jiapeng.chong@linux.alibaba.com; NM=1; PH=DS; RN=10; SR=0;
+ TI=SMTPD_---0UQMzAus_1614850125; 
 Received: from
- j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com
- fp:SMTPD_---0UQMz88a_1614848882) by smtp.aliyun-inc.com(127.0.0.1);
- Thu, 04 Mar 2021 17:08:03 +0800
-From: Yang Li <yang.lee@linux.alibaba.com>
-To: timur@kernel.org
-Subject: [PATCH v2] ASoC: imx-hdmi: fix platform_no_drv_owner.cocci warnings
-Date: Thu,  4 Mar 2021 17:08:01 +0800
-Message-Id: <1614848881-29637-1-git-send-email-yang.lee@linux.alibaba.com>
+ j63c13417.sqa.eu95.tbsite.net(mailfrom:jiapeng.chong@linux.alibaba.com
+ fp:SMTPD_---0UQMzAus_1614850125) by smtp.aliyun-inc.com(127.0.0.1);
+ Thu, 04 Mar 2021 17:28:52 +0800
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To: tyreld@linux.ibm.com
+Subject: [PATCH] scsi: ibmvfc: Switch to using the new API kobj_to_dev()
+Date: Thu,  4 Mar 2021 17:28:44 +0800
+Message-Id: <1614850124-54111-1-git-send-email-jiapeng.chong@linux.alibaba.com>
 X-Mailer: git-send-email 1.8.3.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -44,44 +45,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com,
- s.hauer@pengutronix.de, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz,
- nicoleotsuka@gmail.com, broonie@kernel.org,
- Yang Li <yang.lee@linux.alibaba.com>, linux-imx@nxp.com, kernel@pengutronix.de,
- shawnguo@kernel.org, shengjiu.wang@gmail.com,
- linux-arm-kernel@lists.infradead.org
+Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, martin.petersen@oracle.com,
+ linux-scsi@vger.kernel.org, jejb@linux.ibm.com, linux-kernel@vger.kernel.org,
+ paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-./sound/soc/fsl/imx-hdmi.c:226:3-8: No need to set .owner here. The core
-will do it.
+Fix the following coccicheck warnings:
 
-Remove .owner field if calls are used which set it automatically
+./drivers/scsi/ibmvscsi/ibmvfc.c:3483:60-61: WARNING opportunity for
+kobj_to_dev().
 
 Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 ---
+ drivers/scsi/ibmvscsi/ibmvfc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Change in v2:
--use imx-hdmi instead of hdmi-codec for Subject
-
- sound/soc/fsl/imx-hdmi.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
-index dbbb761..cd0235a 100644
---- a/sound/soc/fsl/imx-hdmi.c
-+++ b/sound/soc/fsl/imx-hdmi.c
-@@ -223,7 +223,6 @@ static int imx_hdmi_probe(struct platform_device *pdev)
- static struct platform_driver imx_hdmi_driver = {
- 	.driver = {
- 		.name = "imx-hdmi",
--		.owner = THIS_MODULE,
- 		.pm = &snd_soc_pm_ops,
- 		.of_match_table = imx_hdmi_dt_ids,
- 	},
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index 755313b..e5f1ca7 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -3480,7 +3480,7 @@ static ssize_t ibmvfc_read_trace(struct file *filp, struct kobject *kobj,
+ 				 struct bin_attribute *bin_attr,
+ 				 char *buf, loff_t off, size_t count)
+ {
+-	struct device *dev = container_of(kobj, struct device, kobj);
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 	unsigned long flags = 0;
 -- 
 1.8.3.1
 
