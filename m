@@ -1,47 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB4F32BBB2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Mar 2021 22:31:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE8B32C4D3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 01:56:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DrRy75g4Wz3d3r
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 08:31:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DrXWV521Bz3cZF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 11:56:54 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RmOiUzLt;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=RmOiUzLt; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DrRxp563Mz30Ng
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 08:30:51 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DrRxd2k33z9ttBL;
- Wed,  3 Mar 2021 22:30:45 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id EOp0jFdqMqTs; Wed,  3 Mar 2021 22:30:45 +0100 (CET)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DrRxd0kG9z9ttRk;
- Wed,  3 Mar 2021 22:30:45 +0100 (CET)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id 6B58D65A; Wed,  3 Mar 2021 22:33:58 +0100 (CET)
-Received: from 37.173.125.231 ([37.173.125.231]) by messagerie.c-s.fr (Horde
- Framework) with HTTP; Wed, 03 Mar 2021 22:33:58 +0100
-Date: Wed, 03 Mar 2021 22:33:58 +0100
-Message-ID: <20210303223358.Horde.OAg4JN_IZgwz7hkYuMwiTg3@messagerie.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: maqiang <maqianga@uniontech.com>
-Subject: Re: [PATCH] powerpc: remove redundant space
-In-Reply-To: <20210303115710.30886-1-maqianga@uniontech.com>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DrXW54dkzz30N0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Mar 2021 11:56:33 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4CE3C64E86;
+ Thu,  4 Mar 2021 00:56:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1614819390;
+ bh=HTFsv6Fv1iYZbTyUPYTDVHFZqM3lA61amO6iQi9gLgU=;
+ h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+ b=RmOiUzLtiSBt3o6wiPFTH/7CT6WnBQdjuEL4dQjWNhho1+B5vpNaFuEBU1P6uVTlY
+ jGXkSWC3Ei62k9+vSdzEEYKWn4LRUPvAvZZNmAgWHa3ahVuIShNcjKbkWKStqZ//uI
+ zbCnkL96OGJdTfNcanMJ8tujdTxYJGDmCVzFHL5GNAE4VjAVhxp+VBgNzU7VnkBC53
+ U44g+O0RvJ6s3nEao8PxuCphPWOB1GP8HQyz8wzILRFQ3vCkZuxpaFyjfPCbDklEXx
+ qvKYf4snK+6fjxHfF5zd6r7R0BAkXs7xGX0p0Ge4hO99r20Z6SImNUx0UVSKElmqcv
+ mIILruaj7Jc0A==
+From: Mark Brown <broonie@kernel.org>
+To: Colin King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org,
+ Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Timur Tabi <timur@kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Takashi Iwai <tiwai@suse.com>
+In-Reply-To: <20210303091835.5024-1-colin.king@canonical.com>
+References: <20210303091835.5024-1-colin.king@canonical.com>
+Subject: Re: [PATCH][next] ASoC: fsl: fsl_easrc: Fix uninitialized variable
+ st2_mem_alloc
+Message-Id: <161481924070.9553.9267870549828564094.b4-ty@kernel.org>
+Date: Thu, 04 Mar 2021 00:54:00 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,43 +64,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-maqiang <maqianga@uniontech.com> a =C3=A9crit=C2=A0:
+On Wed, 3 Mar 2021 09:18:35 +0000, Colin King wrote:
+> A previous cleanup commit removed the ininitialization of st2_mem_alloc.
+> Fix this by restoring the original behaviour by initializing it to zero.
 
-> These one line of code don't meet the kernel coding style,
-> so remove the redundant space.
+Applied to
 
-There seems to be several other style issues in this function and in=20=20
-the=20following one too. You should fix them all at once I think.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
+Thanks!
 
->
-> Signed-off-by: maqiang <maqianga@uniontech.com>
-> ---
->  arch/powerpc/kernel/syscalls.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscall=
-s.c
-> index 078608ec2e92..9248288752d5 100644
-> --- a/arch/powerpc/kernel/syscalls.c
-> +++ b/arch/powerpc/kernel/syscalls.c
-> @@ -81,7 +81,7 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, size_t, len,
->  int
->  ppc_select(int n, fd_set __user *inp, fd_set __user *outp, fd_set=20=20
->=20__user *exp, struct __kernel_old_timeval __user *tvp)
->  {
-> -	if ( (unsigned long)n >=3D 4096 )
-> +	if ((unsigned long)n >=3D 4096)
->  	{
->  		unsigned long __user *buffer =3D (unsigned long __user *)n;
->  		if (!access_ok(buffer, 5*sizeof(unsigned long))
-> --
-> 2.20.1
+[1/1] ASoC: fsl: fsl_easrc: Fix uninitialized variable st2_mem_alloc
+      commit: 84e4eb57ed620adc0371579a5662c4924a72a306
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
