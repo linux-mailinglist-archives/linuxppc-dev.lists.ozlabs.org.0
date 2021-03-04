@@ -1,67 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7062B32DBB6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 22:25:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCB532DC9E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Mar 2021 22:59:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ds3mx38WBz3d6G
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 08:25:21 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=cMWrdirE;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ds4XD5720z3d9f
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 08:59:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.142.88; helo=alln-iport-1.cisco.com;
- envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=cMWrdirE; dkim-atps=neutral
-Received: from alln-iport-1.cisco.com (alln-iport-1.cisco.com [173.37.142.88])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ds3mR4GPpz3cXL
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 08:24:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=1694; q=dns/txt; s=iport;
- t=1614893095; x=1616102695;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=9ULi3lxtKwy2ziPDY/q6Yuz9DuWL9aXRDve/CHdZaFA=;
- b=cMWrdirEiivdcc5nfG+kpeZQeN4uMoLwsN0yWi9ziHAdSTaY0/YsWVet
- PIEHvMI56wkSWOKUXkUEm9z1UvgvppoukJAniJhRKXWIfcmoXC5NBEDg0
- /BO0QpQh/gtQlbjhTlYnsnxauLe2O1g1JQIJNT20DvadoDnh5Un9YPfUa 4=;
-X-IPAS-Result: =?us-ascii?q?A0AVAABfTkFgmIcNJK1iHAEBAQEBAQcBARIBAQQEAQFAg?=
- =?us-ascii?q?TwGAQELAYN2ATkxlh6PehaKP4F8CwEBAQ0BATQEAQGBFIM0AwICgXoCJTUID?=
- =?us-ascii?q?gIDAQEBAwIDAQEBAQUBAQECAQYEFAEBAQEBAQEBhkOGRQEFMgFGEAsYLjwbB?=
- =?us-ascii?q?hOCcIMIrhJ0gTSJH4FEFA6BFgGNQiYcgUlCgRGDGj6KMwSCQAeBDoIoEpN7i?=
- =?us-ascii?q?i6be4MGgR+acjEQo0a2cgIEBgUCFoFWATWBWTMaCBsVgyRQGQ2OOI5QIAMvO?=
- =?us-ascii?q?AIGAQkBAQMJjBMBAQ?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="5.81,223,1610409600"; d="scan'208";a="656967522"
-Received: from alln-core-2.cisco.com ([173.36.13.135])
- by alln-iport-1.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 04 Mar 2021 21:24:51 +0000
-Received: from zorba ([10.24.1.42])
- by alln-core-2.cisco.com (8.15.2/8.15.2) with ESMTPS id 124LOnLb005860
- (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Thu, 4 Mar 2021 21:24:50 GMT
-Date: Thu, 4 Mar 2021 13:24:48 -0800
-From: Daniel Walker <danielwa@cisco.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 2/5] CMDLINE: drivers: of: ifdef out cmdline section
-Message-ID: <20210304212448.GK109100@zorba>
-References: <20210304044803.812204-2-danielwa@cisco.com>
- <2b0081aa-52af-a4ab-7481-6e125bd103d6@csgroup.eu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Ds4Ww3LDzz3cPP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 08:59:06 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 124Lsnob015064;
+ Thu, 4 Mar 2021 15:54:49 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 124Lsm4r015063;
+ Thu, 4 Mar 2021 15:54:48 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Thu, 4 Mar 2021 15:54:48 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH v1] powerpc: Include running function as first entry in
+ save_stack_trace() and friends
+Message-ID: <20210304215448.GU29191@gate.crashing.org>
+References: <e2e8728c4c4553bbac75a64b148e402183699c0c.1614780567.git.christophe.leroy@csgroup.eu>
+ <CANpmjNOvgbUCf0QBs1J-mO0yEPuzcTMm7aS1JpPB-17_LabNHw@mail.gmail.com>
+ <1802be3e-dc1a-52e0-1754-a40f0ea39658@csgroup.eu>
+ <YD+o5QkCZN97mH8/@elver.google.com>
+ <20210304145730.GC54534@C02TD0UTHF1T.local>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2b0081aa-52af-a4ab-7481-6e125bd103d6@csgroup.eu>
-X-Auto-Response-Suppress: DR, OOF, AutoReply
-X-Outbound-SMTP-Client: 10.24.1.42, [10.24.1.42]
-X-Outbound-Node: alln-core-2.cisco.com
+In-Reply-To: <20210304145730.GC54534@C02TD0UTHF1T.local>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,60 +52,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ob Herring <robh@kernel.org>, Ruslan Ruslichenko <rruslich@cisco.com>,
- Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- Frank Rowand <frowand.list@gmail.com>, devicetree@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
- xe-linux-external@cisco.com, Andrew Morton <akpm@linux-foundation.org>,
- Will Deacon <will@kernel.org>
+Cc: Marco Elver <elver@google.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>,
+ kasan-dev <kasan-dev@googlegroups.com>, broonie@kernel.org,
+ Paul Mackerras <paulus@samba.org>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 04, 2021 at 08:09:52AM +0100, Christophe Leroy wrote:
-> 
-> 
-> Le 04/03/2021 à 05:47, Daniel Walker a écrit :
-> > It looks like there's some seepage of cmdline stuff into
-> > the generic device tree code. This conflicts with the
-> > generic cmdline implementation so I remove it in the case
-> > when that's enabled.
-> > 
-> > Cc: xe-linux-external@cisco.com
-> > Signed-off-by: Ruslan Ruslichenko <rruslich@cisco.com>
-> > Signed-off-by: Daniel Walker <danielwa@cisco.com>
-> > ---
-> >   drivers/of/fdt.c | 12 ++++++++++++
-> >   1 file changed, 12 insertions(+)
-> > 
-> > diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> > index feb0f2d67fc5..cfe4f8d3c9f5 100644
-> > --- a/drivers/of/fdt.c
-> > +++ b/drivers/of/fdt.c
-> > @@ -25,6 +25,7 @@
-> >   #include <linux/serial_core.h>
-> >   #include <linux/sysfs.h>
-> >   #include <linux/random.h>
-> > +#include <linux/cmdline.h>
-> >   #include <asm/setup.h>  /* for COMMAND_LINE_SIZE */
-> >   #include <asm/page.h>
-> > @@ -1048,8 +1049,18 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
-> >   	early_init_dt_check_for_initrd(node);
-> > +#ifdef CONFIG_GENERIC_CMDLINE
-> >   	/* Retrieve command line */
-> >   	p = of_get_flat_dt_prop(node, "bootargs", &l);
-> > +
-> > +	/*
-> > +	 * The builtin command line will be added here, or it can override
-> > +	 * with the DT bootargs.
-> > +	 */
-> > +	cmdline_add_builtin(data,
-> > +			    ((p != NULL && l > 0) ? p : NULL), /* This is sanity checking */
-> 
-> Can we do more simple ? If p is NULL, p is already NULL, so (l > 0 ? p : NULL) should be enough.
+Hi!
+
+On Thu, Mar 04, 2021 at 02:57:30PM +0000, Mark Rutland wrote:
+> It looks like GCC is happy to give us the function-entry-time FP if we use
+> __builtin_frame_address(1),
+
+From the GCC manual:
+     Calling this function with a nonzero argument can have
+     unpredictable effects, including crashing the calling program.  As
+     a result, calls that are considered unsafe are diagnosed when the
+     '-Wframe-address' option is in effect.  Such calls should only be
+     made in debugging situations.
+
+It *does* warn (the warning is in -Wall btw), on both powerpc and
+aarch64.  Furthermore, using this builtin causes lousy code (it forces
+the use of a frame pointer, which we normally try very hard to optimise
+away, for good reason).
+
+And, that warning is not an idle warning.  Non-zero arguments to
+__builtin_frame_address can crash the program.  It won't on simpler
+functions, but there is no real definition of what a simpler function
+*is*.  It is meant for debugging, not for production use (this is also
+why no one has bothered to make it faster).
+
+On Power it should work, but on pretty much any other arch it won't.
+
+> Unless we can get some strong guarantees from compiler folk such that we
+> can guarantee a specific function acts boundary for unwinding (and
+> doesn't itself get split, etc), the only reliable way I can think to
+> solve this requires an assembly trampoline. Whatever we do is liable to
+> need some invasive rework.
+
+You cannot get such a guarantee, other than not letting the compiler
+see into the routine at all, like with assembler code (not inline asm,
+real assembler code).
+
+The real way forward is to bite the bullet and to no longer pretend you
+can do a full backtrace from just the stack contents.  You cannot.
 
 
-I believe Rob gave me this line. Maybe he can comment on it.
-
-Daniel
+Segher
