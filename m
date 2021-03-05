@@ -1,51 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127C632E3D6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 09:41:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0812E32E3EE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 09:50:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsLml0T5kz3dCF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 19:41:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsLzR0RdVz3dH3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 19:50:27 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=d2r1GH0E;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsLmQ2HZSz30Lw
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 19:40:50 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DsLmG1HhXz9tws2;
- Fri,  5 Mar 2021 09:40:46 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Qfa6vAzoH0fA; Fri,  5 Mar 2021 09:40:46 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DsLmF69Jdz9tws0;
- Fri,  5 Mar 2021 09:40:45 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E57F58B78D;
- Fri,  5 Mar 2021 09:40:46 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id vPt5UF7YwDZ3; Fri,  5 Mar 2021 09:40:46 +0100 (CET)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A0AEC8B78B;
- Fri,  5 Mar 2021 09:40:46 +0100 (CET)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 76F7B674E4; Fri,  5 Mar 2021 08:40:46 +0000 (UTC)
-Message-Id: <f08ef2b6f339ba19987cfef4307a4dd26b2faf97.1614933479.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3] powerpc/32: remove bogus ppc_select syscall
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Arnd Bergmann <arnd@arndb.de>
-Date: Fri,  5 Mar 2021 08:40:46 +0000 (UTC)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=163.com
+ (client-ip=220.181.12.13; helo=m12-13.163.com; envelope-from=angkery@163.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256
+ header.s=s110527 header.b=d2r1GH0E; dkim-atps=neutral
+Received: from m12-13.163.com (m12-13.163.com [220.181.12.13])
+ by lists.ozlabs.org (Postfix) with SMTP id 4DsLz00pLGz2xb2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 19:50:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=84Sfy
+ PNBxHgq99YUnviXVMgxuSif+wV/5LOoOlGrFtQ=; b=d2r1GH0EG/1ZtieJlsl8k
+ dgGT32KnYEgdiprQHHc5E2UbtwQWmq/DJPV1GQTRmm1AOuO8oAp3dxb4P3IzwHcF
+ lPcs7r1lDODuRyuHp8QHDLE/ut/x0YeOob749j/pOBPBuxKcDvrhSwSWXLNWUdzr
+ STn/9KJa4Glhyp9RkIJBuM=
+Received: from yangjunlin.ccdomain.com (unknown [218.17.89.92])
+ by smtp9 (Coremail) with SMTP id DcCowAAnd5Ns8EFgtBCrhw--.51670S2;
+ Fri, 05 Mar 2021 16:48:46 +0800 (CST)
+From: angkery <angkery@163.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ drt@linux.ibm.com, ljp@linux.ibm.com, sukadev@linux.ibm.com,
+ davem@davemloft.net, kuba@kernel.org
+Subject: [PATCH v1] ibmvnic: remove excessive irqsave
+Date: Fri,  5 Mar 2021 16:48:39 +0800
+Message-Id: <20210305084839.2405-1-angkery@163.com>
+X-Mailer: git-send-email 2.24.0.windows.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: DcCowAAnd5Ns8EFgtBCrhw--.51670S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WF13Xr4fKFy5Ar4UZF47urg_yoW8CFykpF
+ 4fWFy3Gw1vqw1jqa9rXw18AFs3C39YgrW8u34kCws3ur98Ar1rXFn5tFy29rWDG3ySkan8
+ ZF1UZ393AFn8C3DanT9S1TB71UUUUj7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07b58n5UUUUU=
+X-Originating-IP: [218.17.89.92]
+X-CM-SenderInfo: 5dqjyvlu16il2tof0z/xtbBFA5MI1aD+lj1pQAAsS
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,108 +59,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Junlin Yang <yangjunlin@yulong.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Junlin Yang <yangjunlin@yulong.com>
 
-The ppc_select function was introduced in linux-2.3.48 in order to support
-code confusing the legacy select() calling convention with the standard one.
-Even 24 years ago, all correctly built code should not have done this and
-could have easily been phased out. Nothing that was compiled later should
-actually try to use the old_select interface, and it would have been broken
-already on all ppc64 kernels with the syscall emulation layer.
+ibmvnic_remove locks multiple spinlocks while disabling interrupts:
+spin_lock_irqsave(&adapter->state_lock, flags);
+spin_lock_irqsave(&adapter->rwi_lock, flags);
 
-This patch brings the 32 bit compat ABI and the native 32 bit ABI for
-powerpc into a consistent state, by removing support for both the
-old_select system call number and the handler for it.
+As reported by coccinelle, the second _irqsave() overwrites the value
+saved in 'flags' by the first _irqsave(),   therefore when the second
+_irqrestore() comes,the value in 'flags' is not valid,the value saved
+by the first _irqsave() has been lost.
+This likely leads to IRQs remaining disabled. So remove the second
+_irqsave():
+spin_lock_irqsave(&adapter->state_lock, flags);
+spin_lock(&adapter->rwi_lock);
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-[chleroy: Rebased and updated the number of years elapsed and dropped last part of the commit message]
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Generated by: ./scripts/coccinelle/locks/flags.cocci
+./drivers/net/ethernet/ibm/ibmvnic.c:5413:1-18:
+ERROR: nested lock+irqsave that reuses flags from line 5404.
+
+Fixes: 4a41c421f367 ("ibmvnic: serialize access to work queue on remove")
+Signed-off-by: Junlin Yang <yangjunlin@yulong.com>
 ---
-First version was in 2008, at that time it was rejected, see
-http://patchwork.ozlabs.org/project/linuxppc-dev/patch/200809240839.14902.arnd@arndb.de/
-A reduced version of it was merged as commit dad2f2fb0fc7 ("powerpc: Fix wrong error code from ppc32 select syscall")
+Changes in v1:
+	a.According to Christophe Leroy's explanation, update the commit information.
+	b.Add fixes tags.
 
-If we decide to still keep this, then we'll have to:
-- take into account -4096 < fd < 0 case
-- use unsafe_get_user inside a uaccess_begin block
+ drivers/net/ethernet/ibm/ibmvnic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/asm-prototypes.h |  3 ---
- arch/powerpc/kernel/syscalls.c            | 25 -----------------------
- arch/powerpc/kernel/syscalls/syscall.tbl  |  4 +---
- 3 files changed, 1 insertion(+), 31 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
-index 939f3c94c8f3..78e0a3bd448a 100644
---- a/arch/powerpc/include/asm/asm-prototypes.h
-+++ b/arch/powerpc/include/asm/asm-prototypes.h
-@@ -63,9 +63,6 @@ long sys_swapcontext(struct ucontext __user *old_ctx,
- #ifdef CONFIG_PPC32
- long sys_debug_setcontext(struct ucontext __user *ctx,
- 			  int ndbg, struct sig_dbg_op __user *dbg);
--int
--ppc_select(int n, fd_set __user *inp, fd_set __user *outp, fd_set __user *exp,
--	   struct __kernel_old_timeval __user *tvp);
- unsigned long __init early_init(unsigned long dt_ptr);
- void __init machine_init(u64 dt_ptr);
- #endif
-diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscalls.c
-index 078608ec2e92..70b0eb5bedfd 100644
---- a/arch/powerpc/kernel/syscalls.c
-+++ b/arch/powerpc/kernel/syscalls.c
-@@ -71,31 +71,6 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, size_t, len,
- 	return do_mmap2(addr, len, prot, flags, fd, offset, PAGE_SHIFT);
- }
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 2464c8a..a52668d 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -5408,9 +5408,9 @@ static void ibmvnic_remove(struct vio_dev *dev)
+ 	 * after setting state, so __ibmvnic_reset() which is called
+ 	 * from the flush_work() below, can make progress.
+ 	 */
+-	spin_lock_irqsave(&adapter->rwi_lock, flags);
++	spin_lock(&adapter->rwi_lock);
+ 	adapter->state = VNIC_REMOVING;
+-	spin_unlock_irqrestore(&adapter->rwi_lock, flags);
++	spin_unlock(&adapter->rwi_lock);
  
--#ifdef CONFIG_PPC32
--/*
-- * Due to some executables calling the wrong select we sometimes
-- * get wrong args.  This determines how the args are being passed
-- * (a single ptr to them all args passed) then calls
-- * sys_select() with the appropriate args. -- Cort
-- */
--int
--ppc_select(int n, fd_set __user *inp, fd_set __user *outp, fd_set __user *exp, struct __kernel_old_timeval __user *tvp)
--{
--	if ( (unsigned long)n >= 4096 )
--	{
--		unsigned long __user *buffer = (unsigned long __user *)n;
--		if (!access_ok(buffer, 5*sizeof(unsigned long))
--		    || __get_user(n, buffer)
--		    || __get_user(inp, ((fd_set __user * __user *)(buffer+1)))
--		    || __get_user(outp, ((fd_set  __user * __user *)(buffer+2)))
--		    || __get_user(exp, ((fd_set  __user * __user *)(buffer+3)))
--		    || __get_user(tvp, ((struct __kernel_old_timeval  __user * __user *)(buffer+4))))
--			return -EFAULT;
--	}
--	return sys_select(n, inp, outp, exp, tvp);
--}
--#endif
--
- #ifdef CONFIG_PPC64
- long ppc64_personality(unsigned long personality)
- {
-diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-index 0b2480cf3e47..5bb0e90e502e 100644
---- a/arch/powerpc/kernel/syscalls/syscall.tbl
-+++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-@@ -110,9 +110,7 @@
- 79	common	settimeofday			sys_settimeofday		compat_sys_settimeofday
- 80	common	getgroups			sys_getgroups
- 81	common	setgroups			sys_setgroups
--82	32	select				ppc_select			sys_ni_syscall
--82	64	select				sys_ni_syscall
--82	spu	select				sys_ni_syscall
-+82	common	select				sys_ni_syscall
- 83	common	symlink				sys_symlink
- 84	32	oldlstat			sys_lstat			sys_ni_syscall
- 84	64	oldlstat			sys_ni_syscall
+ 	spin_unlock_irqrestore(&adapter->state_lock, flags);
+ 
 -- 
-2.25.0
+1.9.1
+
 
