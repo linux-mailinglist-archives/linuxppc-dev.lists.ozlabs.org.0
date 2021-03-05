@@ -1,103 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE43632E5DB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 11:11:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EACE232E5B4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 11:06:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsNn24XhNz3dHx
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 21:11:34 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HGZksWnp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsNgd035bz3dJm
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 21:06:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=HGZksWnp; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsNmb3nQZz2xy0
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 21:11:11 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 125A3T0l047666; Fri, 5 Mar 2021 05:11:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=ClRGLi/Od3Oqr7Bgr+XqP2qVmOKiQNDanEfWOPC6YHY=;
- b=HGZksWnpEf7zBnRS+WPuTe4oHvGVOL3BxY6RFDc5VJcqxMGh75vrP+NdBnjNUyUfuFFo
- ROwDR2aDmeTNoyFWo1Ggg0Lu4fK8EBW4kxuX+ePPkx4Klr/8HDzaU2O6CXoZuinxtn4G
- dhjZ1ADc12Bk5BHq7tebuGLLGKFzpFePKDU+nXIC3WPT9OGACYwMY3VuAyphDPTjVDmy
- aXJu6W8NIaiQ8ttqVueqdCuu1nmPzqWH1D/gXCTLdj/LiFruU3sNvZaOWQWR/625LNgG
- eGBK3jz+nvF05ZCvmGqjh0mFjK22e6k/86j9mZrqvBWJmmD0+t1R9k1WnRadNWNAG0Iw yA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 373fqrnk91-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 05:11:05 -0500
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 125A63ZY062057;
- Fri, 5 Mar 2021 05:11:04 -0500
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 373fqrnk7e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 05:11:04 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 125A7M5m019700;
- Fri, 5 Mar 2021 10:11:02 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06ams.nl.ibm.com with ESMTP id 37293fsvva-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 10:11:02 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 125AAxKd38600976
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 5 Mar 2021 10:10:59 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 500B4AE04D;
- Fri,  5 Mar 2021 10:10:59 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CC17DAE045;
- Fri,  5 Mar 2021 10:10:58 +0000 (GMT)
-Received: from localhost (unknown [9.85.120.65])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  5 Mar 2021 10:10:58 +0000 (GMT)
-Date: Thu, 4 Mar 2021 06:36:20 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH v2 1/3] powerpc: sstep: Fix load and update emulation
-Message-ID: <20210304010620.GF1913@DESKTOP-TDPLP67.localdomain>
-References: <20210203063841.431063-1-sandipan@linux.ibm.com>
- <20210203094909.GD210@DESKTOP-TDPLP67.localdomain>
- <20210203211732.GD30983@gate.crashing.org>
- <20210204082753.GI210@DESKTOP-TDPLP67.localdomain>
- <20210302023732.GH29191@gate.crashing.org>
- <20210303163127.GE1913@DESKTOP-TDPLP67.localdomain>
- <20210304154535.GS29191@gate.crashing.org>
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.131; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsNgH00Lmz30J6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 21:06:33 +1100 (AEDT)
+Received: from mail-oi1-f173.google.com ([209.85.167.173]) by
+ mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1M8hlZ-1lMoJm2eAL-004mmi for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Mar
+ 2021 11:06:27 +0100
+Received: by mail-oi1-f173.google.com with SMTP id x78so1940804oix.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Mar 2021 02:06:27 -0800 (PST)
+X-Gm-Message-State: AOAM532gNeceY2NafdoSUki866/Hxi6d9Bf4l60hnE/hj7WIDFJ9uaZC
+ 1McLXhl7jexUN7+D7GoK64FPsMHAFQlUKmL0Q7Y=
+X-Google-Smtp-Source: ABdhPJwzyOO7oekaLxVCuYpCBrhMK4PzMy38JZ7xjbD74JT6jclKDiqZP1kKYyYJiRiPAwfQ+NkcFWiabrQ66QAV4CE=
+X-Received: by 2002:a05:6808:3d9:: with SMTP id
+ o25mr6442482oie.4.1614938786377; 
+ Fri, 05 Mar 2021 02:06:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210304154535.GS29191@gate.crashing.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-05_05:2021-03-03,
- 2021-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
- priorityscore=1501 clxscore=1011 phishscore=0 adultscore=0 malwarescore=0
- bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103050048
+References: <f08ef2b6f339ba19987cfef4307a4dd26b2faf97.1614933479.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <f08ef2b6f339ba19987cfef4307a4dd26b2faf97.1614933479.git.christophe.leroy@csgroup.eu>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 5 Mar 2021 11:06:09 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2b+u+8smkKWB-V2Non+nnZmNG4dNi6cGpM8weYuY5j6A@mail.gmail.com>
+Message-ID: <CAK8P3a2b+u+8smkKWB-V2Non+nnZmNG4dNi6cGpM8weYuY5j6A@mail.gmail.com>
+Subject: Re: [PATCH v3] powerpc/32: remove bogus ppc_select syscall
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:ECmvxo4EZF2C6wqu1qXSTSQqjhrKyzy+Xr8knTSu0WzuUMFPV9f
+ qf+PcF/Y4j5WLXDnukZxcPaLl3qq7p+rX1bDJ80nrgxjudR/FEJM4KL2m/uRpEFgQ72eTfh
+ 8j41ifAKlPvQie0BAJYC7b3cJn60xF8qMlgtPWCUwcS9uhsYm0rOIirO4b2Y1PwvjiueCQQ
+ 0Aq//RHB7LBf/SHwpVBig==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:UMorT1T0Z2Y=:njb46D23dvb0DoI/QokGXP
+ 7tWV2PllqDqSO6BM0JP1dmwEzE3W7L8u5LhZRFaxyCuYHsq46HS2VbwYorR3qiI4FQEmPPTWr
+ SOH55OXn0pt0hnnFYiCSSEYt4ZTv7u3IiEd8FdHe3KGXx3djEDAXkSNfVV5acrPcA8XUQ+nE6
+ 909H5NCbeoSFy7URFQzk2Jt4D5ge0/lR7ib0cM0u5foHDA8Lxo5Z6+vlhBt1N/WLYVRFIIk6j
+ Z0BvRF5y2VpC0frH55ZmyMb7WhBfVRXeSJowX7xoZOoUGwfzkvtXv/P4BUlaXMhBsSqbQ5APR
+ 8rmcqC5ftm8CgHvbM4QaYCAS1Jrj3Zi9XJuVkeRe+h1/ABX2HcrJaEsIq8JhMonyWG7LC6dsY
+ /5Li+C2yFcTOAXCdOG9A9wtstc0Qkbnv3seJuO46h/U1tf918cjmcdENDywU/uz4gZeFV2A46
+ /T6u8ucBr6PcZQHmHpBJunmuAR+zwurmwGgQY5jnJPhot2pe321F
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,65 +65,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, ananth@linux.ibm.com, jniethe5@gmail.com,
- paulus@samba.org, Sandipan Das <sandipan@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/03/04 09:45AM, Segher Boessenkool wrote:
-> On Wed, Mar 03, 2021 at 10:01:27PM +0530, Naveen N. Rao wrote:
-> > On 2021/03/01 08:37PM, Segher Boessenkool wrote:
-> > > > And, r6 always ends up with 0xaea. It changes with the value I put into 
-> > > > r6 though.
-> > > 
-> > > That is exactly the behaviour specified for p8.  0aaa+0040=0aea.
-> > > 
-> > > > Granted, this is all up in the air, but it does look like there is more 
-> > > > going on and the value isn't the EA or the value at the address.
-> > > 
-> > > That *is* the EA.  The EA is the address the insn does the access at.
-> > 
-> > I'm probably missing something here. 0xaaa is the value I stored at an 
-> > offset of 64 bytes from the stack pointer (r1 is copied into r6). In the 
-> > ldu instruction above, the EA is 64(r6), which should translate to 
-> > r1+64.  The data returned by the load would be 0xaaa, which should be 
-> > discarded per the description you provided above. So, I would expect to 
-> > see a 0xc0.. address in r6.
-> 
-> Yes, I misread your code it seems.
-> 
-> > In fact, this looks to be the behavior documented for P9:
-> > 
-> > > > Power9 does:
-> > > >
-> > > >   Load with Update Instructions (RA = 0)
-> > > >     EA is placed into R0.
-> > > >   Load with Update Instructions (RA = RT)
-> > > >     The storage operand addressed by EA is accessed. The 
-> > > >     displacement
-> > > >     field is added to the data returned by the load and placed into 
-> > > >     RT.
-> 
-> Yup.  So on what cpu did you test?
+On Fri, Mar 5, 2021 at 9:40 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The ppc_select function was introduced in linux-2.3.48 in order to support
+> code confusing the legacy select() calling convention with the standard one.
+> Even 24 years ago, all correctly built code should not have done this and
+> could have easily been phased out. Nothing that was compiled later should
+> actually try to use the old_select interface, and it would have been broken
+> already on all ppc64 kernels with the syscall emulation layer.
+>
+> This patch brings the 32 bit compat ABI and the native 32 bit ABI for
+> powerpc into a consistent state, by removing support for both the
+> old_select system call number and the handler for it.
 
-I tested this on two processors:
-2.0 (pvr 004d 0200)
-2.1 (pvr 004b 0201)
+The description still seems wrong, please drop all the nonsense I wrote
+back then and explain what is actually going on.
 
-I guess the behavior changed some time during P8, but I don't have a P9 
-to test this on.
+This is what I can see from the linux-history tree:
 
-In any case, this souldn't matter too much for us as you rightly point 
-out:
+- The original ppc32 port (linux-1.3.45) had a regular '__NR_select/sys_select'
+  syscall at #82 and an unusable '__NR__newselect/sys_panic' syscall at #142,
+  while i386 had the indirect '__NR_select/sys_oldselect' syscall at #82
+  and the regular '__NR__newselect/sys_select' version at #142. This was
+  rather confusing.
 
-> 
-> Either way, the kernel should not emulate any particular cpu here, I'd
-> say, esp. since recent cpus do different things for this invalid form.
+- linux-2.1.48 changed both #82 and #142 to the ppc_select() version that
+  tries to guess whether the x86 __NR_select/sys_oldselect() behavior or
+  the regular __NR__newselect/sys_select() behavior is used.
 
-Ack.
+- linux-2.5.5 added ppc64 support, with a compat version of ppc_select()
+  on both #82 and #142 that would either use the __NR__newselect/sys_select
+  semantics or panic() when passed an invalud 'n'. The native ppc64
+  port started out with just __NR__newselect/sys_select() on #142
 
+- linux-2.5.19 changed ppc64 compat mode to no longer panic(), making
+  both #82 and #142 behave like __NR__newselect/sys_select().
 
-Thanks!
-- Naveen
+- glibc support for ppc32 gets merged during the linux-2.5 days, supporting
+  only #142 with the new behavior.
+
+- linux-2.5.41 dropped support for #82 on ppc64 in compat mode but not
+  native ppc32.
+
+- linux-2.6.14 merged the two architecture ports but kept the behavior
+  unchanged for both.
+
+- linux-2.6.32 changed the native ppc32 #142 __NR__newselect to
+  behave the same as compat mode and no longer emulate the
+  x86 oldselect, but #82 remained unchanged.
+
+So we have changed behavior multiple times in the past, and the
+current state still theoretically allows running non-glibc binaries that
+ran on kernels before 2.1.48 that used either the original powerpc
+select or the i386 compatible oldselect semantics. Chances are that
+those binaries are broken for some other reason now.
+
+          Arnd
