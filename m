@@ -1,55 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3561C32DEC7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 02:05:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0459132DF76
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 03:14:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ds8gR1jQ8z3dBY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 12:05:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsBBt4ldZz3d7m
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 13:14:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=PnLAC90/;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=IcYPygun;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canb.auug.org.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=PnLAC90/; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ds8g202K6z30GZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 12:05:32 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Ds8fs6YM6z9sWD;
- Fri,  5 Mar 2021 12:05:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1614906327;
- bh=uNvFCAO2+/dn7zGMlkg9As9h70Dvz8K1kFCotm7Xju8=;
- h=Date:From:To:Cc:Subject:From;
- b=PnLAC90/7KkCqBqXaLXitm2zG+rzO4YYr7FZCY9rfDJ+17IQHAZpTIh1g7womNx/o
- wnMEnN1HorjuOM9lhf1Pf1JuZc0weOa3YFoHJh3hGJaKOQxKMjnqYpb9mbF8vbSThz
- 1ZK8iEhxDgmvCnnnKJ+KLJ0rAd6guEEl8VkJYSCGFGTvlydZkbTzyMTfyyIMbNZ8Y+
- FFAS+tM6BqkKwkyWPT1vI4gCVwE1RkcXHbjkWdKLFdDUaizXlGGmvs9BX0SShVoXCG
- vv2YC5lfBD40ecIC52PjYbJUenFGyT0GstSMH4szUDg+psLwnqxNxVvC9U4SjI5REj
- axK9ChShZOEXA==
-Date: Fri, 5 Mar 2021 12:05:23 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Greg KH <greg@kroah.com>, Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: manual merge of the tty tree with the powerpc-fixes tree
-Message-ID: <20210305120523.0cb114b9@canb.auug.org.au>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=163.com
+ (client-ip=220.181.12.13; helo=m12-13.163.com; envelope-from=angkery@163.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256
+ header.s=s110527 header.b=IcYPygun; dkim-atps=neutral
+X-Greylist: delayed 1005 seconds by postgrey-1.36 at boromir;
+ Fri, 05 Mar 2021 13:02:52 AEDT
+Received: from m12-13.163.com (m12-13.163.com [220.181.12.13])
+ by lists.ozlabs.org (Postfix) with SMTP id 4Ds9x82b31z30HH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 13:02:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=0mrqM
+ ZgvevrNOXq8jnxeZuPhNgFFPoldWVREeiMQV0o=; b=IcYPygun8FEvyMXek6SOM
+ j/Csv/BWQzA/FGSwbTmQ2CW4r8bApzsF43YduAFu4cCXk1M4gvT/PRlLS+EOpx2z
+ td1n9YcaGem0FI/k9OvhWlmfbmXB7pXNMgSQkNKJyML+ak0O3dJLt2Dsc/rjUGpy
+ BKY6Mov8pnNmSbZmaGSTOQ=
+Received: from yangjunlin.ccdomain.com (unknown [119.137.55.151])
+ by smtp9 (Coremail) with SMTP id DcCowACX+4wWjUFgajZ+hw--.44962S2;
+ Fri, 05 Mar 2021 09:44:56 +0800 (CST)
+From: angkery <angkery@163.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ drt@linux.ibm.com, ljp@linux.ibm.com, sukadev@linux.ibm.com,
+ davem@davemloft.net, kuba@kernel.org
+Subject: [PATCH] ibmvnic: remove excessive irqsave
+Date: Fri,  5 Mar 2021 09:43:50 +0800
+Message-Id: <20210305014350.1460-1-angkery@163.com>
+X-Mailer: git-send-email 2.24.0.windows.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/9xWkDb4+9_2nx0jSjYMefla";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: DcCowACX+4wWjUFgajZ+hw--.44962S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WF13XryrXFyxCryftw1kKrg_yoW8XrykpF
+ 4UuFy3Cw10qw1jqa9rJw18ZrsxCaykKrW8W34kCws3uFZ8Ary5Xr1FyFy29rWDK3yakan8
+ uF1rZ393A3Z8Aw7anT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jj38nUUUUU=
+X-Originating-IP: [119.137.55.151]
+X-CM-SenderInfo: 5dqjyvlu16il2tof0z/xtbCBglMI13I062i4wAAsK
+X-Mailman-Approved-At: Fri, 05 Mar 2021 13:14:24 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,62 +62,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <uwe@kleine-koenig.org>,
- Jiri Slaby <jirislaby@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Jiri Slaby <jslaby@suse.cz>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Junlin Yang <yangjunlin@yulong.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/9xWkDb4+9_2nx0jSjYMefla
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+From: Junlin Yang <yangjunlin@yulong.com>
 
-Hi all,
+ibmvnic_remove locks multiple spinlocks while disabling interrupts:
+spin_lock_irqsave(&adapter->state_lock, flags);
+spin_lock_irqsave(&adapter->rwi_lock, flags);
 
-Today's linux-next merge of the tty tree got a conflict in:
+there is no need for the second irqsave,since interrupts are disabled
+at that point, so remove the second irqsave:
+spin_lock_irqsave(&adapter->state_lock, flags);
+spin_lock(&adapter->rwi_lock);
 
-  drivers/tty/hvc/hvcs.c
+Generated by: ./scripts/coccinelle/locks/flags.cocci
+./drivers/net/ethernet/ibm/ibmvnic.c:5413:1-18:
+ERROR: nested lock+irqsave that reuses flags from line 5404.
 
-between commit:
+Signed-off-by: Junlin Yang <yangjunlin@yulong.com>
+---
+ drivers/net/ethernet/ibm/ibmvnic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-  386a966f5ce7 ("vio: make remove callback return void")
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 2464c8a..a52668d 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -5408,9 +5408,9 @@ static void ibmvnic_remove(struct vio_dev *dev)
+ 	 * after setting state, so __ibmvnic_reset() which is called
+ 	 * from the flush_work() below, can make progress.
+ 	 */
+-	spin_lock_irqsave(&adapter->rwi_lock, flags);
++	spin_lock(&adapter->rwi_lock);
+ 	adapter->state = VNIC_REMOVING;
+-	spin_unlock_irqrestore(&adapter->rwi_lock, flags);
++	spin_unlock(&adapter->rwi_lock);
+ 
+ 	spin_unlock_irqrestore(&adapter->state_lock, flags);
+ 
+-- 
+1.9.1
 
-from the powerpc-fixes tree and commit:
 
-  fb8d350c291c ("tty: hvc, drop unneeded forward declarations")
-
-from the tty tree.
-
-I fixed it up (they both removed the forward decalrartion of
-hvcs_remove(), but the latter removed more) and can carry the fix as
-necessary. This is now fixed as far as linux-next is concerned, but any
-non trivial conflicts should be mentioned to your upstream maintainer
-when your tree is submitted for merging.  You may also want to consider
-cooperating with the maintainer of the conflicting tree to minimise any
-particularly complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/9xWkDb4+9_2nx0jSjYMefla
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmBBg9MACgkQAVBC80lX
-0GwXiQf8DH+F4whK60DwjNEeg8slREuMDGj5efB//THFJmu1MUAsJfNIxZ+tYRwD
-hIEeS9EWl6G/o28EqBe6yBsIdB4Q6/8CQD8q+0dC5rUrcnB9yGso7NdDut/aQJv1
-8Xf3jbcLhafoceBARbPZ+ad4s7nGN+tbXnN8aIa5wiT2yvxaCQl23sZkHNYJGXJH
-l8l9Gun1v8goZoaa/BSQr7RcNaHpBHycHRFss6QAa9nCbap67ZVAngFQYm4JuAGU
-oeaH/Hbr5Ai2h3H8zEUr/Ivyyc8UK8+EWaVS9oqrXEZKdTvEBZPtMg1493pF0c4o
-erVXqm+X/JvQlrNFGwLRu+DTmE32FQ==
-=+4E4
------END PGP SIGNATURE-----
-
---Sig_/9xWkDb4+9_2nx0jSjYMefla--
