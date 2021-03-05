@@ -2,43 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 403B932E4DB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 10:32:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 410BA32E584
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 11:00:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsMw91Q0Rz3dJc
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 20:32:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsNXX6Xm5z3dJ3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 21:00:44 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VdQgZNul;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=VdQgZNul; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsMvr0wN9z2xb3
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 20:32:23 +1100 (AEDT)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id DBC7D2013FB;
- Fri,  5 Mar 2021 10:32:18 +0100 (CET)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9FCB62013FE;
- Fri,  5 Mar 2021 10:32:13 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 72E5A40249;
- Fri,  5 Mar 2021 10:32:07 +0100 (CET)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org
-Subject: [PATCH] ASoC: fsl_asrc_dma: request dma channel from specific
- controller
-Date: Fri,  5 Mar 2021 17:19:37 +0800
-Message-Id: <1614935977-21638-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsNX54M4hz3cH2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 21:00:21 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B9C7C64F56;
+ Fri,  5 Mar 2021 10:00:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1614938418;
+ bh=q7+GpxBp+H0eRgTkIdpsEpb4AOMic5EYKdk6TlKfzNU=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=VdQgZNulq90gd29Xtg9/oNfQ2d54P/SpjBprppu6WHUCh5dXm1SSl0GGu+C3Db9Uo
+ pzwAKH5nDVAuHW4QcGz/8GQB5Uwy2F1AF4JKaBAKwYloGiPn5yGUdPVMFOmSFrGY4q
+ 1BFHvZTVShuR2OJT0m5VHBTe69UQAbmD/qup6iCvMDYVTI30coAfWYG48n1Nx0Zwfg
+ ff6QcANvdoSlC3az1tKSteLjGyz8Je2PCg+wq1tAcIFASs2XSsNRO2eEn2wRIe4a5a
+ tAI98WNSpofbBZCB1IrCBc5S9hoqSYa/Hnq02bUaEneKTqhx6nKn4Ab9WNOF3O7t4d
+ jOwVlaHOUjTTQ==
+Date: Fri, 5 Mar 2021 10:00:12 +0000
+From: Will Deacon <will@kernel.org>
+To: Rob Clark <robdclark@gmail.com>
+Subject: Re: [Freedreno] [PATCH 16/17] iommu: remove DOMAIN_ATTR_IO_PGTABLE_CFG
+Message-ID: <20210305100012.GB22536@willie-the-truck>
+References: <20210301084257.945454-1-hch@lst.de>
+ <20210301084257.945454-17-hch@lst.de>
+ <d567ad5c-5f89-effa-7260-88c6d86b4695@arm.com>
+ <CAF6AEGtTs-=aO-Ntp0Qn6mYDSv4x0-q3y217QxU7kZ6H1b1fiQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAF6AEGtTs-=aO-Ntp0Qn6mYDSv4x0-q3y217QxU7kZ6H1b1fiQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,47 +61,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: freedreno <freedreno@lists.freedesktop.org>,
+ Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>, kvm@vger.kernel.org,
+ Joerg Roedel <joro@8bytes.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ dri-devel <dri-devel@lists.freedesktop.org>, Li Yang <leoyang.li@nxp.com>,
+ "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>,
+ Joerg Roedel <joro@8bytes.org>, " <iommu@lists.linux-foundation.org>,
+ netdev@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+ linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+ virtualization@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
+ Christoph Hellwig <hch@lst.de>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Robin Gong <yibin.gong@nxp.com>
+On Thu, Mar 04, 2021 at 03:11:08PM -0800, Rob Clark wrote:
+> On Thu, Mar 4, 2021 at 7:48 AM Robin Murphy <robin.murphy@arm.com> wrote:
+> >
+> > On 2021-03-01 08:42, Christoph Hellwig wrote:
+> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> >
+> > Moreso than the previous patch, where the feature is at least relatively
+> > generic (note that there's a bunch of in-flight development around
+> > DOMAIN_ATTR_NESTING), I'm really not convinced that it's beneficial to
+> > bloat the generic iommu_ops structure with private driver-specific
+> > interfaces. The attribute interface is a great compromise for these
+> > kinds of things, and you can easily add type-checked wrappers around it
+> > for external callers (maybe even make the actual attributes internal
+> > between the IOMMU core and drivers) if that's your concern.
+> 
+> I suppose if this is *just* for the GPU we could move it into adreno_smmu_priv..
+> 
+> But one thing I'm not sure about is whether
+> IO_PGTABLE_QUIRK_ARM_OUTER_WBWA is something that other devices
+> *should* be using as well, but just haven't gotten around to yet.
 
-Request dma channel from specific dma controller instead of generic
-dma controller list, otherwise, may get the wrong dma controller
-if there are multi dma controllers such as i.MX8MP.
+The intention is certainly that this would be a place to collate per-domain
+pgtable quirks, so I'd prefer not to tie that to the GPU.
 
-Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_asrc_dma.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-index 29f91cdecbc3..c313a26c8f95 100644
---- a/sound/soc/fsl/fsl_asrc_dma.c
-+++ b/sound/soc/fsl/fsl_asrc_dma.c
-@@ -141,6 +141,7 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
- 	struct dma_slave_config config_fe, config_be;
- 	enum asrc_pair_index index = pair->index;
- 	struct device *dev = component->dev;
-+	struct device_node *of_dma_node;
- 	int stream = substream->stream;
- 	struct imx_dma_data *tmp_data;
- 	struct snd_soc_dpcm *dpcm;
-@@ -231,8 +232,10 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
- 		pair->dma_data.priority = tmp_data->priority;
- 		dma_release_channel(tmp_chan);
- 
-+		of_dma_node = pair->dma_chan[!dir]->device->dev->of_node;
- 		pair->dma_chan[dir] =
--			dma_request_channel(mask, filter, &pair->dma_data);
-+			__dma_request_channel(&mask, filter, &pair->dma_data,
-+					      of_dma_node);
- 		pair->req_dma_chan = true;
- 	} else {
- 		pair->dma_chan[dir] = tmp_chan;
--- 
-2.27.0
-
+Will
