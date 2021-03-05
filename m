@@ -2,59 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E9732E799
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 13:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE39832E79F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 13:05:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsRHH4d9Hz3dJ4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 23:04:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsRJs4bCrz3dLy
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 23:05:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.17.24; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsRGy2Xjnz3cPn
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 23:04:08 +1100 (AEDT)
-Received: from mail-oi1-f182.google.com ([209.85.167.182]) by
- mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MulVd-1lZg2R0PUR-00rrNM for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Mar
- 2021 13:04:04 +0100
-Received: by mail-oi1-f182.google.com with SMTP id z126so2225924oiz.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Mar 2021 04:04:03 -0800 (PST)
-X-Gm-Message-State: AOAM530QDx/B4qTmE20Avie+Bmx4PJB3qV/MGLcu286H8u7oam+QnK5L
- ZJ0u0ZOU9y1LdUt+JEImtIU4BN3QPZ+t1Af34wc=
-X-Google-Smtp-Source: ABdhPJzvwNIaEW00Aml4Gt9DByl41wlsXQXcSHXEPeKAsXC8bMoOquef8BfTOVyLV4/l6Byf5f01UCfsF2Iye6vPn94=
-X-Received: by 2002:aca:4fd3:: with SMTP id d202mr6517268oib.11.1614945842125; 
- Fri, 05 Mar 2021 04:04:02 -0800 (PST)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DsRJY0GW4z3cRd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 23:05:31 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F22531B;
+ Fri,  5 Mar 2021 04:05:27 -0800 (PST)
+Received: from C02TD0UTHF1T.local (unknown [10.57.47.91])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B046D3F766;
+ Fri,  5 Mar 2021 04:05:24 -0800 (PST)
+Date: Fri, 5 Mar 2021 12:04:53 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Marco Elver <elver@google.com>
+Subject: Re: [PATCH v1] powerpc: Include running function as first entry in
+ save_stack_trace() and friends
+Message-ID: <20210305120453.GA74705@C02TD0UTHF1T.local>
+References: <1802be3e-dc1a-52e0-1754-a40f0ea39658@csgroup.eu>
+ <YD+o5QkCZN97mH8/@elver.google.com>
+ <20210304145730.GC54534@C02TD0UTHF1T.local>
+ <CANpmjNOSpFbbDaH9hNucXrpzG=HpsoQpk5w-24x8sU_G-6cz0Q@mail.gmail.com>
+ <20210304165923.GA60457@C02TD0UTHF1T.local>
+ <YEEYDSJeLPvqRAHZ@elver.google.com>
+ <20210304180154.GD60457@C02TD0UTHF1T.local>
+ <CANpmjNOZWuhqXATDjH3F=DMbpg2xOy0XppVJ+Wv2XjFh_crJJg@mail.gmail.com>
+ <20210304185148.GE60457@C02TD0UTHF1T.local>
+ <CANpmjNMQNWBtWS7O_aaCfbMWvQUnzWTPXoxgD8DzqNzKfL_2Dg@mail.gmail.com>
 MIME-Version: 1.0
-References: <f08ef2b6f339ba19987cfef4307a4dd26b2faf97.1614933479.git.christophe.leroy@csgroup.eu>
- <CAK8P3a2b+u+8smkKWB-V2Non+nnZmNG4dNi6cGpM8weYuY5j6A@mail.gmail.com>
- <5811950d-ef14-d416-35e6-d694ef920a7d@csgroup.eu>
-In-Reply-To: <5811950d-ef14-d416-35e6-d694ef920a7d@csgroup.eu>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Fri, 5 Mar 2021 13:03:45 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a34cnCk4=Xyxvib57JLN-ck4T0-FUZRAQT_L6MDKjE+-w@mail.gmail.com>
-Message-ID: <CAK8P3a34cnCk4=Xyxvib57JLN-ck4T0-FUZRAQT_L6MDKjE+-w@mail.gmail.com>
-Subject: Re: [PATCH v3] powerpc/32: remove bogus ppc_select syscall
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0kCD38r+vVvZjWc/tZPHcSkOWs94Cx9Yvj9qdaUQF1iglgOR4yo
- YD+OgK8ehxlmbAs6I3Wc0VlslYMdCHy8fyCwLt5bLetOSjVOeydENekrNA/7LfFpcIjehG8
- +Fjsl5yhZtFFEjZZUeKqOSku5hgeaGfn5EO1kcUkZKexqdCD9Q65b2YXESdcXckys89xSNi
- YBMTu2/UNhlv+aqKveXBA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:hToTwb+NV68=:bvaMFRsnShIHdlQ6FJGtvZ
- 5/KBdE3Wjjw9jsH28RemF8sDEk4DOZGFCk+Y1qKPiiIOPUN8edUhX4XxVauPEna0mr8R598mM
- NHJfNNymoIg6qh4noF5fOO7P/EkRVl9ib+v4UpETqs1XRpkQ+m4TnvdtPpsUcLiB/Q1SqDk+C
- lYwt6inJ/WgXYX0l9EsWvpHtBEuVx3Vh3qvex3Amy0NZAWUyCP6Y55sKd0aWXRNoyKVtJPz6S
- ZJB/WsaPmQNipH/+TZ668sxqaSIvpTBGwOELK+qci5RkKSTdVt6moDC1mjiBDVcyyvIcusfN1
- vYr2OgdBuDm/ne25AZVrUd8r5Fq4St+rNgh5FzZMV9bhyhbdR8JhTOy/2pDSaooTCqEJtxiZN
- FzVvqNe7QzRv++2RGEiTpvcXW8FA3T/pX/pNAqVoYRr0jtL8EQizjehP+k2CC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNMQNWBtWS7O_aaCfbMWvQUnzWTPXoxgD8DzqNzKfL_2Dg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,63 +53,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, broonie@kernel.org,
+ Paul Mackerras <paulus@samba.org>, kasan-dev <kasan-dev@googlegroups.com>,
+ linux-toolchains@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 5, 2021 at 11:15 AM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> Le 05/03/2021 =C3=A0 11:06, Arnd Bergmann a =C3=A9crit :
-> > On Fri, Mar 5, 2021 at 9:40 AM Christophe Leroy <christophe.leroy@csgro=
-up.eu> wrote:
-> > - glibc support for ppc32 gets merged during the linux-2.5 days, suppor=
-ting
-> >    only #142 with the new behavior.
+On Thu, Mar 04, 2021 at 08:01:29PM +0100, Marco Elver wrote:
+> On Thu, 4 Mar 2021 at 19:51, Mark Rutland <mark.rutland@arm.com> wrote:
+> > On Thu, Mar 04, 2021 at 07:22:53PM +0100, Marco Elver wrote:
 
-It turns out to be older than I said. This was actually in glibc-1.94
-from 1997, so during
-the linux-2.1 days, not 2.5!
+> > > I was having this problem with KCSAN, where the compiler would
+> > > tail-call-optimize __tsan_X instrumentation.
+> >
+> > Those are compiler-generated calls, right? When those are generated the
+> > compilation unit (and whatever it has included) might not have provided
+> > a prototype anyway, and the compiler has special knowledge of the
+> > functions, so it feels like the compiler would need to inhibit TCO here
+> > for this to be robust. For their intended usage subjecting them to TCO
+> > doesn't seem to make sense AFAICT.
+> >
+> > I suspect that compilers have some way of handling that; otherwise I'd
+> > expect to have heard stories of mcount/fentry calls getting TCO'd and
+> > causing problems. So maybe there's an easy fix there?
+> 
+> I agree, the compiler builtins should be handled by the compiler
+> directly, perhaps that was a bad example. But we also have "explicit
+> instrumentation", e.g. everything that's in <linux/instrumented.h>.
 
-> Whaou, nice archeology, thanks. Do you mind if I copy the history you est=
-ablished ?
+True -- I agree for those we want similar, and can see a case for a
+no-tco-calls-to-me attribute on functions as with noreturn.
 
-That's fine, please copy it.
+Maybe for now it's worth adding prevent_tail_call_optimization() to the
+instrument_*() call wrappers in <linux/instrumented.h>? As those are
+__always_inline, that should keep the function they get inlined in
+around. Though we probably want to see if we can replace the mb() in
+prevent_tail_call_optimization() with something that doesn't require a
+real CPU barrier.
 
-> In your commit, you said 2.3.48. Here in the history you say 2.1.48. Whic=
-h one is correct ?
+[...]
 
-2.1.48 is correct.
+> > I reckon for basically any instrumentation we don't want calls to be
+> > TCO'd, though I'm not immediately sure of cases beyond sanitizers and
+> > mcount/fentry.
+> 
+> Thinking about this more, I think it's all debugging tools. E.g.
+> lockdep, if you lock/unlock at the end of a function, you might tail
+> call into lockdep. If the compiler applies TCO, and lockdep determines
+> there's a bug and then shows a trace, you'll have no idea where the
+> actual bug is. The kernel has lots of debugging facilities that add
+> instrumentation in this way. So perhaps it's a general debugging-tool
+> problem (rather than just sanitizers).
 
-> Regardless of whethere binaries are broken or not for other reason, is th=
-at worth expecting an
-> almost 25 yr old binary to run on future kernels ? If one is able to put =
-the necessary effort to
-> port you hardware to the latest kernel, can't he really port the binary a=
-s well ?
+This makes sense to me.
 
-I think the questions of supporting old hardware with new software and
-supporting old
-binaries on modern kernels are largely orthogonal. The policy we have
-is that we don't
-break existing user setups, and it really seems unlikely that anyone
-still uses pre-1997
-executables for anything that requires a modern kernel!
-
-I now checked the oldest mklinux I could find (DR2.1 from 1997), and
-even has the
-modern glibc and linux-2.0.28 kernel patched to provide the modern semantic=
-s at
-syscall #142 for glibc, with the same (already unused) compatibility hack a=
-t #82
-that we still have for ppc32 today. This made mklinux DR2.1 binaries
-incompatible
-with mainline linux-2.0 kernels, but they might still work with modern kern=
-els,
-regardless of whether we remove support for binaries that worked with mainl=
-ine
-linux-2.0.
-
-       Arnd
+Thanks,
+Mark.
