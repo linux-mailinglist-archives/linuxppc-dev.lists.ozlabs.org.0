@@ -2,95 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E3832E709
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 12:10:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 574DD32E71D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 12:17:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsQ5R5WPfz3dHK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 22:10:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hT61fGEK;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsQDw282vz3dKD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 22:17:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hT61fGEK; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsQ501zxgz3cGF
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 22:10:27 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 125B4W2Z010728; Fri, 5 Mar 2021 06:10:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=u0N/RW7I4FUjeI3p2VL+gSb2nyIuiQqLVNHNOzKuduI=;
- b=hT61fGEKDV1BQOkYYrNkNS9Mf9PA8cxqtwBmjv1iw8juE44L2EEdq2w2nUeJ+dNhYtiX
- ThBm6IqGlWO4yntttKOQAO7Ydx2ptxnfc9NcyQ0/7Re3Z6rCxdghgQk99UAP9GfIbVbT
- glX1hgqMPD6IQ0ABZ6qomrm7syWQQepP7twrR0BhBXpL6CgzHj9WTeSc6VcK2X+frZ4E
- uYElzW2eD9DbrVhf5FTmCjwI2w0yhbyw5swXUyVRaydesuDMzsS9HP64os8D0xyy8O4+
- Iky+Vj8l9Knp1WatQh9VjcgV+Mqx+bzF8arK/+MUo8ApNLR6Bd/wLa/08npIFtAxjLbm lw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 373jrrhcy0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 06:10:20 -0500
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 125B58AH014197;
- Fri, 5 Mar 2021 06:10:20 -0500
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 373jrrhcwj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 06:10:20 -0500
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 125B80Jh028369;
- Fri, 5 Mar 2021 11:10:18 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma04ams.nl.ibm.com with ESMTP id 3712fmkmcs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 11:10:17 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 125BA1tl26739094
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 5 Mar 2021 11:10:01 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ABE9D4204D;
- Fri,  5 Mar 2021 11:10:15 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7C74D42045;
- Fri,  5 Mar 2021 11:10:14 +0000 (GMT)
-Received: from DESKTOP-TDPLP67.localdomain (unknown [9.85.120.65])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  5 Mar 2021 11:10:14 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc: Fix instruction encoding for lis in
- ppc_function_entry()
-Date: Thu,  4 Mar 2021 07:34:11 +0530
-Message-Id: <20210304020411.16796-1-naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsQDZ5wj7z3cGk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 22:16:58 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DsQDP6krLz9txfD;
+ Fri,  5 Mar 2021 12:16:53 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id IaumhEy4LJKR; Fri,  5 Mar 2021 12:16:53 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DsQDP5NzTz9txf7;
+ Fri,  5 Mar 2021 12:16:53 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0909B8B81F;
+ Fri,  5 Mar 2021 12:16:55 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ahQmwKGZx4cI; Fri,  5 Mar 2021 12:16:54 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8A0DF8B78B;
+ Fri,  5 Mar 2021 12:16:54 +0100 (CET)
+Subject: Re: Build regressions/improvements in v5.12-rc1
+To: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Alex Deucher <alexdeucher@gmail.com>
+References: <20210301104316.2766484-1-geert@linux-m68k.org>
+ <alpine.DEB.2.22.394.2103011342520.710098@ramsan.of.borg>
+ <CADnq5_O-j8EWL+Eb8zK-7WqUuWKWETVWYRQNFdS_ymUSgo1jrg@mail.gmail.com>
+ <CAMuHMdVFstnce-WKmj=4h3ZdtSThJNOLz_f1ervcZxE6hg=KsA@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <09155bb0-4403-bcde-239f-eae4067953ca@csgroup.eu>
+Date: Fri, 5 Mar 2021 12:16:34 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
+In-Reply-To: <CAMuHMdVFstnce-WKmj=4h3ZdtSThJNOLz_f1ervcZxE6hg=KsA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-05_05:2021-03-03,
- 2021-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 mlxlogscore=999
- lowpriorityscore=0 spamscore=0 clxscore=1015 suspectscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103050055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,36 +65,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ amd-gfx list <amd-gfx@lists.freedesktop.org>,
+ =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-'lis r2,N' is 'addis r2,0,N' and the instruction encoding in the macro
-LIS_R2 is incorrect (it currently maps to 'addis 0,r2,N'). Fix the same.
 
-Fixes: c71b7eff426fa7 ("powerpc: Add ABIv2 support to ppc_function_entry")
-Reported-by: Jiri Olsa <jolsa@redhat.com>
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+
+Le 02/03/2021 à 21:01, Geert Uytterhoeven a écrit :
+> Hi Alex,
+> 
+> On Tue, Mar 2, 2021 at 8:30 PM Alex Deucher <alexdeucher@gmail.com> wrote:
+>> On Mon, Mar 1, 2021 at 9:21 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>>> On Mon, 1 Mar 2021, Geert Uytterhoeven wrote:
+>>>> Below is the list of build error/warning regressions/improvements in
+>>>> v5.12-rc1[1] compared to v5.11[2].
+>>>>
+>>>> Summarized:
+>>>>   - build errors: +2/-0
+>>>
+>>>> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/fe07bfda2fb9cdef8a4d4008a409bb02f35f1bd8/ (all 192 configs)
+>>>> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/f40ddce88593482919761f74910f42f4b84c004b/ (all 192 configs)
+>>>>
+>>>>
+>>>> *** ERRORS ***
+>>>>
+>>>> 2 error regressions:
+>>>>   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c: error: implicit declaration of function 'disable_kernel_vsx' [-Werror=implicit-function-declaration]:  => 674:2
+>>>>   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c: error: implicit declaration of function 'enable_kernel_vsx' [-Werror=implicit-function-declaration]:  => 638:2
+>>>
+>>> powerpc-gcc4.9/ppc64_book3e_allmodconfig
+>>>
+>>> This was fixed in v5.11-rc1, but reappeared in v5.12-rc1?
+>>
+>> Do you know what fixed in for 5.11?  I guess for PPC64 we depend on CONFIG_VSX?
+> 
+> Looking at the kisskb build logs for v5.11*, it seems compilation never
+> got to drivers/gpu/drm/ due to internal compiler errors that weren't caught
+> by my scripts.  So the errors listed above were not really fixed.
+> 
+
+As far as I can see, the problem has been there for any config without CONFIG_VSX from the beginning 
+ie since https://github.com/linuxppc/linux/commit/16a9dea110a6
+
+The following should fix it up:
+
+diff --git a/arch/powerpc/include/asm/switch_to.h b/arch/powerpc/include/asm/switch_to.h
+index fdab93428372..9d1fbd8be1c7 100644
+--- a/arch/powerpc/include/asm/switch_to.h
++++ b/arch/powerpc/include/asm/switch_to.h
+@@ -71,6 +71,16 @@ static inline void disable_kernel_vsx(void)
+  {
+  	msr_check_and_clear(MSR_FP|MSR_VEC|MSR_VSX);
+  }
++#else
++static inline void enable_kernel_vsx(void)
++{
++	BUILD_BUG();
++}
++
++static inline void disable_kernel_vsx(void)
++{
++	BUILD_BUG();
++}
+  #endif
+
+  #ifdef CONFIG_SPE
 ---
- arch/powerpc/include/asm/code-patching.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
-index eacc9102c2515c..d5b3c3bb95b400 100644
---- a/arch/powerpc/include/asm/code-patching.h
-+++ b/arch/powerpc/include/asm/code-patching.h
-@@ -73,7 +73,7 @@ void __patch_exception(int exc, unsigned long addr);
- #endif
- 
- #define OP_RT_RA_MASK	0xffff0000UL
--#define LIS_R2		0x3c020000UL
-+#define LIS_R2		0x3c400000UL
- #define ADDIS_R2_R12	0x3c4c0000UL
- #define ADDI_R2_R2	0x38420000UL
- 
-
-base-commit: 91966823812efbd175f904599e5cf2a854b39809
--- 
-2.25.1
-
+Christophe
+Christophe
