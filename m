@@ -2,57 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D61332F2D1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 19:39:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E26F32F2C9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 19:37:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dsc2p6wBvz3dP3
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Mar 2021 05:39:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dsc0z0WDtz3dNP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Mar 2021 05:37:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=87.98.187.244; helo=10.mo52.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 3599 seconds by postgrey-1.36 at boromir;
- Sat, 06 Mar 2021 05:38:56 AEDT
-Received: from 10.mo52.mail-out.ovh.net (10.mo52.mail-out.ovh.net
- [87.98.187.244])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dsc2S6cdcz3dF4
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Mar 2021 05:38:55 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.4.89])
- by mo52.mail-out.ovh.net (Postfix) with ESMTPS id 91BA2247D5E;
- Fri,  5 Mar 2021 18:22:13 +0100 (CET)
-Received: from kaod.org (37.59.142.98) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 5 Mar 2021
- 18:22:12 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-98R0028d3f4780-093e-46d9-9ca6-335c229312b5,
- A3005A4F36DF08AD97B2C2D73D5B520F0C45B7E8) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 86.201.91.229
-Subject: Re: [PATCH] arch/powerpc/include/asm/book3s/64/: remove duplicate
- include in mmu-hash.h
-To: <menglong8.dong@gmail.com>, <mpe@ellerman.id.au>
-References: <20210304024251.187564-1-zhang.yunkai@zte.com.cn>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <899a2027-d7e8-334d-d7ad-36ee143cfbce@kaod.org>
-Date: Fri, 5 Mar 2021 18:22:12 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <20210304024251.187564-1-zhang.yunkai@zte.com.cn>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.98]
-X-ClientProxiedBy: DAG1EX1.mxp5.local (172.16.2.1) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 0822bdb6-c61c-4633-ace2-03d601973089
-X-Ovh-Tracer-Id: 7549440352677891061
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledruddtiedgledvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefuvfhfhffkffgfgggjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeejkeduueduveelgeduueegkeelffevledujeetffeivdelvdfgkeeufeduheehfeenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddrleeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehmvghnghhlohhnghekrdguohhnghesghhmrghilhdrtghomh
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Dsc0d3q1zz30MK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Mar 2021 05:37:21 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 125IX2ju027144;
+ Fri, 5 Mar 2021 12:33:02 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 125IX0sO027136;
+ Fri, 5 Mar 2021 12:33:00 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Fri, 5 Mar 2021 12:33:00 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 1/7] cmdline: Add generic function to build command
+ line.
+Message-ID: <20210305183300.GX29191@gate.crashing.org>
+References: <cover.1614705851.git.christophe.leroy@csgroup.eu>
+ <d8cf7979ad986de45301b39a757c268d9df19f35.1614705851.git.christophe.leroy@csgroup.eu>
+ <20210303172810.GA19713@willie-the-truck>
+ <a0cfef11-efba-2e5c-6f58-ed63a2c3bfa0@csgroup.eu>
+ <20210303174627.GC19713@willie-the-truck>
+ <dc6576ac-44ff-7db4-d718-7565b83f50b8@csgroup.eu>
+ <20210303181651.GE19713@willie-the-truck> <87sg59rewl.fsf@mpe.ellerman.id.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87sg59rewl.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,38 +54,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rdunlap@infradead.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
- zhang.yunkai@zte.com.cn, ganeshgr@linux.ibm.com, aneesh.kumar@linux.ibm.com,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, robh@kernel.org,
+ daniel@gimpelevich.san-francisco.ca.us, devicetree@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Will Deacon <will@kernel.org>,
+ danielwa@cisco.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/4/21 3:42 AM, menglong8.dong@gmail.com wrote:
-> From: Zhang Yunkai <zhang.yunkai@zte.com.cn>
+On Fri, Mar 05, 2021 at 10:58:02PM +1100, Michael Ellerman wrote:
+> Will Deacon <will@kernel.org> writes:
+> > That's very similar to us; we're not relocated, although we are at least
+> > in control of the MMU (which is using a temporary set of page-tables).
 > 
-> 'asm/bug.h' included in 'arch/powerpc/include/asm/book3s/64/mmu-hash.h'
-> is duplicated.It is also included in the 12th line.
-> 
-> Signed-off-by: Zhang Yunkai <zhang.yunkai@zte.com.cn>
+> prom_init runs as an OF client, with the MMU off (except on some Apple
+> machines), and we don't own the MMU. So there's really nothing we can do :)
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+You *could* take over all memory mapping.  This is complex, and I
+estimate the change you get this to work correctly on all supported
+systems to be between -400% and 0%.
 
-> ---
->  arch/powerpc/include/asm/book3s/64/mmu-hash.h | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-> index f911bdb68d8b..3004f3323144 100644
-> --- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-> +++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-> @@ -18,7 +18,6 @@
->   * complete pgtable.h but only a portion of it.
->   */
->  #include <asm/book3s/64/pgtable.h>
-> -#include <asm/bug.h>
->  #include <asm/task_size_64.h>
->  #include <asm/cpu_has_feature.h>
->  
-> 
+And not very long later Linux jettisons OF completely anyway.
 
+> Though now that I look at it, I don't think we should be doing this
+> level of commandline handling in prom_init. It should just grab the
+> value from firmware and pass it to the kernel proper, and then all the
+> prepend/append/force etc. logic should happen there.
+
+That sounds much simpler, yes :-)
+
+
+Segher
