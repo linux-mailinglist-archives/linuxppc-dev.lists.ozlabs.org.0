@@ -1,73 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4B432E27C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 07:48:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC00932E2C9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 08:07:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsJGt1LcNz3dGS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 17:48:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsJhQ5WcTz3dd1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 18:07:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=fnoBYN2i;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Inac1/Pd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=dja@axtens.net;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=163.com
+ (client-ip=220.181.12.15; helo=m12-15.163.com; envelope-from=angkery@163.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=fnoBYN2i; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
+ unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256
+ header.s=s110527 header.b=Inac1/Pd; dkim-atps=neutral
+Received: from m12-15.163.com (m12-15.163.com [220.181.12.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsJGR4mCHz30Lq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 17:48:14 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id q204so1326452pfq.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Mar 2021 22:48:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=F/qIU3IVSwnnhwoxv/S8JOpC9tqjeNus66Z68JkhNVs=;
- b=fnoBYN2i3hfuntuqeKOzbav0DqrHVOiQO/3vVCS1UOygE1ibRQXOKEgpd+2UYtaPbq
- Wc08puCItQsrHTHxnV/DIopaOKT2qzbSFRFX/Xa/zI1JqAr0Xvz6v5tquPDaByZKjNVi
- LhScXhC9jZm+jE0e90EKaSHqD5Xfyn1jn593s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=F/qIU3IVSwnnhwoxv/S8JOpC9tqjeNus66Z68JkhNVs=;
- b=HnPZvDZGxJlLrI7JlFAIe/0pPXG3mtKdL8Ghbre0QOsfKtO2fge1sLL8uABA+46z1/
- tudawJOMUdrkbnYZWK7M3gf1SOjVkjFGDl3hLHyac/svdW8aRcDADCM/oFhSR1oWHGsA
- MYYZVqhxZkFtcHzTmFPgjrHG4wuG0k8Eqort+klXlXmDfRCXb5PAytfwzP0AS7lNrvc2
- tsoO99kBBn6YwNGOByrn5in3GeJQ0Ov4stjzJsgMHawKiTs0zNqsMcaeJDRlog49MgsT
- d8lMRws8790l35fuu0KWCgqln26hZeVjQ2Cky1YlPw879ORTCSbkoYqnOTcPMq2U+ydf
- eFoA==
-X-Gm-Message-State: AOAM531UhWT4PUIzTkhD0ryWYlNbdPFeiT4/aH+6ckE5mS+1Y2DP7NXT
- qveOQ2CiqCyBgjMVuTOzKuTFJw==
-X-Google-Smtp-Source: ABdhPJzMm4yOQ9+/nRdrJDidJj+rlT7dVotAw+MONYti662kDRf6XgZddV3hl4g2VN6SKNV0iGkqQQ==
-X-Received: by 2002:aa7:88c3:0:b029:1ed:f702:7230 with SMTP id
- k3-20020aa788c30000b02901edf7027230mr7755503pff.76.1614926890875; 
- Thu, 04 Mar 2021 22:48:10 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-7ad2-5bb3-4fd4-d737.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:7ad2:5bb3:4fd4:d737])
- by smtp.gmail.com with ESMTPSA id u2sm1158316pjy.14.2021.03.04.22.48.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Mar 2021 22:48:10 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH v2 09/37] KVM: PPC: Book3S 64: Move hcall early register
- setup to KVM
-In-Reply-To: <20210225134652.2127648-10-npiggin@gmail.com>
-References: <20210225134652.2127648-1-npiggin@gmail.com>
- <20210225134652.2127648-10-npiggin@gmail.com>
-Date: Fri, 05 Mar 2021 17:48:07 +1100
-Message-ID: <87im6685aw.fsf@linkitivity.dja.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsJgr6Hckz30LT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 18:06:41 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Date:From:Subject:Message-ID:MIME-Version; bh=1CrzQ
+ K1FiZQ6UWshLPUj3+3c3rlvZ+x61jdocF6Jma8=; b=Inac1/PdOL9Oi2sDMH0WD
+ uOHyrLIK+aIUzdARMwf9vqeP7SOGpcj6EplN2U0F0JT65LhLE55uleZF+8CAywvh
+ Iqi86yjKeIZfuD4M/Ry+gs7+lsR+S/M6mSGbHEV72O9Zq3CQGwHRi+ON63cHLcVc
+ Fxa8dNZCQijfkmZuo3iibQ=
+Received: from localhost (unknown [119.137.55.151])
+ by smtp11 (Coremail) with SMTP id D8CowAC3vhKx10Fgj6uHDw--.63S2;
+ Fri, 05 Mar 2021 15:03:22 +0800 (CST)
+Date: Fri, 5 Mar 2021 15:03:25 +0800
+From: angkery <angkery@163.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] ibmvnic: remove excessive irqsave
+Message-ID: <20210305150325.0000286b.angkery@163.com>
+In-Reply-To: <67215668-0850-a0f3-06e1-49db590b8fcc@csgroup.eu>
+References: <20210305014350.1460-1-angkery@163.com>
+ <67215668-0850-a0f3-06e1-49db590b8fcc@csgroup.eu>
+Organization: yulong
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=GB18030
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: D8CowAC3vhKx10Fgj6uHDw--.63S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJryfXrW5Jr1DGrWxuw45ZFb_yoW8trWkpF
+ srWFy3C3Wvqr1jgwsrXw10yFsrC3yDtry8WrykC3Wfuas8Zr1Fqr1rKFy29FWDJ3yfKan0
+ yF15Z3s3ZFn8C3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UzKZXUUUUU=
+X-Originating-IP: [119.137.55.151]
+X-CM-SenderInfo: 5dqjyvlu16il2tof0z/1tbiLQFMI1SIlLiOnAABsg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,172 +65,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Junlin Yang <yangjunlin@yulong.com>, linux-kernel@vger.kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, ljp@linux.ibm.com, drt@linux.ibm.com,
+ paulus@samba.org, sukadev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+On Fri, 5 Mar 2021 06:49:14 +0100
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-> System calls / hcalls have a different calling convention than
-> other interrupts, so there is code in the KVMTEST to massage these
-> into the same form as other interrupt handlers.
->
-> Move this work into the KVM hcall handler. This means teaching KVM
-> a little more about the low level interrupt handler setup, PACA save
-> areas, etc., although that's not obviously worse than the current
-> approach of coming up with an entirely different interrupt register
-> / save convention.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/include/asm/exception-64s.h | 13 +++++++
->  arch/powerpc/kernel/exceptions-64s.S     | 44 ++----------------------
->  arch/powerpc/kvm/book3s_64_entry.S       | 17 +++++++++
->  3 files changed, 32 insertions(+), 42 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/exception-64s.h b/arch/powerpc/include/asm/exception-64s.h
-> index c1a8aac01cf9..bb6f78fcf981 100644
-> --- a/arch/powerpc/include/asm/exception-64s.h
-> +++ b/arch/powerpc/include/asm/exception-64s.h
-> @@ -35,6 +35,19 @@
->  /* PACA save area size in u64 units (exgen, exmc, etc) */
->  #define EX_SIZE		10
->  
-> +/* PACA save area offsets */
-> +#define EX_R9		0
-> +#define EX_R10		8
-> +#define EX_R11		16
-> +#define EX_R12		24
-> +#define EX_R13		32
-> +#define EX_DAR		40
-> +#define EX_DSISR	48
-> +#define EX_CCR		52
-> +#define EX_CFAR		56
-> +#define EX_PPR		64
-> +#define EX_CTR		72
+> Le 05/03/2021 à 02:43, angkery a écrit :
+> > From: Junlin Yang <yangjunlin@yulong.com>
+> > 
+> > ibmvnic_remove locks multiple spinlocks while disabling interrupts:
+> > spin_lock_irqsave(&adapter->state_lock, flags);
+> > spin_lock_irqsave(&adapter->rwi_lock, flags);
+> > 
+> > there is no need for the second irqsave,since interrupts are
+> > disabled at that point, so remove the second irqsave:  
+> 
+> The problème is not that there is no need. The problem is a lot more
+> serious: As reported by coccinella, the second _irqsave() overwrites
+> the value saved in 'flags' by the first _irqsave, therefore when the
+> second _irqrestore comes, the value in 'flags' is not valid, the
+> value saved by the first _irqsave has been lost. This likely leads to
+> IRQs remaining disabled, which is _THE_ problem really.
+> 
 
-I wonder - now that EX_blah and EX_SIZE both live in the one header
-file, if we could calculate EX_SIZE based on the last offset... or have
-a BUILD_BUG_ON or something? ... just trying not to lose the sanity
-checking afforded to us by the .if macro we lose when moving these out
-of exceptions-64s.S...
+Thank you for explaining the real problem.
+I will update the commit information with your description.
 
-> +
->  /*
->   * maximum recursive depth of MCE exceptions
->   */
-> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-> index 9ae463e8522b..b7092ba87da8 100644
-> --- a/arch/powerpc/kernel/exceptions-64s.S
-> +++ b/arch/powerpc/kernel/exceptions-64s.S
-> @@ -21,22 +21,6 @@
->  #include <asm/feature-fixups.h>
->  #include <asm/kup.h>
->  
-> -/* PACA save area offsets (exgen, exmc, etc) */
-> -#define EX_R9		0
-> -#define EX_R10		8
-> -#define EX_R11		16
-> -#define EX_R12		24
-> -#define EX_R13		32
-> -#define EX_DAR		40
-> -#define EX_DSISR	48
-> -#define EX_CCR		52
-> -#define EX_CFAR		56
-> -#define EX_PPR		64
-> -#define EX_CTR		72
-> -.if EX_SIZE != 10
-> -	.error "EX_SIZE is wrong"
-> -.endif
-> -
->  /*
->   * Following are fixed section helper macros.
->   *
-> @@ -1964,45 +1948,21 @@ EXC_VIRT_END(system_call, 0x4c00, 0x100)
->  
->  #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
->  TRAMP_REAL_BEGIN(system_call_kvm)
-> -	/*
-> -	 * This is a hcall, so register convention is as above, with these
-> -	 * differences:
-> -	 * r13 = PACA
-> -	 * ctr = orig r13
-> -	 * orig r10 saved in PACA
-> -	 */
-> -	 /*
-> -	  * Save the PPR (on systems that support it) before changing to
-> -	  * HMT_MEDIUM. That allows the KVM code to save that value into the
-> -	  * guest state (it is the guest's PPR value).
-> -	  */
-> -BEGIN_FTR_SECTION
-> -	mfspr	r10,SPRN_PPR
-> -	std	r10,HSTATE_PPR(r13)
-> -END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
-> -	HMT_MEDIUM
->  	mfctr	r10
-> -	SET_SCRATCH0(r10)
-> -	mfcr	r10
-> -	std	r12,HSTATE_SCRATCH0(r13)
-> -	sldi	r12,r10,32
-> -	ori	r12,r12,0xc00
-> +	SET_SCRATCH0(r10) /* Save r13 in SCRATCH0 */
->  #ifdef CONFIG_RELOCATABLE
->  	/*
-> -	 * Requires __LOAD_FAR_HANDLER beause kvmppc_interrupt lives
-> +	 * Requires __LOAD_FAR_HANDLER beause kvmppc_hcall lives
 
-That change probably belongs in the previous patch :)
+> > spin_lock_irqsave(&adapter->state_lock, flags);
+> > spin_lock(&adapter->rwi_lock);
+> > 
+> > Generated by: ./scripts/coccinelle/locks/flags.cocci
+> > ./drivers/net/ethernet/ibm/ibmvnic.c:5413:1-18:
+> > ERROR: nested lock+irqsave that reuses flags from line 5404.
+> > 
+> > Signed-off-by: Junlin Yang <yangjunlin@yulong.com>
+> > ---
+> >   drivers/net/ethernet/ibm/ibmvnic.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/ibm/ibmvnic.c
+> > b/drivers/net/ethernet/ibm/ibmvnic.c index 2464c8a..a52668d 100644
+> > --- a/drivers/net/ethernet/ibm/ibmvnic.c
+> > +++ b/drivers/net/ethernet/ibm/ibmvnic.c
+> > @@ -5408,9 +5408,9 @@ static void ibmvnic_remove(struct vio_dev
+> > *dev)
+> >   	 * after setting state, so __ibmvnic_reset() which is
+> > called
+> >   	 * from the flush_work() below, can make progress.
+> >   	 */
+> > -	spin_lock_irqsave(&adapter->rwi_lock, flags);
+> > +	spin_lock(&adapter->rwi_lock);
+> >   	adapter->state = VNIC_REMOVING;
+> > -	spin_unlock_irqrestore(&adapter->rwi_lock, flags);
+> > +	spin_unlock(&adapter->rwi_lock);
+> >   
+> >   	spin_unlock_irqrestore(&adapter->state_lock, flags);
+> >   
+> >   
 
-Beyond that, I'm still wrapping my head around the deep magic going on
-here! Hopefully I'll get a bit a bit further next time I look.
 
-Kind regards,
-Daniel
-
->  	 * outside the head section.
->  	 */
->  	__LOAD_FAR_HANDLER(r10, kvmppc_hcall)
->  	mtctr   r10
-> -	ld	r10,PACA_EXGEN+EX_R10(r13)
->  	bctr
->  #else
-> -	ld	r10,PACA_EXGEN+EX_R10(r13)
->  	b       kvmppc_hcall
->  #endif
->  #endif
->  
-> -
->  /**
->   * Interrupt 0xd00 - Trace Interrupt.
->   * This is a synchronous interrupt in response to instruction step or
-> diff --git a/arch/powerpc/kvm/book3s_64_entry.S b/arch/powerpc/kvm/book3s_64_entry.S
-> index 9572f759255c..1c9518ab7d96 100644
-> --- a/arch/powerpc/kvm/book3s_64_entry.S
-> +++ b/arch/powerpc/kvm/book3s_64_entry.S
-> @@ -13,6 +13,23 @@
->  .global	kvmppc_hcall
->  .balign IFETCH_ALIGN_BYTES
->  kvmppc_hcall:
-> +	/*
-> +	 * This is a hcall, so register convention is as
-> +	 * Documentation/powerpc/papr_hcalls.rst, with these additions:
-> +	 * R13		= PACA
-> +	 * guest R13 saved in SPRN_SCRATCH0
-> +	 * R10		= free
-> +	 */
-> +BEGIN_FTR_SECTION
-> +	mfspr	r10,SPRN_PPR
-> +	std	r10,HSTATE_PPR(r13)
-> +END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
-> +	HMT_MEDIUM
-> +	mfcr	r10
-> +	std	r12,HSTATE_SCRATCH0(r13)
-> +	sldi	r12,r10,32
-> +	ori	r12,r12,0xc00
-> +	ld	r10,PACA_EXGEN+EX_R10(r13)
->  
->  .global	kvmppc_interrupt
->  .balign IFETCH_ALIGN_BYTES
-> -- 
-> 2.23.0
