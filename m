@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBF832EDD2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 16:08:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBAC32EDDA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 16:08:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsWMf1gM0z3ddJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Mar 2021 02:08:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsWN50WTpz3dCs
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Mar 2021 02:08:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=C5Xz5RYQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ozRaWqyO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
+ helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=C5Xz5RYQ; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+ header.s=20161025 header.b=ozRaWqyO; dkim-atps=neutral
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
+ [IPv6:2607:f8b0:4864:20::42f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsWKt3xQDz3dHY
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Mar 2021 02:06:58 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id h13so2214756pjt.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Mar 2021 07:06:58 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsWKy0r5mz3dBT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Mar 2021 02:07:01 +1100 (AEDT)
+Received: by mail-pf1-x42f.google.com with SMTP id m6so2377866pfk.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Mar 2021 07:07:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=OqE85jl6MTcwHuvBnwFd1UHp75PiplctVH/sjdMOP1s=;
- b=C5Xz5RYQOMw1QPhs6aQT3WoCyvr3U5jPVO4aRwZCz7U2Yt7tj5XMKFFrhV5NKgUSbC
- zmB394eJOoELma7tlIhpOez/ZddcpNSqwl1hHJzKOxVw0qhpv6JLU1nMlhM/d0dMSeA0
- ILnRYWGOrXw5wI8GM8a9kRcgVwNpWfN8Jlk7Ezs9gGpWKGSsnh38JcYGLTtMT5eWHxbZ
- 352+M/Bc4XY0Qw/4Wf+3ooc3BkyeAvgoNxin/GFqvCfjAUBMmkHsE4sRL7cAvAnIE87y
- qNFakIw0/mAN8s4EYF5YnLKQsgf72j0bk/T7oOwXhmr+RGo+XjuTx/F0yW2h6nT6DnjO
- vKLA==
+ bh=jg3hJJ3AY2PRkc+v0V7qcNrjz/l+y41Urd3AyMqPGgM=;
+ b=ozRaWqyOXFZZIe1oKZ09TVdVMyI8dCsWfXfxYwP23i67RR8WLxy4ZKssAd0HkvE2En
+ VzF4XioeJeg2CQzz1VdNqYjEqnHx5/7OWH6i6nCg96t9Pb+MOyYuG683mVRTq2gK6bs/
+ gbCkBMVU5IZ4Vd1MWCIszhZc57wpxyF+ImiPgrgL8RCndp3W+81BVDFGR/h8bdrAiCV9
+ 3hNm7PF+iYbKnjEwtAv5q8GWqHJvGv9rA0m5yXnIS1WRL/FEj99JDcQ9GytMqoX01EbC
+ LOVKO9C1Lb643BPkaWWcag0kXzZxHrsaLSEilTzUFt8Y2OXQhjTivC7OvKAsHsFRrHzg
+ 6kHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=OqE85jl6MTcwHuvBnwFd1UHp75PiplctVH/sjdMOP1s=;
- b=GXNfnzBFLL7jVKekXhGu99NXOyiB8rANQ2C03FB0Fg+GJB5h5/JaqFzojXJ5f6ghTB
- tiKoD7O2PkHNPv1wcyFsDyLlUrLvNj0B4RulOi0tQPA1YTKdclMiTL8ZnvslJeRMtWGg
- qO/5FoiI/rUHllCPmY4CtUtL1wuu+TJf2kdDi+XKja4ui6Uni0x+k50tVg/tDwCj7dqV
- nOUPYggNYlHGEoIQ8dSGQalOBNJ8JhxL9W3Uo3228cFjhztYWdy4qxDIgQjEEm+RJIXH
- F8EAf3YQ8FMWGlGkUgXbmZbiurT0qPseLqIkguWNX2Ie5YCoDmVPDSLYBH1BL739+9Lh
- WxIA==
-X-Gm-Message-State: AOAM531Ipx1dyTph8MD3F0ZOojed0J60g+T+k3FqUT9rpCCOC98nnQgn
- 5GCTndn9tBtkNw8Na897EkM=
-X-Google-Smtp-Source: ABdhPJx5/llvTT6K0Ik963e3DaHBuAbSBuyIFWQzDdCt4SFmbhfbV+lkfx7rdu7zbuCBN3odG28UGg==
-X-Received: by 2002:a17:902:ec83:b029:e3:ec1f:9dfe with SMTP id
- x3-20020a170902ec83b02900e3ec1f9dfemr9011629plg.59.1614956816281; 
- Fri, 05 Mar 2021 07:06:56 -0800 (PST)
+ bh=jg3hJJ3AY2PRkc+v0V7qcNrjz/l+y41Urd3AyMqPGgM=;
+ b=TXh+oq1+44tUISMlccs5DXTFbxS2wFRsTOtt8fo5gOni3BtMb75yqIqOws2naV6nVj
+ gqQiw+uUWjnHREG0TKeVFbhWmZnz76Em0/3rdr/Rru3Wj7aZ1DGGlDhc/2d/fqSMJFm7
+ riL9zgw5dbDQsM8hW9GcevU4ebJLOOGzgCgib+zArZL79S4pa/fEbMZYjNTjCXzDVYyV
+ o8NAPnv9cwlAnlldZ6A/eJ/1HV0NMH689jfyzdSw2BAZuuUJDD1jrpXSU6eMKtyDI4DE
+ DNnBRbNOG6PWNYEAAZwjDObckI4ajbOqwinAJ33gcXV0a02w0yBYQCZ5EemMUrLkK9y/
+ vgPg==
+X-Gm-Message-State: AOAM531by+RQgxBnzagLIYTmFpu6W06qouOwEPPCHnhl0YSaPqOcbCEi
+ AVU9bwjchVdcFdczibNTcpvE6i5CjsQ=
+X-Google-Smtp-Source: ABdhPJzegQq0tsMJ2CKEU1yp/D4gqtyXoE40J4UK9COw6KOPhttFwmKagBrbcYSrwEIGWEnWBOlbhQ==
+X-Received: by 2002:a65:52c6:: with SMTP id z6mr9126628pgp.132.1614956819808; 
+ Fri, 05 Mar 2021 07:06:59 -0800 (PST)
 Received: from bobo.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id m5sm1348982pfd.96.2021.03.05.07.06.53
+ by smtp.gmail.com with ESMTPSA id m5sm1348982pfd.96.2021.03.05.07.06.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Mar 2021 07:06:55 -0800 (PST)
+ Fri, 05 Mar 2021 07:06:59 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v3 03/41] KVM: PPC: Book3S HV: Remove redundant mtspr PSPB
-Date: Sat,  6 Mar 2021 01:06:00 +1000
-Message-Id: <20210305150638.2675513-4-npiggin@gmail.com>
+Subject: [PATCH v3 04/41] KVM: PPC: Book3S HV: remove unused kvmppc_h_protect
+ argument
+Date: Sat,  6 Mar 2021 01:06:01 +1000
+Message-Id: <20210305150638.2675513-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210305150638.2675513-1-npiggin@gmail.com>
 References: <20210305150638.2675513-1-npiggin@gmail.com>
@@ -81,31 +81,49 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- Fabiano Rosas <farosas@linux.ibm.com>
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This SPR is set to 0 twice when exiting the guest.
+The va argument is not used in the function or set by its asm caller,
+so remove it to be safe.
 
-Suggested-by: Fabiano Rosas <farosas@linux.ibm.com>
+Reviewed-by: Daniel Axtens <dja@axtens.net>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/powerpc/include/asm/kvm_ppc.h  | 3 +--
+ arch/powerpc/kvm/book3s_hv_rm_mmu.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 2e29b96ef775..0542d7f17dc3 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3758,7 +3758,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	mtspr(SPRN_DSCR, host_dscr);
- 	mtspr(SPRN_TIDR, host_tidr);
- 	mtspr(SPRN_IAMR, host_iamr);
--	mtspr(SPRN_PSPB, 0);
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index 8aacd76bb702..9531b1c1b190 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -767,8 +767,7 @@ long kvmppc_h_remove(struct kvm_vcpu *vcpu, unsigned long flags,
+                      unsigned long pte_index, unsigned long avpn);
+ long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu);
+ long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
+-                      unsigned long pte_index, unsigned long avpn,
+-                      unsigned long va);
++                      unsigned long pte_index, unsigned long avpn);
+ long kvmppc_h_read(struct kvm_vcpu *vcpu, unsigned long flags,
+                    unsigned long pte_index);
+ long kvmppc_h_clear_ref(struct kvm_vcpu *vcpu, unsigned long flags,
+diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
+index 88da2764c1bb..7af7c70f1468 100644
+--- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
++++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
+@@ -673,8 +673,7 @@ long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu)
+ }
  
- 	if (host_amr != vcpu->arch.amr)
- 		mtspr(SPRN_AMR, host_amr);
+ long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
+-		      unsigned long pte_index, unsigned long avpn,
+-		      unsigned long va)
++		      unsigned long pte_index, unsigned long avpn)
+ {
+ 	struct kvm *kvm = vcpu->kvm;
+ 	__be64 *hpte;
 -- 
 2.23.0
 
