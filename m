@@ -1,53 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0812E32E3EE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 09:50:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50BA232E3FC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 09:54:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsLzR0RdVz3dH3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 19:50:27 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=d2r1GH0E;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsM4S2gDXz3dHB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 19:54:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=163.com
- (client-ip=220.181.12.13; helo=m12-13.163.com; envelope-from=angkery@163.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256
- header.s=s110527 header.b=d2r1GH0E; dkim-atps=neutral
-Received: from m12-13.163.com (m12-13.163.com [220.181.12.13])
- by lists.ozlabs.org (Postfix) with SMTP id 4DsLz00pLGz2xb2
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 19:50:02 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=84Sfy
- PNBxHgq99YUnviXVMgxuSif+wV/5LOoOlGrFtQ=; b=d2r1GH0EG/1ZtieJlsl8k
- dgGT32KnYEgdiprQHHc5E2UbtwQWmq/DJPV1GQTRmm1AOuO8oAp3dxb4P3IzwHcF
- lPcs7r1lDODuRyuHp8QHDLE/ut/x0YeOob749j/pOBPBuxKcDvrhSwSWXLNWUdzr
- STn/9KJa4Glhyp9RkIJBuM=
-Received: from yangjunlin.ccdomain.com (unknown [218.17.89.92])
- by smtp9 (Coremail) with SMTP id DcCowAAnd5Ns8EFgtBCrhw--.51670S2;
- Fri, 05 Mar 2021 16:48:46 +0800 (CST)
-From: angkery <angkery@163.com>
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
- drt@linux.ibm.com, ljp@linux.ibm.com, sukadev@linux.ibm.com,
- davem@davemloft.net, kuba@kernel.org
-Subject: [PATCH v1] ibmvnic: remove excessive irqsave
-Date: Fri,  5 Mar 2021 16:48:39 +0800
-Message-Id: <20210305084839.2405-1-angkery@163.com>
-X-Mailer: git-send-email 2.24.0.windows.2
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsM470nLYz30Ml
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 19:54:29 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DsM406713z9twsP;
+ Fri,  5 Mar 2021 09:54:24 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id T8CJAndR9POI; Fri,  5 Mar 2021 09:54:24 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DsM405JP6z9twsN;
+ Fri,  5 Mar 2021 09:54:24 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B77808B78B;
+ Fri,  5 Mar 2021 09:54:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ODY3hqu1EVFa; Fri,  5 Mar 2021 09:54:25 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D8ED8B818;
+ Fri,  5 Mar 2021 09:54:25 +0100 (CET)
+Subject: Re: [PATCH v5 05/22] powerpc/irq: Add helper to set regs->softe
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, msuchanek@suse.de,
+ Paul Mackerras <paulus@samba.org>
+References: <cover.1612796617.git.christophe.leroy@csgroup.eu>
+ <5f37d1177a751fdbca79df461d283850ca3a34a2.1612796617.git.christophe.leroy@csgroup.eu>
+ <1612832745.vhjk6358hf.astroid@bobo.none>
+ <5987787e-ee80-ed0e-0c34-9884f6aad3c5@csgroup.eu>
+ <1612856863.0x6ebz3hce.astroid@bobo.none>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <d243672c-ea47-2d0c-bfe4-e6eed5460868@csgroup.eu>
+Date: Fri, 5 Mar 2021 09:54:24 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
+In-Reply-To: <1612856863.0x6ebz3hce.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DcCowAAnd5Ns8EFgtBCrhw--.51670S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WF13Xr4fKFy5Ar4UZF47urg_yoW8CFykpF
- 4fWFy3Gw1vqw1jqa9rXw18AFs3C39YgrW8u34kCws3ur98Ar1rXFn5tFy29rWDG3ySkan8
- ZF1UZ393AFn8C3DanT9S1TB71UUUUj7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07b58n5UUUUU=
-X-Originating-IP: [218.17.89.92]
-X-CM-SenderInfo: 5dqjyvlu16il2tof0z/xtbBFA5MI1aD+lj1pQAAsS
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,58 +68,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Junlin Yang <yangjunlin@yulong.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Junlin Yang <yangjunlin@yulong.com>
-
-ibmvnic_remove locks multiple spinlocks while disabling interrupts:
-spin_lock_irqsave(&adapter->state_lock, flags);
-spin_lock_irqsave(&adapter->rwi_lock, flags);
-
-As reported by coccinelle, the second _irqsave() overwrites the value
-saved in 'flags' by the first _irqsave(),   therefore when the second
-_irqrestore() comes,the value in 'flags' is not valid,the value saved
-by the first _irqsave() has been lost.
-This likely leads to IRQs remaining disabled. So remove the second
-_irqsave():
-spin_lock_irqsave(&adapter->state_lock, flags);
-spin_lock(&adapter->rwi_lock);
-
-Generated by: ./scripts/coccinelle/locks/flags.cocci
-./drivers/net/ethernet/ibm/ibmvnic.c:5413:1-18:
-ERROR: nested lock+irqsave that reuses flags from line 5404.
-
-Fixes: 4a41c421f367 ("ibmvnic: serialize access to work queue on remove")
-Signed-off-by: Junlin Yang <yangjunlin@yulong.com>
----
-Changes in v1:
-	a.According to Christophe Leroy's explanation, update the commit information.
-	b.Add fixes tags.
-
- drivers/net/ethernet/ibm/ibmvnic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 2464c8a..a52668d 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -5408,9 +5408,9 @@ static void ibmvnic_remove(struct vio_dev *dev)
- 	 * after setting state, so __ibmvnic_reset() which is called
- 	 * from the flush_work() below, can make progress.
- 	 */
--	spin_lock_irqsave(&adapter->rwi_lock, flags);
-+	spin_lock(&adapter->rwi_lock);
- 	adapter->state = VNIC_REMOVING;
--	spin_unlock_irqrestore(&adapter->rwi_lock, flags);
-+	spin_unlock(&adapter->rwi_lock);
- 
- 	spin_unlock_irqrestore(&adapter->state_lock, flags);
- 
--- 
-1.9.1
 
 
+Le 09/02/2021 à 08:49, Nicholas Piggin a écrit :
+> Excerpts from Christophe Leroy's message of February 9, 2021 4:18 pm:
+>>
+>>
+>> Le 09/02/2021 à 02:11, Nicholas Piggin a écrit :
+>>> Excerpts from Christophe Leroy's message of February 9, 2021 1:10 am:
+>>>> regs->softe doesn't exist on PPC32.
+>>>>
+>>>> Add irq_soft_mask_regs_set_state() helper to set regs->softe.
+>>>> This helper will void on PPC32.
+>>>>
+>>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>>> ---
+>>>
+>>> You could do the same with the kuap_ functions to change some ifdefs
+>>> to IS_ENABLED.
+>>>
+>>> That's just my preference but if you prefer this way I guess that's
+>>> okay.
+>>>
+>>
+>>
+>> That's also my preference on the long term.
+>>
+>> Here it is ephemeral, I have a follow up series implementing interrupt exit/entry in C and getting
+>> rid of all the assembly kuap hence getting rid of those ifdefs.
+> 
+> I thought it might have been because you hate ifdef more tha most :)
+>   
+>> The issue I see when using IS_ENABLED() is that you have to indent to the right, then you interfere
+>> with the file history and 'git blame'
+> 
+> Valid point if it's just going to indent back the other way in your next
+> series.
+> 
+>> Thanks for reviewing my series and looking forward to your feedback on my series on the interrupt
+>> entry/exit that I will likely release later today.
+> 
+> Cool, I'm eager to see them.
+> 
+
+Hi Nick, have you been able to look at it ?
+
+https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1612864003.git.christophe.leroy@csgroup.eu/
+
+Thanks
+Christophe
