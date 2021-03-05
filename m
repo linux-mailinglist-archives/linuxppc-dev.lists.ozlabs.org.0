@@ -1,64 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B6B32E77F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 12:58:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E9732E799
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 13:04:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsR8L631dz3dKN
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 22:58:26 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RRhqKWCT;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsRHH4d9Hz3dJ4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 23:04:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=RRhqKWCT; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.17.24; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsR7x62q1z3cPn
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 22:58:05 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DsR7v2SyLz9sR4;
- Fri,  5 Mar 2021 22:58:03 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1614945485;
- bh=L1NC9GV9BQ+E9+ry/jR63z+hknnTIJGa4fWZ4Daa1hY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=RRhqKWCT2ZGCNhqG7CWrydw8rsBkf55ZdiKxlD9W92jlG0zCxTPsjRAO+SZ3/E+Qz
- G1JbEu/m4uxOYAFEVULj86D/q25BtbKfPyyBlJIxG/8j9YdVvjqILwbvttYoAmVss3
- 0GkVDCWjLkBPqQiHJaJGzkfJ7Jl7qsPoR0tkpnrF5csXtnnAWzDwcf+6M9nJmDDegx
- dVRI9i5n5TyDn6OQHYmMOW/EgmjAkpeMFmDVRrfd4RvhQk2g6CBiWaJoAqZ6BNcMNd
- ROEx0HJ0zfDvX3FrIFKqtNHBdNylyCFhYy1m+CgFne2H6kkRZ7pPs0pj1d1OeUpazv
- sRtB9CzGrGiKg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Will Deacon <will@kernel.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 1/7] cmdline: Add generic function to build command
- line.
-In-Reply-To: <20210303181651.GE19713@willie-the-truck>
-References: <cover.1614705851.git.christophe.leroy@csgroup.eu>
- <d8cf7979ad986de45301b39a757c268d9df19f35.1614705851.git.christophe.leroy@csgroup.eu>
- <20210303172810.GA19713@willie-the-truck>
- <a0cfef11-efba-2e5c-6f58-ed63a2c3bfa0@csgroup.eu>
- <20210303174627.GC19713@willie-the-truck>
- <dc6576ac-44ff-7db4-d718-7565b83f50b8@csgroup.eu>
- <20210303181651.GE19713@willie-the-truck>
-Date: Fri, 05 Mar 2021 22:58:02 +1100
-Message-ID: <87sg59rewl.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsRGy2Xjnz3cPn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 23:04:08 +1100 (AEDT)
+Received: from mail-oi1-f182.google.com ([209.85.167.182]) by
+ mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MulVd-1lZg2R0PUR-00rrNM for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Mar
+ 2021 13:04:04 +0100
+Received: by mail-oi1-f182.google.com with SMTP id z126so2225924oiz.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Mar 2021 04:04:03 -0800 (PST)
+X-Gm-Message-State: AOAM530QDx/B4qTmE20Avie+Bmx4PJB3qV/MGLcu286H8u7oam+QnK5L
+ ZJ0u0ZOU9y1LdUt+JEImtIU4BN3QPZ+t1Af34wc=
+X-Google-Smtp-Source: ABdhPJzvwNIaEW00Aml4Gt9DByl41wlsXQXcSHXEPeKAsXC8bMoOquef8BfTOVyLV4/l6Byf5f01UCfsF2Iye6vPn94=
+X-Received: by 2002:aca:4fd3:: with SMTP id d202mr6517268oib.11.1614945842125; 
+ Fri, 05 Mar 2021 04:04:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <f08ef2b6f339ba19987cfef4307a4dd26b2faf97.1614933479.git.christophe.leroy@csgroup.eu>
+ <CAK8P3a2b+u+8smkKWB-V2Non+nnZmNG4dNi6cGpM8weYuY5j6A@mail.gmail.com>
+ <5811950d-ef14-d416-35e6-d694ef920a7d@csgroup.eu>
+In-Reply-To: <5811950d-ef14-d416-35e6-d694ef920a7d@csgroup.eu>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 5 Mar 2021 13:03:45 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a34cnCk4=Xyxvib57JLN-ck4T0-FUZRAQT_L6MDKjE+-w@mail.gmail.com>
+Message-ID: <CAK8P3a34cnCk4=Xyxvib57JLN-ck4T0-FUZRAQT_L6MDKjE+-w@mail.gmail.com>
+Subject: Re: [PATCH v3] powerpc/32: remove bogus ppc_select syscall
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0kCD38r+vVvZjWc/tZPHcSkOWs94Cx9Yvj9qdaUQF1iglgOR4yo
+ YD+OgK8ehxlmbAs6I3Wc0VlslYMdCHy8fyCwLt5bLetOSjVOeydENekrNA/7LfFpcIjehG8
+ +Fjsl5yhZtFFEjZZUeKqOSku5hgeaGfn5EO1kcUkZKexqdCD9Q65b2YXESdcXckys89xSNi
+ YBMTu2/UNhlv+aqKveXBA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:hToTwb+NV68=:bvaMFRsnShIHdlQ6FJGtvZ
+ 5/KBdE3Wjjw9jsH28RemF8sDEk4DOZGFCk+Y1qKPiiIOPUN8edUhX4XxVauPEna0mr8R598mM
+ NHJfNNymoIg6qh4noF5fOO7P/EkRVl9ib+v4UpETqs1XRpkQ+m4TnvdtPpsUcLiB/Q1SqDk+C
+ lYwt6inJ/WgXYX0l9EsWvpHtBEuVx3Vh3qvex3Amy0NZAWUyCP6Y55sKd0aWXRNoyKVtJPz6S
+ ZJB/WsaPmQNipH/+TZ668sxqaSIvpTBGwOELK+qci5RkKSTdVt6moDC1mjiBDVcyyvIcusfN1
+ vYr2OgdBuDm/ne25AZVrUd8r5Fq4St+rNgh5FzZMV9bhyhbdR8JhTOy/2pDSaooTCqEJtxiZN
+ FzVvqNe7QzRv++2RGEiTpvcXW8FA3T/pX/pNAqVoYRr0jtL8EQizjehP+k2CC
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,103 +66,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, robh@kernel.org,
- daniel@gimpelevich.san-francisco.ca.us, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, danielwa@cisco.com
+Cc: Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Will Deacon <will@kernel.org> writes:
-> On Wed, Mar 03, 2021 at 06:57:09PM +0100, Christophe Leroy wrote:
->> Le 03/03/2021 =C3=A0 18:46, Will Deacon a =C3=A9crit=C2=A0:
->> > On Wed, Mar 03, 2021 at 06:38:16PM +0100, Christophe Leroy wrote:
->> > > Le 03/03/2021 =C3=A0 18:28, Will Deacon a =C3=A9crit=C2=A0:
->> > > > On Tue, Mar 02, 2021 at 05:25:17PM +0000, Christophe Leroy wrote:
->> > > > > This code provides architectures with a way to build command line
->> > > > > based on what is built in the kernel and what is handed over by =
-the
->> > > > > bootloader, based on selected compile-time options.
->> > > > >=20
->> > > > > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> > > > > ---
->> > > > >    include/linux/cmdline.h | 62 ++++++++++++++++++++++++++++++++=
-+++++++++
->> > > > >    1 file changed, 62 insertions(+)
->> > > > >    create mode 100644 include/linux/cmdline.h
->> > > > >=20
->> > > > > diff --git a/include/linux/cmdline.h b/include/linux/cmdline.h
->> > > > > new file mode 100644
->> > > > > index 000000000000..ae3610bb0ee2
->> > > > > --- /dev/null
->> > > > > +++ b/include/linux/cmdline.h
->> > > > > @@ -0,0 +1,62 @@
->> > > > > +/* SPDX-License-Identifier: GPL-2.0 */
->> > > > > +#ifndef _LINUX_CMDLINE_H
->> > > > > +#define _LINUX_CMDLINE_H
->> > > > > +
->> > > > > +static __always_inline size_t cmdline_strlen(const char *s)
->> > > > > +{
->> > > > > +	const char *sc;
->> > > > > +
->> > > > > +	for (sc =3D s; *sc !=3D '\0'; ++sc)
->> > > > > +		; /* nothing */
->> > > > > +	return sc - s;
->> > > > > +}
->> > > > > +
->> > > > > +static __always_inline size_t cmdline_strlcat(char *dest, const=
- char *src, size_t count)
->> > > > > +{
->> > > > > +	size_t dsize =3D cmdline_strlen(dest);
->> > > > > +	size_t len =3D cmdline_strlen(src);
->> > > > > +	size_t res =3D dsize + len;
->> > > > > +
->> > > > > +	/* This would be a bug */
->> > > > > +	if (dsize >=3D count)
->> > > > > +		return count;
->> > > > > +
->> > > > > +	dest +=3D dsize;
->> > > > > +	count -=3D dsize;
->> > > > > +	if (len >=3D count)
->> > > > > +		len =3D count - 1;
->> > > > > +	memcpy(dest, src, len);
->> > > > > +	dest[len] =3D 0;
->> > > > > +	return res;
->> > > > > +}
->> > > >=20
->> > > > Why are these needed instead of using strlen and strlcat directly?
->> > >=20
->> > > Because on powerpc (at least), it will be used in prom_init, it is v=
-ery
->> > > early in the boot and KASAN shadow memory is not set up yet so calli=
-ng
->> > > generic string functions would crash the board.
->> >=20
->> > Hmm. We deliberately setup a _really_ early shadow on arm64 for this, =
-can
->> > you not do something similar? Failing that, I think it would be better=
- to
->> > offer the option for an arch to implement cmdline_*, but have then poi=
-nt to
->> > the normal library routines by default.
->>=20
->> I don't think it is possible to setup an earlier early shadow.
->>=20
->> At the point we are in prom_init, the code is not yet relocated at the
->> address it was linked for, and it is running with the MMU set by the
->> bootloader, I can't imagine being able to setup MMU entries for the early
->> shadow KASAN yet without breaking everything.
->
-> That's very similar to us; we're not relocated, although we are at least
-> in control of the MMU (which is using a temporary set of page-tables).
+On Fri, Mar 5, 2021 at 11:15 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+> Le 05/03/2021 =C3=A0 11:06, Arnd Bergmann a =C3=A9crit :
+> > On Fri, Mar 5, 2021 at 9:40 AM Christophe Leroy <christophe.leroy@csgro=
+up.eu> wrote:
+> > - glibc support for ppc32 gets merged during the linux-2.5 days, suppor=
+ting
+> >    only #142 with the new behavior.
 
-prom_init runs as an OF client, with the MMU off (except on some Apple
-machines), and we don't own the MMU. So there's really nothing we can do :)
+It turns out to be older than I said. This was actually in glibc-1.94
+from 1997, so during
+the linux-2.1 days, not 2.5!
 
-Though now that I look at it, I don't think we should be doing this
-level of commandline handling in prom_init. It should just grab the
-value from firmware and pass it to the kernel proper, and then all the
-prepend/append/force etc. logic should happen there.
+> Whaou, nice archeology, thanks. Do you mind if I copy the history you est=
+ablished ?
 
-cheers
+That's fine, please copy it.
+
+> In your commit, you said 2.3.48. Here in the history you say 2.1.48. Whic=
+h one is correct ?
+
+2.1.48 is correct.
+
+> Regardless of whethere binaries are broken or not for other reason, is th=
+at worth expecting an
+> almost 25 yr old binary to run on future kernels ? If one is able to put =
+the necessary effort to
+> port you hardware to the latest kernel, can't he really port the binary a=
+s well ?
+
+I think the questions of supporting old hardware with new software and
+supporting old
+binaries on modern kernels are largely orthogonal. The policy we have
+is that we don't
+break existing user setups, and it really seems unlikely that anyone
+still uses pre-1997
+executables for anything that requires a modern kernel!
+
+I now checked the oldest mklinux I could find (DR2.1 from 1997), and
+even has the
+modern glibc and linux-2.0.28 kernel patched to provide the modern semantic=
+s at
+syscall #142 for glibc, with the same (already unused) compatibility hack a=
+t #82
+that we still have for ppc32 today. This made mklinux DR2.1 binaries
+incompatible
+with mainline linux-2.0 kernels, but they might still work with modern kern=
+els,
+regardless of whether we remove support for binaries that worked with mainl=
+ine
+linux-2.0.
+
+       Arnd
