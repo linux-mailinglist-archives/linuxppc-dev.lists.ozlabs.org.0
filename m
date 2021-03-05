@@ -2,94 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62C832E34F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 09:05:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D52F532E390
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 09:23:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsKzl69nfz3dCJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 19:05:39 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BRvj/LUR;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsLNH5yygz3dG9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 19:23:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=BRvj/LUR; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsKzK1dtmz30Nj
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 19:05:16 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12584V5K125028; Fri, 5 Mar 2021 03:05:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Ojgh08nhkBozW5mZ5COh3+R5k4wHeCmdvIA4CCCBqwU=;
- b=BRvj/LURCy5hzUub6nHFOdbDnAsdNtDXa2F5lNFNFQ5Ru3Yg1FidPVOFIr0FdcvynzI6
- pyX0/LR37J7oC6X7Mx+UfkPywnAzok0TCizOJZE4xOKCPJTOOOhi9juLtJ1Zg+dKVEBs
- MNMSNb3K8Fs+4pPfoCMnIQgdazR2L9YQXFpt6B/b1gRBcRLw8jFVDHLZYZnB/IwIz1UO
- kNE12QlolR0QOxU5zdthmKj/BlBqarGnccmc9IXanrQwrMAb+E1P+5gBN8Uqim3EIPMK
- WO4ZDBSX5XmPU2m/hIIOlcdRd39C+XsRx5nFppoO1V0lATZ9GgMNvK9XLzI21Oq4tUPG LQ== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0b-001b2d01.pphosted.com with ESMTP id 373dh6nd8r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 03:05:06 -0500
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 12581jWw030752;
- Fri, 5 Mar 2021 08:04:24 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06fra.de.ibm.com with ESMTP id 3713s9stma-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 08:04:24 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12584LAE53346648
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 5 Mar 2021 08:04:21 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A467442047;
- Fri,  5 Mar 2021 08:04:21 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5902D42041;
- Fri,  5 Mar 2021 08:04:21 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.58.197])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  5 Mar 2021 08:04:21 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/pseries: export LPAR security flavor in lparcfg
-To: Michael Ellerman <mpe@ellerman.id.au>, benh@kernel.crashing.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
-References: <20210304114240.54112-1-ldufour@linux.ibm.com>
- <871rcuruee.fsf@mpe.ellerman.id.au>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Message-ID: <2c67c119-c1ec-b079-da54-0bf2f316c734@linux.ibm.com>
-Date: Fri, 5 Mar 2021 09:04:20 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
- Gecko/20100101 Thunderbird/78.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsLMy3F6bz3bPJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 19:23:06 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DsLMp3HQjz9twsB;
+ Fri,  5 Mar 2021 09:23:02 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id kZwaV1QlYV6g; Fri,  5 Mar 2021 09:23:02 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DsLMp21cgz9tws9;
+ Fri,  5 Mar 2021 09:23:02 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 499B18B78B;
+ Fri,  5 Mar 2021 09:23:03 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 0Bg31oR211ZU; Fri,  5 Mar 2021 09:23:03 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8075A8B791;
+ Fri,  5 Mar 2021 09:23:02 +0100 (CET)
+Subject: Re: [RFC PATCH v1] powerpc: Enable KFENCE for PPC32
+To: Marco Elver <elver@google.com>, Michael Ellerman <mpe@ellerman.id.au>
+References: <CANpmjNPGj4C2rr2FbSD+FC-GnWUvJrtdLyX5TYpJE_Um8CGu1Q@mail.gmail.com>
+ <08a96c5d-4ae7-03b4-208f-956226dee6bb@csgroup.eu>
+ <CANpmjNPYEmLtQEu5G=zJLUzOBaGoqNKwLyipDCxvytdKDKb7mg@mail.gmail.com>
+ <ad61cb3a-2b4a-3754-5761-832a1dd0c34e@csgroup.eu>
+ <CANpmjNOnVzei7frKcMzMHxaDXh5NvTA-Wpa29C2YC1GUxyKfhQ@mail.gmail.com>
+ <f036c53d-7e81-763c-47f4-6024c6c5f058@csgroup.eu>
+ <CANpmjNMn_CUrgeSqBgiKx4+J8a+XcxkaLPWoDMUvUEXk8+-jxg@mail.gmail.com>
+ <7270e1cc-bb6b-99ee-0043-08a027b8d83a@csgroup.eu>
+ <YEDXJ5JNkgvDFehc@elver.google.com> <874khqry78.fsf@mpe.ellerman.id.au>
+ <YEHiq1ALdPn2crvP@elver.google.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <f6e47f4f-6953-6584-f023-8b9c22d6974e@csgroup.eu>
+Date: Fri, 5 Mar 2021 09:23:00 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <871rcuruee.fsf@mpe.ellerman.id.au>
+In-Reply-To: <YEHiq1ALdPn2crvP@elver.google.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-05_04:2021-03-03,
- 2021-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 mlxlogscore=999 bulkscore=0 priorityscore=1501 mlxscore=0
- clxscore=1015 phishscore=0 malwarescore=0 spamscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103050038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,52 +70,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, cheloha@linux.ibm.com, linux-kernel@vger.kernel.org
+Cc: LKML <linux-kernel@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>,
+ Alexander Potapenko <glider@google.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 05/03/2021 à 07:23, Michael Ellerman a écrit :
-> Laurent Dufour <ldufour@linux.ibm.com> writes:
->> This is helpful to read the security flavor from inside the LPAR.
-> 
-> We already have /sys/kernel/debug/powerpc/security_features.
-> 
-> Is that not sufficient?
 
-Not really, it only reports that security mitigation are on or off but not the 
-level set through the ASMI menu. Furthermore, reporting it through
-/proc/powerpc/lparcfg allows an easy processing by the lparstat command (see below).
 
-> 
->> Export it like this in /proc/powerpc/lparcfg:
+Le 05/03/2021 à 08:50, Marco Elver a écrit :
+> On Fri, Mar 05, 2021 at 04:01PM +1100, Michael Ellerman wrote:
+>> Marco Elver <elver@google.com> writes:
+>>> On Thu, Mar 04, 2021 at 12:48PM +0100, Christophe Leroy wrote:
+>>>> Le 04/03/2021 à 12:31, Marco Elver a écrit :
+>>>>> On Thu, 4 Mar 2021 at 12:23, Christophe Leroy
+>>>>> <christophe.leroy@csgroup.eu> wrote:
+>>>>>> Le 03/03/2021 à 11:56, Marco Elver a écrit :
+>>>>>>>
+>>>>>>> Somewhat tangentially, I also note that e.g. show_regs(regs) (which
+>>>>>>> was printed along the KFENCE report above) didn't include the top
+>>>>>>> frame in the "Call Trace", so this assumption is definitely not
+>>>>>>> isolated to KFENCE.
+>>>>>>>
+>>>>>>
+>>>>>> Now, I have tested PPC64 (with the patch I sent yesterday to modify save_stack_trace_regs()
+>>>>>> applied), and I get many failures. Any idea ?
+>>>>>>
+>>>>>> [   17.653751][   T58] ==================================================================
+>>>>>> [   17.654379][   T58] BUG: KFENCE: invalid free in .kfence_guarded_free+0x2e4/0x530
+>>>>>> [   17.654379][   T58]
+>>>>>> [   17.654831][   T58] Invalid free of 0xc00000003c9c0000 (in kfence-#77):
+>>>>>> [   17.655358][   T58]  .kfence_guarded_free+0x2e4/0x530
+>>>>>> [   17.655775][   T58]  .__slab_free+0x320/0x5a0
+>>>>>> [   17.656039][   T58]  .test_double_free+0xe0/0x198
+>>>>>> [   17.656308][   T58]  .kunit_try_run_case+0x80/0x110
+>>>>>> [   17.656523][   T58]  .kunit_generic_run_threadfn_adapter+0x38/0x50
+>>>>>> [   17.657161][   T58]  .kthread+0x18c/0x1a0
+>>>>>> [   17.659148][   T58]  .ret_from_kernel_thread+0x58/0x70
+>>>>>> [   17.659869][   T58]
+>>> [...]
+>>>>>
+>>>>> Looks like something is prepending '.' to function names. We expect
+>>>>> the function name to appear as-is, e.g. "kfence_guarded_free",
+>>>>> "test_double_free", etc.
+>>>>>
+>>>>> Is there something special on ppc64, where the '.' is some convention?
+>>>>>
+>>>>
+>>>> I think so, see https://refspecs.linuxfoundation.org/ELF/ppc64/PPC-elf64abi.html#FUNC-DES
+>>>>
+>>>> Also see commit https://github.com/linuxppc/linux/commit/02424d896
+>>>
+>>> Thanks -- could you try the below patch? You'll need to define
+>>> ARCH_FUNC_PREFIX accordingly.
+>>>
+>>> We think, since there are only very few architectures that add a prefix,
+>>> requiring <asm/kfence.h> to define something like ARCH_FUNC_PREFIX is
+>>> the simplest option. Let me know if this works for you.
+>>>
+>>> There an alternative option, which is to dynamically figure out the
+>>> prefix, but if this simpler option is fine with you, we'd prefer it.
 >>
->> $ grep security_flavor /proc/powerpc/lparcfg
->> security_flavor=1
+>> We have rediscovered this problem in basically every tracing / debugging
+>> feature added in the last 20 years :)
 >>
->> Value means:
->> 0 Speculative execution fully enabled
->> 1 Speculative execution controls to mitigate user-to-kernel attacks
->> 2 Speculative execution controls to mitigate user-to-kernel and
->>    user-to-user side-channel attacks
+>> I think the simplest solution is the one tools/perf/util/symbol.c uses,
+>> which is to just skip a leading '.'.
+>>
+>> Does that work?
+>>
+>> diff --git a/mm/kfence/report.c b/mm/kfence/report.c
+>> index ab83d5a59bb1..67b49dc54b38 100644
+>> --- a/mm/kfence/report.c
+>> +++ b/mm/kfence/report.c
+>> @@ -67,6 +67,9 @@ static int get_stack_skipnr(const unsigned long stack_entries[], int num_entries
+>>   	for (skipnr = 0; skipnr < num_entries; skipnr++) {
+>>   		int len = scnprintf(buf, sizeof(buf), "%ps", (void *)stack_entries[skipnr]);
+>>   
+>> +		if (buf[0] == '.')
+>> +			buf++;
+>> +
 > 
-> Those strings come from the FSP help, but we have no guarantee it won't
-> mean something different in future.
+> Unfortunately this does not work, since buf is an array. We'd need an
+> offset, and it should be determined outside the loop. I had a solution
+> like this, but it turned out quite complex (see below). And since most
+> architectures do not require this, decided that the safest option is to
+> use the macro approach with ARCH_FUNC_PREFIX, for which Christophe
+> already prepared a patch and tested:
+> https://lore.kernel.org/linux-mm/20210304144000.1148590-1-elver@google.com/
+> https://lkml.kernel.org/r/afaec81a551ef15345cb7d7563b3fac3d7041c3a.1614868445.git.christophe.leroy@csgroup.eu
+> 
+> Since KFENCE requires <asm/kfence.h> anyway, we'd prefer this approach
+> (vs.  dynamically detecting).
+> 
+> Thanks,
+> -- Marco
+> 
 
-I think this is nailed down, those strings came from:
-https://www.ibm.com/support/pages/node/715841
+What about
 
-Where it is written (regarding AIX):
+diff --git a/mm/kfence/report.c b/mm/kfence/report.c
+index 519f037720f5..5e196625fb34 100644
+--- a/mm/kfence/report.c
++++ b/mm/kfence/report.c
+@@ -43,7 +43,7 @@ static void seq_con_printf(struct seq_file *seq, const char *fmt, ...)
+  static int get_stack_skipnr(const unsigned long stack_entries[], int num_entries,
+  			    const enum kfence_error_type *type)
+  {
+-	char buf[64];
++	char _buf[64];
+  	int skipnr, fallback = 0;
 
-On an LPAR, one can use lparstat -x to display the current mitigation mode:
-0 = Speculative execution fully enabled
-1 = Speculative execution controls to mitigate user-to-kernel side-channel attacks
-2 = Speculative execution controls to mitigate user-to-kernel and user-to-user 
-side-channel attacks
+  	if (type) {
+@@ -65,7 +65,11 @@ static int get_stack_skipnr(const unsigned long stack_entries[], int num_entries
+  	}
 
-We have been requested to provide almost the same, which I proposed in 
-powerpc-utils:
-https://groups.google.com/g/powerpc-utils-devel/c/NaKXvdyl_UI/m/wa2stpIDAQAJ
+  	for (skipnr = 0; skipnr < num_entries; skipnr++) {
+-		int len = scnprintf(buf, sizeof(buf), "%ps", (void *)stack_entries[skipnr]);
++		char *buf = _buf;
++		int len = scnprintf(_buf, sizeof(_buf), "%ps", (void *)stack_entries[skipnr]);
++
++		if (_buf[0] == '.')
++			buf++, len--;
 
-Thanks,
-Laurent.
+  		if (str_has_prefix(buf, "kfence_") || str_has_prefix(buf, "__kfence_") ||
+  		    !strncmp(buf, "__slab_free", len)) {
+---
+
+Christophe
