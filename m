@@ -2,94 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD0C32E775
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 12:56:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B6B32E77F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 12:58:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsR5V3JfYz3dK8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 22:55:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsR8L631dz3dKN
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 22:58:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LUYjC8cH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RRhqKWCT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=LUYjC8cH; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=RRhqKWCT; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsR535jjKz3cJq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 22:55:35 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 125BXdcS012986; Fri, 5 Mar 2021 06:54:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=tThMMiURIYel2tcEV6/s2VlXRYF5FWm2p5ebEVtrexM=;
- b=LUYjC8cHEyyiFRiSzq78oKOfa2CQHAAaR9ibE2taXdpa4O8y/t8nbVM3Q3jc1+O/4n+J
- bkZ4dWxqJCpxD8whJ24L/8wVd9jMCRR7jgFhe5mSSld7SamyjOW1yewXC0deKQKsFWkM
- pVPnrl4lM44NMfTAVdopkDtdmmqfz+xYn4AS789aA9ck1pC1XWuZPUNSPIQWMkpNljGL
- +YHtfewk33fsk+z2A27x/87I7vOCB/SpwhjtN2iTtcvcSH8hynXe/p0JvWNZsUUnI6BU
- Cz/j1muApuenl2iArsTcrz3LKmq4MYvVXoWXcOZWsPeY7KewU9oyD9omW3E5t3GOk8ck zw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 373kk9ry2n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 06:54:57 -0500
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 125BXgA1013171;
- Fri, 5 Mar 2021 06:54:56 -0500
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 373kk9ry1w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 06:54:56 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 125BreLC030755;
- Fri, 5 Mar 2021 11:54:54 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 37293fsycm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Mar 2021 11:54:53 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 125Bspes45875634
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 5 Mar 2021 11:54:51 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0FCB8AE04D;
- Fri,  5 Mar 2021 11:54:51 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9F29DAE045;
- Fri,  5 Mar 2021 11:54:48 +0000 (GMT)
-Received: from bangoria.ibmuc.com (unknown [9.199.43.205])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  5 Mar 2021 11:54:48 +0000 (GMT)
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v4] powerpc/uprobes: Validation for prefixed instruction
-Date: Fri,  5 Mar 2021 17:24:33 +0530
-Message-Id: <20210305115433.140769-1-ravi.bangoria@linux.ibm.com>
-X-Mailer: git-send-email 2.29.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsR7x62q1z3cPn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 22:58:05 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DsR7v2SyLz9sR4;
+ Fri,  5 Mar 2021 22:58:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1614945485;
+ bh=L1NC9GV9BQ+E9+ry/jR63z+hknnTIJGa4fWZ4Daa1hY=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=RRhqKWCT2ZGCNhqG7CWrydw8rsBkf55ZdiKxlD9W92jlG0zCxTPsjRAO+SZ3/E+Qz
+ G1JbEu/m4uxOYAFEVULj86D/q25BtbKfPyyBlJIxG/8j9YdVvjqILwbvttYoAmVss3
+ 0GkVDCWjLkBPqQiHJaJGzkfJ7Jl7qsPoR0tkpnrF5csXtnnAWzDwcf+6M9nJmDDegx
+ dVRI9i5n5TyDn6OQHYmMOW/EgmjAkpeMFmDVRrfd4RvhQk2g6CBiWaJoAqZ6BNcMNd
+ ROEx0HJ0zfDvX3FrIFKqtNHBdNylyCFhYy1m+CgFne2H6kkRZ7pPs0pj1d1OeUpazv
+ sRtB9CzGrGiKg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Will Deacon <will@kernel.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 1/7] cmdline: Add generic function to build command
+ line.
+In-Reply-To: <20210303181651.GE19713@willie-the-truck>
+References: <cover.1614705851.git.christophe.leroy@csgroup.eu>
+ <d8cf7979ad986de45301b39a757c268d9df19f35.1614705851.git.christophe.leroy@csgroup.eu>
+ <20210303172810.GA19713@willie-the-truck>
+ <a0cfef11-efba-2e5c-6f58-ed63a2c3bfa0@csgroup.eu>
+ <20210303174627.GC19713@willie-the-truck>
+ <dc6576ac-44ff-7db4-d718-7565b83f50b8@csgroup.eu>
+ <20210303181651.GE19713@willie-the-truck>
+Date: Fri, 05 Mar 2021 22:58:02 +1100
+Message-ID: <87sg59rewl.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-05_05:2021-03-03,
- 2021-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- malwarescore=0 mlxlogscore=999 priorityscore=1501 lowpriorityscore=0
- clxscore=1015 spamscore=0 bulkscore=0 suspectscore=0 adultscore=0
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103050058
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,55 +70,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com, oleg@redhat.com,
- rostedt@goodmis.org, linux-kernel@vger.kernel.org, paulus@samba.org,
- sandipan@linux.ibm.com, naveen.n.rao@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, robh@kernel.org,
+ daniel@gimpelevich.san-francisco.ca.us, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, danielwa@cisco.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As per ISA 3.1, prefixed instruction should not cross 64-byte
-boundary. So don't allow Uprobe on such prefixed instruction.
+Will Deacon <will@kernel.org> writes:
+> On Wed, Mar 03, 2021 at 06:57:09PM +0100, Christophe Leroy wrote:
+>> Le 03/03/2021 =C3=A0 18:46, Will Deacon a =C3=A9crit=C2=A0:
+>> > On Wed, Mar 03, 2021 at 06:38:16PM +0100, Christophe Leroy wrote:
+>> > > Le 03/03/2021 =C3=A0 18:28, Will Deacon a =C3=A9crit=C2=A0:
+>> > > > On Tue, Mar 02, 2021 at 05:25:17PM +0000, Christophe Leroy wrote:
+>> > > > > This code provides architectures with a way to build command line
+>> > > > > based on what is built in the kernel and what is handed over by =
+the
+>> > > > > bootloader, based on selected compile-time options.
+>> > > > >=20
+>> > > > > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> > > > > ---
+>> > > > >    include/linux/cmdline.h | 62 ++++++++++++++++++++++++++++++++=
++++++++++
+>> > > > >    1 file changed, 62 insertions(+)
+>> > > > >    create mode 100644 include/linux/cmdline.h
+>> > > > >=20
+>> > > > > diff --git a/include/linux/cmdline.h b/include/linux/cmdline.h
+>> > > > > new file mode 100644
+>> > > > > index 000000000000..ae3610bb0ee2
+>> > > > > --- /dev/null
+>> > > > > +++ b/include/linux/cmdline.h
+>> > > > > @@ -0,0 +1,62 @@
+>> > > > > +/* SPDX-License-Identifier: GPL-2.0 */
+>> > > > > +#ifndef _LINUX_CMDLINE_H
+>> > > > > +#define _LINUX_CMDLINE_H
+>> > > > > +
+>> > > > > +static __always_inline size_t cmdline_strlen(const char *s)
+>> > > > > +{
+>> > > > > +	const char *sc;
+>> > > > > +
+>> > > > > +	for (sc =3D s; *sc !=3D '\0'; ++sc)
+>> > > > > +		; /* nothing */
+>> > > > > +	return sc - s;
+>> > > > > +}
+>> > > > > +
+>> > > > > +static __always_inline size_t cmdline_strlcat(char *dest, const=
+ char *src, size_t count)
+>> > > > > +{
+>> > > > > +	size_t dsize =3D cmdline_strlen(dest);
+>> > > > > +	size_t len =3D cmdline_strlen(src);
+>> > > > > +	size_t res =3D dsize + len;
+>> > > > > +
+>> > > > > +	/* This would be a bug */
+>> > > > > +	if (dsize >=3D count)
+>> > > > > +		return count;
+>> > > > > +
+>> > > > > +	dest +=3D dsize;
+>> > > > > +	count -=3D dsize;
+>> > > > > +	if (len >=3D count)
+>> > > > > +		len =3D count - 1;
+>> > > > > +	memcpy(dest, src, len);
+>> > > > > +	dest[len] =3D 0;
+>> > > > > +	return res;
+>> > > > > +}
+>> > > >=20
+>> > > > Why are these needed instead of using strlen and strlcat directly?
+>> > >=20
+>> > > Because on powerpc (at least), it will be used in prom_init, it is v=
+ery
+>> > > early in the boot and KASAN shadow memory is not set up yet so calli=
+ng
+>> > > generic string functions would crash the board.
+>> >=20
+>> > Hmm. We deliberately setup a _really_ early shadow on arm64 for this, =
+can
+>> > you not do something similar? Failing that, I think it would be better=
+ to
+>> > offer the option for an arch to implement cmdline_*, but have then poi=
+nt to
+>> > the normal library routines by default.
+>>=20
+>> I don't think it is possible to setup an earlier early shadow.
+>>=20
+>> At the point we are in prom_init, the code is not yet relocated at the
+>> address it was linked for, and it is running with the MMU set by the
+>> bootloader, I can't imagine being able to setup MMU entries for the early
+>> shadow KASAN yet without breaking everything.
+>
+> That's very similar to us; we're not relocated, although we are at least
+> in control of the MMU (which is using a temporary set of page-tables).
 
-There are two ways probed instruction is changed in mapped pages.
-First, when Uprobe is activated, it searches for all the relevant
-pages and replace instruction in them. In this case, if that probe
-is on the 64-byte unaligned prefixed instruction, error out
-directly. Second, when Uprobe is already active and user maps a
-relevant page via mmap(), instruction is replaced via mmap() code
-path. But because Uprobe is invalid, entire mmap() operation can
-not be stopped. In this case just print an error and continue.
+prom_init runs as an OF client, with the MMU off (except on some Apple
+machines), and we don't own the MMU. So there's really nothing we can do :)
 
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
-v3: https://lore.kernel.org/r/20210304050529.59391-1-ravi.bangoria@linux.ibm.com
-v3->v4:
-  - CONFIG_PPC64 check was not required, remove it.
-  - Use SZ_ macros instead of hardcoded numbers.
+Though now that I look at it, I don't think we should be doing this
+level of commandline handling in prom_init. It should just grab the
+value from firmware and pass it to the kernel proper, and then all the
+prepend/append/force etc. logic should happen there.
 
- arch/powerpc/kernel/uprobes.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
-index e8a63713e655..4cbfff6e94a3 100644
---- a/arch/powerpc/kernel/uprobes.c
-+++ b/arch/powerpc/kernel/uprobes.c
-@@ -41,6 +41,13 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe,
- 	if (addr & 0x03)
- 		return -EINVAL;
- 
-+	if (cpu_has_feature(CPU_FTR_ARCH_31) &&
-+	    ppc_inst_prefixed(auprobe->insn) &&
-+	    (addr & (SZ_64 - 4)) == SZ_64 - 4) {
-+		pr_info_ratelimited("Cannot register a uprobe on 64 byte unaligned prefixed instruction\n");
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.27.0
-
+cheers
