@@ -2,32 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A9232E014
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 04:28:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A14032E090
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 05:19:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsCrJ10w4z3dCc
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 14:28:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsDzG42fDz3d8V
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 15:19:54 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=U9bM/RSQ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DsCqz0kXMz3cGv
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 14:28:28 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 286EDD6E;
- Thu,  4 Mar 2021 19:28:26 -0800 (PST)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.68.69])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 258B43F7D7;
- Thu,  4 Mar 2021 19:28:21 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Subject: [PATCH V3] mm: Generalize HUGETLB_PAGE_SIZE_VARIABLE
-Date: Fri,  5 Mar 2021 08:58:48 +0530
-Message-Id: <1614914928-22039-1-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=U9bM/RSQ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsDyq21zWz3bN7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 15:19:30 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 12544YQY070061; Thu, 4 Mar 2021 23:19:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=LqR2TXEh97yGVBBSx0eCKJKZMDI0vptlzlcbTFPS2Ok=;
+ b=U9bM/RSQOuR/W3wSSpRL2RUsq+KJZUFai882hWbPHFFogkKRfBaJ5ca4P+8EWDIDbDIw
+ RPTR9JbFTkv3LlJTLIc4rj7Xekhx+iBkgwCUoU+h5Qe2cy7RftrUQS8qdAaxiGaQPTv3
+ G5D0/U5rZKC7vABDOTxYpXsnDqGTOWcCBNKN+6YTuFRnbvl2LXMU3JmoQB0WEM312q/m
+ WsJ+RtBmbUFSG/ojmKVSFxh36No2DdpouUVIvgcf3pgo82TfSBTRjVINYkexsmcE0Hbj
+ s7F+rYcKw4VR+LFqRuthz42K451HbRJsfMjBZluCR/f29vlU8pPJCcr8yxpM2ijmzyUL OA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 373cth1c3v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Mar 2021 23:19:16 -0500
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12544UYW069777;
+ Thu, 4 Mar 2021 23:19:16 -0500
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 373cth1c3q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Mar 2021 23:19:16 -0500
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1254IJNf002810;
+ Fri, 5 Mar 2021 04:19:15 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma03dal.us.ibm.com with ESMTP id 3720r0wquf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 05 Mar 2021 04:19:15 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1254JE8i30343676
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 5 Mar 2021 04:19:14 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4F573C6057;
+ Fri,  5 Mar 2021 04:19:14 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 20B18C605A;
+ Fri,  5 Mar 2021 04:19:14 +0000 (GMT)
+Received: from suka-w540.localdomain (unknown [9.85.205.202])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri,  5 Mar 2021 04:19:13 +0000 (GMT)
+Received: by suka-w540.localdomain (Postfix, from userid 1000)
+ id E820B2E282E; Thu,  4 Mar 2021 20:19:10 -0800 (PST)
+Date: Thu, 4 Mar 2021 20:19:10 -0800
+From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+To: angkery <angkery@163.com>
+Subject: Re: [PATCH] ibmvnic: remove excessive irqsave
+Message-ID: <20210305041910.GA1396452@us.ibm.com>
+References: <20210305014350.1460-1-angkery@163.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210305014350.1460-1-angkery@163.com>
+X-Operating-System: Linux 2.0.32 on an i486
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-05_03:2021-03-03,
+ 2021-03-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0
+ lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 clxscore=1011 mlxlogscore=860
+ suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103050018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,123 +106,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>
+Cc: Junlin Yang <yangjunlin@yulong.com>, linux-kernel@vger.kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, ljp@linux.ibm.com, drt@linux.ibm.com,
+ paulus@samba.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-HUGETLB_PAGE_SIZE_VARIABLE need not be defined for each individual
-platform subscribing it. Instead just make it generic.
+angkery [angkery@163.com] wrote:
+> From: Junlin Yang <yangjunlin@yulong.com>
+> 
+> ibmvnic_remove locks multiple spinlocks while disabling interrupts:
+> spin_lock_irqsave(&adapter->state_lock, flags);
+> spin_lock_irqsave(&adapter->rwi_lock, flags);
+> 
+> there is no need for the second irqsave,since interrupts are disabled
+> at that point, so remove the second irqsave:
+> spin_lock_irqsave(&adapter->state_lock, flags);
+> spin_lock(&adapter->rwi_lock);
+> 
+> Generated by: ./scripts/coccinelle/locks/flags.cocci
+> ./drivers/net/ethernet/ibm/ibmvnic.c:5413:1-18:
+> ERROR: nested lock+irqsave that reuses flags from line 5404.
+> 
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linux-ia64@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-This change was originally suggested in an earilier discussion. This
-applies on v5.12-rc1 and has been build tested on all applicable
-platforms i.e ia64 and powerpc.
+Thanks. Please add
 
-https://patchwork.kernel.org/project/linux-mm/patch/1613024531-19040-3-git-send-email-anshuman.khandual@arm.com/
+Fixes: 4a41c421f367 ("ibmvnic: serialize access to work queue on remove")
 
-Changes in V3:
+> Signed-off-by: Junlin Yang <yangjunlin@yulong.com>
 
-- Dropped the bool desciption that enabled user selection
-- Dropped the dependency on HUGETLB_PAGE for HUGETLB_PAGE_SIZE_VARIABLE
-
-Changes in V2:
-
-https://patchwork.kernel.org/project/linux-mm/patch/1614661987-23881-1-git-send-email-anshuman.khandual@arm.com/
-
-- Added a description for HUGETLB_PAGE_SIZE_VARIABLE
-- Added HUGETLB_PAGE dependency while selecting HUGETLB_PAGE_SIZE_VARIABLE
-
-Changes in V1:
-
-https://patchwork.kernel.org/project/linux-mm/patch/1614577853-7452-1-git-send-email-anshuman.khandual@arm.com/
-
- arch/ia64/Kconfig    | 6 +-----
- arch/powerpc/Kconfig | 6 +-----
- mm/Kconfig           | 7 +++++++
- 3 files changed, 9 insertions(+), 10 deletions(-)
-
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 2ad7a8d29fcc..dccf5bfebf48 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -32,6 +32,7 @@ config IA64
- 	select TTY
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_VIRT_CPU_ACCOUNTING
-+	select HUGETLB_PAGE_SIZE_VARIABLE if HUGETLB_PAGE
- 	select VIRT_TO_BUS
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_PENDING_IRQ if SMP
-@@ -82,11 +83,6 @@ config STACKTRACE_SUPPORT
- config GENERIC_LOCKBREAK
- 	def_bool n
- 
--config HUGETLB_PAGE_SIZE_VARIABLE
--	bool
--	depends on HUGETLB_PAGE
--	default y
--
- config GENERIC_CALIBRATE_DELAY
- 	bool
- 	default y
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 386ae12d8523..11fea95a1f2c 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -231,6 +231,7 @@ config PPC
- 	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
-+	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
- 	select MMU_GATHER_RCU_TABLE_FREE
- 	select MMU_GATHER_PAGE_SIZE
- 	select HAVE_REGS_AND_STACK_ACCESS_API
-@@ -415,11 +416,6 @@ config HIGHMEM
- 
- source "kernel/Kconfig.hz"
- 
--config HUGETLB_PAGE_SIZE_VARIABLE
--	bool
--	depends on HUGETLB_PAGE && PPC_BOOK3S_64
--	default y
--
- config MATH_EMULATION
- 	bool "Math emulation"
- 	depends on 4xx || PPC_8xx || PPC_MPC832x || BOOKE
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 24c045b24b95..4413a69e7850 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -274,6 +274,13 @@ config ARCH_ENABLE_HUGEPAGE_MIGRATION
- config ARCH_ENABLE_THP_MIGRATION
- 	bool
- 
-+config HUGETLB_PAGE_SIZE_VARIABLE
-+	def_bool n
-+	help
-+	  Allows the pageblock_order value to be dynamic instead of just standard
-+	  HUGETLB_PAGE_ORDER when there are multiple HugeTLB page sizes available
-+	  on a platform.
-+
- config CONTIG_ALLOC
- 	def_bool (MEMORY_ISOLATION && COMPACTION) || CMA
- 
--- 
-2.20.1
-
+Reviewed-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
