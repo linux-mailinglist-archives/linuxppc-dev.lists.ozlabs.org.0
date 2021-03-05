@@ -1,57 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD7832E74C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 12:37:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 602EE32E756
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 12:44:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsQhZ5HFXz3dKY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 22:37:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsQrD2ZMZz3dJy
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 22:44:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YCW3yOV5;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=YCW3yOV5; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DsQhG1MvQz3cKp
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 22:37:30 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DsQh56Y09z9twsb;
- Fri,  5 Mar 2021 12:37:25 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id WGAikzzfnPuS; Fri,  5 Mar 2021 12:37:25 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DsQh55Gn9z9twsM;
- Fri,  5 Mar 2021 12:37:25 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 106B48B81F;
- Fri,  5 Mar 2021 12:37:27 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id CM78OON5YN7b; Fri,  5 Mar 2021 12:37:26 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B9CAB8B828;
- Fri,  5 Mar 2021 12:37:26 +0100 (CET)
-Subject: Re: [PATCH] powerpc: Fix instruction encoding for lis in
- ppc_function_entry()
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-References: <20210304020411.16796-1-naveen.n.rao@linux.vnet.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <870c42dd-9862-bb86-6e06-2e0164f4ae85@csgroup.eu>
-Date: Fri, 5 Mar 2021 12:37:06 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsQqr1mMMz3cGs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 22:44:07 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DsQqj0TBXz9sWL;
+ Fri,  5 Mar 2021 22:44:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1614944641;
+ bh=SFTN3pvD7WygrPK8345qUzj/Yiy79Aui/vKNcyYo1LU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=YCW3yOV5cOUSmUMmyms3tOismZLI9sjylaqzifzV7Obbez3s6noEcH1EItlJ2FtO7
+ 59C5rksyJB2tF5TxHrCeVwR8sDItttmQ+vwXfUo2EBjMAJNqa2D3Dr1ObN0CX3OaVX
+ R7fZ0V8FR3GxSu/Z3ANBcrAqYCB20hRGyz/4U2Fm4QsYjOqg0ET5d1JUHnKHYSaNqX
+ bvOaCyI1He1BYYs77/73rQC0lGKR8zYVbO2i13A3523xx7JIDPT67CfVjmeoThqijf
+ p9Kv0JPRNTY5M2mFPqTeyffX9ycAsHZv8vFr2loJywXoMbrtnUoX05eCh/zNHwp7su
+ IloIeuJoxDwLQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Laurent Dufour <ldufour@linux.ibm.com>, benh@kernel.crashing.org,
+ paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/pseries: export LPAR security flavor in lparcfg
+In-Reply-To: <2c67c119-c1ec-b079-da54-0bf2f316c734@linux.ibm.com>
+References: <20210304114240.54112-1-ldufour@linux.ibm.com>
+ <871rcuruee.fsf@mpe.ellerman.id.au>
+ <2c67c119-c1ec-b079-da54-0bf2f316c734@linux.ibm.com>
+Date: Fri, 05 Mar 2021 22:43:55 +1100
+Message-ID: <87wnulrfk4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20210304020411.16796-1-naveen.n.rao@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,45 +65,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: nathanl@linux.ibm.com, cheloha@linux.ibm.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Laurent Dufour <ldufour@linux.ibm.com> writes:
+> Le 05/03/2021 =C3=A0 07:23, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Laurent Dufour <ldufour@linux.ibm.com> writes:
+>>> This is helpful to read the security flavor from inside the LPAR.
+>>=20
+>> We already have /sys/kernel/debug/powerpc/security_features.
+>>=20
+>> Is that not sufficient?
+>
+> Not really, it only reports that security mitigation are on or off but no=
+t the=20
+> level set through the ASMI menu. Furthermore, reporting it through
+> /proc/powerpc/lparcfg allows an easy processing by the lparstat command (=
+see below).
+>
+>>=20
+>>> Export it like this in /proc/powerpc/lparcfg:
+>>>
+>>> $ grep security_flavor /proc/powerpc/lparcfg
+>>> security_flavor=3D1
+>>>
+>>> Value means:
+>>> 0 Speculative execution fully enabled
+>>> 1 Speculative execution controls to mitigate user-to-kernel attacks
+>>> 2 Speculative execution controls to mitigate user-to-kernel and
+>>>    user-to-user side-channel attacks
+>>=20
+>> Those strings come from the FSP help, but we have no guarantee it won't
+>> mean something different in future.
+>
+> I think this is nailed down, those strings came from:
+> https://www.ibm.com/support/pages/node/715841
+>
+> Where it is written (regarding AIX):
+>
+> On an LPAR, one can use lparstat -x to display the current mitigation mod=
+e:
+> 0 =3D Speculative execution fully enabled
+> 1 =3D Speculative execution controls to mitigate user-to-kernel side-chan=
+nel attacks
+> 2 =3D Speculative execution controls to mitigate user-to-kernel and user-=
+to-user=20
+> side-channel attacks
+>
+> We have been requested to provide almost the same, which I proposed in=20
+> powerpc-utils:
+> https://groups.google.com/g/powerpc-utils-devel/c/NaKXvdyl_UI/m/wa2stpIDA=
+QAJ
 
+OK. Do you mind sending a v2 with all those details incorporated into
+the change log?
 
-Le 04/03/2021 à 03:04, Naveen N. Rao a écrit :
-> 'lis r2,N' is 'addis r2,0,N' and the instruction encoding in the macro
-> LIS_R2 is incorrect (it currently maps to 'addis 0,r2,N'). Fix the same.
-> 
-> Fixes: c71b7eff426fa7 ("powerpc: Add ABIv2 support to ppc_function_entry")
-> Reported-by: Jiri Olsa <jolsa@redhat.com>
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> ---
->   arch/powerpc/include/asm/code-patching.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
-> index eacc9102c2515c..d5b3c3bb95b400 100644
-> --- a/arch/powerpc/include/asm/code-patching.h
-> +++ b/arch/powerpc/include/asm/code-patching.h
-> @@ -73,7 +73,7 @@ void __patch_exception(int exc, unsigned long addr);
->   #endif
->   
->   #define OP_RT_RA_MASK	0xffff0000UL
-> -#define LIS_R2		0x3c020000UL
-> +#define LIS_R2		0x3c400000UL
->   #define ADDIS_R2_R12	0x3c4c0000UL
->   #define ADDI_R2_R2	0x38420000UL
-
-That probably goes beyond the scope of this patch, but it would be more readable and less error 
-prone to use macros defined in ppc-opcode.h just like kernel/module_64.c does for instance:
-
-#define LIS_R2	(PPC_INST_ADDIS | __PPC_RT(R2))
-#define ADDIS_R2_R12	(PPC_INST_ADDIS | __PPC_RT(R2) | __PPC_RA(R12))
-#define ADDI_R2_R2	(PPC_INST_ADDI | __PPC_RT(R2) | __PPC_RA(R2))
-
->   
-> 
-> base-commit: 91966823812efbd175f904599e5cf2a854b39809
-> 
+cheers
