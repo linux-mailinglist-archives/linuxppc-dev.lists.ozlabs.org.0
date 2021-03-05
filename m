@@ -1,47 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE39832E79F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 13:05:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11EE232E7B5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 13:12:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsRJs4bCrz3dLy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 23:05:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsRSs0ZPcz3dK6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 23:12:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RFYtcy26;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DsRJY0GW4z3cRd
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 23:05:31 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F22531B;
- Fri,  5 Mar 2021 04:05:27 -0800 (PST)
-Received: from C02TD0UTHF1T.local (unknown [10.57.47.91])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B046D3F766;
- Fri,  5 Mar 2021 04:05:24 -0800 (PST)
-Date: Fri, 5 Mar 2021 12:04:53 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Marco Elver <elver@google.com>
-Subject: Re: [PATCH v1] powerpc: Include running function as first entry in
- save_stack_trace() and friends
-Message-ID: <20210305120453.GA74705@C02TD0UTHF1T.local>
-References: <1802be3e-dc1a-52e0-1754-a40f0ea39658@csgroup.eu>
- <YD+o5QkCZN97mH8/@elver.google.com>
- <20210304145730.GC54534@C02TD0UTHF1T.local>
- <CANpmjNOSpFbbDaH9hNucXrpzG=HpsoQpk5w-24x8sU_G-6cz0Q@mail.gmail.com>
- <20210304165923.GA60457@C02TD0UTHF1T.local>
- <YEEYDSJeLPvqRAHZ@elver.google.com>
- <20210304180154.GD60457@C02TD0UTHF1T.local>
- <CANpmjNOZWuhqXATDjH3F=DMbpg2xOy0XppVJ+Wv2XjFh_crJJg@mail.gmail.com>
- <20210304185148.GE60457@C02TD0UTHF1T.local>
- <CANpmjNMQNWBtWS7O_aaCfbMWvQUnzWTPXoxgD8DzqNzKfL_2Dg@mail.gmail.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=RFYtcy26; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsRST3Mkfz30Lw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 23:12:24 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DsRSN3xc3z9sWL;
+ Fri,  5 Mar 2021 23:12:20 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1614946342;
+ bh=aHL61nbJ14YVMtmcKw3QkQlg65ehKSOR2fQhnK5ASNM=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=RFYtcy26f5gmzrJqSk1tcWhWWPFLaSE81tlUXQAhECBh8eMXEYNMO5tZ9x4rlR8jh
+ aNvIJrxJ/KmdEYHZknj6TSuxKWmFcA5Ahn5HuXY6RKlHn0zLhKnT3RXI/3y38ia5MS
+ JkNgJS5vB2TLrVgU75ml8aRn1avbmPb42hmMFoIyONZ0zH2RQ66HoBu5hckN36yYSX
+ c6IsYOwVt0tKTVEy8CRxFy0qXSx2/aGRzvp/C0J5lSsB+Qj6mO71whKVsYAjDwlnEr
+ ADmQCjQyL7/fhfJQsTxKjOIZ/Fp8LwqKPrnZuuqyFhzKrTE5Anp2GVIzL4dN/VvP3R
+ QdNjEwMOMox4A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+Subject: Re: [PATCH V3] mm: Generalize HUGETLB_PAGE_SIZE_VARIABLE
+In-Reply-To: <1614914928-22039-1-git-send-email-anshuman.khandual@arm.com>
+References: <1614914928-22039-1-git-send-email-anshuman.khandual@arm.com>
+Date: Fri, 05 Mar 2021 23:12:17 +1100
+Message-ID: <87pn0dre8u.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNMQNWBtWS7O_aaCfbMWvQUnzWTPXoxgD8DzqNzKfL_2Dg@mail.gmail.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,62 +61,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, broonie@kernel.org,
- Paul Mackerras <paulus@samba.org>, kasan-dev <kasan-dev@googlegroups.com>,
- linux-toolchains@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: linux-ia64@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 04, 2021 at 08:01:29PM +0100, Marco Elver wrote:
-> On Thu, 4 Mar 2021 at 19:51, Mark Rutland <mark.rutland@arm.com> wrote:
-> > On Thu, Mar 04, 2021 at 07:22:53PM +0100, Marco Elver wrote:
+Anshuman Khandual <anshuman.khandual@arm.com> writes:
+> HUGETLB_PAGE_SIZE_VARIABLE need not be defined for each individual
+> platform subscribing it. Instead just make it generic.
+>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Suggested-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> This change was originally suggested in an earilier discussion. This
+> applies on v5.12-rc1 and has been build tested on all applicable
+> platforms i.e ia64 and powerpc.
+>
+> https://patchwork.kernel.org/project/linux-mm/patch/1613024531-19040-3-git-send-email-anshuman.khandual@arm.com/
+>
+> Changes in V3:
+>
+> - Dropped the bool desciption that enabled user selection
+> - Dropped the dependency on HUGETLB_PAGE for HUGETLB_PAGE_SIZE_VARIABLE
+>
+> Changes in V2:
+>
+> https://patchwork.kernel.org/project/linux-mm/patch/1614661987-23881-1-git-send-email-anshuman.khandual@arm.com/
+>
+> - Added a description for HUGETLB_PAGE_SIZE_VARIABLE
+> - Added HUGETLB_PAGE dependency while selecting HUGETLB_PAGE_SIZE_VARIABLE
+>
+> Changes in V1:
+>
+> https://patchwork.kernel.org/project/linux-mm/patch/1614577853-7452-1-git-send-email-anshuman.khandual@arm.com/
+>
+>  arch/ia64/Kconfig    | 6 +-----
+>  arch/powerpc/Kconfig | 6 +-----
 
-> > > I was having this problem with KCSAN, where the compiler would
-> > > tail-call-optimize __tsan_X instrumentation.
-> >
-> > Those are compiler-generated calls, right? When those are generated the
-> > compilation unit (and whatever it has included) might not have provided
-> > a prototype anyway, and the compiler has special knowledge of the
-> > functions, so it feels like the compiler would need to inhibit TCO here
-> > for this to be robust. For their intended usage subjecting them to TCO
-> > doesn't seem to make sense AFAICT.
-> >
-> > I suspect that compilers have some way of handling that; otherwise I'd
-> > expect to have heard stories of mcount/fentry calls getting TCO'd and
-> > causing problems. So maybe there's an easy fix there?
-> 
-> I agree, the compiler builtins should be handled by the compiler
-> directly, perhaps that was a bad example. But we also have "explicit
-> instrumentation", e.g. everything that's in <linux/instrumented.h>.
+LGTM.
 
-True -- I agree for those we want similar, and can see a case for a
-no-tco-calls-to-me attribute on functions as with noreturn.
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Maybe for now it's worth adding prevent_tail_call_optimization() to the
-instrument_*() call wrappers in <linux/instrumented.h>? As those are
-__always_inline, that should keep the function they get inlined in
-around. Though we probably want to see if we can replace the mb() in
-prevent_tail_call_optimization() with something that doesn't require a
-real CPU barrier.
-
-[...]
-
-> > I reckon for basically any instrumentation we don't want calls to be
-> > TCO'd, though I'm not immediately sure of cases beyond sanitizers and
-> > mcount/fentry.
-> 
-> Thinking about this more, I think it's all debugging tools. E.g.
-> lockdep, if you lock/unlock at the end of a function, you might tail
-> call into lockdep. If the compiler applies TCO, and lockdep determines
-> there's a bug and then shows a trace, you'll have no idea where the
-> actual bug is. The kernel has lots of debugging facilities that add
-> instrumentation in this way. So perhaps it's a general debugging-tool
-> problem (rather than just sanitizers).
-
-This makes sense to me.
-
-Thanks,
-Mark.
+cheers
