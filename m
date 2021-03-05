@@ -2,55 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0459132DF76
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 03:14:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3322C32DFCC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 03:56:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DsBBt4ldZz3d7m
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 13:14:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DsC6c1ClNz3d9G
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Mar 2021 13:56:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=IcYPygun;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=LVLoAGKO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=163.com
- (client-ip=220.181.12.13; helo=m12-13.163.com; envelope-from=angkery@163.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::732;
+ helo=mail-qk1-x732.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256
- header.s=s110527 header.b=IcYPygun; dkim-atps=neutral
-X-Greylist: delayed 1005 seconds by postgrey-1.36 at boromir;
- Fri, 05 Mar 2021 13:02:52 AEDT
-Received: from m12-13.163.com (m12-13.163.com [220.181.12.13])
- by lists.ozlabs.org (Postfix) with SMTP id 4Ds9x82b31z30HH
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 13:02:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=0mrqM
- ZgvevrNOXq8jnxeZuPhNgFFPoldWVREeiMQV0o=; b=IcYPygun8FEvyMXek6SOM
- j/Csv/BWQzA/FGSwbTmQ2CW4r8bApzsF43YduAFu4cCXk1M4gvT/PRlLS+EOpx2z
- td1n9YcaGem0FI/k9OvhWlmfbmXB7pXNMgSQkNKJyML+ak0O3dJLt2Dsc/rjUGpy
- BKY6Mov8pnNmSbZmaGSTOQ=
-Received: from yangjunlin.ccdomain.com (unknown [119.137.55.151])
- by smtp9 (Coremail) with SMTP id DcCowACX+4wWjUFgajZ+hw--.44962S2;
- Fri, 05 Mar 2021 09:44:56 +0800 (CST)
-From: angkery <angkery@163.com>
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
- drt@linux.ibm.com, ljp@linux.ibm.com, sukadev@linux.ibm.com,
- davem@davemloft.net, kuba@kernel.org
-Subject: [PATCH] ibmvnic: remove excessive irqsave
-Date: Fri,  5 Mar 2021 09:43:50 +0800
-Message-Id: <20210305014350.1460-1-angkery@163.com>
-X-Mailer: git-send-email 2.24.0.windows.2
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=LVLoAGKO; dkim-atps=neutral
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com
+ [IPv6:2607:f8b0:4864:20::732])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DsC676v7zz3cXX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Mar 2021 13:55:41 +1100 (AEDT)
+Received: by mail-qk1-x732.google.com with SMTP id t4so701938qkp.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Mar 2021 18:55:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=B6K7R4Bd/k7pKUFwYYEqKbrQpzoj3M/+hPbpG9mugKo=;
+ b=LVLoAGKOykm/jC9af7pN4kyhfFsAcpvm9VLGQ0CXg0Se/SR35Oao/hkwdMYuxntVC7
+ J8PVTeW0iWrkuoJKaUfkJjFMyKNvIPNeP4toVjX1ZIFubifotU2p+sArdZJWyEnqPH75
+ Y9aUcSuSflX0iOPbsFK769CWeZ7IC98sOu0IPwL3onUjFtgic42u1FpwAONNbuEifkTD
+ 30fd4+jhh3OvFhY6949/pvO0jes6AfNqJoyTQzov/lvXL4NYk8jkujPxpxY5nyGz3fPT
+ LWkSuVWVkzTK+K2qNZOSVrOTr3P/MkvZI7UxiEM/FXLkgD9AHSXBbGIolCXSlxMAhqwi
+ OUow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=B6K7R4Bd/k7pKUFwYYEqKbrQpzoj3M/+hPbpG9mugKo=;
+ b=BbTQqpgcAMjaFjz+cBqkjffufUJqT9FmyoRs+ArOLfkyodzz3IMst9NG6u9MMcHCW8
+ eKteTsEAO8xcTn4i+RTUAJvITo7QqPy3WE/rs1c5pOzEWb/vFE1NgfOWS0WU7esOvjRm
+ qNU2cFwRSf4jHyPyqa1zDuQv61TLHzWJqZ6KsRV0f4lUrIzY6VtcDu9hyIaJ4z86CnBu
+ zcocC9ezagt7Ok46sH7q3mzo7ajDrzrkbYhf0YYy4M573A/FZ0IkuDLameyfLphbKv4A
+ ExUcz30of0uOAUba6gxtuXb6qxnonUg1roVIc3H4E5IbEI/fZqINBNzSgHrFP11fS83p
+ LoGg==
+X-Gm-Message-State: AOAM530XIha8XXnFwwXuEqyivghh71BeSRd51nFqY6ViS/1pkENhL927
+ nYG5RfplyuQP/S++cJQ4/1bdbuiWcgmBeOyALSg=
+X-Google-Smtp-Source: ABdhPJxRI1kuyUugmvglxFPMew6mIeAnrVcTj55/x338nxC4x/s5QaheI/U88N1H58YRzxifmLj0W6Tq5BJQQdJ62Go=
+X-Received: by 2002:a37:a282:: with SMTP id l124mr7167285qke.37.1614912936574; 
+ Thu, 04 Mar 2021 18:55:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DcCowACX+4wWjUFgajZ+hw--.44962S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WF13XryrXFyxCryftw1kKrg_yoW8XrykpF
- 4UuFy3Cw10qw1jqa9rJw18ZrsxCaykKrW8W34kCws3uFZ8Ary5Xr1FyFy29rWDK3yakan8
- uF1rZ393A3Z8Aw7anT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jj38nUUUUU=
-X-Originating-IP: [119.137.55.151]
-X-CM-SenderInfo: 5dqjyvlu16il2tof0z/xtbCBglMI13I062i4wAAsK
-X-Mailman-Approved-At: Fri, 05 Mar 2021 13:14:24 +1100
+References: <1612693435-31418-1-git-send-email-shengjiu.wang@nxp.com>
+ <1612693435-31418-8-git-send-email-shengjiu.wang@nxp.com>
+ <20210210221704.GA2894134@robh.at.kernel.org>
+ <CAA+D8ANOv91jr4381Acz1B2mZ6=Mx2J_2CMTGXmPKztv7bMjPA@mail.gmail.com>
+ <CAL_JsqK1uc82hfdE4yj0ye-D6vygiqWkDVW96NOb-8kEFVqHMg@mail.gmail.com>
+In-Reply-To: <CAL_JsqK1uc82hfdE4yj0ye-D6vygiqWkDVW96NOb-8kEFVqHMg@mail.gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 5 Mar 2021 10:55:25 +0800
+Message-ID: <CAA+D8AOP9L7eNHFMYrTscz0tPKMqU8Y0H5BtqyURmduhHgvGtw@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] ASoC: dt-bindings: imx-rpmsg: Add binding doc for
+ rpmsg machine driver
+To: Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,49 +78,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Junlin Yang <yangjunlin@yulong.com>
+Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Junlin Yang <yangjunlin@yulong.com>
+Hi
 
-ibmvnic_remove locks multiple spinlocks while disabling interrupts:
-spin_lock_irqsave(&adapter->state_lock, flags);
-spin_lock_irqsave(&adapter->rwi_lock, flags);
+On Fri, Mar 5, 2021 at 4:05 AM Rob Herring <robh@kernel.org> wrote:
+>
+> On Thu, Feb 18, 2021 at 1:23 AM Shengjiu Wang <shengjiu.wang@gmail.com> wrote:
+> >
+> > On Thu, Feb 11, 2021 at 6:18 AM Rob Herring <robh@kernel.org> wrote:
+> > >
+> > > On Sun, Feb 07, 2021 at 06:23:55PM +0800, Shengjiu Wang wrote:
+> > > > Imx-rpmsg is a new added machine driver for supporting audio on Cortex-M
+> > > > core. The Cortex-M core will control the audio interface, DMA and audio
+> > > > codec, setup the pipeline, the audio driver on Cortex-A core side is just
+> > > > to communitcate with M core, it is a virtual sound card and don't touch
+> > > > the hardware.
+> > >
+> > > I don't understand why there are 2 nodes for this other than you happen
+> > > to want to split this into 2 Linux drivers. It's 1 h/w thing.
+> >
+> > This one is for the sound card machine driver.  Another one is
+> > for the sound card cpu dai driver. so there are 2 nodes.
+>
+> You are explaining this to me in terms of drivers. Explain it in terms
+> of h/w blocks.
+>
 
-there is no need for the second irqsave,since interrupts are disabled
-at that point, so remove the second irqsave:
-spin_lock_irqsave(&adapter->state_lock, flags);
-spin_lock(&adapter->rwi_lock);
+Yes, there is only 1 h/w block, which is (MU) message unit
 
-Generated by: ./scripts/coccinelle/locks/flags.cocci
-./drivers/net/ethernet/ibm/ibmvnic.c:5413:1-18:
-ERROR: nested lock+irqsave that reuses flags from line 5404.
+As the sound card needs a cpu dai node and sound card node,
+so from the driver's perspective, I use two nodes.
 
-Signed-off-by: Junlin Yang <yangjunlin@yulong.com>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Seems It is hard to only use one node for my case.
+or do you have any suggestions?
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 2464c8a..a52668d 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -5408,9 +5408,9 @@ static void ibmvnic_remove(struct vio_dev *dev)
- 	 * after setting state, so __ibmvnic_reset() which is called
- 	 * from the flush_work() below, can make progress.
- 	 */
--	spin_lock_irqsave(&adapter->rwi_lock, flags);
-+	spin_lock(&adapter->rwi_lock);
- 	adapter->state = VNIC_REMOVING;
--	spin_unlock_irqrestore(&adapter->rwi_lock, flags);
-+	spin_unlock(&adapter->rwi_lock);
- 
- 	spin_unlock_irqrestore(&adapter->state_lock, flags);
- 
--- 
-1.9.1
-
-
+Best regards
+Wang shengjiu
