@@ -1,54 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59CAD32FCF6
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Mar 2021 21:00:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B857B32FD25
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Mar 2021 21:36:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DtFpF0jL5z3dJc
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Mar 2021 07:00:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=ceIvwhha;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DtGbv4S1Sz3dJt
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Mar 2021 07:36:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=178.238.156.107; helo=merlin.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Received: from merlin.infradead.org (merlin.infradead.org [178.238.156.107])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.216.41; helo=mail-pj1-f41.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com
+ [209.85.216.41])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DtFng0FrYz30Nx
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Mar 2021 07:00:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=Message-ID:From:CC:To:Subject:
- Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:
- Date:Sender:Reply-To:Content-ID:Content-Description;
- bh=bVEadx5XUyga2+3JVanlGM60Y2Rfk62e/HFKwSxTExU=; b=ceIvwhhav+M1uUnFOKoZGnbexg
- W1nHPwkf+MxykeLakwYq+ezYl+N9JXfFPEL1bcEngpvNMKr1hj8XPLI83AlBSHGZ6ntgbmI3iJyT6
- Mh9Ti3q6QNbFJiWWb2U6DrrCCUNfa6ouq+4Td/lt/hDO4hmcbDa13yb2MW+wniYwxTq8O7SIXHl7d
- WfFqXluL8mkde4IjVXbm/GkMnqc+wnXuUIPPDNetxO0DcdzhSTiwFMAuEk2XJL8fe/XNa7yxtkwZl
- duabVyoh0prdN/vWcla8xW9FkCAKrgwz76d1AaDge8csI9X1IuNmpDfvkrxxcT213nKBGkn6AQrgK
- R7CI6xnQ==;
-Received: from [104.129.198.225] (helo=[100.124.44.209])
- by merlin.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lId5H-000Ga2-7Q; Sat, 06 Mar 2021 19:59:32 +0000
-Date: Sat, 06 Mar 2021 11:44:33 -0800
-User-Agent: K-9 Mail for Android
-In-Reply-To: <87lfb5sthg.fsf@mpe.ellerman.id.au>
-References: <20210302082811.8671-1-rdunlap@infradead.org>
- <87lfb5sthg.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DtGbZ6zvBz2xxw
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Mar 2021 07:36:25 +1100 (AEDT)
+Received: by mail-pj1-f41.google.com with SMTP id
+ nh23-20020a17090b3657b02900c0d5e235a8so1022964pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Mar 2021 12:36:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=kxst1hG7ALyCmuPlQ7JFD7SMZloRyR6/yTfXMK8W7T0=;
+ b=Q1WdDMhEW3Kq5DbuNmNMNaKOyohPvq6d4tQeRhlN4GCja3wktujKsY7hBSHVp1Z6en
+ 6ysgCIkqQaNrGski/tBmlHZP5KsS3r1sqnugTqk2QLvMWaL3YMT2ADkIY0gOuF1Ykj+b
+ xlE9KixlkhJx1J1FhxoPph8urFrVwTPff8AZrL985Wrhtbumr7mkqdOb9Fa3SsV8bjf6
+ Is+ls/0/1/z0RoY77jWdZpxD2Nb1eQK9Sj6GcckojFDl4nclNN8z3JW/UXfn+I/+Mz/w
+ Jxl5vbObX8hzum1PTfAVR7MZLPIoaOJjKRt7tjf4Reo3/j20IDqLVurPS41s4TLVVRHI
+ SNgw==
+X-Gm-Message-State: AOAM532sgarROCw6aEch1kVNvrJG3QSp3cmmc8HgLI2OL5NS3vaAph/i
+ WgF04ifDZpX4hePfjfqPgw==
+X-Google-Smtp-Source: ABdhPJz0P+6rkvVUSXxTrcwxqhCKO6b8X5k2tVKedc0iXxGFF8nD+HcxsXL0EuR95YHQZyqlJKMczg==
+X-Received: by 2002:a17:90b:809:: with SMTP id
+ bk9mr16677761pjb.83.1615062983602; 
+ Sat, 06 Mar 2021 12:36:23 -0800 (PST)
+Received: from robh.at.kernel.org ([172.58.27.98])
+ by smtp.gmail.com with ESMTPSA id t22sm6300886pjw.54.2021.03.06.12.36.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 06 Mar 2021 12:36:22 -0800 (PST)
+Received: (nullmailer pid 1172590 invoked by uid 1000);
+ Sat, 06 Mar 2021 20:36:17 -0000
+Date: Sat, 6 Mar 2021 13:36:17 -0700
+From: Rob Herring <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v3 7/7] ASoC: dt-bindings: imx-rpmsg: Add binding doc for
+ rpmsg machine driver
+Message-ID: <20210306203617.GA1164939@robh.at.kernel.org>
+References: <1614221563-26822-1-git-send-email-shengjiu.wang@nxp.com>
+ <1614221563-26822-8-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] powerpc: iommu: fix build when neither PCI or IBMVIO is
- set
-To: Michael Ellerman <mpe@ellerman.id.au>,linux-kernel@vger.kernel.org
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <3954705C-2B4C-436A-8902-494240662491@infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1614221563-26822-8-git-send-email-shengjiu.wang@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,70 +68,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
- Anton Blanchard <anton@samba.org>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, timur@kernel.org,
+ lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com,
+ linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com,
+ broonie@kernel.org, perex@perex.cz, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On March 2, 2021 3:08:43 AM PST, Michael Ellerman <mpe@ellerman=2Eid=2Eau> =
-wrote:
->Randy Dunlap <rdunlap@infradead=2Eorg> writes:
->> When neither CONFIG_PCI nor CONFIG_IBMVIO is enabled:
->>
->> =2E=2E/arch/powerpc/kernel/iommu=2Ec:178:30: error:
->'fail_iommu_bus_notifier' defined but not used
->[-Werror=3Dunused-variable]
->>   178 | static struct notifier_block fail_iommu_bus_notifier =3D {
->>
->> If only that struct is bounded by 2 #if defined() phrases (PCI &&
->IBMVIO):
->>
->> =2E=2E/arch/powerpc/kernel/iommu=2Ec:162:12: error: 'fail_iommu_bus_not=
-ify'
->defined but not used [-Werror=3Dunused-function]
->>   162 | static int fail_iommu_bus_notify(struct notifier_block *nb,
->>
->> If that function is also guarded by 2 #if defined() phrases:
->>
->> In file included from =2E=2E/include/linux/dma-mapping=2Eh:7,
->>                  from =2E=2E/arch/powerpc/kernel/iommu=2Ec:19:
->> =2E=2E/include/linux/device=2Eh:131:26: error: 'dev_attr_fail_iommu'
->defined but not used [-Werror=3Dunused-variable]
->>   131 |  struct device_attribute dev_attr_##_name =3D __ATTR_RW(_name)
->> =2E=2E/arch/powerpc/kernel/iommu=2Ec:160:8: note: in expansion of macro
->'DEVICE_ATTR_RW'
->>   160 | static DEVICE_ATTR_RW(fail_iommu);
->>
->> and the snowball continues to grow=2E
->> Next I got this one:
->>
->> =2E=2E/arch/powerpc/kernel/iommu=2Ec: In function 'iommu_range_alloc':
->> =2E=2E/arch/powerpc/kernel/iommu=2Ec:234:6: error: implicit declaration=
- of
->function 'should_fail_iommu'; did you mean 'should_failslab'?
->[-Werror=3Dimplicit-function-declaration]
->>   234 |  if (should_fail_iommu(dev))
->>
->> and
->>
->> =2E=2E/arch/powerpc/kernel/iommu=2Ec: In function 'should_fail_iommu':
->> =2E=2E/arch/powerpc/kernel/iommu=2Ec:122:50: error: 'fail_iommu' undecl=
-ared
->(first use in this function)
->>   122 |  return dev->archdata=2Efail_iommu && should_fail(&fail_iommu,
->1);
->>
->> So combine CONFIG_FAIL_IOMMU && (CONFIG_PCI || CONFIG_IBMVIO)
->> to decide on building some of this code/data=2E
->
->Couldn't we just make FAIL_IOMMU depend on PCI || IBMVIO?
->
->cheers
+On Thu, Feb 25, 2021 at 10:52:43AM +0800, Shengjiu Wang wrote:
+> Imx-rpmsg is a new added machine driver for supporting audio on Cortex-M
+> core. The Cortex-M core will control the audio interface, DMA and audio
+> codec, setup the pipeline, the audio driver on Cortex-A core side is just
+> to communitcate with M core, it is a virtual sound card and don't touch
+> the hardware.
 
-Yes, I thought of that about 5 seconds after hitting Send=2E But I can't d=
-o it just now -- am away from computer=2E
+This sounds like 1 h/w block (the interface to the cortex-M), your DT 
+should be 1 node. If you need 2 drivers to satisfy the needs of the OS, 
+then instantiate one device from the other device's driver.
 
-
---=20
-Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
+Rob
