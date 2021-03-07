@@ -1,81 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05741330523
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 00:02:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C8433052B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 00:11:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dtxng4PQnz3cPC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 10:02:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.a=rsa-sha256 header.s=mail181024 header.b=GaUPz3mm;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DtxzQ1F2tz3d7x
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 10:10:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
- helo=gate2.alliedtelesis.co.nz;
- envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=GaUPz3mm; 
- dkim-atps=neutral
-X-Greylist: delayed 542 seconds by postgrey-1.36 at boromir;
- Mon, 08 Mar 2021 10:02:06 AEDT
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [202.36.163.20])
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DtxnB2pX4z3bPN
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Mar 2021 10:02:06 +1100 (AEDT)
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 62DE3806B5;
- Mon,  8 Mar 2021 11:52:54 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1615157574;
- bh=/uKpJ5Y+T9LW6SOC8eRw1AlWYpZCA12/OQkujPvvcJY=;
- h=From:To:CC:Subject:Date;
- b=GaUPz3mmGUBnXWWeJo65ql5yaIUz9E8ejIt68W1/UW14ePNIzX7emnkI0fBhGBT3x
- cJQMFFzkiHVOY5vnAB9eFH/0mPoq9OCurVHzEhZylgDxQw3433CvQG07QQcbMNYXu3
- 6AhUCEpTrEmFk/xB2yXQjbcuZAvsxJxr1+9mzLDU2GLqjRH43XVbvbxaiIdTfSPtRK
- oVTAKnoieZOjhMggKeK5w1jowP4NdbNejouZFk1fcFT8sSs4RjUpp2uP/7k9ScRbMW
- n/337qaBOEo6GfOHuw2wrLAMc0YTDGf/Bmnchlqqz4kUM5YmJgXv9HEVzhzQ4rE6ft
- fiepq67lhkkjA==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[2001:df5:b000:bc8::77]) by
- svr-chch-seg1.atlnz.lc with Trustwave SEG (v8, 2, 6, 11305)
- id <B604559460000>; Mon, 08 Mar 2021 11:52:54 +1300
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
- by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 8 Mar 2021 11:52:54 +1300
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.012; Mon, 8 Mar 2021 11:52:54 +1300
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: "jdelvare@suse.com" <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>
-Subject: Errant readings on LM81 with T2080 SoC
-Thread-Topic: Errant readings on LM81 with T2080 SoC
-Thread-Index: AQHXE6SbssdAOSHgwE+zIRhtn11Skw==
-Date: Sun, 7 Mar 2021 22:52:53 +0000
-Message-ID: <8e0a88ba-01e9-9bc1-c78b-20f26ce27d12@alliedtelesis.co.nz>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.32.1.11]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F132F842DDAF194C9B19A1C4261BD2BA@atlnz.lc>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dtxyl0G5xz3bPZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Mar 2021 10:10:21 +1100 (AEDT)
+IronPort-SDR: uvgQhw5i1xuPafRrLQmoEM6OUe9hSHIKIaJbO6TikOGIt42iAujCIwN7rfhWn7XUJQW7JuySJO
+ b+hmFvs7WQNA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9916"; a="175048627"
+X-IronPort-AV: E=Sophos;i="5.81,231,1610438400"; d="scan'208";a="175048627"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Mar 2021 15:10:18 -0800
+IronPort-SDR: ZHWfAdTkUSDrsBkE4ZmwExbvKg+8pQG5GdUHZjhmsgSV0wPrEPr5mIufz3nMfv5hCxd6ZUsjbO
+ 3T0RnAcH2VGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,231,1610438400"; d="scan'208";a="587859292"
+Received: from lkp-server01.sh.intel.com (HELO 3e992a48ca98) ([10.239.97.150])
+ by orsmga005.jf.intel.com with ESMTP; 07 Mar 2021 15:10:17 -0800
+Received: from kbuild by 3e992a48ca98 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lJ2XQ-0000g6-GP; Sun, 07 Mar 2021 23:10:16 +0000
+Date: Mon, 08 Mar 2021 07:09:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 103ebc760cccd96ab1ebc3558881106d48efdcea
+Message-ID: <60455d3d./OoInyokQJk8UWkd%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-SEG-SpamProfiler-Analysis: v=2.3 cv=C7uXNjH+ c=1 sm=1 tr=0
- a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10
- a=IkcTkHD0fZMA:10 a=dESyimp9J3IA:10 a=v3EFt_4kAAAA:20 a=sozttTNsAAAA:8
- a=1L_YXzs6ym7sghQsxOAA:9 a=QEXdDO2ut3YA:10 a=aeg5Gbbo78KNqacMgKqU:22
- a=BPzZvq435JnGatEyYwdK:22 a=pHzHmUro8NiASowvMSCR:22 a=nt3jZW36AmriUCFCBwmW:22
-X-SEG-SpamProfiler-Score: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,40 +53,176 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGksDQoNCkkndmUgZ290IGEgc3lzdGVtIHVzaW5nIGEgUG93ZXJQQyBUMjA4MCBTb0MgYW5kIGFt
-b25nIG90aGVyIHRoaW5ncyBoYXMgDQphbiBMTTgxIGh3bW9uIGNoaXAuDQoNClVuZGVyIGEgaGln
-aCBDUFUgbG9hZCB3ZSBzZWUgZXJyYW50IHJlYWRpbmdzIGZyb20gdGhlIExNODEgYXMgd2VsbCBh
-cyANCmFjdHVhbCBmYWlsdXJlcy4gSXQncyB0aGUgZXJyYW50IHJlYWRpbmdzIHRoYXQgY2F1c2Ug
-dGhlIG1vc3QgY29uY2VybiANCnNpbmNlIHdlIGNhbiBlYXNpbHkgaWdub3JlIHRoZSByZWFkIGVy
-cm9ycyBpbiBvdXIgbW9uaXRvcmluZyBhcHBsaWNhdGlvbiANCihhbHRob3VnaCBpdCB3b3VsZCBi
-ZSBiZXR0ZXIgaWYgdGhleSB3ZXJlbid0IHRoZXJlIGF0IGFsbCkuDQoNCkknbSBhYmxlIHRvIHJl
-cHJvZHVjZSB0aGlzIHdpdGggYSB0ZXN0IGFwcGxpY2F0aW9uWzBdIHRoYXQgYXJ0aWZpY2lhbGx5
-IA0KY3JlYXRlcyBhIGhpZ2ggQ1BVIGxvYWQgdGhlbiBieSByZXBlYXRlZGx5IGNoZWNraW5nIGZv
-ciB0aGUgYWxsLTFzIA0KdmFsdWVzIGZyb20gdGhlIExNODEgZGF0YXNoZWV0WzFdKHBhZ2UgMTcp
-LiBUaGUgYWxsLTFzIHJlYWRpbmdzIHN0aWNrIA0Kb3V0IGFzIHRoZXkgYXJlIG9idmlvdXNseSBo
-aWdoZXIgdGhhbiB0aGUgdm9sdGFnZSByYWlscyB0aGF0IGFyZSANCmNvbm5lY3RlZCBhbmQgZGlz
-YWdyZWUgd2l0aCBtZWFzdXJlbWVudHMgdGFrZW4gd2l0aCBhIG11bHRpbWV0ZXIuDQoNCkhlcmUn
-cyB0aGUgb3V0cHV0IGZyb20gbXkgZGV2aWNlDQoNCltyb290QGxpbnV4Ym94IH5dIyBjcHVsb2Fk
-IDkwJg0KW3Jvb3RAbGludXhib3ggfl0jICh3aGlsZSB0cnVlOyBkbyBjYXQgL3N5cy9jbGFzcy9o
-d21vbi9od21vbjAvaW4qX2lucHV0IA0KfCBncmVwICczMzIwXHw0MzgzXHw2NjQxXHwxNTkzMFx8
-MzU4Nic7IHNsZWVwIDE7IGRvbmUpJg0KMzU4Ng0KMzU4Ng0KY2F0OiByZWFkIGVycm9yOiBObyBz
-dWNoIGRldmljZSBvciBhZGRyZXNzDQpjYXQ6IHJlYWQgZXJyb3I6IE5vIHN1Y2ggZGV2aWNlIG9y
-IGFkZHJlc3MNCjMzMjANCjMzMjANCjM1ODYNCjM1ODYNCjY2NDENCjY2NDENCjQzODMNCjQzODMN
-Cg0KRnVuZGFtZW50YWxseSBJIHRoaW5rIHRoaXMgaXMgYSBwcm9ibGVtIHdpdGggdGhlIGZhY3Qg
-dGhhdCB0aGUgTE04MSBpcyANCmFuIFNNQnVzIGRldmljZSBidXQgdGhlIFQyMDgwIChhbmQgb3Ro
-ZXIgRnJlZXNjYWxlIFNvQ3MpIHVzZXMgaTJjIGFuZCB3ZSANCmVtdWxhdGUgU01CdXMuIEkgc3Vz
-cGVjdCB0aGUgZXJyYW50IHJlYWRpbmdzIGFyZSB3aGVuIHdlIGRvbid0IGdldCByb3VuZCANCnRv
-IGNvbXBsZXRpbmcgdGhlIHJlYWQgd2l0aGluIHRoZSB0aW1lb3V0IHNwZWNpZmllZCBieSB0aGUg
-U01CdXMgDQpzcGVjaWZpY2F0aW9uLiBEZXBlbmRpbmcgb24gd2hlbiB0aGF0IGhhcHBlbnMgd2Ug
-ZWl0aGVyIGZhaWwgdGhlIA0KdHJhbnNmZXIgb3IgaW50ZXJwcmV0IHRoZSByZXN1bHQgYXMgYWxs
-LTFzLg0KDQpbMF0gLSBodHRwczovL2dpc3QuZ2l0aHViLmNvbS9jcGFja2hhbS82MzU2YTNhOTQz
-YWNjZWJiMjI4MTM1ZGMxMGRhZjcyMQ0KWzFdIC0gaHR0cHM6Ly93d3cudGkuY29tL2xpdC9kcy9z
-eW1saW5rL2xtODEucGRmDQo=
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 103ebc760cccd96ab1ebc3558881106d48efdcea  Automatic merge of 'master' into merge (2021-03-07 21:07)
+
+elapsed time: 723m
+
+configs tested: 150
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                           ip28_defconfig
+mips                       capcella_defconfig
+arm                        mini2440_defconfig
+arm                           spitz_defconfig
+arm                          pxa168_defconfig
+mips                           gcw0_defconfig
+sh                           se7724_defconfig
+arc                        nsim_700_defconfig
+powerpc                     mpc83xx_defconfig
+mips                  decstation_64_defconfig
+arm                        clps711x_defconfig
+arc                              allyesconfig
+parisc                              defconfig
+powerpc                    klondike_defconfig
+sh                            titan_defconfig
+xtensa                    smp_lx200_defconfig
+powerpc                    ge_imp3a_defconfig
+arm                       mainstone_defconfig
+mips                             allmodconfig
+arm                            dove_defconfig
+sh                             shx3_defconfig
+arc                          axs101_defconfig
+powerpc                  mpc866_ads_defconfig
+mips                        workpad_defconfig
+powerpc                 mpc8313_rdb_defconfig
+mips                        maltaup_defconfig
+mips                      loongson3_defconfig
+powerpc                 mpc834x_itx_defconfig
+alpha                            alldefconfig
+sh                        sh7763rdp_defconfig
+openrisc                 simple_smp_defconfig
+arm                         at91_dt_defconfig
+powerpc                     powernv_defconfig
+csky                             alldefconfig
+mips                        nlm_xlr_defconfig
+xtensa                       common_defconfig
+sh                                  defconfig
+sh                           se7722_defconfig
+arm                         s5pv210_defconfig
+arm                            hisi_defconfig
+ia64                         bigsur_defconfig
+powerpc                  mpc885_ads_defconfig
+sh                          sdk7786_defconfig
+arm                     am200epdkit_defconfig
+mips                            gpr_defconfig
+arm                         cm_x300_defconfig
+arc                        vdk_hs38_defconfig
+sh                          polaris_defconfig
+arc                    vdk_hs38_smp_defconfig
+powerpc                     tqm8555_defconfig
+mips                       rbtx49xx_defconfig
+arm                          pxa3xx_defconfig
+powerpc                      pasemi_defconfig
+arc                      axs103_smp_defconfig
+powerpc                     tqm8560_defconfig
+microblaze                          defconfig
+powerpc                   bluestone_defconfig
+mips                           ip27_defconfig
+xtensa                          iss_defconfig
+mips                         tb0226_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+nios2                               defconfig
+nds32                             allnoconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a005-20210307
+i386                 randconfig-a003-20210307
+i386                 randconfig-a002-20210307
+i386                 randconfig-a004-20210307
+i386                 randconfig-a006-20210307
+i386                 randconfig-a001-20210307
+x86_64               randconfig-a013-20210307
+x86_64               randconfig-a016-20210307
+x86_64               randconfig-a015-20210307
+x86_64               randconfig-a014-20210307
+x86_64               randconfig-a012-20210307
+x86_64               randconfig-a011-20210307
+i386                 randconfig-a016-20210308
+i386                 randconfig-a012-20210308
+i386                 randconfig-a014-20210308
+i386                 randconfig-a013-20210308
+i386                 randconfig-a011-20210308
+i386                 randconfig-a015-20210308
+i386                 randconfig-a016-20210307
+i386                 randconfig-a012-20210307
+i386                 randconfig-a013-20210307
+i386                 randconfig-a014-20210307
+i386                 randconfig-a011-20210307
+i386                 randconfig-a015-20210307
+x86_64               randconfig-a006-20210308
+x86_64               randconfig-a001-20210308
+x86_64               randconfig-a004-20210308
+x86_64               randconfig-a002-20210308
+x86_64               randconfig-a005-20210308
+x86_64               randconfig-a003-20210308
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a006-20210307
+x86_64               randconfig-a001-20210307
+x86_64               randconfig-a004-20210307
+x86_64               randconfig-a005-20210307
+x86_64               randconfig-a002-20210307
+x86_64               randconfig-a003-20210307
+x86_64               randconfig-a013-20210308
+x86_64               randconfig-a016-20210308
+x86_64               randconfig-a015-20210308
+x86_64               randconfig-a014-20210308
+x86_64               randconfig-a011-20210308
+x86_64               randconfig-a012-20210308
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
