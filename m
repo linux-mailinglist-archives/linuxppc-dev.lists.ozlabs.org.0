@@ -2,68 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D3B32FF47
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Mar 2021 07:31:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2FF32FFEB
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Mar 2021 10:38:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DtWpb5mlcz3dD9
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Mar 2021 17:31:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DtbyH51M2z3cSp
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Mar 2021 20:38:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=B8lJWYRs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=UhggsXAl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::62f;
- helo=mail-pl1-x62f.google.com; envelope-from=maskray@google.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=baijiaju1990@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=B8lJWYRs; dkim-atps=neutral
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
- [IPv6:2607:f8b0:4864:20::62f])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=UhggsXAl; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DtWpC2F6vz30JT
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Mar 2021 17:31:30 +1100 (AEDT)
-Received: by mail-pl1-x62f.google.com with SMTP id s16so3367467plr.9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Mar 2021 22:31:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=lgTVaBNy62FaQXG4T7xAtsLpQb7SJOUo67w7wxLxPEA=;
- b=B8lJWYRslFfmnZRMNrhVfkxmfp4MFiFQw1YP0x5TKFi1oeC7TCND4+2D3S910wYBj1
- xkftjqHwg81TT5F7Eu7d8F5vUWc7vvBVZTyEM2EQKq6aNnmWGQw9Xv/LkIPIUACgpzR3
- 3OOhXNQEkTopGcMFBGmwA+5Q5kQkQ4VXn4GaxdOlsPDqRwx7yFZfaG6e0cuV1rJTFVcD
- i/6PcrGH7p+CCdxEGRFAIkmgfA6n4WMBgTorYalHPtmJJuRnCUePdFpHJXcQlENclB9p
- jkv1+FcUnY1e/HMpqaY7hEuAPm85tKM7jUitwDEvoLhh+06R2lBttlPQd14lM4l9gM1L
- iZkw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DtbNs0sYqz30LQ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Mar 2021 20:13:14 +1100 (AEDT)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ f2-20020a17090a4a82b02900c67bf8dc69so1385779pjh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Mar 2021 01:13:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=9Aawe9QfXb0YxIR8Jzrfs58tlZMG5IqOctIXF8gQkLY=;
+ b=UhggsXAldaEpBafQQQwFw14B6tumhWrHV43VeU8nYUccgd6lTUv4UrLEXD0mxpvYg0
+ WJETcpeA1siImX1QC2lMAZ66NE30eUMlWU2Z6Dd3vFyCu6+aKJn/FC/VXfXHyd8F4NcF
+ nNu7gZlfNHnIDQyonKFVJ573DfI15xS7F64dh2Y97k717XT6JRTBonF6n9dz2PG+ucty
+ UU4/dO9GP2FqGMMqKNCCff6Iw6vlVVuRmBICkh1izEOfRNv3aYz0JjdZ4KFfevzjxm/Z
+ KQQCLPSa8LFrPwcArGCfayTcp80+eL3j/oob2BNIWLvtGxkGG7ObNg4UObBFzC/TuCc6
+ y5Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=lgTVaBNy62FaQXG4T7xAtsLpQb7SJOUo67w7wxLxPEA=;
- b=GovQffamHL+ZK4a22P1zGqoZPNhf65D3flF8pApqNAe5vDB/m4aHyuMweIdzRTCAVq
- RdoduUBPdVFWGrNF447tOLooPjHggrxCnaa63f/q5oTTdVM4Pdk2E6dX6irQNEm0oeFs
- oIiV/2mLIyi/YcgMixBUHfB4nkz6exjXdjSvrPOlJ0C5116Ku+UhXy2WaW+d63+JQcZi
- sWT/5ZRPFrart4ofj4svFESTbxyNAaWL9XKISfK3l75LI64x4phPcbjxpCW09AJFMNDG
- 933e55hFaYtZXmSHAgjTGPTB8u+34+nxolHowWwmJXPYCvETCQQEnnuoWsYggWLKHqv5
- iK+g==
-X-Gm-Message-State: AOAM530pjKzbB7QbHv5qzLtxPIl94KbJqeaTBzyHGvG6SLbXLSuPfdYF
- Jehvgx982uJc/ckzb2osnxidJg+cj80ZHhNyHBpqag==
-X-Google-Smtp-Source: ABdhPJzdZxodEAfZsSGiMWKYWmBZtbZMMbxfaNo2TkklrGQdBeIRlu5Mhe/eB7JuNoJTwCVMn2xKbSEMlWhgFor9+gg=
-X-Received: by 2002:a17:902:ead5:b029:e5:bd04:bf48 with SMTP id
- p21-20020a170902ead5b02900e5bd04bf48mr16013637pld.38.1615098686849; Sat, 06
- Mar 2021 22:31:26 -0800 (PST)
-MIME-Version: 1.0
-References: <20210307051433.2756645-1-maskray@google.com>
- <20210307062336.GD29191@gate.crashing.org>
-In-Reply-To: <20210307062336.GD29191@gate.crashing.org>
-From: =?UTF-8?B?RsSBbmctcnXDrCBTw7JuZw==?= <maskray@google.com>
-Date: Sat, 6 Mar 2021 22:31:15 -0800
-Message-ID: <CAFP8O3L91xzZtTQ3gDzpLE=-FvgM3ot5oaBK6jGUZbeT7Pg-RA@mail.gmail.com>
-Subject: Re: [PATCH] Replace __toc_start + 0x8000 with .TOC.
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Content-Type: text/plain; charset="UTF-8"
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=9Aawe9QfXb0YxIR8Jzrfs58tlZMG5IqOctIXF8gQkLY=;
+ b=GAcVshcKoyH3FhkJAcvCwEndKvbMyhX6iVNMjP8ngpA4WYKOEi+efRwBk18ZD822v7
+ DITlBb5jJkmVd+b5d5xLhmT9gMRxwbpt2GRCPJ0DdfnghZPTWNZDsDYsTBTtYO5E/LSQ
+ rqyd4Yo3DkMsxe+LNa+LBKO1Rp+2cIgi7n7ArKN6GLAUDmPB5ALAR97vF2uhcz1W66nf
+ oJWLk93oroPBPUxK+y//O1q5UIxQmZuzeRMMmVslwQmig9dUi1YLXPIBETvfe4zw+tIe
+ 4MzvyJCwkjbwOAkoss3p/y5FxSKGs2GYgVMeUvRKBJxsLEz8yp1jwCKy5uH3/2+wM5vY
+ yYzA==
+X-Gm-Message-State: AOAM5308TLAhVGFURZj6isVDAWtP6zq+RhQccZg19heS1CnUJDjCrbRH
+ 5BVgD8H9dPsrF3LsB5oZbtk=
+X-Google-Smtp-Source: ABdhPJw6y5+sJnv51Z6d8vwll05AJl+ba8SkszCda/a9N/8fuHzZ8pEuMl57xak273MSyHvwnb2M+g==
+X-Received: by 2002:a17:902:a40b:b029:e0:1096:7fb with SMTP id
+ p11-20020a170902a40bb02900e0109607fbmr15909348plq.40.1615108389415; 
+ Sun, 07 Mar 2021 01:13:09 -0800 (PST)
+Received: from localhost.localdomain ([45.135.186.66])
+ by smtp.gmail.com with ESMTPSA id q15sm6850719pfk.181.2021.03.07.01.13.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 07 Mar 2021 01:13:09 -0800 (PST)
+From: Jia-Ju Bai <baijiaju1990@gmail.com>
+To: qiang.zhao@nxp.com,
+	davem@davemloft.net,
+	kuba@kernel.org
+Subject: [PATCH] net: wan: fix error return code of uhdlc_init()
+Date: Sun,  7 Mar 2021 01:12:56 -0800
+Message-Id: <20210307091256.22897-1-baijiaju1990@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Mailman-Approved-At: Sun, 07 Mar 2021 20:38:26 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,44 +78,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>
+Cc: netdev@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 6, 2021 at 10:25 PM Segher Boessenkool
-<segher@kernel.crashing.org> wrote:
->
-> Hi!
->
-> On Sat, Mar 06, 2021 at 09:14:33PM -0800, Fangrui Song wrote:
-> > TOC relocations are like GOT relocations on other architectures.
-> > However, unlike other architectures, GNU ld's ppc64 port defines .TOC.
-> > relative to the .got output section instead of the linker synthesized
-> > .got input section. LLD defines .TOC. as the .got input section plus
-> > 0x8000. When CONFIG_PPC_OF_BOOT_TRAMPOLINE=y,
-> > arch/powerpc/kernel/prom_init.o is built, and LLD computed .TOC. can be
-> > different from __toc_start defined by the linker script.
-> >
-> > Simplify kernel_toc_addr with asm label .TOC. so that we can get rid of
-> > __toc_start.
-> >
-> > With this change, powernv_defconfig with CONFIG_PPC_OF_BOOT_TRAMPOLINE=y
-> > is bootable with LLD. There is still an untriaged issue with Alexey's
-> > configuration.
->
-> Do you have any explanation why this *does* work, while the original
-> doesn't?  Some explanation that says *what* is wrong.  To me it doesn't
-> look like the kernel script is.
->
->
-> Segher
+When priv->rx_skbuff or priv->tx_skbuff is NULL, no error return code of
+uhdlc_init() is assigned.
+To fix this bug, ret is assigned with -ENOMEM in these cases.
 
-The kernel code probably wants to access .TOC. (the TOC base symbol)
-via __toc_start+0x8000.
-If the kernel understood TOC base is different from the linker
-understood TOC base (.TOC.), there should be a problem.
-By using .TOC. in the kernel code, the two concepts are guaranteed to match.
+Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+---
+ drivers/net/wan/fsl_ucc_hdlc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+index dca97cd7c4e7..7eac6a3e1cde 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -204,14 +204,18 @@ static int uhdlc_init(struct ucc_hdlc_private *priv)
+ 	priv->rx_skbuff = kcalloc(priv->rx_ring_size,
+ 				  sizeof(*priv->rx_skbuff),
+ 				  GFP_KERNEL);
+-	if (!priv->rx_skbuff)
++	if (!priv->rx_skbuff) {
++		ret = -ENOMEM;
+ 		goto free_ucc_pram;
++	}
+ 
+ 	priv->tx_skbuff = kcalloc(priv->tx_ring_size,
+ 				  sizeof(*priv->tx_skbuff),
+ 				  GFP_KERNEL);
+-	if (!priv->tx_skbuff)
++	if (!priv->tx_skbuff) {
++		ret = -ENOMEM;
+ 		goto free_rx_skbuff;
++	}
+ 
+ 	priv->skb_curtx = 0;
+ 	priv->skb_dirtytx = 0;
+-- 
+2.17.1
+
