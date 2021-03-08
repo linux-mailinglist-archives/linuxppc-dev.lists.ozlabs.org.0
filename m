@@ -2,52 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281223312E8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 17:08:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EDA3314A8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 18:23:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvNYv0wqfz3d5s
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 03:08:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LfdzLPPb;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvQDX5LdRz3cns
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 04:23:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=LfdzLPPb; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=kaod.org (client-ip=178.32.121.110; helo=1.mo51.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 569 seconds by postgrey-1.36 at boromir;
+ Tue, 09 Mar 2021 04:23:39 AEDT
+Received: from 1.mo51.mail-out.ovh.net (1.mo51.mail-out.ovh.net
+ [178.32.121.110])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvNYV42M5z2xYr
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 03:08:30 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1EE6E65210;
- Mon,  8 Mar 2021 16:08:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1615219707;
- bh=dp5CLRZ/qcCLRBLFiX1Elejcb5Arx4EDlbEp0HHDH1Y=;
- h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
- b=LfdzLPPbq9W7CZ7v8EHQghN3CFK/Zuhx8Ptho+UIORomAXGE68s+X9ZyN4SceEvh1
- 8Br2eVy6SLaJb0vC7ecRnFhW++wAvubKpCz42XKOablLrp73rEVHca9J6/dMgr6zGR
- 2Fyy2H0/RTOfVG3jkCVcfSiLYjYCAoH5MXTA+xRVLnkeUeOZ4YOwuCOJGT/sWsvURn
- wuh1Wc7dDzKQitA5V3AO41N1U/CyYFGcHJhZNTPj3AIGSrfuAOwXh9oi5XtB/QdyGn
- MDNCyBiceExcVP9s9Um6vT2rp3sTFJjMu2M1abXdD6g1WHdkGeCxzgEi59002NVdG5
- jpuMJEOK7JsDA==
-From: Mark Brown <broonie@kernel.org>
-To: Tang Bin <tangbin@cmss.chinamobile.com>, perex@perex.cz, timur@kernel.org,
- nicoleotsuka@gmail.com, tiwai@suse.com, Xiubo.Lee@gmail.com
-In-Reply-To: <20210302125002.23900-1-tangbin@cmss.chinamobile.com>
-References: <20210302125002.23900-1-tangbin@cmss.chinamobile.com>
-Subject: Re: [PATCH] ASoC: fsl_xcvr: Use
- devm_platform_ioremap_resource_byname() to simplify code
-Message-Id: <161521960849.9621.15073900533403359434.b4-ty@kernel.org>
-Date: Mon, 08 Mar 2021 16:06:48 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvQDC5F20z3cJc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 04:23:39 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.146.140])
+ by mo51.mail-out.ovh.net (Postfix) with ESMTPS id F364026ED3C;
+ Mon,  8 Mar 2021 18:14:01 +0100 (CET)
+Received: from kaod.org (37.59.142.101) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 8 Mar 2021
+ 18:14:00 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-101G004bc6dcaae-9eee-46ea-91ee-177d3e527f2a,
+ BFE3C84E2CAB42A1CEB5BA3519A80D4AF8E6727E) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Mon, 8 Mar 2021 18:13:59 +0100
+From: Greg Kurz <groug@kaod.org>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH v2 1/8] powerpc/xive: Use cpu_to_node() instead of
+ ibm,chip-id property
+Message-ID: <20210308181359.789c143b@bahia.lan>
+In-Reply-To: <20210303174857.1760393-2-clg@kaod.org>
+References: <20210303174857.1760393-1-clg@kaod.org>
+ <20210303174857.1760393-2-clg@kaod.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.101]
+X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: 839bdb8a-0f17-45c5-b15b-e34154c8679b
+X-Ovh-Tracer-Id: 6582292330740881885
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledruddugedgfeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepveelhfdtudffhfeiveehhfelgeellefgteffteekudegheejfffghefhfeeuudffnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopegtlhhgsehkrghougdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,40 +63,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2 Mar 2021 20:50:02 +0800, Tang Bin wrote:
-> In this function, devm_platform_ioremap_resource_byname() should be
-> suitable to simplify code.
+On Wed, 3 Mar 2021 18:48:50 +0100
+C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 
-Applied to
+> The 'chip_id' field of the XIVE CPU structure is used to choose a
+> target for a source located on the same chip when possible. This field
+> is assigned on the PowerNV platform using the "ibm,chip-id" property
+> on pSeries under KVM when NUMA nodes are defined but it is undefined
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+This sentence seems to have a syntax problem... like it is missing an
+'and' before 'on pSeries'.
 
-Thanks!
+> under PowerVM. The XIVE source structure has a similar field
+> 'src_chip' which is only assigned on the PowerNV platform.
+>=20
+> cpu_to_node() returns a compatible value on all platforms, 0 being the
+> default node. It will also give us the opportunity to set the affinity
+> of a source on pSeries when we can localize them.
+>=20
 
-[1/1] ASoC: fsl_xcvr: Use devm_platform_ioremap_resource_byname() to simplify code
-      commit: c5f48a78e0cb950eb821af36b8790b794cc745b1
+IIUC this relies on the fact that the NUMA node id is =3D=3D to chip id
+on PowerNV, i.e. xc->chip_id which is passed to OPAL remain stable
+with this change.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+On the other hand, you have the pSeries case under PowerVM that
+doesn't xc->chip_id, which isn't passed to any hcall AFAICT. It
+looks like the chip id is only used for localization purpose in
+this case, right ?
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+In this case, what about doing this change for pSeries only,
+somewhere in spapr.c ?
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+>  arch/powerpc/sysdev/xive/common.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
+>=20
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
+/common.c
+> index 595310e056f4..b8e456da28aa 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -1335,16 +1335,11 @@ static int xive_prepare_cpu(unsigned int cpu)
+> =20
+>  	xc =3D per_cpu(xive_cpu, cpu);
+>  	if (!xc) {
+> -		struct device_node *np;
+> -
+>  		xc =3D kzalloc_node(sizeof(struct xive_cpu),
+>  				  GFP_KERNEL, cpu_to_node(cpu));
+>  		if (!xc)
+>  			return -ENOMEM;
+> -		np =3D of_get_cpu_node(cpu, NULL);
+> -		if (np)
+> -			xc->chip_id =3D of_get_ibm_chip_id(np);
+> -		of_node_put(np);
+> +		xc->chip_id =3D cpu_to_node(cpu);
+>  		xc->hw_ipi =3D XIVE_BAD_IRQ;
+> =20
+>  		per_cpu(xive_cpu, cpu) =3D xc;
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
