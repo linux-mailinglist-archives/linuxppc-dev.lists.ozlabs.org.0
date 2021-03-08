@@ -2,100 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04811330B6D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 11:41:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F481330D2A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 13:15:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvFHs0YCNz3ckJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 21:41:13 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XcVRf1+I;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvHNW4MM2z3cXZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 23:15:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=XcVRf1+I; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvFHP5rfwz3cLN
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Mar 2021 21:40:48 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 128AXKxM093640; Mon, 8 Mar 2021 05:40:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=pp1;
- bh=I9pkCqcopJ0DSYA3ZRB1mKxx9JOkddnnnaF04MxzMXo=;
- b=XcVRf1+ItJOKXdYaDP9zdTwX4lkxtnHhIQmaNk6LikRcGWUMumpcmkwe01OQS91UXjDw
- AG9ShFUr+H4wqwPVWOkYkoIB6nXd4SsXzk6+xkvLC4kWQdtLty4xd1DD3u31PWFxF+Jf
- sG1JWSolRiddV3SJCy/5KW6kebyO4jiNK68HemvV/X7WxkmHgN+BK3m79mFCWFq0bRcM
- pEaekuMnv4ZADMsIq4fS93/Zh/7a+7KmiehNmbMv8C1dTBn69ctv2HARVUyX7kmh2wKQ
- /mNmZhwnVQxsoeQVEkuuiyDDOCT3VZjYQ7iXBugBJQ3IdjCaVkOk2LGPdi/yXEhNaHIy 3A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 375bhcj2j3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Mar 2021 05:40:39 -0500
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 128AYxNe102836;
- Mon, 8 Mar 2021 05:40:39 -0500
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 375bhcj2hh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Mar 2021 05:40:39 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 128AY2Fb014311;
- Mon, 8 Mar 2021 10:40:37 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 37410h9rmb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Mar 2021 10:40:37 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 128AeZma36634894
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Mar 2021 10:40:35 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 343A2AE053;
- Mon,  8 Mar 2021 10:40:35 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8163DAE045;
- Mon,  8 Mar 2021 10:40:34 +0000 (GMT)
-Received: from localhost (unknown [9.77.201.1])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  8 Mar 2021 10:40:34 +0000 (GMT)
-Date: Mon, 8 Mar 2021 16:10:32 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc: Fix instruction encoding for lis in
- ppc_function_entry()
-Message-ID: <20210308104032.GB145@DESKTOP-TDPLP67.localdomain>
-References: <20210304020411.16796-1-naveen.n.rao@linux.vnet.ibm.com>
- <870c42dd-9862-bb86-6e06-2e0164f4ae85@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvHNB3tSvz3cGQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Mar 2021 23:15:02 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DvHMw3qc5z9tysJ;
+ Mon,  8 Mar 2021 13:14:52 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id dEqMcPH0WQ-Z; Mon,  8 Mar 2021 13:14:52 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DvHMw2x4tz9tyrs;
+ Mon,  8 Mar 2021 13:14:52 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B36388B7B3;
+ Mon,  8 Mar 2021 13:14:57 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 2JHGHDJHPda4; Mon,  8 Mar 2021 13:14:57 +0100 (CET)
+Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6D2AE8B7B1;
+ Mon,  8 Mar 2021 13:14:57 +0100 (CET)
+Subject: Re: [PATCH v1 12/15] powerpc/uaccess: Refactor get/put_user() and
+ __get/put_user()
+To: kernel test robot <lkp@intel.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Evgeniy Polyakov <zbr@ioremap.net>, Alex Deucher
+ <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=c3=b6nig?=
+ <christian.koenig@amd.com>
+References: <3c174edb80d2d37af6b08c637b09268f675e5371.1614275314.git.christophe.leroy@csgroup.eu>
+ <202103071822.4cXbH0Xp-lkp@intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <bfb95917-2b84-59f2-7f22-22fd6d63d09a@csgroup.eu>
+Date: Mon, 8 Mar 2021 13:14:57 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <202103071822.4cXbH0Xp-lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <870c42dd-9862-bb86-6e06-2e0164f4ae85@csgroup.eu>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-08_04:2021-03-08,
- 2021-03-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 mlxlogscore=999 adultscore=0 impostorscore=0
- priorityscore=1501 phishscore=0 malwarescore=0 clxscore=1011
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103080055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,50 +68,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jiri Olsa <jolsa@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, kbuild-all@01.org,
+ amd-gfx list <amd-gfx@lists.freedesktop.org>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/03/05 12:37PM, Christophe Leroy wrote:
++Evgeniy for W1 Dallas
++Alex & Christian for RADEON
+
+Le 07/03/2021 à 11:23, kernel test robot a écrit :
+> Hi Christophe,
+> 
+> I love your patch! Perhaps something to improve:
+> 
+> [auto build test WARNING on powerpc/next]
+> [also build test WARNING on v5.12-rc2 next-20210305]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-Cleanup-of-uaccess-h/20210226-015715
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+> config: powerpc-randconfig-s031-20210307 (attached as .config)
+> compiler: powerpc-linux-gcc (GCC) 9.3.0
+> reproduce:
+>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>          chmod +x ~/bin/make.cross
+>          # apt-get install sparse
+>          # sparse version: v0.6.3-245-gacc5c298-dirty
+>          # https://github.com/0day-ci/linux/commit/449bdbf978936e67e4919be8be0eec3e490a65e2
+>          git remote add linux-review https://github.com/0day-ci/linux
+>          git fetch --no-tags linux-review Christophe-Leroy/powerpc-Cleanup-of-uaccess-h/20210226-015715
+>          git checkout 449bdbf978936e67e4919be8be0eec3e490a65e2
+>          # save the attached .config to linux build tree
+>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=powerpc
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+
+
+The mentioned patch is not the source of the problem, it only allows to spot it.
+
+Christophe
+
 > 
 > 
-> Le 04/03/2021 à 03:04, Naveen N. Rao a écrit :
-> > 'lis r2,N' is 'addis r2,0,N' and the instruction encoding in the macro
-> > LIS_R2 is incorrect (it currently maps to 'addis 0,r2,N'). Fix the same.
-> > 
-> > Fixes: c71b7eff426fa7 ("powerpc: Add ABIv2 support to ppc_function_entry")
-> > Reported-by: Jiri Olsa <jolsa@redhat.com>
-> > Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> > ---
-> >   arch/powerpc/include/asm/code-patching.h | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
-> > index eacc9102c2515c..d5b3c3bb95b400 100644
-> > --- a/arch/powerpc/include/asm/code-patching.h
-> > +++ b/arch/powerpc/include/asm/code-patching.h
-> > @@ -73,7 +73,7 @@ void __patch_exception(int exc, unsigned long addr);
-> >   #endif
-> >   #define OP_RT_RA_MASK	0xffff0000UL
-> > -#define LIS_R2		0x3c020000UL
-> > +#define LIS_R2		0x3c400000UL
-> >   #define ADDIS_R2_R12	0x3c4c0000UL
-> >   #define ADDI_R2_R2	0x38420000UL
+> "sparse warnings: (new ones prefixed by >>)"
+>>> drivers/w1/slaves/w1_ds28e04.c:342:13: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected char [noderef] __user *_pu_addr @@     got char *buf @@
+>     drivers/w1/slaves/w1_ds28e04.c:342:13: sparse:     expected char [noderef] __user *_pu_addr
+>     drivers/w1/slaves/w1_ds28e04.c:342:13: sparse:     got char *buf
+>>> drivers/w1/slaves/w1_ds28e04.c:356:13: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected char const [noderef] __user *_gu_addr @@     got char const *buf @@
+>     drivers/w1/slaves/w1_ds28e04.c:356:13: sparse:     expected char const [noderef] __user *_gu_addr
+>     drivers/w1/slaves/w1_ds28e04.c:356:13: sparse:     got char const *buf
+> --
+>     drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse: sparse: cast removes address space '__user' of expression
+>     drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse: sparse: cast removes address space '__user' of expression
+>>> drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected unsigned int [noderef] __user *_pu_addr @@     got unsigned int [usertype] * @@
+>     drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse:     expected unsigned int [noderef] __user *_pu_addr
+>     drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse:     got unsigned int [usertype] *
+>     drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse: sparse: cast removes address space '__user' of expression
 > 
-> That probably goes beyond the scope of this patch, but it would be more
-> readable and less error prone to use macros defined in ppc-opcode.h just
-> like kernel/module_64.c does for instance:
+> vim +342 drivers/w1/slaves/w1_ds28e04.c
 > 
-> #define LIS_R2	(PPC_INST_ADDIS | __PPC_RT(R2))
-> #define ADDIS_R2_R12	(PPC_INST_ADDIS | __PPC_RT(R2) | __PPC_RA(R12))
-> #define ADDI_R2_R2	(PPC_INST_ADDI | __PPC_RT(R2) | __PPC_RA(R2))
-
-Good point. While that would have made it harder to spot the error, it 
-probably would have avoided the error in the first place.
-
-Your change looks good to me.
-
-Thanks,
-Naveen
-
+> fa33a65a9cf7e2 Greg Kroah-Hartman 2013-08-21  338
+> fa33a65a9cf7e2 Greg Kroah-Hartman 2013-08-21  339  static ssize_t crccheck_show(struct device *dev, struct device_attribute *attr,
+> fa33a65a9cf7e2 Greg Kroah-Hartman 2013-08-21  340  			     char *buf)
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  341  {
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26 @342  	if (put_user(w1_enable_crccheck + 0x30, buf))
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  343  		return -EFAULT;
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  344
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  345  	return sizeof(w1_enable_crccheck);
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  346  }
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  347
+> fa33a65a9cf7e2 Greg Kroah-Hartman 2013-08-21  348  static ssize_t crccheck_store(struct device *dev, struct device_attribute *attr,
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  349  			      const char *buf, size_t count)
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  350  {
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  351  	char val;
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  352
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  353  	if (count != 1 || !buf)
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  354  		return -EINVAL;
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  355
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26 @356  	if (get_user(val, buf))
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  357  		return -EFAULT;
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  358
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  359  	/* convert to decimal */
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  360  	val = val - 0x30;
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  361  	if (val != 0 && val != 1)
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  362  		return -EINVAL;
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  363
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  364  	/* set the new value */
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  365  	w1_enable_crccheck = val;
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  366
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  367  	return sizeof(w1_enable_crccheck);
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  368  }
+> fbf7f7b4e2ae40 Markus Franke      2012-05-26  369
+> 
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
