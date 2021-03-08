@@ -1,56 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A55A331867
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 21:24:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6509033187D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 21:28:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvVDW2xQ2z3cXv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 07:24:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvVJr2q4gz3cly
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 07:27:56 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.a=rsa-sha256 header.s=mail181024 header.b=X0v/Cm6+;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.96.117; helo=1.mo52.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 7801 seconds by postgrey-1.36 at boromir;
- Tue, 09 Mar 2021 07:23:53 AEDT
-Received: from 1.mo52.mail-out.ovh.net (1.mo52.mail-out.ovh.net
- [178.32.96.117])
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
+ helo=gate2.alliedtelesis.co.nz;
+ envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.a=rsa-sha256 header.s=mail181024 header.b=X0v/Cm6+; 
+ dkim-atps=neutral
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [202.36.163.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvVD95Qddz30Qw
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 07:23:51 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.244])
- by mo52.mail-out.ovh.net (Postfix) with ESMTPS id 5F1B3247107;
- Mon,  8 Mar 2021 18:55:30 +0100 (CET)
-Received: from kaod.org (37.59.142.101) by DAG8EX1.mxp5.local (172.16.2.71)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 8 Mar 2021
- 18:55:30 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-101G004143809b3-bb0b-4744-9177-8fb645acf3e2,
- BFE3C84E2CAB42A1CEB5BA3519A80D4AF8E6727E) smtp.auth=groug@kaod.org
-X-OVh-ClientIp: 78.197.208.248
-Date: Mon, 8 Mar 2021 18:55:29 +0100
-From: Greg Kurz <groug@kaod.org>
-To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
-Subject: Re: [PATCH v2 2/8] powerpc/xive: Introduce an IPI interrupt domain
-Message-ID: <20210308185529.71588590@bahia.lan>
-In-Reply-To: <20210303174857.1760393-3-clg@kaod.org>
-References: <20210303174857.1760393-1-clg@kaod.org>
- <20210303174857.1760393-3-clg@kaod.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvVJQ1Mb0z30Jp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 07:27:33 +1100 (AEDT)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 5B3F3806B5;
+ Tue,  9 Mar 2021 09:27:31 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1615235251;
+ bh=Onrpr6MuDOllsC8Vd8il2kEwkyXgQ0Z8dtUPbT50kjI=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To;
+ b=X0v/Cm6+HMVBJflFpnyK7E2951V4dmSemJemlO6wYL6f2242lw8iZ47QHwaXEnBX/
+ lSleaA3N9XFNuPmPSMBZwybMMgAOX2PNrglKGBQ5ffiaK/UkNNlRmwIpCzUoAAHrqS
+ LY5Vc0uAOGmts2dyz+r7ZecePgpYvFMj5xaezi8JWp6lbRfaMtfSLhYUnNlHVqCCGB
+ z8sv70kK9uR/g7vUyLErEOgHMioyz432Y9BdFVb4oE6I2GUtJkTi2QymioKyaY5Bvp
+ NBFYnleQ8STqq2dDRsrD09PcC5VfBO+h4YvJkJTTHtpX8vLocdtfVL9GyJV8hTNmK8
+ 1S96pjrEO08SQ==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[2001:df5:b000:bc8::77]) by
+ svr-chch-seg1.atlnz.lc with Trustwave SEG (v8, 2, 6, 11305)
+ id <B604688b30000>; Tue, 09 Mar 2021 09:27:31 +1300
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) by
+ svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Tue, 9 Mar 2021 09:27:31 +1300
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1497.012; Tue, 9 Mar 2021 09:27:30 +1300
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Guenter Roeck <linux@roeck-us.net>, "jdelvare@suse.com" <jdelvare@suse.com>
+Subject: Re: Errant readings on LM81 with T2080 SoC
+Thread-Topic: Errant readings on LM81 with T2080 SoC
+Thread-Index: AQHXE6SbssdAOSHgwE+zIRhtn11Sk6p4Y2sAgAAgcACAACSBgIAABe+AgAEDagA=
+Date: Mon, 8 Mar 2021 20:27:30 +0000
+Message-ID: <d6074923-ee7e-4499-0e54-383a607d3c41@alliedtelesis.co.nz>
+References: <8e0a88ba-01e9-9bc1-c78b-20f26ce27d12@alliedtelesis.co.nz>
+ <96d660bc-17ab-4e0e-9a94-bce1737a8da1@roeck-us.net>
+ <4a1b1494-df96-2d8c-9323-beb2c2ba706b@alliedtelesis.co.nz>
+ <a67ea323-634d-d34e-c63e-b1aaa4737b19@alliedtelesis.co.nz>
+ <5709f180-04b5-09b2-e1c4-53eb5c9345d8@roeck-us.net>
+In-Reply-To: <5709f180-04b5-09b2-e1c4-53eb5c9345d8@roeck-us.net>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.1.11]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1094CD31F910C44BA6BC32182082EAC5@atlnz.lc>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [37.59.142.101]
-X-ClientProxiedBy: DAG4EX1.mxp5.local (172.16.2.31) To DAG8EX1.mxp5.local
- (172.16.2.71)
-X-Ovh-Tracer-GUID: 5d27dce1-0926-4207-a8dd-27f2420d878c
-X-Ovh-Tracer-Id: 7282883549283785181
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledruddugedggeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkjghfofggtgfgihesthhqfedtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepleeuteehgeehfeetveevledvhfeuuedugedugeetudefuedtkeekueegjefgtedvnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopegtlhhgsehkrghougdrohhrgh
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=C7uXNjH+ c=1 sm=1 tr=0
+ a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10
+ a=IkcTkHD0fZMA:10 a=dESyimp9J3IA:10 a=VwQbUJbxAAAA:8 a=aQgbSj5FuRS31VXIRagA:9
+ a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22 a=BPzZvq435JnGatEyYwdK:22
+X-SEG-SpamProfiler-Score: 0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,126 +90,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 3 Mar 2021 18:48:51 +0100
-C=C3=A9dric Le Goater <clg@kaod.org> wrote:
-
-> The IPI interrupt is a special case of the XIVE IRQ domain. When
-> mapping and unmapping the interrupts in the Linux interrupt number
-> space, the HW interrupt number 0 (XIVE_IPI_HW_IRQ) is checked to
-> distinguish the IPI interrupt from other interrupts of the system.
->=20
-> Simplify the XIVE interrupt domain by introducing a specific domain
-> for the IPI.
->=20
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> ---
-
-Nice !
-
-Reviewed-by: Greg Kurz <groug@kaod.org>
-
->  arch/powerpc/sysdev/xive/common.c | 51 +++++++++++++------------------
->  1 file changed, 22 insertions(+), 29 deletions(-)
->=20
-> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
-/common.c
-> index b8e456da28aa..e7783760d278 100644
-> --- a/arch/powerpc/sysdev/xive/common.c
-> +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -63,6 +63,8 @@ static const struct xive_ops *xive_ops;
->  static struct irq_domain *xive_irq_domain;
-> =20
->  #ifdef CONFIG_SMP
-> +static struct irq_domain *xive_ipi_irq_domain;
-> +
->  /* The IPIs all use the same logical irq number */
->  static u32 xive_ipi_irq;
->  #endif
-> @@ -1067,20 +1069,32 @@ static struct irq_chip xive_ipi_chip =3D {
->  	.irq_unmask =3D xive_ipi_do_nothing,
->  };
-> =20
-> +/*
-> + * IPIs are marked per-cpu. We use separate HW interrupts under the
-> + * hood but associated with the same "linux" interrupt
-> + */
-> +static int xive_ipi_irq_domain_map(struct irq_domain *h, unsigned int vi=
-rq,
-> +				   irq_hw_number_t hw)
-> +{
-> +	irq_set_chip_and_handler(virq, &xive_ipi_chip, handle_percpu_irq);
-> +	return 0;
-> +}
-> +
-> +static const struct irq_domain_ops xive_ipi_irq_domain_ops =3D {
-> +	.map =3D xive_ipi_irq_domain_map,
-> +};
-> +
->  static void __init xive_request_ipi(void)
->  {
->  	unsigned int virq;
-> =20
-> -	/*
-> -	 * Initialization failed, move on, we might manage to
-> -	 * reach the point where we display our errors before
-> -	 * the system falls appart
-> -	 */
-> -	if (!xive_irq_domain)
-> +	xive_ipi_irq_domain =3D irq_domain_add_linear(NULL, 1,
-> +						    &xive_ipi_irq_domain_ops, NULL);
-> +	if (WARN_ON(xive_ipi_irq_domain =3D=3D NULL))
->  		return;
-> =20
->  	/* Initialize it */
-> -	virq =3D irq_create_mapping(xive_irq_domain, XIVE_IPI_HW_IRQ);
-> +	virq =3D irq_create_mapping(xive_ipi_irq_domain, XIVE_IPI_HW_IRQ);
->  	xive_ipi_irq =3D virq;
-> =20
->  	WARN_ON(request_irq(virq, xive_muxed_ipi_action,
-> @@ -1178,19 +1192,6 @@ static int xive_irq_domain_map(struct irq_domain *=
-h, unsigned int virq,
->  	 */
->  	irq_clear_status_flags(virq, IRQ_LEVEL);
-> =20
-> -#ifdef CONFIG_SMP
-> -	/* IPIs are special and come up with HW number 0 */
-> -	if (hw =3D=3D XIVE_IPI_HW_IRQ) {
-> -		/*
-> -		 * IPIs are marked per-cpu. We use separate HW interrupts under
-> -		 * the hood but associated with the same "linux" interrupt
-> -		 */
-> -		irq_set_chip_and_handler(virq, &xive_ipi_chip,
-> -					 handle_percpu_irq);
-> -		return 0;
-> -	}
-> -#endif
-> -
->  	rc =3D xive_irq_alloc_data(virq, hw);
->  	if (rc)
->  		return rc;
-> @@ -1202,15 +1203,7 @@ static int xive_irq_domain_map(struct irq_domain *=
-h, unsigned int virq,
-> =20
->  static void xive_irq_domain_unmap(struct irq_domain *d, unsigned int vir=
-q)
->  {
-> -	struct irq_data *data =3D irq_get_irq_data(virq);
-> -	unsigned int hw_irq;
-> -
-> -	/* XXX Assign BAD number */
-> -	if (!data)
-> -		return;
-> -	hw_irq =3D (unsigned int)irqd_to_hwirq(data);
-> -	if (hw_irq !=3D XIVE_IPI_HW_IRQ)
-> -		xive_irq_free_data(virq);
-> +	xive_irq_free_data(virq);
->  }
-> =20
->  static int xive_irq_domain_xlate(struct irq_domain *h, struct device_nod=
-e *ct,
-
+DQpPbiA4LzAzLzIxIDU6NTkgcG0sIEd1ZW50ZXIgUm9lY2sgd3JvdGU6DQo+IE9uIDMvNy8yMSA4
+OjM3IFBNLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPiBbIC4uLiBdDQo+Pj4gVGhhdCdzIGZyb20g
+LUVOWElPIHdoaWNoIGlzIHVzZWQgaW4gb25seSBvbmUgcGxhY2UgaW4gaTJjLW1wYy5jLiBJJ2xs
+DQo+Pj4gZW5hYmxlIHNvbWUgZGVidWcgYW5kIHNlZSB3aGF0IHdlIGdldC4NCj4+IEZvciB0aGUg
+ZXJyYW50IHJlYWRpbmdzIHRoZXJlIHdhcyBub3RoaW5nIGFibm9ybWFsIHJlcG9ydGVkIGJ5IHRo
+ZSBkcml2ZXIuDQo+Pg0KPj4gRm9yIHRoZSAiTm8gc3VjaCBkZXZpY2Ugb3IgYWRkcmVzcyIgSSBz
+YXcgIm1wYy1pMmMgZmZlMTE5MDAwLmkyYzogTm8NCj4+IFJYQUsiIHdoaWNoIG1hdGNoZXMgdXAg
+d2l0aCB0aGUgLUVOWElPIHJldHVybi4NCj4+DQo+IElkIHN1Z2dlc3QgdG8gY2hlY2sgdGhlIHRp
+bWUgdW50aWwgbm90IGJ1c3kgYW5kIHN0b3AgaW4gbXBjX3hmZXIoKS4NCj4gVGhvc2UgaG90IGxv
+b3BzIGFyZSB1bnVzdWFsLCBhbmQgbWF5IHdlbGwgbWVzcyB1cCB0aGUgY29kZSBlc3BlY2lhbGx5
+DQo+IGlmIHByZWVtcHQgaXMgZW5hYmxlZC4gQWxzbywgYXJlIHlvdSB1c2luZyBpbnRlcnJ1cHRz
+IG9yIHBvbGxpbmcgaW4NCj4geW91ciBzeXN0ZW0gPw0KSSdtIHVzaW5nIGludGVycnVwdHMgYnV0
+IEkgc2VlIHRoZSBzYW1lIGlzc3VlIGlmIEkgY29tbWVudCBvdXQgdGhlIA0KaW50ZXJydXB0cyBp
+biB0aGUgZHRzaSBmaWxlIChpLmUuIGZvcmNlIGl0IHRvIHVzZSBwb2xsaW5nKS4NCj4gVGhlIGlu
+dGVycnVwdCBoYW5kbGVyIGxvb2tzIGEgYml0IG9kZCwgd2l0aCAiUmVhZCBhZ2Fpbg0KPiB0byBh
+bGxvdyByZWdpc3RlciB0byBzdGFiaWxpc2UiLg0KDQpZZWFoIHRoYXQgc3R1Y2sgb3V0IHRvIG1l
+IHRvby4gVGhlIGNvZGUgaW4gcXVlc3Rpb24gcHJlZGF0ZXMgZ2l0LCBJIHdlbnQgDQpzcGVsdW5r
+aW5nIGluIGhpc3RvcnkuZ2l0IGFuZCB0aGUgIlJlYWQgYWdhaW4iIHNlZW1zIHRvIGJlIGluIHRo
+ZSANCmluaXRpYWwgdmVyc2lvblswXS4gSSBkaWQgdHJ5IHRvIGFsdGVyIHRoZSBpbnRlcnJ1cHQg
+aGFuZGxlciBzbyB0aGF0IGl0IA0Kb25seSBkb2VzIG9uZSByZWFkIGJ1dCB0aGF0IGRpZG4ndCBz
+ZWVtIHRvIGNoYW5nZSBhbnl0aGluZy4NCg0KPiBEbyB5b3UgaGF2ZSBmc2wsdGltZW91dCBzZXQg
+aW4gdGhlIGRldmljZXRyZWUgcHJvcGVydGllcyBhbmQsIGlmIHNvLA0KPiBoYXZlIHlvdSBwbGF5
+ZWQgd2l0aCBpdCA/DQpIYXZlbid0IGdvdCBpdCBzZXQgYnV0IEknbGwgaGF2ZSBhIGdvIGF0IHR3
+ZWFraW5nIGl0Lg0KPiBPdGhlciB0aGFuIHRoYXQsIHRoZSBvbmx5IG90aGVyIHJlYWwgaWRlYSBJ
+IGhhdmUgd291bGQgYmUgdG8gbW9uaXRvcg0KPiB0aGUgaTJjIGJ1cy4NCkkgYW0gaW4gdGhlIGZv
+cnR1bmF0ZSBwb3NpdGlvbiBvZiBiZWluZyBhYmxlIHRvIGdvIGludG8gdGhlIG9mZmljZSBhbmQg
+DQpldmVuIGhhcHBlbiB0byBoYXZlIHRoZSBleHBlbnNpdmUgc2NvcGUgYXQgdGhlIG1vbWVudC4g
+Tm93IEkganVzdCBuZWVkIA0KdG8gZmluZCBhIHRhbWUgSFcgZW5naW5lZXIgc28gSSBkb24ndCBi
+dXJuIG15c2VsZiB0cnlpbmcgdG8gYXR0YWNoIHRoZSANCnByb2Jlcy4NCg0KLS0gDQoNClswXSAt
+IGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L2hpc3Rvcnkv
+aGlzdG9yeS5naXQvY29tbWl0Lz9pZD0xMWIzMjM1ZGMwNGEzMDZmNmE5YmExNGMxYWI2MjFiMmQ1
+NGYyYzU2DQoNCg==
