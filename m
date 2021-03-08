@@ -1,84 +1,127 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57A13306E5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 05:38:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAABC330705
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 05:59:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dv5F85pcwz3cZj
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 15:38:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dv5jd6WqFz3cbr
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 15:59:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.a=rsa-sha256 header.s=mail181024 header.b=1412Bhug;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=prYAO2kj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=2001:df5:b000:5::4;
- helo=gate2.alliedtelesis.co.nz;
- envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::331;
+ helo=mail-ot1-x331.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=1412Bhug; 
- dkim-atps=neutral
-X-Greylist: delayed 20693 seconds by postgrey-1.36 at boromir;
- Mon, 08 Mar 2021 15:37:55 AEDT
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [IPv6:2001:df5:b000:5::4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=prYAO2kj; dkim-atps=neutral
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com
+ [IPv6:2607:f8b0:4864:20::331])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dv5Dh029Vz2xZx
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Mar 2021 15:37:55 +1100 (AEDT)
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 07882806B5;
- Mon,  8 Mar 2021 17:37:49 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1615178269;
- bh=NXLFfI7BQjptcdFkSZ0hwO090fqmTSBgkr9D2madENE=;
- h=From:To:CC:Subject:Date:References:In-Reply-To;
- b=1412BhugzOdifScxDGYfVQ3ZalUfK4y4p4tdAbJpukHHqDHeiKwB2D8Opa2IPc36P
- jtS/M3uP5usFbvkT/OMkJoAq1D5F00iienDaeXyWbSQLRbAmA9lDNtFM6LC7ld1n8L
- MvpShKUftN4eYolZTBEU8WrWveHg/Yo1L/iVnXLhuV05EtoXgXKRJJ0yPhNtTZBKC7
- TaC4XXiq3vQhSZ/ylQ2hx9zb1eh8BA32NfRgunEl2qRtA7MmSDFGsE/d57WqvsRmDv
- xLgPR89JfrtDARkpt4GepnDNpzz/Zrru/1e9vegkdq9PQMrbGtldJauS/T/pFE8Kck
- KHyjuJehuGb1w==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[2001:df5:b000:bc8::77]) by
- svr-chch-seg1.atlnz.lc with Trustwave SEG (v8, 2, 6, 11305)
- id <B6045aa1c0000>; Mon, 08 Mar 2021 17:37:48 +1300
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) by
- svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Mon, 8 Mar 2021 17:37:48 +1300
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.012; Mon, 8 Mar 2021 17:37:48 +1300
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: Guenter Roeck <linux@roeck-us.net>, "jdelvare@suse.com" <jdelvare@suse.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dv5jB6H3fz3bN9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Mar 2021 15:59:09 +1100 (AEDT)
+Received: by mail-ot1-x331.google.com with SMTP id d9so7998365ote.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Mar 2021 20:59:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:autocrypt:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=ZUvcfnkox4LhpcIq2ddGdCAV16jxJEBVa2beBV/87wo=;
+ b=prYAO2kjGQZVXIAguu5TNjY41YBapgOJRmDtP202Iy3DFrHRrnD92r1EC9uB3QgpSb
+ 3P7ArdzOHxB77/kK4vFbwr5fvoAzqQFuEXA+7mZtIOW57s3h8InrTLlaXihwYX/GiBgO
+ pHPkFgNc7ENEXz2DROYWLn9KcuBwo4l/eLfvLXwo4b9FVvMP88hGPuZ73SPVf3ZmUJTZ
+ 8HFM0rArtVifRmCKonHJPEzcHDEx5sbIN1fvVmjes+jYsDDR+LnA7YXAtbzQWvvO1se5
+ Ogw5HA1Fb4ObMeQD2CBDLWFH48P57SuQBbZaQouzgtoleFCpzxI+MUSV6v1dItQQ//lS
+ zEsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=ZUvcfnkox4LhpcIq2ddGdCAV16jxJEBVa2beBV/87wo=;
+ b=n3rsuNl3LdkKaQqUIYTblBCNQ0hI5amJDTXEgqUplQYmLcVLf7MB5bboYtqoQudhBw
+ 0O+mJYFu2fx5qUBI+dVi//gYSfOMzm+xfv6lIkgQqRRN+L0NrB6jylKc+lVkcp6KkcBT
+ Zt9DJOUOCA7lK2oW1Mg0xOsqZU/LpzN2GZubrF+Szw+GlH9gA0mhj1VkB4iaW28cZUij
+ zRxMQRsgsXIJDtQtHYfx76nisAOQqrxcQt8ffRkdeYRC0NaRe8n6g6c69tTGHYrVMHoh
+ hpmaaOsafdRTtWIQhvmJe4cibmYAaLDks1Ngv1Kx/kPWabETUw5ESD0boQbSaorcIEoO
+ JFGA==
+X-Gm-Message-State: AOAM530qlCqcgMB8Njqjfg0B1GLkkrevyKGg2UIUX14BYgKfeFGZRg0H
+ yL9oFydjcdhM3jI5AHw3Fhmby5fhEPc=
+X-Google-Smtp-Source: ABdhPJzG6dS3Tsy1arKfLzW4En0A1BxCoae+FZdnSwj2kje9p1etOO0hzoQTE2i8o/zMORjJ9h3Gkw==
+X-Received: by 2002:a05:6830:14a:: with SMTP id
+ j10mr3270593otp.143.1615179544471; 
+ Sun, 07 Mar 2021 20:59:04 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ 1sm2444961otr.53.2021.03.07.20.59.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 07 Mar 2021 20:59:03 -0800 (PST)
 Subject: Re: Errant readings on LM81 with T2080 SoC
-Thread-Topic: Errant readings on LM81 with T2080 SoC
-Thread-Index: AQHXE6SbssdAOSHgwE+zIRhtn11Sk6p4Y2sAgAAgcACAACSBgA==
-Date: Mon, 8 Mar 2021 04:37:47 +0000
-Message-ID: <a67ea323-634d-d34e-c63e-b1aaa4737b19@alliedtelesis.co.nz>
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ "jdelvare@suse.com" <jdelvare@suse.com>
 References: <8e0a88ba-01e9-9bc1-c78b-20f26ce27d12@alliedtelesis.co.nz>
  <96d660bc-17ab-4e0e-9a94-bce1737a8da1@roeck-us.net>
  <4a1b1494-df96-2d8c-9323-beb2c2ba706b@alliedtelesis.co.nz>
-In-Reply-To: <4a1b1494-df96-2d8c-9323-beb2c2ba706b@alliedtelesis.co.nz>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.32.1.11]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C4C7845C248C3D4EB8EC3956E6D5AD71@atlnz.lc>
-Content-Transfer-Encoding: base64
+ <a67ea323-634d-d34e-c63e-b1aaa4737b19@alliedtelesis.co.nz>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+Message-ID: <5709f180-04b5-09b2-e1c4-53eb5c9345d8@roeck-us.net>
+Date: Sun, 7 Mar 2021 20:59:01 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-SEG-SpamProfiler-Analysis: v=2.3 cv=C7uXNjH+ c=1 sm=1 tr=0
- a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10
- a=IkcTkHD0fZMA:10 a=dESyimp9J3IA:10 a=OylRmCEKjCub7zUREboA:9
- a=QEXdDO2ut3YA:10
-X-SEG-SpamProfiler-Score: 0
+In-Reply-To: <a67ea323-634d-d34e-c63e-b1aaa4737b19@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,57 +141,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQpPbiA4LzAzLzIxIDM6MjcgcG0sIENocmlzIFBhY2toYW0gd3JvdGU6DQo+DQo+IE9uIDgvMDMv
-MjEgMTozMSBwbSwgR3VlbnRlciBSb2VjayB3cm90ZToNCj4+IE9uIDMvNy8yMSAyOjUyIFBNLCBD
-aHJpcyBQYWNraGFtIHdyb3RlOg0KPj4+IEhpLA0KPj4+DQo+Pj4gSSd2ZSBnb3QgYSBzeXN0ZW0g
-dXNpbmcgYSBQb3dlclBDIFQyMDgwIFNvQyBhbmQgYW1vbmcgb3RoZXIgdGhpbmdzIGhhcw0KPj4+
-IGFuIExNODEgaHdtb24gY2hpcC4NCj4+Pg0KPj4+IFVuZGVyIGEgaGlnaCBDUFUgbG9hZCB3ZSBz
-ZWUgZXJyYW50IHJlYWRpbmdzIGZyb20gdGhlIExNODEgYXMgd2VsbCBhcw0KPj4+IGFjdHVhbCBm
-YWlsdXJlcy4gSXQncyB0aGUgZXJyYW50IHJlYWRpbmdzIHRoYXQgY2F1c2UgdGhlIG1vc3QgY29u
-Y2Vybg0KPj4+IHNpbmNlIHdlIGNhbiBlYXNpbHkgaWdub3JlIHRoZSByZWFkIGVycm9ycyBpbiBv
-dXIgbW9uaXRvcmluZyANCj4+PiBhcHBsaWNhdGlvbg0KPj4+IChhbHRob3VnaCBpdCB3b3VsZCBi
-ZSBiZXR0ZXIgaWYgdGhleSB3ZXJlbid0IHRoZXJlIGF0IGFsbCkuDQo+Pj4NCj4+PiBJJ20gYWJs
-ZSB0byByZXByb2R1Y2UgdGhpcyB3aXRoIGEgdGVzdCBhcHBsaWNhdGlvblswXSB0aGF0IGFydGlm
-aWNpYWxseQ0KPj4+IGNyZWF0ZXMgYSBoaWdoIENQVSBsb2FkIHRoZW4gYnkgcmVwZWF0ZWRseSBj
-aGVja2luZyBmb3IgdGhlIGFsbC0xcw0KPj4+IHZhbHVlcyBmcm9tIHRoZSBMTTgxIGRhdGFzaGVl
-dFsxXShwYWdlIDE3KS4gVGhlIGFsbC0xcyByZWFkaW5ncyBzdGljaw0KPj4+IG91dCBhcyB0aGV5
-IGFyZSBvYnZpb3VzbHkgaGlnaGVyIHRoYW4gdGhlIHZvbHRhZ2UgcmFpbHMgdGhhdCBhcmUNCj4+
-PiBjb25uZWN0ZWQgYW5kIGRpc2FncmVlIHdpdGggbWVhc3VyZW1lbnRzIHRha2VuIHdpdGggYSBt
-dWx0aW1ldGVyLg0KPj4+DQo+Pj4gSGVyZSdzIHRoZSBvdXRwdXQgZnJvbSBteSBkZXZpY2UNCj4+
-Pg0KPj4+IFtyb290QGxpbnV4Ym94IH5dIyBjcHVsb2FkIDkwJg0KPj4+IFtyb290QGxpbnV4Ym94
-IH5dIyAod2hpbGUgdHJ1ZTsgZG8gY2F0IA0KPj4+IC9zeXMvY2xhc3MvaHdtb24vaHdtb24wL2lu
-Kl9pbnB1dA0KPj4+IHwgZ3JlcCAnMzMyMFx8NDM4M1x8NjY0MVx8MTU5MzBcfDM1ODYnOyBzbGVl
-cCAxOyBkb25lKSYNCj4+PiAzNTg2DQo+Pj4gMzU4Ng0KPj4+IGNhdDogcmVhZCBlcnJvcjogTm8g
-c3VjaCBkZXZpY2Ugb3IgYWRkcmVzcw0KPj4+IGNhdDogcmVhZCBlcnJvcjogTm8gc3VjaCBkZXZp
-Y2Ugb3IgYWRkcmVzcw0KPj4+IDMzMjANCj4+PiAzMzIwDQo+Pj4gMzU4Ng0KPj4+IDM1ODYNCj4+
-PiA2NjQxDQo+Pj4gNjY0MQ0KPj4+IDQzODMNCj4+PiA0MzgzDQo+Pj4NCj4+PiBGdW5kYW1lbnRh
-bGx5IEkgdGhpbmsgdGhpcyBpcyBhIHByb2JsZW0gd2l0aCB0aGUgZmFjdCB0aGF0IHRoZSBMTTgx
-IGlzDQo+Pj4gYW4gU01CdXMgZGV2aWNlIGJ1dCB0aGUgVDIwODAgKGFuZCBvdGhlciBGcmVlc2Nh
-bGUgU29DcykgdXNlcyBpMmMgDQo+Pj4gYW5kIHdlDQo+Pj4gZW11bGF0ZSBTTUJ1cy4gSSBzdXNw
-ZWN0IHRoZSBlcnJhbnQgcmVhZGluZ3MgYXJlIHdoZW4gd2UgZG9uJ3QgZ2V0IA0KPj4+IHJvdW5k
-DQo+Pj4gdG8gY29tcGxldGluZyB0aGUgcmVhZCB3aXRoaW4gdGhlIHRpbWVvdXQgc3BlY2lmaWVk
-IGJ5IHRoZSBTTUJ1cw0KPj4+IHNwZWNpZmljYXRpb24uIERlcGVuZGluZyBvbiB3aGVuIHRoYXQg
-aGFwcGVucyB3ZSBlaXRoZXIgZmFpbCB0aGUNCj4+PiB0cmFuc2ZlciBvciBpbnRlcnByZXQgdGhl
-IHJlc3VsdCBhcyBhbGwtMXMuDQo+Pj4NCj4+IFRoYXQgaXMgcXVpdGUgdW5saWtlbHkuIE1hbnkg
-c2Vuc29yIGNoaXBzIGFyZSBTTUJ1cyBjaGlwcyBjb25uZWN0ZWQgdG8NCj4+IGkyYyBidXNzZXMu
-IEl0IGlzIG11Y2ggbW9yZSBsaWtlbHkgdGhhdCB0aGVyZSBpcyBhIGJ1ZyBpbiB0aGUgVDIwODAg
-DQo+PiBpMmMgZHJpdmVyLA0KPj4gdGhhdCB0aGUgY2hpcCBkb2Vzbid0IGxpa2UgdGhlIGJ1bGsg
-cmVhZCBjb21tYW5kIGlzc3VlZCB0aHJvdWdoIA0KPj4gcmVnbWFwLCB0aGF0DQo+PiB0aGUgY2hp
-cCBoYXMgcHJvYmxlbXMgd2l0aCB0aGUgaTJjIGJ1cyBzcGVlZCwgb3IgdGhhdCB0aGUgaTJjIGJ1
-cyBpcyANCj4+IG5vaXN5Lg0KPiBQZXJoYXBzIHNvbWV0aGluZyBnZXRzIHVwc2V0IHdoZW4gaW50
-ZXJydXB0IHByb2Nlc3NpbmcgaXMgZGVsYXllZCANCj4gYmVjYXVzZSBvZiBDUFUgbG9hZC4gSSBk
-b24ndCBzZWUgdGhlIHByb2JsZW0gd2hlbiB0aGVyZSBpc24ndCBhIENQVSANCj4gbG9hZCBzbyBJ
-IHRoaW5rIHRoYXQgZWxpbWluYXRlcyBib2FyZCBpc3N1ZXMuDQo+PiBJbiB0aGlzIGNvbnRleHQs
-IHRoZSAiTm8gc3VjaCBkZXZpY2Ugb3IgYWRkcmVzcyIgcmVzcG9uc2VzIGFyZSB2ZXJ5IA0KPj4g
-c3VzcGljaW91cy4NCj4+IFRob3NlIGFyZSByZXBvcnRlZCBieSB0aGUgaTJjIGRyaXZlciwgbm90
-IGJ5IHRoZSBod21vbiBkcml2ZXIsIGFuZCANCj4+IHN1Z2dlc3QNCj4+IHRoYXQgdGhlIGNoaXAg
-ZGlkIG5vdCByZXNwb25kIHRvIGEgcmVhZCByZXF1ZXN0LiBNYXliZSBpdCBoZWxwcyB0byANCj4+
-IGVuYWJsZQ0KPj4gZGVidWdnaW5nIHRvIHRoZSBpMmMgZHJpdmVyIHRvIHNlZSBpZiBpdCByZXBv
-cnRzIGFueXRoaW5nIHVzZWZ1bC4gRXZlbg0KPj4gYmV0dGVyIG1pZ2h0IGJlIHRvIGNvbm5lY3Qg
-YW4gaTJjIGJ1cyBhbmFseXplciB0byB0aGUgaTJjIGJ1cyBhbmQgY2hlY2sNCj4+IHdoYXQgaXMg
-Z29pbmcgb24uDQo+IFRoYXQncyBmcm9tIC1FTlhJTyB3aGljaCBpcyB1c2VkIGluIG9ubHkgb25l
-IHBsYWNlIGluIGkyYy1tcGMuYy4gSSdsbCANCj4gZW5hYmxlIHNvbWUgZGVidWcgYW5kIHNlZSB3
-aGF0IHdlIGdldC4NCg0KRm9yIHRoZSBlcnJhbnQgcmVhZGluZ3MgdGhlcmUgd2FzIG5vdGhpbmcg
-YWJub3JtYWwgcmVwb3J0ZWQgYnkgdGhlIGRyaXZlci4NCg0KRm9yIHRoZSAiTm8gc3VjaCBkZXZp
-Y2Ugb3IgYWRkcmVzcyIgSSBzYXcgIm1wYy1pMmMgZmZlMTE5MDAwLmkyYzogTm8gDQpSWEFLIiB3
-aGljaCBtYXRjaGVzIHVwIHdpdGggdGhlIC1FTlhJTyByZXR1cm4uDQo=
+On 3/7/21 8:37 PM, Chris Packham wrote:
+[ ... ]
+>> That's from -ENXIO which is used in only one place in i2c-mpc.c. I'll 
+>> enable some debug and see what we get.
+> 
+> For the errant readings there was nothing abnormal reported by the driver.
+> 
+> For the "No such device or address" I saw "mpc-i2c ffe119000.i2c: No 
+> RXAK" which matches up with the -ENXIO return.
+> 
+
+Id suggest to check the time until not busy and stop in mpc_xfer().
+Those hot loops are unusual, and may well mess up the code especially
+if preempt is enabled. Also, are you using interrupts or polling in
+your system ? The interrupt handler looks a bit odd, with "Read again
+to allow register to stabilise".
+
+Do you have fsl,timeout set in the devicetree properties and, if so,
+have you played with it ?
+
+Other than that, the only other real idea I have would be to monitor
+the i2c bus.
+
+Guenter
