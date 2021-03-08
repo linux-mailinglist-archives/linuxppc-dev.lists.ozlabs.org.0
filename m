@@ -2,78 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601A3331A4B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 23:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7244D331B20
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 00:53:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvYFL2kkxz3cK9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 09:40:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvZtW3QFMz3cbr
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 10:53:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ek/lewEG;
+	dkim=pass (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=VRLLXtcQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32f;
- helo=mail-ot1-x32f.google.com; envelope-from=groeck7@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ek/lewEG; dkim-atps=neutral
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com
- [IPv6:2607:f8b0:4864:20::32f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvYDr55FQz30RD
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 09:39:40 +1100 (AEDT)
-Received: by mail-ot1-x32f.google.com with SMTP id e45so10884348ote.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Mar 2021 14:39:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=wQvIDGso1RBFZCsL6ixTOcS0Wu2YsU6EKE/ysPX9/4E=;
- b=ek/lewEGWWKcVBwJKjOEuNn4V/El1kvmO132wgQDs0Nop8NdQDvQwIv9UU4wkRowm4
- olbH+1vBxE7emGSmO1gMGYtgdaz3TdxH2VYQm09srJR7Sdz+v6EiYYb5g/TcGZviL4jx
- Mn61bmIgJ8XnNEUe1t5RhzdRCKJGvZINrNpaTxyy/0H+6DK0H9rTIGxYgGK/em8Ys0S8
- Zwxr+tbMU1qRWh7nyOsA4nKhzMVJX4aFkE6LTmgAs1XCQ5GxPuHaOEbxaBxzLYqTHTF+
- 0hQ7Y9mVSmCinX/3jtB0GV/gOGOmDH/EKvHpDYlp3MNRapFnJ08V/2EDb0CDIoZ94JLK
- H2Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to:user-agent;
- bh=wQvIDGso1RBFZCsL6ixTOcS0Wu2YsU6EKE/ysPX9/4E=;
- b=hA6ON8CYXpWOCXtpeY07fBqRw0FFPTIob6RNxpfqUripyZAmdqavtlfP0KEoTpAn2a
- 8ykadl1y9ylmqh1t/8vJZBgZ4MnIS3WrWuMD9nQCLjZquKU9u+NrgJc9SfVhU6CMnjFQ
- gSyjEWbY6sXwk8jo6A3qNowv76Tc2DHZFqS84aZAeGQbNTsXrgRZA5sUrBMbdAECU6ng
- ZXr7ziXrUluDqeUfFeW7E+Guiqw9z9MwzncCeUdqMYi8M/ppDoHUK7mGqYA8z/uajImM
- 4QGXB57SWST/CnKvuEt/R4om2xaf3jXUEjq6XhXOQLorlbeRLO6EWOY5zIm0Y/15RKbk
- gz/Q==
-X-Gm-Message-State: AOAM533vHW1tj1PRRnccjaNE+kyMyS4hw4DvR5XijEOmG+YCXKvdphpD
- tWTsv/8+HN/yZ078QYKVfdc=
-X-Google-Smtp-Source: ABdhPJx8XlOlv8RaO6z9FNUkdOHyEa1MxP3s6FTna3PLeU0s6f4ziWS1rVKlVQvp9Mqc9QeAXg4Ncg==
-X-Received: by 2002:a9d:80e:: with SMTP id 14mr21846215oty.211.1615243175971; 
- Mon, 08 Mar 2021 14:39:35 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id h24sm33807otg.20.2021.03.08.14.39.34
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 08 Mar 2021 14:39:35 -0800 (PST)
-Date: Mon, 8 Mar 2021 14:39:34 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-Subject: Re: Errant readings on LM81 with T2080 SoC
-Message-ID: <20210308223934.GD185990@roeck-us.net>
-References: <8e0a88ba-01e9-9bc1-c78b-20f26ce27d12@alliedtelesis.co.nz>
- <96d660bc-17ab-4e0e-9a94-bce1737a8da1@roeck-us.net>
- <4a1b1494-df96-2d8c-9323-beb2c2ba706b@alliedtelesis.co.nz>
- <a67ea323-634d-d34e-c63e-b1aaa4737b19@alliedtelesis.co.nz>
- <5709f180-04b5-09b2-e1c4-53eb5c9345d8@roeck-us.net>
- <d6074923-ee7e-4499-0e54-383a607d3c41@alliedtelesis.co.nz>
+ smtp.mailfrom=cisco.com (client-ip=173.37.142.92; helo=alln-iport-5.cisco.com;
+ envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
+ header.s=iport header.b=VRLLXtcQ; dkim-atps=neutral
+Received: from alln-iport-5.cisco.com (alln-iport-5.cisco.com [173.37.142.92])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvZt32lrdz30LR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 10:53:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=cisco.com; i=@cisco.com; l=3040; q=dns/txt; s=iport;
+ t=1615247611; x=1616457211;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=qOW1VpsX4fbS7pi7TUvKz3uyZUc7qjDe5+CAjX227XY=;
+ b=VRLLXtcQREtUUvmVphwPvwl3Syo/m01VMAPcXPujbmqxYNqYN4eTjC2G
+ dDzNEQffoyoMzrzNFMxuK/ErgVTST4UPvl97X/RBTdTJMqlA5+oMD+KqQ
+ QvA5sO26eBwzkOnIx7O0W+SpJTpRQtF31eepett51jBRdFz4PfkwRlv8i s=;
+X-IPAS-Result: =?us-ascii?q?A0CAAQCat0ZgkIoNJK1iHAEBAQEBAQcBARIBAQQEAQGCD?=
+ =?us-ascii?q?4N3ATmzHQsBAQEPNAQBAYRNgXwCJTgTAgMBAQEDAgMBAQEBBQEBAQIBBgQUA?=
+ =?us-ascii?q?QEBAQEBhkWGfQFGgT4BgwKDCKwogiiJCYFFgTmIXHSEGByBSUKPHASCR2klA?=
+ =?us-ascii?q?YEIZz+eQJwCgwiBH48qi04PIqNslF2iVYFrIYFZMxoIGxWDJU8ZDY44jXMBX?=
+ =?us-ascii?q?CADZwIGCgEBAwmPJgEB?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="5.81,233,1610409600"; d="scan'208";a="676271451"
+Received: from alln-core-5.cisco.com ([173.36.13.138])
+ by alln-iport-5.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
+ 08 Mar 2021 23:53:21 +0000
+Received: from zorba.cisco.com ([10.24.7.91])
+ by alln-core-5.cisco.com (8.15.2/8.15.2) with ESMTP id 128NrKRh007218;
+ Mon, 8 Mar 2021 23:53:20 GMT
+From: Daniel Walker <danielwa@cisco.com>
+To: Will Deacon <will@kernel.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Rob Herring <robh@kernel.org>,
+ Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
+ Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: [PATCH v2 0/7] Generic Command Line changes
+Date: Mon,  8 Mar 2021 15:53:08 -0800
+Message-Id: <20210308235319.2988609-1-danielwa@cisco.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d6074923-ee7e-4499-0e54-383a607d3c41@alliedtelesis.co.nz>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+X-Outbound-SMTP-Client: 10.24.7.91, [10.24.7.91]
+X-Outbound-Node: alln-core-5.cisco.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,25 +75,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- "jdelvare@suse.com" <jdelvare@suse.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
+Cc: linux-efi@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 08, 2021 at 08:27:30PM +0000, Chris Packham wrote:
-[ ... ]
-> > Other than that, the only other real idea I have would be to monitor
-> > the i2c bus.
-> I am in the fortunate position of being able to go into the office and 
-> even happen to have the expensive scope at the moment. Now I just need 
-> to find a tame HW engineer so I don't burn myself trying to attach the 
-> probes.
-> 
-A bit unrelated, but you can get scopes connected through usb which are
-quite low-cost (like in the $100 range) and good enough for i2c testing.
+This fixed some problem identified in my last release. I made updates
+based on comments from Christophe Leroy.
 
-Guenter
+I added scripted updates to the defconfig file for mips and powerpc.
+This is required in order to maintain the status quo for those platforms
+which used the prior builtin command line system.
+
+These were tested on all effected architectures.
+
+Daniel Walker (7):
+  CMDLINE: add generic builtin command line
+  CMDLINE: drivers: of: ifdef out cmdline section
+  powerpc: convert config files to generic cmdline
+  CMDLINE: powerpc: convert to generic builtin command line
+  mips: convert config files to generic cmdline
+  CMDLINE: mips: convert to generic builtin command line
+  CMDLINE: x86: convert to generic builtin command line
+
+ arch/mips/Kconfig                             |  4 +-
+ arch/mips/Kconfig.debug                       | 44 ---------
+ arch/mips/configs/ar7_defconfig               |  9 +-
+ arch/mips/configs/bcm47xx_defconfig           |  8 +-
+ arch/mips/configs/bcm63xx_defconfig           | 15 ++--
+ arch/mips/configs/bmips_be_defconfig          | 11 +--
+ arch/mips/configs/bmips_stb_defconfig         | 11 +--
+ arch/mips/configs/capcella_defconfig          | 11 +--
+ arch/mips/configs/ci20_defconfig              | 10 +--
+ arch/mips/configs/cu1000-neo_defconfig        | 10 +--
+ arch/mips/configs/cu1830-neo_defconfig        | 10 +--
+ arch/mips/configs/e55_defconfig               |  4 +-
+ arch/mips/configs/generic_defconfig           |  6 +-
+ arch/mips/configs/gpr_defconfig               | 18 +---
+ arch/mips/configs/loongson3_defconfig         | 13 +--
+ arch/mips/configs/mpc30x_defconfig            |  7 +-
+ arch/mips/configs/tb0219_defconfig            |  7 +-
+ arch/mips/configs/tb0226_defconfig            |  7 +-
+ arch/mips/configs/tb0287_defconfig            |  7 +-
+ arch/mips/configs/workpad_defconfig           | 11 +--
+ arch/mips/kernel/setup.c                      | 36 +-------
+ arch/powerpc/Kconfig                          | 37 +-------
+ arch/powerpc/configs/44x/fsp2_defconfig       | 33 ++++---
+ arch/powerpc/configs/44x/iss476-smp_defconfig | 25 +++---
+ arch/powerpc/configs/44x/warp_defconfig       | 17 ++--
+ arch/powerpc/configs/holly_defconfig          | 13 +--
+ arch/powerpc/configs/mvme5100_defconfig       | 23 ++---
+ arch/powerpc/configs/skiroot_defconfig        | 12 ++-
+ arch/powerpc/configs/storcenter_defconfig     | 18 ++--
+ arch/powerpc/kernel/prom.c                    |  1 +
+ arch/powerpc/kernel/prom_init.c               | 35 +++++---
+ arch/x86/Kconfig                              | 44 +--------
+ arch/x86/kernel/setup.c                       | 18 +---
+ drivers/firmware/efi/libstub/x86-stub.c       |  2 +-
+ drivers/of/fdt.c                              | 12 +++
+ include/linux/cmdline.h                       | 89 +++++++++++++++++++
+ init/Kconfig                                  | 68 ++++++++++++++
+ 37 files changed, 321 insertions(+), 385 deletions(-)
+ create mode 100644 include/linux/cmdline.h
+
+-- 
+2.25.1
+
