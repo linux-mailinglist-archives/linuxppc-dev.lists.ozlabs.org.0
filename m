@@ -2,87 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4F0331125
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 15:43:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB8A331199
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 16:04:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvLgv5gNrz3cSK
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 01:43:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvM853Hfdz3cPs
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 02:04:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=VNEcNxDg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MVEHytM3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::636;
- helo=mail-ej1-x636.google.com; envelope-from=ckoenig.leichtzumerken@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VNEcNxDg; dkim-atps=neutral
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com
- [IPv6:2a00:1450:4864:20::636])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=MVEHytM3; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvLgT2b8Rz3cJc
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 01:43:32 +1100 (AEDT)
-Received: by mail-ej1-x636.google.com with SMTP id jt13so20932748ejb.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Mar 2021 06:43:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-transfer-encoding:content-language;
- bh=Az8rhA9caHuo5zJCEYV8g7y4jULWEe6VaW1tk9jHX3I=;
- b=VNEcNxDgmlldA/u8di4huVxTlpa63PWMrv1nVVNhGIhelZ8P8KTUV7fB2hzpu2JE3L
- JR2nNA8A2rPTgt7Y7SHLNz36wk7715OF6V3QdYK1ynr1bpibEr2d2s0obXyasg2pViE4
- Y90OLyHBTliRuLh6i20zM+WckQYC6ADJexiAtBJF7QFrMZNV4vniXv0kP3lIinLsrmf7
- dkfZBqm9FUtnoK3l4G4wpC4ZrT06TML31imjHUZe53UU0aWfQVJ/VJskJXmrYYHDWDQU
- UL2I7iIpchwsyzl9tknM4XrRJH8B5zXEuJe0woH/m8++6yUQZWjaJBrHWwtvnEOgMVig
- tJ3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-transfer-encoding
- :content-language;
- bh=Az8rhA9caHuo5zJCEYV8g7y4jULWEe6VaW1tk9jHX3I=;
- b=RRluC5RaUWfI+Hq1WHsekxFqiT8ef4L4TCMrqh0RG2xm0Z0hrY283xtAJpGSd2/zyP
- PBa/JkuZ3RFpZsygo2YE/cKNpvKyMLTyqL+mjm1pdUD41aC42N2INLF+ewTVOCej6mwp
- Z0FD8U1sLeUwgLLvKmMtsQkNI5CYImi4KRng352Igqj2NlS8ml/I9VpEV8/OLXrY10OO
- p7HlB8V/bI3ABj6DiBTGavZqtrbT4Dnrv0HY1YgbfQJ8UxjaBznNroGOoA7A2K/cO/I6
- TCvvZM+8I0r9NLhhC2J54GQLr470GZanFXouvoNjFJUrLiz5Ccq4TMG0pzr9B4o0pyuL
- FtHA==
-X-Gm-Message-State: AOAM532lsGOzALmoX9pX47u8f85tmC1gp5JSMJKLlAJN04IPhT+DB8IQ
- RPoeVpwn6b1debWq1PA7dvg=
-X-Google-Smtp-Source: ABdhPJzLVFusCJGHsLRE2whpfSe3NJ3sQRGVskencktMChCB5X29IBCZfnhGe0pbrM61syySA7Jj2g==
-X-Received: by 2002:a17:906:d787:: with SMTP id
- pj7mr14938160ejb.257.1615214606892; 
- Mon, 08 Mar 2021 06:43:26 -0800 (PST)
-Received: from ?IPv6:2a02:908:1252:fb60:4794:2f8d:7bcd:36a5?
- ([2a02:908:1252:fb60:4794:2f8d:7bcd:36a5])
- by smtp.gmail.com with ESMTPSA id d19sm7259446edr.45.2021.03.08.06.43.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Mar 2021 06:43:26 -0800 (PST)
-Subject: Re: [PATCH v1 12/15] powerpc/uaccess: Refactor get/put_user() and
- __get/put_user()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- kernel test robot <lkp@intel.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Evgeniy Polyakov <zbr@ioremap.net>, Alex Deucher
- <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=c3=b6nig?=
- <christian.koenig@amd.com>
-References: <3c174edb80d2d37af6b08c637b09268f675e5371.1614275314.git.christophe.leroy@csgroup.eu>
- <202103071822.4cXbH0Xp-lkp@intel.com>
- <bfb95917-2b84-59f2-7f22-22fd6d63d09a@csgroup.eu>
-From: =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
-Message-ID: <b282b744-ea10-aedf-da10-832af7565f24@gmail.com>
-Date: Mon, 8 Mar 2021 15:43:25 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvM7f4XhCz3cG4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 02:04:29 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 128F3Q3q067639; Mon, 8 Mar 2021 10:04:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=3JQl7+OiQwXd/kxZ3DnL9khjx5cDmaNGOhzng0U0/oE=;
+ b=MVEHytM3SERnn5VbNX6mW0IwTs3RHi2yyrNDgNRo89WML/3CL3t5TmVxLdau7CkHYeA8
+ LFGzaDDheec9aZlXefnGFdrm6mNLDh+7EPcbXPDSmdSGWK6i3eqiqHi2XhRxoKwOLfeb
+ sz7+PL2VLbIA0GRYb/8fqWHM5xyIKWl6zFYKzmEitTgQQvzn+f8l6DGP3T5PeZv3vFyb
+ yfd7h4IsRGL/pcSJVSXG3w/QbNasOpxR/30lZl6EtTVHt5vC0YYw+Akb0cFYw7ybMurC
+ BG1SrDsIuomJghQFmfb8Xz2u48OHy4vxJt34lcoyHV/cBzttenslXNfHaOoIloVWuCku Vg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 375nqbh977-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Mar 2021 10:04:23 -0500
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 128F3njm069585;
+ Mon, 8 Mar 2021 10:04:23 -0500
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 375nqbh952-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Mar 2021 10:04:22 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 128F2Z6d016583;
+ Mon, 8 Mar 2021 15:04:20 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma05wdc.us.ibm.com with ESMTP id 3741c97b67-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Mar 2021 15:04:20 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 128F4Jdx34800056
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 8 Mar 2021 15:04:19 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 20F9FBE059;
+ Mon,  8 Mar 2021 15:04:19 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 73ADEBE065;
+ Mon,  8 Mar 2021 15:04:18 +0000 (GMT)
+Received: from localhost (unknown [9.163.6.5])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Mon,  8 Mar 2021 15:04:18 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Do not expose HFSCR sanitisation
+ to nested hypervisor
+In-Reply-To: <1615191200.1pjltfhe7o.astroid@bobo.none>
+References: <20210305231055.2913892-1-farosas@linux.ibm.com>
+ <1615191200.1pjltfhe7o.astroid@bobo.none>
+Date: Mon, 08 Mar 2021 12:04:16 -0300
+Message-ID: <87eegpn0un.fsf@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <bfb95917-2b84-59f2-7f22-22fd6d63d09a@csgroup.eu>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-08_08:2021-03-08,
+ 2021-03-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0
+ suspectscore=0 mlxlogscore=999 spamscore=0 lowpriorityscore=0 phishscore=0
+ malwarescore=0 mlxscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103080083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,151 +104,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kbuild-all@01.org,
- amd-gfx list <amd-gfx@lists.freedesktop.org>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The radeon warning is trivial to fix, going to send out a patch in a few 
-moments.
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-Regards,
-Christian.
+> Excerpts from Fabiano Rosas's message of March 6, 2021 9:10 am:
+>> As one of the arguments of the H_ENTER_NESTED hypercall, the nested
+>> hypervisor (L1) prepares a structure containing the values of various
+>> hypervisor-privileged registers with which it wants the nested guest
+>> (L2) to run. Since the nested HV runs in supervisor mode it needs the
+>> host to write to these registers.
+>> 
+>> To stop a nested HV manipulating this mechanism and using a nested
+>> guest as a proxy to access a facility that has been made unavailable
+>> to it, we have a routine that sanitises the values of the HV registers
+>> before copying them into the nested guest's vcpu struct.
+>> 
+>> However, when coming out of the guest the values are copied as they
+>> were back into L1 memory, which means that any sanitisation we did
+>> during guest entry will be exposed to L1 after H_ENTER_NESTED returns.
+>> 
+>> This is not a problem by itself, but in the case of the Hypervisor
+>> Facility Status and Control Register (HFSCR), we use the intersection
+>> between L2 hfscr bits and L1 hfscr bits. That means that L1 could use
+>> this to indirectly read the (hv-privileged) value from its vcpu
+>> struct.
+>> 
+>> This patch fixes this by making sure that L1 only gets back the bits
+>> that are necessary for regular functioning.
+>
+> The general idea of restricting exposure of HV privileged bits, but
+> for the case of HFSCR a guest can probe the HFCR anyway by testing which 
+> facilities are available (and presumably an HV may need some way to know
+> what features are available for it to advertise to its own guests), so
+> is this necessary? Perhaps a comment would be sufficient.
+>
 
-Am 08.03.21 um 13:14 schrieb Christophe Leroy:
-> +Evgeniy for W1 Dallas
-> +Alex & Christian for RADEON
+Well, I'd be happy to force them through the arduous path then =); and
+there are features that are emulated by the HV which L1 would not be
+able to probe.
+
+I think we should implement a mechanism that stops all leaks now, rather
+than having to ponder about this every time we touch an hv_reg in that
+structure. I'm not too worried about HFSCR specifically.
+
+Let me think about this some more and see if I can make it more generic,
+I realise that sticking the saved_hfscr on the side is not the most
+elegant approach.
+
+> Thanks,
+> Nick
 >
-> Le 07/03/2021 à 11:23, kernel test robot a écrit :
->> Hi Christophe,
->>
->> I love your patch! Perhaps something to improve:
->>
->> [auto build test WARNING on powerpc/next]
->> [also build test WARNING on v5.12-rc2 next-20210305]
->> [If your patch is applied to the wrong git tree, kindly drop us a note.
->> And when submitting patch, we suggest to use '--base' as documented in
->> https://git-scm.com/docs/git-format-patch]
->>
->> url: 
->> https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-Cleanup-of-uaccess-h/20210226-015715
->> base: 
->> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
->> config: powerpc-randconfig-s031-20210307 (attached as .config)
->> compiler: powerpc-linux-gcc (GCC) 9.3.0
->> reproduce:
->>          wget 
->> https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross 
->> -O ~/bin/make.cross
->>          chmod +x ~/bin/make.cross
->>          # apt-get install sparse
->>          # sparse version: v0.6.3-245-gacc5c298-dirty
->>          # 
->> https://github.com/0day-ci/linux/commit/449bdbf978936e67e4919be8be0eec3e490a65e2
->>          git remote add linux-review https://github.com/0day-ci/linux
->>          git fetch --no-tags linux-review 
->> Christophe-Leroy/powerpc-Cleanup-of-uaccess-h/20210226-015715
->>          git checkout 449bdbf978936e67e4919be8be0eec3e490a65e2
->>          # save the attached .config to linux build tree
->>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 
->> make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=powerpc
->>
->> If you fix the issue, kindly add following tag as appropriate
->> Reported-by: kernel test robot <lkp@intel.com>
->
->
-> The mentioned patch is not the source of the problem, it only allows 
-> to spot it.
->
-> Christophe
->
->>
->>
->> "sparse warnings: (new ones prefixed by >>)"
->>>> drivers/w1/slaves/w1_ds28e04.c:342:13: sparse: sparse: incorrect 
->>>> type in initializer (different address spaces) @@     expected char 
->>>> [noderef] __user *_pu_addr @@     got char *buf @@
->>     drivers/w1/slaves/w1_ds28e04.c:342:13: sparse:     expected char 
->> [noderef] __user *_pu_addr
->>     drivers/w1/slaves/w1_ds28e04.c:342:13: sparse:     got char *buf
->>>> drivers/w1/slaves/w1_ds28e04.c:356:13: sparse: sparse: incorrect 
->>>> type in initializer (different address spaces) @@     expected char 
->>>> const [noderef] __user *_gu_addr @@     got char const *buf @@
->>     drivers/w1/slaves/w1_ds28e04.c:356:13: sparse:     expected char 
->> const [noderef] __user *_gu_addr
->>     drivers/w1/slaves/w1_ds28e04.c:356:13: sparse:     got char const 
->> *buf
->> -- 
->>     drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse: sparse: cast 
->> removes address space '__user' of expression
->>     drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse: sparse: cast 
->> removes address space '__user' of expression
->>>> drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse: sparse: 
->>>> incorrect type in initializer (different address spaces) @@     
->>>> expected unsigned int [noderef] __user *_pu_addr @@     got 
->>>> unsigned int [usertype] * @@
->>     drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse: expected 
->> unsigned int [noderef] __user *_pu_addr
->>     drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse:     got 
->> unsigned int [usertype] *
->>     drivers/gpu/drm/radeon/radeon_ttm.c:933:21: sparse: sparse: cast 
->> removes address space '__user' of expression
->>
->> vim +342 drivers/w1/slaves/w1_ds28e04.c
->>
->> fa33a65a9cf7e2 Greg Kroah-Hartman 2013-08-21  338
->> fa33a65a9cf7e2 Greg Kroah-Hartman 2013-08-21  339  static ssize_t 
->> crccheck_show(struct device *dev, struct device_attribute *attr,
->> fa33a65a9cf7e2 Greg Kroah-Hartman 2013-08-21 340                   
->> char *buf)
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  341  {
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26 @342      if 
->> (put_user(w1_enable_crccheck + 0x30, buf))
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  343 return -EFAULT;
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  344
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  345      return 
->> sizeof(w1_enable_crccheck);
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  346  }
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  347
->> fa33a65a9cf7e2 Greg Kroah-Hartman 2013-08-21  348  static ssize_t 
->> crccheck_store(struct device *dev, struct device_attribute *attr,
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26 349                    
->> const char *buf, size_t count)
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  350  {
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  351      char val;
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  352
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  353      if (count != 1 
->> || !buf)
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  354 return -EINVAL;
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  355
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26 @356      if 
->> (get_user(val, buf))
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  357 return -EFAULT;
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  358
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  359      /* convert to 
->> decimal */
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  360      val = val - 0x30;
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  361      if (val != 0 
->> && val != 1)
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  362 return -EINVAL;
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  363
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  364      /* set the new 
->> value */
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  365 w1_enable_crccheck 
->> = val;
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  366
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  367      return 
->> sizeof(w1_enable_crccheck);
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  368  }
->> fbf7f7b4e2ae40 Markus Franke      2012-05-26  369
->>
+>> 
+>> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
 >> ---
->> 0-DAY CI Kernel Test Service, Intel Corporation
->> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
->>
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
-
+>>  arch/powerpc/kvm/book3s_hv_nested.c | 22 +++++++++++++++++-----
+>>  1 file changed, 17 insertions(+), 5 deletions(-)
+>> 
+>> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+>> index 0cd0e7aad588..860004f46e08 100644
+>> --- a/arch/powerpc/kvm/book3s_hv_nested.c
+>> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+>> @@ -98,12 +98,20 @@ static void byteswap_hv_regs(struct hv_guest_state *hr)
+>>  }
+>>  
+>>  static void save_hv_return_state(struct kvm_vcpu *vcpu, int trap,
+>> -				 struct hv_guest_state *hr)
+>> +				 struct hv_guest_state *hr, u64 saved_hfscr)
+>>  {
+>>  	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+>>  
+>> +	/*
+>> +	 * During sanitise_hv_regs() we used HFSCR bits from L1 state
+>> +	 * to restrict what the L2 state is allowed to be. Since L1 is
+>> +	 * not allowed to read this SPR, do not include these
+>> +	 * modifications in the return state.
+>> +	 */
+>> +	hr->hfscr = ((~HFSCR_INTR_CAUSE & saved_hfscr) |
+>> +		     (HFSCR_INTR_CAUSE & vcpu->arch.hfscr));
+>> +
+>>  	hr->dpdes = vc->dpdes;
+>> -	hr->hfscr = vcpu->arch.hfscr;
+>>  	hr->purr = vcpu->arch.purr;
+>>  	hr->spurr = vcpu->arch.spurr;
+>>  	hr->ic = vcpu->arch.ic;
+>> @@ -132,12 +140,14 @@ static void save_hv_return_state(struct kvm_vcpu *vcpu, int trap,
+>>  	}
+>>  }
+>>  
+>> -static void sanitise_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
+>> +static void sanitise_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr,
+>> +			     u64 *saved_hfscr)
+>>  {
+>>  	/*
+>>  	 * Don't let L1 enable features for L2 which we've disabled for L1,
+>>  	 * but preserve the interrupt cause field.
+>>  	 */
+>> +	*saved_hfscr = hr->hfscr;
+>>  	hr->hfscr &= (HFSCR_INTR_CAUSE | vcpu->arch.hfscr);
+>>  
+>>  	/* Don't let data address watchpoint match in hypervisor state */
+>> @@ -272,6 +282,7 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+>>  	u64 hdec_exp;
+>>  	s64 delta_purr, delta_spurr, delta_ic, delta_vtb;
+>>  	u64 mask;
+>> +	u64 hfscr;
+>>  	unsigned long lpcr;
+>>  
+>>  	if (vcpu->kvm->arch.l1_ptcr == 0)
+>> @@ -324,7 +335,8 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+>>  	mask = LPCR_DPFD | LPCR_ILE | LPCR_TC | LPCR_AIL | LPCR_LD |
+>>  		LPCR_LPES | LPCR_MER;
+>>  	lpcr = (vc->lpcr & ~mask) | (l2_hv.lpcr & mask);
+>> -	sanitise_hv_regs(vcpu, &l2_hv);
+>> +
+>> +	sanitise_hv_regs(vcpu, &l2_hv, &hfscr);
+>>  	restore_hv_regs(vcpu, &l2_hv);
+>>  
+>>  	vcpu->arch.ret = RESUME_GUEST;
+>> @@ -345,7 +357,7 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+>>  	delta_spurr = vcpu->arch.spurr - l2_hv.spurr;
+>>  	delta_ic = vcpu->arch.ic - l2_hv.ic;
+>>  	delta_vtb = vc->vtb - l2_hv.vtb;
+>> -	save_hv_return_state(vcpu, vcpu->arch.trap, &l2_hv);
+>> +	save_hv_return_state(vcpu, vcpu->arch.trap, &l2_hv, hfscr);
+>>  
+>>  	/* restore L1 state */
+>>  	vcpu->arch.nested = NULL;
+>> -- 
+>> 2.29.2
+>> 
+>> 
