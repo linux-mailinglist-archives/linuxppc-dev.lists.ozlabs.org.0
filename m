@@ -1,70 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A967F330A97
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 10:53:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2F4330A99
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 10:53:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvDDb4y72z3ckD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 20:53:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvDF23J9Sz3dGj
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Mar 2021 20:53:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=uaCe049I;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=btCzEuSM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
+ helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uaCe049I; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
+ header.s=20161025 header.b=btCzEuSM; dkim-atps=neutral
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvDDC0JG5z30HF
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Mar 2021 20:52:58 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id j12so6693916pfj.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Mar 2021 01:52:57 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvDDD4F3zz3cLl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Mar 2021 20:53:00 +1100 (AEDT)
+Received: by mail-pf1-x434.google.com with SMTP id t85so1531822pfc.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Mar 2021 01:53:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=AhT6gnEhqVWDZjbVZ4xMqIf0rYZ/6aqhPAYATeUwlKc=;
- b=uaCe049IQLTXl4hEee2niRhGTopyPNAH5t8rTHzM3scw6V1VDdXvO5NQlJOaqe/7Io
- gEp3s7+tNtL64bTXjYBRflhmrMbnxjJO28gWJKZvtGEjLI36gCJc+sXcqxZvDUdS2oo0
- Dru6CEiaIX4q8rba4p0TuUXeAAUUbAABWbps/VBK1SPLgGhe4yth3ByQi7sMFd5jQVNQ
- PGuNYWtd5BgsvWLsSAtGo+Zhq2AVqXDScEJfElka/tN+15yGkeG6CTcB4+V4eYpGKGt+
- bE/MPCC8cVmUfC+Sg/YG2o9psDTyRYtiue97Ep72KZXvUSr2G80X2F5K+kmN/7r8qHrl
- nKqw==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=cKOElDbOOYhBWt4cAVGyc+iLTO7fKLi9zB1w5hJBFng=;
+ b=btCzEuSMKWDim8NDHRqt6OsgNoe/QwUxMVr7MScjW31FngkeiQLnUiYt33JqwBQfpS
+ 2T682Zl0rZl8Oqn7zg/kpdfpRmHOG5WIwFQfhuimkcFQ0WsEB8a+V66WIlfRzreLQEr0
+ G6PKmcv2buoU7EzLQqN97ipn+ysiANboIxlanxnAKsIvZg/pz3cN6eI+La1jisDEyMty
+ YRFoEhUcpx60S2x1YplDV1kUc7TqCYfowl8IvRBeDwlWezZ85asU5yey1o+8KmUaeH6X
+ vv9SBCDIVn/NH2ZNxW5WY9q2KVKP1fAcH6t2K3bGOSUbDtPJtXQHJ88OKK+qxv62J6y+
+ S1Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=AhT6gnEhqVWDZjbVZ4xMqIf0rYZ/6aqhPAYATeUwlKc=;
- b=Pr4lYARS4zfUYZYSDATfNp8XYILcozilHudImDcFw4stJ8bIZxL1dVOZyiD6i0Vuk2
- ZS0tMTMjqqAeBX82iVm4DdKhWYSadI+b/0OS522+nsUn9bGWLbpOJGP93aM90P9vETPE
- pPUnnGEsTFjhAsPPRswP7xTJGIhQvuzMqRk00ObF3b9FZBdciV9MoU57qB8Y6CnFVZlF
- 2cAUJh3qM6FUzE+2ZTEeITxeTsdqmcV/z+TQYjiYhgOoyCjpEjswWtGKl1ux1J/sZuOe
- fKoyn1Le8/zrRwq3Rts5WHxs5AgGNnne1pW7Q2LHGD6kD3NOk4y7QWHij2CJ6DgRs95r
- jvtw==
-X-Gm-Message-State: AOAM530dk371aBQcTIqFdAF7eHxHIonVkGjaIIQxm38H944yZSMp6bdh
- cehvf3qseg1xCYRVKFQ2EepeCj+Oe+Y=
-X-Google-Smtp-Source: ABdhPJwR3TSwXe8iTTi4mEC5BqrMSsyTpmT8WGsTTd6wAXLuSEGUb4CqS5NMjP4S67o04sUqJhtqgQ==
-X-Received: by 2002:a63:545e:: with SMTP id e30mr20165049pgm.13.1615197174357; 
- Mon, 08 Mar 2021 01:52:54 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=cKOElDbOOYhBWt4cAVGyc+iLTO7fKLi9zB1w5hJBFng=;
+ b=qWxgZIOHFGdGib22CXfH1zwtaAgTSx4Ax3VFvXnKptnXN94oB3buE+3HfMgCEOrvI2
+ nApVUtnTD6V7qIdeX0KUlYb3gi10v8ITOYKUdoW9BeoH3cYbl3/WRZT7DqFmrtp2CyTc
+ jqdACBmh3an+twMfQTFHgReLElmw8Rgx0I8x4L5gFsCZAEHOgD1W5x91w+EWXB2nQjL/
+ 5jFMctUrEo37sXk8K6NPI9F63VYtd66rOsjYizawltcUIz0W74yDdzUO2pmH2TBpIpFx
+ xjiHplGNs0HBKRoxf11Ma4B5yjnatXvi/odJZrJz7ofRXhrSNhDPu11Cy3wHpKfE9yXc
+ F8GA==
+X-Gm-Message-State: AOAM530DHWzU4D0ldEhMqykwZXL4mkHKfn4wBhHMpCjtFNKBR+xr6bvq
+ gkDPnFf1T38+Lyn6EPFO14U/bKiKkvY=
+X-Google-Smtp-Source: ABdhPJwVpUlOlU5F0jgCuei4SjcY28Kbz5XE9I7fvregeAnMYE+LPG/BOi8F4fj2F8+gGmiHyCh87w==
+X-Received: by 2002:a05:6a00:22d6:b029:1cb:35ac:d8e0 with SMTP id
+ f22-20020a056a0022d6b02901cb35acd8e0mr20032111pfj.17.1615197177962; 
+ Mon, 08 Mar 2021 01:52:57 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
  by smtp.gmail.com with ESMTPSA id
- e63sm1326850pfe.208.2021.03.08.01.52.51
+ e63sm1326850pfe.208.2021.03.08.01.52.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Mar 2021 01:52:53 -0800 (PST)
+ Mon, 08 Mar 2021 01:52:57 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 0/7] Move 64e to new interrupt return code
-Date: Mon,  8 Mar 2021 19:52:36 +1000
-Message-Id: <20210308095244.3195782-1-npiggin@gmail.com>
+Subject: [PATCH] powerpc: fix inverted SET_FULL_REGS bitop
+Date: Mon,  8 Mar 2021 19:52:37 +1000
+Message-Id: <20210308095244.3195782-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20210308095244.3195782-1-npiggin@gmail.com>
+References: <20210308095244.3195782-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,45 +86,47 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Time to finally try removing the remaining old cruft left over
-from the big interrupt return rewrite in C.
+This bit operation was inverted and set the low bit rather than cleared
+it, breaking the ability to ptrace non-volatile GPRs after exec. Fix.
 
-This series will clash lightly with Christophe's one to switch
-ppc32 over. His should go in first because it's a lot bigger
-and more mature at this stage. I will rebase this series on top
-of his at some point but at the moment it's just based on upstream.
+Fixes: feb9df3462e68 ("powerpc/64s: Always has full regs, so remove remnant checks")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+Well this is embarrassing. Condition flags should be represented by the
+bit set, rather than bit clear. That would have made the mistake obvious
+even at a glance.
 
-Patch 1 should go in as a fix, patch 5 is not required for this
-series I'll drop it from non-rfc series and send it separately (it's
-not tested at the moment).
+In this case, this stuff is going away soon so I won't bother to change
+it around.
 
 Thanks,
 Nick
 
-Nicholas Piggin (7):
-  powerpc/syscall: switch user_exit_irqoff and trace_hardirqs_off order
-  powerpc/64e/interrupt: always save nvgprs on interrupt
-  powerpc/64e/interrupt: use new interrupt return
-  powerpc/64e/interrupt: reconcile irq soft-mask state in C
-  KVM: PPC: Remove RECONCILE_IRQ_STATE from guest exit
-  powerpc/64e/interrupt: handle bad_page_fault in C
-  powerpc/64e/interrupt: Use new interrupt context tracking scheme
+ arch/powerpc/include/asm/ptrace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- arch/powerpc/include/asm/asm-prototypes.h |   2 -
- arch/powerpc/include/asm/interrupt.h      |  31 +-
- arch/powerpc/include/asm/irqflags.h       |  58 ----
- arch/powerpc/include/asm/kvm_ppc.h        |  22 --
- arch/powerpc/include/asm/ptrace.h         |   9 +-
- arch/powerpc/kernel/entry_64.S            |  40 +--
- arch/powerpc/kernel/exceptions-64e.S      | 394 ++--------------------
- arch/powerpc/kernel/interrupt.c           |  18 +-
- arch/powerpc/kernel/irq.c                 |  76 -----
- arch/powerpc/kvm/book3s_pr.c              |   8 +-
- arch/powerpc/kvm/booke.c                  |   9 +-
- arch/powerpc/kvm/bookehv_interrupts.S     |   9 -
- arch/powerpc/mm/fault.c                   |   4 +-
- 13 files changed, 69 insertions(+), 611 deletions(-)
-
+diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
+index 975ba260006a..1499e928ea6a 100644
+--- a/arch/powerpc/include/asm/ptrace.h
++++ b/arch/powerpc/include/asm/ptrace.h
+@@ -195,7 +195,7 @@ static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
+ #define TRAP_FLAGS_MASK		0x11
+ #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
+ #define FULL_REGS(regs)		(((regs)->trap & 1) == 0)
+-#define SET_FULL_REGS(regs)	((regs)->trap |= 1)
++#define SET_FULL_REGS(regs)	((regs)->trap &= ~1)
+ #endif
+ #define CHECK_FULL_REGS(regs)	BUG_ON(!FULL_REGS(regs))
+ #define NV_REG_POISON		0xdeadbeefdeadbeefUL
+@@ -210,7 +210,7 @@ static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
+ #define TRAP_FLAGS_MASK		0x1F
+ #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
+ #define FULL_REGS(regs)		(((regs)->trap & 1) == 0)
+-#define SET_FULL_REGS(regs)	((regs)->trap |= 1)
++#define SET_FULL_REGS(regs)	((regs)->trap &= ~1)
+ #define IS_CRITICAL_EXC(regs)	(((regs)->trap & 2) != 0)
+ #define IS_MCHECK_EXC(regs)	(((regs)->trap & 4) != 0)
+ #define IS_DEBUG_EXC(regs)	(((regs)->trap & 8) != 0)
 -- 
 2.23.0
 
