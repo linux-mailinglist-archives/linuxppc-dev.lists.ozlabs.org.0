@@ -2,61 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B441332E37
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 19:24:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A163332DEA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 19:12:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw3Wh1thcz3cc7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 05:24:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw3GS0nKNz3cLF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 05:12:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=188.165.49.222; helo=6.mo52.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 3435 seconds by postgrey-1.36 at boromir;
- Wed, 10 Mar 2021 05:23:59 AEDT
-Received: from 6.mo52.mail-out.ovh.net (6.mo52.mail-out.ovh.net
- [188.165.49.222])
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kaod.org (client-ip=207.211.30.44;
+ helo=us-smtp-delivery-44.mimecast.com; envelope-from=groug@kaod.org;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 65 seconds by postgrey-1.36 at boromir;
+ Wed, 10 Mar 2021 05:12:30 AEDT
+Received: from us-smtp-delivery-44.mimecast.com
+ (us-smtp-delivery-44.mimecast.com [207.211.30.44])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw3WM05nLz2xxw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 05:23:56 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.1.76])
- by mo52.mail-out.ovh.net (Postfix) with ESMTPS id E80162476F6;
- Tue,  9 Mar 2021 18:26:36 +0100 (CET)
-Received: from kaod.org (37.59.142.103) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 9 Mar 2021
- 18:26:36 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-103G005b3342e94-a8ab-4258-a199-b306ceb08c64,
- 8C9061D2296CFEABF2D52E5F4F8F8063DC0B97BF) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Subject: Re: [PATCH v2 1/8] powerpc/xive: Use cpu_to_node() instead of
- ibm,chip-id property
-To: Daniel Henrique Barboza <danielhb@linux.ibm.com>, Greg Kurz
- <groug@kaod.org>
-References: <20210303174857.1760393-1-clg@kaod.org>
- <20210303174857.1760393-2-clg@kaod.org> <20210308181359.789c143b@bahia.lan>
- <8dd98e22-1f10-e87b-3fe3-e786bc9a8d71@kaod.org>
- <3180b5c6-e61f-9c5f-3c80-f10e69dc5785@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <92edbc26-4cb5-6e2f-00ff-43a3dca43759@kaod.org>
-Date: Tue, 9 Mar 2021 18:26:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw3G63xHSz3cG2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 05:12:30 +1100 (AEDT)
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-379-YbQoMtiLOkGTYLcLvRh8gA-1; Tue, 09 Mar 2021 13:11:14 -0500
+X-MC-Unique: YbQoMtiLOkGTYLcLvRh8gA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F062C80364C;
+ Tue,  9 Mar 2021 18:11:12 +0000 (UTC)
+Received: from bahia.lan (ovpn-113-236.ams2.redhat.com [10.36.113.236])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E053610190A7;
+ Tue,  9 Mar 2021 18:11:11 +0000 (UTC)
+Subject: [PATCH] powerpc/xmon: Check cpu id in commands "c#", "dp#" and "dx#"
+From: Greg Kurz <groug@kaod.org>
+To: linuxppc-dev@lists.ozlabs.org
+Date: Tue, 09 Mar 2021 19:11:10 +0100
+Message-ID: <161531347060.252863.10490063933688958044.stgit@bahia.lan>
+User-Agent: StGit/0.21
 MIME-Version: 1.0
-In-Reply-To: <3180b5c6-e61f-9c5f-3c80-f10e69dc5785@linux.ibm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.103]
-X-ClientProxiedBy: DAG5EX1.mxp5.local (172.16.2.41) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 36be80d9-9d5e-489e-a97b-459db706a6b2
-X-Ovh-Tracer-Id: 12667499853954255721
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudduiedguddtudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeejkeduueduveelgeduueegkeelffevledujeetffeivdelvdfgkeeufeduheehfeenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtohepghhrohhugheskhgrohgurdhorhhg
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: kaod.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,172 +58,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "list@suse.de:PowerPC" <qemu-ppc@nongnu.org>, linuxppc-dev@lists.ozlabs.org,
- QEMU Developers <qemu-devel@nongnu.org>, David Gibson <dgibson@redhat.com>
+Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/9/21 6:08 PM, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 3/9/21 12:33 PM, Cédric Le Goater wrote:
->> On 3/8/21 6:13 PM, Greg Kurz wrote:
->>> On Wed, 3 Mar 2021 18:48:50 +0100
->>> Cédric Le Goater <clg@kaod.org> wrote:
->>>
->>>> The 'chip_id' field of the XIVE CPU structure is used to choose a
->>>> target for a source located on the same chip when possible. This field
->>>> is assigned on the PowerNV platform using the "ibm,chip-id" property
->>>> on pSeries under KVM when NUMA nodes are defined but it is undefined
->>>
->>> This sentence seems to have a syntax problem... like it is missing an
->>> 'and' before 'on pSeries'.
->>
->> ah yes, or simply a comma.
->>
->>>> under PowerVM. The XIVE source structure has a similar field
->>>> 'src_chip' which is only assigned on the PowerNV platform.
->>>>
->>>> cpu_to_node() returns a compatible value on all platforms, 0 being the
->>>> default node. It will also give us the opportunity to set the affinity
->>>> of a source on pSeries when we can localize them.
->>>>
->>>
->>> IIUC this relies on the fact that the NUMA node id is == to chip id
->>> on PowerNV, i.e. xc->chip_id which is passed to OPAL remain stable
->>> with this change.
->>
->> Linux sets the NUMA node in numa_setup_cpu(). On pseries, the hcall
->> H_HOME_NODE_ASSOCIATIVITY returns the node id if I am correct (Daniel
->> in Cc:)
-> 
-> That's correct. H_HOME_NODE_ASSOCIATIVITY returns not only the node_id, but
-> a list with the ibm,associativity domains of the CPU that "proc-no" (processor
-> identifier) is mapped to inside QEMU.
-> 
-> node_id in this case, considering that we're working with a reference-points
-> of size 4, is the 4th element of the returned list. The last element is
-> "procno" itself.
-> 
-> 
->>
->> On PowerNV, Linux uses "ibm,associativity" property of the CPU to find
->> the node id. This value is built from the chip id in OPAL, so the
->> value returned by cpu_to_node(cpu) and the value of the "ibm,chip-id"
->> property are unlikely to be different.
->>
->> cpu_to_node(cpu) is used in many places to allocate the structures
->> locally to the owning node. XIVE is not an exception (see below in the
->> same patch), it is better to be consistent and get the same information
->> (node id) using the same routine.
->>
->>
->> In Linux, "ibm,chip-id" is only used in low level PowerNV drivers :
->> LPC, XSCOM, RNG, VAS, NX. XIVE should be in that list also but skiboot
->> unifies the controllers of the system to only expose one the OS. This
->> is problematic and should be changed but it's another topic.
->>
->>
->>> On the other hand, you have the pSeries case under PowerVM that
->>> doesn't xc->chip_id, which isn't passed to any hcall AFAICT.
->>
->> yes "ibm,chip-id" is an OPAL concept unfortunately and it has no meaning
->> under PAPR. xc->chip_id on pseries (PowerVM) will contains an invalid
->> chip id.
->>
->> QEMU/KVM exposes "ibm,chip-id" but it's not used. (its value is not
->> always correct btw)
-> 
-> 
-> If you have a way to reliably reproduce this, let me know and I'll fix it
-> up in QEMU.
+All these commands end up peeking into the PACA using the user originated
+cpu id as an index. Check the cpu id is valid in order to prevent xmon to
+crash. Instead of printing an error, this follows the same behavior as the
+"lp s #" command : ignore the buggy cpu id parameter and fall back to the
+#-less version of the command.
 
-with :
+Signed-off-by: Greg Kurz <groug@kaod.org>
+---
+ arch/powerpc/xmon/xmon.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-   -smp 4,cores=1,maxcpus=8 -object memory-backend-ram,id=ram-node0,size=2G -numa node,nodeid=0,cpus=0-1,cpus=4-5,memdev=ram-node0 -object memory-backend-ram,id=ram-node1,size=2G -numa node,nodeid=1,cpus=2-3,cpus=6-7,memdev=ram-node1
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 80fbf8968f77..d3d6e044228e 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -1248,7 +1248,7 @@ static int cpu_cmd(void)
+ =09unsigned long cpu, first_cpu, last_cpu;
+ =09int timeout;
+=20
+-=09if (!scanhex(&cpu)) {
++=09if (!scanhex(&cpu) || cpu >=3D num_possible_cpus()) {
+ =09=09/* print cpus waiting or in xmon */
+ =09=09printf("cpus stopped:");
+ =09=09last_cpu =3D first_cpu =3D NR_CPUS;
+@@ -2678,7 +2678,7 @@ static void dump_pacas(void)
+=20
+ =09termch =3D c;=09/* Put c back, it wasn't 'a' */
+=20
+-=09if (scanhex(&num))
++=09if (scanhex(&num) && num < num_possible_cpus())
+ =09=09dump_one_paca(num);
+ =09else
+ =09=09dump_one_paca(xmon_owner);
+@@ -2751,7 +2751,7 @@ static void dump_xives(void)
+=20
+ =09termch =3D c;=09/* Put c back, it wasn't 'a' */
+=20
+-=09if (scanhex(&num))
++=09if (scanhex(&num) && num < num_possible_cpus())
+ =09=09dump_one_xive(num);
+ =09else
+ =09=09dump_one_xive(xmon_owner);
 
-# dmesg | grep numa
-[    0.013106] numa: Node 0 CPUs: 0-1
-[    0.013136] numa: Node 1 CPUs: 2-3
 
-# dtc -I fs /proc/device-tree/cpus/ -f | grep ibm,chip-id
-		ibm,chip-id = <0x01>;
-		ibm,chip-id = <0x02>;
-		ibm,chip-id = <0x00>;
-		ibm,chip-id = <0x03>;
-
-with :
-
-  -smp 4,cores=4,maxcpus=8,threads=1 -object memory-backend-ram,id=ram-node0,size=2G -numa node,nodeid=0,cpus=0-1,cpus=4-5,memdev=ram-node0 -object memory-backend-ram,id=ram-node1,size=2G -numa node,nodeid=1,cpus=2-3,cpus=6-7,memdev=ram-node1
-
-# dmesg | grep numa
-[    0.013106] numa: Node 0 CPUs: 0-1
-[    0.013136] numa: Node 1 CPUs: 2-3
-
-# dtc -I fs /proc/device-tree/cpus/ -f | grep ibm,chip-id
-		ibm,chip-id = <0x00>;
-		ibm,chip-id = <0x00>;
-		ibm,chip-id = <0x00>;
-		ibm,chip-id = <0x00>;
-
-I think we should simply remove "ibm,chip-id" since it's not used and
-not in the PAPR spec.
-
-Thanks,
-
-C.
-
- 
-
-> 
-> Thanks,
-> 
-> 
-> DHB
-> 
-> 
->>
->>> It looks like the chip id is only used for localization purpose in
->>> this case, right ?
->>
->> Yes and PAPR sources are not localized. So it's not used. MSI sources
->> could be if we rewrote the MSI driver.
->>
->>> In this case, what about doing this change for pSeries only,
->>> somewhere in spapr.c ?
->>
->> The IPI code is common to all platforms and all have the same issue.
->> I rather not.
->>
->> Thanks,
->>
->> C.
->>  
->>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->>>> ---
->>>>   arch/powerpc/sysdev/xive/common.c | 7 +------
->>>>   1 file changed, 1 insertion(+), 6 deletions(-)
->>>>
->>>> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
->>>> index 595310e056f4..b8e456da28aa 100644
->>>> --- a/arch/powerpc/sysdev/xive/common.c
->>>> +++ b/arch/powerpc/sysdev/xive/common.c
->>>> @@ -1335,16 +1335,11 @@ static int xive_prepare_cpu(unsigned int cpu)
->>>>         xc = per_cpu(xive_cpu, cpu);
->>>>       if (!xc) {
->>>> -        struct device_node *np;
->>>> -
->>>>           xc = kzalloc_node(sizeof(struct xive_cpu),
->>>>                     GFP_KERNEL, cpu_to_node(cpu));
->>>>           if (!xc)
->>>>               return -ENOMEM;
->>>> -        np = of_get_cpu_node(cpu, NULL);
->>>> -        if (np)
->>>> -            xc->chip_id = of_get_ibm_chip_id(np);
->>>> -        of_node_put(np);
->>>> +        xc->chip_id = cpu_to_node(cpu);
->>>>           xc->hw_ipi = XIVE_BAD_IRQ;
->>>>             per_cpu(xive_cpu, cpu) = xc;
->>>
->>
