@@ -2,56 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5033321BA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 10:14:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D34B3321C1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 10:16:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvqJq5fmVz3cLY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 20:14:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvqN73NByz3cQc
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 20:16:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=groug@kaod.org;
- receiver=<UNKNOWN>)
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.222.49; helo=mail-ua1-f49.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com
+ [209.85.222.49])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvqJV3cJ5z30LP
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 20:13:45 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.4.132])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 9462A8E05C56;
- Tue,  9 Mar 2021 10:13:41 +0100 (CET)
-Received: from kaod.org (37.59.142.101) by DAG8EX1.mxp5.local (172.16.2.71)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 9 Mar 2021
- 10:13:40 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-101G004591d6a76-2c49-4261-b780-3ace89d0a383,
- 5BB0FC21D60CBA87691D752E0F3295FDC8BC83A3) smtp.auth=groug@kaod.org
-X-OVh-ClientIp: 78.197.208.248
-Date: Tue, 9 Mar 2021 10:13:39 +0100
-From: Greg Kurz <groug@kaod.org>
-To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
-Subject: Re: [PATCH v2 4/8] powerpc/xive: Simplify xive_core_debug_show()
-Message-ID: <20210309101339.1b1e2d4e@bahia.lan>
-In-Reply-To: <464b873b-b8d9-c656-fb72-365bfca9d8c6@kaod.org>
-References: <20210303174857.1760393-1-clg@kaod.org>
- <20210303174857.1760393-5-clg@kaod.org>
- <20210308190710.4dba0379@bahia.lan>
- <464b873b-b8d9-c656-fb72-365bfca9d8c6@kaod.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvqMp6LbZz2xZL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 20:16:37 +1100 (AEDT)
+Received: by mail-ua1-f49.google.com with SMTP id h26so2690241uax.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 01:16:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=DxSUjQGZz4/YjWnn3wACv5aSRYiuKXpXdqRpRz0A8i4=;
+ b=EuKF8tOWW4KqPMe4+DrfH2sz9WsGyTe3HvWEsJk7aESYImawlSuheWCQwfmGO8fBWF
+ p7hB3RnL4iuCZGYwvPi4Alic5aGcd+Zj1/0Vt8HkMV5JxWuZYMiOtEvodg+f7blK8nCN
+ hfHpR1j4XzOEjrztwUIoKQTJGb5SDomGUKgzzAx0B/0y1vFGGBArKpOM6PXsT5uNKsKa
+ X8FNmkCC673SKAZx8nYo7+89gc0vXXPT3SWrDeNYOTuVwJKo3VwOHVr5MZ0JyzZz6NEh
+ TVm39E0ZvBeZ2Zc14gcrmR9ScSKJHLrA3TCZZhTwmOiUzVLH9pjt1rHd0MugYYMrbpfj
+ C5OA==
+X-Gm-Message-State: AOAM533lPNkRr5LTn8+u7oFXN064DjlGOczwiB1VEmrngADeIocmg/nL
+ 4ZDWnsWRtlMaD8WKbxzCNRA+cmXQU9uhzRGwgS8=
+X-Google-Smtp-Source: ABdhPJww7xH7Oe5Pjr4n5IpImR4mF9lUTXCXGNF+o1r811zxaElWbHX29Xxb/k0BiTXqUy738t90tdAg9Vt/0gLMISg=
+X-Received: by 2002:a9f:35a1:: with SMTP id t30mr14845428uad.106.1615281395334; 
+ Tue, 09 Mar 2021 01:16:35 -0800 (PST)
 MIME-Version: 1.0
+References: <8d7d285a027e9d21f5ff7f850fa71a2655b0c4af.1615279170.git.christophe.leroy@csgroup.eu>
+ <CAMuHMdW0Cn1So8ckvhsT+N+p2hiPiksmCS32jzM0xCUYU4UAdQ@mail.gmail.com>
+ <b12f9128-790b-7d8b-5f3c-e0912f5bec0a@csgroup.eu>
+In-Reply-To: <b12f9128-790b-7d8b-5f3c-e0912f5bec0a@csgroup.eu>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 9 Mar 2021 10:16:24 +0100
+Message-ID: <CAMuHMdXM0qg23UN6VBqbb0Vm2bg3tRSM=OCD5r7U2K1brpnJAg@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: Fix missing declaration of
+ [en/dis]able_kernel_vsx()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [37.59.142.101]
-X-ClientProxiedBy: DAG9EX1.mxp5.local (172.16.2.81) To DAG8EX1.mxp5.local
- (172.16.2.71)
-X-Ovh-Tracer-GUID: f8ceb63e-81ee-46cd-9ef6-bb8ab692b4e5
-X-Ovh-Tracer-Id: 4342877418063501789
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudduhedguddukecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepfffhvffukfgjfhfogggtgfhisehtqhertdertdejnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeevlefhtddufffhieevhefhleegleelgfetffetkedugeehjeffgfehhfefueduffenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,96 +61,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ amd-gfx list <amd-gfx@lists.freedesktop.org>,
+ Paul Mackerras <paulus@samba.org>, Alex Deucher <alexdeucher@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 8 Mar 2021 19:11:11 +0100
-C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+Hi Christophe,
 
-> On 3/8/21 7:07 PM, Greg Kurz wrote:
-> > On Wed, 3 Mar 2021 18:48:53 +0100
-> > C=C3=A9dric Le Goater <clg@kaod.org> wrote:
-> >=20
-> >> Now that the IPI interrupt has its own domain, the checks on the HW
-> >> interrupt number XIVE_IPI_HW_IRQ and on the chip can be replaced by a
-> >> check on the domain.
+On Tue, Mar 9, 2021 at 9:52 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+> Le 09/03/2021 =C3=A0 09:45, Geert Uytterhoeven a =C3=A9crit :
+> > On Tue, Mar 9, 2021 at 9:39 AM Christophe Leroy
+> > <christophe.leroy@csgroup.eu> wrote:
+> >> Add stub instances of enable_kernel_vsx() and disable_kernel_vsx()
+> >> when CONFIG_VSX is not set, to avoid following build failure.
 > >>
-> >> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> >> ---
-> >=20
-> > Shouldn't this have the following tags ?
-> >=20
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > Fixes: 930914b7d528 ("powerpc/xive: Add a debugfs file to dump internal=
- XIVE state")
->=20
-> The next patch has because it removes the useless check on irq_data.
-> =20
-
-Ok I get it. This report isn't about an actual crash. Just a false
-positive because of the not needed check in the caller.
-
-> C.
->=20
-> >=20
-> > Anyway,
-> >=20
-> > Reviewed-by: Greg Kurz <groug@kaod.org>
-> >=20
-> >>  arch/powerpc/sysdev/xive/common.c | 18 ++++--------------
-> >>  1 file changed, 4 insertions(+), 14 deletions(-)
+> >>    CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.o
+> >> In file included from ./drivers/gpu/drm/amd/amdgpu/../display/dc/dm_se=
+rvices_types.h:29,
+> >>                   from ./drivers/gpu/drm/amd/amdgpu/../display/dc/dm_s=
+ervices.h:37,
+> >>                   from drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/=
+dcn_calcs.c:27:
+> >> drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c: In functio=
+n 'dcn_bw_apply_registry_override':
+> >> ./drivers/gpu/drm/amd/amdgpu/../display/dc/os_types.h:64:3: error: imp=
+licit declaration of function 'enable_kernel_vsx'; did you mean 'enable_ker=
+nel_fp'? [-Werror=3Dimplicit-function-declaration]
+> >>     64 |   enable_kernel_vsx(); \
+> >>        |   ^~~~~~~~~~~~~~~~~
+> >> drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:640:2: note=
+: in expansion of macro 'DC_FP_START'
+> >>    640 |  DC_FP_START();
+> >>        |  ^~~~~~~~~~~
+> >> ./drivers/gpu/drm/amd/amdgpu/../display/dc/os_types.h:75:3: error: imp=
+licit declaration of function 'disable_kernel_vsx'; did you mean 'disable_k=
+ernel_fp'? [-Werror=3Dimplicit-function-declaration]
+> >>     75 |   disable_kernel_vsx(); \
+> >>        |   ^~~~~~~~~~~~~~~~~~
+> >> drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:676:2: note=
+: in expansion of macro 'DC_FP_END'
+> >>    676 |  DC_FP_END();
+> >>        |  ^~~~~~~~~
+> >> cc1: some warnings being treated as errors
+> >> make[5]: *** [drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs=
+.o] Error 1
 > >>
-> >> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/x=
-ive/common.c
-> >> index 678680531d26..7581cb12bb53 100644
-> >> --- a/arch/powerpc/sysdev/xive/common.c
-> >> +++ b/arch/powerpc/sysdev/xive/common.c
-> >> @@ -1579,17 +1579,14 @@ static void xive_debug_show_cpu(struct seq_fil=
-e *m, int cpu)
-> >>  	seq_puts(m, "\n");
-> >>  }
-> >> =20
-> >> -static void xive_debug_show_irq(struct seq_file *m, u32 hw_irq, struc=
-t irq_data *d)
-> >> +static void xive_debug_show_irq(struct seq_file *m, struct irq_data *=
-d)
-> >>  {
-> >> -	struct irq_chip *chip =3D irq_data_get_irq_chip(d);
-> >> +	unsigned int hw_irq =3D (unsigned int)irqd_to_hwirq(d);
-> >>  	int rc;
-> >>  	u32 target;
-> >>  	u8 prio;
-> >>  	u32 lirq;
-> >> =20
-> >> -	if (!is_xive_irq(chip))
-> >> -		return;
-> >> -
-> >>  	rc =3D xive_ops->get_irq_config(hw_irq, &target, &prio, &lirq);
-> >>  	if (rc) {
-> >>  		seq_printf(m, "IRQ 0x%08x : no config rc=3D%d\n", hw_irq, rc);
-> >> @@ -1627,16 +1624,9 @@ static int xive_core_debug_show(struct seq_file=
- *m, void *private)
-> >> =20
-> >>  	for_each_irq_desc(i, desc) {
-> >>  		struct irq_data *d =3D irq_desc_get_irq_data(desc);
-> >> -		unsigned int hw_irq;
-> >> -
-> >> -		if (!d)
-> >> -			continue;
-> >> -
-> >> -		hw_irq =3D (unsigned int)irqd_to_hwirq(d);
-> >> =20
-> >> -		/* IPIs are special (HW number 0) */
-> >> -		if (hw_irq !=3D XIVE_IPI_HW_IRQ)
-> >> -			xive_debug_show_irq(m, hw_irq, d);
-> >> +		if (d->domain =3D=3D xive_irq_domain)
-> >> +			xive_debug_show_irq(m, d);
-> >>  	}
-> >>  	return 0;
-> >>  }
-> >=20
->=20
+> >> Fixes: 16a9dea110a6 ("amdgpu: Enable initial DCN support on POWER")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> >
+> > Thanks for your patch!
+> >
+> >> --- a/arch/powerpc/include/asm/switch_to.h
+> >> +++ b/arch/powerpc/include/asm/switch_to.h
+> >> @@ -71,6 +71,16 @@ static inline void disable_kernel_vsx(void)
+> >>   {
+> >>          msr_check_and_clear(MSR_FP|MSR_VEC|MSR_VSX);
+> >>   }
+> >> +#else
+> >> +static inline void enable_kernel_vsx(void)
+> >> +{
+> >> +       BUILD_BUG();
+> >> +}
+> >> +
+> >> +static inline void disable_kernel_vsx(void)
+> >> +{
+> >> +       BUILD_BUG();
+> >> +}
+> >>   #endif
+> >
+> > I'm wondering how this is any better than the current situation: using
+> > BUILD_BUG() will still cause a build failure?
+>
+> No it won't cause a failure. In drivers/gpu/drm/amd/display/dc/os_types.h=
+ you have:
+>
+> #define DC_FP_START() { \
+>         if (cpu_has_feature(CPU_FTR_VSX_COMP)) { \
+>                 preempt_disable(); \
+>                 enable_kernel_vsx(); \
+>         } else if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP)) { \
+>                 preempt_disable(); \
+>                 enable_kernel_altivec(); \
+>         } else if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE)) { \
+>                 preempt_disable(); \
+>                 enable_kernel_fp(); \
+>         } \
+>
+> When CONFIG_VSX is not selected, cpu_has_feature(CPU_FTR_VSX_COMP) consta=
+nt folds to 'false' so the
+> call to enable_kernel_vsx() is discarded and the build succeeds.
 
+IC. So you might as well have an empty (dummy) function instead?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
