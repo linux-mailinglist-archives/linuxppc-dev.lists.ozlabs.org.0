@@ -2,94 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FFD133240B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 12:29:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 400693324C1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:10:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvtJn0Vq8z3cTf
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 22:29:13 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nhH5iiMs;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvD41tKMz3dDC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:10:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=nhH5iiMs; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvtJK6tVqz30Kw
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 22:28:49 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 129B3wcx043755; Tue, 9 Mar 2021 06:28:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=NkdTnnfYghbRDUtA2oEECqWmnmnNMcZrmUuMlnmwJR0=;
- b=nhH5iiMs1o9Mf1a2JW9yHs3t4q7CBcpZ++nqct5+hK32fgod+Bnu2bapZR/8IFw9GR5G
- oeuC1bUMYjJZTf61ifKeO7qAO4TwDdmDUGVB8JwOFYWm//XdDh09uQ+w7+fk08+CAnDt
- pxri66J4aDWAuDbuItmqextyXSw6v6+b5fXJIW//706gsk7J6e2XvAzncNFUtFE3wKNP
- LOweRSx0cwV2YdNkI0KB4WSeBqYBjyBpL5MZn7G99CPJipaFh81/MweB3vKAjNKdLF5G
- BqhOZs3nZEug5d2fzGvK1bAMrSjVQuOHTa6PJdR+kP6yi1uKpxsDDQoIOm6v+2L/liWc KQ== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 375wcm7r18-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 06:28:44 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 129AwlKr026965;
- Tue, 9 Mar 2021 11:28:42 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 37636fg86y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 11:28:42 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 129BSeQM40305052
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Mar 2021 11:28:40 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 88232AE045;
- Tue,  9 Mar 2021 11:28:40 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 477E8AE04D;
- Tue,  9 Mar 2021 11:28:39 +0000 (GMT)
-Received: from Madhavan.PrimaryTP (unknown [9.80.199.175])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  9 Mar 2021 11:28:38 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/perf: Fix the threshold event selection for
- memory events in power10
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, mpe@ellerman.id.au
-References: <1614840015-1535-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Message-ID: <e8b9af3b-71d2-d4b1-313c-3e108b5e3ab7@linux.ibm.com>
-Date: Tue, 9 Mar 2021 16:58:37 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-MIME-Version: 1.0
-In-Reply-To: <1614840015-1535-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-09_09:2021-03-08,
- 2021-03-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 mlxlogscore=999 clxscore=1015 impostorscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103090053
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCJ6s9vz3bPJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:09:29 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DvvC90QLGz9tyjH;
+ Tue,  9 Mar 2021 13:09:25 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id nn4CD7l4vK_b; Tue,  9 Mar 2021 13:09:24 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvC86b9tz9tyjF;
+ Tue,  9 Mar 2021 13:09:24 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 44CA78B7FC;
+ Tue,  9 Mar 2021 13:09:26 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id jt62WIiaF8Pb; Tue,  9 Mar 2021 13:09:26 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CFE788B800;
+ Tue,  9 Mar 2021 13:09:25 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 8FD0E67555; Tue,  9 Mar 2021 12:09:25 +0000 (UTC)
+Message-Id: <cover.1615291471.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 00/43] powerpc/32: Switch to interrupt entry/exit in C
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com
+Date: Tue,  9 Mar 2021 12:09:25 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,41 +57,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This series aims at porting interrupt entry/exit in C on PPC32, using
+the work already merged for PPC64.
 
-On 3/4/21 12:10 PM, Athira Rajeev wrote:
-> Memory events (mem-loads and mem-stores) currently use the threshold
-> event selection as issue to finish. Power10 supports issue to complete
-> as part of thresholding which is more appropriate for mem-loads and
-> mem-stores. Hence fix the event code for memory events to use issue
-> to complete.
+First two patches are a fix and an optimisation of unrecoverable_exception() function.
 
-Changes looks fine to me.
+Six following patches do minimal changes in 40x in order to be able to enable MMU
+earlier in exception entry.
 
-Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Second part of the series prepares and switches interrupt exit in C.
 
-We should also CC stable to include this fix?
+Third part moves more and more things in C, ending with KUAP management.
 
+v2 is tested on 8xx and 83xx and qemu, and compile tested via kisskb.
 
-> Fixes: a64e697cef23 ("powerpc/perf: power10 Performance Monitoring support")
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->   arch/powerpc/perf/power10-events-list.h | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/perf/power10-events-list.h b/arch/powerpc/perf/power10-events-list.h
-> index e45dafe818ed..93be7197d250 100644
-> --- a/arch/powerpc/perf/power10-events-list.h
-> +++ b/arch/powerpc/perf/power10-events-list.h
-> @@ -75,5 +75,5 @@
->    *     thresh end (TE)
->    */
->   
-> -EVENT(MEM_LOADS,				0x34340401e0);
-> -EVENT(MEM_STORES,				0x343c0401e0);
-> +EVENT(MEM_LOADS,				0x35340401e0);
-> +EVENT(MEM_STORES,				0x353c0401e0);
+Changes in v2:
+- Two first patches are new.
+- Mainly build fixes, nothing much new.
+
+Christophe Leroy (43):
+  powerpc/traps: unrecoverable_exception() is not an interrupt handler
+  powerpc/traps: Declare unrecoverable_exception() as __noreturn
+  powerpc/40x: Don't use SPRN_SPRG_SCRATCH0/1 in TLB miss handlers
+  powerpc/40x: Change CRITICAL_EXCEPTION_PROLOG macro to a gas macro
+  powerpc/40x: Save SRR0/SRR1 and r10/r11 earlier in critical exception
+  powerpc/40x: Reorder a few instructions in critical exception prolog
+  powerpc/40x: Prepare for enabling MMU in critical exception prolog
+  powerpc/40x: Prepare normal exception handler for enabling MMU early
+  powerpc/32: Reconcile interrupts in C
+  powerpc/32: Entry cpu time accounting in C
+  powerpc/32: Handle bookE debugging in C in exception entry
+  powerpc/32: Use fast instruction to set MSR RI in exception prolog on
+    8xx
+  powerpc/32: Remove ksp_limit
+  powerpc/32: Always enable data translation in exception prolog
+  powerpc/32: Tag DAR in EXCEPTION_PROLOG_2 for the 8xx
+  powerpc/32: Enable instruction translation at the same time as data
+    translation
+  powerpc/32: Statically initialise first emergency context
+  powerpc/32: Add vmap_stack_overflow label inside the macro
+  powerpc/32: Use START_EXCEPTION() as much as possible
+  powerpc/32: Move exception prolog code into .text once MMU is back on
+  powerpc/32: Provide a name to exception prolog continuation in virtual
+    mode
+  powerpc/32: Refactor booke critical registers saving
+  powerpc/32: Perform normal function call in exception entry
+  powerpc/32: Always save non volatile registers on exception entry
+  powerpc/32: Replace ASM exception exit by C exception exit from ppc64
+  powerpc/32: Set regs parameter in r3 in transfer_to_handler
+  powerpc/32: Call bad_page_fault() from do_page_fault()
+  powerpc/64e: Call bad_page_fault() from do_page_fault()
+  powerpc/32: Save trap number on stack in exception prolog
+  powerpc/32: Add a prepare_transfer_to_handler macro for exception
+    prologs
+  powerpc/32: Only restore non volatile registers when required
+  powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE
+  powerpc/32: Remove the xfer parameter in EXCEPTION() macro
+  powerpc/32: Refactor saving of volatile registers in exception prologs
+  powerpc/32: Save remaining registers in exception prolog
+  powerpc/32: Set current->thread.regs in C interrupt entry
+  powerpc/32: Return directly from power_save_ppc32_restore()
+  powerpc/32: Only use prepare_transfer_to_handler function on book3s/32
+    and e500
+  powerpc/32s: Move KUEP locking/unlocking in C
+  powerpc/64s: Make kuap_check_amr() and kuap_get_and_check_amr()
+    generic
+  powerpc/32s: Create C version of kuap save/restore/check helpers
+  powerpc/8xx: Create C version of kuap save/restore/check helpers
+  powerpc/32: Manage KUAP in C
+
+ arch/powerpc/include/asm/book3s/32/kup.h     | 126 +--
+ arch/powerpc/include/asm/book3s/64/kup.h     |  24 +-
+ arch/powerpc/include/asm/interrupt.h         |  19 +-
+ arch/powerpc/include/asm/kup.h               |  27 +-
+ arch/powerpc/include/asm/nohash/32/kup-8xx.h |  56 +-
+ arch/powerpc/include/asm/ppc_asm.h           |  10 -
+ arch/powerpc/include/asm/processor.h         |   6 +-
+ arch/powerpc/include/asm/ptrace.h            |   6 +-
+ arch/powerpc/kernel/asm-offsets.c            |   4 -
+ arch/powerpc/kernel/entry_32.S               | 835 ++++---------------
+ arch/powerpc/kernel/exceptions-64e.S         |   8 +-
+ arch/powerpc/kernel/fpu.S                    |   2 -
+ arch/powerpc/kernel/head_32.h                | 195 ++---
+ arch/powerpc/kernel/head_40x.S               | 271 +++---
+ arch/powerpc/kernel/head_44x.S               |  10 +-
+ arch/powerpc/kernel/head_8xx.S               | 151 ++--
+ arch/powerpc/kernel/head_book3s_32.S         | 233 +++---
+ arch/powerpc/kernel/head_booke.h             | 188 +++--
+ arch/powerpc/kernel/head_fsl_booke.S         |  64 +-
+ arch/powerpc/kernel/idle_6xx.S               |  14 +-
+ arch/powerpc/kernel/idle_e500.S              |  14 +-
+ arch/powerpc/kernel/interrupt.c              |  40 +-
+ arch/powerpc/kernel/irq.c                    |   2 +-
+ arch/powerpc/kernel/misc_32.S                |  14 -
+ arch/powerpc/kernel/process.c                |   6 +-
+ arch/powerpc/kernel/setup_32.c               |   2 +-
+ arch/powerpc/kernel/traps.c                  |  15 +-
+ arch/powerpc/kernel/vector.S                 |   2 -
+ arch/powerpc/lib/sstep.c                     |   9 -
+ arch/powerpc/mm/book3s32/Makefile            |   1 +
+ arch/powerpc/mm/book3s32/hash_low.S          |  14 -
+ arch/powerpc/mm/book3s32/kuep.c              |  38 +
+ arch/powerpc/mm/fault.c                      |  17 +-
+ 33 files changed, 885 insertions(+), 1538 deletions(-)
+ create mode 100644 arch/powerpc/mm/book3s32/kuep.c
+
+-- 
+2.25.0
+
