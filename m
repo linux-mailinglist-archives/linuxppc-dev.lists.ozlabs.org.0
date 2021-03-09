@@ -1,35 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220663320AD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 09:34:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8FC3320E4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 09:40:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvpRC1KCBz3dfs
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 19:34:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvpYg5yRSz3cV5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 19:40:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DvpPw5dB1z3cb8
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 19:33:24 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9BA3D1042;
- Tue,  9 Mar 2021 00:33:22 -0800 (PST)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.66.57])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B1CA33F71B;
- Tue,  9 Mar 2021 00:33:15 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Subject: [PATCH 5/6] mm: Drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK
-Date: Tue,  9 Mar 2021 14:03:09 +0530
-Message-Id: <1615278790-18053-6-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1615278790-18053-1-git-send-email-anshuman.khandual@arm.com>
-References: <1615278790-18053-1-git-send-email-anshuman.khandual@arm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvpYJ4vwjz2xb5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 19:39:45 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DvpY74qvgz9v0Yp;
+ Tue,  9 Mar 2021 09:39:39 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 6ZPySg4uw5U3; Tue,  9 Mar 2021 09:39:39 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DvpY73LQxz9v0Yt;
+ Tue,  9 Mar 2021 09:39:39 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 78B298B7D4;
+ Tue,  9 Mar 2021 09:39:40 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Lo25lReMKuyY; Tue,  9 Mar 2021 09:39:40 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3655E8B7D9;
+ Tue,  9 Mar 2021 09:39:40 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 03A016753F; Tue,  9 Mar 2021 08:39:39 +0000 (UTC)
+Message-Id: <8d7d285a027e9d21f5ff7f850fa71a2655b0c4af.1615279170.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc: Fix missing declaration of [en/dis]able_kernel_vsx()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ geert@linux-m68k.org
+Date: Tue,  9 Mar 2021 08:39:39 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,145 +57,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: alexdeucher@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ christian.koenig@amd.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ARCH_ENABLE_SPLIT_PMD_PTLOCKS has duplicate definitions on platforms that
-subscribe it. Drop these reduntant definitions and instead just select it
-on applicable platforms.
+Add stub instances of enable_kernel_vsx() and disable_kernel_vsx()
+when CONFIG_VSX is not set, to avoid following build failure.
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+  CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.o
+In file included from ./drivers/gpu/drm/amd/amdgpu/../display/dc/dm_services_types.h:29,
+                 from ./drivers/gpu/drm/amd/amdgpu/../display/dc/dm_services.h:37,
+                 from drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:27:
+drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c: In function 'dcn_bw_apply_registry_override':
+./drivers/gpu/drm/amd/amdgpu/../display/dc/os_types.h:64:3: error: implicit declaration of function 'enable_kernel_vsx'; did you mean 'enable_kernel_fp'? [-Werror=implicit-function-declaration]
+   64 |   enable_kernel_vsx(); \
+      |   ^~~~~~~~~~~~~~~~~
+drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:640:2: note: in expansion of macro 'DC_FP_START'
+  640 |  DC_FP_START();
+      |  ^~~~~~~~~~~
+./drivers/gpu/drm/amd/amdgpu/../display/dc/os_types.h:75:3: error: implicit declaration of function 'disable_kernel_vsx'; did you mean 'disable_kernel_fp'? [-Werror=implicit-function-declaration]
+   75 |   disable_kernel_vsx(); \
+      |   ^~~~~~~~~~~~~~~~~~
+drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:676:2: note: in expansion of macro 'DC_FP_END'
+  676 |  DC_FP_END();
+      |  ^~~~~~~~~
+cc1: some warnings being treated as errors
+make[5]: *** [drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.o] Error 1
+
+Fixes: 16a9dea110a6 ("amdgpu: Enable initial DCN support on POWER")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/arm64/Kconfig                     | 4 +---
- arch/powerpc/platforms/Kconfig.cputype | 5 +----
- arch/s390/Kconfig                      | 4 +---
- arch/x86/Kconfig                       | 5 +----
- 4 files changed, 4 insertions(+), 14 deletions(-)
+ arch/powerpc/include/asm/switch_to.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index c0e75f62f08c..fb5b1630a4eb 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -14,6 +14,7 @@ config ARM64
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
- 	select ARCH_ENABLE_MEMORY_HOTPLUG
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE
-+	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
- 	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
- 	select ARCH_HAS_CACHE_LINE_SIZE
- 	select ARCH_HAS_DEBUG_VIRTUAL
-@@ -1054,9 +1055,6 @@ config HW_PERF_EVENTS
+diff --git a/arch/powerpc/include/asm/switch_to.h b/arch/powerpc/include/asm/switch_to.h
+index fdab93428372..9d1fbd8be1c7 100644
+--- a/arch/powerpc/include/asm/switch_to.h
++++ b/arch/powerpc/include/asm/switch_to.h
+@@ -71,6 +71,16 @@ static inline void disable_kernel_vsx(void)
+ {
+ 	msr_check_and_clear(MSR_FP|MSR_VEC|MSR_VSX);
+ }
++#else
++static inline void enable_kernel_vsx(void)
++{
++	BUILD_BUG();
++}
++
++static inline void disable_kernel_vsx(void)
++{
++	BUILD_BUG();
++}
+ #endif
  
- config ARCH_WANT_HUGE_PMD_SHARE
- 
--config ARCH_ENABLE_SPLIT_PMD_PTLOCK
--	def_bool y if PGTABLE_LEVELS > 2
--
- # Supported by clang >= 7.0
- config CC_HAVE_SHADOW_CALL_STACK
- 	def_bool $(cc-option, -fsanitize=shadow-call-stack -ffixed-x18)
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 4465b71b2bff..be0e29f18dd4 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -97,6 +97,7 @@ config PPC_BOOK3S_64
- 	select PPC_HAVE_PMU_SUPPORT
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
-+	select ARCH_ENABLE_PMD_SPLIT_PTLOCK
- 	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
- 	select ARCH_SUPPORTS_HUGETLBFS
- 	select ARCH_SUPPORTS_NUMA_BALANCING
-@@ -356,10 +357,6 @@ config SPE
- 
- 	  If in doubt, say Y here.
- 
--config ARCH_ENABLE_SPLIT_PMD_PTLOCK
--	def_bool y
--	depends on PPC_BOOK3S_64
--
- config PPC_RADIX_MMU
- 	bool "Radix MMU Support"
- 	depends on PPC_BOOK3S_64
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index f8b356550daa..d72989591223 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -62,6 +62,7 @@ config S390
- 	select ARCH_BINFMT_ELF_STATE
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE
-+	select ARCH_ENABLE_SPLIT_PMD_PTLOCK
- 	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DEBUG_WX
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
-@@ -628,9 +629,6 @@ config ARCH_SPARSEMEM_ENABLE
- config ARCH_SPARSEMEM_DEFAULT
- 	def_bool y
- 
--config ARCH_ENABLE_SPLIT_PMD_PTLOCK
--	def_bool y
--
- config MAX_PHYSMEM_BITS
- 	int "Maximum size of supported physical memory in bits (42-53)"
- 	range 42 53
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 10702ef1eb57..5dd70c798167 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -63,6 +63,7 @@ config X86
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if x86_64 && HUGETLB_PAGE && MIGRATION
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64 || (X86_32 && HIGHMEM)
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
-+	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if X86_64 || X86_PAE
- 	select ARCH_ENABLE_THP_MIGRATION if x86_64 && TRANSPARENT_HUGEPAGE
- 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
- 	select ARCH_HAS_CACHE_LINE_SIZE
-@@ -2431,10 +2432,6 @@ config USE_PERCPU_NUMA_NODE_ID
- 	def_bool y
- 	depends on NUMA
- 
--config ARCH_ENABLE_SPLIT_PMD_PTLOCK
--	def_bool y
--	depends on X86_64 || X86_PAE
--
- menu "Power management and ACPI options"
- 
- config ARCH_HIBERNATION_HEADER
+ #ifdef CONFIG_SPE
 -- 
-2.20.1
+2.25.0
 
