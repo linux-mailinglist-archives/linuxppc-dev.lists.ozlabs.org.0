@@ -1,124 +1,123 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE48332C19
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 17:31:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CF2332CA5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 17:55:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw1141l4bz3dYm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 03:31:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw1YC1G5vz3cVZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 03:55:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=eefOIOcB;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=PZIZu0aJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=40.107.94.71;
- helo=nam10-mw2-obe.outbound.protection.outlook.com;
+ smtp.mailfrom=nvidia.com (client-ip=40.107.93.40;
+ helo=nam10-dm6-obe.outbound.protection.outlook.com;
  envelope-from=jgg@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
- header.s=selector2 header.b=eefOIOcB; 
+ header.s=selector2 header.b=PZIZu0aJ; 
  dkim-atps=neutral
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2071.outbound.protection.outlook.com [40.107.94.71])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2040.outbound.protection.outlook.com [40.107.93.40])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw10F42dWz3dSF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 03:30:18 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw1Xj39jXz30Jr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 03:54:59 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Yr1nkdSsahjPD2dBxm8KcitMD7DHc/tXrJhzEynr+Es0R07U4QWRCmVT2aXxLM8QjqRl09L0W3Dq0n19d7wSvVJo1rDpQ5fNfMDH0XHJCXWC1iA+kXVeN5gDY2VEwVHv1CX2/bVWJgV14cBIGZqQr604OEm6/GIw51g4lxaD65nxF/U2a+YeDCbomeasfF8KayoPD25bJceByU48NnPrA7uNODIuHEP4h4zAQyGA6HnnIbkjOOCcyJFhfkbC6AEs2cwVJaeywHk6KzbQIJP7jD4jdHuQhNWAyRansk9CzBYywktGZ2pnvkCdUr9tbKPbPPnH33A4uC5D70oYhE0TJA==
+ b=REvZNFj5NdqLRsUKrfO9REXJccQ3KwQJGQYG52qujvXt63qcAUxxe0cLXrE9CMXtfJNdLtTxOftN0pYC5rLiTss25jRr89+hFscC3/19GtqVNcHry06J8a2FMKQ7sf9TxIdybnJ58u3yRIJoraJloLzcqNPmTxyIXJvNiQKhCYS5hL9CAmrZ6aS9UrhMVeEf4FaBAMW83PV+xbyEgopr8iw3VOOJIUUQuteoU3v8llr0axyBApRJ1rVD5t58wxJJSY0/C0dbKEiY9sRA4l8I4jJlkZrMFW+RzmZTsTCjG8k8+712nACaH3aOmnZsNl8szdnmnkja3unm1kI+8MZuug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cx4u4CqzyU8/bg10yk5Bvl3Bl81sKAITY/gse2edcuE=;
- b=iTFfsH0gekC0iFRw1pLUadK1MBLNuTKOQndGe89emM/8rYTh2ift0/Ta7P/oiuiibvwOHJH+C6KXXRGLrXS7EQ73F4c8fYRF2cR/vBdj9EK6QGjrJ9KGZc1f895OoJzMPId6olbXJ+mGSfMwXTvdczghuDXx/WtcDbGeMu/voOPBWJ/PZThJ6de+glMhwgJp10eBI561YozqhfnqSOxD9Wha3fRlrryvywGKoWaKqZUVGBsA+y5JeJXNBh26GKK59bq7M992+6YxQK97oBDQ+y6qySRjPNZQe4cLzKxe/ukRD8mCBiRsxvM2TgC5RifluSy3lA31ETjgTKG8crRT4g==
+ bh=VKpvK/3/3Ub2XKJ/f47QIMrZJJ50utNXNchYEtfdulw=;
+ b=PFTb8zNeRDnzxIiAR+ZNjm+vvmucOuSzWb2cedwpZRDrXlRpdsHzauXmHd5cLqcKonmomFwgJEsoAnjVV5Bvk6J1upML5cbMADaNq/ps9103ZMWW46kUbK9wfFiJdCuXxIfyVtkI6V1BDEw3V12Q1hhJnhXRkL369hFxRb/uMMn5AWHGaeiLYTLbgWXY7QcOidfaZnqeiLm6iahFwnQJGvzas3dQbFlCcv4NzfiKM5fJt6EYHFZIsDttlBOZU8hRww4rl+YIIFj4hrwUGGluODj7VBYSCpPEtTHDlRFMeGTuN3sDfSU/75rNMWmOgX58UUeMJ0RWDEs/bGZ741bVng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cx4u4CqzyU8/bg10yk5Bvl3Bl81sKAITY/gse2edcuE=;
- b=eefOIOcBFAyS+g+SrQuqVsNWogEss2nMvBrf86frmzgL8DfVEOVFtolEch4HbQFUhVR6i2MQQPrRzLgifWugDB1BRZvHFTcGBiuiroQRFYQDGJzeG2kpJcQwqLOwnd1rBkk7QGp6JXcmMdfTArgnfiY8OJl5eRJxcFBTznupOWQ03YhjAfnNe5kuYb0iVbV/YnyjqZzPtSm1OBo8KnXR+wkHk6vVBKyZEiiZBEOdZsD6KA8FzTtq5ZULeEAHar4KX5/g4bDSwJic5DImEWlJsGzY+V5TklghySvJELC/IAOonQL41LvhaIBnHn1tcwZ2yt6ufAcWKschp0+4ofVn8Q==
+ bh=VKpvK/3/3Ub2XKJ/f47QIMrZJJ50utNXNchYEtfdulw=;
+ b=PZIZu0aJ9VmzfjQ5BiGNC+DvF5fWQreDhyerJAF10qutSFy8ubSjKJUdF4q60iVzWaw/TF7nm6/JxnQTpXn49fkVdhpILkbIkbiR8gsKpNc6sKYyjBC8maT66uit9ClvvsYHJ9Bap1VNEG5QpXCPF2z4AmxbX3VfYVFk84/6rmxSCpXYJSePjTmcGTefGKwvrcnECnpf38dGagwr44oGxmst6PCfYeBWGS05Mw77u2hGPL2zNKiSNgLf68H85PyTpjUa3MhQnJh7JXSk4XrpeIcPY64/mvy/f4aRu8I79AbRr623u6beSz0oaqG05fDbg27FYCiJgzC4wH9rHyzZyQ==
 Authentication-Results: lst.de; dkim=none (message not signed)
  header.d=none;lst.de; dmarc=none action=none header.from=nvidia.com;
 Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
- by DM5PR12MB1515.namprd12.prod.outlook.com (2603:10b6:4:6::9) with Microsoft
+ by DM5PR12MB1548.namprd12.prod.outlook.com (2603:10b6:4:a::23) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3912.17; Tue, 9 Mar 2021 16:30:13 +0000
+ 15.20.3912.26; Tue, 9 Mar 2021 16:54:54 +0000
 Received: from DM6PR12MB3834.namprd12.prod.outlook.com
  ([fe80::1c62:7fa3:617b:ab87]) by DM6PR12MB3834.namprd12.prod.outlook.com
  ([fe80::1c62:7fa3:617b:ab87%6]) with mapi id 15.20.3912.027; Tue, 9 Mar 2021
- 16:30:13 +0000
-Date: Tue, 9 Mar 2021 12:30:11 -0400
+ 16:54:54 +0000
+Date: Tue, 9 Mar 2021 12:54:52 -0400
 From: Jason Gunthorpe <jgg@nvidia.com>
 To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 3/9] powerpc/pseries: remove the ppc-cmm file system
-Message-ID: <20210309163011.GI2356281@nvidia.com>
+Subject: Re: make alloc_anon_inode more useful
+Message-ID: <20210309165452.GL2356281@nvidia.com>
 References: <20210309155348.974875-1-hch@lst.de>
- <20210309155348.974875-4-hch@lst.de>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210309155348.974875-4-hch@lst.de>
+In-Reply-To: <20210309155348.974875-1-hch@lst.de>
 X-Originating-IP: [142.162.115.133]
-X-ClientProxiedBy: MN2PR19CA0060.namprd19.prod.outlook.com
- (2603:10b6:208:19b::37) To DM6PR12MB3834.namprd12.prod.outlook.com
+X-ClientProxiedBy: MN2PR15CA0045.namprd15.prod.outlook.com
+ (2603:10b6:208:237::14) To DM6PR12MB3834.namprd12.prod.outlook.com
  (2603:10b6:5:14a::12)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 Received: from mlx.ziepe.ca (142.162.115.133) by
- MN2PR19CA0060.namprd19.prod.outlook.com (2603:10b6:208:19b::37) with
+ MN2PR15CA0045.namprd15.prod.outlook.com (2603:10b6:208:237::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend
- Transport; Tue, 9 Mar 2021 16:30:12 +0000
+ Transport; Tue, 9 Mar 2021 16:54:54 +0000
 Received: from jgg by mlx with local (Exim 4.94)	(envelope-from
- <jgg@nvidia.com>)	id 1lJfFL-00A8Q8-4m; Tue, 09 Mar 2021 12:30:11 -0400
+ <jgg@nvidia.com>)	id 1lJfdE-00A8qz-Vs; Tue, 09 Mar 2021 12:54:53 -0400
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a770fdb8-d9f5-4c3e-2467-08d8e3189d3e
-X-MS-TrafficTypeDiagnostic: DM5PR12MB1515:
-X-Microsoft-Antispam-PRVS: <DM5PR12MB1515AD5539AEA25E61904769C2929@DM5PR12MB1515.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:962;
+X-MS-Office365-Filtering-Correlation-Id: 6ef625fe-0a3d-42c7-3b0f-08d8e31c1017
+X-MS-TrafficTypeDiagnostic: DM5PR12MB1548:
+X-Microsoft-Antispam-PRVS: <DM5PR12MB15487F5E00577BA870A1831FC2929@DM5PR12MB1548.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: YB6AWWyhsRFzEZ77McjH72YwfG9fd9go4Fvx8vIcJh38nNWNOLp+DGN5WoqjALpxD7wFYdcNQn42PJyLo6ZsRnBtWr5JZiYIC1O7dxxMBJ2OSh5XCStz0vh4aEhUjE3WaqxMitanuIGJGeS6IJWIokVZHdr2mJOPy6zrC5Xgodo3OSI0gcGlBNloEL6qYOLS8z2/LihHud3FV4oh8npAZOpTHmZ8XVQhfzdUOKkO5kEIEyfBTCH+oAnjkVfDorb319W84dYZelaRVfE7aWn/bumEYw3o0z1eg4HaHZonpFXf3VtQ/25CBFpIhD/mMbGt5016nleizT5S00D0h5gfPGvpsOJ3Z4h8eN979gWpcuCxyQtaAeLhrhVXxyx4zU4ugiCDXYMnye1+Qlv8WBFRFGiyaiwdOTZLFxlo+TqVUMnKMKry3wEXtUTxCi69fdv/66bdWiztPEgD3LvEsMWO2I0DQ4MNW3yIcHNwLgopvuzxeCNssM+uRkWabXKK1bbto0+zNL+QvBHSTZU1WMICgA==
+X-Microsoft-Antispam-Message-Info: 7wb1mpIictjVgMwEJkt4sPVsmOj/7ohub1dlzy2ygvLFHZwntVd5AtW5q620Eux0M5fnWJ6+0+BboPkaVvIjj4opGGgr0f/7OV7OWujUIk2K36SA6e074ZoVv94eoUgvggPwQ1V+drjLwYZNC1heck4+Y0JNjdenRreeFVbcRq5IAI3P8SjVu8lLQFJETGnR2tb4WSw3VyoJUIrnyfMAKrDx9OJYmWZcsmI1SFLd24xz0q7l84vqcKGtFUygqxD47r2RRI8nwreo4lOGpEqGXGb9My8miQVBj0M+5x8dPyFDYjkNRZIznEwxeVAEieiNFrSgTYFuLY0/qxMenyXhnVdMtsS+5JMCFhxMQ/fjG9XZLbUsiy/+YpLrRl2oaukxBMyxvPIh8e0IBl++W+pitD1bQWmo2/HCRoyqv47o0F1g7rPgyPfLi9bs2YBevJuyjy8a8H3hPaM4OUOkzx1U3qPaEAFlWjharVe0V/oKmC1N/2d8nUpdQfozlf3ZW5Icnxr3Ks7kwkF2hQ1tHbuPoQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM6PR12MB3834.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(39860400002)(346002)(366004)(376002)(136003)(396003)(186003)(26005)(1076003)(66556008)(66476007)(8676002)(66946007)(9746002)(83380400001)(33656002)(9786002)(4326008)(36756003)(6916009)(54906003)(5660300002)(2616005)(2906002)(478600001)(8936002)(426003)(316002)(7416002)(86362001);
+ SFS:(4636009)(39860400002)(366004)(136003)(376002)(396003)(346002)(54906003)(86362001)(5660300002)(9786002)(33656002)(36756003)(7416002)(1076003)(26005)(186003)(2906002)(4744005)(9746002)(8936002)(8676002)(426003)(4326008)(6916009)(66556008)(66946007)(2616005)(478600001)(83380400001)(66476007)(316002);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?GeZfUjj/BY4Q5ZY/Ne5hIbcRm2fx9AhzeVfKrcWHKhjvzQYH79J+bILlAEfw?=
- =?us-ascii?Q?2j2zNEDIHCPzLB7G4S7p5Y7dMEA7sQyVCJtJkLn0Xm1kEQ6apuACyV5qNcqS?=
- =?us-ascii?Q?BdJbsywgpiHuStyxySNN2Obpe8Z778/v+gdu2w/c/SOtYv4tZl+Vaj9by/Iq?=
- =?us-ascii?Q?reFh/L9gxkUMYEx8f/ZKt7mTEStsfT2gsUhVYm6ZVpiWqqof5faizpmkKGzG?=
- =?us-ascii?Q?BCWpV/uFrPf54pgEE59RecMv2dn4Urc9MNB+xlQZ3VMnI57lGvjmEREJYmkp?=
- =?us-ascii?Q?Y56+ZjoMuXrX5Q4iNi9dq3rbWheVBsd3jNtebQMaAwDlv9uliD+e1OkX49pb?=
- =?us-ascii?Q?EiMLClszECZ8J7zgMgvKW+86hrQ+vvZ3wKmCSThp1nNPy5tRjGTymojzwyjO?=
- =?us-ascii?Q?DEmvzj0n+IzB/P3tm8Qvwo9fmVVKGjgfCnxpoeJqQltAxv0bLDMP0l0sFK92?=
- =?us-ascii?Q?nOL/D1Ubu5am3HSgtjaVeMIoVeo+ijlJtS3ahc+bkqHD9HoTeM6Hdph1doPv?=
- =?us-ascii?Q?le33czrHXyn3fCF67xwx2GadwqIYwIq9qKUlI8f6xpumClD3E4FFoJTSh8vs?=
- =?us-ascii?Q?w/sFhoR1IfV7NnzkXcNWJe5XobmQqvGkw4e/oYMdPng9Pw06NGAQjQ+25mRP?=
- =?us-ascii?Q?5pYBcXMCx6KFqU3BregIWp0HGSUf/M5fhDfF753dwhBtcXgtwjcrD3aQbAK6?=
- =?us-ascii?Q?Ruh0ihhWFUTPa4rir/E3/hqSRi/yecY6YqmqH69dyiGIZrJRuqMacvm/fmLC?=
- =?us-ascii?Q?8DfWeB2myltlvUAd6kEgGnkVZnj+LgGXQ12jF6bYVSEimIB3ZGuDcVJwuKjT?=
- =?us-ascii?Q?3tZzmEdDfM9qKchuxAJW3KAZ3bxZFvWEAvBekomQL+BHS4YIptHAhY1zBU0V?=
- =?us-ascii?Q?r9ahlyffkSGY79sf6B3yHSY2Jn+3fG2r29z0lLpD+fqGUlVQQqDqdUgNf4ey?=
- =?us-ascii?Q?6LygnYH43wka2jpORwEMmSEJOHrVS4qvqwZcT5OIGyV3mZBoBTtVELpLzFkX?=
- =?us-ascii?Q?HjRN20FA0mv/ZAh9c2z0Rw21MxHC22jPS03qMKjLiuXjvuV9nLubjhXiaCzN?=
- =?us-ascii?Q?1tUZ2g1kPYibTK+KpiCKmZnwcM6K5KXfFjkgUwYIDIkdDQ3qcd6ij8k7pXlw?=
- =?us-ascii?Q?ydNgmU9wa5WtFI2B/Q7/oOemVkWMPhoHJ6Ek986ZN1bQQ8YU8M4ADX5FHfoX?=
- =?us-ascii?Q?X06u1+2kpWTyQaZdTPampDln5MN+9J7MbJHePvSq2QUKgKZSU0FT43tBg5aB?=
- =?us-ascii?Q?mU+y9DT2OLOKzDO3DcettVUjQDZoanGusIl1iPkW7WLRWmJTeDkcvLUQj9YG?=
- =?us-ascii?Q?oksXENpn2jJljsQnEvAaAUzhp/9agQKq4x/oxJ+QILJ6Kw=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?jZFzFtuf5R6MqIg4O0DL4z6BTmkDWOHPy1QSqDbGA/CoOfqMTbT4dEvyov+9?=
+ =?us-ascii?Q?wqDQM77xS2pkngKlHOmlV4l5xvMAidbdYX/UdjjIeHPttTps/K7XFu1ERM8v?=
+ =?us-ascii?Q?xyLfkmvLaRzmV6D/ABpTRYJ+asQVGyoB1OsiwJN5pmwopkQom7Aw7xXwLFYY?=
+ =?us-ascii?Q?ZF1eWbaniNXIRPBIEU7EfyE4BwFDWiCGwLluRBPAPlVXg5hTwZiyAtUmtZec?=
+ =?us-ascii?Q?CcVfqa7/MT3ZqA2S3YAzo7NG+TZe1HIVGykPEBt9lHl/wEq2BjvxeQ6tgqoc?=
+ =?us-ascii?Q?2mXL9f44MWl6xK6gEgQj7eAxCj/lYNzsaH+DvqI0sf+SAbfzTXhfKhuVafp7?=
+ =?us-ascii?Q?BziwFtLWNOqKb20duo9JxdW3d2CfBAtsHVHdWvnn8KoeFwuDcA+2abOUorti?=
+ =?us-ascii?Q?q9JHjscBDqHrhFUnREJQFlJJ9UY8BTBDhHx2QfO5VR5uX2wUXof6WdFFUzLV?=
+ =?us-ascii?Q?b91+pO2LVqKGCdxxnFoUsnA5SFp7+3hhSz0ziIjqbmCL3vQD1F2dtKlexvCQ?=
+ =?us-ascii?Q?cdy5uZOmn7Hfy3Oe+T/Sk9ayvXKzHp/S8AtYGn+hOC/bDh+5xv/l6wyhSYsP?=
+ =?us-ascii?Q?sSrFkos6W2gAxoBricKXt7iUQOxyf7BE2AheT7taWo92fAf/pWwdglVSQLUL?=
+ =?us-ascii?Q?04FvfESpwSIns6V1O+/bDIocOKKZfWG8N7K0I3P/Li5bwiCP7QwMHHhQdB7/?=
+ =?us-ascii?Q?hcsTWQTGmsCk7tXycrg+PhhakES4/Mfc7exbZegewNLrn9DwYymp5D2RYR9E?=
+ =?us-ascii?Q?BhvhvA4PsSISnIChINmNVijRYFB+Tpf0SLYqeDxZyHqzVteIwSH7V/ng2nPa?=
+ =?us-ascii?Q?pNk4x4pQPpTJRYbDgxZVL9s2w61LzwKJ0M+Z0J0xfYSIM2SkK/NkfuHN18qf?=
+ =?us-ascii?Q?ip+4HZVH1g+H1vr7LN+cUHxGtUIhVKy+h7cLU1ErQI7ey/F2MgZzU0J63dYU?=
+ =?us-ascii?Q?i5AZCPSZorLJVaCF8l8qWUu6AN4RUHvxoLeW87vhQhG1FsocO2+7DZlWVouc?=
+ =?us-ascii?Q?0+CwaUMK2I+pBOi9pSrN8CX00OoUsnwV3SPxP1jnpsbTRzLrwrwd8cWDP9gr?=
+ =?us-ascii?Q?bLrVgdF1BcCUvnGP1q0iHHNfpdpAi93Nizn5z0BV6RwR9bkeSb/p1cGtUiPb?=
+ =?us-ascii?Q?Xji18HoMq0PdwgMYcvs2G6fXWoYOaVxfZFfFlTsw+sg+cRO/rEjSwe4gLA2C?=
+ =?us-ascii?Q?nrr65UdppWuAuQirJ7tenBlIbT2mK0Mk9eXsxMR6u7Zc91ZugAAWMy8i8ZfU?=
+ =?us-ascii?Q?uYxJE7Iw5gvhh5ExD4JQzc3qWmXa8jHpalXT8mngHJMLuyq2/8SSeOFxsRgQ?=
+ =?us-ascii?Q?+BWoUrd8PTJQ32W3UBeWTK43MyYPCmFGXzcVhuloaTuwjQ=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a770fdb8-d9f5-4c3e-2467-08d8e3189d3e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ef625fe-0a3d-42c7-3b0f-08d8e31c1017
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3834.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2021 16:30:13.3578 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2021 16:54:54.3541 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YG0fXvmgG4F/z/92kicWiUtI37//p+Oz3U8+UgFrwDdkQQo+kYm6bXhKFDMPFBa+
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1515
+X-MS-Exchange-CrossTenant-UserPrincipalName: yHLv7rz67JwaCrza7WpjYQGi1FXin+ClHRaejpP8M3GuoOUt1zb0btLDz04o8DaC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1548
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -143,36 +142,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 09, 2021 at 04:53:42PM +0100, Christoph Hellwig wrote:
-> Just use the generic anon_inode file system.
+On Tue, Mar 09, 2021 at 04:53:39PM +0100, Christoph Hellwig wrote:
+> Hi all,
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
->  arch/powerpc/platforms/pseries/cmm.c | 27 ++-------------------------
->  1 file changed, 2 insertions(+), 25 deletions(-)
+> this series first renames the existing alloc_anon_inode to
+> alloc_anon_inode_sb to clearly mark it as requiring a superblock.
 > 
-> diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-> index 6d36b858b14df1..9d07e6bea7126c 100644
-> +++ b/arch/powerpc/platforms/pseries/cmm.c
-> @@ -6,6 +6,7 @@
->   * Author(s): Brian King (brking@linux.vnet.ibm.com),
->   */
->  
-> +#include <linux/anon_inodes.h>
->  #include <linux/ctype.h>
->  #include <linux/delay.h>
->  #include <linux/errno.h>
-> @@ -502,19 +503,6 @@ static struct notifier_block cmm_mem_nb = {
->  };
->  
->  #ifdef CONFIG_BALLOON_COMPACTION
-> -static struct vfsmount *balloon_mnt;
-> -
-> -static int cmm_init_fs_context(struct fs_context *fc)
-> -{
-> -	return init_pseudo(fc, PPC_CMM_MAGIC) ? 0 : -ENOMEM;
+> It then adds a new alloc_anon_inode that works on the anon_inode
+> file system super block, thus removing tons of boilerplate code.
+> 
+> The few remainig callers of alloc_anon_inode_sb all use alloc_file_pseudo
+> later, but might also be ripe for some cleanup.
 
-Should we clean these unusued magic constants too?
+I like it
 
-include/uapi/linux/magic.h:#define PPC_CMM_MAGIC                0xc7571590
+For a submission plan can we have this on a git branch please? I will
+need a copy for RDMA and Alex will need one for vfio..
 
+Thanks,
 Jason
