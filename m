@@ -2,56 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F951332B05
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 16:49:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C50332B17
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 16:55:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw0583GWzz3cYP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:49:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw0DB67nxz3d4w
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:55:38 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=UqioM+JO;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
- helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=clg@kaod.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+5fd0a10d8842976b880f+6407+infradead.org+hch@casper.srs.infradead.org;
  receiver=<UNKNOWN>)
-Received: from smtpout1.mo804.mail-out.ovh.net
- (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=UqioM+JO; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw04q5kz5z30gd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 02:49:14 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.4.25])
- by mo804.mail-out.ovh.net (Postfix) with ESMTPS id 4D97E94F6D88;
- Tue,  9 Mar 2021 16:49:12 +0100 (CET)
-Received: from kaod.org (37.59.142.99) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 9 Mar 2021
- 16:49:08 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-99G0036f6670b3-846d-474c-b0cf-6acf8e7f409b,
- 8C9061D2296CFEABF2D52E5F4F8F8063DC0B97BF) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Subject: Re: [PATCH v2 7/8] powerpc/xive: Fix xmon command "dxi"
-To: Greg Kurz <groug@kaod.org>
-References: <20210303174857.1760393-1-clg@kaod.org>
- <20210303174857.1760393-8-clg@kaod.org> <20210309112325.7b161cc7@bahia.lan>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <d2d9078e-1cc6-c0e8-2d35-36e34cd588a8@kaod.org>
-Date: Tue, 9 Mar 2021 16:49:05 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw0CD2Lr0z30N8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 02:54:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=KGWSD1qzjw8jWYcVTd5k5Vux/eD/dPBH9TiN6yLVseE=; b=UqioM+JOtMrCZY+99WNlohS+n6
+ D8sXLpSvt07nrEhE9GYHmdMTmjw4DL1jAclk+Ci+jnYGdn+IEIwZ0S8fpKJ2whNwkyjmljxBPh47g
+ cMsKfNPA0fujb0XrwseHmDs/2m816gk63sTddN9x9X9wgRohgavTvx8tm6KQtpAyIG7cxz0OK5MKP
+ PgIH6/WtutbbPjhpmXZVF7C1m9jWVkHGrdDIIbgcgrxaJ3JqKKlPb7/Swf8vZxBO2cCE67ILF7rVn
+ MmRlVgFU4oQqmQ/DBvwu33p+M9TPPMt61GrQMTQJl2w3aFf67m+MltPsTuxfefjtilLeB/ZfnOnxB
+ lkLQIpmA==;
+Received: from [2001:4bb8:180:9884:c70:4a89:bc61:3] (helo=localhost)
+ by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1lJegA-000lLy-1I; Tue, 09 Mar 2021 15:53:56 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Subject: make alloc_anon_inode more useful
+Date: Tue,  9 Mar 2021 16:53:39 +0100
+Message-Id: <20210309155348.974875-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-In-Reply-To: <20210309112325.7b161cc7@bahia.lan>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.99]
-X-ClientProxiedBy: DAG1EX2.mxp5.local (172.16.2.2) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: a392fa72-ff38-4080-a795-55432c91a139
-X-Ovh-Tracer-Id: 11022560089089412003
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudduiedgkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtohepghhrohhugheskhgrohgurdhorhhg
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,117 +62,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
- Dan Carpenter <dan.carpenter@oracle.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, David Hildenbrand <david@redhat.com>,
+ "VMware, Inc." <pv-drivers@vmware.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
+ Minchan Kim <minchan@kernel.org>, Alex Williamson <alex.williamson@redhat.com>,
+ Nadav Amit <namit@vmware.com>, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, Nitin Gupta <ngupta@vflare.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/9/21 11:23 AM, Greg Kurz wrote:
-> On Wed, 3 Mar 2021 18:48:56 +0100
-> Cédric Le Goater <clg@kaod.org> wrote:
-> 
->> When under xmon, the "dxi" command dumps the state of the XIVE
->> interrupts. If an interrupt number is specified, only the state of
->> the associated XIVE interrupt is dumped. This form of the command
->> lacks an irq_data parameter which is nevertheless used by
->> xmon_xive_get_irq_config(), leading to an xmon crash.
->>
->> Fix that by doing a lookup in the system IRQ mapping to query the IRQ
->> descriptor data. Invalid interrupt numbers, or not belonging to the
->> XIVE IRQ domain, OPAL event interrupt number for instance, should be
->> caught by the previous query done at the firmware level.
->>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
->> Fixes: 97ef27507793 ("powerpc/xive: Fix xmon support on the PowerNV platform")
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
-> 
-> I've tested this in a KVM guest and it seems to do the job.
-> 
-> 6:mon> dxi 1201
-> IRQ 0x00001201 : target=0xfffffc00 prio=ff lirq=0x0 flags= LH PQ=-Q
-> 
-> Bad HW irq numbers are filtered by the hypervisor:
-> 
-> 6:mon> dxi bad
-> [  696.390577] xive: H_INT_GET_SOURCE_CONFIG lisn=2989 failed -55
-> IRQ 0x00000bad : no config rc=-6
-> 
-> Note that this also allows to show IPIs:
-> 
-> 6:mon> dxi 0
-> IRQ 0x00000000 : target=0x0 prio=06 lirq=0x10 
-> 
-> This is a bit inconsistent with output of the 0-argument form of "dxi",
+Hi all,
 
-It's an hidden feature ! :) 
+this series first renames the existing alloc_anon_inode to
+alloc_anon_inode_sb to clearly mark it as requiring a superblock.
 
-Yes. You can query at the FW level the configuration of any valid HW 
-interrupt number where as "dxi" without an argument only loops on the 
-XIVE IRQ domain which does not include the XIVE CPU IPIs which are 
-special. You should "dxa" for these. 
+It then adds a new alloc_anon_inode that works on the anon_inode
+file system super block, thus removing tons of boilerplate code.
 
-> which filters them out for a reason that isn't obvious to me. 
+The few remainig callers of alloc_anon_inode_sb all use alloc_file_pseudo
+later, but might also be ripe for some cleanup.
 
-For historical reason. XIVE support for PowerNV was the first to reach 
-Linux. If you run the same xmon commands on a PowerNV machine (you could 
-use QEMU), the ouput is different. it has more low level details.
-
-> No big deal though, this should be addressed in another patch anyway.
-
-We could simplify the xmon helpers to be sync with the debugfs one
-and the QEMU/KVM "info pic" command. I agree.
-
-Thanks,
-
-C. 
-
-
-> Reviewed-and-tested-by: Greg Kurz <groug@kaod.org>
-> 
->>  arch/powerpc/sysdev/xive/common.c | 14 ++++++++++----
->>  1 file changed, 10 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
->> index f6b7b15bbb3a..8eefd152b947 100644
->> --- a/arch/powerpc/sysdev/xive/common.c
->> +++ b/arch/powerpc/sysdev/xive/common.c
->> @@ -255,17 +255,20 @@ notrace void xmon_xive_do_dump(int cpu)
->>  	xmon_printf("\n");
->>  }
->>  
->> +static struct irq_data *xive_get_irq_data(u32 hw_irq)
->> +{
->> +	unsigned int irq = irq_find_mapping(xive_irq_domain, hw_irq);
->> +
->> +	return irq ? irq_get_irq_data(irq) : NULL;
->> +}
->> +
->>  int xmon_xive_get_irq_config(u32 hw_irq, struct irq_data *d)
->>  {
->> -	struct irq_chip *chip = irq_data_get_irq_chip(d);
->>  	int rc;
->>  	u32 target;
->>  	u8 prio;
->>  	u32 lirq;
->>  
->> -	if (!is_xive_irq(chip))
->> -		return -EINVAL;
->> -
->>  	rc = xive_ops->get_irq_config(hw_irq, &target, &prio, &lirq);
->>  	if (rc) {
->>  		xmon_printf("IRQ 0x%08x : no config rc=%d\n", hw_irq, rc);
->> @@ -275,6 +278,9 @@ int xmon_xive_get_irq_config(u32 hw_irq, struct irq_data *d)
->>  	xmon_printf("IRQ 0x%08x : target=0x%x prio=%02x lirq=0x%x ",
->>  		    hw_irq, target, prio, lirq);
->>  
->> +	if (!d)
->> +		d = xive_get_irq_data(hw_irq);
->> +
->>  	if (d) {
->>  		struct xive_irq_data *xd = irq_data_get_irq_handler_data(d);
->>  		u64 val = xive_esb_read(xd, XIVE_ESB_GET);
-> 
-
+Diffstat:
+ arch/powerpc/platforms/pseries/cmm.c |   27 +-------------
+ drivers/dma-buf/dma-buf.c            |    2 -
+ drivers/gpu/drm/drm_drv.c            |   64 +----------------------------------
+ drivers/misc/cxl/api.c               |    2 -
+ drivers/misc/vmw_balloon.c           |   24 +------------
+ drivers/scsi/cxlflash/ocxl_hw.c      |    2 -
+ drivers/virtio/virtio_balloon.c      |   30 +---------------
+ fs/aio.c                             |    2 -
+ fs/anon_inodes.c                     |   15 +++++++-
+ fs/libfs.c                           |    2 -
+ include/linux/anon_inodes.h          |    1 
+ include/linux/fs.h                   |    2 -
+ kernel/resource.c                    |   30 ++--------------
+ mm/z3fold.c                          |   38 +-------------------
+ mm/zsmalloc.c                        |   48 +-------------------------
+ 15 files changed, 39 insertions(+), 250 deletions(-)
