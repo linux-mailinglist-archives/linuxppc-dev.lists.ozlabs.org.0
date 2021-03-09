@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76862332550
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:19:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3ACC332552
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:20:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvR62d00z3f6W
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:19:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvRd6C8Wz3hVd
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:20:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,40 +15,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCr3Tfbz3cWZ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCr72r6z3cmp
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:10:00 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DvvCl5XCpz9tyjG;
- Tue,  9 Mar 2021 13:09:55 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DvvCn1hGwz9tyjJ;
+ Tue,  9 Mar 2021 13:09:57 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 8RHNdaQSPPXS; Tue,  9 Mar 2021 13:09:55 +0100 (CET)
+ with ESMTP id 2qYzUNDSAhY0; Tue,  9 Mar 2021 13:09:57 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvCl4nKFz9tyjM;
- Tue,  9 Mar 2021 13:09:55 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 12DC18B7FC;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvCn0pwqz9tyjF;
  Tue,  9 Mar 2021 13:09:57 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 507748B7FC;
+ Tue,  9 Mar 2021 13:09:58 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id gZsxQlsEVveD; Tue,  9 Mar 2021 13:09:57 +0100 (CET)
+ with ESMTP id 4qLddIFwmM-n; Tue,  9 Mar 2021 13:09:58 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CED1C8B803;
- Tue,  9 Mar 2021 13:09:56 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D690E8B800;
+ Tue,  9 Mar 2021 13:09:57 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id AFFC067555; Tue,  9 Mar 2021 12:09:56 +0000 (UTC)
-Message-Id: <9185f150b0aec40277c363ff5a4fdd84fce8f25c.1615291473.git.christophe.leroy@csgroup.eu>
+ id B772767555; Tue,  9 Mar 2021 12:09:57 +0000 (UTC)
+Message-Id: <e917c788c4af050fec14d1b8f9a3cdedb1fae0aa.1615291473.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1615291471.git.christophe.leroy@csgroup.eu>
 References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 30/43] powerpc/32: Add a prepare_transfer_to_handler macro
- for exception prologs
+Subject: [PATCH v2 31/43] powerpc/32: Only restore non volatile registers when
+ required
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com
-Date: Tue,  9 Mar 2021 12:09:56 +0000 (UTC)
+Date: Tue,  9 Mar 2021 12:09:57 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,71 +65,213 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In order to increase flexibility, add a macro that will for now
-call transfer_to_handler.
+Until now, non volatile registers were restored everytime they
+were saved, ie using EXC_XFER_STD meant saving and restoring
+them while EXC_XFER_LITE meant neither saving not restoring them.
 
-As transfer_to_handler doesn't do the actual transfer anymore,
-also name it prepare_transfer_to_handler. The following patches
-will progressively remove the use of transfer_to_handler label.
+Now that they are always saved, EXC_XFER_STD means to restore
+them and EXC_XFER_LITE means to not restore them.
+
+Most of the users of EXC_XFER_STD only need to retrieve the
+non volatile registers. For them there is no need to restore
+the non volatile registers as they have not been modified.
+
+Only very few exceptions require non volatile registers restore.
+
+Opencode the few places which require saving of non volatile
+registers.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/entry_32.S   | 3 +++
- arch/powerpc/kernel/head_32.h    | 4 ++++
- arch/powerpc/kernel/head_booke.h | 4 ++++
- 3 files changed, 11 insertions(+)
+ arch/powerpc/kernel/entry_32.S       |  1 -
+ arch/powerpc/kernel/head_40x.S       | 10 ++++++++--
+ arch/powerpc/kernel/head_8xx.S       | 24 ++++++++++++++++++++----
+ arch/powerpc/kernel/head_book3s_32.S | 17 ++++++++++++++---
+ arch/powerpc/kernel/head_booke.h     | 10 ++++++++--
+ arch/powerpc/kernel/head_fsl_booke.S | 16 ++++++++++++----
+ 6 files changed, 62 insertions(+), 16 deletions(-)
 
 diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index cb2fa00b8fc1..e2346662444d 100644
+index e2346662444d..ca14bc2f3418 100644
 --- a/arch/powerpc/kernel/entry_32.S
 +++ b/arch/powerpc/kernel/entry_32.S
-@@ -86,6 +86,8 @@ _ASM_NOKPROBE_SYMBOL(transfer_to_handler_full)
+@@ -335,7 +335,6 @@ _ASM_NOKPROBE_SYMBOL(fast_exception_return)
  
- 	.globl	transfer_to_handler
- transfer_to_handler:
-+	.globl	prepare_transfer_to_handler
-+prepare_transfer_to_handler:
- 	SAVE_NVGPRS(r11)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	stw	r2,GPR2(r11)
-@@ -132,6 +134,7 @@ transfer_to_handler_cont:
- 	stw	r9,_MSR(r11)
- 	b	fast_exception_return
- #endif
-+_ASM_NOKPROBE_SYMBOL(prepare_transfer_to_handler)
- _ASM_NOKPROBE_SYMBOL(transfer_to_handler)
- _ASM_NOKPROBE_SYMBOL(transfer_to_handler_cont)
+ 	.globl	ret_from_except_full
+ ret_from_except_full:
+-	REST_NVGPRS(r1)
+ 	/* fall through */
  
-diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index bf4c288173ad..3ab0f3ad9a6a 100644
---- a/arch/powerpc/kernel/head_32.h
-+++ b/arch/powerpc/kernel/head_32.h
-@@ -115,6 +115,10 @@
- _ASM_NOKPROBE_SYMBOL(\name\()_virt)
- .endm
+ 	.globl	ret_from_except
+diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
+index 7270caff665c..f3e5b462113f 100644
+--- a/arch/powerpc/kernel/head_40x.S
++++ b/arch/powerpc/kernel/head_40x.S
+@@ -228,12 +228,18 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
+ /* 0x0600 - Alignment Exception */
+ 	START_EXCEPTION(0x0600, Alignment)
+ 	EXCEPTION_PROLOG 0x600 Alignment handle_dar_dsisr=1
+-	EXC_XFER_STD(0x600, alignment_exception)
++	prepare_transfer_to_handler
++	bl	alignment_exception
++	REST_NVGPRS(r1)
++	b	interrupt_return
  
-+.macro prepare_transfer_to_handler
-+	bl	prepare_transfer_to_handler
-+.endm
-+
- .macro SYSCALL_ENTRY trapno
- 	mfspr	r9, SPRN_SRR1
- 	mfspr	r10, SPRN_SRR0
+ /* 0x0700 - Program Exception */
+ 	START_EXCEPTION(0x0700, ProgramCheck)
+ 	EXCEPTION_PROLOG 0x700 ProgramCheck handle_dar_dsisr=1
+-	EXC_XFER_STD(0x700, program_check_exception)
++	prepare_transfer_to_handler
++	bl	program_check_exception
++	REST_NVGPRS(r1)
++	b	interrupt_return
+ 
+ 	EXCEPTION(0x0800, Trap_08, unknown_exception, EXC_XFER_STD)
+ 	EXCEPTION(0x0900, Trap_09, unknown_exception, EXC_XFER_STD)
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index c48de97f42fc..86f844eb0e5a 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -131,10 +131,18 @@ instruction_counter:
+ /* Alignment exception */
+ 	START_EXCEPTION(0x600, Alignment)
+ 	EXCEPTION_PROLOG 0x600 Alignment handle_dar_dsisr=1
+-	EXC_XFER_STD(0x600, alignment_exception)
++	prepare_transfer_to_handler
++	bl	alignment_exception
++	REST_NVGPRS(r1)
++	b	interrupt_return
+ 
+ /* Program check exception */
+-	EXCEPTION(0x700, ProgramCheck, program_check_exception, EXC_XFER_STD)
++	START_EXCEPTION(0x700, ProgramCheck)
++	EXCEPTION_PROLOG 0x700 ProgramCheck
++	prepare_transfer_to_handler
++	bl	program_check_exception
++	REST_NVGPRS(r1)
++	b	interrupt_return
+ 
+ /* Decrementer */
+ 	EXCEPTION(0x900, Decrementer, timer_interrupt, EXC_XFER_LITE)
+@@ -149,7 +157,12 @@ instruction_counter:
+ /* On the MPC8xx, this is a software emulation interrupt.  It occurs
+  * for all unimplemented and illegal instructions.
+  */
+-	EXCEPTION(0x1000, SoftEmu, emulation_assist_interrupt, EXC_XFER_STD)
++	START_EXCEPTION(0x1000, SoftEmu)
++	EXCEPTION_PROLOG 0x1000 SoftEmu
++	prepare_transfer_to_handler
++	bl	emulation_assist_interrupt
++	REST_NVGPRS(r1)
++	b	interrupt_return
+ 
+ /*
+  * For the MPC8xx, this is a software tablewalk to load the instruction
+@@ -348,7 +361,10 @@ DARFixed:/* Return from dcbx instruction bug workaround */
+ 	EXCEPTION_PROLOG_2 0x1c00 DataBreakpoint handle_dar_dsisr=1
+ 	mfspr	r4,SPRN_BAR
+ 	stw	r4,_DAR(r11)
+-	EXC_XFER_STD(0x1c00, do_break)
++	prepare_transfer_to_handler
++	bl	do_break
++	REST_NVGPRS(r1)
++	b	interrupt_return
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ 	START_EXCEPTION(0x1d00, InstructionBreakpoint)
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index 67dac65b8ec3..609b2eedd4f9 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -300,7 +300,10 @@ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_HPTE_TABLE)
+ 	andis.	r0, r5, DSISR_DABRMATCH@h
+ 	bne-	1f
+ 	EXC_XFER_LITE(0x300, do_page_fault)
+-1:	EXC_XFER_STD(0x300, do_break)
++1:	prepare_transfer_to_handler
++	bl	do_break
++	REST_NVGPRS(r1)
++	b	interrupt_return
+ 
+ 
+ /* Instruction access exception. */
+@@ -336,10 +339,18 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
+ /* Alignment exception */
+ 	START_EXCEPTION(0x600, Alignment)
+ 	EXCEPTION_PROLOG 0x600 Alignment handle_dar_dsisr=1
+-	EXC_XFER_STD(0x600, alignment_exception)
++	prepare_transfer_to_handler
++	bl	alignment_exception
++	REST_NVGPRS(r1)
++	b	interrupt_return
+ 
+ /* Program check exception */
+-	EXCEPTION(0x700, ProgramCheck, program_check_exception, EXC_XFER_STD)
++	START_EXCEPTION(0x700, ProgramCheck)
++	EXCEPTION_PROLOG 0x700 ProgramCheck
++	prepare_transfer_to_handler
++	bl	program_check_exception
++	REST_NVGPRS(r1)
++	b	interrupt_return
+ 
+ /* Floating-point unavailable */
+ 	START_EXCEPTION(0x800, FPUnavailable)
 diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-index 27a7358c04bb..0f02b970e797 100644
+index 0f02b970e797..baf10556c587 100644
 --- a/arch/powerpc/kernel/head_booke.h
 +++ b/arch/powerpc/kernel/head_booke.h
-@@ -87,6 +87,10 @@ END_BTB_FLUSH_SECTION
- 	SAVE_4GPRS(3, r11);						     \
- 	SAVE_2GPRS(7, r11)
+@@ -483,14 +483,20 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
+ 	NORMAL_EXCEPTION_PROLOG(0x600, ALIGNMENT);		      \
+ 	mfspr   r4,SPRN_DEAR;           /* Grab the DEAR and save it */	      \
+ 	stw     r4,_DEAR(r11);						      \
+-	EXC_XFER_STD(0x0600, alignment_exception)
++	prepare_transfer_to_handler;					      \
++	bl	alignment_exception;					      \
++	REST_NVGPRS(r1);						      \
++	b	interrupt_return
  
-+.macro prepare_transfer_to_handler
-+	bl	prepare_transfer_to_handler
-+.endm
-+
- .macro SYSCALL_ENTRY trapno intno srr1
- 	mfspr	r10, SPRN_SPRG_THREAD
- #ifdef CONFIG_KVM_BOOKE_HV
+ #define PROGRAM_EXCEPTION						      \
+ 	START_EXCEPTION(Program)					      \
+ 	NORMAL_EXCEPTION_PROLOG(0x700, PROGRAM);		      \
+ 	mfspr	r4,SPRN_ESR;		/* Grab the ESR and save it */	      \
+ 	stw	r4,_ESR(r11);						      \
+-	EXC_XFER_STD(0x0700, program_check_exception)
++	prepare_transfer_to_handler;					      \
++	bl	program_check_exception;				      \
++	REST_NVGPRS(r1);						      \
++	b	interrupt_return
+ 
+ #define DECREMENTER_EXCEPTION						      \
+ 	START_EXCEPTION(Decrementer)					      \
+diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
+index bf2730b4e43b..210871b2eb41 100644
+--- a/arch/powerpc/kernel/head_fsl_booke.S
++++ b/arch/powerpc/kernel/head_fsl_booke.S
+@@ -625,12 +625,20 @@ END_BTB_FLUSH_SECTION
+ 
+ 	/* SPE Floating Point Data */
+ #ifdef CONFIG_SPE
+-	EXCEPTION(0x2030, SPE_FP_DATA, SPEFloatingPointData,
+-		  SPEFloatingPointException, EXC_XFER_STD)
++	START_EXCEPTION(SPEFloatingPointData)
++	NORMAL_EXCEPTION_PROLOG(0x2030, SPE_FP_DATA)
++	prepare_transfer_to_handler
++	bl	SPEFloatingPointException
++	REST_NVGPRS(r1)
++	b	interrupt_return
+ 
+ 	/* SPE Floating Point Round */
+-	EXCEPTION(0x2050, SPE_FP_ROUND, SPEFloatingPointRound, \
+-		  SPEFloatingPointRoundException, EXC_XFER_STD)
++	START_EXCEPTION(SPEFloatingPointRound)
++	NORMAL_EXCEPTION_PROLOG(0x2050, SPE_FP_ROUND)
++	prepare_transfer_to_handler
++	bl	SPEFloatingPointRoundException
++	REST_NVGPRS(r1)
++	b	interrupt_return
+ #elif defined(CONFIG_SPE_POSSIBLE)
+ 	EXCEPTION(0x2040, SPE_FP_DATA, SPEFloatingPointData,
+ 		  unknown_exception, EXC_XFER_STD)
 -- 
 2.25.0
 
