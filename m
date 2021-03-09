@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862D73324D1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:10:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC543324BD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:09:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvDQ4FXNz3dPx
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:10:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvCf6yH7z3cGR
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:09:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,40 +15,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCJ6tydz3bPK
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCJ6nvdz30LB
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:09:30 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DvvC96L15z9tyjF;
- Tue,  9 Mar 2021 13:09:25 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DvvCC06ptz9tyjM;
+ Tue,  9 Mar 2021 13:09:27 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id wQHYjtF11liV; Tue,  9 Mar 2021 13:09:25 +0100 (CET)
+ with ESMTP id M-vlTheoMnF7; Tue,  9 Mar 2021 13:09:26 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvC95RwWz9tyjG;
- Tue,  9 Mar 2021 13:09:25 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvCB6LJbz9tyjK;
+ Tue,  9 Mar 2021 13:09:26 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 278208B802;
- Tue,  9 Mar 2021 13:09:27 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 423C98B803;
+ Tue,  9 Mar 2021 13:09:28 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id YAi1Sz2wvQKq; Tue,  9 Mar 2021 13:09:27 +0100 (CET)
+ with ESMTP id 5HqoCMIik9T9; Tue,  9 Mar 2021 13:09:28 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CF5988B801;
- Tue,  9 Mar 2021 13:09:26 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CB53C8B7FC;
+ Tue,  9 Mar 2021 13:09:27 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id A8C3067555; Tue,  9 Mar 2021 12:09:26 +0000 (UTC)
-Message-Id: <ae96c59fa2cb7f24a8929c58cfa2c909cb8ff1f1.1615291471.git.christophe.leroy@csgroup.eu>
+ id AFD2B67555; Tue,  9 Mar 2021 12:09:27 +0000 (UTC)
+Message-Id: <f097a1071254e8f6875588f8fb9771467824a569.1615291471.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1615291471.git.christophe.leroy@csgroup.eu>
 References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 01/43] powerpc/traps: unrecoverable_exception() is not an
- interrupt handler
+Subject: [PATCH v2 02/43] powerpc/traps: Declare unrecoverable_exception() as
+ __noreturn
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com
-Date: Tue,  9 Mar 2021 12:09:26 +0000 (UTC)
+Date: Tue,  9 Mar 2021 12:09:27 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,66 +65,124 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-unrecoverable_exception() is called from interrupt handlers or
-after an interrupt handler has failed.
+unrecoverable_exception() is never expected to return, most callers
+have an infiniteloop in case it returns.
 
-Make it a standard function to avoid doubling the actions
-performed on interrupt entry (e.g.: user time accounting).
+Ensure it really never returns by terminating it with a BUG(), and
+declare it __no_return.
 
-Fixes: 3a96570ffceb ("powerpc: convert interrupt handlers to use wrappers")
+It always GCC to really simplify functions calling it. In the exemple
+below, it avoids the stack frame in the likely fast path and avoids
+code duplication for the exit.
+
+With this patch:
+
+	00000348 <interrupt_exit_kernel_prepare>:
+	 348:	81 43 00 84 	lwz     r10,132(r3)
+	 34c:	71 48 00 02 	andi.   r8,r10,2
+	 350:	41 82 00 2c 	beq     37c <interrupt_exit_kernel_prepare+0x34>
+	 354:	71 4a 40 00 	andi.   r10,r10,16384
+	 358:	40 82 00 20 	bne     378 <interrupt_exit_kernel_prepare+0x30>
+	 35c:	80 62 00 70 	lwz     r3,112(r2)
+	 360:	74 63 00 01 	andis.  r3,r3,1
+	 364:	40 82 00 28 	bne     38c <interrupt_exit_kernel_prepare+0x44>
+	 368:	7d 40 00 a6 	mfmsr   r10
+	 36c:	7c 11 13 a6 	mtspr   81,r0
+	 370:	7c 12 13 a6 	mtspr   82,r0
+	 374:	4e 80 00 20 	blr
+	 378:	48 00 00 00 	b       378 <interrupt_exit_kernel_prepare+0x30>
+	 37c:	94 21 ff f0 	stwu    r1,-16(r1)
+	 380:	7c 08 02 a6 	mflr    r0
+	 384:	90 01 00 14 	stw     r0,20(r1)
+	 388:	48 00 00 01 	bl      388 <interrupt_exit_kernel_prepare+0x40>
+				388: R_PPC_REL24	unrecoverable_exception
+	 38c:	38 e2 00 70 	addi    r7,r2,112
+	 390:	3d 00 00 01 	lis     r8,1
+	 394:	7c c0 38 28 	lwarx   r6,0,r7
+	 398:	7c c6 40 78 	andc    r6,r6,r8
+	 39c:	7c c0 39 2d 	stwcx.  r6,0,r7
+	 3a0:	40 a2 ff f4 	bne     394 <interrupt_exit_kernel_prepare+0x4c>
+	 3a4:	38 60 00 01 	li      r3,1
+	 3a8:	4b ff ff c0 	b       368 <interrupt_exit_kernel_prepare+0x20>
+
+Without this patch:
+
+	00000348 <interrupt_exit_kernel_prepare>:
+	 348:	94 21 ff f0 	stwu    r1,-16(r1)
+	 34c:	93 e1 00 0c 	stw     r31,12(r1)
+	 350:	7c 7f 1b 78 	mr      r31,r3
+	 354:	81 23 00 84 	lwz     r9,132(r3)
+	 358:	71 2a 00 02 	andi.   r10,r9,2
+	 35c:	41 82 00 34 	beq     390 <interrupt_exit_kernel_prepare+0x48>
+	 360:	71 29 40 00 	andi.   r9,r9,16384
+	 364:	40 82 00 28 	bne     38c <interrupt_exit_kernel_prepare+0x44>
+	 368:	80 62 00 70 	lwz     r3,112(r2)
+	 36c:	74 63 00 01 	andis.  r3,r3,1
+	 370:	40 82 00 3c 	bne     3ac <interrupt_exit_kernel_prepare+0x64>
+	 374:	7d 20 00 a6 	mfmsr   r9
+	 378:	7c 11 13 a6 	mtspr   81,r0
+	 37c:	7c 12 13 a6 	mtspr   82,r0
+	 380:	83 e1 00 0c 	lwz     r31,12(r1)
+	 384:	38 21 00 10 	addi    r1,r1,16
+	 388:	4e 80 00 20 	blr
+	 38c:	48 00 00 00 	b       38c <interrupt_exit_kernel_prepare+0x44>
+	 390:	7c 08 02 a6 	mflr    r0
+	 394:	90 01 00 14 	stw     r0,20(r1)
+	 398:	48 00 00 01 	bl      398 <interrupt_exit_kernel_prepare+0x50>
+				398: R_PPC_REL24	unrecoverable_exception
+	 39c:	80 01 00 14 	lwz     r0,20(r1)
+	 3a0:	81 3f 00 84 	lwz     r9,132(r31)
+	 3a4:	7c 08 03 a6 	mtlr    r0
+	 3a8:	4b ff ff b8 	b       360 <interrupt_exit_kernel_prepare+0x18>
+	 3ac:	39 02 00 70 	addi    r8,r2,112
+	 3b0:	3d 40 00 01 	lis     r10,1
+	 3b4:	7c e0 40 28 	lwarx   r7,0,r8
+	 3b8:	7c e7 50 78 	andc    r7,r7,r10
+	 3bc:	7c e0 41 2d 	stwcx.  r7,0,r8
+	 3c0:	40 a2 ff f4 	bne     3b4 <interrupt_exit_kernel_prepare+0x6c>
+	 3c4:	38 60 00 01 	li      r3,1
+	 3c8:	4b ff ff ac 	b       374 <interrupt_exit_kernel_prepare+0x2c>
+
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/interrupt.h | 3 ++-
- arch/powerpc/kernel/interrupt.c      | 1 -
- arch/powerpc/kernel/traps.c          | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/interrupt.h | 2 +-
+ arch/powerpc/kernel/traps.c          | 6 +++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index aedfba29e43a..e8d09a841373 100644
+index e8d09a841373..232a4847f596 100644
 --- a/arch/powerpc/include/asm/interrupt.h
 +++ b/arch/powerpc/include/asm/interrupt.h
-@@ -410,7 +410,6 @@ DECLARE_INTERRUPT_HANDLER(altivec_assist_exception);
- DECLARE_INTERRUPT_HANDLER(CacheLockingException);
- DECLARE_INTERRUPT_HANDLER(SPEFloatingPointException);
- DECLARE_INTERRUPT_HANDLER(SPEFloatingPointRoundException);
--DECLARE_INTERRUPT_HANDLER(unrecoverable_exception);
- DECLARE_INTERRUPT_HANDLER(WatchdogException);
- DECLARE_INTERRUPT_HANDLER(kernel_bad_stack);
- 
-@@ -437,6 +436,8 @@ DECLARE_INTERRUPT_HANDLER_NMI(hmi_exception_realmode);
+@@ -436,7 +436,7 @@ DECLARE_INTERRUPT_HANDLER_NMI(hmi_exception_realmode);
  
  DECLARE_INTERRUPT_HANDLER_ASYNC(TAUException);
  
-+void unrecoverable_exception(struct pt_regs *regs);
-+
+-void unrecoverable_exception(struct pt_regs *regs);
++void __noreturn unrecoverable_exception(struct pt_regs *regs);
+ 
  void replay_system_reset(void);
  void replay_soft_interrupts(void);
- 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index 398cd86b6ada..b8e7d25be31b 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -436,7 +436,6 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
- 	return ret;
- }
- 
--void unrecoverable_exception(struct pt_regs *regs);
- void preempt_schedule_irq(void);
- 
- notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsigned long msr)
 diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 1583fd1c6010..a44a30b0688c 100644
+index a44a30b0688c..d5c9d9ddd186 100644
 --- a/arch/powerpc/kernel/traps.c
 +++ b/arch/powerpc/kernel/traps.c
-@@ -2170,7 +2170,7 @@ DEFINE_INTERRUPT_HANDLER(SPEFloatingPointRoundException)
+@@ -2170,11 +2170,15 @@ DEFINE_INTERRUPT_HANDLER(SPEFloatingPointRoundException)
   * in the MSR is 0.  This indicates that SRR0/1 are live, and that
   * we therefore lost state by taking this exception.
   */
--DEFINE_INTERRUPT_HANDLER(unrecoverable_exception)
-+void unrecoverable_exception(struct pt_regs *regs)
+-void unrecoverable_exception(struct pt_regs *regs)
++void __noreturn unrecoverable_exception(struct pt_regs *regs)
  {
  	pr_emerg("Unrecoverable exception %lx at %lx (msr=%lx)\n",
  		 regs->trap, regs->nip, regs->msr);
+ 	die("Unrecoverable exception", regs, SIGABRT);
++	/* die() should not return */
++	WARN(true, "die() unexpectedly returned");
++	for (;;)
++		;
+ }
+ 
+ #if defined(CONFIG_BOOKE_WDT) || defined(CONFIG_40x)
 -- 
 2.25.0
 
