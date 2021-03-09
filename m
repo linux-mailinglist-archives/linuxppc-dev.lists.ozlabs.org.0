@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12D0332501
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:12:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C175B332502
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:12:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvGJ4kP9z3dyd
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:12:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvGm5j5cz3f0p
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:12:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,40 +15,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCN1G61z3cJp
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCP05Bwz3cKs
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:09:36 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DvvCJ2Snjz9tyjP;
- Tue,  9 Mar 2021 13:09:32 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DvvCK2HQDz9tyjQ;
+ Tue,  9 Mar 2021 13:09:33 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id zjG7tO8TMb8S; Tue,  9 Mar 2021 13:09:32 +0100 (CET)
+ with ESMTP id l45W7vZ1yY_R; Tue,  9 Mar 2021 13:09:33 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvCJ1lQ8z9tyjG;
- Tue,  9 Mar 2021 13:09:32 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5D8EE8B801;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvCK1Vxgz9tyjG;
  Tue,  9 Mar 2021 13:09:33 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8DA2F8B7FC;
+ Tue,  9 Mar 2021 13:09:34 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ymE75GDJJJiG; Tue,  9 Mar 2021 13:09:33 +0100 (CET)
+ with ESMTP id yMtfVgOyw_Mo; Tue,  9 Mar 2021 13:09:34 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 102828B7FC;
- Tue,  9 Mar 2021 13:09:33 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 100848B800;
+ Tue,  9 Mar 2021 13:09:34 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E07C967555; Tue,  9 Mar 2021 12:09:32 +0000 (UTC)
-Message-Id: <2023fed626035f763c7bb55b01daaac0ae2c3eb8.1615291471.git.christophe.leroy@csgroup.eu>
+ id E80FA67555; Tue,  9 Mar 2021 12:09:33 +0000 (UTC)
+Message-Id: <5cbd0cb65293c3c6d98a0ca41edfad73fd005e84.1615291471.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1615291471.git.christophe.leroy@csgroup.eu>
 References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 07/43] powerpc/40x: Prepare for enabling MMU in critical
- exception prolog
+Subject: [PATCH v2 08/43] powerpc/40x: Prepare normal exception handler for
+ enabling MMU early
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com
-Date: Tue,  9 Mar 2021 12:09:32 +0000 (UTC)
+Date: Tue,  9 Mar 2021 12:09:33 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,102 +65,122 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In order the enable MMU early in exception prolog, implement
-CONFIG_VMAP_STACK principles in critical exception prolog.
+Ensure normal exception handler are able to manage stuff with
+MMU enabled. For that we use CONFIG_VMAP_STACK related code
+allthough there is no intention to really activate CONFIG_VMAP_STACK
+on powerpc 40x for the moment.
 
-There is no intention to use CONFIG_VMAP_STACK on 40x,
-but related code will be used to enable MMU early in exception
-in a later patch.
+40x uses SPRN_DEAR instead of SPRN_DAR and SPRN_ESR instead of
+SPRN_DSISR. Take it into account in common macros.
 
-Also address (critirq_ctx - PAGE_OFFSET) directly instead of
-using tophys() in order to win one instruction.
+40x MSR value doesn't fit on 15 bits, use LOAD_REG_IMMEDIATE() in
+common macros that will be used also with 40x.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/head_40x.S | 40 +++++++++++++++++++++++++++++++---
- 1 file changed, 37 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/entry_32.S |  2 +-
+ arch/powerpc/kernel/head_32.h  | 15 ++++++++++++++-
+ arch/powerpc/kernel/head_40x.S | 17 ++++++-----------
+ 3 files changed, 21 insertions(+), 13 deletions(-)
 
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 8528b4c7f9d3..535c55f4393a 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -162,7 +162,7 @@ transfer_to_handler:
+ 	li	r12,-1			/* clear all pending debug events */
+ 	mtspr	SPRN_DBSR,r12
+ 	lis	r11,global_dbcr0@ha
+-	tophys(r11,r11)
++	tophys_novmstack r11,r11
+ 	addi	r11,r11,global_dbcr0@l
+ #ifdef CONFIG_SMP
+ 	lwz	r9,TASK_CPU(r2)
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index 5d4706c14572..ac6b391f1493 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -22,9 +22,17 @@
+ #ifdef CONFIG_VMAP_STACK
+ 	mfspr	r10, SPRN_SPRG_THREAD
+ 	.if	\handle_dar_dsisr
++#ifdef CONFIG_40x
++	mfspr	r11, SPRN_DEAR
++#else
+ 	mfspr	r11, SPRN_DAR
++#endif
+ 	stw	r11, DAR(r10)
++#ifdef CONFIG_40x
++	mfspr	r11, SPRN_ESR
++#else
+ 	mfspr	r11, SPRN_DSISR
++#endif
+ 	stw	r11, DSISR(r10)
+ 	.endif
+ 	mfspr	r11, SPRN_SRR0
+@@ -61,7 +69,7 @@
+ 
+ .macro EXCEPTION_PROLOG_2 handle_dar_dsisr=0
+ #ifdef CONFIG_VMAP_STACK
+-	li	r11, MSR_KERNEL & ~(MSR_IR | MSR_RI) /* can take DTLB miss */
++	LOAD_REG_IMMEDIATE(r11, MSR_KERNEL & ~(MSR_IR | MSR_RI)) /* can take DTLB miss */
+ 	mtmsr	r11
+ 	isync
+ 	mfspr	r11, SPRN_SPRG_SCRATCH2
+@@ -158,8 +166,13 @@
+ 
+ .macro save_dar_dsisr_on_stack reg1, reg2, sp
+ #ifndef CONFIG_VMAP_STACK
++#ifdef CONFIG_40x
++	mfspr	\reg1, SPRN_DEAR
++	mfspr	\reg2, SPRN_ESR
++#else
+ 	mfspr	\reg1, SPRN_DAR
+ 	mfspr	\reg2, SPRN_DSISR
++#endif
+ 	stw	\reg1, _DAR(\sp)
+ 	stw	\reg2, _DSISR(\sp)
+ #endif
 diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
-index 5b337bf49bcb..1468f38c3860 100644
+index 1468f38c3860..4bf0aee858eb 100644
 --- a/arch/powerpc/kernel/head_40x.S
 +++ b/arch/powerpc/kernel/head_40x.S
-@@ -89,6 +89,12 @@ _ENTRY(crit_srr0)
- 	.space	4
- _ENTRY(crit_srr1)
- 	.space	4
-+_ENTRY(crit_r1)
-+	.space	4
-+_ENTRY(crit_dear)
-+	.space	4
-+_ENTRY(crit_esr)
-+	.space	4
- _ENTRY(saved_ksp_limit)
- 	.space	4
+@@ -221,11 +221,8 @@ _ENTRY(saved_ksp_limit)
+  * if they can't resolve the lightweight TLB fault.
+  */
+ 	START_EXCEPTION(0x0300,	DataStorage)
+-	EXCEPTION_PROLOG
+-	mfspr	r5, SPRN_ESR		/* Grab the ESR, save it */
+-	stw	r5, _ESR(r11)
+-	mfspr	r4, SPRN_DEAR		/* Grab the DEAR, save it */
+-	stw	r4, _DEAR(r11)
++	EXCEPTION_PROLOG handle_dar_dsisr=1
++	save_dar_dsisr_on_stack	r4, r5, r11
+ 	EXC_XFER_LITE(0x300, handle_page_fault)
  
-@@ -107,32 +113,60 @@ _ENTRY(saved_ksp_limit)
- 	mfspr	r11,SPRN_SRR1
- 	stw	r10,crit_srr0@l(0)
- 	stw	r11,crit_srr1@l(0)
-+#ifdef CONFIG_VMAP_STACK
-+	mfspr	r10,SPRN_DEAR
-+	mfspr	r11,SPRN_ESR
-+	stw	r10,crit_dear@l(0)
-+	stw	r11,crit_esr@l(0)
-+#endif
- 	mfcr	r10			/* save CR in r10 for now	   */
- 	mfspr	r11,SPRN_SRR3		/* check whether user or kernel    */
- 	andi.	r11,r11,MSR_PR
--	lis	r11,critirq_ctx@ha
--	tophys(r11,r11)
--	lwz	r11,critirq_ctx@l(r11)
-+	lis	r11,(critirq_ctx-PAGE_OFFSET)@ha
-+	lwz	r11,(critirq_ctx-PAGE_OFFSET)@l(r11)
- 	beq	1f
- 	/* COMING FROM USER MODE */
- 	mfspr	r11,SPRN_SPRG_THREAD	/* if from user, start at top of   */
- 	lwz	r11,TASK_STACK-THREAD(r11) /* this thread's kernel stack */
-+#ifdef CONFIG_VMAP_STACK
-+1:	stw	r1,crit_r1@l(0)
-+	addi	r1,r11,THREAD_SIZE-INT_FRAME_SIZE /* Alloc an excpt frm  */
-+	LOAD_REG_IMMEDIATE(r11,MSR_KERNEL & ~(MSR_IR | MSR_RI))
-+	mtmsr	r11
-+	isync
-+	lwz	r11,crit_r1@l(0)
-+	stw	r11,GPR1(r1)
-+	stw	r11,0(r1)
-+	mr	r11,r1
-+#else
- 1:	addi	r11,r11,THREAD_SIZE-INT_FRAME_SIZE /* Alloc an excpt frm  */
- 	tophys(r11,r11)
- 	stw	r1,GPR1(r11)
- 	stw	r1,0(r11)
- 	tovirt(r1,r11)
-+#endif
- 	stw	r10,_CCR(r11)		/* save various registers	   */
- 	stw	r12,GPR12(r11)
- 	stw	r9,GPR9(r11)
- 	mflr	r10
- 	stw	r10,_LINK(r11)
-+#ifdef CONFIG_VMAP_STACK
-+	lis	r9,PAGE_OFFSET@ha
-+	lwz	r10,crit_r10@l(r9)
-+	lwz	r12,crit_r11@l(r9)
-+#else
- 	lwz	r10,crit_r10@l(0)
- 	lwz	r12,crit_r11@l(0)
-+#endif
- 	stw	r10,GPR10(r11)
- 	stw	r12,GPR11(r11)
-+#ifdef CONFIG_VMAP_STACK
-+	lwz	r12,crit_dear@l(r9)
-+	lwz	r9,crit_esr@l(r9)
-+#else
- 	mfspr	r12,SPRN_DEAR		/* save DEAR and ESR in the frame  */
- 	mfspr	r9,SPRN_ESR		/* in them at the point where the  */
-+#endif
- 	stw	r12,_DEAR(r11)		/* since they may have had stuff   */
- 	stw	r9,_ESR(r11)		/* exception was taken		   */
- 	mfspr	r12,SPRN_SRR2
+ /*
+@@ -244,17 +241,15 @@ _ENTRY(saved_ksp_limit)
+ 
+ /* 0x0600 - Alignment Exception */
+ 	START_EXCEPTION(0x0600, Alignment)
+-	EXCEPTION_PROLOG
+-	mfspr	r4,SPRN_DEAR		/* Grab the DEAR and save it */
+-	stw	r4,_DEAR(r11)
++	EXCEPTION_PROLOG handle_dar_dsisr=1
++	save_dar_dsisr_on_stack r4, r5, r11
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	EXC_XFER_STD(0x600, alignment_exception)
+ 
+ /* 0x0700 - Program Exception */
+ 	START_EXCEPTION(0x0700, ProgramCheck)
+-	EXCEPTION_PROLOG
+-	mfspr	r4,SPRN_ESR		/* Grab the ESR and save it */
+-	stw	r4,_ESR(r11)
++	EXCEPTION_PROLOG handle_dar_dsisr=1
++	save_dar_dsisr_on_stack r4, r5, r11
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	EXC_XFER_STD(0x700, program_check_exception)
+ 
 -- 
 2.25.0
 
