@@ -2,57 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEEE0332CDA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 18:08:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF23F332D44
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 18:30:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw1rX6RPlz3cby
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 04:08:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw2Kz5Bwzz3cS0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 04:30:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=188.165.32.156; helo=3.mo51.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 4565 seconds by postgrey-1.36 at boromir;
- Wed, 10 Mar 2021 04:08:27 AEDT
-Received: from 3.mo51.mail-out.ovh.net (3.mo51.mail-out.ovh.net
- [188.165.32.156])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw1rC6xV1z3cH9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 04:08:25 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.1.214])
- by mo51.mail-out.ovh.net (Postfix) with ESMTPS id 3F73326EDF7;
- Tue,  9 Mar 2021 16:52:18 +0100 (CET)
-Received: from kaod.org (37.59.142.106) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 9 Mar 2021
- 16:52:14 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-106R00683159893-e56b-4bd8-a274-5c18a8f63d30,
- 8C9061D2296CFEABF2D52E5F4F8F8063DC0B97BF) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Subject: Re: [PATCH v2 8/8] powerpc/xive: Map one IPI interrupt per node
-To: Greg Kurz <groug@kaod.org>
-References: <20210303174857.1760393-1-clg@kaod.org>
- <20210303174857.1760393-9-clg@kaod.org> <20210309142331.1b9456c2@bahia.lan>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <e86f7e34-afe1-ac03-3444-68e06d3fccdb@kaod.org>
-Date: Tue, 9 Mar 2021 16:52:10 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw2Kf6Szrz3cGq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 04:30:30 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id A3684ACC6;
+ Tue,  9 Mar 2021 17:30:27 +0000 (UTC)
+Date: Tue, 9 Mar 2021 18:30:26 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Davidlohr Bueso <dave@stgolabs.net>
+Subject: Re: [PATCH 3/3] powerpc/qspinlock: Use generic smp_cond_load_relaxed
+Message-ID: <20210309173026.GB6564@kitsune.suse.cz>
+References: <20210309015950.27688-1-dave@stgolabs.net>
+ <20210309015950.27688-4-dave@stgolabs.net>
+ <20210309093912.GW6564@kitsune.suse.cz>
+ <20210309154611.kbxzx65auzvmfqnt@offworld>
 MIME-Version: 1.0
-In-Reply-To: <20210309142331.1b9456c2@bahia.lan>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.106]
-X-ClientProxiedBy: DAG9EX2.mxp5.local (172.16.2.82) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 8a9a8de6-5b10-485f-9710-993d84fed242
-X-Ovh-Tracer-Id: 11074632961135971293
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudduiedgkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefuvfhfhffkffgfgggjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeehuedtheeghfdvhedtueelteegvdefueektdefiefhffffieduuddtudfhgfevtdenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehgrhhouhhgsehkrghougdrohhrgh
+In-Reply-To: <20210309154611.kbxzx65auzvmfqnt@offworld>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,237 +48,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Davidlohr Bueso <dbueso@suse.de>, peterz@infradead.org, will@kernel.org,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com, mingo@redhat.com,
+ paulus@samba.org, longman@redhat.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/9/21 2:23 PM, Greg Kurz wrote:
-> On Wed, 3 Mar 2021 18:48:57 +0100
-> Cédric Le Goater <clg@kaod.org> wrote:
+On Tue, Mar 09, 2021 at 07:46:11AM -0800, Davidlohr Bueso wrote:
+> On Tue, 09 Mar 2021, Michal Such�nek wrote:
 > 
->> ipistorm [*] can be used to benchmark the raw interrupt rate of an
->> interrupt controller by measuring the number of IPIs a system can
->> sustain. When applied to the XIVE interrupt controller of POWER9 and
->> POWER10 systems, a significant drop of the interrupt rate can be
->> observed when crossing the second node boundary.
->>
->> This is due to the fact that a single IPI interrupt is used for all
->> CPUs of the system. The structure is shared and the cache line updates
->> impact greatly the traffic between nodes and the overall IPI
->> performance.
->>
->> As a workaround, the impact can be reduced by deactivating the IRQ
->> lockup detector ("noirqdebug") which does a lot of accounting in the
->> Linux IRQ descriptor structure and is responsible for most of the
->> performance penalty.
->>
->> As a fix, this proposal allocates an IPI interrupt per node, to be
->> shared by all CPUs of that node. It solves the scaling issue, the IRQ
->> lockup detector still has an impact but the XIVE interrupt rate scales
->> linearly. It also improves the "noirqdebug" case as showed in the
->> tables below.
->>
->>  * P9 DD2.2 - 2s * 64 threads
->>
->>                                                "noirqdebug"
->>                         Mint/s                    Mint/s
->>  chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys
->>  --------------------------------------------------------------
->>  1      0-15     4.984023   4.875405       4.996536   5.048892
->>         0-31    10.879164  10.544040      10.757632  11.037859
->>         0-47    15.345301  14.688764      14.926520  15.310053
->>         0-63    17.064907  17.066812      17.613416  17.874511
->>  2      0-79    11.768764  21.650749      22.689120  22.566508
->>         0-95    10.616812  26.878789      28.434703  28.320324
->>         0-111   10.151693  31.397803      31.771773  32.388122
->>         0-127    9.948502  33.139336      34.875716  35.224548
->>
->>  * P10 DD1 - 4s (not homogeneous) 352 threads
->>
->>                                                "noirqdebug"
->>                         Mint/s                    Mint/s
->>  chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys
->>  --------------------------------------------------------------
->>  1      0-15     2.409402   2.364108       2.383303   2.395091
->>         0-31     6.028325   6.046075       6.089999   6.073750
->>         0-47     8.655178   8.644531       8.712830   8.724702
->>         0-63    11.629652  11.735953      12.088203  12.055979
->>         0-79    14.392321  14.729959      14.986701  14.973073
->>         0-95    12.604158  13.004034      17.528748  17.568095
->>  2      0-111    9.767753  13.719831      19.968606  20.024218
->>         0-127    6.744566  16.418854      22.898066  22.995110
->>         0-143    6.005699  19.174421      25.425622  25.417541
->>         0-159    5.649719  21.938836      27.952662  28.059603
->>         0-175    5.441410  24.109484      31.133915  31.127996
->>  3      0-191    5.318341  24.405322      33.999221  33.775354
->>         0-207    5.191382  26.449769      36.050161  35.867307
->>         0-223    5.102790  29.356943      39.544135  39.508169
->>         0-239    5.035295  31.933051      42.135075  42.071975
->>         0-255    4.969209  34.477367      44.655395  44.757074
->>  4      0-271    4.907652  35.887016      47.080545  47.318537
->>         0-287    4.839581  38.076137      50.464307  50.636219
->>         0-303    4.786031  40.881319      53.478684  53.310759
->>         0-319    4.743750  43.448424      56.388102  55.973969
->>         0-335    4.709936  45.623532      59.400930  58.926857
->>         0-351    4.681413  45.646151      62.035804  61.830057
->>
->> [*] https://github.com/antonblanchard/ipistorm
->>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>  arch/powerpc/sysdev/xive/xive-internal.h |  2 --
->>  arch/powerpc/sysdev/xive/common.c        | 39 ++++++++++++++++++------
->>  2 files changed, 30 insertions(+), 11 deletions(-)
->>
->> diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysdev/xive/xive-internal.h
->> index 9cf57c722faa..b3a456fdd3a5 100644
->> --- a/arch/powerpc/sysdev/xive/xive-internal.h
->> +++ b/arch/powerpc/sysdev/xive/xive-internal.h
->> @@ -5,8 +5,6 @@
->>  #ifndef __XIVE_INTERNAL_H
->>  #define __XIVE_INTERNAL_H
->>  
->> -#define XIVE_IPI_HW_IRQ		0 /* interrupt source # for IPIs */
->> -
->>  /*
->>   * A "disabled" interrupt should never fire, to catch problems
->>   * we set its logical number to this
->> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
->> index 8eefd152b947..c27f7bb0494b 100644
->> --- a/arch/powerpc/sysdev/xive/common.c
->> +++ b/arch/powerpc/sysdev/xive/common.c
->> @@ -65,8 +65,16 @@ static struct irq_domain *xive_irq_domain;
->>  #ifdef CONFIG_SMP
->>  static struct irq_domain *xive_ipi_irq_domain;
->>  
->> -/* The IPIs all use the same logical irq number */
->> -static u32 xive_ipi_irq;
->> +/* The IPIs use the same logical irq number when on the same chip */
->> +static struct xive_ipi_desc {
->> +	unsigned int irq;
->> +	char name[8]; /* enough bytes to fit IPI-XXX */
+> > On Mon, Mar 08, 2021 at 05:59:50PM -0800, Davidlohr Bueso wrote:
+> > > 49a7d46a06c3 (powerpc: Implement smp_cond_load_relaxed()) added
+> > > busy-waiting pausing with a preferred SMT priority pattern, lowering
+> > > the priority (reducing decode cycles) during the whole loop slowpath.
+> > > 
+> > > However, data shows that while this pattern works well with simple
+> >                                              ^^^^^^^^^^^^^^^^^^^^^^
+> > > spinlocks, queued spinlocks benefit more being kept in medium priority,
+> > > with a cpu_relax() instead, being a low+medium combo on powerpc.
+> > ...
+> > > 
+> > > diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
+> > > index aecfde829d5d..7ae29cfb06c0 100644
+> > > --- a/arch/powerpc/include/asm/barrier.h
+> > > +++ b/arch/powerpc/include/asm/barrier.h
+> > > @@ -80,22 +80,6 @@ do {									\
+> > > 	___p1;								\
+> > >  })
+> > > 
+> > > -#ifdef CONFIG_PPC64
+> > Maybe it should be kept for the simple spinlock case then?
 > 
-> So this assumes that the node number that node is <= 999 ? This
-> is certainly the case for now since CONFIG_NODES_SHIFT is 8
-> on ppc64 but starting with 10, you'd have truncated names.
+> It is kept, note that simple spinlocks don't use smp_cond_load_relaxed,
+> but instead deal with the priorities in arch_spin_lock(), so it will
+> spin in low priority until it sees a chance to take the lock, where
+> it switches back to medium.
 
-It should be harmless though. I agree this is a useless optimization.
+Indeed, thanks for the clarification.
 
-> What about deriving the size of name[] from CONFIG_NODES_SHIFT ?
-
-Yes.
- 
-> Apart from that, LGTM. Probably not worth to respin just for
-> this.
-> 
-> I also could give a try in a KVM guest.
-> 
-> Topology passed to QEMU:
-> 
->   -smp 8,maxcpus=8,cores=2,threads=2,sockets=2 \
->   -numa node,nodeid=0,cpus=0-4 \
->   -numa node,nodeid=1,cpus=4-7
-> 
-> Topology observed in guest with lstopo :
-> 
->   Package L#0
->     NUMANode L#0 (P#0 30GB)
->     L1d L#0 (32KB) + L1i L#0 (32KB) + Core L#0
->       PU L#0 (P#0)
->       PU L#1 (P#1)
->     L1d L#1 (32KB) + L1i L#1 (32KB) + Core L#1
->       PU L#2 (P#2)
->       PU L#3 (P#3)
->   Package L#1
->     NUMANode L#1 (P#1 32GB)
->     L1d L#2 (32KB) + L1i L#2 (32KB) + Core L#2
->       PU L#4 (P#4)
->       PU L#5 (P#5)
->     L1d L#3 (32KB) + L1i L#3 (32KB) + Core L#3
->       PU L#6 (P#6)
->       PU L#7 (P#7)
-> 
-> Interrupts in guest:
-> 
-> $ cat /proc/interrupts 
->            CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       CPU6       CPU7       
->  16:       1023        871       1042        749          0          0          0          0  XIVE-IPI   0 Edge      IPI-0
->  17:          0          0          0          0       2123       1019       1263       1288  XIVE-IPI   1 Edge      IPI-1
-> 
-> IPIs are mapped to the appropriate nodes, and the numbers indicate
-> that everything is working as expected.
-
-You should see the same on 2 socket PowerNV QEMU machine.
- 
-> Reviewed-and-tested-by: Greg Kurz <groug@kaod.org>
-
-Thanks,
-
-C. 
-
-> 
->> +} *xive_ipis;
->> +
->> +static unsigned int xive_ipi_cpu_to_irq(unsigned int cpu)
->> +{
->> +	return xive_ipis[cpu_to_node(cpu)].irq;
->> +}
->>  #endif
->>  
->>  /* Xive state for each CPU */
->> @@ -1106,25 +1114,36 @@ static const struct irq_domain_ops xive_ipi_irq_domain_ops = {
->>  
->>  static void __init xive_request_ipi(void)
->>  {
->> -	unsigned int virq;
->> +	unsigned int node;
->>  
->> -	xive_ipi_irq_domain = irq_domain_add_linear(NULL, 1,
->> +	xive_ipi_irq_domain = irq_domain_add_linear(NULL, nr_node_ids,
->>  						    &xive_ipi_irq_domain_ops, NULL);
->>  	if (WARN_ON(xive_ipi_irq_domain == NULL))
->>  		return;
->>  
->> -	/* Initialize it */
->> -	virq = irq_create_mapping(xive_ipi_irq_domain, XIVE_IPI_HW_IRQ);
->> -	xive_ipi_irq = virq;
->> +	xive_ipis = kcalloc(nr_node_ids, sizeof(*xive_ipis), GFP_KERNEL | __GFP_NOFAIL);
->> +	for_each_node(node) {
->> +		struct xive_ipi_desc *xid = &xive_ipis[node];
->> +		irq_hw_number_t node_ipi_hwirq = node;
->> +
->> +		/*
->> +		 * Map one IPI interrupt per node for all cpus of that node.
->> +		 * Since the HW interrupt number doesn't have any meaning,
->> +		 * simply use the node number.
->> +		 */
->> +		xid->irq = irq_create_mapping(xive_ipi_irq_domain, node_ipi_hwirq);
->> +		snprintf(xid->name, sizeof(xid->name), "IPI-%d", node);
->>  
->> -	WARN_ON(request_irq(virq, xive_muxed_ipi_action,
->> -			    IRQF_PERCPU | IRQF_NO_THREAD, "IPI", NULL));
->> +		WARN_ON(request_irq(xid->irq, xive_muxed_ipi_action,
->> +				    IRQF_PERCPU | IRQF_NO_THREAD, xid->name, NULL));
->> +	}
->>  }
->>  
->>  static int xive_setup_cpu_ipi(unsigned int cpu)
->>  {
->>  	struct xive_cpu *xc;
->>  	int rc;
->> +	unsigned int xive_ipi_irq = xive_ipi_cpu_to_irq(cpu);
->>  
->>  	pr_debug("Setting up IPI for CPU %d\n", cpu);
->>  
->> @@ -1165,6 +1184,8 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
->>  
->>  static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
->>  {
->> +	unsigned int xive_ipi_irq = xive_ipi_cpu_to_irq(cpu);
->> +
->>  	/* Disable the IPI and free the IRQ data */
->>  
->>  	/* Already cleaned up ? */
-> 
-
+Michal
