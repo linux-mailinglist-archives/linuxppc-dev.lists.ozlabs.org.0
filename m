@@ -2,60 +2,126 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFC433311A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 22:41:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B03333124
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 22:42:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw7v50gnpz3cZT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 08:41:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw7wN480Jz2xYq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 08:42:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=bzhTS6vn;
+	dkim=pass (1024-bit key; unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256 header.s=selector1 header.b=NsI8FJdY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.86.72; helo=rcdn-iport-1.cisco.com;
- envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=prevas.dk (client-ip=2a01:111:f400:fe0c::718;
+ helo=eur04-db3-obe.outbound.protection.outlook.com;
+ envelope-from=rasmus.villemoes@prevas.dk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=bzhTS6vn; dkim-atps=neutral
-Received: from rcdn-iport-1.cisco.com (rcdn-iport-1.cisco.com [173.37.86.72])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw7tf2fKDz3cGx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 08:40:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=7313; q=dns/txt; s=iport;
- t=1615326058; x=1616535658;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=rW2dGFdz1Viogy9BvbMFOe3/vVZakbjcs4YVqhr4xkM=;
- b=bzhTS6vncYDmiGRICpLZGpKyFjxLnjIl8ietbzGVBC4bpF5rhncw+mhC
- KWzroLxuZCod7eO8yODHJQNlsLEZcQu0GKPLG5IO2gaqRkf6zSrlvhqAX
- Jnnye+uAduCM7InusmBOoCo8oQS7QFgWLYaJUqpPAfH01vsMV3Rn+DtP2 A=;
-X-IronPort-AV: E=Sophos;i="5.81,236,1610409600"; d="scan'208";a="861832335"
-Received: from alln-core-6.cisco.com ([173.36.13.139])
- by rcdn-iport-1.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 09 Mar 2021 21:40:54 +0000
-Received: from zorba ([10.24.4.5])
- by alln-core-6.cisco.com (8.15.2/8.15.2) with ESMTPS id 129Lepbs004030
- (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Tue, 9 Mar 2021 21:40:52 GMT
-Date: Tue, 9 Mar 2021 13:40:51 -0800
-From: Daniel Walker <danielwa@cisco.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 4/7] CMDLINE: powerpc: convert to generic builtin
- command line
-Message-ID: <20210309214051.GS109100@zorba>
-References: <20210309000247.2989531-5-danielwa@cisco.com>
- <c5c8b57e-7954-ec02-188a-7f85cb0af731@csgroup.eu>
+ unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256
+ header.s=selector1 header.b=NsI8FJdY; 
+ dkim-atps=neutral
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com
+ (mail-db3eur04on0718.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe0c::718])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw7vt4GDYz2xYn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 08:41:59 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=C+MBZq/DKn8WhWOveIfUb9wNEz19BGT7PwtkBsse4muYaLnAl+Qv8YEhoBc4mdP+D3iK3lt+qZZsk0JE6WjBTtjSCqyZ//k+GKlaWOJhFJ5BYirGwBxFxd/eWcWpRM6jvoHL95PetzZHToWfzQ5k0Y+1X/hUkdSnv3WIpaZMyT08DobzpnSONGUCHJA/mfdO1V/M8kUhzLI2H7y1gzM9skxulP7PrDvqPG8xFfL2I2rJ3x/bla8G6m4vzWczA4CgIBSpCwnOnW9Oz+sOh1dqqcFCbo10NsZ/IjjVZElZdWw8urGFC3mXjnk6sQ11/B990RFEVHnGlWwTbjMhAS8vdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fZ694YIYCd2UL+4mOvbiRmANFbLnhPir7rFuQHimCsA=;
+ b=k3JfwbMRzjDETfYAFSlGpUaEsOK7oH6VeRKcPqb7fNJDELvQ34/ARPRJLi7NLD1Cbr3WQgEFQ2dK+RIT9GGvvijF2f4FqU/4iQcba2R484SlLfStxzPVlrAcgIv2p1CcBCZuKj6ksfFp+FnBC8I1dacIOXJz2R8l9oTRr3J41EdLDFxsx7hiBGA+eHb6s2mRpsguh/JlX8QGxvYco2NwU7HApwxSmjvShNFTjS9Gcj6ET8NNrZHzwYAfm0zdyZLXwsiEDmHxADKMBi9/6jGaqXlnssz23FRHznvBigviTcyevl5sHybZ5BsETF2HQDyhiiGS3EN7Lwb46zBjPD5JeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
+ dkim=pass header.d=prevas.dk; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fZ694YIYCd2UL+4mOvbiRmANFbLnhPir7rFuQHimCsA=;
+ b=NsI8FJdY0YP8jYHQcU+jETsVJpec+4G2GQ9sAARJzNi6gbbgHnviJlnkHGRwhXFuxh9y4+3FUfIvveQU5yHV8uTq586I2IHR6FwXIkMDFQQ7colFlO1UcB6TUoBnNoYhZZu4cVSdoMnTlaJUKS+/cqfiYXhpuI7ZX9yUV6Uxixs=
+Authentication-Results: yulong.com; dkim=none (message not signed)
+ header.d=none;yulong.com; dmarc=none action=none header.from=prevas.dk;
+Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:3f::10)
+ by AM9PR10MB4087.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1f2::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17; Tue, 9 Mar
+ 2021 21:41:49 +0000
+Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::58b2:6a2a:b8f9:bc1a]) by AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::58b2:6a2a:b8f9:bc1a%3]) with mapi id 15.20.3912.027; Tue, 9 Mar 2021
+ 21:41:49 +0000
+Subject: Re: [PATCH] ethernet: ucc_geth: Use kmemdup instead of kmalloc and
+ memcpy
+To: angkery <angkery@163.com>, leoyang.li@nxp.com, davem@davemloft.net,
+ kuba@kernel.org
+References: <20210305142711.3022-1-angkery@163.com>
+From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Message-ID: <f30c31a7-68fa-bd89-1ddf-857808a33f15@prevas.dk>
+Date: Tue, 9 Mar 2021 22:41:47 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
+In-Reply-To: <20210305142711.3022-1-angkery@163.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [80.208.71.248]
+X-ClientProxiedBy: AM3PR07CA0109.eurprd07.prod.outlook.com
+ (2603:10a6:207:7::19) To AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:208:3f::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c5c8b57e-7954-ec02-188a-7f85cb0af731@csgroup.eu>
-X-Auto-Response-Suppress: DR, OOF, AutoReply
-X-Outbound-SMTP-Client: 10.24.4.5, [10.24.4.5]
-X-Outbound-Node: alln-core-6.cisco.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.1.149] (80.208.71.248) by
+ AM3PR07CA0109.eurprd07.prod.outlook.com (2603:10a6:207:7::19) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3933.16 via Frontend Transport; Tue, 9 Mar 2021 21:41:48 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 333560f2-a701-468a-34d0-08d8e34424e6
+X-MS-TrafficTypeDiagnostic: AM9PR10MB4087:
+X-Microsoft-Antispam-PRVS: <AM9PR10MB4087BE308437A79115F5BAE893929@AM9PR10MB4087.EURPRD10.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2000;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 0+PKg6l/T4DaVQG7pw5ihyXRWfZjz0lKa6mhypW9U3xE4GczQFcJ/pYWXRbyXTQQQL5ioO6snQyZ9d3WOnHOY5nRZpsPwGq+JCG0M3LvDaOoDaf38AFlbYJuHJyatNgeKRNvxFIiOHJ61hPHnoXEgdnliKI5LgFY9rAouxssnmazYRXTL/4juC+Y9FZ78LbTh+QKFc+Sur4ibte54tPLQCdJkjeE20Jw90wp5Vc0YxVbUuzHrAu9V5twt9Ps8tj5yVhgpb7mzir+HONMvVlRSICUA5a3iPNlP2pW22/1jk0rS34B17uEdnDttGcfWH8zm7TWMiJlv0bhjWIWys3gx9Jd6941sg0ie//tx2s6vm2JE5Hbp/AxDC/YKsLK/0EYFfQ7dMtnXn8hOzPaw/mb15ZnVggyNQQmEvjPZKVC9/hyZbMG7k+qYIz8Lg39xLUz7Qgyj0FIkDnZxPAQ28Z5J1AS+1A8Y6gc6FYEsMv+BDkbeALxYxDfrWAXWgLBnPMT+RoikHaA27sBPpvj/4CCBxJI5lhYs7bdugBzKt105sREWho7GEm0hnSJrp2U8Z8s5k7IIAk+lr6RBLQbwJRJtatIbdHH7lKaRLsUVuIUNJ0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(39840400004)(136003)(376002)(396003)(366004)(346002)(52116002)(956004)(8676002)(2616005)(8976002)(5660300002)(2906002)(26005)(316002)(31696002)(478600001)(6486002)(8936002)(31686004)(16576012)(86362001)(83380400001)(16526019)(66476007)(44832011)(66946007)(186003)(4326008)(36756003)(66556008)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData: =?Windows-1252?Q?0mEzpFe0bxumCmL3D5U+xbrPaYDa6g/KY22dtNuLJP+KWtYkArGo6erY?=
+ =?Windows-1252?Q?mEfzZIXwOyoVTZL6r6PBzohft9/datrMaRNc3sD7ngB2qa1nTrJodACh?=
+ =?Windows-1252?Q?aQg6SJuZN5Yf5IPqsrIui4ja6wXmbE6haYpW75VhPVdkMvpQfiZIDCL8?=
+ =?Windows-1252?Q?5m2u0iMHaMqKH7fdNvgSBq0L6QaDSbYsh7N80SThXes0WzcmSNFmeNxd?=
+ =?Windows-1252?Q?CreVPijln7z22HWlBD9bGU2eka4JkUWXADPL9DQRSQqbfVkB4nLjq9Au?=
+ =?Windows-1252?Q?a9/hOkFR3C2OqPAJwd7m8wBvMEoYejomUWpZjTugjIZMjRXsIU4KgW9r?=
+ =?Windows-1252?Q?ZYLuO3j7xrl0uPv+vAlZMhZ78el65gvmCaIySx3WL/UsN/63aYrRVcmA?=
+ =?Windows-1252?Q?7qvIdDE0H0XdDIeAODziu3DBftDFfPuqi9gHf7iyZ1W2bHxltXa4xk3R?=
+ =?Windows-1252?Q?wcZ9dhaULMzQKhFJAG9Mjqz8L3/coDYaAbc1dqq8h6I9/RQjfJ5k0bJ0?=
+ =?Windows-1252?Q?0tLghBABGVHkkJcafA1H0MKcBDf3ie1NUOAWPVQnCTuOX768lp91DKqD?=
+ =?Windows-1252?Q?o1AI2POiNk1aUFTRqmbxAxtxGQeuCe6XolIi32i/ITd/VU8cBxOy3ZNc?=
+ =?Windows-1252?Q?TucmJBoYB0uNC7HJc1yMHicExgMakw3MiptO4tI99WjgVa2rTiaYaTc3?=
+ =?Windows-1252?Q?HiDBHf2h2WOOuC2++kOcdVplUXebca5+zMIDQw2fZ5ceka1R8CLXc5pP?=
+ =?Windows-1252?Q?rkKWq+vmnPgDrVxGF8lGSixasRi0Xgeu42rCT3Th1LTttAU8dJHcKj3Y?=
+ =?Windows-1252?Q?ZcoJTlhWy2K7tlytGqC42IzXYgsaUVnY+xCeMQnJxZeeHKcvaCd0zWQW?=
+ =?Windows-1252?Q?jISKX9V7RxQ6abyMoIF2DQXFK+SEXK5yXIL70KsMijLYFsZeg1Sxgc5I?=
+ =?Windows-1252?Q?wbVs3B0do0aq9WvoWySSfOKU3zDCykAqNdCB38JW809In3QwznifYQkR?=
+ =?Windows-1252?Q?dIWUOx3BJ7/yWeHZg0JGjddhT/8bf9j65aqkJdiD3fc44fWS7XBwlLSK?=
+ =?Windows-1252?Q?ZCWyAfjunbQaXKcHesGwBhlWttTjx2dx1LxaAPxlp1X+0esIoXsaKZBl?=
+ =?Windows-1252?Q?0wUY1KSC2WhevRQwYlf+QaNH68Q0Lw2GJYVMw8+boZDssk0aFT1iheKu?=
+ =?Windows-1252?Q?hxtGFv6nj2tH3pPJX3RAa2Vq4oDUz4HKGwXx1Qbn1zyUGZF4y/zjhs1D?=
+ =?Windows-1252?Q?odk8FLfrWVwxB0Np0y85b7M/VXpnMAjxRod9esg1jFEfRP5mRCUiMBam?=
+ =?Windows-1252?Q?LGpJMBPXo8SkUvSHUsvUyp74KPg80gveNFhLVTLHR2xxP0yV0+oPf+wN?=
+ =?Windows-1252?Q?lwTsH7OYuDjYS/QT2i4FqUB9AFaOnEI/s1P27ISWAQwnFmDGNJtZ64ET?=
+X-OriginatorOrg: prevas.dk
+X-MS-Exchange-CrossTenant-Network-Message-Id: 333560f2-a701-468a-34d0-08d8e34424e6
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2021 21:41:49.1082 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XsjaG7olauGiwbr7DYI9x4KLUep9MQVBNSw25XpUwrEenDl/hxNp9hrARvhCtBJgKcZLPy6mEs2UkduUGNHeQFPiZ5gcwa00+NJzqnkrITQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR10MB4087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,207 +133,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Ruslan Ruslichenko <rruslich@cisco.com>,
- Ruslan Bilovol <rbilovol@cisco.com>,
- Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- xe-linux-external@cisco.com, Andrew Morton <akpm@linux-foundation.org>,
- Will Deacon <will@kernel.org>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Junlin Yang <yangjunlin@yulong.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 09, 2021 at 08:56:47AM +0100, Christophe Leroy wrote:
+On 05/03/2021 15.27, angkery wrote:
+> From: Junlin Yang <yangjunlin@yulong.com>
 > 
+> Fixes coccicheck warnings:
+> ./drivers/net/ethernet/freescale/ucc_geth.c:3594:11-18:
+> WARNING opportunity for kmemdup
 > 
-> Le 09/03/2021 à 01:02, Daniel Walker a écrit :
-> > This updates the powerpc code to use the CONFIG_GENERIC_CMDLINE
-> > option.
-> > 
-> > Cc: xe-linux-external@cisco.com
-> > Signed-off-by: Ruslan Ruslichenko <rruslich@cisco.com>
-> > Signed-off-by: Ruslan Bilovol <rbilovol@cisco.com>
-> > Signed-off-by: Daniel Walker <danielwa@cisco.com>
-> > ---
-> >   arch/powerpc/Kconfig            | 37 +--------------------------------
-> >   arch/powerpc/kernel/prom.c      |  1 +
-> >   arch/powerpc/kernel/prom_init.c | 35 ++++++++++++++++++-------------
-> >   3 files changed, 23 insertions(+), 50 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > index 107bb4319e0e..276b06d5c961 100644
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -167,6 +167,7 @@ config PPC
-> >   	select EDAC_SUPPORT
-> >   	select GENERIC_ATOMIC64			if PPC32
-> >   	select GENERIC_CLOCKEVENTS_BROADCAST	if SMP
-> > +	select GENERIC_CMDLINE
-> >   	select GENERIC_CMOS_UPDATE
-> >   	select GENERIC_CPU_AUTOPROBE
-> >   	select GENERIC_CPU_VULNERABILITIES	if PPC_BARRIER_NOSPEC
-> > @@ -906,42 +907,6 @@ config PPC_DENORMALISATION
-> >   	  Add support for handling denormalisation of single precision
-> >   	  values.  Useful for bare metal only.  If unsure say Y here.
-> > -config CMDLINE
-> > -	string "Initial kernel command string"
-> > -	default ""
-> > -	help
-> > -	  On some platforms, there is currently no way for the boot loader to
-> > -	  pass arguments to the kernel. For these platforms, you can supply
-> > -	  some command-line options at build time by entering them here.  In
-> > -	  most cases you will need to specify the root device here.
-> > -
-> > -choice
-> > -	prompt "Kernel command line type" if CMDLINE != ""
-> > -	default CMDLINE_FROM_BOOTLOADER
-> > -
-> > -config CMDLINE_FROM_BOOTLOADER
-> > -	bool "Use bootloader kernel arguments if available"
-> > -	help
-> > -	  Uses the command-line options passed by the boot loader. If
-> > -	  the boot loader doesn't provide any, the default kernel command
-> > -	  string provided in CMDLINE will be used.
-> > -
-> > -config CMDLINE_EXTEND
-> > -	bool "Extend bootloader kernel arguments"
-> > -	help
-> > -	  The command-line arguments provided by the boot loader will be
-> > -	  appended to the default kernel command string.
-> > -
-> > -config CMDLINE_FORCE
-> > -	bool "Always use the default kernel command string"
-> > -	help
-> > -	  Always use the default kernel command string, even if the boot
-> > -	  loader passes other arguments to the kernel.
-> > -	  This is useful if you cannot or don't want to change the
-> > -	  command-line options your boot loader passes to the kernel.
-> > -
-> > -endchoice
-> > -
-> >   config EXTRA_TARGETS
-> >   	string "Additional default image types"
-> >   	help
-> > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> > index ae3c41730367..96d0a01be1b4 100644
-> > --- a/arch/powerpc/kernel/prom.c
-> > +++ b/arch/powerpc/kernel/prom.c
-> > @@ -27,6 +27,7 @@
-> >   #include <linux/irq.h>
-> >   #include <linux/memblock.h>
-> >   #include <linux/of.h>
-> > +#include <linux/cmdline.h>
+> Signed-off-by: Junlin Yang <yangjunlin@yulong.com>
+> ---
+>  drivers/net/ethernet/freescale/ucc_geth.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> Why is this needed in prom.c ?
- 
-Must have been a mistake, I don't think it's needed.
-
-
-> >   #include <linux/of_fdt.h>
-> >   #include <linux/libfdt.h>
-> >   #include <linux/cpu.h>
-> > diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-> > index e9d4eb6144e1..657241534d69 100644
-> > --- a/arch/powerpc/kernel/prom_init.c
-> > +++ b/arch/powerpc/kernel/prom_init.c
-> > @@ -27,6 +27,7 @@
-> >   #include <linux/initrd.h>
-> >   #include <linux/bitops.h>
-> >   #include <linux/pgtable.h>
-> > +#include <linux/cmdline.h>
-> >   #include <asm/prom.h>
-> >   #include <asm/rtas.h>
-> >   #include <asm/page.h>
-> > @@ -242,15 +243,6 @@ static int __init prom_strcmp(const char *cs, const char *ct)
-> >   	return 0;
-> >   }
-> > -static char __init *prom_strcpy(char *dest, const char *src)
-> > -{
-> > -	char *tmp = dest;
-> > -
-> > -	while ((*dest++ = *src++) != '\0')
-> > -		/* nothing */;
-> > -	return tmp;
-> > -}
-> > -
+> diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
+> index ef4e2fe..2c079ad 100644
+> --- a/drivers/net/ethernet/freescale/ucc_geth.c
+> +++ b/drivers/net/ethernet/freescale/ucc_geth.c
+> @@ -3591,10 +3591,9 @@ static int ucc_geth_probe(struct platform_device* ofdev)
+>  	if ((ucc_num < 0) || (ucc_num > 7))
+>  		return -ENODEV;
+>  
+> -	ug_info = kmalloc(sizeof(*ug_info), GFP_KERNEL);
+> +	ug_info = kmemdup(&ugeth_primary_info, sizeof(*ug_info), GFP_KERNEL);
+>  	if (ug_info == NULL)
+>  		return -ENOMEM;
+> -	memcpy(ug_info, &ugeth_primary_info, sizeof(*ug_info));
+>  
+>  	ug_info->uf_info.ucc_num = ucc_num;
+>  
 > 
-> This game with prom_strcpy() should go a separate preceeding patch.
-> 
-> Also, it looks like checkpatch.pl recommends to use strscpy() instead of strlcpy().
 
-strscpy() is very large. I'm not sure it's compatible with this prom_init.c
-environment.
+Ah, yes, of course, I should have used that.
 
-> >   static int __init prom_strncmp(const char *cs, const char *ct, size_t count)
-> >   {
-> >   	unsigned char c1, c2;
-> > @@ -276,6 +268,20 @@ static size_t __init prom_strlen(const char *s)
-> >   	return sc - s;
-> >   }
-> > +static size_t __init prom_strlcpy(char *dest, const char *src, size_t size)
-> > +{
-> > +	size_t ret = prom_strlen(src);
-> > +
-> > +	if (size) {
-> > +		size_t len = (ret >= size) ? size - 1 : ret;
-> > +
-> > +		memcpy(dest, src, len);
-> > +		dest[len] = '\0';
-> > +	}
-> > +	return ret;
-> > +}
-> > +
-> > +
-> >   static int __init prom_memcmp(const void *cs, const void *ct, size_t count)
-> >   {
-> >   	const unsigned char *su1, *su2;
-> > @@ -304,6 +310,7 @@ static char __init *prom_strstr(const char *s1, const char *s2)
-> >   	return NULL;
-> >   }
-> > +#ifdef GENERIC_CMDLINE_NEED_STRLCAT
-> >   static size_t __init prom_strlcat(char *dest, const char *src, size_t count)
-> >   {
-> >   	size_t dsize = prom_strlen(dest);
-> > @@ -323,6 +330,7 @@ static size_t __init prom_strlcat(char *dest, const char *src, size_t count)
-> >   	return res;
-> >   }
-> > +#endif
-> >   #ifdef CONFIG_PPC_PSERIES
-> >   static int __init prom_strtobool(const char *s, bool *res)
-> > @@ -775,12 +783,11 @@ static void __init early_cmdline_parse(void)
-> >   	prom_cmd_line[0] = 0;
-> >   	p = prom_cmd_line;
-> > -	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE) && (long)prom.chosen > 0)
-> > +	if ((long)prom.chosen > 0)
-> >   		l = prom_getprop(prom.chosen, "bootargs", p, COMMAND_LINE_SIZE-1);
-> > -	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) || l <= 0 || p[0] == '\0')
-> > -		prom_strlcat(prom_cmd_line, " " CONFIG_CMDLINE,
-> > -			     sizeof(prom_cmd_line));
-> > +	cmdline_add_builtin_custom(prom_cmd_line, (l > 0 ? p : NULL), sizeof(prom_cmd_line),
-> > +					__prombss, prom_strlcpy, prom_strlcat);
-> 
-> So we are referencing a function that doesn't exist (namely prom_strlcat).
-> But it works because cmdline_add_builtin_custom() looks like a function but
-> is in fact an obscure macro that doesn't use prom_strlcat() unless
-> GENERIC_CMDLINE_NEED_STRLCAT is defined.
-> 
-> IMHO that's awful for readability and code maintenance.
-
-powerpc is a special case, there's no other users like this. The reason is
-because of all the difficulty in this prom_init.c code. A lot of the generic
-code has similar kind of changes to work across architectures.
-
-
-> >   	prom_printf("command line: %s\n", prom_cmd_line);
-> > @@ -2706,7 +2713,7 @@ static void __init flatten_device_tree(void)
-> >   	/* Add "phandle" in there, we'll need it */
-> >   	namep = make_room(&mem_start, &mem_end, 16, 1);
-> > -	prom_strcpy(namep, "phandle");
-> > +	prom_strlcpy(namep, "phandle", 8);
-> 
-> Should be in a separate patch.
-
-I can move it, I missed that from the first round.
-
-Daniel
+Acked-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
