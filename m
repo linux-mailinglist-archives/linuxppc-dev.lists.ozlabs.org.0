@@ -1,48 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480DE333162
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:10:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6771C3331EA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 00:35:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw8XN1ql6z3cVw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 09:10:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwBR1308Nz3cZN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 10:35:41 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.a=rsa-sha256 header.s=mail181024 header.b=yMJLTWRQ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Dw8Wz0px8z2xYp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 09:09:50 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 129M5XDc030658;
- Tue, 9 Mar 2021 16:05:34 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 129M5X7J030657;
- Tue, 9 Mar 2021 16:05:33 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Tue, 9 Mar 2021 16:05:32 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v1] powerpc: Include running function as first entry in
- save_stack_trace() and friends
-Message-ID: <20210309220532.GI29191@gate.crashing.org>
-References: <e2e8728c4c4553bbac75a64b148e402183699c0c.1614780567.git.christophe.leroy@csgroup.eu>
- <CANpmjNOvgbUCf0QBs1J-mO0yEPuzcTMm7aS1JpPB-17_LabNHw@mail.gmail.com>
- <1802be3e-dc1a-52e0-1754-a40f0ea39658@csgroup.eu>
- <YD+o5QkCZN97mH8/@elver.google.com>
- <20210304145730.GC54534@C02TD0UTHF1T.local>
- <20210304215448.GU29191@gate.crashing.org>
- <20210309160505.GA4979@C02TD0UTHF1T.local>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210309160505.GA4979@C02TD0UTHF1T.local>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=2001:df5:b000:5::4;
+ helo=gate2.alliedtelesis.co.nz;
+ envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.a=rsa-sha256 header.s=mail181024 header.b=yMJLTWRQ; 
+ dkim-atps=neutral
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [IPv6:2001:df5:b000:5::4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwBQX6FJGz30J3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 10:35:16 +1100 (AEDT)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 8437A806B5;
+ Wed, 10 Mar 2021 12:35:08 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1615332908;
+ bh=uI86jW6pWpZnO371tm5bCSjh+sq6Wm42ntNgWqBdKss=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To;
+ b=yMJLTWRQjO1i5IakXgJRV1w+B2b7uGCvOsMYX7q5MW9CA8B099sUEVoMdi2V6Yewh
+ HcpysLOY80YGexFt1+L2xiJt44TYB/gTLTKwiVx3Zypapim+RGSoIq6ev5YwA34yUp
+ 2zPhkTjHqC0h5WVrSNkTlCMvtleg9BXMPGdqnFXdLrOhm/C6yJCNtw+NRRPlus7UW/
+ ubfsSfST4TC8FLlySwwPCmaeDYpum4zf62+FlVKeACAeks+4YiaFB+j5Dq+eRbYBI2
+ TMqGQRmW0LmRaSL4mjgQb50lgnceLXrkUtZAYasy+xdqTEwn0pjgvMMLc6FcJjF0Pv
+ IV5erfRh9ulLQ==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[2001:df5:b000:bc8::77]) by
+ svr-chch-seg1.atlnz.lc with Trustwave SEG (v8, 2, 6, 11305)
+ id <B6048062c0000>; Wed, 10 Mar 2021 12:35:08 +1300
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
+ by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
+ Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 10 Mar 2021 12:35:08 +1300
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1497.012; Wed, 10 Mar 2021 12:35:08 +1300
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Guenter Roeck <linux@roeck-us.net>, "jdelvare@suse.com" <jdelvare@suse.com>
+Subject: Re: Errant readings on LM81 with T2080 SoC
+Thread-Topic: Errant readings on LM81 with T2080 SoC
+Thread-Index: AQHXE6SbssdAOSHgwE+zIRhtn11Sk6p4Y2sAgAMVCoA=
+Date: Tue, 9 Mar 2021 23:35:07 +0000
+Message-ID: <b1ba3f34-cbcc-4bbd-ea84-aad21f513682@alliedtelesis.co.nz>
+References: <8e0a88ba-01e9-9bc1-c78b-20f26ce27d12@alliedtelesis.co.nz>
+ <96d660bc-17ab-4e0e-9a94-bce1737a8da1@roeck-us.net>
+In-Reply-To: <96d660bc-17ab-4e0e-9a94-bce1737a8da1@roeck-us.net>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.1.11]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <8BCA4FDE94F0A245BE39485AC5CF9D8F@atlnz.lc>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=C7uXNjH+ c=1 sm=1 tr=0
+ a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10
+ a=IkcTkHD0fZMA:10 a=dESyimp9J3IA:10 a=H79plryXfxChRathHHkA:9
+ a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Score: 0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,120 +87,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Marco Elver <elver@google.com>, Catalin Marinas <catalin.marinas@arm.com>,
- linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>,
- kasan-dev <kasan-dev@googlegroups.com>, broonie@kernel.org,
- Paul Mackerras <paulus@samba.org>, Will Deacon <will@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
-
-On Tue, Mar 09, 2021 at 04:05:23PM +0000, Mark Rutland wrote:
-> On Thu, Mar 04, 2021 at 03:54:48PM -0600, Segher Boessenkool wrote:
-> > On Thu, Mar 04, 2021 at 02:57:30PM +0000, Mark Rutland wrote:
-> > > It looks like GCC is happy to give us the function-entry-time FP if we use
-> > > __builtin_frame_address(1),
-> > 
-> > From the GCC manual:
-> >      Calling this function with a nonzero argument can have
-> >      unpredictable effects, including crashing the calling program.  As
-> >      a result, calls that are considered unsafe are diagnosed when the
-> >      '-Wframe-address' option is in effect.  Such calls should only be
-> >      made in debugging situations.
-> > 
-> > It *does* warn (the warning is in -Wall btw), on both powerpc and
-> > aarch64.  Furthermore, using this builtin causes lousy code (it forces
-> > the use of a frame pointer, which we normally try very hard to optimise
-> > away, for good reason).
-> > 
-> > And, that warning is not an idle warning.  Non-zero arguments to
-> > __builtin_frame_address can crash the program.  It won't on simpler
-> > functions, but there is no real definition of what a simpler function
-> > *is*.  It is meant for debugging, not for production use (this is also
-> > why no one has bothered to make it faster).
-> >
-> > On Power it should work, but on pretty much any other arch it won't.
-> 
-> I understand this is true generally, and cannot be relied upon in
-> portable code. However as you hint here for Power, I believe that on
-> arm64 __builtin_frame_address(1) shouldn't crash the program due to the
-> way frame records work on arm64, but I'll go check with some local
-> compiler folk. I agree that __builtin_frame_address(2) and beyond
-> certainly can, e.g.  by NULL dereference and similar.
-
-I still do not know the aarch64 ABI well enough.  If only I had time!
-
-> For context, why do you think this would work on power specifically? I
-> wonder if our rationale is similar.
-
-On most 64-bit Power ABIs all stack frames are connected together as a
-linked list (which is updated atomically, importantly).  This makes it
-possible to always find all previous stack frames.
-
-> Are you aware of anything in particular that breaks using
-> __builtin_frame_address(1) in non-portable code, or is this just a
-> general sentiment of this not being a supported use-case?
-
-It is not supported, and trying to do it anyway can crash: it can use
-random stack contents as pointer!  Not really "random" of course, but
-where it thinks to find a pointer into the previous frame, which is not
-something it can rely on (unless the ABI guarantees it somehow).
-
-See gcc.gnu.org/PR60109 for example.
-
-> > > Unless we can get some strong guarantees from compiler folk such that we
-> > > can guarantee a specific function acts boundary for unwinding (and
-> > > doesn't itself get split, etc), the only reliable way I can think to
-> > > solve this requires an assembly trampoline. Whatever we do is liable to
-> > > need some invasive rework.
-> > 
-> > You cannot get such a guarantee, other than not letting the compiler
-> > see into the routine at all, like with assembler code (not inline asm,
-> > real assembler code).
-> 
-> If we cannot reliably ensure this then I'm happy to go write an assembly
-> trampoline to snapshot the state at a function call boundary (where our
-> procedure call standard mandates the state of the LR, FP, and frame
-> records pointed to by the FP).
-
-Is the frame pointer required?!
-
-> This'll require reworking a reasonable
-> amount of code cross-architecture, so I'll need to get some more
-> concrete justification (e.g. examples of things that can go wrong in
-> practice).
-
-Say you have a function that does dynamic stack allocation, then there
-is usually no way to find the previous stack frame (without function-
-specific knowledge).  So __builtin_frame_address cannot work (it knows
-nothing about frames further up).
-
-Dynamic stack allocation (alloca, or variable length automatic arrays)
-is just the most common and most convenient example; it is not the only
-case you have problems here.
-
-> > The real way forward is to bite the bullet and to no longer pretend you
-> > can do a full backtrace from just the stack contents.  You cannot.
-> 
-> I think what you mean here is that there's no reliable way to handle the
-> current/leaf function, right? If so I do agree.
-
-No, I meant what I said.
-
-There is the separate issue that you do not know where the return
-address (etc.) is stored in a function that has not yet done a call
-itself, sure.  You cannot assume anything the ABI does not tell you you
-can depend on.
-
-> Beyond that I believe that arm64's frame records should be sufficient.
-
-Do you have a simple linked list connecting all frames?  The aarch64 GCC
-port does not define anything special here (DYNAMIC_CHAIN_ADDRESS), so
-the default will be used: every frame pointer has to point to the
-previous one, no exceptions whatsoever.
-
-
-Segher
+DQpPbiA4LzAzLzIxIDE6MzEgcG0sIEd1ZW50ZXIgUm9lY2sgd3JvdGU6DQo+IE9uIDMvNy8yMSAy
+OjUyIFBNLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPj4gRnVuZGFtZW50YWxseSBJIHRoaW5rIHRo
+aXMgaXMgYSBwcm9ibGVtIHdpdGggdGhlIGZhY3QgdGhhdCB0aGUgTE04MSBpcw0KPj4gYW4gU01C
+dXMgZGV2aWNlIGJ1dCB0aGUgVDIwODAgKGFuZCBvdGhlciBGcmVlc2NhbGUgU29DcykgdXNlcyBp
+MmMgYW5kIHdlDQo+PiBlbXVsYXRlIFNNQnVzLiBJIHN1c3BlY3QgdGhlIGVycmFudCByZWFkaW5n
+cyBhcmUgd2hlbiB3ZSBkb24ndCBnZXQgcm91bmQNCj4+IHRvIGNvbXBsZXRpbmcgdGhlIHJlYWQg
+d2l0aGluIHRoZSB0aW1lb3V0IHNwZWNpZmllZCBieSB0aGUgU01CdXMNCj4+IHNwZWNpZmljYXRp
+b24uIERlcGVuZGluZyBvbiB3aGVuIHRoYXQgaGFwcGVucyB3ZSBlaXRoZXIgZmFpbCB0aGUNCj4+
+IHRyYW5zZmVyIG9yIGludGVycHJldCB0aGUgcmVzdWx0IGFzIGFsbC0xcy4NCj4gVGhhdCBpcyBx
+dWl0ZSB1bmxpa2VseS4gTWFueSBzZW5zb3IgY2hpcHMgYXJlIFNNQnVzIGNoaXBzIGNvbm5lY3Rl
+ZCB0bw0KPiBpMmMgYnVzc2VzLiBJdCBpcyBtdWNoIG1vcmUgbGlrZWx5IHRoYXQgdGhlcmUgaXMg
+YSBidWcgaW4gdGhlIFQyMDgwIGkyYyBkcml2ZXIsDQo+IHRoYXQgdGhlIGNoaXAgZG9lc24ndCBs
+aWtlIHRoZSBidWxrIHJlYWQgY29tbWFuZCBpc3N1ZWQgdGhyb3VnaCByZWdtYXAsIHRoYXQNCj4g
+dGhlIGNoaXAgaGFzIHByb2JsZW1zIHdpdGggdGhlIGkyYyBidXMgc3BlZWQsIG9yIHRoYXQgdGhl
+IGkyYyBidXMgaXMgbm9pc3kuDQpJIGhhdmUgbm90aWNlZCB0aGF0IHdpdGggdGhlIHN3aXRjaCB0
+byByZWdtYXAgd2UgZW5kIHVwIHVzaW5nIHBsYWluIGkyYyANCmluc3RlYWQgb2YgU01CVVMuIFRo
+ZXJlIGFwcGVhcnMgdG8gYmUgbm8gd2F5IG9mIHNheWluZyB1c2UgU01CVVMgDQpzZW1hbnRpY3Mg
+aWYgdGhlIGkyYyBhZGFwdGVyIHJlcG9ydHMgSTJDX0ZVTkNfSTJDLg==
