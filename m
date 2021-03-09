@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61EA0332B47
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 16:58:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 373CB332B4F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 16:58:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw0H52wLGz3dKg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:58:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw0HY1dDXz3dtp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:58:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=iK2JlFyh;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=WHyxP41M;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=iK2JlFyh; 
+ header.s=casper.20170209 header.b=WHyxP41M; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw0Dz1r4Bz3dQp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 02:56:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw0FG34FZz3dT1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 02:56:34 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=H2ld+QgidDGzgxm+N1lJ7nVSOxHC57yc0v6xTacIbY4=; b=iK2JlFyhSt2fAxdUtndJ31jjUd
- hNycyMaLROgr5IP/6Vd9G0ejFwt4PjtbUOIllT6lpcyNO5JSrh2jzNp2gMWO+ruzsynjop/tobJfY
- Ktw36wP3bjGaJFUqad8boRQbzSj/WVqC2vdDF1erI4/UR8j/TiljW5ZWLiSLDSKyNVvtr+fZ51EBV
- pCBrYUDXEQT4MqRPo4dXzQFXnfTWXGQxciUvtoMiNYfJ8YId0Jxl0+zNdyZ/Wd4dtmXuU6KZ77azt
- BWf2kqMD8H4xw36e5pyhM+5SVtwMNqv43fs7ARRc/rD1HyYU5hEmwq8fHIT4tm/rith+FefXPeIqW
- /gsKX6iQ==;
+ bh=IFk47HqYrcljU8sgV3Szm3kSO/BjefEBgYu1y49MYsE=; b=WHyxP41MA1s5vmF0W/htokhaBx
+ JJRExXLLcZF4nmAarls1d3HuzNwpxmbC2mhuQ2AjlEBa/HE9uab75LwxnBHvSlkMbCIWybzSODn2N
+ nI1H1JvK6Iir6AOGJrydVaRgu6VKcvBTzTMpXy9rIa7WbTAufbU1gTxOWVjZCYgJMpuoZTM/mo4PI
+ uRhHJt00wwUBMfOwTrEx++Btjp1eJXNPixwQbRg7gtFznHkapP3JdMEA9Bcm9iGgeFNorbolw8FTk
+ j7Z0M3Q+So7C7evvGwEeGHmpDkMRkIYZTYMWqzUeucdgD9LBE/o0m4JdRWf9Xk52M7m+GAD4SKJAt
+ L4oOHUZw==;
 Received: from [2001:4bb8:180:9884:c70:4a89:bc61:3] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lJehM-000lUZ-SR; Tue, 09 Mar 2021 15:55:09 +0000
+ id 1lJehy-000lWp-8R; Tue, 09 Mar 2021 15:55:48 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 7/9] iomem: remove the iomem file system
-Date: Tue,  9 Mar 2021 16:53:46 +0100
-Message-Id: <20210309155348.974875-8-hch@lst.de>
+Subject: [PATCH 8/9] z3fold: remove the z3fold file system
+Date: Tue,  9 Mar 2021 16:53:47 +0100
+Message-Id: <20210309155348.974875-9-hch@lst.de>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210309155348.974875-1-hch@lst.de>
 References: <20210309155348.974875-1-hch@lst.de>
@@ -80,62 +80,84 @@ Just use the generic anon_inode file system.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- kernel/resource.c | 30 ++++--------------------------
- 1 file changed, 4 insertions(+), 26 deletions(-)
+ mm/z3fold.c | 38 ++------------------------------------
+ 1 file changed, 2 insertions(+), 36 deletions(-)
 
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 0fd091a3f2fc66..12560553c26796 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -26,6 +26,7 @@
- #include <linux/mm.h>
- #include <linux/mount.h>
- #include <linux/resource_ext.h>
-+#include <linux/anon_inodes.h>
- #include <uapi/linux/magic.h>
- #include <asm/io.h>
+diff --git a/mm/z3fold.c b/mm/z3fold.c
+index e7cd9298b221f5..e0749a3d8987de 100644
+--- a/mm/z3fold.c
++++ b/mm/z3fold.c
+@@ -23,6 +23,7 @@
  
-@@ -1838,37 +1839,14 @@ static int __init strict_iomem(char *str)
- 	return 1;
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/anon_inodes.h>
+ #include <linux/atomic.h>
+ #include <linux/sched.h>
+ #include <linux/cpumask.h>
+@@ -345,38 +346,10 @@ static inline void free_handle(unsigned long handle, struct z3fold_header *zhdr)
+ 	}
  }
  
--static int iomem_fs_init_fs_context(struct fs_context *fc)
+-static int z3fold_init_fs_context(struct fs_context *fc)
 -{
--	return init_pseudo(fc, DEVMEM_MAGIC) ? 0 : -ENOMEM;
+-	return init_pseudo(fc, Z3FOLD_MAGIC) ? 0 : -ENOMEM;
 -}
 -
--static struct file_system_type iomem_fs_type = {
--	.name		= "iomem",
--	.owner		= THIS_MODULE,
--	.init_fs_context = iomem_fs_init_fs_context,
+-static struct file_system_type z3fold_fs = {
+-	.name		= "z3fold",
+-	.init_fs_context = z3fold_init_fs_context,
 -	.kill_sb	= kill_anon_super,
 -};
 -
- static int __init iomem_init_inode(void)
- {
--	static struct vfsmount *iomem_vfs_mount;
--	static int iomem_fs_cnt;
- 	struct inode *inode;
--	int rc;
+-static struct vfsmount *z3fold_mnt;
+-static int z3fold_mount(void)
+-{
+-	int ret = 0;
 -
--	rc = simple_pin_fs(&iomem_fs_type, &iomem_vfs_mount, &iomem_fs_cnt);
--	if (rc < 0) {
--		pr_err("Cannot mount iomem pseudo filesystem: %d\n", rc);
--		return rc;
--	}
+-	z3fold_mnt = kern_mount(&z3fold_fs);
+-	if (IS_ERR(z3fold_mnt))
+-		ret = PTR_ERR(z3fold_mnt);
+-
+-	return ret;
+-}
+-
+-static void z3fold_unmount(void)
+-{
+-	kern_unmount(z3fold_mnt);
+-}
+-
+ static const struct address_space_operations z3fold_aops;
+ static int z3fold_register_migration(struct z3fold_pool *pool)
+ {
+-	pool->inode = alloc_anon_inode_sb(z3fold_mnt->mnt_sb);
++	pool->inode = alloc_anon_inode();
+ 	if (IS_ERR(pool->inode)) {
+ 		pool->inode = NULL;
+ 		return 1;
+@@ -1787,22 +1760,15 @@ MODULE_ALIAS("zpool-z3fold");
  
--	inode = alloc_anon_inode_sb(iomem_vfs_mount->mnt_sb);
-+	inode = alloc_anon_inode();
- 	if (IS_ERR(inode)) {
--		rc = PTR_ERR(inode);
--		pr_err("Cannot allocate inode for iomem: %d\n", rc);
--		simple_release_fs(&iomem_vfs_mount, &iomem_fs_cnt);
--		return rc;
-+		pr_err("Cannot allocate inode for iomem: %zd\n", PTR_ERR(inode));
-+		return PTR_ERR(inode);
- 	}
+ static int __init init_z3fold(void)
+ {
+-	int ret;
+-
+ 	/* Make sure the z3fold header is not larger than the page size */
+ 	BUILD_BUG_ON(ZHDR_SIZE_ALIGNED > PAGE_SIZE);
+-	ret = z3fold_mount();
+-	if (ret)
+-		return ret;
  
- 	/*
+ 	zpool_register_driver(&z3fold_zpool_driver);
+-
+ 	return 0;
+ }
+ 
+ static void __exit exit_z3fold(void)
+ {
+-	z3fold_unmount();
+ 	zpool_unregister_driver(&z3fold_zpool_driver);
+ }
+ 
 -- 
 2.30.1
 
