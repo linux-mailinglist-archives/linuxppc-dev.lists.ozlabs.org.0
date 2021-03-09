@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796DE33253F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E7E332541
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:17:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvN23bsjz3gdZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:17:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvNN23XDz3dhs
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:17:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,39 +15,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCg3YnBz3cWG
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:09:51 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCh3tYqz3cVg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:09:52 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DvvCb4Yk3z9tyjK;
- Tue,  9 Mar 2021 13:09:47 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DvvCc4zr1z9tyjL;
+ Tue,  9 Mar 2021 13:09:48 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id x7yMHOxu-uWi; Tue,  9 Mar 2021 13:09:47 +0100 (CET)
+ with ESMTP id kyi8_AWzEWmE; Tue,  9 Mar 2021 13:09:48 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvCb3qB3z9tyjH;
- Tue,  9 Mar 2021 13:09:47 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D53808B800;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvCc4CSmz9tyjH;
  Tue,  9 Mar 2021 13:09:48 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id ECA968B800;
+ Tue,  9 Mar 2021 13:09:49 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Qj8ofnMSA23A; Tue,  9 Mar 2021 13:09:48 +0100 (CET)
+ with ESMTP id FJfmvrsHzMkR; Tue,  9 Mar 2021 13:09:49 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8AC188B7FC;
- Tue,  9 Mar 2021 13:09:48 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 906EC8B7FC;
+ Tue,  9 Mar 2021 13:09:49 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 6D10F67555; Tue,  9 Mar 2021 12:09:48 +0000 (UTC)
-Message-Id: <ca50c568c73091f5b9094043acab20b83e2eb7d8.1615291473.git.christophe.leroy@csgroup.eu>
+ id 72EE367555; Tue,  9 Mar 2021 12:09:49 +0000 (UTC)
+Message-Id: <9bc023f6139f4ba3667050694b2062ab89d99955.1615291473.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1615291471.git.christophe.leroy@csgroup.eu>
 References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 22/43] powerpc/32: Refactor booke critical registers saving
+Subject: [PATCH v2 23/43] powerpc/32: Perform normal function call in
+ exception entry
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com
-Date: Tue,  9 Mar 2021 12:09:48 +0000 (UTC)
+Date: Tue,  9 Mar 2021 12:09:49 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,153 +65,92 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Refactor booke critical registers saving into a few macros
-and move it into the exception prolog directly.
+Now that the MMU is re-enabled before calling the transfer function,
+we don't need anymore that hack with the address of the handler and
+the return function sitting just after the 'bl' to the transfer
+fonction, that function is retrieving via a read relative to 'lr'.
 
-Keep the dedicated transfert_to_handler entry point for the
-moment allthough they are empty. They will be removed in a
-later patch to reduce churn.
+Do a regular call to the transfer function, then to the handler,
+then branch to the return function.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/entry_32.S   | 33 -------------------------
- arch/powerpc/kernel/head_booke.h | 41 ++++++++++++++++++++++++++++++++
- 2 files changed, 41 insertions(+), 33 deletions(-)
+ arch/powerpc/kernel/entry_32.S   | 14 ++++----------
+ arch/powerpc/kernel/head_32.h    |  4 ++--
+ arch/powerpc/kernel/head_booke.h |  6 +++---
+ 3 files changed, 9 insertions(+), 15 deletions(-)
 
 diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 01a064c8a96a..ad1fd33e1126 100644
+index ad1fd33e1126..fb849ef922fb 100644
 --- a/arch/powerpc/kernel/entry_32.S
 +++ b/arch/powerpc/kernel/entry_32.S
-@@ -51,49 +51,16 @@
- #ifdef CONFIG_BOOKE
- 	.globl	mcheck_transfer_to_handler
- mcheck_transfer_to_handler:
--	mfspr	r0,SPRN_DSRR0
--	stw	r0,_DSRR0(r11)
--	mfspr	r0,SPRN_DSRR1
--	stw	r0,_DSRR1(r11)
- 	/* fall through */
- _ASM_NOKPROBE_SYMBOL(mcheck_transfer_to_handler)
- 
- 	.globl	debug_transfer_to_handler
- debug_transfer_to_handler:
--	mfspr	r0,SPRN_CSRR0
--	stw	r0,_CSRR0(r11)
--	mfspr	r0,SPRN_CSRR1
--	stw	r0,_CSRR1(r11)
- 	/* fall through */
- _ASM_NOKPROBE_SYMBOL(debug_transfer_to_handler)
- 
- 	.globl	crit_transfer_to_handler
- crit_transfer_to_handler:
--#ifdef CONFIG_PPC_BOOK3E_MMU
--	mfspr	r0,SPRN_MAS0
--	stw	r0,MAS0(r11)
--	mfspr	r0,SPRN_MAS1
--	stw	r0,MAS1(r11)
--	mfspr	r0,SPRN_MAS2
--	stw	r0,MAS2(r11)
--	mfspr	r0,SPRN_MAS3
--	stw	r0,MAS3(r11)
--	mfspr	r0,SPRN_MAS6
--	stw	r0,MAS6(r11)
--#ifdef CONFIG_PHYS_64BIT
--	mfspr	r0,SPRN_MAS7
--	stw	r0,MAS7(r11)
--#endif /* CONFIG_PHYS_64BIT */
--#endif /* CONFIG_PPC_BOOK3E_MMU */
--#ifdef CONFIG_44x
--	mfspr	r0,SPRN_MMUCR
--	stw	r0,MMUCR(r11)
--#endif
--	mfspr	r0,SPRN_SRR0
--	stw	r0,_SRR0(r11)
--	mfspr	r0,SPRN_SRR1
--	stw	r0,_SRR1(r11)
--
- 	/* fall through */
- _ASM_NOKPROBE_SYMBOL(crit_transfer_to_handler)
+@@ -104,7 +104,7 @@ transfer_to_handler:
+ #ifdef CONFIG_PPC_BOOK3S_32
+ 	kuep_lock r11, r12
  #endif
+-	b	3f
++	blr
+ 
+ 	/* if from kernel, check interrupted DOZE/NAP mode */
+ 2:
+@@ -118,13 +118,7 @@ transfer_to_handler:
+ #endif /* CONFIG_PPC_BOOK3S_32 || CONFIG_E500 */
+ 	.globl transfer_to_handler_cont
+ transfer_to_handler_cont:
+-3:
+-	mflr	r9
+-	lwz	r11,0(r9)		/* virtual address of handler */
+-	lwz	r9,4(r9)		/* where to go when done */
+-	mtctr	r11
+-	mtlr	r9
+-	bctr				/* jump to handler */
++	blr
+ 
+ #if defined (CONFIG_PPC_BOOK3S_32) || defined(CONFIG_E500)
+ 4:	rlwinm	r12,r12,0,~_TLF_NAPPING
+@@ -404,8 +398,8 @@ fee_restarts:
+ 	stw	r10,_TRAP(r11)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	transfer_to_handler_full
+-	.long	unrecoverable_exception
+-	.long	ret_from_except
++	bl	unrecoverable_exception
++	b	ret_from_except
+ #endif
+ 
+ 	.globl	ret_from_except_full
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index 160ebd573c37..e09585b88ba7 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -190,8 +190,8 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
+ 	li	r10,trap;					\
+ 	stw	r10,_TRAP(r11);					\
+ 	bl	tfer;						\
+-	.long	hdlr;						\
+-	.long	ret
++	bl	hdlr;						\
++	b	ret
+ 
+ #define EXC_XFER_STD(n, hdlr)		\
+ 	EXC_XFER_TEMPLATE(hdlr, n, MSR_KERNEL, transfer_to_handler_full,	\
 diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-index f712b9bc6d62..a127d5e7efb4 100644
+index a127d5e7efb4..3707f49f0b78 100644
 --- a/arch/powerpc/kernel/head_booke.h
 +++ b/arch/powerpc/kernel/head_booke.h
-@@ -229,6 +229,36 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 	SAVE_4GPRS(3, r11);						     \
- 	SAVE_2GPRS(7, r11)
+@@ -322,9 +322,9 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
+ #define EXC_XFER_TEMPLATE(hdlr, trap, msr, tfer, ret)	\
+ 	li	r10,trap;					\
+ 	stw	r10,_TRAP(r11);					\
+-	bl	tfer;		 				\
+-	.long	hdlr;						\
+-	.long	ret
++	bl	tfer;						\
++	bl	hdlr;						\
++	b	ret;						\
  
-+#define SAVE_xSRR(xSRR)			\
-+	mfspr	r0,SPRN_##xSRR##0;	\
-+	stw	r0,_##xSRR##0(r1);	\
-+	mfspr	r0,SPRN_##xSRR##1;	\
-+	stw	r0,_##xSRR##1(r1)
-+
-+
-+.macro SAVE_MMU_REGS
-+#ifdef CONFIG_PPC_BOOK3E_MMU
-+	mfspr	r0,SPRN_MAS0
-+	stw	r0,MAS0(r1)
-+	mfspr	r0,SPRN_MAS1
-+	stw	r0,MAS1(r1)
-+	mfspr	r0,SPRN_MAS2
-+	stw	r0,MAS2(r1)
-+	mfspr	r0,SPRN_MAS3
-+	stw	r0,MAS3(r1)
-+	mfspr	r0,SPRN_MAS6
-+	stw	r0,MAS6(r1)
-+#ifdef CONFIG_PHYS_64BIT
-+	mfspr	r0,SPRN_MAS7
-+	stw	r0,MAS7(r1)
-+#endif /* CONFIG_PHYS_64BIT */
-+#endif /* CONFIG_PPC_BOOK3E_MMU */
-+#ifdef CONFIG_44x
-+	mfspr	r0,SPRN_MMUCR
-+	stw	r0,MMUCR(r1)
-+#endif
-+.endm
-+
- #define CRITICAL_EXCEPTION_PROLOG(intno) \
- 		EXC_LEVEL_EXCEPTION_PROLOG(CRIT, intno, SPRN_CSRR0, SPRN_CSRR1)
- #define DEBUG_EXCEPTION_PROLOG \
-@@ -271,6 +301,8 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 	START_EXCEPTION(label);						\
- 	CRITICAL_EXCEPTION_PROLOG(intno);				\
- 	addi	r3,r1,STACK_FRAME_OVERHEAD;				\
-+	SAVE_MMU_REGS;							\
-+	SAVE_xSRR(SRR);							\
- 	EXC_XFER_TEMPLATE(hdlr, n+2, (MSR_KERNEL & ~(MSR_ME|MSR_DE|MSR_CE)), \
- 			  crit_transfer_to_handler, ret_from_crit_exc)
- 
-@@ -280,6 +312,10 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 	mfspr	r5,SPRN_ESR;					\
- 	stw	r5,_ESR(r11);					\
- 	addi	r3,r1,STACK_FRAME_OVERHEAD;			\
-+	SAVE_xSRR(DSRR);					\
-+	SAVE_xSRR(CSRR);					\
-+	SAVE_MMU_REGS;						\
-+	SAVE_xSRR(SRR);						\
- 	EXC_XFER_TEMPLATE(hdlr, n+4, (MSR_KERNEL & ~(MSR_ME|MSR_DE|MSR_CE)), \
- 			  mcheck_transfer_to_handler, ret_from_mcheck_exc)
- 
-@@ -363,6 +399,9 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 2:	mfspr	r4,SPRN_DBSR;						      \
- 	stw	r4,_ESR(r11);		/* DebugException takes DBSR in _ESR */\
- 	addi	r3,r1,STACK_FRAME_OVERHEAD;				      \
-+	SAVE_xSRR(CSRR);						      \
-+	SAVE_MMU_REGS;							      \
-+	SAVE_xSRR(SRR);							      \
- 	EXC_XFER_TEMPLATE(DebugException, 0x2008, (MSR_KERNEL & ~(MSR_ME|MSR_DE|MSR_CE)), debug_transfer_to_handler, ret_from_debug_exc)
- 
- #define DEBUG_CRIT_EXCEPTION						      \
-@@ -417,6 +456,8 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 2:	mfspr	r4,SPRN_DBSR;						      \
- 	stw	r4,_ESR(r11);		/* DebugException takes DBSR in _ESR */\
- 	addi	r3,r1,STACK_FRAME_OVERHEAD;				      \
-+	SAVE_MMU_REGS;							      \
-+	SAVE_xSRR(SRR);							      \
- 	EXC_XFER_TEMPLATE(DebugException, 0x2002, (MSR_KERNEL & ~(MSR_ME|MSR_DE|MSR_CE)), crit_transfer_to_handler, ret_from_crit_exc)
- 
- #define DATA_STORAGE_EXCEPTION						      \
+ #define EXC_XFER_STD(n, hdlr)		\
+ 	EXC_XFER_TEMPLATE(hdlr, n, MSR_KERNEL, transfer_to_handler_full, \
 -- 
 2.25.0
 
