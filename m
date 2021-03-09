@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA063323ED
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 12:27:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FFD133240B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 12:29:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvtGW5WTJz3cTZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 22:27:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvtJn0Vq8z3cTf
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 22:29:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZKF6D0/2;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nhH5iiMs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,64 +18,65 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ZKF6D0/2; dkim-atps=neutral
+ header.s=pp1 header.b=nhH5iiMs; dkim-atps=neutral
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvtG52lgzz30QS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 22:26:52 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvtJK6tVqz30Kw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 22:28:49 +1100 (AEDT)
 Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 129B3wOp043667; Tue, 9 Mar 2021 06:26:46 -0500
+ 129B3wcx043755; Tue, 9 Mar 2021 06:28:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=subject : to : cc :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=HgSQIWSEU/WlQR1r8uNcM4cWyEnQbIa7diDvK+Kr6zk=;
- b=ZKF6D0/2D88/kCjHpgivCgXMGiXSA6FHwwqfjoXGiR1VesmyUs91SxZ+ZnhUzgqzripN
- 8u5OjrnYAlqGLiKL1wz3Zn56vNjoJrJ04bsfJDMiIqWUYtUk2ercB11UBxTq20sIuiUQ
- 5wX6a0+Hg94hsFf5zO2gt7FYjdjRg9m9fwBVRD/FJ3lrmlZGFXWa9Rly8wZs6TF4wZoz
- KKyjHXMtbD8UrKsfDZsHyk3fkH8NGi3Lxi63ZS47f15hL33eKCHiQIwVL9In66etg6Uw
- hD/RSyU2zm9Oq88DnVozxPmgq16L5WCEQTlRnGMxuwoqHLI4GFwGNZQaK5YsP0hVE/Nx hA== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 375wcm7pj8-1
+ bh=NkdTnnfYghbRDUtA2oEECqWmnmnNMcZrmUuMlnmwJR0=;
+ b=nhH5iiMs1o9Mf1a2JW9yHs3t4q7CBcpZ++nqct5+hK32fgod+Bnu2bapZR/8IFw9GR5G
+ oeuC1bUMYjJZTf61ifKeO7qAO4TwDdmDUGVB8JwOFYWm//XdDh09uQ+w7+fk08+CAnDt
+ pxri66J4aDWAuDbuItmqextyXSw6v6+b5fXJIW//706gsk7J6e2XvAzncNFUtFE3wKNP
+ LOweRSx0cwV2YdNkI0KB4WSeBqYBjyBpL5MZn7G99CPJipaFh81/MweB3vKAjNKdLF5G
+ BqhOZs3nZEug5d2fzGvK1bAMrSjVQuOHTa6PJdR+kP6yi1uKpxsDDQoIOm6v+2L/liWc KQ== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 375wcm7r18-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 06:26:46 -0500
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 129AwV3U003805;
- Tue, 9 Mar 2021 11:26:44 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma05fra.de.ibm.com with ESMTP id 3741c89dne-1
+ Tue, 09 Mar 2021 06:28:44 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 129AwlKr026965;
+ Tue, 9 Mar 2021 11:28:42 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06ams.nl.ibm.com with ESMTP id 37636fg86y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 11:26:44 +0000
+ Tue, 09 Mar 2021 11:28:42 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
  [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 129BQR0J34931174
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 129BSeQM40305052
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Mar 2021 11:26:27 GMT
+ Tue, 9 Mar 2021 11:28:40 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6EBF8AE055;
- Tue,  9 Mar 2021 11:26:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 88232AE045;
+ Tue,  9 Mar 2021 11:28:40 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 309F9AE045;
- Tue,  9 Mar 2021 11:26:41 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 477E8AE04D;
+ Tue,  9 Mar 2021 11:28:39 +0000 (GMT)
 Received: from Madhavan.PrimaryTP (unknown [9.80.199.175])
  by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  9 Mar 2021 11:26:40 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/perf: Fix sampled instruction type for larx/stcx
+ Tue,  9 Mar 2021 11:28:38 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/perf: Fix the threshold event selection for
+ memory events in power10
 To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, mpe@ellerman.id.au
-References: <1614858937-1485-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+References: <1614840015-1535-1-git-send-email-atrajeev@linux.vnet.ibm.com>
 From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Message-ID: <1600e1a1-1610-e081-a5b7-46dc7762bad9@linux.ibm.com>
-Date: Tue, 9 Mar 2021 16:56:39 +0530
+Message-ID: <e8b9af3b-71d2-d4b1-313c-3e108b5e3ab7@linux.ibm.com>
+Date: Tue, 9 Mar 2021 16:58:37 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <1614858937-1485-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <1614840015-1535-1-git-send-email-atrajeev@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
@@ -106,96 +107,35 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-On 3/4/21 5:25 PM, Athira Rajeev wrote:
-> Sampled Instruction Event Register (SIER) field [46:48]
-> identifies the sampled instruction type. ISA v3.1 says value
-> of 0b111 for this field as reserved, but in POWER10 it denotes
-> LARX/STCX type which will hopefully be fixed in ISA v3.1 update.
->
-> Patch fixes the functions to handle type value 7 for
-> CPU_FTR_ARCH_31.
-
+On 3/4/21 12:10 PM, Athira Rajeev wrote:
+> Memory events (mem-loads and mem-stores) currently use the threshold
+> event selection as issue to finish. Power10 supports issue to complete
+> as part of thresholding which is more appropriate for mem-loads and
+> mem-stores. Hence fix the event code for memory events to use issue
+> to complete.
 
 Changes looks fine to me.
 
 Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 
+We should also CC stable to include this fix?
+
 
 > Fixes: a64e697cef23 ("powerpc/perf: power10 Performance Monitoring support")
 > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > ---
->   arch/powerpc/perf/isa207-common.c | 30 +++++++++++++++++++++++++++---
->   arch/powerpc/perf/isa207-common.h |  1 +
->   2 files changed, 28 insertions(+), 3 deletions(-)
+>   arch/powerpc/perf/power10-events-list.h | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-> index e4f577da33d8..754f904d8d69 100644
-> --- a/arch/powerpc/perf/isa207-common.c
-> +++ b/arch/powerpc/perf/isa207-common.c
-> @@ -266,6 +266,8 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
->   	u32 sub_idx;
->   	u64 sier;
->   	u64 val;
-> +	u64 mmcra = mfspr(SPRN_MMCRA);
-> +	u32 op_type;
+> diff --git a/arch/powerpc/perf/power10-events-list.h b/arch/powerpc/perf/power10-events-list.h
+> index e45dafe818ed..93be7197d250 100644
+> --- a/arch/powerpc/perf/power10-events-list.h
+> +++ b/arch/powerpc/perf/power10-events-list.h
+> @@ -75,5 +75,5 @@
+>    *     thresh end (TE)
+>    */
 >   
->   	/* Skip if no SIER support */
->   	if (!(flags & PPMU_HAS_SIER)) {
-> @@ -275,12 +277,34 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
->   
->   	sier = mfspr(SPRN_SIER);
->   	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
-> -	if (val == 1 || val == 2) {
-> +	if (val == 1 || val == 2 || (val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
->   		idx = (sier & ISA207_SIER_LDST_MASK) >> ISA207_SIER_LDST_SHIFT;
->   		sub_idx = (sier & ISA207_SIER_DATA_SRC_MASK) >> ISA207_SIER_DATA_SRC_SHIFT;
->   
->   		dsrc->val = isa207_find_source(idx, sub_idx);
-> -		dsrc->val |= (val == 1) ? P(OP, LOAD) : P(OP, STORE);
-> +		if (val == 7) {
-> +			/*
-> +			 * Type 0b111 denotes either larx or stcx instruction. Use the
-> +			 * MMCRA sampling bits [57:59] along with the type value
-> +			 * to determine the exact instruction type. If the sampling
-> +			 * criteria is neither load or store, set the type as default
-> +			 * to NA.
-> +			 */
-> +			op_type = (mmcra >> MMCRA_SAMP_ELIG_SHIFT) & MMCRA_SAMP_ELIG_MASK;
-> +			switch (op_type) {
-> +			case 5:
-> +				dsrc->val |= P(OP, LOAD);
-> +				break;
-> +			case 7:
-> +				dsrc->val |= P(OP, STORE);
-> +				break;
-> +			default:
-> +				dsrc->val |= P(OP, NA);
-> +				break;
-> +			}
-> +		} else {
-> +			dsrc->val |= (val == 1) ? P(OP, LOAD) : P(OP, STORE);
-> +		}
->   	}
->   }
->   
-> @@ -295,7 +319,7 @@ void isa207_get_mem_weight(u64 *weight)
->   	if (cpu_has_feature(CPU_FTR_ARCH_31))
->   		mantissa = P10_MMCRA_THR_CTR_MANT(mmcra);
->   
-> -	if (val == 0 || val == 7)
-> +	if (val == 0 || (val == 7 && !cpu_has_feature(CPU_FTR_ARCH_31)))
->   		*weight = 0;
->   	else
->   		*weight = mantissa << (2 * exp);
-> diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-> index 1af0e8c97ac7..7b0242efe4b9 100644
-> --- a/arch/powerpc/perf/isa207-common.h
-> +++ b/arch/powerpc/perf/isa207-common.h
-> @@ -220,6 +220,7 @@
->   /* Bits in MMCRA for PowerISA v2.07 */
->   #define MMCRA_SAMP_MODE_SHIFT		1
->   #define MMCRA_SAMP_ELIG_SHIFT		4
-> +#define MMCRA_SAMP_ELIG_MASK		7
->   #define MMCRA_THR_CTL_SHIFT		8
->   #define MMCRA_THR_SEL_SHIFT		16
->   #define MMCRA_THR_CMP_SHIFT		32
+> -EVENT(MEM_LOADS,				0x34340401e0);
+> -EVENT(MEM_STORES,				0x343c0401e0);
+> +EVENT(MEM_LOADS,				0x35340401e0);
+> +EVENT(MEM_STORES,				0x353c0401e0);
