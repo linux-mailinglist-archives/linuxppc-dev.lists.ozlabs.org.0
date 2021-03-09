@@ -1,90 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2DC3322AF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 11:13:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0453322E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 11:23:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dvrd53Yrsz3cTW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 21:13:13 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JHoTDLey;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvrsK47ryz3cV7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 21:23:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=JHoTDLey; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=kaod.org (client-ip=178.32.121.110; helo=1.mo51.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+Received: from 1.mo51.mail-out.ovh.net (1.mo51.mail-out.ovh.net
+ [178.32.121.110])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dvrcf5rPdz30JX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 21:12:49 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 129A3Tn8126439; Tue, 9 Mar 2021 05:12:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=VLXXREKt32lTGhx5VSlCqI/r3ad7QYovQBLESPlSg1g=;
- b=JHoTDLey4dg5DpogyA3aPdDBsgtJ9oQbVxU0yNqHH6AxCs0k/hLqbURN9Pp05W9dCjIV
- oJ3IQOmpnHGG/+L0cyuvbVIVjqYPp4JhtXdlNoJNniwZtAR1tkcz/SbR3hpJUPhzVNjt
- Tvi/cR7xZXoRqWMR9g5Fri5UwreL+QHDXQyvSXCCG4F7b7xcBaUtc9pok+hBvRJumV8O
- O67FUpPgItTWV5Q3smsqawuz2HxZNmYtl9TT3HRmU7KZDIm97OxDHREAp3hOYIQ/zlYQ
- RScq9gC3nQkMxAe2cugXHyC9dedDDRUmoojbo3F3j6rNOgbx4OYe0uxkJEJD5yj1Hj3m AQ== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3762wqy07d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 05:12:33 -0500
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1299rlpi009357;
- Tue, 9 Mar 2021 10:12:31 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 3741c8jmw2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 10:12:31 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 129ACSuw48300516
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Mar 2021 10:12:28 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BADF8A405F;
- Tue,  9 Mar 2021 10:12:28 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2A6C8A4065;
- Tue,  9 Mar 2021 10:12:28 +0000 (GMT)
-Received: from osiris (unknown [9.171.41.99])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Tue,  9 Mar 2021 10:12:28 +0000 (GMT)
-Date: Tue, 9 Mar 2021 11:12:26 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH 0/6] mm: some config cleanups
-Message-ID: <YEdKCvxlFQa4noI8@osiris>
-References: <1615278790-18053-1-git-send-email-anshuman.khandual@arm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dvrs164dbz30Kv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 21:23:32 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.143.206])
+ by mo51.mail-out.ovh.net (Postfix) with ESMTPS id 3CEB425F18E;
+ Tue,  9 Mar 2021 11:23:28 +0100 (CET)
+Received: from kaod.org (37.59.142.100) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 9 Mar 2021
+ 11:23:27 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-100R003f27ff26d-f500-42e0-ac23-557abc60056a,
+ 5BB0FC21D60CBA87691D752E0F3295FDC8BC83A3) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Tue, 9 Mar 2021 11:23:25 +0100
+From: Greg Kurz <groug@kaod.org>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH v2 7/8] powerpc/xive: Fix xmon command "dxi"
+Message-ID: <20210309112325.7b161cc7@bahia.lan>
+In-Reply-To: <20210303174857.1760393-8-clg@kaod.org>
+References: <20210303174857.1760393-1-clg@kaod.org>
+ <20210303174857.1760393-8-clg@kaod.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1615278790-18053-1-git-send-email-anshuman.khandual@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-09_09:2021-03-08,
- 2021-03-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- impostorscore=0 bulkscore=0 adultscore=0 spamscore=0 malwarescore=0
- priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1011
- mlxlogscore=465 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103090048
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.100]
+X-ClientProxiedBy: DAG4EX2.mxp5.local (172.16.2.32) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: 0ea67159-ad42-4e74-8f4f-0de1382fc99b
+X-Ovh-Tracer-Id: 5521413143258110371
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudduiedgudegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfhisehtqhertdertdejnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeevlefhtddufffhieevhefhleegleelgfetffetkedugeehjeffgfehhfefueduffenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddttdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,62 +60,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org,
- linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
+ Dan Carpenter <dan.carpenter@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 09, 2021 at 02:03:04PM +0530, Anshuman Khandual wrote:
-> This series contains config cleanup patches which reduces code duplication
-> across platforms and also improves maintainability. There is no functional
-> change intended with this series. This has been boot tested on arm64 but
-> only build tested on some other platforms.
-> 
-> This applies on 5.12-rc2
-> 
-> Cc: x86@kernel.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> 
-> Anshuman Khandual (6):
->   mm: Generalize ARCH_HAS_CACHE_LINE_SIZE
->   mm: Generalize SYS_SUPPORTS_HUGETLBFS (rename as ARCH_SUPPORTS_HUGETLBFS)
->   mm: Generalize ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE]
->   mm: Drop redundant ARCH_ENABLE_[HUGEPAGE|THP]_MIGRATION
->   mm: Drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK
->   mm: Drop redundant HAVE_ARCH_TRANSPARENT_HUGEPAGE
-> 
->  arch/arc/Kconfig                       |  9 ++------
->  arch/arm/Kconfig                       | 10 ++-------
->  arch/arm64/Kconfig                     | 30 ++++++--------------------
->  arch/ia64/Kconfig                      |  8 ++-----
->  arch/mips/Kconfig                      |  6 +-----
->  arch/parisc/Kconfig                    |  5 +----
->  arch/powerpc/Kconfig                   | 11 ++--------
->  arch/powerpc/platforms/Kconfig.cputype | 16 +++++---------
->  arch/riscv/Kconfig                     |  5 +----
->  arch/s390/Kconfig                      | 12 +++--------
->  arch/sh/Kconfig                        |  7 +++---
->  arch/sh/mm/Kconfig                     |  8 -------
->  arch/x86/Kconfig                       | 29 ++++++-------------------
->  fs/Kconfig                             |  5 ++++-
->  mm/Kconfig                             |  9 ++++++++
->  15 files changed, 48 insertions(+), 122 deletions(-)
+On Wed, 3 Mar 2021 18:48:56 +0100
+C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 
-for the s390 bits:
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+> When under xmon, the "dxi" command dumps the state of the XIVE
+> interrupts. If an interrupt number is specified, only the state of
+> the associated XIVE interrupt is dumped. This form of the command
+> lacks an irq_data parameter which is nevertheless used by
+> xmon_xive_get_irq_config(), leading to an xmon crash.
+>=20
+> Fix that by doing a lookup in the system IRQ mapping to query the IRQ
+> descriptor data. Invalid interrupt numbers, or not belonging to the
+> XIVE IRQ domain, OPAL event interrupt number for instance, should be
+> caught by the previous query done at the firmware level.
+>=20
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Fixes: 97ef27507793 ("powerpc/xive: Fix xmon support on the PowerNV platf=
+orm")
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+
+I've tested this in a KVM guest and it seems to do the job.
+
+6:mon> dxi 1201
+IRQ 0x00001201 : target=3D0xfffffc00 prio=3Dff lirq=3D0x0 flags=3D LH PQ=3D=
+-Q
+
+Bad HW irq numbers are filtered by the hypervisor:
+
+6:mon> dxi bad
+[  696.390577] xive: H_INT_GET_SOURCE_CONFIG lisn=3D2989 failed -55
+IRQ 0x00000bad : no config rc=3D-6
+
+Note that this also allows to show IPIs:
+
+6:mon> dxi 0
+IRQ 0x00000000 : target=3D0x0 prio=3D06 lirq=3D0x10=20
+
+This is a bit inconsistent with output of the 0-argument form of "dxi",
+which filters them out for a reason that isn't obvious to me. No big
+deal though, this should be addressed in another patch anyway.
+
+Reviewed-and-tested-by: Greg Kurz <groug@kaod.org>
+
+>  arch/powerpc/sysdev/xive/common.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
+/common.c
+> index f6b7b15bbb3a..8eefd152b947 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -255,17 +255,20 @@ notrace void xmon_xive_do_dump(int cpu)
+>  	xmon_printf("\n");
+>  }
+> =20
+> +static struct irq_data *xive_get_irq_data(u32 hw_irq)
+> +{
+> +	unsigned int irq =3D irq_find_mapping(xive_irq_domain, hw_irq);
+> +
+> +	return irq ? irq_get_irq_data(irq) : NULL;
+> +}
+> +
+>  int xmon_xive_get_irq_config(u32 hw_irq, struct irq_data *d)
+>  {
+> -	struct irq_chip *chip =3D irq_data_get_irq_chip(d);
+>  	int rc;
+>  	u32 target;
+>  	u8 prio;
+>  	u32 lirq;
+> =20
+> -	if (!is_xive_irq(chip))
+> -		return -EINVAL;
+> -
+>  	rc =3D xive_ops->get_irq_config(hw_irq, &target, &prio, &lirq);
+>  	if (rc) {
+>  		xmon_printf("IRQ 0x%08x : no config rc=3D%d\n", hw_irq, rc);
+> @@ -275,6 +278,9 @@ int xmon_xive_get_irq_config(u32 hw_irq, struct irq_d=
+ata *d)
+>  	xmon_printf("IRQ 0x%08x : target=3D0x%x prio=3D%02x lirq=3D0x%x ",
+>  		    hw_irq, target, prio, lirq);
+> =20
+> +	if (!d)
+> +		d =3D xive_get_irq_data(hw_irq);
+> +
+>  	if (d) {
+>  		struct xive_irq_data *xd =3D irq_data_get_irq_handler_data(d);
+>  		u64 val =3D xive_esb_read(xd, XIVE_ESB_GET);
+
