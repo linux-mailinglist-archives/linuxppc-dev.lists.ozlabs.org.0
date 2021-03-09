@@ -1,53 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5297F33256D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:24:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA973325EE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:59:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvXG2lwhz3gg6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:24:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvwJg6sb8z3cX6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:59:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cKFeeBaA;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=cKFeeBaA; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvD55wjhz3cJv
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:10:13 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DvvD20pyHz9tyjM;
- Tue,  9 Mar 2021 13:10:10 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id nbXdCMHcxz8M; Tue,  9 Mar 2021 13:10:10 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvD16nf1z9tyjG;
- Tue,  9 Mar 2021 13:10:09 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 05B748B800;
- Tue,  9 Mar 2021 13:10:11 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id nTx8Z1HFu-7i; Tue,  9 Mar 2021 13:10:10 +0100 (CET)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5DBED8B803;
- Tue,  9 Mar 2021 13:10:10 +0100 (CET)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 3D6A767555; Tue,  9 Mar 2021 12:10:10 +0000 (UTC)
-Message-Id: <509011e8e3ad4399aa39a548d2f30d9056aafa6f.1615291474.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1615291471.git.christophe.leroy@csgroup.eu>
-References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 43/43] powerpc/32: Manage KUAP in C
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- npiggin@gmail.com
-Date: Tue,  9 Mar 2021 12:10:10 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvwJC5Rdgz30Hj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:58:50 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 129CYCfi022923; Tue, 9 Mar 2021 07:58:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=E9Z5K4c9KLZDikZeIsX4UkCzElBTga+tVCdllv+XDCU=;
+ b=cKFeeBaAL1qNqU84XgVrc1u3Smz3hvZmo0PzKVXjKbJS0EnnzPR3BDOLQ7GEmJ5WrNQo
+ aMXmBp+mg7CFZ3FSmT5Pnnm71UVld/tO7bKKPGiyPvB6PJU0RzFyq6W2CIKhxCNw3F+N
+ 11xlcJfq8aBBl6nfNDfPXhxXExUYFWh5jcNxWUdHR0Khp7ofymmHumXeFzlcur4PMcAB
+ t/K+OaeRm66ilO2yehL9UeiYTSAA1XhsjiPpnK4fL6nxLtv4WOFo9i8DveKTSzz4rY8+
+ 6OwxtMFOtF7DPktZHqY522F/s8UnhnE30rRye3xYmfSTLdPNo6OF8/Lihq5aH+kelklF wA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 375wgv9vv7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Mar 2021 07:58:12 -0500
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 129CYDmN023041;
+ Tue, 9 Mar 2021 07:58:11 -0500
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 375wgv9vuh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Mar 2021 07:58:11 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 129Cq06B001183;
+ Tue, 9 Mar 2021 12:58:09 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06ams.nl.ibm.com with ESMTP id 3768urr14r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Mar 2021 12:58:09 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 129Cw6kc42074568
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 9 Mar 2021 12:58:07 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C4E60A404D;
+ Tue,  9 Mar 2021 12:58:06 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 28403A4057;
+ Tue,  9 Mar 2021 12:58:04 +0000 (GMT)
+Received: from [9.199.45.167] (unknown [9.199.45.167])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  9 Mar 2021 12:58:03 +0000 (GMT)
+Subject: Re: [PATCH v4] powerpc/uprobes: Validation for prefixed instruction
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20210305115433.140769-1-ravi.bangoria@linux.ibm.com>
+ <87ft14r6sa.fsf@mpe.ellerman.id.au>
+ <20210309112115.GG145@DESKTOP-TDPLP67.localdomain>
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Message-ID: <1a080cb5-af98-6b6e-352d-772a90cfa902@linux.ibm.com>
+Date: Tue, 9 Mar 2021 18:28:01 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
+MIME-Version: 1.0
+In-Reply-To: <20210309112115.GG145@DESKTOP-TDPLP67.localdomain>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-09_11:2021-03-08,
+ 2021-03-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 mlxlogscore=999
+ malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103090062
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,309 +110,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, jniethe5@gmail.com,
+ oleg@redhat.com, rostedt@goodmis.org, linux-kernel@vger.kernel.org,
+ paulus@samba.org, sandipan@linux.ibm.com, naveen.n.rao@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move all KUAP management in C.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/book3s/32/kup.h     | 50 +-------------------
- arch/powerpc/include/asm/interrupt.h         |  2 +
- arch/powerpc/include/asm/kup.h               |  9 ----
- arch/powerpc/include/asm/nohash/32/kup-8xx.h | 25 +---------
- arch/powerpc/kernel/entry_32.S               |  6 ---
- arch/powerpc/kernel/interrupt.c              | 19 ++------
- arch/powerpc/kernel/process.c                |  3 ++
- 7 files changed, 11 insertions(+), 103 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-index c9d6c28bcd10..27991e0d2cf9 100644
---- a/arch/powerpc/include/asm/book3s/32/kup.h
-+++ b/arch/powerpc/include/asm/book3s/32/kup.h
-@@ -5,55 +5,7 @@
- #include <asm/bug.h>
- #include <asm/book3s/32/mmu-hash.h>
- 
--#ifdef __ASSEMBLY__
--
--#ifdef CONFIG_PPC_KUAP
--
--.macro kuap_update_sr	gpr1, gpr2, gpr3	/* NEVER use r0 as gpr2 due to addis */
--101:	mtsrin	\gpr1, \gpr2
--	addi	\gpr1, \gpr1, 0x111		/* next VSID */
--	rlwinm	\gpr1, \gpr1, 0, 0xf0ffffff	/* clear VSID overflow */
--	addis	\gpr2, \gpr2, 0x1000		/* address of next segment */
--	cmplw	\gpr2, \gpr3
--	blt-	101b
--	isync
--.endm
--
--.macro kuap_save_and_lock	sp, thread, gpr1, gpr2, gpr3
--	lwz	\gpr2, KUAP(\thread)
--	rlwinm.	\gpr3, \gpr2, 28, 0xf0000000
--	stw	\gpr2, STACK_REGS_KUAP(\sp)
--	beq+	102f
--	li	\gpr1, 0
--	stw	\gpr1, KUAP(\thread)
--	mfsrin	\gpr1, \gpr2
--	oris	\gpr1, \gpr1, SR_KS@h	/* set Ks */
--	kuap_update_sr	\gpr1, \gpr2, \gpr3
--102:
--.endm
--
--.macro kuap_restore	sp, current, gpr1, gpr2, gpr3
--	lwz	\gpr2, STACK_REGS_KUAP(\sp)
--	rlwinm.	\gpr3, \gpr2, 28, 0xf0000000
--	stw	\gpr2, THREAD + KUAP(\current)
--	beq+	102f
--	mfsrin	\gpr1, \gpr2
--	rlwinm	\gpr1, \gpr1, 0, ~SR_KS	/* Clear Ks */
--	kuap_update_sr	\gpr1, \gpr2, \gpr3
--102:
--.endm
--
--.macro kuap_check	current, gpr
--#ifdef CONFIG_PPC_KUAP_DEBUG
--	lwz	\gpr, THREAD + KUAP(\current)
--999:	twnei	\gpr, 0
--	EMIT_BUG_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
--#endif
--.endm
--
--#endif /* CONFIG_PPC_KUAP */
--
--#else /* !__ASSEMBLY__ */
-+#ifndef __ASSEMBLY__
- 
- #ifdef CONFIG_PPC_KUAP
- 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index d4bfe94b4a68..b41cb4e014b2 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -37,6 +37,8 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
- 		kuep_lock();
- 		current->thread.regs = regs;
- 		account_cpu_user_entry();
-+	} else {
-+		kuap_save_and_lock(regs);
- 	}
- #endif
- 	/*
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index b7efa46b3109..5bbe8f28d26b 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -28,15 +28,6 @@
- 
- #ifdef __ASSEMBLY__
- #ifndef CONFIG_PPC_KUAP
--.macro kuap_save_and_lock	sp, thread, gpr1, gpr2, gpr3
--.endm
--
--.macro kuap_restore	sp, current, gpr1, gpr2, gpr3
--.endm
--
--.macro kuap_check	current, gpr
--.endm
--
- .macro kuap_check_amr	gpr1, gpr2
- .endm
- 
-diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-index c74f5704bc47..fb294dbca102 100644
---- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-@@ -7,30 +7,7 @@
- 
- #ifdef CONFIG_PPC_KUAP
- 
--#ifdef __ASSEMBLY__
--
--.macro kuap_save_and_lock	sp, thread, gpr1, gpr2, gpr3
--	lis	\gpr2, MD_APG_KUAP@h	/* only APG0 and APG1 are used */
--	mfspr	\gpr1, SPRN_MD_AP
--	mtspr	SPRN_MD_AP, \gpr2
--	stw	\gpr1, STACK_REGS_KUAP(\sp)
--.endm
--
--.macro kuap_restore	sp, current, gpr1, gpr2, gpr3
--	lwz	\gpr1, STACK_REGS_KUAP(\sp)
--	mtspr	SPRN_MD_AP, \gpr1
--.endm
--
--.macro kuap_check	current, gpr
--#ifdef CONFIG_PPC_KUAP_DEBUG
--	mfspr	\gpr, SPRN_MD_AP
--	rlwinm	\gpr, \gpr, 16, 0xffff
--999:	twnei	\gpr, MD_APG_KUAP@h
--	EMIT_BUG_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
--#endif
--.endm
--
--#else /* !__ASSEMBLY__ */
-+#ifndef __ASSEMBLY__
- 
- #include <asm/reg.h>
- 
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 850cb17a937f..f5ac021ff9ed 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -52,11 +52,9 @@
- 	.globl	prepare_transfer_to_handler
- prepare_transfer_to_handler:
- 	andi.	r0,r9,MSR_PR
--	addi	r12, r2, THREAD
- 	bnelr
- 
- 	/* if from kernel, check interrupted DOZE/NAP mode */
--	kuap_save_and_lock r11, r12, r9, r5, r6
- 	lwz	r12,TI_LOCAL_FLAGS(r2)
- 	mtcrf	0x01,r12
- 	bt-	31-TLF_NAPPING,4f
-@@ -96,7 +94,6 @@ ret_from_syscall:
- 	cmplwi	cr0,r5,0
- 	bne-	2f
- #endif /* CONFIG_PPC_47x */
--	kuap_check r2, r4
- 	lwz	r4,_LINK(r1)
- 	lwz	r5,_CCR(r1)
- 	mtlr	r4
-@@ -208,7 +205,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_SPE)
- 	stw	r10,_CCR(r1)
- 	stw	r1,KSP(r3)	/* Set old stack pointer */
- 
--	kuap_check r2, r0
- #ifdef CONFIG_SMP
- 	/* We need a sync somewhere here to make sure that if the
- 	 * previous task gets rescheduled on another CPU, it sees all
-@@ -276,7 +272,6 @@ interrupt_return:
- 	bne-	.Lrestore_nvgprs
- 
- .Lfast_user_interrupt_return:
--	kuap_check r2, r4
- 	lwz	r11,_NIP(r1)
- 	lwz	r12,_MSR(r1)
- 	mtspr	SPRN_SRR0,r11
-@@ -326,7 +321,6 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
- 
- .Lfast_kernel_interrupt_return:
- 	cmpwi	cr1,r3,0
--	kuap_restore r1, r2, r3, r4, r5
- 	lwz	r11,_NIP(r1)
- 	lwz	r12,_MSR(r1)
- 	mtspr	SPRN_SRR0,r11
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index 40ed55064e54..864cf47b629a 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -34,6 +34,9 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 	syscall_fn f;
- 
- 	kuep_lock();
-+#ifdef CONFIG_PPC32
-+	kuap_save_and_lock(regs);
-+#endif
- 
- 	regs->orig_gpr3 = r3;
- 
-@@ -75,9 +78,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 			isync();
- 	} else
- #endif
--#ifdef CONFIG_PPC64
- 		kuap_check();
--#endif
- 
- 	booke_restore_dbcr0();
- 
-@@ -253,9 +254,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 
- 	CT_WARN_ON(ct_state() == CONTEXT_USER);
- 
--#ifdef CONFIG_PPC64
- 	kuap_check();
--#endif
- 
- 	regs->result = r3;
- 
-@@ -350,7 +349,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 
- 	account_cpu_user_exit();
- 
--#ifdef CONFIG_PPC_BOOK3S_64 /* BOOK3E and ppc32 not using this */
-+#ifndef CONFIG_PPC_BOOK3E_64 /* BOOK3E not using this */
- 	/*
- 	 * We do this at the end so that we do context switch with KERNEL AMR
- 	 */
-@@ -379,9 +378,7 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
- 	 * We don't need to restore AMR on the way back to userspace for KUAP.
- 	 * AMR can only have been unlocked if we interrupted the kernel.
- 	 */
--#ifdef CONFIG_PPC64
- 	kuap_check();
--#endif
- 
- 	local_irq_save(flags);
- 
-@@ -438,9 +435,7 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
- 	/*
- 	 * We do this at the end so that we do context switch with KERNEL AMR
- 	 */
--#ifdef CONFIG_PPC64
- 	kuap_user_restore(regs);
--#endif
- 	return ret;
- }
- 
-@@ -450,9 +445,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
- {
- 	unsigned long flags;
- 	unsigned long ret = 0;
--#ifdef CONFIG_PPC64
- 	unsigned long kuap;
--#endif
- 
- 	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x) &&
- 	    unlikely(!(regs->msr & MSR_RI)))
-@@ -466,9 +459,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
- 	if (TRAP(regs) != 0x700)
- 		CT_WARN_ON(ct_state() == CONTEXT_USER);
- 
--#ifdef CONFIG_PPC64
- 	kuap = kuap_get_and_check();
--#endif
- 
- 	if (unlikely(current_thread_info()->flags & _TIF_EMULATE_STACK_STORE)) {
- 		clear_bits(_TIF_EMULATE_STACK_STORE, &current_thread_info()->flags);
-@@ -510,9 +501,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
- 	 * which would cause Read-After-Write stalls. Hence, we take the AMR
- 	 * value from the check above.
- 	 */
--#ifdef CONFIG_PPC64
- 	kuap_kernel_restore(regs, kuap);
--#endif
- 
- 	return ret;
- }
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 5d5d64be2679..fd4da71d92d1 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1255,6 +1255,9 @@ struct task_struct *__switch_to(struct task_struct *prev,
- 	 */
- 	restore_sprs(old_thread, new_thread);
- 
-+#ifdef CONFIG_PPC32
-+	kuap_check();
-+#endif
- 	last = _switch(old_thread, new_thread);
- 
- #ifdef CONFIG_PPC_BOOK3S_64
--- 
-2.25.0
+On 3/9/21 4:51 PM, Naveen N. Rao wrote:
+> On 2021/03/09 08:54PM, Michael Ellerman wrote:
+>> Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
+>>> As per ISA 3.1, prefixed instruction should not cross 64-byte
+>>> boundary. So don't allow Uprobe on such prefixed instruction.
+>>>
+>>> There are two ways probed instruction is changed in mapped pages.
+>>> First, when Uprobe is activated, it searches for all the relevant
+>>> pages and replace instruction in them. In this case, if that probe
+>>> is on the 64-byte unaligned prefixed instruction, error out
+>>> directly. Second, when Uprobe is already active and user maps a
+>>> relevant page via mmap(), instruction is replaced via mmap() code
+>>> path. But because Uprobe is invalid, entire mmap() operation can
+>>> not be stopped. In this case just print an error and continue.
+>>>
+>>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+>>> Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+>>
+>> Do we have a Fixes: tag for this?
+> 
+> Since this is an additional check we are adding, I don't think we should
+> add a Fixes: tag. Nothing is broken per-se -- we're just adding more
+> checks to catch simple mistakes. Also, like Oleg pointed out, there are
+> still many other ways for users to shoot themselves in the foot with
+> uprobes and prefixed instructions, if they so desire.
+> 
+> However, if you still think we should add a Fixes: tag, we can perhaps
+> use the below commit since I didn't see any specific commit adding
+> support for prefixed instructions for uprobes:
+> 
+> Fixes: 650b55b707fdfa ("powerpc: Add prefixed instructions to
+> instruction data type")
 
+True. IMO, It doesn't really need any Fixes tag.
+
+> 
+>>
+>>> ---
+>>> v3: https://lore.kernel.org/r/20210304050529.59391-1-ravi.bangoria@linux.ibm.com
+>>> v3->v4:
+>>>    - CONFIG_PPC64 check was not required, remove it.
+>>>    - Use SZ_ macros instead of hardcoded numbers.
+>>>
+>>>   arch/powerpc/kernel/uprobes.c | 7 +++++++
+>>>   1 file changed, 7 insertions(+)
+>>>
+>>> diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
+>>> index e8a63713e655..4cbfff6e94a3 100644
+>>> --- a/arch/powerpc/kernel/uprobes.c
+>>> +++ b/arch/powerpc/kernel/uprobes.c
+>>> @@ -41,6 +41,13 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe,
+>>>   	if (addr & 0x03)
+>>>   		return -EINVAL;
+>>>   
+>>> +	if (cpu_has_feature(CPU_FTR_ARCH_31) &&
+>>> +	    ppc_inst_prefixed(auprobe->insn) &&
+>>> +	    (addr & (SZ_64 - 4)) == SZ_64 - 4) {
+>>> +		pr_info_ratelimited("Cannot register a uprobe on 64 byte unaligned prefixed instruction\n");
+>>> +		return -EINVAL;
+>>
+>> I realise we already did the 0x03 check above, but I still think this
+>> would be clearer simply as:
+>>
+>> 	    (addr & 0x3f == 60)
+> 
+> Indeed, I like the use of `60' there -- hex is overrated ;)
+
+Sure. Will resend.
+
+Ravi
