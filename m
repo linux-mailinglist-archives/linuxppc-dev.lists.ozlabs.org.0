@@ -2,103 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA973325EE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:59:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DED03326EF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 14:23:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvwJg6sb8z3cX6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:59:15 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cKFeeBaA;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dvws73k6xz3cKn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 00:23:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
+ helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=groug@kaod.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=cKFeeBaA; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from smtpout1.mo529.mail-out.ovh.net
+ (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvwJC5Rdgz30Hj
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:58:50 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 129CYCfi022923; Tue, 9 Mar 2021 07:58:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=E9Z5K4c9KLZDikZeIsX4UkCzElBTga+tVCdllv+XDCU=;
- b=cKFeeBaAL1qNqU84XgVrc1u3Smz3hvZmo0PzKVXjKbJS0EnnzPR3BDOLQ7GEmJ5WrNQo
- aMXmBp+mg7CFZ3FSmT5Pnnm71UVld/tO7bKKPGiyPvB6PJU0RzFyq6W2CIKhxCNw3F+N
- 11xlcJfq8aBBl6nfNDfPXhxXExUYFWh5jcNxWUdHR0Khp7ofymmHumXeFzlcur4PMcAB
- t/K+OaeRm66ilO2yehL9UeiYTSAA1XhsjiPpnK4fL6nxLtv4WOFo9i8DveKTSzz4rY8+
- 6OwxtMFOtF7DPktZHqY522F/s8UnhnE30rRye3xYmfSTLdPNo6OF8/Lihq5aH+kelklF wA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 375wgv9vv7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 07:58:12 -0500
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 129CYDmN023041;
- Tue, 9 Mar 2021 07:58:11 -0500
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 375wgv9vuh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 07:58:11 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 129Cq06B001183;
- Tue, 9 Mar 2021 12:58:09 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 3768urr14r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 12:58:09 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 129Cw6kc42074568
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Mar 2021 12:58:07 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C4E60A404D;
- Tue,  9 Mar 2021 12:58:06 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 28403A4057;
- Tue,  9 Mar 2021 12:58:04 +0000 (GMT)
-Received: from [9.199.45.167] (unknown [9.199.45.167])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  9 Mar 2021 12:58:03 +0000 (GMT)
-Subject: Re: [PATCH v4] powerpc/uprobes: Validation for prefixed instruction
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20210305115433.140769-1-ravi.bangoria@linux.ibm.com>
- <87ft14r6sa.fsf@mpe.ellerman.id.au>
- <20210309112115.GG145@DESKTOP-TDPLP67.localdomain>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Message-ID: <1a080cb5-af98-6b6e-352d-772a90cfa902@linux.ibm.com>
-Date: Tue, 9 Mar 2021 18:28:01 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dvwrp5tGJz30HQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 00:23:36 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.143.25])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id B571E8E16C30;
+ Tue,  9 Mar 2021 14:23:33 +0100 (CET)
+Received: from kaod.org (37.59.142.97) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 9 Mar 2021
+ 14:23:32 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-97G0025d728fc2-e802-4767-80aa-bd684a3fff47,
+ 5BB0FC21D60CBA87691D752E0F3295FDC8BC83A3) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Tue, 9 Mar 2021 14:23:31 +0100
+From: Greg Kurz <groug@kaod.org>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH v2 8/8] powerpc/xive: Map one IPI interrupt per node
+Message-ID: <20210309142331.1b9456c2@bahia.lan>
+In-Reply-To: <20210303174857.1760393-9-clg@kaod.org>
+References: <20210303174857.1760393-1-clg@kaod.org>
+ <20210303174857.1760393-9-clg@kaod.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20210309112115.GG145@DESKTOP-TDPLP67.localdomain>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-09_11:2021-03-08,
- 2021-03-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0
- impostorscore=0 priorityscore=1501 mlxscore=0 suspectscore=0
- lowpriorityscore=0 bulkscore=0 clxscore=1015 mlxlogscore=999
- malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103090062
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.97]
+X-ClientProxiedBy: DAG3EX2.mxp5.local (172.16.2.22) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: 29319199-874e-4e91-bc64-86c8d1c1154b
+X-Ovh-Tracer-Id: 8562750270618966493
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudduiedgheduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfefftedvgeduuefgheeltddtieegheejhfekleduuddtffejffeuleffgfevtdeknecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddrleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopegtlhhgsehkrghougdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,83 +61,230 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, jniethe5@gmail.com,
- oleg@redhat.com, rostedt@goodmis.org, linux-kernel@vger.kernel.org,
- paulus@samba.org, sandipan@linux.ibm.com, naveen.n.rao@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, 3 Mar 2021 18:48:57 +0100
+C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 
+> ipistorm [*] can be used to benchmark the raw interrupt rate of an
+> interrupt controller by measuring the number of IPIs a system can
+> sustain. When applied to the XIVE interrupt controller of POWER9 and
+> POWER10 systems, a significant drop of the interrupt rate can be
+> observed when crossing the second node boundary.
+>=20
+> This is due to the fact that a single IPI interrupt is used for all
+> CPUs of the system. The structure is shared and the cache line updates
+> impact greatly the traffic between nodes and the overall IPI
+> performance.
+>=20
+> As a workaround, the impact can be reduced by deactivating the IRQ
+> lockup detector ("noirqdebug") which does a lot of accounting in the
+> Linux IRQ descriptor structure and is responsible for most of the
+> performance penalty.
+>=20
+> As a fix, this proposal allocates an IPI interrupt per node, to be
+> shared by all CPUs of that node. It solves the scaling issue, the IRQ
+> lockup detector still has an impact but the XIVE interrupt rate scales
+> linearly. It also improves the "noirqdebug" case as showed in the
+> tables below.
+>=20
+>  * P9 DD2.2 - 2s * 64 threads
+>=20
+>                                                "noirqdebug"
+>                         Mint/s                    Mint/s
+>  chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys
+>  --------------------------------------------------------------
+>  1      0-15     4.984023   4.875405       4.996536   5.048892
+>         0-31    10.879164  10.544040      10.757632  11.037859
+>         0-47    15.345301  14.688764      14.926520  15.310053
+>         0-63    17.064907  17.066812      17.613416  17.874511
+>  2      0-79    11.768764  21.650749      22.689120  22.566508
+>         0-95    10.616812  26.878789      28.434703  28.320324
+>         0-111   10.151693  31.397803      31.771773  32.388122
+>         0-127    9.948502  33.139336      34.875716  35.224548
+>=20
+>  * P10 DD1 - 4s (not homogeneous) 352 threads
+>=20
+>                                                "noirqdebug"
+>                         Mint/s                    Mint/s
+>  chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys
+>  --------------------------------------------------------------
+>  1      0-15     2.409402   2.364108       2.383303   2.395091
+>         0-31     6.028325   6.046075       6.089999   6.073750
+>         0-47     8.655178   8.644531       8.712830   8.724702
+>         0-63    11.629652  11.735953      12.088203  12.055979
+>         0-79    14.392321  14.729959      14.986701  14.973073
+>         0-95    12.604158  13.004034      17.528748  17.568095
+>  2      0-111    9.767753  13.719831      19.968606  20.024218
+>         0-127    6.744566  16.418854      22.898066  22.995110
+>         0-143    6.005699  19.174421      25.425622  25.417541
+>         0-159    5.649719  21.938836      27.952662  28.059603
+>         0-175    5.441410  24.109484      31.133915  31.127996
+>  3      0-191    5.318341  24.405322      33.999221  33.775354
+>         0-207    5.191382  26.449769      36.050161  35.867307
+>         0-223    5.102790  29.356943      39.544135  39.508169
+>         0-239    5.035295  31.933051      42.135075  42.071975
+>         0-255    4.969209  34.477367      44.655395  44.757074
+>  4      0-271    4.907652  35.887016      47.080545  47.318537
+>         0-287    4.839581  38.076137      50.464307  50.636219
+>         0-303    4.786031  40.881319      53.478684  53.310759
+>         0-319    4.743750  43.448424      56.388102  55.973969
+>         0-335    4.709936  45.623532      59.400930  58.926857
+>         0-351    4.681413  45.646151      62.035804  61.830057
+>=20
+> [*] https://github.com/antonblanchard/ipistorm
+>=20
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+>  arch/powerpc/sysdev/xive/xive-internal.h |  2 --
+>  arch/powerpc/sysdev/xive/common.c        | 39 ++++++++++++++++++------
+>  2 files changed, 30 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysd=
+ev/xive/xive-internal.h
+> index 9cf57c722faa..b3a456fdd3a5 100644
+> --- a/arch/powerpc/sysdev/xive/xive-internal.h
+> +++ b/arch/powerpc/sysdev/xive/xive-internal.h
+> @@ -5,8 +5,6 @@
+>  #ifndef __XIVE_INTERNAL_H
+>  #define __XIVE_INTERNAL_H
+> =20
+> -#define XIVE_IPI_HW_IRQ		0 /* interrupt source # for IPIs */
+> -
+>  /*
+>   * A "disabled" interrupt should never fire, to catch problems
+>   * we set its logical number to this
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
+/common.c
+> index 8eefd152b947..c27f7bb0494b 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -65,8 +65,16 @@ static struct irq_domain *xive_irq_domain;
+>  #ifdef CONFIG_SMP
+>  static struct irq_domain *xive_ipi_irq_domain;
+> =20
+> -/* The IPIs all use the same logical irq number */
+> -static u32 xive_ipi_irq;
+> +/* The IPIs use the same logical irq number when on the same chip */
+> +static struct xive_ipi_desc {
+> +	unsigned int irq;
+> +	char name[8]; /* enough bytes to fit IPI-XXX */
 
-On 3/9/21 4:51 PM, Naveen N. Rao wrote:
-> On 2021/03/09 08:54PM, Michael Ellerman wrote:
->> Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
->>> As per ISA 3.1, prefixed instruction should not cross 64-byte
->>> boundary. So don't allow Uprobe on such prefixed instruction.
->>>
->>> There are two ways probed instruction is changed in mapped pages.
->>> First, when Uprobe is activated, it searches for all the relevant
->>> pages and replace instruction in them. In this case, if that probe
->>> is on the 64-byte unaligned prefixed instruction, error out
->>> directly. Second, when Uprobe is already active and user maps a
->>> relevant page via mmap(), instruction is replaced via mmap() code
->>> path. But because Uprobe is invalid, entire mmap() operation can
->>> not be stopped. In this case just print an error and continue.
->>>
->>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
->>> Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
->>
->> Do we have a Fixes: tag for this?
-> 
-> Since this is an additional check we are adding, I don't think we should
-> add a Fixes: tag. Nothing is broken per-se -- we're just adding more
-> checks to catch simple mistakes. Also, like Oleg pointed out, there are
-> still many other ways for users to shoot themselves in the foot with
-> uprobes and prefixed instructions, if they so desire.
-> 
-> However, if you still think we should add a Fixes: tag, we can perhaps
-> use the below commit since I didn't see any specific commit adding
-> support for prefixed instructions for uprobes:
-> 
-> Fixes: 650b55b707fdfa ("powerpc: Add prefixed instructions to
-> instruction data type")
+So this assumes that the node number that node is <=3D 999 ? This
+is certainly the case for now since CONFIG_NODES_SHIFT is 8
+on ppc64 but starting with 10, you'd have truncated names.
+What about deriving the size of name[] from CONFIG_NODES_SHIFT ?
 
-True. IMO, It doesn't really need any Fixes tag.
+Apart from that, LGTM. Probably not worth to respin just for
+this.
 
-> 
->>
->>> ---
->>> v3: https://lore.kernel.org/r/20210304050529.59391-1-ravi.bangoria@linux.ibm.com
->>> v3->v4:
->>>    - CONFIG_PPC64 check was not required, remove it.
->>>    - Use SZ_ macros instead of hardcoded numbers.
->>>
->>>   arch/powerpc/kernel/uprobes.c | 7 +++++++
->>>   1 file changed, 7 insertions(+)
->>>
->>> diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
->>> index e8a63713e655..4cbfff6e94a3 100644
->>> --- a/arch/powerpc/kernel/uprobes.c
->>> +++ b/arch/powerpc/kernel/uprobes.c
->>> @@ -41,6 +41,13 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe,
->>>   	if (addr & 0x03)
->>>   		return -EINVAL;
->>>   
->>> +	if (cpu_has_feature(CPU_FTR_ARCH_31) &&
->>> +	    ppc_inst_prefixed(auprobe->insn) &&
->>> +	    (addr & (SZ_64 - 4)) == SZ_64 - 4) {
->>> +		pr_info_ratelimited("Cannot register a uprobe on 64 byte unaligned prefixed instruction\n");
->>> +		return -EINVAL;
->>
->> I realise we already did the 0x03 check above, but I still think this
->> would be clearer simply as:
->>
->> 	    (addr & 0x3f == 60)
-> 
-> Indeed, I like the use of `60' there -- hex is overrated ;)
+I also could give a try in a KVM guest.
 
-Sure. Will resend.
+Topology passed to QEMU:
 
-Ravi
+  -smp 8,maxcpus=3D8,cores=3D2,threads=3D2,sockets=3D2 \
+  -numa node,nodeid=3D0,cpus=3D0-4 \
+  -numa node,nodeid=3D1,cpus=3D4-7
+
+Topology observed in guest with lstopo :
+
+  Package L#0
+    NUMANode L#0 (P#0 30GB)
+    L1d L#0 (32KB) + L1i L#0 (32KB) + Core L#0
+      PU L#0 (P#0)
+      PU L#1 (P#1)
+    L1d L#1 (32KB) + L1i L#1 (32KB) + Core L#1
+      PU L#2 (P#2)
+      PU L#3 (P#3)
+  Package L#1
+    NUMANode L#1 (P#1 32GB)
+    L1d L#2 (32KB) + L1i L#2 (32KB) + Core L#2
+      PU L#4 (P#4)
+      PU L#5 (P#5)
+    L1d L#3 (32KB) + L1i L#3 (32KB) + Core L#3
+      PU L#6 (P#6)
+      PU L#7 (P#7)
+
+Interrupts in guest:
+
+$ cat /proc/interrupts=20
+           CPU0       CPU1       CPU2       CPU3       CPU4       CPU5     =
+  CPU6       CPU7      =20
+ 16:       1023        871       1042        749          0          0     =
+     0          0  XIVE-IPI   0 Edge      IPI-0
+ 17:          0          0          0          0       2123       1019     =
+  1263       1288  XIVE-IPI   1 Edge      IPI-1
+
+IPIs are mapped to the appropriate nodes, and the numbers indicate
+that everything is working as expected.
+
+Reviewed-and-tested-by: Greg Kurz <groug@kaod.org>
+
+> +} *xive_ipis;
+> +
+> +static unsigned int xive_ipi_cpu_to_irq(unsigned int cpu)
+> +{
+> +	return xive_ipis[cpu_to_node(cpu)].irq;
+> +}
+>  #endif
+> =20
+>  /* Xive state for each CPU */
+> @@ -1106,25 +1114,36 @@ static const struct irq_domain_ops xive_ipi_irq_d=
+omain_ops =3D {
+> =20
+>  static void __init xive_request_ipi(void)
+>  {
+> -	unsigned int virq;
+> +	unsigned int node;
+> =20
+> -	xive_ipi_irq_domain =3D irq_domain_add_linear(NULL, 1,
+> +	xive_ipi_irq_domain =3D irq_domain_add_linear(NULL, nr_node_ids,
+>  						    &xive_ipi_irq_domain_ops, NULL);
+>  	if (WARN_ON(xive_ipi_irq_domain =3D=3D NULL))
+>  		return;
+> =20
+> -	/* Initialize it */
+> -	virq =3D irq_create_mapping(xive_ipi_irq_domain, XIVE_IPI_HW_IRQ);
+> -	xive_ipi_irq =3D virq;
+> +	xive_ipis =3D kcalloc(nr_node_ids, sizeof(*xive_ipis), GFP_KERNEL | __G=
+FP_NOFAIL);
+> +	for_each_node(node) {
+> +		struct xive_ipi_desc *xid =3D &xive_ipis[node];
+> +		irq_hw_number_t node_ipi_hwirq =3D node;
+> +
+> +		/*
+> +		 * Map one IPI interrupt per node for all cpus of that node.
+> +		 * Since the HW interrupt number doesn't have any meaning,
+> +		 * simply use the node number.
+> +		 */
+> +		xid->irq =3D irq_create_mapping(xive_ipi_irq_domain, node_ipi_hwirq);
+> +		snprintf(xid->name, sizeof(xid->name), "IPI-%d", node);
+> =20
+> -	WARN_ON(request_irq(virq, xive_muxed_ipi_action,
+> -			    IRQF_PERCPU | IRQF_NO_THREAD, "IPI", NULL));
+> +		WARN_ON(request_irq(xid->irq, xive_muxed_ipi_action,
+> +				    IRQF_PERCPU | IRQF_NO_THREAD, xid->name, NULL));
+> +	}
+>  }
+> =20
+>  static int xive_setup_cpu_ipi(unsigned int cpu)
+>  {
+>  	struct xive_cpu *xc;
+>  	int rc;
+> +	unsigned int xive_ipi_irq =3D xive_ipi_cpu_to_irq(cpu);
+> =20
+>  	pr_debug("Setting up IPI for CPU %d\n", cpu);
+> =20
+> @@ -1165,6 +1184,8 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
+> =20
+>  static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
+>  {
+> +	unsigned int xive_ipi_irq =3D xive_ipi_cpu_to_irq(cpu);
+> +
+>  	/* Disable the IPI and free the IRQ data */
+> =20
+>  	/* Already cleaned up ? */
+
