@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC7E331CB6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 03:01:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 767F5331CB7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 03:01:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvdjD5vNZz3dPT
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:01:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dvdjb3Vgzz3cRj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:01:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,17 +16,17 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dvdh90Rd3z30Qt
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 13:00:09 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvdhD52kyz3cJB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 13:00:12 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id A1F3AAC8C;
- Tue,  9 Mar 2021 02:00:06 +0000 (UTC)
+ by mx2.suse.de (Postfix) with ESMTP id 51F12AC17;
+ Tue,  9 Mar 2021 02:00:10 +0000 (UTC)
 From: Davidlohr Bueso <dave@stgolabs.net>
 To: npiggin@gmail.com
-Subject: [PATCH 2/3] powerpc/spinlock: Unserialize spin_is_locked
-Date: Mon,  8 Mar 2021 17:59:49 -0800
-Message-Id: <20210309015950.27688-3-dave@stgolabs.net>
+Subject: [PATCH 3/3] powerpc/qspinlock: Use generic smp_cond_load_relaxed
+Date: Mon,  8 Mar 2021 17:59:50 -0800
+Message-Id: <20210309015950.27688-4-dave@stgolabs.net>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20210309015950.27688-1-dave@stgolabs.net>
 References: <20210309015950.27688-1-dave@stgolabs.net>
@@ -43,89 +43,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: parri.andrea@gmail.com, dave@stgolabs.net, Davidlohr Bueso <dbueso@suse.de>,
- peterz@infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, mingo@redhat.com, paulus@samba.org,
- longman@redhat.com, pabeni@redhat.com, will@kernel.org
+Cc: dave@stgolabs.net, Davidlohr Bueso <dbueso@suse.de>, peterz@infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ paulus@samba.org, longman@redhat.com, will@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-c6f5d02b6a0f (locking/spinlocks/arm64: Remove smp_mb() from
-arch_spin_is_locked()) made it pretty official that the call
-semantics do not imply any sort of barriers, and any user that
-gets creative must explicitly do any serialization.
+49a7d46a06c3 (powerpc: Implement smp_cond_load_relaxed()) added
+busy-waiting pausing with a preferred SMT priority pattern, lowering
+the priority (reducing decode cycles) during the whole loop slowpath.
 
-This creativity, however, is nowadays pretty limited:
+However, data shows that while this pattern works well with simple
+spinlocks, queued spinlocks benefit more being kept in medium priority,
+with a cpu_relax() instead, being a low+medium combo on powerpc.
 
-1. spin_unlock_wait() has been removed from the kernel in favor
-of a lock/unlock combo. Furthermore, queued spinlocks have now
-for a number of years no longer relied on _Q_LOCKED_VAL for the
-call, but any non-zero value to indicate a locked state. There
-were cases where the delayed locked store could lead to breaking
-mutual exclusion with crossed locking; such as with sysv ipc and
-netfilter being the most extreme.
+Data is from three benchmarks on a Power9: 9008-22L 64 CPUs with
+2 sockets and 8 threads per core.
 
-2. The auditing Andrea did in verified that remaining spin_is_locked()
-no longer rely on such semantics. Most callers just use it to assert
-a lock is taken, in a debug nature. The only user that gets cute is
-NOLOCK qdisc, as of:
+1. locktorture.
 
-   96009c7d500e (sched: replace __QDISC_STATE_RUNNING bit with a spin lock)
+This is data for the lowest and most artificial/pathological level,
+with increasing thread counts pounding on the lock. Metrics are total
+ops/minute. Despite some small hits in the 4-8 range, scenarios are
+either neutral or favorable to this patch.
 
-... which ironically went in the next day after c6f5d02b6a0f. This
-change replaces test_bit() with spin_is_locked() to know whether
-to take the busylock heuristic to reduce contention on the main
-qdisc lock. So any races against spin_is_locked() for archs that
-use LL/SC for spin_lock() will be benign and not break any mutual
-exclusion; furthermore, both the seqlock and busylock have the same
-scope.
++=========+==========+==========+=======+
+| # tasks | vanilla  | dirty    | %diff |
++=========+==========+==========+=======+
+| 2       | 46718565 | 48751350 | 4.35  |
++---------+----------+----------+-------+
+| 4       | 51740198 | 50369082 | -2.65 |
++---------+----------+----------+-------+
+| 8       | 63756510 | 62568821 | -1.86 |
++---------+----------+----------+-------+
+| 16      | 67824531 | 70966546 | 4.63  |
++---------+----------+----------+-------+
+| 32      | 53843519 | 61155508 | 13.58 |
++---------+----------+----------+-------+
+| 64      | 53005778 | 53104412 | 0.18  |
++---------+----------+----------+-------+
+| 128     | 53331980 | 54606910 | 2.39  |
++=========+==========+==========+=======+
 
-Cc: parri.andrea@gmail.com
-Cc: pabeni@redhat.com
+2. sockperf (tcp throughput)
+
+Here a client will do one-way throughput tests to a localhost server, with
+increasing message sizes, dealing with the sk_lock. This patch shows to put
+the performance of the qspinlock back to par with that of the simple lock:
+
+		     simple-spinlock           vanilla			dirty
+Hmean     14        73.50 (   0.00%)       54.44 * -25.93%*       73.45 * -0.07%*
+Hmean     100      654.47 (   0.00%)      385.61 * -41.08%*      771.43 * 17.87%*
+Hmean     300     2719.39 (   0.00%)     2181.67 * -19.77%*     2666.50 * -1.94%*
+Hmean     500     4400.59 (   0.00%)     3390.77 * -22.95%*     4322.14 * -1.78%*
+Hmean     850     6726.21 (   0.00%)     5264.03 * -21.74%*     6863.12 * 2.04%*
+
+3. dbench (tmpfs)
+
+Configured to run with up to ncpusx8 clients, it shows both latency and
+throughput metrics. For the latency, with the exception of the 64 case,
+there is really nothing to go by:
+				     vanilla                dirty
+Amean     latency-1          1.67 (   0.00%)        1.67 *   0.09%*
+Amean     latency-2          2.15 (   0.00%)        2.08 *   3.36%*
+Amean     latency-4          2.50 (   0.00%)        2.56 *  -2.27%*
+Amean     latency-8          2.49 (   0.00%)        2.48 *   0.31%*
+Amean     latency-16         2.69 (   0.00%)        2.72 *  -1.37%*
+Amean     latency-32         2.96 (   0.00%)        3.04 *  -2.60%*
+Amean     latency-64         7.78 (   0.00%)        8.17 *  -5.07%*
+Amean     latency-512      186.91 (   0.00%)      186.41 *   0.27%*
+
+For the dbench4 Throughput (misleading but traditional) there's a small
+but rather constant improvement:
+
+			     vanilla                dirty
+Hmean     1        849.13 (   0.00%)      851.51 *   0.28%*
+Hmean     2       1664.03 (   0.00%)     1663.94 *  -0.01%*
+Hmean     4       3073.70 (   0.00%)     3104.29 *   1.00%*
+Hmean     8       5624.02 (   0.00%)     5694.16 *   1.25%*
+Hmean     16      9169.49 (   0.00%)     9324.43 *   1.69%*
+Hmean     32     11969.37 (   0.00%)    12127.09 *   1.32%*
+Hmean     64     15021.12 (   0.00%)    15243.14 *   1.48%*
+Hmean     512    14891.27 (   0.00%)    15162.11 *   1.82%*
+
+Measuring the dbench4 Per-VFS Operation latency, shows some very minor
+differences within the noise level, around the 0-1% ranges.
+
 Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
 ---
- arch/powerpc/include/asm/qspinlock.h       | 12 ------------
- arch/powerpc/include/asm/simple_spinlock.h |  3 +--
- 2 files changed, 1 insertion(+), 14 deletions(-)
+ arch/powerpc/include/asm/barrier.h | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
-index 3ce1a0bee4fe..b052b0624816 100644
---- a/arch/powerpc/include/asm/qspinlock.h
-+++ b/arch/powerpc/include/asm/qspinlock.h
-@@ -44,18 +44,6 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
- }
- #define queued_spin_lock queued_spin_lock
+diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
+index aecfde829d5d..7ae29cfb06c0 100644
+--- a/arch/powerpc/include/asm/barrier.h
++++ b/arch/powerpc/include/asm/barrier.h
+@@ -80,22 +80,6 @@ do {									\
+ 	___p1;								\
+ })
  
--static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
--{
--	/*
--	 * This barrier was added to simple spinlocks by commit 51d7d5205d338,
--	 * but it should now be possible to remove it, asm arm64 has done with
--	 * commit c6f5d02b6a0f.
--	 */
--	smp_mb();
--	return atomic_read(&lock->val);
--}
--#define queued_spin_is_locked queued_spin_is_locked
+-#ifdef CONFIG_PPC64
+-#define smp_cond_load_relaxed(ptr, cond_expr) ({		\
+-	typeof(ptr) __PTR = (ptr);				\
+-	__unqual_scalar_typeof(*ptr) VAL;			\
+-	VAL = READ_ONCE(*__PTR);				\
+-	if (unlikely(!(cond_expr))) {				\
+-		spin_begin();					\
+-		do {						\
+-			VAL = READ_ONCE(*__PTR);		\
+-		} while (!(cond_expr));				\
+-		spin_end();					\
+-	}							\
+-	(typeof(*ptr))VAL;					\
+-})
+-#endif
 -
- #ifdef CONFIG_PARAVIRT_SPINLOCKS
- #define SPIN_THRESHOLD (1<<15) /* not tuned */
- 
-diff --git a/arch/powerpc/include/asm/simple_spinlock.h b/arch/powerpc/include/asm/simple_spinlock.h
-index 3e87258f73b1..1b935396522a 100644
---- a/arch/powerpc/include/asm/simple_spinlock.h
-+++ b/arch/powerpc/include/asm/simple_spinlock.h
-@@ -38,8 +38,7 @@ static __always_inline int arch_spin_value_unlocked(arch_spinlock_t lock)
- 
- static inline int arch_spin_is_locked(arch_spinlock_t *lock)
- {
--	smp_mb();
--	return !arch_spin_value_unlocked(*lock);
-+	return !arch_spin_value_unlocked(READ_ONCE(*lock));
- }
- 
- /*
+ #ifdef CONFIG_PPC_BOOK3S_64
+ #define NOSPEC_BARRIER_SLOT   nop
+ #elif defined(CONFIG_PPC_FSL_BOOK3E)
 -- 
 2.26.2
 
