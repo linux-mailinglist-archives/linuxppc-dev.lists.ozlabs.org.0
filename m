@@ -2,76 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6CF332828
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 15:08:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 870E633282A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 15:08:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvxrR1PqXz3d4n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 01:08:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dvxrv4GbCz3dPR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 01:08:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nSof6Ecb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ifUVyFQf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=nSof6Ecb; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=ifUVyFQf; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dvxr05b1Kz30H4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 01:08:00 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 129E3oDS161899; Tue, 9 Mar 2021 09:07:51 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvxrS21bkz3cT5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 01:08:23 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 129E4kJA010388; Tue, 9 Mar 2021 09:08:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references; s=pp1;
- bh=cn+6k43LckCCkxmvJIVDo9OrTQNzLiOOcDIPSUQUn0k=;
- b=nSof6EcbtDpv/9QW6As+bT0IRebWtidZ1kxW7IP2muzGOe0sKTN+TKzBpAvLBGpJ34HT
- ArQfLDPH5DbZ7tktgSeEfcf58sAsh2/PvkY5P1OcVhDoNNW+ggaM5vVezN63t9YIcf3a
- BM7m/grSXen4rL2WXxAGlxYkFkv+cMeNW0T4KTR5nqJT5UQwiNkxxQuInr8kk2mGSKtH
- JBo2lgxDc2E+sABmdH6s2GXzQTh2BN/C9IFSRLeWMR1r1UlOKK1izdEUiQxc/qKCNMcZ
- St3E94ZvMD5TGGF4EG9a/vVQ0qjb6C00ao/UJh+TXujbe6jKKuPlutPM9w8cVkQoRTt5 KQ== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 375wfktvdq-1
+ bh=JroW8II15PpaJ6PfT0kKEEbPRxDsswedl5u16nUjcbY=;
+ b=ifUVyFQfV9qYQzRPwJada8Ps6l5LnAuUyFDp0oy/zero9OOJ1CNKrsw45O9JglwyA+ju
+ Wt1l2/0X9jmvyOHBe73B//KCI1CirpN72knXMz66g1GILwiIwuGBOHy9efU8z72DNQRg
+ 73JQJCfP7n+K/FJZrjI+JJhhB0uaJuGfcToVYBx3/yd0udJn9OtLCKN/QKSB30v69PhJ
+ NrQkjmDwACgg2uhCp4jmoXMIAw8JPTshYGzLToShH38ifS99I2M46oyXhI6ie1j4ijiu
+ 06Wlgz1mVZMMvoAPuS15gpU/SpKiVKZmAzIJLZrK74xeFCr1tOUJEgsUM3oxB/Sukexa YA== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 375wdmm59h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 09:07:50 -0500
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 129E1k8o016517;
- Tue, 9 Mar 2021 14:07:41 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 3768n1g3sq-1
+ Tue, 09 Mar 2021 09:08:06 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 129E2GDd011496;
+ Tue, 9 Mar 2021 14:08:04 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06ams.nl.ibm.com with ESMTP id 3768urr2w1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Mar 2021 14:07:41 +0000
+ Tue, 09 Mar 2021 14:08:04 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 129E7c5q48169334
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 129E81Nx18612488
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Mar 2021 14:07:38 GMT
+ Tue, 9 Mar 2021 14:08:01 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4175E4C04A;
- Tue,  9 Mar 2021 14:07:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A2EA04C058;
+ Tue,  9 Mar 2021 14:08:01 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 365034C050;
- Tue,  9 Mar 2021 14:07:12 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 6B2E34C04E;
+ Tue,  9 Mar 2021 14:07:43 +0000 (GMT)
 Received: from localhost.localdomain.localdomain (unknown [9.195.34.70])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  9 Mar 2021 14:07:01 +0000 (GMT)
+ Tue,  9 Mar 2021 14:07:39 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  linux-perf-users@vger.kernel.org, mpe@ellerman.id.au, acme@kernel.org,
  jolsa@kernel.org
-Subject: [PATCH 2/4] tools/perf: Add dynamic headers for perf report columns
-Date: Tue,  9 Mar 2021 09:03:58 -0500
-Message-Id: <1615298640-1529-3-git-send-email-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH 3/4] tools/perf: Add powerpc support for
+ PERF_SAMPLE_WEIGHT_STRUCT
+Date: Tue,  9 Mar 2021 09:03:59 -0500
+Message-Id: <1615298640-1529-4-git-send-email-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1615298640-1529-1-git-send-email-atrajeev@linux.vnet.ibm.com>
 References: <1615298640-1529-1-git-send-email-atrajeev@linux.vnet.ibm.com>
@@ -80,11 +81,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
  definitions=2021-03-09_11:2021-03-08,
  2021-03-09 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- malwarescore=0 clxscore=1015 mlxscore=0 mlxlogscore=999 spamscore=0
- suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103090071
+ bulkscore=0 clxscore=1015
+ priorityscore=1501 mlxlogscore=999 mlxscore=0 adultscore=0 suspectscore=0
+ malwarescore=0 phishscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103090071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,91 +103,89 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently the header string for different columns in perf report
-is fixed. Some fields of perf sample could have different meaning
-for different architectures than the meaning conveyed by the header
-string. An example is the new field 'var2_w' of perf_sample_weight
-structure. This is presently captured as 'Local INSTR Latency' in
-perf mem report. But this could be used to denote a different latency
-cycle in another architecture.
+Add arch specific arch_evsel__set_sample_weight() to set the new
+sample type for powerpc.
 
-Introduce a weak function arch_perf_header_entry__add() to set
-the arch specific header string for the fields which can contain dynamic
-header. If the architecture do not have this function, fall back to the
-default header string value.
+Add arch specific arch_perf_parse_sample_weight() to store the
+sample->weight values depending on the sample type applied.
+if the new sample type (PERF_SAMPLE_WEIGHT_STRUCT) is applied,
+store only the lower 32 bits to sample->weight. If sample type
+is 'PERF_SAMPLE_WEIGHT', store the full 64-bit to sample->weight.
 
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- tools/perf/util/event.h |  1 +
- tools/perf/util/sort.c  | 19 ++++++++++++++++++-
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ tools/perf/arch/powerpc/util/Build   |  2 ++
+ tools/perf/arch/powerpc/util/event.c | 32 ++++++++++++++++++++++++++++++++
+ tools/perf/arch/powerpc/util/evsel.c |  8 ++++++++
+ 3 files changed, 42 insertions(+)
+ create mode 100644 tools/perf/arch/powerpc/util/event.c
+ create mode 100644 tools/perf/arch/powerpc/util/evsel.c
 
-diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
-index f603edbbbc6f..89b149e2e70a 100644
---- a/tools/perf/util/event.h
-+++ b/tools/perf/util/event.h
-@@ -427,5 +427,6 @@ void  cpu_map_data__synthesize(struct perf_record_cpu_map_data *data, struct per
+diff --git a/tools/perf/arch/powerpc/util/Build b/tools/perf/arch/powerpc/util/Build
+index b7945e5a543b..8a79c4126e5b 100644
+--- a/tools/perf/arch/powerpc/util/Build
++++ b/tools/perf/arch/powerpc/util/Build
+@@ -4,6 +4,8 @@ perf-y += kvm-stat.o
+ perf-y += perf_regs.o
+ perf-y += mem-events.o
+ perf-y += sym-handling.o
++perf-y += evsel.o
++perf-y += event.o
  
- void arch_perf_parse_sample_weight(struct perf_sample *data, const __u64 *array, u64 type);
- void arch_perf_synthesize_sample_weight(const struct perf_sample *data, __u64 *array, u64 type);
-+const char *arch_perf_header_entry__add(const char *se_header);
- 
- #endif /* __PERF_RECORD_H */
-diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index 0d5ad42812b9..741a6df29fa0 100644
---- a/tools/perf/util/sort.c
-+++ b/tools/perf/util/sort.c
-@@ -25,6 +25,7 @@
- #include <traceevent/event-parse.h>
- #include "mem-events.h"
- #include "annotate.h"
-+#include "event.h"
- #include "time-utils.h"
- #include "cgroup.h"
- #include "machine.h"
-@@ -45,6 +46,7 @@
- regex_t		ignore_callees_regex;
- int		have_ignore_callees = 0;
- enum sort_mode	sort__mode = SORT_MODE__NORMAL;
-+const char	*dynamic_headers[] = {"local_ins_lat"};
- 
- /*
-  * Replaces all occurrences of a char used with the:
-@@ -1816,6 +1818,16 @@ struct sort_dimension {
- 	int			taken;
- };
- 
-+const char * __weak arch_perf_header_entry__add(const char *se_header)
+ perf-$(CONFIG_DWARF) += dwarf-regs.o
+ perf-$(CONFIG_DWARF) += skip-callchain-idx.o
+diff --git a/tools/perf/arch/powerpc/util/event.c b/tools/perf/arch/powerpc/util/event.c
+new file mode 100644
+index 000000000000..f49d32c2c8ae
+--- /dev/null
++++ b/tools/perf/arch/powerpc/util/event.c
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/types.h>
++#include <linux/string.h>
++#include <linux/zalloc.h>
++
++#include "../../../util/event.h"
++#include "../../../util/synthetic-events.h"
++#include "../../../util/machine.h"
++#include "../../../util/tool.h"
++#include "../../../util/map.h"
++#include "../../../util/debug.h"
++
++void arch_perf_parse_sample_weight(struct perf_sample *data,
++				   const __u64 *array, u64 type)
 +{
-+	return se_header;
++	union perf_sample_weight weight;
++
++	weight.full = *array;
++	if (type & PERF_SAMPLE_WEIGHT)
++		data->weight = weight.full;
++	else
++		data->weight = weight.var1_dw;
 +}
 +
-+static void sort_dimension_add_dynamic_header(struct sort_dimension *sd)
++void arch_perf_synthesize_sample_weight(const struct perf_sample *data,
++					__u64 *array, u64 type)
 +{
-+	sd->entry->se_header = arch_perf_header_entry__add(sd->entry->se_header);
++	*array = data->weight;
++
++	if (type & PERF_SAMPLE_WEIGHT_STRUCT)
++		*array &= 0xffffffff;
 +}
+diff --git a/tools/perf/arch/powerpc/util/evsel.c b/tools/perf/arch/powerpc/util/evsel.c
+new file mode 100644
+index 000000000000..2f733cdc8dbb
+--- /dev/null
++++ b/tools/perf/arch/powerpc/util/evsel.c
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <stdio.h>
++#include "util/evsel.h"
 +
- #define DIM(d, n, func) [d] = { .name = n, .entry = &(func) }
- 
- static struct sort_dimension common_sort_dimensions[] = {
-@@ -2739,11 +2751,16 @@ int sort_dimension__add(struct perf_hpp_list *list, const char *tok,
- 			struct evlist *evlist,
- 			int level)
- {
--	unsigned int i;
-+	unsigned int i, j;
- 
- 	for (i = 0; i < ARRAY_SIZE(common_sort_dimensions); i++) {
- 		struct sort_dimension *sd = &common_sort_dimensions[i];
- 
-+		for (j = 0; j < ARRAY_SIZE(dynamic_headers); j++) {
-+			if (!strcmp(dynamic_headers[j], sd->name))
-+				sort_dimension_add_dynamic_header(sd);
-+		}
-+
- 		if (strncasecmp(tok, sd->name, strlen(tok)))
- 			continue;
- 
++void arch_evsel__set_sample_weight(struct evsel *evsel)
++{
++	evsel__set_sample_bit(evsel, WEIGHT_STRUCT);
++}
 -- 
 1.8.3.1
 
