@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E701933251D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DA633252B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 13:16:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvLS6fFBz3gCL
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:15:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvvLz4fY0z3gJN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 23:16:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,40 +15,39 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCb43qyz3cT4
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:09:47 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DvvCc2PBcz3cGv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 23:09:48 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DvvCW5x5kz9tyjd;
- Tue,  9 Mar 2021 13:09:43 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DvvCX4JQNz9tyjG;
+ Tue,  9 Mar 2021 13:09:44 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 1iIRQWswONXf; Tue,  9 Mar 2021 13:09:43 +0100 (CET)
+ with ESMTP id inKabSOq3zuS; Tue,  9 Mar 2021 13:09:44 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvCW56F5z9tyjW;
- Tue,  9 Mar 2021 13:09:43 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DvvCX3TMNz9tyjL;
+ Tue,  9 Mar 2021 13:09:44 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 09E018B804;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BF8168B80F;
  Tue,  9 Mar 2021 13:09:45 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id BCFj7NPgsukm; Tue,  9 Mar 2021 13:09:44 +0100 (CET)
+ with ESMTP id 9INgapZ5c0_J; Tue,  9 Mar 2021 13:09:45 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 663248B7FC;
- Tue,  9 Mar 2021 13:09:44 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 762868B808;
+ Tue,  9 Mar 2021 13:09:45 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 49FB667555; Tue,  9 Mar 2021 12:09:44 +0000 (UTC)
-Message-Id: <845f6b33f70842954d756c54d487ed5e9e2ee11c.1615291472.git.christophe.leroy@csgroup.eu>
+ id 578C267555; Tue,  9 Mar 2021 12:09:45 +0000 (UTC)
+Message-Id: <45106885c9002b4191a68b37d12e76a29c4cad50.1615291472.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1615291471.git.christophe.leroy@csgroup.eu>
 References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 18/43] powerpc/32: Add vmap_stack_overflow label inside the
- macro
+Subject: [PATCH v2 19/43] powerpc/32: Use START_EXCEPTION() as much as possible
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com
-Date: Tue,  9 Mar 2021 12:09:44 +0000 (UTC)
+Date: Tue,  9 Mar 2021 12:09:45 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,67 +64,230 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For consistency, add in the macro the label used by exception prolog
-to branch to stack overflow processing.
+Everywhere where it is possible, use START_EXCEPTION().
 
-While at it, enclose the macro in #ifdef CONFIG_VMAP_STACK on the 8xx
-as already done on book3s/32.
+This will help for proper exception init in future patches.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/head_32.h        | 3 ++-
- arch/powerpc/kernel/head_8xx.S       | 3 ++-
- arch/powerpc/kernel/head_book3s_32.S | 1 -
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/head_40x.S       | 12 +++++------
+ arch/powerpc/kernel/head_8xx.S       | 27 +++++++++----------------
+ arch/powerpc/kernel/head_book3s_32.S | 30 ++++++++--------------------
+ 3 files changed, 22 insertions(+), 47 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index 15c6fc7cbbf5..d97ec94b34da 100644
---- a/arch/powerpc/kernel/head_32.h
-+++ b/arch/powerpc/kernel/head_32.h
-@@ -52,7 +52,7 @@
- 1:
- #ifdef CONFIG_VMAP_STACK
- 	mtcrf	0x3f, r1
--	bt	32 - THREAD_ALIGN_SHIFT, stack_overflow
-+	bt	32 - THREAD_ALIGN_SHIFT, vmap_stack_overflow
- #endif
- .endm
+diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
+index 55fa99c5085c..c14a71e0d6d3 100644
+--- a/arch/powerpc/kernel/head_40x.S
++++ b/arch/powerpc/kernel/head_40x.S
+@@ -247,17 +247,15 @@ _ENTRY(crit_esr)
+ 	EXCEPTION(0x0F00, Trap_0F, unknown_exception, EXC_XFER_STD)
  
-@@ -196,6 +196,7 @@
- 			  ret_from_except)
+ /* 0x1000 - Programmable Interval Timer (PIT) Exception */
+-	. = 0x1000
++	START_EXCEPTION(0x1000, DecrementerTrap)
+ 	b Decrementer
  
- .macro vmap_stack_overflow_exception
-+vmap_stack_overflow:
- #ifdef CONFIG_SMP
- 	mfspr	r1, SPRN_SPRG_THREAD
- 	lwz	r1, TASK_CPU - THREAD(r1)
+-/* 0x1010 - Fixed Interval Timer (FIT) Exception
+-*/
+-	. = 0x1010
++/* 0x1010 - Fixed Interval Timer (FIT) Exception */
++	START_EXCEPTION(0x1010, FITExceptionTrap)
+ 	b FITException
+ 
+-/* 0x1020 - Watchdog Timer (WDT) Exception
+-*/
+-	. = 0x1020
++/* 0x1020 - Watchdog Timer (WDT) Exception */
++	START_EXCEPTION(0x1020, WDTExceptionTrap)
+ 	b WDTException
+ 
+ /* 0x1100 - Data TLB Miss Exception
 diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index cdbfa9d41353..b63445c55f4d 100644
+index b63445c55f4d..11789a077d76 100644
 --- a/arch/powerpc/kernel/head_8xx.S
 +++ b/arch/powerpc/kernel/head_8xx.S
-@@ -338,8 +338,9 @@ DARFixed:/* Return from dcbx instruction bug workaround */
- 	/* 0x300 is DataAccess exception, needed by bad_page_fault() */
- 	EXC_XFER_LITE(0x300, handle_page_fault)
+@@ -121,8 +121,7 @@ instruction_counter:
+ 	EXCEPTION(0x100, Reset, system_reset_exception, EXC_XFER_STD)
  
--stack_overflow:
-+#ifdef CONFIG_VMAP_STACK
- 	vmap_stack_overflow_exception
-+#endif
+ /* Machine check */
+-	. = 0x200
+-MachineCheck:
++	START_EXCEPTION(0x200, MachineCheck)
+ 	EXCEPTION_PROLOG handle_dar_dsisr=1
+ 	addi r3,r1,STACK_FRAME_OVERHEAD
+ 	EXC_XFER_STD(0x200, machine_check_exception)
+@@ -131,8 +130,7 @@ MachineCheck:
+ 	EXCEPTION(0x500, HardwareInterrupt, do_IRQ, EXC_XFER_LITE)
  
- /* On the MPC8xx, these next four traps are used for development
-  * support of breakpoints and such.  Someday I will get around to
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index 59efbee7c080..9dc05890477d 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -729,7 +729,6 @@ fast_hash_page_return:
- #endif /* CONFIG_PPC_BOOK3S_604 */
+ /* Alignment exception */
+-	. = 0x600
+-Alignment:
++	START_EXCEPTION(0x600, Alignment)
+ 	EXCEPTION_PROLOG handle_dar_dsisr=1
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	b	.Lalignment_exception_ool
+@@ -149,8 +147,7 @@ Alignment:
+ 	EXC_XFER_STD(0x600, alignment_exception)
  
- #ifdef CONFIG_VMAP_STACK
--stack_overflow:
- 	vmap_stack_overflow_exception
+ /* System call */
+-	. = 0xc00
+-SystemCall:
++	START_EXCEPTION(0xc00, SystemCall)
+ 	SYSCALL_ENTRY	0xc00
+ 
+ /* Single step - not used on 601 */
+@@ -161,7 +158,6 @@ SystemCall:
+  */
+ 	EXCEPTION(0x1000, SoftEmu, emulation_assist_interrupt, EXC_XFER_STD)
+ 
+-	. = 0x1100
+ /*
+  * For the MPC8xx, this is a software tablewalk to load the instruction
+  * TLB.  The task switch loads the M_TWB register with the pointer to the first
+@@ -183,7 +179,7 @@ SystemCall:
+ #define INVALIDATE_ADJACENT_PAGES_CPU15(addr, tmp)
  #endif
  
+-InstructionTLBMiss:
++	START_EXCEPTION(0x1100, InstructionTLBMiss)
+ 	mtspr	SPRN_SPRG_SCRATCH2, r10
+ 	mtspr	SPRN_M_TW, r11
+ 
+@@ -239,8 +235,7 @@ InstructionTLBMiss:
+ 	rfi
+ #endif
+ 
+-	. = 0x1200
+-DataStoreTLBMiss:
++	START_EXCEPTION(0x1200, DataStoreTLBMiss)
+ 	mtspr	SPRN_SPRG_SCRATCH2, r10
+ 	mtspr	SPRN_M_TW, r11
+ 	mfcr	r11
+@@ -303,8 +298,7 @@ DataStoreTLBMiss:
+  * to many reasons, such as executing guarded memory or illegal instruction
+  * addresses.  There is nothing to do but handle a big time error fault.
+  */
+-	. = 0x1300
+-InstructionTLBError:
++	START_EXCEPTION(0x1300, InstructionTLBError)
+ 	EXCEPTION_PROLOG
+ 	andis.	r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 bits */
+ 	andis.	r10,r9,SRR1_ISI_NOPT@h
+@@ -320,8 +314,7 @@ InstructionTLBError:
+  * many reasons, including a dirty update to a pte.  We bail out to
+  * a higher level function that can handle it.
+  */
+-	. = 0x1400
+-DataTLBError:
++	START_EXCEPTION(0x1400, DataTLBError)
+ 	EXCEPTION_PROLOG_0 handle_dar_dsisr=1
+ 	mfspr	r11, SPRN_DAR
+ 	cmpwi	cr1, r11, RPN_PATTERN
+@@ -354,8 +347,7 @@ do_databreakpoint:
+ 	stw	r4,_DAR(r11)
+ 	EXC_XFER_STD(0x1c00, do_break)
+ 
+-	. = 0x1c00
+-DataBreakpoint:
++	START_EXCEPTION(0x1c00, DataBreakpoint)
+ 	EXCEPTION_PROLOG_0 handle_dar_dsisr=1
+ 	mfspr	r11, SPRN_SRR0
+ 	cmplwi	cr1, r11, (.Ldtlbie - PAGE_OFFSET)@l
+@@ -368,8 +360,7 @@ DataBreakpoint:
+ 	rfi
+ 
+ #ifdef CONFIG_PERF_EVENTS
+-	. = 0x1d00
+-InstructionBreakpoint:
++	START_EXCEPTION(0x1d00, InstructionBreakpoint)
+ 	mtspr	SPRN_SPRG_SCRATCH0, r10
+ 	lwz	r10, (instruction_counter - PAGE_OFFSET)@l(0)
+ 	addi	r10, r10, -1
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index 9dc05890477d..8f5c8c8da63d 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -255,9 +255,7 @@ __secondary_hold_acknowledge:
+  * pointer when we take an exception from supervisor mode.)
+  *	-- paulus.
+  */
+-	. = 0x200
+-	DO_KVM  0x200
+-MachineCheck:
++	START_EXCEPTION(0x200, MachineCheck)
+ 	EXCEPTION_PROLOG_0
+ #ifdef CONFIG_PPC_CHRP
+ 	mtspr	SPRN_SPRG_SCRATCH2,r1
+@@ -278,9 +276,7 @@ MachineCheck:
+ #endif
+ 
+ /* Data access exception. */
+-	. = 0x300
+-	DO_KVM  0x300
+-DataAccess:
++	START_EXCEPTION(0x300, DataAccess)
+ #ifdef CONFIG_PPC_BOOK3S_604
+ BEGIN_MMU_FTR_SECTION
+ 	mtspr	SPRN_SPRG_SCRATCH2,r10
+@@ -304,9 +300,7 @@ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_HPTE_TABLE)
+ 	b	handle_page_fault_tramp_1
+ 
+ /* Instruction access exception. */
+-	. = 0x400
+-	DO_KVM  0x400
+-InstructionAccess:
++	START_EXCEPTION(0x400, InstructionAccess)
+ 	mtspr	SPRN_SPRG_SCRATCH0,r10
+ 	mtspr	SPRN_SPRG_SCRATCH1,r11
+ 	mfspr	r10, SPRN_SPRG_THREAD
+@@ -336,9 +330,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
+ 	EXCEPTION(0x500, HardwareInterrupt, do_IRQ, EXC_XFER_LITE)
+ 
+ /* Alignment exception */
+-	. = 0x600
+-	DO_KVM  0x600
+-Alignment:
++	START_EXCEPTION(0x600, Alignment)
+ 	EXCEPTION_PROLOG handle_dar_dsisr=1
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	b	alignment_exception_tramp
+@@ -347,9 +339,7 @@ Alignment:
+ 	EXCEPTION(0x700, ProgramCheck, program_check_exception, EXC_XFER_STD)
+ 
+ /* Floating-point unavailable */
+-	. = 0x800
+-	DO_KVM  0x800
+-FPUnavailable:
++	START_EXCEPTION(0x800, FPUnavailable)
+ #ifdef CONFIG_PPC_FPU
+ BEGIN_FTR_SECTION
+ /*
+@@ -375,9 +365,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_FPU_UNAVAILABLE)
+ 	EXCEPTION(0xb00, Trap_0b, unknown_exception, EXC_XFER_STD)
+ 
+ /* System call */
+-	. = 0xc00
+-	DO_KVM  0xc00
+-SystemCall:
++	START_EXCEPTION(0xc00, SystemCall)
+ 	SYSCALL_ENTRY	0xc00
+ 
+ 	EXCEPTION(0xd00, SingleStep, single_step_exception, EXC_XFER_STD)
+@@ -391,12 +379,10 @@ SystemCall:
+  * non-altivec kernel running on a machine with altivec just
+  * by executing an altivec instruction.
+  */
+-	. = 0xf00
+-	DO_KVM  0xf00
++	START_EXCEPTION(0xf00, PerformanceMonitorTrap)
+ 	b	PerformanceMonitor
+ 
+-	. = 0xf20
+-	DO_KVM  0xf20
++	START_EXCEPTION(0xf20, AltiVecUnavailableTrap)
+ 	b	AltiVecUnavailable
+ 
+ /*
 -- 
 2.25.0
 
