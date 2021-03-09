@@ -2,122 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CF2332CA5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 17:55:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEEE0332CDA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 18:08:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw1YC1G5vz3cVZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 03:55:27 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=PZIZu0aJ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw1rX6RPlz3cby
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 04:08:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=40.107.93.40;
- helo=nam10-dm6-obe.outbound.protection.outlook.com;
- envelope-from=jgg@nvidia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
- header.s=selector2 header.b=PZIZu0aJ; 
- dkim-atps=neutral
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2040.outbound.protection.outlook.com [40.107.93.40])
+ smtp.mailfrom=kaod.org (client-ip=188.165.32.156; helo=3.mo51.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 4565 seconds by postgrey-1.36 at boromir;
+ Wed, 10 Mar 2021 04:08:27 AEDT
+Received: from 3.mo51.mail-out.ovh.net (3.mo51.mail-out.ovh.net
+ [188.165.32.156])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw1Xj39jXz30Jr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 03:54:59 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=REvZNFj5NdqLRsUKrfO9REXJccQ3KwQJGQYG52qujvXt63qcAUxxe0cLXrE9CMXtfJNdLtTxOftN0pYC5rLiTss25jRr89+hFscC3/19GtqVNcHry06J8a2FMKQ7sf9TxIdybnJ58u3yRIJoraJloLzcqNPmTxyIXJvNiQKhCYS5hL9CAmrZ6aS9UrhMVeEf4FaBAMW83PV+xbyEgopr8iw3VOOJIUUQuteoU3v8llr0axyBApRJ1rVD5t58wxJJSY0/C0dbKEiY9sRA4l8I4jJlkZrMFW+RzmZTsTCjG8k8+712nACaH3aOmnZsNl8szdnmnkja3unm1kI+8MZuug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VKpvK/3/3Ub2XKJ/f47QIMrZJJ50utNXNchYEtfdulw=;
- b=PFTb8zNeRDnzxIiAR+ZNjm+vvmucOuSzWb2cedwpZRDrXlRpdsHzauXmHd5cLqcKonmomFwgJEsoAnjVV5Bvk6J1upML5cbMADaNq/ps9103ZMWW46kUbK9wfFiJdCuXxIfyVtkI6V1BDEw3V12Q1hhJnhXRkL369hFxRb/uMMn5AWHGaeiLYTLbgWXY7QcOidfaZnqeiLm6iahFwnQJGvzas3dQbFlCcv4NzfiKM5fJt6EYHFZIsDttlBOZU8hRww4rl+YIIFj4hrwUGGluODj7VBYSCpPEtTHDlRFMeGTuN3sDfSU/75rNMWmOgX58UUeMJ0RWDEs/bGZ741bVng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VKpvK/3/3Ub2XKJ/f47QIMrZJJ50utNXNchYEtfdulw=;
- b=PZIZu0aJ9VmzfjQ5BiGNC+DvF5fWQreDhyerJAF10qutSFy8ubSjKJUdF4q60iVzWaw/TF7nm6/JxnQTpXn49fkVdhpILkbIkbiR8gsKpNc6sKYyjBC8maT66uit9ClvvsYHJ9Bap1VNEG5QpXCPF2z4AmxbX3VfYVFk84/6rmxSCpXYJSePjTmcGTefGKwvrcnECnpf38dGagwr44oGxmst6PCfYeBWGS05Mw77u2hGPL2zNKiSNgLf68H85PyTpjUa3MhQnJh7JXSk4XrpeIcPY64/mvy/f4aRu8I79AbRr623u6beSz0oaqG05fDbg27FYCiJgzC4wH9rHyzZyQ==
-Authentication-Results: lst.de; dkim=none (message not signed)
- header.d=none;lst.de; dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
- by DM5PR12MB1548.namprd12.prod.outlook.com (2603:10b6:4:a::23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3912.26; Tue, 9 Mar 2021 16:54:54 +0000
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::1c62:7fa3:617b:ab87]) by DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::1c62:7fa3:617b:ab87%6]) with mapi id 15.20.3912.027; Tue, 9 Mar 2021
- 16:54:54 +0000
-Date: Tue, 9 Mar 2021 12:54:52 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: make alloc_anon_inode more useful
-Message-ID: <20210309165452.GL2356281@nvidia.com>
-References: <20210309155348.974875-1-hch@lst.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210309155348.974875-1-hch@lst.de>
-X-Originating-IP: [142.162.115.133]
-X-ClientProxiedBy: MN2PR15CA0045.namprd15.prod.outlook.com
- (2603:10b6:208:237::14) To DM6PR12MB3834.namprd12.prod.outlook.com
- (2603:10b6:5:14a::12)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw1rC6xV1z3cH9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 04:08:25 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.1.214])
+ by mo51.mail-out.ovh.net (Postfix) with ESMTPS id 3F73326EDF7;
+ Tue,  9 Mar 2021 16:52:18 +0100 (CET)
+Received: from kaod.org (37.59.142.106) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 9 Mar 2021
+ 16:52:14 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-106R00683159893-e56b-4bd8-a274-5c18a8f63d30,
+ 8C9061D2296CFEABF2D52E5F4F8F8063DC0B97BF) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Subject: Re: [PATCH v2 8/8] powerpc/xive: Map one IPI interrupt per node
+To: Greg Kurz <groug@kaod.org>
+References: <20210303174857.1760393-1-clg@kaod.org>
+ <20210303174857.1760393-9-clg@kaod.org> <20210309142331.1b9456c2@bahia.lan>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <e86f7e34-afe1-ac03-3444-68e06d3fccdb@kaod.org>
+Date: Tue, 9 Mar 2021 16:52:10 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mlx.ziepe.ca (142.162.115.133) by
- MN2PR15CA0045.namprd15.prod.outlook.com (2603:10b6:208:237::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend
- Transport; Tue, 9 Mar 2021 16:54:54 +0000
-Received: from jgg by mlx with local (Exim 4.94)	(envelope-from
- <jgg@nvidia.com>)	id 1lJfdE-00A8qz-Vs; Tue, 09 Mar 2021 12:54:53 -0400
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 6ef625fe-0a3d-42c7-3b0f-08d8e31c1017
-X-MS-TrafficTypeDiagnostic: DM5PR12MB1548:
-X-Microsoft-Antispam-PRVS: <DM5PR12MB15487F5E00577BA870A1831FC2929@DM5PR12MB1548.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7wb1mpIictjVgMwEJkt4sPVsmOj/7ohub1dlzy2ygvLFHZwntVd5AtW5q620Eux0M5fnWJ6+0+BboPkaVvIjj4opGGgr0f/7OV7OWujUIk2K36SA6e074ZoVv94eoUgvggPwQ1V+drjLwYZNC1heck4+Y0JNjdenRreeFVbcRq5IAI3P8SjVu8lLQFJETGnR2tb4WSw3VyoJUIrnyfMAKrDx9OJYmWZcsmI1SFLd24xz0q7l84vqcKGtFUygqxD47r2RRI8nwreo4lOGpEqGXGb9My8miQVBj0M+5x8dPyFDYjkNRZIznEwxeVAEieiNFrSgTYFuLY0/qxMenyXhnVdMtsS+5JMCFhxMQ/fjG9XZLbUsiy/+YpLrRl2oaukxBMyxvPIh8e0IBl++W+pitD1bQWmo2/HCRoyqv47o0F1g7rPgyPfLi9bs2YBevJuyjy8a8H3hPaM4OUOkzx1U3qPaEAFlWjharVe0V/oKmC1N/2d8nUpdQfozlf3ZW5Icnxr3Ks7kwkF2hQ1tHbuPoQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR12MB3834.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(39860400002)(366004)(136003)(376002)(396003)(346002)(54906003)(86362001)(5660300002)(9786002)(33656002)(36756003)(7416002)(1076003)(26005)(186003)(2906002)(4744005)(9746002)(8936002)(8676002)(426003)(4326008)(6916009)(66556008)(66946007)(2616005)(478600001)(83380400001)(66476007)(316002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?jZFzFtuf5R6MqIg4O0DL4z6BTmkDWOHPy1QSqDbGA/CoOfqMTbT4dEvyov+9?=
- =?us-ascii?Q?wqDQM77xS2pkngKlHOmlV4l5xvMAidbdYX/UdjjIeHPttTps/K7XFu1ERM8v?=
- =?us-ascii?Q?xyLfkmvLaRzmV6D/ABpTRYJ+asQVGyoB1OsiwJN5pmwopkQom7Aw7xXwLFYY?=
- =?us-ascii?Q?ZF1eWbaniNXIRPBIEU7EfyE4BwFDWiCGwLluRBPAPlVXg5hTwZiyAtUmtZec?=
- =?us-ascii?Q?CcVfqa7/MT3ZqA2S3YAzo7NG+TZe1HIVGykPEBt9lHl/wEq2BjvxeQ6tgqoc?=
- =?us-ascii?Q?2mXL9f44MWl6xK6gEgQj7eAxCj/lYNzsaH+DvqI0sf+SAbfzTXhfKhuVafp7?=
- =?us-ascii?Q?BziwFtLWNOqKb20duo9JxdW3d2CfBAtsHVHdWvnn8KoeFwuDcA+2abOUorti?=
- =?us-ascii?Q?q9JHjscBDqHrhFUnREJQFlJJ9UY8BTBDhHx2QfO5VR5uX2wUXof6WdFFUzLV?=
- =?us-ascii?Q?b91+pO2LVqKGCdxxnFoUsnA5SFp7+3hhSz0ziIjqbmCL3vQD1F2dtKlexvCQ?=
- =?us-ascii?Q?cdy5uZOmn7Hfy3Oe+T/Sk9ayvXKzHp/S8AtYGn+hOC/bDh+5xv/l6wyhSYsP?=
- =?us-ascii?Q?sSrFkos6W2gAxoBricKXt7iUQOxyf7BE2AheT7taWo92fAf/pWwdglVSQLUL?=
- =?us-ascii?Q?04FvfESpwSIns6V1O+/bDIocOKKZfWG8N7K0I3P/Li5bwiCP7QwMHHhQdB7/?=
- =?us-ascii?Q?hcsTWQTGmsCk7tXycrg+PhhakES4/Mfc7exbZegewNLrn9DwYymp5D2RYR9E?=
- =?us-ascii?Q?BhvhvA4PsSISnIChINmNVijRYFB+Tpf0SLYqeDxZyHqzVteIwSH7V/ng2nPa?=
- =?us-ascii?Q?pNk4x4pQPpTJRYbDgxZVL9s2w61LzwKJ0M+Z0J0xfYSIM2SkK/NkfuHN18qf?=
- =?us-ascii?Q?ip+4HZVH1g+H1vr7LN+cUHxGtUIhVKy+h7cLU1ErQI7ey/F2MgZzU0J63dYU?=
- =?us-ascii?Q?i5AZCPSZorLJVaCF8l8qWUu6AN4RUHvxoLeW87vhQhG1FsocO2+7DZlWVouc?=
- =?us-ascii?Q?0+CwaUMK2I+pBOi9pSrN8CX00OoUsnwV3SPxP1jnpsbTRzLrwrwd8cWDP9gr?=
- =?us-ascii?Q?bLrVgdF1BcCUvnGP1q0iHHNfpdpAi93Nizn5z0BV6RwR9bkeSb/p1cGtUiPb?=
- =?us-ascii?Q?Xji18HoMq0PdwgMYcvs2G6fXWoYOaVxfZFfFlTsw+sg+cRO/rEjSwe4gLA2C?=
- =?us-ascii?Q?nrr65UdppWuAuQirJ7tenBlIbT2mK0Mk9eXsxMR6u7Zc91ZugAAWMy8i8ZfU?=
- =?us-ascii?Q?uYxJE7Iw5gvhh5ExD4JQzc3qWmXa8jHpalXT8mngHJMLuyq2/8SSeOFxsRgQ?=
- =?us-ascii?Q?+BWoUrd8PTJQ32W3UBeWTK43MyYPCmFGXzcVhuloaTuwjQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ef625fe-0a3d-42c7-3b0f-08d8e31c1017
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3834.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2021 16:54:54.3541 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yHLv7rz67JwaCrza7WpjYQGi1FXin+ClHRaejpP8M3GuoOUt1zb0btLDz04o8DaC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1548
+In-Reply-To: <20210309142331.1b9456c2@bahia.lan>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.106]
+X-ClientProxiedBy: DAG9EX2.mxp5.local (172.16.2.82) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 8a9a8de6-5b10-485f-9710-993d84fed242
+X-Ovh-Tracer-Id: 11074632961135971293
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudduiedgkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefuvfhfhffkffgfgggjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeehuedtheeghfdvhedtueelteegvdefueektdefiefhffffieduuddtudfhgfevtdenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehgrhhouhhgsehkrghougdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,35 +64,237 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, "VMware,
- Inc." <pv-drivers@vmware.com>, David Hildenbrand <david@redhat.com>,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- Minchan Kim <minchan@kernel.org>, Alex Williamson <alex.williamson@redhat.com>,
- Nadav Amit <namit@vmware.com>, Al Viro <viro@zeniv.linux.org.uk>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Nitin Gupta <ngupta@vflare.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 09, 2021 at 04:53:39PM +0100, Christoph Hellwig wrote:
-> Hi all,
+On 3/9/21 2:23 PM, Greg Kurz wrote:
+> On Wed, 3 Mar 2021 18:48:57 +0100
+> Cédric Le Goater <clg@kaod.org> wrote:
 > 
-> this series first renames the existing alloc_anon_inode to
-> alloc_anon_inode_sb to clearly mark it as requiring a superblock.
+>> ipistorm [*] can be used to benchmark the raw interrupt rate of an
+>> interrupt controller by measuring the number of IPIs a system can
+>> sustain. When applied to the XIVE interrupt controller of POWER9 and
+>> POWER10 systems, a significant drop of the interrupt rate can be
+>> observed when crossing the second node boundary.
+>>
+>> This is due to the fact that a single IPI interrupt is used for all
+>> CPUs of the system. The structure is shared and the cache line updates
+>> impact greatly the traffic between nodes and the overall IPI
+>> performance.
+>>
+>> As a workaround, the impact can be reduced by deactivating the IRQ
+>> lockup detector ("noirqdebug") which does a lot of accounting in the
+>> Linux IRQ descriptor structure and is responsible for most of the
+>> performance penalty.
+>>
+>> As a fix, this proposal allocates an IPI interrupt per node, to be
+>> shared by all CPUs of that node. It solves the scaling issue, the IRQ
+>> lockup detector still has an impact but the XIVE interrupt rate scales
+>> linearly. It also improves the "noirqdebug" case as showed in the
+>> tables below.
+>>
+>>  * P9 DD2.2 - 2s * 64 threads
+>>
+>>                                                "noirqdebug"
+>>                         Mint/s                    Mint/s
+>>  chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys
+>>  --------------------------------------------------------------
+>>  1      0-15     4.984023   4.875405       4.996536   5.048892
+>>         0-31    10.879164  10.544040      10.757632  11.037859
+>>         0-47    15.345301  14.688764      14.926520  15.310053
+>>         0-63    17.064907  17.066812      17.613416  17.874511
+>>  2      0-79    11.768764  21.650749      22.689120  22.566508
+>>         0-95    10.616812  26.878789      28.434703  28.320324
+>>         0-111   10.151693  31.397803      31.771773  32.388122
+>>         0-127    9.948502  33.139336      34.875716  35.224548
+>>
+>>  * P10 DD1 - 4s (not homogeneous) 352 threads
+>>
+>>                                                "noirqdebug"
+>>                         Mint/s                    Mint/s
+>>  chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys
+>>  --------------------------------------------------------------
+>>  1      0-15     2.409402   2.364108       2.383303   2.395091
+>>         0-31     6.028325   6.046075       6.089999   6.073750
+>>         0-47     8.655178   8.644531       8.712830   8.724702
+>>         0-63    11.629652  11.735953      12.088203  12.055979
+>>         0-79    14.392321  14.729959      14.986701  14.973073
+>>         0-95    12.604158  13.004034      17.528748  17.568095
+>>  2      0-111    9.767753  13.719831      19.968606  20.024218
+>>         0-127    6.744566  16.418854      22.898066  22.995110
+>>         0-143    6.005699  19.174421      25.425622  25.417541
+>>         0-159    5.649719  21.938836      27.952662  28.059603
+>>         0-175    5.441410  24.109484      31.133915  31.127996
+>>  3      0-191    5.318341  24.405322      33.999221  33.775354
+>>         0-207    5.191382  26.449769      36.050161  35.867307
+>>         0-223    5.102790  29.356943      39.544135  39.508169
+>>         0-239    5.035295  31.933051      42.135075  42.071975
+>>         0-255    4.969209  34.477367      44.655395  44.757074
+>>  4      0-271    4.907652  35.887016      47.080545  47.318537
+>>         0-287    4.839581  38.076137      50.464307  50.636219
+>>         0-303    4.786031  40.881319      53.478684  53.310759
+>>         0-319    4.743750  43.448424      56.388102  55.973969
+>>         0-335    4.709936  45.623532      59.400930  58.926857
+>>         0-351    4.681413  45.646151      62.035804  61.830057
+>>
+>> [*] https://github.com/antonblanchard/ipistorm
+>>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>  arch/powerpc/sysdev/xive/xive-internal.h |  2 --
+>>  arch/powerpc/sysdev/xive/common.c        | 39 ++++++++++++++++++------
+>>  2 files changed, 30 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysdev/xive/xive-internal.h
+>> index 9cf57c722faa..b3a456fdd3a5 100644
+>> --- a/arch/powerpc/sysdev/xive/xive-internal.h
+>> +++ b/arch/powerpc/sysdev/xive/xive-internal.h
+>> @@ -5,8 +5,6 @@
+>>  #ifndef __XIVE_INTERNAL_H
+>>  #define __XIVE_INTERNAL_H
+>>  
+>> -#define XIVE_IPI_HW_IRQ		0 /* interrupt source # for IPIs */
+>> -
+>>  /*
+>>   * A "disabled" interrupt should never fire, to catch problems
+>>   * we set its logical number to this
+>> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+>> index 8eefd152b947..c27f7bb0494b 100644
+>> --- a/arch/powerpc/sysdev/xive/common.c
+>> +++ b/arch/powerpc/sysdev/xive/common.c
+>> @@ -65,8 +65,16 @@ static struct irq_domain *xive_irq_domain;
+>>  #ifdef CONFIG_SMP
+>>  static struct irq_domain *xive_ipi_irq_domain;
+>>  
+>> -/* The IPIs all use the same logical irq number */
+>> -static u32 xive_ipi_irq;
+>> +/* The IPIs use the same logical irq number when on the same chip */
+>> +static struct xive_ipi_desc {
+>> +	unsigned int irq;
+>> +	char name[8]; /* enough bytes to fit IPI-XXX */
 > 
-> It then adds a new alloc_anon_inode that works on the anon_inode
-> file system super block, thus removing tons of boilerplate code.
-> 
-> The few remainig callers of alloc_anon_inode_sb all use alloc_file_pseudo
-> later, but might also be ripe for some cleanup.
+> So this assumes that the node number that node is <= 999 ? This
+> is certainly the case for now since CONFIG_NODES_SHIFT is 8
+> on ppc64 but starting with 10, you'd have truncated names.
 
-I like it
+It should be harmless though. I agree this is a useless optimization.
 
-For a submission plan can we have this on a git branch please? I will
-need a copy for RDMA and Alex will need one for vfio..
+> What about deriving the size of name[] from CONFIG_NODES_SHIFT ?
+
+Yes.
+ 
+> Apart from that, LGTM. Probably not worth to respin just for
+> this.
+> 
+> I also could give a try in a KVM guest.
+> 
+> Topology passed to QEMU:
+> 
+>   -smp 8,maxcpus=8,cores=2,threads=2,sockets=2 \
+>   -numa node,nodeid=0,cpus=0-4 \
+>   -numa node,nodeid=1,cpus=4-7
+> 
+> Topology observed in guest with lstopo :
+> 
+>   Package L#0
+>     NUMANode L#0 (P#0 30GB)
+>     L1d L#0 (32KB) + L1i L#0 (32KB) + Core L#0
+>       PU L#0 (P#0)
+>       PU L#1 (P#1)
+>     L1d L#1 (32KB) + L1i L#1 (32KB) + Core L#1
+>       PU L#2 (P#2)
+>       PU L#3 (P#3)
+>   Package L#1
+>     NUMANode L#1 (P#1 32GB)
+>     L1d L#2 (32KB) + L1i L#2 (32KB) + Core L#2
+>       PU L#4 (P#4)
+>       PU L#5 (P#5)
+>     L1d L#3 (32KB) + L1i L#3 (32KB) + Core L#3
+>       PU L#6 (P#6)
+>       PU L#7 (P#7)
+> 
+> Interrupts in guest:
+> 
+> $ cat /proc/interrupts 
+>            CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       CPU6       CPU7       
+>  16:       1023        871       1042        749          0          0          0          0  XIVE-IPI   0 Edge      IPI-0
+>  17:          0          0          0          0       2123       1019       1263       1288  XIVE-IPI   1 Edge      IPI-1
+> 
+> IPIs are mapped to the appropriate nodes, and the numbers indicate
+> that everything is working as expected.
+
+You should see the same on 2 socket PowerNV QEMU machine.
+ 
+> Reviewed-and-tested-by: Greg Kurz <groug@kaod.org>
 
 Thanks,
-Jason
+
+C. 
+
+> 
+>> +} *xive_ipis;
+>> +
+>> +static unsigned int xive_ipi_cpu_to_irq(unsigned int cpu)
+>> +{
+>> +	return xive_ipis[cpu_to_node(cpu)].irq;
+>> +}
+>>  #endif
+>>  
+>>  /* Xive state for each CPU */
+>> @@ -1106,25 +1114,36 @@ static const struct irq_domain_ops xive_ipi_irq_domain_ops = {
+>>  
+>>  static void __init xive_request_ipi(void)
+>>  {
+>> -	unsigned int virq;
+>> +	unsigned int node;
+>>  
+>> -	xive_ipi_irq_domain = irq_domain_add_linear(NULL, 1,
+>> +	xive_ipi_irq_domain = irq_domain_add_linear(NULL, nr_node_ids,
+>>  						    &xive_ipi_irq_domain_ops, NULL);
+>>  	if (WARN_ON(xive_ipi_irq_domain == NULL))
+>>  		return;
+>>  
+>> -	/* Initialize it */
+>> -	virq = irq_create_mapping(xive_ipi_irq_domain, XIVE_IPI_HW_IRQ);
+>> -	xive_ipi_irq = virq;
+>> +	xive_ipis = kcalloc(nr_node_ids, sizeof(*xive_ipis), GFP_KERNEL | __GFP_NOFAIL);
+>> +	for_each_node(node) {
+>> +		struct xive_ipi_desc *xid = &xive_ipis[node];
+>> +		irq_hw_number_t node_ipi_hwirq = node;
+>> +
+>> +		/*
+>> +		 * Map one IPI interrupt per node for all cpus of that node.
+>> +		 * Since the HW interrupt number doesn't have any meaning,
+>> +		 * simply use the node number.
+>> +		 */
+>> +		xid->irq = irq_create_mapping(xive_ipi_irq_domain, node_ipi_hwirq);
+>> +		snprintf(xid->name, sizeof(xid->name), "IPI-%d", node);
+>>  
+>> -	WARN_ON(request_irq(virq, xive_muxed_ipi_action,
+>> -			    IRQF_PERCPU | IRQF_NO_THREAD, "IPI", NULL));
+>> +		WARN_ON(request_irq(xid->irq, xive_muxed_ipi_action,
+>> +				    IRQF_PERCPU | IRQF_NO_THREAD, xid->name, NULL));
+>> +	}
+>>  }
+>>  
+>>  static int xive_setup_cpu_ipi(unsigned int cpu)
+>>  {
+>>  	struct xive_cpu *xc;
+>>  	int rc;
+>> +	unsigned int xive_ipi_irq = xive_ipi_cpu_to_irq(cpu);
+>>  
+>>  	pr_debug("Setting up IPI for CPU %d\n", cpu);
+>>  
+>> @@ -1165,6 +1184,8 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
+>>  
+>>  static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
+>>  {
+>> +	unsigned int xive_ipi_irq = xive_ipi_cpu_to_irq(cpu);
+>> +
+>>  	/* Disable the IPI and free the IRQ data */
+>>  
+>>  	/* Already cleaned up ? */
+> 
+
