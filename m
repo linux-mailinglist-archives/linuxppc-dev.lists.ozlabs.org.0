@@ -2,62 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10193332019
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 08:57:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA54833209A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 09:33:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvncB0Wvmz3cPr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 18:57:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DvpPh5FlTz3cTX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 19:33:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dvnbp0QBSz30L3
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 18:56:52 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Dvnbh1xgVz9txlX;
- Tue,  9 Mar 2021 08:56:48 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id w6xYnDel4M2J; Tue,  9 Mar 2021 08:56:48 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Dvnbh0qTtz9txlW;
- Tue,  9 Mar 2021 08:56:48 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2035B8B7CE;
- Tue,  9 Mar 2021 08:56:49 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ebcmzNe1X4b6; Tue,  9 Mar 2021 08:56:49 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 340548B773;
- Tue,  9 Mar 2021 08:56:48 +0100 (CET)
-Subject: Re: [PATCH v2 4/7] CMDLINE: powerpc: convert to generic builtin
- command line
-To: Daniel Walker <danielwa@cisco.com>, Will Deacon <will@kernel.org>,
- Rob Herring <robh@kernel.org>,
- Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- xe-linux-external@cisco.com, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-References: <20210309000247.2989531-5-danielwa@cisco.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <c5c8b57e-7954-ec02-188a-7f85cb0af731@csgroup.eu>
-Date: Tue, 9 Mar 2021 08:56:47 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
-MIME-Version: 1.0
-In-Reply-To: <20210309000247.2989531-5-danielwa@cisco.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DvpPM5rlTz2xb1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 19:32:53 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 32FEED6E;
+ Tue,  9 Mar 2021 00:32:49 -0800 (PST)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.66.57])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BCE853F71B;
+ Tue,  9 Mar 2021 00:32:44 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH 0/6] mm: some config cleanups
+Date: Tue,  9 Mar 2021 14:03:04 +0530
+Message-Id: <1615278790-18053-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,203 +39,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ruslan Ruslichenko <rruslich@cisco.com>,
- Ruslan Bilovol <rbilovol@cisco.com>, linux-kernel@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-sh@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This series contains config cleanup patches which reduces code duplication
+across platforms and also improves maintainability. There is no functional
+change intended with this series. This has been boot tested on arm64 but
+only build tested on some other platforms.
 
+This applies on 5.12-rc2
 
-Le 09/03/2021 à 01:02, Daniel Walker a écrit :
-> This updates the powerpc code to use the CONFIG_GENERIC_CMDLINE
-> option.
-> 
-> Cc: xe-linux-external@cisco.com
-> Signed-off-by: Ruslan Ruslichenko <rruslich@cisco.com>
-> Signed-off-by: Ruslan Bilovol <rbilovol@cisco.com>
-> Signed-off-by: Daniel Walker <danielwa@cisco.com>
-> ---
->   arch/powerpc/Kconfig            | 37 +--------------------------------
->   arch/powerpc/kernel/prom.c      |  1 +
->   arch/powerpc/kernel/prom_init.c | 35 ++++++++++++++++++-------------
->   3 files changed, 23 insertions(+), 50 deletions(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 107bb4319e0e..276b06d5c961 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -167,6 +167,7 @@ config PPC
->   	select EDAC_SUPPORT
->   	select GENERIC_ATOMIC64			if PPC32
->   	select GENERIC_CLOCKEVENTS_BROADCAST	if SMP
-> +	select GENERIC_CMDLINE
->   	select GENERIC_CMOS_UPDATE
->   	select GENERIC_CPU_AUTOPROBE
->   	select GENERIC_CPU_VULNERABILITIES	if PPC_BARRIER_NOSPEC
-> @@ -906,42 +907,6 @@ config PPC_DENORMALISATION
->   	  Add support for handling denormalisation of single precision
->   	  values.  Useful for bare metal only.  If unsure say Y here.
->   
-> -config CMDLINE
-> -	string "Initial kernel command string"
-> -	default ""
-> -	help
-> -	  On some platforms, there is currently no way for the boot loader to
-> -	  pass arguments to the kernel. For these platforms, you can supply
-> -	  some command-line options at build time by entering them here.  In
-> -	  most cases you will need to specify the root device here.
-> -
-> -choice
-> -	prompt "Kernel command line type" if CMDLINE != ""
-> -	default CMDLINE_FROM_BOOTLOADER
-> -
-> -config CMDLINE_FROM_BOOTLOADER
-> -	bool "Use bootloader kernel arguments if available"
-> -	help
-> -	  Uses the command-line options passed by the boot loader. If
-> -	  the boot loader doesn't provide any, the default kernel command
-> -	  string provided in CMDLINE will be used.
-> -
-> -config CMDLINE_EXTEND
-> -	bool "Extend bootloader kernel arguments"
-> -	help
-> -	  The command-line arguments provided by the boot loader will be
-> -	  appended to the default kernel command string.
-> -
-> -config CMDLINE_FORCE
-> -	bool "Always use the default kernel command string"
-> -	help
-> -	  Always use the default kernel command string, even if the boot
-> -	  loader passes other arguments to the kernel.
-> -	  This is useful if you cannot or don't want to change the
-> -	  command-line options your boot loader passes to the kernel.
-> -
-> -endchoice
-> -
->   config EXTRA_TARGETS
->   	string "Additional default image types"
->   	help
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index ae3c41730367..96d0a01be1b4 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -27,6 +27,7 @@
->   #include <linux/irq.h>
->   #include <linux/memblock.h>
->   #include <linux/of.h>
-> +#include <linux/cmdline.h>
+Cc: x86@kernel.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-sh@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
 
-Why is this needed in prom.c ?
+Anshuman Khandual (6):
+  mm: Generalize ARCH_HAS_CACHE_LINE_SIZE
+  mm: Generalize SYS_SUPPORTS_HUGETLBFS (rename as ARCH_SUPPORTS_HUGETLBFS)
+  mm: Generalize ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE]
+  mm: Drop redundant ARCH_ENABLE_[HUGEPAGE|THP]_MIGRATION
+  mm: Drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK
+  mm: Drop redundant HAVE_ARCH_TRANSPARENT_HUGEPAGE
 
->   #include <linux/of_fdt.h>
->   #include <linux/libfdt.h>
->   #include <linux/cpu.h>
-> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-> index e9d4eb6144e1..657241534d69 100644
-> --- a/arch/powerpc/kernel/prom_init.c
-> +++ b/arch/powerpc/kernel/prom_init.c
-> @@ -27,6 +27,7 @@
->   #include <linux/initrd.h>
->   #include <linux/bitops.h>
->   #include <linux/pgtable.h>
-> +#include <linux/cmdline.h>
->   #include <asm/prom.h>
->   #include <asm/rtas.h>
->   #include <asm/page.h>
-> @@ -242,15 +243,6 @@ static int __init prom_strcmp(const char *cs, const char *ct)
->   	return 0;
->   }
->   
-> -static char __init *prom_strcpy(char *dest, const char *src)
-> -{
-> -	char *tmp = dest;
-> -
-> -	while ((*dest++ = *src++) != '\0')
-> -		/* nothing */;
-> -	return tmp;
-> -}
-> -
+ arch/arc/Kconfig                       |  9 ++------
+ arch/arm/Kconfig                       | 10 ++-------
+ arch/arm64/Kconfig                     | 30 ++++++--------------------
+ arch/ia64/Kconfig                      |  8 ++-----
+ arch/mips/Kconfig                      |  6 +-----
+ arch/parisc/Kconfig                    |  5 +----
+ arch/powerpc/Kconfig                   | 11 ++--------
+ arch/powerpc/platforms/Kconfig.cputype | 16 +++++---------
+ arch/riscv/Kconfig                     |  5 +----
+ arch/s390/Kconfig                      | 12 +++--------
+ arch/sh/Kconfig                        |  7 +++---
+ arch/sh/mm/Kconfig                     |  8 -------
+ arch/x86/Kconfig                       | 29 ++++++-------------------
+ fs/Kconfig                             |  5 ++++-
+ mm/Kconfig                             |  9 ++++++++
+ 15 files changed, 48 insertions(+), 122 deletions(-)
 
-This game with prom_strcpy() should go a separate preceeding patch.
+-- 
+2.20.1
 
-Also, it looks like checkpatch.pl recommends to use strscpy() instead of strlcpy().
-
->   static int __init prom_strncmp(const char *cs, const char *ct, size_t count)
->   {
->   	unsigned char c1, c2;
-> @@ -276,6 +268,20 @@ static size_t __init prom_strlen(const char *s)
->   	return sc - s;
->   }
->   
-> +static size_t __init prom_strlcpy(char *dest, const char *src, size_t size)
-> +{
-> +	size_t ret = prom_strlen(src);
-> +
-> +	if (size) {
-> +		size_t len = (ret >= size) ? size - 1 : ret;
-> +
-> +		memcpy(dest, src, len);
-> +		dest[len] = '\0';
-> +	}
-> +	return ret;
-> +}
-> +
-> +
->   static int __init prom_memcmp(const void *cs, const void *ct, size_t count)
->   {
->   	const unsigned char *su1, *su2;
-> @@ -304,6 +310,7 @@ static char __init *prom_strstr(const char *s1, const char *s2)
->   	return NULL;
->   }
->   
-> +#ifdef GENERIC_CMDLINE_NEED_STRLCAT
->   static size_t __init prom_strlcat(char *dest, const char *src, size_t count)
->   {
->   	size_t dsize = prom_strlen(dest);
-> @@ -323,6 +330,7 @@ static size_t __init prom_strlcat(char *dest, const char *src, size_t count)
->   	return res;
->   
->   }
-> +#endif
->   
->   #ifdef CONFIG_PPC_PSERIES
->   static int __init prom_strtobool(const char *s, bool *res)
-> @@ -775,12 +783,11 @@ static void __init early_cmdline_parse(void)
->   	prom_cmd_line[0] = 0;
->   	p = prom_cmd_line;
->   
-> -	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE) && (long)prom.chosen > 0)
-> +	if ((long)prom.chosen > 0)
->   		l = prom_getprop(prom.chosen, "bootargs", p, COMMAND_LINE_SIZE-1);
->   
-> -	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) || l <= 0 || p[0] == '\0')
-> -		prom_strlcat(prom_cmd_line, " " CONFIG_CMDLINE,
-> -			     sizeof(prom_cmd_line));
-> +	cmdline_add_builtin_custom(prom_cmd_line, (l > 0 ? p : NULL), sizeof(prom_cmd_line),
-> +					__prombss, prom_strlcpy, prom_strlcat);
-
-So we are referencing a function that doesn't exist (namely prom_strlcat).
-But it works because cmdline_add_builtin_custom() looks like a function but is in fact an obscure 
-macro that doesn't use prom_strlcat() unless GENERIC_CMDLINE_NEED_STRLCAT is defined.
-
-IMHO that's awful for readability and code maintenance.
-
->   
->   	prom_printf("command line: %s\n", prom_cmd_line);
->   
-> @@ -2706,7 +2713,7 @@ static void __init flatten_device_tree(void)
->   
->   	/* Add "phandle" in there, we'll need it */
->   	namep = make_room(&mem_start, &mem_end, 16, 1);
-> -	prom_strcpy(namep, "phandle");
-> +	prom_strlcpy(namep, "phandle", 8);
-
-Should be in a separate patch.
-
->   	mem_start = (unsigned long)namep + prom_strlen(namep) + 1;
->   
->   	/* Build string array */
-> 
-
-Christophe
