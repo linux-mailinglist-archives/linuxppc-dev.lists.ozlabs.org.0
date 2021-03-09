@@ -2,69 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D6B331B61
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 01:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF22A331BD9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 01:44:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dvb8v5mf4z3dwQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 11:06:23 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=elKPczeg;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dvc0Q6Whxz3cLY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 11:44:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.86.75; helo=rcdn-iport-4.cisco.com;
- envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=elKPczeg; dkim-atps=neutral
-Received: from rcdn-iport-4.cisco.com (rcdn-iport-4.cisco.com [173.37.86.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dvb545BXFz3cbm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 11:03:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=4760; q=dns/txt; s=iport;
- t=1615248184; x=1616457784;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=tQ2KjkNmJ1N6aeJwFCAC+GVVOXowsaBAtY9t5Zi/wUA=;
- b=elKPczegsaLZ0KcR3gPiBg3AfqD7OPxyrbxm+v7qO4/+ml/rJXugBEY0
- 0j3dM3MMs+Z20JSKsNalhd7MCN3VCWpNIgQHezdg4RAit/6f6TievDhQN
- q7ZGJyp7H/7A3MgvbF1/q8ka38egtk6bSvL9jkLm+AtGw4XIXu/H6A0q9 k=;
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0BIAwAiukZg/4cNJK1iHAEBAQEBAQc?=
- =?us-ascii?q?BARIBAQQEAQGCD4IrgUwBOTGWG4opkicLAQEBDzQEAQGETYF8AiU4EwIDAQE?=
- =?us-ascii?q?LAQEFAQEBAgEGBHGFboZ9ATgOgQI8ARKCcIJWAy+sJIIoiBsNYoFFFIEliFx?=
- =?us-ascii?q?0hBgcgUlCgRGDWIIaiBkEgkYBdRkBCiUBgVSBG5AlBgSCbYozgR2aCluDCIE?=
- =?us-ascii?q?flVuFHQ8io2yUXY5HlA6BayOBVzMaCBsVgyRQGQ2OKxaNagFcIAMvOAIGCgE?=
- =?us-ascii?q?BAwmPJgEB?=
-X-IronPort-AV: E=Sophos;i="5.81,233,1610409600"; d="scan'208";a="846417833"
-Received: from alln-core-2.cisco.com ([173.36.13.135])
- by rcdn-iport-4.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 09 Mar 2021 00:03:03 +0000
-Received: from zorba.cisco.com ([10.24.7.91])
- by alln-core-2.cisco.com (8.15.2/8.15.2) with ESMTP id 12902mKh014497;
- Tue, 9 Mar 2021 00:03:01 GMT
-From: Daniel Walker <danielwa@cisco.com>
-To: Will Deacon <will@kernel.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Rob Herring <robh@kernel.org>,
- Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- xe-linux-external@cisco.com, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v2 7/7] CMDLINE: x86: convert to generic builtin command line
-Date: Mon,  8 Mar 2021 16:02:43 -0800
-Message-Id: <20210309000247.2989531-8-danielwa@cisco.com>
-X-Mailer: git-send-email 2.25.1
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dvc056jJHz30RG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 11:43:45 +1100 (AEDT)
+IronPort-SDR: nFLlRgsAdDaBpjF4IzQ/+5BiPnqFIg53nPuBtNt41WyINWz0KVFYKsi++xCayQ8advg55G6Z3n
+ 052RvsgHYHZw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9917"; a="185744137"
+X-IronPort-AV: E=Sophos;i="5.81,233,1610438400"; d="scan'208";a="185744137"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Mar 2021 16:43:42 -0800
+IronPort-SDR: p3OtcuTSj92gqBffzldQDj2Cb0SuavyVXPIB6jOewiyyuyglF+Z1rRPYTFRpk/MDiGxuYSVo1y
+ ocPFV1gIkEaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,233,1610438400"; d="scan'208";a="408431521"
+Received: from lkp-server01.sh.intel.com (HELO 3e992a48ca98) ([10.239.97.150])
+ by orsmga007.jf.intel.com with ESMTP; 08 Mar 2021 16:43:40 -0800
+Received: from kbuild by 3e992a48ca98 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lJQTL-0001Fx-Nv; Tue, 09 Mar 2021 00:43:39 +0000
+Date: Tue, 09 Mar 2021 08:43:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 67f76911b6d44cea4c783271c9633d1414bce4fb
+Message-ID: <6046c497.R3PItZQR7pJmlZTO%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Auto-Response-Suppress: DR, OOF, AutoReply
-X-Outbound-SMTP-Client: 10.24.7.91, [10.24.7.91]
-X-Outbound-Node: alln-core-2.cisco.com
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,144 +53,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Ruslan Ruslichenko <rruslich@cisco.com>,
- linux-efi@vger.kernel.org, Ruslan Bilovol <ruslan.bilovol@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This updates the x86 code to use the CONFIG_GENERIC_CMDLINE
-option.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 67f76911b6d44cea4c783271c9633d1414bce4fb  Automatic merge of 'master' into merge (2021-03-08 10:21)
 
-Cc: xe-linux-external@cisco.com
-Signed-off-by: Ruslan Ruslichenko <rruslich@cisco.com>
-Signed-off-by: Ruslan Bilovol <ruslan.bilovol@gmail.com>
-Signed-off-by: Daniel Walker <danielwa@cisco.com>
+elapsed time: 727m
+
+configs tested: 127
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                     akebono_defconfig
+sh                          polaris_defconfig
+sh                          rsk7264_defconfig
+powerpc                 mpc832x_mds_defconfig
+arm                          pcm027_defconfig
+powerpc                     skiroot_defconfig
+mips                        workpad_defconfig
+sh                          sdk7780_defconfig
+sh                        edosk7760_defconfig
+powerpc                          g5_defconfig
+csky                             alldefconfig
+powerpc                  mpc885_ads_defconfig
+nds32                            alldefconfig
+parisc                generic-32bit_defconfig
+sh                          lboxre2_defconfig
+sh                          rsk7203_defconfig
+sh                           se7619_defconfig
+powerpc                        cell_defconfig
+arm                           corgi_defconfig
+arm                     eseries_pxa_defconfig
+arm                             rpc_defconfig
+arm                        mvebu_v7_defconfig
+powerpc                     stx_gp3_defconfig
+sparc                            allyesconfig
+sh                             espt_defconfig
+m68k                          sun3x_defconfig
+sparc                       sparc64_defconfig
+mips                  maltasmvp_eva_defconfig
+m68k                       m5208evb_defconfig
+arm                       imx_v6_v7_defconfig
+arm                             ezx_defconfig
+arm                        trizeps4_defconfig
+h8300                       h8s-sim_defconfig
+powerpc                      mgcoge_defconfig
+sh                             sh03_defconfig
+mips                       capcella_defconfig
+xtensa                  audio_kc705_defconfig
+sh                           se7705_defconfig
+arm                         bcm2835_defconfig
+arm                        keystone_defconfig
+mips                            gpr_defconfig
+arm                        neponset_defconfig
+arm                       aspeed_g5_defconfig
+sh                          sdk7786_defconfig
+arm                           u8500_defconfig
+mips                         mpc30x_defconfig
+mips                  decstation_64_defconfig
+sh                           se7721_defconfig
+mips                         tb0219_defconfig
+powerpc                 mpc8272_ads_defconfig
+sh                ecovec24-romimage_defconfig
+arm                            hisi_defconfig
+ia64                            zx1_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20210308
+x86_64               randconfig-a001-20210308
+x86_64               randconfig-a004-20210308
+x86_64               randconfig-a002-20210308
+x86_64               randconfig-a005-20210308
+x86_64               randconfig-a003-20210308
+i386                 randconfig-a005-20210308
+i386                 randconfig-a003-20210308
+i386                 randconfig-a002-20210308
+i386                 randconfig-a006-20210308
+i386                 randconfig-a004-20210308
+i386                 randconfig-a001-20210308
+i386                 randconfig-a016-20210308
+i386                 randconfig-a012-20210308
+i386                 randconfig-a014-20210308
+i386                 randconfig-a013-20210308
+i386                 randconfig-a011-20210308
+i386                 randconfig-a015-20210308
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a013-20210308
+x86_64               randconfig-a016-20210308
+x86_64               randconfig-a015-20210308
+x86_64               randconfig-a014-20210308
+x86_64               randconfig-a011-20210308
+x86_64               randconfig-a012-20210308
+
 ---
- arch/x86/Kconfig                        | 44 +------------------------
- arch/x86/kernel/setup.c                 | 18 ++--------
- drivers/firmware/efi/libstub/x86-stub.c |  2 +-
- 3 files changed, 4 insertions(+), 60 deletions(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 21f851179ff0..3950f9bf9855 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -115,6 +115,7 @@ config X86
- 	select EDAC_SUPPORT
- 	select GENERIC_CLOCKEVENTS_BROADCAST	if X86_64 || (X86_32 && X86_LOCAL_APIC)
- 	select GENERIC_CLOCKEVENTS_MIN_ADJUST
-+	select GENERIC_CMDLINE
- 	select GENERIC_CMOS_UPDATE
- 	select GENERIC_CPU_AUTOPROBE
- 	select GENERIC_CPU_VULNERABILITIES
-@@ -2368,49 +2369,6 @@ choice
- 
- endchoice
- 
--config CMDLINE_BOOL
--	bool "Built-in kernel command line"
--	help
--	  Allow for specifying boot arguments to the kernel at
--	  build time.  On some systems (e.g. embedded ones), it is
--	  necessary or convenient to provide some or all of the
--	  kernel boot arguments with the kernel itself (that is,
--	  to not rely on the boot loader to provide them.)
--
--	  To compile command line arguments into the kernel,
--	  set this option to 'Y', then fill in the
--	  boot arguments in CONFIG_CMDLINE.
--
--	  Systems with fully functional boot loaders (i.e. non-embedded)
--	  should leave this option set to 'N'.
--
--config CMDLINE
--	string "Built-in kernel command string"
--	depends on CMDLINE_BOOL
--	default ""
--	help
--	  Enter arguments here that should be compiled into the kernel
--	  image and used at boot time.  If the boot loader provides a
--	  command line at boot time, it is appended to this string to
--	  form the full kernel command line, when the system boots.
--
--	  However, you can use the CONFIG_CMDLINE_OVERRIDE option to
--	  change this behavior.
--
--	  In most cases, the command line (whether built-in or provided
--	  by the boot loader) should specify the device for the root
--	  file system.
--
--config CMDLINE_OVERRIDE
--	bool "Built-in command line overrides boot loader arguments"
--	depends on CMDLINE_BOOL && CMDLINE != ""
--	help
--	  Set this option to 'Y' to have the kernel ignore the boot loader
--	  command line, and use ONLY the built-in command line.
--
--	  This is used to work around broken boot loaders.  This should
--	  be set to 'N' under normal conditions.
--
- config MODIFY_LDT_SYSCALL
- 	bool "Enable the LDT (local descriptor table)" if EXPERT
- 	default y
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 740f3bdb3f61..e748c3e5c1ae 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -48,6 +48,7 @@
- #include <asm/unwind.h>
- #include <asm/vsyscall.h>
- #include <linux/vmalloc.h>
-+#include <linux/cmdline.h>
- 
- /*
-  * max_low_pfn_mapped: highest directly mapped pfn < 4 GB
-@@ -162,9 +163,6 @@ unsigned long saved_video_mode;
- #define RAMDISK_LOAD_FLAG		0x4000
- 
- static char __initdata command_line[COMMAND_LINE_SIZE];
--#ifdef CONFIG_CMDLINE_BOOL
--static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
--#endif
- 
- #if defined(CONFIG_EDD) || defined(CONFIG_EDD_MODULE)
- struct edd edd;
-@@ -884,19 +882,7 @@ void __init setup_arch(char **cmdline_p)
- 	bss_resource.start = __pa_symbol(__bss_start);
- 	bss_resource.end = __pa_symbol(__bss_stop)-1;
- 
--#ifdef CONFIG_CMDLINE_BOOL
--#ifdef CONFIG_CMDLINE_OVERRIDE
--	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
--#else
--	if (builtin_cmdline[0]) {
--		/* append boot loader cmdline to builtin */
--		strlcat(builtin_cmdline, " ", COMMAND_LINE_SIZE);
--		strlcat(builtin_cmdline, boot_command_line, COMMAND_LINE_SIZE);
--		strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
--	}
--#endif
--#endif
--
-+	cmdline_add_builtin(boot_command_line, NULL, COMMAND_LINE_SIZE);
- 	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
- 	*cmdline_p = command_line;
- 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index f14c4ff5839f..9538c9d4a0bc 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -736,7 +736,7 @@ unsigned long efi_main(efi_handle_t handle,
- 	}
- 
- #ifdef CONFIG_CMDLINE_BOOL
--	status = efi_parse_options(CONFIG_CMDLINE);
-+	status = efi_parse_options(CONFIG_CMDLINE_PREPEND " " CONFIG_CMDLINE_APPEND);
- 	if (status != EFI_SUCCESS) {
- 		efi_err("Failed to parse options\n");
- 		goto fail;
--- 
-2.25.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
