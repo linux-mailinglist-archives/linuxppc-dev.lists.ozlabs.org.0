@@ -1,58 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FB4332367
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 11:55:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD4C3323D1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 12:22:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DvsYy5H72z3cTc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 21:55:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dvt8z3VsPz3cGy
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 22:22:27 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hEJzA/ph;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.181;
- helo=mail-vk1-f181.google.com; envelope-from=geert.uytterhoeven@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com
- [209.85.221.181])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=hEJzA/ph; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DvsYg06D1z30N8
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 21:55:17 +1100 (AEDT)
-Received: by mail-vk1-f181.google.com with SMTP id y67so1823659vka.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 02:55:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=oX7AxwHbI6o3a5Bi4c9f3W+YD88gdE1RWPCa5CVMxh4=;
- b=S+ge0gUQm0dAnmLsteMvWz9IEyEdUxzRVHHtjnhz8oE9+oY32xB3WFTPuQ99HQe990
- z78usGHX1aAYV1sEMW82eLFGYSPsgkCuNedvkwYRqh7Z7thdQ6iNkdGk+7Ap+0BAsk6i
- xYj1+mUDveOjwFyg96yXe3mp9SH+S5i0X0mBDaeMnu4hNpc5M+YS2BilZpju9Ez2DvdS
- KgU1Vcd97B6nYbcE/n1d8bK5xi1sae1DyCEmuoRhfreGZMC1s2ALp81V5SrJBOthdKnU
- TmgagBOyPzy1g5RhUJ6y4FLQ/gaeZFSYHb2PN18cN1MXyO+808v721IxxfJIkbfzllJi
- tzxA==
-X-Gm-Message-State: AOAM532RRnZlVkdSBSxXbgQgpeTQOU24dBEQaXs2iIyty98Smb8Fwvwp
- kEBK7AwynbDkxzbamRIOjFFAaxbezh0cKBlR2WU=
-X-Google-Smtp-Source: ABdhPJwveE/U9SAwH7PSfNB+ROkadaF3IBN/Y7JnqtqYAHB2l2g3/7Wr7l7W359+lNpN6E+AIE0VV7DgzraTAMlMtWs=
-X-Received: by 2002:a1f:1a51:: with SMTP id a78mr15741334vka.2.1615287315138; 
- Tue, 09 Mar 2021 02:55:15 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dvt8X1Dnhz30H9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Mar 2021 22:22:03 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 129B3hVr112130; Tue, 9 Mar 2021 06:21:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=33MSJeKOJi4+jaAUNsH0vSXR7A3trD0q3srKz5Tj/ok=;
+ b=hEJzA/ph2QFwapCbBviSSkLZguu55d0WTFdUgAySnXKXXfFwO8NFJHwCI3ID1KQGvOIT
+ jMrNPBzK0pLP6BtO2JxGvTw0kLSUsDk2NhOywymq6ed7Ny3yjgCghLSymWUfb+jygdxv
+ Ncu9gQphkeaD73x2gdxvoapqAgCEOz4r8GQEFV0117LH3PkehLVpSXvuJ7STgjYve92F
+ dBlSZ8+9ELQ1qf+pO9Gg77tI0NEFWWIL0z/v7/ZGI3aZAqGneZas/JCUMUQmIr3/NxzG
+ zGcb8BTcoLaJQLcaXErWxBTI7s9qhDt/GvteYeOwBbcQgu42VWCRu4WT7R3WG7FXfH5M CQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 375wesyqhx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Mar 2021 06:21:24 -0500
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 129B3mjq112563;
+ Tue, 9 Mar 2021 06:21:24 -0500
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 375wesyqgm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Mar 2021 06:21:24 -0500
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 129AwPua010276;
+ Tue, 9 Mar 2021 11:21:21 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma01fra.de.ibm.com with ESMTP id 3741c81dc5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Mar 2021 11:21:21 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 129BLIGZ56099188
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 9 Mar 2021 11:21:18 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 815FBA4057;
+ Tue,  9 Mar 2021 11:21:18 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0BDC4A404D;
+ Tue,  9 Mar 2021 11:21:18 +0000 (GMT)
+Received: from localhost (unknown [9.85.103.166])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  9 Mar 2021 11:21:17 +0000 (GMT)
+Date: Tue, 9 Mar 2021 16:51:15 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v4] powerpc/uprobes: Validation for prefixed instruction
+Message-ID: <20210309112115.GG145@DESKTOP-TDPLP67.localdomain>
+References: <20210305115433.140769-1-ravi.bangoria@linux.ibm.com>
+ <87ft14r6sa.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <8d7d285a027e9d21f5ff7f850fa71a2655b0c4af.1615279170.git.christophe.leroy@csgroup.eu>
- <CAMuHMdW0Cn1So8ckvhsT+N+p2hiPiksmCS32jzM0xCUYU4UAdQ@mail.gmail.com>
- <b12f9128-790b-7d8b-5f3c-e0912f5bec0a@csgroup.eu>
- <CAMuHMdXM0qg23UN6VBqbb0Vm2bg3tRSM=OCD5r7U2K1brpnJAg@mail.gmail.com>
- <b64111a3-df3f-bf59-20ce-0af57715ad53@csgroup.eu>
-In-Reply-To: <b64111a3-df3f-bf59-20ce-0af57715ad53@csgroup.eu>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 9 Mar 2021 11:55:03 +0100
-Message-ID: <CAMuHMdUQcE7+O9NWH4Xxxv+r7ZFnTGqtHuteOMiSPY_gK5xkZw@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: Fix missing declaration of
- [en/dis]able_kernel_vsx()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ft14r6sa.fsf@mpe.ellerman.id.au>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-09_09:2021-03-08,
+ 2021-03-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxscore=0
+ spamscore=0 bulkscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0
+ malwarescore=0 adultscore=0 priorityscore=1501 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103090053
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,135 +104,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- amd-gfx list <amd-gfx@lists.freedesktop.org>,
- Paul Mackerras <paulus@samba.org>, Alex Deucher <alexdeucher@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, jniethe5@gmail.com,
+ oleg@redhat.com, rostedt@goodmis.org, linux-kernel@vger.kernel.org,
+ paulus@samba.org, sandipan@linux.ibm.com, naveen.n.rao@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
-
-On Tue, Mar 9, 2021 at 10:58 AM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> Le 09/03/2021 =C3=A0 10:16, Geert Uytterhoeven a =C3=A9crit :
-> > On Tue, Mar 9, 2021 at 9:52 AM Christophe Leroy
-> > <christophe.leroy@csgroup.eu> wrote:
-> >> Le 09/03/2021 =C3=A0 09:45, Geert Uytterhoeven a =C3=A9crit :
-> >>> On Tue, Mar 9, 2021 at 9:39 AM Christophe Leroy
-> >>> <christophe.leroy@csgroup.eu> wrote:
-> >>>> Add stub instances of enable_kernel_vsx() and disable_kernel_vsx()
-> >>>> when CONFIG_VSX is not set, to avoid following build failure.
-> >>>>
-> >>>>     CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs=
-.o
-> >>>> In file included from ./drivers/gpu/drm/amd/amdgpu/../display/dc/dm_=
-services_types.h:29,
-> >>>>                    from ./drivers/gpu/drm/amd/amdgpu/../display/dc/d=
-m_services.h:37,
-> >>>>                    from drivers/gpu/drm/amd/amdgpu/../display/dc/cal=
-cs/dcn_calcs.c:27:
-> >>>> drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c: In funct=
-ion 'dcn_bw_apply_registry_override':
-> >>>> ./drivers/gpu/drm/amd/amdgpu/../display/dc/os_types.h:64:3: error: i=
-mplicit declaration of function 'enable_kernel_vsx'; did you mean 'enable_k=
-ernel_fp'? [-Werror=3Dimplicit-function-declaration]
-> >>>>      64 |   enable_kernel_vsx(); \
-> >>>>         |   ^~~~~~~~~~~~~~~~~
-> >>>> drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:640:2: no=
-te: in expansion of macro 'DC_FP_START'
-> >>>>     640 |  DC_FP_START();
-> >>>>         |  ^~~~~~~~~~~
-> >>>> ./drivers/gpu/drm/amd/amdgpu/../display/dc/os_types.h:75:3: error: i=
-mplicit declaration of function 'disable_kernel_vsx'; did you mean 'disable=
-_kernel_fp'? [-Werror=3Dimplicit-function-declaration]
-> >>>>      75 |   disable_kernel_vsx(); \
-> >>>>         |   ^~~~~~~~~~~~~~~~~~
-> >>>> drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:676:2: no=
-te: in expansion of macro 'DC_FP_END'
-> >>>>     676 |  DC_FP_END();
-> >>>>         |  ^~~~~~~~~
-> >>>> cc1: some warnings being treated as errors
-> >>>> make[5]: *** [drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_cal=
-cs.o] Error 1
-> >>>>
-> >>>> Fixes: 16a9dea110a6 ("amdgpu: Enable initial DCN support on POWER")
-> >>>> Cc: stable@vger.kernel.org
-> >>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> >>>
-> >>> Thanks for your patch!
-> >>>
-> >>>> --- a/arch/powerpc/include/asm/switch_to.h
-> >>>> +++ b/arch/powerpc/include/asm/switch_to.h
-> >>>> @@ -71,6 +71,16 @@ static inline void disable_kernel_vsx(void)
-> >>>>    {
-> >>>>           msr_check_and_clear(MSR_FP|MSR_VEC|MSR_VSX);
-> >>>>    }
-> >>>> +#else
-> >>>> +static inline void enable_kernel_vsx(void)
-> >>>> +{
-> >>>> +       BUILD_BUG();
-> >>>> +}
-> >>>> +
-> >>>> +static inline void disable_kernel_vsx(void)
-> >>>> +{
-> >>>> +       BUILD_BUG();
-> >>>> +}
-> >>>>    #endif
-> >>>
-> >>> I'm wondering how this is any better than the current situation: usin=
-g
-> >>> BUILD_BUG() will still cause a build failure?
-> >>
-> >> No it won't cause a failure. In drivers/gpu/drm/amd/display/dc/os_type=
-s.h you have:
-> >>
-> >> #define DC_FP_START() { \
-> >>          if (cpu_has_feature(CPU_FTR_VSX_COMP)) { \
-> >>                  preempt_disable(); \
-> >>                  enable_kernel_vsx(); \
-> >>          } else if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP)) { \
-> >>                  preempt_disable(); \
-> >>                  enable_kernel_altivec(); \
-> >>          } else if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE)) { \
-> >>                  preempt_disable(); \
-> >>                  enable_kernel_fp(); \
-> >>          } \
-> >>
-> >> When CONFIG_VSX is not selected, cpu_has_feature(CPU_FTR_VSX_COMP) con=
-stant folds to 'false' so the
-> >> call to enable_kernel_vsx() is discarded and the build succeeds.
+On 2021/03/09 08:54PM, Michael Ellerman wrote:
+> Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
+> > As per ISA 3.1, prefixed instruction should not cross 64-byte
+> > boundary. So don't allow Uprobe on such prefixed instruction.
 > >
-> > IC. So you might as well have an empty (dummy) function instead?
+> > There are two ways probed instruction is changed in mapped pages.
+> > First, when Uprobe is activated, it searches for all the relevant
+> > pages and replace instruction in them. In this case, if that probe
+> > is on the 64-byte unaligned prefixed instruction, error out
+> > directly. Second, when Uprobe is already active and user maps a
+> > relevant page via mmap(), instruction is replaced via mmap() code
+> > path. But because Uprobe is invalid, entire mmap() operation can
+> > not be stopped. In this case just print an error and continue.
 > >
->
-> But with an empty function, you take the risk that one day, someone calls=
- it without checking that
-> CONFIG_VSX is selected. Here if someone does that, build will fail.
+> > Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> > Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> 
+> Do we have a Fixes: tag for this?
 
-OK, convinced.
+Since this is an additional check we are adding, I don't think we should 
+add a Fixes: tag. Nothing is broken per-se -- we're just adding more 
+checks to catch simple mistakes. Also, like Oleg pointed out, there are 
+still many other ways for users to shoot themselves in the foot with 
+uprobes and prefixed instructions, if they so desire.
 
-> Another solution is to declare a non static prototype of it, like __put_u=
-ser_bad() for instance. In
-> that case, the link will fail.
->
-> I prefer the BUILD_BUG() approach as I find it cleaner and more explicit,=
- and also because it breaks
-> the build at compile time, you don't have to wait link time to catch the =
-error.
+However, if you still think we should add a Fixes: tag, we can perhaps 
+use the below commit since I didn't see any specific commit adding 
+support for prefixed instructions for uprobes:
 
-Gr{oetje,eeting}s,
+Fixes: 650b55b707fdfa ("powerpc: Add prefixed instructions to 
+instruction data type")
 
-                        Geert
+> 
+> > ---
+> > v3: https://lore.kernel.org/r/20210304050529.59391-1-ravi.bangoria@linux.ibm.com
+> > v3->v4:
+> >   - CONFIG_PPC64 check was not required, remove it.
+> >   - Use SZ_ macros instead of hardcoded numbers.
+> >
+> >  arch/powerpc/kernel/uprobes.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
+> > index e8a63713e655..4cbfff6e94a3 100644
+> > --- a/arch/powerpc/kernel/uprobes.c
+> > +++ b/arch/powerpc/kernel/uprobes.c
+> > @@ -41,6 +41,13 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe,
+> >  	if (addr & 0x03)
+> >  		return -EINVAL;
+> >  
+> > +	if (cpu_has_feature(CPU_FTR_ARCH_31) &&
+> > +	    ppc_inst_prefixed(auprobe->insn) &&
+> > +	    (addr & (SZ_64 - 4)) == SZ_64 - 4) {
+> > +		pr_info_ratelimited("Cannot register a uprobe on 64 byte unaligned prefixed instruction\n");
+> > +		return -EINVAL;
+> 
+> I realise we already did the 0x03 check above, but I still think this
+> would be clearer simply as:
+> 
+> 	    (addr & 0x3f == 60)
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Indeed, I like the use of `60' there -- hex is overrated ;)
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+- Naveen
