@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373CB332B4F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 16:58:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05446332B50
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Mar 2021 16:58:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw0HY1dDXz3dtp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:58:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dw0J0704dz3dyk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:58:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=WHyxP41M;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=K1zd0jFp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=WHyxP41M; 
+ header.s=casper.20170209 header.b=K1zd0jFp; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw0FG34FZz3dT1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 02:56:34 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dw0Fh4Y0cz3dXq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 02:56:56 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=IFk47HqYrcljU8sgV3Szm3kSO/BjefEBgYu1y49MYsE=; b=WHyxP41MA1s5vmF0W/htokhaBx
- JJRExXLLcZF4nmAarls1d3HuzNwpxmbC2mhuQ2AjlEBa/HE9uab75LwxnBHvSlkMbCIWybzSODn2N
- nI1H1JvK6Iir6AOGJrydVaRgu6VKcvBTzTMpXy9rIa7WbTAufbU1gTxOWVjZCYgJMpuoZTM/mo4PI
- uRhHJt00wwUBMfOwTrEx++Btjp1eJXNPixwQbRg7gtFznHkapP3JdMEA9Bcm9iGgeFNorbolw8FTk
- j7Z0M3Q+So7C7evvGwEeGHmpDkMRkIYZTYMWqzUeucdgD9LBE/o0m4JdRWf9Xk52M7m+GAD4SKJAt
- L4oOHUZw==;
+ bh=81oGSCBl39iypfLV/NoPk/fT5YyYJiKMaMVaZJIwgrQ=; b=K1zd0jFpZYL+ZtHkLHvgFqVo3p
+ h0n1mVJ6xBDYsmZ2ahXvorBLK+B3nIqdp9SBF8EG/bXS+IsljPrtJK2g37AP4qDeVxiqHM/RZXx3q
+ S2CEFcUd8C43qdjZ+9VdgqfeVWq56HoefjzfpaWwnPCvcAjOqJar1KuO0CyEqdbCe8ML70nAYFfua
+ VPC6vyaOhGWsaj+cksNDgySPdh8+mPTd/DfGakuL9yseLjJeQfIk/7NZVe94BnW2qbyUlG2+FyHwZ
+ uFSZK8ZEBs8Qdk6n8xtOgSm5GaHD9TgoqPuqa4IUBK0F1IiHVfJUGU91yPDMhg29RGnXUdHnRmOAs
+ sVy5rRLQ==;
 Received: from [2001:4bb8:180:9884:c70:4a89:bc61:3] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lJehy-000lWp-8R; Tue, 09 Mar 2021 15:55:48 +0000
+ id 1lJeiQ-000lYx-7J; Tue, 09 Mar 2021 15:56:11 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 8/9] z3fold: remove the z3fold file system
-Date: Tue,  9 Mar 2021 16:53:47 +0100
-Message-Id: <20210309155348.974875-9-hch@lst.de>
+Subject: [PATCH 9/9] zsmalloc: remove the zsmalloc file system
+Date: Tue,  9 Mar 2021 16:53:48 +0100
+Message-Id: <20210309155348.974875-10-hch@lst.de>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210309155348.974875-1-hch@lst.de>
 References: <20210309155348.974875-1-hch@lst.de>
@@ -80,84 +80,120 @@ Just use the generic anon_inode file system.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- mm/z3fold.c | 38 ++------------------------------------
- 1 file changed, 2 insertions(+), 36 deletions(-)
+ mm/zsmalloc.c | 48 +++---------------------------------------------
+ 1 file changed, 3 insertions(+), 45 deletions(-)
 
-diff --git a/mm/z3fold.c b/mm/z3fold.c
-index e7cd9298b221f5..e0749a3d8987de 100644
---- a/mm/z3fold.c
-+++ b/mm/z3fold.c
-@@ -23,6 +23,7 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index a6449a2ad861de..a7d2f471935447 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -41,6 +41,7 @@
+ #include <linux/slab.h>
+ #include <linux/pgtable.h>
+ #include <asm/tlbflush.h>
 +#include <linux/anon_inodes.h>
- #include <linux/atomic.h>
- #include <linux/sched.h>
  #include <linux/cpumask.h>
-@@ -345,38 +346,10 @@ static inline void free_handle(unsigned long handle, struct z3fold_header *zhdr)
- 	}
+ #include <linux/cpu.h>
+ #include <linux/vmalloc.h>
+@@ -176,10 +177,6 @@ struct zs_size_stat {
+ static struct dentry *zs_stat_root;
+ #endif
+ 
+-#ifdef CONFIG_COMPACTION
+-static struct vfsmount *zsmalloc_mnt;
+-#endif
+-
+ /*
+  * We assign a page to ZS_ALMOST_EMPTY fullness group when:
+  *	n <= N / f, where
+@@ -308,8 +305,6 @@ static void kick_deferred_free(struct zs_pool *pool);
+ static void init_deferred_free(struct zs_pool *pool);
+ static void SetZsPageMovable(struct zs_pool *pool, struct zspage *zspage);
+ #else
+-static int zsmalloc_mount(void) { return 0; }
+-static void zsmalloc_unmount(void) {}
+ static int zs_register_migration(struct zs_pool *pool) { return 0; }
+ static void zs_unregister_migration(struct zs_pool *pool) {}
+ static void migrate_lock_init(struct zspage *zspage) {}
+@@ -1751,33 +1746,6 @@ static void lock_zspage(struct zspage *zspage)
+ 	} while ((page = get_next_page(page)) != NULL);
  }
  
--static int z3fold_init_fs_context(struct fs_context *fc)
+-static int zs_init_fs_context(struct fs_context *fc)
 -{
--	return init_pseudo(fc, Z3FOLD_MAGIC) ? 0 : -ENOMEM;
+-	return init_pseudo(fc, ZSMALLOC_MAGIC) ? 0 : -ENOMEM;
 -}
 -
--static struct file_system_type z3fold_fs = {
--	.name		= "z3fold",
--	.init_fs_context = z3fold_init_fs_context,
+-static struct file_system_type zsmalloc_fs = {
+-	.name		= "zsmalloc",
+-	.init_fs_context = zs_init_fs_context,
 -	.kill_sb	= kill_anon_super,
 -};
 -
--static struct vfsmount *z3fold_mnt;
--static int z3fold_mount(void)
+-static int zsmalloc_mount(void)
 -{
 -	int ret = 0;
 -
--	z3fold_mnt = kern_mount(&z3fold_fs);
--	if (IS_ERR(z3fold_mnt))
--		ret = PTR_ERR(z3fold_mnt);
+-	zsmalloc_mnt = kern_mount(&zsmalloc_fs);
+-	if (IS_ERR(zsmalloc_mnt))
+-		ret = PTR_ERR(zsmalloc_mnt);
 -
 -	return ret;
 -}
 -
--static void z3fold_unmount(void)
+-static void zsmalloc_unmount(void)
 -{
--	kern_unmount(z3fold_mnt);
+-	kern_unmount(zsmalloc_mnt);
 -}
 -
- static const struct address_space_operations z3fold_aops;
- static int z3fold_register_migration(struct z3fold_pool *pool)
+ static void migrate_lock_init(struct zspage *zspage)
  {
--	pool->inode = alloc_anon_inode_sb(z3fold_mnt->mnt_sb);
+ 	rwlock_init(&zspage->lock);
+@@ -2086,7 +2054,7 @@ static const struct address_space_operations zsmalloc_aops = {
+ 
+ static int zs_register_migration(struct zs_pool *pool)
+ {
+-	pool->inode = alloc_anon_inode_sb(zsmalloc_mnt->mnt_sb);
 +	pool->inode = alloc_anon_inode();
  	if (IS_ERR(pool->inode)) {
  		pool->inode = NULL;
  		return 1;
-@@ -1787,22 +1760,15 @@ MODULE_ALIAS("zpool-z3fold");
- 
- static int __init init_z3fold(void)
+@@ -2506,14 +2474,10 @@ static int __init zs_init(void)
  {
--	int ret;
--
- 	/* Make sure the z3fold header is not larger than the page size */
- 	BUILD_BUG_ON(ZHDR_SIZE_ALIGNED > PAGE_SIZE);
--	ret = z3fold_mount();
+ 	int ret;
+ 
+-	ret = zsmalloc_mount();
 -	if (ret)
--		return ret;
- 
- 	zpool_register_driver(&z3fold_zpool_driver);
+-		goto out;
 -
+ 	ret = cpuhp_setup_state(CPUHP_MM_ZS_PREPARE, "mm/zsmalloc:prepare",
+ 				zs_cpu_prepare, zs_cpu_dead);
+ 	if (ret)
+-		goto hp_setup_fail;
++		return ret;
+ 
+ #ifdef CONFIG_ZPOOL
+ 	zpool_register_driver(&zs_zpool_driver);
+@@ -2522,11 +2486,6 @@ static int __init zs_init(void)
+ 	zs_stat_init();
+ 
  	return 0;
+-
+-hp_setup_fail:
+-	zsmalloc_unmount();
+-out:
+-	return ret;
  }
  
- static void __exit exit_z3fold(void)
- {
--	z3fold_unmount();
- 	zpool_unregister_driver(&z3fold_zpool_driver);
- }
+ static void __exit zs_exit(void)
+@@ -2534,7 +2493,6 @@ static void __exit zs_exit(void)
+ #ifdef CONFIG_ZPOOL
+ 	zpool_unregister_driver(&zs_zpool_driver);
+ #endif
+-	zsmalloc_unmount();
+ 	cpuhp_remove_state(CPUHP_MM_ZS_PREPARE);
  
+ 	zs_stat_exit();
 -- 
 2.30.1
 
