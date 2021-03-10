@@ -2,74 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5833332AE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:17:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB6D3332B7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:23:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwDhQ012dz3cKv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 12:17:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwDq52D57z3cYS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 12:23:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=NFP/fOl8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=bzYrsE8a;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531;
- helo=mail-pg1-x531.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f;
+ helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=NFP/fOl8; dkim-atps=neutral
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com
- [IPv6:2607:f8b0:4864:20::531])
+ header.s=20161025 header.b=bzYrsE8a; dkim-atps=neutral
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
+ [IPv6:2607:f8b0:4864:20::62f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwDgz240Vz30QD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 12:17:00 +1100 (AEDT)
-Received: by mail-pg1-x531.google.com with SMTP id x29so10253489pgk.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 17:17:00 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwDpg1v2Cz30L4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 12:22:48 +1100 (AEDT)
+Received: by mail-pl1-x62f.google.com with SMTP id w7so4157439pll.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 17:22:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=DjidbrwyCx3lORD3j61lhIQB01qhNRAIbQn71N/GNnc=;
- b=NFP/fOl8BCAapNo/2gaBvjw/pa0scQdoJA9QjrWcRvb09sWIwzFqlBHXFWGc36E/95
- lQhvzcVswpo7zSr/0EUho7lqZ7jPW5xGstl5gQj2nd/pGygE5rKok0egs5SR6QsKo01Q
- 04IfXWwGSN3Yevzkp6UBSFQeeOniDjlIGWn8TBMt6VL+jDGvS9xviXckbCZk2P7jWT/N
- Fw8UMGb9YulUI3EEyF4f9+41kqMs2J0ieXJB/POmvPyCsij24EB7Oyouzlezu/hVrxBK
- 7Y0BQqxsfT0mZvVf9LxwMqqakPMIxLFHB6QMvis8iP7YVAv0SCxH+d0VCe8fdxuh+jeD
- ldNA==
+ bh=/0T9Q/3VYJdpmRDY2Zb62s1teTncsS5cl8cP6z35CcM=;
+ b=bzYrsE8ab+hzvJInwNOsFN4tTFMxA3qcocbvzHxjAO+IZcW33em6ESOnW76SumDCG2
+ 4F4fPJgaw/SirzDK/hcDZd3An6x3E4pjnWpvEv3XQ5OU62l3Q5p0L77dekVecVmuT86C
+ 7Iiig07OyeyjTTiQ5d8+bZGuqLuQ03Aa8jg0SAQxiWEGhIBwsT6iM4vte8IznTM7Tz68
+ 05WuF8Oxpiv33TLgJ/8QaDhquImZIqHbXSsNxVpRGMzKHXKFX1XQVQcek5sp12oZRDfp
+ EJHup+icXOeseFDB5S0sriXGqfrWYGDvMMoBE9AN/2RwlMnlgVbC8mx3Tlkq28YJZG4v
+ gabg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=DjidbrwyCx3lORD3j61lhIQB01qhNRAIbQn71N/GNnc=;
- b=l7otiM/Qr8mAXuSKTWZGN2tA3wZvpdSeFEEEElZ3OuplUNxbhyzydcDAlwPosuEpaE
- ijBWKoPEsY1NFWEHz5GXhB6vaWenfC5zlGfzLQchM2QuTn9FQdx8dq6z77wc7J6gtKMN
- g/LbaI0t0XNbf20wvUtRDz6O/nRgw8UFUVLHHkMPo01WeUaGlpQruCfQF83GLIwZqxgT
- 07LL+XYNyg3QE7YW2XcqWOk1Fs7I4DGhgNzbYE8PTLUacegODODcALY97jI+uGU9QRAN
- RpZEq2C72oT5VlluHCaLwPKR7v07P8NGIj6zfzhVKkPaKzMb9zZ4NAh9VF/rgWG9DHU8
- yo/g==
-X-Gm-Message-State: AOAM530QJ1pvKKvhCOj9TCX8ImYpCzKRA93qFqP+cWIlX2rF+dwevVFh
- m/K0k/ZEkT16vqVUHvoZZw8=
-X-Google-Smtp-Source: ABdhPJyQq4Lc5AFbI42oqK1tMmOp5ZBN1pH2tB5VAev9LMJErHXAaM0Qxhs1H9CMlazf7jv+S5A8eg==
-X-Received: by 2002:a63:40c5:: with SMTP id n188mr516700pga.255.1615339015898; 
- Tue, 09 Mar 2021 17:16:55 -0800 (PST)
+ bh=/0T9Q/3VYJdpmRDY2Zb62s1teTncsS5cl8cP6z35CcM=;
+ b=kyO43kwSHmBamQT9E+1voDoq4qvC0C/G6c5DCFzw8H3jpSwUh3alhi54oXimiA4+qt
+ +e1kPJNXnnKkdmv1JCBP+qDZIuwZmb7przsejtHbLD0g9mCtfDsmjicecFUSoxIhi49+
+ j94k/YiGMI3XnWL/CfzYkjhZUeir7hEwIn5Wl7jNScgWF/ZXvdv7yfKqGwkvj62Daj4G
+ u7fLnTKTY/tRK9svlrr09FxSjTHU6Iok99oREOMgXtDSWVzcaKg6uVOFPCnOMeROcgVZ
+ ib9PL1+X678NRtWWhKrerFN7/gzqKL6k8FUlnR27h8aPZ1xEvcUvbjGXxrcqsu0P7G+8
+ fuGA==
+X-Gm-Message-State: AOAM531tX2ohjxMLxeNXLba/AlDI38qemvgIudvgFPSd3Uk/eYCcXiho
+ Tzc6W9AE6qcEEk+COCbhwN0=
+X-Google-Smtp-Source: ABdhPJxTOZjEHZ9m10YEdhbBRQMe0zJEDNi/G7r+9KpnfEzOCSm9nbO3D39CGUHblwkoYfJoKT+e+A==
+X-Received: by 2002:a17:90a:bf04:: with SMTP id
+ c4mr766670pjs.170.1615339365730; 
+ Tue, 09 Mar 2021 17:22:45 -0800 (PST)
 Received: from localhost (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id a204sm3162989pfd.106.2021.03.09.17.16.54
+ by smtp.gmail.com with ESMTPSA id s194sm14297397pfs.57.2021.03.09.17.22.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Mar 2021 17:16:54 -0800 (PST)
-Date: Wed, 10 Mar 2021 11:16:49 +1000
+ Tue, 09 Mar 2021 17:22:45 -0800 (PST)
+Date: Wed, 10 Mar 2021 11:22:40 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 01/43] powerpc/traps: unrecoverable_exception() is not
- an interrupt handler
+Subject: Re: [PATCH v2 02/43] powerpc/traps: Declare unrecoverable_exception()
+ as __noreturn
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
  <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
  Paul Mackerras <paulus@samba.org>
 References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
- <ae96c59fa2cb7f24a8929c58cfa2c909cb8ff1f1.1615291471.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <ae96c59fa2cb7f24a8929c58cfa2c909cb8ff1f1.1615291471.git.christophe.leroy@csgroup.eu>
+ <f097a1071254e8f6875588f8fb9771467824a569.1615291471.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <f097a1071254e8f6875588f8fb9771467824a569.1615291471.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1615338957.9ydlqjl817.astroid@bobo.none>
+Message-Id: <1615339022.cb2m6h66vl.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -89,79 +90,57 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Excerpts from Christophe Leroy's message of March 9, 2021 10:09 pm:
-> unrecoverable_exception() is called from interrupt handlers or
-> after an interrupt handler has failed.
+> unrecoverable_exception() is never expected to return, most callers
+> have an infiniteloop in case it returns.
 >=20
-> Make it a standard function to avoid doubling the actions
-> performed on interrupt entry (e.g.: user time accounting).
+> Ensure it really never returns by terminating it with a BUG(), and
+> declare it __no_return.
 >=20
-> Fixes: 3a96570ffceb ("powerpc: convert interrupt handlers to use wrappers=
-")
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-This should go in as a fix for this release I think.
-
-> ---
->  arch/powerpc/include/asm/interrupt.h | 3 ++-
->  arch/powerpc/kernel/interrupt.c      | 1 -
->  arch/powerpc/kernel/traps.c          | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+> It always GCC to really simplify functions calling it. In the exemple
+> below, it avoids the stack frame in the likely fast path and avoids
+> code duplication for the exit.
 >=20
-> diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/=
-asm/interrupt.h
-> index aedfba29e43a..e8d09a841373 100644
-> --- a/arch/powerpc/include/asm/interrupt.h
-> +++ b/arch/powerpc/include/asm/interrupt.h
-> @@ -410,7 +410,6 @@ DECLARE_INTERRUPT_HANDLER(altivec_assist_exception);
->  DECLARE_INTERRUPT_HANDLER(CacheLockingException);
->  DECLARE_INTERRUPT_HANDLER(SPEFloatingPointException);
->  DECLARE_INTERRUPT_HANDLER(SPEFloatingPointRoundException);
-> -DECLARE_INTERRUPT_HANDLER(unrecoverable_exception);
->  DECLARE_INTERRUPT_HANDLER(WatchdogException);
->  DECLARE_INTERRUPT_HANDLER(kernel_bad_stack);
-> =20
-> @@ -437,6 +436,8 @@ DECLARE_INTERRUPT_HANDLER_NMI(hmi_exception_realmode)=
-;
-> =20
->  DECLARE_INTERRUPT_HANDLER_ASYNC(TAUException);
-> =20
-> +void unrecoverable_exception(struct pt_regs *regs);
-> +
->  void replay_system_reset(void);
->  void replay_soft_interrupts(void);
-> =20
-> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interr=
-upt.c
-> index 398cd86b6ada..b8e7d25be31b 100644
-> --- a/arch/powerpc/kernel/interrupt.c
-> +++ b/arch/powerpc/kernel/interrupt.c
-> @@ -436,7 +436,6 @@ notrace unsigned long interrupt_exit_user_prepare(str=
-uct pt_regs *regs, unsigned
->  	return ret;
->  }
-> =20
-> -void unrecoverable_exception(struct pt_regs *regs);
->  void preempt_schedule_irq(void);
-> =20
->  notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs=
-, unsigned long msr)
+> With this patch:
+
+[snip]
+
+Nice.
+
 > diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-> index 1583fd1c6010..a44a30b0688c 100644
+> index a44a30b0688c..d5c9d9ddd186 100644
 > --- a/arch/powerpc/kernel/traps.c
 > +++ b/arch/powerpc/kernel/traps.c
-> @@ -2170,7 +2170,7 @@ DEFINE_INTERRUPT_HANDLER(SPEFloatingPointRoundExcep=
-tion)
+> @@ -2170,11 +2170,15 @@ DEFINE_INTERRUPT_HANDLER(SPEFloatingPointRoundExc=
+eption)
 >   * in the MSR is 0.  This indicates that SRR0/1 are live, and that
 >   * we therefore lost state by taking this exception.
 >   */
-> -DEFINE_INTERRUPT_HANDLER(unrecoverable_exception)
-> +void unrecoverable_exception(struct pt_regs *regs)
+> -void unrecoverable_exception(struct pt_regs *regs)
+> +void __noreturn unrecoverable_exception(struct pt_regs *regs)
 >  {
 >  	pr_emerg("Unrecoverable exception %lx at %lx (msr=3D%lx)\n",
 >  		 regs->trap, regs->nip, regs->msr);
-> --=20
-> 2.25.0
->=20
->=20
+>  	die("Unrecoverable exception", regs, SIGABRT);
+> +	/* die() should not return */
+> +	WARN(true, "die() unexpectedly returned");
+> +	for (;;)
+> +		;
+>  }
+
+I don't think the WARN should be added because that will cause another
+interrupt after something is already badly wrong, so this might just
+make it harder to debug.
+
+For example if die() is falling through for some reason, we warn and
+cause a program check here, and that might also be unrecoverable so it
+might come through here and fall through again and warn again, etc.
+
+Putting the infinite loop is good enough I think (and better than there=20
+was previously).
+
+Otherwise
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+Thanks,
+Nick
