@@ -2,52 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E26B3338A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 10:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008753338AC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 10:26:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwRVF35W8z3cc3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 20:24:21 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=QkmtQd5S;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwRX603KPz3d61
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 20:25:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=paulus@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=QkmtQd5S; dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwRTr1WG7z30RR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 20:24:00 +1100 (AEDT)
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4DwRTq4sC5z9sVS; Wed, 10 Mar 2021 20:23:59 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1615368239; bh=vNOp55tbHRtcADIHuk6QWWg+Ff4RMtHkJEVvcbKDyTY=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=QkmtQd5SXcntQkKro2P9fzExrRBNHQguaXPp4IkcmaH0niCbBMBvY3YZbP8yWbgVH
- iLW4MSJq4J+d/8+qbsQJL4SLx9TsJiVMpjL+WUJuZmPF9B+rQGdnlSNpX2MM8Qpz9t
- nn9B5z7YuA1otYonIQm5unW32o7JXI39fhSei0NUYhaOjbg9Y9i+2tw/R9m74CwG+k
- DhqvruDo+WEOkXFiHyVfehxI+RYbaxyvVBnCmEf1ENZSEIlUvlF6W6bhSo8briV41J
- Ow/2pVHL+v6vLMXJ954BzfK2Twxzs9O4g5OIHGXkqTHMBrER7mn3izQKiKzc4e/xcr
- rrT/HyMqkUEIA==
-Date: Wed, 10 Mar 2021 20:23:54 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Do not expose HFSCR sanitisation to
- nested hypervisor
-Message-ID: <20210310092354.GA30597@blackberry>
-References: <20210305231055.2913892-1-farosas@linux.ibm.com>
- <1615191200.1pjltfhe7o.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwRWn1zz2z30K4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 20:25:41 +1100 (AEDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 2657568B05; Wed, 10 Mar 2021 10:25:34 +0100 (CET)
+Date: Wed, 10 Mar 2021 10:25:33 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH 14/17] iommu: remove DOMAIN_ATTR_DMA_USE_FLUSH_QUEUE
+Message-ID: <20210310092533.GA6819@lst.de>
+References: <20210301084257.945454-1-hch@lst.de>
+ <20210301084257.945454-15-hch@lst.de>
+ <1658805c-ed28-b650-7385-a56fab3383e3@arm.com> <20210310091501.GC5928@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1615191200.1pjltfhe7o.astroid@bobo.none>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <20210310091501.GC5928@lst.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,49 +44,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
- Fabiano Rosas <farosas@linux.ibm.com>
+Cc: kvm@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Joerg Roedel <joro@8bytes.org>, linuxppc-dev@lists.ozlabs.org,
+ dri-devel@lists.freedesktop.org, Li Yang <leoyang.li@nxp.com>,
+ iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
+ David Woodhouse <dwmw2@infradead.org>, linux-arm-kernel@lists.infradead.org,
+ virtualization@lists.linux-foundation.org, freedreno@lists.freedesktop.org,
+ Christoph Hellwig <hch@lst.de>, linux-arm-msm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 08, 2021 at 06:18:47PM +1000, Nicholas Piggin wrote:
-> Excerpts from Fabiano Rosas's message of March 6, 2021 9:10 am:
-> > As one of the arguments of the H_ENTER_NESTED hypercall, the nested
-> > hypervisor (L1) prepares a structure containing the values of various
-> > hypervisor-privileged registers with which it wants the nested guest
-> > (L2) to run. Since the nested HV runs in supervisor mode it needs the
-> > host to write to these registers.
-> > 
-> > To stop a nested HV manipulating this mechanism and using a nested
-> > guest as a proxy to access a facility that has been made unavailable
-> > to it, we have a routine that sanitises the values of the HV registers
-> > before copying them into the nested guest's vcpu struct.
-> > 
-> > However, when coming out of the guest the values are copied as they
-> > were back into L1 memory, which means that any sanitisation we did
-> > during guest entry will be exposed to L1 after H_ENTER_NESTED returns.
-> > 
-> > This is not a problem by itself, but in the case of the Hypervisor
-> > Facility Status and Control Register (HFSCR), we use the intersection
-> > between L2 hfscr bits and L1 hfscr bits. That means that L1 could use
-> > this to indirectly read the (hv-privileged) value from its vcpu
-> > struct.
-> > 
-> > This patch fixes this by making sure that L1 only gets back the bits
-> > that are necessary for regular functioning.
+On Wed, Mar 10, 2021 at 10:15:01AM +0100, Christoph Hellwig wrote:
+> On Thu, Mar 04, 2021 at 03:25:27PM +0000, Robin Murphy wrote:
+> > On 2021-03-01 08:42, Christoph Hellwig wrote:
+> >> Use explicit methods for setting and querying the information instead.
+> >
+> > Now that everyone's using iommu-dma, is there any point in bouncing this 
+> > through the drivers at all? Seems like it would make more sense for the x86 
+> > drivers to reflect their private options back to iommu_dma_strict (and 
+> > allow Intel's caching mode to override it as well), then have 
+> > iommu_dma_init_domain just test !iommu_dma_strict && 
+> > domain->ops->flush_iotlb_all.
 > 
-> The general idea of restricting exposure of HV privileged bits, but
-> for the case of HFSCR a guest can probe the HFCR anyway by testing which 
-> facilities are available (and presumably an HV may need some way to know
-> what features are available for it to advertise to its own guests), so
-> is this necessary? Perhaps a comment would be sufficient.
+> Hmm.  I looked at this, and kill off ->dma_enable_flush_queue for
+> the ARM drivers and just looking at iommu_dma_strict seems like a
+> very clear win.
+> 
+> OTOH x86 is a little more complicated.  AMD and intel defaul to lazy
+> mode, so we'd have to change the global iommu_dma_strict if they are
+> initialized.  Also Intel has not only a "static" option to disable
+> lazy mode, but also a "dynamic" one where it iterates structure.  So
+> I think on the get side we're stuck with the method, but it still
+> simplifies the whole thing.
 
-I would see it a bit differently.  From L1's point of view, L0 is the
-hardware.  The situation we have now is akin to writing a value to the
-real HFSCR, then reading HFSCR and finding that some of the facility
-enable bits have magically got set to zero.  That's not the way real
-hardware works, so L0 shouldn't behave that way either, or at least
-not without some strong justification.
-
-Paul.
+Actually... Just mirroring the iommu_dma_strict value into
+struct iommu_domain should solve all of that with very little
+boilerplate code. 
