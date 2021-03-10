@@ -1,53 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F6A334274
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 17:08:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535D03342E5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 17:20:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwcSR24Fyz3cVs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 03:08:23 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PIIVIbru;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwckM22yQz3d76
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 03:20:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=PIIVIbru; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwcS109nSz30Mk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 03:08:01 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E45D564F4C;
- Wed, 10 Mar 2021 16:07:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1615392478;
- bh=7sTMvplzl4qRhmylBff3JMaWNZ6VDs7GHryb8IWMb8E=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=PIIVIbrunaUx2mEUOz6ZJxHRH1se7E+5o1HDWFnKHf8eRzIiylHjOZmg5NZShqUGW
- hjBa9elVXNdk4eDdsGhTeXYuzv3/BXbX9p/KFb7ybT6VG90bTEx1lnCRZOw2RFaiFz
- xUEZGv0mJM9hDLsvPxYJiJZDiqjW49MgbOGmc1zY8E3cbyvNj4DU6HwresgdU5wkaD
- /6Nzn59UjeidTCW1K7nx7/asBj1lP/sYdEKM7aFPidqM8CVyvFTnzvC3yn1XacZioJ
- H8pxELt905xod7Mk5tdYLPuc5q0SIB1frKl7tHHxsimgV+p7eYBm76eNyVHMHiOgX+
- s9X5laJqNqC3Q==
-Date: Wed, 10 Mar 2021 16:07:48 +0000
-From: Will Deacon <will@kernel.org>
-To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v4 13/14] dt-bindings: of: Add restricted DMA pool
-Message-ID: <20210310160747.GA29834@willie-the-truck>
-References: <20210209062131.2300005-1-tientzu@chromium.org>
- <20210209062131.2300005-14-tientzu@chromium.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Dwck20Zqbz30Mh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 03:20:09 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 12AGHuCa032468;
+ Wed, 10 Mar 2021 10:17:57 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 12AGHsaD032459;
+ Wed, 10 Mar 2021 10:17:54 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 10 Mar 2021 10:17:54 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: PowerPC64 future proof kernel toc, revised for lld
+Message-ID: <20210310161754.GK29191@gate.crashing.org>
+References: <20210309045638.GI6042@bubble.grove.modra.org>
+ <20210310034813.GM6042@bubble.grove.modra.org>
+ <3c92968f-7c61-8d36-4001-91f8630de4b1@linux.ibm.com>
+ <20210310050722.GN6042@bubble.grove.modra.org>
+ <5aa60950-d93c-f700-3b0b-a01f947e8a22@linux.ibm.com>
+ <20210310122513.GB29645@bubble.grove.modra.org>
+ <df863fb6-2fd6-00d7-b6f3-94a49c2a5405@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20210209062131.2300005-14-tientzu@chromium.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <df863fb6-2fd6-00d7-b6f3-94a49c2a5405@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,100 +54,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, peterz@infradead.org, grant.likely@arm.com,
- paulus@samba.org, Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
- Marek Szyprowski <m.szyprowski@samsung.com>, sstabellini@kernel.org,
- Saravana Kannan <saravanak@google.com>, Joerg Roedel <joro@8bytes.org>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Christoph Hellwig <hch@lst.de>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>,
- xen-devel@lists.xenproject.org, Thierry Reding <treding@nvidia.com>,
- linux-devicetree <devicetree@vger.kernel.org>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
- Rob Herring <robh+dt@kernel.org>, boris.ostrovsky@oracle.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
- Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
- Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
+Cc: alexey@au1.ibm.com, Alexey Kardashevskiy <aik@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, ellerman@au1.ibm.com,
+ Alan Modra <amodra@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Claire,
-
-On Tue, Feb 09, 2021 at 02:21:30PM +0800, Claire Chang wrote:
-> Introduce the new compatible string, restricted-dma-pool, for restricted
-> DMA. One can specify the address and length of the restricted DMA memory
-> region by restricted-dma-pool in the reserved-memory node.
+On Wed, Mar 10, 2021 at 01:44:57PM +0100, Christophe Leroy wrote:
 > 
-> Signed-off-by: Claire Chang <tientzu@chromium.org>
-> ---
->  .../reserved-memory/reserved-memory.txt       | 24 +++++++++++++++++++
->  1 file changed, 24 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> index e8d3096d922c..fc9a12c2f679 100644
-> --- a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> +++ b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> @@ -51,6 +51,20 @@ compatible (optional) - standard definition
->            used as a shared pool of DMA buffers for a set of devices. It can
->            be used by an operating system to instantiate the necessary pool
->            management subsystem if necessary.
-> +        - restricted-dma-pool: This indicates a region of memory meant to be
-> +          used as a pool of restricted DMA buffers for a set of devices. The
-> +          memory region would be the only region accessible to those devices.
-> +          When using this, the no-map and reusable properties must not be set,
-> +          so the operating system can create a virtual mapping that will be used
-> +          for synchronization. The main purpose for restricted DMA is to
-> +          mitigate the lack of DMA access control on systems without an IOMMU,
-> +          which could result in the DMA accessing the system memory at
-> +          unexpected times and/or unexpected addresses, possibly leading to data
-> +          leakage or corruption. The feature on its own provides a basic level
-> +          of protection against the DMA overwriting buffer contents at
-> +          unexpected times. However, to protect against general data leakage and
-> +          system memory corruption, the system needs to provide way to lock down
-> +          the memory access, e.g., MPU.
+> Le 10/03/2021 à 13:25, Alan Modra a écrit :
+> >On Wed, Mar 10, 2021 at 08:33:37PM +1100, Alexey Kardashevskiy wrote:
+> >>One more question - the older version had a construct "DEFINED (.TOC.) ?
+> >>.TOC. : ..." in case .TOC. is not defined (too old ld? too old gcc?) but 
+> >>the
+> >>newer patch seems assuming it is always defined, when was it added? I have
+> >>the same check in SLOF, for example, do I still need it?
+> >
+> >.TOC. symbol support was first added 2012-11-06, so you need
+> >binutils-2.24 or later to use .TOC. as a symbol.
+> >
+> 
+> As of today, minimum requirement to build kernel is binutils 2.23, see 
+> https://www.kernel.org/doc/html/latest/process/changes.html#current-minimal-requirements
 
-As far as I can tell, these pools work with both static allocations (which
-seem to match your use-case where firmware has preconfigured the DMA ranges)
-but also with dynamic allocations where a 'size' property is present instead
-of the 'reg' property and the kernel is responsible for allocating the
-reservation during boot. Am I right and, if so, is that deliberate?
+The minimum GCC version required is 4.9, released April 2014, so it
+would make sense to require binutils 2.24 at least as well: that was the
+last binutils release before the GCC 4.9 release (it was end of 2013).
 
-I ask because I think that would potentially be useful to us for the
-Protected KVM work, where we need to bounce virtio memory accesses via
-guest-determined windows because the guest memory is generally inaccessible
-to the host. We've been hacking this using a combination of "swiotlb=force"
-and set_memory_{decrypted,encrypted}() but it would be much better to
-leverage the stuff you have here.
+Generally you should make sure to always have a binutils at least as new
+as your GCC (and newer almost always works just fine).
 
-Also:
 
-> +
-> +		restricted_dma_mem_reserved: restricted_dma_mem_reserved {
-> +			compatible = "restricted-dma-pool";
-> +			reg = <0x50000000 0x400000>;
-> +		};
->  	};
->  
->  	/* ... */
-> @@ -138,4 +157,9 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
->  		memory-region = <&multimedia_reserved>;
->  		/* ... */
->  	};
-> +
-> +	pcie_device: pcie_device@0,0 {
-> +		memory-region = <&restricted_dma_mem_reserved>;
-> +		/* ... */
-> +	};
-
-I find this example a bit weird, as I didn't think we usually had DT nodes
-for PCI devices; rather they are discovered as a result of probing config
-space. Is the idea that you have one reserved memory region attached to the
-RC and all the PCI devices below that share the region, or is there a need
-for a mapping mechanism?
-
-Will
+Segher
