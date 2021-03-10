@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E18334579
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 18:47:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611B333457F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 18:49:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwfgG4lvPz3dJc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 04:47:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dwfhj6yb5z3fDY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 04:49:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,38 +15,39 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dwfdy5Vn4z30Nx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 04:46:46 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dwff12XJGz3cTP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 04:46:48 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Dwfdt2kZyz9tyv8;
- Wed, 10 Mar 2021 18:46:42 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4Dwfdv2j0wz9tytW;
+ Wed, 10 Mar 2021 18:46:43 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id b2uK3zp1MjTq; Wed, 10 Mar 2021 18:46:42 +0100 (CET)
+ with ESMTP id 6XlsGUGhnDDI; Wed, 10 Mar 2021 18:46:43 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Dwfdt1vlYz9tytW;
- Wed, 10 Mar 2021 18:46:42 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F04F28B77E;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Dwfdv1r4hz9tytQ;
  Wed, 10 Mar 2021 18:46:43 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 07A698B78D;
+ Wed, 10 Mar 2021 18:46:45 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LuGCq-bEmnUx; Wed, 10 Mar 2021 18:46:43 +0100 (CET)
+ with ESMTP id 13uzWABqKiYi; Wed, 10 Mar 2021 18:46:44 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AA53D8B78E;
- Wed, 10 Mar 2021 18:46:43 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B0A898B77E;
+ Wed, 10 Mar 2021 18:46:44 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 8835C67568; Wed, 10 Mar 2021 17:46:43 +0000 (UTC)
-Message-Id: <1e5c895669e8d54a7810b62dc61eb111f33c2c37.1615398265.git.christophe.leroy@csgroup.eu>
+ id 8F65A67568; Wed, 10 Mar 2021 17:46:44 +0000 (UTC)
+Message-Id: <2c6e83581b4fa434aa7cf2fa7714c41e98f57007.1615398265.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1615398265.git.christophe.leroy@csgroup.eu>
 References: <cover.1615398265.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 04/15] powerpc/uaccess: Remove __get/put_user_inatomic()
+Subject: [PATCH v2 05/15] powerpc/uaccess: Move get_user_instr helpers in
+ asm/inst.h
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed, 10 Mar 2021 17:46:43 +0000 (UTC)
+Date: Wed, 10 Mar 2021 17:46:44 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,123 +64,107 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Powerpc is the only architecture having _inatomic variants of
-__get_user() and __put_user() accessors. They were introduced
-by commit e68c825bb016 ("[POWERPC] Add inatomic versions of __get_user
-and __put_user").
+Those helpers use get_user helpers but they don't participate
+in their implementation, so they do not belong to asm/uaccess.h
 
-Those variants expand to the _nosleep macros instead of expanding
-to the _nocheck macros. The only difference between the _nocheck
-and the _nosleep macros is the call to might_fault().
-
-Since commit 662bbcb2747c ("mm, sched: Allow uaccess in atomic with
-pagefault_disable()"), __get/put_user() can be used in atomic parts
-of the code, therefore __get/put_user_inatomic() have become useless.
-
-Remove __get_user_inatomic() and __put_user_inatomic().
+Move them in asm/inst.h
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/uaccess.h            | 37 -------------------
- .../kernel/hw_breakpoint_constraints.c        |  2 +-
- arch/powerpc/kernel/traps.c                   |  2 +-
- 3 files changed, 2 insertions(+), 39 deletions(-)
+ arch/powerpc/include/asm/inst.h    | 34 ++++++++++++++++++++++++++++++
+ arch/powerpc/include/asm/uaccess.h | 34 ------------------------------
+ 2 files changed, 34 insertions(+), 34 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
+index cc73c1267572..19e18af2fac9 100644
+--- a/arch/powerpc/include/asm/inst.h
++++ b/arch/powerpc/include/asm/inst.h
+@@ -4,6 +4,40 @@
+ 
+ #include <asm/ppc-opcode.h>
+ 
++#ifdef CONFIG_PPC64
++
++#define ___get_user_instr(gu_op, dest, ptr)				\
++({									\
++	long __gui_ret = 0;						\
++	unsigned long __gui_ptr = (unsigned long)ptr;			\
++	struct ppc_inst __gui_inst;					\
++	unsigned int __prefix, __suffix;				\
++	__gui_ret = gu_op(__prefix, (unsigned int __user *)__gui_ptr);	\
++	if (__gui_ret == 0) {						\
++		if ((__prefix >> 26) == OP_PREFIX) {			\
++			__gui_ret = gu_op(__suffix,			\
++				(unsigned int __user *)__gui_ptr + 1);	\
++			__gui_inst = ppc_inst_prefix(__prefix,		\
++						     __suffix);		\
++		} else {						\
++			__gui_inst = ppc_inst(__prefix);		\
++		}							\
++		if (__gui_ret == 0)					\
++			(dest) = __gui_inst;				\
++	}								\
++	__gui_ret;							\
++})
++#else /* !CONFIG_PPC64 */
++#define ___get_user_instr(gu_op, dest, ptr)				\
++	gu_op((dest).val, (u32 __user *)(ptr))
++#endif /* CONFIG_PPC64 */
++
++#define get_user_instr(x, ptr) \
++	___get_user_instr(get_user, x, ptr)
++
++#define __get_user_instr(x, ptr) \
++	___get_user_instr(__get_user, x, ptr)
++
+ /*
+  * Instruction data type for POWER
+  */
 diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index a08c482b1315..01aea0df4dd0 100644
+index 01aea0df4dd0..eaa828a6a419 100644
 --- a/arch/powerpc/include/asm/uaccess.h
 +++ b/arch/powerpc/include/asm/uaccess.h
-@@ -53,11 +53,6 @@ static inline bool __access_ok(unsigned long addr, unsigned long size)
+@@ -53,40 +53,6 @@ static inline bool __access_ok(unsigned long addr, unsigned long size)
  #define __put_user(x, ptr) \
  	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
  
--#define __get_user_inatomic(x, ptr) \
--	__get_user_nosleep((x), (ptr), sizeof(*(ptr)))
--#define __put_user_inatomic(x, ptr) \
--	__put_user_nosleep((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
+-#ifdef CONFIG_PPC64
 -
- #ifdef CONFIG_PPC64
- 
- #define ___get_user_instr(gu_op, dest, ptr)				\
-@@ -92,9 +87,6 @@ static inline bool __access_ok(unsigned long addr, unsigned long size)
- #define __get_user_instr(x, ptr) \
- 	___get_user_instr(__get_user, x, ptr)
- 
--#define __get_user_instr_inatomic(x, ptr) \
--	___get_user_instr(__get_user_inatomic, x, ptr)
+-#define ___get_user_instr(gu_op, dest, ptr)				\
+-({									\
+-	long __gui_ret = 0;						\
+-	unsigned long __gui_ptr = (unsigned long)ptr;			\
+-	struct ppc_inst __gui_inst;					\
+-	unsigned int __prefix, __suffix;				\
+-	__gui_ret = gu_op(__prefix, (unsigned int __user *)__gui_ptr);	\
+-	if (__gui_ret == 0) {						\
+-		if ((__prefix >> 26) == OP_PREFIX) {			\
+-			__gui_ret = gu_op(__suffix,			\
+-				(unsigned int __user *)__gui_ptr + 1);	\
+-			__gui_inst = ppc_inst_prefix(__prefix,		\
+-						     __suffix);		\
+-		} else {						\
+-			__gui_inst = ppc_inst(__prefix);		\
+-		}							\
+-		if (__gui_ret == 0)					\
+-			(dest) = __gui_inst;				\
+-	}								\
+-	__gui_ret;							\
+-})
+-#else /* !CONFIG_PPC64 */
+-#define ___get_user_instr(gu_op, dest, ptr)				\
+-	gu_op((dest).val, (u32 __user *)(ptr))
+-#endif /* CONFIG_PPC64 */
+-
+-#define get_user_instr(x, ptr) \
+-	___get_user_instr(get_user, x, ptr)
+-
+-#define __get_user_instr(x, ptr) \
+-	___get_user_instr(__get_user, x, ptr)
 -
  extern long __put_user_bad(void);
  
  #define __put_user_size(x, ptr, size, retval)			\
-@@ -141,20 +133,6 @@ __pu_failed:							\
- 	__pu_err;							\
- })
- 
--#define __put_user_nosleep(x, ptr, size)			\
--({								\
--	long __pu_err;						\
--	__typeof__(*(ptr)) __user *__pu_addr = (ptr);		\
--	__typeof__(*(ptr)) __pu_val = (x);			\
--	__typeof__(size) __pu_size = (size);			\
--								\
--	__chk_user_ptr(__pu_addr);				\
--	__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
--								\
--	__pu_err;						\
--})
--
--
- /*
-  * We don't tell gcc that we are accessing memory, but this is OK
-  * because we do not write to any memory gcc knows about, so there
-@@ -320,21 +298,6 @@ do {								\
- 	__gu_err;							\
- })
- 
--#define __get_user_nosleep(x, ptr, size)			\
--({								\
--	long __gu_err;						\
--	__long_type(*(ptr)) __gu_val;				\
--	__typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
--	__typeof__(size) __gu_size = (size);			\
--								\
--	__chk_user_ptr(__gu_addr);				\
--	__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
--	(x) = (__force __typeof__(*(ptr)))__gu_val;			\
--								\
--	__gu_err;						\
--})
--
--
- /* more complex routines */
- 
- extern unsigned long __copy_tofrom_user(void __user *to,
-diff --git a/arch/powerpc/kernel/hw_breakpoint_constraints.c b/arch/powerpc/kernel/hw_breakpoint_constraints.c
-index 867ee4aa026a..675d1f66ab72 100644
---- a/arch/powerpc/kernel/hw_breakpoint_constraints.c
-+++ b/arch/powerpc/kernel/hw_breakpoint_constraints.c
-@@ -141,7 +141,7 @@ void wp_get_instr_detail(struct pt_regs *regs, struct ppc_inst *instr,
- {
- 	struct instruction_op op;
- 
--	if (__get_user_instr_inatomic(*instr, (void __user *)regs->nip))
-+	if (__get_user_instr(*instr, (void __user *)regs->nip))
- 		return;
- 
- 	analyse_instr(&op, regs, *instr);
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 1583fd1c6010..1fa36bd08efe 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -864,7 +864,7 @@ static void p9_hmi_special_emu(struct pt_regs *regs)
- 	unsigned long ea, msr, msr_mask;
- 	bool swap;
- 
--	if (__get_user_inatomic(instr, (unsigned int __user *)regs->nip))
-+	if (__get_user(instr, (unsigned int __user *)regs->nip))
- 		return;
- 
- 	/*
 -- 
 2.25.0
 
