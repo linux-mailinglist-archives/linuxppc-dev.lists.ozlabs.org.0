@@ -1,83 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30E4333D80
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 14:16:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B05333DE6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 14:33:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwXfd652tz3d7P
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 00:16:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwY270mWwz3d3r
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 00:33:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=pn+LM12N;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=bl9foFVu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::42e;
- helo=mail-pf1-x42e.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72e;
+ helo=mail-qk1-x72e.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=pn+LM12N; dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
- [IPv6:2607:f8b0:4864:20::42e])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=bl9foFVu; dkim-atps=neutral
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com
+ [IPv6:2607:f8b0:4864:20::72e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwXfD1QC4z2yhy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 00:16:32 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id 18so12031960pfo.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 05:16:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=cgQUglqxc+GpfWMq7JXRAC8k+191d2Fc9wCJ5LvoShI=;
- b=pn+LM12NRe+x8d81MNP41l+x4+6QN4/QzNvoWzth/rhxK/vv3n4pe3pNHQ8/0gMeqw
- oNLwq2tWDO5lNA8KCx4mo4BfMKPmtSVN8r2AuKq5+osyQYgKUSOgKAxL85N0d3F2D06C
- jXQL0De4yqVyqw506Ee8XeEhsGf0tlxk2eHIkGgTeEwkorGe4FO7qYzRIWOGVC1gS71X
- 0qqX+a3KMc3skC6huvPay9gdK83k9baUVcdSlsTK7GHitGkauMEtxs2H5gXSN9T4Kuvf
- degma3B12KbV6y/vQuhzMoqdEEfr79+3AXICHsSHmLiseF/kGnMX42SFIahM6i70GtrF
- Tj2w==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwY1h3pXxz30LN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 00:33:26 +1100 (AEDT)
+Received: by mail-qk1-x72e.google.com with SMTP id t4so16784718qkp.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 05:33:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=xATgDCcvjbRfKhf77xL4HQKVKsZXwxoQX6S2FdKT3Oo=;
+ b=bl9foFVuWm1U0ekqf1RlZ6JOgyHSxk20HsshPAc/WzmNMQkpqow9aJHwikbBuhzGt5
+ jT1S7UCkiQhavHDTqfeS/7Pfr5/IePsLcFDW+xtC3oZT8urNRddeoTEDdbA1IepPMPk+
+ opy2by+nNj9L9mcjh3ek7aNkXjf9fKBBKm2Jqgd5tMFigjlDZjBf2JhaP0RIxWNQxb2T
+ /+3P/012KMPMRD/pd+hAGnOJoVnTUWu55a3JQpQ9tb6n/wtLR9H0ZJW4J2/1/FeMOnPA
+ ckGsAVCt8a/1taU7nsP+U4gCNpvnevNcHi/hhmmnz1IViwSN4ngtMzFuAOU/mXVgcYBY
+ nErg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=cgQUglqxc+GpfWMq7JXRAC8k+191d2Fc9wCJ5LvoShI=;
- b=QnmhbgEffDrQVyAblIEZH2oHLNWSZAzfxAxVqB1j7umbiOUQO+NAiCwAiKCGSeJAz7
- U8HrFheI20g3Qo3GghUg7ZMJcJKnw4mbEFnDPgxvej1u4yS5haT6EsTlXjz8YyL6fRAQ
- QepOzKiD/mBc66POn0INM/G9tCEuAlDDg4kftyB1zZbdt4y4Jml6N+Gcm2L+w3/iFe8G
- gs49TM7m1GS6v3Iz1vL9vbZLnjjZkNnd9dLOfvRKbDY/3nxHidFoccytO/fGRHdUah7B
- VcTQHzb7txdvF1vON+K1Mi/+etBOsKGgThMywR/UrHS7+tuCKQ/gCE7Hf4hUfeaN/F+C
- 6SgA==
-X-Gm-Message-State: AOAM5321o/rOlwUTAhx+AwQHcKuNA/+rzbPzCDpcP2nPnR7hTJJyu6F9
- wfsOXpQn2J7fUQU8NYLg2dEhJJDtiWg9SQ==
-X-Google-Smtp-Source: ABdhPJzuvYo3MKxO9XaUejZpbSDSt2TAK+WMvZAB+yUkLMpx6eOgOiQB8u9s5shDgcJAB7MiHL4Zfg==
-X-Received: by 2002:a62:7ecc:0:b029:1ee:f61b:a63f with SMTP id
- z195-20020a627ecc0000b02901eef61ba63fmr2779896pfc.57.1615382189641; 
- Wed, 10 Mar 2021 05:16:29 -0800 (PST)
-Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
- [124.171.107.241])
- by smtp.gmail.com with UTF8SMTPSA id l22sm17299314pfd.145.2021.03.10.05.16.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Mar 2021 05:16:29 -0800 (PST)
-Subject: Re: [PATCH V2 2/2] powerpc/perf: Add platform specific
- check_attr_config
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au
-References: <20210226065025.1254973-1-maddy@linux.ibm.com>
- <20210226065025.1254973-2-maddy@linux.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <dde47591-db00-4c4f-ed24-a8ab5a7a4c6a@ozlabs.ru>
-Date: Thu, 11 Mar 2021 00:16:25 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:85.0) Gecko/20100101
- Thunderbird/85.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=xATgDCcvjbRfKhf77xL4HQKVKsZXwxoQX6S2FdKT3Oo=;
+ b=bZodciW7b5cYjx97zAWzsuo1d8KHB/+IlNY/0hh3iqdJofJj0SzZwRcMSlkftIYa+T
+ UXrHDMn89JZCuDGIgU23+nRZtZYyroytiqD1Zq9ZyYH/WuLckj2jChbPMRLJRlvZ0bYh
+ DRr5Zp2QvN7yZqtj0Lnq8ASN8ovLBSgwWzKiYDXIlNvfMrF/tk7m+xJpR+bc2oo6y/lO
+ eZ8ALnt2HvrhqP+5Vj7JsdEHuZYGCa3BGtrX2WtopODQppiahOyzEiq0tZgZxNISl9Sc
+ WWlsskZC1TZuC9Ms3Zuj2Il2IDjHDsgl9/KHrOtOhgyCVlVJcud0bAfaQgDxuBEOWFOG
+ Q2GA==
+X-Gm-Message-State: AOAM532breCVutilmHcZTzm8XE58VNZGj5eGo1ezCT9c3pcIiDZqQAB+
+ RhQYLzFBfA+AaUagen1xHakaB5x2gz+SdLI2ZT4=
+X-Google-Smtp-Source: ABdhPJwsnjO9VMCLT+e6qoznWlE6iGQjtNS8w36gj0aKWvcdVWBIbKTu/A3JNEQWuep1O/iNA0xg755nBa0vz1K9AyA=
+X-Received: by 2002:a05:620a:89d:: with SMTP id
+ b29mr2468495qka.103.1615383202487; 
+ Wed, 10 Mar 2021 05:33:22 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20210226065025.1254973-2-maddy@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1615209750-2357-1-git-send-email-shengjiu.wang@nxp.com>
+ <1615209750-2357-4-git-send-email-shengjiu.wang@nxp.com>
+ <20210310024834.GA1623179@robh.at.kernel.org>
+In-Reply-To: <20210310024834.GA1623179@robh.at.kernel.org>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Wed, 10 Mar 2021 21:33:11 +0800
+Message-ID: <CAA+D8AM5nH+gwfas_=9gkzaegq4=4q2AfVybBnxM4xU3gOiF4w@mail.gmail.com>
+Subject: Re: [PATCH v4 3/6] ASoC: dt-bindings: fsl_rpmsg: Add binding doc for
+ rpmsg cpu dai driver
+To: Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,185 +77,229 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, alsa-devel@alsa-project.org,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Rob
+
+On Wed, Mar 10, 2021 at 10:49 AM Rob Herring <robh@kernel.org> wrote:
+>
+> On Mon, Mar 08, 2021 at 09:22:27PM +0800, Shengjiu Wang wrote:
+> > fsl_rpmsg cpu dai driver is driver for rpmsg audio, which is mainly used
+>
+> Bindings describe h/w blocks, not drivers.
+
+I will modify the descriptions. but here it is a virtual device.  the
+mapping in real h/w is cortex M core, Cortex M core controls the SAI,
+DMA interface. What we see from Linux side is a audio service
+through rpmsg channel.
+
+>
+> > for getting the user's configuration from device tree and configure the
+> > clocks which is used by Cortex-M core. So in this document define the
+> > needed property.
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  .../devicetree/bindings/sound/fsl,rpmsg.yaml  | 118 ++++++++++++++++++
+> >  1 file changed, 118 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+> > new file mode 100644
+> > index 000000000000..5731c1fbc0a6
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+> > @@ -0,0 +1,118 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/sound/fsl,rpmsg.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: NXP Audio RPMSG CPU DAI Controller
+> > +
+> > +maintainers:
+> > +  - Shengjiu Wang <shengjiu.wang@nxp.com>
+> > +
+> > +description: |
+> > +  fsl_rpmsg cpu dai driver is virtual driver for rpmsg audio, which doesn't
+> > +  touch hardware. It is mainly used for getting the user's configuration
+> > +  from device tree and configure the clocks which is used by Cortex-M core.
+> > +  So in this document define the needed property.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - fsl,imx7ulp-rpmsg
+> > +      - fsl,imx8mn-rpmsg
+> > +      - fsl,imx8mm-rpmsg
+> > +      - fsl,imx8mp-rpmsg
+> > +
+> > +  model:
+> > +    $ref: /schemas/types.yaml#/definitions/string
+> > +    description: User specified audio sound card name
+> > +
+> > +  clocks:
+> > +    items:
+> > +      - description: Peripheral clock for register access
+> > +      - description: Master clock
+> > +      - description: DMA clock for DMA register access
+> > +      - description: Parent clock for multiple of 8kHz sample rates
+> > +      - description: Parent clock for multiple of 11kHz sample rates
+> > +    minItems: 5
+>
+> If this doesn't touch hardware, what are these clocks for?
+
+When the cortex-M core support audio service, these clock
+needed prepared & enabled by ALSA driver.
+
+>
+> You don't need 'minItems' unless it's less than the number of 'items'.
+
+Ok, I will remove this minItems.
+
+>
+> > +
+> > +  clock-names:
+> > +    items:
+> > +      - const: ipg
+> > +      - const: mclk
+> > +      - const: dma
+> > +      - const: pll8k
+> > +      - const: pll11k
+> > +    minItems: 5
+> > +
+> > +  power-domains:
+> > +    maxItems: 1
+> > +
+> > +  fsl,audioindex:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    enum: [0, 1]
+> > +    default: 0
+> > +    description: Instance index for sound card in
+> > +                 M core side, which share one rpmsg
+> > +                 channel.
+>
+> We don't do indexes in DT. What's this numbering tied to?
+
+I will remove it. it is not necessary
+
+>
+> > +
+> > +  fsl,version:
+>
+> version of what?
+>
+> This seems odd at best.
+>
+
+I will remove it.  it is not necessary
+
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    enum: [1, 2]
+>
+> You're going to update this with every new firmware version?
+>
+> > +    default: 2
+> > +    description: The version of M core image, which is
+> > +                 to make driver compatible with different image.
+> > +
+> > +  fsl,buffer-size:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    description: pre allocate dma buffer size
+>
+> How can you have DMA, this doesn't touch h/w?
+
+The DMA is handled by M core image for sound playback
+and capture. we need to allocated buffer in Linux side.
+here just make the buffer size to be configurable.
+>
+> > +
+> > +  fsl,enable-lpa:
+> > +    $ref: /schemas/types.yaml#/definitions/flag
+> > +    description: enable low power audio path.
+> > +
+> > +  fsl,rpmsg-out:
+> > +    $ref: /schemas/types.yaml#/definitions/flag
+> > +    description: |
+> > +      This is a boolean property. If present, the transmitting function
+> > +      will be enabled.
+> > +
+> > +  fsl,rpmsg-in:
+> > +    $ref: /schemas/types.yaml#/definitions/flag
+> > +    description: |
+> > +      This is a boolean property. If present, the receiving function
+> > +      will be enabled.
+> > +
+> > +  fsl,codec-type:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    enum: [0, 1, 2]
+> > +    default: 0
+> > +    description: Sometimes the codec is registered by
+> > +                 driver not by the device tree, this items
+> > +                 can be used to distinguish codecs.
+>
+> How does one decide what value to use?
+
+I will add more description:
+0: dummy codec
+1: WM8960 codec
+2: AK4497 codec
+
+>
+> > +
+> > +  audio-codec:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
+> > +    description: The phandle of the audio codec
+>
+> The codec is controlled from the Linux side?
+
+yes.
+
+>
+> > +
+> > +  memory-region:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
+> > +    description: phandle to the reserved memory nodes
+> > +
+> > +required:
+> > +  - compatible
+> > +  - fsl,audioindex
+> > +  - fsl,version
+> > +  - fsl,buffer-size
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    rpmsg_audio: rpmsg_audio {
+> > +        compatible = "fsl,imx8mn-rpmsg";
+> > +        fsl,audioindex = <0> ;
+> > +        fsl,version = <2>;
+> > +        fsl,buffer-size = <0x6000000>;
+> > +        fsl,enable-lpa;
+>
+> How does this work? Don't you need somewhere to put the 'rpmsg' data?
+
+The rpmsg data is not handled in this "rpmsg_audio" device, it is just to
+prepare the resource for rpmsg audio function, the clock, the memory
+the power...
+
+The rpmsg data is handled in imx-pcm-rpmsg.c and imx-audio-rpmsg.c
+These devices is registered by imx remoteproc driver.
 
 
-On 26/02/2021 17:50, Madhavan Srinivasan wrote:
-> Add platform specific attr.config value checks. Patch
-> includes checks for both power9 and power10.
-> 
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> ---
-> Changelog v1:
-> - No changes.
-> 
->   arch/powerpc/perf/isa207-common.c | 41 +++++++++++++++++++++++++++++++
->   arch/powerpc/perf/isa207-common.h |  2 ++
->   arch/powerpc/perf/power10-pmu.c   | 13 ++++++++++
->   arch/powerpc/perf/power9-pmu.c    | 13 ++++++++++
->   4 files changed, 69 insertions(+)
-> 
-> diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-> index e4f577da33d8..b255799f5b51 100644
-> --- a/arch/powerpc/perf/isa207-common.c
-> +++ b/arch/powerpc/perf/isa207-common.c
-> @@ -694,3 +694,44 @@ int isa207_get_alternatives(u64 event, u64 alt[], int size, unsigned int flags,
->   
->   	return num_alt;
->   }
-> +
-> +int isa3_X_check_attr_config(struct perf_event *ev)
+I will update this document in v5
 
-
-"isa300" is used everywhere else to refer to ISA 3.00.
-
-
-> +{
-> +	u64 val, sample_mode;
-> +	u64 event = ev->attr.config;
-> +
-> +	val = (event >> EVENT_SAMPLE_SHIFT) & EVENT_SAMPLE_MASK;
-
-I am not familiar with the code - "Raw event encoding for Power9" from 
-arch/powerpc/perf/power9-pmu.c - where is this from? Is this how linux 
-defines encoding or it is P9 UM or something?
-
-> +	sample_mode = val & 0x3;
-> +
-> +	/*
-> +	 * MMCRA[61:62] is Randome Sampling Mode (SM).
-> +	 * value of 0b11 is reserved.
-> +	 */
-> +	if (sample_mode == 0x3)
-> +		return -1;
-> +
-> +	/*
-> +	 * Check for all reserved value
-> +	 */
-> +	switch (val) {
-> +	case 0x5:
-> +	case 0x9:
-> +	case 0xD:
-> +	case 0x19:
-> +	case 0x1D:
-> +	case 0x1A:
-> +	case 0x1E:
-
-
-What spec did these numbers come from?
-
-> +		return -1;
-> +	}
-> +
-> +	/*
-> +	 * MMCRA[48:51]/[52:55]) Threshold Start/Stop
-> +	 * Events Selection.
-> +	 * 0b11110000/0b00001111 is reserved.
-
-The mapping between the event and MMCRA is very unclear :) But there are 
-more reserved values in MMCRA in PowerISA_public.v3.0B.pdf:
-
-===
-0000 Reserved
-
-Problem state access (SPR 770)
-1000 - 1111 - ReservedPrivileged access (SPR 770 or 786)
-1000 - 1111 - Implementation-dependent
-===
-
-Do not you need to filter these too?
-
-> +	 */
-> +	val = (event >> EVENT_THR_CTL_SHIFT) & EVENT_THR_CTL_MASK;
-> +	if (((val & 0xF0) == 0xF0) || ((val & 0xF) == 0xF))
-> +		return -1;
-
-Since the filters may differ for problem and privileged, may be make 
-these check_attr_config() hooks return EINVAL or EPERM and pass it on in 
-the caller? Not sure there is much value in it though.
-
-
-> +
-> +	return 0;
-> +}
-> diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-> index 1af0e8c97ac7..ae8eaf05efd1 100644
-> --- a/arch/powerpc/perf/isa207-common.h
-> +++ b/arch/powerpc/perf/isa207-common.h
-> @@ -280,4 +280,6 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
->   							struct pt_regs *regs);
->   void isa207_get_mem_weight(u64 *weight);
->   
-> +int isa3_X_check_attr_config(struct perf_event *ev);
-> +
->   #endif
-> diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-> index a901c1348cad..bc64354cab6a 100644
-> --- a/arch/powerpc/perf/power10-pmu.c
-> +++ b/arch/powerpc/perf/power10-pmu.c
-> @@ -106,6 +106,18 @@ static int power10_get_alternatives(u64 event, unsigned int flags, u64 alt[])
->   	return num_alt;
->   }
->   
-> +static int power10_check_attr_config(struct perf_event *ev)
-> +{
-> +	u64 val;
-> +	u64 event = ev->attr.config;
-> +
-> +	val = (event >> EVENT_SAMPLE_SHIFT) & EVENT_SAMPLE_MASK;
-> +	if (val == 0x10 || isa3_X_check_attr_config(ev))
-> +		return -1;
-> +
-> +	return 0;
-> +}
-> +
->   GENERIC_EVENT_ATTR(cpu-cycles,			PM_RUN_CYC);
->   GENERIC_EVENT_ATTR(instructions,		PM_RUN_INST_CMPL);
->   GENERIC_EVENT_ATTR(branch-instructions,		PM_BR_CMPL);
-> @@ -559,6 +571,7 @@ static struct power_pmu power10_pmu = {
->   	.attr_groups		= power10_pmu_attr_groups,
->   	.bhrb_nr		= 32,
->   	.capabilities           = PERF_PMU_CAP_EXTENDED_REGS,
-> +	.check_attr_config	= power10_check_attr_config,
->   };
->   
->   int init_power10_pmu(void)
-> diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
-> index 2a57e93a79dc..b3b9b226d053 100644
-> --- a/arch/powerpc/perf/power9-pmu.c
-> +++ b/arch/powerpc/perf/power9-pmu.c
-> @@ -151,6 +151,18 @@ static int power9_get_alternatives(u64 event, unsigned int flags, u64 alt[])
->   	return num_alt;
->   }
->   
-> +static int power9_check_attr_config(struct perf_event *ev)
-> +{
-> +	u64 val;
-> +	u64 event = ev->attr.config;
-> +
-> +	val = (event >> EVENT_SAMPLE_SHIFT) & EVENT_SAMPLE_MASK;
-> +	if (val == 0xC || isa3_X_check_attr_config(ev))
-> +		return -1;
-> +
-> +	return 0;
-> +}
-> +
->   GENERIC_EVENT_ATTR(cpu-cycles,			PM_CYC);
->   GENERIC_EVENT_ATTR(stalled-cycles-frontend,	PM_ICT_NOSLOT_CYC);
->   GENERIC_EVENT_ATTR(stalled-cycles-backend,	PM_CMPLU_STALL);
-> @@ -437,6 +449,7 @@ static struct power_pmu power9_pmu = {
->   	.attr_groups		= power9_pmu_attr_groups,
->   	.bhrb_nr		= 32,
->   	.capabilities           = PERF_PMU_CAP_EXTENDED_REGS,
-> +	.check_attr_config	= power9_check_attr_config,
->   };
->   
->   int init_power9_pmu(void)
-> 
-
--- 
-Alexey
+Best regards
+Wang Shengjiu
