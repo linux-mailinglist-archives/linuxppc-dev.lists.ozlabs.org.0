@@ -1,79 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A190A3334B5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 06:07:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E64E3334C0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 06:14:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwKpF4K6dz3d9K
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 16:07:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwKxj1NZ4z3cnB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 16:14:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=jLVKplXc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gAAezJ3g;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
- helo=mail-pf1-x42e.google.com; envelope-from=amodra@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jLVKplXc; dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
- [IPv6:2607:f8b0:4864:20::42e])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=gAAezJ3g; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwKns3bcLz3cKQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 16:07:29 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id q204so11134362pfq.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 21:07:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=rXx5g+GDYePC+AM0lg3Ovb3zdgXaFFKbHFAzwfAO66s=;
- b=jLVKplXcqWXh+BS4x2qCgjxaMcXZUnpD8YDYPLxOx49a64i+yqI2qOcLEpaxrCMsNI
- dDMvI901byMGEFxe7IQUxTIPP8wdf0j+twbm88nZeO4ihG430UHDu04oV8Fcl635bCtX
- cChWbOefFtYFTwG+EwdgyuD0VgES27zarlhy5xo5dySEvXfC23F1YTeZYUjnVRPIssf+
- 30eBj7XE6GgFkMe0b460vKrftD8ZeIGl2b/omdz4CfagFjDMUQ9bu1t2C4AISe0n8DTg
- r5nIHSzFhDWT0Ed/ZuFFkUUMR+RpmWkfqmo9ZimSgjgJk4NDIOd6BPJcBrHA+calYmxf
- +/Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=rXx5g+GDYePC+AM0lg3Ovb3zdgXaFFKbHFAzwfAO66s=;
- b=jUWM+mgy4b6do9C2vTzGJ83QZucd3wiw4kNvyHX3dXzvFDYd14FfwYIf3NJUHi6eBN
- 79GlvwV6WITG4vWN3UFRCKNqZqCaD3MW2YDCTQVUIc100k/Sp5paFWAxNO4Y8KZsUKaY
- 7Fqb4uA+WbOlrD5f0WlFVs2px788bMohzoewfcZsj0Ncknnsf79V9nCr2hqqn523FHab
- OfKXTGFVg+J2nZNNfBjW9bi5E/ETVma1Kgb/Vx/Qn9zW5J+GHzfrLVhQSb7VXLJMxvTw
- KFe5pR3xD4+x1hKCH/h/Z7FNrc3a55fDjoUBeGFEW4BFbyX8n+tjvl/aHq1OdNWqiH1C
- wAJg==
-X-Gm-Message-State: AOAM5304ZNaWQV1V2eBpjzcuVOeS9vDdfwn235XlEC+rky/5TrAQ1zhx
- YqKpB6wXuSNWYu27QmNBoM4=
-X-Google-Smtp-Source: ABdhPJyEA+v3X/TM+GuWBCgd8JtnnmHo5Q7h3dVW81ywxul0bMjs0qf71szL542nfbUV2hoRzDIbKQ==
-X-Received: by 2002:a65:5bca:: with SMTP id o10mr1322710pgr.248.1615352847200; 
- Tue, 09 Mar 2021 21:07:27 -0800 (PST)
-Received: from bubble.grove.modra.org
- ([2406:3400:51d:8cc0:782f:891e:65a1:90c6])
- by smtp.gmail.com with ESMTPSA id w18sm4410740pjh.19.2021.03.09.21.07.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Mar 2021 21:07:26 -0800 (PST)
-Received: by bubble.grove.modra.org (Postfix, from userid 1000)
- id C44C9412D9; Wed, 10 Mar 2021 15:37:22 +1030 (ACDT)
-Date: Wed, 10 Mar 2021 15:37:22 +1030
-From: Alan Modra <amodra@gmail.com>
-To: Alexey Kardashevskiy <aik@linux.ibm.com>
-Subject: Re: PowerPC64 future proof kernel toc, revised for lld
-Message-ID: <20210310050722.GN6042@bubble.grove.modra.org>
-References: <20210309045638.GI6042@bubble.grove.modra.org>
- <20210310034813.GM6042@bubble.grove.modra.org>
- <3c92968f-7c61-8d36-4001-91f8630de4b1@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwKxJ4RjVz30QX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 16:13:56 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DwKxD3YWwz9sVt;
+ Wed, 10 Mar 2021 16:13:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1615353236;
+ bh=PTvR9yy+hFS1JwrAkv1oOXKRmXp2wT57fM05CuMq9n4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=gAAezJ3g1I+qwK2XJLKpN8fLHuQhJUtk5xtwGLQCWS+YNib0C/xLeB/2wRr127ta0
+ 2KyjMDPt2zX6vAv7dKlir7kRhUjjlfgU83c16TkZmOqGc9UDK2E6rzXCkh+9zhBCZs
+ RPBhBchbTPSnu1iqRA5vaJ+m/kcB/AfwfNdvArtrudzO9yvhgbI0TQRdDpffhn6hdU
+ EMdj1VITVWjR6sFBNDHAqI6ZIyPjlK7ewcXMa9n55DV4HWNGjD/btkMREYD/6eUW4/
+ pgcvzG0nEtt+IHOHN57E8cT2wXq+bynGya0XurUDnx9BuBKaQHaG18JU+6+g0s9lb6
+ tkTfVAt/9KW1g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, "Naveen N. Rao"
+ <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4] powerpc/uprobes: Validation for prefixed instruction
+In-Reply-To: <1a080cb5-af98-6b6e-352d-772a90cfa902@linux.ibm.com>
+References: <20210305115433.140769-1-ravi.bangoria@linux.ibm.com>
+ <87ft14r6sa.fsf@mpe.ellerman.id.au>
+ <20210309112115.GG145@DESKTOP-TDPLP67.localdomain>
+ <1a080cb5-af98-6b6e-352d-772a90cfa902@linux.ibm.com>
+Date: Wed, 10 Mar 2021 16:13:51 +1100
+Message-ID: <877dmfr3ow.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c92968f-7c61-8d36-4001-91f8630de4b1@linux.ibm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,29 +65,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alexey@au1.ibm.com, linuxppc-dev@lists.ozlabs.org, ellerman@au1.ibm.com
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, jniethe5@gmail.com,
+ oleg@redhat.com, rostedt@goodmis.org, linux-kernel@vger.kernel.org,
+ paulus@samba.org, sandipan@linux.ibm.com, naveen.n.rao@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 10, 2021 at 03:44:44PM +1100, Alexey Kardashevskiy wrote:
-> For my own education, is .got for prom_init.o still generated by ld or gcc?
+Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
+> On 3/9/21 4:51 PM, Naveen N. Rao wrote:
+>> On 2021/03/09 08:54PM, Michael Ellerman wrote:
+>>> Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
+>>>> As per ISA 3.1, prefixed instruction should not cross 64-byte
+>>>> boundary. So don't allow Uprobe on such prefixed instruction.
+>>>>
+>>>> There are two ways probed instruction is changed in mapped pages.
+>>>> First, when Uprobe is activated, it searches for all the relevant
+>>>> pages and replace instruction in them. In this case, if that probe
+>>>> is on the 64-byte unaligned prefixed instruction, error out
+>>>> directly. Second, when Uprobe is already active and user maps a
+>>>> relevant page via mmap(), instruction is replaced via mmap() code
+>>>> path. But because Uprobe is invalid, entire mmap() operation can
+>>>> not be stopped. In this case just print an error and continue.
+>>>>
+>>>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+>>>> Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+>>>
+>>> Do we have a Fixes: tag for this?
+>> 
+>> Since this is an additional check we are adding, I don't think we should
+>> add a Fixes: tag. Nothing is broken per-se -- we're just adding more
+>> checks to catch simple mistakes. Also, like Oleg pointed out, there are
+>> still many other ways for users to shoot themselves in the foot with
+>> uprobes and prefixed instructions, if they so desire.
+>> 
+>> However, if you still think we should add a Fixes: tag, we can perhaps
+>> use the below commit since I didn't see any specific commit adding
+>> support for prefixed instructions for uprobes:
+>> 
+>> Fixes: 650b55b707fdfa ("powerpc: Add prefixed instructions to
+>> instruction data type")
+>
+> True. IMO, It doesn't really need any Fixes tag.
 
-.got is generated by ld.
+Yep OK, I'm happy without a Fixes tag based on that explanation.
 
-> In other words, should "objdump -D -s -j .got" ever dump .got for any .o
-> file, like below?
+>>>> diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
+>>>> index e8a63713e655..4cbfff6e94a3 100644
+>>>> --- a/arch/powerpc/kernel/uprobes.c
+>>>> +++ b/arch/powerpc/kernel/uprobes.c
+>>>> @@ -41,6 +41,13 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe,
+>>>>   	if (addr & 0x03)
+>>>>   		return -EINVAL;
+>>>>   
+>>>> +	if (cpu_has_feature(CPU_FTR_ARCH_31) &&
+>>>> +	    ppc_inst_prefixed(auprobe->insn) &&
+>>>> +	    (addr & (SZ_64 - 4)) == SZ_64 - 4) {
+>>>> +		pr_info_ratelimited("Cannot register a uprobe on 64 byte unaligned prefixed instruction\n");
+>>>> +		return -EINVAL;
+>>>
+>>> I realise we already did the 0x03 check above, but I still think this
+>>> would be clearer simply as:
+>>>
+>>> 	    (addr & 0x3f == 60)
+>> 
+>> Indeed, I like the use of `60' there -- hex is overrated ;)
+>
+> Sure. Will resend.
 
-No.  "objdump -r prom_init.o | grep GOT" will tell you whether
-prom_init.o *may* cause ld to generate .got entries.  (Linker
-optimisations or --gc-sections might remove the need for those .got
-entries.)
+Thanks.
 
-> objdump: section '.got' mentioned in a -j option, but not found in any input
-> file
-
-Right, expected.
-
--- 
-Alan Modra
-Australia Development Lab, IBM
+cheers
