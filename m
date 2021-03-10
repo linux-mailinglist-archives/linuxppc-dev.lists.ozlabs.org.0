@@ -2,56 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C693334CD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 06:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C903335A4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 07:03:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwL5P6JxMz3cjw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 16:20:57 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=J7tJEgWY;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwM2R1db0z3cjq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 17:03:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=J7tJEgWY; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwL503lwxz3cLF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 16:20:35 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DwL4j4Sq1z9sVt;
- Wed, 10 Mar 2021 16:20:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1615353635;
- bh=hRcUlrx6WVs6H6bysWKFjU5tqR/J0nyX9yzAP97GJsQ=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=J7tJEgWYlgdvVYjfzFG1g90s1EOtAnSSXBRLQ734Q2HRbgzt8b5qMsfcT75CaJw/5
- k2iXGDhutq9tOyXtkr9ZdT6+Kw3xBnr49WyYm1ThfwbSXS49oSisxLyUici9Us3TE5
- HtEU/wSHCFC/s0gViktBCnLKaTQ6q/J6g7vI7Yf82084Vpw7jSTqhvDbOhMgyxxI9w
- 06Bw6yZRBta9uSCCaIQ2c7wKj4hZxuCWKQRB2mMVm8bhHalhKoBF9ueKaVIbelzwFf
- 39/YMJZ9zGzrte7RuLUNxyCLzwS8ZoBCqvCyhYy1dJsJ4rr7rf2eQnVXaCuVc8iu5b
- xcUsluM3pIA9g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Subject: Re: [PATCH 2/6] mm: Generalize SYS_SUPPORTS_HUGETLBFS (rename as
- ARCH_SUPPORTS_HUGETLBFS)
-In-Reply-To: <1615185706-24342-3-git-send-email-anshuman.khandual@arm.com>
-References: <1615185706-24342-1-git-send-email-anshuman.khandual@arm.com>
- <1615185706-24342-3-git-send-email-anshuman.khandual@arm.com>
-Date: Wed, 10 Mar 2021 16:20:19 +1100
-Message-ID: <874khjr3e4.fsf@mpe.ellerman.id.au>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DwM244TPXz2yRb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 17:03:05 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A5C521FB;
+ Tue,  9 Mar 2021 22:03:02 -0800 (PST)
+Received: from [10.163.67.114] (unknown [10.163.67.114])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DDF513F70D;
+ Tue,  9 Mar 2021 22:02:57 -0800 (PST)
+Subject: Re: [PATCH V2] mm/memtest: Add ARCH_USE_MEMTEST
+To: linux-mm@kvack.org
+References: <1614573126-7740-1-git-send-email-anshuman.khandual@arm.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <d8f959e4-8a8b-7f11-4ce5-32462c46c05f@arm.com>
+Date: Wed, 10 Mar 2021 11:33:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <1614573126-7740-1-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,63 +46,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- linux-kernel@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Paul Mackerras <paulus@samba.org>, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- linux-snps-arc@lists.infradead.org, Albert Ou <aou@eecs.berkeley.edu>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-kernel@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Catalin Marinas <catalin.marinas@arm.com>,
+ linuxppc-dev@lists.ozlabs.org, Russell King <linux@armlinux.org.uk>,
+ linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Anshuman Khandual <anshuman.khandual@arm.com> writes:
-> SYS_SUPPORTS_HUGETLBFS config has duplicate definitions on platforms that
-> subscribe it. Instead, just make it a generic option which can be selected
-> on applicable platforms. Also rename it as ARCH_SUPPORTS_HUGETLBFS instead.
-> This reduces code duplication and makes it cleaner.
->
+
+
+On 3/1/21 10:02 AM, Anshuman Khandual wrote:
+> early_memtest() does not get called from all architectures. Hence enabling
+> CONFIG_MEMTEST and providing a valid memtest=[1..N] kernel command line
+> option might not trigger the memory pattern tests as would be expected in
+> normal circumstances. This situation is misleading.
+> 
+> The change here prevents the above mentioned problem after introducing a
+> new config option ARCH_USE_MEMTEST that should be subscribed on platforms
+> that call early_memtest(), in order to enable the config CONFIG_MEMTEST.
+> Conversely CONFIG_MEMTEST cannot be enabled on platforms where it would
+> not be tested anyway.
+> 
 > Cc: Russell King <linux@armlinux.org.uk>
 > Cc: Catalin Marinas <catalin.marinas@arm.com>
 > Cc: Will Deacon <will@kernel.org>
 > Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> Cc: Helge Deller <deller@gmx.de>
 > Cc: Michael Ellerman <mpe@ellerman.id.au>
 > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 > Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Albert Ou <aou@eecs.berkeley.edu>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Chris Zankel <chris@zankel.net>
+> Cc: Max Filippov <jcmvbkbc@gmail.com>
 > Cc: linux-arm-kernel@lists.infradead.org
 > Cc: linux-mips@vger.kernel.org
-> Cc: linux-parisc@vger.kernel.org
 > Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-xtensa@linux-xtensa.org
+> Cc: linux-mm@kvack.org
 > Cc: linux-kernel@vger.kernel.org
+> Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
 > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
->  arch/arm/Kconfig                       | 5 +----
->  arch/arm64/Kconfig                     | 4 +---
->  arch/mips/Kconfig                      | 6 +-----
->  arch/parisc/Kconfig                    | 5 +----
->  arch/powerpc/Kconfig                   | 3 ---
->  arch/powerpc/platforms/Kconfig.cputype | 6 +++---
+> This patch applies on v5.12-rc1 and has been tested on arm64 platform.
+> But it has been just build tested on all other platforms.
+> 
+> Changes in V2:
+> 
+> - Added ARCH_USE_MEMTEST in the sorted alphabetical order on platforms
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
+Gentle ping, any updates or objections ?
