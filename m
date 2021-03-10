@@ -1,61 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC31333342
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 03:49:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB6C3333A4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 04:10:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwGk43BTmz3cRy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 13:49:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwHBP33vPz3cWQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 14:10:05 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dcCRe4ah;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.166.173;
- helo=mail-il1-f173.google.com; envelope-from=robherring2@gmail.com;
- receiver=<UNKNOWN>)
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com
- [209.85.166.173])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=dcCRe4ah; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwGjl5V9lz30Nx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 13:48:41 +1100 (AEDT)
-Received: by mail-il1-f173.google.com with SMTP id f10so14146834ilq.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 18:48:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=tEOOZPHDEcY0BRs13eDY3wS0u+L4s5FzuNZ5kGdjLNs=;
- b=mIBqKI/F7U2WXYM5YZ8uadQ+ceIbStrT8xt/VQf1+oV8wJOS2DhlTPbKFxWma+uoc2
- PtjuNWX9gRqVrUIr3hxw+Dk9goOuyr17foEnZk1p7CPwTauiveFydognIaCiqlKJ9GQj
- NW6yRZaSaT2MDE/1p1FCnUiNtpl6wI91MeyL6tLkRZrnD/3v5x7OfO6ZZWBy0XrRKG2V
- ev0XoGzYpoOSXb2j2XcGx3VCDiUrTHioocVszGnyJofktSVOCuXkxi+CPB97OIPdalrl
- B/BgWGPRzpaLgqQnNBnobzvYPBs1osdOJOibpxWSwc99CItOImqI9EZ7KbIJzTYRKgSM
- hZLw==
-X-Gm-Message-State: AOAM533JIbwgKZlHluyvjcp3wGN6oibZb/hG5agDB1ipm8aS0raEG5y9
- B/87f6rSk0h6cONujYlojg==
-X-Google-Smtp-Source: ABdhPJxlxbdsnOqUBKBvn9roAYNjrX2t5RPeImFkLklYb3N4N/Nb+GkhzCBE7xUxdgoLpquCONAlmw==
-X-Received: by 2002:a05:6e02:685:: with SMTP id o5mr998162ils.39.1615344518240; 
- Tue, 09 Mar 2021 18:48:38 -0800 (PST)
-Received: from robh.at.kernel.org ([64.188.179.253])
- by smtp.gmail.com with ESMTPSA id x6sm8397734ioh.19.2021.03.09.18.48.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Mar 2021 18:48:37 -0800 (PST)
-Received: (nullmailer pid 1645357 invoked by uid 1000);
- Wed, 10 Mar 2021 02:48:34 -0000
-Date: Tue, 9 Mar 2021 19:48:34 -0700
-From: Rob Herring <robh@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v4 3/6] ASoC: dt-bindings: fsl_rpmsg: Add binding doc for
- rpmsg cpu dai driver
-Message-ID: <20210310024834.GA1623179@robh.at.kernel.org>
-References: <1615209750-2357-1-git-send-email-shengjiu.wang@nxp.com>
- <1615209750-2357-4-git-send-email-shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwH9w5Y8zz3bPV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 14:09:40 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C3B2E64FED
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 03:09:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1615345778;
+ bh=hHi9H5kl4wpnWvG7xJWgx+rlR2fSM4M2CJlmcTqk4Lc=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=dcCRe4ahcLl+ilOI4Q2TmKUnNWQT709Ih1Ly31MOW62sbSIo2eqTOGJibYu64f86g
+ 9GE3K/HEKMJMs/DHsf0S+j9cJqY/h6n7Po9UmmGNLjB37Y0WS43B7ScWFUQmOyu+mw
+ 5lD0H1XelHCgY/HA/6+ZU4HIrDuih50Iz6J+Kfh/gUVj9n6ppOkNoKzwiGf+efP+k0
+ cc3ycUWZi/OpppwwL+6FjndLw+7G/U773wFxHHv6cVF6RtJ69933jg2dZCpwv3MJs4
+ 2JEBKNrWL2Ntj37r//WTRSf7HVI5kfqPNgbrtmSzMJ32sNmAU9RYVNttTsPYw6+jxy
+ KShrx5/XUKIiQ==
+Received: by mail-ej1-f52.google.com with SMTP id bm21so34614680ejb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 19:09:37 -0800 (PST)
+X-Gm-Message-State: AOAM531QH0NaLdFw+/jTPLJpM9UgYfa+DrcmEH2jTPaTmpQLKueF8rX3
+ D6xQh0YqGqDn4z7lY7PsjFzdU6H+0LdstRgvtQ==
+X-Google-Smtp-Source: ABdhPJwE7Ujo2AxBz//6JFloBR3AHEXYZ0s2yT2uFYTIgO188foiD1hEWo4q88NF+iArryuCRjHmqLZRu8yeZDKzYg4=
+X-Received: by 2002:a17:906:d153:: with SMTP id
+ br19mr1192083ejb.360.1615345776316; 
+ Tue, 09 Mar 2021 19:09:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1615209750-2357-4-git-send-email-shengjiu.wang@nxp.com>
+References: <20210220005204.1417200-1-bauerman@linux.ibm.com>
+ <CAL_JsqJatxTwSbM8a0PB2ievO_fRFeYJ8ZtBN0pRfnEjSXyUkg@mail.gmail.com>
+ <7d0c6062-ca73-f183-110d-f5b75ae91d10@linux.microsoft.com>
+In-Reply-To: <7d0c6062-ca73-f183-110d-f5b75ae91d10@linux.microsoft.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 9 Mar 2021 20:09:25 -0700
+X-Gmail-Original-Message-ID: <CAL_JsqK2M_Wfyd0MJK-0Qk7k=CspQZy6_FL6FTWkURmA_ZcARg@mail.gmail.com>
+Message-ID: <CAL_JsqK2M_Wfyd0MJK-0Qk7k=CspQZy6_FL6FTWkURmA_ZcARg@mail.gmail.com>
+Subject: Re: [PATCH v2] powerpc/kexec_file: Restore FDT size estimation for
+ kdump kernel
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,181 +68,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, timur@kernel.org,
- lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com,
- linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com,
- broonie@kernel.org, perex@perex.cz, festevam@gmail.com
+Cc: kexec@lists.infradead.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Mimi Zohar <zohar@linux.ibm.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 08, 2021 at 09:22:27PM +0800, Shengjiu Wang wrote:
-> fsl_rpmsg cpu dai driver is driver for rpmsg audio, which is mainly used
+On Tue, Mar 9, 2021 at 7:31 PM Lakshmi Ramasubramanian
+<nramas@linux.microsoft.com> wrote:
+>
+> On 3/9/21 6:08 PM, Rob Herring wrote:
+>
+> Hi Rob,
+>
+> > On Fri, Feb 19, 2021 at 6:52 PM Thiago Jung Bauermann
+> > <bauerman@linux.ibm.com> wrote:
+> >>
+> >> Commit 2377c92e37fe ("powerpc/kexec_file: fix FDT size estimation for kdump
+> >> kernel") fixed how elf64_load() estimates the FDT size needed by the
+> >> crashdump kernel.
+> >>
+> >> At the same time, commit 130b2d59cec0 ("powerpc: Use common
+> >> of_kexec_alloc_and_setup_fdt()") changed the same code to use the generic
+> >> function of_kexec_alloc_and_setup_fdt() to calculate the FDT size. That
+> >> change made the code overestimate it a bit by counting twice the space
+> >> required for the kernel command line and /chosen properties.
+> >>
+> >> Therefore change kexec_fdt_totalsize_ppc64() to calculate just the extra
+> >> space needed by the kdump kernel, and change the function name so that it
+> >> better reflects what the function is now doing.
+> >>
+> >> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> >> Reviewed-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+> >> ---
+> >>   arch/powerpc/include/asm/kexec.h  |  2 +-
+> >>   arch/powerpc/kexec/elf_64.c       |  2 +-
+> >>   arch/powerpc/kexec/file_load_64.c | 26 ++++++++------------------
+> >>   3 files changed, 10 insertions(+), 20 deletions(-)
+> >
+> > I ended up delaying the referenced series til 5.13, but have applied
+> > it now. Can I get an ack from the powerpc maintainers on this one?
+> > I'll fixup the commit log to make sense given the commit id's aren't
+> > valid.
+>
+> I checked the change applied in linux-next branch and also Device Tree's
+> for-next branch - it looks like v1 of Thiago's patch has been applied.
+> Could you please pick up the v2 patch?
 
-Bindings describe h/w blocks, not drivers.
+Huh? This patch (v2) hasn't been applied to any tree AFAICT.
 
-> for getting the user's configuration from device tree and configure the
-> clocks which is used by Cortex-M core. So in this document define the
-> needed property.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  .../devicetree/bindings/sound/fsl,rpmsg.yaml  | 118 ++++++++++++++++++
->  1 file changed, 118 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
-> new file mode 100644
-> index 000000000000..5731c1fbc0a6
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
-> @@ -0,0 +1,118 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/sound/fsl,rpmsg.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP Audio RPMSG CPU DAI Controller
-> +
-> +maintainers:
-> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
-> +
-> +description: |
-> +  fsl_rpmsg cpu dai driver is virtual driver for rpmsg audio, which doesn't
-> +  touch hardware. It is mainly used for getting the user's configuration
-> +  from device tree and configure the clocks which is used by Cortex-M core.
-> +  So in this document define the needed property.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,imx7ulp-rpmsg
-> +      - fsl,imx8mn-rpmsg
-> +      - fsl,imx8mm-rpmsg
-> +      - fsl,imx8mp-rpmsg
-> +
-> +  model:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: User specified audio sound card name
-> +
-> +  clocks:
-> +    items:
-> +      - description: Peripheral clock for register access
-> +      - description: Master clock
-> +      - description: DMA clock for DMA register access
-> +      - description: Parent clock for multiple of 8kHz sample rates
-> +      - description: Parent clock for multiple of 11kHz sample rates
-> +    minItems: 5
-
-If this doesn't touch hardware, what are these clocks for?
-
-You don't need 'minItems' unless it's less than the number of 'items'.
-
-> +
-> +  clock-names:
-> +    items:
-> +      - const: ipg
-> +      - const: mclk
-> +      - const: dma
-> +      - const: pll8k
-> +      - const: pll11k
-> +    minItems: 5
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  fsl,audioindex:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [0, 1]
-> +    default: 0
-> +    description: Instance index for sound card in
-> +                 M core side, which share one rpmsg
-> +                 channel.
-
-We don't do indexes in DT. What's this numbering tied to?
-
-> +
-> +  fsl,version:
-
-version of what?
-
-This seems odd at best.
-
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [1, 2]
-
-You're going to update this with every new firmware version?
-
-> +    default: 2
-> +    description: The version of M core image, which is
-> +                 to make driver compatible with different image.
-> +
-> +  fsl,buffer-size:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: pre allocate dma buffer size
-
-How can you have DMA, this doesn't touch h/w?
-
-> +
-> +  fsl,enable-lpa:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description: enable low power audio path.
-> +
-> +  fsl,rpmsg-out:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description: |
-> +      This is a boolean property. If present, the transmitting function
-> +      will be enabled.
-> +
-> +  fsl,rpmsg-in:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description: |
-> +      This is a boolean property. If present, the receiving function
-> +      will be enabled.
-> +
-> +  fsl,codec-type:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [0, 1, 2]
-> +    default: 0
-> +    description: Sometimes the codec is registered by
-> +                 driver not by the device tree, this items
-> +                 can be used to distinguish codecs.
-
-How does one decide what value to use?
-
-> +
-> +  audio-codec:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: The phandle of the audio codec
-
-The codec is controlled from the Linux side?
-
-> +
-> +  memory-region:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: phandle to the reserved memory nodes
-> +
-> +required:
-> +  - compatible
-> +  - fsl,audioindex
-> +  - fsl,version
-> +  - fsl,buffer-size
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    rpmsg_audio: rpmsg_audio {
-> +        compatible = "fsl,imx8mn-rpmsg";
-> +        fsl,audioindex = <0> ;
-> +        fsl,version = <2>;
-> +        fsl,buffer-size = <0x6000000>;
-> +        fsl,enable-lpa;
-
-How does this work? Don't you need somewhere to put the 'rpmsg' data?
-
-> +    };
-> -- 
-> 2.27.0
-> 
+Rob
