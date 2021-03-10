@@ -1,77 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183E23332C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:34:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DF63332CD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:37:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwF3t0l2Hz3cc7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 12:34:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwF7z5Nftz3cZR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 12:37:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ZK7yoTO7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Og2RkqQi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
- helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZK7yoTO7; dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
+ header.s=20161025 header.b=Og2RkqQi; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwF3S5pGrz30RR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 12:33:56 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id
- f2-20020a17090a4a82b02900c67bf8dc69so6306758pjh.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 17:33:56 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwF7X3nMtz3bPW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 12:37:27 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id w7so4173969pll.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 17:37:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=bk2gbXj7lVPQspVhwjnWs8ssO+83Zc6YrCjiO0hiGow=;
- b=ZK7yoTO7YgUN2ikGdYvBBxnFHZlkxpq4eADMqVD4AZknTxG4DhR/6WXNzfVDudcqwZ
- F8jjnKdMoVDM7Neo/fOY5tGOXHRVMkaFlh5nZI91TiTJgkRZ8PJEj+AwXJFnEAsHA0P8
- SmT2+cJ9jGCj4Zl96a4JnxB8HHdFLK1H1x5ylKrfN19rVvHyCKYv+XGLo6PYHCFAo1Zy
- 3PW9xT3GWIHFiaU0DLWA8AO43RPQ96ZRjnYb6I8clypkojZfem69/CNOmOI/GuaQ5oJN
- sT+0cQcPfPvfw0kSWgNa8W2KpTDw1XkyfuAiIHcrMKfh/m2xxUg+1DjQtds9BBlSBUEU
- FNkA==
+ bh=d34zYJWgTA8c5Ujr7dblIGWfKQ8pynSGIl67Hphzq54=;
+ b=Og2RkqQiOEne1+Gi6J2O4Hjwwyiz1gKu6i/HaU63P6yngPcIvLsN05veNm3o9RNFAn
+ qj7kRjjOin/0wLSLLZwRKzU3VnoUQslskUoFK50QstseVsZ5ljc/0Y39/pBdMt5wklvS
+ ajWGEoYIaHXYjy1/22t0Ay227dDZz4FpSFyB1Ula67JHp1xGjlo61/bSsW60dIOhigTJ
+ qYGrx94BmrM2NriCFIvgfba4866E12TEY1nAaUN+C+WwC+KJRYiQbE9M9FwIa7KnAN7r
+ OdX4SjCGlmUEFTfLJGBeCTBTkUjAZ8+rH5QSYhRyFt1KXTNDrNtaYeLiAjZkhuT8JAGf
+ I13g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=bk2gbXj7lVPQspVhwjnWs8ssO+83Zc6YrCjiO0hiGow=;
- b=Lp4r/Cc3Fdd8RQCYoZaWaCLJJ0m6jH+Z2OLssJ4GXCcUG9ExhvgQG6xf/flSvIh9S5
- NfGXPQtyDCplLB4bR7sTBDnBv1Rf+AwGuoGzNsgxtHT8UWgiel/y8xVlQLV57Py6mBQV
- l5xraXeXUb0XPdiBfhZxk9sTJrY36bq17ZxXyZf0xJLA5gjp1GH6IXWdc5gX8os7bpww
- UP5t8hQsZ2clJ4MAkwNk8pYh+8+4lS7SauxoyUhWsdn+Ozqz/aA/NrbugQcPeDNGaPNM
- mHk8jixvt7EjRtBT4fBBDo2PyrIUuaaD394pHnra2EgOthTeiA1wsQEbrSQkhWmha2Xs
- aZaA==
-X-Gm-Message-State: AOAM532C2QwkDJHo38dMjpqOYS+rgvHpPNiUXZ1ehaYd0PSkCYnD7Lqo
- cIkurlk7oZXgmf59l7V9h1Y=
-X-Google-Smtp-Source: ABdhPJy2HN27jz4a5QTummRE+dZi2bKOXRGhtGb8kVTmwRdp+g5WgQtHEmb6K/7hPGkiu4ADl8Zt9w==
-X-Received: by 2002:a17:90b:3550:: with SMTP id
- lt16mr802543pjb.47.1615340033713; 
- Tue, 09 Mar 2021 17:33:53 -0800 (PST)
+ bh=d34zYJWgTA8c5Ujr7dblIGWfKQ8pynSGIl67Hphzq54=;
+ b=KtdHRWR07OiS2qDrtwD3z/+BaorqbnKOwvgAFpiwTgESTiGn2ilYWNo+uiB4Sc2ag8
+ xgzWnX+b/mzRjdDa/H+ck/oonLJ+xCSLmsXTU71caa7AIeREhXHNLEcQ//dRgeFpju5B
+ WNHxEUOuSpTC8gtnrw4N3PMPKblZPvyqBnnNzTaJQOCm5Fn7HiyVYQCZeKznSkNH6sYQ
+ ofJf0JXV2pqRGUni9vKKOm60m0WRv+LD6wp3veM4Ir4QUO4dhHIMeDI3uipged1g2qHY
+ uwvx8UL0cymCNs8hYp1GkTuSCpHVRqxzO2pimxnNi6BCp+mMWTBv/yVuB/WR5rMG2FZk
+ pFiw==
+X-Gm-Message-State: AOAM533N9D/3goSiwYknBKRH71M8L00DZxDWYbANAH8zHPmQldmEcsvq
+ svrz2JmZIbdz/V62c9mOWvE=
+X-Google-Smtp-Source: ABdhPJwe5UZ2T1wGyZQha2NcygpxsFF8QBaWQ2n+ZMxWbZ708LSjMbOf49G2004b3456bB5kUgPEsA==
+X-Received: by 2002:a17:90b:305:: with SMTP id ay5mr856742pjb.74.1615340244654; 
+ Tue, 09 Mar 2021 17:37:24 -0800 (PST)
 Received: from localhost (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id s10sm14061433pgl.90.2021.03.09.17.33.52
+ by smtp.gmail.com with ESMTPSA id 9sm13858029pgy.79.2021.03.09.17.37.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Mar 2021 17:33:53 -0800 (PST)
-Date: Wed, 10 Mar 2021 11:33:47 +1000
+ Tue, 09 Mar 2021 17:37:24 -0800 (PST)
+Date: Wed, 10 Mar 2021 11:37:19 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 36/43] powerpc/32: Set current->thread.regs in C
- interrupt entry
+Subject: Re: [PATCH v2 40/43] powerpc/64s: Make kuap_check_amr() and
+ kuap_get_and_check_amr() generic
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
  <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
  Paul Mackerras <paulus@samba.org>
 References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
- <8d523f9ecee1de0515cc31d43030c12ab171a670.1615291474.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <8d523f9ecee1de0515cc31d43030c12ab171a670.1615291474.git.christophe.leroy@csgroup.eu>
+ <7167aef44fb816f6df17f65d540ac07ca98c4af9.1615291474.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <7167aef44fb816f6df17f65d540ac07ca98c4af9.1615291474.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1615339900.vmbtzuirqw.astroid@bobo.none>
+Message-Id: <1615340152.vcj9lsklbx.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -91,54 +89,179 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Excerpts from Christophe Leroy's message of March 9, 2021 10:10 pm:
-> No need to do that is assembly, do it in C.
+> In preparation of porting powerpc32 to C syscall entry/exit,
+> rename kuap_check_amr() and kuap_get_and_check_amr() as kuap_check()
+> and kuap_get_and_check(), and move in the generic asm/kup.h the stub
+> for when CONFIG_PPC_KUAP is not selected.
 
-Hmm. No issues with the patch as such, but why does ppc32 need this but=20
-not 64? AFAIKS 64 sets this when a thread is created.
+Looks pretty straightforward to me.
 
-Thanks,
-Nick
+While you're renaming things, could kuap_check_amr() be changed to
+kuap_assert_locked() or similar? Otherwise,
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 >=20
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  arch/powerpc/include/asm/interrupt.h | 4 +++-
->  arch/powerpc/kernel/entry_32.S       | 3 +--
->  2 files changed, 4 insertions(+), 3 deletions(-)
+>  arch/powerpc/include/asm/book3s/64/kup.h | 24 ++----------------------
+>  arch/powerpc/include/asm/kup.h           | 10 +++++++++-
+>  arch/powerpc/kernel/interrupt.c          | 12 ++++++------
+>  arch/powerpc/kernel/irq.c                |  2 +-
+>  4 files changed, 18 insertions(+), 30 deletions(-)
 >=20
-> diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/=
-asm/interrupt.h
-> index 861e6eadc98c..e6d71c2e3aa2 100644
-> --- a/arch/powerpc/include/asm/interrupt.h
-> +++ b/arch/powerpc/include/asm/interrupt.h
-> @@ -33,8 +33,10 @@ static inline void interrupt_enter_prepare(struct pt_r=
-egs *regs, struct interrup
->  	if (!arch_irq_disabled_regs(regs))
->  		trace_hardirqs_off();
+> diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/incl=
+ude/asm/book3s/64/kup.h
+> index 8bd905050896..d9b07e9998be 100644
+> --- a/arch/powerpc/include/asm/book3s/64/kup.h
+> +++ b/arch/powerpc/include/asm/book3s/64/kup.h
+> @@ -287,7 +287,7 @@ static inline void kuap_kernel_restore(struct pt_regs=
+ *regs,
+>  	 */
+>  }
 > =20
-> -	if (user_mode(regs))
-> +	if (user_mode(regs)) {
-> +		current->thread.regs =3D regs;
->  		account_cpu_user_entry();
-> +	}
+> -static inline unsigned long kuap_get_and_check_amr(void)
+> +static inline unsigned long kuap_get_and_check(void)
+>  {
+>  	if (mmu_has_feature(MMU_FTR_BOOK3S_KUAP)) {
+>  		unsigned long amr =3D mfspr(SPRN_AMR);
+> @@ -298,27 +298,7 @@ static inline unsigned long kuap_get_and_check_amr(v=
+oid)
+>  	return 0;
+>  }
+> =20
+> -#else /* CONFIG_PPC_PKEY */
+> -
+> -static inline void kuap_user_restore(struct pt_regs *regs)
+> -{
+> -}
+> -
+> -static inline void kuap_kernel_restore(struct pt_regs *regs, unsigned lo=
+ng amr)
+> -{
+> -}
+> -
+> -static inline unsigned long kuap_get_and_check_amr(void)
+> -{
+> -	return 0;
+> -}
+> -
+> -#endif /* CONFIG_PPC_PKEY */
+> -
+> -
+> -#ifdef CONFIG_PPC_KUAP
+> -
+> -static inline void kuap_check_amr(void)
+> +static inline void kuap_check(void)
+>  {
+>  	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && mmu_has_feature(MMU_FTR_BOOK3S=
+_KUAP))
+>  		WARN_ON_ONCE(mfspr(SPRN_AMR) !=3D AMR_KUAP_BLOCKED);
+> diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/ku=
+p.h
+> index 25671f711ec2..b7efa46b3109 100644
+> --- a/arch/powerpc/include/asm/kup.h
+> +++ b/arch/powerpc/include/asm/kup.h
+> @@ -74,7 +74,15 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long add=
+ress, bool is_write)
+>  	return false;
+>  }
+> =20
+> -static inline void kuap_check_amr(void) { }
+> +static inline void kuap_check(void) { }
+> +static inline void kuap_save_and_lock(struct pt_regs *regs) { }
+> +static inline void kuap_user_restore(struct pt_regs *regs) { }
+> +static inline void kuap_kernel_restore(struct pt_regs *regs, unsigned lo=
+ng amr) { }
+> +
+> +static inline unsigned long kuap_get_and_check(void)
+> +{
+> +	return 0;
+> +}
+> =20
+>  /*
+>   * book3s/64/kup-radix.h defines these functions for the !KUAP case to f=
+lush
+> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interr=
+upt.c
+> index 727b7848c9cc..40ed55064e54 100644
+> --- a/arch/powerpc/kernel/interrupt.c
+> +++ b/arch/powerpc/kernel/interrupt.c
+> @@ -76,7 +76,7 @@ notrace long system_call_exception(long r3, long r4, lo=
+ng r5,
+>  	} else
 >  #endif
->  	/*
->  	 * Book3E reconciles irq soft mask in asm
-> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_3=
-2.S
-> index 8fe1c3fdfa6e..815a4ff1ba76 100644
-> --- a/arch/powerpc/kernel/entry_32.S
-> +++ b/arch/powerpc/kernel/entry_32.S
-> @@ -52,8 +52,7 @@
->  prepare_transfer_to_handler:
->  	andi.	r0,r9,MSR_PR
->  	addi	r12, r2, THREAD
-> -	beq	2f			/* if from user, fix up THREAD.regs */
-> -	stw	r3,PT_REGS(r12)
-> +	beq	2f
->  #ifdef CONFIG_PPC_BOOK3S_32
->  	kuep_lock r11, r12
+>  #ifdef CONFIG_PPC64
+> -		kuap_check_amr();
+> +		kuap_check();
 >  #endif
+> =20
+>  	booke_restore_dbcr0();
+> @@ -254,7 +254,7 @@ notrace unsigned long syscall_exit_prepare(unsigned l=
+ong r3,
+>  	CT_WARN_ON(ct_state() =3D=3D CONTEXT_USER);
+> =20
+>  #ifdef CONFIG_PPC64
+> -	kuap_check_amr();
+> +	kuap_check();
+>  #endif
+> =20
+>  	regs->result =3D r3;
+> @@ -380,7 +380,7 @@ notrace unsigned long interrupt_exit_user_prepare(str=
+uct pt_regs *regs, unsigned
+>  	 * AMR can only have been unlocked if we interrupted the kernel.
+>  	 */
+>  #ifdef CONFIG_PPC64
+> -	kuap_check_amr();
+> +	kuap_check();
+>  #endif
+> =20
+>  	local_irq_save(flags);
+> @@ -451,7 +451,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(s=
+truct pt_regs *regs, unsign
+>  	unsigned long flags;
+>  	unsigned long ret =3D 0;
+>  #ifdef CONFIG_PPC64
+> -	unsigned long amr;
+> +	unsigned long kuap;
+>  #endif
+> =20
+>  	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x) &&
+> @@ -467,7 +467,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(s=
+truct pt_regs *regs, unsign
+>  		CT_WARN_ON(ct_state() =3D=3D CONTEXT_USER);
+> =20
+>  #ifdef CONFIG_PPC64
+> -	amr =3D kuap_get_and_check_amr();
+> +	kuap =3D kuap_get_and_check();
+>  #endif
+> =20
+>  	if (unlikely(current_thread_info()->flags & _TIF_EMULATE_STACK_STORE)) =
+{
+> @@ -511,7 +511,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(s=
+truct pt_regs *regs, unsign
+>  	 * value from the check above.
+>  	 */
+>  #ifdef CONFIG_PPC64
+> -	kuap_kernel_restore(regs, amr);
+> +	kuap_kernel_restore(regs, kuap);
+>  #endif
+> =20
+>  	return ret;
+> diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+> index d71fd10a1dd4..3b18d2b2c702 100644
+> --- a/arch/powerpc/kernel/irq.c
+> +++ b/arch/powerpc/kernel/irq.c
+> @@ -282,7 +282,7 @@ static inline void replay_soft_interrupts_irqrestore(=
+void)
+>  	 * and re-locking AMR but we shouldn't get here in the first place,
+>  	 * hence the warning.
+>  	 */
+> -	kuap_check_amr();
+> +	kuap_check();
+> =20
+>  	if (kuap_state !=3D AMR_KUAP_BLOCKED)
+>  		set_kuap(AMR_KUAP_BLOCKED);
 > --=20
 > 2.25.0
 >=20
