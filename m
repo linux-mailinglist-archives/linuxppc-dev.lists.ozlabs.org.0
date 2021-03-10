@@ -2,63 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF86333965
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 11:06:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C20F0333AC7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 11:56:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwSQQ0VTtz3cVC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 21:06:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwTXV44cNz3d47
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 21:56:26 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Snrq3o6N;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=217.72.192.74; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-X-Greylist: delayed 314 seconds by postgrey-1.36 at boromir;
- Wed, 10 Mar 2021 21:05:47 AEDT
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwSQ34Qzwz30Hc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 21:05:46 +1100 (AEDT)
-Received: from mail-oi1-f169.google.com ([209.85.167.169]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1M593i-1lL26D2MJY-001CoB for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar
- 2021 11:00:21 +0100
-Received: by mail-oi1-f169.google.com with SMTP id w65so18457337oie.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 02:00:20 -0800 (PST)
-X-Gm-Message-State: AOAM532u8J/pxkY7GNiPWUZxELKsAyxCSEbZs9H3FWkvpNcYDomRY4pJ
- 38cTicdcOdfyK0G8tV+5elym/AggiM6MsSwRbg8=
-X-Google-Smtp-Source: ABdhPJz57LKzxKPOX8uFg4l8cQDX68aMXQSUFxgEEkBEVQzSWLTS5wn+SJ00u096OqMsz2UiKEGrsCkrnzqbLH7kTeM=
-X-Received: by 2002:aca:bf44:: with SMTP id p65mr1764631oif.11.1615370419432; 
- Wed, 10 Mar 2021 02:00:19 -0800 (PST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Snrq3o6N; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwTX23WlDz3cK6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 21:56:02 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0375464FBA;
+ Wed, 10 Mar 2021 10:55:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1615373758;
+ bh=l5F4mRFTlCcuvK65v3+ubAAIjsEOKjTToYBZnVrSV8Q=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Snrq3o6NQfFy8T13bWkjeS0t+DUxWxLJ7ItwwsFvYQUN059elyy12JfOlinrWY9b9
+ HZXz58NlMVNMAanXaV4jMPtH+wZ63zpj4onuFCjkYAw0y6Itf99qSovicg/AvxjLlu
+ dC1gGgjIjClyM+tZEQc82j0YPmrepv2haKqVn9pXRXBSHMvhcAemlq17an5DZjsRLD
+ GavAs3RvhjKvztQsc6QzDP7siwQGDfGWNWfSNCMIjao9k51gQwMEycEcBk2+iaZ2FD
+ GfnBGnq0Lliwgyj+ZV+DmU7+2pHmPC7dDWTA6KQMdLwYszXdvPO5XE4k7J4bo7MxuP
+ Ok+UecEar6NwQ==
+Date: Wed, 10 Mar 2021 10:55:51 +0000
+From: Will Deacon <will@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [Freedreno] [PATCH 16/17] iommu: remove DOMAIN_ATTR_IO_PGTABLE_CFG
+Message-ID: <20210310105550.GA29270@willie-the-truck>
+References: <20210301084257.945454-1-hch@lst.de>
+ <20210301084257.945454-17-hch@lst.de>
+ <d567ad5c-5f89-effa-7260-88c6d86b4695@arm.com>
+ <CAF6AEGtTs-=aO-Ntp0Qn6mYDSv4x0-q3y217QxU7kZ6H1b1fiQ@mail.gmail.com>
+ <20210305100012.GB22536@willie-the-truck>
+ <20210310085806.GB5928@lst.de>
 MIME-Version: 1.0
-References: <f08ef2b6f339ba19987cfef4307a4dd26b2faf97.1614933479.git.christophe.leroy@csgroup.eu>
- <CAK8P3a2b+u+8smkKWB-V2Non+nnZmNG4dNi6cGpM8weYuY5j6A@mail.gmail.com>
- <5811950d-ef14-d416-35e6-d694ef920a7d@csgroup.eu>
- <CAK8P3a34cnCk4=Xyxvib57JLN-ck4T0-FUZRAQT_L6MDKjE+-w@mail.gmail.com>
- <13737de5-0eb7-e881-9af0-163b0d29a1a0@csgroup.eu>
-In-Reply-To: <13737de5-0eb7-e881-9af0-163b0d29a1a0@csgroup.eu>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 10 Mar 2021 11:00:03 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2W9H7k2S3Bk1323Ro2F=_m48wBy-tENd-MyNe3Z3azyQ@mail.gmail.com>
-Message-ID: <CAK8P3a2W9H7k2S3Bk1323Ro2F=_m48wBy-tENd-MyNe3Z3azyQ@mail.gmail.com>
-Subject: Re: [PATCH v3] powerpc/32: remove bogus ppc_select syscall
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0EEgx3Qqq6jhXRtRfw8EkLnjrA91cQVRi5H2VBoKCYl/CU7XNmJ
- 8weSGHNJT7tF/h1KnCrTlzr5HEuIAAP7Hexi8gTSXINCdq9rKNt3TKW3L+qTGrbHdjlPtLl
- Eqa0kY6hBTNnaaI6WiDa/wqN+hLt6K7vCBnXvJRg5+ebT89UYr8ed9XgX10tNsu4fQRpb/Z
- UG0Kw7EzpnwADS2Ju4JhA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:goVcUrqw8XI=:u1rAoIqTjoVsFFq5B6mHQY
- ulLWltGhLSNEjG6aUOdZ9mzv20PIpoZ8ty7XvAzZxbyGYqiwKXpqietq4goymLHygwH1FHr7l
- dvt9oKMWlwmTxgg43Hjv6C9JnRRCPAkv4xm5rBZ9qgCS2E0FKTOjzxed6nd8/EdyW7vQGzxl3
- zY9hzRZTVF+XpMr3KFiT/ICtUQqWDkoLyJglijwdVy7mlvWQqFyK8muXrk5MWqrWH3TwLFNjs
- rlA9cE99npCGfO16FBxAbVSiCRexFVi99wYlyyQCugNSdktsohyX87vWt5XJ0j6zCZASseloI
- FPNtjk6Whojwxxuu/1+PFHCe1Tv91Aw42gImNDw6NBLkuF2h2LEXmkD2B/unTtnxYA+d5hWQG
- R4ObqRHAfj3K3PudHfhTxCAbVPgc5B8KCTGmgoU4OJj5G3jDWkchkcPL4Ywyv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210310085806.GB5928@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,50 +63,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: freedreno <freedreno@lists.freedesktop.org>,
+ Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>, kvm@vger.kernel.org,
+ Joerg Roedel <joro@8bytes.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ dri-devel <dri-devel@lists.freedesktop.org>, Li Yang <leoyang.li@nxp.com>,
+ Rob Clark <robdclark@gmail.com>,
+ "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>,
+ Joerg Roedel <joro@8bytes.org>, " <iommu@lists.linux-foundation.org>,
+ David Woodhouse <dwmw2@infradead.org>,
+ linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+ virtualization@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
+ netdev@vger.kernel.org,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 9, 2021 at 4:59 PM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> Le 05/03/2021 =C3=A0 13:03, Arnd Bergmann a =C3=A9crit :
-> > On Fri, Mar 5, 2021 at 11:15 AM Christophe Leroy
-> > <christophe.leroy@csgroup.eu> wrote:
-> >> Le 05/03/2021 =C3=A0 11:06, Arnd Bergmann a =C3=A9crit :
->
-> I had another look. In fact x86, arm and m68k still have the #82 syscall,=
- but they don't have the
-> hack we have on powerpc to "guess" that something is calling the old sele=
-ct with the arguments of
-> the new select.
+On Wed, Mar 10, 2021 at 09:58:06AM +0100, Christoph Hellwig wrote:
+> On Fri, Mar 05, 2021 at 10:00:12AM +0000, Will Deacon wrote:
+> > > But one thing I'm not sure about is whether
+> > > IO_PGTABLE_QUIRK_ARM_OUTER_WBWA is something that other devices
+> > > *should* be using as well, but just haven't gotten around to yet.
+> > 
+> > The intention is certainly that this would be a place to collate per-domain
+> > pgtable quirks, so I'd prefer not to tie that to the GPU.
+> 
+> So the overall consensus is to just keep this as-is for now?
 
-Makes sense. At least for x86, there are probably still some pre-glibc
-binaries around
-that would use the old select.
+Yes, please. If it doesn't see wider adoption then we can revisit it.
 
-> As part of my series of user accesses cleanup, I'll replace the open code=
-d stuff by a call to
-> sys_old_select(), see below.
-
-Nice!
-
-> Maybe at the end we should keep the #82 syscall, but do we need to keep t=
-he powerpc hack really ?
-> Maybe the best is to drop ppc_select() function but mention sys_old_selec=
-t() instead of ni_syscall
-> for entry #82 in the syscall table ?
-
-I'd say we should either keep the powerpc hack intact (with your cleanup),
-or remove the syscall entirely. I have been unable to find any indication o=
-f
-who might have called the #82 syscall prior to mklinux DR2.1 and linuxppc R=
-4,
-so there is no way of knowing which of the two ABIs they were using either.
-
-It was definitely ambiguous since the ancient kernels only had sys_select()
-semantics at #82, but the existence of the hack tells us that there were at
-least some binaries that wanted the sys_oldselect() semantics.
-
-       Arnd
+Will
