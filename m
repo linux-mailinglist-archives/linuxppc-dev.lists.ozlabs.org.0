@@ -1,76 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8513332C0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:29:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 183E23332C8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 02:34:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwDyb2KHxz3cZ7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 12:29:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwF3t0l2Hz3cc7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 12:34:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=DhGbBceW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ZK7yoTO7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
- helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
+ helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DhGbBceW; dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
+ header.s=20161025 header.b=ZK7yoTO7; dkim-atps=neutral
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
+ [IPv6:2607:f8b0:4864:20::1033])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwDy95kwlz30L4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 12:29:19 +1100 (AEDT)
-Received: by mail-pj1-x102a.google.com with SMTP id
- kk2-20020a17090b4a02b02900c777aa746fso6556296pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 17:29:19 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwF3S5pGrz30RR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 12:33:56 +1100 (AEDT)
+Received: by mail-pj1-x1033.google.com with SMTP id
+ f2-20020a17090a4a82b02900c67bf8dc69so6306758pjh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 17:33:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=mqm5GjReFw8SY6mddPr+SiVrrIzZTFQq/5dTlBRN2X8=;
- b=DhGbBceWgzp+vxj5K79waSiCvD8OZbI7JIq1uuWos/OxyLdE7wp1zLMX+uzVVqlV6A
- +0tBDqCZxaOaHrGTJU+zkfaEF+BotALT4/gIFd6kqHJF6Yt2QAMj1Ew4/XBrx5NXxk36
- 8NynUE1jmV9AyIdNfJ4cY4VXX6opVSG7iWlj0QGnqYj6UHhX5K6TlcLhArnd0nwU4dY+
- cH8lcvA272qtrtfwLaKE+Hzfi/4U7CT4D4nQJ0G68HkNUkhhmforg1R70VmcMwJpX18t
- yNKKNo1sn5f2KJAy/eAwCGHTWIaE4X5LVbuq1waCqIW8GdxFjcpYW5D2klYgO85OR9Tr
- ORXw==
+ bh=bk2gbXj7lVPQspVhwjnWs8ssO+83Zc6YrCjiO0hiGow=;
+ b=ZK7yoTO7YgUN2ikGdYvBBxnFHZlkxpq4eADMqVD4AZknTxG4DhR/6WXNzfVDudcqwZ
+ F8jjnKdMoVDM7Neo/fOY5tGOXHRVMkaFlh5nZI91TiTJgkRZ8PJEj+AwXJFnEAsHA0P8
+ SmT2+cJ9jGCj4Zl96a4JnxB8HHdFLK1H1x5ylKrfN19rVvHyCKYv+XGLo6PYHCFAo1Zy
+ 3PW9xT3GWIHFiaU0DLWA8AO43RPQ96ZRjnYb6I8clypkojZfem69/CNOmOI/GuaQ5oJN
+ sT+0cQcPfPvfw0kSWgNa8W2KpTDw1XkyfuAiIHcrMKfh/m2xxUg+1DjQtds9BBlSBUEU
+ FNkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=mqm5GjReFw8SY6mddPr+SiVrrIzZTFQq/5dTlBRN2X8=;
- b=a9Gg7ZJLFfGxVxfvb/ndQ1DzkowAEODa6kFolc/DyZPJ1YTH545aORRKCtNTezPMhx
- sDLOnXZ4K2EU72BMieCIhO3Jtt/DLRcqUxmZUrCw0Tz5ReFMfqYcrg20mrlJfl2qzcWK
- wsdxjk8XItc2oHfZ1WKY4m83emUtEZXj7HG/MdrJOLBDxA104QLjwWbAUKidQkP6UCJb
- 99VbatkVHJAyXm0yaH5Ds/ZiOv9647n+PMWOqbJn7sLUYX2mxcfDeqy6899xKBqH9wQg
- ZsOs03BB8fVx+l4WhnAeOmTwdNJsaaC3CZD0SgngESFoiOpmd2jZMPMCl1cJ7u+WfDOO
- h0ag==
-X-Gm-Message-State: AOAM531Ot/29OO9n4HTs9bvspfQ8ePDin8GGcymiE9y5h00raQEc6LSY
- wcMs6bgEPRi8upvKIc2Z+sU=
-X-Google-Smtp-Source: ABdhPJyqd5/1VOgBtk/ONDQ7gbtd2txT6fiYwn7VFXcj6nI+l/riLFDNeo3AobEPmMWAdK7jL9BSqg==
-X-Received: by 2002:a17:90b:809:: with SMTP id bk9mr781935pjb.83.1615339756109; 
- Tue, 09 Mar 2021 17:29:16 -0800 (PST)
+ bh=bk2gbXj7lVPQspVhwjnWs8ssO+83Zc6YrCjiO0hiGow=;
+ b=Lp4r/Cc3Fdd8RQCYoZaWaCLJJ0m6jH+Z2OLssJ4GXCcUG9ExhvgQG6xf/flSvIh9S5
+ NfGXPQtyDCplLB4bR7sTBDnBv1Rf+AwGuoGzNsgxtHT8UWgiel/y8xVlQLV57Py6mBQV
+ l5xraXeXUb0XPdiBfhZxk9sTJrY36bq17ZxXyZf0xJLA5gjp1GH6IXWdc5gX8os7bpww
+ UP5t8hQsZ2clJ4MAkwNk8pYh+8+4lS7SauxoyUhWsdn+Ozqz/aA/NrbugQcPeDNGaPNM
+ mHk8jixvt7EjRtBT4fBBDo2PyrIUuaaD394pHnra2EgOthTeiA1wsQEbrSQkhWmha2Xs
+ aZaA==
+X-Gm-Message-State: AOAM532C2QwkDJHo38dMjpqOYS+rgvHpPNiUXZ1ehaYd0PSkCYnD7Lqo
+ cIkurlk7oZXgmf59l7V9h1Y=
+X-Google-Smtp-Source: ABdhPJy2HN27jz4a5QTummRE+dZi2bKOXRGhtGb8kVTmwRdp+g5WgQtHEmb6K/7hPGkiu4ADl8Zt9w==
+X-Received: by 2002:a17:90b:3550:: with SMTP id
+ lt16mr802543pjb.47.1615340033713; 
+ Tue, 09 Mar 2021 17:33:53 -0800 (PST)
 Received: from localhost (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id s15sm14282344pfe.108.2021.03.09.17.29.14
+ by smtp.gmail.com with ESMTPSA id s10sm14061433pgl.90.2021.03.09.17.33.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Mar 2021 17:29:15 -0800 (PST)
-Date: Wed, 10 Mar 2021 11:29:10 +1000
+ Tue, 09 Mar 2021 17:33:53 -0800 (PST)
+Date: Wed, 10 Mar 2021 11:33:47 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 28/43] powerpc/64e: Call bad_page_fault() from
- do_page_fault()
+Subject: Re: [PATCH v2 36/43] powerpc/32: Set current->thread.regs in C
+ interrupt entry
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
  <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
  Paul Mackerras <paulus@samba.org>
 References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
- <b2878184d4c21faa8af55b60e52c83f391272112.1615291473.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <b2878184d4c21faa8af55b60e52c83f391272112.1615291473.git.christophe.leroy@csgroup.eu>
+ <8d523f9ecee1de0515cc31d43030c12ab171a670.1615291474.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <8d523f9ecee1de0515cc31d43030c12ab171a670.1615291474.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1615339667.i88ve15v8a.astroid@bobo.none>
+Message-Id: <1615339900.vmbtzuirqw.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -89,19 +90,11 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of March 9, 2021 10:09 pm:
-> book3e/64 is the last one calling __bad_page_fault()
-> from assembly.
->=20
-> Save non volatile registers before calling do_page_fault()
-> and modify do_page_fault() to call __bad_page_fault()
-> for all platforms.
->=20
-> Then it can be refactored by the call of bad_page_fault()
-> which avoids the duplication of the exception table search.
+Excerpts from Christophe Leroy's message of March 9, 2021 10:10 pm:
+> No need to do that is assembly, do it in C.
 
-This can go in with the 64e change after your series. I think it should
-be ready for the next merge window as well.
+Hmm. No issues with the patch as such, but why does ppc32 need this but=20
+not 64? AFAIKS 64 sets this when a thread is created.
 
 Thanks,
 Nick
@@ -109,65 +102,43 @@ Nick
 >=20
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  arch/powerpc/kernel/exceptions-64e.S |  8 +-------
->  arch/powerpc/mm/fault.c              | 17 ++++-------------
->  2 files changed, 5 insertions(+), 20 deletions(-)
+>  arch/powerpc/include/asm/interrupt.h | 4 +++-
+>  arch/powerpc/kernel/entry_32.S       | 3 +--
+>  2 files changed, 4 insertions(+), 3 deletions(-)
 >=20
-> diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/e=
-xceptions-64e.S
-> index e8eb9992a270..b60f89078a3f 100644
-> --- a/arch/powerpc/kernel/exceptions-64e.S
-> +++ b/arch/powerpc/kernel/exceptions-64e.S
-> @@ -1010,15 +1010,9 @@ storage_fault_common:
->  	addi	r3,r1,STACK_FRAME_OVERHEAD
->  	ld	r14,PACA_EXGEN+EX_R14(r13)
->  	ld	r15,PACA_EXGEN+EX_R15(r13)
-> +	bl	save_nvgprs
->  	bl	do_page_fault
-> -	cmpdi	r3,0
-> -	bne-	1f
->  	b	ret_from_except_lite
-> -1:	bl	save_nvgprs
-> -	mr	r4,r3
-> -	addi	r3,r1,STACK_FRAME_OVERHEAD
-> -	bl	__bad_page_fault
-> -	b	ret_from_except
+> diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/=
+asm/interrupt.h
+> index 861e6eadc98c..e6d71c2e3aa2 100644
+> --- a/arch/powerpc/include/asm/interrupt.h
+> +++ b/arch/powerpc/include/asm/interrupt.h
+> @@ -33,8 +33,10 @@ static inline void interrupt_enter_prepare(struct pt_r=
+egs *regs, struct interrup
+>  	if (!arch_irq_disabled_regs(regs))
+>  		trace_hardirqs_off();
 > =20
->  /*
->   * Alignment exception doesn't fit entirely in the 0x100 bytes so it
-> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-> index 2e54bac99a22..7bcff3fca110 100644
-> --- a/arch/powerpc/mm/fault.c
-> +++ b/arch/powerpc/mm/fault.c
-> @@ -541,24 +541,15 @@ NOKPROBE_SYMBOL(___do_page_fault);
-> =20
->  static long __do_page_fault(struct pt_regs *regs)
->  {
-> -	const struct exception_table_entry *entry;
->  	long err;
-> =20
->  	err =3D ___do_page_fault(regs, regs->dar, regs->dsisr);
->  	if (likely(!err))
-> -		return err;
-> -
-> -	entry =3D search_exception_tables(regs->nip);
-> -	if (likely(entry)) {
-> -		instruction_pointer_set(regs, extable_fixup(entry));
->  		return 0;
-> -	} else if (!IS_ENABLED(CONFIG_PPC_BOOK3E_64)) {
-> -		__bad_page_fault(regs, err);
-> -		return 0;
-> -	} else {
-> -		/* 32 and 64e handle the bad page fault in asm */
-> -		return err;
-> -	}
-> +
-> +	bad_page_fault(regs, err);
-> +
-> +	return 0;
->  }
->  NOKPROBE_SYMBOL(__do_page_fault);
-> =20
+> -	if (user_mode(regs))
+> +	if (user_mode(regs)) {
+> +		current->thread.regs =3D regs;
+>  		account_cpu_user_entry();
+> +	}
+>  #endif
+>  	/*
+>  	 * Book3E reconciles irq soft mask in asm
+> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_3=
+2.S
+> index 8fe1c3fdfa6e..815a4ff1ba76 100644
+> --- a/arch/powerpc/kernel/entry_32.S
+> +++ b/arch/powerpc/kernel/entry_32.S
+> @@ -52,8 +52,7 @@
+>  prepare_transfer_to_handler:
+>  	andi.	r0,r9,MSR_PR
+>  	addi	r12, r2, THREAD
+> -	beq	2f			/* if from user, fix up THREAD.regs */
+> -	stw	r3,PT_REGS(r12)
+> +	beq	2f
+>  #ifdef CONFIG_PPC_BOOK3S_32
+>  	kuep_lock r11, r12
+>  #endif
 > --=20
 > 2.25.0
 >=20
