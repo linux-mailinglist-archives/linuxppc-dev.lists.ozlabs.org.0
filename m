@@ -1,126 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606153333D3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 04:29:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12CC73333F3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 04:48:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwHdH1z4fz3cPY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 14:29:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwJ320lWZz3ckC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 14:48:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=q2S62wwq;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ue1Des28;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::236;
- helo=mail-oi1-x236.google.com; envelope-from=groeck7@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
+ helo=mail-pl1-x629.google.com; envelope-from=amodra@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=q2S62wwq; dkim-atps=neutral
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com
- [IPv6:2607:f8b0:4864:20::236])
+ header.s=20161025 header.b=ue1Des28; dkim-atps=neutral
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
+ [IPv6:2607:f8b0:4864:20::629])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwHcq6gqHz3bPX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 14:29:30 +1100 (AEDT)
-Received: by mail-oi1-x236.google.com with SMTP id v192so9972249oia.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 19:29:30 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwJ2Z5kLGz3cKC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 14:48:21 +1100 (AEDT)
+Received: by mail-pl1-x629.google.com with SMTP id e2so2538562pld.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Mar 2021 19:48:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:autocrypt:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=GWoXqYUv2WBQDrWT7/Ky5xxfDWEreVWPuNrxHsNCjjo=;
- b=q2S62wwqj2NQVhp+b3jiA2qL9H+TCTbDqi2sV3TZHSS3EIy+lx9HsD/saL2Gao4AXI
- su2rSgEse8chsj78Bcs9mI9U4g0bfGSauZv0Xy1zM9Mq1XeE7sWItyLY2Y1TPCxdeltI
- IUoPgsf4Mc3ZQ2JRUB5uEx5WYsb8FXYTtCbawY3wMVMtI3nRWzhxPLsgO/c3O73t0PQ3
- 9fKrxrYd3b7sJRj42sos5ltnmTXUsV/HZGMjQ9E+vP8wcSmZXgbLlTFgglG2VuM4QvLS
- 3cL564AwGxBHrFJB6J2swY0uQGb8jzysytPgSI2zQzLqf2nRS22lCh5KcnUpOsk7bpOu
- Tolw==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=SMtw5+QnSaw2Y6qNpZi4X1C2CMeJ4xcKvB7ckTI5jHA=;
+ b=ue1Des28Ms9L/OJX/4dKF+Xxv/EnBOkFzmmbBAdY0CKQdjgZPLNOymszIeRbmKXeN/
+ KFJb1IIOmomIaPrUTs/2dC9dpD+dI56HTGaqAND3EMcqqYf4HKF2Dpbadgjh7IKxZycC
+ FLtiLJLgUdI8LOY4V5Fge6pOIEL/HdCgSCACh/5v4dK5mRl6Oab+xBGdPch9JI2QPte4
+ EzjgMgqUUIrE8vmscoBSTJwZFNGrEDwN521UTykPbNr/AyLksu1e8KM5n8Q0vlGSPgiv
+ Sy79b7Wfc8gLAWMhG0VAczYFEMgge0wsM9dRQC30hMVNCfVtYiRlJwOlr/zw8NMdIXCe
+ 8eyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=GWoXqYUv2WBQDrWT7/Ky5xxfDWEreVWPuNrxHsNCjjo=;
- b=f+hVYpARw1Dwdy6zWYJPnsbscR9arbDDrDuCWVcQA+F+2phqSXGHqre9aTRtncpacU
- /l3rVYRa6EcbBZMHSxOLu0NoEhSv7uA5nRsS38ZPMZjlyJ8ecydY3Maif21JJdUm32Y0
- U9UD988ePrDTk0nHWziU7fxtYUebRPauhtwbLpwwRFafw3bZ2niZL0TCfC/N2MjN7JGG
- QnW2xZY016QruCT+n48wyViGqZ2Ybotiat9nbPuFEHuNszD3fd0051VLoMrxIETaVbBS
- ZTLs05L6q7FLg9u18jy6fFIA8PL+c3Hgj+pj0cMz1dYFdOxbxDcz1Ul0xgLOtQfRi9xR
- uoPw==
-X-Gm-Message-State: AOAM5305qrD2oAnC6qvPdGv7rpfyqjFfOLCOyq6CrxB0UoifXFl9Sqeh
- MnjfHWwSYyYBQfdQtF0V0UyzWH2NjZ4=
-X-Google-Smtp-Source: ABdhPJw+CQO9zMWsyNllts2ptpm3W2v/A4mCWEeiGCKVaM67W+ux6BVaAWz9Z01PUiu1nQ2Epuq8wA==
-X-Received: by 2002:a05:6808:7ca:: with SMTP id
- f10mr998856oij.139.1615346966672; 
- Tue, 09 Mar 2021 19:29:26 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- c7sm1314285oot.42.2021.03.09.19.29.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Mar 2021 19:29:25 -0800 (PST)
-Subject: Re: Errant readings on LM81 with T2080 SoC
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
- "jdelvare@suse.com" <jdelvare@suse.com>
-References: <8e0a88ba-01e9-9bc1-c78b-20f26ce27d12@alliedtelesis.co.nz>
- <96d660bc-17ab-4e0e-9a94-bce1737a8da1@roeck-us.net>
- <b1ba3f34-cbcc-4bbd-ea84-aad21f513682@alliedtelesis.co.nz>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
- RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
- nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
- 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
- gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
- IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
- kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
- VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
- jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
- BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
- ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
- CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
- nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
- hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
- c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
- 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
- GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
- sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
- Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
- HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
- BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
- l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
- 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
- pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
- J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
- pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
- 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
- ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
- I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
- nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
- HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
- JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
- J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
- cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
- wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
- hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
- nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
- QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
- trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
- WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
- HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-Message-ID: <c009a2b7-b15c-b9e6-a7d6-98d6b1039512@roeck-us.net>
-Date: Tue, 9 Mar 2021 19:29:23 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=SMtw5+QnSaw2Y6qNpZi4X1C2CMeJ4xcKvB7ckTI5jHA=;
+ b=aRxmTt+EWd9HkyB5nmG1yq4Y92Q6si6P5y5gbMbOEsik9VtfXvwg79cMYb+ND4YGnt
+ 354fgo4ZRYImoXZ007jghQHLYmC2rZBJUBMifuocQoH4jiKShhOMCRLVB9D33gjxUsTw
+ W6wNDS5YYfFfXVuLOL6R1cz1Tj40sxG61p7ep0Ps1jxTorR6JEuwhpkN+9Wym4t4FWyR
+ LMXyzT+1j3ehinIWxEpH2Wbs4Mw1oC5M5rZmbECnMOMYWsg8dE9Te4s+S6wGs2LQttaY
+ 7Qc+xeClC9vQxz2JFDoV41FeWtKmidYi5PMkl6+/FA7qy6PtAkDfBS8zHdBAXQQ6aTde
+ WW+A==
+X-Gm-Message-State: AOAM531UWI0YuefwE3umnmoUNb5/qqVm7TnU/9MU8hCkZ78AFVtHMtkx
+ JF+KB5wvWoC39TMhhhVHhaoEAYC00Gb3Xg==
+X-Google-Smtp-Source: ABdhPJywv9zQZPlacfQHzeRfWKf2CIS/BGK0laW+ohJlnbhgTX+0kJcwLMfG+hEuSiY50BFiMHQiDg==
+X-Received: by 2002:a17:90a:ec15:: with SMTP id
+ l21mr1328340pjy.164.1615348098340; 
+ Tue, 09 Mar 2021 19:48:18 -0800 (PST)
+Received: from bubble.grove.modra.org
+ ([2406:3400:51d:8cc0:782f:891e:65a1:90c6])
+ by smtp.gmail.com with ESMTPSA id p5sm12732908pfq.56.2021.03.09.19.48.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Mar 2021 19:48:17 -0800 (PST)
+Received: by bubble.grove.modra.org (Postfix, from userid 1000)
+ id CFA5641A8C; Wed, 10 Mar 2021 14:18:13 +1030 (ACDT)
+Date: Wed, 10 Mar 2021 14:18:13 +1030
+From: Alan Modra <amodra@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: Re: PowerPC64 future proof kernel toc, revised for lld
+Message-ID: <20210310034813.GM6042@bubble.grove.modra.org>
+References: <20210309045638.GI6042@bubble.grove.modra.org>
 MIME-Version: 1.0
-In-Reply-To: <b1ba3f34-cbcc-4bbd-ea84-aad21f513682@alliedtelesis.co.nz>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210309045638.GI6042@bubble.grove.modra.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,34 +84,230 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
+Cc: alexey@au1.ibm.com, ellerman@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/9/21 3:35 PM, Chris Packham wrote:
-> 
-> On 8/03/21 1:31 pm, Guenter Roeck wrote:
->> On 3/7/21 2:52 PM, Chris Packham wrote:
->>> Fundamentally I think this is a problem with the fact that the LM81 is
->>> an SMBus device but the T2080 (and other Freescale SoCs) uses i2c and we
->>> emulate SMBus. I suspect the errant readings are when we don't get round
->>> to completing the read within the timeout specified by the SMBus
->>> specification. Depending on when that happens we either fail the
->>> transfer or interpret the result as all-1s.
->> That is quite unlikely. Many sensor chips are SMBus chips connected to
->> i2c busses. It is much more likely that there is a bug in the T2080 i2c driver,
->> that the chip doesn't like the bulk read command issued through regmap, that
->> the chip has problems with the i2c bus speed, or that the i2c bus is noisy.
-> I have noticed that with the switch to regmap we end up using plain i2c 
-> instead of SMBUS. There appears to be no way of saying use SMBUS 
-> semantics if the i2c adapter reports I2C_FUNC_I2C.
-> 
+This patch future-proofs the kernel against linker changes that might
+put the toc pointer at some location other than .got+0x8000, by
+replacing __toc_start+0x8000 with .TOC. throughout.  If the kernel's
+idea of the toc pointer doesn't agree with the linker, bad things
+happen.
 
-The driver only really supports I2C; SMBUS functions are emulated.
-I don't think that makes a real difference.
+prom_init.c code relocating its toc is also changed so that a symbolic
+__prom_init_toc_start toc-pointer relative address is calculated
+rather than assuming that it is always at toc-pointer - 0x8000.  The
+length calculations loading values from the toc are also avoided.
+It's a little incestuous to do that with unreloc_toc picking up
+adjusted values (which is fine in practice, they both adjust by the
+same amount if all goes well).
 
-Guenter
+I've also changed the way .got is aligned in vmlinux.lds and
+zImage.lds, mostly so that dumping out section info by objdump or
+readelf plainly shows the alignment is 256.  This linker script
+feature was added 2005-09-27, available in FSF binutils releases from
+2.17 onwards.  Should be safe to use in the kernel, I think.
+
+Finally, put *(.got) before the prom_init.o entry which only needs
+*(.toc), so that the GOT header goes in the correct place.  I don't
+believe this makes any difference for the kernel as it would for
+dynamic objects being loaded by ld.so.  That change is just to stop
+lusers who blindly copy kernel scripts being led astray.  Of course,
+this change needs the prom_init.c changes.
+
+Some notes on .toc and .got.
+
+.toc is a compiler generated section of addresses.  .got is a linker
+generated section of addresses, generally built when the linker sees
+R_*_*GOT* relocations.  In the case of powerpc64 ld.bfd, there are
+multiple generated .got sections, one per input object file.  So you
+can somewhat reasonably write in a linker script an input section
+statement like *prom_init.o(.got .toc) to mean "the .got and .toc
+section for files matching *prom_init.o".  On other architectures that
+doesn't make sense, because the linker generally has just one .got
+section.  Even on powerpc64, note well that the GOT entries for
+prom_init.o may be merged with GOT entries from other objects.  That
+means that if prom_init.o references, say, _end via some GOT
+relocation, and some other object also references _end via a GOT
+relocation, the GOT entry for _end may be in the range
+__prom_init_toc_start to __prom_init_toc_end and if the kernel does
+something special to GOT/TOC entries in that range then the value of
+_end as seen by objects other than prom_init.o will be affected.  On
+the other hand the GOT entry for _end may not be in the range
+__prom_init_toc_start to __prom_init_toc_end.  Which way it turns out
+is deterministic but a detail of linker operation that should not be
+relied on.
+
+A feature of ld.bfd is that input .toc (and .got) sections matching
+one linker input section statement may be sorted, to put entries used
+by small-model code first, near the toc base.  This is why scripts for
+powerpc64 normally use *(.got .toc) rather than *(.got) *(.toc), since
+the first form allows more freedom to sort.
+
+Another feature of ld.bfd is that indirect addressing sequences using
+the GOT/TOC may be edited by the linker to relative addressing.  In
+many cases relative addressing would be emitted by gcc for
+-mcmodel=medium if you appropriately decorate variable declarations
+with non-default visibility.
+
+Signed-off-by: Alan Modra <amodra@au1.ibm.com>
+
+diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
+index 1d83966f5ef6..e45907fe468f 100644
+--- a/arch/powerpc/boot/crt0.S
++++ b/arch/powerpc/boot/crt0.S
+@@ -28,7 +28,7 @@ p_etext:	.8byte	_etext
+ p_bss_start:	.8byte	__bss_start
+ p_end:		.8byte	_end
+ 
+-p_toc:		.8byte	__toc_start + 0x8000 - p_base
++p_toc:		.8byte	.TOC. - p_base
+ p_dyn:		.8byte	__dynamic_start - p_base
+ p_rela:		.8byte	__rela_dyn_start - p_base
+ p_prom:		.8byte	0
+diff --git a/arch/powerpc/boot/zImage.lds.S b/arch/powerpc/boot/zImage.lds.S
+index d6f072865627..d65cd55a6f38 100644
+--- a/arch/powerpc/boot/zImage.lds.S
++++ b/arch/powerpc/boot/zImage.lds.S
+@@ -36,12 +36,9 @@ SECTIONS
+   }
+ 
+ #ifdef CONFIG_PPC64_BOOT_WRAPPER
+-  . = ALIGN(256);
+-  .got :
++  .got : ALIGN(256)
+   {
+-    __toc_start = .;
+-    *(.got)
+-    *(.toc)
++    *(.got .toc)
+   }
+ #endif
+ 
+diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
+index 324d7b298ec3..e5a1eae11ed5 100644
+--- a/arch/powerpc/include/asm/sections.h
++++ b/arch/powerpc/include/asm/sections.h
+@@ -48,14 +48,18 @@ static inline int in_kernel_text(unsigned long addr)
+ 
+ static inline unsigned long kernel_toc_addr(void)
+ {
+-	/* Defined by the linker, see vmlinux.lds.S */
+-	extern unsigned long __toc_start;
+-
+-	/*
+-	 * The TOC register (r2) points 32kB into the TOC, so that 64kB of
+-	 * the TOC can be addressed using a single machine instruction.
+-	 */
+-	return (unsigned long)(&__toc_start) + 0x8000UL;
++#if 0
++	/* This version is appropriate if the kernel is never compiled
++	   -mcmodel=small or the total .toc is always less than 64k.  */
++	register unsigned long toc_ptr asm ("r2");
++	return toc_ptr;
++#else
++	/* Otherwise linker automatic multiple toc sections might be
++	   required, and in that case r2 may be adjusted by a linker
++	   stub.  */
++	extern unsigned long __attribute__((visibility("hidden"))) toc asm (".TOC.");
++	return (unsigned long)&toc;
++#endif
+ }
+ 
+ static inline int overlaps_interrupt_vector_text(unsigned long start,
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index ece7f97bafff..9542d03b2efe 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -899,7 +899,7 @@ _GLOBAL(relative_toc)
+ 	blr
+ 
+ .balign 8
+-p_toc:	.8byte	__toc_start + 0x8000 - 0b
++p_toc:	.8byte	.TOC. - 0b
+ 
+ /*
+  * This is where the main kernel code starts.
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index ccf77b985c8f..d309a7787652 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -3220,27 +3220,26 @@ static void unreloc_toc(void)
+ {
+ }
+ #else
+-static void __reloc_toc(unsigned long offset, unsigned long nr_entries)
++static void __reloc_toc(unsigned long offset)
+ {
+-	unsigned long i;
+ 	unsigned long *toc_entry;
++	unsigned long *toc_start, *toc_end;
+ 
+-	/* Get the start of the TOC by using r2 directly. */
+-	asm volatile("addi %0,2,-0x8000" : "=b" (toc_entry));
++	asm("addis %0,2,__prom_init_toc_start@toc@ha\n\t"
++	    "addi %0,%0,__prom_init_toc_start@toc@l" : "=b" (toc_start));
++	asm("addis %0,2,__prom_init_toc_end@toc@ha\n\t"
++	    "addi %0,%0,__prom_init_toc_end@toc@l" : "=b" (toc_end));
+ 
+-	for (i = 0; i < nr_entries; i++) {
+-		*toc_entry = *toc_entry + offset;
+-		toc_entry++;
++	for (toc_entry = toc_start; toc_entry != toc_end; toc_entry++) {
++		*toc_entry += offset;
+ 	}
+ }
+ 
+ static void reloc_toc(void)
+ {
+ 	unsigned long offset = reloc_offset();
+-	unsigned long nr_entries =
+-		(__prom_init_toc_end - __prom_init_toc_start) / sizeof(long);
+ 
+-	__reloc_toc(offset, nr_entries);
++	__reloc_toc(offset);
+ 
+ 	mb();
+ }
+@@ -3248,12 +3247,10 @@ static void reloc_toc(void)
+ static void unreloc_toc(void)
+ {
+ 	unsigned long offset = reloc_offset();
+-	unsigned long nr_entries =
+-		(__prom_init_toc_end - __prom_init_toc_start) / sizeof(long);
+ 
+ 	mb();
+ 
+-	__reloc_toc(-offset, nr_entries);
++	__reloc_toc(-offset);
+ }
+ #endif
+ #endif
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 72fa3c00229a..3d2e6e2b81b5 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -326,15 +326,13 @@ SECTIONS
+ 		__end_opd = .;
+ 	}
+ 
+-	. = ALIGN(256);
+-	.got : AT(ADDR(.got) - LOAD_OFFSET) {
+-		__toc_start = .;
++	.got : AT(ADDR(.got) - LOAD_OFFSET) ALIGN(256) {
++		*(.got)
+ #ifndef CONFIG_RELOCATABLE
+ 		__prom_init_toc_start = .;
+-		arch/powerpc/kernel/prom_init.o*(.toc .got)
++		arch/powerpc/kernel/prom_init.o*(.toc)
+ 		__prom_init_toc_end = .;
+ #endif
+-		*(.got)
+ 		*(.toc)
+ 	}
+ #endif
+
+-- 
+Alan Modra
+Australia Development Lab, IBM
