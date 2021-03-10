@@ -1,38 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 415D9333877
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 10:15:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D795D33388F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 10:17:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwRJ40rHNz3dJh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 20:15:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwRLq6HFtz3d7F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Mar 2021 20:17:55 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=GuiCwOSj;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=GuiCwOSj; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwRHh1PXGz3cTy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 20:15:11 +1100 (AEDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 4E49D68B05; Wed, 10 Mar 2021 10:15:02 +0100 (CET)
-Date: Wed, 10 Mar 2021 10:15:01 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH 14/17] iommu: remove DOMAIN_ATTR_DMA_USE_FLUSH_QUEUE
-Message-ID: <20210310091501.GC5928@lst.de>
-References: <20210301084257.945454-1-hch@lst.de>
- <20210301084257.945454-15-hch@lst.de>
- <1658805c-ed28-b650-7385-a56fab3383e3@arm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DwRLS57JSz30Ng
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 20:17:35 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DwRLL1cfpz9sS8;
+ Wed, 10 Mar 2021 20:17:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1615367850;
+ bh=SxpQfrsAj8eOaludMCh7g4ZvWzABuwNmJO7ZW/Saw4E=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=GuiCwOSjDOw4RdkiKTL8kS1JTjBXdx3iAkMSCfMN5D87ZPQ6XmJZkjF4Rp40Q1/dW
+ nsQ+qROimFS21068jarTiJ9ZFj3G5M6rx/H0GebUmLd9uDqSlmbIEVDOVIi+C+IlVu
+ yNnDFFJLb9pfwSgEw6onikmO0snwjmHt9yXfJrXiImkhOh9x/Wz9Umi3UcOb6KfpvG
+ B7t/SSZG9N1tFpRh3dc1WAA9/sjXmaAMiKyUv8Pv2mtZZ7+gLiycF381uVLwO+MKvx
+ NzFlmcYqOt0CyHtmsOK+/aqJyG67WgYh1N0ITMn9Wd4DlbhHAAzEc1dtRRC1FzrS4c
+ pXUbJKS+mVsjw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/mm: Add cond_resched() while removing hpte
+ mappings
+In-Reply-To: <20210310075938.361656-1-vaibhav@linux.ibm.com>
+References: <20210310075938.361656-1-vaibhav@linux.ibm.com>
+Date: Wed, 10 Mar 2021 20:17:25 +1100
+Message-ID: <87im5zmkpm.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1658805c-ed28-b650-7385-a56fab3383e3@arm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,35 +62,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Will Deacon <will@kernel.org>,
- Joerg Roedel <joro@8bytes.org>, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org, Li Yang <leoyang.li@nxp.com>,
- iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
- David Woodhouse <dwmw2@infradead.org>, linux-arm-kernel@lists.infradead.org,
- virtualization@lists.linux-foundation.org, freedreno@lists.freedesktop.org,
- Christoph Hellwig <hch@lst.de>, linux-arm-msm@vger.kernel.org
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 04, 2021 at 03:25:27PM +0000, Robin Murphy wrote:
-> On 2021-03-01 08:42, Christoph Hellwig wrote:
->> Use explicit methods for setting and querying the information instead.
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+> While removing large number of mappings from hash page tables for
+> large memory systems as soft-lockup is reported because of the time
+> spent inside htap_remove_mapping() like one below:
 >
-> Now that everyone's using iommu-dma, is there any point in bouncing this 
-> through the drivers at all? Seems like it would make more sense for the x86 
-> drivers to reflect their private options back to iommu_dma_strict (and 
-> allow Intel's caching mode to override it as well), then have 
-> iommu_dma_init_domain just test !iommu_dma_strict && 
-> domain->ops->flush_iotlb_all.
+>  watchdog: BUG: soft lockup - CPU#8 stuck for 23s!
+>  <snip>
+>  NIP plpar_hcall+0x38/0x58
+>  LR  pSeries_lpar_hpte_invalidate+0x68/0xb0
+>  Call Trace:
+>   0x1fffffffffff000 (unreliable)
+>   pSeries_lpar_hpte_removebolted+0x9c/0x230
+>   hash__remove_section_mapping+0xec/0x1c0
+>   remove_section_mapping+0x28/0x3c
+>   arch_remove_memory+0xfc/0x150
+>   devm_memremap_pages_release+0x180/0x2f0
+>   devm_action_release+0x30/0x50
+>   release_nodes+0x28c/0x300
+>   device_release_driver_internal+0x16c/0x280
+>   unbind_store+0x124/0x170
+>   drv_attr_store+0x44/0x60
+>   sysfs_kf_write+0x64/0x90
+>   kernfs_fop_write+0x1b0/0x290
+>   __vfs_write+0x3c/0x70
+>   vfs_write+0xd4/0x270
+>   ksys_write+0xdc/0x130
+>   system_call+0x5c/0x70
+>
+> Fix this by adding a cond_resched() to the loop in
+> htap_remove_mapping() that issues hcall to remove hpte mapping. This
+> should prevent the soft-lockup from being reported.
 
-Hmm.  I looked at this, and kill off ->dma_enable_flush_queue for
-the ARM drivers and just looking at iommu_dma_strict seems like a
-very clear win.
+Can/should we also/instead be using H_BLOCK_REMOVE?
 
-OTOH x86 is a little more complicated.  AMD and intel defaul to lazy
-mode, so we'd have to change the global iommu_dma_strict if they are
-initialized.  Also Intel has not only a "static" option to disable
-lazy mode, but also a "dynamic" one where it iterates structure.  So
-I think on the get side we're stuck with the method, but it still
-simplifies the whole thing.
+cheers
