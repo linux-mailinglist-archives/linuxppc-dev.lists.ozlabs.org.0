@@ -1,60 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFCD337E4A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 20:39:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 234F1337F83
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 22:18:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DxK5c13BXz3dDq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 06:39:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DxMHZ1RVCz3d4M
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 08:18:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.a=rsa-sha256 header.s=mail181024 header.b=2I4l3FFn;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=2001:df5:b000:5::4;
+ helo=gate2.alliedtelesis.co.nz;
+ envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.a=rsa-sha256 header.s=mail181024 header.b=2I4l3FFn; 
+ dkim-atps=neutral
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [IPv6:2001:df5:b000:5::4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DxK5G2qZ4z2ysn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 06:39:10 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DxK554JMmz9typl;
- Thu, 11 Mar 2021 20:39:05 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 6Iqq4qYKiOTw; Thu, 11 Mar 2021 20:39:05 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DxK551CyCz9typk;
- Thu, 11 Mar 2021 20:39:05 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1BB0F8B80D;
- Thu, 11 Mar 2021 20:39:07 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 9oXY_QXeLpW6; Thu, 11 Mar 2021 20:39:07 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 925208B80B;
- Thu, 11 Mar 2021 20:39:06 +0100 (CET)
-Subject: Re: [PATCH v2 25/43] powerpc/32: Replace ASM exception exit by C
- exception exit from ppc64
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, npiggin@gmail.com
-References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
- <a9a50f475db97fc53795dd778bc14f58029fdd55.1615291473.git.christophe.leroy@csgroup.eu>
- <87tuphkdkz.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <0296d1bc-b37e-43c8-06cf-00ec458fb74e@csgroup.eu>
-Date: Thu, 11 Mar 2021 20:39:04 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DxMH52VG4z30Mx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 08:17:52 +1100 (AEDT)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 2D53E806B5;
+ Fri, 12 Mar 2021 10:17:44 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1615497464;
+ bh=1DcFBkSZ1GEMK4IGgLLSPohVm5dNWmmK5gXKKqQb5SE=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To;
+ b=2I4l3FFnAYyE+DGHLdQLbYSxuXARGckSj2PvrusoNEIBwVD97nFEDz8CEAHpO82NE
+ HTgpeW0lzhI0O2CCS3hi0F8mev9yd0qeMfllU/2iMKfZMtZQWCyod5vjlsmn2cbXim
+ n/X189mL9CAZY/VOGf/T7cny7II/DKVTtTVuwBVuBdf2D6NcBxzlVMGXqoVQ0LRoUS
+ Piqvc6LmD8HcAbb0xvvJrt8FQiidwHfOm839d2enaDkds/C+Q527t8EJ8i4lNjhT34
+ hA+mvaIxzApx4tOlg072hdCKv2z+LSZ5Tl5Yo7dACUQ+QJHszj97dwaOhEy4tF022l
+ CmXEeHhh4OlNA==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[2001:df5:b000:bc8::77]) by
+ svr-chch-seg1.atlnz.lc with Trustwave SEG (v8, 2, 6, 11305)
+ id <B604a88f80000>; Fri, 12 Mar 2021 10:17:44 +1300
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
+ by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
+ Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 12 Mar 2021 10:17:43 +1300
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1497.012; Fri, 12 Mar 2021 10:17:43 +1300
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Wolfram Sang <wsa@kernel.org>, Guenter Roeck <linux@roeck-us.net>
+Subject: Re: Errant readings on LM81 with T2080 SoC
+Thread-Topic: Errant readings on LM81 with T2080 SoC
+Thread-Index: AQHXE6SbssdAOSHgwE+zIRhtn11Sk6p4Y2sAgAAgcACAACSBgIAABe+AgAEDagCAAfS7gIAALq8AgAEX54CAAKWsgIAACmIAgADZp4A=
+Date: Thu, 11 Mar 2021 21:17:43 +0000
+Message-ID: <94dfa9dc-a80c-98ba-4169-44cce3d810f7@alliedtelesis.co.nz>
+References: <20210311081842.GA1070@ninjato>
+In-Reply-To: <20210311081842.GA1070@ninjato>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.1.11]
+Content-Type: text/plain; charset="Windows-1252"
+Content-ID: <0B4D89C4CA0DE1478530916CB5DE73E1@atlnz.lc>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <87tuphkdkz.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=GfppYjfL c=1 sm=1 tr=0
+ a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10
+ a=N659UExz7-8A:10 a=dESyimp9J3IA:10 a=No7XfMmhj-zxftOn39MA:9
+ a=pILNOxqGKmIA:10
+X-SEG-SpamProfiler-Score: 0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,73 +86,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+ "jdelvare@suse.com" <jdelvare@suse.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-
-Le 11/03/2021 à 14:46, Michael Ellerman a écrit :
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> This patch replaces the PPC32 ASM exception exit by C exception exit.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   arch/powerpc/kernel/entry_32.S  | 481 +++++++++-----------------------
->>   arch/powerpc/kernel/interrupt.c |   4 +
->>   2 files changed, 132 insertions(+), 353 deletions(-)
-> 
-> Bisect points to this breaking qemu mac99 for me, with pmac32_defconfig.
-> 
-> I haven't had time to dig any deeper sorry.
-
-Embarrasing ...
-
-I don't get this problem on the 8xx (nohash/32) or the 83xx (book3s/32).
-I don't get this problem with qemu mac99 when using my klibc-based initramfs.
-
-I managed to reproduce it with the rootfs.cpio that I got some time ago from linuxppc github Wiki.
-
-I'll investigate it tomorrow.
-
-Thanks
-Christophe
-
-
-> 
-> cheers
-> 
-> 
-> Freeing unused kernel memory: 1132K
-> This architecture does not have kernel memory protection.
-> Run /init as init process
-> init[1]: User access of kernel address (fffffd20) - exploit attempt? (uid: 0)
-> init[1]: segfault (11) at fffffd20 nip b7e78638 lr b7e845e4 code 1 in ld-2.27.so[b7e6b000+22000]
-> init[1]: code: 92010080 92210084 92410088 92810090 92a10094 92c10098 930100a0 932100a4
-> init[1]: code: 934100a8 936100ac 93a100b4 91810074 <7d41496e> 39400000 3b810017 579c0036
-> Kernel panic - not syncing: Attempted to kill init! exitcode=0x00ERROR: Error: saw oops/warning etc. while expecting
-> 00000b
-> CPU: 0 PID: 1 Comm: init Not tainted 5.12.0-rc2+ #1
-> Call Trace:
-> [f1019d80] [c004f1ec] panic+0x138/0x328 (unreliable)
-> [f1019de0] [c0051c8c] do_exit+0x880/0x8f4
-> [f1019e30] [c0052bdc] do_group_exit+0x40/0xa4
-> [f1019e50] [c0060d04] get_signal+0x1e8/0x834
-> [f1019eb0] [c000b624] do_notify_resume+0xc8/0x314
-> [f1019f10] [c0010da8] interrupt_exit_user_prepare+0xa4/0xdc
-> [f1019f30] [c0018228] interrupt_return+0x14/0x14c
-> --- interrupt: 300 at 0xb7e78638
-> NIP:  b7e78638 LR: b7e845e4 CTR: c01ea2d8
-> REGS: f1019f40 TRAP: 0300   Not tainted  (5.12.0-rc2+)
-> MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 28004422  XER: 20000000
-> DAR: fffffd20 DSISR: 42000000
-> GPR00: b7e845e4 bf951440 00000000 bf951460 00000000 bf951718 fefefeff 7f7f7f7f
-> GPR08: bf9516b0 406ae8e0 b7eac1d4 00000000 0a12247b 00000000 b7e8a0d0 b7e78554
-> GPR16: bf951730 bf9516f0 b7eaaf40 bf9516f0 00000001 b7eaa688 10002178 bf951460
-> GPR24: 00000000 00000000 b7eac200 100cff38 bf9516f0 10002179 b7e845e4 bf951440
-> NIP [b7e78638] 0xb7e78638
-> LR [b7e845e4] 0xb7e845e4
-> --- interrupt: 300
-> Rebooting in 180 seconds..
-> 
+On 11/03/21 9:18 pm, Wolfram Sang wrote:
+>> Bummer. What is really weird is that you see clock stretching under
+>> CPU load. Normally clock stretching is triggered by the device, not
+>> by the host.
+> One example: Some hosts need an interrupt per byte to know if they
+> should send ACK or NACK. If that interrupt is delayed, they stretch the
+> clock.
+>
+It feels like something like that is happening. Looking at the T2080=20
+Reference manual there is an interesting timing diagram (Figure 14-2 if=20
+someone feels like looking it up). It shows SCL low between the ACK for=20
+the address and the data byte. I think if we're delayed in sending the=20
+next byte we could violate Ttimeout or Tlow:mext from the SMBUS spec.=
