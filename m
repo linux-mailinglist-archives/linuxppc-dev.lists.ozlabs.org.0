@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7FD337C80
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 19:24:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EFCD337E4A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 20:39:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DxHRV5Zjdz3d9d
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 05:24:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DxK5c13BXz3dDq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 06:39:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,36 +15,46 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DxHR94hPyz3cJw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 05:24:34 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DxK5G2qZ4z2ysn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 06:39:10 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DxHR214Jrz9tyS4;
- Thu, 11 Mar 2021 19:24:30 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DxK554JMmz9typl;
+ Thu, 11 Mar 2021 20:39:05 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id h0keolxaqy_5; Thu, 11 Mar 2021 19:24:30 +0100 (CET)
+ with ESMTP id 6Iqq4qYKiOTw; Thu, 11 Mar 2021 20:39:05 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DxHR203Gpz9tyS3;
- Thu, 11 Mar 2021 19:24:30 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DxK551CyCz9typk;
+ Thu, 11 Mar 2021 20:39:05 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CD3CE8B80D;
- Thu, 11 Mar 2021 19:24:31 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1BB0F8B80D;
+ Thu, 11 Mar 2021 20:39:07 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id imUCp6fL9L8h; Thu, 11 Mar 2021 19:24:31 +0100 (CET)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7B5F68B80B;
- Thu, 11 Mar 2021 19:24:31 +0100 (CET)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 51A6E6758B; Thu, 11 Mar 2021 18:24:31 +0000 (UTC)
-Message-Id: <225179d2e8b93c1bec23f39275b34af9b3881f17.1615486843.git.christophe.leroy@csgroup.eu>
+ with ESMTP id 9oXY_QXeLpW6; Thu, 11 Mar 2021 20:39:07 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 925208B80B;
+ Thu, 11 Mar 2021 20:39:06 +0100 (CET)
+Subject: Re: [PATCH v2 25/43] powerpc/32: Replace ASM exception exit by C
+ exception exit from ppc64
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, npiggin@gmail.com
+References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
+ <a9a50f475db97fc53795dd778bc14f58029fdd55.1615291473.git.christophe.leroy@csgroup.eu>
+ <87tuphkdkz.fsf@mpe.ellerman.id.au>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] [backport for 5.4] powerpc/603: Fix protection of user pages
- mapped with PROT_NONE
-To: stable@vger.kernel.org, gregkh@linuxfoundation.org
-Date: Thu, 11 Mar 2021 18:24:31 +0000 (UTC)
+Message-ID: <0296d1bc-b37e-43c8-06cf-00ec458fb74e@csgroup.eu>
+Date: Thu, 11 Mar 2021 20:39:04 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
+MIME-Version: 1.0
+In-Reply-To: <87tuphkdkz.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,97 +71,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-(cherry picked from commit c119565a15a628efdfa51352f9f6c5186e506a1c)
 
-On book3s/32, page protection is defined by the PP bits in the PTE
-which provide the following protection depending on the access
-keys defined in the matching segment register:
-- PP 00 means RW with key 0 and N/A with key 1.
-- PP 01 means RW with key 0 and RO with key 1.
-- PP 10 means RW with both key 0 and key 1.
-- PP 11 means RO with both key 0 and key 1.
 
-Since the implementation of kernel userspace access protection,
-PP bits have been set as follows:
-- PP00 for pages without _PAGE_USER
-- PP01 for pages with _PAGE_USER and _PAGE_RW
-- PP11 for pages with _PAGE_USER and without _PAGE_RW
+Le 11/03/2021 à 14:46, Michael Ellerman a écrit :
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>> This patch replaces the PPC32 ASM exception exit by C exception exit.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>>   arch/powerpc/kernel/entry_32.S  | 481 +++++++++-----------------------
+>>   arch/powerpc/kernel/interrupt.c |   4 +
+>>   2 files changed, 132 insertions(+), 353 deletions(-)
+> 
+> Bisect points to this breaking qemu mac99 for me, with pmac32_defconfig.
+> 
+> I haven't had time to dig any deeper sorry.
 
-For kernelspace segments, kernel accesses are performed with key 0
-and user accesses are performed with key 1. As PP00 is used for
-non _PAGE_USER pages, user can't access kernel pages not flagged
-_PAGE_USER while kernel can.
+Embarrasing ...
 
-For userspace segments, both kernel and user accesses are performed
-with key 0, therefore pages not flagged _PAGE_USER are still
-accessible to the user.
+I don't get this problem on the 8xx (nohash/32) or the 83xx (book3s/32).
+I don't get this problem with qemu mac99 when using my klibc-based initramfs.
 
-This shouldn't be an issue, because userspace is expected to be
-accessible to the user. But unlike most other architectures, powerpc
-implements PROT_NONE protection by removing _PAGE_USER flag instead of
-flagging the page as not valid. This means that pages in userspace
-that are not flagged _PAGE_USER shall remain inaccessible.
+I managed to reproduce it with the rootfs.cpio that I got some time ago from linuxppc github Wiki.
 
-To get the expected behaviour, just mimic other architectures in the
-TLB miss handler by checking _PAGE_USER permission on userspace
-accesses as if it was the _PAGE_PRESENT bit.
+I'll investigate it tomorrow.
 
-Note that this problem only is only for 603 cores. The 604+ have
-an hash table, and hash_page() function already implement the
-verification of _PAGE_USER permission on userspace pages.
+Thanks
+Christophe
 
-Fixes: f342adca3afc ("powerpc/32s: Prepare Kernel Userspace Access Protection")
-Change-Id: I68bc5e5ff4542bdfcdcd12923fa96a5811707475
-Cc: stable@vger.kernel.org # v5.2+
-Reported-by: Christoph Plattner <christoph.plattner@thalesgroup.com>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/4a0c6e3bb8f0c162457bf54d9bc6fd8d7b55129f.1612160907.git.christophe.leroy@csgroup.eu
----
- arch/powerpc/kernel/head_32.S | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_32.S b/arch/powerpc/kernel/head_32.S
-index 126ba5438430..edaab1142498 100644
---- a/arch/powerpc/kernel/head_32.S
-+++ b/arch/powerpc/kernel/head_32.S
-@@ -418,10 +418,11 @@ InstructionTLBMiss:
- 	cmplw	0,r1,r3
- #endif
- 	mfspr	r2, SPRN_SPRG_PGDIR
--	li	r1,_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_EXEC
-+	li	r1,_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_EXEC | _PAGE_USER
- #if defined(CONFIG_MODULES) || defined(CONFIG_DEBUG_PAGEALLOC)
- 	bge-	112f
- 	lis	r2, (swapper_pg_dir - PAGE_OFFSET)@ha	/* if kernel address, use */
-+	li	r1,_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_EXEC
- 	addi	r2, r2, (swapper_pg_dir - PAGE_OFFSET)@l	/* kernel page table */
- #endif
- 112:	rlwimi	r2,r3,12,20,29		/* insert top 10 bits of address */
-@@ -480,9 +481,10 @@ DataLoadTLBMiss:
- 	lis	r1,PAGE_OFFSET@h		/* check if kernel address */
- 	cmplw	0,r1,r3
- 	mfspr	r2, SPRN_SPRG_PGDIR
--	li	r1, _PAGE_PRESENT | _PAGE_ACCESSED
-+	li	r1, _PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_USER
- 	bge-	112f
- 	lis	r2, (swapper_pg_dir - PAGE_OFFSET)@ha	/* if kernel address, use */
-+	li	r1, _PAGE_PRESENT | _PAGE_ACCESSED
- 	addi	r2, r2, (swapper_pg_dir - PAGE_OFFSET)@l	/* kernel page table */
- 112:	rlwimi	r2,r3,12,20,29		/* insert top 10 bits of address */
- 	lwz	r2,0(r2)		/* get pmd entry */
-@@ -556,9 +558,10 @@ DataStoreTLBMiss:
- 	lis	r1,PAGE_OFFSET@h		/* check if kernel address */
- 	cmplw	0,r1,r3
- 	mfspr	r2, SPRN_SPRG_PGDIR
--	li	r1, _PAGE_RW | _PAGE_DIRTY | _PAGE_PRESENT | _PAGE_ACCESSED
-+	li	r1, _PAGE_RW | _PAGE_DIRTY | _PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_USER
- 	bge-	112f
- 	lis	r2, (swapper_pg_dir - PAGE_OFFSET)@ha	/* if kernel address, use */
-+	li	r1, _PAGE_RW | _PAGE_DIRTY | _PAGE_PRESENT | _PAGE_ACCESSED
- 	addi	r2, r2, (swapper_pg_dir - PAGE_OFFSET)@l	/* kernel page table */
- 112:	rlwimi	r2,r3,12,20,29		/* insert top 10 bits of address */
- 	lwz	r2,0(r2)		/* get pmd entry */
--- 
-2.25.0
-
+> 
+> cheers
+> 
+> 
+> Freeing unused kernel memory: 1132K
+> This architecture does not have kernel memory protection.
+> Run /init as init process
+> init[1]: User access of kernel address (fffffd20) - exploit attempt? (uid: 0)
+> init[1]: segfault (11) at fffffd20 nip b7e78638 lr b7e845e4 code 1 in ld-2.27.so[b7e6b000+22000]
+> init[1]: code: 92010080 92210084 92410088 92810090 92a10094 92c10098 930100a0 932100a4
+> init[1]: code: 934100a8 936100ac 93a100b4 91810074 <7d41496e> 39400000 3b810017 579c0036
+> Kernel panic - not syncing: Attempted to kill init! exitcode=0x00ERROR: Error: saw oops/warning etc. while expecting
+> 00000b
+> CPU: 0 PID: 1 Comm: init Not tainted 5.12.0-rc2+ #1
+> Call Trace:
+> [f1019d80] [c004f1ec] panic+0x138/0x328 (unreliable)
+> [f1019de0] [c0051c8c] do_exit+0x880/0x8f4
+> [f1019e30] [c0052bdc] do_group_exit+0x40/0xa4
+> [f1019e50] [c0060d04] get_signal+0x1e8/0x834
+> [f1019eb0] [c000b624] do_notify_resume+0xc8/0x314
+> [f1019f10] [c0010da8] interrupt_exit_user_prepare+0xa4/0xdc
+> [f1019f30] [c0018228] interrupt_return+0x14/0x14c
+> --- interrupt: 300 at 0xb7e78638
+> NIP:  b7e78638 LR: b7e845e4 CTR: c01ea2d8
+> REGS: f1019f40 TRAP: 0300   Not tainted  (5.12.0-rc2+)
+> MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 28004422  XER: 20000000
+> DAR: fffffd20 DSISR: 42000000
+> GPR00: b7e845e4 bf951440 00000000 bf951460 00000000 bf951718 fefefeff 7f7f7f7f
+> GPR08: bf9516b0 406ae8e0 b7eac1d4 00000000 0a12247b 00000000 b7e8a0d0 b7e78554
+> GPR16: bf951730 bf9516f0 b7eaaf40 bf9516f0 00000001 b7eaa688 10002178 bf951460
+> GPR24: 00000000 00000000 b7eac200 100cff38 bf9516f0 10002179 b7e845e4 bf951440
+> NIP [b7e78638] 0xb7e78638
+> LR [b7e845e4] 0xb7e845e4
+> --- interrupt: 300
+> Rebooting in 180 seconds..
+> 
