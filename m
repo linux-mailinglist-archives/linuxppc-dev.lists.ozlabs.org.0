@@ -2,86 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D66334CB6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 00:42:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06424336995
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 02:22:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DwpX13P2Lz3ck2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 10:42:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dwrm474vHz3d3s
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 12:22:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=VsvkqZwD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EEdCyich;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=amodra@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VsvkqZwD; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=EEdCyich; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DwpWY3y7dz30Hc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 10:41:42 +1100 (AEDT)
-Received: by mail-pj1-x1036.google.com with SMTP id
- ga23-20020a17090b0397b02900c0b81bbcd4so8127313pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 15:41:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to
- :user-agent; bh=OhE9A5Au8YXDk/nctLEnkZXW+Ihu2QNqqTqW2KwYPHo=;
- b=VsvkqZwDY0Y2DMRxEz83oxJJTYKXYj8IPnK2ertssuutSi4X9bdw6Ec7TgBjj+oLNK
- sgRCVFA/gfIepe0bnE7P3pHBTfQgAR3WfTFxtcNAHGf2LsxJqeU+nm3PpgpMppWFE6Sg
- HbkPARXC0B1Edy2amGuwc0SlFp7ira3KerAmCI1lSoZljHjbyMfdg10SC8BH+bHRJoEl
- 2EXrTN8QzMRlS9XOGkjSdRH3unk1L3zY5rI2kdMMtLyEDDlO6+o8cQK77HoxioFrNBCd
- Q5GVIuPvYkrDTeUUZDl2cYLWGpxlgiUMLqizvb0Oi9JNUxAo6tLiCnk7VbfXrd7OhocN
- 8JWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to:user-agent;
- bh=OhE9A5Au8YXDk/nctLEnkZXW+Ihu2QNqqTqW2KwYPHo=;
- b=CXqMWVjokTjjwbufd56WRNL2OMaA9JKxOvCV4Q7+4B2kw6jJ/MqWIaNgps5MZTAPrH
- Ycz86CgNoCZCkTHhedUGQxS7YFJV93Igp/5EkLZ+axCScnVQJH0axu65YCQRk7krK83S
- jvGQGXlKMScsDsQfNTYdiJxeJu2WDWy2Zzg1Jw1vdOjgY/VtOdgYp80XsCR8GSbfleEf
- 6f5B5XQbIFtHj2L0XTQPKHk+ooqe19GFpdgt+KjidcCky1joRTsE3Jo9S3eQ9AMLRL3J
- j1xXWrPUi9YELI16i2/YFIhmzmxFjUXS3WBsqo0LSD4RBih2LHuWL7Tb0m6IDEPp89n9
- D/aA==
-X-Gm-Message-State: AOAM533IiEcbW9/JeQJfMp/S1aYiB0shu2rSMeCR6zUb7CyzEJQ7kX1M
- YWGD6jHX/uoc3XkLGap5AP8=
-X-Google-Smtp-Source: ABdhPJyZi49r/GiQ7mgRxNi9gpCAs/zXjluTq8TRLgqFqjBoZX6xRifLY9mxyYxMOTYIBgkES3yG3w==
-X-Received: by 2002:a17:90a:2a41:: with SMTP id
- d1mr5829233pjg.164.1615419699553; 
- Wed, 10 Mar 2021 15:41:39 -0800 (PST)
-Received: from bubble.grove.modra.org (158.106.96.58.static.exetel.com.au.
- [58.96.106.158])
- by smtp.gmail.com with ESMTPSA id i1sm491375pfo.160.2021.03.10.15.41.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Mar 2021 15:41:39 -0800 (PST)
-Received: by bubble.grove.modra.org (Postfix, from userid 1000)
- id 5389641A81; Thu, 11 Mar 2021 10:11:35 +1030 (ACDT)
-Date: Thu, 11 Mar 2021 10:11:35 +1030
-From: Alan Modra <amodra@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: PowerPC64 future proof kernel toc, revised for lld
-Message-ID: <20210310234135.GC29645@bubble.grove.modra.org>
-References: <20210309045638.GI6042@bubble.grove.modra.org>
- <20210310034813.GM6042@bubble.grove.modra.org>
- <3c92968f-7c61-8d36-4001-91f8630de4b1@linux.ibm.com>
- <20210310050722.GN6042@bubble.grove.modra.org>
- <5aa60950-d93c-f700-3b0b-a01f947e8a22@linux.ibm.com>
- <20210310122513.GB29645@bubble.grove.modra.org>
- <df863fb6-2fd6-00d7-b6f3-94a49c2a5405@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dwrlf1Z7fz30Qm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 12:22:21 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 12B13hRR067777; Wed, 10 Mar 2021 20:22:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=mFXtU+zxowGTGGG0QOp7xGjGqTn6kG26cxtGR7OX7jk=;
+ b=EEdCyich9uOHhuh++cmQgnooeOu7G4uBc6Z+j1ci3i8qle0Nun3JyUoKkR5M3v5UtjbJ
+ xdBN49LYn/ovGQcnis8HpWNh+Pmy04rZt8LKPFMrLwk/dgkrZB8ccKhMBrjwwZjaprtP
+ fcYWbIvxFG+gk+QMpzI6UKe68YADsSrypS7OFjCw9/zJjhbjctGk60oZeQ+ugXrnx8fq
+ QB25Gl1TZXOq4kkHkcn4WsR3vw96FriKl9bHLeLMo4Ub7rIOR3xPwgnwzCetXB7rWs5J
+ FRdplKkxthmPn73nFKCL24Pw7DlcqUyVQNaM+n93eewjW777ISwJS20Zh0DhVm/313e5 wQ== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3774m07fch-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 10 Mar 2021 20:22:17 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12B1Kl25025455;
+ Thu, 11 Mar 2021 01:22:16 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com
+ (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+ by ppma01wdc.us.ibm.com with ESMTP id 3768mh489f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Mar 2021 01:22:16 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 12B1MFkU21430636
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 11 Mar 2021 01:22:15 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 46A746E053;
+ Thu, 11 Mar 2021 01:22:15 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A68AB6E050;
+ Thu, 11 Mar 2021 01:22:14 +0000 (GMT)
+Received: from vios4361.aus.stglabs.ibm.com (unknown [9.3.43.61])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 11 Mar 2021 01:22:14 +0000 (GMT)
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+To: james.bottomley@hansenpartnership.com
+Subject: [PATCH] ibmvfc: free channel_setup_buf during device tear down
+Date: Wed, 10 Mar 2021 19:22:12 -0600
+Message-Id: <20210311012212.428068-1-tyreld@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <df863fb6-2fd6-00d7-b6f3-94a49c2a5405@csgroup.eu>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-10_13:2021-03-10,
+ 2021-03-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ impostorscore=0 mlxlogscore=999 clxscore=1015 spamscore=0 phishscore=0
+ suspectscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103110005
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,32 +94,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alexey@au1.ibm.com, Alexey Kardashevskiy <aik@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, ellerman@au1.ibm.com
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, martin.petersen@oracle.com,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, brking@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 10, 2021 at 01:44:57PM +0100, Christophe Leroy wrote:
-> 
-> 
-> Le 10/03/2021 à 13:25, Alan Modra a écrit :
-> > On Wed, Mar 10, 2021 at 08:33:37PM +1100, Alexey Kardashevskiy wrote:
-> > > One more question - the older version had a construct "DEFINED (.TOC.) ?
-> > > .TOC. : ..." in case .TOC. is not defined (too old ld? too old gcc?) but the
-> > > newer patch seems assuming it is always defined, when was it added? I have
-> > > the same check in SLOF, for example, do I still need it?
-> > 
-> > .TOC. symbol support was first added 2012-11-06, so you need
-> > binutils-2.24 or later to use .TOC. as a symbol.
-> > 
-> 
-> As of today, minimum requirement to build kernel is binutils 2.23, see https://www.kernel.org/doc/html/latest/process/changes.html#current-minimal-requirements
+The buffer for negotiating channel setup is DMA allocated at device
+probe time. However, the remove path fails to free this allocation which
+will prevent the hypervisor from releasing the virtual device in the
+case of a hotplug remove.
 
-Yes, and arch/powerpc/Makefile complains about 2.24.  So for powerpc
-that means you need to go to at least 2.25.  Oh the horror of needing
-such new tools!
+Fix this issue by freeing the buffer allocation in ibmvfc_free_mem().
 
+Fixes: e95eef3fc0bc ("scsi: ibmvfc: Implement channel enquiry and setup commands")
+Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+---
+ drivers/scsi/ibmvscsi/ibmvfc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index e663085a8944..76531eec49de 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -5770,6 +5770,8 @@ static void ibmvfc_free_mem(struct ibmvfc_host *vhost)
+ 			  vhost->disc_buf_dma);
+ 	dma_free_coherent(vhost->dev, sizeof(*vhost->login_buf),
+ 			  vhost->login_buf, vhost->login_buf_dma);
++	dma_free_coherent(vhost->dev, sizeof(*vhost->channel_setup_buf),
++			  vhost->channel_setup_buf, vhost->channel_setup_dma);
+ 	dma_pool_destroy(vhost->sg_pool);
+ 	ibmvfc_free_queue(vhost, async_q);
+ 	LEAVE;
 -- 
-Alan Modra
-Australia Development Lab, IBM
+2.27.0
+
