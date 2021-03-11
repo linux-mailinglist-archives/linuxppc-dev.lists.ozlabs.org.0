@@ -2,47 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7393369CC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 02:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADC9336ACF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 04:38:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dws4r6SlPz3cnr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 12:37:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DwvmN2y7fz3d3t
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Mar 2021 14:38:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.222.177;
+ helo=mail-qk1-f177.google.com; envelope-from=kswilczynski@gmail.com;
+ receiver=<UNKNOWN>)
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com
+ [209.85.222.177])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dws4V3Lbqz2yjH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 12:36:56 +1100 (AEDT)
-IronPort-SDR: SqRVTI/ja3ysQsGXHzZxyoZDbbDHTj8l7hAapTrvD1WEchtbIrAnnxLEVlAgMqPsUQjH+ox9P9
- wbHQG/cb8HxQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9919"; a="176190959"
-X-IronPort-AV: E=Sophos;i="5.81,238,1610438400"; d="scan'208";a="176190959"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2021 17:36:51 -0800
-IronPort-SDR: 2Efd5b45b1ldztUBPkUBiFSKZmz6BAxraRjWDGp21CC5e7pRGDixos6qd1Z+C/18PVaJPC3bEo
- 6q59n/8sS0qw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,238,1610438400"; d="scan'208";a="372163760"
-Received: from lkp-server02.sh.intel.com (HELO ce64c092ff93) ([10.239.97.151])
- by orsmga006.jf.intel.com with ESMTP; 10 Mar 2021 17:36:50 -0800
-Received: from kbuild by ce64c092ff93 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1lKAFu-0000VO-0R; Thu, 11 Mar 2021 01:36:50 +0000
-Date: Thu, 11 Mar 2021 09:36:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- bd73758803c2eedc037c2268b65a19542a832594
-Message-ID: <60497417.AQc3piuOMMftfVgm%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dwvm215kFz3cH1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 14:37:53 +1100 (AEDT)
+Received: by mail-qk1-f177.google.com with SMTP id l132so19322681qke.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Mar 2021 19:37:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HoIkSwuB9kFb/7o0k8S78I/HpiyIT43O0+mWxnUnfJI=;
+ b=AVVotz6QcDJt8/bWVuYTruhoWny7aKM2ZtbIBC8Xz7guTZ1lq8R3D/q+W6BvohKWov
+ JhUw5Z+eKDDsYErzH47MR5cunyXsRFYUOKWxuZ34xdgezEDXEPVaDb3pDoS0EDakXE6e
+ v1sYYy+E4En4pI3pN075c1UVacNJK7KZKTwhgcX9PBNt7xfjMSzWPWTJU25IPEvuIRMI
+ CHP6/MhrC7GM4c4xj018VNJlfl8JGPjo/BqN50vd5X2vTpL4GWpP8VY2hCL2vGcqmM1C
+ bmJRD/JA6mV2O1DIFuz8gGnf7/BOimsErJEPVVE0/mJ4OmmzISikWJWk9QLs2gYBFTAP
+ lPTA==
+X-Gm-Message-State: AOAM531wRMY1hwCKtxPFEpbEg6K6oGlrL/hkjod8Qit9Wd282mgAMvKn
+ bYwOFWPY39laCSYUnHWFPtA=
+X-Google-Smtp-Source: ABdhPJyKZhUdOe1LCVxqhW5iBVJS/b2WAnNvPcpQJ7B6+4Fnw8aEHmu32vFpUVzeLUQfGiIHqbOtQQ==
+X-Received: by 2002:a37:94b:: with SMTP id 72mr4823437qkj.94.1615433870050;
+ Wed, 10 Mar 2021 19:37:50 -0800 (PST)
+Received: from workstation.lan ([95.155.85.46])
+ by smtp.gmail.com with ESMTPSA id j1sm949876qti.55.2021.03.10.19.37.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 10 Mar 2021 19:37:49 -0800 (PST)
+From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: [PATCH] PCI: layerscape: Correct syntax by changing comma to semicolon
+Date: Thu, 11 Mar 2021 03:37:45 +0000
+Message-Id: <20210311033745.1547044-1-kw@linux.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,157 +62,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Roy Zang <roy.zang@nxp.com>,
+ Minghuan Lian <minghuan.Lian@nxp.com>, linux-pci@vger.kernel.org,
+ Zheng Yongjun <zhengyongjun3@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: bd73758803c2eedc037c2268b65a19542a832594  powerpc: Fix missing declaration of [en/dis]able_kernel_vsx()
+Replace command with a semicolon to correct syntax and to prevent
+potential unspecified behaviour and/or unintended side effects.
 
-elapsed time: 729m
+Related:
+  https://lore.kernel.org/linux-pci/20201216131944.14990-1-zhengyongjun3@huawei.com/
 
-configs tested: 131
-configs skipped: 42
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sparc                            allyesconfig
-mips                         db1xxx_defconfig
-powerpc                     tqm8540_defconfig
-powerpc                      ppc44x_defconfig
-m68k                          hp300_defconfig
-powerpc                    adder875_defconfig
-powerpc                 mpc8313_rdb_defconfig
-powerpc                      ppc40x_defconfig
-mips                      pistachio_defconfig
-powerpc                 mpc837x_rdb_defconfig
-powerpc                     pq2fads_defconfig
-powerpc                      obs600_defconfig
-powerpc                       holly_defconfig
-powerpc                     kmeter1_defconfig
-riscv                          rv32_defconfig
-arm                             pxa_defconfig
-powerpc                     tqm8541_defconfig
-sh                          polaris_defconfig
-powerpc                      ep88xc_defconfig
-mips                       rbtx49xx_defconfig
-powerpc                     mpc512x_defconfig
-ia64                             allmodconfig
-sh                   sh7770_generic_defconfig
-i386                                defconfig
-arm                             ezx_defconfig
-powerpc                       eiger_defconfig
-ia64                            zx1_defconfig
-sh                           se7750_defconfig
-arm                     eseries_pxa_defconfig
-sh                               alldefconfig
-powerpc                      katmai_defconfig
-m68k                       m5275evb_defconfig
-sh                        dreamcast_defconfig
-microblaze                          defconfig
-powerpc                 mpc836x_mds_defconfig
-sh                          lboxre2_defconfig
-arm                            xcep_defconfig
-arc                           tb10x_defconfig
-arm                          ep93xx_defconfig
-powerpc                     stx_gp3_defconfig
-arm                          pxa910_defconfig
-powerpc                        icon_defconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20210309
-i386                 randconfig-a003-20210309
-i386                 randconfig-a002-20210309
-i386                 randconfig-a006-20210309
-i386                 randconfig-a004-20210309
-i386                 randconfig-a001-20210309
-x86_64               randconfig-a013-20210309
-x86_64               randconfig-a016-20210309
-x86_64               randconfig-a015-20210309
-x86_64               randconfig-a014-20210309
-x86_64               randconfig-a011-20210309
-x86_64               randconfig-a012-20210309
-x86_64               randconfig-a011-20210310
-x86_64               randconfig-a016-20210310
-x86_64               randconfig-a013-20210310
-x86_64               randconfig-a015-20210310
-x86_64               randconfig-a014-20210310
-x86_64               randconfig-a012-20210310
-i386                 randconfig-a016-20210309
-i386                 randconfig-a012-20210309
-i386                 randconfig-a014-20210309
-i386                 randconfig-a013-20210309
-i386                 randconfig-a011-20210309
-i386                 randconfig-a015-20210309
-x86_64               randconfig-a006-20210308
-x86_64               randconfig-a001-20210308
-x86_64               randconfig-a004-20210308
-x86_64               randconfig-a002-20210308
-x86_64               randconfig-a005-20210308
-x86_64               randconfig-a003-20210308
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a013-20210308
-x86_64               randconfig-a016-20210308
-x86_64               randconfig-a015-20210308
-x86_64               randconfig-a014-20210308
-x86_64               randconfig-a011-20210308
-x86_64               randconfig-a012-20210308
-x86_64               randconfig-a006-20210309
-x86_64               randconfig-a001-20210309
-x86_64               randconfig-a004-20210309
-x86_64               randconfig-a002-20210309
-x86_64               randconfig-a005-20210309
-x86_64               randconfig-a003-20210309
-
+Co-authored-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/pci/controller/dwc/pci-layerscape-ep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index 39fe2ed5a6a2..39f4664bd84c 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -154,7 +154,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 	pci->dev = dev;
+ 	pci->ops = pcie->drvdata->dw_pcie_ops;
+ 
+-	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4),
++	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
+ 
+ 	pcie->pci = pci;
+ 	pcie->ls_epc = ls_epc;
+-- 
+2.30.1
+
