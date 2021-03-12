@@ -1,53 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6304A338E3C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 14:04:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99348338E3D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 14:05:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DxmHb2x5gz3jgd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Mar 2021 00:04:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DxmJ644Pmz3jmc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Mar 2021 00:05:10 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kdmJmnns;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=kdmJmnns; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dxlzg0j6sz3dV9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 23:50:55 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Dxlzb5g6yz9ttBQ;
- Fri, 12 Mar 2021 13:50:51 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id cfUFVCpVZiQ2; Fri, 12 Mar 2021 13:50:51 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Dxlzb4dyhz9ttBP;
- Fri, 12 Mar 2021 13:50:51 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 83FD48B812;
- Fri, 12 Mar 2021 13:50:52 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id S0iLJerymnqD; Fri, 12 Mar 2021 13:50:52 +0100 (CET)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1C5478B764;
- Fri, 12 Mar 2021 13:50:52 +0100 (CET)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id DED58675C9; Fri, 12 Mar 2021 12:50:51 +0000 (UTC)
-Message-Id: <199365ddb58d579daf724815f2d0acb91cc49d19.1615552867.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1615552866.git.christophe.leroy@csgroup.eu>
-References: <cover.1615552866.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 41/41] powerpc/32: Manage KUAP in C
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- npiggin@gmail.com
-Date: Fri, 12 Mar 2021 12:50:51 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dxm5309c8z3fmK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 23:55:34 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 12CCoVxo098940; Fri, 12 Mar 2021 07:55:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=CZraW3MLXsGZlFWIXQunR5iKvo4efs3ARmrIvH7smV0=;
+ b=kdmJmnnsMKXuEmWZOuMf7s7iV6TMAecfmqZhAziTu7p6X4vp9zARCsAJF6RaqIw54sJC
+ M6JfXwnR4QJXb+uK+DNNuySj/97U5tk3NZXfsgaQgHGO2DvTx/uaHoiiu/R7kZlTU00/
+ zwwUrdboYiCYtvaRFNyMkn+Ffx0XjAEsDIHsCKjtULM4kOPH5NVk44ousNxzgbpJLGBf
+ 1rckNi0o3pypo+mokZ/AwPGCL06We013odqVZjAa3FtOrNAYooE/kPlJUxdlYKcRWP/Q
+ D9QdvFF/hYlDuxslK4F1sNqYZwSBTzOvF6Vo5dCQa1AIBkPY5atEvMzQ21uy23RD2E3P pQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3774m6s7qq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Mar 2021 07:55:32 -0500
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12CCoXfi099116;
+ Fri, 12 Mar 2021 07:55:31 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3774m6s7qb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Mar 2021 07:55:31 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12CCh0xr005916;
+ Fri, 12 Mar 2021 12:55:31 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma02wdc.us.ibm.com with ESMTP id 3768swfevk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Mar 2021 12:55:31 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 12CCtPrS31916300
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 12 Mar 2021 12:55:25 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 348D978064;
+ Fri, 12 Mar 2021 12:55:25 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 79AA278063;
+ Fri, 12 Mar 2021 12:55:24 +0000 (GMT)
+Received: from localhost (unknown [9.211.65.7])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Fri, 12 Mar 2021 12:55:24 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH v3 23/41] KVM: PPC: Book3S HV P9: Reduce mftb per guest
+ entry/exit
+In-Reply-To: <20210305150638.2675513-24-npiggin@gmail.com>
+References: <20210305150638.2675513-1-npiggin@gmail.com>
+ <20210305150638.2675513-24-npiggin@gmail.com>
+Date: Fri, 12 Mar 2021 09:55:22 -0300
+Message-ID: <87y2essf9h.fsf@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-12_03:2021-03-10,
+ 2021-03-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ mlxlogscore=999 spamscore=0 adultscore=0 malwarescore=0 phishscore=0
+ clxscore=1015 impostorscore=0 mlxscore=0 bulkscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103120088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,316 +104,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move all KUAP management in C.
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/book3s/32/kup.h     | 50 +-------------------
- arch/powerpc/include/asm/interrupt.h         |  2 +
- arch/powerpc/include/asm/kup.h               |  9 ----
- arch/powerpc/include/asm/nohash/32/kup-8xx.h | 25 +---------
- arch/powerpc/kernel/entry_32.S               |  8 ----
- arch/powerpc/kernel/interrupt.c              | 19 ++------
- arch/powerpc/kernel/process.c                |  3 ++
- 7 files changed, 11 insertions(+), 105 deletions(-)
+> mftb is serialising (dispatch next-to-complete) so it is heavy weight
+> for a mfspr. Avoid reading it multiple times in the entry or exit paths.
+> A small number of cycles delay to timers is tolerable.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-index 46599bbc4525..1670dfe9d4f1 100644
---- a/arch/powerpc/include/asm/book3s/32/kup.h
-+++ b/arch/powerpc/include/asm/book3s/32/kup.h
-@@ -5,55 +5,7 @@
- #include <asm/bug.h>
- #include <asm/book3s/32/mmu-hash.h>
- 
--#ifdef __ASSEMBLY__
--
--#ifdef CONFIG_PPC_KUAP
--
--.macro kuap_update_sr	gpr1, gpr2, gpr3	/* NEVER use r0 as gpr2 due to addis */
--101:	mtsrin	\gpr1, \gpr2
--	addi	\gpr1, \gpr1, 0x111		/* next VSID */
--	rlwinm	\gpr1, \gpr1, 0, 0xf0ffffff	/* clear VSID overflow */
--	addis	\gpr2, \gpr2, 0x1000		/* address of next segment */
--	cmplw	\gpr2, \gpr3
--	blt-	101b
--	isync
--.endm
--
--.macro kuap_save_and_lock	sp, thread, gpr1, gpr2, gpr3
--	lwz	\gpr2, KUAP(\thread)
--	rlwinm.	\gpr3, \gpr2, 28, 0xf0000000
--	stw	\gpr2, STACK_REGS_KUAP(\sp)
--	beq+	102f
--	li	\gpr1, 0
--	stw	\gpr1, KUAP(\thread)
--	mfsrin	\gpr1, \gpr2
--	oris	\gpr1, \gpr1, SR_KS@h	/* set Ks */
--	kuap_update_sr	\gpr1, \gpr2, \gpr3
--102:
--.endm
--
--.macro kuap_restore	sp, current, gpr1, gpr2, gpr3
--	lwz	\gpr2, STACK_REGS_KUAP(\sp)
--	rlwinm.	\gpr3, \gpr2, 28, 0xf0000000
--	stw	\gpr2, THREAD + KUAP(\current)
--	beq+	102f
--	mfsrin	\gpr1, \gpr2
--	rlwinm	\gpr1, \gpr1, 0, ~SR_KS	/* Clear Ks */
--	kuap_update_sr	\gpr1, \gpr2, \gpr3
--102:
--.endm
--
--.macro kuap_check	current, gpr
--#ifdef CONFIG_PPC_KUAP_DEBUG
--	lwz	\gpr, THREAD + KUAP(\current)
--999:	twnei	\gpr, 0
--	EMIT_BUG_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
--#endif
--.endm
--
--#endif /* CONFIG_PPC_KUAP */
--
--#else /* !__ASSEMBLY__ */
-+#ifndef __ASSEMBLY__
- 
- #ifdef CONFIG_PPC_KUAP
- 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index 857375309255..7c633896d758 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -36,6 +36,8 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
- 	if (user_mode(regs)) {
- 		kuep_lock();
- 		account_cpu_user_entry();
-+	} else {
-+		kuap_save_and_lock(regs);
- 	}
- #endif
- 	/*
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index aa5f77459311..ec96232529ac 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -28,15 +28,6 @@
- 
- #ifdef __ASSEMBLY__
- #ifndef CONFIG_PPC_KUAP
--.macro kuap_save_and_lock	sp, thread, gpr1, gpr2, gpr3
--.endm
--
--.macro kuap_restore	sp, current, gpr1, gpr2, gpr3
--.endm
--
--.macro kuap_check	current, gpr
--.endm
--
- .macro kuap_check_amr	gpr1, gpr2
- .endm
- 
-diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-index e6b5ebca47e5..295ef5639609 100644
---- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-@@ -7,30 +7,7 @@
- 
- #ifdef CONFIG_PPC_KUAP
- 
--#ifdef __ASSEMBLY__
--
--.macro kuap_save_and_lock	sp, thread, gpr1, gpr2, gpr3
--	lis	\gpr2, MD_APG_KUAP@h	/* only APG0 and APG1 are used */
--	mfspr	\gpr1, SPRN_MD_AP
--	mtspr	SPRN_MD_AP, \gpr2
--	stw	\gpr1, STACK_REGS_KUAP(\sp)
--.endm
--
--.macro kuap_restore	sp, current, gpr1, gpr2, gpr3
--	lwz	\gpr1, STACK_REGS_KUAP(\sp)
--	mtspr	SPRN_MD_AP, \gpr1
--.endm
--
--.macro kuap_check	current, gpr
--#ifdef CONFIG_PPC_KUAP_DEBUG
--	mfspr	\gpr, SPRN_MD_AP
--	rlwinm	\gpr, \gpr, 16, 0xffff
--999:	twnei	\gpr, MD_APG_KUAP@h
--	EMIT_BUG_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
--#endif
--.endm
--
--#else /* !__ASSEMBLY__ */
-+#ifndef __ASSEMBLY__
- 
- #include <asm/reg.h>
- 
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 112d6247c391..9160285cb2f4 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -51,10 +51,7 @@
- #if defined(CONFIG_PPC_BOOK3S_32) || defined(CONFIG_E500)
- 	.globl	prepare_transfer_to_handler
- prepare_transfer_to_handler:
--	addi	r12,r2,THREAD
--
- 	/* if from kernel, check interrupted DOZE/NAP mode */
--	kuap_save_and_lock r11, r12, r9, r5, r6
- 	lwz	r12,TI_LOCAL_FLAGS(r2)
- 	mtcrf	0x01,r12
- 	bt-	31-TLF_NAPPING,4f
-@@ -70,7 +67,6 @@ prepare_transfer_to_handler:
- 	lwz	r9,_MSR(r11)		/* if sleeping, clear MSR.EE */
- 	rlwinm	r9,r9,0,~MSR_EE
- 	lwz	r12,_LINK(r11)		/* and return to address in LR */
--	kuap_restore r11, r2, r3, r4, r5
- 	lwz	r2, GPR2(r11)
- 	b	fast_exception_return
- _ASM_NOKPROBE_SYMBOL(prepare_transfer_to_handler)
-@@ -95,7 +91,6 @@ ret_from_syscall:
- 	cmplwi	cr0,r5,0
- 	bne-	2f
- #endif /* CONFIG_PPC_47x */
--	kuap_check r2, r4
- 	lwz	r4,_LINK(r1)
- 	lwz	r5,_CCR(r1)
- 	mtlr	r4
-@@ -207,7 +202,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_SPE)
- 	stw	r10,_CCR(r1)
- 	stw	r1,KSP(r3)	/* Set old stack pointer */
- 
--	kuap_check r2, r0
- #ifdef CONFIG_SMP
- 	/* We need a sync somewhere here to make sure that if the
- 	 * previous task gets rescheduled on another CPU, it sees all
-@@ -298,7 +292,6 @@ interrupt_return:
- 	bne-	.Lrestore_nvgprs
- 
- .Lfast_user_interrupt_return:
--	kuap_check r2, r4
- 	lwz	r11,_NIP(r1)
- 	lwz	r12,_MSR(r1)
- 	mtspr	SPRN_SRR0,r11
-@@ -347,7 +340,6 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
- 
- .Lfast_kernel_interrupt_return:
- 	cmpwi	cr1,r3,0
--	kuap_restore r1, r2, r3, r4, r5
- 	lwz	r11,_NIP(r1)
- 	lwz	r12,_MSR(r1)
- 	mtspr	SPRN_SRR0,r11
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index a7cb511bf945..c4dd4b8f9cfa 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -34,6 +34,9 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 	syscall_fn f;
- 
- 	kuep_lock();
-+#ifdef CONFIG_PPC32
-+	kuap_save_and_lock(regs);
-+#endif
- 
- 	regs->orig_gpr3 = r3;
- 
-@@ -75,9 +78,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 			isync();
- 	} else
- #endif
--#ifdef CONFIG_PPC64
- 		kuap_assert_locked();
--#endif
- 
- 	booke_restore_dbcr0();
- 
-@@ -253,9 +254,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 
- 	CT_WARN_ON(ct_state() == CONTEXT_USER);
- 
--#ifdef CONFIG_PPC64
- 	kuap_assert_locked();
--#endif
- 
- 	regs->result = r3;
- 
-@@ -350,7 +349,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 
- 	account_cpu_user_exit();
- 
--#ifdef CONFIG_PPC_BOOK3S_64 /* BOOK3E and ppc32 not using this */
-+#ifndef CONFIG_PPC_BOOK3E_64 /* BOOK3E not using this */
- 	/*
- 	 * We do this at the end so that we do context switch with KERNEL AMR
- 	 */
-@@ -379,9 +378,7 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
- 	 * We don't need to restore AMR on the way back to userspace for KUAP.
- 	 * AMR can only have been unlocked if we interrupted the kernel.
- 	 */
--#ifdef CONFIG_PPC64
- 	kuap_assert_locked();
--#endif
- 
- 	local_irq_save(flags);
- 
-@@ -438,9 +435,7 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
- 	/*
- 	 * We do this at the end so that we do context switch with KERNEL AMR
- 	 */
--#ifdef CONFIG_PPC64
- 	kuap_user_restore(regs);
--#endif
- 	return ret;
- }
- 
-@@ -450,9 +445,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
- {
- 	unsigned long flags;
- 	unsigned long ret = 0;
--#ifdef CONFIG_PPC64
- 	unsigned long kuap;
--#endif
- 
- 	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x) &&
- 	    unlikely(!(regs->msr & MSR_RI)))
-@@ -466,9 +459,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
- 	if (TRAP(regs) != 0x700)
- 		CT_WARN_ON(ct_state() == CONTEXT_USER);
- 
--#ifdef CONFIG_PPC64
- 	kuap = kuap_get_and_assert_locked();
--#endif
- 
- 	if (unlikely(current_thread_info()->flags & _TIF_EMULATE_STACK_STORE)) {
- 		clear_bits(_TIF_EMULATE_STACK_STORE, &current_thread_info()->flags);
-@@ -510,9 +501,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
- 	 * which would cause Read-After-Write stalls. Hence, we take the AMR
- 	 * value from the check above.
- 	 */
--#ifdef CONFIG_PPC64
- 	kuap_kernel_restore(regs, kuap);
--#endif
- 
- 	return ret;
- }
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 5d5d64be2679..7989d9ce468b 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1255,6 +1255,9 @@ struct task_struct *__switch_to(struct task_struct *prev,
- 	 */
- 	restore_sprs(old_thread, new_thread);
- 
-+#ifdef CONFIG_PPC32
-+	kuap_assert_locked();
-+#endif
- 	last = _switch(old_thread, new_thread);
- 
- #ifdef CONFIG_PPC_BOOK3S_64
--- 
-2.25.0
+Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
 
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index c1965a9d8d00..6f3e3aed99aa 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -3505,12 +3505,13 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+>  		host_dawrx1 = mfspr(SPRN_DAWRX1);
+>  	}
+>
+> -	hdec = time_limit - mftb();
+> +	tb = mftb();
+> +	hdec = time_limit - tb;
+>  	if (hdec < 0)
+>  		return BOOK3S_INTERRUPT_HV_DECREMENTER;
+>
+>  	if (vc->tb_offset) {
+> -		u64 new_tb = mftb() + vc->tb_offset;
+> +		u64 new_tb = tb + vc->tb_offset;
+>  		mtspr(SPRN_TBU40, new_tb);
+>  		tb = mftb();
+>  		if ((tb & 0xffffff) < (new_tb & 0xffffff))
+> @@ -3703,7 +3704,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>  	if (!(vcpu->arch.ctrl & 1))
+>  		mtspr(SPRN_CTRLT, mfspr(SPRN_CTRLF) & ~1);
+>
+> -	mtspr(SPRN_DEC, vcpu->arch.dec_expires - mftb());
+> +	mtspr(SPRN_DEC, vcpu->arch.dec_expires - tb);
+>
+>  	if (kvmhv_on_pseries()) {
+>  		/*
+> @@ -3837,7 +3838,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>  	vc->entry_exit_map = 0x101;
+>  	vc->in_guest = 0;
+>
+> -	mtspr(SPRN_DEC, local_paca->kvm_hstate.dec_expires - mftb());
+> +	mtspr(SPRN_DEC, local_paca->kvm_hstate.dec_expires - tb);
+>  	mtspr(SPRN_SPRG_VDSO_WRITE, local_paca->sprg_vdso);
+>
+>  	kvmhv_load_host_pmu();
