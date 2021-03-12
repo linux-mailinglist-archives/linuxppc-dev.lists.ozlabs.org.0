@@ -1,90 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04324338477
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 04:45:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83F23384DF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 06:08:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DxWtm08ZVz3dDM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 14:45:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DxYk06TlCz3dFS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 16:08:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=vuJbn5YD;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=iiFmQA/u;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::429;
- helo=mail-pf1-x429.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=vuJbn5YD; dkim-atps=neutral
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
- [IPv6:2607:f8b0:4864:20::429])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=iiFmQA/u; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DxWtJ6CYSz3cJX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 14:45:25 +1100 (AEDT)
-Received: by mail-pf1-x429.google.com with SMTP id l7so955313pfd.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 19:45:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=+UxDu1OMkjlBjCBhL012JeSF23eUU8crAJ2h0QUTKBA=;
- b=vuJbn5YDcO8s4thuITfoh9JX/Y8eTdfR2O3/CMCZxQuUjQuLHNpWkAg7XmZz8K5zdN
- cnlO2+pp6pj012fNtXCvk1uZhBP2k+bSq4BXTyDVLEHwthjsVsoqxQ3As5fgf20zwren
- ZdpwSBLDHOxxY2EvQQXe6j1TbWIM7C7FpJqj9cde4kh0gttMRIBnxNlU4Xdyfpao0yVn
- UuOhaBO6XMACYaj265G4w+wxfXTvQOv5rRu+oIDaU1rq86VshE2cMeeyXrALeHad2FNU
- LUplHi6o+obaF4XciMMK8TrGOPkVc+j02R4q2SNqeVv9/pOJbTZs641FmY7jcgNYHcTP
- /mtw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DxYjb1Hmnz3cJF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 16:07:59 +1100 (AEDT)
+Received: by mail-pj1-x102f.google.com with SMTP id gb6so4582770pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 21:07:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=Aw8LdrIy0N+x7RWdCdmmkmT4qhnI7TsuuwjFLzDAHCg=;
+ b=iiFmQA/ujrKz79YHZfVGSeFKgwmlp1xcvs5qM1LU+dCINPeVoAVxJCPmTzVvT7nUog
+ SfKW53M7u4loOU2OJnzuOO9IFWGOfkXsrPtf0NMSuWyU1q1LmVpw9wr/xSMFtW/q7N9i
+ QkMVEF6qW2xnLWxjVfOBnJqhrTTuKYOD1j74s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=+UxDu1OMkjlBjCBhL012JeSF23eUU8crAJ2h0QUTKBA=;
- b=pxvbqlCoCixqYRoJfEHjYUfwQ9FPUconvUUKpuSjls5B3Lk9q8F33VCy9TOK3SzuFS
- /d0Yfyz6PzuaWUWBU3o+smjej6R7QNImaK3Zv9sb3EFaO5OUeOtTGsEqykFzItC/ftZj
- hw/28a1EBQ3O4mnrYJqzirc96WU/P90lUPUacO7nhgtj4Zgt/ApyJt9OF+KnTZhMfKeM
- MhQ6RkVz2ymWPA6ytIzbv9zMR30FCFabFg+N8MDdnFRvRifw3GjVX4TIyIPWtI6GttL8
- +505lgPIZKcj7EN0F2GK76ZkiuKn49ratSlWag9eUCv9Dx+5qjiJDS8es2Ptb2BZAM4T
- 7UEg==
-X-Gm-Message-State: AOAM531nOqSeOWm/8VzrSpP57NhUMMN6OqabayUviUsZzoDfYuWXVtWd
- vM/IAMS515DTbk+0q4v39PzmElwzk0SKw4C4
-X-Google-Smtp-Source: ABdhPJzeikVGR+92CKdvaSQjcMn1Cyr/SlWohyWSplupON4v/IeFDyvKlQhudqWwy2gl+BonELOqUg==
-X-Received: by 2002:aa7:942d:0:b029:1f2:cbc6:8491 with SMTP id
- y13-20020aa7942d0000b02901f2cbc68491mr10556788pfo.53.1615520719927; 
- Thu, 11 Mar 2021 19:45:19 -0800 (PST)
-Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
- [124.171.107.241])
- by smtp.gmail.com with UTF8SMTPSA id u20sm3717947pfm.146.2021.03.11.19.45.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Mar 2021 19:45:19 -0800 (PST)
-Subject: Re: PowerPC64 future proof kernel toc, revised for lld
-To: Michael Ellerman <ellerman@au1.ibm.com>, Alan Modra <amodra@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20210309045638.GI6042@bubble.grove.modra.org>
- <20210310034813.GM6042@bubble.grove.modra.org>
- <3c92968f-7c61-8d36-4001-91f8630de4b1@linux.ibm.com>
- <20210310050722.GN6042@bubble.grove.modra.org>
- <5aa60950-d93c-f700-3b0b-a01f947e8a22@linux.ibm.com>
- <20210310122513.GB29645@bubble.grove.modra.org>
- <df863fb6-2fd6-00d7-b6f3-94a49c2a5405@csgroup.eu>
- <20210310234135.GC29645@bubble.grove.modra.org>
- <87mtv9jmgf.fsf@mpe.ellerman.id.au>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <15227114-a5fc-9573-f563-cde1b84cbaa1@ozlabs.ru>
-Date: Fri, 12 Mar 2021 14:45:13 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:85.0) Gecko/20100101
- Thunderbird/85.0
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=Aw8LdrIy0N+x7RWdCdmmkmT4qhnI7TsuuwjFLzDAHCg=;
+ b=T7ZMFOUL44Lkok+c2jvWheXXnZ8xf06n10eMVchOKrKRbGiLmFCXXDytGH7O17HDNQ
+ w7tDW+zejEB1AxIy3gj8wUof1OpqRASfUoUenONMHTg7X77UHAuoDfrk47DT9yA90WeG
+ TAg+sv+DTlQoUQ5kPkfUVABdO5OXcFRZRXhXCP5NpOtrmKh7hmhOC+uWudnlHxtd1t7W
+ 7Rq+Mij+8KD0pcXpOQUI3aulquHt5xLtC29dYhhUbEd+iMJuhIpR6xFjMAytp7QHP4tn
+ t7PSdrv8mcEqLPEsIa++J6G+GqwRbRtSz/ivTjiH5wruNDV0Eu/MOItWBqIRo84eD5Ev
+ D9Qg==
+X-Gm-Message-State: AOAM533l3TQmKUPNAXAUXae8WAMori1QUrZc/ymOhRQgVzuOjttX+8IJ
+ 9rbZj9Zz9vftCD3jFyQhrOC84Q==
+X-Google-Smtp-Source: ABdhPJyDC5thnbRF6vH+OWtFPtshcHt9zGNXl3bAvIhIAAiWc8LkvHsuU8eEV6jCKV5y1HazdorJHg==
+X-Received: by 2002:a17:903:22d2:b029:e5:df4f:3d64 with SMTP id
+ y18-20020a17090322d2b02900e5df4f3d64mr11868068plg.37.1615525676335; 
+ Thu, 11 Mar 2021 21:07:56 -0800 (PST)
+Received: from localhost
+ (2001-44b8-1113-6700-7ad2-5bb3-4fd4-d737.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:7ad2:5bb3:4fd4:d737])
+ by smtp.gmail.com with ESMTPSA id 134sm3978946pfc.113.2021.03.11.21.07.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Mar 2021 21:07:55 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH v3 03/41] KVM: PPC: Book3S HV: Remove redundant mtspr PSPB
+In-Reply-To: <20210305150638.2675513-4-npiggin@gmail.com>
+References: <20210305150638.2675513-1-npiggin@gmail.com>
+ <20210305150638.2675513-4-npiggin@gmail.com>
+Date: Fri, 12 Mar 2021 16:07:52 +1100
+Message-ID: <87ft117ydz.fsf@linkitivity.dja.id.au>
 MIME-Version: 1.0
-In-Reply-To: <87mtv9jmgf.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,56 +78,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alexey@au1.ibm.com, Alexey Kardashevskiy <aik@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Nick,
+
+> This SPR is set to 0 twice when exiting the guest.
+>
+Indeed it is.
+
+I checked the ISA because I'd never heard of the PSPB SPR before! It's
+the Problem State Priority Boost register. Before I knew what it was, I
+was slightly concerned that the chip might change the value while the
+other mtsprs were running, but given that it's just affects the priority
+boost states that problem state can use, I don't think that is actually
+going to happen.
+
+I also checked the commit that introduced it - commit 95a6432ce903
+("KVM: PPC: Book3S HV: Streamlined guest entry/exit path on P9 for radix
+guests"), and there wasn't any justification for having a double mtspr.
+
+So, this seems good:
+Reviewed-by: Daniel Axtens <dja@axtens.net>
+
+Kind regards,
+Daniel
 
 
-On 12/03/2021 10:32, Michael Ellerman wrote:
-> Alan Modra <amodra@gmail.com> writes:
->> On Wed, Mar 10, 2021 at 01:44:57PM +0100, Christophe Leroy wrote:
->>>
->>> Le 10/03/2021 à 13:25, Alan Modra a écrit :
->>>> On Wed, Mar 10, 2021 at 08:33:37PM +1100, Alexey Kardashevskiy wrote:
->>>>> One more question - the older version had a construct "DEFINED (.TOC.) ?
->>>>> .TOC. : ..." in case .TOC. is not defined (too old ld? too old gcc?) but the
->>>>> newer patch seems assuming it is always defined, when was it added? I have
->>>>> the same check in SLOF, for example, do I still need it?
->>>>
->>>> .TOC. symbol support was first added 2012-11-06, so you need
->>>> binutils-2.24 or later to use .TOC. as a symbol.
->>>>
->>>
->>> As of today, minimum requirement to build kernel is binutils 2.23, see https://urldefense.proofpoint.com/v2/url?u=https-3A__www.kernel.org_doc_html_latest_process_changes.html-23current-2Dminimal-2Drequirements&d=DwIDAw&c=jf_iaSHvJObTbx-siA1ZOg&r=uzpscot8Q8p-51o1Gp1vnzKV94bfny2qmUdVe821lv0&m=SYi605mn0I1hf1QoHuvHXtS_Z-R6JJHbzS34cEtV2Tk&s=47ckf3yxVcP6RwRb8D9viYOQSWpf6rXrnWj4YM4OTJ0&e=
->>
->> Yes, and arch/powerpc/Makefile complains about 2.24.  So for powerpc
->> that means you need to go to at least 2.25.
-> 
-> Not quite. It only complains for little endian builds, and only if you
-> have stock 2.24, it will allow a 2.24.<something>.
-> 
-> I do most of my builds with 2.34, so I have no issue with newer
-> binutils. But we try not to increase the minimum version too rapidly to
-> accommodate folks using older and/or "Enterprise" distros that are stuck
-> on old toolchains.
-> 
-> I think we are within our rights to increase the minimum requirement for
-> powerpc builds, if it brings advantages we can identify.
-> 
-> The way to do that would be to add a new check in our arch Makefile that
-> rejects the older versions.
-
-The upstream llvm just learnt to handle the .TOC. symbol in linker 
-scripts so we may delay the future for a bit longer :) @dja wanted 
-upstream llvm anyway and the currently supported llvm 10.xx is not much 
-value for our experiments.
-
-https://github.com/llvm/llvm-project/commit/e4f385d89448393b4d213339bbbbbbaa42b49489
-
-
-
--- 
-Alexey
+> Suggested-by: Fabiano Rosas <farosas@linux.ibm.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 2e29b96ef775..0542d7f17dc3 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -3758,7 +3758,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>  	mtspr(SPRN_DSCR, host_dscr);
+>  	mtspr(SPRN_TIDR, host_tidr);
+>  	mtspr(SPRN_IAMR, host_iamr);
+> -	mtspr(SPRN_PSPB, 0);
+>
+>  	if (host_amr != vcpu->arch.amr)
+>  		mtspr(SPRN_AMR, host_amr);
+> -- 
+> 2.23.0
