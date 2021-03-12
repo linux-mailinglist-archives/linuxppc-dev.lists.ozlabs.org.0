@@ -1,43 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69893392EA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 17:18:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E019B3393C1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 17:42:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dxrbh5Rv0z3dNC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Mar 2021 03:18:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dxs6N4WK3z3dK9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Mar 2021 03:42:04 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=dY53Jxah;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DxrbM6rL0z30M3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Mar 2021 03:18:37 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B392E1FB;
- Fri, 12 Mar 2021 08:18:33 -0800 (PST)
-Received: from [10.57.52.136] (unknown [10.57.52.136])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A040A3F7D7;
- Fri, 12 Mar 2021 08:18:30 -0800 (PST)
-Subject: Re: [PATCH 14/17] iommu: remove DOMAIN_ATTR_DMA_USE_FLUSH_QUEUE
-To: Christoph Hellwig <hch@lst.de>
-References: <20210301084257.945454-1-hch@lst.de>
- <20210301084257.945454-15-hch@lst.de>
- <1658805c-ed28-b650-7385-a56fab3383e3@arm.com> <20210310091501.GC5928@lst.de>
- <20210310092533.GA6819@lst.de> <fdacf87a-be14-c92c-4084-1d1dd4fc7766@arm.com>
- <20210311082609.GA6990@lst.de>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <dff8eb80-8f74-972b-17e9-496c1fc0396f@arm.com>
-Date: Fri, 12 Mar 2021 16:18:24 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1234::107; helo=merlin.infradead.org;
+ envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=merlin.20170209 header.b=dY53Jxah; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1234::107])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dxs5x0mb4z2yjK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Mar 2021 03:41:40 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
+ Reply-To:Cc:Content-ID:Content-Description;
+ bh=NjO5e3NHxlfLBPFzxRL/627oFgY8z8FkhHekhopo2VY=; b=dY53Jxah5kMEb2PGNAmWb0SzKP
+ gZ0ZjGbQwOxh/bpVmAx0Vu0XmnCsOOhiybXokrnaVeDkmC1EqHpqEElhZd5QCWdSUToD8/pVJJ32T
+ SuYfuBbNMr6cD/oqhG/gjshO16+NnhL7e7+5+Yrq3BdOpfWmzslhQKR/8XMiXQOrp5ns+9uTAxjY3
+ VDUYwmLZagGQWSWBinh+x2Eg1RqPt0AUFUlDl6vW7LRwKs1kGlnuYdZ6HPLGR1SK2xmjJsA9+q6EW
+ C5m8KKIfgnFAUtPTSVjedpd6NdQWkbzhcMSD5g7FtsJUZz2dV37cHHuPv7rvhP4mtr/GSVpawhaiE
+ MqpDf43Q==;
+Received: from [2601:1c0:6280:3f0::3ba4]
+ by merlin.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1lKkqv-0014IL-Um; Fri, 12 Mar 2021 16:41:30 +0000
+Subject: Re: [PATCH] powerpc: mm: book3s64: Fix a typo in the file
+ mmu_context.c
+To: Bhaskar Chowdhury <unixbhaskar@gmail.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
+ aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20210312112537.4585-1-unixbhaskar@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <7a2b6ee3-33cf-00a3-fb5c-f8bcf404f29c@infradead.org>
+Date: Fri, 12 Mar 2021 08:41:26 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-In-Reply-To: <20210311082609.GA6990@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
+In-Reply-To: <20210312112537.4585-1-unixbhaskar@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -50,53 +68,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Will Deacon <will@kernel.org>,
- Joerg Roedel <joro@8bytes.org>, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org, Li Yang <leoyang.li@nxp.com>,
- iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- virtualization@lists.linux-foundation.org, freedreno@lists.freedesktop.org,
- David Woodhouse <dwmw2@infradead.org>, linux-arm-msm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-03-11 08:26, Christoph Hellwig wrote:
-> On Wed, Mar 10, 2021 at 06:39:57PM +0000, Robin Murphy wrote:
->>> Actually... Just mirroring the iommu_dma_strict value into
->>> struct iommu_domain should solve all of that with very little
->>> boilerplate code.
->>
->> Yes, my initial thought was to directly replace the attribute with a
->> common flag at iommu_domain level, but since in all cases the behaviour
->> is effectively global rather than actually per-domain, it seemed
->> reasonable to take it a step further. This passes compile-testing for
->> arm64 and x86, what do you think?
+On 3/12/21 3:25 AM, Bhaskar Chowdhury wrote:
 > 
-> It seems to miss a few bits, and also generally seems to be not actually
-> apply to recent mainline or something like it due to different empty
-> lines in a few places.
-
-Yeah, that was sketched out on top of some other development patches, 
-and in being so focused on not breaking any of the x86 behaviours I did 
-indeed overlook fully converting the SMMU drivers... oops!
-
-(my thought was to do the conversion for its own sake, then clean up the 
-redundant attribute separately, but I guess it's fine either way)
-
-> Let me know what you think of the version here:
+> s/detalis/details/
 > 
-> http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/iommu-cleanup
+> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+
+> ---
+>  arch/powerpc/mm/book3s64/mmu_context.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> I'll happily switch the patch to you as the author if you're fine with
-> that as well.
+> diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
+> index 0c8557220ae2..c10fc8a72fb3 100644
+> --- a/arch/powerpc/mm/book3s64/mmu_context.c
+> +++ b/arch/powerpc/mm/book3s64/mmu_context.c
+> @@ -119,7 +119,7 @@ static int hash__init_new_context(struct mm_struct *mm)
+>  		/* This is fork. Copy hash_context details from current->mm */
+>  		memcpy(mm->context.hash_context, current->mm->context.hash_context, sizeof(struct hash_mm_context));
+>  #ifdef CONFIG_PPC_SUBPAGE_PROT
+> -		/* inherit subpage prot detalis if we have one. */
+> +		/* inherit subpage prot details if we have one. */
+>  		if (current->mm->context.hash_context->spt) {
+>  			mm->context.hash_context->spt = kmalloc(sizeof(struct subpage_prot_table),
+>  								GFP_KERNEL);
+> --
 
-I still have reservations about removing the attribute API entirely and 
-pretending that io_pgtable_cfg is anything other than a SoC-specific 
-private interface, but the reworked patch on its own looks reasonable to 
-me, thanks! (I wasn't too convinced about the iommu_cmd_line wrappers 
-either...) Just iommu_get_dma_strict() needs an export since the SMMU 
-drivers can be modular - I consciously didn't add that myself since I 
-was mistakenly thinking only iommu-dma would call it.
 
-Robin.
+-- 
+~Randy
+
