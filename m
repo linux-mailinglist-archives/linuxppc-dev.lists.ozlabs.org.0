@@ -2,97 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99348338E3D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 14:05:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE4A338E44
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 14:05:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DxmJ644Pmz3jmc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Mar 2021 00:05:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DxmJb6gMXz3jtP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Mar 2021 00:05:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kdmJmnns;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A2EQJM/7;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A2EQJM/7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=jolsa@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=kdmJmnns; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=A2EQJM/7; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=A2EQJM/7; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dxm5309c8z3fmK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 23:55:34 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12CCoVxo098940; Fri, 12 Mar 2021 07:55:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=CZraW3MLXsGZlFWIXQunR5iKvo4efs3ARmrIvH7smV0=;
- b=kdmJmnnsMKXuEmWZOuMf7s7iV6TMAecfmqZhAziTu7p6X4vp9zARCsAJF6RaqIw54sJC
- M6JfXwnR4QJXb+uK+DNNuySj/97U5tk3NZXfsgaQgHGO2DvTx/uaHoiiu/R7kZlTU00/
- zwwUrdboYiCYtvaRFNyMkn+Ffx0XjAEsDIHsCKjtULM4kOPH5NVk44ousNxzgbpJLGBf
- 1rckNi0o3pypo+mokZ/AwPGCL06We013odqVZjAa3FtOrNAYooE/kPlJUxdlYKcRWP/Q
- D9QdvFF/hYlDuxslK4F1sNqYZwSBTzOvF6Vo5dCQa1AIBkPY5atEvMzQ21uy23RD2E3P pQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3774m6s7qq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 12 Mar 2021 07:55:32 -0500
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12CCoXfi099116;
- Fri, 12 Mar 2021 07:55:31 -0500
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3774m6s7qb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 12 Mar 2021 07:55:31 -0500
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12CCh0xr005916;
- Fri, 12 Mar 2021 12:55:31 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02wdc.us.ibm.com with ESMTP id 3768swfevk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 12 Mar 2021 12:55:31 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12CCtPrS31916300
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 12 Mar 2021 12:55:25 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 348D978064;
- Fri, 12 Mar 2021 12:55:25 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 79AA278063;
- Fri, 12 Mar 2021 12:55:24 +0000 (GMT)
-Received: from localhost (unknown [9.211.65.7])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Fri, 12 Mar 2021 12:55:24 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH v3 23/41] KVM: PPC: Book3S HV P9: Reduce mftb per guest
- entry/exit
-In-Reply-To: <20210305150638.2675513-24-npiggin@gmail.com>
-References: <20210305150638.2675513-1-npiggin@gmail.com>
- <20210305150638.2675513-24-npiggin@gmail.com>
-Date: Fri, 12 Mar 2021 09:55:22 -0300
-Message-ID: <87y2essf9h.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dxm6r6XFXz3gXP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 23:57:07 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1615553825;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wgncmMqhr4dHPhdE9BWfq/XyXMHQvttFAM4981INv84=;
+ b=A2EQJM/7+J79JV0nbwUeoXaY/sG6etjC4kAjyEmeuaGbhk/0HmbEiiMdrPDr3oXKRYozDB
+ b3kq1rLAN8Yae3+KoKUpRIhwFBLkHjFTpf8wlofd8gJt15WoB/a8CHXa+Sh/WvrhtTTEoD
+ f2zABTaF5MAVR872Zc4xdwhA4I6of+8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1615553825;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wgncmMqhr4dHPhdE9BWfq/XyXMHQvttFAM4981INv84=;
+ b=A2EQJM/7+J79JV0nbwUeoXaY/sG6etjC4kAjyEmeuaGbhk/0HmbEiiMdrPDr3oXKRYozDB
+ b3kq1rLAN8Yae3+KoKUpRIhwFBLkHjFTpf8wlofd8gJt15WoB/a8CHXa+Sh/WvrhtTTEoD
+ f2zABTaF5MAVR872Zc4xdwhA4I6of+8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-149-IBQGRFjSNOe0qKlVlhp4UQ-1; Fri, 12 Mar 2021 07:57:00 -0500
+X-MC-Unique: IBQGRFjSNOe0qKlVlhp4UQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 63BF11015C84;
+ Fri, 12 Mar 2021 12:56:56 +0000 (UTC)
+Received: from krava (unknown [10.40.192.54])
+ by smtp.corp.redhat.com (Postfix) with SMTP id DC311197F9;
+ Fri, 12 Mar 2021 12:56:52 +0000 (UTC)
+Date: Fri, 12 Mar 2021 13:56:51 +0100
+From: Jiri Olsa <jolsa@redhat.com>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH 4/4] tools/perf: Support pipeline stage cycles for powerpc
+Message-ID: <YEtlEyb2z33qHhvO@krava>
+References: <1615298640-1529-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <1615298640-1529-5-git-send-email-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-12_03:2021-03-10,
- 2021-03-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- mlxlogscore=999 spamscore=0 adultscore=0 malwarescore=0 phishscore=0
- clxscore=1015 impostorscore=0 mlxscore=0 bulkscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103120088
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1615298640-1529-5-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,60 +83,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: ravi.bangoria@linux.ibm.com, maddy@linux.ibm.com, peterz@infradead.org,
+ linux-kernel@vger.kernel.org, acme@kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-
-> mftb is serialising (dispatch next-to-complete) so it is heavy weight
-> for a mfspr. Avoid reading it multiple times in the entry or exit paths.
-> A small number of cycles delay to timers is tolerable.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
-
+On Tue, Mar 09, 2021 at 09:04:00AM -0500, Athira Rajeev wrote:
+> The pipeline stage cycles details can be recorded on powerpc from
+> the contents of Performance Monitor Unit (PMU) registers. On
+> ISA v3.1 platform, sampling registers exposes the cycles spent in
+> different pipeline stages. Patch adds perf tools support to present
+> two of the cycle counter information along with memory latency (weight).
+> 
+> Re-use the field 'ins_lat' for storing the first pipeline stage cycle.
+> This is stored in 'var2_w' field of 'perf_sample_weight'.
+> 
+> Add a new field 'p_stage_cyc' to store the second pipeline stage cycle
+> which is stored in 'var3_w' field of perf_sample_weight.
+> 
+> Add new sort function 'Pipeline Stage Cycle' and include this in
+> default_mem_sort_order[]. This new sort function may be used to denote
+> some other pipeline stage in another architecture. So add this to
+> list of sort entries that can have dynamic header string.
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > ---
->  arch/powerpc/kvm/book3s_hv.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index c1965a9d8d00..6f3e3aed99aa 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -3505,12 +3505,13 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
->  		host_dawrx1 = mfspr(SPRN_DAWRX1);
->  	}
->
-> -	hdec = time_limit - mftb();
-> +	tb = mftb();
-> +	hdec = time_limit - tb;
->  	if (hdec < 0)
->  		return BOOK3S_INTERRUPT_HV_DECREMENTER;
->
->  	if (vc->tb_offset) {
-> -		u64 new_tb = mftb() + vc->tb_offset;
-> +		u64 new_tb = tb + vc->tb_offset;
->  		mtspr(SPRN_TBU40, new_tb);
->  		tb = mftb();
->  		if ((tb & 0xffffff) < (new_tb & 0xffffff))
-> @@ -3703,7 +3704,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->  	if (!(vcpu->arch.ctrl & 1))
->  		mtspr(SPRN_CTRLT, mfspr(SPRN_CTRLF) & ~1);
->
-> -	mtspr(SPRN_DEC, vcpu->arch.dec_expires - mftb());
-> +	mtspr(SPRN_DEC, vcpu->arch.dec_expires - tb);
->
->  	if (kvmhv_on_pseries()) {
->  		/*
-> @@ -3837,7 +3838,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->  	vc->entry_exit_map = 0x101;
->  	vc->in_guest = 0;
->
-> -	mtspr(SPRN_DEC, local_paca->kvm_hstate.dec_expires - mftb());
-> +	mtspr(SPRN_DEC, local_paca->kvm_hstate.dec_expires - tb);
->  	mtspr(SPRN_SPRG_VDSO_WRITE, local_paca->sprg_vdso);
->
->  	kvmhv_load_host_pmu();
+>  tools/perf/Documentation/perf-report.txt |  1 +
+>  tools/perf/arch/powerpc/util/event.c     | 18 ++++++++++++++++--
+>  tools/perf/util/event.h                  |  1 +
+>  tools/perf/util/hist.c                   | 11 ++++++++---
+>  tools/perf/util/hist.h                   |  1 +
+>  tools/perf/util/session.c                |  4 +++-
+>  tools/perf/util/sort.c                   | 24 ++++++++++++++++++++++--
+>  tools/perf/util/sort.h                   |  2 ++
+>  8 files changed, 54 insertions(+), 8 deletions(-)
+> 
+> diff --git a/tools/perf/Documentation/perf-report.txt b/tools/perf/Documentation/perf-report.txt
+> index f546b5e9db05..9691d9c227ba 100644
+> --- a/tools/perf/Documentation/perf-report.txt
+> +++ b/tools/perf/Documentation/perf-report.txt
+> @@ -112,6 +112,7 @@ OPTIONS
+>  	- ins_lat: Instruction latency in core cycles. This is the global instruction
+>  	  latency
+>  	- local_ins_lat: Local instruction latency version
+> +	- p_stage_cyc: Number of cycles spent in a pipeline stage.
+
+please specify in here that it's ppc only
+
+SNIP
+
+> +struct sort_entry sort_p_stage_cyc = {
+> +	.se_header      = "Pipeline Stage Cycle",
+> +	.se_cmp         = sort__global_p_stage_cyc_cmp,
+> +	.se_snprintf	= hist_entry__p_stage_cyc_snprintf,
+> +	.se_width_idx	= HISTC_P_STAGE_CYC,
+> +};
+> +
+>  struct sort_entry sort_mem_daddr_sym = {
+>  	.se_header	= "Data Symbol",
+>  	.se_cmp		= sort__daddr_cmp,
+> @@ -1853,6 +1872,7 @@ static void sort_dimension_add_dynamic_header(struct sort_dimension *sd)
+>  	DIM(SORT_CODE_PAGE_SIZE, "code_page_size", sort_code_page_size),
+>  	DIM(SORT_LOCAL_INS_LAT, "local_ins_lat", sort_local_ins_lat),
+>  	DIM(SORT_GLOBAL_INS_LAT, "ins_lat", sort_global_ins_lat),
+> +	DIM(SORT_P_STAGE_CYC, "p_stage_cyc", sort_p_stage_cyc),
+
+this might be out of scope for this patch, but would it make sense
+to add arch specific sort dimension? so the specific column is
+not even visible on arch that it's not supported on
+
+
+>  };
+>  
+>  #undef DIM
+> diff --git a/tools/perf/util/sort.h b/tools/perf/util/sort.h
+> index 63f67a3f3630..23b20cbbc846 100644
+> --- a/tools/perf/util/sort.h
+> +++ b/tools/perf/util/sort.h
+> @@ -51,6 +51,7 @@ struct he_stat {
+>  	u64			period_guest_us;
+>  	u64			weight;
+>  	u64			ins_lat;
+> +	u64			p_stage_cyc;
+>  	u32			nr_events;
+>  };
+>  
+> @@ -234,6 +235,7 @@ enum sort_type {
+>  	SORT_CODE_PAGE_SIZE,
+>  	SORT_LOCAL_INS_LAT,
+>  	SORT_GLOBAL_INS_LAT,
+> +	SORT_P_STAGE_CYC,
+
+we could have the whole 'SORT_PEPELINE_STAGE_CYC',
+so it's more obvious
+
+thanks,
+jirka
+
