@@ -2,63 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4577A338697
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 08:33:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A4F33869E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 08:33:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dxcx11knHz3cTv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 18:33:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DxcxV08Ntz3dYD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 18:33:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=NG77WAYg;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=iT8PQhvR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72b;
- helo=mail-qk1-x72b.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2b;
+ helo=mail-qv1-xf2b.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=NG77WAYg; dkim-atps=neutral
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com
- [IPv6:2607:f8b0:4864:20::72b])
+ header.s=20161025 header.b=iT8PQhvR; dkim-atps=neutral
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com
+ [IPv6:2607:f8b0:4864:20::f2b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dxcvc1Lpgz3d3C
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 18:31:56 +1100 (AEDT)
-Received: by mail-qk1-x72b.google.com with SMTP id 130so23352492qkh.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 23:31:55 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dxcvj4lWwz3ckh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 18:32:01 +1100 (AEDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id a14so3832269qvj.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 23:32:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=z052sO/4NGB1LzTDqZ+gt7AUquJ7y9J7Drl1gXLThHU=;
- b=NG77WAYgsJT+VsleEY/Rphw3eS5xA0aCgIwZs1LZXaL5bN0l9hl1v8uAnYZuiKiaUK
- U4XnUtnxPm1lWURbJgD+Ksy+EJDQpuKVzGvMjBO2aLU5/bxG6Lh7cp06N85MIH1o3Apg
- aSGmvLfztbMxSZ5OX43sfVN28p1wz/nJBVvsv9YSDgpEoY/R/tZ3pqdpuWGvJ5EAdX6R
- RgXluxL5ZBQ8m5Peq3zvP0b3UwF9fNAKM4EDEjosSlLIdaBeOJtL9VHeZ9GfhyNNZtuE
- YDNV/SKTr2/MvU2p8XdEumcjABrSzYlAMC9VDBa5tDIxAya57cogGAHQV/bpZtnaqdfK
- Ugqg==
+ bh=ZEtUz4cca1c3Fl5qiQDKoYLrz6ESJJtyWLesvPnKSDE=;
+ b=iT8PQhvRWLgLdesAqQvoHlBII0zpfG7wK5D8JyGWBsR97w6xqBm/UAzMn5xG1iMjI/
+ 5Vu4/MYUXNSWwAkdMg/Q/z7QQab5OA9O9muH+h0chtyy50D7of89f6HQWIw8gWuRDeT6
+ QTn4AAmHC4QRptq0vBm3Bu75CKASbkVd2AOq/Of0r9pSh1K8B2Gldie69c7Ytg3ZY7Ga
+ xeAbWwdv5fomFwldof6Wkkws9QFF55xIc3kRAZtuImbRSY926SqbCQUm5joE4sAO4M6G
+ 6HIBiYDMToAf8cfn1bd+frD5JPPlGz53RMlS1wz6izNkergvG0xOtdCckZYMOyQvXlRY
+ wJlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=z052sO/4NGB1LzTDqZ+gt7AUquJ7y9J7Drl1gXLThHU=;
- b=E8IBRW+q9CXnvwzHxlzkTE7kxhgrH5Fe5MX9Gp9mxLLMajfKjL1AY8Z86TU2M1Kbh3
- tc41wOuEXTIZv0tCRlX78XWwY3CuR2D+9kkUJQuyrDOOkzaYfU7jxPbVXjq/tN+tT4+6
- z5fEG26mNzagjF8BddytFQlrj+2hAMQJxE6n7jqZyaJE9FRWRGxXaD6Wvb7AkRdR2RAP
- fYaqaPGLa/0/JreBh/s1qq01J7/D/XKyAePul2yNXFPYzogzNIu0izirC2eTqcps7P1J
- 8DDMVgNcope1ZPGdmRtGSzpzwZea8YkZ3eJpLtLxcaS2lQsA60qx8Ut2NEkFwOn/iswL
- RfwQ==
-X-Gm-Message-State: AOAM530CKwKbMmu+1R2m/uS7XBRG5TPyqSBnhSyXWuAF+hNlAMXzUlx0
- LMjnJ7IXoUL+IN7z6u+yP7c=
-X-Google-Smtp-Source: ABdhPJyfSXCBtJL+8rrzAmK7RWJPFCVC4RYg2LBf6U8/N6ZSe055Myz7T7HEnkfqwjwo7XNHWtkL/g==
-X-Received: by 2002:a37:2756:: with SMTP id n83mr11259204qkn.70.1615534313731; 
- Thu, 11 Mar 2021 23:31:53 -0800 (PST)
+ bh=ZEtUz4cca1c3Fl5qiQDKoYLrz6ESJJtyWLesvPnKSDE=;
+ b=PLEhz7xcH6mahVadQ7E1avByZLDc2AxSrdKiA1SPGwgcrU32sCmhhijMHb39mpIHaM
+ 1e4KFBRPk5L7ZvHdqc3mtpETvXt+iS4wgPxXZs/g0XfZRCXm1PyA88KMQK8ls2vPxXm1
+ 6LJbKRt/s1RrUKvIMmqLS27a/vVByGgVIc7e6YfrjMPCE2eTzdo9bravX8p3JNmGeqR1
+ weu+Jh8MMRO3s+s9woY/a5qbZyjDP3N2B8QE6kzd1g6YJTlRKF+DFgmcKm/3XKVofihX
+ TvXIK61AZAhdePjdABl8cVinkF77zmpAg8ps00xVsQyf2Oy+1eC12SFhEkc3t7rJ8iMm
+ 3gQA==
+X-Gm-Message-State: AOAM533Gd2/gmQVWxNMhT2ux5s9A3hPIGOVThO7wdSf9uMZlrY88WTn9
+ 3mYeGFOoHo+dZELvbdwQTsk=
+X-Google-Smtp-Source: ABdhPJwOJIMYFb2EtlgeCslrjHbdt3ioBTdrKL23cPfV68Ct+F6Lsz0Fql+YfcBk8Z7oPBByHoO9aQ==
+X-Received: by 2002:a0c:9cc2:: with SMTP id j2mr7724455qvf.2.1615534318818;
+ Thu, 11 Mar 2021 23:31:58 -0800 (PST)
 Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com.com
  (177-131-89-8.dynamic.desktop.com.br. [177.131.89.8])
- by smtp.gmail.com with ESMTPSA id t6sm3434026qti.2.2021.03.11.23.31.48
+ by smtp.gmail.com with ESMTPSA id t6sm3434026qti.2.2021.03.11.23.31.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Mar 2021 23:31:53 -0800 (PST)
+ Thu, 11 Mar 2021 23:31:58 -0800 (PST)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -74,10 +74,10 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Laurent Dufour <ldufour@linux.ibm.com>,
  Scott Cheloha <cheloha@linux.ibm.com>,
  David Gibson <david@gibson.dropbear.id.au>
-Subject: [PATCH 2/3] powerpc/mm/hash: Avoid multiple HPT resize-ups on memory
- hotplug
-Date: Fri, 12 Mar 2021 04:29:40 -0300
-Message-Id: <20210312072940.598696-3-leobras.c@gmail.com>
+Subject: [PATCH 3/3] powerpc/mm/hash: Avoid multiple HPT resize-downs on
+ memory hotunplug
+Date: Fri, 12 Mar 2021 04:29:41 -0300
+Message-Id: <20210312072940.598696-4-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210312072940.598696-1-leobras.c@gmail.com>
 References: <20210312072940.598696-1-leobras.c@gmail.com>
@@ -99,71 +99,106 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Every time a memory hotplug happens, and the memory limit crosses a 2^n
-value, it may be necessary to perform HPT resizing-up, which can take
-some time (over 100ms in my tests).
+During memory hotunplug, after each LMB is removed, the HPT may be
+resized-down if it would map a max of 4 times the current amount of memory.
+(2 shifts, due to introduced histeresis)
 
-It usually is not an issue, but it can take some time if a lot of memory
-is added to a guest with little starting memory:
-Adding 256G to a 2GB guest, for example will require 8 HPT resizes.
+It usually is not an issue, but it can take a lot of time if HPT
+resizing-down fails. This happens  because resize-down failures
+usually repeat at each LMB removal, until there are no more bolted entries
+conflict, which can take a while to happen.
 
-Perform an HPT resize before memory hotplug, updating HPT to its
-final size (considering a successful hotplug), taking the number of
-HPT resizes to at most one per memory hotplug action.
+This can be solved by doing a single HPT resize at the end of memory
+hotunplug, after all requested entries are removed.
+
+To make this happen, it's necessary to temporarily disable all HPT
+resize-downs before hotunplug, re-enable them after hotunplug ends,
+and then resize-down HPT to the current memory size.
+
+As an example, hotunplugging 256GB from a 385GB guest took 621s without
+this patch, and 100s after applied.
 
 Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 ---
- arch/powerpc/include/asm/book3s/64/hash.h       |  2 ++
- arch/powerpc/include/asm/sparsemem.h            |  2 ++
- arch/powerpc/mm/book3s64/hash_utils.c           | 14 ++++++++++++++
- arch/powerpc/mm/book3s64/pgtable.c              |  6 ++++++
- arch/powerpc/platforms/pseries/hotplug-memory.c |  6 ++++++
- 5 files changed, 30 insertions(+)
+ arch/powerpc/include/asm/book3s/64/hash.h     |  2 ++
+ arch/powerpc/include/asm/sparsemem.h          |  2 ++
+ arch/powerpc/mm/book3s64/hash_utils.c         | 28 +++++++++++++++++++
+ arch/powerpc/mm/book3s64/pgtable.c            | 12 ++++++++
+ .../platforms/pseries/hotplug-memory.c        | 16 +++++++++++
+ 5 files changed, 60 insertions(+)
 
 diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
-index d959b0195ad9..843b0a178590 100644
+index 843b0a178590..f92697c107f7 100644
 --- a/arch/powerpc/include/asm/book3s/64/hash.h
 +++ b/arch/powerpc/include/asm/book3s/64/hash.h
-@@ -255,6 +255,8 @@ int hash__create_section_mapping(unsigned long start, unsigned long end,
- 				 int nid, pgprot_t prot);
+@@ -256,6 +256,8 @@ int hash__create_section_mapping(unsigned long start, unsigned long end,
  int hash__remove_section_mapping(unsigned long start, unsigned long end);
  
-+void hash_memory_batch_expand_prepare(unsigned long newsize);
-+
+ void hash_memory_batch_expand_prepare(unsigned long newsize);
++void hash_memory_batch_shrink_begin(void);
++void hash_memory_batch_shrink_end(void);
+ 
  #endif /* !__ASSEMBLY__ */
  #endif /* __KERNEL__ */
- #endif /* _ASM_POWERPC_BOOK3S_64_HASH_H */
 diff --git a/arch/powerpc/include/asm/sparsemem.h b/arch/powerpc/include/asm/sparsemem.h
-index d072866842e4..16b5f5300c84 100644
+index 16b5f5300c84..a7a8a0d070fc 100644
 --- a/arch/powerpc/include/asm/sparsemem.h
 +++ b/arch/powerpc/include/asm/sparsemem.h
-@@ -17,6 +17,8 @@ extern int remove_section_mapping(unsigned long start, unsigned long end);
- extern int memory_add_physaddr_to_nid(u64 start);
+@@ -18,6 +18,8 @@ extern int memory_add_physaddr_to_nid(u64 start);
  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
  
-+void memory_batch_expand_prepare(unsigned long newsize);
-+
+ void memory_batch_expand_prepare(unsigned long newsize);
++void memory_batch_shrink_begin(void);
++void memory_batch_shrink_end(void);
+ 
  #ifdef CONFIG_NUMA
  extern int hot_add_scn_to_nid(unsigned long scn_addr);
- #else
 diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index cfb3ec164f56..1f6aa0bf27e7 100644
+index 1f6aa0bf27e7..e16f207de8e4 100644
 --- a/arch/powerpc/mm/book3s64/hash_utils.c
 +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -858,6 +858,20 @@ int hash__remove_section_mapping(unsigned long start, unsigned long end)
+@@ -794,6 +794,9 @@ static unsigned long __init htab_get_table_size(void)
+ }
  
- 	return rc;
+ #ifdef CONFIG_MEMORY_HOTPLUG
++
++atomic_t hpt_resize_disable = ATOMIC_INIT(0);
++
+ static int resize_hpt_for_hotplug(unsigned long new_mem_size, bool shrinking)
+ {
+ 	unsigned target_hpt_shift;
+@@ -805,6 +808,10 @@ static int resize_hpt_for_hotplug(unsigned long new_mem_size, bool shrinking)
+ 
+ 	if (shrinking) {
+ 
++		/* When batch removing entries, only resizes HPT at the end. */
++		if (atomic_read_acquire(&hpt_resize_disable))
++			return 0;
++
+ 		/*
+ 		 * To avoid lots of HPT resizes if memory size is fluctuating
+ 		 * across a boundary, we deliberately have some hysterisis
+@@ -872,6 +879,27 @@ void hash_memory_batch_expand_prepare(unsigned long newsize)
+ 		pr_warn("Hash collision while resizing HPT\n");
+ 	}
  }
 +
-+void hash_memory_batch_expand_prepare(unsigned long newsize)
++void hash_memory_batch_shrink_begin(void)
 +{
-+	/*
-+	 * Resizing-up HPT should never fail, but there are some cases system starts with higher
-+	 * SHIFT than required, and we go through the funny case of resizing HPT down while
-+	 * adding memory
-+	 */
++	/* Disable HPT resize-down during hot-unplug */
++	atomic_set_release(&hpt_resize_disable, 1);
++}
 +
-+	while (resize_hpt_for_hotplug(newsize, false) == -ENOSPC) {
++void hash_memory_batch_shrink_end(void)
++{
++	unsigned long newsize;
++
++	/* Re-enables HPT resize-down after hot-unplug */
++	atomic_set_release(&hpt_resize_disable, 0);
++
++	newsize = memblock_phys_mem_size();
++	/* Resize to smallest SHIFT possible */
++	while (resize_hpt_for_hotplug(newsize, true) == -ENOSPC) {
 +		newsize *= 2;
 +		pr_warn("Hash collision while resizing HPT\n");
 +	}
@@ -172,53 +207,118 @@ index cfb3ec164f56..1f6aa0bf27e7 100644
  
  static void __init hash_init_partition_table(phys_addr_t hash_table,
 diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 5b3a3bae21aa..f1cd8af0f67f 100644
+index f1cd8af0f67f..e01681e22e00 100644
 --- a/arch/powerpc/mm/book3s64/pgtable.c
 +++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -193,6 +193,12 @@ int __meminit remove_section_mapping(unsigned long start, unsigned long end)
- 
- 	return hash__remove_section_mapping(start, end);
+@@ -199,6 +199,18 @@ void memory_batch_expand_prepare(unsigned long newsize)
+ 	if (!radix_enabled())
+ 		hash_memory_batch_expand_prepare(newsize);
  }
 +
-+void memory_batch_expand_prepare(unsigned long newsize)
++void memory_batch_shrink_begin(void)
 +{
 +	if (!radix_enabled())
-+		hash_memory_batch_expand_prepare(newsize);
++		hash_memory_batch_shrink_begin();
++}
++
++void memory_batch_shrink_end(void)
++{
++	if (!radix_enabled())
++		hash_memory_batch_shrink_end();
 +}
  #endif /* CONFIG_MEMORY_HOTPLUG */
  
  void __init mmu_partition_table_init(void)
 diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 8377f1f7c78e..353c71249214 100644
+index 353c71249214..9182fb5b5c01 100644
 --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
 +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -671,6 +671,8 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
- 	if (lmbs_available < lmbs_to_add)
+@@ -425,6 +425,8 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_remove)
  		return -EINVAL;
+ 	}
  
-+	memory_batch_expand_prepare(memblock_phys_mem_size() + lmbs_to_add * drmem_lmb_size());
++	memory_batch_shrink_begin();
 +
  	for_each_drmem_lmb(lmb) {
- 		if (lmb->flags & DRCONF_MEM_ASSIGNED)
- 			continue;
-@@ -734,6 +736,8 @@ static int dlpar_memory_add_by_index(u32 drc_index)
+ 		rc = dlpar_remove_lmb(lmb);
+ 		if (rc)
+@@ -470,6 +472,8 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_remove)
+ 		rc = 0;
+ 	}
  
- 	pr_info("Attempting to hot-add LMB, drc index %x\n", drc_index);
++	memory_batch_shrink_end();
++
+ 	return rc;
+ }
  
-+	memory_batch_expand_prepare(memblock_phys_mem_size() +
-+				     drmem_info->n_lmbs * drmem_lmb_size());
+@@ -481,6 +485,8 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
+ 
+ 	pr_debug("Attempting to hot-remove LMB, drc index %x\n", drc_index);
+ 
++	memory_batch_shrink_begin();
++
  	lmb_found = 0;
  	for_each_drmem_lmb(lmb) {
  		if (lmb->drc_index == drc_index) {
-@@ -788,6 +792,8 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
- 	if (lmbs_available < lmbs_to_add)
+@@ -502,6 +508,8 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
+ 	else
+ 		pr_debug("Memory at %llx was hot-removed\n", lmb->base_addr);
+ 
++	memory_batch_shrink_end();
++
+ 	return rc;
+ }
+ 
+@@ -532,6 +540,8 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+ 	if (lmbs_available < lmbs_to_remove)
  		return -EINVAL;
  
-+	memory_batch_expand_prepare(memblock_phys_mem_size() + lmbs_to_add * drmem_lmb_size());
++	memory_batch_shrink_begin();
 +
  	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
- 		if (lmb->flags & DRCONF_MEM_ASSIGNED)
+ 		if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
  			continue;
+@@ -572,6 +582,8 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+ 		}
+ 	}
+ 
++	memory_batch_shrink_end();
++
+ 	return rc;
+ }
+ 
+@@ -700,6 +712,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+ 	if (lmbs_added != lmbs_to_add) {
+ 		pr_err("Memory hot-add failed, removing any added LMBs\n");
+ 
++		memory_batch_shrink_begin();
+ 		for_each_drmem_lmb(lmb) {
+ 			if (!drmem_lmb_reserved(lmb))
+ 				continue;
+@@ -713,6 +726,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+ 
+ 			drmem_remove_lmb_reservation(lmb);
+ 		}
++		memory_batch_shrink_end();
+ 		rc = -EINVAL;
+ 	} else {
+ 		for_each_drmem_lmb(lmb) {
+@@ -814,6 +828,7 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
+ 	if (rc) {
+ 		pr_err("Memory indexed-count-add failed, removing any added LMBs\n");
+ 
++		memory_batch_shrink_begin();
+ 		for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+ 			if (!drmem_lmb_reserved(lmb))
+ 				continue;
+@@ -827,6 +842,7 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
+ 
+ 			drmem_remove_lmb_reservation(lmb);
+ 		}
++		memory_batch_shrink_end();
+ 		rc = -EINVAL;
+ 	} else {
+ 		for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
 -- 
 2.29.2
 
