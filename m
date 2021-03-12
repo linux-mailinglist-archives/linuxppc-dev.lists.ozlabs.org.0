@@ -1,79 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19AF03382F8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 02:00:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F9C33830F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 02:14:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DxSDG0R5hz3d7F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 12:00:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DxSWs18Y1z3cn1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 12:14:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=W74o9hWG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=vdo0+wYI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
- helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
+ helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=W74o9hWG; dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
- [IPv6:2607:f8b0:4864:20::636])
+ header.s=20161025 header.b=vdo0+wYI; dkim-atps=neutral
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
+ [IPv6:2607:f8b0:4864:20::432])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DxSCn4t4Nz3cLN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 12:00:20 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id a24so11099090plm.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 17:00:20 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DxSWP6Hsyz30Nj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 12:13:52 +1100 (AEDT)
+Received: by mail-pf1-x432.google.com with SMTP id t29so723796pfg.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 17:13:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=gv+xWsQfcMIOQNOovYei3JCwJn5hpNQ/FSKLCaKdqn8=;
- b=W74o9hWGlvn00KI1/2TNKoG5g2mE1OhPtw8DGPyd5+TQlCXCp+ti1l9C/ehXqBT59S
- W1mEa5HQOsLs182A3l4vd0A+PKB+QD6i5GYQUcHx+ltotWgMklhjs5K1D+WuwEvdFpaW
- WzTFxg+6XRbGSTWAhI61T6/kG8rKSKAIORGCmcs26Id6sQkcQN8lTrhxOmfFaLd3Ryt2
- 5iM9NQk35cNoIo6+ai8XNtiz1/AuDtlC9aDaBWED3NPysoRCmhg7Yco0rEAWXI17qFrV
- CFOx6BMe1CzDiACCXErNYh9Um5EHKrbxHdn8Z7f5fVlUfSumsMWUiifYoY84sauU+YL0
- uBzA==
+ bh=fqgBQHGszJ1FJ/uJtib9M0dApRy7K5pmtaH0QVQ6w/E=;
+ b=vdo0+wYIjZgxN1DHiAduyEanAb6xMs7pl6PHFhUQVCmfAgFSd2RNbjOFKI/L1rY+92
+ hbfV8nmYDxlPo4Ur59e8+a8ppAenabXc2eXQvPMoJwbmuWfNff114lZaw1Rg5sR6Veb2
+ OI5S2IeOA8CDDZ5IpDFo37yWixEWNriAqpJ6r9UfE0wnO8Yhs0TwKr+MnPmlVYzgqDM2
+ DzU85n0RBEbwMOAVZkPrOlO4l2MsSZ34OpXIviaFOUQVRJpLnEP3qbxFhVMudI83LkBZ
+ qhGN/RzbgoWxMqaM4gMi/WK59gHt5PFl0d8MRsPR98rfbbhprDda1yazuiAzRVuoCH40
+ yAyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=gv+xWsQfcMIOQNOovYei3JCwJn5hpNQ/FSKLCaKdqn8=;
- b=L5fLZZIHyumWOzQtEvnsCQJkem6D/jcBWbx/IO4QxnDGnLGZErzMuVtTtTB5oKSFO0
- OGDTSiWor5pUsHZKHNKVs6yL8wzFH3ZPYEoOMBW0VwUnj9XNCl5LfyuUzjm++P9ncYRA
- 0xANmoJSSR0QzBN+0zPR4UuglW06UDBtaZwlN5QY76PmnKJpGfCSNjgYIoir/wuPOctE
- HwiVk9EEnpIh0ufL8/aIEx9x5a6mQ/I1FG8A0qD83gWajOzoFO+KZJif/+6vX56UtDtz
- 1FLXHT+nV52lzhhgs0MiX0ifktnw2XvoaIO3fZJGzeGIpJGHqlqqDY0pbp3g6vn1i+Lj
- MU1Q==
-X-Gm-Message-State: AOAM530BmW42OpwLqhh0qhe10xCvml4yi6/APsD52H9Dc1EuS3FyQnyh
- lKRSak1AJmrFCxlkk2qtKzU=
-X-Google-Smtp-Source: ABdhPJyBjVxYp/bY5ZCLnj5g+/WCwYIiJuGyGicbGZC4UNROy8kbx+b25aWfVFADwBt1Wat7ZPK+nQ==
-X-Received: by 2002:a17:90a:e7cc:: with SMTP id
- kb12mr8591004pjb.31.1615510816986; 
- Thu, 11 Mar 2021 17:00:16 -0800 (PST)
+ bh=fqgBQHGszJ1FJ/uJtib9M0dApRy7K5pmtaH0QVQ6w/E=;
+ b=GkoUzfBYFSlbAGcMZr9x29PczPCBFV11TxdfVHXK6NoMpCeKLveEYiF6kctOQD0nDq
+ MbSQYTXAYzzzz/wyOigkEih0UztAn0WvlwkoWBLb/uiPazmpwr6ptuMiGq6zQ3GQ+drR
+ I/SoyHR8HY4BMHFnzGRno3ORF4FkOcpNKODYkM+hN8LvDmTu3IA+7GzZn/u2hI6AOprI
+ /pCn62kJbMbeBjIkY3eOTOnlkhjiRPKz5b/mJhDVDGOo5Z438KPt0opUMbViYZfzY2SC
+ p574H1ZzOcqEDMgkgz55RcYr7XuGiJz6XuKiOEpsHaLl1QAp9Z5XJ76dc/6t6oosvncz
+ UR6w==
+X-Gm-Message-State: AOAM531QZMBZ6ILp6ZAzUV9nmOlQnFvsmujb48C9Drbx7LmGZ8HDKdRI
+ qsIngehxIrSb4WcjUYV9oHk=
+X-Google-Smtp-Source: ABdhPJx249OAggnX/6S8Z7M8WlaUjbknMaYUtqTYcwA9ec64iRZMMUHTncGO8vWthXzdUlABbTCjXA==
+X-Received: by 2002:a62:35c2:0:b029:1f1:3a8b:83d5 with SMTP id
+ c185-20020a6235c20000b02901f13a8b83d5mr10032240pfa.29.1615511629491; 
+ Thu, 11 Mar 2021 17:13:49 -0800 (PST)
 Received: from localhost (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id j10sm255097pjs.11.2021.03.11.17.00.15
+ by smtp.gmail.com with ESMTPSA id k8sm277545pjj.31.2021.03.11.17.13.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Mar 2021 17:00:16 -0800 (PST)
-Date: Fri, 12 Mar 2021 11:00:10 +1000
+ Thu, 11 Mar 2021 17:13:48 -0800 (PST)
+Date: Fri, 12 Mar 2021 11:13:43 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 36/43] powerpc/32: Set current->thread.regs in C
- interrupt entry
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>
-References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
- <8d523f9ecee1de0515cc31d43030c12ab171a670.1615291474.git.christophe.leroy@csgroup.eu>
- <1615339900.vmbtzuirqw.astroid@bobo.none>
- <035298ad-4d0b-5e74-6f5c-e03677580924@csgroup.eu>
- <5a80e05e-27d7-0e95-67c7-0fe3255c4be1@csgroup.eu>
-In-Reply-To: <5a80e05e-27d7-0e95-67c7-0fe3255c4be1@csgroup.eu>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Do not expose HFSCR sanitisation to
+ nested hypervisor
+To: Paul Mackerras <paulus@ozlabs.org>
+References: <20210305231055.2913892-1-farosas@linux.ibm.com>
+ <1615191200.1pjltfhe7o.astroid@bobo.none>
+ <20210310092354.GA30597@blackberry>
+In-Reply-To: <20210310092354.GA30597@blackberry>
 MIME-Version: 1.0
-Message-Id: <1615510691.0vpkz8qib3.astroid@bobo.none>
+Message-Id: <1615511004.vkyzd3ossi.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,49 +83,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of March 11, 2021 10:38 pm:
+Excerpts from Paul Mackerras's message of March 10, 2021 7:23 pm:
+> On Mon, Mar 08, 2021 at 06:18:47PM +1000, Nicholas Piggin wrote:
+>> Excerpts from Fabiano Rosas's message of March 6, 2021 9:10 am:
+>> > As one of the arguments of the H_ENTER_NESTED hypercall, the nested
+>> > hypervisor (L1) prepares a structure containing the values of various
+>> > hypervisor-privileged registers with which it wants the nested guest
+>> > (L2) to run. Since the nested HV runs in supervisor mode it needs the
+>> > host to write to these registers.
+>> >=20
+>> > To stop a nested HV manipulating this mechanism and using a nested
+>> > guest as a proxy to access a facility that has been made unavailable
+>> > to it, we have a routine that sanitises the values of the HV registers
+>> > before copying them into the nested guest's vcpu struct.
+>> >=20
+>> > However, when coming out of the guest the values are copied as they
+>> > were back into L1 memory, which means that any sanitisation we did
+>> > during guest entry will be exposed to L1 after H_ENTER_NESTED returns.
+>> >=20
+>> > This is not a problem by itself, but in the case of the Hypervisor
+>> > Facility Status and Control Register (HFSCR), we use the intersection
+>> > between L2 hfscr bits and L1 hfscr bits. That means that L1 could use
+>> > this to indirectly read the (hv-privileged) value from its vcpu
+>> > struct.
+>> >=20
+>> > This patch fixes this by making sure that L1 only gets back the bits
+>> > that are necessary for regular functioning.
+>>=20
+>> The general idea of restricting exposure of HV privileged bits, but
+>> for the case of HFSCR a guest can probe the HFCR anyway by testing which=
+=20
+>> facilities are available (and presumably an HV may need some way to know
+>> what features are available for it to advertise to its own guests), so
+>> is this necessary? Perhaps a comment would be sufficient.
 >=20
->=20
-> Le 11/03/2021 =C3=A0 11:38, Christophe Leroy a =C3=A9crit=C2=A0:
->>=20
->>=20
->> Le 10/03/2021 =C3=A0 02:33, Nicholas Piggin a =C3=A9crit=C2=A0:
->>> Excerpts from Christophe Leroy's message of March 9, 2021 10:10 pm:
->>>> No need to do that is assembly, do it in C.
->>>
->>> Hmm. No issues with the patch as such, but why does ppc32 need this but
->>> not 64? AFAIKS 64 sets this when a thread is created.
->>=20
->> Looks like ppc64 was doing the same in function save_remaining_regs() in=
- arch/ppc64/kernel/head.S=20
->> until commit https://github.com/mpe/linux-fullhistory/commit/e5bb080d
->>=20
->> But I can't find what happend to it in that commit.
->>=20
->> Where is it done now ? Maybe that's also already done for ppc32.
->>=20
->=20
-> I digged a bit more and found a later bug fix which adds that setting of =
-current->thread.regs at=20
-> task creation: https://github.com/mpe/linux-fullhistory/commit/3eac1897
->=20
-> That was in the ppc64 tree only at that time, and was merged into the com=
-mon powerpc tree via commit=20
-> https://github.com/mpe/linux-fullhistory/commit/06d67d54
+> I would see it a bit differently.  From L1's point of view, L0 is the
+> hardware.  The situation we have now is akin to writing a value to the
+> real HFSCR, then reading HFSCR and finding that some of the facility
+> enable bits have magically got set to zero.  That's not the way real
+> hardware works, so L0 shouldn't behave that way either, or at least
+> not without some strong justification.
 
-Nice archaeology!
+But the features disallowed by the L0 have to be viewed as unimplemented=20
+by the hardware so the bits would be reserved, so according to=20
+architecture they actually are allowed to return zero.
 
-> So we have it for both ppc32 and ppc64 and ppc32 doesn't need to do it at=
- exception entry anymore.=20
-> I'll remove it.
+That's not my concern though, and I do agree it is a bit odd. I don't=20
+have a problem with leaving the FC field value unchanged.
 
-Good, that's what I hoped (otherwise ppc64 would have been missing=20
-something).
+I think at least printing a warning for unimplemented bits would be good=20
+though.
 
 Thanks,
 Nick
