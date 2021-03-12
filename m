@@ -1,78 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E0FE338E45
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 14:06:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D899F338E4F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 14:09:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DxmKC39wRz3fST
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Mar 2021 00:06:07 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L0rSbepW;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hKGGJ57d;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DxmP76QDdz3dwd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Mar 2021 00:09:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=jolsa@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=L0rSbepW; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=hKGGJ57d; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dxm943TR9z3h8r
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 23:59:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1615553941;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eMDB4smPKXpj13VyYw6JScKxmvyMa7ikPfuNl9CjCjM=;
- b=L0rSbepWKSfOYp1hqRug4ew9LfMCg9WShL1X/JdpNgrmS2zUzGhSxSGmYQs4iDDz/F0i3N
- myHE38HGahfp4yxPi/4h880SVbidanqm+r46hlR4pgKG3uyecHZZrrvMq+ZqaMpog2n27M
- 9P1J0iJFET2g/zmdqizLcvonYfuqMXM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1615553942;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eMDB4smPKXpj13VyYw6JScKxmvyMa7ikPfuNl9CjCjM=;
- b=hKGGJ57dBkBO7zwSOp8J/VyHFePIi3REHc2HlTKG6moCyoEb9EqihStF0cXbRNc5XOAp9f
- 2jOU6HJe9kAC7jyU8iWCsqfISH72hTXuEe767WTkZnLjTisfSHF16QcmLEyORLyNnPpOmQ
- 66zERum+oFoWmyAR1uDOoP/Px4if6Q8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-78-CYeILR2XPRaZIlLezxAVSA-1; Fri, 12 Mar 2021 07:57:08 -0500
-X-MC-Unique: CYeILR2XPRaZIlLezxAVSA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1223E108BD06;
- Fri, 12 Mar 2021 12:57:07 +0000 (UTC)
-Received: from krava (unknown [10.40.192.54])
- by smtp.corp.redhat.com (Postfix) with SMTP id 5A26410016FB;
- Fri, 12 Mar 2021 12:57:04 +0000 (UTC)
-Date: Fri, 12 Mar 2021 13:57:03 +0100
-From: Jiri Olsa <jolsa@redhat.com>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/4] tools/perf: Add dynamic headers for perf report
- columns
-Message-ID: <YEtlHzsJ4z19pB/M@krava>
-References: <1615298640-1529-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1615298640-1529-3-git-send-email-atrajeev@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DxmNp5WmVz3cW9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Mar 2021 00:09:13 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DxmNj2M3Nz9ttBX;
+ Fri, 12 Mar 2021 14:09:09 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id hVMvcGhuLUiu; Fri, 12 Mar 2021 14:09:09 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DxmNj0Vbsz9ttBW;
+ Fri, 12 Mar 2021 14:09:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1ED378B812;
+ Fri, 12 Mar 2021 14:09:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id PiXVMXcPudGi; Fri, 12 Mar 2021 14:09:09 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A0B5B8B764;
+ Fri, 12 Mar 2021 14:09:08 +0100 (CET)
+Subject: Re: [PATCH] powerpc/vdso32: Add missing _restgpr_31_x to fix build
+ failure
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <a7aa198a88bcd33c6e35e99f70f86c7b7f2f9440.1615270757.git.christophe.leroy@csgroup.eu>
+Message-ID: <d28e06ff-ade0-588f-42a5-ca01e6ebda80@csgroup.eu>
+Date: Fri, 12 Mar 2021 14:09:04 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1615298640-1529-3-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+In-Reply-To: <a7aa198a88bcd33c6e35e99f70f86c7b7f2f9440.1615270757.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,106 +62,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, maddy@linux.ibm.com, peterz@infradead.org,
- linux-kernel@vger.kernel.org, acme@kernel.org,
- linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, kan.liang@linux.intel.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 09, 2021 at 09:03:58AM -0500, Athira Rajeev wrote:
-> Currently the header string for different columns in perf report
-> is fixed. Some fields of perf sample could have different meaning
-> for different architectures than the meaning conveyed by the header
-> string. An example is the new field 'var2_w' of perf_sample_weight
-> structure. This is presently captured as 'Local INSTR Latency' in
-> perf mem report. But this could be used to denote a different latency
-> cycle in another architecture.
+
+
+Le 09/03/2021 à 07:19, Christophe Leroy a écrit :
+> With some defconfig including CONFIG_CC_OPTIMIZE_FOR_SIZE,
+> (for instance mvme5100_defconfig and ps3_defconfig), gcc 5
+> generates a call to _restgpr_31_x.
 > 
-> Introduce a weak function arch_perf_header_entry__add() to set
-> the arch specific header string for the fields which can contain dynamic
-> header. If the architecture do not have this function, fall back to the
-> default header string value.
+> Until recently it went unnoticed, but
+> commit 42ed6d56ade2 ("powerpc/vdso: Block R_PPC_REL24 relocations")
+> made it rise to the surface.
 > 
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> Provide that function (copied from lib/crtsavres.S) in
+> gettimeofday.S
+> 
+> Fixes: ab037dd87a2f ("powerpc/vdso: Switch VDSO to generic C implementation.")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+Fixes the following builds:
+
+http://kisskb.ellerman.id.au/kisskb/buildresult/14492138/
+http://kisskb.ellerman.id.au/kisskb/buildresult/14492041/
+
+Christophe
+
+
 > ---
->  tools/perf/util/event.h |  1 +
->  tools/perf/util/sort.c  | 19 ++++++++++++++++++-
->  2 files changed, 19 insertions(+), 1 deletion(-)
+> I don't know if there is a way to tell GCC not to emit that call, because at the end we get more instructions than needed.
+> ---
+>   arch/powerpc/kernel/vdso32/gettimeofday.S | 11 +++++++++++
+>   1 file changed, 11 insertions(+)
 > 
-> diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
-> index f603edbbbc6f..89b149e2e70a 100644
-> --- a/tools/perf/util/event.h
-> +++ b/tools/perf/util/event.h
-> @@ -427,5 +427,6 @@ void  cpu_map_data__synthesize(struct perf_record_cpu_map_data *data, struct per
->  
->  void arch_perf_parse_sample_weight(struct perf_sample *data, const __u64 *array, u64 type);
->  void arch_perf_synthesize_sample_weight(const struct perf_sample *data, __u64 *array, u64 type);
-> +const char *arch_perf_header_entry__add(const char *se_header);
->  
->  #endif /* __PERF_RECORD_H */
-> diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-> index 0d5ad42812b9..741a6df29fa0 100644
-> --- a/tools/perf/util/sort.c
-> +++ b/tools/perf/util/sort.c
-> @@ -25,6 +25,7 @@
->  #include <traceevent/event-parse.h>
->  #include "mem-events.h"
->  #include "annotate.h"
-> +#include "event.h"
->  #include "time-utils.h"
->  #include "cgroup.h"
->  #include "machine.h"
-> @@ -45,6 +46,7 @@
->  regex_t		ignore_callees_regex;
->  int		have_ignore_callees = 0;
->  enum sort_mode	sort__mode = SORT_MODE__NORMAL;
-> +const char	*dynamic_headers[] = {"local_ins_lat"};
->  
->  /*
->   * Replaces all occurrences of a char used with the:
-> @@ -1816,6 +1818,16 @@ struct sort_dimension {
->  	int			taken;
->  };
->  
-> +const char * __weak arch_perf_header_entry__add(const char *se_header)
-
-no need for the __add suffix in here
-
-jirka
-
-> +{
-> +	return se_header;
-> +}
+> diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
+> index a6e29f880e0e..d21d08140a5e 100644
+> --- a/arch/powerpc/kernel/vdso32/gettimeofday.S
+> +++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
+> @@ -65,3 +65,14 @@ V_FUNCTION_END(__kernel_clock_getres)
+>   V_FUNCTION_BEGIN(__kernel_time)
+>   	cvdso_call_time __c_kernel_time
+>   V_FUNCTION_END(__kernel_time)
 > +
-> +static void sort_dimension_add_dynamic_header(struct sort_dimension *sd)
-> +{
-> +	sd->entry->se_header = arch_perf_header_entry__add(sd->entry->se_header);
-> +}
-> +
->  #define DIM(d, n, func) [d] = { .name = n, .entry = &(func) }
->  
->  static struct sort_dimension common_sort_dimensions[] = {
-> @@ -2739,11 +2751,16 @@ int sort_dimension__add(struct perf_hpp_list *list, const char *tok,
->  			struct evlist *evlist,
->  			int level)
->  {
-> -	unsigned int i;
-> +	unsigned int i, j;
->  
->  	for (i = 0; i < ARRAY_SIZE(common_sort_dimensions); i++) {
->  		struct sort_dimension *sd = &common_sort_dimensions[i];
->  
-> +		for (j = 0; j < ARRAY_SIZE(dynamic_headers); j++) {
-> +			if (!strcmp(dynamic_headers[j], sd->name))
-> +				sort_dimension_add_dynamic_header(sd);
-> +		}
-> +
->  		if (strncasecmp(tok, sd->name, strlen(tok)))
->  			continue;
->  
-> -- 
-> 1.8.3.1
+> +/* Routines for restoring integer registers, called by the compiler.  */
+> +/* Called with r11 pointing to the stack header word of the caller of the */
+> +/* function, just beyond the end of the integer restore area.  */
+> +_GLOBAL(_restgpr_31_x)
+> +_GLOBAL(_rest32gpr_31_x)
+> +	lwz	r0,4(r11)
+> +	lwz	r31,-4(r11)
+> +	mtlr	r0
+> +	mr	r1,r11
+> +	blr
 > 
-
