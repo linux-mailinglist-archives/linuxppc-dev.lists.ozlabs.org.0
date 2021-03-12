@@ -2,76 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F9C33830F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 02:14:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4C733831B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 02:21:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DxSWs18Y1z3cn1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 12:14:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DxShB6V0Cz3dCL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 12:21:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=vdo0+wYI;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=jap1qW3E;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
- helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vdo0+wYI; dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
- [IPv6:2607:f8b0:4864:20::432])
+ header.s=20161025 header.b=jap1qW3E; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DxSWP6Hsyz30Nj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 12:13:52 +1100 (AEDT)
-Received: by mail-pf1-x432.google.com with SMTP id t29so723796pfg.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 17:13:52 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DxSgm2kSxz30Nx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 12:21:06 +1100 (AEDT)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ q6-20020a17090a4306b02900c42a012202so10251470pjg.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Mar 2021 17:21:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=fqgBQHGszJ1FJ/uJtib9M0dApRy7K5pmtaH0QVQ6w/E=;
- b=vdo0+wYIjZgxN1DHiAduyEanAb6xMs7pl6PHFhUQVCmfAgFSd2RNbjOFKI/L1rY+92
- hbfV8nmYDxlPo4Ur59e8+a8ppAenabXc2eXQvPMoJwbmuWfNff114lZaw1Rg5sR6Veb2
- OI5S2IeOA8CDDZ5IpDFo37yWixEWNriAqpJ6r9UfE0wnO8Yhs0TwKr+MnPmlVYzgqDM2
- DzU85n0RBEbwMOAVZkPrOlO4l2MsSZ34OpXIviaFOUQVRJpLnEP3qbxFhVMudI83LkBZ
- qhGN/RzbgoWxMqaM4gMi/WK59gHt5PFl0d8MRsPR98rfbbhprDda1yazuiAzRVuoCH40
- yAyQ==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=awBWsjMYTKRIzzLxfU88S8jB61XJtoxtB3gs3C+osHs=;
+ b=jap1qW3EbvlA6fYwzkRvOdAtb3zu8s+e55danl+ER9Sew1+28S5y4J0VXGQ7jXPR21
+ ysVKk4SLeVOjv7XVI1eWV1YEQFhDpOPb5AiOmYWQZ+RbALg0y58b/3wbHSBwhcAhCI4h
+ qQGiGN4l76jddAC9kU0seiHpGupQbCLsBnHk4Ie1sn9/LND67AJwKhetA2vZx9e1uWUJ
+ MbpQxPPWkWjl9GCnVnlrW9lwRuXJBGdcqQqttys7mpwXNY4X7s0VWw7DH3zRhhlTnYGF
+ RGiyQ6cuqG/iC3XfXSRhCnhRfMg1cPTX8aIUWZooekyrgd6H4oAmQyy6/uxIUKdiJcU8
+ T0zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=fqgBQHGszJ1FJ/uJtib9M0dApRy7K5pmtaH0QVQ6w/E=;
- b=GkoUzfBYFSlbAGcMZr9x29PczPCBFV11TxdfVHXK6NoMpCeKLveEYiF6kctOQD0nDq
- MbSQYTXAYzzzz/wyOigkEih0UztAn0WvlwkoWBLb/uiPazmpwr6ptuMiGq6zQ3GQ+drR
- I/SoyHR8HY4BMHFnzGRno3ORF4FkOcpNKODYkM+hN8LvDmTu3IA+7GzZn/u2hI6AOprI
- /pCn62kJbMbeBjIkY3eOTOnlkhjiRPKz5b/mJhDVDGOo5Z438KPt0opUMbViYZfzY2SC
- p574H1ZzOcqEDMgkgz55RcYr7XuGiJz6XuKiOEpsHaLl1QAp9Z5XJ76dc/6t6oosvncz
- UR6w==
-X-Gm-Message-State: AOAM531QZMBZ6ILp6ZAzUV9nmOlQnFvsmujb48C9Drbx7LmGZ8HDKdRI
- qsIngehxIrSb4WcjUYV9oHk=
-X-Google-Smtp-Source: ABdhPJx249OAggnX/6S8Z7M8WlaUjbknMaYUtqTYcwA9ec64iRZMMUHTncGO8vWthXzdUlABbTCjXA==
-X-Received: by 2002:a62:35c2:0:b029:1f1:3a8b:83d5 with SMTP id
- c185-20020a6235c20000b02901f13a8b83d5mr10032240pfa.29.1615511629491; 
- Thu, 11 Mar 2021 17:13:49 -0800 (PST)
-Received: from localhost (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id k8sm277545pjj.31.2021.03.11.17.13.47
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=awBWsjMYTKRIzzLxfU88S8jB61XJtoxtB3gs3C+osHs=;
+ b=SRwteolY5+bo5MESq1dRQtJrlQulSqMse6uowmtHG998v9BJWzLJTaGiiXPIOa0fRC
+ jeRn5k8oBDrcjxGf3uZwWAg1ovrIOR/TkBSaaj6EONPdaLCEty6R5iUcM+fJEt1iunCS
+ 1m9niNAMTUTwOPelAIXDwjahyLEOJxjVdgpAd5Qo4tj8Pn23QbOdpYbFA9Un5fZyqk9X
+ 5qxjpUA1l3K1NsJBwEBiXPR881K8d3ovp+r07LJTmBctNyPUsUDGDEiY2Aa5nwKFV1gm
+ ko15BNsNjlJNOYhcV7r4DO6jnpO7nL4jWBw+PK0iJVSd0dYV5x4nnbarx8/k1pZAvQSL
+ VQAA==
+X-Gm-Message-State: AOAM531hsvlWxOZUHR8fKIT9u2pr7kRyrrxw1T7c1LPG/u0K7Pooa7L7
+ RTijikGUfnOv9x0mALyATR4dcNGzROM=
+X-Google-Smtp-Source: ABdhPJwH22UpFH4iKN/trrQslSfQc4L3Z59GZa73NSBB2im/N48XqNCnJfZ6UJhX4enbfbbjGrU8ng==
+X-Received: by 2002:a17:90b:798:: with SMTP id
+ l24mr11001817pjz.63.1615512063642; 
+ Thu, 11 Mar 2021 17:21:03 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
+ by smtp.gmail.com with ESMTPSA id
+ 202sm3400480pfu.46.2021.03.11.17.20.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Mar 2021 17:13:48 -0800 (PST)
-Date: Fri, 12 Mar 2021 11:13:43 +1000
+ Thu, 11 Mar 2021 17:21:03 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Do not expose HFSCR sanitisation to
- nested hypervisor
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <20210305231055.2913892-1-farosas@linux.ibm.com>
- <1615191200.1pjltfhe7o.astroid@bobo.none>
- <20210310092354.GA30597@blackberry>
-In-Reply-To: <20210310092354.GA30597@blackberry>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64s: power4 nap fixup in C
+Date: Fri, 12 Mar 2021 11:20:44 +1000
+Message-Id: <20210312012044.3660743-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Message-Id: <1615511004.vkyzd3ossi.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,62 +80,233 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
- Fabiano Rosas <farosas@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Paul Mackerras's message of March 10, 2021 7:23 pm:
-> On Mon, Mar 08, 2021 at 06:18:47PM +1000, Nicholas Piggin wrote:
->> Excerpts from Fabiano Rosas's message of March 6, 2021 9:10 am:
->> > As one of the arguments of the H_ENTER_NESTED hypercall, the nested
->> > hypervisor (L1) prepares a structure containing the values of various
->> > hypervisor-privileged registers with which it wants the nested guest
->> > (L2) to run. Since the nested HV runs in supervisor mode it needs the
->> > host to write to these registers.
->> >=20
->> > To stop a nested HV manipulating this mechanism and using a nested
->> > guest as a proxy to access a facility that has been made unavailable
->> > to it, we have a routine that sanitises the values of the HV registers
->> > before copying them into the nested guest's vcpu struct.
->> >=20
->> > However, when coming out of the guest the values are copied as they
->> > were back into L1 memory, which means that any sanitisation we did
->> > during guest entry will be exposed to L1 after H_ENTER_NESTED returns.
->> >=20
->> > This is not a problem by itself, but in the case of the Hypervisor
->> > Facility Status and Control Register (HFSCR), we use the intersection
->> > between L2 hfscr bits and L1 hfscr bits. That means that L1 could use
->> > this to indirectly read the (hv-privileged) value from its vcpu
->> > struct.
->> >=20
->> > This patch fixes this by making sure that L1 only gets back the bits
->> > that are necessary for regular functioning.
->>=20
->> The general idea of restricting exposure of HV privileged bits, but
->> for the case of HFSCR a guest can probe the HFCR anyway by testing which=
-=20
->> facilities are available (and presumably an HV may need some way to know
->> what features are available for it to advertise to its own guests), so
->> is this necessary? Perhaps a comment would be sufficient.
->=20
-> I would see it a bit differently.  From L1's point of view, L0 is the
-> hardware.  The situation we have now is akin to writing a value to the
-> real HFSCR, then reading HFSCR and finding that some of the facility
-> enable bits have magically got set to zero.  That's not the way real
-> hardware works, so L0 shouldn't behave that way either, or at least
-> not without some strong justification.
+There is no need for this to be in asm, use the new intrrupt entry wrapper.
 
-But the features disallowed by the L0 have to be viewed as unimplemented=20
-by the hardware so the bits would be reserved, so according to=20
-architecture they actually are allowed to return zero.
-
-That's not my concern though, and I do agree it is a bit odd. I don't=20
-have a problem with leaving the FC field value unchanged.
-
-I think at least printing a warning for unimplemented bits would be good=20
-though.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+Hopefully this works on a real G5 now, but I couldn't reproduce the
+problem with QEMU.
 
 Thanks,
 Nick
+
+ arch/powerpc/include/asm/interrupt.h   | 19 +++++++++++
+ arch/powerpc/include/asm/processor.h   |  1 +
+ arch/powerpc/include/asm/thread_info.h |  6 ++++
+ arch/powerpc/kernel/exceptions-64s.S   | 45 --------------------------
+ arch/powerpc/kernel/idle_book3s.S      |  4 +++
+ 5 files changed, 30 insertions(+), 45 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index aedfba29e43a..ef015d3b5e39 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -9,6 +9,17 @@
+ #include <asm/kprobes.h>
+ #include <asm/runlatch.h>
+ 
++static inline void nap_adjust_return(struct pt_regs *regs)
++{
++#ifdef CONFIG_PPC_970_NAP
++	if (unlikely(test_thread_local_flags(_TLF_NAPPING))) {
++		/* Can avoid a test-and-clear because NMIs do not call this */
++		clear_thread_local_flags(_TLF_NAPPING);
++		regs->nip = (unsigned long)power4_idle_nap_return;
++	}
++#endif
++}
++
+ struct interrupt_state {
+ #ifdef CONFIG_PPC_BOOK3E_64
+ 	enum ctx_state ctx_state;
+@@ -111,6 +122,9 @@ static inline void interrupt_async_exit_prepare(struct pt_regs *regs, struct int
+ {
+ 	irq_exit();
+ 	interrupt_exit_prepare(regs, state);
++
++	/* Adjust at exit so the main handler sees the true NIA */
++	nap_adjust_return(regs);
+ }
+ 
+ struct interrupt_nmi_state {
+@@ -164,6 +178,11 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
+ 			radix_enabled() || (mfmsr() & MSR_DR))
+ 		nmi_exit();
+ 
++	/*
++	 * nmi does not call nap_adjust_return because nmi should not create
++	 * new work to do (must use irq_work for that).
++	 */
++
+ #ifdef CONFIG_PPC64
+ 	if (TRAP(regs) != 0x900 && TRAP(regs) != 0xf00 && TRAP(regs) != 0x260)
+ 		this_cpu_set_ftrace_enabled(state->ftrace_enabled);
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index 8acc3590c971..eedc3c775141 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -393,6 +393,7 @@ extern unsigned long isa300_idle_stop_mayloss(unsigned long psscr_val);
+ extern unsigned long isa206_idle_insn_mayloss(unsigned long type);
+ #ifdef CONFIG_PPC_970_NAP
+ extern void power4_idle_nap(void);
++void power4_idle_nap_return(void);
+ #endif
+ 
+ extern unsigned long cpuidle_disable;
+diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+index 386d576673a1..bf137151100b 100644
+--- a/arch/powerpc/include/asm/thread_info.h
++++ b/arch/powerpc/include/asm/thread_info.h
+@@ -152,6 +152,12 @@ void arch_setup_new_exec(void);
+ 
+ #ifndef __ASSEMBLY__
+ 
++static inline void clear_thread_local_flags(unsigned int flags)
++{
++	struct thread_info *ti = current_thread_info();
++	ti->local_flags &= ~flags;
++}
++
+ static inline bool test_thread_local_flags(unsigned int flags)
+ {
+ 	struct thread_info *ti = current_thread_info();
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 60d3051a8bc8..ea7a443488d2 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -692,25 +692,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	ld	r1,GPR1(r1)
+ .endm
+ 
+-/*
+- * When the idle code in power4_idle puts the CPU into NAP mode,
+- * it has to do so in a loop, and relies on the external interrupt
+- * and decrementer interrupt entry code to get it out of the loop.
+- * It sets the _TLF_NAPPING bit in current_thread_info()->local_flags
+- * to signal that it is in the loop and needs help to get out.
+- */
+-#ifdef CONFIG_PPC_970_NAP
+-#define FINISH_NAP				\
+-BEGIN_FTR_SECTION				\
+-	ld	r11, PACA_THREAD_INFO(r13);	\
+-	ld	r9,TI_LOCAL_FLAGS(r11);		\
+-	andi.	r10,r9,_TLF_NAPPING;		\
+-	bnel	power4_fixup_nap;		\
+-END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
+-#else
+-#define FINISH_NAP
+-#endif
+-
+ /*
+  * There are a few constraints to be concerned with.
+  * - Real mode exceptions code/data must be located at their physical location.
+@@ -1248,7 +1229,6 @@ EXC_COMMON_BEGIN(machine_check_common)
+ 	 */
+ 	GEN_COMMON machine_check
+ 
+-	FINISH_NAP
+ 	/* Enable MSR_RI when finished with PACA_EXMC */
+ 	li	r10,MSR_RI
+ 	mtmsrd 	r10,1
+@@ -1571,7 +1551,6 @@ EXC_VIRT_BEGIN(hardware_interrupt, 0x4500, 0x100)
+ EXC_VIRT_END(hardware_interrupt, 0x4500, 0x100)
+ EXC_COMMON_BEGIN(hardware_interrupt_common)
+ 	GEN_COMMON hardware_interrupt
+-	FINISH_NAP
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	do_IRQ
+ 	b	interrupt_return
+@@ -1801,7 +1780,6 @@ EXC_VIRT_BEGIN(decrementer, 0x4900, 0x80)
+ EXC_VIRT_END(decrementer, 0x4900, 0x80)
+ EXC_COMMON_BEGIN(decrementer_common)
+ 	GEN_COMMON decrementer
+-	FINISH_NAP
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	timer_interrupt
+ 	b	interrupt_return
+@@ -1886,7 +1864,6 @@ EXC_VIRT_BEGIN(doorbell_super, 0x4a00, 0x100)
+ EXC_VIRT_END(doorbell_super, 0x4a00, 0x100)
+ EXC_COMMON_BEGIN(doorbell_super_common)
+ 	GEN_COMMON doorbell_super
+-	FINISH_NAP
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ #ifdef CONFIG_PPC_DOORBELL
+ 	bl	doorbell_exception
+@@ -2237,7 +2214,6 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
+ 
+ EXC_COMMON_BEGIN(hmi_exception_common)
+ 	GEN_COMMON hmi_exception
+-	FINISH_NAP
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	handle_hmi_exception
+ 	b	interrupt_return
+@@ -2266,7 +2242,6 @@ EXC_VIRT_BEGIN(h_doorbell, 0x4e80, 0x20)
+ EXC_VIRT_END(h_doorbell, 0x4e80, 0x20)
+ EXC_COMMON_BEGIN(h_doorbell_common)
+ 	GEN_COMMON h_doorbell
+-	FINISH_NAP
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ #ifdef CONFIG_PPC_DOORBELL
+ 	bl	doorbell_exception
+@@ -2299,7 +2274,6 @@ EXC_VIRT_BEGIN(h_virt_irq, 0x4ea0, 0x20)
+ EXC_VIRT_END(h_virt_irq, 0x4ea0, 0x20)
+ EXC_COMMON_BEGIN(h_virt_irq_common)
+ 	GEN_COMMON h_virt_irq
+-	FINISH_NAP
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	do_IRQ
+ 	b	interrupt_return
+@@ -2345,7 +2319,6 @@ EXC_VIRT_BEGIN(performance_monitor, 0x4f00, 0x20)
+ EXC_VIRT_END(performance_monitor, 0x4f00, 0x20)
+ EXC_COMMON_BEGIN(performance_monitor_common)
+ 	GEN_COMMON performance_monitor
+-	FINISH_NAP
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	performance_monitor_exception
+ 	b	interrupt_return
+@@ -3096,24 +3069,6 @@ USE_FIXED_SECTION(virt_trampolines)
+ __end_interrupts:
+ DEFINE_FIXED_SYMBOL(__end_interrupts)
+ 
+-#ifdef CONFIG_PPC_970_NAP
+-	/*
+-	 * Called by exception entry code if _TLF_NAPPING was set, this clears
+-	 * the NAPPING flag, and redirects the exception exit to
+-	 * power4_fixup_nap_return.
+-	 */
+-	.globl power4_fixup_nap
+-EXC_COMMON_BEGIN(power4_fixup_nap)
+-	andc	r9,r9,r10
+-	std	r9,TI_LOCAL_FLAGS(r11)
+-	LOAD_REG_ADDR(r10, power4_idle_nap_return)
+-	std	r10,_NIP(r1)
+-	blr
+-
+-power4_idle_nap_return:
+-	blr
+-#endif
+-
+ CLOSE_FIXED_SECTION(real_vectors);
+ CLOSE_FIXED_SECTION(real_trampolines);
+ CLOSE_FIXED_SECTION(virt_vectors);
+diff --git a/arch/powerpc/kernel/idle_book3s.S b/arch/powerpc/kernel/idle_book3s.S
+index f9e6d83e6720..abb719b21cae 100644
+--- a/arch/powerpc/kernel/idle_book3s.S
++++ b/arch/powerpc/kernel/idle_book3s.S
+@@ -209,4 +209,8 @@ _GLOBAL(power4_idle_nap)
+ 	mtmsrd	r7
+ 	isync
+ 	b	1b
++
++	.globl power4_idle_nap_return
++power4_idle_nap_return:
++	blr
+ #endif
+-- 
+2.23.0
+
