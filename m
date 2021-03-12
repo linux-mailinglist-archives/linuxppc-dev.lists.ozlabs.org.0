@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1273387BB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 09:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4273387CB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 09:41:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DxfQd1dSKz3cVH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 19:40:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DxfRf5mhbz3dDs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Mar 2021 19:41:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,43 +15,43 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DxfQJ09sdz3cKb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 19:40:06 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DxfRJ5nsBz3cGd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Mar 2021 19:41:00 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DxfQ81Fkcz9v0tv;
- Fri, 12 Mar 2021 09:40:00 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DxfRF1DSgz9v0v7;
+ Fri, 12 Mar 2021 09:40:57 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Rn4VRcLedMso; Fri, 12 Mar 2021 09:40:00 +0100 (CET)
+ with ESMTP id Gn7TlhMAF9ZL; Fri, 12 Mar 2021 09:40:57 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DxfQ76Wftz9v0ts;
- Fri, 12 Mar 2021 09:39:59 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DxfRD60Dgz9v0v4;
+ Fri, 12 Mar 2021 09:40:56 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6EA878B764;
- Fri, 12 Mar 2021 09:40:00 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6EE928B764;
+ Fri, 12 Mar 2021 09:40:57 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 1daKeA9LbCwM; Fri, 12 Mar 2021 09:40:00 +0100 (CET)
+ with ESMTP id io9eXAHyt1an; Fri, 12 Mar 2021 09:40:57 +0100 (CET)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D60748B810;
- Fri, 12 Mar 2021 09:39:59 +0100 (CET)
-Subject: Re: [PATCH v2 28/43] powerpc/64e: Call bad_page_fault() from
- do_page_fault()
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B9F538B80F;
+ Fri, 12 Mar 2021 09:40:56 +0100 (CET)
+Subject: Re: [PATCH v2 02/43] powerpc/traps: Declare unrecoverable_exception()
+ as __noreturn
 To: Nicholas Piggin <npiggin@gmail.com>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
 References: <cover.1615291471.git.christophe.leroy@csgroup.eu>
- <b2878184d4c21faa8af55b60e52c83f391272112.1615291473.git.christophe.leroy@csgroup.eu>
- <1615339667.i88ve15v8a.astroid@bobo.none>
+ <f097a1071254e8f6875588f8fb9771467824a569.1615291471.git.christophe.leroy@csgroup.eu>
+ <1615339022.cb2m6h66vl.astroid@bobo.none>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <6e5e8283-8aad-cf61-565b-03903e5d20b5@csgroup.eu>
-Date: Fri, 12 Mar 2021 09:39:56 +0100
+Message-ID: <9e96b084-1914-f82e-5577-183bb7082d18@csgroup.eu>
+Date: Fri, 12 Mar 2021 09:40:53 +0100
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <1615339667.i88ve15v8a.astroid@bobo.none>
+In-Reply-To: <1615339022.cb2m6h66vl.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -73,90 +73,62 @@ Sender: "Linuxppc-dev"
 
 
 
-Le 10/03/2021 à 02:29, Nicholas Piggin a écrit :
+Le 10/03/2021 à 02:22, Nicholas Piggin a écrit :
 > Excerpts from Christophe Leroy's message of March 9, 2021 10:09 pm:
->> book3e/64 is the last one calling __bad_page_fault()
->> from assembly.
+>> unrecoverable_exception() is never expected to return, most callers
+>> have an infiniteloop in case it returns.
 >>
->> Save non volatile registers before calling do_page_fault()
->> and modify do_page_fault() to call __bad_page_fault()
->> for all platforms.
+>> Ensure it really never returns by terminating it with a BUG(), and
+>> declare it __no_return.
 >>
->> Then it can be refactored by the call of bad_page_fault()
->> which avoids the duplication of the exception table search.
+>> It always GCC to really simplify functions calling it. In the exemple
+>> below, it avoids the stack frame in the likely fast path and avoids
+>> code duplication for the exit.
+>>
+>> With this patch:
 > 
-> This can go in with the 64e change after your series. I think it should
-> be ready for the next merge window as well.
+> [snip]
+> 
+> Nice.
+> 
+>> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+>> index a44a30b0688c..d5c9d9ddd186 100644
+>> --- a/arch/powerpc/kernel/traps.c
+>> +++ b/arch/powerpc/kernel/traps.c
+>> @@ -2170,11 +2170,15 @@ DEFINE_INTERRUPT_HANDLER(SPEFloatingPointRoundException)
+>>    * in the MSR is 0.  This indicates that SRR0/1 are live, and that
+>>    * we therefore lost state by taking this exception.
+>>    */
+>> -void unrecoverable_exception(struct pt_regs *regs)
+>> +void __noreturn unrecoverable_exception(struct pt_regs *regs)
+>>   {
+>>   	pr_emerg("Unrecoverable exception %lx at %lx (msr=%lx)\n",
+>>   		 regs->trap, regs->nip, regs->msr);
+>>   	die("Unrecoverable exception", regs, SIGABRT);
+>> +	/* die() should not return */
+>> +	WARN(true, "die() unexpectedly returned");
+>> +	for (;;)
+>> +		;
+>>   }
+> 
+> I don't think the WARN should be added because that will cause another
+> interrupt after something is already badly wrong, so this might just
+> make it harder to debug.
+> 
+> For example if die() is falling through for some reason, we warn and
+> cause a program check here, and that might also be unrecoverable so it
+> might come through here and fall through again and warn again, etc.
+> 
+> Putting the infinite loop is good enough I think (and better than there
+> was previously).
 
-Yes, I thought it would pull more optimisation, but at the end it doesn't bring anythink, so I'll 
-drop it for now and leave it to you for your series.
+Ok, dropped the WARN()
 
+> 
+> Otherwise
+> 
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 > 
 > Thanks,
 > Nick
 > 
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   arch/powerpc/kernel/exceptions-64e.S |  8 +-------
->>   arch/powerpc/mm/fault.c              | 17 ++++-------------
->>   2 files changed, 5 insertions(+), 20 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
->> index e8eb9992a270..b60f89078a3f 100644
->> --- a/arch/powerpc/kernel/exceptions-64e.S
->> +++ b/arch/powerpc/kernel/exceptions-64e.S
->> @@ -1010,15 +1010,9 @@ storage_fault_common:
->>   	addi	r3,r1,STACK_FRAME_OVERHEAD
->>   	ld	r14,PACA_EXGEN+EX_R14(r13)
->>   	ld	r15,PACA_EXGEN+EX_R15(r13)
->> +	bl	save_nvgprs
->>   	bl	do_page_fault
->> -	cmpdi	r3,0
->> -	bne-	1f
->>   	b	ret_from_except_lite
->> -1:	bl	save_nvgprs
->> -	mr	r4,r3
->> -	addi	r3,r1,STACK_FRAME_OVERHEAD
->> -	bl	__bad_page_fault
->> -	b	ret_from_except
->>   
->>   /*
->>    * Alignment exception doesn't fit entirely in the 0x100 bytes so it
->> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
->> index 2e54bac99a22..7bcff3fca110 100644
->> --- a/arch/powerpc/mm/fault.c
->> +++ b/arch/powerpc/mm/fault.c
->> @@ -541,24 +541,15 @@ NOKPROBE_SYMBOL(___do_page_fault);
->>   
->>   static long __do_page_fault(struct pt_regs *regs)
->>   {
->> -	const struct exception_table_entry *entry;
->>   	long err;
->>   
->>   	err = ___do_page_fault(regs, regs->dar, regs->dsisr);
->>   	if (likely(!err))
->> -		return err;
->> -
->> -	entry = search_exception_tables(regs->nip);
->> -	if (likely(entry)) {
->> -		instruction_pointer_set(regs, extable_fixup(entry));
->>   		return 0;
->> -	} else if (!IS_ENABLED(CONFIG_PPC_BOOK3E_64)) {
->> -		__bad_page_fault(regs, err);
->> -		return 0;
->> -	} else {
->> -		/* 32 and 64e handle the bad page fault in asm */
->> -		return err;
->> -	}
->> +
->> +	bad_page_fault(regs, err);
->> +
->> +	return 0;
->>   }
->>   NOKPROBE_SYMBOL(__do_page_fault);
->>   
->> -- 
->> 2.25.0
->>
->>
