@@ -1,107 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B0033A9B4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 03:53:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D0833A9DE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 04:18:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzLZY4nP5z3cM6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 13:53:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzM7Y1HSQz3ckQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:18:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jRtgMWjg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=dT5axvtK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=au1.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=michaele@au1.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
+ helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jRtgMWjg; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=dT5axvtK; dkim-atps=neutral
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzLZ52S56z2ysr
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 13:52:44 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12F2XlQp129569; Sun, 14 Mar 2021 22:52:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=TfwgIDtMspvL1SrXH4WOgpQyUnLw8JK846jcaSOMI+I=;
- b=jRtgMWjgfnJLI7qeGsrxGDpLBx5KI9uKMN8koo+eqHQ7kAkh0gqKu2+2rBzLquwkejEZ
- r2ziZFH8dPJc7Y0XZOLOx/+DETtIvoaZ49oDnEdFhGZu8m2lFA/GJ3GJHEJEaBzUhPEb
- Zs6nVF0o7eZpsQ2SHDKBpIeuatf03Z+0gYYvoIf1CIrv8wh1Xy00QnM+Zcqep1Z+rznz
- E1iEotpH3yDnGSbC1kft9/6e8oyyw5Al5Pl3wBQIq6h2Xr2LgbpU0UBwD/7Uz6seRyrV
- ap0oo0lvuoAeuhVHi4ql0ReCY0KjPgD0M20tXPkqqgxyyCiEm3/Xt1M9rZq7Xs5e5hHr vw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 379ukebh0k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 14 Mar 2021 22:52:41 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12F2nsB3026890;
- Sun, 14 Mar 2021 22:52:41 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 379ukebh05-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 14 Mar 2021 22:52:41 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12F2qdk9002570;
- Mon, 15 Mar 2021 02:52:39 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06ams.nl.ibm.com with ESMTP id 378mnh1d9x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Mar 2021 02:52:38 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 12F2qKvD17957140
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Mar 2021 02:52:20 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AA840A4054;
- Mon, 15 Mar 2021 02:52:36 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 52B07A405B;
- Mon, 15 Mar 2021 02:52:36 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 15 Mar 2021 02:52:36 +0000 (GMT)
-Received: from localhost (unknown [9.206.171.122])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 871BF601F4;
- Mon, 15 Mar 2021 13:52:34 +1100 (AEDT)
-From: Michael Ellerman <michaele@au1.ibm.com>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>, Michal =?utf-8?Q?Such=C3=A1nek?=
- <msuchanek@suse.de>
-Subject: Re: [PATCH] rpadlpar: fix potential drc_name corruption in store
- functions
-In-Reply-To: <a67af978-1c47-c66b-47f0-3d754da738f9@linux.ibm.com>
-References: <20210310223021.423155-1-tyreld@linux.ibm.com>
- <20210313091751.GM6564@kitsune.suse.cz>
- <a67af978-1c47-c66b-47f0-3d754da738f9@linux.ibm.com>
-Date: Mon, 15 Mar 2021 13:52:31 +1100
-Message-ID: <87o8fl3z80.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzM6g6JdRz30Gp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 14:17:30 +1100 (AEDT)
+Received: by mail-pf1-x434.google.com with SMTP id x7so5695047pfi.7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Mar 2021 20:17:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=jzR8ErWfNRx1JHHZNtVy6/YcPMkh5LidPDohsPOcWzQ=;
+ b=dT5axvtKi7PkztZEkyV12/VAQaOmCodxwcQdYPxKKV5lPsQ10yoVPIEfnSFx4lFr53
+ 7NXJVsfixMqyRn/64NUPALFevQLmPJXk1vfDXJZjL1NhEQ++cVSEI4ThNET+nqRrxjvs
+ dd9qpTqXOOtEdYAbY1Ouxq6pj0skXMbZKUAA+6bnHz/oPQ9yjfpUlcNX/pwQFu0PIUli
+ 3wqNGL2mN+RLb0QA+jKfJrjuKw3cf6aCZU7x2bDyPoMYY7GQC9+Z1LNjvTA2D0YbP9jj
+ lXGfYRsIKeozJnYj8Jqw0t9m1ox/TR4u8g57moAYob+El83rmdvv1QuxBSsB8RcpBHyp
+ Un5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=jzR8ErWfNRx1JHHZNtVy6/YcPMkh5LidPDohsPOcWzQ=;
+ b=CIuxaPp+gKdOEwYx4UHhQxfRALkxqWs/oRz4RkbFPPnMzW9HQB7wdmB1ATHxUtEPpZ
+ 7l1wrL5CvA8DbMZzqmNQAhyB7IBlb5bWsZwrJdCt+AJohIGArNxb/vcmz4jMWrzDZ7YC
+ 83Je16xMRQSzpI2oIZV9E9RbTykwZuOVEDntfewlMGLKswS4PAtL4JgOi0yDRsEQAhcg
+ GulNFqWjX+YXRg81fxjeNAjUDFrffwF9nqnewyAxWfwz1UhkvhUQVbY/hJmEiuFoQK95
+ DEncYgm/sdrlKc7YSaKBL4vcOdsKZu32V6SaW2Uc/OMC/8zhmnqO0lzETiLKbSPhNeuW
+ IBsQ==
+X-Gm-Message-State: AOAM530ocErj5HzBxBGaTFIvkD3IWB1wdDSJJ+r+i0iEamu0/R3WP081
+ yIGGbxn+OgQQ1QqnPH8exJt23j52lgQ=
+X-Google-Smtp-Source: ABdhPJxhTN8RjDRg+IZXcZQq+Yj+pQflGEJQ9ey7DRlTfEJq+KtoEccPcwoi+YZ11R5ju4RsRDQPiA==
+X-Received: by 2002:aa7:99c4:0:b029:1f6:c0bf:43d1 with SMTP id
+ v4-20020aa799c40000b02901f6c0bf43d1mr22296467pfi.37.1615778244965; 
+ Sun, 14 Mar 2021 20:17:24 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
+ by smtp.gmail.com with ESMTPSA id
+ j22sm8517740pjz.3.2021.03.14.20.17.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 14 Mar 2021 20:17:24 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 00/10] Move 64e to new interrupt return code
+Date: Mon, 15 Mar 2021 13:17:06 +1000
+Message-Id: <20210315031716.3940350-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-14_16:2021-03-12,
- 2021-03-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 adultscore=0 mlxscore=0 clxscore=1011 malwarescore=0
- mlxlogscore=999 priorityscore=1501 bulkscore=0 suspectscore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103150018
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,53 +79,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bhelgaas@google.com, linux-pci@vger.kernel.org, mmc@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Scott Wood <oss@buserror.net>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tyrel Datwyler <tyreld@linux.ibm.com> writes:
-> On 3/13/21 1:17 AM, Michal Such=C3=A1nek wrote:
->> On Wed, Mar 10, 2021 at 04:30:21PM -0600, Tyrel Datwyler wrote:
->>> Both add_slot_store() and remove_slot_store() try to fix up the drc_name
->>> copied from the store buffer by placing a NULL terminator at nbyte + 1
->>> or in place of a '\n' if present. However, the static buffer that we
->>> copy the drc_name data into is not zeored and can contain anything past
->>> the n-th byte. This is problematic if a '\n' byte appears in that buffer
->>> after nbytes and the string copied into the store buffer was not NULL
->>> terminated to start with as the strchr() search for a '\n' byte will ma=
-rk
->>> this incorrectly as the end of the drc_name string resulting in a drc_n=
-ame
->>> string that contains garbage data after the n-th byte. The following
->>> debugging shows an example of the drmgr utility writing "PHB 4543" to
->>> the add_slot sysfs attribute, but add_slot_store logging a corrupted
->>> string value.
->>>
->>> [135823.702864] drmgr: drmgr: -c phb -a -s PHB 4543 -d 1
->>> [135823.702879] add_slot_store: drc_name =3D PHB 4543=C2=B0|<82>!, rc =
-=3D -19
->>>
->>> Fix this by NULL terminating the string when we copy it into our static
->>> buffer by coping nbytes + 1 of data from the store buffer. The code has
->> Why is it OK to copy nbytes + 1 and why is it expected that the buffer
->> contains a nul after the content?
->
-> It is my understanding that the store function buffer is allocated as a
-> zeroed-page which the kernel copies up to at most (PAGE_SIZE - 1) of user=
- data
-> into. Anything after nbytes would therefore be zeroed.
+Since RFC this is rebased on Christophe's v3 ppc32 conversion, and
+has fixed up small details, and then adds some powerpc-wide
+cleanups at the end.
 
-I think that's true, but it would be nice if we didn't have to rely on
-that obscure detail in order for this code to be correct & understandable.
+Tested on qemu only (QEMU e500), which is not ideal for interrupt
+handling particularly the critical interrupts which I don't know
+whether it can generate.
 
->> Isn't it much saner to just nul terminate the string after copying?
->
-> At the cost of an extra line of code, sure.
+Thanks,
+Nick
 
-Is there a reason we can't use strscpy()? That should deal with all the
-corner cases around the string copy, and then all you have to do is look
-for a newline and turn it into nul.
+Nicholas Piggin (10):
+  powerpc/syscall: switch user_exit_irqoff and trace_hardirqs_off order
+  powerpc/64e/interrupt: always save nvgprs on interrupt
+  powerpc/64e/interrupt: use new interrupt return
+  powerpc/64e/interrupt: NMI save irq soft-mask state in C
+  powerpc/64e/interrupt: reconcile irq soft-mask state in C
+  powerpc/64e/interrupt: Use new interrupt context tracking scheme
+  powerpc/64e/interrupt: handle bad_page_fault in C
+  powerpc: clean up do_page_fault
+  powerpc: remove partial register save logic
+  powerpc: move norestart trap flag to bit 0
 
-cheers
+ arch/powerpc/include/asm/asm-prototypes.h |   2 -
+ arch/powerpc/include/asm/bug.h            |   4 +-
+ arch/powerpc/include/asm/interrupt.h      |  66 ++--
+ arch/powerpc/include/asm/ptrace.h         |  36 +-
+ arch/powerpc/kernel/align.c               |   6 -
+ arch/powerpc/kernel/entry_64.S            |  40 +-
+ arch/powerpc/kernel/exceptions-64e.S      | 425 ++--------------------
+ arch/powerpc/kernel/interrupt.c           |  22 +-
+ arch/powerpc/kernel/irq.c                 |  76 ----
+ arch/powerpc/kernel/process.c             |  12 -
+ arch/powerpc/kernel/ptrace/ptrace-view.c  |  21 --
+ arch/powerpc/kernel/ptrace/ptrace.c       |   2 -
+ arch/powerpc/kernel/ptrace/ptrace32.c     |   4 -
+ arch/powerpc/kernel/signal_32.c           |   3 -
+ arch/powerpc/kernel/signal_64.c           |   2 -
+ arch/powerpc/kernel/traps.c               |  14 +-
+ arch/powerpc/lib/sstep.c                  |   4 -
+ arch/powerpc/mm/book3s64/hash_utils.c     |  16 +-
+ arch/powerpc/mm/fault.c                   |  28 +-
+ arch/powerpc/xmon/xmon.c                  |  23 +-
+ 20 files changed, 130 insertions(+), 676 deletions(-)
+
+-- 
+2.23.0
+
