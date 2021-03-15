@@ -2,70 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44F133C91A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 23:10:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8499B33C91B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 23:10:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzrFg3XQFz3byF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 09:10:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzrGF3qN1z3dt1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 09:10:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=R9yvXhJ2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=oiTlZr6u;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a;
+ helo=mail-pg1-x52a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=R9yvXhJ2; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
+ header.s=20161025 header.b=oiTlZr6u; dkim-atps=neutral
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
+ [IPv6:2607:f8b0:4864:20::52a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzr7L1sKFz30Gk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 09:04:46 +1100 (AEDT)
-Received: by mail-pj1-x1030.google.com with SMTP id gb6so9549968pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 15:04:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzr7N5zPyz30C6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 09:04:48 +1100 (AEDT)
+Received: by mail-pg1-x52a.google.com with SMTP id w34so20222143pga.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 15:04:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=LLi1S3FpkxSAZwsX8u/3TltE4SXPN2E9VJ/bztmavDE=;
- b=R9yvXhJ2A09LCVynjHTqMqAYOdhoU/hY1xLXfb3NAavb/BlZBuPjAZg/5gJdE1/5YS
- QFSUELxTbO3pE0PnTgIx6F40iI1ltFEj1mK040C6Q+SFq1QIjxggZrQGoxxE63OChFU1
- DCxuNL9OXWJXu565Ld9LJfiRHCnpfJy2rjVq8Q9rC5oh/1VapRmfUvbcaTrTmFCW1wqH
- pi4FRHgnG6T9Xsl+daCZr/cgOnghruRJu7WLfrE642QFY8R07C8nPBEQatD0VBXWWqXN
- g0NglPZ9+5QDTuFB0WZ4v8FPX77dCQgtlioeuhh1Vuw33gHcVdoNYevQaqDw0lsi4N0g
- T4vA==
+ bh=gURV2Sq7v8hvIzpx4HtLrxkr8I54uRWTYNN+Qe5iCCU=;
+ b=oiTlZr6u89Ym2+olqDfGWy61s1pJvgIXqW0hs7MN4hU398MHOTCIZhNogbCAtqvNzJ
+ I0NQFR21ek6RTh+C6PZQm0bWNKCQQf0Gq2hknHVNlsM0MDTCZdqARA69s/10H0VgLc8z
+ elZowMVrvDL/nT3M+oZ5I9aw427Gkk4Iv5LlpnYbkyMZ2RasX6JmOKfmg9TUU/ITTSUS
+ qGn82ZGFtLCms1gMLIWCkwa7eAAa2TB3ZS6oulILFH7wXIyhr7sU/1Xi/uB63ABn7/QX
+ I5QSLuZ1RYp4OjXg6FQFDyKYre/JMUIc+TKWkcjf1WJ5zl7yCiRE7gvf0bjglZpalDQH
+ oVlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=LLi1S3FpkxSAZwsX8u/3TltE4SXPN2E9VJ/bztmavDE=;
- b=KQDDJ+h0X/3Y8Lj62A18Cwm/m5FHrWfTrObZc503bCzAuhO+P5p94g45yccI4DTiko
- Mw7UetS98FScWx6pY1TTP7ciEebvE2HJ4G3apYeLsol/OJTUDb+NHzsasxRaDRl86j7J
- ii+KOKCLZwxSORw0TodbRurtPeoOLRe0/Cihda4vLoxudwnBwwfwDG8Se9iqU1HNAAOU
- jVAKj7xLjqN9PZ7LoOSZ147sOQF+cRWdIlvCsfr6upqhJCNDagSwiVSca8YppF1LSt+6
- FWe3r3hKIPzv0OAVlHo/kWXeqBDctHiRUv0yb2KH5z8eyk1gzWzhL4k/nHLNzikLwdRn
- s7fQ==
-X-Gm-Message-State: AOAM533FG0+fQSXtUThF31IfgOdAUBrWNxAOb5wkpTL2sxa27kcJqoHP
- W7q8EHXoHtMAQXuE4i4Rdky/t3ypGTs=
-X-Google-Smtp-Source: ABdhPJyoHCwsMyRK66X1/PFD9uTGFbULJc+pnfyaAmtajnA7hdDTVi5e/8tup/CG4QmNUsrVg6F+mg==
-X-Received: by 2002:a17:902:e54b:b029:e6:b39f:63ab with SMTP id
- n11-20020a170902e54bb02900e6b39f63abmr6969492plf.55.1615845883596; 
- Mon, 15 Mar 2021 15:04:43 -0700 (PDT)
+ bh=gURV2Sq7v8hvIzpx4HtLrxkr8I54uRWTYNN+Qe5iCCU=;
+ b=gL4yyCsDm2w18gb73iZ8ai1dhJbjZvt9FSMtpr6/d7m7utTFw4hPcKsb712dli67Cg
+ etewVav6VtImOgm5iEk5V+RFAhSBZgg0emzgv/DHf3S3oasdFIBg/DN2BMGXYFBQ0v8X
+ 0L0ajK1nYN1JBOVYQSoVsvmQ5WivD5vVYtcxktOthWD6kGVmh24h3fZxw/sfVymiLBgT
+ Zldz/cWmKIJNMBwat3vCCaRlEwGp7N/Ln4iP374tVMBxkiP8KWVnytcBtb9zUH0+4bGp
+ W0dr9yimHc/C2w6sYxjq590sJIU1nh9DOwJnswweWkJ0/dzHiWNhkN84CYTTCqbwUns+
+ uP8A==
+X-Gm-Message-State: AOAM530gCf6OStv5LNL30e2upS1Crc4Bsceuc6VTXa8c7n0Hfd0lHhPI
+ kzUf0hLLQCf1JDJR2gvjWiAGWKJXYPo=
+X-Google-Smtp-Source: ABdhPJxAL7tqMjRU3dENF8QdEdheVLTXPBaMpeNh5WYUTVK2dKSoEg1FfqMl7w89F8LdHkXPfGMtFw==
+X-Received: by 2002:a65:6916:: with SMTP id s22mr1033854pgq.9.1615845886112;
+ Mon, 15 Mar 2021 15:04:46 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
  by smtp.gmail.com with ESMTPSA id
- y9sm14740338pgc.9.2021.03.15.15.04.41
+ y9sm14740338pgc.9.2021.03.15.15.04.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Mar 2021 15:04:43 -0700 (PDT)
+ Mon, 15 Mar 2021 15:04:45 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 12/14] powerpc/64s: system call avoid setting MSR[RI] until we
- set MSR[EE]
-Date: Tue, 16 Mar 2021 08:04:00 +1000
-Message-Id: <20210315220402.260594-13-npiggin@gmail.com>
+Subject: [PATCH 13/14] powerpc/64: handle MSR EE and RI in interrupt entry
+ wrapper
+Date: Tue, 16 Mar 2021 08:04:01 +1000
+Message-Id: <20210315220402.260594-14-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210315220402.260594-1-npiggin@gmail.com>
 References: <20210315220402.260594-1-npiggin@gmail.com>
@@ -87,46 +86,172 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This extends the MSR[RI]=0 window a little further into the system
-call in order to pair RI and EE enabling with a single mtmsrd.
+Similarly to the system call change in the previous patch, the mtmsrd to
+enable RI can be combined with the mtmsrd to enable EE for interrupts
+which enable the latter, which tends to be the important synchronous
+interrupts (i.e., page faults).
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Do this by enabling EE and RI together at the beginning of the entry
+wrapper if PACA_IRQ_HARD_DIS is clear, and just enabling RI if it is set
+(which means something wanted EE=0).
+
+Asynchronous interrupts set PACA_IRQ_HARD_DIS, but synchronous ones
+leave it unchanged, so by default they always get EE=1 unless they
+interrupt a caller that has hard disabled. When the sync interrupt
+later calls interrupt_cond_local_irq_enable(), that will not require
+another mtmsrd because we already enabled here.
+
+This tends to save one mtmsrd L=1 for synchronous interrupts on 64s.
+64e is conceptually unchanged, but it also sets MSR[EE]=1 now in the
+interrupt wrapper for synchronous interrupts with the same code.
+
+From: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 2 --
- arch/powerpc/kernel/interrupt_64.S   | 6 +++---
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ arch/powerpc/include/asm/interrupt.h | 18 +++++++++++++++--
+ arch/powerpc/kernel/exceptions-64s.S | 30 ----------------------------
+ 2 files changed, 16 insertions(+), 32 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index 8796eb4630c9..d6d54bbcba2f 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -55,9 +55,20 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
+ #endif
+ 
+ #ifdef CONFIG_PPC64
+-	if (irq_soft_mask_set_return(IRQS_ALL_DISABLED) == IRQS_ENABLED)
++	bool trace_enable = false;
++
++	if (IS_ENABLED(CONFIG_TRACE_IRQFLAGS)) {
++		if (irq_soft_mask_set_return(IRQS_DISABLED) == IRQS_ENABLED)
++			trace_enable = true;
++	} else {
++		irq_soft_mask_set(IRQS_DISABLED);
++	}
++	if (local_paca->irq_happened & PACA_IRQ_HARD_DIS)
++		__hard_RI_enable();
++	else
++		__hard_irq_enable();
++	if (trace_enable)
+ 		trace_hardirqs_off();
+-	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
+ 
+ 	if (user_mode(regs)) {
+ 		CT_WARN_ON(ct_state() != CONTEXT_USER);
+@@ -110,6 +121,7 @@ static inline void interrupt_async_enter_prepare(struct pt_regs *regs, struct in
+ 		__ppc64_runlatch_on();
+ #endif
+ 
++	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
+ 	interrupt_enter_prepare(regs, state);
+ 	irq_enter();
+ }
+@@ -166,6 +178,8 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
+ 	local_paca->irq_soft_mask = IRQS_ALL_DISABLED;
+ 	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
+ 
++	__hard_RI_enable();
++
+ 	/* Don't do any per-CPU operations until interrupt state is fixed */
+ 
+ 	if (nmi_disables_ftrace(regs)) {
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index bd0c82ac9de5..2f14ac3c377c 100644
+index 2f14ac3c377c..75cee7cdf887 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1999,8 +1999,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
- 	mtctr	r10
- 	bctr
- 	.else
+@@ -129,7 +129,6 @@ name:
+ #define IISIDE		.L_IISIDE_\name\()	/* Uses SRR0/1 not DAR/DSISR */
+ #define IDAR		.L_IDAR_\name\()	/* Uses DAR (or SRR0) */
+ #define IDSISR		.L_IDSISR_\name\()	/* Uses DSISR (or SRR1) */
+-#define ISET_RI		.L_ISET_RI_\name\()	/* Run common code w/ MSR[RI]=1 */
+ #define IBRANCH_TO_COMMON	.L_IBRANCH_TO_COMMON_\name\() /* ENTRY branch to common */
+ #define IREALMODE_COMMON	.L_IREALMODE_COMMON_\name\() /* Common runs in realmode */
+ #define IMASK		.L_IMASK_\name\()	/* IRQ soft-mask bit */
+@@ -174,9 +173,6 @@ do_define_int n
+ 	.ifndef IDSISR
+ 		IDSISR=0
+ 	.endif
+-	.ifndef ISET_RI
+-		ISET_RI=1
+-	.endif
+ 	.ifndef IBRANCH_TO_COMMON
+ 		IBRANCH_TO_COMMON=1
+ 	.endif
+@@ -582,11 +578,6 @@ DEFINE_FIXED_SYMBOL(\name\()_common_real)
+ 	stb	r10,PACASRR_VALID(r13)
+ 	.endif
+ 
+-	.if ISET_RI
 -	li	r10,MSR_RI
--	mtmsrd 	r10,1			/* Set RI (EE=0) */
- #ifdef CONFIG_RELOCATABLE
- 	__LOAD_HANDLER(r10, system_call_common)
- 	mtctr	r10
-diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-index f28f41a1a85a..eef61800f734 100644
---- a/arch/powerpc/kernel/interrupt_64.S
-+++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -311,10 +311,10 @@ END_BTB_FLUSH_SECTION
- 	 * nothing pending. system_call_exception() will call
- 	 * trace_hardirqs_off().
+-	mtmsrd	r10,1			/* Set MSR_RI */
+-	.endif
+-
+ 	.if ISTACK
+ 	.if IKUAP
+ 	kuap_save_amr_and_lock r9, r10, cr1, cr0
+@@ -931,11 +922,6 @@ INT_DEFINE_BEGIN(system_reset)
+ 	IVEC=0x100
+ 	IAREA=PACA_EXNMI
+ 	IVIRT=0 /* no virt entry point */
+-	/*
+-	 * MSR_RI is not enabled, because PACA_EXNMI and nmi stack is
+-	 * being used, so a nested NMI exception would corrupt it.
+-	 */
+-	ISET_RI=0
+ 	ISTACK=0
+ 	IKVM_REAL=1
+ INT_DEFINE_END(system_reset)
+@@ -1016,8 +1002,6 @@ EXC_COMMON_BEGIN(system_reset_common)
+ 	lhz	r10,PACA_IN_NMI(r13)
+ 	addi	r10,r10,1
+ 	sth	r10,PACA_IN_NMI(r13)
+-	li	r10,MSR_RI
+-	mtmsrd 	r10,1
+ 
+ 	mr	r10,r1
+ 	ld	r1,PACA_NMI_EMERG_SP(r13)
+@@ -1095,12 +1079,6 @@ INT_DEFINE_BEGIN(machine_check_early)
+ 	IAREA=PACA_EXMC
+ 	IVIRT=0 /* no virt entry point */
+ 	IREALMODE_COMMON=1
+-	/*
+-	 * MSR_RI is not enabled, because PACA_EXMC is being used, so a
+-	 * nested machine check corrupts it. machine_check_common enables
+-	 * MSR_RI.
+-	 */
+-	ISET_RI=0
+ 	ISTACK=0
+ 	IDAR=1
+ 	IDSISR=1
+@@ -1111,7 +1089,6 @@ INT_DEFINE_BEGIN(machine_check)
+ 	IVEC=0x200
+ 	IAREA=PACA_EXMC
+ 	IVIRT=0 /* no virt entry point */
+-	ISET_RI=0
+ 	IDAR=1
+ 	IDSISR=1
+ 	IKVM_SKIP=1
+@@ -1182,9 +1159,6 @@ EXC_COMMON_BEGIN(machine_check_early_common)
+ BEGIN_FTR_SECTION
+ 	bl	enable_machine_check
+ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+-	li	r10,MSR_RI
+-	mtmsrd	r10,1
+-
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	machine_check_early
+ 	std	r3,RESULT(r1)	/* Save result */
+@@ -1272,10 +1246,6 @@ EXC_COMMON_BEGIN(machine_check_common)
+ 	 * save area: PACA_EXMC instead of PACA_EXGEN.
  	 */
--	li	r11,IRQS_ALL_DISABLED
--	li	r12,PACA_IRQ_HARD_DIS
-+	li	r11,IRQS_DISABLED
-+	li	r12,-1 /* Set MSR_EE and MSR_RI */
- 	stb	r11,PACAIRQSOFTMASK(r13)
--	stb	r12,PACAIRQHAPPENED(r13)
-+	mtmsrd	r12,1
- 
- 	ENTER_KERNEL_SECURITY_FALLBACK
- 
+ 	GEN_COMMON machine_check
+-
+-	/* Enable MSR_RI when finished with PACA_EXMC */
+-	li	r10,MSR_RI
+-	mtmsrd 	r10,1
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	machine_check_exception
+ 	b	interrupt_return_srr
 -- 
 2.23.0
 
