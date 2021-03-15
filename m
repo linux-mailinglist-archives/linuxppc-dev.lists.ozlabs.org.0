@@ -1,70 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8499B33C91B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 23:10:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCB833C91C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 23:11:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzrGF3qN1z3dt1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 09:10:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzrGl4H5bz3c1V
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 09:11:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=oiTlZr6u;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=qgWJplCX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a;
- helo=mail-pg1-x52a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b;
+ helo=mail-pf1-x42b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=oiTlZr6u; dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
+ header.s=20161025 header.b=qgWJplCX; dkim-atps=neutral
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
+ [IPv6:2607:f8b0:4864:20::42b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzr7N5zPyz30C6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 09:04:48 +1100 (AEDT)
-Received: by mail-pg1-x52a.google.com with SMTP id w34so20222143pga.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 15:04:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzr7Q4zLNz30LN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 09:04:50 +1100 (AEDT)
+Received: by mail-pf1-x42b.google.com with SMTP id y13so7489159pfr.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 15:04:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=gURV2Sq7v8hvIzpx4HtLrxkr8I54uRWTYNN+Qe5iCCU=;
- b=oiTlZr6u89Ym2+olqDfGWy61s1pJvgIXqW0hs7MN4hU398MHOTCIZhNogbCAtqvNzJ
- I0NQFR21ek6RTh+C6PZQm0bWNKCQQf0Gq2hknHVNlsM0MDTCZdqARA69s/10H0VgLc8z
- elZowMVrvDL/nT3M+oZ5I9aw427Gkk4Iv5LlpnYbkyMZ2RasX6JmOKfmg9TUU/ITTSUS
- qGn82ZGFtLCms1gMLIWCkwa7eAAa2TB3ZS6oulILFH7wXIyhr7sU/1Xi/uB63ABn7/QX
- I5QSLuZ1RYp4OjXg6FQFDyKYre/JMUIc+TKWkcjf1WJ5zl7yCiRE7gvf0bjglZpalDQH
- oVlQ==
+ bh=Y+dg15PmAQIaQlIl2osG/hO3jjeAvCRiFGni1ZhwgxI=;
+ b=qgWJplCXwPnKxkMOZJPqEDo7lnZMeZHNv6Hof5pH5nnymSRMY7K98BZzVEmbfo7/7z
+ 248aDEiIJNbjnS6z/xrXGEviK6XGxstHgeyPplWcW/SfF6sTEpT95H+smITs71RQ7tVX
+ CdXSX28zNvhpHDGEGxatWvgHeYZNdD2v2Xq0rBLv8j30VQk68Zbj6MU1NzbH6I2MRwnq
+ +EqqW3njmiaG0enAGkoYNRHqKomNNMhkW/1vQA4wy0Qmbow/j9I0XadBHL0kcKwqtdrd
+ 8bUsNfKnZhxCxbM0UFvPSjuj+oMz3qremmot02Z+ZVUQ8R5MH1pcquEI2G5D0MRdLDfC
+ dP6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=gURV2Sq7v8hvIzpx4HtLrxkr8I54uRWTYNN+Qe5iCCU=;
- b=gL4yyCsDm2w18gb73iZ8ai1dhJbjZvt9FSMtpr6/d7m7utTFw4hPcKsb712dli67Cg
- etewVav6VtImOgm5iEk5V+RFAhSBZgg0emzgv/DHf3S3oasdFIBg/DN2BMGXYFBQ0v8X
- 0L0ajK1nYN1JBOVYQSoVsvmQ5WivD5vVYtcxktOthWD6kGVmh24h3fZxw/sfVymiLBgT
- Zldz/cWmKIJNMBwat3vCCaRlEwGp7N/Ln4iP374tVMBxkiP8KWVnytcBtb9zUH0+4bGp
- W0dr9yimHc/C2w6sYxjq590sJIU1nh9DOwJnswweWkJ0/dzHiWNhkN84CYTTCqbwUns+
- uP8A==
-X-Gm-Message-State: AOAM530gCf6OStv5LNL30e2upS1Crc4Bsceuc6VTXa8c7n0Hfd0lHhPI
- kzUf0hLLQCf1JDJR2gvjWiAGWKJXYPo=
-X-Google-Smtp-Source: ABdhPJxAL7tqMjRU3dENF8QdEdheVLTXPBaMpeNh5WYUTVK2dKSoEg1FfqMl7w89F8LdHkXPfGMtFw==
-X-Received: by 2002:a65:6916:: with SMTP id s22mr1033854pgq.9.1615845886112;
- Mon, 15 Mar 2021 15:04:46 -0700 (PDT)
+ bh=Y+dg15PmAQIaQlIl2osG/hO3jjeAvCRiFGni1ZhwgxI=;
+ b=QymeK0DovK0Xi0ZZt9VJcTlrRcB7GbLSTSoLznsYGK2m/U7CkSm+rKonrsR49U0jVT
+ r96DFks3DA8d8DJRqY3O/2TzmdW9S7KOgysdid9UoaLjLTqY5/irwE/e7q3VKt0EhZXG
+ 9qV8j25B8eEzZA8UGRn7CDYalgNrXCVzlP6vRWep8nrSND2jap8agOodsGO38h5jnMDM
+ oNr4SCTwAvup6BvrazLu7nkdWTMTp/r3mikHY7/BEgjJ+griDxjWMBW+mtao8OyNqTyx
+ 5zwENrS3/9o4ew4Q/flEdEtxt2m3rfT66lY4oKWQnGg43wNXsOnfNQH7nobVfh1p3Suj
+ Tz2w==
+X-Gm-Message-State: AOAM533P2Rw8p/ubtQ3y59PNVUIOCuuHAvBsLjo2Wr6G76sG3UPNwz+w
+ IBXTUCc16wh/n8VOiRyyQw6volGgAT0=
+X-Google-Smtp-Source: ABdhPJy4lnU/fv6tr1AnVgVacx3ckViiw0iVbuzBtfjFUzXc5SS0009vNTjwUQlfI7j0hycU3uwRXA==
+X-Received: by 2002:a05:6a00:1507:b029:1e4:d81:5586 with SMTP id
+ q7-20020a056a001507b02901e40d815586mr12222975pfu.53.1615845888510; 
+ Mon, 15 Mar 2021 15:04:48 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
  by smtp.gmail.com with ESMTPSA id
- y9sm14740338pgc.9.2021.03.15.15.04.43
+ y9sm14740338pgc.9.2021.03.15.15.04.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Mar 2021 15:04:45 -0700 (PDT)
+ Mon, 15 Mar 2021 15:04:48 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 13/14] powerpc/64: handle MSR EE and RI in interrupt entry
- wrapper
-Date: Tue, 16 Mar 2021 08:04:01 +1000
-Message-Id: <20210315220402.260594-14-npiggin@gmail.com>
+Subject: [PATCH 14/14] powerpc/64s: use the same default PPR for user and
+ kernel
+Date: Tue, 16 Mar 2021 08:04:02 +1000
+Message-Id: <20210315220402.260594-15-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210315220402.260594-1-npiggin@gmail.com>
 References: <20210315220402.260594-1-npiggin@gmail.com>
@@ -86,172 +87,212 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Similarly to the system call change in the previous patch, the mtmsrd to
-enable RI can be combined with the mtmsrd to enable EE for interrupts
-which enable the latter, which tends to be the important synchronous
-interrupts (i.e., page faults).
+Change the default PPR to userspace to 4 (medium), matching the
+normal kernel PPR.
 
-Do this by enabling EE and RI together at the beginning of the entry
-wrapper if PACA_IRQ_HARD_DIS is clear, and just enabling RI if it is set
-(which means something wanted EE=0).
+This allows system calls and user interrupts to avoid setting PPR on
+entry and exit, providing a significant speedup.
 
-Asynchronous interrupts set PACA_IRQ_HARD_DIS, but synchronous ones
-leave it unchanged, so by default they always get EE=1 unless they
-interrupt a caller that has hard disabled. When the sync interrupt
-later calls interrupt_cond_local_irq_enable(), that will not require
-another mtmsrd because we already enabled here.
+This is a change to the user environment. The problem with changing
+the kernel to match userspace at 3 (medium-low), is that userspace
+can then boost priority above the kernel which is also undesirable.
 
-This tends to save one mtmsrd L=1 for synchronous interrupts on 64s.
-64e is conceptually unchanged, but it also sets MSR[EE]=1 now in the
-interrupt wrapper for synchronous interrupts with the same code.
+glibc does not seem to change PPR anywhere, so the decision is to
+go with this.
 
-From: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/interrupt.h | 18 +++++++++++++++--
- arch/powerpc/kernel/exceptions-64s.S | 30 ----------------------------
- 2 files changed, 16 insertions(+), 32 deletions(-)
+ arch/powerpc/include/asm/interrupt.h |  2 ++
+ arch/powerpc/include/asm/processor.h |  4 ++--
+ arch/powerpc/kernel/exceptions-64s.S |  3 ---
+ arch/powerpc/kernel/interrupt.c      | 33 ++++++++++++++++++++++++++++
+ arch/powerpc/kernel/interrupt_64.S   | 17 --------------
+ 5 files changed, 37 insertions(+), 22 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index 8796eb4630c9..d6d54bbcba2f 100644
+index d6d54bbcba2f..293e6be9fd71 100644
 --- a/arch/powerpc/include/asm/interrupt.h
 +++ b/arch/powerpc/include/asm/interrupt.h
-@@ -55,9 +55,20 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
+@@ -57,6 +57,8 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
+ #ifdef CONFIG_PPC64
+ 	bool trace_enable = false;
+ 
++	if (unlikely(regs->ppr != DEFAULT_PPR))
++		mtspr(SPRN_PPR, DEFAULT_PPR);
+ 	if (IS_ENABLED(CONFIG_TRACE_IRQFLAGS)) {
+ 		if (irq_soft_mask_set_return(IRQS_DISABLED) == IRQS_ENABLED)
+ 			trace_enable = true;
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index cb1edf21a82e..5ff589042103 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -27,8 +27,8 @@
  #endif
  
  #ifdef CONFIG_PPC64
--	if (irq_soft_mask_set_return(IRQS_ALL_DISABLED) == IRQS_ENABLED)
-+	bool trace_enable = false;
-+
-+	if (IS_ENABLED(CONFIG_TRACE_IRQFLAGS)) {
-+		if (irq_soft_mask_set_return(IRQS_DISABLED) == IRQS_ENABLED)
-+			trace_enable = true;
-+	} else {
-+		irq_soft_mask_set(IRQS_DISABLED);
-+	}
-+	if (local_paca->irq_happened & PACA_IRQ_HARD_DIS)
-+		__hard_RI_enable();
-+	else
-+		__hard_irq_enable();
-+	if (trace_enable)
- 		trace_hardirqs_off();
--	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
- 
- 	if (user_mode(regs)) {
- 		CT_WARN_ON(ct_state() != CONTEXT_USER);
-@@ -110,6 +121,7 @@ static inline void interrupt_async_enter_prepare(struct pt_regs *regs, struct in
- 		__ppc64_runlatch_on();
- #endif
- 
-+	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
- 	interrupt_enter_prepare(regs, state);
- 	irq_enter();
- }
-@@ -166,6 +178,8 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
- 	local_paca->irq_soft_mask = IRQS_ALL_DISABLED;
- 	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
- 
-+	__hard_RI_enable();
-+
- 	/* Don't do any per-CPU operations until interrupt state is fixed */
- 
- 	if (nmi_disables_ftrace(regs)) {
+-/* Default SMT priority is set to 3. Use 11- 13bits to save priority. */
+-#define PPR_PRIORITY 3
++/* Default SMT priority is set to 4. Use 11- 13bits to save priority. */
++#define PPR_PRIORITY 4
+ #ifdef __ASSEMBLY__
+ #define DEFAULT_PPR (PPR_PRIORITY << 50)
+ #else
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 2f14ac3c377c..75cee7cdf887 100644
+index 75cee7cdf887..0d40614d13e0 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -129,7 +129,6 @@ name:
- #define IISIDE		.L_IISIDE_\name\()	/* Uses SRR0/1 not DAR/DSISR */
- #define IDAR		.L_IDAR_\name\()	/* Uses DAR (or SRR0) */
- #define IDSISR		.L_IDSISR_\name\()	/* Uses DSISR (or SRR1) */
--#define ISET_RI		.L_ISET_RI_\name\()	/* Run common code w/ MSR[RI]=1 */
- #define IBRANCH_TO_COMMON	.L_IBRANCH_TO_COMMON_\name\() /* ENTRY branch to common */
- #define IREALMODE_COMMON	.L_IREALMODE_COMMON_\name\() /* Common runs in realmode */
- #define IMASK		.L_IMASK_\name\()	/* IRQ soft-mask bit */
-@@ -174,9 +173,6 @@ do_define_int n
- 	.ifndef IDSISR
- 		IDSISR=0
- 	.endif
--	.ifndef ISET_RI
--		ISET_RI=1
--	.endif
- 	.ifndef IBRANCH_TO_COMMON
- 		IBRANCH_TO_COMMON=1
- 	.endif
-@@ -582,11 +578,6 @@ DEFINE_FIXED_SYMBOL(\name\()_common_real)
- 	stb	r10,PACASRR_VALID(r13)
- 	.endif
- 
--	.if ISET_RI
--	li	r10,MSR_RI
--	mtmsrd	r10,1			/* Set MSR_RI */
--	.endif
--
- 	.if ISTACK
- 	.if IKUAP
- 	kuap_save_amr_and_lock r9, r10, cr1, cr0
-@@ -931,11 +922,6 @@ INT_DEFINE_BEGIN(system_reset)
- 	IVEC=0x100
- 	IAREA=PACA_EXNMI
- 	IVIRT=0 /* no virt entry point */
--	/*
--	 * MSR_RI is not enabled, because PACA_EXNMI and nmi stack is
--	 * being used, so a nested NMI exception would corrupt it.
--	 */
--	ISET_RI=0
- 	ISTACK=0
- 	IKVM_REAL=1
- INT_DEFINE_END(system_reset)
-@@ -1016,8 +1002,6 @@ EXC_COMMON_BEGIN(system_reset_common)
- 	lhz	r10,PACA_IN_NMI(r13)
- 	addi	r10,r10,1
- 	sth	r10,PACA_IN_NMI(r13)
--	li	r10,MSR_RI
--	mtmsrd 	r10,1
- 
- 	mr	r10,r1
- 	ld	r1,PACA_NMI_EMERG_SP(r13)
-@@ -1095,12 +1079,6 @@ INT_DEFINE_BEGIN(machine_check_early)
- 	IAREA=PACA_EXMC
- 	IVIRT=0 /* no virt entry point */
- 	IREALMODE_COMMON=1
--	/*
--	 * MSR_RI is not enabled, because PACA_EXMC is being used, so a
--	 * nested machine check corrupts it. machine_check_common enables
--	 * MSR_RI.
--	 */
--	ISET_RI=0
- 	ISTACK=0
- 	IDAR=1
- 	IDSISR=1
-@@ -1111,7 +1089,6 @@ INT_DEFINE_BEGIN(machine_check)
- 	IVEC=0x200
- 	IAREA=PACA_EXMC
- 	IVIRT=0 /* no virt entry point */
--	ISET_RI=0
- 	IDAR=1
- 	IDSISR=1
- 	IKVM_SKIP=1
-@@ -1182,9 +1159,6 @@ EXC_COMMON_BEGIN(machine_check_early_common)
+@@ -367,7 +367,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
  BEGIN_FTR_SECTION
- 	bl	enable_machine_check
- END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
--	li	r10,MSR_RI
--	mtmsrd	r10,1
+ 	mfspr	r9,SPRN_PPR
+ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+-	HMT_MEDIUM
+ 	std	r10,IAREA+EX_R10(r13)		/* save r10 - r12 */
+ BEGIN_FTR_SECTION
+ 	mfspr	r10,SPRN_CFAR
+@@ -1962,8 +1961,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
+ 	mfspr	r11,SPRN_SRR0
+ 	mfspr	r12,SPRN_SRR1
+ 
+-	HMT_MEDIUM
 -
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	machine_check_early
- 	std	r3,RESULT(r1)	/* Save result */
-@@ -1272,10 +1246,6 @@ EXC_COMMON_BEGIN(machine_check_common)
- 	 * save area: PACA_EXMC instead of PACA_EXGEN.
+ 	.if ! \virt
+ 	__LOAD_HANDLER(r10, system_call_common_real)
+ 	mtctr	r10
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index 09cf699d0e2e..a6e0595da0dd 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -40,6 +40,11 @@ notrace long system_call_exception(long r3, long r4, long r5,
+ 
+ 	regs->orig_gpr3 = r3;
+ 
++#ifdef CONFIG_PPC_BOOK3S_64
++	if (unlikely(regs->ppr != DEFAULT_PPR))
++		mtspr(SPRN_PPR, DEFAULT_PPR);
++#endif
++
+ 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+ 		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
+ 
+@@ -237,6 +242,11 @@ notrace unsigned long syscall_exit_prepare_main(unsigned long r3,
+ 
+ 	account_cpu_user_exit();
+ 
++#ifdef CONFIG_PPC_BOOK3S_64
++	if (unlikely(regs->ppr != DEFAULT_PPR))
++		mtspr(SPRN_PPR, regs->ppr);
++#endif
++
+ #ifndef CONFIG_PPC_BOOK3E_64 /* BOOK3E not using this */
+ 	/*
+ 	 * We do this at the end so that we do context switch with KERNEL AMR
+@@ -315,6 +325,11 @@ notrace unsigned long syscall_exit_restart(unsigned long r3, struct pt_regs *reg
  	 */
- 	GEN_COMMON machine_check
+ 	hard_irq_disable();
+ 
++#ifdef CONFIG_PPC_BOOK3S_64
++	if (unlikely(regs->ppr != DEFAULT_PPR))
++		mtspr(SPRN_PPR, DEFAULT_PPR);
++#endif
++
+ 	trace_hardirqs_off();
+ 	user_exit_irqoff();
+ 	account_cpu_user_entry();
+@@ -398,6 +413,11 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs)
+ 
+ 	account_cpu_user_exit();
+ 
++#ifdef CONFIG_PPC_BOOK3S_64
++	if (unlikely(regs->ppr != DEFAULT_PPR))
++		mtspr(SPRN_PPR, regs->ppr);
++#endif
++
+ 	/*
+ 	 * We do this at the end so that we do context switch with KERNEL AMR
+ 	 */
+@@ -489,6 +509,11 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
+ 	local_paca->tm_scratch = regs->msr;
+ #endif
+ 
++#ifdef CONFIG_PPC_BOOK3S_64
++	if (unlikely(regs->ppr != DEFAULT_PPR))
++		mtspr(SPRN_PPR, regs->ppr);
++#endif
++
+ 	/*
+ 	 * Don't want to mfspr(SPRN_AMR) here, because this comes after mtmsr,
+ 	 * which would cause Read-After-Write stalls. Hence, we take the AMR
+@@ -505,6 +530,10 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
+ notrace unsigned long interrupt_exit_user_restart(struct pt_regs *regs)
+ {
+ 	hard_irq_disable();
++#ifdef CONFIG_PPC_BOOK3S_64
++	if (unlikely(regs->ppr != DEFAULT_PPR))
++		mtspr(SPRN_PPR, DEFAULT_PPR);
++#endif
+ 
+ 	trace_hardirqs_off();
+ 	user_exit_irqoff();
+@@ -523,6 +552,10 @@ notrace unsigned long interrupt_exit_user_restart(struct pt_regs *regs)
+ notrace unsigned long interrupt_exit_kernel_restart(struct pt_regs *regs)
+ {
+ 	hard_irq_disable();
++#ifdef CONFIG_PPC_BOOK3S_64
++	if (unlikely(regs->ppr != DEFAULT_PPR))
++		mtspr(SPRN_PPR, DEFAULT_PPR);
++#endif
+ 
+ #ifndef CONFIG_PPC_BOOK3E_64
+ 	set_kuap(AMR_KUAP_BLOCKED);
+diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
+index eef61800f734..53fc446dcbeb 100644
+--- a/arch/powerpc/kernel/interrupt_64.S
++++ b/arch/powerpc/kernel/interrupt_64.S
+@@ -99,10 +99,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_TM)
+ 	ld	r11,exception_marker@toc(r2)
+ 	std	r11,-16(r10)		/* "regshere" marker */
+ 
+-BEGIN_FTR_SECTION
+-	HMT_MEDIUM
+-END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
 -
--	/* Enable MSR_RI when finished with PACA_EXMC */
--	li	r10,MSR_RI
--	mtmsrd 	r10,1
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	machine_check_exception
- 	b	interrupt_return_srr
+ 	ENTER_KERNEL_SECURITY_FALLBACK
+ 
+ 	/*
+@@ -142,10 +138,6 @@ BEGIN_FTR_SECTION
+ 	stdcx.	r0,0,r1			/* to clear the reservation */
+ END_FTR_SECTION_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ 
+-BEGIN_FTR_SECTION
+-	HMT_MEDIUM_LOW
+-END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+-
+ 	cmpdi	r3,0
+ 	bne	.Lsyscall_vectored_\name\()_restore_regs
+ 
+@@ -377,10 +369,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ 	mtspr	SPRN_XER,r0
+ .Lsyscall_restore_regs_cont:
+ 
+-BEGIN_FTR_SECTION
+-	HMT_MEDIUM_LOW
+-END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+-
+ 	/*
+ 	 * We don't need to restore AMR on the way back to userspace for KUAP.
+ 	 * The value of AMR only matters while we're in the kernel.
+@@ -533,11 +521,6 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return_\srr\())
+ 	tdnei	r4,IRQS_ENABLED
+ 
+ #ifdef CONFIG_PPC_BOOK3S
+-BEGIN_FTR_SECTION
+-	ld	r10,_PPR(r1)
+-	mtspr	SPRN_PPR,r10
+-END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+-
+ 	.ifc \srr,srr
+ 	lbz	r4,PACASRR_VALID(r13)
+ 	.else
 -- 
 2.23.0
 
