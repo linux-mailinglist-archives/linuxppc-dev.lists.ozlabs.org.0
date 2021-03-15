@@ -2,46 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B7E33B310
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 13:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E1333B31E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 13:57:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dzbnx107Nz303v
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 23:48:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dzc0H6sw9z30B7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 23:57:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com;
- envelope-from=heying24@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ smtp.mailfrom=kaod.org (client-ip=178.33.255.19; helo=2.mo51.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+Received: from 2.mo51.mail-out.ovh.net (2.mo51.mail-out.ovh.net
+ [178.33.255.19])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzbnb6LTbz2yRh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 23:48:32 +1100 (AEDT)
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
- by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4DzblG5sMDz8ybG;
- Mon, 15 Mar 2021 20:46:34 +0800 (CST)
-Received: from [10.67.110.136] (10.67.110.136) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.498.0; Mon, 15 Mar 2021 20:48:19 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzbzz2D1fz2yRJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 23:57:33 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.216])
+ by mo51.mail-out.ovh.net (Postfix) with ESMTPS id 1EE57272357;
+ Mon, 15 Mar 2021 13:57:26 +0100 (CET)
+Received: from kaod.org (37.59.142.101) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 15 Mar
+ 2021 13:57:20 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-101G004e03ccb0c-b9bd-4690-bb9f-9df4a813f39d,
+ 6ECECE93D947A1E75FB970C6684F7B2999F5CB5C) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
 Subject: Re: [PATCH] powerpc: Fix missing prototype problems for
  "arch/powerpc/kernel/setup_64.c"
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, <mpe@ellerman.id.au>,
+To: "heying (H)" <heying24@huawei.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, <mpe@ellerman.id.au>,
  <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
  <dja@axtens.net>, <akpm@linux-foundation.org>, <rppt@kernel.org>,
- <aneesh.kumar@linux.ibm.com>, <clg@kaod.org>
+ <aneesh.kumar@linux.ibm.com>
 References: <20210315120444.215905-1-heying24@huawei.com>
  <6eb1925c-a3a1-f062-29da-3a7fa946505c@csgroup.eu>
-From: "heying (H)" <heying24@huawei.com>
-Message-ID: <ddd03e30-9e54-66cd-8917-6f620557b795@huawei.com>
-Date: Mon, 15 Mar 2021 20:48:20 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ <ddd03e30-9e54-66cd-8917-6f620557b795@huawei.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <c6af9455-9a04-c93e-ac7c-3c7d6a56953a@kaod.org>
+Date: Mon, 15 Mar 2021 13:57:19 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <6eb1925c-a3a1-f062-29da-3a7fa946505c@csgroup.eu>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <ddd03e30-9e54-66cd-8917-6f620557b795@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.110.136]
-X-CFilter-Loop: Reflected
+X-Originating-IP: [37.59.142.101]
+X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 68f78610-622f-46f4-afe4-e4836fa15429
+X-Ovh-Tracer-Id: 6462946941296872440
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledruddvledggeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehhvgihihhnghdvgeeshhhurgifvghirdgtohhm
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,73 +73,74 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 3/15/21 1:48 PM, heying (H) wrote:
+> 
+> 在 2021/3/15 20:17, Christophe Leroy 写道:
+>> You subject doesn't match the content of the patch.
+> OK. I'll adapt that.
+>>
+>> Le 15/03/2021 à 13:04, He Ying a écrit :
+>>> The variables 'uaccess_fulsh' and 'entry_flush' are not referenced
+>>> outside the file. So define them as static to avoid the warnings.
+>>>
+>>> And add a prototype for the function 'panic_smp_self_stop' for the
+>>> same purpose.
+>>>
+>>> Sparse also warns that 'rfi_flush' should be static. However, it's
+>>> referenced outside the file.
+>>
+>> To clear that warning, you have to include asm/security_features.h, rfi_flush is declared there.
+> Do you mean that I should include this header in arch/powerpc/kernel/setup_64.c?
 
-在 2021/3/15 20:17, Christophe Leroy 写道:
-> You subject doesn't match the content of the patch.
-OK. I'll adapt that.
->
-> Le 15/03/2021 à 13:04, He Ying a écrit :
->> The variables 'uaccess_fulsh' and 'entry_flush' are not referenced
->> outside the file. So define them as static to avoid the warnings.
+yes.
+
 >>
->> And add a prototype for the function 'panic_smp_self_stop' for the
->> same purpose.
+>>>
+>>> The warnings about the file reported by sparse are as follows:
+>>> arch/powerpc/kernel/setup_64.c:422:6: warning: symbol 'panic_smp_self_stop' was not declared. Should it be static?
+>>> arch/powerpc/kernel/setup_64.c:951:6: warning: symbol 'rfi_flush' was not declared. Should it be static?
+>>> arch/powerpc/kernel/setup_64.c:952:6: warning: symbol 'entry_flush' was not declared. Should it be static?
+>>> arch/powerpc/kernel/setup_64.c:953:6: warning: symbol 'uaccess_flush' was not declared. Should it be static?
+>>>
+>>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>>> Signed-off-by: He Ying <heying24@huawei.com>
+>>> ---
+>>>   arch/powerpc/kernel/setup_64.c | 6 ++++--
+>>>   1 file changed, 4 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+>>> index 560ed8b975e7..603aacd8527b 100644
+>>> --- a/arch/powerpc/kernel/setup_64.c
+>>> +++ b/arch/powerpc/kernel/setup_64.c
+>>> @@ -71,6 +71,8 @@
+>>>     #include "setup.h"
+>>>   +extern void panic_smp_self_stop(void);
+>>> +
 >>
->> Sparse also warns that 'rfi_flush' should be static. However, it's
->> referenced outside the file.
->
-> To clear that warning, you have to include asm/security_features.h, 
-> rfi_flush is declared there.
-Do you mean that I should include this header in 
-arch/powerpc/kernel/setup_64.c?
->
+>> For function prototypes 'extern' is unneeded and deprecated.
 >>
->> The warnings about the file reported by sparse are as follows:
->> arch/powerpc/kernel/setup_64.c:422:6: warning: symbol 
->> 'panic_smp_self_stop' was not declared. Should it be static?
->> arch/powerpc/kernel/setup_64.c:951:6: warning: symbol 'rfi_flush' was 
->> not declared. Should it be static?
->> arch/powerpc/kernel/setup_64.c:952:6: warning: symbol 'entry_flush' 
->> was not declared. Should it be static?
->> arch/powerpc/kernel/setup_64.c:953:6: warning: symbol 'uaccess_flush' 
->> was not declared. Should it be static?
+>> And function prototypes should go in an header file.
 >>
->> Reported-by: Hulk Robot <hulkci@huawei.com>
->> Signed-off-by: He Ying <heying24@huawei.com>
->> ---
->>   arch/powerpc/kernel/setup_64.c | 6 ++++--
->>   1 file changed, 4 insertions(+), 2 deletions(-)
+>> panic_smp_self_stop() is called from kernel/panic.c , it should be declared in one of the generic linux header files I think.
+> Yes, you're right. But I have no idea which header it should be declared in. May I have your suggestions?
+
+arch/powerpc/include/asm/bug.h looks like a good place.
+
+C.
+
 >>
->> diff --git a/arch/powerpc/kernel/setup_64.c 
->> b/arch/powerpc/kernel/setup_64.c
->> index 560ed8b975e7..603aacd8527b 100644
->> --- a/arch/powerpc/kernel/setup_64.c
->> +++ b/arch/powerpc/kernel/setup_64.c
->> @@ -71,6 +71,8 @@
->>     #include "setup.h"
->>   +extern void panic_smp_self_stop(void);
->> +
->
-> For function prototypes 'extern' is unneeded and deprecated.
->
-> And function prototypes should go in an header file.
->
-> panic_smp_self_stop() is called from kernel/panic.c , it should be 
-> declared in one of the generic linux header files I think.
-Yes, you're right. But I have no idea which header it should be declared 
-in. May I have your suggestions?
->
->>   int spinning_secondaries;
->>   u64 ppc64_pft_size;
->>   @@ -949,8 +951,8 @@ static bool no_rfi_flush;
->>   static bool no_entry_flush;
->>   static bool no_uaccess_flush;
->>   bool rfi_flush;
->> -bool entry_flush;
->> -bool uaccess_flush;
->> +static bool entry_flush;
->> +static bool uaccess_flush;
->>   DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
->>   EXPORT_SYMBOL(uaccess_flush_key);
->>
-> .
+>>>   int spinning_secondaries;
+>>>   u64 ppc64_pft_size;
+>>>   @@ -949,8 +951,8 @@ static bool no_rfi_flush;
+>>>   static bool no_entry_flush;
+>>>   static bool no_uaccess_flush;
+>>>   bool rfi_flush;
+>>> -bool entry_flush;
+>>> -bool uaccess_flush;
+>>> +static bool entry_flush;
+>>> +static bool uaccess_flush;
+>>>   DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
+>>>   EXPORT_SYMBOL(uaccess_flush_key);
+>>>
+>> .
+
