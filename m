@@ -1,97 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CA133B326
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:00:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3B933B32D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:02:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dzc3Z65Qzz300K
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 00:00:42 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DkzdEzl9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dzc5311YQz2yxx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 00:01:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=DkzdEzl9; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzc2y5w2nz2yZ2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 00:00:10 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12FCYNK5116156; Mon, 15 Mar 2021 08:59:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=8WFkFCUzbiDpnPzhEpGycbtsY42d0ftEwAfUOcXYa6E=;
- b=DkzdEzl9/X0yunHIa+DQ/TN2tIN13HfM8SxQzDPWeWTuCGinGKqvb1Wvo8av15RRBjMm
- NL3hS6TQ2OM94h9IvIVOJq93iMvGIDKBDxdXm0qIui7VWdqh9EpEL0nZi/NaCFEzntzG
- Eici8Lr9wKixpPDbeNc8Yw2qMmBSSGkJHQ4ZznBtJ5jLMQlBsoXYm0QHg9Dau7F39qgs
- 8KSaf9/pI6L2baHSGKU7KaU4CRrgxTwmV35km1SvIRIB+Ds3t1X1TpX6yyQtVxiBmlQl
- DlS8kIHNKujuGOGp30K/3B04GByTsa1AQrGW5BDcmFftKVJAb7Z7YJlBaijy/QTgRqMv bA== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 379yhqnrjx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Mar 2021 08:59:58 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12FCw3R7016896;
- Mon, 15 Mar 2021 12:59:56 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06ams.nl.ibm.com with ESMTP id 378mnh1vyj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Mar 2021 12:59:56 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12FCxsfO42992036
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Mar 2021 12:59:54 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 045C0A405B;
- Mon, 15 Mar 2021 12:59:54 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1AD9BA4060;
- Mon, 15 Mar 2021 12:59:53 +0000 (GMT)
-Received: from [9.199.36.236] (unknown [9.199.36.236])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 15 Mar 2021 12:59:52 +0000 (GMT)
-Subject: Re: [PATCH v6 19/22] powerpc/book3s64/hash/kuap: Enable kuap on hash
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-References: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
- <20201125051634.509286-20-aneesh.kumar@linux.ibm.com>
- <2898f50c-aa42-5842-9d29-7272c7da5d00@csgroup.eu>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <cc0338af-da92-f6d5-c0fb-aca67a2cccc5@linux.ibm.com>
-Date: Mon, 15 Mar 2021 18:29:52 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzc4j4qKcz2xZD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 00:01:40 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4Dzc4X2pKBz9tyRs;
+ Mon, 15 Mar 2021 14:01:32 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id JijiRi72Cvcq; Mon, 15 Mar 2021 14:01:32 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Dzc4W73j6z9tyRk;
+ Mon, 15 Mar 2021 14:01:31 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3974C8B779;
+ Mon, 15 Mar 2021 14:01:37 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Lls54DDK7J70; Mon, 15 Mar 2021 14:01:37 +0100 (CET)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CDC4A8B776;
+ Mon, 15 Mar 2021 14:01:36 +0100 (CET)
+Subject: Re: [PATCH] powerpc: Fix missing prototype problems for
+ "arch/powerpc/kernel/setup_64.c"
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ "heying (H)" <heying24@huawei.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
+ dja@axtens.net, akpm@linux-foundation.org, rppt@kernel.org,
+ aneesh.kumar@linux.ibm.com
+References: <20210315120444.215905-1-heying24@huawei.com>
+ <6eb1925c-a3a1-f062-29da-3a7fa946505c@csgroup.eu>
+ <ddd03e30-9e54-66cd-8917-6f620557b795@huawei.com>
+ <c6af9455-9a04-c93e-ac7c-3c7d6a56953a@kaod.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <fe0638cc-28be-2e5c-9e94-ab3ff7666164@csgroup.eu>
+Date: Mon, 15 Mar 2021 14:01:32 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <2898f50c-aa42-5842-9d29-7272c7da5d00@csgroup.eu>
+In-Reply-To: <c6af9455-9a04-c93e-ac7c-3c7d6a56953a@kaod.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-15_05:2021-03-15,
- 2021-03-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- priorityscore=1501 malwarescore=0 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 mlxscore=0 suspectscore=0 clxscore=1015 phishscore=0
- bulkscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2103150088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,47 +69,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sandipan Das <sandipan@linux.ibm.com>
+Cc: johnny.chenyi@huawei.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/15/21 5:36 PM, Christophe Leroy wrote:
+
+
+Le 15/03/2021 à 13:57, Cédric Le Goater a écrit :
+> On 3/15/21 1:48 PM, heying (H) wrote:
+>>
+>> 在 2021/3/15 20:17, Christophe Leroy 写道:
+>>> You subject doesn't match the content of the patch.
+>> OK. I'll adapt that.
+>>>
+>>> Le 15/03/2021 à 13:04, He Ying a écrit :
+>>>> The variables 'uaccess_fulsh' and 'entry_flush' are not referenced
+>>>> outside the file. So define them as static to avoid the warnings.
+>>>>
+>>>> And add a prototype for the function 'panic_smp_self_stop' for the
+>>>> same purpose.
+>>>>
+>>>> Sparse also warns that 'rfi_flush' should be static. However, it's
+>>>> referenced outside the file.
+>>>
+>>> To clear that warning, you have to include asm/security_features.h, rfi_flush is declared there.
+>> Do you mean that I should include this header in arch/powerpc/kernel/setup_64.c?
 > 
+> yes.
 > 
-> Le 25/11/2020 à 06:16, Aneesh Kumar K.V a écrit :
->> Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>>
+>>>>
+>>>> The warnings about the file reported by sparse are as follows:
+>>>> arch/powerpc/kernel/setup_64.c:422:6: warning: symbol 'panic_smp_self_stop' was not declared. Should it be static?
+>>>> arch/powerpc/kernel/setup_64.c:951:6: warning: symbol 'rfi_flush' was not declared. Should it be static?
+>>>> arch/powerpc/kernel/setup_64.c:952:6: warning: symbol 'entry_flush' was not declared. Should it be static?
+>>>> arch/powerpc/kernel/setup_64.c:953:6: warning: symbol 'uaccess_flush' was not declared. Should it be static?
+>>>>
+>>>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>>>> Signed-off-by: He Ying <heying24@huawei.com>
+>>>> ---
+>>>>    arch/powerpc/kernel/setup_64.c | 6 ++++--
+>>>>    1 file changed, 4 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+>>>> index 560ed8b975e7..603aacd8527b 100644
+>>>> --- a/arch/powerpc/kernel/setup_64.c
+>>>> +++ b/arch/powerpc/kernel/setup_64.c
+>>>> @@ -71,6 +71,8 @@
+>>>>      #include "setup.h"
+>>>>    +extern void panic_smp_self_stop(void);
+>>>> +
+>>>
+>>> For function prototypes 'extern' is unneeded and deprecated.
+>>>
+>>> And function prototypes should go in an header file.
+>>>
+>>> panic_smp_self_stop() is called from kernel/panic.c , it should be declared in one of the generic linux header files I think.
+>> Yes, you're right. But I have no idea which header it should be declared in. May I have your suggestions?
 > 
-> PPC_HAVE_KUAP is only selected on book3s/64 when PPC_RADIX_MMU is 
-> selected. Is that normal ?
+> arch/powerpc/include/asm/bug.h looks like a good place.
+
+Why declaring it in a powerpc header ?
+
+It's a weak function defined in core part of kernel (kernel/panic.c).
+
+I think it should go in a common header, just like for instance arch_thaw_secondary_cpus_begin()
+
 > 
-
-
-I guess we missed fixing that with this patch. How about
-
-modified   arch/powerpc/platforms/Kconfig.cputype
-@@ -103,6 +103,8 @@ config PPC_BOOK3S_64
-  	select ARCH_SUPPORTS_NUMA_BALANCING
-  	select IRQ_WORK
-  	select PPC_MM_SLICES
-+	select PPC_HAVE_KUEP
-+	select PPC_HAVE_KUAP
-
-  config PPC_BOOK3E_64
-  	bool "Embedded processors"
-@@ -365,8 +367,6 @@ config PPC_RADIX_MMU
-  	bool "Radix MMU Support"
-  	depends on PPC_BOOK3S_64
-  	select ARCH_HAS_GIGANTIC_PAGE
--	select PPC_HAVE_KUEP
--	select PPC_HAVE_KUAP
-  	default y
-  	help
-  	  Enable support for the Power ISA 3.0 Radix style MMU. Currently this
-
-
-
-
-
--aneesh
+> C.
+> 
+>>>
+>>>>    int spinning_secondaries;
+>>>>    u64 ppc64_pft_size;
+>>>>    @@ -949,8 +951,8 @@ static bool no_rfi_flush;
+>>>>    static bool no_entry_flush;
+>>>>    static bool no_uaccess_flush;
+>>>>    bool rfi_flush;
+>>>> -bool entry_flush;
+>>>> -bool uaccess_flush;
+>>>> +static bool entry_flush;
+>>>> +static bool uaccess_flush;
+>>>>    DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
+>>>>    EXPORT_SYMBOL(uaccess_flush_key);
+>>>>
+>>> .
