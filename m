@@ -2,73 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A4633AA0C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 04:38:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC7733AA14
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 04:42:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzMZg4GNWz3cPN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:38:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzMgL6mZxz3cGY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:42:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=n4tbZ1hU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=b2xSk1jA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::833;
- helo=mail-qt1-x833.google.com; envelope-from=unixbhaskar@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=n4tbZ1hU; dkim-atps=neutral
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com
- [IPv6:2607:f8b0:4864:20::833])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=b2xSk1jA; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzMZD00Qyz30Mw
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 14:37:53 +1100 (AEDT)
-Received: by mail-qt1-x833.google.com with SMTP id 73so8230354qtg.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Mar 2021 20:37:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=jsNszPZXedsfKo/NVYJH3mt7sz+6/7d3/2iK40T3H3E=;
- b=n4tbZ1hUmWc0FvQk9jHWHSZnJpStEDGWoPWQPelBX1kOfx+uHJaj3r7K2yC32VdJCN
- +dpp6Ef513EBFnSnjoRVA5/YaMVJV5BSfSPtf7j0h6x5D0WAhNNriiQYHOuRBzigD4ye
- fA0rd9g9ix6q5F+g6DfbF5lgFFexSs+L53W+4wSCP5hKap8BhKsztS4QRFQX7q4WqfpE
- q05wEA15tNQ0HtBd9+S6BvMJnUxAhfWbv6ENOnbe9WbZzODXHyHjGjXoP1saOr2kn4KP
- NnjTA9aFxVOqNYOgN2+c3ZGv96z0X681GnvfWvKxwLBqtZzmWPjezuM0275tnupLcuwF
- h+MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=jsNszPZXedsfKo/NVYJH3mt7sz+6/7d3/2iK40T3H3E=;
- b=W3dIR3Pyw5nslIkzhSZ2gHcyC02t4yHbi/PDON5Zv84dO/UM5S80ekC/x59tImZJFE
- JNKjwU8az8Ofa0N673y32vGYiTA9/I9+jS2N2nSnCpTCvF05a6YJ2/mwiXCgDPt7WFas
- rE8GReEY4dalS9CMFRtTW7HaHW/FvucBRYpl1hBkOIPX9hwYQD++lXjniUWZANSCoZzH
- 6JCF9FVzFw7KmnevgVtgcF7RrYKzVkUTxj53qlV8JSl2mGUWpms2sjRnS0Ojbl5fIIwx
- BuGC2YIbaWpOOfCbbAFk5QqkSx/gcV4FX5Dr/m9A50n9ZC9KZUpMGVPO9OVr2K6EzLNh
- DIIw==
-X-Gm-Message-State: AOAM5328Lq24LmWUydwpORnIYfH1IfkevCt5tQP+YpfOO7pcVl5wqvMH
- GYe3W031tNpBJl64VAfmUp0=
-X-Google-Smtp-Source: ABdhPJzpYoy1WskwOMaatABheKu2F3MpLTCwIufz8o/2TUz+wcty9ZMoQUTgwT2g6edB7+o3vLy76Q==
-X-Received: by 2002:a05:622a:193:: with SMTP id
- s19mr21275482qtw.366.1615779469848; 
- Sun, 14 Mar 2021 20:37:49 -0700 (PDT)
-Received: from localhost.localdomain ([156.146.55.217])
- by smtp.gmail.com with ESMTPSA id d70sm11906310qkg.30.2021.03.14.20.37.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Mar 2021 20:37:49 -0700 (PDT)
-From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
- rppt@kernel.org, akpm@linux-foundation.org, christophe.leroy@csgroup.eu,
- oss@buserror.net, npiggin@gmail.com, unixbhaskar@gmail.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc: kernel: Trivial spelling fixes throughout the file
- head_fsl_booke.S
-Date: Mon, 15 Mar 2021 09:07:32 +0530
-Message-Id: <20210315033732.4173500-1-unixbhaskar@gmail.com>
-X-Mailer: git-send-email 2.30.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzMfz1ltJz30Gx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 14:42:02 +1100 (AEDT)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4DzMfy30vrz9sVm; Mon, 15 Mar 2021 14:42:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1615779722;
+ bh=xIfzvjYxdYj5kl+7E/yZx5Q+XM+XeDcoT7q8ah19n/0=;
+ h=From:To:Cc:Subject:Date:From;
+ b=b2xSk1jAVGoEoqXuxnd/KIxpFtszMlKa84QtgyJ6mni5r3D5t6Lw3qZkhdLMbwbJl
+ dxDhJJHjnz4dukGcbEXmxFnRit3saY5gUTnMd8fdz8mrq/LWeVlICBB3EeEx67aqY5
+ wSFv41JYqAdaaB1wu5AmAld8UBMIpEx55EAKDlET8iNG4G4IpW7Xji5/zblcsOM0CG
+ 3ShH8+BK+Rnq+yYroVDW9GPWFZnCV5aZhO5cJjtYc/GtExrk0uoeB0dFlkiEKbUtvx
+ zZCjf8KYAw9eY9YuEAquXH5DMDggtRS6i7e0dljX0zeKMDh+reRzVst4+aaH/PmBh1
+ 7Fh4QgLta3t0g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/kexec: Don't use .machine ppc64 in trampoline_64.S
+Date: Mon, 15 Mar 2021 14:41:59 +1100
+Message-Id: <20210315034159.315675-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,55 +56,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rdunlap@infradead.org
+Cc: dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-s/virutal/virtual/
-s/mismach/mismatch/
+The ".machine" directive allows changing the machine for which code is
+being generated. It's equivalent to passing an -mcpu option on the
+command line.
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Although it can be useful, it's generally a bad idea because it adds
+another way to influence code generation separate from the flags
+passed via the build system. ie. if we need to build different pieces
+of code with different flags we should do that via our Makefiles, not
+using ".machine".
+
+However as best as I can tell the ".machine" directive in
+trampoline_64.S is not necessary at all.
+
+It was added in commit 0d97631392c2 ("powerpc: Add purgatory for
+kexec_file_load() implementation."), which created the file based on
+the kexec-tools purgatory. It may be/have-been necessary in the
+kexec-tools version, but we have a completely different build system,
+and we already pass the desired CPU flags, eg:
+
+  gcc ... -m64 -Wl,-a64 -mabi=elfv2 -Wa,-maltivec -Wa,-mpower4 -Wa,-many
+  ... arch/powerpc/purgatory/trampoline_64.S
+
+So drop the ".machine" directive and rely on the assembler flags.
+
+Reported-by: Daniel Axtens <dja@axtens.net>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- As Randy pointed out I was changing the predefined macro name,so, reverted
- or leave it alone.
- Michael,sorry to run down a cold weave in your spine with my stupdity,this is
- okay.
+ arch/powerpc/purgatory/trampoline_64.S | 1 -
+ 1 file changed, 1 deletion(-)
 
- arch/powerpc/kernel/head_fsl_booke.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
-index 3f4a40cccef5..a955403247f1 100644
---- a/arch/powerpc/kernel/head_fsl_booke.S
-+++ b/arch/powerpc/kernel/head_fsl_booke.S
-@@ -113,7 +113,7 @@ _ENTRY(_start);
-
- 1:
- 	/*
--	 * We have the runtime (virutal) address of our base.
-+	 * We have the runtime (virtual) address of our base.
- 	 * We calculate our shift of offset from a 64M page.
- 	 * We could map the 64M page we belong to at PAGE_OFFSET and
- 	 * get going from there.
-@@ -497,7 +497,7 @@ END_BTB_FLUSH_SECTION
- #endif
- #endif
-
--	bne	2f			/* Bail if permission/valid mismach */
-+	bne	2f			/* Bail if permission/valid mismatch */
-
- 	/* Jump to common tlb load */
- 	b	finish_tlb_load
-@@ -592,7 +592,7 @@ END_BTB_FLUSH_SECTION
- #endif
- #endif
-
--	bne	2f			/* Bail if permission mismach */
-+	bne	2f			/* Bail if permission mismatch */
-
- 	/* Jump to common TLB load point */
- 	b	finish_tlb_load
---
-2.30.2
+diff --git a/arch/powerpc/purgatory/trampoline_64.S b/arch/powerpc/purgatory/trampoline_64.S
+index d956b8a35fd1..b35837c13852 100644
+--- a/arch/powerpc/purgatory/trampoline_64.S
++++ b/arch/powerpc/purgatory/trampoline_64.S
+@@ -12,7 +12,6 @@
+ #include <asm/asm-compat.h>
+ #include <asm/crashdump-ppc64.h>
+ 
+-	.machine ppc64
+ 	.balign 256
+ 	.globl purgatory_start
+ purgatory_start:
+-- 
+2.25.1
 
