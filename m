@@ -1,58 +1,127 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF8733C16F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 17:16:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C740733C19C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 17:24:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzhPd6Vn2z30D7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 03:16:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzhZf5Vcjz30Cx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 03:24:26 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256 header.s=selector1 header.b=A7Np8th/;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.33.255.19; helo=2.mo51.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-Received: from 2.mo51.mail-out.ovh.net (2.mo51.mail-out.ovh.net
- [178.33.255.19])
+ smtp.mailfrom=prevas.dk (client-ip=40.107.8.104;
+ helo=eur04-vi1-obe.outbound.protection.outlook.com;
+ envelope-from=rasmus.villemoes@prevas.dk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256
+ header.s=selector1 header.b=A7Np8th/; 
+ dkim-atps=neutral
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com
+ (mail-eopbgr80104.outbound.protection.outlook.com [40.107.8.104])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzhPJ5Fjbz2yRg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 03:16:18 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.216])
- by mo51.mail-out.ovh.net (Postfix) with ESMTPS id BF667270A7E;
- Mon, 15 Mar 2021 17:16:15 +0100 (CET)
-Received: from kaod.org (37.59.142.100) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 15 Mar
- 2021 17:16:15 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-100R00316cc062d-37cb-4ab2-937a-4f7af29ee175,
- 6ECECE93D947A1E75FB970C6684F7B2999F5CB5C) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Subject: Re: [PATCH] powerpc/numa: Fix topology_physical_package_id() on
- pSeries
-To: Daniel Henrique Barboza <danielhb413@gmail.com>,
- <linuxppc-dev@lists.ozlabs.org>
-References: <20210312143154.3181109-1-clg@kaod.org>
- <bd0c948c-64f8-cf64-6d30-b9167b6a7629@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <09b298ce-a566-0542-0aa8-8c4e5248bda6@kaod.org>
-Date: Mon, 15 Mar 2021 17:16:14 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzhZ83kqbz2yxj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 03:23:57 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WaFInJPt/sHpJyACyHeIyNut38JaY+qdgBjm3FSh6zaTGU+qJvLiaJS0NGXAu6HI5h6eet24AhTLHPPD9sBvwk+xwss2mAv4J5F1H2HZG+kUqODq8apTTLhhmit+2GJEfqkzXYWJLFXxVGbwJypB1/eohVWliSI+OeW9o5tPbBZHoQDpy2BxnrlJLjlM6Y/zXk8smNbUOw8lmYwQMAKkO0IhZX9nHiFFavXffShPJHGt1+5/kr7E7UVCdp4Ww6l+0Iq/W51AYLYJlW4GtsVYE2x3au8+1VlaDIwrCZDGRSirV5pMhL9r9rrTikSgilQy1bZkd8RWnw6ufx+rA0hi4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LBbwNugU0x0J3FSyQnd74gqiwS2klXqmRUfnMBA3lq4=;
+ b=XHDUtUCiyRwRggjlI7HTvR9GzGUsXcrOhLsTqxnw6X4eL3OXcePbNq0RjEPUTAQxQvA0p7AE0D0HiajqGPbG3AgpG5NXeUp1L9WlBEGRR0uDdt3n8Y7MGH/iadGI9HEn039MTD0KX56/gZuoNcKggewVQaK20n1Zuf4pQKBiVwvbjesuRkI6Iw5FNSAv1P6U2Red0UlKkR2i9TGmPYeH0No7eCPq69RB4EPwIOBmcVkyRUG4WsRPmoteNKmb32cgVyg1U7Z5uLJqu4ff8tR/DLcBALhyV1q5gTaLQKZkOsI336klpYfzQTDtsstE24I9Ti0sxUylMkvT40FPa7p6cg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
+ dkim=pass header.d=prevas.dk; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LBbwNugU0x0J3FSyQnd74gqiwS2klXqmRUfnMBA3lq4=;
+ b=A7Np8th/olZDVdE/s2VxfmO9ozV/8AvZhJjl22F+B+zB5VmitFuPKcJwaqj0h/mbiFenoUNa7dSQsvFcO/V92NpIwjY3m9gmQHF9lwyKdfZL+XxUk/qzocJkHXTVf3Zh9uB0uphXCvTIPF3AcDWzDJKH0xRZZrpOoSYD0tw/3Ys=
+Authentication-Results: lists.ozlabs.org; dkim=none (message not signed)
+ header.d=none; lists.ozlabs.org; dmarc=none action=none header.from=prevas.dk; 
+Received: from DB7PR10MB1881.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:5:a::23) by
+ DB8PR10MB3498.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:13e::12) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3933.32; Mon, 15 Mar 2021 16:23:46 +0000
+Received: from DB7PR10MB1881.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::71ec:bc55:9aad:f4f9]) by DB7PR10MB1881.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::71ec:bc55:9aad:f4f9%6]) with mapi id 15.20.3933.032; Mon, 15 Mar 2021
+ 16:23:46 +0000
+Subject: Re: [PATCH] powerpc/vdso32: Add missing _restgpr_31_x to fix build
+ failure
+To: Segher Boessenkool <segher@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <a7aa198a88bcd33c6e35e99f70f86c7b7f2f9440.1615270757.git.christophe.leroy@csgroup.eu>
+ <20210312022940.GO29191@gate.crashing.org>
+From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Message-ID: <023afd0c-dc61-5891-5145-5bcdce8227be@prevas.dk>
+Date: Mon, 15 Mar 2021 17:23:44 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <bd0c948c-64f8-cf64-6d30-b9167b6a7629@gmail.com>
-Content-Type: text/plain; charset="utf-8"
+ Thunderbird/78.7.1
+In-Reply-To: <20210312022940.GO29191@gate.crashing.org>
+Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: bcaf5aad-f8d8-4a92-9159-987ef8a8c915
-X-Ovh-Tracer-Id: 9822069314311916396
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledruddvledgkeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehgrhhouhhgsehkrghougdrohhrgh
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [80.208.71.248]
+X-ClientProxiedBy: AM6P194CA0043.EURP194.PROD.OUTLOOK.COM
+ (2603:10a6:209:84::20) To DB7PR10MB1881.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:5:a::23)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.1.149] (80.208.71.248) by
+ AM6P194CA0043.EURP194.PROD.OUTLOOK.COM (2603:10a6:209:84::20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3933.31 via Frontend Transport; Mon, 15 Mar 2021 16:23:45 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 402e4c69-b669-4d44-e41f-08d8e7ceb4fb
+X-MS-TrafficTypeDiagnostic: DB8PR10MB3498:
+X-Microsoft-Antispam-PRVS: <DB8PR10MB34983D921AEA33226B5BD01D936C9@DB8PR10MB3498.EURPRD10.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hdtMSQcxiQ1yc0mcUBKJSGtKUHxhi3Wvy4DjGWPxtD2aiK7GHAn/fZhAEpP2pKkpvjsDGkJ7eYwn0bF2aZVyZ7/SPVilv+RynhYSDGwBgo8TXmY5rBrtdFRF8APxOInc8ozlNhq7s/SY8el28n7nYU5E6fmwkpyS/5vv9qVI3xiqY7fdPwXp7YBYaxndGmMggAxtAoxHQ9tyU0ke79GhLyJhkyG92I3gbT9RV/8gzFkxjZktBb2d8r7Si7+efI4M51TxAQlEYusJWaMkdyg+ocg4ssCdzm3YXOH4JlEkH1Ab8SchTzAPBQGK+8n//n/F6cKS43P4+c7W34B6GaV74MXNA94B8pqt24NEm94eoar8kjCwJnwhq84QRg4ya2rBDNW5HewVGVwcp7GniWQUB+vduMcsPzyCSAanxheEUw7m3QVMYnsosF1BGNq4iec9A4HKC+v/NQlTMrCAXAsq10qJ3EtRAyDbJUxcKY/i4okAHrNmMHIFMbszc4c8MvLE8wpMCZ9fBK9ltcDwWAuSTLAi7Xz0uBLEzn/QBRjwM2dVRyM6hAfXlzmplWVssUMB3GpFIHYEj1/yV3N/YtidCo/Gx6UB2hdQemB6Axih89OPLA1Ovdycg5T8ZxnQA69XWsRFSugoViEVybU8LMW/Pg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DB7PR10MB1881.EURPRD10.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(39830400003)(346002)(366004)(396003)(136003)(376002)(66476007)(4326008)(8936002)(31686004)(186003)(31696002)(6486002)(16526019)(956004)(66556008)(52116002)(44832011)(478600001)(4744005)(16576012)(8976002)(316002)(2906002)(110136005)(5660300002)(86362001)(26005)(2616005)(36756003)(8676002)(54906003)(66946007)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData: =?Windows-1252?Q?Qw95G3a4AZSPQuIGyclZ1qoNu7bv8vwEZd/SvWPSDagD19TIUSSEJ1ck?=
+ =?Windows-1252?Q?rm1fJvpzsJcphJucTLUObVAmlSsvdwxym2awBHb3dUxq5dPVwJo81rqU?=
+ =?Windows-1252?Q?y3EHUtWc9Y7IRjKP9IzcOIXiTCxrlKKHJ+Yj5/GtbS9rtIfFxbWJcWhq?=
+ =?Windows-1252?Q?dmYM2Q0Cp7NkWggcRbboTmyU0DibUDKb4RkbCc8oYc5Cx+yIxOIIP7o4?=
+ =?Windows-1252?Q?M1TgSGgnOqWGG7euLi/S27Yil9pO8HxhCaQzDoEEzCsvqr97LdasXNoP?=
+ =?Windows-1252?Q?QmLZvBU4ARxjTk7tb/ezcABBqIInZqsRGdlxpJxZqTJqEzegI9xVybqI?=
+ =?Windows-1252?Q?QAnt+jH0ZSlMESIVMg1IKoCQPZ8ZdjZhHkgJO4olXI8ZWdka/9YRMiC5?=
+ =?Windows-1252?Q?oyjg0jHDNON28fu1kdva/q65LeUUGdo2y/ZbOkdEPXWui6D7Gq70SBtB?=
+ =?Windows-1252?Q?bGPGzJqFpDh8aK71uyjXZ0ljnUmgDmAe/dP4mvL66ofgYt9aV6X2rBVD?=
+ =?Windows-1252?Q?hwY7zQm8gV6Vj1WmswJiEksQMjd/tWX8NjRUHK8VnYV3t6zSvRwQEBlU?=
+ =?Windows-1252?Q?QaIr9/JEfYm+navoMYOfcBT4c4V9G2fMQWHCbFWyRpEJlO8gUU8bUbpn?=
+ =?Windows-1252?Q?Q0Fi341m4Dw41lLEbbU8IeXAKwbdkyfNmxauQ7U8E/61edrz4petg3S9?=
+ =?Windows-1252?Q?Yj5yRCRKY34mVxWfjad80vsuQzXddpXNyz011jjOAShDuoS4p5xSqgEf?=
+ =?Windows-1252?Q?6NEXQtHtlKodc1XcGbk3m1xzDG47XGtnWGCzqdj/Iv+Aww0m05RbQc4v?=
+ =?Windows-1252?Q?KZn12Y6EVdEIH3e9nZPMlwX0DVNUXHEZgwja7ZmiufkFmrtdnWdHrHU/?=
+ =?Windows-1252?Q?arvAzvk+4bXA2JYZjpdDLYogLO0Qj2rYXExS0voS4DEjpJXP4a87mBio?=
+ =?Windows-1252?Q?ITrShQfhLCbN5k5AnSYJ/8ISZdF7zJUBtnG/F9VzWkq8b+Kqpjibyetq?=
+ =?Windows-1252?Q?hNwX7GJz68tGlYW/Lak9wXtjzbp74m/3k9Et9my/26NAjmcTCjyFnnVp?=
+ =?Windows-1252?Q?rVoRiioncJwB4xUPqGgtxtSQEAuD8dIw4ymaEC7nHdnmuKooqLceVY9p?=
+ =?Windows-1252?Q?7W06DJIS3NLnFKlLhgIoSKrEYex26hwyEGBR+nhRZydEp9gzrvd4c1iL?=
+ =?Windows-1252?Q?FwNF5axx1rKY2C0sJlCM+rjxB6L3wprDtk6ia+StRY12j3gN9fQT89vY?=
+ =?Windows-1252?Q?G5hrfAMGiPADqS+Iq+QSiyxYqfw6k6M053Pn5LFRLSdcikclSZWhvgev?=
+ =?Windows-1252?Q?BkwGpi2aN+CyaIAJMmM0Z+cU4aa4hHVN+zt5z1UuIJtew5a3dfPKduAu?=
+ =?Windows-1252?Q?AsTdeHQDmGXGJws8rVhCzjEvobWkNNas+xKGaFIhmeDclvV5t6LA27aE?=
+X-OriginatorOrg: prevas.dk
+X-MS-Exchange-CrossTenant-Network-Message-Id: 402e4c69-b669-4d44-e41f-08d8e7ceb4fb
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR10MB1881.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Mar 2021 16:23:46.5447 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uJwUlfjpJvMGXiPEs3iNyV0bu3kogkRtkP8B5SILSfn+EAKxalCLmddX7XDmJNwtWWzNVl4tqR4vjKcGzL7RgMjeNbzIwBHo/n6/PixkNJM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3498
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,76 +133,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Greg Kurz <groug@kaod.org>,
- Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/15/21 4:12 PM, Daniel Henrique Barboza wrote:
+On 12/03/2021 03.29, Segher Boessenkool wrote:
+> Hi!
 > 
+> On Tue, Mar 09, 2021 at 06:19:30AM +0000, Christophe Leroy wrote:
+>> With some defconfig including CONFIG_CC_OPTIMIZE_FOR_SIZE,
+>> (for instance mvme5100_defconfig and ps3_defconfig), gcc 5
+>> generates a call to _restgpr_31_x.
 > 
-> On 3/12/21 11:31 AM, Cédric Le Goater wrote:
->> Initial commit 15863ff3b8da ("powerpc: Make chip-id information
->> available to userspace") introduce a cpu_to_chip_id() routine for the
->> PowerNV platform using the "ibm,chip-id" property to query the chip id
->> of a CPU. But PAPR does not specify such a property and the node id
->> query is broken.
->>
->> Use cpu_to_node() instead which guarantees to have a correct value on
->> all platforms, PowerNV an pSeries.
+>> I don't know if there is a way to tell GCC not to emit that call, because at the end we get more instructions than needed.
 > 
-> It is worth mentioning that that this patch will change how
-> topology_physical_package_id() represents in a QEMU guest. Right now, ibm,chip-id
-> in QEMU is matching the socket-id. After this patch, topology_physical_package_id()
-> will now match the NUMA id of the CPU.
-
-yes. I should have added some more background. 
-
-LPARs are impacted by the use of ibm,chip-id because the property 
-does not exist under PowerVM and the topology-id in sysfs is always
--1 even if NUMA nodes are defined.
-
-Under QEMU/KVM, ibm,chip-id is badly calculated when using uncommon 
-SMT configuration. This leads to a bogus topology-id value being 
-exported in sysfs.
-
-The use of cpu_to_node() guarantees to have a correct NUMA node id 
-under both environments QEMU/KVM and PowerVM.
-
-On the PowerNV platform, the numa node id returned by cpu_to_node() 
-is computed from the "ibm,associativity" property of the CPU. Its 
-value is built from the OPAL chip id and is equivalent to ibm,chip-id. 
-
-May be I should rephrase the commit log in a v2 ?
-
-C.
-
- 
-> Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-> Tested-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+> The function is required by the ABI, you need to have it.
 > 
->>
->> Cc: Nathan Lynch <nathanl@linux.ibm.com>
->> Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
->> Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>   arch/powerpc/include/asm/topology.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
->> index 3beeb030cd78..887c42a4e43d 100644
->> --- a/arch/powerpc/include/asm/topology.h
->> +++ b/arch/powerpc/include/asm/topology.h
->> @@ -123,7 +123,7 @@ static inline int cpu_to_coregroup_id(int cpu)
->>   #ifdef CONFIG_PPC64
->>   #include <asm/smp.h>
->>   -#define topology_physical_package_id(cpu)    (cpu_to_chip_id(cpu))
->> +#define topology_physical_package_id(cpu)    (cpu_to_node(cpu))
->>     #define topology_sibling_cpumask(cpu)    (per_cpu(cpu_sibling_map, cpu))
->>   #define topology_core_cpumask(cpu)    (cpu_cpu_mask(cpu))
->>
+> You get *fewer* insns statically, and that is what -Os is about: reduce
+> the size of the binaries.
 
+Is there any reason to not just always build the vdso with -O2? It's one
+page/one VMA either way, and the vdso is about making certain system
+calls cheaper, so if unconditional -O2 could save a few cycles compared
+to -Os, why not? (And if, as it seems, there's only one user within the
+DSO of _restgpr_31_x, yes, the overall size of the .text segment
+probably increases slightly).
+
+Rasmus
