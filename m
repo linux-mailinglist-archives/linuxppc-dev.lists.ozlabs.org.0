@@ -2,75 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D61333A9F6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 04:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A897433A9FB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 04:27:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzMD81l1Fz3f1j
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:22:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzMKc3Tg7z3cms
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:27:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=uv5oLlsf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=BvHC6wmn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72a;
+ helo=mail-qk1-x72a.google.com; envelope-from=unixbhaskar@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uv5oLlsf; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
+ header.s=20161025 header.b=BvHC6wmn; dkim-atps=neutral
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com
+ [IPv6:2607:f8b0:4864:20::72a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzM7B1JmNz3cWZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 14:17:58 +1100 (AEDT)
-Received: by mail-pj1-x102c.google.com with SMTP id
- lr10-20020a17090b4b8ab02900dd61b95c5eso11330611pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Mar 2021 20:17:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzMKB2d2lz30LR
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 14:26:37 +1100 (AEDT)
+Received: by mail-qk1-x72a.google.com with SMTP id x10so30408080qkm.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Mar 2021 20:26:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=4Kp72aT76gdbSTqpYV7yp/TKHQaU/VygiQHbpe3wL/g=;
- b=uv5oLlsfNQ9huIeGDiO+YrlvHFA4y5f4zRkAOwtDr0f5sLdRVkcIdeXFgpmAuPHUno
- sCZd/5D2Z9Ocymq840OEikOD92osxDEEso/W0djj7K3bJbWcWPsPzjZOHW5Se2jAd6dH
- 3YFSfNSFMK0C/WLCmW20doeECPTLJRmmH7FGYgx2qFzdTuNZlpfr1NRFh40ZvljN2zos
- G+ncEX8OAx75ILdCqM3ufONSciNdhQcJSIFAo3hzx8IyTTEqfg9CMz0a7VqiVkFpE2Bp
- 96z9m76Evh9Lu1OvsQe0fD3I5UCQQuh8Rc+kxKO0fRPWOEtugMzBizFu+857JW+lRTny
- LNXw==
+ h=date:from:to:cc:subject:message-id:mail-followup-to:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=uUydBSlgVr1bgB3fgHkH0tdR13fMyNSnZM4O4Ua8siU=;
+ b=BvHC6wmn8Od8FYfb70CSfrzWzH9+g60gVg6T8xdEtN0OpsZEysXuJRPnbhm6muZc1+
+ jU7ittciq2njAMXAJgIYtI7xw24t6PJXYUe2lD/AsI5lPNjzAUnjJnomlMPuyVyTLEPa
+ ap5tcjyZOp0GBlXo+55BmzJyqY7GEKT5RaN5oANyy54P676k0awclQ4zVp0G69aWJ/6B
+ PZxx6bDNi5AdBTqNCJDMYIt7YTrrC/+9uK7PzsDJIVar6qph/1cln6BC+MZ872h6zaSP
+ gQcBdvcaRMzTk+jILr/iUIJNfu2iDoQamyEXKJAOGsnCfE1dl6G+Q67KkNzFZZ6/ylfT
+ T/Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=4Kp72aT76gdbSTqpYV7yp/TKHQaU/VygiQHbpe3wL/g=;
- b=KqOYtzFnuK+xzF9215dZWRbgeEzZLsl6rbj6SMnIsbUAIf1SZxhiGsMcxRYp/DD03y
- Na44g+dj/flcZTi9PoaQ3VDfC1ExGKhdhDiyiA51oTykialxYJu1t5Dz0hVrf9QAH1iw
- pGS4Nuf6s+cji1kHMh0yTgTCStJDhUH9/R6IURqo4Rya5ifW1cjs8fTYT0+G86zp4Xk3
- T4/ltU+irUQ90EHaQjrgy/nZ73rC4AJFt33cGuSMhLgi+GfCm+MyjqqwvXdB01Yaq4t3
- DKjdQXuLKCQckep910YAdFlwttV7d7zZ6WXzRdCyw3SkS20cMpIzsOYJBk1KALpG2fQv
- mHCw==
-X-Gm-Message-State: AOAM533tf+J/cIhBk7ZewxGoYue8yI5kzYdK/Ce0qDhiBzWyUtn8dExJ
- QglgKS1AJ9hgHvBsi4yECE3k5N3yZtk=
-X-Google-Smtp-Source: ABdhPJwEFoYVqDs982KLLxWq8pheqoYAlA5QZSVr6YhH/wDCbI1svVQ6+3l6jJ5ZTpfB8dqZK+85tg==
-X-Received: by 2002:a17:902:dac2:b029:e6:30a6:4c06 with SMTP id
- q2-20020a170902dac2b02900e630a64c06mr9530555plx.65.1615778275451; 
- Sun, 14 Mar 2021 20:17:55 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id
- j22sm8517740pjz.3.2021.03.14.20.17.52
+ h=x-gm-message-state:date:from:to:cc:subject:message-id
+ :mail-followup-to:references:mime-version:content-disposition
+ :in-reply-to;
+ bh=uUydBSlgVr1bgB3fgHkH0tdR13fMyNSnZM4O4Ua8siU=;
+ b=JR52JG83YwTR6sv5uEflo8vlUuZgngVaupIZHZ/3SloxSG1hg6SnSkMIvWWFIhP0WU
+ bDCNg+hAsbeVHu6NHXpxjqHwCbo+uh/xRT1wrHith70m1uRa1dhi3toJUt/aP3aCvG7X
+ Zo/DwyQK+AMm9sR6A7FifSmb/L0tvl3/RdKAoFTC3bMViKbspeG71vCbVguw9HbgZ+dI
+ Gun/vh8OmLZlwIBJdJ2xfjPYFGfB9LC7FaI0rZobqbdRhfCDDxMOhbR1ZFYbMhcGvSye
+ UgZDF7t9roSEj64i/dh9vYaTfA96o1eSFcwAb2EJszJGukunSVSO+oHMabCiDjSLg+TL
+ iq6A==
+X-Gm-Message-State: AOAM531I7FNl0K7J1G3Bk9CklcSAsLmmVttL7UVa+5kQ6gExFIOeRViM
+ qvYPBYvnc8NZell1R9l/MFI=
+X-Google-Smtp-Source: ABdhPJwIQZPkmQnaF0KdIGFTrq0lUPYP1L8r1glWKTx+BK/GJN/htmXXPHS0UE3BVbWwJm3j4iQcrw==
+X-Received: by 2002:a37:9d8b:: with SMTP id g133mr22898960qke.10.1615778793668; 
+ Sun, 14 Mar 2021 20:26:33 -0700 (PDT)
+Received: from ArchLinux ([156.146.55.217])
+ by smtp.gmail.com with ESMTPSA id b2sm1533993qtb.54.2021.03.14.20.26.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Mar 2021 20:17:55 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 10/10] powerpc: move norestart trap flag to bit 0
-Date: Mon, 15 Mar 2021 13:17:16 +1000
-Message-Id: <20210315031716.3940350-11-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20210315031716.3940350-1-npiggin@gmail.com>
-References: <20210315031716.3940350-1-npiggin@gmail.com>
+ Sun, 14 Mar 2021 20:26:32 -0700 (PDT)
+Date: Mon, 15 Mar 2021 08:56:19 +0530
+From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: kernel: Trivial spelling fixes throughout the
+ file head_fsl_booke.S
+Message-ID: <YE7T2+/6AjOxshUV@ArchLinux>
+Mail-Followup-To: Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Randy Dunlap <rdunlap@infradead.org>, benh@kernel.crashing.org,
+ paulus@samba.org, akpm@linux-foundation.org, rppt@kernel.org,
+ oss@buserror.net, christophe.leroy@csgroup.eu,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20210314220436.3417083-1-unixbhaskar@gmail.com>
+ <f8dc3cbe-54f4-1da1-b14f-4735d28aad13@infradead.org>
+ <87r1kh3zeu.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="0h8yTNnxCDFgEAPZ"
+Content-Disposition: inline
+In-Reply-To: <87r1kh3zeu.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,69 +90,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+ oss@buserror.net, paulus@samba.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Compact the trap flags down to use the low 4 bits of regs.trap.
 
-A few 64e interrupt trap numbers set bit 4. Although they tended to be
-trivial so it wasn't a real problem[1], it is not the right thing to do,
-and confusing.
+--0h8yTNnxCDFgEAPZ
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 
-[*] E.g., 0x310 hypercall goes to unknown_exception, which prints
-    regs->trap directly so 0x310 will appear fine, and only the syscall
-    interrupt will test norestart, so it won't be confused by 0x310.
+On 13:48 Mon 15 Mar 2021, Michael Ellerman wrote:
+>Randy Dunlap <rdunlap@infradead.org> writes:
+>> On 3/14/21 3:04 PM, Bhaskar Chowdhury wrote:
+>>>
+>>> Trivial spelling fixes throughout the file.
+>>>
+>>> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+>>> ---
+>>>  arch/powerpc/kernel/head_fsl_booke.S | 8 ++++----
+>>>  1 file changed, 4 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
+>>> index fdd4d274c245..c6fcfca0b0d7 100644
+>>> --- a/arch/powerpc/kernel/head_fsl_booke.S
+>>> +++ b/arch/powerpc/kernel/head_fsl_booke.S
+>>> @@ -403,7 +403,7 @@ interrupt_base:
+>>>  	EXCEPTION(0x2900, AP_UNAVAIL, AuxillaryProcessorUnavailable, \
+>>>  		  unknown_exception, EXC_XFER_STD)
+>>>
+>>> -	/* Decrementer Interrupt */
+>>> +	/* Decremented Interrupt */
+>>
+>> No, the comment matches the macro (or whatever that is).
+>
+>Right. I dropped this hunk. Please update your script or whatever to not
+>"correct" that spelling.
+>
+Hmmmm ...V2 on the way...
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/ptrace.h | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+>cheers
 
-diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index 91194fdd5d01..6a04abfe5eb6 100644
---- a/arch/powerpc/include/asm/ptrace.h
-+++ b/arch/powerpc/include/asm/ptrace.h
-@@ -185,15 +185,21 @@ static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
- #define current_pt_regs() \
- 	((struct pt_regs *)((unsigned long)task_stack_page(current) + THREAD_SIZE) - 1)
- 
-+/*
-+ * The 4 low bits (0xf) are available as flags to overload the trap word,
-+ * because interrupt vectors have minimum alignment of 0x10. TRAP_FLAGS_MASK
-+ * must cover the bits used as flags, including bit 0 which is used as the
-+ * "norestart" bit.
-+ */
- #ifdef __powerpc64__
--#define TRAP_FLAGS_MASK		0x10
-+#define TRAP_FLAGS_MASK		0x1
- #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
- #else
- /*
-  * On 4xx we use bit 1 in the trap word to indicate whether the exception
-  * is a critical exception (1 means it is).
-  */
--#define TRAP_FLAGS_MASK		0x1E
-+#define TRAP_FLAGS_MASK		0xf
- #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
- #define IS_CRITICAL_EXC(regs)	(((regs)->trap & 2) != 0)
- #define IS_MCHECK_EXC(regs)	(((regs)->trap & 4) != 0)
-@@ -222,12 +228,12 @@ static inline bool trap_is_syscall(struct pt_regs *regs)
- 
- static inline bool trap_norestart(struct pt_regs *regs)
- {
--	return regs->trap & 0x10;
-+	return regs->trap & 0x1;
- }
- 
- static inline void set_trap_norestart(struct pt_regs *regs)
- {
--	regs->trap |= 0x10;
-+	regs->trap |= 0x1;
- }
- 
- #define arch_has_single_step()	(1)
--- 
-2.23.0
+--0h8yTNnxCDFgEAPZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEnwF+nWawchZUPOuwsjqdtxFLKRUFAmBO09cACgkQsjqdtxFL
+KRXnkAgAoQe+fjFbsaDe//4BHrcEkDyQcBya7D6Bbo40PXbWS19N4uxxcA7w87u7
+KZkMnmnRzNR1Xyv1Eykde//1MmQBdGudjElLW51HqMi1G90a95I80GMjvNPEHhOw
++9Tnnh9zFGAueL3PzC7+V9jsFl3VbbCzEE0u7ppfvyNJ99FVTgtIcF0aBoZD6F49
+R0UyqVD8LRCQAuvkYeSpbYiD3fVnllflfsnM/Q1a4b2q2xLZHc7b/hOqbJXbVzRQ
+0K5pfHupQZDjrQJghr026ZcuZWP04RbZRQYW6Asn05iNsATlAaxBYdg7RoVRUANl
+XWIOeH3De6RAp04QNqOarSIAbSco9Q==
+=+yEE
+-----END PGP SIGNATURE-----
+
+--0h8yTNnxCDFgEAPZ--
