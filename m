@@ -1,42 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F5233AD19
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 09:11:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2E233AD22
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 09:15:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzTf52qpzz3035
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 19:11:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzTkK1VwGz302k
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 19:15:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
- envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzTdn46mpz2xfZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 19:11:22 +1100 (AEDT)
-Received: from [192.168.0.2] (unknown [95.90.234.167])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id 7A96A20645D6F;
- Mon, 15 Mar 2021 09:11:13 +0100 (CET)
-Subject: Re: VIO bus not initialized
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-References: <41c04182-20c1-6124-a221-90aef704e310@molgen.mpg.de>
- <87mtv44zut.fsf@mpe.ellerman.id.au>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-Message-ID: <90e6a559-0908-684c-9156-5f3da2b02e38@molgen.mpg.de>
-Date: Mon, 15 Mar 2021 09:11:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzTjz44K7z2xfj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 19:15:01 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DzTjm6bsfz9tyDQ;
+ Mon, 15 Mar 2021 09:14:52 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Ve3cfPsdp8mN; Mon, 15 Mar 2021 09:14:52 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DzTjm2QW6z9tyDP;
+ Mon, 15 Mar 2021 09:14:52 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 144598B777;
+ Mon, 15 Mar 2021 09:14:57 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Pr23mMRympGp; Mon, 15 Mar 2021 09:14:57 +0100 (CET)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id ADFD78B776;
+ Mon, 15 Mar 2021 09:14:56 +0100 (CET)
+Subject: Re: [PATCH 10/10] powerpc: move norestart trap flag to bit 0
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210315031716.3940350-1-npiggin@gmail.com>
+ <20210315031716.3940350-11-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <99f15df0-dc86-4601-066f-a6c067ece8bf@csgroup.eu>
+Date: Mon, 15 Mar 2021 09:14:51 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <87mtv44zut.fsf@mpe.ellerman.id.au>
+In-Reply-To: <20210315031716.3940350-11-npiggin@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -49,46 +62,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Scott Wood <oss@buserror.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dear Michael,
 
 
-Thank you very much for your response.
-
-
-Am 15.03.21 um 08:53 schrieb Michael Ellerman:
-> Paul Menzel writes:
-
->> On the POWER8 system IBM S822LC, Linux 5.12-rc2+ logs the errors below.
+Le 15/03/2021 à 04:17, Nicholas Piggin a écrit :
+> Compact the trap flags down to use the low 4 bits of regs.trap.
 > 
-> That's a bare metal system, you can see that from the line "Using
-> PowerNV machine description" in the boot log.
+> A few 64e interrupt trap numbers set bit 4. Although they tended to be
+> trivial so it wasn't a real problem[1], it is not the right thing to do,
+> and confusing.
 > 
->>       $ dmesg --level=err
->>       [    1.555668] Driver 'hvc_console' was unable to register with bus_type 'vio' because the bus was not initialized.
->>       [    1.558434] Driver 'tpm_ibmvtpm' was unable to register with bus_type 'vio' because the bus was not initialized.
->>       $ grep VIO /boot/config-5.12.0-rc2+
->>       CONFIG_IBMVIO=y
+> [*] E.g., 0x310 hypercall goes to unknown_exception, which prints
+>      regs->trap directly so 0x310 will appear fine, and only the syscall
+>      interrupt will test norestart, so it won't be confused by 0x310.
 > 
-> The "vio" bus is not a real bus, it's a fake bus we use for hypervisor
-> provided devices in LPARs (guests).
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   arch/powerpc/include/asm/ptrace.h | 14 ++++++++++----
+>   1 file changed, 10 insertions(+), 4 deletions(-)
 > 
-> So on bare metal machines there is no vio bus, the devices that would
-> appear on the vio bus are found via other mechanisms.
+> diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
+> index 91194fdd5d01..6a04abfe5eb6 100644
+> --- a/arch/powerpc/include/asm/ptrace.h
+> +++ b/arch/powerpc/include/asm/ptrace.h
+> @@ -185,15 +185,21 @@ static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
+>   #define current_pt_regs() \
+>   	((struct pt_regs *)((unsigned long)task_stack_page(current) + THREAD_SIZE) - 1)
+>   
+> +/*
+> + * The 4 low bits (0xf) are available as flags to overload the trap word,
+> + * because interrupt vectors have minimum alignment of 0x10. TRAP_FLAGS_MASK
+> + * must cover the bits used as flags, including bit 0 which is used as the
+> + * "norestart" bit.
+> + */
+>   #ifdef __powerpc64__
+> -#define TRAP_FLAGS_MASK		0x10
+> +#define TRAP_FLAGS_MASK		0x1
+>   #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
+>   #else
+>   /*
+>    * On 4xx we use bit 1 in the trap word to indicate whether the exception
+>    * is a critical exception (1 means it is).
+>    */
+> -#define TRAP_FLAGS_MASK		0x1E
+> +#define TRAP_FLAGS_MASK		0xf
 
-Thank you for the explanation. Two questions:
+Could we set 0xf for all and remove the ifdef __powerpc64__ ?
 
-1.  Could a bare metal system be detected, and the VIO “be skipped”?
-2.  Should the log level be changed to notice or info then, as it’s an 
-expected failure?
+>   #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
+>   #define IS_CRITICAL_EXC(regs)	(((regs)->trap & 2) != 0)
+>   #define IS_MCHECK_EXC(regs)	(((regs)->trap & 4) != 0)
+> @@ -222,12 +228,12 @@ static inline bool trap_is_syscall(struct pt_regs *regs)
+>   
+>   static inline bool trap_norestart(struct pt_regs *regs)
+>   {
+> -	return regs->trap & 0x10;
+> +	return regs->trap & 0x1;
+>   }
+>   
+>   static inline void set_trap_norestart(struct pt_regs *regs)
+>   {
+> -	regs->trap |= 0x10;
+> +	regs->trap |= 0x1;
+>   }
+>   
+>   #define arch_has_single_step()	(1)
+> 
 
-[…]
+While we are playing with ->trap, in mm/book3s64/hash_utils.c there is an if (regs->trap == 0x400). 
+Should be TRAP(regs) == 0x400 ?
 
-
-Kind regards,
-
-Paul
+Christophe
