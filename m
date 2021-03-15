@@ -1,50 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC7733AA14
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 04:42:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D7433AA8B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 05:43:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzMgL6mZxz3cGY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:42:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzP1d6PGMz3cVx
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 15:43:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=b2xSk1jA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ADrXPF4T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=b2xSk1jA; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ADrXPF4T; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzMfz1ltJz30Gx
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 14:42:02 +1100 (AEDT)
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4DzMfy30vrz9sVm; Mon, 15 Mar 2021 14:42:02 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1615779722;
- bh=xIfzvjYxdYj5kl+7E/yZx5Q+XM+XeDcoT7q8ah19n/0=;
- h=From:To:Cc:Subject:Date:From;
- b=b2xSk1jAVGoEoqXuxnd/KIxpFtszMlKa84QtgyJ6mni5r3D5t6Lw3qZkhdLMbwbJl
- dxDhJJHjnz4dukGcbEXmxFnRit3saY5gUTnMd8fdz8mrq/LWeVlICBB3EeEx67aqY5
- wSFv41JYqAdaaB1wu5AmAld8UBMIpEx55EAKDlET8iNG4G4IpW7Xji5/zblcsOM0CG
- 3ShH8+BK+Rnq+yYroVDW9GPWFZnCV5aZhO5cJjtYc/GtExrk0uoeB0dFlkiEKbUtvx
- zZCjf8KYAw9eY9YuEAquXH5DMDggtRS6i7e0dljX0zeKMDh+reRzVst4+aaH/PmBh1
- 7Fh4QgLta3t0g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/kexec: Don't use .machine ppc64 in trampoline_64.S
-Date: Mon, 15 Mar 2021 14:41:59 +1100
-Message-Id: <20210315034159.315675-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzP1C0sHqz30Lk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 15:42:54 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 12F4fEnU029748; Mon, 15 Mar 2021 00:42:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=j8LNqCQn6S5qTytD74OUK2QwYQ44vd6F16Saa1U4nao=;
+ b=ADrXPF4T7ajMHTyu0OxI0RtllxSJJ3NRz2Bzq05cYpM1kSbucMkjC4ulDVr359mZ+1/O
+ p4+KFrLDQImNFvf0M8qVu/Gu2pNiOfEIMpPRAsEWYQe7cRtRG4ebYREuc8qimxMlY2Dx
+ ezGfyHxqZqyllvA1dNsE3oCXK6o6Y92BEjiBvvJ8osvexSilrvy23VTv6AIKN1d6uh7G
+ 3i/DU2ONQMbmnUIjSj5EYgUK+iZ49Hl7nKABLH/XBcpxAsFlgRW7dXXH1jbb77YkKns2
+ hQVraVBM8KwzrXdBUYGqF2oj0h1q03thUYSHKeLovChHAG3swSw8WhJGETqwn4eMdLsz wg== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 379ra7rgav-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Mar 2021 00:42:50 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12F4gc1X010540;
+ Mon, 15 Mar 2021 04:42:47 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04fra.de.ibm.com with ESMTP id 378n188rdk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Mar 2021 04:42:47 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 12F4gjPV42008924
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 15 Mar 2021 04:42:45 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 48F4452050;
+ Mon, 15 Mar 2021 04:42:45 +0000 (GMT)
+Received: from Madhavan.PrimaryTP (unknown [9.80.219.156])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 1748F5204E;
+ Mon, 15 Mar 2021 04:42:43 +0000 (GMT)
+Subject: Re: [PATCH V2 1/2] powerpc/perf: Infrastructure to support checking
+ of attr.config*
+To: "Paul A. Clarke" <pc@us.ibm.com>
+References: <20210226065025.1254973-1-maddy@linux.ibm.com>
+ <20210226140340.GA36821@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+Message-ID: <36f06b91-d3fe-ad7e-bf73-d7023ce2a62b@linux.ibm.com>
+Date: Mon, 15 Mar 2021 10:12:42 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210226140340.GA36821@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-15_01:2021-03-15,
+ 2021-03-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0
+ malwarescore=0 impostorscore=0 clxscore=1015 phishscore=0 mlxlogscore=999
+ lowpriorityscore=0 mlxscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103150030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,53 +99,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dja@axtens.net
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ".machine" directive allows changing the machine for which code is
-being generated. It's equivalent to passing an -mcpu option on the
-command line.
 
-Although it can be useful, it's generally a bad idea because it adds
-another way to influence code generation separate from the flags
-passed via the build system. ie. if we need to build different pieces
-of code with different flags we should do that via our Makefiles, not
-using ".machine".
+On 2/26/21 7:33 PM, Paul A. Clarke wrote:
+> Another drive-by review... just some minor nits, below...
+>
+> On Fri, Feb 26, 2021 at 12:20:24PM +0530, Madhavan Srinivasan wrote:
+>> Introduce code to support the checking of attr.config* for
+>> values which are reserved for a given platform.
+>> Performance Monitoring Unit (PMU) configuration registers
+>> have fields that are reserved and specific value to bit field
+> I'd reword to "some specific values for bit fields are reserved".
+>
+>> as reserved. For ex., MMCRA[61:62] is Randome Sampling Mode (SM)
+> s/Randome/Random/
+> This occurs here, and below, and in patch 2/2.
+>
+>> and value of 0b11 to this field is reserved.
+> s/to/for/
+>
+>> Writing a non-zero values in these fields or writing invalid
+>> value to bit fields will have unknown behaviours.
+> Suggest: Writing non-zero or invalid values in these fields
+> will have unknown behaviors. (or "behaviours" ;-)
+>
+> PC
 
-However as best as I can tell the ".machine" directive in
-trampoline_64.S is not necessary at all.
+Thanks for the review. Will fix it.
 
-It was added in commit 0d97631392c2 ("powerpc: Add purgatory for
-kexec_file_load() implementation."), which created the file based on
-the kexec-tools purgatory. It may be/have-been necessary in the
-kexec-tools version, but we have a completely different build system,
-and we already pass the desired CPU flags, eg:
+Maddy
 
-  gcc ... -m64 -Wl,-a64 -mabi=elfv2 -Wa,-maltivec -Wa,-mpower4 -Wa,-many
-  ... arch/powerpc/purgatory/trampoline_64.S
-
-So drop the ".machine" directive and rely on the assembler flags.
-
-Reported-by: Daniel Axtens <dja@axtens.net>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/purgatory/trampoline_64.S | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/powerpc/purgatory/trampoline_64.S b/arch/powerpc/purgatory/trampoline_64.S
-index d956b8a35fd1..b35837c13852 100644
---- a/arch/powerpc/purgatory/trampoline_64.S
-+++ b/arch/powerpc/purgatory/trampoline_64.S
-@@ -12,7 +12,6 @@
- #include <asm/asm-compat.h>
- #include <asm/crashdump-ppc64.h>
- 
--	.machine ppc64
- 	.balign 256
- 	.globl purgatory_start
- purgatory_start:
--- 
-2.25.1
-
+>
+>> Patch adds a generic call-back function "check_attr_config"
+>> in "struct power_pmu", to be called in event_init to
+>> check for attr.config* values for a given platform.
+>> "check_attr_config" is valid only for raw event type.
+>>
+>> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> ---
+>> Changelog v1:
+>> -Fixed commit message and in-code comments
+>>
+>>   arch/powerpc/include/asm/perf_event_server.h |  6 ++++++
+>>   arch/powerpc/perf/core-book3s.c              | 14 ++++++++++++++
+>>   2 files changed, 20 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
+>> index 00e7e671bb4b..dde97d7d9253 100644
+>> --- a/arch/powerpc/include/asm/perf_event_server.h
+>> +++ b/arch/powerpc/include/asm/perf_event_server.h
+>> @@ -67,6 +67,12 @@ struct power_pmu {
+>>   	 * the pmu supports extended perf regs capability
+>>   	 */
+>>   	int		capabilities;
+>> +	/*
+>> +	 * Function to check event code for values which are
+>> +	 * reserved. Function takes struct perf_event as input,
+>> +	 * since event code could be spread in attr.config*
+>> +	 */
+>> +	int		(*check_attr_config)(struct perf_event *ev);
+>>   };
+>>
+>>   /*
+>> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+>> index 6817331e22ff..c6eeb4fdc5fd 100644
+>> --- a/arch/powerpc/perf/core-book3s.c
+>> +++ b/arch/powerpc/perf/core-book3s.c
+>> @@ -1958,6 +1958,20 @@ static int power_pmu_event_init(struct perf_event *event)
+>>
+>>   		if (ppmu->blacklist_ev && is_event_blacklisted(ev))
+>>   			return -EINVAL;
+>> +		/*
+>> +		 * PMU config registers have fields that are
+>> +		 * reserved and specific value to bit field as reserved.
+>> +		 * For ex., MMCRA[61:62] is Randome Sampling Mode (SM)
+>> +		 * and value of 0b11 to this field is reserved.
+>> +		 *
+>> +		 * This check is needed only for raw event type,
+>> +		 * since tools like fuzzer use raw event type to
+>> +		 * provide randomized event code values for test.
+>> +		 *
+>> +		 */
+>> +		if (ppmu->check_attr_config &&
+>> +		    ppmu->check_attr_config(event))
+>> +			return -EINVAL;
+>>   		break;
+>>   	default:
+>>   		return -ENOENT;
+>> -- 
+>> 2.26.2
+>>
