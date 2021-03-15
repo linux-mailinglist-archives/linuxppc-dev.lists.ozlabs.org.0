@@ -2,97 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CFE33C8BD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 22:48:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71EB133C902
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 23:05:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dzqmz6TcNz309f
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 08:48:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dzr7k2wRQz30hR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 09:05:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VfPcA0Ij;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Ug6jJkNl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
+ helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=VfPcA0Ij; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Ug6jJkNl; dkim-atps=neutral
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
+ [IPv6:2607:f8b0:4864:20::102c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzqmX6Xw4z2y0B
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 08:48:28 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12FLYFqS030697; Mon, 15 Mar 2021 17:48:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=pp1;
- bh=iAyKZDpJ5s3o/1yy81QDoXVoZTWX12vRGKv8qlZCbhI=;
- b=VfPcA0Ij9huaFCRSO13F8u/XRh/HmuL0GAwWUxLuxelN3j3TdlSeyQ39inFpoaOk2ETA
- cXIiB+s/0mhOTCmRO/x9gadLaf4knbaL6oPYdFZmk/uXUV6AgVVstCckNT2rrxgjfy/3
- /XJviNi85Oi+jwvcch+MPZqyz1bbW61z7OzS8Zu8bihDPxdWVYGZqDTqxke1SlROR83s
- QfrIgJIsaohBlPUGQ1bj+g8R08jNDGZJ1MUNyVGXVVDoDUFVNY0wkmAaGwmiSc4AXCfB
- rksEG58J3o5DfA1Sro0yxgRzfPkDINeiOraS9ucxxnzwldEQN/3REcojPANGltmuBfuy BA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37ada7bp45-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Mar 2021 17:48:25 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12FLjc8D081920;
- Mon, 15 Mar 2021 17:48:25 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37ada7bp42-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Mar 2021 17:48:24 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12FLWhrS006762;
- Mon, 15 Mar 2021 21:48:24 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma03wdc.us.ibm.com with ESMTP id 378ubt8mf6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Mar 2021 21:48:24 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12FLmNqK22479256
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Mar 2021 21:48:23 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A20936E04E;
- Mon, 15 Mar 2021 21:48:23 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 663DC6E04C;
- Mon, 15 Mar 2021 21:48:23 +0000 (GMT)
-Received: from vios4361.aus.stglabs.ibm.com (unknown [9.3.43.61])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 15 Mar 2021 21:48:23 +0000 (GMT)
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-To: bhelgaas@google.com
-Subject: [PATCH v2] rpadlpar: fix potential drc_name corruption in store
- functions
-Date: Mon, 15 Mar 2021 15:48:21 -0600
-Message-Id: <20210315214821.452959-1-tyreld@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzr6n4WJgz301g
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 09:04:15 +1100 (AEDT)
+Received: by mail-pj1-x102c.google.com with SMTP id
+ kk2-20020a17090b4a02b02900c777aa746fso326359pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 15:04:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=w/LTny7Dqd6lYQHnUAXLQrJOz+mm91DMlgEGFpzaxUo=;
+ b=Ug6jJkNlervLMBBOgmasao/+wGvy8vH/f7D/Zvbz5PlE9aB7ytAX+nV1ilq9zzJ/F4
+ /GAhiPzSYWhHgH1nIwNh0pRU0116agGkGvehRnhFXPV5TQKuZZj02UOP3A/bmI+KREhn
+ +VLi9BDa44JN5CMspiGr+9ucFuzqzfSbkyGhavpty/3UsJrwGfF08GlUINs3wKT8zXM0
+ GeJXLlp+bU8SarfenGRzEVIVbcrA9X4LNl7wU1zEJqyxZZ6sBiZwFOpqMSKORFv9d2lT
+ 220UpVzHCfsA8Mt6sO8ATGqCfckJ29xHWParpRW5Chi7pkT2+m3FWn61+70neFNssFr5
+ mnsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=w/LTny7Dqd6lYQHnUAXLQrJOz+mm91DMlgEGFpzaxUo=;
+ b=nN8cEvlJFoLFRtc0n97V5P6zjt25T3cCeMfoNGtQNmG4ZcZr5UnHAEx8LXKw+q71rH
+ iNOYyFNJ4gR9BSZGQqY9F2u+tcv4krkfxjNs/70lPMDdUCS4WbfrsrEZ59QBzbHpLsAl
+ fE54dNQNWfQ5e++Ar1fq9JuOLunOf1Zud0GMom5lbqBpUvvM7HtSG+OH/AobNq0x2/dA
+ akfRhbHkI2HpVO/2BHPMXgBb18N6w0pUR1n/xJMZvr9PllvWmb7GERjbQ00cEAEQhFcy
+ 0eZkhmmTaZeakf1dro+TtsnXGiRfpE9iPRvJijAyW2ScRP8KA7XLpODXBVkz4nW1UrT9
+ iIRQ==
+X-Gm-Message-State: AOAM531Yij63I6Zc9fKqRUJ9IRa6CYlAqZpmQCRvi/zwuwqUNOMqlA6T
+ AURs0DNa7P3Bvu7V6+9ox+PvIYYwMuk=
+X-Google-Smtp-Source: ABdhPJwkxscl4RnmOgivx4umRpSir50iuZire+ay+lLQsWSM7j7M/0lZ+dqmZsTT21a6PpDC7BZXMA==
+X-Received: by 2002:a17:90a:bb07:: with SMTP id
+ u7mr1247077pjr.49.1615845851421; 
+ Mon, 15 Mar 2021 15:04:11 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
+ by smtp.gmail.com with ESMTPSA id
+ y9sm14740338pgc.9.2021.03.15.15.04.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Mar 2021 15:04:10 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 00/14] powerpc/64: fast interrupt exits
+Date: Tue, 16 Mar 2021 08:03:48 +1000
+Message-Id: <20210315220402.260594-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-15_12:2021-03-15,
- 2021-03-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- bulkscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1015 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103150145
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,78 +80,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Both add_slot_store() and remove_slot_store() try to fix up the drc_name
-copied from the store buffer by placing a NULL terminator at nbyte + 1
-or in place of a '\n' if present. However, the static buffer that we
-copy the drc_name data into is not zeored and can contain anything past
-the n-th byte. This is problematic if a '\n' byte appears in that buffer
-after nbytes and the string copied into the store buffer was not NULL
-terminated to start with as the strchr() search for a '\n' byte will mark
-this incorrectly as the end of the drc_name string resulting in a drc_name
-string that contains garbage data after the n-th byte. The following
-debugging shows an example of the drmgr utility writing "PHB 4543" to
-the add_slot sysfs attribute, but add_slot_store logging a corrupted
-string value.
+This applies to powerpc next-test (particularly Christophe's ppc32
+interrupt conversion) plus the 64e interrupt conversion patches I
+recently posted.
 
-[135823.702864] drmgr: drmgr: -c phb -a -s PHB 4543 -d 1
-[135823.702879] add_slot_store: drc_name = PHB 4543°|<82>!, rc = -19
+This series attempts to improve the speed of interrupts and system calls
+in three major ways.
 
-Fix this by using strscpy() instead of memcpy() to ensure the string is
-NULL terminated when copied into the static drc_name buffer. Further,
-since the string is now NULL terminated the code only needs to change
-'\n' to '\0' when present.
+Firstly, the SRR/HSRR registers do not need to be reloaded if they were
+not used or clobbered fur the duration of the interrupt. 64e does not
+implement this, but it could.
 
-Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
----
+Secondly, an alternate return location facility is added for soft-masked
+asynchronous interrupts and then that's used to set everything up for
+return without having to disable MSR RI or EE.
 
-Changes in v2:
-* use strscpy instead of memcpy (suggested by mpe)
+Thirdly, mtmsrd and mtspr are reduced by various means. This is mostly
+specific to 64s.
 
- drivers/pci/hotplug/rpadlpar_sysfs.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+After this series, the entire system call / interrupt handler fast path
+executes no mtsprs and one mtmsrd to enable interrupts initially, and
+the system call vectored path doesn't even need to do that. This gives a
+decent performance benefit. On POWER9 with a powernv_defconfig without
+VIRT_CPU_ACCOUNTING_NATIVE, no meltdown workarounds, gettid sc system
+call goes from 481 -> 344 cycles, gettid scv 345->299 cycles, and page
+fault 1225->1064 cycles.
 
-diff --git a/drivers/pci/hotplug/rpadlpar_sysfs.c b/drivers/pci/hotplug/rpadlpar_sysfs.c
-index cdbfa5df3a51..dbfa0b55d31a 100644
---- a/drivers/pci/hotplug/rpadlpar_sysfs.c
-+++ b/drivers/pci/hotplug/rpadlpar_sysfs.c
-@@ -34,12 +34,11 @@ static ssize_t add_slot_store(struct kobject *kobj, struct kobj_attribute *attr,
- 	if (nbytes >= MAX_DRC_NAME_LEN)
- 		return 0;
- 
--	memcpy(drc_name, buf, nbytes);
-+	strscpy(drc_name, buf, nbytes + 1);
- 
- 	end = strchr(drc_name, '\n');
--	if (!end)
--		end = &drc_name[nbytes];
--	*end = '\0';
-+	if (end)
-+		*end = '\0';
- 
- 	rc = dlpar_add_slot(drc_name);
- 	if (rc)
-@@ -65,12 +64,11 @@ static ssize_t remove_slot_store(struct kobject *kobj,
- 	if (nbytes >= MAX_DRC_NAME_LEN)
- 		return 0;
- 
--	memcpy(drc_name, buf, nbytes);
-+	strscpy(drc_name, buf, nbytes + 1);
- 
- 	end = strchr(drc_name, '\n');
--	if (!end)
--		end = &drc_name[nbytes];
--	*end = '\0';
-+	if (end)
-+		*end = '\0';
- 
- 	rc = dlpar_remove_slot(drc_name);
- 	if (rc)
+Since RFC, this no longer breaks 64e, several techniques for reducing
+MSR/SPR updates become possible or tidier with interrupt wrappers, and
+security fallback flushes aren't broken, usual bug fixes.
+
+Thanks,
+Nick
+
+Nicholas Piggin (14):
+  powerpc: remove interrupt exit helpers unused argument
+  powerpc/64s: security fallback improvement
+  powerpc/64s: introduce different functions to return from SRR vs HSRR
+    interrupts
+  powerpc/64s: avoid reloading (H)SRR registers if they are still valid
+  powerpc/64: move interrupt return asm to interrupt_64.S
+  powerpc/64s: save one more register in the masked interrupt handler
+  powerpc/64: allow alternate return locations for soft-masked
+    interrupts
+  powerpc/64: interrupt soft-enable race fix
+  powerpc/64: treat low kernel text as irqs soft-masked
+  powerpc/64: use interrupt restart table to speed up return from
+    interrupt
+  powerpc/64e: Remove PPR from pt_regs
+  powerpc/64s: system call avoid setting MSR[RI] until we set MSR[EE]
+  powerpc/64: handle MSR EE and RI in interrupt entry wrapper
+  powerpc/64s: use the same default PPR for user and kernel
+
+ arch/powerpc/Kconfig.debug                 |   5 +
+ arch/powerpc/include/asm/asm-prototypes.h  |   4 +-
+ arch/powerpc/include/asm/exception-64e.h   |   6 +
+ arch/powerpc/include/asm/exception-64s.h   |  52 +-
+ arch/powerpc/include/asm/feature-fixups.h  |  18 +
+ arch/powerpc/include/asm/head-64.h         |   2 +-
+ arch/powerpc/include/asm/interrupt.h       |  41 +-
+ arch/powerpc/include/asm/paca.h            |   9 +-
+ arch/powerpc/include/asm/ppc_asm.h         |   8 +
+ arch/powerpc/include/asm/processor.h       |   4 +-
+ arch/powerpc/include/asm/ptrace.h          |  65 +-
+ arch/powerpc/kernel/asm-offsets.c          |   7 +-
+ arch/powerpc/kernel/entry_64.S             | 516 --------------
+ arch/powerpc/kernel/exceptions-64e.S       |  53 +-
+ arch/powerpc/kernel/exceptions-64s.S       | 384 +++++------
+ arch/powerpc/kernel/fpu.S                  |   2 +
+ arch/powerpc/kernel/head_64.S              |   5 +-
+ arch/powerpc/kernel/interrupt.c            | 319 +++++----
+ arch/powerpc/kernel/interrupt_64.S         | 738 +++++++++++++++++++++
+ arch/powerpc/kernel/irq.c                  |  81 ++-
+ arch/powerpc/kernel/kgdb.c                 |   2 +-
+ arch/powerpc/kernel/kprobes-ftrace.c       |   2 +-
+ arch/powerpc/kernel/kprobes.c              |  10 +-
+ arch/powerpc/kernel/process.c              |  20 +-
+ arch/powerpc/kernel/rtas.c                 |  13 +-
+ arch/powerpc/kernel/signal.c               |   2 +-
+ arch/powerpc/kernel/signal_64.c            |  14 +
+ arch/powerpc/kernel/syscalls.c             |   2 +
+ arch/powerpc/kernel/traps.c                |  18 +-
+ arch/powerpc/kernel/vector.S               |   6 +-
+ arch/powerpc/kernel/vmlinux.lds.S          |  24 +
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S    |   4 +
+ arch/powerpc/lib/Makefile                  |   2 +-
+ arch/powerpc/lib/feature-fixups.c          | 241 ++++---
+ arch/powerpc/lib/restart_table.c           |  29 +
+ arch/powerpc/lib/sstep.c                   |   5 +-
+ arch/powerpc/math-emu/math.c               |   2 +-
+ arch/powerpc/platforms/powernv/opal-call.c |   3 +
+ arch/powerpc/sysdev/fsl_pci.c              |   2 +-
+ 39 files changed, 1631 insertions(+), 1089 deletions(-)
+ create mode 100644 arch/powerpc/kernel/interrupt_64.S
+ create mode 100644 arch/powerpc/lib/restart_table.c
+
 -- 
-2.27.0
+2.23.0
 
