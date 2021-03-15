@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3B933B32D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:02:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF1433B32F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:03:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dzc5311YQz2yxx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 00:01:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dzc6B5GRWz30FM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 00:02:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,46 +15,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzc4j4qKcz2xZD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 00:01:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzc5s1rYmz2xZD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 00:02:40 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Dzc4X2pKBz9tyRs;
- Mon, 15 Mar 2021 14:01:32 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4Dzc5h1DH7z9tyRm;
+ Mon, 15 Mar 2021 14:02:32 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id JijiRi72Cvcq; Mon, 15 Mar 2021 14:01:32 +0100 (CET)
+ with ESMTP id zbRByMg-vOPS; Mon, 15 Mar 2021 14:02:32 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Dzc4W73j6z9tyRk;
- Mon, 15 Mar 2021 14:01:31 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Dzc5g6C1Zz9tyRk;
+ Mon, 15 Mar 2021 14:02:31 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3974C8B779;
- Mon, 15 Mar 2021 14:01:37 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C1CF88B776;
+ Mon, 15 Mar 2021 14:02:36 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Lls54DDK7J70; Mon, 15 Mar 2021 14:01:37 +0100 (CET)
+ with ESMTP id 2I_92wJSbw6e; Mon, 15 Mar 2021 14:02:36 +0100 (CET)
 Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CDC4A8B776;
- Mon, 15 Mar 2021 14:01:36 +0100 (CET)
-Subject: Re: [PATCH] powerpc: Fix missing prototype problems for
- "arch/powerpc/kernel/setup_64.c"
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- "heying (H)" <heying24@huawei.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
- dja@axtens.net, akpm@linux-foundation.org, rppt@kernel.org,
- aneesh.kumar@linux.ibm.com
-References: <20210315120444.215905-1-heying24@huawei.com>
- <6eb1925c-a3a1-f062-29da-3a7fa946505c@csgroup.eu>
- <ddd03e30-9e54-66cd-8917-6f620557b795@huawei.com>
- <c6af9455-9a04-c93e-ac7c-3c7d6a56953a@kaod.org>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2F29F8B779;
+ Mon, 15 Mar 2021 14:02:36 +0100 (CET)
+Subject: Re: [PATCH v6 19/22] powerpc/book3s64/hash/kuap: Enable kuap on hash
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+References: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
+ <20201125051634.509286-20-aneesh.kumar@linux.ibm.com>
+ <2898f50c-aa42-5842-9d29-7272c7da5d00@csgroup.eu>
+ <cc0338af-da92-f6d5-c0fb-aca67a2cccc5@linux.ibm.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <fe0638cc-28be-2e5c-9e94-ab3ff7666164@csgroup.eu>
-Date: Mon, 15 Mar 2021 14:01:32 +0100
+Message-ID: <02869c06-a3e5-2f9e-50a4-9b1d63061401@csgroup.eu>
+Date: Mon, 15 Mar 2021 14:02:31 +0100
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <c6af9455-9a04-c93e-ac7c-3c7d6a56953a@kaod.org>
+In-Reply-To: <cc0338af-da92-f6d5-c0fb-aca67a2cccc5@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -69,88 +65,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: johnny.chenyi@huawei.com, linuxppc-dev@lists.ozlabs.org
+Cc: Sandipan Das <sandipan@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 15/03/2021 à 13:57, Cédric Le Goater a écrit :
-> On 3/15/21 1:48 PM, heying (H) wrote:
+Le 15/03/2021 à 13:59, Aneesh Kumar K.V a écrit :
+> On 3/15/21 5:36 PM, Christophe Leroy wrote:
 >>
->> 在 2021/3/15 20:17, Christophe Leroy 写道:
->>> You subject doesn't match the content of the patch.
->> OK. I'll adapt that.
->>>
->>> Le 15/03/2021 à 13:04, He Ying a écrit :
->>>> The variables 'uaccess_fulsh' and 'entry_flush' are not referenced
->>>> outside the file. So define them as static to avoid the warnings.
->>>>
->>>> And add a prototype for the function 'panic_smp_self_stop' for the
->>>> same purpose.
->>>>
->>>> Sparse also warns that 'rfi_flush' should be static. However, it's
->>>> referenced outside the file.
->>>
->>> To clear that warning, you have to include asm/security_features.h, rfi_flush is declared there.
->> Do you mean that I should include this header in arch/powerpc/kernel/setup_64.c?
+>>
+>> Le 25/11/2020 à 06:16, Aneesh Kumar K.V a écrit :
+>>> Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
+>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>
+>> PPC_HAVE_KUAP is only selected on book3s/64 when PPC_RADIX_MMU is selected. Is that normal ?
+>>
 > 
-> yes.
 > 
->>>
->>>>
->>>> The warnings about the file reported by sparse are as follows:
->>>> arch/powerpc/kernel/setup_64.c:422:6: warning: symbol 'panic_smp_self_stop' was not declared. Should it be static?
->>>> arch/powerpc/kernel/setup_64.c:951:6: warning: symbol 'rfi_flush' was not declared. Should it be static?
->>>> arch/powerpc/kernel/setup_64.c:952:6: warning: symbol 'entry_flush' was not declared. Should it be static?
->>>> arch/powerpc/kernel/setup_64.c:953:6: warning: symbol 'uaccess_flush' was not declared. Should it be static?
->>>>
->>>> Reported-by: Hulk Robot <hulkci@huawei.com>
->>>> Signed-off-by: He Ying <heying24@huawei.com>
->>>> ---
->>>>    arch/powerpc/kernel/setup_64.c | 6 ++++--
->>>>    1 file changed, 4 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
->>>> index 560ed8b975e7..603aacd8527b 100644
->>>> --- a/arch/powerpc/kernel/setup_64.c
->>>> +++ b/arch/powerpc/kernel/setup_64.c
->>>> @@ -71,6 +71,8 @@
->>>>      #include "setup.h"
->>>>    +extern void panic_smp_self_stop(void);
->>>> +
->>>
->>> For function prototypes 'extern' is unneeded and deprecated.
->>>
->>> And function prototypes should go in an header file.
->>>
->>> panic_smp_self_stop() is called from kernel/panic.c , it should be declared in one of the generic linux header files I think.
->> Yes, you're right. But I have no idea which header it should be declared in. May I have your suggestions?
-> 
-> arch/powerpc/include/asm/bug.h looks like a good place.
+> I guess we missed fixing that with this patch. How about
 
-Why declaring it in a powerpc header ?
-
-It's a weak function defined in core part of kernel (kernel/panic.c).
-
-I think it should go in a common header, just like for instance arch_thaw_secondary_cpus_begin()
+Yes, looks good to me.
 
 > 
-> C.
+> modified   arch/powerpc/platforms/Kconfig.cputype
+> @@ -103,6 +103,8 @@ config PPC_BOOK3S_64
+>       select ARCH_SUPPORTS_NUMA_BALANCING
+>       select IRQ_WORK
+>       select PPC_MM_SLICES
+> +    select PPC_HAVE_KUEP
+> +    select PPC_HAVE_KUAP
 > 
->>>
->>>>    int spinning_secondaries;
->>>>    u64 ppc64_pft_size;
->>>>    @@ -949,8 +951,8 @@ static bool no_rfi_flush;
->>>>    static bool no_entry_flush;
->>>>    static bool no_uaccess_flush;
->>>>    bool rfi_flush;
->>>> -bool entry_flush;
->>>> -bool uaccess_flush;
->>>> +static bool entry_flush;
->>>> +static bool uaccess_flush;
->>>>    DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
->>>>    EXPORT_SYMBOL(uaccess_flush_key);
->>>>
->>> .
+>   config PPC_BOOK3E_64
+>       bool "Embedded processors"
+> @@ -365,8 +367,6 @@ config PPC_RADIX_MMU
+>       bool "Radix MMU Support"
+>       depends on PPC_BOOK3S_64
+>       select ARCH_HAS_GIGANTIC_PAGE
+> -    select PPC_HAVE_KUEP
+> -    select PPC_HAVE_KUAP
+>       default y
+>       help
+>         Enable support for the Power ISA 3.0 Radix style MMU. Currently this
+> 
+> 
+> 
+> 
+> 
+> -aneesh
