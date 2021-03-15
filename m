@@ -2,46 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E2F33AE30
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 10:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A2C33AE74
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 10:17:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzVtz0DxXz302g
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 20:07:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzW5k59Hqz302S
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 20:17:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=szxga06-in.huawei.com;
- envelope-from=heying24@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzRtP41Mjz2xZm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 17:52:09 +1100 (AEDT)
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
- by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4DzRrN55w7zlVhs;
- Mon, 15 Mar 2021 14:50:28 +0800 (CST)
-Received: from [10.67.110.136] (10.67.110.136) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.498.0; Mon, 15 Mar 2021 14:51:49 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzW5N5ZXtz2yRY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 20:16:53 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DzW585F0xz9tyQX;
+ Mon, 15 Mar 2021 10:16:44 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id heiqeBYVwGLA; Mon, 15 Mar 2021 10:16:44 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DzW583VXxz9tyQT;
+ Mon, 15 Mar 2021 10:16:44 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4F3408B776;
+ Mon, 15 Mar 2021 10:16:49 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id lxPhJYcY4fVp; Mon, 15 Mar 2021 10:16:49 +0100 (CET)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DBE268B75B;
+ Mon, 15 Mar 2021 10:16:48 +0100 (CET)
 Subject: Re: [PATCH] powerpc: define the variable 'uaccess_flush' as static
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, <mpe@ellerman.id.au>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <dja@axtens.net>, <akpm@linux-foundation.org>, <rppt@kernel.org>,
- <aneesh.kumar@linux.ibm.com>
+To: "heying (H)" <heying24@huawei.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, mpe@ellerman.id.au, benh@kernel.crashing.org,
+ paulus@samba.org, npiggin@gmail.com, dja@axtens.net,
+ akpm@linux-foundation.org, rppt@kernel.org, aneesh.kumar@linux.ibm.com
 References: <20210312110638.178974-1-heying24@huawei.com>
  <a06a0dc8-c717-da4c-c5ad-eaf56bbbd896@kaod.org>
-From: "heying (H)" <heying24@huawei.com>
-Message-ID: <2c7bf6e0-d950-c728-bfe9-2db99a4d18a9@huawei.com>
-Date: Mon, 15 Mar 2021 14:51:37 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ <2c7bf6e0-d950-c728-bfe9-2db99a4d18a9@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <c522ca02-4053-3e3d-f25e-2c1482c5a8bd@csgroup.eu>
+Date: Mon, 15 Mar 2021 10:16:38 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <a06a0dc8-c717-da4c-c5ad-eaf56bbbd896@kaod.org>
-Content-Type: multipart/alternative;
- boundary="------------7D2E77D4DAA772EC4AE12991"
-X-Originating-IP: [10.67.110.136]
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Mon, 15 Mar 2021 20:07:38 +1100
+In-Reply-To: <2c7bf6e0-d950-c728-bfe9-2db99a4d18a9@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,92 +72,40 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---------------7D2E77D4DAA772EC4AE12991
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
 
 
-> I think this is the case also for entry_flush. compiling with W=1 will tell you more.
+Le 15/03/2021 à 07:51, heying (H) a écrit :
+> 
+>> I think this is the case also for entry_flush. compiling with W=1 will tell you more.
+> 
+> When I use these commands:
+> 
+> make allmodconfig ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
+> make C=2 arch/powerpc/kernel/setup_64.o ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
+> 
+> I find warnings as followings:
+> 
+> arch/powerpc/kernel/setup_64.c:422:6: warning: symbol 'panic_smp_self_stop' was not declared. Should 
+> it be static?
+> arch/powerpc/kernel/setup_64.c:951:6: warning: symbol 'rfi_flush' was not declared. Should it be static?
+> arch/powerpc/kernel/setup_64.c:952:6: warning: symbol 'entry_flush' was not declared. Should it be 
+> static?
+> arch/powerpc/kernel/setup_64.c:953:6: warning: symbol 'uaccess_flush' was not declared. Should it be 
+> static?
+> 
+> When I use the command "make W=1 arch/powerpc/kernel/setup_64.o ARCH=powerpc 
+> CROSS_COMPILE=powerpc64-linux-gnu-", warning becomes this:
+> 
+> arch/powerpc/kernel/setup_64.c:422:6: warning: no previous prototype for ‘panic_smp_self_stop’ 
+> [-Wmissing-prototypes]
+>   void panic_smp_self_stop(void)
+>        ^~~~~~~~~~~~~~~~~~~
+> 
+> My sparse tool is the latest one with the version "v0.6.3". So, should I fix all the warnings 
+> reported by sparse?
 
-When I use these commands:
+I think W=1 will only report missing function prototypes.
 
-make allmodconfig ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
-make C=2 arch/powerpc/kernel/setup_64.o ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
+sparse also reports missing variables prototypes so that's better. All should be fixed.
 
-I find warnings as followings:
-
-arch/powerpc/kernel/setup_64.c:422:6: warning: symbol 
-'panic_smp_self_stop' was not declared. Should it be static?
-arch/powerpc/kernel/setup_64.c:951:6: warning: symbol 'rfi_flush' was 
-not declared. Should it be static?
-arch/powerpc/kernel/setup_64.c:952:6: warning: symbol 'entry_flush' was 
-not declared. Should it be static?
-arch/powerpc/kernel/setup_64.c:953:6: warning: symbol 'uaccess_flush' 
-was not declared. Should it be static?
-
-When I use the command "make W=1 arch/powerpc/kernel/setup_64.o 
-ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-", warning becomes this:
-
-arch/powerpc/kernel/setup_64.c:422:6: warning: no previous prototype for 
-‘panic_smp_self_stop’ [-Wmissing-prototypes]
-  void panic_smp_self_stop(void)
-       ^~~~~~~~~~~~~~~~~~~
-
-My sparse tool is the latest one with the version "v0.6.3". So, should I 
-fix all the warnings reported by sparse?
-
-
-Thanks.
-
-
---------------7D2E77D4DAA772EC4AE12991
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <br>
-    <blockquote type="cite"
-      cite="mid:a06a0dc8-c717-da4c-c5ad-eaf56bbbd896@kaod.org">
-      <pre class="moz-quote-pre" wrap="">
-I think this is the case also for entry_flush. compiling with W=1 will tell you more.</pre>
-    </blockquote>
-    <p>When I use these commands:<br>
-    </p>
-    <pre style="box-sizing: border-box; font-family: SFMono-Regular, Menlo, Monaco, Consolas, &quot;Liberation Mono&quot;, &quot;Courier New&quot;, monospace; font-size: 12.25px; margin-top: 0px; margin-bottom: 1rem; overflow: auto; display: block; color: rgb(35, 40, 44); font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">make allmodconfig ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
-make C=2 arch/powerpc/kernel/setup_64.o ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
-</pre>
-    <p>I find warnings as followings:<br>
-    </p>
-    <p>arch/powerpc/kernel/setup_64.c:422:6: warning: symbol
-      'panic_smp_self_stop' was not declared. Should it be static?<br>
-      arch/powerpc/kernel/setup_64.c:951:6: warning: symbol 'rfi_flush'
-      was not declared. Should it be static?<br>
-      arch/powerpc/kernel/setup_64.c:952:6: warning: symbol
-      'entry_flush' was not declared. Should it be static?<br>
-      arch/powerpc/kernel/setup_64.c:953:6: warning: symbol
-      'uaccess_flush' was not declared. Should it be static?</p>
-    <p>When I use the command "make W=1 arch/powerpc/kernel/setup_64.o
-      ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-", warning becomes
-      this:</p>
-    <p>arch/powerpc/kernel/setup_64.c:422:6: warning: no previous
-      prototype for ‘panic_smp_self_stop’ [-Wmissing-prototypes]<br>
-       void panic_smp_self_stop(void)<br>
-            ^~~~~~~~~~~~~~~~~~~<br>
-    </p>
-    <p>My sparse tool is the latest one with the version "v0.6.3". So,
-      should I fix all the warnings reported by sparse?<br>
-    </p>
-    <p><br>
-    </p>
-    <p>Thanks.<br>
-    </p>
-    <pre class="moz-quote-pre" wrap="">
-</pre>
-  </body>
-</html>
-
---------------7D2E77D4DAA772EC4AE12991--
+Christophe
