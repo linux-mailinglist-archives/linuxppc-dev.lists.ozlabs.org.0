@@ -2,70 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D0833A9DE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 04:18:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC4933A9DD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 04:17:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzM7Y1HSQz3ckQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:18:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzM7575Wrz3cVJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 14:17:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=dT5axvtK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=tLMyetUO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
- helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529;
+ helo=mail-pg1-x529.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=dT5axvtK; dkim-atps=neutral
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
+ header.s=20161025 header.b=tLMyetUO; dkim-atps=neutral
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
+ [IPv6:2607:f8b0:4864:20::529])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzM6g6JdRz30Gp
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzM6h03NLz30LP
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 14:17:30 +1100 (AEDT)
-Received: by mail-pf1-x434.google.com with SMTP id x7so5695047pfi.7
+Received: by mail-pg1-x529.google.com with SMTP id 205so2658281pgh.9
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Mar 2021 20:17:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=jzR8ErWfNRx1JHHZNtVy6/YcPMkh5LidPDohsPOcWzQ=;
- b=dT5axvtKi7PkztZEkyV12/VAQaOmCodxwcQdYPxKKV5lPsQ10yoVPIEfnSFx4lFr53
- 7NXJVsfixMqyRn/64NUPALFevQLmPJXk1vfDXJZjL1NhEQ++cVSEI4ThNET+nqRrxjvs
- dd9qpTqXOOtEdYAbY1Ouxq6pj0skXMbZKUAA+6bnHz/oPQ9yjfpUlcNX/pwQFu0PIUli
- 3wqNGL2mN+RLb0QA+jKfJrjuKw3cf6aCZU7x2bDyPoMYY7GQC9+Z1LNjvTA2D0YbP9jj
- lXGfYRsIKeozJnYj8Jqw0t9m1ox/TR4u8g57moAYob+El83rmdvv1QuxBSsB8RcpBHyp
- Un5w==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=CDJoUG1yLv0WyAFnf8ZykYSJsUDwHka1W1/1b/XD9EY=;
+ b=tLMyetUO3K4qPdpAr0BSx6Zyhdb4TJQzMX8MUlHNcZojZymedZKIhOKtxDjW+FhX7z
+ 2pfosM/XAyUco/rrpC/U9V4+RrKFNBxSodIzdZHOWNnx39WAIwUIsEO0YeMWJahcr6ss
+ KL1XVjTmlsTDlIuCbTKHxA3Yj68RiDCsrEaRErI5yaMIPR85Nh7By58PD0WyQrQvuDSB
+ E2zBXCdgx/XoJvgrAFb6Fj1NAHmZ5hry+5s+EEe6noRT4y+Nvwbvf4yGHm7AvP+B0KZr
+ rOXcKWwk6BpLvSMz/lpy03XxVmjQ+UBqY0RZWfQ6HRIPlULv5UFzRTlrqrrSEKZao4Bc
+ rK0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=jzR8ErWfNRx1JHHZNtVy6/YcPMkh5LidPDohsPOcWzQ=;
- b=CIuxaPp+gKdOEwYx4UHhQxfRALkxqWs/oRz4RkbFPPnMzW9HQB7wdmB1ATHxUtEPpZ
- 7l1wrL5CvA8DbMZzqmNQAhyB7IBlb5bWsZwrJdCt+AJohIGArNxb/vcmz4jMWrzDZ7YC
- 83Je16xMRQSzpI2oIZV9E9RbTykwZuOVEDntfewlMGLKswS4PAtL4JgOi0yDRsEQAhcg
- GulNFqWjX+YXRg81fxjeNAjUDFrffwF9nqnewyAxWfwz1UhkvhUQVbY/hJmEiuFoQK95
- DEncYgm/sdrlKc7YSaKBL4vcOdsKZu32V6SaW2Uc/OMC/8zhmnqO0lzETiLKbSPhNeuW
- IBsQ==
-X-Gm-Message-State: AOAM530ocErj5HzBxBGaTFIvkD3IWB1wdDSJJ+r+i0iEamu0/R3WP081
- yIGGbxn+OgQQ1QqnPH8exJt23j52lgQ=
-X-Google-Smtp-Source: ABdhPJxhTN8RjDRg+IZXcZQq+Yj+pQflGEJQ9ey7DRlTfEJq+KtoEccPcwoi+YZ11R5ju4RsRDQPiA==
-X-Received: by 2002:aa7:99c4:0:b029:1f6:c0bf:43d1 with SMTP id
- v4-20020aa799c40000b02901f6c0bf43d1mr22296467pfi.37.1615778244965; 
- Sun, 14 Mar 2021 20:17:24 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=CDJoUG1yLv0WyAFnf8ZykYSJsUDwHka1W1/1b/XD9EY=;
+ b=ZWpiiycOaJqgHQs/nMhfi5zo6eCgx3qtHSSMuzg7fV8ZWDRSDVCHGN8em2sLWENh1P
+ 2+uqxe/GFO5RCQaukQmr1eoaV7LcBDZCpYMnSS3D24YW2jaeXa61dhOfNNNNcM7n47uO
+ K60VYMIElRaJkNyBk8QvW7ZFDK9Mu1Di9YZzx9PYeSEX9s/pdt1Ghn4NUav4FlzJXyOa
+ F9kXKWQkpaFL71Yy0cvKgSCVPRz5qkBbdBk3TNv3Alycp5+HdToj3hsKoAsL6UX4/9Gx
+ virpexzqxX9SOU9zrtoNZNSKBlso1VEQMo+hFtTG4Nm958E+1fLAB45nwXTZAi+jaG47
+ RlnQ==
+X-Gm-Message-State: AOAM5320RTQs+PrNzIeAXmlP7/AoNtk3QLWOilmEkHTKbvqCgjc0EFsI
+ fOCbvbOM+zy5QnuvxfD3fRQ3/iu6Tjg=
+X-Google-Smtp-Source: ABdhPJy9jsuU0uThIfATwH84yKwvo5h+v8VvDwjNey9LDaw1M1xYFNbE/340DNfwMgZ8da3RsbiAzg==
+X-Received: by 2002:a63:e5d:: with SMTP id 29mr21115462pgo.450.1615778247947; 
+ Sun, 14 Mar 2021 20:17:27 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
  by smtp.gmail.com with ESMTPSA id
- j22sm8517740pjz.3.2021.03.14.20.17.22
+ j22sm8517740pjz.3.2021.03.14.20.17.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Mar 2021 20:17:24 -0700 (PDT)
+ Sun, 14 Mar 2021 20:17:27 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 00/10] Move 64e to new interrupt return code
-Date: Mon, 15 Mar 2021 13:17:06 +1000
-Message-Id: <20210315031716.3940350-1-npiggin@gmail.com>
+Subject: [PATCH 01/10] powerpc/syscall: switch user_exit_irqoff and
+ trace_hardirqs_off order
+Date: Mon, 15 Mar 2021 13:17:07 +1000
+Message-Id: <20210315031716.3940350-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20210315031716.3940350-1-npiggin@gmail.com>
+References: <20210315031716.3940350-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,51 +86,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since RFC this is rebased on Christophe's v3 ppc32 conversion, and
-has fixed up small details, and then adds some powerpc-wide
-cleanups at the end.
+user_exit_irqoff() -> __context_tracking_exit -> vtime_user_exit
+warns in __seqprop_assert due to lockdep thinking preemption is enabled
+because trace_hardirqs_off() has not yet been called.
 
-Tested on qemu only (QEMU e500), which is not ideal for interrupt
-handling particularly the critical interrupts which I don't know
-whether it can generate.
+Switch the order of these two calls, which matches their ordering in
+interrupt_enter_prepare.
 
-Thanks,
-Nick
+Fixes: 5f0b6ac3905f ("powerpc/64/syscall: Reconcile interrupts")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/interrupt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Nicholas Piggin (10):
-  powerpc/syscall: switch user_exit_irqoff and trace_hardirqs_off order
-  powerpc/64e/interrupt: always save nvgprs on interrupt
-  powerpc/64e/interrupt: use new interrupt return
-  powerpc/64e/interrupt: NMI save irq soft-mask state in C
-  powerpc/64e/interrupt: reconcile irq soft-mask state in C
-  powerpc/64e/interrupt: Use new interrupt context tracking scheme
-  powerpc/64e/interrupt: handle bad_page_fault in C
-  powerpc: clean up do_page_fault
-  powerpc: remove partial register save logic
-  powerpc: move norestart trap flag to bit 0
-
- arch/powerpc/include/asm/asm-prototypes.h |   2 -
- arch/powerpc/include/asm/bug.h            |   4 +-
- arch/powerpc/include/asm/interrupt.h      |  66 ++--
- arch/powerpc/include/asm/ptrace.h         |  36 +-
- arch/powerpc/kernel/align.c               |   6 -
- arch/powerpc/kernel/entry_64.S            |  40 +-
- arch/powerpc/kernel/exceptions-64e.S      | 425 ++--------------------
- arch/powerpc/kernel/interrupt.c           |  22 +-
- arch/powerpc/kernel/irq.c                 |  76 ----
- arch/powerpc/kernel/process.c             |  12 -
- arch/powerpc/kernel/ptrace/ptrace-view.c  |  21 --
- arch/powerpc/kernel/ptrace/ptrace.c       |   2 -
- arch/powerpc/kernel/ptrace/ptrace32.c     |   4 -
- arch/powerpc/kernel/signal_32.c           |   3 -
- arch/powerpc/kernel/signal_64.c           |   2 -
- arch/powerpc/kernel/traps.c               |  14 +-
- arch/powerpc/lib/sstep.c                  |   4 -
- arch/powerpc/mm/book3s64/hash_utils.c     |  16 +-
- arch/powerpc/mm/fault.c                   |  28 +-
- arch/powerpc/xmon/xmon.c                  |  23 +-
- 20 files changed, 130 insertions(+), 676 deletions(-)
-
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index c4dd4b8f9cfa..fbabb49888d3 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -43,11 +43,11 @@ notrace long system_call_exception(long r3, long r4, long r5,
+ 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+ 		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
+ 
++	trace_hardirqs_off(); /* finish reconciling */
++
+ 	CT_WARN_ON(ct_state() == CONTEXT_KERNEL);
+ 	user_exit_irqoff();
+ 
+-	trace_hardirqs_off(); /* finish reconciling */
+-
+ 	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x))
+ 		BUG_ON(!(regs->msr & MSR_RI));
+ 	BUG_ON(!(regs->msr & MSR_PR));
 -- 
 2.23.0
 
