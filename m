@@ -2,55 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BB833AC83
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 08:51:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B0733ACC6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 08:53:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzTBF30Jwz2ym4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 18:51:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzTDV6SSTz301w
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Mar 2021 18:52:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cuk3giHK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=cuk3giHK; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzT9v2vZqz2yR4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 18:50:39 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DzT9c5mXDz9tyDG;
- Mon, 15 Mar 2021 08:50:28 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id vKpD-afCYxgp; Mon, 15 Mar 2021 08:50:28 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DzT9c4fTyz9tyDF;
- Mon, 15 Mar 2021 08:50:28 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3FDD38B774;
- Mon, 15 Mar 2021 08:50:33 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id xTEm8cbGe9WR; Mon, 15 Mar 2021 08:50:33 +0100 (CET)
-Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0E25E8B773;
- Mon, 15 Mar 2021 08:50:33 +0100 (CET)
-Subject: Re: [PATCH 03/10] powerpc/64e/interrupt: use new interrupt return
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210315031716.3940350-1-npiggin@gmail.com>
- <20210315031716.3940350-4-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <186d3513-d7ab-a658-cdb2-6fe5146c1fc4@csgroup.eu>
-Date: Mon, 15 Mar 2021 08:50:28 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
-MIME-Version: 1.0
-In-Reply-To: <20210315031716.3940350-4-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzTD34HVfz2yRP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 18:52:35 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 12F7XsgX089859; Mon, 15 Mar 2021 03:52:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=HcX046qC/tehsLd7N2DVF9Yj77T3WGq0lvIEkaEsFEA=;
+ b=cuk3giHKykYPYWGVenYLJC9/n5ekFPbFg97T6zlwInxYFbomwgVAjCgqSKyQc8ReH13p
+ ycNRmiB/l8jeF5o+NdG7WHpFw9yUgkTvpn50XHy/KTAXwYEqIBSeNTo7PkhVK14Ki0E9
+ ybhqxUa0H8mGuU02mCzdNfcter4t7190wUuWWOevlK6CNL4rm0x7znmYY9i4YREpGjTE
+ LK2R8mdYGN/1nlXVsNpopeGzc6B0xYQkJ/aRWPxJA6nyXPy9wWlkUZ++QFOIRI8dYH5+
+ 0w66a1kir+v4snaDX4DhITLMgoIj81gyXZEVoXbM0LwkM9neK02YsyS/v1qietQPv+en xQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 379r4a48jn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Mar 2021 03:52:21 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12F7Xvmt090288;
+ Mon, 15 Mar 2021 03:52:20 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 379r4a48ja-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Mar 2021 03:52:20 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12F7nTYJ007557;
+ Mon, 15 Mar 2021 07:52:19 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04ams.nl.ibm.com with ESMTP id 378n18hkey-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Mar 2021 07:52:19 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 12F7qG4d57409972
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 15 Mar 2021 07:52:16 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 39CC65204E;
+ Mon, 15 Mar 2021 07:52:16 +0000 (GMT)
+Received: from [9.79.177.97] (unknown [9.79.177.97])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 693AC52050;
+ Mon, 15 Mar 2021 07:52:12 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.4\))
+Subject: Re: [PATCH 4/4] tools/perf: Support pipeline stage cycles for powerpc
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <YEtlEyb2z33qHhvO@krava>
+Date: Mon, 15 Mar 2021 13:22:09 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <FD9505E3-8CDE-4073-88A0-BCA4B92F276E@linux.vnet.ibm.com>
+References: <1615298640-1529-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <1615298640-1529-5-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <YEtlEyb2z33qHhvO@krava>
+To: Jiri Olsa <jolsa@redhat.com>
+X-Mailer: Apple Mail (2.3608.120.23.2.4)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-15_03:2021-03-15,
+ 2021-03-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0
+ mlxscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 bulkscore=0
+ adultscore=0 impostorscore=0 mlxlogscore=999 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103150050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,403 +105,280 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, kjain@linux.ibm.com,
+ linux-kernel@vger.kernel.org, acme@kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 15/03/2021 à 04:17, Nicholas Piggin a écrit :
-> Update the new C and asm interrupt return code to account for 64e
-> specifics, switch over to use it.
-> 
-> The now-unused old ret_from_except code, that was moved to 64e after the
-> 64s conversion, is removed.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/include/asm/asm-prototypes.h |   2 -
->   arch/powerpc/kernel/entry_64.S            |   9 +-
->   arch/powerpc/kernel/exceptions-64e.S      | 321 ++--------------------
->   arch/powerpc/kernel/interrupt.c           |  27 +-
->   arch/powerpc/kernel/irq.c                 |  76 -----
->   5 files changed, 56 insertions(+), 379 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
-> index 939f3c94c8f3..1c7b75834e04 100644
-> --- a/arch/powerpc/include/asm/asm-prototypes.h
-> +++ b/arch/powerpc/include/asm/asm-prototypes.h
-> @@ -77,8 +77,6 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
->   long ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32 offset_low,
->   		      u32 len_high, u32 len_low);
->   long sys_switch_endian(void);
-> -notrace unsigned int __check_irq_replay(void);
-> -void notrace restore_interrupts(void);
->   
->   /* prom_init (OpenFirmware) */
->   unsigned long __init prom_init(unsigned long r3, unsigned long r4,
-> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-> index 853534b2ae2e..555b3d0a3f38 100644
-> --- a/arch/powerpc/kernel/entry_64.S
-> +++ b/arch/powerpc/kernel/entry_64.S
-> @@ -632,7 +632,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
->   	addi	r1,r1,SWITCH_FRAME_SIZE
->   	blr
->   
-> -#ifdef CONFIG_PPC_BOOK3S
->   	/*
->   	 * If MSR EE/RI was never enabled, IRQs not reconciled, NVGPRs not
->   	 * touched, no exit work created, then this can be used.
-> @@ -644,6 +643,7 @@ _ASM_NOKPROBE_SYMBOL(fast_interrupt_return)
->   	kuap_check_amr r3, r4
->   	ld	r5,_MSR(r1)
->   	andi.	r0,r5,MSR_PR
-> +#ifdef CONFIG_PPC_BOOK3S
->   	bne	.Lfast_user_interrupt_return_amr
->   	kuap_kernel_restore r3, r4
->   	andi.	r0,r5,MSR_RI
-> @@ -652,6 +652,10 @@ _ASM_NOKPROBE_SYMBOL(fast_interrupt_return)
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	bl	unrecoverable_exception
->   	b	. /* should not get here */
-> +#else
-> +	bne	.Lfast_user_interrupt_return
-> +	b	.Lfast_kernel_interrupt_return
-> +#endif
->   
->   	.balign IFETCH_ALIGN_BYTES
->   	.globl interrupt_return
-> @@ -665,8 +669,10 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return)
->   	cmpdi	r3,0
->   	bne-	.Lrestore_nvgprs
->   
-> +#ifdef CONFIG_PPC_BOOK3S
->   .Lfast_user_interrupt_return_amr:
->   	kuap_user_restore r3, r4
-> +#endif
->   .Lfast_user_interrupt_return:
->   	ld	r11,_NIP(r1)
->   	ld	r12,_MSR(r1)
-> @@ -775,7 +781,6 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
->   
->   	RFI_TO_KERNEL
->   	b	.	/* prevent speculative execution */
-> -#endif /* CONFIG_PPC_BOOK3S */
->   
->   #ifdef CONFIG_PPC_RTAS
->   /*
-> diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-> index da78eb6ab92f..1bb4e9b37748 100644
-> --- a/arch/powerpc/kernel/exceptions-64e.S
-> +++ b/arch/powerpc/kernel/exceptions-64e.S
-> @@ -139,7 +139,8 @@ ret_from_level_except:
->   	ld	r3,_MSR(r1)
->   	andi.	r3,r3,MSR_PR
->   	beq	1f
-> -	b	ret_from_except
-> +	REST_NVGPRS(r1)
+> On 12-Mar-2021, at 6:26 PM, Jiri Olsa <jolsa@redhat.com> wrote:
+>=20
+> On Tue, Mar 09, 2021 at 09:04:00AM -0500, Athira Rajeev wrote:
+>> The pipeline stage cycles details can be recorded on powerpc from
+>> the contents of Performance Monitor Unit (PMU) registers. On
+>> ISA v3.1 platform, sampling registers exposes the cycles spent in
+>> different pipeline stages. Patch adds perf tools support to present
+>> two of the cycle counter information along with memory latency =
+(weight).
+>>=20
+>> Re-use the field 'ins_lat' for storing the first pipeline stage =
+cycle.
+>> This is stored in 'var2_w' field of 'perf_sample_weight'.
+>>=20
+>> Add a new field 'p_stage_cyc' to store the second pipeline stage =
+cycle
+>> which is stored in 'var3_w' field of perf_sample_weight.
+>>=20
+>> Add new sort function 'Pipeline Stage Cycle' and include this in
+>> default_mem_sort_order[]. This new sort function may be used to =
+denote
+>> some other pipeline stage in another architecture. So add this to
+>> list of sort entries that can have dynamic header string.
+>>=20
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> ---
+>> tools/perf/Documentation/perf-report.txt |  1 +
+>> tools/perf/arch/powerpc/util/event.c     | 18 ++++++++++++++++--
+>> tools/perf/util/event.h                  |  1 +
+>> tools/perf/util/hist.c                   | 11 ++++++++---
+>> tools/perf/util/hist.h                   |  1 +
+>> tools/perf/util/session.c                |  4 +++-
+>> tools/perf/util/sort.c                   | 24 =
+++++++++++++++++++++++--
+>> tools/perf/util/sort.h                   |  2 ++
+>> 8 files changed, 54 insertions(+), 8 deletions(-)
+>>=20
+>> diff --git a/tools/perf/Documentation/perf-report.txt =
+b/tools/perf/Documentation/perf-report.txt
+>> index f546b5e9db05..9691d9c227ba 100644
+>> --- a/tools/perf/Documentation/perf-report.txt
+>> +++ b/tools/perf/Documentation/perf-report.txt
+>> @@ -112,6 +112,7 @@ OPTIONS
+>> 	- ins_lat: Instruction latency in core cycles. This is the =
+global instruction
+>> 	  latency
+>> 	- local_ins_lat: Local instruction latency version
+>> +	- p_stage_cyc: Number of cycles spent in a pipeline stage.
+>=20
+> please specify in here that it's ppc only
 
-Could this be in a separate preceding patch (only the adding of REST_NVGPRS(), the call to 
-ret_from_except can remain as is by removing the REST_NVGPRS() which is there to make 
-ret_from_except and ret_from_except_lite identical).
+Ok Sure,
 
-Or maybe you can also do the name change to interrupt_return in that preceeding patch, so than the 
-"use new interrupt return" patch only contains the interesting parts.
+>=20
+> SNIP
+>=20
+>> +struct sort_entry sort_p_stage_cyc =3D {
+>> +	.se_header      =3D "Pipeline Stage Cycle",
+>> +	.se_cmp         =3D sort__global_p_stage_cyc_cmp,
+>> +	.se_snprintf	=3D hist_entry__p_stage_cyc_snprintf,
+>> +	.se_width_idx	=3D HISTC_P_STAGE_CYC,
+>> +};
+>> +
+>> struct sort_entry sort_mem_daddr_sym =3D {
+>> 	.se_header	=3D "Data Symbol",
+>> 	.se_cmp		=3D sort__daddr_cmp,
+>> @@ -1853,6 +1872,7 @@ static void =
+sort_dimension_add_dynamic_header(struct sort_dimension *sd)
+>> 	DIM(SORT_CODE_PAGE_SIZE, "code_page_size", sort_code_page_size),
+>> 	DIM(SORT_LOCAL_INS_LAT, "local_ins_lat", sort_local_ins_lat),
+>> 	DIM(SORT_GLOBAL_INS_LAT, "ins_lat", sort_global_ins_lat),
+>> +	DIM(SORT_P_STAGE_CYC, "p_stage_cyc", sort_p_stage_cyc),
+>=20
+> this might be out of scope for this patch, but would it make sense
+> to add arch specific sort dimension? so the specific column is
+> not even visible on arch that it's not supported on
+>=20
 
-> +	b	interrupt_return
->   1:
->   
->   	LOAD_REG_ADDR(r11,extlb_level_exc)
-> @@ -208,7 +209,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
->   	/*
->   	 * Restore PACAIRQHAPPENED rather than setting it based on
->   	 * the return MSR[EE], since we could have interrupted
-> -	 * __check_irq_replay() or other inconsistent transitory
-> +	 * interrupt replay or other inconsistent transitory
->   	 * states that must remain that way.
->   	 */
->   	SPECIAL_EXC_LOAD(r10,IRQHAPPENED)
-> @@ -511,7 +512,7 @@ exc_##n##_bad_stack:							    \
->   	CHECK_NAPPING();						\
->   	addi	r3,r1,STACK_FRAME_OVERHEAD;				\
->   	bl	hdlr;							\
-> -	b	ret_from_except_lite;
-> +	b	interrupt_return
->   
->   /* This value is used to mark exception frames on the stack. */
->   	.section	".toc","aw"
-> @@ -623,7 +624,8 @@ __end_interrupts:
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	ld	r14,PACA_EXGEN+EX_R14(r13)
->   	bl	program_check_exception
-> -	b	ret_from_except
-> +	REST_NVGPRS(r1)
-> +	b	interrupt_return
->   
->   /* Floating Point Unavailable Interrupt */
->   	START_EXCEPTION(fp_unavailable);
-> @@ -635,11 +637,11 @@ __end_interrupts:
->   	andi.	r0,r12,MSR_PR;
->   	beq-	1f
->   	bl	load_up_fpu
-> -	b	fast_exception_return
-> +	b	fast_interrupt_return
->   1:	INTS_DISABLE
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	bl	kernel_fp_unavailable_exception
-> -	b	ret_from_except
-> +	b	interrupt_return
->   
->   /* Altivec Unavailable Interrupt */
->   	START_EXCEPTION(altivec_unavailable);
-> @@ -653,14 +655,14 @@ BEGIN_FTR_SECTION
->   	andi.	r0,r12,MSR_PR;
->   	beq-	1f
->   	bl	load_up_altivec
-> -	b	fast_exception_return
-> +	b	fast_interrupt_return
->   1:
->   END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
->   #endif
->   	INTS_DISABLE
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	bl	altivec_unavailable_exception
-> -	b	ret_from_except
-> +	b	interrupt_return
->   
->   /* AltiVec Assist */
->   	START_EXCEPTION(altivec_assist);
-> @@ -674,10 +676,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
->   BEGIN_FTR_SECTION
->   	bl	altivec_assist_exception
->   END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
-> +	REST_NVGPRS(r1)
->   #else
->   	bl	unknown_exception
->   #endif
-> -	b	ret_from_except
-> +	b	interrupt_return
->   
->   
->   /* Decrementer Interrupt */
-> @@ -719,7 +722,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
->   	INTS_DISABLE
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	bl	unknown_exception
-> -	b	ret_from_except
-> +	b	interrupt_return
->   
->   /* Debug exception as a critical interrupt*/
->   	START_EXCEPTION(debug_crit);
-> @@ -786,7 +789,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
->   	ld	r14,PACA_EXCRIT+EX_R14(r13)
->   	ld	r15,PACA_EXCRIT+EX_R15(r13)
->   	bl	DebugException
-> -	b	ret_from_except
-> +	REST_NVGPRS(r1)
-> +	b	interrupt_return
->   
->   kernel_dbg_exc:
->   	b	.	/* NYI */
-> @@ -857,7 +861,8 @@ kernel_dbg_exc:
->   	ld	r14,PACA_EXDBG+EX_R14(r13)
->   	ld	r15,PACA_EXDBG+EX_R15(r13)
->   	bl	DebugException
-> -	b	ret_from_except
-> +	REST_NVGPRS(r1)
-> +	b	interrupt_return
->   
->   	START_EXCEPTION(perfmon);
->   	NORMAL_EXCEPTION_PROLOG(0x260, BOOKE_INTERRUPT_PERFORMANCE_MONITOR,
-> @@ -867,7 +872,7 @@ kernel_dbg_exc:
->   	CHECK_NAPPING()
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	bl	performance_monitor_exception
-> -	b	ret_from_except_lite
-> +	b	interrupt_return
->   
->   /* Doorbell interrupt */
->   	MASKABLE_EXCEPTION(0x280, BOOKE_INTERRUPT_DOORBELL,
-> @@ -895,7 +900,7 @@ kernel_dbg_exc:
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	INTS_RESTORE_HARD
->   	bl	unknown_exception
-> -	b	ret_from_except
-> +	b	interrupt_return
->   
->   /* Guest Doorbell critical Interrupt */
->   	START_EXCEPTION(guest_doorbell_crit);
-> @@ -916,7 +921,7 @@ kernel_dbg_exc:
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	INTS_RESTORE_HARD
->   	bl	unknown_exception
-> -	b	ret_from_except
-> +	b	interrupt_return
->   
->   /* Embedded Hypervisor priviledged  */
->   	START_EXCEPTION(ehpriv);
-> @@ -926,7 +931,7 @@ kernel_dbg_exc:
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	INTS_RESTORE_HARD
->   	bl	unknown_exception
-> -	b	ret_from_except
-> +	b	interrupt_return
->   
->   /* LRAT Error interrupt */
->   	START_EXCEPTION(lrat_error);
-> @@ -936,7 +941,7 @@ kernel_dbg_exc:
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	INTS_RESTORE_HARD
->   	bl	unknown_exception
-> -	b	ret_from_except
-> +	b	interrupt_return
->   
->   /*
->    * An interrupt came in while soft-disabled; We mark paca->irq_happened
-> @@ -998,11 +1003,11 @@ storage_fault_common:
->   	bl	do_page_fault
->   	cmpdi	r3,0
->   	bne-	1f
-> -	b	ret_from_except_lite
-> +	b	interrupt_return
->   	mr	r4,r3
->   	addi	r3,r1,STACK_FRAME_OVERHEAD
->   	bl	__bad_page_fault
-> -	b	ret_from_except
-> +	b	interrupt_return
->   
->   /*
->    * Alignment exception doesn't fit entirely in the 0x100 bytes so it
-> @@ -1016,284 +1021,8 @@ alignment_more:
+Hi Jiri,
 
-...
+Thanks for the suggestions.
 
-> -fast_exception_return:
-> -	wrteei	0
-> -1:	mr	r0,r13
-> -	ld	r10,_MSR(r1)
-> -	REST_4GPRS(2, r1)
-> -	andi.	r6,r10,MSR_PR
-> -	REST_2GPRS(6, r1)
-> -	beq	1f
-> -	ACCOUNT_CPU_USER_EXIT(r13, r10, r11)
+Below is an approach I came up with for adding dynamic sort key based on =
+architecture support.
+With this patch, perf report for mem mode will display new sort key only =
+in supported archs.=20
+Please help to review if this approach looks good. I have created this =
+on top of my current set. If this looks fine,=20
+I can include this in version2 patch set.
 
-Then ACCOUNT_CPU_USER_EXIT can be removed from asm/ppc_asm.h
+=46rom 8ebbe6ae802d895103335899e4e60dde5e562f33 Mon Sep 17 00:00:00 2001
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Date: Mon, 15 Mar 2021 02:33:28 +0000
+Subject: [PATCH] tools/perf: Add dynamic sort dimensions for mem mode
 
-...
+Add dynamic sort dimensions for mem mode.
 
-> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-> index fbabb49888d3..ae7b058b2970 100644
-> --- a/arch/powerpc/kernel/interrupt.c
-> +++ b/arch/powerpc/kernel/interrupt.c
-> @@ -235,6 +235,10 @@ static notrace void booke_load_dbcr0(void)
->   #endif
->   }
->   
-> +/* temporary hack for context tracking, removed in later patch */
-> +#include <linux/sched/debug.h>
-> +asmlinkage __visible void __sched schedule_user(void);
-> +
->   /*
->    * This should be called after a syscall returns, with r3 the return value
->    * from the syscall. If this function returns non-zero, the system call
-> @@ -292,7 +296,11 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
->   	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
->   		local_irq_enable();
->   		if (ti_flags & _TIF_NEED_RESCHED) {
-> +#ifdef CONFIG_PPC_BOOK3E_64
-> +			schedule_user();
-> +#else
->   			schedule();
-> +#endif
->   		} else {
->   			/*
->   			 * SIGPENDING must restore signal handler function
-> @@ -360,7 +368,6 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
->   	return ret;
->   }
->   
-> -#ifndef CONFIG_PPC_BOOK3E_64 /* BOOK3E not yet using this */
->   notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned long msr)
->   {
->   	unsigned long ti_flags;
-> @@ -372,7 +379,9 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
->   	BUG_ON(!(regs->msr & MSR_PR));
->   	BUG_ON(!FULL_REGS(regs));
->   	BUG_ON(arch_irq_disabled_regs(regs));
-> +#ifdef CONFIG_PPC_BOOK3S_64
->   	CT_WARN_ON(ct_state() == CONTEXT_USER);
-> +#endif
->   
->   	/*
->   	 * We don't need to restore AMR on the way back to userspace for KUAP.
-> @@ -387,7 +396,11 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
->   	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
->   		local_irq_enable(); /* returning to user: may enable */
->   		if (ti_flags & _TIF_NEED_RESCHED) {
-> +#ifdef CONFIG_PPC_BOOK3E_64
-> +			schedule_user();
-> +#else
->   			schedule();
-> +#endif
->   		} else {
->   			if (ti_flags & _TIF_SIGPENDING)
->   				ret |= _TIF_RESTOREALL;
-> @@ -435,7 +448,10 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
->   	/*
->   	 * We do this at the end so that we do context switch with KERNEL AMR
->   	 */
-> +#ifndef CONFIG_PPC_BOOK3E_64
->   	kuap_user_restore(regs);
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ tools/perf/arch/powerpc/util/event.c |  7 +++++
+ tools/perf/util/event.h              |  1 +
+ tools/perf/util/sort.c               | 43 +++++++++++++++++++++++++++-
+ 3 files changed, 50 insertions(+), 1 deletion(-)
 
-Why do you need to ifdef this out ?
-Only PPC_8xx, PPC_BOOK3S_32 and PPC_RADIX_MMU select PPC_HAVE_KUAP.
-When PPC_KUAP is not selected, kuap_user_restore() is a static inline {} defined in asm/kup.h
+diff --git a/tools/perf/arch/powerpc/util/event.c =
+b/tools/perf/arch/powerpc/util/event.c
+index b80fbee83b6e..fddfc288c415 100644
+--- a/tools/perf/arch/powerpc/util/event.c
++++ b/tools/perf/arch/powerpc/util/event.c
+@@ -44,3 +44,10 @@ const char *arch_perf_header_entry__add(const char =
+*se_header)
+ 		return "Dispatch Cyc";
+ 	return se_header;
+ }
++
++int arch_support_dynamic_key(const char *sort_key)
++{
++	if (!strcmp(sort_key, "p_stage_cyc"))
++		return 1;
++	return 0;
++}
+diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
+index 65f89e80916f..6cd4bf54dbdc 100644
+--- a/tools/perf/util/event.h
++++ b/tools/perf/util/event.h
+@@ -429,5 +429,6 @@ char *get_page_size_name(u64 size, char *str);
+ void arch_perf_parse_sample_weight(struct perf_sample *data, const =
+__u64 *array, u64 type);
+ void arch_perf_synthesize_sample_weight(const struct perf_sample *data, =
+__u64 *array, u64 type);
+ const char *arch_perf_header_entry__add(const char *se_header);
++int arch_support_dynamic_key(const char *sort_key);
+=20
+ #endif /* __PERF_RECORD_H */
+diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
+index cbb3899e7eca..e194b1187db8 100644
+--- a/tools/perf/util/sort.c
++++ b/tools/perf/util/sort.c
+@@ -37,7 +37,7 @@ const char	default_parent_pattern[] =3D =
+"^sys_|^do_page_fault";
+ const char	*parent_pattern =3D default_parent_pattern;
+ const char	*default_sort_order =3D "comm,dso,symbol";
+ const char	default_branch_sort_order[] =3D =
+"comm,dso_from,symbol_from,symbol_to,cycles";
+-const char	default_mem_sort_order[] =3D =
+"local_weight,mem,sym,dso,symbol_daddr,dso_daddr,snoop,tlb,locked,blocked,=
+local_ins_lat,p_stage_cyc";
++const char	default_mem_sort_order[] =3D =
+"local_weight,mem,sym,dso,symbol_daddr,dso_daddr,snoop,tlb,locked,blocked,=
+local_ins_lat";
+ const char	default_top_sort_order[] =3D "dso,symbol";
+ const char	default_diff_sort_order[] =3D "dso,symbol";
+ const char	default_tracepoint_sort_order[] =3D "trace";
+@@ -47,6 +47,7 @@ regex_t		ignore_callees_regex;
+ int		have_ignore_callees =3D 0;
+ enum sort_mode	sort__mode =3D SORT_MODE__NORMAL;
+ const char	*dynamic_headers[] =3D {"local_ins_lat", "p_stage_cyc"};
++const char	*dynamic_sort_keys_mem[] =3D {"p_stage_cyc"};
+=20
+ /*
+  * Replaces all occurrences of a char used with the:
+@@ -2997,6 +2998,20 @@ static char *prefix_if_not_in(const char *pre, =
+char *str)
+ 	return n;
+ }
+=20
++/*
++ * Adds 'suff,' suffix into 'str' if 'suff' is
++ * not already part of 'str'.
++ */
++static char *suffix_if_not_in(const char *suff, char *str)
++{
++	if (!str || strstr(str, suff))
++		return str;
++
++	if (asprintf(&str, "%s,%s", str, suff) < 0)
++		str =3D NULL;
++	return str;
++}
++
+ static char *setup_overhead(char *keys)
+ {
+ 	if (sort__mode =3D=3D SORT_MODE__DIFF)
+@@ -3010,6 +3025,26 @@ static char *setup_overhead(char *keys)
+ 	return keys;
+ }
+=20
++int __weak arch_support_dynamic_key(const char *sort_key =
+__maybe_unused)
++{
++	return 0;
++}
++
++static char *setup_dynamic_sort_keys(char *str)
++{
++	unsigned int j;
++
++	if (sort__mode =3D=3D SORT_MODE__MEMORY)
++		for (j =3D 0; j < ARRAY_SIZE(dynamic_sort_keys_mem); =
+j++)
++			if =
+(arch_support_dynamic_key(dynamic_sort_keys_mem[j])) {
++				str =3D =
+suffix_if_not_in(dynamic_sort_keys_mem[j], str);
++				if (str =3D=3D NULL)
++					return str;
++			}
++
++	return str;
++}
++
+ static int __setup_sorting(struct evlist *evlist)
+ {
+ 	char *str;
+@@ -3050,6 +3085,12 @@ static int __setup_sorting(struct evlist *evlist)
+ 		}
+ 	}
+=20
++	str =3D setup_dynamic_sort_keys(str);
++	if (str =3D=3D NULL) {
++		pr_err("Not enough memory to setup dynamic sort keys");
++		return -ENOMEM;
++	}
++
+ 	ret =3D setup_sort_list(&perf_hpp_list, str, evlist);
+=20
+ 	free(str);
+--=20
+2.26.2
 
-> +#endif
-> +
->   	return ret;
->   }
->   
-> @@ -445,7 +461,9 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
->   {
->   	unsigned long flags;
->   	unsigned long ret = 0;
-> +#ifndef CONFIG_PPC_BOOK3E_64
->   	unsigned long kuap;
-> +#endif
->   
->   	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x) &&
->   	    unlikely(!(regs->msr & MSR_RI)))
-> @@ -456,10 +474,12 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
->   	 * CT_WARN_ON comes here via program_check_exception,
->   	 * so avoid recursion.
->   	 */
-> -	if (TRAP(regs) != 0x700)
-> +	if (IS_ENABLED(CONFIG_BOOKS) && TRAP(regs) != 0x700)
->   		CT_WARN_ON(ct_state() == CONTEXT_USER);
->   
-> +#ifndef CONFIG_PPC_BOOK3E_64
->   	kuap = kuap_get_and_assert_locked();
 
-Same, kuap_get_and_assert_locked() always exists, no need to ifdef it.
+Thanks,
+Athira
 
-> +#endif
->   
->   	if (unlikely(current_thread_info()->flags & _TIF_EMULATE_STACK_STORE)) {
->   		clear_bits(_TIF_EMULATE_STACK_STORE, &current_thread_info()->flags);
-> @@ -501,8 +521,9 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
->   	 * which would cause Read-After-Write stalls. Hence, we take the AMR
->   	 * value from the check above.
->   	 */
-> +#ifndef CONFIG_PPC_BOOK3E_64
->   	kuap_kernel_restore(regs, kuap);
+>=20
+>> };
+>>=20
+>> #undef DIM
+>> diff --git a/tools/perf/util/sort.h b/tools/perf/util/sort.h
+>> index 63f67a3f3630..23b20cbbc846 100644
+>> --- a/tools/perf/util/sort.h
+>> +++ b/tools/perf/util/sort.h
+>> @@ -51,6 +51,7 @@ struct he_stat {
+>> 	u64			period_guest_us;
+>> 	u64			weight;
+>> 	u64			ins_lat;
+>> +	u64			p_stage_cyc;
+>> 	u32			nr_events;
+>> };
+>>=20
+>> @@ -234,6 +235,7 @@ enum sort_type {
+>> 	SORT_CODE_PAGE_SIZE,
+>> 	SORT_LOCAL_INS_LAT,
+>> 	SORT_GLOBAL_INS_LAT,
+>> +	SORT_P_STAGE_CYC,
+>=20
+> we could have the whole 'SORT_PEPELINE_STAGE_CYC',
+> so it's more obvious
 
-Same
+Ok.
 
-> +#endif
->   
->   	return ret;
->   }
-> -#endif
+>=20
+> thanks,
+> jirka
+
