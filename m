@@ -2,72 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A7733CEAC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 08:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0C733CEBA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 08:36:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F04mM3V6Pz301P
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 18:34:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F04q66Kvfz303m
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 18:36:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=SdXcCZp5;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=H0PbIoKK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=menglong8.dong@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
+ helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=SdXcCZp5; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=H0PbIoKK; dkim-atps=neutral
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
+ [IPv6:2607:f8b0:4864:20::629])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F04lw61y8z2yjK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 18:33:46 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id a13so1431613pln.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 00:33:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F04pk0WPVz2yq9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 18:36:13 +1100 (AEDT)
+Received: by mail-pl1-x629.google.com with SMTP id e2so11275132pld.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 00:36:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=4uwGLw4oyBg2siguHNzqzxEJ2zioYts2IjBxF9nVxAg=;
- b=SdXcCZp5eAj0eG7le1UodFJ9kJpKFCcQXFQp8y9qS8SdgjuQUyQtykgdEoNmnyyzKW
- IQ1GtYSUBCwWSC3WBh0bAoZ1T7a7sfvhhxTRkgQjODrJjpZBbfucYpPO1DICYL7y46U5
- kVnaM9dnC+obTvaD/Pyd4n4TjkZkW4PzW+0l8hSS3H3HbX+yTGRz1cuTTefF98kwU7/9
- 9jyskWUQbxOckPjq60RBOooNAgPyiBqm2eqoD6AYFhZoYW7UqkZI+ejXh2XmO80BklJ8
- C/uD2l2ry6DUrtnjfwjnWoB4JMxx2v6vYiNyXeiSwuyG9FbMSR2nPHCgnDmBRLpNRsXe
- 6uew==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=SG7xGv2vEoLCMq35gZdaaOfUxupWlJtB1dpOm6BCIw4=;
+ b=H0PbIoKKo0jn+LTNwGdv3U3Z0C/NNSo/Ug6OsexMTUBnQzNW9OmssFQvGspDJ+xV82
+ a4Ap+D0kLysYJCil1nz94Y1Thh5Neym9pp54mtLOTICFS5bQrlV+R9JySGWfNnMkp0yT
+ OFtf4qhtRNU5YfUK1ARUyvXAiJbHdGdjLkuRkrmLB8aTIGm3dwmnWYFDYjsWudA95SdE
+ hMorGAkQt1AqEy+9vItjt2NWAVHUXBw72Nlius5zLSNBexMTiZ5r87E5r4q2UXb6H3Iq
+ dEW0UYo9/LHYORt/iwzFCgWdzL+z/bQ+9NrGtKfT85rf4IdlIuECk5qNrLQXhpe6DIVu
+ 6QeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=4uwGLw4oyBg2siguHNzqzxEJ2zioYts2IjBxF9nVxAg=;
- b=DegMhk5KY2xAeJHw1Sz5oQEyvXry2Hu6ZLeqQaRw5+lfFidUi+OaD360+i4k3ueyoN
- I68bAJLyMydjy2uJhnDqne4a3Whfyx8hfgCnynYv7Kxo9vXz5ORW4FSovSXv0w6mI8TR
- VW1DmPogX4eKGO4gb9K8LZ+RU/au0mLF5KD+RpYONytWFnLEu1IHQO/PDcUvT6UEJ3tF
- xaFJnjIQ2GO/TkN0Hd3QXc1DC/ORAZWGkUtfur7fnFfkWcgyqzZ9brG22alwOnUt1bGy
- XK8lgatl3azylTCX6N7i6zmZw1u/YwaV+3AI+umhp30zTKH6ysNTGoV569t0+4063TQh
- mHaA==
-X-Gm-Message-State: AOAM530ppR8AazYxzrECFi/H4YSPKZegUStJ8h+vYpj4MdwlFJYYaLc6
- HpOBhTSul6ADeLHxFQEvnfw=
-X-Google-Smtp-Source: ABdhPJz2vO1LkuhskFr46Ba09gSjtiCwL5zhzdrTzGXkiqsvd3q1KCoj2T2CQeDKwYaintJT/FE2Ew==
-X-Received: by 2002:a17:90a:cb12:: with SMTP id
- z18mr3298352pjt.132.1615880023387; 
- Tue, 16 Mar 2021 00:33:43 -0700 (PDT)
-Received: from localhost.localdomain ([178.236.46.205])
- by smtp.gmail.com with ESMTPSA id d20sm1850131pjv.47.2021.03.16.00.33.40
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=SG7xGv2vEoLCMq35gZdaaOfUxupWlJtB1dpOm6BCIw4=;
+ b=ZG2wc005u/R9g8H25koJ8X3DD0GvRqe9exHGH97gY65+tHs5DVs8vJd45CMpPv0ODy
+ A26qqnbGTzuLB5Wi5LaZhdq/icUimns+FcS5qgX+umk6WxSXyqAjIgxzcAeFSZEm7UoK
+ gahSYFyqKGpWO03ZgzmUTTfwZpaiBKyijyAl85nkb703UvrMXnVzw4iM5efUi3nmU/xg
+ wrc2yRENP5u+dbp7uFeb1T6bFSLoMUPgLUFgvRI6SmWWJUqUCx5mMfGr9X2BS09ppXAA
+ 0Qfhk9t+6AxztJE7PGuJxStkOUOvWFufKgC5lbJHmTITd0AMsHq2ueawb5/HlZbyTW4f
+ LTbQ==
+X-Gm-Message-State: AOAM5324CN2gpGfqR+4/hhXmx0FiOqAmf9QRfddgcDGzZFCJsRY+2t1w
+ zrKZ2bAKWEV+QJnJOI2TyLg=
+X-Google-Smtp-Source: ABdhPJw2XT/tXllIemjv47OFWUl1cuSrq6zclPD/pnYItiaXQOBykWZGBquvoo8Sr7fdtQ50b32PgA==
+X-Received: by 2002:a17:90a:540c:: with SMTP id
+ z12mr3349175pjh.163.1615880170776; 
+ Tue, 16 Mar 2021 00:36:10 -0700 (PDT)
+Received: from localhost (58-6-239-121.tpgi.com.au. [58.6.239.121])
+ by smtp.gmail.com with ESMTPSA id o1sm1942262pjp.4.2021.03.16.00.36.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Mar 2021 00:33:42 -0700 (PDT)
-From: menglong8.dong@gmail.com
-X-Google-Original-From: zhang.yunkai@zte.com.cn
-To: pbonzini@redhat.com
-Subject: [PATCH] selftests: remove duplicate include
-Date: Tue, 16 Mar 2021 00:33:36 -0700
-Message-Id: <20210316073336.426255-1-zhang.yunkai@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+ Tue, 16 Mar 2021 00:36:10 -0700 (PDT)
+Date: Tue, 16 Mar 2021 17:36:04 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 28/32] powerpc/64s: interrupt implement exit logic in C
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <20200225173541.1549955-29-npiggin@gmail.com>
+ <2d68d9ad-c3a2-2372-a5b2-1a1e3fdb41e4@csgroup.eu>
+In-Reply-To: <2d68d9ad-c3a2-2372-a5b2-1a1e3fdb41e4@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <1615879834.64tfygznle.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,66 +83,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, zhang.yunkai@zte.com.cn, paulus@samba.org,
- linux-kselftest@vger.kernel.org, akpm@linux-foundation.org,
- ricardo.canuelo@collabora.com, shuah@kernel.org
+Cc: Michal Suchanek <msuchanek@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Zhang Yunkai <zhang.yunkai@zte.com.cn>
+Excerpts from Christophe Leroy's message of March 15, 2021 11:41 pm:
+>=20
+>=20
+> Le 25/02/2020 =C3=A0 18:35, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Implement the bulk of interrupt return logic in C. The asm return code
+>> must handle a few cases: restoring full GPRs, and emulating stack store.
+>>=20
+>> The stack store emulation is significantly simplfied, rather than creati=
+ng
+>> a new return frame and switching to that before performing the store, it
+>> uses the PACA to keep a scratch register around to perform thestore.
+>>=20
+>> The asm return code is moved into 64e for now. The new logic has made
+>> allowance for 64e, but I don't have a full environment that works well
+>> to test it, and even booting in emulated qemu is not great for stress
+>> testing. 64e shouldn't be too far off working with this, given a bit
+>> more testing and auditing of the logic.
+>>=20
+>> This is slightly faster on a POWER9 (page fault speed increases about
+>> 1.1%), probably due to reduced mtmsrd.
+>>=20
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+>> ---
+>=20
+> ...
+>=20
+>> +notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs,=
+ unsigned long msr)
+>> +{
+>=20
+> ...
+>=20
+>> +
+>> +#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+>> +	local_paca->tm_scratch =3D regs->msr;
+>> +#endif
+>=20
+> Could we define a helper for that in asm/tm.h, that voids when CONFIG_PPC=
+_TRANSACTIONAL_MEM is not=20
+> selected ?
 
-'assert.h' included in 'sparsebit.c' is duplicated.
-It is also included in the 161th line.
-'string.h' included in 'mincore_selftest.c' is duplicated.
-It is also included in the 15th line.
-'sched.h' included in 'tlbie_test.c' is duplicated.
-It is also included in the 33th line.
+Yeah I wanted to do something about that. I don't know what it's used=20
+for here. I guess it saves the return MSR so if that causes a crash then=20
+the next oops would see it, but I wonder if we can just get that from=20
+SRR1 + program check error codes, or if there is something we can't
+reconstruct from there. Have to check with someone who knows TM better.
 
-Signed-off-by: Zhang Yunkai <zhang.yunkai@zte.com.cn>
----
- tools/testing/selftests/kvm/lib/sparsebit.c        | 1 -
- tools/testing/selftests/mincore/mincore_selftest.c | 1 -
- tools/testing/selftests/powerpc/mm/tlbie_test.c    | 1 -
- 3 files changed, 3 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/lib/sparsebit.c b/tools/testing/selftests/kvm/lib/sparsebit.c
-index 031ba3c932ed..a0d0c83d83de 100644
---- a/tools/testing/selftests/kvm/lib/sparsebit.c
-+++ b/tools/testing/selftests/kvm/lib/sparsebit.c
-@@ -1890,7 +1890,6 @@ void sparsebit_validate_internal(struct sparsebit *s)
-  */
- 
- #include <stdlib.h>
--#include <assert.h>
- 
- struct range {
- 	sparsebit_idx_t first, last;
-diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
-index 5a1e85ff5d32..e54106643337 100644
---- a/tools/testing/selftests/mincore/mincore_selftest.c
-+++ b/tools/testing/selftests/mincore/mincore_selftest.c
-@@ -14,7 +14,6 @@
- #include <sys/mman.h>
- #include <string.h>
- #include <fcntl.h>
--#include <string.h>
- 
- #include "../kselftest.h"
- #include "../kselftest_harness.h"
-diff --git a/tools/testing/selftests/powerpc/mm/tlbie_test.c b/tools/testing/selftests/powerpc/mm/tlbie_test.c
-index f85a0938ab25..48344a74b212 100644
---- a/tools/testing/selftests/powerpc/mm/tlbie_test.c
-+++ b/tools/testing/selftests/powerpc/mm/tlbie_test.c
-@@ -33,7 +33,6 @@
- #include <sched.h>
- #include <time.h>
- #include <stdarg.h>
--#include <sched.h>
- #include <pthread.h>
- #include <signal.h>
- #include <sys/prctl.h>
--- 
-2.25.1
-
+Thanks,
+Nick
