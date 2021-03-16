@@ -1,45 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082A033CA3A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 01:01:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0352F33CA8F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 02:10:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dztjv0bvpz309n
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 11:01:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzwFN5xLFz30Cf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 12:10:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kXjID66d;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DztjY4s2zz2yyt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 11:01:05 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 12FNxmMm004591;
- Mon, 15 Mar 2021 18:59:48 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 12FNxlbU004590;
- Mon, 15 Mar 2021 18:59:47 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Mon, 15 Mar 2021 18:59:47 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: David Laight <David.Laight@aculab.com>
-Subject: Re: [PATCH] powerpc/vdso32: Add missing _restgpr_31_x to fix build
- failure
-Message-ID: <20210315235947.GD16691@gate.crashing.org>
-References: <a7aa198a88bcd33c6e35e99f70f86c7b7f2f9440.1615270757.git.christophe.leroy@csgroup.eu>
- <20210312022940.GO29191@gate.crashing.org>
- <023afd0c-dc61-5891-5145-5bcdce8227be@prevas.dk>
- <14e2cfb8c3f141aaba8fe0fb2d8f1885@AcuMS.aculab.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <14e2cfb8c3f141aaba8fe0fb2d8f1885@AcuMS.aculab.com>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=kXjID66d; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzwDv3jrGz2yx9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 12:09:50 +1100 (AEDT)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4DzwDn5M76z9sW5; Tue, 16 Mar 2021 12:09:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1615856985;
+ bh=2y+Npkmx9WI7W8MKn1RHvKjwSoTuYSmjcsSdikVqhsY=;
+ h=From:To:Cc:Subject:Date:From;
+ b=kXjID66dcr9uObFBuZG56V898CQ0xwfFxl2nC3s4Gw039aGGpoiAOBWer1gJgeQ/y
+ sGB+y2NUC6ayhQcmlCGf5LsSQfQ8cBGk3Qsyd9QKR8kr7ZKJ9AQRIwMT9pW+slIU5+
+ tbl5ouscMgmcDIIAJBJgq+g2/Triby+P86i9/2gm03NydHgKVCIWIG5I1Xm27Id5Ti
+ osGVBwlcm2S3+XrYMmIR0M/aZz6XieiWQLLAhPFZlR4cbbRcjbqVcIBhZ2QPJ6dxaA
+ 9FqWaBQjuBDVP5To1OzwmVWtDH53lmQ8GaXrXMp2RHiQA7Nkhtmw0qB8WuP9Avyp8O
+ knPTBL1Wd4d8Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries: Only register vio drivers if vio bus exists
+Date: Tue, 16 Mar 2021 12:09:38 +1100
+Message-Id: <20210316010938.525657-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,57 +56,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- 'Rasmus Villemoes' <rasmus.villemoes@prevas.dk>
+Cc: pmenzel@molgen.mpg.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 15, 2021 at 04:38:52PM +0000, David Laight wrote:
-> From: Rasmus Villemoes
-> > Sent: 15 March 2021 16:24
-> > On 12/03/2021 03.29, Segher Boessenkool wrote:
-> > > On Tue, Mar 09, 2021 at 06:19:30AM +0000, Christophe Leroy wrote:
-> > >> With some defconfig including CONFIG_CC_OPTIMIZE_FOR_SIZE,
-> > >> (for instance mvme5100_defconfig and ps3_defconfig), gcc 5
-> > >> generates a call to _restgpr_31_x.
-> > >
-> > >> I don't know if there is a way to tell GCC not to emit that call, because at the end we get more
-> > instructions than needed.
-> > >
-> > > The function is required by the ABI, you need to have it.
-> > >
-> > > You get *fewer* insns statically, and that is what -Os is about: reduce
-> > > the size of the binaries.
-> > 
-> > Is there any reason to not just always build the vdso with -O2? It's one
-> > page/one VMA either way, and the vdso is about making certain system
-> > calls cheaper, so if unconditional -O2 could save a few cycles compared
-> > to -Os, why not? (And if, as it seems, there's only one user within the
-> > DSO of _restgpr_31_x, yes, the overall size of the .text segment
-> > probably increases slightly).
-> 
-> Sometimes -Os generates such horrid code you really never want to use it.
-> A classic is on x86 where it replaces 'load register with byte constant'
-> with 'push byte' 'pop register'.
-> The code is actually smaller but the execution time is horrid.
-> 
-> There are also cases where -O2 actually generates smaller code.
+The vio bus is a fake bus, which we use on pseries LPARs (guests) to
+discover devices provided by the hypervisor. There's no need or sense
+in creating the vio bus on bare metal systems.
 
-Yes, as with all heuristics it doesn't always work out.  But usually -Os
-is smaller.
+Which is why commit 4336b9337824 ("powerpc/pseries: Make vio and
+ibmebus initcalls pseries specific") made the initialisation of the
+vio bus only happen in LPARs.
 
-> Although you may need to disable loop unrolling (often dubious at best)
-> and either force or disable some function inlining.
+However as a result of that commit we now see errors at boot on bare
+metal systems:
 
-The cases where GCC does loop unrolling at -O2 always help quite a lot.
-Or, do you have a counter-example?  We'd love to see one.
+  Driver 'hvc_console' was unable to register with bus_type 'vio' because the bus was not initialized.
+  Driver 'tpm_ibmvtpm' was unable to register with bus_type 'vio' because the bus was not initialized.
 
-And yup, inlining is hard.  GCC's heuristics there are very good
-nowadays, but any single decision has big effects.  Doing the important
-spots manually (always_inline or noinline) has good payoff.
+This happens because those drivers are built-in, and are calling
+vio_register_driver(). It in turn calls driver_register() with a
+reference to vio_bus_type, but we haven't registered vio_bus_type with
+the driver core.
 
+Fix it by also guarding vio_register_driver() with a check to see if
+we are on pseries.
 
-Segher
+Fixes: 4336b9337824 ("powerpc/pseries: Make vio and ibmebus initcalls pseries specific")
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/platforms/pseries/vio.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
+index 9cb4fc839fd5..429053d0402a 100644
+--- a/arch/powerpc/platforms/pseries/vio.c
++++ b/arch/powerpc/platforms/pseries/vio.c
+@@ -1285,6 +1285,10 @@ static int vio_bus_remove(struct device *dev)
+ int __vio_register_driver(struct vio_driver *viodrv, struct module *owner,
+ 			  const char *mod_name)
+ {
++	// vio_bus_type is only initialised for pseries
++	if (!machine_is(pseries))
++		return -ENODEV;
++
+ 	pr_debug("%s: driver %s registering\n", __func__, viodrv->name);
+ 
+ 	/* fill in 'struct driver' fields */
+-- 
+2.25.1
+
