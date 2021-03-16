@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054DF33DBCF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 19:00:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A3D33DBC2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 19:00:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0LgS6zhJz3bcg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 05:00:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0Lg06vhsz3bps
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 05:00:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UnlsifzF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oPFo3HEm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,34 +17,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=UnlsifzF; 
+ header.s=k20201202 header.b=oPFo3HEm; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0LfZ4nqPz30CD
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0LfZ4lGnz303q
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 05:00:05 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D7E73650D9;
- Tue, 16 Mar 2021 17:59:57 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 87EEA65133;
+ Tue, 16 Mar 2021 18:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1615917598;
- bh=vdy2WpeZI2HCzGdQqz3Y/L//P+ab1QFmmzSf0iTsJxg=;
+ s=k20201202; t=1615917604;
+ bh=HoSgMtiIiSAkVpHOLGFLlZiBQhF3CTEX630pkOg0tF8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=UnlsifzFhj3D7YpXvvXOJU1CORovHfvgX17+U2yLJQFIhShbsFwrxhYDfy4n3Qkwp
- t+tSGUVpZcfEVLKsHejsyo26wxOi/2dh6ZTWags7XmGxJCI20l0YQhkgAwde5K69CO
- YIqlWdcLppGJR1U8qaT+dlLgjE4mu+nWZT/AxDSIBUfBU5DTVWzc/P2KLpCopE8xRR
- sDsb4MpkKwRPRZHje7YgqUNa98+5xMgUgPW9ebUDLMUEAeyR5EM18v8RJtQ/MEaKn2
- vDQEq6I9Ttz8qOessEJAW/UgI04oHXEq5OLCKEljcMW/jc4FwTqIUkWccl49vwuF9k
- HYyY4rqU9s1TQ==
+ b=oPFo3HEmTj7fXwVlPAbg2/67boHFQ5fn1riyjzHQVTcmIIJrMvgNBFL7gMO3M/3gk
+ OhqnVkWUr+LxO1vWgXl56pTnORZXAzS9SBHed9ZnJVw3uHxKvzIx5MtJeBGY2AObkB
+ NlB9edqAUyhPMwjlRdYk653y+ScwnxxDQxSwhoechPZlTpdHXCL5UD8KgPuCgtsjKd
+ JjqIlm+yajsnVIjEup91KXVa8fD5P75eo7POnhMqVL7FJCG6tu5RzVUVM92re0+iCL
+ 0HKUT8AL0T/w3ZwcBBE2QYiKp643CctO1emtQ7vYaG2ecAy2GlVqZkSAaQ6xIex1Uk
+ QbCD9IE5jc9NQ==
 From: Mark Brown <broonie@kernel.org>
-To: timur@kernel.org,
-	Yang Li <yang.lee@linux.alibaba.com>
-Subject: Re: [PATCH] ASoC: hdmi-codec: fix platform_no_drv_owner.cocci warnings
-Date: Tue, 16 Mar 2021 17:59:41 +0000
-Message-Id: <161591744695.13544.8415296923566318166.b4-ty@kernel.org>
+To: Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, perex@perex.cz,
+ timur@kernel.org, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, festevam@gmail.com,
+ lgirdwood@gmail.com, nicoleotsuka@gmail.com, alsa-devel@alsa-project.org
+Subject: Re: [PATCH] ASoC: fsl_spdif: use snd_ctl_boolean_mono_info
+Date: Tue, 16 Mar 2021 17:59:43 +0000
+Message-Id: <161591744696.13544.5081763572355349115.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <1614761651-86898-1-git-send-email-yang.lee@linux.alibaba.com>
-References: <1614761651-86898-1-git-send-email-yang.lee@linux.alibaba.com>
+In-Reply-To: <1615887736-31217-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1615887736-31217-1-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -59,21 +61,14 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, shengjiu.wang@gmail.com,
- Xiubo.Lee@gmail.com, festevam@gmail.com, s.hauer@pengutronix.de,
- linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com,
- Mark Brown <broonie@kernel.org>, linux-imx@nxp.com, kernel@pengutronix.de,
- shawnguo@kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Mark Brown <broonie@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 3 Mar 2021 16:54:11 +0800, Yang Li wrote:
-> ./sound/soc/fsl/imx-hdmi.c:226:3-8: No need to set .owner here. The core
-> will do it.
-> 
-> Remove .owner field if calls are used which set it automatically
+On Tue, 16 Mar 2021 17:42:16 +0800, Shengjiu Wang wrote:
+> Remove redundant code and use snd_ctl_boolean_mono_info
+> instead.
 
 Applied to
 
@@ -81,8 +76,8 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: hdmi-codec: fix platform_no_drv_owner.cocci warnings
-      commit: 2e2bf6d479616a15c54c4e668558f61caffa4db4
+[1/1] ASoC: fsl_spdif: use snd_ctl_boolean_mono_info
+      commit: 6ad864ed6ac50f11a6d8575fda79991cca8f245c
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
