@@ -2,57 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B8E33CEA0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 08:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A7733CEAC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 08:34:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F04gz4R73z30MC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 18:30:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F04mM3V6Pz301P
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 18:34:11 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=SdXcCZp5;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=menglong8.dong@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=SdXcCZp5; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F04gf1BTmz2yZ1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 18:30:04 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F04gX4NLfz9v020;
- Tue, 16 Mar 2021 08:30:00 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 4DOJjKkkLcTI; Tue, 16 Mar 2021 08:30:00 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F04gX3GD4z9v01y;
- Tue, 16 Mar 2021 08:30:00 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2FA148B788;
- Tue, 16 Mar 2021 08:30:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id p7kEBORt2Ae4; Tue, 16 Mar 2021 08:30:01 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C53F18B782;
- Tue, 16 Mar 2021 08:30:00 +0100 (CET)
-Subject: Re: [PATCH 03/10] powerpc/64e/interrupt: use new interrupt return
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210315031716.3940350-1-npiggin@gmail.com>
- <20210315031716.3940350-4-npiggin@gmail.com>
- <a2c192a2-ebdb-d18a-6e21-b27d8890fe06@csgroup.eu>
- <1615878222.rk6eq5hjpl.astroid@bobo.none>
- <1615879421.ckimzb9u3c.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <f452729c-6290-17e9-eb96-4c1ebffd4c7e@csgroup.eu>
-Date: Tue, 16 Mar 2021 08:29:58 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F04lw61y8z2yjK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 18:33:46 +1100 (AEDT)
+Received: by mail-pl1-x643.google.com with SMTP id a13so1431613pln.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 00:33:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=4uwGLw4oyBg2siguHNzqzxEJ2zioYts2IjBxF9nVxAg=;
+ b=SdXcCZp5eAj0eG7le1UodFJ9kJpKFCcQXFQp8y9qS8SdgjuQUyQtykgdEoNmnyyzKW
+ IQ1GtYSUBCwWSC3WBh0bAoZ1T7a7sfvhhxTRkgQjODrJjpZBbfucYpPO1DICYL7y46U5
+ kVnaM9dnC+obTvaD/Pyd4n4TjkZkW4PzW+0l8hSS3H3HbX+yTGRz1cuTTefF98kwU7/9
+ 9jyskWUQbxOckPjq60RBOooNAgPyiBqm2eqoD6AYFhZoYW7UqkZI+ejXh2XmO80BklJ8
+ C/uD2l2ry6DUrtnjfwjnWoB4JMxx2v6vYiNyXeiSwuyG9FbMSR2nPHCgnDmBRLpNRsXe
+ 6uew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=4uwGLw4oyBg2siguHNzqzxEJ2zioYts2IjBxF9nVxAg=;
+ b=DegMhk5KY2xAeJHw1Sz5oQEyvXry2Hu6ZLeqQaRw5+lfFidUi+OaD360+i4k3ueyoN
+ I68bAJLyMydjy2uJhnDqne4a3Whfyx8hfgCnynYv7Kxo9vXz5ORW4FSovSXv0w6mI8TR
+ VW1DmPogX4eKGO4gb9K8LZ+RU/au0mLF5KD+RpYONytWFnLEu1IHQO/PDcUvT6UEJ3tF
+ xaFJnjIQ2GO/TkN0Hd3QXc1DC/ORAZWGkUtfur7fnFfkWcgyqzZ9brG22alwOnUt1bGy
+ XK8lgatl3azylTCX6N7i6zmZw1u/YwaV+3AI+umhp30zTKH6ysNTGoV569t0+4063TQh
+ mHaA==
+X-Gm-Message-State: AOAM530ppR8AazYxzrECFi/H4YSPKZegUStJ8h+vYpj4MdwlFJYYaLc6
+ HpOBhTSul6ADeLHxFQEvnfw=
+X-Google-Smtp-Source: ABdhPJz2vO1LkuhskFr46Ba09gSjtiCwL5zhzdrTzGXkiqsvd3q1KCoj2T2CQeDKwYaintJT/FE2Ew==
+X-Received: by 2002:a17:90a:cb12:: with SMTP id
+ z18mr3298352pjt.132.1615880023387; 
+ Tue, 16 Mar 2021 00:33:43 -0700 (PDT)
+Received: from localhost.localdomain ([178.236.46.205])
+ by smtp.gmail.com with ESMTPSA id d20sm1850131pjv.47.2021.03.16.00.33.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Mar 2021 00:33:42 -0700 (PDT)
+From: menglong8.dong@gmail.com
+X-Google-Original-From: zhang.yunkai@zte.com.cn
+To: pbonzini@redhat.com
+Subject: [PATCH] selftests: remove duplicate include
+Date: Tue, 16 Mar 2021 00:33:36 -0700
+Message-Id: <20210316073336.426255-1-zhang.yunkai@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <1615879421.ckimzb9u3c.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,86 +79,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>
+Cc: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, zhang.yunkai@zte.com.cn, paulus@samba.org,
+ linux-kselftest@vger.kernel.org, akpm@linux-foundation.org,
+ ricardo.canuelo@collabora.com, shuah@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Zhang Yunkai <zhang.yunkai@zte.com.cn>
 
+'assert.h' included in 'sparsebit.c' is duplicated.
+It is also included in the 161th line.
+'string.h' included in 'mincore_selftest.c' is duplicated.
+It is also included in the 15th line.
+'sched.h' included in 'tlbie_test.c' is duplicated.
+It is also included in the 33th line.
 
-Le 16/03/2021 à 08:25, Nicholas Piggin a écrit :
-> Excerpts from Nicholas Piggin's message of March 16, 2021 5:04 pm:
->> Excerpts from Christophe Leroy's message of March 15, 2021 11:30 pm:
->>>
->>>
->>> Le 15/03/2021 à 04:17, Nicholas Piggin a écrit :
->>>> Update the new C and asm interrupt return code to account for 64e
->>>> specifics, switch over to use it.
->>>>
->>>> The now-unused old ret_from_except code, that was moved to 64e after the
->>>> 64s conversion, is removed.
->>>>
->>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>>> ---
->>>>    arch/powerpc/include/asm/asm-prototypes.h |   2 -
->>>>    arch/powerpc/kernel/entry_64.S            |   9 +-
->>>>    arch/powerpc/kernel/exceptions-64e.S      | 321 ++--------------------
->>>>    arch/powerpc/kernel/interrupt.c           |  27 +-
->>>>    arch/powerpc/kernel/irq.c                 |  76 -----
->>>>    5 files changed, 56 insertions(+), 379 deletions(-)
->>>>
->>>> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
->>>> index fbabb49888d3..ae7b058b2970 100644
->>>> --- a/arch/powerpc/kernel/interrupt.c
->>>> +++ b/arch/powerpc/kernel/interrupt.c
->>>> @@ -235,6 +235,10 @@ static notrace void booke_load_dbcr0(void)
->>>>    #endif
->>>>    }
->>>>    
->>>> +/* temporary hack for context tracking, removed in later patch */
->>>> +#include <linux/sched/debug.h>
->>>> +asmlinkage __visible void __sched schedule_user(void);
->>>> +
->>>>    /*
->>>>     * This should be called after a syscall returns, with r3 the return value
->>>>     * from the syscall. If this function returns non-zero, the system call
->>>> @@ -292,7 +296,11 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
->>>>    	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
->>>>    		local_irq_enable();
->>>>    		if (ti_flags & _TIF_NEED_RESCHED) {
->>>> +#ifdef CONFIG_PPC_BOOK3E_64
->>>> +			schedule_user();
->>>> +#else
->>>>    			schedule();
->>>> +#endif
->>>>    		} else {
->>>>    			/*
->>>>    			 * SIGPENDING must restore signal handler function
->>>> @@ -360,7 +368,6 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
->>>>    	return ret;
->>>>    }
->>>>    
->>>> -#ifndef CONFIG_PPC_BOOK3E_64 /* BOOK3E not yet using this */
->>>>    notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned long msr)
->>>>    {
->>>>    	unsigned long ti_flags;
->>>> @@ -372,7 +379,9 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
->>>>    	BUG_ON(!(regs->msr & MSR_PR));
->>>>    	BUG_ON(!FULL_REGS(regs));
->>>>    	BUG_ON(arch_irq_disabled_regs(regs));
->>>> +#ifdef CONFIG_PPC_BOOK3S_64
->>>
->>> Shouldn't this go away in patch 6 as well ?
->>> Or is that needed at all ? In syscall_exit_prepare() it is not ifdefed .
->>
->> Hmm, not sure. I'll take a look. It probably shouldn't be ifdefed at all
->> but definitely by the end it should run without warning.
-> 
-> Oh I got confused and thought that was the syscall exit. Interrupt exit
-> has to keep this until patch 6 because 64e context tracking does
-> everything in interrupt wrappers, so by the time we get here it will
-> already be set to CONTEXT_USER.
-> 
+Signed-off-by: Zhang Yunkai <zhang.yunkai@zte.com.cn>
+---
+ tools/testing/selftests/kvm/lib/sparsebit.c        | 1 -
+ tools/testing/selftests/mincore/mincore_selftest.c | 1 -
+ tools/testing/selftests/powerpc/mm/tlbie_test.c    | 1 -
+ 3 files changed, 3 deletions(-)
 
-ok, but that it has to go in patch 6 ? At the time being the #ifdef is still there at the end of the 
-series
+diff --git a/tools/testing/selftests/kvm/lib/sparsebit.c b/tools/testing/selftests/kvm/lib/sparsebit.c
+index 031ba3c932ed..a0d0c83d83de 100644
+--- a/tools/testing/selftests/kvm/lib/sparsebit.c
++++ b/tools/testing/selftests/kvm/lib/sparsebit.c
+@@ -1890,7 +1890,6 @@ void sparsebit_validate_internal(struct sparsebit *s)
+  */
+ 
+ #include <stdlib.h>
+-#include <assert.h>
+ 
+ struct range {
+ 	sparsebit_idx_t first, last;
+diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
+index 5a1e85ff5d32..e54106643337 100644
+--- a/tools/testing/selftests/mincore/mincore_selftest.c
++++ b/tools/testing/selftests/mincore/mincore_selftest.c
+@@ -14,7 +14,6 @@
+ #include <sys/mman.h>
+ #include <string.h>
+ #include <fcntl.h>
+-#include <string.h>
+ 
+ #include "../kselftest.h"
+ #include "../kselftest_harness.h"
+diff --git a/tools/testing/selftests/powerpc/mm/tlbie_test.c b/tools/testing/selftests/powerpc/mm/tlbie_test.c
+index f85a0938ab25..48344a74b212 100644
+--- a/tools/testing/selftests/powerpc/mm/tlbie_test.c
++++ b/tools/testing/selftests/powerpc/mm/tlbie_test.c
+@@ -33,7 +33,6 @@
+ #include <sched.h>
+ #include <time.h>
+ #include <stdarg.h>
+-#include <sched.h>
+ #include <pthread.h>
+ #include <signal.h>
+ #include <sys/prctl.h>
+-- 
+2.25.1
+
