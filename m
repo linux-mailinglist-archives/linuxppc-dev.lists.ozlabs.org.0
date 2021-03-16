@@ -2,44 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB3D33D489
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 14:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0AD33D4E7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 14:34:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0D591dZGz30Qb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 00:04:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0DlV03Psz30Dt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 00:33:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=R+7ONg+R;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4F0D4q2Y0Sz3034
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 00:03:53 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83307101E;
- Tue, 16 Mar 2021 06:03:49 -0700 (PDT)
-Received: from [10.57.55.99] (unknown [10.57.55.99])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 768DC3F792;
- Tue, 16 Mar 2021 06:03:47 -0700 (PDT)
-Subject: Re: [PATCH 14/17] iommu: remove DOMAIN_ATTR_DMA_USE_FLUSH_QUEUE
-To: Christoph Hellwig <hch@lst.de>
-References: <20210301084257.945454-1-hch@lst.de>
- <20210301084257.945454-15-hch@lst.de>
- <1658805c-ed28-b650-7385-a56fab3383e3@arm.com> <20210310091501.GC5928@lst.de>
- <20210310092533.GA6819@lst.de> <fdacf87a-be14-c92c-4084-1d1dd4fc7766@arm.com>
- <20210311082609.GA6990@lst.de> <dff8eb80-8f74-972b-17e9-496c1fc0396f@arm.com>
- <20210315083347.GA28445@lst.de>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <42f5aba4-9271-d106-4a85-1bfc9fd98de1@arm.com>
-Date: Tue, 16 Mar 2021 13:03:42 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72c;
+ helo=mail-qk1-x72c.google.com; envelope-from=shengjiu.wang@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=R+7ONg+R; dkim-atps=neutral
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com
+ [IPv6:2607:f8b0:4864:20::72c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0Dl46gl3z302X
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 00:33:35 +1100 (AEDT)
+Received: by mail-qk1-x72c.google.com with SMTP id f124so35155702qkj.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 06:33:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=yxhYiPJJfH15vXoqGY5Nr6454DNFIyQXelAI1Oeta38=;
+ b=R+7ONg+RgbaadocUNVLV29LfFtUgU08qGOry13BkXZuUFBFdApt7Q1+HoPq95QNmmK
+ 2o3ieaXtCTwUuwJLbltLXooTvq9MOIcqDu2j31htqM9p/0qKnYJJG2FbX2hlB2DMQhHS
+ wN/YFTNa2+/mIo9Ss9mOnnaK9uViykX44CgthMB7gKsSAtW2dYhUXV+zXJwEYdLvyjjG
+ hhlZhAuWKnxeE3sC76kOrqtI+zQq8bHLJepTQ4Bp+Mt8ZOcv2K5z2/1zuQJPcf2gB9vA
+ VIhQgygxCx7LeyWGzQTGlkeVXK8pHZxUrbGtLyGgYe+iOyb8BBHkxWWZH5E6i1l09S9V
+ q7aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=yxhYiPJJfH15vXoqGY5Nr6454DNFIyQXelAI1Oeta38=;
+ b=P8js7yMGeRGphQRRaGMxVIDg7jZcxw8Td0g4Gxvsu7Y7FS4aO8UT/wSjI94uSd5s+6
+ 78ApK8g3l2RE2VCkN9f2AKQ+aYNu/UxixjeS/PCeDQlO/u4pDQOf5nLHaTumn98LWTxR
+ fMATScwBBiC4lJ226yS4JL7GXk1RcYNNgWVFaUvq0f3ihRICPYpKnYzf7/cNCy92wEBM
+ vAb1UGDsK0pv8MK07tqQSxEW/HYv4T2F2okZzV3BEmkdYHharBD1o4flxge8YOmMCUVd
+ GnO/Tk9ZPjf3+lrGuq6cesNs4OWWUY/WkWo792OsL5lH9jw4dMOWwQJkOO9gxCQXZ1oY
+ pisA==
+X-Gm-Message-State: AOAM531qHw/UJtqqQDY2EY/SwOnE6ijicLenVOZ9AeMUbBezTEkcU3wX
+ ba/cBlxH72PmMwVst+oQ7dDTwcWm7IszOIzq6XE=
+X-Google-Smtp-Source: ABdhPJykBK34HSDNuEExOj5PswzE1G8jMi/5K/0nsn1rodmf2p5QQgA9T0JNsjrPtdfQjvlMyoaxymcMxTUmvmisoS0=
+X-Received: by 2002:a05:620a:718:: with SMTP id
+ 24mr30441878qkc.121.1615901611988; 
+ Tue, 16 Mar 2021 06:33:31 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210315083347.GA28445@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+References: <1615886826-30844-1-git-send-email-shengjiu.wang@nxp.com>
+ <20210316125839.GA4309@sirena.org.uk>
+In-Reply-To: <20210316125839.GA4309@sirena.org.uk>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Tue, 16 Mar 2021 21:33:21 +0800
+Message-ID: <CAA+D8APfpXvMby-rKKodcOZaJHHsE4sAtSYV9JW867MLZTvj5w@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: remove reset code from dai_probe
+To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,64 +75,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: freedreno@lists.freedesktop.org, kvm@vger.kernel.org,
- Will Deacon <will@kernel.org>, linux-arm-msm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Li Yang <leoyang.li@nxp.com>,
- iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- David Woodhouse <dwmw2@infradead.org>, linux-arm-kernel@lists.infradead.org
+Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-03-15 08:33, Christoph Hellwig wrote:
-> On Fri, Mar 12, 2021 at 04:18:24PM +0000, Robin Murphy wrote:
->>> Let me know what you think of the version here:
->>>
->>> http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/iommu-cleanup
->>>
->>> I'll happily switch the patch to you as the author if you're fine with
->>> that as well.
->>
->> I still have reservations about removing the attribute API entirely and
->> pretending that io_pgtable_cfg is anything other than a SoC-specific
->> private interface,
-> 
-> I think a private inteface would make more sense.  For now I've just
-> condensed it down to a generic set of quirk bits and dropped the
-> attrs structure, which seems like an ok middle ground for now.  That
-> being said I wonder why that quirk isn't simply set in the device
-> tree?
+On Tue, Mar 16, 2021 at 9:01 PM Mark Brown <broonie@kernel.org> wrote:
+>
+> On Tue, Mar 16, 2021 at 05:27:06PM +0800, Shengjiu Wang wrote:
+> > From: Viorel Suman <viorel.suman@nxp.com>
+> >
+> > SAI software reset is done in runtime resume,
+> > there is no need to do it in fsl_sai_dai_probe.
+>
+> People can disable runtime PM in their configurations - do you not still
+> need a reset on probe in case there's no runtime PM?  It'd probably make
+> sense to factor the rest code out itno a function though.
 
-Because it's a software policy decision rather than any inherent 
-property of the platform, and the DT certainly doesn't know *when* any 
-particular device might prefer its IOMMU to use cacheable pagetables to 
-minimise TLB miss latency vs. saving the cache capacity for larger data 
-buffers. It really is most logical to decide this at the driver level.
+Right, didn't consider the case of disable runtime PM.
+Will move the reset code to a function.
 
-In truth the overall concept *is* relatively generic (a trend towards 
-larger system caches and cleverer usage is about both raw performance 
-and saving power on off-SoC DRAM traffic), it's just the particular 
-implementation of using io-pgtable to set an outer-cacheable walk 
-attribute in an SMMU TCR that's pretty much specific to Qualcomm SoCs. 
-Hence why having a common abstraction at the iommu_domain level, but 
-where the exact details are free to vary across different IOMMUs and 
-their respective client drivers, is in many ways an ideal fit.
-
->> but the reworked patch on its own looks reasonable to
->> me, thanks! (I wasn't too convinced about the iommu_cmd_line wrappers
->> either...) Just iommu_get_dma_strict() needs an export since the SMMU
->> drivers can be modular - I consciously didn't add that myself since I was
->> mistakenly thinking only iommu-dma would call it.
-> 
-> Fixed.  Can I get your signoff for the patch?  Then I'll switch it to
-> over to being attributed to you.
-
-Sure - I would have thought that the one I originally posted still 
-stands, but for the avoidance of doubt, for the parts of commit 
-8b6d45c495bd in your tree that remain from what I wrote:
-
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-
-Cheers,
-Robin.
+Best regards
+wang shengjiu
