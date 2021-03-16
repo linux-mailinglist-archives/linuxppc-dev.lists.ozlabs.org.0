@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D96633CE64
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 08:14:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67AFD33CE6C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 08:16:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F04K31Jv5z30Mn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 18:13:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F04NN24dxz30Kn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 18:16:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,41 +15,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F04Jj4YNrz2y89
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 18:13:38 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F04N140blz2y0N
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 18:16:33 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F04JT2CxFz9v01w;
- Tue, 16 Mar 2021 08:13:29 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4F04My0khXz9v01x;
+ Tue, 16 Mar 2021 08:16:30 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 8lPll8OPtAwa; Tue, 16 Mar 2021 08:13:29 +0100 (CET)
+ with ESMTP id lX-DG0j1SLSr; Tue, 16 Mar 2021 08:16:30 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F04JT0DBDz9v01v;
- Tue, 16 Mar 2021 08:13:29 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F04Mx6FXTz9v01w;
+ Tue, 16 Mar 2021 08:16:29 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BB6628B77F;
- Tue, 16 Mar 2021 08:13:29 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8F5768B77F;
+ Tue, 16 Mar 2021 08:16:30 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ruNrR7DJy-Mv; Tue, 16 Mar 2021 08:13:29 +0100 (CET)
+ with ESMTP id EHzDybjSgk6N; Tue, 16 Mar 2021 08:16:30 +0100 (CET)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5FAF58B766;
- Tue, 16 Mar 2021 08:13:29 +0100 (CET)
-Subject: Re: [PATCH 10/10] powerpc: move norestart trap flag to bit 0
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4A03F8B766;
+ Tue, 16 Mar 2021 08:16:30 +0100 (CET)
+Subject: Re: [PATCH] powerpc/64s: power4 nap fixup in C
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210315031716.3940350-1-npiggin@gmail.com>
- <20210315031716.3940350-11-npiggin@gmail.com>
- <99f15df0-dc86-4601-066f-a6c067ece8bf@csgroup.eu>
- <1615878424.0gp943h7l3.astroid@bobo.none>
+References: <20210312012044.3660743-1-npiggin@gmail.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <d359ad7b-8c4d-a699-4764-dee478cad110@csgroup.eu>
-Date: Tue, 16 Mar 2021 08:13:27 +0100
+Message-ID: <6ab2073b-dd10-ef2c-375d-1300f071ae1a@csgroup.eu>
+Date: Tue, 16 Mar 2021 08:16:27 +0100
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <1615878424.0gp943h7l3.astroid@bobo.none>
+In-Reply-To: <20210312012044.3660743-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -64,94 +61,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 16/03/2021 à 08:11, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of March 15, 2021 6:14 pm:
->>
->>
->> Le 15/03/2021 à 04:17, Nicholas Piggin a écrit :
->>> Compact the trap flags down to use the low 4 bits of regs.trap.
->>>
->>> A few 64e interrupt trap numbers set bit 4. Although they tended to be
->>> trivial so it wasn't a real problem[1], it is not the right thing to do,
->>> and confusing.
->>>
->>> [*] E.g., 0x310 hypercall goes to unknown_exception, which prints
->>>       regs->trap directly so 0x310 will appear fine, and only the syscall
->>>       interrupt will test norestart, so it won't be confused by 0x310.
->>>
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>>    arch/powerpc/include/asm/ptrace.h | 14 ++++++++++----
->>>    1 file changed, 10 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
->>> index 91194fdd5d01..6a04abfe5eb6 100644
->>> --- a/arch/powerpc/include/asm/ptrace.h
->>> +++ b/arch/powerpc/include/asm/ptrace.h
->>> @@ -185,15 +185,21 @@ static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
->>>    #define current_pt_regs() \
->>>    	((struct pt_regs *)((unsigned long)task_stack_page(current) + THREAD_SIZE) - 1)
->>>    
->>> +/*
->>> + * The 4 low bits (0xf) are available as flags to overload the trap word,
->>> + * because interrupt vectors have minimum alignment of 0x10. TRAP_FLAGS_MASK
->>> + * must cover the bits used as flags, including bit 0 which is used as the
->>> + * "norestart" bit.
->>> + */
->>>    #ifdef __powerpc64__
->>> -#define TRAP_FLAGS_MASK		0x10
->>> +#define TRAP_FLAGS_MASK		0x1
->>>    #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
->>>    #else
->>>    /*
->>>     * On 4xx we use bit 1 in the trap word to indicate whether the exception
->>>     * is a critical exception (1 means it is).
->>>     */
->>> -#define TRAP_FLAGS_MASK		0x1E
->>> +#define TRAP_FLAGS_MASK		0xf
->>
->> Could we set 0xf for all and remove the ifdef __powerpc64__ ?
+Le 12/03/2021 à 02:20, Nicholas Piggin a écrit :
+> There is no need for this to be in asm, use the new intrrupt entry wrapper.
 > 
-> I like that it documents the bit number allocation so I prefer to leave
-> it, but TRAP() does not have to be defined twice at least.
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> Hopefully this works on a real G5 now, but I couldn't reproduce the
+> problem with QEMU.
 > 
->>
->>>    #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
->>>    #define IS_CRITICAL_EXC(regs)	(((regs)->trap & 2) != 0)
->>>    #define IS_MCHECK_EXC(regs)	(((regs)->trap & 4) != 0)
->>> @@ -222,12 +228,12 @@ static inline bool trap_is_syscall(struct pt_regs *regs)
->>>    
->>>    static inline bool trap_norestart(struct pt_regs *regs)
->>>    {
->>> -	return regs->trap & 0x10;
->>> +	return regs->trap & 0x1;
->>>    }
->>>    
->>>    static inline void set_trap_norestart(struct pt_regs *regs)
->>>    {
->>> -	regs->trap |= 0x10;
->>> +	regs->trap |= 0x1;
->>>    }
->>>    
->>>    #define arch_has_single_step()	(1)
->>>
->>
->> While we are playing with ->trap, in mm/book3s64/hash_utils.c there is an if (regs->trap == 0x400).
->> Should be TRAP(regs) == 0x400 ?
+> Thanks,
+> Nick
 > 
-> Yes I would say so, if you want to do a patch you can add
-> Acked-by: Nicholas Piggin <npiggin@gmail.com>
+>   arch/powerpc/include/asm/interrupt.h   | 19 +++++++++++
+>   arch/powerpc/include/asm/processor.h   |  1 +
+>   arch/powerpc/include/asm/thread_info.h |  6 ++++
+>   arch/powerpc/kernel/exceptions-64s.S   | 45 --------------------------
+>   arch/powerpc/kernel/idle_book3s.S      |  4 +++
+>   5 files changed, 30 insertions(+), 45 deletions(-)
 > 
-> Otherwise I can do it.
+> diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+> index aedfba29e43a..ef015d3b5e39 100644
+> --- a/arch/powerpc/include/asm/interrupt.h
+> +++ b/arch/powerpc/include/asm/interrupt.h
+> @@ -9,6 +9,17 @@
+>   #include <asm/kprobes.h>
+>   #include <asm/runlatch.h>
+>   
+> +static inline void nap_adjust_return(struct pt_regs *regs)
+> +{
+> +#ifdef CONFIG_PPC_970_NAP
+> +	if (unlikely(test_thread_local_flags(_TLF_NAPPING))) {
+> +		/* Can avoid a test-and-clear because NMIs do not call this */
+> +		clear_thread_local_flags(_TLF_NAPPING);
+> +		regs->nip = (unsigned long)power4_idle_nap_return;
 
-Yes please do.
+Why don't you do regs->nip = regs->link like PPC32 instead of going via an intermediate symbol that 
+does nothing else than branching to LR ?
 
-Thanks
-Christophe
+> +	}
+> +#endif
+> +}
+> +
+>   struct interrupt_state {
+>   #ifdef CONFIG_PPC_BOOK3E_64
+>   	enum ctx_state ctx_state;
+> @@ -111,6 +122,9 @@ static inline void interrupt_async_exit_prepare(struct pt_regs *regs, struct int
+>   {
+>   	irq_exit();
+>   	interrupt_exit_prepare(regs, state);
+> +
+> +	/* Adjust at exit so the main handler sees the true NIA */
+> +	nap_adjust_return(regs);
+>   }
+>   
+>   struct interrupt_nmi_state {
+> @@ -164,6 +178,11 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
+>   			radix_enabled() || (mfmsr() & MSR_DR))
+>   		nmi_exit();
+>   
+> +	/*
+> +	 * nmi does not call nap_adjust_return because nmi should not create
+> +	 * new work to do (must use irq_work for that).
+> +	 */
+> +
+>   #ifdef CONFIG_PPC64
+>   	if (TRAP(regs) != 0x900 && TRAP(regs) != 0xf00 && TRAP(regs) != 0x260)
+>   		this_cpu_set_ftrace_enabled(state->ftrace_enabled);
+
+...
+
+> diff --git a/arch/powerpc/kernel/idle_book3s.S b/arch/powerpc/kernel/idle_book3s.S
+> index f9e6d83e6720..abb719b21cae 100644
+> --- a/arch/powerpc/kernel/idle_book3s.S
+> +++ b/arch/powerpc/kernel/idle_book3s.S
+> @@ -209,4 +209,8 @@ _GLOBAL(power4_idle_nap)
+>   	mtmsrd	r7
+>   	isync
+>   	b	1b
+> +
+> +	.globl power4_idle_nap_return
+> +power4_idle_nap_return:
+> +	blr
+>   #endif
+> 
