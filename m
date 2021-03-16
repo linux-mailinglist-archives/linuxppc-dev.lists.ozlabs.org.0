@@ -1,74 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC2B33CB89
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 03:37:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C98833CB98
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 03:48:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzyBR5FBRz30GF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 13:37:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=oOlXhQYm;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzyQB2mjnz30H3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 13:48:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
- helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=oOlXhQYm; dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
- [IPv6:2607:f8b0:4864:20::42c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzyB10SJnz2y8J
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 13:37:26 +1100 (AEDT)
-Received: by mail-pf1-x42c.google.com with SMTP id r16so6499991pfh.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 19:37:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=6lp695PcIQjxnB74Ga/9wMdAdKUKeJasCm+kHxvArMg=;
- b=oOlXhQYmb9PiL9bzrWsBzOuEN5/wk8+5lqS0QVBhgXiXuqoXC5mfSca7aa+X/X2Pxi
- q7C7UfeQeMU9bUQ3cm5VWi5Uro3OyCGRm/ZtYg1GSstgysIVzbe9QWp4DF5Fgelk9HzS
- EhxQdxaLG6s/f+FYSFIGzcCDrfHCda4Bl/PXkIvmVO970q+IA+jq4QoNmV2/s9KTTIfD
- IHX6x2jZ91aVxsgI/I2vk9yGPl6qgaErL+u3gbOaOSVThVou5/wdM636GDZ1B0oVxglA
- JDBOsJ6koyT581Jl10QvYxaei17yhj98hyXDXrN4PJjgI2jz0xVSfqOjyGzaWFIrXBPS
- VveA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=6lp695PcIQjxnB74Ga/9wMdAdKUKeJasCm+kHxvArMg=;
- b=sYxGu2XuLKZqN0e4Qjo2KWvDX46UfCQ93MOqqiqEJqQlSoINqb6iz3lGfZz7vaOnPN
- D5BXVc1w5oGF6NMvggQ0sD22bD7aTDKX+UUAsbBPiKSaWpxWodqkDodC3zfdd1yYTx/z
- JzIjd95wH61qHrCjKA7aIBMA/ywfnAYjKHs/b6vmT15ZrAu3Jz5y00m4WzTK7iC6vAb2
- OeYhOMi89ExYtKz6aFb3e1+vSpiCVrCtwx2kkDY9KNiGKOUFXEGv+xFXoTkAjrp4B9Ud
- 9bFIq7FVUkny9zvfWsVu7br68iRfgNqq4bI/ZEx3JeTKwZZkV+4XrRmGEPYuaQxFpZz0
- lVow==
-X-Gm-Message-State: AOAM5338DigRSseY148oGWpW2qO/rxerFPj0UKPy9FVLB065RJestMTz
- 28mrgEfC+GcU4WtMRLDHqzPIR/dCaCY=
-X-Google-Smtp-Source: ABdhPJwnQJgS9BcJ9ll+cpL3FkCCvpsu5ET/TzB/g43FYSegZz8H7L9XK4I2+1iTwQN8yX9WbkBb+w==
-X-Received: by 2002:a65:62cc:: with SMTP id m12mr1834288pgv.427.1615862241342; 
- Mon, 15 Mar 2021 19:37:21 -0700 (PDT)
-Received: from localhost (58-6-239-121.tpgi.com.au. [58.6.239.121])
- by smtp.gmail.com with ESMTPSA id r2sm14047813pgv.50.2021.03.15.19.37.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Mar 2021 19:37:20 -0700 (PDT)
-Date: Tue, 16 Mar 2021 12:37:15 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 0/2] handle premature return from H_JOIN in pseries
- mobility code
-To: linuxppc-dev@lists.ozlabs.org, Nathan Lynch <nathanl@linux.ibm.com>
-References: <20210315080045.460331-1-nathanl@linux.ibm.com>
-In-Reply-To: <20210315080045.460331-1-nathanl@linux.ibm.com>
-MIME-Version: 1.0
-Message-Id: <1615861985.myhwki4p5y.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DzyPs5qK3z2yxZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 13:47:43 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 12G2iZBe019663;
+ Mon, 15 Mar 2021 21:44:35 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 12G2iYKT019662;
+ Mon, 15 Mar 2021 21:44:34 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Mon, 15 Mar 2021 21:44:34 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/kexec: Don't use .machine ppc64 in trampoline_64.S
+Message-ID: <20210316024434.GE16691@gate.crashing.org>
+References: <20210315034159.315675-1-mpe@ellerman.id.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210315034159.315675-1-mpe@ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,21 +47,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.ibm.com, tyreld@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nathan Lynch's message of March 15, 2021 6:00 pm:
-> pseries VMs in shared processor mode are susceptible to failed
-> migrations becasue stray H_PRODs from the paravirt spinlock
-> implementation can bump threads out of joining state before the
-> suspend has occurred. Fix this by adding a small amount of shared
-> state and ordering accesses to it with respect to H_PROD and H_JOIN.
+Hi!
 
-Oh, tricky problem. Nice work on finding and fixing it.
+On Mon, Mar 15, 2021 at 02:41:59PM +1100, Michael Ellerman wrote:
+> The ".machine" directive allows changing the machine for which code is
+> being generated. It's equivalent to passing an -mcpu option on the
+> command line.
+> 
+> Although it can be useful, it's generally a bad idea because it adds
+> another way to influence code generation separate from the flags
+> passed via the build system. ie. if we need to build different pieces
+> of code with different flags we should do that via our Makefiles, not
+> using ".machine".
 
-The patches seem okay to me.
+It does not influence code generation.  It says which instructions are
+valid, instead.  There are a few cases where the same mnemonic will
+generate a different binary encoding depending on machine selected,
+maybe you mean that?
 
-Thanks,
-Nick
+It is *normal* to use .machine push/pop and a specific .machine around
+instructions that require a machine other than what you are building
+for.  The compiler does this itself, and it is the recommended way to
+use "foreign" instructions in inline assembler.
+
+That said...
+
+> However as best as I can tell the ".machine" directive in
+> trampoline_64.S is not necessary at all.
+> 
+> It was added in commit 0d97631392c2 ("powerpc: Add purgatory for
+> kexec_file_load() implementation."), which created the file based on
+> the kexec-tools purgatory. It may be/have-been necessary in the
+> kexec-tools version, but we have a completely different build system,
+> and we already pass the desired CPU flags, eg:
+> 
+>   gcc ... -m64 -Wl,-a64 -mabi=elfv2 -Wa,-maltivec -Wa,-mpower4 -Wa,-many
+>   ... arch/powerpc/purgatory/trampoline_64.S
+> 
+> So drop the ".machine" directive and rely on the assembler flags.
+
+> -	.machine ppc64
+
+Please make sure to test this on a big endian config.
+
+A ppc64le-linux assembler defaults to power8.  A ppc64-linux assembler
+defaults to power3 (that is the same as .machine ppc64).  Or maybe it
+makes it power4?  I get lost :-)
+
+It certainly *should* work, but, test please :-)
+
+(And with a *default* powerpc64-linux config, not one that defaults to
+power7 or power8 or similar!  Arnd's toolchains at
+<https://mirrors.edge.kernel.org/pub/tools/crosstool/>
+are fine for this.)
+
+
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+
+Segher
