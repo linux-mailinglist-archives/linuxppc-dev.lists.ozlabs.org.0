@@ -2,70 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273C233D216
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 11:45:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2F033D217
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 11:45:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F090V6Qvwz3cDR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 21:44:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F091334Vhz3cYm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 21:45:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=iUPt76gI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=GDOp11N9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
+ helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=iUPt76gI; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+ header.s=20161025 header.b=GDOp11N9; dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F08xy08f8z30LR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 21:42:45 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id j6so16736702plx.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 03:42:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F08y54NMsz30GN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 21:42:53 +1100 (AEDT)
+Received: by mail-pg1-x532.google.com with SMTP id q5so9663161pgk.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 03:42:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=8tas6DdL07+xDffS87lgRXfDLe52u+MFtvNI2eJ4D0Y=;
- b=iUPt76gIF9+WwVUkeqOx6yPZfA8AUff6K0SljBwnp4Ss3oP1uVzLqvAtlYYeL1y1T7
- 9pAk9lSIdt+YqZATarcHusUvSSt5hx9JDWDCZe8/ogH69qzdQCDXedF+x5nGuCbJnmLN
- HHqbAJeYkSn0/+Llt6K9l37cCboknaPO0/vIfYYE9nttqDt/XeimBxDRpAypbJQ985ub
- qIHMRCNlTHlgcWgbeQjBps2GAY6BWn+yWh2zv8oZyj5lEGbZbOxVWrmeGQGevmeY2UNN
- R7EUr0fs+kV6uBJv+EAQx4o76cptKu/1CcyAr3OIN3KCTl1nAYcvZqJWAcURuTkXRlhr
- GAeA==
+ bh=NPq9SSBBA1BH6qxT0JQH5+ZncQAaRNIddFPqTv02Vkc=;
+ b=GDOp11N93TOhrqnOYd2KfFpJNLPurYFMb+CH8AlFwwJRxa9CKYtzfSUazuOeBnNWHz
+ rWi5PW6XM2XJH9qZcBJWUxWOjdb9w0B5IK8hSJ8lH4CQMe24kR3JGeD2f5s443Z6KOvd
+ oVGx5CBNHmJRCSRevsSeMNDzMTdOkvLLarkclh8ExOnfoW973U7LAnOLBwNCm8ERzC6V
+ paQ15oKZe1Jn02gULksqfJlrDw8dlg4G12trV4/05gaJJ0NjC9b4XOH0WKnlG+1SBWXY
+ Eoqvg00SZIkoMBhLOWbvlvsGZ5w6sk0XHUxwX+wJo1fx9MZHa+4bPAyqRLn5F2jBY8vK
+ HxXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=8tas6DdL07+xDffS87lgRXfDLe52u+MFtvNI2eJ4D0Y=;
- b=UxV9hCbXI9JK9DwuZKF+cUY01JEzQGZRg0mvKMnUFrpa/uo5+4MZEA0ZEIc/9/P745
- TqpqUBxxzheWbBbAYGhOh2EVP/8DXI63TWv9TcDkVbm5XsigTcGWikXpKsZrcA/GyrWi
- lSDmled52i24RPxktNYFcbZ80UTZVS2OneeOQfkMJrec2ie69o6jCksl705RksvAY2zQ
- BHFs9yY07GdPVP1E/juepVvgbtp1Hn4sIzKk5LrihwaoZkUnbkhx+6arUd57FwlKON6R
- okSQ2H+eb3P23ECwOwNjZHeAcQ+TP24E65+OLBCKL6c5IovFKDWtoM24oM1Wx79m/RTn
- zq5w==
-X-Gm-Message-State: AOAM53071BLuUHcgYkbSGdjVOfcuR9zPTHwr1anlODyBP9l3yeizV3b5
- d4pxJ17yUUd+wfnEjHVicbXd9J37hss=
-X-Google-Smtp-Source: ABdhPJwFbCZ6De8zafs32xT7FzlJhftMUfmv3s2KvzlDHLBLlewnxLpvJvRan8Jn6FIngCvYLQwnuw==
-X-Received: by 2002:a17:90b:228c:: with SMTP id
- kx12mr4058549pjb.7.1615891363000; 
- Tue, 16 Mar 2021 03:42:43 -0700 (PDT)
+ bh=NPq9SSBBA1BH6qxT0JQH5+ZncQAaRNIddFPqTv02Vkc=;
+ b=Rhi8CkJJGwXSHn5F4Pc41c5huDhGosKsW7qAzt+ztvSfj/wUnlUIz8htjKRE0ZLE7P
+ y4KYBh3kqgYFAcE42QKcJvMoBMNtcEIT8cDui6PyQuJUHHC2GDmYHhkpuWxYb4am/FJX
+ g6Zbqvf6pLvILGXQbCaB/LkvWhkDpsdoxjxJ5oTj+DxXKsx4T1VGqHF/zq2Gq9K6BaLN
+ nw5GJbz2Vv0f2V5ifzigw1SSG3FXlAxnJzTwQo0uVD3K8jNbYtAodTd3Y5pWVMg8f4U5
+ yus0jYXwSIJU0o2eqyWMU0/E6nVzpxob1dMHWk5UOba+5IlMT4XXgL6P0DtFzkM3EZ8U
+ DiGA==
+X-Gm-Message-State: AOAM530P6U8i5oNkQ+ymu2mvhGFXOaiSKOV3dTHLlrc5hG+fXVSl5Fxv
+ kgGpCHwe4FQymrOQgjr5u/+zebDPlz8=
+X-Google-Smtp-Source: ABdhPJzoFq1XX3KtS/fAYsrC3dWAOR0jdzQg7P24Lfm0GtI780QnS3lzSci6GRIuaPf9KtFJmAlF2g==
+X-Received: by 2002:a65:4508:: with SMTP id n8mr3333787pgq.294.1615891370857; 
+ Tue, 16 Mar 2021 03:42:50 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
  by smtp.gmail.com with ESMTPSA id
- r30sm15828489pgu.86.2021.03.16.03.42.31
+ r30sm15828489pgu.86.2021.03.16.03.42.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Mar 2021 03:42:42 -0700 (PDT)
+ Tue, 16 Mar 2021 03:42:50 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 05/11] powerpc/64e/interrupt: NMI save irq soft-mask state
+Subject: [PATCH v2 06/11] powerpc/64e/interrupt: reconcile irq soft-mask state
  in C
-Date: Tue, 16 Mar 2021 20:41:59 +1000
-Message-Id: <20210316104206.407354-6-npiggin@gmail.com>
+Date: Tue, 16 Mar 2021 20:42:00 +1000
+Message-Id: <20210316104206.407354-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210316104206.407354-1-npiggin@gmail.com>
 References: <20210316104206.407354-1-npiggin@gmail.com>
@@ -87,237 +86,229 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-64e non-maskable interrupts save the state of the irq soft-mask in
-asm. This can be done in C in interrupt wrappers as 64s does.
+Use existing 64s interrupt entry wrapper code to reconcile irqs in C.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-I haven't been able to test this with qemu because it doesn't seem
-to cause FSL bookE WDT interrupts.
-
-This makes WatchdogException an NMI interrupt, which affects 32-bit
-as well (okay, or create a new handler?)
 ---
- arch/powerpc/include/asm/interrupt.h | 32 +++++++++++++++++--------
- arch/powerpc/kernel/exceptions-64e.S | 36 ++++------------------------
- arch/powerpc/kernel/traps.c          | 13 +++++++++-
- 3 files changed, 38 insertions(+), 43 deletions(-)
+ arch/powerpc/include/asm/interrupt.h |  8 +++---
+ arch/powerpc/kernel/entry_64.S       | 18 ++++++-------
+ arch/powerpc/kernel/exceptions-64e.S | 39 +---------------------------
+ 3 files changed, 13 insertions(+), 52 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index 7c633896d758..305d7c17a4cf 100644
+index 305d7c17a4cf..29b48d083156 100644
 --- a/arch/powerpc/include/asm/interrupt.h
 +++ b/arch/powerpc/include/asm/interrupt.h
-@@ -130,18 +130,32 @@ static inline void interrupt_async_exit_prepare(struct pt_regs *regs, struct int
- 
- struct interrupt_nmi_state {
- #ifdef CONFIG_PPC64
--#ifdef CONFIG_PPC_BOOK3S_64
- 	u8 irq_soft_mask;
- 	u8 irq_happened;
--#endif
- 	u8 ftrace_enabled;
- #endif
- };
- 
-+static inline bool nmi_disables_ftrace(struct pt_regs *regs)
-+{
-+	/* Allow DEC and PMI to be traced when they are soft-NMI */
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64)) {
-+		if (TRAP(regs) == 0x900)
-+		       return false;
-+		if (TRAP(regs) == 0xf00)
-+		       return false;
-+	}
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3E)) {
-+		if (TRAP(regs) == 0x260)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct interrupt_nmi_state *state)
- {
- #ifdef CONFIG_PPC64
--#ifdef CONFIG_PPC_BOOK3S_64
- 	state->irq_soft_mask = local_paca->irq_soft_mask;
- 	state->irq_happened = local_paca->irq_happened;
- 
-@@ -154,9 +168,8 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
- 	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
- 
- 	/* Don't do any per-CPU operations until interrupt state is fixed */
--#endif
--	/* Allow DEC and PMI to be traced when they are soft-NMI */
--	if (TRAP(regs) != 0x900 && TRAP(regs) != 0xf00 && TRAP(regs) != 0x260) {
-+
-+	if (nmi_disables_ftrace(regs)) {
- 		state->ftrace_enabled = this_cpu_get_ftrace_enabled();
- 		this_cpu_set_ftrace_enabled(0);
+@@ -40,14 +40,14 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
+ 		kuap_save_and_lock(regs);
  	}
-@@ -180,16 +193,14 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
- 		nmi_exit();
- 
- #ifdef CONFIG_PPC64
--	if (TRAP(regs) != 0x900 && TRAP(regs) != 0xf00 && TRAP(regs) != 0x260)
-+	if (nmi_disables_ftrace(regs))
- 		this_cpu_set_ftrace_enabled(state->ftrace_enabled);
- 
--#ifdef CONFIG_PPC_BOOK3S_64
- 	/* Check we didn't change the pending interrupt mask. */
- 	WARN_ON_ONCE((state->irq_happened | PACA_IRQ_HARD_DIS) != local_paca->irq_happened);
- 	local_paca->irq_happened = state->irq_happened;
- 	local_paca->irq_soft_mask = state->irq_soft_mask;
  #endif
--#endif
- }
+-	/*
+-	 * Book3E reconciles irq soft mask in asm
+-	 */
+-#ifdef CONFIG_PPC_BOOK3S_64
++
++#ifdef CONFIG_PPC64
+ 	if (irq_soft_mask_set_return(IRQS_ALL_DISABLED) == IRQS_ENABLED)
+ 		trace_hardirqs_off();
+ 	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
++#endif
  
- /*
-@@ -402,6 +413,7 @@ DECLARE_INTERRUPT_HANDLER(SMIException);
- DECLARE_INTERRUPT_HANDLER(handle_hmi_exception);
- DECLARE_INTERRUPT_HANDLER(unknown_exception);
- DECLARE_INTERRUPT_HANDLER_ASYNC(unknown_async_exception);
-+DECLARE_INTERRUPT_HANDLER_NMI(unknown_nmi_exception);
- DECLARE_INTERRUPT_HANDLER(instruction_breakpoint_exception);
- DECLARE_INTERRUPT_HANDLER(RunModeException);
- DECLARE_INTERRUPT_HANDLER(single_step_exception);
-@@ -425,7 +437,7 @@ DECLARE_INTERRUPT_HANDLER(altivec_assist_exception);
- DECLARE_INTERRUPT_HANDLER(CacheLockingException);
- DECLARE_INTERRUPT_HANDLER(SPEFloatingPointException);
- DECLARE_INTERRUPT_HANDLER(SPEFloatingPointRoundException);
--DECLARE_INTERRUPT_HANDLER(WatchdogException);
-+DECLARE_INTERRUPT_HANDLER_NMI(WatchdogException);
- DECLARE_INTERRUPT_HANDLER(kernel_bad_stack);
++#ifdef CONFIG_PPC_BOOK3S_64
+ 	if (user_mode(regs)) {
+ 		CT_WARN_ON(ct_state() != CONTEXT_USER);
+ 		user_exit_irqoff();
+diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+index 555b3d0a3f38..03727308d8cc 100644
+--- a/arch/powerpc/kernel/entry_64.S
++++ b/arch/powerpc/kernel/entry_64.S
+@@ -117,13 +117,12 @@ BEGIN_FTR_SECTION
+ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
  
- /* slb.c */
+ 	/*
+-	 * RECONCILE_IRQ_STATE without calling trace_hardirqs_off(), which
+-	 * would clobber syscall parameters. Also we always enter with IRQs
+-	 * enabled and nothing pending. system_call_exception() will call
+-	 * trace_hardirqs_off().
+-	 *
+-	 * scv enters with MSR[EE]=1, so don't set PACA_IRQ_HARD_DIS. The
+-	 * entry vector already sets PACAIRQSOFTMASK to IRQS_ALL_DISABLED.
++	 * scv enters with MSR[EE]=1 and is immediately considered soft-masked.
++	 * The entry vector already sets PACAIRQSOFTMASK to IRQS_ALL_DISABLED,
++	 * and interrupts may be masked and pending already.
++	 * system_call_exception() will call trace_hardirqs_off() which means
++	 * interrupts could already have been blocked before trace_hardirqs_off,
++	 * but this is the best we can do.
+ 	 */
+ 
+ 	/* Calling convention has r9 = orig r0, r10 = regs */
+@@ -288,9 +287,8 @@ END_BTB_FLUSH_SECTION
+ 	std	r11,-16(r10)		/* "regshere" marker */
+ 
+ 	/*
+-	 * RECONCILE_IRQ_STATE without calling trace_hardirqs_off(), which
+-	 * would clobber syscall parameters. Also we always enter with IRQs
+-	 * enabled and nothing pending. system_call_exception() will call
++	 * We always enter kernel from userspace with irq soft-mask enabled and
++	 * nothing pending. system_call_exception() will call
+ 	 * trace_hardirqs_off().
+ 	 */
+ 	li	r11,IRQS_ALL_DISABLED
 diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-index 7a2e7be33092..18be576fc0b3 100644
+index 18be576fc0b3..3c222a97f023 100644
 --- a/arch/powerpc/kernel/exceptions-64e.S
 +++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -63,9 +63,6 @@
- 	ld	reg, (SPECIAL_EXC_##name * 8 + SPECIAL_EXC_FRAME_OFFS)(r1)
+@@ -409,28 +409,6 @@ exc_##n##_common:							    \
+ #define EXCEPTION_COMMON_DBG(n) \
+ 	EXCEPTION_COMMON_LVL(n, SPRN_SPRG_DBG_SCRATCH, PACA_EXDBG)
  
- special_reg_save:
--	lbz	r9,PACAIRQHAPPENED(r13)
--	RECONCILE_IRQ_STATE(r3,r4)
+-/*
+- * This is meant for exceptions that don't immediately hard-enable.  We
+- * set a bit in paca->irq_happened to ensure that a subsequent call to
+- * arch_local_irq_restore() will properly hard-enable and avoid the
+- * fast-path, and then reconcile irq state.
+- */
+-#define INTS_DISABLE	RECONCILE_IRQ_STATE(r3,r4)
 -
- 	/*
- 	 * We only need (or have stack space) to save this stuff if
- 	 * we interrupted the kernel.
-@@ -119,15 +116,11 @@ BEGIN_FTR_SECTION
- 	mtspr	SPRN_MAS5,r10
- 	mtspr	SPRN_MAS8,r10
- END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
--	SPECIAL_EXC_STORE(r9,IRQHAPPENED)
+-/*
+- * This is called by exceptions that don't use INTS_DISABLE (that did not
+- * touch irq indicators in the PACA).  This will restore MSR:EE to it's
+- * previous value
+- *
+- * XXX In the long run, we may want to open-code it in order to separate the
+- *     load from the wrtee, thus limiting the latency caused by the dependency
+- *     but at this point, I'll favor code clarity until we have a near to final
+- *     implementation
+- */
+-#define INTS_RESTORE_HARD						    \
+-	ld	r11,_MSR(r1);						    \
+-	wrtee	r11;
 -
- 	mfspr	r10,SPRN_DEAR
- 	SPECIAL_EXC_STORE(r10,DEAR)
- 	mfspr	r10,SPRN_ESR
- 	SPECIAL_EXC_STORE(r10,ESR)
+ /* XXX FIXME: Restore r14/r15 when necessary */
+ #define BAD_STACK_TRAMPOLINE(n)						    \
+ exc_##n##_bad_stack:							    \
+@@ -479,7 +457,6 @@ exc_##n##_bad_stack:							    \
+ 	START_EXCEPTION(label);						\
+ 	NORMAL_EXCEPTION_PROLOG(trapnum, intnum, PROLOG_ADDITION_MASKABLE)\
+ 	EXCEPTION_COMMON(trapnum)					\
+-	INTS_DISABLE;							\
+ 	ack(r8);							\
+ 	CHECK_NAPPING();						\
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD;				\
+@@ -559,7 +536,6 @@ __end_interrupts:
+ 	mfspr	r14,SPRN_DEAR
+ 	mfspr	r15,SPRN_ESR
+ 	EXCEPTION_COMMON(0x300)
+-	INTS_DISABLE
+ 	b	storage_fault_common
  
--	lbz	r10,PACAIRQSOFTMASK(r13)
--	SPECIAL_EXC_STORE(r10,SOFTE)
- 	ld	r10,_NIP(r1)
- 	SPECIAL_EXC_STORE(r10,CSRR0)
- 	ld	r10,_MSR(r1)
-@@ -194,27 +187,6 @@ BEGIN_FTR_SECTION
- 	mtspr	SPRN_MAS8,r10
- END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
+ /* Instruction Storage Interrupt */
+@@ -569,7 +545,6 @@ __end_interrupts:
+ 	li	r15,0
+ 	mr	r14,r10
+ 	EXCEPTION_COMMON(0x400)
+-	INTS_DISABLE
+ 	b	storage_fault_common
  
--	lbz	r6,PACAIRQSOFTMASK(r13)
--	ld	r5,SOFTE(r1)
--
--	/* Interrupts had better not already be enabled... */
--	tweqi	r6,IRQS_ENABLED
--
--	andi.	r6,r5,IRQS_DISABLED
--	bne	1f
--
--	TRACE_ENABLE_INTS
--	stb	r5,PACAIRQSOFTMASK(r13)
--1:
--	/*
--	 * Restore PACAIRQHAPPENED rather than setting it based on
--	 * the return MSR[EE], since we could have interrupted
--	 * interrupt replay or other inconsistent transitory
--	 * states that must remain that way.
--	 */
--	SPECIAL_EXC_LOAD(r10,IRQHAPPENED)
--	stb	r10,PACAIRQHAPPENED(r13)
--
- 	SPECIAL_EXC_LOAD(r10,DEAR)
- 	mtspr	SPRN_DEAR,r10
- 	SPECIAL_EXC_LOAD(r10,ESR)
-@@ -566,7 +538,7 @@ __end_interrupts:
- 	bl	special_reg_save
- 	CHECK_NAPPING();
+ /* External Input Interrupt */
+@@ -591,7 +566,6 @@ __end_interrupts:
+ 				PROLOG_ADDITION_1REG)
+ 	mfspr	r14,SPRN_ESR
+ 	EXCEPTION_COMMON(0x700)
+-	INTS_DISABLE
+ 	std	r14,_DSISR(r1)
  	addi	r3,r1,STACK_FRAME_OVERHEAD
--	bl	unknown_exception
-+	bl	unknown_nmi_exception
- 	b	ret_from_crit_except
+ 	ld	r14,PACA_EXGEN+EX_R14(r13)
+@@ -610,8 +584,7 @@ __end_interrupts:
+ 	beq-	1f
+ 	bl	load_up_fpu
+ 	b	fast_interrupt_return
+-1:	INTS_DISABLE
+-	addi	r3,r1,STACK_FRAME_OVERHEAD
++1:	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	kernel_fp_unavailable_exception
+ 	b	interrupt_return
  
- /* Machine Check Interrupt */
-@@ -702,7 +674,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
- #ifdef CONFIG_BOOKE_WDT
- 	bl	WatchdogException
- #else
--	bl	unknown_exception
-+	bl	unknown_nmi_exception
+@@ -631,7 +604,6 @@ BEGIN_FTR_SECTION
+ 1:
+ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
  #endif
- 	b	ret_from_crit_except
- 
-@@ -886,7 +858,7 @@ kernel_dbg_exc:
- 	bl	special_reg_save
- 	CHECK_NAPPING();
+-	INTS_DISABLE
  	addi	r3,r1,STACK_FRAME_OVERHEAD
--	bl	unknown_exception
-+	bl	unknown_nmi_exception
- 	b	ret_from_crit_except
- 
- /*
-@@ -910,7 +882,7 @@ kernel_dbg_exc:
- 	bl	special_reg_save
- 	CHECK_NAPPING();
+ 	bl	altivec_unavailable_exception
+ 	b	interrupt_return
+@@ -642,7 +614,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ 				BOOKE_INTERRUPT_ALTIVEC_ASSIST,
+ 				PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x220)
+-	INTS_DISABLE
  	addi	r3,r1,STACK_FRAME_OVERHEAD
--	bl	unknown_exception
-+	bl	unknown_nmi_exception
- 	b	ret_from_crit_except
+ #ifdef CONFIG_ALTIVEC
+ BEGIN_FTR_SECTION
+@@ -691,7 +662,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ 	NORMAL_EXCEPTION_PROLOG(0xf20, BOOKE_INTERRUPT_AP_UNAVAIL,
+ 				PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0xf20)
+-	INTS_DISABLE
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	unknown_exception
+ 	b	interrupt_return
+@@ -827,7 +797,6 @@ kernel_dbg_exc:
+ 	 */
+ 	mfspr	r14,SPRN_DBSR
+ 	EXCEPTION_COMMON_DBG(0xd08)
+-	INTS_DISABLE
+ 	std	r14,_DSISR(r1)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	ld	r14,PACA_EXDBG+EX_R14(r13)
+@@ -840,7 +809,6 @@ kernel_dbg_exc:
+ 	NORMAL_EXCEPTION_PROLOG(0x260, BOOKE_INTERRUPT_PERFORMANCE_MONITOR,
+ 				PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x260)
+-	INTS_DISABLE
+ 	CHECK_NAPPING()
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	performance_monitor_exception
+@@ -870,7 +838,6 @@ kernel_dbg_exc:
+ 			        PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x2c0)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	INTS_RESTORE_HARD
+ 	bl	unknown_exception
+ 	b	interrupt_return
  
- /* Hypervisor call */
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index c74e7727860a..97b5f3d83ff7 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -1079,6 +1079,16 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(unknown_async_exception)
- 	_exception(SIGTRAP, regs, TRAP_UNK, 0);
- }
+@@ -891,7 +858,6 @@ kernel_dbg_exc:
+ 			        PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x310)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	INTS_RESTORE_HARD
+ 	bl	unknown_exception
+ 	b	interrupt_return
  
-+DEFINE_INTERRUPT_HANDLER_NMI(unknown_nmi_exception)
-+{
-+	printk("Bad trap at PC: %lx, SR: %lx, vector=%lx\n",
-+	       regs->nip, regs->msr, regs->trap);
-+
-+	_exception(SIGTRAP, regs, TRAP_UNK, 0);
-+
-+	return 0;
-+}
-+
- DEFINE_INTERRUPT_HANDLER(instruction_breakpoint_exception)
- {
- 	if (notify_die(DIE_IABR_MATCH, "iabr_match", regs, 5,
-@@ -2183,10 +2193,11 @@ void __attribute__ ((weak)) WatchdogHandler(struct pt_regs *regs)
- 	return;
- }
+@@ -901,7 +867,6 @@ kernel_dbg_exc:
+ 			        PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x320)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	INTS_RESTORE_HARD
+ 	bl	unknown_exception
+ 	b	interrupt_return
  
--DEFINE_INTERRUPT_HANDLER(WatchdogException) /* XXX NMI? async? */
-+DEFINE_INTERRUPT_HANDLER_NMI(WatchdogException)
- {
- 	printk (KERN_EMERG "PowerPC Book-E Watchdog Exception\n");
- 	WatchdogHandler(regs);
-+	return 0;
- }
- #endif
+@@ -911,7 +876,6 @@ kernel_dbg_exc:
+ 			        PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x340)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	INTS_RESTORE_HARD
+ 	bl	unknown_exception
+ 	b	interrupt_return
  
+@@ -991,7 +955,6 @@ alignment_more:
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	ld	r14,PACA_EXGEN+EX_R14(r13)
+ 	ld	r15,PACA_EXGEN+EX_R15(r13)
+-	INTS_RESTORE_HARD
+ 	bl	alignment_exception
+ 	REST_NVGPRS(r1)
+ 	b	interrupt_return
 -- 
 2.23.0
 
