@@ -2,174 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C45633CBBB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 04:14:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7465633CBE7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 04:18:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Dzz1B3rdZz303S
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 14:14:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Dzz5q3kjMz300T
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 14:18:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=eNJg49vG;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=IGjep7mf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=mKPcFr7f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.79; helo=aserp2130.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
+ helo=mail-pl1-x62e.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=eNJg49vG; 
- dkim=pass (1024-bit key;
- unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
- header.b=IGjep7mf; dkim-atps=neutral
-Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=mKPcFr7f; dkim-atps=neutral
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzz0d4kwbz2ydJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 14:14:24 +1100 (AEDT)
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
- by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12G3AuMS169200;
- Tue, 16 Mar 2021 03:14:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=corp-2020-01-29;
- bh=qPbwybmF74AWyKtZafk0bMp/+UMNEj9ekFBGtD+NqAE=;
- b=eNJg49vGHjW6yFgIZpaOxW+na0/gn2xezlfDSs6bHPWvp8klyRNbmd2WVa//jwbXcmn/
- 3QDenhMzSrf+Qt926WIB+PmB9ZePVzNrVCi8KYF/cUJaQULHHEcKnSZglvRPZkH8RJcT
- fQJGJBmhVGoBOJbj90JlsY1dedl46AV0JyXFmQKHg2Ntd8kbqS3TrDoYmJ5rqIAg3n/l
- sJ2nlju7gNCPAcQkGembwWn8+3lN8zlSZIrbGbD5mkUyHuhSZsOSLKiULzYaylzNr8em
- KRK6XIvSaUIZ0nxkm12d7IYkDZ7kD7IwqkBH7KyQSte9ODSwX71YK2IruFYq0A3wHTbY mA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
- by aserp2130.oracle.com with ESMTP id 378jwbe7s5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 Mar 2021 03:14:09 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
- by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12G3BCWG139271;
- Tue, 16 Mar 2021 03:14:09 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
- by userp3020.oracle.com with ESMTP id 37a4esbpjy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 Mar 2021 03:14:08 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DZpAEANi9e0B0qnX1FgXw2+gupb48X8Hyw5R80MPQw4VLJwW7HfiIsCzKhYW67LKWUW4DSQhubcbByFqnP0LSeLKuiDIWZ3ezOyWhPdoCgDyp9P2xUUGiTIVBM+a91Skm7a9W/sHel/e26GQMxZzSZNgQdVdUQ3H11kfX8jjZfLm6RgvvNKjdoRH1fNAEMa4Rq+pfiBY/FG2vZP2/mCBuE4mlbsr1In+6no7Qk3o14hMShFo6i7s3eNIXm/+BmWIYXM8SLRfUcyfGBA9T2/xq8Y68+re9xZ2usu33DKeQUxL5YsqnlwZa3z3MTvFjK+k8J8aKLxsHCjGppbkPsqhrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qPbwybmF74AWyKtZafk0bMp/+UMNEj9ekFBGtD+NqAE=;
- b=NW/QqBA7TbRBp4apV1jHp9P0Xq7gKtMfz+nnzwo+abg/cgDvqBlCNqs50IJDLOZnRHlr73To+arGOkVtpMz54MML4TwP3aFAQIcqA8uTQYvp+7ec7Jxjz9TeV5J3ErSP4YFAzsOxj304gHkCod3S/WscZdIyAGt3+dPbgWxz50AEr4EP5EETy0mOIJkOHv2YF7wwQrmgSCv2gR7ewQRQ8FVk5MxZrc8ot/i5UDEH7/uE+TDE8Qa9RI5G3aW/iEZRRE+UHeOHf2EEIB3ldyTHLE+dl0v2BYKjFYK+pavlrhhGErFWHKzqlBFmUqPRFO8HCJD5JYyfGxXzLQaYETnyQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qPbwybmF74AWyKtZafk0bMp/+UMNEj9ekFBGtD+NqAE=;
- b=IGjep7mfncc4o0JxMO9CRUKqTuxGHM+Cw6m4P1TXdY6Oi19BRmFOwNEiVHpGh16BzktmnLagRhwLWHheiT3GEAxcHuPSqYoWEN0KOaZlOO/6mHIZjtWKXcrK+I/Ic7KipMv02oXc63MaASRwn/OLlpsRmcbLkUWL1sV77ltg5vQ=
-Authentication-Results: hansenpartnership.com; dkim=none (message not signed)
- header.d=none; hansenpartnership.com;
- dmarc=none action=none header.from=oracle.com;
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
- by PH0PR10MB4709.namprd10.prod.outlook.com (2603:10b6:510:3d::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3933.32; Tue, 16 Mar
- 2021 03:14:07 +0000
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::dc39:c9fa:7365:8c8e]) by PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::dc39:c9fa:7365:8c8e%5]) with mapi id 15.20.3933.032; Tue, 16 Mar 2021
- 03:14:07 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: james.bottomley@hansenpartnership.com,
- Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: Re: [PATCH] ibmvfc: free channel_setup_buf during device tear down
-Date: Mon, 15 Mar 2021 23:13:58 -0400
-Message-Id: <161586434244.11995.1429133965746647049.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210311012212.428068-1-tyreld@linux.ibm.com>
-References: <20210311012212.428068-1-tyreld@linux.ibm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [138.3.200.9]
-X-ClientProxiedBy: SJ0PR03CA0119.namprd03.prod.outlook.com
- (2603:10b6:a03:333::34) To PH0PR10MB4759.namprd10.prod.outlook.com
- (2603:10b6:510:3d::12)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Dzz5N16Ycz2yhl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 14:18:31 +1100 (AEDT)
+Received: by mail-pl1-x62e.google.com with SMTP id c16so16304797ply.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Mar 2021 20:18:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=9Mv4k+bwxOezfvxU4AwqD9Zx/VQngin96IFhNJ+MTB8=;
+ b=mKPcFr7fJWIf9axsWK36tSnDsMU0Lpaeq4XDschP6qmnGe0g50sro9i6L9B2NAK6+0
+ PhwbVoHh+LjeBUIMe3x/YKhdr7fD9wcQoyuIZkgBzErVgC6PiUKnKuZSQFKk5TXY3oue
+ /oljGgJFmapqLX7pxEBRu70x+CTu5BPx6ze9GWaOkwJl8YA1Nv3xBW+vWSVULxsEAeuF
+ uGMe4f1kh6E+motYvG6u8KNE0gm2nyjCQZiVXo49XyYq5fEaKocJ2pgkc+9xAySLC8m3
+ OflQ9mutWZOyJiTNTfde9GLDS5/2LeKr1ee/SggTxhlIWSP6Fgeby5/4/+DKnDvKNsbL
+ WnwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=9Mv4k+bwxOezfvxU4AwqD9Zx/VQngin96IFhNJ+MTB8=;
+ b=tKRr77mC3wkRZ13UzjvtKKpSN2Vxj3ZYZjANP1Jy2Teglj7TdOH9WanVMiTjveEwpq
+ OC+/iIBOsfiuOkP67OOqWlsIwjpxmbmm1DZ7WaTNOi8qyusMFMJmDZrV36wEe9oTY/AU
+ mqs84rH4qjKvyu7Lx3ROt1/xfi8UwiW/xrjo9Mr7Lwvm6CFhEVMHvR57elGOThUpZ/cD
+ 8hTaM21PSvyLxkjDehlvnpg5AySZs049rRC8gDoGxMCJ9NKarQGUXZ8rfIFF5Im0OAKs
+ vINiDlzC2DxX+r+6sAHGLWLJhgF0Exz4v3eAEljzgNbo7mimrs4eJBfBiSyYwf5HI2nz
+ CkMw==
+X-Gm-Message-State: AOAM532gkMLt3U7tirvaWbjp+iTgGBQLuI659k2bR4CC9GSgci7LvQkC
+ 8yCCALzvgfpPDE/Vo5nGzlZKsELnZnmj5A==
+X-Google-Smtp-Source: ABdhPJydDVjaZqhcKn+UEwNK89hRlC2KEQu6TGGSU1qpkdIwjCTCJvp3qIctUGWR81Z/MUy5QqVubA==
+X-Received: by 2002:a17:902:9b8b:b029:e6:b027:2f96 with SMTP id
+ y11-20020a1709029b8bb02900e6b0272f96mr8988066plp.28.1615864707626; 
+ Mon, 15 Mar 2021 20:18:27 -0700 (PDT)
+Received: from localhost.localdomain
+ (159-196-117-139.9fc475.syd.nbn.aussiebb.net. [159.196.117.139])
+ by smtp.gmail.com with ESMTPSA id o13sm15098809pgv.40.2021.03.15.20.18.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Mar 2021 20:18:27 -0700 (PDT)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v9 1/8] powerpc/mm: Implement set_memory() routines
+Date: Tue, 16 Mar 2021 14:17:34 +1100
+Message-Id: <20210316031741.1004850-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from ca-mkp.mkp.ca.oracle.com (138.3.200.9) by
- SJ0PR03CA0119.namprd03.prod.outlook.com (2603:10b6:a03:333::34) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3933.31 via Frontend
- Transport; Tue, 16 Mar 2021 03:14:05 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 68ccfaa1-2cb7-447b-b31c-08d8e8298f40
-X-MS-TrafficTypeDiagnostic: PH0PR10MB4709:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <PH0PR10MB4709A671D3E7B588C6B38FE58E6B9@PH0PR10MB4709.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +bKG74fZX+tR3gY9QbAl/W5iTxQVGazYAFlH/6FurSR3PPStcp9c6uoDFhxUSQNkHe+taonHV/i8iphFwKoA8sLOld4ivLBjsMZqqlpVLZ6xpM6GKD+G6kLpZxAyCtU2fBS/tfnesz31PqK+4kClo/dT1aTBEp8Vw10xFCoUHsxDSP26af6Ds0TwzQVCi4KW0bOJp6+ji+emHZcYyxAXgi42Jk1hc4SSnOsb4T4dQ0Yinp9DByNj8AkYAlquOz2sa6xxV4YEVgg7Xx422aiMSullGn9L8KaCm/pbTXY60XCRo4yPn/p1l59db1NdOv59nTSZFEcATDyFFdZxtIFIZyxPf2OZA5h5g6FWCIHizbGKgxJ9nhbGrlprZ6ap0vG0a0xvQlXDWSAf6ORKuXMSlnIMCpDKWNd9VQEto1GN0SyP4urJLCpBblPDa6YWeIU5ysspD+fE4Es4N+WNGLXAwFNgkb6loDPxynllRYGOaYJZlPoVV58PxYKCImLj5tRMxO5KR4q4zPqNBcv6lcdUPW6FYAsffXeajZxubh8Z73w1/8QqEfzmSZHRSe7398ShygW1ErBwLhH1FGIlp/elUN1+bQxs1Ls43in5orptVyNEoPOAJViKEACmpzp3KJpunV59c7REXekBu0f99IaM7g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR10MB4759.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(376002)(346002)(39860400002)(366004)(136003)(396003)(2616005)(26005)(478600001)(956004)(4326008)(6486002)(186003)(66946007)(103116003)(4744005)(316002)(5660300002)(966005)(6916009)(8936002)(86362001)(8676002)(16526019)(6666004)(2906002)(36756003)(7696005)(52116002)(66556008)(66476007);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?bnRTQk1heFd6SVpxeStDc2NJcVhndlNFaGxzekN0a2ZwbDMvNk1UMVBxMFN0?=
- =?utf-8?B?a3ZqL040VitSTWR1bWh2T0lDa1B1UlhLVVdYZ2MwTHhQa0RzTE5BUS9TOFRm?=
- =?utf-8?B?SXdjZHNKNjF4SFJvTjIwajVHVDgzblUvWTlOVEhsc2xOUmFsQlBad1JiWXM3?=
- =?utf-8?B?dGVkOTZjcFdrc2RucTZzdG5jdjZGSkR3d2EzSmRCa3BTYnZEQmcyaWxOd3Zk?=
- =?utf-8?B?YkNCQ2NpZTR1RmVENWEybkpwYnFEL2RGSVc0cW8zOUpLMmtMYnN2WVE3dWJR?=
- =?utf-8?B?cXRkNEhGaHRRbjJSOXlFbk1QMHBJYTZkR05EazBRbmpabkxTOW9aM0Rqc0k3?=
- =?utf-8?B?dkUyOVBtV2dXN2UrcnpkeDJaTUdCc0Z4c0NoK09BcEFwSnZGWWVVZm5UQUkr?=
- =?utf-8?B?L0RhZzZaNU95OVNJVlRoT2tPbVNQRDcyTDBMVDhNSmpORkptMGthZSt5WGl1?=
- =?utf-8?B?Uk1oV1FIVVVyLzdQUEtja1hTbENGK0RwSjc3L3Yxc2tTS3VDZlQvbnM4Q0c3?=
- =?utf-8?B?d1BwSklYbU02dnVXRWpVaDBUYmpETzNIbnhZRUpZSDB2YW0yYjBNazAzeWRC?=
- =?utf-8?B?aEE5eTB3S25rYitudWZLSGFCbytjdENNNy93QjByUDhibnpCRXJDL0ZxODZJ?=
- =?utf-8?B?YzNwdlV0R2FrWm1VRXk3ZDkzRDBsUlEzOFR6U0w1UVN3TC84S25JSm56VFdQ?=
- =?utf-8?B?UDhGZi84MGV4UnJ1UmZkY3FnZ0pMdDRCSzMzeDR2RG5kTHRlWFAzZUxFdWJl?=
- =?utf-8?B?YmZ2Z01jb1N4eGh5KzliV3VqM3Fqa25Mb09DZUh4NHNsWE5pa3V3VGNrdVp3?=
- =?utf-8?B?VTVkaXVyenlFNXFSK0RBRjZtS201TE84VFhFNERaVFoxd1ozWW9JZFdQNURH?=
- =?utf-8?B?UW1BYUVHblRvMHlxTmdJVXlPbWROMGJsZEdTdzI1QUZXVXFzUXlJUHlLVHNG?=
- =?utf-8?B?dm5ETUtSK2hWbSt4ZkVRNGYwYnZ4amd3RkNCSXcyL255dlZ6OFo3NHVlaGU3?=
- =?utf-8?B?b010RXladjZ6dnBLNEhoSURJdkI4VVBLdHlXcEl5Nm5abmJmRGtCUW4xbkk0?=
- =?utf-8?B?Sy9XdFlFVXQyTkhFeGhnUmN5MjlST3pjNCtzdVByQjRzdnU0TGRpMkd3bmRt?=
- =?utf-8?B?ak9WdWsyRThpRlNpVWNLSENUMmJuNFcwZWFVcTFCcHJGZTM1WExVUGtYYVJj?=
- =?utf-8?B?WTJFd3JTa0MrQ0ZVbEhpS0ZYcDVmWmw4RmhoMDFneXpLS3IzdWRwVDA3ZmJM?=
- =?utf-8?B?STB2MGNXNGFOM294cVplb29TMkIyTGRDT3pqcEQwOEUyRkQ0MXNsdi9VRWJq?=
- =?utf-8?B?R0JCMjhVK2kxWGhYS0tTSDVzSmpJajBSci9qYUxwWXhzRE03eTB0NDV6bVVL?=
- =?utf-8?B?VUhhdnkyVGFPTVlDZFY3RmEwc1VjaTdhL1BKMTJMelJBdlVsSkZtUmhYS3VF?=
- =?utf-8?B?N21jcWxBejRBc2QzK2tBYUp6M2txR1A1aDJsczhVTnpGbHBLRy85UTFDUlVq?=
- =?utf-8?B?MUpSOWQ2SlF3bk05bmYrWnNUanU2L3U0aGtVVUpJcW5CclJBTVZEdGVVWTVk?=
- =?utf-8?B?NXZYdGF4dFM3b1BnY1ZmWWVEMmNDemJIK2ZVSWF4aGlyRTEwQmhKS3hoS0h4?=
- =?utf-8?B?K2VRb1dMbnQ0K0JWVm55UUltZG1UV3ZsbC9Td3JlNk9uTFNycXNNZVZmNnN1?=
- =?utf-8?B?c25XU0hVZ0dDSW9Rb0Yzc1JXczRmcjdoeHBvMTRPQ2MzOWFldkROSW92eW0r?=
- =?utf-8?Q?p/xuRDZobtQOtqCcaLIrfCa/IrT7oGpmbaoNvoH?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68ccfaa1-2cb7-447b-b31c-08d8e8298f40
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2021 03:14:06.9352 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p9V/lOuOLrWeqQKlRvtor7aCZHToOtmpcRxp1A8fM0pTUHvE1UDwPSlu3WR3V85IdqblCRQhLKdBFbf/v+U8ehMuGQijsE8l3HB8u+twqzE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4709
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9924
- signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0
- malwarescore=0 phishscore=0 bulkscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103160021
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9924
- signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxlogscore=999
- spamscore=0 mlxscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 adultscore=0 phishscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103160021
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -181,26 +79,194 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- "Martin K . Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org
+Cc: christophe.leroy@c-s.fr, ajd@linux.ibm.com, npiggin@gmail.com,
+ naveen.n.rao@linux.ibm.com, Jordan Niethe <jniethe5@gmail.com>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 10 Mar 2021 19:22:12 -0600, Tyrel Datwyler wrote:
+From: Russell Currey <ruscur@russell.cc>
 
-> The buffer for negotiating channel setup is DMA allocated at device
-> probe time. However, the remove path fails to free this allocation which
-> will prevent the hypervisor from releasing the virtual device in the
-> case of a hotplug remove.
-> 
-> Fix this issue by freeing the buffer allocation in ibmvfc_free_mem().
+The set_memory_{ro/rw/nx/x}() functions are required for STRICT_MODULE_RWX,
+and are generally useful primitives to have.  This implementation is
+designed to be completely generic across powerpc's many MMUs.
 
-Applied to 5.12/scsi-fixes, thanks!
+It's possible that this could be optimised to be faster for specific
+MMUs, but the focus is on having a generic and safe implementation for
+now.
 
-[1/1] ibmvfc: free channel_setup_buf during device tear down
-      https://git.kernel.org/mkp/scsi/c/febb0cc847e7
+This implementation does not handle cases where the caller is attempting
+to change the mapping of the page it is executing from, or if another
+CPU is concurrently using the page being altered.  These cases likely
+shouldn't happen, but a more complex implementation with MMU-specific code
+could safely handle them, so that is left as a TODO for now.
 
+These functions do nothing if STRICT_KERNEL_RWX is not enabled.
+
+Reviewed-by: Daniel Axtens <dja@axtens.net>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+[jpn: rebase on next plus "powerpc/mm/64s: Allow STRICT_KERNEL_RWX again"]
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+---
+ arch/powerpc/Kconfig                  |  1 +
+ arch/powerpc/include/asm/set_memory.h | 32 +++++++++++
+ arch/powerpc/mm/Makefile              |  2 +-
+ arch/powerpc/mm/pageattr.c            | 81 +++++++++++++++++++++++++++
+ 4 files changed, 115 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/include/asm/set_memory.h
+ create mode 100644 arch/powerpc/mm/pageattr.c
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index fc7f5c5933e6..4498a27ac9db 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -135,6 +135,7 @@ config PPC
+ 	select ARCH_HAS_MEMBARRIER_CALLBACKS
+ 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+ 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
++	select ARCH_HAS_SET_MEMORY
+ 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !HIBERNATION)
+ 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UACCESS_FLUSHCACHE
+diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
+new file mode 100644
+index 000000000000..64011ea444b4
+--- /dev/null
++++ b/arch/powerpc/include/asm/set_memory.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_POWERPC_SET_MEMORY_H
++#define _ASM_POWERPC_SET_MEMORY_H
++
++#define SET_MEMORY_RO	0
++#define SET_MEMORY_RW	1
++#define SET_MEMORY_NX	2
++#define SET_MEMORY_X	3
++
++int change_memory_attr(unsigned long addr, int numpages, long action);
++
++static inline int set_memory_ro(unsigned long addr, int numpages)
++{
++	return change_memory_attr(addr, numpages, SET_MEMORY_RO);
++}
++
++static inline int set_memory_rw(unsigned long addr, int numpages)
++{
++	return change_memory_attr(addr, numpages, SET_MEMORY_RW);
++}
++
++static inline int set_memory_nx(unsigned long addr, int numpages)
++{
++	return change_memory_attr(addr, numpages, SET_MEMORY_NX);
++}
++
++static inline int set_memory_x(unsigned long addr, int numpages)
++{
++	return change_memory_attr(addr, numpages, SET_MEMORY_X);
++}
++
++#endif
+diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
+index 3b4e9e4e25ea..d8a08abde1ae 100644
+--- a/arch/powerpc/mm/Makefile
++++ b/arch/powerpc/mm/Makefile
+@@ -5,7 +5,7 @@
+ 
+ ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
+ 
+-obj-y				:= fault.o mem.o pgtable.o mmap.o maccess.o \
++obj-y				:= fault.o mem.o pgtable.o mmap.o maccess.o pageattr.o \
+ 				   init_$(BITS).o pgtable_$(BITS).o \
+ 				   pgtable-frag.o ioremap.o ioremap_$(BITS).o \
+ 				   init-common.o mmu_context.o drmem.o
+diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+new file mode 100644
+index 000000000000..2da3fbab6ff7
+--- /dev/null
++++ b/arch/powerpc/mm/pageattr.c
+@@ -0,0 +1,81 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/*
++ * MMU-generic set_memory implementation for powerpc
++ *
++ * Copyright 2019, IBM Corporation.
++ */
++
++#include <linux/mm.h>
++#include <linux/set_memory.h>
++
++#include <asm/mmu.h>
++#include <asm/page.h>
++#include <asm/pgtable.h>
++
++
++/*
++ * Updates the attributes of a page in three steps:
++ *
++ * 1. invalidate the page table entry
++ * 2. flush the TLB
++ * 3. install the new entry with the updated attributes
++ *
++ * This is unsafe if the caller is attempting to change the mapping of the
++ * page it is executing from, or if another CPU is concurrently using the
++ * page being altered.
++ *
++ * TODO make the implementation resistant to this.
++ *
++ * NOTE: can be dangerous to call without STRICT_KERNEL_RWX
++ */
++static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
++{
++	long action = (long)data;
++	pte_t pte;
++
++	spin_lock(&init_mm.page_table_lock);
++
++	/* invalidate the PTE so it's safe to modify */
++	pte = ptep_get_and_clear(&init_mm, addr, ptep);
++	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
++
++	/* modify the PTE bits as desired, then apply */
++	switch (action) {
++	case SET_MEMORY_RO:
++		pte = pte_wrprotect(pte);
++		break;
++	case SET_MEMORY_RW:
++		pte = pte_mkwrite(pte);
++		break;
++	case SET_MEMORY_NX:
++		pte = pte_exprotect(pte);
++		break;
++	case SET_MEMORY_X:
++		pte = pte_mkexec(pte);
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		break;
++	}
++
++	set_pte_at(&init_mm, addr, ptep, pte);
++	spin_unlock(&init_mm.page_table_lock);
++
++	return 0;
++}
++
++int change_memory_attr(unsigned long addr, int numpages, long action)
++{
++	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
++	unsigned long sz = numpages * PAGE_SIZE;
++
++	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
++		return 0;
++
++	if (numpages <= 0)
++		return 0;
++
++	return apply_to_existing_page_range(&init_mm, start, sz,
++					    change_page_attr, (void *)action);
++}
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.25.1
+
