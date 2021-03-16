@@ -1,59 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0386333CA92
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 02:11:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2972433CB3C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 03:04:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DzwGX0BKMz30KD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 12:11:16 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=d/S7T1J4;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DzxSD5q0xz304V
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 13:04:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=d/S7T1J4; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=szxga06-in.huawei.com;
+ envelope-from=heying24@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DzwG8457lz2yYl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 12:10:56 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DzwG72ty0z9sXL;
- Tue, 16 Mar 2021 12:10:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1615857055;
- bh=5V9OxHYlT++Lf0PAHK5fyrGP3WfFK7LlWpGGyBlMPEs=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=d/S7T1J4s+09scWOyTv2VFPvPNANr3og/GfYo5Euvc7alSAUQi3Pb2IP+jZ0Sk73c
- lLlbQF9TYKLSKRtU52OJUxYgamkA6c/pHRmAH6mkLJvl02GAbsLubxEzhdGLcDbfXY
- nYEB+E2vK+CbOHMk7Rh+IFPkrusxthFTOBSPfOzh6HKElNsDiNhqgOO/HfFM5jbOFx
- GfUop7h/1T8v/0V740gyFjwtsFcv6qjwm6H5WCyZGXqjENl5KrFpKWzyYHc68w83KU
- wltn7Jhr55POslYdEzFHThRJQDjHFz6OgsqTjCd2d4lFnGNXtT+cIqurPDQqDZlcqh
- OwaC3yoN7kmnw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Paul Menzel <pmenzel@molgen.mpg.de>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-Subject: Re: VIO bus not initialized
-In-Reply-To: <90e6a559-0908-684c-9156-5f3da2b02e38@molgen.mpg.de>
-References: <41c04182-20c1-6124-a221-90aef704e310@molgen.mpg.de>
- <87mtv44zut.fsf@mpe.ellerman.id.au>
- <90e6a559-0908-684c-9156-5f3da2b02e38@molgen.mpg.de>
-Date: Tue, 16 Mar 2021 12:10:50 +1100
-Message-ID: <87k0q752ed.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DzxRt3Jl5z2yjH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 13:04:23 +1100 (AEDT)
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+ by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4DzxPx0JzszkZMC;
+ Tue, 16 Mar 2021 10:02:45 +0800 (CST)
+Received: from [10.67.110.136] (10.67.110.136) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 16 Mar 2021 10:04:09 +0800
+Subject: Re: [PATCH] powerpc: Fix missing prototype problems for
+ "arch/powerpc/kernel/setup_64.c"
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, <mpe@ellerman.id.au>,
+ <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
+ <dja@axtens.net>, <akpm@linux-foundation.org>, <rppt@kernel.org>,
+ <aneesh.kumar@linux.ibm.com>
+References: <20210315120444.215905-1-heying24@huawei.com>
+ <6eb1925c-a3a1-f062-29da-3a7fa946505c@csgroup.eu>
+ <ddd03e30-9e54-66cd-8917-6f620557b795@huawei.com>
+ <c6af9455-9a04-c93e-ac7c-3c7d6a56953a@kaod.org>
+ <fe0638cc-28be-2e5c-9e94-ab3ff7666164@csgroup.eu>
+ <eb78b1b0-03f9-2b20-02a7-74dbeea81493@kaod.org>
+From: "heying (H)" <heying24@huawei.com>
+Message-ID: <8abc9f24-4e63-f694-ba6b-56da801b45ed@huawei.com>
+Date: Tue, 16 Mar 2021 10:04:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <eb78b1b0-03f9-2b20-02a7-74dbeea81493@kaod.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.110.136]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,43 +58,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: johnny.chenyi@huawei.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paul Menzel <pmenzel@molgen.mpg.de> writes:
-> Am 15.03.21 um 08:53 schrieb Michael Ellerman:
->> Paul Menzel writes:
->
->>> On the POWER8 system IBM S822LC, Linux 5.12-rc2+ logs the errors below.
->>=20
->> That's a bare metal system, you can see that from the line "Using
->> PowerNV machine description" in the boot log.
->>=20
->>>       $ dmesg --level=3Derr
->>>       [    1.555668] Driver 'hvc_console' was unable to register with b=
-us_type 'vio' because the bus was not initialized.
->>>       [    1.558434] Driver 'tpm_ibmvtpm' was unable to register with b=
-us_type 'vio' because the bus was not initialized.
->>>       $ grep VIO /boot/config-5.12.0-rc2+
->>>       CONFIG_IBMVIO=3Dy
->>=20
->> The "vio" bus is not a real bus, it's a fake bus we use for hypervisor
->> provided devices in LPARs (guests).
->>=20
->> So on bare metal machines there is no vio bus, the devices that would
->> appear on the vio bus are found via other mechanisms.
->
-> Thank you for the explanation. Two questions:
->
-> 1.  Could a bare metal system be detected, and the VIO =E2=80=9Cbe skippe=
-d=E2=80=9D?
+Dear Cédric Le Goater and Christophe Leroy,
 
-Yeah, in fact we are already skipping the registration of the bus,
-that's why we're seeing these messages. We need to also skip the
-registration of the drivers to avoid those warnings.
+Thanks for all your suggestions! I'll pick them in my patch and resent 
+it soon.
 
-See the patch I just sent.
 
-cheers
+Thanks again.
+
+
+在 2021/3/15 21:14, Cédric Le Goater 写道:
+> On 3/15/21 2:01 PM, Christophe Leroy wrote:
+>>
+>> Le 15/03/2021 à 13:57, Cédric Le Goater a écrit :
+>>> On 3/15/21 1:48 PM, heying (H) wrote:
+>>>> 在 2021/3/15 20:17, Christophe Leroy 写道:
+>>>>> You subject doesn't match the content of the patch.
+>>>> OK. I'll adapt that.
+>>>>> Le 15/03/2021 à 13:04, He Ying a écrit :
+>>>>>> The variables 'uaccess_fulsh' and 'entry_flush' are not referenced
+>>>>>> outside the file. So define them as static to avoid the warnings.
+>>>>>>
+>>>>>> And add a prototype for the function 'panic_smp_self_stop' for the
+>>>>>> same purpose.
+>>>>>>
+>>>>>> Sparse also warns that 'rfi_flush' should be static. However, it's
+>>>>>> referenced outside the file.
+>>>>> To clear that warning, you have to include asm/security_features.h, rfi_flush is declared there.
+>>>> Do you mean that I should include this header in arch/powerpc/kernel/setup_64.c?
+>>> yes.
+>>>
+>>>>>> The warnings about the file reported by sparse are as follows:
+>>>>>> arch/powerpc/kernel/setup_64.c:422:6: warning: symbol 'panic_smp_self_stop' was not declared. Should it be static?
+>>>>>> arch/powerpc/kernel/setup_64.c:951:6: warning: symbol 'rfi_flush' was not declared. Should it be static?
+>>>>>> arch/powerpc/kernel/setup_64.c:952:6: warning: symbol 'entry_flush' was not declared. Should it be static?
+>>>>>> arch/powerpc/kernel/setup_64.c:953:6: warning: symbol 'uaccess_flush' was not declared. Should it be static?
+>>>>>>
+>>>>>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>>>>>> Signed-off-by: He Ying <heying24@huawei.com>
+>>>>>> ---
+>>>>>>     arch/powerpc/kernel/setup_64.c | 6 ++++--
+>>>>>>     1 file changed, 4 insertions(+), 2 deletions(-)
+>>>>>>
+>>>>>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+>>>>>> index 560ed8b975e7..603aacd8527b 100644
+>>>>>> --- a/arch/powerpc/kernel/setup_64.c
+>>>>>> +++ b/arch/powerpc/kernel/setup_64.c
+>>>>>> @@ -71,6 +71,8 @@
+>>>>>>       #include "setup.h"
+>>>>>>     +extern void panic_smp_self_stop(void);
+>>>>>> +
+>>>>> For function prototypes 'extern' is unneeded and deprecated.
+>>>>>
+>>>>> And function prototypes should go in an header file.
+>>>>>
+>>>>> panic_smp_self_stop() is called from kernel/panic.c , it should be declared in one of the generic linux header files I think.
+>>>> Yes, you're right. But I have no idea which header it should be declared in. May I have your suggestions?
+>>> arch/powerpc/include/asm/bug.h looks like a good place.
+>> Why declaring it in a powerpc header ?
+>>
+>> It's a weak function defined in core part of kernel (kernel/panic.c).
+>>
+>> I think it should go in a common header, just like for instance arch_thaw_secondary_cpus_begin()
+> Indeed. include/linux/smp.h is a better place for a common routine.
+>
+> C.
+>
+> .
