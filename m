@@ -1,53 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCEB33DBDA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 19:01:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 456AF33DC3D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 19:10:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0Lgw60zgz3c1n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 05:01:16 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vk1OzZlj;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0Ltx21Brz3brS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 05:10:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Vk1OzZlj; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0Lfd0Pfkz30Fj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 05:00:09 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 56D5065138;
- Tue, 16 Mar 2021 18:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1615917606;
- bh=iGiBNRxaPcDr+iH013raTIVuSi+f7uXGwsktWMiJ3zA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Vk1OzZljn21yoof0f5+sxZerNH5nku57uhEErWCu0wqClyD4i6+Q2gbSbinH/hoX/
- Poq/vNUJiY/GJRdmdYa4dy0OgbxuWygENGWFNGJxR89EDL9/78UysElnpg21NKbXw3
- dHmhgaKTG+tQt/c3LtCQ8qWbaLFIFrWbvqrfSGFAcNarYf5zhp/nPIvochh1Nk2zX/
- /iQmt9+9gN+yM1Qzw0QDlvx610nIKv6apmWOqSYnVYx7KkGj4UQwREqOEzXHtdR7lx
- 3h+LSG2S/3G7RkIPagCZMjiVT9fa2EGi41cX+jUOfYFHx+iHShBzl51X69GHAScRa1
- i8iYkO/X4yU8A==
-From: Mark Brown <broonie@kernel.org>
-To: timur@kernel.org,
-	Yang Li <yang.lee@linux.alibaba.com>
-Subject: Re: [PATCH v2] ASoC: imx-hdmi: fix platform_no_drv_owner.cocci
- warnings
-Date: Tue, 16 Mar 2021 17:59:44 +0000
-Message-Id: <161591744695.13544.5664238144081084443.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <1614848881-29637-1-git-send-email-yang.lee@linux.alibaba.com>
-References: <1614848881-29637-1-git-send-email-yang.lee@linux.alibaba.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0Ltb3xDYz2xgK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 05:10:27 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4F0LtQ5qpxz9v0hq;
+ Tue, 16 Mar 2021 19:10:22 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id b9cIQnu_A5rj; Tue, 16 Mar 2021 19:10:22 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F0LtQ3h1Nz9v0hm;
+ Tue, 16 Mar 2021 19:10:22 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2FFD98B7EE;
+ Tue, 16 Mar 2021 19:10:24 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id pg33Skpor4nr; Tue, 16 Mar 2021 19:10:24 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B55658B7E1;
+ Tue, 16 Mar 2021 19:10:23 +0100 (CET)
+Subject: Re: [PATCH] net: ethernet: fs-enet: remove casting dma_alloc_coherent
+To: David Laight <David.Laight@ACULAB.COM>, Xu Wang <vulab@iscas.ac.cn>,
+ "pantelis.antoniou@gmail.com" <pantelis.antoniou@gmail.com>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "kuba@kernel.org" <kuba@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20201211085212.85457-1-vulab@iscas.ac.cn>
+ <34548188-67f4-d3ef-c2e3-871fc520e838@csgroup.eu>
+ <6fc4b62ee7754d78b8f7b9c2275bc47e@AcuMS.aculab.com>
+ <4a1c2852-781f-e125-afcb-69387660b6af@csgroup.eu>
+ <3f31140339c94652b1e7116e91cfd9c8@AcuMS.aculab.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <7f322df3-80b6-dfd0-caf2-afc2ca3950b1@csgroup.eu>
+Date: Tue, 16 Mar 2021 19:10:19 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <3f31140339c94652b1e7116e91cfd9c8@AcuMS.aculab.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,46 +69,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, shengjiu.wang@gmail.com,
- Xiubo.Lee@gmail.com, festevam@gmail.com, s.hauer@pengutronix.de,
- linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com,
- Mark Brown <broonie@kernel.org>, linux-imx@nxp.com, kernel@pengutronix.de,
- shawnguo@kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 4 Mar 2021 17:08:01 +0800, Yang Li wrote:
-> ./sound/soc/fsl/imx-hdmi.c:226:3-8: No need to set .owner here. The core
-> will do it.
+
+
+Le 11/12/2020 à 17:55, David Laight a écrit :
+> From: Christophe Leroy
+>> Sent: 11 December 2020 16:43
+>>
+>> Le 11/12/2020 à 17:07, David Laight a écrit :
+>>> From: Christophe Leroy
+>>>> Sent: 11 December 2020 15:22
+>>>>
+>>>> Le 11/12/2020 à 09:52, Xu Wang a écrit :
+>>>>> Remove casting the values returned by dma_alloc_coherent.
+>>>>
+>>>> Can you explain more in the commit log ?
+>>>>
+>>>> As far as I can see, dma_alloc_coherent() doesn't return __iomem, and ring_base member is __iomem
+>>>
+>>> Which is probably wrong - that is the kernel address of kernel memory.
+>>> So it shouldn't have the __iomem marker.
+>>
+>> That's where the buffer descriptors are, the driver accesses to the content of the buffer
+>> descriptors using the IO accessors in_be16()/out_be16(). Is it not correct ?
 > 
-> Remove .owner field if calls are used which set it automatically
+> I've just been looking at the crap in there.
+> My understanding is that IO accessors are for IO devices (eg addresses
+> from io_remap() etc).
+> 
+> Buffers allocated by dma_alloc_coherent() are normal kernel memory
+> and don't need any accessors.
+> Now you might need some barriers - mostly because an ethernet chip
+> can typically read a ring entry without being prodded.
+> IIRC there is a barrier in writel() to ensure the dma master will
+> 'see' all memory writes done before the IO write that kicks it into
+> doing some processing.
 
-Applied to
+As far as I can see, writel() is using __iomem memory, see 
+https://elixir.bootlin.com/linux/v5.12-rc2/source/include/asm-generic/io.h#L221
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+> 
+> The fact that the driver contains so many __iomem casts (eg in
+> tx_restart) is an indication that something is badly awry.
+> __iomem exists to check you are using the correct type of pointer.
+> Any __iomem casts are dubious.
 
-Thanks!
+I agree, but what else can we do to guarantee proper access to that memory ?
 
-[1/1] ASoC: imx-hdmi: fix platform_no_drv_owner.cocci warnings
-      commit: 2e2bf6d479616a15c54c4e668558f61caffa4db4
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Christophe
