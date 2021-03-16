@@ -2,55 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC15433DA6C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 18:14:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CEF33DB6C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 18:52:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0Kdz5vshz3bn8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 04:14:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0LTX10Hbz3bnK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 04:52:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=JJhWXyR9;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=nHI0P9Xt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
+ (client-ip=2001:8b0:10b:1234::107; helo=merlin.infradead.org;
  envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=JJhWXyR9; 
+ header.s=merlin.20170209 header.b=nHI0P9Xt; 
  dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org
- [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1234::107])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0KdW16qlz30Dd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 04:14:04 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0LSK2sX6z30CD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 04:51:12 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
- :MIME-Version:Date:Message-ID:Subject:From:Cc:To:Sender:Reply-To:Content-ID:
- Content-Description:In-Reply-To:References;
- bh=SNd1NC05kzjzUXrk9iyFECNnh7DNfCihWph8pL99bq8=; b=JJhWXyR9bT6NbKdEAKE9PYA+Wn
- pcarwhC/oci2ZPPjV+XG3kjJ2mmxJn9ShFlXQy1faXD3HMdTfn7qwq1pgftW/tO7DLKKGqftH0UPK
- rZyO9Rd4nijI6xbwUeVkYlwoA0pXneE+vc9W+HOQw76EJiKXvqj+9nVqHyZJ9tfGwHo1c4WBUji8L
- UN1MLo+ble4DXOuQ3ckQBh/FUYhiz+2vnGJwOpEQF0fNo9qD7yWzpCsEIF+m7+vLNmjfIaCTUMuvP
- CbXWKUkmZNEeSJICcxGKWoe1W+E6dEWcSvSz3z7uvC5cw6wceI8G4ntr8wosGzzEz+ECXfT1tuYAg
- kKPYVdiw==;
-Received: from [2602:306:c5a2:a380:9e7b:efff:fe40:2b26]
- by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lMDGY-001O05-Bx; Tue, 16 Mar 2021 17:13:59 +0000
-To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+ d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:Message-Id:
+ Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=vzYJFOzEb1NIe97QoacZwsNCoaEoErPswDtLLsJodoE=; b=nHI0P9XtVczaiwy5Rpf4wbFsUy
+ 1c3Y/vCblIOOo0gditrYx11ZTLAeRvbG7/5zKWQcD3h8YGyRo1Gvsmq8KCP7Th4dfXTQ1r+KUlTvg
+ 2YLbujuecTxQK6FkD+e9Ln7HAseuf8XnCUE714I2s0g8AwPb4+UH4evBRC+6IKR2+1NhzX2VJb98s
+ NhCsmWu3xifM6xAAcAz3EkABmnqfdsOAK89ZHAuac0JY8Av2FOhQR7r817dRMLcYjjMxCNpPPfU8W
+ U+ODpB3W/bx9hECVIfydELMm2zrXYlBkvfg7KPLQgWzvdWsfWCLX9k7sM7W5ssilmCI5CewhciB1P
+ cAbi4Cmg==;
+Received: from geoff by merlin.infradead.org with local (Exim 4.94 #2 (Red Hat
+ Linux)) id 1lMDqU-001UqU-L3; Tue, 16 Mar 2021 17:51:06 +0000
+Message-Id: <cover.1615916650.git.geoff@infradead.org>
 From: Geoff Levand <geoff@infradead.org>
-Subject: [PATCH] MAINTAINERS: Update Spidernet network driver
-Message-ID: <6399e3a4-c8b0-e015-c766-07cbb87780ab@infradead.org>
-Date: Tue, 16 Mar 2021 10:13:52 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Patch-Date: Mon, 15 Mar 2021 19:14:10 -0700
+Subject: [PATCH v1 0/2] PS3 Updates
+To: Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 16 Mar 2021 17:51:06 +0000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,37 +56,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Change the Spidernet network driver from supported to
-maintained, add the linuxppc-dev ML, and add myself as
-a 'maintainer'.
+Hi Michael,
 
-Cc: Ishizaki Kou <kou.ishizaki@toshiba.co.jp>
-Signed-off-by: Geoff Levand <geoff@infradead.org>
----
- MAINTAINERS | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Here are two minor updates for PS3.  The first exports the firmware version to
+the proc FS, and the second re-aligns the DTB to save a little space in the
+PS3's limited flash memory.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index aa84121c5611..7451cd55af18 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16887,8 +16887,10 @@ F:	tools/spi/
- 
- SPIDERNET NETWORK DRIVER for CELL
- M:	Ishizaki Kou <kou.ishizaki@toshiba.co.jp>
-+M:	Geoff Levand <geoff@infradead.org>
- L:	netdev@vger.kernel.org
--S:	Supported
-+L:	linuxppc-dev@lists.ozlabs.org
-+S:	Maintained
- F:	Documentation/networking/device_drivers/ethernet/toshiba/spider_net.rst
- F:	drivers/net/ethernet/toshiba/spider_net*
- 
+-Geoff
+
+The following changes since commit f40ddce88593482919761f74910f42f4b84c004b:
+
+  Linux 5.11 (2021-02-14 14:32:24 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/geoff/ps3-linux.git for-merge-powerpc
+
+for you to fetch changes up to 7bee1153671a3ec71775246887894eefbfcb4b25:
+
+  powerpc/ps3: Re-align DTB in image (2021-03-13 18:43:16 -0800)
+
+----------------------------------------------------------------
+Geoff Levand (2):
+      powerpc/ps3: Add firmware version to proc
+      powerpc/ps3: Re-align DTB in image
+
+ arch/powerpc/boot/zImage.ps3.lds.S |  2 +-
+ arch/powerpc/platforms/ps3/setup.c | 62 ++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 60 insertions(+), 4 deletions(-)
+
 -- 
 2.25.1
 
