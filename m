@@ -1,70 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E72333D1F2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 11:43:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0267F33D205
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 11:43:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F08yN1RVBz30Gk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 21:43:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F08yz06ZRz3bxY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 21:43:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=qgUqKV/i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=T5Bln+cg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
+ helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qgUqKV/i; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
+ header.s=20161025 header.b=T5Bln+cg; dkim-atps=neutral
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
+ [IPv6:2607:f8b0:4864:20::1033])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F08xV3rjrz3035
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 21:42:21 +1100 (AEDT)
-Received: by mail-pj1-x1036.google.com with SMTP id ha17so9634378pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 03:42:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F08xX4RP4z303B
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 21:42:24 +1100 (AEDT)
+Received: by mail-pj1-x1033.google.com with SMTP id
+ f2-20020a17090a4a82b02900c67bf8dc69so1143198pjh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 03:42:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=CDJoUG1yLv0WyAFnf8ZykYSJsUDwHka1W1/1b/XD9EY=;
- b=qgUqKV/i0lqQGQ8cpf3T8NjxZmLAYoqRVMPd64/OVpYlXSqPQGe4tOTpKq1U1sDVad
- akThFTvykQ+4JoLA2rvOyQKkr+r6iqtmkNMuuKhnHT+MaOrkfbepBAmLkzfPMHGdtFUn
- nieTSRef+E1Yls5NvaW6fWMLfesAKbqoACXfcuCiAErklDsRs0CDkWuN78ScFHbVBoCH
- B55EfscgdxVvEeMpt35onBYfeRFzcJEMEGe8VSnI8k7txpd71+8ckQ/acSeXuopL4Og5
- 35NRVV8oF0KVesaeFeM8EpjsA+HZzn0xPB8KOIY4wn4u+Dft2z0aFnp18AMDbxqqsCzi
- T5Wg==
+ bh=1GvWHHegIjn0/n4RBs2lpRU+ieSIbQ58O73O3TZAEeE=;
+ b=T5Bln+cgglNrOOjWWdsILSB6ItfkNYBBwpHHDhTd1ycGjCSg0A+vo/WQpIpdpdppG9
+ CS5gC9F0vLpfmfv23hcP9E966OwWV1Jr7KCoKZV7x/fcmEIXsDNJfKUGL2iyM+3HZDEA
+ asMPfgI2yHulmK2RSrg2jRbN1wb5DRlYuvAOHqTzyTRNkoVDwW5RcsF/GfaheYZc+BYf
+ TpE7i9MBDaeTWzp9GYZ3H0wRiWBOAp9v0NGJu0SKhTb9WtdU925wXGo31pQfrpQG4vkg
+ +ZVcFsGxGzfxRnT+e1aPZ8E63YZQA2wSID+49dY3X2tOmPH0n5I6MKLWM7LxatqQBZGw
+ ij9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=CDJoUG1yLv0WyAFnf8ZykYSJsUDwHka1W1/1b/XD9EY=;
- b=jlVJmzVX2RKrKGhKhONKCWbLpOY94YcSgJrhtthc7ViLGhankNrv1Uio9Xc2m1L55D
- MmeD8k+4ZW9UOSuY2MZ2ArNITWzekdLPnHt8flhAqyJfo4VFJ3jdBCNq3TC4MUYRisc4
- S/VElFvRi6fO7kd13ZQalj8E1wpBVZPfl23de4mp0rEycPwOF1AV6uQlQF6xdTyqh+83
- TYJkh3Mp2rq6b1U0p3oHftPTA9Bpe9RhTb9R2w5VNRmdl507fq+n8XHGKDU8ClqoNgyk
- D3lGJIWRrY9DtSe+1qFxKtrclwziWd5V79Np74/PGxS9toei7J32ln+HZUlJJEr8Y6z3
- fsXQ==
-X-Gm-Message-State: AOAM531niUUIfbGwIlgxjTaqgJFh5x3IiZnXSQLtGKt9H75btGErv4hk
- lqpr9VJnBhgzSpEgsngFea6yvrCGCDU=
-X-Google-Smtp-Source: ABdhPJyRPBCcrYPk025d+rz2yifSyS3Mboy00PTPnNP9byvEwjZgY3KNVfpG4eRcE+AYuyjZXlmZoA==
-X-Received: by 2002:a17:90a:8408:: with SMTP id j8mr4251110pjn.1.1615891339145; 
- Tue, 16 Mar 2021 03:42:19 -0700 (PDT)
+ bh=1GvWHHegIjn0/n4RBs2lpRU+ieSIbQ58O73O3TZAEeE=;
+ b=ez7IB9NThXqq8Kb1T3915WU8v8A+pcjcfMfXeumkTCnGiak+OVmbqxAcqxWYdZ7BX3
+ ZDyQdtDWl+QYScbQF5Rh/pZIb83YErr6NI9RWXj4vbC1j5gMrhDHo8JiyUGUeCw3xf3/
+ QyvpBJdIGqPQFjy5E1US9B38kcQbg1qToL4cN8+tDQmne9hOyUjTj2SzEAH1O09Vx/2B
+ gakr2KFfOJnTfjGg5vEyOlzq9bHl5xY3TZ5BbdqgshC02RdjqM+qQrt52rwFp+I9y9zn
+ QBkyIKumDiyw3AeP4kWoVPrGSrt1AiK7gIqK5ZivJVay812qB8o3VdKAGMArQ5bBUeuL
+ l2DA==
+X-Gm-Message-State: AOAM531UVrxhYXG/Hx99beUGy9QXXNqB3D07keE9S0WHfyEOPbKnsNf8
+ UrMFRYTKl09GTKAPaMpRS+6ripMb8Us=
+X-Google-Smtp-Source: ABdhPJyRBByj6J9lyd0IOyHJo6VNmUzfuBf1UWhbNIPBqqjjAQBTejGVczeF01BWdbCDn/H3PRy5bg==
+X-Received: by 2002:a17:90b:3884:: with SMTP id
+ mu4mr4253784pjb.128.1615891342191; 
+ Tue, 16 Mar 2021 03:42:22 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
  by smtp.gmail.com with ESMTPSA id
- r30sm15828489pgu.86.2021.03.16.03.42.16
+ r30sm15828489pgu.86.2021.03.16.03.42.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Mar 2021 03:42:18 -0700 (PDT)
+ Tue, 16 Mar 2021 03:42:21 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 01/11] powerpc/syscall: switch user_exit_irqoff and
- trace_hardirqs_off order
-Date: Tue, 16 Mar 2021 20:41:55 +1000
-Message-Id: <20210316104206.407354-2-npiggin@gmail.com>
+Subject: [PATCH v2 02/11] powerpc/64e/interrupt: always save nvgprs on
+ interrupt
+Date: Tue, 16 Mar 2021 20:41:56 +1000
+Message-Id: <20210316104206.407354-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210316104206.407354-1-npiggin@gmail.com>
 References: <20210316104206.407354-1-npiggin@gmail.com>
@@ -86,37 +88,246 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-user_exit_irqoff() -> __context_tracking_exit -> vtime_user_exit
-warns in __seqprop_assert due to lockdep thinking preemption is enabled
-because trace_hardirqs_off() has not yet been called.
+In order to use the C interrupt return, nvgprs must always be saved.
 
-Switch the order of these two calls, which matches their ordering in
-interrupt_enter_prepare.
-
-Fixes: 5f0b6ac3905f ("powerpc/64/syscall: Reconcile interrupts")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/interrupt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/ptrace.h    |  9 +--------
+ arch/powerpc/kernel/entry_64.S       | 13 -------------
+ arch/powerpc/kernel/exceptions-64e.S | 27 +++------------------------
+ 3 files changed, 4 insertions(+), 45 deletions(-)
 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index c4dd4b8f9cfa..fbabb49888d3 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -43,11 +43,11 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
- 		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
+diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
+index 1aca5fe79285..c5b3669918f4 100644
+--- a/arch/powerpc/include/asm/ptrace.h
++++ b/arch/powerpc/include/asm/ptrace.h
+@@ -186,18 +186,11 @@ static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
+ 	((struct pt_regs *)((unsigned long)task_stack_page(current) + THREAD_SIZE) - 1)
  
-+	trace_hardirqs_off(); /* finish reconciling */
-+
- 	CT_WARN_ON(ct_state() == CONTEXT_KERNEL);
- 	user_exit_irqoff();
+ #ifdef __powerpc64__
+-#ifdef CONFIG_PPC_BOOK3S
+ #define TRAP_FLAGS_MASK		0x10
+ #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
+ #define FULL_REGS(regs)		true
+ #define SET_FULL_REGS(regs)	do { } while (0)
+-#else
+-#define TRAP_FLAGS_MASK		0x11
+-#define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
+-#define FULL_REGS(regs)		(((regs)->trap & 1) == 0)
+-#define SET_FULL_REGS(regs)	((regs)->trap &= ~1)
+-#endif
+-#define CHECK_FULL_REGS(regs)	BUG_ON(!FULL_REGS(regs))
++#define CHECK_FULL_REGS(regs)	do { } while (0)
+ #define NV_REG_POISON		0xdeadbeefdeadbeefUL
+ #else
+ /*
+diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+index 6c4d9e276c4d..853534b2ae2e 100644
+--- a/arch/powerpc/kernel/entry_64.S
++++ b/arch/powerpc/kernel/entry_64.S
+@@ -417,19 +417,6 @@ _GLOBAL(ret_from_kernel_thread)
+ 	li	r3,0
+ 	b	.Lsyscall_exit
  
--	trace_hardirqs_off(); /* finish reconciling */
+-#ifdef CONFIG_PPC_BOOK3E
+-/* Save non-volatile GPRs, if not already saved. */
+-_GLOBAL(save_nvgprs)
+-	ld	r11,_TRAP(r1)
+-	andi.	r0,r11,1
+-	beqlr-
+-	SAVE_NVGPRS(r1)
+-	clrrdi	r0,r11,1
+-	std	r0,_TRAP(r1)
+-	blr
+-_ASM_NOKPROBE_SYMBOL(save_nvgprs);
+-#endif
 -
- 	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x))
- 		BUG_ON(!(regs->msr & MSR_RI));
- 	BUG_ON(!(regs->msr & MSR_PR));
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 
+ #define FLUSH_COUNT_CACHE	\
+diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+index e8eb9992a270..a7d9ce9f7fdb 100644
+--- a/arch/powerpc/kernel/exceptions-64e.S
++++ b/arch/powerpc/kernel/exceptions-64e.S
+@@ -417,14 +417,15 @@ exc_##n##_common:							    \
+ 	std	r6,_LINK(r1);						    \
+ 	std	r7,_CTR(r1);						    \
+ 	std	r8,_XER(r1);						    \
+-	li	r3,(n)+1;		/* indicate partial regs in trap */ \
++	li	r3,(n);			/* regs.trap vector */		    \
+ 	std	r9,0(r1);		/* store stack frame back link */   \
+ 	std	r10,_CCR(r1);		/* store orig CR in stackframe */   \
+ 	std	r9,GPR1(r1);		/* store stack frame back link */   \
+ 	std	r11,SOFTE(r1);		/* and save it to stackframe */     \
+ 	std	r12,STACK_FRAME_OVERHEAD-16(r1); /* mark the frame */	    \
+ 	std	r3,_TRAP(r1);		/* set trap number		*/  \
+-	std	r0,RESULT(r1);		/* clear regs->result */
++	std	r0,RESULT(r1);		/* clear regs->result */	    \
++	SAVE_NVGPRS(r1);
+ 
+ #define EXCEPTION_COMMON(n) \
+ 	EXCEPTION_COMMON_LVL(n, SPRN_SPRG_GEN_SCRATCH, PACA_EXGEN)
+@@ -561,7 +562,6 @@ __end_interrupts:
+ 	CRIT_EXCEPTION_PROLOG(0x100, BOOKE_INTERRUPT_CRITICAL,
+ 			      PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON_CRIT(0x100)
+-	bl	save_nvgprs
+ 	bl	special_reg_save
+ 	CHECK_NAPPING();
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+@@ -573,7 +573,6 @@ __end_interrupts:
+ 	MC_EXCEPTION_PROLOG(0x000, BOOKE_INTERRUPT_MACHINE_CHECK,
+ 			    PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON_MC(0x000)
+-	bl	save_nvgprs
+ 	bl	special_reg_save
+ 	CHECK_NAPPING();
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+@@ -623,7 +622,6 @@ __end_interrupts:
+ 	std	r14,_DSISR(r1)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	ld	r14,PACA_EXGEN+EX_R14(r13)
+-	bl	save_nvgprs
+ 	bl	program_check_exception
+ 	b	ret_from_except
+ 
+@@ -639,7 +637,6 @@ __end_interrupts:
+ 	bl	load_up_fpu
+ 	b	fast_exception_return
+ 1:	INTS_DISABLE
+-	bl	save_nvgprs
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	kernel_fp_unavailable_exception
+ 	b	ret_from_except
+@@ -661,7 +658,6 @@ BEGIN_FTR_SECTION
+ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ #endif
+ 	INTS_DISABLE
+-	bl	save_nvgprs
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	altivec_unavailable_exception
+ 	b	ret_from_except
+@@ -673,7 +669,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ 				PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x220)
+ 	INTS_DISABLE
+-	bl	save_nvgprs
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ #ifdef CONFIG_ALTIVEC
+ BEGIN_FTR_SECTION
+@@ -698,7 +693,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ 	CRIT_EXCEPTION_PROLOG(0x9f0, BOOKE_INTERRUPT_WATCHDOG,
+ 			      PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON_CRIT(0x9f0)
+-	bl	save_nvgprs
+ 	bl	special_reg_save
+ 	CHECK_NAPPING();
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+@@ -723,7 +717,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ 				PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0xf20)
+ 	INTS_DISABLE
+-	bl	save_nvgprs
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	unknown_exception
+ 	b	ret_from_except
+@@ -792,7 +785,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	ld	r14,PACA_EXCRIT+EX_R14(r13)
+ 	ld	r15,PACA_EXCRIT+EX_R15(r13)
+-	bl	save_nvgprs
+ 	bl	DebugException
+ 	b	ret_from_except
+ 
+@@ -864,7 +856,6 @@ kernel_dbg_exc:
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	ld	r14,PACA_EXDBG+EX_R14(r13)
+ 	ld	r15,PACA_EXDBG+EX_R15(r13)
+-	bl	save_nvgprs
+ 	bl	DebugException
+ 	b	ret_from_except
+ 
+@@ -887,7 +878,6 @@ kernel_dbg_exc:
+ 	CRIT_EXCEPTION_PROLOG(0x2a0, BOOKE_INTERRUPT_DOORBELL_CRITICAL,
+ 			      PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON_CRIT(0x2a0)
+-	bl	save_nvgprs
+ 	bl	special_reg_save
+ 	CHECK_NAPPING();
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+@@ -903,7 +893,6 @@ kernel_dbg_exc:
+ 			        PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x2c0)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	bl	save_nvgprs
+ 	INTS_RESTORE_HARD
+ 	bl	unknown_exception
+ 	b	ret_from_except
+@@ -913,7 +902,6 @@ kernel_dbg_exc:
+ 	CRIT_EXCEPTION_PROLOG(0x2e0, BOOKE_INTERRUPT_GUEST_DBELL_CRIT,
+ 			      PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON_CRIT(0x2e0)
+-	bl	save_nvgprs
+ 	bl	special_reg_save
+ 	CHECK_NAPPING();
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+@@ -926,7 +914,6 @@ kernel_dbg_exc:
+ 			        PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x310)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	bl	save_nvgprs
+ 	INTS_RESTORE_HARD
+ 	bl	unknown_exception
+ 	b	ret_from_except
+@@ -937,7 +924,6 @@ kernel_dbg_exc:
+ 			        PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x320)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	bl	save_nvgprs
+ 	INTS_RESTORE_HARD
+ 	bl	unknown_exception
+ 	b	ret_from_except
+@@ -948,7 +934,6 @@ kernel_dbg_exc:
+ 			        PROLOG_ADDITION_NONE)
+ 	EXCEPTION_COMMON(0x340)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	bl	save_nvgprs
+ 	INTS_RESTORE_HARD
+ 	bl	unknown_exception
+ 	b	ret_from_except
+@@ -1014,7 +999,6 @@ storage_fault_common:
+ 	cmpdi	r3,0
+ 	bne-	1f
+ 	b	ret_from_except_lite
+-1:	bl	save_nvgprs
+ 	mr	r4,r3
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	__bad_page_fault
+@@ -1030,16 +1014,12 @@ alignment_more:
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	ld	r14,PACA_EXGEN+EX_R14(r13)
+ 	ld	r15,PACA_EXGEN+EX_R15(r13)
+-	bl	save_nvgprs
+ 	INTS_RESTORE_HARD
+ 	bl	alignment_exception
+ 	b	ret_from_except
+ 
+ 	.align	7
+ _GLOBAL(ret_from_except)
+-	ld	r11,_TRAP(r1)
+-	andi.	r0,r11,1
+-	bne	ret_from_except_lite
+ 	REST_NVGPRS(r1)
+ 
+ _GLOBAL(ret_from_except_lite)
+@@ -1080,7 +1060,6 @@ _GLOBAL(ret_from_except_lite)
+ 	SCHEDULE_USER
+ 	b	ret_from_except_lite
+ 2:
+-	bl	save_nvgprs
+ 	/*
+ 	 * Use a non volatile GPR to save and restore our thread_info flags
+ 	 * across the call to restore_interrupts.
 -- 
 2.23.0
 
