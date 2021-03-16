@@ -1,52 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAB933DB65
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 18:51:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054DF33DBCF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 19:00:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0LSj6Kn3z3bPX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 04:51:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0LgS6zhJz3bcg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 05:00:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=1b8wl9YJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UnlsifzF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1234::107; helo=merlin.infradead.org;
- envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=1b8wl9YJ; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=UnlsifzF; 
  dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1234::107])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0LSK6tkdz30Dp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 04:51:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
- In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=daDjuKp3v3AZM2+NFJem86trbpyHiWImyVHebGvZ5qw=; b=1b8wl9YJJ4XP3gzEKbLqvhrITo
- +IklB+LnXnWPzeWOHIrQjOL4yS/vmWhv1xWo46L9XMZt6pgjix45F72mad9EiSwjbsI7lRrAZvNIt
- rsdYMXIxhudBIlXvfNP/vKgOWiDB5nU3OfDqn/jnpLiZQ5A8sbcnUA7ikPeJDMBMLCmysPbdyGihA
- K4FYiJOUEI3Wu5Y8IZ/4dZVVb2WtJTXBoVo+Iez7Xq2yJP8rvB4KejosOWatZeT5HwebQWESjaQ6m
- nBzTYwtpsVB9LvQ0iJuF92GFNBaeakcYsF/Xk2tkQ4O5YDPUVWrG4ab9dOrlujpbRjb3hc4RATj1G
- GCJ5HhIg==;
-Received: from geoff by merlin.infradead.org with local (Exim 4.94 #2 (Red Hat
- Linux)) id 1lMDqV-001UqZ-Rw; Tue, 16 Mar 2021 17:51:09 +0000
-Message-Id: <7bee1153671a3ec71775246887894eefbfcb4b25.1615916650.git.geoff@infradead.org>
-In-Reply-To: <cover.1615916650.git.geoff@infradead.org>
-References: <cover.1615916650.git.geoff@infradead.org>
-From: Geoff Levand <geoff@infradead.org>
-Patch-Date: Sat, 13 Mar 2021 18:43:16 -0800
-Subject: [PATCH v1 2/2] powerpc/ps3: Re-align DTB in image
-To: Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 16 Mar 2021 17:51:07 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0LfZ4nqPz30CD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 05:00:05 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D7E73650D9;
+ Tue, 16 Mar 2021 17:59:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1615917598;
+ bh=vdy2WpeZI2HCzGdQqz3Y/L//P+ab1QFmmzSf0iTsJxg=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=UnlsifzFhj3D7YpXvvXOJU1CORovHfvgX17+U2yLJQFIhShbsFwrxhYDfy4n3Qkwp
+ t+tSGUVpZcfEVLKsHejsyo26wxOi/2dh6ZTWags7XmGxJCI20l0YQhkgAwde5K69CO
+ YIqlWdcLppGJR1U8qaT+dlLgjE4mu+nWZT/AxDSIBUfBU5DTVWzc/P2KLpCopE8xRR
+ sDsb4MpkKwRPRZHje7YgqUNa98+5xMgUgPW9ebUDLMUEAeyR5EM18v8RJtQ/MEaKn2
+ vDQEq6I9Ttz8qOessEJAW/UgI04oHXEq5OLCKEljcMW/jc4FwTqIUkWccl49vwuF9k
+ HYyY4rqU9s1TQ==
+From: Mark Brown <broonie@kernel.org>
+To: timur@kernel.org,
+	Yang Li <yang.lee@linux.alibaba.com>
+Subject: Re: [PATCH] ASoC: hdmi-codec: fix platform_no_drv_owner.cocci warnings
+Date: Tue, 16 Mar 2021 17:59:41 +0000
+Message-Id: <161591744695.13544.8415296923566318166.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <1614761651-86898-1-git-send-email-yang.lee@linux.alibaba.com>
+References: <1614761651-86898-1-git-send-email-yang.lee@linux.alibaba.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,33 +59,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, shengjiu.wang@gmail.com,
+ Xiubo.Lee@gmail.com, festevam@gmail.com, s.hauer@pengutronix.de,
+ linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com,
+ Mark Brown <broonie@kernel.org>, linux-imx@nxp.com, kernel@pengutronix.de,
+ shawnguo@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Change the PS3 linker script to align the DTB at 8 bytes,
-the same alignment as that of the of the 'generic' powerpc
-linker script.
+On Wed, 3 Mar 2021 16:54:11 +0800, Yang Li wrote:
+> ./sound/soc/fsl/imx-hdmi.c:226:3-8: No need to set .owner here. The core
+> will do it.
+> 
+> Remove .owner field if calls are used which set it automatically
 
-Signed-off-by: Geoff Levand <geoff@infradead.org>
----
- arch/powerpc/boot/zImage.ps3.lds.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied to
 
-diff --git a/arch/powerpc/boot/zImage.ps3.lds.S b/arch/powerpc/boot/zImage.ps3.lds.S
-index 7b2ff2eaa73a..d0ffb493614d 100644
---- a/arch/powerpc/boot/zImage.ps3.lds.S
-+++ b/arch/powerpc/boot/zImage.ps3.lds.S
-@@ -8,7 +8,7 @@ SECTIONS
-   .kernel:vmlinux.bin : { *(.kernel:vmlinux.bin) }
-   _vmlinux_end =  .;
- 
--  . = ALIGN(4096);
-+  . = ALIGN(8);
-   _dtb_start = .;
-   .kernel:dtb : { *(.kernel:dtb) }
-   _dtb_end = .;
--- 
-2.25.1
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
+Thanks!
+
+[1/1] ASoC: hdmi-codec: fix platform_no_drv_owner.cocci warnings
+      commit: 2e2bf6d479616a15c54c4e668558f61caffa4db4
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
