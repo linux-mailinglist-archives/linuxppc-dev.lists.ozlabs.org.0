@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30A833D225
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 11:47:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B3733D226
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 11:47:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F09326d49z3dff
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 21:47:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F093c6rsJz3dlJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 21:47:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=eZx//ltl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=c3b1VyyX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f;
+ helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=eZx//ltl; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
+ header.s=20161025 header.b=c3b1VyyX; dkim-atps=neutral
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
+ [IPv6:2607:f8b0:4864:20::52f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F08yN6dJyz30D0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 21:43:08 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id a188so8533712pfb.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 03:43:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F08yR4162z30B5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 21:43:11 +1100 (AEDT)
+Received: by mail-pg1-x52f.google.com with SMTP id w34so21259176pga.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 03:43:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=wqys8HDJj8lKPD7TwvDnSgXZIKw+xHC+YZL0jCMUFLs=;
- b=eZx//ltlJt2UvaXeQXh0HB8sAOlZC1FnKk56TfH/ReALD78hYvFBaKjAnMQrO3Cwfn
- PKwudA/0cI+2l/2iG+yxf2SbT8UyAdz5qx9xsrUBBkZYbJCJ2q+C1v2CVm9Ei0envMqU
- 6n3yqluxG0M2Oqd/EpcwaVDXqfr8PxwoIL6ZxsAwOl/8CO7PBkdKEi5jFdnFxYJJ3+DV
- OIElj94lW1ZtcuWiQRtqZyun0SX07VMvEWNikjaHcbjyfFMeOPtJmoHpI33+r/G7RJat
- 9VGKeq/EL/KPWy5SDrIH7A8QFOD3sGoovnuotOiA4oGggsRH/BDaECEhsjmXO0OJALIg
- FSkQ==
+ bh=I3Ah3oz2aTxULj+x6daaGEf0aY8vZIOZAoSytA9Ic10=;
+ b=c3b1VyyXVkBINe+Ia97aIR3w5IQztyH/VWwiVEWVoU4Cr7AU8y9r7xlrk3HNoNp+qB
+ jBlsCoD0sdcZ4EOHieP1Lgd/BTvxqifGL4qKB6ZAa2b9dWRRSefWk+A6cZ4LBOOPypmM
+ NJcYmnvUTJ3nUgmtTU9RNIFAOqX9yFtlwrrAkgzogWqsm/8SbFz30RcAMZm4soIVPTK4
+ Yyt5Jpn91n2USZULnvQq6nzGyNVl0kfCVPnUIhmuDPkb9DXsWYWP4KOiCHSuGqlIXtJf
+ bbLm1kpJHqzA0QM+QIKFF19GGp6fc8prRtu/UZv5yL9OMr8YOgNWYDcsPwAYGx0LFtXc
+ z97g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=wqys8HDJj8lKPD7TwvDnSgXZIKw+xHC+YZL0jCMUFLs=;
- b=AnnKHpQeu/8a1Hl15gMXdrAEaQKkoQlrnLWkZsL6OMUxTy82SFjISCHg2GzTZDo3Ok
- ual+IaQgAMhv0qBAcyUs6qUTQBRHPWdFdqo3LLwsKC73ZEJakGT3o60orObBCnA8czq5
- debcaS88mDOQuqaY7StyhBEwtuH0pTG0trZEBct6h4sfxJ6RP07sjqyILp322R8lpcSj
- UoHwSyqWHgtRxhVZiY1eXvLt8cqwks9jGEr0qFVPJDhD5FaYvu419fkN0HbfMgC72PLk
- mt8DE8qHJ16JcqknQiE8zfs8I8cxuc1OrH6360BtOwzZ3N4Gwb770duRxcVw+8VwR460
- C1Rw==
-X-Gm-Message-State: AOAM530aoq5jn0NOkRrKtce5El6+bxL1zQh/kj2F9Nx3nX+Cn9vyVaAU
- VnbMpC6GoEme4zIp0U1DqwwD8fFMehc=
-X-Google-Smtp-Source: ABdhPJyDQDMqqdKwqPwYXd+WlMu26SckMuIIrBQElBtGP88Njs/XXKdmYlTq+uWELqVA/jqQvsPFKA==
-X-Received: by 2002:a63:5a50:: with SMTP id k16mr3397648pgm.155.1615891386203; 
- Tue, 16 Mar 2021 03:43:06 -0700 (PDT)
+ bh=I3Ah3oz2aTxULj+x6daaGEf0aY8vZIOZAoSytA9Ic10=;
+ b=Nn+vwUy0miyOb5bhcrxutnmHgPBkqKQLtdg/lFY0EEwFyBP9SKjNTsQ1EMjopBgnnB
+ 3wp/ulDji8cFXghx6oSolkSOnIOMe8iR8dB7wztnN/0StVND7zXCZZzMFPD5kLLg+uT2
+ iXzYeGDI32lvBrzUFvFH49fuqVBYQF6yf0r3H5ASf45ydheucmd5NIabxP3UT8OoVrug
+ fyNnqx5/6hjtj22o/U9iDTja2j0jDYe6zfhag4duX4fNezjuifzFGw0x5u2TGQZnFGig
+ r9nrV1Ty5/xnF2ZY89qpNmlCtvuWBK6F/TWvup5KV6RI6gTxrvWegzNqc76vxNPsJp5Z
+ AVxg==
+X-Gm-Message-State: AOAM532RY9fHtUtc/FD1MiRNOnRwuQ7x4ArDUFU7dFCNGYT0u4fSmawb
+ wZUfwIE4g/Sv8kZ0ApixlFlU6zHCxCs=
+X-Google-Smtp-Source: ABdhPJxnjm7RvVE5xCtJkDMOko/Clyq73CSvuADUkTLDV831HslwPqkAqLDp6Y1I1dkAW+ktyy8C1A==
+X-Received: by 2002:a63:c4c:: with SMTP id 12mr3510658pgm.320.1615891389329;
+ Tue, 16 Mar 2021 03:43:09 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
  by smtp.gmail.com with ESMTPSA id
- r30sm15828489pgu.86.2021.03.16.03.43.02
+ r30sm15828489pgu.86.2021.03.16.03.43.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Mar 2021 03:43:05 -0700 (PDT)
+ Tue, 16 Mar 2021 03:43:08 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 10/11] powerpc: remove partial register save logic
-Date: Tue, 16 Mar 2021 20:42:04 +1000
-Message-Id: <20210316104206.407354-11-npiggin@gmail.com>
+Subject: [PATCH v2 11/11] powerpc: move norestart trap flag to bit 0
+Date: Tue, 16 Mar 2021 20:42:05 +1000
+Message-Id: <20210316104206.407354-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210316104206.407354-1-npiggin@gmail.com>
 References: <20210316104206.407354-1-npiggin@gmail.com>
@@ -85,373 +85,70 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All subarchitectures always save all GPRs to pt_regs interrupt frames
-now. Remove FULL_REGS and associated bits.
+Compact the trap flags down to use the low 4 bits of regs.trap.
+
+A few 64e interrupt trap numbers set bit 4. Although they tended to be
+trivial so it wasn't a real problem[1], it is not the right thing to do,
+and confusing.
+
+[*] E.g., 0x310 hypercall goes to unknown_exception, which prints
+    regs->trap directly so 0x310 will appear fine, and only the syscall
+    interrupt will test norestart, so it won't be confused by 0x310.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/ptrace.h        | 17 ++---------------
- arch/powerpc/kernel/align.c              |  6 ------
- arch/powerpc/kernel/interrupt.c          |  3 ---
- arch/powerpc/kernel/process.c            | 12 ------------
- arch/powerpc/kernel/ptrace/ptrace-view.c | 21 ---------------------
- arch/powerpc/kernel/ptrace/ptrace.c      |  2 --
- arch/powerpc/kernel/ptrace/ptrace32.c    |  4 ----
- arch/powerpc/kernel/signal_32.c          |  3 ---
- arch/powerpc/kernel/signal_64.c          |  2 --
- arch/powerpc/kernel/traps.c              |  1 -
- arch/powerpc/lib/sstep.c                 |  4 ----
- arch/powerpc/xmon/xmon.c                 | 23 +++++++----------------
- 12 files changed, 9 insertions(+), 89 deletions(-)
+ arch/powerpc/include/asm/ptrace.h | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index c5b3669918f4..91194fdd5d01 100644
+index 91194fdd5d01..1e34791b9f80 100644
 --- a/arch/powerpc/include/asm/ptrace.h
 +++ b/arch/powerpc/include/asm/ptrace.h
-@@ -188,29 +188,16 @@ static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
+@@ -185,20 +185,25 @@ static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
+ #define current_pt_regs() \
+ 	((struct pt_regs *)((unsigned long)task_stack_page(current) + THREAD_SIZE) - 1)
+ 
++/*
++ * The 4 low bits (0xf) are available as flags to overload the trap word,
++ * because interrupt vectors have minimum alignment of 0x10. TRAP_FLAGS_MASK
++ * must cover the bits used as flags, including bit 0 which is used as the
++ * "norestart" bit.
++ */
  #ifdef __powerpc64__
- #define TRAP_FLAGS_MASK		0x10
- #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
--#define FULL_REGS(regs)		true
--#define SET_FULL_REGS(regs)	do { } while (0)
--#define CHECK_FULL_REGS(regs)	do { } while (0)
--#define NV_REG_POISON		0xdeadbeefdeadbeefUL
+-#define TRAP_FLAGS_MASK		0x10
+-#define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
++#define TRAP_FLAGS_MASK		0x1
  #else
  /*
-- * We use the least-significant bit of the trap field to indicate
-- * whether we have saved the full set of registers, or only a
-- * partial set.  A 1 there means the partial set.
-- * On 4xx we use the next bit to indicate whether the exception
-+ * On 4xx we use bit 1 in the trap word to indicate whether the exception
+  * On 4xx we use bit 1 in the trap word to indicate whether the exception
   * is a critical exception (1 means it is).
   */
--#define TRAP_FLAGS_MASK		0x1F
-+#define TRAP_FLAGS_MASK		0x1E
- #define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
--#define FULL_REGS(regs)		true
--#define SET_FULL_REGS(regs)	do { } while (0)
+-#define TRAP_FLAGS_MASK		0x1E
+-#define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
++#define TRAP_FLAGS_MASK		0xf
  #define IS_CRITICAL_EXC(regs)	(((regs)->trap & 2) != 0)
  #define IS_MCHECK_EXC(regs)	(((regs)->trap & 4) != 0)
  #define IS_DEBUG_EXC(regs)	(((regs)->trap & 8) != 0)
--#define NV_REG_POISON		0xdeadbeef
--#define CHECK_FULL_REGS(regs)						      \
--do {									      \
--} while (0)
  #endif /* __powerpc64__ */
++#define TRAP(regs)		((regs)->trap & ~TRAP_FLAGS_MASK)
  
  static inline void set_trap(struct pt_regs *regs, unsigned long val)
-diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
-index c7797eb958c7..ae525397947e 100644
---- a/arch/powerpc/kernel/align.c
-+++ b/arch/powerpc/kernel/align.c
-@@ -299,12 +299,6 @@ int fix_alignment(struct pt_regs *regs)
- 	struct instruction_op op;
- 	int r, type;
- 
--	/*
--	 * We require a complete register set, if not, then our assembly
--	 * is broken
--	 */
--	CHECK_FULL_REGS(regs);
--
- 	if (unlikely(__get_user_instr(instr, (void __user *)regs->nip)))
- 		return -EFAULT;
- 	if ((regs->msr & MSR_LE) != (MSR_KERNEL & MSR_LE)) {
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index 1b0e1792ac37..b953bb5027e6 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -51,7 +51,6 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x))
- 		BUG_ON(!(regs->msr & MSR_RI));
- 	BUG_ON(!(regs->msr & MSR_PR));
--	BUG_ON(!FULL_REGS(regs));
- 	BUG_ON(arch_irq_disabled_regs(regs));
- 
- #ifdef CONFIG_PPC_PKEY
-@@ -365,7 +364,6 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
- 	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x))
- 		BUG_ON(!(regs->msr & MSR_RI));
- 	BUG_ON(!(regs->msr & MSR_PR));
--	BUG_ON(!FULL_REGS(regs));
- 	BUG_ON(arch_irq_disabled_regs(regs));
- 	CT_WARN_ON(ct_state() == CONTEXT_USER);
- 
-@@ -445,7 +443,6 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
- 	    unlikely(!(regs->msr & MSR_RI)))
- 		unrecoverable_exception(regs);
- 	BUG_ON(regs->msr & MSR_PR);
--	BUG_ON(!FULL_REGS(regs));
- 	/*
- 	 * CT_WARN_ON comes here via program_check_exception,
- 	 * so avoid recursion.
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 7989d9ce468b..1e62a70a29aa 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1447,11 +1447,9 @@ static void print_msr_bits(unsigned long val)
- #ifdef CONFIG_PPC64
- #define REG		"%016lx"
- #define REGS_PER_LINE	4
--#define LAST_VOLATILE	13
- #else
- #define REG		"%08lx"
- #define REGS_PER_LINE	8
--#define LAST_VOLATILE	12
- #endif
- 
- static void __show_regs(struct pt_regs *regs)
-@@ -1487,8 +1485,6 @@ static void __show_regs(struct pt_regs *regs)
- 		if ((i % REGS_PER_LINE) == 0)
- 			pr_cont("\nGPR%02d: ", i);
- 		pr_cont(REG " ", regs->gpr[i]);
--		if (i == LAST_VOLATILE && !FULL_REGS(regs))
--			break;
- 	}
- 	pr_cont("\n");
- 	/*
-@@ -1691,7 +1687,6 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
- 	} else {
- 		/* user thread */
- 		struct pt_regs *regs = current_pt_regs();
--		CHECK_FULL_REGS(regs);
- 		*childregs = *regs;
- 		if (usp)
- 			childregs->gpr[1] = usp;
-@@ -1796,13 +1791,6 @@ void start_thread(struct pt_regs *regs, unsigned long start, unsigned long sp)
- 	regs->ccr = 0;
- 	regs->gpr[1] = sp;
- 
--	/*
--	 * We have just cleared all the nonvolatile GPRs, so make
--	 * FULL_REGS(regs) return true.  This is necessary to allow
--	 * ptrace to examine the thread immediately after exec.
--	 */
--	SET_FULL_REGS(regs);
--
- #ifdef CONFIG_PPC32
- 	regs->mq = 0;
- 	regs->nip = start;
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c b/arch/powerpc/kernel/ptrace/ptrace-view.c
-index 2bad8068f598..8eb826aa2a10 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-view.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
-@@ -221,17 +221,9 @@ static int gpr_get(struct task_struct *target, const struct user_regset *regset,
- #ifdef CONFIG_PPC64
- 	struct membuf to_softe = membuf_at(&to, offsetof(struct pt_regs, softe));
- #endif
--	int i;
--
- 	if (target->thread.regs == NULL)
- 		return -EIO;
- 
--	if (!FULL_REGS(target->thread.regs)) {
--		/* We have a partial register set.  Fill 14-31 with bogus values */
--		for (i = 14; i < 32; i++)
--			target->thread.regs->gpr[i] = NV_REG_POISON;
--	}
--
- 	membuf_write(&to, target->thread.regs, sizeof(struct user_pt_regs));
- 
- 	membuf_store(&to_msr, get_user_msr(target));
-@@ -252,8 +244,6 @@ static int gpr_set(struct task_struct *target, const struct user_regset *regset,
- 	if (target->thread.regs == NULL)
- 		return -EIO;
- 
--	CHECK_FULL_REGS(target->thread.regs);
--
- 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
- 				 target->thread.regs,
- 				 0, PT_MSR * sizeof(reg));
-@@ -723,19 +713,9 @@ static int gpr32_get(struct task_struct *target,
- 		     const struct user_regset *regset,
- 		     struct membuf to)
  {
--	int i;
--
- 	if (target->thread.regs == NULL)
- 		return -EIO;
+@@ -222,12 +227,12 @@ static inline bool trap_is_syscall(struct pt_regs *regs)
  
--	if (!FULL_REGS(target->thread.regs)) {
--		/*
--		 * We have a partial register set.
--		 * Fill 14-31 with bogus values.
--		 */
--		for (i = 14; i < 32; i++)
--			target->thread.regs->gpr[i] = NV_REG_POISON;
--	}
- 	return gpr32_get_common(target, regset, to,
- 			&target->thread.regs->gpr[0]);
- }
-@@ -748,7 +728,6 @@ static int gpr32_set(struct task_struct *target,
- 	if (target->thread.regs == NULL)
- 		return -EIO;
- 
--	CHECK_FULL_REGS(target->thread.regs);
- 	return gpr32_set_common(target, regset, pos, count, kbuf, ubuf,
- 			&target->thread.regs->gpr[0]);
- }
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index 4f3d4ff3728c..f59883902b35 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -59,7 +59,6 @@ long arch_ptrace(struct task_struct *child, long request,
- 		if ((addr & (sizeof(long) - 1)) || !child->thread.regs)
- 			break;
- 
--		CHECK_FULL_REGS(child->thread.regs);
- 		if (index < PT_FPR0)
- 			ret = ptrace_get_reg(child, (int) index, &tmp);
- 		else
-@@ -81,7 +80,6 @@ long arch_ptrace(struct task_struct *child, long request,
- 		if ((addr & (sizeof(long) - 1)) || !child->thread.regs)
- 			break;
- 
--		CHECK_FULL_REGS(child->thread.regs);
- 		if (index < PT_FPR0)
- 			ret = ptrace_put_reg(child, index, data);
- 		else
-diff --git a/arch/powerpc/kernel/ptrace/ptrace32.c b/arch/powerpc/kernel/ptrace/ptrace32.c
-index d30b9ad70edc..19c224808982 100644
---- a/arch/powerpc/kernel/ptrace/ptrace32.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace32.c
-@@ -83,7 +83,6 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
- 		if ((addr & 3) || (index > PT_FPSCR32))
- 			break;
- 
--		CHECK_FULL_REGS(child->thread.regs);
- 		if (index < PT_FPR0) {
- 			ret = ptrace_get_reg(child, index, &tmp);
- 			if (ret)
-@@ -133,7 +132,6 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
- 		if ((addr & 3) || numReg > PT_FPSCR)
- 			break;
- 
--		CHECK_FULL_REGS(child->thread.regs);
- 		if (numReg >= PT_FPR0) {
- 			flush_fp_to_thread(child);
- 			/* get 64 bit FPR */
-@@ -187,7 +185,6 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
- 		if ((addr & 3) || (index > PT_FPSCR32))
- 			break;
- 
--		CHECK_FULL_REGS(child->thread.regs);
- 		if (index < PT_FPR0) {
- 			ret = ptrace_put_reg(child, index, data);
- 		} else {
-@@ -226,7 +223,6 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
- 		 */
- 		if ((addr & 3) || (numReg > PT_FPSCR))
- 			break;
--		CHECK_FULL_REGS(child->thread.regs);
- 		if (numReg < PT_FPR0) {
- 			unsigned long freg;
- 			ret = ptrace_get_reg(child, numReg, &freg);
-diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
-index 75ee918a120a..73551237de9d 100644
---- a/arch/powerpc/kernel/signal_32.c
-+++ b/arch/powerpc/kernel/signal_32.c
-@@ -99,8 +99,6 @@ save_general_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame)
- 	elf_greg_t64 *gregs = (elf_greg_t64 *)regs;
- 	int val, i;
- 
--	WARN_ON(!FULL_REGS(regs));
--
- 	for (i = 0; i <= PT_RESULT; i ++) {
- 		/* Force usr to alway see softe as 1 (interrupts enabled) */
- 		if (i == PT_SOFTE)
-@@ -153,7 +151,6 @@ static inline int get_sigset_t(sigset_t *set, const sigset_t __user *uset)
- static __always_inline int
- save_general_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame)
+ static inline bool trap_norestart(struct pt_regs *regs)
  {
--	WARN_ON(!FULL_REGS(regs));
- 	unsafe_copy_to_user(&frame->mc_gregs, regs, GP_REGS_SIZE, failed);
- 	return 0;
+-	return regs->trap & 0x10;
++	return regs->trap & 0x1;
+ }
  
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index f9e4a1ac440f..0e3637722e97 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -160,7 +160,6 @@ static long setup_sigcontext(struct sigcontext __user *sc,
- 	}
- #endif /* CONFIG_VSX */
- 	err |= __put_user(&sc->gp_regs, &sc->regs);
--	WARN_ON(!FULL_REGS(regs));
- 	err |= __copy_to_user(&sc->gp_regs, regs, GP_REGS_SIZE);
- 	err |= __put_user(msr, &sc->gp_regs[PT_MSR]);
- 	err |= __put_user(softe, &sc->gp_regs[PT_SOFTE]);
-@@ -294,7 +293,6 @@ static long setup_tm_sigcontexts(struct sigcontext __user *sc,
+ static inline void set_trap_norestart(struct pt_regs *regs)
+ {
+-	regs->trap |= 0x10;
++	regs->trap |= 0x1;
+ }
  
- 	err |= __put_user(&sc->gp_regs, &sc->regs);
- 	err |= __put_user(&tm_sc->gp_regs, &tm_sc->regs);
--	WARN_ON(!FULL_REGS(regs));
- 	err |= __copy_to_user(&tm_sc->gp_regs, regs, GP_REGS_SIZE);
- 	err |= __copy_to_user(&sc->gp_regs,
- 			      &tsk->thread.ckpt_regs, GP_REGS_SIZE);
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 97b5f3d83ff7..6c62e4e87979 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -1319,7 +1319,6 @@ static int emulate_instruction(struct pt_regs *regs)
- 
- 	if (!user_mode(regs))
- 		return -EINVAL;
--	CHECK_FULL_REGS(regs);
- 
- 	if (get_user(instword, (u32 __user *)(regs->nip)))
- 		return -EFAULT;
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 739ea6dc461c..45bda2520755 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -1401,10 +1401,6 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		break;
- 	}
- 
--	/* Following cases refer to regs->gpr[], so we need all regs */
--	if (!FULL_REGS(regs))
--		return -1;
--
- 	rd = (word >> 21) & 0x1f;
- 	ra = (word >> 16) & 0x1f;
- 	rb = (word >> 11) & 0x1f;
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 3fe37495f63d..42a2c831d87a 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1815,25 +1815,16 @@ static void prregs(struct pt_regs *fp)
- 	}
- 
- #ifdef CONFIG_PPC64
--	if (FULL_REGS(fp)) {
--		for (n = 0; n < 16; ++n)
--			printf("R%.2d = "REG"   R%.2d = "REG"\n",
--			       n, fp->gpr[n], n+16, fp->gpr[n+16]);
--	} else {
--		for (n = 0; n < 7; ++n)
--			printf("R%.2d = "REG"   R%.2d = "REG"\n",
--			       n, fp->gpr[n], n+7, fp->gpr[n+7]);
--	}
-+#define R_PER_LINE 2
- #else
-+#define R_PER_LINE 4
-+#endif
-+
- 	for (n = 0; n < 32; ++n) {
--		printf("R%.2d = %.8lx%s", n, fp->gpr[n],
--		       (n & 3) == 3? "\n": "   ");
--		if (n == 12 && !FULL_REGS(fp)) {
--			printf("\n");
--			break;
--		}
-+		printf("R%.2d = "REG"%s", n, fp->gpr[n],
-+			(n % R_PER_LINE) == R_PER_LINE - 1 ? "\n" : "   ");
- 	}
--#endif
-+
- 	printf("pc  = ");
- 	xmon_print_symbol(fp->nip, " ", "\n");
- 	if (!trap_is_syscall(fp) && cpu_has_feature(CPU_FTR_CFAR)) {
+ #define arch_has_single_step()	(1)
 -- 
 2.23.0
 
