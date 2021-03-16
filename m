@@ -2,54 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A39DF33D229
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 11:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2694333D22D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 11:52:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F096B4qH0z3c9D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 21:49:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F099J1936z3bmr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Mar 2021 21:52:36 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fsfycRiZ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
+ helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=fsfycRiZ; dkim-atps=neutral
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
+ [IPv6:2607:f8b0:4864:20::630])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F095Z2MPTz30Gm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 21:49:18 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F095Q1n67z9v09L;
- Tue, 16 Mar 2021 11:49:14 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id zN3uq9cqPwFs; Tue, 16 Mar 2021 11:49:14 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F095Q0j7lz9v09K;
- Tue, 16 Mar 2021 11:49:14 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E5C898B799;
- Tue, 16 Mar 2021 11:49:14 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 17WApwqlZS7n; Tue, 16 Mar 2021 11:49:14 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A68968B792;
- Tue, 16 Mar 2021 11:49:10 +0100 (CET)
-Subject: Re: [PATCH v2 04/11] powerpc/64e/interrupt: use new interrupt return
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210316104206.407354-1-npiggin@gmail.com>
- <20210316104206.407354-5-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <53a3a1e1-b2c5-116c-174b-dd4beefa6515@csgroup.eu>
-Date: Tue, 16 Mar 2021 11:49:05 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F098v3vV6z2xfl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 21:52:15 +1100 (AEDT)
+Received: by mail-pl1-x630.google.com with SMTP id o10so4555795plg.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Mar 2021 03:52:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=R+de/X0rnXV0f1FHR7BuMAM6SyOWthu2NUw8EqIWeL8=;
+ b=fsfycRiZ/SoXt2NNYViF1VTgxmH+EIPL2KOeMdjvkXrq7K2J/8L4ykwS1JXciCFz6B
+ LepvpqBkIPeHLQiYKNY2qcBLqArMc56xDExuSTK7wJ5lXtQ/fIgn2zX2PZSs+2bYX88s
+ eJCFbz0sfy+vXFb1Z7h1my2ZdwBUsv8HZanfdm06vVEnsNF4y1n95rOV+J2iO9LHgFzu
+ ckfJR4Vv/Il0yv/sbzH+0UVAuOoNCRM2JP8gz3QJZRYW71ZJ16EuBycxxro9CcoEmdzI
+ JazUUuqCcwJ+rR7CcYUYBxnJ/Pzq+JcOZ+hoLt0OVKQQRHniMvJfP/MgAdp3GoPq7PMK
+ we4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=R+de/X0rnXV0f1FHR7BuMAM6SyOWthu2NUw8EqIWeL8=;
+ b=XR8fctZvc80wlFl4BvO5/+Tpk/XXT9SK1l8EtZaycGLLH2CZX7GHHPtsLyXQEEQDkR
+ 3fLqzn9jiPI47PaNYkmRuv3IuCtYGD0VHI8Rvitmhptxhb40cPapZyI2TGqPjgwYRzz/
+ mUSWA5uCE9VUXeUe/TdjDigPtgQKek5JqqQTsWE1uvwdmG4pXf0BKz6wNDpy2HWg2E24
+ pR7rFtFU6wBEG8zgeAt7NSxeQaj+WwhSB2S3uf53Kw5xe6zrDMmO11WyOXQW/CgUAqS6
+ +BTyHG71cu0bLcnACPRlHHZYycs0/Vm/qUKEAk9SDFdLA0q9k7ZaQsx1yjiB/7zzfuvF
+ MgjQ==
+X-Gm-Message-State: AOAM533FtTEebZJRkFT1ntHM8t2lbCmzr1HQI+D6AKAv6voA02/2fge+
+ 8zqCP6yuooWgeRwseQrXyvE4j3cwbcU=
+X-Google-Smtp-Source: ABdhPJx+vX1NDaTboTIVUHnw+W6ldGcmVNwFdBlaR0g2DPk31AXgqT7an52gMA5XQd5xDqulTcCQdw==
+X-Received: by 2002:a17:90a:ce0c:: with SMTP id
+ f12mr4228822pju.11.1615891931824; 
+ Tue, 16 Mar 2021 03:52:11 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (58-6-239-121.tpgi.com.au. [58.6.239.121])
+ by smtp.gmail.com with ESMTPSA id
+ n5sm16047079pfq.44.2021.03.16.03.52.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Mar 2021 03:52:11 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64s: Fix hash fault to use TRAP accessor
+Date: Tue, 16 Mar 2021 20:52:05 +1000
+Message-Id: <20210316105205.407767-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20210316104206.407354-5-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,56 +79,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hash faults use the trap vector to decide whether this is an
+instruction or data fault. This should use the TRAP accessor
+rather than open access regs->trap.
 
+This won't cause a problem at the moment because 64s only uses
+trap flags for system call interrupts (the norestart flag), but
+that could change if any other trap flags get used in future.
 
-Le 16/03/2021 à 11:41, Nicholas Piggin a écrit :
-> Update the new C and asm interrupt return code to account for 64e
-> specifics, switch over to use it.
-> 
-> The now-unused old ret_from_except code, that was moved to 64e after the
-> 64s conversion, is removed.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/include/asm/asm-prototypes.h |   2 -
->   arch/powerpc/include/asm/ppc_asm.h        |  20 --
->   arch/powerpc/kernel/asm-offsets.c         |  10 -
->   arch/powerpc/kernel/exceptions-64e.S      | 321 ++--------------------
->   arch/powerpc/kernel/irq.c                 |  76 -----
->   5 files changed, 25 insertions(+), 404 deletions(-)
-> 
+Fixes: a4922f5442e7e ("powerpc/64s: move the hash fault handling logic to C")
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/mm/book3s64/hash_utils.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-> index 85ba2b0bc8d8..c880ad18b851 100644
-> --- a/arch/powerpc/kernel/asm-offsets.c
-> +++ b/arch/powerpc/kernel/asm-offsets.c
-> @@ -282,21 +282,11 @@ int main(void)
->   	OFFSET(PACAHWCPUID, paca_struct, hw_cpu_id);
->   	OFFSET(PACAKEXECSTATE, paca_struct, kexec_state);
->   	OFFSET(PACA_DSCR_DEFAULT, paca_struct, dscr_default);
-> -	OFFSET(ACCOUNT_STARTTIME, paca_struct, accounting.starttime);
-> -	OFFSET(ACCOUNT_STARTTIME_USER, paca_struct, accounting.starttime_user);
-> -	OFFSET(ACCOUNT_USER_TIME, paca_struct, accounting.utime);
-> -	OFFSET(ACCOUNT_SYSTEM_TIME, paca_struct, accounting.stime);
->   #ifdef CONFIG_PPC_BOOK3E
->   	OFFSET(PACA_TRAP_SAVE, paca_struct, trap_save);
->   #endif
->   	OFFSET(PACA_SPRG_VDSO, paca_struct, sprg_vdso);
->   #else /* CONFIG_PPC64 */
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 1c4b0a29f0f5..977da0dce80c 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1545,10 +1545,10 @@ DEFINE_INTERRUPT_HANDLER_RET(__do_hash_fault)
+ 	if (user_mode(regs) || (region_id == USER_REGION_ID))
+ 		access &= ~_PAGE_PRIVILEGED;
+ 
+-	if (regs->trap == 0x400)
++	if (TRAP(regs) == 0x400)
+ 		access |= _PAGE_EXEC;
+ 
+-	err = hash_page_mm(mm, ea, access, regs->trap, flags);
++	err = hash_page_mm(mm, ea, access, TRAP(regs), flags);
+ 	if (unlikely(err < 0)) {
+ 		// failed to instert a hash PTE due to an hypervisor error
+ 		if (user_mode(regs)) {
+-- 
+2.23.0
 
-The #else is useless
-
-> -#ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
-> -	OFFSET(ACCOUNT_STARTTIME, thread_info, accounting.starttime);
-> -	OFFSET(ACCOUNT_STARTTIME_USER, thread_info, accounting.starttime_user);
-> -	OFFSET(ACCOUNT_USER_TIME, thread_info, accounting.utime);
-> -	OFFSET(ACCOUNT_SYSTEM_TIME, thread_info, accounting.stime);
-> -#endif
->   #endif /* CONFIG_PPC64 */
->   
->   	/* RTAS */
