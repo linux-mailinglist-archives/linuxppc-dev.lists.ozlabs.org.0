@@ -2,40 +2,170 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4494A33E667
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 02:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7366A33E6AE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 03:17:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0Y5b1lC0z3bpH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 12:50:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0YhV2PrSz30L9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 13:17:30 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=EpvOgOYO;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=hRz2Xbka;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ smtp.mailfrom=oracle.com (client-ip=141.146.126.79; helo=aserp2130.oracle.com;
+ envelope-from=konrad.wilk@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=EpvOgOYO; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=hRz2Xbka; dkim-atps=neutral
+X-Greylist: delayed 6359 seconds by postgrey-1.36 at boromir;
+ Wed, 17 Mar 2021 13:17:02 AEDT
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0Y5C4ZMRz30BT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 12:50:19 +1100 (AEDT)
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
- by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4F0Y2q0RTVz8yR6;
- Wed, 17 Mar 2021 09:48:19 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.498.0; Wed, 17 Mar 2021 09:50:03 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2] mm: Move mem_init_print_info() into mm_init()
-Date: Wed, 17 Mar 2021 09:52:10 +0800
-Message-ID: <20210317015210.33641-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu>
-References: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0Ygy4TF4z2yRH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 13:17:01 +1100 (AEDT)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+ by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12H0TvvK055859;
+ Wed, 17 Mar 2021 00:30:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=MqhKdxUI8LwYf06J6INY/KXNITf0zAV9/TtiHVgje8I=;
+ b=EpvOgOYOq9MDCVf+4duRwpNXV5kdn92V4+d5wAll9Bi0p50dpeKumykYvYXssXF6qZrW
+ g6PQAECkGZ8cywTD/aUTYpLMYvITJjdCDfEjjqWPlutXt94yTX/vSCfkKLsrXbxPiLIJ
+ 0Prd3cKPKe1vamvGlDxfIxFWWxtXEd/1jtnBtoZRqoc1lhnVizip8VvUEiGpK1yc3RB7
+ yCo7k6ijGgf9K5pKffAA0QRI7ewbw9zkS5MiIP8uj2+ltmV8dqwOJzTx+SJz+r1rv+1A
+ V2JLoeEoZm8x8Jcayu3gLONFqSo6M2JJufce2AG1LjPnxLFeIsP1BbM24SHDy5kXAeob oA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+ by aserp2130.oracle.com with ESMTP id 378jwbjfus-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 17 Mar 2021 00:30:52 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+ by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12H0Tl9J141958;
+ Wed, 17 Mar 2021 00:30:52 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12lp2048.outbound.protection.outlook.com [104.47.66.48])
+ by aserp3020.oracle.com with ESMTP id 3797a1wnmj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 17 Mar 2021 00:30:52 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hWdgJ6YZgOYDCU16tiroiMBD+6aPoZz+0IeAQf+ob4Efi6/ro6aBcPlJuPzL5loBJLeVgTd4hSpZ/2C2thkseDNYbc1BPFx/5y3yG7b9FMaGqx+Rvg2iGi8oC2tOEB5CfJ1L1wKTHggO8+eft/SyxtodljI8SplPwugUyw5n7unpdTgZFCwDjHdkX/csOkdunVtGc2IjWDeLUWjmPecZrJucqfnKQaei6cA5/jBzj2mOJLiBlRSB11qKWTkw1HTV5ZOWbMrDl09np4UE5Qyj3ppyDQHVfyIxl/ixNukwyuFd50TJ+6oOofQngi6iChHSSiQb0SIY69+UMwGa7zeDsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MqhKdxUI8LwYf06J6INY/KXNITf0zAV9/TtiHVgje8I=;
+ b=XixOG/Fxi+d6hoPrC3H2ST6CXpYNLSr49AbTOh6yoL2CB8dsBD4hS/inn8/LAu5eJtb2r5tXCAKr3fyut1oXgDWxBvtz3s0tugmcGFReCh5Rp3NbqNIh+GkG0sZlJmbV6gFcvHMRQ/txLULxig94dMI4+Cea6vKlJqoRcysZzsNS0LVDBNkIrK2c/D8ld2WfFIBSn19RTeoVzmUut38/ci8hzu1jtDXwfJT6pTU/PJffwhSfbnEutyjZU1mEjnpQG/OiTgsz7zcsbws8mPpN69m5Hal/a3PCT2Dmd3ywzGOfoNv68obMi7JOfj5Dq+FzNswtGvzdARqRGhg81kBJhQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MqhKdxUI8LwYf06J6INY/KXNITf0zAV9/TtiHVgje8I=;
+ b=hRz2XbkaNc4S5gMGVSoehCpK4sBLeXkKmlEm8AT6gozqwOZNPPxQEKvcqHmCCl90eZxAA6v8kUYioixGOeCKseGop9uSNVntfew4X9er41TldPoXOz9e5Nlz2eQB7Ph4C16ysYeOqsu4RfLHSisDo11AKg7wE7RVpm7FQSAdEAM=
+Authentication-Results: lst.de; dkim=none (message not signed)
+ header.d=none;lst.de; dmarc=none action=none header.from=oracle.com;
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com (2603:10b6:a03:85::27)
+ by SJ0PR10MB4445.namprd10.prod.outlook.com (2603:10b6:a03:2ae::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.18; Wed, 17 Mar
+ 2021 00:30:50 +0000
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::50f2:e203:1cc5:d4f7]) by BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::50f2:e203:1cc5:d4f7%6]) with mapi id 15.20.3955.018; Wed, 17 Mar 2021
+ 00:30:50 +0000
+Date: Wed, 17 Mar 2021 00:30:47 +0000
+From: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 03/14] swiotlb: move orig addr and size validation into
+ swiotlb_bounce
+Message-ID: <20210317003037.GB80752@konrad-char-us-oracle-com.allregionaliads.osdevelopmeniad.oraclevcn.com>
+References: <20210301074436.919889-1-hch@lst.de>
+ <20210301074436.919889-4-hch@lst.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210301074436.919889-4-hch@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Originating-IP: [209.17.40.37]
+X-ClientProxiedBy: BL0PR02CA0035.namprd02.prod.outlook.com
+ (2603:10b6:207:3c::48) To BYAPR10MB2999.namprd10.prod.outlook.com
+ (2603:10b6:a03:85::27)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from
+ konrad-char-us-oracle-com.allregionaliads.osdevelopmeniad.oraclevcn.com
+ (209.17.40.37) by BL0PR02CA0035.namprd02.prod.outlook.com
+ (2603:10b6:207:3c::48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.18 via Frontend
+ Transport; Wed, 17 Mar 2021 00:30:49 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 968f3c57-0a09-4974-a33c-08d8e8dbea78
+X-MS-TrafficTypeDiagnostic: SJ0PR10MB4445:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SJ0PR10MB4445A058551AE675C4DF1D93896A9@SJ0PR10MB4445.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vKQuzYNrl6utvhHUKHrC6FC8ZfOirMpmDQ9KoeH+NFxcVThGkvBqdOvAc3RGjqUfm6ubhWasXw+7G/TQKnqE6dZz1yd++ryEeF6G9wtacYWRf5gRGu6G4NDYREGutAiVgo0s+eal/PnSLeoNozpta15kkb1C2ibu+8S4vxMYoOc8dtu4Gvhnao3vYWkJgj22vbmTxNNdCF6d5QIuR2ArdOSE3dOUPmvd5kxZf+BpDMwjMfAvlEcLO1zJzpPTqeRg9ZuUK4MxCeo5huufzX8aMp8s3K11KQtaSo2IbTOfbJt6uwJK/giIaXjOuWBEgiz0RoIYB0U0Vx4eWxcTja3Awy8Jx9U6OBJQb6ns7eik5JVwQAwFgxY1X75O2yRVpn2rmAGGkMkI/NtEOS0b4o1wV1lxpP2CItVrcxJjIzA5Fkyuqc9gSY7c1OJDLOBvY7yx+MKfdLEtABWBO7TTuZUZ90xez2kOUZOK74fsgs3lAm2EL3+YHF6m26uGjKLGBAcwDbbLUZJT/EqmPGh2J2ooB8JaLm9rs7WIbPO4t4NksE5Yft24Uw+otcwSpiYBwTze
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BYAPR10MB2999.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(396003)(39860400002)(366004)(136003)(376002)(346002)(1076003)(9686003)(2906002)(316002)(26005)(54906003)(16526019)(186003)(8676002)(86362001)(55016002)(5660300002)(6506007)(107886003)(6916009)(33656002)(8936002)(52116002)(478600001)(4744005)(956004)(66476007)(83380400001)(66556008)(66946007)(7696005)(4326008);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?4IiTvCGZ+9dN/yDNl9WPIUdKPgvJuGaeQe/6PexKQpozRbyuTzDFg6S4vOwk?=
+ =?us-ascii?Q?mLGBwX8gpoIKda9Axb2RpnO3eEmq5JAjHduCwW1RkspO3pwHUUy/01Oybjza?=
+ =?us-ascii?Q?Q+PDF25eXQCmzV7UxZOx9Wl1Gd8/A0vIVRKeHmZd4864WN4ol3K5k9gPt3ZD?=
+ =?us-ascii?Q?dpreqmAikiDMGJwYVIHRfMPZpnz4372+93ApksBWzmaEGqodBiTRRiFZMlKt?=
+ =?us-ascii?Q?jjMiFhSi1FbAcyTKLfsDB0NrotJxn6gYT0KIQBuDci+LfxfEtJkd0OC/sbGn?=
+ =?us-ascii?Q?yEkJWQ2lFg4SWbJsATIGlZ8bjuJz4cz8WH9h8FaHgRVLEHz/darcezw4a19S?=
+ =?us-ascii?Q?zOfZS6HBGXv0vnlPpv8Lrpx1Cwc75qVZPm5cMemI395uUVBijZrFWq6qYWpv?=
+ =?us-ascii?Q?fPcNZ3Jtg1r6kRgGxrljVzxxeRShBmNlM3LMrkw0opnGcTyQ4PRRqMeBoDbj?=
+ =?us-ascii?Q?AGY0Vjqk346nsoiEO9A0bjcTfr/DEKEUN88BDMUBfOIOS2VkLQXku5WPZAf2?=
+ =?us-ascii?Q?PvTfgZNSyoOEoNcrgjceTiig6awswrJM9iLRrhcYQUPcoQVcIJ1bLbGD1Pts?=
+ =?us-ascii?Q?5LdXHX07lWb2TFyvwGe41TtvLdNuIPmBDfLv46+ewfHxkhub59vJub7BY0OR?=
+ =?us-ascii?Q?Zh+/ca1bxNZVlLIIsmL2qDxg+hT7ufzmrXJSNI+qNbTENxNt7GgUv3DPTcb2?=
+ =?us-ascii?Q?CQrKYbP70H7xY63/XHXdVYs2HVt3V1haZTPez0iKlCAGQ5Ln+h5PtBsL31ic?=
+ =?us-ascii?Q?NkzTwcVoKyPrbf2jFSbQZ8mveeM2vYNvzSTfDx9gOc6hl0f5Z0i1Zi8V652M?=
+ =?us-ascii?Q?XQl9p2Occ+ikCbkzIULwxpHbijiFdDU1jdSKHsu+DEVKD+gtro1XpvSxksyk?=
+ =?us-ascii?Q?4TX7kQ7dWUwHgsJ2u7dKbjDGkVLZwqpQf/lMKC/z/Mt+JXAFnh5uY/yzHaV5?=
+ =?us-ascii?Q?FSN7q2FhhrvITSJkSa1E1/9PWnyheaNtQi/fqm7LcbflhAwwI200U2e6oXT4?=
+ =?us-ascii?Q?k+Hsc50HrF3FCkH5PZQEecMPUYtahiznLYc9dCNfXmZiWbtEG/F38cBgCwaA?=
+ =?us-ascii?Q?k8VFp/FXkng2DA4EdfqPnjCMIqnkZkuKTaitTR8LUBIu4oU21svjKD7nMo9Z?=
+ =?us-ascii?Q?/H8htBkvneCdcMT1wuAzuZitdmPDKJ/TdtODbPWOSlsYzEH9jKylNypqommy?=
+ =?us-ascii?Q?jU6l07Yax7WD9LTaxfUfdL4pu+MAovXI324Qm7WtGxNF90vPRerqx9zedLVw?=
+ =?us-ascii?Q?tWoMi9XWJ3b8EYDU2iV5VsTy51KvaSNab+MxV9iujUoE+IONl4wtMJv+tG+v?=
+ =?us-ascii?Q?7BYp9GBnYEK9Brp8Mft9GwMD?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 968f3c57-0a09-4974-a33c-08d8e8dbea78
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2999.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2021 00:30:50.5030 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: go2eOFypX5B9nVPRMIQmYMGrOdhGuNBT2DeGDJYygZrdUN2XAp7Y02uj3YLn5X34YB/p+UL9m75QO6kGfuQk1w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4445
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9925
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ adultscore=0 spamscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103170001
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9925
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ mlxlogscore=999
+ spamscore=0 mlxscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 adultscore=0 phishscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103170001
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,453 +177,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter
- Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, Jonas Bonn <jonas@southpole.se>,
- linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-hexagon@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, Heiko Carstens <hca@linux.ibm.com>,
- linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
- openrisc@lists.librecores.org, linux-arm-kernel@lists.infradead.org,
- Richard Henderson <rth@twiddle.net>, linux-parisc@vger.kernel.org,
- linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: xen-devel@lists.xenproject.org, iommu@lists.linux-foundation.org,
+ Dongli Zhang <dongli.zhang@oracle.com>, Claire Chang <tientzu@chromium.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-mem_init_print_info() is called in mem_init() on each architecture,
-and pass NULL argument, so using void argument and move it into mm_init().
+On Mon, Mar 01, 2021 at 08:44:25AM +0100, Christoph Hellwig wrote:
+> Move the code to find and validate the original buffer address and size
+> from the callers into swiotlb_bounce.  This means a tiny bit of extra
+> work in the swiotlb_map path, but avoids code duplication and a leads to
+> a better code structure.
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
-v2:
-- Cleanup 'str' line suggested by Christophe and ACK
 
- arch/alpha/mm/init.c             |  1 -
- arch/arc/mm/init.c               |  1 -
- arch/arm/mm/init.c               |  2 --
- arch/arm64/mm/init.c             |  2 --
- arch/csky/mm/init.c              |  1 -
- arch/h8300/mm/init.c             |  2 --
- arch/hexagon/mm/init.c           |  1 -
- arch/ia64/mm/init.c              |  1 -
- arch/m68k/mm/init.c              |  1 -
- arch/microblaze/mm/init.c        |  1 -
- arch/mips/loongson64/numa.c      |  1 -
- arch/mips/mm/init.c              |  1 -
- arch/mips/sgi-ip27/ip27-memory.c |  1 -
- arch/nds32/mm/init.c             |  1 -
- arch/nios2/mm/init.c             |  1 -
- arch/openrisc/mm/init.c          |  2 --
- arch/parisc/mm/init.c            |  2 --
- arch/powerpc/mm/mem.c            |  1 -
- arch/riscv/mm/init.c             |  1 -
- arch/s390/mm/init.c              |  2 --
- arch/sh/mm/init.c                |  1 -
- arch/sparc/mm/init_32.c          |  2 --
- arch/sparc/mm/init_64.c          |  1 -
- arch/um/kernel/mem.c             |  1 -
- arch/x86/mm/init_32.c            |  2 --
- arch/x86/mm/init_64.c            |  2 --
- arch/xtensa/mm/init.c            |  1 -
- include/linux/mm.h               |  2 +-
- init/main.c                      |  1 +
- mm/page_alloc.c                  | 10 +++++-----
- 30 files changed, 7 insertions(+), 42 deletions(-)
-
-diff --git a/arch/alpha/mm/init.c b/arch/alpha/mm/init.c
-index 3c42b3147fd6..a97650a618f1 100644
---- a/arch/alpha/mm/init.c
-+++ b/arch/alpha/mm/init.c
-@@ -282,5 +282,4 @@ mem_init(void)
- 	set_max_mapnr(max_low_pfn);
- 	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
- 	memblock_free_all();
--	mem_init_print_info(NULL);
- }
-diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
-index ce07e697916c..33832e36bdb7 100644
---- a/arch/arc/mm/init.c
-+++ b/arch/arc/mm/init.c
-@@ -194,7 +194,6 @@ void __init mem_init(void)
- {
- 	memblock_free_all();
- 	highmem_init();
--	mem_init_print_info(NULL);
- }
- 
- #ifdef CONFIG_HIGHMEM
-diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
-index 828a2561b229..7022b7b5c400 100644
---- a/arch/arm/mm/init.c
-+++ b/arch/arm/mm/init.c
-@@ -316,8 +316,6 @@ void __init mem_init(void)
- 
- 	free_highpages();
- 
--	mem_init_print_info(NULL);
--
- 	/*
- 	 * Check boundaries twice: Some fundamental inconsistencies can
- 	 * be detected at build time already.
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 3685e12aba9b..e8f29a0bb2f1 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -491,8 +491,6 @@ void __init mem_init(void)
- 	/* this will put all unused low memory onto the freelists */
- 	memblock_free_all();
- 
--	mem_init_print_info(NULL);
--
- 	/*
- 	 * Check boundaries twice: Some fundamental inconsistencies can be
- 	 * detected at build time already.
-diff --git a/arch/csky/mm/init.c b/arch/csky/mm/init.c
-index 894050a8ce09..bf2004aa811a 100644
---- a/arch/csky/mm/init.c
-+++ b/arch/csky/mm/init.c
-@@ -107,7 +107,6 @@ void __init mem_init(void)
- 			free_highmem_page(page);
- 	}
- #endif
--	mem_init_print_info(NULL);
- }
- 
- void free_initmem(void)
-diff --git a/arch/h8300/mm/init.c b/arch/h8300/mm/init.c
-index 1f3b345d68b9..f7bf4693e3b2 100644
---- a/arch/h8300/mm/init.c
-+++ b/arch/h8300/mm/init.c
-@@ -98,6 +98,4 @@ void __init mem_init(void)
- 
- 	/* this will put all low memory onto the freelists */
- 	memblock_free_all();
--
--	mem_init_print_info(NULL);
- }
-diff --git a/arch/hexagon/mm/init.c b/arch/hexagon/mm/init.c
-index f2e6c868e477..f01e91e10d95 100644
---- a/arch/hexagon/mm/init.c
-+++ b/arch/hexagon/mm/init.c
-@@ -55,7 +55,6 @@ void __init mem_init(void)
- {
- 	/*  No idea where this is actually declared.  Seems to evade LXR.  */
- 	memblock_free_all();
--	mem_init_print_info(NULL);
- 
- 	/*
- 	 *  To-Do:  someone somewhere should wipe out the bootmem map
-diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-index 16d0d7d22657..83280e2df807 100644
---- a/arch/ia64/mm/init.c
-+++ b/arch/ia64/mm/init.c
-@@ -659,7 +659,6 @@ mem_init (void)
- 	set_max_mapnr(max_low_pfn);
- 	high_memory = __va(max_low_pfn * PAGE_SIZE);
- 	memblock_free_all();
--	mem_init_print_info(NULL);
- 
- 	/*
- 	 * For fsyscall entrpoints with no light-weight handler, use the ordinary
-diff --git a/arch/m68k/mm/init.c b/arch/m68k/mm/init.c
-index 14c1e541451c..1759ab875d47 100644
---- a/arch/m68k/mm/init.c
-+++ b/arch/m68k/mm/init.c
-@@ -153,5 +153,4 @@ void __init mem_init(void)
- 	/* this will put all memory onto the freelists */
- 	memblock_free_all();
- 	init_pointer_tables();
--	mem_init_print_info(NULL);
- }
-diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-index 05cf1fb3f5ff..ab55c70380a5 100644
---- a/arch/microblaze/mm/init.c
-+++ b/arch/microblaze/mm/init.c
-@@ -131,7 +131,6 @@ void __init mem_init(void)
- 	highmem_setup();
- #endif
- 
--	mem_init_print_info(NULL);
- 	mem_init_done = 1;
- }
- 
-diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
-index 8315c871c435..fa9b4a487a47 100644
---- a/arch/mips/loongson64/numa.c
-+++ b/arch/mips/loongson64/numa.c
-@@ -178,7 +178,6 @@ void __init mem_init(void)
- 	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
- 	memblock_free_all();
- 	setup_zero_pages();	/* This comes from node 0 */
--	mem_init_print_info(NULL);
- }
- 
- /* All PCI device belongs to logical Node-0 */
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 5cb73bf74a8b..c36358758969 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -467,7 +467,6 @@ void __init mem_init(void)
- 	memblock_free_all();
- 	setup_zero_pages();	/* Setup zeroed pages.  */
- 	mem_init_free_highmem();
--	mem_init_print_info(NULL);
- 
- #ifdef CONFIG_64BIT
- 	if ((unsigned long) &_text > (unsigned long) CKSEG0)
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index 87bb6945ec25..6173684b5aaa 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -420,5 +420,4 @@ void __init mem_init(void)
- 	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
- 	memblock_free_all();
- 	setup_zero_pages();	/* This comes from node 0 */
--	mem_init_print_info(NULL);
- }
-diff --git a/arch/nds32/mm/init.c b/arch/nds32/mm/init.c
-index fa86f7b2f416..f63f839738c4 100644
---- a/arch/nds32/mm/init.c
-+++ b/arch/nds32/mm/init.c
-@@ -191,7 +191,6 @@ void __init mem_init(void)
- 
- 	/* this will put all low memory onto the freelists */
- 	memblock_free_all();
--	mem_init_print_info(NULL);
- 
- 	pr_info("virtual kernel memory layout:\n"
- 		"    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n"
-diff --git a/arch/nios2/mm/init.c b/arch/nios2/mm/init.c
-index 61862dbb0e32..613fcaa5988a 100644
---- a/arch/nios2/mm/init.c
-+++ b/arch/nios2/mm/init.c
-@@ -71,7 +71,6 @@ void __init mem_init(void)
- 
- 	/* this will put all memory onto the freelists */
- 	memblock_free_all();
--	mem_init_print_info(NULL);
- }
- 
- void __init mmu_init(void)
-diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
-index bf9b2310fc93..d5641198b90c 100644
---- a/arch/openrisc/mm/init.c
-+++ b/arch/openrisc/mm/init.c
-@@ -211,8 +211,6 @@ void __init mem_init(void)
- 	/* this will put all low memory onto the freelists */
- 	memblock_free_all();
- 
--	mem_init_print_info(NULL);
--
- 	printk("mem_init_done ...........................................\n");
- 	mem_init_done = 1;
- 	return;
-diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-index 9ca4e4ff6895..591a4e939415 100644
---- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@ -573,8 +573,6 @@ void __init mem_init(void)
- #endif
- 		parisc_vmalloc_start = SET_MAP_OFFSET(MAP_START);
- 
--	mem_init_print_info(NULL);
--
- #if 0
- 	/*
- 	 * Do not expose the virtual kernel memory layout to userspace.
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 4e8ce6d85232..7e11c4cb08b8 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -312,7 +312,6 @@ void __init mem_init(void)
- 		(mfspr(SPRN_TLB1CFG) & TLBnCFG_N_ENTRY) - 1;
- #endif
- 
--	mem_init_print_info(NULL);
- #ifdef CONFIG_PPC32
- 	pr_info("Kernel virtual memory layout:\n");
- #ifdef CONFIG_KASAN
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 7f5036fbee8c..3c5ee3b7d811 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -102,7 +102,6 @@ void __init mem_init(void)
- 	high_memory = (void *)(__va(PFN_PHYS(max_low_pfn)));
- 	memblock_free_all();
- 
--	mem_init_print_info(NULL);
- 	print_vm_layout();
- }
- 
-diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-index 0e76b2127dc6..8ac710de1ab1 100644
---- a/arch/s390/mm/init.c
-+++ b/arch/s390/mm/init.c
-@@ -209,8 +209,6 @@ void __init mem_init(void)
- 	setup_zero_pages();	/* Setup zeroed pages. */
- 
- 	cmma_init_nodat();
--
--	mem_init_print_info(NULL);
- }
- 
- void free_initmem(void)
-diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-index 0db6919af8d3..168d7d4dd735 100644
---- a/arch/sh/mm/init.c
-+++ b/arch/sh/mm/init.c
-@@ -359,7 +359,6 @@ void __init mem_init(void)
- 
- 	vsyscall_init();
- 
--	mem_init_print_info(NULL);
- 	pr_info("virtual kernel memory layout:\n"
- 		"    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n"
- 		"    vmalloc : 0x%08lx - 0x%08lx   (%4ld MB)\n"
-diff --git a/arch/sparc/mm/init_32.c b/arch/sparc/mm/init_32.c
-index 6139c5700ccc..1e9f577f084d 100644
---- a/arch/sparc/mm/init_32.c
-+++ b/arch/sparc/mm/init_32.c
-@@ -292,8 +292,6 @@ void __init mem_init(void)
- 
- 		map_high_region(start_pfn, end_pfn);
- 	}
--
--	mem_init_print_info(NULL);
- }
- 
- void sparc_flush_page_to_ram(struct page *page)
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 182bb7bdaa0a..e454f179cf5d 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -2520,7 +2520,6 @@ void __init mem_init(void)
- 	}
- 	mark_page_reserved(mem_map_zero);
- 
--	mem_init_print_info(NULL);
- 
- 	if (tlb_type == cheetah || tlb_type == cheetah_plus)
- 		cheetah_ecache_flush_init();
-diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-index 9242dc91d751..9019ff5905b1 100644
---- a/arch/um/kernel/mem.c
-+++ b/arch/um/kernel/mem.c
-@@ -54,7 +54,6 @@ void __init mem_init(void)
- 	memblock_free_all();
- 	max_low_pfn = totalram_pages();
- 	max_pfn = max_low_pfn;
--	mem_init_print_info(NULL);
- 	kmalloc_ok = 1;
- }
- 
-diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-index da31c2635ee4..21ffb03f6c72 100644
---- a/arch/x86/mm/init_32.c
-+++ b/arch/x86/mm/init_32.c
-@@ -755,8 +755,6 @@ void __init mem_init(void)
- 	after_bootmem = 1;
- 	x86_init.hyper.init_after_bootmem();
- 
--	mem_init_print_info(NULL);
--
- 	/*
- 	 * Check boundaries twice: Some fundamental inconsistencies can
- 	 * be detected at build time already.
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 5430c81eefc9..aa8387aab9c1 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1350,8 +1350,6 @@ void __init mem_init(void)
- 		kclist_add(&kcore_vsyscall, (void *)VSYSCALL_ADDR, PAGE_SIZE, KCORE_USER);
- 
- 	preallocate_vmalloc_pages();
--
--	mem_init_print_info(NULL);
- }
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-diff --git a/arch/xtensa/mm/init.c b/arch/xtensa/mm/init.c
-index 2daeba9e454e..6a32b2cf2718 100644
---- a/arch/xtensa/mm/init.c
-+++ b/arch/xtensa/mm/init.c
-@@ -119,7 +119,6 @@ void __init mem_init(void)
- 
- 	memblock_free_all();
- 
--	mem_init_print_info(NULL);
- 	pr_info("virtual kernel memory layout:\n"
- #ifdef CONFIG_KASAN
- 		"    kasan   : 0x%08lx - 0x%08lx  (%5lu MB)\n"
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 89314651dd62..c2e0b3495c5a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2373,7 +2373,7 @@ extern unsigned long free_reserved_area(void *start, void *end,
- 					int poison, const char *s);
- 
- extern void adjust_managed_page_count(struct page *page, long count);
--extern void mem_init_print_info(const char *str);
-+extern void mem_init_print_info(void);
- 
- extern void reserve_bootmem_region(phys_addr_t start, phys_addr_t end);
- 
-diff --git a/init/main.c b/init/main.c
-index 53b278845b88..5581af5b4cb7 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -830,6 +830,7 @@ static void __init mm_init(void)
- 	report_meminit();
- 	stack_depot_init();
- 	mem_init();
-+	mem_init_print_info();
- 	/* page_owner must be initialized after buddy is ready */
- 	page_ext_init_flatmem_late();
- 	kmem_cache_init();
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 55d938297ce6..b5fe5962837c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7728,7 +7728,7 @@ unsigned long free_reserved_area(void *start, void *end, int poison, const char
- 	return pages;
- }
- 
--void __init mem_init_print_info(const char *str)
-+void __init mem_init_print_info(void)
- {
- 	unsigned long physpages, codesize, datasize, rosize, bss_size;
- 	unsigned long init_code_size, init_data_size;
-@@ -7767,17 +7767,17 @@ void __init mem_init_print_info(const char *str)
- #ifdef	CONFIG_HIGHMEM
- 		", %luK highmem"
- #endif
--		"%s%s)\n",
-+		")\n",
- 		nr_free_pages() << (PAGE_SHIFT - 10),
- 		physpages << (PAGE_SHIFT - 10),
- 		codesize >> 10, datasize >> 10, rosize >> 10,
- 		(init_data_size + init_code_size) >> 10, bss_size >> 10,
- 		(physpages - totalram_pages() - totalcma_pages) << (PAGE_SHIFT - 10),
--		totalcma_pages << (PAGE_SHIFT - 10),
-+		totalcma_pages << (PAGE_SHIFT - 10)
- #ifdef	CONFIG_HIGHMEM
--		totalhigh_pages() << (PAGE_SHIFT - 10),
-+		, totalhigh_pages() << (PAGE_SHIFT - 10)
- #endif
--		str ? ", " : "", str ? str : "");
-+		);
- }
- 
- /**
--- 
-2.26.2
-
+Reviewed-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
