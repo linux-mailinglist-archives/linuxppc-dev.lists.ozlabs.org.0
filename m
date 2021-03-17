@@ -1,75 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B4833F0CF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 14:01:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7956433F102
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 14:19:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0qz95qVMz3bsS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 00:01:09 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=hV3yiNVc;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0rND3SW9z3c1R
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 00:19:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2e;
- helo=mail-qv1-xf2e.google.com; envelope-from=danielhb413@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hV3yiNVc; dkim-atps=neutral
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com
- [IPv6:2607:f8b0:4864:20::f2e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0qyf4Qj4z301j
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 00:00:41 +1100 (AEDT)
-Received: by mail-qv1-xf2e.google.com with SMTP id g8so1309340qvx.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 06:00:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=to:cc:from:subject:message-id:date:user-agent:mime-version
- :content-language:content-transfer-encoding;
- bh=e21U2UYt0oYJzEyPL9wmAS75LblZJPLoOzhTd8C2vJ8=;
- b=hV3yiNVc2/LBh+NSV4K+nod5CSpOwpXnZUXsJ7Zt5I4HQ5pyLa9v/Pq9O3k920S0Ai
- 4vJJuMAzu+uDLm/AtTDvCtphxalilk24Hn+wZCWJgff3IFKDFuMGVFii2MokhK0xGPB4
- FDVv52O47IxkQUwud0kLBVaEszg+daZbGETO5hsPHpEfgfliOQgmMkckrdBhtqLiZz/r
- ga0i2wXVnaFRoneAyeU3zcE1TUkLRUlIic6JPBe+B2qvnUbuA5Ih0Sgs3+eHryfirMo4
- VeVSnU5/jrFBahNx5fMOVOuWURdwN9KRNxHreqZmKNu/CpEpeJPBvEgo8YaKw8Td5jXl
- fGuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
- :mime-version:content-language:content-transfer-encoding;
- bh=e21U2UYt0oYJzEyPL9wmAS75LblZJPLoOzhTd8C2vJ8=;
- b=KEB1HLFWHfzAjOIrSkDT840P60FZDDqzYT1+pEXphZbIR4/tL9gT7/ogsUYDQNY1Nb
- UNTiCfQvrhcNERxy0RfVb64x5/sDe5odM64YC0qu6rgtuflgTn1+vTzd/4jcj1Fj8VGa
- AQCXODRzdXhOnhuQ3n4JqRU2J0fquSqxHnHqmAngMWAMvFuB7N1peh2UweMHq2uxNkNL
- UuPu0OI0mALjdPoVz5DWzxtdLDSxVhR1PUZB2jeIoiJc85FfugacubYZ4qNdmMlpzzmr
- L1v0KZTcs1+bRje+CNArfRNixPhjnpiULA2NUwfUJy218Hwinds2yUzXCzUZYveHaoBx
- H2Gg==
-X-Gm-Message-State: AOAM530oy5cN9PeuAHrQ0FDN7FSwz2J17I7N4/+D04lk4cAM5alrGjvf
- myyT4cytd3xhNWI9OvM4x+o=
-X-Google-Smtp-Source: ABdhPJxnQDDHSCyVblemoMADGl770mBx7rzBklyS8CcZfoyPkynSCCwzH2f5LLwPPDVzNZPRRd790g==
-X-Received: by 2002:ad4:5887:: with SMTP id dz7mr5340642qvb.12.1615986037883; 
- Wed, 17 Mar 2021 06:00:37 -0700 (PDT)
-Received: from ?IPv6:2804:431:c7c7:cc80:21a:fa87:b9b8:5376?
- ([2804:431:c7c7:cc80:21a:fa87:b9b8:5376])
- by smtp.gmail.com with ESMTPSA id x36sm15717449qte.1.2021.03.17.06.00.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Mar 2021 06:00:37 -0700 (PDT)
-To: linuxppc-dev@lists.ozlabs.org
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Advice needed on SMP regression after cpu_core_mask change
-Message-ID: <daa5d05f-dbd0-05ad-7395-5d5a3d364fc6@gmail.com>
-Date: Wed, 17 Mar 2021 10:00:34 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0rMX6rWsz2xxj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 00:18:47 +1100 (AEDT)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D8C1E1A06D7;
+ Wed, 17 Mar 2021 14:18:43 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 40C771A06F2;
+ Wed, 17 Mar 2021 14:18:37 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id AC28D4029D;
+ Wed, 17 Mar 2021 14:18:28 +0100 (CET)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ robh+dt@kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH 1/2] ASoC: fsl-asoc-card: Add support for WM8958 codec
+Date: Wed, 17 Mar 2021 21:05:02 +0800
+Message-Id: <1615986303-27959-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,130 +51,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@in.ibm.com, Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Cedric Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+WM8958 codec is used on some i.MX based platform.
+So add it support in this generic driver.
 
-Patch 4bce545903fa ("powerpc/topology: Update topology_core_cpumask") introduced
-a regression in both upstream and RHEL downstream kernels [1]. The assumption made
-in the commit:
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/Kconfig         |  2 ++
+ sound/soc/fsl/fsl-asoc-card.c | 17 +++++++++++++++--
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-"Further analysis shows that cpu_core_mask and cpu_cpu_mask for any CPU would be
-equal on Power"
+diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
+index c71c6024320b..0917d65d6921 100644
+--- a/sound/soc/fsl/Kconfig
++++ b/sound/soc/fsl/Kconfig
+@@ -310,6 +310,8 @@ config SND_SOC_FSL_ASOC_CARD
+ 	select SND_SOC_FSL_ESAI
+ 	select SND_SOC_FSL_SAI
+ 	select SND_SOC_FSL_SSI
++	select SND_SOC_WM8994
++	select MFD_WM8994
+ 	help
+ 	 ALSA SoC Audio support with ASRC feature for Freescale SoCs that have
+ 	 ESAI/SAI/SSI and connect with external CODECs such as WM8962, CS42888,
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index f62f81ceab0d..c62bfd1c3ac7 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -25,6 +25,7 @@
+ #include "../codecs/sgtl5000.h"
+ #include "../codecs/wm8962.h"
+ #include "../codecs/wm8960.h"
++#include "../codecs/wm8994.h"
+ 
+ #define CS427x_SYSCLK_MCLK 0
+ 
+@@ -37,12 +38,14 @@
+ /**
+  * struct codec_priv - CODEC private data
+  * @mclk_freq: Clock rate of MCLK
++ * @free_freq: Clock rate of MCLK for hw_free()
+  * @mclk_id: MCLK (or main clock) id for set_sysclk()
+  * @fll_id: FLL (or secordary clock) id for set_sysclk()
+  * @pll_id: PLL id for set_pll()
+  */
+ struct codec_priv {
+ 	unsigned long mclk_freq;
++	unsigned long free_freq;
+ 	u32 mclk_id;
+ 	u32 fll_id;
+ 	u32 pll_id;
+@@ -235,10 +238,10 @@ static int fsl_asoc_card_hw_free(struct snd_pcm_substream *substream)
+ 	priv->streams &= ~BIT(substream->stream);
+ 
+ 	if (!priv->streams && codec_priv->pll_id && codec_priv->fll_id) {
+-		/* Force freq to be 0 to avoid error message in codec */
++		/* Force freq to be free_freq to avoid error message in codec */
+ 		ret = snd_soc_dai_set_sysclk(asoc_rtd_to_codec(rtd, 0),
+ 					     codec_priv->mclk_id,
+-					     0,
++					     codec_priv->free_freq,
+ 					     SND_SOC_CLOCK_IN);
+ 		if (ret) {
+ 			dev_err(dev, "failed to switch away from FLL: %d\n", ret);
+@@ -665,6 +668,15 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 		priv->dai_fmt |= SND_SOC_DAIFMT_CBS_CFS;
+ 		priv->card.dapm_routes = audio_map_rx;
+ 		priv->card.num_dapm_routes = ARRAY_SIZE(audio_map_rx);
++	} else if (of_device_is_compatible(np, "fsl,imx-audio-wm8958")) {
++		codec_dai_name = "wm8994-aif1";
++		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
++		priv->codec_priv.mclk_id = WM8994_FLL_SRC_MCLK1;
++		priv->codec_priv.fll_id = WM8994_SYSCLK_FLL1;
++		priv->codec_priv.pll_id = WM8994_FLL1;
++		priv->codec_priv.free_freq = priv->codec_priv.mclk_freq;
++		priv->card.dapm_routes = NULL;
++		priv->card.num_dapm_routes = 0;
+ 	} else {
+ 		dev_err(&pdev->dev, "unknown Device Tree compatible\n");
+ 		ret = -EINVAL;
+@@ -882,6 +894,7 @@ static const struct of_device_id fsl_asoc_card_dt_ids[] = {
+ 	{ .compatible = "fsl,imx-audio-mqs", },
+ 	{ .compatible = "fsl,imx-audio-wm8524", },
+ 	{ .compatible = "fsl,imx-audio-si476x", },
++	{ .compatible = "fsl,imx-audio-wm8958", },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, fsl_asoc_card_dt_ids);
+-- 
+2.27.0
 
-Doesn't seem to be true. After this commit, QEMU is now unable to set single NUMA
-node SMP topologies such as:
-
--smp 8,maxcpus=8,cores=2,threads=2,sockets=2
-
-lscpu will give the following output in this case:
-
-# lscpu
-Architecture:        ppc64le
-Byte Order:          Little Endian
-CPU(s):              8
-On-line CPU(s) list: 0-7
-Thread(s) per core:  2
-Core(s) per socket:  4
-Socket(s):           1
-NUMA node(s):        1
-Model:               2.2 (pvr 004e 1202)
-Model name:          POWER9 (architected), altivec supported
-Hypervisor vendor:   KVM
-Virtualization type: para
-L1d cache:           32K
-L1i cache:           32K
-NUMA node0 CPU(s):   0-7
-
-
-This is happening because the macro cpu_cpu_mask(cpu) expands to
-cpumask_of_node(cpu_to_node(cpu)), which in turn expands to node_to_cpumask_map[node].
-node_to_cpumask_map is a NUMA array that maps CPUs to NUMA nodes (Aneesh is on CC to
-correct me if I'm wrong). We're now associating sockets to NUMA nodes directly.
-
-If I add a second NUMA node then I can get the intended smp topology:
-
--smp 8,maxcpus=8,cores=2,threads=2,sockets=2
--numa node,memdev=mem0,cpus=0-3,nodeid=0 \
--numa node,memdev=mem1,cpus=4-7,nodeid=1 \
-
-# lscpu
-Architecture:        ppc64le
-Byte Order:          Little Endian
-CPU(s):              8
-On-line CPU(s) list: 0-7
-Thread(s) per core:  2
-Core(s) per socket:  2
-Socket(s):           2
-NUMA node(s):        2
-Model:               2.2 (pvr 004e 1202)
-Model name:          POWER9 (architected), altivec supported
-Hypervisor vendor:   KVM
-Virtualization type: para
-L1d cache:           32K
-L1i cache:           32K
-NUMA node0 CPU(s):   0-3
-NUMA node1 CPU(s):   4-7
-
-
-However, if I try a single socket with multiple NUMA nodes topology, which is the case
-of Power10, e.g.:
-
-
--smp 8,maxcpus=8,cores=4,threads=2,sockets=1
--numa node,memdev=mem0,cpus=0-3,nodeid=0 \
--numa node,memdev=mem1,cpus=4-7,nodeid=1 \
-
-
-This is the result:
-
-# lscpu
-Architecture:        ppc64le
-Byte Order:          Little Endian
-CPU(s):              8
-On-line CPU(s) list: 0-7
-Thread(s) per core:  2
-Core(s) per socket:  2
-Socket(s):           2
-NUMA node(s):        2
-Model:               2.2 (pvr 004e 1202)
-Model name:          POWER9 (architected), altivec supported
-Hypervisor vendor:   KVM
-Virtualization type: para
-L1d cache:           32K
-L1i cache:           32K
-NUMA node0 CPU(s):   0-3
-NUMA node1 CPU(s):   4-7
-
-
-This confirms my suspicions that, at this moment, we're making sockets == NUMA nodes.
-
-
-Cedric, the reason I'm CCing you is because this is related to ibm,chip-id. The commit
-after the one that caused the regression, 4ca234a9cbd7c3a65 ("powerpc/smp: Stop updating
-cpu_core_mask"), is erasing the code that calculated cpu_core_mask. cpu_core_mask, despite
-its shortcomings that caused its removal, was giving a precise SMP topology. And it was
-using physical_package_id/'ibm,chip-id' for that.
-
-Checking in QEMU I can say that the ibm,chip-id calculation is the only place in the code
-that cares about cores per socket information. The kernel is now ignoring that, starting
-on 4bce545903fa, and now QEMU is unable to provide this info to the guest.
-
-If we're not going to use ibm,chip-id any longer, which seems sensible given that PAPR does
-not declare it, we need another way of letting the guest know how much cores per socket
-we want.
-
-
-
-[1] https://bugzilla.redhat.com/1934421
-
-
-
-Thanks,
-
-
-DHB
