@@ -2,77 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD2533EAF0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 08:58:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D66E533EC25
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 10:05:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0jGD5K3rz3bs3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 18:58:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0kkp6Ml5z3bnF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 20:05:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=grlmjP9c;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Cm3JrRcv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::736;
+ helo=mail-qk1-x736.google.com; envelope-from=unixbhaskar@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=grlmjP9c; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Cm3JrRcv; dkim-atps=neutral
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com
+ [IPv6:2607:f8b0:4864:20::736])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0jFp6fTcz300k
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 18:58:21 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id ha17so659841pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 00:58:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version:content-transfer-encoding;
- bh=I20ao//jp0K+ljf1zyYRmUDybDGX4o2ZQ8hxDCPtACs=;
- b=grlmjP9cLtgbJiOVVtTbtM9/sum9yzN6kUjg+qj2AT2HHoCwMg/hZ+ajTEmXhLd4Go
- 8IUt/u2OhcF0Lg0BI2M4P2BRFgLjpNL/Uf1kuek5vH0u5J1q6gEKYQWGCymwOT/Mg3W4
- AXckl48lO3Q2vWc0mSuVaGOKfDPvABPsJIDaU=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0kkK2PpDz2xZm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 20:04:39 +1100 (AEDT)
+Received: by mail-qk1-x736.google.com with SMTP id n79so38136528qke.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 02:04:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=V/QALeH7PgIqdJCNh1QudPBXuTGR62+LsmILJFDMTZU=;
+ b=Cm3JrRcviowCEXj5d5PWA7VutLsPoeca2RGX192F6MIhPYz2pdfayBdfBoUNTJffEw
+ OUg16s0Yv3AgeZ4G1uH4XIPDNUeQoRT+anTF8epJcFVt8APP9Tuap03GIX8Y26XKLGMq
+ D7YvkgutQAmdHPPXIxOamPPgf8nPI+NCrvKU3kaOermzy9U0GHteC9aBWErpWfS2ijyP
+ qqKKjtPZEke1zktT1qN5u2jxzROj6LpkK1iEQF6AVltQ7tkM3sGXsJhFgfYCvPtt4VQ+
+ UBHYVNaa4uBeZ1oluy6bkpxXNMWDkm231v9FfdHa3f82kCRLoo1BEM6gfEbjJENjeNEa
+ PX+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=I20ao//jp0K+ljf1zyYRmUDybDGX4o2ZQ8hxDCPtACs=;
- b=C+wjCjd2NYOXIyKxNNj5Yz7VoJ75M3bcseeBj4OSnw6W1aGMd1WFP5hBKeyV/L8HZj
- Ov+uJQHk0sGpZ0ay52TAbbAF7uAMk2MpqMdeCIl5QrAGL2f9EQClVXWWkS3rSuVNzByu
- agufJyl/IvUnjZHiu4sBhkW8v7n0hCjiFjeq5GA2YwRECgeR/kzSBxRSpKX30shbk2bY
- 4Na/g+qqUnVHvwR/w8E5XckOwm5nilKMrAQQaGSywlCje5SNq+9IHvg0scqjDmbJxv7h
- YbmQLrYo+0C9HZs0KlR15SbwQv3ongONnFgcvqOil8woq8e49/CeeNhcR7XZ5zpkrvk0
- iuKA==
-X-Gm-Message-State: AOAM533Kf/pYfYbO7rkTmcGayO676+VL+u/eXAT51ZVmM5N0RJ4Dzu5t
- hc0UBOhgdN0TcVcurGlM8jBShQ==
-X-Google-Smtp-Source: ABdhPJxYxOzfNLuJLRkClYD1JdcEoh936YPYAebHe0scmNtkzZ7wQeI3uoofXXe493EipbmEgLeTBQ==
-X-Received: by 2002:a17:90a:ce0d:: with SMTP id
- f13mr3249699pju.85.1615967898257; 
- Wed, 17 Mar 2021 00:58:18 -0700 (PDT)
-Received: from localhost
- (2001-44b8-1113-6700-13b2-19b2-2ae0-4d54.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:13b2:19b2:2ae0:4d54])
- by smtp.gmail.com with ESMTPSA id nk3sm1717212pjb.17.2021.03.17.00.58.17
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=V/QALeH7PgIqdJCNh1QudPBXuTGR62+LsmILJFDMTZU=;
+ b=gRrz8gM9uMq5OAwOJRAmFAsQZ+ppE/wSS3zhzdUvPaSdmEBA0AHTu4BOGf+JioJNPU
+ qRfIuCAoAf8JIDYjlyJcXMLD/T7WS5qFAhRJyzsOcxtbD3ej+mEK4wW1iF/ZCgb9lems
+ XI44tFUuWX/s0RbDZHPOcsi6a6wYtxzfPdqPsXI42JbrzugyDYci6nM5rH06TsMsfgGu
+ nZ1tXW7F1GrAuMYaeI3ww7+WaJkDddxO+SfCo5B7pfTy1mEqoT7hwdpozRTnwCuvVDAX
+ ylj0VwsVFqj7nIKGhfxAoLDmYc2RC6ILqCy1soCZpt9m3zxFoYUYGu3lQoMlPJTTQ6oG
+ AF1w==
+X-Gm-Message-State: AOAM533ABuAGHHN+0m2R5Xe8GlhIiulXncqCr5HYvtD5QMilBW71yayK
+ 0rb43q5GXo4kZwGsxWU/OxM=
+X-Google-Smtp-Source: ABdhPJzivtYEMadnDZYNb3ssdC1THxrgwqHVnF917hZwSRkhyIOSGGKk0xS3EV3eUopxGiwdV7HMQw==
+X-Received: by 2002:a05:620a:13db:: with SMTP id
+ g27mr3675187qkl.367.1615971876587; 
+ Wed, 17 Mar 2021 02:04:36 -0700 (PDT)
+Received: from localhost.localdomain ([37.19.198.48])
+ by smtp.gmail.com with ESMTPSA id z2sm17799618qkg.22.2021.03.17.02.04.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Mar 2021 00:58:17 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: "heying \(H\)" <heying24@huawei.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
- akpm@linux-foundation.org, aneesh.kumar@linux.ibm.com, rppt@kernel.org,
- ardb@kernel.org, clg@kaod.org, christophe.leroy@csgroup.eu
-Subject: Re: [PATCH] powerpc: arch/powerpc/kernel/setup_64.c - cleanup warnings
-In-Reply-To: <f0130916-a8f3-75ba-b5da-7d37d9139ff3@huawei.com>
-References: <20210316041148.29694-1-heying24@huawei.com>
- <87wnu6bhvi.fsf@dja-thinkpad.axtens.net>
- <f0130916-a8f3-75ba-b5da-7d37d9139ff3@huawei.com>
-Date: Wed, 17 Mar 2021 18:58:14 +1100
-Message-ID: <87tupab4a1.fsf@dja-thinkpad.axtens.net>
+ Wed, 17 Mar 2021 02:04:36 -0700 (PDT)
+From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ jniethe5@gmail.com, unixbhaskar@gmail.com, alistair@popple.id.au,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc: kernel: Trivial typo fix in the file kgdb.c
+Date: Wed, 17 Mar 2021 14:34:13 +0530
+Message-Id: <20210317090413.120891-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,87 +80,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: johnny.chenyi@huawei.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: rdunlap@infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"heying (H)" <heying24@huawei.com> writes:
 
-> Thank you for your reply.
->
->
-> =E5=9C=A8 2021/3/17 11:04, Daniel Axtens =E5=86=99=E9=81=93:
->> Hi He Ying,
->>
->> Thank you for this patch.
->>
->> I'm not sure what the precise rules for Fixes are, but I wonder if this
->> should have:
->>
->> Fixes: 9a32a7e78bd0 ("powerpc/64s: flush L1D after user accesses")
->> Fixes: f79643787e0a ("powerpc/64s: flush L1D on kernel entry")
->
-> Is that necessary for warning cleanups? I thought 'Fixes' tags are=20
-> needed only for
->
-> bugfix patches. Can someone tell me whether I am right?
+s/procesing/processing/
 
-Yeah, I'm not sure either. Hopefully mpe will let us know.
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ arch/powerpc/kernel/kgdb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Kind regards,
-Daniel
+diff --git a/arch/powerpc/kernel/kgdb.c b/arch/powerpc/kernel/kgdb.c
+index 409080208a6c..7dd2ad3603ad 100644
+--- a/arch/powerpc/kernel/kgdb.c
++++ b/arch/powerpc/kernel/kgdb.c
+@@ -376,7 +376,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ }
 
->
->>
->> Those are the commits that added the entry_flush and uaccess_flush
->> symbols. Perhaps one for rfi_flush too but I'm not sure what commit
->> introduced that.
->>
->> Kind regards,
->> Daniel
->>
->>> warning: symbol 'rfi_flush' was not declared.
->>> warning: symbol 'entry_flush' was not declared.
->>> warning: symbol 'uaccess_flush' was not declared.
->>> We found warnings above in arch/powerpc/kernel/setup_64.c by using
->>> sparse tool.
->>>
->>> Define 'entry_flush' and 'uaccess_flush' as static because they are not
->>> referenced outside the file. Include asm/security_features.h in which
->>> 'rfi_flush' is declared.
->>>
->>> Reported-by: Hulk Robot <hulkci@huawei.com>
->>> Signed-off-by: He Ying <heying24@huawei.com>
->>> ---
->>>   arch/powerpc/kernel/setup_64.c | 5 +++--
->>>   1 file changed, 3 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup=
-_64.c
->>> index 560ed8b975e7..f92d72a7e7ce 100644
->>> --- a/arch/powerpc/kernel/setup_64.c
->>> +++ b/arch/powerpc/kernel/setup_64.c
->>> @@ -68,6 +68,7 @@
->>>   #include <asm/early_ioremap.h>
->>>   #include <asm/pgalloc.h>
->>>   #include <asm/asm-prototypes.h>
->>> +#include <asm/security_features.h>
->>>=20=20=20
->>>   #include "setup.h"
->>>=20=20=20
->>> @@ -949,8 +950,8 @@ static bool no_rfi_flush;
->>>   static bool no_entry_flush;
->>>   static bool no_uaccess_flush;
->>>   bool rfi_flush;
->>> -bool entry_flush;
->>> -bool uaccess_flush;
->>> +static bool entry_flush;
->>> +static bool uaccess_flush;
->>>   DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
->>>   EXPORT_SYMBOL(uaccess_flush_key);
->>>=20=20=20
->>> --=20
->>> 2.17.1
->> .
+ /*
+- * This function does PowerPC specific procesing for interfacing to gdb.
++ * This function does PowerPC specific processing for interfacing to gdb.
+  */
+ int kgdb_arch_handle_exception(int vector, int signo, int err_code,
+ 			       char *remcom_in_buffer, char *remcom_out_buffer,
+--
+2.30.2
+
