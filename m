@@ -1,60 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F6B33EADE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 08:55:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD2533EAF0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 08:58:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0jBS2SpVz3bsr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 18:55:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0jGD5K3rz3bs3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 18:58:44 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=grlmjP9c;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.131; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=grlmjP9c; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0jB567nbz2yxY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 18:55:07 +1100 (AEDT)
-Received: from mail-oo1-f48.google.com ([209.85.161.48]) by
- mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1M1YtP-1lOv3n16CJ-0039Bo for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar
- 2021 08:55:00 +0100
-Received: by mail-oo1-f48.google.com with SMTP id
- j10-20020a4ad18a0000b02901b677a0ba98so346759oor.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 00:54:59 -0700 (PDT)
-X-Gm-Message-State: AOAM530FiCMKSb9KcmZh5qHVYzl5A2uNUswX8WZzDylx+U4rAW68M2x+
- Igz3ohPyoMFe+Ux9qlaIkvNxzvVUfpsXTHc4uYc=
-X-Google-Smtp-Source: ABdhPJzZdnCKyGkix2AX1KZ8MvuG4J0YDH/ajg643LqQK/un1mnEh1NJMcHZybuhM8IY5iaf1gLAfwPJHLlkz96pFRA=
-X-Received: by 2002:a4a:e9a2:: with SMTP id t2mr2259266ood.15.1615967698408;
- Wed, 17 Mar 2021 00:54:58 -0700 (PDT)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0jFp6fTcz300k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 18:58:21 +1100 (AEDT)
+Received: by mail-pj1-x102f.google.com with SMTP id ha17so659841pjb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 00:58:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=I20ao//jp0K+ljf1zyYRmUDybDGX4o2ZQ8hxDCPtACs=;
+ b=grlmjP9cLtgbJiOVVtTbtM9/sum9yzN6kUjg+qj2AT2HHoCwMg/hZ+ajTEmXhLd4Go
+ 8IUt/u2OhcF0Lg0BI2M4P2BRFgLjpNL/Uf1kuek5vH0u5J1q6gEKYQWGCymwOT/Mg3W4
+ AXckl48lO3Q2vWc0mSuVaGOKfDPvABPsJIDaU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version:content-transfer-encoding;
+ bh=I20ao//jp0K+ljf1zyYRmUDybDGX4o2ZQ8hxDCPtACs=;
+ b=C+wjCjd2NYOXIyKxNNj5Yz7VoJ75M3bcseeBj4OSnw6W1aGMd1WFP5hBKeyV/L8HZj
+ Ov+uJQHk0sGpZ0ay52TAbbAF7uAMk2MpqMdeCIl5QrAGL2f9EQClVXWWkS3rSuVNzByu
+ agufJyl/IvUnjZHiu4sBhkW8v7n0hCjiFjeq5GA2YwRECgeR/kzSBxRSpKX30shbk2bY
+ 4Na/g+qqUnVHvwR/w8E5XckOwm5nilKMrAQQaGSywlCje5SNq+9IHvg0scqjDmbJxv7h
+ YbmQLrYo+0C9HZs0KlR15SbwQv3ongONnFgcvqOil8woq8e49/CeeNhcR7XZ5zpkrvk0
+ iuKA==
+X-Gm-Message-State: AOAM533Kf/pYfYbO7rkTmcGayO676+VL+u/eXAT51ZVmM5N0RJ4Dzu5t
+ hc0UBOhgdN0TcVcurGlM8jBShQ==
+X-Google-Smtp-Source: ABdhPJxYxOzfNLuJLRkClYD1JdcEoh936YPYAebHe0scmNtkzZ7wQeI3uoofXXe493EipbmEgLeTBQ==
+X-Received: by 2002:a17:90a:ce0d:: with SMTP id
+ f13mr3249699pju.85.1615967898257; 
+ Wed, 17 Mar 2021 00:58:18 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-1113-6700-13b2-19b2-2ae0-4d54.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:13b2:19b2:2ae0:4d54])
+ by smtp.gmail.com with ESMTPSA id nk3sm1717212pjb.17.2021.03.17.00.58.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Mar 2021 00:58:17 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: "heying \(H\)" <heying24@huawei.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
+ akpm@linux-foundation.org, aneesh.kumar@linux.ibm.com, rppt@kernel.org,
+ ardb@kernel.org, clg@kaod.org, christophe.leroy@csgroup.eu
+Subject: Re: [PATCH] powerpc: arch/powerpc/kernel/setup_64.c - cleanup warnings
+In-Reply-To: <f0130916-a8f3-75ba-b5da-7d37d9139ff3@huawei.com>
+References: <20210316041148.29694-1-heying24@huawei.com>
+ <87wnu6bhvi.fsf@dja-thinkpad.axtens.net>
+ <f0130916-a8f3-75ba-b5da-7d37d9139ff3@huawei.com>
+Date: Wed, 17 Mar 2021 18:58:14 +1100
+Message-ID: <87tupab4a1.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-References: <1615966419-20549-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-In-Reply-To: <1615966419-20549-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 17 Mar 2021 08:54:42 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3V=nhE9o6qvmjAHzakQesT9SWniRHW3mCe6Q+kd9J2PQ@mail.gmail.com>
-Message-ID: <CAK8P3a3V=nhE9o6qvmjAHzakQesT9SWniRHW3mCe6Q+kd9J2PQ@mail.gmail.com>
-Subject: Re: [PATCH v2] sched: replace if (cond) BUG() with WARN_ON()
-To: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:H42Cwy0O7Bqon4LJNtG7M6hWYmbkaaf0Wwburu6ldTPw1jKOAYl
- 9wVwQ3bkFTeuv9Xl7eqIJVoALhyQc97d/hqGDHcpUu7tU3jWNZNrgRT6fJkJPTBpxlykMWP
- nbdXyj0jURJ343mkv26Z9lHHXB1o50zZ6LafW6GEHa6QZx4nFDNG65rMJn0X3DQ/hZcY6Sb
- U0uzzLAQWQInEHI94i2Tg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:GttH1sGfsXQ=:KELTSEWtWVkgJGjLoSVuMt
- xb5Lhk+/PkU0/xynSEicZfqMRi0efG9A0jBneiwHXOkFW4uq6KRaJ91z2eI3WoblAVjMf99nS
- +yynVo//qB3W4HfQZe9hmFib8jQvA7Sto7pNrp3JThke1M4sB6DZ8F4GIys7RoqEH2TcyjirQ
- GFkI2wD/tl6igor4jPxukYHwInJ5iUzfPaOnXUhUtFUoeioBXGdB/veR4+W5IyMpOn2hbepaI
- ddq/K0woeSWXpNEjjtSZhMgDJOCwPgWBl6pelURDFSEKj4uJ1UPbJxtp24XfLdVgR6AZkDq6C
- SnPFlXJ5gw02PiDad2oKwgx+Y3nXliH8xYlZRNLtm2noqENu5sndd+0XrEn23JoJegaN0cw8Q
- 880n+QM3zDMAEW+I0fyISY+wkBi5NjM4G+h6u/i9UpRATm4hK+822bdLHBr97HgTi1KTqZKMX
- x5Mk6rqIegOCS5hXTNaTCZfvMTy3NW95PgqHqYwNXpsldJ6j0cWWOZBMXGS83XU4MlHxV6s4P
- cQv00k5pABm1L8ny4S5Iy2Bh2KBI7/LwtDSSKnMteiUVU1cCnRMSPKcD3OdyCv3Cg==
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,31 +84,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: johnny.chenyi@huawei.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 17, 2021 at 8:35 AM Jiapeng Chong
-<jiapeng.chong@linux.alibaba.com> wrote:
->
-> Fix the following coccicheck warnings:
->
-> ./arch/powerpc/platforms/cell/spufs/sched.c:908:2-5: WARNING: Use BUG_ON
-> instead of if condition followed by BUG.
->
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+"heying (H)" <heying24@huawei.com> writes:
 
-If you change it from BUG() to WARN_ON(), you should explain why it's safe to
-do that in this case. Here it is not, since the following spu_release() will
-end up making things worse if the acquire failed. Also if there was a signal
-pending, then spusched_tick() will just get called again and constantly
-print these warnings.
+> Thank you for your reply.
+>
+>
+> =E5=9C=A8 2021/3/17 11:04, Daniel Axtens =E5=86=99=E9=81=93:
+>> Hi He Ying,
+>>
+>> Thank you for this patch.
+>>
+>> I'm not sure what the precise rules for Fixes are, but I wonder if this
+>> should have:
+>>
+>> Fixes: 9a32a7e78bd0 ("powerpc/64s: flush L1D after user accesses")
+>> Fixes: f79643787e0a ("powerpc/64s: flush L1D on kernel entry")
+>
+> Is that necessary for warning cleanups? I thought 'Fixes' tags are=20
+> needed only for
+>
+> bugfix patches. Can someone tell me whether I am right?
 
-There is probably a way to use WARN_ON_ONCE() here, in combination
-with a way to terminate the thread safely, but this has to be done carefully.
+Yeah, I'm not sure either. Hopefully mpe will let us know.
 
-       Arnd
+Kind regards,
+Daniel
+
+>
+>>
+>> Those are the commits that added the entry_flush and uaccess_flush
+>> symbols. Perhaps one for rfi_flush too but I'm not sure what commit
+>> introduced that.
+>>
+>> Kind regards,
+>> Daniel
+>>
+>>> warning: symbol 'rfi_flush' was not declared.
+>>> warning: symbol 'entry_flush' was not declared.
+>>> warning: symbol 'uaccess_flush' was not declared.
+>>> We found warnings above in arch/powerpc/kernel/setup_64.c by using
+>>> sparse tool.
+>>>
+>>> Define 'entry_flush' and 'uaccess_flush' as static because they are not
+>>> referenced outside the file. Include asm/security_features.h in which
+>>> 'rfi_flush' is declared.
+>>>
+>>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>>> Signed-off-by: He Ying <heying24@huawei.com>
+>>> ---
+>>>   arch/powerpc/kernel/setup_64.c | 5 +++--
+>>>   1 file changed, 3 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup=
+_64.c
+>>> index 560ed8b975e7..f92d72a7e7ce 100644
+>>> --- a/arch/powerpc/kernel/setup_64.c
+>>> +++ b/arch/powerpc/kernel/setup_64.c
+>>> @@ -68,6 +68,7 @@
+>>>   #include <asm/early_ioremap.h>
+>>>   #include <asm/pgalloc.h>
+>>>   #include <asm/asm-prototypes.h>
+>>> +#include <asm/security_features.h>
+>>>=20=20=20
+>>>   #include "setup.h"
+>>>=20=20=20
+>>> @@ -949,8 +950,8 @@ static bool no_rfi_flush;
+>>>   static bool no_entry_flush;
+>>>   static bool no_uaccess_flush;
+>>>   bool rfi_flush;
+>>> -bool entry_flush;
+>>> -bool uaccess_flush;
+>>> +static bool entry_flush;
+>>> +static bool uaccess_flush;
+>>>   DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
+>>>   EXPORT_SYMBOL(uaccess_flush_key);
+>>>=20=20=20
+>>> --=20
+>>> 2.17.1
+>> .
