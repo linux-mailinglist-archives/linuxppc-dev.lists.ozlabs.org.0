@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4052533EFE2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 12:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4816A33EFF9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 13:05:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0pZ01tXLz3bnX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 22:57:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0pkS1VvJz30JK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 23:05:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o7FCwonQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=m+BAfz4r;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,43 +17,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=o7FCwonQ; 
+ header.a=rsa-sha256 header.s=201909 header.b=m+BAfz4r; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0pYb2qmjz303c
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 22:57:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0pk15HXkz2xg5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 23:04:41 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F0pYT4yrVz9sTD;
- Wed, 17 Mar 2021 22:57:17 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4F0pjz6Gtpz9sWQ;
+ Wed, 17 Mar 2021 23:04:39 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1615982241;
- bh=Zhmy2g9i1U4R/4NbsT62uiLktGvcjXOQHf91TVlASCo=;
+ s=201909; t=1615982680;
+ bh=rFxZxzMVL9CiaY3o0lToBCatccB71mOld3oUDIVn63M=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=o7FCwonQdnQAExLznUTypn+iMH7d97qDlNwxwgN8+JhdS3g9O3FWkMU/0jcrxay33
- HPYyHpQC+h/b3SmyS4YD8WBu/RCdQeGZKuDqmJ92xAK81UgMvecMxw2D0l09LBS3Mh
- jp0/+Bu3vk29Fe1xYt15TMLoK1++2Pz/2ZS8wERNgh8l+xAdecH8QsOdSCwZOPNf9b
- SkxsVnrq6nYjioVDGvZZ1LVabuLbT89sQW+ldA32nBHewmYpk5dmxY2ztHRSjdy1JE
- eg+q86EOvnBvxxUX133QQHy1ta89glwyc2rrJOUrYECjoP9IvpViKENHK4NF618IaQ
- OnG7EKuQu8sWQ==
+ b=m+BAfz4rlJoKcHvqabxUkl2pc7Ax1MYaP+GEkQl0gb9uBGEYtOUPzspIPKeBkj+1J
+ ixmlJ+QuTPiHhIVz9BmY4y7e4HpJVjECo0zfYI7hd7z5vOjWjz8okHb098giY3g60U
+ HqdkqSZZgXoejHDGyKz6/fde7fExaotKERFmfDgUO9ZCO2/Qxy9PVDu5yPfTQrQWM2
+ kckmxEQSNlT+oa1UxahwOgFAg2WLv8OnpL5WkEU/XOwNv/ebUBJiiH9DNXAwa8lww/
+ boXYsubKNCijIl/t5BW2wGFeYrvUsp/4XwtBNaAvwoaZ/TQwR67CPBp4WAvg0TNyE0
+ lK3anAFczczvw==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Daniel Axtens <dja@axtens.net>, "heying (H)" <heying24@huawei.com>,
- benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
- akpm@linux-foundation.org, aneesh.kumar@linux.ibm.com, rppt@kernel.org,
- ardb@kernel.org, clg@kaod.org, christophe.leroy@csgroup.eu
-Subject: Re: [PATCH] powerpc: arch/powerpc/kernel/setup_64.c - cleanup warnings
-In-Reply-To: <87tupab4a1.fsf@dja-thinkpad.axtens.net>
-References: <20210316041148.29694-1-heying24@huawei.com>
- <87wnu6bhvi.fsf@dja-thinkpad.axtens.net>
- <f0130916-a8f3-75ba-b5da-7d37d9139ff3@huawei.com>
- <87tupab4a1.fsf@dja-thinkpad.axtens.net>
-Date: Wed, 17 Mar 2021 22:57:14 +1100
-Message-ID: <877dm6ouw5.fsf@mpe.ellerman.id.au>
+To: Jordan Niethe <jniethe5@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v9 2/8] powerpc/lib/code-patching: Set up Strict RWX
+ patching earlier
+In-Reply-To: <CACzsE9rbgjNtLOjCHL9+LN6_Xoo6mJ_D5pewuMg7ktqA_OnR0w@mail.gmail.com>
+References: <20210316031741.1004850-1-jniethe5@gmail.com>
+ <20210316031741.1004850-2-jniethe5@gmail.com>
+ <bd0e37b6-22cb-6dbc-1ef8-b6eac4b4c6e6@csgroup.eu>
+ <CACzsE9rbgjNtLOjCHL9+LN6_Xoo6mJ_D5pewuMg7ktqA_OnR0w@mail.gmail.com>
+Date: Wed, 17 Mar 2021 23:04:38 +1100
+Message-ID: <874khaoujt.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -68,39 +67,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: johnny.chenyi@huawei.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, ajd@linux.ibm.com,
+ Nicholas Piggin <npiggin@gmail.com>, naveen.n.rao@linux.ibm.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Axtens <dja@axtens.net> writes:
-> "heying (H)" <heying24@huawei.com> writes:
->
->> Thank you for your reply.
+Jordan Niethe <jniethe5@gmail.com> writes:
+> On Tue, Mar 16, 2021 at 5:32 PM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
 >>
->> =E5=9C=A8 2021/3/17 11:04, Daniel Axtens =E5=86=99=E9=81=93:
->>> Hi He Ying,
->>>
->>> Thank you for this patch.
->>>
->>> I'm not sure what the precise rules for Fixes are, but I wonder if this
->>> should have:
->>>
->>> Fixes: 9a32a7e78bd0 ("powerpc/64s: flush L1D after user accesses")
->>> Fixes: f79643787e0a ("powerpc/64s: flush L1D on kernel entry")
+>> Le 16/03/2021 =C3=A0 04:17, Jordan Niethe a =C3=A9crit :
+>> > setup_text_poke_area() is a late init call so it runs before
+>> > mark_rodata_ro() and after the init calls. This lets all the init code
+>> > patching simply write to their locations. In the future, kprobes is
+>> > going to allocate its instruction pages RO which means they will need
+>> > setup_text__poke_area() to have been already called for their code
+>> > patching. However, init_kprobes() (which allocates and patches some
+>> > instruction pages) is an early init call so it happens before
+>> > setup_text__poke_area().
+>> >
+>> > start_kernel() calls poking_init() before any of the init calls. On
+>> > powerpc, poking_init() is currently a nop. setup_text_poke_area() reli=
+es
+>> > on kernel virtual memory, cpu hotplug and per_cpu_areas being setup.
+>> > setup_per_cpu_areas(), boot_cpu_hotplug_init() and mm_init() are called
+>> > before poking_init().
+>> >
+>> > Turn setup_text_poke_area() into poking_init().
+>> >
+>> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+>> > ---
+>> > v9: New to series
+>> > ---
+>> >   arch/powerpc/lib/code-patching.c | 12 ++++--------
+>> >   1 file changed, 4 insertions(+), 8 deletions(-)
+>> >
+>> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-=
+patching.c
+>> > index 2333625b5e31..b28afa1133db 100644
+>> > --- a/arch/powerpc/lib/code-patching.c
+>> > +++ b/arch/powerpc/lib/code-patching.c
+>> > @@ -65,14 +65,11 @@ static int text_area_cpu_down(unsigned int cpu)
+>> >   }
+>> >
+>> >   /*
+>> > - * Run as a late init call. This allows all the boot time patching to=
+ be done
+>> > - * simply by patching the code, and then we're called here prior to
+>> > - * mark_rodata_ro(), which happens after all init calls are run. Alth=
+ough
+>> > - * BUG_ON() is rude, in this case it should only happen if ENOMEM, an=
+d we judge
+>> > - * it as being preferable to a kernel that will crash later when some=
+one tries
+>> > - * to use patch_instruction().
+>> > + * Although BUG_ON() is rude, in this case it should only happen if E=
+NOMEM, and
+>> > + * we judge it as being preferable to a kernel that will crash later =
+when
+>> > + * someone tries to use patch_instruction().
 >>
->> Is that necessary for warning cleanups? I thought 'Fixes' tags are=20
->> needed only for
->>
->> bugfix patches. Can someone tell me whether I am right?
->
-> Yeah, I'm not sure either. Hopefully mpe will let us know.
+>> Please use WARN_ON(), see why at https://www.kernel.org/doc/html/latest/=
+process/deprecated.html
 
-It's not necessary to add a Fixes tag for a patch like this, but you can
-add one if you think it's important that the fix gets backported.
+> Ok I can include a change to WARN_ON() as a separate patch.
 
-I don't think the cleanups in this case are that important, so I
-wouldn't bother with a Fixes tag.
+I'm not convinced we should change this to a WARN_ON.
+
+Being able to patch the kernel text is not optional.
+
+Patching jump labels has no ability to return an error, and the code
+that uses them has no concept of the jump label not taking the correct
+polarity.
+
+Silently failing the patch is like randomly flipping an if condition
+somewhere in the kernel and hoping that everything will continue
+working.
 
 cheers
