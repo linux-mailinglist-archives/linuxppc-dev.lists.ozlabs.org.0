@@ -2,97 +2,168 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0464F33F55C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 17:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F1133F789
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 18:52:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0wSG6rv4z3bs9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 03:23:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0yRk44hzz3bpb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 04:52:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QhTj8hrT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=q7MYbIvZ;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=zfL6FH13;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
+ envelope-from=konrad.wilk@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=QhTj8hrT; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=q7MYbIvZ; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=zfL6FH13; dkim-atps=neutral
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0wRp0cqlz3047
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 03:22:45 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12HGEqqd134757; Wed, 17 Mar 2021 12:22:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=AaRv1lCjJnXBKG54W8/mErqbuMHW+AG57/a2M1z9nnQ=;
- b=QhTj8hrTt1gFwp5EqGeD9BW0kr4rCZAOMFXzxfhmkGvM5QBXr/VAx5oai/L81vuvl/Ye
- 5N70EIV3N3uzapaKbfZEo0qNC3A5kjYwK6aUej9fSuryfAa26bDAFz4qmTbNpaml2PX9
- 0H6yuuNBMaUwlG1Ri4ONyyOiasUE3W7oUuvJ4Md+BOd8OtIBPbKnYbgmk4YdrZbphZS+
- 79TqlyAomZV5ruJN9WlHJI72V/teBig1/rY7uR7T7p+Pnyo0NdOSRNiEB7T1s1fO7Kyg
- uesqXi5pGw6gpfXlR52e0Un0EGbEtvS/wtkmmUY9cUWyOdG4/DRuCkYNdepjk0qC59gQ jQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37bn4b8a6f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Mar 2021 12:22:43 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12HGFW8o141942;
- Wed, 17 Mar 2021 12:22:42 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37bn4b8a63-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Mar 2021 12:22:42 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12HGI7RM019633;
- Wed, 17 Mar 2021 16:22:42 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma02dal.us.ibm.com with ESMTP id 378n1a8c1q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Mar 2021 16:22:42 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12HGMe0i15466782
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Mar 2021 16:22:40 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9E262C6057;
- Wed, 17 Mar 2021 16:22:40 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D8012C605B;
- Wed, 17 Mar 2021 16:22:39 +0000 (GMT)
-Received: from localhost (unknown [9.163.19.147])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Wed, 17 Mar 2021 16:22:39 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH v3 19/41] KVM: PPC: Book3S HV P9: Stop handling hcalls
- in real-mode in the P9 path
-In-Reply-To: <20210305150638.2675513-20-npiggin@gmail.com>
-References: <20210305150638.2675513-1-npiggin@gmail.com>
- <20210305150638.2675513-20-npiggin@gmail.com>
-Date: Wed, 17 Mar 2021 13:22:37 -0300
-Message-ID: <87o8fh21iq.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0yR945cRz300T
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 04:52:20 +1100 (AEDT)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12HHjfH8009868;
+ Wed, 17 Mar 2021 17:52:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=AuI7WZwh+THy66uOk/dX3AZL5VQVLUSbLO1vN8BYNn0=;
+ b=q7MYbIvZ6XMGjyOchRWzSW4ZJV9PXDxgAxsHR0bCU11jzHqB/0qlMbzS3LR1GwamuOw2
+ WGAsF+dk2sTsXcFjn3Ep5sB6cZFzB0l1SZwuw3qVfusDBr0u2qHzdLrZpcBUbt6cWt9b
+ GPypjNYpqC7IN5y0SL3GpbZ6Syyx8iTesdRhrGgYBJSR/etjfiKlCpKYAz3+7ykbf/PV
+ 5K3Hkey9IOQya3dHeRFJ+dO+8kKyESEFG4UZjKkUnn5UeitjYfIOuUcBza3f9zce5LF1
+ eHF1ufETgY/oRCyEeyi87FMVH6XNwAPu9ca0hzlE2pzd4nXTLslJyWiKxurd0gNsX5Am tg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by userp2120.oracle.com with ESMTP id 378p1nvxtx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 17 Mar 2021 17:52:04 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12HHolTG188948;
+ Wed, 17 Mar 2021 17:52:03 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10lp2108.outbound.protection.outlook.com [104.47.70.108])
+ by aserp3030.oracle.com with ESMTP id 3796yv54qa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 17 Mar 2021 17:52:03 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Kcn/OjkRge8LRRP9YU/yXyzkWHOmNItw1fflnCQtErFqe43UOBpVw/FXv2hgRoNipg6yCqhebnN8HMd+pYJwPVuUgl6jY/noZ/u+hrjO8j9kkVP40XTNyKcBCTD7mwcmV/URn9aWl7ceK/hz8ns6oTU7mh195Ur8WxXn3LmEZenbl7jsx8plEe14shYAw0gE0DHH4hH1tHk17Co7VYohUf3EWIVoTCS4pkQQoziIM7mjBBPeqP+Bb+deOqdvEeAqRT1i7OzgXmGQdbXC+TdBxf+rCea73JMHUm+Rpr6P1B/zOAtHECHQdlgXiY3mZua9jUctRyD5m7SxiMUxqzJgEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AuI7WZwh+THy66uOk/dX3AZL5VQVLUSbLO1vN8BYNn0=;
+ b=oSYlbGapY7yAud4JHRULDxIdcFgcRiWIVoYYb1MMcgGKqy6sGKKDR6sYcucR+6huAwI7iTbrLSWiW0hhStMiAu7t2Aoezm1GPFZvH4U5vvs4uhEof+uZrAGo5wdWClXFR1obEnYK2HrB9i+9p4EsBLV2A9ZVo+0P+iYs8WgmQ9A719Ch04jnrTP6V8OTcvKTQkTO41Eo96mjpzQUfhdvFy8Q1kh3mQbR9NgZaaegoFsuRlXmfWggICuTwkIM5I+k9bjNL2NpKwIlVoiFtqsYFuirPVzb3elhERj7twf8OEScJkMb6upOJ07V/d1Ty8Wtw4woAZfoZyHfXbR5ZlmH1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AuI7WZwh+THy66uOk/dX3AZL5VQVLUSbLO1vN8BYNn0=;
+ b=zfL6FH13MdOTEy+2aWuMUWZXnarmlVGA9yqKLcNVH/ruodNqoCx3nSr5i+xV9uwxm+3SUOLWhj6/VW1qJR5omKaTK3b3pLufrKLZ66AhgWzcyGXhL6WoN3jJ1vOrvsucvpj1p107v7eLPo78TZzvsC6h5uiGKZCmpopdHH/zSJU=
+Authentication-Results: lst.de; dkim=none (message not signed)
+ header.d=none;lst.de; dmarc=none action=none header.from=oracle.com;
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com (2603:10b6:a03:85::27)
+ by BYAPR10MB3685.namprd10.prod.outlook.com (2603:10b6:a03:124::33)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3933.32; Wed, 17 Mar
+ 2021 17:52:01 +0000
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::50f2:e203:1cc5:d4f7]) by BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::50f2:e203:1cc5:d4f7%6]) with mapi id 15.20.3955.018; Wed, 17 Mar 2021
+ 17:52:01 +0000
+Date: Wed, 17 Mar 2021 13:51:56 -0400
+From: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 12/14] swiotlb: move global variables into a new
+ io_tlb_mem structure
+Message-ID: <YFJBvFjtZUiBQj4k@Konrads-MacBook-Pro.local>
+References: <20210301074436.919889-1-hch@lst.de>
+ <20210301074436.919889-13-hch@lst.de>
+ <20210317134204.GA315788@konrad-char-us-oracle-com.allregionaliads.osdevelopmeniad.oraclevcn.com>
+ <20210317135327.GA10797@lst.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210317135327.GA10797@lst.de>
+X-Originating-IP: [138.3.200.3]
+X-ClientProxiedBy: SJ0PR13CA0157.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::12) To BYAPR10MB2999.namprd10.prod.outlook.com
+ (2603:10b6:a03:85::27)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-17_10:2021-03-17,
- 2021-03-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 bulkscore=0
- suspectscore=0 impostorscore=0 mlxscore=0 phishscore=0 clxscore=1015
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103170113
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from Konrads-MacBook-Pro.local (138.3.200.3) by
+ SJ0PR13CA0157.namprd13.prod.outlook.com (2603:10b6:a03:2c7::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.9 via Frontend
+ Transport; Wed, 17 Mar 2021 17:52:00 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 7fbf9615-15e3-487b-32ef-08d8e96d5e39
+X-MS-TrafficTypeDiagnostic: BYAPR10MB3685:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR10MB3685B8A2D0DE7D5B105A71AE896A9@BYAPR10MB3685.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: cg6vtXO6MX/vimR6TjsQK3eGF7dB1pf/RHbbE/yxEHzIpd43hQ4lNXA1O4mM/0q4O2BDRSLiuW/desJr6Lqo22PJgRHWhFbgQL+2kziLt8xMoWcKVTAwd7JYEkdesN5VZao+Zrxm5lB4Bcf7oIHzr+LokzLdmZQoSwoC6sHPQpUBxS6sPW3N2UX7L4FgwYbz8ypk0w7/9Em+CdiFnvqfLgL/+0AXvw7vjR6bPVfRWMBu71PRN7GbZ/0KyrHsKRyKSsTyiBwruage4hNuKMRiT3RmkLLVLmSn4amNIrUABsu7ZLHKVh53myhYMFegW/q/5zFEZh+q4BA6gUxPc+c2aroz21R1xrJDW9pKoIIzabN6ucPPkpRREnjZp6UBlu73p/amgqcc7ao6G102wTl0DU17cETBT8X3Lp+MxIBQw4WV22lbOeg2IKQNwUUbptfsLqHkbp/7y70iR3ypmM+K+KfBJCLjz7RJjjNGmu5iqKw9PiJjlNElCwBz1p0yOH1S1qIqIWCK97/I4KB1+fp5arG0mYBfJ/gGOyf71HXyVXH+ob1FMAX+4F/E18EwkNR0
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BYAPR10MB2999.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(39860400002)(376002)(396003)(136003)(366004)(346002)(9686003)(478600001)(107886003)(16526019)(956004)(4326008)(186003)(55016002)(26005)(52116002)(54906003)(86362001)(6666004)(83380400001)(66556008)(2906002)(6916009)(4744005)(8936002)(5660300002)(66946007)(7696005)(66476007)(6506007)(8676002)(316002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?pFahNcWwbr+sh5HdDal7q2UqMPQ5bGD0l0l+kCf79QilCOQvTr+8iLTPRWMx?=
+ =?us-ascii?Q?lsbkwOiEoP4oFpERPxfbqL5tlPCHfMgwcjoWK/K5PWO13lzHRDhgKMWWVGRX?=
+ =?us-ascii?Q?kA3AyabgIFN7VTYzbONsr/zhCaTmWlCF15l3sADlGp3Fa0Sn23YKBFl8a+1A?=
+ =?us-ascii?Q?YbRVOdDu82odfOej1PCUI5GV88CqHIvnL5N5zfEo1uwZg/wga/MOJNr2J+3Z?=
+ =?us-ascii?Q?WsvCY1flmMxEBrvClV1cEbBRsHsXje6FmgCVMhDdp3uMGUJ/CEBnVBHtHg9/?=
+ =?us-ascii?Q?uX1EJOYLQ7OPtgWPXg3lObGyz2zdvfUcV9Jw0QDhLLGIfGDvAyS7CEJge3go?=
+ =?us-ascii?Q?hUwdocRbhc1v+QA1XukKKu6yPCt0vPIsCC/gX29HzBpUjPmAZHlQvNMpsTqu?=
+ =?us-ascii?Q?ONgObmKaE1OMlDgFAQfl4hKtDKILPHX31Z3TPmS1793vKMr9bgwuBg4qfqLk?=
+ =?us-ascii?Q?7xUkVveiG00YNfA9k3R3HfAF1TBlY94GAZWrHoJYS5Fc324PYVsVnAr8hSjf?=
+ =?us-ascii?Q?qvhOzeuJmJMiWgI9bsy7Od1ZSKTKhNbqX5S/8He/BdUj37QuJcARu8n46LHh?=
+ =?us-ascii?Q?FND/lAc7iIlxsLiXWGw5IaKGEwyqRdJMxWY/uBokjO8LwVxL4qMBVsWTgdrX?=
+ =?us-ascii?Q?gK/yzjMTGi++lEr9GkZH0Vm0+JQBU59M+uRm86cja/z6bOdhKB7+Q++N4tvj?=
+ =?us-ascii?Q?GENnWLErIJddMOaLzKm4X6Ym+hNA7x3AH0fio5kgZxozODfE+LbZcia8nvA8?=
+ =?us-ascii?Q?4dHuW+HfsBBz2PVeawU3PlSkKN1pN17NV2j0RN2Sasfv6J2d8fajbwgEo5Nt?=
+ =?us-ascii?Q?QW30RBSpoFgasw21s4xXE/2F0oNb7NuP44hItFC8WOcP/0qk+TwaTXRb+650?=
+ =?us-ascii?Q?P+WxjqQBQC3ya1R99iWqMIhtJOP40M89yM8C/tFUyf5G2kUeN600LF4ljdfX?=
+ =?us-ascii?Q?iVkIcYF0QD8pYhbnroz2hiNKqL/49EuNP8eYrZCrYM3jY0B9f7VyzWQnGk9c?=
+ =?us-ascii?Q?bCbEzHJDNsxo4YR/+QA1LxYbiwhLkY+i35LP3IjEJyYCptn6sGchJocVslDa?=
+ =?us-ascii?Q?/YQVR0J5a/rZ/l/h3OGrPuzkWroBd/QshiPMH3BCDXkN6PEdUiON4KsNjrDt?=
+ =?us-ascii?Q?EvmfYMPtRlXHYHORQTpAGIq+2SG6kFkxytWR4cYbu5yHsNWjq7eVeClxF3Um?=
+ =?us-ascii?Q?s7BFLsrGenkp3bVbxpxNj0HxWXbnb6U181zEAv3jdQ4Ji6FgvuSgNF7k6/lD?=
+ =?us-ascii?Q?eQZzledKoRnPYnMCLs5NmcJdfxz/4qB4Lxg9gA7XmENBZm9u2lDEVKEb8bzS?=
+ =?us-ascii?Q?Ljz9mVtM0NWuuvNj9MkR+C4H?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7fbf9615-15e3-487b-32ef-08d8e96d5e39
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2999.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2021 17:52:01.5958 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m/8aLUIRs+feJbm4KItJpG0Ipp0ZNh2sYGazLu/mxiZBrxNC3dcUS2K2QRWICEvQzErxzpvKggL0kf42ENh5vw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB3685
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9926
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ malwarescore=0 spamscore=0
+ bulkscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103170123
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9926
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ suspectscore=0 adultscore=0
+ spamscore=0 clxscore=1011 phishscore=0 malwarescore=0 priorityscore=1501
+ bulkscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103170122
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,236 +175,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: xen-devel@lists.xenproject.org, iommu@lists.linux-foundation.org,
+ Dongli Zhang <dongli.zhang@oracle.com>, Claire Chang <tientzu@chromium.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+On Wed, Mar 17, 2021 at 02:53:27PM +0100, Christoph Hellwig wrote:
+> On Wed, Mar 17, 2021 at 01:42:07PM +0000, Konrad Rzeszutek Wilk wrote:
+> > > -	alloc_size = PAGE_ALIGN(io_tlb_nslabs * sizeof(size_t));
+> > > -	io_tlb_alloc_size = memblock_alloc(alloc_size, PAGE_SIZE);
+> > > -	if (!io_tlb_alloc_size)
+> > > -		panic("%s: Failed to allocate %zu bytes align=0x%lx\n",
+> > > -		      __func__, alloc_size, PAGE_SIZE);
+> > 
+> > Shouldn't this be converted to:
+> > 	mem->alloc_size = memblock_alloc(alloc_size, PAGE_SIZE);
+> > 	if (...)
+> > 
+> > Seems that it got lost in the search and replace?
+> 
+> Yes, I messed that up during the rebase.  That being said it magically
+> gets fixed in the next patch..
 
-> In the interest of minimising the amount of code that is run in
-> "real-mode", don't handle hcalls in real mode in the P9 path.
->
-> POWER8 and earlier are much more expensive to exit from HV real mode
-> and switch to host mode, because on those processors HV interrupts get
-> to the hypervisor with the MMU off, and the other threads in the core
-> need to be pulled out of the guest, and SLBs all need to be saved,
-> ERATs invalidated, and host SLB reloaded before the MMU is re-enabled
-> in host mode. Hash guests also require a lot of hcalls to run. The
-> XICS interrupt controller requires hcalls to run.
->
-> By contrast, POWER9 has independent thread switching, and in radix mode
-> the hypervisor is already in a host virtual memory mode when the HV
-> interrupt is taken. Radix + xive guests don't need hcalls to handle
-> interrupts or manage translations.
->
-> So it's much less important to handle hcalls in real mode in P9.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-
-<snip>
-
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 497f216ad724..1f2ba8955c6a 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -1147,7 +1147,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
->   * This has to be done early, not in kvmppc_pseries_do_hcall(), so
->   * that the cede logic in kvmppc_run_single_vcpu() works properly.
->   */
-> -static void kvmppc_nested_cede(struct kvm_vcpu *vcpu)
-> +static void kvmppc_cede(struct kvm_vcpu *vcpu)
-
-The comment above needs to be updated I think.
-
->  {
->  	vcpu->arch.shregs.msr |= MSR_EE;
->  	vcpu->arch.ceded = 1;
-> @@ -1403,9 +1403,15 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
->  		/* hcall - punt to userspace */
->  		int i;
->
-> -		/* hypercall with MSR_PR has already been handled in rmode,
-> -		 * and never reaches here.
-> -		 */
-> +		if (unlikely(vcpu->arch.shregs.msr & MSR_PR)) {
-> +			/*
-> +			 * Guest userspace executed sc 1, reflect it back as a
-> +			 * privileged program check interrupt.
-> +			 */
-> +			kvmppc_core_queue_program(vcpu, SRR1_PROGPRIV);
-> +			r = RESUME_GUEST;
-> +			break;
-> +		}
->
->  		run->papr_hcall.nr = kvmppc_get_gpr(vcpu, 3);
->  		for (i = 0; i < 9; ++i)
-> @@ -3740,15 +3746,36 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->  		/* H_CEDE has to be handled now, not later */
->  		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
->  		    kvmppc_get_gpr(vcpu, 3) == H_CEDE) {
-> -			kvmppc_nested_cede(vcpu);
-> +			kvmppc_cede(vcpu);
->  			kvmppc_set_gpr(vcpu, 3, 0);
->  			trap = 0;
->  		}
->  	} else {
->  		kvmppc_xive_push_vcpu(vcpu);
->  		trap = kvmhv_load_hv_regs_and_go(vcpu, time_limit, lpcr);
-> -		kvmppc_xive_pull_vcpu(vcpu);
-> +		/* H_CEDE has to be handled now, not later */
-> +		/* XICS hcalls must be handled before xive is pulled */
-> +		if (trap == BOOK3S_INTERRUPT_SYSCALL &&
-> +		    !(vcpu->arch.shregs.msr & MSR_PR)) {
-> +			unsigned long req = kvmppc_get_gpr(vcpu, 3);
->
-> +			if (req == H_CEDE) {
-> +				kvmppc_cede(vcpu);
-> +				kvmppc_xive_cede_vcpu(vcpu); /* may un-cede */
-> +				kvmppc_set_gpr(vcpu, 3, 0);
-> +				trap = 0;
-> +			}
-> +			if (req == H_EOI || req == H_CPPR ||
-> +			    req == H_IPI || req == H_IPOLL ||
-> +			    req == H_XIRR || req == H_XIRR_X) {
-> +				unsigned long ret;
-> +
-> +				ret = kvmppc_xive_xics_hcall(vcpu, req);
-> +				kvmppc_set_gpr(vcpu, 3, ret);
-> +				trap = 0;
-> +			}
-> +		}
-
-I tried running L2 with xive=off and this code slows down the boot
-considerably. I think we're missing a !vcpu->arch.nested in the
-conditional.
-
-This may also be missing these checks from kvmppc_pseries_do_hcall:
-
-		if (kvmppc_xics_enabled(vcpu)) {
-			if (xics_on_xive()) {
-				ret = H_NOT_AVAILABLE;
-				return RESUME_GUEST;
-			}
-			ret = kvmppc_xics_hcall(vcpu, req);
-                        (...)
-
-For H_CEDE there might be a similar situation since we're shadowing the
-code above that runs after H_ENTER_NESTED by setting trap to 0 here.
-
-> +		kvmppc_xive_pull_vcpu(vcpu);
->  	}
->
->  	vcpu->arch.slb_max = 0;
-> @@ -4408,8 +4435,11 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
->  		else
->  			r = kvmppc_run_vcpu(vcpu);
->
-> -		if (run->exit_reason == KVM_EXIT_PAPR_HCALL &&
-> -		    !(vcpu->arch.shregs.msr & MSR_PR)) {
-> +		if (run->exit_reason == KVM_EXIT_PAPR_HCALL) {
-> +			if (WARN_ON_ONCE(vcpu->arch.shregs.msr & MSR_PR)) {
-> +				r = RESUME_GUEST;
-> +				continue;
-> +			}
->  			trace_kvm_hcall_enter(vcpu);
->  			r = kvmppc_pseries_do_hcall(vcpu);
->  			trace_kvm_hcall_exit(vcpu, r);
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index c11597f815e4..2d0d14ed1d92 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -1397,9 +1397,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->  	mr	r4,r9
->  	bge	fast_guest_return
->  2:
-> +	/* If we came in through the P9 short path, no real mode hcalls */
-> +	lwz	r0, STACK_SLOT_SHORT_PATH(r1)
-> +	cmpwi	r0, 0
-> +	bne	no_try_real
->  	/* See if this is an hcall we can handle in real mode */
->  	cmpwi	r12,BOOK3S_INTERRUPT_SYSCALL
->  	beq	hcall_try_real_mode
-> +no_try_real:
->
->  	/* Hypervisor doorbell - exit only if host IPI flag set */
->  	cmpwi	r12, BOOK3S_INTERRUPT_H_DOORBELL
-> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-> index 52cdb9e2660a..1e4871bbcad4 100644
-> --- a/arch/powerpc/kvm/book3s_xive.c
-> +++ b/arch/powerpc/kvm/book3s_xive.c
-> @@ -158,6 +158,40 @@ void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu)
->  }
->  EXPORT_SYMBOL_GPL(kvmppc_xive_pull_vcpu);
->
-> +void kvmppc_xive_cede_vcpu(struct kvm_vcpu *vcpu)
-> +{
-> +	void __iomem *esc_vaddr = (void __iomem *)vcpu->arch.xive_esc_vaddr;
-> +
-> +	if (!esc_vaddr)
-> +		return;
-> +
-> +	/* we are using XIVE with single escalation */
-> +
-> +	if (vcpu->arch.xive_esc_on) {
-> +		/*
-> +		 * If we still have a pending escalation, abort the cede,
-> +		 * and we must set PQ to 10 rather than 00 so that we don't
-> +		 * potentially end up with two entries for the escalation
-> +		 * interrupt in the XIVE interrupt queue.  In that case
-> +		 * we also don't want to set xive_esc_on to 1 here in
-> +		 * case we race with xive_esc_irq().
-> +		 */
-> +		vcpu->arch.ceded = 0;
-> +		/*
-> +		 * The escalation interrupts are special as we don't EOI them.
-> +		 * There is no need to use the load-after-store ordering offset
-> +		 * to set PQ to 10 as we won't use StoreEOI.
-> +		 */
-> +		__raw_readq(esc_vaddr + XIVE_ESB_SET_PQ_10);
-> +	} else {
-> +		vcpu->arch.xive_esc_on = true;
-> +		mb();
-> +		__raw_readq(esc_vaddr + XIVE_ESB_SET_PQ_00);
-> +	}
-> +	mb();
-> +}
-> +EXPORT_SYMBOL_GPL(kvmppc_xive_cede_vcpu);
-> +
->  /*
->   * This is a simple trigger for a generic XIVE IRQ. This must
->   * only be called for interrupts that support a trigger page
-> @@ -2106,6 +2140,32 @@ static int kvmppc_xive_create(struct kvm_device *dev, u32 type)
->  	return 0;
->  }
->
-> +int kvmppc_xive_xics_hcall(struct kvm_vcpu *vcpu, u32 req)
-> +{
-> +	struct kvmppc_vcore *vc = vcpu->arch.vcore;
-> +
-> +	switch (req) {
-> +	case H_XIRR:
-> +		return xive_vm_h_xirr(vcpu);
-> +	case H_CPPR:
-> +		return xive_vm_h_cppr(vcpu, kvmppc_get_gpr(vcpu, 4));
-> +	case H_EOI:
-> +		return xive_vm_h_eoi(vcpu, kvmppc_get_gpr(vcpu, 4));
-> +	case H_IPI:
-> +		return xive_vm_h_ipi(vcpu, kvmppc_get_gpr(vcpu, 4),
-> +					  kvmppc_get_gpr(vcpu, 5));
-> +	case H_IPOLL:
-> +		return xive_vm_h_ipoll(vcpu, kvmppc_get_gpr(vcpu, 4));
-> +	case H_XIRR_X:
-> +		xive_vm_h_xirr(vcpu);
-> +		kvmppc_set_gpr(vcpu, 5, get_tb() + vc->tb_offset);
-> +		return H_SUCCESS;
-> +	}
-> +
-> +	return H_UNSUPPORTED;
-> +}
-> +EXPORT_SYMBOL_GPL(kvmppc_xive_xics_hcall);
-> +
->  int kvmppc_xive_debug_show_queues(struct seq_file *m, struct kvm_vcpu *vcpu)
->  {
->  	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
+Yes. However if someone does a bisection they are going to be mighty unhappy
+with you.
