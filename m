@@ -1,170 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A63EC33F809
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 19:19:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B83D633F86F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 19:50:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0z1y4kP3z3btt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 05:19:02 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=pbksK3uF;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=WkMu1nqA;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0zk75Fmhz3bwN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 05:50:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=konrad.wilk@oracle.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=pbksK3uF; 
- dkim=pass (1024-bit key;
- unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
- header.b=WkMu1nqA; dkim-atps=neutral
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir;
+ Thu, 18 Mar 2021 05:50:05 AEDT
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0z1S11z3z3034
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 05:18:34 +1100 (AEDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12HIGv0T127203;
- Wed, 17 Mar 2021 18:18:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2020-01-29;
- bh=wRdmGtgo4XK/l/pi1Z/4bjFdiEXScxvAsYXaLMWX8HI=;
- b=pbksK3uFoBv8jN/wwIujSF9/XgE+1CxrIBf0isrI8SiLrHTvuLVKnWlZgNG/eXUp3i4d
- kdwd4JeAFVflZy/fACUDztI9HVEQUQxstI7y8fJep0F+Pf61PFRXEbK6ZvmwE+ZhMwsO
- FcJyKerTnEuXfPsWPQoKRrkByic41cJzk7OTWwH3j7+Yfb3a2AkIvMytd9tMebRFVT9I
- N4YyxQgtvAJCF8FnQ+1IaL8uy4U18Orcmb+hx1zvuhAKEZkMyV6Eq0a0+M9eJnaPh0H9
- XpPq/T7z9q4JW1xgJU2rSlQ4Q24124LxuUH+EQUQXN6wdeRIdoNjvbrUi7DInQTHZZ1g /g== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by userp2120.oracle.com with ESMTP id 378p1nw1cb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Mar 2021 18:18:28 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12HIFqvN154125;
- Wed, 17 Mar 2021 18:18:27 GMT
-Received: from nam02-sn1-obe.outbound.protection.outlook.com
- (mail-sn1nam02lp2055.outbound.protection.outlook.com [104.47.36.55])
- by aserp3020.oracle.com with ESMTP id 3797a2xaer-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Mar 2021 18:18:27 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m7HjDhO9o2jvLEAk1ODdhP6qFJDYSs+P5TM+WQb9K6PXkt1OSyzxtXRy9ypq6yWWwSyrEkCH5ccnuk2OL7ewh+wJWCqlpZ2B4pF07YSCe3FD/avZ86nM4ekSqDo66QzGZoHA7C4Qop69tf8V3IUx4F2IalO1qTWQWFYWdKYncFNU4LUUZrYA77VMahHz5f4X7v4SsEFPh+BdmX8xSu0P+BXSLSNTA6AfPp6StO1+6Ye4z1Yc3cAhHmKFk3oLYIt2o9vJ0F/sGmx/pxeMkSUSUxoy/2iTvFBSGEday8fy75w/b0zNk0Co/eCya1sU38kCAUdvjAx+2WyTb3sa7ik8dQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wRdmGtgo4XK/l/pi1Z/4bjFdiEXScxvAsYXaLMWX8HI=;
- b=IhjadvwVg35RkPi9ogcBV8CRs4FRKYUpA5BTiqxO43Mjqwmi3xZOgyFkewdz6WYywcxh0+YfYKouxJihsSXfq7kenqmbrh2l9e28+VWC67ouBlwvPQu+e/E/Lr0EeEcNcLVGj6JAG0sH2rjzfhTY4X0b5n5IGY9WLP5y//JAz0V0OtUnfzFclHVV38ttMTyVVGD1j9pjuZVZiYHBnnhSatRHgEJpoVsuVCJdhL2j6EPfK0w8e3Y9aLySrMgRpFSnRvIR1YLEYQC1xvJfJ39OkDOsHQ8Wnd2FH4Pis+PFkwl8vj/p8gtFGqOcJwcSTnLi48vb8iYf/ip9fk9lOP8NiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wRdmGtgo4XK/l/pi1Z/4bjFdiEXScxvAsYXaLMWX8HI=;
- b=WkMu1nqAl5+fetUsDACDaVKBHUMVCafzSWtQsUp+rUa8pycmx0EH2yK2vsjAa9LYwxzJ9ouSGNGR2c4X7r5sGrqlpIqVNZBZAheS7rFi26Jlbfq5jR0QFTH2Ly9pJBHD5p8dtiUglEu7JREsNRG+vJ+Qlf/YVWwCE5j0r5MSisE=
-Authentication-Results: lst.de; dkim=none (message not signed)
- header.d=none;lst.de; dmarc=none action=none header.from=oracle.com;
-Received: from BYAPR10MB2999.namprd10.prod.outlook.com (2603:10b6:a03:85::27)
- by BY5PR10MB4276.namprd10.prod.outlook.com (2603:10b6:a03:201::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3933.32; Wed, 17 Mar
- 2021 18:18:25 +0000
-Received: from BYAPR10MB2999.namprd10.prod.outlook.com
- ([fe80::50f2:e203:1cc5:d4f7]) by BYAPR10MB2999.namprd10.prod.outlook.com
- ([fe80::50f2:e203:1cc5:d4f7%6]) with mapi id 15.20.3955.018; Wed, 17 Mar 2021
- 18:18:25 +0000
-Date: Wed, 17 Mar 2021 14:18:18 -0400
-From: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-To: Christoph Hellwig <hch@lst.de>, jgross@suse.com
-Subject: Re: [PATCH 12/14] swiotlb: move global variables into a new
- io_tlb_mem structure
-Message-ID: <YFJH6mkA8il1wjBZ@Konrads-MacBook-Pro.local>
-References: <20210301074436.919889-1-hch@lst.de>
- <20210301074436.919889-13-hch@lst.de>
- <20210317134204.GA315788@konrad-char-us-oracle-com.allregionaliads.osdevelopmeniad.oraclevcn.com>
- <20210317135327.GA10797@lst.de>
- <YFJBvFjtZUiBQj4k@Konrads-MacBook-Pro.local>
- <20210317175742.GA29280@lst.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210317175742.GA29280@lst.de>
-X-Originating-IP: [138.3.200.3]
-X-ClientProxiedBy: CH0PR07CA0016.namprd07.prod.outlook.com
- (2603:10b6:610:32::21) To BYAPR10MB2999.namprd10.prod.outlook.com
- (2603:10b6:a03:85::27)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0zjn6Y9Dz3045
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 05:50:05 +1100 (AEDT)
+IronPort-SDR: RCFZDjeaI7ZIvUh+EvRzWOujsyHIcblgZddBwZ8tgVIc438me7FyGOhf4o9k+DUwMXVK8Gcfpk
+ f/d/9IFIn+eg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9926"; a="253537442"
+X-IronPort-AV: E=Sophos;i="5.81,257,1610438400"; d="scan'208";a="253537442"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Mar 2021 11:48:51 -0700
+IronPort-SDR: p/cSR5ulZFFd9H+i41M6HIHkogJZKBFJt/D8W5rmiysz+I/eOXhnwpKvJG3+3BPjs//QdUlzyH
+ OHhL8ciCbw6g==
+X-IronPort-AV: E=Sophos;i="5.81,257,1610438400"; d="scan'208";a="605831558"
+Received: from mtpearso-mobl4.amr.corp.intel.com (HELO [10.213.190.14])
+ ([10.213.190.14])
+ by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Mar 2021 11:48:50 -0700
+Subject: Re: [PATCH v2] mm: Move mem_init_print_info() into mm_init()
+To: Kefeng Wang <wangkefeng.wang@huawei.com>, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu>
+ <20210317015210.33641-1-wangkefeng.wang@huawei.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+ z5cecg==
+Message-ID: <2a7d6e39-b293-7422-87b0-741f1ab0c22c@intel.com>
+Date: Wed, 17 Mar 2021 11:48:50 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from Konrads-MacBook-Pro.local (138.3.200.3) by
- CH0PR07CA0016.namprd07.prod.outlook.com (2603:10b6:610:32::21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3955.18 via Frontend Transport; Wed, 17 Mar 2021 18:18:23 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1e53fdb7-ab97-400e-f073-08d8e9710e74
-X-MS-TrafficTypeDiagnostic: BY5PR10MB4276:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR10MB42767F1BCA5CBBAC71926AB6896A9@BY5PR10MB4276.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: DlrkTVWW/e7zc1JJihtgu8t91wb9elr29Kftpn9KBl+1QJb20Y+TqJ+Xez3vp2i4GOfRvXtPZ/8SmAXJ6ZZLJvUyV0GUcqXZxC0gRx2H7SAJYjLJOdKEBN7F+uyEnzs0/IeIK5l9VLWE97p8xxgY/9ocTQbNWb83ZxuUl0Hp2ngZj0n77bpDnQDF7WQ0KJ+x/w6QIlUObEIRNEvbKP6w19sRjDXRtyxjBuZ3jCuP+Kp3YfjhcoikwME6r/2P5qgQ6mIqvKC1sR8gSheNln+k4Ujloj5PGIMIi1Z7WAw+dGYj8GxvYMJFJuOy+8YP99hoUbWY8JHFKIdd/flj1ERliNtufdH44C6pQ2fpEJFN7MZIIbZEnXhQnNU7JUFwaEeEhFPjiFsJqQVgR5NDJM/JjAOx/J2BqshJRCPSQqdvp8lWYTVXexE1uaQtuAhwn6QcWF33d7TZhch3n/oULxXLjRfkriOTMeV+O8wszSbIcuh4IYEHGW8CXF7gG4wtcdrMEJ4+kvozEJjrcUTDa0TMDHl0RMTgNRB0rGHG1eTBdM5ebV01BLuGP8JWhOhPI7wq
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR10MB2999.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(136003)(396003)(366004)(346002)(39860400002)(376002)(9686003)(8676002)(6666004)(5660300002)(83380400001)(54906003)(2906002)(55016002)(956004)(186003)(8936002)(66556008)(86362001)(66946007)(66476007)(52116002)(26005)(16526019)(478600001)(316002)(7696005)(4326008)(107886003)(6506007);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?domb47Ad3+oBW8VUH8U/3fTzd226BaZwyIt4Ktk589XTg9xrqRff2gTJNQsM?=
- =?us-ascii?Q?F0RRz7B4KIkfuTNho7905xBtmqhSd8hRYYi6Yhh4FidxRAyI0PdkapJ90rP2?=
- =?us-ascii?Q?Duh6VXDVoBt0jmNwgzgsv+lz/xPjOw4lwjhhvWhOT8rUrtCOVaaZRt9TB8qh?=
- =?us-ascii?Q?Gl/k63Wwmj6SzfgZzEN2qVdBBdLYdW6MBzAEqOBGNVTIUueofebOsfMsygrK?=
- =?us-ascii?Q?JNlx69QVB8K/XSPyCkqWZshW+yfNZmY7fZDroawbDVJAL3B1EBYzjlW2kmBy?=
- =?us-ascii?Q?qphfhRrkW0ctAXpD906/Z1OGu7b+P6L4LRTUVegT0NWjTehUeR4dq3LHO3Y/?=
- =?us-ascii?Q?A4JaKsFmDL28r5o2yLjp/3B7SRIqG6Fdfx9zopkS2W3q4nGjnSnt9mLDyVBY?=
- =?us-ascii?Q?S2+GSbASP6erGGWtIXHTLkg4gULbX5Tud7paaYactqJ4iYkc0dUUJfELg4hl?=
- =?us-ascii?Q?KYBTHs2BEK6brDLPU/OMwMuSdKJN9UyiXCTHeedttPdskD1LAcE6xb3yNkEL?=
- =?us-ascii?Q?NSaRWuHXceX3WnXfCqNHuyuxNuYOwH8mekK1z7KRetySHoG6eg1o/umnsEj/?=
- =?us-ascii?Q?PGIevtlu0+g1LLclkCGA/RnyHIjBPw+P6ZmlkLoAqWvTfgxV482uZsU8WjI8?=
- =?us-ascii?Q?BrFvm5qTfWdmQA7h+941UM8+rSnlOc6u8XhcJnkmRPWHNReW70TuyrBDPAZH?=
- =?us-ascii?Q?2nDkyLy0iLZCU5MgU0J9mHbJbu3jrEGYwEmu4EgTkQ/bh1oeyCziqZCq4skv?=
- =?us-ascii?Q?3mtc45SCPGo1Y71Em4OdBhtILrujMgbGIeqd3qfGHWVL3dbqB2mKOvOCAdNT?=
- =?us-ascii?Q?FK+0qhAIFkwnBLUa60DREeJOsXqiWsRMcdjRDIa5rKUEpX4XTxRE7c4lAcfK?=
- =?us-ascii?Q?d+549ZIsR4ZHRhF1uETZ30Jhodx9a8vNX/HoUromjdvgLYtZDD5nIDcrmXF7?=
- =?us-ascii?Q?m8SxdloxpjRQVelZF1w93lYY0hsJ2CSebFYt+r3EV9xD3vE0gCYdUUtw/URV?=
- =?us-ascii?Q?HLOzhWwHE18D1XZCaXpqG0ejTis8ZusHILwkTUKkkuG/JKlzyKVBjw+MAq84?=
- =?us-ascii?Q?rUV2ywbP4fsoMAsP6QNgfMEXDBl+98gn44bpj6m6ZXCmI8/Gjxh2UxmsOEOR?=
- =?us-ascii?Q?o8jmXUZKCtWCc6DN2MqhrJs7aYcvc8mEoHtGbTu9C9Fni/JASSfmOsG4sMXV?=
- =?us-ascii?Q?T1jPGOUiBIohSwXgjPnWHYctM7LXbzAYaJgHJDTz7o8Fokjv4wzsG8qwZlm2?=
- =?us-ascii?Q?upwC5cY2mtoUKIvbv6WNJp5ePGenSKReqkb/j7+yyO3M/3rbW/JBfdwcTeG8?=
- =?us-ascii?Q?wCNUQ4k3NEt9x/k+If00eHng?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e53fdb7-ab97-400e-f073-08d8e9710e74
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2999.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2021 18:18:25.6935 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B6oHeA/c3erElwCCUHT4pLP7VcA2cD28uRMJfL/ipJKFjinXMf5e2REZiVVnm+Bjd+7a51uJLsAwHYcPMvBY7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR10MB4276
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9926
- signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0 spamscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103170126
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9926
- signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- suspectscore=0 adultscore=0
- spamscore=0 clxscore=1015 phishscore=0 malwarescore=0 priorityscore=1501
- bulkscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103170126
+In-Reply-To: <20210317015210.33641-1-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -176,42 +102,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: xen-devel@lists.xenproject.org, iommu@lists.linux-foundation.org,
- Dongli Zhang <dongli.zhang@oracle.com>, Claire Chang <tientzu@chromium.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
+ Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Jonas Bonn <jonas@southpole.se>,
+ linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-hexagon@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Heiko Carstens <hca@linux.ibm.com>,
+ linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
+ openrisc@lists.librecores.org, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>, linux-parisc@vger.kernel.org,
+ linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 17, 2021 at 06:57:42PM +0100, Christoph Hellwig wrote:
-> On Wed, Mar 17, 2021 at 01:51:56PM -0400, Konrad Rzeszutek Wilk wrote:
-> > On Wed, Mar 17, 2021 at 02:53:27PM +0100, Christoph Hellwig wrote:
-> > > On Wed, Mar 17, 2021 at 01:42:07PM +0000, Konrad Rzeszutek Wilk wrote:
-> > > > > -	alloc_size = PAGE_ALIGN(io_tlb_nslabs * sizeof(size_t));
-> > > > > -	io_tlb_alloc_size = memblock_alloc(alloc_size, PAGE_SIZE);
-> > > > > -	if (!io_tlb_alloc_size)
-> > > > > -		panic("%s: Failed to allocate %zu bytes align=0x%lx\n",
-> > > > > -		      __func__, alloc_size, PAGE_SIZE);
-> > > > 
-> > > > Shouldn't this be converted to:
-> > > > 	mem->alloc_size = memblock_alloc(alloc_size, PAGE_SIZE);
-> > > > 	if (...)
-> > > > 
-> > > > Seems that it got lost in the search and replace?
-> > > 
-> > > Yes, I messed that up during the rebase.  That being said it magically
-> > > gets fixed in the next patch..
-> > 
-> > Yes. However if someone does a bisection they are going to be mighty unhappy
-> > with you.
+On 3/16/21 6:52 PM, Kefeng Wang wrote:
+> mem_init_print_info() is called in mem_init() on each architecture,
+> and pass NULL argument, so using void argument and move it into mm_init().
 > 
-> Sure, I was planning on fixing it anyway.  Just waiting for feedback
-> on the rest of the patches before doing a respin.
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 
-I put the patches up-to this one on :
+It's not a big deal but you might want to say something like:
 
- git://git.kernel.org/pub/scm/linux/kernel/git/konrad/swiotlb devel/for-linus-5.13
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # x86 bits
 
-Would you be OK rebasing on top of that and sending the patches?
-
-Juergen, would you be OK testing that branch on your Xen setup?
+Just to make it clear that I didn't look at the alpha bits at all. :)
