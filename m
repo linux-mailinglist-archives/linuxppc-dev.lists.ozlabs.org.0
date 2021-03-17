@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E51533E40C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 01:59:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D145B33E411
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 02:00:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F0Wyh2J2fz3bsP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 11:59:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F0WzG3Yx9z3bs0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Mar 2021 12:00:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YifZ5p2H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u9WgVpvU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,34 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=YifZ5p2H; 
+ header.s=k20201202 header.b=u9WgVpvU; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F0Wy56Sjlz30QK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 11:59:09 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 32B2864F97;
- Wed, 17 Mar 2021 00:59:07 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F0WyP6BCKz3cnc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 11:59:25 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C12C164F94;
+ Wed, 17 Mar 2021 00:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1615942748;
- bh=vrO7KwDpMMsX+cWn8BeQo8ANif15unkmHNpJ8fJCPBo=;
+ s=k20201202; t=1615942763;
+ bh=eyvwRZIPlZpP72HysB9lTTUVYz1mj0WrErunU7kassk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=YifZ5p2HH5VtWbC/vw38TEE2975t6MqmZGWena4CDuhByWt9DpwSTiPnPQsC4RzZD
- +bnJBsp8AIGE6WHXyDRjUUZxMUobBJZKpDTPBvkF7zGR0+CKqYd0BFEsm9zBnDw6Vj
- L5bFCZ1OA51g/emO4arnN/K0iiDO9Nzv/CattNDqCixBwUfeRu3It0GyfGpkCv8bHu
- Iq21xczxQ/Q3Ec2IC7ik04ZrnrE8Ex2UrMTmXEXFFqC3oongbzbP/goVAvufV5xHs9
- +VJkgDKnqVJAxB1DbKU/qvGHJwytzU4cMt+lz+xBaQboF8CiusS7NUWrqqiiwu28+3
- Q8vIZEzFA+psA==
+ b=u9WgVpvUlipgiuLh67npUFnh2V9RkqRSi8Cf6WaNEc15lFa4hg9i0fkl8EniviX4L
+ T64Fd4NECDl5cXRalDWWZS6akGf4aoxyyoRWHVr8TL0qqRQ3t80m2LS4pF+z/QUSCa
+ uS5iNxDwqjEWjxIeaRcnkCncOYJMdWNntfpJN6vrHRAUjLdsxBnmZ33zZNRxfU1KBO
+ +RrJSdtaDPCveaHw8vOqdpFLN+wDL69G9qCl1r/fjN+B49K8FI5Ak7Dp0COuh8m6Ph
+ Kh1DVZuhy+pB4YeY9yEmSkm9vnppEPBquTl2tAqIyy5LzLaIqElxJdbIYwIH64UI8o
+ HFXT1Mvy8X6Pg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 14/23] net: wan: fix error return code of
- uhdlc_init()
-Date: Tue, 16 Mar 2021 20:58:40 -0400
-Message-Id: <20210317005850.726479-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 02/21] powerpc/4xx: Fix build errors from mfdcr()
+Date: Tue, 16 Mar 2021 20:59:01 -0400
+Message-Id: <20210317005920.726931-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210317005850.726479-1-sashal@kernel.org>
-References: <20210317005850.726479-1-sashal@kernel.org>
+In-Reply-To: <20210317005920.726931-1-sashal@kernel.org>
+References: <20210317005920.726931-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,54 +60,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
- Jia-Ju Bai <baijiaju1990@gmail.com>, TOTE Robot <oslab@tsinghua.edu.cn>,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Sasha Levin <sashal@kernel.org>, Feng Tang <feng.tang@intel.com>,
+ kernel test robot <lkp@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Jia-Ju Bai <baijiaju1990@gmail.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 62765d39553cfd1ad340124fe1e280450e8c89e2 ]
+[ Upstream commit eead089311f4d935ab5d1d8fbb0c42ad44699ada ]
 
-When priv->rx_skbuff or priv->tx_skbuff is NULL, no error return code of
-uhdlc_init() is assigned.
-To fix this bug, ret is assigned with -ENOMEM in these cases.
+lkp reported a build error in fsp2.o:
 
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  CC      arch/powerpc/platforms/44x/fsp2.o
+  {standard input}:577: Error: unsupported relocation against base
+
+Which comes from:
+
+  pr_err("GESR0: 0x%08x\n", mfdcr(base + PLB4OPB_GESR0));
+
+Where our mfdcr() macro is stringifying "base + PLB4OPB_GESR0", and
+passing that to the assembler, which obviously doesn't work.
+
+The mfdcr() macro already checks that the argument is constant using
+__builtin_constant_p(), and if not calls the out-of-line version of
+mfdcr(). But in this case GCC is smart enough to notice that "base +
+PLB4OPB_GESR0" will be constant, even though it's not something we can
+immediately stringify into a register number.
+
+Segher pointed out that passing the register number to the inline asm
+as a constant would be better, and in fact it fixes the build error,
+presumably because it gives GCC a chance to resolve the value.
+
+While we're at it, change mtdcr() similarly.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Suggested-by: Segher Boessenkool <segher@kernel.crashing.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Acked-by: Feng Tang <feng.tang@intel.com>
+Link: https://lore.kernel.org/r/20210218123058.748882-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wan/fsl_ucc_hdlc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/dcr-native.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index 9ab04ef532f3..5df6e85e7ccb 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -201,14 +201,18 @@ static int uhdlc_init(struct ucc_hdlc_private *priv)
- 	priv->rx_skbuff = kcalloc(priv->rx_ring_size,
- 				  sizeof(*priv->rx_skbuff),
- 				  GFP_KERNEL);
--	if (!priv->rx_skbuff)
-+	if (!priv->rx_skbuff) {
-+		ret = -ENOMEM;
- 		goto free_ucc_pram;
-+	}
- 
- 	priv->tx_skbuff = kcalloc(priv->tx_ring_size,
- 				  sizeof(*priv->tx_skbuff),
- 				  GFP_KERNEL);
--	if (!priv->tx_skbuff)
-+	if (!priv->tx_skbuff) {
-+		ret = -ENOMEM;
- 		goto free_rx_skbuff;
-+	}
- 
- 	priv->skb_curtx = 0;
- 	priv->skb_dirtytx = 0;
+diff --git a/arch/powerpc/include/asm/dcr-native.h b/arch/powerpc/include/asm/dcr-native.h
+index 4a2beef74277..86fdda16bb73 100644
+--- a/arch/powerpc/include/asm/dcr-native.h
++++ b/arch/powerpc/include/asm/dcr-native.h
+@@ -65,8 +65,8 @@ static inline void mtdcrx(unsigned int reg, unsigned int val)
+ #define mfdcr(rn)						\
+ 	({unsigned int rval;					\
+ 	if (__builtin_constant_p(rn) && rn < 1024)		\
+-		asm volatile("mfdcr %0," __stringify(rn)	\
+-		              : "=r" (rval));			\
++		asm volatile("mfdcr %0, %1" : "=r" (rval)	\
++			      : "n" (rn));			\
+ 	else if (likely(cpu_has_feature(CPU_FTR_INDEXED_DCR)))	\
+ 		rval = mfdcrx(rn);				\
+ 	else							\
+@@ -76,8 +76,8 @@ static inline void mtdcrx(unsigned int reg, unsigned int val)
+ #define mtdcr(rn, v)						\
+ do {								\
+ 	if (__builtin_constant_p(rn) && rn < 1024)		\
+-		asm volatile("mtdcr " __stringify(rn) ",%0"	\
+-			      : : "r" (v)); 			\
++		asm volatile("mtdcr %0, %1"			\
++			      : : "n" (rn), "r" (v));		\
+ 	else if (likely(cpu_has_feature(CPU_FTR_INDEXED_DCR)))	\
+ 		mtdcrx(rn, v);					\
+ 	else							\
 -- 
 2.30.1
 
