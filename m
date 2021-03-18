@@ -1,80 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0C33402EF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 11:12:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D213403CD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 11:49:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1NBN0fkxz3bw5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 21:12:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=h+XOb1Gs;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1P0X0CZHz3c0G
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 21:49:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12d;
- helo=mail-lf1-x12d.google.com; envelope-from=sergei.shtylyov@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=h+XOb1Gs; dkim-atps=neutral
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
- [IPv6:2a00:1450:4864:20::12d])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=ubuntu.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=christian.brauner@ubuntu.com; receiver=<UNKNOWN>)
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1N9x13j3z2xdL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 21:12:20 +1100 (AEDT)
-Received: by mail-lf1-x12d.google.com with SMTP id m12so3652213lfq.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 03:12:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=fj+8CF0xEa6bOzXqxjtIYrEA5HoToR1DJW5/Q9q9jmw=;
- b=h+XOb1GsQ2w8fLoRZPzFbHuKl4PLZbrg1n3NNXlB+1pwKaDpv3IYeBwNMYTnaAe/dv
- 53qY2HQRgJloO7YPpYoaazxwB0LyW9cda/3XqephYo6XWuKffw2EvNS/BeW8bu2CjhLn
- YWTP2x1H0eEBDgDtwckTaScppt8aK7lt+V3njf7QJpXzuiT7grarbWs5GRfMMbxHi5hx
- sbbCxsAJNuzngqg7yz9ZWUT+6eIJtzHyMp4aZtClTbLq39j781dflkTtZN7C5T1u2Nwq
- xymOipVtMZt0XepUbRaIZljM2iUOt+cNzBqUcJW9l5gvLHs6joBPpTbT1tLMNxHlVuyX
- KLDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=fj+8CF0xEa6bOzXqxjtIYrEA5HoToR1DJW5/Q9q9jmw=;
- b=sSmmkJDjdGx3+N86aKoLOb4IzTqvJFt6hceSb5L6Am0CP76AfXFCBvsgE0xos5bSqg
- nE11ugeDSmocpMoSCLKGabwnZWdEB8Jpv9l+8W54TX+ti2Ilf0SsHmjQzNOw+4QD7DTg
- 2c7RrarVsp+dMB4APcGunM5JiflsFKSAd7lok4mbjLMdDa8OAd0DOASVv3l5/edadI75
- Toj4RKHRxNjEpvJBMH9e1ZAf9QldEF9KeksiVw4RB4oQz4t/FxFSpoIdjfnSUjPBjS/v
- bBJK73e4E1WLJIU66I35c9jF9/S9sB0A+Zv4erAiEUzSDOUwAwcJav0iAdzzOekfQ3GY
- I0fA==
-X-Gm-Message-State: AOAM532AGcniYFdJ8/AaQbyoGH45d65PZkL717OKe0ke6nKIJLAX0pg4
- 5mxE7SnMjLK07LxbcDtfkfgVTSmWpcc06Q==
-X-Google-Smtp-Source: ABdhPJw0WKNmAy7eGUCvhofce6ngmswkk73bpXDn/HaCVJQto32NE95sJGLkJZuXS7ucQeT6WnUpaw==
-X-Received: by 2002:a05:6512:238c:: with SMTP id
- c12mr69712lfv.200.1616062337968; 
- Thu, 18 Mar 2021 03:12:17 -0700 (PDT)
-Received: from [192.168.1.101] ([178.176.78.3])
- by smtp.gmail.com with ESMTPSA id p22sm168167lfh.113.2021.03.18.03.12.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Mar 2021 03:12:17 -0700 (PDT)
-Subject: Re: [PATCH 08/10] MIPS: disable CONFIG_IDE in malta*_defconfig
-To: Christoph Hellwig <hch@lst.de>, "David S. Miller" <davem@davemloft.net>,
- Jens Axboe <axboe@kernel.dk>, Geert Uytterhoeven <geert@linux-m68k.org>
-References: <20210318045706.200458-1-hch@lst.de>
- <20210318045706.200458-9-hch@lst.de>
-From: Sergei Shtylyov <sergei.shtylyov@gmail.com>
-Message-ID: <5b0f503e-a27c-a241-c705-b2a9ccd6d0a2@gmail.com>
-Date: Thu, 18 Mar 2021 13:12:16 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1P0B264Mz30F4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 21:48:57 +1100 (AEDT)
+Received: from ip5f5af0a0.dynamic.kabel-deutschland.de ([95.90.240.160]
+ helo=wittgenstein) by youngberry.canonical.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <christian.brauner@ubuntu.com>)
+ id 1lMqCr-0006tk-6K; Thu, 18 Mar 2021 10:48:45 +0000
+Date: Thu, 18 Mar 2021 11:48:43 +0100
+From: Christian Brauner <christian.brauner@ubuntu.com>
+To: Richard Guy Briggs <rgb@redhat.com>
+Subject: Re: [PATCH 1/2] audit: add support for the openat2 syscall
+Message-ID: <20210318104843.uiga6tmmhn5wfhbs@wittgenstein>
+References: <cover.1616031035.git.rgb@redhat.com>
+ <49510cacfb5fbbaa312a4a389f3a6619675007ab.1616031035.git.rgb@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20210318045706.200458-9-hch@lst.de>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <49510cacfb5fbbaa312a4a389f3a6619675007ab.1616031035.git.rgb@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,29 +46,256 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-doc@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-alpha@vger.kernel.org,
- Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- Richard Henderson <rth@twiddle.net>
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ Paul Moore <paul@paul-moore.com>, linux-parisc@vger.kernel.org, x86@kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Eric Paris <eparis@redhat.com>,
+ linux-fsdevel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
+ Linux-Audit Mailing List <linux-audit@redhat.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-alpha@vger.kernel.org,
+ sparclinux@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
+ Steve Grubb <sgrubb@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/18/21 7:57 AM, Christoph Hellwig wrote:
+[+Cc Aleksa, the author of openat2()]
 
-> Various malta defconfigs enable CONFIG_IDE for the tc86c001 ide driver,
-> hich is a Toshiba plug in card that does not make much sense to use on
-  ^ which is for
+and a comment below. :)
 
-> bigsur platforms.  For all other ATA cards libata support is already
-  ^ Malta.
-
-> enabled.
+On Wed, Mar 17, 2021 at 09:47:17PM -0400, Richard Guy Briggs wrote:
+> The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
+> ("open: introduce openat2(2) syscall")
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-[...]
+> Add the openat2(2) syscall to the audit syscall classifier.
+> 
+> See the github issue
+> https://github.com/linux-audit/audit-kernel/issues/67
+> 
+> Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+> ---
+>  arch/alpha/kernel/audit.c          | 2 ++
+>  arch/ia64/kernel/audit.c           | 2 ++
+>  arch/parisc/kernel/audit.c         | 2 ++
+>  arch/parisc/kernel/compat_audit.c  | 2 ++
+>  arch/powerpc/kernel/audit.c        | 2 ++
+>  arch/powerpc/kernel/compat_audit.c | 2 ++
+>  arch/s390/kernel/audit.c           | 2 ++
+>  arch/s390/kernel/compat_audit.c    | 2 ++
+>  arch/sparc/kernel/audit.c          | 2 ++
+>  arch/sparc/kernel/compat_audit.c   | 2 ++
+>  arch/x86/ia32/audit.c              | 2 ++
+>  arch/x86/kernel/audit_64.c         | 2 ++
+>  kernel/auditsc.c                   | 3 +++
+>  lib/audit.c                        | 4 ++++
+>  lib/compat_audit.c                 | 4 ++++
+>  15 files changed, 35 insertions(+)
+> 
+> diff --git a/arch/alpha/kernel/audit.c b/arch/alpha/kernel/audit.c
+> index 96a9d18ff4c4..06a911b685d1 100644
+> --- a/arch/alpha/kernel/audit.c
+> +++ b/arch/alpha/kernel/audit.c
+> @@ -42,6 +42,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  		return 3;
+>  	case __NR_execve:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 0;
+>  	}
+> diff --git a/arch/ia64/kernel/audit.c b/arch/ia64/kernel/audit.c
+> index 5192ca899fe6..5eaa888c8fd3 100644
+> --- a/arch/ia64/kernel/audit.c
+> +++ b/arch/ia64/kernel/audit.c
+> @@ -43,6 +43,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  		return 3;
+>  	case __NR_execve:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 0;
+>  	}
+> diff --git a/arch/parisc/kernel/audit.c b/arch/parisc/kernel/audit.c
+> index 9eb47b2225d2..fc721a7727ba 100644
+> --- a/arch/parisc/kernel/audit.c
+> +++ b/arch/parisc/kernel/audit.c
+> @@ -52,6 +52,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  		return 3;
+>  	case __NR_execve:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 0;
+>  	}
+> diff --git a/arch/parisc/kernel/compat_audit.c b/arch/parisc/kernel/compat_audit.c
+> index 20c39c9d86a9..fc6d35918c44 100644
+> --- a/arch/parisc/kernel/compat_audit.c
+> +++ b/arch/parisc/kernel/compat_audit.c
+> @@ -35,6 +35,8 @@ int parisc32_classify_syscall(unsigned syscall)
+>  		return 3;
+>  	case __NR_execve:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 1;
+>  	}
+> diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
+> index a2dddd7f3d09..8f32700b0baa 100644
+> --- a/arch/powerpc/kernel/audit.c
+> +++ b/arch/powerpc/kernel/audit.c
+> @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  		return 4;
+>  	case __NR_execve:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 0;
+>  	}
+> diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
+> index 55c6ccda0a85..ebe45534b1c9 100644
+> --- a/arch/powerpc/kernel/compat_audit.c
+> +++ b/arch/powerpc/kernel/compat_audit.c
+> @@ -38,6 +38,8 @@ int ppc32_classify_syscall(unsigned syscall)
+>  		return 4;
+>  	case __NR_execve:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 1;
+>  	}
+> diff --git a/arch/s390/kernel/audit.c b/arch/s390/kernel/audit.c
+> index d395c6c9944c..d964cb94cfaf 100644
+> --- a/arch/s390/kernel/audit.c
+> +++ b/arch/s390/kernel/audit.c
+> @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  		return 4;
+>  	case __NR_execve:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 0;
+>  	}
+> diff --git a/arch/s390/kernel/compat_audit.c b/arch/s390/kernel/compat_audit.c
+> index 444fb1f66944..f7b32933ce0e 100644
+> --- a/arch/s390/kernel/compat_audit.c
+> +++ b/arch/s390/kernel/compat_audit.c
+> @@ -39,6 +39,8 @@ int s390_classify_syscall(unsigned syscall)
+>  		return 4;
+>  	case __NR_execve:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 1;
+>  	}
+> diff --git a/arch/sparc/kernel/audit.c b/arch/sparc/kernel/audit.c
+> index a6e91bf34d48..b6dcca9c6520 100644
+> --- a/arch/sparc/kernel/audit.c
+> +++ b/arch/sparc/kernel/audit.c
+> @@ -55,6 +55,8 @@ int audit_classify_syscall(int abi, unsigned int syscall)
+>  		return 4;
+>  	case __NR_execve:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 0;
+>  	}
+> diff --git a/arch/sparc/kernel/compat_audit.c b/arch/sparc/kernel/compat_audit.c
+> index 10eeb4f15b20..d2652a1083ad 100644
+> --- a/arch/sparc/kernel/compat_audit.c
+> +++ b/arch/sparc/kernel/compat_audit.c
+> @@ -39,6 +39,8 @@ int sparc32_classify_syscall(unsigned int syscall)
+>  		return 4;
+>  	case __NR_execve:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 1;
+>  	}
+> diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
+> index 6efe6cb3768a..57a02ade5503 100644
+> --- a/arch/x86/ia32/audit.c
+> +++ b/arch/x86/ia32/audit.c
+> @@ -39,6 +39,8 @@ int ia32_classify_syscall(unsigned syscall)
+>  	case __NR_execve:
+>  	case __NR_execveat:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 1;
+>  	}
+> diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
+> index 83d9cad4e68b..39de1e021258 100644
+> --- a/arch/x86/kernel/audit_64.c
+> +++ b/arch/x86/kernel/audit_64.c
+> @@ -53,6 +53,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  	case __NR_execve:
+>  	case __NR_execveat:
+>  		return 5;
+> +	case __NR_openat2:
+> +		return 6;
+>  	default:
+>  		return 0;
+>  	}
+> diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> index 8bb9ac84d2fb..f5616e70d129 100644
+> --- a/kernel/auditsc.c
+> +++ b/kernel/auditsc.c
+> @@ -76,6 +76,7 @@
+>  #include <linux/fsnotify_backend.h>
+>  #include <uapi/linux/limits.h>
+>  #include <uapi/linux/netfilter/nf_tables.h>
+> +#include <uapi/linux/openat2.h>
+>  
+>  #include "audit.h"
+>  
+> @@ -195,6 +196,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+>  		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+>  	case 5: /* execve */
+>  		return mask & AUDIT_PERM_EXEC;
+> +	case 6: /* openat2 */
+> +		return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
 
-MBR, Sergei
+That looks a bit dodgy. Maybe sm like the below would be a bit better?
+
+diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+index 47fb48f42c93..531e882a5096 100644
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -159,6 +159,7 @@ static const struct audit_nfcfgop_tab audit_nfcfgs[] = {
+
+ static int audit_match_perm(struct audit_context *ctx, int mask)
+ {
++       struct open_how *openat2;
+        unsigned n;
+        if (unlikely(!ctx))
+                return 0;
+@@ -195,6 +196,12 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+                return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+        case 5: /* execve */
+                return mask & AUDIT_PERM_EXEC;
++       case 6: /* openat2 */
++               openat2 = ctx->argv[2];
++               if (upper_32_bits(openat2->flags))
++                       pr_warn("Some sensible warning about unknown flags");
++
++               return mask & ACC_MODE(lower_32_bits(openat2->flags));
+        default:
+                return 0;
+        }
+
+(Ideally we'd probably notice at build-time that we've got flags
+exceeding 32bits. Could probably easily been done by exposing an all
+flags macro somewhere and then we can place a BUILD_BUG_ON() or sm into
+such places.)
+
+Christian
