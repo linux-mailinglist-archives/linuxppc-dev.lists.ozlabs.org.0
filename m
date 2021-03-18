@@ -1,127 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E12233FDF9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 05:02:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF7AC33FE67
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 05:59:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1CzG0fdGz3bwt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 15:02:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1FDT5KlGz3c3D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 15:59:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=eTNOqDUO;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=bv913LM0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::334;
- helo=mail-ot1-x334.google.com; envelope-from=groeck7@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+3da9058682ed8a08391b+6416+infradead.org+hch@casper.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=eTNOqDUO; dkim-atps=neutral
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com
- [IPv6:2607:f8b0:4864:20::334])
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=bv913LM0; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1Cyn3vJ7z309Z
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 15:02:06 +1100 (AEDT)
-Received: by mail-ot1-x334.google.com with SMTP id
- 31-20020a9d00220000b02901b64b9b50b1so3958126ota.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 21:02:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:autocrypt:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=yPPNJ/iuMbYQdPze8KDj5MSdlpFP5EItMkTH0DbgL7g=;
- b=eTNOqDUON1e5faLvL9M7KB42WLQjZt471iyOIGQM5sPNcm1DkkaFAHq0jElFahiRoB
- xBmQeiOLLpl/1xqMDn+6x3M3gj2Uv/x+2+amD3/B6pfJSwrlRLWXxxG/tvzcNykVIdWZ
- KdKp17U5n0gryOtcsQzLkX+5gT0ve9Wt1Nkaokyg/L+VH70fkV7M96+7kBk86AUOfTYc
- NJZF+iJ8WTnm2b+M3/YwZmvFeAOF7xiy2gdmLr8y22orzEzYi8Xp6S0eN1AM3jUSQa0l
- fHvEV1QMxxJ/035103668b0/MzMAAt+SsVC+ZjLL1KPD/SwpQMqSYsBdnc4+ATL5xxUQ
- ImJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=yPPNJ/iuMbYQdPze8KDj5MSdlpFP5EItMkTH0DbgL7g=;
- b=Tf+OrCK8X7PispCi+hI5PLy4XgaoRV+aErl6c5Y2jJ/f7OXCoPA29Qx0UdRPrLEiTV
- Vl46hvkqcdHsxcEILW5TFfkDGIWWgucMhH2tvrSPK5cFjsJtt8WKh48b7ntz3ff4ihuh
- uMce0TF4W+rudMOFuzNd5fXiM/RXsw06+4ZrKdnHUqOH9bhLbWTI4ONDllXUlO1T5wGX
- 7f1wo7Fq/GIEtNnoQ/2MUWlTEeJR+kgrtrdxx30hQn/iRwhGyUIBgggIh3mEaTGOW6fh
- qc6mp4w4StIvVm4PkOB4wJLSa/JuhPMXpQ+ZpqrhtLyoGnvmfX2C5IXeTpFo/1p6U0XV
- eh3w==
-X-Gm-Message-State: AOAM530YKCMBozrnGcGgGSlB9Qao3Ljd9Ntq2Bk0PcDHGkkMMKlRZOWM
- dbpDK2UqvRlUx5IZpJeaZAwFUnN3VqY=
-X-Google-Smtp-Source: ABdhPJxoToCJpxVnBlX8zjBz4PEI1c5sVhZMQtNK8lkVSBq1SufotWu8/IlEnttIMyYXoZRwf69/Pg==
-X-Received: by 2002:a9d:8d5:: with SMTP id 79mr5916165otf.345.1616040123041;
- Wed, 17 Mar 2021 21:02:03 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- d21sm247135oic.54.2021.03.17.21.02.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Mar 2021 21:02:02 -0700 (PDT)
-Subject: Re: Errant readings on LM81 with T2080 SoC
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
- Wolfram Sang <wsa@kernel.org>
-References: <20210311081842.GA1070@ninjato>
- <94dfa9dc-a80c-98ba-4169-44cce3d810f7@alliedtelesis.co.nz>
- <725c5e51-65df-e17d-e2da-0982efacf2d2@roeck-us.net>
- <9c912424-2cc9-8753-1352-1a5c27722cd2@alliedtelesis.co.nz>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-Message-ID: <8e516ef6-340e-a873-68a9-71a10008f32c@roeck-us.net>
-Date: Wed, 17 Mar 2021 21:02:00 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1FCW3pMGz301t
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 15:58:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=wEy5NunwrZKXnkhywjB0DIEFLxRmlhSa94tBcP+tKjE=; b=bv913LM0lvcD8Id3k3odeou8wR
+ 1UvHd2GaSV+awelY4zndccdEi1o98SvR0osHU7YT2lzvxPSgn9S+llRvYFYZl0NqxKr6JPY5h6ZqC
+ /VHtYLrSrsc3G0fU/qqnWT2IZ/W4XWIdxAZ8719My3Pmb4XVeFuT7ZtRtwHvPpDffcuPFktVt74Ci
+ iKFsp0yleZWPZWxf14Mw2w5Vhlql3ikursfJEfoBHUEAclgryE05eVjtWYzyYdxxKWdARDOzxutBe
+ fAU3lk4ETNL1tXb+E/S9a3A6KawIpnvinkS/iDrdzoMGs3YMF+h+OAjuVTBRk+TeCrfcJQuHQYqF9
+ rlZkW62w==;
+Received: from [2001:4bb8:18c:bb3:e1cf:ad2f:7ff7:7a0b] (helo=localhost)
+ by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1lMkiZ-002ZB3-Ks; Thu, 18 Mar 2021 04:57:10 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: "David S. Miller" <davem@davemloft.net>, Jens Axboe <axboe@kernel.dk>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: remove the legacy ide driver
+Date: Thu, 18 Mar 2021 05:56:56 +0100
+Message-Id: <20210318045706.200458-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-In-Reply-To: <9c912424-2cc9-8753-1352-1a5c27722cd2@alliedtelesis.co.nz>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,49 +63,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- "jdelvare@suse.com" <jdelvare@suse.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-doc@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-alpha@vger.kernel.org,
+ Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/17/21 8:46 PM, Chris Packham wrote:
-> 
-> On 12/03/21 10:34 am, Guenter Roeck wrote:
->> On 3/11/21 1:17 PM, Chris Packham wrote:
->>> On 11/03/21 9:18 pm, Wolfram Sang wrote:
->>>>> Bummer. What is really weird is that you see clock stretching under
->>>>> CPU load. Normally clock stretching is triggered by the device, not
->>>>> by the host.
->>>> One example: Some hosts need an interrupt per byte to know if they
->>>> should send ACK or NACK. If that interrupt is delayed, they stretch the
->>>> clock.
->>>>
->>> It feels like something like that is happening. Looking at the T2080
->>> Reference manual there is an interesting timing diagram (Figure 14-2 if
->>> someone feels like looking it up). It shows SCL low between the ACK for
->>> the address and the data byte. I think if we're delayed in sending the
->>> next byte we could violate Ttimeout or Tlow:mext from the SMBUS spec.
->>>
->> I think that really leaves you only two options that I can see:
->> Rework the driver to handle critical actions (such as setting TXAK,
->> and everything else that might result in clock stretching) in the
->> interrupt handler, or rework the driver to handle everything in
->> a high priority kernel thread.
-> I've made some reasonable progress on making i2c-mpc more interrupt 
-> driven. Assuming it works out for my use-case is there an opinion on 
-> making interrupt support mandatory? Looking at all the in-tree dts files 
-> that use one of the compatible strings from i2c-mpc.c they all have 
-> interrupt properties so in theory nothing is using the polling mode. But 
-> there may be some out-of-tree boards or boards using an old dtb that 
-> would be affected?
-> 
+Hi all,
 
-The polling code is from pre-git times. Like 2005 and earlier.
-I'd say it is about time to get rid of it. Any out-of-tree users
-had more than 15 years to upstream their code, after all.
+we've been trying to get rid of the legacy ide driver for a while now,
+and finally scheduled a removal for 2021, which is three month old now.
 
-Guenter
+In general distros and most defconfigs have switched to libata long ago,
+but there are a few exceptions.  This series first switches over all
+remaining defconfigs to use libata and then removes the legacy ide
+driver.
+
+libata mostly covers all hardware supported by the legacy ide driver.
+There are three mips drivers that are not supported, but the linux-mips
+list could not identify any users of those.  There also are two m68k
+drivers that do not have libata equivalents, which might or might not
+have users, so we'll need some input and possibly help from the m68k
+community here.
