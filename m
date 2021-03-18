@@ -2,57 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA85933FD33
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 03:27:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5E933FD34
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 03:28:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F19sS4xPVz3bvG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 13:27:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SXK8ydgQ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F19tt48Hmz3bxJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 13:28:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=SXK8ydgQ; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F19s261TRz300V
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 13:27:01 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F19rt2cr9z9sW1;
- Thu, 18 Mar 2021 13:26:53 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1616034415;
- bh=n7jbAoL3R+9HiLhJbEg9m55h22lar+wmmLU1ms4QAFE=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=SXK8ydgQAX3qbq58RUaD0IWoICWrGDDwcNc1/vYOAfR9EibmMAfUFUaqngBXOaC7A
- JqVj7B+LvtP/M4cGOYe0Deg9DgEUMSLo4F2AsxDb6bCblhAWm5QcvTjFpnDP3Jf3tO
- MXI5rK2pH7dqv0P7BytwqtHbEGlV7wqHw9L2+/6oFMtHN3WcdGfKsgihD4/R3qNdOd
- s+5cqAhWFxF5m8Hrd5TLl8Qts87RmL4+YiEIdRgkGSJPQusL4uPAz7/VmFPCQuCnxB
- XBk46m+OUwrcd8EW1ISlLebuFbdiM4vlyP/NLha3+RjpyjT8OBjoQ8pRGN127PV+uR
- evKtaJpFAgmUw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/numa: Fix topology_physical_package_id() on
- pSeries
-In-Reply-To: <20210312143154.3181109-1-clg@kaod.org>
-References: <20210312143154.3181109-1-clg@kaod.org>
-Date: Thu, 18 Mar 2021 13:26:52 +1100
-Message-ID: <871rcdp577.fsf@mpe.ellerman.id.au>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com;
+ envelope-from=heying24@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F19tY1lSnz3014
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 13:28:20 +1100 (AEDT)
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F19qZ0p6wzPjdT;
+ Thu, 18 Mar 2021 10:25:46 +0800 (CST)
+Received: from [10.67.110.136] (10.67.110.136) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.498.0; Thu, 18 Mar 2021 10:28:09 +0800
+Subject: Re: [PATCH -next] powerpc: kernel/time.c - cleanup warnings
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, <mpe@ellerman.id.au>,
+ <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
+ <msuchanek@suse.de>, <peterz@infradead.org>, <geert+renesas@glider.be>,
+ <kernelfans@gmail.com>, <frederic@kernel.org>
+References: <20210317103438.177428-1-heying24@huawei.com>
+ <3f4d196b-0a8e-d4c9-cabe-591f5916a2b9@csgroup.eu>
+From: "heying (H)" <heying24@huawei.com>
+Message-ID: <5ee06736-7fc4-7993-a8b5-042e1890a6de@huawei.com>
+Date: Thu, 18 Mar 2021 10:28:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <3f4d196b-0a8e-d4c9-cabe-591f5916a2b9@csgroup.eu>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.110.136]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,71 +52,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Greg Kurz <groug@kaod.org>,
- Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-C=C3=A9dric Le Goater <clg@kaod.org> writes:
-> Initial commit 15863ff3b8da ("powerpc: Make chip-id information
-> available to userspace") introduce a cpu_to_chip_id() routine for the
-> PowerNV platform using the "ibm,chip-id" property to query the chip id
-> of a CPU. But PAPR does not specify such a property and the node id
-> query is broken.
+
+在 2021/3/17 19:16, Christophe Leroy 写道:
 >
-> Use cpu_to_node() instead which guarantees to have a correct value on
-> all platforms, PowerNV an pSeries.
+>
+> Le 17/03/2021 à 11:34, He Ying a écrit :
+>> We found these warnings in arch/powerpc/kernel/time.c as follows:
+>> warning: symbol 'decrementer_max' was not declared. Should it be static?
+>> warning: symbol 'rtc_lock' was not declared. Should it be static?
+>> warning: symbol 'dtl_consumer' was not declared. Should it be static?
+>>
+>> Declare 'decrementer_max' in arch/powerpc/include/asm/time.h. And 
+>> include
+>> proper header in which 'rtc_lock' is declared. Move 'dtl_consumer'
+>> definition behind "include <asm/dtl.h>" because 'dtl_consumer' is 
+>> declared
+>> there.
+>>
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: He Ying <heying24@huawei.com>
+>> ---
+>>   arch/powerpc/include/asm/time.h | 1 +
+>>   arch/powerpc/kernel/time.c      | 7 +++----
+>>   2 files changed, 4 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/time.h 
+>> b/arch/powerpc/include/asm/time.h
+>> index 8dd3cdb25338..2cd2b50bedda 100644
+>> --- a/arch/powerpc/include/asm/time.h
+>> +++ b/arch/powerpc/include/asm/time.h
+>> @@ -22,6 +22,7 @@ extern unsigned long tb_ticks_per_jiffy;
+>>   extern unsigned long tb_ticks_per_usec;
+>>   extern unsigned long tb_ticks_per_sec;
+>>   extern struct clock_event_device decrementer_clockevent;
+>> +extern u64 decrementer_max;
+>>       extern void generic_calibrate_decr(void);
+>> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+>> index b67d93a609a2..409967713ca6 100644
+>> --- a/arch/powerpc/kernel/time.c
+>> +++ b/arch/powerpc/kernel/time.c
+>> @@ -55,6 +55,7 @@
+>>   #include <linux/sched/cputime.h>
+>>   #include <linux/sched/clock.h>
+>>   #include <linux/processor.h>
+>> +#include <linux/mc146818rtc.h>
+>
+> I don't think that's the good place. It has no link to powerpc, it is 
+> only by chance that it has the same name.
+>
+> As rtc_lock is defined in powerpc time.c, I think you should declare 
+> it in powerpc asm/time.h
 
-I'm not convinced this is correct on any platforms :)
+My first thought was the same as yours. I tried to add declaration in 
+powerpc asm/time.h, but got a compiling error:
 
-The node (nid) is just a number made up by Linux, so it's not a
-"physical package id".
+drivers/rtc/rtc-vr41xx.c:75:24: error: static declaration of ‘rtc_lock’ 
+follows non-static declaration
+  static DEFINE_SPINLOCK(rtc_lock);
 
-It might correspond to a "physical package" (whatever that means), on
-existing skiboot, but it's not guaranteed.
+In file included from ./arch/powerpc/include/asm/delay.h:7:0,
+                  from ./arch/powerpc/include/asm/io.h:33,
+                  from ./include/linux/io.h:13,
+                  from drivers/rtc/rtc-vr41xx.c:11:
+./arch/powerpc/include/asm/time.h:25:19: note: previous declaration of 
+‘rtc_lock’ was here
+  extern spinlock_t rtc_lock;
 
-The PAPR text around associativity and so on is incredibly dense, but I
-think one thing that is clear is that firmware is allowed to present to
-us whatever boundaries it thinks are most meaningful.
+There's a conflict. Perhaps I can rename it in drivers/rtc/rtc-vr41xx.c.
 
-ie. if two things on one "physical package" have a meaningful distance
-between them, then they might be presented to us as two nodes.
 
-Having said that, if you look at the documentation in the kernel we
-have:
+But I find an existing declaration in linux/mc146818rtc.h and there's 
+only one definition for 'rtc_lock' in powerpc.
 
-	physical_package_id: physical package id of cpu#. Typically
-	corresponds to a physical socket number, but the actual value
-	is architecture and platform dependent.
+There's some includes of mc146818rtc.h in powperc. I wonder they point 
+to the same thing. But I'm not very sure
 
-Which is nicely vague.
+because the header's name looks a bit strange.
 
-But then:
-
-	core_siblings: internal kernel map of cpu#'s hardware threads
-	within the same physical_package_id.
-
-Which is not true for us already on bare metal. And is just wrong on
-modern CPUs where there's multiple non-siblings in a single
-core/chip/package.
-
-So a patch to update the documentation would be good :)
-
-As far as what we should do in our topology code, I think we should use
-the chip-id when we have it - ie. on bare metal.
-
-It may not be exactly correct, but it's at least not filtered through
-any indirection about NUMA-ness, ie. the associativity properties.
-
-Also we've been using it for several years and I don't think we should
-risk breaking anything by changing the value now.
-
-As far as pseries, I'm still a bit dubious, but maybe using nid is
-better than providing nothing, even if it is a lie.
-
-cheers
+>
+>
+>>   #include <asm/trace.h>
+>>     #include <asm/interrupt.h>
+>> @@ -150,10 +151,6 @@ bool tb_invalid;
+>>   u64 __cputime_usec_factor;
+>>   EXPORT_SYMBOL(__cputime_usec_factor);
+>>   -#ifdef CONFIG_PPC_SPLPAR
+>> -void (*dtl_consumer)(struct dtl_entry *, u64);
+>> -#endif
+>> -
+>>   static void calc_cputime_factors(void)
+>>   {
+>>       struct div_result res;
+>> @@ -179,6 +176,8 @@ static inline unsigned long read_spurr(unsigned 
+>> long tb)
+>>     #include <asm/dtl.h>
+>>   +void (*dtl_consumer)(struct dtl_entry *, u64);
+>> +
+>>   /*
+>>    * Scan the dispatch trace log and count up the stolen time.
+>>    * Should be called with interrupts disabled.
+>>
+> .
