@@ -2,124 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1A7340D0B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 19:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF44F340E1F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 20:22:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1bJ72tBMz3bwb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 05:33:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1cPF6JTRz3byR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 06:22:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=WYVu9x/O;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GIj9uyZB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32f;
- helo=mail-ot1-x32f.google.com; envelope-from=groeck7@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=WYVu9x/O; dkim-atps=neutral
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com
- [IPv6:2607:f8b0:4864:20::32f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=GIj9uyZB; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1bHg5RXyz30DJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 05:33:02 +1100 (AEDT)
-Received: by mail-ot1-x32f.google.com with SMTP id
- t23-20020a0568301e37b02901b65ab30024so6119477otr.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 11:33:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:autocrypt:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=68KRrEwMq9PQq849OciQP0m36IL1xJQ4EuOwvDR9Rgc=;
- b=WYVu9x/OkotfVM0WKRdcSlyCdBUnWKppvuOOERQhOGEW92033xbkw2ptj2vbhpgNj1
- nupX2UzgqldyUyMavtqzkBqWChGFP/L9O4sCUmuTOCNajHq2eMly2c10We+XuOGX0wOh
- qUUcdD+0YVX3TzKqfmzbzqrlOQ6coQDmGTmnH4sH/7IXo3DVRlsyi6xdh50UPDOfIa6R
- oqrAMPZgNcuCCVV948YNgg7/+bUUSLggRKGzk9ntOrcWRuWtzl+2BOI585vf18iKLla0
- 0I6k95Dgt8+og7Sn8LoHYua5pLY0IZgPBFaVdKSaj3yojRU+VHxR7XE+0ifeyfmd4gw1
- kUGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=68KRrEwMq9PQq849OciQP0m36IL1xJQ4EuOwvDR9Rgc=;
- b=RZrKgnmicTuOuZSj4cUebhXjIzxeGbSXtnoGPC6GfJVYxB+tciPCHY8sSqzuagAhA6
- shq9yPSfjEUF4rCBGKGUqAq9YkPn6R8p8WuDBNgV6fYwG8E2LJv0Pe1YQUXru/l7ZkpW
- DcIyR4j+w2mYSuEocJwB8z2xHdfL3h/vueBRkZBHPuxr65c+6fvziFVq5lOK/w2z1Qvg
- Bz4YwP2aWMpcCjR+pBJSqN6Ia9vv0hD8g3VSbsQBO4LEFiBSmikdNu334vcqWqmO+0/h
- 6wqyONmbkWHuzVug+VXCFmz92FoNrqPbeeWAFHbGNMfFJGgE33vIBMzT5YL5KVjZ69Ku
- Hikw==
-X-Gm-Message-State: AOAM531k8Ealh73POX060G/WlyRIRGoqLAlgsCbHJo7bx/O3UXkRgGuk
- 1u6jQYwOSdXyAdpLfQjTyY4=
-X-Google-Smtp-Source: ABdhPJzJfqul9wonICMp/F/+b4/rfQsekD6SPyfti6z8pzkRkY+bfQfsEop/em5uGKeUPB/Nd9E5aQ==
-X-Received: by 2002:a9d:bd6:: with SMTP id 80mr8886488oth.98.1616092379391;
- Thu, 18 Mar 2021 11:32:59 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- h18sm704565oov.43.2021.03.18.11.32.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Mar 2021 11:32:58 -0700 (PDT)
-Subject: Re: [PATCH] watchdog: Remove MV64x60 watchdog driver
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Wim Van Sebroeck <wim@linux-watchdog.org>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1cNr3Rw5z3bnT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 06:22:36 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8F53064F30;
+ Thu, 18 Mar 2021 19:22:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1616095351;
+ bh=BHUAanqwOsbASIOKCYywfRr2tc5rTzcdgHq4z9RDxy8=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=GIj9uyZBoYnvbeLn3l5xKmC5HSYSHwu6gYDdWGz7GxhOfai1tYiEsApnvm9Bz3tLL
+ XoiDVH3GIAoJu/xKSBX9+Ij/j+9AtzCA4b/v2HQrZG7TFX8wy8pi0L7h4alixEyuk4
+ jO2gyc7qeEbJ6XLDSGDsvhL0rMzWI80ee+GyeLI1C7Yr8O62ZbuBD4FgrdFriAOgAM
+ KS2/icrNgr/8k6YfaOLH4qJrKenGiPW/NEmPAG9eLUhIJppr4W1oW0kkfiCzo3SQi9
+ sRoa6Xukc2AsmmR8HKcpypf9ATGLjhDz2EZcE5m/taih17azlhntzrB4zQV0ps8Rob
+ qMoS/P/t5wNug==
+Date: Thu, 18 Mar 2021 20:22:27 +0100
+From: Wolfram Sang <wsa@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/embedded6xx: Remove CONFIG_MV64X60
+Message-ID: <20210318192227.GA2317@ninjato>
 References: <9c2952bcfaec3b1789909eaa36bbce2afbfab7ab.1616085654.git.christophe.leroy@csgroup.eu>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-Message-ID: <31d702e5-22d1-1766-76dd-e24860e5b1a4@roeck-us.net>
-Date: Thu, 18 Mar 2021 11:32:56 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <19e57d16692dcd1ca67ba880d7273a57fab416aa.1616085654.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <9c2952bcfaec3b1789909eaa36bbce2afbfab7ab.1616085654.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="fdj2RfSjLxBAspz7"
+Content-Disposition: inline
+In-Reply-To: <19e57d16692dcd1ca67ba880d7273a57fab416aa.1616085654.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,404 +59,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-i2c@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/18/21 10:25 AM, Christophe Leroy wrote:
+
+--fdj2RfSjLxBAspz7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Mar 18, 2021 at 05:25:07PM +0000, Christophe Leroy wrote:
 > Commit 92c8c16f3457 ("powerpc/embedded6xx: Remove C2K board support")
-> removed the last selector of CONFIG_MV64X60.
-> 
-> Therefore CONFIG_MV64X60_WDT cannot be selected anymore and
-> can be removed.
-> 
+> moved the last selector of CONFIG_MV64X60.
+>=20
+> As it is not a user selectable config, it can be removed.
+>=20
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Wolfram Sang <wsa@kernel.org> # for I2C
 
-> ---
->  drivers/watchdog/Kconfig       |   4 -
->  drivers/watchdog/Makefile      |   1 -
->  drivers/watchdog/mv64x60_wdt.c | 324 ---------------------------------
->  include/linux/mv643xx.h        |   8 -
->  4 files changed, 337 deletions(-)
->  delete mode 100644 drivers/watchdog/mv64x60_wdt.c
-> 
-> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> index 1fe0042a48d2..178296bda151 100644
-> --- a/drivers/watchdog/Kconfig
-> +++ b/drivers/watchdog/Kconfig
-> @@ -1831,10 +1831,6 @@ config 8xxx_WDT
->  
->  	  For BookE processors (MPC85xx) use the BOOKE_WDT driver instead.
->  
-> -config MV64X60_WDT
-> -	tristate "MV64X60 (Marvell Discovery) Watchdog Timer"
-> -	depends on MV64X60 || COMPILE_TEST
-> -
->  config PIKA_WDT
->  	tristate "PIKA FPGA Watchdog"
->  	depends on WARP || (PPC64 && COMPILE_TEST)
-> diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-> index f3a6540e725e..752c6513f731 100644
-> --- a/drivers/watchdog/Makefile
-> +++ b/drivers/watchdog/Makefile
-> @@ -175,7 +175,6 @@ obj-$(CONFIG_PIC32_DMT) += pic32-dmt.o
->  # POWERPC Architecture
->  obj-$(CONFIG_GEF_WDT) += gef_wdt.o
->  obj-$(CONFIG_8xxx_WDT) += mpc8xxx_wdt.o
-> -obj-$(CONFIG_MV64X60_WDT) += mv64x60_wdt.o
->  obj-$(CONFIG_PIKA_WDT) += pika_wdt.o
->  obj-$(CONFIG_BOOKE_WDT) += booke_wdt.o
->  obj-$(CONFIG_MEN_A21_WDT) += mena21_wdt.o
-> diff --git a/drivers/watchdog/mv64x60_wdt.c b/drivers/watchdog/mv64x60_wdt.c
-> deleted file mode 100644
-> index 894aa63488d3..000000000000
-> --- a/drivers/watchdog/mv64x60_wdt.c
-> +++ /dev/null
-> @@ -1,324 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -/*
-> - * mv64x60_wdt.c - MV64X60 (Marvell Discovery) watchdog userspace interface
-> - *
-> - * Author: James Chapman <jchapman@katalix.com>
-> - *
-> - * Platform-specific setup code should configure the dog to generate
-> - * interrupt or reset as required.  This code only enables/disables
-> - * and services the watchdog.
-> - *
-> - * Derived from mpc8xx_wdt.c, with the following copyright.
-> - *
-> - * 2002 (c) Florian Schirmer <jolt@tuxbox.org>
-> - */
-> -
-> -#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> -
-> -#include <linux/fs.h>
-> -#include <linux/init.h>
-> -#include <linux/kernel.h>
-> -#include <linux/miscdevice.h>
-> -#include <linux/module.h>
-> -#include <linux/watchdog.h>
-> -#include <linux/platform_device.h>
-> -#include <linux/mv643xx.h>
-> -#include <linux/uaccess.h>
-> -#include <linux/io.h>
-> -
-> -#define MV64x60_WDT_WDC_OFFSET	0
-> -
-> -/*
-> - * The watchdog configuration register contains a pair of 2-bit fields,
-> - *   1.  a reload field, bits 27-26, which triggers a reload of
-> - *       the countdown register, and
-> - *   2.  an enable field, bits 25-24, which toggles between
-> - *       enabling and disabling the watchdog timer.
-> - * Bit 31 is a read-only field which indicates whether the
-> - * watchdog timer is currently enabled.
-> - *
-> - * The low 24 bits contain the timer reload value.
-> - */
-> -#define MV64x60_WDC_ENABLE_SHIFT	24
-> -#define MV64x60_WDC_SERVICE_SHIFT	26
-> -#define MV64x60_WDC_ENABLED_SHIFT	31
-> -
-> -#define MV64x60_WDC_ENABLED_TRUE	1
-> -#define MV64x60_WDC_ENABLED_FALSE	0
-> -
-> -/* Flags bits */
-> -#define MV64x60_WDOG_FLAG_OPENED	0
-> -
-> -static unsigned long wdt_flags;
-> -static int wdt_status;
-> -static void __iomem *mv64x60_wdt_regs;
-> -static int mv64x60_wdt_timeout;
-> -static int mv64x60_wdt_count;
-> -static unsigned int bus_clk;
-> -static char expect_close;
-> -static DEFINE_SPINLOCK(mv64x60_wdt_spinlock);
-> -
-> -static bool nowayout = WATCHDOG_NOWAYOUT;
-> -module_param(nowayout, bool, 0);
-> -MODULE_PARM_DESC(nowayout,
-> -		"Watchdog cannot be stopped once started (default="
-> -				__MODULE_STRING(WATCHDOG_NOWAYOUT) ")");
-> -
-> -static int mv64x60_wdt_toggle_wdc(int enabled_predicate, int field_shift)
-> -{
-> -	u32 data;
-> -	u32 enabled;
-> -	int ret = 0;
-> -
-> -	spin_lock(&mv64x60_wdt_spinlock);
-> -	data = readl(mv64x60_wdt_regs + MV64x60_WDT_WDC_OFFSET);
-> -	enabled = (data >> MV64x60_WDC_ENABLED_SHIFT) & 1;
-> -
-> -	/* only toggle the requested field if enabled state matches predicate */
-> -	if ((enabled ^ enabled_predicate) == 0) {
-> -		/* We write a 1, then a 2 -- to the appropriate field */
-> -		data = (1 << field_shift) | mv64x60_wdt_count;
-> -		writel(data, mv64x60_wdt_regs + MV64x60_WDT_WDC_OFFSET);
-> -
-> -		data = (2 << field_shift) | mv64x60_wdt_count;
-> -		writel(data, mv64x60_wdt_regs + MV64x60_WDT_WDC_OFFSET);
-> -		ret = 1;
-> -	}
-> -	spin_unlock(&mv64x60_wdt_spinlock);
-> -
-> -	return ret;
-> -}
-> -
-> -static void mv64x60_wdt_service(void)
-> -{
-> -	mv64x60_wdt_toggle_wdc(MV64x60_WDC_ENABLED_TRUE,
-> -			       MV64x60_WDC_SERVICE_SHIFT);
-> -}
-> -
-> -static void mv64x60_wdt_handler_enable(void)
-> -{
-> -	if (mv64x60_wdt_toggle_wdc(MV64x60_WDC_ENABLED_FALSE,
-> -				   MV64x60_WDC_ENABLE_SHIFT)) {
-> -		mv64x60_wdt_service();
-> -		pr_notice("watchdog activated\n");
-> -	}
-> -}
-> -
-> -static void mv64x60_wdt_handler_disable(void)
-> -{
-> -	if (mv64x60_wdt_toggle_wdc(MV64x60_WDC_ENABLED_TRUE,
-> -				   MV64x60_WDC_ENABLE_SHIFT))
-> -		pr_notice("watchdog deactivated\n");
-> -}
-> -
-> -static void mv64x60_wdt_set_timeout(unsigned int timeout)
-> -{
-> -	/* maximum bus cycle count is 0xFFFFFFFF */
-> -	if (timeout > 0xFFFFFFFF / bus_clk)
-> -		timeout = 0xFFFFFFFF / bus_clk;
-> -
-> -	mv64x60_wdt_count = timeout * bus_clk >> 8;
-> -	mv64x60_wdt_timeout = timeout;
-> -}
-> -
-> -static int mv64x60_wdt_open(struct inode *inode, struct file *file)
-> -{
-> -	if (test_and_set_bit(MV64x60_WDOG_FLAG_OPENED, &wdt_flags))
-> -		return -EBUSY;
-> -
-> -	if (nowayout)
-> -		__module_get(THIS_MODULE);
-> -
-> -	mv64x60_wdt_handler_enable();
-> -
-> -	return stream_open(inode, file);
-> -}
-> -
-> -static int mv64x60_wdt_release(struct inode *inode, struct file *file)
-> -{
-> -	if (expect_close == 42)
-> -		mv64x60_wdt_handler_disable();
-> -	else {
-> -		pr_crit("unexpected close, not stopping timer!\n");
-> -		mv64x60_wdt_service();
-> -	}
-> -	expect_close = 0;
-> -
-> -	clear_bit(MV64x60_WDOG_FLAG_OPENED, &wdt_flags);
-> -
-> -	return 0;
-> -}
-> -
-> -static ssize_t mv64x60_wdt_write(struct file *file, const char __user *data,
-> -				 size_t len, loff_t *ppos)
-> -{
-> -	if (len) {
-> -		if (!nowayout) {
-> -			size_t i;
-> -
-> -			expect_close = 0;
-> -
-> -			for (i = 0; i != len; i++) {
-> -				char c;
-> -				if (get_user(c, data + i))
-> -					return -EFAULT;
-> -				if (c == 'V')
-> -					expect_close = 42;
-> -			}
-> -		}
-> -		mv64x60_wdt_service();
-> -	}
-> -
-> -	return len;
-> -}
-> -
-> -static long mv64x60_wdt_ioctl(struct file *file,
-> -					unsigned int cmd, unsigned long arg)
-> -{
-> -	int timeout;
-> -	int options;
-> -	void __user *argp = (void __user *)arg;
-> -	static const struct watchdog_info info = {
-> -		.options =	WDIOF_SETTIMEOUT	|
-> -				WDIOF_MAGICCLOSE	|
-> -				WDIOF_KEEPALIVEPING,
-> -		.firmware_version = 0,
-> -		.identity = "MV64x60 watchdog",
-> -	};
-> -
-> -	switch (cmd) {
-> -	case WDIOC_GETSUPPORT:
-> -		if (copy_to_user(argp, &info, sizeof(info)))
-> -			return -EFAULT;
-> -		break;
-> -
-> -	case WDIOC_GETSTATUS:
-> -	case WDIOC_GETBOOTSTATUS:
-> -		if (put_user(wdt_status, (int __user *)argp))
-> -			return -EFAULT;
-> -		wdt_status &= ~WDIOF_KEEPALIVEPING;
-> -		break;
-> -
-> -	case WDIOC_GETTEMP:
-> -		return -EOPNOTSUPP;
-> -
-> -	case WDIOC_SETOPTIONS:
-> -		if (get_user(options, (int __user *)argp))
-> -			return -EFAULT;
-> -
-> -		if (options & WDIOS_DISABLECARD)
-> -			mv64x60_wdt_handler_disable();
-> -
-> -		if (options & WDIOS_ENABLECARD)
-> -			mv64x60_wdt_handler_enable();
-> -		break;
-> -
-> -	case WDIOC_KEEPALIVE:
-> -		mv64x60_wdt_service();
-> -		wdt_status |= WDIOF_KEEPALIVEPING;
-> -		break;
-> -
-> -	case WDIOC_SETTIMEOUT:
-> -		if (get_user(timeout, (int __user *)argp))
-> -			return -EFAULT;
-> -		mv64x60_wdt_set_timeout(timeout);
-> -		fallthrough;
-> -
-> -	case WDIOC_GETTIMEOUT:
-> -		if (put_user(mv64x60_wdt_timeout, (int __user *)argp))
-> -			return -EFAULT;
-> -		break;
-> -
-> -	default:
-> -		return -ENOTTY;
-> -	}
-> -
-> -	return 0;
-> -}
-> -
-> -static const struct file_operations mv64x60_wdt_fops = {
-> -	.owner = THIS_MODULE,
-> -	.llseek = no_llseek,
-> -	.write = mv64x60_wdt_write,
-> -	.unlocked_ioctl = mv64x60_wdt_ioctl,
-> -	.compat_ioctl = compat_ptr_ioctl,
-> -	.open = mv64x60_wdt_open,
-> -	.release = mv64x60_wdt_release,
-> -};
-> -
-> -static struct miscdevice mv64x60_wdt_miscdev = {
-> -	.minor = WATCHDOG_MINOR,
-> -	.name = "watchdog",
-> -	.fops = &mv64x60_wdt_fops,
-> -};
-> -
-> -static int mv64x60_wdt_probe(struct platform_device *dev)
-> -{
-> -	struct mv64x60_wdt_pdata *pdata = dev_get_platdata(&dev->dev);
-> -	struct resource *r;
-> -	int timeout = 10;
-> -
-> -	bus_clk = 133;			/* in MHz */
-> -	if (pdata) {
-> -		timeout = pdata->timeout;
-> -		bus_clk = pdata->bus_clk;
-> -	}
-> -
-> -	/* Since bus_clk is truncated MHz, actual frequency could be
-> -	 * up to 1MHz higher.  Round up, since it's better to time out
-> -	 * too late than too soon.
-> -	 */
-> -	bus_clk++;
-> -	bus_clk *= 1000000;		/* convert to Hz */
-> -
-> -	r = platform_get_resource(dev, IORESOURCE_MEM, 0);
-> -	if (!r)
-> -		return -ENODEV;
-> -
-> -	mv64x60_wdt_regs = devm_ioremap(&dev->dev, r->start, resource_size(r));
-> -	if (mv64x60_wdt_regs == NULL)
-> -		return -ENOMEM;
-> -
-> -	mv64x60_wdt_set_timeout(timeout);
-> -
-> -	mv64x60_wdt_handler_disable();	/* in case timer was already running */
-> -
-> -	return misc_register(&mv64x60_wdt_miscdev);
-> -}
-> -
-> -static int mv64x60_wdt_remove(struct platform_device *dev)
-> -{
-> -	misc_deregister(&mv64x60_wdt_miscdev);
-> -
-> -	mv64x60_wdt_handler_disable();
-> -
-> -	return 0;
-> -}
-> -
-> -static struct platform_driver mv64x60_wdt_driver = {
-> -	.probe = mv64x60_wdt_probe,
-> -	.remove = mv64x60_wdt_remove,
-> -	.driver = {
-> -		.name = MV64x60_WDT_NAME,
-> -	},
-> -};
-> -
-> -static int __init mv64x60_wdt_init(void)
-> -{
-> -	pr_info("MV64x60 watchdog driver\n");
-> -
-> -	return platform_driver_register(&mv64x60_wdt_driver);
-> -}
-> -
-> -static void __exit mv64x60_wdt_exit(void)
-> -{
-> -	platform_driver_unregister(&mv64x60_wdt_driver);
-> -}
-> -
-> -module_init(mv64x60_wdt_init);
-> -module_exit(mv64x60_wdt_exit);
-> -
-> -MODULE_AUTHOR("James Chapman <jchapman@katalix.com>");
-> -MODULE_DESCRIPTION("MV64x60 watchdog driver");
-> -MODULE_LICENSE("GPL");
-> -MODULE_ALIAS("platform:" MV64x60_WDT_NAME);
-> diff --git a/include/linux/mv643xx.h b/include/linux/mv643xx.h
-> index 47e5679b48e1..000b126acfb6 100644
-> --- a/include/linux/mv643xx.h
-> +++ b/include/linux/mv643xx.h
-> @@ -918,12 +918,4 @@
->  
->  extern void mv64340_irq_init(unsigned int base);
->  
-> -/* Watchdog Platform Device, Driver Data */
-> -#define	MV64x60_WDT_NAME			"mv64x60_wdt"
-> -
-> -struct mv64x60_wdt_pdata {
-> -	int	timeout;	/* watchdog expiry in seconds, default 10 */
-> -	int	bus_clk;	/* bus clock in MHz, default 133 */
-> -};
-> -
->  #endif /* __ASM_MV643XX_H */
-> 
 
+--fdj2RfSjLxBAspz7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmBTqG8ACgkQFA3kzBSg
+KbbmohAArNDcM8jsah4nKuj2dEoibVzEc+TeWQIgUpiB4KO9oGcBdkjORA/Su7//
+GfQEAxIJAGVfqLRWHEMdZx7B91GNzIfAPm6uMajK8kNShfY5W19gzDVD1tKBRyuY
+Q5xjwI5Ln2RJAVdYYXc3uYAG5ViJeQXug5JBIAlIj0ekVIWaNk3146cuT1p2d9S+
+Awvu7AnrE2+5LwIUzuJURfbNYNmF7OqJIpDU0Wo7CV/7pcy96WCEVTYQYbt8jlyY
+/pS6RddvhTmI3fcLZbXM1u+57ySH4xhLtq5lkqXa5l8xw+8Z7IYaOCVV+upxG6Tc
+J8kf9DAIo1jyOgmfhsLusXiMPrXAlP/GeNRxG3m0Kx9eg31CLn0jCA7u5LddXlSy
+aQ4vWQc/PJ/XGASymVFwONX4cAN/lJiX6SrU/7c59IookElOI9vYKnZw2dfu+xHZ
+PnajCmQPIbugZNnf6JadbSJTyu/AsFOHtCX8ezNPm8rx+Dis3o04Y3SMBiSDto9x
+be+WUqupXtQJAw+zVcgJzqeO/NvzdwUu7Z7vV5GWQPCFnKoD9F8LUQ6Xjmha41uQ
+aOjYlWHsSH8uqXIVD3tjc6n+Ln5g4VyOcj2yqwINd3rFZtPCis0SlCqx0GeDajl/
+IKZ9olgyGT/Zx58AubDDV4K1iQUg77xoo+PP4uk1m6C0EP1ItiE=
+=fzcK
+-----END PGP SIGNATURE-----
+
+--fdj2RfSjLxBAspz7--
