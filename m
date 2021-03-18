@@ -1,71 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C2D33FD55
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 03:42:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5AF33FDE2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 04:47:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1BC61M6Qz3bwP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 13:42:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1Cdp5rDKz3bvK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 14:47:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Y+rEVRYk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.a=rsa-sha256 header.s=mail181024 header.b=Wxm/LTQu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b32;
- helo=mail-yb1-xb32.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
+ helo=gate2.alliedtelesis.co.nz;
+ envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Y+rEVRYk; dkim-atps=neutral
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com
- [IPv6:2607:f8b0:4864:20::b32])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.a=rsa-sha256 header.s=mail181024 header.b=Wxm/LTQu; 
+ dkim-atps=neutral
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [202.36.163.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1BBj0LYbz2yRy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 13:42:19 +1100 (AEDT)
-Received: by mail-yb1-xb32.google.com with SMTP id n195so956869ybg.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 19:42:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=yH5PzRW85N1JyyiQVE6znBE0JobSJTK1ZOPrZSyhJSA=;
- b=Y+rEVRYktEFfAuWatQOPkTzUUyf26qI+WvD1wFqwGC3ZuUc+U25ooF1SkPV2mazHO7
- bsK5FrOMbgsRldzEsHsU9oAud4xtj36dgTwn7cx+ZCXqzgFfYIXKZI9obngJ2AnKnRne
- yEyJTTqUVkUXumunmpJZauIceHbug6PjU3xYnC1AOcWqgCuF9HFYeD5INtJK7+iwTVvb
- YQy0CetcoUFRe9t24swVBGC9f0nyH9NF/G8A+Ds6LxiycZeNZIUX9UjGnV9he/G69bH1
- /zTsq7hSxC+iGwl8Xss2pvwyIxl9DQUa6xWvPNrkpQcRAJxO7T2yWD39Mfk4LMgpR94r
- PXUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=yH5PzRW85N1JyyiQVE6znBE0JobSJTK1ZOPrZSyhJSA=;
- b=cRXPP9VW9BRpMAv/Y5hLa5xVlZbFCXjcvgnUx+9rXJ2Q/xlCT61ouewaSdpi7nU5vV
- q2P1Np75Erd2Gr1z3BXuSSYumU2fBIqm7kT7J8ARyzXXpR53PxFyclwDG7JwPtTc/iIs
- 2raGcsRf0ZKD0R0toc4yXIML5R6aecdEhbNi9l6a6fQDeo8Da6F1LpgmYCGCto9PqfJT
- n80G0chb2+I3Izu3nmyK8xIAteIs5HAQ0Ee6zSHJmrUy7VFU9QxBY9m+RgT0AdTPdcEj
- fEPayKX9syaV4iidGmTKXdmimt+ygMyiPj57o7ugoU9D5qErJXbpb1si3CU/+adEhqAX
- VOXw==
-X-Gm-Message-State: AOAM533oATz3POa/eRPweoSDnWRz17u+jlzce569MIxE/Gz2+2c99Igv
- pFs2aA/1chru5t87kO4IvBzFhNKM6kmvWbBO618=
-X-Google-Smtp-Source: ABdhPJx+i2x2HoJt4hWotMyzY4g2jkYU30a54PTsPiM9PXT+H/Kp+Kx/3IyAOom1NMZuSR4KYa7cN9j6UgoUl/a7SGw=
-X-Received: by 2002:a25:5051:: with SMTP id e78mr8536391ybb.386.1616035335694; 
- Wed, 17 Mar 2021 19:42:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210316031741.1004850-1-jniethe5@gmail.com>
- <20210316031741.1004850-3-jniethe5@gmail.com>
- <87553048-5f1f-0704-2256-d2c85b8e43c6@csgroup.eu>
-In-Reply-To: <87553048-5f1f-0704-2256-d2c85b8e43c6@csgroup.eu>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Thu, 18 Mar 2021 13:42:04 +1100
-Message-ID: <CACzsE9qm694GvaS+iZgd-X5sNwhHXsAxMdJD0n79fmehtt26PA@mail.gmail.com>
-Subject: Re: [PATCH v9 3/8] powerpc/kprobes: Mark newly allocated probes as RO
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1CdL3Gkhz302q
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 14:47:02 +1100 (AEDT)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 26D0A891AC;
+ Thu, 18 Mar 2021 16:46:59 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1616039219;
+ bh=YhRnUFVrl7/8nydokzr/5/OXltn4aUhYU1Fr4pawvfs=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To;
+ b=Wxm/LTQu9rRmMleCZxX+Ed3aTU/MrYR953tJJ3AjUCRaHDfmOyiz16R/OdsjSXSLU
+ +Zg9JLw8VUflvEdzqQWdjr6Q61COrRVacgwceND/GKLES3eygfopp/cXQ6HuDAaAJ7
+ Ui+J3gmmt/12WDWPXwswkczpmXeF9oG4CV3T3BIGWiqlbjUv2ZXZH1ExG/vMNvE9uI
+ LzB7QwhQyZzbVwi4BWpvQzihgzw2dC1veQ+GM8PYIIx/Ry2nwVRrwVp5n0QmW5Ufz1
+ etnHMCubJlFKDq6VQHE+RgweuEJMf9kZiuGIUHwnz0+2VxbSc94plTpTF3/TTOG+pI
+ zF7c1rXLztH+A==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[2001:df5:b000:bc8::77]) by
+ svr-chch-seg1.atlnz.lc with Trustwave SEG (v8, 2, 6, 11305)
+ id <B6052cd330000>; Thu, 18 Mar 2021 16:46:59 +1300
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
+ by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
+ Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 18 Mar 2021 16:46:58 +1300
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1497.012; Thu, 18 Mar 2021 16:46:58 +1300
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Guenter Roeck <linux@roeck-us.net>, Wolfram Sang <wsa@kernel.org>
+Subject: Re: Errant readings on LM81 with T2080 SoC
+Thread-Topic: Errant readings on LM81 with T2080 SoC
+Thread-Index: AQHXE6SbssdAOSHgwE+zIRhtn11Sk6p4Y2sAgAAgcACAACSBgIAABe+AgAEDagCAAfS7gIAALq8AgAEX54CAAKWsgIAACmIAgADZp4CAAATLAIAJ1fMA
+Date: Thu, 18 Mar 2021 03:46:58 +0000
+Message-ID: <9c912424-2cc9-8753-1352-1a5c27722cd2@alliedtelesis.co.nz>
+References: <20210311081842.GA1070@ninjato>
+ <94dfa9dc-a80c-98ba-4169-44cce3d810f7@alliedtelesis.co.nz>
+ <725c5e51-65df-e17d-e2da-0982efacf2d2@roeck-us.net>
+In-Reply-To: <725c5e51-65df-e17d-e2da-0982efacf2d2@roeck-us.net>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.1.11]
+Content-Type: text/plain; charset="Windows-1252"
+Content-ID: <0D62E11FAE39D940A8C764469E59E569@atlnz.lc>
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=GfppYjfL c=1 sm=1 tr=0
+ a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10
+ a=N659UExz7-8A:10 a=dESyimp9J3IA:10 a=VNwDg8RZYkgfWyEnbsYA:9
+ a=pILNOxqGKmIA:10
+X-SEG-SpamProfiler-Score: 0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,51 +88,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>, ajd@linux.ibm.com,
- Nicholas Piggin <npiggin@gmail.com>, naveen.n.rao@linux.ibm.com,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
+Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+ "jdelvare@suse.com" <jdelvare@suse.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 17, 2021 at 5:12 PM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 16/03/2021 =C3=A0 04:17, Jordan Niethe a =C3=A9crit :
-> > From: Russell Currey <ruscur@russell.cc>
-> >
-> > With CONFIG_STRICT_KERNEL_RWX=3Dy and CONFIG_KPROBES=3Dy, there will be=
- one
-> > W+X page at boot by default.  This can be tested with
-> > CONFIG_PPC_PTDUMP=3Dy and CONFIG_PPC_DEBUG_WX=3Dy set, and checking the
-> > kernel log during boot.
-> >
-> > Add an arch specific insn page allocator which returns RO pages if
-> > STRICT_KERNEL_RWX is enabled. This page is only written to with
-> > patch_instruction() which is able to write RO pages.
-> >
->
-> Did you investigate BPF ? The problematic looks more or less similar to k=
-probe:
->
-> bpf_jit_compile() in arch/powerpc/net/bpf_jit_comp.c calls module_alloc()=
-, which provides it with
-> PAGE_KERNEL_TEXT memory, ie RWX. That function is only used on PPC32 whic=
-h still has Classic BPF,
-> and this is about to go away with future series
-> https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1608112796.=
-git.christophe.leroy@csgroup.eu/
->
-> PPC64 has Extended BPF instead, and PPC32 will it the future too.
-> bpf_int_jit_compile() in arch/powerpc/net/bpf_jit_comp64.c calls bpf_jit_=
-binary_alloc() which uses
-> bpf_jit_alloc_exec().
->
-> bpf_jit_alloc_exec() is a weak function that should be redefined for powe=
-rpc I think, more or less
-> like alloc_insn_page() for kprobes.
-Thanks, that is a good point. I will handle bpf with the next revision.
->
-> Christophe
+
+On 12/03/21 10:34 am, Guenter Roeck wrote:
+> On 3/11/21 1:17 PM, Chris Packham wrote:
+>> On 11/03/21 9:18 pm, Wolfram Sang wrote:
+>>>> Bummer. What is really weird is that you see clock stretching under
+>>>> CPU load. Normally clock stretching is triggered by the device, not
+>>>> by the host.
+>>> One example: Some hosts need an interrupt per byte to know if they
+>>> should send ACK or NACK. If that interrupt is delayed, they stretch the
+>>> clock.
+>>>
+>> It feels like something like that is happening. Looking at the T2080
+>> Reference manual there is an interesting timing diagram (Figure 14-2 if
+>> someone feels like looking it up). It shows SCL low between the ACK for
+>> the address and the data byte. I think if we're delayed in sending the
+>> next byte we could violate Ttimeout or Tlow:mext from the SMBUS spec.
+>>
+> I think that really leaves you only two options that I can see:
+> Rework the driver to handle critical actions (such as setting TXAK,
+> and everything else that might result in clock stretching) in the
+> interrupt handler, or rework the driver to handle everything in
+> a high priority kernel thread.
+I've made some reasonable progress on making i2c-mpc more interrupt=20
+driven. Assuming it works out for my use-case is there an opinion on=20
+making interrupt support mandatory? Looking at all the in-tree dts files=20
+that use one of the compatible strings from i2c-mpc.c they all have=20
+interrupt properties so in theory nothing is using the polling mode. But=20
+there may be some out-of-tree boards or boards using an old dtb that=20
+would be affected?=
