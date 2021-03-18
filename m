@@ -2,52 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF44F340E1F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 20:22:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F74340EC3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 21:03:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1cPF6JTRz3byR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 06:22:57 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GIj9uyZB;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1dHb2hZ8z3c1K
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 07:03:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=GIj9uyZB; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=stgolabs.net (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=dave@stgolabs.net; receiver=<UNKNOWN>)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1cNr3Rw5z3bnT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 06:22:36 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8F53064F30;
- Thu, 18 Mar 2021 19:22:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1616095351;
- bh=BHUAanqwOsbASIOKCYywfRr2tc5rTzcdgHq4z9RDxy8=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=GIj9uyZBoYnvbeLn3l5xKmC5HSYSHwu6gYDdWGz7GxhOfai1tYiEsApnvm9Bz3tLL
- XoiDVH3GIAoJu/xKSBX9+Ij/j+9AtzCA4b/v2HQrZG7TFX8wy8pi0L7h4alixEyuk4
- jO2gyc7qeEbJ6XLDSGDsvhL0rMzWI80ee+GyeLI1C7Yr8O62ZbuBD4FgrdFriAOgAM
- KS2/icrNgr/8k6YfaOLH4qJrKenGiPW/NEmPAG9eLUhIJppr4W1oW0kkfiCzo3SQi9
- sRoa6Xukc2AsmmR8HKcpypf9ATGLjhDz2EZcE5m/taih17azlhntzrB4zQV0ps8Rob
- qMoS/P/t5wNug==
-Date: Thu, 18 Mar 2021 20:22:27 +0100
-From: Wolfram Sang <wsa@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/embedded6xx: Remove CONFIG_MV64X60
-Message-ID: <20210318192227.GA2317@ninjato>
-References: <9c2952bcfaec3b1789909eaa36bbce2afbfab7ab.1616085654.git.christophe.leroy@csgroup.eu>
- <19e57d16692dcd1ca67ba880d7273a57fab416aa.1616085654.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1dHF0cG2z3bnX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 07:02:46 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 1FE62ACA8;
+ Thu, 18 Mar 2021 20:02:43 +0000 (UTC)
+Date: Thu, 18 Mar 2021 13:02:33 -0700
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 3/3] powerpc/qspinlock: Use generic smp_cond_load_relaxed
+Message-ID: <20210318200233.zov3wbugbgbj4f73@offworld>
+References: <20210309015950.27688-1-dave@stgolabs.net>
+ <20210309015950.27688-4-dave@stgolabs.net>
+ <1615870473.h7h4jetmjb.astroid@bobo.none>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="fdj2RfSjLxBAspz7"
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <19e57d16692dcd1ca67ba880d7273a57fab416aa.1616085654.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <1615870473.h7h4jetmjb.astroid@bobo.none>
+User-Agent: NeoMutt/20201120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,47 +46,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linux-i2c@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: will@kernel.org, Davidlohr Bueso <dbueso@suse.de>, peterz@infradead.org,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, paulus@samba.org,
+ longman@redhat.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, 16 Mar 2021, Nicholas Piggin wrote:
 
---fdj2RfSjLxBAspz7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>One request, could you add a comment in place that references
+>smp_cond_load_relaxed() so this commit can be found again if
+>someone looks at it? Something like this
+>
+>/*
+> * smp_cond_load_relaxed was found to have performance problems if
+> * implemented with spin_begin()/spin_end().
+> */
 
-On Thu, Mar 18, 2021 at 05:25:07PM +0000, Christophe Leroy wrote:
-> Commit 92c8c16f3457 ("powerpc/embedded6xx: Remove C2K board support")
-> moved the last selector of CONFIG_MV64X60.
->=20
-> As it is not a user selectable config, it can be removed.
->=20
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Sure, let me see where I can fit that in and send out a v2.
 
-Acked-by: Wolfram Sang <wsa@kernel.org> # for I2C
+Similarly, but unrelated to this patch, is there any chance we could
+remove the whole spin_until_cond() machinery and make it specific to
+powerpc? This was introduced in 2017 and doesn't really have any users
+outside of powerpc, except for these:
 
+drivers/firmware/arm_scmi/driver.c:             spin_until_cond(scmi_xfer_done_no_timeout(cinfo, xfer, stop));
+drivers/firmware/arm_scmi/shmem.c:      spin_until_cond(ioread32(&shmem->channel_status) &
+drivers/net/ethernet/xilinx/ll_temac_main.c:    spin_until_cond(hard_acs_rdy_or_timeout(lp, timeout));
 
---fdj2RfSjLxBAspz7
-Content-Type: application/pgp-signature; name="signature.asc"
+... which afaict only the xilinx one can actually build on powerpc.
+Regardless, these could be converted to smp_cond_load_relaxed(), being
+the more standard way to do optimized busy-waiting, caring more about
+the family of barriers than ad-hoc SMT priorities. Of course, I have
+no way of testing any of these changes.
 
------BEGIN PGP SIGNATURE-----
+>I wonder if it should have a Fixes: tag to the original commit as
+>well.
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmBTqG8ACgkQFA3kzBSg
-KbbmohAArNDcM8jsah4nKuj2dEoibVzEc+TeWQIgUpiB4KO9oGcBdkjORA/Su7//
-GfQEAxIJAGVfqLRWHEMdZx7B91GNzIfAPm6uMajK8kNShfY5W19gzDVD1tKBRyuY
-Q5xjwI5Ln2RJAVdYYXc3uYAG5ViJeQXug5JBIAlIj0ekVIWaNk3146cuT1p2d9S+
-Awvu7AnrE2+5LwIUzuJURfbNYNmF7OqJIpDU0Wo7CV/7pcy96WCEVTYQYbt8jlyY
-/pS6RddvhTmI3fcLZbXM1u+57ySH4xhLtq5lkqXa5l8xw+8Z7IYaOCVV+upxG6Tc
-J8kf9DAIo1jyOgmfhsLusXiMPrXAlP/GeNRxG3m0Kx9eg31CLn0jCA7u5LddXlSy
-aQ4vWQc/PJ/XGASymVFwONX4cAN/lJiX6SrU/7c59IookElOI9vYKnZw2dfu+xHZ
-PnajCmQPIbugZNnf6JadbSJTyu/AsFOHtCX8ezNPm8rx+Dis3o04Y3SMBiSDto9x
-be+WUqupXtQJAw+zVcgJzqeO/NvzdwUu7Z7vV5GWQPCFnKoD9F8LUQ6Xjmha41uQ
-aOjYlWHsSH8uqXIVD3tjc6n+Ln5g4VyOcj2yqwINd3rFZtPCis0SlCqx0GeDajl/
-IKZ9olgyGT/Zx58AubDDV4K1iQUg77xoo+PP4uk1m6C0EP1ItiE=
-=fzcK
------END PGP SIGNATURE-----
+I'm not sure either. I've actually been informed recently of other
+workloads that benefit from the revert on large Power9 boxes. So I'll
+go ahead and add it.
 
---fdj2RfSjLxBAspz7--
+>
+>Otherwise,
+>
+>Acked-by: Nicholas Piggin <npiggin@gmail.com>
+
+Thanks,
+Davidlohr
