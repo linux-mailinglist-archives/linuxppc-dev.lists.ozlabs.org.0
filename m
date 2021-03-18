@@ -1,48 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A2433FC8A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 02:09:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5887533FCBF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 02:48:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F187K4R8Yz3bsq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 12:09:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F190m2zpMz3bvd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 12:48:40 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MkqVQkJK;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MkqVQkJK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=rgb@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=MkqVQkJK; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=MkqVQkJK; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F186c5zprz300j
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 12:08:36 +1100 (AEDT)
-IronPort-SDR: g0Ex47vm+tT6MqBghIFWQGLleWjU7H1Rqojxs4tzpyH4vOncHwhhpqcomuVoWvoDQccm7hZReN
- KalQHRSMtlTQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9926"; a="177170681"
-X-IronPort-AV: E=Sophos;i="5.81,257,1610438400"; d="scan'208";a="177170681"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Mar 2021 18:08:34 -0700
-IronPort-SDR: QwwJqDSqHvipGe9vND4oePLWSycsjP4k58IYdj9rEB94DqX/2eZJT7Z4Hq4A88dQq0g8plE17E
- DMFrIreq09FQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,257,1610438400"; d="scan'208";a="433618958"
-Received: from lkp-server02.sh.intel.com (HELO 1c294c63cb86) ([10.239.97.151])
- by fmsmga004.fm.intel.com with ESMTP; 17 Mar 2021 18:08:32 -0700
-Received: from kbuild by 1c294c63cb86 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1lMh9M-0000wb-6z; Thu, 18 Mar 2021 01:08:32 +0000
-Date: Thu, 18 Mar 2021 09:08:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 11aa533b82d5785e0475fd1e2f47db1ccf8f5be4
-Message-ID: <6052a7fd.c+ToFG1hwa642SCV%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F190K0N92z303T
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 12:48:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1616032091;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UuMfiKtlHJ9YtiMEQ803haS0RFolvE5VmV2RzbMQkXA=;
+ b=MkqVQkJKxN6l0GQ/AAkkpxwUvQDkNU3XYyoh1tcryH8NFTaWi9bJ3XcrK1yKnVYLY3n3Sq
+ 4FNK/w4lsWOgBWzW5vynlNWebwHmUFSKf0MzLydpTdwvRj3dcxvNrhJbq77lafJmUK27u1
+ 9TGcofDkyzeINEyHJDqkqOmTpKzecxo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1616032091;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UuMfiKtlHJ9YtiMEQ803haS0RFolvE5VmV2RzbMQkXA=;
+ b=MkqVQkJKxN6l0GQ/AAkkpxwUvQDkNU3XYyoh1tcryH8NFTaWi9bJ3XcrK1yKnVYLY3n3Sq
+ 4FNK/w4lsWOgBWzW5vynlNWebwHmUFSKf0MzLydpTdwvRj3dcxvNrhJbq77lafJmUK27u1
+ 9TGcofDkyzeINEyHJDqkqOmTpKzecxo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-387-Yg0X8aOYOhmb-aInmv1mmg-1; Wed, 17 Mar 2021 21:48:06 -0400
+X-MC-Unique: Yg0X8aOYOhmb-aInmv1mmg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 97E0D180FCA0;
+ Thu, 18 Mar 2021 01:48:04 +0000 (UTC)
+Received: from madcap2.tricolour.ca (unknown [10.10.110.12])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DCAB14C;
+ Thu, 18 Mar 2021 01:48:00 +0000 (UTC)
+From: Richard Guy Briggs <rgb@redhat.com>
+To: Linux-Audit Mailing List <linux-audit@redhat.com>,
+ LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH 1/2] audit: add support for the openat2 syscall
+Date: Wed, 17 Mar 2021 21:47:17 -0400
+Message-Id: <49510cacfb5fbbaa312a4a389f3a6619675007ab.1616031035.git.rgb@redhat.com>
+In-Reply-To: <cover.1616031035.git.rgb@redhat.com>
+References: <cover.1616031035.git.rgb@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,161 +84,251 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ Paul Moore <paul@paul-moore.com>, linux-parisc@vger.kernel.org,
+ Richard Guy Briggs <rgb@redhat.com>, x86@kernel.org,
+ Eric Paris <eparis@redhat.com>, linux-fsdevel@vger.kernel.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-alpha@vger.kernel.org,
+ sparclinux@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
+ Steve Grubb <sgrubb@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 11aa533b82d5785e0475fd1e2f47db1ccf8f5be4  powerpc/mm: Remove unneeded #ifdef CONFIG_PPC_MEM_KEYS
+The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
+("open: introduce openat2(2) syscall")
 
-elapsed time: 1276m
+Add the openat2(2) syscall to the audit syscall classifier.
 
-configs tested: 135
-configs skipped: 2
+See the github issue
+https://github.com/linux-audit/audit-kernel/issues/67
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-x86_64                           allyesconfig
-riscv                            allmodconfig
-i386                             allyesconfig
-riscv                            allyesconfig
-powerpc                    ge_imp3a_defconfig
-powerpc                     skiroot_defconfig
-powerpc                     ksi8560_defconfig
-sh                           se7721_defconfig
-h8300                     edosk2674_defconfig
-powerpc                     redwood_defconfig
-mips                        qi_lb60_defconfig
-powerpc                     taishan_defconfig
-mips                            gpr_defconfig
-arm                         bcm2835_defconfig
-sh                          rsk7269_defconfig
-sh                           se7751_defconfig
-parisc                generic-64bit_defconfig
-powerpc                 mpc85xx_cds_defconfig
-arm                              alldefconfig
-powerpc                      ppc40x_defconfig
-sh                        edosk7705_defconfig
-mips                         rt305x_defconfig
-arm                         cm_x300_defconfig
-sh                                  defconfig
-powerpc                 mpc834x_itx_defconfig
-mips                     loongson1c_defconfig
-sh                        sh7785lcr_defconfig
-sh                          sdk7786_defconfig
-mips                         mpc30x_defconfig
-powerpc                 mpc836x_mds_defconfig
-arm                          moxart_defconfig
-powerpc                         wii_defconfig
-mips                           ip32_defconfig
-ia64                         bigsur_defconfig
-arm                        multi_v7_defconfig
-powerpc                      pcm030_defconfig
-arm                     eseries_pxa_defconfig
-powerpc                   lite5200b_defconfig
-powerpc                     ppa8548_defconfig
-powerpc                    sam440ep_defconfig
-powerpc                 mpc8560_ads_defconfig
-arm                          ixp4xx_defconfig
-mips                        vocore2_defconfig
-powerpc                     mpc5200_defconfig
-powerpc                   motionpro_defconfig
-nios2                            alldefconfig
-mips                           ip27_defconfig
-arm                         palmz72_defconfig
-nios2                         3c120_defconfig
-mips                            ar7_defconfig
-mips                        maltaup_defconfig
-arm                           stm32_defconfig
-mips                          ath25_defconfig
-powerpc64                        alldefconfig
-powerpc                    adder875_defconfig
-powerpc                      cm5200_defconfig
-powerpc                  storcenter_defconfig
-sh                   sh7770_generic_defconfig
-mips                    maltaup_xpa_defconfig
-arc                         haps_hs_defconfig
-arm                     am200epdkit_defconfig
-arm                         vf610m4_defconfig
-xtensa                           alldefconfig
-arm                          collie_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20210317
-i386                 randconfig-a005-20210317
-i386                 randconfig-a002-20210317
-i386                 randconfig-a003-20210317
-i386                 randconfig-a004-20210317
-i386                 randconfig-a006-20210317
-x86_64               randconfig-a006-20210317
-x86_64               randconfig-a001-20210317
-x86_64               randconfig-a005-20210317
-x86_64               randconfig-a004-20210317
-x86_64               randconfig-a003-20210317
-x86_64               randconfig-a002-20210317
-i386                 randconfig-a013-20210317
-i386                 randconfig-a016-20210317
-i386                 randconfig-a011-20210317
-i386                 randconfig-a012-20210317
-i386                 randconfig-a015-20210317
-i386                 randconfig-a014-20210317
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a011-20210317
-x86_64               randconfig-a016-20210317
-x86_64               randconfig-a013-20210317
-x86_64               randconfig-a014-20210317
-x86_64               randconfig-a015-20210317
-x86_64               randconfig-a012-20210317
-
+Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ arch/alpha/kernel/audit.c          | 2 ++
+ arch/ia64/kernel/audit.c           | 2 ++
+ arch/parisc/kernel/audit.c         | 2 ++
+ arch/parisc/kernel/compat_audit.c  | 2 ++
+ arch/powerpc/kernel/audit.c        | 2 ++
+ arch/powerpc/kernel/compat_audit.c | 2 ++
+ arch/s390/kernel/audit.c           | 2 ++
+ arch/s390/kernel/compat_audit.c    | 2 ++
+ arch/sparc/kernel/audit.c          | 2 ++
+ arch/sparc/kernel/compat_audit.c   | 2 ++
+ arch/x86/ia32/audit.c              | 2 ++
+ arch/x86/kernel/audit_64.c         | 2 ++
+ kernel/auditsc.c                   | 3 +++
+ lib/audit.c                        | 4 ++++
+ lib/compat_audit.c                 | 4 ++++
+ 15 files changed, 35 insertions(+)
+
+diff --git a/arch/alpha/kernel/audit.c b/arch/alpha/kernel/audit.c
+index 96a9d18ff4c4..06a911b685d1 100644
+--- a/arch/alpha/kernel/audit.c
++++ b/arch/alpha/kernel/audit.c
+@@ -42,6 +42,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+ 		return 3;
+ 	case __NR_execve:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 0;
+ 	}
+diff --git a/arch/ia64/kernel/audit.c b/arch/ia64/kernel/audit.c
+index 5192ca899fe6..5eaa888c8fd3 100644
+--- a/arch/ia64/kernel/audit.c
++++ b/arch/ia64/kernel/audit.c
+@@ -43,6 +43,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+ 		return 3;
+ 	case __NR_execve:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 0;
+ 	}
+diff --git a/arch/parisc/kernel/audit.c b/arch/parisc/kernel/audit.c
+index 9eb47b2225d2..fc721a7727ba 100644
+--- a/arch/parisc/kernel/audit.c
++++ b/arch/parisc/kernel/audit.c
+@@ -52,6 +52,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+ 		return 3;
+ 	case __NR_execve:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 0;
+ 	}
+diff --git a/arch/parisc/kernel/compat_audit.c b/arch/parisc/kernel/compat_audit.c
+index 20c39c9d86a9..fc6d35918c44 100644
+--- a/arch/parisc/kernel/compat_audit.c
++++ b/arch/parisc/kernel/compat_audit.c
+@@ -35,6 +35,8 @@ int parisc32_classify_syscall(unsigned syscall)
+ 		return 3;
+ 	case __NR_execve:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 1;
+ 	}
+diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
+index a2dddd7f3d09..8f32700b0baa 100644
+--- a/arch/powerpc/kernel/audit.c
++++ b/arch/powerpc/kernel/audit.c
+@@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+ 		return 4;
+ 	case __NR_execve:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 0;
+ 	}
+diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
+index 55c6ccda0a85..ebe45534b1c9 100644
+--- a/arch/powerpc/kernel/compat_audit.c
++++ b/arch/powerpc/kernel/compat_audit.c
+@@ -38,6 +38,8 @@ int ppc32_classify_syscall(unsigned syscall)
+ 		return 4;
+ 	case __NR_execve:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 1;
+ 	}
+diff --git a/arch/s390/kernel/audit.c b/arch/s390/kernel/audit.c
+index d395c6c9944c..d964cb94cfaf 100644
+--- a/arch/s390/kernel/audit.c
++++ b/arch/s390/kernel/audit.c
+@@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+ 		return 4;
+ 	case __NR_execve:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 0;
+ 	}
+diff --git a/arch/s390/kernel/compat_audit.c b/arch/s390/kernel/compat_audit.c
+index 444fb1f66944..f7b32933ce0e 100644
+--- a/arch/s390/kernel/compat_audit.c
++++ b/arch/s390/kernel/compat_audit.c
+@@ -39,6 +39,8 @@ int s390_classify_syscall(unsigned syscall)
+ 		return 4;
+ 	case __NR_execve:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 1;
+ 	}
+diff --git a/arch/sparc/kernel/audit.c b/arch/sparc/kernel/audit.c
+index a6e91bf34d48..b6dcca9c6520 100644
+--- a/arch/sparc/kernel/audit.c
++++ b/arch/sparc/kernel/audit.c
+@@ -55,6 +55,8 @@ int audit_classify_syscall(int abi, unsigned int syscall)
+ 		return 4;
+ 	case __NR_execve:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 0;
+ 	}
+diff --git a/arch/sparc/kernel/compat_audit.c b/arch/sparc/kernel/compat_audit.c
+index 10eeb4f15b20..d2652a1083ad 100644
+--- a/arch/sparc/kernel/compat_audit.c
++++ b/arch/sparc/kernel/compat_audit.c
+@@ -39,6 +39,8 @@ int sparc32_classify_syscall(unsigned int syscall)
+ 		return 4;
+ 	case __NR_execve:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 1;
+ 	}
+diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
+index 6efe6cb3768a..57a02ade5503 100644
+--- a/arch/x86/ia32/audit.c
++++ b/arch/x86/ia32/audit.c
+@@ -39,6 +39,8 @@ int ia32_classify_syscall(unsigned syscall)
+ 	case __NR_execve:
+ 	case __NR_execveat:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 1;
+ 	}
+diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
+index 83d9cad4e68b..39de1e021258 100644
+--- a/arch/x86/kernel/audit_64.c
++++ b/arch/x86/kernel/audit_64.c
+@@ -53,6 +53,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+ 	case __NR_execve:
+ 	case __NR_execveat:
+ 		return 5;
++	case __NR_openat2:
++		return 6;
+ 	default:
+ 		return 0;
+ 	}
+diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+index 8bb9ac84d2fb..f5616e70d129 100644
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -76,6 +76,7 @@
+ #include <linux/fsnotify_backend.h>
+ #include <uapi/linux/limits.h>
+ #include <uapi/linux/netfilter/nf_tables.h>
++#include <uapi/linux/openat2.h>
+ 
+ #include "audit.h"
+ 
+@@ -195,6 +196,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+ 		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+ 	case 5: /* execve */
+ 		return mask & AUDIT_PERM_EXEC;
++	case 6: /* openat2 */
++		return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
+ 	default:
+ 		return 0;
+ 	}
+diff --git a/lib/audit.c b/lib/audit.c
+index 5004bff928a7..8f030b9a2d10 100644
+--- a/lib/audit.c
++++ b/lib/audit.c
+@@ -60,6 +60,10 @@ int audit_classify_syscall(int abi, unsigned syscall)
+ #endif
+ 	case __NR_execve:
+ 		return 5;
++#ifdef __NR_openat2
++	case __NR_openat2:
++		return 6;
++#endif
+ 	default:
+ 		return 0;
+ 	}
+diff --git a/lib/compat_audit.c b/lib/compat_audit.c
+index 77eabad69b4a..8aff0d0d9ba0 100644
+--- a/lib/compat_audit.c
++++ b/lib/compat_audit.c
+@@ -45,6 +45,10 @@ int audit_classify_compat_syscall(int abi, unsigned syscall)
+ #endif
+ 	case __NR_execve:
+ 		return 5;
++#ifdef __NR_openat2
++	case __NR_openat2:
++		return 6;
++#endif
+ 	default:
+ 		return 1;
+ 	}
+-- 
+2.27.0
+
