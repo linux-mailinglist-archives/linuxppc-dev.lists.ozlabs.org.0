@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFE033FE91
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 06:01:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF54233FE92
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 06:02:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1FHj6Sd2z3c7K
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 16:01:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1FJK6Vf0z3dbh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 16:02:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pzJ0Yf2l;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ANHvQI4K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,34 +19,34 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=pzJ0Yf2l; 
+ header.s=casper.20170209 header.b=ANHvQI4K; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1FFW1q6cz3cFN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 15:59:59 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1FFy1D7qz3c0c
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 16:00:22 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=D+S8wlSiI4RJjZ5iJm2sxYRqVVY2Unydlyni8O7HV7o=; b=pzJ0Yf2lHvDqADXeBYbA1uMzpD
- I6mDgP2SEN/7rGW4D7M0Ki28esLEuHEzgcaB+m4I0HZb9ICnfb8uKmfHkgbct9yI3HZpieLHqlQEh
- 8ZbEn5zQGPKudyNhU8V8cHI31vqq6hKIZ1nqgkPeMR1uuWM6Oxoidcm4R8IxXu0YYrCico+vv8b0e
- k+rwed8gxoGnWEhv0Hg3mbM4FuSQJxw8Qo8gIeaBe+lgf/aXSBWdZLIDAFI/vcihYht+9pWlSAmEG
- 4Th3oOBd6lEMeB1Lb+YDe+H2jNV89dT/d7RDozI5Gdo0MLhPGOE1hDuCpQQpdvquZpbflKIZbTYYf
- bGwozUuw==;
+ bh=+nlm279ylA5Av6DETMBos1RXabjczdpECnt3hiQJvZw=; b=ANHvQI4KxYoaApzwlvQSBMTCk7
+ 3OYutmcg+lJh5H8kXsn8/neUqT/z8/2CNM82ZKJ31TSj6XcNA3WDJI7ExWvcJ2LHE1O2hrNyg/TgA
+ BTHnGkvkU7VTBvt7G3sWB3hroM6qKXfvCLsOp3dz6FOGKOV+4v9ioq6WGotQo4Rgi14fbssLpC87H
+ yHZJDIBrypvHfnYpCpB5IvDJIblOipSQsWP4GfuOx/bmxat4IGvgwaXA+RD9njBrxHQ5+2sZPrXU2
+ 6f0S0z1ppLOpYf0cQjLRmtF5T5ob+YY39FR20C8tkjisYerK6eoM5VxlESMaN9dUevpycm+fsD1EH
+ SeXneIoA==;
 Received: from [2001:4bb8:18c:bb3:e1cf:ad2f:7ff7:7a0b] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lMkk1-002ZIG-2u; Thu, 18 Mar 2021 04:58:40 +0000
+ id 1lMkkO-002ZJq-GS; Thu, 18 Mar 2021 04:59:10 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: "David S. Miller" <davem@davemloft.net>, Jens Axboe <axboe@kernel.dk>,
  Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 07/10] MIPS: disable CONFIG_IDE in bigsur_defconfig
-Date: Thu, 18 Mar 2021 05:57:03 +0100
-Message-Id: <20210318045706.200458-8-hch@lst.de>
+Subject: [PATCH 08/10] MIPS: disable CONFIG_IDE in malta*_defconfig
+Date: Thu, 18 Mar 2021 05:57:04 +0100
+Message-Id: <20210318045706.200458-9-hch@lst.de>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210318045706.200458-1-hch@lst.de>
 References: <20210318045706.200458-1-hch@lst.de>
@@ -76,30 +76,60 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-bigsur_defconfig enables CONFIG_IDE for the tc86c001 ide driver, which
-is a Toshiba plug in card that does not make much sense to use on bigsur
-platforms.  For all other ATA cards libata support is already enabled.
+Various malta defconfigs enable CONFIG_IDE for the tc86c001 ide driver,
+hich is a Toshiba plug in card that does not make much sense to use on
+bigsur platforms.  For all other ATA cards libata support is already
+enabled.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/mips/configs/bigsur_defconfig | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/mips/configs/malta_kvm_defconfig       | 3 ---
+ arch/mips/configs/malta_kvm_guest_defconfig | 3 ---
+ arch/mips/configs/maltaup_xpa_defconfig     | 3 ---
+ 3 files changed, 9 deletions(-)
 
-diff --git a/arch/mips/configs/bigsur_defconfig b/arch/mips/configs/bigsur_defconfig
-index eea9b613bb7402..d83e7d600b0a56 100644
---- a/arch/mips/configs/bigsur_defconfig
-+++ b/arch/mips/configs/bigsur_defconfig
-@@ -105,10 +105,6 @@ CONFIG_BLK_DEV_CRYPTOLOOP=m
- CONFIG_BLK_DEV_NBD=m
- CONFIG_EEPROM_LEGACY=y
- CONFIG_EEPROM_MAX6875=y
+diff --git a/arch/mips/configs/malta_kvm_defconfig b/arch/mips/configs/malta_kvm_defconfig
+index 62b1969b4f55b9..b4f9f3d4bd5d34 100644
+--- a/arch/mips/configs/malta_kvm_defconfig
++++ b/arch/mips/configs/malta_kvm_defconfig
+@@ -239,9 +239,6 @@ CONFIG_BLK_DEV_NBD=m
+ CONFIG_BLK_DEV_RAM=y
+ CONFIG_CDROM_PKTCDVD=m
+ CONFIG_ATA_OVER_ETH=m
 -CONFIG_IDE=y
 -CONFIG_BLK_DEV_IDECD=y
--CONFIG_BLK_DEV_IDETAPE=y
 -CONFIG_BLK_DEV_TC86C001=m
+ CONFIG_RAID_ATTRS=m
  CONFIG_BLK_DEV_SD=y
- CONFIG_CHR_DEV_ST=y
- CONFIG_BLK_DEV_SR=y
+ CONFIG_CHR_DEV_ST=m
+diff --git a/arch/mips/configs/malta_kvm_guest_defconfig b/arch/mips/configs/malta_kvm_guest_defconfig
+index 9185e0a0aa4551..4d415145d1163e 100644
+--- a/arch/mips/configs/malta_kvm_guest_defconfig
++++ b/arch/mips/configs/malta_kvm_guest_defconfig
+@@ -237,9 +237,6 @@ CONFIG_BLK_DEV_RAM=y
+ CONFIG_CDROM_PKTCDVD=m
+ CONFIG_ATA_OVER_ETH=m
+ CONFIG_VIRTIO_BLK=y
+-CONFIG_IDE=y
+-CONFIG_BLK_DEV_IDECD=y
+-CONFIG_BLK_DEV_TC86C001=m
+ CONFIG_RAID_ATTRS=m
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_CHR_DEV_ST=m
+diff --git a/arch/mips/configs/maltaup_xpa_defconfig b/arch/mips/configs/maltaup_xpa_defconfig
+index 636311d67a533c..cd536086dca4a4 100644
+--- a/arch/mips/configs/maltaup_xpa_defconfig
++++ b/arch/mips/configs/maltaup_xpa_defconfig
+@@ -237,9 +237,6 @@ CONFIG_BLK_DEV_NBD=m
+ CONFIG_BLK_DEV_RAM=y
+ CONFIG_CDROM_PKTCDVD=m
+ CONFIG_ATA_OVER_ETH=m
+-CONFIG_IDE=y
+-CONFIG_BLK_DEV_IDECD=y
+-CONFIG_BLK_DEV_TC86C001=m
+ CONFIG_RAID_ATTRS=m
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_CHR_DEV_ST=m
 -- 
 2.30.1
 
