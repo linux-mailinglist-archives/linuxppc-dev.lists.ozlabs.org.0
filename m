@@ -2,87 +2,126 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB2A33FDE8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 04:49:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E12233FDF9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 05:02:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1ChN2cmDz3c3s
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 14:49:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1CzG0fdGz3bwt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 15:02:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ekzl93DI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=eTNOqDUO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::334;
+ helo=mail-ot1-x334.google.com; envelope-from=groeck7@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ekzl93DI; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=eTNOqDUO; dkim-atps=neutral
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com
+ [IPv6:2607:f8b0:4864:20::334])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1Cgj3dn9z3bs1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 14:49:05 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12I3XdPY054814; Wed, 17 Mar 2021 23:49:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=B1glSlsMjml8IkUtR6iwf428e5+HZmHvd+7Z04QhEkM=;
- b=ekzl93DIRWTF6phfauP7t74zrEVQgiu5X9903L+P7oJ3M9yT+HSPanpf8LnRZgTEIDUn
- sxiLBI1s+/8cIrd30AoA1WP3oLdG2TqBe2bi38yh10UoRrPvKGjVFq0+95FthZXCzeRQ
- R48/IghC9UUf4JWG3pg25KtrHIxsyBm9HOic0luXJYz5hKwqxS5vgDIs7L2sjvZhyi/Z
- E1FTqWsq17GQxTEVVaJafKpKCtkp4QE8P3+25UbLDWEqlpy82xQwnUMxyciQmLu6EDfj
- CDFE/CA6Nr6JNyf6+6nMmBZ4woy50R+3llwbXG8dsbVrYgg9Xdv6XFLvyBAjlUECJVpn 6A== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37bwx8hf90-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Mar 2021 23:49:01 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12I3luUY010489;
- Thu, 18 Mar 2021 03:49:00 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma03dal.us.ibm.com with ESMTP id 378n19ms7n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Mar 2021 03:49:00 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12I3mxLg32309594
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Mar 2021 03:49:00 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E43F6AE05F;
- Thu, 18 Mar 2021 03:48:59 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 98224AE062;
- Thu, 18 Mar 2021 03:48:58 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.85.72.215])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 18 Mar 2021 03:48:58 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/mm: Revert "powerpc/mm: Remove DEBUG_VM_PGTABLE
- support on powerpc"
-Date: Thu, 18 Mar 2021 09:18:55 +0530
-Message-Id: <20210318034855.74513-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.30.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1Cyn3vJ7z309Z
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 15:02:06 +1100 (AEDT)
+Received: by mail-ot1-x334.google.com with SMTP id
+ 31-20020a9d00220000b02901b64b9b50b1so3958126ota.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Mar 2021 21:02:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:autocrypt:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=yPPNJ/iuMbYQdPze8KDj5MSdlpFP5EItMkTH0DbgL7g=;
+ b=eTNOqDUON1e5faLvL9M7KB42WLQjZt471iyOIGQM5sPNcm1DkkaFAHq0jElFahiRoB
+ xBmQeiOLLpl/1xqMDn+6x3M3gj2Uv/x+2+amD3/B6pfJSwrlRLWXxxG/tvzcNykVIdWZ
+ KdKp17U5n0gryOtcsQzLkX+5gT0ve9Wt1Nkaokyg/L+VH70fkV7M96+7kBk86AUOfTYc
+ NJZF+iJ8WTnm2b+M3/YwZmvFeAOF7xiy2gdmLr8y22orzEzYi8Xp6S0eN1AM3jUSQa0l
+ fHvEV1QMxxJ/035103668b0/MzMAAt+SsVC+ZjLL1KPD/SwpQMqSYsBdnc4+ATL5xxUQ
+ ImJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=yPPNJ/iuMbYQdPze8KDj5MSdlpFP5EItMkTH0DbgL7g=;
+ b=Tf+OrCK8X7PispCi+hI5PLy4XgaoRV+aErl6c5Y2jJ/f7OXCoPA29Qx0UdRPrLEiTV
+ Vl46hvkqcdHsxcEILW5TFfkDGIWWgucMhH2tvrSPK5cFjsJtt8WKh48b7ntz3ff4ihuh
+ uMce0TF4W+rudMOFuzNd5fXiM/RXsw06+4ZrKdnHUqOH9bhLbWTI4ONDllXUlO1T5wGX
+ 7f1wo7Fq/GIEtNnoQ/2MUWlTEeJR+kgrtrdxx30hQn/iRwhGyUIBgggIh3mEaTGOW6fh
+ qc6mp4w4StIvVm4PkOB4wJLSa/JuhPMXpQ+ZpqrhtLyoGnvmfX2C5IXeTpFo/1p6U0XV
+ eh3w==
+X-Gm-Message-State: AOAM530YKCMBozrnGcGgGSlB9Qao3Ljd9Ntq2Bk0PcDHGkkMMKlRZOWM
+ dbpDK2UqvRlUx5IZpJeaZAwFUnN3VqY=
+X-Google-Smtp-Source: ABdhPJxoToCJpxVnBlX8zjBz4PEI1c5sVhZMQtNK8lkVSBq1SufotWu8/IlEnttIMyYXoZRwf69/Pg==
+X-Received: by 2002:a9d:8d5:: with SMTP id 79mr5916165otf.345.1616040123041;
+ Wed, 17 Mar 2021 21:02:03 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ d21sm247135oic.54.2021.03.17.21.02.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Mar 2021 21:02:02 -0700 (PDT)
+Subject: Re: Errant readings on LM81 with T2080 SoC
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ Wolfram Sang <wsa@kernel.org>
+References: <20210311081842.GA1070@ninjato>
+ <94dfa9dc-a80c-98ba-4169-44cce3d810f7@alliedtelesis.co.nz>
+ <725c5e51-65df-e17d-e2da-0982efacf2d2@roeck-us.net>
+ <9c912424-2cc9-8753-1352-1a5c27722cd2@alliedtelesis.co.nz>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+Message-ID: <8e516ef6-340e-a873-68a9-71a10008f32c@roeck-us.net>
+Date: Wed, 17 Mar 2021 21:02:00 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-18_01:2021-03-17,
- 2021-03-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0
- bulkscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 mlxscore=0 mlxlogscore=770 malwarescore=0 clxscore=1015
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103180026
+In-Reply-To: <9c912424-2cc9-8753-1352-1a5c27722cd2@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,49 +133,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+ "jdelvare@suse.com" <jdelvare@suse.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This reverts commit 675bceb097e6 ("powerpc/mm: Remove DEBUG_VM_PGTABLE support on powerpc")
+On 3/17/21 8:46 PM, Chris Packham wrote:
+> 
+> On 12/03/21 10:34 am, Guenter Roeck wrote:
+>> On 3/11/21 1:17 PM, Chris Packham wrote:
+>>> On 11/03/21 9:18 pm, Wolfram Sang wrote:
+>>>>> Bummer. What is really weird is that you see clock stretching under
+>>>>> CPU load. Normally clock stretching is triggered by the device, not
+>>>>> by the host.
+>>>> One example: Some hosts need an interrupt per byte to know if they
+>>>> should send ACK or NACK. If that interrupt is delayed, they stretch the
+>>>> clock.
+>>>>
+>>> It feels like something like that is happening. Looking at the T2080
+>>> Reference manual there is an interesting timing diagram (Figure 14-2 if
+>>> someone feels like looking it up). It shows SCL low between the ACK for
+>>> the address and the data byte. I think if we're delayed in sending the
+>>> next byte we could violate Ttimeout or Tlow:mext from the SMBUS spec.
+>>>
+>> I think that really leaves you only two options that I can see:
+>> Rework the driver to handle critical actions (such as setting TXAK,
+>> and everything else that might result in clock stretching) in the
+>> interrupt handler, or rework the driver to handle everything in
+>> a high priority kernel thread.
+> I've made some reasonable progress on making i2c-mpc more interrupt 
+> driven. Assuming it works out for my use-case is there an opinion on 
+> making interrupt support mandatory? Looking at all the in-tree dts files 
+> that use one of the compatible strings from i2c-mpc.c they all have 
+> interrupt properties so in theory nothing is using the polling mode. But 
+> there may be some out-of-tree boards or boards using an old dtb that 
+> would be affected?
+> 
 
-All the related issues are fixed by the series
-https://lore.kernel.org/linux-mm/20200902114222.181353-1-aneesh.kumar@linux.ibm.com
+The polling code is from pre-git times. Like 2005 and earlier.
+I'd say it is about time to get rid of it. Any out-of-tree users
+had more than 15 years to upstream their code, after all.
 
-Hence enable it back
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- Documentation/features/debug/debug-vm-pgtable/arch-support.txt | 2 +-
- arch/powerpc/Kconfig                                           | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-index 7aff505af706..fa83403b4aec 100644
---- a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-+++ b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
-@@ -21,7 +21,7 @@
-     |       nios2: | TODO |
-     |    openrisc: | TODO |
-     |      parisc: | TODO |
--    |     powerpc: | TODO |
-+    |     powerpc: |  ok  |
-     |       riscv: |  ok  |
-     |        s390: |  ok  |
-     |          sh: | TODO |
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 386ae12d8523..982c87d5c051 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -119,6 +119,7 @@ config PPC
- 	#
- 	select ARCH_32BIT_OFF_T if PPC32
- 	select ARCH_HAS_DEBUG_VIRTUAL
-+	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_FORTIFY_SOURCE
--- 
-2.30.2
-
+Guenter
