@@ -2,78 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42FD340529
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 13:08:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4E43405EE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 13:45:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1QmF5GV6z3bnT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 23:08:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1RZl35h9z3c5F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 23:45:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FcBbbxKB;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FcBbbxKB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=xLCEVWKk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=rgb@redhat.com;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32b;
+ helo=mail-wm1-x32b.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=FcBbbxKB; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=FcBbbxKB; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=xLCEVWKk; dkim-atps=neutral
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com
+ [IPv6:2a00:1450:4864:20::32b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1Qlp6PVsz30D6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 23:08:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1616069299;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JlDcllrQr7DBrDcUVIaiNqS6XDXXMP0YtmA9o1iIxrY=;
- b=FcBbbxKBfcdcae7kMThWjKP/+KRYFtMf1BqowmxPgqupMjl4lph0T5ymTm10N275LRrG40
- 8j9Yq6mWRMvpHYyIK1bvLV2Ypb/kJrAy8EEpqXK4dDsI8e8OaCRz33WWDT0/fXBogFsEDz
- FUHROQKhnIm1ouOyWM7pgFOEN2uYLgM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1616069299;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JlDcllrQr7DBrDcUVIaiNqS6XDXXMP0YtmA9o1iIxrY=;
- b=FcBbbxKBfcdcae7kMThWjKP/+KRYFtMf1BqowmxPgqupMjl4lph0T5ymTm10N275LRrG40
- 8j9Yq6mWRMvpHYyIK1bvLV2Ypb/kJrAy8EEpqXK4dDsI8e8OaCRz33WWDT0/fXBogFsEDz
- FUHROQKhnIm1ouOyWM7pgFOEN2uYLgM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-109-LtMXlIIPOV6X0T5SHt7tIw-1; Thu, 18 Mar 2021 08:08:17 -0400
-X-MC-Unique: LtMXlIIPOV6X0T5SHt7tIw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DC2B9107B7C9;
- Thu, 18 Mar 2021 12:08:14 +0000 (UTC)
-Received: from madcap2.tricolour.ca (unknown [10.10.110.12])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 456A31002388;
- Thu, 18 Mar 2021 12:08:04 +0000 (UTC)
-Date: Thu, 18 Mar 2021 08:08:01 -0400
-From: Richard Guy Briggs <rgb@redhat.com>
-To: Christian Brauner <christian.brauner@ubuntu.com>
-Subject: Re: [PATCH 1/2] audit: add support for the openat2 syscall
-Message-ID: <20210318120801.GK3141668@madcap2.tricolour.ca>
-References: <cover.1616031035.git.rgb@redhat.com>
- <49510cacfb5fbbaa312a4a389f3a6619675007ab.1616031035.git.rgb@redhat.com>
- <20210318104843.uiga6tmmhn5wfhbs@wittgenstein>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1RYk69Ttz2yQx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 23:44:40 +1100 (AEDT)
+Received: by mail-wm1-x32b.google.com with SMTP id
+ b2-20020a7bc2420000b029010be1081172so3293859wmj.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 05:44:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AJQO8bVI3b81mb68PB08R/oOF3ooV8dt2QQLb5Ex6Hw=;
+ b=xLCEVWKkh857JtBePvYh95mpILww1ayRgcQloNKeaL50VqqgjDok4abtvvZuFJWyfw
+ dnRyPtwBhPgmGzki0AqxfG2sSSG9B9avGDZDMVKPuxnkv8kf9HjCZbBNsuXIG0kW67D0
+ 7pKKWVpVt5eSAQKVisuUbMIixNVBlo2/fbE+ZvGSs2611TTmd/yYh2113XLB0mJhA7lS
+ gBkOdh/lWFeTpkSWDRUeE90GLO2Isqcusm8lVACorWp5T6FCOP2830dL3UT3ljAw9jpz
+ wtjWsIW27awROUFuS5LMJ6B8gtXI2OqOaaLIDVDBxp//GWNNPvucgHnco3AaTdyOHKZG
+ ufyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AJQO8bVI3b81mb68PB08R/oOF3ooV8dt2QQLb5Ex6Hw=;
+ b=Cu2NWe0OWpWWVIBtGEJnYjHRE9tcWnbvPSuc4Nho1v9M7mL1fcKTqU5rREFhX7sL26
+ 6F/38kY/+SRV6SzLjyS0YTqbwUCZC6OAl2yul8iAWDWU4nmut4z/RdpQcnDSAeFcp3ap
+ uEBtNDcSyn+eHlsW12jPnQzF29hPJ684LwbPPHu8IonvpcpkahUK7LlGuifvfrEwFd7e
+ /FLpWbhPIUT+O3Seu0Oh9tdHsPHRbTz0N4at0R73S97uJ5PQPplx7NEQSUYvm3+mBtPB
+ B4Ek4BxTfYN0iVqkWv+ft/biT9b1HedbpaTaAHgnm++mVUdLRpdUCnpimhZg7tn0cn40
+ 62DQ==
+X-Gm-Message-State: AOAM530w9vmQdv7XZwlkrP2exF7MfkGPwk4GD3IOboOhE2fSimmXyIqX
+ Y29N9+3uxFGfaLC64SABNnZoZA==
+X-Google-Smtp-Source: ABdhPJxnk1k0Mb4aNBzX643EoSOfVjoAuKNDuwWX1gNK4cFB4T9rip/OdnykKJk57tfoH66Iy1z1YQ==
+X-Received: by 2002:a7b:c759:: with SMTP id w25mr3467410wmk.139.1616071470493; 
+ Thu, 18 Mar 2021 05:44:30 -0700 (PDT)
+Received: from dell.default ([91.110.221.194])
+ by smtp.gmail.com with ESMTPSA id q15sm2813900wrx.56.2021.03.18.05.44.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Mar 2021 05:44:30 -0700 (PDT)
+From: Lee Jones <lee.jones@linaro.org>
+To: lee.jones@linaro.org
+Subject: [PATCH v3 00/10] Rid W=1 warnings in Crypto
+Date: Thu, 18 Mar 2021 12:44:12 +0000
+Message-Id: <20210318124422.3200180-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210318104843.uiga6tmmhn5wfhbs@wittgenstein>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,276 +79,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- Paul Moore <paul@paul-moore.com>, linux-parisc@vger.kernel.org, x86@kernel.org,
- LKML <linux-kernel@vger.kernel.org>, Eric Paris <eparis@redhat.com>,
- linux-fsdevel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
- Linux-Audit Mailing List <linux-audit@redhat.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-alpha@vger.kernel.org,
- sparclinux@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
- Steve Grubb <sgrubb@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Aymen Sghaier <aymen.sghaier@nxp.com>, Kent Yoder <yoder1@us.ibm.com>,
+ Ayush Sawal <ayush.sawal@chelsio.com>,
+ Joakim Bech <joakim.xx.bech@stericsson.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, Paul Mackerras <paulus@samba.org>,
+ Andreas Westin <andreas.westin@stericsson.com>,
+ =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+ Atul Gupta <atul.gupta@chelsio.com>,
+ Niklas Hernaeus <niklas.hernaeus@stericsson.com>,
+ M R Gowda <yeshaswi@chelsio.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+ Rohit Maheshwari <rohitm@chelsio.com>, Nayna Jain <nayna@linux.ibm.com>,
+ Manoj Malviya <manojmalviya@chelsio.com>,
+ Ludovic Desroches <ludovic.desroches@microchip.com>,
+ Jonas Linde <jonas.linde@stericsson.com>, Rob Rice <rob.rice@broadcom.com>,
+ Zaibo Xu <xuzaibo@huawei.com>, Harsh Jain <harsh@chelsio.com>,
+ Declan Murphy <declan.murphy@intel.com>,
+ Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+ Shujuan Chen <shujuan.chen@stericsson.com>,
+ Henrique Cerri <mhcerri@br.ibm.com>,
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, linux-kernel@vger.kernel.org,
+ Berne Hebark <berne.herbark@stericsson.com>, linux-crypto@vger.kernel.org,
+ Jitendra Lulla <jlulla@chelsio.com>,
+ Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-03-18 11:48, Christian Brauner wrote:
-> [+Cc Aleksa, the author of openat2()]
+This is set 1 of 2 sets required to fully clean Crypto.
 
-Ah!  Thanks for pulling in Aleksa.  I thought I caught everyone...
+v2: No functional changes since v1.
+v3: Description change and additional struct header fix
 
-> and a comment below. :)
+Lee Jones (10):
+  crypto: hisilicon: sec_drv: Supply missing description for
+    'sec_queue_empty()'s 'queue' param
+  crypto: bcm: Fix a whole host of kernel-doc misdemeanours
+  crypto: chelsio: chcr_core: Fix some kernel-doc issues
+  crypto: ux500: hash: hash_core: Fix worthy kernel-doc headers and
+    remove others
+  crypto: keembay: ocs-hcu: Fix incorrectly named functions/structs
+  crypto: atmel-ecc: Struct headers need to start with keyword 'struct'
+  crypto: caam: caampkc: Provide the name of the function and provide
+    missing descriptions
+  crypto: vmx: Source headers are not good kernel-doc candidates
+  crypto: nx: nx-aes-cbc: Repair some kernel-doc problems
+  crypto: cavium: nitrox_isr: Demote non-compliant kernel-doc headers
 
-Same...
+ drivers/crypto/atmel-ecc.c                |  2 +-
+ drivers/crypto/bcm/cipher.c               |  7 ++--
+ drivers/crypto/bcm/spu.c                  | 16 ++++-----
+ drivers/crypto/bcm/spu2.c                 | 43 +++++++++++++----------
+ drivers/crypto/bcm/util.c                 |  4 +--
+ drivers/crypto/caam/caamalg_qi2.c         |  3 ++
+ drivers/crypto/caam/caampkc.c             |  3 +-
+ drivers/crypto/cavium/nitrox/nitrox_isr.c |  4 +--
+ drivers/crypto/chelsio/chcr_algo.c        |  8 ++---
+ drivers/crypto/chelsio/chcr_core.c        |  2 +-
+ drivers/crypto/hisilicon/sec/sec_drv.c    |  1 +
+ drivers/crypto/keembay/ocs-hcu.c          |  8 ++---
+ drivers/crypto/nx/nx-aes-cbc.c            |  2 +-
+ drivers/crypto/nx/nx.c                    |  5 +--
+ drivers/crypto/nx/nx_debugfs.c            |  2 +-
+ drivers/crypto/ux500/cryp/cryp.c          |  5 +--
+ drivers/crypto/ux500/cryp/cryp_core.c     |  5 +--
+ drivers/crypto/ux500/cryp/cryp_irq.c      |  2 +-
+ drivers/crypto/ux500/hash/hash_core.c     | 15 +++-----
+ drivers/crypto/vmx/vmx.c                  |  2 +-
+ 20 files changed, 73 insertions(+), 66 deletions(-)
 
-> On Wed, Mar 17, 2021 at 09:47:17PM -0400, Richard Guy Briggs wrote:
-> > The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
-> > ("open: introduce openat2(2) syscall")
-> > 
-> > Add the openat2(2) syscall to the audit syscall classifier.
-> > 
-> > See the github issue
-> > https://github.com/linux-audit/audit-kernel/issues/67
-> > 
-> > Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
-> > ---
-> >  arch/alpha/kernel/audit.c          | 2 ++
-> >  arch/ia64/kernel/audit.c           | 2 ++
-> >  arch/parisc/kernel/audit.c         | 2 ++
-> >  arch/parisc/kernel/compat_audit.c  | 2 ++
-> >  arch/powerpc/kernel/audit.c        | 2 ++
-> >  arch/powerpc/kernel/compat_audit.c | 2 ++
-> >  arch/s390/kernel/audit.c           | 2 ++
-> >  arch/s390/kernel/compat_audit.c    | 2 ++
-> >  arch/sparc/kernel/audit.c          | 2 ++
-> >  arch/sparc/kernel/compat_audit.c   | 2 ++
-> >  arch/x86/ia32/audit.c              | 2 ++
-> >  arch/x86/kernel/audit_64.c         | 2 ++
-> >  kernel/auditsc.c                   | 3 +++
-> >  lib/audit.c                        | 4 ++++
-> >  lib/compat_audit.c                 | 4 ++++
-> >  15 files changed, 35 insertions(+)
-> > 
-> > diff --git a/arch/alpha/kernel/audit.c b/arch/alpha/kernel/audit.c
-> > index 96a9d18ff4c4..06a911b685d1 100644
-> > --- a/arch/alpha/kernel/audit.c
-> > +++ b/arch/alpha/kernel/audit.c
-> > @@ -42,6 +42,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> >  		return 3;
-> >  	case __NR_execve:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 0;
-> >  	}
-> > diff --git a/arch/ia64/kernel/audit.c b/arch/ia64/kernel/audit.c
-> > index 5192ca899fe6..5eaa888c8fd3 100644
-> > --- a/arch/ia64/kernel/audit.c
-> > +++ b/arch/ia64/kernel/audit.c
-> > @@ -43,6 +43,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> >  		return 3;
-> >  	case __NR_execve:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 0;
-> >  	}
-> > diff --git a/arch/parisc/kernel/audit.c b/arch/parisc/kernel/audit.c
-> > index 9eb47b2225d2..fc721a7727ba 100644
-> > --- a/arch/parisc/kernel/audit.c
-> > +++ b/arch/parisc/kernel/audit.c
-> > @@ -52,6 +52,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> >  		return 3;
-> >  	case __NR_execve:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 0;
-> >  	}
-> > diff --git a/arch/parisc/kernel/compat_audit.c b/arch/parisc/kernel/compat_audit.c
-> > index 20c39c9d86a9..fc6d35918c44 100644
-> > --- a/arch/parisc/kernel/compat_audit.c
-> > +++ b/arch/parisc/kernel/compat_audit.c
-> > @@ -35,6 +35,8 @@ int parisc32_classify_syscall(unsigned syscall)
-> >  		return 3;
-> >  	case __NR_execve:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 1;
-> >  	}
-> > diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
-> > index a2dddd7f3d09..8f32700b0baa 100644
-> > --- a/arch/powerpc/kernel/audit.c
-> > +++ b/arch/powerpc/kernel/audit.c
-> > @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> >  		return 4;
-> >  	case __NR_execve:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 0;
-> >  	}
-> > diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
-> > index 55c6ccda0a85..ebe45534b1c9 100644
-> > --- a/arch/powerpc/kernel/compat_audit.c
-> > +++ b/arch/powerpc/kernel/compat_audit.c
-> > @@ -38,6 +38,8 @@ int ppc32_classify_syscall(unsigned syscall)
-> >  		return 4;
-> >  	case __NR_execve:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 1;
-> >  	}
-> > diff --git a/arch/s390/kernel/audit.c b/arch/s390/kernel/audit.c
-> > index d395c6c9944c..d964cb94cfaf 100644
-> > --- a/arch/s390/kernel/audit.c
-> > +++ b/arch/s390/kernel/audit.c
-> > @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> >  		return 4;
-> >  	case __NR_execve:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 0;
-> >  	}
-> > diff --git a/arch/s390/kernel/compat_audit.c b/arch/s390/kernel/compat_audit.c
-> > index 444fb1f66944..f7b32933ce0e 100644
-> > --- a/arch/s390/kernel/compat_audit.c
-> > +++ b/arch/s390/kernel/compat_audit.c
-> > @@ -39,6 +39,8 @@ int s390_classify_syscall(unsigned syscall)
-> >  		return 4;
-> >  	case __NR_execve:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 1;
-> >  	}
-> > diff --git a/arch/sparc/kernel/audit.c b/arch/sparc/kernel/audit.c
-> > index a6e91bf34d48..b6dcca9c6520 100644
-> > --- a/arch/sparc/kernel/audit.c
-> > +++ b/arch/sparc/kernel/audit.c
-> > @@ -55,6 +55,8 @@ int audit_classify_syscall(int abi, unsigned int syscall)
-> >  		return 4;
-> >  	case __NR_execve:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 0;
-> >  	}
-> > diff --git a/arch/sparc/kernel/compat_audit.c b/arch/sparc/kernel/compat_audit.c
-> > index 10eeb4f15b20..d2652a1083ad 100644
-> > --- a/arch/sparc/kernel/compat_audit.c
-> > +++ b/arch/sparc/kernel/compat_audit.c
-> > @@ -39,6 +39,8 @@ int sparc32_classify_syscall(unsigned int syscall)
-> >  		return 4;
-> >  	case __NR_execve:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 1;
-> >  	}
-> > diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
-> > index 6efe6cb3768a..57a02ade5503 100644
-> > --- a/arch/x86/ia32/audit.c
-> > +++ b/arch/x86/ia32/audit.c
-> > @@ -39,6 +39,8 @@ int ia32_classify_syscall(unsigned syscall)
-> >  	case __NR_execve:
-> >  	case __NR_execveat:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 1;
-> >  	}
-> > diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
-> > index 83d9cad4e68b..39de1e021258 100644
-> > --- a/arch/x86/kernel/audit_64.c
-> > +++ b/arch/x86/kernel/audit_64.c
-> > @@ -53,6 +53,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> >  	case __NR_execve:
-> >  	case __NR_execveat:
-> >  		return 5;
-> > +	case __NR_openat2:
-> > +		return 6;
-> >  	default:
-> >  		return 0;
-> >  	}
-> > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-> > index 8bb9ac84d2fb..f5616e70d129 100644
-> > --- a/kernel/auditsc.c
-> > +++ b/kernel/auditsc.c
-> > @@ -76,6 +76,7 @@
-> >  #include <linux/fsnotify_backend.h>
-> >  #include <uapi/linux/limits.h>
-> >  #include <uapi/linux/netfilter/nf_tables.h>
-> > +#include <uapi/linux/openat2.h>
-> >  
-> >  #include "audit.h"
-> >  
-> > @@ -195,6 +196,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
-> >  		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
-> >  	case 5: /* execve */
-> >  		return mask & AUDIT_PERM_EXEC;
-> > +	case 6: /* openat2 */
-> > +		return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
-> 
-> That looks a bit dodgy. Maybe sm like the below would be a bit better?
-
-Ah, ok, fair enough, since original flags use a u32 and this was picked
-as u64 for alignment.  It was just occurring to me last night that I
-might have the dubious honour of being the first usage of 0%llo format
-specifier in the kernel...  ;-)
-
-> diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-> index 47fb48f42c93..531e882a5096 100644
-> --- a/kernel/auditsc.c
-> +++ b/kernel/auditsc.c
-> @@ -159,6 +159,7 @@ static const struct audit_nfcfgop_tab audit_nfcfgs[] = {
-> 
->  static int audit_match_perm(struct audit_context *ctx, int mask)
->  {
-> +       struct open_how *openat2;
->         unsigned n;
->         if (unlikely(!ctx))
->                 return 0;
-> @@ -195,6 +196,12 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
->                 return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
->         case 5: /* execve */
->                 return mask & AUDIT_PERM_EXEC;
-> +       case 6: /* openat2 */
-> +               openat2 = ctx->argv[2];
-> +               if (upper_32_bits(openat2->flags))
-> +                       pr_warn("Some sensible warning about unknown flags");
-> +
-> +               return mask & ACC_MODE(lower_32_bits(openat2->flags));
->         default:
->                 return 0;
->         }
-> 
-> (Ideally we'd probably notice at build-time that we've got flags
-> exceeding 32bits. Could probably easily been done by exposing an all
-> flags macro somewhere and then we can place a BUILD_BUG_ON() or sm into
-> such places.)
-> 
-> Christian
-
-- RGB
-
---
-Richard Guy Briggs <rgb@redhat.com>
-Sr. S/W Engineer, Kernel Security, Base Operating Systems
-Remote, Ottawa, Red Hat Canada
-IRC: rgb, SunRaycer
-Voice: +1.647.777.2635, Internal: (81) 32635
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Andreas Westin <andreas.westin@stericsson.com>
+Cc: Atul Gupta <atul.gupta@chelsio.com>
+Cc: Aymen Sghaier <aymen.sghaier@nxp.com>
+Cc: Ayush Sawal <ayush.sawal@chelsio.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Berne Hebark <berne.herbark@stericsson.com>
+Cc: "Breno Leitão" <leitao@debian.org>
+Cc: Daniele Alessandrelli <daniele.alessandrelli@intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Declan Murphy <declan.murphy@intel.com>
+Cc: Harsh Jain <harsh@chelsio.com>
+Cc: Henrique Cerri <mhcerri@br.ibm.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "Horia Geantă" <horia.geanta@nxp.com>
+Cc: Jitendra Lulla <jlulla@chelsio.com>
+Cc: Joakim Bech <joakim.xx.bech@stericsson.com>
+Cc: Jonas Linde <jonas.linde@stericsson.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Kent Yoder <yoder1@us.ibm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-crypto@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+Cc: Manoj Malviya <manojmalviya@chelsio.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: M R Gowda <yeshaswi@chelsio.com>
+Cc: Nayna Jain <nayna@linux.ibm.com>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Niklas Hernaeus <niklas.hernaeus@stericsson.com>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+Cc: Rob Rice <rob.rice@broadcom.com>
+Cc: Rohit Maheshwari <rohitm@chelsio.com>
+Cc: Shujuan Chen <shujuan.chen@stericsson.com>
+Cc: Tudor Ambarus <tudor.ambarus@microchip.com>
+Cc: Vinay Kumar Yadav <vinay.yadav@chelsio.com>
+Cc: Zaibo Xu <xuzaibo@huawei.com>
+-- 
+2.27.0
 
