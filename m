@@ -2,54 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C3E340FCF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 22:30:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 230D8341128
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 00:45:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1gDY0Vs2z3c1Z
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 08:30:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g6I43FoE;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1kD90vTJz3bsS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 10:45:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=g6I43FoE; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1gD90sP8z30JK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 08:30:16 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 09E0D64EB6;
- Thu, 18 Mar 2021 21:30:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1616103010;
- bh=njIxVbMP2TpTidEcVGE5rBGrmzNdINWBbtvz4f0g1ng=;
- h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
- b=g6I43FoETF+MB+kPHxHCwCYSvq/G7LTyRtol75wG5QaeKWl3arXJhD24o1CjqhUQm
- MNq1eU0yIyMNlfwqTkLC4R1nQmvGJr8kw2fzQQdLRG2YB6y1TTjQGdbuYfD7QySHEt
- aKSF9PyckCyKN6AJ+KI2xceg1REzlKllFeea6BYDz1g05j4P6mrjFwdEaviSyCwpjn
- ZAz2UktEnta2yzz3hgfgJlUi4vOyyKC2Zv9piQStddIdxHibEbhXIlT8FMEAQIdp1J
- pqPXbot+XRoydmc5CQcEtc741N24cvWgY/CPANz98OwIPPwH50u8xto0xVGCok8ZmG
- RU0n23r7b6Gtw==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
- [127.0.0.1])
- by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id ED34960951;
- Thu, 18 Mar 2021 21:30:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1kCp5cTwz302D
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 10:45:04 +1100 (AEDT)
+IronPort-SDR: OfRLBzxPHBsMURH7uHgJOVGAsBvSwqmM9Qa/REJ2KZI2EpopSYjABEk89Su+NLZFpbOEoeU5z8
+ oRcWq0GZ21TQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9927"; a="169087592"
+X-IronPort-AV: E=Sophos;i="5.81,259,1610438400"; d="scan'208";a="169087592"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2021 16:45:00 -0700
+IronPort-SDR: k0tDIEljJSTd8V/3WJ57iomiVdd4Ht6LTCEY49TX1F9JmTfddoPFIe0liMt7wkpCVRAuuLBVbW
+ 1GELlZUNIz9Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,259,1610438400"; d="scan'208";a="389432556"
+Received: from lkp-server02.sh.intel.com (HELO 1c294c63cb86) ([10.239.97.151])
+ by orsmga002.jf.intel.com with ESMTP; 18 Mar 2021 16:44:57 -0700
+Received: from kbuild by 1c294c63cb86 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lN2K1-0001Tj-6y; Thu, 18 Mar 2021 23:44:57 +0000
+Date: Fri, 19 Mar 2021 07:44:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: [PATCH] powerpc/iommu/debug: fix ifnullfree.cocci warnings
+Message-ID: <20210318234441.GA63469@f8e20a472e81>
+References: <202103190721.joUfcBzf-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: marvell: Remove reference to CONFIG_MV64X60
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161610300996.15925.6620318542461392361.git-patchwork-notify@kernel.org>
-Date: Thu, 18 Mar 2021 21:30:09 +0000
-References: <7fc233cfbda60b87894c3f4a3b0d1e63fdb24b37.1616085654.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <7fc233cfbda60b87894c3f4a3b0d1e63fdb24b37.1616085654.git.christophe.leroy@csgroup.eu>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202103190721.joUfcBzf-lkp@intel.com>
+X-Patchwork-Hint: ignore
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,35 +56,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
- sebastian.hesselbarth@gmail.com
+Cc: kbuild-all@lists.01.org, Niklas Schnelle <schnelle@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello:
+From: kernel test robot <lkp@intel.com>
 
-This patch was applied to netdev/net.git (refs/heads/master):
+arch/powerpc/kernel/iommu.c:76:2-16: WARNING: NULL check before some freeing functions is not needed.
 
-On Thu, 18 Mar 2021 17:25:08 +0000 (UTC) you wrote:
-> Commit 92c8c16f3457 ("powerpc/embedded6xx: Remove C2K board support")
-> removed last selector of CONFIG_MV64X60.
-> 
-> As it is not a user selectable config item, all references to it
-> are stale. Remove them.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> 
-> [...]
+ NULL check before some freeing functions is not needed.
 
-Here is the summary with links:
-  - net: marvell: Remove reference to CONFIG_MV64X60
-    https://git.kernel.org/netdev/net/c/600cc3c9c62d
+ Based on checkpatch warning
+ "kfree(NULL) is safe this check is probably not required"
+ and kfreeaddr.cocci by Julia Lawall.
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Generated by: scripts/coccinelle/free/ifnullfree.cocci
 
+Fixes: 691602aab9c3 ("powerpc/iommu/debug: Add debugfs entries for IOMMU tables")
+CC: Alexey Kardashevskiy <aik@ozlabs.ru>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: kernel test robot <lkp@intel.com>
+---
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   81aa0968b7ea6dbabcdcda37dc8434dca6e1565b
+commit: 691602aab9c3cce31d3ff9529c09b7922a5f6224 powerpc/iommu/debug: Add debugfs entries for IOMMU tables
+
+ iommu.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -72,8 +72,7 @@ static void iommu_debugfs_del(struct iom
+ 
+ 	sprintf(name, "%08lx", tbl->it_index);
+ 	liobn_entry = debugfs_lookup(name, iommu_debugfs_dir);
+-	if (liobn_entry)
+-		debugfs_remove(liobn_entry);
++	debugfs_remove(liobn_entry);
+ }
+ #else
+ static void iommu_debugfs_add(struct iommu_table *tbl){}
