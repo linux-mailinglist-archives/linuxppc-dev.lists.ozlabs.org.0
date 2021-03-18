@@ -2,56 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C0E340041
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 08:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FABF340086
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 08:59:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1JXw1hcfz3bxd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 18:28:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1KDz0xlcz3byl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Mar 2021 18:59:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=188.165.32.156; helo=3.mo51.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-Received: from 3.mo51.mail-out.ovh.net (3.mo51.mail-out.ovh.net
- [188.165.32.156])
+ smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
+ helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 268 seconds by postgrey-1.36 at boromir;
+ Thu, 18 Mar 2021 18:59:29 AEDT
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
+ [130.133.4.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1JXZ6c9Gz2yZ0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 18:28:13 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.102])
- by mo51.mail-out.ovh.net (Postfix) with ESMTPS id DB35F27676D;
- Thu, 18 Mar 2021 08:28:05 +0100 (CET)
-Received: from kaod.org (37.59.142.104) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 18 Mar
- 2021 08:28:05 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-104R005dc3a2ed1-0b7e-4491-8446-6f987fee5bf1,
- C897064FACBBDDBF9BDDE2E136029E522C3F85A1) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Subject: Re: [PATCH] powerpc/numa: Fix topology_physical_package_id() on
- pSeries
-To: Michael Ellerman <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>
-References: <20210312143154.3181109-1-clg@kaod.org>
- <871rcdp577.fsf@mpe.ellerman.id.au>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <b9e259d0-0d28-d5bf-bc85-05d42b352943@kaod.org>
-Date: Thu, 18 Mar 2021 08:28:04 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1KDd0QMwz2xxq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Mar 2021 18:59:28 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1lMnUZ-002BtB-BB; Thu, 18 Mar 2021 08:54:51 +0100
+Received: from p5b13a966.dip0.t-ipconnect.de ([91.19.169.102]
+ helo=[192.168.178.139]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
+ with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1lMnUZ-001WwY-3q; Thu, 18 Mar 2021 08:54:51 +0100
+Subject: Re: [PATCH 01/10] alpha: use libata instead of the legacy ide driver
+To: Al Viro <viro@zeniv.linux.org.uk>, Christoph Hellwig <hch@lst.de>
+References: <20210318045706.200458-1-hch@lst.de>
+ <20210318045706.200458-2-hch@lst.de> <YFLrLwjZubWUvA2J@zeniv-ca.linux.org.uk>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <3a752e8c-b518-6d61-75e7-3549e9906f83@physik.fu-berlin.de>
+Date: Thu, 18 Mar 2021 08:54:49 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <871rcdp577.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <YFLrLwjZubWUvA2J@zeniv-ca.linux.org.uk>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.104]
-X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: c40f20aa-2077-4213-893b-96b2eaca2f27
-X-Ovh-Tracer-Id: 73464972763695980
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudefhedguddtiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgihesthejredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeegvdeijeefvdfhudfhffeuveehledufffhvdekheelgedttddthfeigeevgefhffenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtohepghhrohhugheskhgrohgurdhorhhg
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.169.102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,25 +58,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Greg Kurz <groug@kaod.org>,
- Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Jens Axboe <axboe@kernel.dk>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-doc@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-alpha@vger.kernel.org,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Also we've been using it for several years and I don't think we should
-> risk breaking anything by changing the value now.
+Hi Al!
 
-I guess we can leave it that way. Please read the commit log of 
-the second patch (not tagged as a v2 ...).
+On 3/18/21 6:54 AM, Al Viro wrote:
+> On Thu, Mar 18, 2021 at 05:56:57AM +0100, Christoph Hellwig wrote:
+>> Switch the alpha defconfig from the legacy ide driver to libata.
+> 
+> Umm...  I don't have an IDE alpha box in a usable shape (fans on
+> CPU module shat themselves), and it would take a while to resurrect
+> it, but I remember the joy it used to cause in some versions.
+> 
+> Do you have reports of libata variants of drivers actually tested on
+> those?
 
-But we should remove ibm,chip-id from QEMU since the property does 
-not exist on PAPR and that the calculation is anyhow very broken. 
+At least pata_cypress works fine on my AlphaStation XP1000:
 
-Thanks,
+root@tsunami:~> lspci
+0000:00:07.0 ISA bridge: Contaq Microsystems 82c693
+0000:00:07.1 IDE interface: Contaq Microsystems 82c693
+0000:00:07.2 IDE interface: Contaq Microsystems 82c693
+0000:00:07.3 USB controller: Contaq Microsystems 82c693
+0000:00:0d.0 VGA compatible controller: Texas Instruments TVP4020 [Permedia 2] (rev 01)
+0001:01:03.0 Ethernet controller: Digital Equipment Corporation DECchip 21142/43 (rev 41)
+0001:01:06.0 SCSI storage controller: QLogic Corp. ISP1020 Fast-wide SCSI (rev 06)
+0001:01:08.0 PCI bridge: Digital Equipment Corporation DECchip 21152 (rev 03)
+0001:02:09.0 Ethernet controller: Intel Corporation 82541PI Gigabit Ethernet Controller (rev 05)
+root@tsunami:~> lsmod|grep pata
+pata_cypress            3595  3
+libata                235071  2 ata_generic,pata_cypress
+root@tsunami:~>
 
-C. 
+I also have two AlphaStation 233 currently in storage which I assume use
+different IDE chipset which I could test as well.
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
