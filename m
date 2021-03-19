@@ -2,55 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC26341540
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 07:13:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2312634160A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 07:39:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1tqk0lvcz3byV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 17:13:22 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dHEsJThK;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1vQL10d7z3d7T
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 17:39:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=dHEsJThK; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1tqJ6mwHz30RT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 17:12:59 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F1tqF66thz9sRR;
- Fri, 19 Mar 2021 17:12:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1616134378;
- bh=kJ9iQxu1PdbwXZcwj4ZBrsy/tjV2YT8oyoulfIvvYvQ=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=dHEsJThKTbS8knKU3kL+At8dlDbHUQpzaaBSaeVNKpkkRHlddPvbhiCJii5n778p+
- S5DRTTijhRKa+dWrwu6T84fmEf2SWH2hftQXgrtud+YIuTKqddtCHmMhJV6DI15xj0
- xpHJnCVn7zh6n3O5yAxVq2PC277XXm+CK6MyGmpJIiF0d0jzqwdclDZKF8JI1Q8Ypa
- qGkCEaFigwneWYC7wrA4icgWrmve7eG049RxVV3364Asw/yvE3YujJ5SdeHd/ihbXZ
- bvfcsthLH3TsKgOjOpBrojudXQmD0mtk6HUbVymKROnXOeZIJzDDYiAjrkIUhTSKfw
- cCRktfJ+rQ1mA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc/kexec: Don't use .machine ppc64 in trampoline_64.S
-In-Reply-To: <20210316024434.GE16691@gate.crashing.org>
-References: <20210315034159.315675-1-mpe@ellerman.id.au>
- <20210316024434.GE16691@gate.crashing.org>
-Date: Fri, 19 Mar 2021 17:12:53 +1100
-Message-ID: <87ft0r6596.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1vJW4Sjtz3c2x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 17:34:47 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4F1vJM4T4Yz9twh2;
+ Fri, 19 Mar 2021 07:34:43 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id VUUj7Uck4CgF; Fri, 19 Mar 2021 07:34:43 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F1vJM35rTz9twgw;
+ Fri, 19 Mar 2021 07:34:43 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4231D8B94F;
+ Fri, 19 Mar 2021 07:34:44 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id n49SHOlY-EdL; Fri, 19 Mar 2021 07:34:44 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EE0698B76C;
+ Fri, 19 Mar 2021 07:34:43 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id AF650675EF; Fri, 19 Mar 2021 06:34:43 +0000 (UTC)
+Message-Id: <3a278ba2792a96ebaaf0b60f2b2c7fdd9f174f7d.1616135611.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v6] powerpc/irq: inline call_do_irq() and call_do_softirq() on
+ PPC32
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 19 Mar 2021 06:34:43 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,95 +57,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Segher Boessenkool <segher@kernel.crashing.org> writes:
-> Hi!
->
-> On Mon, Mar 15, 2021 at 02:41:59PM +1100, Michael Ellerman wrote:
->> The ".machine" directive allows changing the machine for which code is
->> being generated. It's equivalent to passing an -mcpu option on the
->> command line.
->> 
->> Although it can be useful, it's generally a bad idea because it adds
->> another way to influence code generation separate from the flags
->> passed via the build system. ie. if we need to build different pieces
->> of code with different flags we should do that via our Makefiles, not
->> using ".machine".
->
-> It does not influence code generation.  It says which instructions are
-> valid, instead.  There are a few cases where the same mnemonic will
-> generate a different binary encoding depending on machine selected,
-> maybe you mean that?
+call_do_irq() and call_do_softirq() are simple enough to be
+worth inlining.
 
-Yeah that's what I was referring to. Which is code generation in my
-mind, but I guess that's probably not the right terminology to use
-around compiler people :)
+Inlining them avoids an mflr/mtlr pair plus a save/reload on stack.
+It also allows GCC to keep the saved ksp_limit in an nonvolatile reg.
 
-And I guess you're right, the more common case is that the mnemonics are
-just not valid for other machines and wouldn't assemble at all.
+This is inspired from S390 arch. Several other arches do more or
+less the same. The way sparc arch does seems odd thought.
 
-I'll reword it.
+For the time being this is limited to PPC32 because there are
+incertainties on the handling of r2 which is the TOC on PPC64,
+see discussion at https://patchwork.ozlabs.org/patch/1174288/
 
-> It is *normal* to use .machine push/pop and a specific .machine around
-> instructions that require a machine other than what you are building
-> for.  The compiler does this itself, and it is the recommended way to
-> use "foreign" instructions in inline assembler.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+---
+v2: no change.
+v3: no change.
+v4:
+- comment reminding the purpose of the inline asm block.
+- added r2 as clobbered reg
+v5:
+- Limiting the change to PPC32 for now.
+- removed r2 from the clobbered regs list (on PPC32 r2 points to current all the time)
+- Removed patch 1 and merged ksp_limit handling in here.
+v6:
+- Rebase on top of merge-test (ca6e327fefb2).
+- Remove the ksp_limit stuff as it's doesn't exist anymore.
+---
+ arch/powerpc/include/asm/irq.h |  2 ++
+ arch/powerpc/kernel/irq.c      | 34 ++++++++++++++++++++++++++++++++++
+ arch/powerpc/kernel/misc_32.S  | 25 -------------------------
+ 3 files changed, 36 insertions(+), 25 deletions(-)
 
-Right, but it also makes it easy to build code that won't run :) So we'd
-like to avoid it.
+diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
+index f3f264e441a7..23c28974ca29 100644
+--- a/arch/powerpc/include/asm/irq.h
++++ b/arch/powerpc/include/asm/irq.h
+@@ -53,8 +53,10 @@ extern void *mcheckirq_ctx[NR_CPUS];
+ extern void *hardirq_ctx[NR_CPUS];
+ extern void *softirq_ctx[NR_CPUS];
+ 
++#ifdef CONFIG_PPC64
+ void call_do_softirq(void *sp);
+ void call_do_irq(struct pt_regs *regs, void *sp);
++#endif
+ extern void do_IRQ(struct pt_regs *regs);
+ extern void __init init_IRQ(void);
+ extern void __do_irq(struct pt_regs *regs);
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 5b72abbff96c..327422c57ae8 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -667,6 +667,40 @@ static inline void check_stack_overflow(void)
+ 	}
+ }
+ 
++#ifdef CONFIG_PPC32
++static inline void call_do_softirq(const void *sp)
++{
++	register unsigned long ret asm("r3");
++
++	/* Temporarily switch r1 to sp, call __do_softirq() then restore r1. */
++	asm volatile(
++		"	"PPC_STLU"	1, %2(%1);\n"
++		"	mr		1, %1;\n"
++		"	bl		%3;\n"
++		"	"PPC_LL"	1, 0(1);\n" :
++		"=r"(ret) :
++		"b"(sp), "i"(THREAD_SIZE - STACK_FRAME_OVERHEAD), "i"(__do_softirq) :
++		"lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr6", "cr7",
++		"r0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
++}
++
++static inline void call_do_irq(struct pt_regs *regs, void *sp)
++{
++	register unsigned long r3 asm("r3") = (unsigned long)regs;
++
++	/* Temporarily switch r1 to sp, call __do_irq() then restore r1. */
++	asm volatile(
++		"	"PPC_STLU"	1, %2(%1);\n"
++		"	mr		1, %1;\n"
++		"	bl		%3;\n"
++		"	"PPC_LL"	1, 0(1);\n" :
++		"+r"(r3) :
++		"b"(sp), "i"(THREAD_SIZE - STACK_FRAME_OVERHEAD), "i"(__do_irq) :
++		"lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr6", "cr7",
++		"r0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
++}
++#endif
++
+ void __do_irq(struct pt_regs *regs)
+ {
+ 	unsigned int irq;
+diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
+index acc410043b96..6a076bef2932 100644
+--- a/arch/powerpc/kernel/misc_32.S
++++ b/arch/powerpc/kernel/misc_32.S
+@@ -27,31 +27,6 @@
+ 
+ 	.text
+ 
+-_GLOBAL(call_do_softirq)
+-	mflr	r0
+-	stw	r0,4(r1)
+-	stwu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r3)
+-	mr	r1,r3
+-	bl	__do_softirq
+-	lwz	r1,0(r1)
+-	lwz	r0,4(r1)
+-	mtlr	r0
+-	blr
+-
+-/*
+- * void call_do_irq(struct pt_regs *regs, void *sp);
+- */
+-_GLOBAL(call_do_irq)
+-	mflr	r0
+-	stw	r0,4(r1)
+-	stwu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r4)
+-	mr	r1,r4
+-	bl	__do_irq
+-	lwz	r1,0(r1)
+-	lwz	r0,4(r1)
+-	mtlr	r0
+-	blr
+-
+ /*
+  * This returns the high 64 bits of the product of two 64-bit numbers.
+  */
+-- 
+2.25.0
 
-We had that in the past where we were building the power7-only memcpy
-routines for Book3E 64. They weren't being used due to runtime patching
-stuff, but it's better to not build them in the first place for those
-CPUs because they could never work.
-
-> That said...
->
->> However as best as I can tell the ".machine" directive in
->> trampoline_64.S is not necessary at all.
->> 
->> It was added in commit 0d97631392c2 ("powerpc: Add purgatory for
->> kexec_file_load() implementation."), which created the file based on
->> the kexec-tools purgatory. It may be/have-been necessary in the
->> kexec-tools version, but we have a completely different build system,
->> and we already pass the desired CPU flags, eg:
->> 
->>   gcc ... -m64 -Wl,-a64 -mabi=elfv2 -Wa,-maltivec -Wa,-mpower4 -Wa,-many
->>   ... arch/powerpc/purgatory/trampoline_64.S
->> 
->> So drop the ".machine" directive and rely on the assembler flags.
->
->> -	.machine ppc64
->
-> Please make sure to test this on a big endian config.
-
-Done.
-
-> A ppc64le-linux assembler defaults to power8.  A ppc64-linux assembler
-> defaults to power3 (that is the same as .machine ppc64).  Or maybe it
-> makes it power4?  I get lost :-)
-
-For book3s64 we always specify -mpower4 since 15a3204d24a3
-("powerpc/64s: Set assembler machine type to POWER4") (Apr 2018).
-
-That does leave 64-bit book3e, but I just tested that and it also builds
-fine.
-
-> It certainly *should* work, but, test please :-)
->
-> (And with a *default* powerpc64-linux config, not one that defaults to
-> power7 or power8 or similar!  Arnd's toolchains at
-> <https://mirrors.edge.kernel.org/pub/tools/crosstool/>
-> are fine for this.)
-
-Yep, I used Arnd's 10.1.0.
-
-> Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
-
-Thanks.
-
-cheers
