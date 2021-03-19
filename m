@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304EF341B7C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 12:29:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66E5341BB4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 12:45:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F21rg14d2z3c5D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 22:29:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F22Bm4ZX3z3c54
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 22:45:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Qz8n6N1S;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BLFuyB4f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,41 +17,41 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Qz8n6N1S; 
+ header.a=rsa-sha256 header.s=201909 header.b=BLFuyB4f; 
  dkim-atps=neutral
 Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F21rJ0d9kz303T
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 22:29:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F22BK3lgGz2yR2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 22:44:56 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F21rH01bhz9sSC;
- Fri, 19 Mar 2021 22:29:18 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4F22BG3w08z9sRR;
+ Fri, 19 Mar 2021 22:44:54 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1616153359;
- bh=h9n46vZ+v387YB+Fnjwom9YY5fA8Nlh7Po2OkRlziAw=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=Qz8n6N1SQZ55bzir9rjHFKEtzydgR72kqfX6Z5azDvM6tZe3ql3Zz8c4CBpJLi3Ck
- 2tIVGt7vd0xRRaR+ix5qKhG0I+Ag3nUQ6g7UbFgC8+WndBqTxDaZEdkrRUoQ1CRhNG
- S4CgQCV0C2sT92fCteSie2Ow4ywWLEFu9oE1qWp2kqJM62dPcKayna6p7J+gHTJuas
- kw0+tUmY5fsyrpLR7PswUjuWoj3HbiqSRHawdLmKrNYw7ivMABAjSZzxIUSaA/xKTd
- EE3r7FuXRoeDd1P5w+OiEhFUqUDVYYiLCgzQuKteAv+1uJIovlsVehuJSjByto7+QZ
- Fq9+3TNnkukSg==
+ s=201909; t=1616154295;
+ bh=4OvAWpSdUbbA7qhkw2mCkkhz/DdW53pscA/IF09MLJg=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=BLFuyB4fhDCvrCBffIHe4uqM28aNMCHfhsASgbXl5PTe5zPaG76x8VtQXCaiZQk/c
+ GIY5rvklTy7vkHHkPhp/rcy38YQ2pkS23NRVm+K6gh6DMiCoq+wAlvCfw+xyZYRaTv
+ nZ9klLiCg/Pl4S0YDh6llB4bZlW8WfsIF4AmBUbPSMRCN8/qPE7vKaFDt4jO9RnKRJ
+ 7Ygo3Gt6Yq6myY13MmOL/biZNWvQqet1IlvvpP68JmBSIIW2GjLKbrfaLsb+8EpWXb
+ ZiqFiYON4tkeMbkWtr0o8TYydaNIBB9DTC2uwEp814hORhuxip7PM6erBUEZSNq+64
+ bsufL632tThyQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin
- <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 12/14] powerpc/64s: system call avoid setting MSR[RI]
- until we set MSR[EE]
-In-Reply-To: <722aeb8d-507f-6702-dd79-26242f987e3e@csgroup.eu>
-References: <20210315220402.260594-1-npiggin@gmail.com>
- <20210315220402.260594-13-npiggin@gmail.com>
- <722aeb8d-507f-6702-dd79-26242f987e3e@csgroup.eu>
-Date: Fri, 19 Mar 2021 22:29:17 +1100
-Message-ID: <877dm38jqq.fsf@mpe.ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3 28/32] powerpc/64s: interrupt implement exit logic in C
+In-Reply-To: <1615879834.64tfygznle.astroid@bobo.none>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <20200225173541.1549955-29-npiggin@gmail.com>
+ <2d68d9ad-c3a2-2372-a5b2-1a1e3fdb41e4@csgroup.eu>
+ <1615879834.64tfygznle.astroid@bobo.none>
+Date: Fri, 19 Mar 2021 22:44:53 +1100
+Message-ID: <874kh78j0q.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -66,55 +66,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Michal Suchanek <msuchanek@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 15/03/2021 =C3=A0 23:04, Nicholas Piggin a =C3=A9crit=C2=A0:
->> This extends the MSR[RI]=3D0 window a little further into the system
->> call in order to pair RI and EE enabling with a single mtmsrd.
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Excerpts from Christophe Leroy's message of March 15, 2021 11:41 pm:
+>>=20
+>> Le 25/02/2020 =C3=A0 18:35, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>> Implement the bulk of interrupt return logic in C. The asm return code
+>>> must handle a few cases: restoring full GPRs, and emulating stack store.
+>>>=20
+>>> The stack store emulation is significantly simplfied, rather than creat=
+ing
+>>> a new return frame and switching to that before performing the store, it
+>>> uses the PACA to keep a scratch register around to perform thestore.
+>>>=20
+>>> The asm return code is moved into 64e for now. The new logic has made
+>>> allowance for 64e, but I don't have a full environment that works well
+>>> to test it, and even booting in emulated qemu is not great for stress
+>>> testing. 64e shouldn't be too far off working with this, given a bit
+>>> more testing and auditing of the logic.
+>>>=20
+>>> This is slightly faster on a POWER9 (page fault speed increases about
+>>> 1.1%), probably due to reduced mtmsrd.
+>>>=20
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+>>> ---
+>>=20
+>> ...
+>>=20
+>>> +notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs=
+, unsigned long msr)
+>>> +{
+>>=20
+>> ...
+>>=20
+>>> +
+>>> +#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+>>> +	local_paca->tm_scratch =3D regs->msr;
+>>> +#endif
+>>=20
+>> Could we define a helper for that in asm/tm.h, that voids when CONFIG_PP=
+C_TRANSACTIONAL_MEM is not=20
+>> selected ?
 >
-> Time ago, I proposed to delay that on PPC32 and Michael objected, see=20
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/9f9dd859d571e324c=
-7412ed9db9da8cfba678257.1548956511.git.christophe.leroy@c-s.fr/
+> Yeah I wanted to do something about that. I don't know what it's used=20
+> for here. I guess it saves the return MSR so if that causes a crash then=
+=20
+> the next oops would see it, but I wonder if we can just get that from=20
+> SRR1 + program check error codes, or if there is something we can't
+> reconstruct from there.
 
-I don't think I objected, I was just curious about what the added
-exposure to RI=3D0 was :)
+In the cases when you need it, you can't reconstruct it :)
+
+But given the TM code is on life support we could probably drop
+tm_scratch.
+
+I don't think we've used it in anger for several years. Probably since
+265e60a170d0 ("powerpc/64s: Use emergency stack for kernel TM Bad Thing
+program checks") (Oct 2017).
+
+If one of us has to debug some hairy TM issue we can always add it back
+temporarily in a dev kernel.
 
 cheers
-
->> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/=
-exceptions-64s.S
->> index bd0c82ac9de5..2f14ac3c377c 100644
->> --- a/arch/powerpc/kernel/exceptions-64s.S
->> +++ b/arch/powerpc/kernel/exceptions-64s.S
->> @@ -1999,8 +1999,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
->>   	mtctr	r10
->>   	bctr
->>   	.else
->> -	li	r10,MSR_RI
->> -	mtmsrd 	r10,1			/* Set RI (EE=3D0) */
->>   #ifdef CONFIG_RELOCATABLE
->>   	__LOAD_HANDLER(r10, system_call_common)
->>   	mtctr	r10
->> diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/in=
-terrupt_64.S
->> index f28f41a1a85a..eef61800f734 100644
->> --- a/arch/powerpc/kernel/interrupt_64.S
->> +++ b/arch/powerpc/kernel/interrupt_64.S
->> @@ -311,10 +311,10 @@ END_BTB_FLUSH_SECTION
->>   	 * nothing pending. system_call_exception() will call
->>   	 * trace_hardirqs_off().
->>   	 */
->> -	li	r11,IRQS_ALL_DISABLED
->> -	li	r12,PACA_IRQ_HARD_DIS
->> +	li	r11,IRQS_DISABLED
->> +	li	r12,-1 /* Set MSR_EE and MSR_RI */
->>   	stb	r11,PACAIRQSOFTMASK(r13)
->> -	stb	r12,PACAIRQHAPPENED(r13)
->> +	mtmsrd	r12,1
->>=20=20=20
->>   	ENTER_KERNEL_SECURITY_FALLBACK
->>=20=20=20
->>=20
