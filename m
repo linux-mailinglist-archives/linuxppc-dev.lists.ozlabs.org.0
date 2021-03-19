@@ -1,51 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F3A341A37
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 11:40:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 790CD341A7C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 11:54:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F20lv1fYWz3c0t
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 21:40:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F213w5hpjz3c4V
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 21:54:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=fQb6LIQ+;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dUJfgsL9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=fQb6LIQ+; 
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=dUJfgsL9; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F20lS0lFlz304c
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 21:40:03 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C5CF464E6B;
- Fri, 19 Mar 2021 10:39:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1616150400;
- bh=upXug4xn2cSMI3wX/C88hwIqnigSyE+kWd7XvhtAWx0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=fQb6LIQ+LxulZcdqI5di1q2vhaiBCfkZzN/03rB+k9dHwWyRKyPN/OOsr8N61AUbo
- G3jMqaXi6SkyXAdKwTI7qhfei+qX80s/hsKBQhHzn1eaPqbDtXf652VHZ/ku150Gmx
- xZ1JdJjteMr9mPTKNoaojWKGPIZgJD50OblpFWD4=
-Date: Fri, 19 Mar 2021 11:39:57 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Nicolas Boichat <drinkcat@chromium.org>
-Subject: Re: [for-stable-4.19 PATCH 1/2] vmlinux.lds.h: Create section for
- protection against instrumentation
-Message-ID: <YFR/fQIePjDQcO5W@kroah.com>
-References: <20210318235416.794798-1-drinkcat@chromium.org>
- <20210319075410.for-stable-4.19.1.I222f801866f71be9f7d85e5b10665cd4506d78ec@changeid>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F213W49v4z2yyC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 21:53:58 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4F213L6lDVz9sSC;
+ Fri, 19 Mar 2021 21:53:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1616151231;
+ bh=A9UtJ6CsoBJ0YID5f30nH4NRkis6eO4gedPV6cG2crk=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=dUJfgsL94gbpLB64F0bJvYc67DwLlLWTYQ7+94zK5tc74D2H6kHyoqx+/WVYZEJbq
+ Z6TUDkSJGYnuOLPwqydzny8ba39FJVOB4ZpBWvM9eFR4bplw+y3u1C8afZdfkFE3vV
+ h59QWke/as/eMfDH8gP5xud4Y8D7wZheWGkZcQ+CB6iyLt7mHf+Gbhz+s9MlLJCrJ5
+ zHFNEG0zFGtPGNhNihNmzpAAvIbYOSPhlX9ev453A/zzuSTtBTqW2FQW/AXRLCBWRx
+ bEAzwj49hBq13zaVt0CgAueaKO21SvahXiZx1uvzjkistiRzBUfTt3fsodSO2sPdOk
+ euRVdae6cnPRQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>,
+ linuxppc-dev@lists.ozlabs.org, llvmlinux@lists.linuxfoundation.org
+Subject: Re: [RFC PATCH 2/8] powerpc: check for support for -Wa, -m{power4,
+ any}
+In-Reply-To: <1616117194.vwe39qw3i4.astroid@bobo.none>
+References: <20210225031006.1204774-1-dja@axtens.net>
+ <20210225031006.1204774-3-dja@axtens.net>
+ <1616117194.vwe39qw3i4.astroid@bobo.none>
+Date: Fri, 19 Mar 2021 21:53:47 +1100
+Message-ID: <87ft0r8ldw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210319075410.for-stable-4.19.1.I222f801866f71be9f7d85e5b10665cd4506d78ec@changeid>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,74 +65,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linux-arch@vger.kernel.org,
- Michal Marek <michal.lkml@markovi.net>,
- Alexandre Chartre <alexandre.chartre@oracle.com>,
- Arnd Bergmann <arnd@arndb.de>, linux-kbuild@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, Christopher Li <sparse@chrisli.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Masahiro Yamada <yamada.masahiro@socionext.com>, linux-sparse@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 19, 2021 at 07:54:15AM +0800, Nicolas Boichat wrote:
-> From: Thomas Gleixner <tglx@linutronix.de>
-> 
-> commit 6553896666433e7efec589838b400a2a652b3ffa upstream.
-> 
-> Some code pathes, especially the low level entry code, must be protected
-> against instrumentation for various reasons:
-> 
->  - Low level entry code can be a fragile beast, especially on x86.
-> 
->  - With NO_HZ_FULL RCU state needs to be established before using it.
-> 
-> Having a dedicated section for such code allows to validate with tooling
-> that no unsafe functions are invoked.
-> 
-> Add the .noinstr.text section and the noinstr attribute to mark
-> functions. noinstr implies notrace. Kprobes will gain a section check
-> later.
-> 
-> Provide also a set of markers: instrumentation_begin()/end()
-> 
-> These are used to mark code inside a noinstr function which calls
-> into regular instrumentable text section as safe.
-> 
-> The instrumentation markers are only active when CONFIG_DEBUG_ENTRY is
-> enabled as the end marker emits a NOP to prevent the compiler from merging
-> the annotation points. This means the objtool verification requires a
-> kernel compiled with this option.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-> Acked-by: Peter Zijlstra <peterz@infradead.org>
-> Link: https://lkml.kernel.org/r/20200505134100.075416272@linutronix.de
-> 
-> [Nicolas: context conflicts in:
-> 	arch/powerpc/kernel/vmlinux.lds.S
-> 	include/asm-generic/vmlinux.lds.h
-> 	include/linux/compiler.h
-> 	include/linux/compiler_types.h]
-> Signed-off-by: Nicolas Boichat <drinkcat@chromium.org>
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Excerpts from Daniel Axtens's message of February 25, 2021 1:10 pm:
+>> LLVM's integrated assembler does not like either -Wa,-mpower4
+>> or -Wa,-many. So just don't pass them if they're not supported.
+>> 
+>> Signed-off-by: Daniel Axtens <dja@axtens.net>
+>> ---
+>>  arch/powerpc/Makefile | 4 +++-
+>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+>> index 08cf0eade56a..3e2c72d20bb8 100644
+>> --- a/arch/powerpc/Makefile
+>> +++ b/arch/powerpc/Makefile
+>> @@ -252,7 +252,9 @@ cpu-as-$(CONFIG_E500)		+= -Wa,-me500
+>>  # When using '-many -mpower4' gas will first try and find a matching power4
+>>  # mnemonic and failing that it will allow any valid mnemonic that GAS knows
+>>  # about. GCC will pass -many to GAS when assembling, clang does not.
+>> -cpu-as-$(CONFIG_PPC_BOOK3S_64)	+= -Wa,-mpower4 -Wa,-many
+>> +# LLVM IAS doesn't understand either flag: https://github.com/ClangBuiltLinux/linux/issues/675
+>> +# but LLVM IAS only supports ISA >= 2.06 for Book3S 64 anyway...
+>> +cpu-as-$(CONFIG_PPC_BOOK3S_64)	+= $(call as-option,-Wa$(comma)-mpower4) $(call as-option,-Wa$(comma)-many)
+>>  cpu-as-$(CONFIG_PPC_E500MC)	+= $(call as-option,-Wa$(comma)-me500mc)
+>>  
+>>  KBUILD_AFLAGS += $(cpu-as-y)
+>
+> I'm wondering why we even have this now. Kbuild's "AS" command goes 
+> through the C compiler now with relevant options like -mcpu.
 
-Did you build this on x86?
+It uses $(CC) but it doesn't pass it $CFLAGS AFAIK. So it would use
+whatever the compiler default is for -mcpu etc. I think.
 
-I get the following build error:
+> I assume it used to be useful for cross compiling when as was called
+> directly but I'm not sure.
 
-ld:./arch/x86/kernel/vmlinux.lds:20: syntax error
+We still use it directly in vdso32/Makefile.
 
-And that line looks like:
-
- . = ALIGN(8); *(.text.hot .text.hot.*) *(.text .text.fixup) *(.text.unlikely .text.unlikely.*) *(.text.unknown .text.unknown.*) . = ALIGN(8); __noinstr_text_start = .; *(.__attribute__((noinline)) __attribute__((no_instrument_function)) __attribute((__section__(".noinstr.text"))).text) __noinstr_text_end = .; *(.text..refcount) *(.ref.text) *(.meminit.text*) *(.memexit.text*)
-
-So I'm going to drop both of these patches from the queue.
-
-thanks,
-
-greg k-h
+cheers
