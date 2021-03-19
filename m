@@ -1,60 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66E5341BB4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 12:45:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11943341BD2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 12:56:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F22Bm4ZX3z3c54
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 22:45:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F22RR0W3jz3c4t
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 22:56:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BLFuyB4f;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=AvllA/pN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=BLFuyB4f; 
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=AvllA/pN; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F22BK3lgGz2yR2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 22:44:56 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F22BG3w08z9sRR;
- Fri, 19 Mar 2021 22:44:54 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1616154295;
- bh=4OvAWpSdUbbA7qhkw2mCkkhz/DdW53pscA/IF09MLJg=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=BLFuyB4fhDCvrCBffIHe4uqM28aNMCHfhsASgbXl5PTe5zPaG76x8VtQXCaiZQk/c
- GIY5rvklTy7vkHHkPhp/rcy38YQ2pkS23NRVm+K6gh6DMiCoq+wAlvCfw+xyZYRaTv
- nZ9klLiCg/Pl4S0YDh6llB4bZlW8WfsIF4AmBUbPSMRCN8/qPE7vKaFDt4jO9RnKRJ
- 7Ygo3Gt6Yq6myY13MmOL/biZNWvQqet1IlvvpP68JmBSIIW2GjLKbrfaLsb+8EpWXb
- ZiqFiYON4tkeMbkWtr0o8TYydaNIBB9DTC2uwEp814hORhuxip7PM6erBUEZSNq+64
- bsufL632tThyQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 28/32] powerpc/64s: interrupt implement exit logic in C
-In-Reply-To: <1615879834.64tfygznle.astroid@bobo.none>
-References: <20200225173541.1549955-1-npiggin@gmail.com>
- <20200225173541.1549955-29-npiggin@gmail.com>
- <2d68d9ad-c3a2-2372-a5b2-1a1e3fdb41e4@csgroup.eu>
- <1615879834.64tfygznle.astroid@bobo.none>
-Date: Fri, 19 Mar 2021 22:44:53 +1100
-Message-ID: <874kh78j0q.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F22R06zhPz2ym4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 22:55:55 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0932460233;
+ Fri, 19 Mar 2021 11:55:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1616154952;
+ bh=xEggSgwLTsxsRSBCrktgETXhVT4kXbKFtICLOdi9pY4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=AvllA/pNHM01eptUHALZqK7jqyXMvVBQyy3Hx/6pWSGz2zC6ZVyEFWmPuJSVPDd3R
+ 6I77gkfy9yLXyZfPIB0HjJtdc62tYVEuDd1/RNd7GoPlKTTQRniu0+Gv41CynFYGdq
+ 0DdY5Uh7Znaay4BVVuRq/Q79Ak9ueJzm9S6+Bvr8=
+Date: Fri, 19 Mar 2021 12:55:50 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: Re: [for-stable-4.19 PATCH 1/2] vmlinux.lds.h: Create section for
+ protection against instrumentation
+Message-ID: <YFSRRux3FHJVgWXt@kroah.com>
+References: <20210318235416.794798-1-drinkcat@chromium.org>
+ <20210319075410.for-stable-4.19.1.I222f801866f71be9f7d85e5b10665cd4506d78ec@changeid>
+ <YFR/fQIePjDQcO5W@kroah.com>
+ <b5d3d0ed-953e-083d-15f6-4a1e3ed95428@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b5d3d0ed-953e-083d-15f6-4a1e3ed95428@oracle.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,70 +59,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Suchanek <msuchanek@suse.de>
+Cc: Sasha Levin <sashal@kernel.org>, linux-arch@vger.kernel.org,
+ Nicolas Boichat <drinkcat@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ linux-kbuild@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Christopher Li <sparse@chrisli.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Masahiro Yamada <yamada.masahiro@socionext.com>,
+ linux-sparse@vger.kernel.org, Michal Marek <michal.lkml@markovi.net>,
+ Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Excerpts from Christophe Leroy's message of March 15, 2021 11:41 pm:
->>=20
->> Le 25/02/2020 =C3=A0 18:35, Nicholas Piggin a =C3=A9crit=C2=A0:
->>> Implement the bulk of interrupt return logic in C. The asm return code
->>> must handle a few cases: restoring full GPRs, and emulating stack store.
->>>=20
->>> The stack store emulation is significantly simplfied, rather than creat=
-ing
->>> a new return frame and switching to that before performing the store, it
->>> uses the PACA to keep a scratch register around to perform thestore.
->>>=20
->>> The asm return code is moved into 64e for now. The new logic has made
->>> allowance for 64e, but I don't have a full environment that works well
->>> to test it, and even booting in emulated qemu is not great for stress
->>> testing. 64e shouldn't be too far off working with this, given a bit
->>> more testing and auditing of the logic.
->>>=20
->>> This is slightly faster on a POWER9 (page fault speed increases about
->>> 1.1%), probably due to reduced mtmsrd.
->>>=20
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
->>> ---
->>=20
->> ...
->>=20
->>> +notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs=
-, unsigned long msr)
->>> +{
->>=20
->> ...
->>=20
->>> +
->>> +#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->>> +	local_paca->tm_scratch =3D regs->msr;
->>> +#endif
->>=20
->> Could we define a helper for that in asm/tm.h, that voids when CONFIG_PP=
-C_TRANSACTIONAL_MEM is not=20
->> selected ?
->
-> Yeah I wanted to do something about that. I don't know what it's used=20
-> for here. I guess it saves the return MSR so if that causes a crash then=
-=20
-> the next oops would see it, but I wonder if we can just get that from=20
-> SRR1 + program check error codes, or if there is something we can't
-> reconstruct from there.
+On Fri, Mar 19, 2021 at 12:20:22PM +0100, Alexandre Chartre wrote:
+> 
+> On 3/19/21 11:39 AM, Greg Kroah-Hartman wrote:
+> > On Fri, Mar 19, 2021 at 07:54:15AM +0800, Nicolas Boichat wrote:
+> > > From: Thomas Gleixner <tglx@linutronix.de>
+> > > 
+> > > commit 6553896666433e7efec589838b400a2a652b3ffa upstream.
+> > > 
+> > > Some code pathes, especially the low level entry code, must be protected
+> > > against instrumentation for various reasons:
+> > > 
+> > >   - Low level entry code can be a fragile beast, especially on x86.
+> > > 
+> > >   - With NO_HZ_FULL RCU state needs to be established before using it.
+> > > 
+> > > Having a dedicated section for such code allows to validate with tooling
+> > > that no unsafe functions are invoked.
+> > > 
+> > > Add the .noinstr.text section and the noinstr attribute to mark
+> > > functions. noinstr implies notrace. Kprobes will gain a section check
+> > > later.
+> > > 
+> > > Provide also a set of markers: instrumentation_begin()/end()
+> > > 
+> > > These are used to mark code inside a noinstr function which calls
+> > > into regular instrumentable text section as safe.
+> > > 
+> > > The instrumentation markers are only active when CONFIG_DEBUG_ENTRY is
+> > > enabled as the end marker emits a NOP to prevent the compiler from merging
+> > > the annotation points. This means the objtool verification requires a
+> > > kernel compiled with this option.
+> > > 
+> > > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> > > Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+> > > Acked-by: Peter Zijlstra <peterz@infradead.org>
+> > > Link: https://lkml.kernel.org/r/20200505134100.075416272@linutronix.de
+> > > 
+> > > [Nicolas: context conflicts in:
+> > > 	arch/powerpc/kernel/vmlinux.lds.S
+> > > 	include/asm-generic/vmlinux.lds.h
+> > > 	include/linux/compiler.h
+> > > 	include/linux/compiler_types.h]
+> > > Signed-off-by: Nicolas Boichat <drinkcat@chromium.org>
+> > 
+> > Did you build this on x86?
+> > 
+> > I get the following build error:
+> > 
+> > ld:./arch/x86/kernel/vmlinux.lds:20: syntax error
+> > 
+> > And that line looks like:
+> > 
+> >   . = ALIGN(8); *(.text.hot .text.hot.*) *(.text .text.fixup) *(.text.unlikely .text.unlikely.*) *(.text.unknown .text.unknown.*) . = ALIGN(8); __noinstr_text_start = .; *(.__attribute__((noinline)) __attribute__((no_instrument_function)) __attribute((__section__(".noinstr.text"))).text) __noinstr_text_end = .; *(.text..refcount) *(.ref.text) *(.meminit.text*) *(.memexit.text*)
+> > 
+> 
+> In the NOINSTR_TEXT macro, noinstr is expanded with the value of the noinstr
+> macro from linux/compiler_types.h while it shouldn't.
+> 
+> The problem is possibly that the noinstr macro is defined for assembly. Make
+> sure that the macro is not defined for assembly e.g.:
+> 
+> #ifndef __ASSEMBLY__
+> 
+> /* Section for code which can't be instrumented at all */
+> #define noinstr								\
+> 	noinline notrace __attribute((__section__(".noinstr.text")))
+> 
+> #endif
 
-In the cases when you need it, you can't reconstruct it :)
+This implies that the backport is incorrect, so I'll wait for an updated
+version...
 
-But given the TM code is on life support we could probably drop
-tm_scratch.
+thanks,
 
-I don't think we've used it in anger for several years. Probably since
-265e60a170d0 ("powerpc/64s: Use emergency stack for kernel TM Bad Thing
-program checks") (Oct 2017).
-
-If one of us has to debug some hairy TM issue we can always add it back
-temporarily in a dev kernel.
-
-cheers
+greg k-h
