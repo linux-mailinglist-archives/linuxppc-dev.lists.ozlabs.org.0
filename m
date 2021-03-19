@@ -1,77 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216DB341F97
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 15:36:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8AF341FCF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 15:41:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F260k14YYz3c64
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Mar 2021 01:36:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F26621cFZz3bsc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Mar 2021 01:41:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h5ZM9BOa;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h5ZM9BOa;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=GYlAFBv2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1033;
+ helo=mail-pj1-x1033.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=h5ZM9BOa; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=h5ZM9BOa; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=GYlAFBv2; dkim-atps=neutral
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
+ [IPv6:2607:f8b0:4864:20::1033])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F260D47SSz3bsQ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Mar 2021 01:36:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1616164578;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FXYl9hPij054vFEEXKLgQXfdpg6LLSdzf8h+kRhT++U=;
- b=h5ZM9BOaHWki/RayXw430fq54ViKVrZ8CkgANtwQoh20Jr1aY8rZvbN5IFi4feJiJFmA69
- +Gj0kT2zOlM7KtIezaNjdPTkWJLaExd9Af+z0QXOq3tZtZ3DppioLYt2ZlCIwBO6AxK9Oq
- dGbTgeD39dcCIUbkPiGVu/G0SRwt5r8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1616164578;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FXYl9hPij054vFEEXKLgQXfdpg6LLSdzf8h+kRhT++U=;
- b=h5ZM9BOaHWki/RayXw430fq54ViKVrZ8CkgANtwQoh20Jr1aY8rZvbN5IFi4feJiJFmA69
- +Gj0kT2zOlM7KtIezaNjdPTkWJLaExd9Af+z0QXOq3tZtZ3DppioLYt2ZlCIwBO6AxK9Oq
- dGbTgeD39dcCIUbkPiGVu/G0SRwt5r8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-142-5pJmeDzBN1Gy0hLj-NyWUw-1; Fri, 19 Mar 2021 10:36:12 -0400
-X-MC-Unique: 5pJmeDzBN1Gy0hLj-NyWUw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C0C0A84BA42;
- Fri, 19 Mar 2021 14:36:06 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-112-11.ams2.redhat.com [10.36.112.11])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B096F610F5;
- Fri, 19 Mar 2021 14:35:46 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH RFC 2/3] mm: remove xlate_dev_kmem_ptr()
-Date: Fri, 19 Mar 2021 15:34:51 +0100
-Message-Id: <20210319143452.25948-3-david@redhat.com>
-In-Reply-To: <20210319143452.25948-1-david@redhat.com>
-References: <20210319143452.25948-1-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F265c13DYz3bcq
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Mar 2021 01:41:07 +1100 (AEDT)
+Received: by mail-pj1-x1033.google.com with SMTP id bt4so4753737pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 07:41:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=JMTZPdTE/aMUDIoULLEYEVVyeOj9JMcW8Ag8gkApcG8=;
+ b=GYlAFBv2hVH9zVW7eDuOt74/YKU618uB0XcxKKzYydhK/xHH6uRUbGe/+odzkPTFKW
+ hEszJNjv6g5hyao1Oqax0qywro1jPO+BgzYqshqU6Bem1v5HUynvd0jTgbEgvgUBrI1S
+ 5BG6Uwvk0JFWd8hod3flUFu8OHPeXrqrC9pew=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=JMTZPdTE/aMUDIoULLEYEVVyeOj9JMcW8Ag8gkApcG8=;
+ b=e88y5loLGruXiNFk00P9lAYVOiqjCvh5w34TYPyhkGlcFjy79KhKEW0Z8y8sXXyvQ6
+ NCWGhqyBUMN8UrpBPD5g7ysuqhzHDWEZf83Zw/8teupgFIFSZk6Cz5x1JeA86MFl27eb
+ 1QuQTYy9rtlMjAiu8Ch2sWIpvEhSrb9ZRzcsfQUSgyWLFFOvVAp0N6qqHnKakgDg/mS0
+ zA7wU9iFgopy4fST0ZcFdCX+DygIf6SxU7pTDHcaBu4OWbefa7XmDiyEK1aBn1wpraBP
+ c0hsYs02XiSREuIgAgtZFk0HcwBiLcmlKSXV3lQxs6D51trhUSXxYS66L4JPmfYdbBrk
+ Mkng==
+X-Gm-Message-State: AOAM532MOAQtYLvj83ha9dN0sfNZRQLegtCEb8vqtRRUGOKHDlZ42ruv
+ BtSnpoVIiojMkWJCI9auUZYzOQ==
+X-Google-Smtp-Source: ABdhPJxlMSF9N8TsI+7JmybLd20c1cK01aJvUVhZRerB4UyQEjpJ8VtHIcBPF1ZR8qLARnh3lMogvw==
+X-Received: by 2002:a17:90a:516:: with SMTP id
+ h22mr9634409pjh.222.1616164864070; 
+ Fri, 19 Mar 2021 07:41:04 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-111e-5c00-674e-5c6f-efc9-136d.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:674e:5c6f:efc9:136d])
+ by smtp.gmail.com with ESMTPSA id l4sm5692224pgn.77.2021.03.19.07.41.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 Mar 2021 07:41:03 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
+ christophe.leroy@csgroup.eu, aneesh.kumar@linux.ibm.com,
+ bsingharora@gmail.com
+Subject: [PATCH v11 0/6] KASAN for powerpc64 radix
+Date: Sat, 20 Mar 2021 01:40:52 +1100
+Message-Id: <20210319144058.772525-1-dja@axtens.net>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,329 +80,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- David Hildenbrand <david@redhat.com>,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Palmer Dabbelt <palmerdabbelt@google.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
- Ingo Molnar <mingo@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
- Brian Cain <bcain@codeaurora.org>, Helge Deller <deller@gmx.de>,
- linux-sh@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-parisc@vger.kernel.org,
- Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Niklas Schnelle <schnelle@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Greentime Hu <green.hu@gmail.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Pierre Morel <pmorel@linux.ibm.com>, Randy Dunlap <rdunlap@infradead.org>,
- linux-mips@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, linux-alpha@vger.kernel.org,
- Mikulas Patocka <mpatocka@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+Cc: Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since /dev/kmem has been removed, let's remove the xlate_dev_kmem_ptr()
-leftovers.
+Building on the work of Christophe, Aneesh and Balbir, I've ported
+KASAN to 64-bit Book3S kernels running on the Radix MMU.
 
-Cc: Richard Henderson <rth@twiddle.net>
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Brian Cain <bcain@codeaurora.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Mikulas Patocka <mpatocka@redhat.com>
-Cc: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Palmer Dabbelt <palmerdabbelt@google.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Greentime Hu <green.hu@gmail.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Niklas Schnelle <schnelle@linux.ibm.com>
-Cc: Pierre Morel <pmorel@linux.ibm.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-hexagon@vger.kernel.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: linux-arch@vger.kernel.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- arch/alpha/include/asm/io.h     |  5 -----
- arch/arm/include/asm/io.h       |  5 -----
- arch/hexagon/include/asm/io.h   |  1 -
- arch/ia64/include/asm/io.h      |  1 -
- arch/ia64/include/asm/uaccess.h | 18 ------------------
- arch/m68k/include/asm/io_mm.h   |  5 -----
- arch/mips/include/asm/io.h      |  5 -----
- arch/parisc/include/asm/io.h    |  5 -----
- arch/powerpc/include/asm/io.h   |  5 -----
- arch/s390/include/asm/io.h      |  5 -----
- arch/sh/include/asm/io.h        |  5 -----
- arch/sparc/include/asm/io_64.h  |  5 -----
- include/asm-generic/io.h        | 11 -----------
- 13 files changed, 76 deletions(-)
+v11 applies to next-20210317. I had hoped to have it apply to
+powerpc/next but once again there are changes in the kasan core that
+clash. Also, thanks to mpe for fixing a build break with KASAN off.
 
-diff --git a/arch/alpha/include/asm/io.h b/arch/alpha/include/asm/io.h
-index 1f6a909d1fa5..0fab5ac90775 100644
---- a/arch/alpha/include/asm/io.h
-+++ b/arch/alpha/include/asm/io.h
-@@ -602,11 +602,6 @@ extern void outsl (unsigned long port, const void *src, unsigned long count);
-  */
- #define xlate_dev_mem_ptr(p)	__va(p)
- 
--/*
-- * Convert a virtual cached pointer to an uncached pointer
-- */
--#define xlate_dev_kmem_ptr(p)	p
--
- #endif /* __KERNEL__ */
- 
- #endif /* __ALPHA_IO_H */
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index fc748122f1e0..f74944c6fe8d 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -430,11 +430,6 @@ extern void pci_iounmap(struct pci_dev *dev, void __iomem *addr);
-  */
- #define xlate_dev_mem_ptr(p)	__va(p)
- 
--/*
-- * Convert a virtual cached pointer to an uncached pointer
-- */
--#define xlate_dev_kmem_ptr(p)	p
--
- #include <asm-generic/io.h>
- 
- #ifdef CONFIG_MMU
-diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
-index bda2a9c2df78..c33241425a5c 100644
---- a/arch/hexagon/include/asm/io.h
-+++ b/arch/hexagon/include/asm/io.h
-@@ -64,7 +64,6 @@ static inline void *phys_to_virt(unsigned long address)
-  * convert a physical pointer to a virtual kernel pointer for
-  * /dev/mem access.
-  */
--#define xlate_dev_kmem_ptr(p)    __va(p)
- #define xlate_dev_mem_ptr(p)    __va(p)
- 
- /*
-diff --git a/arch/ia64/include/asm/io.h b/arch/ia64/include/asm/io.h
-index 3d666a11a2de..6d93b923b379 100644
---- a/arch/ia64/include/asm/io.h
-+++ b/arch/ia64/include/asm/io.h
-@@ -277,7 +277,6 @@ extern void memset_io(volatile void __iomem *s, int c, long n);
- #define memcpy_fromio memcpy_fromio
- #define memcpy_toio memcpy_toio
- #define memset_io memset_io
--#define xlate_dev_kmem_ptr xlate_dev_kmem_ptr
- #define xlate_dev_mem_ptr xlate_dev_mem_ptr
- #include <asm-generic/io.h>
- #undef PCI_IOBASE
-diff --git a/arch/ia64/include/asm/uaccess.h b/arch/ia64/include/asm/uaccess.h
-index 179243c3dfc7..e19d2dcc0ced 100644
---- a/arch/ia64/include/asm/uaccess.h
-+++ b/arch/ia64/include/asm/uaccess.h
-@@ -272,22 +272,4 @@ xlate_dev_mem_ptr(phys_addr_t p)
- 	return ptr;
- }
- 
--/*
-- * Convert a virtual cached kernel memory pointer to an uncached pointer
-- */
--static __inline__ void *
--xlate_dev_kmem_ptr(void *p)
--{
--	struct page *page;
--	void *ptr;
--
--	page = virt_to_page((unsigned long)p);
--	if (PageUncached(page))
--		ptr = (void *)__pa(p) + __IA64_UNCACHED_OFFSET;
--	else
--		ptr = p;
--
--	return ptr;
--}
--
- #endif /* _ASM_IA64_UACCESS_H */
-diff --git a/arch/m68k/include/asm/io_mm.h b/arch/m68k/include/asm/io_mm.h
-index 819f611dccf2..d41fa488453b 100644
---- a/arch/m68k/include/asm/io_mm.h
-+++ b/arch/m68k/include/asm/io_mm.h
-@@ -397,11 +397,6 @@ static inline void isa_delay(void)
-  */
- #define xlate_dev_mem_ptr(p)	__va(p)
- 
--/*
-- * Convert a virtual cached pointer to an uncached pointer
-- */
--#define xlate_dev_kmem_ptr(p)	p
--
- #define readb_relaxed(addr)	readb(addr)
- #define readw_relaxed(addr)	readw(addr)
- #define readl_relaxed(addr)	readl(addr)
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 78537aa23500..e6373e7ac892 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -552,11 +552,6 @@ extern void (*_dma_cache_inv)(unsigned long start, unsigned long size);
-  */
- #define xlate_dev_mem_ptr(p)	__va(p)
- 
--/*
-- * Convert a virtual cached pointer to an uncached pointer
-- */
--#define xlate_dev_kmem_ptr(p)	p
--
- void __ioread64_copy(void *to, const void __iomem *from, size_t count);
- 
- #endif /* _ASM_IO_H */
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index 8a11b8cf4719..0b5259102319 100644
---- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -316,11 +316,6 @@ extern void iowrite64be(u64 val, void __iomem *addr);
-  */
- #define xlate_dev_mem_ptr(p)	__va(p)
- 
--/*
-- * Convert a virtual cached pointer to an uncached pointer
-- */
--#define xlate_dev_kmem_ptr(p)	p
--
- extern int devmem_is_allowed(unsigned long pfn);
- 
- #endif
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index 273edd208ec5..f130783c8301 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -662,11 +662,6 @@ static inline void name at					\
-  */
- #define xlate_dev_mem_ptr(p)	__va(p)
- 
--/*
-- * Convert a virtual cached pointer to an uncached pointer
-- */
--#define xlate_dev_kmem_ptr(p)	p
--
- /*
-  * We don't do relaxed operations yet, at least not with this semantic
-  */
-diff --git a/arch/s390/include/asm/io.h b/arch/s390/include/asm/io.h
-index 28664ee0abc1..e3882b012bfa 100644
---- a/arch/s390/include/asm/io.h
-+++ b/arch/s390/include/asm/io.h
-@@ -20,11 +20,6 @@ void *xlate_dev_mem_ptr(phys_addr_t phys);
- #define unxlate_dev_mem_ptr unxlate_dev_mem_ptr
- void unxlate_dev_mem_ptr(phys_addr_t phys, void *addr);
- 
--/*
-- * Convert a virtual cached pointer to an uncached pointer
-- */
--#define xlate_dev_kmem_ptr(p)	p
--
- #define IO_SPACE_LIMIT 0
- 
- void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long prot);
-diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
-index 6d5c6463bc07..cf9a3ec32406 100644
---- a/arch/sh/include/asm/io.h
-+++ b/arch/sh/include/asm/io.h
-@@ -283,11 +283,6 @@ static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
-  */
- #define xlate_dev_mem_ptr(p)	__va(p)
- 
--/*
-- * Convert a virtual cached pointer to an uncached pointer
-- */
--#define xlate_dev_kmem_ptr(p)	p
--
- #define ARCH_HAS_VALID_PHYS_ADDR_RANGE
- int valid_phys_addr_range(phys_addr_t addr, size_t size);
- int valid_mmap_phys_addr_range(unsigned long pfn, size_t size);
-diff --git a/arch/sparc/include/asm/io_64.h b/arch/sparc/include/asm/io_64.h
-index 9bb27e5c22f1..ff6fe387d78c 100644
---- a/arch/sparc/include/asm/io_64.h
-+++ b/arch/sparc/include/asm/io_64.h
-@@ -450,11 +450,6 @@ void sbus_set_sbus64(struct device *, int);
-  */
- #define xlate_dev_mem_ptr(p)	__va(p)
- 
--/*
-- * Convert a virtual cached pointer to an uncached pointer
-- */
--#define xlate_dev_kmem_ptr(p)	p
--
- #endif
- 
- #endif /* !(__SPARC64_IO_H) */
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index c6af40ce03be..33d4746b086f 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -1045,17 +1045,6 @@ static inline void pci_iounmap(struct pci_dev *dev, void __iomem *p)
- #endif
- #endif /* CONFIG_GENERIC_IOMAP */
- 
--/*
-- * Convert a virtual cached pointer to an uncached pointer
-- */
--#ifndef xlate_dev_kmem_ptr
--#define xlate_dev_kmem_ptr xlate_dev_kmem_ptr
--static inline void *xlate_dev_kmem_ptr(void *addr)
--{
--	return addr;
--}
--#endif
--
- #ifndef xlate_dev_mem_ptr
- #define xlate_dev_mem_ptr xlate_dev_mem_ptr
- static inline void *xlate_dev_mem_ptr(phys_addr_t addr)
--- 
-2.29.2
+I'm not sure how best to progress this towards actually being merged
+when it has impacts across subsystems. I'd appreciate any input. Maybe
+the first four patches could go in via the kasan tree, that should
+make things easier for powerpc in a future cycle?
+
+v10 rebases on top of next-20210125, fixing things up to work on top
+of the latest changes, and fixing some review comments from
+Christophe. I have tested host and guest with 64k pages for this spin.
+
+There is now only 1 failing KUnit test: kasan_global_oob - gcc puts
+the ASAN init code in a section called '.init_array'. Powerpc64 module
+loading code goes through and _renames_ any section beginning with
+'.init' to begin with '_init' in order to avoid some complexities
+around our 24-bit indirect jumps. This means it renames '.init_array'
+to '_init_array', and the generic module loading code then fails to
+recognise the section as a constructor and thus doesn't run it. This
+hack dates back to 2003 and so I'm not going to try to unpick it in
+this series. (I suspect this may have previously worked if the code
+ended up in .ctors rather than .init_array but I don't keep my old
+binaries around so I have no real way of checking.)
+
+(The previously failing stack tests are now skipped due to more
+accurate configuration settings.)
+
+Details from v9: This is a significant reworking of the previous
+versions. Instead of the previous approach which supported inline
+instrumentation, this series provides only outline instrumentation.
+
+To get around the problem of accessing the shadow region inside code we run
+with translations off (in 'real mode'), we we restrict checking to when
+translations are enabled. This is done via a new hook in the kasan core and
+by excluding larger quantites of arch code from instrumentation. The upside
+is that we no longer require that you be able to specify the amount of
+physically contiguous memory on the system at compile time. Hopefully this
+is a better trade-off. More details in patch 6.
+
+kexec works. Both 64k and 4k pages work. Running as a KVM host works, but
+nothing in arch/powerpc/kvm is instrumented. It's also potentially a bit
+fragile - if any real mode code paths call out to instrumented code, things
+will go boom.
+
+Kind regards,
+Daniel
+
+Daniel Axtens (6):
+  kasan: allow an architecture to disable inline instrumentation
+  kasan: allow architectures to provide an outline readiness check
+  kasan: define and use MAX_PTRS_PER_* for early shadow tables
+  kasan: Document support on 32-bit powerpc
+  powerpc/mm/kasan: rename kasan_init_32.c to init_32.c
+  powerpc: Book3S 64-bit outline-only KASAN support
 
