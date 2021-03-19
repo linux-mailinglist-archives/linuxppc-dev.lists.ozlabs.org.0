@@ -1,50 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230D8341128
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 00:45:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB2D3411FB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 02:12:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F1kD90vTJz3bsS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 10:45:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F1m8f19P3z3c11
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 12:12:34 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Fao3y2Eh;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Fao3y2Eh; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F1kCp5cTwz302D
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 10:45:04 +1100 (AEDT)
-IronPort-SDR: OfRLBzxPHBsMURH7uHgJOVGAsBvSwqmM9Qa/REJ2KZI2EpopSYjABEk89Su+NLZFpbOEoeU5z8
- oRcWq0GZ21TQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9927"; a="169087592"
-X-IronPort-AV: E=Sophos;i="5.81,259,1610438400"; d="scan'208";a="169087592"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2021 16:45:00 -0700
-IronPort-SDR: k0tDIEljJSTd8V/3WJ57iomiVdd4Ht6LTCEY49TX1F9JmTfddoPFIe0liMt7wkpCVRAuuLBVbW
- 1GELlZUNIz9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,259,1610438400"; d="scan'208";a="389432556"
-Received: from lkp-server02.sh.intel.com (HELO 1c294c63cb86) ([10.239.97.151])
- by orsmga002.jf.intel.com with ESMTP; 18 Mar 2021 16:44:57 -0700
-Received: from kbuild by 1c294c63cb86 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1lN2K1-0001Tj-6y; Thu, 18 Mar 2021 23:44:57 +0000
-Date: Fri, 19 Mar 2021 07:44:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: [PATCH] powerpc/iommu/debug: fix ifnullfree.cocci warnings
-Message-ID: <20210318234441.GA63469@f8e20a472e81>
-References: <202103190721.joUfcBzf-lkp@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F1m8F2rHrz2yRW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 12:12:12 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4F1m8D1wZMz9sS8;
+ Fri, 19 Mar 2021 12:12:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1616116332;
+ bh=rRKNz7fKA4p24eXJa06RoR1oxjHRUhSG3Jnyacf6ruc=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Fao3y2Ehs4jzoyXSJ9p/Nr78wQaOGpd+aEjqm17J145FvtbBM7y3YslFtOWbg4stx
+ L0/tsXoMmQ0Gakb+yu0GLhzVl/H+DXk/KR/RushG16wQuQPaXVwu9WRH6klHCsmo3f
+ pnr/6zI9UmbesNMW2MUpyuuy2/0B/UZXwUwrz+Q3VuxxBx/VA2UAmgBm/Q6KLzuoP/
+ /0xU6cowcBYu3zlQMimkhtPDbaTl7LwVyxMGJYtuxkA1B3pPbR7TuVLVALs1ocf+bb
+ pc2GVGqmyYPo3Sh4Vs9gueeqw0IExSyJLkcwwTs7IMG7wbi/OStT++GLKFJBDq96sd
+ eAiJDLTgS/VMg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/mm: Revert "powerpc/mm: Remove DEBUG_VM_PGTABLE
+ support on powerpc"
+In-Reply-To: <20210318034855.74513-1-aneesh.kumar@linux.ibm.com>
+References: <20210318034855.74513-1-aneesh.kumar@linux.ibm.com>
+Date: Fri, 19 Mar 2021 12:12:10 +1100
+Message-ID: <87lfak54lx.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202103190721.joUfcBzf-lkp@intel.com>
-X-Patchwork-Hint: ignore
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,47 +63,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, Niklas Schnelle <schnelle@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: kernel test robot <lkp@intel.com>
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> This reverts commit 675bceb097e6 ("powerpc/mm: Remove DEBUG_VM_PGTABLE support on powerpc")
+>
+> All the related issues are fixed by the series
+> https://lore.kernel.org/linux-mm/20200902114222.181353-1-aneesh.kumar@linux.ibm.com
 
-arch/powerpc/kernel/iommu.c:76:2-16: WARNING: NULL check before some freeing functions is not needed.
+Was that series merged?
 
- NULL check before some freeing functions is not needed.
+If so this seems like this could be tagged as a Fix for the last commit
+in that series.
 
- Based on checkpatch warning
- "kfree(NULL) is safe this check is probably not required"
- and kfreeaddr.cocci by Julia Lawall.
+cheers
 
-Generated by: scripts/coccinelle/free/ifnullfree.cocci
-
-Fixes: 691602aab9c3 ("powerpc/iommu/debug: Add debugfs entries for IOMMU tables")
-CC: Alexey Kardashevskiy <aik@ozlabs.ru>
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: kernel test robot <lkp@intel.com>
----
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   81aa0968b7ea6dbabcdcda37dc8434dca6e1565b
-commit: 691602aab9c3cce31d3ff9529c09b7922a5f6224 powerpc/iommu/debug: Add debugfs entries for IOMMU tables
-
- iommu.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -72,8 +72,7 @@ static void iommu_debugfs_del(struct iom
- 
- 	sprintf(name, "%08lx", tbl->it_index);
- 	liobn_entry = debugfs_lookup(name, iommu_debugfs_dir);
--	if (liobn_entry)
--		debugfs_remove(liobn_entry);
-+	debugfs_remove(liobn_entry);
- }
- #else
- static void iommu_debugfs_add(struct iommu_table *tbl){}
+> Hence enable it back
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  Documentation/features/debug/debug-vm-pgtable/arch-support.txt | 2 +-
+>  arch/powerpc/Kconfig                                           | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+> index 7aff505af706..fa83403b4aec 100644
+> --- a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+> +++ b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+> @@ -21,7 +21,7 @@
+>      |       nios2: | TODO |
+>      |    openrisc: | TODO |
+>      |      parisc: | TODO |
+> -    |     powerpc: | TODO |
+> +    |     powerpc: |  ok  |
+>      |       riscv: |  ok  |
+>      |        s390: |  ok  |
+>      |          sh: | TODO |
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 386ae12d8523..982c87d5c051 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -119,6 +119,7 @@ config PPC
+>  	#
+>  	select ARCH_32BIT_OFF_T if PPC32
+>  	select ARCH_HAS_DEBUG_VIRTUAL
+> +	select ARCH_HAS_DEBUG_VM_PGTABLE
+>  	select ARCH_HAS_DEVMEM_IS_ALLOWED
+>  	select ARCH_HAS_ELF_RANDOMIZE
+>  	select ARCH_HAS_FORTIFY_SOURCE
+> -- 
+> 2.30.2
