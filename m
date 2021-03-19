@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC962341B2D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 12:10:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E01D341B2B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 12:10:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F21QW3k1Tz3dyY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 22:10:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F21Q92HLpz3c9t
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Mar 2021 22:10:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,40 +15,39 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F21Lc5b4jz3by4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F21Lc62Cpz3c0G
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Mar 2021 22:07:03 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F21LX009Sz9tx96;
+ by localhost (Postfix) with ESMTP id 4F21LX1c91z9tx8s;
  Fri, 19 Mar 2021 12:07:00 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id HovJI18WGdp9; Fri, 19 Mar 2021 12:06:59 +0100 (CET)
+ with ESMTP id 5BZWUwXysFnB; Fri, 19 Mar 2021 12:07:00 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F21LW6C3gz9tx8s;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F21LW6k02z9tx94;
  Fri, 19 Mar 2021 12:06:59 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5E7668B976;
- Fri, 19 Mar 2021 12:07:00 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 16F4B8B972;
+ Fri, 19 Mar 2021 12:07:01 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id xqJzzg0emXHy; Fri, 19 Mar 2021 12:07:00 +0100 (CET)
+ with ESMTP id Lg4zbuWVj8vk; Fri, 19 Mar 2021 12:07:01 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5951D8B972;
- Fri, 19 Mar 2021 12:06:59 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 449998B975;
+ Fri, 19 Mar 2021 12:07:00 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id F3227675FB; Fri, 19 Mar 2021 11:06:58 +0000 (UTC)
-Message-Id: <9273ba664db769b8d9c7540ae91395e346e4945e.1616151715.git.christophe.leroy@csgroup.eu>
+ id 06A95675FB; Fri, 19 Mar 2021 11:07:00 +0000 (UTC)
+Message-Id: <638fa99530beb29f82f94370057d110e91272acc.1616151715.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1616151715.git.christophe.leroy@csgroup.eu>
 References: <cover.1616151715.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 09/10] powerpc/signal32: Convert do_setcontext[_tm]() to user
- access block
+Subject: [PATCH 10/10] powerpc/signal32: Simplify logging in sigreturn()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  cmr@codefail.de
-Date: Fri, 19 Mar 2021 11:06:58 +0000 (UTC)
+Date: Fri, 19 Mar 2021 11:07:00 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,128 +64,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add unsafe_get_user_sigset() and transform PPC32 get_sigset_t()
-into an unsafe version unsafe_get_sigset_t().
-
-Then convert do_setcontext() and do_setcontext_tm() to use
-user_read_access_begin/end.
+Same spirit as commit debf122c777f ("powerpc/signal32: Simplify logging
+in handle_rt_signal32()"), remove this intermediate 'addr' local var.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/signal.h    |  2 ++
- arch/powerpc/kernel/signal_32.c | 42 +++++++++++++++++++--------------
- 2 files changed, 26 insertions(+), 18 deletions(-)
+ arch/powerpc/kernel/signal_32.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/signal.h
-index a5152ff3c52f..f4aafa337c2e 100644
---- a/arch/powerpc/kernel/signal.h
-+++ b/arch/powerpc/kernel/signal.h
-@@ -25,6 +25,8 @@ static inline int __get_user_sigset(sigset_t *dst, const sigset_t __user *src)
- 
- 	return __get_user(dst->sig[0], (u64 __user *)&src->sig[0]);
- }
-+#define unsafe_get_user_sigset(dst, src, label) \
-+	unsafe_get_user((dst)->sig[0], (u64 __user *)&(src)->sig[0], label)
- 
- #ifdef CONFIG_VSX
- extern unsigned long copy_vsx_to_user(void __user *to,
 diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
-index 0b1a6f53e553..592b889e3836 100644
+index 592b889e3836..5be267b3a13e 100644
 --- a/arch/powerpc/kernel/signal_32.c
 +++ b/arch/powerpc/kernel/signal_32.c
-@@ -83,12 +83,7 @@
-  * implementation that makes things simple for little endian only)
-  */
- #define unsafe_put_sigset_t	unsafe_put_compat_sigset
--
--static inline int get_sigset_t(sigset_t *set,
--			       const compat_sigset_t __user *uset)
--{
--	return get_compat_sigset(set, uset);
--}
-+#define unsafe_get_sigset_t	unsafe_get_compat_sigset
- 
- #define to_user_ptr(p)		ptr_to_compat(p)
- #define from_user_ptr(p)	compat_ptr(p)
-@@ -144,10 +139,7 @@ __unsafe_restore_general_regs(struct pt_regs *regs, struct mcontext __user *sr)
- 	unsafe_copy_to_user(__us, __s, sizeof(*__us), label);		\
- } while (0)
- 
--static inline int get_sigset_t(sigset_t *set, const sigset_t __user *uset)
--{
--	return __get_user_sigset(set, uset);
--}
-+#define unsafe_get_sigset_t	unsafe_get_user_sigset
- 
- #define to_user_ptr(p)		((unsigned long)(p))
- #define from_user_ptr(p)	((void __user *)(p))
-@@ -982,25 +974,31 @@ static int do_setcontext(struct ucontext __user *ucp, struct pt_regs *regs, int
+@@ -1352,7 +1352,6 @@ SYSCALL_DEFINE0(sigreturn)
+ 	struct sigcontext __user *sc;
+ 	struct sigcontext sigctx;
+ 	struct mcontext __user *sr;
+-	void __user *addr;
  	sigset_t set;
  	struct mcontext __user *mcp;
+ 	struct mcontext __user *tm_mcp = NULL;
+@@ -1363,7 +1362,6 @@ SYSCALL_DEFINE0(sigreturn)
  
--	if (get_sigset_t(&set, &ucp->uc_sigmask))
-+	if (user_read_access_begin(ucp, sizeof(*ucp)))
- 		return -EFAULT;
+ 	sf = (struct sigframe __user *)(regs->gpr[1] + __SIGNAL_FRAMESIZE);
+ 	sc = &sf->sctx;
+-	addr = sc;
+ 	if (copy_from_user(&sigctx, sc, sizeof(sigctx)))
+ 		goto badframe;
+ 
+@@ -1392,16 +1390,19 @@ SYSCALL_DEFINE0(sigreturn)
+ 			goto badframe;
+ 	} else {
+ 		sr = (struct mcontext __user *)from_user_ptr(sigctx.regs);
+-		addr = sr;
+-		if (restore_user_regs(regs, sr, 1))
+-			goto badframe;
++		if (restore_user_regs(regs, sr, 1)) {
++			signal_fault(current, regs, "sys_sigreturn", sr);
 +
-+	unsafe_get_sigset_t(&set, &ucp->uc_sigmask, failed);
- #ifdef CONFIG_PPC64
- 	{
- 		u32 cmcp;
- 
--		if (__get_user(cmcp, &ucp->uc_regs))
--			return -EFAULT;
-+		unsafe_get_user(cmcp, &ucp->uc_regs, failed);
- 		mcp = (struct mcontext __user *)(u64)cmcp;
++			force_sig(SIGSEGV);
++			return 0;
++		}
  	}
- #else
--	if (__get_user(mcp, &ucp->uc_regs))
--		return -EFAULT;
-+	unsafe_get_user(mcp, &ucp->uc_regs, failed);
- #endif
-+	user_read_access_end();
-+
- 	set_current_blocked(&set);
- 	if (restore_user_regs(regs, mcp, sig))
- 		return -EFAULT;
  
+ 	set_thread_flag(TIF_RESTOREALL);
  	return 0;
-+
-+failed:
-+	user_read_access_end();
-+	return -EFAULT;
- }
  
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-@@ -1014,11 +1012,15 @@ static int do_setcontext_tm(struct ucontext __user *ucp,
- 	u32 cmcp;
- 	u32 tm_cmcp;
+ badframe:
+-	signal_fault(current, regs, "sys_sigreturn", addr);
++	signal_fault(current, regs, "sys_sigreturn", sc);
  
--	if (get_sigset_t(&set, &ucp->uc_sigmask))
-+	if (user_read_access_begin(ucp, sizeof(*ucp)))
- 		return -EFAULT;
- 
--	if (__get_user(cmcp, &ucp->uc_regs) ||
--	    __get_user(tm_cmcp, &tm_ucp->uc_regs))
-+	unsafe_get_sigset_t(&set, &ucp->uc_sigmask, failed);
-+	unsafe_get_user(cmcp, &ucp->uc_regs, failed);
-+
-+	user_read_access_end();
-+
-+	if (__get_user(tm_cmcp, &tm_ucp->uc_regs))
- 		return -EFAULT;
- 	mcp = (struct mcontext __user *)(u64)cmcp;
- 	tm_mcp = (struct mcontext __user *)(u64)tm_cmcp;
-@@ -1029,6 +1031,10 @@ static int do_setcontext_tm(struct ucontext __user *ucp,
- 		return -EFAULT;
- 
+ 	force_sig(SIGSEGV);
  	return 0;
-+
-+failed:
-+	user_read_access_end();
-+	return -EFAULT;
- }
- #endif
- 
 -- 
 2.25.0
 
