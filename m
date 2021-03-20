@@ -2,57 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514DA342CF6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Mar 2021 14:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97467342F81
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Mar 2021 21:26:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F2gvk21nHz3c1K
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Mar 2021 00:04:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F2sj845WBz2yy9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Mar 2021 07:26:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kHmR/KZL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=B3AQK37g;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=yashsri421@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=kHmR/KZL; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=B3AQK37g; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F2gvK5lRPz2yQl
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Mar 2021 00:04:12 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F2gvJ1s1nz9sW4;
- Sun, 21 Mar 2021 00:04:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1616245452;
- bh=0jvUu/lL0vT5Wn9Hiq1LrSevPknarpA71XtCkS9rqP8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=kHmR/KZL3XC2j9v/B0Raqzi+ehUkFCer/lc9kroxv3DGR9vpKhtC5PEBm5b3OEBuR
- bHYXqlS0k1b5VF/9/vOKhtFFVDYsaA0eTixuuww7qbBW6XAYDDXxAvNLiOvHDwSu33
- kWtW2TeC1+Zb2kVQ+IvKS+f5nu2mwiGQe2/F3s3ZUYq/6xzQln0ruFZuF3jjajmcHQ
- AIGtXWsFVdWj6sgYn1KkwaefS8VwC7O5gDdzXb+/03UNOxmHd11vJ89+Cx+jZTJhKR
- EKXG36EM4VX+EZp56UL/x5M1HC2JMhrFRQ1dVswPJkM9uPH5w/ezOmzXpKsAGbSg+P
- SUk4zevE1U+RA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 5/6] powerpc/mm/64s/hash: Add real-mode
- change_memory_range() for hash LPAR
-In-Reply-To: <1613084139.rsms9jxmax.astroid@bobo.none>
-References: <20210211135130.3474832-1-mpe@ellerman.id.au>
- <20210211135130.3474832-5-mpe@ellerman.id.au>
- <1613084139.rsms9jxmax.astroid@bobo.none>
-Date: Sun, 21 Mar 2021 00:04:07 +1100
-Message-ID: <878s6iht88.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F2shk3Frxz2xZ1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Mar 2021 07:25:42 +1100 (AEDT)
+Received: by mail-pj1-x1031.google.com with SMTP id
+ f2-20020a17090a4a82b02900c67bf8dc69so8398042pjh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Mar 2021 13:25:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=vgEHWfJxSnMvNGltZK35bv4lE0nxYTmBjGCCpSZ2qwE=;
+ b=B3AQK37gdKNg75CyXMf9iaXlGL9RQhcnBKwEe3Lieo2WwIYNmzGlinRadiAHCpxnc0
+ sct6SsVizPmtD0Wz13XUBxHWj29/ihjOzNHPe4vJiFdv+PuZ9wfPxtoMwhHdVCGWAzVp
+ ZSQfzus9F+FSLPgr9VCMTCJxxfOWtfmHHWSFicAV61A9v13xWEGqkYXMhlxOGF3l+jcj
+ 0dtIy+0LVKzVOzD7uBiQQvtz1hK6bEW3K2sBNtsa1cyQIrv2cAQDFgzdEnIFWfc67xoC
+ p6PVv4It8kFPdjLMT2sk7c6yxlqJfZCBf5iH0iyF12uz8TEv82fw0JvSqY7bUq6bDFCP
+ 2sHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=vgEHWfJxSnMvNGltZK35bv4lE0nxYTmBjGCCpSZ2qwE=;
+ b=ltH2cNlhbHobSSC6FULou+9goj9JRjiaFO8B1y2NlQOgdVp9N10YJFTEnIVwfO/gEc
+ OFeguHvkGkASz1TZ3vY2y7N+GRG3p46aKiBfFyjgETg7BerDuoSydtmustnYon5RqR0F
+ EP9oAW7PgtejoeJ+DB+IeV5FsMPAi+2mEmBJBQdSVd5o+HzfoZKua7dmpuVqLjMMclij
+ +HHv84lFN7CxUGjrivcarX6Rkn2Nk3gWV2ujj5XflB3b7thTvHMgMI38jVu2CXMMexXH
+ QRoCQmnzaOqSyzviUMcWVxq5D1XmhsNxAkeOEvN5gs4CYw3CmBne4qZJFMlf/aGCKDgy
+ NFYw==
+X-Gm-Message-State: AOAM531/fz8VU0erVIhI/ZYrKQL/CANmpiHlOYKZ/MujfRT6vPhvbaAB
+ 1Y9rsNk911wo/fd87V97npk=
+X-Google-Smtp-Source: ABdhPJxXOY21EFvd4PI13TZ0reKzvM6BOPt4J0kTB4D7tg4zVYP2zKz48Khz54lVG1zBdJH1yR0q5w==
+X-Received: by 2002:a17:90a:b63:: with SMTP id
+ 90mr5085668pjq.124.1616271938959; 
+ Sat, 20 Mar 2021 13:25:38 -0700 (PDT)
+Received: from localhost.localdomain ([2405:201:600d:a089:1ce8:18d9:6e3d:8c29])
+ by smtp.googlemail.com with ESMTPSA id t1sm9252938pfc.173.2021.03.20.13.25.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 20 Mar 2021 13:25:38 -0700 (PDT)
+From: Aditya Srivastava <yashsri421@gmail.com>
+To: leitao@debian.org
+Subject: [PATCH] crypto: vmx: fix incorrect kernel-doc comment syntax in files
+Date: Sun, 21 Mar 2021 01:55:25 +0530
+Message-Id: <20210320202525.12562-1-yashsri421@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,90 +75,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com
+Cc: rdunlap@infradead.org, herbert@gondor.apana.org.au, corbet@lwn.net,
+ nayna@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, yashsri421@gmail.com, pfsmorigo@gmail.com,
+ linux-crypto@vger.kernel.org, lukas.bulwahn@gmail.com,
+ linux-kernel-mentees@lists.linuxfoundation.org, davem@davemloft.net,
+ paulus@samba.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Excerpts from Michael Ellerman's message of February 11, 2021 11:51 pm:
-...
->> diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
->> index 3663d3cdffac..01de985df2c4 100644
->> --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
->> +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
->> @@ -414,6 +428,73 @@ static void change_memory_range(unsigned long start, unsigned long end,
->>  							mmu_kernel_ssize);
->>  }
->>  
->> +static int notrace chmem_secondary_loop(struct change_memory_parms *parms)
->> +{
->> +	unsigned long msr, tmp, flags;
->> +	int *p;
->> +
->> +	p = &parms->cpu_counter.counter;
->> +
->> +	local_irq_save(flags);
->> +	__hard_EE_RI_disable();
->> +
->> +	asm volatile (
->> +	// Switch to real mode and leave interrupts off
->> +	"mfmsr	%[msr]			;"
->> +	"li	%[tmp], %[MSR_IR_DR]	;"
->> +	"andc	%[tmp], %[msr], %[tmp]	;"
->> +	"mtmsrd %[tmp]			;"
->> +
->> +	// Tell the master we are in real mode
->> +	"1:				"
->> +	"lwarx	%[tmp], 0, %[p]		;"
->> +	"addic	%[tmp], %[tmp], -1	;"
->> +	"stwcx.	%[tmp], 0, %[p]		;"
->> +	"bne-	1b			;"
->> +
->> +	// Spin until the counter goes to zero
->> +	"2:				;"
->> +	"lwz	%[tmp], 0(%[p])		;"
->> +	"cmpwi	%[tmp], 0		;"
->> +	"bne-	2b			;"
->> +
->> +	// Switch back to virtual mode
->> +	"mtmsrd %[msr]			;"
->> +
->> +	: // outputs
->> +	  [msr] "=&r" (msr), [tmp] "=&b" (tmp), "+m" (*p)
->> +	: // inputs
->> +	  [p] "b" (p), [MSR_IR_DR] "i" (MSR_IR | MSR_DR)
->> +	: // clobbers
->> +	  "cc", "xer"
->> +	);
->> +
->> +	local_irq_restore(flags);
->
-> Hmm. __hard_EE_RI_disable won't get restored by this because it doesn't
-> set the HARD_DIS flag. Also we don't want RI disabled here because 
-> tracing will get called first (which might take SLB or HPTE fault).
+The opening comment mark '/**' is used for highlighting the beginning of
+kernel-doc comments.
+There are certain files in drivers/crypto/vmx, which follow this syntax,
+but the content inside does not comply with kernel-doc.
+Such lines were probably not meant for kernel-doc parsing, but are parsed
+due to the presence of kernel-doc like comment syntax(i.e, '/**'), which
+causes unexpected warnings from kernel-doc.
 
-Thanks for noticing. I originally wrote hard_irq_disable() but then
-thought disabling RI also would be good.
+E.g., presence of kernel-doc like comment in the header line for
+drivers/crypto/vmx/vmx.c causes this warning by kernel-doc:
 
-> But it's also slightly rude to ever enable EE under an irq soft mask,
-> because you don't know if it had been disabled by the masked interrupt 
-> handler. It's not strictly a problem AFAIK because the interrupt would
-> just get masked again, but if we try to maintain a good pattern would
-> be good. Hmm that means we should add a check for irqs soft masked in
-> __hard_irq_enable(), I'm not sure if all existing users would follow
-> this rule.
->
-> Might be better to call hard_irq_disable(); after the local_irq_save();
-> and then clear and reset RI inside that region (could just do it at the
-> same time as disabling MMU).
+"warning: expecting prototype for Routines supporting VMX instructions on the Power 8(). Prototype was for p8_init() instead"
 
-Thinking about it more, there's no real reason to disable RI.
+Similarly for other files too.
 
-We should be able to return from an interrupt in there, it's just that
-if we do take one we'll probably die before we get a chance to return
-because the mapping of text will be missing.
+Provide a simple fix by replacing such occurrences with general comment
+format, i.e. '/*', to prevent kernel-doc from parsing it.
 
-So disabling RI doesn't really gain us anything I don't think.
+Signed-off-by: Aditya Srivastava <yashsri421@gmail.com>
+---
+* Applies perfectly on next-20210319
 
-cheers
+ drivers/crypto/vmx/aes.c     | 2 +-
+ drivers/crypto/vmx/aes_cbc.c | 2 +-
+ drivers/crypto/vmx/aes_ctr.c | 2 +-
+ drivers/crypto/vmx/aes_xts.c | 2 +-
+ drivers/crypto/vmx/ghash.c   | 2 +-
+ drivers/crypto/vmx/vmx.c     | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/crypto/vmx/aes.c b/drivers/crypto/vmx/aes.c
+index d05c02baebcf..ec06189fbf99 100644
+--- a/drivers/crypto/vmx/aes.c
++++ b/drivers/crypto/vmx/aes.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * AES routines supporting VMX instructions on the Power 8
+  *
+  * Copyright (C) 2015 International Business Machines Inc.
+diff --git a/drivers/crypto/vmx/aes_cbc.c b/drivers/crypto/vmx/aes_cbc.c
+index d88084447f1c..ed0debc7acb5 100644
+--- a/drivers/crypto/vmx/aes_cbc.c
++++ b/drivers/crypto/vmx/aes_cbc.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * AES CBC routines supporting VMX instructions on the Power 8
+  *
+  * Copyright (C) 2015 International Business Machines Inc.
+diff --git a/drivers/crypto/vmx/aes_ctr.c b/drivers/crypto/vmx/aes_ctr.c
+index 79ba062ee1c1..9a3da8cd62f3 100644
+--- a/drivers/crypto/vmx/aes_ctr.c
++++ b/drivers/crypto/vmx/aes_ctr.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * AES CTR routines supporting VMX instructions on the Power 8
+  *
+  * Copyright (C) 2015 International Business Machines Inc.
+diff --git a/drivers/crypto/vmx/aes_xts.c b/drivers/crypto/vmx/aes_xts.c
+index 9fee1b1532a4..dabbccb41550 100644
+--- a/drivers/crypto/vmx/aes_xts.c
++++ b/drivers/crypto/vmx/aes_xts.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * AES XTS routines supporting VMX In-core instructions on Power 8
+  *
+  * Copyright (C) 2015 International Business Machines Inc.
+diff --git a/drivers/crypto/vmx/ghash.c b/drivers/crypto/vmx/ghash.c
+index 14807ac2e3b9..5bc5710a6de0 100644
+--- a/drivers/crypto/vmx/ghash.c
++++ b/drivers/crypto/vmx/ghash.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+-/**
++/*
+  * GHASH routines supporting VMX instructions on the Power 8
+  *
+  * Copyright (C) 2015, 2019 International Business Machines Inc.
+diff --git a/drivers/crypto/vmx/vmx.c b/drivers/crypto/vmx/vmx.c
+index a40d08e75fc0..7eb713cc87c8 100644
+--- a/drivers/crypto/vmx/vmx.c
++++ b/drivers/crypto/vmx/vmx.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * Routines supporting VMX instructions on the Power 8
+  *
+  * Copyright (C) 2015 International Business Machines Inc.
+-- 
+2.17.1
+
