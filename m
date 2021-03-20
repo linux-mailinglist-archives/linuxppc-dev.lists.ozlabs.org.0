@@ -2,82 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B650342B63
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Mar 2021 10:08:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DC9342B9B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Mar 2021 11:56:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F2Zfy50wvz30JK
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Mar 2021 20:08:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F2d496TMqz3byS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Mar 2021 21:56:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=snN3tVHS;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=hUozruWt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::633;
- helo=mail-pl1-x633.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=snN3tVHS; dkim-atps=neutral
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
- [IPv6:2607:f8b0:4864:20::633])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=hUozruWt; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F2ZfX0pqpz300T
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Mar 2021 20:07:44 +1100 (AEDT)
-Received: by mail-pl1-x633.google.com with SMTP id t20so4054500plr.13
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Mar 2021 02:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=bXKKCKnz/33aAei7zUlJGr2xMyWZ9KodS3FoI2Gsia4=;
- b=snN3tVHSqTWGJQIiCP/UTPKWnguOwN1n3tRbrw4J9wqgSBZ2ogRAuvponaYotPLrys
- E/qEW8KWKDsRmfRzNGdrc6YqU9bv9aqqe80d4uXZSplDOVRhWWMDUby5sqJHK2s/jVNZ
- n8lDusSFQd6o6rrXCinufXdoy6iRtuFo0Zuf4kye/1PmFbwq4UB/SSXSlm3GBmCDrNyn
- 9aBAyYAN2wHSSCdQXjxsGe8ObCwQqJ0/oeszpKVzVGz0/Tkbo5UUN3gVxRmm2tpVaLk3
- +Db4s/QbKtTdb1zrKiWvwpXfeh95hKjYjfkwbdJ5XNMs0rwNCsqmCTsuZ4hzX25ZEX2U
- FTOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=bXKKCKnz/33aAei7zUlJGr2xMyWZ9KodS3FoI2Gsia4=;
- b=U+JksSCg0W0ZzVQeM3tAYByD2IU2hLVTCcWkcZ01gruiplCrBbbSgNP40JDNJ/fqpE
- XKf7xPi0lUeZqtokeng4VqIM0rnhEGZkLxSf+L0Fv/w9AkYvHiOQNSTjalNCDM6P8S0+
- BSO/Qk8TsZfTTVM224DvsAwJYA8w572wWj8/UX3JBpl1vJBajM6MAwYPJqpJV1XJGu9E
- t+h26GBUuJHC4j42D89AE9VxqVTGhaGuLvwV0OaRYooQ6lrjrSm9vX7LTFjzuAHRoz55
- mGW7PYLx9z0KnTajQLgWWSv4Ycx/oDOxAvUAvqePWjcRANPgowpLwiEZbXmnjrfGafyW
- ynkg==
-X-Gm-Message-State: AOAM531s19ozES/Fw/9CFqEBv6bb0u0SPwCJ0EvwIbOrzFNomUYhSJW+
- 7j1Kwj12hkaDfg0NXMHPoVd6D0ipin7aEG4W
-X-Google-Smtp-Source: ABdhPJxOSI1SGW4UP6cRyzkQzxM3OHVzn049dE5cOy6QTjHTlSzgr+RYPwVLLFba9uvnq3aQtfbxIA==
-X-Received: by 2002:a17:90a:df91:: with SMTP id
- p17mr2704648pjv.23.1616231256476; 
- Sat, 20 Mar 2021 02:07:36 -0700 (PDT)
-Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
- [124.171.107.241])
- by smtp.gmail.com with UTF8SMTPSA id gm9sm7333749pjb.13.2021.03.20.02.07.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 20 Mar 2021 02:07:35 -0700 (PDT)
-Message-ID: <1f68b37c-7167-30d7-ee19-f6ebc69bd4a6@ozlabs.ru>
-Date: Sat, 20 Mar 2021 20:07:31 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F2d3k2xg3z304Y
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Mar 2021 21:56:16 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C26FD61A3E;
+ Sat, 20 Mar 2021 10:56:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1616237772;
+ bh=CnkqKhcc/WPXZ1PJ09rzSteqUjpcjox3r41fvuZuU7s=;
+ h=Subject:To:Cc:From:Date:In-Reply-To:From;
+ b=hUozruWtEVxsgUFhjdZS6Qx4izdEvfmE6iw7K+q+A6GJG2rcWfwJo7DXrJOoaedej
+ m9mvcycMxukPCBoipJxad684l3JLmu53Hfcqz+pOUbOJ60Pbt/yapfotMsDyXp8MoT
+ t40fFX/F8CedZcC5QvOD/DWWdm8xlcZqS460cZPA=
+Subject: Patch "vmlinux.lds.h: Create section for protection against
+ instrumentation" has been added to the 4.19-stable tree
+To: alexandre.chartre@oracle.com, arnd@arndb.de, benh@kernel.crashing.org,
+ dja@axtens.net, drinkcat@chromium.org, gregkh@linuxfoundation.org,
+ groeck@chromium.org, linuxppc-dev@lists.ozlabs.org, michal.lkml@markovi.net,
+ mpe@ellerman.id.au, naveen.n.rao@linux.vnet.ibm.com, npiggin@gmail.com,
+ paulus@samba.org, peterz@infradead.org, sparse@chrisli.org, tglx@linutronix.de,
+ yamada.masahiro@socionext.com
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 20 Mar 2021 11:56:01 +0100
+In-Reply-To: <20210320121614.for-stable-4.19.v2.1.I222f801866f71be9f7d85e5b10665cd4506d78ec@changeid>
+Message-ID: <161623776156233@kroah.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:87.0) Gecko/20100101
- Thunderbird/87.0
-Subject: Re: [PATCH v3 14/41] KVM: PPC: Book3S 64: move bad_host_intr check to
- HV handler
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-References: <20210305150638.2675513-1-npiggin@gmail.com>
- <20210305150638.2675513-15-npiggin@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20210305150638.2675513-15-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,97 +62,249 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: stable-commits@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+This is a note to let you know that I've just added the patch titled
 
-On 06/03/2021 02:06, Nicholas Piggin wrote:
-> This is not used by PR KVM.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+    vmlinux.lds.h: Create section for protection against instrumentation
+
+to the 4.19-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     vmlinux.lds.h-create-section-for-protection-against-instrumentation.patch
+and it can be found in the queue-4.19 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
 
 
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+From foo@baz Sat Mar 20 11:54:47 AM CET 2021
+From: Nicolas Boichat <drinkcat@chromium.org>
+Date: Sat, 20 Mar 2021 12:16:25 +0800
+Subject: vmlinux.lds.h: Create section for protection against instrumentation
+To: stable@vger.kernel.org
+Cc: groeck@chromium.org, Thomas Gleixner <tglx@linutronix.de>, Alexandre Chartre <alexandre.chartre@oracle.com>, Peter Zijlstra <peterz@infradead.org>, Nicolas Boichat <drinkcat@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christopher Li <sparse@chrisli.org>, Daniel Axtens <dja@axtens.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Masahiro Yamada <yamada.masahiro@socionext.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Marek <michal.lkml@markovi.net>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>, linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, linux-sparse@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Message-ID: <20210320121614.for-stable-4.19.v2.1.I222f801866f71be9f7d85e5b10665cd4506d78ec@changeid>
 
-a small tote - it probably makes sense to move this before 09/41 as this 
-one removes what 09/41 added to book3s_64_entry.S. Thanks,
+From: Nicolas Boichat <drinkcat@chromium.org>
+
+From: Thomas Gleixner <tglx@linutronix.de>
+
+commit 6553896666433e7efec589838b400a2a652b3ffa upstream.
+
+Some code pathes, especially the low level entry code, must be protected
+against instrumentation for various reasons:
+
+ - Low level entry code can be a fragile beast, especially on x86.
+
+ - With NO_HZ_FULL RCU state needs to be established before using it.
+
+Having a dedicated section for such code allows to validate with tooling
+that no unsafe functions are invoked.
+
+Add the .noinstr.text section and the noinstr attribute to mark
+functions. noinstr implies notrace. Kprobes will gain a section check
+later.
+
+Provide also a set of markers: instrumentation_begin()/end()
+
+These are used to mark code inside a noinstr function which calls
+into regular instrumentable text section as safe.
+
+The instrumentation markers are only active when CONFIG_DEBUG_ENTRY is
+enabled as the end marker emits a NOP to prevent the compiler from merging
+the annotation points. This means the objtool verification requires a
+kernel compiled with this option.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200505134100.075416272@linutronix.de
+
+[Nicolas:
+Guard noinstr macro in include/linux/compiler_types.h in __KERNEL__
+&& !__ASSEMBLY__, otherwise noinstr is expanded in the linker
+script construct.
+
+Upstream does not have this problem as many macros were moved by
+commit 71391bdd2e9a ("include/linux/compiler_types.h: don't pollute
+userspace with macro definitions"). We take the minimal approach here
+and just guard the new macro.
+
+Minor context conflicts in:
+	arch/powerpc/kernel/vmlinux.lds.S
+	include/asm-generic/vmlinux.lds.h
+	include/linux/compiler.h]
+Signed-off-by: Nicolas Boichat <drinkcat@chromium.org>
+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+Technically guarding with !__ASSEMBLY__ should be enough, but
+there seems to be no reason to expose this new macro when
+!__KERNEL__, so let's just match what upstream does.
+
+Changes in v2:
+ - Guard noinstr macro by __KERNEL__ && !__ASSEMBLY__ to prevent
+   expansion in linker script and match upstream.
+
+ arch/powerpc/kernel/vmlinux.lds.S |    1 
+ include/asm-generic/sections.h    |    3 ++
+ include/asm-generic/vmlinux.lds.h |   10 +++++++
+ include/linux/compiler.h          |   54 ++++++++++++++++++++++++++++++++++++++
+ include/linux/compiler_types.h    |    6 ++++
+ scripts/mod/modpost.c             |    2 -
+ 6 files changed, 75 insertions(+), 1 deletion(-)
+
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -99,6 +99,7 @@ SECTIONS
+ #endif
+ 		/* careful! __ftr_alt_* sections need to be close to .text */
+ 		*(.text.hot TEXT_MAIN .text.fixup .text.unlikely .fixup __ftr_alt_* .ref.text);
++		NOINSTR_TEXT
+ 		SCHED_TEXT
+ 		CPUIDLE_TEXT
+ 		LOCK_TEXT
+--- a/include/asm-generic/sections.h
++++ b/include/asm-generic/sections.h
+@@ -53,6 +53,9 @@ extern char __ctors_start[], __ctors_end
+ /* Start and end of .opd section - used for function descriptors. */
+ extern char __start_opd[], __end_opd[];
+ 
++/* Start and end of instrumentation protected text section */
++extern char __noinstr_text_start[], __noinstr_text_end[];
++
+ extern __visible const void __nosave_begin, __nosave_end;
+ 
+ /* Function descriptor handling (if any).  Override in asm/sections.h */
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -483,6 +483,15 @@
+ 	}
+ 
+ /*
++ * Non-instrumentable text section
++ */
++#define NOINSTR_TEXT							\
++		ALIGN_FUNCTION();					\
++		__noinstr_text_start = .;				\
++		*(.noinstr.text)					\
++		__noinstr_text_end = .;
++
++/*
+  * .text section. Map to function alignment to avoid address changes
+  * during second ld run in second ld pass when generating System.map
+  *
+@@ -496,6 +505,7 @@
+ 		*(TEXT_MAIN .text.fixup)				\
+ 		*(.text.unlikely .text.unlikely.*)			\
+ 		*(.text.unknown .text.unknown.*)			\
++		NOINSTR_TEXT						\
+ 		*(.text..refcount)					\
+ 		*(.ref.text)						\
+ 	MEM_KEEP(init.text*)						\
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -129,11 +129,65 @@ void ftrace_likely_update(struct ftrace_
+ 	".pushsection .discard.unreachable\n\t"				\
+ 	".long 999b - .\n\t"						\
+ 	".popsection\n\t"
++
++#ifdef CONFIG_DEBUG_ENTRY
++/* Begin/end of an instrumentation safe region */
++#define instrumentation_begin() ({					\
++	asm volatile("%c0:\n\t"						\
++		     ".pushsection .discard.instr_begin\n\t"		\
++		     ".long %c0b - .\n\t"				\
++		     ".popsection\n\t" : : "i" (__COUNTER__));		\
++})
++
++/*
++ * Because instrumentation_{begin,end}() can nest, objtool validation considers
++ * _begin() a +1 and _end() a -1 and computes a sum over the instructions.
++ * When the value is greater than 0, we consider instrumentation allowed.
++ *
++ * There is a problem with code like:
++ *
++ * noinstr void foo()
++ * {
++ *	instrumentation_begin();
++ *	...
++ *	if (cond) {
++ *		instrumentation_begin();
++ *		...
++ *		instrumentation_end();
++ *	}
++ *	bar();
++ *	instrumentation_end();
++ * }
++ *
++ * If instrumentation_end() would be an empty label, like all the other
++ * annotations, the inner _end(), which is at the end of a conditional block,
++ * would land on the instruction after the block.
++ *
++ * If we then consider the sum of the !cond path, we'll see that the call to
++ * bar() is with a 0-value, even though, we meant it to happen with a positive
++ * value.
++ *
++ * To avoid this, have _end() be a NOP instruction, this ensures it will be
++ * part of the condition block and does not escape.
++ */
++#define instrumentation_end() ({					\
++	asm volatile("%c0: nop\n\t"					\
++		     ".pushsection .discard.instr_end\n\t"		\
++		     ".long %c0b - .\n\t"				\
++		     ".popsection\n\t" : : "i" (__COUNTER__));		\
++})
++#endif /* CONFIG_DEBUG_ENTRY */
++
+ #else
+ #define annotate_reachable()
+ #define annotate_unreachable()
+ #endif
+ 
++#ifndef instrumentation_begin
++#define instrumentation_begin()		do { } while(0)
++#define instrumentation_end()		do { } while(0)
++#endif
++
+ #ifndef ASM_UNREACHABLE
+ # define ASM_UNREACHABLE
+ #endif
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -234,6 +234,12 @@ struct ftrace_likely_data {
+ #define notrace			__attribute__((no_instrument_function))
+ #endif
+ 
++#if defined(__KERNEL__) && !defined(__ASSEMBLY__)
++/* Section for code which can't be instrumented at all */
++#define noinstr								\
++	noinline notrace __attribute((__section__(".noinstr.text")))
++#endif
++
+ /*
+  * it doesn't make sense on ARM (currently the only user of __naked)
+  * to trace naked functions because then mcount is called without
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -895,7 +895,7 @@ static void check_section(const char *mo
+ 
+ #define DATA_SECTIONS ".data", ".data.rel"
+ #define TEXT_SECTIONS ".text", ".text.unlikely", ".sched.text", \
+-		".kprobes.text", ".cpuidle.text"
++		".kprobes.text", ".cpuidle.text", ".noinstr.text"
+ #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
+ 		".fixup", ".entry.text", ".exception.text", ".text.*", \
+ 		".coldtext"
 
 
-> ---
->   arch/powerpc/kvm/book3s_64_entry.S      | 3 ---
->   arch/powerpc/kvm/book3s_hv_rmhandlers.S | 4 +++-
->   arch/powerpc/kvm/book3s_segment.S       | 7 +++++++
->   3 files changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_64_entry.S b/arch/powerpc/kvm/book3s_64_entry.S
-> index d06e81842368..7a6b060ceed8 100644
-> --- a/arch/powerpc/kvm/book3s_64_entry.S
-> +++ b/arch/powerpc/kvm/book3s_64_entry.S
-> @@ -78,11 +78,8 @@ do_kvm_interrupt:
->   	beq-	.Lmaybe_skip
->   .Lno_skip:
->   #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> -	cmpwi	r9,KVM_GUEST_MODE_HOST_HV
-> -	beq	kvmppc_bad_host_intr
->   #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
->   	cmpwi	r9,KVM_GUEST_MODE_GUEST
-> -	ld	r9,HSTATE_SCRATCH2(r13)
->   	beq	kvmppc_interrupt_pr
->   #endif
->   	b	kvmppc_interrupt_hv
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index f976efb7e4a9..75405ef53238 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -1265,6 +1265,7 @@ hdec_soon:
->   kvmppc_interrupt_hv:
->   	/*
->   	 * Register contents:
-> +	 * R9		= HSTATE_IN_GUEST
->   	 * R12		= (guest CR << 32) | interrupt vector
->   	 * R13		= PACA
->   	 * guest R12 saved in shadow VCPU SCRATCH0
-> @@ -1272,6 +1273,8 @@ kvmppc_interrupt_hv:
->   	 * guest R9 saved in HSTATE_SCRATCH2
->   	 */
->   	/* We're now back in the host but in guest MMU context */
-> +	cmpwi	r9,KVM_GUEST_MODE_HOST_HV
-> +	beq	kvmppc_bad_host_intr
->   	li	r9, KVM_GUEST_MODE_HOST_HV
->   	stb	r9, HSTATE_IN_GUEST(r13)
->   
-> @@ -3272,7 +3275,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_P9_TM_HV_ASSIST)
->    * cfar is saved in HSTATE_CFAR(r13)
->    * ppr is saved in HSTATE_PPR(r13)
->    */
-> -.global kvmppc_bad_host_intr
->   kvmppc_bad_host_intr:
->   	/*
->   	 * Switch to the emergency stack, but start half-way down in
-> diff --git a/arch/powerpc/kvm/book3s_segment.S b/arch/powerpc/kvm/book3s_segment.S
-> index 1f492aa4c8d6..ef1d88b869bf 100644
-> --- a/arch/powerpc/kvm/book3s_segment.S
-> +++ b/arch/powerpc/kvm/book3s_segment.S
-> @@ -167,8 +167,15 @@ kvmppc_interrupt_pr:
->   	 * R12             = (guest CR << 32) | exit handler id
->   	 * R13             = PACA
->   	 * HSTATE.SCRATCH0 = guest R12
-> +	 *
-> +	 * If HV is possible, additionally:
-> +	 * R9              = HSTATE_IN_GUEST
-> +	 * HSTATE.SCRATCH2 = guest R9
->   	 */
->   #ifdef CONFIG_PPC64
-> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> +	ld	r9,HSTATE_SCRATCH2(r13)
-> +#endif
->   	/* Match 32-bit entry */
->   	rotldi	r12, r12, 32		  /* Flip R12 halves for stw */
->   	stw	r12, HSTATE_SCRATCH1(r13) /* CR is now in the low half */
-> 
+Patches currently in stable-queue which might be from drinkcat@chromium.org are
 
--- 
-Alexey
+queue-4.19/vmlinux.lds.h-create-section-for-protection-against-instrumentation.patch
+queue-4.19/lkdtm-don-t-move-ctors-to-.rodata.patch
