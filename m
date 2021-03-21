@@ -1,72 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD7D343220
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Mar 2021 12:38:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDD834326E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Mar 2021 13:30:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F3FyB1qn9z30B2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Mar 2021 22:38:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F3H6F5Rbnz303x
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Mar 2021 23:30:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=CjBgjxTr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=hegytKpY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42f;
- helo=mail-pf1-x42f.google.com; envelope-from=senozhatsky@chromium.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=yashsri421@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=CjBgjxTr; dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=hegytKpY; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F35hc5NXSz2xfx
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Mar 2021 16:26:21 +1100 (AEDT)
-Received: by mail-pf1-x42f.google.com with SMTP id c204so8731205pfc.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Mar 2021 22:26:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=Hh7shEFqN+4YQy0DWvjoXzsDlDCaLtw9ra44KHPWHkg=;
- b=CjBgjxTr+npHKRoZHWRNroG1zVN7+AkzcS/lmkSLNlF4EKxZnVNJjDShIuxxxAbDMP
- Zi7BM7SPsQiwW3sjUNxe7wSxx8345a5fj0NJPVkLBGCQUl1vmxZJ8jBKoC1wCrRzdvKX
- XajNGZiZipEMON2F1c0CexM5NZ+JccY+8RIow=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F3H5q5rgHz2xg4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Mar 2021 23:30:22 +1100 (AEDT)
+Received: by mail-pj1-x1031.google.com with SMTP id s21so6954674pjq.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Mar 2021 05:30:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=KfMzPZjWj4vEWxC64jkBmTku/Bg4RYDhn1mRma2jDt8=;
+ b=hegytKpYdRSuP2KRtRXvnXoxRL6o5TUG6vOY4yeXASkte2gkTvZzYhTtSmPnxAq+v9
+ 9Hcn68jY5tETkaXali7jJZwmv0qJJ4qKDuqsQ8a/7ddrRCBVr6rqHtAjCCWEmMoSxQ8C
+ xj4AvwuHiarQk0OF3AUhT21yIOgrguIaVndkjaXXDmonXpLrs+xulUoFFlHr7JvvfuqQ
+ ag67lyTseGR3cQkkgmZO5w9Kb3IY4mII+7z3Mz3U8K+LLGglSTA5zny0fZLXhXRrIChW
+ GDcrbjaL8URhLtnkfkr4BuqnJBntGZJ1y1NI4r8LA9fGb9CHVhb0KibU1KZ7Z6Jt34zb
+ AAJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=Hh7shEFqN+4YQy0DWvjoXzsDlDCaLtw9ra44KHPWHkg=;
- b=PjkGNoS8O06TSycG5dfNg1ZKciNlvCbnM5amvuVNdcKdpD4u1WhcrKJjLrNt5IRNce
- 0O3t+Ow13gq0wzWrFA2I8dEeBDmzQ/wtsdPazGRPRGTx02n2/D74LAs0Uh8JZoImS/W7
- gR2/ARuzh+v9c4BDEc5oZ8zbjve8ccWm1QaSi0SBFuCLzA8PPxQBoT5gwqjN+8TbEyw2
- baO99aB4I5Ff3qIvhhmVlD/8i/owTtdf2CZXybNWlOrsQCXUq5ynh8ui4WfdM6Yc6rp5
- vW7LgE2HvE9EBYK411nBbAjR1Y70PoofxGzKFkizHYw0TpgQuBaFUpCuZCo8KHVeZ8hp
- GPCA==
-X-Gm-Message-State: AOAM531K92wDDZWYZKGvfjNc4k+zkGN8gHX8yLV5YJl2LLCLYcMYNhOZ
- +Uwqy5w36KlmMqFF8HqqQTOSQw==
-X-Google-Smtp-Source: ABdhPJzWtY3HUJYpBDSoqpysrTRhl3hfq3Gue+pAzMn1TblrjdoVsbczMaY8+SWExQl6c3ccUGZpXA==
-X-Received: by 2002:a63:1845:: with SMTP id 5mr18028063pgy.244.1616304378263; 
- Sat, 20 Mar 2021 22:26:18 -0700 (PDT)
-Received: from google.com ([2409:10:2e40:5100:2dfa:a0a:77ff:3953])
- by smtp.gmail.com with ESMTPSA id x190sm9815525pfx.60.2021.03.20.22.26.12
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=KfMzPZjWj4vEWxC64jkBmTku/Bg4RYDhn1mRma2jDt8=;
+ b=QeuhsZd671sMkam54W2fD+Km9A5V0A7h8y6O/LzFOpVRxpYQUfmhZ6SjpSOMfxBRI1
+ WZega8EidN/zIMZw6bRhLJuibl4Hng5Kp/A0rV+xyRX7EWHDx/uG/V65sNpimLgila8/
+ izxPBMduZXoapbqTCj78PTzChh8q98bZBohnuiY6LyuJucmWfY61pyLVnC5xdLzSdMR7
+ WYQGAPZHcggoIY32gdUGwql6xIBDwkBs75bvmDr+IP6zgV2+1OTJwyTE4sf4tNUGFg8N
+ hWCv3BZVOfUW6qWlgWIxQMBTLUcy1Bwfv3S3LQGA6LfbrbIKUknNrPPLQpsu0WJxRcJ8
+ 3LLg==
+X-Gm-Message-State: AOAM531r+pdg0SzsP2cwS5Ga4RwOoPRcflCcbjT2CfMFbFDQrp9CQIzS
+ YQLz47hG52MqBW0RgBPASqw=
+X-Google-Smtp-Source: ABdhPJxrZpRtLJ/jkSAjBSxfQgEgy62uvjYCzEAtSUy2I9ELjZgwt4OUC4GFVa3L3gPwSN14gkfhNg==
+X-Received: by 2002:a17:90a:8c08:: with SMTP id
+ a8mr8252584pjo.136.1616329820543; 
+ Sun, 21 Mar 2021 05:30:20 -0700 (PDT)
+Received: from localhost.localdomain ([2405:201:600d:a089:4cb7:d0cb:1241:5cf8])
+ by smtp.googlemail.com with ESMTPSA id
+ f135sm10627171pfa.102.2021.03.21.05.30.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 Mar 2021 22:26:17 -0700 (PDT)
-Date: Sun, 21 Mar 2021 14:26:10 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: John Ogness <john.ogness@linutronix.de>
-Subject: Re: [PATCH next v1 2/3] printk: remove safe buffers
-Message-ID: <YFbY8kF7ilYoxvYp@google.com>
-References: <20210316233326.10778-1-john.ogness@linutronix.de>
- <20210316233326.10778-3-john.ogness@linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210316233326.10778-3-john.ogness@linutronix.de>
-X-Mailman-Approved-At: Sun, 21 Mar 2021 22:38:19 +1100
+ Sun, 21 Mar 2021 05:30:20 -0700 (PDT)
+From: Aditya Srivastava <yashsri421@gmail.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: nx: fix incorrect kernel-doc comment syntax in files
+Date: Sun, 21 Mar 2021 18:00:07 +0530
+Message-Id: <20210321123007.15505-1-yashsri421@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,66 +75,159 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rafael Aquini <aquini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Paul Mackerras <paulus@samba.org>, Tiezhu Yang <yangtiezhu@loongson.cn>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Yue Hu <huyue2@yulong.com>,
- Jordan Niethe <jniethe5@gmail.com>, Petr Mladek <pmladek@suse.com>,
- Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alistair Popple <alistair@popple.id.au>,
- "Guilherme G. Piccoli" <gpiccoli@canonical.com>,
- Nicholas Piggin <npiggin@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
- Thomas Gleixner <tglx@linutronix.de>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, Eric Biederman <ebiederm@xmission.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Cc: nayna@linux.ibm.com, herbert@gondor.apana.org.au, corbet@lwn.net,
+ rdunlap@infradead.org, linuxppc-dev@lists.ozlabs.org, yashsri421@gmail.com,
+ pfsmorigo@gmail.com, linux-crypto@vger.kernel.org, leitao@debian.org,
+ lukas.bulwahn@gmail.com, linux-kernel-mentees@lists.linuxfoundation.org,
+ davem@davemloft.net, paulus@samba.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On (21/03/17 00:33), John Ogness wrote:
-[..]
->  void printk_nmi_direct_enter(void)
->  {
-> @@ -324,27 +44,8 @@ void printk_nmi_direct_exit(void)
->  	this_cpu_and(printk_context, ~PRINTK_NMI_DIRECT_CONTEXT_MASK);
->  }
->  
-> -#else
-> -
-> -static __printf(1, 0) int vprintk_nmi(const char *fmt, va_list args)
-> -{
-> -	return 0;
-> -}
-> -
->  #endif /* CONFIG_PRINTK_NMI */
->  
-> -/*
-> - * Lock-less printk(), to avoid deadlocks should the printk() recurse
-> - * into itself. It uses a per-CPU buffer to store the message, just like
-> - * NMI.
-> - */
-> -static __printf(1, 0) int vprintk_safe(const char *fmt, va_list args)
-> -{
-> -	struct printk_safe_seq_buf *s = this_cpu_ptr(&safe_print_seq);
-> -
-> -	return printk_safe_log_store(s, fmt, args);
-> -}
-> -
->  /* Can be preempted by NMI. */
->  void __printk_safe_enter(void)
->  {
-> @@ -369,7 +70,10 @@ __printf(1, 0) int vprintk_func(const char *fmt, va_list args)
->  	 * Use the main logbuf even in NMI. But avoid calling console
->  	 * drivers that might have their own locks.
->  	 */
-> -	if ((this_cpu_read(printk_context) & PRINTK_NMI_DIRECT_CONTEXT_MASK)) {
-> +	if (this_cpu_read(printk_context) &
-> +	    (PRINTK_NMI_DIRECT_CONTEXT_MASK |
-> +	     PRINTK_NMI_CONTEXT_MASK |
-> +	     PRINTK_SAFE_CONTEXT_MASK)) {
+The opening comment mark '/**' is used for highlighting the beginning of
+kernel-doc comments.
+There are certain files in drivers/crypto/nx, which follow this syntax,
+but the content inside does not comply with kernel-doc.
+Such lines were probably not meant for kernel-doc parsing, but are parsed
+due to the presence of kernel-doc like comment syntax(i.e, '/**'), which
+causes unexpected warnings from kernel-doc.
 
-Do we need printk_nmi_direct_enter/exit() and PRINTK_NMI_DIRECT_CONTEXT_MASK?
-Seems like all printk_safe() paths are now DIRECT - we store messages to the
-prb, but don't call console drivers.
+E.g., presence of kernel-doc like comment in the header lines for
+drivers/crypto/nx/nx-sha256.c at header causes these warnings:
+"warning: Function parameter or member 'tfm' not described in 'nx_crypto_ctx_sha256_init'"
+"warning: expecting prototype for SHA(). Prototype was for nx_crypto_ctx_sha256_init() instead"
 
-	-ss
+Similarly for other files too.
+
+Provide a simple fix by replacing such occurrences with general comment
+format, i.e. '/*', to prevent kernel-doc from parsing it.
+
+Signed-off-by: Aditya Srivastava <yashsri421@gmail.com>
+---
+* Applies perfectly on next-20210319
+
+ drivers/crypto/nx/nx-aes-cbc.c  | 2 +-
+ drivers/crypto/nx/nx-aes-ccm.c  | 2 +-
+ drivers/crypto/nx/nx-aes-ctr.c  | 2 +-
+ drivers/crypto/nx/nx-aes-ecb.c  | 2 +-
+ drivers/crypto/nx/nx-aes-gcm.c  | 2 +-
+ drivers/crypto/nx/nx-aes-xcbc.c | 2 +-
+ drivers/crypto/nx/nx-sha256.c   | 2 +-
+ drivers/crypto/nx/nx-sha512.c   | 2 +-
+ drivers/crypto/nx/nx.c          | 2 +-
+ drivers/crypto/nx/nx_debugfs.c  | 2 +-
+ 10 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/crypto/nx/nx-aes-cbc.c b/drivers/crypto/nx/nx-aes-cbc.c
+index 92e921eceed7..d6314ea9ae89 100644
+--- a/drivers/crypto/nx/nx-aes-cbc.c
++++ b/drivers/crypto/nx/nx-aes-cbc.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * AES CBC routines supporting the Power 7+ Nest Accelerators driver
+  *
+  * Copyright (C) 2011-2012 International Business Machines Inc.
+diff --git a/drivers/crypto/nx/nx-aes-ccm.c b/drivers/crypto/nx/nx-aes-ccm.c
+index 4c9362eebefd..e7384d107573 100644
+--- a/drivers/crypto/nx/nx-aes-ccm.c
++++ b/drivers/crypto/nx/nx-aes-ccm.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * AES CCM routines supporting the Power 7+ Nest Accelerators driver
+  *
+  * Copyright (C) 2012 International Business Machines Inc.
+diff --git a/drivers/crypto/nx/nx-aes-ctr.c b/drivers/crypto/nx/nx-aes-ctr.c
+index 6d5ce1a66f1e..13f518802343 100644
+--- a/drivers/crypto/nx/nx-aes-ctr.c
++++ b/drivers/crypto/nx/nx-aes-ctr.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * AES CTR routines supporting the Power 7+ Nest Accelerators driver
+  *
+  * Copyright (C) 2011-2012 International Business Machines Inc.
+diff --git a/drivers/crypto/nx/nx-aes-ecb.c b/drivers/crypto/nx/nx-aes-ecb.c
+index 77e338dc33f1..7a729dc2bc17 100644
+--- a/drivers/crypto/nx/nx-aes-ecb.c
++++ b/drivers/crypto/nx/nx-aes-ecb.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * AES ECB routines supporting the Power 7+ Nest Accelerators driver
+  *
+  * Copyright (C) 2011-2012 International Business Machines Inc.
+diff --git a/drivers/crypto/nx/nx-aes-gcm.c b/drivers/crypto/nx/nx-aes-gcm.c
+index 19c6ed5baea4..fc9baca13920 100644
+--- a/drivers/crypto/nx/nx-aes-gcm.c
++++ b/drivers/crypto/nx/nx-aes-gcm.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * AES GCM routines supporting the Power 7+ Nest Accelerators driver
+  *
+  * Copyright (C) 2012 International Business Machines Inc.
+diff --git a/drivers/crypto/nx/nx-aes-xcbc.c b/drivers/crypto/nx/nx-aes-xcbc.c
+index 48dc1c98ca52..eb5c8f689360 100644
+--- a/drivers/crypto/nx/nx-aes-xcbc.c
++++ b/drivers/crypto/nx/nx-aes-xcbc.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * AES XCBC routines supporting the Power 7+ Nest Accelerators driver
+  *
+  * Copyright (C) 2011-2012 International Business Machines Inc.
+diff --git a/drivers/crypto/nx/nx-sha256.c b/drivers/crypto/nx/nx-sha256.c
+index 90d9a37a57f6..b0ad665e4bda 100644
+--- a/drivers/crypto/nx/nx-sha256.c
++++ b/drivers/crypto/nx/nx-sha256.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * SHA-256 routines supporting the Power 7+ Nest Accelerators driver
+  *
+  * Copyright (C) 2011-2012 International Business Machines Inc.
+diff --git a/drivers/crypto/nx/nx-sha512.c b/drivers/crypto/nx/nx-sha512.c
+index eb8627a0f317..c29103a1a0b6 100644
+--- a/drivers/crypto/nx/nx-sha512.c
++++ b/drivers/crypto/nx/nx-sha512.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * SHA-512 routines supporting the Power 7+ Nest Accelerators driver
+  *
+  * Copyright (C) 2011-2012 International Business Machines Inc.
+diff --git a/drivers/crypto/nx/nx.c b/drivers/crypto/nx/nx.c
+index 1d0e8a1ba160..13bb705ba6a4 100644
+--- a/drivers/crypto/nx/nx.c
++++ b/drivers/crypto/nx/nx.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * Routines supporting the Power 7+ Nest Accelerators driver
+  *
+  * Copyright (C) 2011-2012 International Business Machines Inc.
+diff --git a/drivers/crypto/nx/nx_debugfs.c b/drivers/crypto/nx/nx_debugfs.c
+index 1975bcbee997..ee7cd88bb10a 100644
+--- a/drivers/crypto/nx/nx_debugfs.c
++++ b/drivers/crypto/nx/nx_debugfs.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/**
++/*
+  * debugfs routines supporting the Power 7+ Nest Accelerators driver
+  *
+  * Copyright (C) 2011-2012 International Business Machines Inc.
+-- 
+2.17.1
+
