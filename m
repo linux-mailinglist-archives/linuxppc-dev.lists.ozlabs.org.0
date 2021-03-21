@@ -2,52 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACEA73430F4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Mar 2021 06:16:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 325923431D9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Mar 2021 10:21:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F35Sy2NzTz30CL
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Mar 2021 16:16:18 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hLs9Zd46;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F3BvQ733Mz309h
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Mar 2021 20:21:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=hLs9Zd46; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
+ helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
+ receiver=<UNKNOWN>)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
+ [130.133.4.66])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F35SY03yWz2xdQ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Mar 2021 16:15:55 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F35SK57g1z9sSC;
- Sun, 21 Mar 2021 16:15:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1616303747;
- bh=NuaqmDeUEq7U+V+o2OVKAvJoermIek4/PIHuFD5u7/M=;
- h=From:To:Cc:Subject:Date:From;
- b=hLs9Zd46xThlMGvFCxClRd+w5xtFqAbGKjF3KtZzNaSgW2omzEP0bTWxPqDkhP9/p
- SoDcsRAhc0MaMuLz72Qhrz9rR6x09ZAT1XHjhZLNaavGzgJlTtbGsbirtoWuf6Bbkf
- fn8gafnk5qQ9JHuCSdpPeUp20koQJGcPzj2O1dXBeSaU9LWH1RxT1mzLWdBaxkAZeJ
- IWmpwQQyDH1gG7dbpk4wu3qz561WQ7PrZKW+aIK7FpdaLMRY3wznnF2ROnIRHBRzGb
- sixgdsyQgqw1/Dd5t+y2oTqIo3E7p6deBaZAmspEIo4Xrum9vPnkAsZoC/4ETZO+zk
- m4pbh66yxo5Dw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.12-4 tag
-Date: Sun, 21 Mar 2021 16:15:35 +1100
-Message-ID: <875z1lhytk.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F3Bv509jXz2xZR
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Mar 2021 20:20:47 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1lNuGE-003lHF-1r; Sun, 21 Mar 2021 10:20:38 +0100
+Received: from p57bd9a6f.dip0.t-ipconnect.de ([87.189.154.111]
+ helo=[192.168.178.139]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
+ with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1lNuGD-001TwM-Dq; Sun, 21 Mar 2021 10:20:37 +0100
+Subject: Re: remove the legacy ide driver
+To: Christoph Hellwig <hch@lst.de>, "David S. Miller" <davem@davemloft.net>,
+ Jens Axboe <axboe@kernel.dk>, Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20210318045706.200458-1-hch@lst.de>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <4ac2f934-fa64-f8c2-8a4d-4b15c8a421a6@physik.fu-berlin.de>
+Date: Sun, 21 Mar 2021 10:20:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20210318045706.200458-1-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.154.111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,67 +56,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-doc@vger.kernel.org,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-alpha@vger.kernel.org,
+ Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Hello Christoph!
 
-Hi Linus,
+On 3/18/21 5:56 AM, Christoph Hellwig wrote:
+> libata mostly covers all hardware supported by the legacy ide driver.
+> There are three mips drivers that are not supported, but the linux-mips
+> list could not identify any users of those.  There also are two m68k
+> drivers that do not have libata equivalents, which might or might not
+> have users, so we'll need some input and possibly help from the m68k
+> community here.
 
-Please pull some more powerpc fixes for 5.12:
+I think those drivers were the Q60 driver and the MacIDE driver, weren't they?
 
-The following changes since commit 0b736881c8f1a6cd912f7a9162b9e097b28c1c30:
+Either way, I have so far been unsuccessful in obtaining access to these machines
+but I assume once we gain access to such machines, Bartlomiej could convert the
+drivers the same way he already converted the falcon, gayle and buddha drivers,
+for example.
 
-  powerpc/traps: unrecoverable_exception() is not an interrupt handler (2021-03-12 11:02:12 +1100)
+One could also just convert the drivers to libata and include them untested, the
+conversion itself seems pretty little work for someone experienced with libata.
 
-are available in the git repository at:
+Adrian
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.12-4
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
-for you to fetch changes up to cc7a0bb058b85ea03db87169c60c7cfdd5d34678:
-
-  PCI: rpadlpar: Fix potential drc_name corruption in store functions (2021-03-17 13:48:07 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.12 #4
-
-Fix a possible stack corruption and subsequent DLPAR failure in the rpadlpar_io
-PCI hotplug driver.
-
-Two build fixes for uncommon configurations.
-
-Thanks to Christophe Leroy, Tyrel Datwyler.
-
-- ------------------------------------------------------------------
-Christophe Leroy (2):
-      powerpc/vdso32: Add missing _restgpr_31_x to fix build failure
-      powerpc: Force inlining of cpu_has_feature() to avoid build failure
-
-Tyrel Datwyler (1):
-      PCI: rpadlpar: Fix potential drc_name corruption in store functions
-
-
- arch/powerpc/include/asm/cpu_has_feature.h |  4 ++--
- arch/powerpc/kernel/vdso32/gettimeofday.S  | 11 +++++++++++
- drivers/pci/hotplug/rpadlpar_sysfs.c       | 14 ++++++--------
- 3 files changed, 19 insertions(+), 10 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmBW1cQACgkQUevqPMjh
-pYAhog/+KVrIL4frKx1m7bmM+FJ83heS20+F7i5yQWRovR2FdgYwwbIrtxNUKzRU
-sNShwQbt9H6GVEGc12kusH5M+t6wGrHrYQ47kdkD6qhDTPfQzKXsoi5eWbgMkQnx
-Hd3njqjzfGFEicmfp8l+1WmoWeYpL2MLR7E/KTtS/MYMq5Gsz2lZSMEsmXlAY5Cs
-5lT8dBHdH0AX9krRJk9BzKrRqB0qjrK60/sg9oLJQ4sixeWaa+dSORnJq26jYV+n
-MPyaNCWF3EUrs7BNyxfZOeFwAZ0FzRSBZrgIt6MNPreT/FaL6lo2McHHyQ9Ls5Qb
-yPUmioNKLhXdtcU6AZ0+QOlQvyiGJ7xb3UTAbFFq8TifYHVS0v9srBkgfcvFHycc
-yjDtdeTk18WB6NSDC8zVSc+Ut5q7WZa6RLKubiCPgd5DqDkpAKcYcTQSZZUgTb6Q
-IyT7bwCBqW6Z5bNTsHhSZ+Ub06L6RLTQ1IfD4GXtqe16F1eeFlMOPCP2YzGUB6s9
-IB7GQilliVtRZaFCGwYyVdZCHftHVdK5k7DV+3aImzPRYOKpL4YWwrBnDoqkccYs
-Mhbw2YtO7oXSZ2yXGrsu/WF56QCDf6PFO5r28dvNFEi6qZWbfLEQQLZmv/0efFtC
-Je1VKXKXCfuLD2VH02F8URZpzbg90dC8YRsTUpgSLCHgiGjEOcE=
-=zfoH
------END PGP SIGNATURE-----
