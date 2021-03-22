@@ -1,79 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D73344FA4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 20:10:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287BC345228
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 22:59:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F43xS66DYz30Lq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 06:10:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F47gq4fs7z30L4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 08:59:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=rnlGQtVK;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=hWZn1OEP;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=CRPWbEDw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::736;
- helo=mail-qk1-x736.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
+ helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rnlGQtVK; dkim-atps=neutral
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com
- [IPv6:2607:f8b0:4864:20::736])
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=hWZn1OEP; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=CRPWbEDw; 
+ dkim-atps=neutral
+Received: from galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F43x135n1z302L
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 06:10:28 +1100 (AEDT)
-Received: by mail-qk1-x736.google.com with SMTP id q26so6507286qkm.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 12:10:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=iNkMlxbd5hw8vbFbsx/z880fTB06PFSXH/nFwwKyStY=;
- b=rnlGQtVK9HXlygnqWYdHt7Txl0gnxq9HLW0CGVrRuzpqd69n+S42Gyed5hCfbylmjI
- oKiixgwo495YWGW0sq99flzrhZyPCH4/vXD4C0EKShIpop7qf+69ML9lKCmq3gOhZnNM
- qlKr1ecNrZWZUniNY+3FvKGjjHX4kWieZaYbQm9hSRFTWHEPXWTMexC1ZeVKimlBShMs
- ZkeDpEHlFTI2N5WE3IGf0DMHh+g0f/yvF5UlkS+ATOVQmcAUu7PXiJEsQGzDUW3lhHt4
- wf43IZ+7Gtrj6iM80U+L+UNlXvjqhEAyPBtspqJAy9EP8G/pefSlp/THDyzXl02LSlyH
- DqLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=iNkMlxbd5hw8vbFbsx/z880fTB06PFSXH/nFwwKyStY=;
- b=fhn3IU3HH+PFErtifMWBiRx3a6omOW2Ip1T7xT730TZIVp1nwlkJK5sgR/HretbQmt
- szSdecp/R/2n3DqNZqPX24kdhb5I317lXoHzFlfpQ3amKc8K1nrLqDNJX3YrFgY4ZR2g
- f3/squbttXpkvV4TN5o+Sf7cNj96IUSRgT277pUlQ4TsvXKVxxtHooL3Bl0m7JQjSHgs
- K53NZzTWg7NX/Sckmq5gjQoF7fFwDvy1sU2lSB3Re0j0OMO8gw20I1eBSpHf6F7sZu8d
- UuAu9D6jhq0/zUjBuqW1uoFhtv3vCAtA5RBCCpZ+BudQDqALeHj+Ljp4s0A98j2b9ksk
- 7dNQ==
-X-Gm-Message-State: AOAM531dkDIiu8vJ/jOKN4RvruA2gWtrOwoAYnt5HdvVTC9QNSy/7mby
- 5HmmZQyxUqJzxvjbRB/iEsE=
-X-Google-Smtp-Source: ABdhPJx2GYs+mlG9vxpWgsKw5z54VcLtQ6iDAT/CYzn5OSkaZdO704su+AGykz3PLGvC9Wyhb9dy1Q==
-X-Received: by 2002:a05:620a:20c7:: with SMTP id
- f7mr1619367qka.156.1616440223181; 
- Mon, 22 Mar 2021 12:10:23 -0700 (PDT)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com.com
- (179-125-204-19.dynamic.desktop.com.br. [179.125.204.19])
- by smtp.gmail.com with ESMTPSA id r133sm11810186qke.20.2021.03.22.12.10.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Mar 2021 12:10:22 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Christophe Leroy <christophe.leroy@c-s.fr>,
- Leonardo Bras <leobras.c@gmail.com>, Joel Stanley <joel@jms.id.au>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, brking@linux.vnet.ibm.com
-Subject: [PATCH 1/1] powerpc/iommu: Enable remaining IOMMU Pagesizes present
- in LoPAR
-Date: Mon, 22 Mar 2021 16:09:43 -0300
-Message-Id: <20210322190943.715368-1-leobras.c@gmail.com>
-X-Mailer: git-send-email 2.29.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F47gN3c3gz2y8N
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 08:58:56 +1100 (AEDT)
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1616450328;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Iet1Wjr63GOcypmPYTq4T14ZukHB3u7jxBY+aVGKYYw=;
+ b=hWZn1OEPRtuWZTKgMnYPjGIok1vIyTctIQZGZ6w/gvzyu38zCLZRs0rP9Ld3AFrAYjsdQe
+ LPb1O/m0YREF9nWyNXiWpxJRtjvD1vliM5odx5pV7lvLTfnfG6pV6T2qyZSsh3Upl9Wcbc
+ XswU2iFrZ50/MSWD3bBuw2BwTyF8JQ/1TbC8wssrTXY2cZk8peWr1fggRtl2VUFe+1EBgH
+ APX1XMEVv5RIRBqmYlI1jY46v/MwBj5JvZIP5jVcc8vFSE/ihpLFRid2DCHwMmq/iI2wTu
+ w2LsHAkd/icYsF9porOlMj1Yc0IOVHbHMtqmZHHgv8il23b1PqhtabwpAQfFLQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1616450328;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Iet1Wjr63GOcypmPYTq4T14ZukHB3u7jxBY+aVGKYYw=;
+ b=CRPWbEDwimqHHhUntjKMWJlbWmp0m4OGXo7z/b2dtmIHKsux6P7hlRrO9Y3AeDGb3cbI3E
+ OtE/XeeV+5OMVICw==
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH next v1 2/3] printk: remove safe buffers
+In-Reply-To: <YFjbwxhZNnC52aSP@alley>
+References: <20210316233326.10778-1-john.ogness@linutronix.de>
+ <20210316233326.10778-3-john.ogness@linutronix.de>
+ <YFbY8kF7ilYoxvYp@google.com> <87k0pzmoao.fsf@jogness.linutronix.de>
+ <YFjbwxhZNnC52aSP@alley>
+Date: Mon, 22 Mar 2021 22:58:47 +0100
+Message-ID: <87ft0mg8a0.fsf@jogness.linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,93 +72,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Rafael Aquini <aquini@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Paul Mackerras <paulus@samba.org>, Tiezhu Yang <yangtiezhu@loongson.cn>,
+ Peter Zijlstra <peterz@infradead.org>, Yue Hu <huyue2@yulong.com>,
+ Jordan Niethe <jniethe5@gmail.com>, Kees Cook <keescook@chromium.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Alistair Popple <alistair@popple.id.au>, "Guilherme G.
+ Piccoli" <gpiccoli@canonical.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Eric Biederman <ebiederm@xmission.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-According to LoPAR, ibm,query-pe-dma-window output named "IO Page Sizes"
-will let the OS know all possible pagesizes that can be used for creating a
-new DDW.
+On 2021-03-22, Petr Mladek <pmladek@suse.com> wrote:
+> On Mon 2021-03-22 12:16:15, John Ogness wrote:
+>> On 2021-03-21, Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
+>> >> @@ -369,7 +70,10 @@ __printf(1, 0) int vprintk_func(const char *fmt, va_list args)
+>> >>  	 * Use the main logbuf even in NMI. But avoid calling console
+>> >>  	 * drivers that might have their own locks.
+>> >>  	 */
+>> >> -	if ((this_cpu_read(printk_context) & PRINTK_NMI_DIRECT_CONTEXT_MASK)) {
+>> >> +	if (this_cpu_read(printk_context) &
+>> >> +	    (PRINTK_NMI_DIRECT_CONTEXT_MASK |
+>> >> +	     PRINTK_NMI_CONTEXT_MASK |
+>> >> +	     PRINTK_SAFE_CONTEXT_MASK)) {
+>> >
+>> > Do we need printk_nmi_direct_enter/exit() and
+>> > PRINTK_NMI_DIRECT_CONTEXT_MASK?  Seems like all printk_safe() paths
+>> > are now DIRECT - we store messages to the prb, but don't call console
+>> > drivers.
+>>
+>> I was planning on waiting until the kthreads are introduced, in which
+>> case printk_safe.c is completely removed.
+>
+> You want to keep printk_safe() context because it prevents calling
+> consoles even in normal context. Namely, it prevents deadlock by
+> recursively taking, for example, sem->lock in console_lock() or
+> console_owner_lock in console_trylock_spinning(). Am I right?
 
-Currently Linux will only try using 3 of the 8 available options:
-4K, 64K and 16M. According to LoPAR, Hypervisor may also offer 32M, 64M,
-128M, 256M and 16G.
+Correct.
 
-Enabling bigger pages would be interesting for direct mapping systems
-with a lot of RAM, while using less TCE entries.
+>> But I suppose I could switch
+>> the 1 printk_nmi_direct_enter() user to printk_nmi_enter() so that
+>> PRINTK_NMI_DIRECT_CONTEXT_MASK can be removed now. I would do this in a
+>> 4th patch of the series.
+>
+> Yes, please unify the PRINTK_NMI_CONTEXT. One is enough.
 
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
----
- arch/powerpc/include/asm/iommu.h       |  8 ++++++++
- arch/powerpc/platforms/pseries/iommu.c | 28 +++++++++++++++++++-------
- 2 files changed, 29 insertions(+), 7 deletions(-)
+Agreed. (But I'll go even further. See below.)
 
-diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-index deef7c94d7b6..c170048b7a1b 100644
---- a/arch/powerpc/include/asm/iommu.h
-+++ b/arch/powerpc/include/asm/iommu.h
-@@ -19,6 +19,14 @@
- #include <asm/pci-bridge.h>
- #include <asm/asm-const.h>
- 
-+#define IOMMU_PAGE_SHIFT_16G	34
-+#define IOMMU_PAGE_SHIFT_256M	28
-+#define IOMMU_PAGE_SHIFT_128M	27
-+#define IOMMU_PAGE_SHIFT_64M	26
-+#define IOMMU_PAGE_SHIFT_32M	25
-+#define IOMMU_PAGE_SHIFT_16M	24
-+#define IOMMU_PAGE_SHIFT_64K	16
-+
- #define IOMMU_PAGE_SHIFT_4K      12
- #define IOMMU_PAGE_SIZE_4K       (ASM_CONST(1) << IOMMU_PAGE_SHIFT_4K)
- #define IOMMU_PAGE_MASK_4K       (~((1 << IOMMU_PAGE_SHIFT_4K) - 1))
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 9fc5217f0c8e..02958e80aa91 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1099,6 +1099,24 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
- 			 ret);
- }
- 
-+/* Returns page shift based on "IO Page Sizes" output at ibm,query-pe-dma-window. SeeL LoPAR */
-+static int iommu_get_page_shift(u32 query_page_size)
-+{
-+	const int shift[] = {IOMMU_PAGE_SHIFT_4K,   IOMMU_PAGE_SHIFT_64K,  IOMMU_PAGE_SHIFT_16M,
-+			     IOMMU_PAGE_SHIFT_32M,  IOMMU_PAGE_SHIFT_64M,  IOMMU_PAGE_SHIFT_128M,
-+			     IOMMU_PAGE_SHIFT_256M, IOMMU_PAGE_SHIFT_16G};
-+	int i = ARRAY_SIZE(shift) - 1;
-+
-+	/* Looks for the largest page size supported */
-+	for (; i >= 0; i--) {
-+		if (query_page_size & (1 << i))
-+			return shift[i];
-+	}
-+
-+	/* No valid page size found. */
-+	return 0;
-+}
-+
- /*
-  * If the PE supports dynamic dma windows, and there is space for a table
-  * that can map all pages in a linear offset, then setup such a table,
-@@ -1206,13 +1224,9 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 			goto out_failed;
- 		}
- 	}
--	if (query.page_size & 4) {
--		page_shift = 24; /* 16MB */
--	} else if (query.page_size & 2) {
--		page_shift = 16; /* 64kB */
--	} else if (query.page_size & 1) {
--		page_shift = 12; /* 4kB */
--	} else {
-+
-+	page_shift = iommu_get_page_shift(query.page_size);
-+	if (!page_shift) {
- 		dev_dbg(&dev->dev, "no supported direct page size in mask %x",
- 			  query.page_size);
- 		goto out_failed;
--- 
-2.29.2
+> I wonder if it would make sense to go even further at this stage.
+> There will still be 4 contexts that modify the printk behavior after
+> this patchset:
+>
+>   + printk_count set by printk_enter()/exit()
+>       + prevents: infinite recursion
+>       + context: any context
+>       + action: skips entire printk at 3rd recursion level
+>
+>   + prink_context set by printk_safe_enter()/exit()
+>       + prevents: dead lock caused by recursion into some
+> 		console code in any context
+>       + context: any
+>       + action: skips console call at 1st recursion level
 
+Technically, at this point printk_safe_enter() behavior is identical to
+printk_nmi_enter(). Namely, prevent any recursive printk calls from
+calling into the console code.
+
+>   + printk_context set by printk_nmi_enter()/exit()
+>       + prevents: dead lock caused by any console lock recursion
+>       + context: NMI
+>       + action: skips console calls at 0th recursion level
+>
+>   + kdb_trap_printk
+>       + redirects printk() to kdb_printk() in kdb context
+>
+>
+> What is possible?
+>
+> 1. We could get rid of printk_nmi_enter()/exit() and
+>    PRINTK_NMI_CONTEXT completely already now. It is enough
+>    to check in_nmi() in printk_func().
+>
+>    printk_nmi_enter() was added by the commit 42a0bb3f71383b457a7db362
+>    ("printk/nmi: generic solution for safe printk in NMI"). It was
+>    really needed to modify @printk_func pointer.
+>
+>    We did not remove it later when printk_function became a real
+>    function. The idea was to track all printk contexts in a single
+>    variable. But we never added kdb context.
+>
+>    It might make sense to remove it now. Peter Zijstra would be happy.
+>    There already were some churns with tracking printk_context in NMI.
+>    For example, see
+>    https://lore.kernel.org/r/20200219150744.428764577@infradead.org
+>
+>    IMHO, it does not make sense to wait until the entire console-stuff
+>    rework is done in this case.
+
+Agreed. in_nmi() within vprintk_emit() is enough to detect if the
+console code should be skipped:
+
+    if (!in_sched && !in_nmi()) {
+        ...
+    }
+
+> 2. I thought about unifying printk_safe_enter()/exit() and
+>    printk_enter()/exit(). They both count recursion with
+>    IRQs disabled, have similar name. But they are used
+>    different way.
+>
+>    But better might be to rename printk_safe_enter()/exit() to
+>    console_enter()/exit() or to printk_deferred_enter()/exit().
+>    It would make more clear what it does now. And it might help
+>    to better distinguish it from the new printk_enter()/exit().
+>
+>    This patchset actually splits the original printk_safe()
+>    functionality into two:
+>
+>        + printk_count prevents infinite recursion
+>        + printk_deferred_enter() deffers console handling.
+>
+>    I am not sure if it is worth it. But it might help people (even me)
+>    when digging into the printk history. Different name will help to
+>    understand the functionality at the given time.
+
+I am also not sure if it is worth the extra "noise" just to give the
+function a more appropriate name. The plan is to remove it completely
+soon anyway. My vote is to leave the name as it is.
+
+But I am willing to do the rename in an addtional patch if you
+want. printk_deferred_enter() sounds fine to me. Please confirm if you
+want me to do this.
+
+John Ogness
