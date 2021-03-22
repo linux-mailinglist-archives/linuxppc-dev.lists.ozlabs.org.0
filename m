@@ -1,83 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D18F343823
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 06:06:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A881E343855
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 06:25:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F3jBy2nWpz30BH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 16:06:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F3jcV0d0Qz301M
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 16:24:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=xTRCZqxI;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=KRNu2jb9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::535;
- helo=mail-pg1-x535.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=xTRCZqxI; dkim-atps=neutral
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
- [IPv6:2607:f8b0:4864:20::535])
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=KRNu2jb9; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F3jBV2RcSz2y83
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 16:05:51 +1100 (AEDT)
-Received: by mail-pg1-x535.google.com with SMTP id r17so7854614pgi.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Mar 2021 22:05:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=S77D8L3UAMxKrJ/VDWFeVz077lFS1UobdDs7mqKVBSk=;
- b=xTRCZqxIWT29Q/ifOxeLDEpipdFiAjSztQeULrzSlxJog1i6sgBPIGo+Fv+moWetZk
- NO+uFG9aIy4jmliLICiFg3R6F2cDKSXJNawZ8lFXBx4CHDDhi1EiF6mtNuR6l5bsXqh1
- VzKApSVjLNX5QaERiF+rBrQWFp9ksd2cfzJuyNBcm7al7pTCyU1SdzoWTXgED3bFWW3m
- xan/ssx+9v5G5iZGd+3X6l1IK4oNfLXj9bh0dgXioTLah7Ez/ZIGt63ZK6FUWZAJpJ1X
- G8nMPIWXrk0Rim2tM+r0ah01oBNXNPTr8IDij+6ZjQzT/1D8iflCyLS8LOQVr7ojWhcR
- y+5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=S77D8L3UAMxKrJ/VDWFeVz077lFS1UobdDs7mqKVBSk=;
- b=ex5N8WqLMxhAOtAhbUNkUiWb6JF6i5AO/EAumjGFbsfEz/++WEbyW+0oagR2A3qq1q
- ig85kEW013lk1vuvoVkho3mdKKTQrKea9oOKauj9CcCT12xgT1tl1dOt47xuOF/7JHHO
- +jUJcr5g0zQ3aeEB3N4y1ve4lFntAFqkGtRCKOjU3nT+PUj3/LQPF0wlnBBLMUgL7Zi0
- Irn5eWQR2LdTvwdaKijiQEiRnzMTYudXFyDlBODWp8gRshkxrdhtwB/cKyq9Jkox+FGe
- C9yypS/FFXoJI7+iEi1todGjVgqr2RYD6NTZt9odYhRAaYgjMT7DWaEbbSjEyYqfmPzd
- jNIw==
-X-Gm-Message-State: AOAM532Fen+GXMVs22F+L2AoHO9zLVNYn601HsiPKkVD6oOjvOMuezbw
- MkdNE2dDnEtBNerRV/UNuuuMvg3fcJ0dWz7C
-X-Google-Smtp-Source: ABdhPJwLFCn0agpknpQILBQYMVj9nrwhgNHv5KoZUrYCu/LyqL7rEPcx3qw1H4HO3NrHaJvU/vRaBA==
-X-Received: by 2002:a62:8c05:0:b029:1d8:7f36:bcd8 with SMTP id
- m5-20020a628c050000b02901d87f36bcd8mr20070184pfd.43.1616389548091; 
- Sun, 21 Mar 2021 22:05:48 -0700 (PDT)
-Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
- [124.171.107.241])
- by smtp.gmail.com with UTF8SMTPSA id gm9sm11836511pjb.13.2021.03.21.22.05.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 21 Mar 2021 22:05:47 -0700 (PDT)
-Message-ID: <6316c619-1ba8-f8fa-3e30-95f3182505d5@ozlabs.ru>
-Date: Mon, 22 Mar 2021 16:05:44 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F3jc245Tmz2xZk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 16:24:33 +1100 (AEDT)
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4F3jc10vTKz9sVS; Mon, 22 Mar 2021 16:24:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1616390673;
+ bh=VmntQM0bUJEv9iglvyXrces4GlDbVzNrigbUfQujlEQ=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=KRNu2jb9CpEkhdsaEFst1w4kg7Ymx4IdDzaSgTtUtqOfoR6pEotXusPWdsn1KVvje
+ rxQqNlKwfx39cMMsm1n+9XfPFwLeq04rm+o/gEy+eE1FGPzZGaIEXOEO8Y+7sVQNu7
+ T9bdcvPoqZPY6BQzwZKw19LGwZr2xHInhRzC7s9w=
+Date: Mon, 22 Mar 2021 16:19:23 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH] powerpc/numa: Fix topology_physical_package_id() on
+ pSeries
+Message-ID: <YFgo26FoqgM5+eHc@yekko.fritz.box>
+References: <20210316122437.3571843-1-clg@kaod.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:87.0) Gecko/20100101
- Thunderbird/87.0
-Subject: Re: [PATCH v3 17/41] KVM: PPC: Book3S HV P9: implement
- kvmppc_xive_pull_vcpu in C
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-References: <20210305150638.2675513-1-npiggin@gmail.com>
- <20210305150638.2675513-18-npiggin@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20210305150638.2675513-18-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="uQnH2xl3pk102oI/"
+Content-Disposition: inline
+In-Reply-To: <20210316122437.3571843-1-clg@kaod.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,127 +57,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, Greg Kurz <groug@kaod.org>,
+ Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--uQnH2xl3pk102oI/
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 06/03/2021 02:06, Nicholas Piggin wrote:
-> This is more symmetric with kvmppc_xive_push_vcpu. The extra test in
-> the asm will go away in a later change.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+On Tue, Mar 16, 2021 at 01:24:37PM +0100, C=E9dric Le Goater wrote:
+> The topology-id of a CPU in a pSeries machine can be queried from
+> sysfs but under PowerVM the value is always -1 even if NUMA nodes are
+> defined. This is because the topology_physical_package_id() routine is
+> using the "ibm,chip-id" property which is not specified in PAPR.
+>=20
+> Under QEMU/KVM, things are different because QEMU populates the CPU DT
+> node with "ibm,chip-id" property. However, its value can be incorrect
+> for uncommon SMT configuration and expose a bogus topology-id value in
+> sysfs.
+
+Incorrect in what sense?  It's still indicating the (admittedly
+arbitrary) qemu socket number, isn't it?  And isn't that what it
+should be?
+
+> The use of cpu_to_node() guarantees to have a correct NUMA node id
+> under both environments QEMU/KVM and PowerVM. This introduces a slight
+> change for the QEMU/KVM guest, as the topology-id now matches the NUMA
+> node and not the socket-id as before. Since QEMU also needs to remove
+> "ibm,chip-id" property for the DT to follow the PAPR specs, both
+> hypervisor environments will be in sync.
+>=20
+> On the PowerNV side, the NUMA node id returned by cpu_to_node() is
+> computed from the "ibm,associativity" property of the CPU. Its value
+> is built from the OPAL chip id and is equivalent to "ibm,chip-id".
+
+Like mpe, I'm not convinced this is the right approach.  "physical
+packate" and NUMA node are not the same thing, except sometimes by
+accident.
+
+>=20
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+> Reviewed-by: Greg Kurz <groug@kaod.org>
+> Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+> Tested-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+> Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> Signed-off-by: C=E9dric Le Goater <clg@kaod.org>
 > ---
->   arch/powerpc/include/asm/kvm_ppc.h      |  2 ++
->   arch/powerpc/kvm/book3s_hv.c            |  2 ++
->   arch/powerpc/kvm/book3s_hv_rmhandlers.S |  5 ++++
->   arch/powerpc/kvm/book3s_xive.c          | 31 +++++++++++++++++++++++++
->   4 files changed, 40 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-> index 9531b1c1b190..73b1ca5a6471 100644
-> --- a/arch/powerpc/include/asm/kvm_ppc.h
-> +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> @@ -672,6 +672,7 @@ extern int kvmppc_xive_set_icp(struct kvm_vcpu *vcpu, u64 icpval);
->   extern int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
->   			       int level, bool line_status);
->   extern void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu);
-> +extern void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu);
->   
->   static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
->   {
-> @@ -712,6 +713,7 @@ static inline int kvmppc_xive_set_icp(struct kvm_vcpu *vcpu, u64 icpval) { retur
->   static inline int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
->   				      int level, bool line_status) { return -ENODEV; }
->   static inline void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu) { }
-> +static inline void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu) { }
->   
->   static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
->   	{ return 0; }
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index b9cae42b9cd5..b265522fc467 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -3565,6 +3565,8 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
->   
->   	trap = __kvmhv_vcpu_entry_p9(vcpu);
->   
-> +	kvmppc_xive_pull_vcpu(vcpu);
-> +
->   	/* Advance host PURR/SPURR by the amount used by guest */
->   	purr = mfspr(SPRN_PURR);
->   	spurr = mfspr(SPRN_SPURR);
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index 75405ef53238..c11597f815e4 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -1442,6 +1442,11 @@ guest_exit_cont:		/* r9 = vcpu, r12 = trap, r13 = paca */
->   	bl	kvmhv_accumulate_time
->   #endif
->   #ifdef CONFIG_KVM_XICS
-> +	/* If we came in through the P9 short path, xive pull is done in C */
-> +	lwz	r0, STACK_SLOT_SHORT_PATH(r1)
-> +	cmpwi	r0, 0
-> +	bne	1f
-> +
->   	/* We are exiting, pull the VP from the XIVE */
->   	lbz	r0, VCPU_XIVE_PUSHED(r9)
->   	cmpwi	cr0, r0, 0
-> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-> index e7219b6f5f9a..52cdb9e2660a 100644
-> --- a/arch/powerpc/kvm/book3s_xive.c
-> +++ b/arch/powerpc/kvm/book3s_xive.c
-> @@ -127,6 +127,37 @@ void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu)
->   }
->   EXPORT_SYMBOL_GPL(kvmppc_xive_push_vcpu);
->   
-> +/*
-> + * Pull a vcpu's context from the XIVE on guest exit.
-> + * This assumes we are in virtual mode (MMU on)
-> + */
-> +void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu)
-> +{
-> +	void __iomem *tima = local_paca->kvm_hstate.xive_tima_virt;
-> +
-> +	if (!vcpu->arch.xive_pushed)
-> +		return;
-> +
-> +	/*
-> +	 * Sould not have been pushed if there is no tima
+>  arch/powerpc/include/asm/topology.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/a=
+sm/topology.h
+> index 3beeb030cd78..887c42a4e43d 100644
+> --- a/arch/powerpc/include/asm/topology.h
+> +++ b/arch/powerpc/include/asm/topology.h
+> @@ -123,7 +123,7 @@ static inline int cpu_to_coregroup_id(int cpu)
+>  #ifdef CONFIG_PPC64
+>  #include <asm/smp.h>
+> =20
+> -#define topology_physical_package_id(cpu)	(cpu_to_chip_id(cpu))
+> +#define topology_physical_package_id(cpu)	(cpu_to_node(cpu))
+> =20
+>  #define topology_sibling_cpumask(cpu)	(per_cpu(cpu_sibling_map, cpu))
+>  #define topology_core_cpumask(cpu)	(cpu_cpu_mask(cpu))
 
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-s/Sould/Should/
+--uQnH2xl3pk102oI/
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Otherwise good
+-----BEGIN PGP SIGNATURE-----
 
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmBYKNsACgkQbDjKyiDZ
+s5K0bhAA2/r52dWvK0gZuMlAzcFr71G2iwcgjvzpvfsr2MpeuUSeBnWiRRuwTUrS
+TBLnXlEtCKlwbGi9sUBOGOg+l3vxEDhyjX8neABbbm9LR9PF63lseduWP6ZhPm55
+PMiC8Ks0AyJPFYbY4BOul3W/r8kNoxm9lqzMj6uKdS/KEbIXGKjTV2JIgOYHPkfO
+v12khi9FROeYmX2RmzVv/K2DL1FTm99hlcZYYrwHfUCp/ihmmN0iiM1VuL3I/qy7
+oaoYz0uVu0CNO4HkWvKfNZYVOXJZpDdtDtQW49pFCUyYyLNmPvW8mkyrH8uqilFJ
+10Ck154aaxyASNzM3njwqqWeIXZR3Et3fbATz+EUWtdKe6qG9BJVvymqkGIOGnlu
+YJ3DOUJXmRNqma6Xdnty0+J/xAuvSDS+umQsv18rbtCM6FyoZxRRranEavjlDGxr
+OuolDel9qxyDP07ayMVRvPIdNVUcHh3a7XqUsG1hOEta6yphCKg5YsxX+iZYaZkF
+cVSnJkQ3SmqXJwNhW9PFszq2PkPCQKdOUrb9dpJ/6hvgyFpyBndz4bX86uQQAbl0
+SjZKLPXfwNeua66aC9mkmKU31IkiogHGhPeMsexP+pQlkDoxlldOLFCSjEV7BYOq
+BaROoGoDPMPYBSz9NxmyEcxrQ5Tu3NzptQm5RedzwvmOyqDYbTg=
+=PHrJ
+-----END PGP SIGNATURE-----
 
-
-
-> +	 */
-> +	if (WARN_ON(!tima))
-> +		return;
-> +
-> +	eieio();
-> +	/* First load to pull the context, we ignore the value */
-> +	__raw_readl(tima + TM_SPC_PULL_OS_CTX);
-> +	/* Second load to recover the context state (Words 0 and 1) */
-> +	vcpu->arch.xive_saved_state.w01 = __raw_readq(tima + TM_QW1_OS);
-> +
-> +	/* Fixup some of the state for the next load */
-> +	vcpu->arch.xive_saved_state.lsmfb = 0;
-> +	vcpu->arch.xive_saved_state.ack = 0xff;
-> +	vcpu->arch.xive_pushed = 0;
-> +	eieio();
-> +}
-> +EXPORT_SYMBOL_GPL(kvmppc_xive_pull_vcpu);
-> +
->   /*
->    * This is a simple trigger for a generic XIVE IRQ. This must
->    * only be called for interrupts that support a trigger page
-> 
-
--- 
-Alexey
+--uQnH2xl3pk102oI/--
