@@ -1,75 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793C634405E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 13:03:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2076344399
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 13:54:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F3tSp3VTQz30BK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 23:03:54 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=D9avA8ij;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F3vbh46nrz30DZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 23:54:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::833;
- helo=mail-qt1-x833.google.com; envelope-from=unixbhaskar@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=D9avA8ij; dkim-atps=neutral
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com
- [IPv6:2607:f8b0:4864:20::833])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F3tSN55TKz2yjP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 23:03:31 +1100 (AEDT)
-Received: by mail-qt1-x833.google.com with SMTP id a11so12058538qto.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 05:03:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=tQK01wmcF8jPX8e5PCzrQrsEyQrec41JbEyt6M3+vg4=;
- b=D9avA8ij3mUbrTDCl8zy8/B34jsX+dh/SBXjQpM8bcCjfgHFhtuZ/mfmv664IH7SiW
- CmkBTti9xjZ4kQBCO3j3rDxxXAWonh+RG/VT/e1G7lxpTwE8aQDbwIuVOZyfsjxgqOfM
- j/kCyzbAFkhvM+7dhB6kZSyGPaHSDgcHW9ET36f1DJds5aTti+gUS6SjaG81n/ZyskDH
- Rr3H9IT7Lm7Ya9SiCx8GifpD6GbWdjVFmD2gbyND0veMTG3Gt5aa3KAo5iqxL8oe7NXB
- IiFwXXQcHCfv24l8ARlDC3nqRSkA9uGCO2BorvSWZ3nrwWuAxIi0AjRAhIBnd+oyyn3P
- etEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=tQK01wmcF8jPX8e5PCzrQrsEyQrec41JbEyt6M3+vg4=;
- b=Tl0g3t0X+uHZohqxEPBGvV0JxazffLeC5VeOSbRPK3sXJqWpuZErI7nQFgjvfT4qYT
- g/Ms0sHDZVxXQgNbDtP5ncWiOQRXqa9wzzrSnBvjU7Rl0u5TmWkXWTQPB44FAlyFuENR
- 8QsB3M8X2HgN8oXozGDZJnKeYpn9rRjZmzh5xMUcfHullSXWng/DNrggZmtlR2txgRGs
- 5GXgh1vuQRmNxPruKkXRH33U5iV7BOT5j7FZ8zz/oX5mLFQQeNx5HaHS11s+6+Nl6YaB
- doT4N016FTn2yJqknpAyFuLrDdhQ0/LP0gP3mmjIqJXxcm6iFZ1hpcXQPJxq+5f4Ll9k
- 2NcA==
-X-Gm-Message-State: AOAM533S9n9U3+PygtBx2pAu172JEe780nSxecIMj9SWWqz85y2SMRjX
- o6/L3/uCDoU7qkPSEwx/BY4=
-X-Google-Smtp-Source: ABdhPJxDCg1+OAL3V5EU4KW1n/507Ijkz7OJJQy43gygVfsFk84CIg2ZOhnfD7K8Mj7dJSOzoADL0Q==
-X-Received: by 2002:a05:622a:4d0:: with SMTP id
- q16mr9121780qtx.303.1616414608119; 
- Mon, 22 Mar 2021 05:03:28 -0700 (PDT)
-Received: from localhost.localdomain ([143.244.44.200])
- by smtp.gmail.com with ESMTPSA id z7sm10556601qkf.136.2021.03.22.05.03.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Mar 2021 05:03:27 -0700 (PDT)
-From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
- christophe.leroy@csgroup.eu, rppt@kernel.org, npiggin@gmail.com,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/8xx: Fix a typo
-Date: Mon, 22 Mar 2021 17:33:14 +0530
-Message-Id: <20210322120314.2085782-1-unixbhaskar@gmail.com>
-X-Mailer: git-send-email 2.31.0
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=lorenzo.pieralisi@arm.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 663 seconds by postgrey-1.36 at boromir;
+ Mon, 22 Mar 2021 23:54:39 AEDT
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4F3vbM55ddz2xfY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 23:54:39 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C6891063;
+ Mon, 22 Mar 2021 05:43:31 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com
+ [10.1.196.255])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 667843F718;
+ Mon, 22 Mar 2021 05:43:29 -0700 (PDT)
+Date: Mon, 22 Mar 2021 12:43:26 +0000
+From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+ minghuan.Lian@nxp.com, Mingkai Hu <mingkai.hu@nxp.com>,
+ Roy Zang <roy.zang@nxp.com>
+Subject: Re: [PATCH -next] pci/controller/dwc: convert comma to semicolon
+Message-ID: <20210322124326.GD11469@e121166-lin.cambridge.arm.com>
+References: <20201216131944.14990-1-zhengyongjun3@huawei.com>
+ <20210106190722.GA1327553@bjorn-Precision-5520>
+ <20210115113654.GA22508@e121166-lin.cambridge.arm.com>
+ <YEUdSZpwzg0k5z2+@rocinante>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <YEUdSZpwzg0k5z2+@rocinante>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,32 +53,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Cc: robh@kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Zheng Yongjun <zhengyongjun3@huawei.com>, Bjorn Helgaas <helgaas@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sun, Mar 07, 2021 at 07:36:57PM +0100, Krzysztof Wilczyński wrote:
+> Hi,
+> 
+> [...]
+> > I would request NXP maintainers to take this patch, rewrite it as
+> > Bjorn requested and resend it as fast as possible, this is a very
+> > relevant fix.
+> [...]
+> 
+> Looking at the state of the pci-layerscape-ep.c file in Linus' tree,
+> this still hasn't been fixed, and it has been a while.
+> 
+> NXP folks, are you intend to pick this up?  Do let us know.
 
-s/poiners/pointers/
+Minghuan, Mingkai, Roy,
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
----
- arch/powerpc/kernel/head_8xx.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+either one of you reply and follow up this patch or I will have to
+update the MAINTAINERS entry and take action accordingly, you are
+not maintaining this driver and I won't maintain your code, sorry.
 
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 46dff3f9c31f..8a85a984609a 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -819,7 +819,7 @@ EXPORT_SYMBOL(empty_zero_page)
- swapper_pg_dir:
- 	.space	PGD_TABLE_SIZE
+Lorenzo
 
--/* Room for two PTE table poiners, usually the kernel and current user
-+/* Room for two PTE table pointers, usually the kernel and current user
-  * pointer to their respective root page table (pgdir).
-  */
- 	.globl	abatron_pteptrs
---
-2.31.0
-
+> Krzysztof
