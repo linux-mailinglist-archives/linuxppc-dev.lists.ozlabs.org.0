@@ -2,77 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D433436E6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 03:56:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF0F3436F0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 04:00:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F3fKX2fYRz304C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 13:56:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F3fPS5f3cz302j
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 14:00:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=CIMofV50;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=KeQ2EZhF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
- helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
+ helo=mail-pf1-x42c.google.com; envelope-from=bsingharora@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=CIMofV50; dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
+ header.s=20161025 header.b=KeQ2EZhF; dkim-atps=neutral
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
+ [IPv6:2607:f8b0:4864:20::42c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F3fK60ZCGz2xg6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 13:56:24 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id l1so5783560plg.12
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Mar 2021 19:56:24 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F3fNw1MkCz2xfd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 13:59:42 +1100 (AEDT)
+Received: by mail-pf1-x42c.google.com with SMTP id l123so9988325pfl.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Mar 2021 19:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=dByteuEb7W2qYd9EJauFlXwJwUYQshLLvYtfbu0gmA4=;
- b=CIMofV50nFoi2Kji4LhDJjgWnPdz6yxm/amf5kcBPK5qD04D36Ogm/5+LwvPKz7siT
- vEepKyfc0XpUdvl3QJUljRUCzA3w5RPQ2E5sPo7LlJ6vRt4iISsXPByjpuYqigrjFaBH
- i9fQs1etlDNxGZkijz8AXHV9d231SNaIyW+umBBFYeeAa8KsAU1A/PVLnm7HqdX901Ga
- pqS9qgAkPSdDmLlRaIHXMEIR4GOGYBJKtvyvVpmDIbS5uuFeLz7NApS/pgifMbp+7HoM
- lGyU3LCkWnUXZm2OPcWW7mkcKj3iyiNrPsSBQH4Yd5LP3Sy5Ni9XIqEeHqPGaFZmUrPJ
- Drew==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=8PSyfDnBNxdEv0JuzVsHXHjHmPcZoANyRQWH8adKcPU=;
+ b=KeQ2EZhFTYagfAjvaNMYRY2V8nza7K0AVpdfi9X2lo8Gs3x7mT7i06esVkHvO3ZvU4
+ lebgmxwhNqqUNxEOyZB+LLlOzZGqdINNcOrS5xMouPK7ioJkYNfJMcWj2C4Xk3ThbZRm
+ 8GKB6ZEdQA4FaSOrfEWq1IzQ59N0bVKT/RlsuZShrfAINBb3nFG+k3SvJ8H1DkZwRXii
+ 6rmpMRrm4lgT3oOiXCaydKA3ksPUrGXt6qz3Gmu1VOTrPhM6SwqZY7F40NJZ8bUjmyN3
+ aQ8wjtQ42ctdLsXzmpPtVnhYx+ohKZvxauXtiqKdhk8igcIeeFQ17gBe7K77JoALBN1X
+ lsYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=dByteuEb7W2qYd9EJauFlXwJwUYQshLLvYtfbu0gmA4=;
- b=SPemvv1Jv74VvWe5HTtRTRAXac4EmJwAd1KUElA8DxQvkaNgGRmegQF/Mh/Kd4CHbT
- mZ0QodlamoLu86wKCz6BNuK4andrgMZ5u4JxS9Gka+HR/bMYztC3PeDTSi+IYt7+KN6R
- sn2DLw8sGCf2nbtplicLuX2dp4P/E3edVZNgL/wUgm3hDFs9PfsP+rHzCdm8BLeUX/fP
- uU1Kq79yEXjfNjQqnN+hu/6nmgA0SwpYy227KoojVFOMgB9OYURNrFmZCZ73zjpL8BMr
- shLj9LpC2lptYtbEqS0M01kK/ZnKUvPNtzapE9NaBdfO4MfmjjFKBZv7b8lQX/xpPO0v
- l5IQ==
-X-Gm-Message-State: AOAM531qRAy9ZksQdhqH/bWu+e0hsEFerdfVbqbgInyDZKPs33/o57zv
- MJicKPb/PtOXg5zeHaLW3bq2bJDEPz8=
-X-Google-Smtp-Source: ABdhPJyJRvYKj9xpacMBLpwAgaEi25AassVQ+31HARJMaHcitZGVc1qnU8VtNbb/fHeNw+9ux+nE4Q==
-X-Received: by 2002:a17:902:8217:b029:e6:2875:b1d9 with SMTP id
- x23-20020a1709028217b02900e62875b1d9mr24533941pln.70.1616381780674; 
- Sun, 21 Mar 2021 19:56:20 -0700 (PDT)
-Received: from localhost ([58.84.78.96])
- by smtp.gmail.com with ESMTPSA id f11sm11061850pga.34.2021.03.21.19.56.19
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=8PSyfDnBNxdEv0JuzVsHXHjHmPcZoANyRQWH8adKcPU=;
+ b=gtZVSjt4Ufw1uFq2uoxL+7zJFn9qFC/a9IYgwhTN7xgDhnPRfki2GmhmAfM9pAHbeJ
+ yvaVwIIalhv7YqQz/59oYlIFUaFmJrAfN/VujGI52XeIlDrTYnofErwi/X0CpQbh4ngz
+ Za3LO6e/qFts05UX+0DDcF9bPgnxB1QJdxs+DVOK2dMsYLdUSLtka31E02VlkbnRJ0m2
+ XHSjswYZzZ3bqkbVbuvLVN/T6FPirGLtoOyWFMKn3GXJBvztJNyejRG5JU1dKP7YuUTT
+ rnBElkvWBPFCBONntHUrEys+8dnJEOWqdEwVXwL180eP/ZZ8PddkniJxtA5GpYWsGz6m
+ vd4g==
+X-Gm-Message-State: AOAM532/JqU/igUPz0FFQGCaIrqjriAQc+qdsQyRWnvvplmaSc9Sn7DW
+ vR6Osy5UydvvYSfwqe8islQ=
+X-Google-Smtp-Source: ABdhPJzP+wfmDE3n90GIkMs5FVkBLmsqxwWI8xoZ7BBqinIpDh/WojCEAWo5OUMjof16ChcmAc4HzQ==
+X-Received: by 2002:aa7:86d9:0:b029:1ff:275c:b67a with SMTP id
+ h25-20020aa786d90000b02901ff275cb67amr19223972pfo.69.1616381979110; 
+ Sun, 21 Mar 2021 19:59:39 -0700 (PDT)
+Received: from localhost (121-45-173-48.tpgi.com.au. [121.45.173.48])
+ by smtp.gmail.com with ESMTPSA id mp19sm14599055pjb.2.2021.03.21.19.59.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Mar 2021 19:56:20 -0700 (PDT)
-Date: Mon, 22 Mar 2021 12:56:14 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 5/6] powerpc/mm/64s/hash: Add real-mode
- change_memory_range() for hash LPAR
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-References: <20210211135130.3474832-1-mpe@ellerman.id.au>
- <20210211135130.3474832-5-mpe@ellerman.id.au>
- <1613084139.rsms9jxmax.astroid@bobo.none>
- <878s6iht88.fsf@mpe.ellerman.id.au>
-In-Reply-To: <878s6iht88.fsf@mpe.ellerman.id.au>
+ Sun, 21 Mar 2021 19:59:38 -0700 (PDT)
+Date: Mon, 22 Mar 2021 13:59:34 +1100
+From: Balbir Singh <bsingharora@gmail.com>
+To: Daniel Axtens <dja@axtens.net>
+Subject: Re: [PATCH v11 6/6] powerpc: Book3S 64-bit outline-only KASAN support
+Message-ID: <20210322025934.GG77072@balbir-desktop>
+References: <20210319144058.772525-1-dja@axtens.net>
+ <20210319144058.772525-7-dja@axtens.net>
+ <20210320060259.GF77072@balbir-desktop>
+ <87o8fcatxv.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Message-Id: <1616381600.958ox5tnxz.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87o8fcatxv.fsf@dja-thinkpad.axtens.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,103 +83,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com
+Cc: aneesh.kumar@linux.ibm.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of March 20, 2021 11:04 pm:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->> Excerpts from Michael Ellerman's message of February 11, 2021 11:51 pm:
-> ...
->>> diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/=
-book3s64/hash_pgtable.c
->>> index 3663d3cdffac..01de985df2c4 100644
->>> --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
->>> +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
->>> @@ -414,6 +428,73 @@ static void change_memory_range(unsigned long star=
-t, unsigned long end,
->>>  							mmu_kernel_ssize);
->>>  }
->>> =20
->>> +static int notrace chmem_secondary_loop(struct change_memory_parms *pa=
-rms)
->>> +{
->>> +	unsigned long msr, tmp, flags;
->>> +	int *p;
->>> +
->>> +	p =3D &parms->cpu_counter.counter;
->>> +
->>> +	local_irq_save(flags);
->>> +	__hard_EE_RI_disable();
->>> +
->>> +	asm volatile (
->>> +	// Switch to real mode and leave interrupts off
->>> +	"mfmsr	%[msr]			;"
->>> +	"li	%[tmp], %[MSR_IR_DR]	;"
->>> +	"andc	%[tmp], %[msr], %[tmp]	;"
->>> +	"mtmsrd %[tmp]			;"
->>> +
->>> +	// Tell the master we are in real mode
->>> +	"1:				"
->>> +	"lwarx	%[tmp], 0, %[p]		;"
->>> +	"addic	%[tmp], %[tmp], -1	;"
->>> +	"stwcx.	%[tmp], 0, %[p]		;"
->>> +	"bne-	1b			;"
->>> +
->>> +	// Spin until the counter goes to zero
->>> +	"2:				;"
->>> +	"lwz	%[tmp], 0(%[p])		;"
->>> +	"cmpwi	%[tmp], 0		;"
->>> +	"bne-	2b			;"
->>> +
->>> +	// Switch back to virtual mode
->>> +	"mtmsrd %[msr]			;"
->>> +
->>> +	: // outputs
->>> +	  [msr] "=3D&r" (msr), [tmp] "=3D&b" (tmp), "+m" (*p)
->>> +	: // inputs
->>> +	  [p] "b" (p), [MSR_IR_DR] "i" (MSR_IR | MSR_DR)
->>> +	: // clobbers
->>> +	  "cc", "xer"
->>> +	);
->>> +
->>> +	local_irq_restore(flags);
->>
->> Hmm. __hard_EE_RI_disable won't get restored by this because it doesn't
->> set the HARD_DIS flag. Also we don't want RI disabled here because=20
->> tracing will get called first (which might take SLB or HPTE fault).
->=20
-> Thanks for noticing. I originally wrote hard_irq_disable() but then
-> thought disabling RI also would be good.
->=20
->> But it's also slightly rude to ever enable EE under an irq soft mask,
->> because you don't know if it had been disabled by the masked interrupt=20
->> handler. It's not strictly a problem AFAIK because the interrupt would
->> just get masked again, but if we try to maintain a good pattern would
->> be good. Hmm that means we should add a check for irqs soft masked in
->> __hard_irq_enable(), I'm not sure if all existing users would follow
->> this rule.
->>
->> Might be better to call hard_irq_disable(); after the local_irq_save();
->> and then clear and reset RI inside that region (could just do it at the
->> same time as disabling MMU).
->=20
-> Thinking about it more, there's no real reason to disable RI.
->=20
-> We should be able to return from an interrupt in there, it's just that
-> if we do take one we'll probably die before we get a chance to return
-> because the mapping of text will be missing.
+On Mon, Mar 22, 2021 at 11:55:08AM +1100, Daniel Axtens wrote:
+> Hi Balbir,
+> 
+> > Could you highlight the changes from
+> > https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20170729140901.5887-1-bsingharora@gmail.com/?
+> >
+> > Feel free to use my signed-off-by if you need to and add/update copyright
+> > headers if appropriate.
+> 
+> There's not really anything in common any more:
+> 
+>  - ppc32 KASAN landed, so there was already a kasan.h for powerpc, the
+>    explicit memcpy changes, the support for non-instrumented files,
+>    prom_check.sh, etc. all already landed.
+> 
+>  - I locate the shadow region differently and don't resize any virtual
+>    memory areas.
+> 
+>  - The ARCH_DEFINES_KASAN_ZERO_PTE handling changed upstream and our
+>    handling for that is now handled more by patch 3.
+> 
+>  - The outline hook is now an inline function rather than a #define.
+> 
+>  - The init function has been totally rewritten as it's gone from
+>    supporting real mode to not supporting real mode and back.
+> 
+>  - The list of non-instrumented files has grown a lot.
+> 
+>  - There's new stuff: stack walking is now safe, KASAN vmalloc support
+>    means modules are better supported now, ptdump works, and there's
+>    documentation.
+> 
+> It's been a while now, but I don't think when I started this process 2
+> years ago that I directly reused much of your code. So I'm not sure that
+> a signed-off-by makes sense here? Would a different tag (Originally-by?)
+> make more sense?
+>
 
-Yeah it probably will because the pseries hash machine check handler has=20
-some hacks in it that require turning the MMU on. We might never fix=20
-that if we're moving to radix, but if we did then in theory we'd be able=20
-to take a MCE here and recover.
+Sure
+ 
+> >> + * The shadow ends before the highest accessible address
+> >> + * because we don't need a shadow for the shadow. Instead:
+> >> + * c00e000000000000 << 3 + a80e 0000 0000 0000 000 = c00fc00000000000
+> >
+> > The comment has one extra 0 in a80e.., I did the math and had to use
+> > the data from the defines :)
+> 
+> 3 extra 0s, even! Fixed.
+> 
+> >> +void __init kasan_init(void)
+> >> +{
+> >> +	/*
+> >> +	 * We want to do the following things:
+> >> +	 *  1) Map real memory into the shadow for all physical memblocks
+> >> +	 *     This takes us from c000... to c008...
+> >> +	 *  2) Leave a hole over the shadow of vmalloc space. KASAN_VMALLOC
+> >> +	 *     will manage this for us.
+> >> +	 *     This takes us from c008... to c00a...
+> >> +	 *  3) Map the 'early shadow'/zero page over iomap and vmemmap space.
+> >> +	 *     This takes us up to where we start at c00e...
+> >> +	 */
+> >> +
+> >
+> > assuming we have
+> > #define VMEMMAP_END R_VMEMMAP_END
+> > and ditto for hash we probably need
+> >
+> > 	BUILD_BUG_ON(VMEMMAP_END + KASAN_SHADOW_OFFSET != KASAN_SHADOW_END);
+> 
+> Sorry, I'm not sure what this is supposed to be testing? In what
+> situation would this trigger?
+>
 
-> So disabling RI doesn't really gain us anything I don't think.
+I am bit concerned that we have hard coded (IIR) 0xa80e... in the
+config, any changes to VMEMMAP_END, KASAN_SHADOW_OFFSET/END
+should be guarded.
 
-Yeah I probably agree. So local_irq_save(flags); hard_irq_disable();=20
-should do the trick.
-
-Thanks,
-Nick
+Balbir Singh.
