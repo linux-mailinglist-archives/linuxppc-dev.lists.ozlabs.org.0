@@ -2,70 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4578D34532B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 00:46:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E18345387
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 01:01:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4B2z1yD7z30N1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 10:46:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4BNt6Y49z30Fg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 11:01:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=Ze6ptfQk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=nxmYxd5t;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::42d;
- helo=mail-pf1-x42d.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=Ze6ptfQk; dkim-atps=neutral
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
- [IPv6:2607:f8b0:4864:20::42d])
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=nxmYxd5t; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4B2X2kfpz2yxb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 10:45:37 +1100 (AEDT)
-Received: by mail-pf1-x42d.google.com with SMTP id x26so12342741pfn.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 16:45:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=7p7Vs6bLBk4Uyz+kJg2qbyDsqQhArCrFc7/wzK/apD4=;
- b=Ze6ptfQkU0mDC6xweiEQU/jw9crvSu/zn9mJ/28udQg9gYqLeIcw53dteWKhNM0alV
- 7+XwJdhCkQzVwvCdWWWB47HURNcKeGDLFF+qoyiB1ot7wB2khle5T8OZ4PaF005lxquH
- 2V47tXecRxwMkqnghpcp4aUA2+QrGb7dVEJws=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=7p7Vs6bLBk4Uyz+kJg2qbyDsqQhArCrFc7/wzK/apD4=;
- b=BUIDdYqZTipRsD8At0IOxCQIT9IuKUSGLtwn656ToAOo2GkObdEzgulYN4egQQi7U+
- DJMQU3EVZegLKxAN6vUfPeR3gwLBGh5WkDobKsuxYpU85Z1k/6+rH+C3WNuf3jyFIAVp
- ITNkWBi5merL0qvRTGgiHqg2/q8JL4kuFkEgEojkuP3Cca/tEjbl8wyhL5cwQqTqkLBv
- wd0oF5raTBysJ41RcyN0qhMJyzdUzW57/JJQoom2AAV5vas0CIZoGiQtQNFN+e1iIG6w
- HObKHUxlpErelDRd723gL6OUWO3mn4LOL2h9KYcvSx12N+vFeMXrTXAg3083rYpM9rur
- s1FQ==
-X-Gm-Message-State: AOAM530gh6XMkmOJKLHQ5tX8q6fmNHghNhU02ii7yeugso6dCJkQqrbk
- OVgPgFtORGGESZS7lydvrq2cNw==
-X-Google-Smtp-Source: ABdhPJwjQ2rNwR9pwENLYbus2oM8MGaeo3pBEEoU3c2Oww2o4vvfEhYramAGyJM0uEPGJfVzzw5KUw==
-X-Received: by 2002:a17:902:8b86:b029:e5:bef6:56b0 with SMTP id
- ay6-20020a1709028b86b02900e5bef656b0mr2011837plb.76.1616456735667; 
- Mon, 22 Mar 2021 16:45:35 -0700 (PDT)
-Received: from localhost
- (2001-44b8-1113-6700-07ae-1980-05d6-0e77.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:7ae:1980:5d6:e77])
- by smtp.gmail.com with ESMTPSA id g28sm15116670pfr.120.2021.03.22.16.45.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Mar 2021 16:45:35 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 00/10] Move 64e to new interrupt return code
-In-Reply-To: <20210315031716.3940350-1-npiggin@gmail.com>
-References: <20210315031716.3940350-1-npiggin@gmail.com>
-Date: Tue, 23 Mar 2021 10:45:32 +1100
-Message-ID: <87im5ibvmr.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4BNR6FHwz2yRh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 11:01:11 +1100 (AEDT)
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4F4BNR1jjrz9sVt; Tue, 23 Mar 2021 11:01:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1616457671;
+ bh=2B47zSLfKdKBUMFaksnySYIgLtsf9FPssHOONTo5Log=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=nxmYxd5tNWfXzOubueRVdLgfgzB9uak/ODIxg8N0RBw/kfrQjD168iO461XNwYcTU
+ ttXfy84iOPX2AZHeYVKhuLXxhgJ3bDpvaGlKQ3TW0OhkJ6OvsHmjE4Eg6bUAiO3J35
+ Eqr1JaJQyI/QDtq8loL01ljaMgrG/GHBU6L5Atzs=
+Date: Tue, 23 Mar 2021 10:45:55 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Leonardo Bras <leobras.c@gmail.com>
+Subject: Re: [PATCH 3/3] powerpc/mm/hash: Avoid multiple HPT resize-downs on
+ memory hotunplug
+Message-ID: <YFksMw8Hw/mC48yb@yekko.fritz.box>
+References: <20210312072940.598696-1-leobras.c@gmail.com>
+ <20210312072940.598696-4-leobras.c@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="gtIkK5qVPrjLWkaU"
+Content-Disposition: inline
+In-Reply-To: <20210312072940.598696-4-leobras.c@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,236 +58,314 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
+ Scott Cheloha <cheloha@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ Bharata B Rao <bharata@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Sandipan Das <sandipan@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Laurent Dufour <ldufour@linux.ibm.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Dan Williams <dan.j.williams@intel.com>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nick,
 
-> Since RFC this is rebased on Christophe's v3 ppc32 conversion, and
-> has fixed up small details, and then adds some powerpc-wide
-> cleanups at the end.
->
-> Tested on qemu only (QEMU e500), which is not ideal for interrupt
-> handling particularly the critical interrupts which I don't know
-> whether it can generate.
+--gtIkK5qVPrjLWkaU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I tested this on a T4240RDB with:
+On Fri, Mar 12, 2021 at 04:29:41AM -0300, Leonardo Bras wrote:
+> During memory hotunplug, after each LMB is removed, the HPT may be
+> resized-down if it would map a max of 4 times the current amount of memor=
+y.
+> (2 shifts, due to introduced histeresis)
+>=20
+> It usually is not an issue, but it can take a lot of time if HPT
+> resizing-down fails. This happens  because resize-down failures
+> usually repeat at each LMB removal, until there are no more bolted entries
+> conflict, which can take a while to happen.
+>=20
+> This can be solved by doing a single HPT resize at the end of memory
+> hotunplug, after all requested entries are removed.
+>=20
+> To make this happen, it's necessary to temporarily disable all HPT
+> resize-downs before hotunplug, re-enable them after hotunplug ends,
+> and then resize-down HPT to the current memory size.
+>=20
+> As an example, hotunplugging 256GB from a 385GB guest took 621s without
+> this patch, and 100s after applied.
+>=20
+> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+> ---
+>  arch/powerpc/include/asm/book3s/64/hash.h     |  2 ++
+>  arch/powerpc/include/asm/sparsemem.h          |  2 ++
+>  arch/powerpc/mm/book3s64/hash_utils.c         | 28 +++++++++++++++++++
+>  arch/powerpc/mm/book3s64/pgtable.c            | 12 ++++++++
+>  .../platforms/pseries/hotplug-memory.c        | 16 +++++++++++
+>  5 files changed, 60 insertions(+)
+>=20
+> diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/inc=
+lude/asm/book3s/64/hash.h
+> index 843b0a178590..f92697c107f7 100644
+> --- a/arch/powerpc/include/asm/book3s/64/hash.h
+> +++ b/arch/powerpc/include/asm/book3s/64/hash.h
+> @@ -256,6 +256,8 @@ int hash__create_section_mapping(unsigned long start,=
+ unsigned long end,
+>  int hash__remove_section_mapping(unsigned long start, unsigned long end);
+> =20
+>  void hash_memory_batch_expand_prepare(unsigned long newsize);
+> +void hash_memory_batch_shrink_begin(void);
+> +void hash_memory_batch_shrink_end(void);
+> =20
+>  #endif /* !__ASSEMBLY__ */
+>  #endif /* __KERNEL__ */
+> diff --git a/arch/powerpc/include/asm/sparsemem.h b/arch/powerpc/include/=
+asm/sparsemem.h
+> index 16b5f5300c84..a7a8a0d070fc 100644
+> --- a/arch/powerpc/include/asm/sparsemem.h
+> +++ b/arch/powerpc/include/asm/sparsemem.h
+> @@ -18,6 +18,8 @@ extern int memory_add_physaddr_to_nid(u64 start);
+>  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
+> =20
+>  void memory_batch_expand_prepare(unsigned long newsize);
+> +void memory_batch_shrink_begin(void);
+> +void memory_batch_shrink_end(void);
+> =20
+>  #ifdef CONFIG_NUMA
+>  extern int hot_add_scn_to_nid(unsigned long scn_addr);
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book=
+3s64/hash_utils.c
+> index 1f6aa0bf27e7..e16f207de8e4 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -794,6 +794,9 @@ static unsigned long __init htab_get_table_size(void)
+>  }
+> =20
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+> +
+> +atomic_t hpt_resize_disable =3D ATOMIC_INIT(0);
+> +
+>  static int resize_hpt_for_hotplug(unsigned long new_mem_size, bool shrin=
+king)
+>  {
+>  	unsigned target_hpt_shift;
+> @@ -805,6 +808,10 @@ static int resize_hpt_for_hotplug(unsigned long new_=
+mem_size, bool shrinking)
+> =20
+>  	if (shrinking) {
+> =20
+> +		/* When batch removing entries, only resizes HPT at the end. */
+> +		if (atomic_read_acquire(&hpt_resize_disable))
+> +			return 0;
+> +
 
-stress-ng --class interrupts --seq 0 -t 5
+I'm not quite convinced by this locking.  Couldn't hpt_resize_disable
+be set after this point, but while you're still inside
+resize_hpt_for_hotplug()?  Probably better to use an explicit mutex
+(and mutex_trylock()) to make the critical sections clearer.
 
-There are some problems that occur only when testing with your series. I
-haven't made any attempt to debug them yet.
+Except... do we even need the fancy mechanics to suppress the resizes
+in one place to do them elswhere.  Couldn't we just replace the
+existing resize calls with the batched ones?
 
-stress-ng: info:  [3101] unsuccessful run completed in 6352.60s (1 hour, 45 mins, 52.60 secs)
-stress-ng: fail:  [3101] aio instance 0 corrupted bogo-ops counter, 7542705 vs 0
-stress-ng: fail:  [3101] aio instance 0 hash error in bogo-ops counter and run flag, 359866039 vs 0
-stress-ng: fail:  [3101] aio instance 17 corrupted bogo-ops counter, 7638823 vs 0
-stress-ng: fail:  [3101] aio instance 17 hash error in bogo-ops counter and run flag, 2001558423 vs 0
-stress-ng: fail:  [3101] aio instance 30 corrupted bogo-ops counter, 8192545 vs 0
-info: 5 failures reached, aborting stress process
-stress-ng: fail:  [3101] aio instance 30 hash error in bogo-ops counter and run flag, 3023200976 vs 0
-stress-ng: fail:  [3101] pidfd instance 25 corrupted bogo-ops counter, 116476 vs 0
-stress-ng: fail:  [3101] pidfd instance 25 hash error in bogo-ops counter and run flag, 1964630417 vs 0
-stress-ng: fail:  [3101] sigabrt instance 3 corrupted bogo-ops counter, 95662 vs 0
-stress-ng: fail:  [3101] sigabrt instance 3 hash error in bogo-ops counter and run flag, 1321243721 vs 0
-stress-ng: fail:  [3101] sigabrt instance 9 corrupted bogo-ops counter, 92858 vs 0
-stress-ng: fail:  [3101] sigabrt instance 9 hash error in bogo-ops counter and run flag, 3835381330 vs 0
-stress-ng: fail:  [3101] sigabrt instance 11 corrupted bogo-ops counter, 98333 vs 0
-stress-ng: fail:  [3101] sigabrt instance 11 hash error in bogo-ops counter and run flag, 3447969030 vs 0
-stress-ng: fail:  [3101] sigabrt instance 14 corrupted bogo-ops counter, 96995 vs 0
-stress-ng: fail:  [3101] sigabrt instance 14 hash error in bogo-ops counter and run flag, 2621581502 vs 0
-stress-ng: fail:  [3101] sigabrt instance 16 corrupted bogo-ops counter, 97464 vs 0
-stress-ng: fail:  [3101] sigabrt instance 16 hash error in bogo-ops counter and run flag, 3422440538 vs 0
-stress-ng: fail:  [3101] sigabrt instance 19 corrupted bogo-ops counter, 96044 vs 0
-stress-ng: fail:  [3101] sigabrt instance 19 hash error in bogo-ops counter and run flag, 511989935 vs 0
-stress-ng: fail:  [3101] sigabrt instance 20 corrupted bogo-ops counter, 96018 vs 0
-stress-ng: fail:  [3101] sigabrt instance 20 hash error in bogo-ops counter and run flag, 2348631606 vs 0
-stress-ng: fail:  [3101] sigabrt instance 23 corrupted bogo-ops counter, 95252 vs 0
-stress-ng: fail:  [3101] sigabrt instance 23 hash error in bogo-ops counter and run flag, 2302430489 vs 0
-stress-ng: fail:  [3101] sigabrt instance 26 corrupted bogo-ops counter, 99151 vs 0
-stress-ng: fail:  [3101] sigabrt instance 26 hash error in bogo-ops counter and run flag, 2882282932 vs 0
-stress-ng: fail:  [3101] sigabrt instance 27 corrupted bogo-ops counter, 95434 vs 0
-stress-ng: fail:  [3101] sigabrt instance 27 hash error in bogo-ops counter and run flag, 260112434 vs 0
-stress-ng: fail:  [3101] sigabrt instance 28 corrupted bogo-ops counter, 97138 vs 0
-stress-ng: fail:  [3101] sigabrt instance 28 hash error in bogo-ops counter and run flag, 2822283734 vs 0
-stress-ng: fail:  [3101] sigabrt instance 30 corrupted bogo-ops counter, 97728 vs 0
-stress-ng: fail:  [3101] sigabrt instance 30 hash error in bogo-ops counter and run flag, 738567801 vs 0
-stress-ng: fail:  [3101] sigabrt instance 31 corrupted bogo-ops counter, 96368 vs 0
-stress-ng: fail:  [3101] sigabrt instance 31 hash error in bogo-ops counter and run flag, 1663873592 vs 0
-stress-ng: fail:  [3101] sigio instance 0 corrupted bogo-ops counter, 1141 vs 0
-stress-ng: fail:  [3101] sigio instance 0 hash error in bogo-ops counter and run flag, 3981634025 vs 0
-stress-ng: fail:  [3101] sigio instance 1 corrupted bogo-ops counter, 1323 vs 0
-stress-ng: fail:  [3101] sigio instance 1 hash error in bogo-ops counter and run flag, 2384922462 vs 0
-stress-ng: fail:  [3101] sigio instance 2 corrupted bogo-ops counter, 876 vs 0
-stress-ng: fail:  [3101] sigio instance 2 hash error in bogo-ops counter and run flag, 2730635354 vs 0
-stress-ng: fail:  [3101] sigio instance 3 corrupted bogo-ops counter, 3391 vs 0
-stress-ng: fail:  [3101] sigio instance 3 hash error in bogo-ops counter and run flag, 3893594528 vs 0
-stress-ng: fail:  [3101] sigio instance 4 corrupted bogo-ops counter, 988 vs 0
-stress-ng: fail:  [3101] sigio instance 4 hash error in bogo-ops counter and run flag, 2252189661 vs 0
-stress-ng: fail:  [3101] sigio instance 5 corrupted bogo-ops counter, 4158 vs 0
-stress-ng: fail:  [3101] sigio instance 5 hash error in bogo-ops counter and run flag, 908770141 vs 0
-stress-ng: fail:  [3101] sigio instance 6 corrupted bogo-ops counter, 657 vs 0
-stress-ng: fail:  [3101] sigio instance 6 hash error in bogo-ops counter and run flag, 3022228667 vs 0
-stress-ng: fail:  [3101] sigio instance 7 corrupted bogo-ops counter, 239 vs 0
-stress-ng: fail:  [3101] sigio instance 7 hash error in bogo-ops counter and run flag, 2339545388 vs 0
-stress-ng: fail:  [3101] sigio instance 8 corrupted bogo-ops counter, 183062 vs 0
-stress-ng: fail:  [3101] sigio instance 8 hash error in bogo-ops counter and run flag, 2294439106 vs 0
-stress-ng: fail:  [3101] sigio instance 9 corrupted bogo-ops counter, 946 vs 0
-stress-ng: fail:  [3101] sigio instance 9 hash error in bogo-ops counter and run flag, 2990832529 vs 0
-stress-ng: fail:  [3101] sigio instance 10 corrupted bogo-ops counter, 2799 vs 0
-stress-ng: fail:  [3101] sigio instance 10 hash error in bogo-ops counter and run flag, 1781985030 vs 0
-stress-ng: fail:  [3101] sigio instance 11 corrupted bogo-ops counter, 2705 vs 0
-stress-ng: fail:  [3101] sigio instance 11 hash error in bogo-ops counter and run flag, 3301490000 vs 0
-stress-ng: fail:  [3101] sigio instance 21 corrupted bogo-ops counter, 238787 vs 0
-stress-ng: fail:  [3101] sigio instance 21 hash error in bogo-ops counter and run flag, 2490210165 vs 0
-stress-ng: fail:  [3101] sigio instance 28 corrupted bogo-ops counter, 1020 vs 0
-stress-ng: fail:  [3101] sigio instance 28 hash error in bogo-ops counter and run flag, 3260422232 vs 0
-stress-ng: fail:  [3101] metrics-check: stressor metrics corrupted, data is compromised
+>  		/*
+>  		 * To avoid lots of HPT resizes if memory size is fluctuating
+>  		 * across a boundary, we deliberately have some hysterisis
+> @@ -872,6 +879,27 @@ void hash_memory_batch_expand_prepare(unsigned long =
+newsize)
+>  		pr_warn("Hash collision while resizing HPT\n");
+>  	}
+>  }
+> +
+> +void hash_memory_batch_shrink_begin(void)
+> +{
+> +	/* Disable HPT resize-down during hot-unplug */
+> +	atomic_set_release(&hpt_resize_disable, 1);
+> +}
+> +
+> +void hash_memory_batch_shrink_end(void)
+> +{
+> +	unsigned long newsize;
+> +
+> +	/* Re-enables HPT resize-down after hot-unplug */
+> +	atomic_set_release(&hpt_resize_disable, 0);
+> +
+> +	newsize =3D memblock_phys_mem_size();
+> +	/* Resize to smallest SHIFT possible */
+> +	while (resize_hpt_for_hotplug(newsize, true) =3D=3D -ENOSPC) {
+> +		newsize *=3D 2;
 
-It looks like this is paired with some segfaults in dmesg:
+As noted earlier, doing this without an explicit cap on the new hpt
+size (of the existing size) this makes me nervous.  Less so, but doing
+the calculations on memory size, rather than explictly on HPT size /
+HPT order also seems kinda clunky.
 
-stress-ng-pidfd[4417]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-pidfd[4417]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-pidfd[4417]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigab[3748349]: segfault (11) at 800100 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigab[3748349]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigab[3748390]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1
-stress-ng-sigab[3748405]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigab[3748405]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigab[3748405]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigab[3748427]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1
-stress-ng-sigab[3748376]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1
-in stress-ng[107e8d000+3000]
-in stress-ng[107e8d000+3000]
-stress-ng-sigab[3748427]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigab[3748376]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigab[3748427]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigab[3748376]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigab[3748460]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigab[3748460]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigab[3748460]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigab[3748434]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigab[3748434]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigab[3748434]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigab[3748367]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigab[3748367]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigab[3748367]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigab[3748349]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-in stress-ng[107e8d000+3000]
-stress-ng-sigab[3748507]: segfault (11) at 800100 nip 107e8fb14 lr 107e8fb04 code 1
+> +		pr_warn("Hash collision while resizing HPT\n");
+> +	}
+> +}
+>  #endif /* CONFIG_MEMORY_HOTPLUG */
+> =20
+>  static void __init hash_init_partition_table(phys_addr_t hash_table,
+> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s6=
+4/pgtable.c
+> index f1cd8af0f67f..e01681e22e00 100644
+> --- a/arch/powerpc/mm/book3s64/pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> @@ -199,6 +199,18 @@ void memory_batch_expand_prepare(unsigned long newsi=
+ze)
+>  	if (!radix_enabled())
+>  		hash_memory_batch_expand_prepare(newsize);
+>  }
+> +
+> +void memory_batch_shrink_begin(void)
+> +{
+> +	if (!radix_enabled())
+> +		hash_memory_batch_shrink_begin();
+> +}
+> +
+> +void memory_batch_shrink_end(void)
+> +{
+> +	if (!radix_enabled())
+> +		hash_memory_batch_shrink_end();
+> +}
 
-in stress-ng[107e8d000+3000]
-stress-ng-sigab[3748390]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+Again, these wrappers don't seem particularly useful to me.
 
-stress-ng-sigab[3748491]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigab[3748491]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigab[3748491]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigab[3748390]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigab[3748507]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigab[3748507]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-show_signal_msg: 3 callbacks suppressed
-stress-ng-sigio[2635277]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1
-stress-ng-sigio[2635278]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1
-stress-ng-sigio[2635279]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigio[2635279]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigio[2635279]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigio[2635280]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigio[2635280]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigio[2635280]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigio[2635283]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigio[2635283]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigio[2635283]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigio[2635285]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigio[2635285]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigio[2635285]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigio[2635289]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigio[2635289]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigio[2635289]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-in stress-ng[107e8d000+3000]
-stress-ng-sigio[2635293]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigio[2635293]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigio[2635293]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigio[2635292]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigio[2635292]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigio[2635292]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigio[2635315]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
-stress-ng-sigio[2635315]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigio[2635315]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-in stress-ng[107e8d000+3000]
+>  #endif /* CONFIG_MEMORY_HOTPLUG */
+> =20
+>  void __init mmu_partition_table_init(void)
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/power=
+pc/platforms/pseries/hotplug-memory.c
+> index 353c71249214..9182fb5b5c01 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -425,6 +425,8 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_r=
+emove)
+>  		return -EINVAL;
+>  	}
+> =20
+> +	memory_batch_shrink_begin();
+> +
+>  	for_each_drmem_lmb(lmb) {
+>  		rc =3D dlpar_remove_lmb(lmb);
+>  		if (rc)
+> @@ -470,6 +472,8 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_r=
+emove)
+>  		rc =3D 0;
+>  	}
+> =20
+> +	memory_batch_shrink_end();
+> +
+>  	return rc;
+>  }
+> =20
+> @@ -481,6 +485,8 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
+> =20
+>  	pr_debug("Attempting to hot-remove LMB, drc index %x\n", drc_index);
+> =20
+> +	memory_batch_shrink_begin();
+> +
+>  	lmb_found =3D 0;
+>  	for_each_drmem_lmb(lmb) {
+>  		if (lmb->drc_index =3D=3D drc_index) {
+> @@ -502,6 +508,8 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
+>  	else
+>  		pr_debug("Memory at %llx was hot-removed\n", lmb->base_addr);
+> =20
+> +	memory_batch_shrink_end();
 
-stress-ng-sigio[2635278]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigio[2635277]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
-stress-ng-sigio[2635278]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
-stress-ng-sigio[2635277]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+remove_by_index only removes a single LMB, so there's no real point to
+batching here.
 
-In one run, I had problems with a hardware interrupt, but I haven't seen
-it reoccur so I can't be sure it came from your series:
+>  	return rc;
+>  }
+> =20
+> @@ -532,6 +540,8 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remo=
+ve, u32 drc_index)
+>  	if (lmbs_available < lmbs_to_remove)
+>  		return -EINVAL;
+> =20
+> +	memory_batch_shrink_begin();
+> +
+>  	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+>  		if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
+>  			continue;
+> @@ -572,6 +582,8 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remo=
+ve, u32 drc_index)
+>  		}
+>  	}
+> =20
+> +	memory_batch_shrink_end();
+> +
+>  	return rc;
+>  }
+> =20
+> @@ -700,6 +712,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+>  	if (lmbs_added !=3D lmbs_to_add) {
+>  		pr_err("Memory hot-add failed, removing any added LMBs\n");
+> =20
+> +		memory_batch_shrink_begin();
 
 
-mmc0: Timeout waiting for hardware cmd interrupt.        
-mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
-mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00001301
-mmc0: sdhci: Blk size:  0x00000000 | Blk cnt:  0x00000000
-mmc0: sdhci: Argument:  0x00000c00 | Trn mode: 0x00000000
-mmc0: sdhci: Present:   0x01f00008 | Host ctl: 0x00000020
-mmc0: sdhci: Power:     0x00000000 | Blk gap:  0x00000000
-mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x000020e8
-mmc0: sdhci: Timeout:   0x00000000 | Int stat: 0x00010001
-mmc0: sdhci: Int enab:  0x007f0007 | Sig enab: 0x007f0003
-mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00001402
-mmc0: sdhci: Caps:      0x04fa0000 | Caps_1:   0x00000000
-mmc0: sdhci: Cmd:       0x0000341a | Max curr: 0x00000000
-mmc0: sdhci: Resp[0]:   0x00000000 | Resp[1]:  0x00000000
-mmc0: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
-mmc0: sdhci: Host ctl2: 0x00000000                       
-mmc0: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0x00000000
-mmc0: sdhci: ============================================
-mmc0: Timeout waiting for hardware cmd interrupt. 
+The effect of these on the memory grow path is far from clear.
 
-Let me know if you'd like me to run any further tests.
+>  		for_each_drmem_lmb(lmb) {
+>  			if (!drmem_lmb_reserved(lmb))
+>  				continue;
+> @@ -713,6 +726,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+> =20
+>  			drmem_remove_lmb_reservation(lmb);
+>  		}
+> +		memory_batch_shrink_end();
+>  		rc =3D -EINVAL;
+>  	} else {
+>  		for_each_drmem_lmb(lmb) {
+> @@ -814,6 +828,7 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u3=
+2 drc_index)
+>  	if (rc) {
+>  		pr_err("Memory indexed-count-add failed, removing any added LMBs\n");
+> =20
+> +		memory_batch_shrink_begin();
+>  		for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+>  			if (!drmem_lmb_reserved(lmb))
+>  				continue;
+> @@ -827,6 +842,7 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u3=
+2 drc_index)
+> =20
+>  			drmem_remove_lmb_reservation(lmb);
+>  		}
+> +		memory_batch_shrink_end();
+>  		rc =3D -EINVAL;
+>  	} else {
+>  		for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
 
-Kind regards,
-Daniel
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
->
-> Thanks,
-> Nick
->
-> Nicholas Piggin (10):
->   powerpc/syscall: switch user_exit_irqoff and trace_hardirqs_off order
->   powerpc/64e/interrupt: always save nvgprs on interrupt
->   powerpc/64e/interrupt: use new interrupt return
->   powerpc/64e/interrupt: NMI save irq soft-mask state in C
->   powerpc/64e/interrupt: reconcile irq soft-mask state in C
->   powerpc/64e/interrupt: Use new interrupt context tracking scheme
->   powerpc/64e/interrupt: handle bad_page_fault in C
->   powerpc: clean up do_page_fault
->   powerpc: remove partial register save logic
->   powerpc: move norestart trap flag to bit 0
->
->  arch/powerpc/include/asm/asm-prototypes.h |   2 -
->  arch/powerpc/include/asm/bug.h            |   4 +-
->  arch/powerpc/include/asm/interrupt.h      |  66 ++--
->  arch/powerpc/include/asm/ptrace.h         |  36 +-
->  arch/powerpc/kernel/align.c               |   6 -
->  arch/powerpc/kernel/entry_64.S            |  40 +-
->  arch/powerpc/kernel/exceptions-64e.S      | 425 ++--------------------
->  arch/powerpc/kernel/interrupt.c           |  22 +-
->  arch/powerpc/kernel/irq.c                 |  76 ----
->  arch/powerpc/kernel/process.c             |  12 -
->  arch/powerpc/kernel/ptrace/ptrace-view.c  |  21 --
->  arch/powerpc/kernel/ptrace/ptrace.c       |   2 -
->  arch/powerpc/kernel/ptrace/ptrace32.c     |   4 -
->  arch/powerpc/kernel/signal_32.c           |   3 -
->  arch/powerpc/kernel/signal_64.c           |   2 -
->  arch/powerpc/kernel/traps.c               |  14 +-
->  arch/powerpc/lib/sstep.c                  |   4 -
->  arch/powerpc/mm/book3s64/hash_utils.c     |  16 +-
->  arch/powerpc/mm/fault.c                   |  28 +-
->  arch/powerpc/xmon/xmon.c                  |  23 +-
->  20 files changed, 130 insertions(+), 676 deletions(-)
->
-> -- 
-> 2.23.0
+--gtIkK5qVPrjLWkaU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmBZLDIACgkQbDjKyiDZ
+s5KydRAAvlSEci9/e1SzmnhDyBt8gLcH9LuoP+xvXgVJ7HoHOgkTG0wXUr2zjerN
+UkgsVSSW/UucmAvr8pM3UC56Yn49cl94HAY5HYAcmld0F+1SHviag1cRvy2IF8WQ
+BgC6+hOLZ4MjatCplw4kVQKEp9yY+lOvwFsqJkwFz5yjPooBEO5MtJ8H4J3zzwev
+a0bSpmmwaDg9kcP8CcTr6eCHrgc8fHsDVmkB1evJiGC+hMDHsO4IdET6ULZqUVlQ
+XjJy634j1Eb1LcTiNq3WVnnD/AQZ7PNJqzKwG/PxEfQNT/Q180aP4UivxPzDlnhS
+Jh3QBKmjiC7JFEhOCH2NTiYHM+eYj0so/5d14gquTMqJOBbFjOHpC/VxpIlzvCW2
+Gomr9tzy14sA4wpmT7yRIOMEaKbOFgXw+BYetUowDk8cO2VpyQ/Xs/p/3DVifaz5
+g1ppt73qoMAv2G4kmmFo6G/4yqw1jhY7RLIx9LwQfPYTMUNSk51LLoVea5W0wvJm
+S8XXM5rYV9EU2qOluChXpd6//lJ9iw4O6onqFQ9bCCNXtSETMOJicJauHU3d+csA
+V+eQ2gHngCHDvy4FqwgDyZVKlETdnIHh+NSTi0D1MVinvZzmx+am5f7pPxDwPWdD
+r1yph4aI2SsfZwW+ezJwLAFeHuKNwLX8JPDWQMNkw3NVVT+h7ZY=
+=mGrR
+-----END PGP SIGNATURE-----
+
+--gtIkK5qVPrjLWkaU--
