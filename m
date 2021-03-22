@@ -1,66 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287BC345228
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 22:59:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970CF345305
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 00:31:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F47gq4fs7z30L4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 08:59:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F49jm4mPKz30CB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 10:31:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=hWZn1OEP;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=CRPWbEDw;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=qsOszmmo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2b;
+ helo=mail-qv1-xf2b.google.com; envelope-from=danielhb413@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=hWZn1OEP; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=CRPWbEDw; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=qsOszmmo; dkim-atps=neutral
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com
+ [IPv6:2607:f8b0:4864:20::f2b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F47gN3c3gz2y8N
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 08:58:56 +1100 (AEDT)
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1616450328;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Iet1Wjr63GOcypmPYTq4T14ZukHB3u7jxBY+aVGKYYw=;
- b=hWZn1OEPRtuWZTKgMnYPjGIok1vIyTctIQZGZ6w/gvzyu38zCLZRs0rP9Ld3AFrAYjsdQe
- LPb1O/m0YREF9nWyNXiWpxJRtjvD1vliM5odx5pV7lvLTfnfG6pV6T2qyZSsh3Upl9Wcbc
- XswU2iFrZ50/MSWD3bBuw2BwTyF8JQ/1TbC8wssrTXY2cZk8peWr1fggRtl2VUFe+1EBgH
- APX1XMEVv5RIRBqmYlI1jY46v/MwBj5JvZIP5jVcc8vFSE/ihpLFRid2DCHwMmq/iI2wTu
- w2LsHAkd/icYsF9porOlMj1Yc0IOVHbHMtqmZHHgv8il23b1PqhtabwpAQfFLQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1616450328;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Iet1Wjr63GOcypmPYTq4T14ZukHB3u7jxBY+aVGKYYw=;
- b=CRPWbEDwimqHHhUntjKMWJlbWmp0m4OGXo7z/b2dtmIHKsux6P7hlRrO9Y3AeDGb3cbI3E
- OtE/XeeV+5OMVICw==
-To: Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH next v1 2/3] printk: remove safe buffers
-In-Reply-To: <YFjbwxhZNnC52aSP@alley>
-References: <20210316233326.10778-1-john.ogness@linutronix.de>
- <20210316233326.10778-3-john.ogness@linutronix.de>
- <YFbY8kF7ilYoxvYp@google.com> <87k0pzmoao.fsf@jogness.linutronix.de>
- <YFjbwxhZNnC52aSP@alley>
-Date: Mon, 22 Mar 2021 22:58:47 +0100
-Message-ID: <87ft0mg8a0.fsf@jogness.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F49jL4NkKz2yQw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 10:30:44 +1100 (AEDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id h3so9581247qvh.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 16:30:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:references:from:message-id:date:user-agent:mime-version
+ :in-reply-to:content-language:content-transfer-encoding;
+ bh=Flv7N9YKZgQ+axjMlJ48Sk/1ZxaJPhQd7ShqxyoaEUs=;
+ b=qsOszmmoXSKrSKWadgyyH0NB0zZYX9ALRSf8uY5PMqXJsrzXPqOBJYFUD/kLsCAoRh
+ i+6BsVJdFMIBdCe6xe+Rm4PVD3cRj909pDBHPRqAeC2Aiq+ceGBpWXiIHvWRx/70qfI0
+ 45P52wIF5hRKwyFhxgfD4vGYE+F09ci2AcCTa8RqUm4ImwzNVAlkpUHjjIC1QcGnM4eF
+ +VftBXI3UiPh2ehv3oxMjRBqxZwdkn9erHLaheRRfONrOzcfFc2YQF2wsQ0XiowdHZxc
+ 5jOGUPrY8JEOZBiaGP32Bc0AFiz0tnxCEFofyFSb9R7QeBxNHRdNaMx4pqQJZAJX+BAN
+ 3ZTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=Flv7N9YKZgQ+axjMlJ48Sk/1ZxaJPhQd7ShqxyoaEUs=;
+ b=lZZ7zncnSfctALjuHjrSHbjXDwdU3f1QocomzwP8JwoRCETDGOjksnDrGN9e0pU5l2
+ VqUuGyHunSAw+mf8qTcQ/S9rE9m2VZ5y7HgvdB61joeel0rJyPCW73QkAKlgS8T1GX0T
+ WSuwXCFpLGFYfAzkM7qgHMc3EVEk7xpFnqCDDXGQPmxRRQTK/LsSwuwUsuHaWWb43W8B
+ VNDFi9Pjlq/DQ+AfviN3iSwc7Y4pf0FpMZVt7mmMHGoiQdTkyhgNNqJD96dJdZJsW4PT
+ FwAjUbGHgk1OmpZZYaNSLMeJbPHQQGuj0Y39LHxFbu06fypJa1zXd6/9W2Vje+WzAZW7
+ xUmw==
+X-Gm-Message-State: AOAM5328UZrtjoL56W+gl8P0hPpZU+T3vBhfGxlaaN0rjEZxXSHRpHbo
+ Z9ECGg1Dh1LDG6i8M2ouVvFmUcxjd6M=
+X-Google-Smtp-Source: ABdhPJz1I1/wpbkasrhHG/j1zJpNK1ISnd+MGBpXAoP1pUOH3UlSTF2SpyejU/ozbH8x74Sd7Zu7sw==
+X-Received: by 2002:ad4:4ae9:: with SMTP id cp9mr2134690qvb.20.1616455839255; 
+ Mon, 22 Mar 2021 16:30:39 -0700 (PDT)
+Received: from ?IPv6:2804:431:c7c6:3fd7:65e0:e5c6:f4fc:733c?
+ ([2804:431:c7c6:3fd7:65e0:e5c6:f4fc:733c])
+ by smtp.gmail.com with ESMTPSA id i14sm3664989qtq.81.2021.03.22.16.30.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Mar 2021 16:30:38 -0700 (PDT)
+Subject: Re: [PATCH 1/1] hotplug-cpu.c: show 'last online CPU' error in
+ dlpar_cpu_remove()
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20210305173845.451158-1-danielhb413@gmail.com>
+ <c2fdbf4e-995b-fec8-7dc3-41beb7d66daa@gmail.com>
+ <87a6qz8juk.fsf@mpe.ellerman.id.au>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+Message-ID: <2642d868-1c08-a8f3-042f-f43720d46250@gmail.com>
+Date: Mon, 22 Mar 2021 20:30:36 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <87a6qz8juk.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,143 +87,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rafael Aquini <aquini@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Paul Mackerras <paulus@samba.org>, Tiezhu Yang <yangtiezhu@loongson.cn>,
- Peter Zijlstra <peterz@infradead.org>, Yue Hu <huyue2@yulong.com>,
- Jordan Niethe <jniethe5@gmail.com>, Kees Cook <keescook@chromium.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Alistair Popple <alistair@popple.id.au>, "Guilherme G.
- Piccoli" <gpiccoli@canonical.com>, Nicholas Piggin <npiggin@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Eric Biederman <ebiederm@xmission.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-03-22, Petr Mladek <pmladek@suse.com> wrote:
-> On Mon 2021-03-22 12:16:15, John Ogness wrote:
->> On 2021-03-21, Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
->> >> @@ -369,7 +70,10 @@ __printf(1, 0) int vprintk_func(const char *fmt, va_list args)
->> >>  	 * Use the main logbuf even in NMI. But avoid calling console
->> >>  	 * drivers that might have their own locks.
->> >>  	 */
->> >> -	if ((this_cpu_read(printk_context) & PRINTK_NMI_DIRECT_CONTEXT_MASK)) {
->> >> +	if (this_cpu_read(printk_context) &
->> >> +	    (PRINTK_NMI_DIRECT_CONTEXT_MASK |
->> >> +	     PRINTK_NMI_CONTEXT_MASK |
->> >> +	     PRINTK_SAFE_CONTEXT_MASK)) {
->> >
->> > Do we need printk_nmi_direct_enter/exit() and
->> > PRINTK_NMI_DIRECT_CONTEXT_MASK?  Seems like all printk_safe() paths
->> > are now DIRECT - we store messages to the prb, but don't call console
->> > drivers.
+
+
+On 3/19/21 8:26 AM, Michael Ellerman wrote:
+> Daniel Henrique Barboza <danielhb413@gmail.com> writes:
+>> Ping
 >>
->> I was planning on waiting until the kthreads are introduced, in which
->> case printk_safe.c is completely removed.
->
-> You want to keep printk_safe() context because it prevents calling
-> consoles even in normal context. Namely, it prevents deadlock by
-> recursively taking, for example, sem->lock in console_lock() or
-> console_owner_lock in console_trylock_spinning(). Am I right?
+>> On 3/5/21 2:38 PM, Daniel Henrique Barboza wrote:
+>>> Of all the reasons that dlpar_cpu_remove() can fail, the 'last online
+>>> CPU' is one that can be caused directly by the user offlining CPUs
+>>> in a partition/virtual machine that has hotplugged CPUs. Trying to
+>>> reclaim a hotplugged CPU can fail if the CPU is now the last online in
+>>> the system. This is easily reproduced using QEMU [1].
+> 
+> Sorry, I saw this earlier and never got around to replying.
 
-Correct.
+No problem. Thanks for the review!
 
->> But I suppose I could switch
->> the 1 printk_nmi_direct_enter() user to printk_nmi_enter() so that
->> PRINTK_NMI_DIRECT_CONTEXT_MASK can be removed now. I would do this in a
->> 4th patch of the series.
->
-> Yes, please unify the PRINTK_NMI_CONTEXT. One is enough.
+> 
+> I'm wondering if we neet to catch it earlier, ie. in
+> dlpar_offline_cpu().
+> 
+> By the time we return to dlpar_cpu_remove() we've dropped the
+> cpu_add_remove_lock (cpu_maps_update_done), so num_online_cpus() could
+> change out from under us, meaning the num_online_cpus() == 1 check might
+> trigger incorrectly (or vice versa).
+> 
+> Something like the patch below (completely untested :D)
 
-Agreed. (But I'll go even further. See below.)
+Makes sense. I'll try it out to see if it works.
 
-> I wonder if it would make sense to go even further at this stage.
-> There will still be 4 contexts that modify the printk behavior after
-> this patchset:
->
->   + printk_count set by printk_enter()/exit()
->       + prevents: infinite recursion
->       + context: any context
->       + action: skips entire printk at 3rd recursion level
->
->   + prink_context set by printk_safe_enter()/exit()
->       + prevents: dead lock caused by recursion into some
-> 		console code in any context
->       + context: any
->       + action: skips console call at 1st recursion level
+> 
+> And writing that patch makes me wonder, is == 1 the right check?
+> 
+> In most cases we'll remove all but one thread of the core, but we'll
+> fail on the last thread. Leaving that core effectively stuck in SMT1. Is
+> that useful behaviour? Should we instead check at the start that we can
+> remove all threads of the core without going to zero online CPUs?
 
-Technically, at this point printk_safe_enter() behavior is identical to
-printk_nmi_enter(). Namely, prevent any recursive printk calls from
-calling into the console code.
+I think it's ok to allow SMT1 cores, speaking from QEMU perspective.
+QEMU does not have a "core hotunplug" operation where the whole core is
+hotunplugged at once. The CPU hotplug/unplug operations are done as single
+CPU thread add/removal. If the user wants to run 4 cores, all of them with
+SMT1, QEMU will allow it.
 
->   + printk_context set by printk_nmi_enter()/exit()
->       + prevents: dead lock caused by any console lock recursion
->       + context: NMI
->       + action: skips console calls at 0th recursion level
->
->   + kdb_trap_printk
->       + redirects printk() to kdb_printk() in kdb context
->
->
-> What is possible?
->
-> 1. We could get rid of printk_nmi_enter()/exit() and
->    PRINTK_NMI_CONTEXT completely already now. It is enough
->    to check in_nmi() in printk_func().
->
->    printk_nmi_enter() was added by the commit 42a0bb3f71383b457a7db362
->    ("printk/nmi: generic solution for safe printk in NMI"). It was
->    really needed to modify @printk_func pointer.
->
->    We did not remove it later when printk_function became a real
->    function. The idea was to track all printk contexts in a single
->    variable. But we never added kdb context.
->
->    It might make sense to remove it now. Peter Zijstra would be happy.
->    There already were some churns with tracking printk_context in NMI.
->    For example, see
->    https://lore.kernel.org/r/20200219150744.428764577@infradead.org
->
->    IMHO, it does not make sense to wait until the entire console-stuff
->    rework is done in this case.
+Libvirt does not operate with the core granularity either - you can specify
+the amount of vcpus the guest should run with, and Libvirt will send
+hotplug/unplug requests to QEMU to match the desired value. It doesn't
+bother with how many threads of a core were offlined or not.
 
-Agreed. in_nmi() within vprintk_emit() is enough to detect if the
-console code should be skipped:
 
-    if (!in_sched && !in_nmi()) {
-        ...
-    }
+Thanks,
 
-> 2. I thought about unifying printk_safe_enter()/exit() and
->    printk_enter()/exit(). They both count recursion with
->    IRQs disabled, have similar name. But they are used
->    different way.
->
->    But better might be to rename printk_safe_enter()/exit() to
->    console_enter()/exit() or to printk_deferred_enter()/exit().
->    It would make more clear what it does now. And it might help
->    to better distinguish it from the new printk_enter()/exit().
->
->    This patchset actually splits the original printk_safe()
->    functionality into two:
->
->        + printk_count prevents infinite recursion
->        + printk_deferred_enter() deffers console handling.
->
->    I am not sure if it is worth it. But it might help people (even me)
->    when digging into the printk history. Different name will help to
->    understand the functionality at the given time.
 
-I am also not sure if it is worth the extra "noise" just to give the
-function a more appropriate name. The plan is to remove it completely
-soon anyway. My vote is to leave the name as it is.
+DHB
 
-But I am willing to do the rename in an addtional patch if you
-want. printk_deferred_enter() sounds fine to me. Please confirm if you
-want me to do this.
 
-John Ogness
+
+> 
+> cheers
+> 
+> 
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> index 12cbffd3c2e3..498c22331ac8 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> @@ -271,6 +271,12 @@ static int dlpar_offline_cpu(struct device_node *dn)
+>   			if (!cpu_online(cpu))
+>   				break;
+>   
+> +			if (num_online_cpus() == 1) {
+> +				pr_warn("Unable to remove last online CPU %pOFn\n", dn);
+> +				rc = EBUSY;
+> +				goto out_unlock;
+> +			}
+> +
+>   			cpu_maps_update_done();
+>   			rc = device_offline(get_cpu_device(cpu));
+>   			if (rc)
+> @@ -283,6 +289,7 @@ static int dlpar_offline_cpu(struct device_node *dn)
+>   				thread);
+>   		}
+>   	}
+> +out_unlock:
+>   	cpu_maps_update_done();
+>   
+>   out:
+> 
