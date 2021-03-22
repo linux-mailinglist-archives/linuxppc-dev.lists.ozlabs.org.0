@@ -1,58 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14744344B05
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 17:20:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D31344BAF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 17:38:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F408S0BLqz30CM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 03:20:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F40Yc2Y7Nz30Cy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 03:38:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
- receiver=<UNKNOWN>)
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F40834vXQz2xfs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 03:19:46 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.146.197])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 02D17939F00A;
- Mon, 22 Mar 2021 17:19:44 +0100 (CET)
-Received: from kaod.org (37.59.142.100) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 22 Mar
- 2021 17:19:43 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-100R0032c87bfd7-30fd-4e5d-838b-ecd6d1ca7ca1,
- 2440D31D697F0C6CF44D15E35915EFCCCC8A77EA) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Subject: Re: [PATCH v3 17/41] KVM: PPC: Book3S HV P9: implement
- kvmppc_xive_pull_vcpu in C
-To: Nicholas Piggin <npiggin@gmail.com>, <kvm-ppc@vger.kernel.org>
-References: <20210305150638.2675513-1-npiggin@gmail.com>
- <20210305150638.2675513-18-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <11823cfb-3d10-8f2f-4caf-9b38a010ed31@kaod.org>
-Date: Mon, 22 Mar 2021 17:19:42 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <20210305150638.2675513-18-npiggin@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG8EX1.mxp5.local (172.16.2.71) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 4886eb08-8085-47b9-9adc-9d1c859b7ee2
-X-Ovh-Tracer-Id: 14095985360674196445
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudeggedgkeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhephedtgfethfduhfduteeuhefffefhgfdtudevudevudfgtdfgjedukeffteelkeffnecuffhomhgrihhnpehrmhhhrghnughlvghrshdrshgsnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehnphhighhgihhnsehgmhgrihhlrdgtohhm
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F40Xw3RJlz301L
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 03:37:48 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4F40Xh2qlVz9txkM;
+ Mon, 22 Mar 2021 17:37:40 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 0xxz-9rq0dT4; Mon, 22 Mar 2021 17:37:40 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F40Xh1qmSz9txkL;
+ Mon, 22 Mar 2021 17:37:40 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E57D08B7A3;
+ Mon, 22 Mar 2021 17:37:45 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id hGhPYlNpQroi; Mon, 22 Mar 2021 17:37:45 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9F83C8B79C;
+ Mon, 22 Mar 2021 17:37:45 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 730F3675F4; Mon, 22 Mar 2021 16:37:45 +0000 (UTC)
+Message-Id: <cover.1616430991.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 0/8] Implement EBPF on powerpc32
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, kafai@fb.com,
+ songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
+ kpsingh@chromium.org, naveen.n.rao@linux.ibm.com, sandipan@linux.ibm.com
+Date: Mon, 22 Mar 2021 16:37:45 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,119 +59,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/5/21 4:06 PM, Nicholas Piggin wrote:
-> This is more symmetric with kvmppc_xive_push_vcpu. The extra test in
-> the asm will go away in a later change.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+This series implements extended BPF on powerpc32. For the implementation
+details, see the patch before the last.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+The following operations are not implemented:
 
-> ---
->  arch/powerpc/include/asm/kvm_ppc.h      |  2 ++
->  arch/powerpc/kvm/book3s_hv.c            |  2 ++
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S |  5 ++++
->  arch/powerpc/kvm/book3s_xive.c          | 31 +++++++++++++++++++++++++
->  4 files changed, 40 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-> index 9531b1c1b190..73b1ca5a6471 100644
-> --- a/arch/powerpc/include/asm/kvm_ppc.h
-> +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> @@ -672,6 +672,7 @@ extern int kvmppc_xive_set_icp(struct kvm_vcpu *vcpu, u64 icpval);
->  extern int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
->  			       int level, bool line_status);
->  extern void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu);
-> +extern void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu);
->  
->  static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
->  {
-> @@ -712,6 +713,7 @@ static inline int kvmppc_xive_set_icp(struct kvm_vcpu *vcpu, u64 icpval) { retur
->  static inline int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
->  				      int level, bool line_status) { return -ENODEV; }
->  static inline void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu) { }
-> +static inline void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu) { }
->  
->  static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
->  	{ return 0; }
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index b9cae42b9cd5..b265522fc467 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -3565,6 +3565,8 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
->  
->  	trap = __kvmhv_vcpu_entry_p9(vcpu);
->  
-> +	kvmppc_xive_pull_vcpu(vcpu);
-> +
->  	/* Advance host PURR/SPURR by the amount used by guest */
->  	purr = mfspr(SPRN_PURR);
->  	spurr = mfspr(SPRN_SPURR);
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index 75405ef53238..c11597f815e4 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -1442,6 +1442,11 @@ guest_exit_cont:		/* r9 = vcpu, r12 = trap, r13 = paca */
->  	bl	kvmhv_accumulate_time
->  #endif
->  #ifdef CONFIG_KVM_XICS
-> +	/* If we came in through the P9 short path, xive pull is done in C */
-> +	lwz	r0, STACK_SLOT_SHORT_PATH(r1)
-> +	cmpwi	r0, 0
-> +	bne	1f
-> +
->  	/* We are exiting, pull the VP from the XIVE */
->  	lbz	r0, VCPU_XIVE_PUSHED(r9)
->  	cmpwi	cr0, r0, 0
-> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-> index e7219b6f5f9a..52cdb9e2660a 100644
-> --- a/arch/powerpc/kvm/book3s_xive.c
-> +++ b/arch/powerpc/kvm/book3s_xive.c
-> @@ -127,6 +127,37 @@ void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu)
->  }
->  EXPORT_SYMBOL_GPL(kvmppc_xive_push_vcpu);
->  
-> +/*
-> + * Pull a vcpu's context from the XIVE on guest exit.
-> + * This assumes we are in virtual mode (MMU on)
+		case BPF_ALU64 | BPF_DIV | BPF_X: /* dst /= src */
+		case BPF_ALU64 | BPF_MOD | BPF_X: /* dst %= src */
+		case BPF_STX | BPF_XADD | BPF_DW: /* *(u64 *)(dst + off) += src */
 
-should we add an assert on is_rm() ? 
+The following operations are only implemented for power of two constants:
 
-> + */
-> +void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu)
-> +{
-> +	void __iomem *tima = local_paca->kvm_hstate.xive_tima_virt;
-> +
-> +	if (!vcpu->arch.xive_pushed)
-> +		return;
-> +
-> +	/*
-> +	 * Sould not have been pushed if there is no tima
-> +	 */
-> +	if (WARN_ON(!tima))
-> +		return;
-> +
-> +	eieio();
-> +	/* First load to pull the context, we ignore the value */
-> +	__raw_readl(tima + TM_SPC_PULL_OS_CTX);
-> +	/* Second load to recover the context state (Words 0 and 1) */
-> +	vcpu->arch.xive_saved_state.w01 = __raw_readq(tima + TM_QW1_OS);
-> +
-> +	/* Fixup some of the state for the next load */
-> +	vcpu->arch.xive_saved_state.lsmfb = 0;
-> +	vcpu->arch.xive_saved_state.ack = 0xff;
-> +	vcpu->arch.xive_pushed = 0;
-> +	eieio();
-> +}
-> +EXPORT_SYMBOL_GPL(kvmppc_xive_pull_vcpu);
-> +
->  /*
->   * This is a simple trigger for a generic XIVE IRQ. This must
->   * only be called for interrupts that support a trigger page
-> 
+		case BPF_ALU64 | BPF_MOD | BPF_K: /* dst %= imm */
+		case BPF_ALU64 | BPF_DIV | BPF_K: /* dst /= imm */
+
+Below are the results on a powerpc 885:
+- with the patch, with and without bpf_jit_enable
+- without the patch, with bpf_jit_enable (ie with CBPF)
+
+With the patch, with bpf_jit_enable = 1 :
+
+[   60.826529] test_bpf: Summary: 378 PASSED, 0 FAILED, [354/366 JIT'ed]
+[   60.832505] test_bpf: test_skb_segment: Summary: 2 PASSED, 0 FAILED
+
+With the patch, with bpf_jit_enable = 0 :
+
+[   75.186337] test_bpf: Summary: 378 PASSED, 0 FAILED, [0/366 JIT'ed]
+[   75.192325] test_bpf: test_skb_segment: Summary: 2 PASSED, 0 FAILED
+
+Without the patch, with bpf_jit_enable = 1 :
+
+[  186.112429] test_bpf: Summary: 371 PASSED, 7 FAILED, [119/366 JIT'ed]
+
+Couldn't run test_progs because it doesn't build (clang 11 crashes during the build).
+
+Changes in v2:
+- Simplify 16 bits swap
+- Rework tailcall, use stack for tailcall counter
+- Fix handling of BPF_REG_FP:
+  - must be handler like any other register allthough only the lower 32 bits part is used as a pointer.
+  - r18 was TMP_REG, r17/r18 become de BPF_REG_FP
+  - r31 was BPF_REG_FP, it is now TMP_REG
+- removed bpf_jit32.h
+- Reorder register allocation dynamically to use the volatile registers as much as possible when not doing function calls (last patch - new)
+
+Christophe Leroy (8):
+  powerpc/bpf: Remove classical BPF support for PPC32
+  powerpc/bpf: Change register numbering for bpf_set/is_seen_register()
+  powerpc/bpf: Move common helpers into bpf_jit.h
+  powerpc/bpf: Move common functions into bpf_jit_comp.c
+  powerpc/bpf: Change values of SEEN_ flags
+  powerpc/asm: Add some opcodes in asm/ppc-opcode.h for PPC32 eBPF
+  powerpc/bpf: Implement extended BPF on PPC32
+  powerpc/bpf: Reallocate BPF registers to volatile registers when
+    possible on PPC32
+
+ Documentation/admin-guide/sysctl/net.rst |    2 +-
+ arch/powerpc/Kconfig                     |    3 +-
+ arch/powerpc/include/asm/ppc-opcode.h    |   12 +
+ arch/powerpc/net/Makefile                |    6 +-
+ arch/powerpc/net/bpf_jit.h               |   61 ++
+ arch/powerpc/net/bpf_jit32.h             |  139 ---
+ arch/powerpc/net/bpf_jit64.h             |   21 +-
+ arch/powerpc/net/bpf_jit_asm.S           |  226 -----
+ arch/powerpc/net/bpf_jit_comp.c          |  782 ++++-----------
+ arch/powerpc/net/bpf_jit_comp32.c        | 1095 ++++++++++++++++++++++
+ arch/powerpc/net/bpf_jit_comp64.c        |  295 +-----
+ 11 files changed, 1372 insertions(+), 1270 deletions(-)
+ delete mode 100644 arch/powerpc/net/bpf_jit32.h
+ delete mode 100644 arch/powerpc/net/bpf_jit_asm.S
+ create mode 100644 arch/powerpc/net/bpf_jit_comp32.c
+
+-- 
+2.25.0
 
