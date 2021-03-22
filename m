@@ -2,80 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970CF345305
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 00:31:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4578D34532B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 00:46:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F49jm4mPKz30CB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 10:31:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4B2z1yD7z30N1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 10:46:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=qsOszmmo;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=Ze6ptfQk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2b;
- helo=mail-qv1-xf2b.google.com; envelope-from=danielhb413@gmail.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::42d;
+ helo=mail-pf1-x42d.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qsOszmmo; dkim-atps=neutral
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com
- [IPv6:2607:f8b0:4864:20::f2b])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=Ze6ptfQk; dkim-atps=neutral
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
+ [IPv6:2607:f8b0:4864:20::42d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F49jL4NkKz2yQw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 10:30:44 +1100 (AEDT)
-Received: by mail-qv1-xf2b.google.com with SMTP id h3so9581247qvh.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 16:30:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:references:from:message-id:date:user-agent:mime-version
- :in-reply-to:content-language:content-transfer-encoding;
- bh=Flv7N9YKZgQ+axjMlJ48Sk/1ZxaJPhQd7ShqxyoaEUs=;
- b=qsOszmmoXSKrSKWadgyyH0NB0zZYX9ALRSf8uY5PMqXJsrzXPqOBJYFUD/kLsCAoRh
- i+6BsVJdFMIBdCe6xe+Rm4PVD3cRj909pDBHPRqAeC2Aiq+ceGBpWXiIHvWRx/70qfI0
- 45P52wIF5hRKwyFhxgfD4vGYE+F09ci2AcCTa8RqUm4ImwzNVAlkpUHjjIC1QcGnM4eF
- +VftBXI3UiPh2ehv3oxMjRBqxZwdkn9erHLaheRRfONrOzcfFc2YQF2wsQ0XiowdHZxc
- 5jOGUPrY8JEOZBiaGP32Bc0AFiz0tnxCEFofyFSb9R7QeBxNHRdNaMx4pqQJZAJX+BAN
- 3ZTw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4B2X2kfpz2yxb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 10:45:37 +1100 (AEDT)
+Received: by mail-pf1-x42d.google.com with SMTP id x26so12342741pfn.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 16:45:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=7p7Vs6bLBk4Uyz+kJg2qbyDsqQhArCrFc7/wzK/apD4=;
+ b=Ze6ptfQkU0mDC6xweiEQU/jw9crvSu/zn9mJ/28udQg9gYqLeIcw53dteWKhNM0alV
+ 7+XwJdhCkQzVwvCdWWWB47HURNcKeGDLFF+qoyiB1ot7wB2khle5T8OZ4PaF005lxquH
+ 2V47tXecRxwMkqnghpcp4aUA2+QrGb7dVEJws=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=Flv7N9YKZgQ+axjMlJ48Sk/1ZxaJPhQd7ShqxyoaEUs=;
- b=lZZ7zncnSfctALjuHjrSHbjXDwdU3f1QocomzwP8JwoRCETDGOjksnDrGN9e0pU5l2
- VqUuGyHunSAw+mf8qTcQ/S9rE9m2VZ5y7HgvdB61joeel0rJyPCW73QkAKlgS8T1GX0T
- WSuwXCFpLGFYfAzkM7qgHMc3EVEk7xpFnqCDDXGQPmxRRQTK/LsSwuwUsuHaWWb43W8B
- VNDFi9Pjlq/DQ+AfviN3iSwc7Y4pf0FpMZVt7mmMHGoiQdTkyhgNNqJD96dJdZJsW4PT
- FwAjUbGHgk1OmpZZYaNSLMeJbPHQQGuj0Y39LHxFbu06fypJa1zXd6/9W2Vje+WzAZW7
- xUmw==
-X-Gm-Message-State: AOAM5328UZrtjoL56W+gl8P0hPpZU+T3vBhfGxlaaN0rjEZxXSHRpHbo
- Z9ECGg1Dh1LDG6i8M2ouVvFmUcxjd6M=
-X-Google-Smtp-Source: ABdhPJz1I1/wpbkasrhHG/j1zJpNK1ISnd+MGBpXAoP1pUOH3UlSTF2SpyejU/ozbH8x74Sd7Zu7sw==
-X-Received: by 2002:ad4:4ae9:: with SMTP id cp9mr2134690qvb.20.1616455839255; 
- Mon, 22 Mar 2021 16:30:39 -0700 (PDT)
-Received: from ?IPv6:2804:431:c7c6:3fd7:65e0:e5c6:f4fc:733c?
- ([2804:431:c7c6:3fd7:65e0:e5c6:f4fc:733c])
- by smtp.gmail.com with ESMTPSA id i14sm3664989qtq.81.2021.03.22.16.30.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Mar 2021 16:30:38 -0700 (PDT)
-Subject: Re: [PATCH 1/1] hotplug-cpu.c: show 'last online CPU' error in
- dlpar_cpu_remove()
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20210305173845.451158-1-danielhb413@gmail.com>
- <c2fdbf4e-995b-fec8-7dc3-41beb7d66daa@gmail.com>
- <87a6qz8juk.fsf@mpe.ellerman.id.au>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-ID: <2642d868-1c08-a8f3-042f-f43720d46250@gmail.com>
-Date: Mon, 22 Mar 2021 20:30:36 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=7p7Vs6bLBk4Uyz+kJg2qbyDsqQhArCrFc7/wzK/apD4=;
+ b=BUIDdYqZTipRsD8At0IOxCQIT9IuKUSGLtwn656ToAOo2GkObdEzgulYN4egQQi7U+
+ DJMQU3EVZegLKxAN6vUfPeR3gwLBGh5WkDobKsuxYpU85Z1k/6+rH+C3WNuf3jyFIAVp
+ ITNkWBi5merL0qvRTGgiHqg2/q8JL4kuFkEgEojkuP3Cca/tEjbl8wyhL5cwQqTqkLBv
+ wd0oF5raTBysJ41RcyN0qhMJyzdUzW57/JJQoom2AAV5vas0CIZoGiQtQNFN+e1iIG6w
+ HObKHUxlpErelDRd723gL6OUWO3mn4LOL2h9KYcvSx12N+vFeMXrTXAg3083rYpM9rur
+ s1FQ==
+X-Gm-Message-State: AOAM530gh6XMkmOJKLHQ5tX8q6fmNHghNhU02ii7yeugso6dCJkQqrbk
+ OVgPgFtORGGESZS7lydvrq2cNw==
+X-Google-Smtp-Source: ABdhPJwjQ2rNwR9pwENLYbus2oM8MGaeo3pBEEoU3c2Oww2o4vvfEhYramAGyJM0uEPGJfVzzw5KUw==
+X-Received: by 2002:a17:902:8b86:b029:e5:bef6:56b0 with SMTP id
+ ay6-20020a1709028b86b02900e5bef656b0mr2011837plb.76.1616456735667; 
+ Mon, 22 Mar 2021 16:45:35 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-1113-6700-07ae-1980-05d6-0e77.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:7ae:1980:5d6:e77])
+ by smtp.gmail.com with ESMTPSA id g28sm15116670pfr.120.2021.03.22.16.45.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Mar 2021 16:45:35 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 00/10] Move 64e to new interrupt return code
+In-Reply-To: <20210315031716.3940350-1-npiggin@gmail.com>
+References: <20210315031716.3940350-1-npiggin@gmail.com>
+Date: Tue, 23 Mar 2021 10:45:32 +1100
+Message-ID: <87im5ibvmr.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-In-Reply-To: <87a6qz8juk.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,94 +77,236 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Scott Wood <oss@buserror.net>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Nick,
+
+> Since RFC this is rebased on Christophe's v3 ppc32 conversion, and
+> has fixed up small details, and then adds some powerpc-wide
+> cleanups at the end.
+>
+> Tested on qemu only (QEMU e500), which is not ideal for interrupt
+> handling particularly the critical interrupts which I don't know
+> whether it can generate.
+
+I tested this on a T4240RDB with:
+
+stress-ng --class interrupts --seq 0 -t 5
+
+There are some problems that occur only when testing with your series. I
+haven't made any attempt to debug them yet.
+
+stress-ng: info:  [3101] unsuccessful run completed in 6352.60s (1 hour, 45 mins, 52.60 secs)
+stress-ng: fail:  [3101] aio instance 0 corrupted bogo-ops counter, 7542705 vs 0
+stress-ng: fail:  [3101] aio instance 0 hash error in bogo-ops counter and run flag, 359866039 vs 0
+stress-ng: fail:  [3101] aio instance 17 corrupted bogo-ops counter, 7638823 vs 0
+stress-ng: fail:  [3101] aio instance 17 hash error in bogo-ops counter and run flag, 2001558423 vs 0
+stress-ng: fail:  [3101] aio instance 30 corrupted bogo-ops counter, 8192545 vs 0
+info: 5 failures reached, aborting stress process
+stress-ng: fail:  [3101] aio instance 30 hash error in bogo-ops counter and run flag, 3023200976 vs 0
+stress-ng: fail:  [3101] pidfd instance 25 corrupted bogo-ops counter, 116476 vs 0
+stress-ng: fail:  [3101] pidfd instance 25 hash error in bogo-ops counter and run flag, 1964630417 vs 0
+stress-ng: fail:  [3101] sigabrt instance 3 corrupted bogo-ops counter, 95662 vs 0
+stress-ng: fail:  [3101] sigabrt instance 3 hash error in bogo-ops counter and run flag, 1321243721 vs 0
+stress-ng: fail:  [3101] sigabrt instance 9 corrupted bogo-ops counter, 92858 vs 0
+stress-ng: fail:  [3101] sigabrt instance 9 hash error in bogo-ops counter and run flag, 3835381330 vs 0
+stress-ng: fail:  [3101] sigabrt instance 11 corrupted bogo-ops counter, 98333 vs 0
+stress-ng: fail:  [3101] sigabrt instance 11 hash error in bogo-ops counter and run flag, 3447969030 vs 0
+stress-ng: fail:  [3101] sigabrt instance 14 corrupted bogo-ops counter, 96995 vs 0
+stress-ng: fail:  [3101] sigabrt instance 14 hash error in bogo-ops counter and run flag, 2621581502 vs 0
+stress-ng: fail:  [3101] sigabrt instance 16 corrupted bogo-ops counter, 97464 vs 0
+stress-ng: fail:  [3101] sigabrt instance 16 hash error in bogo-ops counter and run flag, 3422440538 vs 0
+stress-ng: fail:  [3101] sigabrt instance 19 corrupted bogo-ops counter, 96044 vs 0
+stress-ng: fail:  [3101] sigabrt instance 19 hash error in bogo-ops counter and run flag, 511989935 vs 0
+stress-ng: fail:  [3101] sigabrt instance 20 corrupted bogo-ops counter, 96018 vs 0
+stress-ng: fail:  [3101] sigabrt instance 20 hash error in bogo-ops counter and run flag, 2348631606 vs 0
+stress-ng: fail:  [3101] sigabrt instance 23 corrupted bogo-ops counter, 95252 vs 0
+stress-ng: fail:  [3101] sigabrt instance 23 hash error in bogo-ops counter and run flag, 2302430489 vs 0
+stress-ng: fail:  [3101] sigabrt instance 26 corrupted bogo-ops counter, 99151 vs 0
+stress-ng: fail:  [3101] sigabrt instance 26 hash error in bogo-ops counter and run flag, 2882282932 vs 0
+stress-ng: fail:  [3101] sigabrt instance 27 corrupted bogo-ops counter, 95434 vs 0
+stress-ng: fail:  [3101] sigabrt instance 27 hash error in bogo-ops counter and run flag, 260112434 vs 0
+stress-ng: fail:  [3101] sigabrt instance 28 corrupted bogo-ops counter, 97138 vs 0
+stress-ng: fail:  [3101] sigabrt instance 28 hash error in bogo-ops counter and run flag, 2822283734 vs 0
+stress-ng: fail:  [3101] sigabrt instance 30 corrupted bogo-ops counter, 97728 vs 0
+stress-ng: fail:  [3101] sigabrt instance 30 hash error in bogo-ops counter and run flag, 738567801 vs 0
+stress-ng: fail:  [3101] sigabrt instance 31 corrupted bogo-ops counter, 96368 vs 0
+stress-ng: fail:  [3101] sigabrt instance 31 hash error in bogo-ops counter and run flag, 1663873592 vs 0
+stress-ng: fail:  [3101] sigio instance 0 corrupted bogo-ops counter, 1141 vs 0
+stress-ng: fail:  [3101] sigio instance 0 hash error in bogo-ops counter and run flag, 3981634025 vs 0
+stress-ng: fail:  [3101] sigio instance 1 corrupted bogo-ops counter, 1323 vs 0
+stress-ng: fail:  [3101] sigio instance 1 hash error in bogo-ops counter and run flag, 2384922462 vs 0
+stress-ng: fail:  [3101] sigio instance 2 corrupted bogo-ops counter, 876 vs 0
+stress-ng: fail:  [3101] sigio instance 2 hash error in bogo-ops counter and run flag, 2730635354 vs 0
+stress-ng: fail:  [3101] sigio instance 3 corrupted bogo-ops counter, 3391 vs 0
+stress-ng: fail:  [3101] sigio instance 3 hash error in bogo-ops counter and run flag, 3893594528 vs 0
+stress-ng: fail:  [3101] sigio instance 4 corrupted bogo-ops counter, 988 vs 0
+stress-ng: fail:  [3101] sigio instance 4 hash error in bogo-ops counter and run flag, 2252189661 vs 0
+stress-ng: fail:  [3101] sigio instance 5 corrupted bogo-ops counter, 4158 vs 0
+stress-ng: fail:  [3101] sigio instance 5 hash error in bogo-ops counter and run flag, 908770141 vs 0
+stress-ng: fail:  [3101] sigio instance 6 corrupted bogo-ops counter, 657 vs 0
+stress-ng: fail:  [3101] sigio instance 6 hash error in bogo-ops counter and run flag, 3022228667 vs 0
+stress-ng: fail:  [3101] sigio instance 7 corrupted bogo-ops counter, 239 vs 0
+stress-ng: fail:  [3101] sigio instance 7 hash error in bogo-ops counter and run flag, 2339545388 vs 0
+stress-ng: fail:  [3101] sigio instance 8 corrupted bogo-ops counter, 183062 vs 0
+stress-ng: fail:  [3101] sigio instance 8 hash error in bogo-ops counter and run flag, 2294439106 vs 0
+stress-ng: fail:  [3101] sigio instance 9 corrupted bogo-ops counter, 946 vs 0
+stress-ng: fail:  [3101] sigio instance 9 hash error in bogo-ops counter and run flag, 2990832529 vs 0
+stress-ng: fail:  [3101] sigio instance 10 corrupted bogo-ops counter, 2799 vs 0
+stress-ng: fail:  [3101] sigio instance 10 hash error in bogo-ops counter and run flag, 1781985030 vs 0
+stress-ng: fail:  [3101] sigio instance 11 corrupted bogo-ops counter, 2705 vs 0
+stress-ng: fail:  [3101] sigio instance 11 hash error in bogo-ops counter and run flag, 3301490000 vs 0
+stress-ng: fail:  [3101] sigio instance 21 corrupted bogo-ops counter, 238787 vs 0
+stress-ng: fail:  [3101] sigio instance 21 hash error in bogo-ops counter and run flag, 2490210165 vs 0
+stress-ng: fail:  [3101] sigio instance 28 corrupted bogo-ops counter, 1020 vs 0
+stress-ng: fail:  [3101] sigio instance 28 hash error in bogo-ops counter and run flag, 3260422232 vs 0
+stress-ng: fail:  [3101] metrics-check: stressor metrics corrupted, data is compromised
+
+It looks like this is paired with some segfaults in dmesg:
+
+stress-ng-pidfd[4417]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-pidfd[4417]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-pidfd[4417]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigab[3748349]: segfault (11) at 800100 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigab[3748349]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigab[3748390]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1
+stress-ng-sigab[3748405]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigab[3748405]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigab[3748405]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigab[3748427]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1
+stress-ng-sigab[3748376]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1
+in stress-ng[107e8d000+3000]
+in stress-ng[107e8d000+3000]
+stress-ng-sigab[3748427]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigab[3748376]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigab[3748427]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigab[3748376]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigab[3748460]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigab[3748460]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigab[3748460]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigab[3748434]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigab[3748434]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigab[3748434]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigab[3748367]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigab[3748367]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigab[3748367]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigab[3748349]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+in stress-ng[107e8d000+3000]
+stress-ng-sigab[3748507]: segfault (11) at 800100 nip 107e8fb14 lr 107e8fb04 code 1
+
+in stress-ng[107e8d000+3000]
+stress-ng-sigab[3748390]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+
+stress-ng-sigab[3748491]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigab[3748491]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigab[3748491]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigab[3748390]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigab[3748507]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigab[3748507]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+show_signal_msg: 3 callbacks suppressed
+stress-ng-sigio[2635277]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1
+stress-ng-sigio[2635278]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1
+stress-ng-sigio[2635279]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigio[2635279]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigio[2635279]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigio[2635280]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigio[2635280]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigio[2635280]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigio[2635283]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigio[2635283]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigio[2635283]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigio[2635285]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigio[2635285]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigio[2635285]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigio[2635289]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigio[2635289]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigio[2635289]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+in stress-ng[107e8d000+3000]
+stress-ng-sigio[2635293]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigio[2635293]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigio[2635293]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigio[2635292]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigio[2635292]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigio[2635292]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigio[2635315]: segfault (11) at 800000 nip 107e8fb14 lr 107e8fb04 code 1 in stress-ng[107e8d000+3000]
+stress-ng-sigio[2635315]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigio[2635315]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+in stress-ng[107e8d000+3000]
+
+stress-ng-sigio[2635278]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigio[2635277]: code: 7d4903a6 e8490008 4e800421 e8410028 7c691b78 386100ac 912100ac 4bfc3be1 
+stress-ng-sigio[2635278]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+stress-ng-sigio[2635277]: code: 60000000 812100ac 2c090000 40820014 <e90f0000> 39200001 993c0940 99280008 
+
+In one run, I had problems with a hardware interrupt, but I haven't seen
+it reoccur so I can't be sure it came from your series:
 
 
-On 3/19/21 8:26 AM, Michael Ellerman wrote:
-> Daniel Henrique Barboza <danielhb413@gmail.com> writes:
->> Ping
->>
->> On 3/5/21 2:38 PM, Daniel Henrique Barboza wrote:
->>> Of all the reasons that dlpar_cpu_remove() can fail, the 'last online
->>> CPU' is one that can be caused directly by the user offlining CPUs
->>> in a partition/virtual machine that has hotplugged CPUs. Trying to
->>> reclaim a hotplugged CPU can fail if the CPU is now the last online in
->>> the system. This is easily reproduced using QEMU [1].
-> 
-> Sorry, I saw this earlier and never got around to replying.
+mmc0: Timeout waiting for hardware cmd interrupt.        
+mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+mmc0: sdhci: Sys addr:  0x00000000 | Version:  0x00001301
+mmc0: sdhci: Blk size:  0x00000000 | Blk cnt:  0x00000000
+mmc0: sdhci: Argument:  0x00000c00 | Trn mode: 0x00000000
+mmc0: sdhci: Present:   0x01f00008 | Host ctl: 0x00000020
+mmc0: sdhci: Power:     0x00000000 | Blk gap:  0x00000000
+mmc0: sdhci: Wake-up:   0x00000000 | Clock:    0x000020e8
+mmc0: sdhci: Timeout:   0x00000000 | Int stat: 0x00010001
+mmc0: sdhci: Int enab:  0x007f0007 | Sig enab: 0x007f0003
+mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00001402
+mmc0: sdhci: Caps:      0x04fa0000 | Caps_1:   0x00000000
+mmc0: sdhci: Cmd:       0x0000341a | Max curr: 0x00000000
+mmc0: sdhci: Resp[0]:   0x00000000 | Resp[1]:  0x00000000
+mmc0: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+mmc0: sdhci: Host ctl2: 0x00000000                       
+mmc0: sdhci: ADMA Err:  0x00000000 | ADMA Ptr: 0x00000000
+mmc0: sdhci: ============================================
+mmc0: Timeout waiting for hardware cmd interrupt. 
 
-No problem. Thanks for the review!
+Let me know if you'd like me to run any further tests.
 
-> 
-> I'm wondering if we neet to catch it earlier, ie. in
-> dlpar_offline_cpu().
-> 
-> By the time we return to dlpar_cpu_remove() we've dropped the
-> cpu_add_remove_lock (cpu_maps_update_done), so num_online_cpus() could
-> change out from under us, meaning the num_online_cpus() == 1 check might
-> trigger incorrectly (or vice versa).
-> 
-> Something like the patch below (completely untested :D)
+Kind regards,
+Daniel
 
-Makes sense. I'll try it out to see if it works.
-
-> 
-> And writing that patch makes me wonder, is == 1 the right check?
-> 
-> In most cases we'll remove all but one thread of the core, but we'll
-> fail on the last thread. Leaving that core effectively stuck in SMT1. Is
-> that useful behaviour? Should we instead check at the start that we can
-> remove all threads of the core without going to zero online CPUs?
-
-I think it's ok to allow SMT1 cores, speaking from QEMU perspective.
-QEMU does not have a "core hotunplug" operation where the whole core is
-hotunplugged at once. The CPU hotplug/unplug operations are done as single
-CPU thread add/removal. If the user wants to run 4 cores, all of them with
-SMT1, QEMU will allow it.
-
-Libvirt does not operate with the core granularity either - you can specify
-the amount of vcpus the guest should run with, and Libvirt will send
-hotplug/unplug requests to QEMU to match the desired value. It doesn't
-bother with how many threads of a core were offlined or not.
-
-
-Thanks,
-
-
-DHB
-
-
-
-> 
-> cheers
-> 
-> 
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> index 12cbffd3c2e3..498c22331ac8 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> @@ -271,6 +271,12 @@ static int dlpar_offline_cpu(struct device_node *dn)
->   			if (!cpu_online(cpu))
->   				break;
->   
-> +			if (num_online_cpus() == 1) {
-> +				pr_warn("Unable to remove last online CPU %pOFn\n", dn);
-> +				rc = EBUSY;
-> +				goto out_unlock;
-> +			}
-> +
->   			cpu_maps_update_done();
->   			rc = device_offline(get_cpu_device(cpu));
->   			if (rc)
-> @@ -283,6 +289,7 @@ static int dlpar_offline_cpu(struct device_node *dn)
->   				thread);
->   		}
->   	}
-> +out_unlock:
->   	cpu_maps_update_done();
->   
->   out:
-> 
+>
+> Thanks,
+> Nick
+>
+> Nicholas Piggin (10):
+>   powerpc/syscall: switch user_exit_irqoff and trace_hardirqs_off order
+>   powerpc/64e/interrupt: always save nvgprs on interrupt
+>   powerpc/64e/interrupt: use new interrupt return
+>   powerpc/64e/interrupt: NMI save irq soft-mask state in C
+>   powerpc/64e/interrupt: reconcile irq soft-mask state in C
+>   powerpc/64e/interrupt: Use new interrupt context tracking scheme
+>   powerpc/64e/interrupt: handle bad_page_fault in C
+>   powerpc: clean up do_page_fault
+>   powerpc: remove partial register save logic
+>   powerpc: move norestart trap flag to bit 0
+>
+>  arch/powerpc/include/asm/asm-prototypes.h |   2 -
+>  arch/powerpc/include/asm/bug.h            |   4 +-
+>  arch/powerpc/include/asm/interrupt.h      |  66 ++--
+>  arch/powerpc/include/asm/ptrace.h         |  36 +-
+>  arch/powerpc/kernel/align.c               |   6 -
+>  arch/powerpc/kernel/entry_64.S            |  40 +-
+>  arch/powerpc/kernel/exceptions-64e.S      | 425 ++--------------------
+>  arch/powerpc/kernel/interrupt.c           |  22 +-
+>  arch/powerpc/kernel/irq.c                 |  76 ----
+>  arch/powerpc/kernel/process.c             |  12 -
+>  arch/powerpc/kernel/ptrace/ptrace-view.c  |  21 --
+>  arch/powerpc/kernel/ptrace/ptrace.c       |   2 -
+>  arch/powerpc/kernel/ptrace/ptrace32.c     |   4 -
+>  arch/powerpc/kernel/signal_32.c           |   3 -
+>  arch/powerpc/kernel/signal_64.c           |   2 -
+>  arch/powerpc/kernel/traps.c               |  14 +-
+>  arch/powerpc/lib/sstep.c                  |   4 -
+>  arch/powerpc/mm/book3s64/hash_utils.c     |  16 +-
+>  arch/powerpc/mm/fault.c                   |  28 +-
+>  arch/powerpc/xmon/xmon.c                  |  23 +-
+>  20 files changed, 130 insertions(+), 676 deletions(-)
+>
+> -- 
+> 2.23.0
