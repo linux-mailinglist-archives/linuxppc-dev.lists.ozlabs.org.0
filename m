@@ -1,83 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED43D343A94
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 08:30:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2587343B07
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 08:56:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F3mPf6jLHz30C5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 18:30:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F3mzN5Lptz30KR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 18:56:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=DUXBOG2e;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=Pvdzhb++;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::62b;
- helo=mail-pl1-x62b.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=DUXBOG2e; dkim-atps=neutral
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
- [IPv6:2607:f8b0:4864:20::62b])
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=Pvdzhb++; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F3mPC3XKWz2xg7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:30:21 +1100 (AEDT)
-Received: by mail-pl1-x62b.google.com with SMTP id g1so6075389plg.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 00:30:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=44uLXf9fUq01jayoIUqnJ2o6Rdu+SmU1YK9yqOQ5VFc=;
- b=DUXBOG2e3DViYXLeEmheH4wdlkVYNOV6CyRCYEXW+O8RGODGVyKzBt9mzE4dTjQiWp
- K0Qy/wnV/x1nluJanpLkHg52L6W4qSzM8jplOhwBfAswzkLuAi8pfIc+HgMS+Y9RpLdg
- G98oGgkVHG4rDBu6Bu0go49vGFTiyACNGgHnVfDfjV5K2yiDqiOR+WsxONPFZxB8y3DJ
- 6U2lRj3jZw/K8q6zdQfXabk+y7UjZnEIDc7fNc5njvD/MFJub0u0qT2HpnWRT747XEye
- WMYLdz/2SJhHKOoWIoKrlZndMuMl8GAJhmFmdfnFwmVgpDUNAEmGI9pjXRfsolWeharP
- l2HQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=44uLXf9fUq01jayoIUqnJ2o6Rdu+SmU1YK9yqOQ5VFc=;
- b=GsH7jQ43hgZZPvGIOdLzp3/mwuhknrypRVDB54VgNXq+M+8Tp+uY9ei+rKR4RkMUmw
- lkMCfYA1cO62JNP92j7tZVGtFPwVRtcsCo2W0zCCQ7l+IvLBr+C8dTK7N9ZXNdl1VU4X
- Zk4587SlF/o3FUK87iHnZniybHn9KXrelvthoraGgzn2gRDF+lbmx+bl+3vDB+hmfu3g
- 5V+jQt+YVv+EQDVDe2h0FKTLcKuweljJonWFMR4Sm+Sw8vhd0UB+MgDTHtjYpxHOvSfX
- CIrOik+F8Fx8reZBdjXjvdpBdEdBCefsvyhdnD+GYvGWdPFDu8Y4HFASqRRtscYVn1CU
- F3OQ==
-X-Gm-Message-State: AOAM5314qtFlK7yb6SFuvUVHm7VdLrDAv0it9Hwq12HWcnyH6+djY+fS
- tkcAkK2NuxCmbhdyTeFR3H5ouAFp3243KSWI
-X-Google-Smtp-Source: ABdhPJyjrCP6FHICL+Zro5pGQfN1u1tGoi+yH6etRgEKOfq3JUVoYS7lFyy7VGUw8ZwzpSfZy50Hwg==
-X-Received: by 2002:a17:902:aa0c:b029:e5:da5f:5f66 with SMTP id
- be12-20020a170902aa0cb02900e5da5f5f66mr25599992plb.81.1616398216222; 
- Mon, 22 Mar 2021 00:30:16 -0700 (PDT)
-Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
- [124.171.107.241])
- by smtp.gmail.com with UTF8SMTPSA id d13sm11373422pgb.6.2021.03.22.00.30.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Mar 2021 00:30:15 -0700 (PDT)
-Message-ID: <b06ebe14-a714-c882-8bdf-ac41de9a8523@ozlabs.ru>
-Date: Mon, 22 Mar 2021 18:30:12 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F3myS113Qz2yZD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:55:43 +1100 (AEDT)
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4F3myR33Mhz9sW4; Mon, 22 Mar 2021 18:55:42 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1616399743;
+ bh=iXW50wXRudKRGwTFh9sWa1KF8w7414Xekxwj8VRKjGY=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Pvdzhb++ltYujkrwSxE6Q4MI6Vj6NkhxsuAMgIP3WuRvci4mROa0uBm9mANBByMSA
+ rBOMuukSCqr4FTqIGC2qGO6+vf23Yy4hMBFAFi/QQUOKGjBBDY2SQw3NoJW4inecKd
+ 2PO9SYypWY+mDqiSnDplzHVJrSXS6h3YQk0m4z2c=
+Date: Mon, 22 Mar 2021 17:49:53 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Leonardo Bras <leobras.c@gmail.com>
+Subject: Re: [PATCH 1/3] powerpc/mm/hash: Avoid resizing-down HPT on first
+ memory hotplug
+Message-ID: <YFg+Edy6dfmZx3lr@yekko.fritz.box>
+References: <20210312072940.598696-1-leobras.c@gmail.com>
+ <20210312072940.598696-2-leobras.c@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:87.0) Gecko/20100101
- Thunderbird/87.0
-Subject: Re: [PATCH v3 19/41] KVM: PPC: Book3S HV P9: Stop handling hcalls in
- real-mode in the P9 path
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-References: <20210305150638.2675513-1-npiggin@gmail.com>
- <20210305150638.2675513-20-npiggin@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20210305150638.2675513-20-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="+KZWWyDCgmkgJp5r"
+Content-Disposition: inline
+In-Reply-To: <20210312072940.598696-2-leobras.c@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,286 +58,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
+ Scott Cheloha <cheloha@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ Bharata B Rao <bharata@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Sandipan Das <sandipan@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Laurent Dufour <ldufour@linux.ibm.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Dan Williams <dan.j.williams@intel.com>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--+KZWWyDCgmkgJp5r
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 06/03/2021 02:06, Nicholas Piggin wrote:
-> In the interest of minimising the amount of code that is run in
-> "real-mode", don't handle hcalls in real mode in the P9 path.
-> 
-> POWER8 and earlier are much more expensive to exit from HV real mode
-> and switch to host mode, because on those processors HV interrupts get
-> to the hypervisor with the MMU off, and the other threads in the core
-> need to be pulled out of the guest, and SLBs all need to be saved,
-> ERATs invalidated, and host SLB reloaded before the MMU is re-enabled
-> in host mode. Hash guests also require a lot of hcalls to run. The
-> XICS interrupt controller requires hcalls to run.
-> 
-> By contrast, POWER9 has independent thread switching, and in radix mode
-> the hypervisor is already in a host virtual memory mode when the HV
-> interrupt is taken. Radix + xive guests don't need hcalls to handle
-> interrupts or manage translations.
-> 
-> So it's much less important to handle hcalls in real mode in P9.
+On Fri, Mar 12, 2021 at 04:29:39AM -0300, Leonardo Bras wrote:
+> Because hypervisors may need to create HPTs without knowing the guest
+> page size, the smallest used page-size (4k) may be chosen, resulting in
+> a HPT that is possibly bigger than needed.
+>=20
+> On a guest with bigger page-sizes, the amount of entries for HTP may be
+> too high, causing the guest to ask for a HPT resize-down on the first
+> hotplug.
+>=20
+> This becomes a problem when HPT resize-down fails, and causes the
+> HPT resize to be performed on every LMB added, until HPT size is
+> compatible to guest memory size, causing a major slowdown.
+>=20
+> So, avoiding HPT resizing-down on hot-add significantly improves memory
+> hotplug times.
+>=20
+> As an example, hotplugging 256GB on a 129GB guest took 710s without this
+> patch, and 21s after applied.
+>=20
+> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 
-So acde25726bc6034b (which added if(kvm_is_radix(vcpu->kvm))return 
-H_TOO_HARD) can be reverted, pretty much?
+I don't love this approach.  Adding the extra flag at this level seems
+a bit inelegant, and it means we're passing up an easy opportunity to
+reduce our resource footprint on the host.
 
+But... maybe we'll have to do it.  I'd like to see if we can get
+things to work well enough with just the "batching" to avoid multiple
+resize attempts first.
 
-
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   arch/powerpc/include/asm/kvm_ppc.h      |  5 +++
->   arch/powerpc/kvm/book3s_hv.c            | 46 +++++++++++++++----
->   arch/powerpc/kvm/book3s_hv_rmhandlers.S |  5 +++
->   arch/powerpc/kvm/book3s_xive.c          | 60 +++++++++++++++++++++++++
->   4 files changed, 108 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-> index 73b1ca5a6471..db6646c2ade2 100644
-> --- a/arch/powerpc/include/asm/kvm_ppc.h
-> +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> @@ -607,6 +607,7 @@ extern void kvmppc_free_pimap(struct kvm *kvm);
->   extern int kvmppc_xics_rm_complete(struct kvm_vcpu *vcpu, u32 hcall);
->   extern void kvmppc_xics_free_icp(struct kvm_vcpu *vcpu);
->   extern int kvmppc_xics_hcall(struct kvm_vcpu *vcpu, u32 cmd);
-> +extern int kvmppc_xive_xics_hcall(struct kvm_vcpu *vcpu, u32 req);
->   extern u64 kvmppc_xics_get_icp(struct kvm_vcpu *vcpu);
->   extern int kvmppc_xics_set_icp(struct kvm_vcpu *vcpu, u64 icpval);
->   extern int kvmppc_xics_connect_vcpu(struct kvm_device *dev,
-> @@ -639,6 +640,8 @@ static inline int kvmppc_xics_enabled(struct kvm_vcpu *vcpu)
->   static inline void kvmppc_xics_free_icp(struct kvm_vcpu *vcpu) { }
->   static inline int kvmppc_xics_hcall(struct kvm_vcpu *vcpu, u32 cmd)
->   	{ return 0; }
-> +static inline int kvmppc_xive_xics_hcall(struct kvm_vcpu *vcpu, u32 req)
-> +	{ return 0; }
->   #endif
->   
->   #ifdef CONFIG_KVM_XIVE
-> @@ -673,6 +676,7 @@ extern int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
->   			       int level, bool line_status);
->   extern void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu);
->   extern void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu);
-> +extern void kvmppc_xive_cede_vcpu(struct kvm_vcpu *vcpu);
->   
->   static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
->   {
-> @@ -714,6 +718,7 @@ static inline int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 ir
->   				      int level, bool line_status) { return -ENODEV; }
->   static inline void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu) { }
->   static inline void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu) { }
-> +static inline void kvmppc_xive_cede_vcpu(struct kvm_vcpu *vcpu) { }
->   
->   static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
->   	{ return 0; }
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 497f216ad724..1f2ba8955c6a 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -1147,7 +1147,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
->    * This has to be done early, not in kvmppc_pseries_do_hcall(), so
->    * that the cede logic in kvmppc_run_single_vcpu() works properly.
->    */
-> -static void kvmppc_nested_cede(struct kvm_vcpu *vcpu)
-> +static void kvmppc_cede(struct kvm_vcpu *vcpu)
->   {
->   	vcpu->arch.shregs.msr |= MSR_EE;
->   	vcpu->arch.ceded = 1;
-> @@ -1403,9 +1403,15 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
->   		/* hcall - punt to userspace */
->   		int i;
->   
-> -		/* hypercall with MSR_PR has already been handled in rmode,
-> -		 * and never reaches here.
-> -		 */
-> +		if (unlikely(vcpu->arch.shregs.msr & MSR_PR)) {
-> +			/*
-> +			 * Guest userspace executed sc 1, reflect it back as a
-> +			 * privileged program check interrupt.
-> +			 */
-> +			kvmppc_core_queue_program(vcpu, SRR1_PROGPRIV);
-> +			r = RESUME_GUEST;
-> +			break;
-> +		}
->   
->   		run->papr_hcall.nr = kvmppc_get_gpr(vcpu, 3);
->   		for (i = 0; i < 9; ++i)
-> @@ -3740,15 +3746,36 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->   		/* H_CEDE has to be handled now, not later */
->   		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
->   		    kvmppc_get_gpr(vcpu, 3) == H_CEDE) {
-> -			kvmppc_nested_cede(vcpu);
-> +			kvmppc_cede(vcpu);
->   			kvmppc_set_gpr(vcpu, 3, 0);
->   			trap = 0;
->   		}
->   	} else {
->   		kvmppc_xive_push_vcpu(vcpu);
->   		trap = kvmhv_load_hv_regs_and_go(vcpu, time_limit, lpcr);
-> -		kvmppc_xive_pull_vcpu(vcpu);
-> +		/* H_CEDE has to be handled now, not later */
-> +		/* XICS hcalls must be handled before xive is pulled */
-> +		if (trap == BOOK3S_INTERRUPT_SYSCALL &&
-> +		    !(vcpu->arch.shregs.msr & MSR_PR)) {
-> +			unsigned long req = kvmppc_get_gpr(vcpu, 3);
->   
-> +			if (req == H_CEDE) {
-> +				kvmppc_cede(vcpu);
-> +				kvmppc_xive_cede_vcpu(vcpu); /* may un-cede */
-> +				kvmppc_set_gpr(vcpu, 3, 0);
-> +				trap = 0;
-> +			}
-> +			if (req == H_EOI || req == H_CPPR ||
-
-else if (req == H_EOI ... ?
-
-> +			    req == H_IPI || req == H_IPOLL ||
-> +			    req == H_XIRR || req == H_XIRR_X) {
-> +				unsigned long ret;
-> +
-> +				ret = kvmppc_xive_xics_hcall(vcpu, req);
-> +				kvmppc_set_gpr(vcpu, 3, ret);
-> +				trap = 0;
-> +			}
-> +		}
-> +		kvmppc_xive_pull_vcpu(vcpu);
->   	}
->   
->   	vcpu->arch.slb_max = 0;
-> @@ -4408,8 +4435,11 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
->   		else
->   			r = kvmppc_run_vcpu(vcpu);
->   
-> -		if (run->exit_reason == KVM_EXIT_PAPR_HCALL &&
-> -		    !(vcpu->arch.shregs.msr & MSR_PR)) {
-> +		if (run->exit_reason == KVM_EXIT_PAPR_HCALL) {
-> +			if (WARN_ON_ONCE(vcpu->arch.shregs.msr & MSR_PR)) {
-> +				r = RESUME_GUEST;
-> +				continue;
-> +			}
->   			trace_kvm_hcall_enter(vcpu);
->   			r = kvmppc_pseries_do_hcall(vcpu);
->   			trace_kvm_hcall_exit(vcpu, r);
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index c11597f815e4..2d0d14ed1d92 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -1397,9 +1397,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->   	mr	r4,r9
->   	bge	fast_guest_return
->   2:
-> +	/* If we came in through the P9 short path, no real mode hcalls */
-> +	lwz	r0, STACK_SLOT_SHORT_PATH(r1)
-> +	cmpwi	r0, 0
-> +	bne	no_try_real
->   	/* See if this is an hcall we can handle in real mode */
->   	cmpwi	r12,BOOK3S_INTERRUPT_SYSCALL
->   	beq	hcall_try_real_mode
-> +no_try_real:
->   
->   	/* Hypervisor doorbell - exit only if host IPI flag set */
->   	cmpwi	r12, BOOK3S_INTERRUPT_H_DOORBELL
-> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-> index 52cdb9e2660a..1e4871bbcad4 100644
-> --- a/arch/powerpc/kvm/book3s_xive.c
-> +++ b/arch/powerpc/kvm/book3s_xive.c
-> @@ -158,6 +158,40 @@ void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu)
->   }
->   EXPORT_SYMBOL_GPL(kvmppc_xive_pull_vcpu);
->   
-> +void kvmppc_xive_cede_vcpu(struct kvm_vcpu *vcpu)
-> +{
-> +	void __iomem *esc_vaddr = (void __iomem *)vcpu->arch.xive_esc_vaddr;
-> +
-> +	if (!esc_vaddr)
-> +		return;
-> +
-> +	/* we are using XIVE with single escalation */
-> +
-> +	if (vcpu->arch.xive_esc_on) {
+>  arch/powerpc/mm/book3s64/hash_utils.c | 36 ++++++++++++++++-----------
+>  1 file changed, 21 insertions(+), 15 deletions(-)
+>=20
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book=
+3s64/hash_utils.c
+> index 73b06adb6eeb..cfb3ec164f56 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -794,7 +794,7 @@ static unsigned long __init htab_get_table_size(void)
+>  }
+> =20
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+> -static int resize_hpt_for_hotplug(unsigned long new_mem_size)
+> +static int resize_hpt_for_hotplug(unsigned long new_mem_size, bool shrin=
+king)
+>  {
+>  	unsigned target_hpt_shift;
+> =20
+> @@ -803,19 +803,25 @@ static int resize_hpt_for_hotplug(unsigned long new=
+_mem_size)
+> =20
+>  	target_hpt_shift =3D htab_shift_for_mem_size(new_mem_size);
+> =20
+> -	/*
+> -	 * To avoid lots of HPT resizes if memory size is fluctuating
+> -	 * across a boundary, we deliberately have some hysterisis
+> -	 * here: we immediately increase the HPT size if the target
+> -	 * shift exceeds the current shift, but we won't attempt to
+> -	 * reduce unless the target shift is at least 2 below the
+> -	 * current shift
+> -	 */
+> -	if (target_hpt_shift > ppc64_pft_size ||
+> -	    target_hpt_shift < ppc64_pft_size - 1)
+> -		return mmu_hash_ops.resize_hpt(target_hpt_shift);
+> +	if (shrinking) {
+> =20
+> -	return 0;
 > +		/*
-> +		 * If we still have a pending escalation, abort the cede,
-> +		 * and we must set PQ to 10 rather than 00 so that we don't
-> +		 * potentially end up with two entries for the escalation
-> +		 * interrupt in the XIVE interrupt queue.  In that case
-> +		 * we also don't want to set xive_esc_on to 1 here in
-> +		 * case we race with xive_esc_irq().
+> +		 * To avoid lots of HPT resizes if memory size is fluctuating
+> +		 * across a boundary, we deliberately have some hysterisis
+> +		 * here: we immediately increase the HPT size if the target
+> +		 * shift exceeds the current shift, but we won't attempt to
+> +		 * reduce unless the target shift is at least 2 below the
+> +		 * current shift
 > +		 */
-> +		vcpu->arch.ceded = 0;
-> +		/*
-> +		 * The escalation interrupts are special as we don't EOI them.
-> +		 * There is no need to use the load-after-store ordering offset
-> +		 * to set PQ to 10 as we won't use StoreEOI.
-> +		 */
-> +		__raw_readq(esc_vaddr + XIVE_ESB_SET_PQ_10);
-> +	} else {
-> +		vcpu->arch.xive_esc_on = true;
-> +		mb();
-> +		__raw_readq(esc_vaddr + XIVE_ESB_SET_PQ_00);
-> +	}
-> +	mb();
-
-
-Uff. Thanks for cut-n-pasting the comments, helped a lot to match this c 
-to that asm!
-
-
-> +}
-> +EXPORT_SYMBOL_GPL(kvmppc_xive_cede_vcpu);
 > +
->   /*
->    * This is a simple trigger for a generic XIVE IRQ. This must
->    * only be called for interrupts that support a trigger page
-> @@ -2106,6 +2140,32 @@ static int kvmppc_xive_create(struct kvm_device *dev, u32 type)
->   	return 0;
->   }
->   
-> +int kvmppc_xive_xics_hcall(struct kvm_vcpu *vcpu, u32 req)
-> +{
-> +	struct kvmppc_vcore *vc = vcpu->arch.vcore;
-
-
-Can a XIVE enabled guest issue these hcalls? Don't we want if 
-(!kvmppc_xics_enabled(vcpu)) and
-  if (xics_on_xive()) here, as kvmppc_rm_h_xirr() have? Some of these 
-hcalls do write to XIVE registers but some seem to change 
-kvmppc_xive_vcpu. Thanks,
-
-
-
-
+> +		if (target_hpt_shift >=3D ppc64_pft_size - 1)
+> +			return 0;
 > +
-> +	switch (req) {
-> +	case H_XIRR:
-> +		return xive_vm_h_xirr(vcpu);
-> +	case H_CPPR:
-> +		return xive_vm_h_cppr(vcpu, kvmppc_get_gpr(vcpu, 4));
-> +	case H_EOI:
-> +		return xive_vm_h_eoi(vcpu, kvmppc_get_gpr(vcpu, 4));
-> +	case H_IPI:
-> +		return xive_vm_h_ipi(vcpu, kvmppc_get_gpr(vcpu, 4),
-> +					  kvmppc_get_gpr(vcpu, 5));
-> +	case H_IPOLL:
-> +		return xive_vm_h_ipoll(vcpu, kvmppc_get_gpr(vcpu, 4));
-> +	case H_XIRR_X:
-> +		xive_vm_h_xirr(vcpu);
-> +		kvmppc_set_gpr(vcpu, 5, get_tb() + vc->tb_offset);
-> +		return H_SUCCESS;
+> +	} else if (target_hpt_shift <=3D ppc64_pft_size) {
+> +		return 0;
 > +	}
 > +
-> +	return H_UNSUPPORTED;
-> +}
-> +EXPORT_SYMBOL_GPL(kvmppc_xive_xics_hcall);
-> +
->   int kvmppc_xive_debug_show_queues(struct seq_file *m, struct kvm_vcpu *vcpu)
->   {
->   	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
-> 
+> +	return mmu_hash_ops.resize_hpt(target_hpt_shift);
+>  }
+> =20
+>  int hash__create_section_mapping(unsigned long start, unsigned long end,
+> @@ -828,7 +834,7 @@ int hash__create_section_mapping(unsigned long start,=
+ unsigned long end,
+>  		return -1;
+>  	}
+> =20
+> -	resize_hpt_for_hotplug(memblock_phys_mem_size());
+> +	resize_hpt_for_hotplug(memblock_phys_mem_size(), false);
+> =20
+>  	rc =3D htab_bolt_mapping(start, end, __pa(start),
+>  			       pgprot_val(prot), mmu_linear_psize,
+> @@ -847,7 +853,7 @@ int hash__remove_section_mapping(unsigned long start,=
+ unsigned long end)
+>  	int rc =3D htab_remove_mapping(start, end, mmu_linear_psize,
+>  				     mmu_kernel_ssize);
+> =20
+> -	if (resize_hpt_for_hotplug(memblock_phys_mem_size()) =3D=3D -ENOSPC)
+> +	if (resize_hpt_for_hotplug(memblock_phys_mem_size(), true) =3D=3D -ENOS=
+PC)
+>  		pr_warn("Hash collision while resizing HPT\n");
+> =20
+>  	return rc;
 
--- 
-Alexey
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--+KZWWyDCgmkgJp5r
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmBYPhEACgkQbDjKyiDZ
+s5IfmRAAkCGhA/1ADH9AQ3Hx1wiRHoiu833INxVLW2AVVsUXk9KyjBvH1eZnPZUa
+fJksevzl+qul4PFGNLl5CrKzpGm+jpjsqZFLQgD9e5xoOYZTl7QeF23nBdCSKEQ3
+L34lXek6H8i3iVAfHzDmi9kI0S4ot7BCK4OZwAPgrC649z5uJX194VRo7CCo0HQz
+kSnGtPD4TmTtOxPGI242FFUjAr+kh2Kur7i/oIaCgk5AqJP4cQP7L8t/eh82kaFW
+VHzs9NAajopKvo8fy8pdOsqzOiSsE0Xj7+L94awCz4vfOIc3I3Ch6pjIQDwhn+gJ
+ZoKYtbq0ests9THu5Doq5ZBr4jQBdFgy1wOhUsc1ModlcSXNbp5rtY1X5u++ipu0
+KNVXFhasoD6m2ZsFCMYs/z3U6Wk8DFyVk+GHH/l6H5WfLFAYmHKIWgR9yGcJCIh1
+JuhXuN8B1FHsm91ztApx5twTcId3p8dh4ZuDUOoiLh0j0V+L9oyOd+XZh+RCcD3H
+ltqqevM2gw0/tBhXtV+7jADGTbpITvXSs0fId/sEVnVsTLqdSgYewF7qgT6DSwZC
+qxoYmVDEIJvaYk/9+CczywkYcgwVph7XcC8K0IM49utByC0HXGbSWbY+W0RdIe5h
+9W32smfBQn2wwdCfKV/4qVV7PDYMwmFf1i19KXjgDjEDQ2Sg8as=
+=zQSa
+-----END PGP SIGNATURE-----
+
+--+KZWWyDCgmkgJp5r--
