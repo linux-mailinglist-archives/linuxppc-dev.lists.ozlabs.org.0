@@ -1,39 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9F7343D27
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 10:44:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8D5343F15
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 12:08:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F3qMp4h34z30CQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 20:44:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F3sF15pGrz30DR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 22:08:37 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cFUGRWY/;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132;
- helo=out30-132.freemail.mail.aliyun.com;
- envelope-from=jiapeng.chong@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-132.freemail.mail.aliyun.com
- (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=cFUGRWY/; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F3qMS6D2Jz2xyB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 20:44:01 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R121e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04420;
- MF=jiapeng.chong@linux.alibaba.com; NM=1; PH=DS; RN=6; SR=0;
- TI=SMTPD_---0USve7yu_1616406218; 
-Received: from
- j63c13417.sqa.eu95.tbsite.net(mailfrom:jiapeng.chong@linux.alibaba.com
- fp:SMTPD_---0USve7yu_1616406218) by smtp.aliyun-inc.com(127.0.0.1);
- Mon, 22 Mar 2021 17:43:43 +0800
-From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/iommu/debug: Remove redundant NULL check
-Date: Mon, 22 Mar 2021 17:43:37 +0800
-Message-Id: <1616406217-94635-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F3sDc1y8nz2yQp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 22:08:15 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4F3sDT0lfsz9sS8;
+ Mon, 22 Mar 2021 22:08:08 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1616411289;
+ bh=uxa4pHHTMVzSJZOPCsz78YK8wlcYnsE951BCdVMBFh8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=cFUGRWY/Qr86qwsUK1d49CiSAXP5qdPTyn3zQzF0R4HHxwcLccxcP0SLc9nzQn2+J
+ 9gKFUP4LO8HRRZ6KQud4YGoe+r7qHqfCG0MDFn//jYBydvWrKeEuZU8i79EIaYT9W5
+ Rdmu/Md7ms21WOn2mLDRIFJFWMfe+tLCNZjioXivdjsNsbBwNiqfprfvYqBiYh3G77
+ 22lkMpE52ooBfNdL2474eXWjEsltIIw5ajfcF41sfwpZvEJ7XoKm2cNSfbrai8pKNm
+ cZGA/OSAHRB1NYjAIYC6fT1RHoXNhFFGD0lh7u2v/QIDupcGg02EU7/UhdXk0iZ0aZ
+ IsibVdS+bb0RA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Daniel Axtens <dja@axtens.net>, Balbir Singh <bsingharora@gmail.com>
+Subject: Re: [PATCH v11 1/6] kasan: allow an architecture to disable inline
+ instrumentation
+In-Reply-To: <87r1k8av4j.fsf@dja-thinkpad.axtens.net>
+References: <20210319144058.772525-1-dja@axtens.net>
+ <20210319144058.772525-2-dja@axtens.net>
+ <20210320014606.GB77072@balbir-desktop>
+ <87r1k8av4j.fsf@dja-thinkpad.axtens.net>
+Date: Mon, 22 Mar 2021 22:08:05 +1100
+Message-ID: <87v99jh2ei.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,37 +65,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: aneesh.kumar@linux.ibm.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix the following coccicheck warnings:
+Daniel Axtens <dja@axtens.net> writes:
+> Balbir Singh <bsingharora@gmail.com> writes:
+>
+>> On Sat, Mar 20, 2021 at 01:40:53AM +1100, Daniel Axtens wrote:
+>>> For annoying architectural reasons, it's very difficult to support inline
+>>> instrumentation on powerpc64.
+>>
+>> I think we can expand here and talk about how in hash mode, the vmalloc
+>> address space is in a region of memory different than where kernel virtual
+>> addresses are mapped. Did I recollect the reason correctly?
+>
+> I think that's _a_ reason, but for radix mode (which is all I support at
+> the moment), the reason is a bit simpler.
 
-./fs/io_uring.c:5989:4-9: WARNING: NULL check before some freeing
-functions is not needed.
+Actually Aneesh fixed that in:
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
----
- arch/powerpc/kernel/iommu.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+  0034d395f89d ("powerpc/mm/hash64: Map all the kernel regions in the same 0xc range")
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index c00214a..2168714 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -72,8 +72,7 @@ static void iommu_debugfs_del(struct iommu_table *tbl)
- 
- 	sprintf(name, "%08lx", tbl->it_index);
- 	liobn_entry = debugfs_lookup(name, iommu_debugfs_dir);
--	if (liobn_entry)
--		debugfs_remove(liobn_entry);
-+	debugfs_remove(liobn_entry);
- }
- #else
- static void iommu_debugfs_add(struct iommu_table *tbl){}
--- 
-1.8.3.1
+The problem we had prior to that was that the linear mapping was at
+(0xc << 60), vmalloc was at (0xd << 60), and vmemap was at (0xf << 60).
 
+Meaning our shadow region would need to be more than (3 << 60) in size.
+
+cheers
