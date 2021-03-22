@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B882D344F0D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 19:50:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BEA344F19
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 19:52:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F43VD5L4sz30Lq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 05:50:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F43Wk5Qscz30Dt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 05:52:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=S0PWFuWS;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ZVhuah8Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,41 +18,43 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=S0PWFuWS; 
+ header.s=casper.20170209 header.b=ZVhuah8Q; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F43Tr27rvz2xfj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 05:50:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F43WK1ywvz2xfj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 05:51:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
  In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
  Reply-To:Cc:Content-ID:Content-Description;
- bh=rgKmg8TVdXghRnkApE4fkAGJ5moLys2JCYUJGG86PPE=; b=S0PWFuWSJl4JWUThotvNH6XHVq
- r/PnF/gH9jmD13WuxPFZqAB2t9y6LWL5VyRY3e2MxOcJo9GaSIn8mtDmLjRCEODhI8ebDR7bPrmVz
- lxq7DcxHTm7Z9gi4+SLXIg5/CT9q99Msga+QjoKWgQah03n8Qzcj9NMsPEFvLFwbazwzs8g6CBkOF
- RipbrS592/JAlVNTSQC5YU8dhOvUAkgKZ595ksOjBLOcfI+lo+f3lnn9a0qKmg2gC81SOyH0h9snS
- 2Ebq0b7d2bVcYxEdqOb8agjanQV+dhlrc75/kwNeNNvJgRkZa0R8qg1VKKoNji/PxtkbwqpBvCebv
- ++fjIxMQ==;
+ bh=KqWlvhAGgyStdJLBW78wBFkvyCWpxBzSVDDJlh/HL90=; b=ZVhuah8QLyHaRfi5DaIMP+8KR3
+ Rqz0HEJy5GOMs+GeP5oX15a2ApgBEEtJ5l/Xcpa2ohrvqfCk77QvwTgYfH3nwC3Q9vGzsBAlim8Fn
+ 3Z3Ose0MR0e11E9FdlpoEXmMdX4/56dhDC29xFgo7rDnzJG0eyFxoupZq9EwKo68A49zvT+JZLWoc
+ W1nGwUIeAOW5GBJ+GppY4UIkVVa1UpTvZgbNLGRxezMu88Vc1epNpO6Qju9IGJsvyexskEWiDEWer
+ 9bg5+Qo71NGFCsToH24ewMwFMThUrKK1Xb79QfOnyLoFmb9hZXLCCWxQLbe8a/zZ0pju4QwhUgOh3
+ cLem4M2Q==;
 Received: from [2601:1c0:6280:3f0::3ba4]
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lOPcT-008w9v-VB; Mon, 22 Mar 2021 18:49:59 +0000
-Subject: Re: [PATCH] docs: powerpc: Fix a typo
+ id 1lOPdX-008wJa-Pl; Mon, 22 Mar 2021 18:51:07 +0000
+Subject: Re: [PATCH] powerpc: kernel: Trivial spelling fixes throughout the
+ file head_fsl_booke.S
 To: Bhaskar Chowdhury <unixbhaskar@gmail.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, corbet@lwn.net,
- linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
+ benh@kernel.crashing.org, paulus@samba.org, rppt@kernel.org,
+ akpm@linux-foundation.org, christophe.leroy@csgroup.eu, oss@buserror.net,
+ npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
-References: <20210322062237.2971314-1-unixbhaskar@gmail.com>
+References: <20210315033732.4173500-1-unixbhaskar@gmail.com>
 From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <61e323a3-0934-708a-99cc-a4cd632ca6b0@infradead.org>
-Date: Mon, 22 Mar 2021 11:49:38 -0700
+Message-ID: <3b2e038c-6c17-0b53-0b96-8795ee32c09b@infradead.org>
+Date: Mon, 22 Mar 2021 11:50:44 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <20210322062237.2971314-1-unixbhaskar@gmail.com>
+In-Reply-To: <20210315033732.4173500-1-unixbhaskar@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -71,33 +73,56 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/21/21 11:22 PM, Bhaskar Chowdhury wrote:
-> 
-> s/struture/structure/
+On 3/14/21 8:37 PM, Bhaskar Chowdhury wrote:
+> s/virutal/virtual/
+> s/mismach/mismatch/
 > 
 > Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 
 Acked-by: Randy Dunlap <rdunlap@infradead.org>
 
 > ---
->  Documentation/powerpc/firmware-assisted-dump.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  As Randy pointed out I was changing the predefined macro name,so, reverted
+>  or leave it alone.
+>  Michael,sorry to run down a cold weave in your spine with my stupdity,this is
+>  okay.
 > 
-> diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
-> index 20ea8cdee0aa..6c0ae070ba67 100644
-> --- a/Documentation/powerpc/firmware-assisted-dump.rst
-> +++ b/Documentation/powerpc/firmware-assisted-dump.rst
-> @@ -171,7 +171,7 @@ that were present in CMA region::
->                                             (meta area)    |
->                                                            |
->                                                            |
-> -                      Metadata: This area holds a metadata struture whose
-> +                      Metadata: This area holds a metadata structure whose
->                        address is registered with f/w and retrieved in the
->                        second kernel after crash, on platforms that support
->                        tags (OPAL). Having such structure with info needed
+>  arch/powerpc/kernel/head_fsl_booke.S | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
+> index 3f4a40cccef5..a955403247f1 100644
+> --- a/arch/powerpc/kernel/head_fsl_booke.S
+> +++ b/arch/powerpc/kernel/head_fsl_booke.S
+> @@ -113,7 +113,7 @@ _ENTRY(_start);
+> 
+>  1:
+>  	/*
+> -	 * We have the runtime (virutal) address of our base.
+> +	 * We have the runtime (virtual) address of our base.
+>  	 * We calculate our shift of offset from a 64M page.
+>  	 * We could map the 64M page we belong to at PAGE_OFFSET and
+>  	 * get going from there.
+> @@ -497,7 +497,7 @@ END_BTB_FLUSH_SECTION
+>  #endif
+>  #endif
+> 
+> -	bne	2f			/* Bail if permission/valid mismach */
+> +	bne	2f			/* Bail if permission/valid mismatch */
+> 
+>  	/* Jump to common tlb load */
+>  	b	finish_tlb_load
+> @@ -592,7 +592,7 @@ END_BTB_FLUSH_SECTION
+>  #endif
+>  #endif
+> 
+> -	bne	2f			/* Bail if permission mismach */
+> +	bne	2f			/* Bail if permission mismatch */
+> 
+>  	/* Jump to common TLB load point */
+>  	b	finish_tlb_load
 > --
-> 2.31.0
+> 2.30.2
 > 
 
 
