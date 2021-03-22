@@ -2,126 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D716834492B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 16:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E7834492C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 16:25:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F3yxY6V9rz2yxw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:25:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Ii4NN0iW;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F3yxx5kw2z3bcN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:25:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.4.75; helo=eur03-db5-obe.outbound.protection.outlook.com;
- envelope-from=roy.zang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=Ii4NN0iW; 
- dkim-atps=neutral
-Received: from EUR03-DB5-obe.outbound.protection.outlook.com
- (mail-eopbgr40075.outbound.protection.outlook.com [40.107.4.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F3yx422bJz2yxB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 02:25:10 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AbsfaPvNX8LxY9JH6X1HYrgPzGvHvXee8+YR9fc9xt+2TgnJO5qvHtrixt2I2w+S6NtGju1Bv7OkqnZDhXoSLeqzUH6/lsV/LUqj1R7B9taEDs16/FurL6EcK21iGftgNZXats7kxPVacd4IK55IYH/R2Nte8WRRxv5tmSnN8V7EgRieAMsPgO3NaLCHlIcawJvN8svxyvD0i3GhioEPkIx9t6T3+eO2IYDfichM1Rb6C5AEptGBALIhJfMOzZo2lOHI+6AXlEVGLo+P8NcLLw4gg0VO3kGt3j7PMt5K7qsxZYYg+rtjaxmJ/FUM6kWYSxRBbrewTUIH3/FCU61NgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5Cl7PNctos/HqcZiYP+UZHZP3+KnlGpyNh0PXPdyuKw=;
- b=TomID8zWLKgGgWHNJ/QSyAReJ3ePYUPovHuhe5+J3/DY332ScyTdLOMGALgrEKo+0Kc9/a7Tm4P2bwzrYoFMyqK8Ol/9PRr329y9//GGe0DL3Ne6saaGCBbJgySjj42U4m/qt1EMoAb53XWME73V8oye06FKmcZOhrz1W6n9WHfYdifRMT45yapPk5mIdYjDgQOyIb9tCXraUplk822ZnOmKZM0q8ykya5yhvA9NJaRr6O3Rf4x0L719JBBvBZsRN6uuaHcHP3Yu4kZD8e++H0xwPzB+O+jlEvbfEXc003sbR/kqjaTSpyGMqFHkyu1JcZkCEd6UzKoy60AvwBCZTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5Cl7PNctos/HqcZiYP+UZHZP3+KnlGpyNh0PXPdyuKw=;
- b=Ii4NN0iWHqQkrgGix57Rbz6q4RbHjPbnVz5oBXKk4qm82321gA2+AkJB35rQxaW2RLx0ie9XtDlJhZvwuXvka65K4iuBcOnvGhQxwpdwiNio/K3RdIZEVTman4lx7W7Vsib3j6DwuP3FoswHv2d4r4cSw02QxSfHCNyAN4oU3Yc=
-Received: from VI1PR04MB5967.eurprd04.prod.outlook.com (2603:10a6:803:cc::27)
- by VI1PR04MB5678.eurprd04.prod.outlook.com (2603:10a6:803:e1::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.18; Mon, 22 Mar
- 2021 15:25:04 +0000
-Received: from VI1PR04MB5967.eurprd04.prod.outlook.com
- ([fe80::d1cb:cbf8:2e78:8826]) by VI1PR04MB5967.eurprd04.prod.outlook.com
- ([fe80::d1cb:cbf8:2e78:8826%2]) with mapi id 15.20.3955.025; Mon, 22 Mar 2021
- 15:25:04 +0000
-From: Roy Zang <roy.zang@nxp.com>
-To: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Subject: RE: [PATCH -next] pci/controller/dwc: convert comma to semicolon
-Thread-Topic: [PATCH -next] pci/controller/dwc: convert comma to semicolon
-Thread-Index: AQHW067swcgbu9wBmkKgbXrNx0haraobFvQAgA2nIACAUJxCgIAXMDMAgAAPvDCAABI4gIAACttA
-Date: Mon, 22 Mar 2021 15:25:04 +0000
-Message-ID: <VI1PR04MB59675A1B2906DA2A6BAD22648B659@VI1PR04MB5967.eurprd04.prod.outlook.com>
-References: <20201216131944.14990-1-zhengyongjun3@huawei.com>
- <20210106190722.GA1327553@bjorn-Precision-5520>
- <20210115113654.GA22508@e121166-lin.cambridge.arm.com>
- <YEUdSZpwzg0k5z2+@rocinante>
- <20210322124326.GD11469@e121166-lin.cambridge.arm.com>
- <VI1PR04MB5967D3FCEE442AF30738939B8B659@VI1PR04MB5967.eurprd04.prod.outlook.com>
- <20210322144457.GA13436@e121166-lin.cambridge.arm.com>
-In-Reply-To: <20210322144457.GA13436@e121166-lin.cambridge.arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: arm.com; dkim=none (message not signed)
- header.d=none;arm.com; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [72.177.85.142]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 2b3e31e6-2cd5-4c2c-b093-08d8ed46ab35
-x-ms-traffictypediagnostic: VI1PR04MB5678:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR04MB5678B2D6BF9A899B3FD69FAB8B659@VI1PR04MB5678.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: eYozCQNgGQc95VZj7UgjuTAoGKhoqzTC2DFBnXWdCqfcMvANxJqfgjQigZcG9Tg8DFwPLM+1euk0Lt8O5yAuThHjoiDJhFBqbl3s7d3WkqRgwcgPHjU6+sKOA0GpicxnDP9opjPtaBLMToYpQK1TFzXDz1t4CYggb2O1Zt1XE/MYKgH6/KGpzLExka49zfNvRlhJ1+8Vg90cMQ4IwFp6rdCs8RtzrlM6IAozZp6FlxhbhPfp3BJCqzgqJerk4t2hNE7ObNNCxz8BkVZz74wjY1JTau1J/dzJh2JXpH8jCWMdeJWMooqk1VSxxkyClXwFA9OSkCNuSpLBcaMEQ2RAQC5tD/90onb+ATkobpkQE5jV9dz0i6hOS3t10mF5pMOlVbi2krKkmabyeDoN50NIQEpvJM6lJoOA0uQDBoofxn/BPWgqn1bNEnC7qZ+1iKt2sXuhK6LLIWP4VrzbEmX83h52NwPjHRbZwmOh5sRrqS7epO1grZTxWbDpMyjm3zFxCzNIQ658FQiNicCl2IKqAep7Q3F8mZ+EycHy3YS2qTRlag8QvTvLWg6ckzlhGDizqU31LXUei5HL7wD2HKTSvJMVu7YgZyF6FUDq23ZogKttmVYX6J1DX63vckvxJs0SJDoPB8eEh4XPA0BlYBONOW5n1lEO25R4WbInR49VjvbL7NrbFFkCFf2/xqqZEhhOGvC9OjGgnalkIL5rDXEDlGFsVxF16ilGprWvimCTVlkDwETe+wVdFsslIjOvZ7iQ
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR04MB5967.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(396003)(39850400004)(376002)(136003)(366004)(346002)(71200400001)(26005)(478600001)(316002)(6916009)(33656002)(38100700001)(186003)(52536014)(5660300002)(4744005)(44832011)(8676002)(8936002)(966005)(4326008)(54906003)(86362001)(55016002)(2906002)(9686003)(66556008)(64756008)(66476007)(66946007)(76116006)(45080400002)(66446008)(7696005)(6506007);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: =?iso-8859-2?Q?ABJpVmjHzcuWUWf+0GV0CaRuB8RSwzu3Zg6SeKNSqER4NrYvszvCyXC3c3?=
- =?iso-8859-2?Q?n1iwtPYG9OiokxKnPgtata+qIpcNNMfmf33TC2RTb94gZS9cmmbxrPyvp7?=
- =?iso-8859-2?Q?X4x2+wT5XLXjLP2K7REnbv7WykL1Ey+s4tXJa5mmbxPuUlDYIeqFgYeEu/?=
- =?iso-8859-2?Q?9uSt8P19MhlG7YL2Eo1LN7R4IasDkP8enL8E8SkzxHdjyfkyBqk3e3GRDN?=
- =?iso-8859-2?Q?1n5FoGucGjctSl8HrjnG+j+RttVSctHkgv2qDvMKMMY0gRB1fN9oE3PjxG?=
- =?iso-8859-2?Q?UlCO5NWBMFPtymG/i/9PBer8P8NtaliDFRIDaVI1oH95YdA1CY44jrUUOD?=
- =?iso-8859-2?Q?FQLyaFZHrkE05vXVBpP+U+QA0CcKgmkpgg5EFpbphFQ8bgDsmcWeV1sKMm?=
- =?iso-8859-2?Q?kmha+GrbYKeNpLh2uTjBvswnrViBG7mdyMPnHpeIRUk9pvpNtF8bv2bapp?=
- =?iso-8859-2?Q?lr15ARZnzZujKhQJ9WgTxQyUas3vhyBKI7B6uoe8VXOPFdT0ATCBsQnMYI?=
- =?iso-8859-2?Q?0UUReJ6VPf/fWIBGGyhPHBAvRatkc9v77CVUcaXNh8wqXeMKg2KQnWTmg8?=
- =?iso-8859-2?Q?6TqkTD6GgfOYwdF81Ek7e4RRG+dyeveDBfV3gCikAy9h1tmUJUghCl5+es?=
- =?iso-8859-2?Q?LuqH+5ncsGAEA9eRiLMtWDvaR1gSn2YgRJdvcDSzJ9BEr5+Ohc4pXBXhnZ?=
- =?iso-8859-2?Q?6CjGf/bE1vQus2VAkuEQMKfF9XZhMEmbrBwm/9qDo3qx9v5MPXflegfx1v?=
- =?iso-8859-2?Q?DdBSjQ9cKW7EibZzcx5Eornv5tXQ8BfzJUyhqEGWddgHmkVV2tDQFVOL7R?=
- =?iso-8859-2?Q?svvsmB6kKyGfk+xIU+RywSzHbASwbBN2YMVf0gxHLdng7iIhH+UcFoNzr/?=
- =?iso-8859-2?Q?BipVvtlOUJLFUKhcmKfgSOG56CZ4YBq+fQfPXdHW4MSveTFx/vfLxnaI17?=
- =?iso-8859-2?Q?fZb8lIu4mkZzNoFz4S+9AEW7kDyA91afwYPJ5S9Cs9086tElLH8JqKwD2c?=
- =?iso-8859-2?Q?XlqygHyJuaEL1tsRk0QFXHSOJqw7Y9R5ccx2SwtDLNuKqmU3+J71eL4s9r?=
- =?iso-8859-2?Q?NiG3eEJvvzR78tno/2hSfMi7r5LdrngmP2FJXWrxz3wSb2rvHw7cTqGIsv?=
- =?iso-8859-2?Q?Dunl/X2e5XSkbDpWsDq9ukZfHTirUkLxhblHthazET7+TsUg69f4uvJPDV?=
- =?iso-8859-2?Q?p3mrWs+5kwqk8gij0u698PkUZFTUj7D4QFAyPBeZQeA4dwe4BH6vpx1Yb+?=
- =?iso-8859-2?Q?W3D4a0tQnxS9bEy3CWPpRFM4raeDd1yvSAuo/PsI0+83mq0Y+x4P7pjUeC?=
- =?iso-8859-2?Q?uf8kcy/V/h3KiVN2/PcEqahiUz7bky6QPTkYNxbYPr+zryuHzUt1xLWqC9?=
- =?iso-8859-2?Q?2WzYVd8B9Y?=
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F3yxN37mhz30Cy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 02:25:25 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4F3yx93j9Tz9tyQm;
+ Mon, 22 Mar 2021 16:25:17 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id C6Gl5N5PG0H7; Mon, 22 Mar 2021 16:25:17 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F3yx92ctLz9tyQR;
+ Mon, 22 Mar 2021 16:25:17 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DCAF38B7A5;
+ Mon, 22 Mar 2021 16:25:22 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id pG7t4HJR04sX; Mon, 22 Mar 2021 16:25:22 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 774118B79C;
+ Mon, 22 Mar 2021 16:25:22 +0100 (CET)
+Subject: Re: [PATCH v7] powerpc/irq: Inline call_do_irq() and call_do_softirq()
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20210320122227.345427-1-mpe@ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <d2217b4e-718b-674d-c6a0-2cb69e3fd81c@csgroup.eu>
+Date: Mon, 22 Mar 2021 16:25:16 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5967.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b3e31e6-2cd5-4c2c-b093-08d8ed46ab35
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2021 15:25:04.7622 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sqpx4svcSxcwFqyNm22UaRXUPTf8tf1lzPzXsEGjDcy83KDeXm14rPWlLvhdlpO1JzfezKe2REOldUucsHg/cg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5678
+In-Reply-To: <20210320122227.345427-1-mpe@ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,40 +61,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?iso-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>,
- "robh@kernel.org" <robh@kernel.org>, "M.h. Lian" <minghuan.lian@nxp.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Zheng Yongjun <zhengyongjun3@huawei.com>, Bjorn Helgaas <helgaas@kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> On Mon, Mar 22, 2021 at 01:40:16PM +0000, Roy Zang wrote:
-> > Yes.  It is maintained.
->=20
-> To be maintained you should review its code please.
-Sure.=20
->=20
-> > I will send out a patch.
->=20
-> Krzysztof already posted one for you, you just need to ack it:
->=20
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fpatch=
-w
-> ork.kernel.org%2Fproject%2Flinux-
-> pci%2Fpatch%2F20210311033745.1547044-1-
-> kw%40linux.com&amp;data=3D04%7C01%7Croy.zang%40nxp.com%7Ced683ff5
-> 093443cb9c1608d8ed41150e%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0
-> %7C1%7C637520211070640953%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiM
-> C4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000
-> &amp;sdata=3DIWTcj7Xs0AdVVIf%2BSFzge6is9D8o0h6SSi7MpibIYcY%3D&amp;r
-> eserved=3D0
->=20
-> For the future email exchanges: don't top-post please.
-Acked.
-Roy
+
+
+Le 20/03/2021 à 13:22, Michael Ellerman a écrit :
+> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+> call_do_irq() and call_do_softirq() are simple enough to be
+> worth inlining.
+> 
+> Inlining them avoids an mflr/mtlr pair plus a save/reload on stack. It
+> also allows GCC to keep the saved ksp_limit in an nonvolatile reg.
+
+We don't have the ksp_limit anymore, I forgot to remove the above text.
+
+> 
+> This is inspired from S390 arch. Several other arches do more or
+> less the same. The way sparc arch does seems odd thought.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+> 
+> v2: no change.
+> v3: no change.
+> v4:
+> - comment reminding the purpose of the inline asm block.
+> - added r2 as clobbered reg
+> v5:
+> - Limiting the change to PPC32 for now.
+> - removed r2 from the clobbered regs list (on PPC32 r2 points to current all the time)
+> - Removed patch 1 and merged ksp_limit handling in here.
+> v6:
+> - Rebase on top of merge-test (ca6e327fefb2).
+> - Remove the ksp_limit stuff as it's doesn't exist anymore.
+> 
+> v7:
+> mpe:
+> - Enable for 64-bit too. This all in-kernel code calling in-kernel
+>    code, and must use the kernel TOC.
+
+Great.
+
+> - Use named parameters for the inline asm.
+
+Hmm. It is the first time we use named parameters in powerpc assembly, isn't it ?
+I saw when investigating userspace access that x86 is using named parameters widely.
+
+Wondering, how would the below look like with named parameters (from __put_user_asm2_goto) ?
+
+	stw%X1 %L0, %L1
+
+> - Reformat inline asm.
+> - Mark as always_inline.
+> - Drop unused ret from call_do_softirq(), add r3 as clobbered.
+> ---
+>   arch/powerpc/include/asm/irq.h |  2 --
+>   arch/powerpc/kernel/irq.c      | 41 ++++++++++++++++++++++++++++++++++
+>   arch/powerpc/kernel/misc_32.S  | 25 ---------------------
+>   arch/powerpc/kernel/misc_64.S  | 22 ------------------
+>   4 files changed, 41 insertions(+), 49 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
+> index f3f264e441a7..b2bd58830430 100644
+> --- a/arch/powerpc/include/asm/irq.h
+> +++ b/arch/powerpc/include/asm/irq.h
+> @@ -53,8 +53,6 @@ extern void *mcheckirq_ctx[NR_CPUS];
+>   extern void *hardirq_ctx[NR_CPUS];
+>   extern void *softirq_ctx[NR_CPUS];
+>   
+> -void call_do_softirq(void *sp);
+> -void call_do_irq(struct pt_regs *regs, void *sp);
+>   extern void do_IRQ(struct pt_regs *regs);
+>   extern void __init init_IRQ(void);
+>   extern void __do_irq(struct pt_regs *regs);
+> diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+> index 5b72abbff96c..260effc0a435 100644
+> --- a/arch/powerpc/kernel/irq.c
+> +++ b/arch/powerpc/kernel/irq.c
+> @@ -667,6 +667,47 @@ static inline void check_stack_overflow(void)
+>   	}
+>   }
+>   
+> +static __always_inline void call_do_softirq(const void *sp)
+> +{
+> +	/* Temporarily switch r1 to sp, call __do_softirq() then restore r1. */
+> +	asm volatile (
+> +		 PPC_STLU "	%%r1, %[offset](%[sp])	;"
+> +		"mr		%%r1, %[sp]		;"
+> +		"bl		%[callee]		;"
+> +		 PPC_LL "	%%r1, 0(%%r1)		;"
+> +		 : // Outputs
+> +		 : // Inputs
+> +		   [sp] "b" (sp), [offset] "i" (THREAD_SIZE - STACK_FRAME_OVERHEAD),
+> +		   [callee] "i" (__do_softirq)
+> +		 : // Clobbers
+> +		   "lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr6",
+> +		   "cr7", "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10",
+> +		   "r11", "r12"
+> +	);
+> +}
+> +
+> +static __always_inline void call_do_irq(struct pt_regs *regs, void *sp)
+> +{
+> +	register unsigned long r3 asm("r3") = (unsigned long)regs;
+> +
+> +	/* Temporarily switch r1 to sp, call __do_irq() then restore r1. */
+> +	asm volatile (
+> +		 PPC_STLU "	%%r1, %[offset](%[sp])	;"
+> +		"mr		%%r1, %[sp]		;"
+> +		"bl		%[callee]		;"
+> +		 PPC_LL "	%%r1, 0(%%r1)		;"
+> +		 : // Outputs
+> +		   "+r" (r3)
+> +		 : // Inputs
+> +		   [sp] "b" (sp), [offset] "i" (THREAD_SIZE - STACK_FRAME_OVERHEAD),
+> +		   [callee] "i" (__do_irq)
+> +		 : // Clobbers
+> +		   "lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr6",
+> +		   "cr7", "r0", "r4", "r5", "r6", "r7", "r8", "r9", "r10",
+> +		   "r11", "r12"
+> +	);
+> +}
+> +
+>   void __do_irq(struct pt_regs *regs)
+>   {
+>   	unsigned int irq;
+> diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
+> index acc410043b96..6a076bef2932 100644
+> --- a/arch/powerpc/kernel/misc_32.S
+> +++ b/arch/powerpc/kernel/misc_32.S
+> @@ -27,31 +27,6 @@
+>   
+>   	.text
+>   
+> -_GLOBAL(call_do_softirq)
+> -	mflr	r0
+> -	stw	r0,4(r1)
+> -	stwu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r3)
+> -	mr	r1,r3
+> -	bl	__do_softirq
+> -	lwz	r1,0(r1)
+> -	lwz	r0,4(r1)
+> -	mtlr	r0
+> -	blr
+> -
+> -/*
+> - * void call_do_irq(struct pt_regs *regs, void *sp);
+> - */
+> -_GLOBAL(call_do_irq)
+> -	mflr	r0
+> -	stw	r0,4(r1)
+> -	stwu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r4)
+> -	mr	r1,r4
+> -	bl	__do_irq
+> -	lwz	r1,0(r1)
+> -	lwz	r0,4(r1)
+> -	mtlr	r0
+> -	blr
+> -
+>   /*
+>    * This returns the high 64 bits of the product of two 64-bit numbers.
+>    */
+> diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
+> index 070465825c21..4b761a18a74d 100644
+> --- a/arch/powerpc/kernel/misc_64.S
+> +++ b/arch/powerpc/kernel/misc_64.S
+> @@ -27,28 +27,6 @@
+>   
+>   	.text
+>   
+> -_GLOBAL(call_do_softirq)
+> -	mflr	r0
+> -	std	r0,16(r1)
+> -	stdu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r3)
+> -	mr	r1,r3
+> -	bl	__do_softirq
+> -	ld	r1,0(r1)
+> -	ld	r0,16(r1)
+> -	mtlr	r0
+> -	blr
+> -
+> -_GLOBAL(call_do_irq)
+> -	mflr	r0
+> -	std	r0,16(r1)
+> -	stdu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r4)
+> -	mr	r1,r4
+> -	bl	__do_irq
+> -	ld	r1,0(r1)
+> -	ld	r0,16(r1)
+> -	mtlr	r0
+> -	blr
+> -
+>   _GLOBAL(__bswapdi2)
+>   EXPORT_SYMBOL(__bswapdi2)
+>   	srdi	r8,r3,32
+> 
