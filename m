@@ -2,103 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E00344601
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 14:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7110B344751
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 15:33:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F3wcp2TKMz30DW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 00:40:58 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=jmdR0Ses;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F3xnD3kLnz3001
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 01:33:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.7.58; helo=eur04-he1-obe.outbound.protection.outlook.com;
- envelope-from=roy.zang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=jmdR0Ses; 
- dkim-atps=neutral
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
- (mail-eopbgr70058.outbound.protection.outlook.com [40.107.7.58])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F3wcH6pLjz2xYt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 00:40:29 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VHl2orBAhrMh/H9Rr7DZecJQuDyd7tafdQ53jr+3DjSDNKOVExPTpPWrjBM9TzURFFFLRdZvqiHicLVmbV5r/dpS1ZMS4F/E/qoF8F7fECfkg9RNBpSgUIZntvunF/ef7OwJoFOValc7TYtk3ZyPn9HgBflEKO6RGBewLwzLKXWQU8qbwQ0JzQPaY/skyIzeMikBt8r/a1glLpPDx3bltpdAakn5wjySMKo2C539tQyhx1z1POC/ACy6/8//P2rZlXTY08WhXHrTpFn96BQZuSKYflgYMn3vM7sFWtpy59f617eQj6gad2P4nOum830ilMEBnuFYidX9LKuweWbbrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PKqh++oX7Zt6nJpqVqI89wscfmjEKsMhztCrswjTVKY=;
- b=JDz71OpMRtQ6Pih978vbv/HdVWYk6OSySFtCD8pNmlLqh+Z1rAjzOi67f7P2jWbcPlJ7tfdtzhlRTYrH5lpR1+p8oAp5J7OV5kpb++Bbf6Qpc1xA4kk7Acz4KnMMvKilyCRvm9Vtzb7sXh5oV62s9sslbTd1nzZKVyIt1B4tRk6H6iTMtOaTj95P+XCpE90LfMWDPNFeyyMD8uJ0nDElWld7jTjHRO4VY7NEx+ch+QTrRbfvLlWz7cZShmG2t8UQnp/GIll3w8z9Re70Es1Gr+1AACz1/2kS8CVltDQ/R6m0zVsN+TjEAVd3cFV6Sg0KkGkZTjztgWXE59AukVLgNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PKqh++oX7Zt6nJpqVqI89wscfmjEKsMhztCrswjTVKY=;
- b=jmdR0SesGaposubr6DPXvV6CzntIp2lxSvl+6IVFRLW5gExtz1tDDKvgWVnAyenEhi45c5xpwd47ooV20RRJcxwvauEwEjcXJMEm4T/Zs1ZfPtk6WCs9vUXMX7zol7PzgDmhneMH/Etvs38LfFXhnaPz+lXW1srfONNRmr42xG4=
-Received: from VI1PR04MB5967.eurprd04.prod.outlook.com (2603:10a6:803:cc::27)
- by VI1PR0402MB3456.eurprd04.prod.outlook.com (2603:10a6:803:7::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.18; Mon, 22 Mar
- 2021 13:40:16 +0000
-Received: from VI1PR04MB5967.eurprd04.prod.outlook.com
- ([fe80::d1cb:cbf8:2e78:8826]) by VI1PR04MB5967.eurprd04.prod.outlook.com
- ([fe80::d1cb:cbf8:2e78:8826%2]) with mapi id 15.20.3955.025; Mon, 22 Mar 2021
- 13:40:16 +0000
-From: Roy Zang <roy.zang@nxp.com>
-To: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- =?utf-8?B?S3J6eXN6dG9mIFdpbGN6ecWEc2tp?= <kw@linux.com>, "M.h. Lian"
- <minghuan.lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>
-Subject: RE: [PATCH -next] pci/controller/dwc: convert comma to semicolon
-Thread-Topic: [PATCH -next] pci/controller/dwc: convert comma to semicolon
-Thread-Index: AQHW067swcgbu9wBmkKgbXrNx0haraobFvQAgA2nIACAUJxCgIAXMDMAgAAPvDA=
-Date: Mon, 22 Mar 2021 13:40:16 +0000
-Message-ID: <VI1PR04MB5967D3FCEE442AF30738939B8B659@VI1PR04MB5967.eurprd04.prod.outlook.com>
-References: <20201216131944.14990-1-zhengyongjun3@huawei.com>
- <20210106190722.GA1327553@bjorn-Precision-5520>
- <20210115113654.GA22508@e121166-lin.cambridge.arm.com>
- <YEUdSZpwzg0k5z2+@rocinante>
- <20210322124326.GD11469@e121166-lin.cambridge.arm.com>
-In-Reply-To: <20210322124326.GD11469@e121166-lin.cambridge.arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: arm.com; dkim=none (message not signed)
- header.d=none;arm.com; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [72.177.85.142]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: ab813604-a0b2-472f-2a1f-08d8ed380746
-x-ms-traffictypediagnostic: VI1PR0402MB3456:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR0402MB34568646F1D49631F79737678B659@VI1PR0402MB3456.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 0OVKhn3Y0VMKGZFHD1gi89doFVtpHp8pWcZCK/FTDzPdXwelbSSnM7OBYhaJu3JBSuI6Y3LB92+SxePx85LaHTXVINCuJSdyNLR8tEPmbXFbxgGb7LarqOy4P2ubadisBwpUk0JFx4wEutbNUNw39Rj3n3Jj+u5I04WM0GO3Kpg2xhCK390jDn5m2TA6r6o5YLYXwh5IukdmvcslMeNNHotFTgkqkzzH33NF89RZ3yNnWDsOwZeKGZ+dGC84VcEa+SDIZctFknZsbbiU2ezISSkxFaJtVIAvKY28+6u/cSAYV8D8/tYl0YJsUeCgfy5P/yFuMpZbVjiqeT4Ng6eALuRaXYnyfjhT34nK3v+LfmYHglTKJAPl4D03SyMUeahSSjsqLSUONDfgowcGtvdLq6wb96p3deKutjNP85xvZvfoM8/Wo8uEIFI63noZTyau0QTUtCYhXz28zerZGDB/z8+NwauaGHDfGVqVXYaxWJ7/giRHQyxNS9WqXdPMyTK/apEfWmfacdgVTx8XNEo9qB23n26CEq+1mMq41w0xm/f5mydAnA93XYa4Or+7P7H99Lux+4bpEh+upmZB7Y4C7LHkwWi30i5N1aFINjdXZ65fmIBsG8uLl0ElyQPRt+QrP725Ix5F4lRn950mtfhuvrB05UB1UoE5Vz2ouvAQ4bQ=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR04MB5967.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(396003)(39860400002)(346002)(366004)(376002)(136003)(86362001)(33656002)(83380400001)(66556008)(66946007)(5660300002)(8936002)(66476007)(6636002)(26005)(66446008)(8676002)(66574015)(2906002)(76116006)(4744005)(478600001)(52536014)(64756008)(110136005)(55016002)(4326008)(44832011)(38100700001)(316002)(9686003)(186003)(71200400001)(7696005)(6506007)(54906003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: ykWGt9fZZwISCcx5EE0D9pwmBnLLgeDgftrg9FkZ/5h5P33fr+Z1OxYug48QROoLVVpwE2Zh1Wv7R8mIR3K+OFGmBcpq5FqQWVKQlyurSpSY4IZVpxwYgzwi3p0Gi+ySqJcBvOHm5YOmc2P8G0wT6sTUbZpmnY5y2xCXF2KcmDaflWZrDU9Hqz3zjDvU2Zljb7BZeUOrll4iXdDpzttXVQ1yLIft+R+RmnG5MIpOeJ/qNrrYH5qJ73Y9wVOL6B9R0Cq4rSuus2vGxmaM2+UGnwr1v5KCJgySlqtqkRSYYBNU7/wEIl+tqs64w+U6rDP9Iv5nFcxRofsWo60FhkDP/6P4nvs/TvQBMNPOToA0D15SstASwa8TwC91nHZWLGLSKBu5pV1M4JSJ0NheamzIs7g5V/+6hUdMW8YbMTPpcLtFIpR2SLjMt/kcFycU6VKmcEU0moezle+a+2aciz9tqEv8tzoJoJeG/RkZXABzpg48XfjlttGe5G/jR6DJf1tXiz+dVOUPqaA19M3AGJDTWOctDcA8uEhQOYdHZv7oTcYWyIDSdKX1qZCFwi2qvEyYW9GhWAM6OIfU8Zgay9j2qo4usBuFbK1HsSq80DnF7TBAt4t9/BErwQ9DL5aUxTzaYBggdqQvoXZQ/L27GIyiCzDVB8p0JJOwK6EjBdrk1cQZKC7EYtGNvQhlIiXSnoQx7MwZWEph8Dy/y6S+JJ0E5y2ELumXpGPaKrDs2l+G7BQ=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F3xmv3txJz2yjN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 01:33:00 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4F3xmf1Jcpz9tyhT;
+ Mon, 22 Mar 2021 15:32:50 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Ddg49OyYyGfy; Mon, 22 Mar 2021 15:32:50 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F3xmd5qZNz9tyhR;
+ Mon, 22 Mar 2021 15:32:49 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1785C8B79F;
+ Mon, 22 Mar 2021 15:32:55 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 6Tx7BT7WTY9N; Mon, 22 Mar 2021 15:32:54 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3E4318B79C;
+ Mon, 22 Mar 2021 15:32:54 +0100 (CET)
+Subject: Re: [PATCH v11 0/6] KASAN for powerpc64 radix
+To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ kasan-dev@googlegroups.com, aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
+References: <20210319144058.772525-1-dja@axtens.net>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <5a3b5952-b31f-42bf-eaf4-ea24444f8df6@csgroup.eu>
+Date: Mon, 22 Mar 2021 15:32:50 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5967.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab813604-a0b2-472f-2a1f-08d8ed380746
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2021 13:40:16.7836 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: woS37cya3l6XgzBQ0RN8NpecGgNJB2AJuFsC7NUGNb5JNoC9lI5duhxYt668GQepKYOXP3yx+UrCwLiQobAxPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3456
+In-Reply-To: <20210319144058.772525-1-dja@axtens.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,29 +63,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "robh@kernel.org" <robh@kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Zheng Yongjun <zhengyongjun3@huawei.com>, Bjorn Helgaas <helgaas@kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-WWVzLiAgSXQgaXMgbWFpbnRhaW5lZC4NCkkgd2lsbCBzZW5kIG91dCBhIHBhdGNoLg0KVGhhbmtz
-Lg0KUm95DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBMb3JlbnpvIFBpZXJh
-bGlzaSA8bG9yZW56by5waWVyYWxpc2lAYXJtLmNvbT4gDQoNCk9uIFN1biwgTWFyIDA3LCAyMDIx
-IGF0IDA3OjM2OjU3UE0gKzAxMDAsIEtyenlzenRvZiBXaWxjennFhHNraSB3cm90ZToNCj4gSGks
-DQo+IA0KPiBbLi4uXQ0KPiA+IEkgd291bGQgcmVxdWVzdCBOWFAgbWFpbnRhaW5lcnMgdG8gdGFr
-ZSB0aGlzIHBhdGNoLCByZXdyaXRlIGl0IGFzIA0KPiA+IEJqb3JuIHJlcXVlc3RlZCBhbmQgcmVz
-ZW5kIGl0IGFzIGZhc3QgYXMgcG9zc2libGUsIHRoaXMgaXMgYSB2ZXJ5IA0KPiA+IHJlbGV2YW50
-IGZpeC4NCj4gWy4uLl0NCj4gDQo+IExvb2tpbmcgYXQgdGhlIHN0YXRlIG9mIHRoZSBwY2ktbGF5
-ZXJzY2FwZS1lcC5jIGZpbGUgaW4gTGludXMnIHRyZWUsIA0KPiB0aGlzIHN0aWxsIGhhc24ndCBi
-ZWVuIGZpeGVkLCBhbmQgaXQgaGFzIGJlZW4gYSB3aGlsZS4NCj4gDQo+IE5YUCBmb2xrcywgYXJl
-IHlvdSBpbnRlbmQgdG8gcGljayB0aGlzIHVwPyAgRG8gbGV0IHVzIGtub3cuDQoNCk1pbmdodWFu
-LCBNaW5na2FpLCBSb3ksDQoNCmVpdGhlciBvbmUgb2YgeW91IHJlcGx5IGFuZCBmb2xsb3cgdXAg
-dGhpcyBwYXRjaCBvciBJIHdpbGwgaGF2ZSB0byB1cGRhdGUgdGhlIE1BSU5UQUlORVJTIGVudHJ5
-IGFuZCB0YWtlIGFjdGlvbiBhY2NvcmRpbmdseSwgeW91IGFyZSBub3QgbWFpbnRhaW5pbmcgdGhp
-cyBkcml2ZXIgYW5kIEkgd29uJ3QgbWFpbnRhaW4geW91ciBjb2RlLCBzb3JyeS4NCg0KTG9yZW56
-bw0KDQo+IEtyenlzenRvZg0K
+
+
+Le 19/03/2021 à 15:40, Daniel Axtens a écrit :
+> Building on the work of Christophe, Aneesh and Balbir, I've ported
+> KASAN to 64-bit Book3S kernels running on the Radix MMU.
+> 
+> v11 applies to next-20210317. I had hoped to have it apply to
+> powerpc/next but once again there are changes in the kasan core that
+> clash. Also, thanks to mpe for fixing a build break with KASAN off.
+> 
+> I'm not sure how best to progress this towards actually being merged
+> when it has impacts across subsystems. I'd appreciate any input. Maybe
+> the first four patches could go in via the kasan tree, that should
+> make things easier for powerpc in a future cycle?
+> 
+> v10 rebases on top of next-20210125, fixing things up to work on top
+> of the latest changes, and fixing some review comments from
+> Christophe. I have tested host and guest with 64k pages for this spin.
+> 
+> There is now only 1 failing KUnit test: kasan_global_oob - gcc puts
+> the ASAN init code in a section called '.init_array'. Powerpc64 module
+> loading code goes through and _renames_ any section beginning with
+> '.init' to begin with '_init' in order to avoid some complexities
+> around our 24-bit indirect jumps. This means it renames '.init_array'
+> to '_init_array', and the generic module loading code then fails to
+> recognise the section as a constructor and thus doesn't run it. This
+> hack dates back to 2003 and so I'm not going to try to unpick it in
+> this series. (I suspect this may have previously worked if the code
+> ended up in .ctors rather than .init_array but I don't keep my old
+> binaries around so I have no real way of checking.)
+> 
+> (The previously failing stack tests are now skipped due to more
+> accurate configuration settings.)
+> 
+> Details from v9: This is a significant reworking of the previous
+> versions. Instead of the previous approach which supported inline
+> instrumentation, this series provides only outline instrumentation.
+> 
+> To get around the problem of accessing the shadow region inside code we run
+> with translations off (in 'real mode'), we we restrict checking to when
+> translations are enabled. This is done via a new hook in the kasan core and
+> by excluding larger quantites of arch code from instrumentation. The upside
+> is that we no longer require that you be able to specify the amount of
+> physically contiguous memory on the system at compile time. Hopefully this
+> is a better trade-off. More details in patch 6.
+> 
+> kexec works. Both 64k and 4k pages work. Running as a KVM host works, but
+> nothing in arch/powerpc/kvm is instrumented. It's also potentially a bit
+> fragile - if any real mode code paths call out to instrumented code, things
+> will go boom.
+> 
+
+In the discussion we had long time ago, 
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20190806233827.16454-5-dja@axtens.net/#2321067 
+, I challenged you on why it was not possible to implement things the same way as other 
+architectures, in extenso with an early mapping.
+
+Your first answer was that too many things were done in real mode at startup. After some discussion 
+you said that finally there was not that much things at startup but the issue was KVM.
+
+Now you say that instrumentation on KVM is fully disabled.
+
+So my question is, if KVM is not a problem anymore, why not go the standard way with an early shadow 
+? Then you could also support inline instrumentation.
+
+Christophe
