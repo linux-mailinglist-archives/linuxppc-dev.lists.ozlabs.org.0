@@ -2,44 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624713447AA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 15:45:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 500F9344833
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Mar 2021 15:54:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F3y3d2CyYz3bdF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 01:45:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F3yFb29Wsz30F1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 01:54:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=lorenzo.pieralisi@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4F3y2r4NmZz302W
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 01:45:07 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F0131042;
- Mon, 22 Mar 2021 07:45:04 -0700 (PDT)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com
- [10.1.196.255])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D5C2B3F719;
- Mon, 22 Mar 2021 07:45:02 -0700 (PDT)
-Date: Mon, 22 Mar 2021 14:44:57 +0000
-From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To: Roy Zang <roy.zang@nxp.com>
-Subject: Re: [PATCH -next] pci/controller/dwc: convert comma to semicolon
-Message-ID: <20210322144457.GA13436@e121166-lin.cambridge.arm.com>
-References: <20201216131944.14990-1-zhengyongjun3@huawei.com>
- <20210106190722.GA1327553@bjorn-Precision-5520>
- <20210115113654.GA22508@e121166-lin.cambridge.arm.com>
- <YEUdSZpwzg0k5z2+@rocinante>
- <20210322124326.GD11469@e121166-lin.cambridge.arm.com>
- <VI1PR04MB5967D3FCEE442AF30738939B8B659@VI1PR04MB5967.eurprd04.prod.outlook.com>
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F3yFH2XjNz2yhm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 01:54:10 +1100 (AEDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id A32F268BEB; Mon, 22 Mar 2021 15:54:03 +0100 (CET)
+Date: Mon, 22 Mar 2021 15:54:03 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Russell King - ARM Linux admin <linux@armlinux.org.uk>
+Subject: Re: [PATCH 02/10] ARM: disable CONFIG_IDE in footbridge_defconfig
+Message-ID: <20210322145403.GA30942@lst.de>
+References: <20210318045706.200458-1-hch@lst.de>
+ <20210318045706.200458-3-hch@lst.de>
+ <20210319170753.GV1463@shell.armlinux.org.uk>
+ <20210319175311.GW1463@shell.armlinux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <VI1PR04MB5967D3FCEE442AF30738939B8B659@VI1PR04MB5967.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20210319175311.GW1463@shell.armlinux.org.uk>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,58 +45,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
- "robh@kernel.org" <robh@kernel.org>, "M.h. Lian" <minghuan.lian@nxp.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Zheng Yongjun <zhengyongjun3@huawei.com>, Bjorn Helgaas <helgaas@kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Mingkai Hu <mingkai.hu@nxp.com>
+Cc: Jens Axboe <axboe@kernel.dk>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ linux-ide@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-alpha@vger.kernel.org,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 22, 2021 at 01:40:16PM +0000, Roy Zang wrote:
-> Yes.  It is maintained.
-
-To be maintained you should review its code please.
-
-> I will send out a patch.
-
-Krzysztof already posted one for you, you just need to ack it:
-
-https://patchwork.kernel.org/project/linux-pci/patch/20210311033745.1547044-1-kw@linux.com
-
-For the future email exchanges: don't top-post please.
-
-Thanks,
-Lorenzo
-
-> Thanks.
-> Roy
+On Fri, Mar 19, 2021 at 05:53:12PM +0000, Russell King - ARM Linux admin wrote:
+> If I extend the arch/arm/kernel/bios32.c code to kill BARs 2/3 (which
+> actually are not present on the CY82C693) then the IDE driver works
+> for me, but the PATA driver does not:
 > 
-> -----Original Message-----
-> From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com> 
+> cy82c693 0000:00:06.1: IDE controller (0x1080:0xc693 rev 0x00)
+> cy82c693 0000:00:06.1: not 100% native mode: will probe irqs later
+> legacy IDE will be removed in 2021, please switch to libata
+> Report any missing HW support to linux-ide@vger.kernel.org
+>     ide0: BM-DMA at 0x1080-0x1087
+>     ide1: BM-DMA at 0x1088-0x108f
+> Probing IDE interface ide0...
+> hda: PIONEER DVD-RW DVR-105, ATAPI CD/DVD-ROM drive
+> hda: host max PIO4 wanted PIO255(auto-tune) selected PIO4
+> ...
 > 
-> On Sun, Mar 07, 2021 at 07:36:57PM +0100, Krzysztof Wilczyński wrote:
-> > Hi,
-> > 
-> > [...]
-> > > I would request NXP maintainers to take this patch, rewrite it as 
-> > > Bjorn requested and resend it as fast as possible, this is a very 
-> > > relevant fix.
-> > [...]
-> > 
-> > Looking at the state of the pci-layerscape-ep.c file in Linus' tree, 
-> > this still hasn't been fixed, and it has been a while.
-> > 
-> > NXP folks, are you intend to pick this up?  Do let us know.
+> (unbind Cypress_IDE and try binding pata_cypress)
 > 
-> Minghuan, Mingkai, Roy,
-> 
-> either one of you reply and follow up this patch or I will have to update the MAINTAINERS entry and take action accordingly, you are not maintaining this driver and I won't maintain your code, sorry.
-> 
-> Lorenzo
-> 
-> > Krzysztof
+> pata_cypress 0000:00:06.1: no available native port
+
+This comes from ata_pci_sff_init_host when it tails to initialize
+a port.  There are three cases why it can't initialize the port:
+
+ 1) because it is marked as dummy, which is the case for the second
+    port of the cypress controller, but you're not using that even
+    with the old ide driver, and we'd still not get that message just
+    because of that second port.
+ 2) when ata_resources_present returns false because the BAR has
+    a zero start or length
+ 3) because pcim_iomap_regions() fails.  This prints a warning to the
+    log ("failed to request/iomap BARs for port %d (errno=%d)") that you
+    should have seen
+
+So the problem here has to be number two.  The legacy ide driver OTOH
+seems to lack a lot of these checks, although I'm not sure how it
+manages to actually work without those.
+
+Can you show how the BAR assignment for the device looks using lscpi
+or a tool of your choice?
