@@ -1,80 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699F9345B53
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 10:49:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA92345B97
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 11:02:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4RRD2zZQz30gg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 20:49:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4Rkl03TZz3bp4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 21:02:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=dCwBg30e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=gJuXXYMu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
- helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b34;
+ helo=mail-yb1-xb34.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=dCwBg30e; dkim-atps=neutral
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
- [IPv6:2607:f8b0:4864:20::1029])
+ header.s=20161025 header.b=gJuXXYMu; dkim-atps=neutral
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com
+ [IPv6:2607:f8b0:4864:20::b34])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4RQp4lt4z302s
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 20:49:05 +1100 (AEDT)
-Received: by mail-pj1-x1029.google.com with SMTP id
- kr3-20020a17090b4903b02900c096fc01deso9877374pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 02:49:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4RkL5g01z30F6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 21:02:33 +1100 (AEDT)
+Received: by mail-yb1-xb34.google.com with SMTP id o66so9722590ybg.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 03:02:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=c1kuMFGWEbTOeFhDqSYJCZMejdonWc5t7uysZdJ61Xg=;
- b=dCwBg30eq7kvsgo/KtoSqLNtbWKmVgtrpPAwvBXo1gnVhDObcOBvp0TsB/tXB0WKsG
- N9F1Y4uCPGm5Tw/mj409OgYFHHwqIzbjT97f4zKHRPierYL5pOYvT/6dGbSgE0xCRJuR
- t1lA0LJYXBwyFqgppJh3iQLkTaxJmDfOUKDCDVZ2vgtzB1vSp6IQSDrhjdlZxlE/USAs
- XDXZcoWoyMO27OuvBRHFCLl+qwv+C+82ZmNrW/V+7GXBC9EOQcznUmmtdT1dBAUE16Ds
- mDCi2IICdzBPz/4Nj9yOse0QbsugBJyvZEdMI3yGMH3rxn/08FS3FrYsrHUDBNCzH0Zk
- BX0Q==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=Qp/jj3l6ivGZ4OXCocertOe4BVJnz1tKssW/YzmGbTA=;
+ b=gJuXXYMuBphx+t5hfk93Y7sfNFPYwhbjIw3T8P7KTZv5AR9YQ4Y0OOiEXzTlu3oo57
+ crZ2GYH2sClMfNM12fQOVFB4DcyXeyCzGpZ9fit7gX4nYw1de8CsJ55YlLUb56WzSUwy
+ TIAfMPbTFDWkuuBaQTTfwEzsr8GkFTEzeQQEpHWJTrjgqAtAgAo5o/UjcIcMhv9s4lGV
+ MsdeVqUEza/b/LRrElL1NtVHI7ChbPkgtMXdtoJNDKSRQsFPCBgCOOz50hQhOVDd7R30
+ 6rh77lFlSCkHHoCnzIj3FwHAXgBj1N3xpoOGwB25mXsFh+wq85GheT3NMuG9IpPVaNfx
+ UnlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=c1kuMFGWEbTOeFhDqSYJCZMejdonWc5t7uysZdJ61Xg=;
- b=TKbli1YesKQL0Ds1T5DaLE987PitQdiFg7vWFejSgFXaAa8TMkY3RuS193Jc4xkP4h
- 9BRh+uSvGkRFcCQU6NOlXGAJnqJzIRA+fbcNMbuMxLYvdey0f6MzNaiW/nL2KQHRQPY4
- 3sSRLvlOLmfsKFp2WcZ/pEhXFyPjAijVbe59eINFANgAPOlN0RFlxJoSKtg0FZZQYoRd
- pHS3noVBo4wUeRrIygjqKNSEThBTPvUSbDzbr9tbMVGmDVe+mAFrmORXE7+i2UpSwzS2
- Q0hWZqlLb5solCmFFHNqRTuAg05oN3QcFV4op/ZY/cV91G0suSOaq/5aLBptzDXIrzSl
- kt8w==
-X-Gm-Message-State: AOAM533ticFOhKCSmhA1fAOSpmg2AkNxSSySPsPkz6bCWr+dBSBguvu5
- UoF3sZQAonPGThnMxkMOwQk=
-X-Google-Smtp-Source: ABdhPJwTA/SMB23drVhANK+kBQOX7U1rMdAEfO8vZlCydkn8E2Fd4H7asUOKskWbdhNlVCco9RxEkg==
-X-Received: by 2002:a17:90a:d801:: with SMTP id
- a1mr3761057pjv.84.1616492943289; 
- Tue, 23 Mar 2021 02:49:03 -0700 (PDT)
-Received: from localhost ([1.132.174.211])
- by smtp.gmail.com with ESMTPSA id q95sm2255130pjq.20.2021.03.23.02.49.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Mar 2021 02:49:02 -0700 (PDT)
-Date: Tue, 23 Mar 2021 19:48:57 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 22/46] KVM: PPC: Book3S HV P9: Stop handling hcalls in
- real-mode in the P9 path
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, kvm-ppc@vger.kernel.org
-References: <20210323010305.1045293-1-npiggin@gmail.com>
- <20210323010305.1045293-23-npiggin@gmail.com>
- <6901d698-f3d8-024b-3aa1-47b157bbd57d@ozlabs.ru>
- <1616490842.v369xyk7do.astroid@bobo.none>
- <994fb056-4445-4301-faca-b53394fb6b35@ozlabs.ru>
-In-Reply-To: <994fb056-4445-4301-faca-b53394fb6b35@ozlabs.ru>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Qp/jj3l6ivGZ4OXCocertOe4BVJnz1tKssW/YzmGbTA=;
+ b=q7UuqjCbsjnMFar1lpu5B1K4I1oALdvRXHYcWiiq6xEmsls/sJHhiUxjpsPueBLn4Z
+ JUBElgX8JoJ22yjE9bAIzhXzrw/H7+1prcRASEe0o8IC2YWRr6c4QKRrhAStTZAuF4J1
+ EiJnJq5vbIAErhVNmKWqQztEaa/5nxajPMDUliY8/RFLeksKLaX8kQsnny+1skhoJZIg
+ G3aPRTd7sLNNynUDodoLdLeZWFn4mbkJwpE1+XNdEDkePzbVC2BmDlJF0bajmtG0+rLI
+ LEx2v3ZPzOAL/BjywvWyYhp7iSLU5Afr2lkiVqAeyFfvPMI5LIix9lSTI49j30c+kRWA
+ pNpw==
+X-Gm-Message-State: AOAM532sgPEG9ZnRp4fTZkMy0CnSLxviS0TKgL7DOmdxaQ6N4WXuBFyL
+ v+J9ubcUhjHt/E1ZrBkJrxm2nweYWdXEqqMyTiHVHOBw05UdDA==
+X-Google-Smtp-Source: ABdhPJylVauAaSy0QdnuaN0wsPp5eKvLs3gWNjOyhWw54JITI4zXzthk13t3k6s1NdoyOmuw9hraEbpQt1uXgHEBJaQ=
+X-Received: by 2002:a25:6e02:: with SMTP id j2mr4055149ybc.247.1616493750049; 
+ Tue, 23 Mar 2021 03:02:30 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <1616492251.gsmvgdqq5o.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20210323032624.1039422-1-mpe@ellerman.id.au>
+In-Reply-To: <20210323032624.1039422-1-mpe@ellerman.id.au>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 23 Mar 2021 11:02:19 +0100
+Message-ID: <CANiq72n-tMww2U+eQ=iHOh5u1JQgjM0b1E3XQ9jpWMfpdQ5+=g@mail.gmail.com>
+Subject: Re: [PATCH 0/4] Rust for Linux for ppc64le
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,53 +73,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>,
+ rust-for-linux@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Alexey Kardashevskiy's message of March 23, 2021 7:24 pm:
->=20
->=20
-> On 23/03/2021 20:16, Nicholas Piggin wrote:
->> Excerpts from Alexey Kardashevskiy's message of March 23, 2021 7:02 pm:
->>>
->>>
->>> On 23/03/2021 12:02, Nicholas Piggin wrote:
->>>> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kv=
-m/book3s_hv_rmhandlers.S
->>>> index c11597f815e4..2d0d14ed1d92 100644
->>>> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
->>>> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
->>>> @@ -1397,9 +1397,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->>>>    	mr	r4,r9
->>>>    	bge	fast_guest_return
->>>>    2:
->>>> +	/* If we came in through the P9 short path, no real mode hcalls */
->>>> +	lwz	r0, STACK_SLOT_SHORT_PATH(r1)
->>>> +	cmpwi	r0, 0
->>>> +	bne	no_try_real
->>>
->>>
->>> btw is mmu on at this point? or it gets enabled by rfid at the end of
->>> guest_exit_short_path?
->>=20
->> Hash guest it's off. Radix guest it can be on or off depending on the
->> interrupt type and MSR and LPCR[AIL] values.
->=20
-> What I meant was - what do we expect here on p9? mmu on? ^w^w^w^w^w^w^w^w=
-^w
+Hi Michael,
 
-P9 radix can be on or off. If the guest had MSR[IR] or MSR[DR] clear, or=20
-if the guest is running AIL=3D0 mode, or if this is a machine check,=20
-system reset, or HMI interrupt then the MMU will be off here.
+On Tue, Mar 23, 2021 at 4:27 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Hi all,
+>
+> Here's a first attempt at getting the kernel Rust support building on powerpc.
 
-> I just realized - it is radix so there is no problem with vmalloc=20
-> addresses in real mode as these do not use top 2 bits as on hash and the=20
-> exact mmu state is less important here. Cheers.
+Thanks a *lot*! It is great to have more architectures rolling.
 
-We still can't use vmalloc addresses in real mode on radix because they=20
-don't translate with the page tables.
+> It's powerpc64le only for now, as that's what I can easily test given the
+> distros I have installed. Though powerpc and powerpc64 are also Tier 2 platforms
 
-Thanks,
-Nick
+Even if it is just 64-bit, it is very good to have it!
+
+> so in theory should work. Supporting those would require something more
+> complicated than just pointing rustc at arch/$(ARCH)/rust/target.json.
+
+Yeah, the arch/$(ARCH)/rust/target.json dance is a placeholder -- I
+need to figure out how to do that more cleanly, likely generating them
+on the fly.
+
+> This is based on 832575d934a2 from the Rust-for-Linux tree. Anything newer gives
+> me errors about symbol name lengths. I figured I'd send this anyway, as it seems
+> like those errors are probably not powerpc specific.
+
+Sure, feel free to send things even if they don't work completely.
+
+I will take a look at the symbol name lengths -- I increased that
+limit to 512 and added support for 2-byte lengths in the tables, but
+perhaps something is missing. If I manage to make it work, I can add
+ppc64le to our CI! :-)
+
+> Michael Ellerman (4):
+>   rust: Export symbols in initialized data section
+>   rust: Add powerpc64 as a 64-bit target_arch in c_types.rs
+>   powerpc/rust: Add target.json for ppc64le
+>   rust: Enable for ppc64le
+
+Regarding the development process: at least until the RFC we are
+working with the usual GitHub PR workflow (for several reasons: having
+a quick CI setup, getting new Rust developers on-board, having a list
+of "issues", cross-reference with the Rust repo, etc.).
+
+I can take patches from the list, of course, but since we are pre-RFC,
+do you mind if they get rebased etc. through there?
+
+Thanks again!
+
+Cheers,
+Miguel
