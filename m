@@ -2,62 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C523458A3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 08:27:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BBF43458ED
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 08:41:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4NH92NM1z3bmh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 18:27:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4Nbs3hrhz30CN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 18:41:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=UE5+wbRm;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::530;
+ helo=mail-pg1-x530.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=UE5+wbRm; dkim-atps=neutral
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
+ [IPv6:2607:f8b0:4864:20::530])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4NGp6RNwz30Bp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 18:26:56 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.102])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id C947693CC5D1;
- Tue, 23 Mar 2021 08:26:31 +0100 (CET)
-Received: from kaod.org (37.59.142.100) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 23 Mar
- 2021 08:26:30 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-100R003d932da59-8f62-453a-9723-a91eb2f9e31b,
- 3463118FEE79F4041422E427733B80787D17A221) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Subject: Re: [PATCH v3 19/41] KVM: PPC: Book3S HV P9: Stop handling hcalls in
- real-mode in the P9 path
-To: Nicholas Piggin <npiggin@gmail.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, 
- <kvm-ppc@vger.kernel.org>
-References: <20210305150638.2675513-1-npiggin@gmail.com>
- <20210305150638.2675513-20-npiggin@gmail.com>
- <b06ebe14-a714-c882-8bdf-ac41de9a8523@ozlabs.ru>
- <1616417941.ksskhyvg3t.astroid@bobo.none>
- <cc1660a7-e81e-b7b3-a841-35fb77fb571b@kaod.org>
- <1616436906.owrt3o4wh1.astroid@bobo.none>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <a8453296-717e-5186-38f9-38f0962e2e17@kaod.org>
-Date: Tue, 23 Mar 2021 08:26:30 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4NbQ1pBwz2xb9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 18:41:19 +1100 (AEDT)
+Received: by mail-pg1-x530.google.com with SMTP id h25so10830929pgm.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 00:41:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=gcmI11wouIpDwxdi+NStOdrVppM7cT0Mia1ThanzCd0=;
+ b=UE5+wbRmZdYUdQ0G8bX362ijyRwJ9biLMH7je5sLG9tnGEthPDD8cms1zmPguoF2Vz
+ PdJgmfHFxwX09TuzdZ6OiVb5rBOwbl6JvTiwYJ4ZpFQGLsCHU5fms4JjJqtMYnQ5J+h+
+ 0ryMxlh8oqxok6IQtckoXOeiOaGx77B4tbt11zmPUMa2vX+O9NFx7zXvpTw1HrFwBztz
+ NPeXe/t0wUwM/uI0Mx8vQuL1oKQIQQhXDwlPgESgSrKwScDtQ3ErlHqczwAUiobBAjDv
+ Y3WAeJwnHB3G8M+PonvwePYXgPUy82uDV+D3i6i9rRjiqTF9B7VfjIRofihNj13QksRB
+ PVcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=gcmI11wouIpDwxdi+NStOdrVppM7cT0Mia1ThanzCd0=;
+ b=Ea0sfRo3xle+DcrGCh7PuM2dCGSHQHvsBoThzx9QyVJFcEOdLldwXJ/4mn4vTP/z3b
+ SDWu2xzWdJiTTjiliSVhyFmHf4iz4P85rh3Mdv+gcwm//MQ9O83bThREH6n9npEE+2Tb
+ Nkt7G+Hx1YpRBJpakz9PooYm0lAr6rTVU1aeHeyokox9YFfoiVgAgXUE4smAnsf/kX4L
+ xxJYXqzOLQtvB/CjVkBFITdk9/+vmkNsXfB5qecF9qiMcx0OGdxiyu+6ei38/21KTCFs
+ hTrkDBZmvQRIlHN3Al9ItZ/fYsocdVGq4hiVs9w7mC0fRcbsapNjIz9VX1wePK11vNO0
+ J7ow==
+X-Gm-Message-State: AOAM531tOe/mSCFvstLCzNYJdXDgWkTr0bBUxziDJ74rZYHZmiF1rXBg
+ k4+ca/0jLIWcqVhzmHxSSrsxsQ==
+X-Google-Smtp-Source: ABdhPJwErHiyQzkdLbopxkOHcUNRxbNwmPsMCMOGUe+a7whz50kbLU6xArS7p5n4wvFkqiQmxoY6wg==
+X-Received: by 2002:a62:7ed2:0:b029:21d:1806:fe30 with SMTP id
+ z201-20020a627ed20000b029021d1806fe30mr731380pfc.5.1616485277056; 
+ Tue, 23 Mar 2021 00:41:17 -0700 (PDT)
+Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
+ [124.171.107.241])
+ by smtp.gmail.com with UTF8SMTPSA id 4sm1593011pjl.51.2021.03.23.00.41.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Mar 2021 00:41:16 -0700 (PDT)
+Message-ID: <2088f84c-08fb-fecc-f5d4-5735357dc296@ozlabs.ru>
+Date: Tue, 23 Mar 2021 18:41:09 +1100
 MIME-Version: 1.0
-In-Reply-To: <1616436906.owrt3o4wh1.astroid@bobo.none>
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:87.0) Gecko/20100101
+ Thunderbird/87.0
+Subject: Re: [PATCH 1/1] powerpc/iommu: Enable remaining IOMMU Pagesizes
+ present in LoPAR
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG1EX2.mxp5.local (172.16.2.2) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: d7ca665f-a7c6-43b6-a0c3-6ab51d795ff4
-X-Ovh-Tracer-Id: 10963731819251862496
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudeghedguddtjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeejkeduueduveelgeduueegkeelffevledujeetffeivdelvdfgkeeufeduheehfeenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddttdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtohepnhhpihhgghhinhesghhmrghilhdrtghomh
+To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Christophe Leroy
+ <christophe.leroy@c-s.fr>, Joel Stanley <joel@jms.id.au>,
+ brking@linux.vnet.ibm.com
+References: <20210322190943.715368-1-leobras.c@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <20210322190943.715368-1-leobras.c@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,206 +92,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/22/21 7:22 PM, Nicholas Piggin wrote:
-> Excerpts from Cédric Le Goater's message of March 23, 2021 2:01 am:
->> On 3/22/21 2:15 PM, Nicholas Piggin wrote:
->>> Excerpts from Alexey Kardashevskiy's message of March 22, 2021 5:30 pm:
->>>>
->>>>
->>>> On 06/03/2021 02:06, Nicholas Piggin wrote:
->>>>> In the interest of minimising the amount of code that is run in>>> "real-mode", don't handle hcalls in real mode in the P9 path.
->>>>>
->>>>> POWER8 and earlier are much more expensive to exit from HV real mode
->>>>> and switch to host mode, because on those processors HV interrupts get
->>>>> to the hypervisor with the MMU off, and the other threads in the core
->>>>> need to be pulled out of the guest, and SLBs all need to be saved,
->>>>> ERATs invalidated, and host SLB reloaded before the MMU is re-enabled
->>>>> in host mode. Hash guests also require a lot of hcalls to run. The
->>>>> XICS interrupt controller requires hcalls to run.
->>>>>
->>>>> By contrast, POWER9 has independent thread switching, and in radix mode
->>>>> the hypervisor is already in a host virtual memory mode when the HV
->>>>> interrupt is taken. Radix + xive guests don't need hcalls to handle
->>>>> interrupts or manage translations.
->>
->> Do we need to handle the host-is-a-P9-without-xive case ?
-> 
-> I'm not sure really. Is there an intention for OPAL to be able to 
-> provide a fallback layer in the worst case?
 
-yes. OPAL has a XICS-on-XIVE emulation for P9, implemented for bringup,
-and it still boots, XICS guest can run. P10 doesn't have it though.
 
-> Maybe microwatt grows HV capability before XIVE?
+On 23/03/2021 06:09, Leonardo Bras wrote:
+> According to LoPAR, ibm,query-pe-dma-window output named "IO Page Sizes"
+> will let the OS know all possible pagesizes that can be used for creating a
+> new DDW.
+> 
+> Currently Linux will only try using 3 of the 8 available options:
+> 4K, 64K and 16M. According to LoPAR, Hypervisor may also offer 32M, 64M,
+> 128M, 256M and 16G.
+> 
+> Enabling bigger pages would be interesting for direct mapping systems
+> with a lot of RAM, while using less TCE entries.
+> > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+> ---
+>   arch/powerpc/include/asm/iommu.h       |  8 ++++++++
+>   arch/powerpc/platforms/pseries/iommu.c | 28 +++++++++++++++++++-------
+>   2 files changed, 29 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
+> index deef7c94d7b6..c170048b7a1b 100644
+> --- a/arch/powerpc/include/asm/iommu.h
+> +++ b/arch/powerpc/include/asm/iommu.h
+> @@ -19,6 +19,14 @@
+>   #include <asm/pci-bridge.h>
+>   #include <asm/asm-const.h>
+>   
+> +#define IOMMU_PAGE_SHIFT_16G	34
+> +#define IOMMU_PAGE_SHIFT_256M	28
+> +#define IOMMU_PAGE_SHIFT_128M	27
+> +#define IOMMU_PAGE_SHIFT_64M	26
+> +#define IOMMU_PAGE_SHIFT_32M	25
+> +#define IOMMU_PAGE_SHIFT_16M	24
+> +#define IOMMU_PAGE_SHIFT_64K	16
 
-I don't know if we should develop the same XIVE logic for microwatt. 
-It's awfully complex and we have the XICS interface which works already. 
 
->>>>> So it's much less important to handle hcalls in real mode in P9.
->>>>
->>>> So acde25726bc6034b (which added if(kvm_is_radix(vcpu->kvm))return 
->>>> H_TOO_HARD) can be reverted, pretty much?
->>>
->>> Yes. Although that calls attention to the fact I missed doing
->>> a P9 h_random handler in this patch. I'll fix that, then I think
->>> acde2572 could be reverted entirely.
->>>
->>> [...]
->>>
->>>>>   	} else {
->>>>>   		kvmppc_xive_push_vcpu(vcpu);
->>>>>   		trap = kvmhv_load_hv_regs_and_go(vcpu, time_limit, lpcr);
->>>>> -		kvmppc_xive_pull_vcpu(vcpu);
->>>>> +		/* H_CEDE has to be handled now, not later */
->>>>> +		/* XICS hcalls must be handled before xive is pulled */
->>>>> +		if (trap == BOOK3S_INTERRUPT_SYSCALL &&
->>>>> +		    !(vcpu->arch.shregs.msr & MSR_PR)) {
->>>>> +			unsigned long req = kvmppc_get_gpr(vcpu, 3);
->>>>>   
->>>>> +			if (req == H_CEDE) {
->>>>> +				kvmppc_cede(vcpu);
->>>>> +				kvmppc_xive_cede_vcpu(vcpu); /* may un-cede */
->>>>> +				kvmppc_set_gpr(vcpu, 3, 0);
->>>>> +				trap = 0;
->>>>> +			}
->>>>> +			if (req == H_EOI || req == H_CPPR ||
->>>>
->>>> else if (req == H_EOI ... ?
->>>
->>> Hummm, sure.
->>
->> you could integrate the H_CEDE in the switch statement below.
-> 
-> Below is in a different file just for the emulation calls.
-> 
->>>
->>> [...]
->>>
->>>>> +void kvmppc_xive_cede_vcpu(struct kvm_vcpu *vcpu)
->>>>> +{
->>>>> +	void __iomem *esc_vaddr = (void __iomem *)vcpu->arch.xive_esc_vaddr;
->>>>> +
->>>>> +	if (!esc_vaddr)
->>>>> +		return;
->>>>> +
->>>>> +	/* we are using XIVE with single escalation */
->>>>> +
->>>>> +	if (vcpu->arch.xive_esc_on) {
->>>>> +		/*
->>>>> +		 * If we still have a pending escalation, abort the cede,
->>>>> +		 * and we must set PQ to 10 rather than 00 so that we don't
->>>>> +		 * potentially end up with two entries for the escalation
->>>>> +		 * interrupt in the XIVE interrupt queue.  In that case
->>>>> +		 * we also don't want to set xive_esc_on to 1 here in
->>>>> +		 * case we race with xive_esc_irq().
->>>>> +		 */
->>>>> +		vcpu->arch.ceded = 0;
->>>>> +		/*
->>>>> +		 * The escalation interrupts are special as we don't EOI them.
->>>>> +		 * There is no need to use the load-after-store ordering offset
->>>>> +		 * to set PQ to 10 as we won't use StoreEOI.
->>>>> +		 */
->>>>> +		__raw_readq(esc_vaddr + XIVE_ESB_SET_PQ_10);
->>>>> +	} else {
->>>>> +		vcpu->arch.xive_esc_on = true;
->>>>> +		mb();
->>>>> +		__raw_readq(esc_vaddr + XIVE_ESB_SET_PQ_00);
->>>>> +	}
->>>>> +	mb();
->>>>
->>>>
->>>> Uff. Thanks for cut-n-pasting the comments, helped a lot to match this c 
->>>> to that asm!
->>>
->>> Glad it helped.
->>>>> +}
->>
->> I had to do the PowerNV models in QEMU to start understanding that stuff ... 
->>
->>>>> +EXPORT_SYMBOL_GPL(kvmppc_xive_cede_vcpu);
->>>>> +
->>>>>   /*
->>>>>    * This is a simple trigger for a generic XIVE IRQ. This must
->>>>>    * only be called for interrupts that support a trigger page
->>>>> @@ -2106,6 +2140,32 @@ static int kvmppc_xive_create(struct kvm_device *dev, u32 type)
->>>>>   	return 0;
->>>>>   }
->>>>>   
->>>>> +int kvmppc_xive_xics_hcall(struct kvm_vcpu *vcpu, u32 req)
->>>>> +{
->>>>> +	struct kvmppc_vcore *vc = vcpu->arch.vcore;
->>>>
->>>>
->>>> Can a XIVE enabled guest issue these hcalls? Don't we want if 
->>>> (!kvmppc_xics_enabled(vcpu)) and
->>>>   if (xics_on_xive()) here, as kvmppc_rm_h_xirr() have? Some of these 
->>>> hcalls do write to XIVE registers but some seem to change 
->>>> kvmppc_xive_vcpu. Thanks,
->>>
->>> Yes I think you're right, good catch. I'm not completely sure about all 
->>> the xive and xics modes but a guest certainly can make any kind of hcall 
->>> it likes and we have to sanity check it.
->>
->> Yes. 
->>
->>> We want to take the hcall here (in replacement of the real mode hcalls)
->>> with the same condition. So it would be:
->>>
->>>         if (!kvmppc_xics_enabled(vcpu))
->>>                 return H_TOO_HARD;
->>
->> Yes.
->>
->> This test covers the case in which a vCPU does XICS hcalls without QEMU 
->> having connected the vCPU to a XICS ICP. The ICP is the KVM XICS device 
->> on P8 or XICS-on-XIVE on P9. It catches QEMU errors when the interrupt 
->> mode is negotiated, we don't want the OS to do XICS hcalls after having 
->> negotiated the XIVE interrupt mode. 
-> 
-> Okay.
-> 
->> It's different for the XIVE hcalls (when running under XICS) because they 
->> are all handled in QEMU. 
-> 
-> XIVE guest hcalls running on XICS host?
+These are not very descriptive, these are just normal shifts, could be 
+as simple as __builtin_ctz(SZ_4K) (gcc will optimize this) and so on.
 
-What I meant is that in anycase, XICS or XIVE host, the XIVE hcalls are 
-trapped in KVM but always handled in QEMU. So We don't need to check 
-anything in KVM, as QEMU will take care of it. 
+OTOH the PAPR page sizes need macros as they are the ones which are 
+weird and screaming for macros.
 
-( It also make the implementation cleaner since the hcall frontend is in
-one place. )
+I'd steal/rework spapr_page_mask_to_query_mask() from QEMU. Thanks,
 
-C.
 
->>>         if (!xics_on_xive())
->>> 		return H_TOO_HARD;
->>
->> I understand that this code is only called on P9 and with translation on.
-> 
-> Yes.
-> 
->> On P9, we could have xics_on_xive() == 0 if XIVE is disabled at compile 
->> time or with "xive=off" at boot time. But guests should be supported. 
->> I don't see a reason to restrict the support even if these scenarios 
->> are rather unusual if not very rare.
->>
->> on P10, it's the same but since we don't have the XICS emulation layer 
->> in OPAL, the host will be pretty useless. We don't care.
->>
->> Since we are trying to handle hcalls, this is L0 and it can not be called 
->> for nested guests, which would be another case of xics_on_xive() == 0. 
->> We don't care either.
-> 
-> Okay so no xics_on_xive() test. I'll change that.
->
-> 
-> Thanks,
-> Nick
+
+
+> +
+>   #define IOMMU_PAGE_SHIFT_4K      12
+>   #define IOMMU_PAGE_SIZE_4K       (ASM_CONST(1) << IOMMU_PAGE_SHIFT_4K)
+>   #define IOMMU_PAGE_MASK_4K       (~((1 << IOMMU_PAGE_SHIFT_4K) - 1))
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index 9fc5217f0c8e..02958e80aa91 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -1099,6 +1099,24 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
+>   			 ret);
+>   }
+>   
+> +/* Returns page shift based on "IO Page Sizes" output at ibm,query-pe-dma-window. SeeL LoPAR */
+> +static int iommu_get_page_shift(u32 query_page_size)
+> +{
+> +	const int shift[] = {IOMMU_PAGE_SHIFT_4K,   IOMMU_PAGE_SHIFT_64K,  IOMMU_PAGE_SHIFT_16M,
+> +			     IOMMU_PAGE_SHIFT_32M,  IOMMU_PAGE_SHIFT_64M,  IOMMU_PAGE_SHIFT_128M,
+> +			     IOMMU_PAGE_SHIFT_256M, IOMMU_PAGE_SHIFT_16G};
+> +	int i = ARRAY_SIZE(shift) - 1;
+> +
+> +	/* Looks for the largest page size supported */
+> +	for (; i >= 0; i--) {
+> +		if (query_page_size & (1 << i))
+> +			return shift[i];
+> +	}
+> +
+> +	/* No valid page size found. */
+> +	return 0;
+> +}
+> +
+>   /*
+>    * If the PE supports dynamic dma windows, and there is space for a table
+>    * that can map all pages in a linear offset, then setup such a table,
+> @@ -1206,13 +1224,9 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   			goto out_failed;
+>   		}
+>   	}
+> -	if (query.page_size & 4) {
+> -		page_shift = 24; /* 16MB */
+> -	} else if (query.page_size & 2) {
+> -		page_shift = 16; /* 64kB */
+> -	} else if (query.page_size & 1) {
+> -		page_shift = 12; /* 4kB */
+> -	} else {
+> +
+> +	page_shift = iommu_get_page_shift(query.page_size);
+> +	if (!page_shift) {
+>   		dev_dbg(&dev->dev, "no supported direct page size in mask %x",
+>   			  query.page_size);
+>   		goto out_failed;
 > 
 
+-- 
+Alexey
