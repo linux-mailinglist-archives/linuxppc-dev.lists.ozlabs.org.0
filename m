@@ -1,71 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC9A3460E5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 15:03:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B68A934616F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 15:27:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4Y4m2lb0z30NB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 01:03:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4Yc05KNXz3bcb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 01:27:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=X+JdXLoQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=kuI5z7BT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
- (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk;
- envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b33;
+ helo=mail-yb1-xb33.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256
- header.s=pandora-2019 header.b=X+JdXLoQ; 
- dkim-atps=neutral
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
- [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=kuI5z7BT; dkim-atps=neutral
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com
+ [IPv6:2607:f8b0:4864:20::b33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4Y4L1nDVz30FF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 01:03:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=N2uCmQ8vi2Ep5UQ3oogYPNPYrv32/jec/EyUkk8lTs8=; b=X+JdXLoQWsdpRf+AXi8/3tUI/
- jXnKmRfCxmqfZ3epNEm5hZd6PTJjrEfchsuMTTlqSuqlwy6qnEC631sY4eZU+osiWuHRhcxdwfmBD
- EcYvmwvWC1bY3+5djEQq4uPoU/zCK3YUQHS/90ljVFZtIVLjCNXfSahRqSQjUFj/aqr7rUZvqKCg4
- nAFII9fQW+Yo8eMKfe/x8Vh7CDPqW0zVh4L6fCzsTfFC91VsLLsN1Nuepys1ybTCHaDv7p6juNvev
- jSWu7nxKgl0Rmv4lCgJG2fgIHHEpOcy5Vg45Bw0aV7bKbBtPXM47Pr9bcIU6ymZXkeYIVCo3YUFhi
- YIUU7TlWA==;
-Received: from shell.armlinux.org.uk
- ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51628)
- by pandora.armlinux.org.uk with esmtpsa
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <linux@armlinux.org.uk>)
- id 1lOhcg-0007nq-TU; Tue, 23 Mar 2021 14:03:07 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
- (envelope-from <linux@shell.armlinux.org.uk>)
- id 1lOhcd-0004D5-LA; Tue, 23 Mar 2021 14:03:03 +0000
-Date: Tue, 23 Mar 2021 14:03:03 +0000
-From: Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 02/10] ARM: disable CONFIG_IDE in footbridge_defconfig
-Message-ID: <20210323140303.GD1463@shell.armlinux.org.uk>
-References: <20210318045706.200458-1-hch@lst.de>
- <20210318045706.200458-3-hch@lst.de>
- <20210319170753.GV1463@shell.armlinux.org.uk>
- <20210319175311.GW1463@shell.armlinux.org.uk>
- <20210322145403.GA30942@lst.de>
- <20210322151503.GX1463@shell.armlinux.org.uk>
- <20210322151823.GA2764@lst.de> <20210322153314.GA3440@lst.de>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4Ybc1F2Gz30B1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 01:27:06 +1100 (AEDT)
+Received: by mail-yb1-xb33.google.com with SMTP id o66so10527634ybg.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 07:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=a1UKA4D9x9QmZ1+15HTh/Ges6E1m3MBK/glmFQ+WIEA=;
+ b=kuI5z7BTwTCzb12byWHvnez5Mri863aUQ3Lj3wB4GHCyfdrM6k/PvMxgsDLB4Q56Du
+ Oxsn7JJ1zTtYNbr+YMmHvo6+bSmAhFKqpRsRl/nUyYPyQYUnvqE2CkV6pZCpEPho8r7H
+ iqwsDC953u7rl0alzpfcXzROoV7ZCUkD+yPfl1BRJp5RXXPidKuNgSjSa1EDTy5rb5C9
+ udHkwgLnN9LTrHQcLroeHvLDQIAIelJWHyRQ4Ot9kLYJofbjoaEPhk4WmZAjuJhBcjxv
+ NMRUwLmWeC6RbgjskE7+IApMwa1xCSPkjAzLo89sQxdH6lmwytLDKK29WysJnQOKW+Me
+ b7LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=a1UKA4D9x9QmZ1+15HTh/Ges6E1m3MBK/glmFQ+WIEA=;
+ b=PW3IfpnYTBFUhfPpOQ285nI9Z6KxQGWf5O6M7GQQo3Wqu6aCSJjrjvUm0D9l6+eHft
+ DzLBHqNoHzE72IOfdPDAH6AXmiKXm9A9UoylDVniB7qNSgaRElaMv97skJ28SOD9oFN5
+ CdZDDrmqYO0vQkfpFCVcZp59wNQRJoBUL74X5Zc7fJREbkX6CmR52VZYQkrwuFKSRxmj
+ 7sqfRqLJ1mP1OWAqGZ9RPEtrXNSN9WJBg/OdHdJ0+0F8UOPfuRnQlryolcg2C+t05VQw
+ 6JcJPR8NskyLkGjqHMJKMtVSaC/BPXl0ciDUhDZzq/UOisfn9hSzCem3RZ45m4PFzNou
+ 7e8w==
+X-Gm-Message-State: AOAM531SVJqyJoIk93XopNnKi7jd8yEL9F6yZjBE+2Tpeo+NuuWVU5Uk
+ qhFv8s3GRgyTVG0rht9eGFi1iQS0IxGWtAXeOm4=
+X-Google-Smtp-Source: ABdhPJybD3ce1ekRim1ZhIjnmLmlL/O7qPnH3M5AavmL+8L6MPDtRHWU2dnXIV05AjFpWSQvRk0Q2y0+VBJ4qWnrVSI=
+X-Received: by 2002:a5b:449:: with SMTP id s9mr5786215ybp.115.1616509620027;
+ Tue, 23 Mar 2021 07:27:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210322153314.GA3440@lst.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20210323032624.1039422-1-mpe@ellerman.id.au>
+ <CANiq72n-tMww2U+eQ=iHOh5u1JQgjM0b1E3XQ9jpWMfpdQ5+=g@mail.gmail.com>
+ <87mtuugj61.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87mtuugj61.fsf@mpe.ellerman.id.au>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 23 Mar 2021 15:26:49 +0100
+Message-ID: <CANiq72nx6Z=m-Fye7QYuQdjq9q0ZvH2+rkbrfQq-yQRMAadTYg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] Rust for Linux for ppc64le
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,105 +75,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-alpha@vger.kernel.org,
- Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>,
+ rust-for-linux@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 22, 2021 at 04:33:14PM +0100, Christoph Hellwig wrote:
-> On Mon, Mar 22, 2021 at 04:18:23PM +0100, Christoph Hellwig wrote:
-> > On Mon, Mar 22, 2021 at 03:15:03PM +0000, Russell King - ARM Linux admin wrote:
-> > > It gets worse than that though - due to a change to remove
-> > > pcibios_min_io from the generic code, moving it into the ARM
-> > > architecture code, this has caused a regression that prevents the
-> > > legacy resources being registered against the bus resource. So even
-> > > if they are there, they cause probe failures. I haven't found a
-> > > reasonable way to solve this yet, but until there is, there is no
-> > > way that the PATA driver can be used as the "legacy mode" support
-> > > is effectively done via the PCI code assigning virtual IO port
-> > > resources.
-> > > 
-> > > I'm quite surprised that the CY82C693 even works on Alpha - I've
-> > > asked for a lspci for that last week but nothing has yet been
-> > > forthcoming from whoever responded to your patch for Alpha - so I
-> > > can't compare what I'm seeing with what's happening with Alpha.
-> > 
-> > That sounds like something we could fix with a quirk for function 2
-> > in the PCI resource assignment code.  Can you show what vendor and
-> > device ID function 2 has so that I could try to come up with one?
-> 
-> Something like this:
+On Tue, Mar 23, 2021 at 1:16 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> It would be nice to be in the CI. I was building natively so I haven't
+> tried cross compiling yet (which we'll need for CI).
 
-That solves the problem for the IDE driver, which knows how to deal
-with legacy mode, but not the PATA driver, which doesn't. The PATA
-driver needs these resources.
+Indeed -- in the CI we already cross-compile arm64 (and run under QEMU
+both arm64 as well as x86_64), so it is easy to add new ones to the
+matrix.
 
-As I say, having these resources presents a problem on ARM. A previous
-commit (3c5d1699887b) changed the way the bus resources are setup which
-results in /proc/ioports containing:
+> I can send a pull request if that's easiest.
 
-00000000-0000000f : dma1
-00000020-0000003f : pic1
-00000060-0000006f : i8042
-00000070-00000073 : rtc_cmos
-  00000070-00000073 : rtc0
-00000080-0000008f : dma low page
-000000a0-000000bf : pic2
-000000c0-000000df : dma2
-00000213-00000213 : ISAPnP
-000002f8-000002ff : serial8250.0
-  000002f8-000002ff : serial
-000003c0-000003df : vga+
-000003f8-000003ff : serial8250.0
-  000003f8-000003ff : serial
-00000480-0000048f : dma high page
-00000a79-00000a79 : isapnp write
-00001000-0000ffff : PCI0 I/O
-  00001000-0000107f : 0000:00:08.0
-    00001000-0000107f : 3c59x
-  00001080-0000108f : 0000:00:06.1
-  00001090-0000109f : 0000:00:07.0
-    00001090-0000109f : pata_it821x
-  000010a0-000010a7 : 0000:00:07.0
-    000010a0-000010a7 : pata_it821x
-  000010a8-000010af : 0000:00:07.0
-    000010a8-000010af : pata_it821x
-  000010b0-000010b3 : 0000:00:07.0
-    000010b0-000010b3 : pata_it821x
-  000010b4-000010b7 : 0000:00:07.0
-    000010b4-000010b7 : pata_it821x
+No worries, I will pick the patches. But, of course, feel free to join
+us in GitHub! :-)
 
-The "PCI0 I/O" resource is the bus level resource, and the legacy
-resources can not be claimed against that.
-
-Without these resources, the PATA cypress driver doesn't work.
-
-As I said previously, the reason this regression was not picked up
-earlier is because I don't upgrade the kernel on this machine very
-often; the machine has had uptimes into thousands of days.
-
-I need to try reverting Rob's commit to find out if anything breaks
-on this platform - it's completely wrong from a technical point of
-view for any case where we have a PCI southbridge, since the
-southbridge provides ISA based resources. I'm not entirely sure
-what the point of it was, since we still have the PCIBIOS_MIN_IO
-macro which still uses pcibios_min_io.
-
-I'm looking at some of the other changes Rob made back at that time
-which also look wrong, such as 8ef6e6201b26 which has the effect of
-locating the 21285 IO resources to PCI address 0, over the top of
-the ISA southbridge resources. I've no idea what Rob was thinking
-when he removed the csrio allocation code in that commit, but
-looking at it to day, it's soo obviously wrong even to a casual
-glance.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Cheers,
+Miguel
