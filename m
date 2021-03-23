@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B2C3454D8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:17:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4703454D9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:18:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4D4p0Fgkz3dX5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 12:17:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4D5H0tYzz3gR1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 12:18:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=HuOsbnzo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=g0KPjTuw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a;
- helo=mail-pf1-x42a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d;
+ helo=mail-pg1-x52d.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=HuOsbnzo; dkim-atps=neutral
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
- [IPv6:2607:f8b0:4864:20::42a])
+ header.s=20161025 header.b=g0KPjTuw; dkim-atps=neutral
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com
+ [IPv6:2607:f8b0:4864:20::52d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4Cny6fBxz3c50
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 12:04:54 +1100 (AEDT)
-Received: by mail-pf1-x42a.google.com with SMTP id h3so12525359pfr.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:04:54 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4Cp11Ymdz3c6W
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 12:04:57 +1100 (AEDT)
+Received: by mail-pg1-x52d.google.com with SMTP id k24so10040570pgl.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:04:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=6Bs7XHUMbIVuw7QkJEX6gwpyVXR4AO2//Bxh2Wns9Vc=;
- b=HuOsbnzoWSo5wPcaNBAbd+S9V/AFZxTBfRCDdRl4NHB7haqnRXMZaQG/K5jaj/mTcN
- SNWFCa7wjXWXp3DTyRMrC0cdsQWPduJbtDImFxC+5RXR1jTM3kXEHVRV+jfUq50M9zfW
- THWSbSeSCuOXbq4ANET5KlfbSODBAok8bLrlGWPoOxBsaFM6qX4OhQbixjaBm0Na+izH
- 1lbxKVzc9IE3OyI9DLRfDOKaVQAmzURLpXriqj2vBkrgqtjW5BksVbPSsTv3PEJ7UAR9
- XTYIivrYDYZxryHUUFAg9jkkeXqj/9ig2sOaw7T/RbhdKQe3+uWYoJ6kuWvVFt86ergV
- K2/w==
+ bh=xmDpEHgsazPBq/iaHf1gq1ioVfAETKz0M2WFtf/RE1s=;
+ b=g0KPjTuwknaPHORqF8abNTqxzcfOHoswrBnb1gDIuoXptLY6IUUsijMyI3pTUQ1jUV
+ h+un+hveOYovOJODCiIOd7ilsjWeWIx5EwWfJGcY2ifHGigJgkWhfzLiY+I/1dhCA8KW
+ 0Q3xfBIQIJ2qqQYz99ieZPKpcsE6T+9bPxYU553lDMgIv0kX6Xif5FCXlMf+be/OeNxy
+ ZqsW830mMSXOpWQXcWQHxxXaTibYoQAc3Mwx6sKt2u4SCNvaXGODd9B0Tl1oA1qKqjsa
+ JoQzbr6NtRtkv1jK06VgBRfyFfmG9GPv1dBJNJSkbzvPIoa2Jf/kLph9RD7RTyLsQ7UX
+ amew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=6Bs7XHUMbIVuw7QkJEX6gwpyVXR4AO2//Bxh2Wns9Vc=;
- b=PuDYUVip5zHKNijSQtKrHsSp4mKVZA4LGm0EXjPSntLThIDIGJM8C4xjBH/LAL5jJs
- GZdpDmxWlYaFuoVcK+fskqsU1M1OR6jjMloq2elVAwR8cGIc4GwxpzEzHavm/iTSI9lc
- wU59oT6G+QXYRAiVkwig7CoBA1TDnEFuu+z/lxK/KF3KduBZim4EyqNMtiRPi+yq4lf5
- ziUDBd9HtZRk6TApfnyoCmAh4GQldmvyoMW/iI5G8FYr8mtE4EJ68DKQ+r6WXl4EuM4p
- yD04OUw+u9c9rdK0DYwLyEf9TUJpgusiuW9vU/xr4fztjupFTeQ6ryvWIgXQoLx083sx
- NPdA==
-X-Gm-Message-State: AOAM530Aiy7QfdlyJhC7tU3hAKEsV+qlPdPWymzTAHAngFkUEmLnS2Ew
- OZpnQCSAJJZaZeYcTsboa18=
-X-Google-Smtp-Source: ABdhPJy9ia9LiBiNlH+5PtjdyP/GaYHOKYdX4afOPn6Zs/CGfDOOVAW6b2TeBm2rMl/CoOxQDmQlLw==
-X-Received: by 2002:a62:2a8b:0:b029:21c:3016:3a9f with SMTP id
- q133-20020a622a8b0000b029021c30163a9fmr1565590pfq.38.1616461492867; 
- Mon, 22 Mar 2021 18:04:52 -0700 (PDT)
+ bh=xmDpEHgsazPBq/iaHf1gq1ioVfAETKz0M2WFtf/RE1s=;
+ b=eM0VEZFY+OSiqZr3M/NjLIO2Dq0ggsUE4P9dfa3ppKnNy8vDH6OoirR/UQU86Z4x5F
+ 1ygHgQMmjNaRiO7vU1JNz17zswyn/pOaIIFE3zSTHG0ZL4TS6/EqtjH5wltJKC8uL6Id
+ Jfk+ol7VAFVJcwTuoVT/Kg/hI8uUsv4od5AX34jY5VhS8xEoRMegT00zUGtHKAyqiui4
+ VSXOqGEkvyney1syIdiPugAoJsrZ0uH154S2NeREfGaxLeAeSaQdW8ZWpLWXSug0uVT4
+ oWB0ZTvmvrHeQZCXY0WcyUcyYJE+mlp1HfnGFrH7ORGue1rUMQ2HnIFLY6cQRTcJBBwU
+ 5sSg==
+X-Gm-Message-State: AOAM531m8Pt5+C1oAEND+3IqU4Co8QD6npDpCTvCPC7xISUBo8pKHjTK
+ dG6SAB7fes7JwYr1YsxqBxUE8qxrdrg=
+X-Google-Smtp-Source: ABdhPJxMas/9lfwRgTcjcrbFuFFIram7aZO0X8Y5LpmjHrmv+Ugt6nLLBms3F3mgsWZlh5LPD0+RUw==
+X-Received: by 2002:a62:8485:0:b029:1fc:823d:2a70 with SMTP id
+ k127-20020a6284850000b02901fc823d2a70mr2398327pfd.18.1616461495441; 
+ Mon, 22 Mar 2021 18:04:55 -0700 (PDT)
 Received: from bobo.ibm.com ([58.84.78.96])
- by smtp.gmail.com with ESMTPSA id e7sm14491894pfc.88.2021.03.22.18.04.49
+ by smtp.gmail.com with ESMTPSA id e7sm14491894pfc.88.2021.03.22.18.04.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Mar 2021 18:04:51 -0700 (PDT)
+ Mon, 22 Mar 2021 18:04:55 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v4 32/46] KVM: PPC: Book3S HV P9: Improve exit timing
- accounting coverage
-Date: Tue, 23 Mar 2021 11:02:51 +1000
-Message-Id: <20210323010305.1045293-33-npiggin@gmail.com>
+Subject: [PATCH v4 33/46] KVM: PPC: Book3S HV P9: Move SPR loading after
+ expiry time check
+Date: Tue, 23 Mar 2021 11:02:52 +1000
+Message-Id: <20210323010305.1045293-34-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210323010305.1045293-1-npiggin@gmail.com>
 References: <20210323010305.1045293-1-npiggin@gmail.com>
@@ -86,54 +86,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The C conversion caused exit timing to become a bit cramped. Expand it
-to cover more of the entry and exit code.
+This is wasted work if the time limit is exceeded.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv_interrupt.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/kvm/book3s_hv_interrupt.c | 36 ++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv_interrupt.c b/arch/powerpc/kvm/book3s_hv_interrupt.c
-index a7e5628ac36c..4058a325a7f0 100644
+index 4058a325a7f0..f57379e73b5c 100644
 --- a/arch/powerpc/kvm/book3s_hv_interrupt.c
 +++ b/arch/powerpc/kvm/book3s_hv_interrupt.c
-@@ -159,6 +159,8 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 	if (hdec < 0)
- 		return BOOK3S_INTERRUPT_HV_DECREMENTER;
- 
-+	start_timing(vcpu, &vcpu->arch.rm_entry);
-+
- 	if (vc->tb_offset) {
- 		u64 new_tb = tb + vc->tb_offset;
- 		mtspr(SPRN_TBU40, new_tb);
-@@ -209,8 +211,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 	 */
- 	mtspr(SPRN_HDEC, hdec);
- 
--	start_timing(vcpu, &vcpu->arch.rm_entry);
+@@ -138,21 +138,16 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	u64 tb, purr, spurr;
+ 	u64 *exsave;
+ 	bool ri_set;
+-	unsigned long msr = mfmsr();
+ 	int trap;
+-	unsigned long host_hfscr = mfspr(SPRN_HFSCR);
+-	unsigned long host_ciabr = mfspr(SPRN_CIABR);
+-	unsigned long host_dawr0 = mfspr(SPRN_DAWR0);
+-	unsigned long host_dawrx0 = mfspr(SPRN_DAWRX0);
+-	unsigned long host_psscr = mfspr(SPRN_PSSCR);
+-	unsigned long host_pidr = mfspr(SPRN_PID);
+-	unsigned long host_dawr1 = 0;
+-	unsigned long host_dawrx1 = 0;
 -
- 	vcpu->arch.ceded = 0;
+-	if (cpu_has_feature(CPU_FTR_DAWR1)) {
+-		host_dawr1 = mfspr(SPRN_DAWR1);
+-		host_dawrx1 = mfspr(SPRN_DAWRX1);
+-	}
++	unsigned long msr;
++	unsigned long host_hfscr;
++	unsigned long host_ciabr;
++	unsigned long host_dawr0;
++	unsigned long host_dawrx0;
++	unsigned long host_psscr;
++	unsigned long host_pidr;
++	unsigned long host_dawr1;
++	unsigned long host_dawrx1;
  
- 	WARN_ON_ONCE(vcpu->arch.shregs.msr & MSR_HV);
-@@ -354,8 +354,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	tb = mftb();
+ 	hdec = time_limit - tb;
+@@ -170,6 +165,19 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 		vc->tb_offset_applied = vc->tb_offset;
+ 	}
  
- 	accumulate_time(vcpu, &vcpu->arch.rm_exit);
- 
--	end_timing(vcpu);
--
- 	/* Advance host PURR/SPURR by the amount used by guest */
- 	purr = mfspr(SPRN_PURR);
- 	spurr = mfspr(SPRN_SPURR);
-@@ -420,6 +418,8 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 
- 	switch_mmu_to_host_radix(kvm, host_pidr);
- 
-+	end_timing(vcpu);
++	msr = mfmsr();
 +
- 	return trap;
- }
- EXPORT_SYMBOL_GPL(kvmhv_vcpu_entry_p9);
++	host_hfscr = mfspr(SPRN_HFSCR);
++	host_ciabr = mfspr(SPRN_CIABR);
++	host_dawr0 = mfspr(SPRN_DAWR0);
++	host_dawrx0 = mfspr(SPRN_DAWRX0);
++	host_psscr = mfspr(SPRN_PSSCR);
++	host_pidr = mfspr(SPRN_PID);
++	if (cpu_has_feature(CPU_FTR_DAWR1)) {
++		host_dawr1 = mfspr(SPRN_DAWR1);
++		host_dawrx1 = mfspr(SPRN_DAWRX1);
++	}
++
+ 	if (vc->pcr)
+ 		mtspr(SPRN_PCR, vc->pcr | PCR_MASK);
+ 	mtspr(SPRN_DPDES, vc->dpdes);
 -- 
 2.23.0
 
