@@ -2,68 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68A934616F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 15:27:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2D9346342
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 16:48:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4Yc05KNXz3bcb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 01:27:28 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=kuI5z7BT;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4bPP0Rcdz3bc4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 02:48:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b33;
- helo=mail-yb1-xb33.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=kuI5z7BT; dkim-atps=neutral
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com
- [IPv6:2607:f8b0:4864:20::b33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4Ybc1F2Gz30B1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 01:27:06 +1100 (AEDT)
-Received: by mail-yb1-xb33.google.com with SMTP id o66so10527634ybg.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 07:27:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=a1UKA4D9x9QmZ1+15HTh/Ges6E1m3MBK/glmFQ+WIEA=;
- b=kuI5z7BTwTCzb12byWHvnez5Mri863aUQ3Lj3wB4GHCyfdrM6k/PvMxgsDLB4Q56Du
- Oxsn7JJ1zTtYNbr+YMmHvo6+bSmAhFKqpRsRl/nUyYPyQYUnvqE2CkV6pZCpEPho8r7H
- iqwsDC953u7rl0alzpfcXzROoV7ZCUkD+yPfl1BRJp5RXXPidKuNgSjSa1EDTy5rb5C9
- udHkwgLnN9LTrHQcLroeHvLDQIAIelJWHyRQ4Ot9kLYJofbjoaEPhk4WmZAjuJhBcjxv
- NMRUwLmWeC6RbgjskE7+IApMwa1xCSPkjAzLo89sQxdH6lmwytLDKK29WysJnQOKW+Me
- b7LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=a1UKA4D9x9QmZ1+15HTh/Ges6E1m3MBK/glmFQ+WIEA=;
- b=PW3IfpnYTBFUhfPpOQ285nI9Z6KxQGWf5O6M7GQQo3Wqu6aCSJjrjvUm0D9l6+eHft
- DzLBHqNoHzE72IOfdPDAH6AXmiKXm9A9UoylDVniB7qNSgaRElaMv97skJ28SOD9oFN5
- CdZDDrmqYO0vQkfpFCVcZp59wNQRJoBUL74X5Zc7fJREbkX6CmR52VZYQkrwuFKSRxmj
- 7sqfRqLJ1mP1OWAqGZ9RPEtrXNSN9WJBg/OdHdJ0+0F8UOPfuRnQlryolcg2C+t05VQw
- 6JcJPR8NskyLkGjqHMJKMtVSaC/BPXl0ciDUhDZzq/UOisfn9hSzCem3RZ45m4PFzNou
- 7e8w==
-X-Gm-Message-State: AOAM531SVJqyJoIk93XopNnKi7jd8yEL9F6yZjBE+2Tpeo+NuuWVU5Uk
- qhFv8s3GRgyTVG0rht9eGFi1iQS0IxGWtAXeOm4=
-X-Google-Smtp-Source: ABdhPJybD3ce1ekRim1ZhIjnmLmlL/O7qPnH3M5AavmL+8L6MPDtRHWU2dnXIV05AjFpWSQvRk0Q2y0+VBJ4qWnrVSI=
-X-Received: by 2002:a5b:449:: with SMTP id s9mr5786215ybp.115.1616509620027;
- Tue, 23 Mar 2021 07:27:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210323032624.1039422-1-mpe@ellerman.id.au>
- <CANiq72n-tMww2U+eQ=iHOh5u1JQgjM0b1E3XQ9jpWMfpdQ5+=g@mail.gmail.com>
- <87mtuugj61.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87mtuugj61.fsf@mpe.ellerman.id.au>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 23 Mar 2021 15:26:49 +0100
-Message-ID: <CANiq72nx6Z=m-Fye7QYuQdjq9q0ZvH2+rkbrfQq-yQRMAadTYg@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Rust for Linux for ppc64le
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4bP46xLYz2yRh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 02:48:05 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4F4bNv0QZJz9v1CM;
+ Tue, 23 Mar 2021 16:47:59 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id yKZo8PO8EepR; Tue, 23 Mar 2021 16:47:58 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F4bNt676Xz9v1CL;
+ Tue, 23 Mar 2021 16:47:58 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 55FF58B7FA;
+ Tue, 23 Mar 2021 16:48:00 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 1ohfYHHR3z24; Tue, 23 Mar 2021 16:48:00 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0F0268B7F4;
+ Tue, 23 Mar 2021 16:48:00 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id E927D675EC; Tue, 23 Mar 2021 15:47:59 +0000 (UTC)
+Message-Id: <828348da7868eda953ce023994404dfc49603b64.1616514473.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc: Switch to relative jump labels
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 23 Mar 2021 15:47:59 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,25 +56,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>,
- rust-for-linux@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 23, 2021 at 1:16 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> It would be nice to be in the CI. I was building natively so I haven't
-> tried cross compiling yet (which we'll need for CI).
+Convert powerpc to relative jump labels.
 
-Indeed -- in the CI we already cross-compile arm64 (and run under QEMU
-both arm64 as well as x86_64), so it is easy to add new ones to the
-matrix.
+Before the patch, pseries_defconfig vmlinux.o has:
+9074 __jump_table  0003f2a0  0000000000000000  0000000000000000  01321fa8  2**0
 
-> I can send a pull request if that's easiest.
+With the patch, the same config gets:
+9074 __jump_table  0002a0e0  0000000000000000  0000000000000000  01321fb4  2**0
 
-No worries, I will pick the patches. But, of course, feel free to join
-us in GitHub! :-)
+Size is 258720 without the patch, 172256 with the patch.
+That's a 33% size reduction.
 
-Cheers,
-Miguel
+Largely copied from commit c296146c058c ("arm64/kernel: jump_label:
+Switch to relative references")
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/Kconfig                  |  1 +
+ arch/powerpc/include/asm/jump_label.h | 21 ++++++---------------
+ arch/powerpc/kernel/jump_label.c      |  4 ++--
+ 3 files changed, 9 insertions(+), 17 deletions(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index d46db0bfb998..a52938c0f85b 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -182,6 +182,7 @@ config PPC
+ 	select HAVE_ARCH_AUDITSYSCALL
+ 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
+ 	select HAVE_ARCH_JUMP_LABEL
++	select HAVE_ARCH_JUMP_LABEL_RELATIVE
+ 	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
+ 	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
+ 	select HAVE_ARCH_KGDB
+diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include/asm/jump_label.h
+index 09297ec9fa52..2d5c6bec2b4f 100644
+--- a/arch/powerpc/include/asm/jump_label.h
++++ b/arch/powerpc/include/asm/jump_label.h
+@@ -20,7 +20,8 @@ static __always_inline bool arch_static_branch(struct static_key *key, bool bran
+ 	asm_volatile_goto("1:\n\t"
+ 		 "nop # arch_static_branch\n\t"
+ 		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 JUMP_ENTRY_TYPE "1b, %l[l_yes], %c0\n\t"
++		 ".long 1b - ., %l[l_yes] - .\n\t"
++		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
+ 		 ".popsection \n\t"
+ 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
+ 
+@@ -34,7 +35,8 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key, bool
+ 	asm_volatile_goto("1:\n\t"
+ 		 "b %l[l_yes] # arch_static_branch_jump\n\t"
+ 		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 JUMP_ENTRY_TYPE "1b, %l[l_yes], %c0\n\t"
++		 ".long 1b - ., %l[l_yes] - .\n\t"
++		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
+ 		 ".popsection \n\t"
+ 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
+ 
+@@ -43,23 +45,12 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key, bool
+ 	return true;
+ }
+ 
+-#ifdef CONFIG_PPC64
+-typedef u64 jump_label_t;
+-#else
+-typedef u32 jump_label_t;
+-#endif
+-
+-struct jump_entry {
+-	jump_label_t code;
+-	jump_label_t target;
+-	jump_label_t key;
+-};
+-
+ #else
+ #define ARCH_STATIC_BRANCH(LABEL, KEY)		\
+ 1098:	nop;					\
+ 	.pushsection __jump_table, "aw";	\
+-	FTR_ENTRY_LONG 1098b, LABEL, KEY;	\
++	.long 1098b - ., LABEL - .;		\
++	FTR_ENTRY_LONG KEY;			\
+ 	.popsection
+ #endif
+ 
+diff --git a/arch/powerpc/kernel/jump_label.c b/arch/powerpc/kernel/jump_label.c
+index 144858027fa3..ce87dc5ea23c 100644
+--- a/arch/powerpc/kernel/jump_label.c
++++ b/arch/powerpc/kernel/jump_label.c
+@@ -11,10 +11,10 @@
+ void arch_jump_label_transform(struct jump_entry *entry,
+ 			       enum jump_label_type type)
+ {
+-	struct ppc_inst *addr = (struct ppc_inst *)(unsigned long)entry->code;
++	struct ppc_inst *addr = (struct ppc_inst *)jump_entry_code(entry);
+ 
+ 	if (type == JUMP_LABEL_JMP)
+-		patch_branch(addr, entry->target, 0);
++		patch_branch(addr, jump_entry_target(entry), 0);
+ 	else
+ 		patch_instruction(addr, ppc_inst(PPC_INST_NOP));
+ }
+-- 
+2.25.0
+
