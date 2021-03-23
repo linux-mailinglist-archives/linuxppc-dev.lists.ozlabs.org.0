@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBCD3454DF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:19:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5C1A3454E2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:20:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4D7F0dpXz3gn0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 12:19:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4D7m69LBz3dd5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 12:20:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ngUv60Qh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=cYqJs2vy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536;
+ helo=mail-pg1-x536.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ngUv60Qh; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
+ header.s=20161025 header.b=cYqJs2vy; dkim-atps=neutral
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
+ [IPv6:2607:f8b0:4864:20::536])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4CpC3QJLz30Bf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 12:05:07 +1100 (AEDT)
-Received: by mail-pg1-x532.google.com with SMTP id 32so3913085pgm.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:05:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4CpF6slHz3c8W
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 12:05:09 +1100 (AEDT)
+Received: by mail-pg1-x536.google.com with SMTP id l1so10027322pgb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:05:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=xHgVkqThu3YVjb/LlhPKNVCBzPJbceg0r7qPQTj5Pz4=;
- b=ngUv60Qh9l4EaxWirUBMWlqDNLd022gVdFbIZnhx6N37VR5FWIEWlN+21edabbm596
- aoCe/cXnt5Vb++HAGn374inPONUNnRA4c+9Sx/1uN3ynk3fJw2toVQlqNArdW8Qk5xMP
- /1dFEvhh9tBz6ZXc+l5F3s+oyDoLHfcFQlmVagqNOj80r6zWPMHak9KIx/WkbbGbuYeZ
- SMOHyDmQfLYHoduuK10WXY7xLxKgTSmNCnQLfMDpRcT/w/UWBmJxWVfTfsmPNOQMqBkV
- zXq8ORkq+eNyvKAbmZScfW0GlfzjYMjcMmapmohzYrP8gxtvQIvqhZeaZUPGUOgnXrWk
- HUzQ==
+ bh=r47G5cn1oaGPrrKik2Ywyme7L9rzbfB2t/Rvv5lOwEQ=;
+ b=cYqJs2vyeboIor0OFwVYe3LrpjbLH68lpL/4Oy8QJlYaKko83CjdG+RrzflBPKPb9H
+ TTJMssRco/dewrHgGzZvwdR/q7VnCgXLAwUYDvYN1utrhWLzQ2rRzQW+sM/0kqFmzmsT
+ pm1d8Vqre4+yWd12PQ/lNKHDj40a1SsyNsopsUqcf5Tt5aiS60gXRMAjvvIft2AGAXXa
+ +Q5r1EpyGimak7bvFGxolPDZyplEewimixgVwEe8dQ8rQL+YLbrwVVht6XCelDUOdu75
+ zu7ltHUWgnlbQfLrWeG5QhaP6vZG/tlWVoAAYLgfq9a5waWOSoggNmaSe/FCRok6lID6
+ ngYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=xHgVkqThu3YVjb/LlhPKNVCBzPJbceg0r7qPQTj5Pz4=;
- b=fdkCQ5x6ZkEjRzs2vxW8uSYz9lL/ao4dEjgYNtkwLfa8d+koIQdFgLOm1SDAbSvX+E
- aewog981ysSu60v1bfpKqgA3/v6LnqC+pjEMOFRZHDJyOyusUdnxlloVb9/gZkjyf0c9
- xVW80pfkUtnw0u3fdvz0ZbbN6KsgbsLR3wk9DuNA16C/XZfw0l7LJFq889GpboQ/gE23
- eT/VJxBYX5zStdoTyFUSN8ovizeefqoo6mbKtYNuUGsViRsWDv/RDgJYqbH85SuJWcnA
- Nqihxdo8J8N88zrZYjn23uuSRzmwgFcr7NajMIuWAn90+0vE2HvkuBE2AUo7PSX1Y7kW
- zCdg==
-X-Gm-Message-State: AOAM533T6JnkfnhnGtxLU0Qtg139UrmcSFCw9r/S9WBs2IRN1R4vfXZk
- Zh89ysiyatPdTapLdO6tmrk=
-X-Google-Smtp-Source: ABdhPJxCNtGVq6QBH3SllkpPoBJaip1LbeJ9wLqrjGVYJ1u2tX7wg/lnsr8LW6AURmbNddnSMp/OHQ==
-X-Received: by 2002:aa7:824e:0:b029:20a:3a1:eeda with SMTP id
- e14-20020aa7824e0000b029020a03a1eedamr2277597pfn.71.1616461505176; 
- Mon, 22 Mar 2021 18:05:05 -0700 (PDT)
+ bh=r47G5cn1oaGPrrKik2Ywyme7L9rzbfB2t/Rvv5lOwEQ=;
+ b=gAsX/9ERiCOjhnt1rh3Ij4sth1CXkPOMFMJKmGIYAA3DpomOy87BJp8DtRCQPOl39g
+ 8VTBr7oaep/a2RZl1xoH038uSS+n6YETEM9xbpBLtUna6Dj2PIz0I2GLycFVYBM9hxFn
+ EAJtXzVcbTfwCx3DEHzR6rQ9Fk3rC/iEN4iMl3pl3z1KPOkBlFy92bqeBYSvHDRYY+Zc
+ qSZw+2dFHZ1SXBCr84/Ii4LHcTs2gQ4kU+KaXOw29OP0OmHz+OXH8Bulx5KCpzkM1dAw
+ pC2jgquTlTRz0K105aOh+DWurqHuHxO+7EUyCPigR+51mpHd/LOkTAX4Ag6pWDTUc17H
+ GeBA==
+X-Gm-Message-State: AOAM533FispGO6ISmR89c1v/tcuRShK1Nm1MFcbU3LpZCqbKOyx2eZ/w
+ C4s0qNkVefsGjLY/IsMHeBs=
+X-Google-Smtp-Source: ABdhPJyjUlacnG7Pm4mHipcF8tls+H6RCZXYxJWxMDeOnXTnU+2EJYtHkVegu0rWvs8LOzgO82UO7g==
+X-Received: by 2002:a63:5361:: with SMTP id t33mr1784118pgl.439.1616461507603; 
+ Mon, 22 Mar 2021 18:05:07 -0700 (PDT)
 Received: from bobo.ibm.com ([58.84.78.96])
- by smtp.gmail.com with ESMTPSA id e7sm14491894pfc.88.2021.03.22.18.05.03
+ by smtp.gmail.com with ESMTPSA id e7sm14491894pfc.88.2021.03.22.18.05.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Mar 2021 18:05:04 -0700 (PDT)
+ Mon, 22 Mar 2021 18:05:07 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v4 37/46] KVM: PPC: Book3S HV: Remove support for dependent
- threads mode on P9
-Date: Tue, 23 Mar 2021 11:02:56 +1000
-Message-Id: <20210323010305.1045293-38-npiggin@gmail.com>
+Subject: [PATCH v4 38/46] KVM: PPC: Book3S HV: Remove radix guest support from
+ P7/8 path
+Date: Tue, 23 Mar 2021 11:02:57 +1000
+Message-Id: <20210323010305.1045293-39-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210323010305.1045293-1-npiggin@gmail.com>
 References: <20210323010305.1045293-1-npiggin@gmail.com>
@@ -86,96 +85,180 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Radix guest support will be removed from the P7/8 path, so disallow
-dependent threads mode on P9.
+The P9 path now runs all supported radix guest combinations, so
+remove radix guest support from the P7/8 path.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/kvm_host.h |  1 -
- arch/powerpc/kvm/book3s_hv.c        | 27 +++++----------------------
- 2 files changed, 5 insertions(+), 23 deletions(-)
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S | 79 +------------------------
+ 1 file changed, 3 insertions(+), 76 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index 05fb00d37609..dd017dfa4e65 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -304,7 +304,6 @@ struct kvm_arch {
- 	u8 fwnmi_enabled;
- 	u8 secure_guest;
- 	u8 svm_enabled;
--	bool threads_indep;
- 	bool nested_enable;
- 	bool dawr1_enabled;
- 	pgd_t *pgtable;
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 8480cbe4b4fa..85a14ce0ea0e 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -103,13 +103,9 @@ static int target_smt_mode;
- module_param(target_smt_mode, int, 0644);
- MODULE_PARM_DESC(target_smt_mode, "Target threads per core (0 = max)");
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index 61f71a7df238..b1f3ee16fd84 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -133,15 +133,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
+ 	/* Return the trap number on this thread as the return value */
+ 	mr	r3, r12
  
--static bool indep_threads_mode = true;
--module_param(indep_threads_mode, bool, S_IRUGO | S_IWUSR);
--MODULE_PARM_DESC(indep_threads_mode, "Independent-threads mode (only on POWER9)");
+-	/*
+-	 * If we came back from the guest via a relocation-on interrupt,
+-	 * we will be in virtual mode at this point, which makes it a
+-	 * little easier to get back to the caller.
+-	 */
+-	mfmsr	r0
+-	andi.	r0, r0, MSR_IR		/* in real mode? */
+-	bne	.Lvirt_return
 -
- static bool one_vm_per_core;
- module_param(one_vm_per_core, bool, S_IRUGO | S_IWUSR);
--MODULE_PARM_DESC(one_vm_per_core, "Only run vCPUs from the same VM on a core (requires indep_threads_mode=N)");
-+MODULE_PARM_DESC(one_vm_per_core, "Only run vCPUs from the same VM on a core (requires POWER8 or older)");
+ 	/* RFI into the highmem handler */
+ 	mfmsr	r6
+ 	li	r0, MSR_RI
+@@ -151,11 +142,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
+ 	mtsrr1	r7
+ 	RFI_TO_KERNEL
  
- #ifdef CONFIG_KVM_XICS
- static const struct kernel_param_ops module_param_ops = {
-@@ -2247,7 +2243,7 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+-	/* Virtual-mode return */
+-.Lvirt_return:
+-	mtlr	r8
+-	blr
+-
+ kvmppc_primary_no_guest:
+ 	/* We handle this much like a ceded vcpu */
+ 	/* put the HDEC into the DEC, since HDEC interrupts don't wake us */
+@@ -899,11 +885,6 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
+ 	cmpdi	r3, 512		/* 1 microsecond */
+ 	blt	hdec_soon
+ 
+-	ld	r6, VCPU_KVM(r4)
+-	lbz	r0, KVM_RADIX(r6)
+-	cmpwi	r0, 0
+-	bne	9f
+-
+ 	/* For hash guest, clear out and reload the SLB */
+ BEGIN_MMU_FTR_SECTION
+ 	/* Radix host won't have populated the SLB, so no need to clear */
+@@ -1389,11 +1370,7 @@ guest_exit_cont:		/* r9 = vcpu, r12 = trap, r13 = paca */
+ 	patch_site 1b patch__call_kvm_flush_link_stack
+ 
+ 	/* For hash guest, read the guest SLB and save it away */
+-	ld	r5, VCPU_KVM(r9)
+-	lbz	r0, KVM_RADIX(r5)
+ 	li	r5, 0
+-	cmpwi	r0, 0
+-	bne	0f			/* for radix, save 0 entries */
+ 	lwz	r0,VCPU_SLB_NR(r9)	/* number of entries in SLB */
+ 	mtctr	r0
+ 	li	r6,0
+@@ -1432,23 +1409,6 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_RADIX)
+ 	slbmte	r6,r5
+ 1:	addi	r8,r8,16
+ 	.endr
+-	b	guest_bypass
+-
+-0:	/*
+-	 * Malicious or buggy radix guests may have inserted SLB entries
+-	 * (only 0..3 because radix always runs with UPRT=1), so these must
+-	 * be cleared here to avoid side-channels. slbmte is used rather
+-	 * than slbia, as it won't clear cached translations.
+-	 */
+-	li	r0,0
+-	stw	r0,VCPU_SLB_MAX(r9)
+-	slbmte	r0,r0
+-	li	r4,1
+-	slbmte	r0,r4
+-	li	r4,2
+-	slbmte	r0,r4
+-	li	r4,3
+-	slbmte	r0,r4
+ 
+ guest_bypass:
+ 	stw	r12, STACK_SLOT_TRAP(r1)
+@@ -1694,24 +1654,6 @@ BEGIN_FTR_SECTION
+ 	mtspr	SPRN_PID, r7
+ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+ 
+-#ifdef CONFIG_PPC_RADIX_MMU
+-	/*
+-	 * Are we running hash or radix ?
+-	 */
+-	ld	r5, VCPU_KVM(r9)
+-	lbz	r0, KVM_RADIX(r5)
+-	cmpwi	cr2, r0, 0
+-	beq	cr2, 2f
+-
+-	/*
+-	 * Radix: do eieio; tlbsync; ptesync sequence in case we
+-	 * interrupted the guest between a tlbie and a ptesync.
+-	 */
+-	eieio
+-	tlbsync
+-	ptesync
+-#endif /* CONFIG_PPC_RADIX_MMU */
+-
+ 	/*
+ 	 * cp_abort is required if the processor supports local copy-paste
+ 	 * to clear the copy buffer that was under control of the guest.
+@@ -1970,8 +1912,6 @@ kvmppc_tm_emul:
+  * reflect the HDSI to the guest as a DSI.
   */
- static int threads_per_vcore(struct kvm *kvm)
- {
--	if (kvm->arch.threads_indep)
-+	if (cpu_has_feature(CPU_FTR_ARCH_300))
- 		return 1;
- 	return threads_per_subcore;
- }
-@@ -4345,7 +4341,7 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
- 	vcpu->arch.state = KVMPPC_VCPU_BUSY_IN_HOST;
+ kvmppc_hdsi:
+-	ld	r3, VCPU_KVM(r9)
+-	lbz	r0, KVM_RADIX(r3)
+ 	mfspr	r4, SPRN_HDAR
+ 	mfspr	r6, SPRN_HDSISR
+ BEGIN_FTR_SECTION
+@@ -1979,8 +1919,6 @@ BEGIN_FTR_SECTION
+ 	cmpdi	r6, 0x7fff
+ 	beq	6f
+ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+-	cmpwi	r0, 0
+-	bne	.Lradix_hdsi		/* on radix, just save DAR/DSISR/ASDR */
+ 	/* HPTE not found fault or protection fault? */
+ 	andis.	r0, r6, (DSISR_NOHPTE | DSISR_PROTFAULT)@h
+ 	beq	1f			/* if not, send it to the guest */
+@@ -2057,23 +1995,11 @@ fast_interrupt_c_return:
+ 	stb	r0, HSTATE_IN_GUEST(r13)
+ 	b	guest_exit_cont
  
- 	do {
--		if (kvm->arch.threads_indep && kvm_is_radix(kvm))
-+		if (kvm_is_radix(kvm))
- 			r = kvmhv_run_single_vcpu(vcpu, ~(u64)0,
- 						  vcpu->arch.vcore->lpcr);
- 		else
-@@ -4961,21 +4957,8 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
- 	/*
- 	 * Track that we now have a HV mode VM active. This blocks secondary
- 	 * CPU threads from coming online.
--	 * On POWER9, we only need to do this if the "indep_threads_mode"
--	 * module parameter has been set to N.
- 	 */
--	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
--		if (!indep_threads_mode && !cpu_has_feature(CPU_FTR_HVMODE)) {
--			pr_warn("KVM: Ignoring indep_threads_mode=N in nested hypervisor\n");
--			kvm->arch.threads_indep = true;
--		} else if (!indep_threads_mode && cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
--			pr_warn("KVM: Ignoring indep_threads_mode=N on pre-DD2.2 POWER9\n");
--			kvm->arch.threads_indep = true;
--		} else {
--			kvm->arch.threads_indep = indep_threads_mode;
--		}
--	}
--	if (!kvm->arch.threads_indep)
-+	if (!cpu_has_feature(CPU_FTR_ARCH_300))
- 		kvm_hv_vm_activated();
+-.Lradix_hdsi:
+-	std	r4, VCPU_FAULT_DAR(r9)
+-	stw	r6, VCPU_FAULT_DSISR(r9)
+-.Lradix_hisi:
+-	mfspr	r5, SPRN_ASDR
+-	std	r5, VCPU_FAULT_GPA(r9)
+-	b	guest_exit_cont
+-
+ /*
+  * Similarly for an HISI, reflect it to the guest as an ISI unless
+  * it is an HPTE not found fault for a page that we have paged out.
+  */
+ kvmppc_hisi:
+-	ld	r3, VCPU_KVM(r9)
+-	lbz	r0, KVM_RADIX(r3)
+-	cmpwi	r0, 0
+-	bne	.Lradix_hisi		/* for radix, just save ASDR */
+ 	andis.	r0, r11, SRR1_ISI_NOPT@h
+ 	beq	1f
+ 	andi.	r0, r11, MSR_IR		/* instruction relocation enabled? */
+@@ -3217,15 +3143,16 @@ BEGIN_FTR_SECTION
+ 	mtspr	SPRN_DAWRX1, r0
+ END_FTR_SECTION_IFSET(CPU_FTR_DAWR1)
  
- 	/*
-@@ -5016,7 +4999,7 @@ static void kvmppc_core_destroy_vm_hv(struct kvm *kvm)
- {
- 	debugfs_remove_recursive(kvm->arch.debugfs_dir);
+-	/* Clear hash and radix guest SLB. */
++	/* Clear guest SLB. */
+ 	slbmte	r0, r0
+ 	PPC_SLBIA(6)
++	ptesync
  
--	if (!kvm->arch.threads_indep)
-+	if (!cpu_has_feature(CPU_FTR_ARCH_300))
- 		kvm_hv_vm_deactivated();
+ BEGIN_MMU_FTR_SECTION
+ 	b	4f
+ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_RADIX)
  
- 	kvmppc_free_vcores(kvm);
+-	ptesync
++	/* load host SLB entries */
+ 	ld	r8, PACA_SLBSHADOWPTR(r13)
+ 	.rept	SLB_NUM_BOLTED
+ 	li	r3, SLBSHADOW_SAVEAREA
 -- 
 2.23.0
 
