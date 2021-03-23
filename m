@@ -1,52 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FFBE34563E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 04:28:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6143456C9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 05:32:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4Gzc2ZWYz30Gp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 14:28:28 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=evWkzPLo;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4JPp0VhWz3bnT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 15:32:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=evWkzPLo; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=vivo.com (client-ip=59.111.176.37; helo=mail-m17637.qiye.163.com;
+ envelope-from=wanjiabing@vivo.com; receiver=<UNKNOWN>)
+Received: from mail-m17637.qiye.163.com (mail-m17637.qiye.163.com
+ [59.111.176.37])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4GxS2cNwz30CG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 14:26:36 +1100 (AEDT)
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F4GxR6y4kz9sWC; Tue, 23 Mar 2021 14:26:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1616469995;
- bh=oCVP83reXY5CqSeSdxhQL70bGsRVlM/e497ho1J4FF0=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=evWkzPLotTXfeJJL/8pnTrk8j8+qXOmddh2ne8LPYkfGrMGwSlUXdULaaK/PVBVcx
- CYrmvJ9fcvJ/hPoJcEU4qBaEznNIAPRwkLfVlfBujIXY4Pwck8bJ3mcK+r3TRFxRYY
- 8wndNrheP07HpfMNnudVOD+F91Q2DbrZUPS28byCGw/PjLRPThqzXCLELjn9rx4umD
- rrPlmwqrJLSIfenfHGnqrxbXlz7Kg1CO9gXFa1dfX1f/TuqnBXYfn1iyEnfS4YCfTk
- gkEN5Jqh9yk0outp6JXC/6gIV41Mmv04OXXlAfknXnnZVt3Wt/pKm77G/Hc6QohybM
- /HeMcQz0LlD9Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: rust-for-linux@vger.kernel.org
-Subject: [PATCH 4/4] rust: Enable for ppc64le
-Date: Tue, 23 Mar 2021 14:26:24 +1100
-Message-Id: <20210323032624.1039422-5-mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4H722JBXz2xb2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 14:34:50 +1100 (AEDT)
+Received: from wanjb-virtual-machine.localdomain (unknown [36.152.145.182])
+ by mail-m17637.qiye.163.com (Hmail) with ESMTPA id B6C0C9801A4;
+ Tue, 23 Mar 2021 11:34:32 +0800 (CST)
+From: Wan Jiabing <wanjiabing@vivo.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Shuah Khan <shuah@kernel.org>,
+ Wan Jiabing <wanjiabing@vivo.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] tools: testing: Remove duplicate include of sched.h
+Date: Tue, 23 Mar 2021 11:34:11 +0800
+Message-Id: <20210323033413.284420-1-wanjiabing@vivo.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210323032624.1039422-1-mpe@ellerman.id.au>
-References: <20210323032624.1039422-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
+ oVCBIfWUFZTxlIGh4aTBhPGBlMVkpNSk1PTEtPQ09MSkNVEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
+ FZT0tIVUpKS0hKQ1VLWQY+
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PjI6MTo*Ij8UKDosMwMZMRIS
+ Ax8KCjFVSlVKTUpNT0xLT0NOS0tKVTMWGhIXVQwaFRESGhkSFRw7DRINFFUYFBZFWVdZEgtZQVlI
+ TVVKTklVSk9OVUpDSVlXWQgBWUFKTEJONwY+
+X-HM-Tid: 0a785d262682d992kuwsb6c0c9801a4
+X-Mailman-Approved-At: Tue, 23 Mar 2021 15:31:17 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,34 +52,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kael_w@yeah.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All the pieces are in place now for us to enable building rust support
-on ppc64le.
+sched.h has been included at line 33.
+So we remove the duplicate one at line 36.
 
-Only works with clang for now.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
 ---
- init/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/powerpc/mm/tlbie_test.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index d73ac9de186d..ddc2fda1a22c 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -58,7 +58,7 @@ config LLD_VERSION
- 	default 0
- 
- config HAS_RUST
--	depends on ARM64 || X86_64
-+	depends on ARM64 || X86_64 || (PPC64 && CPU_LITTLE_ENDIAN && CC_IS_CLANG)
- 	def_bool $(success,$(RUSTC) --version)
- 
- config RUSTC_VERSION
+diff --git a/tools/testing/selftests/powerpc/mm/tlbie_test.c b/tools/testing/selftests/powerpc/mm/tlbie_test.c
+index f85a0938ab25..48344a74b212 100644
+--- a/tools/testing/selftests/powerpc/mm/tlbie_test.c
++++ b/tools/testing/selftests/powerpc/mm/tlbie_test.c
+@@ -33,7 +33,6 @@
+ #include <sched.h>
+ #include <time.h>
+ #include <stdarg.h>
+-#include <sched.h>
+ #include <pthread.h>
+ #include <signal.h>
+ #include <sys/prctl.h>
 -- 
 2.25.1
 
