@@ -1,52 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A27345566
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 03:14:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF5334550E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:44:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4FL648kHz3bmq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 13:14:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4DgV3cXYz3bqS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 12:44:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=gryQmbGN;
+	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=M5S+OSXK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=gryQmbGN; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::52b;
+ helo=mail-pg1-x52b.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=M5S+OSXK; dkim-atps=neutral
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
+ [IPv6:2607:f8b0:4864:20::52b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4FKF0bqBz2yRS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 13:13:36 +1100 (AEDT)
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4F4FKD3WGGz9sVS; Tue, 23 Mar 2021 13:13:36 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1616465616;
- bh=BOuWa8UaE7ECNbJjXx2pAKCGGhQFwDrno0GolRKA3tY=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=gryQmbGNnM+eICmH6gcaPFrTGPObJJRRRaVwlNzbf45Qdb0e/7mdQzVVRYr+Q7pbB
- zZ8Kv2wFreSSe8C45J0qcDcU1a2TsvOtZE+UroS+qLoFuaCIy4BpCmFWSvMj4dAeHF
- 8llPGXbbLioyNgO+hHvSGaXiZCG96lHcSdE60+BE=
-Date: Tue, 23 Mar 2021 12:24:36 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v6 2/6] powerpc/book3s64/radix: Add H_RPT_INVALIDATE
- pgsize encodings to mmu_psize_def
-Message-ID: <YFlDVCMpMW4ofP7D@yekko.fritz.box>
-References: <20210311083939.595568-1-bharata@linux.ibm.com>
- <20210311083939.595568-3-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4Dg10kLYz2xZ0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 12:43:55 +1100 (AEDT)
+Received: by mail-pg1-x52b.google.com with SMTP id e33so10128705pgm.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:43:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=hQmoN07pSxYuHOAET0vCC+e70OLR6jAQK2ogz5XslTs=;
+ b=M5S+OSXKqv93PwyBNbYD5UxWAV+NsHE5gDpaMZMtsYsPzjHlTLNRJfStYMbULfTe8w
+ ZCe6G3b8ow6RNCp5T7tTrc5menbYPDJe6aftxMSFyKMvXL8t9D5mBMt527j8+s8tH1M+
+ XCsTuJLpx1Qrz0ekL52XysbWR5pSEWjdt61iNeX8gfPMGxG7xqi4HGfEXgnvtLTExGdN
+ in57FgR8OGOeB+PVsquW+15aPUg9q1jRy3JYqlF3C2VCIZb+0RWdOb3sR3QjgKQRlyYv
+ JZ3StA1SvScSxejq7T0uU9xOEQ3qAynFafgTdqP7ozgC34sYng0WLgub7+QnDJQFI1LF
+ JNCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=hQmoN07pSxYuHOAET0vCC+e70OLR6jAQK2ogz5XslTs=;
+ b=RpRFlhk9z7sk6mcsPVskqGcigceJr/oqjSq+bPg+/jX19cZUypNQUKAcdNcbcxcNqr
+ yn6ZhKacbugTe8dFP8VxaliMfd8tWvSrMbdIKW7JugTyE52LJw4pCiPa7dAY5JDIUhwX
+ EJrvxOopV5KtuAZE0/AaJXyM6yWpdEOFtzR2GaWU3VxERFmjmeZYHtsvRac/x2JgiZ7u
+ I5RrEfutBP20weMkkiuUoIPowb7rX9XK91TqCe36f0RCAMRChFKBK77Wsa7Jx0LsveYO
+ Iai2yh1dIhcaYctSRFULZI2K+xXPGhxyzZrHdPSPT25cxh264Rh55nutOvw0b9pQIkri
+ u/eQ==
+X-Gm-Message-State: AOAM532sqk+VA1BLM1D0Xj9k2kiaGk6NkeNz92L7vNWPaMkuOA3lpNu2
+ L9watwj7f3PIi2AjpNCg0WrEuxrDaJneo3Mq
+X-Google-Smtp-Source: ABdhPJwy9WcJo/lqUHdK3yHAVQZiv7UD6U0EvvIjZf/ueJk5zzV3P4fzpiYZiBoeWwYnuH8SfsyeLg==
+X-Received: by 2002:a62:1c93:0:b029:1fd:2216:fb45 with SMTP id
+ c141-20020a621c930000b02901fd2216fb45mr2426230pfc.13.1616463832818; 
+ Mon, 22 Mar 2021 18:43:52 -0700 (PDT)
+Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
+ [124.171.107.241])
+ by smtp.gmail.com with UTF8SMTPSA id z2sm15621848pfq.198.2021.03.22.18.43.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Mar 2021 18:43:52 -0700 (PDT)
+Message-ID: <869f47fd-efc7-3cf8-25b6-6aee18f4f082@ozlabs.ru>
+Date: Tue, 23 Mar 2021 12:43:46 +1100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="ZBgd1eIUYKsIz9Dp"
-Content-Disposition: inline
-In-Reply-To: <20210311083939.595568-3-bharata@linux.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:87.0) Gecko/20100101
+ Thunderbird/87.0
+Subject: Re: [PATCH v3 25/41] KVM: PPC: Book3S HV P9: Reduce irq_work vs guest
+ decrementer races
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+References: <20210305150638.2675513-1-npiggin@gmail.com>
+ <20210305150638.2675513-26-npiggin@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <20210305150638.2675513-26-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,105 +89,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---ZBgd1eIUYKsIz9Dp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 11, 2021 at 02:09:35PM +0530, Bharata B Rao wrote:
-> Add a field to mmu_psize_def to store the page size encodings
-> of H_RPT_INVALIDATE hcall. Initialize this while scanning the radix
-> AP encodings. This will be used when invalidating with required
-> page size encoding in the hcall.
->=20
-> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-
-Having the table be the source of truth and implementing
-psize_to_rpti_pgsize() in terms of it would be nicer.  But... I guess
-you can't really do that, because you're dynamically initializing the
-table from the device tree, but the device tree doesn't include the
-RPTI encodings.  Oh well.
-
-Reveiwed-by: David Gibson <david@gibson.dropbear.id.au>
-
+On 06/03/2021 02:06, Nicholas Piggin wrote:
+> irq_work's use of the DEC SPR is racy with guest<->host switch and guest
+> entry which flips the DEC interrupt to guest, which could lose a host
+> work interrupt.
+> 
+> This patch closes one race, and attempts to comment another class of
+> races.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/powerpc/include/asm/book3s/64/mmu.h | 1 +
->  arch/powerpc/mm/book3s64/radix_pgtable.c | 5 +++++
->  2 files changed, 6 insertions(+)
->=20
-> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/incl=
-ude/asm/book3s/64/mmu.h
-> index eace8c3f7b0a..c02f42d1031e 100644
-> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
-> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-> @@ -19,6 +19,7 @@ struct mmu_psize_def {
->  	int		penc[MMU_PAGE_COUNT];	/* HPTE encoding */
->  	unsigned int	tlbiel;	/* tlbiel supported for that page size */
->  	unsigned long	avpnm;	/* bits to mask out in AVPN in the HPTE */
-> +	unsigned long   h_rpt_pgsize; /* H_RPT_INVALIDATE page size encoding */
->  	union {
->  		unsigned long	sllp;	/* SLB L||LP (exact mask to use in slbmte) */
->  		unsigned long ap;	/* Ap encoding used by PowerISA 3.0 */
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/b=
-ook3s64/radix_pgtable.c
-> index 98f0b243c1ab..1b749899016b 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -486,6 +486,7 @@ static int __init radix_dt_scan_page_sizes(unsigned l=
-ong node,
->  		def =3D &mmu_psize_defs[idx];
->  		def->shift =3D shift;
->  		def->ap  =3D ap;
-> +		def->h_rpt_pgsize =3D psize_to_rpti_pgsize(idx);
->  	}
-> =20
->  	/* needed ? */
-> @@ -560,9 +561,13 @@ void __init radix__early_init_devtree(void)
->  		 */
->  		mmu_psize_defs[MMU_PAGE_4K].shift =3D 12;
->  		mmu_psize_defs[MMU_PAGE_4K].ap =3D 0x0;
-> +		mmu_psize_defs[MMU_PAGE_4K].h_rpt_pgsize =3D
-> +			psize_to_rpti_pgsize(MMU_PAGE_4K);
-> =20
->  		mmu_psize_defs[MMU_PAGE_64K].shift =3D 16;
->  		mmu_psize_defs[MMU_PAGE_64K].ap =3D 0x5;
-> +		mmu_psize_defs[MMU_PAGE_64K].h_rpt_pgsize =3D
-> +			psize_to_rpti_pgsize(MMU_PAGE_64K);
->  	}
-> =20
->  	/*
+>   arch/powerpc/kvm/book3s_hv.c | 15 ++++++++++++++-
+>   1 file changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 6f3e3aed99aa..b7a88960ac49 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -3704,6 +3704,18 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>   	if (!(vcpu->arch.ctrl & 1))
+>   		mtspr(SPRN_CTRLT, mfspr(SPRN_CTRLF) & ~1);
+>   
+> +	/*
+> +	 * When setting DEC, we must always deal with irq_work_raise via NMI vs
+> +	 * setting DEC. The problem occurs right as we switch into guest mode
+> +	 * if a NMI hits and sets pending work and sets DEC, then that will
+> +	 * apply to the guest and not bring us back to the host.
+> +	 *
+> +	 * irq_work_raise could check a flag (or possibly LPCR[HDICE] for
+> +	 * example) and set HDEC to 1? That wouldn't solve the nested hv
+> +	 * case which needs to abort the hcall or zero the time limit.
+> +	 *
+> +	 * XXX: Another day's problem.
+> +	 */
+>   	mtspr(SPRN_DEC, vcpu->arch.dec_expires - tb);
+>   
+>   	if (kvmhv_on_pseries()) {
+> @@ -3838,7 +3850,8 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>   	vc->entry_exit_map = 0x101;
+>   	vc->in_guest = 0;
+>   
+> -	mtspr(SPRN_DEC, local_paca->kvm_hstate.dec_expires - tb);
+> +	set_dec_or_work(local_paca->kvm_hstate.dec_expires - tb);
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+set_dec_or_work() will write local_paca->kvm_hstate.dec_expires - tb - 1 
+to SPRN_DEC which is not exactly the same, is this still alright?
 
---ZBgd1eIUYKsIz9Dp
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+> +
+>   	mtspr(SPRN_SPRG_VDSO_WRITE, local_paca->sprg_vdso);
+>   
+>   	kvmhv_load_host_pmu();
+> 
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmBZQ1MACgkQbDjKyiDZ
-s5JFRRAA0oOFK9Q84n+MtxUJ7MAHvqkQaqSlF76S3JMuUqh2zpZJRZHmESXo2ZBL
-1ZkpZUlHXbUo3yJYmVPQ9j8WPFegkyai+dvIuMFxc/DmB3WHEmHZfvfqsV5k4iy0
-FceHtu1jtln45MQA1L/yqm6nCoCHMfan/rE12rt+q8wyf+3CHH0iccAFUoTZGguz
-iOtw7ud4LxhpCGmSiiy2K9HsPSdhacraHXTIqrjuUw+wxfYSG0+R6DqWkByeAgK2
-VQVGrEX0uzL/woRTuaFrcI8BnSVICofuyfaZH1mIDQabLYnk4eAhvNSPwY44xWUS
-LpYAcMkNe/E6dnMqhbhcfn9xTzpWEAfKzLjGfoaAq8xsZCNAUIQQIqWgc+cceXX0
-OWhaJPH4EvHPzdtGRvRotNsPXjyYf+qKL47y9TgHOxPYye4BSS6eGbW9Ecj2T2by
-XNo+auFgR+BjtxaC1C/ewSMVAggB9NkARDhDCrpaI5D5rK/SMoSBSLm0AoFJVmID
-T32cqyPh7zg69/CSMy5GLyfRclTSfVUfDmixg/yzr5z745/b84lGU9h9v7kLD0z6
-f6fKWqDh/yKb7B9giM27wmW4IzI8+mwQNO4cMkyFGoafkTC4uNR/ddbFf/X9yfCu
-HNZypYJpfsfIKXvtNKnkrC/MfAcLlWSUcLjCx3mCAZ66+jwMVGc=
-=tCbh
------END PGP SIGNATURE-----
-
---ZBgd1eIUYKsIz9Dp--
+-- 
+Alexey
