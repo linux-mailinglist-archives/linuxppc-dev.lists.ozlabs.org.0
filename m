@@ -2,51 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9451345563
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 03:14:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB333454F3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:24:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4FKf60Tnz30NB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 13:13:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4DDh2RBWz3hfH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 12:24:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=NSWVowc5;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=VliLkGKl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::429;
+ helo=mail-pf1-x429.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=NSWVowc5; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=VliLkGKl; dkim-atps=neutral
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
+ [IPv6:2607:f8b0:4864:20::429])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4FKF45CCz2yRy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 13:13:36 +1100 (AEDT)
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4F4FKD3GnTz9sRf; Tue, 23 Mar 2021 13:13:36 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1616465616;
- bh=OA5ZAsCs5+L71lR4bQzy7HQX2Ve6DCQaBayBcwXORi0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=NSWVowc5LNdQsgwuw68YycyiPTww+qIjxeia8571z9zNSmTur6cCr6wm2K7+XJ55z
- 88F0Rqb7TKPlPuXls6Ha90XNBFi1Yf4G2IpZy/essNOyWv9D4DH32T3cYSXHI4Ju/5
- JbgJlh6fl3QAhzgoBFClVmZGGErJ7pLq1m+OaI6Y=
-Date: Tue, 23 Mar 2021 12:19:28 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v6 1/6] KVM: PPC: Book3S HV: Fix comments of
- H_RPT_INVALIDATE arguments
-Message-ID: <YFlCICYsADa+OrG/@yekko.fritz.box>
-References: <20210311083939.595568-1-bharata@linux.ibm.com>
- <20210311083939.595568-2-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4D9H5nhmz3h7R
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 12:21:38 +1100 (AEDT)
+Received: by mail-pf1-x429.google.com with SMTP id y5so12570355pfn.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:21:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:subject:in-reply-to:references:date:message-id:mime-version;
+ bh=D6/t64GWTSvYj3tg/pZ5Ic42OSmLCS9eM7+HxTJh7bY=;
+ b=VliLkGKlUFWXjHYPHKhIoC9T8J/tXbQBlLhNPRFKpcSDmcYqAJwrSP1aEMERW9alSF
+ +/C6VVdeBGrMAl6EuoauewV9NOcKnut05ZmeYuZQkmsrz6WSWGaB1xefKkXg/LWSUhtz
+ 54ZrfHpYG6uA/l01ZR+VOyiPyQIwl6EVfUCf8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=D6/t64GWTSvYj3tg/pZ5Ic42OSmLCS9eM7+HxTJh7bY=;
+ b=B+BfzrXKvievLcimbFIkrzOJxgx3srtgPw8hyXFwC6UZ7nQfOPWkX3J7YOtqhenPGg
+ /p7ynkk/pSwKVcx8AhMHbf61cCbt56xlJtxNstrTqJPirRap3dJh8freuRkT73x5dKAm
+ SSlMUoiCaSzVkqRLSooa+Ajx61z3/4M6tPXQKTggUg10bQfHpsfVASlVXA99S/2g/HrC
+ cgKjnTHW2A366OGufImhUwXrUKLjhyuj7AZkIlKZcKA48Epr4poTO16mHC3/qJhxb0SB
+ AeR/HJYq3S6gayUQYx4f+B29UQcLEzxDXkSRqxA+HjJc/F5oH/f2w3U6Nrxo1Xszb4A5
+ b6mw==
+X-Gm-Message-State: AOAM53132QXVq8uMq6s6KUU27JvlET1+RqceE7g12EP2UOiPz4Pgn/b5
+ izxj2m+lxShTVLD0zqemQl4Vbg==
+X-Google-Smtp-Source: ABdhPJw2Qp+2mIKNhFX1I+6sZk2cFgPwhAQgZTyBkhIWBJDj29kcgwl2c2YRP52g3ltzroCn2P4Oag==
+X-Received: by 2002:a17:902:6ac3:b029:e6:c6a3:a697 with SMTP id
+ i3-20020a1709026ac3b02900e6c6a3a697mr2657330plt.2.1616462496621; 
+ Mon, 22 Mar 2021 18:21:36 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-1113-6700-ab57-754e-edac-e091.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:ab57:754e:edac:e091])
+ by smtp.gmail.com with ESMTPSA id j188sm15051642pfd.64.2021.03.22.18.21.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Mar 2021 18:21:36 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
+ aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
+Subject: Re: [PATCH v11 0/6] KASAN for powerpc64 radix
+In-Reply-To: <5a3b5952-b31f-42bf-eaf4-ea24444f8df6@csgroup.eu>
+References: <20210319144058.772525-1-dja@axtens.net>
+ <5a3b5952-b31f-42bf-eaf4-ea24444f8df6@csgroup.eu>
+Date: Tue, 23 Mar 2021 12:21:32 +1100
+Message-ID: <87ft0mbr6r.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="2cpqFItxP4BNoyVD"
-Content-Disposition: inline
-In-Reply-To: <20210311083939.595568-2-bharata@linux.ibm.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,81 +81,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Christophe,
 
---2cpqFItxP4BNoyVD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> In the discussion we had long time ago, 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20190806233827.16454-5-dja@axtens.net/#2321067 
+> , I challenged you on why it was not possible to implement things the same way as other 
+> architectures, in extenso with an early mapping.
+>
+> Your first answer was that too many things were done in real mode at startup. After some discussion 
+> you said that finally there was not that much things at startup but the issue was KVM.
+>
+> Now you say that instrumentation on KVM is fully disabled.
+>
+> So my question is, if KVM is not a problem anymore, why not go the standard way with an early shadow 
+> ? Then you could also support inline instrumentation.
 
-On Thu, Mar 11, 2021 at 02:09:34PM +0530, Bharata B Rao wrote:
-> From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
->=20
-> The type values H_RPTI_TYPE_PRT and H_RPTI_TYPE_PAT indicate
-> invalidating the caching of process and partition scoped entries
-> respectively.
->=20
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+Fair enough, I've had some trouble both understanding the problem myself
+and clearly articulating it. Let me try again.
 
-Not sure the change really clarifies that much, but whatever
+We need translations on to access the shadow area.
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+We reach setup_64.c::early_setup() with translations off. At this point
+we don't know what MMU we're running under, or our CPU features.
 
-> ---
->  arch/powerpc/include/asm/hvcall.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm=
-/hvcall.h
-> index ed6086d57b22..6af7bb3c9121 100644
-> --- a/arch/powerpc/include/asm/hvcall.h
-> +++ b/arch/powerpc/include/asm/hvcall.h
-> @@ -411,9 +411,9 @@
->  #define H_RPTI_TYPE_NESTED	0x0001	/* Invalidate nested guest partition-s=
-cope */
->  #define H_RPTI_TYPE_TLB		0x0002	/* Invalidate TLB */
->  #define H_RPTI_TYPE_PWC		0x0004	/* Invalidate Page Walk Cache */
-> -/* Invalidate Process Table Entries if H_RPTI_TYPE_NESTED is clear */
-> +/* Invalidate caching of Process Table Entries if H_RPTI_TYPE_NESTED is =
-clear */
->  #define H_RPTI_TYPE_PRT		0x0008
-> -/* Invalidate Partition Table Entries if H_RPTI_TYPE_NESTED is set */
-> +/* Invalidate caching of Partition Table Entries if H_RPTI_TYPE_NESTED i=
-s set */
->  #define H_RPTI_TYPE_PAT		0x0008
->  #define H_RPTI_TYPE_ALL		(H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC | \
->  				 H_RPTI_TYPE_PRT)
+To determine our MMU and CPU features, early_setup() calls functions
+(dt_cpu_ftrs_init, early_init_devtree) that call out to generic code
+like of_scan_flat_dt. We need to do this before we turn on translations
+because we can't set up the MMU until we know what MMU we have.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+So this puts us in a bind:
 
---2cpqFItxP4BNoyVD
-Content-Type: application/pgp-signature; name="signature.asc"
+ - We can't set up an early shadow until we have translations on, which
+   requires that the MMU is set up.
 
------BEGIN PGP SIGNATURE-----
+ - We can't set up an MMU until we call out to generic code for FDT
+   parsing.
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmBZQiAACgkQbDjKyiDZ
-s5IDrxAAshdC1SOjx3acRTuepXPgDDgKNDXdt6CjzNwC1fdPHB1i+S5SOC/YyJWe
-nmFKP/p0/Y3vZwaLIirEgxjkiseO7tTWmtI9wVzDdZcrcyDmu08OySV678aqPeJg
-oucn/rzkSiLb9sqvB9JjouCEXbaJHXA4M3IMHNSD23qdKsU50zxVHZa9y557UPEN
-NPN3JoUVRBawIUOBCkmHW8bNRnWWGKRczCtHCrAQPQuqHSvXBP71BYt2YzYCHvWT
-1iN5DFC9W/E3r/aHGnRs3EGjugTGZW2V3TH3/AL/rwsfydSFUls/mBUJQi8O870f
-+TB08tNns5pM+nMm9JP5pXAtQTVQGtWT+T41wV/vZRVN7yMSfwPQAYDjWIdTf+nr
-DJWjxZPdAhuVDY//aGnbVs0XCUkf3x+eIrBE1+zJ1SU19d8e9B/p1PDsmQ/G3q46
-3+nlwBPtJjWovZ6X+A5HCHX24Q/JNiHSZbiJ1I/EYr6eBLU+usDZhbKI1fY86NcP
-NpB4eF30iymHkkavRNoc6nGcPE6DULXQnTiVEGzUTcsxTvDimWeN2c2NVncg86Tc
-dB5QL0GdpJu2HJRZmhmtOcCc8nyiL96pNVQdQiwlZem6NXz4XErFRA52Hj4NKEnS
-y380f8Y0uNuK0sU1pGeCDuibXYTZ3RVTJxDCXCxSgsfSFYCJ7CA=
-=ZQjV
------END PGP SIGNATURE-----
+So there will be calls to generic FDT parsing code that happen before the
+early shadow is set up.
 
---2cpqFItxP4BNoyVD--
+The setup code also prints a bunch of information about the platform
+with printk() while translations are off, so it wouldn't even be enough
+to disable instrumentation for bits of the generic DT code on ppc64.
+
+Does that make sense? If you can figure out how to 'square the circle'
+here I'm all ears.
+
+Other notes:
+
+ - There's a comment about printk() being 'safe' in early_setup(), that
+   refers to having a valid PACA, it doesn't mean that it's safe in any
+   other sense.
+
+ - KVM does indeed also run stuff with translations off but we can catch
+   all of that by disabling instrumentation on the real-mode handlers:
+   it doesn't seem to leak out to generic code. So you are right that
+   KVM is no longer an issue.
+
+Kind regards,
+Daniel
+
+
+>
+> Christophe
+
