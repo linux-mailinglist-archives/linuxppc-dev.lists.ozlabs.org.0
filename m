@@ -2,66 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA92345B97
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 11:02:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4FE2345BBC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 11:13:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4Rkl03TZz3bp4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 21:02:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4RzD4Vyjz3bmh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 21:13:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=gJuXXYMu;
+	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=MqCkGTz4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b34;
- helo=mail-yb1-xb34.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1035;
+ helo=mail-pj1-x1035.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gJuXXYMu; dkim-atps=neutral
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com
- [IPv6:2607:f8b0:4864:20::b34])
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=MqCkGTz4; dkim-atps=neutral
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
+ [IPv6:2607:f8b0:4864:20::1035])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4RkL5g01z30F6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 21:02:33 +1100 (AEDT)
-Received: by mail-yb1-xb34.google.com with SMTP id o66so9722590ybg.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 03:02:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Qp/jj3l6ivGZ4OXCocertOe4BVJnz1tKssW/YzmGbTA=;
- b=gJuXXYMuBphx+t5hfk93Y7sfNFPYwhbjIw3T8P7KTZv5AR9YQ4Y0OOiEXzTlu3oo57
- crZ2GYH2sClMfNM12fQOVFB4DcyXeyCzGpZ9fit7gX4nYw1de8CsJ55YlLUb56WzSUwy
- TIAfMPbTFDWkuuBaQTTfwEzsr8GkFTEzeQQEpHWJTrjgqAtAgAo5o/UjcIcMhv9s4lGV
- MsdeVqUEza/b/LRrElL1NtVHI7ChbPkgtMXdtoJNDKSRQsFPCBgCOOz50hQhOVDd7R30
- 6rh77lFlSCkHHoCnzIj3FwHAXgBj1N3xpoOGwB25mXsFh+wq85GheT3NMuG9IpPVaNfx
- UnlA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4Ryn2xHRz30Dt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 21:13:20 +1100 (AEDT)
+Received: by mail-pj1-x1035.google.com with SMTP id
+ q6-20020a17090a4306b02900c42a012202so9896647pjg.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 03:13:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=S0VXCg+nlzBozrdWHXgTNulRU5+BlACmvhzlexa5ah8=;
+ b=MqCkGTz40Bz/d4qLMARgRqU1nV/4StH8XiyPZEAUr/RQZG5lkVX2RmS3LgykzG70Ug
+ IocoZD2rifEiFsAWdKpE989Ee1TlxCMIXDCVylJrw169vOvrQaLOjTob1l/I3wzg7q/b
+ Pl8t+waZGyOwrosjJfXFkOC2aS8+9L/3MNexdzFzjYZV/tNTokRREGSTdG7hS7rzB0wK
+ EJf5frdhAM2v4lpvkglfsQN+CRLjunlNwE6IbUufScfhIvoHBVfxIF21Rpk1XoGXzRSN
+ VtHE+I5PeQBzUJnkHGYlwQPDDGBM8Bgcthp0WytoWAQEl5TEbbbeoG1932UvPBGrSHon
+ mu5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Qp/jj3l6ivGZ4OXCocertOe4BVJnz1tKssW/YzmGbTA=;
- b=q7UuqjCbsjnMFar1lpu5B1K4I1oALdvRXHYcWiiq6xEmsls/sJHhiUxjpsPueBLn4Z
- JUBElgX8JoJ22yjE9bAIzhXzrw/H7+1prcRASEe0o8IC2YWRr6c4QKRrhAStTZAuF4J1
- EiJnJq5vbIAErhVNmKWqQztEaa/5nxajPMDUliY8/RFLeksKLaX8kQsnny+1skhoJZIg
- G3aPRTd7sLNNynUDodoLdLeZWFn4mbkJwpE1+XNdEDkePzbVC2BmDlJF0bajmtG0+rLI
- LEx2v3ZPzOAL/BjywvWyYhp7iSLU5Afr2lkiVqAeyFfvPMI5LIix9lSTI49j30c+kRWA
- pNpw==
-X-Gm-Message-State: AOAM532sgPEG9ZnRp4fTZkMy0CnSLxviS0TKgL7DOmdxaQ6N4WXuBFyL
- v+J9ubcUhjHt/E1ZrBkJrxm2nweYWdXEqqMyTiHVHOBw05UdDA==
-X-Google-Smtp-Source: ABdhPJylVauAaSy0QdnuaN0wsPp5eKvLs3gWNjOyhWw54JITI4zXzthk13t3k6s1NdoyOmuw9hraEbpQt1uXgHEBJaQ=
-X-Received: by 2002:a25:6e02:: with SMTP id j2mr4055149ybc.247.1616493750049; 
- Tue, 23 Mar 2021 03:02:30 -0700 (PDT)
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=S0VXCg+nlzBozrdWHXgTNulRU5+BlACmvhzlexa5ah8=;
+ b=H89ekeiOg3FQn/gEBOH4uj5HYNbQdZixWYRVx60p4KUuR749DD5+9HGC45xEAyU8oB
+ Vg2/fFIJXyDn2hmvEibGgGnuWI5ol2teAcarr24VShv3QBgAjsLGgkXDUFt/1X6SX6tu
+ zbzewxRwMMFH6ckxWxfEiHzHjC43Zyj2D3GT3XgS7e9ZSyS4btxbCUGp2eXPVMKm/0c1
+ AZHfwmrfc8moxo+iYGtW1VgaDWq/qcK8OfmmkHZq3PsGy0inQdOgOJXFiX/DvG/RUKQJ
+ M1QrRxkLPt3Im/LcEV2b9kZ3yTtjF2HZBAjv0F6KorhRtmCZHrExyJJsiCOMqasozcC/
+ nZSA==
+X-Gm-Message-State: AOAM530v3vPMpr//MP4odfoQYTQbLWcLi/ZINlz8o8j7Zz6O+VjdO7a9
+ vZD523rLgSQ3QsjTelgLTtZi6PRGBkaJHDQB
+X-Google-Smtp-Source: ABdhPJze4HUPAcXMoEk5PkqyXQzhctwqxPR2w4c2vUnIWIqZAwgYV1xsV8DH8J/nVKtG8Bw/NpX9Nw==
+X-Received: by 2002:a17:90b:903:: with SMTP id
+ bo3mr3949176pjb.198.1616494396659; 
+ Tue, 23 Mar 2021 03:13:16 -0700 (PDT)
+Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
+ [124.171.107.241])
+ by smtp.gmail.com with UTF8SMTPSA id x4sm15730543pfn.134.2021.03.23.03.13.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Mar 2021 03:13:16 -0700 (PDT)
+Message-ID: <3ca0e504-70df-2a25-12af-a1addac842b6@ozlabs.ru>
+Date: Tue, 23 Mar 2021 21:13:12 +1100
 MIME-Version: 1.0
-References: <20210323032624.1039422-1-mpe@ellerman.id.au>
-In-Reply-To: <20210323032624.1039422-1-mpe@ellerman.id.au>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 23 Mar 2021 11:02:19 +0100
-Message-ID: <CANiq72n-tMww2U+eQ=iHOh5u1JQgjM0b1E3XQ9jpWMfpdQ5+=g@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Rust for Linux for ppc64le
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:87.0) Gecko/20100101
+ Thunderbird/87.0
+Subject: Re: [PATCH v4 28/46] KVM: PPC: Book3S HV P9: Reduce irq_work vs guest
+ decrementer races
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+References: <20210323010305.1045293-1-npiggin@gmail.com>
+ <20210323010305.1045293-29-npiggin@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <20210323010305.1045293-29-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,60 +90,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>,
- rust-for-linux@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
 
-On Tue, Mar 23, 2021 at 4:27 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Hi all,
->
-> Here's a first attempt at getting the kernel Rust support building on powerpc.
 
-Thanks a *lot*! It is great to have more architectures rolling.
+On 23/03/2021 12:02, Nicholas Piggin wrote:
+> irq_work's use of the DEC SPR is racy with guest<->host switch and guest
+> entry which flips the DEC interrupt to guest, which could lose a host
+> work interrupt.
+> 
+> This patch closes one race, and attempts to comment another class of
+> races.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   arch/powerpc/kvm/book3s_hv.c | 15 ++++++++++++++-
+>   1 file changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 1f38a0abc611..989a1ff5ad11 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -3745,6 +3745,18 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>   	if (!(vcpu->arch.ctrl & 1))
+>   		mtspr(SPRN_CTRLT, mfspr(SPRN_CTRLF) & ~1);
+>   
+> +	/*
+> +	 * When setting DEC, we must always deal with irq_work_raise via NMI vs
+> +	 * setting DEC. The problem occurs right as we switch into guest mode
+> +	 * if a NMI hits and sets pending work and sets DEC, then that will
+> +	 * apply to the guest and not bring us back to the host.
+> +	 *
+> +	 * irq_work_raise could check a flag (or possibly LPCR[HDICE] for
+> +	 * example) and set HDEC to 1? That wouldn't solve the nested hv
+> +	 * case which needs to abort the hcall or zero the time limit.
+> +	 *
+> +	 * XXX: Another day's problem.
+> +	 */
+>   	mtspr(SPRN_DEC, vcpu->arch.dec_expires - tb);
+>   
+>   	if (kvmhv_on_pseries()) {
+> @@ -3879,7 +3891,8 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>   	vc->entry_exit_map = 0x101;
+>   	vc->in_guest = 0;
+>   
+> -	mtspr(SPRN_DEC, local_paca->kvm_hstate.dec_expires - tb);
+> +	set_dec_or_work(local_paca->kvm_hstate.dec_expires - tb);
 
-> It's powerpc64le only for now, as that's what I can easily test given the
-> distros I have installed. Though powerpc and powerpc64 are also Tier 2 platforms
 
-Even if it is just 64-bit, it is very good to have it!
+set_dec_or_work() will write local_paca->kvm_hstate.dec_expires - tb - 1 
+to SPRN_DEC which is not exactly the same, is this still alright?
 
-> so in theory should work. Supporting those would require something more
-> complicated than just pointing rustc at arch/$(ARCH)/rust/target.json.
+I asked in v3 but it is probably lost :)
 
-Yeah, the arch/$(ARCH)/rust/target.json dance is a placeholder -- I
-need to figure out how to do that more cleanly, likely generating them
-on the fly.
+> +
+>   	mtspr(SPRN_SPRG_VDSO_WRITE, local_paca->sprg_vdso);
+>   
+>   	kvmhv_load_host_pmu();
+> 
 
-> This is based on 832575d934a2 from the Rust-for-Linux tree. Anything newer gives
-> me errors about symbol name lengths. I figured I'd send this anyway, as it seems
-> like those errors are probably not powerpc specific.
-
-Sure, feel free to send things even if they don't work completely.
-
-I will take a look at the symbol name lengths -- I increased that
-limit to 512 and added support for 2-byte lengths in the tables, but
-perhaps something is missing. If I manage to make it work, I can add
-ppc64le to our CI! :-)
-
-> Michael Ellerman (4):
->   rust: Export symbols in initialized data section
->   rust: Add powerpc64 as a 64-bit target_arch in c_types.rs
->   powerpc/rust: Add target.json for ppc64le
->   rust: Enable for ppc64le
-
-Regarding the development process: at least until the RFC we are
-working with the usual GitHub PR workflow (for several reasons: having
-a quick CI setup, getting new Rust developers on-board, having a list
-of "issues", cross-reference with the Rust repo, etc.).
-
-I can take patches from the list, of course, but since we are pre-RFC,
-do you mind if they get rebased etc. through there?
-
-Thanks again!
-
-Cheers,
-Miguel
+-- 
+Alexey
