@@ -1,97 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E0B346D9F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 23:57:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FCB8346DDF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 00:25:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4mwl3Dxjz3br1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 09:57:43 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XupEEdYL;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4nXm3F50z30GN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 10:25:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.mailfrom=bootlin.com (client-ip=217.70.178.242;
+ helo=mslow2.mail.gandi.net; envelope-from=alexandre.belloni@bootlin.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=XupEEdYL; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4mwJ3BzYz2xVt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 09:57:19 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12NMd97E018419; Tue, 23 Mar 2021 18:57:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=TiEHHsahInRHmSU3qC9dnBo0r1OtAPNnhOmbEM2E9hI=;
- b=XupEEdYLaCjOzy/ew1+RjZlN5Q9DnLzx951YqD5+GIUkiniZbsCGooFmnrfbo59q+4Ds
- Fy1WTPAvsqAOxzpklbDmVRnXN9A2YIbvWdelJNzAfgMbI5K8u1M11OTprcQcvrLRliNr
- Mk0iSb0OLofpso+ovvJYSS8jodzrwvr3fjLCaW2PC/XP5Sle3VYp+0k/D3WfYbuULvoU
- +2rms2Nqzkfc4Z8dBpFmu1tQpEl6pSF7W/1T1G8l+zYQNVCES7d+kp8id20qN5njNpQK
- 1E5jD/P+6rBLa82lgzvGaU45Qy9QZOBQO3uCr7+3U0FwdY/QUniMq/C/uQzcp13DmpdT 9A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37fn8uejx2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Mar 2021 18:57:16 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12NMvG83085701;
- Tue, 23 Mar 2021 18:57:16 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37fn8uejww-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Mar 2021 18:57:16 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12NMpc9a031649;
- Tue, 23 Mar 2021 22:57:15 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma05wdc.us.ibm.com with ESMTP id 37dycckdme-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Mar 2021 22:57:15 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12NMvFX234013646
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 23 Mar 2021 22:57:15 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 29E9B112069;
- Tue, 23 Mar 2021 22:57:15 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 446E3112061;
- Tue, 23 Mar 2021 22:57:14 +0000 (GMT)
-Received: from localhost (unknown [9.163.8.110])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
- Tue, 23 Mar 2021 22:57:13 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH v4 22/46] KVM: PPC: Book3S HV P9: Stop handling hcalls
- in real-mode in the P9 path
-In-Reply-To: <20210323010305.1045293-23-npiggin@gmail.com>
-References: <20210323010305.1045293-1-npiggin@gmail.com>
- <20210323010305.1045293-23-npiggin@gmail.com>
-Date: Tue, 23 Mar 2021 19:57:11 -0300
-Message-ID: <87y2ed5vi0.fsf@linux.ibm.com>
+Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4nXQ4kR8z302Z
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 10:25:08 +1100 (AEDT)
+Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
+ by mslow2.mail.gandi.net (Postfix) with ESMTP id 59E9F3AF0C1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 23:06:07 +0000 (UTC)
+X-Originating-IP: 90.65.108.55
+Received: from localhost (lfbn-lyo-1-1676-55.w90-65.abo.wanadoo.fr
+ [90.65.108.55]) (Authenticated sender: alexandre.belloni@bootlin.com)
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 8A772FF805;
+ Tue, 23 Mar 2021 23:05:37 +0000 (UTC)
+Date: Wed, 24 Mar 2021 00:05:37 +0100
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: He Ying <heying24@huawei.com>
+Subject: Re: [PATCH v2 -next] powerpc: kernel/time.c - cleanup warnings
+Message-ID: <YFp0Qc2P61V+3bm0@piout.net>
+References: <20210323091257.90054-1-heying24@huawei.com>
+ <YFppJkpZRHMJFay0@piout.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-23_11:2021-03-23,
- 2021-03-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- lowpriorityscore=0 suspectscore=0 adultscore=0 priorityscore=1501
- mlxscore=0 mlxlogscore=999 impostorscore=0 spamscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103230166
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YFppJkpZRHMJFay0@piout.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,175 +48,276 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-rtc@vger.kernel.org, a.zummo@towertech.it, geert+renesas@glider.be,
+ peterz@infradead.org, frederic@kernel.org, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com, paulus@samba.org, kernelfans@gmail.com, tglx@linutronix.de,
+ msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+On 23/03/2021 23:18:17+0100, Alexandre Belloni wrote:
+> Hello,
+> 
+> On 23/03/2021 05:12:57-0400, He Ying wrote:
+> > We found these warnings in arch/powerpc/kernel/time.c as follows:
+> > warning: symbol 'decrementer_max' was not declared. Should it be static?
+> > warning: symbol 'rtc_lock' was not declared. Should it be static?
+> > warning: symbol 'dtl_consumer' was not declared. Should it be static?
+> > 
+> > Declare 'decrementer_max' and 'rtc_lock' in powerpc asm/time.h.
+> > Rename 'rtc_lock' in drviers/rtc/rtc-vr41xx.c to 'vr41xx_rtc_lock' to
+> > avoid the conflict with the variable in powerpc asm/time.h.
+> > Move 'dtl_consumer' definition behind "include <asm/dtl.h>" because it
+> > is declared there.
+> > 
+> > Reported-by: Hulk Robot <hulkci@huawei.com>
+> > Signed-off-by: He Ying <heying24@huawei.com>
+> > ---
+> > v2:
+> > - Instead of including linux/mc146818rtc.h in powerpc kernel/time.c, declare
+> >   rtc_lock in powerpc asm/time.h.
+> > 
+> 
+> V1 was actually the correct thing to do. rtc_lock is there exactly
+> because chrp and maple are using mc146818 compatible RTCs. This is then
+> useful because then drivers/char/nvram.c is enabled. The proper fix
+> would be to scrap all of that and use rtc-cmos for those platforms as
+> this drives the RTC properly and exposes the NVRAM for the mc146818.
+> 
+> Or at least, if there are no users for the char/nvram driver on those
+> two platforms, remove the spinlock and stop enabling CONFIG_NVRAM or
+> more likely rename the symbol as it seems to be abused by both chrp and
+> powermac.
+> 
 
-> In the interest of minimising the amount of code that is run in
-> "real-mode", don't handle hcalls in real mode in the P9 path.
->
-> POWER8 and earlier are much more expensive to exit from HV real mode
-> and switch to host mode, because on those processors HV interrupts get
-> to the hypervisor with the MMU off, and the other threads in the core
-> need to be pulled out of the guest, and SLBs all need to be saved,
-> ERATs invalidated, and host SLB reloaded before the MMU is re-enabled
-> in host mode. Hash guests also require a lot of hcalls to run. The
-> XICS interrupt controller requires hcalls to run.
->
-> By contrast, POWER9 has independent thread switching, and in radix mode
-> the hypervisor is already in a host virtual memory mode when the HV
-> interrupt is taken. Radix + xive guests don't need hcalls to handle
-> interrupts or manage translations.
->
-> So it's much less important to handle hcalls in real mode in P9.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
+Ok so rtc_lock is not even used by the char/nvram.c driver as it is
+completely compiled out.
 
-<snip>
+I guess it is fine having it move to the individual platform as looking
+very quickly at the Kconfig, it is not possible to select both
+simultaneously. Tentative patch:
 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index fa7614c37e08..17739aaee3d8 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -1142,12 +1142,13 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
->  }
->
->  /*
-> - * Handle H_CEDE in the nested virtualization case where we haven't
-> - * called the real-mode hcall handlers in book3s_hv_rmhandlers.S.
-> + * Handle H_CEDE in the P9 path where we don't call the real-mode hcall
-> + * handlers in book3s_hv_rmhandlers.S.
-> + *
->   * This has to be done early, not in kvmppc_pseries_do_hcall(), so
->   * that the cede logic in kvmppc_run_single_vcpu() works properly.
->   */
-> -static void kvmppc_nested_cede(struct kvm_vcpu *vcpu)
-> +static void kvmppc_cede(struct kvm_vcpu *vcpu)
->  {
->  	vcpu->arch.shregs.msr |= MSR_EE;
->  	vcpu->arch.ceded = 1;
-> @@ -1403,9 +1404,15 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
->  		/* hcall - punt to userspace */
->  		int i;
->
-> -		/* hypercall with MSR_PR has already been handled in rmode,
-> -		 * and never reaches here.
-> -		 */
-> +		if (unlikely(vcpu->arch.shregs.msr & MSR_PR)) {
-> +			/*
-> +			 * Guest userspace executed sc 1, reflect it back as a
-> +			 * privileged program check interrupt.
-> +			 */
-> +			kvmppc_core_queue_program(vcpu, SRR1_PROGPRIV);
-> +			r = RESUME_GUEST;
-> +			break;
-> +		}
+8<-----
+From dfa59b6f44fdfdefafffa7666aec89e62bbd5c80 Mon Sep 17 00:00:00 2001
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Date: Wed, 24 Mar 2021 00:00:03 +0100
+Subject: [PATCH] powerpc: move rtc_lock to specific platforms
 
-This patch bypasses sc_1_fast_return so it breaks KVM-PR. L1 loops with
-the following output:
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+---
+ arch/powerpc/kernel/time.c          | 3 ---
+ arch/powerpc/platforms/chrp/time.c  | 2 +-
+ arch/powerpc/platforms/maple/time.c | 2 ++
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
-[    9.503929][ T3443] Couldn't emulate instruction 0x4e800020 (op 19 xop 16)
-[    9.503990][ T3443] kvmppc_exit_pr_progint: emulation at 48f4 failed (4e800020)
-[    9.504080][ T3443] Couldn't emulate instruction 0x4e800020 (op 19 xop 16)
-[    9.504170][ T3443] kvmppc_exit_pr_progint: emulation at 48f4 failed (4e800020)
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 67feb3524460..d3bb189ea7f4 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -123,9 +123,6 @@ EXPORT_SYMBOL(tb_ticks_per_usec);
+ unsigned long tb_ticks_per_sec;
+ EXPORT_SYMBOL(tb_ticks_per_sec);	/* for cputime_t conversions */
+ 
+-DEFINE_SPINLOCK(rtc_lock);
+-EXPORT_SYMBOL_GPL(rtc_lock);
+-
+ static u64 tb_to_ns_scale __read_mostly;
+ static unsigned tb_to_ns_shift __read_mostly;
+ static u64 boot_tb __read_mostly;
+diff --git a/arch/powerpc/platforms/chrp/time.c b/arch/powerpc/platforms/chrp/time.c
+index acde7bbe0716..ea90c15f5edd 100644
+--- a/arch/powerpc/platforms/chrp/time.c
++++ b/arch/powerpc/platforms/chrp/time.c
+@@ -30,7 +30,7 @@
+ 
+ #include <platforms/chrp/chrp.h>
+ 
+-extern spinlock_t rtc_lock;
++DEFINE_SPINLOCK(rtc_lock);
+ 
+ #define NVRAM_AS0  0x74
+ #define NVRAM_AS1  0x75
+diff --git a/arch/powerpc/platforms/maple/time.c b/arch/powerpc/platforms/maple/time.c
+index 78209bb7629c..ddda02010d86 100644
+--- a/arch/powerpc/platforms/maple/time.c
++++ b/arch/powerpc/platforms/maple/time.c
+@@ -34,6 +34,8 @@
+ #define DBG(x...)
+ #endif
+ 
++DEFINE_SPINLOCK(rtc_lock);
++
+ static int maple_rtc_addr;
+ 
+ static int maple_clock_read(int addr)
+-- 
+2.25.1
 
-0x4e800020 is a blr after a sc 1 in SLOF.
 
-For KVM-PR we need to inject a 0xc00 at some point, either here or
-before branching to no_try_real in book3s_hv_rmhandlers.S.
+> I'm not completely against the rename in vr41xxx but the fix for the
+> warnings can and should be contained in arch/powerpc.
+> 
+> >  arch/powerpc/include/asm/time.h |  3 +++
+> >  arch/powerpc/kernel/time.c      |  6 ++----
+> >  drivers/rtc/rtc-vr41xx.c        | 22 +++++++++++-----------
+> >  3 files changed, 16 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
+> > index 8dd3cdb25338..64a3ef0b4270 100644
+> > --- a/arch/powerpc/include/asm/time.h
+> > +++ b/arch/powerpc/include/asm/time.h
+> > @@ -12,6 +12,7 @@
+> >  #ifdef __KERNEL__
+> >  #include <linux/types.h>
+> >  #include <linux/percpu.h>
+> > +#include <linux/spinlock.h>
+> >  
+> >  #include <asm/processor.h>
+> >  #include <asm/cpu_has_feature.h>
+> > @@ -22,6 +23,8 @@ extern unsigned long tb_ticks_per_jiffy;
+> >  extern unsigned long tb_ticks_per_usec;
+> >  extern unsigned long tb_ticks_per_sec;
+> >  extern struct clock_event_device decrementer_clockevent;
+> > +extern u64 decrementer_max;
+> > +extern spinlock_t rtc_lock;
+> >  
+> >  
+> >  extern void generic_calibrate_decr(void);
+> > diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+> > index b67d93a609a2..60b6ac7d3685 100644
+> > --- a/arch/powerpc/kernel/time.c
+> > +++ b/arch/powerpc/kernel/time.c
+> > @@ -150,10 +150,6 @@ bool tb_invalid;
+> >  u64 __cputime_usec_factor;
+> >  EXPORT_SYMBOL(__cputime_usec_factor);
+> >  
+> > -#ifdef CONFIG_PPC_SPLPAR
+> > -void (*dtl_consumer)(struct dtl_entry *, u64);
+> > -#endif
+> > -
+> >  static void calc_cputime_factors(void)
+> >  {
+> >  	struct div_result res;
+> > @@ -179,6 +175,8 @@ static inline unsigned long read_spurr(unsigned long tb)
+> >  
+> >  #include <asm/dtl.h>
+> >  
+> > +void (*dtl_consumer)(struct dtl_entry *, u64);
+> > +
+> >  /*
+> >   * Scan the dispatch trace log and count up the stolen time.
+> >   * Should be called with interrupts disabled.
+> > diff --git a/drivers/rtc/rtc-vr41xx.c b/drivers/rtc/rtc-vr41xx.c
+> > index 5a9f9ad86d32..cc31db058197 100644
+> > --- a/drivers/rtc/rtc-vr41xx.c
+> > +++ b/drivers/rtc/rtc-vr41xx.c
+> > @@ -72,7 +72,7 @@ static void __iomem *rtc2_base;
+> >  
+> >  static unsigned long epoch = 1970;	/* Jan 1 1970 00:00:00 */
+> >  
+> > -static DEFINE_SPINLOCK(rtc_lock);
+> > +static DEFINE_SPINLOCK(vr41xx_rtc_lock);
+> >  static char rtc_name[] = "RTC";
+> >  static unsigned long periodic_count;
+> >  static unsigned int alarm_enabled;
+> > @@ -101,13 +101,13 @@ static inline time64_t read_elapsed_second(void)
+> >  
+> >  static inline void write_elapsed_second(time64_t sec)
+> >  {
+> > -	spin_lock_irq(&rtc_lock);
+> > +	spin_lock_irq(&vr41xx_rtc_lock);
+> >  
+> >  	rtc1_write(ETIMELREG, (uint16_t)(sec << 15));
+> >  	rtc1_write(ETIMEMREG, (uint16_t)(sec >> 1));
+> >  	rtc1_write(ETIMEHREG, (uint16_t)(sec >> 17));
+> >  
+> > -	spin_unlock_irq(&rtc_lock);
+> > +	spin_unlock_irq(&vr41xx_rtc_lock);
+> >  }
+> >  
+> >  static int vr41xx_rtc_read_time(struct device *dev, struct rtc_time *time)
+> > @@ -139,14 +139,14 @@ static int vr41xx_rtc_read_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
+> >  	unsigned long low, mid, high;
+> >  	struct rtc_time *time = &wkalrm->time;
+> >  
+> > -	spin_lock_irq(&rtc_lock);
+> > +	spin_lock_irq(&vr41xx_rtc_lock);
+> >  
+> >  	low = rtc1_read(ECMPLREG);
+> >  	mid = rtc1_read(ECMPMREG);
+> >  	high = rtc1_read(ECMPHREG);
+> >  	wkalrm->enabled = alarm_enabled;
+> >  
+> > -	spin_unlock_irq(&rtc_lock);
+> > +	spin_unlock_irq(&vr41xx_rtc_lock);
+> >  
+> >  	rtc_time64_to_tm((high << 17) | (mid << 1) | (low >> 15), time);
+> >  
+> > @@ -159,7 +159,7 @@ static int vr41xx_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
+> >  
+> >  	alarm_sec = rtc_tm_to_time64(&wkalrm->time);
+> >  
+> > -	spin_lock_irq(&rtc_lock);
+> > +	spin_lock_irq(&vr41xx_rtc_lock);
+> >  
+> >  	if (alarm_enabled)
+> >  		disable_irq(aie_irq);
+> > @@ -173,7 +173,7 @@ static int vr41xx_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
+> >  
+> >  	alarm_enabled = wkalrm->enabled;
+> >  
+> > -	spin_unlock_irq(&rtc_lock);
+> > +	spin_unlock_irq(&vr41xx_rtc_lock);
+> >  
+> >  	return 0;
+> >  }
+> > @@ -202,7 +202,7 @@ static int vr41xx_rtc_ioctl(struct device *dev, unsigned int cmd, unsigned long
+> >  
+> >  static int vr41xx_rtc_alarm_irq_enable(struct device *dev, unsigned int enabled)
+> >  {
+> > -	spin_lock_irq(&rtc_lock);
+> > +	spin_lock_irq(&vr41xx_rtc_lock);
+> >  	if (enabled) {
+> >  		if (!alarm_enabled) {
+> >  			enable_irq(aie_irq);
+> > @@ -214,7 +214,7 @@ static int vr41xx_rtc_alarm_irq_enable(struct device *dev, unsigned int enabled)
+> >  			alarm_enabled = 0;
+> >  		}
+> >  	}
+> > -	spin_unlock_irq(&rtc_lock);
+> > +	spin_unlock_irq(&vr41xx_rtc_lock);
+> >  	return 0;
+> >  }
+> >  
+> > @@ -296,7 +296,7 @@ static int rtc_probe(struct platform_device *pdev)
+> >  	rtc->range_max = (1ULL << 33) - 1;
+> >  	rtc->max_user_freq = MAX_PERIODIC_RATE;
+> >  
+> > -	spin_lock_irq(&rtc_lock);
+> > +	spin_lock_irq(&vr41xx_rtc_lock);
+> >  
+> >  	rtc1_write(ECMPLREG, 0);
+> >  	rtc1_write(ECMPMREG, 0);
+> > @@ -304,7 +304,7 @@ static int rtc_probe(struct platform_device *pdev)
+> >  	rtc1_write(RTCL1LREG, 0);
+> >  	rtc1_write(RTCL1HREG, 0);
+> >  
+> > -	spin_unlock_irq(&rtc_lock);
+> > +	spin_unlock_irq(&vr41xx_rtc_lock);
+> >  
+> >  	aie_irq = platform_get_irq(pdev, 0);
+> >  	if (aie_irq <= 0) {
+> > -- 
+> > 2.17.1
+> > 
+> 
+> -- 
+> Alexandre Belloni, co-owner and COO, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
 
->
->  		run->papr_hcall.nr = kvmppc_get_gpr(vcpu, 3);
->  		for (i = 0; i < 9; ++i)
-> @@ -3663,6 +3670,12 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
->  	return trap;
->  }
->
-> +static inline bool hcall_is_xics(unsigned long req)
-> +{
-> +	return (req == H_EOI || req == H_CPPR || req == H_IPI ||
-> +		req == H_IPOLL || req == H_XIRR || req == H_XIRR_X);
-> +}
-> +
->  /*
->   * Virtual-mode guest entry for POWER9 and later when the host and
->   * guest are both using the radix MMU.  The LPIDR has already been set.
-> @@ -3774,15 +3787,36 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->  		/* H_CEDE has to be handled now, not later */
->  		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
->  		    kvmppc_get_gpr(vcpu, 3) == H_CEDE) {
-> -			kvmppc_nested_cede(vcpu);
-> +			kvmppc_cede(vcpu);
->  			kvmppc_set_gpr(vcpu, 3, 0);
->  			trap = 0;
->  		}
->  	} else {
->  		kvmppc_xive_push_vcpu(vcpu);
->  		trap = kvmhv_load_hv_regs_and_go(vcpu, time_limit, lpcr);
-> +		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
-> +		    !(vcpu->arch.shregs.msr & MSR_PR)) {
-> +			unsigned long req = kvmppc_get_gpr(vcpu, 3);
-> +
-> +			/* H_CEDE has to be handled now, not later */
-> +			if (req == H_CEDE) {
-> +				kvmppc_cede(vcpu);
-> +				kvmppc_xive_cede_vcpu(vcpu); /* may un-cede */
-> +				kvmppc_set_gpr(vcpu, 3, 0);
-> +				trap = 0;
-> +
-> +			/* XICS hcalls must be handled before xive is pulled */
-> +			} else if (hcall_is_xics(req)) {
-> +				int ret;
-> +
-> +				ret = kvmppc_xive_xics_hcall(vcpu, req);
-> +				if (ret != H_TOO_HARD) {
-> +					kvmppc_set_gpr(vcpu, 3, ret);
-> +					trap = 0;
-> +				}
-> +			}
-> +		}
->  		kvmppc_xive_pull_vcpu(vcpu);
-> -
->  	}
->
->  	vcpu->arch.slb_max = 0;
-> @@ -4442,8 +4476,11 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
->  		else
->  			r = kvmppc_run_vcpu(vcpu);
->
-> -		if (run->exit_reason == KVM_EXIT_PAPR_HCALL &&
-> -		    !(vcpu->arch.shregs.msr & MSR_PR)) {
-> +		if (run->exit_reason == KVM_EXIT_PAPR_HCALL) {
-> +			if (WARN_ON_ONCE(vcpu->arch.shregs.msr & MSR_PR)) {
-> +				r = RESUME_GUEST;
-> +				continue;
-> +			}
-
-Note that this hunk might need to be dropped.
-
->  			trace_kvm_hcall_enter(vcpu);
->  			r = kvmppc_pseries_do_hcall(vcpu);
->  			trace_kvm_hcall_exit(vcpu, r);
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index c11597f815e4..2d0d14ed1d92 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -1397,9 +1397,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->  	mr	r4,r9
->  	bge	fast_guest_return
->  2:
-> +	/* If we came in through the P9 short path, no real mode hcalls */
-> +	lwz	r0, STACK_SLOT_SHORT_PATH(r1)
-> +	cmpwi	r0, 0
-> +	bne	no_try_real
->  	/* See if this is an hcall we can handle in real mode */
->  	cmpwi	r12,BOOK3S_INTERRUPT_SYSCALL
->  	beq	hcall_try_real_mode
-> +no_try_real:
->
->  	/* Hypervisor doorbell - exit only if host IPI flag set */
->  	cmpwi	r12, BOOK3S_INTERRUPT_H_DOORBELL
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
