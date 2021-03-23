@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D3834558A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 03:37:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B939345585
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 03:36:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4FrR5J9Sz3c1s
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 13:37:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4Fqy1PKbz3bs6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 13:36:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=iO5nWtlC;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=Q7dNcqmG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,36 +17,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=iO5nWtlC; 
+ header.a=rsa-sha256 header.s=201602 header.b=Q7dNcqmG; 
  dkim-atps=neutral
 Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4Fq37371z30Bk
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4Fq41FFlz30Bt
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 13:35:59 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1007)
- id 4F4Fq26SB4z9sS8; Tue, 23 Mar 2021 13:35:58 +1100 (AEDT)
+ id 4F4Fq26sznz9sVt; Tue, 23 Mar 2021 13:35:58 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=gibson.dropbear.id.au; s=201602; t=1616466958;
- bh=N89rimpg6MSUiaOv9SYI9x6BFHUIYS1VvYsVCIcQ5C4=;
+ bh=uffToqj4Zz//s6Da4+iWvUfhBr+uZ/jCN4cKfU9hUw4=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=iO5nWtlC8w1RiSX9UDUsa2merWYjQsmBYCmWoQEn6xdCDOJKRIhvVErDoksZ/cHB/
- ie2eBFUd0MM5j6NZDz3LzxBTA3muHU0HpJC3ByZ/rwrpJzS6RDI+lj2lCnjZUPpBgW
- OmGs5hZTjzTIoZ0aApgEto/PPBCijWTa2xmlTOFE=
-Date: Tue, 23 Mar 2021 13:26:56 +1100
+ b=Q7dNcqmGvrG/YNZs7nhFhnkOn/KP3MJRgmQJ0xnjNjY9Wjy9nnI82mmYS1IwWaq2e
+ rMcXOi2Nn3STJkHUKV9i7QCfqlsSJFRKcDbTwxU+GEo5QoPH1DOSFDf8GkVHJmKIhz
+ /zWjdCb+FFWN6yMetjJEf+giUpZO1uqDnmRUjYZk=
+Date: Tue, 23 Mar 2021 13:33:21 +1100
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v6 3/6] KVM: PPC: Book3S HV: Add support for
+Subject: Re: [PATCH v6 4/6] KVM: PPC: Book3S HV: Nested support in
  H_RPT_INVALIDATE
-Message-ID: <YFlR8BROYwX0i0A9@yekko.fritz.box>
+Message-ID: <YFlTcauBzA8APjjX@yekko.fritz.box>
 References: <20210311083939.595568-1-bharata@linux.ibm.com>
- <20210311083939.595568-4-bharata@linux.ibm.com>
+ <20210311083939.595568-5-bharata@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="27Kb1Mwjc5GFA/S8"
+ protocol="application/pgp-signature"; boundary="r1OAT0jrWOgqEPEU"
 Content-Disposition: inline
-In-Reply-To: <20210311083939.595568-4-bharata@linux.ibm.com>
+In-Reply-To: <20210311083939.595568-5-bharata@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,488 +65,269 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---27Kb1Mwjc5GFA/S8
-Content-Type: text/plain; charset=iso-8859-1
+--r1OAT0jrWOgqEPEU
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 11, 2021 at 02:09:36PM +0530, Bharata B Rao wrote:
-> H_RPT_INVALIDATE does two types of TLB invalidations:
+On Thu, Mar 11, 2021 at 02:09:37PM +0530, Bharata B Rao wrote:
+> Enable support for process-scoped invalidations from nested
+> guests and partition-scoped invalidations for nested guests.
 >=20
-> 1. Process-scoped invalidations for guests when LPCR[GTSE]=3D0.
->    This is currently not used in KVM as GTSE is not usually
->    disabled in KVM.
-> 2. Partition-scoped invalidations that an L1 hypervisor does on
->    behalf of an L2 guest. This is currently handled
->    by H_TLB_INVALIDATE hcall and this new replaces the old that.
+> Process-scoped invalidations for any level of nested guests
+> are handled by implementing H_RPT_INVALIDATE handler in the
+> nested guest exit path in L0.
 >=20
-> This commit enables process-scoped invalidations for L1 guests.
-> Support for process-scoped and partition-scoped invalidations
-> from/for nested guests will be added separately.
->=20
-> Process scoped tlbie invalidations from L1 and nested guests
-> need RS register for TLBIE instruction to contain both PID and
-> LPID.  This patch introduces primitives that execute tlbie
-> instruction with both PID and LPID set in prepartion for
-> H_RPT_INVALIDATE hcall.
->=20
-> A description of H_RPT_INVALIDATE follows:
->=20
-> int64=A0=A0 /* H_Success: Return code on successful completion */
-> =A0=A0=A0=A0=A0=A0=A0 /* H_Busy - repeat the call with the same */
-> =A0=A0=A0=A0=A0=A0=A0 /* H_Parameter, H_P2, H_P3, H_P4, H_P5 : Invalid
-> 	   parameters */
-> hcall(const uint64 H_RPT_INVALIDATE, /* Invalidate RPT
-> 					translation
-> 					lookaside information */
-> =A0=A0=A0=A0=A0 uint64 id,=A0 =A0=A0=A0=A0=A0 /* PID/LPID to invalidate */
-> =A0=A0=A0=A0=A0 uint64 target,=A0=A0=A0 /* Invalidation target */
-> =A0=A0=A0=A0=A0 uint64 type,=A0=A0=A0=A0=A0 /* Type of lookaside informat=
-ion */
-> =A0=A0=A0=A0=A0 uint64 pg_sizes,  /* Page sizes */
-> =A0=A0=A0=A0=A0 uint64 start,=A0=A0=A0=A0 /* Start of Effective Address (=
-EA)
-> 			   range (inclusive) */
-> =A0=A0=A0=A0=A0 uint64 end)=A0=A0=A0=A0=A0=A0 /* End of EA range (exclusi=
-ve) */
->=20
-> Invalidation targets (target)
-> -----------------------------
-> Core MMU=A0=A0=A0=A0=A0=A0=A0 0x01 /* All virtual processors in the
-> 			partition */
-> Core local MMU=A0 0x02 /* Current virtual processor */
-> Nest MMU=A0=A0=A0=A0=A0=A0=A0 0x04 /* All nest/accelerator agents
-> 			in use by the partition */
->=20
-> A combination of the above can be specified,
-> except core and core local.
->=20
-> Type of translation to invalidate (type)
-> ---------------------------------------
-> NESTED=A0=A0=A0=A0=A0=A0 0x0001=A0 /* invalidate nested guest partition-s=
-cope */
-> TLB=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0002=A0 /* Invalidate TLB */
-> PWC=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0004=A0 /* Invalidate Page Walk Cache =
-*/
-> PRT=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0008=A0 /* Invalidate caching of Proce=
-ss Table
-> 			Entries if NESTED is clear */
-> PAT=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0008=A0 /* Invalidate caching of Parti=
-tion Table
-> 			Entries if NESTED is set */
->=20
-> A combination of the above can be specified.
->=20
-> Page size mask (pages)
-> ----------------------
-> 4K=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x01
-> 64K=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x02
-> 2M=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x04
-> 1G=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x08
-> All sizes=A0=A0=A0=A0=A0=A0 (-1UL)
->=20
-> A combination of the above can be specified.
-> All page sizes can be selected with -1.
->=20
-> Semantics: Invalidate radix tree lookaside information
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 matching the parameters given.
-> * Return H_P2, H_P3 or H_P4 if target, type, or pageSizes parameters
->   are different from the defined values.
-> * Return H_PARAMETER if NESTED is set and pid is not a valid nested
->   LPID allocated to this partition
-> * Return H_P5 if (start, end) doesn't form a valid range. Start and
->   end should be a valid Quadrant address and=A0 end > start.
-> * Return H_NotSupported if the partition is not in running in radix
->   translation mode.
-> * May invalidate more translation information than requested.
-> * If start =3D 0 and end =3D -1, set the range to cover all valid
->   addresses. Else start and end should be aligned to 4kB (lower 11
->   bits clear).
-> * If NESTED is clear, then invalidate process scoped lookaside
->   information. Else pid specifies a nested LPID, and the invalidation
->   is performed =A0 on nested guest partition table and nested guest
->   partition scope real addresses.
-> * If pid =3D 0 and NESTED is clear, then valid addresses are quadrant 3
->   and quadrant 0 spaces, Else valid addresses are quadrant 0.
-> * Pages which are fully covered by the range are to be invalidated.
-> =A0 Those which are partially covered are considered outside
->   invalidation range, which allows a caller to optimally invalidate
->   ranges that may =A0 contain mixed page sizes.
-> * Return H_SUCCESS on success.
+> Partition-scoped invalidation requests are forwarded to the
+> right nested guest, handled there and passed down to L0
+> for eventual handling.
 >=20
 > Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> 	[Nested guest partition-scoped invalidation changes]
 
 Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 
-with the exception of one nit noted below.
-
 > ---
->  .../include/asm/book3s/64/tlbflush-radix.h    |   4 +
->  arch/powerpc/include/asm/mmu_context.h        |  11 ++
->  arch/powerpc/kvm/book3s_hv.c                  |  46 ++++++
->  arch/powerpc/mm/book3s64/radix_tlb.c          | 152 +++++++++++++++++-
->  4 files changed, 209 insertions(+), 4 deletions(-)
+>  arch/powerpc/include/asm/kvm_book3s.h |   3 +
+>  arch/powerpc/kvm/book3s_hv.c          |  71 +++++++++++++++++-
+>  arch/powerpc/kvm/book3s_hv_nested.c   | 104 ++++++++++++++++++++++++++
+>  3 files changed, 175 insertions(+), 3 deletions(-)
 >=20
-> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h b/arch/p=
-owerpc/include/asm/book3s/64/tlbflush-radix.h
-> index 8b33601cdb9d..a46fd37ad552 100644
-> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
-> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
-> @@ -4,6 +4,10 @@
-> =20
->  #include <asm/hvcall.h>
-> =20
-> +#define RIC_FLUSH_TLB 0
-> +#define RIC_FLUSH_PWC 1
-> +#define RIC_FLUSH_ALL 2
-
-Is there a reason for moving these?  You don't appear to be adding a
-use of them outside the .c file they were in before.
-
-> +
->  struct vm_area_struct;
->  struct mm_struct;
->  struct mmu_gather;
-> diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/includ=
-e/asm/mmu_context.h
-> index 652ce85f9410..da25aef657c6 100644
-> --- a/arch/powerpc/include/asm/mmu_context.h
-> +++ b/arch/powerpc/include/asm/mmu_context.h
-> @@ -124,8 +124,19 @@ static inline bool need_extra_context(struct mm_stru=
-ct *mm, unsigned long ea)
-> =20
->  #if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE) && defined(CONFIG_PPC_RADIX_M=
-MU)
->  extern void radix_kvm_prefetch_workaround(struct mm_struct *mm);
-> +void do_h_rpt_invalidate_prt(unsigned long pid, unsigned long lpid,
-> +			     unsigned long type, unsigned long page_size,
-> +			     unsigned long psize, unsigned long start,
-> +			     unsigned long end);
->  #else
->  static inline void radix_kvm_prefetch_workaround(struct mm_struct *mm) {=
- }
-> +static inline void do_h_rpt_invalidate_prt(unsigned long pid,
-> +					   unsigned long lpid,
-> +					   unsigned long type,
-> +					   unsigned long page_size,
-> +					   unsigned long psize,
-> +					   unsigned long start,
-> +					   unsigned long end) { }
->  #endif
-> =20
->  extern void switch_cop(struct mm_struct *next);
+> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include=
+/asm/kvm_book3s.h
+> index 2f5f919f6cd3..de8fc5a4d19c 100644
+> --- a/arch/powerpc/include/asm/kvm_book3s.h
+> +++ b/arch/powerpc/include/asm/kvm_book3s.h
+> @@ -305,6 +305,9 @@ void kvmhv_set_ptbl_entry(unsigned int lpid, u64 dw0,=
+ u64 dw1);
+>  void kvmhv_release_all_nested(struct kvm *kvm);
+>  long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu);
+>  long kvmhv_do_nested_tlbie(struct kvm_vcpu *vcpu);
+> +long do_h_rpt_invalidate_pat(struct kvm_vcpu *vcpu, unsigned long lpid,
+> +			     unsigned long type, unsigned long pg_sizes,
+> +			     unsigned long start, unsigned long end);
+>  int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu,
+>  			  u64 time_limit, unsigned long lpcr);
+>  void kvmhv_save_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr=
+);
 > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 13bad6bf4c95..5d008468347c 100644
+> index 5d008468347c..03755389efd1 100644
 > --- a/arch/powerpc/kvm/book3s_hv.c
 > +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -76,6 +76,7 @@
->  #include <asm/kvm_book3s_uvmem.h>
->  #include <asm/ultravisor.h>
->  #include <asm/dtl.h>
-> +#include <asm/plpar_wrappers.h>
-> =20
->  #include "book3s.h"
-> =20
-> @@ -921,6 +922,42 @@ static int kvmppc_get_yield_count(struct kvm_vcpu *v=
+> @@ -922,6 +922,46 @@ static int kvmppc_get_yield_count(struct kvm_vcpu *v=
 cpu)
 >  	return yield_count;
 >  }
 > =20
-> +static long kvmppc_h_rpt_invalidate(struct kvm_vcpu *vcpu,
-> +				    unsigned long id, unsigned long target,
-> +				    unsigned long type, unsigned long pg_sizes,
-> +				    unsigned long start, unsigned long end)
+> +/*
+> + * H_RPT_INVALIDATE hcall handler for nested guests.
+> + *
+> + * Handles only nested process-scoped invalidation requests in L0.
+> + */
+> +static int kvmppc_nested_h_rpt_invalidate(struct kvm_vcpu *vcpu)
 > +{
-> +	unsigned long psize;
+> +	unsigned long type =3D kvmppc_get_gpr(vcpu, 6);
+> +	unsigned long pid, pg_sizes, start, end, psize;
+> +	struct kvm_nested_guest *gp;
 > +	struct mmu_psize_def *def;
 > +
-> +	if (!kvm_is_radix(vcpu->kvm))
-> +		return H_UNSUPPORTED;
-> +
-> +	if (end < start)
-> +		return H_P5;
-> +
 > +	/*
-> +	 * Partition-scoped invalidation for nested guests.
-> +	 * Not yet supported
+> +	 * The partition-scoped invalidations aren't handled here in L0.
 > +	 */
 > +	if (type & H_RPTI_TYPE_NESTED)
-> +		return H_P3;
+> +		return RESUME_HOST;
 > +
-> +	/*
-> +	 * Process-scoped invalidation for L1 guests.
-> +	 */
+> +	pid =3D kvmppc_get_gpr(vcpu, 4);
+> +	pg_sizes =3D kvmppc_get_gpr(vcpu, 7);
+> +	start =3D kvmppc_get_gpr(vcpu, 8);
+> +	end =3D kvmppc_get_gpr(vcpu, 9);
+> +
+> +	gp =3D kvmhv_get_nested(vcpu->kvm, vcpu->kvm->arch.lpid, false);
+> +	if (!gp)
+> +		goto out;
+> +
 > +	for (psize =3D 0; psize < MMU_PAGE_COUNT; psize++) {
 > +		def =3D &mmu_psize_defs[psize];
-> +		if (!(pg_sizes & def->h_rpt_pgsize))
-> +			continue;
+> +		if (pg_sizes & def->h_rpt_pgsize)
+> +			do_h_rpt_invalidate_prt(pid, gp->shadow_lpid, type,
+> +						(1UL << def->shift), psize,
+> +						start, end);
+> +	}
+> +	kvmhv_put_nested(gp);
+> +out:
+> +	kvmppc_set_gpr(vcpu, 3, H_SUCCESS);
+> +	return RESUME_GUEST;
+> +}
 > +
-> +		do_h_rpt_invalidate_prt(id, vcpu->kvm->arch.lpid,
-> +					type, (1UL << def->shift),
-> +					psize, start, end);
+>  static long kvmppc_h_rpt_invalidate(struct kvm_vcpu *vcpu,
+>  				    unsigned long id, unsigned long target,
+>  				    unsigned long type, unsigned long pg_sizes,
+> @@ -938,10 +978,18 @@ static long kvmppc_h_rpt_invalidate(struct kvm_vcpu=
+ *vcpu,
+> =20
+>  	/*
+>  	 * Partition-scoped invalidation for nested guests.
+> -	 * Not yet supported
+>  	 */
+> -	if (type & H_RPTI_TYPE_NESTED)
+> -		return H_P3;
+> +	if (type & H_RPTI_TYPE_NESTED) {
+> +		if (!nesting_enabled(vcpu->kvm))
+> +			return H_FUNCTION;
+> +
+> +		/* Support only cores as target */
+> +		if (target !=3D H_RPTI_TARGET_CMMU)
+> +			return H_P2;
+> +
+> +		return do_h_rpt_invalidate_pat(vcpu, id, type, pg_sizes,
+> +					       start, end);
+> +	}
+> =20
+>  	/*
+>  	 * Process-scoped invalidation for L1 guests.
+> @@ -1636,6 +1684,23 @@ static int kvmppc_handle_nested_exit(struct kvm_vc=
+pu *vcpu)
+>  		if (!xics_on_xive())
+>  			kvmppc_xics_rm_complete(vcpu, 0);
+>  		break;
+> +	case BOOK3S_INTERRUPT_SYSCALL:
+> +	{
+> +		unsigned long req =3D kvmppc_get_gpr(vcpu, 3);
+> +
+> +		/*
+> +		 * The H_RPT_INVALIDATE hcalls issued by nested
+> +		 * guests for process-scoped invalidations when
+> +		 * GTSE=3D0, are handled here in L0.
+> +		 */
+> +		if (req =3D=3D H_RPT_INVALIDATE) {
+> +			r =3D kvmppc_nested_h_rpt_invalidate(vcpu);
+> +			break;
+> +		}
+> +
+> +		r =3D RESUME_HOST;
+> +		break;
+> +	}
+>  	default:
+>  		r =3D RESUME_HOST;
+>  		break;
+> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3=
+s_hv_nested.c
+> index 0cd0e7aad588..adcc8e26ef22 100644
+> --- a/arch/powerpc/kvm/book3s_hv_nested.c
+> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+> @@ -1191,6 +1191,110 @@ long kvmhv_do_nested_tlbie(struct kvm_vcpu *vcpu)
+>  	return H_SUCCESS;
+>  }
+> =20
+> +static long do_tlb_invalidate_nested_tlb(struct kvm_vcpu *vcpu,
+> +					 unsigned long lpid,
+> +					 unsigned long page_size,
+> +					 unsigned long ap,
+> +					 unsigned long start,
+> +					 unsigned long end)
+> +{
+> +	unsigned long addr =3D start;
+> +	int ret;
+> +
+> +	do {
+> +		ret =3D kvmhv_emulate_tlbie_tlb_addr(vcpu, lpid, ap,
+> +						   get_epn(addr));
+> +		if (ret)
+> +			return ret;
+> +		addr +=3D page_size;
+> +	} while (addr < end);
+> +
+> +	return ret;
+> +}
+> +
+> +static long do_tlb_invalidate_nested_all(struct kvm_vcpu *vcpu,
+> +					 unsigned long lpid, unsigned long ric)
+> +{
+> +	struct kvm *kvm =3D vcpu->kvm;
+> +	struct kvm_nested_guest *gp;
+> +
+> +	gp =3D kvmhv_get_nested(kvm, lpid, false);
+> +	if (gp) {
+> +		kvmhv_emulate_tlbie_lpid(vcpu, gp, ric);
+> +		kvmhv_put_nested(gp);
 > +	}
 > +	return H_SUCCESS;
 > +}
 > +
->  int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
->  {
->  	unsigned long req =3D kvmppc_get_gpr(vcpu, 3);
-> @@ -1129,6 +1166,14 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
->  		 */
->  		ret =3D kvmppc_h_svm_init_abort(vcpu->kvm);
->  		break;
-> +	case H_RPT_INVALIDATE:
-> +		ret =3D kvmppc_h_rpt_invalidate(vcpu, kvmppc_get_gpr(vcpu, 4),
-> +					      kvmppc_get_gpr(vcpu, 5),
-> +					      kvmppc_get_gpr(vcpu, 6),
-> +					      kvmppc_get_gpr(vcpu, 7),
-> +					      kvmppc_get_gpr(vcpu, 8),
-> +					      kvmppc_get_gpr(vcpu, 9));
-> +		break;
-> =20
->  	default:
->  		return RESUME_HOST;
-> @@ -1175,6 +1220,7 @@ static int kvmppc_hcall_impl_hv(unsigned long cmd)
->  	case H_XIRR_X:
->  #endif
->  	case H_PAGE_INIT:
-> +	case H_RPT_INVALIDATE:
->  		return 1;
->  	}
-> =20
-> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3=
-s64/radix_tlb.c
-> index 409e61210789..613198c41006 100644
-> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
-> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-> @@ -20,10 +20,6 @@
-> =20
->  #include "internal.h"
-> =20
-> -#define RIC_FLUSH_TLB 0
-> -#define RIC_FLUSH_PWC 1
-> -#define RIC_FLUSH_ALL 2
-> -
->  /*
->   * tlbiel instruction for radix, set invalidation
->   * i.e., r=3D1 and is=3D01 or is=3D10 or is=3D11
-> @@ -130,6 +126,21 @@ static __always_inline void __tlbie_pid(unsigned lon=
-g pid, unsigned long ric)
->  	trace_tlbie(0, 0, rb, rs, ric, prs, r);
->  }
-> =20
-> +static __always_inline void __tlbie_pid_lpid(unsigned long pid,
-> +					     unsigned long lpid,
-> +					     unsigned long ric)
-> +{
-> +	unsigned long rb, rs, prs, r;
-> +
-> +	rb =3D PPC_BIT(53); /* IS =3D 1 */
-> +	rs =3D (pid << PPC_BITLSHIFT(31)) | (lpid & ~(PPC_BITMASK(0, 31)));
-> +	prs =3D 1; /* process scoped */
-> +	r =3D 1;   /* radix format */
-> +
-> +	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
-> +		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
-> +	trace_tlbie(0, 0, rb, rs, ric, prs, r);
-> +}
->  static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned lo=
-ng ric)
->  {
->  	unsigned long rb,rs,prs,r;
-> @@ -190,6 +201,23 @@ static __always_inline void __tlbie_va(unsigned long=
- va, unsigned long pid,
->  	trace_tlbie(0, 0, rb, rs, ric, prs, r);
->  }
-> =20
-> +static __always_inline void __tlbie_va_lpid(unsigned long va, unsigned l=
-ong pid,
-> +					    unsigned long lpid,
-> +					    unsigned long ap, unsigned long ric)
-> +{
-> +	unsigned long rb, rs, prs, r;
-> +
-> +	rb =3D va & ~(PPC_BITMASK(52, 63));
-> +	rb |=3D ap << PPC_BITLSHIFT(58);
-> +	rs =3D (pid << PPC_BITLSHIFT(31)) | (lpid & ~(PPC_BITMASK(0, 31)));
-> +	prs =3D 1; /* process scoped */
-> +	r =3D 1;   /* radix format */
-> +
-> +	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
-> +		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
-> +	trace_tlbie(0, 0, rb, rs, ric, prs, r);
-> +}
-> +
->  static __always_inline void __tlbie_lpid_va(unsigned long va, unsigned l=
-ong lpid,
->  					    unsigned long ap, unsigned long ric)
->  {
-> @@ -235,6 +263,22 @@ static inline void fixup_tlbie_va_range(unsigned lon=
-g va, unsigned long pid,
->  	}
->  }
-> =20
-> +static inline void fixup_tlbie_va_range_lpid(unsigned long va,
-> +					     unsigned long pid,
-> +					     unsigned long lpid,
-> +					     unsigned long ap)
-> +{
-> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-> +		asm volatile("ptesync" : : : "memory");
-> +		__tlbie_pid_lpid(0, lpid, RIC_FLUSH_TLB);
-> +	}
-> +
-> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
-> +		asm volatile("ptesync" : : : "memory");
-> +		__tlbie_va_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
-> +	}
-> +}
-> +
->  static inline void fixup_tlbie_pid(unsigned long pid)
->  {
->  	/*
-> @@ -254,6 +298,25 @@ static inline void fixup_tlbie_pid(unsigned long pid)
->  	}
->  }
-> =20
-> +static inline void fixup_tlbie_pid_lpid(unsigned long pid, unsigned long=
- lpid)
-> +{
-> +	/*
-> +	 * We can use any address for the invalidation, pick one which is
-> +	 * probably unused as an optimisation.
-> +	 */
-> +	unsigned long va =3D ((1UL << 52) - 1);
-> +
-> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-> +		asm volatile("ptesync" : : : "memory");
-> +		__tlbie_pid_lpid(0, lpid, RIC_FLUSH_TLB);
-> +	}
-> +
-> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
-> +		asm volatile("ptesync" : : : "memory");
-> +		__tlbie_va_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
-> +				RIC_FLUSH_TLB);
-> +	}
-> +}
-> =20
->  static inline void fixup_tlbie_lpid_va(unsigned long va, unsigned long l=
-pid,
->  				       unsigned long ap)
-> @@ -344,6 +407,31 @@ static inline void _tlbie_pid(unsigned long pid, uns=
-igned long ric)
->  	asm volatile("eieio; tlbsync; ptesync": : :"memory");
->  }
-> =20
-> +static inline void _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
-> +				   unsigned long ric)
-> +{
-> +	asm volatile("ptesync" : : : "memory");
-> +
-> +	/*
-> +	 * Workaround the fact that the "ric" argument to __tlbie_pid
-> +	 * must be a compile-time contraint to match the "i" constraint
-> +	 * in the asm statement.
-> +	 */
-> +	switch (ric) {
-> +	case RIC_FLUSH_TLB:
-> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
-> +		fixup_tlbie_pid_lpid(pid, lpid);
-> +		break;
-> +	case RIC_FLUSH_PWC:
-> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
-> +		break;
-> +	case RIC_FLUSH_ALL:
-> +	default:
-> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_ALL);
-> +		fixup_tlbie_pid_lpid(pid, lpid);
-> +	}
-> +	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
-> +}
->  struct tlbiel_pid {
->  	unsigned long pid;
->  	unsigned long ric;
-> @@ -469,6 +557,20 @@ static inline void __tlbie_va_range(unsigned long st=
-art, unsigned long end,
->  	fixup_tlbie_va_range(addr - page_size, pid, ap);
->  }
-> =20
-> +static inline void __tlbie_va_range_lpid(unsigned long start, unsigned l=
-ong end,
-> +					 unsigned long pid, unsigned long lpid,
-> +					 unsigned long page_size,
-> +					 unsigned long psize)
-> +{
-> +	unsigned long addr;
-> +	unsigned long ap =3D mmu_get_ap(psize);
-> +
-> +	for (addr =3D start; addr < end; addr +=3D page_size)
-> +		__tlbie_va_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
-> +
-> +	fixup_tlbie_va_range_lpid(addr - page_size, pid, lpid, ap);
-> +}
-> +
->  static __always_inline void _tlbie_va(unsigned long va, unsigned long pi=
-d,
->  				      unsigned long psize, unsigned long ric)
->  {
-> @@ -549,6 +651,18 @@ static inline void _tlbie_va_range(unsigned long sta=
-rt, unsigned long end,
->  	asm volatile("eieio; tlbsync; ptesync": : :"memory");
->  }
-> =20
-> +static inline void _tlbie_va_range_lpid(unsigned long start, unsigned lo=
-ng end,
-> +					unsigned long pid, unsigned long lpid,
-> +					unsigned long page_size,
-> +					unsigned long psize, bool also_pwc)
-> +{
-> +	asm volatile("ptesync" : : : "memory");
-> +	if (also_pwc)
-> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
-> +	__tlbie_va_range_lpid(start, end, pid, lpid, page_size, psize);
-> +	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
-> +}
-> +
->  static inline void _tlbiel_va_range_multicast(struct mm_struct *mm,
->  				unsigned long start, unsigned long end,
->  				unsigned long pid, unsigned long page_size,
-> @@ -1381,4 +1495,34 @@ extern void radix_kvm_prefetch_workaround(struct m=
-m_struct *mm)
->  	}
->  }
->  EXPORT_SYMBOL_GPL(radix_kvm_prefetch_workaround);
-> +
 > +/*
-> + * Performs process-scoped invalidations for a given LPID
+> + * Performs partition-scoped invalidations for nested guests
 > + * as part of H_RPT_INVALIDATE hcall.
 > + */
-> +void do_h_rpt_invalidate_prt(unsigned long pid, unsigned long lpid,
-> +			     unsigned long type, unsigned long page_size,
-> +			     unsigned long psize, unsigned long start,
-> +			     unsigned long end)
+> +long do_h_rpt_invalidate_pat(struct kvm_vcpu *vcpu, unsigned long lpid,
+> +			     unsigned long type, unsigned long pg_sizes,
+> +			     unsigned long start, unsigned long end)
 > +{
+> +	struct kvm_nested_guest *gp;
+> +	long ret;
+> +	unsigned long psize, ap;
+> +
 > +	/*
-> +	 * A H_RPTI_TYPE_ALL request implies RIC=3D3, hence
-> +	 * do a single IS=3D1 based flush.
+> +	 * If L2 lpid isn't valid, we need to return H_PARAMETER.
+> +	 *
+> +	 * However, nested KVM issues a L2 lpid flush call when creating
+> +	 * partition table entries for L2. This happens even before the
+> +	 * corresponding shadow lpid is created in HV which happens in
+> +	 * H_ENTER_NESTED call. Since we can't differentiate this case from
+> +	 * the invalid case, we ignore such flush requests and return success.
 > +	 */
-> +	if ((type & H_RPTI_TYPE_ALL) =3D=3D H_RPTI_TYPE_ALL) {
-> +		_tlbie_pid_lpid(pid, lpid, RIC_FLUSH_ALL);
-> +		return;
+> +	gp =3D kvmhv_find_nested(vcpu->kvm, lpid);
+> +	if (!gp)
+> +		return H_SUCCESS;
+> +
+> +	/*
+> +	 * A flush all request can be handled by a full lpid flush only.
+> +	 */
+> +	if ((type & H_RPTI_TYPE_NESTED_ALL) =3D=3D H_RPTI_TYPE_NESTED_ALL)
+> +		return do_tlb_invalidate_nested_all(vcpu, lpid, RIC_FLUSH_ALL);
+> +
+> +#if 0
+> +	/*
+> +	 * We don't need to handle a PWC flush like process table here,
+> +	 * because intermediate partition scoped table in nested guest doesn't
+> +	 * really have PWC. Only level we have PWC is in L0 and for nested
+> +	 * invalidate at L0 we always do kvm_flush_lpid() which does
+> +	 * radix__flush_all_lpid(). For range invalidate at any level, we
+> +	 * are not removing the higher level page tables and hence there is
+> +	 * no PWC invalidate needed.
+> +	 */
+> +	if (type & H_RPTI_TYPE_PWC) {
+> +		ret =3D do_tlb_invalidate_nested_all(vcpu, lpid, RIC_FLUSH_PWC);
+> +		if (ret)
+> +			return H_P4;
 > +	}
+> +#endif
 > +
-> +	if (type & H_RPTI_TYPE_PWC)
-> +		_tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
+> +	if (start =3D=3D 0 && end =3D=3D -1)
+> +		return do_tlb_invalidate_nested_all(vcpu, lpid, RIC_FLUSH_TLB);
 > +
-> +	if (start =3D=3D 0 && end =3D=3D -1) /* PID */
-> +		_tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
-> +	else /* EA */
-> +		_tlbie_va_range_lpid(start, end, pid, lpid, page_size,
-> +				     psize, false);
+> +	if (type & H_RPTI_TYPE_TLB) {
+> +		struct mmu_psize_def *def;
+> +
+> +		for (psize =3D 0; psize < MMU_PAGE_COUNT; psize++) {
+> +			def =3D &mmu_psize_defs[psize];
+> +			if (!(pg_sizes & def->h_rpt_pgsize))
+> +				continue;
+> +
+> +			ret =3D do_tlb_invalidate_nested_tlb(vcpu, lpid,
+> +							   (1UL << def->shift),
+> +							   ap, start, end);
+> +			if (ret)
+> +				return H_P4;
+> +		}
+> +	}
+> +	return H_SUCCESS;
 > +}
-> +EXPORT_SYMBOL_GPL(do_h_rpt_invalidate_prt);
 > +
->  #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+>  /* Used to convert a nested guest real address to a L1 guest real addres=
+s */
+>  static int kvmhv_translate_addr_nested(struct kvm_vcpu *vcpu,
+>  				       struct kvm_nested_guest *gp,
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -554,24 +335,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---27Kb1Mwjc5GFA/S8
+--r1OAT0jrWOgqEPEU
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmBZUfAACgkQbDjKyiDZ
-s5KyVRAA1DUYagKEajy7PTvK8lsepxsJcFBhKO2B598Bas/8TZybSly9l+2LK/6+
-q/OdO2EfhH7YCaiHLQhPM42Od6TWnVxtRmAh8GVamEh8IOT3VcgRc9ePm5sbvOij
-xpcKT0E7oOc7Vzyf1OnL57Caaazv83NstYQsxhPdT3BLaViIIWrSv/dr6Mj7RYHo
-jeEpbf2AuGEaOZg4t/fOpccyXdwHj0mQpY7PW6W2mfCqzp1av4BIX05C0DB0WPvI
-jRWq0SLKKNfwofkSEYNchc6bvhLr2KAhuDmGfqWU6GEUu3awYUzwzhs2rts/WMM7
-NmTkuKfRzZYY/BcJ+6yBx77cxNzhWdEnWxXY/5ISVj3jr+PNhZP2bU7ZeYmDhmK8
-/+O2xKQhEsbgWOyUvVbySLOupVp6xKpCuaD7EF+QPlVeasHitmXkwLxITDdiGU5W
-XiLDkkkpNDZ5wtHHglaVdxumTZDXTPngZKxxtaLuW7Y6aT/Xzig7twCXOLgGto9x
-jlZx9IfiafzBVnLKjSXurwE38Qdkh1t3nWXVw23H7IPUDrdJAPCKFCO43hSdeuPN
-MC4lEMun3VYJ/Tyr4Jy0eHWetIkyoBbWHvBkkqy+gH97udOAks2bkdY1JCiCX2E4
-gliWNEfcY9RI/Kw9wuDdyVJlxeAkb4/v4b+yWBkMLfkMwOeYAEc=
-=UXps
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmBZU3EACgkQbDjKyiDZ
+s5IQCA//dpsGmrpFkx3ZZ81DtZOYJMSQlaA4Qj5TzciJlF0qWUAlJv3P3pFkZfG1
+XQDHfW4n9yO0f6+cbgPp9dh6VLHKO1HI1sOL6ttZmoRB8gJvdomSAOnrd5ZEmbPA
+CAkFx2iB94ziUow8GKQKcT7QF+wvQCbVsdYz0NwAWG1HZUP5mdwfSDXmOl1fr4yD
+22Ej5rTrC0qJFb1UDScUT4v9x9wQPrgbyS5/qdhwR2a6lPF0Smp/xTRKWfipct4F
+QoOxiDsB8PsEIj1xK6WpDVaJ+Be8sFnq8OFnFh7BECVet+89OacbbpJY7X8qc/Co
+vYMf22l1rcJuy1gooKFfh3Bb9j2dwob+f6WFQDBtoFDcwaBO91hV33artzZX8uw0
+AIxd576xRVmqbNpNVqCiI88WzNyL/fLCnacA1zkW0/U2xJbRRSgKR2mVjhwlcrwu
+vdmlAE4aiSCBMqLlNXLJI8dv6Kg2bkUwM97LOtTaIYHeQ2sn0yb8hE65ljUFp7IZ
+wxL8U2xvgvgcjWTT8xDD+OezD83jc7kZkqF2CU8Q6N8dSJXykPMgZX9XDyOM0kj9
+qkGC5eB4qeDZdKPCACQrxH6sJpCjFHjPsyAyY8fduth+o11tEyXycCj15LCjh4lZ
+0gYBn0R2D7xlHSetxxGvWbNRXBhq5rF3LKCaiYprBXngBkW1kjk=
+=nL3w
 -----END PGP SIGNATURE-----
 
---27Kb1Mwjc5GFA/S8--
+--r1OAT0jrWOgqEPEU--
