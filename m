@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424D634548A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A17345499
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:06:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4Cpc1Z9vz3cCX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 12:05:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4CqB3YGzz3cMs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 12:05:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=iSK4Rha4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=JuDOVyXU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435;
- helo=mail-pf1-x435.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c;
+ helo=mail-pg1-x52c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=iSK4Rha4; dkim-atps=neutral
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
- [IPv6:2607:f8b0:4864:20::435])
+ header.s=20161025 header.b=JuDOVyXU; dkim-atps=neutral
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
+ [IPv6:2607:f8b0:4864:20::52c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4CmM2Bjfz30BH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 12:03:31 +1100 (AEDT)
-Received: by mail-pf1-x435.google.com with SMTP id x26so12511578pfn.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:03:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4CmR0xKHz30GM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 12:03:35 +1100 (AEDT)
+Received: by mail-pg1-x52c.google.com with SMTP id r17so10053877pgi.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:03:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=96lVEMoY9hmNRY65UX3KaQpv8EehCYA8LF4BBDNeARg=;
- b=iSK4Rha4ojQO3w1SlTqJyLAZThuuX0MD2SeDxkMMa5SyRmgHPv3iBkYCzlfYbiXHap
- 4W6LWw3i/tEZ80AXYb8vhj+z4OIw/2cHoNhgnvREZ6nI3HyYkmdU0+YN9LvnGRrXDZTc
- FxIEzDV3Q/504Hmz2gSgDVsxWLtCn9a2wW0Czckaa2Oi/pZRHkoimiOfAOzWBqEKM+lL
- 9M/HrVUbOMfjB3YR5toJT7fDMxSMAUyWYS33gp+alUPVPNmCYnkh+ow4UGd/Dm+Vyl14
- feNPyZSeEB4EDqaUvi5/R/YF8Y25mCX3tArhFDkSGaLmabnUiaoUZAY7+NcGPrXyt1+s
- vMwQ==
+ bh=A/SnEbu0v05VvXraZOiAb1e9wcvWFKJdoZf5OUf6Yb0=;
+ b=JuDOVyXU2df0CU3+R6S09KRDtVt/8n4GJK0Ch+5DH5ljnxTiVaS3sdai/S8/zQzkDD
+ S/ovhELE/16rS+8eVkva1wf/zoK7PIBGgCokdzWtOtpe0eecheLJmvzcPboQHT155fQ4
+ syVRm+RXb+pbaZjR1zC+DPni20iVW2uyH8o+qKlChvamO/vxebQbklnTuFVALfsqy+Cu
+ zr4tlz4DAE4fYc6hBTIq0aWANeo3m/Vjq2xa7xa0N8QkhKqvKWPDFnUURVU6qHVRoHjS
+ BXbiprbmUXW++Q9JDRcNfeCeuwsGUadw2PghxU/OceUoPoshiBy70vJ4HMZZYNIpkdhh
+ uuMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=96lVEMoY9hmNRY65UX3KaQpv8EehCYA8LF4BBDNeARg=;
- b=n7PEGJjghZCW6dq4vc1l7GHB4YAneu6HuE4I5SLfiXb7evy8+XyCOvlS1qg23dngSX
- TeU10nG/qMoEg9vaX4t7kEJuV8MF8rBGk7ENrp6bfPQxoLUqtanXxXhR8nYqvi4eRX6v
- FWUb7JyxX2yRRlvqsma/jYks9pWggYcU7UhGNX8LABbK5uavSw8SV/Ze0bC61gt2TtNR
- skM4GaSINZSnpzwZyOo3sbf3iEIUpTVqmT05bf9KtJ2sV2go0X+hJRL9l44MQc0DVr7l
- 2WGrBdFv6PpU38OBT2TmmMcZX+vM2a7AbiutN3HgJ9WItL/W/e6ck+TcV2dnAgtyhmxV
- 9arg==
-X-Gm-Message-State: AOAM533voXqTCFUAHI36R4+HPY66ETXubyFJEf63XlVfIqnkLVYkGZfS
- swYNzkW9nx/BA1UHagSfTfc=
-X-Google-Smtp-Source: ABdhPJwHaxaBbEuGdovpRjVbFcwmJA1YSF54aKN3EmfRzan+E5ppcHdiDa0PBOZV7uXBrp6yGDN3Rw==
-X-Received: by 2002:a65:6a44:: with SMTP id o4mr1802492pgu.312.1616461409541; 
- Mon, 22 Mar 2021 18:03:29 -0700 (PDT)
+ bh=A/SnEbu0v05VvXraZOiAb1e9wcvWFKJdoZf5OUf6Yb0=;
+ b=aMu4XtRkLfAgahqxalHGYqsBXvaHRDhF0i4jyLQKIJc/So6uA67RzioOUD6JSjlsrb
+ mlN/kUrY8hnyOYrQVrcKWMxU5fxzgXpblGDfAiSycXnolK+rvvSiYPmTZJ2JKYcSjz6d
+ CddeNjsTOhlEZ6vXa11xjKRus0X8eHapXqbsMYCRqQsjAEHoVsJ4+x9IyHEU80T0ronf
+ pobAQVABjmSwMajs+gVAEyrUnAlYtsYWOpkd8UPIRqtTas2wdj7E8T4RHEBZF3BSy7ev
+ U3jtPYaHrgbpDtCVI3JX9r44QdvlCAKEbFdbOBj8MWO0H8DJicrqRx/A4E4S97G4cWZN
+ j9Hw==
+X-Gm-Message-State: AOAM533amn+ODkVtNyFlu1sBFVjS45tbotAEn/UaXAr2BWZdtksMrIu8
+ e+Cr3W/AGyz/zAgDJezVU2cg9rBtP+w=
+X-Google-Smtp-Source: ABdhPJxqJvrbrlx/7iCJz0s11fRARFxYLUUGvx9PFsEE91s5bQ+/yI9/oWpFx6L+15k1SwL7NpEifw==
+X-Received: by 2002:a17:902:c9c3:b029:e6:f027:b01e with SMTP id
+ q3-20020a170902c9c3b02900e6f027b01emr818869pld.74.1616461412848; 
+ Mon, 22 Mar 2021 18:03:32 -0700 (PDT)
 Received: from bobo.ibm.com ([58.84.78.96])
- by smtp.gmail.com with ESMTPSA id e7sm14491894pfc.88.2021.03.22.18.03.27
+ by smtp.gmail.com with ESMTPSA id e7sm14491894pfc.88.2021.03.22.18.03.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Mar 2021 18:03:29 -0700 (PDT)
+ Mon, 22 Mar 2021 18:03:32 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v4 04/46] KVM: PPC: Book3S HV: Prevent radix guests from
- setting LPCR[TC]
-Date: Tue, 23 Mar 2021 11:02:23 +1000
-Message-Id: <20210323010305.1045293-5-npiggin@gmail.com>
+Subject: [PATCH v4 05/46] KVM: PPC: Book3S HV: Remove redundant mtspr PSPB
+Date: Tue, 23 Mar 2021 11:02:24 +1000
+Message-Id: <20210323010305.1045293-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210323010305.1045293-1-npiggin@gmail.com>
 References: <20210323010305.1045293-1-npiggin@gmail.com>
@@ -80,50 +80,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This bit only applies to hash partitions.
+This SPR is set to 0 twice when exiting the guest.
 
+Suggested-by: Fabiano Rosas <farosas@linux.ibm.com>
+Reviewed-by: Daniel Axtens <dja@axtens.net>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c        | 6 ++++++
- arch/powerpc/kvm/book3s_hv_nested.c | 3 +--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index c5de7e3f22b6..1ffb0902e779 100644
+index 1ffb0902e779..7cfaabab2c20 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1645,6 +1645,12 @@ static int kvm_arch_vcpu_ioctl_set_sregs_hv(struct kvm_vcpu *vcpu,
-  */
- unsigned long kvmppc_filter_lpcr_hv(struct kvmppc_vcore *vc, unsigned long lpcr)
- {
-+	struct kvm *kvm = vc->kvm;
-+
-+	/* LPCR_TC only applies to HPT guests */
-+	if (kvm_is_radix(kvm))
-+		lpcr &= ~LPCR_TC;
-+
- 	/* On POWER8 and above, userspace can modify AIL */
- 	if (!cpu_has_feature(CPU_FTR_ARCH_207S))
- 		lpcr &= ~LPCR_AIL;
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index f7b441b3eb17..851e3f527eb2 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -140,8 +140,7 @@ static void sanitise_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
- 	/*
- 	 * Don't let L1 change LPCR bits for the L2 except these:
- 	 */
--	mask = LPCR_DPFD | LPCR_ILE | LPCR_TC | LPCR_AIL | LPCR_LD |
--		LPCR_LPES | LPCR_MER;
-+	mask = LPCR_DPFD | LPCR_ILE | LPCR_AIL | LPCR_LD | LPCR_LPES | LPCR_MER;
- 	hr->lpcr = kvmppc_filter_lpcr_hv(vc,
- 			(vc->lpcr & ~mask) | (hr->lpcr & mask));
+@@ -3781,7 +3781,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	mtspr(SPRN_DSCR, host_dscr);
+ 	mtspr(SPRN_TIDR, host_tidr);
+ 	mtspr(SPRN_IAMR, host_iamr);
+-	mtspr(SPRN_PSPB, 0);
  
+ 	if (host_amr != vcpu->arch.amr)
+ 		mtspr(SPRN_AMR, host_amr);
 -- 
 2.23.0
 
