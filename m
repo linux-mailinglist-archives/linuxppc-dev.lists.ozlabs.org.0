@@ -2,74 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB333454F3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 02:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A27345566
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 03:14:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4DDh2RBWz3hfH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 12:24:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4FL648kHz3bmq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Mar 2021 13:14:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=VliLkGKl;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=gryQmbGN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::429;
- helo=mail-pf1-x429.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=VliLkGKl; dkim-atps=neutral
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
- [IPv6:2607:f8b0:4864:20::429])
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=gryQmbGN; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4D9H5nhmz3h7R
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 12:21:38 +1100 (AEDT)
-Received: by mail-pf1-x429.google.com with SMTP id y5so12570355pfn.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Mar 2021 18:21:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:subject:in-reply-to:references:date:message-id:mime-version;
- bh=D6/t64GWTSvYj3tg/pZ5Ic42OSmLCS9eM7+HxTJh7bY=;
- b=VliLkGKlUFWXjHYPHKhIoC9T8J/tXbQBlLhNPRFKpcSDmcYqAJwrSP1aEMERW9alSF
- +/C6VVdeBGrMAl6EuoauewV9NOcKnut05ZmeYuZQkmsrz6WSWGaB1xefKkXg/LWSUhtz
- 54ZrfHpYG6uA/l01ZR+VOyiPyQIwl6EVfUCf8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=D6/t64GWTSvYj3tg/pZ5Ic42OSmLCS9eM7+HxTJh7bY=;
- b=B+BfzrXKvievLcimbFIkrzOJxgx3srtgPw8hyXFwC6UZ7nQfOPWkX3J7YOtqhenPGg
- /p7ynkk/pSwKVcx8AhMHbf61cCbt56xlJtxNstrTqJPirRap3dJh8freuRkT73x5dKAm
- SSlMUoiCaSzVkqRLSooa+Ajx61z3/4M6tPXQKTggUg10bQfHpsfVASlVXA99S/2g/HrC
- cgKjnTHW2A366OGufImhUwXrUKLjhyuj7AZkIlKZcKA48Epr4poTO16mHC3/qJhxb0SB
- AeR/HJYq3S6gayUQYx4f+B29UQcLEzxDXkSRqxA+HjJc/F5oH/f2w3U6Nrxo1Xszb4A5
- b6mw==
-X-Gm-Message-State: AOAM53132QXVq8uMq6s6KUU27JvlET1+RqceE7g12EP2UOiPz4Pgn/b5
- izxj2m+lxShTVLD0zqemQl4Vbg==
-X-Google-Smtp-Source: ABdhPJw2Qp+2mIKNhFX1I+6sZk2cFgPwhAQgZTyBkhIWBJDj29kcgwl2c2YRP52g3ltzroCn2P4Oag==
-X-Received: by 2002:a17:902:6ac3:b029:e6:c6a3:a697 with SMTP id
- i3-20020a1709026ac3b02900e6c6a3a697mr2657330plt.2.1616462496621; 
- Mon, 22 Mar 2021 18:21:36 -0700 (PDT)
-Received: from localhost
- (2001-44b8-1113-6700-ab57-754e-edac-e091.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:ab57:754e:edac:e091])
- by smtp.gmail.com with ESMTPSA id j188sm15051642pfd.64.2021.03.22.18.21.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Mar 2021 18:21:36 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
- aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
-Subject: Re: [PATCH v11 0/6] KASAN for powerpc64 radix
-In-Reply-To: <5a3b5952-b31f-42bf-eaf4-ea24444f8df6@csgroup.eu>
-References: <20210319144058.772525-1-dja@axtens.net>
- <5a3b5952-b31f-42bf-eaf4-ea24444f8df6@csgroup.eu>
-Date: Tue, 23 Mar 2021 12:21:32 +1100
-Message-ID: <87ft0mbr6r.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4FKF0bqBz2yRS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 13:13:36 +1100 (AEDT)
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4F4FKD3WGGz9sVS; Tue, 23 Mar 2021 13:13:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1616465616;
+ bh=BOuWa8UaE7ECNbJjXx2pAKCGGhQFwDrno0GolRKA3tY=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=gryQmbGNnM+eICmH6gcaPFrTGPObJJRRRaVwlNzbf45Qdb0e/7mdQzVVRYr+Q7pbB
+ zZ8Kv2wFreSSe8C45J0qcDcU1a2TsvOtZE+UroS+qLoFuaCIy4BpCmFWSvMj4dAeHF
+ 8llPGXbbLioyNgO+hHvSGaXiZCG96lHcSdE60+BE=
+Date: Tue, 23 Mar 2021 12:24:36 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v6 2/6] powerpc/book3s64/radix: Add H_RPT_INVALIDATE
+ pgsize encodings to mmu_psize_def
+Message-ID: <YFlDVCMpMW4ofP7D@yekko.fritz.box>
+References: <20210311083939.595568-1-bharata@linux.ibm.com>
+ <20210311083939.595568-3-bharata@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="ZBgd1eIUYKsIz9Dp"
+Content-Disposition: inline
+In-Reply-To: <20210311083939.595568-3-bharata@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,71 +58,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
+ kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
 
-> In the discussion we had long time ago, 
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20190806233827.16454-5-dja@axtens.net/#2321067 
-> , I challenged you on why it was not possible to implement things the same way as other 
-> architectures, in extenso with an early mapping.
->
-> Your first answer was that too many things were done in real mode at startup. After some discussion 
-> you said that finally there was not that much things at startup but the issue was KVM.
->
-> Now you say that instrumentation on KVM is fully disabled.
->
-> So my question is, if KVM is not a problem anymore, why not go the standard way with an early shadow 
-> ? Then you could also support inline instrumentation.
+--ZBgd1eIUYKsIz9Dp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fair enough, I've had some trouble both understanding the problem myself
-and clearly articulating it. Let me try again.
+On Thu, Mar 11, 2021 at 02:09:35PM +0530, Bharata B Rao wrote:
+> Add a field to mmu_psize_def to store the page size encodings
+> of H_RPT_INVALIDATE hcall. Initialize this while scanning the radix
+> AP encodings. This will be used when invalidating with required
+> page size encoding in the hcall.
+>=20
+> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
 
-We need translations on to access the shadow area.
+Having the table be the source of truth and implementing
+psize_to_rpti_pgsize() in terms of it would be nicer.  But... I guess
+you can't really do that, because you're dynamically initializing the
+table from the device tree, but the device tree doesn't include the
+RPTI encodings.  Oh well.
 
-We reach setup_64.c::early_setup() with translations off. At this point
-we don't know what MMU we're running under, or our CPU features.
+Reveiwed-by: David Gibson <david@gibson.dropbear.id.au>
 
-To determine our MMU and CPU features, early_setup() calls functions
-(dt_cpu_ftrs_init, early_init_devtree) that call out to generic code
-like of_scan_flat_dt. We need to do this before we turn on translations
-because we can't set up the MMU until we know what MMU we have.
+> ---
+>  arch/powerpc/include/asm/book3s/64/mmu.h | 1 +
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 5 +++++
+>  2 files changed, 6 insertions(+)
+>=20
+> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/incl=
+ude/asm/book3s/64/mmu.h
+> index eace8c3f7b0a..c02f42d1031e 100644
+> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
+> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+> @@ -19,6 +19,7 @@ struct mmu_psize_def {
+>  	int		penc[MMU_PAGE_COUNT];	/* HPTE encoding */
+>  	unsigned int	tlbiel;	/* tlbiel supported for that page size */
+>  	unsigned long	avpnm;	/* bits to mask out in AVPN in the HPTE */
+> +	unsigned long   h_rpt_pgsize; /* H_RPT_INVALIDATE page size encoding */
+>  	union {
+>  		unsigned long	sllp;	/* SLB L||LP (exact mask to use in slbmte) */
+>  		unsigned long ap;	/* Ap encoding used by PowerISA 3.0 */
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/b=
+ook3s64/radix_pgtable.c
+> index 98f0b243c1ab..1b749899016b 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -486,6 +486,7 @@ static int __init radix_dt_scan_page_sizes(unsigned l=
+ong node,
+>  		def =3D &mmu_psize_defs[idx];
+>  		def->shift =3D shift;
+>  		def->ap  =3D ap;
+> +		def->h_rpt_pgsize =3D psize_to_rpti_pgsize(idx);
+>  	}
+> =20
+>  	/* needed ? */
+> @@ -560,9 +561,13 @@ void __init radix__early_init_devtree(void)
+>  		 */
+>  		mmu_psize_defs[MMU_PAGE_4K].shift =3D 12;
+>  		mmu_psize_defs[MMU_PAGE_4K].ap =3D 0x0;
+> +		mmu_psize_defs[MMU_PAGE_4K].h_rpt_pgsize =3D
+> +			psize_to_rpti_pgsize(MMU_PAGE_4K);
+> =20
+>  		mmu_psize_defs[MMU_PAGE_64K].shift =3D 16;
+>  		mmu_psize_defs[MMU_PAGE_64K].ap =3D 0x5;
+> +		mmu_psize_defs[MMU_PAGE_64K].h_rpt_pgsize =3D
+> +			psize_to_rpti_pgsize(MMU_PAGE_64K);
+>  	}
+> =20
+>  	/*
 
-So this puts us in a bind:
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
- - We can't set up an early shadow until we have translations on, which
-   requires that the MMU is set up.
+--ZBgd1eIUYKsIz9Dp
+Content-Type: application/pgp-signature; name="signature.asc"
 
- - We can't set up an MMU until we call out to generic code for FDT
-   parsing.
+-----BEGIN PGP SIGNATURE-----
 
-So there will be calls to generic FDT parsing code that happen before the
-early shadow is set up.
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmBZQ1MACgkQbDjKyiDZ
+s5JFRRAA0oOFK9Q84n+MtxUJ7MAHvqkQaqSlF76S3JMuUqh2zpZJRZHmESXo2ZBL
+1ZkpZUlHXbUo3yJYmVPQ9j8WPFegkyai+dvIuMFxc/DmB3WHEmHZfvfqsV5k4iy0
+FceHtu1jtln45MQA1L/yqm6nCoCHMfan/rE12rt+q8wyf+3CHH0iccAFUoTZGguz
+iOtw7ud4LxhpCGmSiiy2K9HsPSdhacraHXTIqrjuUw+wxfYSG0+R6DqWkByeAgK2
+VQVGrEX0uzL/woRTuaFrcI8BnSVICofuyfaZH1mIDQabLYnk4eAhvNSPwY44xWUS
+LpYAcMkNe/E6dnMqhbhcfn9xTzpWEAfKzLjGfoaAq8xsZCNAUIQQIqWgc+cceXX0
+OWhaJPH4EvHPzdtGRvRotNsPXjyYf+qKL47y9TgHOxPYye4BSS6eGbW9Ecj2T2by
+XNo+auFgR+BjtxaC1C/ewSMVAggB9NkARDhDCrpaI5D5rK/SMoSBSLm0AoFJVmID
+T32cqyPh7zg69/CSMy5GLyfRclTSfVUfDmixg/yzr5z745/b84lGU9h9v7kLD0z6
+f6fKWqDh/yKb7B9giM27wmW4IzI8+mwQNO4cMkyFGoafkTC4uNR/ddbFf/X9yfCu
+HNZypYJpfsfIKXvtNKnkrC/MfAcLlWSUcLjCx3mCAZ66+jwMVGc=
+=tCbh
+-----END PGP SIGNATURE-----
 
-The setup code also prints a bunch of information about the platform
-with printk() while translations are off, so it wouldn't even be enough
-to disable instrumentation for bits of the generic DT code on ppc64.
-
-Does that make sense? If you can figure out how to 'square the circle'
-here I'm all ears.
-
-Other notes:
-
- - There's a comment about printk() being 'safe' in early_setup(), that
-   refers to having a valid PACA, it doesn't mean that it's safe in any
-   other sense.
-
- - KVM does indeed also run stuff with translations off but we can catch
-   all of that by disabling instrumentation on the real-mode handlers:
-   it doesn't seem to leak out to generic code. So you are right that
-   KVM is no longer an issue.
-
-Kind regards,
-Daniel
-
-
->
-> Christophe
-
+--ZBgd1eIUYKsIz9Dp--
