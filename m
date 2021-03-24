@@ -1,62 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE42347F61
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 18:33:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C302348221
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 20:46:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F5Fgm5D3yz3bv2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 04:33:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F5JdD1KkGz3brw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 06:46:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T66PHbzA;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fcl63NbL;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fDA9pfyV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=T66PHbzA; 
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=jolsa@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=fcl63NbL; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=fDA9pfyV; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F5FgL1Slcz301y
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 04:32:46 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3B08761A19
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 17:32:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1616607163;
- bh=vwFmLhIbpBit7slP5Tgq8iugG6lF7uxqcxCcj5anb1s=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=T66PHbzA4HZLyDpwGOkX+dflulPJCr9OD+q4niugzUsfMiI9RRAGz5n7CWXc2WtXR
- XbuhrFmqKLpIwxKmUJDvEVxs0mhwEIxcXsqNURnI1d7/3eFvgOm8abHDCM49/H3Bcf
- qvL2xptThHPDmYcaGptEqEHOkGjiA6p0x7zd8Yv9Vcd68HCUOSUZFJDQAGNgtHdf8Q
- rRu34o4uRbPglSg1LqlwqUB3wXov+O83CJ50wVik8yYYAo0m4PxVbBJR5qtZ7tTQ46
- E7J01J6cM1sxGhyKXm6t2MC4vKiuIMFxUa4kcLH4QmvCSF/wB32I2fLk7RvUSZZCGe
- Poh8Mv+K1J1hw==
-Received: by mail-ed1-f43.google.com with SMTP id bx7so28559363edb.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 10:32:43 -0700 (PDT)
-X-Gm-Message-State: AOAM532mQoR8aIhbjfI8Edk1PFJiDhrD3RENC1hVxSzklBFwyRr4PLmG
- JrzRwwNyo0lXOQjs3ncpfYPzxtX9lR/0+3ORKA==
-X-Google-Smtp-Source: ABdhPJy7YCVuRWwXQo13DaEdS0eUAv22DscISVepsqz2isMzM1EIDsAzWe5iU1QCiAYfFd5rzpKJR8h0mAzTPfMAUrg=
-X-Received: by 2002:aa7:d3d8:: with SMTP id o24mr4667708edr.165.1616607161795; 
- Wed, 24 Mar 2021 10:32:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F5Jcl493kz30Bp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 06:45:41 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1616615136;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=71BnMFS9rn8SPVKmnpmhBKFC1i10nRCVkAwJRE2/qiI=;
+ b=fcl63NbLaF9WNx44G7od4SxMzLZDAqbfbyg2+FdyXDGO9OBwR8iaW7wSAa3KOP6JMVrFtQ
+ /CoSeMdKSGOp+6+5I6GNb21dQgKGravOgnTWfkol+jtcrp5Re4N2gyrpKXuEYn9qdNs+Gm
+ iteuPIFO3ntqRgdwKsRsVlf5LxjF6B4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1616615137;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=71BnMFS9rn8SPVKmnpmhBKFC1i10nRCVkAwJRE2/qiI=;
+ b=fDA9pfyVyeS1YXGwTbRRWsULuDjkU9PUq1HiW7RCf5q7avwaRTZt74n7YuhsVTJTa7Y4pI
+ Cv/A9bAFNOy+xdICLRrZ3ytfz4eDX7wVosbQCqplCJXKkzuhj4QcxfztymiJDUqccVrmso
+ 8xm8Tqdk8Ae7lWIFTOOpPgfggUPvk6o=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-9-9ef1xfLNNA2T-RmkDksVBg-1; Wed, 24 Mar 2021 15:43:49 -0400
+X-MC-Unique: 9ef1xfLNNA2T-RmkDksVBg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5F1C21922037;
+ Wed, 24 Mar 2021 19:43:47 +0000 (UTC)
+Received: from krava (unknown [10.40.196.25])
+ by smtp.corp.redhat.com (Postfix) with SMTP id A716262677;
+ Wed, 24 Mar 2021 19:43:44 +0000 (UTC)
+Date: Wed, 24 Mar 2021 20:43:43 +0100
+From: Jiri Olsa <jolsa@redhat.com>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH V2 3/5] tools/perf: Add powerpc support for
+ PERF_SAMPLE_WEIGHT_STRUCT
+Message-ID: <YFuWb3S8p0ZGjmGu@krava>
+References: <1616425047-1666-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <1616425047-1666-4-git-send-email-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
-References: <20210309000247.2989531-4-danielwa@cisco.com>
- <5f865584-09c9-d21f-ffb7-23cf07cf058e@csgroup.eu>
- <20210309212944.GR109100@zorba>
- <e4899874-1684-fa1b-443e-f4e478e05e31@csgroup.eu>
-In-Reply-To: <e4899874-1684-fa1b-443e-f4e478e05e31@csgroup.eu>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 24 Mar 2021 11:32:30 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKm76jRQYDcu3rGyUWKPLspoO=EZW_WFy=zAK+m_JYCTg@mail.gmail.com>
-Message-ID: <CAL_JsqKm76jRQYDcu3rGyUWKPLspoO=EZW_WFy=zAK+m_JYCTg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/7] powerpc: convert config files to generic cmdline
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1616425047-1666-4-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,96 +84,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, X86 ML <x86@kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, xe-linux-external@cisco.com,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- Daniel Walker <danielwa@cisco.com>
+Cc: ravi.bangoria@linux.ibm.com, maddy@linux.ibm.com, peterz@infradead.org,
+ linux-kernel@vger.kernel.org, acme@kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 24, 2021 at 11:01 AM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 09/03/2021 =C3=A0 22:29, Daniel Walker a =C3=A9crit :
-> > On Tue, Mar 09, 2021 at 08:47:09AM +0100, Christophe Leroy wrote:
-> >>
-> >>
-> >> Le 09/03/2021 =C3=A0 01:02, Daniel Walker a =C3=A9crit :
-> >>> This is a scripted mass convert of the config files to use
-> >>> the new generic cmdline. There is a bit of a trim effect here.
-> >>> It would seems that some of the config haven't been trimmed in
-> >>> a while.
-> >>
-> >> If you do that in a separate patch, you loose bisectability.
-> >>
-> >> I think it would have been better to do things in a different way, mor=
-e or less like I did in my series:
-> >> 1/ Provide GENERIC cmdline at the same functionnality level as what is
-> >> spread in the different architectures
-> >> 2/ Convert architectures to the generic with least churn.
-> >> 3/ Add new features to the generic
-> >
-> > You have to have the churn eventually, no matter how you do it. The onl=
-y way you
-> > don't have churn is if you never upgrade the feature set.
-> >
-> >
-> >>>
-> >>> The bash script used to convert is as follows,
-> >>>
-> >>> if [[ -z "$1" || -z "$2" ]]; then
-> >>>           echo "Two arguments are needed."
-> >>>           exit 1
-> >>> fi
-> >>> mkdir $1
-> >>> cp $2 $1/.config
-> >>> sed -i 's/CONFIG_CMDLINE=3D/CONFIG_CMDLINE_BOOL=3Dy\nCONFIG_CMDLINE_P=
-REPEND=3D/g' $1/.config
-> >>
-> >> This is not correct.
-> >>
-> >> By default, on powerpc the provided command line is used only if the b=
-ootloader doesn't provide one.
-> >>
-> >> Otherwise:
-> >> - the builtin command line is appended to the one provided by the boot=
-loader
-> >> if CONFIG_CMDLINE_EXTEND is selected
-> >> - the builtin command line replaces to the one provided by the bootloa=
-der if
-> >> CONFIG_CMDLINE_FORCE is selected
-> >
-> > I think my changes maintain most of this due to the override of
-> > CONFIG_CMDLINE_PREPEND. This is an upgrade and the inflexibility in pow=
-erpc is
-> > an example of why these changes were created in the first place.
->
-> "inflexibility in powerpc" : Can you elaborate ?
->
-> >
-> > For example , say the default command line is "root=3D/dev/issblk0" fro=
-m iss476
-> > platform. And the bootloader adds "root=3D/dev/sda1"
-> >
-> > The result is <prepend><bootloader><append>.
->
->
-> I'm still having hard time understanding the benefit of having both <prep=
-end> and <append>.
-> Could you please provide a complete exemple from real life, ie what exact=
-ly the problem is and what
-> it solves ?
+On Mon, Mar 22, 2021 at 10:57:25AM -0400, Athira Rajeev wrote:
+> Add arch specific arch_evsel__set_sample_weight() to set the new
+> sample type for powerpc.
+> 
+> Add arch specific arch_perf_parse_sample_weight() to store the
+> sample->weight values depending on the sample type applied.
+> if the new sample type (PERF_SAMPLE_WEIGHT_STRUCT) is applied,
+> store only the lower 32 bits to sample->weight. If sample type
+> is 'PERF_SAMPLE_WEIGHT', store the full 64-bit to sample->weight.
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  tools/perf/arch/powerpc/util/Build   |  2 ++
+>  tools/perf/arch/powerpc/util/event.c | 32 ++++++++++++++++++++++++++++++++
+>  tools/perf/arch/powerpc/util/evsel.c |  8 ++++++++
+>  3 files changed, 42 insertions(+)
+>  create mode 100644 tools/perf/arch/powerpc/util/event.c
+>  create mode 100644 tools/perf/arch/powerpc/util/evsel.c
+> 
+> diff --git a/tools/perf/arch/powerpc/util/Build b/tools/perf/arch/powerpc/util/Build
+> index b7945e5a543b..8a79c4126e5b 100644
+> --- a/tools/perf/arch/powerpc/util/Build
+> +++ b/tools/perf/arch/powerpc/util/Build
+> @@ -4,6 +4,8 @@ perf-y += kvm-stat.o
+>  perf-y += perf_regs.o
+>  perf-y += mem-events.o
+>  perf-y += sym-handling.o
+> +perf-y += evsel.o
+> +perf-y += event.o
+>  
+>  perf-$(CONFIG_DWARF) += dwarf-regs.o
+>  perf-$(CONFIG_DWARF) += skip-callchain-idx.o
+> diff --git a/tools/perf/arch/powerpc/util/event.c b/tools/perf/arch/powerpc/util/event.c
+> new file mode 100644
+> index 000000000000..f49d32c2c8ae
+> --- /dev/null
+> +++ b/tools/perf/arch/powerpc/util/event.c
+> @@ -0,0 +1,32 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +#include <linux/types.h>
+> +#include <linux/string.h>
+> +#include <linux/zalloc.h>
+> +
+> +#include "../../../util/event.h"
+> +#include "../../../util/synthetic-events.h"
+> +#include "../../../util/machine.h"
+> +#include "../../../util/tool.h"
+> +#include "../../../util/map.h"
+> +#include "../../../util/debug.h"
 
-It doesn't matter. We already have both cases and 'extend' has meant either=
- one.
+nit, just #include "utils/...h" should work no?
 
-What someone wants is policy and the kernel shouldn't be defining the polic=
-y.
+other than that, the patchset looks ok to me
 
-Rob
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+
+thanks,
+jirka
+
+> +
+> +void arch_perf_parse_sample_weight(struct perf_sample *data,
+> +				   const __u64 *array, u64 type)
+> +{
+> +	union perf_sample_weight weight;
+> +
+> +	weight.full = *array;
+> +	if (type & PERF_SAMPLE_WEIGHT)
+> +		data->weight = weight.full;
+> +	else
+> +		data->weight = weight.var1_dw;
+> +}
+> +
+> +void arch_perf_synthesize_sample_weight(const struct perf_sample *data,
+> +					__u64 *array, u64 type)
+> +{
+> +	*array = data->weight;
+> +
+> +	if (type & PERF_SAMPLE_WEIGHT_STRUCT)
+> +		*array &= 0xffffffff;
+> +}
+> diff --git a/tools/perf/arch/powerpc/util/evsel.c b/tools/perf/arch/powerpc/util/evsel.c
+> new file mode 100644
+> index 000000000000..2f733cdc8dbb
+> --- /dev/null
+> +++ b/tools/perf/arch/powerpc/util/evsel.c
+> @@ -0,0 +1,8 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +#include <stdio.h>
+> +#include "util/evsel.h"
+> +
+> +void arch_evsel__set_sample_weight(struct evsel *evsel)
+> +{
+> +	evsel__set_sample_bit(evsel, WEIGHT_STRUCT);
+> +}
+> -- 
+> 1.8.3.1
+> 
+
