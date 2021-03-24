@@ -1,42 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCB8346DDF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 00:25:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3479346E72
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 02:05:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4nXm3F50z30GN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 10:25:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4qls02tMz3bqp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 12:05:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bootlin.com (client-ip=217.70.178.242;
- helo=mslow2.mail.gandi.net; envelope-from=alexandre.belloni@bootlin.com;
- receiver=<UNKNOWN>)
-Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4nXQ4kR8z302Z
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 10:25:08 +1100 (AEDT)
-Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
- by mslow2.mail.gandi.net (Postfix) with ESMTP id 59E9F3AF0C1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 23:06:07 +0000 (UTC)
-X-Originating-IP: 90.65.108.55
-Received: from localhost (lfbn-lyo-1-1676-55.w90-65.abo.wanadoo.fr
- [90.65.108.55]) (Authenticated sender: alexandre.belloni@bootlin.com)
- by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 8A772FF805;
- Tue, 23 Mar 2021 23:05:37 +0000 (UTC)
-Date: Wed, 24 Mar 2021 00:05:37 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: He Ying <heying24@huawei.com>
-Subject: Re: [PATCH v2 -next] powerpc: kernel/time.c - cleanup warnings
-Message-ID: <YFp0Qc2P61V+3bm0@piout.net>
-References: <20210323091257.90054-1-heying24@huawei.com>
- <YFppJkpZRHMJFay0@piout.net>
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4qlR56Yzz304J
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 12:04:49 +1100 (AEDT)
+IronPort-SDR: YDSf0px4PY4avFSKbEgWjueF+d5pvQOxNLuUAnsKIuudSD1T3DoUf5+HJUQBRXCMoQ0J+QmdVB
+ acsNVHMKGUkg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9932"; a="251954582"
+X-IronPort-AV: E=Sophos;i="5.81,272,1610438400"; d="scan'208";a="251954582"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Mar 2021 18:04:47 -0700
+IronPort-SDR: axeWNcM7EiP3UtFEG7ZiQHIBIHkrEeYga+i90NYESwcytjKQjcZAvhYScnfwOnPUdJBMHQOqGw
+ riK3jlvGG82w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,272,1610438400"; d="scan'208";a="452372924"
+Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
+ by orsmga001.jf.intel.com with ESMTP; 23 Mar 2021 18:04:45 -0700
+Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lOrwy-0000th-SM; Wed, 24 Mar 2021 01:04:44 +0000
+Date: Wed, 24 Mar 2021 09:04:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 274cb1ca2e7ce02cab56f5f4c61a74aeb566f931
+Message-ID: <605a9021.SoZeP/FrrcYOJ0aH%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YFppJkpZRHMJFay0@piout.net>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,276 +54,232 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-rtc@vger.kernel.org, a.zummo@towertech.it, geert+renesas@glider.be,
- peterz@infradead.org, frederic@kernel.org, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, paulus@samba.org, kernelfans@gmail.com, tglx@linutronix.de,
- msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 23/03/2021 23:18:17+0100, Alexandre Belloni wrote:
-> Hello,
-> 
-> On 23/03/2021 05:12:57-0400, He Ying wrote:
-> > We found these warnings in arch/powerpc/kernel/time.c as follows:
-> > warning: symbol 'decrementer_max' was not declared. Should it be static?
-> > warning: symbol 'rtc_lock' was not declared. Should it be static?
-> > warning: symbol 'dtl_consumer' was not declared. Should it be static?
-> > 
-> > Declare 'decrementer_max' and 'rtc_lock' in powerpc asm/time.h.
-> > Rename 'rtc_lock' in drviers/rtc/rtc-vr41xx.c to 'vr41xx_rtc_lock' to
-> > avoid the conflict with the variable in powerpc asm/time.h.
-> > Move 'dtl_consumer' definition behind "include <asm/dtl.h>" because it
-> > is declared there.
-> > 
-> > Reported-by: Hulk Robot <hulkci@huawei.com>
-> > Signed-off-by: He Ying <heying24@huawei.com>
-> > ---
-> > v2:
-> > - Instead of including linux/mc146818rtc.h in powerpc kernel/time.c, declare
-> >   rtc_lock in powerpc asm/time.h.
-> > 
-> 
-> V1 was actually the correct thing to do. rtc_lock is there exactly
-> because chrp and maple are using mc146818 compatible RTCs. This is then
-> useful because then drivers/char/nvram.c is enabled. The proper fix
-> would be to scrap all of that and use rtc-cmos for those platforms as
-> this drives the RTC properly and exposes the NVRAM for the mc146818.
-> 
-> Or at least, if there are no users for the char/nvram driver on those
-> two platforms, remove the spinlock and stop enabling CONFIG_NVRAM or
-> more likely rename the symbol as it seems to be abused by both chrp and
-> powermac.
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 274cb1ca2e7ce02cab56f5f4c61a74aeb566f931  powerpc/pseries/mobility: handle premature return from H_JOIN
 
-Ok so rtc_lock is not even used by the char/nvram.c driver as it is
-completely compiled out.
+elapsed time: 721m
 
-I guess it is fine having it move to the individual platform as looking
-very quickly at the Kconfig, it is not possible to select both
-simultaneously. Tentative patch:
+configs tested: 206
+configs skipped: 2
 
-8<-----
-From dfa59b6f44fdfdefafffa7666aec89e62bbd5c80 Mon Sep 17 00:00:00 2001
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Date: Wed, 24 Mar 2021 00:00:03 +0100
-Subject: [PATCH] powerpc: move rtc_lock to specific platforms
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+i386                             allyesconfig
+powerpc                    sam440ep_defconfig
+powerpc               mpc834x_itxgp_defconfig
+powerpc                     ppa8548_defconfig
+mips                        workpad_defconfig
+powerpc                 mpc8313_rdb_defconfig
+mips                     cu1000-neo_defconfig
+arm                        mini2440_defconfig
+powerpc                     redwood_defconfig
+mips                            ar7_defconfig
+m68k                            mac_defconfig
+m68k                             allyesconfig
+arm                          imote2_defconfig
+mips                           ip27_defconfig
+sh                           se7724_defconfig
+mips                           jazz_defconfig
+m68k                           sun3_defconfig
+powerpc                     skiroot_defconfig
+mips                      bmips_stb_defconfig
+arm                   milbeaut_m10v_defconfig
+arm                         mv78xx0_defconfig
+arm                           h5000_defconfig
+arm                        spear3xx_defconfig
+powerpc                 mpc836x_rdk_defconfig
+arm                            lart_defconfig
+m68k                        m5307c3_defconfig
+h8300                    h8300h-sim_defconfig
+sh                   rts7751r2dplus_defconfig
+arm                           sunxi_defconfig
+sh                         ap325rxa_defconfig
+mips                         bigsur_defconfig
+m68k                        m5407c3_defconfig
+arm                            hisi_defconfig
+arm                        vexpress_defconfig
+m68k                       m5208evb_defconfig
+powerpc                     ksi8560_defconfig
+arm                            mps2_defconfig
+arm                         shannon_defconfig
+arm                       omap2plus_defconfig
+arm                      tct_hammer_defconfig
+powerpc                      cm5200_defconfig
+powerpc                  iss476-smp_defconfig
+mips                malta_kvm_guest_defconfig
+arc                     haps_hs_smp_defconfig
+powerpc                   lite5200b_defconfig
+powerpc                     sequoia_defconfig
+mips                       rbtx49xx_defconfig
+arm                      pxa255-idp_defconfig
+arm                          exynos_defconfig
+powerpc                   bluestone_defconfig
+powerpc                    adder875_defconfig
+arm                           omap1_defconfig
+powerpc                     tqm8560_defconfig
+arm                        trizeps4_defconfig
+xtensa                  cadence_csp_defconfig
+sh                     magicpanelr2_defconfig
+m68k                       m5475evb_defconfig
+mips                         db1xxx_defconfig
+mips                      maltaaprp_defconfig
+mips                         tb0287_defconfig
+sh                          sdk7780_defconfig
+powerpc                  storcenter_defconfig
+powerpc                     kilauea_defconfig
+mips                   sb1250_swarm_defconfig
+arc                        vdk_hs38_defconfig
+ia64                        generic_defconfig
+arc                        nsim_700_defconfig
+arm                          pxa910_defconfig
+xtensa                  nommu_kc705_defconfig
+powerpc                    socrates_defconfig
+nds32                             allnoconfig
+arm                       imx_v6_v7_defconfig
+arm                        neponset_defconfig
+sh                            hp6xx_defconfig
+arm                         orion5x_defconfig
+mips                         tb0219_defconfig
+mips                        jmr3927_defconfig
+ia64                      gensparse_defconfig
+microblaze                      mmu_defconfig
+arm                         nhk8815_defconfig
+mips                malta_qemu_32r6_defconfig
+mips                       capcella_defconfig
+arm                         lubbock_defconfig
+s390                             alldefconfig
+mips                            e55_defconfig
+sh                     sh7710voipgw_defconfig
+m68k                        stmark2_defconfig
+powerpc                      ppc64e_defconfig
+powerpc                     sbc8548_defconfig
+mips                        bcm47xx_defconfig
+mips                      loongson3_defconfig
+mips                           ip28_defconfig
+powerpc                      obs600_defconfig
+m68k                        mvme16x_defconfig
+nios2                         3c120_defconfig
+sh                          landisk_defconfig
+sh                   secureedge5410_defconfig
+arm                      integrator_defconfig
+powerpc                 mpc836x_mds_defconfig
+powerpc                 mpc8272_ads_defconfig
+powerpc                 linkstation_defconfig
+powerpc                     rainier_defconfig
+mips                        maltaup_defconfig
+arm                          pxa168_defconfig
+arm                          collie_defconfig
+arm                         lpc18xx_defconfig
+sh                ecovec24-romimage_defconfig
+mips                           rs90_defconfig
+sh                        sh7785lcr_defconfig
+sh                           se7721_defconfig
+arm                     davinci_all_defconfig
+powerpc                      ppc6xx_defconfig
+powerpc                 mpc834x_mds_defconfig
+sh                          rsk7201_defconfig
+powerpc                     tqm8541_defconfig
+powerpc                 mpc834x_itx_defconfig
+sh                          rsk7203_defconfig
+mips                     loongson1b_defconfig
+arm                             pxa_defconfig
+powerpc                     tqm8555_defconfig
+powerpc                       eiger_defconfig
+mips                     cu1830-neo_defconfig
+powerpc64                           defconfig
+mips                          ath25_defconfig
+arm                         axm55xx_defconfig
+arc                 nsimosci_hs_smp_defconfig
+powerpc                     asp8347_defconfig
+arc                            hsdk_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a002-20210323
+x86_64               randconfig-a003-20210323
+x86_64               randconfig-a006-20210323
+x86_64               randconfig-a001-20210323
+x86_64               randconfig-a004-20210323
+x86_64               randconfig-a005-20210323
+i386                 randconfig-a003-20210323
+i386                 randconfig-a001-20210323
+i386                 randconfig-a002-20210323
+i386                 randconfig-a004-20210323
+i386                 randconfig-a006-20210323
+i386                 randconfig-a005-20210323
+i386                 randconfig-a004-20210324
+i386                 randconfig-a003-20210324
+i386                 randconfig-a001-20210324
+i386                 randconfig-a002-20210324
+i386                 randconfig-a006-20210324
+i386                 randconfig-a005-20210324
+i386                 randconfig-a015-20210323
+i386                 randconfig-a016-20210323
+i386                 randconfig-a014-20210323
+i386                 randconfig-a011-20210323
+i386                 randconfig-a012-20210323
+i386                 randconfig-a013-20210323
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a012-20210323
+x86_64               randconfig-a015-20210323
+x86_64               randconfig-a013-20210323
+x86_64               randconfig-a014-20210323
+x86_64               randconfig-a011-20210323
+x86_64               randconfig-a016-20210323
+
 ---
- arch/powerpc/kernel/time.c          | 3 ---
- arch/powerpc/platforms/chrp/time.c  | 2 +-
- arch/powerpc/platforms/maple/time.c | 2 ++
- 3 files changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 67feb3524460..d3bb189ea7f4 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -123,9 +123,6 @@ EXPORT_SYMBOL(tb_ticks_per_usec);
- unsigned long tb_ticks_per_sec;
- EXPORT_SYMBOL(tb_ticks_per_sec);	/* for cputime_t conversions */
- 
--DEFINE_SPINLOCK(rtc_lock);
--EXPORT_SYMBOL_GPL(rtc_lock);
--
- static u64 tb_to_ns_scale __read_mostly;
- static unsigned tb_to_ns_shift __read_mostly;
- static u64 boot_tb __read_mostly;
-diff --git a/arch/powerpc/platforms/chrp/time.c b/arch/powerpc/platforms/chrp/time.c
-index acde7bbe0716..ea90c15f5edd 100644
---- a/arch/powerpc/platforms/chrp/time.c
-+++ b/arch/powerpc/platforms/chrp/time.c
-@@ -30,7 +30,7 @@
- 
- #include <platforms/chrp/chrp.h>
- 
--extern spinlock_t rtc_lock;
-+DEFINE_SPINLOCK(rtc_lock);
- 
- #define NVRAM_AS0  0x74
- #define NVRAM_AS1  0x75
-diff --git a/arch/powerpc/platforms/maple/time.c b/arch/powerpc/platforms/maple/time.c
-index 78209bb7629c..ddda02010d86 100644
---- a/arch/powerpc/platforms/maple/time.c
-+++ b/arch/powerpc/platforms/maple/time.c
-@@ -34,6 +34,8 @@
- #define DBG(x...)
- #endif
- 
-+DEFINE_SPINLOCK(rtc_lock);
-+
- static int maple_rtc_addr;
- 
- static int maple_clock_read(int addr)
--- 
-2.25.1
-
-
-> I'm not completely against the rename in vr41xxx but the fix for the
-> warnings can and should be contained in arch/powerpc.
-> 
-> >  arch/powerpc/include/asm/time.h |  3 +++
-> >  arch/powerpc/kernel/time.c      |  6 ++----
-> >  drivers/rtc/rtc-vr41xx.c        | 22 +++++++++++-----------
-> >  3 files changed, 16 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
-> > index 8dd3cdb25338..64a3ef0b4270 100644
-> > --- a/arch/powerpc/include/asm/time.h
-> > +++ b/arch/powerpc/include/asm/time.h
-> > @@ -12,6 +12,7 @@
-> >  #ifdef __KERNEL__
-> >  #include <linux/types.h>
-> >  #include <linux/percpu.h>
-> > +#include <linux/spinlock.h>
-> >  
-> >  #include <asm/processor.h>
-> >  #include <asm/cpu_has_feature.h>
-> > @@ -22,6 +23,8 @@ extern unsigned long tb_ticks_per_jiffy;
-> >  extern unsigned long tb_ticks_per_usec;
-> >  extern unsigned long tb_ticks_per_sec;
-> >  extern struct clock_event_device decrementer_clockevent;
-> > +extern u64 decrementer_max;
-> > +extern spinlock_t rtc_lock;
-> >  
-> >  
-> >  extern void generic_calibrate_decr(void);
-> > diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-> > index b67d93a609a2..60b6ac7d3685 100644
-> > --- a/arch/powerpc/kernel/time.c
-> > +++ b/arch/powerpc/kernel/time.c
-> > @@ -150,10 +150,6 @@ bool tb_invalid;
-> >  u64 __cputime_usec_factor;
-> >  EXPORT_SYMBOL(__cputime_usec_factor);
-> >  
-> > -#ifdef CONFIG_PPC_SPLPAR
-> > -void (*dtl_consumer)(struct dtl_entry *, u64);
-> > -#endif
-> > -
-> >  static void calc_cputime_factors(void)
-> >  {
-> >  	struct div_result res;
-> > @@ -179,6 +175,8 @@ static inline unsigned long read_spurr(unsigned long tb)
-> >  
-> >  #include <asm/dtl.h>
-> >  
-> > +void (*dtl_consumer)(struct dtl_entry *, u64);
-> > +
-> >  /*
-> >   * Scan the dispatch trace log and count up the stolen time.
-> >   * Should be called with interrupts disabled.
-> > diff --git a/drivers/rtc/rtc-vr41xx.c b/drivers/rtc/rtc-vr41xx.c
-> > index 5a9f9ad86d32..cc31db058197 100644
-> > --- a/drivers/rtc/rtc-vr41xx.c
-> > +++ b/drivers/rtc/rtc-vr41xx.c
-> > @@ -72,7 +72,7 @@ static void __iomem *rtc2_base;
-> >  
-> >  static unsigned long epoch = 1970;	/* Jan 1 1970 00:00:00 */
-> >  
-> > -static DEFINE_SPINLOCK(rtc_lock);
-> > +static DEFINE_SPINLOCK(vr41xx_rtc_lock);
-> >  static char rtc_name[] = "RTC";
-> >  static unsigned long periodic_count;
-> >  static unsigned int alarm_enabled;
-> > @@ -101,13 +101,13 @@ static inline time64_t read_elapsed_second(void)
-> >  
-> >  static inline void write_elapsed_second(time64_t sec)
-> >  {
-> > -	spin_lock_irq(&rtc_lock);
-> > +	spin_lock_irq(&vr41xx_rtc_lock);
-> >  
-> >  	rtc1_write(ETIMELREG, (uint16_t)(sec << 15));
-> >  	rtc1_write(ETIMEMREG, (uint16_t)(sec >> 1));
-> >  	rtc1_write(ETIMEHREG, (uint16_t)(sec >> 17));
-> >  
-> > -	spin_unlock_irq(&rtc_lock);
-> > +	spin_unlock_irq(&vr41xx_rtc_lock);
-> >  }
-> >  
-> >  static int vr41xx_rtc_read_time(struct device *dev, struct rtc_time *time)
-> > @@ -139,14 +139,14 @@ static int vr41xx_rtc_read_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
-> >  	unsigned long low, mid, high;
-> >  	struct rtc_time *time = &wkalrm->time;
-> >  
-> > -	spin_lock_irq(&rtc_lock);
-> > +	spin_lock_irq(&vr41xx_rtc_lock);
-> >  
-> >  	low = rtc1_read(ECMPLREG);
-> >  	mid = rtc1_read(ECMPMREG);
-> >  	high = rtc1_read(ECMPHREG);
-> >  	wkalrm->enabled = alarm_enabled;
-> >  
-> > -	spin_unlock_irq(&rtc_lock);
-> > +	spin_unlock_irq(&vr41xx_rtc_lock);
-> >  
-> >  	rtc_time64_to_tm((high << 17) | (mid << 1) | (low >> 15), time);
-> >  
-> > @@ -159,7 +159,7 @@ static int vr41xx_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
-> >  
-> >  	alarm_sec = rtc_tm_to_time64(&wkalrm->time);
-> >  
-> > -	spin_lock_irq(&rtc_lock);
-> > +	spin_lock_irq(&vr41xx_rtc_lock);
-> >  
-> >  	if (alarm_enabled)
-> >  		disable_irq(aie_irq);
-> > @@ -173,7 +173,7 @@ static int vr41xx_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
-> >  
-> >  	alarm_enabled = wkalrm->enabled;
-> >  
-> > -	spin_unlock_irq(&rtc_lock);
-> > +	spin_unlock_irq(&vr41xx_rtc_lock);
-> >  
-> >  	return 0;
-> >  }
-> > @@ -202,7 +202,7 @@ static int vr41xx_rtc_ioctl(struct device *dev, unsigned int cmd, unsigned long
-> >  
-> >  static int vr41xx_rtc_alarm_irq_enable(struct device *dev, unsigned int enabled)
-> >  {
-> > -	spin_lock_irq(&rtc_lock);
-> > +	spin_lock_irq(&vr41xx_rtc_lock);
-> >  	if (enabled) {
-> >  		if (!alarm_enabled) {
-> >  			enable_irq(aie_irq);
-> > @@ -214,7 +214,7 @@ static int vr41xx_rtc_alarm_irq_enable(struct device *dev, unsigned int enabled)
-> >  			alarm_enabled = 0;
-> >  		}
-> >  	}
-> > -	spin_unlock_irq(&rtc_lock);
-> > +	spin_unlock_irq(&vr41xx_rtc_lock);
-> >  	return 0;
-> >  }
-> >  
-> > @@ -296,7 +296,7 @@ static int rtc_probe(struct platform_device *pdev)
-> >  	rtc->range_max = (1ULL << 33) - 1;
-> >  	rtc->max_user_freq = MAX_PERIODIC_RATE;
-> >  
-> > -	spin_lock_irq(&rtc_lock);
-> > +	spin_lock_irq(&vr41xx_rtc_lock);
-> >  
-> >  	rtc1_write(ECMPLREG, 0);
-> >  	rtc1_write(ECMPMREG, 0);
-> > @@ -304,7 +304,7 @@ static int rtc_probe(struct platform_device *pdev)
-> >  	rtc1_write(RTCL1LREG, 0);
-> >  	rtc1_write(RTCL1HREG, 0);
-> >  
-> > -	spin_unlock_irq(&rtc_lock);
-> > +	spin_unlock_irq(&vr41xx_rtc_lock);
-> >  
-> >  	aie_irq = platform_get_irq(pdev, 0);
-> >  	if (aie_irq <= 0) {
-> > -- 
-> > 2.17.1
-> > 
-> 
-> -- 
-> Alexandre Belloni, co-owner and COO, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
-
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
