@@ -1,57 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C516E3474E6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 10:44:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8013474F6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 10:46:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F53Gf36j2z3brZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 20:44:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F53Kg6Vnlz3bqf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 20:46:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F53GH6hR3z300C
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 20:43:48 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F53G85XXfz9ty51;
- Wed, 24 Mar 2021 10:43:44 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id buohXL9fr0jW; Wed, 24 Mar 2021 10:43:44 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F53G84Bvqz9ty50;
- Wed, 24 Mar 2021 10:43:44 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8D65A8B81A;
- Wed, 24 Mar 2021 10:43:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 1-_oAO7f-bJF; Wed, 24 Mar 2021 10:43:45 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7F7158B812;
- Wed, 24 Mar 2021 10:43:44 +0100 (CET)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com;
+ envelope-from=heying24@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F53KK2h0Dz300J
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 20:46:26 +1100 (AEDT)
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F53GF40qRzPll5;
+ Wed, 24 Mar 2021 17:43:49 +0800 (CST)
+Received: from [10.67.110.136] (10.67.110.136) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.498.0; Wed, 24 Mar 2021 17:46:19 +0800
 Subject: Re: [PATCH V3 -next] powerpc: kernel/time.c - cleanup warnings
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- He Ying <heying24@huawei.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
 References: <20210324090939.143477-1-heying24@huawei.com>
  <YFsGYgdNH5HrlqDJ@piout.net>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <be984dbc-ba34-8e82-b16e-48d54bd15fe5@csgroup.eu>
-Date: Wed, 24 Mar 2021 10:43:44 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+From: "heying (H)" <heying24@huawei.com>
+Message-ID: <18a8d444-f1a5-61e0-b9f2-f85c03d71686@huawei.com>
+Date: Wed, 24 Mar 2021 17:46:19 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
 In-Reply-To: <YFsGYgdNH5HrlqDJ@piout.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.110.136]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,16 +51,17 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-rtc@vger.kernel.org, a.zummo@towertech.it, geert+renesas@glider.be,
  peterz@infradead.org, frederic@kernel.org, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, paulus@samba.org, kernelfans@gmail.com,
+ npiggin@gmail.com, kernelfans@gmail.com, paulus@samba.org,
  geert@linux-m68k.org, tglx@linutronix.de, msuchanek@suse.de,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Dear Alexandre,
 
 
-Le 24/03/2021 à 10:29, Alexandre Belloni a écrit :
+�� 2021/3/24 17:29, Alexandre Belloni д��:
 > On 24/03/2021 05:09:39-0400, He Ying wrote:
 >> We found these warnings in arch/powerpc/kernel/time.c as follows:
 >> warning: symbol 'decrementer_max' was not declared. Should it be static?
@@ -126,7 +113,6 @@ Le 24/03/2021 à 10:29, Alexandre Belloni a écrit :
 >>   #include <linux/processor.h>
 >> -#include <asm/trace.h>
 >> +#include <linux/mc146818rtc.h>
-> 
 > I'm fine with that but I really think my suggestion to make the rtc_lock
 > local to the platforms was better because it is only used to synchronize
 > between concurrent invocations of chrp_set_rtc_time or
@@ -134,14 +120,16 @@ Le 24/03/2021 à 10:29, Alexandre Belloni a écrit :
 > would be concurrent calls to rtc_ops.set_time and
 > update_persistent_clock64 (which should also be removed at some point).
 
-I agree but I think it must be done carefully. If the lock is local to the driver really and without 
-a link with the RTC core, then the lock var should probably be static. But then we'll have name 
-conflict with the global rtc_lock which is declared in <linux/mc146818rtc.h>
+Many thanks for your suggestion. As you suggest, rtc_lock should be 
+local to platforms.
 
-All this is not easy, and I like your idea in the other mail to really clean up the rtc core and 
-remove this global rtc_lock completely.
+Does it mean not only powerpc but also all other platforms should adapt 
+this change?
 
-For the time being I guess the fix provided by this patch is just semantic and is just fine as is, 
-as there is no real bug behind the messages from sparse.
+It might be a big change. I have no idea if that's OK. What are other 
+maintainers' opinions?
 
-Christophe
+
+Thanks.
+
+
