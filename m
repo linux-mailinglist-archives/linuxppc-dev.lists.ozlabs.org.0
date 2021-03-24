@@ -2,44 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C743734759D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 11:14:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CAA34757C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 11:10:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F53xk5p2sz3d7f
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 21:14:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F53rS1H4Zz3cDq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 21:10:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F53w4020hz2xyB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 21:13:06 +1100 (AEDT)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B17DB202743;
- Wed, 24 Mar 2021 11:13:03 +0100 (CET)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A7526202740;
- Wed, 24 Mar 2021 11:12:59 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 63D8040341;
- Wed, 24 Mar 2021 11:12:36 +0100 (CET)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org
-Subject: [PATCH 6/6] ASoC: fsl_micfil: Don't use devm_regmap_init_mmio_clk
-Date: Wed, 24 Mar 2021 17:58:48 +0800
-Message-Id: <1616579928-22428-7-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1616579928-22428-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1616579928-22428-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
+ envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4F53q458Ywz301l
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 21:08:46 +1100 (AEDT)
+Received: from uucp (helo=alpha)
+ by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+ id 1lP0RM-0008Sw-02; Wed, 24 Mar 2021 11:08:40 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+ id 3EDC2C1C69; Wed, 24 Mar 2021 10:59:47 +0100 (CET)
+Date: Wed, 24 Mar 2021 10:59:47 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 04/10] MIPS: disable CONFIG_IDE in sb1250_swarm_defconfig
+Message-ID: <20210324095947.GC2378@alpha.franken.de>
+References: <20210318045706.200458-1-hch@lst.de>
+ <20210318045706.200458-5-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210318045706.200458-5-hch@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,104 +43,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>, linux-doc@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-alpha@vger.kernel.org,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When there is power domain bind with ipg_clk clock,
+On Thu, Mar 18, 2021 at 05:57:00AM +0100, Christoph Hellwig wrote:
+> sb1250_swarm_defconfig enables CONFIG_IDE but no actual host controller
+> driver, so just drop CONFIG_IDE, CONFIG_BLK_DEV_IDECD and
+> CONFIG_BLK_DEV_IDETAPE as they are useless.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/mips/configs/sb1250_swarm_defconfig | 3 ---
+>  1 file changed, 3 deletions(-)
 
-The call flow:
-devm_regmap_init_mmio_clk
-   - clk_prepare()
-      - clk_pm_runtime_get()
+applied to mips-next.
 
-cause the power domain of clock always be enabled after
-regmap_init(). which impact the power consumption.
+Thomas.
 
-So use devm_regmap_init_mmio instead of
-devm_regmap_init_mmio_clk,but explicitly enable
-clock when it is used.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Viorel Suman <viorel.suman@nxp.com>
----
- sound/soc/fsl/fsl_micfil.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 2b9edd4bb94d..3cf789ed6cbe 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -31,6 +31,7 @@ struct fsl_micfil {
- 	struct platform_device *pdev;
- 	struct regmap *regmap;
- 	const struct fsl_micfil_soc_data *soc;
-+	struct clk *busclk;
- 	struct clk *mclk;
- 	struct snd_dmaengine_dai_dma_data dma_params_rx;
- 	unsigned int dataline;
-@@ -660,16 +661,22 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 		return PTR_ERR(micfil->mclk);
- 	}
- 
-+	micfil->busclk = devm_clk_get(&pdev->dev, "ipg_clk");
-+	if (IS_ERR(micfil->busclk)) {
-+		dev_err(&pdev->dev, "failed to get ipg clock: %ld\n",
-+			PTR_ERR(micfil->busclk));
-+		return PTR_ERR(micfil->busclk);
-+	}
-+
- 	/* init regmap */
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	regs = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(regs))
- 		return PTR_ERR(regs);
- 
--	micfil->regmap = devm_regmap_init_mmio_clk(&pdev->dev,
--						   "ipg_clk",
--						   regs,
--						   &fsl_micfil_regmap_config);
-+	micfil->regmap = devm_regmap_init_mmio(&pdev->dev,
-+					       regs,
-+					       &fsl_micfil_regmap_config);
- 	if (IS_ERR(micfil->regmap)) {
- 		dev_err(&pdev->dev, "failed to init MICFIL regmap: %ld\n",
- 			PTR_ERR(micfil->regmap));
-@@ -729,6 +736,7 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, micfil);
- 
- 	pm_runtime_enable(&pdev->dev);
-+	regcache_cache_only(micfil->regmap, true);
- 
- 	ret = devm_snd_soc_register_component(&pdev->dev, &fsl_micfil_component,
- 					      &fsl_micfil_dai, 1);
-@@ -752,6 +760,7 @@ static int __maybe_unused fsl_micfil_runtime_suspend(struct device *dev)
- 	regcache_cache_only(micfil->regmap, true);
- 
- 	clk_disable_unprepare(micfil->mclk);
-+	clk_disable_unprepare(micfil->busclk);
- 
- 	return 0;
- }
-@@ -761,10 +770,16 @@ static int __maybe_unused fsl_micfil_runtime_resume(struct device *dev)
- 	struct fsl_micfil *micfil = dev_get_drvdata(dev);
- 	int ret;
- 
--	ret = clk_prepare_enable(micfil->mclk);
-+	ret = clk_prepare_enable(micfil->busclk);
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = clk_prepare_enable(micfil->mclk);
-+	if (ret < 0) {
-+		clk_disable_unprepare(micfil->busclk);
-+		return ret;
-+	}
-+
- 	regcache_cache_only(micfil->regmap, false);
- 	regcache_mark_dirty(micfil->regmap);
- 	regcache_sync(micfil->regmap);
 -- 
-2.27.0
-
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
