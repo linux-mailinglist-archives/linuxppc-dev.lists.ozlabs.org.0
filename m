@@ -1,98 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7055234707F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 05:36:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E530E347135
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 06:48:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4wRP1B9Kz30Md
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 15:36:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4y2F6n5Jz30Jr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 16:48:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j/ViPQY+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=UORtWm7q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535;
+ helo=mail-pg1-x535.google.com; envelope-from=cyborgyn@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=j/ViPQY+; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=UORtWm7q; dkim-atps=neutral
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
+ [IPv6:2607:f8b0:4864:20::535])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4wQx4Lssz2yxB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 15:35:52 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12O4XMue159255; Wed, 24 Mar 2021 00:35:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=/gfana0Qw6+sAD3/4uWgMwI02MnOBsacp7vI78wfbyo=;
- b=j/ViPQY+9X9ECIl9ER4iu3HDWGqB+9U0S/jDT4EJ3n473x2lbLHlj/PpVpy2BHUYDUXe
- oPCdRMU2lMkdCpYKh3MhcqwCcXM/liMgvOAcRg5CcuMpaQD10eQ3cyGAf1Ui0fa7ATMg
- PWPBavXwH56eyrly2hlwe6w3OSSRQp28YVgk3ngEXQlXSjG18wwAMYg5cFU0tXO9Pr5H
- 6H0JjqeROsDf07v6uzgIGbGLHjBlXMrj5TkGoxx1A4T5ZW81Opo1bCBrjZ8GwdmETIgV
- vrMc6cTF8S/O3bE2feCmbM908/ZnRXURkMcHVbbozKxERadoTpT0NNOe3JxwePIYDqAe Uw== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37fsm0dxh8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Mar 2021 00:35:35 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12O4R7A7010917;
- Wed, 24 Mar 2021 04:35:33 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 37d9bmky1g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Mar 2021 04:35:32 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12O4ZTZe26607988
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 24 Mar 2021 04:35:29 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B530C4C044;
- Wed, 24 Mar 2021 04:35:29 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0E8C74C040;
- Wed, 24 Mar 2021 04:35:26 +0000 (GMT)
-Received: from Madhavan.PrimaryTP (unknown [9.80.207.190])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 24 Mar 2021 04:35:25 +0000 (GMT)
-Subject: Re: [PATCH V2 1/5] powerpc/perf: Expose processor pipeline stage
- cycles using PERF_SAMPLE_WEIGHT_STRUCT
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- mpe@ellerman.id.au, acme@kernel.org, jolsa@kernel.org
-References: <1616425047-1666-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1616425047-1666-2-git-send-email-atrajeev@linux.vnet.ibm.com>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Message-ID: <d7dd633b-e28a-155a-a8e2-0e5a83b4eead@linux.ibm.com>
-Date: Wed, 24 Mar 2021 10:05:23 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4y1m5pkQz301k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 16:47:38 +1100 (AEDT)
+Received: by mail-pg1-x535.google.com with SMTP id h25so13907573pgm.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 22:47:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=3/V/wb+c7o+naCxYjw0DGXPXFDsGm4gbTHC17MJ5eDA=;
+ b=UORtWm7q81uVrGPPQlVIZPbeeLQ5Ne8SaeD8lCdBTGsiDw082WEG6F9ZzA44U7U20R
+ nV0g4QOZ3cVOGF1M34wItVLRDN6BWKP0dJcPaWHuOGdYTwmQc+ERekjLVjS75urj56/E
+ +hMTzpYLp2A3QEQEX5ppZPuGBaX5V/7rL+E1Jv1OGi9gnA7+cBlLdMcbIGTE+DShJwDC
+ valenRD79ZEs1slQeOKxDhcyC61Tb+Guz7lezNct2UqXfTHxPDfhxICDye2shpCqalF8
+ vULIh21cEGxjhmCP/NP68GNRFUgz+siJXtxwVQFLLrfq4gHPcJ0a2joISY4EfZduxX5i
+ Ytjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=3/V/wb+c7o+naCxYjw0DGXPXFDsGm4gbTHC17MJ5eDA=;
+ b=g+dAV2foGmhK8b18duSAuw1NhOyE0tXtXrKxyYvzvm1XI5rFgHQhQP20uo8G9dAByX
+ wdvFPOzX8mIduG/BJL0HVwjJY/MaZQrNGx4dou7EsgOJSgBbqOYhL4UBvhYmkcL/y2e7
+ 7wLgDr5ny17CWKovTmZ+jgJInHTMyjS+lsxg76AHgoir8NCRD/H0/gtAJlCNUYETt+M7
+ kdAKdNyNCeAN5ael91kqI/cDhXiGfMkJ73HdRXVANhGPpjIRTAiMTOnt7WXYnQohHJnP
+ fEpHh/UH5R7AQwSjqEETglJ6xxVjalUUlvl+ByInl2VANpozuM0n3Su+oVdoms03q0Xr
+ FBjw==
+X-Gm-Message-State: AOAM5318ei70Wi09kE44tnHPkWRtTaRgUmr3TbrL76J3Qiv9Z0xxV4JV
+ 76o5LjRytBDCwQWCU8f9PElZGBma3niT2bqDG4Z3OeVMs8s=
+X-Google-Smtp-Source: ABdhPJyRFizO8aX0S/3g4GodbO0+twLfEMtbSN263NpOZxooLbeo3ay8YVAxGGNOSILNHDlAEwauCjMZR6X+p8NNLe8=
+X-Received: by 2002:a63:fa4c:: with SMTP id g12mr1614518pgk.205.1616564856232; 
+ Tue, 23 Mar 2021 22:47:36 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1616425047-1666-2-git-send-email-atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-24_03:2021-03-23,
- 2021-03-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 malwarescore=0
- suspectscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0
- spamscore=0 mlxlogscore=999 impostorscore=0 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103240034
+References: <20210318045706.200458-1-hch@lst.de>
+ <20210318045706.200458-3-hch@lst.de>
+ <20210319170753.GV1463@shell.armlinux.org.uk>
+ <20210319175311.GW1463@shell.armlinux.org.uk>
+ <20210322145403.GA30942@lst.de> <20210322151503.GX1463@shell.armlinux.org.uk>
+ <224b110e-7c42-4e19-800e-e0fa23d3bf7f@physik.fu-berlin.de>
+ <20210322170338.GZ1463@shell.armlinux.org.uk>
+ <CAD4NMuZWoV0m85OyBDHLt+J8NYCV5wYx7fFZaivBNEgDnrN5xw@mail.gmail.com>
+ <20210323184321.GE1463@shell.armlinux.org.uk>
+In-Reply-To: <20210323184321.GE1463@shell.armlinux.org.uk>
+From: Cye Borg <cyborgyn@gmail.com>
+Date: Wed, 24 Mar 2021 06:47:25 +0100
+Message-ID: <CAD4NMubOZ019ESLVXbZXVYf1UGC7z9tQ4655TS68tSdwG9TTWA@mail.gmail.com>
+Subject: Re: [PATCH 02/10] ARM: disable CONFIG_IDE in footbridge_defconfig
+To: Russell King - ARM Linux admin <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,147 +81,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, ravi.bangoria@linux.ibm.com,
- kan.liang@linux.intel.com, kjain@linux.ibm.com
+Cc: Jens Axboe <axboe@kernel.dk>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-doc@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, linux-ide@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, Geert Uytterhoeven <geert@linux-m68k.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Sure, here it is:
+snow / # lspci -vxxx -s 7.0
+00:07.0 ISA bridge: Contaq Microsystems 82c693
+        Flags: bus master, medium devsel, latency 0
+        Kernel modules: pata_cypress
+00: 80 10 93 c6 47 00 80 02 00 00 01 06 00 00 80 00
+10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+20: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+40: 03 02 00 00 26 60 00 01 f0 60 00 80 80 71 00 00
+50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
-On 3/22/21 8:27 PM, Athira Rajeev wrote:
-> Performance Monitoring Unit (PMU) registers in powerpc provides
-> information on cycles elapsed between different stages in the
-> pipeline. This can be used for application tuning. On ISA v3.1
-> platform, this information is exposed by sampling registers.
-> Patch adds kernel support to capture two of the cycle counters
-> as part of perf sample using the sample type:
-> PERF_SAMPLE_WEIGHT_STRUCT.
+Best regards,
+Barnabas
+
+ps.: let me know, if anything else I can do.
+
+On Tue, Mar 23, 2021 at 7:43 PM Russell King - ARM Linux admin
+<linux@armlinux.org.uk> wrote:
 >
-> The power PMU function 'get_mem_weight' currently uses 64 bit weight
-> field of perf_sample_data to capture memory latency. But following the
-> introduction of PERF_SAMPLE_WEIGHT_TYPE, weight field could contain
-> 64-bit or 32-bit value depending on the architexture support for
-> PERF_SAMPLE_WEIGHT_STRUCT. Patches uses WEIGHT_STRUCT to expose the
-> pipeline stage cycles info. Hence update the ppmu functions to work for
-> 64-bit and 32-bit weight values.
+> On Mon, Mar 22, 2021 at 06:10:01PM +0100, Cye Borg wrote:
+> > PWS 500au:
+> >
+> > snow / # lspci -vvx -s 7.1
+> > 00:07.1 IDE interface: Contaq Microsystems 82c693 (prog-if 80 [ISA
+> > Compatibility mode-only controller, supports bus mastering])
+> >         Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop-
+> > ParErr+ Stepping- SERR- FastB2B- DisINTx-
+> >         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium
+> > >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+> >         Latency: 0
+> >         Interrupt: pin A routed to IRQ 0
+> >         Region 0: I/O ports at 01f0 [size=8]
+> >         Region 1: I/O ports at 03f4
+> >         Region 4: I/O ports at 9080 [size=16]
+> >         Kernel driver in use: pata_cypress
+> >         Kernel modules: pata_cypress
+> > 00: 80 10 93 c6 45 00 80 02 00 80 01 01 00 00 80 00
+> > 10: f1 01 00 00 f5 03 00 00 00 00 00 00 00 00 00 00
+> > 20: 81 90 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> > 30: 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00
+> >
+> > snow / # lspci -vvx -s 7.2
+> > 00:07.2 IDE interface: Contaq Microsystems 82c693 (prog-if 00 [ISA
+> > Compatibility mode-only controller])
+> >         Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop-
+> > ParErr+ Stepping- SERR- FastB2B- DisINTx-
+> >         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium
+> > >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+> >         Latency: 0
+> >         Interrupt: pin B routed to IRQ 0
+> >         Region 0: I/O ports at 0170 [size=8]
+> >         Region 1: I/O ports at 0374
+> >         Region 4: Memory at 0c240000 (32-bit, non-prefetchable)
+> > [disabled] [size=64K]
+> >         Kernel modules: pata_cypress
+> > 00: 80 10 93 c6 45 00 80 02 00 00 01 01 00 00 80 00
+> > 10: 71 01 00 00 75 03 00 00 00 00 00 00 00 00 00 00
+> > 20: 00 00 24 0c 00 00 00 00 00 00 00 00 00 00 00 00
+> > 30: 00 00 00 00 00 00 00 00 00 00 00 00 00 02 00 00
 >
-> If the sample type is PERF_SAMPLE_WEIGHT, use the 64-bit weight field.
-> if the sample type is PERF_SAMPLE_WEIGHT_STRUCT, memory subsystem
-> latency is stored in the low 32bits of perf_sample_weight structure.
-> Also for CPU_FTR_ARCH_31, capture the two cycle counter information in
-> two 16 bit fields of perf_sample_weight structure.
-
-Changes looks fine to me.
-
-Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-
-
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->   arch/powerpc/include/asm/perf_event_server.h |  2 +-
->   arch/powerpc/perf/core-book3s.c              |  4 ++--
->   arch/powerpc/perf/isa207-common.c            | 29 +++++++++++++++++++++++++---
->   arch/powerpc/perf/isa207-common.h            |  6 +++++-
->   4 files changed, 34 insertions(+), 7 deletions(-)
+> Thanks very much.
 >
-> diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
-> index 00e7e671bb4b..112cf092d7b3 100644
-> --- a/arch/powerpc/include/asm/perf_event_server.h
-> +++ b/arch/powerpc/include/asm/perf_event_server.h
-> @@ -43,7 +43,7 @@ struct power_pmu {
->   				u64 alt[]);
->   	void		(*get_mem_data_src)(union perf_mem_data_src *dsrc,
->   				u32 flags, struct pt_regs *regs);
-> -	void		(*get_mem_weight)(u64 *weight);
-> +	void		(*get_mem_weight)(u64 *weight, u64 type);
->   	unsigned long	group_constraint_mask;
->   	unsigned long	group_constraint_val;
->   	u64             (*bhrb_filter_map)(u64 branch_sample_type);
-> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-> index 766f064f00fb..6936763246bd 100644
-> --- a/arch/powerpc/perf/core-book3s.c
-> +++ b/arch/powerpc/perf/core-book3s.c
-> @@ -2206,9 +2206,9 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
->   						ppmu->get_mem_data_src)
->   			ppmu->get_mem_data_src(&data.data_src, ppmu->flags, regs);
->   
-> -		if (event->attr.sample_type & PERF_SAMPLE_WEIGHT &&
-> +		if (event->attr.sample_type & PERF_SAMPLE_WEIGHT_TYPE &&
->   						ppmu->get_mem_weight)
-> -			ppmu->get_mem_weight(&data.weight.full);
-> +			ppmu->get_mem_weight(&data.weight.full, event->attr.sample_type);
->   
->   		if (perf_event_overflow(event, &data, regs))
->   			power_pmu_stop(event, 0);
-> diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-> index e4f577da33d8..5dcbdbd54598 100644
-> --- a/arch/powerpc/perf/isa207-common.c
-> +++ b/arch/powerpc/perf/isa207-common.c
-> @@ -284,8 +284,10 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
->   	}
->   }
->   
-> -void isa207_get_mem_weight(u64 *weight)
-> +void isa207_get_mem_weight(u64 *weight, u64 type)
->   {
-> +	union perf_sample_weight *weight_fields;
-> +	u64 weight_lat;
->   	u64 mmcra = mfspr(SPRN_MMCRA);
->   	u64 exp = MMCRA_THR_CTR_EXP(mmcra);
->   	u64 mantissa = MMCRA_THR_CTR_MANT(mmcra);
-> @@ -296,9 +298,30 @@ void isa207_get_mem_weight(u64 *weight)
->   		mantissa = P10_MMCRA_THR_CTR_MANT(mmcra);
->   
->   	if (val == 0 || val == 7)
-> -		*weight = 0;
-> +		weight_lat = 0;
->   	else
-> -		*weight = mantissa << (2 * exp);
-> +		weight_lat = mantissa << (2 * exp);
-> +
-> +	/*
-> +	 * Use 64 bit weight field (full) if sample type is
-> +	 * WEIGHT.
-> +	 *
-> +	 * if sample type is WEIGHT_STRUCT:
-> +	 * - store memory latency in the lower 32 bits.
-> +	 * - For ISA v3.1, use remaining two 16 bit fields of
-> +	 *   perf_sample_weight to store cycle counter values
-> +	 *   from sier2.
-> +	 */
-> +	weight_fields = (union perf_sample_weight *)weight;
-> +	if (type & PERF_SAMPLE_WEIGHT)
-> +		weight_fields->full = weight_lat;
-> +	else {
-> +		weight_fields->var1_dw = (u32)weight_lat;
-> +		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
-> +			weight_fields->var2_w = P10_SIER2_FINISH_CYC(mfspr(SPRN_SIER2));
-> +			weight_fields->var3_w = P10_SIER2_DISPATCH_CYC(mfspr(SPRN_SIER2));
-> +		}
-> +	}
->   }
->   
->   int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp, u64 event_config1)
-> diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-> index 1af0e8c97ac7..fc30d43c4d0c 100644
-> --- a/arch/powerpc/perf/isa207-common.h
-> +++ b/arch/powerpc/perf/isa207-common.h
-> @@ -265,6 +265,10 @@
->   #define ISA207_SIER_DATA_SRC_SHIFT	53
->   #define ISA207_SIER_DATA_SRC_MASK	(0x7ull << ISA207_SIER_DATA_SRC_SHIFT)
->   
-> +/* Bits in SIER2/SIER3 for Power10 */
-> +#define P10_SIER2_FINISH_CYC(sier2)	(((sier2) >> (63 - 37)) & 0x7fful)
-> +#define P10_SIER2_DISPATCH_CYC(sier2)	(((sier2) >> (63 - 13)) & 0x7fful)
-> +
->   #define P(a, b)				PERF_MEM_S(a, b)
->   #define PH(a, b)			(P(LVL, HIT) | P(a, b))
->   #define PM(a, b)			(P(LVL, MISS) | P(a, b))
-> @@ -278,6 +282,6 @@ int isa207_get_alternatives(u64 event, u64 alt[], int size, unsigned int flags,
->   					const unsigned int ev_alt[][MAX_ALT]);
->   void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
->   							struct pt_regs *regs);
-> -void isa207_get_mem_weight(u64 *weight);
-> +void isa207_get_mem_weight(u64 *weight, u64 type);
->   
->   #endif
+> Could I also ask for the output of:
+>
+> # lspci -vxxx -s 7.0
+>
+> as well please - this will dump all 256 bytes for the ISA bridge, which
+> contains a bunch of configuration registers. Thanks.
+>
+> --
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
