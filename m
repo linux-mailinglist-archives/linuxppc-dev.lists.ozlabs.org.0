@@ -2,73 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4452C346EA7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 02:27:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C308346EE9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 02:35:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F4rFn1hbQz30Mj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 12:27:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F4rQn4WLzz30L4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 12:35:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=o9jdf0Ua;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=RgFXgZDP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
- helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535;
+ helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=o9jdf0Ua; dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
- [IPv6:2607:f8b0:4864:20::635])
+ header.s=20161025 header.b=RgFXgZDP; dkim-atps=neutral
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
+ [IPv6:2607:f8b0:4864:20::535])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F4rFN14jGz2yxw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 12:27:18 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id v8so7068289plz.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 18:27:18 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F4rQK4p15z301B
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 12:35:03 +1100 (AEDT)
+Received: by mail-pg1-x535.google.com with SMTP id u19so13547669pgh.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Mar 2021 18:35:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=nzpqaVMQ3IUMG30sPJ4iVSoB4g0F5+nzjHooZaW9EYU=;
- b=o9jdf0UaH4iqgysLoFQBtvAxyJfnWn7+yiETn9HREIvvcG388uTFwirj4zIFo/l+hd
- F8tZwyLBbu+RjSWm0ciry23PEyNCCJ+Uv3nNGpid4T7taxoLEsad3aFEnGMLtyf5PDaX
- JhhRUXbJGRy/80zULMBAHrafLb72/576E+qmGWPVN1rG68RQy0wzMbd0U0POsparqH8j
- x6VUEpnd1wXQchAKYOXHB811UdhIoy85v1SCsnQXklkJXitD19/TZ4x7McNP47ElCvbf
- YCkN8+TF46Gk8/N6RegAJhSklDXAvBJvjKu3yBzBcn9ZNosVy5FuA8qg5v1EamSVh+3W
- D8JQ==
+ bh=2Esp6d9qJMuOjUmKYgGj6kVKFLxI1yLM0VLvKW/6jTo=;
+ b=RgFXgZDPWXDd162vmCVB+rkePQayzeoHj4DoEkOAShQhrMkc3AIsH4j0tegvfg55Q2
+ 3qE3/oex7CeR1lRpKlr/wpe9afxT2IPc2n6uRRtIGXb7f4sYAfraEkDq52yau2lI8XxI
+ OTFPEQwhuJpHS5Ho7yrioaZtvH62Ed48NWmVfiI9zkt1NqjIKRxyCOta6if6svESjrN1
+ iKGDvLG1VhjpLJ9/oG9FML8h/0ISt3RteykmLSAGLnPQEGhYxX6fqSAivr/MqRYH7aUx
+ mlJMVj+l/nZNar1NP+Aebnk8WM3Rfsh2Lgb6vzPj3rOYgj0US4tVHpMYuqwgcesQrvul
+ qjvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=nzpqaVMQ3IUMG30sPJ4iVSoB4g0F5+nzjHooZaW9EYU=;
- b=o8fUk6q12aZFy0AcaK23UkzwvmeRllWyFY+rm0KMiVo/yo3L5+n80wL6uo6BjG78lJ
- Skc6Vttr9P/QkHe/05RKft0SSpoz4OJsWa8CUxjjlSQigzAl/yFZjAuNl5B4E+b6fR3A
- DJpK9z4PbHBLGspNN0Nwz5nXRqm+KmV2WTMw7ibUw3uFAfhpp7z3GIfCXGOYtn4EjbFU
- JuodZ5j5B2ad/3D7lGJ6E1HaPCkJE3wsw3nY2FFSWjU5v8/YSM/nt3JbJKRNU9RC/pfV
- G92NWa6LdkIyyQbB8LQNXE2MlWk+2r9qdUrmIQwUrM2nQ6MI5XbxPSom/Q5LGNBVQiew
- yGkw==
-X-Gm-Message-State: AOAM531tEKY9sVwrsyUpVTKFqEtf0bQzIKmDn7pLyUITgisoObLqIYRb
- +QAH+wEK9MA9+p7k5izU+bk=
-X-Google-Smtp-Source: ABdhPJwlnb/0C1Upjp5GyaOwv9VkE9QbE7AYqUqpNbtyCDRoHVEOKqD+YO5IYQCVyEFHZ7WmqWIFjQ==
-X-Received: by 2002:a17:90b:1044:: with SMTP id
- gq4mr816183pjb.232.1616549235640; 
- Tue, 23 Mar 2021 18:27:15 -0700 (PDT)
+ bh=2Esp6d9qJMuOjUmKYgGj6kVKFLxI1yLM0VLvKW/6jTo=;
+ b=lRtkwySNljFwwgklvCEKfRPM52QbODivwstfnoEggMbPua9crL8+jrkRwaKwJYLGid
+ sCQ8wHN/MQ6Nh4ds83ur1ny/VAzjiYM6vtYTtUhItJYPRo9L8cZjMN3VjSFyQGJk+mV4
+ EFl9IRPmQWjg90NMXSPi3vtWukGG4mWNd8EAxN6FpPChoF22nf508Jvp2FqQ6RTuAq2R
+ WtEkb96fAIZKbzQP7ua0hsQI3TRh/t012Dfbnpzz4WliDQaTOjEsB3FxrYNV56+EqUcw
+ tnWZXRILv8miwCG3SRm3Nf/UucMOMoAhb74KjfG51IhNmmkX902hKIM591JUzt11rqwR
+ R4Ag==
+X-Gm-Message-State: AOAM530dT7FAt3+rtBfrzFZwZi5+02tV1v6cRO8EC98gOhsUwaE7Q1NU
+ fTpDD96uBNSSIasvsx1ucVI=
+X-Google-Smtp-Source: ABdhPJx2+SzcdmpzPYGk5x1oUCWIBBJ+/x+AV+tqcF8TyXqNmywur28Opjzjq1KMs92ok0kzzsyPhA==
+X-Received: by 2002:a62:a108:0:b029:1c1:119b:8713 with SMTP id
+ b8-20020a62a1080000b02901c1119b8713mr861259pff.74.1616549699978; 
+ Tue, 23 Mar 2021 18:34:59 -0700 (PDT)
 Received: from localhost (193-116-197-97.tpgi.com.au. [193.116.197.97])
- by smtp.gmail.com with ESMTPSA id v1sm366370pjt.1.2021.03.23.18.27.14
+ by smtp.gmail.com with ESMTPSA id 9sm370057pgy.79.2021.03.23.18.34.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Mar 2021 18:27:14 -0700 (PDT)
-Date: Wed, 24 Mar 2021 11:27:09 +1000
+ Tue, 23 Mar 2021 18:34:59 -0700 (PDT)
+Date: Wed, 24 Mar 2021 11:34:54 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 22/46] KVM: PPC: Book3S HV P9: Stop handling hcalls in
- real-mode in the P9 path
+Subject: Re: [PATCH v4 44/46] KVM: PPC: Book3S HV P9: implement hash guest
+ support
 To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
 References: <20210323010305.1045293-1-npiggin@gmail.com>
- <20210323010305.1045293-23-npiggin@gmail.com> <87y2ed5vi0.fsf@linux.ibm.com>
-In-Reply-To: <87y2ed5vi0.fsf@linux.ibm.com>
+ <20210323010305.1045293-45-npiggin@gmail.com> <87tup1kgtb.fsf@linux.ibm.com>
+In-Reply-To: <87tup1kgtb.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1616548948.qjnut0qf3h.astroid@bobo.none>
+Message-Id: <1616549242.r712wrhm08.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,94 +87,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Fabiano Rosas's message of March 24, 2021 8:57 am:
+Excerpts from Fabiano Rosas's message of March 24, 2021 1:53 am:
 > Nicholas Piggin <npiggin@gmail.com> writes:
 >=20
->> In the interest of minimising the amount of code that is run in
->> "real-mode", don't handle hcalls in real mode in the P9 path.
+>> Guest entry/exit has to restore and save/clear the SLB, plus several
+>> other bits to accommodate hash guests in the P9 path.
 >>
->> POWER8 and earlier are much more expensive to exit from HV real mode
->> and switch to host mode, because on those processors HV interrupts get
->> to the hypervisor with the MMU off, and the other threads in the core
->> need to be pulled out of the guest, and SLBs all need to be saved,
->> ERATs invalidated, and host SLB reloaded before the MMU is re-enabled
->> in host mode. Hash guests also require a lot of hcalls to run. The
->> XICS interrupt controller requires hcalls to run.
->>
->> By contrast, POWER9 has independent thread switching, and in radix mode
->> the hypervisor is already in a host virtual memory mode when the HV
->> interrupt is taken. Radix + xive guests don't need hcalls to handle
->> interrupts or manage translations.
->>
->> So it's much less important to handle hcalls in real mode in P9.
+>> Radix host, hash guest support is removed from the P7/8 path.
 >>
 >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >> ---
 >=20
 > <snip>
 >=20
->> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->> index fa7614c37e08..17739aaee3d8 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
->> @@ -1142,12 +1142,13 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcp=
-u)
->>  }
+>> diff --git a/arch/powerpc/kvm/book3s_hv_interrupt.c b/arch/powerpc/kvm/b=
+ook3s_hv_interrupt.c
+>> index cd84d2c37632..03fbfef708a8 100644
+>> --- a/arch/powerpc/kvm/book3s_hv_interrupt.c
+>> +++ b/arch/powerpc/kvm/book3s_hv_interrupt.c
+>> @@ -55,6 +55,50 @@ static void __accumulate_time(struct kvm_vcpu *vcpu, =
+struct kvmhv_tb_accumulator
+>>  #define accumulate_time(vcpu, next) do {} while (0)
+>>  #endif
 >>
->>  /*
->> - * Handle H_CEDE in the nested virtualization case where we haven't
->> - * called the real-mode hcall handlers in book3s_hv_rmhandlers.S.
->> + * Handle H_CEDE in the P9 path where we don't call the real-mode hcall
->> + * handlers in book3s_hv_rmhandlers.S.
->> + *
->>   * This has to be done early, not in kvmppc_pseries_do_hcall(), so
->>   * that the cede logic in kvmppc_run_single_vcpu() works properly.
->>   */
->> -static void kvmppc_nested_cede(struct kvm_vcpu *vcpu)
->> +static void kvmppc_cede(struct kvm_vcpu *vcpu)
->>  {
->>  	vcpu->arch.shregs.msr |=3D MSR_EE;
->>  	vcpu->arch.ceded =3D 1;
->> @@ -1403,9 +1404,15 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu =
-*vcpu,
->>  		/* hcall - punt to userspace */
->>  		int i;
->>
->> -		/* hypercall with MSR_PR has already been handled in rmode,
->> -		 * and never reaches here.
->> -		 */
->> +		if (unlikely(vcpu->arch.shregs.msr & MSR_PR)) {
->> +			/*
->> +			 * Guest userspace executed sc 1, reflect it back as a
->> +			 * privileged program check interrupt.
->> +			 */
->> +			kvmppc_core_queue_program(vcpu, SRR1_PROGPRIV);
->> +			r =3D RESUME_GUEST;
->> +			break;
->> +		}
+>> +static inline void mfslb(unsigned int idx, u64 *slbee, u64 *slbev)
+>> +{
+>> +	asm volatile("slbmfev  %0,%1" : "=3Dr" (*slbev) : "r" (idx));
+>> +	asm volatile("slbmfee  %0,%1" : "=3Dr" (*slbee) : "r" (idx));
+>> +}
+>> +
+>> +static inline void __mtslb(u64 slbee, u64 slbev)
+>> +{
+>> +	asm volatile("slbmte %0,%1" :: "r" (slbev), "r" (slbee));
+>> +}
+>> +
+>> +static inline void mtslb(unsigned int idx, u64 slbee, u64 slbev)
+>> +{
+>> +	BUG_ON((slbee & 0xfff) !=3D idx);
+>> +
+>> +	__mtslb(slbee, slbev);
+>> +}
+>> +
+>> +static inline void slb_invalidate(unsigned int ih)
+>> +{
+>> +	asm volatile("slbia %0" :: "i"(ih));
+>> +}
 >=20
-> This patch bypasses sc_1_fast_return so it breaks KVM-PR. L1 loops with
-> the following output:
+> Fyi, in my environment the assembler complains:
 >=20
-> [    9.503929][ T3443] Couldn't emulate instruction 0x4e800020 (op 19 xop=
- 16)
-> [    9.503990][ T3443] kvmppc_exit_pr_progint: emulation at 48f4 failed (=
-4e800020)
-> [    9.504080][ T3443] Couldn't emulate instruction 0x4e800020 (op 19 xop=
- 16)
-> [    9.504170][ T3443] kvmppc_exit_pr_progint: emulation at 48f4 failed (=
-4e800020)
+> {standard input}: Assembler messages:                                   =20
+> {standard input}:1293: Error: junk at end of line: `6'                   =
+         =20
+> {standard input}:2138: Error: junk at end of line: `6'                   =
+=20
+> make[3]: *** [../scripts/Makefile.build:271:
+> arch/powerpc/kvm/book3s_hv_interrupt.o] Error 1
 >=20
-> 0x4e800020 is a blr after a sc 1 in SLOF.
+> This works:
 >=20
-> For KVM-PR we need to inject a 0xc00 at some point, either here or
-> before branching to no_try_real in book3s_hv_rmhandlers.S.
+> -       asm volatile("slbia %0" :: "i"(ih));
+> +       asm volatile(PPC_SLBIA(%0) :: "i"(ih));
+>=20
+> But I don't know what is going on.
 
-Ah, I didn't know about that PR KVM (I suppose I should test it but I=20
-haven't been able to get it running in the past).
+Ah yes, we still need to use PPC_SLBIA. IH parameter to slbia was only=20
+added in binutils 2.27 and we support down to 2.23.
 
-Should be able to deal with that. This patch probably shouldn't change=20
-the syscall behaviour like this anyway.
+Thanks for the fix I'll add it.
 
 Thanks,
 Nick
