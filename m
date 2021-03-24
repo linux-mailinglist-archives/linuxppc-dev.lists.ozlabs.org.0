@@ -1,78 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D582234764D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 11:39:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F44347876
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 13:26:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F54VS5pNXz3bs3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 21:39:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F56t36G3lz3bsq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Mar 2021 23:26:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ForY/pCi;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=goNjsgxu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::42b;
- helo=mail-wr1-x42b.google.com; envelope-from=lee.jones@linaro.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=ForY/pCi; dkim-atps=neutral
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com
- [IPv6:2a00:1450:4864:20::42b])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=goNjsgxu; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F54V32wcZz30Cm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 21:39:04 +1100 (AEDT)
-Received: by mail-wr1-x42b.google.com with SMTP id z2so23925085wrl.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 03:39:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to;
- bh=2MN1HupZ2wU1N48DN3xopdGtWYSQO4jTJCN0wDe7jKo=;
- b=ForY/pCiS80CgudsYEzzbIxR+kr2cfbrUmgzu/ludY/Uo92HPWP+SLqDWeZfxq3WSe
- HTHwDHlrQxlLWT7P7Gq8eo9BSbEShZ7hjHRYm+FqCm5EvOgkFAEOk+QHzDYOVD+U1j0f
- tDwmW4UVfjTDmjAVPP4QM5xp5ThZOQECpMToplMoLRPOXLw/Y4IhVIILv38jPcpI6xNN
- XRdQhxIB83+2oYPLvz6k45cBAaJnHHduSScmxqQamSzovWUpRTHRSE1t5w28lN0nIAss
- g5A7AXDjoyOKqTqpGIXiA7P5po/OiVPWnnd2Q9XN/aOPBLxK67bsfxN6PjDXnw+Fs2Sx
- 9y/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=2MN1HupZ2wU1N48DN3xopdGtWYSQO4jTJCN0wDe7jKo=;
- b=a4rk6z3unP+I2PxUpkxWp6vMLIyHEAGy04N0MexwBR6L1oJlwU7CZWgwecjrSzHdbp
- oeGUpPhc3sVGPov3x4fGaqi5vssj3JnV113WrVWkL5rAKe+4zPkbFWq0UZJhfv0dS7Ek
- Z0O3hyMLCCDn44VA6dUp0TVcOB/OMSxnMSI7g5pS1Jyg1DvYUzdoEq9oq1Cneb3QRfNc
- xPAQFPwFqoIWVJs8AdOjWyLCFZ2i7HL7QUDaCRPzEzb6lGrq2anuvC6KPsOtrDwM0Qcu
- v4bz1cxnwals7N475ulCIys1YTvc34rl0EJCao/O1fLfsRoE8esxkQ1lRGQ8xq5w2GlW
- imaQ==
-X-Gm-Message-State: AOAM5336qOscTltTCrbW2SEMOf2myi6qIxRcD9PAqFltBdlwY6NoRwL3
- Pzkkk6OrLCHL8wI+FnEBEzcBSg==
-X-Google-Smtp-Source: ABdhPJwIZdrt9EiiBePHl2O9+VwbRbzY7HrD7Y+Yu81cs+LLDiS4bf1HGZlx6QURHuOw/yy5G8QTIw==
-X-Received: by 2002:a5d:42ca:: with SMTP id t10mr2743090wrr.274.1616582336777; 
- Wed, 24 Mar 2021 03:38:56 -0700 (PDT)
-Received: from dell ([91.110.221.180])
- by smtp.gmail.com with ESMTPSA id j12sm2678133wrx.59.2021.03.24.03.38.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Mar 2021 03:38:56 -0700 (PDT)
-Date: Wed, 24 Mar 2021 10:38:54 +0000
-From: Lee Jones <lee.jones@linaro.org>
-To: linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RESEND 1/1] powerpc: asm: hvconsole: Move 'hvc_vio_init_early's
- prototype to shared location
-Message-ID: <20210324103854.GK2916463@dell>
-References: <20210303124603.3150175-1-lee.jones@linaro.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F56sf3YTvz300r
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 23:26:13 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4F56sW00v6z9sWm;
+ Wed, 24 Mar 2021 23:26:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1616588767;
+ bh=zn71pgqow00k/WEKKDLdPSzZSu3TPEpAVVpuNBxkfvs=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=goNjsgxu1V91XU9VGxOMj+hdOjNfUa9p/m8//Y3PL/ZVRgZMfFYEQRNijCHbqWMVE
+ lA7luQe+S9Ni+qGymtkm6Hkhc5T1WWGiIuSmwa5mfPvuQl606GXTvX08/WQcCebh8I
+ xOlxmJ+J1bfOx6BgXb1WmKJ0ysnecMNrSILeRMqfgFqVbMfajQJTXobAV6dfPl61l1
+ nJQAu0ZbyEzfFRsWclaYC2vqhMX61WnV5TshN9fWiK3BgojnuaBxWeT4iFAnTH5ag8
+ YWhqD0o5o3O3TPiAL/Faa+4AU1IC1GgK/E5vETUcu92WjcYrIxqNk62rg8Y6GUVVXj
+ Ef8tuVwjyoLeQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v7] powerpc/irq: Inline call_do_irq() and call_do_softirq()
+In-Reply-To: <d2217b4e-718b-674d-c6a0-2cb69e3fd81c@csgroup.eu>
+References: <20210320122227.345427-1-mpe@ellerman.id.au>
+ <d2217b4e-718b-674d-c6a0-2cb69e3fd81c@csgroup.eu>
+Date: Wed, 24 Mar 2021 23:26:01 +1100
+Message-ID: <87k0pwhh5y.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210303124603.3150175-1-lee.jones@linaro.org>
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,32 +68,71 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 03 Mar 2021, Lee Jones wrote:
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 20/03/2021 =C3=A0 13:22, Michael Ellerman a =C3=A9crit=C2=A0:
+>> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>=20
+>> call_do_irq() and call_do_softirq() are simple enough to be
+>> worth inlining.
+>>=20
+>> Inlining them avoids an mflr/mtlr pair plus a save/reload on stack. It
+>> also allows GCC to keep the saved ksp_limit in an nonvolatile reg.
+>
+> We don't have the ksp_limit anymore, I forgot to remove the above text.
 
-> Fixes the following W=1 kernel build warning(s):
-> 
->  drivers/tty/hvc/hvc_vio.c:385:13: warning: no previous prototype for ‘hvc_vio_init_early’ [-Wmissing-prototypes]
->  385 | void __init hvc_vio_init_early(void)
->  | ^~~~~~~~~~~~~~~~~~
-> 
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/include/asm/hvconsole.h     | 3 +++
->  arch/powerpc/platforms/pseries/pseries.h | 3 ---
->  arch/powerpc/platforms/pseries/setup.c   | 1 +
->  3 files changed, 4 insertions(+), 3 deletions(-)
+No worries, I'll edit it when I apply it.
 
-Any idea who might pick this up please?
+>> This is inspired from S390 arch. Several other arches do more or
+>> less the same. The way sparc arch does seems odd thought.
+>>=20
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>> ---
+>>=20
+>> v2: no change.
+>> v3: no change.
+>> v4:
+>> - comment reminding the purpose of the inline asm block.
+>> - added r2 as clobbered reg
+>> v5:
+>> - Limiting the change to PPC32 for now.
+>> - removed r2 from the clobbered regs list (on PPC32 r2 points to current=
+ all the time)
+>> - Removed patch 1 and merged ksp_limit handling in here.
+>> v6:
+>> - Rebase on top of merge-test (ca6e327fefb2).
+>> - Remove the ksp_limit stuff as it's doesn't exist anymore.
+>>=20
+>> v7:
+>> mpe:
+>> - Enable for 64-bit too. This all in-kernel code calling in-kernel
+>>    code, and must use the kernel TOC.
+>
+> Great.
+>
+>> - Use named parameters for the inline asm.
+>
+> Hmm. It is the first time we use named parameters in powerpc assembly, is=
+n't it ?
 
-It's been on the list for months.
+Not quite the first.
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+See load_unaligned_zeropad().
+
+And also my soon to be merged code in:
+  http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210211135130.347=
+4832-5-mpe@ellerman.id.au/
+
+> I saw when investigating userspace access that x86 is using named paramet=
+ers widely.
+
+Yeah I'd like us to use it more, I think it helps readability a lot.
+
+> Wondering, how would the below look like with named parameters (from __pu=
+t_user_asm2_goto) ?
+>
+> 	stw%X1 %L0, %L1
+
+Not sure, possibly that's too complicated for it :)
+
+cheers
