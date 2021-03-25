@@ -2,56 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998A434984A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 18:38:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5592E349898
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 18:49:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F5slG40rBz3brR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 04:38:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F5szq2Bz7z3brf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 04:49:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kEfGfakW;
+	dkim=pass (2048-bit key; unprotected) header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256 header.s=20201203 header.b=p8knMaD7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=lwn.net
+ (client-ip=45.79.88.28; helo=ms.lwn.net; envelope-from=corbet@lwn.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=kEfGfakW; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256
+ header.s=20201203 header.b=p8knMaD7; dkim-atps=neutral
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F5skb5jp9z3bsq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 04:37:43 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 13DA461A2C;
- Thu, 25 Mar 2021 17:37:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1616693861;
- bh=1g0ymfKKeil9RN/uPQNtw7qS+3W7ggqGXapUCg0NkV0=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=kEfGfakWKp7ciHKy0udBHqlqmjlANfUTku7KpJ/sgEjH7iUge9hHR/C+qRjvIDnY9
- begDphefk0w0XugDXIJZPxUUce3tMuf5GPtrJqmB+YKqbs9jHxNHApLimYsOnvBJsG
- nh5mdvLe7JSKmb5PiRcpdrJBN8zSlK0m4pk9uPQHZXKNgNIskyPfzDOoDvLnOrkCtn
- jRJhYwEvfhwTaSoY9RzO1AxgKIMN7/1DP6Rs+dqV4Naw8pWN2lC266o7kqULO6BtpT
- qM8/+Dpi+QH+GVK/4H2zZwg9zXbqwnY4ipIBECN2S5O5FyO0u+1bleZp/zGhN4s/FZ
- +rCyuY2Sv/qyA==
-From: Mark Brown <broonie@kernel.org>
-To: tiwai@suse.com, perex@perex.cz, festevam@gmail.com, Xiubo.Lee@gmail.com,
- devicetree@vger.kernel.org, nicoleotsuka@gmail.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- timur@kernel.org, alsa-devel@alsa-project.org,
- Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com,
- robh+dt@kernel.org
-Subject: Re: [PATCH v5 0/6] Add audio driver base on rpmsg on i.MX platform
-Date: Thu, 25 Mar 2021 17:37:08 +0000
-Message-Id: <161669370551.41585.13939031002896940550.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <1615516725-4975-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1615516725-4975-1-git-send-email-shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F5szR1J55z2yyy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 04:48:51 +1100 (AEDT)
+Received: from localhost (unknown [IPv6:2601:281:8300:104d::5f6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ms.lwn.net (Postfix) with ESMTPSA id 81581381;
+ Thu, 25 Mar 2021 17:48:43 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 81581381
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+ t=1616694523; bh=dSiZ9WpbH6o5PpPH+JZs6hsMtE8EOaozrSsU3F4QXm4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=p8knMaD7MJkMURknqdxLgw09A6O8jjHKJcgS8GWt5XPxd2EM4iaVKA+ZIz0LnKlhv
+ Xds3laI1PxKxoqo3QqQFoM9p+a6gTVjXwdPsY6kp28fUxNykaXAfvJo1JEJSkEw3VR
+ iMbSmXAB8sLW1Z9JlpLYFDztU553e0QjM0zOe6JWf0vg63Mh7uZBHMhTkX7z7e1/0w
+ aLaumMWZMrkN5whRYJLWGuY7jh1UTvDVOpgyigeYgZe83w37AnMlNBR8tKKRBeboB6
+ JVJb4E4h1j731EaYcRd9Mh0ge6aT2rHI3ouQSXvw3mvPUBUjvCod9tjimXbkVE+Hin
+ ZeOHormm5CmuQ==
+From: Jonathan Corbet <corbet@lwn.net>
+To: Bhaskar Chowdhury <unixbhaskar@gmail.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs: powerpc: Fix a typo
+In-Reply-To: <20210322062237.2971314-1-unixbhaskar@gmail.com>
+References: <20210322062237.2971314-1-unixbhaskar@gmail.com>
+Date: Thu, 25 Mar 2021 11:48:43 -0600
+Message-ID: <87o8f715vo.fsf@meer.lwn.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,56 +61,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Brown <broonie@kernel.org>
+Cc: rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 12 Mar 2021 10:38:39 +0800, Shengjiu Wang wrote:
-> On Asymmetric multiprocessor, there is Cortex-A core and Cortex-M core,
-> Linux is running on A core, RTOS is running on M core.
-> The audio hardware device can be controlled by Cortex-M device,
-> So audio playback/capture can be handled by M core.
-> 
-> Rpmsg is the interface for sending and receiving msg to and from M
-> core, that we can create a virtual sound on Cortex-A core side.
-> 
-> [...]
+Bhaskar Chowdhury <unixbhaskar@gmail.com> writes:
 
-Applied to
+> s/struture/structure/
+>
+> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+> ---
+>  Documentation/powerpc/firmware-assisted-dump.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
+> index 20ea8cdee0aa..6c0ae070ba67 100644
+> --- a/Documentation/powerpc/firmware-assisted-dump.rst
+> +++ b/Documentation/powerpc/firmware-assisted-dump.rst
+> @@ -171,7 +171,7 @@ that were present in CMA region::
+>                                             (meta area)    |
+>                                                            |
+>                                                            |
+> -                      Metadata: This area holds a metadata struture whose
+> +                      Metadata: This area holds a metadata structure whose
+>                        address is registered with f/w and retrieved in the
+>                        second kernel after crash, on platforms that support
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Applied, thanks.
 
-Thanks!
-
-[1/6] ASoC: soc-component: Add snd_soc_pcm_component_ack
-      commit: 8bdfc0455e3a59e2c1207a56be22e910fae0e0d5
-[2/6] ASoC: fsl_rpmsg: Add CPU DAI driver for audio base on rpmsg
-      commit: b73d9e6225e86492f6a901223a34ecfa7b55c178
-[3/6] ASoC: dt-bindings: fsl_rpmsg: Add binding doc for rpmsg audio device
-      commit: 49c6bf62498344fa8f8af2314231f3eb37e0e150
-[4/6] ASoC: imx-audio-rpmsg: Add rpmsg_driver for audio channel
-      commit: 1935050de0b6c6c961e9de51d5b5d05642f861f1
-[5/6] ASoC: imx-pcm-rpmsg: Add platform driver for audio base on rpmsg
-      commit: 3c00eceb2a5391ed1ca6703b71cad35ab8cd4352
-[6/6] ASoC: imx-rpmsg: Add machine driver for audio base on rpmsg
-      commit: 39f8405c3e502e7b9d0533fa0b0bfe715b3e89c1
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+jon
