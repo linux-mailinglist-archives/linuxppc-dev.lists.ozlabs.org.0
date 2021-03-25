@@ -2,67 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF24349450
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 15:40:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3687A349718
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 17:43:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F5nns5q1gz3bwG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 01:40:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F5rWt1YXlz3bwr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 03:43:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=f9Z3n8d4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ALPbykLR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::734;
+ helo=mail-qk1-x734.google.com; envelope-from=arnaldo.melo@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=f9Z3n8d4; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ALPbykLR; dkim-atps=neutral
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com
+ [IPv6:2607:f8b0:4864:20::734])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F5nnM6SlPz2yyF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 01:39:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=03Sfa8ytglLlN13ZxnR+Q00mzR+WY66jFRqGNPbAZSA=; b=f9Z3n8d4kjN4SVMwGULXWANrw/
- CUHwQZQbYJjoYZi2BkET3nr9wT+yE7CBb6ZH4xsnNPN38BwnOB2XtxcxBfYDjC9TW9fihC8AfMRNJ
- iKgU9JKfO1Eh/z39sKzRDL5ndpE8HtdkVIP5LBMevSrLzw+eCYXlACSAThKeuZQ6JND4ugMlreg8s
- tMIVXbP80pPnz4Q9RcMjWtCLusUw8eMrLORpxtEFEJIJVpzlbXtDf8szfZoaWQMde4GODjwUK9679
- CqmvhTRfAJmrN3wrA5+QddCAEBgithqMxT3NKaaf3B/uBq5hDhAXZxzfnXtO1Y6GaNe/BifhYr4B8
- IxvQIZNQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lPR7d-00D5Wx-54; Thu, 25 Mar 2021 14:38:33 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D64DF3060C5;
- Thu, 25 Mar 2021 15:38:02 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id F0CA72CBFC94A; Thu, 25 Mar 2021 15:38:01 +0100 (CET)
-Date: Thu, 25 Mar 2021 15:38:01 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Subject: Re: [PATCH V2 1/5] powerpc/perf: Expose processor pipeline stage
- cycles using PERF_SAMPLE_WEIGHT_STRUCT
-Message-ID: <YFygSdFOT5B0DwRU@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F5rWR0DLZz30D8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 03:42:57 +1100 (AEDT)
+Received: by mail-qk1-x734.google.com with SMTP id q3so2372420qkq.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 09:42:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:user-agent:in-reply-to:references:mime-version
+ :content-transfer-encoding:subject:to:cc:from:message-id;
+ bh=nQz2FFQOVbXdb1nbA7usuQscVjdcM+pKQXNSzOfg+hY=;
+ b=ALPbykLRvkeSQXAwHyRm4zfDOnJh4b6/wRGs+aUYsGZSIjDlbhhMFjIDFemRMdYPMq
+ V0mugNl66OVvvLY4jcKxG7wlEQuZ2tLNJdsfpx92KDNEcH49zxOL/VVSD7apxqvXSUIa
+ cZzdX2nJ79iU7+K/cs9CqIYV/Q01Y35WOKKOyv0S/g79GK0wo8hDMCU68nlXyohluUUN
+ pDP/R++uPfjtJVXnpDEYJK8/A0SerROMRL4of8IsPM/gk69UYSZhANaIOS3vPEK2L7IQ
+ eVUj5BnMsLefSjObFHH8VfsrWGXoAl1+QTErTvGryQrBIXXp+I5IxNEgU3CnnKc34rVj
+ Sszw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:user-agent:in-reply-to:references
+ :mime-version:content-transfer-encoding:subject:to:cc:from
+ :message-id;
+ bh=nQz2FFQOVbXdb1nbA7usuQscVjdcM+pKQXNSzOfg+hY=;
+ b=rmZpMjA569KJjYnkD/yVCDTePUPItDKLBMgvD53CcNyie/b6qI599RC4iQhm0hpT2M
+ qV0S4PEiVbTFdOC5oYLC9tfPGQMA4VqH6v2aaaBAWX4NCP88CcRKVMpKojxOSeL1No0A
+ TEycAViObPwsBsBMPzxHgddn2Eujsz8rKCUmCUhSFuliBzxdUn9XQyQjKWK4L8MiA1H2
+ PLfDnBcyBYsK8w/AZDgX4Dsmld6lmpGGNW67Lh/c56JUx4c5VDtE0tFnvFWc+IjRGN3/
+ VleL3QtGtnZfQRBOg2hFo/YCriO5w7bZaoCtOV+rsR1qVrC526YGHXg7KARBS5/k06wA
+ v8Ug==
+X-Gm-Message-State: AOAM532KqQcStqNyYHqZ/ORFS0shLZbmsgFrkj+Y/tPUIuDnFZGqOpeJ
+ /1ufSwwiK6Lfhg9L+JOCUds=
+X-Google-Smtp-Source: ABdhPJwFootViaDnm/L5OAhIV4/loi9y5igxc62Na47b2/oBl1G7aIZhhS0rvK90N5qsxuI7E3p/ZA==
+X-Received: by 2002:a37:9e4e:: with SMTP id h75mr8931214qke.180.1616690571930; 
+ Thu, 25 Mar 2021 09:42:51 -0700 (PDT)
+Received: from [172.16.141.208] ([187.68.194.76])
+ by smtp.gmail.com with ESMTPSA id a187sm4512112qkd.69.2021.03.25.09.42.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 Mar 2021 09:42:51 -0700 (PDT)
+Date: Thu, 25 Mar 2021 13:42:23 -0300
+User-Agent: K-9 Mail for Android
+In-Reply-To: <YFygSdFOT5B0DwRU@hirez.programming.kicks-ass.net>
 References: <1616425047-1666-1-git-send-email-atrajeev@linux.vnet.ibm.com>
  <1616425047-1666-2-git-send-email-atrajeev@linux.vnet.ibm.com>
  <d7dd633b-e28a-155a-a8e2-0e5a83b4eead@linux.ibm.com>
  <YFyJr+R24TlrMNrC@kernel.org>
+ <YFygSdFOT5B0DwRU@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YFyJr+R24TlrMNrC@kernel.org>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH V2 1/5] powerpc/perf: Expose processor pipeline stage
+ cycles using PERF_SAMPLE_WEIGHT_STRUCT
+To: Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>
+From: Arnaldo <arnaldo.melo@gmail.com>
+Message-ID: <2BAC42AE-6BD3-45EF-8867-1A15F25FE80B@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,37 +96,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 25, 2021 at 10:01:35AM -0300, Arnaldo Carvalho de Melo wrote:
-> Em Wed, Mar 24, 2021 at 10:05:23AM +0530, Madhavan Srinivasan escreveu:
-> > 
-> > On 3/22/21 8:27 PM, Athira Rajeev wrote:
-> > > Performance Monitoring Unit (PMU) registers in powerpc provides
-> > > information on cycles elapsed between different stages in the
-> > > pipeline. This can be used for application tuning. On ISA v3.1
-> > > platform, this information is exposed by sampling registers.
-> > > Patch adds kernel support to capture two of the cycle counters
-> > > as part of perf sample using the sample type:
-> > > PERF_SAMPLE_WEIGHT_STRUCT.
-> > > 
-> > > The power PMU function 'get_mem_weight' currently uses 64 bit weight
-> > > field of perf_sample_data to capture memory latency. But following the
-> > > introduction of PERF_SAMPLE_WEIGHT_TYPE, weight field could contain
-> > > 64-bit or 32-bit value depending on the architexture support for
-> > > PERF_SAMPLE_WEIGHT_STRUCT. Patches uses WEIGHT_STRUCT to expose the
-> > > pipeline stage cycles info. Hence update the ppmu functions to work for
-> > > 64-bit and 32-bit weight values.
-> > > 
-> > > If the sample type is PERF_SAMPLE_WEIGHT, use the 64-bit weight field.
-> > > if the sample type is PERF_SAMPLE_WEIGHT_STRUCT, memory subsystem
-> > > latency is stored in the low 32bits of perf_sample_weight structure.
-> > > Also for CPU_FTR_ARCH_31, capture the two cycle counter information in
-> > > two 16 bit fields of perf_sample_weight structure.
-> > 
-> > Changes looks fine to me.
-> > 
-> > Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> 
-> So who will process the kernel bits? I'm merging the tooling parts,
 
-I was sorta expecting these to go through the powerpc tree. Let me know
-if you want them in tip/perf/core instead.
+
+On March 25, 2021 11:38:01 AM GMT-03:00, Peter Zijlstra <peterz@infradead=
+=2Eorg> wrote:
+>On Thu, Mar 25, 2021 at 10:01:35AM -0300, Arnaldo Carvalho de Melo
+>wrote:=2E
+>> > > Also for CPU_FTR_ARCH_31, capture the two cycle counter
+>information in
+>> > > two 16 bit fields of perf_sample_weight structure=2E
+>> >=20
+>> > Changes looks fine to me=2E
+>> >=20
+>> > Reviewed-by: Madhavan Srinivasan <maddy@linux=2Eibm=2Ecom>
+>>=20
+>> So who will process the kernel bits? I'm merging the tooling parts,
+>
+>I was sorta expecting these to go through the powerpc tree=2E Let me know
+>if you want them in tip/perf/core instead=2E
+
+Shouldn't matter by which tree it gets upstream, as long as it gets picked=
+ :-)
+
+- Arnaldo
+
+--=20
+Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
