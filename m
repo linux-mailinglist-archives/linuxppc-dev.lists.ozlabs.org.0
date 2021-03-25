@@ -1,60 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44AC348639
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 02:10:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1F3348786
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 04:35:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F5Rqq6bslz3btw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 12:10:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F5W2N2VRNz3btp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 14:35:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ZaAExu5G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Avv86z6t;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435;
+ helo=mail-pf1-x435.google.com; envelope-from=rashmica.g@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ZaAExu5G; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Avv86z6t; dkim-atps=neutral
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
+ [IPv6:2607:f8b0:4864:20::435])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F5RqQ1CvSz301y
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 12:10:25 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F5RqF5LH1z9sWX;
- Thu, 25 Mar 2021 12:10:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1616634618;
- bh=ZW+d7kU0Risnr9sA0Xrow6G2y6serwV4IO6IYGM/EHQ=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=ZaAExu5G5EHRvfCFWIlGfPIGJXs7Zus8026qfM8tQ0XazFMVwrAL3KgxCye2W5i4N
- etEWZ7Oqv9u8UWwPMG+ZyjZr+LGwZoohZQGnyNQm4T/ZHBIQs3Ta081CFtBYmVXY9T
- ao/N1sK/2aQ2xtBhpSWIG/jqGPQvn9CTkVrCX+MJV6h1C9BIuYXDQdZiyHMQ6QfGxb
- c4EbvWbapRIDhnoXQBgXXt+jXDCU3DSS4pM3wcG93GZmHNJv4YjpaUQ3mJsiU9IFsi
- 2EXUsPRpd2CrsqfjptLJiDaQuEq0g4a+oIOUdOmaMnsrFipNTB0UP6ao/umAJUYBOy
- kGKpbzjJSY0VA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org, Benjamin
- Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RESEND 1/1] powerpc: asm: hvconsole: Move
- 'hvc_vio_init_early's prototype to shared location
-In-Reply-To: <20210324103854.GK2916463@dell>
-References: <20210303124603.3150175-1-lee.jones@linaro.org>
- <20210324103854.GK2916463@dell>
-Date: Thu, 25 Mar 2021 12:10:13 +1100
-Message-ID: <87h7l0ghsa.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F5W1t1s8Gz2yh8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 14:34:41 +1100 (AEDT)
+Received: by mail-pf1-x435.google.com with SMTP id y5so632744pfn.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Mar 2021 20:34:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :user-agent:mime-version:content-transfer-encoding;
+ bh=uiHuANgZnUbs15erWI7jFJ06CQL/PCIuoG5tp+3N4nE=;
+ b=Avv86z6t3Wlrh6ex01MDKbR5Qe9MemwRgAj1PIprTZWNVr5vpe2TpYSZANV1n5OATL
+ zZaJ5qQDZiEGkKvCSOgAzKB5ZRAWg5HSq1KkfAKxYbEZHJh8sIb/XK14yCwGXMBGtS20
+ 0U5XPJ/LWeAlNBbnHotvyKWXTpSt1e8cT+ux9w14OrihPnXYnQW/chh2WGfXisDqBNJv
+ N0cozmY90iTzeixUAC/W76VPTg9kexWXW8wfUB3Lo0VVwQ1Iz7Hq6ZnFdIudcvtjxsau
+ qhM7nGl4xM9XkTONd2PpCzC/OUDC0ssP7urAYzZ/amK+kCESzmhH7+6zuxySYcgxDqu0
+ qmCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:user-agent:mime-version:content-transfer-encoding;
+ bh=uiHuANgZnUbs15erWI7jFJ06CQL/PCIuoG5tp+3N4nE=;
+ b=LDHjJHszQPsS9MJA6xOfBEV8yw/HYUibQIK//u0uQPxmsiHXUtwVz2xvDpuTp5YGnJ
+ eYx7PKpc1cSY7Lvv6HHanh3xMMVczlkYCnsGO716dDnZxl2Q3zGMOtYES0KdtFgkPGF8
+ QaOQg2jumf2V5ckWWoR3roo5x1IC6dS9YrQRB2ppOYZIxx7daxm+RK/qU2S45hqu6M/c
+ B9UYOqsFBbwWCDpSv8cyoYfyktnw2VvaDEmcsSfQR6GG+9DR9WISKumDlzVE/N3PGqJ7
+ swKZrP/r5bCJXbXw0q79gS/L1R2MNleL4RzzJwRdHAYRjdkwrb1az2GvJXONeZA3K0Pl
+ W4RA==
+X-Gm-Message-State: AOAM5329j3zPAcTOW9itprHkqIRdUB62QixN32dDtuKKzAPNK62hXH0z
+ MmozU8NKSHKjO63JB6eyBcg=
+X-Google-Smtp-Source: ABdhPJxImsKBAHNehdnBOjZGwfMv4q2M2pY7ju3E01s04z4pvRiTdZAPGc2tU3JodE7AeVEWfWa/mA==
+X-Received: by 2002:a62:7f86:0:b029:20a:a195:bb36 with SMTP id
+ a128-20020a627f860000b029020aa195bb36mr6160832pfd.4.1616643276590; 
+ Wed, 24 Mar 2021 20:34:36 -0700 (PDT)
+Received: from rashmica (150.24.220.111.sta.wbroadband.net.au.
+ [111.220.24.150])
+ by smtp.googlemail.com with ESMTPSA id m3sm3528784pgk.47.2021.03.24.20.34.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 Mar 2021 20:34:36 -0700 (PDT)
+Message-ID: <fa0803a7ca3c88835e113e06e32bed68adbc45c2.camel@gmail.com>
+Subject: Re: [PATCH] powerpc/asm-offsets: GPR14 is not needed either
+From: Rashmica Gupta <rashmica.g@gmail.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
+ Ellerman <mpe@ellerman.id.au>
+Date: Thu, 25 Mar 2021 14:34:31 +1100
+In-Reply-To: <9881c68fbca004f9ea18fc9473f630e11ccd6417.1615806071.git.christophe.leroy@csgroup.eu>
+References: <9881c68fbca004f9ea18fc9473f630e11ccd6417.1615806071.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,34 +84,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Lee Jones <lee.jones@linaro.org> writes:
-> On Wed, 03 Mar 2021, Lee Jones wrote:
->
->> Fixes the following W=3D1 kernel build warning(s):
->>=20
->>  drivers/tty/hvc/hvc_vio.c:385:13: warning: no previous prototype for =
-=E2=80=98hvc_vio_init_early=E2=80=99 [-Wmissing-prototypes]
->>  385 | void __init hvc_vio_init_early(void)
->>  | ^~~~~~~~~~~~~~~~~~
->>=20
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Signed-off-by: Lee Jones <lee.jones@linaro.org>
->> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
->> ---
->>  arch/powerpc/include/asm/hvconsole.h     | 3 +++
->>  arch/powerpc/platforms/pseries/pseries.h | 3 ---
->>  arch/powerpc/platforms/pseries/setup.c   | 1 +
->>  3 files changed, 4 insertions(+), 3 deletions(-)
->
-> Any idea who might pick this up please?
+On Mon, 2021-03-15 at 11:01 +0000, Christophe Leroy wrote:
+> Commit aac6a91fea93 ("powerpc/asm: Remove unused symbols in
+> asm-offsets.c") removed GPR15 to GPR31 but kept GPR14,
+> probably because it pops up in a couple of comments when doing
+> a grep.
+> 
+> However, it was never used either, so remove it as well.
+> 
 
-I will. I have it in my next-test branch.=20
+Looks good to me.
 
-cheers
+Reviewed-by: Rashmica Gupta <rashmica.g@gmail.com>
+
+> Fixes: aac6a91fea93 ("powerpc/asm: Remove unused symbols in asm-
+> offsets.c")
+> Cc: Rashmica Gupta <rashmicy@gmail.com>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/kernel/asm-offsets.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/asm-offsets.c
+> b/arch/powerpc/kernel/asm-offsets.c
+> index f3a662201a9f..4d230c5c7099 100644
+> --- a/arch/powerpc/kernel/asm-offsets.c
+> +++ b/arch/powerpc/kernel/asm-offsets.c
+> @@ -323,9 +323,6 @@ int main(void)
+>  	STACK_PT_REGS_OFFSET(GPR11, gpr[11]);
+>  	STACK_PT_REGS_OFFSET(GPR12, gpr[12]);
+>  	STACK_PT_REGS_OFFSET(GPR13, gpr[13]);
+> -#ifndef CONFIG_PPC64
+> -	STACK_PT_REGS_OFFSET(GPR14, gpr[14]);
+> -#endif /* CONFIG_PPC64 */
+>  	/*
+>  	 * Note: these symbols include _ because they overlap with
+> special
+>  	 * register names
+
