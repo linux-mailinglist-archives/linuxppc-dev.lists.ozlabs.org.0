@@ -2,56 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D334348ED4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 12:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5018B348EDF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 12:25:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F5jPm35Bfz3brp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 22:22:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F5jTX2KPHz3btv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 22:25:52 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PWzuaEVk;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=PWzuaEVk; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F5jPQ543Yz2yyq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 22:22:13 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F5jPF3Rmmz9v07B;
- Thu, 25 Mar 2021 12:22:09 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 23Jg9s7auSVF; Thu, 25 Mar 2021 12:22:09 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F5jPF2Xh6z9v076;
- Thu, 25 Mar 2021 12:22:09 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 905718B850;
- Thu, 25 Mar 2021 12:22:10 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 17HwWPOOzqFZ; Thu, 25 Mar 2021 12:22:10 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 95F028B84F;
- Thu, 25 Mar 2021 12:22:09 +0100 (CET)
-Subject: Re: [PATCH v2 6/7] cmdline: Gives architectures opportunity to use
- generically defined boot cmdline manipulation
-To: Will Deacon <will@kernel.org>
-References: <cover.1614705851.git.christophe.leroy@csgroup.eu>
- <2eb6fad3470256fff5c9f33cd876f344abb1628b.1614705851.git.christophe.leroy@csgroup.eu>
- <20210303175747.GD19713@willie-the-truck>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <8db81511-3f28-4ef1-5e66-188cf7cafad1@csgroup.eu>
-Date: Thu, 25 Mar 2021 12:18:38 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F5jT86dWjz304Q
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 22:25:32 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D991261A27;
+ Thu, 25 Mar 2021 11:25:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1616671528;
+ bh=MvspNmx/BQ2U6lxFhhm7YQJAvRh6QOInlWJfeIGGQP8=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=PWzuaEVkzrWJSvHUwl1iC7gZ/Mo2UgkIZE/4FJzFkd20cBQunMX7ecvn70oJFYcmt
+ /SO1CnN8ijocgl6agThVTMgjcwOlTwl8lVwFCwitlijZDyLV+mloUBH8vp1rqHthh2
+ 3AhmGlkvtCj6wAIzHk1s6heyJffncq9sQHyO2vXUwOWbFm1lO8GN+3N7JiHD+HHpci
+ G4wV98USCCYGqi92YDKudo0scPZ6T2K1i+CIGfJBmoHSEfawj1fqbuEnzYHBSfkqsR
+ H9gVqCc8dTmikLLU/9tfey+47pCXBXyX4lRKaAqywjWCbgc8s7Ok1tRncgyHPC2u8y
+ k0HhHQ4n+jxwg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.11 22/44] powerpc: Force inlining of
+ cpu_has_feature() to avoid build failure
+Date: Thu, 25 Mar 2021 07:24:37 -0400
+Message-Id: <20210325112459.1926846-22-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210325112459.1926846-1-sashal@kernel.org>
+References: <20210325112459.1926846-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20210303175747.GD19713@willie-the-truck>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -64,121 +61,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, robh@kernel.org,
- daniel@gimpelevich.san-francisco.ca.us, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, danielwa@cisco.com
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
+[ Upstream commit eed5fae00593ab9d261a0c1ffc1bdb786a87a55a ]
 
-Le 03/03/2021 à 18:57, Will Deacon a écrit :
-> On Tue, Mar 02, 2021 at 05:25:22PM +0000, Christophe Leroy wrote:
->> Most architectures have similar boot command line manipulation
->> options. This patchs adds the definition in init/Kconfig, gated by
->> CONFIG_HAVE_CMDLINE that the architectures can select to use them.
->>
->> In order to use this, a few architectures will have to change their
->> CONFIG options:
->> - riscv has to replace CMDLINE_FALLBACK by CMDLINE_FROM_BOOTLOADER
->> - architectures using CONFIG_CMDLINE_OVERRIDE or
->> CONFIG_CMDLINE_OVERWRITE have to replace them by CONFIG_CMDLINE_FORCE.
->>
->> Architectures also have to define CONFIG_DEFAULT_CMDLINE.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   init/Kconfig | 56 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 56 insertions(+)
->>
->> diff --git a/init/Kconfig b/init/Kconfig
->> index 22946fe5ded9..a0f2ad9467df 100644
->> --- a/init/Kconfig
->> +++ b/init/Kconfig
->> @@ -117,6 +117,62 @@ config INIT_ENV_ARG_LIMIT
->>   	  Maximum of each of the number of arguments and environment
->>   	  variables passed to init from the kernel command line.
->>   
->> +config HAVE_CMDLINE
->> +	bool
->> +
->> +config CMDLINE_BOOL
->> +	bool "Default bootloader kernel arguments"
->> +	depends on HAVE_CMDLINE
->> +	help
->> +	  On some platforms, there is currently no way for the boot loader to
->> +	  pass arguments to the kernel. For these platforms, you can supply
->> +	  some command-line options at build time by entering them here.  In
->> +	  most cases you will need to specify the root device here.
-> 
-> Why is this needed as well as CMDLINE_FROM_BOOTLOADER? IIUC, the latter
-> will use CONFIG_CMDLINE if it fails to get anything from the bootloader,
-> which sounds like the same scenario.
-> 
->> +config CMDLINE
->> +	string "Initial kernel command string"
-> 
-> s/Initial/Default
-> 
-> which is then consistent with the rest of the text here.
-> 
->> +	depends on CMDLINE_BOOL
-> 
-> Ah, so this is a bit different and I don't think lines-up with the
-> CMDLINE_BOOL help text.
-> 
->> +	default DEFAULT_CMDLINE
->> +	help
->> +	  On some platforms, there is currently no way for the boot loader to
->> +	  pass arguments to the kernel. For these platforms, you can supply
->> +	  some command-line options at build time by entering them here.  In
->> +	  most cases you will need to specify the root device here.
-> 
-> (same stale text)
-> 
->> +choice
->> +	prompt "Kernel command line type" if CMDLINE != ""
->> +	default CMDLINE_FROM_BOOTLOADER
->> +	help
->> +	  Selects the way you want to use the default kernel arguments.
-> 
-> How about:
-> 
-> "Determines how the default kernel arguments are combined with any
->   arguments passed by the bootloader"
-> 
->> +config CMDLINE_FROM_BOOTLOADER
->> +	bool "Use bootloader kernel arguments if available"
->> +	help
->> +	  Uses the command-line options passed by the boot loader. If
->> +	  the boot loader doesn't provide any, the default kernel command
->> +	  string provided in CMDLINE will be used.
->> +
->> +config CMDLINE_EXTEND
-> 
-> Can we rename this to CMDLINE_APPEND, please? There is code in the tree
-> which disagrees about what CMDLINE_EXTEND means, so that will need be
-> to be updated to be consistent (e.g. the EFI stub parsing order). Having
-> the generic option with a different name means we won't accidentally end
-> up with the same inconsistent behaviours.
+The code relies on constant folding of cpu_has_feature() based
+on possible and always true values as defined per
+CPU_FTRS_ALWAYS and CPU_FTRS_POSSIBLE.
 
-Argh, yes. Seems like the problem is even larger than that IIUC:
+Build failure is encountered with for instance
+book3e_all_defconfig on kisskb in the AMDGPU driver which uses
+cpu_has_feature(CPU_FTR_VSX_COMP) to decide whether calling
+kernel_enable_vsx() or not.
 
-- For ARM it means to append the bootloader arguments to the CONFIG_CMDLINE
-- For Powerpc it means to append the CONFIG_CMDLINE to the bootloader arguments
-- For SH  it means to append the CONFIG_CMDLINE to the bootloader arguments
-- For EFI it means to append the bootloader arguments to the CONFIG_CMDLINE
-- For OF it means to append the CONFIG_CMDLINE to the bootloader arguments
+The failure is due to cpu_has_feature() not being inlined with
+that configuration with gcc 4.9.
 
-So what happens on ARM for instance when it selects CONFIG_OF for instance ?
-Or should we consider that EXTEND means APPEND or PREPEND, no matter which ?
-Because EXTEND is for instance used for:
+In the same way as commit acdad8fb4a15 ("powerpc: Force inlining of
+mmu_has_feature to fix build failure"), for inlining of
+cpu_has_feature().
 
-	config INITRAMFS_FORCE
-		bool "Ignore the initramfs passed by the bootloader"
-		depends on CMDLINE_EXTEND || CMDLINE_FORCE
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/b231dfa040ce4cc37f702f5c3a595fdeabfe0462.1615378209.git.christophe.leroy@csgroup.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/include/asm/cpu_has_feature.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/cpu_has_feature.h b/arch/powerpc/include/asm/cpu_has_feature.h
+index 7897d16e0990..727d4b321937 100644
+--- a/arch/powerpc/include/asm/cpu_has_feature.h
++++ b/arch/powerpc/include/asm/cpu_has_feature.h
+@@ -7,7 +7,7 @@
+ #include <linux/bug.h>
+ #include <asm/cputable.h>
+ 
+-static inline bool early_cpu_has_feature(unsigned long feature)
++static __always_inline bool early_cpu_has_feature(unsigned long feature)
+ {
+ 	return !!((CPU_FTRS_ALWAYS & feature) ||
+ 		  (CPU_FTRS_POSSIBLE & cur_cpu_spec->cpu_features & feature));
+@@ -46,7 +46,7 @@ static __always_inline bool cpu_has_feature(unsigned long feature)
+ 	return static_branch_likely(&cpu_feature_keys[i]);
+ }
+ #else
+-static inline bool cpu_has_feature(unsigned long feature)
++static __always_inline bool cpu_has_feature(unsigned long feature)
+ {
+ 	return early_cpu_has_feature(feature);
+ }
+-- 
+2.30.1
 
-Christophe
