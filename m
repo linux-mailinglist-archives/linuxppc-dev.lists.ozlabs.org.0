@@ -2,96 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DBF3499EC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 20:03:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AEDA349A4D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 20:32:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F5vd13P2mz3bnM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 06:03:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F5wHM1kz4z3by8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 06:32:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kaGEXXmh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qhPz13AM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=kaGEXXmh; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=qhPz13AM; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F5vcY1hkqz30KR
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 06:02:35 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12PIY1rx053774; Thu, 25 Mar 2021 15:02:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : from : to :
- references : cc : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=5TSZvWmAq47qPT3ZC2XijbVOZgYy2PCzsx2HCBwSf/E=;
- b=kaGEXXmhVjUTbYsifYoqMmCzn5CDNXtzvK4HrzlwgxeBJSbI7oLkSnUl00dzn4gVV4zV
- eUOgEZuFq+7WIZwq2woSOq7v4xmez4JAxKIvfx4Fhb/85CcLrU5n49BysC28sKbFPehg
- i1lEnjw8tZr8hYEFMtUzfli+ucwD3wuuxj8tut7tYVaxka0k3GZYtrpJ96E0mly+eOVR
- iKlFghxJq9BtolVbGs/1FBnLiYLyzAyEkRY3MIFHh3E5gKAaDwty0cNgvsZXNTUiitq3
- ktBJfBizwLzw3bpIuV7SGnbxWSfkkHf2/EzCLJuMO6iMV0K70cPZti/xsxlZ+UBFYc72 Kg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37gvav7dr0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Mar 2021 15:02:26 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12PJ1YWF009655;
- Thu, 25 Mar 2021 19:02:24 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 37d9bmnn2r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Mar 2021 19:02:24 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12PJ2MSa32506310
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Mar 2021 19:02:22 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5BE4B4C04E;
- Thu, 25 Mar 2021 19:02:22 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 80F594C04A;
- Thu, 25 Mar 2021 19:02:21 +0000 (GMT)
-Received: from pomme.local (unknown [9.211.113.64])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 25 Mar 2021 19:02:21 +0000 (GMT)
-Subject: Re: VDSO ELF header
-From: Laurent Dufour <ldufour@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F5wGx5Gshz30D8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 06:32:25 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 43EF861A39;
+ Thu, 25 Mar 2021 19:32:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1616700742;
+ bh=wPQ5Sea1VKNbkcHcSE2wOkcPab+jTWd/uy3MX0n6t8Y=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=qhPz13AMwoqBiPYoRSp+sOrqs8xLR1phPnSElfXaT3SrbfZRHiaZgO6D7YxgFZFFB
+ oYa7bMFovpREENQs5jwQgUYDLkzu2gcrVCPDsaBy6SzeQvaW1qrofhoLHr6Wq6E1CS
+ KMdfhVDAoQwH/bhQKHL6qSPnxH+MpGsDZdurCpwfuSeXSV6DGHtZ9Fdftq9PoXLTtS
+ VR152Oo7hAfi8Zdxu/F1l7A4k8xXQKOqYBWtJAYNCqivBoeVVWU4ZgtKVn4Gt+lrBU
+ bmmEoQwh5ps8MzGegpOwIpYOQNtaD7Lg+t46gFEMs2T6iX+7F6kF2hWshOdydJPQ3n
+ 9ZQrmixlOTDcA==
+Date: Thu, 25 Mar 2021 19:32:17 +0000
+From: Will Deacon <will@kernel.org>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <c45ae4f8-1cbc-c687-b6a2-9a431fafc85c@linux.ibm.com>
- <9366c258-127f-f105-abd1-6baa9a6745c5@csgroup.eu>
- <5b03e966-2cfd-5f0c-c48d-dea5e0001833@linux.ibm.com>
-Message-ID: <30c51951-332b-7aa8-13ba-44a0b6ae3498@linux.ibm.com>
-Date: Thu, 25 Mar 2021 20:02:20 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
- Gecko/20100101 Thunderbird/78.8.1
-In-Reply-To: <5b03e966-2cfd-5f0c-c48d-dea5e0001833@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Subject: Re: [PATCH v2 6/7] cmdline: Gives architectures opportunity to use
+ generically defined boot cmdline manipulation
+Message-ID: <20210325193216.GC16123@willie-the-truck>
+References: <cover.1614705851.git.christophe.leroy@csgroup.eu>
+ <2eb6fad3470256fff5c9f33cd876f344abb1628b.1614705851.git.christophe.leroy@csgroup.eu>
+ <20210303175747.GD19713@willie-the-truck>
+ <8db81511-3f28-4ef1-5e66-188cf7cafad1@csgroup.eu>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-25_07:2021-03-25,
- 2021-03-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- spamscore=0 lowpriorityscore=0 mlxlogscore=999 impostorscore=0
- malwarescore=0 priorityscore=1501 bulkscore=0 clxscore=1015 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103250135
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8db81511-3f28-4ef1-5e66-188cf7cafad1@csgroup.eu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,71 +63,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, robh@kernel.org,
+ daniel@gimpelevich.san-francisco.ca.us, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, danielwa@cisco.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 25/03/2021 à 17:56, Laurent Dufour a écrit :
-> Le 25/03/2021 à 17:46, Christophe Leroy a écrit :
->> Hi Laurent
->>
->> Le 25/03/2021 à 17:11, Laurent Dufour a écrit :
->>> Hi Christophe,
->>>
->>> Since v5.11 and the changes you made to the VDSO code, it no more exposing 
->>> the ELF header at the beginning of the VDSO mapping in user space.
->>>
->>> This is confusing CRIU which is checking for this ELF header cookie 
->>> (https://github.com/checkpoint-restore/criu/issues/1417).
->>
->> How does it do on other architectures ?
+On Thu, Mar 25, 2021 at 12:18:38PM +0100, Christophe Leroy wrote:
 > 
-> Good question, I'll double check the CRIU code.
-
-On x86, there are 2 VDSO entries:
-7ffff7fcb000-7ffff7fce000 r--p 00000000 00:00 0                          [vvar]
-7ffff7fce000-7ffff7fcf000 r-xp 00000000 00:00 0                          [vdso]
-
-And the VDSO is starting with the ELF header.
-
 > 
->>
->>>
->>> I'm not an expert in loading and ELF part and reading the change you made, I 
->>> can't identify how this could work now as I'm expecting the loader to need 
->>> that ELF header to do the relocation.
->>
->> I think the loader is able to find it at the expected place.
+> Le 03/03/2021 � 18:57, Will Deacon a �crit�:
+> > On Tue, Mar 02, 2021 at 05:25:22PM +0000, Christophe Leroy wrote:
+> > > Most architectures have similar boot command line manipulation
+> > > options. This patchs adds the definition in init/Kconfig, gated by
+> > > CONFIG_HAVE_CMDLINE that the architectures can select to use them.
+> > > 
+> > > In order to use this, a few architectures will have to change their
+> > > CONFIG options:
+> > > - riscv has to replace CMDLINE_FALLBACK by CMDLINE_FROM_BOOTLOADER
+> > > - architectures using CONFIG_CMDLINE_OVERRIDE or
+> > > CONFIG_CMDLINE_OVERWRITE have to replace them by CONFIG_CMDLINE_FORCE.
+> > > 
+> > > Architectures also have to define CONFIG_DEFAULT_CMDLINE.
+> > > 
+> > > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > > ---
+> > >   init/Kconfig | 56 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+> > >   1 file changed, 56 insertions(+)
+> > > 
+> > > diff --git a/init/Kconfig b/init/Kconfig
+> > > index 22946fe5ded9..a0f2ad9467df 100644
+> > > --- a/init/Kconfig
+> > > +++ b/init/Kconfig
+> > > @@ -117,6 +117,62 @@ config INIT_ENV_ARG_LIMIT
+> > >   	  Maximum of each of the number of arguments and environment
+> > >   	  variables passed to init from the kernel command line.
+> > > +config HAVE_CMDLINE
+> > > +	bool
+> > > +
+> > > +config CMDLINE_BOOL
+> > > +	bool "Default bootloader kernel arguments"
+> > > +	depends on HAVE_CMDLINE
+> > > +	help
+> > > +	  On some platforms, there is currently no way for the boot loader to
+> > > +	  pass arguments to the kernel. For these platforms, you can supply
+> > > +	  some command-line options at build time by entering them here.  In
+> > > +	  most cases you will need to specify the root device here.
+> > 
+> > Why is this needed as well as CMDLINE_FROM_BOOTLOADER? IIUC, the latter
+> > will use CONFIG_CMDLINE if it fails to get anything from the bootloader,
+> > which sounds like the same scenario.
+> > 
+> > > +config CMDLINE
+> > > +	string "Initial kernel command string"
+> > 
+> > s/Initial/Default
+> > 
+> > which is then consistent with the rest of the text here.
+> > 
+> > > +	depends on CMDLINE_BOOL
+> > 
+> > Ah, so this is a bit different and I don't think lines-up with the
+> > CMDLINE_BOOL help text.
+> > 
+> > > +	default DEFAULT_CMDLINE
+> > > +	help
+> > > +	  On some platforms, there is currently no way for the boot loader to
+> > > +	  pass arguments to the kernel. For these platforms, you can supply
+> > > +	  some command-line options at build time by entering them here.  In
+> > > +	  most cases you will need to specify the root device here.
+> > 
+> > (same stale text)
+> > 
+> > > +choice
+> > > +	prompt "Kernel command line type" if CMDLINE != ""
+> > > +	default CMDLINE_FROM_BOOTLOADER
+> > > +	help
+> > > +	  Selects the way you want to use the default kernel arguments.
+> > 
+> > How about:
+> > 
+> > "Determines how the default kernel arguments are combined with any
+> >   arguments passed by the bootloader"
+> > 
+> > > +config CMDLINE_FROM_BOOTLOADER
+> > > +	bool "Use bootloader kernel arguments if available"
+> > > +	help
+> > > +	  Uses the command-line options passed by the boot loader. If
+> > > +	  the boot loader doesn't provide any, the default kernel command
+> > > +	  string provided in CMDLINE will be used.
+> > > +
+> > > +config CMDLINE_EXTEND
+> > 
+> > Can we rename this to CMDLINE_APPEND, please? There is code in the tree
+> > which disagrees about what CMDLINE_EXTEND means, so that will need be
+> > to be updated to be consistent (e.g. the EFI stub parsing order). Having
+> > the generic option with a different name means we won't accidentally end
+> > up with the same inconsistent behaviours.
 > 
-> Actually, it seems the loader relies on the AUX vector AT_SYSINFO_EHDR. I guess 
-> CRIU should do the same.
+> Argh, yes. Seems like the problem is even larger than that IIUC:
 > 
->>>
->>>  From my investigation it seems that the first bytes of the VDSO area are now 
->>> the vdso_arch_data.
->>>
->>> Is the ELF header put somewhere else?
->>> How could the loader process the VDSO without that ELF header?
->>>
->>
->> Like most other architectures, we now have the data section as first page and 
->> the text section follows. So you will likely find the elf header on the second 
->> page.
+> - For ARM it means to append the bootloader arguments to the CONFIG_CMDLINE
+> - For Powerpc it means to append the CONFIG_CMDLINE to the bootloader arguments
+> - For SH  it means to append the CONFIG_CMDLINE to the bootloader arguments
+> - For EFI it means to append the bootloader arguments to the CONFIG_CMDLINE
+> - For OF it means to append the CONFIG_CMDLINE to the bootloader arguments
+> 
+> So what happens on ARM for instance when it selects CONFIG_OF for instance ?
 
-I'm wondering if the data section you're refering to is the vvar section I can 
-see on x86.
+I think ARM gets different behaviour depending on whether it uses ATAGs or
+FDT.
 
+> Or should we consider that EXTEND means APPEND or PREPEND, no matter which ?
+> Because EXTEND is for instance used for:
+> 
+> 	config INITRAMFS_FORCE
+> 		bool "Ignore the initramfs passed by the bootloader"
+> 		depends on CMDLINE_EXTEND || CMDLINE_FORCE
 
->>
->> Done in this commit: 
->> https://github.com/linuxppc/linux/commit/511157ab641eb6bedd00d62673388e78a4f871cf
-> 
-> I'll double check on x86, but anyway, I think CRIU should rely on 
-> AT_SYSINFO_EHDR and not assume that the ELF header is at the beginning of VDSO 
-> mapping.
-> 
-> Thanks for your help.
-> Laurent.
-> 
+Oh man, I didn't spot that one :(
 
+I think I would make the generic options explicit: either APPEND or PREPEND.
+Then architectures which choose to define CMDLINE_EXTEND in their Kconfigs
+can select the generic option that matches their behaviour.
+
+INITRAMFS_FORCE sounds like it should depend on APPEND (assuming that means
+CONFIG_CMDLINE is appended to the bootloader arguments).
+
+Will
