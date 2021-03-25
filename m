@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5018B348EDF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 12:25:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9208C348F0C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 12:26:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F5jTX2KPHz3btv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 22:25:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F5jVd3qrwz3btS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 22:26:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PWzuaEVk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=op4lhtXp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=PWzuaEVk; 
+ header.s=k20201202 header.b=op4lhtXp; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F5jT86dWjz304Q
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 22:25:32 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D991261A27;
- Thu, 25 Mar 2021 11:25:27 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F5jVF4YF6z2xfT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 22:26:29 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 929C561A34;
+ Thu, 25 Mar 2021 11:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1616671528;
+ s=k20201202; t=1616671587;
  bh=MvspNmx/BQ2U6lxFhhm7YQJAvRh6QOInlWJfeIGGQP8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=PWzuaEVkzrWJSvHUwl1iC7gZ/Mo2UgkIZE/4FJzFkd20cBQunMX7ecvn70oJFYcmt
- /SO1CnN8ijocgl6agThVTMgjcwOlTwl8lVwFCwitlijZDyLV+mloUBH8vp1rqHthh2
- 3AhmGlkvtCj6wAIzHk1s6heyJffncq9sQHyO2vXUwOWbFm1lO8GN+3N7JiHD+HHpci
- G4wV98USCCYGqi92YDKudo0scPZ6T2K1i+CIGfJBmoHSEfawj1fqbuEnzYHBSfkqsR
- H9gVqCc8dTmikLLU/9tfey+47pCXBXyX4lRKaAqywjWCbgc8s7Ok1tRncgyHPC2u8y
- k0HhHQ4n+jxwg==
+ b=op4lhtXpH4+JZBNTK6Als9+FV0JJg4OSHgfEzt/spZe8T1zl3n23cM0pJ8npKNBWd
+ c6c7PacjxRiOPZSSC5GLKU1IuuNdvLn5yBcSjSiVqgQtyE7ip43795hj0KGi97nPcL
+ jJrJgcM+JxPNJer8cg7uWhgeDwsjdTrFgvLgsnvm47S3+75jL9T4nmbx4CvvDOq2fj
+ 7nZbPegpFNCZxqrlMQyRSdlspeH/60CYGUOF5guDs5EYhDWNnARcPWn9ZbIRW+ioGy
+ RlHbPPmv1PuReU2MeIm8tad6rLjG44+b/Eo1LimMeXYk3VKj9kxYbBWzP/2gmThLdR
+ 7WLsGhTGVb1rw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.11 22/44] powerpc: Force inlining of
+Subject: [PATCH AUTOSEL 5.10 21/39] powerpc: Force inlining of
  cpu_has_feature() to avoid build failure
-Date: Thu, 25 Mar 2021 07:24:37 -0400
-Message-Id: <20210325112459.1926846-22-sashal@kernel.org>
+Date: Thu, 25 Mar 2021 07:25:40 -0400
+Message-Id: <20210325112558.1927423-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210325112459.1926846-1-sashal@kernel.org>
-References: <20210325112459.1926846-1-sashal@kernel.org>
+In-Reply-To: <20210325112558.1927423-1-sashal@kernel.org>
+References: <20210325112558.1927423-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
