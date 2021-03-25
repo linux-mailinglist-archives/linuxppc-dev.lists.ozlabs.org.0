@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07CEE34928E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 14:02:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9235A3492B5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Mar 2021 14:06:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F5lcY722fz3bqf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 00:02:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F5ljm3zhpz3bvQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 00:06:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ju/qHmlr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YX5naR5R;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,33 +17,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Ju/qHmlr; 
+ header.s=k20201202 header.b=YX5naR5R; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F5lc52Phbz2yxf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 00:01:41 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C087961A11;
- Thu, 25 Mar 2021 13:01:37 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F5ljM606Zz30Bp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 00:06:15 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 18B26619E4;
+ Thu, 25 Mar 2021 13:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1616677298;
- bh=VVzdacZ5WDveyzy7D1c2EKGI2GCUWsmL2zx+5NzF7+w=;
+ s=k20201202; t=1616677573;
+ bh=d9VDzuX7t090oj90bd1Ejc5Z05/QWX5T3xUF0Jflowg=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Ju/qHmlr9oR4lpvM/NzvZFrmuzz3uVjdkKZWi5R31vC8OJbG8FAiNU2GIWtx3KKSx
- R48ajxWLNWLzqyIZzu5s6gNlae9LD+BC4PNLZsUA+sWoMhGpW839bLqoXQ8gwdSJ45
- 2nA1gYQSG7LEfdi5yO80kSNL9pTbyuR6xdyCGBkQRe0Lx48FOonJYWFjLppY72kJi/
- rtg4CUIzPigSDE/oBZ3/IpnwffM/cV73cd+u3JsOvCGJhXraOsFWAoodBOnGn65G6f
- AQsNtDonMCyIMvNguvwqBxeP58Rqdd2rVN+jgCQAgZDSqoaR6OhujeOR3gZRdKNAfQ
- W+0XHVJnnTVBA==
+ b=YX5naR5RlhYYuu8g30O2QQaRc6Do+Q540UhBZ49tE+cCkcojRzIZ22+CRz8vgsWa/
+ On62D1VCMJ4zs9mZTMxEk4zVbvGBx80g6gDFjRnfFl/gIQtUEbFWKfTavrBfKfbD7D
+ 68/TsG9rNHd8lzrLiwyDdPBkscm8YQey0/wjR15zn+JWEGyp1WxLhQIIWhylfY+Tnd
+ cFvnmtRtWadxcxSOUALgVpUxxk9F93Wi85Ff5a2NV1TzKi75w0I+iFJPce/YZ7ar+g
+ hZIuIcbv7Cy3+gRgbvUgsBSy8UCrkRk8nsY0G4xq8GrA0TFJ69oTCb3jMnycmf/64G
+ 4rx8LXUepUyCg==
 Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
- id CA3D740647; Thu, 25 Mar 2021 10:01:35 -0300 (-03)
-Date: Thu, 25 Mar 2021 10:01:35 -0300
+ id 144D040647; Thu, 25 Mar 2021 10:06:11 -0300 (-03)
+Date: Thu, 25 Mar 2021 10:06:11 -0300
 From: Arnaldo Carvalho de Melo <acme@kernel.org>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>
 Subject: Re: [PATCH V2 1/5] powerpc/perf: Expose processor pipeline stage
  cycles using PERF_SAMPLE_WEIGHT_STRUCT
-Message-ID: <YFyJr+R24TlrMNrC@kernel.org>
+Message-ID: <YFyKw1ezDio0z9yM@kernel.org>
 References: <1616425047-1666-1-git-send-email-atrajeev@linux.vnet.ibm.com>
  <1616425047-1666-2-git-send-email-atrajeev@linux.vnet.ibm.com>
  <d7dd633b-e28a-155a-a8e2-0e5a83b4eead@linux.ibm.com>
@@ -97,15 +97,12 @@ Em Wed, Mar 24, 2021 at 10:05:23AM +0530, Madhavan Srinivasan escreveu:
 > > two 16 bit fields of perf_sample_weight structure.
 > 
 > Changes looks fine to me.
-> 
-> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-So who will process the kernel bits? I'm merging the tooling parts,
-
-Thanks,
-
-- Arnaldo
+You mean just the kernel part or can I add your Reviewed-by to all the
+patchset?
  
+> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> 
 > 
 > > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > > ---
