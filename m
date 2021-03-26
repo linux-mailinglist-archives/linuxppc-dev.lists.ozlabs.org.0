@@ -1,52 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCA134A8FB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 14:50:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B8B34A93F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 15:08:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6NfF1HhXz3fTh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 00:50:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6P2n4Q4Hz3c5p
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 01:08:33 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Dh7dx+ZZ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::829;
+ helo=mail-qt1-x829.google.com; envelope-from=danielhb413@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Dh7dx+ZZ; dkim-atps=neutral
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com
+ [IPv6:2607:f8b0:4864:20::829])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6NWp6KR6z3bwn
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 00:45:10 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F6NWh6NNJz9v03N;
- Fri, 26 Mar 2021 14:45:04 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id xndv0v1GJYSd; Fri, 26 Mar 2021 14:45:04 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F6NWh50m3z9v03M;
- Fri, 26 Mar 2021 14:45:04 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7ED9F8B8CB;
- Fri, 26 Mar 2021 14:45:05 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id fcwQHTDmL2ra; Fri, 26 Mar 2021 14:45:05 +0100 (CET)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BF2308B8CD;
- Fri, 26 Mar 2021 14:45:04 +0100 (CET)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 48ABF67611; Fri, 26 Mar 2021 13:45:05 +0000 (UTC)
-Message-Id: <63c9c340da826c14ed0c4f0121e723b16f626bc7.1616765870.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1616765869.git.christophe.leroy@csgroup.eu>
-References: <cover.1616765869.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 17/17] cmdline: Remove CONFIG_CMDLINE_EXTEND
-To: will@kernel.org, danielwa@cisco.com, robh@kernel.org,
- daniel@gimpelevich.san-francisco.ca.us
-Date: Fri, 26 Mar 2021 13:45:05 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6P2M6GW7z2yhs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 01:08:10 +1100 (AEDT)
+Received: by mail-qt1-x829.google.com with SMTP id i19so4270530qtv.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 07:08:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:references:from:message-id:date:user-agent:mime-version
+ :in-reply-to:content-language:content-transfer-encoding;
+ bh=vuKxDYahmwdMyoe1S0fSlxX5rMXxNCpigWRyydmBVwA=;
+ b=Dh7dx+ZZrD4TNXl0F4eqps4X/KPnNvRsnNQyxhIO07A9C4iV2+CPzsqJntxyz4RxbX
+ z154WOwgD2uF28D6E9LPZktW8toyyDLsAufQZsvf8lW/SzN4b7rVNjTo46PPicFH6j8z
+ k2c3Nxu1x+u5YE0LqbgxfyWjMHt2wLyPQp5ZvQzZfyP3UE8KgkZ7xZ8jXh9OJ+timAFN
+ RxBenxKLzS8UlJ6dgUl0+q0ttz25852phoQqVCVhSRvT2p9z0/14qGM8jfqDvs8votCG
+ RpOIPLQ4/dI+SeIxYf3ISQqSd4lt5q2t/Pw1tlHyyYop5xioUx35fdeIswBDXHnM7lt1
+ pCTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=vuKxDYahmwdMyoe1S0fSlxX5rMXxNCpigWRyydmBVwA=;
+ b=OgazB+FNHHa2gqdjY9gtcUFgcAzJ+uIVQvs++gLqMk6WIjOx4fdp4uFoSFHTm5vooF
+ kY0a5ttCO6yVxow0GSNW4MWWxGWbzOATZjeRgMqdUZHmiBzgtpcMONIoTAV+t4lZ0Rk3
+ ruX+g9oRV8ivlTIhozUYNapZPGTXZZsPaNdWFUzeDyOIJrext/hQSs0jZUE36gF4wLa+
+ ssvMsb5akzTeDtK3P7uBVUQC7RJNUtW8O3f/pWmI/pMeULICAGTFnXSe6p4zJf1JS1kY
+ CcByN93ByW3u+MUhIGmdQZ0ZYihDfg/JqZFQga9KyilF+/Si1j+uOI+Yqyh+3WjyehkT
+ u4JQ==
+X-Gm-Message-State: AOAM531UOIOYwZbcwnrEQOQkeo0ZybaimPxcCfLP/ylk4vwUXGoljpm2
+ RnyqWKTsRlQVtifX1/L981DBLq2g+i0=
+X-Google-Smtp-Source: ABdhPJxi5Wgukq5rleYGPQT9oPuKGnqo1X3dfoXXD2gZ4rs68DBjjLcNcZITriaKQnogaJ7daSEHLA==
+X-Received: by 2002:ac8:4b58:: with SMTP id e24mr12187488qts.120.1616767685842; 
+ Fri, 26 Mar 2021 07:08:05 -0700 (PDT)
+Received: from ?IPv6:2804:431:c7c6:3fd7:65e0:e5c6:f4fc:733c?
+ ([2804:431:c7c6:3fd7:65e0:e5c6:f4fc:733c])
+ by smtp.gmail.com with ESMTPSA id d24sm6461963qkl.49.2021.03.26.07.08.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 Mar 2021 07:08:05 -0700 (PDT)
+Subject: Re: [PATCH v2 1/1] hotplug-cpu.c: show 'last online CPU' error in
+ dlpar_cpu_offline()
+To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
+References: <20210323205056.52768-1-danielhb413@gmail.com>
+ <20210323205056.52768-2-danielhb413@gmail.com>
+ <871rc28p1w.fsf@linkitivity.dja.id.au>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+Message-ID: <b9a6e77c-4319-ff08-493f-43e02388701b@gmail.com>
+Date: Fri, 26 Mar 2021 11:08:01 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+MIME-Version: 1.0
+In-Reply-To: <871rc28p1w.fsf@linkitivity.dja.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,44 +87,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, devicetree@vger.kernel.org,
- microblaze <monstr@monstr.eu>, linux-xtensa@linux-xtensa.org,
- linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, nios2 <ley.foon.tan@intel.com>,
- linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All architectures providing CONFIG_CMDLINE_EXTEND
-are now converted to GENERIC_CMDLINE.
+Hey Daniel,
 
-This configuration item is not used anymore, drop it.
+On 3/26/21 2:24 AM, Daniel Axtens wrote:
+> Hi Daniel,
+> 
+> Two small nitpicks:
+> 
+>> This patch adds a 'last online' check in dlpar_cpu_offline() to catch
+>> the 'last online CPU' offline error, eturning a more informative error
+>                                         ^--- s/eturning/returning/;
+> 
+> 
+>> +			/* device_offline() will return -EBUSY (via cpu_down())
+>> +			 * if there is only one CPU left. Check it here to fail
+>> +			 * earlier and with a more informative error message,
+>> +			 * while also retaining the cpu_add_remove_lock to be sure
+>> +			 * that no CPUs are being online/offlined during this
+>> +			 * check. */
+> 
+> Checkpatch has a small issue with this comment:
+> 
+> WARNING: Block comments use a trailing */ on a separate line
+> #50: FILE: arch/powerpc/platforms/pseries/hotplug-cpu.c:279:
+> +			 * check. */
+> 
+> Apart from that, this patch seems sane to me, but I haven't been able to
+> test it.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- init/Kconfig | 6 ------
- 1 file changed, 6 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index af0d84662cc2..fa002e3765ab 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -163,12 +163,6 @@ config CMDLINE_FORCE
- 	  arguments provided by the bootloader.
- endchoice
- 
--config CMDLINE_EXTEND
--	bool
--	default CMDLINE_APPEND
--	help
--	  To be removed once all architectures are converted to generic CMDLINE
--
- config COMPILE_TEST
- 	bool "Compile also drivers which will not load"
- 	depends on HAS_IOMEM
--- 
-2.25.0
+Thanks for the review, and for letting me know of the existence of
+'scripts/checkpatch.pl' to verify the patches before posting. I'll
+send a v3.
 
+
+Thanks,
+
+
+DHB
+
+
+> 
+> Kind regards,
+> Daniel
+> 
