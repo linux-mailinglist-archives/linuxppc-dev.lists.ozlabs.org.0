@@ -1,40 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F173C34A54A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 11:09:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565E734A558
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 11:12:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6Hl86g2Sz3bv8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 21:09:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6HpM2fs7z3c1j
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 21:12:27 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kObWXJ3X;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com;
- envelope-from=heying24@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6Hkp4cgCz301y
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 21:09:18 +1100 (AEDT)
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F6Hh93BMjzyPPH;
- Fri, 26 Mar 2021 18:07:05 +0800 (CST)
-Received: from huawei.com (10.67.174.47) by DGGEMS404-HUB.china.huawei.com
- (10.3.19.204) with Microsoft SMTP Server id 14.3.498.0; Fri, 26 Mar 2021
- 18:08:58 +0800
-From: He Ying <heying24@huawei.com>
-To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
- <corbet@lwn.net>, <ruscur@russell.cc>, <oohall@gmail.com>,
- <heying24@huawei.com>
-Subject: [PATCH] docs: powerpc: Fix misspellings and grammar errors
-Date: Fri, 26 Mar 2021 06:08:53 -0400
-Message-ID: <20210326100853.173586-1-heying24@huawei.com>
-X-Mailer: git-send-email 2.17.1
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=kObWXJ3X; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6Hnx179fz2yxh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 21:12:04 +1100 (AEDT)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4F6Hnw1Z1lz9sWP; Fri, 26 Mar 2021 21:12:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1616753524;
+ bh=GUlHzL5n9whpu6Hf7LxDdPjQ1vuGmBimzHPNq4r/5Cc=;
+ h=From:To:Subject:Date:From;
+ b=kObWXJ3Xbv8h7C97A5v8jTHaQvvasw0gQjwu2UoJpG/MgATMpVvwoo2bMFTRQmW5X
+ Gv0UmSXqrGQbBRC+4PH3jAwPrBzTTQFp0ILDgB4MxaCGwDrkcOt0/HX5bvq0xLjNWy
+ kc+ichLHA6EAiU3nDAR3q9nRniK9YPd/WWwZT1uOWub9o9HqOR4sje83dblqAK//0T
+ Slj06EDw80pkVcufDDvSWSvqryqlGwDC2gTssqlq1VVxbSD7iTIXYMlwfYKmW8Hzl+
+ F0TGiwBpDkgv2V3YOhPHd8aebBzammdTUB3VG/zeucuDnQokRSMG9pwyY8KTw6M29l
+ 1XCXgX3nRDrhg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64: Move security code into security.c
+Date: Fri, 26 Mar 2021 21:12:01 +1100
+Message-Id: <20210326101201.1973552-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.47]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,156 +56,596 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: He Ying <heying24@huawei.com>
----
- Documentation/powerpc/booting.rst                | 2 +-
- Documentation/powerpc/dawr-power9.rst            | 2 +-
- Documentation/powerpc/eeh-pci-error-recovery.rst | 2 +-
- Documentation/powerpc/elfnote.rst                | 2 +-
- Documentation/powerpc/firmware-assisted-dump.rst | 2 +-
- Documentation/powerpc/kaslr-booke32.rst          | 2 +-
- Documentation/powerpc/mpc52xx.rst                | 2 +-
- Documentation/powerpc/papr_hcalls.rst            | 4 ++--
- Documentation/powerpc/transactional_memory.rst   | 4 ++--
- 9 files changed, 11 insertions(+), 11 deletions(-)
+When the original spectre/meltdown mitigations were merged we put them
+in setup_64.c for lack of a better place.
 
-diff --git a/Documentation/powerpc/booting.rst b/Documentation/powerpc/booting.rst
-index 2d0ec2ff2b57..11aa440f98cc 100644
---- a/Documentation/powerpc/booting.rst
-+++ b/Documentation/powerpc/booting.rst
-@@ -94,7 +94,7 @@ should:
+Since then we created security.c for some of the other mitigation
+related code. But it should all be in there.
+
+This sort of code movement can cause trouble for backports, but
+hopefully this code is relatively stable these days (famous last words).
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/security.c | 261 ++++++++++++++++++++++++++++++++
+ arch/powerpc/kernel/setup_64.c | 264 ---------------------------------
+ 2 files changed, 261 insertions(+), 264 deletions(-)
+
+diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+index e4e1a94ccf6a..287286ddf7dc 100644
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -7,6 +7,7 @@
+ #include <linux/cpu.h>
+ #include <linux/kernel.h>
+ #include <linux/device.h>
++#include <linux/memblock.h>
+ #include <linux/nospec.h>
+ #include <linux/prctl.h>
+ #include <linux/seq_buf.h>
+@@ -18,6 +19,7 @@
+ #include <asm/setup.h>
+ #include <asm/inst.h>
  
-         a) add your platform support as a _boolean_ option in
-         arch/powerpc/Kconfig, following the example of PPC_PSERIES,
--        PPC_PMAC and PPC_MAPLE. The later is probably a good
-+        PPC_PMAC and PPC_MAPLE. The latter is probably a good
-         example of a board support to start from.
++#include "setup.h"
  
-         b) create your main platform file as
-diff --git a/Documentation/powerpc/dawr-power9.rst b/Documentation/powerpc/dawr-power9.rst
-index c96ab6befd9c..e55ac6a24b97 100644
---- a/Documentation/powerpc/dawr-power9.rst
-+++ b/Documentation/powerpc/dawr-power9.rst
-@@ -4,7 +4,7 @@ DAWR issues on POWER9
+ u64 powerpc_security_features __read_mostly = SEC_FTR_DEFAULT;
  
- On POWER9 the Data Address Watchpoint Register (DAWR) can cause a checkstop
- if it points to cache inhibited (CI) memory. Currently Linux has no way to
--disinguish CI memory when configuring the DAWR, so (for now) the DAWR is
-+distinguish CI memory when configuring the DAWR, so (for now) the DAWR is
- disabled by this commit::
+@@ -541,6 +543,178 @@ void setup_count_cache_flush(void)
+ 	toggle_branch_cache_flush(enable);
+ }
  
-     commit 9654153158d3e0684a1bdb76dbababdb7111d5a0
-diff --git a/Documentation/powerpc/eeh-pci-error-recovery.rst b/Documentation/powerpc/eeh-pci-error-recovery.rst
-index 438a87ebc095..d6643a91bdf8 100644
---- a/Documentation/powerpc/eeh-pci-error-recovery.rst
-+++ b/Documentation/powerpc/eeh-pci-error-recovery.rst
-@@ -73,7 +73,7 @@ return all-ff's (0xff, 0xffff, 0xffffffff for 8/16/32-bit reads).
- This value was chosen because it is the same value you would
- get if the device was physically unplugged from the slot.
- This includes access to PCI memory, I/O space, and PCI config
--space.  Interrupts; however, will continued to be delivered.
-+space.  Interrupts; however, will continue to be delivered.
- 
- Detection and recovery are performed with the aid of ppc64
- firmware.  The programming interfaces in the Linux kernel
-diff --git a/Documentation/powerpc/elfnote.rst b/Documentation/powerpc/elfnote.rst
-index 06602248621c..3ec8d61e9a33 100644
---- a/Documentation/powerpc/elfnote.rst
-+++ b/Documentation/powerpc/elfnote.rst
-@@ -8,7 +8,7 @@ capabilities and information which can be used by a bootloader or userland.
- Types and Descriptors
- ---------------------
- 
--The types to be used with the "PowerPC" namesapce are defined in [#f1]_.
-+The types to be used with the "PowerPC" namespace are defined in [#f1]_.
- 
- 	1) PPC_ELFNOTE_CAPABILITIES
- 
-diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
-index 6c0ae070ba67..e363fc48529a 100644
---- a/Documentation/powerpc/firmware-assisted-dump.rst
-+++ b/Documentation/powerpc/firmware-assisted-dump.rst
-@@ -207,7 +207,7 @@ Currently the dump will be copied from /proc/vmcore to a new file upon
- user intervention. The dump data available through /proc/vmcore will be
- in ELF format. Hence the existing kdump infrastructure (kdump scripts)
- to save the dump works fine with minor modifications. KDump scripts on
--major Distro releases have already been modified to work seemlessly (no
-+major Distro releases have already been modified to work seamlessly (no
- user intervention in saving the dump) when FADump is used, instead of
- KDump, as dump mechanism.
- 
-diff --git a/Documentation/powerpc/kaslr-booke32.rst b/Documentation/powerpc/kaslr-booke32.rst
-index 8b259fdfdf03..5681c1d1b65b 100644
---- a/Documentation/powerpc/kaslr-booke32.rst
-+++ b/Documentation/powerpc/kaslr-booke32.rst
-@@ -38,5 +38,5 @@ bit of the entropy to decide the index of the 64M zone. Then we chose a
- 
-                               kernstart_virt_addr
- 
--To enable KASLR, set CONFIG_RANDOMIZE_BASE = y. If KASLR is enable and you
-+To enable KASLR, set CONFIG_RANDOMIZE_BASE = y. If KASLR is enabled and you
- want to disable it at runtime, add "nokaslr" to the kernel cmdline.
-diff --git a/Documentation/powerpc/mpc52xx.rst b/Documentation/powerpc/mpc52xx.rst
-index 30260707c3fe..5243b1763fad 100644
---- a/Documentation/powerpc/mpc52xx.rst
-+++ b/Documentation/powerpc/mpc52xx.rst
-@@ -34,7 +34,7 @@ To compile/use :
- Some remarks:
- 
-  - The port is named mpc52xxx, and config options are PPC_MPC52xx. The MGT5100
--   is not supported, and I'm not sure anyone is interesting in working on it
-+   is not supported, and I'm not sure anyone is interested in working on it
-    so. I didn't took 5xxx because there's apparently a lot of 5xxx that have
-    nothing to do with the MPC5200. I also included the 'MPC' for the same
-    reason.
-diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
-index 48fcf1255a33..3d553e8a2937 100644
---- a/Documentation/powerpc/papr_hcalls.rst
-+++ b/Documentation/powerpc/papr_hcalls.rst
-@@ -40,7 +40,7 @@ and any in-arguments for the hcall are provided in registers *r4-r12*. If values
- have to be passed through a memory buffer, the data stored in that buffer should be
- in Big-endian byte order.
- 
--Once control is returns back to the guest after hypervisor has serviced the
-+Once control returns back to the guest after hypervisor has serviced the
- 'HVCS' instruction the return value of the hcall is available in *r3* and any
- out values are returned in registers *r4-r12*. Again like in case of in-arguments,
- any out values stored in a memory buffer will be in Big-endian byte order.
-@@ -147,7 +147,7 @@ corresponding opcode values please look into the arch specific header [4]_:
- | Out: *numBytesRead*
- | Return Value: *H_Success, H_Parameter, H_P2, H_P3, H_Hardware*
- 
--Given a DRC Index of an NVDIMM, read N-bytes from the the metadata area
-+Given a DRC Index of an NVDIMM, read N-bytes from the metadata area
- associated with it, at a specified offset and copy it to provided buffer.
- The metadata area stores configuration information such as label information,
- bad-blocks etc. The metadata area is located out-of-band of NVDIMM storage
-diff --git a/Documentation/powerpc/transactional_memory.rst b/Documentation/powerpc/transactional_memory.rst
-index b5b09bf00966..040a20675fd1 100644
---- a/Documentation/powerpc/transactional_memory.rst
-+++ b/Documentation/powerpc/transactional_memory.rst
-@@ -189,7 +189,7 @@ kernel aborted a transaction:
-  ====================== ================================
- 
- These can be checked by the user program's abort handler as TEXASR[0:7].  If
--bit 7 is set, it indicates that the error is consider persistent.  For example
-+bit 7 is set, it indicates that the error is considered persistent.  For example
- a TM_CAUSE_ALIGNMENT will be persistent while a TM_CAUSE_RESCHED will not.
- 
- GDB
-@@ -271,4 +271,4 @@ with these lines:
- 
- hrfid and mtmsrd have the same quirk.
- 
--The Linux kernel uses this quirk in it's early exception handling.
-+The Linux kernel uses this quirk in its early exception handling.
++static enum l1d_flush_type enabled_flush_types;
++static void *l1d_flush_fallback_area;
++static bool no_rfi_flush;
++static bool no_entry_flush;
++static bool no_uaccess_flush;
++bool rfi_flush;
++static bool entry_flush;
++static bool uaccess_flush;
++DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
++EXPORT_SYMBOL(uaccess_flush_key);
++
++static int __init handle_no_rfi_flush(char *p)
++{
++	pr_info("rfi-flush: disabled on command line.");
++	no_rfi_flush = true;
++	return 0;
++}
++early_param("no_rfi_flush", handle_no_rfi_flush);
++
++static int __init handle_no_entry_flush(char *p)
++{
++	pr_info("entry-flush: disabled on command line.");
++	no_entry_flush = true;
++	return 0;
++}
++early_param("no_entry_flush", handle_no_entry_flush);
++
++static int __init handle_no_uaccess_flush(char *p)
++{
++	pr_info("uaccess-flush: disabled on command line.");
++	no_uaccess_flush = true;
++	return 0;
++}
++early_param("no_uaccess_flush", handle_no_uaccess_flush);
++
++/*
++ * The RFI flush is not KPTI, but because users will see doco that says to use
++ * nopti we hijack that option here to also disable the RFI flush.
++ */
++static int __init handle_no_pti(char *p)
++{
++	pr_info("rfi-flush: disabling due to 'nopti' on command line.\n");
++	handle_no_rfi_flush(NULL);
++	return 0;
++}
++early_param("nopti", handle_no_pti);
++
++static void do_nothing(void *unused)
++{
++	/*
++	 * We don't need to do the flush explicitly, just enter+exit kernel is
++	 * sufficient, the RFI exit handlers will do the right thing.
++	 */
++}
++
++void rfi_flush_enable(bool enable)
++{
++	if (enable) {
++		do_rfi_flush_fixups(enabled_flush_types);
++		on_each_cpu(do_nothing, NULL, 1);
++	} else
++		do_rfi_flush_fixups(L1D_FLUSH_NONE);
++
++	rfi_flush = enable;
++}
++
++static void entry_flush_enable(bool enable)
++{
++	if (enable) {
++		do_entry_flush_fixups(enabled_flush_types);
++		on_each_cpu(do_nothing, NULL, 1);
++	} else {
++		do_entry_flush_fixups(L1D_FLUSH_NONE);
++	}
++
++	entry_flush = enable;
++}
++
++static void uaccess_flush_enable(bool enable)
++{
++	if (enable) {
++		do_uaccess_flush_fixups(enabled_flush_types);
++		static_branch_enable(&uaccess_flush_key);
++		on_each_cpu(do_nothing, NULL, 1);
++	} else {
++		static_branch_disable(&uaccess_flush_key);
++		do_uaccess_flush_fixups(L1D_FLUSH_NONE);
++	}
++
++	uaccess_flush = enable;
++}
++
++static void __ref init_fallback_flush(void)
++{
++	u64 l1d_size, limit;
++	int cpu;
++
++	/* Only allocate the fallback flush area once (at boot time). */
++	if (l1d_flush_fallback_area)
++		return;
++
++	l1d_size = ppc64_caches.l1d.size;
++
++	/*
++	 * If there is no d-cache-size property in the device tree, l1d_size
++	 * could be zero. That leads to the loop in the asm wrapping around to
++	 * 2^64-1, and then walking off the end of the fallback area and
++	 * eventually causing a page fault which is fatal. Just default to
++	 * something vaguely sane.
++	 */
++	if (!l1d_size)
++		l1d_size = (64 * 1024);
++
++	limit = min(ppc64_bolted_size(), ppc64_rma_size);
++
++	/*
++	 * Align to L1d size, and size it at 2x L1d size, to catch possible
++	 * hardware prefetch runoff. We don't have a recipe for load patterns to
++	 * reliably avoid the prefetcher.
++	 */
++	l1d_flush_fallback_area = memblock_alloc_try_nid(l1d_size * 2,
++						l1d_size, MEMBLOCK_LOW_LIMIT,
++						limit, NUMA_NO_NODE);
++	if (!l1d_flush_fallback_area)
++		panic("%s: Failed to allocate %llu bytes align=0x%llx max_addr=%pa\n",
++		      __func__, l1d_size * 2, l1d_size, &limit);
++
++
++	for_each_possible_cpu(cpu) {
++		struct paca_struct *paca = paca_ptrs[cpu];
++		paca->rfi_flush_fallback_area = l1d_flush_fallback_area;
++		paca->l1d_flush_size = l1d_size;
++	}
++}
++
++void setup_rfi_flush(enum l1d_flush_type types, bool enable)
++{
++	if (types & L1D_FLUSH_FALLBACK) {
++		pr_info("rfi-flush: fallback displacement flush available\n");
++		init_fallback_flush();
++	}
++
++	if (types & L1D_FLUSH_ORI)
++		pr_info("rfi-flush: ori type flush available\n");
++
++	if (types & L1D_FLUSH_MTTRIG)
++		pr_info("rfi-flush: mttrig type flush available\n");
++
++	enabled_flush_types = types;
++
++	if (!cpu_mitigations_off() && !no_rfi_flush)
++		rfi_flush_enable(enable);
++}
++
++void setup_entry_flush(bool enable)
++{
++	if (cpu_mitigations_off())
++		return;
++
++	if (!no_entry_flush)
++		entry_flush_enable(enable);
++}
++
++void setup_uaccess_flush(bool enable)
++{
++	if (cpu_mitigations_off())
++		return;
++
++	if (!no_uaccess_flush)
++		uaccess_flush_enable(enable);
++}
++
+ #ifdef CONFIG_DEBUG_FS
+ static int count_cache_flush_set(void *data, u64 val)
+ {
+@@ -579,5 +753,92 @@ static __init int count_cache_flush_debugfs_init(void)
+ 	return 0;
+ }
+ device_initcall(count_cache_flush_debugfs_init);
++
++static int rfi_flush_set(void *data, u64 val)
++{
++	bool enable;
++
++	if (val == 1)
++		enable = true;
++	else if (val == 0)
++		enable = false;
++	else
++		return -EINVAL;
++
++	/* Only do anything if we're changing state */
++	if (enable != rfi_flush)
++		rfi_flush_enable(enable);
++
++	return 0;
++}
++
++static int rfi_flush_get(void *data, u64 *val)
++{
++	*val = rfi_flush ? 1 : 0;
++	return 0;
++}
++
++DEFINE_SIMPLE_ATTRIBUTE(fops_rfi_flush, rfi_flush_get, rfi_flush_set, "%llu\n");
++
++static int entry_flush_set(void *data, u64 val)
++{
++	bool enable;
++
++	if (val == 1)
++		enable = true;
++	else if (val == 0)
++		enable = false;
++	else
++		return -EINVAL;
++
++	/* Only do anything if we're changing state */
++	if (enable != entry_flush)
++		entry_flush_enable(enable);
++
++	return 0;
++}
++
++static int entry_flush_get(void *data, u64 *val)
++{
++	*val = entry_flush ? 1 : 0;
++	return 0;
++}
++
++DEFINE_SIMPLE_ATTRIBUTE(fops_entry_flush, entry_flush_get, entry_flush_set, "%llu\n");
++
++static int uaccess_flush_set(void *data, u64 val)
++{
++	bool enable;
++
++	if (val == 1)
++		enable = true;
++	else if (val == 0)
++		enable = false;
++	else
++		return -EINVAL;
++
++	/* Only do anything if we're changing state */
++	if (enable != uaccess_flush)
++		uaccess_flush_enable(enable);
++
++	return 0;
++}
++
++static int uaccess_flush_get(void *data, u64 *val)
++{
++	*val = uaccess_flush ? 1 : 0;
++	return 0;
++}
++
++DEFINE_SIMPLE_ATTRIBUTE(fops_uaccess_flush, uaccess_flush_get, uaccess_flush_set, "%llu\n");
++
++static __init int rfi_flush_debugfs_init(void)
++{
++	debugfs_create_file("rfi_flush", 0600, powerpc_debugfs_root, NULL, &fops_rfi_flush);
++	debugfs_create_file("entry_flush", 0600, powerpc_debugfs_root, NULL, &fops_entry_flush);
++	debugfs_create_file("uaccess_flush", 0600, powerpc_debugfs_root, NULL, &fops_uaccess_flush);
++	return 0;
++}
++device_initcall(rfi_flush_debugfs_init);
+ #endif /* CONFIG_DEBUG_FS */
+ #endif /* CONFIG_PPC_BOOK3S_64 */
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index 04a31586f760..ccbfcc88758c 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -50,7 +50,6 @@
+ #include <asm/setup.h>
+ #include <asm/rtas.h>
+ #include <asm/iommu.h>
+-#include <asm/security_features.h>
+ #include <asm/serial.h>
+ #include <asm/cache.h>
+ #include <asm/page.h>
+@@ -942,266 +941,3 @@ static int __init disable_hardlockup_detector(void)
+ 	return 0;
+ }
+ early_initcall(disable_hardlockup_detector);
+-
+-#ifdef CONFIG_PPC_BOOK3S_64
+-static enum l1d_flush_type enabled_flush_types;
+-static void *l1d_flush_fallback_area;
+-static bool no_rfi_flush;
+-static bool no_entry_flush;
+-static bool no_uaccess_flush;
+-bool rfi_flush;
+-static bool entry_flush;
+-static bool uaccess_flush;
+-DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
+-EXPORT_SYMBOL(uaccess_flush_key);
+-
+-static int __init handle_no_rfi_flush(char *p)
+-{
+-	pr_info("rfi-flush: disabled on command line.");
+-	no_rfi_flush = true;
+-	return 0;
+-}
+-early_param("no_rfi_flush", handle_no_rfi_flush);
+-
+-static int __init handle_no_entry_flush(char *p)
+-{
+-	pr_info("entry-flush: disabled on command line.");
+-	no_entry_flush = true;
+-	return 0;
+-}
+-early_param("no_entry_flush", handle_no_entry_flush);
+-
+-static int __init handle_no_uaccess_flush(char *p)
+-{
+-	pr_info("uaccess-flush: disabled on command line.");
+-	no_uaccess_flush = true;
+-	return 0;
+-}
+-early_param("no_uaccess_flush", handle_no_uaccess_flush);
+-
+-/*
+- * The RFI flush is not KPTI, but because users will see doco that says to use
+- * nopti we hijack that option here to also disable the RFI flush.
+- */
+-static int __init handle_no_pti(char *p)
+-{
+-	pr_info("rfi-flush: disabling due to 'nopti' on command line.\n");
+-	handle_no_rfi_flush(NULL);
+-	return 0;
+-}
+-early_param("nopti", handle_no_pti);
+-
+-static void do_nothing(void *unused)
+-{
+-	/*
+-	 * We don't need to do the flush explicitly, just enter+exit kernel is
+-	 * sufficient, the RFI exit handlers will do the right thing.
+-	 */
+-}
+-
+-void rfi_flush_enable(bool enable)
+-{
+-	if (enable) {
+-		do_rfi_flush_fixups(enabled_flush_types);
+-		on_each_cpu(do_nothing, NULL, 1);
+-	} else
+-		do_rfi_flush_fixups(L1D_FLUSH_NONE);
+-
+-	rfi_flush = enable;
+-}
+-
+-static void entry_flush_enable(bool enable)
+-{
+-	if (enable) {
+-		do_entry_flush_fixups(enabled_flush_types);
+-		on_each_cpu(do_nothing, NULL, 1);
+-	} else {
+-		do_entry_flush_fixups(L1D_FLUSH_NONE);
+-	}
+-
+-	entry_flush = enable;
+-}
+-
+-static void uaccess_flush_enable(bool enable)
+-{
+-	if (enable) {
+-		do_uaccess_flush_fixups(enabled_flush_types);
+-		static_branch_enable(&uaccess_flush_key);
+-		on_each_cpu(do_nothing, NULL, 1);
+-	} else {
+-		static_branch_disable(&uaccess_flush_key);
+-		do_uaccess_flush_fixups(L1D_FLUSH_NONE);
+-	}
+-
+-	uaccess_flush = enable;
+-}
+-
+-static void __ref init_fallback_flush(void)
+-{
+-	u64 l1d_size, limit;
+-	int cpu;
+-
+-	/* Only allocate the fallback flush area once (at boot time). */
+-	if (l1d_flush_fallback_area)
+-		return;
+-
+-	l1d_size = ppc64_caches.l1d.size;
+-
+-	/*
+-	 * If there is no d-cache-size property in the device tree, l1d_size
+-	 * could be zero. That leads to the loop in the asm wrapping around to
+-	 * 2^64-1, and then walking off the end of the fallback area and
+-	 * eventually causing a page fault which is fatal. Just default to
+-	 * something vaguely sane.
+-	 */
+-	if (!l1d_size)
+-		l1d_size = (64 * 1024);
+-
+-	limit = min(ppc64_bolted_size(), ppc64_rma_size);
+-
+-	/*
+-	 * Align to L1d size, and size it at 2x L1d size, to catch possible
+-	 * hardware prefetch runoff. We don't have a recipe for load patterns to
+-	 * reliably avoid the prefetcher.
+-	 */
+-	l1d_flush_fallback_area = memblock_alloc_try_nid(l1d_size * 2,
+-						l1d_size, MEMBLOCK_LOW_LIMIT,
+-						limit, NUMA_NO_NODE);
+-	if (!l1d_flush_fallback_area)
+-		panic("%s: Failed to allocate %llu bytes align=0x%llx max_addr=%pa\n",
+-		      __func__, l1d_size * 2, l1d_size, &limit);
+-
+-
+-	for_each_possible_cpu(cpu) {
+-		struct paca_struct *paca = paca_ptrs[cpu];
+-		paca->rfi_flush_fallback_area = l1d_flush_fallback_area;
+-		paca->l1d_flush_size = l1d_size;
+-	}
+-}
+-
+-void setup_rfi_flush(enum l1d_flush_type types, bool enable)
+-{
+-	if (types & L1D_FLUSH_FALLBACK) {
+-		pr_info("rfi-flush: fallback displacement flush available\n");
+-		init_fallback_flush();
+-	}
+-
+-	if (types & L1D_FLUSH_ORI)
+-		pr_info("rfi-flush: ori type flush available\n");
+-
+-	if (types & L1D_FLUSH_MTTRIG)
+-		pr_info("rfi-flush: mttrig type flush available\n");
+-
+-	enabled_flush_types = types;
+-
+-	if (!cpu_mitigations_off() && !no_rfi_flush)
+-		rfi_flush_enable(enable);
+-}
+-
+-void setup_entry_flush(bool enable)
+-{
+-	if (cpu_mitigations_off())
+-		return;
+-
+-	if (!no_entry_flush)
+-		entry_flush_enable(enable);
+-}
+-
+-void setup_uaccess_flush(bool enable)
+-{
+-	if (cpu_mitigations_off())
+-		return;
+-
+-	if (!no_uaccess_flush)
+-		uaccess_flush_enable(enable);
+-}
+-
+-#ifdef CONFIG_DEBUG_FS
+-static int rfi_flush_set(void *data, u64 val)
+-{
+-	bool enable;
+-
+-	if (val == 1)
+-		enable = true;
+-	else if (val == 0)
+-		enable = false;
+-	else
+-		return -EINVAL;
+-
+-	/* Only do anything if we're changing state */
+-	if (enable != rfi_flush)
+-		rfi_flush_enable(enable);
+-
+-	return 0;
+-}
+-
+-static int rfi_flush_get(void *data, u64 *val)
+-{
+-	*val = rfi_flush ? 1 : 0;
+-	return 0;
+-}
+-
+-DEFINE_SIMPLE_ATTRIBUTE(fops_rfi_flush, rfi_flush_get, rfi_flush_set, "%llu\n");
+-
+-static int entry_flush_set(void *data, u64 val)
+-{
+-	bool enable;
+-
+-	if (val == 1)
+-		enable = true;
+-	else if (val == 0)
+-		enable = false;
+-	else
+-		return -EINVAL;
+-
+-	/* Only do anything if we're changing state */
+-	if (enable != entry_flush)
+-		entry_flush_enable(enable);
+-
+-	return 0;
+-}
+-
+-static int entry_flush_get(void *data, u64 *val)
+-{
+-	*val = entry_flush ? 1 : 0;
+-	return 0;
+-}
+-
+-DEFINE_SIMPLE_ATTRIBUTE(fops_entry_flush, entry_flush_get, entry_flush_set, "%llu\n");
+-
+-static int uaccess_flush_set(void *data, u64 val)
+-{
+-	bool enable;
+-
+-	if (val == 1)
+-		enable = true;
+-	else if (val == 0)
+-		enable = false;
+-	else
+-		return -EINVAL;
+-
+-	/* Only do anything if we're changing state */
+-	if (enable != uaccess_flush)
+-		uaccess_flush_enable(enable);
+-
+-	return 0;
+-}
+-
+-static int uaccess_flush_get(void *data, u64 *val)
+-{
+-	*val = uaccess_flush ? 1 : 0;
+-	return 0;
+-}
+-
+-DEFINE_SIMPLE_ATTRIBUTE(fops_uaccess_flush, uaccess_flush_get, uaccess_flush_set, "%llu\n");
+-
+-static __init int rfi_flush_debugfs_init(void)
+-{
+-	debugfs_create_file("rfi_flush", 0600, powerpc_debugfs_root, NULL, &fops_rfi_flush);
+-	debugfs_create_file("entry_flush", 0600, powerpc_debugfs_root, NULL, &fops_entry_flush);
+-	debugfs_create_file("uaccess_flush", 0600, powerpc_debugfs_root, NULL, &fops_uaccess_flush);
+-	return 0;
+-}
+-device_initcall(rfi_flush_debugfs_init);
+-#endif
+-#endif /* CONFIG_PPC_BOOK3S_64 */
 -- 
-2.17.1
+2.25.1
 
