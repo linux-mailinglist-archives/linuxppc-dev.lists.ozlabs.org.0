@@ -2,80 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B8B34A93F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 15:08:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF3F34A940
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 15:09:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6P2n4Q4Hz3c5p
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 01:08:33 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Dh7dx+ZZ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6P3K6fWGz3cD4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 01:09:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::829;
- helo=mail-qt1-x829.google.com; envelope-from=danielhb413@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Dh7dx+ZZ; dkim-atps=neutral
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com
- [IPv6:2607:f8b0:4864:20::829])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=nefkom.net (client-ip=212.18.0.10; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6P2M6GW7z2yhs
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 01:08:10 +1100 (AEDT)
-Received: by mail-qt1-x829.google.com with SMTP id i19so4270530qtv.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 07:08:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:references:from:message-id:date:user-agent:mime-version
- :in-reply-to:content-language:content-transfer-encoding;
- bh=vuKxDYahmwdMyoe1S0fSlxX5rMXxNCpigWRyydmBVwA=;
- b=Dh7dx+ZZrD4TNXl0F4eqps4X/KPnNvRsnNQyxhIO07A9C4iV2+CPzsqJntxyz4RxbX
- z154WOwgD2uF28D6E9LPZktW8toyyDLsAufQZsvf8lW/SzN4b7rVNjTo46PPicFH6j8z
- k2c3Nxu1x+u5YE0LqbgxfyWjMHt2wLyPQp5ZvQzZfyP3UE8KgkZ7xZ8jXh9OJ+timAFN
- RxBenxKLzS8UlJ6dgUl0+q0ttz25852phoQqVCVhSRvT2p9z0/14qGM8jfqDvs8votCG
- RpOIPLQ4/dI+SeIxYf3ISQqSd4lt5q2t/Pw1tlHyyYop5xioUx35fdeIswBDXHnM7lt1
- pCTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=vuKxDYahmwdMyoe1S0fSlxX5rMXxNCpigWRyydmBVwA=;
- b=OgazB+FNHHa2gqdjY9gtcUFgcAzJ+uIVQvs++gLqMk6WIjOx4fdp4uFoSFHTm5vooF
- kY0a5ttCO6yVxow0GSNW4MWWxGWbzOATZjeRgMqdUZHmiBzgtpcMONIoTAV+t4lZ0Rk3
- ruX+g9oRV8ivlTIhozUYNapZPGTXZZsPaNdWFUzeDyOIJrext/hQSs0jZUE36gF4wLa+
- ssvMsb5akzTeDtK3P7uBVUQC7RJNUtW8O3f/pWmI/pMeULICAGTFnXSe6p4zJf1JS1kY
- CcByN93ByW3u+MUhIGmdQZ0ZYihDfg/JqZFQga9KyilF+/Si1j+uOI+Yqyh+3WjyehkT
- u4JQ==
-X-Gm-Message-State: AOAM531UOIOYwZbcwnrEQOQkeo0ZybaimPxcCfLP/ylk4vwUXGoljpm2
- RnyqWKTsRlQVtifX1/L981DBLq2g+i0=
-X-Google-Smtp-Source: ABdhPJxi5Wgukq5rleYGPQT9oPuKGnqo1X3dfoXXD2gZ4rs68DBjjLcNcZITriaKQnogaJ7daSEHLA==
-X-Received: by 2002:ac8:4b58:: with SMTP id e24mr12187488qts.120.1616767685842; 
- Fri, 26 Mar 2021 07:08:05 -0700 (PDT)
-Received: from ?IPv6:2804:431:c7c6:3fd7:65e0:e5c6:f4fc:733c?
- ([2804:431:c7c6:3fd7:65e0:e5c6:f4fc:733c])
- by smtp.gmail.com with ESMTPSA id d24sm6461963qkl.49.2021.03.26.07.08.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Mar 2021 07:08:05 -0700 (PDT)
-Subject: Re: [PATCH v2 1/1] hotplug-cpu.c: show 'last online CPU' error in
- dlpar_cpu_offline()
-To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
-References: <20210323205056.52768-1-danielhb413@gmail.com>
- <20210323205056.52768-2-danielhb413@gmail.com>
- <871rc28p1w.fsf@linkitivity.dja.id.au>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-ID: <b9a6e77c-4319-ff08-493f-43e02388701b@gmail.com>
-Date: Fri, 26 Mar 2021 11:08:01 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6P302tYbz3bPH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 01:08:44 +1100 (AEDT)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 4F6P2d6PvWz1ryY1;
+ Fri, 26 Mar 2021 15:08:25 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 4F6P2d4qBqz1qqwS;
+ Fri, 26 Mar 2021 15:08:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id onoyYkV_BZHU; Fri, 26 Mar 2021 15:08:24 +0100 (CET)
+X-Auth-Info: OEvAU2bUcvvTBFMfvWGLhYIW4WQnHRDFk1cZLlSNZz300DmBDLQfVXreztynDrlR
+Received: from igel.home (ppp-46-244-160-134.dynamic.mnet-online.de
+ [46.244.160.134])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Fri, 26 Mar 2021 15:08:24 +0100 (CET)
+Received: by igel.home (Postfix, from userid 1000)
+ id 998042C35E3; Fri, 26 Mar 2021 15:08:22 +0100 (CET)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v3 11/17] riscv: Convert to GENERIC_CMDLINE
+References: <cover.1616765869.git.christophe.leroy@csgroup.eu>
+ <46745e07b04139a22b5bd01dc37df97e6981e643.1616765870.git.christophe.leroy@csgroup.eu>
+X-Yow: I'd like some JUNK FOOD...  and then I want to be ALONE --
+Date: Fri, 26 Mar 2021 15:08:22 +0100
+In-Reply-To: <46745e07b04139a22b5bd01dc37df97e6981e643.1616765870.git.christophe.leroy@csgroup.eu>
+ (Christophe Leroy's message of "Fri, 26 Mar 2021 13:44:58 +0000
+ (UTC)")
+Message-ID: <87zgyqdn3d.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <871rc28p1w.fsf@linkitivity.dja.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,51 +63,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, robh@kernel.org, microblaze <monstr@monstr.eu>,
+ daniel@gimpelevich.san-francisco.ca.us, devicetree@vger.kernel.org,
+ linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-xtensa@linux-xtensa.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ nios2 <ley.foon.tan@intel.com>, linux-mips@vger.kernel.org,
+ openrisc@lists.librecores.org, linux-hexagon@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, danielwa@cisco.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hey Daniel,
+On Mär 26 2021, Christophe Leroy wrote:
 
-On 3/26/21 2:24 AM, Daniel Axtens wrote:
-> Hi Daniel,
-> 
-> Two small nitpicks:
-> 
->> This patch adds a 'last online' check in dlpar_cpu_offline() to catch
->> the 'last online CPU' offline error, eturning a more informative error
->                                         ^--- s/eturning/returning/;
-> 
-> 
->> +			/* device_offline() will return -EBUSY (via cpu_down())
->> +			 * if there is only one CPU left. Check it here to fail
->> +			 * earlier and with a more informative error message,
->> +			 * while also retaining the cpu_add_remove_lock to be sure
->> +			 * that no CPUs are being online/offlined during this
->> +			 * check. */
-> 
-> Checkpatch has a small issue with this comment:
-> 
-> WARNING: Block comments use a trailing */ on a separate line
-> #50: FILE: arch/powerpc/platforms/pseries/hotplug-cpu.c:279:
-> +			 * check. */
-> 
-> Apart from that, this patch seems sane to me, but I haven't been able to
-> test it.
+> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+> index f8f15332caa2..e7c91ee478d1 100644
+> --- a/arch/riscv/kernel/setup.c
+> +++ b/arch/riscv/kernel/setup.c
+> @@ -20,6 +20,7 @@
+>  #include <linux/swiotlb.h>
+>  #include <linux/smp.h>
+>  #include <linux/efi.h>
+> +#include <linux/cmdline.h>
+>  
+>  #include <asm/cpu_ops.h>
+>  #include <asm/early_ioremap.h>
+> @@ -228,10 +229,8 @@ static void __init parse_dtb(void)
+>  	}
+>  
+>  	pr_err("No DTB passed to the kernel\n");
+> -#ifdef CONFIG_CMDLINE_FORCE
+> -	strlcpy(boot_command_line, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
+> +	cmdline_build(boot_command_line, NULL, COMMAND_LINE_SIZE);
+>  	pr_info("Forcing kernel command line to: %s\n", boot_command_line);
 
+Shouldn't that message become conditional in some way?
 
-Thanks for the review, and for letting me know of the existence of
-'scripts/checkpatch.pl' to verify the patches before posting. I'll
-send a v3.
+Andreas.
 
-
-Thanks,
-
-
-DHB
-
-
-> 
-> Kind regards,
-> Daniel
-> 
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
