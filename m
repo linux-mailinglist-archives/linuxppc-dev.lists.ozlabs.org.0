@@ -1,100 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944DF34A32E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 09:33:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E216F34A36D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 09:52:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6FcY2tpHz3c1j
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 19:33:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6G246Ql7z3c1k
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 19:52:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rfj/lJxp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lBrtXw4I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=rfj/lJxp; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=lBrtXw4I; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6Fc51JvFz302X
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 19:33:24 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12Q85fR3026754; Fri, 26 Mar 2021 04:33:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=cChZkv+v3RHZi9hahy+PJZFUm7hR0ITMKjeluEp3Cr4=;
- b=rfj/lJxp+ifesKphm4RHO2szVX2wzfbBl+KUY0SQxrX5ty1er6JZi5sZ8E5DnKMZrAz5
- NAG22Ke2+v1yNHMyeBLVPQ5p64hgjnznJdJ4EV7aEXOnVnpPoZ7FC88ziH/IOlwHjJmH
- ZXGEEpGoLYwgzn5xTGjRxnVziViS+tnafKWKSW1GVDVKDxHmj8mCD16pQrpjk4T/YMww
- oi7rQhJE4pjrDZ7PkZCFRGU0LpbQD88M3/oxXviT5DgG7V7eDsXb/Fc6RLKN4UvzLE0P
- 01UDCxVWbVP0/Q5KgLA5qM2keRLuBLHDOP2zr2H3/jyp3Dyc7d+Yay7vutEB53Z4wmIl Hw== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37h9vuk76s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Mar 2021 04:33:07 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12Q8X36d029427;
- Fri, 26 Mar 2021 08:33:03 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 37h15a8f3q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Mar 2021 08:33:03 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12Q8WBWB41222650
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Mar 2021 08:32:11 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3B94E11C058;
- Fri, 26 Mar 2021 08:32:11 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F3ABF11C04A;
- Fri, 26 Mar 2021 08:32:04 +0000 (GMT)
-Received: from Madhavan.PrimaryTP (unknown [9.85.205.23])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 26 Mar 2021 08:32:04 +0000 (GMT)
-Subject: Re: [PATCH V2 1/5] powerpc/perf: Expose processor pipeline stage
- cycles using PERF_SAMPLE_WEIGHT_STRUCT
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-References: <1616425047-1666-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1616425047-1666-2-git-send-email-atrajeev@linux.vnet.ibm.com>
- <d7dd633b-e28a-155a-a8e2-0e5a83b4eead@linux.ibm.com>
- <YFyKw1ezDio0z9yM@kernel.org>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Message-ID: <f9f4ff0a-35dc-7adf-2470-d5172e1b4629@linux.ibm.com>
-Date: Fri, 26 Mar 2021 14:02:02 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6G1f4zH5z300x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 19:52:06 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2FDB461A4C
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 08:52:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1616748723;
+ bh=XLC9yTktkkTCTcqmTymKbTkS7ocrX/l3RayX7yKfUVI=;
+ h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
+ b=lBrtXw4IguGaQxldR1tMbzgyY/459t+AJnsxWjtacrvonEyaiKgvg0a36MZmS2hRI
+ pPf5E60q6ihnrDDdqCxaavQOxRcMs9G9AXp6kx/L7N9hchCEwzHzuEd4n2iccH13Yl
+ o03yicOVpDb9sfGGim3AGr1J/9KkOaFlZkkDUihxhKqE9C+Yz2JGoeap1i2WziQtCh
+ scfzUykjP7KNWmoudf3E5tpPOUhOORVuKzzVZ0CvWv3Thrp+yV5SLmYh8XYF01Y0wK
+ Vqgrcir0b4fJskQNdi6J4j8du2SqYB8uUjt8vlaPWcCQVstBUo8J9PU1/psJzAbKZo
+ bVJD99+44gCLg==
+Received: by mail-oo1-f51.google.com with SMTP id
+ n12-20020a4ad12c0000b02901b63e7bc1b4so1141571oor.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 01:52:03 -0700 (PDT)
+X-Gm-Message-State: AOAM533XeSzw3eFZlHvpApo+54xbydjHipZfyLa5oqHeLfmFS5hYpvHd
+ lIth9IAYv7k/CYrTYVpQVgMDfQekef4S0NmMu10=
+X-Google-Smtp-Source: ABdhPJxFmzDYtA3vz0j++H5JPrGDulcgfDeMX+fhEtN0QMlJKXJwWIk94mYoTguFCR3xO2L/Mr+haF9Bq5h9AnTcBrs=
+X-Received: by 2002:a4a:e9a2:: with SMTP id t2mr10392411ood.15.1616748722322; 
+ Fri, 26 Mar 2021 01:52:02 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YFyKw1ezDio0z9yM@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oZ3ANj_MBJoGv-l7S4yYDP3GjXvdGTJx
-X-Proofpoint-GUID: oZ3ANj_MBJoGv-l7S4yYDP3GjXvdGTJx
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-26_02:2021-03-25,
- 2021-03-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- suspectscore=0 adultscore=0 impostorscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2103250000 definitions=main-2103260058
+References: <20210323131530.2619900-1-arnd@kernel.org>
+ <CADRPPNQJfJ=KmRGkX5Uo6VfWDsihrMUKV7OkQ7jtb3+Byb0RLQ@mail.gmail.com>
+In-Reply-To: <CADRPPNQJfJ=KmRGkX5Uo6VfWDsihrMUKV7OkQ7jtb3+Byb0RLQ@mail.gmail.com>
+From: Arnd Bergmann <arnd@kernel.org>
+Date: Fri, 26 Mar 2021 09:51:47 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2y4cmmRtpPvSvxaevDftsCUQDEJxjin0j77yOJqxv_YA@mail.gmail.com>
+Message-ID: <CAK8P3a2y4cmmRtpPvSvxaevDftsCUQDEJxjin0j77yOJqxv_YA@mail.gmail.com>
+Subject: Re: [PATCH] soc/fsl: qbman: fix conflicting alignment attributes
+To: Li Yang <leoyang.li@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,156 +66,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
- peterz@infradead.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, kan.liang@linux.intel.com
+Cc: Madalin-cristian Bucur <madalin.bucur@nxp.com>, SoC Team <soc@kernel.org>,
+ Lee Jones <lee.jones@linaro.org>, Roy Pledge <roy.pledge@nxp.com>,
+ YueHaibing <yuehaibing@huawei.com>, lkml <linux-kernel@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Jakub Kicinski <kuba@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Mar 26, 2021 at 3:17 AM Li Yang <leoyang.li@nxp.com> wrote:
+> On Tue, Mar 23, 2021 at 8:17 AM Arnd Bergmann <arnd@kernel.org> wrote:
+> >
+> > From: Arnd Bergmann <arnd@arndb.de>
+> >
+> > When building with W=1, gcc points out that the __packed attribute
+> > on struct qm_eqcr_entry conflicts with the 8-byte alignment
+> > attribute on struct qm_fd inside it:
+> >
+> > drivers/soc/fsl/qbman/qman.c:189:1: error: alignment 1 of 'struct qm_eqcr_entry' is less than 8 [-Werror=packed-not-aligned]
+> >
+> > I assume that the alignment attribute is the correct one, and
+> > that qm_eqcr_entry cannot actually be unaligned in memory,
+> > so add the same alignment on the outer struct.
+> >
+> > Fixes: c535e923bb97 ("soc/fsl: Introduce DPAA 1.x QMan device driver")
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > ---
+> >  drivers/soc/fsl/qbman/qman.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+> > index a1b9be1d105a..fde4edd83c14 100644
+> > --- a/drivers/soc/fsl/qbman/qman.c
+> > +++ b/drivers/soc/fsl/qbman/qman.c
+> > @@ -186,7 +186,7 @@ struct qm_eqcr_entry {
+> >         __be32 tag;
+> >         struct qm_fd fd;
+> >         u8 __reserved3[32];
+> > -} __packed;
+> > +} __packed __aligned(8);
+>
+> The EQCR structure is actually aligned on 64-byte from the manual.
+> But probably 8 is enough to let the compiler not complain.
 
-On 3/25/21 6:36 PM, Arnaldo Carvalho de Melo wrote:
-> Em Wed, Mar 24, 2021 at 10:05:23AM +0530, Madhavan Srinivasan escreveu:
->> On 3/22/21 8:27 PM, Athira Rajeev wrote:
->>> Performance Monitoring Unit (PMU) registers in powerpc provides
->>> information on cycles elapsed between different stages in the
->>> pipeline. This can be used for application tuning. On ISA v3.1
->>> platform, this information is exposed by sampling registers.
->>> Patch adds kernel support to capture two of the cycle counters
->>> as part of perf sample using the sample type:
->>> PERF_SAMPLE_WEIGHT_STRUCT.
->>>
->>> The power PMU function 'get_mem_weight' currently uses 64 bit weight
->>> field of perf_sample_data to capture memory latency. But following the
->>> introduction of PERF_SAMPLE_WEIGHT_TYPE, weight field could contain
->>> 64-bit or 32-bit value depending on the architexture support for
->>> PERF_SAMPLE_WEIGHT_STRUCT. Patches uses WEIGHT_STRUCT to expose the
->>> pipeline stage cycles info. Hence update the ppmu functions to work for
->>> 64-bit and 32-bit weight values.
->>>
->>> If the sample type is PERF_SAMPLE_WEIGHT, use the 64-bit weight field.
->>> if the sample type is PERF_SAMPLE_WEIGHT_STRUCT, memory subsystem
->>> latency is stored in the low 32bits of perf_sample_weight structure.
->>> Also for CPU_FTR_ARCH_31, capture the two cycle counter information in
->>> two 16 bit fields of perf_sample_weight structure.
->> Changes looks fine to me.
-> You mean just the kernel part or can I add your Reviewed-by to all the
-> patchset?
+The important bit is that all members inside are at most 8-byte long
+and naturally aligned, so the compiler can now optimize the accesses
+because it can assume that each member can be updated atomically.
 
+Marking a structure as unaligned with the __packed attribute can lead
+to rather unoptimized code, which is particularly important when the
+structure is mapped as uncached -- accessing it one byte at a time
+means you have eight times the latency for a simple read. I think on
+arm64, the compiler doesn't actually have to do that, but at least if you
+run a 32-bit kernel, the packing would prevent the use of ldrd or ldm
+instructions that need an aligned word.
 
-Yes, kindly add it, I did review the patchset. My bad, i should have 
-mentioned it here
-
-or should have replied to the cover letter.
-
-
-Maddy
-
-
->   
->> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->>
->>
->>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>> ---
->>>    arch/powerpc/include/asm/perf_event_server.h |  2 +-
->>>    arch/powerpc/perf/core-book3s.c              |  4 ++--
->>>    arch/powerpc/perf/isa207-common.c            | 29 +++++++++++++++++++++++++---
->>>    arch/powerpc/perf/isa207-common.h            |  6 +++++-
->>>    4 files changed, 34 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
->>> index 00e7e671bb4b..112cf092d7b3 100644
->>> --- a/arch/powerpc/include/asm/perf_event_server.h
->>> +++ b/arch/powerpc/include/asm/perf_event_server.h
->>> @@ -43,7 +43,7 @@ struct power_pmu {
->>>    				u64 alt[]);
->>>    	void		(*get_mem_data_src)(union perf_mem_data_src *dsrc,
->>>    				u32 flags, struct pt_regs *regs);
->>> -	void		(*get_mem_weight)(u64 *weight);
->>> +	void		(*get_mem_weight)(u64 *weight, u64 type);
->>>    	unsigned long	group_constraint_mask;
->>>    	unsigned long	group_constraint_val;
->>>    	u64             (*bhrb_filter_map)(u64 branch_sample_type);
->>> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
->>> index 766f064f00fb..6936763246bd 100644
->>> --- a/arch/powerpc/perf/core-book3s.c
->>> +++ b/arch/powerpc/perf/core-book3s.c
->>> @@ -2206,9 +2206,9 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
->>>    						ppmu->get_mem_data_src)
->>>    			ppmu->get_mem_data_src(&data.data_src, ppmu->flags, regs);
->>> -		if (event->attr.sample_type & PERF_SAMPLE_WEIGHT &&
->>> +		if (event->attr.sample_type & PERF_SAMPLE_WEIGHT_TYPE &&
->>>    						ppmu->get_mem_weight)
->>> -			ppmu->get_mem_weight(&data.weight.full);
->>> +			ppmu->get_mem_weight(&data.weight.full, event->attr.sample_type);
->>>    		if (perf_event_overflow(event, &data, regs))
->>>    			power_pmu_stop(event, 0);
->>> diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
->>> index e4f577da33d8..5dcbdbd54598 100644
->>> --- a/arch/powerpc/perf/isa207-common.c
->>> +++ b/arch/powerpc/perf/isa207-common.c
->>> @@ -284,8 +284,10 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
->>>    	}
->>>    }
->>> -void isa207_get_mem_weight(u64 *weight)
->>> +void isa207_get_mem_weight(u64 *weight, u64 type)
->>>    {
->>> +	union perf_sample_weight *weight_fields;
->>> +	u64 weight_lat;
->>>    	u64 mmcra = mfspr(SPRN_MMCRA);
->>>    	u64 exp = MMCRA_THR_CTR_EXP(mmcra);
->>>    	u64 mantissa = MMCRA_THR_CTR_MANT(mmcra);
->>> @@ -296,9 +298,30 @@ void isa207_get_mem_weight(u64 *weight)
->>>    		mantissa = P10_MMCRA_THR_CTR_MANT(mmcra);
->>>    	if (val == 0 || val == 7)
->>> -		*weight = 0;
->>> +		weight_lat = 0;
->>>    	else
->>> -		*weight = mantissa << (2 * exp);
->>> +		weight_lat = mantissa << (2 * exp);
->>> +
->>> +	/*
->>> +	 * Use 64 bit weight field (full) if sample type is
->>> +	 * WEIGHT.
->>> +	 *
->>> +	 * if sample type is WEIGHT_STRUCT:
->>> +	 * - store memory latency in the lower 32 bits.
->>> +	 * - For ISA v3.1, use remaining two 16 bit fields of
->>> +	 *   perf_sample_weight to store cycle counter values
->>> +	 *   from sier2.
->>> +	 */
->>> +	weight_fields = (union perf_sample_weight *)weight;
->>> +	if (type & PERF_SAMPLE_WEIGHT)
->>> +		weight_fields->full = weight_lat;
->>> +	else {
->>> +		weight_fields->var1_dw = (u32)weight_lat;
->>> +		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->>> +			weight_fields->var2_w = P10_SIER2_FINISH_CYC(mfspr(SPRN_SIER2));
->>> +			weight_fields->var3_w = P10_SIER2_DISPATCH_CYC(mfspr(SPRN_SIER2));
->>> +		}
->>> +	}
->>>    }
->>>    int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp, u64 event_config1)
->>> diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
->>> index 1af0e8c97ac7..fc30d43c4d0c 100644
->>> --- a/arch/powerpc/perf/isa207-common.h
->>> +++ b/arch/powerpc/perf/isa207-common.h
->>> @@ -265,6 +265,10 @@
->>>    #define ISA207_SIER_DATA_SRC_SHIFT	53
->>>    #define ISA207_SIER_DATA_SRC_MASK	(0x7ull << ISA207_SIER_DATA_SRC_SHIFT)
->>> +/* Bits in SIER2/SIER3 for Power10 */
->>> +#define P10_SIER2_FINISH_CYC(sier2)	(((sier2) >> (63 - 37)) & 0x7fful)
->>> +#define P10_SIER2_DISPATCH_CYC(sier2)	(((sier2) >> (63 - 13)) & 0x7fful)
->>> +
->>>    #define P(a, b)				PERF_MEM_S(a, b)
->>>    #define PH(a, b)			(P(LVL, HIT) | P(a, b))
->>>    #define PM(a, b)			(P(LVL, MISS) | P(a, b))
->>> @@ -278,6 +282,6 @@ int isa207_get_alternatives(u64 event, u64 alt[], int size, unsigned int flags,
->>>    					const unsigned int ev_alt[][MAX_ALT]);
->>>    void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
->>>    							struct pt_regs *regs);
->>> -void isa207_get_mem_weight(u64 *weight);
->>> +void isa207_get_mem_weight(u64 *weight, u64 type);
->>>    #endif
+       Arnd
