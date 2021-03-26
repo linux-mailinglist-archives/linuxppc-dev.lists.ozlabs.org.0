@@ -1,73 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3466F34A0FF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 06:25:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C55534A117
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 06:38:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F69RD18dhz3btd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 16:25:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F69kQ0zrFz3brp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 16:38:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=LGBtSy6x;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=aiVnRhdX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=LGBtSy6x; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
+ header.s=google header.b=aiVnRhdX; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F69Qp29Wvz30MT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 16:25:05 +1100 (AEDT)
-Received: by mail-pj1-x102c.google.com with SMTP id
- il9-20020a17090b1649b0290114bcb0d6c2so3720858pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 22:25:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F69jz5D2mz303J
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 16:38:13 +1100 (AEDT)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ f2-20020a17090a4a82b02900c67bf8dc69so3718061pjh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 22:38:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=DNpRt98fJG6kHRhTsOHE3bYts0c3S4iiO+xiZE8Qyz8=;
- b=LGBtSy6xtL30J7odjS5ti71Mph7wNpTWoBEGILUmfEMmgAwvQ/+Y6nCaN4t6nU7sEK
- DoaQn/UV54e16K2IZmAWaIUNgDzwO8eoxlZe+Bdxg7hmVl4rMPurUAg1gyhzKjuDsC7P
- 7RYC1LOcSH2iP700ZripBb8avk/EDaSvYaI0k=
+ :mime-version; bh=87Df9w+HLEtQIYbykZK6bC5setLTpy5vdBvKQb+SxG0=;
+ b=aiVnRhdXR8vqYfZs7pR9AAdR+ScJHjfTl952RwX/4aJVw7oHFCSUCBgIrXS5rzdA0G
+ Od/yPxM+UBMZbP9usp1GQ4peMtXL+AnkFzvWqNVQvLvvSSh7aIIXmu77zSVJ6PSsV6GN
+ w3BV/SekzvMkknp+8SOKBVK0jKaYbL9PcwbZU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
  :message-id:mime-version;
- bh=DNpRt98fJG6kHRhTsOHE3bYts0c3S4iiO+xiZE8Qyz8=;
- b=IH/e/YtXPX296LdIBqaRwXDl4dgHEWalk1ixKoJPZn/uuh5gCKuf0ltRZLEqsuOiCr
- tI3M8x+BmcfkxMGeHmSdfy3KbBx5tNzn//uSkTuZCtRWEj0Cas3tjtWGS+S0etoZkzs+
- gcgNdXf4ubv0QCwvtd68pbMPV9HDvYS6l3Q1q5JM7YDqaFPB0SooUdGf7R4M0YF9nx31
- Fl/+WCKNnM7SjN6ja96m9YbIrt4T0rb2SGvFfgV+Bw3FoN4D0ve52qjEHDV/ourb/eZW
- OFLE6/7XELQPuJLyWFSBU84FOQprimKkkJpblA4EeNAHh7HHC6CI6IbYPaHWGndryaY5
- AFfA==
-X-Gm-Message-State: AOAM530wqHyW5NJRj7dhHK7qwF9NXJ8dNCP5p6YpZBBVAFS0vvtCZxS+
- mXu810BtsPq7dRAkXG9hxp+4gA==
-X-Google-Smtp-Source: ABdhPJxf5jYnEELZ6yAiMAI/df/mNa4VUzyBRnsmdlUCXj07KCRjTW3105EzdGp2IgcRCLZIVVCW0Q==
-X-Received: by 2002:a17:902:708b:b029:e6:77ca:3cb6 with SMTP id
- z11-20020a170902708bb02900e677ca3cb6mr13639461plk.84.1616736303106; 
- Thu, 25 Mar 2021 22:25:03 -0700 (PDT)
+ bh=87Df9w+HLEtQIYbykZK6bC5setLTpy5vdBvKQb+SxG0=;
+ b=szI0xhVJ+06YQuEobmbnNraz9UevWQPbbjrIufh2nTDbq6k7ZbeS9Ms8e9DkCFRufK
+ BAgtj477SvE8Np4EYmMRtBJS78xYZvCGC5rl/7Em8f1CKJzroILJVv+i7m1mFj8Q+VJJ
+ f+wyCv+oHZ6YkIq7e07UvK1M9Zx+bYEiMyfQp21QLDZMVXYr+WOsPWJO/NbTi7lpH4uM
+ gj1uf1+X4rcNGEx/Q13c/UT7eQE9SWkGt3gq8RrWGzE/6j5n7RWOUf2jhlooXH4E0qy7
+ OiMuBcARgeL5JdLy4kq+9pbkaqD3Ytj+xdIOh7LNrTOa1+fYV9n/PCTJLw0VM20KEmmW
+ dkjg==
+X-Gm-Message-State: AOAM5304BSqnyj3paRachjRet/rbfRxG2bOaccE4ahP9LlPulowKlEVT
+ dqOYeX1A/PosCVbByZDZXAHiFQ==
+X-Google-Smtp-Source: ABdhPJyvcXRQyAYpeNoyjsN9TtaOvpteuYOcXzmzRTWnnmi5naQ0BxtrTjUBbMsEaOFtaevNqkz+Bw==
+X-Received: by 2002:a17:902:c317:b029:e4:aecd:8539 with SMTP id
+ k23-20020a170902c317b02900e4aecd8539mr13673784plx.61.1616737090389; 
+ Thu, 25 Mar 2021 22:38:10 -0700 (PDT)
 Received: from localhost
  (2001-44b8-111e-5c00-39c5-e677-fdb8-5d64.static.ipv6.internode.on.net.
  [2001:44b8:111e:5c00:39c5:e677:fdb8:5d64])
- by smtp.gmail.com with ESMTPSA id n25sm7454205pgv.66.2021.03.25.22.25.02
+ by smtp.gmail.com with ESMTPSA id s200sm7803561pfs.53.2021.03.25.22.38.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Mar 2021 22:25:02 -0700 (PDT)
+ Thu, 25 Mar 2021 22:38:09 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 1/1] hotplug-cpu.c: show 'last online CPU' error in
- dlpar_cpu_offline()
-In-Reply-To: <20210323205056.52768-2-danielhb413@gmail.com>
-References: <20210323205056.52768-1-danielhb413@gmail.com>
- <20210323205056.52768-2-danielhb413@gmail.com>
-Date: Fri, 26 Mar 2021 16:24:59 +1100
-Message-ID: <871rc28p1w.fsf@linkitivity.dja.id.au>
+To: Wan Jiabing <wanjiabing@vivo.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, =?utf-8?Q?C=C3=A9dric?= Le
+ Goater <clg@kaod.org>, Randy Dunlap <rdunlap@infradead.org>, Wan Jiabing
+ <wanjiabing@vivo.com>, Ganesh Goudar <ganeshgr@linux.ibm.com>, Christophe
+ Leroy <christophe.leroy@csgroup.eu>, Michal Suchanek <msuchanek@suse.de>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Pingfan Liu
+ <kernelfans@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [v2] arch: powerpc: Remove duplicate includes
+In-Reply-To: <20210323062916.295346-1-wanjiabing@vivo.com>
+References: <20210323062916.295346-1-wanjiabing@vivo.com>
+Date: Fri, 26 Mar 2021 16:38:06 +1100
+Message-ID: <87y2ea79vl.fsf@linkitivity.dja.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,35 +87,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: kael_w@yeah.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Daniel,
+Wan Jiabing <wanjiabing@vivo.com> writes:
 
-Two small nitpicks:
+> mmu-hash.h: asm/bug.h has been included at line 12, so remove 
+> the duplicate one at line 21.
 
-> This patch adds a 'last online' check in dlpar_cpu_offline() to catch
-> the 'last online CPU' offline error, eturning a more informative error
-                                       ^--- s/eturning/returning/;
+Looking at the file I had wondered if this was due to a #ifdef being
+removed, but no, the second one was just added in commit 891121e6c02c
+("powerpc/mm: Differentiate between hugetlb and THP during page
+walk"). How odd!
 
+Anyway, all of these look good to me, and the automated checks at
+http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210323062916.295346-1-wanjiabing@vivo.com/
+have all passed.
 
-> +			/* device_offline() will return -EBUSY (via cpu_down())
-> +			 * if there is only one CPU left. Check it here to fail
-> +			 * earlier and with a more informative error message,
-> +			 * while also retaining the cpu_add_remove_lock to be sure
-> +			 * that no CPUs are being online/offlined during this
-> +			 * check. */
-
-Checkpatch has a small issue with this comment:
-
-WARNING: Block comments use a trailing */ on a separate line
-#50: FILE: arch/powerpc/platforms/pseries/hotplug-cpu.c:279:
-+			 * check. */
-
-Apart from that, this patch seems sane to me, but I haven't been able to
-test it.
+Reviewed-by: Daniel Axtens <dja@axtens.net>
 
 Kind regards,
 Daniel
