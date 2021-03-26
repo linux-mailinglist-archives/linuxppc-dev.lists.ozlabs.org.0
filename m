@@ -2,82 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829D4349F4E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 03:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2904349F68
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 03:18:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F650q14Ylz3c0N
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 13:05:47 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=GjUuWAup;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F65H36G65z3c0R
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 13:18:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::52e;
- helo=mail-pg1-x52e.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=GjUuWAup; dkim-atps=neutral
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
- [IPv6:2607:f8b0:4864:20::52e])
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.47; helo=mail-ot1-f47.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com
+ [209.85.210.47])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F650N0JL7z30CL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 13:05:20 +1100 (AEDT)
-Received: by mail-pg1-x52e.google.com with SMTP id h25so3598129pgm.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 19:05:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=yKhmmXY4pTqCWXAljZwZF1SSxy2c+IrHiu41koX7ecI=;
- b=GjUuWAup17rU3k6hJzbVBoLpdx1x9vaBoRfVofdlodQDzk3DkIuj2xbDWykBCUopR8
- a3Rv65ZOMsBk9ehPsXqLN8xzYdi0bEZJfm6JekzWtJcrYVIhTqTFlSDhjQm6Grl3H76V
- ihS1r503zJa5FVBIJL6S/va79niYeihhuOtIr0IBEXrAyMoVRBL6MYPBebfmJp6sXO0i
- txfssh/1GBPgUxmJckwXb9Ja9VBapseEEYlxZ5pqCMcaEyJV3y00Za+iJlYU+IhDu3yo
- WU+T3GgSVxWgrWlDhlVE1qB9/QmqOufOEoMd9UVjyf8pGAq9yHwRUjn/7TjeLqTrBvl5
- nDtQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F65Gj0Pzrz30G9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 13:17:48 +1100 (AEDT)
+Received: by mail-ot1-f47.google.com with SMTP id
+ m21-20020a9d7ad50000b02901b83efc84a0so3900430otn.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 19:17:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=yKhmmXY4pTqCWXAljZwZF1SSxy2c+IrHiu41koX7ecI=;
- b=jxoun3v+NBTf55JPToLILEJpYi4Hs/GCdILakTTAquyC/9DxIDNlzxTeJMBkvfBoXP
- KqiN+fzYjrUBQnVKj1gJW1EGyMKdQ4z5mgN9KnAD1ksN2/eWxlMZPPCofPjcMs6Layr7
- 01MrIAx/C1tVdovfkY8R+Gdt7KO1hCqhyEbGJ8TSlb5/4oS+RC1n7WaIcXKLCRlIsejA
- r+djlltkLeWjPgW8hwIH9VJAX8qs97uOfRmU7m+in4jttdIfqLAOu5WtmM6ncrYnTGui
- d8IE6tNP75E1MKXSq3x+NE6zYXEjuQPiiZKuDqsF2iFal+DusjB7ZYbU9RT48mS0CYSa
- Nnkg==
-X-Gm-Message-State: AOAM533mRaoWJv5eBaIncaR38j3XcDZv2I122PuDh/+A9kkOsPYxfs6T
- lAwfyiJ7RZrZeylnDOs2+3Hn0NXJfkFxfQ==
-X-Google-Smtp-Source: ABdhPJytNWZBIFBatQ0RJL7vsJKciW8PCsq+Tu4UZ5ZSHSUmrZ0jmUWmQkMo8hWDzHUdZHcmVXCHuA==
-X-Received: by 2002:aa7:9a95:0:b029:1f3:4169:ccf2 with SMTP id
- w21-20020aa79a950000b02901f34169ccf2mr10373184pfi.14.1616724314826; 
- Thu, 25 Mar 2021 19:05:14 -0700 (PDT)
-Received: from [192.168.10.23]
- (ppp121-45-194-51.cbr-trn-nor-bras38.tpg.internode.on.net. [121.45.194.51])
- by smtp.gmail.com with UTF8SMTPSA id r10sm6800294pfq.216.2021.03.25.19.05.12
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=pN6nWQzQZ6AQx0kJQTtGWLMXZDRLpSHjIhqC/t+YFhY=;
+ b=pg6OQeRkCiGEFuklTXqRxVXWIrc2+sp5ZILlzwgRB1hGFrOwLhdm02u1v1BVB769yf
+ BlZfcAXVViKSyNI4vNWV7Lf1Ot6SGv/Sl5WK3aaRE1QbU39JR8xPEbZ1BztSrp/w0bEh
+ o7HpydMDRWAfSCShesv1EQH9axaoEXP+E/Mc4acGKvK9NHNEgmM18qmYmMtTHjKUTrID
+ XvJiQEcqC8g2k+qhVdt6gSM5J8UWXvzawDo71mgwfCzlf99bH0TtW3U46uh8crL2xfVp
+ ydP9qAL4HHhKaQxKA2lwwgX8Lbfl08p0Rffbs07JXqALlWM6SEJ/FfYV0kLGKYxvb0Qw
+ 8DbQ==
+X-Gm-Message-State: AOAM531zwM9D/ZKlmEXGQfTkQsZ2sIxHVWZYmZFdZ/knWQVb9kX1F+KD
+ CwUE/UOvJbpatsL5mD8TE0nedQCzxJU=
+X-Google-Smtp-Source: ABdhPJxygfLULdYinCKv9Q8ic/5/UoyrbuitbVjJZMSjpBz2Equ0HjVvOTtQsFpVvf+dw+YmutQrZg==
+X-Received: by 2002:a05:6830:17d0:: with SMTP id
+ p16mr9733626ota.127.1616725065533; 
+ Thu, 25 Mar 2021 19:17:45 -0700 (PDT)
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com.
+ [209.85.210.49])
+ by smtp.gmail.com with ESMTPSA id x25sm1711902oto.72.2021.03.25.19.17.44
+ for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 Mar 2021 19:05:14 -0700 (PDT)
-Message-ID: <11ba0a43-a64a-ca06-581c-e8b7dc97b1d7@ozlabs.ru>
-Date: Fri, 26 Mar 2021 13:05:10 +1100
+ Thu, 25 Mar 2021 19:17:44 -0700 (PDT)
+Received: by mail-ot1-f49.google.com with SMTP id
+ 91-20020a9d08640000b0290237d9c40382so3890549oty.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 19:17:44 -0700 (PDT)
+X-Received: by 2002:a05:6830:20da:: with SMTP id
+ z26mr10108692otq.74.1616725064425; 
+ Thu, 25 Mar 2021 19:17:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:87.0) Gecko/20100101
- Thunderbird/87.0
-Subject: Re: [PATCH v4 24/46] KVM: PPC: Book3S HV P9: Use large decrementer
- for HDEC
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-References: <20210323010305.1045293-1-npiggin@gmail.com>
- <20210323010305.1045293-25-npiggin@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20210323010305.1045293-25-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20210323131530.2619900-1-arnd@kernel.org>
+In-Reply-To: <20210323131530.2619900-1-arnd@kernel.org>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Thu, 25 Mar 2021 21:17:33 -0500
+X-Gmail-Original-Message-ID: <CADRPPNQJfJ=KmRGkX5Uo6VfWDsihrMUKV7OkQ7jtb3+Byb0RLQ@mail.gmail.com>
+Message-ID: <CADRPPNQJfJ=KmRGkX5Uo6VfWDsihrMUKV7OkQ7jtb3+Byb0RLQ@mail.gmail.com>
+Subject: Re: [PATCH] soc/fsl: qbman: fix conflicting alignment attributes
+To: Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,69 +72,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Madalin-cristian Bucur <madalin.bucur@nxp.com>, soc@kernel.org,
+ Lee Jones <lee.jones@linaro.org>, Roy Pledge <roy.pledge@nxp.com>,
+ YueHaibing <yuehaibing@huawei.com>, lkml <linux-kernel@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Jakub Kicinski <kuba@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 23/03/2021 12:02, Nicholas Piggin wrote:
-> On processors that don't suppress the HDEC exceptions when LPCR[HDICE]=0,
-> this could help reduce needless guest exits due to leftover exceptions on
-> entering the guest.
-> 
-> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-
-ERROR: modpost: "decrementer_max" [arch/powerpc/kvm/kvm-hv.ko] undefined!
-
-
-need this:
-
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -89,6 +89,7 @@ static struct clocksource clocksource_timebase = {
-
-  #define DECREMENTER_DEFAULT_MAX 0x7FFFFFFF
-  u64 decrementer_max = DECREMENTER_DEFAULT_MAX;
-+EXPORT_SYMBOL_GPL(decrementer_max);
-
-
+On Tue, Mar 23, 2021 at 8:17 AM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> When building with W=1, gcc points out that the __packed attribute
+> on struct qm_eqcr_entry conflicts with the 8-byte alignment
+> attribute on struct qm_fd inside it:
+>
+> drivers/soc/fsl/qbman/qman.c:189:1: error: alignment 1 of 'struct qm_eqcr_entry' is less than 8 [-Werror=packed-not-aligned]
+>
+> I assume that the alignment attribute is the correct one, and
+> that qm_eqcr_entry cannot actually be unaligned in memory,
+> so add the same alignment on the outer struct.
+>
+> Fixes: c535e923bb97 ("soc/fsl: Introduce DPAA 1.x QMan device driver")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
->   arch/powerpc/include/asm/time.h | 2 ++
->   arch/powerpc/kvm/book3s_hv.c    | 3 ++-
->   2 files changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
-> index 8dd3cdb25338..68d94711811e 100644
-> --- a/arch/powerpc/include/asm/time.h
-> +++ b/arch/powerpc/include/asm/time.h
-> @@ -18,6 +18,8 @@
->   #include <asm/vdso/timebase.h>
->   
->   /* time.c */
-> +extern u64 decrementer_max;
-> +
->   extern unsigned long tb_ticks_per_jiffy;
->   extern unsigned long tb_ticks_per_usec;
->   extern unsigned long tb_ticks_per_sec;
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 8215430e6d5e..bb30c5ab53d1 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -3658,7 +3658,8 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
->   		vc->tb_offset_applied = 0;
->   	}
->   
-> -	mtspr(SPRN_HDEC, 0x7fffffff);
-> +	/* HDEC must be at least as large as DEC, so decrementer_max fits */
-> +	mtspr(SPRN_HDEC, decrementer_max);
->   
->   	switch_mmu_to_host_radix(kvm, host_pidr);
->   
-> 
+>  drivers/soc/fsl/qbman/qman.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+> index a1b9be1d105a..fde4edd83c14 100644
+> --- a/drivers/soc/fsl/qbman/qman.c
+> +++ b/drivers/soc/fsl/qbman/qman.c
+> @@ -186,7 +186,7 @@ struct qm_eqcr_entry {
+>         __be32 tag;
+>         struct qm_fd fd;
+>         u8 __reserved3[32];
+> -} __packed;
+> +} __packed __aligned(8);
 
--- 
-Alexey
+The EQCR structure is actually aligned on 64-byte from the manual.
+But probably 8 is enough to let the compiler not complain.
+
+>  #define QM_EQCR_VERB_VBIT              0x80
+>  #define QM_EQCR_VERB_CMD_MASK          0x61    /* but only one value; */
+>  #define QM_EQCR_VERB_CMD_ENQUEUE       0x01
+> --
+> 2.29.2
+>
