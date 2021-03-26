@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE0634A8DD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 14:47:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCB634A8E1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 14:48:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6NZr3tpMz3dg3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 00:47:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6NbB543mz3dkk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 00:48:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,38 +15,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6NWZ5BK1z3bwN
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 00:44:58 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6NWb3hr9z3bxG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 00:44:59 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F6NWV6Xcgz9v03G;
- Fri, 26 Mar 2021 14:44:54 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4F6NWW4kcBz9v03H;
+ Fri, 26 Mar 2021 14:44:55 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id iHvyC-mVLzvr; Fri, 26 Mar 2021 14:44:54 +0100 (CET)
+ with ESMTP id X6tAOk3XRuAU; Fri, 26 Mar 2021 14:44:55 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F6NWV5V7Pz9v03B;
- Fri, 26 Mar 2021 14:44:54 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9951F8B8C9;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F6NWW3rR4z9v03B;
  Fri, 26 Mar 2021 14:44:55 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 665048B8C9;
+ Fri, 26 Mar 2021 14:44:56 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id yHHbHQHnKvxK; Fri, 26 Mar 2021 14:44:55 +0100 (CET)
+ with ESMTP id pdElShztt2nj; Fri, 26 Mar 2021 14:44:56 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0731A8B8C7;
- Fri, 26 Mar 2021 14:44:55 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0CE3F8B8C7;
+ Fri, 26 Mar 2021 14:44:56 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 87B0D67611; Fri, 26 Mar 2021 13:44:55 +0000 (UTC)
-Message-Id: <0ce1c49ba4db6ffad82561d8b2877bd2ecde854d.1616765870.git.christophe.leroy@csgroup.eu>
+ id 8E34E67611; Fri, 26 Mar 2021 13:44:56 +0000 (UTC)
+Message-Id: <85b1dc6339351cbc46d179e8fdb9dfc398e58303.1616765870.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1616765869.git.christophe.leroy@csgroup.eu>
 References: <cover.1616765869.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 08/17] microblaze: Convert to GENERIC_CMDLINE
+Subject: [PATCH v3 09/17] nios2: Convert to GENERIC_CMDLINE
 To: will@kernel.org, danielwa@cisco.com, robh@kernel.org,
  daniel@gimpelevich.san-francisco.ca.us
-Date: Fri, 26 Mar 2021 13:44:55 +0000 (UTC)
+Date: Fri, 26 Mar 2021 13:44:56 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,88 +73,85 @@ This converts the architecture to GENERIC_CMDLINE.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/microblaze/Kconfig               | 24 +-----------------------
- arch/microblaze/configs/mmu_defconfig |  2 +-
- arch/microblaze/kernel/head.S         |  4 ++--
- 3 files changed, 4 insertions(+), 26 deletions(-)
+ arch/nios2/Kconfig        | 24 +-----------------------
+ arch/nios2/kernel/setup.c | 13 ++++---------
+ 2 files changed, 5 insertions(+), 32 deletions(-)
 
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index 0660f47012bc..1242f34bc2a2 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -15,6 +15,7 @@ config MICROBLAZE
- 	select COMMON_CLK
- 	select DMA_DIRECT_REMAP
- 	select GENERIC_ATOMIC64
-+	select GENERIC_CMDLINE
- 	select GENERIC_CPU_DEVICES
- 	select GENERIC_IDLE_POLL_SETUP
- 	select GENERIC_IRQ_PROBE
-@@ -93,29 +94,6 @@ source "kernel/Kconfig.hz"
- config MMU
- 	def_bool y
+diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
+index c24955c81c92..f66c97b15813 100644
+--- a/arch/nios2/Kconfig
++++ b/arch/nios2/Kconfig
+@@ -90,31 +90,9 @@ config NIOS2_ALIGNMENT_TRAP
  
--comment "Boot options"
--
+ comment "Boot options"
+ 
 -config CMDLINE_BOOL
 -	bool "Default bootloader kernel arguments"
+-	default y
 -
 -config CMDLINE
 -	string "Default kernel command string"
+-	default ""
 -	depends on CMDLINE_BOOL
--	default "console=ttyUL0,115200"
 -	help
--	  On some architectures there is currently no way for the boot loader
--	  to pass arguments to the kernel. For these architectures, you should
--	  supply some command-line options at build time by entering them
--	  here.
+-	  On some platforms, there is currently no way for the boot loader to
+-	  pass arguments to the kernel. For these platforms, you can supply
+-	  some command-line options at build time by entering them here.  In
+-	  other cases you can specify kernel args so that you don't have
+-	  to set them up in board prom initialization routines.
 -
 -config CMDLINE_FORCE
 -	bool "Force default kernel command string"
 -	depends on CMDLINE_BOOL
--	default n
 -	help
 -	  Set this to have arguments from the default kernel command string
 -	  override those passed by the boot loader.
 -
- endmenu
+ config NIOS2_CMDLINE_IGNORE_DTB
+ 	bool "Ignore kernel command string from DTB"
+-	depends on CMDLINE_BOOL
++	depends on CMDLINE != ""
+ 	depends on !CMDLINE_FORCE
+ 	default y
+ 	help
+diff --git a/arch/nios2/kernel/setup.c b/arch/nios2/kernel/setup.c
+index d2f21957e99c..42464f457a6d 100644
+--- a/arch/nios2/kernel/setup.c
++++ b/arch/nios2/kernel/setup.c
+@@ -20,6 +20,7 @@
+ #include <linux/initrd.h>
+ #include <linux/of_fdt.h>
+ #include <linux/screen_info.h>
++#include <linux/cmdline.h>
  
- menu "Kernel features"
-diff --git a/arch/microblaze/configs/mmu_defconfig b/arch/microblaze/configs/mmu_defconfig
-index 51337fffb947..b4d2219d0a8f 100644
---- a/arch/microblaze/configs/mmu_defconfig
-+++ b/arch/microblaze/configs/mmu_defconfig
-@@ -16,7 +16,7 @@ CONFIG_XILINX_MICROBLAZE0_USE_DIV=1
- CONFIG_XILINX_MICROBLAZE0_USE_HW_MUL=2
- CONFIG_XILINX_MICROBLAZE0_USE_FPU=2
- CONFIG_HZ_100=y
--CONFIG_CMDLINE_BOOL=y
-+CONFIG_CMDLINE="console=ttyUL0,115200"
- CONFIG_CMDLINE_FORCE=y
- CONFIG_HIGHMEM=y
- CONFIG_PCI_XILINX=y
-diff --git a/arch/microblaze/kernel/head.S b/arch/microblaze/kernel/head.S
-index ec2fcb545e64..605b18c86ac8 100644
---- a/arch/microblaze/kernel/head.S
-+++ b/arch/microblaze/kernel/head.S
-@@ -105,7 +105,7 @@ _copy_fdt:
- 	addik	r3, r3, -4 /* descrement loop */
- no_fdt_arg:
+ #include <asm/mmu_context.h>
+ #include <asm/sections.h>
+@@ -108,7 +109,7 @@ asmlinkage void __init nios2_boot_init(unsigned r4, unsigned r5, unsigned r6,
+ 				       unsigned r7)
+ {
+ 	unsigned dtb_passed = 0;
+-	char cmdline_passed[COMMAND_LINE_SIZE] __maybe_unused = { 0, };
++	char cmdline_passed[COMMAND_LINE_SIZE] = { 0, };
  
--#ifndef CONFIG_CMDLINE_BOOL
-+#if CONFIG_CMDLINE == ""
- /*
-  * handling command line
-  * copy command line directly to cmd_line placed in data section.
-@@ -126,7 +126,7 @@ _copy_command_line:
- 	addik	r5, r4, 0		/* add new space for command line */
- 	tovirt(r5,r5)
- skip:
--#endif /* CONFIG_CMDLINE_BOOL */
-+#endif /* CONFIG_CMDLINE */
+ #if defined(CONFIG_NIOS2_PASS_CMDLINE)
+ 	if (r4 == 0x534f494e) { /* r4 is magic NIOS */
+@@ -127,14 +128,8 @@ asmlinkage void __init nios2_boot_init(unsigned r4, unsigned r5, unsigned r6,
  
- #ifdef NOT_COMPILE
- /* save bram context */
+ 	early_init_devtree((void *)dtb_passed);
+ 
+-#ifndef CONFIG_CMDLINE_FORCE
+-	if (cmdline_passed[0])
+-		strlcpy(boot_command_line, cmdline_passed, COMMAND_LINE_SIZE);
+-#ifdef CONFIG_NIOS2_CMDLINE_IGNORE_DTB
+-	else
+-		strlcpy(boot_command_line, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
+-#endif
+-#endif
++	if (cmdline_passed[0] || IS_ENABLED(CONFIG_NIOS2_CMDLINE_IGNORE_DTB))
++		cmdline_build(boot_command_line, cmdline_passed, COMMAND_LINE_SIZE);
+ 
+ 	parse_early_param();
+ }
 -- 
 2.25.0
 
