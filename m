@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F005234A8E5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 14:48:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED40634A8E8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 14:48:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6NbX6tqKz3dsT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 00:48:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6Nbt6xSlz3cFc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 00:48:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,38 +15,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6NWc4XQgz3by8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 00:45:00 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6NWf2YTYz3bsL
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 00:45:01 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F6NWX5nkqz9v03K;
- Fri, 26 Mar 2021 14:44:56 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4F6NWY5C3mz9v03L;
+ Fri, 26 Mar 2021 14:44:57 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id WOLvZloR3Ccc; Fri, 26 Mar 2021 14:44:56 +0100 (CET)
+ with ESMTP id 4mW1M94fWAEi; Fri, 26 Mar 2021 14:44:57 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F6NWX4v6mz9v03B;
- Fri, 26 Mar 2021 14:44:56 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 627FB8B8C9;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F6NWY4Gn8z9v03B;
  Fri, 26 Mar 2021 14:44:57 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6E7728B8C7;
+ Fri, 26 Mar 2021 14:44:58 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 6OaEXOQG2IEm; Fri, 26 Mar 2021 14:44:57 +0100 (CET)
+ with ESMTP id lzygznqtzRZ7; Fri, 26 Mar 2021 14:44:58 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 147E38B8C7;
- Fri, 26 Mar 2021 14:44:57 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1C1488B8C9;
+ Fri, 26 Mar 2021 14:44:58 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 94C9867611; Fri, 26 Mar 2021 13:44:57 +0000 (UTC)
-Message-Id: <d583d618d93e723165b1145f9d4ec2981b61ca04.1616765870.git.christophe.leroy@csgroup.eu>
+ id 9B96867611; Fri, 26 Mar 2021 13:44:58 +0000 (UTC)
+Message-Id: <46745e07b04139a22b5bd01dc37df97e6981e643.1616765870.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1616765869.git.christophe.leroy@csgroup.eu>
 References: <cover.1616765869.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 10/17] openrisc: Convert to GENERIC_CMDLINE
+Subject: [PATCH v3 11/17] riscv: Convert to GENERIC_CMDLINE
 To: will@kernel.org, danielwa@cisco.com, robh@kernel.org,
  daniel@gimpelevich.san-francisco.ca.us
-Date: Fri, 26 Mar 2021 13:44:57 +0000 (UTC)
+Date: Fri, 26 Mar 2021 13:44:58 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,37 +73,96 @@ This converts the architecture to GENERIC_CMDLINE.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/openrisc/Kconfig | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ arch/riscv/Kconfig        | 44 +--------------------------------------
+ arch/riscv/kernel/setup.c |  5 ++---
+ 2 files changed, 3 insertions(+), 46 deletions(-)
 
-diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
-index 591acc5990dc..ca1d0f18fe16 100644
---- a/arch/openrisc/Kconfig
-+++ b/arch/openrisc/Kconfig
-@@ -25,6 +25,7 @@ config OPENRISC
- 	select HAVE_UID16
- 	select GENERIC_ATOMIC64
- 	select GENERIC_CLOCKEVENTS_BROADCAST
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 87d7b52f278f..3dbd50bed037 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -39,6 +39,7 @@ config RISCV
+ 	select EDAC_SUPPORT
+ 	select GENERIC_ARCH_TOPOLOGY if SMP
+ 	select GENERIC_ATOMIC64 if !64BIT
 +	select GENERIC_CMDLINE
- 	select GENERIC_STRNCPY_FROM_USER
- 	select GENERIC_STRNLEN_USER
- 	select GENERIC_SMP_IDLE_THREAD
-@@ -162,15 +163,6 @@ config OPENRISC_HAVE_SHADOW_GPRS
- 	  On SMP systems, this feature is mandatory.
- 	  On a unicore system it's safe to say N here if you are unsure.
+ 	select GENERIC_EARLY_IOREMAP
+ 	select GENERIC_GETTIMEOFDAY if HAVE_GENERIC_VDSO
+ 	select GENERIC_IOREMAP
+@@ -390,49 +391,6 @@ endmenu
+ 
+ menu "Boot options"
  
 -config CMDLINE
--	string "Default kernel command string"
--	default ""
+-	string "Built-in kernel command line"
 -	help
--	  On some architectures there is currently no way for the boot loader
--	  to pass arguments to the kernel. For these architectures, you should
--	  supply some command-line options at build time by entering them
--	  here.
+-	  For most platforms, the arguments for the kernel's command line
+-	  are provided at run-time, during boot. However, there are cases
+-	  where either no arguments are being provided or the provided
+-	  arguments are insufficient or even invalid.
 -
- menu "Debugging options"
+-	  When that occurs, it is possible to define a built-in command
+-	  line here and choose how the kernel should use it later on.
+-
+-choice
+-	prompt "Built-in command line usage" if CMDLINE != ""
+-	default CMDLINE_FALLBACK
+-	help
+-	  Choose how the kernel will handle the provided built-in command
+-	  line.
+-
+-config CMDLINE_FALLBACK
+-	bool "Use bootloader kernel arguments if available"
+-	help
+-	  Use the built-in command line as fallback in case we get nothing
+-	  during boot. This is the default behaviour.
+-
+-config CMDLINE_EXTEND
+-	bool "Extend bootloader kernel arguments"
+-	help
+-	  The command-line arguments provided during boot will be
+-	  appended to the built-in command line. This is useful in
+-	  cases where the provided arguments are insufficient and
+-	  you don't want to or cannot modify them.
+-
+-
+-config CMDLINE_FORCE
+-	bool "Always use the default kernel command string"
+-	help
+-	  Always use the built-in command line, even if we get one during
+-	  boot. This is useful in case you need to override the provided
+-	  command line on systems where you don't have or want control
+-	  over it.
+-
+-endchoice
+-
+ config EFI_STUB
+ 	bool
  
- config JUMP_UPON_UNHANDLED_EXCEPTION
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index f8f15332caa2..e7c91ee478d1 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -20,6 +20,7 @@
+ #include <linux/swiotlb.h>
+ #include <linux/smp.h>
+ #include <linux/efi.h>
++#include <linux/cmdline.h>
+ 
+ #include <asm/cpu_ops.h>
+ #include <asm/early_ioremap.h>
+@@ -228,10 +229,8 @@ static void __init parse_dtb(void)
+ 	}
+ 
+ 	pr_err("No DTB passed to the kernel\n");
+-#ifdef CONFIG_CMDLINE_FORCE
+-	strlcpy(boot_command_line, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
++	cmdline_build(boot_command_line, NULL, COMMAND_LINE_SIZE);
+ 	pr_info("Forcing kernel command line to: %s\n", boot_command_line);
+-#endif
+ }
+ 
+ void __init setup_arch(char **cmdline_p)
 -- 
 2.25.0
 
