@@ -2,40 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF5334A233
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 07:54:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F24B934A251
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 08:05:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6CQL4228z3c3G
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 17:54:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6CfS6yH6z3c1w
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 18:05:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com;
- envelope-from=zhengyongjun3@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6CQ20Bm3z2xxh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 17:54:33 +1100 (AEDT)
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F6Bvr3sWsznWnR;
- Fri, 26 Mar 2021 14:31:52 +0800 (CST)
-Received: from localhost.localdomain (10.175.104.82) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.498.0; Fri, 26 Mar 2021 14:34:18 +0800
-From: Zheng Yongjun <zhengyongjun3@huawei.com>
-To: <zhengyongjun3@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>, "Shuah
- Khan" <shuah@kernel.org>
-Subject: [PATCH -next] treewide: Remove duplicated include from
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6Cf752Kwz300k
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 18:04:59 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4F6Cdz4fhSz9tykG;
+ Fri, 26 Mar 2021 08:04:55 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Z58WxS2xMeos; Fri, 26 Mar 2021 08:04:55 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F6Cdz3Dg6z9tykF;
+ Fri, 26 Mar 2021 08:04:55 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 29E918B834;
+ Fri, 26 Mar 2021 08:04:56 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id p6eUKttqYihi; Fri, 26 Mar 2021 08:04:56 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8ACC78B766;
+ Fri, 26 Mar 2021 08:04:54 +0100 (CET)
+Subject: Re: [PATCH -next] treewide: Remove duplicated include from
  tm-vmx-unavail.c
-Date: Fri, 26 Mar 2021 14:48:12 +0800
-Message-ID: <20210326064812.3262659-1-zhengyongjun3@huawei.com>
-X-Mailer: git-send-email 2.25.1
+To: Zheng Yongjun <zhengyongjun3@huawei.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Shuah Khan <shuah@kernel.org>
+References: <20210326064812.3262659-1-zhengyongjun3@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <05c34150-1a30-0abe-87c1-5b9a2aa82f0b@csgroup.eu>
+Date: Fri, 26 Mar 2021 08:04:55 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
+In-Reply-To: <20210326064812.3262659-1-zhengyongjun3@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.175.104.82]
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,30 +63,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+Cc: linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
  linux-kselftest@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove duplicated include.
+Le 26/03/2021 à 07:48, Zheng Yongjun a écrit :
+> Remove duplicated include.
+> 
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
----
- tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c | 1 -
- 1 file changed, 1 deletion(-)
+Why is that flagged "treewide" ?
 
-diff --git a/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c b/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c
-index e2a0c07e8362..9ef37a9836ac 100644
---- a/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c
-+++ b/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c
-@@ -17,7 +17,6 @@
- #include <pthread.h>
- #include <sys/mman.h>
- #include <unistd.h>
--#include <pthread.h>
- 
- #include "tm.h"
- #include "utils.h"
+Can you please combine all similar changes to tools/testing/selftests/powerpc/ into a single patch 
+please ?
 
+Thanks
+Christophe
+
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+> ---
+>   tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c b/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c
+> index e2a0c07e8362..9ef37a9836ac 100644
+> --- a/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c
+> +++ b/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c
+> @@ -17,7 +17,6 @@
+>   #include <pthread.h>
+>   #include <sys/mman.h>
+>   #include <unistd.h>
+> -#include <pthread.h>
+>   
+>   #include "tm.h"
+>   #include "utils.h"
+> 
