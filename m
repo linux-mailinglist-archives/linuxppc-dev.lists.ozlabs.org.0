@@ -1,59 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91ECA34AAE2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 16:05:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E1534AAEA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 16:05:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6QJ63Btwz3c3w
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 02:05:10 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FslLeGi3;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6QJb60Fzz3cB3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 02:05:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=FslLeGi3; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6QHd0R4pz2yy9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 02:04:44 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BADEB61A26
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 15:04:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1616771080;
- bh=CcDG1SYT+u5oJCFUbtBoRVBdku5chSBF/j8IcwTSwyA=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=FslLeGi3ttBCpMwtegrgb3z3Jo9maYQuWXpVaJsfbMi0cMLce4xQuBXm6iwbDyBJu
- Wqc+4pQAnP76sDiYBuKQKxkAJshruFOVUM4rted2/fN3Ef93XjjXL5dnmEqUFNAO9e
- hoyR+oYbvgzxSvB/aqrMzDUIZBLKXvK1JT5W2Kr/DA6ua8jhtsHnjx4e8WJTmGsIa2
- e4Fnako4g0tZmhYLhifao8/XBPPKaTP5NVGYKGXCSpJx/WFDJdEHtdZzuqbjGKXZHs
- 5Mn2WuBXZZBRUS/K6Tlirn0e261TPnYR+Zqff0+P437/WKaaCfTmbL6HwTudxdrVdJ
- JCXHPuMsIVGrw==
-Received: by mail-ed1-f46.google.com with SMTP id bf3so6676803edb.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 08:04:39 -0700 (PDT)
-X-Gm-Message-State: AOAM533BnxFS8IYSb31kSe/pFi0dNW9PlDiRvBEcNfVlN2vTIV7X13Uv
- W4UQFK5o96AwWOVGS8gTZmU/7/eUHFIo3bHGAg==
-X-Google-Smtp-Source: ABdhPJysfZUE7pyMmQBkvm0tvpbMLtvvqy297Z/V6TC8r3w35DV43BQKmWP/tZVYr7jDjbifL0QLm4IUfTacC1zCtZ0=
-X-Received: by 2002:a05:6402:2d0:: with SMTP id
- b16mr15924985edx.194.1616771078263; 
- Fri, 26 Mar 2021 08:04:38 -0700 (PDT)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.17.24; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6QJ669Lvz3bvr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 02:05:10 +1100 (AEDT)
+Received: from mail-oi1-f169.google.com ([209.85.167.169]) by
+ mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1N8XLj-1llH0q3GW9-014XSu for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar
+ 2021 16:05:06 +0100
+Received: by mail-oi1-f169.google.com with SMTP id n140so5968434oig.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 08:05:04 -0700 (PDT)
+X-Gm-Message-State: AOAM533cUnNUEKvSm2GoEIHE/01cWWfsjSvZ1pcB4jyjTbOZFalhu5PB
+ wECA8hMQdlJnZYvgRG3oSpwIbtAqaNXS9uvnoEs=
+X-Google-Smtp-Source: ABdhPJxkabhICNjVimKONzi11M/Se4ShvOLHDXtHqNvGZV2LWEfIbqRfkSQLV++Q5maH4NbCwdiaxdlkbDHuJr8w0IQ=
+X-Received: by 2002:a05:6808:313:: with SMTP id
+ i19mr9838151oie.67.1616771103242; 
+ Fri, 26 Mar 2021 08:05:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1616765869.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1616765869.git.christophe.leroy@csgroup.eu>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 26 Mar 2021 09:04:25 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLQTM0Xw_skFeysJyYAyW3B=0u0xgePgoUYSpKaWw9SjQ@mail.gmail.com>
-Message-ID: <CAL_JsqLQTM0Xw_skFeysJyYAyW3B=0u0xgePgoUYSpKaWw9SjQ@mail.gmail.com>
-Subject: Re: [PATCH v3 00/17] Implement GENERIC_CMDLINE
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20210326143831.1550030-1-hch@lst.de>
+ <20210326143831.1550030-2-hch@lst.de>
+In-Reply-To: <20210326143831.1550030-2-hch@lst.de>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 26 Mar 2021 16:04:48 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1zGcjPXPhKiUVZOwocYFKNfSGSx-M_ZY1hytp1+xEt0g@mail.gmail.com>
+Message-ID: <CAK8P3a1zGcjPXPhKiUVZOwocYFKNfSGSx-M_ZY1hytp1+xEt0g@mail.gmail.com>
+Subject: Re: [PATCH 1/4] exec: remove do_execve
+To: Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:M4F7FLYSB0mShYpDwcTVhqDPjE6l/xzZ9cdvoO6jgFJjZeOAFll
+ 5czji7KBKx2+XaQxSnB9ULEw1Goo3g03tiVqdDkweDNYZIQSHGXwqvO2FqQPtzcbfwilCv5
+ Q3sDoIsKuzLKCKMij/B5p+3pQ5N9W4c1B2Y5ZEwskTB5jyCgvgToRb/nxXkA/CXLW/w3K83
+ LXZjhsCdGrHnnSg1IZAGA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:rCJqDP4x+RE=:DknoFE7reHI9CoeCpesHHV
+ LU3ruHZ8dc8JrNzeLjKvB81jbKRmznZ1XAyZWtDoC4Kueomqsb0TYJuRHLwrFFIODoCU+Lg86
+ Z1Is9KiYdPCD4JL1NASdnYEgj7BRhdiE7Evpkc/M81VN5QwvtVO/9YSAsVtbKM1J6m6c98qW4
+ s83aOGj3E/cABzCyC1M2qPXJSrAB+rN+K+x6/gLmm+XIyUr8wbpWxFzefiV5PFguFXjqe+NWr
+ GxcXy3yBjnQn04YQ+80651+/3UNSIt4kL6uCOwC2ESMMpHf0h66CkARhdafynJU7cQpKT6ha2
+ aQKtyCpCwehbBJ1ZI6TE4UUP7J8i4q8WJFb0lHcGLMp7SPIFNRgwNnm9Ymx5HlBgmNpVasSeC
+ VhXoHDf1t0iMGkn4aYvovA/ldp/EzTWA7FqiFB2vZEgUdw+/yl6IYKBEAJkqdThulAUG3dBPB
+ PnlCfUytVarggjdngbsKxgc+qcEPMCjfZN4BQnkhVDdtZfypBypIe+jZX4qGGQxUQRv5cSuSr
+ x9hbD+YfRxTlHRb/FxkZzIAZWH2EMoQHebPdLAOMTriv7jGaP/j5eFkWtanaobLN9xzTSDfvV
+ G2OUJn7EsphliQ4MS4cwyF9CzRcA56LOGg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,163 +68,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:GENERIC INCLUDE/ASM HEADER FILES" <linux-arch@vger.kernel.org>,
- devicetree@vger.kernel.org, microblaze <monstr@monstr.eu>,
- Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- linux-xtensa@linux-xtensa.org, SH-Linux <linux-sh@vger.kernel.org>,
- Will Deacon <will@kernel.org>, X86 ML <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- nios2 <ley.foon.tan@intel.com>, "open list:MIPS" <linux-mips@vger.kernel.org>,
- Openrisc <openrisc@lists.librecores.org>, linux-hexagon@vger.kernel.org,
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Parisc List <linux-parisc@vger.kernel.org>, Brian Gerst <brgerst@gmail.com>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
  sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Daniel Walker <danielwa@cisco.com>
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 26, 2021 at 7:44 AM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
+On Fri, Mar 26, 2021 at 3:38 PM Christoph Hellwig <hch@lst.de> wrote:
 >
-> The purpose of this series is to improve and enhance the
-> handling of kernel boot arguments.
+> Just call do_execveat instead.
 >
-> It is first focussed on powerpc but also extends the capability
-> for other arches.
->
-> This is based on suggestion from Daniel Walker <danielwa@cisco.com>
->
-> Main changes in V3:
-> - Also accept destination equal to source in cmdline_build() by setting a tmp buffer in __initdata. Powerpc provides different source and destination and call __cmdline_build() directly.
-> - Taken comments received from Will and Rob
-> - Converted all architectures (Only tested on powerpc)
->
-> Christophe Leroy (17):
->   cmdline: Add generic function to build command line.
->   drivers: of: use cmdline building function
->   cmdline: Gives architectures opportunity to use generically defined
->     boot cmdline manipulation
->   powerpc: Convert to GENERIC_CMDLINE
->   arm: Convert to GENERIC_CMDLINE
->   arm64: Convert to GENERIC_CMDLINE
->   hexagon: Convert to GENERIC_CMDLINE
->   microblaze: Convert to GENERIC_CMDLINE
->   nios2: Convert to GENERIC_CMDLINE
->   openrisc: Convert to GENERIC_CMDLINE
->   riscv: Convert to GENERIC_CMDLINE
->   sh: Convert to GENERIC_CMDLINE
->   sparc: Convert to GENERIC_CMDLINE
->   xtensa: Convert to GENERIC_CMDLINE
->   x86: Convert to GENERIC_CMDLINE
->   mips: Convert to GENERIC_CMDLINE
->   cmdline: Remove CONFIG_CMDLINE_EXTEND
->
->  arch/arm/Kconfig                            | 38 +-------------
->  arch/arm/kernel/atags_parse.c               | 15 ++----
->  arch/arm64/Kconfig                          | 33 +-----------
->  arch/arm64/kernel/idreg-override.c          |  9 ++--
->  arch/hexagon/Kconfig                        | 11 +---
->  arch/hexagon/kernel/setup.c                 | 10 +---
->  arch/microblaze/Kconfig                     | 24 +--------
->  arch/microblaze/configs/mmu_defconfig       |  2 +-
->  arch/microblaze/kernel/head.S               |  4 +-
->  arch/mips/Kconfig                           |  1 +
->  arch/mips/Kconfig.debug                     | 44 ----------------
->  arch/mips/configs/ar7_defconfig             |  1 -
->  arch/mips/configs/bcm47xx_defconfig         |  1 -
->  arch/mips/configs/bcm63xx_defconfig         |  1 -
->  arch/mips/configs/bmips_be_defconfig        |  1 -
->  arch/mips/configs/bmips_stb_defconfig       |  1 -
->  arch/mips/configs/capcella_defconfig        |  1 -
->  arch/mips/configs/ci20_defconfig            |  1 -
->  arch/mips/configs/cu1000-neo_defconfig      |  1 -
->  arch/mips/configs/cu1830-neo_defconfig      |  1 -
->  arch/mips/configs/e55_defconfig             |  1 -
->  arch/mips/configs/generic_defconfig         |  1 -
->  arch/mips/configs/gpr_defconfig             |  1 -
->  arch/mips/configs/loongson3_defconfig       |  1 -
->  arch/mips/configs/mpc30x_defconfig          |  1 -
->  arch/mips/configs/rt305x_defconfig          |  1 -
->  arch/mips/configs/tb0219_defconfig          |  1 -
->  arch/mips/configs/tb0226_defconfig          |  1 -
->  arch/mips/configs/tb0287_defconfig          |  1 -
->  arch/mips/configs/workpad_defconfig         |  1 -
->  arch/mips/configs/xway_defconfig            |  1 -
->  arch/mips/kernel/relocate.c                 |  4 +-
->  arch/mips/kernel/setup.c                    | 40 +--------------
->  arch/mips/pic32/pic32mzda/early_console.c   |  2 +-
->  arch/mips/pic32/pic32mzda/init.c            |  2 -
->  arch/nios2/Kconfig                          | 24 +--------
->  arch/nios2/kernel/setup.c                   | 13 ++---
->  arch/openrisc/Kconfig                       | 10 +---
->  arch/powerpc/Kconfig                        | 37 +------------
->  arch/powerpc/kernel/prom_init.c             | 17 +++---
->  arch/riscv/Kconfig                          | 44 +---------------
->  arch/riscv/kernel/setup.c                   |  5 +-
->  arch/sh/Kconfig                             | 30 +----------
->  arch/sh/configs/ap325rxa_defconfig          |  2 +-
->  arch/sh/configs/dreamcast_defconfig         |  2 +-
->  arch/sh/configs/ecovec24-romimage_defconfig |  2 +-
->  arch/sh/configs/ecovec24_defconfig          |  2 +-
->  arch/sh/configs/edosk7760_defconfig         |  2 +-
->  arch/sh/configs/espt_defconfig              |  2 +-
->  arch/sh/configs/j2_defconfig                |  2 +-
->  arch/sh/configs/kfr2r09-romimage_defconfig  |  2 +-
->  arch/sh/configs/kfr2r09_defconfig           |  2 +-
->  arch/sh/configs/lboxre2_defconfig           |  2 +-
->  arch/sh/configs/microdev_defconfig          |  2 +-
->  arch/sh/configs/migor_defconfig             |  2 +-
->  arch/sh/configs/polaris_defconfig           |  2 +-
->  arch/sh/configs/r7780mp_defconfig           |  2 +-
->  arch/sh/configs/r7785rp_defconfig           |  2 +-
->  arch/sh/configs/rsk7201_defconfig           |  2 +-
->  arch/sh/configs/rsk7203_defconfig           |  2 +-
->  arch/sh/configs/rts7751r2d1_defconfig       |  2 +-
->  arch/sh/configs/rts7751r2dplus_defconfig    |  2 +-
->  arch/sh/configs/sdk7780_defconfig           |  2 +-
->  arch/sh/configs/sdk7786_defconfig           |  2 +-
->  arch/sh/configs/se7206_defconfig            |  2 +-
->  arch/sh/configs/se7343_defconfig            |  2 +-
->  arch/sh/configs/se7712_defconfig            |  2 +-
->  arch/sh/configs/se7721_defconfig            |  2 +-
->  arch/sh/configs/se7724_defconfig            |  2 +-
->  arch/sh/configs/se7751_defconfig            |  2 +-
->  arch/sh/configs/se7780_defconfig            |  2 +-
->  arch/sh/configs/sh03_defconfig              |  2 +-
->  arch/sh/configs/sh2007_defconfig            |  2 +-
->  arch/sh/configs/sh7757lcr_defconfig         |  2 +-
->  arch/sh/configs/sh7763rdp_defconfig         |  2 +-
->  arch/sh/configs/shmin_defconfig             |  2 +-
->  arch/sh/configs/shx3_defconfig              |  2 +-
->  arch/sh/configs/titan_defconfig             |  2 +-
->  arch/sh/configs/ul2_defconfig               |  2 +-
->  arch/sh/kernel/setup.c                      | 11 +---
->  arch/sparc/Kconfig                          | 18 +------
->  arch/sparc/prom/bootstr_64.c                |  2 +-
->  arch/x86/Kconfig                            | 45 +---------------
->  arch/x86/kernel/setup.c                     | 17 +-----
->  arch/xtensa/Kconfig                         | 15 +-----
->  arch/xtensa/configs/audio_kc705_defconfig   |  1 -
->  arch/xtensa/configs/common_defconfig        |  1 -
->  arch/xtensa/configs/generic_kc705_defconfig |  1 -
->  arch/xtensa/configs/iss_defconfig           |  1 -
->  arch/xtensa/configs/nommu_kc705_defconfig   |  1 -
->  arch/xtensa/configs/smp_lx200_defconfig     |  1 -
->  arch/xtensa/configs/virt_defconfig          |  1 -
->  arch/xtensa/configs/xip_kc705_defconfig     |  1 -
->  arch/xtensa/kernel/setup.c                  | 10 +---
->  drivers/firmware/efi/libstub/x86-stub.c     | 26 +++++-----
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-You missed efi-stub.c which has CMDLINE_EXTEND.
-
->  drivers/of/fdt.c                            | 23 ++-------
->  include/linux/cmdline.h                     | 57 +++++++++++++++++++++
->  init/Kconfig                                | 46 +++++++++++++++++
->  98 files changed, 209 insertions(+), 580 deletions(-)
->  create mode 100644 include/linux/cmdline.h
->
-> --
-> 2.25.0
->
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
