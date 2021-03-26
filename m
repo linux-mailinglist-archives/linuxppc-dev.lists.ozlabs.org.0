@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA0E34A8AC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 14:47:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E78634A8CF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 14:47:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6NZ80Npqz3dG9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 00:47:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6NZV14wRz3dbN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 00:47:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,38 +15,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6NWY1gHdz3bsK
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6NWY3nhLz3btQ
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 00:44:57 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F6NWS60pgz9v03C;
- Fri, 26 Mar 2021 14:44:52 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4F6NWT4TPXz9v03D;
+ Fri, 26 Mar 2021 14:44:53 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ua4xnFB1IzAD; Fri, 26 Mar 2021 14:44:52 +0100 (CET)
+ with ESMTP id EEqTBNdfHvPX; Fri, 26 Mar 2021 14:44:53 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F6NWS560hz9v03B;
- Fri, 26 Mar 2021 14:44:52 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 702B98B8CB;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F6NWT3Zrwz9v03B;
  Fri, 26 Mar 2021 14:44:53 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 58E9A8B8C9;
+ Fri, 26 Mar 2021 14:44:54 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id nQgQ-Ws-8ZQe; Fri, 26 Mar 2021 14:44:53 +0100 (CET)
+ with ESMTP id Yai4PS5jsljR; Fri, 26 Mar 2021 14:44:54 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EC3738B8C7;
- Fri, 26 Mar 2021 14:44:52 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0171D8B8C7;
+ Fri, 26 Mar 2021 14:44:53 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 78A0A67611; Fri, 26 Mar 2021 13:44:53 +0000 (UTC)
-Message-Id: <29e44feb9254a462e23513cc4279dae6af0f2ae6.1616765870.git.christophe.leroy@csgroup.eu>
+ id 80E9967611; Fri, 26 Mar 2021 13:44:54 +0000 (UTC)
+Message-Id: <3561ef609d471949454d58f969c036f97f596211.1616765870.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1616765869.git.christophe.leroy@csgroup.eu>
 References: <cover.1616765869.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 06/17] arm64: Convert to GENERIC_CMDLINE
+Subject: [PATCH v3 07/17] hexagon: Convert to GENERIC_CMDLINE
 To: will@kernel.org, danielwa@cisco.com, robh@kernel.org,
  daniel@gimpelevich.san-francisco.ca.us
-Date: Fri, 26 Mar 2021 13:44:53 +0000 (UTC)
+Date: Fri, 26 Mar 2021 13:44:54 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,89 +73,81 @@ This converts the architecture to GENERIC_CMDLINE.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/arm64/Kconfig                 | 33 +-----------------------------
- arch/arm64/kernel/idreg-override.c |  9 ++++----
- 2 files changed, 5 insertions(+), 37 deletions(-)
+ arch/hexagon/Kconfig        | 11 +----------
+ arch/hexagon/kernel/setup.c | 10 ++--------
+ 2 files changed, 3 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 5656e7aacd69..eeff7730ccf0 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -105,6 +105,7 @@ config ARM64
+diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
+index 44a409967af1..1e69c99bae6b 100644
+--- a/arch/hexagon/Kconfig
++++ b/arch/hexagon/Kconfig
+@@ -18,6 +18,7 @@ config HEXAGON
+ 	select HAVE_PERF_EVENTS
+ 	# GENERIC_ALLOCATOR is used by dma_alloc_coherent()
  	select GENERIC_ALLOCATOR
- 	select GENERIC_ARCH_TOPOLOGY
- 	select GENERIC_CLOCKEVENTS_BROADCAST
 +	select GENERIC_CMDLINE
- 	select GENERIC_CPU_AUTOPROBE
- 	select GENERIC_CPU_VULNERABILITIES
- 	select GENERIC_EARLY_IOREMAP
-@@ -1831,38 +1832,6 @@ config ARM64_ACPI_PARKING_PROTOCOL
- 	  protocol even if the corresponding data is present in the ACPI
- 	  MADT table.
+ 	select GENERIC_IRQ_SHOW
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_TRACEHOOK
+@@ -91,16 +92,6 @@ config HEXAGON_ARCH_VERSION
+ 	int "Architecture version"
+ 	default 2
  
 -config CMDLINE
 -	string "Default kernel command string"
 -	default ""
 -	help
--	  Provide a set of default command-line options at build time by
--	  entering them here. As a minimum, you should specify the the
--	  root device (e.g. root=/dev/nfs).
+-	  On some platforms, there is currently no way for the boot loader
+-	  to pass arguments to the kernel. For these, you should supply some
+-	  command-line options at build time by entering them here.  At a
+-	  minimum, you should specify the memory size and the root device
+-	  (e.g., mem=64M root=/dev/nfs).
 -
--choice
--	prompt "Kernel command line type" if CMDLINE != ""
--	default CMDLINE_FROM_BOOTLOADER
--	help
--	  Choose how the kernel will handle the provided default kernel
--	  command line string.
--
--config CMDLINE_FROM_BOOTLOADER
--	bool "Use bootloader kernel arguments if available"
--	help
--	  Uses the command-line options passed by the boot loader. If
--	  the boot loader doesn't provide any, the default kernel command
--	  string provided in CMDLINE will be used.
--
--config CMDLINE_FORCE
--	bool "Always use the default kernel command string"
--	help
--	  Always use the default kernel command string, even if the boot
--	  loader passes other arguments to the kernel.
--	  This is useful if you cannot or don't want to change the
--	  command-line options your boot loader passes to the kernel.
--
--endchoice
--
- config EFI_STUB
- 	bool
- 
-diff --git a/arch/arm64/kernel/idreg-override.c b/arch/arm64/kernel/idreg-override.c
-index 83f1c4b92095..8bc955cdcf82 100644
---- a/arch/arm64/kernel/idreg-override.c
-+++ b/arch/arm64/kernel/idreg-override.c
-@@ -9,6 +9,7 @@
- #include <linux/ctype.h>
- #include <linux/kernel.h>
- #include <linux/libfdt.h>
+ config SMP
+ 	bool "Multi-Processing support"
+ 	help
+diff --git a/arch/hexagon/kernel/setup.c b/arch/hexagon/kernel/setup.c
+index 1880d9beaf2b..be586cea4076 100644
+--- a/arch/hexagon/kernel/setup.c
++++ b/arch/hexagon/kernel/setup.c
+@@ -13,6 +13,7 @@
+ #include <linux/seq_file.h>
+ #include <linux/console.h>
+ #include <linux/of_fdt.h>
 +#include <linux/cmdline.h>
+ #include <asm/io.h>
+ #include <asm/sections.h>
+ #include <asm/setup.h>
+@@ -22,7 +23,6 @@
+ #include <asm/time.h>
  
- #include <asm/cacheflush.h>
- #include <asm/cpufeature.h>
-@@ -187,12 +188,10 @@ static __init const u8 *get_bootargs_cmdline(void)
- static __init void parse_cmdline(void)
+ char cmd_line[COMMAND_LINE_SIZE];
+-static char default_command_line[COMMAND_LINE_SIZE] __initdata = CONFIG_CMDLINE;
+ 
+ int on_simulator;
+ 
+@@ -38,8 +38,6 @@ void calibrate_delay(void)
+ 
+ void __init setup_arch(char **cmdline_p)
  {
- 	const u8 *prop = get_bootargs_cmdline();
-+	static char __initdata cmdline[COMMAND_LINE_SIZE];
- 
--	if (IS_ENABLED(CONFIG_CMDLINE_FORCE) || !prop)
--		__parse_cmdline(CONFIG_CMDLINE, true);
+-	char *p = &external_cmdline_buffer;
 -
--	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE) && prop)
--		__parse_cmdline(prop, true);
-+	cmdline_build(cmdline, prop, COMMAND_LINE_SIZE);
-+	__parse_cmdline(cmdline, true);
- }
+ 	/*
+ 	 * These will eventually be pulled in via either some hypervisor
+ 	 * or devicetree description.  Hardwiring for now.
+@@ -65,11 +63,7 @@ void __init setup_arch(char **cmdline_p)
+ 	else
+ 		on_simulator = 0;
  
- /* Keep checkers quiet */
+-	if (p[0] != '\0')
+-		strlcpy(boot_command_line, p, COMMAND_LINE_SIZE);
+-	else
+-		strlcpy(boot_command_line, default_command_line,
+-			COMMAND_LINE_SIZE);
++	cmdline_build(boot_command_line, external_cmdline_buffer, COMMAND_LINE_SIZE);
+ 
+ 	/*
+ 	 * boot_command_line and the value set up by setup_arch
 -- 
 2.25.0
 
