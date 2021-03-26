@@ -1,56 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB48734A6A6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 12:55:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E40D34A859
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 14:45:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6L571sQ0z3c2Y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 22:55:23 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=OE282vqP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6NXc4TtJz3cJ3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 00:45:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=163.com
- (client-ip=220.181.12.12; helo=m12-12.163.com;
- envelope-from=dingsenjie@163.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256
- header.s=s110527 header.b=OE282vqP; dkim-atps=neutral
-Received: from m12-12.163.com (m12-12.163.com [220.181.12.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6L4g0m5Cz2yy5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 22:54:54 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=qmOVU
- bBT6UUgOqC+nqtqAfxo5EXyRbjGxCrrXHUkSkY=; b=OE282vqPxehvpHcP6Jnt0
- vHSIkxXunmFunj6W+2fuUnDATpyvtlgT4Kr9GJ+XkLACOwJnJquDnIVmkpNT3wLJ
- 0o1jZfOSeYG71T1uy8RMrnMM9gxR7MQ6lfsZkFKYOToCCV0pTcI17BaN372LlrUL
- m/mmoiVvuyeNFdKQLiPFxE=
-Received: from COOL-20201222LC.ccdomain.com (unknown [218.94.48.178])
- by smtp8 (Coremail) with SMTP id DMCowACXG5hNy11gTlIqWg--.38911S2;
- Fri, 26 Mar 2021 19:53:52 +0800 (CST)
-From: dingsenjie@163.com
-To: mpe@ellerman.id.au,
-	benh@kernel.crashing.org,
-	paulus@samba.org
-Subject: [PATCH] powerpc: powernv: Remove unneeded variable: "rc"
-Date: Fri, 26 Mar 2021 19:53:56 +0800
-Message-Id: <20210326115356.12444-1-dingsenjie@163.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DMCowACXG5hNy11gTlIqWg--.38911S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Gw1kJw4kAFykWr1UAw4UXFb_yoWkuFg_Jw
- 48t3yYkrs7trWqy3s8Cw1fXryDA39agr1Utr1aga1akrnxKasxGrWDury3ZayxXr1jyFWD
- GFn8GrZ0kFyxAjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8imRUUUUUU==
-X-Originating-IP: [218.94.48.178]
-X-CM-SenderInfo: 5glqw25hqmxvi6rwjhhfrp/1tbiThFhyFUDIa1M6gAAsK
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6NWV3sZ3z2yxT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 00:44:50 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4F6NWL3t9Tz9tyyW;
+ Fri, 26 Mar 2021 14:44:46 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id kIulHNAnYVH6; Fri, 26 Mar 2021 14:44:46 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F6NWL2lGwz9tyyV;
+ Fri, 26 Mar 2021 14:44:46 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 33E0E8B8C9;
+ Fri, 26 Mar 2021 14:44:47 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 5JtG0C39F4IQ; Fri, 26 Mar 2021 14:44:47 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C055F8B8C7;
+ Fri, 26 Mar 2021 14:44:46 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 31C9867611; Fri, 26 Mar 2021 13:44:47 +0000 (UTC)
+Message-Id: <cover.1616765869.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 00/17] Implement GENERIC_CMDLINE
+To: will@kernel.org, danielwa@cisco.com, robh@kernel.org,
+ daniel@gimpelevich.san-francisco.ca.us
+Date: Fri, 26 Mar 2021 13:44:47 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,46 +56,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dingsenjie <dingsenjie@yulong.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, devicetree@vger.kernel.org,
+ microblaze <monstr@monstr.eu>, linux-xtensa@linux-xtensa.org,
+ linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, nios2 <ley.foon.tan@intel.com>,
+ linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: dingsenjie <dingsenjie@yulong.com>
+The purpose of this series is to improve and enhance the
+handling of kernel boot arguments.
 
-Remove unneeded variable: "rc".
+It is first focussed on powerpc but also extends the capability
+for other arches.
 
-Signed-off-by: dingsenjie <dingsenjie@yulong.com>
----
- arch/powerpc/platforms/powernv/opal-prd.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+This is based on suggestion from Daniel Walker <danielwa@cisco.com>
 
-diff --git a/arch/powerpc/platforms/powernv/opal-prd.c b/arch/powerpc/platforms/powernv/opal-prd.c
-index deddaeb..a191f4c 100644
---- a/arch/powerpc/platforms/powernv/opal-prd.c
-+++ b/arch/powerpc/platforms/powernv/opal-prd.c
-@@ -105,7 +105,6 @@ static int opal_prd_mmap(struct file *file, struct vm_area_struct *vma)
- {
- 	size_t addr, size;
- 	pgprot_t page_prot;
--	int rc;
- 
- 	pr_devel("opal_prd_mmap(0x%016lx, 0x%016lx, 0x%lx, 0x%lx)\n",
- 			vma->vm_start, vma->vm_end, vma->vm_pgoff,
-@@ -121,10 +120,8 @@ static int opal_prd_mmap(struct file *file, struct vm_area_struct *vma)
- 	page_prot = phys_mem_access_prot(file, vma->vm_pgoff,
- 					 size, vma->vm_page_prot);
- 
--	rc = remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff, size,
-+	return remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff, size,
- 				page_prot);
--
--	return rc;
- }
- 
- static bool opal_msg_queue_empty(void)
+Main changes in V3:
+- Also accept destination equal to source in cmdline_build() by setting a tmp buffer in __initdata. Powerpc provides different source and destination and call __cmdline_build() directly.
+- Taken comments received from Will and Rob
+- Converted all architectures (Only tested on powerpc)
+
+Christophe Leroy (17):
+  cmdline: Add generic function to build command line.
+  drivers: of: use cmdline building function
+  cmdline: Gives architectures opportunity to use generically defined
+    boot cmdline manipulation
+  powerpc: Convert to GENERIC_CMDLINE
+  arm: Convert to GENERIC_CMDLINE
+  arm64: Convert to GENERIC_CMDLINE
+  hexagon: Convert to GENERIC_CMDLINE
+  microblaze: Convert to GENERIC_CMDLINE
+  nios2: Convert to GENERIC_CMDLINE
+  openrisc: Convert to GENERIC_CMDLINE
+  riscv: Convert to GENERIC_CMDLINE
+  sh: Convert to GENERIC_CMDLINE
+  sparc: Convert to GENERIC_CMDLINE
+  xtensa: Convert to GENERIC_CMDLINE
+  x86: Convert to GENERIC_CMDLINE
+  mips: Convert to GENERIC_CMDLINE
+  cmdline: Remove CONFIG_CMDLINE_EXTEND
+
+ arch/arm/Kconfig                            | 38 +-------------
+ arch/arm/kernel/atags_parse.c               | 15 ++----
+ arch/arm64/Kconfig                          | 33 +-----------
+ arch/arm64/kernel/idreg-override.c          |  9 ++--
+ arch/hexagon/Kconfig                        | 11 +---
+ arch/hexagon/kernel/setup.c                 | 10 +---
+ arch/microblaze/Kconfig                     | 24 +--------
+ arch/microblaze/configs/mmu_defconfig       |  2 +-
+ arch/microblaze/kernel/head.S               |  4 +-
+ arch/mips/Kconfig                           |  1 +
+ arch/mips/Kconfig.debug                     | 44 ----------------
+ arch/mips/configs/ar7_defconfig             |  1 -
+ arch/mips/configs/bcm47xx_defconfig         |  1 -
+ arch/mips/configs/bcm63xx_defconfig         |  1 -
+ arch/mips/configs/bmips_be_defconfig        |  1 -
+ arch/mips/configs/bmips_stb_defconfig       |  1 -
+ arch/mips/configs/capcella_defconfig        |  1 -
+ arch/mips/configs/ci20_defconfig            |  1 -
+ arch/mips/configs/cu1000-neo_defconfig      |  1 -
+ arch/mips/configs/cu1830-neo_defconfig      |  1 -
+ arch/mips/configs/e55_defconfig             |  1 -
+ arch/mips/configs/generic_defconfig         |  1 -
+ arch/mips/configs/gpr_defconfig             |  1 -
+ arch/mips/configs/loongson3_defconfig       |  1 -
+ arch/mips/configs/mpc30x_defconfig          |  1 -
+ arch/mips/configs/rt305x_defconfig          |  1 -
+ arch/mips/configs/tb0219_defconfig          |  1 -
+ arch/mips/configs/tb0226_defconfig          |  1 -
+ arch/mips/configs/tb0287_defconfig          |  1 -
+ arch/mips/configs/workpad_defconfig         |  1 -
+ arch/mips/configs/xway_defconfig            |  1 -
+ arch/mips/kernel/relocate.c                 |  4 +-
+ arch/mips/kernel/setup.c                    | 40 +--------------
+ arch/mips/pic32/pic32mzda/early_console.c   |  2 +-
+ arch/mips/pic32/pic32mzda/init.c            |  2 -
+ arch/nios2/Kconfig                          | 24 +--------
+ arch/nios2/kernel/setup.c                   | 13 ++---
+ arch/openrisc/Kconfig                       | 10 +---
+ arch/powerpc/Kconfig                        | 37 +------------
+ arch/powerpc/kernel/prom_init.c             | 17 +++---
+ arch/riscv/Kconfig                          | 44 +---------------
+ arch/riscv/kernel/setup.c                   |  5 +-
+ arch/sh/Kconfig                             | 30 +----------
+ arch/sh/configs/ap325rxa_defconfig          |  2 +-
+ arch/sh/configs/dreamcast_defconfig         |  2 +-
+ arch/sh/configs/ecovec24-romimage_defconfig |  2 +-
+ arch/sh/configs/ecovec24_defconfig          |  2 +-
+ arch/sh/configs/edosk7760_defconfig         |  2 +-
+ arch/sh/configs/espt_defconfig              |  2 +-
+ arch/sh/configs/j2_defconfig                |  2 +-
+ arch/sh/configs/kfr2r09-romimage_defconfig  |  2 +-
+ arch/sh/configs/kfr2r09_defconfig           |  2 +-
+ arch/sh/configs/lboxre2_defconfig           |  2 +-
+ arch/sh/configs/microdev_defconfig          |  2 +-
+ arch/sh/configs/migor_defconfig             |  2 +-
+ arch/sh/configs/polaris_defconfig           |  2 +-
+ arch/sh/configs/r7780mp_defconfig           |  2 +-
+ arch/sh/configs/r7785rp_defconfig           |  2 +-
+ arch/sh/configs/rsk7201_defconfig           |  2 +-
+ arch/sh/configs/rsk7203_defconfig           |  2 +-
+ arch/sh/configs/rts7751r2d1_defconfig       |  2 +-
+ arch/sh/configs/rts7751r2dplus_defconfig    |  2 +-
+ arch/sh/configs/sdk7780_defconfig           |  2 +-
+ arch/sh/configs/sdk7786_defconfig           |  2 +-
+ arch/sh/configs/se7206_defconfig            |  2 +-
+ arch/sh/configs/se7343_defconfig            |  2 +-
+ arch/sh/configs/se7712_defconfig            |  2 +-
+ arch/sh/configs/se7721_defconfig            |  2 +-
+ arch/sh/configs/se7724_defconfig            |  2 +-
+ arch/sh/configs/se7751_defconfig            |  2 +-
+ arch/sh/configs/se7780_defconfig            |  2 +-
+ arch/sh/configs/sh03_defconfig              |  2 +-
+ arch/sh/configs/sh2007_defconfig            |  2 +-
+ arch/sh/configs/sh7757lcr_defconfig         |  2 +-
+ arch/sh/configs/sh7763rdp_defconfig         |  2 +-
+ arch/sh/configs/shmin_defconfig             |  2 +-
+ arch/sh/configs/shx3_defconfig              |  2 +-
+ arch/sh/configs/titan_defconfig             |  2 +-
+ arch/sh/configs/ul2_defconfig               |  2 +-
+ arch/sh/kernel/setup.c                      | 11 +---
+ arch/sparc/Kconfig                          | 18 +------
+ arch/sparc/prom/bootstr_64.c                |  2 +-
+ arch/x86/Kconfig                            | 45 +---------------
+ arch/x86/kernel/setup.c                     | 17 +-----
+ arch/xtensa/Kconfig                         | 15 +-----
+ arch/xtensa/configs/audio_kc705_defconfig   |  1 -
+ arch/xtensa/configs/common_defconfig        |  1 -
+ arch/xtensa/configs/generic_kc705_defconfig |  1 -
+ arch/xtensa/configs/iss_defconfig           |  1 -
+ arch/xtensa/configs/nommu_kc705_defconfig   |  1 -
+ arch/xtensa/configs/smp_lx200_defconfig     |  1 -
+ arch/xtensa/configs/virt_defconfig          |  1 -
+ arch/xtensa/configs/xip_kc705_defconfig     |  1 -
+ arch/xtensa/kernel/setup.c                  | 10 +---
+ drivers/firmware/efi/libstub/x86-stub.c     | 26 +++++-----
+ drivers/of/fdt.c                            | 23 ++-------
+ include/linux/cmdline.h                     | 57 +++++++++++++++++++++
+ init/Kconfig                                | 46 +++++++++++++++++
+ 98 files changed, 209 insertions(+), 580 deletions(-)
+ create mode 100644 include/linux/cmdline.h
+
 -- 
-1.9.1
-
+2.25.0
 
