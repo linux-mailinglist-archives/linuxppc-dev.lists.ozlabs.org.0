@@ -2,36 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0E434A22E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 07:50:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF5334A233
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 07:54:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6CK44jsnz30B4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 17:50:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6CQL4228z3c3G
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 17:54:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com;
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com;
  envelope-from=zhengyongjun3@huawei.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 919 seconds by postgrey-1.36 at boromir;
- Fri, 26 Mar 2021 17:49:56 AEDT
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6CJh5NYSz2yR1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 17:49:55 +1100 (AEDT)
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F6Bvq71pKzNqWc;
- Fri, 26 Mar 2021 14:31:51 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6CQ20Bm3z2xxh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 17:54:33 +1100 (AEDT)
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F6Bvr3sWsznWnR;
+ Fri, 26 Mar 2021 14:31:52 +0800 (CST)
 Received: from localhost.localdomain (10.175.104.82) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.498.0; Fri, 26 Mar 2021 14:34:15 +0800
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.498.0; Fri, 26 Mar 2021 14:34:18 +0800
 From: Zheng Yongjun <zhengyongjun3@huawei.com>
 To: <zhengyongjun3@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>, "Shuah
  Khan" <shuah@kernel.org>
-Subject: [PATCH -next] selftests/powerpc: Remove duplicated include from
- tm-poison.c
-Date: Fri, 26 Mar 2021 14:48:08 +0800
-Message-ID: <20210326064808.3262568-1-zhengyongjun3@huawei.com>
+Subject: [PATCH -next] treewide: Remove duplicated include from
+ tm-vmx-unavail.c
+Date: Fri, 26 Mar 2021 14:48:12 +0800
+Message-ID: <20210326064812.3262659-1-zhengyongjun3@huawei.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="ISO-8859-1"
@@ -60,19 +58,19 @@ Remove duplicated include.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 ---
- tools/testing/selftests/powerpc/tm/tm-poison.c | 1 -
+ tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/powerpc/tm/tm-poison.c b/tools/testing/selftests/powerpc/tm/tm-poison.c
-index 29e5f26af7b9..27c083a03d1f 100644
---- a/tools/testing/selftests/powerpc/tm/tm-poison.c
-+++ b/tools/testing/selftests/powerpc/tm/tm-poison.c
-@@ -20,7 +20,6 @@
- #include <sched.h>
- #include <sys/types.h>
- #include <signal.h>
--#include <inttypes.h>
+diff --git a/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c b/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c
+index e2a0c07e8362..9ef37a9836ac 100644
+--- a/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c
++++ b/tools/testing/selftests/powerpc/tm/tm-vmx-unavail.c
+@@ -17,7 +17,6 @@
+ #include <pthread.h>
+ #include <sys/mman.h>
+ #include <unistd.h>
+-#include <pthread.h>
  
  #include "tm.h"
- 
+ #include "utils.h"
 
