@@ -1,89 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F166734AD21
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 18:12:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E292734AE42
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 19:10:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6T6m755Jz3c6F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 04:12:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6VPg6Bm2z3c6J
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 05:10:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ByeSOipR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=rZ5aSSs1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::433;
- helo=mail-wr1-x433.google.com; envelope-from=0x7f454c46@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b30;
+ helo=mail-yb1-xb30.google.com; envelope-from=andrii.nakryiko@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ByeSOipR; dkim-atps=neutral
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com
- [IPv6:2a00:1450:4864:20::433])
+ header.s=20161025 header.b=rZ5aSSs1; dkim-atps=neutral
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com
+ [IPv6:2607:f8b0:4864:20::b30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6T6L3SW0z3btb
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 04:11:53 +1100 (AEDT)
-Received: by mail-wr1-x433.google.com with SMTP id x13so6327877wrs.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 10:11:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6VPB3s7Pz30CK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 05:09:48 +1100 (AEDT)
+Received: by mail-yb1-xb30.google.com with SMTP id o66so6693049ybg.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 11:09:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=H2sIzh/TsuZe/gkJCNiA0CvcXYHRyrIvEdU4dWur6to=;
- b=ByeSOipRbzayJybWf40NjnYhH28cuKft3+B40MC1n2NZe1Drjy66oyqeGpTGALRWpx
- Kl6v/KhDLveC4Ua2qsWejX7uC2qG96aICwXnKJGX90RT1KUwSwt6WlCgmAZC25Kl1zSF
- 5Jtq5rjCkdBufjORpYWq9MOXTjEgf0LPwGxsdse9/ePpGHXKQS6bSFA5WmMd/e32KGe1
- bWlzLqdQOEJtbJdPK83QL+NkXBGWxQC1YR+nzTEthyoSr8Nw6lwbWbCjHPjsEMQv4Qwj
- A6pTbhPA4MZWGL1e7GRkAOB18BE25h8BHgfbx/Y5B2X68tP2Vgwd/ifVqDvLc99pmFB8
- HW4g==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=ZhDceGf5EPwxqOmSXw7vSwKwAN2oE3kPh5APLhrkFoc=;
+ b=rZ5aSSs1FMJf5GOkwaIlzevMhDtIv7GWGcyp/tMZriePwT5YUyIaPyEGKp2gaPLE2l
+ QJNagORWX24s9kDaMB8RWeFqZ5FQpu9tN4mO3Cg3A2kqJfgu7uX822GyYYNo9JvDZjJz
+ 6JVN6mF8zW4m8a95krBY959jji1or981S1VIn1uGOnvq1aJ58VLwtr9d2MNIQ/k6gJbs
+ fFNWCW9ZEtoxN+71hkrz07cWEKdhifXdRVS/QYRojYXy7/stfTVT/8CHCRt/L6htJX8g
+ K0as0xRGm/ajFmHbeGvhACS4PRdWsX0Mhr+a6DmJreZzz9nt8AMShYtp6kfrMopsZ1Km
+ WaOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=H2sIzh/TsuZe/gkJCNiA0CvcXYHRyrIvEdU4dWur6to=;
- b=d8IDSVM2f0PWlhcJJAP8uZmXsFii2dj68kagOXdjQF1Ye80mHQ4eIq+bQLosmH3khG
- BnmxxGcQ9b1DBk5ljKodLXyzZLjCBygyIHgmJd0ShB/ep8DayZZB4ozdqBzbPaBfOro+
- JpURCJaplUXec4Lq6PbB9i55TEHo0qS1ZQlCEYInzDOWrImeihlEe4BG3CVGOEM2Uptu
- 8wco2mRyRRUHWBCdN24Y93ZrRmR2yypbE4OAA0ICm07zy5JTCc6hRnaKpJfGDwkl0qgm
- KSqzdbQnRjv/Hcb+PqjgYQ3ZZZifz3mKedCybAC3Nw8eOD5T7N06Nlp3b+dkGogin8Cn
- +ZVg==
-X-Gm-Message-State: AOAM531lTvLO9SFpIuksX0TTYV87NinhEdNSq1XxL6BMlBFfKna3WjZf
- kfvCHvM/X05gLeRQArUQA7o=
-X-Google-Smtp-Source: ABdhPJz42Js9k5rug/0miCJMNcXDdI6ZNO0wtdk4E/qGMYNflnq5GqOyczi8MiWzq5rYa/O924Nxug==
-X-Received: by 2002:a05:6000:2c8:: with SMTP id
- o8mr15650338wry.407.1616778710531; 
- Fri, 26 Mar 2021 10:11:50 -0700 (PDT)
-Received: from ?IPv6:2a02:8084:e84:2480:228:f8ff:fe6f:83a8?
- ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
- by smtp.gmail.com with ESMTPSA id u4sm13945346wrm.24.2021.03.26.10.11.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Mar 2021 10:11:50 -0700 (PDT)
-Subject: Re: VDSO ELF header
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>, Laurent Dufour <ldufour@linux.ibm.com>
-References: <c45ae4f8-1cbc-c687-b6a2-9a431fafc85c@linux.ibm.com>
- <9366c258-127f-f105-abd1-6baa9a6745c5@csgroup.eu>
- <5b03e966-2cfd-5f0c-c48d-dea5e0001833@linux.ibm.com>
- <30c51951-332b-7aa8-13ba-44a0b6ae3498@linux.ibm.com>
- <87blb6gpkj.fsf@mpe.ellerman.id.au>
- <c7e0568f-786b-2c1c-fb6d-cd804bc1b539@csgroup.eu>
- <e8c2b4b5-f0b6-945e-4a42-c2308dd719a2@gmail.com>
- <3ce8811a-9216-6164-cdf2-974b13e400d3@csgroup.eu>
- <edf2547f-4705-764b-dadd-3ec1d2a6b8b3@gmail.com>
- <4904769a-be42-cdd2-1d97-8b1889f7f723@csgroup.eu>
-From: Dmitry Safonov <0x7f454c46@gmail.com>
-Message-ID: <46e49770-04ee-2455-f2f7-b3915ceea38a@gmail.com>
-Date: Fri, 26 Mar 2021 17:11:49 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=ZhDceGf5EPwxqOmSXw7vSwKwAN2oE3kPh5APLhrkFoc=;
+ b=XHmFbHEFUGzFF8wPx4zDDGx6/tRYPE0mziNoeEuLkZ2Q5GzSHf4sVts3Bqa/SBTv4K
+ KaMsxYb6/1P7RVb5wAXdDcZ+ELxcW+HoxnhCiL7kFDWsLALx77BByhGO/bLBTB/7XxNq
+ lUmyHaLFFAtHmypjE9/adMxTYh3DQFd1NnVNLhEXJZaHa+ePBTPBfYqRqPVBpImiJmlt
+ u5N78RHai2lZdeSHQ7VoLPivT5GXNDvmofLTVO6F+OUFrxL5/uNYI7H3ge5GSZK2xY+x
+ GRLXqmPBwhOUJxAistuZ1c1DOK62stNaA8cDd9MioU5rDWkA2gWXIfP/enXKefrPjX3B
+ Ki7w==
+X-Gm-Message-State: AOAM530HE0+S1mGg2LdI94JiNNueyuvdM+lTpYzHQkC8YWQIZNARkcB4
+ O3/NH49f2nRD7t1HxWpUpGs3pytcB+QeEaYcIYo=
+X-Google-Smtp-Source: ABdhPJwZWcSa7JQvBA9hqNB5lZjLdckzgvKVymMhVosuDluUt0M9JwkAjau2sBLidm357xNSn5TXDUV43T3H05sAiIo=
+X-Received: by 2002:a25:ab03:: with SMTP id u3mr15164570ybi.347.1616782181703; 
+ Fri, 26 Mar 2021 11:09:41 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <4904769a-be42-cdd2-1d97-8b1889f7f723@csgroup.eu>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <cover.1616430991.git.christophe.leroy@csgroup.eu>
+ <CAEf4BzZjNK_La1t5FGyie02FCABBieZJod49rW4=WtMs7ELLSw@mail.gmail.com>
+ <86028d25-c3fe-3765-f7c3-12448523405a@csgroup.eu>
+In-Reply-To: <86028d25-c3fe-3765-f7c3-12448523405a@csgroup.eu>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Fri, 26 Mar 2021 11:09:30 -0700
+Message-ID: <CAEf4BzaNh2hDmY+9CZWTDOF2gXtPcs9iGYj6PADgH4RuUOPsKQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/8] Implement EBPF on powerpc32
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,20 +77,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>,
+ john fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>, naveen.n.rao@linux.ibm.com,
+ Networking <netdev@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
+ sandipan@linux.ibm.com, KP Singh <kpsingh@chromium.org>,
+ Yonghong Song <yhs@fb.com>, bpf <bpf@vger.kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Martin Lau <kafai@fb.com>,
+ open list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/26/21 5:07 PM, Christophe Leroy wrote:
-> No, the problem is that user access has to be allowed for the flush()
-> 
-> A hacky solution would be to call user_access_begin() , will test that
-> later
+On Fri, Mar 26, 2021 at 7:42 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 22/03/2021 =C3=A0 18:53, Andrii Nakryiko a =C3=A9crit :
+> > On Mon, Mar 22, 2021 at 9:37 AM Christophe Leroy
+> > <christophe.leroy@csgroup.eu> wrote:
+> >>
+> >> This series implements extended BPF on powerpc32. For the implementati=
+on
+> >> details, see the patch before the last.
+> >>
+> >> The following operations are not implemented:
+> >>
+> >>                  case BPF_ALU64 | BPF_DIV | BPF_X: /* dst /=3D src */
+> >>                  case BPF_ALU64 | BPF_MOD | BPF_X: /* dst %=3D src */
+> >>                  case BPF_STX | BPF_XADD | BPF_DW: /* *(u64 *)(dst + o=
+ff) +=3D src */
+> >>
+> >> The following operations are only implemented for power of two constan=
+ts:
+> >>
+> >>                  case BPF_ALU64 | BPF_MOD | BPF_K: /* dst %=3D imm */
+> >>                  case BPF_ALU64 | BPF_DIV | BPF_K: /* dst /=3D imm */
+> >>
+> >> Below are the results on a powerpc 885:
+> >> - with the patch, with and without bpf_jit_enable
+> >> - without the patch, with bpf_jit_enable (ie with CBPF)
+> >>
+> >> With the patch, with bpf_jit_enable =3D 1 :
+> >>
+> >> [   60.826529] test_bpf: Summary: 378 PASSED, 0 FAILED, [354/366 JIT'e=
+d]
+> >> [   60.832505] test_bpf: test_skb_segment: Summary: 2 PASSED, 0 FAILED
+> >>
+> >> With the patch, with bpf_jit_enable =3D 0 :
+> >>
+> >> [   75.186337] test_bpf: Summary: 378 PASSED, 0 FAILED, [0/366 JIT'ed]
+> >> [   75.192325] test_bpf: test_skb_segment: Summary: 2 PASSED, 0 FAILED
+> >>
+> >> Without the patch, with bpf_jit_enable =3D 1 :
+> >>
+> >> [  186.112429] test_bpf: Summary: 371 PASSED, 7 FAILED, [119/366 JIT'e=
+d]
+> >>
+> >> Couldn't run test_progs because it doesn't build (clang 11 crashes dur=
+ing the build).
+> >
+> > Can you please try checking out the latest clang from sources and use
+> > that one instead?
+>
+> The crash is fixed, it builds one step more, then fails at:
+>
+> [root@PC-server-ldb bpf]# make CROSS_COMPILE=3Dppc-linux- ARCH=3Dpowerpc =
+V=3D1
+> /root/gen_ldb/linux-powerpc/tools/testing/selftests/bpf/host-tools/sbin/b=
+pftool gen skeleton
+> /root/gen_ldb/linux-powerpc/tools/testing/selftests/bpf/atomic_bounds.o >
+> /root/gen_ldb/linux-powerpc/tools/testing/selftests/bpf/atomic_bounds.ske=
+l.h
+> libbpf: elf: endianness mismatch in atomic_bounds.
+> Error: failed to open BPF object file: Endian mismatch
+>
+> I'm cross-building on x86 for powerpc/32
 
-Yeah, cool.
+yeah, I'm not sure selftests/bpf supports cross-compiling. bpftool got
+some patches recently to enable cross-compiling, but probably not
+selftests/bpf.
 
-Will it be fine if I send the vvar patch with your Tested-by?
-
-Thanks,
-            Dmitry
+>
+> [root@PC-server-ldb bpf]# file atomic_bounds.o
+> atomic_bounds.o: ELF 64-bit MSB relocatable, eBPF, version 1 (SYSV), with=
+ debug_info, not stripped
+>
+> Christophe
