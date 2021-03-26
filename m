@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E1534AAEA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 16:05:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E563634AB21
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 16:13:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6QJb60Fzz3cB3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 02:05:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6QTJ6f6rz3c4W
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 02:13:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.17.24; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.131; helo=mout.kundenserver.de;
  envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6QJ669Lvz3bvr
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 02:05:10 +1100 (AEDT)
-Received: from mail-oi1-f169.google.com ([209.85.167.169]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1N8XLj-1llH0q3GW9-014XSu for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar
- 2021 16:05:06 +0100
-Received: by mail-oi1-f169.google.com with SMTP id n140so5968434oig.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 08:05:04 -0700 (PDT)
-X-Gm-Message-State: AOAM533cUnNUEKvSm2GoEIHE/01cWWfsjSvZ1pcB4jyjTbOZFalhu5PB
- wECA8hMQdlJnZYvgRG3oSpwIbtAqaNXS9uvnoEs=
-X-Google-Smtp-Source: ABdhPJxkabhICNjVimKONzi11M/Se4ShvOLHDXtHqNvGZV2LWEfIbqRfkSQLV++Q5maH4NbCwdiaxdlkbDHuJr8w0IQ=
-X-Received: by 2002:a05:6808:313:: with SMTP id
- i19mr9838151oie.67.1616771103242; 
- Fri, 26 Mar 2021 08:05:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6QSz3LRmz30Bp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 02:12:49 +1100 (AEDT)
+Received: from mail-oo1-f52.google.com ([209.85.161.52]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MfYHQ-1lsF4Y0BpI-00g0DN for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar
+ 2021 16:12:46 +0100
+Received: by mail-oo1-f52.google.com with SMTP id
+ r17-20020a4acb110000b02901b657f28cdcso1368265ooq.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 08:12:44 -0700 (PDT)
+X-Gm-Message-State: AOAM532Gp81auAoQbbFqGAsLyi5k5zdkUexOkSG+AeXdis/ZJcklAzjr
+ AyUO15fB/okvVAWye4DyaEK8kdEt41ESlFy9w68=
+X-Google-Smtp-Source: ABdhPJyncRM6kyqeo61SxrePQvXeSUHXpMpeR3setGvzuR1f3RkPXPWDzfhUQ5b18mmh4AOwFayrXC4U1BBAx3fFL7s=
+X-Received: by 2002:a4a:304a:: with SMTP id z10mr11801529ooz.26.1616771563972; 
+ Fri, 26 Mar 2021 08:12:43 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210326143831.1550030-1-hch@lst.de>
- <20210326143831.1550030-2-hch@lst.de>
-In-Reply-To: <20210326143831.1550030-2-hch@lst.de>
+ <20210326143831.1550030-5-hch@lst.de>
+In-Reply-To: <20210326143831.1550030-5-hch@lst.de>
 From: Arnd Bergmann <arnd@arndb.de>
-Date: Fri, 26 Mar 2021 16:04:48 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1zGcjPXPhKiUVZOwocYFKNfSGSx-M_ZY1hytp1+xEt0g@mail.gmail.com>
-Message-ID: <CAK8P3a1zGcjPXPhKiUVZOwocYFKNfSGSx-M_ZY1hytp1+xEt0g@mail.gmail.com>
-Subject: Re: [PATCH 1/4] exec: remove do_execve
+Date: Fri, 26 Mar 2021 16:12:28 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3jQHHwxFw4DV5+c0Nu61TsxqL9vRoAga+yjz_U-iXxvw@mail.gmail.com>
+Message-ID: <CAK8P3a3jQHHwxFw4DV5+c0Nu61TsxqL9vRoAga+yjz_U-iXxvw@mail.gmail.com>
+Subject: Re: [PATCH 4/4] exec: move the call to getname_flags into do_execveat
 To: Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:M4F7FLYSB0mShYpDwcTVhqDPjE6l/xzZ9cdvoO6jgFJjZeOAFll
- 5czji7KBKx2+XaQxSnB9ULEw1Goo3g03tiVqdDkweDNYZIQSHGXwqvO2FqQPtzcbfwilCv5
- Q3sDoIsKuzLKCKMij/B5p+3pQ5N9W4c1B2Y5ZEwskTB5jyCgvgToRb/nxXkA/CXLW/w3K83
- LXZjhsCdGrHnnSg1IZAGA==
+X-Provags-ID: V03:K1:DbajlyCkUYy9vHuAb0o62XsbChwJIKDNoGR7cfPyGCpNYveUZSn
+ noB1YzdvJZ7Bu9ltRDz4e1R5Nd7gOP9PXoCmc1mQ6p6/JXshNMEMENnQVcNPJr6IUQM3pE9
+ 9gvhMlleZqjiz+b6gIOtNZiWj3H9HGbjN2Dbp/UaJfNf5VQ4WH1hj2F96PM3YOiGC6JlmVb
+ cTPZ3fc1qDSpP5Fpk5pyQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:rCJqDP4x+RE=:DknoFE7reHI9CoeCpesHHV
- LU3ruHZ8dc8JrNzeLjKvB81jbKRmznZ1XAyZWtDoC4Kueomqsb0TYJuRHLwrFFIODoCU+Lg86
- Z1Is9KiYdPCD4JL1NASdnYEgj7BRhdiE7Evpkc/M81VN5QwvtVO/9YSAsVtbKM1J6m6c98qW4
- s83aOGj3E/cABzCyC1M2qPXJSrAB+rN+K+x6/gLmm+XIyUr8wbpWxFzefiV5PFguFXjqe+NWr
- GxcXy3yBjnQn04YQ+80651+/3UNSIt4kL6uCOwC2ESMMpHf0h66CkARhdafynJU7cQpKT6ha2
- aQKtyCpCwehbBJ1ZI6TE4UUP7J8i4q8WJFb0lHcGLMp7SPIFNRgwNnm9Ymx5HlBgmNpVasSeC
- VhXoHDf1t0iMGkn4aYvovA/ldp/EzTWA7FqiFB2vZEgUdw+/yl6IYKBEAJkqdThulAUG3dBPB
- PnlCfUytVarggjdngbsKxgc+qcEPMCjfZN4BQnkhVDdtZfypBypIe+jZX4qGGQxUQRv5cSuSr
- x9hbD+YfRxTlHRb/FxkZzIAZWH2EMoQHebPdLAOMTriv7jGaP/j5eFkWtanaobLN9xzTSDfvV
- G2OUJn7EsphliQ4MS4cwyF9CzRcA56LOGg
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8Xg1rb4w/vs=:e9i1FO6DyB+lCeofN/owNz
+ mWkZtERIkhMdPw0WMoIOmbAHkw/EvuG54y/6OKTaTomD5FeZIkhRxO2QHflboYt6y6V1nx84y
+ 8iyWnMHFkUtrJOWfsfzxXuvkR1QGLfaGFlj2MLzISxri0m4KH73UnSeQxqgv4HTAMxSf0J1uX
+ mutrA4x5G08HJyTCikVjzyOpPeorTmaAhSVy0EGGqbfsMqFNJ2if4AN6dqjQEvUb5KIzxH/Yj
+ H4rGINjN5IPG3EiP/zolDSfzCxjBOaTkJcPcIBqGs3Xq3gBaE2BAXrphhnAmGS2xgN7IlzoAS
+ bHPmip2+wNcSTgtPJWcRmoG3T/szCNlVd5udPNuzITyA7sd5oD14Y6NXEPX2cIjZtNleuk09F
+ YjTyb/FdGRAzwWwPO14mByt3pZIJMvZyThANkjn7rLPm/2adDIZHJlQS46UEDAmiZAKRJ/tsR
+ SNCU8bKDZSYPpA6/oRcJ6LRJ6YyUmf1SVOO0Y6VfNtbIcPJj7IC9JA5Q5T/wPEpWJzsEtjFN9
+ 8nTFAzdVloNv6eK5wnYYZSlnmjhxBakqu/br6pmNONHYfKJc8BXdOYMcFJBrb0XLt5V9V4k9F
+ 3GPWNVBzMk4yvGP9Y2kFGpI/BQm2zlLJej
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,8 +87,20 @@ Sender: "Linuxppc-dev"
 
 On Fri, Mar 26, 2021 at 3:38 PM Christoph Hellwig <hch@lst.de> wrote:
 >
-> Just call do_execveat instead.
+> Remove the duplicated copying of the pathname into the common helper.
 >
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
+
+Looks correct, but
+
+> -static int do_execveat(int fd, struct filename *filename,
+> +static int do_execveat(int fd, const char __user *pathname,
+>                 const char __user *const __user *argv,
+>                 const char __user *const __user *envp, int flags)
+
+Maybe rename this to ksys_execveat() for consistency now? I think that
+is the current trend for functions that are essentially just the syscall.
+
+With or without that change
 
 Reviewed-by: Arnd Bergmann <arnd@arndb.de>
