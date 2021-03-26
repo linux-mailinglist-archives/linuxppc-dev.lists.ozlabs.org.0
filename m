@@ -2,49 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565E734A558
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 11:12:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A86434A5C8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 11:47:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6HpM2fs7z3c1j
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 21:12:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F6JZL3zgcz3bvL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 21:47:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kObWXJ3X;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CvJWxrHN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=kObWXJ3X; 
+ header.a=rsa-sha256 header.s=201909 header.b=CvJWxrHN; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6Hnx179fz2yxh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 21:12:04 +1100 (AEDT)
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F6Hnw1Z1lz9sWP; Fri, 26 Mar 2021 21:12:04 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6JYy234xz3bPH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 21:46:45 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4F6JYs0Q1hz9s1l;
+ Fri, 26 Mar 2021 21:46:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1616753524;
- bh=GUlHzL5n9whpu6Hf7LxDdPjQ1vuGmBimzHPNq4r/5Cc=;
- h=From:To:Subject:Date:From;
- b=kObWXJ3Xbv8h7C97A5v8jTHaQvvasw0gQjwu2UoJpG/MgATMpVvwoo2bMFTRQmW5X
- Gv0UmSXqrGQbBRC+4PH3jAwPrBzTTQFp0ILDgB4MxaCGwDrkcOt0/HX5bvq0xLjNWy
- kc+ichLHA6EAiU3nDAR3q9nRniK9YPd/WWwZT1uOWub9o9HqOR4sje83dblqAK//0T
- Slj06EDw80pkVcufDDvSWSvqryqlGwDC2gTssqlq1VVxbSD7iTIXYMlwfYKmW8Hzl+
- F0TGiwBpDkgv2V3YOhPHd8aebBzammdTUB3VG/zeucuDnQokRSMG9pwyY8KTw6M29l
- 1XCXgX3nRDrhg==
+ s=201909; t=1616755601;
+ bh=doEUsCeV3X5i1gDBs4ejhTJ8hEzuHjNceYhqumx4I8c=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=CvJWxrHND/IQHrLjqzdxdAvO4vddm7fnbFKwD8Yt+QHkOiRNl4f41F/S16ky/DDAw
+ Wfet+kJFCHg1OZCQ2wFxqko8AoZnF2timySC6HlMMtL3ImyPrTba7l5hHHuacFZHGT
+ v+6T+6K/BZVIYLfRgAcDpA451OFwxy8Aim9ueb22uTpstDN/+edihMR6nyOvJsIJOe
+ q2PRrOhIH1h7LwuXTJI9UwX4Kx9w90MbYNoL3vFa5NR2wYkVfFRy2xWP8PPmNBHHH2
+ ZeFaflEgazK+Fht+MSVXDz9m7B4oMLUq0/hOlS+KI+lncnVB2Qxa9ZQ8XJgrUFrShS
+ 2Su0UEoA9jHvA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64: Move security code into security.c
-Date: Fri, 26 Mar 2021 21:12:01 +1100
-Message-Id: <20210326101201.1973552-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+To: Laurent Dufour <ldufour@linux.ibm.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Subject: Re: VDSO ELF header
+In-Reply-To: <30c51951-332b-7aa8-13ba-44a0b6ae3498@linux.ibm.com>
+References: <c45ae4f8-1cbc-c687-b6a2-9a431fafc85c@linux.ibm.com>
+ <9366c258-127f-f105-abd1-6baa9a6745c5@csgroup.eu>
+ <5b03e966-2cfd-5f0c-c48d-dea5e0001833@linux.ibm.com>
+ <30c51951-332b-7aa8-13ba-44a0b6ae3498@linux.ibm.com>
+Date: Fri, 26 Mar 2021 21:46:36 +1100
+Message-ID: <87blb6gpkj.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,596 +66,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the original spectre/meltdown mitigations were merged we put them
-in setup_64.c for lack of a better place.
+Laurent Dufour <ldufour@linux.ibm.com> writes:
+> Le 25/03/2021 =C3=A0 17:56, Laurent Dufour a =C3=A9crit=C2=A0:
+>> Le 25/03/2021 =C3=A0 17:46, Christophe Leroy a =C3=A9crit=C2=A0:
+>>> Le 25/03/2021 =C3=A0 17:11, Laurent Dufour a =C3=A9crit=C2=A0:
+>>>> Since v5.11 and the changes you made to the VDSO code, it no more expo=
+sing=20
+>>>> the ELF header at the beginning of the VDSO mapping in user space.
+>>>>
+>>>> This is confusing CRIU which is checking for this ELF header cookie=20
+>>>> (https://github.com/checkpoint-restore/criu/issues/1417).
+>>>
+>>> How does it do on other architectures ?
+>>=20
+>> Good question, I'll double check the CRIU code.
+>
+> On x86, there are 2 VDSO entries:
+> 7ffff7fcb000-7ffff7fce000 r--p 00000000 00:00 0                          =
+[vvar]
+> 7ffff7fce000-7ffff7fcf000 r-xp 00000000 00:00 0                          =
+[vdso]
+>
+> And the VDSO is starting with the ELF header.
+>
+>>>> I'm not an expert in loading and ELF part and reading the change you m=
+ade, I=20
+>>>> can't identify how this could work now as I'm expecting the loader to =
+need=20
+>>>> that ELF header to do the relocation.
+>>>
+>>> I think the loader is able to find it at the expected place.
+>>=20
+>> Actually, it seems the loader relies on the AUX vector AT_SYSINFO_EHDR. =
+I guess=20
+>> CRIU should do the same.
+>>=20
+>>>>
+>>>> =C2=A0From my investigation it seems that the first bytes of the VDSO =
+area are now=20
+>>>> the vdso_arch_data.
+>>>>
+>>>> Is the ELF header put somewhere else?
+>>>> How could the loader process the VDSO without that ELF header?
+>>>>
+>>>
+>>> Like most other architectures, we now have the data section as first pa=
+ge and=20
+>>> the text section follows. So you will likely find the elf header on the=
+ second=20
+>>> page.
+>
+> I'm wondering if the data section you're refering to is the vvar section =
+I can=20
+> see on x86.
 
-Since then we created security.c for some of the other mitigation
-related code. But it should all be in there.
+Many of the other architectures have separate vm_special_mapping's for
+the data page and the vdso binary, where the former is called "vvar".
 
-This sort of code movement can cause trouble for backports, but
-hopefully this code is relatively stable these days (famous last words).
+eg, s390:
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kernel/security.c | 261 ++++++++++++++++++++++++++++++++
- arch/powerpc/kernel/setup_64.c | 264 ---------------------------------
- 2 files changed, 261 insertions(+), 264 deletions(-)
+static struct vm_special_mapping vvar_mapping =3D {
+	.name =3D "[vvar]",
+	.fault =3D vvar_fault,
+};
 
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index e4e1a94ccf6a..287286ddf7dc 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -7,6 +7,7 @@
- #include <linux/cpu.h>
- #include <linux/kernel.h>
- #include <linux/device.h>
-+#include <linux/memblock.h>
- #include <linux/nospec.h>
- #include <linux/prctl.h>
- #include <linux/seq_buf.h>
-@@ -18,6 +19,7 @@
- #include <asm/setup.h>
- #include <asm/inst.h>
- 
-+#include "setup.h"
- 
- u64 powerpc_security_features __read_mostly = SEC_FTR_DEFAULT;
- 
-@@ -541,6 +543,178 @@ void setup_count_cache_flush(void)
- 	toggle_branch_cache_flush(enable);
- }
- 
-+static enum l1d_flush_type enabled_flush_types;
-+static void *l1d_flush_fallback_area;
-+static bool no_rfi_flush;
-+static bool no_entry_flush;
-+static bool no_uaccess_flush;
-+bool rfi_flush;
-+static bool entry_flush;
-+static bool uaccess_flush;
-+DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
-+EXPORT_SYMBOL(uaccess_flush_key);
-+
-+static int __init handle_no_rfi_flush(char *p)
-+{
-+	pr_info("rfi-flush: disabled on command line.");
-+	no_rfi_flush = true;
-+	return 0;
-+}
-+early_param("no_rfi_flush", handle_no_rfi_flush);
-+
-+static int __init handle_no_entry_flush(char *p)
-+{
-+	pr_info("entry-flush: disabled on command line.");
-+	no_entry_flush = true;
-+	return 0;
-+}
-+early_param("no_entry_flush", handle_no_entry_flush);
-+
-+static int __init handle_no_uaccess_flush(char *p)
-+{
-+	pr_info("uaccess-flush: disabled on command line.");
-+	no_uaccess_flush = true;
-+	return 0;
-+}
-+early_param("no_uaccess_flush", handle_no_uaccess_flush);
-+
-+/*
-+ * The RFI flush is not KPTI, but because users will see doco that says to use
-+ * nopti we hijack that option here to also disable the RFI flush.
-+ */
-+static int __init handle_no_pti(char *p)
-+{
-+	pr_info("rfi-flush: disabling due to 'nopti' on command line.\n");
-+	handle_no_rfi_flush(NULL);
-+	return 0;
-+}
-+early_param("nopti", handle_no_pti);
-+
-+static void do_nothing(void *unused)
-+{
-+	/*
-+	 * We don't need to do the flush explicitly, just enter+exit kernel is
-+	 * sufficient, the RFI exit handlers will do the right thing.
-+	 */
-+}
-+
-+void rfi_flush_enable(bool enable)
-+{
-+	if (enable) {
-+		do_rfi_flush_fixups(enabled_flush_types);
-+		on_each_cpu(do_nothing, NULL, 1);
-+	} else
-+		do_rfi_flush_fixups(L1D_FLUSH_NONE);
-+
-+	rfi_flush = enable;
-+}
-+
-+static void entry_flush_enable(bool enable)
-+{
-+	if (enable) {
-+		do_entry_flush_fixups(enabled_flush_types);
-+		on_each_cpu(do_nothing, NULL, 1);
-+	} else {
-+		do_entry_flush_fixups(L1D_FLUSH_NONE);
-+	}
-+
-+	entry_flush = enable;
-+}
-+
-+static void uaccess_flush_enable(bool enable)
-+{
-+	if (enable) {
-+		do_uaccess_flush_fixups(enabled_flush_types);
-+		static_branch_enable(&uaccess_flush_key);
-+		on_each_cpu(do_nothing, NULL, 1);
-+	} else {
-+		static_branch_disable(&uaccess_flush_key);
-+		do_uaccess_flush_fixups(L1D_FLUSH_NONE);
-+	}
-+
-+	uaccess_flush = enable;
-+}
-+
-+static void __ref init_fallback_flush(void)
-+{
-+	u64 l1d_size, limit;
-+	int cpu;
-+
-+	/* Only allocate the fallback flush area once (at boot time). */
-+	if (l1d_flush_fallback_area)
-+		return;
-+
-+	l1d_size = ppc64_caches.l1d.size;
-+
-+	/*
-+	 * If there is no d-cache-size property in the device tree, l1d_size
-+	 * could be zero. That leads to the loop in the asm wrapping around to
-+	 * 2^64-1, and then walking off the end of the fallback area and
-+	 * eventually causing a page fault which is fatal. Just default to
-+	 * something vaguely sane.
-+	 */
-+	if (!l1d_size)
-+		l1d_size = (64 * 1024);
-+
-+	limit = min(ppc64_bolted_size(), ppc64_rma_size);
-+
-+	/*
-+	 * Align to L1d size, and size it at 2x L1d size, to catch possible
-+	 * hardware prefetch runoff. We don't have a recipe for load patterns to
-+	 * reliably avoid the prefetcher.
-+	 */
-+	l1d_flush_fallback_area = memblock_alloc_try_nid(l1d_size * 2,
-+						l1d_size, MEMBLOCK_LOW_LIMIT,
-+						limit, NUMA_NO_NODE);
-+	if (!l1d_flush_fallback_area)
-+		panic("%s: Failed to allocate %llu bytes align=0x%llx max_addr=%pa\n",
-+		      __func__, l1d_size * 2, l1d_size, &limit);
-+
-+
-+	for_each_possible_cpu(cpu) {
-+		struct paca_struct *paca = paca_ptrs[cpu];
-+		paca->rfi_flush_fallback_area = l1d_flush_fallback_area;
-+		paca->l1d_flush_size = l1d_size;
-+	}
-+}
-+
-+void setup_rfi_flush(enum l1d_flush_type types, bool enable)
-+{
-+	if (types & L1D_FLUSH_FALLBACK) {
-+		pr_info("rfi-flush: fallback displacement flush available\n");
-+		init_fallback_flush();
-+	}
-+
-+	if (types & L1D_FLUSH_ORI)
-+		pr_info("rfi-flush: ori type flush available\n");
-+
-+	if (types & L1D_FLUSH_MTTRIG)
-+		pr_info("rfi-flush: mttrig type flush available\n");
-+
-+	enabled_flush_types = types;
-+
-+	if (!cpu_mitigations_off() && !no_rfi_flush)
-+		rfi_flush_enable(enable);
-+}
-+
-+void setup_entry_flush(bool enable)
-+{
-+	if (cpu_mitigations_off())
-+		return;
-+
-+	if (!no_entry_flush)
-+		entry_flush_enable(enable);
-+}
-+
-+void setup_uaccess_flush(bool enable)
-+{
-+	if (cpu_mitigations_off())
-+		return;
-+
-+	if (!no_uaccess_flush)
-+		uaccess_flush_enable(enable);
-+}
-+
- #ifdef CONFIG_DEBUG_FS
- static int count_cache_flush_set(void *data, u64 val)
- {
-@@ -579,5 +753,92 @@ static __init int count_cache_flush_debugfs_init(void)
- 	return 0;
- }
- device_initcall(count_cache_flush_debugfs_init);
-+
-+static int rfi_flush_set(void *data, u64 val)
-+{
-+	bool enable;
-+
-+	if (val == 1)
-+		enable = true;
-+	else if (val == 0)
-+		enable = false;
-+	else
-+		return -EINVAL;
-+
-+	/* Only do anything if we're changing state */
-+	if (enable != rfi_flush)
-+		rfi_flush_enable(enable);
-+
-+	return 0;
-+}
-+
-+static int rfi_flush_get(void *data, u64 *val)
-+{
-+	*val = rfi_flush ? 1 : 0;
-+	return 0;
-+}
-+
-+DEFINE_SIMPLE_ATTRIBUTE(fops_rfi_flush, rfi_flush_get, rfi_flush_set, "%llu\n");
-+
-+static int entry_flush_set(void *data, u64 val)
-+{
-+	bool enable;
-+
-+	if (val == 1)
-+		enable = true;
-+	else if (val == 0)
-+		enable = false;
-+	else
-+		return -EINVAL;
-+
-+	/* Only do anything if we're changing state */
-+	if (enable != entry_flush)
-+		entry_flush_enable(enable);
-+
-+	return 0;
-+}
-+
-+static int entry_flush_get(void *data, u64 *val)
-+{
-+	*val = entry_flush ? 1 : 0;
-+	return 0;
-+}
-+
-+DEFINE_SIMPLE_ATTRIBUTE(fops_entry_flush, entry_flush_get, entry_flush_set, "%llu\n");
-+
-+static int uaccess_flush_set(void *data, u64 val)
-+{
-+	bool enable;
-+
-+	if (val == 1)
-+		enable = true;
-+	else if (val == 0)
-+		enable = false;
-+	else
-+		return -EINVAL;
-+
-+	/* Only do anything if we're changing state */
-+	if (enable != uaccess_flush)
-+		uaccess_flush_enable(enable);
-+
-+	return 0;
-+}
-+
-+static int uaccess_flush_get(void *data, u64 *val)
-+{
-+	*val = uaccess_flush ? 1 : 0;
-+	return 0;
-+}
-+
-+DEFINE_SIMPLE_ATTRIBUTE(fops_uaccess_flush, uaccess_flush_get, uaccess_flush_set, "%llu\n");
-+
-+static __init int rfi_flush_debugfs_init(void)
-+{
-+	debugfs_create_file("rfi_flush", 0600, powerpc_debugfs_root, NULL, &fops_rfi_flush);
-+	debugfs_create_file("entry_flush", 0600, powerpc_debugfs_root, NULL, &fops_entry_flush);
-+	debugfs_create_file("uaccess_flush", 0600, powerpc_debugfs_root, NULL, &fops_uaccess_flush);
-+	return 0;
-+}
-+device_initcall(rfi_flush_debugfs_init);
- #endif /* CONFIG_DEBUG_FS */
- #endif /* CONFIG_PPC_BOOK3S_64 */
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index 04a31586f760..ccbfcc88758c 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -50,7 +50,6 @@
- #include <asm/setup.h>
- #include <asm/rtas.h>
- #include <asm/iommu.h>
--#include <asm/security_features.h>
- #include <asm/serial.h>
- #include <asm/cache.h>
- #include <asm/page.h>
-@@ -942,266 +941,3 @@ static int __init disable_hardlockup_detector(void)
- 	return 0;
- }
- early_initcall(disable_hardlockup_detector);
--
--#ifdef CONFIG_PPC_BOOK3S_64
--static enum l1d_flush_type enabled_flush_types;
--static void *l1d_flush_fallback_area;
--static bool no_rfi_flush;
--static bool no_entry_flush;
--static bool no_uaccess_flush;
--bool rfi_flush;
--static bool entry_flush;
--static bool uaccess_flush;
--DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
--EXPORT_SYMBOL(uaccess_flush_key);
--
--static int __init handle_no_rfi_flush(char *p)
--{
--	pr_info("rfi-flush: disabled on command line.");
--	no_rfi_flush = true;
--	return 0;
--}
--early_param("no_rfi_flush", handle_no_rfi_flush);
--
--static int __init handle_no_entry_flush(char *p)
--{
--	pr_info("entry-flush: disabled on command line.");
--	no_entry_flush = true;
--	return 0;
--}
--early_param("no_entry_flush", handle_no_entry_flush);
--
--static int __init handle_no_uaccess_flush(char *p)
--{
--	pr_info("uaccess-flush: disabled on command line.");
--	no_uaccess_flush = true;
--	return 0;
--}
--early_param("no_uaccess_flush", handle_no_uaccess_flush);
--
--/*
-- * The RFI flush is not KPTI, but because users will see doco that says to use
-- * nopti we hijack that option here to also disable the RFI flush.
-- */
--static int __init handle_no_pti(char *p)
--{
--	pr_info("rfi-flush: disabling due to 'nopti' on command line.\n");
--	handle_no_rfi_flush(NULL);
--	return 0;
--}
--early_param("nopti", handle_no_pti);
--
--static void do_nothing(void *unused)
--{
--	/*
--	 * We don't need to do the flush explicitly, just enter+exit kernel is
--	 * sufficient, the RFI exit handlers will do the right thing.
--	 */
--}
--
--void rfi_flush_enable(bool enable)
--{
--	if (enable) {
--		do_rfi_flush_fixups(enabled_flush_types);
--		on_each_cpu(do_nothing, NULL, 1);
--	} else
--		do_rfi_flush_fixups(L1D_FLUSH_NONE);
--
--	rfi_flush = enable;
--}
--
--static void entry_flush_enable(bool enable)
--{
--	if (enable) {
--		do_entry_flush_fixups(enabled_flush_types);
--		on_each_cpu(do_nothing, NULL, 1);
--	} else {
--		do_entry_flush_fixups(L1D_FLUSH_NONE);
--	}
--
--	entry_flush = enable;
--}
--
--static void uaccess_flush_enable(bool enable)
--{
--	if (enable) {
--		do_uaccess_flush_fixups(enabled_flush_types);
--		static_branch_enable(&uaccess_flush_key);
--		on_each_cpu(do_nothing, NULL, 1);
--	} else {
--		static_branch_disable(&uaccess_flush_key);
--		do_uaccess_flush_fixups(L1D_FLUSH_NONE);
--	}
--
--	uaccess_flush = enable;
--}
--
--static void __ref init_fallback_flush(void)
--{
--	u64 l1d_size, limit;
--	int cpu;
--
--	/* Only allocate the fallback flush area once (at boot time). */
--	if (l1d_flush_fallback_area)
--		return;
--
--	l1d_size = ppc64_caches.l1d.size;
--
--	/*
--	 * If there is no d-cache-size property in the device tree, l1d_size
--	 * could be zero. That leads to the loop in the asm wrapping around to
--	 * 2^64-1, and then walking off the end of the fallback area and
--	 * eventually causing a page fault which is fatal. Just default to
--	 * something vaguely sane.
--	 */
--	if (!l1d_size)
--		l1d_size = (64 * 1024);
--
--	limit = min(ppc64_bolted_size(), ppc64_rma_size);
--
--	/*
--	 * Align to L1d size, and size it at 2x L1d size, to catch possible
--	 * hardware prefetch runoff. We don't have a recipe for load patterns to
--	 * reliably avoid the prefetcher.
--	 */
--	l1d_flush_fallback_area = memblock_alloc_try_nid(l1d_size * 2,
--						l1d_size, MEMBLOCK_LOW_LIMIT,
--						limit, NUMA_NO_NODE);
--	if (!l1d_flush_fallback_area)
--		panic("%s: Failed to allocate %llu bytes align=0x%llx max_addr=%pa\n",
--		      __func__, l1d_size * 2, l1d_size, &limit);
--
--
--	for_each_possible_cpu(cpu) {
--		struct paca_struct *paca = paca_ptrs[cpu];
--		paca->rfi_flush_fallback_area = l1d_flush_fallback_area;
--		paca->l1d_flush_size = l1d_size;
--	}
--}
--
--void setup_rfi_flush(enum l1d_flush_type types, bool enable)
--{
--	if (types & L1D_FLUSH_FALLBACK) {
--		pr_info("rfi-flush: fallback displacement flush available\n");
--		init_fallback_flush();
--	}
--
--	if (types & L1D_FLUSH_ORI)
--		pr_info("rfi-flush: ori type flush available\n");
--
--	if (types & L1D_FLUSH_MTTRIG)
--		pr_info("rfi-flush: mttrig type flush available\n");
--
--	enabled_flush_types = types;
--
--	if (!cpu_mitigations_off() && !no_rfi_flush)
--		rfi_flush_enable(enable);
--}
--
--void setup_entry_flush(bool enable)
--{
--	if (cpu_mitigations_off())
--		return;
--
--	if (!no_entry_flush)
--		entry_flush_enable(enable);
--}
--
--void setup_uaccess_flush(bool enable)
--{
--	if (cpu_mitigations_off())
--		return;
--
--	if (!no_uaccess_flush)
--		uaccess_flush_enable(enable);
--}
--
--#ifdef CONFIG_DEBUG_FS
--static int rfi_flush_set(void *data, u64 val)
--{
--	bool enable;
--
--	if (val == 1)
--		enable = true;
--	else if (val == 0)
--		enable = false;
--	else
--		return -EINVAL;
--
--	/* Only do anything if we're changing state */
--	if (enable != rfi_flush)
--		rfi_flush_enable(enable);
--
--	return 0;
--}
--
--static int rfi_flush_get(void *data, u64 *val)
--{
--	*val = rfi_flush ? 1 : 0;
--	return 0;
--}
--
--DEFINE_SIMPLE_ATTRIBUTE(fops_rfi_flush, rfi_flush_get, rfi_flush_set, "%llu\n");
--
--static int entry_flush_set(void *data, u64 val)
--{
--	bool enable;
--
--	if (val == 1)
--		enable = true;
--	else if (val == 0)
--		enable = false;
--	else
--		return -EINVAL;
--
--	/* Only do anything if we're changing state */
--	if (enable != entry_flush)
--		entry_flush_enable(enable);
--
--	return 0;
--}
--
--static int entry_flush_get(void *data, u64 *val)
--{
--	*val = entry_flush ? 1 : 0;
--	return 0;
--}
--
--DEFINE_SIMPLE_ATTRIBUTE(fops_entry_flush, entry_flush_get, entry_flush_set, "%llu\n");
--
--static int uaccess_flush_set(void *data, u64 val)
--{
--	bool enable;
--
--	if (val == 1)
--		enable = true;
--	else if (val == 0)
--		enable = false;
--	else
--		return -EINVAL;
--
--	/* Only do anything if we're changing state */
--	if (enable != uaccess_flush)
--		uaccess_flush_enable(enable);
--
--	return 0;
--}
--
--static int uaccess_flush_get(void *data, u64 *val)
--{
--	*val = uaccess_flush ? 1 : 0;
--	return 0;
--}
--
--DEFINE_SIMPLE_ATTRIBUTE(fops_uaccess_flush, uaccess_flush_get, uaccess_flush_set, "%llu\n");
--
--static __init int rfi_flush_debugfs_init(void)
--{
--	debugfs_create_file("rfi_flush", 0600, powerpc_debugfs_root, NULL, &fops_rfi_flush);
--	debugfs_create_file("entry_flush", 0600, powerpc_debugfs_root, NULL, &fops_entry_flush);
--	debugfs_create_file("uaccess_flush", 0600, powerpc_debugfs_root, NULL, &fops_uaccess_flush);
--	return 0;
--}
--device_initcall(rfi_flush_debugfs_init);
--#endif
--#endif /* CONFIG_PPC_BOOK3S_64 */
--- 
-2.25.1
+static struct vm_special_mapping vdso_mapping =3D {
+	.name =3D "[vdso]",
+	.mremap =3D vdso_mremap,
+};
 
+
+I guess we probably should be doing that too.
+
+cheers
