@@ -2,64 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30150349CE6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 00:30:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 829D4349F4E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 03:05:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F61Yb0Htwz3br0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 10:30:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F650q14Ylz3c0N
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 13:05:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ays7TH2U;
+	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=GjUuWAup;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::52e;
+ helo=mail-pg1-x52e.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=ays7TH2U; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=GjUuWAup; dkim-atps=neutral
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
+ [IPv6:2607:f8b0:4864:20::52e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F61Y44Mmkz2yhF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 10:30:00 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7C53961A42
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 23:29:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1616714997;
- bh=1So/sDC1qFPREyegXHFcy7/VmRkzeq/fmOvYjRI/LkM=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=ays7TH2UlrPjYT2EhVKB9kfoPA5X87la04AArIOH/b/tNiVyioalV2c0dN8bICOoL
- 7VJtPJyCS9xna9DctRH8KPmi55ZNcoYl6ih9TRaL9tTERYwV06i8f7RN/lu6xMqld9
- e2l8Of2a/O3BXNaZZgjWqjkX0LVObsYgCGTtH+ZCr2VaXRrIItdTzF93vAGrcWB7z3
- Ewo07B3N41P6QiPOcmR96/pdF1SZpaj3tHf5XQrXzYYKBM0F01axjY0X5FWxjIwrJt
- cDmzFK//Fa80+AgrWa/Pscxi8j3sI2x8kQO05VvBQdTX/SWhTViEySY6kw5g9Bhi0R
- UVP/O02On5eaw==
-Received: by mail-ej1-f51.google.com with SMTP id ce10so5691208ejb.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 16:29:57 -0700 (PDT)
-X-Gm-Message-State: AOAM530HEKL0ztrleJRqKmMUo3BA6beTvVGWUCd1eL6GfrpwiXlr2bzs
- KcxFT5rqFJVT5U4sjmUy0Hw9w8YXHdJpuaIdhA==
-X-Google-Smtp-Source: ABdhPJyp90At2ic5zxJIDhb11Bg7kKraVHtULioYfIts4QYqWxOJiucuvniDhV6Uc0L1MCJm0RL6y9lW3E+JgBiBtTE=
-X-Received: by 2002:a17:906:5e01:: with SMTP id
- n1mr12293198eju.359.1616714996020; 
- Thu, 25 Mar 2021 16:29:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F650N0JL7z30CL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Mar 2021 13:05:20 +1100 (AEDT)
+Received: by mail-pg1-x52e.google.com with SMTP id h25so3598129pgm.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Mar 2021 19:05:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=yKhmmXY4pTqCWXAljZwZF1SSxy2c+IrHiu41koX7ecI=;
+ b=GjUuWAup17rU3k6hJzbVBoLpdx1x9vaBoRfVofdlodQDzk3DkIuj2xbDWykBCUopR8
+ a3Rv65ZOMsBk9ehPsXqLN8xzYdi0bEZJfm6JekzWtJcrYVIhTqTFlSDhjQm6Grl3H76V
+ ihS1r503zJa5FVBIJL6S/va79niYeihhuOtIr0IBEXrAyMoVRBL6MYPBebfmJp6sXO0i
+ txfssh/1GBPgUxmJckwXb9Ja9VBapseEEYlxZ5pqCMcaEyJV3y00Za+iJlYU+IhDu3yo
+ WU+T3GgSVxWgrWlDhlVE1qB9/QmqOufOEoMd9UVjyf8pGAq9yHwRUjn/7TjeLqTrBvl5
+ nDtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=yKhmmXY4pTqCWXAljZwZF1SSxy2c+IrHiu41koX7ecI=;
+ b=jxoun3v+NBTf55JPToLILEJpYi4Hs/GCdILakTTAquyC/9DxIDNlzxTeJMBkvfBoXP
+ KqiN+fzYjrUBQnVKj1gJW1EGyMKdQ4z5mgN9KnAD1ksN2/eWxlMZPPCofPjcMs6Layr7
+ 01MrIAx/C1tVdovfkY8R+Gdt7KO1hCqhyEbGJ8TSlb5/4oS+RC1n7WaIcXKLCRlIsejA
+ r+djlltkLeWjPgW8hwIH9VJAX8qs97uOfRmU7m+in4jttdIfqLAOu5WtmM6ncrYnTGui
+ d8IE6tNP75E1MKXSq3x+NE6zYXEjuQPiiZKuDqsF2iFal+DusjB7ZYbU9RT48mS0CYSa
+ Nnkg==
+X-Gm-Message-State: AOAM533mRaoWJv5eBaIncaR38j3XcDZv2I122PuDh/+A9kkOsPYxfs6T
+ lAwfyiJ7RZrZeylnDOs2+3Hn0NXJfkFxfQ==
+X-Google-Smtp-Source: ABdhPJytNWZBIFBatQ0RJL7vsJKciW8PCsq+Tu4UZ5ZSHSUmrZ0jmUWmQkMo8hWDzHUdZHcmVXCHuA==
+X-Received: by 2002:aa7:9a95:0:b029:1f3:4169:ccf2 with SMTP id
+ w21-20020aa79a950000b02901f34169ccf2mr10373184pfi.14.1616724314826; 
+ Thu, 25 Mar 2021 19:05:14 -0700 (PDT)
+Received: from [192.168.10.23]
+ (ppp121-45-194-51.cbr-trn-nor-bras38.tpg.internode.on.net. [121.45.194.51])
+ by smtp.gmail.com with UTF8SMTPSA id r10sm6800294pfq.216.2021.03.25.19.05.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 Mar 2021 19:05:14 -0700 (PDT)
+Message-ID: <11ba0a43-a64a-ca06-581c-e8b7dc97b1d7@ozlabs.ru>
+Date: Fri, 26 Mar 2021 13:05:10 +1100
 MIME-Version: 1.0
-References: <20210309000247.2989531-4-danielwa@cisco.com>
- <5f865584-09c9-d21f-ffb7-23cf07cf058e@csgroup.eu>
- <20210309212944.GR109100@zorba>
- <e4899874-1684-fa1b-443e-f4e478e05e31@csgroup.eu>
- <CAL_JsqKm76jRQYDcu3rGyUWKPLspoO=EZW_WFy=zAK+m_JYCTg@mail.gmail.com>
- <20fd7d44-8c39-48bc-25c3-990be9d9d911@csgroup.eu>
- <20210325195956.GM109100@zorba>
-In-Reply-To: <20210325195956.GM109100@zorba>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 25 Mar 2021 17:29:44 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+10nucQSRkrTKe9BD5wBScqEb7-Rdg=9TsPiKuiuPG7w@mail.gmail.com>
-Message-ID: <CAL_Jsq+10nucQSRkrTKe9BD5wBScqEb7-Rdg=9TsPiKuiuPG7w@mail.gmail.com>
-Subject: Re: [PATCH v2 3/7] powerpc: convert config files to generic cmdline
-To: Daniel Walker <danielwa@cisco.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:87.0) Gecko/20100101
+ Thunderbird/87.0
+Subject: Re: [PATCH v4 24/46] KVM: PPC: Book3S HV P9: Use large decrementer
+ for HDEC
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+References: <20210323010305.1045293-1-npiggin@gmail.com>
+ <20210323010305.1045293-25-npiggin@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <20210323010305.1045293-25-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,33 +89,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, X86 ML <x86@kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, xe-linux-external@cisco.com,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 25, 2021 at 2:00 PM Daniel Walker <danielwa@cisco.com> wrote:
->
-> On Thu, Mar 25, 2021 at 01:03:55PM +0100, Christophe Leroy wrote:
-> >
-> > Ok, so you agree we don't need to provide two CMDLINE, one to be appended and one to be prepended.
-> >
-> > Let's only provide once CMDLINE as of today, and ask the user to select
-> > whether he wants it appended or prepended or replacee. Then no need to
-> > change all existing config to rename CONFIG_CMDLINE into either of the new
-> > ones.
-> >
-> > That's the main difference between my series and Daniel's series. So I'll
-> > finish taking Will's comment into account and we'll send out a v3 soon.
->
-> It doesn't solve the needs of Cisco, I've stated many times your changes have
-> little value. Please stop submitting them.
 
-Can you please outline what those needs are which aren't met?
 
-Rob
+On 23/03/2021 12:02, Nicholas Piggin wrote:
+> On processors that don't suppress the HDEC exceptions when LPCR[HDICE]=0,
+> this could help reduce needless guest exits due to leftover exceptions on
+> entering the guest.
+> 
+> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+
+
+ERROR: modpost: "decrementer_max" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+
+
+need this:
+
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -89,6 +89,7 @@ static struct clocksource clocksource_timebase = {
+
+  #define DECREMENTER_DEFAULT_MAX 0x7FFFFFFF
+  u64 decrementer_max = DECREMENTER_DEFAULT_MAX;
++EXPORT_SYMBOL_GPL(decrementer_max);
+
+
+> ---
+>   arch/powerpc/include/asm/time.h | 2 ++
+>   arch/powerpc/kvm/book3s_hv.c    | 3 ++-
+>   2 files changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
+> index 8dd3cdb25338..68d94711811e 100644
+> --- a/arch/powerpc/include/asm/time.h
+> +++ b/arch/powerpc/include/asm/time.h
+> @@ -18,6 +18,8 @@
+>   #include <asm/vdso/timebase.h>
+>   
+>   /* time.c */
+> +extern u64 decrementer_max;
+> +
+>   extern unsigned long tb_ticks_per_jiffy;
+>   extern unsigned long tb_ticks_per_usec;
+>   extern unsigned long tb_ticks_per_sec;
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 8215430e6d5e..bb30c5ab53d1 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -3658,7 +3658,8 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+>   		vc->tb_offset_applied = 0;
+>   	}
+>   
+> -	mtspr(SPRN_HDEC, 0x7fffffff);
+> +	/* HDEC must be at least as large as DEC, so decrementer_max fits */
+> +	mtspr(SPRN_HDEC, decrementer_max);
+>   
+>   	switch_mmu_to_host_radix(kvm, host_pidr);
+>   
+> 
+
+-- 
+Alexey
