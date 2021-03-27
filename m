@@ -1,82 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428F234B18A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Mar 2021 22:50:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F0A34B96D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 22:19:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6bJB1gs7z3c6d
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 08:50:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F7BXz1y5cz3bVc
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Mar 2021 08:18:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xmission.com (client-ip=166.70.13.233;
- helo=out03.mta.xmission.com; envelope-from=ebiederm@xmission.com;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 1608 seconds by postgrey-1.36 at boromir;
- Sat, 27 Mar 2021 08:50:32 AEDT
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6bHr5Mpqz3bwG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 08:50:32 +1100 (AEDT)
-Received: from in01.mta.xmission.com ([166.70.13.51])
- by out03.mta.xmission.com with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1lPtvb-000SOd-No; Fri, 26 Mar 2021 15:23:35 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]
- helo=fess.xmission.com) by in01.mta.xmission.com with esmtpsa
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.87)
- (envelope-from <ebiederm@xmission.com>)
- id 1lPtva-00074S-1a; Fri, 26 Mar 2021 15:23:35 -0600
-From: ebiederm@xmission.com (Eric W. Biederman)
-To: Christoph Hellwig <hch@lst.de>
-References: <20210326143831.1550030-1-hch@lst.de>
- <20210326143831.1550030-4-hch@lst.de>
-Date: Fri, 26 Mar 2021 16:22:33 -0500
-In-Reply-To: <20210326143831.1550030-4-hch@lst.de> (Christoph Hellwig's
- message of "Fri, 26 Mar 2021 15:38:30 +0100")
-Message-ID: <m1y2e9vcdi.fsf@fess.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com;
+ envelope-from=chenhuang5@huawei.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 1070 seconds by postgrey-1.36 at boromir;
+ Sat, 27 Mar 2021 20:59:41 AEDT
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F6vT94qMcz2y0K
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Mar 2021 20:59:38 +1100 (AEDT)
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4F6v272fyhz1BHf1;
+ Sat, 27 Mar 2021 17:39:43 +0800 (CST)
+Received: from localhost.localdomain (10.175.112.125) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.498.0; Sat, 27 Mar 2021 17:41:34 +0800
+From: Chen Huang <chenhuang5@huawei.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
+Subject: [PATCH] powerpc: Fix HAVE_HARDLOCKUP_DETECTOR_ARCH build configuration
+Date: Sat, 27 Mar 2021 09:49:00 +0000
+Message-ID: <20210327094900.938555-1-chenhuang5@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1lPtva-00074S-1a; ; ; mid=<m1y2e9vcdi.fsf@fess.ebiederm.org>; ; ;
- hst=in01.mta.xmission.com; ; ; ip=68.227.160.95; ; ; frm=ebiederm@xmission.com;
- ; ; spf=neutral
-X-XM-AID: U2FsdGVkX18JI1x3OTuGSmP1SAxwgJUKnILVVDmHpGw=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa07.xmission.com
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=8.0 tests=ALL_TRUSTED,BAYES_40,
- DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,XMNoVowels autolearn=disabled
- version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
- *      [score: 0.3879]
- *  1.5 XMNoVowels Alpha-numberic number with no vowels
- *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
- * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
- *      [sa07 1397; Body=1 Fuz1=1 Fuz2=1]
-X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Christoph Hellwig <hch@lst.de>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 1205 ms - load_scoreonly_sql: 0.07 (0.0%),
- signal_user_changed: 12 (1.0%), b_tie_ro: 10 (0.8%), parse: 1.10
- (0.1%), extract_message_metadata: 13 (1.1%), get_uri_detail_list: 1.37
- (0.1%), tests_pri_-1000: 7 (0.6%), tests_pri_-950: 1.65 (0.1%),
- tests_pri_-900: 1.23 (0.1%), tests_pri_-90: 84 (7.0%), check_bayes: 83
- (6.9%), b_tokenize: 10 (0.9%), b_tok_get_all: 7 (0.6%), b_comp_prob:
- 2.3 (0.2%), b_tok_touch_all: 59 (4.9%), b_finish: 1.20 (0.1%),
- tests_pri_0: 252 (20.9%), check_dkim_signature: 0.55 (0.0%),
- check_dkim_adsp: 2.8 (0.2%), poll_dns_idle: 803 (66.7%), tests_pri_10:
- 2.3 (0.2%), tests_pri_500: 826 (68.5%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH 3/4] exec: simplify the compat syscall handling
-X-Spam-Flag: No
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.175.112.125]
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Sun, 28 Mar 2021 08:18:42 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,90 +49,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Brian Gerst <brgerst@gmail.com>, x86@kernel.org, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Don Zickus <dzickus@redhat.com>, Chen Huang <chenhuang5@huawei.com>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Hulk Robot <hulkci@huawei.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christoph Hellwig <hch@lst.de> writes:
+When compiling the powerpc with the SMP disabled, it shows the issue:
 
+arch/powerpc/kernel/watchdog.c: In function ‘watchdog_smp_panic’:
+arch/powerpc/kernel/watchdog.c:177:4: error: implicit declaration of function ‘smp_send_nmi_ipi’; did you mean ‘smp_send_stop’? [-Werror=implicit-function-declaration]
+  177 |    smp_send_nmi_ipi(c, wd_lockup_ipi, 1000000);
+      |    ^~~~~~~~~~~~~~~~
+      |    smp_send_stop
+cc1: all warnings being treated as errors
+make[2]: *** [scripts/Makefile.build:273: arch/powerpc/kernel/watchdog.o] Error 1
+make[1]: *** [scripts/Makefile.build:534: arch/powerpc/kernel] Error 2
+make: *** [Makefile:1980: arch/powerpc] Error 2
+make: *** Waiting for unfinished jobs....
 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 06e07278b456fa..b34c1eb9e7ad8e 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -391,47 +391,34 @@ static int bprm_mm_init(struct linux_binprm *bprm)
->  	return err;
->  }
->  
-> -struct user_arg_ptr {
-> -#ifdef CONFIG_COMPAT
-> -	bool is_compat;
-> -#endif
-> -	union {
-> -		const char __user *const __user *native;
-> -#ifdef CONFIG_COMPAT
-> -		const compat_uptr_t __user *compat;
-> -#endif
-> -	} ptr;
-> -};
-> -
-> -static const char __user *get_user_arg_ptr(struct user_arg_ptr argv, int nr)
-> +static const char __user *
-> +get_user_arg_ptr(const char __user *const __user *argv, int nr)
->  {
-> -	const char __user *native;
-> -
-> -#ifdef CONFIG_COMPAT
-> -	if (unlikely(argv.is_compat)) {
-> +	if (in_compat_syscall()) {
-> +		const compat_uptr_t __user *compat_argv =
-> +			compat_ptr((unsigned long)argv);
+We found that powerpc used ipi to implement hardlockup watchdog, so the
+HAVE_HARDLOCKUP_DETECTOR_ARCH should depend on the SMP.
 
-Ouch!  Passing a pointer around as the wrong type through the kernel!
+Fixes: 2104180a5369 ("powerpc/64s: implement arch-specific hardlockup watchdog")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Chen Huang <chenhuang5@huawei.com>
+---
+ arch/powerpc/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Perhaps we should reduce everything to do_execveat and
-do_execveat_compat.  Then there would be no need for anything
-to do anything odd with the pointer types.
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 764df010baee..2d4f37b117ce 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -225,7 +225,7 @@ config PPC
+ 	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
+-	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if (PPC64 && PPC_BOOK3S)
++	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if PPC64 && PPC_BOOK3S && SMP
+ 	select HAVE_OPTPROBES			if PPC64
+ 	select HAVE_PERF_EVENTS
+ 	select HAVE_PERF_EVENTS_NMI		if PPC64
+-- 
+2.17.1
 
-I think the big change would be to factor out a copy_string out
-of copy_strings, that performs all of the work once we know the proper
-pointer value.
-
-Casting pointers from one type to another scares me as one mistake means
-we are doing something wrong and probably exploitable.
-
-
-Eric
-
-
-
-
->  		compat_uptr_t compat;
->  
-> -		if (get_user(compat, argv.ptr.compat + nr))
-> +		if (get_user(compat, compat_argv + nr))
->  			return ERR_PTR(-EFAULT);
-> -
->  		return compat_ptr(compat);
-> -	}
-> -#endif
-> -
-> -	if (get_user(native, argv.ptr.native + nr))
-> -		return ERR_PTR(-EFAULT);
-> +	} else {
-> +		const char __user *native;
->  
-> -	return native;
-> +		if (get_user(native, argv + nr))
-> +			return ERR_PTR(-EFAULT);
-> +		return native;
-> +	}
->  }
->  
