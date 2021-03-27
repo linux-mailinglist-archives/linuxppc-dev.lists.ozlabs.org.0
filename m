@@ -2,61 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33C8034B754
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 14:15:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F2134B870
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Mar 2021 18:20:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F6zq46yTtz3c4S
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Mar 2021 00:15:28 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nABiofRL;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F75Fq55F6z3bcb
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Mar 2021 04:20:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=nABiofRL; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F6zpd2Fbqz2xy7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Mar 2021 00:15:03 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F6zpX6Zfwz9sRf;
- Sun, 28 Mar 2021 00:15:00 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1616850902;
- bh=xls+amKq9a2UqqHe5tYvXJf76OIDuOI+WrJU2CpUwE8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=nABiofRL4eKiuEcFKd/EuCctuw2IxIF5R9r0jvwB74JUobLq3Pg/S2ke2Ob+LBGST
- 45L+BlSd5NkLsx4ZhXe6iZsjbpS9BUgpW/r8gdr8x4qbBhAiCWNnPANtDgRLvsnwMe
- 3mQCwCHDmY+VGQFKMMh1UeNUGAbae213I6DshWJ1A63W/2PCbDikAGaozMRsUZuEKi
- 7EN51eNO/F+XuLDcV9qBk5kw2VQRWyjMPLldIg6M5VUooYsCD1b0kdnxBoC8nFXr2S
- IxZSpijIHnplQ1mHrpdCiZ1uTwKCoZtzafBpSe5IszwgfB/8r4KMCj247fK63h4JBZ
- 7XoR2SZ9Z56/w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Arnaldo <arnaldo.melo@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>
-Subject: Re: [PATCH V2 1/5] powerpc/perf: Expose processor pipeline stage
- cycles using PERF_SAMPLE_WEIGHT_STRUCT
-In-Reply-To: <2BAC42AE-6BD3-45EF-8867-1A15F25FE80B@gmail.com>
-References: <1616425047-1666-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1616425047-1666-2-git-send-email-atrajeev@linux.vnet.ibm.com>
- <d7dd633b-e28a-155a-a8e2-0e5a83b4eead@linux.ibm.com>
- <YFyJr+R24TlrMNrC@kernel.org>
- <YFygSdFOT5B0DwRU@hirez.programming.kicks-ass.net>
- <2BAC42AE-6BD3-45EF-8867-1A15F25FE80B@gmail.com>
-Date: Sun, 28 Mar 2021 00:14:56 +1100
-Message-ID: <874kgwhh67.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F75FT6cBMz301W
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Mar 2021 04:20:10 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4F75FL0fb4z9ty5P;
+ Sat, 27 Mar 2021 18:20:06 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id X-4yeutIqUOF; Sat, 27 Mar 2021 18:20:06 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F75FK6plhz9ty5N;
+ Sat, 27 Mar 2021 18:20:05 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0E59F8B777;
+ Sat, 27 Mar 2021 18:20:06 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id BhNcRVEsIzab; Sat, 27 Mar 2021 18:20:05 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 484DD8B771;
+ Sat, 27 Mar 2021 18:20:05 +0100 (CET)
+Subject: Re: [PATCH] powerpc/vdso: Separate vvar vma from vdso
+To: Dmitry Safonov <dima@arista.com>, linux-kernel@vger.kernel.org
+References: <20210326191720.138155-1-dima@arista.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <52562f46-6767-ba04-7301-04c6209fe4f1@csgroup.eu>
+Date: Sat, 27 Mar 2021 18:19:37 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20210326191720.138155-1-dima@arista.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,33 +61,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
- kjain@linux.ibm.com, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- jolsa@kernel.org, linuxppc-dev@lists.ozlabs.org, kan.liang@linux.intel.com
+Cc: Dmitry Safonov <0x7f454c46@gmail.com>, stable@vger.kernel.org,
+ Andrei Vagin <avagin@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Andy Lutomirski <luto@kernel.org>, Laurent Dufour <ldufour@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Arnaldo <arnaldo.melo@gmail.com> writes:
-> On March 25, 2021 11:38:01 AM GMT-03:00, Peter Zijlstra <peterz@infradead.org> wrote:
->>On Thu, Mar 25, 2021 at 10:01:35AM -0300, Arnaldo Carvalho de Melo
->>wrote:.
->>> > > Also for CPU_FTR_ARCH_31, capture the two cycle counter
->>information in
->>> > > two 16 bit fields of perf_sample_weight structure.
->>> > 
->>> > Changes looks fine to me.
->>> > 
->>> > Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->>> 
->>> So who will process the kernel bits? I'm merging the tooling parts,
->>
->>I was sorta expecting these to go through the powerpc tree. Let me know
->>if you want them in tip/perf/core instead.
->
-> Shouldn't matter by which tree it gets upstream, as long as it gets picked :-)
 
-I plan to take them, just haven't got around to it yet :}
 
-cheers
+Le 26/03/2021 à 20:17, Dmitry Safonov a écrit :
+> Since commit 511157ab641e ("powerpc/vdso: Move vdso datapage up front")
+> VVAR page is in front of the VDSO area. In result it breaks CRIU
+> (Checkpoint Restore In Userspace) [1], where CRIU expects that "[vdso]"
+> from /proc/../maps points at ELF/vdso image, rather than at VVAR data page.
+> Laurent made a patch to keep CRIU working (by reading aux vector).
+> But I think it still makes sence to separate two mappings into different
+> VMAs. It will also make ppc64 less "special" for userspace and as
+> a side-bonus will make VVAR page un-writable by debugger (which previously
+> would COW page and can be unexpected).
+> 
+> I opportunistically Cc stable on it: I understand that usually such
+> stuff isn't a stable material, but that will allow us in CRIU have
+> one workaround less that is needed just for one release (v5.11) on
+> one platform (ppc64), which we otherwise have to maintain.
+
+Why is that a workaround, and why for one release only ? I think the solution proposed by Laurentto 
+use the aux vector AT_SYSINFO_EHDR should work with any past and future release.
+
+> I wouldn't go as far as to say that the commit 511157ab641e is ABI
+> regression as no other userspace got broken, but I'd really appreciate
+> if it gets backported to v5.11 after v5.12 is released, so as not
+> to complicate already non-simple CRIU-vdso code. Thanks!
+> 
+> Cc: Andrei Vagin <avagin@gmail.com>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Laurent Dufour <ldufour@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: stable@vger.kernel.org # v5.11
+> [1]: https://github.com/checkpoint-restore/criu/issues/1417
+> Signed-off-by: Dmitry Safonov <dima@arista.com>
+> Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+I tested it with sifreturn_vdso selftest and it worked, because that selftest doesn't involve VDSO data.
+
+But if I do a mremap() on the VDSO text vma without remapping VVAR to keep the same distance between 
+the two vmas, gettimeofday() crashes. The reason is that the code obtains the address of the data by 
+calculating a fix difference from its own address with the below macro, the delta being resolved at 
+link time:
+
+.macro get_datapage ptr
+	bcl	20, 31, .+4
+999:
+	mflr	\ptr
+#if CONFIG_PPC_PAGE_SHIFT > 14
+	addis	\ptr, \ptr, (_vdso_datapage - 999b)@ha
+#endif
+	addi	\ptr, \ptr, (_vdso_datapage - 999b)@l
+.endm
+
+So the datapage needs to remain at the same distance from the code at all time.
+
+Wondering how the other architectures do to have two independant VMAs and be able to move one 
+independantly of the other.
+
+Christophe
