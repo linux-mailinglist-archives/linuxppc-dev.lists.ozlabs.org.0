@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4785234C049
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 02:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67EE634C04A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 02:01:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F7t5s1nVTz3c5y
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 11:01:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F7t6K2f0bz3dkX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 11:01:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=uqre0zmS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lnZVGx88;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72c;
- helo=mail-qk1-x72c.google.com; envelope-from=unixbhaskar@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::833;
+ helo=mail-qt1-x833.google.com; envelope-from=unixbhaskar@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uqre0zmS; dkim-atps=neutral
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com
- [IPv6:2607:f8b0:4864:20::72c])
+ header.s=20161025 header.b=lnZVGx88; dkim-atps=neutral
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com
+ [IPv6:2607:f8b0:4864:20::833])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F7t0j6ntCz30Hf
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 10:56:53 +1100 (AEDT)
-Received: by mail-qk1-x72c.google.com with SMTP id q26so10932310qkm.6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Mar 2021 16:56:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F7t0q4mPNz3bnJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 10:56:59 +1100 (AEDT)
+Received: by mail-qt1-x833.google.com with SMTP id u8so8197356qtq.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Mar 2021 16:56:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=FFq3P7yiseEEIQs2lgtrYVJcUzd7SMyJml+jQ6mPYF4=;
- b=uqre0zmSKtKLv++i82S0mbofGjuwskwC3CvMsmMtmcwjGtVJxeycjVJ6RpN1VYBSe+
- 0CQzJMu7PEalUVZXmadGM2px6kQtZ3N7tNZA8m0dvlRcCIAf2qxYblhfj3libS6ly7pM
- 7cP6Y7jQrTC4iCIUP2k8mrM8YO2OpsBVZioO1TYaUyX8FXX33csqU52/jNiOF/7HzRdW
- h0q2j3ogjbDgvmDtoSNvMcXXBHSfFF65U6v9ngv5ZS5aXjxah14f4OMwQwxkXQDvmGYq
- AtbeqfKk09GWR+OXgzvinDBtt6Vlb1woQTa7OM74PpgkMbt4TVzXSvTJ5IGTkC59YqDm
- 2KvA==
+ bh=V731M1ZjoMObeUPxmfQu760ZEmOVyQS5nvVKDsMpRYg=;
+ b=lnZVGx88/Q4RgjL+3hIrxaeLUCknaQO529y1KHYklW+L+nkdj8gpcbnqm8dMc1/+l7
+ f6zSHAW3lnPCPRE6I8Y7+qD6NhajFTxCnWDjvRqS+5YTVtxG9RfzFR2gppG6pd2KUONg
+ x2Ypd6MdyYMDQxXuVr9h1defti29sytWbU8Ue/Li0RmO+WBaY8GzifXSi3Uzw8ctplXy
+ 6TXDeusuFr4d4znZtig85zoIyEx6i/oXnzfPQNVFdJWRikFvX9A33V/ZVXPGGkcr9CJy
+ RJnXtSxeb6weKiUSJ+4jqKEIqqXxCR3aOs9fIwYirSfoCpnld2ZyldI5xWdSpa4LevUr
+ PhOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=FFq3P7yiseEEIQs2lgtrYVJcUzd7SMyJml+jQ6mPYF4=;
- b=LjQQiTKoCIPBENv+2p3DsyNL4tjsxspROrg13iZmGOIjgsFI3JuEL2NU+gNpVEyWaL
- NMrL403diW+M0anRZOUc5X45Wq2FMH/EDwIENIusBUR4Ek4YYM3ez2CSc7uNcAVOiFTC
- 2N6pEQbK0NnE4dHyqDHa2wgnDxPuzcHtCc+HPzck7f4mcBpjVubEsqLNUZFgp3YQfmE8
- uLRhv1/HrWJvUnPzWPfQRcHNX63K0RZFxka7lQ/npgibbqeN2kdiWeeEZC01Nrz7nMgv
- 5i9JILSmXsUmn3NMR8kGovps/jW83IXum/C/UY+nIIzAvVWIYfb4QMqdQ98Fhzk9Yyf0
- m6aw==
-X-Gm-Message-State: AOAM532KCCHCBG7HhnoHTNCFDGTE4AU3iRD3L55W0TxJBDzDRosM8rl1
- 4xQ0NNFb8kf+RCFygYYeq9Y=
-X-Google-Smtp-Source: ABdhPJyLHhya4uvoU4yUX2xpbMzIUxvQ1LFqJZoKSNEtSVlVs50tStFXatwwOAyjof/U/tKgBPUUrw==
-X-Received: by 2002:a37:a10a:: with SMTP id k10mr22547586qke.171.1616975812145; 
- Sun, 28 Mar 2021 16:56:52 -0700 (PDT)
+ bh=V731M1ZjoMObeUPxmfQu760ZEmOVyQS5nvVKDsMpRYg=;
+ b=o4ljuXAx8/ZYIsw3vy/ie99cQkOo+IYknOE68N1jYozSpmJIjgjYWuOdQaVNNzdanN
+ 0G9y/GzU/HOLuR1Sn/oAH0IwGJkxOvkGVWUM9BciLVavHO6ZuiYT/BSYiy+7UtIz63mq
+ tQIRf/ww3raGboMKwgPEMTptOfkOx9JmE4eebPaGotGWgkrrGbQCWqx1ZErfPNMlLCkd
+ NCKrsatojMqlXuJ9O8fh1y1vh0dKYz9ujOxk0Dkf8MNVcriFXdlm0EaqTK2Et8+P3Jxa
+ 6kRPaOqFtVkZfuxscLM/oYPV//4OHZyH5ZYPP5VtfEa/CVGGnjzE7apTlb8uFqg6GcJI
+ NZQQ==
+X-Gm-Message-State: AOAM530mRRU9yznYhX4HMnv6OroZJaUJgEDDxGqm81hJKqMWbCZlUVhw
+ BiAMtMzTjSDnmTucAlNT7Uw=
+X-Google-Smtp-Source: ABdhPJwfkmcNQYJxn4S9wN8jOvwQsIXVBRg1ipQrCtKoJ4PNJU1NU5IafcNZI5PpJzjZHpA0d8+z4w==
+X-Received: by 2002:ac8:1098:: with SMTP id a24mr20071293qtj.291.1616975817116; 
+ Sun, 28 Mar 2021 16:56:57 -0700 (PDT)
 Received: from localhost.localdomain ([156.146.58.24])
- by smtp.gmail.com with ESMTPSA id y19sm12153061qky.111.2021.03.28.16.56.47
+ by smtp.gmail.com with ESMTPSA id y19sm12153061qky.111.2021.03.28.16.56.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 Mar 2021 16:56:51 -0700 (PDT)
+ Sun, 28 Mar 2021 16:56:56 -0700 (PDT)
 From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 To: dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org, hch@lst.de,
  iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
  dave.jiang@intel.com, dan.j.williams@intel.com
-Subject: [PATCH 11/30] nbpfaxi.c: Fixed a typo
-Date: Mon, 29 Mar 2021 05:23:07 +0530
-Message-Id: <4171b74a36b486ce83fd019e654660d7cbe2dae0.1616971780.git.unixbhaskar@gmail.com>
+Subject: [PATCH 12/30] of-dma.c: Fixed a typo
+Date: Mon, 29 Mar 2021 05:23:08 +0530
+Message-Id: <0c3e1bd83c63203a0aad27006fbd369090a69dce.1616971780.git.unixbhaskar@gmail.com>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <cover.1616971780.git.unixbhaskar@gmail.com>
 References: <cover.1616971780.git.unixbhaskar@gmail.com>
@@ -87,26 +87,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-s/superflous/superfluous/
+s/propety/properly/
 
 Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 ---
- drivers/dma/nbpfaxi.c | 2 +-
+ drivers/dma/of-dma.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
-index 9c52c57919c6..9eacaa20ddb3 100644
---- a/drivers/dma/nbpfaxi.c
-+++ b/drivers/dma/nbpfaxi.c
-@@ -898,7 +898,7 @@ static int nbpf_config(struct dma_chan *dchan,
- 	/*
- 	 * We could check config->slave_id to match chan->terminal here,
- 	 * but with DT they would be coming from the same source, so
--	 * such a check would be superflous
-+	 * such a check would be superfluous
- 	 */
-
- 	chan->slave_dst_addr = config->dst_addr;
+diff --git a/drivers/dma/of-dma.c b/drivers/dma/of-dma.c
+index ec00b20ae8e4..e028acff7fe8 100644
+--- a/drivers/dma/of-dma.c
++++ b/drivers/dma/of-dma.c
+@@ -337,7 +337,7 @@ EXPORT_SYMBOL_GPL(of_dma_simple_xlate);
+  *
+  * This function can be used as the of xlate callback for DMA driver which wants
+  * to match the channel based on the channel id. When using this xlate function
+- * the #dma-cells propety of the DMA controller dt node needs to be set to 1.
++ * the #dma-cells properly of the DMA controller dt node needs to be set to 1.
+  * The data parameter of of_dma_controller_register must be a pointer to the
+  * dma_device struct the function should match upon.
+  *
 --
 2.26.3
 
