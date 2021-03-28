@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3920834BC17
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Mar 2021 13:07:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD6F834BC1E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Mar 2021 13:14:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F7Xwp1Kl4z30FF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Mar 2021 22:07:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F7Y5S4qpRz30GV
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Mar 2021 22:14:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,41 +15,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F7XwS5T0kz2xYy
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Mar 2021 22:07:00 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F7Y575PS5z2xZp
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Mar 2021 22:14:34 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F7XwK2Cwzz9tyJY;
- Sun, 28 Mar 2021 13:06:57 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4F7Y521DWmz9tyJZ;
+ Sun, 28 Mar 2021 13:14:30 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id X7bzXoFdbBWq; Sun, 28 Mar 2021 13:06:57 +0200 (CEST)
+ with ESMTP id Vbw5Z44eDhdj; Sun, 28 Mar 2021 13:14:30 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F7XwK1C6Rz9tyJV;
- Sun, 28 Mar 2021 13:06:57 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F7Y516Sdvz9v03k;
+ Sun, 28 Mar 2021 13:14:29 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BE4098B782;
- Sun, 28 Mar 2021 13:06:57 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8C8A48B782;
+ Sun, 28 Mar 2021 13:14:30 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id EfLRhhLErgBp; Sun, 28 Mar 2021 13:06:57 +0200 (CEST)
+ with ESMTP id N7crepemd7QU; Sun, 28 Mar 2021 13:14:30 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0EEB08B75F;
- Sun, 28 Mar 2021 13:06:57 +0200 (CEST)
-Subject: Re: [PATCH] powerpc: Fix HAVE_HARDLOCKUP_DETECTOR_ARCH build
- configuration
-To: Chen Huang <chenhuang5@huawei.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-References: <20210327094900.938555-1-chenhuang5@huawei.com>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EA0E48B75F;
+ Sun, 28 Mar 2021 13:14:29 +0200 (CEST)
+Subject: Re: [PATCH v5 4/7] powerpc/qspinlock: Add
+ ARCH_USE_QUEUED_SPINLOCKS_XCHG32
+To: guoren@kernel.org
+References: <1616913028-83376-1-git-send-email-guoren@kernel.org>
+ <1616913028-83376-5-git-send-email-guoren@kernel.org>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <dd6b25d3-006b-be1e-9c4f-89e66aefb519@csgroup.eu>
-Date: Sun, 28 Mar 2021 13:06:52 +0200
+Message-ID: <e27af5e0-a462-cb75-6311-1b5a6b4ee4f1@csgroup.eu>
+Date: Sun, 28 Mar 2021 13:14:28 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.9.0
 MIME-Version: 1.0
-In-Reply-To: <20210327094900.938555-1-chenhuang5@huawei.com>
+In-Reply-To: <1616913028-83376-5-git-send-email-guoren@kernel.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -64,55 +63,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Don Zickus <dzickus@redhat.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Hulk Robot <hulkci@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Guo Ren <guoren@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+ linux-csky@vger.kernel.org, openrisc@lists.librecores.org,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 27/03/2021 à 10:49, Chen Huang a écrit :
-> When compiling the powerpc with the SMP disabled, it shows the issue:
+Le 28/03/2021 à 08:30, guoren@kernel.org a écrit :
+> From: Guo Ren <guoren@linux.alibaba.com>
 > 
-> arch/powerpc/kernel/watchdog.c: In function ‘watchdog_smp_panic’:
-> arch/powerpc/kernel/watchdog.c:177:4: error: implicit declaration of function ‘smp_send_nmi_ipi’; did you mean ‘smp_send_stop’? [-Werror=implicit-function-declaration]
->    177 |    smp_send_nmi_ipi(c, wd_lockup_ipi, 1000000);
->        |    ^~~~~~~~~~~~~~~~
->        |    smp_send_stop
-> cc1: all warnings being treated as errors
-> make[2]: *** [scripts/Makefile.build:273: arch/powerpc/kernel/watchdog.o] Error 1
-> make[1]: *** [scripts/Makefile.build:534: arch/powerpc/kernel] Error 2
-> make: *** [Makefile:1980: arch/powerpc] Error 2
-> make: *** Waiting for unfinished jobs....
+> We don't have native hw xchg16 instruction, so let qspinlock
+> generic code to deal with it.
+
+We have lharx/sthcx pair on some versions of powerpc.
+
+See https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20201107032328.2454582-1-npiggin@gmail.com/
+
+Christophe
+
 > 
-> We found that powerpc used ipi to implement hardlockup watchdog, so the
-> HAVE_HARDLOCKUP_DETECTOR_ARCH should depend on the SMP.
+> Using the full-word atomic xchg instructions implement xchg16 has
+> the semantic risk for atomic operations.
 > 
-> Fixes: 2104180a5369 ("powerpc/64s: implement arch-specific hardlockup watchdog")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Chen Huang <chenhuang5@huawei.com>
+> This patch cancels the dependency of on qspinlock generic code on
+> architecture's xchg16.
+> 
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
 > ---
->   arch/powerpc/Kconfig | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   arch/powerpc/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
 > 
 > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 764df010baee..2d4f37b117ce 100644
+> index 386ae12d8523..69ec4ade6521 100644
 > --- a/arch/powerpc/Kconfig
 > +++ b/arch/powerpc/Kconfig
-> @@ -225,7 +225,7 @@ config PPC
->   	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS
->   	select HAVE_MOD_ARCH_SPECIFIC
->   	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
-> -	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if (PPC64 && PPC_BOOK3S)
-> +	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if PPC64 && PPC_BOOK3S && SMP
-
-While modifying this line, you should restore the alphabetic order by moving it up.
-
-You can use PPC_BOOK3S_64 instead of PPC64 && PPC_BOOK3S
-
->   	select HAVE_OPTPROBES			if PPC64
->   	select HAVE_PERF_EVENTS
->   	select HAVE_PERF_EVENTS_NMI		if PPC64
+> @@ -151,6 +151,7 @@ config PPC
+>   	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
+>   	select ARCH_USE_QUEUED_RWLOCKS		if PPC_QUEUED_SPINLOCKS
+>   	select ARCH_USE_QUEUED_SPINLOCKS	if PPC_QUEUED_SPINLOCKS
+> +	select ARCH_USE_QUEUED_SPINLOCKS_XCHG32	if PPC_QUEUED_SPINLOCKS
+>   	select ARCH_WANT_IPC_PARSE_VERSION
+>   	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+>   	select ARCH_WANT_LD_ORPHAN_WARN
 > 
