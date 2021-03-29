@@ -2,51 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73F634CD96
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 12:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6565D34CD9E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 12:08:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F87Vb6Ghjz30Gv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 21:05:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F87ZL1Pwlz2yhd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 21:08:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=k8mzcRXE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f9EhhMV0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=k8mzcRXE; dkim-atps=neutral
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=f9EhhMV0; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F87V56x50z2yx3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 21:04:44 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1617012281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GNE8QGhIA/QD9lakMGdqAV65OAeWWmq7F4C1CSmNnNA=;
- b=k8mzcRXE4Od3/N55AyhvaLae04t+5A1u52vRoPIWPL6EC58mjgqlveXjfPRdzauZEMCPHR
- 6sZoemDhRalUXdDGXlRv3mmpTkbivMvA7WZGXDfFu8LOInpfH5rYlT8d/Yu+8GebPjLQF1
- oqWPXAhJoL8QKIAbv3LJCKN2fUo1vBs=
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 46D28B3DE;
- Mon, 29 Mar 2021 10:04:41 +0000 (UTC)
-Date: Mon, 29 Mar 2021 12:04:38 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: John Ogness <john.ogness@linutronix.de>
-Subject: Re: [PATCH next v1 2/3] printk: remove safe buffers
-Message-ID: <YGGmNu5ilDnSKH3g@alley>
-References: <20210316233326.10778-1-john.ogness@linutronix.de>
- <20210316233326.10778-3-john.ogness@linutronix.de>
- <YFnHKlCvIA2nI41c@alley> <87pmzmi2xm.fsf@jogness.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F87Yx2j0qz2y0G
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 21:08:05 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4C2D161585;
+ Mon, 29 Mar 2021 10:07:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1617012476;
+ bh=pMPh6eyELHUsFo1+GSOTU018GXuHnqwmLWfjowXKpSM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=f9EhhMV0Q2/acyWJ/ZfxNWBKDPSPFcewP+yYd7grUMYR6ohYLn/GQbjkVRfpx6hy1
+ qlz2kGTV6H9hIJ3P83OFCRWasmAPh0B4tg4uRiF/UiE/RSNCbR5Vp/lFYg26JDmhOc
+ MWyUZuzkuVH70jdZJzCAyLBOqrXhFTb1bKdlZHGSYbFlC9bk2RUcV6QNHQmOXZOSfw
+ MB8cWs05TS9x1iAejddICQs8gS82J+9FM1MYdvz//gI0U56nk09G1BsYCdMIXSnO7c
+ KleBb0hQlKjIQJz/LgOJaH5ew9SHfhQgI3a4l184IRzCzZU/6ZjlfekxQPDfmmV3Jo
+ EOvtS+AxR38PQ==
+Date: Mon, 29 Mar 2021 11:07:51 +0100
+From: Will Deacon <will@kernel.org>
+To: Daniel Walker <danielwa@cisco.com>
+Subject: Re: [PATCH v2 3/7] powerpc: convert config files to generic cmdline
+Message-ID: <20210329100750.GB3207@willie-the-truck>
+References: <20210309000247.2989531-4-danielwa@cisco.com>
+ <5f865584-09c9-d21f-ffb7-23cf07cf058e@csgroup.eu>
+ <20210309212944.GR109100@zorba>
+ <e4899874-1684-fa1b-443e-f4e478e05e31@csgroup.eu>
+ <CAL_JsqKm76jRQYDcu3rGyUWKPLspoO=EZW_WFy=zAK+m_JYCTg@mail.gmail.com>
+ <20fd7d44-8c39-48bc-25c3-990be9d9d911@csgroup.eu>
+ <20210325195956.GM109100@zorba>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87pmzmi2xm.fsf@jogness.linutronix.de>
+In-Reply-To: <20210325195956.GM109100@zorba>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,101 +64,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Paul Mackerras <paulus@samba.org>,
- Tiezhu Yang <yangtiezhu@loongson.cn>, Rafael Aquini <aquini@redhat.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Yue Hu <huyue2@yulong.com>,
- Jordan Niethe <jniethe5@gmail.com>, Kees Cook <keescook@chromium.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Alistair Popple <alistair@popple.id.au>,
- "Guilherme G. Piccoli" <gpiccoli@canonical.com>,
- Nicholas Piggin <npiggin@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
- Thomas Gleixner <tglx@linutronix.de>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Eric Biederman <ebiederm@xmission.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Cc: Rob Herring <robh@kernel.org>,
+ Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
+ X86 ML <x86@kernel.org>, "open list:MIPS" <linux-mips@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, xe-linux-external@cisco.com,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 2021-03-26 12:12:37, John Ogness wrote:
-> On 2021-03-23, Petr Mladek <pmladek@suse.com> wrote:
-> >> --- a/kernel/printk/printk.c
-> >> +++ b/kernel/printk/printk.c
-> >> -
-> >>  	if (seq != prb_next_seq(&printk_rb_static)) {
-> >>  		pr_err("dropped %llu messages\n",
-> >>  		       prb_next_seq(&printk_rb_static) - seq);
-> >> @@ -2666,7 +2631,6 @@ void console_unlock(void)
-> >>  		size_t ext_len = 0;
-> >>  		size_t len;
-> >>  
-> >> -		printk_safe_enter_irqsave(flags);
-> >>  skip:
-> >>  		if (!prb_read_valid(prb, console_seq, &r))
-> >>  			break;
-> >> @@ -2711,6 +2675,8 @@ void console_unlock(void)
-> >>  				printk_time);
-> >>  		console_seq++;
-> >>  
-> >> +		printk_safe_enter_irqsave(flags);
-> >
-> > What is the purpose of the printk_safe context here, please?
+On Thu, Mar 25, 2021 at 12:59:56PM -0700, Daniel Walker wrote:
+> On Thu, Mar 25, 2021 at 01:03:55PM +0100, Christophe Leroy wrote:
+> > 
+> > Ok, so you agree we don't need to provide two CMDLINE, one to be appended and one to be prepended.
+> > 
+> > Let's only provide once CMDLINE as of today, and ask the user to select
+> > whether he wants it appended or prepended or replacee. Then no need to
+> > change all existing config to rename CONFIG_CMDLINE into either of the new
+> > ones.
+> > 
+> > That's the main difference between my series and Daniel's series. So I'll
+> > finish taking Will's comment into account and we'll send out a v3 soon.
 > 
-> console_lock_spinning_enable() needs to be called with interrupts
-> disabled. I should have just used local_irq_save().
-> 
-> I could add local_irq_save() to console_lock_spinning_enable() and
-> restore them at the end of console_lock_spinning_disable_and_check(),
-> but then I would need to add a @flags argument to both functions. I
-> think it is simpler to just do the disable/enable from the caller,
-> console_unlock().
+> It doesn't solve the needs of Cisco, I've stated many times your changes have
+> little value. Please stop submitting them.
 
-I see. I have missed it that all this code have to be called with
-interrupts disabled.
+FWIW, they're useful for arm64 and I will gladly review the updated series.
 
-OK, it is a must-to-have because of the spinning. But I wonder if some
-console drivers rely on the fact that the write() callback is
-called with interrupts disabled.
+I don't think asking people to stop submitting patches is ever the right
+answer. Please don't do that.
 
-IMHO, it would be a bug when any write() callback expects that
-callers disabled the interrupts.
-
-Do you plan to remove the console-spinning stuff after offloading
-consoles to the kthreads?
-
-Will you call console write() callback with irq enabled from
-the kthread?
-
-Anyway, we should at least add a comment why the interrupts are
-disabled.
-
-
-> BTW, I could not find any sane way of disabling interrupts via a
-> raw_spin_lock_irqsave() of @console_owner_lock because of the how it is
-> used with lockdep. In particular for
-> console_lock_spinning_disable_and_check().
-
-I see. IMHO, we would need to explicitly call local_irq_save()/restore()
-if we moved them to console_lock_spinning_enable()/disable_and_check().
-I mean to do:
-
-
-static void console_lock_spinning_enable(unsigned long *flags)
-{
-	local_irq_save(*flags);
-
-	raw_spin_lock(&console_owner_lock);
-	console_owner = current;
-	raw_spin_unlock(&console_owner_lock);
-
-	/* The waiter may spin on us after setting console_owner */
-	spin_acquire(&console_owner_dep_map, 0, 0, _THIS_IP_);
-}
-
-...
-
-Best Regards,
-Petr
+Will
