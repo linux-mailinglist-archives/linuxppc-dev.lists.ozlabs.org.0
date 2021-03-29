@@ -2,90 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7015C34D622
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 19:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD82C34D8AF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 21:59:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F8KXJ3dxDz30JX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 04:37:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F8Ngl5245z30Jj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 06:58:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QA2MqWpK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dMhvtU4d;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=QA2MqWpK; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=dMhvtU4d; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F8KWr4HP9z2xgL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 04:36:55 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12THX3Cb113118; Mon, 29 Mar 2021 13:36:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : from : to : cc
- : date : message-id : content-type : content-transfer-encoding :
- mime-version; s=pp1; bh=MttDJCGARaxpDtVMt/KLSICt/OHkz6lbnzzYLYrPrCo=;
- b=QA2MqWpKs8xty6j31vW9y6CYuQe36GBGmN/fIg8dflwgOEH0acEH1Zamy0LmJAzSXoH4
- aX2yjTY3KEFakG7pdluEps8NY0y4NCykc0z76uZHklvxLFi59Nt/mLv1QfV0xbnpghOO
- NQQTL+Psd04M2WBi21Xvp0dUXlfGWkqLYWVSv092ghNFCgNVdOSIvqip2S+wLMIGCOSE
- MxgPLmOoNy8rDOjtx5Uhzf0lZdS+Z96kIwB0JYyrPwGp/7yHwCujFVzgretg/q0oFsLh
- 4S9UuhFkC5N89TUpFiDFXi3hRHNoZJmuoY/lsy7D3yurpvILMm8a8JZPnEAqOme8wOXT Zg== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37jpbvjy6x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Mar 2021 13:36:50 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12THSVNh021091;
- Mon, 29 Mar 2021 17:36:48 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma05fra.de.ibm.com with ESMTP id 37hvb8h1x8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Mar 2021 17:36:48 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12THakiw54854068
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Mar 2021 17:36:46 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E40AA5204F;
- Mon, 29 Mar 2021 17:36:45 +0000 (GMT)
-Received: from [172.17.0.3] (unknown [9.40.192.207])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B98B052051;
- Mon, 29 Mar 2021 17:36:44 +0000 (GMT)
-Subject: [PATCH v3] powerpc/papr_scm: Implement support for H_SCM_FLUSH hcall
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-To: sbhat@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- kvm-ppc@vger.kernel.org, linux-nvdimm@lists.01.org,
- aneesh.kumar@linux.ibm.com, ellerman@au1.ibm.com
-Date: Mon, 29 Mar 2021 13:36:43 -0400
-Message-ID: <161703936121.36.7260632399582101498.stgit@e1fbed493c87>
-User-Agent: StGit/0.21
-Content-Type: text/plain; charset="utf-8"
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cLlAuKPSy8G7IVq1hjwRBXmiiyY2AnfD
-X-Proofpoint-ORIG-GUID: cLlAuKPSy8G7IVq1hjwRBXmiiyY2AnfD
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F8NgL3BC9z2yxm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 06:58:38 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CD2D261981;
+ Mon, 29 Mar 2021 19:58:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1617047914;
+ bh=u6ACrZWGumDoalB5NQX3JFz6rDEZMDWEtoyXeuanOmQ=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=dMhvtU4diIdI8b8gBUkD+8PCCTgY6vZ97c3QBXsIEdnnv/A4/uNxAoLd6oOgEX7MV
+ j5oqCBD7lkkl2Bj7f4c7PO/MReDZro7S1LsRn2a/9L8aNftkn2L9bJoqK2qPyzYBs4
+ z6ZOJdN3cuaRK4QPcsE68s/1Mlwy3x5fL1I1JZTmy31Ac3m2ZKJ/Bxe66RHyenNWQP
+ 76tWUplbD8gnBwAf/5tcrBlx9c22D3NECZaJCPEa4DxB3zLeuVw2VBabmEQxR5lqhn
+ oMre4fFGPjavQRzMiwgCvaOdY+WUDZ1nr4uGwd4ZcqKC66FkUgKf7UywGipfZkXDI9
+ mz5bcvH6bY4FQ==
+From: Mark Brown <broonie@kernel.org>
+To: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linux-kernel@vger.kernel.org, festevam@gmail.com, nicoleotsuka@gmail.com,
+ tiwai@suse.com, perex@perex.cz, linuxppc-dev@lists.ozlabs.org,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com
+Subject: Re: [PATCH] ASoC: fsl_rpmsg: initialise pointers to NULL
+Date: Mon, 29 Mar 2021 20:58:10 +0100
+Message-Id: <161704724765.10039.8726528619377342527.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <1616988868-971-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1616988868-971-1-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-29_10:2021-03-26,
- 2021-03-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- suspectscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 adultscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2103250000 definitions=main-2103290130
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,150 +61,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: vaibhav@linux.ibm.com, linux-doc@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for ND_REGION_ASYNC capability if the device tree
-indicates 'ibm,hcall-flush-required' property in the NVDIMM node.
-Flush is done by issuing H_SCM_FLUSH hcall to the hypervisor.
+On Mon, 29 Mar 2021 11:34:28 +0800, Shengjiu Wang wrote:
+> This fixes the following sparse warnings:
+> 
+> sound/soc/fsl/fsl_rpmsg.c:45:45: sparse: sparse: Using plain integer as NULL pointer
+> sound/soc/fsl/fsl_rpmsg.c:45:56: sparse: sparse: Using plain integer as NULL pointer
 
-If the flush request failed, the hypervisor is expected to
-to reflect the problem in the subsequent nvdimm H_SCM_HEALTH call.
+Applied to
 
-This patch prevents mmap of namespaces with MAP_SYNC flag if the
-nvdimm requires an explicit flush[1].
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-References:
-[1] https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c
+Thanks!
 
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
----
-v2 - https://www.spinics.net/lists/kvm-ppc/msg18799.html
-Changes from v2:
-       - Fixed the commit message.
-       - Add dev_dbg before the H_SCM_FLUSH hcall
+[1/1] ASoC: fsl_rpmsg: initialise pointers to NULL
+      commit: 502e5321d89214a34a7b8bda697fc98d14b51cae
 
-v1 - https://www.spinics.net/lists/kvm-ppc/msg18272.html
-Changes from v1:
-       - Hcall semantics finalized, all changes are to accomodate them.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
- Documentation/powerpc/papr_hcalls.rst     |   14 ++++++++++
- arch/powerpc/include/asm/hvcall.h         |    3 +-
- arch/powerpc/platforms/pseries/papr_scm.c |   40 +++++++++++++++++++++++++++++
- 3 files changed, 56 insertions(+), 1 deletion(-)
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
-index 48fcf1255a33..648f278eea8f 100644
---- a/Documentation/powerpc/papr_hcalls.rst
-+++ b/Documentation/powerpc/papr_hcalls.rst
-@@ -275,6 +275,20 @@ Health Bitmap Flags:
- Given a DRC Index collect the performance statistics for NVDIMM and copy them
- to the resultBuffer.
- 
-+**H_SCM_FLUSH**
-+
-+| Input: *drcIndex, continue-token*
-+| Out: *continue-token*
-+| Return Value: *H_SUCCESS, H_Parameter, H_P2, H_BUSY*
-+
-+Given a DRC Index Flush the data to backend NVDIMM device.
-+
-+The hcall returns H_BUSY when the flush takes longer time and the hcall needs
-+to be issued multiple times in order to be completely serviced. The
-+*continue-token* from the output to be passed in the argument list of
-+subsequent hcalls to the hypervisor until the hcall is completely serviced
-+at which point H_SUCCESS or other error is returned by the hypervisor.
-+
- References
- ==========
- .. [1] "Power Architecture Platform Reference"
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index ed6086d57b22..9f7729a97ebd 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -315,7 +315,8 @@
- #define H_SCM_HEALTH            0x400
- #define H_SCM_PERFORMANCE_STATS 0x418
- #define H_RPT_INVALIDATE	0x448
--#define MAX_HCALL_OPCODE	H_RPT_INVALIDATE
-+#define H_SCM_FLUSH		0x44C
-+#define MAX_HCALL_OPCODE	H_SCM_FLUSH
- 
- /* Scope args for H_SCM_UNBIND_ALL */
- #define H_UNBIND_SCOPE_ALL (0x1)
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 835163f54244..b7a47fcc5aa5 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -93,6 +93,7 @@ struct papr_scm_priv {
- 	uint64_t block_size;
- 	int metadata_size;
- 	bool is_volatile;
-+	bool hcall_flush_required;
- 
- 	uint64_t bound_addr;
- 
-@@ -117,6 +118,39 @@ struct papr_scm_priv {
- 	size_t stat_buffer_len;
- };
- 
-+static int papr_scm_pmem_flush(struct nd_region *nd_region,
-+			       struct bio *bio __maybe_unused)
-+{
-+	struct papr_scm_priv *p = nd_region_provider_data(nd_region);
-+	unsigned long ret_buf[PLPAR_HCALL_BUFSIZE];
-+	uint64_t token = 0;
-+	int64_t rc;
-+
-+	dev_dbg(&p->pdev->dev, "flush drc 0x%x", p->drc_index);
-+
-+	do {
-+		rc = plpar_hcall(H_SCM_FLUSH, ret_buf, p->drc_index, token);
-+		token = ret_buf[0];
-+
-+		/* Check if we are stalled for some time */
-+		if (H_IS_LONG_BUSY(rc)) {
-+			msleep(get_longbusy_msecs(rc));
-+			rc = H_BUSY;
-+		} else if (rc == H_BUSY) {
-+			cond_resched();
-+		}
-+	} while (rc == H_BUSY);
-+
-+	if (rc) {
-+		dev_err(&p->pdev->dev, "flush error: %lld", rc);
-+		rc = -EIO;
-+	} else {
-+		dev_dbg(&p->pdev->dev, "flush drc 0x%x complete", p->drc_index);
-+	}
-+
-+	return rc;
-+}
-+
- static LIST_HEAD(papr_nd_regions);
- static DEFINE_MUTEX(papr_ndr_lock);
- 
-@@ -943,6 +977,11 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
- 	ndr_desc.num_mappings = 1;
- 	ndr_desc.nd_set = &p->nd_set;
- 
-+	if (p->hcall_flush_required) {
-+		set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
-+		ndr_desc.flush = papr_scm_pmem_flush;
-+	}
-+
- 	if (p->is_volatile)
- 		p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
- 	else {
-@@ -1088,6 +1127,7 @@ static int papr_scm_probe(struct platform_device *pdev)
- 	p->block_size = block_size;
- 	p->blocks = blocks;
- 	p->is_volatile = !of_property_read_bool(dn, "ibm,cache-flush-required");
-+	p->hcall_flush_required = of_property_read_bool(dn, "ibm,hcall-flush-required");
- 
- 	/* We just need to ensure that set cookies are unique across */
- 	uuid_parse(uuid_str, (uuid_t *) uuid);
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
+Thanks,
+Mark
