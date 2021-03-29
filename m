@@ -2,54 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E7334CF56
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 13:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9524A34CF80
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 13:57:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F89pV2gVjz30Gv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 22:49:06 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=UWtdSj5j;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F89zb058Rz30J3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 22:56:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=UWtdSj5j; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=nefkom.net (client-ip=212.18.0.10; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F89p64DBtz2yZ0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 22:48:45 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E7B6B6195B;
- Mon, 29 Mar 2021 11:48:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1617018522;
- bh=7bOjh2VBV6ORFq+hCMAwT1T3XPaqoe4QhuhPDGs1AAs=;
- h=Date:From:To:Subject:References:In-Reply-To:From;
- b=UWtdSj5jytB4yinCTIl3uubMK3m15sgaJtDCKH4UDmRTzMxypBr8y8V81cmTfFm0M
- srtX9TghLWGx+Ep76clREiLK59I/9LFZrkw/NAqR/q5/Bwjvxm3c5aV4hyPSPoQTJo
- xfqlBmY7r+HQbjNRQKB/IDAmJg0CoWggrzQOzLDE=
-Date: Mon, 29 Mar 2021 13:48:39 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Bhaskar Chowdhury <unixbhaskar@gmail.com>, Christoph Hellwig <hch@lst.de>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
- iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- dave.jiang@intel.com, dan.j.williams@intel.com,
- rdunlap@infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/30] DMA: Mundane typo fixes
-Message-ID: <YGG+l1EfRuWp0J3A@kroah.com>
-References: <cover.1616971780.git.unixbhaskar@gmail.com>
- <20210329052910.GB26495@lst.de> <YGFrvwX8QngvwPbA@Gentoo>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F89zF45rwz2xYt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 22:56:41 +1100 (AEDT)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 4F89z203Xbz1s3jy;
+ Mon, 29 Mar 2021 13:56:29 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 4F89z15Hl9z1r1M8;
+ Mon, 29 Mar 2021 13:56:29 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id 0FNUX2a-J2oV; Mon, 29 Mar 2021 13:56:28 +0200 (CEST)
+X-Auth-Info: nWR6V27iMQF9ig2aZa97r4JZveNCKigm5K0cTjGtV8hbwOnwQh9wQHpDD5U43/X9
+Received: from igel.home (ppp-46-244-184-171.dynamic.mnet-online.de
+ [46.244.184.171])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Mon, 29 Mar 2021 13:56:28 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+ id 585142C3258; Mon, 29 Mar 2021 13:56:28 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/64s: power4 nap fixup in C
+References: <20210312012044.3660743-1-npiggin@gmail.com>
+ <a01d923737cb1d4a603dc5046b67787233051c12.camel@kernel.crashing.org>
+ <236a67a4-1609-5fec-3c68-41db02cd1a4c__18973.8760514714$1617008745$gmane$org@csgroup.eu>
+X-Yow: I'm an East Side TYPE..
+Date: Mon, 29 Mar 2021 13:56:28 +0200
+In-Reply-To: <236a67a4-1609-5fec-3c68-41db02cd1a4c__18973.8760514714$1617008745$gmane$org@csgroup.eu>
+ (Christophe Leroy's message of "Mon, 29 Mar 2021 11:04:52 +0200")
+Message-ID: <87czvikwb7.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YGFrvwX8QngvwPbA@Gentoo>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,32 +63,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 29, 2021 at 11:25:11AM +0530, Bhaskar Chowdhury wrote:
-> On 07:29 Mon 29 Mar 2021, Christoph Hellwig wrote:
-> > I really don't think these typo patchbomb are that useful.  I'm all
-> > for fixing typos when working with a subsystem, but I'm not sure these
-> > patchbombs help anything.
-> > 
-> I am sure you are holding the wrong end of the wand and grossly failing to
-> understand.
+On Mär 29 2021, Christophe Leroy wrote:
 
-Please stop statements like this, it is not helpful and is doing nothing
-but ensure that your patches will not be looked at in the future.
+> Le 29/03/2021 à 10:33, Benjamin Herrenschmidt a écrit :
+>> On Fri, 2021-03-12 at 11:20 +1000, Nicholas Piggin wrote:
+>>>
+>>> +static inline void nap_adjust_return(struct pt_regs *regs)
+>>>
+>>> +{
+>>>
+>>> +#ifdef CONFIG_PPC_970_NAP
+>>>
+>>> +       if (unlikely(test_thread_local_flags(_TLF_NAPPING))) {
+>>> +               /* Can avoid a test-and-clear because NMIs do not call this */
+>>> +               clear_thread_local_flags(_TLF_NAPPING);
+>>> +               regs->nip = (unsigned long)power4_idle_nap_return;
+>>> +       }
+>> Is this a pointer to a function descriptor or the actual code ?
+>> 
+>
+> --- a/arch/powerpc/kernel/idle_book3s.S
+> +++ b/arch/powerpc/kernel/idle_book3s.S
+> @@ -209,4 +209,8 @@ _GLOBAL(power4_idle_nap)
+>  	mtmsrd	r7
+>  	isync
+>  	b	1b
+> +
+> +	.globl power4_idle_nap_return
+> +power4_idle_nap_return:
+> +	blr
+>  #endif
 
-> Anyway, I hope I give a heads up ...find "your way" to fix those damn
-> thing...it's glaring....
+The problem is not the definition, it is the reference.  In C, a
+function symbol always resolves to the address of the descriptor.
 
-There is no requirement that anyone accept patches that are sent to
-them.  When you complain when receiving comments on them, that
-shows you do not wish to work with others.
+Andreas.
 
-Sorry, but you are now on my local blacklist for a while, and I
-encourage other maintainers to just ignore these patches as well.
-
-thanks,
-
-greg k-h
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
