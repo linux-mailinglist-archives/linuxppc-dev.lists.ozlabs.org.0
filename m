@@ -2,56 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9524A34CF80
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 13:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD6F34D0A9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 14:58:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F89zb058Rz30J3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 22:56:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F8CLX2K7Mz301g
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 23:58:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=jIMlPhrn;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nefkom.net (client-ip=212.18.0.10; helo=mail-out.m-online.net;
- envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::833;
+ helo=mail-qt1-x833.google.com; envelope-from=unixbhaskar@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=jIMlPhrn; dkim-atps=neutral
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com
+ [IPv6:2607:f8b0:4864:20::833])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F89zF45rwz2xYt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 22:56:41 +1100 (AEDT)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
- by mail-out.m-online.net (Postfix) with ESMTP id 4F89z203Xbz1s3jy;
- Mon, 29 Mar 2021 13:56:29 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
- by mail.m-online.net (Postfix) with ESMTP id 4F89z15Hl9z1r1M8;
- Mon, 29 Mar 2021 13:56:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
- port 10024)
- with ESMTP id 0FNUX2a-J2oV; Mon, 29 Mar 2021 13:56:28 +0200 (CEST)
-X-Auth-Info: nWR6V27iMQF9ig2aZa97r4JZveNCKigm5K0cTjGtV8hbwOnwQh9wQHpDD5U43/X9
-Received: from igel.home (ppp-46-244-184-171.dynamic.mnet-online.de
- [46.244.184.171])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.mnet-online.de (Postfix) with ESMTPSA;
- Mon, 29 Mar 2021 13:56:28 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
- id 585142C3258; Mon, 29 Mar 2021 13:56:28 +0200 (CEST)
-From: Andreas Schwab <schwab@linux-m68k.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/64s: power4 nap fixup in C
-References: <20210312012044.3660743-1-npiggin@gmail.com>
- <a01d923737cb1d4a603dc5046b67787233051c12.camel@kernel.crashing.org>
- <236a67a4-1609-5fec-3c68-41db02cd1a4c__18973.8760514714$1617008745$gmane$org@csgroup.eu>
-X-Yow: I'm an East Side TYPE..
-Date: Mon, 29 Mar 2021 13:56:28 +0200
-In-Reply-To: <236a67a4-1609-5fec-3c68-41db02cd1a4c__18973.8760514714$1617008745$gmane$org@csgroup.eu>
- (Christophe Leroy's message of "Mon, 29 Mar 2021 11:04:52 +0200")
-Message-ID: <87czvikwb7.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F8CL45B5Sz2yTR
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 23:58:03 +1100 (AEDT)
+Received: by mail-qt1-x833.google.com with SMTP id l13so9162647qtu.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 05:58:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:mail-followup-to:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=pXwScAbp9Oc9UUM+Y5MFv/NyYb1m2Ax9bkESJHn7OoM=;
+ b=jIMlPhrnPxBkc1eIt0loxmUFn7wXXfPXYhzlXGaYPnegO6aUyr7PCPcsU1Q/nPx2fP
+ z9dSO77ODJpoGbIqBdLPzf7Hmx+na9zXd2cZJ4qd9BBfUIDW2OzJWYE465wjBIWAuRrr
+ NWCMehNEk3cJZY3zjwb6ZOQi1NkbEq5fCcB0n+UlGn7E/x8I9ZccVrQAOLQEjvvAhPgW
+ gyvGu7fxdumQ9rlYgMvh+Gznzjnn6Qsqul2TwzNQVb6EA6ue+DdlAwS1sDkE02lS2xyR
+ 3n4LD+Mz6IiTzqnrhisHrhIHhSDc4vM/80A7UAKxL/KmVUJHzyawP00LVXC3wRmxEBMs
+ lnow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id
+ :mail-followup-to:references:mime-version:content-disposition
+ :in-reply-to;
+ bh=pXwScAbp9Oc9UUM+Y5MFv/NyYb1m2Ax9bkESJHn7OoM=;
+ b=e3CSUW0Tr1dEYWwowgL76wAuPFCUA+fix5IxkxOuiWpiiO/bNOppbQCziFr4LV7fz3
+ SCRQkzwk/hD5h206LGYeVtHMxPM5IPzCQFZUCyjbcItO2aaX5e9LHpblj5iP3H8CgUKV
+ Ui/Lqkt9LfQpBYORcz99PlZri9usfeUwxlpKqtOEfGyPIN4Qjx3Rumjyf5TjUwIrNtRS
+ bPiJZs7lt5oiGBFL4j3kBVJPQXrRhb71ybhAUR1xvUKYJ8pffctFhMWX5n64nFVQ9rGi
+ x30TTyvOc16EEvQZ3/PN6ji+FyaOld1L7lF0BPAZZFCyP4ONLV25Br/S6e6+NoewXnrj
+ 7HHg==
+X-Gm-Message-State: AOAM53195TSzl7Lw4NkWxLMt2oqPC5t3O7lpDZWK6SQwisbzxGu7LFaz
+ Ol2TlDAUPzOpz5t0cGfZVpk=
+X-Google-Smtp-Source: ABdhPJzGuB5bAHBNMyTzE3y0baxdhpY1BDoada/eHGqWehXn5kNmFoyZ95oSsGX4Gf6P46twv8R/cA==
+X-Received: by 2002:aed:2ea4:: with SMTP id k33mr22317560qtd.169.1617022681256; 
+ Mon, 29 Mar 2021 05:58:01 -0700 (PDT)
+Received: from Gentoo ([37.19.198.130])
+ by smtp.gmail.com with ESMTPSA id y1sm13368206qki.9.2021.03.29.05.57.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Mar 2021 05:58:00 -0700 (PDT)
+Date: Mon, 29 Mar 2021 18:27:43 +0530
+From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 00/30] DMA: Mundane typo fixes
+Message-ID: <YGHOxwiqwhGAs819@Gentoo>
+Mail-Followup-To: Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ Christoph Hellwig <hch@lst.de>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ dave.jiang@intel.com, dan.j.williams@intel.com,
+ rdunlap@infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1616971780.git.unixbhaskar@gmail.com>
+ <20210329052910.GB26495@lst.de> <YGFrvwX8QngvwPbA@Gentoo>
+ <YGG+l1EfRuWp0J3A@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="5zclouQno4veQbB1"
+Content-Disposition: inline
+In-Reply-To: <YGG+l1EfRuWp0J3A@kroah.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,48 +91,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: dave.jiang@intel.com, Linus Torvalds <torvalds@linux-foundation.org>,
+ rdunlap@infradead.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux-foundation.org,
+ dmaengine@vger.kernel.org, dan.j.williams@intel.com,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mär 29 2021, Christophe Leroy wrote:
 
-> Le 29/03/2021 à 10:33, Benjamin Herrenschmidt a écrit :
->> On Fri, 2021-03-12 at 11:20 +1000, Nicholas Piggin wrote:
->>>
->>> +static inline void nap_adjust_return(struct pt_regs *regs)
->>>
->>> +{
->>>
->>> +#ifdef CONFIG_PPC_970_NAP
->>>
->>> +       if (unlikely(test_thread_local_flags(_TLF_NAPPING))) {
->>> +               /* Can avoid a test-and-clear because NMIs do not call this */
->>> +               clear_thread_local_flags(_TLF_NAPPING);
->>> +               regs->nip = (unsigned long)power4_idle_nap_return;
->>> +       }
->> Is this a pointer to a function descriptor or the actual code ?
->> 
+--5zclouQno4veQbB1
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+
+On 13:48 Mon 29 Mar 2021, Greg KH wrote:
+>On Mon, Mar 29, 2021 at 11:25:11AM +0530, Bhaskar Chowdhury wrote:
+>> On 07:29 Mon 29 Mar 2021, Christoph Hellwig wrote:
+>> > I really don't think these typo patchbomb are that useful.  I'm all
+>> > for fixing typos when working with a subsystem, but I'm not sure these
+>> > patchbombs help anything.
+>> >
+>> I am sure you are holding the wrong end of the wand and grossly failing to
+>> understand.
 >
-> --- a/arch/powerpc/kernel/idle_book3s.S
-> +++ b/arch/powerpc/kernel/idle_book3s.S
-> @@ -209,4 +209,8 @@ _GLOBAL(power4_idle_nap)
->  	mtmsrd	r7
->  	isync
->  	b	1b
-> +
-> +	.globl power4_idle_nap_return
-> +power4_idle_nap_return:
-> +	blr
->  #endif
+>Please stop statements like this, it is not helpful and is doing nothing
+>but ensure that your patches will not be looked at in the future.
+>
+Greg, don't you think you are bit harsh and have an one sided view? People can
+say in better way if they don't like some work. I Have always try to get
+along.
+>> Anyway, I hope I give a heads up ...find "your way" to fix those damn
+>> thing...it's glaring....
+>
+>There is no requirement that anyone accept patches that are sent to
+>them.  When you complain when receiving comments on them, that
+>shows you do not wish to work with others.
+>
+Unfortunate you are only seeing my complains...I don't know why you are so
+blindfolded.
+>Sorry, but you are now on my local blacklist for a while, and I
+>encourage other maintainers to just ignore these patches as well.
+>
+I can not overrule that ...I know my pathes are trivial ..but it seems some
+other problems are looming large.
 
-The problem is not the definition, it is the reference.  In C, a
-function symbol always resolves to the address of the descriptor.
+NOT good Greg....not good seriously.
+>thanks,
+>
+>greg k-h
 
-Andreas.
+--5zclouQno4veQbB1
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEnwF+nWawchZUPOuwsjqdtxFLKRUFAmBhzsAACgkQsjqdtxFL
+KRW2qwf+LpIRIiK3vSyhfOkc5KEs6+JY1kuwY5zK8zNexJI+BFNVlKy2fiJDI5OJ
+ohAkhZ7u6VPXdYX4JVipyUMEVaBJRI36ebb2fl5JhhjKdp+xaw+1pP+AMIXET/SS
+mxlbUWkBiwZvlebkm26R/LDfJ6BMh8uOTth09mP9SEzfLvL41TJotFlJnCZ7+Akq
+RtQfuF4c4a6g4rkBMbKz9GFP35UIl8xrQB9roiynNg8abT7mP0mfBYEa+yofDdA5
+dmOmw22RwwuXueZhidrSifQYP4F0h/3zrUTetKYa4MZYUVnIR/Lvpa9K6U6xjuIb
+rHZf1I6RXTsmUcErV7E2MR4mZEjStg==
+=YLCg
+-----END PGP SIGNATURE-----
+
+--5zclouQno4veQbB1--
