@@ -2,35 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DAA34CA03
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 10:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A00334CB5D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 10:49:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F85WQ2n0Jz30JS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 19:35:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F85pm3Lz6z30Hb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 19:49:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=benh@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4F85W46Mlgz2yxF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 19:35:27 +1100 (AEDT)
-Received: from ip6-localhost (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 12T8XKM1023340;
- Mon, 29 Mar 2021 03:33:21 -0500
-Message-ID: <a01d923737cb1d4a603dc5046b67787233051c12.camel@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc/64s: power4 nap fixup in C
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Date: Mon, 29 Mar 2021 19:33:20 +1100
-In-Reply-To: <20210312012044.3660743-1-npiggin@gmail.com>
-References: <20210312012044.3660743-1-npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+ spf=none (no SPF record) smtp.mailfrom=canonical.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F85pQ71CDz2ysn
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 19:48:45 +1100 (AEDT)
+Received: from 1-171-92-165.dynamic-ip.hinet.net ([1.171.92.165]
+ helo=localhost) by youngberry.canonical.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <kai.heng.feng@canonical.com>)
+ id 1lQnZ9-00057P-O2; Mon, 29 Mar 2021 08:48:08 +0000
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+To: bhelgaas@google.com
+Subject: [PATCH] PCI: Try to find two continuous regions for child resource
+Date: Mon, 29 Mar 2021 16:47:59 +0800
+Message-Id: <20210329084804.257526-1-kai.heng.feng@canonical.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,408 +43,338 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Qian Cai <cai@lca.pw>, Michal Simek <monstr@monstr.eu>,
+ Arnd Bergmann <arnd@arndb.de>,
+ "open list:SPARC + UltraSPARC sparc/sparc64" <sparclinux@vger.kernel.org>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ Dominik Brodowski <linux@dominikbrodowski.net>,
+ Qinglang Miao <miaoqinglang@huawei.com>, Chen Zhou <chenzhou10@huawei.com>,
+ Kai-Heng Feng <kai.heng.feng@canonical.com>, Paul Mackerras <paulus@samba.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "open list:LINUX FOR POWERPC 32-BIT AND 64-BIT"
+ <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2021-03-12 at 11:20 +1000, Nicholas Piggin wrote:
-> 
-> +static inline void nap_adjust_return(struct pt_regs *regs)
-> 
-> +{
-> 
-> +#ifdef CONFIG_PPC_970_NAP
-> 
-> +       if (unlikely(test_thread_local_flags(_TLF_NAPPING))) {
-> +               /* Can avoid a test-and-clear because NMIs do not call this */
-> +               clear_thread_local_flags(_TLF_NAPPING);
-> +               regs->nip = (unsigned long)power4_idle_nap_return;
-> +       }
+Built-in grahpics on HP EliteDesk 805 G6 doesn't work because graphics
+can't get the BAR it needs:
+[    0.611504] pci_bus 0000:00: root bus resource [mem 0x10020200000-0x100303fffff window]
+[    0.611505] pci_bus 0000:00: root bus resource [mem 0x10030400000-0x100401fffff window]
+...
+[    0.638083] pci 0000:00:08.1:   bridge window [mem 0xd2000000-0xd23fffff]
+[    0.638086] pci 0000:00:08.1:   bridge window [mem 0x10030000000-0x100401fffff 64bit pref]
+[    0.962086] pci 0000:00:08.1: can't claim BAR 15 [mem 0x10030000000-0x100401fffff 64bit pref]: no compatible bridge window
+[    0.962086] pci 0000:00:08.1: [mem 0x10030000000-0x100401fffff 64bit pref] clipped to [mem 0x10030000000-0x100303fffff 64bit pref]
+[    0.962086] pci 0000:00:08.1:   bridge window [mem 0x10030000000-0x100303fffff 64bit pref]
+[    0.962086] pci 0000:07:00.0: can't claim BAR 0 [mem 0x10030000000-0x1003fffffff 64bit pref]: no compatible bridge window
+[    0.962086] pci 0000:07:00.0: can't claim BAR 2 [mem 0x10040000000-0x100401fffff 64bit pref]: no compatible bridge window
 
-Is this a pointer to a function descriptor or the actual code ?
+However, the root bus has two continuous regions that can contain the
+child resource requested.
 
-Cheers,
-Ben.
+So try to find another parent region if two regions are continuous and
+can contain child resource. This change makes the grahpics works on the
+system in question.
 
-> +#endif
-> 
-> +}
-> 
-> +
-> 
->  struct interrupt_state {
-> 
->  #ifdef CONFIG_PPC_BOOK3E_64
-> 
->         enum ctx_state ctx_state;
-> 
-> @@ -111,6 +122,9 @@ static inline void interrupt_async_exit_prepare(struct pt_regs *regs, struct int
-> 
->  {
-> 
->         irq_exit();
-> 
->         interrupt_exit_prepare(regs, state);
-> 
-> +
-> 
-> +       /* Adjust at exit so the main handler sees the true NIA */
-> 
-> +       nap_adjust_return(regs);
-> 
->  }
-> 
->  
-> 
->  struct interrupt_nmi_state {
-> 
-> @@ -164,6 +178,11 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
-> 
->                         radix_enabled() || (mfmsr() & MSR_DR))
-> 
->                 nmi_exit();
-> 
->  
-> 
-> +       /*
-> 
-> +        * nmi does not call nap_adjust_return because nmi should not create
-> 
-> +        * new work to do (must use irq_work for that).
-> 
-> +        */
-> 
-> +
-> 
->  #ifdef CONFIG_PPC64
-> 
->         if (TRAP(regs) != 0x900 && TRAP(regs) != 0xf00 && TRAP(regs) != 0x260)
-> 
->                 this_cpu_set_ftrace_enabled(state->ftrace_enabled);
-> 
-> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-> 
-> index 8acc3590c971..eedc3c775141 100644
-> 
-> --- a/arch/powerpc/include/asm/processor.h
-> 
-> +++ b/arch/powerpc/include/asm/processor.h
-> 
-> @@ -393,6 +393,7 @@ extern unsigned long isa300_idle_stop_mayloss(unsigned long psscr_val);
-> 
->  extern unsigned long isa206_idle_insn_mayloss(unsigned long type);
-> 
->  #ifdef CONFIG_PPC_970_NAP
-> 
->  extern void power4_idle_nap(void);
-> 
-> +void power4_idle_nap_return(void);
-> 
->  #endif
-> 
->  
-> 
->  extern unsigned long cpuidle_disable;
-> 
-> diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-> 
-> index 386d576673a1..bf137151100b 100644
-> 
-> --- a/arch/powerpc/include/asm/thread_info.h
-> 
-> +++ b/arch/powerpc/include/asm/thread_info.h
-> 
-> @@ -152,6 +152,12 @@ void arch_setup_new_exec(void);
-> 
->  
-> 
->  #ifndef __ASSEMBLY__
-> 
->  
-> 
-> +static inline void clear_thread_local_flags(unsigned int flags)
-> 
-> +{
-> 
-> +       struct thread_info *ti = current_thread_info();
-> 
-> +       ti->local_flags &= ~flags;
-> 
-> +}
-> 
-> +
-> 
->  static inline bool test_thread_local_flags(unsigned int flags)
-> 
->  {
-> 
->         struct thread_info *ti = current_thread_info();
-> 
-> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-> 
-> index 60d3051a8bc8..ea7a443488d2 100644
-> 
-> --- a/arch/powerpc/kernel/exceptions-64s.S
-> 
-> +++ b/arch/powerpc/kernel/exceptions-64s.S
-> 
-> @@ -692,25 +692,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
-> 
->         ld      r1,GPR1(r1)
-> 
->  .endm
-> 
->  
-> 
-> -/*
-> 
-> - * When the idle code in power4_idle puts the CPU into NAP mode,
-> 
-> - * it has to do so in a loop, and relies on the external interrupt
-> 
-> - * and decrementer interrupt entry code to get it out of the loop.
-> 
-> - * It sets the _TLF_NAPPING bit in current_thread_info()->local_flags
-> 
-> - * to signal that it is in the loop and needs help to get out.
-> 
-> - */
-> 
-> -#ifdef CONFIG_PPC_970_NAP
-> 
-> -#define FINISH_NAP                             \
-> 
-> -BEGIN_FTR_SECTION                              \
-> 
-> -       ld      r11, PACA_THREAD_INFO(r13);     \
-> 
-> -       ld      r9,TI_LOCAL_FLAGS(r11);         \
-> 
-> -       andi.   r10,r9,_TLF_NAPPING;            \
-> 
-> -       bnel    power4_fixup_nap;               \
-> 
-> -END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
-> 
-> -#else
-> 
-> -#define FINISH_NAP
-> 
-> -#endif
-> 
-> -
-> 
->  /*
-> 
->   * There are a few constraints to be concerned with.
-> 
->   * - Real mode exceptions code/data must be located at their physical location.
-> 
-> @@ -1248,7 +1229,6 @@ EXC_COMMON_BEGIN(machine_check_common)
-> 
->          */
-> 
->         GEN_COMMON machine_check
-> 
->  
-> 
-> -       FINISH_NAP
-> 
->         /* Enable MSR_RI when finished with PACA_EXMC */
-> 
->         li      r10,MSR_RI
-> 
->         mtmsrd  r10,1
-> 
-> @@ -1571,7 +1551,6 @@ EXC_VIRT_BEGIN(hardware_interrupt, 0x4500, 0x100)
-> 
->  EXC_VIRT_END(hardware_interrupt, 0x4500, 0x100)
-> 
->  EXC_COMMON_BEGIN(hardware_interrupt_common)
-> 
->         GEN_COMMON hardware_interrupt
-> 
-> -       FINISH_NAP
-> 
->         addi    r3,r1,STACK_FRAME_OVERHEAD
-> 
->         bl      do_IRQ
-> 
->         b       interrupt_return
-> 
-> @@ -1801,7 +1780,6 @@ EXC_VIRT_BEGIN(decrementer, 0x4900, 0x80)
-> 
->  EXC_VIRT_END(decrementer, 0x4900, 0x80)
-> 
->  EXC_COMMON_BEGIN(decrementer_common)
-> 
->         GEN_COMMON decrementer
-> 
-> -       FINISH_NAP
-> 
->         addi    r3,r1,STACK_FRAME_OVERHEAD
-> 
->         bl      timer_interrupt
-> 
->         b       interrupt_return
-> 
-> @@ -1886,7 +1864,6 @@ EXC_VIRT_BEGIN(doorbell_super, 0x4a00, 0x100)
-> 
->  EXC_VIRT_END(doorbell_super, 0x4a00, 0x100)
-> 
->  EXC_COMMON_BEGIN(doorbell_super_common)
-> 
->         GEN_COMMON doorbell_super
-> 
-> -       FINISH_NAP
-> 
->         addi    r3,r1,STACK_FRAME_OVERHEAD
-> 
->  #ifdef CONFIG_PPC_DOORBELL
-> 
->         bl      doorbell_exception
-> 
-> @@ -2237,7 +2214,6 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
-> 
->  
-> 
->  EXC_COMMON_BEGIN(hmi_exception_common)
-> 
->         GEN_COMMON hmi_exception
-> 
-> -       FINISH_NAP
-> 
->         addi    r3,r1,STACK_FRAME_OVERHEAD
-> 
->         bl      handle_hmi_exception
-> 
->         b       interrupt_return
-> 
-> @@ -2266,7 +2242,6 @@ EXC_VIRT_BEGIN(h_doorbell, 0x4e80, 0x20)
-> 
->  EXC_VIRT_END(h_doorbell, 0x4e80, 0x20)
-> 
->  EXC_COMMON_BEGIN(h_doorbell_common)
-> 
->         GEN_COMMON h_doorbell
-> 
-> -       FINISH_NAP
-> 
->         addi    r3,r1,STACK_FRAME_OVERHEAD
-> 
->  #ifdef CONFIG_PPC_DOORBELL
-> 
->         bl      doorbell_exception
-> 
-> @@ -2299,7 +2274,6 @@ EXC_VIRT_BEGIN(h_virt_irq, 0x4ea0, 0x20)
-> 
->  EXC_VIRT_END(h_virt_irq, 0x4ea0, 0x20)
-> 
->  EXC_COMMON_BEGIN(h_virt_irq_common)
-> 
->         GEN_COMMON h_virt_irq
-> 
-> -       FINISH_NAP
-> 
->         addi    r3,r1,STACK_FRAME_OVERHEAD
-> 
->         bl      do_IRQ
-> 
->         b       interrupt_return
-> 
-> @@ -2345,7 +2319,6 @@ EXC_VIRT_BEGIN(performance_monitor, 0x4f00, 0x20)
-> 
->  EXC_VIRT_END(performance_monitor, 0x4f00, 0x20)
-> 
->  EXC_COMMON_BEGIN(performance_monitor_common)
-> 
->         GEN_COMMON performance_monitor
-> 
-> -       FINISH_NAP
-> 
->         addi    r3,r1,STACK_FRAME_OVERHEAD
-> 
->         bl      performance_monitor_exception
-> 
->         b       interrupt_return
-> 
-> @@ -3096,24 +3069,6 @@ USE_FIXED_SECTION(virt_trampolines)
-> 
->  __end_interrupts:
-> 
->  DEFINE_FIXED_SYMBOL(__end_interrupts)
-> 
->  
-> 
-> -#ifdef CONFIG_PPC_970_NAP
-> 
-> -       /*
-> 
-> -        * Called by exception entry code if _TLF_NAPPING was set, this clears
-> 
-> -        * the NAPPING flag, and redirects the exception exit to
-> 
-> -        * power4_fixup_nap_return.
-> 
-> -        */
-> 
-> -       .globl power4_fixup_nap
-> 
-> -EXC_COMMON_BEGIN(power4_fixup_nap)
-> 
-> -       andc    r9,r9,r10
-> 
-> -       std     r9,TI_LOCAL_FLAGS(r11)
-> 
-> -       LOAD_REG_ADDR(r10, power4_idle_nap_return)
-> 
-> -       std     r10,_NIP(r1)
-> 
-> -       blr
-> 
-> -
-> 
-> -power4_idle_nap_return:
-> 
-> -       blr
-> 
-> -#endif
-> 
-> -
-> 
->  CLOSE_FIXED_SECTION(real_vectors);
-> 
->  CLOSE_FIXED_SECTION(real_trampolines);
-> 
->  CLOSE_FIXED_SECTION(virt_vectors);
-> 
-> diff --git a/arch/powerpc/kernel/idle_book3s.S b/arch/powerpc/kernel/idle_book3s.S
-> 
-> index f9e6d83e6720..abb719b21cae 100644
-> 
-> --- a/arch/powerpc/kernel/idle_book3s.S
-> 
-> +++ b/arch/powerpc/kernel/idle_book3s.S
-> 
-> @@ -209,4 +209,8 @@ _GLOBAL(power4_idle_nap)
-> 
->         mtmsrd  r7
-> 
->         isync
-> 
->         b       1b
-> 
-> +
-> 
-> +       .globl power4_idle_nap_return
-> 
-> +power4_idle_nap_return:
-> 
-> +       blr
-> 
->  #endif
-> 
-> --
-> 
-> 2.23.0
+Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=212013
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+---
+ arch/microblaze/pci/pci-common.c |  4 +--
+ arch/powerpc/kernel/pci-common.c |  8 ++---
+ arch/sparc/kernel/pci.c          |  4 +--
+ drivers/pci/pci.c                | 60 +++++++++++++++++++++++++++-----
+ drivers/pci/setup-res.c          | 21 +++++++----
+ drivers/pcmcia/rsrc_nonstatic.c  |  4 +--
+ include/linux/pci.h              |  6 ++--
+ 7 files changed, 80 insertions(+), 27 deletions(-)
+
+diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
+index 557585f1be41..8e65832fb510 100644
+--- a/arch/microblaze/pci/pci-common.c
++++ b/arch/microblaze/pci/pci-common.c
+@@ -669,7 +669,7 @@ static void pcibios_allocate_bus_resources(struct pci_bus *bus)
+ {
+ 	struct pci_bus *b;
+ 	int i;
+-	struct resource *res, *pr;
++	struct resource *res, *pr = NULL;
+ 
+ 	pr_debug("PCI: Allocating bus resources for %04x:%02x...\n",
+ 		 pci_domain_nr(bus), bus->number);
+@@ -688,7 +688,7 @@ static void pcibios_allocate_bus_resources(struct pci_bus *bus)
+ 			 * and as such ensure proper re-allocation
+ 			 * later.
+ 			 */
+-			pr = pci_find_parent_resource(bus->self, res);
++			pci_find_parent_resource(bus->self, res, &pr, NULL);
+ 			if (pr == res) {
+ 				/* this happens when the generic PCI
+ 				 * code (wrongly) decides that this
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index 001e90cd8948..f865354b746d 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -1196,7 +1196,7 @@ static void pcibios_allocate_bus_resources(struct pci_bus *bus)
+ {
+ 	struct pci_bus *b;
+ 	int i;
+-	struct resource *res, *pr;
++	struct resource *res, *pr = NULL;
+ 
+ 	pr_debug("PCI: Allocating bus resources for %04x:%02x...\n",
+ 		 pci_domain_nr(bus), bus->number);
+@@ -1213,7 +1213,7 @@ static void pcibios_allocate_bus_resources(struct pci_bus *bus)
+ 			pr = (res->flags & IORESOURCE_IO) ?
+ 				&ioport_resource : &iomem_resource;
+ 		else {
+-			pr = pci_find_parent_resource(bus->self, res);
++			pci_find_parent_resource(bus->self, res, &pr, NULL);
+ 			if (pr == res) {
+ 				/* this happens when the generic PCI
+ 				 * code (wrongly) decides that this
+@@ -1265,12 +1265,12 @@ static void pcibios_allocate_bus_resources(struct pci_bus *bus)
+ 
+ static inline void alloc_resource(struct pci_dev *dev, int idx)
+ {
+-	struct resource *pr, *r = &dev->resource[idx];
++	struct resource *pr = NULL, *r = &dev->resource[idx];
+ 
+ 	pr_debug("PCI: Allocating %s: Resource %d: %pR\n",
+ 		 pci_name(dev), idx, r);
+ 
+-	pr = pci_find_parent_resource(dev, r);
++	pci_find_parent_resource(dev, r, &pr, NULL);
+ 	if (!pr || (pr->flags & IORESOURCE_UNSET) ||
+ 	    request_resource(pr, r) < 0) {
+ 		printk(KERN_WARNING "PCI: Cannot allocate resource region %d"
+diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
+index 9c2b720bfd20..b4006798e4e1 100644
+--- a/arch/sparc/kernel/pci.c
++++ b/arch/sparc/kernel/pci.c
+@@ -621,7 +621,7 @@ static void pci_bus_register_of_sysfs(struct pci_bus *bus)
+ static void pci_claim_legacy_resources(struct pci_dev *dev)
+ {
+ 	struct pci_bus_region region;
+-	struct resource *p, *root, *conflict;
++	struct resource *p, *root = NULL, *conflict;
+ 
+ 	if ((dev->class >> 8) != PCI_CLASS_DISPLAY_VGA)
+ 		return;
+@@ -637,7 +637,7 @@ static void pci_claim_legacy_resources(struct pci_dev *dev)
+ 	region.end = region.start + 0x1ffffUL;
+ 	pcibios_bus_to_resource(dev->bus, p, &region);
+ 
+-	root = pci_find_parent_resource(dev, p);
++	pci_find_parent_resource(dev, p, &root, NULL);
+ 	if (!root) {
+ 		pci_info(dev, "can't claim VGA legacy %pR: no compatible bridge window\n", p);
+ 		goto err;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 16a17215f633..abbcd2dcdc02 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -693,20 +693,25 @@ u8 pci_find_ht_capability(struct pci_dev *dev, int ht_cap)
+ EXPORT_SYMBOL_GPL(pci_find_ht_capability);
+ 
+ /**
+- * pci_find_parent_resource - return resource region of parent bus of given
++ * pci_find_parent_resource - find resource region of parent bus of given
+  *			      region
+  * @dev: PCI device structure contains resources to be searched
+  * @res: child resource record for which parent is sought
++ * @first: the first region that contains the child resource
++ * @second: the second region that combines with the first region to fully
++ * contains the child resource
+  *
+  * For given resource region of given device, return the resource region of
+  * parent bus the given region is contained in.
+  */
+-struct resource *pci_find_parent_resource(const struct pci_dev *dev,
+-					  struct resource *res)
++void pci_find_parent_resource(const struct pci_dev *dev,
++					  struct resource *res,
++					  struct resource **first,
++					  struct resource **second)
+ {
+ 	const struct pci_bus *bus = dev->bus;
+ 	struct resource *r;
+-	int i;
++	int i, overlaps = 0;
+ 
+ 	pci_bus_for_each_resource(bus, r, i) {
+ 		if (!r)
+@@ -718,8 +723,10 @@ struct resource *pci_find_parent_resource(const struct pci_dev *dev,
+ 			 * not, the allocator made a mistake.
+ 			 */
+ 			if (r->flags & IORESOURCE_PREFETCH &&
+-			    !(res->flags & IORESOURCE_PREFETCH))
+-				return NULL;
++			    !(res->flags & IORESOURCE_PREFETCH)) {
++				*first = NULL;
++				return;
++			}
+ 
+ 			/*
+ 			 * If we're below a transparent bridge, there may
+@@ -729,10 +736,47 @@ struct resource *pci_find_parent_resource(const struct pci_dev *dev,
+ 			 * on pci_bus_for_each_resource() giving us those
+ 			 * first.
+ 			 */
+-			return r;
++			*first = r;
++			return;
+ 		}
+ 	}
+-	return NULL;
++
++	if (!second)
++		return;
++
++	pci_bus_for_each_resource(bus, r, i) {
++		if (!r)
++			continue;
++		if (resource_overlaps(r, res)) {
++			if (r->flags & IORESOURCE_PREFETCH &&
++			    !(res->flags & IORESOURCE_PREFETCH))
++				continue;
++
++			if (!overlaps++)
++				*first = r;
++			else {
++				*second = r;
++				break;
++			}
++		}
++	}
++
++	if (overlaps != 2)
++		goto out;
++
++	if ((*first)->start > (*second)->start)
++		swap(*first, *second);
++
++	if ((*first)->end + 1 != (*second)->start)
++		goto out;
++
++	if ((*first)->start <= res->start && (*second)->end >= res->end)
++		return;
++out:
++
++	*first = NULL;
++	*second = NULL;
++	return;
+ }
+ EXPORT_SYMBOL(pci_find_parent_resource);
+ 
+diff --git a/drivers/pci/setup-res.c b/drivers/pci/setup-res.c
+index 7f1acb3918d0..e39615321d81 100644
+--- a/drivers/pci/setup-res.c
++++ b/drivers/pci/setup-res.c
+@@ -131,7 +131,7 @@ void pci_update_resource(struct pci_dev *dev, int resno)
+ int pci_claim_resource(struct pci_dev *dev, int resource)
+ {
+ 	struct resource *res = &dev->resource[resource];
+-	struct resource *root, *conflict;
++	struct resource *first = NULL, *second = NULL, *conflict;
+ 
+ 	if (res->flags & IORESOURCE_UNSET) {
+ 		pci_info(dev, "can't claim BAR %d %pR: no address assigned\n",
+@@ -147,21 +147,28 @@ int pci_claim_resource(struct pci_dev *dev, int resource)
+ 	if (res->flags & IORESOURCE_ROM_SHADOW)
+ 		return 0;
+ 
+-	root = pci_find_parent_resource(dev, res);
+-	if (!root) {
++	pci_find_parent_resource(dev, res, &first, &second);
++	if (!first) {
+ 		pci_info(dev, "can't claim BAR %d %pR: no compatible bridge window\n",
+ 			 resource, res);
+ 		res->flags |= IORESOURCE_UNSET;
+ 		return -EINVAL;
+ 	}
+ 
+-	conflict = request_resource_conflict(root, res);
++	if (second)
++		first->end = second->end;
++
++	conflict = request_resource_conflict(first, res);
+ 	if (conflict) {
++		if (second)
++			first->end = second->start - 1;
++
+ 		pci_info(dev, "can't claim BAR %d %pR: address conflict with %s %pR\n",
+ 			 resource, res, conflict->name, conflict);
+ 		res->flags |= IORESOURCE_UNSET;
+ 		return -EBUSY;
+-	}
++	} else if (second)
++		second->start = second->end = 0;
+ 
+ 	return 0;
+ }
+@@ -195,7 +202,7 @@ resource_size_t __weak pcibios_retrieve_fw_addr(struct pci_dev *dev, int idx)
+ static int pci_revert_fw_address(struct resource *res, struct pci_dev *dev,
+ 		int resno, resource_size_t size)
+ {
+-	struct resource *root, *conflict;
++	struct resource *root = NULL, *conflict;
+ 	resource_size_t fw_addr, start, end;
+ 
+ 	fw_addr = pcibios_retrieve_fw_addr(dev, resno);
+@@ -208,7 +215,7 @@ static int pci_revert_fw_address(struct resource *res, struct pci_dev *dev,
+ 	res->end = res->start + size - 1;
+ 	res->flags &= ~IORESOURCE_UNSET;
+ 
+-	root = pci_find_parent_resource(dev, res);
++	pci_find_parent_resource(dev, res, &root, NULL);
+ 	if (!root) {
+ 		if (res->flags & IORESOURCE_IO)
+ 			root = &ioport_resource;
+diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
+index 3b05760e69d6..2fba42d7486e 100644
+--- a/drivers/pcmcia/rsrc_nonstatic.c
++++ b/drivers/pcmcia/rsrc_nonstatic.c
+@@ -73,7 +73,7 @@ static struct resource *
+ claim_region(struct pcmcia_socket *s, resource_size_t base,
+ 		resource_size_t size, int type, char *name)
+ {
+-	struct resource *res, *parent;
++	struct resource *res, *parent = NULL;
+ 
+ 	parent = type & IORESOURCE_MEM ? &iomem_resource : &ioport_resource;
+ 	res = pcmcia_make_resource(base, size, type | IORESOURCE_BUSY, name);
+@@ -81,7 +81,7 @@ claim_region(struct pcmcia_socket *s, resource_size_t base,
+ 	if (res) {
+ #ifdef CONFIG_PCI
+ 		if (s && s->cb_dev)
+-			parent = pci_find_parent_resource(s->cb_dev, res);
++			pci_find_parent_resource(s->cb_dev, res, &parent, NULL);
+ #endif
+ 		if (!parent || request_resource(parent, res)) {
+ 			kfree(res);
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 86c799c97b77..dd1455be5247 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1049,8 +1049,10 @@ void pci_device_add(struct pci_dev *dev, struct pci_bus *bus);
+ unsigned int pci_scan_child_bus(struct pci_bus *bus);
+ void pci_bus_add_device(struct pci_dev *dev);
+ void pci_read_bridge_bases(struct pci_bus *child);
+-struct resource *pci_find_parent_resource(const struct pci_dev *dev,
+-					  struct resource *res);
++void pci_find_parent_resource(const struct pci_dev *dev,
++					  struct resource *res,
++					  struct resource **first,
++					  struct resource **second);
+ u8 pci_swizzle_interrupt_pin(const struct pci_dev *dev, u8 pin);
+ int pci_get_interrupt_pin(struct pci_dev *dev, struct pci_dev **bridge);
+ u8 pci_common_swizzle(struct pci_dev *dev, u8 *pinp);
+-- 
+2.30.2
 
