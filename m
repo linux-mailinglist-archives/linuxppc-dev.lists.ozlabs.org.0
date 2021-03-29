@@ -1,37 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3F434D18D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 15:41:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C70B34D359
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Mar 2021 17:10:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F8DHg4z4yz2yxn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 00:41:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F8GH41pKsz30Hn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 02:10:40 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=3lmkfVXQ;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=IAdBFzE0;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
+ helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=3lmkfVXQ; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=IAdBFzE0; 
+ dkim-atps=neutral
+Received: from galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F8DHM4nwcz2yxc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 00:40:46 +1100 (AEDT)
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F8DHC1pQJz9sVS; Tue, 30 Mar 2021 00:40:39 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au
-In-Reply-To: <20210326070755.304625-1-aneesh.kumar@linux.ibm.com>
-References: <20210326070755.304625-1-aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/mm/book3s64: Use the correct storage key value
- when calling H_PROTECT
-Message-Id: <161702520473.3080836.1729450250731388537.b4-ty@ellerman.id.au>
-Date: Tue, 30 Mar 2021 00:40:04 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F8GGb5k2Sz2yRg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 02:10:15 +1100 (AEDT)
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1617030603;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=czaWfQDmWfTZZyk40/r3fn5m8w82rCTMKw/DG6KyCoA=;
+ b=3lmkfVXQ6Kn8x60NUjbCQEHJ6ITAaNLJLrTnRuRX79GChppNS9h4DSkLF9ihUdwo1uxBBf
+ nRbSqQ7ZgOFX/uwi8bTzSHRM2J7jRcMz+LBfdbllOjxGHkLMkCsWez4kglhEbvuHhpEUUs
+ IckgkHO26+svKMgFIWzihmC95ey6tfnNRWzz33LTUZn5t6psLWN5YNgYffoS5d/azDT+4F
+ R8YtzpNyVod55yDrfeqRVze0rWL4ZPvemU3Qvb7xvlqL2wEbZQrLZmQwA+f2tlDQdvYNHz
+ XcUrWIXlJ6UH4PiTv6M/UYTqpmgVxiA3F7vils6OtvtTO4ZQW7Dv93hVGX8P2w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1617030603;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=czaWfQDmWfTZZyk40/r3fn5m8w82rCTMKw/DG6KyCoA=;
+ b=IAdBFzE0yMQolHI4rDtJPaIUbjeNL+Gd3Mx/YUdTHGxrOCZhymDMIWuCIWSOB9MI2RgLFn
+ p9Fb5UQys2JfXMAg==
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH next v1 2/3] printk: remove safe buffers
+In-Reply-To: <YGGmNu5ilDnSKH3g@alley>
+References: <20210316233326.10778-1-john.ogness@linutronix.de>
+ <20210316233326.10778-3-john.ogness@linutronix.de> <YFnHKlCvIA2nI41c@alley>
+ <87pmzmi2xm.fsf@jogness.linutronix.de> <YGGmNu5ilDnSKH3g@alley>
+Date: Mon, 29 Mar 2021 17:10:02 +0200
+Message-ID: <87sg4e6lo5.fsf@jogness.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,27 +71,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
+Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Paul Mackerras <paulus@samba.org>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>, Rafael Aquini <aquini@redhat.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Yue Hu <huyue2@yulong.com>,
+ Jordan Niethe <jniethe5@gmail.com>, Kees Cook <keescook@chromium.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Alistair Popple <alistair@popple.id.au>, "Guilherme G.
+ Piccoli" <gpiccoli@canonical.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Eric Biederman <ebiederm@xmission.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 26 Mar 2021 12:37:55 +0530, Aneesh Kumar K.V wrote:
-> H_PROTECT expect the flag value to include
-> flags: AVPN, pp0, pp1, pp2, key0-key4, Noexec, CMO Option flags
-> 
-> This patch updates hpte_updatepp() to fetch the storage key value from the linux page
-> table and use the same in H_PROTECT hcall.
-> 
-> native_hpte_updatepp() is not updated because the kernel doesn't clear the existing
-> storage key value there. The kernel also doesn't use hpte_updatepp() callback for
-> updating storage keys.
-> 
-> [...]
+On 2021-03-29, Petr Mladek <pmladek@suse.com> wrote:
+> I wonder if some console drivers rely on the fact that the write()
+> callback is called with interrupts disabled.
+>
+> IMHO, it would be a bug when any write() callback expects that
+> callers disabled the interrupts.
 
-Applied to powerpc/fixes.
+Agreed.
 
-[1/1] powerpc/mm/book3s64: Use the correct storage key value when calling H_PROTECT
-      https://git.kernel.org/powerpc/c/53f1d31708f6240e4615b0927df31f182e389e2f
+> Do you plan to remove the console-spinning stuff after offloading
+> consoles to the kthreads?
 
-cheers
+Yes. Although a similar concept will be introduced to allow the threaded
+printers and the atomic consoles to compete.
+
+> Will you call console write() callback with irq enabled from the
+> kthread?
+
+No. That defeats the fundamental purpose of this entire rework
+excercise. ;-)
+
+> Anyway, we should at least add a comment why the interrupts are
+> disabled.
+
+I decided to move the local_irq_save/restore inside the console-spinning
+functions and added a comment for v2.
+
+John Ogness
