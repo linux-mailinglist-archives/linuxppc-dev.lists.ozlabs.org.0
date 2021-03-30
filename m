@@ -1,94 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F3534E085
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 07:03:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D014F34E086
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 07:06:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F8cmW077Hz3c79
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 16:03:55 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kBPxEfcu;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F8cq85XPNz3cCh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 16:06:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=kBPxEfcu; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F8cm45SnGz302G
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 16:03:32 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12U4Xn8e040438; Tue, 30 Mar 2021 01:03:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=MkRFTZ+yQ4oZTVfxLM4HDI9YIxINp2dFxT8AxBvUW8s=;
- b=kBPxEfcuxNPhvJSsQiVvdEvxHBp5WE9qw2CvHu7FVzPKjPsvthKN3kNBjuAz0q51xIne
- uULawPmXn1hu/O6Q505F3BPn536kZL1u34/YJ08llk5jPZJkpwre4+2jght+1U+LM+7j
- 6yymL9nDAtODucbYi5Op4IQp5/AkHPOyMM+iazbWqNavL4kylcGfIeSufamQWl1rwBZ2
- avHWNQyGj5g02sj3rObdDOUtGIEOt86JP3LV5Nu9BmmLsRYLlB5KcbAB/iVx6cNCM+LF
- D8Ynjmkd0rUgOBBShgsFXYz+JWLJr4oET6Meoyak/AqoKeJvDU9ww6GAoi4yxUgOKcPh gQ== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37jhnm41pm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Mar 2021 01:03:26 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12U52ojg017666;
- Tue, 30 Mar 2021 05:03:24 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma03dal.us.ibm.com with ESMTP id 37jtub50tr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Mar 2021 05:03:24 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12U53NOt33685954
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Mar 2021 05:03:23 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 286DABE054;
- Tue, 30 Mar 2021 05:03:23 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 02551BE056;
- Tue, 30 Mar 2021 05:03:20 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.52.226])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 30 Mar 2021 05:03:20 +0000 (GMT)
-X-Mailer: emacs 28.0.50 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linux-nvdimm@lists.01.org,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/papr_scm: Mark nvdimm as unarmed if needed
- during probe
-In-Reply-To: <20210329113103.476760-1-vaibhav@linux.ibm.com>
-References: <20210329113103.476760-1-vaibhav@linux.ibm.com>
-Date: Tue, 30 Mar 2021 10:33:18 +0530
-Message-ID: <87k0pp6xnt.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F8cpp4RSJz2yy0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 16:05:54 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4F8cpl4yYsz9txNc;
+ Tue, 30 Mar 2021 07:05:51 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id FuF7edQKtkHX; Tue, 30 Mar 2021 07:05:51 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F8cpl3zZ3z9txNb;
+ Tue, 30 Mar 2021 07:05:51 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BEAB58B7E7;
+ Tue, 30 Mar 2021 07:05:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id kPXz2HGuX8KL; Tue, 30 Mar 2021 07:05:51 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 041388B75B;
+ Tue, 30 Mar 2021 07:05:50 +0200 (CEST)
+Subject: Re: [PATCH v10 04/10] powerpc/kprobes: Mark newly allocated probes as
+ ROX
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210330045132.722243-1-jniethe5@gmail.com>
+ <20210330045132.722243-5-jniethe5@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <d61a1b2f-4a22-fb43-e8fe-a7612431c4ad@csgroup.eu>
+Date: Tue, 30 Mar 2021 07:05:47 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LhqZbeDmdCXDAw8XSe_vCeq7tXGk2ofH
-X-Proofpoint-ORIG-GUID: LhqZbeDmdCXDAw8XSe_vCeq7tXGk2ofH
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-30_01:2021-03-26,
- 2021-03-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- mlxscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
- mlxlogscore=999 bulkscore=0 phishscore=0 spamscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2103250000 definitions=main-2103300029
+In-Reply-To: <20210330045132.722243-5-jniethe5@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,53 +63,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Cc: ajd@linux.ibm.com, npiggin@gmail.com, cmr@codefail.de,
+ naveen.n.rao@linux.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 
-> In case an nvdimm is found to be unarmed during probe then set its
-> NDD_UNARMED flag before nvdimm_create(). This would enforce a
-> read-only access to the ndimm region. Presently even if an nvdimm is
-> unarmed its not marked as read-only on ppc64 guests.
->
-> The patch updates papr_scm_nvdimm_init() to force query of nvdimm
-> health via __drc_pmem_query_health() and if nvdimm is found to be
-> unarmed then set the nvdimm flag ND_UNARMED for nvdimm_create().
->
 
-Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Le 30/03/2021 à 06:51, Jordan Niethe a écrit :
+> From: Russell Currey <ruscur@russell.cc>
+> 
+> Add the arch specific insn page allocator for powerpc. This allocates
+> ROX pages if STRICT_KERNEL_RWX is enabled. These pages are only written
+> to with patch_instruction() which is able to write RO pages.
+> 
+> Reviewed-by: Daniel Axtens <dja@axtens.net>
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> [jpn: Reword commit message, switch to __vmalloc_node_range()]
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index 835163f54244..7e8168e19427 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -914,6 +914,15 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->  	dimm_flags = 0;
->  	set_bit(NDD_LABELING, &dimm_flags);
->  
-> +	/*
-> +	 * Check if the nvdimm is unarmed. No locking needed as we are still
-> +	 * initializing. Ignore error encountered if any.
-> +	 */
-> +	__drc_pmem_query_health(p);
+> v9: - vmalloc_exec() no longer exists
+>      - Set the page to RW before freeing it
+> v10: - use __vmalloc_node_range()
+> ---
+>   arch/powerpc/kernel/kprobes.c | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
+> 
+> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+> index 01ab2163659e..3ae27af9b094 100644
+> --- a/arch/powerpc/kernel/kprobes.c
+> +++ b/arch/powerpc/kernel/kprobes.c
+> @@ -25,6 +25,7 @@
+>   #include <asm/sections.h>
+>   #include <asm/inst.h>
+>   #include <linux/uaccess.h>
+> +#include <linux/vmalloc.h>
+>   
+>   DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
+>   DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+> @@ -103,6 +104,19 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name, unsigned int offset)
+>   	return addr;
+>   }
+>   
+> +void *alloc_insn_page(void)
+> +{
+> +	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX)) {
+> +		return __vmalloc_node_range(PAGE_SIZE, 1, MODULES_VADDR, MODULES_END,
+> +				GFP_KERNEL, PAGE_KERNEL_ROX, VM_FLUSH_RESET_PERMS,
+> +				NUMA_NO_NODE, __builtin_return_address(0));
+> +	} else {
+> +		return __vmalloc_node_range(PAGE_SIZE, 1, MODULES_VADDR, MODULES_END,
+> +				GFP_KERNEL, PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS,
+> +				NUMA_NO_NODE, __builtin_return_address(0));
+> +	}
+> +}
 > +
-> +	if (p->health_bitmap & PAPR_PMEM_UNARMED_MASK)
-> +		set_bit(NDD_UNARMED, &dimm_flags);
-> +
->  	p->nvdimm = nvdimm_create(p->bus, p, papr_nd_attr_groups,
->  				  dimm_flags, PAPR_SCM_DIMM_CMD_MASK, 0, NULL);
->  	if (!p->nvdimm) {
-> -- 
-> 2.30.2
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+What about
+
+void *alloc_insn_page(void)
+{
+	pgprot_t prot = IS_ENABLED(CONFIG_STRICT_KERNEL_RWX) ? PAGE_KERNEL_ROX : PAGE_KERNEL_EXEC;
+
+	return __vmalloc_node_range(PAGE_SIZE, 1, MODULES_VADDR, MODULES_END,
+			GFP_KERNEL, prot, VM_FLUSH_RESET_PERMS,
+			NUMA_NO_NODE, __builtin_return_address(0));
+}
+
+>   int arch_prepare_kprobe(struct kprobe *p)
+>   {
+>   	int ret = 0;
+> 
