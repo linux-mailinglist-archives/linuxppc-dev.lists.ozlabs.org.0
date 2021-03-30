@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092BC34E356
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 10:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3215834E53B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 12:18:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F8jbv6yk9z30Pf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 19:41:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F8llR1cqGz30Mj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 21:18:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,34 +15,34 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F8jbY684Mz302C
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 19:41:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F8ll6089Mz2xy3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 21:18:05 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F8jbP4gGqz9ty5J;
- Tue, 30 Mar 2021 10:41:21 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4F8lky0Skxz9ty55;
+ Tue, 30 Mar 2021 12:18:02 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id m5ZcP1WejqMt; Tue, 30 Mar 2021 10:41:21 +0200 (CEST)
+ with ESMTP id ps5lNHgb8olB; Tue, 30 Mar 2021 12:18:01 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F8jbP3rhZz9ty58;
- Tue, 30 Mar 2021 10:41:21 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F8lkx5tzKz9ty52;
+ Tue, 30 Mar 2021 12:18:01 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C8D888B7EC;
- Tue, 30 Mar 2021 10:41:21 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DEAD38B7F0;
+ Tue, 30 Mar 2021 12:18:01 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id K2Y0u5_WTgnD; Tue, 30 Mar 2021 10:41:21 +0200 (CEST)
+ with ESMTP id 0dt7KnvUNDCa; Tue, 30 Mar 2021 12:18:01 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 13DDC8B75B;
- Tue, 30 Mar 2021 10:41:21 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EF9C88B7EE;
+ Tue, 30 Mar 2021 12:18:00 +0200 (CEST)
 Subject: Re: [PATCH] powerpc/vdso: Separate vvar vma from vdso
 To: Dmitry Safonov <dima@arista.com>, linux-kernel@vger.kernel.org
 References: <20210326191720.138155-1-dima@arista.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <09e8d68d-54fe-e327-b44f-8f68543edba1@csgroup.eu>
-Date: Tue, 30 Mar 2021 10:41:18 +0200
+Message-ID: <47623d02-eb29-0fcb-0cfd-a9c11c9fab02@csgroup.eu>
+Date: Tue, 30 Mar 2021 12:17:59 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.9.0
 MIME-Version: 1.0
@@ -108,26 +108,38 @@ Le 26/03/2021 à 20:17, Dmitry Safonov a écrit :
 >   arch/powerpc/kernel/vdso.c             | 54 +++++++++++++++++++-------
 >   2 files changed, 40 insertions(+), 16 deletions(-)
 > 
-
-> @@ -133,7 +135,13 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
->   	 * install_special_mapping or the perf counter mmap tracking code
->   	 * will fail to recognise it as a vDSO.
->   	 */
-> -	mm->context.vdso = (void __user *)vdso_base + PAGE_SIZE;
-> +	mm->context.vdso = (void __user *)vdso_base + vvar_size;
-> +
-> +	vma = _install_special_mapping(mm, vdso_base, vvar_size,
-> +				       VM_READ | VM_MAYREAD | VM_IO |
-> +				       VM_DONTDUMP | VM_PFNMAP, &vvar_spec);
-> +	if (IS_ERR(vma))
-> +		return PTR_ERR(vma);
+> diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+> index 652ce85f9410..4bc45d3ed8b0 100644
+> --- a/arch/powerpc/include/asm/mmu_context.h
+> +++ b/arch/powerpc/include/asm/mmu_context.h
+> @@ -263,7 +263,7 @@ extern void arch_exit_mmap(struct mm_struct *mm);
+>   static inline void arch_unmap(struct mm_struct *mm,
+>   			      unsigned long start, unsigned long end)
+>   {
+> -	unsigned long vdso_base = (unsigned long)mm->context.vdso - PAGE_SIZE;
+> +	unsigned long vdso_base = (unsigned long)mm->context.vdso;
 >   
->   	/*
->   	 * our vma flags don't have VM_WRITE so by default, the process isn't
+>   	if (start <= vdso_base && vdso_base < end)
+>   		mm->context.vdso = NULL;
+> diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+> index e839a906fdf2..b14907209822 100644
+> --- a/arch/powerpc/kernel/vdso.c
+> +++ b/arch/powerpc/kernel/vdso.c
+> @@ -55,10 +55,10 @@ static int vdso_mremap(const struct vm_special_mapping *sm, struct vm_area_struc
+>   {
+>   	unsigned long new_size = new_vma->vm_end - new_vma->vm_start;
+>   
+> -	if (new_size != text_size + PAGE_SIZE)
+> +	if (new_size != text_size)
+>   		return -EINVAL;
 
+In ARM64 you have removed the above test in commit 871402e05b24cb56 ("mm: forbid splitting special 
+mappings"). Do we need to keep it here ?
 
-IIUC, VM_PFNMAP is for when we have a vvar_fault handler.
-Allthough we will soon have one for handle TIME_NS, at the moment powerpc doesn't have that handler.
-Isn't it dangerous to set VM_PFNMAP then ?
+>   
+> -	current->mm->context.vdso = (void __user *)new_vma->vm_start + PAGE_SIZE;
+> +	current->mm->context.vdso = (void __user *)new_vma->vm_start;
+>   
+>   	return 0;
+>   }
 
-Christophe
