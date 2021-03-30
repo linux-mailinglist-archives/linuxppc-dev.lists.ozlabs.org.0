@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3EA834E058
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 06:53:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F283F34E059
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 06:53:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F8cXR71jHz3c6x
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 15:53:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F8cXw00Nsz3cDV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 15:53:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=DMo5mmys;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=kkOsfG1f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d;
- helo=mail-pl1-x62d.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
+ helo=mail-pf1-x431.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DMo5mmys; dkim-atps=neutral
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
- [IPv6:2607:f8b0:4864:20::62d])
+ header.s=20161025 header.b=kkOsfG1f; dkim-atps=neutral
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
+ [IPv6:2607:f8b0:4864:20::431])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F8cVn2jZkz304H
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 15:52:01 +1100 (AEDT)
-Received: by mail-pl1-x62d.google.com with SMTP id t20so5508426plr.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 21:52:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F8cVt3Y8Kz30GW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 15:52:06 +1100 (AEDT)
+Received: by mail-pf1-x431.google.com with SMTP id q5so11303641pfh.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Mar 2021 21:52:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=HrxLlLDZ0an/heUeCZAvmT5gaBDr6v5Eev1L/4hTTdM=;
- b=DMo5mmysisR1AYEapO+vDrkbAA2Zg5MIQzPRGNjhYbicSWxitd+9CMbNpuaOlQYNq6
- K2k4p9KkrjXj/qJp+Z8iB0B1HnQXszirBPupTPa9BkefR2m/6E36T+tMwyrZVL6yiXQp
- ErA9S1KSEkxnpR+596NjChd2EhLiK8EPSv8/x45ECmdzdjZ8hbsAUABy4A+NVDvrSgOV
- mngZ5RqTydeeW1y1BgpPQTQbYZsJItC5v1lZ53/IZH9SJ+5s7NR7zzxY9IfRQ/l4DEQx
- UBHfSMb7x0Lk2eLBF/rVWDP7q9mzHVPnTnUIieViLA+94Fg5DXiLl6Sau5STmoDhej0r
- dmOw==
+ bh=f5qX0zwmUN7b3YCTuFi5vA9cPngeGg3OSEyHJ7gHbOI=;
+ b=kkOsfG1fL75rLVS4Aog5SCn2gVwWWAcsvukt9LFGsGAAZFEk6eCOZk4SeetvwJz5bk
+ 8esBG2TVJYLguDaPp0Q4NLVlMCa+/kxplZ4Szb2CXzk3Zz0uFtiAjNRufTQig/WwcmR2
+ jLxZIZ0Jg2IzHjtE6K3aWkws+i5ft6hqOzOCgtfXFWEI2a7pUFTuAFy6pVelap9HDaJL
+ 4IupaxW/bR7z7tp3e0Bgh/vOhf0toSyNM7XSo5gtusnbr0dMp4N+KSa8Q16Qi3VtsuZ6
+ IH3N9N62vksox9I7v98fxXv/z1PGm2kgKhzaRGo7z7vU8XIYoUHS9NUcgW8xBetBhsHf
+ Y97Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=HrxLlLDZ0an/heUeCZAvmT5gaBDr6v5Eev1L/4hTTdM=;
- b=mu/2D5L2AspaOS1yFYum2Sf6QCxc3g/x1NbdYXgdcrhRU3wdcAzHSFU07tKv9JTOcA
- aCgMMPSSCTqA5jVaF2+AcU6oiMZEyjBTzea26v/vSbswzc3EPL/FkRZtK5Qhc5OfMQNJ
- HDCpEF1d7U7FLDt2vct8C9iPIUK0JlQ/1qaWUZQyoQqiNwjowjnUZ4e1Ri1HWnpx33ep
- qX5ecokfG8c0gh3WW+Rid2N1c6nTzokjR/TYRPSsJ5ViOVsjOji2Amn+f070w5PmbRqf
- 2KL0KD+Ws3arcdEJ6u+4tWga8hzKIMicFu0vyqsYee2W+HbxQi/ThN16aYKaaN3Bj1Xm
- oh0A==
-X-Gm-Message-State: AOAM533+WvRiywD3Y0hSauTFNREmt099IdfX8WzdEnVspBLIV0YHQfIW
- kOjMcn91sjUdmOnP675qJUwLKEViiBwsjA==
-X-Google-Smtp-Source: ABdhPJzjyJkhkgD8dXvqVOqRUzRpaVqgd6Uh4w+WIjHkJBLxHaeH5TScDZK26MI3nrTMoWFNGEzgaA==
-X-Received: by 2002:a17:90a:5898:: with SMTP id
- j24mr2496966pji.103.1617079919004; 
- Mon, 29 Mar 2021 21:51:59 -0700 (PDT)
+ bh=f5qX0zwmUN7b3YCTuFi5vA9cPngeGg3OSEyHJ7gHbOI=;
+ b=O9MFZZ2Q3btF96wBGdzkWAMwcTpbbadH8zwGuFNgWXLWYtPR9/wQsmj4i51Puz/pMv
+ uzMeKwvY0+aVpHPB45JCZ9k8wTMcoPlUl+A/VtcOVP2TjfNp7YKHURTBKkTh6FQxNTiT
+ TaR3WpH7OVlAJCMKvRBxmFldOj0vquYrokFU7X+4RUk8pxyLJVQMcj+6bKPMsH/sXLf3
+ wKSWphAidStu0YFcMjqMxhlu4o8l60Vq+WHWErbtqehALaSFkcGsQpTJuyvGdSpiBnW9
+ /pNTWUaEEbCVmzdx2z2gtRepg8wQnjEFJ6hyynHtiq24uo4xFd3AOTiaX23qmZ3jHYG3
+ kmtg==
+X-Gm-Message-State: AOAM53379zj5FuZ7fnqU3GDYgMa79ihVjhfbcVa6Btqp6RJ1e8JAku2c
+ bP/bkpMJ2i3U48yk6IJq6UrouC9pY6ldwg==
+X-Google-Smtp-Source: ABdhPJwv9kGkS6hvWTn41UXPqS3dxQWD17XaHlldzhjAqNE1OgHBVq7MsELGJXdbaZqAQq7/bpbPKw==
+X-Received: by 2002:a63:6a84:: with SMTP id
+ f126mr26248615pgc.352.1617079923866; 
+ Mon, 29 Mar 2021 21:52:03 -0700 (PDT)
 Received: from tee480.ibm.com (159-196-117-139.9fc475.syd.nbn.aussiebb.net.
  [159.196.117.139])
- by smtp.gmail.com with ESMTPSA id a18sm14136574pfa.18.2021.03.29.21.51.55
+ by smtp.gmail.com with ESMTPSA id a18sm14136574pfa.18.2021.03.29.21.51.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Mar 2021 21:51:58 -0700 (PDT)
+ Mon, 29 Mar 2021 21:52:03 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v10 03/10] powerpc: Always define MODULES_{VADDR,END}
-Date: Tue, 30 Mar 2021 15:51:25 +1100
-Message-Id: <20210330045132.722243-4-jniethe5@gmail.com>
+Subject: [PATCH v10 04/10] powerpc/kprobes: Mark newly allocated probes as ROX
+Date: Tue, 30 Mar 2021 15:51:26 +1100
+Message-Id: <20210330045132.722243-5-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210330045132.722243-1-jniethe5@gmail.com>
 References: <20210330045132.722243-1-jniethe5@gmail.com>
@@ -82,69 +82,62 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: ajd@linux.ibm.com, cmr@codefail.de, npiggin@gmail.com,
- Jordan Niethe <jniethe5@gmail.com>, naveen.n.rao@linux.ibm.com, dja@axtens.net
+ naveen.n.rao@linux.ibm.com, Jordan Niethe <jniethe5@gmail.com>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If MODULES_{VADDR,END} are not defined set them to VMALLOC_START and
-VMALLOC_END respectively. This reduces the need for special cases. For
-example, powerpc's module_alloc() was previously predicated on
-MODULES_VADDR being defined but now is unconditionally defined.
+From: Russell Currey <ruscur@russell.cc>
 
-This will be useful reducing conditional code in other places that need
-to allocate from the module region (i.e., kprobes).
+Add the arch specific insn page allocator for powerpc. This allocates
+ROX pages if STRICT_KERNEL_RWX is enabled. These pages are only written
+to with patch_instruction() which is able to write RO pages.
 
+Reviewed-by: Daniel Axtens <dja@axtens.net>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+[jpn: Reword commit message, switch to __vmalloc_node_range()]
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v10: New to series
+v9: - vmalloc_exec() no longer exists
+    - Set the page to RW before freeing it
+v10: - use __vmalloc_node_range()
 ---
- arch/powerpc/include/asm/pgtable.h | 5 +++++
- arch/powerpc/kernel/module.c       | 5 +----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/kprobes.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index 4eed82172e33..014c2921f26a 100644
---- a/arch/powerpc/include/asm/pgtable.h
-+++ b/arch/powerpc/include/asm/pgtable.h
-@@ -167,6 +167,11 @@ struct seq_file;
- void arch_report_meminfo(struct seq_file *m);
- #endif /* CONFIG_PPC64 */
+diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+index 01ab2163659e..3ae27af9b094 100644
+--- a/arch/powerpc/kernel/kprobes.c
++++ b/arch/powerpc/kernel/kprobes.c
+@@ -25,6 +25,7 @@
+ #include <asm/sections.h>
+ #include <asm/inst.h>
+ #include <linux/uaccess.h>
++#include <linux/vmalloc.h>
  
-+#ifndef MODULES_VADDR
-+#define MODULES_VADDR VMALLOC_START
-+#define MODULES_END VMALLOC_END
-+#endif
+ DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
+ DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+@@ -103,6 +104,19 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name, unsigned int offset)
+ 	return addr;
+ }
+ 
++void *alloc_insn_page(void)
++{
++	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX)) {
++		return __vmalloc_node_range(PAGE_SIZE, 1, MODULES_VADDR, MODULES_END,
++				GFP_KERNEL, PAGE_KERNEL_ROX, VM_FLUSH_RESET_PERMS,
++				NUMA_NO_NODE, __builtin_return_address(0));
++	} else {
++		return __vmalloc_node_range(PAGE_SIZE, 1, MODULES_VADDR, MODULES_END,
++				GFP_KERNEL, PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS,
++				NUMA_NO_NODE, __builtin_return_address(0));
++	}
++}
 +
- #endif /* __ASSEMBLY__ */
- 
- #endif /* _ASM_POWERPC_PGTABLE_H */
-diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.c
-index a211b0253cdb..f1fb58389d58 100644
---- a/arch/powerpc/kernel/module.c
-+++ b/arch/powerpc/kernel/module.c
-@@ -14,6 +14,7 @@
- #include <asm/firmware.h>
- #include <linux/sort.h>
- #include <asm/setup.h>
-+#include <linux/mm.h>
- 
- static LIST_HEAD(module_bug_list);
- 
-@@ -87,13 +88,9 @@ int module_finalize(const Elf_Ehdr *hdr,
- 	return 0;
- }
- 
--#ifdef MODULES_VADDR
- void *module_alloc(unsigned long size)
+ int arch_prepare_kprobe(struct kprobe *p)
  {
--	BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
--
- 	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END, GFP_KERNEL,
- 				    PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
- 				    __builtin_return_address(0));
- }
--#endif
+ 	int ret = 0;
 -- 
 2.25.1
 
