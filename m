@@ -2,66 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAFE34F1FF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 22:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F8134F2DD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 23:13:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F90yF0nmFz3bv7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 07:13:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F92Gw13WNz3bvV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 08:13:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oxcTEFt8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=k33NE2CX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::830;
+ helo=mail-qt1-x830.google.com; envelope-from=unixbhaskar@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=oxcTEFt8; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=k33NE2CX; dkim-atps=neutral
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com
+ [IPv6:2607:f8b0:4864:20::830])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F90xp5Vy5z2y8Q
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 07:13:18 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3E7F2619D0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 20:13:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1617135196;
- bh=a0u6btj9eABWcxyPcMcImxEQD72LmDexfcRuz0Fotaw=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=oxcTEFt8SZA7Bx7749WETP1GMcz8oii+pSej4jE7fgG7WS52nFSAy0fAei47dgGTT
- q+Qb1Vck6k9rwb/VKFbpxYLCRwW8Zmp1NygRTYvTbkrtN8tcJTYHnYqP37zGDxtl3E
- fLVdYj+EF8UqAvR0aWxEGFZxJkFSDv4Byhn8kleGogmKDj7PTae42Z1E5/o+jWQsb1
- HYw1Fo55Tqy0SK39VzMpcr/2Pwo8JaJitq/88PjP/eTbN9nL6pj+wOZyP2ryfIX68I
- bA376/UXRBuXIyfqtJFeQh4VhT/oB3BGehfnYkXzNHHRLkOJra/md8EVxl2jTS73e4
- GEFqd0oC0lteg==
-Received: by mail-qv1-f45.google.com with SMTP id by2so8818718qvb.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 13:13:16 -0700 (PDT)
-X-Gm-Message-State: AOAM532r54RIukg/3Fdarc0YM1l0TvhqWqdzUkIK7fdlvM0wfxJ3DGgz
- sMaB0Rn7Rn5r3Tgp4fCxxuOZ5PNHgQz0WyagSQ==
-X-Google-Smtp-Source: ABdhPJw55amAUhZyFZAQITDAaWCWvjRQ4s0B/xEdY/mzymYT1/HSrfDlYWJbEwEmGzlU1vhNgrIIF8xwK9tMaYRV82Y=
-X-Received: by 2002:a05:6214:12a1:: with SMTP id
- w1mr32724714qvu.57.1617135195251; 
- Tue, 30 Mar 2021 13:13:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F92GS2c2fz2yR0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 08:12:45 +1100 (AEDT)
+Received: by mail-qt1-x830.google.com with SMTP id s2so12968123qtx.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 14:12:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:mail-followup-to:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=rvg5KeeLafDks20d9MA0DVK+cDxKZn2jW/3PZAzDQ/c=;
+ b=k33NE2CXIobJjoB4dL34gEB0xWjLB3X1YdTxpiNE4m0w39+avHYjIPTlPYWXgE++hd
+ CGQkltFiOHlY66qiAVKRvXxWVeakz1vHzUgjMGABg2PdcXzfe4r3i+hllFqwhr/VX80V
+ uTac3mVQxYNW6lBVUmFdY/ZTI21BQcj9z97C+l86gNTTNqfOUpNO1cef3VITKGOdj5ZS
+ ptEdf7sJdINv/ay1cfflAq7AeGQma+759sqdmJKNeuL+0T3qU0k3TxjPWmmAuFuQt/qP
+ SnTM8sTfRkspWWUd4gwPfQngwZ66vFuqI7L5F8zrbvx6YUTXzNQsV6Apc9bQGppT2onR
+ AZyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id
+ :mail-followup-to:references:mime-version:content-disposition
+ :in-reply-to;
+ bh=rvg5KeeLafDks20d9MA0DVK+cDxKZn2jW/3PZAzDQ/c=;
+ b=Mja98ebxUyw7dvPCuizq00FC+H0gRblN1Vd4ri/eWkzd9MpDpYWWcLp4vgLAPzVlh8
+ OAhNK3O2Gtvn8TaiASFtW9Vx/ymRnBtkfJuwNYcpPp7wN9OoMU8cCkG478noe5Rih5fb
+ V/Tk0RgJumVtaGV4DJUP/xQHa4gKu5ERvRncTLTyL0pQjxMoTKQcGw7ihy0Ba3o4JUpv
+ AkifMatjXbmjWoh/v3v4Kizu+Exxz/lr9DP2rF/oL8TnaoiwiX9L8rX/WoFgVn6QhuKk
+ FrH3VkRYOxiyUai5ji+cR8SwmNZQ72Zhk0dzBFIQDU2fHAo6rbnc7S4GuqwioWRgnNjW
+ 2FGQ==
+X-Gm-Message-State: AOAM532ctkkxJk53cjOQ9pl7BkKYX6c4uLfs0+J5eqUcqwAyajSK8l80
+ OiEljLexCEIkX3pBUn0W9E0=
+X-Google-Smtp-Source: ABdhPJzBICbv2tB+pZHOQUhX9mgUx+2f/OIMBmWy7u6Wt0v1ME2jB1BtLU0fWk8lwylmTW63ROdomw==
+X-Received: by 2002:a05:622a:454:: with SMTP id
+ o20mr28861530qtx.292.1617138762074; 
+ Tue, 30 Mar 2021 14:12:42 -0700 (PDT)
+Received: from Gentoo ([143.244.44.215])
+ by smtp.gmail.com with ESMTPSA id b2sm119921qtb.54.2021.03.30.14.12.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Mar 2021 14:12:41 -0700 (PDT)
+Date: Wed, 31 Mar 2021 02:42:21 +0530
+From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To: Vinod Koul <vkoul@kernel.org>
+Subject: Re: [PATCH 14/30] Revert "s3c24xx-dma.c: Fix a typo"
+Message-ID: <YGOUNbCJOHLmeHm9@Gentoo>
+Mail-Followup-To: Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+ Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, hch@lst.de,
+ iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ dave.jiang@intel.com, dan.j.williams@intel.com,
+ rdunlap@infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1616971780.git.unixbhaskar@gmail.com>
+ <1d989f71fbebd15de633c187d88cb3be3a0f2723.1616971780.git.unixbhaskar@gmail.com>
+ <YGNgFuLWc91aGoQj@vkoul-mobl.Dlink>
 MIME-Version: 1.0
-References: <20210309000247.2989531-4-danielwa@cisco.com>
- <5f865584-09c9-d21f-ffb7-23cf07cf058e@csgroup.eu>
- <20210309212944.GR109100@zorba>
- <e4899874-1684-fa1b-443e-f4e478e05e31@csgroup.eu>
- <CAL_JsqKm76jRQYDcu3rGyUWKPLspoO=EZW_WFy=zAK+m_JYCTg@mail.gmail.com>
- <20fd7d44-8c39-48bc-25c3-990be9d9d911@csgroup.eu>
- <20210325195956.GM109100@zorba>
- <CAL_Jsq+10nucQSRkrTKe9BD5wBScqEb7-Rdg=9TsPiKuiuPG7w@mail.gmail.com>
- <20210330173254.GS109100@zorba>
-In-Reply-To: <20210330173254.GS109100@zorba>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 30 Mar 2021 15:13:04 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJKBeAgaHQJwOL9G2qLbQSh32L5LtN+cSUgn5sV_P8How@mail.gmail.com>
-Message-ID: <CAL_JsqJKBeAgaHQJwOL9G2qLbQSh32L5LtN+cSUgn5sV_P8How@mail.gmail.com>
-Subject: Re: [PATCH v2 3/7] powerpc: convert config files to generic cmdline
-To: Daniel Walker <danielwa@cisco.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="yapxdGUX50HbkJ4L"
+Content-Disposition: inline
+In-Reply-To: <YGNgFuLWc91aGoQj@vkoul-mobl.Dlink>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,47 +90,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, X86 ML <x86@kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, xe-linux-external@cisco.com,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>
+Cc: dave.jiang@intel.com, rdunlap@infradead.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux-foundation.org,
+ dmaengine@vger.kernel.org, dan.j.williams@intel.com,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 30, 2021 at 12:33 PM Daniel Walker <danielwa@cisco.com> wrote:
->
-> On Thu, Mar 25, 2021 at 05:29:44PM -0600, Rob Herring wrote:
-> > On Thu, Mar 25, 2021 at 2:00 PM Daniel Walker <danielwa@cisco.com> wrote:
-> > >
-> > > On Thu, Mar 25, 2021 at 01:03:55PM +0100, Christophe Leroy wrote:
-> > > >
-> > > > Ok, so you agree we don't need to provide two CMDLINE, one to be appended and one to be prepended.
-> > > >
-> > > > Let's only provide once CMDLINE as of today, and ask the user to select
-> > > > whether he wants it appended or prepended or replacee. Then no need to
-> > > > change all existing config to rename CONFIG_CMDLINE into either of the new
-> > > > ones.
-> > > >
-> > > > That's the main difference between my series and Daniel's series. So I'll
-> > > > finish taking Will's comment into account and we'll send out a v3 soon.
-> > >
-> > > It doesn't solve the needs of Cisco, I've stated many times your changes have
-> > > little value. Please stop submitting them.
-> >
-> > Can you please outline what those needs are which aren't met?
->
-> append AND prepend at the same time on all architectures. Christophe doesn't
-> understand the need, and hence tries to minimize the feature set which is
-> incompatible with Cisco needs and all the other out of tree users.
 
-Okay, but that's never been a feature in upstream. For upstream, we
-refactor first and add features 2nd. In this case, the difference is
-largely the kconfig and it would be better to not change the options
-twice, but that's not a blocker for taking the refactoring. You won't
-find a maintainer that's going to take adding a feature over cleanups
-and unification.
+--yapxdGUX50HbkJ4L
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 
-Rob
+On 22:59 Tue 30 Mar 2021, Vinod Koul wrote:
+>On 29-03-21, 05:23, Bhaskar Chowdhury wrote:
+>> s/transferred/transfered/
+>>
+>> This reverts commit a2ddb8aea8106bd5552f8516ad7a8a26b9282a8f.
+>
+>This is not upstream, why not squash in. Also would make sense to write
+>sensible changelog and not phrases and use the right subsystem
+>conventions!
+>
+Changes like this don't deserve a history to tell, specific to changelog, one
+line is suffice.
+
+>Droped the series now
+>
+This is a bad commit slip in , not suppose to be there, thanks for catching
+it.
+
+Sorry for the noise.
+>
+>--
+>~Vinod
+
+--yapxdGUX50HbkJ4L
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEnwF+nWawchZUPOuwsjqdtxFLKRUFAmBjlDIACgkQsjqdtxFL
+KRXbEQf9HOVQ3RETxBGqN9aTy39IsbyS5nu7/kFDhcZEJysEreLDXKPWNNQ2PX5w
+cirIvKOlvWXDyrO8kTzZj7lyhdV4i20kBx+wWdBZ5Pzgxv7EsC29/u3MLwHH9eWk
+/yvTPpfI8KLYpPNMU8bMS8NKR+hP+75gM0gGO4zmirTubaAIH9709n3MVg4A7Qlj
+ZdJE1MCUqt+VHUnBqZzu2Afv10gBlrsy671OsH0K/m8/ZOWoIKg50Epc7s2/LPEg
+DnYTel5gyXWtZh4thSXcjV0hm5Q6jzE0DQjGE7NDxeI8yIz4c6hZBJ2OOTXp1h2A
+O5yOuKgqXzo95RFK6W9QSbfhv3erIA==
+=mURO
+-----END PGP SIGNATURE-----
+
+--yapxdGUX50HbkJ4L--
