@@ -2,43 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5F534EDCD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 18:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1FDE34EF74
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 19:27:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F8vyp5vZXz3c6W
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:28:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F8xGr689bz3bxJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 04:27:48 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=II5NU/e0;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4F8vyS6DsVz3bpj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 03:28:30 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 79B92D6E;
- Tue, 30 Mar 2021 09:28:26 -0700 (PDT)
-Received: from [10.57.24.208] (unknown [10.57.24.208])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C45EC3F719;
- Tue, 30 Mar 2021 09:28:22 -0700 (PDT)
-Subject: Re: [PATCH 16/18] iommu: remove DOMAIN_ATTR_DMA_USE_FLUSH_QUEUE
-To: Will Deacon <will@kernel.org>
-References: <20210316153825.135976-1-hch@lst.de>
- <20210316153825.135976-17-hch@lst.de>
- <20210330131149.GP5908@willie-the-truck>
- <a6952aa7-4d7e-54f0-339e-e15f88596dcc@arm.com>
- <20210330135801.GA6187@willie-the-truck>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <578d6aa5-4239-f5d7-2e9f-686b18e52bba@arm.com>
-Date: Tue, 30 Mar 2021 17:28:19 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=cisco.com (client-ip=173.37.86.77; helo=rcdn-iport-6.cisco.com;
+ envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
+ header.s=iport header.b=II5NU/e0; dkim-atps=neutral
+Received: from rcdn-iport-6.cisco.com (rcdn-iport-6.cisco.com [173.37.86.77])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F8xGN4bYxz3bcq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 04:27:23 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=cisco.com; i=@cisco.com; l=1640; q=dns/txt; s=iport;
+ t=1617125245; x=1618334845;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=DLlq6Eg2HUUvE9Fdg0Ebob6Tw5pX5R4uRXQoNV4sDwc=;
+ b=II5NU/e0omr/fcsPCXcBYrO3Foi1Ywy5VY9dCEAGHfqavRMhFuXE2rkh
+ mWTvCx+ny3zuihpnczcoN8hmD24SfD9GDXSupCirwN45nRVxVP+Q+XKn7
+ QDB0uJkyOfw6MBfmWbZ+TiZzis+VO1r8FOHMh8/P59dU/VYByduXcYzA4 g=;
+IronPort-HdrOrdr: =?us-ascii?q?A9a23=3AoTmckqE8NgKcaaN3pLqEVceALOonbusQ8z?=
+ =?us-ascii?q?AX/mp6ICY7TuWzkceykPMHkTL1ki8WQnE8mdaGUZPwJE/035hz/IUXIPOeTB?=
+ =?us-ascii?q?Dr0VHYTr1KwIP+z1TbcRHW2fVa0c5bHpRWKNq1NlRiiNa/3Q/QKadF/PCi0I?=
+ =?us-ascii?q?SFwdjT1G1sSwYCUdAC0y5cBhyAGkN7AClqbKBZKLOm6sBKpyWtdB0sB6zROl?=
+ =?us-ascii?q?A/U+fOvNHNnp79CCRnOzcc9AKMgTm0gYSVLzGk2H4lPw9n8PMF7XXPlRD/6+?=
+ =?us-ascii?q?GFtfy2oyWssVP73tBxhMbrzMdFCYi3rvUtbh/oigquee1aKtq/gAw=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0BhAABKXmNg/4UNJK1aHAEBAQEBAQc?=
+ =?us-ascii?q?BARIBAQQEAQFAgTwHAQELAYIqgUwBOTGMZYkukAgWikWBfAsBAQENAQE0BAE?=
+ =?us-ascii?q?BhFACgXoCJTQJDgIDAQEMAQEFAQEBAgEGBHGFboZFAQU6PxALGC48GwYThXi?=
+ =?us-ascii?q?rInWBNIkLgUQigRcBjUkmHIFJQoESgm4uPoo2BIJHgQ6CMCyeTZwigxGBI5s?=
+ =?us-ascii?q?2MRCkQrgSAgQGBQIWgVQ6gVkzGggbFYMkUBkNnQchAy84AgYKAQEDCYkfAQE?=
+X-IronPort-AV: E=Sophos;i="5.81,291,1610409600"; d="scan'208";a="880406225"
+Received: from alln-core-11.cisco.com ([173.36.13.133])
+ by rcdn-iport-6.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
+ 30 Mar 2021 17:27:19 +0000
+Received: from zorba ([10.24.8.123])
+ by alln-core-11.cisco.com (8.15.2/8.15.2) with ESMTPS id 12UHREPN013894
+ (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Tue, 30 Mar 2021 17:27:16 GMT
+Date: Tue, 30 Mar 2021 10:27:14 -0700
+From: Daniel Walker <danielwa@cisco.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v3 01/17] cmdline: Add generic function to build command
+ line.
+Message-ID: <20210330172714.GR109100@zorba>
+References: <cover.1616765869.git.christophe.leroy@csgroup.eu>
+ <878228ad88df38f8914c7aa25dede3ed05c50f48.1616765869.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <20210330135801.GA6187@willie-the-truck>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <878228ad88df38f8914c7aa25dede3ed05c50f48.1616765869.git.christophe.leroy@csgroup.eu>
+X-Outbound-SMTP-Client: 10.24.8.123, [10.24.8.123]
+X-Outbound-Node: alln-core-11.cisco.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,91 +77,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: freedreno@lists.freedesktop.org, kvm@vger.kernel.org,
- Joerg Roedel <joro@8bytes.org>, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org, Li Yang <leoyang.li@nxp.com>,
- iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, virtualization@lists.linux-foundation.org,
- David Woodhouse <dwmw2@infradead.org>, Christoph Hellwig <hch@lst.de>,
- linux-arm-kernel@lists.infradead.org, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linux-arch@vger.kernel.org, robh@kernel.org, microblaze <monstr@monstr.eu>,
+ daniel@gimpelevich.san-francisco.ca.us, devicetree@vger.kernel.org,
+ linux-sh@vger.kernel.org, will@kernel.org, linux-xtensa@linux-xtensa.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, nios2 <ley.foon.tan@intel.com>,
+ linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+ linux-hexagon@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-03-30 14:58, Will Deacon wrote:
-> On Tue, Mar 30, 2021 at 02:19:38PM +0100, Robin Murphy wrote:
->> On 2021-03-30 14:11, Will Deacon wrote:
->>> On Tue, Mar 16, 2021 at 04:38:22PM +0100, Christoph Hellwig wrote:
->>>> From: Robin Murphy <robin.murphy@arm.com>
->>>>
->>>> Instead make the global iommu_dma_strict paramete in iommu.c canonical by
->>>> exporting helpers to get and set it and use those directly in the drivers.
->>>>
->>>> This make sure that the iommu.strict parameter also works for the AMD and
->>>> Intel IOMMU drivers on x86.  As those default to lazy flushing a new
->>>> IOMMU_CMD_LINE_STRICT is used to turn the value into a tristate to
->>>> represent the default if not overriden by an explicit parameter.
->>>>
->>>> Signed-off-by: Robin Murphy <robin.murphy@arm.com>.
->>>> [ported on top of the other iommu_attr changes and added a few small
->>>>    missing bits]
->>>> Signed-off-by: Christoph Hellwig <hch@lst.de>
->>>> ---
->>>>    drivers/iommu/amd/iommu.c                   | 23 +-------
->>>>    drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 50 +---------------
->>>>    drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |  1 -
->>>>    drivers/iommu/arm/arm-smmu/arm-smmu.c       | 27 +--------
->>>>    drivers/iommu/dma-iommu.c                   |  9 +--
->>>>    drivers/iommu/intel/iommu.c                 | 64 ++++-----------------
->>>>    drivers/iommu/iommu.c                       | 27 ++++++---
->>>>    include/linux/iommu.h                       |  4 +-
->>>>    8 files changed, 40 insertions(+), 165 deletions(-)
->>>
->>> I really like this cleanup, but I can't help wonder if it's going in the
->>> wrong direction. With SoCs often having multiple IOMMU instances and a
->>> distinction between "trusted" and "untrusted" devices, then having the
->>> flush-queue enabled on a per-IOMMU or per-domain basis doesn't sound
->>> unreasonable to me, but this change makes it a global property.
->>
->> The intent here was just to streamline the existing behaviour of stuffing a
->> global property into a domain attribute then pulling it out again in the
->> illusion that it was in any way per-domain. We're still checking
->> dev_is_untrusted() before making an actual decision, and it's not like we
->> can't add more factors at that point if we want to.
+On Fri, Mar 26, 2021 at 01:44:48PM +0000, Christophe Leroy wrote:
+> This code provides architectures with a way to build command line
+> based on what is built in the kernel and what is handed over by the
+> bootloader, based on selected compile-time options.
 > 
-> Like I say, the cleanup is great. I'm just wondering whether there's a
-> better way to express the complicated logic to decide whether or not to use
-> the flush queue than what we end up with:
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+> v3:
+> - Addressed comments from Will
+> - Added capability to have src == dst
+> ---
+>  include/linux/cmdline.h | 57 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+>  create mode 100644 include/linux/cmdline.h
 > 
-> 	if (!cookie->fq_domain && (!dev || !dev_is_untrusted(dev)) &&
-> 	    domain->ops->flush_iotlb_all && !iommu_get_dma_strict())
-> 
-> which is mixing up globals, device properties and domain properties. The
-> result is that the driver code ends up just using the global to determine
-> whether or not to pass IO_PGTABLE_QUIRK_NON_STRICT to the page-table code,
-> which is a departure from the current way of doing things.
+> diff --git a/include/linux/cmdline.h b/include/linux/cmdline.h
+> new file mode 100644
+> index 000000000000..dea87edd41be
+> --- /dev/null
+> +++ b/include/linux/cmdline.h
+> @@ -0,0 +1,57 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_CMDLINE_H
+> +#define _LINUX_CMDLINE_H
+> +
+> +#include <linux/string.h>
+> +
+> +/* Allow architectures to override strlcat, powerpc can't use strings so early */
+> +#ifndef cmdline_strlcat
+> +#define cmdline_strlcat strlcat
+> +#endif
+> +
+> +/*
+> + * This function will append or prepend a builtin command line to the command
+> + * line provided by the bootloader. Kconfig options can be used to alter
+> + * the behavior of this builtin command line.
+> + * @dst: The destination of the final appended/prepended string.
+> + * @src: The starting string or NULL if there isn't one.
+> + * @len: the length of dest buffer.
+> + */
 
-But previously, SMMU only ever saw the global policy piped through the 
-domain attribute by iommu_group_alloc_default_domain(), so there's no 
-functional change there.
+Append or prepend ? Cisco requires both at the same time. This is why my
+implementation provides both. I can't use this with both at once.
 
-Obviously some of the above checks could be factored out into some kind 
-of iommu_use_flush_queue() helper that IOMMU drivers can also call if 
-they need to keep in sync. Or maybe we just allow iommu-dma to set 
-IO_PGTABLE_QUIRK_NON_STRICT directly via iommu_set_pgtable_quirks() if 
-we're treating that as a generic thing now.
-
->>> For example, see the recent patch from Lu Baolu:
->>>
->>> https://lore.kernel.org/r/20210225061454.2864009-1-baolu.lu@linux.intel.com
->>
->> Erm, this patch is based on that one, it's right there in the context :/
-> 
-> Ah, sorry, I didn't spot that! I was just trying to illustrate that this
-> is per-device.
-
-Sure, I understand - and I'm just trying to bang home that despite 
-appearances it's never actually been treated as such for SMMU, so 
-anything that's wrong after this change was already wrong before.
-
-Robin.
+Daniel
