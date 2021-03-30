@@ -2,75 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3848E34F060
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 20:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB98D34F08C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 20:11:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F8y151s4Bz3c0x
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 05:00:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F8yDf5F0Cz3c6G
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 05:10:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=iR/wJlGG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=goldelico.com header.i=@goldelico.com header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=mbDZevjF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.142.90; helo=alln-iport-3.cisco.com;
- envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=iR/wJlGG; dkim-atps=neutral
-Received: from alln-iport-3.cisco.com (alln-iport-3.cisco.com [173.37.142.90])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F8xx36YJDz3bsm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 04:57:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=3559; q=dns/txt; s=iport;
- t=1617127048; x=1618336648;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=qd9oUIm458Aa8NrbzxxHcRM50MFT4YpUd/nN6uaHB5Q=;
- b=iR/wJlGGwPceACxzUOOyFMr4qCbfma83vzciz4QQ1Ip7JMRoVSsCRYiI
- uHVMmvVQEnPN2Dj3VtmkX5+cVIrqMos50AWlvFHRBvPSsYJKCbChC+/Uy
- /uC4Tiy+DzJ7K7rDw+/88UoQslIq5IpU5ZAxc70ENpHcJqJAEFxNNsoop g=;
-X-IPAS-Result: =?us-ascii?q?A0AEAACmZWNg/5ldJa1aGgEBAQEBAQEBAQEDAQEBARIBA?=
- =?us-ascii?q?QEBAgIBAQEBgXwFAQEBAQsBgiqBTAE5MYxlpBKBfAsBAQEPNAQBAYRQAoF6A?=
- =?us-ascii?q?iU0CQ4CAwEBAQMCAwEBAQEBBQEBAQIBBgRxhW6GRQYyAUYQUVcGARKFeKsyg?=
- =?us-ascii?q?imJC4FEFIElAYhjdINyJhyBSUKBEjODJ4o2BIJGAYEPggSRYgSNPpwigxGBI?=
- =?us-ascii?q?5tFIqRSlQeeLYUHgVQ6gVkzGggbFYMkUBkNjisWjWoBWyEDLzgCBgoBAQMJi?=
- =?us-ascii?q?R8BAQ?=
-IronPort-HdrOrdr: A9a23:zZeFBaHz0wV689mgpLqFtZHXdLJzesId70hD6mlaQ3VuHvCwvc
- aogfgdyFvIkz4XQn4tgpStP6OHTHPa+/dOkO0sFJqrQQWOggWVBa5464+K+VfdMg34stVQzK
- JxN5V5YeeAbmRSqebfzE2GH807wN+BmZrY4Nv263t2VwllZ+VB4m5CazqzKUF9SAlYCZdRLv
- P1jfZvnDaudW8aac62HBA+Lor+jufWn5HrawNuPXEawTSJ5AnE1JfKVzCFwxFbaD9U2LEk62
- SAqRDh/76uqevT8G6660bjq7BfmN7s0bJ4ZPCku4wyNijmjBquacBHXbCP1QpF2d2H2RINjM
- TGpQsmMoBIz07pOkuxoRfrxmDboVAT10M=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="5.81,291,1610409600"; d="scan'208";a="671912618"
-Received: from rcdn-core-2.cisco.com ([173.37.93.153])
- by alln-iport-3.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 30 Mar 2021 17:57:24 +0000
-Received: from zorba.cisco.com ([10.24.8.123])
- by rcdn-core-2.cisco.com (8.15.2/8.15.2) with ESMTP id 12UHv6CL024502;
- Tue, 30 Mar 2021 17:57:22 GMT
-From: Daniel Walker <danielwa@cisco.com>
-To: Will Deacon <will@kernel.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- ob Herring <robh@kernel.org>,
- Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 8/8] CMDLINE: arm64: convert to generic builtin command line
-Date: Tue, 30 Mar 2021 10:57:03 -0700
-Message-Id: <be8847438abbfa4972dd792eb616973816af9290.1617126961.git.danielwa@cisco.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <41021d66db2ab427c14255d2a24bb4517c8b58fd.1617126961.git.danielwa@cisco.com>
-References: <41021d66db2ab427c14255d2a24bb4517c8b58fd.1617126961.git.danielwa@cisco.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Auto-Response-Suppress: DR, OOF, AutoReply
-X-Outbound-SMTP-Client: 10.24.8.123, [10.24.8.123]
-X-Outbound-Node: rcdn-core-2.cisco.com
+ smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=81.169.146.168;
+ helo=mo4-p02-ob.smtp.rzone.de; envelope-from=hns@goldelico.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=goldelico.com header.i=@goldelico.com
+ header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=mbDZevjF; 
+ dkim-atps=neutral
+X-Greylist: delayed 147 seconds by postgrey-1.36 at boromir;
+ Wed, 31 Mar 2021 05:10:35 AEDT
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de
+ [81.169.146.168])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F8yDC2cXyz2yyt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 05:10:34 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1617127652; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=Eyq7UqYoQqaEh0TMUnq5UzdsBNGHStBafdmSxV9W2kisa22bG7lmyAywbGT1XJNba7
+ eioohjWH90m+ApCCaLfIJxxrR0fQOvTVZ+fpgqmhqIMk/mcG5vvv755Km5wHzjfz85eD
+ AIodf4KHXJpzky4K9Aqs3tShThestACt/nWf04t592qQQCRQl6j3BZfA4sQbOP2xon7H
+ CO2OSrUFpfKhmJRWkNPpKptwmAM6sMygUV0eEVrdYDzhUtLa+wHtAn+mOZEsc3EVuVuK
+ I1WEqmTMsSz6bLFh8xF0oI/lJJm26GPzvsu8uvlw+eAR9YXciV1S+X5IXCmUg1qJUIug
+ fnig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1617127652;
+ s=strato-dkim-0002; d=strato.com;
+ h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=TBtxdLUkTjgMvDEB4mRh0JBbXrVFmzYUj0lLVMFFsdA=;
+ b=iDxuBxBtN4zGXwH2FsNDucbzs44++UuByW9OubNfPa+SgIUVYehN+9wajhoPfWf8ne
+ AJBeDpLzfO9gvPi1AhT0jxBhUc3mkrU3McdEHDV+b0zDo5wFvykL3ipqabsAzZU6O7uz
+ is7TqCigWd9ZbgrEsfGbT107MDunzyDPutsq+PzsCSPNZocW9LxvOzLbkyCPLhoBlc7/
+ oipum/qvWNjCcVAwprWos80uz+EPG1wDUnbl2HlPeD0LPZubEv85OlwKgkt04b/wC3ze
+ Q/YiSR5IF99tHUC2aAp+hTj0JNzGcOYR8WbAB/c0XCz3bibgnOfYzQ2C5UX/ZGASRCMW
+ /9Eg==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1617127652;
+ s=strato-dkim-0002; d=goldelico.com;
+ h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=TBtxdLUkTjgMvDEB4mRh0JBbXrVFmzYUj0lLVMFFsdA=;
+ b=mbDZevjFp2b5R5VUle8FDC8MwkfYJzBYGCwkaBTe2ybLg6GWxZEJsH5woKenUz96DZ
+ HLCOwfabBd5h1GPxw3d1/qdKw063SU3JfrMvJjSZc4etXqVgZ2OuBchcRp0XGZjLqw0Q
+ XI9sVLA8HjveKwrt594YK3I6FiUVUxeNeTlYhNwAe6WYcF1jzcOR6pVtqoJP9uP/xZ/D
+ Syv6uzaw6Ma5RlMrYSJzO01MZ2ln4j1+WzqLWaT+SnK0MZvUpV72FVIyBP3MJRqqvVES
+ dGUeryXh/+ZW1PiQ4IEXCAuRPM4Xx3PnN8Xk5C5+DltqN18M43BTURpT9dF2flHnmD8l
+ liYA==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmAjw47t884="
+X-RZG-CLASS-ID: mo00
+Received: from [192.168.178.35] by smtp.strato.de (RZmta 47.23.1 DYNA|AUTH)
+ with ESMTPSA id h03350x2UI7VJS3
+ (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256
+ ECDH bits, eq. 3072 bits RSA))
+ (Client did not present a certificate);
+ Tue, 30 Mar 2021 20:07:31 +0200 (CEST)
+Subject: Re: [PATCH v3 01/17] cmdline: Add generic function to build command
+ line.
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=us-ascii
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20210330172714.GR109100@zorba>
+Date: Tue, 30 Mar 2021 20:07:30 +0200
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D8C1FBF6-E5C0-4233-BCB8-694274EA28F9@goldelico.com>
+References: <cover.1616765869.git.christophe.leroy@csgroup.eu>
+ <878228ad88df38f8914c7aa25dede3ed05c50f48.1616765869.git.christophe.leroy@csgroup.eu>
+ <20210330172714.GR109100@zorba>
+To: Daniel Walker <danielwa@cisco.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+X-Mailer: Apple Mail (2.3124)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,124 +97,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- xe-linux-external@cisco.com
+Cc: linux-arch@vger.kernel.org, Rob Herring <robh@kernel.org>,
+ microblaze <monstr@monstr.eu>, daniel@gimpelevich.san-francisco.ca.us,
+ devicetree <devicetree@vger.kernel.org>, linux-sh@vger.kernel.org,
+ will@kernel.org, linux-xtensa@linux-xtensa.org, x86@kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ nios2 <ley.foon.tan@intel.com>, linux-mips <linux-mips@vger.kernel.org>,
+ openrisc@lists.librecores.org, linux-hexagon@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This updates the arm64 code to use the CONFIG_GENERIC_CMDLINE
-option.
 
-Cc: xe-linux-external@cisco.com
-Signed-off-by: Daniel Walker <danielwa@cisco.com>
----
- arch/arm64/Kconfig                 | 33 +-----------------------------
- arch/arm64/kernel/idreg-override.c |  8 +++++---
- arch/arm64/kernel/setup.c          |  4 ++++
- 3 files changed, 10 insertions(+), 35 deletions(-)
+> Am 30.03.2021 um 19:27 schrieb Daniel Walker <danielwa@cisco.com>:
+>=20
+> On Fri, Mar 26, 2021 at 01:44:48PM +0000, Christophe Leroy wrote:
+>> This code provides architectures with a way to build command line
+>> based on what is built in the kernel and what is handed over by the
+>> bootloader, based on selected compile-time options.
+>>=20
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>> v3:
+>> - Addressed comments from Will
+>> - Added capability to have src =3D=3D dst
+>> ---
+>> include/linux/cmdline.h | 57 =
++++++++++++++++++++++++++++++++++++++++++
+>> 1 file changed, 57 insertions(+)
+>> create mode 100644 include/linux/cmdline.h
+>>=20
+>> diff --git a/include/linux/cmdline.h b/include/linux/cmdline.h
+>> new file mode 100644
+>> index 000000000000..dea87edd41be
+>> --- /dev/null
+>> +++ b/include/linux/cmdline.h
+>> @@ -0,0 +1,57 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +#ifndef _LINUX_CMDLINE_H
+>> +#define _LINUX_CMDLINE_H
+>> +
+>> +#include <linux/string.h>
+>> +
+>> +/* Allow architectures to override strlcat, powerpc can't use =
+strings so early */
+>> +#ifndef cmdline_strlcat
+>> +#define cmdline_strlcat strlcat
+>> +#endif
+>> +
+>> +/*
+>> + * This function will append or prepend a builtin command line to =
+the command
+>> + * line provided by the bootloader. Kconfig options can be used to =
+alter
+>> + * the behavior of this builtin command line.
+>> + * @dst: The destination of the final appended/prepended string.
+>> + * @src: The starting string or NULL if there isn't one.
+>> + * @len: the length of dest buffer.
+>> + */
+>=20
+> Append or prepend ? Cisco requires both at the same time. This is why =
+my
+> implementation provides both. I can't use this with both at once.
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index e4e1b6550115..9781ba3758b1 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -105,6 +105,7 @@ config ARM64
- 	select GENERIC_ALLOCATOR
- 	select GENERIC_ARCH_TOPOLOGY
- 	select GENERIC_CLOCKEVENTS_BROADCAST
-+	select GENERIC_CMDLINE
- 	select GENERIC_CPU_AUTOPROBE
- 	select GENERIC_CPU_VULNERABILITIES
- 	select GENERIC_EARLY_IOREMAP
-@@ -1841,38 +1842,6 @@ config ARM64_ACPI_PARKING_PROTOCOL
- 	  protocol even if the corresponding data is present in the ACPI
- 	  MADT table.
- 
--config CMDLINE
--	string "Default kernel command string"
--	default ""
--	help
--	  Provide a set of default command-line options at build time by
--	  entering them here. As a minimum, you should specify the the
--	  root device (e.g. root=/dev/nfs).
--
--choice
--	prompt "Kernel command line type" if CMDLINE != ""
--	default CMDLINE_FROM_BOOTLOADER
--	help
--	  Choose how the kernel will handle the provided default kernel
--	  command line string.
--
--config CMDLINE_FROM_BOOTLOADER
--	bool "Use bootloader kernel arguments if available"
--	help
--	  Uses the command-line options passed by the boot loader. If
--	  the boot loader doesn't provide any, the default kernel command
--	  string provided in CMDLINE will be used.
--
--config CMDLINE_FORCE
--	bool "Always use the default kernel command string"
--	help
--	  Always use the default kernel command string, even if the boot
--	  loader passes other arguments to the kernel.
--	  This is useful if you cannot or don't want to change the
--	  command-line options your boot loader passes to the kernel.
--
--endchoice
--
- config EFI_STUB
- 	bool
- 
-diff --git a/arch/arm64/kernel/idreg-override.c b/arch/arm64/kernel/idreg-override.c
-index 83f1c4b92095..fb10cd860a26 100644
---- a/arch/arm64/kernel/idreg-override.c
-+++ b/arch/arm64/kernel/idreg-override.c
-@@ -9,6 +9,7 @@
- #include <linux/ctype.h>
- #include <linux/kernel.h>
- #include <linux/libfdt.h>
-+#include <linux/cmdline.h>
- 
- #include <asm/cacheflush.h>
- #include <asm/cpufeature.h>
-@@ -188,11 +189,12 @@ static __init void parse_cmdline(void)
- {
- 	const u8 *prop = get_bootargs_cmdline();
- 
--	if (IS_ENABLED(CONFIG_CMDLINE_FORCE) || !prop)
--		__parse_cmdline(CONFIG_CMDLINE, true);
-+	__parse_cmdline(CMDLINE_PREPEND, true);
- 
--	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE) && prop)
-+	if (IS_ENABLED(CMDLINE_OVERRIDE) && prop)
- 		__parse_cmdline(prop, true);
-+
-+	__parse_cmdline(CMDLINE_APPEND, true);
- }
- 
- /* Keep checkers quiet */
-diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-index 61845c0821d9..01791ce5244c 100644
---- a/arch/arm64/kernel/setup.c
-+++ b/arch/arm64/kernel/setup.c
-@@ -30,6 +30,7 @@
- #include <linux/psci.h>
- #include <linux/sched/task.h>
- #include <linux/mm.h>
-+#include <linux/cmdline.h>
- 
- #include <asm/acpi.h>
- #include <asm/fixmap.h>
-@@ -322,6 +323,9 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
- 	 * cpufeature code and early parameters.
- 	 */
- 	jump_label_init();
-+
-+	cmdline_add_builtin(boot_command_line, NULL, COMMAND_LINE_SIZE);
-+
- 	parse_early_param();
- 
- 	/*
--- 
-2.25.1
+Just an idea: what about defining CMDLINE as a pattern where e.g. "$$" =
+or "%%"
+is replaced by the boot loader command line?
+
+Then you can formulate replace, prepend, append, prepend+append with a =
+single
+CONFIG setting.
+
+It may be a little more complex in code (scanning for the pattern and =
+replacing
+it and take care to temporary memory) but IMHO it could be worth to =
+consider.
+
+BR,
+Nikolaus Schaller
 
