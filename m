@@ -2,47 +2,179 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BEC234DDD3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 03:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFD334DF9E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 05:56:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F8XZX2qgLz30CG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 12:55:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F8bGR0BGQz30Fy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 14:56:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=lBoC0cYO;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=IU21k6r5;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ smtp.mailfrom=oracle.com (client-ip=141.146.126.79; helo=aserp2130.oracle.com;
+ envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=lBoC0cYO; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=IU21k6r5; dkim-atps=neutral
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F8XZB2Gq8z2yyh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 12:54:35 +1100 (AEDT)
-IronPort-SDR: NoWybNeduw0CpBW3lRXkRCZYtUU/Q2dx+8MKsh/ZSvJHlbv1dyD4e0Enq+IeicWnIZmpkOjB3r
- gMcgJ/Y+FAUw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9938"; a="171682180"
-X-IronPort-AV: E=Sophos;i="5.81,289,1610438400"; d="scan'208";a="171682180"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Mar 2021 18:54:31 -0700
-IronPort-SDR: Xc0dyJ4ul8D6/FmmJBBY0QY7NOILgSzcp9+TrQ4x9G+cHu81I8032emyfBmINMnjzbP164JDqf
- Bcmw3vNnXqJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,289,1610438400"; d="scan'208";a="606587332"
-Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
- by fmsmga006.fm.intel.com with ESMTP; 29 Mar 2021 18:54:30 -0700
-Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1lR3aP-0004wm-8e; Tue, 30 Mar 2021 01:54:29 +0000
-Date: Tue, 30 Mar 2021 09:54:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 53f1d31708f6240e4615b0927df31f182e389e2f
-Message-ID: <606284be.0rJoXd5GhdI+ZwyY%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F8bFr0cwHz2xg1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 14:55:42 +1100 (AEDT)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+ by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12U3lxJw004459;
+ Tue, 30 Mar 2021 03:55:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=corp-2020-01-29;
+ bh=yNbIs4rlQ8ayFwpkEolxhuqeN3gNVQQ6av2N+5Hewto=;
+ b=lBoC0cYO5uT1gE6SzUmQ/qwXFIcteSLvkboI1js2eerCHtsPWjGVBNpiY/nVB6+u9wiP
+ S7vLKqGBhU32vsPjGsQ/JNs2MhXbiH0Z7G/LRYUSMjP6414HKhg92fcgxoWwhm6ZbCTl
+ yJmiweAZos48Vro09agQkxdKoTBrwd7pdiRIA6ReQ5a+Ev8dPCsduSK1FXL1hqslpJDv
+ oanyoxtmzRd8HiZhIEMoTD6dP4+auUT9SPuJfTQlLDfNqTpR+Zh/5GV/Lp3y39rhAcV7
+ SevpAEXdKFcAwdfoXcSHiuJK6xqEpfcQDrbzNRCwMl6W1RR9k6U06GLoiNjZhIxIut8i ww== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+ by aserp2130.oracle.com with ESMTP id 37ht7bdq5e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 30 Mar 2021 03:55:20 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+ by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12U3jRdG187799;
+ Tue, 30 Mar 2021 03:55:19 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10lp2108.outbound.protection.outlook.com [104.47.58.108])
+ by userp3030.oracle.com with ESMTP id 37jemwj7hh-2
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 30 Mar 2021 03:55:19 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GfawCaDh5/3SV5SmOe/MvPx2MkgLbOcUw3rd+r5uvFAlES2W2LIw+icii7KNwLc+kirtGO911YXHceiUT/WfZzAyhiirBRnFZHr2qQHgQZ+KqxRjUa7g+AvyMC8MyB9hG+kfzjtR741RyFYWlveU3rsgMNOdoB/1uUehMu2B5gb2zVd+8t7guDUkT7RajB2giOMUSvXQdupFkyyCbLynUPty99Tezm82ng0NvBwKU2WIPCKyNGvbDKmGzkfIh/Ve82bzA4abffDR7h3AhzTRhm9fDNG8bJgUCJZ4b/YF8PrV4bywcsBueMYm02EDor8jcqOxmfNUn5Z+Sa4a/jiH/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yNbIs4rlQ8ayFwpkEolxhuqeN3gNVQQ6av2N+5Hewto=;
+ b=JJaaraS5Bgawo6vXrLLeMkzjKqhDXZOMdZcCrWKOJuZBPtT4w9J6vtVnGr2H5/Cvq0LA9KiHw1Ok7DP2Cg9HKZEyvaCzpEWh5Gdr3n206DXQeHdEoR9wscqyVbf8QH7y6eIaHSw9lfV/2n4y/hbZ+dQ5ivnpU61pJNMImb9zAhzBK80EHzirF8TuUAScMww8JUsoYVtMv03YEnTJBf5fo950XK6M+3AsQPfgJz9ec/JaSlIJmyBGopbZkU+g0h3tHzR9glzHRdUUUHGxhBhWohtZrrB/sSL1ajMjd6ek8eQCWblKUsOc4qRa9m1GdLULHbZSSQyp+PPEDtHpebkjdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yNbIs4rlQ8ayFwpkEolxhuqeN3gNVQQ6av2N+5Hewto=;
+ b=IU21k6r5TfbP82KD+zFVi0npKEHUK0vtd7xsOPbVcbwGkOjGDFK2UeE6x2xzid5a7/XeHmPbZufXunUvYjsbjSGs32ajDoDzgDgclXNwVG3/i/94H5oiAKMmTrq7SRzbp4dLl1fpf+ixVCWrikoCeXk70MVmxSh/JQ1e7Z7EM2M=
+Authentication-Results: ellerman.id.au; dkim=none (message not signed)
+ header.d=none;ellerman.id.au; dmarc=none action=none header.from=oracle.com;
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by PH0PR10MB4760.namprd10.prod.outlook.com (2603:10b6:510:3b::23)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.25; Tue, 30 Mar
+ 2021 03:55:18 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::dc39:c9fa:7365:8c8e]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::dc39:c9fa:7365:8c8e%5]) with mapi id 15.20.3977.033; Tue, 30 Mar 2021
+ 03:55:18 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ Wang Qing <wangqing@vivo.com>, linux-kernel@vger.kernel.org,
+ Tyrel Datwyler <tyreld@linux.ibm.com>, linux-scsi@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: Re: [PATCH] scsi: ibmvscsi: delete the useless casting value returned
+Date: Mon, 29 Mar 2021 23:54:48 -0400
+Message-Id: <161707636880.29267.16463436541519396499.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <1615515534-1250-1-git-send-email-wangqing@vivo.com>
+References: <1615515534-1250-1-git-send-email-wangqing@vivo.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [138.3.201.9]
+X-ClientProxiedBy: SJ0PR03CA0231.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f::26) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from ca-mkp.mkp.ca.oracle.com (138.3.201.9) by
+ SJ0PR03CA0231.namprd03.prod.outlook.com (2603:10b6:a03:39f::26) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.24 via Frontend
+ Transport; Tue, 30 Mar 2021 03:55:17 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: bd6ac646-34a1-453c-c004-08d8f32fa21d
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4760:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <PH0PR10MB47605F72DF0F5697DA69C0A38E7D9@PH0PR10MB4760.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:843;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Gr2QBdomNMxx3DPl+IUIuztkVnZvXIu4dLyhf6egDIzgD0xl49BY5k1hBFg/bh2XjHy4NV8vDlDoXwtWg/wYpndXR2S67Xqh0o6Y2BfBfbeFvSE3yGqPM0F+2NZwy/AJ5xMpKojjKgHGoMktPTGFed+EOHiYN6+bm9SFZCBkhbFwRJu5oztYPd1/rAOoNrGyGg+D2n8MKHWx0o6+AKSe55N2PUkhNei8l9DrGCPMDGCSqdcjy9i1g+wmI7WhePyk7JwFlo2FEiebhTUQpb93gZUqrTy+ID1s+lK5YQBDPHG2TkjObZY4/vH/DzoVl3zyddSiqOCo7ijeEJBjASbeTEWgG4VFm8cUCh8wil6hqy7pv0xRDN50lERgMIKB/B8kcQRfoLKzjrPHB84IjgvpTJCLVwaR5FJxkkmN6E9CbgUqW3jOr6TmX0Ry7Dr38qLLgpbFSFujozBsS9qF4iOXGMyEgd8VGc/g41tB8IzXWLRnKE3MCfEOp4RL1owW5fB6FK8sHSJzQ2bpMJVS0po7ILpEVMvx4TF4iPiatShmhdtoWcQ0FRud7w5WPXsvXsjnMYBMmFbaNd+Q7JV+0j+q16Bk+ew2ORuSY1+Elex8+51/q37CLLwWYuvDvTg24B+Q6TpSOuQaucU7yQvWwD49avrWnyY3IIEA/fLKjwEyxcrlJFzYVc8RD3sS9OL8HGEt1Y0fY/hpHO5uekVT6XcyX1fuODuPVgzAYW8FNDHOqtU=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB4759.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(39860400002)(136003)(396003)(366004)(346002)(376002)(83380400001)(66476007)(52116002)(86362001)(4744005)(110136005)(66946007)(66556008)(6486002)(26005)(8676002)(478600001)(7696005)(186003)(36756003)(956004)(316002)(966005)(103116003)(16526019)(107886003)(2906002)(5660300002)(6666004)(2616005)(38100700001)(8936002)(4326008);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?UUFGR1dPckVZR25OV04vK3k3R3ZUS2s0SHhGKzk2a3ZoVUx1bWRGb3ZnWXpn?=
+ =?utf-8?B?Y1UrWkZHMnQ2NXZqMCtCcnhHbHJuM2YxWWFVaXJoUFNmRGVYOU5pUDdJUzFl?=
+ =?utf-8?B?UHJHZnN0NW9yTk9kS1Y1YzNQNk8wS2dPOUVIenNPeTBpczliUlQ0ZUdsenA3?=
+ =?utf-8?B?d2tKMFFXSnltRm5JK2pXNm1yMEk2VGYrT0w3cjF2YlRpKzlVaGlGU3JxVFh4?=
+ =?utf-8?B?cXFWZWNFQ2V3OVFUN2k0NmFiMkxDMWtOa2lqbFVEMDVRdlV5eGVGWERqYlBx?=
+ =?utf-8?B?VnZsMXNwS2tacCt3SU9YUVFpWDNxbkxqK2RiWHF2djBBdFlNSVRrZkZBV3N6?=
+ =?utf-8?B?NStrVERadENoMXFGZmhKaGRUay8wSlBoVzl2MjZQYzJNNWRqeU5PM2J2UDBZ?=
+ =?utf-8?B?Q3JjdWs4dy9CY3JwRXpTTkx6V1AydTZJRk1JcXRtaXZ1L3NnNjFxaHVJNFc1?=
+ =?utf-8?B?OVFOS0pwaWszTHpLTC9qQm11cXY5TTFyenRXUnVGSUJrU2JHZGVENjJzdjB0?=
+ =?utf-8?B?d1plb3RPVHVnalp2cEtpR29ZYTRQT1Z5QnFmWG5KMG1CRmVkRFB4a2lxbzhh?=
+ =?utf-8?B?dnVOc2FuRjJxYUNvNkNRU08xTzNweGU5S0dSV0I1Qjk0VkVCWm92STFMT2xI?=
+ =?utf-8?B?KzV4Y1RZNXNENUxoNjFOTFJhQ0h2WUF4c1lDdGJTeGdkWFhSME82cUw3MVMy?=
+ =?utf-8?B?ZVFDM2ZPcVI5azAyN1NFN2psOGpLdjJoQ0I0SlhaZUFLWFhyRG5XRnNFTG9B?=
+ =?utf-8?B?Rk4zTGJDK1ZJNGZiajhaU09Ld09tYUxXRHpBYzMzZ0huTWlYQmo0dEJmNnVI?=
+ =?utf-8?B?ZXRQQlB6dUJDekNYUWM4WFRlenlhZ1o1Rk9GL0N0Z1pRdmVOa1FjYWlPNnVP?=
+ =?utf-8?B?V3haRy95dTQ4VGprZ3FjRzI1RGZoeFV1WmtoeDc5Y1R4cnZhendXOUVYSStX?=
+ =?utf-8?B?UjZ1N05oM2F3SnFIVU9mY2U5Z01keU5LYVRwNXJNUEIzZUhvNjVSSmNlMFND?=
+ =?utf-8?B?NjNFS214SGJCTmpzeSs0MzBybGNHQ2xUK1M0UkllRS81Y3JkNytSd0dMNm5s?=
+ =?utf-8?B?b0Q2bmdYQy8wZWYrR0cyazBvQ0FjK0IySTZNQXR2MDUyZ0JscXRseGoxVTVB?=
+ =?utf-8?B?ei9OeVVjSjZCWG14Ui9jMjRubjc0VXJyZlFHWjVVTFpGZ1ozSU1IMm0xamtD?=
+ =?utf-8?B?UWI2VVVLVmRVc0VSWlhya1hhZXlCcXBVcGtYWFJVZWlreEZiK1F1T3pmWmp4?=
+ =?utf-8?B?Ny9FeFMxNUtJbkxtZTRjZWZOSEdXanZKMk5VZ2NJdnd1cE41amNqZjlMNHN5?=
+ =?utf-8?B?NEZoVEd4dEFvV00vY290OWlQZFNhelcvSnF3a3lLUXBudWJIeUZMeVZjbXFl?=
+ =?utf-8?B?S3RoNkQ0dWZRT1g5eFhnekVQUHpaZ3ZuM2tnWmVjdFEwOGlwVjJRRzgwL1F1?=
+ =?utf-8?B?VVEwbExMbVRUL1JlTVRHSk12VGF0cFJuczhnVmVmdCtwOElaaFV3ZjZiOW1Z?=
+ =?utf-8?B?eTRNc3JmSXJFMWs5Y2IvVGJITDNmTktBY1JQMmtFSHVtK054QzVXbVpEWXMz?=
+ =?utf-8?B?bXZTTVFJVWdRaUpjQmRxOXc3Mk4vVlNVVUxtQXgzWnRndWNiTXg0NHBzT1dJ?=
+ =?utf-8?B?cGxacWlCcm1RRzJHc0JZZ08rdWtCU3MvcmowbmRqbG1WYk1FTDNMd1dZNFR1?=
+ =?utf-8?B?MEwyM3cvN0hmb3RWTkhiWVR0QkpTSWxvbzRLcFE5NmFtSXB3bWZSZVh0Q091?=
+ =?utf-8?Q?pw1CX5x+WNA2ejtLWM50dp9yX1dHa1YxgXqEqc/?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd6ac646-34a1-453c-c004-08d8f32fa21d
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2021 03:55:18.3996 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qRTUlwIxHILnLz0BBUweY5zbi7H9/ube469RX2hwXVi6zBO+85OEHQ901tS3mWtlaYDB3IKLGfrET/DD5Tm6QwkicaCZDFXgoeEkPuzqEug=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4760
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9938
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ mlxscore=0 spamscore=0
+ suspectscore=0 adultscore=0 phishscore=0 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2103250000
+ definitions=main-2103300023
+X-Proofpoint-GUID: 9q5wqXu8xC0SJJjKvcGuJgg4Pmu1ncUP
+X-Proofpoint-ORIG-GUID: 9q5wqXu8xC0SJJjKvcGuJgg4Pmu1ncUP
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9938
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ phishscore=0 spamscore=0
+ clxscore=1015 mlxscore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ impostorscore=0 malwarescore=0 lowpriorityscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2103250000
+ definitions=main-2103300023
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,323 +186,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 53f1d31708f6240e4615b0927df31f182e389e2f  powerpc/mm/book3s64: Use the correct storage key value when calling H_PROTECT
+On Fri, 12 Mar 2021 10:18:53 +0800, Wang Qing wrote:
 
-elapsed time: 3677m
+> Fix the following coccicheck warning:
+> WARNING: casting value returned by memory allocation function is useless.
 
-configs tested: 297
-configs skipped: 2
+Applied to 5.13/scsi-queue, thanks!
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+[1/1] scsi: ibmvscsi: delete the useless casting value returned
+      https://git.kernel.org/mkp/scsi/c/0d556a21a9da
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-x86_64                           allyesconfig
-riscv                            allmodconfig
-i386                             allyesconfig
-riscv                            allyesconfig
-sh                        sh7763rdp_defconfig
-arm                         lpc32xx_defconfig
-arm64                            alldefconfig
-xtensa                              defconfig
-powerpc                 mpc837x_rdb_defconfig
-m68k                          atari_defconfig
-sh                           se7712_defconfig
-arc                        nsim_700_defconfig
-arc                           tb10x_defconfig
-arm                        keystone_defconfig
-powerpc                      pcm030_defconfig
-powerpc                    socrates_defconfig
-mips                       lemote2f_defconfig
-powerpc                      ppc44x_defconfig
-arm                    vt8500_v6_v7_defconfig
-arm                         cm_x300_defconfig
-riscv                            alldefconfig
-arm                            hisi_defconfig
-microblaze                      mmu_defconfig
-powerpc               mpc834x_itxgp_defconfig
-arc                            hsdk_defconfig
-sh                            hp6xx_defconfig
-powerpc                      makalu_defconfig
-powerpc                      walnut_defconfig
-parisc                generic-32bit_defconfig
-sh                         ecovec24_defconfig
-arc                    vdk_hs38_smp_defconfig
-arm                       versatile_defconfig
-arm                         mv78xx0_defconfig
-powerpc                     akebono_defconfig
-powerpc                    adder875_defconfig
-sh                         microdev_defconfig
-arm                        multi_v7_defconfig
-sh                                  defconfig
-arm                      pxa255-idp_defconfig
-arm                          iop32x_defconfig
-powerpc                 mpc836x_mds_defconfig
-nios2                         10m50_defconfig
-openrisc                            defconfig
-powerpc                       holly_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                         orion5x_defconfig
-powerpc                      chrp32_defconfig
-arm                       omap2plus_defconfig
-sh                          rsk7264_defconfig
-riscv                    nommu_virt_defconfig
-um                            kunit_defconfig
-powerpc                    sam440ep_defconfig
-powerpc                  storcenter_defconfig
-parisc                           allyesconfig
-arm                          simpad_defconfig
-m68k                        stmark2_defconfig
-nds32                            alldefconfig
-arc                     haps_hs_smp_defconfig
-arm                      footbridge_defconfig
-ia64                            zx1_defconfig
-m68k                                defconfig
-arm                          imote2_defconfig
-xtensa                generic_kc705_defconfig
-powerpc                 mpc8540_ads_defconfig
-m68k                        mvme16x_defconfig
-mips                    maltaup_xpa_defconfig
-powerpc                      ppc40x_defconfig
-sh                   rts7751r2dplus_defconfig
-h8300                       h8s-sim_defconfig
-m68k                         apollo_defconfig
-mips                        omega2p_defconfig
-um                             i386_defconfig
-powerpc                     sbc8548_defconfig
-powerpc                  mpc866_ads_defconfig
-powerpc                       ebony_defconfig
-sh                            titan_defconfig
-sparc64                             defconfig
-mips                         tb0219_defconfig
-mips                            ar7_defconfig
-arm                     am200epdkit_defconfig
-arm                          pxa910_defconfig
-arm                          collie_defconfig
-powerpc                 mpc834x_itx_defconfig
-sh                           se7722_defconfig
-parisc                generic-64bit_defconfig
-m68k                        mvme147_defconfig
-h8300                    h8300h-sim_defconfig
-m68k                       m5475evb_defconfig
-sparc                            allyesconfig
-sh                ecovec24-romimage_defconfig
-arm                        vexpress_defconfig
-powerpc                   bluestone_defconfig
-powerpc                      acadia_defconfig
-arm                       multi_v4t_defconfig
-arm                            mps2_defconfig
-powerpc                        cell_defconfig
-powerpc                   motionpro_defconfig
-mips                           gcw0_defconfig
-arm                          gemini_defconfig
-powerpc                     ppa8548_defconfig
-mips                         cobalt_defconfig
-powerpc                  mpc885_ads_defconfig
-arm                       aspeed_g4_defconfig
-riscv                    nommu_k210_defconfig
-arm                       cns3420vb_defconfig
-sh                           sh2007_defconfig
-arm                      tct_hammer_defconfig
-m68k                            mac_defconfig
-powerpc64                        alldefconfig
-sh                           se7705_defconfig
-powerpc                     rainier_defconfig
-powerpc                          g5_defconfig
-powerpc                     tqm8541_defconfig
-i386                             alldefconfig
-sparc                       sparc64_defconfig
-arm                  colibri_pxa300_defconfig
-powerpc                 mpc85xx_cds_defconfig
-sh                          rsk7203_defconfig
-powerpc                     redwood_defconfig
-powerpc                     tqm5200_defconfig
-arm                  colibri_pxa270_defconfig
-sh                        edosk7705_defconfig
-sh                           se7724_defconfig
-m68k                        m5407c3_defconfig
-arm                          pcm027_defconfig
-mips                           rs90_defconfig
-sh                        dreamcast_defconfig
-arm                     eseries_pxa_defconfig
-mips                          rb532_defconfig
-arm                        clps711x_defconfig
-powerpc                 mpc837x_mds_defconfig
-arm                        mini2440_defconfig
-arm                           tegra_defconfig
-mips                      pistachio_defconfig
-openrisc                 simple_smp_defconfig
-mips                        nlm_xlp_defconfig
-arm                          pxa3xx_defconfig
-powerpc                 mpc8272_ads_defconfig
-sh                          kfr2r09_defconfig
-arm                        neponset_defconfig
-powerpc                 mpc8313_rdb_defconfig
-sh                          sdk7780_defconfig
-powerpc                 mpc8560_ads_defconfig
-sh                          r7785rp_defconfig
-m68k                       bvme6000_defconfig
-arm                             pxa_defconfig
-sh                         ap325rxa_defconfig
-mips                        maltaup_defconfig
-powerpc                      katmai_defconfig
-powerpc                     mpc5200_defconfig
-mips                     loongson1b_defconfig
-mips                     decstation_defconfig
-sh                         apsh4a3a_defconfig
-arm                         assabet_defconfig
-sh                               alldefconfig
-arm                         s3c6400_defconfig
-xtensa                       common_defconfig
-powerpc                 mpc834x_mds_defconfig
-powerpc                      bamboo_defconfig
-powerpc                        warp_defconfig
-powerpc                 mpc8315_rdb_defconfig
-powerpc                     pq2fads_defconfig
-m68k                            q40_defconfig
-arm                           h5000_defconfig
-sh                        edosk7760_defconfig
-sh                        sh7757lcr_defconfig
-powerpc                         ps3_defconfig
-arm                       mainstone_defconfig
-arm                           omap1_defconfig
-sparc64                          alldefconfig
-riscv             nommu_k210_sdcard_defconfig
-arm                         shannon_defconfig
-powerpc                      ppc6xx_defconfig
-arm                          ixp4xx_defconfig
-arc                      axs103_smp_defconfig
-arm                           spitz_defconfig
-arm                         s3c2410_defconfig
-arm                      jornada720_defconfig
-mips                      pic32mzda_defconfig
-mips                        jmr3927_defconfig
-m68k                       m5275evb_defconfig
-sh                           se7206_defconfig
-mips                     cu1830-neo_defconfig
-sh                            shmin_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                               defconfig
-i386                                defconfig
-i386                               tinyconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a002-20210329
-x86_64               randconfig-a003-20210329
-x86_64               randconfig-a006-20210329
-x86_64               randconfig-a001-20210329
-x86_64               randconfig-a005-20210329
-x86_64               randconfig-a004-20210329
-i386                 randconfig-a003-20210329
-i386                 randconfig-a004-20210329
-i386                 randconfig-a001-20210329
-i386                 randconfig-a002-20210329
-i386                 randconfig-a006-20210329
-i386                 randconfig-a005-20210329
-i386                 randconfig-a003-20210327
-i386                 randconfig-a004-20210327
-i386                 randconfig-a001-20210327
-i386                 randconfig-a002-20210327
-i386                 randconfig-a006-20210327
-i386                 randconfig-a005-20210327
-x86_64               randconfig-a015-20210328
-x86_64               randconfig-a012-20210328
-x86_64               randconfig-a013-20210328
-x86_64               randconfig-a014-20210328
-x86_64               randconfig-a016-20210328
-x86_64               randconfig-a011-20210328
-i386                 randconfig-a011-20210329
-i386                 randconfig-a016-20210329
-i386                 randconfig-a013-20210329
-i386                 randconfig-a012-20210329
-i386                 randconfig-a014-20210329
-i386                 randconfig-a015-20210329
-i386                 randconfig-a014-20210326
-i386                 randconfig-a011-20210326
-i386                 randconfig-a015-20210326
-i386                 randconfig-a016-20210326
-i386                 randconfig-a012-20210326
-i386                 randconfig-a013-20210326
-i386                 randconfig-a014-20210327
-i386                 randconfig-a011-20210327
-i386                 randconfig-a015-20210327
-i386                 randconfig-a016-20210327
-i386                 randconfig-a012-20210327
-i386                 randconfig-a013-20210327
-x86_64               randconfig-a002-20210327
-x86_64               randconfig-a003-20210327
-x86_64               randconfig-a006-20210327
-x86_64               randconfig-a001-20210327
-x86_64               randconfig-a004-20210327
-x86_64               randconfig-a005-20210327
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a002-20210328
-x86_64               randconfig-a003-20210328
-x86_64               randconfig-a001-20210328
-x86_64               randconfig-a006-20210328
-x86_64               randconfig-a005-20210328
-x86_64               randconfig-a004-20210328
-x86_64               randconfig-a015-20210329
-x86_64               randconfig-a012-20210329
-x86_64               randconfig-a013-20210329
-x86_64               randconfig-a014-20210329
-x86_64               randconfig-a011-20210329
-x86_64               randconfig-a016-20210329
-x86_64               randconfig-a012-20210327
-x86_64               randconfig-a015-20210327
-x86_64               randconfig-a014-20210327
-x86_64               randconfig-a013-20210327
-x86_64               randconfig-a011-20210327
-x86_64               randconfig-a016-20210327
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Martin K. Petersen	Oracle Linux Engineering
