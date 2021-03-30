@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A6F34E732
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 14:11:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44FC834E748
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 14:16:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F8pFg4XwTz3byl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 23:11:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F8pMY01Kbz3c22
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Mar 2021 23:16:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V6AwhAf1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QQpwu09z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,36 +17,37 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=V6AwhAf1; 
+ header.s=k20201202 header.b=QQpwu09z; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F8pFG2BgRz30Cn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 23:10:58 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BB48A61989;
- Tue, 30 Mar 2021 12:10:53 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F8pM82YbRz2yx3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Mar 2021 23:16:04 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7EF476023F;
+ Tue, 30 Mar 2021 12:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1617106256;
- bh=x9ekBX8ubp5TbQCSOWJz4iBqTKfUoj1TbGKvNKFHBCs=;
+ s=k20201202; t=1617106561;
+ bh=bw8KBo/NNqB097evsMkXsyFAnnqW6iPTNtBok4bird8=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=V6AwhAf1QgHJ9X1lDR7o2HkHOdHkt3V8vAvvWfz2AHqpyY2l/Fep/z6lg9kDQbauC
- 4y1XZlSQfHxkf5nJp7n5VKoSDsRpRIvd7Q6K6T95XjE1o61jNca8OXezTBC5axyzuh
- IT3g9JXwM1vLMOLl3yOYj0aMGjfEXTlmIQtAF1IbGF0fPyxLKJtpZY5UsEQWkilqqL
- SGdhmOricP9XMO5hJycrVsxTgSV8ERQtWAgJsZ1LV7210oSFaZQl7d6atPYq+EP12r
- 93GDdaLCudVDSgkEgkxYlhKl24qbesurPj6XXgDMZa+OVe889sGvMT7cy4P/XVi4Mb
- eXvJGcyvHpaGw==
-Date: Tue, 30 Mar 2021 13:10:50 +0100
+ b=QQpwu09zdg1APUNJpuxQhrkAfEgb8Xx8xBXTFO5/bqrnCy7nUn9ZszN5WLb+sq6vo
+ 5UJCLWYDMVJjHKt1uBKBD6MMh1tpUC2/ZJUxkV8BiHWJrvRd361XyyytEj+6Li42BI
+ tfxcD7Rdfa0dzL9ZkwRo0SzzQKJrMa88AgwyNDnuPLKRwADNMLnkiOXhBm9+lE1tBR
+ rdun4d9sUp5EgfOD94h55VT+FoWTTMYz/Myrov9kU9g5f+P8nfcOj+TX3m+W0J04yq
+ y4bdrKMyq4yHZ4rqf7cqV7h7YmIgfRkPLJ7ViI7cikjVljJ7l7h/CdSxY5MyPkvqqz
+ V8lAE4+4RFo3g==
+Date: Tue, 30 Mar 2021 13:15:56 +0100
 From: Will Deacon <will@kernel.org>
 To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 02/18] iommu/fsl_pamu: remove fsl_pamu_get_domain_attr
-Message-ID: <20210330121050.GB5908@willie-the-truck>
+Subject: Re: [PATCH 03/18] iommu/fsl_pamu: remove support for setting
+ DOMAIN_ATTR_GEOMETRY
+Message-ID: <20210330121555.GC5908@willie-the-truck>
 References: <20210316153825.135976-1-hch@lst.de>
- <20210316153825.135976-3-hch@lst.de>
+ <20210316153825.135976-4-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210316153825.135976-3-hch@lst.de>
+In-Reply-To: <20210316153825.135976-4-hch@lst.de>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,17 +71,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 16, 2021 at 04:38:08PM +0100, Christoph Hellwig wrote:
-> None of the values returned by this function are ever queried.  Also
-> remove the DOMAIN_ATTR_FSL_PAMUV1 enum value that is not otherwise used.
+On Tue, Mar 16, 2021 at 04:38:09PM +0100, Christoph Hellwig wrote:
+> The default geometry is the same as the one set by qman_port given
+> that FSL_PAMU depends on having 64-bit physical and thus DMA addresses.
+> 
+> Remove the support to update the geometry and remove the now pointless
+> geom_size field.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > Acked-by: Li Yang <leoyang.li@nxp.com>
 > ---
->  drivers/iommu/fsl_pamu_domain.c | 30 ------------------------------
->  include/linux/iommu.h           |  4 ----
->  2 files changed, 34 deletions(-)
+>  drivers/iommu/fsl_pamu_domain.c     | 55 +++--------------------------
+>  drivers/iommu/fsl_pamu_domain.h     |  6 ----
+>  drivers/soc/fsl/qbman/qman_portal.c | 12 -------
+>  3 files changed, 5 insertions(+), 68 deletions(-)
+
+Took me a minute to track down the other magic '36' which ends up in
+aperture_end, but I found it eventually so:
 
 Acked-by: Will Deacon <will@kernel.org>
+
+(It does make me wonder what all this glue was intended to be used for)
 
 Will
