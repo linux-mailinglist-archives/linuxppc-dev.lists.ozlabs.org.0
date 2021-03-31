@@ -2,52 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA6734F58B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 02:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A455734F586
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 02:39:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F96tx1h8gz3cBq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:41:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F96rc4Zw3z3c20
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:39:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rAW8B61Z;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=H+Wpo8CV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=rAW8B61Z; 
+ header.a=rsa-sha256 header.s=201909 header.b=H+Wpo8CV; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F96rG4KDXz3btW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 11:38:53 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F96rC2fKzz2xxh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 11:38:50 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F96rB2BdCz9sW0; Wed, 31 Mar 2021 11:38:50 +1100 (AEDT)
+ id 4F96rB5WTQz9sWK; Wed, 31 Mar 2021 11:38:50 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
  s=201909; t=1617151130;
- bh=99RnwgWYdU01/QUL8pRwYrIC6tmqAiczXkDFESHCLUo=;
+ bh=eGcuo+SD2AvVHdYRAA0vthZg4dPZ8I+d8e7qIwbiN9Q=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=rAW8B61Z/QbpVe6R8PTokzYVZzV1nB4vHKtXmRuILCZOPXUUpCFvtYCCXgEcTFdvS
- g39dAF/1SNKkfdb5ZiN8qmlJJPKDLZ+/uEFQQg5LzlYltm9rLZu/ROKnB4LhRVoowJ
- jqytHU8KipaKtzNBCNKUUqV2f++HnhcoseYSXGn3yuYffk0Ry4TmDDT3FIT0nnOt2M
- Iq69OVq32xaAqkv1zKlrFbwy1Kwwmvx297UjP7EpMJ4T0gENX55ZbZA8K8u329xmuR
- DfXd/xmdP9GeYKBlOaN0AqZpMT01S2aBSQinanEsCDIY42wyN8Fbl21eqmOI1lqtdy
- Y0MVwXhxR0eQw==
+ b=H+Wpo8CVQTOheZYCOoj1uxCMQ7MKIEU3mCxaaJnS81h4bozc4yBO1v8C2laSvONIJ
+ 6vjNXhBUmI9eCf/CiVNoSRg1avyggry9zGRsW/l2RhbdbYqyQFXi1lwVmZYz8leM7M
+ 5eG3iGtJSmSybHuQ2vYEwIbVAgnaTdbR+cLSzSW4eXfwpTs2IDivjYXcJGcNfvHLmT
+ hHuBuyZmFbP1wJ25YrEHJInUXYIIkkH/Pn7bHXloXrJ2NK5K8TCgx2KeT7R3eD/V27
+ cjJgV51QP3PUBzMJjS5XHERb0+Oyu2fQrnmhTfugaMxFgX2ySA2KrMhOlDomgn5//L
+ s/K0Pg+xB3/Aw==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/6] powerpc/pseries: Add key to flags in
- pSeries_lpar_hpte_updateboltedpp()
-Date: Wed, 31 Mar 2021 11:38:41 +1100
-Message-Id: <20210331003845.216246-2-mpe@ellerman.id.au>
+Subject: [PATCH v2 3/6] powerpc/64s: Use htab_convert_pte_flags() in
+ hash__mark_rodata_ro()
+Date: Wed, 31 Mar 2021 11:38:42 +1100
+Message-Id: <20210331003845.216246-3-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210331003845.216246-1-mpe@ellerman.id.au>
 References: <20210331003845.216246-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -64,91 +63,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The flags argument to plpar_pte_protect() (aka. H_PROTECT), includes
-the key in bits 9-13, but currently we always set those bits to zero.
+In hash__mark_rodata_ro() we pass the raw PP_RXXX value to
+hash__change_memory_range(). That has the effect of setting the key to
+zero, because PP_RXXX contains no key value.
 
-In the past that hasn't been a problem because we always used key 0
-for the kernel, and updateboltedpp() is only used for kernel mappings.
-
-However since commit d94b827e89dc ("powerpc/book3s64/kuap: Use Key 3
-for kernel mapping with hash translation") we are now inadvertently
-changing the key (to zero) when we call plpar_pte_protect().
-
-That hasn't broken anything because updateboltedpp() is only used for
-STRICT_KERNEL_RWX, which is currently disabled on 64s due to other
-bugs.
-
-But we want to fix that, so first we need to pass the key correctly to
-plpar_pte_protect(). We can't pass our newpp value directly in, we
-have to convert it into the form expected by the hcall.
-
-The hcall we're using here is H_PROTECT, which is specified in section
-14.5.4.1.6 of LoPAPR v1.1.
-
-It takes a `flags` parameter, and the description for flags says:
-
- * flags: AVPN, pp0, pp1, pp2, key0-key4, n, and for the CMO
-   option: CMO Option flags as defined in Table 189‚
-
-If you then go to the start of the parent section, 14.5.4.1, on page
-405, it says:
-
-Register Linkage (For hcall() tokens 0x04 - 0x18)
- * On Call
-   * R3 function call token
-   * R4 flags (see Table 178‚ “Page Frame Table Access flags field
-     definition‚” on page 401)
-
-Then you have to go to section 14.5.3, and on page 394 there is a list
-of hcalls and their tokens (table 176), and there you can see that
-H_PROTECT == 0x18.
-
-Finally you can look at table 178, on page 401, where it specifies the
-layout of the bits for the key:
-
- Bit     Function
- -----------------
- 50-54 | key0-key4
-
-Those are big-endian bit numbers, converting to normal bit numbers you
-get bits 9-13, or 0x3e00.
-
-In the kernel we have:
-
-  #define HPTE_R_KEY_HI		ASM_CONST(0x3000000000000000)
-  #define HPTE_R_KEY_LO		ASM_CONST(0x0000000000000e00)
-
-So the LO bits of newpp are already in the right place, and the HI
-bits need to be shifted down by 48.
+Fix it by using htab_convert_pte_flags(), which knows how to convert a
+pgprot into a pp value, including the key.
 
 Fixes: d94b827e89dc ("powerpc/book3s64/kuap: Use Key 3 for kernel mapping with hash translation")
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Daniel Axtens <dja@axtens.net>
 ---
- arch/powerpc/platforms/pseries/lpar.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/book3s64/hash_pgtable.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-v2: Expand change log with explanation of where the format of the
-    flags parameter comes from, prompted by dja.
+v2: Unchanged.
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 764170fdb0f7..8bbbddff7226 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -976,11 +976,13 @@ static void pSeries_lpar_hpte_updateboltedpp(unsigned long newpp,
- 	slot = pSeries_lpar_hpte_find(vpn, psize, ssize);
- 	BUG_ON(slot == -1);
+diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
+index 567e0c6b3978..03819c259f0a 100644
+--- a/arch/powerpc/mm/book3s64/hash_pgtable.c
++++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
+@@ -428,12 +428,14 @@ static bool hash__change_memory_range(unsigned long start, unsigned long end,
  
--	flags = newpp & 7;
-+	flags = newpp & (HPTE_R_PP | HPTE_R_N);
- 	if (mmu_has_feature(MMU_FTR_KERNEL_RO))
- 		/* Move pp0 into bit 8 (IBM 55) */
- 		flags |= (newpp & HPTE_R_PP0) >> 55;
+ void hash__mark_rodata_ro(void)
+ {
+-	unsigned long start, end;
++	unsigned long start, end, pp;
  
-+	flags |= ((newpp & HPTE_R_KEY_HI) >> 48) | (newpp & HPTE_R_KEY_LO);
+ 	start = (unsigned long)_stext;
+ 	end = (unsigned long)__init_begin;
+ 
+-	WARN_ON(!hash__change_memory_range(start, end, PP_RXXX));
++	pp = htab_convert_pte_flags(pgprot_val(PAGE_KERNEL_ROX), HPTE_USE_KERNEL_KEY);
 +
- 	lpar_rc = plpar_pte_protect(flags, slot, 0);
++	WARN_ON(!hash__change_memory_range(start, end, pp));
+ }
  
- 	BUG_ON(lpar_rc != H_SUCCESS);
+ void hash__mark_initmem_nx(void)
 -- 
 2.25.1
 
