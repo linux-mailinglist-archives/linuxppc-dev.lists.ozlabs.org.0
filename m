@@ -1,33 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469EF34F5E3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:11:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C37B834F5E5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:12:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F97Z423jjz3dCP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:11:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F97Zm5S8Mz3dd7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:12:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F97XK3d8Xz3bsB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:09 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F97XM3XXWz3bx6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:11 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F97XK1yZ5z9sWk; Wed, 31 Mar 2021 12:10:09 +1100 (AEDT)
+ id 4F97XL5cZdz9sWQ; Wed, 31 Mar 2021 12:10:10 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
- rashmicy@gmail.com, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <9881c68fbca004f9ea18fc9473f630e11ccd6417.1615806071.git.christophe.leroy@csgroup.eu>
-References: <9881c68fbca004f9ea18fc9473f630e11ccd6417.1615806071.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/asm-offsets: GPR14 is not needed either
-Message-Id: <161715297765.226945.4352182922403291412.b4-ty@ellerman.id.au>
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <a1e552006b8c51f23edd2f6cabdd9a986c631146.1615380184.git.christophe.leroy@csgroup.eu>
+References: <a1e552006b8c51f23edd2f6cabdd9a986c631146.1615380184.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/Makefile: Remove workaround for gcc versions
+ below 4.9
+Message-Id: <161715297701.226945.17440071466886747895.b4-ty@ellerman.id.au>
 Date: Wed, 31 Mar 2021 12:09:37 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -48,17 +49,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 15 Mar 2021 11:01:26 +0000 (UTC), Christophe Leroy wrote:
-> Commit aac6a91fea93 ("powerpc/asm: Remove unused symbols in
-> asm-offsets.c") removed GPR15 to GPR31 but kept GPR14,
-> probably because it pops up in a couple of comments when doing
-> a grep.
+On Wed, 10 Mar 2021 12:43:12 +0000 (UTC), Christophe Leroy wrote:
+> Commit 6ec4476ac825 ("Raise gcc version requirement to 4.9")
+> made it impossible to build with gcc 4.8 and under.
 > 
-> However, it was never used either, so remove it as well.
+> Remove related workaround.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/asm-offsets: GPR14 is not needed either
-      https://git.kernel.org/powerpc/c/6eeca7a11379e9dd05493bbdba57515b36a2e3cf
+[1/1] powerpc/Makefile: Remove workaround for gcc versions below 4.9
+      https://git.kernel.org/powerpc/c/802b5560393423166e436c7914b565f3cda9e6b9
 
 cheers
