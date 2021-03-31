@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0F834F828
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 06:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2389734F82C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 06:59:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9DZK5Ytrz3c46
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 15:57:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9DcQ6bR1z3c9D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 15:59:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=sW6QAytA;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=vSoQ47XO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,36 +17,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=paulus@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=sW6QAytA; dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ header.s=201707 header.b=vSoQ47XO; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9DYw0fc7z2xxn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 15:56:51 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9Dc20V2Yz2xxn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 15:58:42 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1003)
- id 4F9DYv0L95z9sWK; Wed, 31 Mar 2021 15:56:50 +1100 (AEDT)
+ id 4F9Dc15vyQz9sWX; Wed, 31 Mar 2021 15:58:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1617166611; bh=19OgOaq+ZIMbNNJbMDGP6fgCyFoh4TXBEgpOg6Gntdk=;
+ t=1617166721; bh=1Jp2PVYuBwxl9vR5J6ojXLJS2rIfGO+/7iEhzEz4i1o=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=sW6QAytAhYBDzhZRB+xjJ3hkwA45lb45zqexsOLJuVZW3X+tXr6cy/VxO0vmc1ixs
- 0qox4x1fRmH7Wp5G/yZZTeLK1cND/jboBMbvbijwgWbcKiXyKB4r6UiXn2aN1WuQYU
- 6v8hsXXmFm1GX4mrFHu1+EAN4jRPkvJhH5md/tvZq8PkplTS6MFXfYDX1KdRxGLOAh
- v9gM6rH6RogyRcQ/Gmg3cM8tywFcqLP7cAVo1ZF9F13RUFhOLeAAfkFbHTcjDb2hAv
- 1iRG3BFvJ3IPgEjVhm67qh8RTqKPWummxdGN/zM+uilB90v7db9lLd9BFYN+RWuQ2S
- qacEqKjBhHtGQ==
-Date: Wed, 31 Mar 2021 15:56:45 +1100
+ b=vSoQ47XO0dYsl0+qzBNZxQdkJD6eb8YSctBF9MF5c5z8E0O65eE2BpsvvntgrZDca
+ 1aPkpWlPW2BJsfnkzQo8Da44xc0yq0BG1mMZpw4i4SCWq7bUEAO+cT3QrR3yQ9SYqE
+ 1bC7TOqqPjxMjEyjqI/OlV+ELiQXxdNrPOlz9uA1QFEUg7mwC3432daWIddv473Stg
+ PwOkLH4zGfPPmVfu7uDG8yKCPR48ybjYGJHz27HQHy1718HBb9BsUyLHQnEHGXKj1R
+ DMCjv/ukgdYSBZz4GnplBj7/ncF/unU9L2KOgftl6diMmItBDWmDpIXq9oxB7ry8sw
+ GTo7EfSqmw7Yg==
+Date: Wed, 31 Mar 2021 15:58:29 +1100
 From: Paul Mackerras <paulus@ozlabs.org>
 To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 10/46] KVM: PPC: Book3S HV: Ensure MSR[ME] is always
- set in guest MSR
-Message-ID: <YGQBDbDfFJuImaTg@thinks.paulus.ozlabs.org>
+Subject: Re: [PATCH v4 11/46] KVM: PPC: Book3S HV: Ensure MSR[HV] is always
+ clear in guest MSR
+Message-ID: <YGQBdVntWnG/ewtj@thinks.paulus.ozlabs.org>
 References: <20210323010305.1045293-1-npiggin@gmail.com>
- <20210323010305.1045293-11-npiggin@gmail.com>
+ <20210323010305.1045293-12-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210323010305.1045293-11-npiggin@gmail.com>
+In-Reply-To: <20210323010305.1045293-12-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,21 +58,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- kvm-ppc@vger.kernel.org, Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 23, 2021 at 11:02:29AM +1000, Nicholas Piggin wrote:
-> Rather than add the ME bit to the MSR at guest entry, make it clear
-> that the hypervisor does not allow the guest to clear the bit.
+On Tue, Mar 23, 2021 at 11:02:30AM +1000, Nicholas Piggin wrote:
+> Rather than clear the HV bit from the MSR at guest entry, make it clear
+> that the hypervisor does not allow the guest to set the bit.
 > 
-> The ME set is kept in guest entry for now, but a future patch will
+> The HV clear is kept in guest entry for now, but a future patch will
 > warn if it's not present.
-> 
-> Reviewed-by: Daniel Axtens <dja@axtens.net>
-> Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+
+Will warn if it *is* present, surely?
+
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
 Acked-by: Paul Mackerras <paulus@ozlabs.org>
