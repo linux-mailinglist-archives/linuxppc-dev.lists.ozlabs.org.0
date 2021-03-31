@@ -2,30 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F3634F620
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:19:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4092A34F61E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:18:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F97kt0GlVz3gcJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:19:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F97kB1fTBz3gWM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:18:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F97Xl0mcFz3c78
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:31 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F97Xh2TZqz3c9x
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:28 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F97Xk5W6hz9svs; Wed, 31 Mar 2021 12:10:28 +1100 (AEDT)
+ id 4F97Xh0PYrz9sjD; Wed, 31 Mar 2021 12:10:27 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20210314093300.131998-1-mpe@ellerman.id.au>
-References: <20210314093300.131998-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/eeh: Fix build failure with CONFIG_PROC_FS=n
-Message-Id: <161715297813.226945.2483746377213597167.b4-ty@ellerman.id.au>
+In-Reply-To: <20210314093320.132331-1-mpe@ellerman.id.au>
+References: <20210314093320.132331-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/64s: Fold update_current_thread_[i]amr() into
+ their only callers
+Message-Id: <161715297829.226945.13185838815958214163.b4-ty@ellerman.id.au>
 Date: Wed, 31 Mar 2021 12:09:38 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -45,17 +46,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 14 Mar 2021 20:33:00 +1100, Michael Ellerman wrote:
-> The build fails with CONFIG_PROC_FS=n:
+On Sun, 14 Mar 2021 20:33:20 +1100, Michael Ellerman wrote:
+> lkp reported warnings in some configuration due to
+> update_current_thread_amr() being unused:
 > 
->   arch/powerpc/kernel/eeh.c:1571:12: error: ‘proc_eeh_show’ defined but not used
->    1571 | static int proc_eeh_show(struct seq_file *m, void *v)
+>   arch/powerpc/mm/book3s64/pkeys.c:284:20: error: unused function 'update_current_thread_amr'
+>   static inline void update_current_thread_amr(u64 value)
 > 
-> Wrap proc_eeh_show() in an ifdef to avoid it.
+> Which is because it's only use is inside an ifdef. We could move it
+> inside the ifdef, but it's a single line function and only has one
+> caller, so just fold it in.
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/eeh: Fix build failure with CONFIG_PROC_FS=n
-      https://git.kernel.org/powerpc/c/7a7685acd2129e2e5d433636120b4c5038c03e51
+[1/1] powerpc/64s: Fold update_current_thread_[i]amr() into their only callers
+      https://git.kernel.org/powerpc/c/c2a2a5d0270c641ce030aee247569afc1a0efbe5
 
 cheers
