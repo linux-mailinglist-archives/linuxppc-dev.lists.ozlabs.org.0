@@ -2,35 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD76634F62B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E0834F614
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:17:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F97pH6LNnz3cHC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:22:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F97j76rMtz3gFs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:17:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F97Xw0C5Yz3cHl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:39 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F97Xd5vbYz3c7J
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:25 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F97Xv1V4Fz9t14; Wed, 31 Mar 2021 12:10:35 +1100 (AEDT)
+ id 4F97Xd4Tm5z9sXh; Wed, 31 Mar 2021 12:10:25 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org,
- Bhaskar Chowdhury <unixbhaskar@gmail.com>, mikey@neuling.org,
- mpe@ellerman.id.au, jniethe5@gmail.com, christophe.leroy@csgroup.eu,
- benh@kernel.crashing.org, alistair@popple.id.au, linux-kernel@vger.kernel.org,
- paulus@samba.org
-In-Reply-To: <20210224075547.763063-1-unixbhaskar@gmail.com>
-References: <20210224075547.763063-1-unixbhaskar@gmail.com>
-Subject: Re: [PATCH] arch: powerpc: kernel: Change droping to dropping in the
- file traps.c
-Message-Id: <161715296517.226945.7681284090188409225.b4-ty@ellerman.id.au>
+To: Lee Jones <lee.jones@linaro.org>
+In-Reply-To: <20210303124603.3150175-1-lee.jones@linaro.org>
+References: <20210303124603.3150175-1-lee.jones@linaro.org>
+Subject: Re: [RESEND 1/1] powerpc: asm: hvconsole: Move 'hvc_vio_init_early's
+ prototype to shared location
+Message-Id: <161715296598.226945.6217795321816645614.b4-ty@ellerman.id.au>
 Date: Wed, 31 Mar 2021 12:09:25 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -46,17 +42,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rdunlap@infradead.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 24 Feb 2021 13:25:47 +0530, Bhaskar Chowdhury wrote:
-> s/droping/dropping/
+On Wed, 3 Mar 2021 12:46:03 +0000, Lee Jones wrote:
+> Fixes the following W=1 kernel build warning(s):
+> 
+>  drivers/tty/hvc/hvc_vio.c:385:13: warning: no previous prototype for ‘hvc_vio_init_early’ [-Wmissing-prototypes]
+>  385 | void __init hvc_vio_init_early(void)
+>  | ^~~~~~~~~~~~~~~~~~
 
 Applied to powerpc/next.
 
-[1/1] arch: powerpc: kernel: Change droping to dropping in the file traps.c
-      https://git.kernel.org/powerpc/c/5c4a4802b9ac8c1acdf2250fad3f8f2d6254f9c7
+[1/1] powerpc: asm: hvconsole: Move 'hvc_vio_init_early's prototype to shared location
+      https://git.kernel.org/powerpc/c/13b8219bd00d953cad60431cb47db96eb835c71d
 
 cheers
