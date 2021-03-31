@@ -1,75 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B9F350633
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 20:22:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B59A3506E7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 20:54:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9ZRJ2ydWz3bsN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 05:22:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9b8B1r3Sz3bq8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 05:54:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=Mh3qzQkN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arista.com header.i=@arista.com header.a=rsa-sha256 header.s=google header.b=Mgm0NPTv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.86.76; helo=rcdn-iport-5.cisco.com;
- envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=Mh3qzQkN; dkim-atps=neutral
-Received: from rcdn-iport-5.cisco.com (rcdn-iport-5.cisco.com [173.37.86.76])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9ZQq5rK8z2yx8
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 05:21:52 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=3897; q=dns/txt; s=iport;
- t=1617214915; x=1618424515;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=t8lk/7k5wkWXyrsD9aMvvKA4Te42fmRyrTbrrcgdlHo=;
- b=Mh3qzQkN8dB8hJlswW8NH363HeUouRgZUl7niJ7bFxHZiP06D+HI9DjW
- jJg2kJ2KXgMRGT6dUHYLzanpVXq4oOcTyzmajSIP9S0qhDgwlVGlDsHln
- hUU0W6E4XG/NxrmJR3hDXzGTALoybmXWm8ntenRa+Ce3XDPBNO+Ikt9aI Q=;
-IronPort-HdrOrdr: =?us-ascii?q?A9a23=3AWKfFL6jA4QpEqfo1THc148MX4HBQX4F13D?=
- =?us-ascii?q?Abvn1ZSRFFG/GwvcrGppsm/DXzjyscX2xltNCbIa+bQW7d85kd2/h1AZ6JWg?=
- =?us-ascii?q?76tGy0aLxz9IeK+UyDJwTS/vNQvJ0LT4FQE9v1ZGIWse/b502CH88k0J279s?=
- =?us-ascii?q?mT9IPj5lNMaS0vVK169Qd+DW+gYy5LbS1LH4AwGpbZxucvnVudUE8aZMi6GX?=
- =?us-ascii?q?UJNtKrz7b2vanrbhIcCxks5BPmt1OVwYTnGBuV1Ap2aV1y6IolmFKoryXJoo?=
- =?us-ascii?q?2+rvf+8RPHzmnV9ZgTosf508BOHtbksLlzFhzcziC1eY9mR7qO+Bcyre3H0i?=
- =?us-ascii?q?dSrPD85zE9Is9093TdOluQnCKo8Qzh3DEygkWSr2OlvQ=3D=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0AkAABzvGRg/5FdJa1aGwEBAQEBAQE?=
- =?us-ascii?q?BBQEBARIBAQEDAwEBAUCBPAYBAQELAYIqgUwBOTGMZYkuA5AIFopFgXwLAQE?=
- =?us-ascii?q?BDQEBNAQBAYRQAoF7AiU0CQ4CAwEBDAEBBQEBAQIBBgRxhW6GRQEFOj8QCxg?=
- =?us-ascii?q?uPBsGE4V5qnd1gTSJCIFEFA6BFwGNSSYcgUlChC4+ijYEgkAGAXsUgmWQfwa?=
- =?us-ascii?q?CdopQgSCZb4EUgxGBI5s5MRCkSLgbAgQGBQIWgVQ6gVkzGggbFYMkUBkNjis?=
- =?us-ascii?q?WjkchAy84AgYKAQEDCY8JAQE?=
-X-IronPort-AV: E=Sophos;i="5.81,293,1610409600"; d="scan'208";a="609843726"
-Received: from rcdn-core-9.cisco.com ([173.37.93.145])
- by rcdn-iport-5.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 31 Mar 2021 18:21:48 +0000
-Received: from zorba ([10.24.8.227])
- by rcdn-core-9.cisco.com (8.15.2/8.15.2) with ESMTPS id 12VILjhE015710
- (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 31 Mar 2021 18:21:47 GMT
-Date: Wed, 31 Mar 2021 11:21:45 -0700
-From: Daniel Walker <danielwa@cisco.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH 6/8] drivers: firmware: efi: libstub: enable generic
- commandline
-Message-ID: <20210331182145.GJ2469518@zorba>
-References: <41021d66db2ab427c14255d2a24bb4517c8b58fd.1617126961.git.danielwa@cisco.com>
- <e5d98d566c38d6f8516b8d9d1fd603ec1f131037.1617126961.git.danielwa@cisco.com>
- <CAMj1kXG_rRLU2Hp_GaZyayxx6J+HaWyPHPmE-hEZawuxzZ4JXw@mail.gmail.com>
+ smtp.mailfrom=arista.com (client-ip=2a00:1450:4864:20::436;
+ helo=mail-wr1-x436.google.com; envelope-from=dima@arista.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=arista.com header.i=@arista.com header.a=rsa-sha256
+ header.s=google header.b=Mgm0NPTv; dkim-atps=neutral
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com
+ [IPv6:2a00:1450:4864:20::436])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9b7k5Qf5z300S
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 05:53:52 +1100 (AEDT)
+Received: by mail-wr1-x436.google.com with SMTP id j18so20707008wra.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 11:53:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arista.com; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=3u7Et0H7oZ1l5+ZT9yV0GYS4scsUtLZ5FCnJUgJcrYc=;
+ b=Mgm0NPTvspRnm2H/4m2momQHT290auYuLqDANl89pFpeXPjht2MQjc/9oGe/0kRF3r
+ FFfSpw6pLg7HQUNMO+FUmKd7OlPJbzAdBkLOxYHVvGKD4bpvCSd93fmeWrM5UsixRe5Q
+ FhpXRqxw19IrLrm3HlvXkMF5B74Oyn6XmtPUM9MzKL8IkLh5lxoQd6S+8Jsvv+MX2ZBy
+ OHFJcVWq89q46mVCPuTkBi5800JUenUswWCTssAgpxdylHdEaVznXTpUGm4QbKkQl/jq
+ R99EYo+OIkW5UzTANDPKCSwh+FWDFaGVPT0OyYd37kX3i5AUAfX/I2OZYTiZI/NH+yKL
+ J2QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=3u7Et0H7oZ1l5+ZT9yV0GYS4scsUtLZ5FCnJUgJcrYc=;
+ b=t/CNronal6fSUQ/GJA5TpUaaVPFM8gF7WGm+Y3T75oiS7HJpjJ6mbI0JUlFRzfcHyE
+ 9CCNmvd+5yFeM8hjGinVlvIop4qRPU7qpXjl+pr2UXkDH0U6gu9oSqj8H25zhadjHTJg
+ RaAJizLlFyY0a5uqlxYY1CKhFCtvaNQhdByn/yTknSYLD9aq048q/IiXuUeUORf02D9U
+ JBCmXTv1fNJRsSaYMgWCTzX2UYzkC+5YwBmolz8MKF6bU2artrVo82IDcEL++VMPGY6O
+ QsFvOocGosfEoFJdwObYhZu/5XQyx8F7amn29fJaP/vrIklyMRHGOCl0q64LUzRe71YK
+ dpvQ==
+X-Gm-Message-State: AOAM5337UFBrz3gMHA8642qerjtwJnZRqFTxGPw0oFH0iZIqO72v3HJv
+ bGmnW5NIrRq4T4wX2QbqsV8LOA==
+X-Google-Smtp-Source: ABdhPJyPqgg2NxjIPCh/BtXZYrR1Sey+m3sh2KHpQm1VyfXtUb7l7xh32RumbSLj4ZvX3qCECfmddw==
+X-Received: by 2002:adf:e34f:: with SMTP id n15mr5278586wrj.224.1617216828332; 
+ Wed, 31 Mar 2021 11:53:48 -0700 (PDT)
+Received: from ?IPv6:2a02:8084:e84:2480:228:f8ff:fe6f:83a8?
+ ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
+ by smtp.gmail.com with ESMTPSA id u20sm6368269wru.6.2021.03.31.11.53.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 31 Mar 2021 11:53:48 -0700 (PDT)
+Subject: Re: [PATCH] powerpc/vdso: Separate vvar vma from vdso
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kernel@vger.kernel.org
+References: <20210326191720.138155-1-dima@arista.com>
+ <09e8d68d-54fe-e327-b44f-8f68543edba1@csgroup.eu>
+ <8735wby77v.fsf@mpe.ellerman.id.au>
+From: Dmitry Safonov <dima@arista.com>
+Message-ID: <361ec8ba-8335-157a-53e8-38a656626519@arista.com>
+Date: Wed, 31 Mar 2021 19:53:46 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXG_rRLU2Hp_GaZyayxx6J+HaWyPHPmE-hEZawuxzZ4JXw@mail.gmail.com>
-X-Auto-Response-Suppress: DR, OOF, AutoReply
-X-Outbound-SMTP-Client: 10.24.8.227, [10.24.8.227]
-X-Outbound-Node: rcdn-core-9.cisco.com
+In-Reply-To: <8735wby77v.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,120 +87,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ob Herring <robh@kernel.org>, linux-efi <linux-efi@vger.kernel.org>,
- Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, X86 ML <x86@kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Arvind Sankar <nivedita@alum.mit.edu>, xe-linux-external@cisco.com,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>
+Cc: Dmitry Safonov <0x7f454c46@gmail.com>, stable@vger.kernel.org,
+ Andrei Vagin <avagin@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Andy Lutomirski <luto@kernel.org>, Laurent Dufour <ldufour@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 31, 2021 at 06:10:08PM +0200, Ard Biesheuvel wrote:
-> (+ Arvind)
-> 
-> On Tue, 30 Mar 2021 at 19:57, Daniel Walker <danielwa@cisco.com> wrote:
-> >
-> > This adds code to handle the generic command line changes.
-> > The efi code appears that it doesn't benefit as much from this design
-> > as it could.
-> >
-> > For example, if you had a prepend command line with "nokaslr" then
-> > you might be helpful to re-enable it in the boot loader or dts,
-> > but there appears to be no way to re-enable kaslr or some of the
-> > other options.
-> >
-> > Cc: xe-linux-external@cisco.com
-> > Signed-off-by: Daniel Walker <danielwa@cisco.com>
-> > ---
-> >  .../firmware/efi/libstub/efi-stub-helper.c    | 35 +++++++++++++++++++
-> >  drivers/firmware/efi/libstub/efi-stub.c       |  7 ++++
-> >  drivers/firmware/efi/libstub/efistub.h        |  1 +
-> >  drivers/firmware/efi/libstub/x86-stub.c       | 13 +++++--
-> >  4 files changed, 54 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > index aa8da0a49829..c155837cedc9 100644
-> > --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > @@ -13,6 +13,7 @@
-> >  #include <linux/efi.h>
-> >  #include <linux/kernel.h>
-> >  #include <linux/printk.h> /* For CONSOLE_LOGLEVEL_* */
-> > +#include <linux/cmdline.h>
-> >  #include <asm/efi.h>
-> >  #include <asm/setup.h>
-> >
-> > @@ -172,6 +173,40 @@ int efi_printk(const char *fmt, ...)
-> >         return printed;
-> >  }
-> >
-> > +/**
-> > + * efi_handle_cmdline() - handle adding in building parts of the command line
-> > + * @cmdline:   kernel command line
-> > + *
-> > + * Add in the generic parts of the commandline and start the parsing of the
-> > + * command line.
-> > + *
-> > + * Return:     status code
-> > + */
-> > +efi_status_t efi_handle_cmdline(char const *cmdline)
-> > +{
-> > +       efi_status_t status;
-> > +
-> > +       status = efi_parse_options(CMDLINE_PREPEND);
-> > +       if (status != EFI_SUCCESS) {
-> > +               efi_err("Failed to parse options\n");
-> > +               return status;
-> > +       }
-> 
-> Even though I am not a fan of the 'success handling' pattern,
-> duplicating the exact same error handling three times is not great
-> either. Could we reuse more of the code here?
+On 3/31/21 10:59 AM, Michael Ellerman wrote:
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+[..]
+>>
+>>> @@ -133,7 +135,13 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
+>>>   	 * install_special_mapping or the perf counter mmap tracking code
+>>>   	 * will fail to recognise it as a vDSO.
+>>>   	 */
+>>> -	mm->context.vdso = (void __user *)vdso_base + PAGE_SIZE;
+>>> +	mm->context.vdso = (void __user *)vdso_base + vvar_size;
+>>> +
+>>> +	vma = _install_special_mapping(mm, vdso_base, vvar_size,
+>>> +				       VM_READ | VM_MAYREAD | VM_IO |
+>>> +				       VM_DONTDUMP | VM_PFNMAP, &vvar_spec);
+>>> +	if (IS_ERR(vma))
+>>> +		return PTR_ERR(vma);
+>>>   
+>>>   	/*
+>>>   	 * our vma flags don't have VM_WRITE so by default, the process isn't
+>>
+>>
+>> IIUC, VM_PFNMAP is for when we have a vvar_fault handler.
+>> Allthough we will soon have one for handle TIME_NS, at the moment
+>> powerpc doesn't have that handler.
+>> Isn't it dangerous to set VM_PFNMAP then ?
 
-How about
+I believe, it's fine, special_mapping_fault() does:
+:		if (sm->fault)
+:			return sm->fault(sm, vmf->vma, vmf);
 
-efi_status_t status = 0;
+> Some of the other flags seem odd too.
+> eg. VM_IO ? VM_DONTDUMP ?
 
-status |= efi_parse_options(CMDLINE_PREPEND);
+Yeah, so:
+VM_PFNMAP | VM_IO is a protection from remote access on pages. So one
+can't access such page with ptrace(), /proc/$pid/mem or
+process_vm_write(). Otherwise, it would create COW mapping and the
+tracee will stop working with stale vvar.
 
-then error checking once ?
+VM_DONTDUMP restricts the area from coredumping and gdb will also avoid
+accessing those[1][2].
 
-> > +
-> > +       status = efi_parse_options(IS_ENABLED(CONFIG_CMDLINE_OVERRIDE) ? "" : cmdline);
-> 
-> What is the point of calling efi_parse_options() with an empty string?
- 
-I could change it to if ((IS_ENABLED(CONFIG_CMDLINE_OVERRIDE)) ?
+I agree that VM_PFNMAP was probably excessive in this patch alone and
+rather synchronized code with other architectures, but it makes more
+sense now in the new patches set by Christophe:
+https://lore.kernel.org/linux-arch/cover.1617209141.git.christophe.leroy@csgroup.eu/
 
-> > --- a/drivers/firmware/efi/libstub/efi-stub.c
-> > +++ b/drivers/firmware/efi/libstub/efi-stub.c
-> > @@ -172,6 +172,12 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
-> >                 goto fail;
-> >         }
-> >
-> > +#ifdef CONFIG_GENERIC_CMDLINE
-> > +       status = efi_handle_cmdline(cmdline_ptr);
-> > +       if (status != EFI_SUCCESS) {
-> > +               goto fail_free_cmdline;
-> > +       }
-> > +#else
-> >         if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
-> >             IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
-> 
-> Does this mean CONFIG_GENERIC_CMDLINE does not replace CMDLINE_EXTEND
-> / CMDLINE_FORCE etc, but introduces yet another variant on top of
-> those?
-> 
-> That does not seem like an improvement to me. I think it is great that
-> you are cleaning this up, but only if it means we can get rid of the
-> old implementation.
- 
-It does replace extend and force. I was under the impression this code was
-shared between arm64 and arm32. If that's not the case I can delete the extend
-and force section. I haven't submitted a conversion for arm32 yet.
 
-Daniel
+[1] https://lore.kernel.org/lkml/550731AF.6080904@redhat.com/T/
+[2] https://sourceware.org/legacy-ml/gdb-patches/2015-03/msg00383.html
+
+Thanks,
+          Dmitry
