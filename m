@@ -1,58 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E95B34FD9D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:59:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C9FF34FDF1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:21:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9MHG3sgfz3c9G
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 20:59:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9MmG27kTz3c2G
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 21:21:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=E1HW2jvQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WAynXgSf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=au1.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ellerman@au1.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=E1HW2jvQ; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=WAynXgSf; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9MGs52gxz2yS0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 20:59:17 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F9MGr5TPpz9sWQ;
- Wed, 31 Mar 2021 20:59:16 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1617184757;
- bh=p3haphj09CDXdLzCL9waMMLLTSGpd53eETzf7Pujz3c=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=E1HW2jvQHKUIpNfeEsD0pCF2UnBDNvnOcHPByIEebrOXqFdoJXcpfLEJT0z9Ml8Si
- h+m5huudFzCU+jqanSEb0XEtdOPCbEjeiaGFutoGPNrm5xEa3JullVhXanp3sJ5fpW
- tl+YqHFLnA3otpgJ0ewWDhWzYkTTsbzjYMEwfFYLJDxi3SjALPR2IFVzlIV8pdmHsm
- UO6j5SJXJZE7xM2/ga+uPgcxYJIdXJmmTbxhgTDBRYyxcpjXg23fBHVXs20S0iDIUS
- fQ1LTsV1HNFOIMondRjpUJbeexX1oQv7BsC4BDifj/CC9eosK6ufxV3gHrP8vUbhE3
- 1CE5X2YtFotPQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Dmitry Safonov
- <dima@arista.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] powerpc/vdso: Separate vvar vma from vdso
-In-Reply-To: <09e8d68d-54fe-e327-b44f-8f68543edba1@csgroup.eu>
-References: <20210326191720.138155-1-dima@arista.com>
- <09e8d68d-54fe-e327-b44f-8f68543edba1@csgroup.eu>
-Date: Wed, 31 Mar 2021 20:59:16 +1100
-Message-ID: <8735wby77v.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9Mll5vJZz303C
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 21:20:51 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 12VA4BOU048660; Wed, 31 Mar 2021 06:20:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=p6YVCg1411fVcZy23Dy4j74YNztaVR4TyNA+hmWAe84=;
+ b=WAynXgSflsuTxDXIW+ATC2sSrpvYsTXv+wt3bUM3j9bXyijEzZeooSooOMB7BXL8WOfP
+ QAU7pzV/q7me3vT6rcwBDipcEpyj/TY/+O+0eTRYObrIDLkFzLaq/6FuBzImGynnQyBc
+ EfScxLCJNv/0yK65B0QZ6UcBsNxj5LZ35vJtSCwpHk96wfZ/CYqWeMmwbZQKQjsD7hPL
+ a9qiSO5mlNoCHsudJXrBxxJLecrPVS8tcRs6nLg0tNOPAz7lZtp6BznPiT3Y4QKRZiOu
+ a/rxYcDqrX/5aZHidrOdI2FnH5twuFw5oxmZbTTNzovIAiSf0v/YgQOpsknJQVMqUki1 aw== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37mb3h8wdt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 Mar 2021 06:20:46 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12VA8Z0d007092;
+ Wed, 31 Mar 2021 10:20:45 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma02fra.de.ibm.com with ESMTP id 37maaqr8w5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 Mar 2021 10:20:44 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 12VAKgeR33489384
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 31 Mar 2021 10:20:42 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A49C042042;
+ Wed, 31 Mar 2021 10:20:42 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 53D7142052;
+ Wed, 31 Mar 2021 10:20:42 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 31 Mar 2021 10:20:42 +0000 (GMT)
+Received: from localhost (unknown [9.206.131.146])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8CEDE60599;
+ Wed, 31 Mar 2021 21:20:40 +1100 (AEDT)
+From: Michael Ellerman <ellerman@au1.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Shivaprasad G Bhat
+ <sbhat@linux.ibm.com>, sbhat@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ linux-nvdimm@lists.01.org
+Subject: Re: [PATCH v3] powerpc/papr_scm: Implement support for H_SCM_FLUSH
+ hcall
+In-Reply-To: <87mtul6xzj.fsf@linux.ibm.com>
+References: <161703936121.36.7260632399582101498.stgit@e1fbed493c87>
+ <87mtul6xzj.fsf@linux.ibm.com>
+Date: Wed, 31 Mar 2021 21:20:36 +1100
+Message-ID: <87zgyjwrnv.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: kI7olCKHAEIbR5wjk2XHs2J1MqGiFAtQ
+X-Proofpoint-GUID: kI7olCKHAEIbR5wjk2XHs2J1MqGiFAtQ
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-03-31_03:2021-03-30,
+ 2021-03-31 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 spamscore=0
+ mlxscore=0 phishscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1011 adultscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2103300000 definitions=main-2103310073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,77 +107,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dmitry Safonov <0x7f454c46@gmail.com>, stable@vger.kernel.org,
- Andrei Vagin <avagin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Andy Lutomirski <luto@kernel.org>, Laurent Dufour <ldufour@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: vaibhav@linux.ibm.com, linux-doc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 26/03/2021 =C3=A0 20:17, Dmitry Safonov a =C3=A9crit=C2=A0:
->> Since commit 511157ab641e ("powerpc/vdso: Move vdso datapage up front")
->> VVAR page is in front of the VDSO area. In result it breaks CRIU
->> (Checkpoint Restore In Userspace) [1], where CRIU expects that "[vdso]"
->> from /proc/../maps points at ELF/vdso image, rather than at VVAR data pa=
-ge.
->> Laurent made a patch to keep CRIU working (by reading aux vector).
->> But I think it still makes sence to separate two mappings into different
->> VMAs. It will also make ppc64 less "special" for userspace and as
->> a side-bonus will make VVAR page un-writable by debugger (which previous=
-ly
->> would COW page and can be unexpected).
->>=20
->> I opportunistically Cc stable on it: I understand that usually such
->> stuff isn't a stable material, but that will allow us in CRIU have
->> one workaround less that is needed just for one release (v5.11) on
->> one platform (ppc64), which we otherwise have to maintain.
->> I wouldn't go as far as to say that the commit 511157ab641e is ABI
->> regression as no other userspace got broken, but I'd really appreciate
->> if it gets backported to v5.11 after v5.12 is released, so as not
->> to complicate already non-simple CRIU-vdso code. Thanks!
->>=20
->> Cc: Andrei Vagin <avagin@gmail.com>
->> Cc: Andy Lutomirski <luto@kernel.org>
->> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Cc: Laurent Dufour <ldufour@linux.ibm.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: stable@vger.kernel.org # v5.11
->> [1]: https://github.com/checkpoint-restore/criu/issues/1417
->> Signed-off-by: Dmitry Safonov <dima@arista.com>
->> Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   arch/powerpc/include/asm/mmu_context.h |  2 +-
->>   arch/powerpc/kernel/vdso.c             | 54 +++++++++++++++++++-------
->>   2 files changed, 40 insertions(+), 16 deletions(-)
->>=20
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> Shivaprasad G Bhat <sbhat@linux.ibm.com> writes:
 >
->> @@ -133,7 +135,13 @@ static int __arch_setup_additional_pages(struct lin=
-ux_binprm *bprm, int uses_int
->>   	 * install_special_mapping or the perf counter mmap tracking code
->>   	 * will fail to recognise it as a vDSO.
->>   	 */
->> -	mm->context.vdso =3D (void __user *)vdso_base + PAGE_SIZE;
->> +	mm->context.vdso =3D (void __user *)vdso_base + vvar_size;
->> +
->> +	vma =3D _install_special_mapping(mm, vdso_base, vvar_size,
->> +				       VM_READ | VM_MAYREAD | VM_IO |
->> +				       VM_DONTDUMP | VM_PFNMAP, &vvar_spec);
->> +	if (IS_ERR(vma))
->> +		return PTR_ERR(vma);
->>=20=20=20
->>   	/*
->>   	 * our vma flags don't have VM_WRITE so by default, the process isn't
+>> Add support for ND_REGION_ASYNC capability if the device tree
+>> indicates 'ibm,hcall-flush-required' property in the NVDIMM node.
+>> Flush is done by issuing H_SCM_FLUSH hcall to the hypervisor.
+>>
+>> If the flush request failed, the hypervisor is expected to
+>> to reflect the problem in the subsequent nvdimm H_SCM_HEALTH call.
+>>
+>> This patch prevents mmap of namespaces with MAP_SYNC flag if the
+>> nvdimm requires an explicit flush[1].
+>>
+>> References:
+>> [1] https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c
 >
 >
-> IIUC, VM_PFNMAP is for when we have a vvar_fault handler.
+> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-Some of the other flags seem odd too.
-eg. VM_IO ? VM_DONTDUMP ?
+Do we need an ack from nvdimm folks on this?
 
+Or is it entirely powerpc internal (seems like it from the diffstat)?
 
 cheers
