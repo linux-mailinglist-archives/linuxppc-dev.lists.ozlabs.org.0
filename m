@@ -2,45 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4A73500F7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 15:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E3DC35012E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 15:24:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9RW552Jvz3bwh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 00:10:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9Rqp1rPgz3bvW
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 00:24:38 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ShwLr+LZ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4F9RVj2KH3z301q
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 00:09:47 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55658D6E;
- Wed, 31 Mar 2021 06:09:44 -0700 (PDT)
-Received: from [10.57.24.208] (unknown [10.57.24.208])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3D9523F694;
- Wed, 31 Mar 2021 06:09:42 -0700 (PDT)
-Subject: Re: [PATCH 16/18] iommu: remove DOMAIN_ATTR_DMA_USE_FLUSH_QUEUE
-To: Will Deacon <will@kernel.org>
-References: <20210316153825.135976-1-hch@lst.de>
- <20210316153825.135976-17-hch@lst.de>
- <20210330131149.GP5908@willie-the-truck>
- <a6952aa7-4d7e-54f0-339e-e15f88596dcc@arm.com>
- <20210330135801.GA6187@willie-the-truck>
- <578d6aa5-4239-f5d7-2e9f-686b18e52bba@arm.com>
- <20210331114947.GA7626@willie-the-truck>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <ef895942-e115-7878-ab86-37e8a1614df5@arm.com>
-Date: Wed, 31 Mar 2021 14:09:37 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ShwLr+LZ; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9Rpn2ccZz3bs7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 00:23:45 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4F9Rpg1k8Kz9sW0;
+ Thu,  1 Apr 2021 00:23:38 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1617197019;
+ bh=o5QrZT0XJjJ703FOqmNAZbZ55vlORQL7/3riBWxpan8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=ShwLr+LZ8mYs8WrH90IIeDFjmV+9nw6Zxp6ewlMQkOU/ePEJKniW7+/bgIlveoAwm
+ E02QJymCUP6dc/0GNlLg1BQFuCQOGxa7ofceDqC4Fy4N1o5sk+9GtQe7WHOGahHTh/
+ HdeV+eNS9nE/AGfs3CQHsr2ejo+jImy8mIzjNYavEudIUHCCpWmh5hd3WHkz12/FAL
+ blgwhq9etRxZbwr9BBi42k//DRyXitak0i/Our0Y4ZJ9Ua+/o8CEmmra8sJZbnE/oE
+ 6jZdZ+I7crjN1iDoGOOC1CsNueI++2ByoY/2eKxOY8tgZ/0rT9kEDOJV1Z4RQHhoUQ
+ eer3Pv4xtPQZQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH] powerpc/signal32: Fix Oops on sigreturn with unmapped VDSO
+In-Reply-To: <79ee6fe13b267b0c81d7626c471a99140f0c9e4a.1616939989.git.christophe.leroy@csgroup.eu>
+References: <79ee6fe13b267b0c81d7626c471a99140f0c9e4a.1616939989.git.christophe.leroy@csgroup.eu>
+Date: Thu, 01 Apr 2021 00:23:35 +1100
+Message-ID: <87ft0b78yw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20210331114947.GA7626@willie-the-truck>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,101 +62,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
- Li Yang <leoyang.li@nxp.com>, iommu@lists.linux-foundation.org,
- Christoph Hellwig <hch@lst.de>, netdev@vger.kernel.org,
- virtualization@lists.linux-foundation.org, freedreno@lists.freedesktop.org,
- David Woodhouse <dwmw2@infradead.org>, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-03-31 12:49, Will Deacon wrote:
-> On Tue, Mar 30, 2021 at 05:28:19PM +0100, Robin Murphy wrote:
->> On 2021-03-30 14:58, Will Deacon wrote:
->>> On Tue, Mar 30, 2021 at 02:19:38PM +0100, Robin Murphy wrote:
->>>> On 2021-03-30 14:11, Will Deacon wrote:
->>>>> On Tue, Mar 16, 2021 at 04:38:22PM +0100, Christoph Hellwig wrote:
->>>>>> From: Robin Murphy <robin.murphy@arm.com>
->>>>>>
->>>>>> Instead make the global iommu_dma_strict paramete in iommu.c canonical by
->>>>>> exporting helpers to get and set it and use those directly in the drivers.
->>>>>>
->>>>>> This make sure that the iommu.strict parameter also works for the AMD and
->>>>>> Intel IOMMU drivers on x86.  As those default to lazy flushing a new
->>>>>> IOMMU_CMD_LINE_STRICT is used to turn the value into a tristate to
->>>>>> represent the default if not overriden by an explicit parameter.
->>>>>>
->>>>>> Signed-off-by: Robin Murphy <robin.murphy@arm.com>.
->>>>>> [ported on top of the other iommu_attr changes and added a few small
->>>>>>     missing bits]
->>>>>> Signed-off-by: Christoph Hellwig <hch@lst.de>
->>>>>> ---
->>>>>>     drivers/iommu/amd/iommu.c                   | 23 +-------
->>>>>>     drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 50 +---------------
->>>>>>     drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |  1 -
->>>>>>     drivers/iommu/arm/arm-smmu/arm-smmu.c       | 27 +--------
->>>>>>     drivers/iommu/dma-iommu.c                   |  9 +--
->>>>>>     drivers/iommu/intel/iommu.c                 | 64 ++++-----------------
->>>>>>     drivers/iommu/iommu.c                       | 27 ++++++---
->>>>>>     include/linux/iommu.h                       |  4 +-
->>>>>>     8 files changed, 40 insertions(+), 165 deletions(-)
->>>>>
->>>>> I really like this cleanup, but I can't help wonder if it's going in the
->>>>> wrong direction. With SoCs often having multiple IOMMU instances and a
->>>>> distinction between "trusted" and "untrusted" devices, then having the
->>>>> flush-queue enabled on a per-IOMMU or per-domain basis doesn't sound
->>>>> unreasonable to me, but this change makes it a global property.
->>>>
->>>> The intent here was just to streamline the existing behaviour of stuffing a
->>>> global property into a domain attribute then pulling it out again in the
->>>> illusion that it was in any way per-domain. We're still checking
->>>> dev_is_untrusted() before making an actual decision, and it's not like we
->>>> can't add more factors at that point if we want to.
->>>
->>> Like I say, the cleanup is great. I'm just wondering whether there's a
->>> better way to express the complicated logic to decide whether or not to use
->>> the flush queue than what we end up with:
->>>
->>> 	if (!cookie->fq_domain && (!dev || !dev_is_untrusted(dev)) &&
->>> 	    domain->ops->flush_iotlb_all && !iommu_get_dma_strict())
->>>
->>> which is mixing up globals, device properties and domain properties. The
->>> result is that the driver code ends up just using the global to determine
->>> whether or not to pass IO_PGTABLE_QUIRK_NON_STRICT to the page-table code,
->>> which is a departure from the current way of doing things.
->>
->> But previously, SMMU only ever saw the global policy piped through the
->> domain attribute by iommu_group_alloc_default_domain(), so there's no
->> functional change there.
-> 
-> For DMA domains sure, but I don't think that's the case for unmanaged
-> domains such as those used by VFIO.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> PPC32 encounters a KUAP fault when trying to handle a signal with
+> VDSO unmapped.
+>
+> 	Kernel attempted to read user page (7fc07ec0) - exploit attempt? (uid: 0)
+> 	BUG: Unable to handle kernel data access on read at 0x7fc07ec0
+> 	Faulting instruction address: 0xc00111d4
+> 	Oops: Kernel access of bad area, sig: 11 [#1]
+> 	BE PAGE_SIZE=16K PREEMPT CMPC885
+> 	CPU: 0 PID: 353 Comm: sigreturn_vdso Not tainted 5.12.0-rc4-s3k-dev-01553-gb30c310ea220 #4814
+> 	NIP:  c00111d4 LR: c0005a28 CTR: 00000000
+> 	REGS: cadb3dd0 TRAP: 0300   Not tainted  (5.12.0-rc4-s3k-dev-01553-gb30c310ea220)
+> 	MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 48000884  XER: 20000000
+> 	DAR: 7fc07ec0 DSISR: 88000000
+> 	GPR00: c0007788 cadb3e90 c28d4a40 7fc07ec0 7fc07ed0 000004e0 7fc07ce0 00000000
+> 	GPR08: 00000001 00000001 7fc07ec0 00000000 28000282 1001b828 100a0920 00000000
+> 	GPR16: 100cac0c 100b0000 105c43a4 105c5685 100d0000 100d0000 100d0000 100b2e9e
+> 	GPR24: ffffffff 105c43c8 00000000 7fc07ec8 cadb3f40 cadb3ec8 c28d4a40 00000000
+> 	NIP [c00111d4] flush_icache_range+0x90/0xb4
+> 	LR [c0005a28] handle_signal32+0x1bc/0x1c4
+> 	Call Trace:
+> 	[cadb3e90] [100d0000] 0x100d0000 (unreliable)
+> 	[cadb3ec0] [c0007788] do_notify_resume+0x260/0x314
+> 	[cadb3f20] [c000c764] syscall_exit_prepare+0x120/0x184
+> 	[cadb3f30] [c00100b4] ret_from_syscall+0xc/0x28
+> 	--- interrupt: c00 at 0xfe807f8
+> 	NIP:  0fe807f8 LR: 10001060 CTR: c0139378
+> 	REGS: cadb3f40 TRAP: 0c00   Not tainted  (5.12.0-rc4-s3k-dev-01553-gb30c310ea220)
+> 	MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 28000482  XER: 20000000
+>
+> 	GPR00: 00000025 7fc081c0 77bb1690 00000000 0000000a 28000482 00000001 0ff03a38
+> 	GPR08: 0000d032 00006de5 c28d4a40 00000009 88000482 1001b828 100a0920 00000000
+> 	GPR16: 100cac0c 100b0000 105c43a4 105c5685 100d0000 100d0000 100d0000 100b2e9e
+> 	GPR24: ffffffff 105c43c8 00000000 77ba7628 10002398 10010000 10002124 00024000
+> 	NIP [0fe807f8] 0xfe807f8
+> 	LR [10001060] 0x10001060
+> 	--- interrupt: c00
+> 	Instruction dump:
+> 	38630010 7c001fac 38630010 4200fff0 7c0004ac 4c00012c 4e800020 7c001fac
+> 	2c0a0000 38630010 4082ffcc 4bffffe4 <7c00186c> 2c070000 39430010 4082ff8c
+> 	---[ end trace 3973fb72b049cb06 ]---
+>
+> This is because flush_icache_range() is called on user addresses.
+>
+> The same problem was detected some time ago on PPC64. It was fixed by
+> enabling KUAP in commit 59bee45b9712 ("powerpc/mm: Fix missing KUAP
+> disable in flush_coherent_icache()").
+>
+> PPC32 doesn't use flush_coherent_icache() and fallbacks on
+> clean_dcache_range() and invalidate_icache_range().
 
-Eh? This is only relevant to DMA domains anyway. Flush queues are part 
-of the IOVA allocator that VFIO doesn't even use. It's always been the 
-case that unmanaged domains only use strict invalidation.
+But this code is also used for compat tasks on 64-bit.
 
->> Obviously some of the above checks could be factored out into some kind of
->> iommu_use_flush_queue() helper that IOMMU drivers can also call if they need
->> to keep in sync. Or maybe we just allow iommu-dma to set
->> IO_PGTABLE_QUIRK_NON_STRICT directly via iommu_set_pgtable_quirks() if we're
->> treating that as a generic thing now.
-> 
-> I think a helper that takes a domain would be a good starting point.
+> We could fix it similarly by enabling user access in those functions,
+> but this is overkill for just flushing two instructions.
+>
+> The two instructions are 8 bytes aligned, so a single dcbst/icbi is
+> enough to flush them. Do like __patch_instruction() and inline
+> a dcbst followed by an icbi just after the write of the instructions,
+> while user access is still allowed. The isync is not required because
+> rfi will be used to return to user.
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/kernel/signal_32.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+> index 75ee918a120a..5b2ba2731957 100644
+> --- a/arch/powerpc/kernel/signal_32.c
+> +++ b/arch/powerpc/kernel/signal_32.c
+> @@ -809,6 +809,7 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
+>  		unsafe_put_user(PPC_INST_ADDI + __NR_rt_sigreturn, &mctx->mc_pad[0],
+>  				failed);
+>  		unsafe_put_user(PPC_INST_SC, &mctx->mc_pad[1], failed);
+> +		asm("dcbst %y0; sync; icbi %y0; sync" :: "Z" (mctx->mc_pad[0]));
 
-You mean device, right? The one condition we currently have is at the 
-device level, and there's really nothing inherent to the domain itself 
-that matters (since the type is implicitly IOMMU_DOMAIN_DMA to even care 
-about this).
+If I'm reading that right you're pointing the icbi at the user address.
 
-Another idea that's just come to mind is now that IOMMU_DOMAIN_DMA has a 
-standard meaning, maybe we could split out a separate 
-IOMMU_DOMAIN_DMA_STRICT type such that it can all propagate from 
-iommu_get_def_domain_type()? That feels like it might be quite 
-promising, but I'd still do it as an improvement on top of this patch, 
-since it's beyond just cleaning up the abuse of domain attributes to 
-pass a command-line option around.
+That's going to cause a KUAP fault just like we fixed in commit
+59bee45b9712 ("powerpc/mm: Fix missing KUAP disable in flush_coherent_icache()").
 
-Robin.
+We have user write access enabled, but the icbi is treated as a load.
+
+So I don't think that's going to work.
+
+cheers
