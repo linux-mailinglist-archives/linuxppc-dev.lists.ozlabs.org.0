@@ -2,47 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A455734F586
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 02:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D4F34F589
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 02:40:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F96rc4Zw3z3c20
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:39:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F96t36ZLmz3bwS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:40:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=H+Wpo8CV;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CI+wrZlx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=H+Wpo8CV; 
+ header.a=rsa-sha256 header.s=201909 header.b=CI+wrZlx; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F96rC2fKzz2xxh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 11:38:50 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F96rF6hVZz3brq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 11:38:53 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F96rB5WTQz9sWK; Wed, 31 Mar 2021 11:38:50 +1100 (AEDT)
+ id 4F96rC1YFRz9sWP; Wed, 31 Mar 2021 11:38:51 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1617151130;
- bh=eGcuo+SD2AvVHdYRAA0vthZg4dPZ8I+d8e7qIwbiN9Q=;
+ s=201909; t=1617151131;
+ bh=FWLikmqZe+OoMmiv9wpj26zh22UFEqSYhhpH4zXT32A=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=H+Wpo8CVQTOheZYCOoj1uxCMQ7MKIEU3mCxaaJnS81h4bozc4yBO1v8C2laSvONIJ
- 6vjNXhBUmI9eCf/CiVNoSRg1avyggry9zGRsW/l2RhbdbYqyQFXi1lwVmZYz8leM7M
- 5eG3iGtJSmSybHuQ2vYEwIbVAgnaTdbR+cLSzSW4eXfwpTs2IDivjYXcJGcNfvHLmT
- hHuBuyZmFbP1wJ25YrEHJInUXYIIkkH/Pn7bHXloXrJ2NK5K8TCgx2KeT7R3eD/V27
- cjJgV51QP3PUBzMJjS5XHERb0+Oyu2fQrnmhTfugaMxFgX2ySA2KrMhOlDomgn5//L
- s/K0Pg+xB3/Aw==
+ b=CI+wrZlxycvIEZhWBoKDsVAypNNrwR9tlbyxPiNtsUs8s+ML2RZKFxl6kLvrLLn1J
+ +tpP0PGeIzFqYzo4QKNGUuU1nd8gBsii11i/nX7ZnFyR8fe/tjLZKqqie2aztvf6kY
+ Y9bSAKPI5sBK/H19HsMBv26f0c46hkmV+25/WGrs9USt7mTNR4CRS0ffwLiUIUAVaI
+ fLCjeUYaPpG9NqKZwlZ2it+X/E7NagscCsp59YnEz6JhJdORFvebjLI92Nv4RKJW+f
+ 4P+i28nIRbXylc0gusnXvWV0r4Vk9T6VDwSy9InWQgFRG05FhBNTQ+cvtcXERvTYCd
+ N1f8y6nHCw5vg==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 3/6] powerpc/64s: Use htab_convert_pte_flags() in
- hash__mark_rodata_ro()
-Date: Wed, 31 Mar 2021 11:38:42 +1100
-Message-Id: <20210331003845.216246-3-mpe@ellerman.id.au>
+Subject: [PATCH v2 4/6] powerpc/mm/64s/hash: Factor out change_memory_range()
+Date: Wed, 31 Mar 2021 11:38:43 +1100
+Message-Id: <20210331003845.216246-4-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210331003845.216246-1-mpe@ellerman.id.au>
 References: <20210331003845.216246-1-mpe@ellerman.id.au>
@@ -63,43 +62,61 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In hash__mark_rodata_ro() we pass the raw PP_RXXX value to
-hash__change_memory_range(). That has the effect of setting the key to
-zero, because PP_RXXX contains no key value.
+Pull the loop calling hpte_updateboltedpp() out of
+hash__change_memory_range() into a helper function. We need it to be a
+separate function for the next patch.
 
-Fix it by using htab_convert_pte_flags(), which knows how to convert a
-pgprot into a pp value, including the key.
-
-Fixes: d94b827e89dc ("powerpc/book3s64/kuap: Use Key 3 for kernel mapping with hash translation")
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Daniel Axtens <dja@axtens.net>
 ---
- arch/powerpc/mm/book3s64/hash_pgtable.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/powerpc/mm/book3s64/hash_pgtable.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
 v2: Unchanged.
 
 diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
-index 567e0c6b3978..03819c259f0a 100644
+index 03819c259f0a..3663d3cdffac 100644
 --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
 +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-@@ -428,12 +428,14 @@ static bool hash__change_memory_range(unsigned long start, unsigned long end,
+@@ -400,10 +400,23 @@ EXPORT_SYMBOL_GPL(hash__has_transparent_hugepage);
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
- void hash__mark_rodata_ro(void)
- {
--	unsigned long start, end;
-+	unsigned long start, end, pp;
- 
- 	start = (unsigned long)_stext;
- 	end = (unsigned long)__init_begin;
- 
--	WARN_ON(!hash__change_memory_range(start, end, PP_RXXX));
-+	pp = htab_convert_pte_flags(pgprot_val(PAGE_KERNEL_ROX), HPTE_USE_KERNEL_KEY);
+ #ifdef CONFIG_STRICT_KERNEL_RWX
++static void change_memory_range(unsigned long start, unsigned long end,
++				unsigned int step, unsigned long newpp)
++{
++	unsigned long idx;
 +
-+	WARN_ON(!hash__change_memory_range(start, end, pp));
- }
++	pr_debug("Changing page protection on range 0x%lx-0x%lx, to 0x%lx, step 0x%x\n",
++		 start, end, newpp, step);
++
++	for (idx = start; idx < end; idx += step)
++		/* Not sure if we can do much with the return value */
++		mmu_hash_ops.hpte_updateboltedpp(newpp, idx, mmu_linear_psize,
++							mmu_kernel_ssize);
++}
++
+ static bool hash__change_memory_range(unsigned long start, unsigned long end,
+ 				      unsigned long newpp)
+ {
+-	unsigned long idx;
+ 	unsigned int step, shift;
  
- void hash__mark_initmem_nx(void)
+ 	shift = mmu_psize_defs[mmu_linear_psize].shift;
+@@ -415,13 +428,7 @@ static bool hash__change_memory_range(unsigned long start, unsigned long end,
+ 	if (start >= end)
+ 		return false;
+ 
+-	pr_debug("Changing page protection on range 0x%lx-0x%lx, to 0x%lx, step 0x%x\n",
+-		 start, end, newpp, step);
+-
+-	for (idx = start; idx < end; idx += step)
+-		/* Not sure if we can do much with the return value */
+-		mmu_hash_ops.hpte_updateboltedpp(newpp, idx, mmu_linear_psize,
+-							mmu_kernel_ssize);
++	change_memory_range(start, end, step, newpp);
+ 
+ 	return true;
+ }
 -- 
 2.25.1
 
