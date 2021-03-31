@@ -1,56 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48DD34FC5D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:16:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABA134FCD0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:29:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9LK04jhLz3c5g
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 20:16:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9Lcd4s2Kz3bwC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 20:29:37 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZilpE/Cg;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=ZilpE/Cg; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9LJg23hmz30Mp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 20:15:45 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F9LJY3T27z9v07B;
- Wed, 31 Mar 2021 11:15:41 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id qd8wwnjoz3M6; Wed, 31 Mar 2021 11:15:41 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F9LJY24hVz9v079;
- Wed, 31 Mar 2021 11:15:41 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4857B8B7F4;
- Wed, 31 Mar 2021 11:15:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id r0VLFysz6y72; Wed, 31 Mar 2021 11:15:42 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C37928B75B;
- Wed, 31 Mar 2021 11:15:41 +0200 (CEST)
-Subject: Re: WARNING: CPU: 0 PID: 1 at arch/powerpc/lib/feature-fixups.c:109
- do_feature_fixups+0xb0/0xf0
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-References: <bc1d3a33-2499-994e-860a-b50cf72b9619@molgen.mpg.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <4d973f54-e080-057f-6ad1-17396e5afb4c@csgroup.eu>
-Date: Wed, 31 Mar 2021 11:15:40 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9LcC5Lqxz3001
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 20:29:15 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3578661606;
+ Wed, 31 Mar 2021 09:29:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1617182952;
+ bh=aMxacYx0WSuYSq+RvcHg7XLnuWTcQHWfWM2hCy7hYJU=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=ZilpE/CgLvY3Nm3hLeCdPrSzQ0bka0Q/xAMzoDxoKT2sksg/+xdgw70lbIQlKRH9q
+ HQM7q1tR3SOaufoC3EF8clnG+n8fTsUXBRqFIqRReR3kDRE9b5+HETaEN2azemUCyN
+ +dywdbjbEuNLM1pOQ9fKcI8/BlabXbx6EDZQjXTlXZiHlwJBGfmHuNxznBzTG2bJFd
+ nNykz3YpDvfjp1B8PgDSj0QLp5Bc0UJEz3WtQfw8cmvL2FnE443FSPWgxCOoGmWTX7
+ urjc5s1XzZrXM3ARPcSSDIS4mEkSxEnbcwd3SAssAB5TkbJXQ91S3vF7J6sARmo8bJ
+ QvnQEWfFitvHA==
+Date: Wed, 31 Mar 2021 12:28:57 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH v2] mm: Move mem_init_print_info() into mm_init()
+Message-ID: <YGRA2SU28yciN9xU@kernel.org>
+References: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu>
+ <20210317015210.33641-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <bc1d3a33-2499-994e-860a-b50cf72b9619@molgen.mpg.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210317015210.33641-1-wangkefeng.wang@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,33 +58,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Jonas Bonn <jonas@southpole.se>,
+ linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-hexagon@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Heiko Carstens <hca@linux.ibm.com>,
+ linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
+ openrisc@lists.librecores.org, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Paul,
+On Wed, Mar 17, 2021 at 09:52:10AM +0800, Kefeng Wang wrote:
+> mem_init_print_info() is called in mem_init() on each architecture,
+> and pass NULL argument, so using void argument and move it into mm_init().
+> 
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-Le 30/03/2021 à 12:37, Paul Menzel a écrit :
-> Dear Linux folks,
-> 
-> 
-> On the POWER8 system IBM S822LC, Linux 5.12-rc5+ logs the warning below.
-> 
-> ```
-> [    0.724118] Unable to patch feature section at (____ptrval____) - (____ptrval____) with 
-> (____ptrval____) - (____ptrval____)
-> [    0.724185] pstore: Registered nvram as persistent store backend
-> ```
-> 
-> Please find the output of `dmesg` attached.
-> 
-> 
+Acked-by: Mike Rapoport <rppt@linux.ibm.com>
 
-Did you do a 'make clean' before building ?
-
-If not, can you try patch 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/8bb015bc98c51d8ced581415b7e3d157e18da7c9.1617181918.git.christophe.leroy@csgroup.eu/
-
-Thanks
-Christophe
+> ---
+> v2:
+> - Cleanup 'str' line suggested by Christophe and ACK
+> 
