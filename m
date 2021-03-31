@@ -1,35 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBECA34F62C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:22:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F64D34F62E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:23:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F97pd5RnZz3dny
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:22:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F97qK3mklz3hnk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:23:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F97Xw107Zz3cHw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F97Y021Mtz3cMP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:44 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F97Xv5695z9sj0; Wed, 31 Mar 2021 12:10:36 +1100 (AEDT)
+ id 4F97Xy6VhCz9sXh; Wed, 31 Mar 2021 12:10:39 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>,
- rppt@kernel.org, mpe@ellerman.id.au, christophe.leroy@csgroup.eu,
- benh@kernel.crashing.org, linux-kernel@vger.kernel.org, oss@buserror.net,
- paulus@samba.org, akpm@linux-foundation.org
-In-Reply-To: <20210314220436.3417083-1-unixbhaskar@gmail.com>
-References: <20210314220436.3417083-1-unixbhaskar@gmail.com>
-Subject: Re: [PATCH] powerpc: kernel: Trivial spelling fixes throughout the
- file head_fsl_booke.S
-Message-Id: <161715297716.226945.9682163470122144049.b4-ty@ellerman.id.au>
+To: npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ Bhaskar Chowdhury <unixbhaskar@gmail.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, aneesh.kumar@linux.ibm.com,
+ linux-kernel@vger.kernel.org, paulus@samba.org
+In-Reply-To: <20210312112537.4585-1-unixbhaskar@gmail.com>
+References: <20210312112537.4585-1-unixbhaskar@gmail.com>
+Subject: Re: [PATCH] powerpc: mm: book3s64: Fix a typo in the file
+ mmu_context.c
+Message-Id: <161715297733.226945.14751652600143342873.b4-ty@ellerman.id.au>
 Date: Wed, 31 Mar 2021 12:09:37 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -50,12 +50,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 15 Mar 2021 03:34:36 +0530, Bhaskar Chowdhury wrote:
-> Trivial spelling fixes throughout the file.
+On Fri, 12 Mar 2021 16:55:37 +0530, Bhaskar Chowdhury wrote:
+> s/detalis/details/
 
 Applied to powerpc/next.
 
-[1/1] powerpc: kernel: Trivial spelling fixes throughout the file head_fsl_booke.S
-      https://git.kernel.org/powerpc/c/f239873fcd953557ba9a9781d10ca95c0594e2b3
+[1/1] powerpc: mm: book3s64: Fix a typo in the file mmu_context.c
+      https://git.kernel.org/powerpc/c/7a7d744ffe87ae10ab98004d1a6ca1f691af58e1
 
 cheers
