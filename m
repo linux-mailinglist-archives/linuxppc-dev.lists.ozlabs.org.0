@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C0034FC3C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:12:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48DD34FC5D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:16:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9LF40TH0z3c5n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 20:12:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9LK04jhLz3c5g
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 20:16:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,38 +15,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9LDl4rfzz30Cn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 20:12:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9LJg23hmz30Mp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 20:15:45 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4F9LDf6FVrz9v077;
- Wed, 31 Mar 2021 11:12:18 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4F9LJY3T27z9v07B;
+ Wed, 31 Mar 2021 11:15:41 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id FLi6KVY5Vd5c; Wed, 31 Mar 2021 11:12:18 +0200 (CEST)
+ with ESMTP id qd8wwnjoz3M6; Wed, 31 Mar 2021 11:15:41 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4F9LDf5PXTz9v076;
- Wed, 31 Mar 2021 11:12:18 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4F9LJY24hVz9v079;
+ Wed, 31 Mar 2021 11:15:41 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A57BF8B7F8;
- Wed, 31 Mar 2021 11:12:19 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4857B8B7F4;
+ Wed, 31 Mar 2021 11:15:42 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 7CojbRHYE_Jc; Wed, 31 Mar 2021 11:12:19 +0200 (CEST)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 63D5C8B7FB;
- Wed, 31 Mar 2021 11:12:19 +0200 (CEST)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 28D8D67624; Wed, 31 Mar 2021 09:12:19 +0000 (UTC)
-Message-Id: <8bb015bc98c51d8ced581415b7e3d157e18da7c9.1617181918.git.christophe.leroy@csgroup.eu>
+ with ESMTP id r0VLFysz6y72; Wed, 31 Mar 2021 11:15:42 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C37928B75B;
+ Wed, 31 Mar 2021 11:15:41 +0200 (CEST)
+Subject: Re: WARNING: CPU: 0 PID: 1 at arch/powerpc/lib/feature-fixups.c:109
+ do_feature_fixups+0xb0/0xf0
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+References: <bc1d3a33-2499-994e-860a-b50cf72b9619@molgen.mpg.de>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/vdso: Make sure vdso_wrapper.o is rebuilt everytime
- vdso.so is rebuilt
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- masahiroy@kernel.org
-Date: Wed, 31 Mar 2021 09:12:19 +0000 (UTC)
+Message-ID: <4d973f54-e080-057f-6ad1-17396e5afb4c@csgroup.eu>
+Date: Wed, 31 Mar 2021 11:15:40 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
+MIME-Version: 1.0
+In-Reply-To: <bc1d3a33-2499-994e-860a-b50cf72b9619@molgen.mpg.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,40 +62,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit bce74491c300 ("powerpc/vdso: fix unnecessary rebuilds of
-vgettimeofday.o") moved vdso32_wrapper.o and vdso64_wrapper.o out
-of arch/powerpc/kernel/vdso[32/64]/ and removed the dependencies in
-the Makefile. This leads to the wrappers not being re-build hence the
-kernel embedding the old vdso library.
+Hi Paul,
 
-Add back missing dependencies to ensure vdso32_wrapper.o and vdso64_wrapper.o
-are rebuilt when vdso32.so.dbg and vdso64.so.dbg are changed.
+Le 30/03/2021 à 12:37, Paul Menzel a écrit :
+> Dear Linux folks,
+> 
+> 
+> On the POWER8 system IBM S822LC, Linux 5.12-rc5+ logs the warning below.
+> 
+> ```
+> [    0.724118] Unable to patch feature section at (____ptrval____) - (____ptrval____) with 
+> (____ptrval____) - (____ptrval____)
+> [    0.724185] pstore: Registered nvram as persistent store backend
+> ```
+> 
+> Please find the output of `dmesg` attached.
+> 
+> 
 
-Fixes: bce74491c300 ("powerpc/vdso: fix unnecessary rebuilds of vgettimeofday.o")
-Cc: stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+Did you do a 'make clean' before building ?
 
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 6084fa499aa3..f66b63e81c3b 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -191,3 +191,7 @@ $(obj)/prom_init_check: $(src)/prom_init_check.sh $(obj)/prom_init.o FORCE
- targets += prom_init_check
- 
- clean-files := vmlinux.lds
-+
-+# Force dependency (incbin is bad)
-+$(obj)/vdso32_wrapper.o : $(obj)/vdso32/vdso32.so.dbg
-+$(obj)/vdso64_wrapper.o : $(obj)/vdso64/vdso64.so.dbg
--- 
-2.25.0
+If not, can you try patch 
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/8bb015bc98c51d8ced581415b7e3d157e18da7c9.1617181918.git.christophe.leroy@csgroup.eu/
 
+Thanks
+Christophe
