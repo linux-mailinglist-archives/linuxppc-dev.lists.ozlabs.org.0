@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD9C34FD96
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:58:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E95B34FD9D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 11:59:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9MGQ4dL2z3c5Z
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 20:58:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9MHG3sgfz3c9G
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 20:59:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=arHGUZR1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=E1HW2jvQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,48 +17,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=arHGUZR1; 
+ header.a=rsa-sha256 header.s=201909 header.b=E1HW2jvQ; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9MFz5qrxz2xb9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 20:58:30 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9MGs52gxz2yS0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 20:59:17 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F9MFl5f6mz9sVb;
- Wed, 31 Mar 2021 20:58:19 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4F9MGr5TPpz9sWQ;
+ Wed, 31 Mar 2021 20:59:16 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1617184704;
- bh=62LWuEyrUicGCyza4BxPmll8qguht3fvwrGpruDriEg=;
+ s=201909; t=1617184757;
+ bh=p3haphj09CDXdLzCL9waMMLLTSGpd53eETzf7Pujz3c=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=arHGUZR1viBTEjAXyUIXP/+nurc8liOgRj9c7NVvad7Troem8hU1kwlNCpaPBAsvP
- 1h82bqXhyB0I38ZWIKd5XW11wZbDamjeJrkS5CklXHx2aXl5h7xCWoIgoqNN2NX2xj
- JatIx753TUP6rLjQavrVe45YO6cLoJa8gbI5xBD8pxTHRVpg3/FerLrPmJ1IEZvc4U
- EpNsaSsCol6UEeUCC/mpwSAtrIdglSlvti1NNnYfURnRwbWrtdAaJPS3ggS/AoRxvg
- /LU6rDVZzYU4KI3q+NJ76VlazhqDSEURUWAmKq9SDpRWQGPaIc/f7b6atnYaEsYJaw
- 2Jux27y1mafQw==
+ b=E1HW2jvQHKUIpNfeEsD0pCF2UnBDNvnOcHPByIEebrOXqFdoJXcpfLEJT0z9Ml8Si
+ h+m5huudFzCU+jqanSEb0XEtdOPCbEjeiaGFutoGPNrm5xEa3JullVhXanp3sJ5fpW
+ tl+YqHFLnA3otpgJ0ewWDhWzYkTTsbzjYMEwfFYLJDxi3SjALPR2IFVzlIV8pdmHsm
+ UO6j5SJXJZE7xM2/ga+uPgcxYJIdXJmmTbxhgTDBRYyxcpjXg23fBHVXs20S0iDIUS
+ fQ1LTsV1HNFOIMondRjpUJbeexX1oQv7BsC4BDifj/CC9eosK6ufxV3gHrP8vUbhE3
+ 1CE5X2YtFotPQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Xiongwei Song <sxwjean@me.com>, benh@kernel.crashing.org,
- paulus@samba.org, oleg@redhat.com, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, msuchanek@suse.de,
- aneesh.kumar@linux.ibm.com, ravi.bangoria@linux.ibm.com,
- mikey@neuling.org, haren@linux.ibm.com, alistair@popple.id.au,
- jniethe5@gmail.com, peterz@infradead.org, leobras.c@gmail.com,
- akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com,
- atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com,
- kan.liang@linux.intel.com, aik@ozlabs.ru, pmladek@suse.com,
- john.ogness@linutronix.de
-Subject: Re: [PATCH v2] powerpc/traps: Enhance readability for trap types
-In-Reply-To: <20210330150425.10145-1-sxwjean@me.com>
-References: <20210330150425.10145-1-sxwjean@me.com>
-Date: Wed, 31 Mar 2021 20:58:17 +1100
-Message-ID: <875z17y79i.fsf@mpe.ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Dmitry Safonov
+ <dima@arista.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc/vdso: Separate vvar vma from vdso
+In-Reply-To: <09e8d68d-54fe-e327-b44f-8f68543edba1@csgroup.eu>
+References: <20210326191720.138155-1-dima@arista.com>
+ <09e8d68d-54fe-e327-b44f-8f68543edba1@csgroup.eu>
+Date: Wed, 31 Mar 2021 20:59:16 +1100
+Message-ID: <8735wby77v.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,104 +64,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Xiongwei Song <sxwjean@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
+Cc: Dmitry Safonov <0x7f454c46@gmail.com>, stable@vger.kernel.org,
+ Andrei Vagin <avagin@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Andy Lutomirski <luto@kernel.org>, Laurent Dufour <ldufour@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Xiongwei Song <sxwjean@me.com> writes:
-> From: Xiongwei Song <sxwjean@gmail.com>
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 26/03/2021 =C3=A0 20:17, Dmitry Safonov a =C3=A9crit=C2=A0:
+>> Since commit 511157ab641e ("powerpc/vdso: Move vdso datapage up front")
+>> VVAR page is in front of the VDSO area. In result it breaks CRIU
+>> (Checkpoint Restore In Userspace) [1], where CRIU expects that "[vdso]"
+>> from /proc/../maps points at ELF/vdso image, rather than at VVAR data pa=
+ge.
+>> Laurent made a patch to keep CRIU working (by reading aux vector).
+>> But I think it still makes sence to separate two mappings into different
+>> VMAs. It will also make ppc64 less "special" for userspace and as
+>> a side-bonus will make VVAR page un-writable by debugger (which previous=
+ly
+>> would COW page and can be unexpected).
+>>=20
+>> I opportunistically Cc stable on it: I understand that usually such
+>> stuff isn't a stable material, but that will allow us in CRIU have
+>> one workaround less that is needed just for one release (v5.11) on
+>> one platform (ppc64), which we otherwise have to maintain.
+>> I wouldn't go as far as to say that the commit 511157ab641e is ABI
+>> regression as no other userspace got broken, but I'd really appreciate
+>> if it gets backported to v5.11 after v5.12 is released, so as not
+>> to complicate already non-simple CRIU-vdso code. Thanks!
+>>=20
+>> Cc: Andrei Vagin <avagin@gmail.com>
+>> Cc: Andy Lutomirski <luto@kernel.org>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Cc: Laurent Dufour <ldufour@linux.ibm.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: stable@vger.kernel.org # v5.11
+>> [1]: https://github.com/checkpoint-restore/criu/issues/1417
+>> Signed-off-by: Dmitry Safonov <dima@arista.com>
+>> Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>>   arch/powerpc/include/asm/mmu_context.h |  2 +-
+>>   arch/powerpc/kernel/vdso.c             | 54 +++++++++++++++++++-------
+>>   2 files changed, 40 insertions(+), 16 deletions(-)
+>>=20
 >
-> Create a new header named traps.h, define macros to list ppc exception
-> types in traps.h, replace the reference of the real trap values with
-> these macros.
+>> @@ -133,7 +135,13 @@ static int __arch_setup_additional_pages(struct lin=
+ux_binprm *bprm, int uses_int
+>>   	 * install_special_mapping or the perf counter mmap tracking code
+>>   	 * will fail to recognise it as a vDSO.
+>>   	 */
+>> -	mm->context.vdso =3D (void __user *)vdso_base + PAGE_SIZE;
+>> +	mm->context.vdso =3D (void __user *)vdso_base + vvar_size;
+>> +
+>> +	vma =3D _install_special_mapping(mm, vdso_base, vvar_size,
+>> +				       VM_READ | VM_MAYREAD | VM_IO |
+>> +				       VM_DONTDUMP | VM_PFNMAP, &vvar_spec);
+>> +	if (IS_ERR(vma))
+>> +		return PTR_ERR(vma);
+>>=20=20=20
+>>   	/*
+>>   	 * our vma flags don't have VM_WRITE so by default, the process isn't
+>
+>
+> IIUC, VM_PFNMAP is for when we have a vvar_fault handler.
 
-Personally I find the hex values easier to recognise, but I realise
-that's probably not true of other people :)
-
-...
-> diff --git a/arch/powerpc/include/asm/traps.h b/arch/powerpc/include/asm/traps.h
-> new file mode 100644
-> index 000000000000..a31b6122de23
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/traps.h
-> @@ -0,0 +1,19 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_PPC_TRAPS_H
-> +#define _ASM_PPC_TRAPS_H
-> +
-> +#define TRAP_RESET   0x100 /* System reset */
-> +#define TRAP_MCE     0x200 /* Machine check */
-> +#define TRAP_DSI     0x300 /* Data storage */
-> +#define TRAP_DSEGI   0x380 /* Data segment */
-> +#define TRAP_ISI     0x400 /* Instruction storage */
-> +#define TRAP_ISEGI   0x480 /* Instruction segment */
-> +#define TRAP_ALIGN   0x600 /* Alignment */
-> +#define TRAP_PROG    0x700 /* Program */
-> +#define TRAP_DEC     0x900 /* Decrementer */
-> +#define TRAP_SYSCALL 0xc00 /* System call */
-> +#define TRAP_TRACEI  0xd00 /* Trace */
-> +#define TRAP_FPA     0xe00 /* Floating-point Assist */
-> +#define TRAP_PMI     0xf00 /* Performance monitor */
-
-I know the macro is called TRAP and the field in pt_regs is called trap,
-but the terminology in the architecture is "exception", and we already
-have many uses of that. In particular we have a lot of uses of "exc" as
-an abbreviation for "exception". So I think I'd rather we use that than
-"TRAP".
-
-I think we should probably use the names from the ISA, unless they are
-really over long.
-
-Which are:
-
-  0x100   System Reset
-  0x200   Machine Check
-  0x300   Data Storage
-  0x380   Data Segment
-  0x400   Instruction Storage
-  0x480   Instruction Segment
-  0x500   External
-  0x600   Alignment
-  0x700   Program
-  0x800   Floating-Point Unavailable
-  0x900   Decrementer
-  0x980   Hypervisor Decrementer
-  0xA00   Directed Privileged Doorbell
-  0xC00   System Call
-  0xD00   Trace
-  0xE00   Hypervisor Data Storage
-  0xE20   Hypervisor Instruction Storage
-  0xE40   Hypervisor Emulation Assistance
-  0xE60   Hypervisor Maintenance
-  0xE80   Directed Hypervisor Doorbell
-  0xEA0   Hypervisor Virtualization
-  0xF00   Performance Monitor
-  0xF20   Vector Unavailable
-  0xF40   VSX Unavailable
-  0xF60   Facility Unavailable
-  0xF80   Hypervisor Facility Unavailable
-  0xFA0   Directed Ultravisor Doorbell
-
-
-So perhaps:
-
-  EXC_SYSTEM_RESET
-  EXC_MACHINE_CHECK
-  EXC_DATA_STORAGE
-  EXC_DATA_SEGMENT
-  EXC_INST_STORAGE
-  EXC_INST_SEGMENT
-  EXC_EXTERNAL_INTERRUPT
-  EXC_ALIGNMENT
-  EXC_PROGRAM_CHECK
-  EXC_FP_UNAVAILABLE
-  EXC_DECREMENTER
-  EXC_HV_DECREMENTER
-  EXC_SYSTEM_CALL
-  EXC_HV_DATA_STORAGE
-  EXC_PERF_MONITOR
+Some of the other flags seem odd too.
+eg. VM_IO ? VM_DONTDUMP ?
 
 
 cheers
