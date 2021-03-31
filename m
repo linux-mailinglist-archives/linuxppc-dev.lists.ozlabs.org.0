@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEFB535026E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 16:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FBD35026F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 16:34:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9TN15Z4Rz3d6n
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 01:34:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9TNS4NQvz3dGf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 01:34:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sLjjqYUK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LrjZ3mx3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,31 +17,31 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=sLjjqYUK; 
+ header.s=k20201202 header.b=LrjZ3mx3; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9TL44lQnz3c5n
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 01:32:28 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 50A8A60FF0;
- Wed, 31 Mar 2021 14:32:19 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9TLD1HRSz3c87
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 01:32:36 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F357360FF2;
+ Wed, 31 Mar 2021 14:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1617201146;
- bh=Ht9rtu0Co+dG0mLJd/EeyOUGuASgL6Jraidb6iiV2SA=;
+ s=k20201202; t=1617201154;
+ bh=Bg9d2w1WAX5KFLAnbnlQNHWx+c16ctVJTJF6+EgKbfQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=sLjjqYUKM/9xT8bdGMLrv/vHz9hXgtgtxvs/oRmBw1S0V9setblm7Thg7sukdPtOh
- 5Ff6couQIDJI4Zj2o5I89lUqC4hfTyLrlnnaG5vm6CEcTEYKTO/+O3NumvCjjgEiHc
- 8qjcmWa/zIDXzY60NtXXR5R7f+OLc1kocQe2AiXzxCIR6a7HLR0QQiRzupGD7VTRTf
- RKfRw6YVG0MHOEviuThmdh3Z97OSB71QBJy1WJSuDfUIdQyk79BIDFWVVYeb316LO+
- 2vLNSCWQKmwWV5DF2Rwv5oYo/GVqHJaM8oo/Br5KYK2E3yzm1SqoUhERexFzNrbhEA
- f1s1XOWvv+EcQ==
+ b=LrjZ3mx3DLcCEGgombkpOj7HEDG+16RbX7GCxzDylhP8guFWgsFJW1a+vbFusHAdY
+ 94Qc8qxXh1EaoulNdS9TWbco1PP6GmCZIt2L23pL/QOBIPRyX63GfvbDQ+9NaIDf0j
+ cyaxT3exYFQgKDTOgB0wOKQGlgVON8y1piXQwNdT3csJ3MSJFjc5fe9PkswGDii/sd
+ eJPqX6kMGOlpOMDJKTbaueqCpyqN6Hisbv6i7VqbZryJVEehQnqSDloumLXlFCearb
+ 3+InC8R0ziS9cAAyzyzC3f0cJufK7mNuBaiq4wARKob/aEo8zMPVAZ5gZ+eiaTG+y6
+ vnrem6tzkauzg==
 From: guoren@kernel.org
 To: guoren@kernel.org
-Subject: [PATCH v6 5/9] csky: Convert custom spinlock/rwlock to generic
- qspinlock/qrwlock
-Date: Wed, 31 Mar 2021 14:30:36 +0000
-Message-Id: <1617201040-83905-6-git-send-email-guoren@kernel.org>
+Subject: [PATCH v6 6/9] openrisc: qspinlock: Add
+ ARCH_USE_QUEUED_SPINLOCKS_XCHG32
+Date: Wed, 31 Mar 2021 14:30:37 +0000
+Message-Id: <1617201040-83905-7-git-send-email-guoren@kernel.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1617201040-83905-1-git-send-email-guoren@kernel.org>
 References: <1617201040-83905-1-git-send-email-guoren@kernel.org>
@@ -58,120 +58,48 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
  Guo Ren <guoren@linux.alibaba.com>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>,
  linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
- openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
- Waiman Long <longman@redhat.com>, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Stafford Horne <shorne@gmail.com>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, Jonas Bonn <jonas@southpole.se>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Guo Ren <guoren@linux.alibaba.com>
 
-Update the C-SKY port to use the generic qspinlock and qrwlock.
+We don't have native hw xchg16 instruction, so let qspinlock
+generic code to deal with it.
 
-C-SKY only support ldex.w/stex.w with word(double word) size &
-align access. So it must select XCHG32 to let qspinlock only use
-word atomic xchg_tail.
+Using the full-word atomic xchg instructions implement xchg16 has
+the semantic risk for atomic operations.
 
-Default is still ticket lock.
+This patch cancels the dependency of on qspinlock generic code on
+architecture's xchg16.
 
 Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>
 Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Jonas Bonn <jonas@southpole.se>
+Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+Cc: Stafford Horne <shorne@gmail.com>
+Cc: openrisc@lists.librecores.org
 ---
- arch/csky/Kconfig                      | 8 ++++++++
- arch/csky/include/asm/Kbuild           | 2 ++
- arch/csky/include/asm/spinlock.h       | 4 ++++
- arch/csky/include/asm/spinlock_types.h | 4 ++++
- 4 files changed, 18 insertions(+)
+ arch/openrisc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
-index 34e91224adc3..ae12332edb7b 100644
---- a/arch/csky/Kconfig
-+++ b/arch/csky/Kconfig
-@@ -8,6 +8,8 @@ config CSKY
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
- 	select ARCH_USE_BUILTIN_BSWAP
- 	select ARCH_USE_QUEUED_RWLOCKS
-+	select ARCH_USE_QUEUED_SPINLOCKS	if !CSKY_TICKET_LOCK
+diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
+index 591acc5990dc..b299e409429f 100644
+--- a/arch/openrisc/Kconfig
++++ b/arch/openrisc/Kconfig
+@@ -33,6 +33,7 @@ config OPENRISC
+ 	select OR1K_PIC
+ 	select CPU_NO_EFFICIENT_FFS if !OPENRISC_HAVE_INST_FF1
+ 	select ARCH_USE_QUEUED_SPINLOCKS
 +	select ARCH_USE_QUEUED_SPINLOCKS_XCHG32
- 	select ARCH_WANT_FRAME_POINTERS if !CPU_CK610
- 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
- 	select COMMON_CLK
-@@ -304,6 +306,12 @@ config NR_CPUS
- 	depends on SMP
- 	default "4"
- 
-+config CSKY_TICKET_LOCK
-+	bool "Ticket-based spin-locking"
-+	default y
-+	help
-+	  Say Y here to use ticket-based spin-locking.
-+
- config HIGHMEM
- 	bool "High Memory Support"
- 	depends on !CPU_CK610
-diff --git a/arch/csky/include/asm/Kbuild b/arch/csky/include/asm/Kbuild
-index cc24bb8e539f..2a2d09963bb9 100644
---- a/arch/csky/include/asm/Kbuild
-+++ b/arch/csky/include/asm/Kbuild
-@@ -2,6 +2,8 @@
- generic-y += asm-offsets.h
- generic-y += gpio.h
- generic-y += kvm_para.h
-+generic-y += mcs_spinlock.h
- generic-y += qrwlock.h
-+generic-y += qspinlock.h
- generic-y += user.h
- generic-y += vmlinux.lds.h
-diff --git a/arch/csky/include/asm/spinlock.h b/arch/csky/include/asm/spinlock.h
-index 69677167977a..fe98ad8ece51 100644
---- a/arch/csky/include/asm/spinlock.h
-+++ b/arch/csky/include/asm/spinlock.h
-@@ -6,6 +6,7 @@
- #include <linux/spinlock_types.h>
- #include <asm/barrier.h>
- 
-+#ifdef CONFIG_CSKY_TICKET_LOCK
- /*
-  * Ticket-based spin-locking.
-  */
-@@ -80,6 +81,9 @@ static inline int arch_spin_is_contended(arch_spinlock_t *lock)
- 	return (tickets.next - tickets.owner) > 1;
- }
- #define arch_spin_is_contended	arch_spin_is_contended
-+#else /* CONFIG_CSKY_TICKET_LOCK */
-+#include <asm/qspinlock.h>
-+#endif /* CONFIG_CSKY_TICKET_LOCK */
- 
- #include <asm/qrwlock.h>
- 
-diff --git a/arch/csky/include/asm/spinlock_types.h b/arch/csky/include/asm/spinlock_types.h
-index 8ff0f6ff3a00..547f035f6dd5 100644
---- a/arch/csky/include/asm/spinlock_types.h
-+++ b/arch/csky/include/asm/spinlock_types.h
-@@ -7,6 +7,7 @@
- # error "please don't include this file directly"
- #endif
- 
-+#ifdef CONFIG_CSKY_TICKET_LOCK
- #define TICKET_NEXT	16
- 
- typedef struct {
-@@ -21,6 +22,9 @@ typedef struct {
- } arch_spinlock_t;
- 
- #define __ARCH_SPIN_LOCK_UNLOCKED	{ { 0 } }
-+#else
-+#include <asm-generic/qspinlock_types.h>
-+#endif
- 
- #include <asm-generic/qrwlock_types.h>
- 
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select OMPIC if SMP
+ 	select ARCH_WANT_FRAME_POINTERS
 -- 
 2.17.1
 
