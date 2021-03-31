@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B333A34F7CB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 06:21:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DA0834F7CC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 06:21:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9Cmv5G9jz3c8q
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 15:21:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9CnL07Z5z3cGl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 15:21:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=BKD9ckIu;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=lU/T7acf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,36 +17,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=paulus@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=BKD9ckIu; dkim-atps=neutral
+ header.s=201707 header.b=lU/T7acf; dkim-atps=neutral
 Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9CmS5YC3z30B7
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9CmS5ZyHz30B9
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 15:20:56 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1003)
- id 4F9CmR3vGHz9sWQ; Wed, 31 Mar 2021 15:20:55 +1100 (AEDT)
+ id 4F9CmR4SpFz9sCD; Wed, 31 Mar 2021 15:20:55 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1617164455; bh=wCCS9x+0BkoEX0cVVG+0NhLVg9XU1CuM70ITQy8JHDQ=;
+ t=1617164455; bh=R5yeQfItJMYJlpFnCudzTg5QYDa/YjngEkHJnRuWw24=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=BKD9ckIuW6EnC9ffmjIC3iQ/aivwmDsUaoQEjocIdV3hSsRTZAzKCCAXTWrwwVG5z
- Wi8V+ICzuDfBQcozE6O7qNKgcp7y57bgSFQYETDTzTheumKhwIYT2jN7elMQj5inIv
- 4I31Gj90JOJ+VRHGvmTcagUZInlcQtlSF+Ro20tWLUhaCF8qusckMOULCQGYymOlH0
- z880TMaIm3fvwCCy9/KFtFlSPoFdWF+N2KzzXHa2Rh66EvvgP6IPIDiEip8dJncpS4
- dRpVGmOVh4VhHnDQ9qiWWNmRXoB57tRcN4GwEQPSnjsUnvxBaO84eRtU4ZeEdE8wMa
- tJt3hQPiyEzzA==
-Date: Wed, 31 Mar 2021 13:47:12 +1100
+ b=lU/T7acfin8IYqJfb+++vclSDcW2I1lHSIk9+QvAaBa9rNeVKr1ABIYu7rxRp4pQC
+ fG8R74l2lH3y3WozkdFqc/OUGAAdThLrsAm7wEc3oEoHkjOb4UKmGYEMUNQZdXTVWC
+ Q+qiRMCZinlFkrjI9ZBdPiFJeGeUKLnhOGsGNzHgxZ25ps+YKWSPV1YsBzhX/EStjh
+ jqwOQ/5R+dCp+Hgf1atBhkF7UXvfQOLxnrM19bZC5ur0WxLTIPOmskRVZYNeji03p7
+ Kpc+vU4eckCAaRJL5fXDKdhtNcBEKFF2si0+vfA5fYWeeWUnPMAnntL8oL3F+Ls9IH
+ Sft1LhM8EqtmQ==
+Date: Wed, 31 Mar 2021 15:08:25 +1100
 From: Paul Mackerras <paulus@ozlabs.org>
 To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 01/46] KVM: PPC: Book3S HV: Nested move LPCR
- sanitising to sanitise_hv_regs
-Message-ID: <YGPisFlG2VjX05iZ@thinks.paulus.ozlabs.org>
+Subject: Re: [PATCH v4 02/46] KVM: PPC: Book3S HV: Add a function to filter
+ guest LPCR bits
+Message-ID: <YGP1uXH5q72auwP7@thinks.paulus.ozlabs.org>
 References: <20210323010305.1045293-1-npiggin@gmail.com>
- <20210323010305.1045293-2-npiggin@gmail.com>
+ <20210323010305.1045293-3-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210323010305.1045293-2-npiggin@gmail.com>
+In-Reply-To: <20210323010305.1045293-3-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,15 +63,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 23, 2021 at 11:02:20AM +1000, Nicholas Piggin wrote:
-> This will get a bit more complicated in future patches. Move it
-> into the helper function.
+On Tue, Mar 23, 2021 at 11:02:21AM +1000, Nicholas Piggin wrote:
+> Guest LPCR depends on hardware type, and future changes will add
+> restrictions based on errata and guest MMU mode. Move this logic
+> to a common function and use it for the cases where the guest
+> wants to update its LPCR (or the LPCR of a nested guest).
 
-This does change L1-visible behaviour, because now the L1 hypervisor
-can see the LPCR bits that L0 is using, whereas previously it couldn't
-(and that was deliberate).  I can't point to a specific scenario where
-that is a real problem, but nevertheless it worries me.  And the
-behaviour change should have been mentioned in the commit message at
-least.
+[snip]
+
+> @@ -4641,8 +4662,9 @@ void kvmppc_update_lpcr(struct kvm *kvm, unsigned long lpcr, unsigned long mask)
+>  		struct kvmppc_vcore *vc = kvm->arch.vcores[i];
+>  		if (!vc)
+>  			continue;
+> +
+>  		spin_lock(&vc->lock);
+> -		vc->lpcr = (vc->lpcr & ~mask) | lpcr;
+> +		vc->lpcr = kvmppc_filter_lpcr_hv(vc, (vc->lpcr & ~mask) | lpcr);
+
+This change seems unnecessary, since kvmppc_update_lpcr is called only
+to update MMU configuration bits, not as a result of any action by
+userspace or a nested hypervisor.  It's also beyond the scope of what
+was mentioned in the commit message.
 
 Paul.
