@@ -1,101 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9FF34FDF1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:21:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E1A34FE2D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:37:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9MmG27kTz3c2G
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 21:21:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9N764pCyz3c5k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 21:37:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WAynXgSf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TTaqi7Yh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=au1.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ellerman@au1.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=WAynXgSf; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=TTaqi7Yh; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9Mll5vJZz303C
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 21:20:51 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 12VA4BOU048660; Wed, 31 Mar 2021 06:20:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- mime-version; s=pp1; bh=p6YVCg1411fVcZy23Dy4j74YNztaVR4TyNA+hmWAe84=;
- b=WAynXgSflsuTxDXIW+ATC2sSrpvYsTXv+wt3bUM3j9bXyijEzZeooSooOMB7BXL8WOfP
- QAU7pzV/q7me3vT6rcwBDipcEpyj/TY/+O+0eTRYObrIDLkFzLaq/6FuBzImGynnQyBc
- EfScxLCJNv/0yK65B0QZ6UcBsNxj5LZ35vJtSCwpHk96wfZ/CYqWeMmwbZQKQjsD7hPL
- a9qiSO5mlNoCHsudJXrBxxJLecrPVS8tcRs6nLg0tNOPAz7lZtp6BznPiT3Y4QKRZiOu
- a/rxYcDqrX/5aZHidrOdI2FnH5twuFw5oxmZbTTNzovIAiSf0v/YgQOpsknJQVMqUki1 aw== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37mb3h8wdt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Mar 2021 06:20:46 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12VA8Z0d007092;
- Wed, 31 Mar 2021 10:20:45 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma02fra.de.ibm.com with ESMTP id 37maaqr8w5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Mar 2021 10:20:44 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 12VAKgeR33489384
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 31 Mar 2021 10:20:42 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A49C042042;
- Wed, 31 Mar 2021 10:20:42 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 53D7142052;
- Wed, 31 Mar 2021 10:20:42 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 31 Mar 2021 10:20:42 +0000 (GMT)
-Received: from localhost (unknown [9.206.131.146])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8CEDE60599;
- Wed, 31 Mar 2021 21:20:40 +1100 (AEDT)
-From: Michael Ellerman <ellerman@au1.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Shivaprasad G Bhat
- <sbhat@linux.ibm.com>, sbhat@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
- linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v3] powerpc/papr_scm: Implement support for H_SCM_FLUSH
- hcall
-In-Reply-To: <87mtul6xzj.fsf@linux.ibm.com>
-References: <161703936121.36.7260632399582101498.stgit@e1fbed493c87>
- <87mtul6xzj.fsf@linux.ibm.com>
-Date: Wed, 31 Mar 2021 21:20:36 +1100
-Message-ID: <87zgyjwrnv.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: kI7olCKHAEIbR5wjk2XHs2J1MqGiFAtQ
-X-Proofpoint-GUID: kI7olCKHAEIbR5wjk2XHs2J1MqGiFAtQ
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9N6j5R0Wz2yyM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 21:37:17 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4F9N6c6lfTz9sWK;
+ Wed, 31 Mar 2021 21:37:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1617187035;
+ bh=VTiOGrrVoq0IDF+lHleeVf//X5BP+Y44WtToIrf4/gw=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=TTaqi7YhLTCJ5QF+Ksat0/xAygaQ29us49FRrLFNh4Q537qnPqNh167x4izzJrNlh
+ ELLUimCB+1VU4GaLqpxNff8gbZ97Wu0oYHFoFQloo2cSeyS2oTNlsCvoo+r3KMcmMb
+ 7YIs3HZ9rpRezAMWODq+8E+xk5geW/DUXpqW3fjbsQlmk06OmXwyn6vLdyMxGa56LZ
+ Km9QPMVrNRaOHlK/7jdw+04sZM+h8X9CTRO8OW5k9DMAdw1lo24S280Ppg35Gn4IdT
+ /ZmegM716Jrmgg0XIz95Q0y7k4wuVEHHPtxpYDt8sea0C6bct6gb0rkSRTA7EF2Qk1
+ BkhT0FYszGnFg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v10 05/10] powerpc/bpf: Write protect JIT code
+In-Reply-To: <20210330045132.722243-6-jniethe5@gmail.com>
+References: <20210330045132.722243-1-jniethe5@gmail.com>
+ <20210330045132.722243-6-jniethe5@gmail.com>
+Date: Wed, 31 Mar 2021 21:37:10 +1100
+Message-ID: <87wntnwqw9.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-03-31_03:2021-03-30,
- 2021-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 spamscore=0
- mlxscore=0 phishscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0
- suspectscore=0 clxscore=1011 adultscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2103300000 definitions=main-2103310073
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,32 +62,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: vaibhav@linux.ibm.com, linux-doc@vger.kernel.org
+Cc: ajd@linux.ibm.com, Jordan Niethe <jniethe5@gmail.com>, cmr@codefail.de,
+ npiggin@gmail.com, naveen.n.rao@linux.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> Shivaprasad G Bhat <sbhat@linux.ibm.com> writes:
->
->> Add support for ND_REGION_ASYNC capability if the device tree
->> indicates 'ibm,hcall-flush-required' property in the NVDIMM node.
->> Flush is done by issuing H_SCM_FLUSH hcall to the hypervisor.
->>
->> If the flush request failed, the hypervisor is expected to
->> to reflect the problem in the subsequent nvdimm H_SCM_HEALTH call.
->>
->> This patch prevents mmap of namespaces with MAP_SYNC flag if the
->> nvdimm requires an explicit flush[1].
->>
->> References:
->> [1] https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c
->
->
-> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Jordan Niethe <jniethe5@gmail.com> writes:
 
-Do we need an ack from nvdimm folks on this?
+> Once CONFIG_STRICT_MODULE_RWX is enabled there will be no need to
+> override bpf_jit_free() because it is now possible to set images
+> read-only. So use the default implementation.
+>
+> Also add the necessary call to bpf_jit_binary_lock_ro() which will
+> remove write protection and add exec protection to the JIT image after
+> it has finished being written.
+>
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v10: New to series
+> ---
+>  arch/powerpc/net/bpf_jit_comp.c   | 5 ++++-
+>  arch/powerpc/net/bpf_jit_comp64.c | 4 ++++
+>  2 files changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index e809cb5a1631..8015e4a7d2d4 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -659,12 +659,15 @@ void bpf_jit_compile(struct bpf_prog *fp)
+>  		bpf_jit_dump(flen, proglen, pass, code_base);
+>  
+>  	bpf_flush_icache(code_base, code_base + (proglen/4));
+> -
+>  #ifdef CONFIG_PPC64
+>  	/* Function descriptor nastiness: Address + TOC */
+>  	((u64 *)image)[0] = (u64)code_base;
+>  	((u64 *)image)[1] = local_paca->kernel_toc;
+>  #endif
+> +	if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX)) {
+> +		set_memory_ro((unsigned long)image, alloclen >> PAGE_SHIFT);
+> +		set_memory_x((unsigned long)image, alloclen >> PAGE_SHIFT);
+> +	}
 
-Or is it entirely powerpc internal (seems like it from the diffstat)?
+You don't need to check the ifdef in a caller, there are stubs that
+compile to nothing when CONFIG_ARCH_HAS_SET_MEMORY=n.
+
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index aaf1a887f653..1484ad588685 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -1240,6 +1240,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+>  	fp->jited_len = alloclen;
+>  
+>  	bpf_flush_icache(bpf_hdr, (u8 *)bpf_hdr + (bpf_hdr->pages * PAGE_SIZE));
+> +	if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
+> +		bpf_jit_binary_lock_ro(bpf_hdr);
+
+Do we need the ifdef here either? Looks like it should be safe to call
+due to the stubs.
+
+> @@ -1262,6 +1264,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+>  }
+>  
+>  /* Overriding bpf_jit_free() as we don't set images read-only. */
+> +#ifndef CONFIG_STRICT_MODULE_RWX
+
+Did you test without this and notice something broken?
+
+Looking at the generic version I can't tell why we need to override
+this. Maybe we don't (anymore?) ?
 
 cheers
+
+>  void bpf_jit_free(struct bpf_prog *fp)
+>  {
+>  	unsigned long addr = (unsigned long)fp->bpf_func & PAGE_MASK;
+> @@ -1272,3 +1275,4 @@ void bpf_jit_free(struct bpf_prog *fp)
+>  
+>  	bpf_prog_unlock_free(fp);
+>  }
+> +#endif
+> -- 
+> 2.25.1
