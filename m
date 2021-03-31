@@ -1,34 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A6A34F5E8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:13:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7278934F5FE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:15:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F97bm6QwGz3dtV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:13:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F97dw5cvgz3fRV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:15:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F97XN6vDXz3c19
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:12 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F97XV6nSyz3bv3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:18 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F97XN4Y8gz9sXh; Wed, 31 Mar 2021 12:10:12 +1100 (AEDT)
+ id 4F97XV2DJJz9sWk; Wed, 31 Mar 2021 12:10:18 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1615398498.git.christophe.leroy@csgroup.eu>
-References: <cover.1615398498.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v1 0/8] Miscellaneous user access improvement
-Message-Id: <161715296775.226945.5121364536588519701.b4-ty@ellerman.id.au>
-Date: Wed, 31 Mar 2021 12:09:27 +1100
+To: npiggin@gmail.com, Davidlohr Bueso <dave@stgolabs.net>
+In-Reply-To: <20210309015950.27688-1-dave@stgolabs.net>
+References: <20210309015950.27688-1-dave@stgolabs.net>
+Subject: Re: [PATCH 0/3] powerpc/qspinlock: Some tuning updates
+Message-Id: <161715296824.226945.611747739649915060.b4-ty@ellerman.id.au>
+Date: Wed, 31 Mar 2021 12:09:28 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,39 +41,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: peterz@infradead.org, will@kernel.org, linux-kernel@vger.kernel.org,
+ mingo@redhat.com, paulus@samba.org, longman@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 10 Mar 2021 17:56:59 +0000 (UTC), Christophe Leroy wrote:
-> Patches 1-3 are cleaning parts of uaccess.h not related
-> to put_user/get_user
-> Patch 4 removes some usage of consecutives __get_user
-> Patches 5 rewrite __patch_instruction to not use uaccess.h internals.
-> Patches 6-8 switch some parts of code to user_access_begin/end blocks
+On Mon, 8 Mar 2021 17:59:47 -0800, Davidlohr Bueso wrote:
+> A few updates while going through the powerpc port of the qspinlock.
 > 
-> All patches are independant.
+> Patches 1 and 2 are straightforward, while patch 3 can be considered
+> more of an rfc as I've only tested on a single machine, and there
+> could be an alternative way if it doesn't end up being nearly a
+> universal performance win.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/8] powerpc/uaccess: Also perform 64 bits copies in unsafe_copy_to_user() on ppc32
-      https://git.kernel.org/powerpc/c/c6adc835c68b713360f918d21372c2f34fc228e2
-[2/8] powerpc/uaccess: Swap clear_user() and __clear_user()
-      https://git.kernel.org/powerpc/c/7472199a6eda6a79f9e3b126f52f67f9ce3e1f77
-[3/8] powerpc/uaccess: Move copy_mc_xxx() functions down
-      https://git.kernel.org/powerpc/c/4b8cda58812c1e1bf79d37f2ddff3cf03b7025da
-[4/8] powerpc/syscalls: Use sys_old_select() in ppc_select()
-      https://git.kernel.org/powerpc/c/fd69d544b0e785b11699675154bdfe01a04538cd
-[5/8] powerpc/lib: Don't use __put_user_asm_goto() outside of uaccess.h
-      https://git.kernel.org/powerpc/c/e63ceebdad82f85e48b018abfc6af4ed6958179e
-[6/8] powerpc/net: Switch csum_and_copy_{to/from}_user to user_access block
-      https://git.kernel.org/powerpc/c/164dc6ce368fa23b0aae0e5d12883fff9bf80458
-[7/8] powerpc/futex: Switch to user_access block
-      https://git.kernel.org/powerpc/c/870779f40e99c795ddfafa0dfc43318e51f15127
-[8/8] powerpc/ptrace: Convert gpr32_set_common() to user access block
-      https://git.kernel.org/powerpc/c/93c043e393af7fa218c928d8c62396ba28f1bb84
+[1/3] powerpc/spinlock: Define smp_mb__after_spinlock only once
+      https://git.kernel.org/powerpc/c/2bf3604c415c9d75311141b8eb6ac8780ef74420
+[2/3] powerpc/spinlock: Unserialize spin_is_locked
+      https://git.kernel.org/powerpc/c/66f60522138c2e0d8a3518edd4979df11a2d7525
+[3/3] powerpc/qspinlock: Use generic smp_cond_load_relaxed
+      https://git.kernel.org/powerpc/c/deb9b13eb2571fbde164ae012c77985fd14f2f02
 
 cheers
