@@ -2,56 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D260F34FF64
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 13:25:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6CB34FFBB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 13:50:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9P9t63RCz3brZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 22:25:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9Pl56FChz3c4Y
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 22:50:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FmuoyXuH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kMlovUr/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=FmuoyXuH; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=kMlovUr/; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9P9Q4FHkz2yxS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 22:24:42 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4F9P9P3VdPz9sW4;
- Wed, 31 Mar 2021 22:24:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1617189881;
- bh=7mUSZiZW2B14bW+Hi4YeBpbqTn7wYMNTKPDBdA5zBBk=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=FmuoyXuHNvbgbuJlGcLNByz1Y1otDLrJwvMF3blAjoCDpK8B5u913VqdXY7gEya4w
- cvGZch5fDeZZD2Nf5PvfKpQvBeEqhF9JzUFFKTipPh9bOtEl3Qz4P+47QuNunSFR0K
- kHZ1ewPLjhAMoJkH1PpZES0P9cPx9ce323uAKzFy0222TMIoqLFsRxLoeoB/9Q34zR
- PM0uwosrq37pGAVr4TtxQqqBYokeIC6Gm0fWsfH68x4Rk4tq2xnGKyf7LRL6W2u1S3
- GCQo1bv/pSs1O6eppgh5qeYJMbmOzqseFWPE9Hpqy/SzXIcO25VJbb7njrOvI2j0fm
- 254/ifECFwE2g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v10 06/10] powerpc/mm/ptdump: debugfs handler for W+X
- checks at runtime
-In-Reply-To: <20210330045132.722243-7-jniethe5@gmail.com>
-References: <20210330045132.722243-1-jniethe5@gmail.com>
- <20210330045132.722243-7-jniethe5@gmail.com>
-Date: Wed, 31 Mar 2021 22:24:40 +1100
-Message-ID: <87im577eh3.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9PkY2W6Zz303J
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 22:49:57 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EC88860249;
+ Wed, 31 Mar 2021 11:49:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1617191393;
+ bh=9Tvk8pMagcUqHlxEfpmAq3P1z5xVSb6AxBC9iuF3UAo=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=kMlovUr/+JWR2ZHUYmDPMJ2ndHmdrz5lm7unGTt4nXLsAYiYuNHKr5e0oMkxx6fDz
+ QR2rHHP5l9HS5rEud3McAg/yhn1jEjy25vdtAyZhr/OaEDrBLA51RShgMt6ADFGgKk
+ uQaFZLkdzt19pPW2qgqzcDG9l8DRiLheZZlrvUgMDXhydKLRJqDVIU4Tnw+ks2cwPl
+ dKj97SK7OA1MiDUHwOiBDXkDUo1pSJ37y/5yx0ulUHqGh/GEBy/gsrfNl6Wm5GhbkI
+ DEukmD+vjCBTbLqtDliJ10g6+dV8RwrdEMhaaSt1c6K7yQWHZYOPwwIVQ8ExC6hyFf
+ jZwkG9F4BmZKw==
+Date: Wed, 31 Mar 2021 12:49:47 +0100
+From: Will Deacon <will@kernel.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH 16/18] iommu: remove DOMAIN_ATTR_DMA_USE_FLUSH_QUEUE
+Message-ID: <20210331114947.GA7626@willie-the-truck>
+References: <20210316153825.135976-1-hch@lst.de>
+ <20210316153825.135976-17-hch@lst.de>
+ <20210330131149.GP5908@willie-the-truck>
+ <a6952aa7-4d7e-54f0-339e-e15f88596dcc@arm.com>
+ <20210330135801.GA6187@willie-the-truck>
+ <578d6aa5-4239-f5d7-2e9f-686b18e52bba@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <578d6aa5-4239-f5d7-2e9f-686b18e52bba@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,58 +63,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, Kees Cook <keescook@chromium.org>,
- Jordan Niethe <jniethe5@gmail.com>, cmr@codefail.de, npiggin@gmail.com,
- naveen.n.rao@linux.ibm.com, dja@axtens.net
+Cc: freedreno@lists.freedesktop.org, kvm@vger.kernel.org,
+ Joerg Roedel <joro@8bytes.org>, linuxppc-dev@lists.ozlabs.org,
+ dri-devel@lists.freedesktop.org, Li Yang <leoyang.li@nxp.com>,
+ iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ David Woodhouse <dwmw2@infradead.org>, Christoph Hellwig <hch@lst.de>,
+ linux-arm-kernel@lists.infradead.org, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jordan Niethe <jniethe5@gmail.com> writes:
-> From: Russell Currey <ruscur@russell.cc>
->
-> Optionally run W+X checks when dumping pagetable information to
-> debugfs' kernel_page_tables.
->
-> To use:
->     $ echo 1 > /sys/kernel/debug/check_wx_pages
->     $ cat /sys/kernel/debug/kernel_page_tables
->
-> and check the kernel log.  Useful for testing strict module RWX.
->
-> To disable W+X checks:
-> 	$ echo 0 > /sys/kernel/debug/check_wx_pages
->
-> Update the Kconfig entry to reflect this.
->
-> Also fix a typo.
->
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
-> [jpn: Change check_wx_pages to act as mode bit affecting
->       kernel_page_tables instead of triggering action on its own]
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> ---
-> v10: check_wx_pages now affects kernel_page_tables rather then triggers
->      its own action.
+On Tue, Mar 30, 2021 at 05:28:19PM +0100, Robin Murphy wrote:
+> On 2021-03-30 14:58, Will Deacon wrote:
+> > On Tue, Mar 30, 2021 at 02:19:38PM +0100, Robin Murphy wrote:
+> > > On 2021-03-30 14:11, Will Deacon wrote:
+> > > > On Tue, Mar 16, 2021 at 04:38:22PM +0100, Christoph Hellwig wrote:
+> > > > > From: Robin Murphy <robin.murphy@arm.com>
+> > > > > 
+> > > > > Instead make the global iommu_dma_strict paramete in iommu.c canonical by
+> > > > > exporting helpers to get and set it and use those directly in the drivers.
+> > > > > 
+> > > > > This make sure that the iommu.strict parameter also works for the AMD and
+> > > > > Intel IOMMU drivers on x86.  As those default to lazy flushing a new
+> > > > > IOMMU_CMD_LINE_STRICT is used to turn the value into a tristate to
+> > > > > represent the default if not overriden by an explicit parameter.
+> > > > > 
+> > > > > Signed-off-by: Robin Murphy <robin.murphy@arm.com>.
+> > > > > [ported on top of the other iommu_attr changes and added a few small
+> > > > >    missing bits]
+> > > > > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > > > > ---
+> > > > >    drivers/iommu/amd/iommu.c                   | 23 +-------
+> > > > >    drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 50 +---------------
+> > > > >    drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |  1 -
+> > > > >    drivers/iommu/arm/arm-smmu/arm-smmu.c       | 27 +--------
+> > > > >    drivers/iommu/dma-iommu.c                   |  9 +--
+> > > > >    drivers/iommu/intel/iommu.c                 | 64 ++++-----------------
+> > > > >    drivers/iommu/iommu.c                       | 27 ++++++---
+> > > > >    include/linux/iommu.h                       |  4 +-
+> > > > >    8 files changed, 40 insertions(+), 165 deletions(-)
+> > > > 
+> > > > I really like this cleanup, but I can't help wonder if it's going in the
+> > > > wrong direction. With SoCs often having multiple IOMMU instances and a
+> > > > distinction between "trusted" and "untrusted" devices, then having the
+> > > > flush-queue enabled on a per-IOMMU or per-domain basis doesn't sound
+> > > > unreasonable to me, but this change makes it a global property.
+> > > 
+> > > The intent here was just to streamline the existing behaviour of stuffing a
+> > > global property into a domain attribute then pulling it out again in the
+> > > illusion that it was in any way per-domain. We're still checking
+> > > dev_is_untrusted() before making an actual decision, and it's not like we
+> > > can't add more factors at that point if we want to.
+> > 
+> > Like I say, the cleanup is great. I'm just wondering whether there's a
+> > better way to express the complicated logic to decide whether or not to use
+> > the flush queue than what we end up with:
+> > 
+> > 	if (!cookie->fq_domain && (!dev || !dev_is_untrusted(dev)) &&
+> > 	    domain->ops->flush_iotlb_all && !iommu_get_dma_strict())
+> > 
+> > which is mixing up globals, device properties and domain properties. The
+> > result is that the driver code ends up just using the global to determine
+> > whether or not to pass IO_PGTABLE_QUIRK_NON_STRICT to the page-table code,
+> > which is a departure from the current way of doing things.
+> 
+> But previously, SMMU only ever saw the global policy piped through the
+> domain attribute by iommu_group_alloc_default_domain(), so there's no
+> functional change there.
 
-Hmm. I liked the old version better :)
+For DMA domains sure, but I don't think that's the case for unmanaged
+domains such as those used by VFIO.
 
-I think you changed it based on Christophe's comment:
+> Obviously some of the above checks could be factored out into some kind of
+> iommu_use_flush_queue() helper that IOMMU drivers can also call if they need
+> to keep in sync. Or maybe we just allow iommu-dma to set
+> IO_PGTABLE_QUIRK_NON_STRICT directly via iommu_set_pgtable_quirks() if we're
+> treating that as a generic thing now.
 
-  Why not just perform the test everytime someone dumps kernel_page_tables ?
+I think a helper that takes a domain would be a good starting point.
 
-
-But I think he meant *always* do the check when someone dumps
-kernel_page_tables, not have another file to enable checking and then
-require someone to dump kernel_page_tables to do the actual check.
-
-Still I like the previous version where you can do the checks
-separately, without having to dump the page tables, because dumping can
-sometimes take quite a while.
-
-What would be even better is if ptdump_check_wx() returned an error when
-wx pages were found, and that was plumbed out to the debugs file. That
-way you can script around it.
-
-cheers
+Will
