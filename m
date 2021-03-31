@@ -2,54 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 641653507A2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 21:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5F7350A1C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 00:20:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9cQS1qZzz3bvk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 06:51:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256 header.s=20201203 header.b=fUGiKxNL;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9gkb3zRlz3btV
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 09:20:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lwn.net
- (client-ip=45.79.88.28; helo=ms.lwn.net; envelope-from=corbet@lwn.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256
- header.s=20201203 header.b=fUGiKxNL; dkim-atps=neutral
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9cQ33jJqz303F
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 06:51:23 +1100 (AEDT)
-Received: from localhost (unknown [IPv6:2601:281:8300:104d::5f6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ms.lwn.net (Postfix) with ESMTPSA id 1D1199B1;
- Wed, 31 Mar 2021 19:51:15 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 1D1199B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
- t=1617220275; bh=EEHjSy38eDkmBHhG9hxDYKTsPRe7jW1nMUaESQgRSZ4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=fUGiKxNLoWOp9UgcEzIj2nD17PVe/e5M1wKm1NO/65qhkBtSsnSCOSttgx0hCtlax
- uiZqOiAFjz6RxkZdXBgp+Sf376WP3boJ4oxRPYSTn8fHN/4XrbRm8IPi4/3Le36uTU
- QKFDjOhOtc8lZ95U286rbce6XWiKDyIKSfRLg/B3sRkkt2ge8CPyAAyJ3qryiRpYRv
- LHXZzykKfixxlvFakMoo/rBtRWC6ECIgslWeE9HOc5c7jbOOtuEFB939L2wlEeTsfH
- xEJ84PVovuJ+8BSjOXuUrIy2MCvCgQOh4ONH6fdIsK/luWJUCA7FhNNql//WAym8G/
- 45RQ3DmZ2mZ3Q==
-From: Jonathan Corbet <corbet@lwn.net>
-To: He Ying <heying24@huawei.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, ruscur@russell.cc,
- oohall@gmail.com, heying24@huawei.com
-Subject: Re: [PATCH] docs: powerpc: Fix misspellings and grammar errors
-In-Reply-To: <20210326100853.173586-1-heying24@huawei.com>
-References: <20210326100853.173586-1-heying24@huawei.com>
-Date: Wed, 31 Mar 2021 13:51:14 -0600
-Message-ID: <878s63ksp9.fsf@meer.lwn.net>
-MIME-Version: 1.0
-Content-Type: text/plain
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4F9gkG0HFmz2yy9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 09:20:37 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 12VLQ2ZF019229;
+ Wed, 31 Mar 2021 16:26:02 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 12VLPpYe019220;
+ Wed, 31 Mar 2021 16:25:51 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 31 Mar 2021 16:25:51 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2] powerpc/traps: Enhance readability for trap types
+Message-ID: <20210331212550.GD13863@gate.crashing.org>
+References: <20210330150425.10145-1-sxwjean@me.com>
+ <875z17y79i.fsf@mpe.ellerman.id.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <875z17y79i.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,28 +48,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
+Cc: pmladek@suse.com, peterz@infradead.org, peterx@redhat.com,
+ linux-kernel@vger.kernel.org, paulus@samba.org, kan.liang@linux.intel.com,
+ leobras.c@gmail.com, mikey@neuling.org, maddy@linux.ibm.com,
+ aneesh.kumar@linux.ibm.com, haren@linux.ibm.com, aik@ozlabs.ru,
+ kjain@linux.ibm.com, msuchanek@suse.de, ravi.bangoria@linux.ibm.com,
+ john.ogness@linutronix.de, alistair@popple.id.au, npiggin@gmail.com,
+ kvm-ppc@vger.kernel.org, jniethe5@gmail.com, atrajeev@linux.vnet.ibm.com,
+ Xiongwei Song <sxwjean@me.com>, Xiongwei Song <sxwjean@gmail.com>,
+ oleg@redhat.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-He Ying <heying24@huawei.com> writes:
+On Wed, Mar 31, 2021 at 08:58:17PM +1100, Michael Ellerman wrote:
+> So perhaps:
+> 
+>   EXC_SYSTEM_RESET
+>   EXC_MACHINE_CHECK
+>   EXC_DATA_STORAGE
+>   EXC_DATA_SEGMENT
+>   EXC_INST_STORAGE
+>   EXC_INST_SEGMENT
+>   EXC_EXTERNAL_INTERRUPT
+>   EXC_ALIGNMENT
+>   EXC_PROGRAM_CHECK
+>   EXC_FP_UNAVAILABLE
+>   EXC_DECREMENTER
+>   EXC_HV_DECREMENTER
+>   EXC_SYSTEM_CALL
+>   EXC_HV_DATA_STORAGE
+>   EXC_PERF_MONITOR
 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: He Ying <heying24@huawei.com>
-> ---
->  Documentation/powerpc/booting.rst                | 2 +-
->  Documentation/powerpc/dawr-power9.rst            | 2 +-
->  Documentation/powerpc/eeh-pci-error-recovery.rst | 2 +-
->  Documentation/powerpc/elfnote.rst                | 2 +-
->  Documentation/powerpc/firmware-assisted-dump.rst | 2 +-
->  Documentation/powerpc/kaslr-booke32.rst          | 2 +-
->  Documentation/powerpc/mpc52xx.rst                | 2 +-
->  Documentation/powerpc/papr_hcalls.rst            | 4 ++--
->  Documentation/powerpc/transactional_memory.rst   | 4 ++--
->  9 files changed, 11 insertions(+), 11 deletions(-)
+These are interrupt (vectors), not exceptions.  It doesn't matter all
+that much, but confusing things more isn't useful either!  There can be
+multiple exceptions that all can trigger the same interrupt.
 
-Applied, thanks.
 
-jon
+Segher
