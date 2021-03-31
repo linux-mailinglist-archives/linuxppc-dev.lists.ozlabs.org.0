@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A3D34F628
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:21:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025A334F60D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 03:16:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F97n80pwmz3hCh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:21:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F97h70QcDz3fsh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Mar 2021 12:16:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,17 +16,16 @@ Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F97Xr5TqCz3cFn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:36 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F97Xb0JdQz3bwc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Mar 2021 12:10:23 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4F97Xr3S33z9t0G; Wed, 31 Mar 2021 12:10:31 +1100 (AEDT)
+ id 4F97XZ4tZZz9sWQ; Wed, 31 Mar 2021 12:10:22 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Nathan Chancellor <nathan@kernel.org>
-In-Reply-To: <20210302200829.2680663-1-nathan@kernel.org>
-References: <20210302200829.2680663-1-nathan@kernel.org>
-Subject: Re: [PATCH] powerpc/prom: Mark identical_pvr_fixup as __init
-Message-Id: <161715296566.226945.1083928509084280457.b4-ty@ellerman.id.au>
+To: mpe@ellerman.id.au, Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+In-Reply-To: <1614151761-53721-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+References: <1614151761-53721-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+Subject: Re: [PATCH] powerpc: remove unneeded semicolon
+Message-Id: <161715296500.226945.13074755946359370693.b4-ty@ellerman.id.au>
 Date: Wed, 31 Mar 2021 12:09:25 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,28 +41,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com
+Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2 Mar 2021 13:08:29 -0700, Nathan Chancellor wrote:
-> If identical_pvr_fixup() is not inlined, there are two modpost warnings:
+On Wed, 24 Feb 2021 15:29:21 +0800, Jiapeng Chong wrote:
+> Fix the following coccicheck warnings:
 > 
-> WARNING: modpost: vmlinux.o(.text+0x54e8): Section mismatch in reference
-> from the function identical_pvr_fixup() to the function
-> .init.text:of_get_flat_dt_prop()
-> The function identical_pvr_fixup() references
-> the function __init of_get_flat_dt_prop().
-> This is often because identical_pvr_fixup lacks a __init
-> annotation or the annotation of of_get_flat_dt_prop is wrong.
-> 
-> [...]
+> ./arch/powerpc/kernel/prom_init.c:2986:2-3: Unneeded semicolon.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/prom: Mark identical_pvr_fixup as __init
-      https://git.kernel.org/powerpc/c/1ef1dd9c7ed27b080445e1576e8a05957e0e4dfc
+[1/1] powerpc: remove unneeded semicolon
+      https://git.kernel.org/powerpc/c/4f46d57cab3b3410411b395a6fa12a07947cb14a
 
 cheers
