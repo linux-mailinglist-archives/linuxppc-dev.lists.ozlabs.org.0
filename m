@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472073515D7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 17:06:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A313515D8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 17:07:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FB639257xz3dYT
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 02:06:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FB63n4jTkz3cD2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 02:07:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=X42s5iMI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=PqNK0pVt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
- helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b;
+ helo=mail-pg1-x52b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=X42s5iMI; dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
+ header.s=20161025 header.b=PqNK0pVt; dkim-atps=neutral
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
+ [IPv6:2607:f8b0:4864:20::52b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FB5zx6Nkqz3btM
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Apr 2021 02:03:57 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id w11so1157991ply.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Apr 2021 08:03:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FB6011pyXz3c1B
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Apr 2021 02:04:01 +1100 (AEDT)
+Received: by mail-pg1-x52b.google.com with SMTP id k8so1705451pgf.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Apr 2021 08:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=kcMSsKOd9XJdn7alZvC43Pwxot302AJo0nnXaxeTFDs=;
- b=X42s5iMIZ8VJmYhLjDMQ1fG68+zbh1OZGwNj581LTwHnZyFso7dfXWP5kG2pehaXKf
- cc1Aev+HMViY+WgaOyBKv2QBEtiz4/CK1/hPgBuOnn8jDCkA/LrLDs4CVZMOLGdT9y/I
- m7P3ku5KL4BFRoNG1JBoiaA8HR00t4FwR8cBBgjfxio2ObTrEjGVCgZBt35BIHNh08/E
- TirvTq6DEmXzU6dFW7XhBm0pWc4ttCH0S2a3EwbKwu8V6XvnUmQbf+4MfQnL9gFOvTRG
- DGPigADvIi27D9Eegmo+GHPYyXQt1BEuudpIbWtMEYL2vxz8hLQhCahA4H2YHy1eHAte
- 89sQ==
+ bh=akE4Bh1LcVOdXlv04bpZUL91EDUzw6Ofnv5OK5AoVW4=;
+ b=PqNK0pVt7bPqUnrKo8LLjI9pB0RsY2a1c7s/OXW+RZzwrUkItn02jrF4xZM27CdTMj
+ R8naDz+Ld535BrKABlCh1n61+lJkegIbeDRPYAClGkb6VDGaQWY4euWFzvu3xb+JAUXM
+ Z2Yh4Q1oT/wlukteOCuuC9qo3hLNndhepc4MK/puGOzrjOximNnsDa/88UElk6JCdvup
+ huan8wOPV53/F2vPSEhLGJMuzqFx5U6AU5ywze+tLnv2rLSrH3qJsT2t4Q3p8IIj7FQw
+ 2+2ZBHTD2P074MwXvPdyeKaXw8aYebFe3iPmahErDZsrEgdw+k0x2pKKIA4jor+EKZ3f
+ Yxyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=kcMSsKOd9XJdn7alZvC43Pwxot302AJo0nnXaxeTFDs=;
- b=QBO9U+jw9E6vUL1m72EIAIbbHec1yBlkqtMlz+KCY/wYA8clUwoJq2uMIdqyfR2KDr
- SraJdEpDgwU0vJBrZim9gygoPR5A1RyG5mlS5DDEiIaTfLQnusfmjWItDfQO0wca3XTn
- kgXSYX5BNRM7GhFCJ4WgODmCOiyiZldLMltJ63L7egYpIhWdgc2eNho5FKq+yxU+5wVy
- t1bOUGpjtO9g9jOzScaX/Lrsa6++hpx/oOsoYXh+D6fOhBuMfi5qKbWDk+imssT0E3uu
- sOH0Ki7326HQ/xdLIHpboBIIH7sBY0bzrbAjsKXIrDMS5MGpNUPt1l1Vea+bCEB1/wu2
- wQdw==
-X-Gm-Message-State: AOAM532aQS8bWhxbKZYvCC//bvBJ01WPCwAwyIpz6Q+JsFsSz1FhpVpN
- y6aWbFaZwje1DitXVHqJJnApQ2vSxnw=
-X-Google-Smtp-Source: ABdhPJzucCzWJyJxZ6llO8KDm+Iua3MGa/eX4OL0JhjyB/Zj+t6yc4J+MGXAJy02ZMDFx+UaSbesrQ==
-X-Received: by 2002:a17:903:22c2:b029:e7:1f02:434c with SMTP id
- y2-20020a17090322c2b02900e71f02434cmr8391810plg.73.1617289435762; 
- Thu, 01 Apr 2021 08:03:55 -0700 (PDT)
+ bh=akE4Bh1LcVOdXlv04bpZUL91EDUzw6Ofnv5OK5AoVW4=;
+ b=dojNTPxH4IbCbcmZS89ep7d/GzSnAQncSrov9yMmCEKpdczDvUGDrSE6ik3eqnhtKk
+ SLPY6pBroorL662dOkhYmQBc7nyi2s9MWqzWLk3JeDSnFKBDkbl+FPa266xHkQcQU6fA
+ jr4aIwMhSLBGH78RgnFceb8HsAe6rQEep1XmlPNDALdWMW22mGB+NTse9tzV71IxNPu9
+ PuiynxHEszBNfZMj5roYmPHh8AQAOud+Q+9pwIrpUPiW2tbA7lyZ5KuPkvlhq80Y2bDC
+ IyXNgG0dYFEZ0K4Ye2Q/1TjOlrxjlLv4oKDR+r4K3iXzSZaLyCBj2vCh5sRxlpYJNfSK
+ ajNg==
+X-Gm-Message-State: AOAM532hYcJN6Jo9bo3ULfzv0eT57S+IBR51MEFgitscDMNO2+VZh3oh
+ zjD54Y41Vh8JD6HEqLSHHVc=
+X-Google-Smtp-Source: ABdhPJy1nERcXRk7g7oDC/QQgNRKAGxmpIwfbGVPpWK/ujVaLR7b8+e0LWqQRrvAiDGc95rL93ysPA==
+X-Received: by 2002:a62:2c12:0:b029:22b:2c97:15a0 with SMTP id
+ s18-20020a622c120000b029022b2c9715a0mr8114703pfs.77.1617289439018; 
+ Thu, 01 Apr 2021 08:03:59 -0700 (PDT)
 Received: from bobo.ibm.com ([1.128.218.207])
- by smtp.gmail.com with ESMTPSA id l3sm5599632pju.44.2021.04.01.08.03.53
+ by smtp.gmail.com with ESMTPSA id l3sm5599632pju.44.2021.04.01.08.03.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Apr 2021 08:03:55 -0700 (PDT)
+ Thu, 01 Apr 2021 08:03:58 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v5 06/48] KVM: PPC: Book3S HV: remove unused kvmppc_h_protect
- argument
-Date: Fri,  2 Apr 2021 01:02:43 +1000
-Message-Id: <20210401150325.442125-7-npiggin@gmail.com>
+Subject: [PATCH v5 07/48] KVM: PPC: Book3S HV: Fix CONFIG_SPAPR_TCE_IOMMU=n
+ default hcalls
+Date: Fri,  2 Apr 2021 01:02:44 +1000
+Message-Id: <20210401150325.442125-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210401150325.442125-1-npiggin@gmail.com>
 References: <20210401150325.442125-1-npiggin@gmail.com>
@@ -87,45 +87,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The va argument is not used in the function or set by its asm caller,
-so remove it to be safe.
+This config option causes the warning in init_default_hcalls to fire
+because the TCE handlers are in the default hcall list but not
+implemented.
 
 Acked-by: Paul Mackerras <paulus@ozlabs.org>
 Reviewed-by: Daniel Axtens <dja@axtens.net>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/kvm_ppc.h  | 3 +--
- arch/powerpc/kvm/book3s_hv_rm_mmu.c | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-index 8aacd76bb702..9531b1c1b190 100644
---- a/arch/powerpc/include/asm/kvm_ppc.h
-+++ b/arch/powerpc/include/asm/kvm_ppc.h
-@@ -767,8 +767,7 @@ long kvmppc_h_remove(struct kvm_vcpu *vcpu, unsigned long flags,
-                      unsigned long pte_index, unsigned long avpn);
- long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu);
- long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
--                      unsigned long pte_index, unsigned long avpn,
--                      unsigned long va);
-+                      unsigned long pte_index, unsigned long avpn);
- long kvmppc_h_read(struct kvm_vcpu *vcpu, unsigned long flags,
-                    unsigned long pte_index);
- long kvmppc_h_clear_ref(struct kvm_vcpu *vcpu, unsigned long flags,
-diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-index 88da2764c1bb..7af7c70f1468 100644
---- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-+++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-@@ -673,8 +673,7 @@ long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu)
- }
- 
- long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
--		      unsigned long pte_index, unsigned long avpn,
--		      unsigned long va)
-+		      unsigned long pte_index, unsigned long avpn)
- {
- 	struct kvm *kvm = vcpu->kvm;
- 	__be64 *hpte;
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 8bc2a5ee9ece..ed77aff9cdb6 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -5409,8 +5409,10 @@ static unsigned int default_hcall_list[] = {
+ 	H_READ,
+ 	H_PROTECT,
+ 	H_BULK_REMOVE,
++#ifdef CONFIG_SPAPR_TCE_IOMMU
+ 	H_GET_TCE,
+ 	H_PUT_TCE,
++#endif
+ 	H_SET_DABR,
+ 	H_SET_XDABR,
+ 	H_CEDE,
 -- 
 2.23.0
 
