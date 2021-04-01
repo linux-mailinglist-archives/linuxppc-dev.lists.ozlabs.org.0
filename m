@@ -1,59 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3036C351697
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 18:03:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83691351699
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 18:03:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FB7JK17Tpz3gpt
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 03:03:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FB7Jp3rBSz3gyh
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 03:03:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Jm4YM1cg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b2rc6Q9t;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+78d50c468b85952dbb35+6430+infradead.org+hch@bombadil.srs.infradead.org;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=Jm4YM1cg; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=b2rc6Q9t; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FB75x6sz0z3d55
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Apr 2021 02:54:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=a335jwrDQUCIDB0PLMT4Bi0PLGtfSsidoCsV+7NPZSw=; b=Jm4YM1cgbTXujlbOs7gh/YkZXl
- 6bHE0FEMAACZyycfzai0Zrl9+34hJNJ67gIyXK6JRT4CXiC62BEJ2u2Xf5O4f/eNl7ZE/T637Sbun
- uOUfGXy7AIV7WWuJoeUBV2LiYRJY6Mq9NDnszI/oN2JzrfKLoXx7xfQMPP4vcQyOgL8CGEM7RkxRG
- snKrJrSiL7ptfKsi0YkiCGWY6qgPobaUY8VNpCHXIzWi0WsxI2lhQmG99snBIuHusV0CsysNNhLBt
- lsb8XMDH5z+8/aFy4jA0asAUu/C66IyIflLuP+uOGzWvUK2BmVRRLIFBdcJULD3dwH9DzQUNx6T2C
- UteOvdqg==;
-Received: from [2001:4bb8:180:7517:83e4:a809:b0aa:ca74] (helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lRzdz-00Cifp-Mc; Thu, 01 Apr 2021 15:54:04 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Li Yang <leoyang.li@nxp.com>
-Subject: [PATCH 20/20] iommu: remove iommu_domain_{get,set}_attr
-Date: Thu,  1 Apr 2021 17:52:56 +0200
-Message-Id: <20210401155256.298656-21-hch@lst.de>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210401155256.298656-1-hch@lst.de>
-References: <20210401155256.298656-1-hch@lst.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FB7Hn0vhhz3ghF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Apr 2021 03:02:44 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 131G051h193684; Thu, 1 Apr 2021 12:02:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=WVddq16PKRx8bgxnWAPhairtiSG0/DH30CuSBK5EKds=;
+ b=b2rc6Q9tz3U/2Zuuz+CJgr+/wGPqzOiu5Wb6gwz9y4OpDPkb+IH2b6MU8nnA8FBFuznN
+ yPTDYoGSvyPGIFHR7eRuge2AQhpVFE8HHiALiKIzJFS2LM1bOxQG8n5/3T0CHE1wlVWl
+ sXK58ylOXS/Y9KwhW9vVAOjdYrcDE6AScYs0K69gLSwnlweI4/H9MyuSOLxzcJDDOaRG
+ BBpHhWA1m8t5e3oTT3vpITmHl9a0bGH9+P7QomsZGx5jBcQvnfEtZFAKiF+RzEdhYhx7
+ mSNaZ8wz2iCRoVruTi9g3hwdJPXiXJVZDx3Vy0LPGJNnZH3gxCF+IFdUDBXRzWnTo6mu Uw== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37nh6dgajb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Apr 2021 12:02:36 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 131G2JvA023351;
+ Thu, 1 Apr 2021 16:02:34 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04ams.nl.ibm.com with ESMTP id 37n28trmpp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Apr 2021 16:02:34 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 131G2VH839911728
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 1 Apr 2021 16:02:31 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89AB4A4057;
+ Thu,  1 Apr 2021 16:02:31 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3DA2DA404D;
+ Thu,  1 Apr 2021 16:02:25 +0000 (GMT)
+Received: from [9.124.214.47] (unknown [9.124.214.47])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Thu,  1 Apr 2021 16:02:19 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.4\))
+Subject: Re: [PATCH v3 1/2] powerpc/perf: Infrastructure to support checking
+ of attr.config*
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20210325115326.143151-1-maddy@linux.ibm.com>
+Date: Thu, 1 Apr 2021 21:30:05 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <31D80EFE-8C54-480F-B00D-AD50910B004A@linux.vnet.ibm.com>
+References: <20210325115326.143151-1-maddy@linux.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+X-Mailer: Apple Mail (2.3608.120.23.2.4)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: aZ306ADFSYdyaKzeamp8hqmdvrmdCt1d
+X-Proofpoint-GUID: aZ306ADFSYdyaKzeamp8hqmdvrmdCt1d
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-04-01_07:2021-04-01,
+ 2021-04-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 clxscore=1015
+ adultscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
+ spamscore=0 impostorscore=0 priorityscore=1501 mlxscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2103310000
+ definitions=main-2104010104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,137 +102,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: freedreno@lists.freedesktop.org, kvm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
- virtualization@lists.linux-foundation.org, iommu@lists.linux-foundation.org,
- netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- David Woodhouse <dwmw2@infradead.org>, linux-arm-kernel@lists.infradead.org,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove the now unused iommu attr infrastructure.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Will Deacon <will@kernel.org>
----
- drivers/iommu/iommu.c | 26 --------------------------
- include/linux/iommu.h | 36 ------------------------------------
- 2 files changed, 62 deletions(-)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index bf7dcd2fc08643..d19944733b9dac 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -2665,32 +2665,6 @@ static int __init iommu_init(void)
- }
- core_initcall(iommu_init);
- 
--int iommu_domain_get_attr(struct iommu_domain *domain,
--			  enum iommu_attr attr, void *data)
--{
--	if (!domain->ops->domain_get_attr)
--		return -EINVAL;
--	return domain->ops->domain_get_attr(domain, attr, data);
--}
--EXPORT_SYMBOL_GPL(iommu_domain_get_attr);
--
--int iommu_domain_set_attr(struct iommu_domain *domain,
--			  enum iommu_attr attr, void *data)
--{
--	int ret = 0;
--
--	switch (attr) {
--	default:
--		if (domain->ops->domain_set_attr == NULL)
--			return -EINVAL;
--
--		ret = domain->ops->domain_set_attr(domain, attr, data);
--	}
--
--	return ret;
--}
--EXPORT_SYMBOL_GPL(iommu_domain_set_attr);
--
- int iommu_enable_nesting(struct iommu_domain *domain)
- {
- 	if (domain->type != IOMMU_DOMAIN_UNMANAGED)
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index 4280be90a27956..1a905446dc4ca1 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -96,20 +96,6 @@ enum iommu_cap {
- 	IOMMU_CAP_NOEXEC,		/* IOMMU_NOEXEC flag */
- };
- 
--/*
-- * Following constraints are specifc to FSL_PAMUV1:
-- *  -aperture must be power of 2, and naturally aligned
-- *  -number of windows must be power of 2, and address space size
-- *   of each window is determined by aperture size / # of windows
-- *  -the actual size of the mapped region of a window must be power
-- *   of 2 starting with 4KB and physical address must be naturally
-- *   aligned.
-- */
--
--enum iommu_attr {
--	DOMAIN_ATTR_MAX,
--};
--
- /* These are the possible reserved region types */
- enum iommu_resv_type {
- 	/* Memory regions which must be mapped 1:1 at all times */
-@@ -191,8 +177,6 @@ struct iommu_iotlb_gather {
-  * @probe_finalize: Do final setup work after the device is added to an IOMMU
-  *                  group and attached to the groups domain
-  * @device_group: find iommu group for a particular device
-- * @domain_get_attr: Query domain attributes
-- * @domain_set_attr: Change domain attributes
-  * @enable_nesting: Enable nesting
-  * @set_pgtable_quirks: Set io page table quirks (IO_PGTABLE_QUIRK_*)
-  * @get_resv_regions: Request list of reserved regions for a device
-@@ -243,10 +227,6 @@ struct iommu_ops {
- 	void (*release_device)(struct device *dev);
- 	void (*probe_finalize)(struct device *dev);
- 	struct iommu_group *(*device_group)(struct device *dev);
--	int (*domain_get_attr)(struct iommu_domain *domain,
--			       enum iommu_attr attr, void *data);
--	int (*domain_set_attr)(struct iommu_domain *domain,
--			       enum iommu_attr attr, void *data);
- 	int (*enable_nesting)(struct iommu_domain *domain);
- 	int (*set_pgtable_quirks)(struct iommu_domain *domain,
- 				  unsigned long quirks);
-@@ -493,10 +473,6 @@ extern int iommu_page_response(struct device *dev,
- extern int iommu_group_id(struct iommu_group *group);
- extern struct iommu_domain *iommu_group_default_domain(struct iommu_group *);
- 
--extern int iommu_domain_get_attr(struct iommu_domain *domain, enum iommu_attr,
--				 void *data);
--extern int iommu_domain_set_attr(struct iommu_domain *domain, enum iommu_attr,
--				 void *data);
- int iommu_enable_nesting(struct iommu_domain *domain);
- int iommu_set_pgtable_quirks(struct iommu_domain *domain,
- 		unsigned long quirks);
-@@ -869,18 +845,6 @@ static inline int iommu_group_id(struct iommu_group *group)
- 	return -ENODEV;
- }
- 
--static inline int iommu_domain_get_attr(struct iommu_domain *domain,
--					enum iommu_attr attr, void *data)
--{
--	return -EINVAL;
--}
--
--static inline int iommu_domain_set_attr(struct iommu_domain *domain,
--					enum iommu_attr attr, void *data)
--{
--	return -EINVAL;
--}
--
- static inline int iommu_set_pgtable_quirks(struct iommu_domain *domain,
- 		unsigned long quirks)
- {
--- 
-2.30.1
+> On 25-Mar-2021, at 5:23 PM, Madhavan Srinivasan <maddy@linux.ibm.com> =
+wrote:
+>=20
+> Introduce code to support the checking of attr.config* for
+> values which are reserved for a given platform.
+> Performance Monitoring Unit (PMU) configuration registers
+> have fields that are reserved and some specific values for
+> bit fields are reserved. For ex., MMCRA[61:62] is
+> Random Sampling Mode (SM) and value of 0b11 for this field
+> is reserved.
+>=20
+> Writing non-zero or invalid values in these fields will
+> have unknown behaviours.
+>=20
+> Patch adds a generic call-back function "check_attr_config"
+> in "struct power_pmu", to be called in event_init to
+> check for attr.config* values for a given platform.
+> "check_attr_config" is valid only for raw event type.
+>=20
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> ---
+> Changelog v2:
+> -Fixed commit message
+>=20
+> Changelog v1:
+> -Fixed commit message and in-code comments
+
+Changes looks fine to me.
+
+Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+
+Thanks,
+Athira
+>=20
+> arch/powerpc/include/asm/perf_event_server.h |  6 ++++++
+> arch/powerpc/perf/core-book3s.c              | 14 ++++++++++++++
+> 2 files changed, 20 insertions(+)
+>=20
+> diff --git a/arch/powerpc/include/asm/perf_event_server.h =
+b/arch/powerpc/include/asm/perf_event_server.h
+> index 00e7e671bb4b..dde97d7d9253 100644
+> --- a/arch/powerpc/include/asm/perf_event_server.h
+> +++ b/arch/powerpc/include/asm/perf_event_server.h
+> @@ -67,6 +67,12 @@ struct power_pmu {
+> 	 * the pmu supports extended perf regs capability
+> 	 */
+> 	int		capabilities;
+> +	/*
+> +	 * Function to check event code for values which are
+> +	 * reserved. Function takes struct perf_event as input,
+> +	 * since event code could be spread in attr.config*
+> +	 */
+> +	int		(*check_attr_config)(struct perf_event *ev);
+> };
+>=20
+> /*
+> diff --git a/arch/powerpc/perf/core-book3s.c =
+b/arch/powerpc/perf/core-book3s.c
+> index 6817331e22ff..c6eeb4fdc5fd 100644
+> --- a/arch/powerpc/perf/core-book3s.c
+> +++ b/arch/powerpc/perf/core-book3s.c
+> @@ -1958,6 +1958,20 @@ static int power_pmu_event_init(struct =
+perf_event *event)
+>=20
+> 		if (ppmu->blacklist_ev && is_event_blacklisted(ev))
+> 			return -EINVAL;
+> +		/*
+> +		 * PMU config registers have fields that are
+> +		 * reserved and specific value to bit field as reserved.
+> +		 * For ex., MMCRA[61:62] is Randome Sampling Mode (SM)
+> +		 * and value of 0b11 to this field is reserved.
+> +		 *
+> +		 * This check is needed only for raw event type,
+> +		 * since tools like fuzzer use raw event type to
+> +		 * provide randomized event code values for test.
+> +		 *
+> +		 */
+> +		if (ppmu->check_attr_config &&
+> +		    ppmu->check_attr_config(event))
+> +			return -EINVAL;
+> 		break;
+> 	default:
+> 		return -ENOENT;
+> --=20
+> 2.26.2
+>=20
 
