@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAC0351532
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 15:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A942235153F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 15:37:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FB3xJ4ZWqz3c71
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 00:31:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FB43s50VRz3brS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 00:37:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,40 +15,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FB3wT51zFz2y0L
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Apr 2021 00:30:47 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FB43V2QpPz2yy9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Apr 2021 00:36:52 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FB3wN34YCz9twjX;
- Thu,  1 Apr 2021 15:30:44 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FB43Q2qByz9v3Xp;
+ Thu,  1 Apr 2021 15:36:50 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id cLpGo-DjBjSy; Thu,  1 Apr 2021 15:30:44 +0200 (CEST)
+ with ESMTP id 1eol7mpqkd-m; Thu,  1 Apr 2021 15:36:50 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FB3wN078lz9twjT;
- Thu,  1 Apr 2021 15:30:44 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FB43Q1vWKz9v3Xm;
+ Thu,  1 Apr 2021 15:36:50 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E43518B99F;
- Thu,  1 Apr 2021 15:30:43 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 330188B99F;
+ Thu,  1 Apr 2021 15:36:50 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id QCigWfZt688c; Thu,  1 Apr 2021 15:30:43 +0200 (CEST)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 903438B991;
- Thu,  1 Apr 2021 15:30:43 +0200 (CEST)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 6DEBB67646; Thu,  1 Apr 2021 13:30:43 +0000 (UTC)
-Message-Id: <a46dcdd39a9e80b012d86c294c4e5cd8d31665f3.1617283827.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <0c3d5cb8a4dfdf6ca1b8aeb385c01470d6628d55.1617283827.git.christophe.leroy@csgroup.eu>
-References: <0c3d5cb8a4dfdf6ca1b8aeb385c01470d6628d55.1617283827.git.christophe.leroy@csgroup.eu>
+ with ESMTP id VGg8iKAIgrtb; Thu,  1 Apr 2021 15:36:50 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8CBA58B991;
+ Thu,  1 Apr 2021 15:36:49 +0200 (CEST)
+Subject: Re: [PATCH v10 03/10] powerpc: Always define MODULES_{VADDR,END}
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210330045132.722243-1-jniethe5@gmail.com>
+ <20210330045132.722243-4-jniethe5@gmail.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 3/3] powerpc/32s: Define a MODULE area below kernel text all
- the time
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- jniethe5@gmail.com
-Date: Thu,  1 Apr 2021 13:30:43 +0000 (UTC)
+Message-ID: <c4977cfb-6d9d-063e-b74b-ba0ffd9feaeb@csgroup.eu>
+Date: Thu, 1 Apr 2021 15:36:47 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
+MIME-Version: 1.0
+In-Reply-To: <20210330045132.722243-4-jniethe5@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,75 +62,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: ajd@linux.ibm.com, npiggin@gmail.com, cmr@codefail.de,
+ naveen.n.rao@linux.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On book3s/32, the segment below kernel text is used for module
-allocation when CONFIG_STRICT_KERNEL_RWX is defined.
 
-In order to benefit from the powerpc specific module_alloc()
-function which allocate modules with 32 Mbytes from
-end of kernel text, use that segment below PAGE_OFFSET at all time.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/Kconfig                         | 2 +-
- arch/powerpc/include/asm/book3s/32/pgtable.h | 2 --
- arch/powerpc/mm/book3s32/mmu.c               | 7 -------
- 3 files changed, 1 insertion(+), 10 deletions(-)
+Le 30/03/2021 à 06:51, Jordan Niethe a écrit :
+> If MODULES_{VADDR,END} are not defined set them to VMALLOC_START and
+> VMALLOC_END respectively. This reduces the need for special cases. For
+> example, powerpc's module_alloc() was previously predicated on
+> MODULES_VADDR being defined but now is unconditionally defined.
+> 
+> This will be useful reducing conditional code in other places that need
+> to allocate from the module region (i.e., kprobes).
+> 
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v10: New to series
+> ---
+>   arch/powerpc/include/asm/pgtable.h | 5 +++++
+>   arch/powerpc/kernel/module.c       | 5 +----
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index c1344c05226c..15a91202d5c3 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -1219,7 +1219,7 @@ config TASK_SIZE_BOOL
- config TASK_SIZE
- 	hex "Size of user task space" if TASK_SIZE_BOOL
- 	default "0x80000000" if PPC_8xx
--	default "0xb0000000" if PPC_BOOK3S_32 && STRICT_KERNEL_RWX
-+	default "0xb0000000" if PPC_BOOK3S_32
- 	default "0xc0000000"
- endmenu
- 
-diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
-index 415ae29fa73a..83c65845a1a9 100644
---- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-@@ -194,10 +194,8 @@ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
- #define VMALLOC_END	ioremap_bot
- #endif
- 
--#ifdef CONFIG_STRICT_KERNEL_RWX
- #define MODULES_END	ALIGN_DOWN(PAGE_OFFSET, SZ_256M)
- #define MODULES_VADDR	(MODULES_END - SZ_256M)
--#endif
- 
- #ifndef __ASSEMBLY__
- #include <linux/sched.h>
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index a0db398b5c26..159930351d9f 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -184,17 +184,10 @@ static bool is_module_segment(unsigned long addr)
- {
- 	if (!IS_ENABLED(CONFIG_MODULES))
- 		return false;
--#ifdef MODULES_VADDR
- 	if (addr < ALIGN_DOWN(MODULES_VADDR, SZ_256M))
- 		return false;
- 	if (addr > ALIGN(MODULES_END, SZ_256M) - 1)
- 		return false;
--#else
--	if (addr < ALIGN_DOWN(VMALLOC_START, SZ_256M))
--		return false;
--	if (addr > ALIGN(VMALLOC_END, SZ_256M) - 1)
--		return false;
--#endif
- 	return true;
- }
- 
--- 
-2.25.0
+You probably also have changes to do in kernel/ptdump.c
 
+In mm/book3s32/mmu.c and mm/kasan/kasan_init_32.c as well allthough that's harmless here.
+
+>   2 files changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+> index 4eed82172e33..014c2921f26a 100644
+> --- a/arch/powerpc/include/asm/pgtable.h
+> +++ b/arch/powerpc/include/asm/pgtable.h
+> @@ -167,6 +167,11 @@ struct seq_file;
+>   void arch_report_meminfo(struct seq_file *m);
+>   #endif /* CONFIG_PPC64 */
+>   
+> +#ifndef MODULES_VADDR
+> +#define MODULES_VADDR VMALLOC_START
+> +#define MODULES_END VMALLOC_END
+> +#endif
+> +
+>   #endif /* __ASSEMBLY__ */
+>   
+>   #endif /* _ASM_POWERPC_PGTABLE_H */
+> diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.c
+> index a211b0253cdb..f1fb58389d58 100644
+> --- a/arch/powerpc/kernel/module.c
+> +++ b/arch/powerpc/kernel/module.c
+> @@ -14,6 +14,7 @@
+>   #include <asm/firmware.h>
+>   #include <linux/sort.h>
+>   #include <asm/setup.h>
+> +#include <linux/mm.h>
+>   
+>   static LIST_HEAD(module_bug_list);
+>   
+> @@ -87,13 +88,9 @@ int module_finalize(const Elf_Ehdr *hdr,
+>   	return 0;
+>   }
+>   
+> -#ifdef MODULES_VADDR
+>   void *module_alloc(unsigned long size)
+>   {
+> -	BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
+> -
+
+The above check is needed somewhere, if you remove it from here you have to perform the check 
+somewhere else.
+
+>   	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END, GFP_KERNEL,
+>   				    PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
+>   				    __builtin_return_address(0));
+>   }
+> -#endif
+> 
