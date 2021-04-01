@@ -1,76 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC743512B4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 11:49:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA473512C0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 11:53:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9z1X48p1z3bv8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 20:49:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9z696jgqz3btg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 20:53:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=FIEsx+En;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=HAt0FUlX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
- helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430;
+ helo=mail-pf1-x430.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FIEsx+En; dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
+ header.s=20161025 header.b=HAt0FUlX; dkim-atps=neutral
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
+ [IPv6:2607:f8b0:4864:20::430])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9z174sjyz2yjc
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 20:49:31 +1100 (AEDT)
-Received: by mail-pj1-x102a.google.com with SMTP id
- lr1-20020a17090b4b81b02900ea0a3f38c1so4471045pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Apr 2021 02:49:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9z5n1K2Cz301L
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 20:53:31 +1100 (AEDT)
+Received: by mail-pf1-x430.google.com with SMTP id 11so1072558pfn.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Apr 2021 02:53:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=LWrLsc7U/Y59RvQVrIOPJZyoQyt2UXhRFGQ6YveYHww=;
- b=FIEsx+EncqLUUJj9AjtyYn3npxPJJollHq6dZ56xEFFvX53Z8iHWgUCb8JqqcgSUSs
- PjPzwePxZHLRi269igCb6iVW4e00T56HvL7cZdP+dIL+eU+funRd//JeHZQLTNmpAwzP
- mlwDeIiBq8qrjSVWYqa11U2dUH0jgISgxL7QcXYWJjF6FzZljBYMhb1myHJNzq7ZcnKe
- so3NBZpu26MkGF6tQXhuZk9qhXVcfS8GVr8z4FKEyGgyYchKWMlWCPcloOLC42HcDQK4
- kiPNIEHPZBClEcojcEw/KYOOiFYJ8bxEoxYxY4ekkgrgqcmKDIHBa7k1BOTHmHWM1SKZ
- z6MA==
+ bh=F4k3xltC/mdSm/joM9oLpm2TwHoO0oN2DqAFlf1TJDM=;
+ b=HAt0FUlXreQHPqvvmqmfz8BJ0iDeU+/1hovAiob8HxWZDxwRSBR8b2HBUQ+JM29+ja
+ r/JMZ4JH/lI1zrRHX+zJc5EK++ITEGUwo077AZmYLIY8UZB8nA1pM7EpdEa3bHFLK8WP
+ LtnxGgPL5OL1o69ZapT7VZTVURaqDEj5tZSXIazgFtGg7S5TM3iL8KBB0aipCBRRPwzv
+ OpXdOjorrfY0AK3Qo5zGgGF+NdOe8qjx0Fr06SEW1Mbmem7vRmwuL+MmFPMrLVyS4bzU
+ Id6XflW8BveQXLjv3cpjFHznAS6QMiESZABrLmxeD1cJI9SVLNTUzugXGAfLZ5NfHD26
+ TbVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=LWrLsc7U/Y59RvQVrIOPJZyoQyt2UXhRFGQ6YveYHww=;
- b=tBJdWz7t0+Frq3koUmzZ3TEcjS87D4djuWntDWYKd1hwsITh+qeRBBae22+gQaqSUw
- 6z3DQG9A0p8FnI74rUFBaZZCmG2n7EoNRsQfHkpmH9d1nMopsE3Xi8qdmbMHj7gyPgtY
- EyUS5DDga+f3Npv20UNZ79kxZJ9JHqqZD61wFsDkVObLp5SkM3Lk44lk75n4N33y6rOz
- 1jachs/7+awQW79WYspJJLrrBBLs7r4/bOm+4kV/B7MQXzcaZSCkfbGKV0KSA/w9XAG0
- 4gZXfFf6JUL06Rv61IcFljrAt0nltGzGoEUWfSOBpa0zjps6J1qNC98I4pM1eW0K+ffg
- Yr1w==
-X-Gm-Message-State: AOAM532VMgpaRLKUUVy02kyjm57iufGxX3pj9q5efVfR4U1JQEoKDIY3
- uRU01nw86IgHoNcI7aP4LTg=
-X-Google-Smtp-Source: ABdhPJyoham8uTT+KgHOmDWwfrW4nRhuzu5ssWNL2ldPpSoB4ofe5HKDsyD/SvBLKfDeqyditEt7aA==
-X-Received: by 2002:a17:902:23:b029:e7:32b7:e760 with SMTP id
- 32-20020a1709020023b02900e732b7e760mr7069600pla.55.1617270569806; 
- Thu, 01 Apr 2021 02:49:29 -0700 (PDT)
-Received: from localhost ([1.128.219.229])
- by smtp.gmail.com with ESMTPSA id gz12sm5099146pjb.33.2021.04.01.02.49.28
+ bh=F4k3xltC/mdSm/joM9oLpm2TwHoO0oN2DqAFlf1TJDM=;
+ b=iwh8sZxTwOZjGlW09/sDqB+n8EfBhUezg4EBkH0seyjpGsFZtiEhvP3mh+UigamdZu
+ g/tyAxCk+jguxHKUPw1fuCGrZwLBFkRhhZMLE7qz6YgMpVevVvjP1lG1fS/G0gnsmJv5
+ vnaxyESVyxUDg9I4SmDZZ3x0fYa5c5yfDOlGSXwimasMIMRaZ3x7Xsl5YDzS5CeXv7tG
+ 45GQJYdAWD9Dt09yp2OG8oPYiw46kdvzk7g2bY91vR/fDJZ6Yxkjic6aUGd2HkD/bn2B
+ xZr/L91RmwrAnCdxTSTDbpD0ErzRFPFfC2yb3NUDEJQNfO/r1uhSUalI5IZtimvD1hwR
+ QCIA==
+X-Gm-Message-State: AOAM532czZz31PljzGqPog7oJG9zvGnclCWsOdvon4iAlCJYrUEyyFeR
+ Eh56Li3RTYkAhZnPe12StYA=
+X-Google-Smtp-Source: ABdhPJzR8DjIT+RPNAptiXqmIPQZZw3Cz1vI7wkbRy9K7DqINSFVZ2CtCEvmM9f6qJIJWOT/mhKUOw==
+X-Received: by 2002:a05:6a00:cc7:b029:203:6bc9:3edf with SMTP id
+ b7-20020a056a000cc7b02902036bc93edfmr6736719pfv.23.1617270808940; 
+ Thu, 01 Apr 2021 02:53:28 -0700 (PDT)
+Received: from localhost ([1.128.222.7])
+ by smtp.gmail.com with ESMTPSA id gb1sm5004177pjb.21.2021.04.01.02.53.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Apr 2021 02:49:29 -0700 (PDT)
-Date: Thu, 01 Apr 2021 19:49:24 +1000
+ Thu, 01 Apr 2021 02:53:28 -0700 (PDT)
+Date: Thu, 01 Apr 2021 19:53:23 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 11/46] KVM: PPC: Book3S HV: Ensure MSR[HV] is always
- clear in guest MSR
+Subject: Re: [PATCH v4 13/46] KVM: PPC: Book3S 64: Move GUEST_MODE_SKIP test
+ into KVM
 To: Paul Mackerras <paulus@ozlabs.org>
 References: <20210323010305.1045293-1-npiggin@gmail.com>
- <20210323010305.1045293-12-npiggin@gmail.com>
- <YGQBdVntWnG/ewtj@thinks.paulus.ozlabs.org>
-In-Reply-To: <YGQBdVntWnG/ewtj@thinks.paulus.ozlabs.org>
+ <20210323010305.1045293-14-npiggin@gmail.com>
+ <YGVbApPydgwAU8cP@thinks.paulus.ozlabs.org>
+In-Reply-To: <YGVbApPydgwAU8cP@thinks.paulus.ozlabs.org>
 MIME-Version: 1.0
-Message-Id: <1617270525.5034ks2srs.astroid@bobo.none>
+Message-Id: <1617270768.urf3tmz6b4.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,28 +83,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ kvm-ppc@vger.kernel.org, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Paul Mackerras's message of March 31, 2021 2:58 pm:
-> On Tue, Mar 23, 2021 at 11:02:30AM +1000, Nicholas Piggin wrote:
->> Rather than clear the HV bit from the MSR at guest entry, make it clear
->> that the hypervisor does not allow the guest to set the bit.
+Excerpts from Paul Mackerras's message of April 1, 2021 3:32 pm:
+> On Tue, Mar 23, 2021 at 11:02:32AM +1000, Nicholas Piggin wrote:
+>> Move the GUEST_MODE_SKIP logic into KVM code. This is quite a KVM
+>> internal detail that has no real need to be in common handlers.
 >>=20
->> The HV clear is kept in guest entry for now, but a future patch will
->> warn if it's not present.
+>> Also add a comment explaining why this thing exists.
 >=20
-> Will warn if it *is* present, surely?
+> [snip]
+>=20
+>> diff --git a/arch/powerpc/kvm/book3s_64_entry.S b/arch/powerpc/kvm/book3=
+s_64_entry.S
+>> index 7a039ea78f15..a5412e24cc05 100644
+>> --- a/arch/powerpc/kvm/book3s_64_entry.S
+>> +++ b/arch/powerpc/kvm/book3s_64_entry.S
+>> @@ -1,6 +1,7 @@
+>>  /* SPDX-License-Identifier: GPL-2.0-only */
+>>  #include <asm/asm-offsets.h>
+>>  #include <asm/cache.h>
+>> +#include <asm/exception-64s.h>
+>>  #include <asm/kvm_asm.h>
+>>  #include <asm/kvm_book3s_asm.h>
+>>  #include <asm/ppc_asm.h>
+>> @@ -20,9 +21,12 @@ kvmppc_interrupt:
+>>  	 * guest R12 saved in shadow VCPU SCRATCH0
+>>  	 * guest R13 saved in SPRN_SCRATCH0
+>>  	 */
+>> -#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+>>  	std	r9,HSTATE_SCRATCH2(r13)
+>>  	lbz	r9,HSTATE_IN_GUEST(r13)
+>> +	cmpwi	r9,KVM_GUEST_MODE_SKIP
+>> +	beq-	.Lmaybe_skip
+>> +.Lno_skip:
+>> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+>>  	cmpwi	r9,KVM_GUEST_MODE_HOST_HV
+>>  	beq	kvmppc_bad_host_intr
+>>  #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+>> @@ -34,3 +38,48 @@ kvmppc_interrupt:
+>>  #else
+>>  	b	kvmppc_interrupt_pr
+>>  #endif
+>=20
+> It's a bit hard to see without more context, but I think that in the
+> PR-only case (CONFIG_KVM_BOOK3S_HV_POSSIBLE undefined), this will
+> corrupt R9.  You need to restore R9 before the unconditional branch to
+> kvmppc_interrupt_pr.  (I realize this code gets modified further, but
+> I'd rather not break bisection.)
 
-Just making sure you were awake, definitely wasn't a copy-paste bug...
+Very good catch, thanks.
 
 Thanks,
 Nick
-
->=20
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->=20
-> Acked-by: Paul Mackerras <paulus@ozlabs.org>
->=20
