@@ -2,77 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8DC3513B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 12:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 205DD3514AA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 14:00:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FB03H2Rpwz3btM
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 21:36:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FB1wn0y93z3bv1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 23:00:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=V4N8Ualv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BsxzZoue;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=parth@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=V4N8Ualv; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BsxzZoue; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FB02q0jqhz300c
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 21:36:01 +1100 (AEDT)
-Received: by mail-pj1-x1032.google.com with SMTP id
- q6-20020a17090a4306b02900c42a012202so782532pjg.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Apr 2021 03:36:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=rDtc7FZ8xpkvkm2Fbi68BZIDe+E4Gs8byKrQt4XXtv8=;
- b=V4N8Ualv1D7aT/hUxdW6c4iZnlXM4maPzdju95tSYPj4xj62IUpEt0nySHxuOfcN2w
- mr/HpSZbU4b7Plq3kpnGt8eTtH23n1fB46ZBVd9IvxOO/+v2V/WBHnW0nPmogZOJYLNn
- 2JZ9dcSZaVrfSP4a4IxR9PAiJV6GVGx8aNcGg8p7z7rldFhriwHn7aT+DQQrMHhWVxAt
- gloajUsjwZjHSd5H8OA85UklLLq557XXGTJJZeda5OD1YMrkVzcjQD4uVTDahw41x91r
- wYun0ADtvHO/PDWkQ64pG2BS8KPe2M2dBoh/wtnNBmaok8mwBfwCAh3mjlG7A0OujwzI
- cPLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=rDtc7FZ8xpkvkm2Fbi68BZIDe+E4Gs8byKrQt4XXtv8=;
- b=NUISKiwQcPPPE2I3KI9rNPPfmmw1l5BBITQunyMQKsX2YY2uZr8Zpt+80E55WLEN3M
- vCwpUd8vUPqZ4FUNBSNEfCudlMsQcWd/z69XuXxfbf7GGejn81S/eeSSlwdJaHAqOySy
- F8F149qErSLDHr5Hu5E1onSJzM57te+gdFJW7F6IIfrBfA4vmV9t06WQdj3fxTquf6Pa
- IkXctG40m8Ox70zIsGllkc+CT9a4NckQOMvvzgFkpyrnqDvtfn8MBaXpUiPFuyYBfnMV
- TlhH2g4MWCuLFC8s40gyxMKIIYyu7soDV508DnFMHuN96mizoDS6+kfmv10RjbpIx8Z/
- qJzA==
-X-Gm-Message-State: AOAM533qbRk3vXNF1a1qaiffRl9AiKs4gDnKJm0eaJK4ZrjgVorKsyDL
- lWpY8sXKM4Anla7Y+3vWgZ8=
-X-Google-Smtp-Source: ABdhPJxaESI8ujtKqPBJ/sMjKL48hxa1jBkmH+O15w0At7TMA4VSEmJJER66Gskp/vPSEYUK0KDkjQ==
-X-Received: by 2002:a17:902:bd8b:b029:e7:147e:ee5b with SMTP id
- q11-20020a170902bd8bb02900e7147eee5bmr7124464pls.9.1617273358580; 
- Thu, 01 Apr 2021 03:35:58 -0700 (PDT)
-Received: from localhost ([1.128.218.191])
- by smtp.gmail.com with ESMTPSA id e21sm4478263pgv.74.2021.04.01.03.35.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Apr 2021 03:35:58 -0700 (PDT)
-Date: Thu, 01 Apr 2021 20:35:52 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 29/46] KVM: PPC: Book3S HV P9: Implement the rest of
- the P9 path in C
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, kvm-ppc@vger.kernel.org
-References: <20210323010305.1045293-1-npiggin@gmail.com>
- <20210323010305.1045293-30-npiggin@gmail.com>
- <56dc4f3f-789d-0bbe-1b1f-508dbdfae487@ozlabs.ru>
-In-Reply-To: <56dc4f3f-789d-0bbe-1b1f-508dbdfae487@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FB1vY1Ftnz2yqC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 22:59:52 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 131BYF8M029489; Thu, 1 Apr 2021 07:59:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=mhozAGGP29s7EkW6wcrYpYvfVGvknqmTMIuti+62z0s=;
+ b=BsxzZoueDxt8C1TPnKYVFbKznUWVOvLYJFVuNc9sv+1PCAA6JP9ztCSmtJhwjz02eqF8
+ Gi/QDcYDA2f3zVbTTiAi1gHXuT67exzGauoPqcJsteVGITxnnOZp+NOCJAj6lB+GXqku
+ S4DilCRPc6F8zXjcvx/QR6lHE3kueViV5MVsgFyWBl5Jb+nv8o8RU94fZ6mnTfQK2DH9
+ CIJXOLR0uZNDKXeCMoEIqp5ifahp+4PE9IzkNXhkND4gD0BxvaJkbf5PK6uCnTjbuoOT
+ 7sodczQCXoucRPPEWcdOsDyOfgq04rdxJur2WpejfZ0QCZVxzyULLG42Bw5JLblKrSlF LA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37ncbxts7s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Apr 2021 07:59:44 -0400
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 131BZHwe035011;
+ Thu, 1 Apr 2021 07:59:44 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37ncbxts75-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Apr 2021 07:59:44 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 131BvOeY012247;
+ Thu, 1 Apr 2021 11:59:42 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma01fra.de.ibm.com with ESMTP id 37n29c88ap-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Apr 2021 11:59:42 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 131BxKkG29491590
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 1 Apr 2021 11:59:20 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E11FD4204C;
+ Thu,  1 Apr 2021 11:59:39 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3CD084205F;
+ Thu,  1 Apr 2021 11:59:37 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.32.50])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  1 Apr 2021 11:59:36 +0000 (GMT)
+From: Parth Shah <parth@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC 1/2] KVM:PPC: Add new hcall to provide hint if a vcpu task will
+ be scheduled instantly.
+Date: Thu,  1 Apr 2021 17:29:21 +0530
+Message-Id: <20210401115922.1524705-2-parth@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20210401115922.1524705-1-parth@linux.ibm.com>
+References: <20210401115922.1524705-1-parth@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1617272101.bcglven6fh.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 5cGdkdjRcf1eYRFrRHJQWplmCGlJ_Y0Y
+X-Proofpoint-GUID: 2aEqlhGQtoY30oXR-0mP1KMkf798V1aj
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-04-01_04:2021-03-31,
+ 2021-04-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 bulkscore=0
+ adultscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 phishscore=0 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2103310000 definitions=main-2104010082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,235 +107,215 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: ego@linux.vnet.ibm.com, mikey@neuling.org, srikar@linux.vnet.ibm.com,
+ npiggin@gmail.com, paulus@samba.org, svaidy@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Alexey Kardashevskiy's message of April 1, 2021 3:30 pm:
->=20
->=20
-> On 3/23/21 12:02 PM, Nicholas Piggin wrote:
->> Almost all logic is moved to C, by introducing a new in_guest mode that
->> selects and branches very early in the interrupt handler to the P9 exit
->> code.
+H_IDLE_HINT is a new hcall introduced to provide a hint to the guestOS
+indicating if a given vCPU can be scheduled instantly or not.
 
-[...]
+The task scheduler generally prefers previous cpu of a task if it is
+available_idle. So if a prev_cpu of the corresponding vCPU task_struct is
+found to be available_idle or sched_idle then hint guestOS that the given
+vCPU can be scheduled instantly by the hypervisor.
 
->> +/*
->> + * kvmppc_p9_exit_hcall and kvmppc_p9_exit_interrupt are branched to fr=
-om
->> + * above if the interrupt was taken for a guest that was entered via
->> + * kvmppc_p9_enter_guest().
->> + *
->> + * This code recovers the host stack and vcpu pointer, saves all GPRs a=
-nd
->> + * CR, LR, CTR, XER as well as guest MSR and NIA into the VCPU, then re=
--
->> + * establishes the host stack and registers to return from  the
->> + * kvmppc_p9_enter_guest() function.
->=20
-> What does "this code" refer to? If it is the asm below, then it does not=20
-> save CTR, it is in the c code. Otherwise it is confusing (to me) :)
+Signed-off-by: Parth Shah <parth@linux.ibm.com>
+---
+ arch/powerpc/include/asm/hvcall.h |  3 ++-
+ arch/powerpc/kvm/book3s_hv.c      | 13 +++++++++++++
+ arch/powerpc/kvm/trace_hv.h       |  1 +
+ include/linux/kvm_host.h          |  1 +
+ include/linux/sched.h             |  1 +
+ kernel/sched/core.c               | 13 +++++++++++++
+ kernel/sched/fair.c               | 12 ++++++++++++
+ kernel/sched/sched.h              |  1 +
+ virt/kvm/kvm_main.c               | 17 +++++++++++++++++
+ 9 files changed, 61 insertions(+), 1 deletion(-)
 
-Yes you're right, CTR is saved in C.
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index c98f5141e3fc..c91e27840c03 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -315,7 +315,8 @@
+ #define H_SCM_HEALTH            0x400
+ #define H_SCM_PERFORMANCE_STATS 0x418
+ #define H_RPT_INVALIDATE	0x448
+-#define MAX_HCALL_OPCODE	H_RPT_INVALIDATE
++#define H_IDLE_HINT		0x44C
++#define MAX_HCALL_OPCODE	H_IDLE_HINT
+ 
+ /* Scope args for H_SCM_UNBIND_ALL */
+ #define H_UNBIND_SCOPE_ALL (0x1)
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 6f612d240392..0472b8a1302f 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -931,6 +931,17 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		if (tvcpu->arch.ceded)
+ 			kvmppc_fast_vcpu_kick_hv(tvcpu);
+ 		break;
++	case H_IDLE_HINT:
++		target = kvmppc_get_gpr(vcpu, 4);
++		tvcpu = kvmppc_find_vcpu(vcpu->kvm, target);
++		if (!tvcpu) {
++			ret = H_PARAMETER;
++			break;
++		}
++		ret = kvm_vcpu_provide_idle_hint(tvcpu);
++		kvmppc_set_gpr(vcpu, 4, ret);
++		ret = H_SUCCESS;
++		break;
+ 	case H_CONFER:
+ 		target = kvmppc_get_gpr(vcpu, 4);
+ 		if (target == -1)
+@@ -1145,6 +1156,7 @@ static int kvmppc_hcall_impl_hv(unsigned long cmd)
+ 	case H_CEDE:
+ 	case H_PROD:
+ 	case H_CONFER:
++	case H_IDLE_HINT:
+ 	case H_REGISTER_VPA:
+ 	case H_SET_MODE:
+ 	case H_LOGICAL_CI_LOAD:
+@@ -5359,6 +5371,7 @@ static unsigned int default_hcall_list[] = {
+ 	H_PROD,
+ 	H_CONFER,
+ 	H_REGISTER_VPA,
++	H_IDLE_HINT,
+ #ifdef CONFIG_KVM_XICS
+ 	H_EOI,
+ 	H_CPPR,
+diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
+index 830a126e095d..d0302a917eaf 100644
+--- a/arch/powerpc/kvm/trace_hv.h
++++ b/arch/powerpc/kvm/trace_hv.h
+@@ -46,6 +46,7 @@
+ 	{H_CEDE,			"H_CEDE"}, \
+ 	{H_CONFER,			"H_CONFER"}, \
+ 	{H_PROD,			"H_PROD"}, \
++	{H_IDLE_HINT,			"H_IDLE_HINT"}, \
+ 	{H_GET_PPP,			"H_GET_PPP"}, \
+ 	{H_SET_PPP,			"H_SET_PPP"}, \
+ 	{H_PURR,			"H_PURR"}, \
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index f3b1013fb22c..78fb0465cd65 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -843,6 +843,7 @@ bool kvm_vcpu_wake_up(struct kvm_vcpu *vcpu);
+ void kvm_vcpu_kick(struct kvm_vcpu *vcpu);
+ int kvm_vcpu_yield_to(struct kvm_vcpu *target);
+ void kvm_vcpu_on_spin(struct kvm_vcpu *vcpu, bool usermode_vcpu_not_eligible);
++unsigned long kvm_vcpu_provide_idle_hint(struct kvm_vcpu *target);
+ 
+ void kvm_flush_remote_tlbs(struct kvm *kvm);
+ void kvm_reload_remote_mmus(struct kvm *kvm);
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 6e3a5eeec509..3dea2a4ff58d 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1688,6 +1688,7 @@ static inline int set_cpus_allowed_ptr(struct task_struct *p, const struct cpuma
+ extern int yield_to(struct task_struct *p, bool preempt);
+ extern void set_user_nice(struct task_struct *p, long nice);
+ extern int task_prio(const struct task_struct *p);
++extern unsigned long get_idle_hint(struct task_struct *p);
+ 
+ /**
+  * task_nice - return the nice value of a given task.
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index ff74fca39ed2..2962bf97ab13 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6812,6 +6812,19 @@ int __sched yield_to(struct task_struct *p, bool preempt)
+ }
+ EXPORT_SYMBOL_GPL(yield_to);
+ 
++/*
++ * Provide hint to the VM indicating if the previous vCPU can be scheduled
++ * instantly or not.
++ */
++unsigned long __sched get_idle_hint(struct task_struct *p)
++{
++	unsigned long ret = 0;
++	if (p->sched_class->get_idle_hint)
++		ret = p->sched_class->get_idle_hint(p);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(get_idle_hint);
++
+ int io_schedule_prepare(void)
+ {
+ 	int old_iowait = current->in_iowait;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 04a3ce20da67..16701a3da5dc 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7236,6 +7236,16 @@ static bool yield_to_task_fair(struct rq *rq, struct task_struct *p)
+ 	return true;
+ }
+ 
++static unsigned long get_idle_hint_fair(struct task_struct *p)
++{
++	unsigned int prev_cpu = task_cpu(p);
++
++	if (available_idle_cpu(prev_cpu) || sched_idle_cpu(prev_cpu))
++		return 1;
++
++	return 0;
++}
++
+ #ifdef CONFIG_SMP
+ /**************************************************
+  * Fair scheduling class load-balancing methods.
+@@ -11264,6 +11274,8 @@ DEFINE_SCHED_CLASS(fair) = {
+ 	.task_change_group	= task_change_group_fair,
+ #endif
+ 
++	.get_idle_hint		= get_idle_hint_fair,
++
+ #ifdef CONFIG_UCLAMP_TASK
+ 	.uclamp_enabled		= 1,
+ #endif
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index bb09988451a0..09b1e35d8331 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1871,6 +1871,7 @@ struct sched_class {
+ #ifdef CONFIG_FAIR_GROUP_SCHED
+ 	void (*task_change_group)(struct task_struct *p, int type);
+ #endif
++	unsigned long (*get_idle_hint)(struct task_struct *p);
+ };
+ 
+ static inline void put_prev_task(struct rq *rq, struct task_struct *prev)
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 8367d88ce39b..5d750ae2fe0a 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2907,6 +2907,23 @@ int kvm_vcpu_yield_to(struct kvm_vcpu *target)
+ }
+ EXPORT_SYMBOL_GPL(kvm_vcpu_yield_to);
+ 
++unsigned long kvm_vcpu_provide_idle_hint(struct kvm_vcpu *target)
++{
++	struct pid *pid;
++	struct task_struct *task = NULL;
++
++	rcu_read_lock();
++	pid = rcu_dereference(target->pid);
++	if (pid)
++		task = get_pid_task(pid, PIDTYPE_PID);
++	rcu_read_unlock();
++	if (!task)
++		return 0;
++
++	return get_idle_hint(task);
++}
++EXPORT_SYMBOL_GPL(kvm_vcpu_provide_idle_hint);
++
+ /*
+  * Helper that checks whether a VCPU is eligible for directed yield.
+  * Most eligible candidate to yield is decided by following heuristics:
+-- 
+2.26.2
 
->> + */
->> +.balign	IFETCH_ALIGN_BYTES
->> +kvmppc_p9_exit_hcall:
->> +	mfspr	r11,SPRN_SRR0
->> +	mfspr	r12,SPRN_SRR1
->> +	li	r10,0xc00
->> +	std	r10,HSTATE_SCRATCH0(r13)
->> +
->> +.balign	IFETCH_ALIGN_BYTES
->> +kvmppc_p9_exit_interrupt:
-
-[...]
-
->> +static inline void slb_invalidate(unsigned int ih)
->> +{
->> +	asm volatile("slbia %0" :: "i"(ih));
->> +}
->=20
-> This one is not used.
-
-It gets used in a later patch, I guess I should move it there.
-
-[...]
-
->> +int __kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu)
->> +{
->> +	u64 *exsave;
->> +	unsigned long msr =3D mfmsr();
->> +	int trap;
->> +
->> +	start_timing(vcpu, &vcpu->arch.rm_entry);
->> +
->> +	vcpu->arch.ceded =3D 0;
->> +
->> +	WARN_ON_ONCE(vcpu->arch.shregs.msr & MSR_HV);
->> +	WARN_ON_ONCE(!(vcpu->arch.shregs.msr & MSR_ME));
->> +
->> +	mtspr(SPRN_HSRR0, vcpu->arch.regs.nip);
->> +	mtspr(SPRN_HSRR1, (vcpu->arch.shregs.msr & ~MSR_HV) | MSR_ME);
->> +
->> +	/*
->> +	 * On POWER9 DD2.1 and below, sometimes on a Hypervisor Data Storage
->> +	 * Interrupt (HDSI) the HDSISR is not be updated at all.
->> +	 *
->> +	 * To work around this we put a canary value into the HDSISR before
->> +	 * returning to a guest and then check for this canary when we take a
->> +	 * HDSI. If we find the canary on a HDSI, we know the hardware didn't
->> +	 * update the HDSISR. In this case we return to the guest to retake th=
-e
->> +	 * HDSI which should correctly update the HDSISR the second time HDSI
->> +	 * entry.
->> +	 *
->> +	 * Just do this on all p9 processors for now.
->> +	 */
->> +	mtspr(SPRN_HDSISR, HDSISR_CANARY);
->> +
->> +	accumulate_time(vcpu, &vcpu->arch.guest_time);
->> +
->> +	local_paca->kvm_hstate.in_guest =3D KVM_GUEST_MODE_GUEST_HV_FAST;
->> +	kvmppc_p9_enter_guest(vcpu);
->> +	// Radix host and guest means host never runs with guest MMU state
->> +	local_paca->kvm_hstate.in_guest =3D KVM_GUEST_MODE_NONE;
->> +
->> +	accumulate_time(vcpu, &vcpu->arch.rm_intr);
->> +
->> +	/* Get these from r11/12 and paca exsave */
->> +	vcpu->arch.shregs.srr0 =3D mfspr(SPRN_SRR0);
->> +	vcpu->arch.shregs.srr1 =3D mfspr(SPRN_SRR1);
->> +	vcpu->arch.shregs.dar =3D mfspr(SPRN_DAR);
->> +	vcpu->arch.shregs.dsisr =3D mfspr(SPRN_DSISR);
->> +
->> +	/* 0x2 bit for HSRR is only used by PR and P7/8 HV paths, clear it */
->> +	trap =3D local_paca->kvm_hstate.scratch0 & ~0x2;
->> +	if (likely(trap > BOOK3S_INTERRUPT_MACHINE_CHECK)) {
->> +		exsave =3D local_paca->exgen;
->> +	} else if (trap =3D=3D BOOK3S_INTERRUPT_SYSTEM_RESET) {
->> +		exsave =3D local_paca->exnmi;
->> +	} else { /* trap =3D=3D 0x200 */
->> +		exsave =3D local_paca->exmc;
->> +	}
->> +
->> +	vcpu->arch.regs.gpr[1] =3D local_paca->kvm_hstate.scratch1;
->> +	vcpu->arch.regs.gpr[3] =3D local_paca->kvm_hstate.scratch2;
->> +	vcpu->arch.regs.gpr[9] =3D exsave[EX_R9/sizeof(u64)];
->> +	vcpu->arch.regs.gpr[10] =3D exsave[EX_R10/sizeof(u64)];
->> +	vcpu->arch.regs.gpr[11] =3D exsave[EX_R11/sizeof(u64)];
->> +	vcpu->arch.regs.gpr[12] =3D exsave[EX_R12/sizeof(u64)];
->> +	vcpu->arch.regs.gpr[13] =3D exsave[EX_R13/sizeof(u64)];
->> +	vcpu->arch.ppr =3D exsave[EX_PPR/sizeof(u64)];
->> +	vcpu->arch.cfar =3D exsave[EX_CFAR/sizeof(u64)];
->> +	vcpu->arch.regs.ctr =3D exsave[EX_CTR/sizeof(u64)];
->> +
->> +	vcpu->arch.last_inst =3D KVM_INST_FETCH_FAILED;
->> +
->> +	if (unlikely(trap =3D=3D BOOK3S_INTERRUPT_MACHINE_CHECK)) {
->> +		vcpu->arch.fault_dar =3D exsave[EX_DAR/sizeof(u64)];
->> +		vcpu->arch.fault_dsisr =3D exsave[EX_DSISR/sizeof(u64)];
->> +		kvmppc_realmode_machine_check(vcpu);
->> +
->> +	} else if (unlikely(trap =3D=3D BOOK3S_INTERRUPT_HMI)) {
->> +		kvmppc_realmode_hmi_handler();
->> +
->> +	} else if (trap =3D=3D BOOK3S_INTERRUPT_H_EMUL_ASSIST) {
->> +		vcpu->arch.emul_inst =3D mfspr(SPRN_HEIR);
->> +
->> +	} else if (trap =3D=3D BOOK3S_INTERRUPT_H_DATA_STORAGE) {
->> +		vcpu->arch.fault_dar =3D exsave[EX_DAR/sizeof(u64)];
->> +		vcpu->arch.fault_dsisr =3D exsave[EX_DSISR/sizeof(u64)];
->> +		vcpu->arch.fault_gpa =3D mfspr(SPRN_ASDR);
->> +
->> +	} else if (trap =3D=3D BOOK3S_INTERRUPT_H_INST_STORAGE) {
->> +		vcpu->arch.fault_gpa =3D mfspr(SPRN_ASDR);
->> +
->> +	} else if (trap =3D=3D BOOK3S_INTERRUPT_H_FAC_UNAVAIL) {
->> +		vcpu->arch.hfscr =3D mfspr(SPRN_HFSCR);
->> +
->> +#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->> +	/*
->> +	 * Softpatch interrupt for transactional memory emulation cases
->> +	 * on POWER9 DD2.2.  This is early in the guest exit path - we
->> +	 * haven't saved registers or done a treclaim yet.
->> +	 */
->> +	} else if (trap =3D=3D BOOK3S_INTERRUPT_HV_SOFTPATCH) {
->> +		vcpu->arch.emul_inst =3D mfspr(SPRN_HEIR);
->> +
->> +		/*
->> +		 * The cases we want to handle here are those where the guest
->> +		 * is in real suspend mode and is trying to transition to
->> +		 * transactional mode.
->> +		 */
->> +		if (local_paca->kvm_hstate.fake_suspend &&
->> +				(vcpu->arch.shregs.msr & MSR_TS_S)) {
->> +			if (kvmhv_p9_tm_emulation_early(vcpu)) {
->> +				/* Prevent it being handled again. */
->> +				trap =3D 0;
->> +			}
->> +		}
->> +#endif
->> +	}
->> +
->> +	radix_clear_slb();
->> +
->> +	__mtmsrd(msr, 0);
->=20
->=20
-> The asm code only sets RI but this potentially sets more bits including=20
-> MSR_EE, is it expected to be 0 when __kvmhv_vcpu_entry_p9() is called?
-
-Yes.
-
->> +	mtspr(SPRN_CTRLT, 1);
->=20
-> What is this for? ISA does not shed much light:
-> =3D=3D=3D
-> 63 RUN This  bit  controls  an  external  I/O  pin.
-> =3D=3D=3D
-
-I don't think it even does that these days. It interacts with the PMU.
-I was looking whether it's feasible to move it into PMU code entirely,=20
-but apparently some tool or something might sample it. I'm a bit=20
-suspicious about that because an untrusted guest could be running and=20
-claim not to so I don't know what said tool really achieves, but I'll
-go through that fight another day.
-
-But KVM has to set it to 1 at exit because Linux host has it set to 1
-except in CPU idle.
-
->=20
->=20
->> +
->> +	accumulate_time(vcpu, &vcpu->arch.rm_exit);
->=20
-> This should not compile without CONFIG_KVM_BOOK3S_HV_EXIT_TIMING.
-
-It has an ifdef wrapper so it should work (it does on my local tree=20
-which is slightly newer than what you have but I don't think I fixed=20
-anything around this recently).
-
->> +
->> +	end_timing(vcpu);
->> +
->> +	return trap;
->=20
->=20
-> The asm does "For hash guest, read the guest SLB and save it away", this=20
-> code does not. Is this new fast-path-in-c only for radix-on-radix or=20
-> hash VMs are supported too?
-
-That asm code does not run for "guest_exit_short_path" case (aka the
-p9 path aka the fast path).
-
-Upstream code only supports radix host and radix guest in this path.
-The old path supports hash and radix. That's unchanged with this patch.
-
-After the series, the new path supports all P9 modes (hash/hash,
-radix/radix, and radix/hash), and the old path supports P7 and P8 only.
-
-Thanks,
-Nick
