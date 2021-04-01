@@ -1,51 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C2653514C4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 14:22:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 210CA3514DC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 14:45:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FB2PW3hwsz3bwN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 23:22:23 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=gszLMzW8;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FB2wF06g0z3c08
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 23:45:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=gszLMzW8; dkim-atps=neutral
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
+ helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=groug@kaod.org;
+ receiver=<UNKNOWN>)
+Received: from smtpout1.mo529.mail-out.ovh.net
+ (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FB2P35Zplz2xdN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 23:21:58 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1617279715; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eW8pAnIayldEm1B55Y6sLVe6CRWlvBKHn4flF3zxEZA=;
- b=gszLMzW8RwZal8nPtgjXEa3lBBuovgYMXPDk9fIl09T2HiDxo3bXO1Emk1xlxN1DylqM+p
- fJf880WFv4pCJoBHmxch2VVw8HcMS2foGhH1A7eU1SmcpQA1d02/Ke9uyzdXyLc9xGG9du
- zbe9scOKZCHGMMMBzQyPGFTolRbPaNg=
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 5CD0DB2E5;
- Thu,  1 Apr 2021 12:21:55 +0000 (UTC)
-Date: Thu, 1 Apr 2021 14:21:51 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: John Ogness <john.ogness@linutronix.de>
-Subject: Re: [PATCH printk v2 2/5] printk: remove safe buffers
-Message-ID: <YGW63/elFr/gYW1u@alley>
-References: <20210330153512.1182-1-john.ogness@linutronix.de>
- <20210330153512.1182-3-john.ogness@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FB2vt3qvQz3014
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 23:45:12 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.4.35])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 53072968AFBB;
+ Thu,  1 Apr 2021 14:45:08 +0200 (CEST)
+Received: from kaod.org (37.59.142.100) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 1 Apr 2021
+ 14:45:08 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-100R003676e3510-44d3-4b53-872d-f105654ef02a,
+ A2907451AC51A4EFF4C4D6DD6E02A54F207D12BE) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Thu, 1 Apr 2021 14:45:01 +0200
+From: Greg Kurz <groug@kaod.org>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH v3 0/9] powerpc/xive: Map one IPI interrupt per node
+Message-ID: <20210401144501.2ee70421@bahia.lan>
+In-Reply-To: <9b678c0d-2c39-62b8-8ff8-392b38ada6b3@kaod.org>
+References: <20210331144514.892250-1-clg@kaod.org>
+ <20210401100415.28eb9967@bahia.lan>
+ <9b678c0d-2c39-62b8-8ff8-392b38ada6b3@kaod.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210330153512.1182-3-john.ogness@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.100]
+X-ClientProxiedBy: DAG3EX2.mxp5.local (172.16.2.22) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: 2ad65efe-994f-4976-8048-4e0ba15225d5
+X-Ovh-Tracer-Id: 13858701956402158045
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudeigedgheduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfefftedvgeduuefgheeltddtieegheejhfekleduuddtffejffeuleffgfevtdeknecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddttdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,242 +62,191 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Paul Mackerras <paulus@samba.org>,
- Tiezhu Yang <yangtiezhu@loongson.cn>, Rafael Aquini <aquini@redhat.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Yue Hu <huyue2@yulong.com>,
- Jordan Niethe <jniethe5@gmail.com>, Kees Cook <keescook@chromium.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Alistair Popple <alistair@popple.id.au>,
- "Guilherme G. Piccoli" <gpiccoli@canonical.com>,
- Nicholas Piggin <npiggin@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
- Thomas Gleixner <tglx@linutronix.de>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Eric Biederman <ebiederm@xmission.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 2021-03-30 17:35:09, John Ogness wrote:
-> With @logbuf_lock removed, the high level printk functions for
-> storing messages are lockless. Messages can be stored from any
-> context, so there is no need for the NMI and safe buffers anymore.
-> Remove the NMI and safe buffers.
-> 
-> Although the safe buffers are removed, the NMI and safe context
-> tracking is still in place. In these contexts, store the message
-> immediately but still use irq_work to defer the console printing.
-> 
-> Since printk recursion tracking is in place, safe context tracking
-> for most of printk is not needed. Remove it. Only safe context
-> tracking relating to the console lock is left in place. This is
-> because the console lock is needed for the actual printing.
+On Thu, 1 Apr 2021 11:18:10 +0200
+C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 
-> --- a/kernel/printk/printk.c
-> +++ b/kernel/printk/printk.c
-> @@ -1142,24 +1128,37 @@ void __init setup_log_buf(int early)
->  		 new_descs, ilog2(new_descs_count),
->  		 new_infos);
->  
-> -	printk_safe_enter_irqsave(flags);
-> +	local_irq_save(flags);
+> Hello,
+>=20
+> On 4/1/21 10:04 AM, Greg Kurz wrote:
+> > On Wed, 31 Mar 2021 16:45:05 +0200
+> > C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+> >=20
+> >>
+> >> Hello,
+> >>
+> >> ipistorm [*] can be used to benchmark the raw interrupt rate of an
+> >> interrupt controller by measuring the number of IPIs a system can
+> >> sustain. When applied to the XIVE interrupt controller of POWER9 and
+> >> POWER10 systems, a significant drop of the interrupt rate can be
+> >> observed when crossing the second node boundary.
+> >>
+> >> This is due to the fact that a single IPI interrupt is used for all
+> >> CPUs of the system. The structure is shared and the cache line updates
+> >> impact greatly the traffic between nodes and the overall IPI
+> >> performance.
+> >>
+> >> As a workaround, the impact can be reduced by deactivating the IRQ
+> >> lockup detector ("noirqdebug") which does a lot of accounting in the
+> >> Linux IRQ descriptor structure and is responsible for most of the
+> >> performance penalty.
+> >>
+> >> As a fix, this proposal allocates an IPI interrupt per node, to be
+> >> shared by all CPUs of that node. It solves the scaling issue, the IRQ
+> >> lockup detector still has an impact but the XIVE interrupt rate scales
+> >> linearly. It also improves the "noirqdebug" case as showed in the
+> >> tables below.=20
+> >>
+> >=20
+> > As explained by David and others, NUMA nodes happen to match sockets
+> > with current POWER CPUs but these are really different concepts. NUMA
+> > is about CPU memory accesses latency,=20
+>=20
+> This is exactly our problem. we have cache issues because hw threads=20
+> on different chips are trying to access the same structure in memory.
+> It happens on virtual platforms and baremetal platforms. This is not
+> restricted to pseries.
+>=20
 
-IMHO, we actually do not have to disable IRQ here. We already copy
-messages that might appear in the small race window in NMI. It would work
-the same way also for IRQ context.
+Ok, I get it... the XIVE HW accesses structures in RAM, just like HW threads
+do, so the closer, the better. This definitely looks NUMA related indeed. So
+yes, the idea of having the XIVE HW to only access local in-RAM data when
+handling IPIs between vCPUs in the same NUMA node makes sense.
 
->  	log_buf_len = new_log_buf_len;
->  	log_buf = new_log_buf;
->  	new_log_buf_len = 0;
->  
->  	free = __LOG_BUF_LEN;
-> -	prb_for_each_record(0, &printk_rb_static, seq, &r)
-> -		free -= add_to_rb(&printk_rb_dynamic, &r);
-> +	prb_for_each_record(0, &printk_rb_static, seq, &r) {
-> +		text_size = add_to_rb(&printk_rb_dynamic, &r);
-> +		if (text_size > free)
-> +			free = 0;
-> +		else
-> +			free -= text_size;
-> +	}
->  
-> -	/*
-> -	 * This is early enough that everything is still running on the
-> -	 * boot CPU and interrupts are disabled. So no new messages will
-> -	 * appear during the transition to the dynamic buffer.
-> -	 */
->  	prb = &printk_rb_dynamic;
->  
-> -	printk_safe_exit_irqrestore(flags);
-> +	local_irq_restore(flags);
-> +
-> +	/*
-> +	 * Copy any remaining messages that might have appeared from
-> +	 * NMI context after copying but before switching to the
-> +	 * dynamic buffer.
+What is less clear is the exact role of ibm,chip-id actually. This is
+currently used on PowerNV only to pick up a default target on the same
+"chip" as the source if possible. What is the detailed motivation behind
+this ?
 
-The above comment would need to get updated if we keep also normal
-IRQ enabled when copying the log buffers.
+> > while in the case of XIVE you
+> > really need to identify a XIVE chip localized in a given socket.
+> >=20
+> > PAPR doesn't know about sockets, only cores. In other words, a PAPR
+> > compliant guest sees all vCPUs like they all sit in a single socket.
+>=20
+> There are also NUMA nodes on PAPR.
+>=20
 
-> +	 */
-> +	prb_for_each_record(seq, &printk_rb_static, seq, &r) {
-> +		text_size = add_to_rb(&printk_rb_dynamic, &r);
-> +		if (text_size > free)
-> +			free = 0;
-> +		else
-> +			free -= text_size;
-> +	}
->  
->  	if (seq != prb_next_seq(&printk_rb_static)) {
->  		pr_err("dropped %llu messages\n",
+Yes but nothing prevents a NUMA node to span over multiple sockets
+or having several NUMA nodes within the same socket, even if this
+isn't the case in practice with current POWER hardware.
 
-> --- a/lib/nmi_backtrace.c
-> +++ b/lib/nmi_backtrace.c
-> @@ -75,12 +75,6 @@ void nmi_trigger_cpumask_backtrace(const cpumask_t *mask,
->  		touch_softlockup_watchdog();
->  	}
->  
-> -	/*
-> -	 * Force flush any remote buffers that might be stuck in IRQ context
-> -	 * and therefore could not run their irq_work.
-> -	 */
-> -	printk_safe_flush();
+> > Same for the XIVE. Trying to introduce a concept of socket, either
+> > by hijacking OPAL's ibm,chip-id or NUMA node ids, is a kind of
+> > spec violation in this context. If the user cares for locality of
+> > the vCPUs and XIVE on the same socket, then it should bind vCPU
+> > threads to host CPUs from the same socket in the first place.
+>=20
+> Yes. that's a must have of course. You need to reflect the real HW
+> topology in the guest or LPAR if you are after performance, or=20
+> restrict the virtual machine to be on a single socket/chip/node. =20
+>=20
+> And this is not only a XIVE problem. XICS has the same problem with
+> a shared single IPI interrupt descriptor but XICS doesn't scale well=20
+> by design, so it doesn't show.
+>=20
+>=20
+> > Isn't this enough to solve the performance issues this series
+> > want to fix, without the need for virtual socket ids ?
+> what are virtual socket ids ? A new concept ?=20
+>=20
 
-Sigh, this reminds me that the nmi_safe buffers serialized backtraces
-from all CPUs.
+For now, we have virtual CPUs identified by a virtual CPU id.
+It thus seems natural to speak of a virtual socket id, but
+anyway, the wording isn't really important here and you
+don't answer the question ;-)
 
-I am afraid that we have to put back the spinlock into
-nmi_cpu_backtrace(). It has been repeatedly added and removed depending
-on whether the backtrace was printed into the main log buffer
-or into the per-CPU buffers. Last time it was removed by
-the commit 03fc7f9c99c1e7ae2925d ("printk/nmi: Prevent deadlock
-when accessing the main log buffer in NMI").
+> Thanks,
+>=20
+> C.
+>=20
+> >=20
+> >>  * P9 DD2.2 - 2s * 64 threads
+> >>
+> >>                                                "noirqdebug"
+> >>                         Mint/s                    Mint/s  =20
+> >>  chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys    =20
+> >>  --------------------------------------------------------------
+> >>  1      0-15     4.984023   4.875405       4.996536   5.048892
+> >>         0-31    10.879164  10.544040      10.757632  11.037859
+> >>         0-47    15.345301  14.688764      14.926520  15.310053
+> >>         0-63    17.064907  17.066812      17.613416  17.874511
+> >>  2      0-79    11.768764  21.650749      22.689120  22.566508
+> >>         0-95    10.616812  26.878789      28.434703  28.320324
+> >>         0-111   10.151693  31.397803      31.771773  32.388122
+> >>         0-127    9.948502  33.139336      34.875716  35.224548
+> >>
+> >>
+> >>  * P10 DD1 - 4s (not homogeneous) 352 threads
+> >>
+> >>                                                "noirqdebug"
+> >>                         Mint/s                    Mint/s  =20
+> >>  chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys    =20
+> >>  --------------------------------------------------------------
+> >>  1      0-15     2.409402   2.364108       2.383303   2.395091
+> >>         0-31     6.028325   6.046075       6.089999   6.073750
+> >>         0-47     8.655178   8.644531       8.712830   8.724702
+> >>         0-63    11.629652  11.735953      12.088203  12.055979
+> >>         0-79    14.392321  14.729959      14.986701  14.973073
+> >>         0-95    12.604158  13.004034      17.528748  17.568095
+> >>  2      0-111    9.767753  13.719831      19.968606  20.024218
+> >>         0-127    6.744566  16.418854      22.898066  22.995110
+> >>         0-143    6.005699  19.174421      25.425622  25.417541
+> >>         0-159    5.649719  21.938836      27.952662  28.059603
+> >>         0-175    5.441410  24.109484      31.133915  31.127996
+> >>  3      0-191    5.318341  24.405322      33.999221  33.775354
+> >>         0-207    5.191382  26.449769      36.050161  35.867307
+> >>         0-223    5.102790  29.356943      39.544135  39.508169
+> >>         0-239    5.035295  31.933051      42.135075  42.071975
+> >>         0-255    4.969209  34.477367      44.655395  44.757074
+> >>  4      0-271    4.907652  35.887016      47.080545  47.318537
+> >>         0-287    4.839581  38.076137      50.464307  50.636219
+> >>         0-303    4.786031  40.881319      53.478684  53.310759
+> >>         0-319    4.743750  43.448424      56.388102  55.973969
+> >>         0-335    4.709936  45.623532      59.400930  58.926857
+> >>         0-351    4.681413  45.646151      62.035804  61.830057
+> >>
+> >> [*] https://github.com/antonblanchard/ipistorm
+> >>
+> >> Thanks,
+> >>
+> >> C.
+> >>
+> >> Changes in v3:
+> >>
+> >>   - improved commit log for the misuse of "ibm,chip-id"
+> >>   - better error handling of xive_request_ipi()
+> >>   - use of a fwnode_handle to name the new domain=20
+> >>   - increased IPI name length
+> >>   - use of early_cpu_to_node() for hotplugged CPUs
+> >>   - filter CPU-less nodes
+> >>
+> >> Changes in v2:
+> >>
+> >>   - extra simplification on xmon
+> >>   - fixes on issues reported by the kernel test robot
+> >>
+> >> C=C3=A9dric Le Goater (9):
+> >>   powerpc/xive: Use cpu_to_node() instead of "ibm,chip-id" property
+> >>   powerpc/xive: Introduce an IPI interrupt domain
+> >>   powerpc/xive: Remove useless check on XIVE_IPI_HW_IRQ
+> >>   powerpc/xive: Simplify xive_core_debug_show()
+> >>   powerpc/xive: Drop check on irq_data in xive_core_debug_show()
+> >>   powerpc/xive: Simplify the dump of XIVE interrupts under xmon
+> >>   powerpc/xive: Fix xmon command "dxi"
+> >>   powerpc/xive: Map one IPI interrupt per node
+> >>   powerpc/xive: Modernize XIVE-IPI domain with an 'alloc' handler
+> >>
+> >>  arch/powerpc/include/asm/xive.h          |   1 +
+> >>  arch/powerpc/sysdev/xive/xive-internal.h |   2 -
+> >>  arch/powerpc/sysdev/xive/common.c        | 211 +++++++++++++++--------
+> >>  arch/powerpc/xmon/xmon.c                 |  28 +--
+> >>  4 files changed, 139 insertions(+), 103 deletions(-)
+> >>
+> >=20
+>=20
 
-It should be safe because there should not be any other locks in the
-code path. Note that only one backtrace might be triggered at the same
-time, see @backtrace_flag in nmi_trigger_cpumask_backtrace().
-
-We _must_ serialize it somehow[*]. The lock in nmi_cpu_backtrace()
-looks less evil than the nmi_safe machinery. nmi_safe() shrinks
-too long backtraces, lose timestamps, needs to be explicitely
-flushed here and there, is a non-trivial code.
-
-[*] Non-serialized bactraces are real mess. Caller-id is visible
-    only on consoles or via syslogd interface. And it is not much
-    convenient.
-
-    I get this with "echo l >/proc/sysrq-trigger" and this patchset:
-
-[   95.642793] sysrq: Show backtrace of all active CPUs
-[   95.645202] NMI backtrace for cpu 3
-[   95.646778] CPU: 3 PID: 5095 Comm: bash Kdump: loaded Tainted: G        W         5.11.0-default+ #231
-[   95.650397] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.12.0-59-gc9ba527-rebuilt.opensuse.org 04/01/2014
-[   95.656497] Call Trace:
-[   95.657937]  dump_stack+0x88/0xab
-[   95.659888]  nmi_cpu_backtrace+0xa4/0xc0
-[   95.661744]  ? lapic_can_unplug_cpu+0xa0/0xa0
-[   95.663658]  nmi_trigger_cpumask_backtrace+0xe6/0x120
-[   95.665657]  arch_trigger_cpumask_backtrace+0x19/0x20
-[   95.667720]  sysrq_handle_showallcpus+0x17/0x20
-[   95.670218]  __handle_sysrq+0xe1/0x240
-[   95.672190]  write_sysrq_trigger+0x51/0x60
-[   95.673993]  proc_reg_write+0x62/0x90
-[   95.675319]  vfs_write+0xed/0x380
-[   95.676636]  ksys_write+0xad/0xf0
-[   95.677835]  __x64_sys_write+0x1a/0x20
-[   95.678722]  do_syscall_64+0x37/0x50
-[   95.679525]  entry_SYSCALL_64_after_hwframe+0x44/0xae
-[   95.680571] RIP: 0033:0x7f3cbc2b3d44
-[   95.681380] Code: 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 80 00 00 00 00 8b 05 ea fa 2c 00 48 63 ff 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 f3 c3 66 90 55 53 48 89 d5 48 89 f3 48 83
-[   95.684456] RSP: 002b:00007ffe29f06018 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[   95.686029] RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f3cbc2b3d44
-[   95.687346] RDX: 0000000000000002 RSI: 000055ad7117b420 RDI: 0000000000000001
-[   95.688690] RBP: 000055ad7117b420 R08: 000000000000000a R09: 0000000000000000
-[   95.690071] R10: 000000000000000a R11: 0000000000000246 R12: 0000000000000002
-[   95.691243] R13: 0000000000000001 R14: 00007f3cbc57f720 R15: 0000000000000002
-[   95.692318] Sending NMI from CPU 3 to CPUs 0-2:
-[   95.693014] NMI backtrace for cpu 2
-[   95.693014] NMI backtrace for cpu 1
-[   95.693016] CPU: 2 PID: 0 Comm: swapper/2 Kdump: loaded Tainted: G        W         5.11.0-default+ #231
-[   95.693014] NMI backtrace for cpu 0 skipped: idling at native_safe_halt+0x12/0x20
-[   95.693016] CPU: 1 PID: 448 Comm: systemd-journal Kdump: loaded Tainted: G        W         5.11.0-default+ #231
-[   95.693018] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.12.0-59-gc9ba527-rebuilt.opensuse.org 04/01/2014
-[   95.693019] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.12.0-59-gc9ba527-rebuilt.opensuse.org 04/01/2014
-[   95.693020] RIP: 0010:ttwu_do_wakeup+0x1aa/0x220
-[   95.693021] RIP: 0010:inode_permission+0x1d/0x150
-[   95.693025] Code: f0 48 39 c1 72 1b 48 89 83 c8 0b 00 00 48 c7 83 c0 0b 00 00 00 00 00 00 5b 41 5c 41 5d 41 5e 5d c3 48 89 8b c8 0b 00 00 eb e3 <48> 8d 7b 18 be ff ff ff ff e8 68 95 c4 00 85 c0 75 80 0f 0b e9 79
-[   95.693025] Code: ff ff 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 55 48 89 e5 41 56 41 55 41 89 f5 41 54 53 41 83 e5 02 75 43 f6 47 02 01 <41> 89 f4 48 89 fb 0f 84 80 00 00 00 44 89 e6 48 89 df e8 dc fd ff
-[   95.693027] RSP: 0018:ffffbae700120ef8 EFLAGS: 00000002
-[   95.693028] RSP: 0018:ffffbae7003ebea0 EFLAGS: 00000202
-[   95.693028] RAX: 0000000000000001 RBX: ffff9eb2ffbebec0 RCX: 0000000000000000
-[   95.693030] RDX: 0000000000010003 RSI: ffffffffaa6a9860 RDI: ffff9eb2803351d0
-[   95.693031] RAX: ffff9eb28229fa80 RBX: 0000000000000001 RCX: 0000000000000000
-[   95.693031] RBP: ffffbae700120f18 R08: 0000000000000001 R09: 0000000000000001
-[   95.693032] R10: ffff9eb282f00850 R11: 000000000000028d R12: ffff9eb282f00780
-[   95.693032] RDX: 0000000000000001 RSI: 0000000000000010 RDI: ffff9eb286df5298
-[   95.693033] R13: ffffbae700120f60 R14: ffffbae700120f60 R15: 0000000000000000
-[   95.693034] RBP: ffffbae7003ebec0 R08: 0000000000000001 R09: 0000000000000001
-[   95.693035] FS:  0000000000000000(0000) GS:ffff9eb2ffa00000(0000) knlGS:0000000000000000
-[   95.693036] R10: ffffbae7003ebea8 R11: 0000000000000001 R12: 0000000000000000
-[   95.693037] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   95.693037] R13: 0000000000000000 R14: 000055a9f3817900 R15: 0000000000000000
-[   95.693038] CR2: 000055e2be208280 CR3: 0000000103838003 CR4: 0000000000370ee0
-[   95.693039] FS:  00007f1682ccb1c0(0000) GS:ffff9eb2ff800000(0000) knlGS:0000000000000000
-[   95.693041] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   95.693042] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[   95.693043] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[   95.693043] CR2: 00007f3cbbfb36a8 CR3: 0000000102708005 CR4: 0000000000370ee0
-[   95.693044] Call Trace:
-[   95.693045]  <IRQ>
-[   95.693047] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[   95.693047]  ttwu_do_activate+0x90/0x190
-[   95.693049] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[   95.693050] Call Trace:
-[   95.693051]  sched_ttwu_pending+0xe6/0x180
-[   95.693054]  do_faccessat+0xbb/0x260
-[   95.693055]  flush_smp_call_function_queue+0x117/0x220
-[   95.693058]  generic_smp_call_function_single_interrupt+0x13/0x20
-[   95.693060]  __x64_sys_access+0x1d/0x20
-[   95.693060]  __sysvec_call_function_single+0x47/0x190
-[   95.693063]  asm_call_irq_on_stack+0xf/0x20
-[   95.693064]  do_syscall_64+0x37/0x50
-[   95.693066]  </IRQ>
-[   95.693067]  sysvec_call_function_single+0x6d/0xb0
-[   95.693068]  entry_SYSCALL_64_after_hwframe+0x44/0xae
-[   95.693070]  asm_sysvec_call_function_single+0x12/0x20
-[   95.693071] RIP: 0033:0x7f1681d6be1a
-[   95.693072] RIP: 0010:native_safe_halt+0x12/0x20
-[   95.693074] Code: 48 8b 15 81 a0 2c 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 63 f6 b8 15 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 06 f3 c3 0f 1f 40 00 48 8b 15 49 a0 2c 00 f7
-[   95.693074] Code: 00 0f 00 2d 92 4f 48 00 f4 5d c3 66 66 2e 0f 1f 84 00 00 00 00 00 66 90 55 48 89 e5 e9 07 00 00 00 0f 00 2d 72 4f 48 00 fb f4 <5d> c3 cc cc cc cc cc cc cc cc cc cc cc cc 0f 1f 44 00 00 55 65 8b
-[   95.693076] RSP: 002b:00007fff61a07828 EFLAGS: 00000246
-[   95.693078] RSP: 0018:ffffbae7000b7e90 EFLAGS: 00000206
-[   95.693080] RAX: ffffffffa8d86240 RBX: 0000000000000002 RCX: 0000000000000000
-[   95.693080] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffa8d865f5
-[   95.693078]  ORIG_RAX: 0000000000000015
-[   95.693081] RBP: ffffbae7000b7e90 R08: 0000000000000001 R09: 0000000000000001
-[   95.693082] R10: 0000000000000000 R11: 0000000000000001 R12: ffffffffaa9bdf60
-[   95.693082] RAX: ffffffffffffffda RBX: 00007fff61a0a550 RCX: 00007f1681d6be1a
-[   95.693083] R13: 0000000000000000 R14: 0000000000000000 R15: ffff9eb280334400
-[   95.693084] RDX: 00007f16827d70e0 RSI: 0000000000000000 RDI: 000055a9f3817900
-[   95.693085] RBP: 00007fff61a07870 R08: 0000000000000000 R09: 0000000000000000
-[   95.693085]  ? __cpuidle_text_start+0x8/0x8
-[   95.693086] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[   95.693087] R13: 0000000000000000 R14: 00007fff61a07970 R15: 0000000000000000
-[   95.693087]  ? default_idle_call+0x45/0x200
-[   95.693091]  default_idle+0xe/0x20
-[   95.693093]  arch_cpu_idle+0x15/0x20
-[   95.693094]  default_idle_call+0x6c/0x200
-[   95.693096]  do_idle+0x1fb/0x2e0
-[   95.693098]  ? do_idle+0x1d9/0x2e0
-[   95.693100]  cpu_startup_entry+0x1d/0x20
-[   95.693102]  start_secondary+0x12b/0x160
-[   95.693105]  secondary_startup_64_no_verify+0xc2/0xcb
-
-
-Otherwise, I really love this patch removing a lot of tricky code.
-
-Best Regards,
-Petr
