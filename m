@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF829351258
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 11:34:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49861351266
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 11:37:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9ygr0FBmz3bsB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 20:34:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9ykp2Dldz3c0F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 20:37:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9ygW0zStz3011
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 20:34:15 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9ykR1Dl6z2xfm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 20:36:46 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 6995C68B05; Thu,  1 Apr 2021 11:34:08 +0200 (CEST)
-Date: Thu, 1 Apr 2021 11:34:08 +0200
+ id 9A5C868B05; Thu,  1 Apr 2021 11:36:42 +0200 (CEST)
+Date: Thu, 1 Apr 2021 11:36:42 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 08/18] iommu/fsl_pamu: merge pamu_set_liodn and map_liodn
-Message-ID: <20210401093408.GD2934@lst.de>
+Subject: Re: [PATCH 11/18] iommu/fsl_pamu: remove the snoop_id field
+Message-ID: <20210401093642.GE2934@lst.de>
 References: <20210316153825.135976-1-hch@lst.de>
- <20210316153825.135976-9-hch@lst.de> <20210330124651.GH5908@willie-the-truck>
+ <20210316153825.135976-12-hch@lst.de>
+ <20210330125816.GK5908@willie-the-truck>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210330124651.GH5908@willie-the-truck>
+In-Reply-To: <20210330125816.GK5908@willie-the-truck>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -54,13 +55,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 30, 2021 at 01:46:51PM +0100, Will Deacon wrote:
-> > +	ret = pamu_config_ppaace(liodn, geom->aperture_start,
-> > +				 geom->aperture_end - 1, ~(u32)0,
-> > +				 0, dma_domain->snoop_id, dma_domain->stash_id,
-> > +				 PAACE_AP_PERMS_QUERY | PAACE_AP_PERMS_UPDATE);
-> 
-> There's more '+1' / '-1' confusion here with aperture_end which I'm not
-> managing to follow. What am I missing?
+On Tue, Mar 30, 2021 at 01:58:17PM +0100, Will Deacon wrote:
+> pamu_config_ppaace() takes quite a few useless parameters at this stage,
+> but anyway:
 
-You did not missing anything, I messed this up.   Fixed.
+I'll see it it makes sense to throw in another patch at the end to cut
+it down a bit more.
+
+> Acked-by: Will Deacon <will@kernel.org>
+> 
+> Do you know if this driver is actually useful? Once the complexity has been
+> stripped back, the stubs and default values really stand out.
+
+Yeah.  No idea what the usefulness of this driver is.  Bascially all it
+seems to do is to setup a few registers to allow access to the whole
+physical memory.  But maybe that is required on this hardware to allow
+for any DMA access?
