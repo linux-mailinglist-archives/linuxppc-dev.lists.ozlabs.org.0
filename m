@@ -2,76 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F1735107F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 10:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA60835108B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 10:04:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4F9wd8333lz3bsb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 19:02:04 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=LYBtBnVl;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4F9wh85yqzz3brT
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 19:04:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
+ helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=groug@kaod.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=LYBtBnVl; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtpout1.mo529.mail-out.ovh.net
+ (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4F9wch4ynfz2yQr
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 19:01:38 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id j25so860796pfe.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Apr 2021 01:01:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=VuqpEl+COxSpxljOZtUJakmvEG5/ezz2fhanp9Quy0o=;
- b=LYBtBnVlJSsTvZ0wDUXosTU4G1ikc07HV2CSmX5/KXHqeoms8yNKR4YVhxpyLnmnSU
- icYlO0MaTxc+8bX1TbWJX8R1j7CdaPsBtp3g4/vXCmxEnQRBXqETzhtIjfIeotXNKvBN
- RbXIRE1rjsf1TXkoyxgIewKopOSUU95bYWviCpfHzbYxKF1oHfrsde6QMGJZ7Yqn1UOH
- fSMTuMbEadDX2gOzV/54ysjQRTPhKusXv3kNwcdPajac5QdmkpwJwGiJMEwK/kSUsVST
- omsbnkLvToLZFE2BB51rQp9zTQQKsTf4JOv9WJYkIbV9hHSDzCkAEi+XX26qQQD45Bkb
- X4TA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=VuqpEl+COxSpxljOZtUJakmvEG5/ezz2fhanp9Quy0o=;
- b=CIJ/r65ndxG4igzzD+Z2cBRLye05LlG9t1UH8fV6B5Kx6AzkhIgxWnyQ0Qcy9qCE60
- 4hkzUKL8uN3WYbnQJmdvpQ/mO0GFdi2b/BkkqvDojVVrEb2sx+IIipY0hwZNmH8D0X/o
- F4KSjVA2PtfPy8puSUkaOAX9ViLNrasxfdygwqroC/SX64gVr5hsCJwVRSQClAiNYnwQ
- nHkhrKIf5wXdLSiRRoks8w5DJSW/uA0V0+7V9MYzWqaJLdxU7RngTs5i3nT2SC8d8/8W
- h3dfKpjRVsdq3YfbZDlmOGMir/GF/+EmCjE5vQ7rZt9EeHTBMZv7aAAieBrBlncEhrc1
- Acvw==
-X-Gm-Message-State: AOAM531fkwBMQHze/VA2XuMu7Ared0S6cS8Z2AfBf9rl9yDTXP8sp0Sp
- wnyYAPZt88QL9ZpmngCEs2g=
-X-Google-Smtp-Source: ABdhPJwMz1GwlXfgz1SdhGlLswPr5wIx2hZQ7NHtvAFR2ElNpBNVDmIG+zYj5puoQmvjP6+Tp7fPPw==
-X-Received: by 2002:a63:6683:: with SMTP id a125mr6320563pgc.382.1617264094938; 
- Thu, 01 Apr 2021 01:01:34 -0700 (PDT)
-Received: from localhost ([1.132.249.187])
- by smtp.gmail.com with ESMTPSA id l22sm5084316pjl.14.2021.04.01.01.01.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Apr 2021 01:01:34 -0700 (PDT)
-Date: Thu, 01 Apr 2021 18:01:29 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2] powerpc/traps: Enhance readability for trap types
-To: Michael Ellerman <mpe@ellerman.id.au>, Segher Boessenkool
- <segher@kernel.crashing.org>
-References: <20210330150425.10145-1-sxwjean@me.com>
- <875z17y79i.fsf@mpe.ellerman.id.au>
- <20210331212550.GD13863@gate.crashing.org>
- <87im5620f3.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87im5620f3.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4F9wgr15J4z2xZP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Apr 2021 19:04:22 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.143.236])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id A15479673B56;
+ Thu,  1 Apr 2021 10:04:17 +0200 (CEST)
+Received: from kaod.org (37.59.142.99) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 1 Apr 2021
+ 10:04:16 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-99G0038ccee2e8-4305-49a0-aee7-6e781a5c8f3d,
+ A2907451AC51A4EFF4C4D6DD6E02A54F207D12BE) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Thu, 1 Apr 2021 10:04:15 +0200
+From: Greg Kurz <groug@kaod.org>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH v3 0/9] powerpc/xive: Map one IPI interrupt per node
+Message-ID: <20210401100415.28eb9967@bahia.lan>
+In-Reply-To: <20210331144514.892250-1-clg@kaod.org>
+References: <20210331144514.892250-1-clg@kaod.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Message-Id: <1617262858.ls37f2d81f.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.99]
+X-ClientProxiedBy: DAG4EX2.mxp5.local (172.16.2.32) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: d958df5b-ee9c-4de1-96c7-8bc79641beec
+X-Ovh-Tracer-Id: 9115567124170775005
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudeifedguddvjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepfffhvffukfgjfhfogggtgfhisehtqhertdertdejnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeefffetvdegudeugfehledttdeigeehjefhkeeluddutdffjeffueelfffgvedtkeenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,86 +60,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, aik@ozlabs.ru, peterx@redhat.com,
- oleg@redhat.com, paulus@samba.org, kan.liang@linux.intel.com,
- leobras.c@gmail.com, mikey@neuling.org, maddy@linux.ibm.com,
- aneesh.kumar@linux.ibm.com, haren@linux.ibm.com, peterz@infradead.org,
- kjain@linux.ibm.com, msuchanek@suse.de, pmladek@suse.com,
- john.ogness@linutronix.de, alistair@popple.id.au, kvm-ppc@vger.kernel.org,
- jniethe5@gmail.com, atrajeev@linux.vnet.ibm.com,
- Xiongwei Song <sxwjean@me.com>, Xiongwei Song <sxwjean@gmail.com>,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, rppt@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of April 1, 2021 12:39 pm:
-> Segher Boessenkool <segher@kernel.crashing.org> writes:
->> On Wed, Mar 31, 2021 at 08:58:17PM +1100, Michael Ellerman wrote:
->>> So perhaps:
->>>=20
->>>   EXC_SYSTEM_RESET
->>>   EXC_MACHINE_CHECK
->>>   EXC_DATA_STORAGE
->>>   EXC_DATA_SEGMENT
->>>   EXC_INST_STORAGE
->>>   EXC_INST_SEGMENT
->>>   EXC_EXTERNAL_INTERRUPT
->>>   EXC_ALIGNMENT
->>>   EXC_PROGRAM_CHECK
->>>   EXC_FP_UNAVAILABLE
->>>   EXC_DECREMENTER
->>>   EXC_HV_DECREMENTER
->>>   EXC_SYSTEM_CALL
->>>   EXC_HV_DATA_STORAGE
->>>   EXC_PERF_MONITOR
->>
->> These are interrupt (vectors), not exceptions.  It doesn't matter all
->> that much, but confusing things more isn't useful either!  There can be
->> multiple exceptions that all can trigger the same interrupt.
+On Wed, 31 Mar 2021 16:45:05 +0200
+C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+
 >=20
-> Yeah I know, but I think that ship has already sailed as far as the
-> naming we have in the kernel.
-
-It has, but there are also several other ships also sailing in different=20
-directions. It could be worse though, at least they are not sideways in=20
-the Suez.
-
-> We have over 250 uses of "exc", and several files called "exception"
-> something.
+> Hello,
 >=20
-> Using "interrupt" can also be confusing because Linux uses that to mean
-> "external interrupt".
+> ipistorm [*] can be used to benchmark the raw interrupt rate of an
+> interrupt controller by measuring the number of IPIs a system can
+> sustain. When applied to the XIVE interrupt controller of POWER9 and
+> POWER10 systems, a significant drop of the interrupt rate can be
+> observed when crossing the second node boundary.
 >=20
-> But I dunno, maybe INT or VEC is clearer? .. or TRAP :)
+> This is due to the fact that a single IPI interrupt is used for all
+> CPUs of the system. The structure is shared and the cache line updates
+> impact greatly the traffic between nodes and the overall IPI
+> performance.
+>=20
+> As a workaround, the impact can be reduced by deactivating the IRQ
+> lockup detector ("noirqdebug") which does a lot of accounting in the
+> Linux IRQ descriptor structure and is responsible for most of the
+> performance penalty.
+>=20
+> As a fix, this proposal allocates an IPI interrupt per node, to be
+> shared by all CPUs of that node. It solves the scaling issue, the IRQ
+> lockup detector still has an impact but the XIVE interrupt rate scales
+> linearly. It also improves the "noirqdebug" case as showed in the
+> tables below.=20
+>=20
 
-We actually already have defines that follow Segher's suggestion, it's=20
-just that they're hidden away in a KVM header.
+As explained by David and others, NUMA nodes happen to match sockets
+with current POWER CPUs but these are really different concepts. NUMA
+is about CPU memory accesses latency, while in the case of XIVE you
+really need to identify a XIVE chip localized in a given socket.
 
-#define BOOK3S_INTERRUPT_SYSTEM_RESET   0x100
-#define BOOK3S_INTERRUPT_MACHINE_CHECK  0x200
-#define BOOK3S_INTERRUPT_DATA_STORAGE   0x300
-#define BOOK3S_INTERRUPT_DATA_SEGMENT   0x380
-#define BOOK3S_INTERRUPT_INST_STORAGE   0x400
-#define BOOK3S_INTERRUPT_INST_SEGMENT   0x480
-#define BOOK3S_INTERRUPT_EXTERNAL       0x500
-#define BOOK3S_INTERRUPT_EXTERNAL_HV    0x502
-#define BOOK3S_INTERRUPT_ALIGNMENT      0x600
+PAPR doesn't know about sockets, only cores. In other words, a PAPR
+compliant guest sees all vCPUs like they all sit in a single socket.
+Same for the XIVE. Trying to introduce a concept of socket, either
+by hijacking OPAL's ibm,chip-id or NUMA node ids, is a kind of
+spec violation in this context. If the user cares for locality of
+the vCPUs and XIVE on the same socket, then it should bind vCPU
+threads to host CPUs from the same socket in the first place.
+Isn't this enough to solve the performance issues this series
+want to fix, without the need for virtual socket ids ?
 
-It would take just a small amount of work to move these to general=20
-powerpc header, add #ifdefs for Book E/S where the numbers differ,
-and remove the BOOK3S_ prefix.
+>  * P9 DD2.2 - 2s * 64 threads
+>=20
+>                                                "noirqdebug"
+>                         Mint/s                    Mint/s  =20
+>  chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys    =20
+>  --------------------------------------------------------------
+>  1      0-15     4.984023   4.875405       4.996536   5.048892
+>         0-31    10.879164  10.544040      10.757632  11.037859
+>         0-47    15.345301  14.688764      14.926520  15.310053
+>         0-63    17.064907  17.066812      17.613416  17.874511
+>  2      0-79    11.768764  21.650749      22.689120  22.566508
+>         0-95    10.616812  26.878789      28.434703  28.320324
+>         0-111   10.151693  31.397803      31.771773  32.388122
+>         0-127    9.948502  33.139336      34.875716  35.224548
+>=20
+>=20
+>  * P10 DD1 - 4s (not homogeneous) 352 threads
+>=20
+>                                                "noirqdebug"
+>                         Mint/s                    Mint/s  =20
+>  chips  cpus      IPI/sys   IPI/chip       IPI/chip    IPI/sys    =20
+>  --------------------------------------------------------------
+>  1      0-15     2.409402   2.364108       2.383303   2.395091
+>         0-31     6.028325   6.046075       6.089999   6.073750
+>         0-47     8.655178   8.644531       8.712830   8.724702
+>         0-63    11.629652  11.735953      12.088203  12.055979
+>         0-79    14.392321  14.729959      14.986701  14.973073
+>         0-95    12.604158  13.004034      17.528748  17.568095
+>  2      0-111    9.767753  13.719831      19.968606  20.024218
+>         0-127    6.744566  16.418854      22.898066  22.995110
+>         0-143    6.005699  19.174421      25.425622  25.417541
+>         0-159    5.649719  21.938836      27.952662  28.059603
+>         0-175    5.441410  24.109484      31.133915  31.127996
+>  3      0-191    5.318341  24.405322      33.999221  33.775354
+>         0-207    5.191382  26.449769      36.050161  35.867307
+>         0-223    5.102790  29.356943      39.544135  39.508169
+>         0-239    5.035295  31.933051      42.135075  42.071975
+>         0-255    4.969209  34.477367      44.655395  44.757074
+>  4      0-271    4.907652  35.887016      47.080545  47.318537
+>         0-287    4.839581  38.076137      50.464307  50.636219
+>         0-303    4.786031  40.881319      53.478684  53.310759
+>         0-319    4.743750  43.448424      56.388102  55.973969
+>         0-335    4.709936  45.623532      59.400930  58.926857
+>         0-351    4.681413  45.646151      62.035804  61.830057
+>=20
+> [*] https://github.com/antonblanchard/ipistorm
+>=20
+> Thanks,
+>=20
+> C.
+>=20
+> Changes in v3:
+>=20
+>   - improved commit log for the misuse of "ibm,chip-id"
+>   - better error handling of xive_request_ipi()
+>   - use of a fwnode_handle to name the new domain=20
+>   - increased IPI name length
+>   - use of early_cpu_to_node() for hotplugged CPUs
+>   - filter CPU-less nodes
+>=20
+> Changes in v2:
+>=20
+>   - extra simplification on xmon
+>   - fixes on issues reported by the kernel test robot
+>=20
+> C=C3=A9dric Le Goater (9):
+>   powerpc/xive: Use cpu_to_node() instead of "ibm,chip-id" property
+>   powerpc/xive: Introduce an IPI interrupt domain
+>   powerpc/xive: Remove useless check on XIVE_IPI_HW_IRQ
+>   powerpc/xive: Simplify xive_core_debug_show()
+>   powerpc/xive: Drop check on irq_data in xive_core_debug_show()
+>   powerpc/xive: Simplify the dump of XIVE interrupts under xmon
+>   powerpc/xive: Fix xmon command "dxi"
+>   powerpc/xive: Map one IPI interrupt per node
+>   powerpc/xive: Modernize XIVE-IPI domain with an 'alloc' handler
+>=20
+>  arch/powerpc/include/asm/xive.h          |   1 +
+>  arch/powerpc/sysdev/xive/xive-internal.h |   2 -
+>  arch/powerpc/sysdev/xive/common.c        | 211 +++++++++++++++--------
+>  arch/powerpc/xmon/xmon.c                 |  28 +--
+>  4 files changed, 139 insertions(+), 103 deletions(-)
+>=20
 
-I don't mind INTERRUPT_ but INT_ would be okay too. VEC_ actually
-doesn't match what Book E does (which is some weirdness to map some
-of them to match Book S but not all, arguably we should clean that
-up too and just use vector numbers consistently, but the INTERRUPT_
-prefix would still be valid if we did that).
-
-BookE KVM entry will still continue to use a different convention
-there so I would leave all those KVM defines in place for now, we
-might do another pass on them later.
-
-Thanks,
-Nick
