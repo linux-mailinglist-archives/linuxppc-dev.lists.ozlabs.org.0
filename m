@@ -1,78 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F0D351524
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 15:28:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA00B351536
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Apr 2021 15:31:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FB3sz2L6wz3c2b
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 00:28:39 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=LdF6JJ4x;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FB3xg4mymz3bpP
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 00:31:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529;
- helo=mail-pg1-x529.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=LdF6JJ4x; dkim-atps=neutral
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
- [IPv6:2607:f8b0:4864:20::529])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FB3sZ0Hlsz3014
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Apr 2021 00:28:17 +1100 (AEDT)
-Received: by mail-pg1-x529.google.com with SMTP id v186so1514599pgv.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Apr 2021 06:28:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=moDbZSIuQbE+Re/GxIqrR5DF17rrpW/0FK43E8e+pFA=;
- b=LdF6JJ4xXCgaxItU5LDAPV4SIK6+1ZisRfBsLfB5H1eu8ikNJ5B+DGAC2DaQTG7NwS
- HVEh8fAGufr1Y2jl/afLlsi+ZDQ8LF7NMzPzY/EBUPqIhRtJiAc1vQD9Etj97Y4CScoQ
- sCjkSBJ7STB2JywhLuU7vYCygtlIsoU4XyqM6AsTPtlHxDkOeB6d/3dUEZa6Zxxw0QWC
- +ZB4LjgduEiZWj2QflNkQmavrcikpvRIh1HzChO2haEbpaI3Uk8NsrY20/lbdGkKU/m6
- mlewigh1FrcR1IwLtIyT/Cx2K4/RbIUl+WOXTbX2gY7wiBZqDgqkhAyIbp4USbWWuxvR
- NtEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=moDbZSIuQbE+Re/GxIqrR5DF17rrpW/0FK43E8e+pFA=;
- b=pECbCqPLEa/vkEBxiScGOEbvu4iaqp/YgIhAovRQSsgnBP3sYBPSeTkW8XuF4+rFZ1
- VT6iTpJ/qH8zkHhgta6JqLktwsu/ziHj2fq9wZJYMajBaoRBPSWQJDK8Sxyf+C7WuKC4
- CGfOGf6YGChb4SmCkHTX+ccu4lTwiYgxZNKeaMVTLUoeAL/+Xg1n8kINHlMi/REAlc7h
- 72nPdEtS9futs/0FBM/VmddulFIDSE41BVlgqGZVwOyi1xI5/ecc9w48uz3KY+Sp8qbl
- RGiz3rABDs8MOSQWp+GELRS++Vu9EGyckshsqKxVnjDWoTtb63ZZakrilP7X1VU70YRe
- okYQ==
-X-Gm-Message-State: AOAM532N4n1NPfEI6iTm4vCCRBsTUsH0tX7t+oS+HyD6MUQ3hu+rLHX1
- pQ6/ZsLNjJHTcHU2duiwVo4=
-X-Google-Smtp-Source: ABdhPJw1sOrEU/4cofTB8qbdFtxs+oTQFcpgbhYGb0n/BpWB98aRuZDlGFVhKnmkasp8AP0EUr6IFA==
-X-Received: by 2002:a62:180f:0:b029:225:5266:2b61 with SMTP id
- 15-20020a62180f0000b029022552662b61mr7771209pfy.30.1617283695211; 
- Thu, 01 Apr 2021 06:28:15 -0700 (PDT)
-Received: from localhost ([1.128.222.58])
- by smtp.gmail.com with ESMTPSA id z8sm5783437pjd.0.2021.04.01.06.28.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Apr 2021 06:28:14 -0700 (PDT)
-Date: Thu, 01 Apr 2021 23:28:09 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 02/46] KVM: PPC: Book3S HV: Add a function to filter
- guest LPCR bits
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <20210323010305.1045293-1-npiggin@gmail.com>
- <20210323010305.1045293-3-npiggin@gmail.com>
- <YGP1uXH5q72auwP7@thinks.paulus.ozlabs.org>
- <1617269036.86nd07dbhp.astroid@bobo.none>
-In-Reply-To: <1617269036.86nd07dbhp.astroid@bobo.none>
-MIME-Version: 1.0
-Message-Id: <1617283627.0fudnz2en1.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FB3wT59dzz2yRb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Apr 2021 00:30:48 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FB3wL4M4Rz9twjV;
+ Thu,  1 Apr 2021 15:30:42 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 6QXPlekH9PAh; Thu,  1 Apr 2021 15:30:42 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FB3wL0Y8pz9twjT;
+ Thu,  1 Apr 2021 15:30:42 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 115448B99F;
+ Thu,  1 Apr 2021 15:30:42 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 5LZA3QbEPpKi; Thu,  1 Apr 2021 15:30:41 +0200 (CEST)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8B8888B991;
+ Thu,  1 Apr 2021 15:30:41 +0200 (CEST)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 4954967646; Thu,  1 Apr 2021 13:30:41 +0000 (UTC)
+Message-Id: <0c3d5cb8a4dfdf6ca1b8aeb385c01470d6628d55.1617283827.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 1/3] powerpc/modules: Load modules closer to kernel text
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ jniethe5@gmail.com
+Date: Thu,  1 Apr 2021 13:30:41 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,45 +57,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of April 1, 2021 7:32 pm:
-> Excerpts from Paul Mackerras's message of March 31, 2021 2:08 pm:
->> On Tue, Mar 23, 2021 at 11:02:21AM +1000, Nicholas Piggin wrote:
->>> Guest LPCR depends on hardware type, and future changes will add
->>> restrictions based on errata and guest MMU mode. Move this logic
->>> to a common function and use it for the cases where the guest
->>> wants to update its LPCR (or the LPCR of a nested guest).
->>=20
->> [snip]
->>=20
->>> @@ -4641,8 +4662,9 @@ void kvmppc_update_lpcr(struct kvm *kvm, unsigned=
- long lpcr, unsigned long mask)
->>>  		struct kvmppc_vcore *vc =3D kvm->arch.vcores[i];
->>>  		if (!vc)
->>>  			continue;
->>> +
->>>  		spin_lock(&vc->lock);
->>> -		vc->lpcr =3D (vc->lpcr & ~mask) | lpcr;
->>> +		vc->lpcr =3D kvmppc_filter_lpcr_hv(vc, (vc->lpcr & ~mask) | lpcr);
->>=20
->> This change seems unnecessary, since kvmppc_update_lpcr is called only
->> to update MMU configuration bits, not as a result of any action by
->> userspace or a nested hypervisor.  It's also beyond the scope of what
->> was mentioned in the commit message.
->=20
-> I didn't think it was outside the spirit of the patch, but yes
-> only the guest update LPCR case was enumerated. Would it be more=20
-> consistent to add it to the changelog and leave it in here or would
-> you prefer it left out until there is a real use?
+On book3s/32, when STRICT_KERNEL_RWX is selected, modules are
+allocated on the segment just before kernel text, ie on the
+0xb0000000-0xbfffffff when PAGE_OFFSET is 0xc0000000.
 
-On second thoughts, I already left at least one other place without
-such a check, so I now tend to agree with you. But I instead added
-a test that just ensures the host is not out of synch with itself in
-terms of what it can set the LPCR to.
+On the 8xx, TASK_SIZE is 0x80000000. The space between TASK_SIZE and
+PAGE_OFFSET is not used and could be used for modules.
 
-Thanks,
-Nick
+The idea comes from ARM architecture.
+
+Having modules just below PAGE_OFFSET offers an opportunity to
+minimise the distance between kernel text and modules and avoid
+trampolines in modules to access kernel functions or other module
+functions.
+
+When MODULES_VADDR is defined, powerpc has it's own module_alloc()
+function. In that function, first try to allocate the module
+above the limit defined by '_etext - 32M'. Then if the allocation
+fails, fallback to the entire MODULES area.
+
+DEBUG logs in module_32.c without the patch:
+
+[ 1572.588822] module_32: Applying ADD relocate section 13 to 12
+[ 1572.588891] module_32: Doing plt for call to 0xc00671a4 at 0xcae04024
+[ 1572.588964] module_32: Initialized plt for 0xc00671a4 at cae04000
+[ 1572.589037] module_32: REL24 value = CAE04000. location = CAE04024
+[ 1572.589110] module_32: Location before: 48000001.
+[ 1572.589171] module_32: Location after: 4BFFFFDD.
+[ 1572.589231] module_32: ie. jump to 03FFFFDC+CAE04024 = CEE04000
+[ 1572.589317] module_32: Applying ADD relocate section 15 to 14
+[ 1572.589386] module_32: Doing plt for call to 0xc00671a4 at 0xcadfc018
+[ 1572.589457] module_32: Initialized plt for 0xc00671a4 at cadfc000
+[ 1572.589529] module_32: REL24 value = CADFC000. location = CADFC018
+[ 1572.589601] module_32: Location before: 48000000.
+[ 1572.589661] module_32: Location after: 4BFFFFE8.
+[ 1572.589723] module_32: ie. jump to 03FFFFE8+CADFC018 = CEDFC000
+
+With the patch:
+
+[  279.404671] module_32: Applying ADD relocate section 13 to 12
+[  279.404741] module_32: REL24 value = C00671B4. location = BF808024
+[  279.404814] module_32: Location before: 48000001.
+[  279.404874] module_32: Location after: 4885F191.
+[  279.404933] module_32: ie. jump to 0085F190+BF808024 = C00671B4
+[  279.405016] module_32: Applying ADD relocate section 15 to 14
+[  279.405085] module_32: REL24 value = C00671B4. location = BF800018
+[  279.405156] module_32: Location before: 48000000.
+[  279.405215] module_32: Location after: 4886719C.
+[  279.405275] module_32: ie. jump to 0086719C+BF800018 = C00671B4
+
+We see that with the patch, no plt entries are set.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/module.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.c
+index a211b0253cdb..fab84024650c 100644
+--- a/arch/powerpc/kernel/module.c
++++ b/arch/powerpc/kernel/module.c
+@@ -14,6 +14,7 @@
+ #include <asm/firmware.h>
+ #include <linux/sort.h>
+ #include <asm/setup.h>
++#include <asm/sections.h>
+ 
+ static LIST_HEAD(module_bug_list);
+ 
+@@ -88,12 +89,28 @@ int module_finalize(const Elf_Ehdr *hdr,
+ }
+ 
+ #ifdef MODULES_VADDR
++static __always_inline void *
++__module_alloc(unsigned long size, unsigned long start, unsigned long end)
++{
++	return __vmalloc_node_range(size, 1, start, end, GFP_KERNEL,
++				    PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
++				    __builtin_return_address(0));
++}
++
+ void *module_alloc(unsigned long size)
+ {
++	unsigned long limit = (unsigned long)_etext - SZ_32M;
++	void *ptr = NULL;
++
+ 	BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
+ 
+-	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END, GFP_KERNEL,
+-				    PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
+-				    __builtin_return_address(0));
++	/* First try within 32M limit from _etext to avoid branch trampolines */
++	if (MODULES_VADDR < PAGE_OFFSET && MODULES_END > limit)
++		ptr = __module_alloc(size, limit, MODULES_END);
++
++	if (!ptr)
++		ptr = __module_alloc(size, MODULES_VADDR, MODULES_END);
++
++	return ptr;
+ }
+ #endif
+-- 
+2.25.0
+
