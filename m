@@ -1,73 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29056352557
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 04:14:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE17352588
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 04:42:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FBNt71BgKz3c4v
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 13:14:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FBPTL3hpxz3byx
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 13:41:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=CiQCdaLN;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=YB4XL0/T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52f;
- helo=mail-pg1-x52f.google.com; envelope-from=senozhatsky@chromium.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535;
+ helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=CiQCdaLN; dkim-atps=neutral
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
- [IPv6:2607:f8b0:4864:20::52f])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=YB4XL0/T; dkim-atps=neutral
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
+ [IPv6:2607:f8b0:4864:20::535])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FBNsg64Dkz3015
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Apr 2021 13:14:29 +1100 (AEDT)
-Received: by mail-pg1-x52f.google.com with SMTP id p12so430718pgj.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Apr 2021 19:14:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=JB5UehlmQzvZFx81WrZqpYM4CZPIjgwCICp/Q33dgPY=;
- b=CiQCdaLNqItRdaQBOeJkErTv3n7PjSNnp+YvdQJ1ecNwMtUhwCi8shAehVOT7sxQpo
- nP61ASpB1NgGt9ANL4exn/Z9n7DKxzMjicech11ff/+fm4VxApqGY66Vw5/l8MC+kRoI
- zt+/uQlTX7cj6PZaFPDSywCRWFA6eFe3lXxPQ=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FBPSw3tLcz3bqw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Apr 2021 13:41:33 +1100 (AEDT)
+Received: by mail-pg1-x535.google.com with SMTP id v186so2765729pgv.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Apr 2021 19:41:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AGSE3M9BRcI1u81aOkGyZ8Bpmd6fJJfj4CJE0weqUCQ=;
+ b=YB4XL0/TTydz4+oBwrBz1OBMGs2de7g9PBkdI0DALydzNF87sm5/fbSoiczEnk7BlA
+ P46BOJJQbe+7RbwCJ/YhwjXzhcgeAAZhpykAggtCPZ/M6XAfSgBw5AqKVNyHRHRnqv7H
+ pTKgXqQLcHGVQORY8YvRNWCh92tiaEioVkPSgOi/Jm0A2wF+IxEnaXmAEteDdDlVOJg0
+ P5vfnsUsxj21wTW54ig0F/ym76DoaVqG8IB3T3brZ6i/5IGuqGAAC5YHpXdKymTZX8oF
+ Oj0y9B0/xhmG4zMGrjI1Hde3NXr/nv2kTh/zvWPr/1wk7a/pKyuIPsRJO9HLdXsv01cQ
+ lwBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=JB5UehlmQzvZFx81WrZqpYM4CZPIjgwCICp/Q33dgPY=;
- b=qkzrVfgo7tFszPAxDP4Bh7AVtOQw3nLb1X+GDIR7w/IQLkN+yv5drIVoBqBSX4wcKL
- N7Yf3iJStluwqJRKf8nCosdIRpHAeSmkxdO5vvneBVZqRPYUqpM2p9lQy5F0+HFAkhlh
- 5QGeQbeg1mMbwKomxKTuskL7341Ug08/noZ3EUndJ0QMzKaPBK6CgqeptUO59AMN+0+j
- 639VsUeaavtRWboWBVNBrn97Z4aPpZBbjgR2EPJJKZLMvz0DBr9pzQvTF1HV5DygBieL
- 5uJ/Z8aqArDcGtnCUOTQMY+TH6lug4bVNcnaSGmddZe76yZZ63FvE5kMZIu5+FEN4jNu
- 24uw==
-X-Gm-Message-State: AOAM532KhlwCX6Igz3Hqy+YyrkOZYe17yHL2evnrBXN7FYOsrhcV6KnY
- BYxE8jDoECyDqLk4QyJ/di5grQ==
-X-Google-Smtp-Source: ABdhPJy0ejIbP6LV2LsRoOa1rVdM/WfylFauJ7ONnIZVqPdmEwYb/IrcKuqgQDFSQ2rNzG87UypcyQ==
-X-Received: by 2002:a65:6a0e:: with SMTP id m14mr10107450pgu.448.1617329667742; 
- Thu, 01 Apr 2021 19:14:27 -0700 (PDT)
-Received: from google.com ([2409:10:2e40:5100:918a:96e1:2fd5:8e77])
- by smtp.gmail.com with ESMTPSA id e65sm6959948pfe.9.2021.04.01.19.14.21
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AGSE3M9BRcI1u81aOkGyZ8Bpmd6fJJfj4CJE0weqUCQ=;
+ b=fcpInTOfbkGqJ6W2qMdpJb9qwCkSqlrVhyMz3vlvY4AgfoWyPnjaTba7VSUtPP60FS
+ dSJ4u5QfqUs6yyb+9gDqdsQdGu3jaEiH9x2yf6pGN4OWIdOrvkIBR8kZ5+ERfVwTqURj
+ jvyJQhQRmb7zXhnG/sr8sFYl0uAdszxUahLfE3N4Q46SSxp0Hnq0LvZpOjxmtSC1Ltrz
+ 1l3YJwmIUuE14Jt9AJPUxi/KInRRwvXyblXBVqwqEtq57/FhMcb2buGtYUgLj3Wu2bur
+ b4a9vWDJZ3+f1NFqFnL/1crxhgHXRLWcemDzbLw9qQhHpBkSyVGT5IAsfEqYCVCWj0Q7
+ 1COg==
+X-Gm-Message-State: AOAM532cM5w4YuF37j7/H+QRBj5VIKmlI7lftPkQXBbTylg4cDO6epUs
+ Kz8AYZUaudOPbKm1WMWwVBJ7WRDsiqCGKw==
+X-Google-Smtp-Source: ABdhPJzcfdoNuKntNWzqO2N1lajH69OywMwV+5wgMtoLlhdXvTaIX730KJ0//msaTNHSRxUSzRcheQ==
+X-Received: by 2002:a63:925a:: with SMTP id s26mr9669038pgn.216.1617331291863; 
+ Thu, 01 Apr 2021 19:41:31 -0700 (PDT)
+Received: from bobo.ibm.com ([1.128.159.73])
+ by smtp.gmail.com with ESMTPSA id r1sm7451501pfh.153.2021.04.01.19.41.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Apr 2021 19:14:27 -0700 (PDT)
-Date: Fri, 2 Apr 2021 11:14:18 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH printk v2 2/5] printk: remove safe buffers
-Message-ID: <YGZ9+kfQKxASmVDR@google.com>
-References: <20210330153512.1182-1-john.ogness@linutronix.de>
- <20210330153512.1182-3-john.ogness@linutronix.de>
- <YGW63/elFr/gYW1u@alley> <87a6qiqgzr.fsf@jogness.linutronix.de>
- <YGXV8LJarjUJDhvy@alley>
+ Thu, 01 Apr 2021 19:41:31 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/powernv: Enable HAIL (HV AIL) for ISA v3.1 processors
+Date: Fri,  2 Apr 2021 12:41:24 +1000
+Message-Id: <20210402024124.545826-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YGXV8LJarjUJDhvy@alley>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,43 +77,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Paul Mackerras <paulus@samba.org>,
- Tiezhu Yang <yangtiezhu@loongson.cn>, Rafael Aquini <aquini@redhat.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Yue Hu <huyue2@yulong.com>,
- Jordan Niethe <jniethe5@gmail.com>, Kees Cook <keescook@chromium.org>,
- John Ogness <john.ogness@linutronix.de>,
- Alistair Popple <alistair@popple.id.au>,
- "Guilherme G. Piccoli" <gpiccoli@canonical.com>,
- Nicholas Piggin <npiggin@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
- Thomas Gleixner <tglx@linutronix.de>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Eric Biederman <ebiederm@xmission.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On (21/04/01 16:17), Petr Mladek wrote:
-> > For the long term, we should introduce a printk-context API that allows
-> > callers to perfectly pack their multi-line output into a single
-> > entry. We discussed [0][1] this back in August 2020.
-> 
-> We need a "short" term solution. There are currently 3 solutions:
-> 
-> 1. Keep nmi_safe() and all the hacks around.
-> 
-> 2. Serialize nmi_cpu_backtrace() by a spin lock and later by
->    the special lock used also by atomic consoles.
-> 
-> 3. Tell complaining people how to sort the messed logs.
+Starting with ISA v3.1, LPCR[AIL] no longer controls the interrupt
+mode for HV=1 interrupts. Instead, a new LPCR[HAIL] bit is defined
+which behaves like AIL=3 for HV interrupts when set.
 
-Are we talking about nmi_cpu_backtrace()->dump_stack() or some
-other path?
+Set HAIL on bare metal to give us mmu-on interrupts and improve
+performance.
 
-dump_stack() seems to be already serialized by `dump_lock`. Hmm,
-show_regs() is not serialized, seems like it should be under the
-same `dump_lock` as dump_stack().
+This also fixes an scv bug: we don't implement scv real mode (AIL=0)
+vectors because they are at an inconvenient location, so we just
+disable scv support when AIL can not be set. However powernv assumes
+that LPCR[AIL] will enable AIL mode so it enables scv support despite
+HV interrupts being AIL=0, which causes scv interrupts to go off into
+the weeds.
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/reg.h |  1 +
+ arch/powerpc/kernel/setup_64.c | 19 ++++++++++++++++---
+ 2 files changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 1be20bc8dce2..9086a2644c89 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -441,6 +441,7 @@
+ #define   LPCR_VRMA_LP1		ASM_CONST(0x0000800000000000)
+ #define   LPCR_RMLS		0x1C000000	/* Implementation dependent RMO limit sel */
+ #define   LPCR_RMLS_SH		26
++#define   LPCR_HAIL		ASM_CONST(0x0000000004000000)   /* HV AIL (ISAv3.1) */
+ #define   LPCR_ILE		ASM_CONST(0x0000000002000000)   /* !HV irqs set MSR:LE */
+ #define   LPCR_AIL		ASM_CONST(0x0000000001800000)	/* Alternate interrupt location */
+ #define   LPCR_AIL_0		ASM_CONST(0x0000000000000000)	/* MMU off exception offset 0x0 */
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index 04a31586f760..671192afcdfd 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -233,10 +233,23 @@ static void cpu_ready_for_interrupts(void)
+ 	 * If we are not in hypervisor mode the job is done once for
+ 	 * the whole partition in configure_exceptions().
+ 	 */
+-	if (cpu_has_feature(CPU_FTR_HVMODE) &&
+-	    cpu_has_feature(CPU_FTR_ARCH_207S)) {
++	if (cpu_has_feature(CPU_FTR_HVMODE)) {
+ 		unsigned long lpcr = mfspr(SPRN_LPCR);
+-		mtspr(SPRN_LPCR, lpcr | LPCR_AIL_3);
++		unsigned long new_lpcr = lpcr;
++
++		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
++			/* P10 DD1 does not have HAIL */
++			if (pvr_version_is(PVR_POWER10) &&
++					(mfspr(SPRN_PVR) & 0xf00) == 0x100)
++				new_lpcr |= LPCR_AIL_3;
++			else
++				new_lpcr |= LPCR_HAIL;
++		} else if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
++			new_lpcr |= LPCR_AIL_3;
++		}
++
++		if (new_lpcr != lpcr)
++			mtspr(SPRN_LPCR, new_lpcr);
+ 	}
+ 
+ 	/*
+-- 
+2.23.0
+
