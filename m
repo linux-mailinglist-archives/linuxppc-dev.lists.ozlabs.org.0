@@ -2,94 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F9C352DDF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 18:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F90352E44
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Apr 2021 19:29:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FBmBN3Fcdz3c56
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Apr 2021 03:45:16 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cmxmgJYD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FBn950CPxz3c79
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Apr 2021 04:29:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=cmxmgJYD; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FBm9m6cD7z3btg
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Apr 2021 03:44:43 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 132GXp6k149512; Fri, 2 Apr 2021 12:44:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=gkdE+H6UoslkeqtMNb7IPN0mwGr/JpXzRpWAcK7ID8g=;
- b=cmxmgJYD6zF37Ml4Xm7Xvxgd52NeOf6pcYAvdLxICgKmSQTV7ZVPNB0LkY5kelvuZ7Vm
- tgczNHZzYFVjm11/QyHlLm4qQHZrbxf1/KJ31b9KXLnUL/IAG8IUiL5bFBUtnou1NVuQ
- SglAwVLdBvCGk0yf2IHjEYZV//OvzQtUvqlSwLNvHU4IOsp7VfHLQNGfIhGp8VM1B7bZ
- 8YQDMyjPMcSHyjLlcWHGoVo4uz81/BSVc6hWJXsKINu/j/VnBA2Xpk8d06Usr4AdVvnG
- 4WHiMHTxhO5MLMCPPZy8LM+FtRtRlSj9qayJHQi7mx2adBf0uCdVh7rcuFVgg0CSICAi ng== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37ntw1sgyq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Apr 2021 12:44:34 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 132Gh6IT007334;
- Fri, 2 Apr 2021 16:44:34 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma04wdc.us.ibm.com with ESMTP id 37n2984607-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Apr 2021 16:44:34 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 132GiXVh31392050
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 2 Apr 2021 16:44:33 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D32152805C;
- Fri,  2 Apr 2021 16:44:33 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9156528059;
- Fri,  2 Apr 2021 16:44:33 +0000 (GMT)
-Received: from localhost (unknown [9.163.15.116])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri,  2 Apr 2021 16:44:33 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Subject: Re: [PATCH v2] pseries: prevent free CPU ids to be reused on
- another node
-In-Reply-To: <d06106d3-76e6-f5da-e3b4-db13c6bfee96@linux.ibm.com>
-References: <20210325093512.57856-1-ldufour@linux.ibm.com>
- <87a6qgbyk6.fsf@linux.ibm.com>
- <d06106d3-76e6-f5da-e3b4-db13c6bfee96@linux.ibm.com>
-Date: Fri, 02 Apr 2021 11:44:32 -0500
-Message-ID: <877dlkbpqn.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FBn8k32v6z3bnx
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Apr 2021 04:28:50 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FBn8Y50v7z9v3qQ;
+ Fri,  2 Apr 2021 19:28:45 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id L7ilypF0b3f4; Fri,  2 Apr 2021 19:28:45 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FBn8Y3vtHz9v3gF;
+ Fri,  2 Apr 2021 19:28:45 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AE9D58BB77;
+ Fri,  2 Apr 2021 19:28:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id IcQEBCei7ZAe; Fri,  2 Apr 2021 19:28:47 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 498158BB6F;
+ Fri,  2 Apr 2021 19:28:46 +0200 (CEST)
+Subject: Re: [PATCH 1/8] CMDLINE: add generic builtin command line
+To: Daniel Walker <danielwa@cisco.com>, Will Deacon <will@kernel.org>,
+ ob Herring <robh@kernel.org>,
+ Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
+ Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <41021d66db2ab427c14255d2a24bb4517c8b58fd.1617126961.git.danielwa@cisco.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <b80403de-a695-2919-5910-cbbe03f2b289@csgroup.eu>
+Date: Fri, 2 Apr 2021 19:28:41 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HJD8wR6yREK7Ai04wfNu96h7_W125uRM
-X-Proofpoint-ORIG-GUID: HJD8wR6yREK7Ai04wfNu96h7_W125uRM
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-04-02_09:2021-04-01,
- 2021-04-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- priorityscore=1501 mlxscore=0 phishscore=0 spamscore=0 clxscore=1015
- adultscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
- impostorscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2103310000 definitions=main-2104020116
+In-Reply-To: <41021d66db2ab427c14255d2a24bb4517c8b58fd.1617126961.git.danielwa@cisco.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,66 +65,287 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>, cheloha@linux.ibm.com,
- linux-kernel@vger.kernel.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: Ruslan Bilovol <rbilovol@cisco.com>, linux-kernel@vger.kernel.org,
+ xe-linux-external@cisco.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Laurent Dufour <ldufour@linux.ibm.com> writes:
-> Le 02/04/2021 =C3=A0 15:34, Nathan Lynch a =C3=A9crit=C2=A0:
->> Laurent Dufour <ldufour@linux.ibm.com> writes:
->>> When a CPU is hot added, the CPU ids are taken from the available mask =
-from
->>> the lower possible set. If that set of values was previously used for C=
-PU
->>> attached to a different node, this seems to application like if these C=
-PUs
->>> have migrated from a node to another one which is not expected in real
->>> life.
->>=20
->> This seems like a problem that could affect other architectures or
->> platforms? I guess as long as arch code is responsible for placing new
->> CPUs in cpu_present_mask, that code will have the responsibility of
->> ensuring CPU IDs' NUMA assignments remain stable.
->
-> Actually, x86 is already handling this issue in the arch code specific
-> code, see 8f54969dc8d6 ("x86/acpi: Introduce persistent storage for
-> cpuid <-> apicid mapping"). I didn't check for other architectures but
-> as CPU id allocation is in the arch part, I believe this is up to each
-> arch to deal with this issue.
->
-> Making the CPU id allocation common to all arch is outside the scope
-> of this patch.
-
-Well... we'd better avoid a situation where architectures impose
-different policies in this area. (I guess we're already in this
-situation, which is the problem.) A more maintainable way to achieve
-that would be to put the higher-level policy in arch-independent code,
-as much as possible.
-
-I don't insist, though.
 
 
->> I don't know, should we not fail the request instead of doing the
->> ABI-breaking thing the code in this change is trying to prevent? I
->> don't think a warning in the kernel log is going to help any
->> application that would be affected by this.
->
-> That's a really good question. One should argue that the most
-> important is to satisfy the CPU add operation, assuming that only few
-> are interested in the CPU numbering, while others would prefer the CPU
-> adding to fail (which may prevent adding CPUs on another nodes if the
-> whole operation is aborted as soon as a CPU add is failing).
->
-> I was conservative here, but if failing the operation is the best
-> option, then this will make that code simpler, removing the backward
-> jump.
->
-> Who is deciding?
+Le 30/03/2021 à 19:56, Daniel Walker a écrit :
+> This code allows architectures to use a generic builtin command line.
+> The state of the builtin command line options across architecture is
+> diverse. MIPS and X86 once has similar systems, then mips added some
+> options to allow extending the command line. Powerpc did something
+> simiar in adding the ability to extend. Even with mips and powerpc
+> enhancement the needs of Cisco are not met on these platforms.
 
-I favor failing the request. Apart from the implications for user space,
-it's not clear to me that allowing the cpu-node relationship to change
-once initialized is benign in terms of internal kernel assumptions
-(e.g. sched domains, workqueues?). And as you say, it would make for
-more straightforward code.
+Can you explain in the commit what is the need ? Nobody mind "who" needs it I think, but "what" is 
+needed would be valuable to know.
+
+> 
+> The code in this commit unifies the code into a generic
+> header file under the CONFIG_GENERIC_CMDLINE option. When this
+> option is enabled the architecture can call the cmdline_add_builtin()
+> to add the builtin command line.
+> 
+> This unified implementation offers the same functionality needed by
+> Cisco on all platform which use it.
+
+Cisco cisco cisco ... Can we avoid mentionning companies like this ? I can't see patches mentioning 
+google or IBM or other companies to that extend.
+
+> 
+> Cc: xe-linux-external@cisco.com
+> Signed-off-by: Ruslan Bilovol <rbilovol@cisco.com>
+> Signed-off-by: Daniel Walker <danielwa@cisco.com>
+> ---
+>   include/linux/cmdline.h | 98 +++++++++++++++++++++++++++++++++++++++++
+>   init/Kconfig            | 72 ++++++++++++++++++++++++++++++
+>   2 files changed, 170 insertions(+)
+>   create mode 100644 include/linux/cmdline.h
+> 
+> diff --git a/include/linux/cmdline.h b/include/linux/cmdline.h
+> new file mode 100644
+> index 000000000000..439c4585feba
+> --- /dev/null
+> +++ b/include/linux/cmdline.h
+> @@ -0,0 +1,98 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_CMDLINE_H
+> +#define _LINUX_CMDLINE_H
+> +
+> +/*
+> + *
+> + * Copyright (C) 2006,2021. Cisco Systems, Inc.
+> + *
+> + * Generic Append/Prepend cmdline support.
+> + */
+> +
+> +#if defined(CONFIG_GENERIC_CMDLINE) && defined(CONFIG_CMDLINE_BOOL)
+> +
+> +#ifndef CONFIG_CMDLINE_OVERRIDE
+> +#define GENERIC_CMDLINE_NEED_STRLCAT
+
+Does it matter ?
+
+Only powerpc needs that really. And prom_strlcat() is there anyway, so why not just use it when 
+needed and rely on GCC to optimise it out when possible ?
+
+
+> +#define CMDLINE_PREPEND CONFIG_CMDLINE_PREPEND
+> +#define CMDLINE_APPEND CONFIG_CMDLINE_APPEND
+
+What are those defines used for ?
+
+> +
+> +/*
+> + * This function will append or prepend a builtin command line to the command
+> + * line provided by the bootloader. Kconfig options can be used to alter
+> + * the behavior of this builtin command line.
+> + * @dest: The destination of the final appended/prepended string
+> + * @src: The starting string or NULL if there isn't one.
+> + * @tmp: temporary space used for prepending
+> + * @length: the maximum length of the strings above.
+> + * @cmdline_strlcpy: point to a compatible strlcpy
+> + * @cmdline_strlcat: point to a compatible strlcat
+> + */
+> +static inline void
+> +__cmdline_add_builtin(char *dest, const char *src, char *tmp, unsigned long length,
+> +		size_t (*cmdline_strlcpy)(char *dest, const char *src, size_t size),
+> +		size_t (*cmdline_strlcat)(char *dest, const char *src, size_t count))
+
+I still can see the advantage of passing strlcpy and strlcat as functions to the function.
+
+Can we instead use macros defined by default that can be overriden by powerpc ?
+
+Something like
+
+#ifndef cmdline_strlcat
+#define cmdline_strlcat strlcat
+#define cmdline_strlcpy strlcpy
+#endif
+
+> +{
+> +	if (src != dest && src != NULL) {
+> +		cmdline_strlcpy(dest, " ", length);
+> +		cmdline_strlcat(dest, src, length);
+> +	}
+> +
+> +	if (sizeof(CONFIG_CMDLINE_APPEND) > 1)
+> +		cmdline_strlcat(dest, " " CONFIG_CMDLINE_APPEND, length);
+> +
+> +	if (sizeof(CONFIG_CMDLINE_PREPEND) > 1) {
+> +		cmdline_strlcpy(tmp, CONFIG_CMDLINE_PREPEND " ", length);
+> +		cmdline_strlcat(tmp, dest, length);
+> +		cmdline_strlcpy(dest, tmp, length);
+> +	}
+> +}
+> +
+> +#define cmdline_add_builtin_custom(dest, src, length, label, cmdline_strlcpy, cmdline_strlcat)			\
+> +{														\
+> +	if (sizeof(CONFIG_CMDLINE_PREPEND) > 1) {								\
+> +		static label char cmdline_tmp_space[length];							\
+> +		__cmdline_add_builtin(dest, src, cmdline_tmp_space, length, cmdline_strlcpy, cmdline_strlcat);	\
+> +	} else if (sizeof(CONFIG_CMDLINE_APPEND) > 1) {								\
+> +		__cmdline_add_builtin(dest, src, NULL, length, cmdline_strlcpy, cmdline_strlcat);		\
+> +	}													\
+> +}
+
+I still don't like passing section names to a macro that way, just for powerpc.
+That tmp space is only needed when source and destination are identical, and it is easy to ensure 
+powerpc doesn't need that. For others, just use __initdata section.
+
+Also the variable length is not really necessary, only COMMAND_LINE_SIZE is used everywhere.
+
+> +#define cmdline_add_builtin(dest, src, length)	\
+> +	cmdline_add_builtin_custom(dest, src, length, __initdata, strlcpy, strlcat)
+> +
+> +#else /* CONFIG_CMDLINE_OVERRIDE */
+> +
+> +#define CMDLINE_PREPEND CONFIG_CMDLINE_PREPEND
+> +#define CMDLINE_APPEND CONFIG_CMDLINE_APPEND
+> +
+> +static inline void
+> +__cmdline_add_builtin_custom(char *dest, const char *src, unsigned long length,
+> +		size_t (*cmdline_strlcpy)(char *dest, const char *src, size_t size))
+> +{
+> +	cmdline_strlcpy(dest, CONFIG_CMDLINE_PREPEND " " CONFIG_CMDLINE_APPEND, length);
+> +}
+> +#define cmdline_add_builtin_custom(dest, src, length, label, cmdline_strlcpy, cmdline_strlcat)	\
+> +	__cmdline_add_builtin_custom(dest, src, length, cmdline_strlcpy)
+> +#define cmdline_add_builtin(dest, src, length)	\
+> +	__cmdline_add_builtin_custom(dest, src, length, strlcpy)
+> +#endif /* !CONFIG_CMDLINE_OVERRIDE */
+> +
+> +#else /* !CONFIG_GENERIC_CMDLINE || !CONFIG_CMDLINE_BOOL */
+> +
+> +#define CMDLINE_PREPEND ""
+> +#define CMDLINE_APPEND ""
+> +
+> +static inline void
+> +__cmdline_add_builtin_custom(char *dest, const char *src, unsigned long length,
+> +		size_t (*cmdline_strlcpy)(char *dest, const char *src, size_t size))
+> +{
+> +	if (src != NULL)
+> +		cmdline_strlcpy(dest, src, length);
+> +}
+> +#define cmdline_add_builtin_custom(dest, src, length, label, cmdline_strlcpy, cmdline_strlcat)	\
+> +	__cmdline_add_builtin_custom(dest, src, length, cmdline_strlcpy)
+> +#define cmdline_add_builtin(dest, src, length)	\
+> +	__cmdline_add_builtin_custom(dest, src, length, strlcpy)	\
+> +
+> +#endif /* CONFIG_GENERIC_CMDLINE */
+
+There are too many alternatives, they could be easily refactored to a single instance reducing the 
+number of #ifdefs.
+
+> +
+> +#endif /* _LINUX_CMDLINE_H */
+> diff --git a/init/Kconfig b/init/Kconfig
+> index 5f5c776ef192..84f06f62550a 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -2034,6 +2034,78 @@ config PROFILING
+>   config TRACEPOINTS
+>   	bool
+>   
+> +config GENERIC_CMDLINE
+> +	bool
+> +
+> +config GENERIC_CMDLINE_OF
+> +	bool
+
+Oh ? A new one ? What do we need something special for OF ?
+
+> +
+> +
+> +if GENERIC_CMDLINE
+> +
+> +config CMDLINE_BOOL
+> +	bool "Built-in kernel command line"
+> +	help
+> +	  Allow for specifying boot arguments to the kernel at
+> +	  build time.  On some systems (e.g. embedded ones), it is
+> +	  necessary or convenient to provide some or all of the
+> +	  kernel boot arguments with the kernel itself (that is,
+> +	  to not rely on the boot loader to provide them.)
+> +
+> +	  To compile command line arguments into the kernel,
+> +	  set this option to 'Y', then fill in the
+> +	  the boot arguments in CONFIG_CMDLINE.
+> +
+> +	  Systems with fully functional boot loaders (i.e. non-embedded)
+> +	  should leave this option set to 'N'.
+> +
+> +config CMDLINE_APPEND
+> +	string "Built-in kernel command string append"
+> +	depends on CMDLINE_BOOL
+> +	default ""
+
+By doing the following instead of using depends
+
+	string "Built-in kernel command string append" if CMDLINE_BOOL
+	default ""
+
+you could have CMDLINE_APPEND defined all the time and avoid related #ifdefs.
+
+> +	help
+> +	  Enter arguments here that should be compiled into the kernel
+> +	  image and used at boot time.  If the boot loader provides a
+> +	  command line at boot time, this string is appended to it to
+> +	  form the full kernel command line, when the system boots.
+> +
+> +	  However, you can use the CONFIG_CMDLINE_OVERRIDE option to
+> +	  change this behavior.
+> +
+> +	  In most cases, the command line (whether built-in or provided
+> +	  by the boot loader) should specify the device for the root
+> +	  file system.
+> +
+> +config CMDLINE_PREPEND
+> +	string "Built-in kernel command string prepend"
+> +	depends on CMDLINE_BOOL
+> +	default ""
+
+Same
+
+
+> +	help
+> +	  Enter arguments here that should be compiled into the kernel
+> +	  image and used at boot time.  If the boot loader provides a
+> +	  command line at boot time, this string is prepended to it to
+> +	  form the full kernel command line, when the system boots.
+> +
+> +	  However, you can use the CONFIG_CMDLINE_OVERRIDE option to
+> +	  change this behavior.
+> +
+> +	  In most cases, the command line (whether built-in or provided
+> +	  by the boot loader) should specify the device for the root
+> +	  file system.
+> +
+> +config CMDLINE_OVERRIDE
+
+Most platforms use CMDLINE_FORCE. Why change the majority to minority ?
+
+> +	bool "Built-in command line overrides boot loader arguments"
+> +	depends on CMDLINE_BOOL
+> +	help
+> +	  Set this option to 'Y' to have the kernel ignore the boot loader
+> +	  command line, and use ONLY the built-in command line. In this case
+> +	  append and prepend strings are concatenated to form the full
+> +	  command line.
+> +
+> +	  This is used to work around broken boot loaders.  This should
+> +	  be set to 'N' under normal conditions.
+> +endif
+> +
+
+Looks like we are still missing the one used at least by powerpc today: CMDLINE_DEFAULT_BOOTLOADER, 
+which uses bootloader arguments if provided, builtin arguments otherwise.
+
+>   endmenu		# General setup
+>   
+>   source "arch/Kconfig"
+> 
