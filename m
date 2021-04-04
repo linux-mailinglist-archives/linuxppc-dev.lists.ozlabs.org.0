@@ -2,74 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5524C35360E
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Apr 2021 02:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7625353611
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Apr 2021 02:52:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FCZvQ2T1Qz3bth
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Apr 2021 10:50:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FCZxW5BNZz3c2T
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Apr 2021 10:51:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lzw4/pQG;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fqX4IDNY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
- helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
+ helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lzw4/pQG; dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
- [IPv6:2607:f8b0:4864:20::1034])
+ header.s=20161025 header.b=fqX4IDNY; dkim-atps=neutral
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FCZtw30FMz2yxl
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Apr 2021 10:49:44 +1000 (AEST)
-Received: by mail-pj1-x1034.google.com with SMTP id t23so1129991pjy.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Apr 2021 17:49:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FCZx56JpGz2xgM
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Apr 2021 10:51:37 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ kk2-20020a17090b4a02b02900c777aa746fso4188991pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Apr 2021 17:51:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:references:in-reply-to:mime-version:message-id
  :content-transfer-encoding;
- bh=40faVX+5+SnZpR7dHTidKS5RcQ7ZL/MEviq5HIQ2L3g=;
- b=lzw4/pQGi8OVAqBKY/e6JpTlbWByV1p1AjjukR+jy7sH81Kt9UzL+AmsICNixyFiCV
- omvwOYSiqxbrPsQFkb4qC41acLyESZ2OyQV0/b0xmajFT/3CUmMr3Ws+4DgubITMwJib
- SN7zXSmR+QGoMScv27RGC7HtYrs2yy7BiTqilqgvzsUr0Bkmv09JF4L28rRGx+7KEpRq
- VqbPYcjqiW3vXQX2gtrHjBy+vn8VCdG/YdbusUB8S07XL62U0nlGT9fQ7Q9/GRT2xr/3
- CirNzbrxgKAE0l3NB2mxqsziiu7/EeKaHQOXwZBMO58/h2TQj4sW+stes0GcQl6K1ThM
- b6ew==
+ bh=f078oh1g39w4WziWK7gA8cApPdqcfS6s3f3bv1Rg6UU=;
+ b=fqX4IDNYyG1oHhpmKKIOae3C9SIlk4gb0bCin3Faa01WY9h1/UZcOdgUhOyb6MrDfq
+ 7dttbJrvcUoKe0/3DC0ndWIEhIKB0YmARgErD5uHS0UVxmDo5NLNb1lDIZcluDYm70kg
+ 4eM5P59dfbbpzuhPjFw4R7bBKNCwpOmas6yqd5XXUzli1PvSj1TAnhYJAIpAV/bxLqn/
+ 3M0CtqxvkHIS5Bzyc1EYMOifB6pz9aodfA9V00v9CRoiH58cSKof3PoMWFU7Kc1xjnSg
+ tp01IgoaWQoFmzNbsUe/LwtZRwmJJXNj43h2fWX0bFp8yUrKuEGXfk00Ko5a4BQH4DZF
+ BDrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=40faVX+5+SnZpR7dHTidKS5RcQ7ZL/MEviq5HIQ2L3g=;
- b=Yyc4gzl8jAynukq4yKWTVS5IgkY8hjrFb3Ncbcv4PUiS90UUwGTH/jlBAXAs961qJc
- oZC26wKsiVYBTdMu6Kugdi6xW2BckA1MNGJCAZHGEgIAmlmp6nSsrGIVx1a6MZaz7SNW
- UGzZ+e5aQ/QFRz6L4WW6Yg0F1ombukJYZznGfzhCDbHAgWFatvwfCl7JHbPReinePaw9
- 5ytzAKTmMBoFUyVTHPTtv0MfNmWFqM2QFc6xp+U1Qi6OrXletwsT0rgmwI6vEK4uUC/s
- KyU1rof7fnrN0ty8hx4xWayBNyF0wARvTHHabpseFz+bluOXJL8CK6Bi+BjnbJ3CKlm2
- cpbQ==
-X-Gm-Message-State: AOAM531+8PFvb3eKdKHLiNngqdxaM2ouuRpvtIcLu71aralGsjOXLe9K
- oHd9YYoLScfVSjMjKTnoO30jmZKtLuSmDg==
-X-Google-Smtp-Source: ABdhPJw1YxHnXzqHl7Xy8+oJj6gxl3yEnycHUzagCmJAYy7PlUWECneKLRrEkFbi2oCqCanWYPReKQ==
-X-Received: by 2002:a17:902:d2c7:b029:e6:34e2:7a83 with SMTP id
- n7-20020a170902d2c7b02900e634e27a83mr18401132plc.60.1617497381220; 
- Sat, 03 Apr 2021 17:49:41 -0700 (PDT)
-Received: from localhost ([1.132.155.16])
- by smtp.gmail.com with ESMTPSA id o4sm11974268pfk.15.2021.04.03.17.49.39
+ bh=f078oh1g39w4WziWK7gA8cApPdqcfS6s3f3bv1Rg6UU=;
+ b=mXmsTa5obbjMgIkIPiUKRZt4PnktupejSKU8adxRmsyEEUXWR8wTacRfm9wizWjinY
+ RfG5I2Ne4S6a194yG0+Wx13LrlNSd83y9ymDVUvjXOsTYTGCzjYEMjwqLR8e86XYasI3
+ XM40nt3FGUgWhyXSqw19FfsYDp2g5K/pJdQmBQpNTtR3OCgcGtHcCsy8Nu8e2uAAYoNl
+ ryguSBsYYs1TnMVKDwMGrvRxrngNfpR8FRMoFHMzK2mUMtpC4nuhmYxoqu/CmMxevTeO
+ MGWu2pGqrJKtfdBTl3LqK88m7uKyI5aopkH1iC10Tbqhjw99MSiKmU5sqDazyF9h92YO
+ krZA==
+X-Gm-Message-State: AOAM5323rcHBfUqi55pQwF0i5tk1xU3TcclTnVMKiY8oTzIjulj7exnK
+ KaCfKiGd3GtET7i1I18aMASWa1BpniebwQ==
+X-Google-Smtp-Source: ABdhPJzOZkXdCYqLMHBohZ7uMZvJAE6SjJEHVSUsD1xXvIhUuaTwa2lz01MCVkuT3Zq6kASTnxBj/Q==
+X-Received: by 2002:a17:902:b908:b029:e6:3e0a:b3cc with SMTP id
+ bf8-20020a170902b908b02900e63e0ab3ccmr18590950plb.68.1617497494480; 
+ Sat, 03 Apr 2021 17:51:34 -0700 (PDT)
+Received: from localhost ([1.132.158.137])
+ by smtp.gmail.com with ESMTPSA id l19sm11596213pjt.16.2021.04.03.17.51.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 03 Apr 2021 17:49:40 -0700 (PDT)
-Date: Sun, 04 Apr 2021 10:49:34 +1000
+ Sat, 03 Apr 2021 17:51:34 -0700 (PDT)
+Date: Sun, 04 Apr 2021 10:51:27 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
 Subject: Re: [PATCH 04/14] powerpc/64s: avoid reloading (H)SRR registers if
  they are still valid
 To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
 References: <20210315220402.260594-1-npiggin@gmail.com>
  <20210315220402.260594-5-npiggin@gmail.com>
- <877dlk1fbg.fsf@mpe.ellerman.id.au>
-In-Reply-To: <877dlk1fbg.fsf@mpe.ellerman.id.au>
+ <874kgo14qw.fsf@mpe.ellerman.id.au>
+In-Reply-To: <874kgo14qw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1617497349.0g6vi5v1lf.astroid@bobo.none>
+Message-Id: <1617497387.f97fep67d5.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,28 +88,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of April 3, 2021 8:39 am:
+Excerpts from Michael Ellerman's message of April 3, 2021 12:28 pm:
 > Nicholas Piggin <npiggin@gmail.com> writes:
->> When an interrupt is taken, the SRR registers are set to return to
->> where it left off. Unless they are modified in the meantime, or the
->> return address or MSR are modified, there is no need to reload these
->> registers when returning from interrupt.
->>
->> Introduce per-CPU flags that track the validity of SRR and HSRR
->> registers, clear them when returning from interrupt, using the registers
->> for something else (e.g., OPAL calls), or adjusting return address or MS=
-R.
->>
->> This improves the performance of interrupt returns.
->>
->> XXX: may not need to invalidate both hsrr and srr all the time
->>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
+>> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_=
+64.S
+>> index ccf913cedd29..b466b3e1bb3f 100644
+>> --- a/arch/powerpc/kernel/entry_64.S
+>> +++ b/arch/powerpc/kernel/entry_64.S
+>> @@ -64,6 +64,30 @@ exception_marker:
+>>  	.section	".text"
+>>  	.align 7
+>> =20
+>> +.macro DEBUG_SRR_VALID srr
+>> +#ifdef CONFIG_PPC_RFI_SRR_DEBUG
+>> +	.ifc \srr,srr
+>> +	mfspr	r11,SPRN_SRR0
+>> +	ld	r12,_NIP(r1)
+>> +100:	tdne	r11,r12
+>> +	EMIT_BUG_ENTRY 100b,__FILE__,__LINE__,(BUGFLAG_WARNING | BUGFLAG_ONCE)
 >=20
-> I needed something like below to get 32-bit building.
+> This always points at *this* line, not the caller. Works better with the
+> patch below.
 
-That looks much better.
+Good thinking.
 
 Thanks,
 Nick
@@ -117,157 +119,69 @@ Nick
 > cheers
 >=20
 >=20
-> diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm=
-/ptrace.h
-> index 6d6237e0cbd7..7f9bbd19db10 100644
-> --- a/arch/powerpc/include/asm/ptrace.h
-> +++ b/arch/powerpc/include/asm/ptrace.h
-> @@ -153,15 +153,21 @@ static inline void regs_set_return_value(struct pt_=
-regs *regs, unsigned long rc)
->  	regs->gpr[3] =3D rc;
->  }
+> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_6=
+4.S
+> index b466b3e1bb3f..ada76b1279f9 100644
+> --- a/arch/powerpc/kernel/entry_64.S
+> +++ b/arch/powerpc/kernel/entry_64.S
+> @@ -64,26 +64,26 @@
+>  	.section	".text"
+>  	.align 7
 > =20
-> -static inline void regs_set_return_ip(struct pt_regs *regs, unsigned lon=
-g ip)
-> +static inline void invalidate_srrs(void)
->  {
-> -	regs->nip =3D ip;
->  #ifdef CONFIG_PPC_BOOK3S_64
-> +	// XXX: We may not need to invalidate both hsrr and srr all the time
->  	local_paca->hsrr_valid =3D 0;
->  	local_paca->srr_valid =3D 0;
+> -.macro DEBUG_SRR_VALID srr
+> +.macro DEBUG_SRR_VALID srr line
+>  #ifdef CONFIG_PPC_RFI_SRR_DEBUG
+>  	.ifc \srr,srr
+>  	mfspr	r11,SPRN_SRR0
+>  	ld	r12,_NIP(r1)
+>  100:	tdne	r11,r12
+> -	EMIT_BUG_ENTRY 100b,__FILE__,__LINE__,(BUGFLAG_WARNING | BUGFLAG_ONCE)
+> +	EMIT_BUG_ENTRY 100b,__FILE__,\line,(BUGFLAG_WARNING | BUGFLAG_ONCE)
+>  	mfspr	r11,SPRN_SRR1
+>  	ld	r12,_MSR(r1)
+>  100:	tdne	r11,r12
+> -	EMIT_BUG_ENTRY 100b,__FILE__,__LINE__,(BUGFLAG_WARNING | BUGFLAG_ONCE)
+> +	EMIT_BUG_ENTRY 100b,__FILE__,\line,(BUGFLAG_WARNING | BUGFLAG_ONCE)
+>  	.else
+>  	mfspr	r11,SPRN_HSRR0
+>  	ld	r12,_NIP(r1)
+>  100:	tdne	r11,r12
+> -	EMIT_BUG_ENTRY 100b,__FILE__,__LINE__,(BUGFLAG_WARNING | BUGFLAG_ONCE)
+> +	EMIT_BUG_ENTRY 100b,__FILE__,\line,(BUGFLAG_WARNING | BUGFLAG_ONCE)
+>  	mfspr	r11,SPRN_HSRR1
+>  	ld	r12,_MSR(r1)
+>  100:	tdne	r11,r12
+> -	EMIT_BUG_ENTRY 100b,__FILE__,__LINE__,(BUGFLAG_WARNING | BUGFLAG_ONCE)
+> +	EMIT_BUG_ENTRY 100b,__FILE__,\line,(BUGFLAG_WARNING | BUGFLAG_ONCE)
+>  	.endif
 >  #endif
->  }
+>  .endm
+> @@ -358,7 +358,7 @@ END_BTB_FLUSH_SECTION
+>  	mtspr	SPRN_SRR0,r4
+>  	mtspr	SPRN_SRR1,r5
+>  1:
+> -	DEBUG_SRR_VALID srr
+> +	DEBUG_SRR_VALID srr __LINE__
 > =20
-> +static inline void regs_set_return_ip(struct pt_regs *regs, unsigned lon=
-g ip)
-> +{
-> +	regs->nip =3D ip;
-> +	invalidate_srrs();
-> +}
-> +
->  static inline void regs_add_return_ip(struct pt_regs *regs, long offset)
->  {
->  	regs_set_return_ip(regs, regs->nip + offset);
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.=
-c
-> index 200b4805f999..82623b57e2d6 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -98,8 +98,7 @@ static void check_if_tm_restore_required(struct task_st=
-ruct *tsk)
->  	    !test_thread_flag(TIF_RESTORE_TM)) {
->  		tsk->thread.ckpt_regs.msr =3D tsk->thread.regs->msr;
->  		set_thread_flag(TIF_RESTORE_TM);
-> -		local_paca->hsrr_valid =3D 0;
-> -		local_paca->srr_valid =3D 0;
-> +		invalidate_srrs();
->  	}
->  }
+>  BEGIN_FTR_SECTION
+>  	stdcx.	r0,0,r1			/* to clear the reservation */
+> @@ -753,7 +753,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>  	stb	r4,PACAHSRR_VALID(r13)
+>  #endif
+>  	.endif
+> -	DEBUG_SRR_VALID \srr
+> +	DEBUG_SRR_VALID \srr __LINE__
 > =20
-> @@ -164,8 +163,7 @@ static void __giveup_fpu(struct task_struct *tsk)
->  	if (cpu_has_feature(CPU_FTR_VSX))
->  		msr &=3D ~MSR_VSX;
->  	tsk->thread.regs->msr =3D msr;
-> -	local_paca->hsrr_valid =3D 0;
-> -	local_paca->srr_valid =3D 0;
-> +	invalidate_srrs();
->  }
+>  BEGIN_FTR_SECTION
+>  	stdcx.	r0,0,r1		/* to clear the reservation */
+> @@ -825,7 +825,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS=
+)
+>  	stb	r4,PACAHSRR_VALID(r13)
+>  #endif
+>  	.endif
+> -	DEBUG_SRR_VALID \srr
+> +	DEBUG_SRR_VALID \srr __LINE__
 > =20
->  void giveup_fpu(struct task_struct *tsk)
-> @@ -249,8 +247,7 @@ static void __giveup_altivec(struct task_struct *tsk)
->  	if (cpu_has_feature(CPU_FTR_VSX))
->  		msr &=3D ~MSR_VSX;
->  	tsk->thread.regs->msr =3D msr;
-> -	local_paca->hsrr_valid =3D 0;
-> -	local_paca->srr_valid =3D 0;
-> +	invalidate_srrs();
->  }
-> =20
->  void giveup_altivec(struct task_struct *tsk)
-> @@ -566,8 +563,7 @@ void notrace restore_math(struct pt_regs *regs)
->  		msr_check_and_clear(new_msr);
-> =20
->  		regs->msr |=3D new_msr | fpexc_mode;
-> -		local_paca->hsrr_valid =3D 0;
-> -		local_paca->srr_valid =3D 0;
-> +		invalidate_srrs();
->  	}
->  }
->  #endif /* CONFIG_PPC_BOOK3S_64 */
-> @@ -1293,8 +1289,7 @@ struct task_struct *__switch_to(struct task_struct =
-*prev,
->  			atomic_read(&current->mm->context.vas_windows)))
->  			asm volatile(PPC_CP_ABORT);
->  	}
-> -	local_paca->hsrr_valid =3D 0;
-> -	local_paca->srr_valid =3D 0;
-> +	invalidate_srrs();
->  #endif /* CONFIG_PPC_BOOK3S_64 */
-> =20
->  	return last;
-> @@ -1884,8 +1879,7 @@ void start_thread(struct pt_regs *regs, unsigned lo=
-ng start, unsigned long sp)
->  	current->thread.load_tm =3D 0;
->  #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
-> =20
-> -	local_paca->hsrr_valid =3D 0;
-> -	local_paca->srr_valid =3D 0;
-> +	invalidate_srrs();
->  }
->  EXPORT_SYMBOL(start_thread);
-> =20
-> @@ -1936,8 +1930,7 @@ int set_fpexc_mode(struct task_struct *tsk, unsigne=
-d int val)
->  	if (regs !=3D NULL && (regs->msr & MSR_FP) !=3D 0) {
->  		regs->msr =3D (regs->msr & ~(MSR_FE0|MSR_FE1))
->  			| tsk->thread.fpexc_mode;
-> -		local_paca->hsrr_valid =3D 0;
-> -		local_paca->srr_valid =3D 0;
-> +		invalidate_srrs();
->  	}
->  	return 0;
->  }
-> @@ -1990,8 +1983,7 @@ int set_endian(struct task_struct *tsk, unsigned in=
-t val)
->  	else
->  		return -EINVAL;
-> =20
-> -	local_paca->hsrr_valid =3D 0;
-> -	local_paca->srr_valid =3D 0;
-> +	invalidate_srrs();
-> =20
->  	return 0;
->  }
-> diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscall=
-s.c
-> index 4cb38afa28a8..9d1d6070a516 100644
-> --- a/arch/powerpc/kernel/syscalls.c
-> +++ b/arch/powerpc/kernel/syscalls.c
-> @@ -115,8 +115,8 @@ SYSCALL_DEFINE0(switch_endian)
->  	struct thread_info *ti;
-> =20
->  	current->thread.regs->msr ^=3D MSR_LE;
-> -	local_paca->hsrr_valid =3D 0;
-> -	local_paca->srr_valid =3D 0;
-> +
-> +	invalidate_srrs();
-> =20
->  	/*
->  	 * Set TIF_RESTOREALL so that r3 isn't clobbered on return to
-> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-> index 96505d4bba1c..2b94bf21d6ae 100644
-> --- a/arch/powerpc/lib/sstep.c
-> +++ b/arch/powerpc/lib/sstep.c
-> @@ -3480,8 +3480,7 @@ int emulate_step(struct pt_regs *regs, struct ppc_i=
-nst instr)
->  	unsigned long val;
->  	unsigned long ea;
-> =20
-> -	local_paca->hsrr_valid =3D 0;
-> -	local_paca->srr_valid =3D 0;
-> +	invalidate_srrs();
-> =20
->  	r =3D analyse_instr(&op, regs, instr);
->  	if (r < 0)
+>  BEGIN_FTR_SECTION
+>  	stdcx.	r0,0,r1		/* to clear the reservation */
 >=20
