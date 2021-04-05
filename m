@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B90F353AE6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 03:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9E1353AE7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 03:39:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FDCxD35N7z3hNQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 11:38:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FDCxh1nPnz3hSq
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 11:39:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=t7RQa1AA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=HHbOVKHi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
- helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=t7RQa1AA; dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
+ header.s=20161025 header.b=HHbOVKHi; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FDCZ843Vgz3cc1
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Apr 2021 11:22:24 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id x126so2205100pfc.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Apr 2021 18:22:24 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FDCZC5M6Fz3ckP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Apr 2021 11:22:27 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id y32so3983460pga.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Apr 2021 18:22:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=vFMMQgThsUAc2S0LaT7h9p9PH0nf5CHdrn+oC6qHpCo=;
- b=t7RQa1AAPbICBHtL8E70gqsHEBscLP9xgAq9L4rDfPNtEPV/RQgBJ9S/DH4OmSdp1+
- PFyah3EPxGggyNqvxja+hPRdFokmnWm/yVj4+gOOoyQHwNut/JxFa0dYq1tU7PTA4x2u
- D7L5vAy+m7IroXLg4/GHcw7zDPvKdG3Q+QQR9Um+H1LB4DceerKeucxt8FthR60FiYk1
- I2A0L3/E9wD8Jl4OePJ7G/X6dfwxEkLi9zLNZfNbSAqE4vJ5lOzsvbJuvoY1fpd6CjsZ
- mSEq1mygCHkNZW/W18HAsvGd+zd8HunASvkcReeradGU37kHChRyfg9i1KMhyJK+vVAm
- +IAQ==
+ bh=pdmRKC0+A/lxg5MleIGjZCeeIx1sWRVwvGao9UDQW6o=;
+ b=HHbOVKHiOBWr+G8xFW7RIRSZv8tUFBfxIdYuJfm3IEJ25RcDfky9eSniF+vD1y6Yd+
+ 0Z+yFBaSDjBo+WM2/UNo+8mG5L9h9vpITNQ6a71YAd4lckcH2ocjiFhY+YFnk24+b0ih
+ M/C60OQ0YC4on9bSP7XR/BcL5jJmzt4A/QQvEJ6RxYKAO1OPE1YfyQ6xLH21ZckjAkMs
+ W6gpPix22tLER1Pb/H635cRroX5jnLygmNTIF3mgn8h4b1QL/hAWfFrVXiJPF1BuyTdr
+ +vfQDIi6DCBpZPzdtebaRC+iIst8Mnvao/XHrYzpKSCog5nkagjCuRor4LblZWtLWwB7
+ at1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=vFMMQgThsUAc2S0LaT7h9p9PH0nf5CHdrn+oC6qHpCo=;
- b=IQALhj5OifSD7nG0JusVSOhBtH/NR/wdjxBV/FSFAliZJvXKfQ2UYGTpYpvPc0UyfX
- DG1tVrtFJWDSnUhlQ70tZe7avjvC2iDxz+Rt6YzA5y/BEh4CC5HaMO3tqOpuIImak7H1
- 1fCFxUT6EKyxIJWg0DOVtWsNAkzDfy9Lh6dJtzV6bM8f/mQSSDmgD1gSn2MKA4qyQcvu
- rmciiBtGf/3TfnoyLPak5rVn9E5dEE+QBpf4KY+TOTdDoaTsrGinH90pJz28pi43skRt
- TzZQA+f52brs2nD3/07WmlyyB623tVdg9xhfFbAlUZnHYHyOyjoMXqPoyYdt89t3cUvk
- ppgQ==
-X-Gm-Message-State: AOAM531oVzt/Qmpf2RHsfcC2NkvmHKmW2diDqfEDqlRixEl0sVzVW1eI
- iBGQwy07ajA//hog+98236c=
-X-Google-Smtp-Source: ABdhPJw8R1k5TWI9uLfaH0DflPKY0792pji+A58QORsoUYVY/k19haFzvL7nlhHgJF/feZXhIgIMbA==
-X-Received: by 2002:a65:610f:: with SMTP id z15mr20974993pgu.360.1617585742986; 
- Sun, 04 Apr 2021 18:22:22 -0700 (PDT)
+ bh=pdmRKC0+A/lxg5MleIGjZCeeIx1sWRVwvGao9UDQW6o=;
+ b=EkZ/0dQBpR/WzeFRJDOUYiB0HtCPn33LrZkiyc0AAh47t/Ry5vlSTEiqCBQdUfEXBd
+ wi2yhogCGXVcAeyqks7H3xLpCOdXdw31I8e/uRHAhWljJqvGs/7aUfC2UDuTxADC7pI7
+ TVKi+HYQULiEEmYC2WSUEtju2ImkE8lpT//syyKZrHM8rEdbaXArG15+83uTEAJDN7cn
+ lnGH4W+ocslMtUdXG1M9d7UXMYRWQlNZLHJIh3htFY4V+vxhiIn/amf4J3zGTw6uITUg
+ ovDhMwf5M+Zolau8WQMXDoh8i4G6I+kvZooHOoGpIkQpvEkg+9YX/Rz0kOL+XyBcBdXO
+ NYTA==
+X-Gm-Message-State: AOAM531XC3uCZ5VjZ0+KZggeCpjTwo4VjlCRehOoEd+UhuhtVg2/v7kl
+ S+WYNsgNXXFyFyP+A9WcbDguwr5ZzQQAlQ==
+X-Google-Smtp-Source: ABdhPJwSIFx8ukfEtjjf+im29WHCk6IgpkFeZtw1PSGg5YUWzCZXJbLote7uXh0iWV1wQg1JU6SGGw==
+X-Received: by 2002:a63:4415:: with SMTP id r21mr21215311pga.222.1617585745681; 
+ Sun, 04 Apr 2021 18:22:25 -0700 (PDT)
 Received: from bobo.ibm.com ([1.132.215.134])
- by smtp.gmail.com with ESMTPSA id e3sm14062536pfm.43.2021.04.04.18.22.20
+ by smtp.gmail.com with ESMTPSA id e3sm14062536pfm.43.2021.04.04.18.22.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Apr 2021 18:22:22 -0700 (PDT)
+ Sun, 04 Apr 2021 18:22:25 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v6 42/48] KVM: PPC: Book3S HV P9: Allow all P9 processors to
- enable nested HV
-Date: Mon,  5 Apr 2021 11:19:42 +1000
-Message-Id: <20210405011948.675354-43-npiggin@gmail.com>
+Subject: [PATCH v6 43/48] KVM: PPC: Book3S HV: small pseries_do_hcall cleanup
+Date: Mon,  5 Apr 2021 11:19:43 +1000
+Message-Id: <20210405011948.675354-44-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210405011948.675354-1-npiggin@gmail.com>
 References: <20210405011948.675354-1-npiggin@gmail.com>
@@ -85,28 +84,131 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All radix guests go via the P9 path now, so there is no need to limit
-nested HV to processors that support "mixed mode" MMU. Remove the
-restriction.
+Functionality should not be changed.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kvm/book3s_hv.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 20ced6c5edfd..5ef43d9b19bc 100644
+index 5ef43d9b19bc..4b4250c04117 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -5443,7 +5443,7 @@ static int kvmhv_enable_nested(struct kvm *kvm)
- {
- 	if (!nested)
- 		return -EPERM;
--	if (!cpu_has_feature(CPU_FTR_ARCH_300) || no_mixing_hpt_and_radix)
-+	if (!cpu_has_feature(CPU_FTR_ARCH_300))
- 		return -ENODEV;
+@@ -925,6 +925,7 @@ static int kvmppc_get_yield_count(struct kvm_vcpu *vcpu)
  
- 	/* kvm == NULL means the caller is testing if the capability exists */
+ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ {
++	struct kvm *kvm = vcpu->kvm;
+ 	unsigned long req = kvmppc_get_gpr(vcpu, 3);
+ 	unsigned long target, ret = H_SUCCESS;
+ 	int yield_count;
+@@ -940,7 +941,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		break;
+ 	case H_PROD:
+ 		target = kvmppc_get_gpr(vcpu, 4);
+-		tvcpu = kvmppc_find_vcpu(vcpu->kvm, target);
++		tvcpu = kvmppc_find_vcpu(kvm, target);
+ 		if (!tvcpu) {
+ 			ret = H_PARAMETER;
+ 			break;
+@@ -954,7 +955,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		target = kvmppc_get_gpr(vcpu, 4);
+ 		if (target == -1)
+ 			break;
+-		tvcpu = kvmppc_find_vcpu(vcpu->kvm, target);
++		tvcpu = kvmppc_find_vcpu(kvm, target);
+ 		if (!tvcpu) {
+ 			ret = H_PARAMETER;
+ 			break;
+@@ -970,12 +971,12 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 					kvmppc_get_gpr(vcpu, 6));
+ 		break;
+ 	case H_RTAS:
+-		if (list_empty(&vcpu->kvm->arch.rtas_tokens))
++		if (list_empty(&kvm->arch.rtas_tokens))
+ 			return RESUME_HOST;
+ 
+-		idx = srcu_read_lock(&vcpu->kvm->srcu);
++		idx = srcu_read_lock(&kvm->srcu);
+ 		rc = kvmppc_rtas_hcall(vcpu);
+-		srcu_read_unlock(&vcpu->kvm->srcu, idx);
++		srcu_read_unlock(&kvm->srcu, idx);
+ 
+ 		if (rc == -ENOENT)
+ 			return RESUME_HOST;
+@@ -1062,12 +1063,12 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 
+ 	case H_SET_PARTITION_TABLE:
+ 		ret = H_FUNCTION;
+-		if (nesting_enabled(vcpu->kvm))
++		if (nesting_enabled(kvm))
+ 			ret = kvmhv_set_partition_table(vcpu);
+ 		break;
+ 	case H_ENTER_NESTED:
+ 		ret = H_FUNCTION;
+-		if (!nesting_enabled(vcpu->kvm))
++		if (!nesting_enabled(kvm))
+ 			break;
+ 		ret = kvmhv_enter_nested_guest(vcpu);
+ 		if (ret == H_INTERRUPT) {
+@@ -1082,12 +1083,12 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		break;
+ 	case H_TLB_INVALIDATE:
+ 		ret = H_FUNCTION;
+-		if (nesting_enabled(vcpu->kvm))
++		if (nesting_enabled(kvm))
+ 			ret = kvmhv_do_nested_tlbie(vcpu);
+ 		break;
+ 	case H_COPY_TOFROM_GUEST:
+ 		ret = H_FUNCTION;
+-		if (nesting_enabled(vcpu->kvm))
++		if (nesting_enabled(kvm))
+ 			ret = kvmhv_copy_tofrom_guest_nested(vcpu);
+ 		break;
+ 	case H_PAGE_INIT:
+@@ -1098,7 +1099,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 	case H_SVM_PAGE_IN:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_page_in(vcpu->kvm,
++			ret = kvmppc_h_svm_page_in(kvm,
+ 						   kvmppc_get_gpr(vcpu, 4),
+ 						   kvmppc_get_gpr(vcpu, 5),
+ 						   kvmppc_get_gpr(vcpu, 6));
+@@ -1106,7 +1107,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 	case H_SVM_PAGE_OUT:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_page_out(vcpu->kvm,
++			ret = kvmppc_h_svm_page_out(kvm,
+ 						    kvmppc_get_gpr(vcpu, 4),
+ 						    kvmppc_get_gpr(vcpu, 5),
+ 						    kvmppc_get_gpr(vcpu, 6));
+@@ -1114,12 +1115,12 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 	case H_SVM_INIT_START:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_init_start(vcpu->kvm);
++			ret = kvmppc_h_svm_init_start(kvm);
+ 		break;
+ 	case H_SVM_INIT_DONE:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_init_done(vcpu->kvm);
++			ret = kvmppc_h_svm_init_done(kvm);
+ 		break;
+ 	case H_SVM_INIT_ABORT:
+ 		/*
+@@ -1129,7 +1130,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		 * Instead the kvm->arch.secure_guest flag is checked inside
+ 		 * kvmppc_h_svm_init_abort().
+ 		 */
+-		ret = kvmppc_h_svm_init_abort(vcpu->kvm);
++		ret = kvmppc_h_svm_init_abort(kvm);
+ 		break;
+ 
+ 	default:
 -- 
 2.23.0
 
