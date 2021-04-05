@@ -2,78 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF00354234
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 14:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B87F03543BF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 17:54:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FDVzl73mqz3btL
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 22:57:07 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=hBAf0+2S;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FDZws5kQRz2yx5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 01:54:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hBAf0+2S; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FDVzH3tTJz2yR2
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Apr 2021 22:56:42 +1000 (AEST)
-Received: by mail-pj1-x1036.google.com with SMTP id
- q6-20020a17090a4306b02900c42a012202so5791478pjg.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Apr 2021 05:56:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=0YtiwbqYkLccMG3bnBO8iydlOkwUwIDqxrr5g0NKREA=;
- b=hBAf0+2SE57nss5ko+9PrjrknSpih0HUAEm0NTheV2/MPMG3CJtmyPFN7Uru80PHCv
- QKERiOdKcnL6PQElrp8zs1cBM//r6bfC61oVVn300Nu0jyhShL0khyjFrpCBpgdLkc3V
- dVWkcNrBkU0AasGZLw6SqrFt4QqtjG/mtvY6flaMw6Y6Ao3yXnEdXekgEM5TmiHnAplK
- ZdnOXc1ldYp+V5Q9Atgj5jqyehWGdCecyEsk8r25deMj2RlvTOQ5DKr7GDtNy0dJ3sbx
- 0/AAIcvdnGW+3YmfVEvJ5JJgDzeRM7XUajB9+UBTG+IOUA1TzMQOjoBee7IHl1m9uyPI
- Xbag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=0YtiwbqYkLccMG3bnBO8iydlOkwUwIDqxrr5g0NKREA=;
- b=cA34mRCcsu4axDIR/1TdZpxrWhCmvZyDKeGhXIQgEVGtPuL3HPdydu8MxZ0OJ3q2kC
- yfmFxDPKmXE32Cypk0CnX4+5WvTQ7gDrJj2QpiH+BcSFCGM/I4JEfZdoInQcNy9q5lNX
- GScvyKGYcK0CK6pIOiiQGmFKCI19bfrpi9HgEXR2H942lAaWpn9yE7y6xtlMRkc9IXFn
- XQUsBDn400RJjbpYivdfTGW4hHwgoc9Z/NMAxl7CiwrLTtyJZu7NqHhgELq9qA7IpJ5r
- ahGeQwVOqElNOfbysOgZI3PF5UUbBogf6G89aocfvkUkJcRIZzzTatTxXnVYObk2CQ09
- ZWng==
-X-Gm-Message-State: AOAM531a6l51UKu0vhYw2oQSur2mpBUTX5jkcArI+MZ5Vm6TY/zvlawf
- h94/GZXiPO9UsWc/ci+PlXk6SKcqxGzcHw==
-X-Google-Smtp-Source: ABdhPJyu3AnZltVVeHnkQpP0oUTJ2Flc3XYpyOjO0F8yYFqgINPHP6ba44nI8s2T87HN1bP/eRUmpg==
-X-Received: by 2002:a17:902:165:b029:e7:3753:65e1 with SMTP id
- 92-20020a1709020165b02900e7375365e1mr24314128plb.10.1617627397894; 
- Mon, 05 Apr 2021 05:56:37 -0700 (PDT)
-Received: from localhost ([1.132.212.67])
- by smtp.gmail.com with ESMTPSA id g5sm17020258pfb.77.2021.04.05.05.56.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Apr 2021 05:56:37 -0700 (PDT)
-Date: Mon, 05 Apr 2021 22:56:31 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/64s: power4 nap fixup in C
-To: Michael Ellerman <mpe@ellerman.id.au>, Andreas Schwab
- <schwab@linux-m68k.org>
-References: <20210312012044.3660743-1-npiggin@gmail.com>
- <87y2e6fu7v.fsf__9754.75274478725$1616992871$gmane$org@mpe.ellerman.id.au>
- <87v99aj7tr.fsf__47134.2879392736$1617031867$gmane$org@igel.home>
- <87r1jyj5e1.fsf@igel.home> <1617262357.w4yq2kiecw.astroid@bobo.none>
-In-Reply-To: <1617262357.w4yq2kiecw.astroid@bobo.none>
-MIME-Version: 1.0
-Message-Id: <1617627247.3cjpyzcob4.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FDZwY3KYmz2yqD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Apr 2021 01:54:33 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FDZwK35ngz9v0ry;
+ Mon,  5 Apr 2021 17:54:25 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id x9xim_CI_Y_2; Mon,  5 Apr 2021 17:54:25 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FDZwK1FY7z9v0rx;
+ Mon,  5 Apr 2021 17:54:25 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6F6208B790;
+ Mon,  5 Apr 2021 17:54:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id FeLwWG8j-6eD; Mon,  5 Apr 2021 17:54:30 +0200 (CEST)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1860C8B75B;
+ Mon,  5 Apr 2021 17:54:30 +0200 (CEST)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id BF4AF67692; Mon,  5 Apr 2021 15:54:29 +0000 (UTC)
+Message-Id: <743e8639e744bfd4a525db78d47e56b655210808.1617638050.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/kconfig: Restore alphabetic order of the selects
+ under CONFIG_PPC
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon,  5 Apr 2021 15:54:29 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,277 +57,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of April 1, 2021 5:36 pm:
-> Excerpts from Andreas Schwab's message of March 30, 2021 2:23 am:
->> On M=C3=A4r 29 2021, Andreas Schwab wrote:
->>=20
->>> On M=C3=A4r 29 2021, Michael Ellerman wrote:
->>>
->>>> Nicholas Piggin <npiggin@gmail.com> writes:
->>>>> There is no need for this to be in asm, use the new intrrupt entry wr=
-apper.
->>>>>
->>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>>>> ---
->>>>> Hopefully this works on a real G5 now, but I couldn't reproduce the
->>>>> problem with QEMU.
->>>>
->>>> It still prevents my G5 from booting.
->>>
->>> I see differing failures.  What's common is that there is a pause of
->>> about 60 seconds before the crash occurs.  It looks like the crash
->>> occurs in power4_idle_nap+0x30/0x34.  Unfortuately, the BootX console i=
-s
->>> too small to see enough.
->>=20
->> I was now able to see the messages on the VGA console, and the problem
->> is actually that the cpus are starting to stall.
->=20
-> This is strange, I haven't been able to figure out what is wrong.
->=20
-> I've been looking at QEMU code and now I'll have to try find a POWER4/5
-> or PPC970 manual to see what exactly this MSR[POW] thing does and make=20
-> sure QEMU matches it.
+Commit a7d2475af7ae ("powerpc: Sort the selects under CONFIG_PPC")
+sorted all selects under CONFIG_PPC.
 
-I worked it out. There was a window where it could take another=20
-interrupt before the first one adjusts the nip.
+4 years later, several items have been introduced at wrong place,
+a few other have been renamed without moving them to their correct
+place.
 
-I managed to trigger it in qemu and this version fixed it.
+Reorder them now.
 
+While we are at it, simplify the test for a couple of them:
+- PPC_64 && PPC_PSERIES is simplified in PPC_PSERIES
+- PPC_64 && PPC_BOOK3S is simplified in PPC_BOOK3S_64
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/interrupt.h   | 24 ++++++++++++++
- arch/powerpc/include/asm/processor.h   |  1 +
- arch/powerpc/include/asm/thread_info.h |  6 ++++
- arch/powerpc/kernel/exceptions-64s.S   | 45 --------------------------
- arch/powerpc/kernel/idle_book3s.S      |  4 +++
- 5 files changed, 35 insertions(+), 45 deletions(-)
+Applies on today's merge-test (4f8f28b28d82a98f74e9881985d8b93ca9a4d203)
+---
+ arch/powerpc/Kconfig | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/as=
-m/interrupt.h
-index e8d09a841373..2643028cf67a 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -9,6 +9,17 @@
- #include <asm/kprobes.h>
- #include <asm/runlatch.h>
-=20
-+static inline void nap_adjust_return(struct pt_regs *regs)
-+{
-+#ifdef CONFIG_PPC_970_NAP
-+	if (unlikely(test_thread_local_flags(_TLF_NAPPING))) {
-+		/* Can avoid a test-and-clear because NMIs do not call this */
-+		clear_thread_local_flags(_TLF_NAPPING);
-+		regs->nip =3D (unsigned long)power4_idle_nap_return;
-+	}
-+#endif
-+}
-+
- struct interrupt_state {
- #ifdef CONFIG_PPC_BOOK3E_64
- 	enum ctx_state ctx_state;
-@@ -109,6 +120,14 @@ static inline void interrupt_async_enter_prepare(struc=
-t pt_regs *regs, struct in
-=20
- static inline void interrupt_async_exit_prepare(struct pt_regs *regs, stru=
-ct interrupt_state *state)
- {
-+	/*
-+	 * Adjust at exit so the main handler sees the true NIA. This must
-+	 * come before irq_exit() because irq_exit can enable interrupts, and
-+	 * if another interrupt is taken before nap_adjust_return has run
-+	 * here, then that interrupt would return directly to idle nap return.
-+	 */
-+	nap_adjust_return(regs);
-+
- 	irq_exit();
- 	interrupt_exit_prepare(regs, state);
- }
-@@ -164,6 +183,11 @@ static inline void interrupt_nmi_exit_prepare(struct p=
-t_regs *regs, struct inter
- 			radix_enabled() || (mfmsr() & MSR_DR))
- 		nmi_exit();
-=20
-+	/*
-+	 * nmi does not call nap_adjust_return because nmi should not create
-+	 * new work to do (must use irq_work for that).
-+	 */
-+
- #ifdef CONFIG_PPC64
- 	if (TRAP(regs) !=3D 0x900 && TRAP(regs) !=3D 0xf00 && TRAP(regs) !=3D 0x2=
-60)
- 		this_cpu_set_ftrace_enabled(state->ftrace_enabled);
-diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/as=
-m/processor.h
-index 8acc3590c971..eedc3c775141 100644
---- a/arch/powerpc/include/asm/processor.h
-+++ b/arch/powerpc/include/asm/processor.h
-@@ -393,6 +393,7 @@ extern unsigned long isa300_idle_stop_mayloss(unsigned =
-long psscr_val);
- extern unsigned long isa206_idle_insn_mayloss(unsigned long type);
- #ifdef CONFIG_PPC_970_NAP
- extern void power4_idle_nap(void);
-+void power4_idle_nap_return(void);
- #endif
-=20
- extern unsigned long cpuidle_disable;
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/=
-asm/thread_info.h
-index 386d576673a1..bf137151100b 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -152,6 +152,12 @@ void arch_setup_new_exec(void);
-=20
- #ifndef __ASSEMBLY__
-=20
-+static inline void clear_thread_local_flags(unsigned int flags)
-+{
-+	struct thread_info *ti =3D current_thread_info();
-+	ti->local_flags &=3D ~flags;
-+}
-+
- static inline bool test_thread_local_flags(unsigned int flags)
- {
- 	struct thread_info *ti =3D current_thread_info();
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exc=
-eptions-64s.S
-index 8082b690e874..0cdb59e8b577 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -692,25 +692,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
- 	ld	r1,GPR1(r1)
- .endm
-=20
--/*
-- * When the idle code in power4_idle puts the CPU into NAP mode,
-- * it has to do so in a loop, and relies on the external interrupt
-- * and decrementer interrupt entry code to get it out of the loop.
-- * It sets the _TLF_NAPPING bit in current_thread_info()->local_flags
-- * to signal that it is in the loop and needs help to get out.
-- */
--#ifdef CONFIG_PPC_970_NAP
--#define FINISH_NAP				\
--BEGIN_FTR_SECTION				\
--	ld	r11, PACA_THREAD_INFO(r13);	\
--	ld	r9,TI_LOCAL_FLAGS(r11);		\
--	andi.	r10,r9,_TLF_NAPPING;		\
--	bnel	power4_fixup_nap;		\
--END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
--#else
--#define FINISH_NAP
--#endif
--
- /*
-  * There are a few constraints to be concerned with.
-  * - Real mode exceptions code/data must be located at their physical loca=
-tion.
-@@ -1248,7 +1229,6 @@ EXC_COMMON_BEGIN(machine_check_common)
- 	 */
- 	GEN_COMMON machine_check
-=20
--	FINISH_NAP
- 	/* Enable MSR_RI when finished with PACA_EXMC */
- 	li	r10,MSR_RI
- 	mtmsrd 	r10,1
-@@ -1571,7 +1551,6 @@ EXC_VIRT_BEGIN(hardware_interrupt, 0x4500, 0x100)
- EXC_VIRT_END(hardware_interrupt, 0x4500, 0x100)
- EXC_COMMON_BEGIN(hardware_interrupt_common)
- 	GEN_COMMON hardware_interrupt
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_IRQ
- 	b	interrupt_return
-@@ -1801,7 +1780,6 @@ EXC_VIRT_BEGIN(decrementer, 0x4900, 0x80)
- EXC_VIRT_END(decrementer, 0x4900, 0x80)
- EXC_COMMON_BEGIN(decrementer_common)
- 	GEN_COMMON decrementer
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	timer_interrupt
- 	b	interrupt_return
-@@ -1886,7 +1864,6 @@ EXC_VIRT_BEGIN(doorbell_super, 0x4a00, 0x100)
- EXC_VIRT_END(doorbell_super, 0x4a00, 0x100)
- EXC_COMMON_BEGIN(doorbell_super_common)
- 	GEN_COMMON doorbell_super
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- #ifdef CONFIG_PPC_DOORBELL
- 	bl	doorbell_exception
-@@ -2237,7 +2214,6 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
-=20
- EXC_COMMON_BEGIN(hmi_exception_common)
- 	GEN_COMMON hmi_exception
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	handle_hmi_exception
- 	b	interrupt_return
-@@ -2266,7 +2242,6 @@ EXC_VIRT_BEGIN(h_doorbell, 0x4e80, 0x20)
- EXC_VIRT_END(h_doorbell, 0x4e80, 0x20)
- EXC_COMMON_BEGIN(h_doorbell_common)
- 	GEN_COMMON h_doorbell
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- #ifdef CONFIG_PPC_DOORBELL
- 	bl	doorbell_exception
-@@ -2299,7 +2274,6 @@ EXC_VIRT_BEGIN(h_virt_irq, 0x4ea0, 0x20)
- EXC_VIRT_END(h_virt_irq, 0x4ea0, 0x20)
- EXC_COMMON_BEGIN(h_virt_irq_common)
- 	GEN_COMMON h_virt_irq
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_IRQ
- 	b	interrupt_return
-@@ -2345,7 +2319,6 @@ EXC_VIRT_BEGIN(performance_monitor, 0x4f00, 0x20)
- EXC_VIRT_END(performance_monitor, 0x4f00, 0x20)
- EXC_COMMON_BEGIN(performance_monitor_common)
- 	GEN_COMMON performance_monitor
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	performance_monitor_exception
- 	b	interrupt_return
-@@ -3096,24 +3069,6 @@ USE_FIXED_SECTION(virt_trampolines)
- __end_interrupts:
- DEFINE_FIXED_SYMBOL(__end_interrupts)
-=20
--#ifdef CONFIG_PPC_970_NAP
--	/*
--	 * Called by exception entry code if _TLF_NAPPING was set, this clears
--	 * the NAPPING flag, and redirects the exception exit to
--	 * power4_fixup_nap_return.
--	 */
--	.globl power4_fixup_nap
--EXC_COMMON_BEGIN(power4_fixup_nap)
--	andc	r9,r9,r10
--	std	r9,TI_LOCAL_FLAGS(r11)
--	LOAD_REG_ADDR(r10, power4_idle_nap_return)
--	std	r10,_NIP(r1)
--	blr
--
--power4_idle_nap_return:
--	blr
--#endif
--
- CLOSE_FIXED_SECTION(real_vectors);
- CLOSE_FIXED_SECTION(real_trampolines);
- CLOSE_FIXED_SECTION(virt_vectors);
-diff --git a/arch/powerpc/kernel/idle_book3s.S b/arch/powerpc/kernel/idle_b=
-ook3s.S
-index f9e6d83e6720..abb719b21cae 100644
---- a/arch/powerpc/kernel/idle_book3s.S
-+++ b/arch/powerpc/kernel/idle_book3s.S
-@@ -209,4 +209,8 @@ _GLOBAL(power4_idle_nap)
- 	mtmsrd	r7
- 	isync
- 	b	1b
-+
-+	.globl power4_idle_nap_return
-+power4_idle_nap_return:
-+	blr
- #endif
---=20
-2.23.0
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 3725850b2a6a..738d4827ae66 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -118,28 +118,29 @@ config PPC
+ 	# Please keep this list sorted alphabetically.
+ 	#
+ 	select ARCH_32BIT_OFF_T if PPC32
++	select ARCH_HAS_COPY_MC			if PPC64
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
++	select ARCH_HAS_DMA_MAP_DIRECT 		if PPC_PSERIES
+ 	select ARCH_HAS_ELF_RANDOMIZE
+ 	select ARCH_HAS_FORTIFY_SOURCE
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+-	select ARCH_HAS_KCOV
+ 	select ARCH_HAS_HUGEPD			if HUGETLB_PAGE
++	select ARCH_HAS_KCOV
++	select ARCH_HAS_MEMBARRIER_CALLBACKS
++	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+ 	select ARCH_HAS_MEMREMAP_COMPAT_ALIGN
+ 	select ARCH_HAS_MMIOWB			if PPC64
++	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	select ARCH_HAS_PHYS_TO_DMA
+ 	select ARCH_HAS_PMEM_API
+-	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	select ARCH_HAS_PTE_DEVMAP		if PPC_BOOK3S_64
+ 	select ARCH_HAS_PTE_SPECIAL
+-	select ARCH_HAS_MEMBARRIER_CALLBACKS
+-	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+ 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+ 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !HIBERNATION)
+ 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UACCESS_FLUSHCACHE
+-	select ARCH_HAS_COPY_MC			if PPC64
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select ARCH_KEEP_MEMBLOCK
+@@ -161,9 +162,8 @@ config PPC
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLONE_BACKWARDS
+ 	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
+-	select DMA_OPS				if PPC64
+ 	select DMA_OPS_BYPASS			if PPC64
+-	select ARCH_HAS_DMA_MAP_DIRECT 		if PPC64 && PPC_PSERIES
++	select DMA_OPS				if PPC64
+ 	select DYNAMIC_FTRACE			if FUNCTION_TRACER
+ 	select EDAC_ATOMIC_SCRUB
+ 	select EDAC_SUPPORT
+@@ -188,18 +188,16 @@ config PPC
+ 	select HAVE_ARCH_JUMP_LABEL_RELATIVE
+ 	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
+ 	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
+-	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_KFENCE			if PPC32
++	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_MMAP_RND_BITS
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+ 	select HAVE_ARCH_NVRAM_OPS
+ 	select HAVE_ARCH_SECCOMP_FILTER
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_ASM_MODVERSIONS
+-	select HAVE_C_RECORDMCOUNT
+-	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
+-	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
+ 	select HAVE_CONTEXT_TRACKING		if PPC64
++	select HAVE_C_RECORDMCOUNT
+ 	select HAVE_DEBUG_KMEMLEAK
+ 	select HAVE_DEBUG_STACKOVERFLOW
+ 	select HAVE_DYNAMIC_FTRACE
+@@ -213,10 +211,13 @@ config PPC
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
+ 	select HAVE_GENERIC_VDSO
++	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if PPC_BOOK3S_64 && SMP
++	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
+ 	select HAVE_HW_BREAKPOINT		if PERF_EVENTS && (PPC_BOOK3S || PPC_8xx)
+ 	select HAVE_IDE
+ 	select HAVE_IOREMAP_PROT
+ 	select HAVE_IRQ_EXIT_ON_IRQ_STACK
++	select HAVE_IRQ_TIME_ACCOUNTING
+ 	select HAVE_KERNEL_GZIP
+ 	select HAVE_KERNEL_LZMA			if DEFAULT_UIMAGE
+ 	select HAVE_KERNEL_LZO			if DEFAULT_UIMAGE
+@@ -228,25 +229,24 @@ config PPC
+ 	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
+-	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if PPC64 && PPC_BOOK3S && SMP
+ 	select HAVE_OPTPROBES			if PPC64
+ 	select HAVE_PERF_EVENTS
+ 	select HAVE_PERF_EVENTS_NMI		if PPC64
+-	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
+ 	select HAVE_PERF_REGS
+ 	select HAVE_PERF_USER_STACK_DUMP
+-	select MMU_GATHER_RCU_TABLE_FREE
+-	select MMU_GATHER_PAGE_SIZE
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RELIABLE_STACKTRACE
++	select HAVE_RSEQ
+ 	select HAVE_SOFTIRQ_ON_OWN_STACK
++	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
++	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select HAVE_VIRT_CPU_ACCOUNTING
+-	select HAVE_IRQ_TIME_ACCOUNTING
+-	select HAVE_RSEQ
+ 	select IOMMU_HELPER			if PPC64
+ 	select IRQ_DOMAIN
+ 	select IRQ_FORCED_THREADING
++	select MMU_GATHER_PAGE_SIZE
++	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MODULES_USE_ELF_RELA
+ 	select NEED_DMA_MAP_STATE		if PPC64 || NOT_COHERENT_CACHE
+ 	select NEED_SG_DMA_LENGTH
+-- 
+2.25.0
 
