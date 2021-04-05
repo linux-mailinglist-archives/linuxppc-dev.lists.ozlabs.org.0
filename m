@@ -1,69 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8B5353ABF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 03:24:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1560F353AC0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 03:24:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FDCcR1sD9z3c5s
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 11:24:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FDCcv0FvSz3dmL
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 11:24:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=DDRSr5jw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=qTRhikcr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
+ helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DDRSr5jw; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
+ header.s=20161025 header.b=qTRhikcr; dkim-atps=neutral
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
+ [IPv6:2607:f8b0:4864:20::1035])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FDCX50lCNz3bwb
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Apr 2021 11:20:36 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id t23so2030423pjy.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Apr 2021 18:20:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FDCX91FBSz30Qb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Apr 2021 11:20:41 +1000 (AEST)
+Received: by mail-pj1-x1035.google.com with SMTP id
+ kk2-20020a17090b4a02b02900c777aa746fso5057809pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Apr 2021 18:20:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=d/LPXjK92NbOrRa0PeaBki14cO228KIgPnhx2QtNvNo=;
- b=DDRSr5jwRsiT2dvsHefsVNe0wEkujn8kPwsfJQ1nnAy+62x3pXmdNkjnm44KI9+rud
- KsF3F+5HLP0oyZIj3lZ6A9MGMjmgAympt3R+Ao4H3V2h4sC2m8mCrdC1lylRDYA1j0R0
- xmaTR9qItovcvzQ3hdtgbNdIETV67gm7f4X5EOXvIWUZIPgj16dSTrs7RGGoQZlSlJrs
- c6x3AMkXABxiBV0yc4H5C63zN2HTAYEt35PBVo4FPAgG9aO+8KMHSCX1817tut0mDrIe
- /nxa4EDEKJmg8LN3+ChotvsWKOp4JAHjZi2PVzpcSKKro7Zu4WaeNQfkiBg8mWX0iamM
- uA6Q==
+ bh=XTwV9xVlVat7TnR+O83IRQJ050ZVGX6uPq2CbLxvr5s=;
+ b=qTRhikcrH3/Zr5oPLdE032U6xMCvjUoB2lQbn3pBzdNA8pUickLMGYU+EAnbuWNfzp
+ d2iHtGkbT17COc9zuTF8Pa8ZjtQmqjlnYOv82MZeiMdZUAa0cxSYZjbANgpuJIn+JAfT
+ T6PqvzrwNVOc4Dof4q3M6q7132zigQ6FZS3FkSjpXZoLXVXUMqkVuaaDNO8IjS/MfpKO
+ pRQ+bWDhgF9BEy5sejWNIomclwZSvXZwhf6aFhN38W4+pPkQD7OSnX6aJu59SNMQBdOr
+ WBmgQht11OQ39pMwN/sJnL+Zyn9OnsO+bleVjpr3xBdpPClru15mepLsv2bSPTZ6IC1l
+ ExzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=d/LPXjK92NbOrRa0PeaBki14cO228KIgPnhx2QtNvNo=;
- b=ezV/LxnD5OyAdybO0X/5wMJuMycCe3453t3Ya+0hBffX5cWOdoeYbm1LdETNTmPZ0c
- 8EfFEeoNFzlwfn+G2UEe5VONf1ALD8wt9R/Z9ZQ76hVcOBrqawdNHWZ+Vf8tYwUoLUoS
- ymW8vjXVBzKRZdUW2oEnY2U1MVLw6FhoxtLbuayhYJap1lqxJIRvb/U60zdWGC0yZnzW
- zBPYzjCxPMRxMecM569Pptl4OXywFBBWIK4LW1w0u0STmRWRy9DibKqgCoT02oBcDEpk
- cMxdal26/olyrTAdXRJ2asOvcEXbJ1Y55uvcjuVFBMV/PaEAnqGCw4rWotP7x+axXx7A
- 6vuQ==
-X-Gm-Message-State: AOAM533JOnPOSuxgUmCfWlFqU4LhhkPvqg8+LmemrtRWOX2Ny6l+KTth
- P2/B6F1Jq0IICOGD9cmGLdg=
-X-Google-Smtp-Source: ABdhPJys3TkaeqCURnzpiDgIzaQ9FVU//McEKHlQFYV6EF3gG7ZW8hRaiHX3Ai1aQf9Q/dZjLFy3eg==
-X-Received: by 2002:a17:90a:fa7:: with SMTP id 36mr8541313pjz.80.1617585634599; 
- Sun, 04 Apr 2021 18:20:34 -0700 (PDT)
+ bh=XTwV9xVlVat7TnR+O83IRQJ050ZVGX6uPq2CbLxvr5s=;
+ b=oSO4xGtZ0luVImc9QQukYO47VpKNyhKY3zQ2PfAjGRQlFYVX49ZViZEdvO77D9UqIY
+ aD1Qn2qUqE4J2WZZIXnnjP7B/DXhcf9icOf0xHW40a9rvoTKFkUG7sAy/3THhb5yugKp
+ s8kshtgoXg4iwxETznGWVAct9z2fIGLNTHZgJOFuinCMz4txVcaUnMGlMt/HyYM/3LzP
+ /oslfb6rGdn99EuB9208GlIhlEpiZ06edI9QGQhDp2zJYfJIAzqN0Zr1cYCzrT3DjQSz
+ dbhH5uoa/YP/13SzdaLLYjRbv9ekjaklW4MbKsjzIClquC/broVDmfyHJ94cuYGTt7h1
+ 1drA==
+X-Gm-Message-State: AOAM532wzc+RkyKsmL7SgPfAwuyKzznFqY0ZuoxTxqvRlAsBEngrZ4fx
+ 6KG/NbEJGDnZgxjwSZBimfY=
+X-Google-Smtp-Source: ABdhPJy8auehRG8QDvzXYfOdTM5XuOLcXu7jGgckCm/ditqcjEDm6KvS5q1GHun2vfRijGIqczyzqw==
+X-Received: by 2002:a17:902:263:b029:e7:35d8:4554 with SMTP id
+ 90-20020a1709020263b02900e735d84554mr21591735plc.83.1617585638854; 
+ Sun, 04 Apr 2021 18:20:38 -0700 (PDT)
 Received: from bobo.ibm.com ([1.132.215.134])
- by smtp.gmail.com with ESMTPSA id e3sm14062536pfm.43.2021.04.04.18.20.30
+ by smtp.gmail.com with ESMTPSA id e3sm14062536pfm.43.2021.04.04.18.20.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Apr 2021 18:20:34 -0700 (PDT)
+ Sun, 04 Apr 2021 18:20:38 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v6 09/48] powerpc/64s: remove KVM SKIP test from instruction
- breakpoint handler
-Date: Mon,  5 Apr 2021 11:19:09 +1000
-Message-Id: <20210405011948.675354-10-npiggin@gmail.com>
+Subject: [PATCH v6 10/48] KVM: PPC: Book3S HV: Ensure MSR[ME] is always set in
+ guest MSR
+Date: Mon,  5 Apr 2021 11:19:10 +1000
+Message-Id: <20210405011948.675354-11-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210405011948.675354-1-npiggin@gmail.com>
 References: <20210405011948.675354-1-npiggin@gmail.com>
@@ -86,42 +88,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The code being executed in KVM_GUEST_MODE_SKIP is hypervisor code with
-MSR[IR]=0, so the faults of concern are the d-side ones caused by access
-to guest context by the hypervisor.
+Rather than add the ME bit to the MSR at guest entry, make it clear
+that the hypervisor does not allow the guest to clear the bit.
 
-Instruction breakpoint interrupts are not a concern here. It's unlikely
-any good would come of causing breaks in this code, but skipping the
-instruction that caused it won't help matters (e.g., skip the mtmsr that
-sets MSR[DR]=0 or clears KVM_GUEST_MODE_SKIP).
-
- [Paul notes: the 0x1300 interrupt was dropped from the architecture a
-  long time ago and is not generated by P7, P8, P9 or P10.]
-
-In fact it does not exist in ISA v2.01, which is the earliest supported
-now, but did exist in 600 series designs (some of the earliest 64-bit
-powerpcs), so it could probably be removed entirely.
+The ME set is kept in guest entry for now, but a future patch will
+warn if it's not present.
 
 Acked-by: Paul Mackerras <paulus@ozlabs.org>
 Reviewed-by: Daniel Axtens <dja@axtens.net>
 Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 1 -
- 1 file changed, 1 deletion(-)
+ arch/powerpc/kvm/book3s_hv_builtin.c | 3 +++
+ arch/powerpc/kvm/book3s_hv_nested.c  | 4 +++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index a0515cb829c2..c9c446ccff54 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -2553,7 +2553,6 @@ EXC_VIRT_NONE(0x5200, 0x100)
- INT_DEFINE_BEGIN(instruction_breakpoint)
- 	IVEC=0x1300
- #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
--	IKVM_SKIP=1
- 	IKVM_REAL=1
- #endif
- INT_DEFINE_END(instruction_breakpoint)
+diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
+index 158d309b42a3..41cb03d0bde4 100644
+--- a/arch/powerpc/kvm/book3s_hv_builtin.c
++++ b/arch/powerpc/kvm/book3s_hv_builtin.c
+@@ -662,6 +662,9 @@ static void kvmppc_end_cede(struct kvm_vcpu *vcpu)
+ 
+ void kvmppc_set_msr_hv(struct kvm_vcpu *vcpu, u64 msr)
+ {
++	/* Guest must always run with ME enabled. */
++	msr = msr | MSR_ME;
++
+ 	/*
+ 	 * Check for illegal transactional state bit combination
+ 	 * and if we find it, force the TS field to a safe state.
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+index d14fe32f167b..fb03085c902b 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -343,7 +343,9 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.nested = l2;
+ 	vcpu->arch.nested_vcpu_id = l2_hv.vcpu_token;
+ 	vcpu->arch.regs = l2_regs;
+-	vcpu->arch.shregs.msr = vcpu->arch.regs.msr;
++
++	/* Guest must always run with ME enabled. */
++	vcpu->arch.shregs.msr = vcpu->arch.regs.msr | MSR_ME;
+ 
+ 	sanitise_hv_regs(vcpu, &l2_hv);
+ 	restore_hv_regs(vcpu, &l2_hv);
 -- 
 2.23.0
 
