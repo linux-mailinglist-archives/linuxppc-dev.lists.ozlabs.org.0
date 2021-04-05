@@ -1,76 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4617353ACB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 03:29:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF395353ACC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 03:29:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FDCjx5GLsz3fdn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 11:29:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FDCkN70VPz3fk2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Apr 2021 11:29:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=tnf57h3h;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=F7sn4PNt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tnf57h3h; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
+ header.s=20161025 header.b=F7sn4PNt; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FDCXq1GCTz3c8X
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Apr 2021 11:21:15 +1000 (AEST)
-Received: by mail-pj1-x1032.google.com with SMTP id
- q6-20020a17090a4306b02900c42a012202so5051099pjg.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Apr 2021 18:21:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FDCXs3WpRz3c98
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Apr 2021 11:21:17 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ mj7-20020a17090b3687b029014d162a65b6so1168704pjb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Apr 2021 18:21:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=iJ6ODLaZGRZoX5kuCv+hNtwVVZa1NGvMNfJW5zA4O7A=;
- b=tnf57h3hsYSAPnNoIVDX0DRnOFYV1zcFOYHbsShspfQ1OXRzvw6Cx0p5hn91bFEwuL
- jQkeo79AtuCmMr5eIxTRgO5a86edi3F2rjTi/b1lsy6klNLup8OcUcVTvcjW8+eAl73Y
- Vcu3AGuVKqJqsjyI9zXvgJvjjRWRGdpVkjpGKCOn5giuqzRzO/MsAM7vUrNBIn3pTrA8
- Q350EFaEhPTWBQ2Ta5TU7B8Jx53/K4rdWhSnEIdtHxJcViIZPd26R7/d/HeWsNOmFn8r
- MvX5wjCqCqFCh25kvxdSsoervBlE5s6reuzgQNC7ER8ABBC2EpmNMxsZld2e0nfOSGx5
- C8gQ==
+ bh=c0MvDZ1F9X/SZ94TT66c0+OApX1YU3GVKikmjXf/RuQ=;
+ b=F7sn4PNtawZZ+0n4PkDaXml8Zr5ys7vuudGUP/2FwhYXAIbyXJliCSpcFYCnGYCYXc
+ KJHx7+6GqcS/ZQgOxTYVc7Fn3HF8cXskQrPVL3mKu9G+qF4LSkfF3VMle+B70Ne3G2Wl
+ PT7qdEeG7Pg3JfXUhCCvKMNvdSzH7BT9Rq3I/2YXO9FYO11PfKv41AuyOMkJuPby0FdV
+ TRwJSfFNiRSGzcc4t4jIUYx28I0VJnLfbv5Z0/oyPwPt2BwVk2PXSz8/DAMf1ZQO7zeE
+ KLm0gdKr1dg4SXO4ydC3vkrYmpfEVzO47cUsLaCo/muJAZpcdDrOx0cmlsI3qaCpOmRU
+ S0Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=iJ6ODLaZGRZoX5kuCv+hNtwVVZa1NGvMNfJW5zA4O7A=;
- b=WZ7DNkl4VapH7lPzQvu+ERqyfkmT/6GfyvLosKMatpalm2qKFyK5NFzv11d/pfa9c1
- Ci+3GyzNRi7Sp5XRpDJWMyaGr46OcIijEB+0VgtpMmb0FTnBhkfZbiAjq2XRKWjJZmbx
- xSQ2ZLau7pqIxh7S1ml2XWuHmoicQKxJ6R1n+iweNW7sF+f6yNBydU79srOuhrRc9ygg
- 8HFYrWPRmZtK8GuNQ/Qnds2ea8zX+KFEC2KQQilGl+cPPJq5smFn0+RuunQTls2jFyKe
- d6gTVXz8SdJVswvpYJUxp4yA5JYyNgF2yflLKQo3/TMBKJWnhLUzwQYFsr3URi7jkQVk
- 6lpQ==
-X-Gm-Message-State: AOAM5315GeL5SRzIO5CJS0cwCjrlsK+W8kiA6Wyefp187L77onoVmOCI
- 3Qq5YT4M2At7lb670OECw4EnGEe9cXWPJg==
-X-Google-Smtp-Source: ABdhPJwqhx+v1wv801r8ZoWRW5tqE3CVkxURxTh6TXVJm/2NlVOoco3OJeN4roQWCu0HQumw+yjBqg==
-X-Received: by 2002:a17:902:9a0a:b029:e6:bf00:8a36 with SMTP id
- v10-20020a1709029a0ab02900e6bf008a36mr22035803plp.51.1617585672919; 
- Sun, 04 Apr 2021 18:21:12 -0700 (PDT)
+ bh=c0MvDZ1F9X/SZ94TT66c0+OApX1YU3GVKikmjXf/RuQ=;
+ b=mK8rFy2scMZomsRG/AOTa9UG+Q9hL9YzXwdpIY5pk3DyWoMp5ZxmBXBqfqBHNgzuM7
+ gvINzg2O6bld6OTasYVFpFE6qAoRzOFZ9ZdjDjwdd8irSPZXAOWLyVpOYn9rbKHx9dxi
+ 09YIw1k5NwkGiAF6v0zNZwpOJvHcs+faruKnrF0sLycLB0yDeHSDRlyFXIOzIcFxRnty
+ FKUXFRvd9K9SwqKCOMIqvs1rb38IHppPNPMUOASGiITf8hRFflIXLzsWJKxfeocDDGQe
+ WYEhUwXHAI70CgzAGMYdTrSjm8vCV1K+DEXWfzV5I1olt/w54EjGhYM9oJfVkceQ3f8z
+ 7GcA==
+X-Gm-Message-State: AOAM532ZonlaPcw33EDxsqn2XhrP5JohM1rmY5zLRqqGq/ZZVGsbz4+X
+ R9AazFryWbkTsqXQHs7e6lM=
+X-Google-Smtp-Source: ABdhPJwtPrpV+zXiV4XPpDvj9qVH5USq3fAtYCWCwwtYuSrsWHqeWpm1iPvPJRRRGaU3gWu5FoOdMg==
+X-Received: by 2002:a17:90b:b0d:: with SMTP id
+ bf13mr23848251pjb.7.1617585675964; 
+ Sun, 04 Apr 2021 18:21:15 -0700 (PDT)
 Received: from bobo.ibm.com ([1.132.215.134])
- by smtp.gmail.com with ESMTPSA id e3sm14062536pfm.43.2021.04.04.18.21.09
+ by smtp.gmail.com with ESMTPSA id e3sm14062536pfm.43.2021.04.04.18.21.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Apr 2021 18:21:12 -0700 (PDT)
+ Sun, 04 Apr 2021 18:21:15 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v6 20/48] KVM: PPC: Book3S HV P9: implement
- kvmppc_xive_pull_vcpu in C
-Date: Mon,  5 Apr 2021 11:19:20 +1000
-Message-Id: <20210405011948.675354-21-npiggin@gmail.com>
+Subject: [PATCH v6 21/48] KVM: PPC: Book3S HV P9: Move xive vcpu context
+ management into kvmhv_p9_guest_entry
+Date: Mon,  5 Apr 2021 11:19:21 +1000
+Message-Id: <20210405011948.675354-22-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210405011948.675354-1-npiggin@gmail.com>
 References: <20210405011948.675354-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -84,116 +83,52 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is more symmetric with kvmppc_xive_push_vcpu. The extra test in
-the asm will go away in a later change.
+Move the xive management up so the low level register switching can be
+pushed further down in a later patch. XIVE MMIO CI operations can run in
+higher level code with machine checks, tracing, etc., available.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/kvm_ppc.h      |  2 ++
- arch/powerpc/kvm/book3s_hv.c            |  2 ++
- arch/powerpc/kvm/book3s_hv_rmhandlers.S |  5 ++++
- arch/powerpc/kvm/book3s_xive.c          | 31 +++++++++++++++++++++++++
- 4 files changed, 40 insertions(+)
+ arch/powerpc/kvm/book3s_hv.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-index 9531b1c1b190..73b1ca5a6471 100644
---- a/arch/powerpc/include/asm/kvm_ppc.h
-+++ b/arch/powerpc/include/asm/kvm_ppc.h
-@@ -672,6 +672,7 @@ extern int kvmppc_xive_set_icp(struct kvm_vcpu *vcpu, u64 icpval);
- extern int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
- 			       int level, bool line_status);
- extern void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu);
-+extern void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu);
- 
- static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
- {
-@@ -712,6 +713,7 @@ static inline int kvmppc_xive_set_icp(struct kvm_vcpu *vcpu, u64 icpval) { retur
- static inline int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
- 				      int level, bool line_status) { return -ENODEV; }
- static inline void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu) { }
-+static inline void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu) { }
- 
- static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
- 	{ return 0; }
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 3424b1bfa98e..6ca47f26a397 100644
+index 6ca47f26a397..2dc65d752f80 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3605,6 +3605,8 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+@@ -3598,15 +3598,11 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 
+ 	switch_mmu_to_guest_radix(kvm, vcpu, lpcr);
+ 
+-	kvmppc_xive_push_vcpu(vcpu);
+-
+ 	mtspr(SPRN_SRR0, vcpu->arch.shregs.srr0);
+ 	mtspr(SPRN_SRR1, vcpu->arch.shregs.srr1);
  
  	trap = __kvmhv_vcpu_entry_p9(vcpu);
  
-+	kvmppc_xive_pull_vcpu(vcpu);
-+
+-	kvmppc_xive_pull_vcpu(vcpu);
+-
  	/* Advance host PURR/SPURR by the amount used by guest */
  	purr = mfspr(SPRN_PURR);
  	spurr = mfspr(SPRN_SPURR);
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index 75405ef53238..c11597f815e4 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -1442,6 +1442,11 @@ guest_exit_cont:		/* r9 = vcpu, r12 = trap, r13 = paca */
- 	bl	kvmhv_accumulate_time
- #endif
- #ifdef CONFIG_KVM_XICS
-+	/* If we came in through the P9 short path, xive pull is done in C */
-+	lwz	r0, STACK_SLOT_SHORT_PATH(r1)
-+	cmpwi	r0, 0
-+	bne	1f
+@@ -3789,7 +3785,10 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 			trap = 0;
+ 		}
+ 	} else {
++		kvmppc_xive_push_vcpu(vcpu);
+ 		trap = kvmhv_load_hv_regs_and_go(vcpu, time_limit, lpcr);
++		kvmppc_xive_pull_vcpu(vcpu);
 +
- 	/* We are exiting, pull the VP from the XIVE */
- 	lbz	r0, VCPU_XIVE_PUSHED(r9)
- 	cmpwi	cr0, r0, 0
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index e7219b6f5f9a..741bf1f4387a 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -127,6 +127,37 @@ void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu)
- }
- EXPORT_SYMBOL_GPL(kvmppc_xive_push_vcpu);
+ 	}
  
-+/*
-+ * Pull a vcpu's context from the XIVE on guest exit.
-+ * This assumes we are in virtual mode (MMU on)
-+ */
-+void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu)
-+{
-+	void __iomem *tima = local_paca->kvm_hstate.xive_tima_virt;
-+
-+	if (!vcpu->arch.xive_pushed)
-+		return;
-+
-+	/*
-+	 * Should not have been pushed if there is no tima
-+	 */
-+	if (WARN_ON(!tima))
-+		return;
-+
-+	eieio();
-+	/* First load to pull the context, we ignore the value */
-+	__raw_readl(tima + TM_SPC_PULL_OS_CTX);
-+	/* Second load to recover the context state (Words 0 and 1) */
-+	vcpu->arch.xive_saved_state.w01 = __raw_readq(tima + TM_QW1_OS);
-+
-+	/* Fixup some of the state for the next load */
-+	vcpu->arch.xive_saved_state.lsmfb = 0;
-+	vcpu->arch.xive_saved_state.ack = 0xff;
-+	vcpu->arch.xive_pushed = 0;
-+	eieio();
-+}
-+EXPORT_SYMBOL_GPL(kvmppc_xive_pull_vcpu);
-+
- /*
-  * This is a simple trigger for a generic XIVE IRQ. This must
-  * only be called for interrupts that support a trigger page
+ 	vcpu->arch.slb_max = 0;
 -- 
 2.23.0
 
