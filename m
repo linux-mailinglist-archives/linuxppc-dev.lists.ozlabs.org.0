@@ -2,80 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFC53557DB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 17:31:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBBE355907
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 18:16:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFBMd43GRz3bqX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 01:31:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFCMY1nynz3br1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 02:16:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20150623.gappssmtp.com header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=DVtq8pcz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LwOMRTys;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::52e;
- helo=mail-pg1-x52e.google.com; envelope-from=axboe@kernel.dk;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel-dk.20150623.gappssmtp.com
- header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=DVtq8pcz; dkim-atps=neutral
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
- [IPv6:2607:f8b0:4864:20::52e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=LwOMRTys; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFBMC1K1Nz2y0G
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 01:31:17 +1000 (AEST)
-Received: by mail-pg1-x52e.google.com with SMTP id g35so5865739pgg.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Apr 2021 08:31:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=kernel-dk.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=FVR8clygzLUFKEPmLFMXFMAq/CEtkPBvYlQe7K+S0wM=;
- b=DVtq8pczW0+cPS/j2Z4qsIjU8D6sXeTAZp0sJuYcGT//v+pcWVzgzeggqfSOCHIP7M
- rILDfEGbGmafL7JwZawTzoIZs7GVAmY+weY26PDox6YhskP0OXFCki0ccJxwlH8TV/kx
- mir+4UQvTB5mzWtJmbASNka+wqB5sSusIK8SSFmaMuxMjsxbmqJ6/P1YvUGX2YNhjdJ4
- +lwAkcGy3ZyV76N3M6c36RLCdfpMOi9BXUqRqgDJlyzLGbgYj7Z5IVh1B2jCEBxmDwae
- rqO3dknEyTTrdxNTd/y0KLOMds3UPKl49Q6kTuqMt47SDlIlXVAY5njn5Jwsq2SBTuXN
- UBgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=FVR8clygzLUFKEPmLFMXFMAq/CEtkPBvYlQe7K+S0wM=;
- b=PFcRV5/iX29d0IlNSQS/QdnoYyvaFjFkuYmSdDTT6bDJV2DKjWx6D01OaDYPJjyVeP
- D8jbiP7s16wWlPMtxdhtJRUGaLv4BxxUqQdCU9wMpuMvwV/hzmznp5w8YZJZbkRAJ5Pa
- rbbRlFsI+gFogHuiLcZO8SAWfWN2d7LUAMX8SonuGXY1E4qr8ccHBziRChzqkwSzVAUZ
- TnXsK3QpVTMJwZ8hb2jcEtNNZSO/tDrPK9Z10qFOxD1VmTUaU+MsW/RDWwaIrCenKcOb
- r0ZCLHqleStaps42X3zV3yIdhHbh1XmeY2tQ35Ttp1NOqNcKNFiCSNnvIbYzRcn4kHID
- +DiQ==
-X-Gm-Message-State: AOAM532LvVWfe+1AKPdaD9ZcSfp48KNZYvjLI3MaeYBdtIEqvB9KtSRF
- djV6fS8SQJ6EykYt8BD4pkJn+XFcfNhnSQ==
-X-Google-Smtp-Source: ABdhPJwLy6+3XFFIb/kUj2Zi2Kpcjuq1vEVWRCe2DwIsxwTXQsvD7YkWlZhyg7Rnv+jccqvyAm8stg==
-X-Received: by 2002:aa7:8d4c:0:b029:21c:104b:f6cb with SMTP id
- s12-20020aa78d4c0000b029021c104bf6cbmr27683675pfe.26.1617723074063; 
- Tue, 06 Apr 2021 08:31:14 -0700 (PDT)
-Received: from [192.168.4.41] (cpe-72-132-29-68.dc.res.rr.com. [72.132.29.68])
- by smtp.gmail.com with ESMTPSA id
- kk6sm2953044pjb.51.2021.04.06.08.31.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Apr 2021 08:31:13 -0700 (PDT)
-Subject: Re: [PATCH] swim3: support highmem
-To: Christoph Hellwig <hch@lst.de>
-References: <20210406061839.811588-1-hch@lst.de>
-From: Jens Axboe <axboe@kernel.dk>
-Message-ID: <5b1e84c0-afbf-389d-2929-d92e914e2613@kernel.dk>
-Date: Tue, 6 Apr 2021 09:31:15 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20210406061839.811588-1-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFCM61vdfz2yR6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 02:16:17 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 136G6KXc060127; Tue, 6 Apr 2021 12:16:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=deJI/wqN6BHO2/OqbU4lAeQCj7YqJQvgT0xW8m2mnzk=;
+ b=LwOMRTysEuZ7XGolH744KrEapPM08AYd0eXr7bH4oOOEXWmuzebC6HY+8E41tWrG78E6
+ rxoZNX3kkQLfGONLS46eqXr/hrWUueTVWr4YrBO8Kxn4J3zJ1qStDsNkEmVUvP3MZRI4
+ F09eUpESsP7MrRSTsmhEr5qJPqLlUBmhqU5g7F9wKN0QdwcCraYWlPUCsD1ViMw+FGFs
+ tjEcyQfTm43lCHTi70tkZRDmZkONN1GxHDecGosoaZt0pRsGfQx0O5G1Tmm0Amd5eJXI
+ ZUNygen1g+Y2l+LIr6tlejYyoMbH3Fa0mrMGed6i5EAE4ed8UJnX+fUiRgU0ZJszbTKX Hg== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37q5amare3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Apr 2021 12:16:08 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 136GDRrE017103;
+ Tue, 6 Apr 2021 16:16:06 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma04ams.nl.ibm.com with ESMTP id 37q2n2ta9w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Apr 2021 16:16:06 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 136GG4Yo24773046
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 6 Apr 2021 16:16:04 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5B6F04C04A;
+ Tue,  6 Apr 2021 16:16:04 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3B7CA4C044;
+ Tue,  6 Apr 2021 16:16:03 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.79.187.191])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  6 Apr 2021 16:16:03 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/perf: Fix PMU constraint check for EBB events
+Date: Tue,  6 Apr 2021 12:16:01 -0400
+Message-Id: <1617725761-1464-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: v8H78y7v6cqnOB-kn815K506l8HDDaod
+X-Proofpoint-ORIG-GUID: v8H78y7v6cqnOB-kn815K506l8HDDaod
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-04-06_04:2021-04-06,
+ 2021-04-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0
+ clxscore=1015 adultscore=0 lowpriorityscore=0 mlxlogscore=999
+ priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104030000 definitions=main-2104060105
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,20 +93,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-block@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: cascardo@canonical.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/6/21 12:18 AM, Christoph Hellwig wrote:
-> swim3 only uses the virtual address of a bio to stash it into the data
-> transfer using virt_to_bus.  But the ppc32 virt_to_bus just uses the
-> physical address with an offset.  Replace virt_to_bus with a local hack
-> that performs the equivalent transformation and stop asking for block
-> layer bounce buffering.
+The power PMU group constraints includes check for EBB events
+to make sure all events in a group must agree on EBB. This
+will prevent scheduling EBB and non-EBB events together.
+But in the existing check, settings for constraint mask and
+value is interchanged. Patch fixes the same.
 
-Applied, thanks.
+Before the patch, PMU selftest "cpu_event_pinned_vs_ebb_test"
+fails with below in dmesg logs. This happens because EBB event
+gets enabled along with a non-EBB cpu event.
 
+<<>>
+[35600.453346] cpu_event_pinne[41326]: illegal instruction (4)
+at 10004a18 nip 10004a18 lr 100049f8 code 1 in
+cpu_event_pinned_vs_ebb_test[10000000+10000]
+<<>>
+
+Test results after the patch:
+
+ ./pmu/ebb/cpu_event_pinned_vs_ebb_test
+test: cpu_event_pinned_vs_ebb
+tags: git_version:v5.12-rc5-93-gf28c3125acd3-dirty
+Binding to cpu 8
+EBB Handler is at 0x100050c8
+read error on event 0x7fffe6bd4040!
+PM_RUN_INST_CMPL: result 9872 running/enabled 37930432
+success: cpu_event_pinned_vs_ebb
+
+Fixes: 4df489991182 ("powerpc/perf: Add power8 EBB support")
+Reported-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ arch/powerpc/perf/isa207-common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
+index e4f577da33d8..8b5eeb6fb2fb 100644
+--- a/arch/powerpc/perf/isa207-common.c
++++ b/arch/powerpc/perf/isa207-common.c
+@@ -447,8 +447,8 @@ int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp,
+ 	 * EBB events are pinned & exclusive, so this should never actually
+ 	 * hit, but we leave it as a fallback in case.
+ 	 */
+-	mask  |= CNST_EBB_VAL(ebb);
+-	value |= CNST_EBB_MASK;
++	mask  |= CNST_EBB_MASK;
++	value |= CNST_EBB_VAL(ebb);
+ 
+ 	*maskp = mask;
+ 	*valp = value;
 -- 
-Jens Axboe
+1.8.3.1
 
