@@ -1,35 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0B33556E8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 16:43:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CF83556F6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 16:48:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FF9JY4HX3z3bsf
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 00:43:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FF9Pl4133z304Z
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 00:48:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TIAIa38J;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=ynyg=jd=ubuntu.com=christian.brauner@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=TIAIa38J; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FF9JD0lHrz2yYZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 00:43:39 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3D38761158;
- Tue,  6 Apr 2021 14:43:27 +0000 (UTC)
-Date: Tue, 6 Apr 2021 16:43:24 +0200
-From: Christian Brauner <christian.brauner@ubuntu.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] kernel.h: Split out panic and oops helpers
-Message-ID: <20210406144324.bmc22gborwj3zjvv@wittgenstein>
-References: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FF9PJ3jbhz2yYZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 00:48:03 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 136EXZm4088271; Tue, 6 Apr 2021 10:47:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=cxGfkH5KTh5bW09+nyDmxK51xI9Etu4dGYuEt71IZyA=;
+ b=TIAIa38JAPrsYg76rk5DbNeiKAguY76C6FNvHcNzM4VDhfLMxSu52v7UJYPewJ1VEHjV
+ 1rMJiHESc48oHgH8yU+iFc4QCZsE2vM/XpWmrAYMz0xLv4YEPB73rmvE5rD/Qt3kVv8T
+ pyO85NrHw//X8hK8wwolvgqDhnqlJ7JU9Zq3f1ZoMCi/GWfV2ki7aRa6RKoqqr08JI4v
+ veBS3BxQ86IjsJVqcmlOR4L/nAaEaGByx0IdvYrXizPdIser9LyXhJrawMzJMaTNXjhI
+ 3Eou8xFymvI7Egmc5S9RHSCjIaMsJuB3aTPoEkSfw0H3vDiArriyV8Yi3ZJpj4CvC/yk xw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37q5kxy964-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Apr 2021 10:47:57 -0400
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 136EXeEK088754;
+ Tue, 6 Apr 2021 10:47:57 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37q5kxy94y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Apr 2021 10:47:57 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 136Eh5vq025562;
+ Tue, 6 Apr 2021 14:47:55 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma03ams.nl.ibm.com with ESMTP id 37q2y9j7vw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Apr 2021 14:47:55 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 136ElowS46924254
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 6 Apr 2021 14:47:50 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ADA314C04E;
+ Tue,  6 Apr 2021 14:47:50 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1940E4C046;
+ Tue,  6 Apr 2021 14:47:46 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.124.212.190])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  6 Apr 2021 14:47:45 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/perf: Clear pending PMI in ppmu callbacks
+Date: Tue,  6 Apr 2021 10:47:43 -0400
+Message-Id: <1617720464-1651-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mrOcTccAOd1IFhBkrHSSV_FTCSl8jGjf
+X-Proofpoint-GUID: HkpUUhx-8BLts9WD54yx1Dcm3D_5mNPQ
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-04-06_03:2021-04-01,
+ 2021-04-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ mlxlogscore=999 suspectscore=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 mlxscore=0 priorityscore=1501 spamscore=0 clxscore=1015
+ bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104030000 definitions=main-2104060102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,477 +100,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>, linux-hyperv@vger.kernel.org,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- linux-remoteproc@vger.kernel.org, Michael Kelley <mikelley@microsoft.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Joel Fernandes <joel@joelfernandes.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arch@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>, Corey Minyard <minyard@acm.org>,
- x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
- Iurii Zaikin <yzaikin@google.com>, Ohad Ben-Cohen <ohad@wizery.com>,
- Joerg Roedel <jroedel@suse.de>, Kees Cook <keescook@chromium.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Josh Triplett <josh@joshtriplett.org>,
- "Steven Rostedt \(VMware\)" <rostedt@goodmis.org>, rcu@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, openipmi-developer@lists.sourceforge.net,
- Bjorn Andersson <bjorn.andersson@linaro.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Eric Biederman <ebiederm@xmission.com>,
- linux-fsdevel@vger.kernel.org,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Cc: nasastry@in.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 06, 2021 at 04:31:58PM +0300, Andy Shevchenko wrote:
-> kernel.h is being used as a dump for all kinds of stuff for a long time.
-> Here is the attempt to start cleaning it up by splitting out panic and
-> oops helpers.
-> 
-> At the same time convert users in header and lib folder to use new header.
-> Though for time being include new header back to kernel.h to avoid twisted
-> indirected includes for existing users.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
+Running perf fuzzer testsuite popped up below messages
+in the dmesg logs:
 
-(I think David has tried something like this a few years ago too?)
-Good idea in any case. (Be good to see kbuild do an allmodconfig build
-of this though.)
-Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
+"Can't find PMC that caused IRQ"
 
->  arch/powerpc/kernel/setup-common.c   |  1 +
->  arch/x86/include/asm/desc.h          |  1 +
->  arch/x86/kernel/cpu/mshyperv.c       |  1 +
->  arch/x86/kernel/setup.c              |  1 +
->  drivers/char/ipmi/ipmi_msghandler.c  |  1 +
->  drivers/remoteproc/remoteproc_core.c |  1 +
->  include/asm-generic/bug.h            |  3 +-
->  include/linux/kernel.h               | 84 +-----------------------
->  include/linux/panic.h                | 98 ++++++++++++++++++++++++++++
->  include/linux/panic_notifier.h       | 12 ++++
->  kernel/hung_task.c                   |  1 +
->  kernel/kexec_core.c                  |  1 +
->  kernel/panic.c                       |  1 +
->  kernel/rcu/tree.c                    |  2 +
->  kernel/sysctl.c                      |  1 +
->  kernel/trace/trace.c                 |  1 +
->  16 files changed, 126 insertions(+), 84 deletions(-)
->  create mode 100644 include/linux/panic.h
->  create mode 100644 include/linux/panic_notifier.h
-> 
-> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-> index 74a98fff2c2f..046fe21b5c3b 100644
-> --- a/arch/powerpc/kernel/setup-common.c
-> +++ b/arch/powerpc/kernel/setup-common.c
-> @@ -9,6 +9,7 @@
->  #undef DEBUG
->  
->  #include <linux/export.h>
-> +#include <linux/panic_notifier.h>
->  #include <linux/string.h>
->  #include <linux/sched.h>
->  #include <linux/init.h>
-> diff --git a/arch/x86/include/asm/desc.h b/arch/x86/include/asm/desc.h
-> index 476082a83d1c..ceb12683b6d1 100644
-> --- a/arch/x86/include/asm/desc.h
-> +++ b/arch/x86/include/asm/desc.h
-> @@ -9,6 +9,7 @@
->  #include <asm/irq_vectors.h>
->  #include <asm/cpu_entry_area.h>
->  
-> +#include <linux/debug_locks.h>
->  #include <linux/smp.h>
->  #include <linux/percpu.h>
->  
-> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-> index 22f13343b5da..9e5c6f2b044d 100644
-> --- a/arch/x86/kernel/cpu/mshyperv.c
-> +++ b/arch/x86/kernel/cpu/mshyperv.c
-> @@ -17,6 +17,7 @@
->  #include <linux/irq.h>
->  #include <linux/kexec.h>
->  #include <linux/i8253.h>
-> +#include <linux/panic_notifier.h>
->  #include <linux/random.h>
->  #include <asm/processor.h>
->  #include <asm/hypervisor.h>
-> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-> index 59e5e0903b0c..570699eecf90 100644
-> --- a/arch/x86/kernel/setup.c
-> +++ b/arch/x86/kernel/setup.c
-> @@ -14,6 +14,7 @@
->  #include <linux/initrd.h>
->  #include <linux/iscsi_ibft.h>
->  #include <linux/memblock.h>
-> +#include <linux/panic_notifier.h>
->  #include <linux/pci.h>
->  #include <linux/root_dev.h>
->  #include <linux/hugetlb.h>
-> diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-> index 8a0e97b33cae..e96cb5c4f97a 100644
-> --- a/drivers/char/ipmi/ipmi_msghandler.c
-> +++ b/drivers/char/ipmi/ipmi_msghandler.c
-> @@ -16,6 +16,7 @@
->  
->  #include <linux/module.h>
->  #include <linux/errno.h>
-> +#include <linux/panic_notifier.h>
->  #include <linux/poll.h>
->  #include <linux/sched.h>
->  #include <linux/seq_file.h>
-> diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
-> index 626a6b90fba2..76dd8e2b1e7e 100644
-> --- a/drivers/remoteproc/remoteproc_core.c
-> +++ b/drivers/remoteproc/remoteproc_core.c
-> @@ -20,6 +20,7 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/device.h>
-> +#include <linux/panic_notifier.h>
->  #include <linux/slab.h>
->  #include <linux/mutex.h>
->  #include <linux/dma-map-ops.h>
-> diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
-> index 76a10e0dca9f..719410b93f99 100644
-> --- a/include/asm-generic/bug.h
-> +++ b/include/asm-generic/bug.h
-> @@ -17,7 +17,8 @@
->  #endif
->  
->  #ifndef __ASSEMBLY__
-> -#include <linux/kernel.h>
-> +#include <linux/panic.h>
-> +#include <linux/printk.h>
->  
->  #ifdef CONFIG_BUG
->  
-> diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-> index 09035ac67d4b..6c5a05ac1ecb 100644
-> --- a/include/linux/kernel.h
-> +++ b/include/linux/kernel.h
-> @@ -14,6 +14,7 @@
->  #include <linux/math.h>
->  #include <linux/minmax.h>
->  #include <linux/typecheck.h>
-> +#include <linux/panic.h>
->  #include <linux/printk.h>
->  #include <linux/build_bug.h>
->  #include <linux/static_call_types.h>
-> @@ -70,7 +71,6 @@
->  #define lower_32_bits(n) ((u32)((n) & 0xffffffff))
->  
->  struct completion;
-> -struct pt_regs;
->  struct user;
->  
->  #ifdef CONFIG_PREEMPT_VOLUNTARY
-> @@ -175,14 +175,6 @@ void __might_fault(const char *file, int line);
->  static inline void might_fault(void) { }
->  #endif
->  
-> -extern struct atomic_notifier_head panic_notifier_list;
-> -extern long (*panic_blink)(int state);
-> -__printf(1, 2)
-> -void panic(const char *fmt, ...) __noreturn __cold;
-> -void nmi_panic(struct pt_regs *regs, const char *msg);
-> -extern void oops_enter(void);
-> -extern void oops_exit(void);
-> -extern bool oops_may_print(void);
->  void do_exit(long error_code) __noreturn;
->  void complete_and_exit(struct completion *, long) __noreturn;
->  
-> @@ -368,52 +360,8 @@ extern int __kernel_text_address(unsigned long addr);
->  extern int kernel_text_address(unsigned long addr);
->  extern int func_ptr_is_kernel_text(void *ptr);
->  
-> -#ifdef CONFIG_SMP
-> -extern unsigned int sysctl_oops_all_cpu_backtrace;
-> -#else
-> -#define sysctl_oops_all_cpu_backtrace 0
-> -#endif /* CONFIG_SMP */
-> -
->  extern void bust_spinlocks(int yes);
-> -extern int panic_timeout;
-> -extern unsigned long panic_print;
-> -extern int panic_on_oops;
-> -extern int panic_on_unrecovered_nmi;
-> -extern int panic_on_io_nmi;
-> -extern int panic_on_warn;
-> -extern unsigned long panic_on_taint;
-> -extern bool panic_on_taint_nousertaint;
-> -extern int sysctl_panic_on_rcu_stall;
-> -extern int sysctl_max_rcu_stall_to_panic;
-> -extern int sysctl_panic_on_stackoverflow;
-> -
-> -extern bool crash_kexec_post_notifiers;
->  
-> -/*
-> - * panic_cpu is used for synchronizing panic() and crash_kexec() execution. It
-> - * holds a CPU number which is executing panic() currently. A value of
-> - * PANIC_CPU_INVALID means no CPU has entered panic() or crash_kexec().
-> - */
-> -extern atomic_t panic_cpu;
-> -#define PANIC_CPU_INVALID	-1
-> -
-> -/*
-> - * Only to be used by arch init code. If the user over-wrote the default
-> - * CONFIG_PANIC_TIMEOUT, honor it.
-> - */
-> -static inline void set_arch_panic_timeout(int timeout, int arch_default_timeout)
-> -{
-> -	if (panic_timeout == arch_default_timeout)
-> -		panic_timeout = timeout;
-> -}
-> -extern const char *print_tainted(void);
-> -enum lockdep_ok {
-> -	LOCKDEP_STILL_OK,
-> -	LOCKDEP_NOW_UNRELIABLE
-> -};
-> -extern void add_taint(unsigned flag, enum lockdep_ok);
-> -extern int test_taint(unsigned flag);
-> -extern unsigned long get_taint(void);
->  extern int root_mountflags;
->  
->  extern bool early_boot_irqs_disabled;
-> @@ -432,36 +380,6 @@ extern enum system_states {
->  	SYSTEM_SUSPEND,
->  } system_state;
->  
-> -/* This cannot be an enum because some may be used in assembly source. */
-> -#define TAINT_PROPRIETARY_MODULE	0
-> -#define TAINT_FORCED_MODULE		1
-> -#define TAINT_CPU_OUT_OF_SPEC		2
-> -#define TAINT_FORCED_RMMOD		3
-> -#define TAINT_MACHINE_CHECK		4
-> -#define TAINT_BAD_PAGE			5
-> -#define TAINT_USER			6
-> -#define TAINT_DIE			7
-> -#define TAINT_OVERRIDDEN_ACPI_TABLE	8
-> -#define TAINT_WARN			9
-> -#define TAINT_CRAP			10
-> -#define TAINT_FIRMWARE_WORKAROUND	11
-> -#define TAINT_OOT_MODULE		12
-> -#define TAINT_UNSIGNED_MODULE		13
-> -#define TAINT_SOFTLOCKUP		14
-> -#define TAINT_LIVEPATCH			15
-> -#define TAINT_AUX			16
-> -#define TAINT_RANDSTRUCT		17
-> -#define TAINT_FLAGS_COUNT		18
-> -#define TAINT_FLAGS_MAX			((1UL << TAINT_FLAGS_COUNT) - 1)
-> -
-> -struct taint_flag {
-> -	char c_true;	/* character printed when tainted */
-> -	char c_false;	/* character printed when not tainted */
-> -	bool module;	/* also show as a per-module taint flag */
-> -};
-> -
-> -extern const struct taint_flag taint_flags[TAINT_FLAGS_COUNT];
-> -
->  extern const char hex_asc[];
->  #define hex_asc_lo(x)	hex_asc[((x) & 0x0f)]
->  #define hex_asc_hi(x)	hex_asc[((x) & 0xf0) >> 4]
-> diff --git a/include/linux/panic.h b/include/linux/panic.h
-> new file mode 100644
-> index 000000000000..f5844908a089
-> --- /dev/null
-> +++ b/include/linux/panic.h
-> @@ -0,0 +1,98 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_PANIC_H
-> +#define _LINUX_PANIC_H
-> +
-> +#include <linux/compiler_attributes.h>
-> +#include <linux/types.h>
-> +
-> +struct pt_regs;
-> +
-> +extern long (*panic_blink)(int state);
-> +__printf(1, 2)
-> +void panic(const char *fmt, ...) __noreturn __cold;
-> +void nmi_panic(struct pt_regs *regs, const char *msg);
-> +extern void oops_enter(void);
-> +extern void oops_exit(void);
-> +extern bool oops_may_print(void);
-> +
-> +#ifdef CONFIG_SMP
-> +extern unsigned int sysctl_oops_all_cpu_backtrace;
-> +#else
-> +#define sysctl_oops_all_cpu_backtrace 0
-> +#endif /* CONFIG_SMP */
-> +
-> +extern int panic_timeout;
-> +extern unsigned long panic_print;
-> +extern int panic_on_oops;
-> +extern int panic_on_unrecovered_nmi;
-> +extern int panic_on_io_nmi;
-> +extern int panic_on_warn;
-> +
-> +extern unsigned long panic_on_taint;
-> +extern bool panic_on_taint_nousertaint;
-> +
-> +extern int sysctl_panic_on_rcu_stall;
-> +extern int sysctl_max_rcu_stall_to_panic;
-> +extern int sysctl_panic_on_stackoverflow;
-> +
-> +extern bool crash_kexec_post_notifiers;
-> +
-> +/*
-> + * panic_cpu is used for synchronizing panic() and crash_kexec() execution. It
-> + * holds a CPU number which is executing panic() currently. A value of
-> + * PANIC_CPU_INVALID means no CPU has entered panic() or crash_kexec().
-> + */
-> +extern atomic_t panic_cpu;
-> +#define PANIC_CPU_INVALID	-1
-> +
-> +/*
-> + * Only to be used by arch init code. If the user over-wrote the default
-> + * CONFIG_PANIC_TIMEOUT, honor it.
-> + */
-> +static inline void set_arch_panic_timeout(int timeout, int arch_default_timeout)
-> +{
-> +	if (panic_timeout == arch_default_timeout)
-> +		panic_timeout = timeout;
-> +}
-> +
-> +/* This cannot be an enum because some may be used in assembly source. */
-> +#define TAINT_PROPRIETARY_MODULE	0
-> +#define TAINT_FORCED_MODULE		1
-> +#define TAINT_CPU_OUT_OF_SPEC		2
-> +#define TAINT_FORCED_RMMOD		3
-> +#define TAINT_MACHINE_CHECK		4
-> +#define TAINT_BAD_PAGE			5
-> +#define TAINT_USER			6
-> +#define TAINT_DIE			7
-> +#define TAINT_OVERRIDDEN_ACPI_TABLE	8
-> +#define TAINT_WARN			9
-> +#define TAINT_CRAP			10
-> +#define TAINT_FIRMWARE_WORKAROUND	11
-> +#define TAINT_OOT_MODULE		12
-> +#define TAINT_UNSIGNED_MODULE		13
-> +#define TAINT_SOFTLOCKUP		14
-> +#define TAINT_LIVEPATCH			15
-> +#define TAINT_AUX			16
-> +#define TAINT_RANDSTRUCT		17
-> +#define TAINT_FLAGS_COUNT		18
-> +#define TAINT_FLAGS_MAX			((1UL << TAINT_FLAGS_COUNT) - 1)
-> +
-> +struct taint_flag {
-> +	char c_true;	/* character printed when tainted */
-> +	char c_false;	/* character printed when not tainted */
-> +	bool module;	/* also show as a per-module taint flag */
-> +};
-> +
-> +extern const struct taint_flag taint_flags[TAINT_FLAGS_COUNT];
-> +
-> +enum lockdep_ok {
-> +	LOCKDEP_STILL_OK,
-> +	LOCKDEP_NOW_UNRELIABLE,
-> +};
-> +
-> +extern const char *print_tainted(void);
-> +extern void add_taint(unsigned flag, enum lockdep_ok);
-> +extern int test_taint(unsigned flag);
-> +extern unsigned long get_taint(void);
-> +
-> +#endif	/* _LINUX_PANIC_H */
-> diff --git a/include/linux/panic_notifier.h b/include/linux/panic_notifier.h
-> new file mode 100644
-> index 000000000000..41e32483d7a7
-> --- /dev/null
-> +++ b/include/linux/panic_notifier.h
-> @@ -0,0 +1,12 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_PANIC_NOTIFIERS_H
-> +#define _LINUX_PANIC_NOTIFIERS_H
-> +
-> +#include <linux/notifier.h>
-> +#include <linux/types.h>
-> +
-> +extern struct atomic_notifier_head panic_notifier_list;
-> +
-> +extern bool crash_kexec_post_notifiers;
-> +
-> +#endif	/* _LINUX_PANIC_NOTIFIERS_H */
-> diff --git a/kernel/hung_task.c b/kernel/hung_task.c
-> index bb2e3e15c84c..2871076e4d29 100644
-> --- a/kernel/hung_task.c
-> +++ b/kernel/hung_task.c
-> @@ -15,6 +15,7 @@
->  #include <linux/kthread.h>
->  #include <linux/lockdep.h>
->  #include <linux/export.h>
-> +#include <linux/panic_notifier.h>
->  #include <linux/sysctl.h>
->  #include <linux/suspend.h>
->  #include <linux/utsname.h>
-> diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-> index f099baee3578..4b34a9aa32bc 100644
-> --- a/kernel/kexec_core.c
-> +++ b/kernel/kexec_core.c
-> @@ -26,6 +26,7 @@
->  #include <linux/suspend.h>
->  #include <linux/device.h>
->  #include <linux/freezer.h>
-> +#include <linux/panic_notifier.h>
->  #include <linux/pm.h>
->  #include <linux/cpu.h>
->  #include <linux/uaccess.h>
-> diff --git a/kernel/panic.c b/kernel/panic.c
-> index 332736a72a58..edad89660a2b 100644
-> --- a/kernel/panic.c
-> +++ b/kernel/panic.c
-> @@ -23,6 +23,7 @@
->  #include <linux/reboot.h>
->  #include <linux/delay.h>
->  #include <linux/kexec.h>
-> +#include <linux/panic_notifier.h>
->  #include <linux/sched.h>
->  #include <linux/sysrq.h>
->  #include <linux/init.h>
-> diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-> index ce5b4cd6bd18..a58c9c86fa13 100644
-> --- a/kernel/rcu/tree.c
-> +++ b/kernel/rcu/tree.c
-> @@ -32,6 +32,8 @@
->  #include <linux/export.h>
->  #include <linux/completion.h>
->  #include <linux/moduleparam.h>
-> +#include <linux/panic.h>
-> +#include <linux/panic_notifier.h>
->  #include <linux/percpu.h>
->  #include <linux/notifier.h>
->  #include <linux/cpu.h>
-> diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-> index 3601786ddaeb..e5cf9c4ef5e1 100644
-> --- a/kernel/sysctl.c
-> +++ b/kernel/sysctl.c
-> @@ -27,6 +27,7 @@
->  #include <linux/sysctl.h>
->  #include <linux/bitmap.h>
->  #include <linux/signal.h>
-> +#include <linux/panic.h>
->  #include <linux/printk.h>
->  #include <linux/proc_fs.h>
->  #include <linux/security.h>
-> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-> index 507a30bf26e4..9612a1d8fa13 100644
-> --- a/kernel/trace/trace.c
-> +++ b/kernel/trace/trace.c
-> @@ -39,6 +39,7 @@
->  #include <linux/slab.h>
->  #include <linux/ctype.h>
->  #include <linux/init.h>
-> +#include <linux/panic_notifier.h>
->  #include <linux/poll.h>
->  #include <linux/nmi.h>
->  #include <linux/fs.h>
-> -- 
-> 2.30.2
-> 
+This means a PMU exception happened, but none of the PMC's (Performance
+Monitor Counter) were found to be overflown. Perf interrupt handler checks
+the PMC's to see which PMC has overflown and if none of the PMCs are
+overflown ( counter value not >= 0x80000000 ), it throws warning:
+"Can't find PMC that caused IRQ".
+
+Powerpc has capability to mask and replay a performance monitoring
+interrupt (PMI). In case of replayed PMI, there are some corner cases
+that clears the PMCs after masking. In such cases, the perf interrupt
+handler will not find the active PMC values that had caused the overflow
+and thus leading to this message. This patchset attempts to fix those
+corner cases.
+
+However there is one more case in PowerNV where these messages are
+emitted during system wide profiling or when a specific CPU is monitored
+for an event. That is, when a counter overflow just before entering idle
+and a PMI gets triggered after wakeup from idle. Since PMCs
+are not saved in the idle path, perf interrupt handler will not
+find overflown counter value and emits the "Can't find PMC" messages.
+This patch documents this race condition in powerpc core-book3s.
+
+Patch fixes the ppmu callbacks to disable pending interrupt before clearing
+the overflown PMC and documents the race condition in idle path.
+
+Athira Rajeev (1):
+  powerpc/perf: Fix PMU callbacks to clear pending PMI before resetting
+    an overflown PMC
+
+ arch/powerpc/include/asm/pmc.h  | 11 +++++++++
+ arch/powerpc/perf/core-book3s.c | 55 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 66 insertions(+)
+
+-- 
+1.8.3.1
+
