@@ -2,96 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4035435590F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 18:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3EEA355936
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 18:30:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFCTp1t92z3bqZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 02:22:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFCgW5NFRz30Dc
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 02:30:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fASIU+H1;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=APaR1zGP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fASIU+H1; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFCTK65fcz2y8B
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 02:21:41 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 136G7aAp150753; Tue, 6 Apr 2021 12:21:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=8irR3ZwSZ+/j2G1DtNcj8fk37Rd/c7OtNqWduMO/Eek=;
- b=fASIU+H1yJYP7tkbuslT7l5JvwepGnqDTckYeKavo9giE7Kd9iu/D+KgJf14agVt5PAK
- DYlVccK3qiB6gayoyTawWJ1YfdaRG8mg8a+8ffFfpMqvkz2ivVahcOetYIZzdt7B4Kr9
- dMgm7cZQjVYkZCNyF5t7HUoeh2LSZnciZUcMfZhz8ahJOqy2pDfdhaty/5ODqEsZmB4R
- 6meytd0P1Cgq3sD3FXhH+7JVf6zCeSAQ9ALFtotIZLgkvTI/h5DdFYqE10HYdCYNWRhN
- kiFlkcw6EwBZY7E+rp8uPDv97wEDKjjoFrrwksnU4wDJ64ChbB81A07JXn0DFvRcQqka cw== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37q5dvgd92-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Apr 2021 12:21:29 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 136GDUpD021687;
- Tue, 6 Apr 2021 16:21:26 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06ams.nl.ibm.com with ESMTP id 37q2q5ja8r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Apr 2021 16:21:26 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 136GL3pF37224714
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Apr 2021 16:21:04 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 861B9A404D;
- Tue,  6 Apr 2021 16:21:24 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F95CA4051;
- Tue,  6 Apr 2021 16:21:23 +0000 (GMT)
-Received: from [9.79.187.191] (unknown [9.79.187.191])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Tue,  6 Apr 2021 16:21:23 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Subject: Re: [PATCH] powerpc/perf: prevent mixed EBB and non-EBB events
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <F791C89D-E644-43D3-8229-3618AF7DE2C2@linux.vnet.ibm.com>
-Date: Tue, 6 Apr 2021 21:51:21 +0530
-Message-Id: <0D709DAB-1C5A-4526-9BAB-11BE27E8DBCB@linux.vnet.ibm.com>
-References: <20210224122116.221120-1-cascardo@canonical.com>
- <F791C89D-E644-43D3-8229-3618AF7DE2C2@linux.vnet.ibm.com>
-To: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.4)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: otPe-JK_96deTIe4c7SmpVOhFaHlCZn2
-X-Proofpoint-ORIG-GUID: otPe-JK_96deTIe4c7SmpVOhFaHlCZn2
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=cisco.com (client-ip=173.37.86.78; helo=rcdn-iport-7.cisco.com;
+ envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
+ header.s=iport header.b=APaR1zGP; dkim-atps=neutral
+Received: from rcdn-iport-7.cisco.com (rcdn-iport-7.cisco.com [173.37.86.78])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFCfw4Mqwz2y8B
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 02:29:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=cisco.com; i=@cisco.com; l=3941; q=dns/txt; s=iport;
+ t=1617726601; x=1618936201;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=wtAeIc7XsQsptor4RXWPj9Y8j7ZxS+JmY38g2U87X54=;
+ b=APaR1zGPRda0qhyteg1WNYis3QLMMfNL3uFoE64HFBjMM9n4cp13nIIq
+ 8Mu8GUhAuHA7zktJQ/uMcAG+DcX6jzi45nT5mC4xwhbW0eqt0ec0vv6KT
+ 2SGSyTCCGpyzSYxdasPMhgxwlYttem3tnob039vR4EXBW8cfD+ul62t/j 0=;
+IronPort-HdrOrdr: =?us-ascii?q?A9a23=3A8kZ/JKy/HEtUs8XFn+v/KrPxd+skLtp033?=
+ =?us-ascii?q?Aq2lEZdDV+eKWj+PyGtvIdyBPylXI9WGs4n8qBJamHRhrnhPtIyKMWOqqvWx?=
+ =?us-ascii?q?SjhXuwIOhZnOnf6hDpBiGWzIRg/Ih6dawWMrDNJHh8yf33+QypV+snqeP3lJ?=
+ =?us-ascii?q?yAocf74zNTQRpxa6dmhj0JaTqzNkFtXgFJCd4YOfOnh/ZvnDardXQJYsnTPB?=
+ =?us-ascii?q?BsNNTrnNHFmInrZhQLHXcciDWmty+i67LxDnGjsCs2bjUn+9sf2FmAuxDl4O?=
+ =?us-ascii?q?GZv+ujzBjH2yvo841Og9f60LJ4dauxo/lQDCnwgQC1Y4kkfLuOsFkO0ZiSwW?=
+ =?us-ascii?q?dvtsXQqBE9OMk20VftRyWepBvg3BSI6kdJ10Pf?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0AHAAD2i2xg/4UNJK1aGQEBAQEBAQE?=
+ =?us-ascii?q?BAQEBAQEBAQEBARIBAQEBAQEBAQEBAQFAgT4EAQEBAQELAYIqgU0BOTGMZok?=
+ =?us-ascii?q?vA5AMFopGFIFoCwEBAQ0BATQEAQGEUAKBdgIlNAkOAgMBAQwBAQUBAQECAQY?=
+ =?us-ascii?q?EcROFXYZEAQEBAwE6PxALEgYVGTwNDgYThVghq011gTSBAYgdgUQUDoEXAY1?=
+ =?us-ascii?q?MJxyBSUKENT6DeYEGhRYiBIFlWwaBEBs/Vi8lWBQCLZEGgkGKW5sVgRSDFYE?=
+ =?us-ascii?q?mm0cyEIM9iniWLLg+AgQGBQIWgVQ6gVkzGggbFYMkUBkOjisWjkchAy84AgY?=
+ =?us-ascii?q?KAQEDCY1EAQE?=
+X-IronPort-AV: E=Sophos;i="5.82,310,1613433600"; d="scan'208";a="867307959"
+Received: from alln-core-11.cisco.com ([173.36.13.133])
+ by rcdn-iport-7.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
+ 06 Apr 2021 16:29:52 +0000
+Received: from zorba ([10.24.14.212])
+ by alln-core-11.cisco.com (8.15.2/8.15.2) with ESMTPS id 136GTgP5005585
+ (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Tue, 6 Apr 2021 16:29:44 GMT
+Date: Tue, 6 Apr 2021 09:29:42 -0700
+From: Daniel Walker <danielwa@cisco.com>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2 3/7] powerpc: convert config files to generic cmdline
+Message-ID: <20210406162942.GR2469518@zorba>
+References: <20210309212944.GR109100@zorba>
+ <e4899874-1684-fa1b-443e-f4e478e05e31@csgroup.eu>
+ <CAL_JsqKm76jRQYDcu3rGyUWKPLspoO=EZW_WFy=zAK+m_JYCTg@mail.gmail.com>
+ <20fd7d44-8c39-48bc-25c3-990be9d9d911@csgroup.eu>
+ <20210325195956.GM109100@zorba>
+ <CAL_Jsq+10nucQSRkrTKe9BD5wBScqEb7-Rdg=9TsPiKuiuPG7w@mail.gmail.com>
+ <20210330173254.GS109100@zorba>
+ <CAL_JsqJKBeAgaHQJwOL9G2qLbQSh32L5LtN+cSUgn5sV_P8How@mail.gmail.com>
+ <20210330233137.GB2469518@zorba>
+ <CAL_JsqL8bJrxnJgs4doQ0L7YTF0vrDZLOoPOBdJzwTgMhXm-dw@mail.gmail.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-04-06_04:2021-04-06,
- 2021-04-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- mlxlogscore=999 spamscore=0 lowpriorityscore=0 adultscore=0 phishscore=0
- impostorscore=0 suspectscore=0 clxscore=1015 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104030000
- definitions=main-2104060105
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqL8bJrxnJgs4doQ0L7YTF0vrDZLOoPOBdJzwTgMhXm-dw@mail.gmail.com>
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+X-Outbound-SMTP-Client: 10.24.14.212, [10.24.14.212]
+X-Outbound-Node: alln-core-11.cisco.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,148 +88,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel@vger.kernel.org
+Cc: Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, X86 ML <x86@kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, xe-linux-external@cisco.com,
+ Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Apr 01, 2021 at 03:08:04PM -0500, Rob Herring wrote:
+> On Tue, Mar 30, 2021 at 6:31 PM Daniel Walker <danielwa@cisco.com> wrote:
+> >
+> > On Tue, Mar 30, 2021 at 03:13:04PM -0500, Rob Herring wrote:
+> > > On Tue, Mar 30, 2021 at 12:33 PM Daniel Walker <danielwa@cisco.com> wrote:
+> > > >
+> > > > On Thu, Mar 25, 2021 at 05:29:44PM -0600, Rob Herring wrote:
+> > > > > On Thu, Mar 25, 2021 at 2:00 PM Daniel Walker <danielwa@cisco.com> wrote:
+> > > > > >
+> > > > > > On Thu, Mar 25, 2021 at 01:03:55PM +0100, Christophe Leroy wrote:
+> > > > > > >
+> > > > > > > Ok, so you agree we don't need to provide two CMDLINE, one to be appended and one to be prepended.
+> > > > > > >
+> > > > > > > Let's only provide once CMDLINE as of today, and ask the user to select
+> > > > > > > whether he wants it appended or prepended or replacee. Then no need to
+> > > > > > > change all existing config to rename CONFIG_CMDLINE into either of the new
+> > > > > > > ones.
+> > > > > > >
+> > > > > > > That's the main difference between my series and Daniel's series. So I'll
+> > > > > > > finish taking Will's comment into account and we'll send out a v3 soon.
+> > > > > >
+> > > > > > It doesn't solve the needs of Cisco, I've stated many times your changes have
+> > > > > > little value. Please stop submitting them.
+> > > > >
+> > > > > Can you please outline what those needs are which aren't met?
+> > > >
+> > > > append AND prepend at the same time on all architectures. Christophe doesn't
+> > > > understand the need, and hence tries to minimize the feature set which is
+> > > > incompatible with Cisco needs and all the other out of tree users.
+> > >
+> > > Okay, but that's never been a feature in upstream. For upstream, we
+> > > refactor first and add features 2nd. In this case, the difference is
+> > > largely the kconfig and it would be better to not change the options
+> > > twice, but that's not a blocker for taking the refactoring. You won't
+> > > find a maintainer that's going to take adding a feature over cleanups
+> > > and unification.
+> >
+> > It kind of is a feature in upstream, it's a matter of opinion. Some platform
+> > used append and some use prepend, and it's likely because the maintainers needed
+> > one or the other for development.
+> 
+> Which arch/platform upstream does both prepend and append at the same time?
+ 
+None do it at the same time, however x86 and mips have switched between the two. 
 
+> > I'm not sure why you think I can't add the features in one go. It would be
+> > horrid to take Christophe's changes, then have to do basically all the same work
+> > a second time which is what Christophe's changes would force me to do.
+> 
+> I didn't say it couldn't be done. In fact, I said it would be better
+> all at once: "it would be better to not change the options twice"
+> 
+> But both of you ignoring comments and continuing to post competing
+> series is not going to get us there. TBC, I think Christophe's series
+> is much closer to being in shape to merge upstream.
+ 
+I'm not the one ignoring comments .. I've taken a number of comments from
+Christophe, but he still submits his own series..
 
-> On 05-Mar-2021, at 11:20 AM, Athira Rajeev <atrajeev@linux.vnet.ibm.com> =
-wrote:
->=20
->=20
->=20
->> On 24-Feb-2021, at 5:51 PM, Thadeu Lima de Souza Cascardo <cascardo@cano=
-nical.com> wrote:
->>=20
->> EBB events must be under exclusive groups, so there is no mix of EBB and
->> non-EBB events on the same PMU. This requirement worked fine as perf core
->> would not allow other pinned events to be scheduled together with exclus=
-ive
->> events.
->>=20
->> This assumption was broken by commit 1908dc911792 ("perf: Tweak
->> perf_event_attr::exclusive semantics").
->>=20
->> After that, the test cpu_event_pinned_vs_ebb_test started succeeding aft=
-er
->> read_events, but worse, the task would not have given access to PMC1, so
->> when it tried to write to it, it was killed with "illegal instruction".
->>=20
->> Preventing mixed EBB and non-EBB events from being add to the same PMU w=
-ill
->> just revert to the previous behavior and the test will succeed.
->=20
->=20
-> Hi,
->=20
-> Thanks for checking this. I checked your patch which is fixing =E2=80=9Cc=
-heck_excludes=E2=80=9D to make
-> sure all events must agree on EBB. But in the PMU group constraints, we a=
-lready have check for
-> EBB events. This is in arch/powerpc/perf/isa207-common.c ( isa207_get_con=
-straint function ).
->=20
-> <<>>
-> mask  |=3D CNST_EBB_VAL(ebb);
-> value |=3D CNST_EBB_MASK;
-> <<>>
->=20
-> But the above setting for mask and value is interchanged. We actually nee=
-d to fix here.
->=20
+Christophe series doesn't look good to me.. I suspect you like it cause it
+deletes lines from of.
 
-Hi,
+> > Say for example I implement this change only on one architecture. In that case
+> > the maintainer would be accepting a feature enhancement , but there would be no
+> > stopping it. I shouldn't have to go two strokes on one architecture, but each
+> > change I'm making is essentially a single architecture. They can go in all
+> > together or one at a time.
+> 
+> Features do get implemented all the time on one arch. And then maybe a
+> 2nd and 3rd. At some point we decide no more copying, it needs to be
+> common and refactored. We're at that point for cmdline handling IMO.
 
-I have sent a patch for fixing this EBB mask/value setting.
-This is the link to patch:
+I don't think it can be done with one series all at once ..
 
-powerpc/perf: Fix PMU constraint check for EBB events
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D237669
-
-Thanks
-Athira
-
-> Below patch should fix this:
->=20
-> diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207=
--common.c
-> index e4f577da33d8..8b5eeb6fb2fb 100644
-> --- a/arch/powerpc/perf/isa207-common.c
-> +++ b/arch/powerpc/perf/isa207-common.c
-> @@ -447,8 +447,8 @@ int isa207_get_constraint(u64 event, unsigned long *m=
-askp, unsigned long *valp,
->         * EBB events are pinned & exclusive, so this should never actually
->         * hit, but we leave it as a fallback in case.
->         */
-> -       mask  |=3D CNST_EBB_VAL(ebb);
-> -       value |=3D CNST_EBB_MASK;
-> +       mask  |=3D CNST_EBB_MASK;
-> +       value |=3D CNST_EBB_VAL(ebb);
->=20
->        *maskp =3D mask;
->        *valp =3D value;
->=20
->=20
-> Can you please try with this patch.
->=20
-> Thanks
-> Athira
->=20
->=20
->>=20
->> Fixes: 1908dc911792 (perf: Tweak perf_event_attr::exclusive semantics)
->> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
->> ---
->> arch/powerpc/perf/core-book3s.c | 20 ++++++++++++++++----
->> 1 file changed, 16 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-bo=
-ok3s.c
->> index 43599e671d38..d767f7944f85 100644
->> --- a/arch/powerpc/perf/core-book3s.c
->> +++ b/arch/powerpc/perf/core-book3s.c
->> @@ -1010,9 +1010,25 @@ static int check_excludes(struct perf_event **ctr=
-s, unsigned int cflags[],
->> 			  int n_prev, int n_new)
->> {
->> 	int eu =3D 0, ek =3D 0, eh =3D 0;
->> +	bool ebb =3D false;
->> 	int i, n, first;
->> 	struct perf_event *event;
->>=20
->> +	n =3D n_prev + n_new;
->> +	if (n <=3D 1)
->> +		return 0;
->> +
->> +	first =3D 1;
->> +	for (i =3D 0; i < n; ++i) {
->> +		event =3D ctrs[i];
->> +		if (first) {
->> +			ebb =3D is_ebb_event(event);
->> +			first =3D 0;
->> +		} else if (is_ebb_event(event) !=3D ebb) {
->> +			return -EAGAIN;
->> +		}
->> +	}
->> +
->> 	/*
->> 	 * If the PMU we're on supports per event exclude settings then we
->> 	 * don't need to do any of this logic. NB. This assumes no PMU has both
->> @@ -1021,10 +1037,6 @@ static int check_excludes(struct perf_event **ctr=
-s, unsigned int cflags[],
->> 	if (ppmu->flags & PPMU_ARCH_207S)
->> 		return 0;
->>=20
->> -	n =3D n_prev + n_new;
->> -	if (n <=3D 1)
->> -		return 0;
->> -
->> 	first =3D 1;
->> 	for (i =3D 0; i < n; ++i) {
->> 		if (cflags[i] & PPMU_LIMITED_PMC_OK) {
->> --=20
->> 2.27.0
-
+Daniel
