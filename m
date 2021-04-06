@@ -2,68 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66373559C7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 18:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0941A355A88
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 19:39:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFDFj68G8z3brc
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 02:56:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFFBj0STzz30Fb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 03:39:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=DoBHYqLn;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=ggLx+4V4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.142.92; helo=alln-iport-5.cisco.com;
+ smtp.mailfrom=cisco.com (client-ip=173.37.86.76; helo=rcdn-iport-5.cisco.com;
  envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=DoBHYqLn; dkim-atps=neutral
-Received: from alln-iport-5.cisco.com (alln-iport-5.cisco.com [173.37.142.92])
+ header.s=iport header.b=ggLx+4V4; dkim-atps=neutral
+Received: from rcdn-iport-5.cisco.com (rcdn-iport-5.cisco.com [173.37.86.76])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFDFH23Qvz2yYZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 02:56:17 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFFBF3hJmz2xfh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 03:38:43 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=2543; q=dns/txt; s=iport;
- t=1617728179; x=1618937779;
+ d=cisco.com; i=@cisco.com; l=1449; q=dns/txt; s=iport;
+ t=1617730725; x=1618940325;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=cZx99TFaCLts0bYspySXDfTAZA7sX1ryp1fo4EAJaBw=;
- b=DoBHYqLnZsRDAmfcc0YbB5axhkshYEZLblpF49Z4Qdol3m+SeMem47aJ
- ijrazB5r3wfVjicpBqJ4rqwlf/2qwul1CwG84UmgHwQ5CEiNWoq5XH0tI
- G5g8RoNGe0zBaGFKcHVNmzO0tc+Miua9MVHLqrb2xiSu0zdRmH2XfpF1h I=;
-X-IPAS-Result: =?us-ascii?q?A0AWAgAIkmxgmIMNJK1aHAEBAQEBAQcBARIBAQQEAQFAg?=
- =?us-ascii?q?VKDeAE5lkYDkAwWilqBaAsBAQENAQE0BAEBhFACgXYCJTgTAgMBAQEDAgMBA?=
- =?us-ascii?q?QEBAQUBAQECAQYEFAEBAQEBAQEBaIVdhkUBBTo/EAsSBhUZPA0OBoMEgwirV?=
- =?us-ascii?q?HWBNIEBiB+BRCKBF41NJxyBSUKENT6DeYEGhTgEggRCAS0Qg3GQQo1gnCmDF?=
- =?us-ascii?q?YEmm0cyEKRhLbgRAgQGBQIWgWshgVszGggbFYMlTxkOjjiOUCEDZwIGCgEBA?=
- =?us-ascii?q?wmNRAEB?=
-IronPort-HdrOrdr: A9a23:az4voqCHQftEAsTlHekR55DYdL4zR+YMi2QD/UoZc3NoW+afkN
- 2jm+le+B/vkTAKWGwhn9foAtjkfVr385lp7Y4NeYqzRQWOghrLEKhO5ZbvqgeLJwTQ7ehYvJ
- 0MT4FfD5nKAUF+nYLG5mCDYrId6f2m1IztuuvE1XdqSmhRGsJdxiN0EBySHEEzZCQuP/sEPa
- GR7MZGuDasEE5/Bq+GL0IIUOTZq9rAmIiOW347LiQ64wqDhy7A0tDHOiWfty1zbxp/hZE/7G
- PCjwv1ooKkvv3T8G6760bjq7JLhdDm1txPQPapt/FQADDthgG0Db4RPIG/gA==
+ bh=wHC75exw7z/XvWxaqurh75hAcW+P/hc1Ce2AN8KLAVE=;
+ b=ggLx+4V4bavJCH3/HSDXdJ0f031+ZXu/aK9m+Bu+07Ktzqdc7oGRwcmN
+ MF3qiGkvDX0Rmhk0jcjFe6EcSQ1cKHIUFwx7d6ypoimEBsIo2Djh9lrDj
+ 84Nti/hzxAyckgzcsesFxFsAG2+o6X7vvTa9GCgTuOTXBQUqYpCDm14Bk s=;
+IronPort-HdrOrdr: =?us-ascii?q?A9a23=3Ad70PFKyAZuY1VAyfgTLAKrPwkb1zdoIgy1?=
+ =?us-ascii?q?knxilNYDZeG/b2q+mFmvMH2RjozBsQQmgng9CcOK+GKEmskKJdy48XILukQU?=
+ =?us-ascii?q?3aqHKlRbsSj7fK7jX8F0TFnNJ1+rxnd8FFZeHYLV8/tsri5Rn9LtBI+qjizI?=
+ =?us-ascii?q?mNpcPzi0hgVhtrbaYI1XYbNi++HldtTAdLQboVfaD82uN9qzCteWsaY62Abx?=
+ =?us-ascii?q?FvY8H5q9LGj57gaxIdbiRG1CC1kTiq5LTmeiL34j4iVVp0rYsKwCzijxHz4L?=
+ =?us-ascii?q?mlvrWdzBLRvlWjiah+qZ/G1sZJAtCKh4wuDgjUziysZIhnRtS5zVcInN0=3D?=
 X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="5.82,201,1613433600"; d="scan'208";a="693085054"
-Received: from alln-core-1.cisco.com ([173.36.13.131])
- by alln-iport-5.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 06 Apr 2021 16:56:13 +0000
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0AGAAAsnGxg/4YNJK1aGgEBAQEBAQE?=
+ =?us-ascii?q?BAQEDAQEBARIBAQEBAgIBAQEBQIE+BQEBAQELAYIqgU0BOY0XiTGQDYpcgXw?=
+ =?us-ascii?q?LAQEBDQEBNAQBAYRQAoF2AiU0CQ4CAwEBDAEBBQEBAQIBBgRxE4VdhkUBBTo?=
+ =?us-ascii?q?6BRALGC48GwaGDKtXdYE0gQGIH4FEIoEXAY1MJxyBSUKBE4MiPoo5BIJHghe?=
+ =?us-ascii?q?gOZwpgxWBJptHMhCkYS24EQIEBgUCFoFUOoFZMxoIGxWDJU8ZDo4rFo5HIQN?=
+ =?us-ascii?q?nAgYKAQEDCYw0XQEB?=
+X-IronPort-AV: E=Sophos;i="5.82,201,1613433600"; d="scan'208";a="611888528"
+Received: from alln-core-12.cisco.com ([173.36.13.134])
+ by rcdn-iport-5.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
+ 06 Apr 2021 17:38:39 +0000
 Received: from zorba ([10.24.14.212])
- by alln-core-1.cisco.com (8.15.2/8.15.2) with ESMTPS id 136GuAm7015894
+ by alln-core-12.cisco.com (8.15.2/8.15.2) with ESMTPS id 136HcajD016593
  (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Tue, 6 Apr 2021 16:56:12 GMT
-Date: Tue, 6 Apr 2021 09:56:10 -0700
+ Tue, 6 Apr 2021 17:38:37 GMT
+Date: Tue, 6 Apr 2021 10:38:36 -0700
 From: Daniel Walker <danielwa@cisco.com>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v4 00/20] Implement GENERIC_CMDLINE
-Message-ID: <20210406165610.GV2469518@zorba>
+Subject: Re: [PATCH v4 19/20] mips: Convert to GENERIC_CMDLINE
+Message-ID: <20210406173836.GW2469518@zorba>
 References: <cover.1617375802.git.christophe.leroy@csgroup.eu>
+ <a01b6cdbae01fff77e26f7a5c40ee5260e1952b5.1617375802.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1617375802.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <a01b6cdbae01fff77e26f7a5c40ee5260e1952b5.1617375802.git.christophe.leroy@csgroup.eu>
 X-Outbound-SMTP-Client: 10.24.14.212, [10.24.14.212]
-X-Outbound-Node: alln-core-1.cisco.com
+X-Outbound-Node: alln-core-12.cisco.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,60 +90,36 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 02, 2021 at 03:18:01PM +0000, Christophe Leroy wrote:
-> The purpose of this series is to improve and enhance the
-> handling of kernel boot arguments.
-> 
-> Current situation is that most if not all architectures are using
-> similar options to do some manupulation on command line arguments:
-> - Prepend built-in arguments in front of bootloader provided arguments
-> - Append built-in arguments after bootloader provided arguments
-> - Replace bootloader provided arguments by built-in arguments
-> - Use built-in arguments when none is provided by bootloader.
-> 
-> On some architectures, all the options are possible. On other ones,
-> only a subset are available.
-> 
-> The purpose of this series is to refactor and enhance the
-> handling of kernel boot arguments so that every architecture can
-> benefit from all possibilities.
-> 
-> It is first focussed on powerpc but also extends the capability
-> for other arches.
-> 
-> The work has been focussed on minimising the churn in architectures
-> by keeping the most commonly used namings.
-> 
-> Main changes in V4:
-> - Included patch from Daniel to replace powerpc's strcpy() by strlcpy()
-> - Using strlcpy() instead of zeroing first char + strlcat() (idea taken frm Daniel's series)
-> - Reworked the convertion of EFI which was wrong in V3
-> - Added "too long" command line handling
-> - Changed cmdline macro into a function
-> - Done a few fixes in arch (NIOS2, SH, ARM)
-> - Taken comments into account (see individual responses for details)
-> - Tested on powerpc, build tested on ARM64, X86_64.
-> 
+On Fri, Apr 02, 2021 at 03:18:21PM +0000, Christophe Leroy wrote:
+> -config CMDLINE_BOOL
+> -	bool "Built-in kernel command line"
+> -	help
+> -	  For most systems, it is firmware or second stage bootloader that
+> -	  by default specifies the kernel command line options.  However,
+> -	  it might be necessary or advantageous to either override the
+> -	  default kernel command line or add a few extra options to it.
+> -	  For such cases, this option allows you to hardcode your own
+> -	  command line options directly into the kernel.  For that, you
+> -	  should choose 'Y' here, and fill in the extra boot arguments
+> -	  in CONFIG_CMDLINE.
+> -
+> -	  The built-in options will be concatenated to the default command
+> -	  line if CMDLINE_OVERRIDE is set to 'N'. Otherwise, the default
+> -	  command line will be ignored and replaced by the built-in string.
+> -
+> -	  Most MIPS systems will normally expect 'N' here and rely upon
+> -	  the command line from the firmware or the second-stage bootloader.
+> -
 
-Why submit your changes ? My changes have been around for almost 10 years, and
-are more widely used. Your changes are very new and unstable, but don't really
-solve the needs of people using my series.
 
-I've tried to work with you and I take comments from you, but yet you insist to
-submit your own series.
+See how you complained that I have CMDLINE_BOOL in my changed, and you think it
+shouldn't exist.
 
-I would suggest this isn't going to go anyplace unless we work together.
+Yet here mips has it, and you just deleted it with no feature parity in your
+changes for this.
 
-I can't really support your changes because, honestly, your changes are really
-ugly and they just look more and more like my changes with every passing
-iteration .. As the maturity of your changes continue they will just become my
-change set.
-
-I've been thru every iteration of these changes, and I see those attempts in
-your changes. Everything different in your changes I've tried, and found not to
-be useful, then it falls away in later iterations.
-
-When you give me comments on something which I haven't tried I typically
-incorporate it.
+In my changes I tried to maintain as much feature parity as I could with the
+architectures. I did the same huge conversion a long time ago you've done here to be sure all
+platforms have the features needed.
 
 Daniel
