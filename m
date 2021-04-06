@@ -1,53 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2385B3551CC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 13:18:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5603551F0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 13:22:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FF4lM157Fz3bqt
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 21:18:23 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=PAPEhIZf;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FF4qg6wTVz3bs3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 21:22:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=PAPEhIZf; dkim-atps=neutral
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FF4kt4Xqdz2yx1
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Apr 2021 21:17:57 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1617707873; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=fSuO/VW+4decWYFfrvqFXfusfZIlDNCC7v2+c0XWZNo=;
- b=PAPEhIZfLegtekKTZbyfOl81UNz8pz/kgdVoCWlQ7KlRomwHba9R9oKWB7w9Fro7JYGctH
- JBUkAnWeVgDeuUYHC5hWZE8psWje/FUDf0OHOZlEGwVr885jT6I0PNz7c4TKgneYv7NhyW
- okifsrMShl9eL/r1m+KFPF8Amq2bFnw=
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id C581FB155;
- Tue,  6 Apr 2021 11:17:52 +0000 (UTC)
-Date: Tue, 6 Apr 2021 13:17:48 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [PATCH printk v2 2/5] printk: remove safe buffers
-Message-ID: <YGxDXBJAolBCtojY@alley>
-References: <20210330153512.1182-1-john.ogness@linutronix.de>
- <20210330153512.1182-3-john.ogness@linutronix.de>
- <YGW63/elFr/gYW1u@alley> <87a6qiqgzr.fsf@jogness.linutronix.de>
- <YGXV8LJarjUJDhvy@alley> <YGZ9+kfQKxASmVDR@google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FF4qJ4Jbmz2xZ9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Apr 2021 21:21:44 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FF4q85Bqdz9tyP3;
+ Tue,  6 Apr 2021 13:21:40 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ovHssQ0hJG_S; Tue,  6 Apr 2021 13:21:40 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FF4q83pBqz9tyP2;
+ Tue,  6 Apr 2021 13:21:40 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CE3E18B79D;
+ Tue,  6 Apr 2021 13:21:41 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id kW7nKdTIea_k; Tue,  6 Apr 2021 13:21:41 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D72F98B79B;
+ Tue,  6 Apr 2021 13:21:40 +0200 (CEST)
+Subject: Re: [PATCH 1/9] irqdomain: Reimplement irq_linear_revmap() with
+ irq_find_mapping()
+To: Marc Zyngier <maz@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
+References: <20210406093557.1073423-1-maz@kernel.org>
+ <20210406093557.1073423-2-maz@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <15be426f-4429-ebeb-1b4a-8342bce391e5@csgroup.eu>
+Date: Tue, 6 Apr 2021 13:21:33 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YGZ9+kfQKxASmVDR@google.com>
+In-Reply-To: <20210406093557.1073423-2-maz@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,77 +65,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Paul Mackerras <paulus@samba.org>,
- Tiezhu Yang <yangtiezhu@loongson.cn>, Rafael Aquini <aquini@redhat.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Yue Hu <huyue2@yulong.com>,
- Jordan Niethe <jniethe5@gmail.com>, Kees Cook <keescook@chromium.org>,
- John Ogness <john.ogness@linutronix.de>,
- Alistair Popple <alistair@popple.id.au>,
- "Guilherme G. Piccoli" <gpiccoli@canonical.com>,
- Nicholas Piggin <npiggin@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
- Thomas Gleixner <tglx@linutronix.de>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Eric Biederman <ebiederm@xmission.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, Rich Felker <dalias@libc.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Robert Jarzmik <robert.jarzmik@free.fr>,
+ Daniel Mack <daniel@zonque.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 2021-04-02 11:14:18, Sergey Senozhatsky wrote:
-> On (21/04/01 16:17), Petr Mladek wrote:
-> > > For the long term, we should introduce a printk-context API that allows
-> > > callers to perfectly pack their multi-line output into a single
-> > > entry. We discussed [0][1] this back in August 2020.
-> > 
-> > We need a "short" term solution. There are currently 3 solutions:
-> > 
-> > 1. Keep nmi_safe() and all the hacks around.
-> > 
-> > 2. Serialize nmi_cpu_backtrace() by a spin lock and later by
-> >    the special lock used also by atomic consoles.
-> > 
-> > 3. Tell complaining people how to sort the messed logs.
+
+
+Le 06/04/2021 à 11:35, Marc Zyngier a écrit :
+> irq_linear_revmap() is supposed to be a fast path for domain
+> lookups, but it only exposes low-level details of the irqdomain
+> implementation, details which are better kept private.
+
+Can you elaborate with more details ?
+
 > 
-> Are we talking about nmi_cpu_backtrace()->dump_stack() or some
-> other path?
+> The *overhead* between the two is only a function call and
+> a couple of tests, so it is likely that noone can show any
+> meaningful difference compared to the cost of taking an
+> interrupt.
 
-It is about serializing
+Do you have any measurement ?
 
-			if (regs)
-				show_regs(regs);
-			else
-				dump_stack();
+Can you make the "likely" a certitude ?
 
-in nmi_cpu_backtrace() when it is triggered on many(all) CPUs
-at the same time.
+> 
+> Reimplement irq_linear_revmap() with irq_find_mapping()
+> in order to preserve source code compatibility, and
+> rename the internal field for a measure.
 
+This is in complete contradiction with commit https://github.com/torvalds/linux/commit/d3dcb436
 
-> dump_stack() seems to be already serialized by `dump_lock`. Hmm,
-> show_regs() is not serialized, seems like it should be under the
-> same `dump_lock` as dump_stack().
+At that time, irq_linear_revmap() was less complex than what irq_find_mapping() is today, and 
+nevertheless it was considered worth restoring in as a fast path. What has changed since then ?
 
-Ah, I think that you already mentioned it in the past and I forget it.
+Can you also explain the reason for the renaming of "linear_revmap" into "revmap" ? What is that 
+"measure" ?
 
-Yes, we would need to synchronize all these dump/show functions using
-the same lock. It is already the lock that might be taken recursively
-on the same CPU.
-
-In each case, we must not introduce another lock in
-nmi_cpu_backtrace() because it might cause deadlock with
-@dump_lock.
-
-Anyway, I would really like to keep the dumps serialized. So, we
-either need to use the same lock everywhere or we need to keep
-nmi_safe buffers for now.
-
-I would like to remove the nmi_safe buffers in the long term
-but I am fine with doing it later after the consoles rework.
-I'll leave the prioritization for John who is doing the work
-and might have some preferences.
-
-Best Regards,
-Petr
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
+>   include/linux/irqdomain.h | 22 +++++++++-------------
+>   kernel/irq/irqdomain.c    |  6 +++---
+>   2 files changed, 12 insertions(+), 16 deletions(-)
+> 
+> diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+> index 33cacc8af26d..b9600f24878a 100644
+> --- a/include/linux/irqdomain.h
+> +++ b/include/linux/irqdomain.h
+> @@ -154,9 +154,9 @@ struct irq_domain_chip_generic;
+>    * Revmap data, used internally by irq_domain
+>    * @revmap_direct_max_irq: The largest hwirq that can be set for controllers that
+>    *                         support direct mapping
+> - * @revmap_size: Size of the linear map table @linear_revmap[]
+> + * @revmap_size: Size of the linear map table @revmap[]
+>    * @revmap_tree: Radix map tree for hwirqs that don't fit in the linear map
+> - * @linear_revmap: Linear table of hwirq->virq reverse mappings
+> + * @revmap: Linear table of hwirq->virq reverse mappings
+>    */
+>   struct irq_domain {
+>   	struct list_head link;
+> @@ -180,7 +180,7 @@ struct irq_domain {
+>   	unsigned int revmap_size;
+>   	struct radix_tree_root revmap_tree;
+>   	struct mutex revmap_tree_mutex;
+> -	unsigned int linear_revmap[];
+> +	unsigned int revmap[];
+>   };
+>   
+>   /* Irq domain flags */
+> @@ -396,24 +396,20 @@ static inline unsigned int irq_create_mapping(struct irq_domain *host,
+>   	return irq_create_mapping_affinity(host, hwirq, NULL);
+>   }
+>   
+> -
+>   /**
+> - * irq_linear_revmap() - Find a linux irq from a hw irq number.
+> + * irq_find_mapping() - Find a linux irq from a hw irq number.
+>    * @domain: domain owning this hardware interrupt
+>    * @hwirq: hardware irq number in that domain space
+> - *
+> - * This is a fast path alternative to irq_find_mapping() that can be
+> - * called directly by irq controller code to save a handful of
+> - * instructions. It is always safe to call, but won't find irqs mapped
+> - * using the radix tree.
+>    */
+> +extern unsigned int irq_find_mapping(struct irq_domain *host,
+> +				     irq_hw_number_t hwirq);
+> +
+>   static inline unsigned int irq_linear_revmap(struct irq_domain *domain,
+>   					     irq_hw_number_t hwirq)
+>   {
+> -	return hwirq < domain->revmap_size ? domain->linear_revmap[hwirq] : 0;
+> +	return irq_find_mapping(domain, hwirq);
+>   }
+> -extern unsigned int irq_find_mapping(struct irq_domain *host,
+> -				     irq_hw_number_t hwirq);
+> +
+>   extern unsigned int irq_create_direct_mapping(struct irq_domain *host);
+>   extern int irq_create_strict_mappings(struct irq_domain *domain,
+>   				      unsigned int irq_base,
+> diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+> index d10ab1d689d5..dfa716305ea9 100644
+> --- a/kernel/irq/irqdomain.c
+> +++ b/kernel/irq/irqdomain.c
+> @@ -486,7 +486,7 @@ static void irq_domain_clear_mapping(struct irq_domain *domain,
+>   				     irq_hw_number_t hwirq)
+>   {
+>   	if (hwirq < domain->revmap_size) {
+> -		domain->linear_revmap[hwirq] = 0;
+> +		domain->revmap[hwirq] = 0;
+>   	} else {
+>   		mutex_lock(&domain->revmap_tree_mutex);
+>   		radix_tree_delete(&domain->revmap_tree, hwirq);
+> @@ -499,7 +499,7 @@ static void irq_domain_set_mapping(struct irq_domain *domain,
+>   				   struct irq_data *irq_data)
+>   {
+>   	if (hwirq < domain->revmap_size) {
+> -		domain->linear_revmap[hwirq] = irq_data->irq;
+> +		domain->revmap[hwirq] = irq_data->irq;
+>   	} else {
+>   		mutex_lock(&domain->revmap_tree_mutex);
+>   		radix_tree_insert(&domain->revmap_tree, hwirq, irq_data);
+> @@ -920,7 +920,7 @@ unsigned int irq_find_mapping(struct irq_domain *domain,
+>   
+>   	/* Check if the hwirq is in the linear revmap. */
+>   	if (hwirq < domain->revmap_size)
+> -		return domain->linear_revmap[hwirq];
+> +		return domain->revmap[hwirq];
+>   
+>   	rcu_read_lock();
+>   	data = radix_tree_lookup(&domain->revmap_tree, hwirq);
+> 
