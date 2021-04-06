@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFDD4355039
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 11:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE0C35503A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 11:39:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FF2Y372zgz3c3J
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 19:39:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FF2YQ0FjKz3dfj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 19:39:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,27 +15,26 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FF2Tp2jsjz30CF
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FF2Tp6VrTz30DT
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Apr 2021 19:36:30 +1000 (AEST)
 Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
  [51.254.78.96])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9DB06613D5;
- Tue,  6 Apr 2021 09:36:28 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 3AFDB613D3;
+ Tue,  6 Apr 2021 09:36:29 +0000 (UTC)
 Received: from 78.163-31-62.static.virginmediabusiness.co.uk ([62.31.163.78]
  helo=why.lan) by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94)
  (envelope-from <maz@kernel.org>)
- id 1lTi8I-005owA-P4; Tue, 06 Apr 2021 10:36:27 +0100
+ id 1lTi8J-005owA-Fa; Tue, 06 Apr 2021 10:36:27 +0100
 From: Marc Zyngier <maz@kernel.org>
 To: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-sh@vger.kernel.org
-Subject: [PATCH 8/9] powerpc: Convert irq_domain_add_legacy_isa use to
- irq_domain_add_legacy
-Date: Tue,  6 Apr 2021 10:35:56 +0100
-Message-Id: <20210406093557.1073423-9-maz@kernel.org>
+Subject: [PATCH 9/9] irqdomain: Kill irq_domain_add_legacy_isa
+Date: Tue,  6 Apr 2021 10:35:57 +0100
+Message-Id: <20210406093557.1073423-10-maz@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210406093557.1073423-1-maz@kernel.org>
 References: <20210406093557.1073423-1-maz@kernel.org>
@@ -71,119 +70,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-irq_domain_add_legacy_isa is a pain. It only exists for the benefit of
-two PPC-specific drivers, and creates an ugly dependency between asm/irq.h
-and linux/irqdomain.h
-
-Instead, let's convert these two drivers to irq_domain_add_legacy(),
-stop using NUM_ISA_INTERRUPTS by directly setting NR_IRQS_LEGACY.
-
-The dependency cannot be broken yet as there is a lot of PPC-related
-code that depends on it, but that's the first step towards it.
-
-A followup patch will remove irq_domain_add_legacy_isa.
+This helper doesn't have a user anymore, let's remove it.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/powerpc/include/asm/irq.h         | 4 ++--
- arch/powerpc/platforms/ps3/interrupt.c | 4 ++--
- arch/powerpc/sysdev/i8259.c            | 3 ++-
- arch/powerpc/sysdev/mpic.c             | 2 +-
- arch/powerpc/sysdev/tsi108_pci.c       | 3 ++-
- arch/powerpc/sysdev/xics/xics-common.c | 2 +-
- 6 files changed, 10 insertions(+), 8 deletions(-)
+ Documentation/core-api/irq/irq-domain.rst |  1 -
+ include/linux/irqdomain.h                 | 11 -----------
+ 2 files changed, 12 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
-index f3f264e441a7..aeb209144c68 100644
---- a/arch/powerpc/include/asm/irq.h
-+++ b/arch/powerpc/include/asm/irq.h
-@@ -23,8 +23,8 @@ extern atomic_t ppc_n_lost_interrupts;
- /* Total number of virq in the platform */
- #define NR_IRQS		CONFIG_NR_IRQS
+diff --git a/Documentation/core-api/irq/irq-domain.rst b/Documentation/core-api/irq/irq-domain.rst
+index a77c24c27f7b..84e561db468f 100644
+--- a/Documentation/core-api/irq/irq-domain.rst
++++ b/Documentation/core-api/irq/irq-domain.rst
+@@ -146,7 +146,6 @@ Legacy
  
--/* Same thing, used by the generic IRQ code */
--#define NR_IRQS_LEGACY		NUM_ISA_INTERRUPTS
-+/* Number of irqs reserved for a legacy isa controller */
-+#define NR_IRQS_LEGACY		16
+ 	irq_domain_add_simple()
+ 	irq_domain_add_legacy()
+-	irq_domain_add_legacy_isa()
+ 	irq_domain_create_legacy()
  
- extern irq_hw_number_t virq_to_hw(unsigned int virq);
+ The Legacy mapping is a special case for drivers that already have a
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index 3997ed9e4d7d..2a7ecf08d56e 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -45,9 +45,6 @@ struct cpumask;
+ struct seq_file;
+ struct irq_affinity_desc;
  
-diff --git a/arch/powerpc/platforms/ps3/interrupt.c b/arch/powerpc/platforms/ps3/interrupt.c
-index 78f2339ed5cb..93e367a00452 100644
---- a/arch/powerpc/platforms/ps3/interrupt.c
-+++ b/arch/powerpc/platforms/ps3/interrupt.c
-@@ -45,7 +45,7 @@
-  * implementation equates HV plug value to Linux virq value, constrains each
-  * interrupt to have a system wide unique plug number, and limits the range
-  * of the plug values to map into the first dword of the bitmaps.  This
-- * gives a usable range of plug values of  {NUM_ISA_INTERRUPTS..63}.  Note
-+ * gives a usable range of plug values of  {NR_IRQS_LEGACY..63}.  Note
-  * that there is no constraint on how many in this set an individual thread
-  * can acquire.
-  *
-@@ -721,7 +721,7 @@ static unsigned int ps3_get_irq(void)
- 	}
+-/* Number of irqs reserved for a legacy isa controller */
+-#define NUM_ISA_INTERRUPTS	16
+-
+ #define IRQ_DOMAIN_IRQ_SPEC_PARAMS 16
  
- #if defined(DEBUG)
--	if (unlikely(plug < NUM_ISA_INTERRUPTS || plug > PS3_PLUG_MAX)) {
-+	if (unlikely(plug < NR_IRQS_LEGACY || plug > PS3_PLUG_MAX)) {
- 		dump_bmp(&per_cpu(ps3_private, 0));
- 		dump_bmp(&per_cpu(ps3_private, 1));
- 		BUG();
-diff --git a/arch/powerpc/sysdev/i8259.c b/arch/powerpc/sysdev/i8259.c
-index c1d76c344351..dc1a151c63d7 100644
---- a/arch/powerpc/sysdev/i8259.c
-+++ b/arch/powerpc/sysdev/i8259.c
-@@ -260,7 +260,8 @@ void i8259_init(struct device_node *node, unsigned long intack_addr)
- 	raw_spin_unlock_irqrestore(&i8259_lock, flags);
- 
- 	/* create a legacy host */
--	i8259_host = irq_domain_add_legacy_isa(node, &i8259_host_ops, NULL);
-+	i8259_host = irq_domain_add_legacy(node, NR_IRQS_LEGACY, 0, 0,
-+					   &i8259_host_ops, NULL);
- 	if (i8259_host == NULL) {
- 		printk(KERN_ERR "i8259: failed to allocate irq host !\n");
- 		return;
-diff --git a/arch/powerpc/sysdev/mpic.c b/arch/powerpc/sysdev/mpic.c
-index b0426f28946a..995fb2ada507 100644
---- a/arch/powerpc/sysdev/mpic.c
-+++ b/arch/powerpc/sysdev/mpic.c
-@@ -602,7 +602,7 @@ static void __init mpic_scan_ht_pics(struct mpic *mpic)
- /* Find an mpic associated with a given linux interrupt */
- static struct mpic *mpic_find(unsigned int irq)
+ /**
+@@ -346,14 +343,6 @@ static inline struct irq_domain *irq_domain_add_nomap(struct device_node *of_nod
  {
--	if (irq < NUM_ISA_INTERRUPTS)
-+	if (irq < NR_IRQS_LEGACY)
- 		return NULL;
- 
- 	return irq_get_chip_data(irq);
-diff --git a/arch/powerpc/sysdev/tsi108_pci.c b/arch/powerpc/sysdev/tsi108_pci.c
-index 49f9541954f8..042bb38fa5c2 100644
---- a/arch/powerpc/sysdev/tsi108_pci.c
-+++ b/arch/powerpc/sysdev/tsi108_pci.c
-@@ -404,7 +404,8 @@ void __init tsi108_pci_int_init(struct device_node *node)
- {
- 	DBG("Tsi108_pci_int_init: initializing PCI interrupts\n");
- 
--	pci_irq_host = irq_domain_add_legacy_isa(node, &pci_irq_domain_ops, NULL);
-+	pci_irq_host = irq_domain_add_legacy(node, NR_IRQS_LEGACY, 0, 0,
-+					     &pci_irq_domain_ops, NULL);
- 	if (pci_irq_host == NULL) {
- 		printk(KERN_ERR "pci_irq_host: failed to allocate irq domain!\n");
- 		return;
-diff --git a/arch/powerpc/sysdev/xics/xics-common.c b/arch/powerpc/sysdev/xics/xics-common.c
-index 7e4305c01bac..fdf8db4444b6 100644
---- a/arch/powerpc/sysdev/xics/xics-common.c
-+++ b/arch/powerpc/sysdev/xics/xics-common.c
-@@ -201,7 +201,7 @@ void xics_migrate_irqs_away(void)
- 		struct ics *ics;
- 
- 		/* We can't set affinity on ISA interrupts */
--		if (virq < NUM_ISA_INTERRUPTS)
-+		if (virq < NR_IRQS_LEGACY)
- 			continue;
- 		/* We only need to migrate enabled IRQS */
- 		if (!desc->action)
+ 	return __irq_domain_add(of_node_to_fwnode(of_node), 0, max_irq, max_irq, ops, host_data);
+ }
+-static inline struct irq_domain *irq_domain_add_legacy_isa(
+-				struct device_node *of_node,
+-				const struct irq_domain_ops *ops,
+-				void *host_data)
+-{
+-	return irq_domain_add_legacy(of_node, NUM_ISA_INTERRUPTS, 0, 0, ops,
+-				     host_data);
+-}
+ static inline struct irq_domain *irq_domain_add_tree(struct device_node *of_node,
+ 					 const struct irq_domain_ops *ops,
+ 					 void *host_data)
 -- 
 2.29.2
 
