@@ -1,62 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD9D355763
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 17:10:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFC53557DB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 17:31:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FF9vG6STBz3bsh
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 01:10:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFBMd43GRz3bqX
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 01:31:41 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20150623.gappssmtp.com header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=DVtq8pcz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.134; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::52e;
+ helo=mail-pg1-x52e.google.com; envelope-from=axboe@kernel.dk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=DVtq8pcz; dkim-atps=neutral
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
+ [IPv6:2607:f8b0:4864:20::52e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FF9tw4Ww9z2yq6
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 01:10:14 +1000 (AEST)
-Received: from mail-ot1-f48.google.com ([209.85.210.48]) by
- mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1N0nzR-1lp1S148ij-00wmlX for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Apr
- 2021 17:10:09 +0200
-Received: by mail-ot1-f48.google.com with SMTP id
- g8-20020a9d6c480000b02901b65ca2432cso14952224otq.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Apr 2021 08:10:08 -0700 (PDT)
-X-Gm-Message-State: AOAM533bTk038xmghH/o/YIbotVZ5LGS40gqvbypHRUvAKQr7iPNdMbQ
- HMppzROAjnRv7KI6oW7rF9rhmtiHlQTOHsJZels=
-X-Google-Smtp-Source: ABdhPJymivlM3E85H8Q+0NCLICsUYllvqqVKgV6xTox+xVrAvu7QQQ8spiRatNW1320IbQIk/CTiHARLx2Yc4o/NYxk=
-X-Received: by 2002:a05:6830:148c:: with SMTP id
- s12mr28037074otq.251.1617721807123; 
- Tue, 06 Apr 2021 08:10:07 -0700 (PDT)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFBMC1K1Nz2y0G
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 01:31:17 +1000 (AEST)
+Received: by mail-pg1-x52e.google.com with SMTP id g35so5865739pgg.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Apr 2021 08:31:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=FVR8clygzLUFKEPmLFMXFMAq/CEtkPBvYlQe7K+S0wM=;
+ b=DVtq8pczW0+cPS/j2Z4qsIjU8D6sXeTAZp0sJuYcGT//v+pcWVzgzeggqfSOCHIP7M
+ rILDfEGbGmafL7JwZawTzoIZs7GVAmY+weY26PDox6YhskP0OXFCki0ccJxwlH8TV/kx
+ mir+4UQvTB5mzWtJmbASNka+wqB5sSusIK8SSFmaMuxMjsxbmqJ6/P1YvUGX2YNhjdJ4
+ +lwAkcGy3ZyV76N3M6c36RLCdfpMOi9BXUqRqgDJlyzLGbgYj7Z5IVh1B2jCEBxmDwae
+ rqO3dknEyTTrdxNTd/y0KLOMds3UPKl49Q6kTuqMt47SDlIlXVAY5njn5Jwsq2SBTuXN
+ UBgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=FVR8clygzLUFKEPmLFMXFMAq/CEtkPBvYlQe7K+S0wM=;
+ b=PFcRV5/iX29d0IlNSQS/QdnoYyvaFjFkuYmSdDTT6bDJV2DKjWx6D01OaDYPJjyVeP
+ D8jbiP7s16wWlPMtxdhtJRUGaLv4BxxUqQdCU9wMpuMvwV/hzmznp5w8YZJZbkRAJ5Pa
+ rbbRlFsI+gFogHuiLcZO8SAWfWN2d7LUAMX8SonuGXY1E4qr8ccHBziRChzqkwSzVAUZ
+ TnXsK3QpVTMJwZ8hb2jcEtNNZSO/tDrPK9Z10qFOxD1VmTUaU+MsW/RDWwaIrCenKcOb
+ r0ZCLHqleStaps42X3zV3yIdhHbh1XmeY2tQ35Ttp1NOqNcKNFiCSNnvIbYzRcn4kHID
+ +DiQ==
+X-Gm-Message-State: AOAM532LvVWfe+1AKPdaD9ZcSfp48KNZYvjLI3MaeYBdtIEqvB9KtSRF
+ djV6fS8SQJ6EykYt8BD4pkJn+XFcfNhnSQ==
+X-Google-Smtp-Source: ABdhPJwLy6+3XFFIb/kUj2Zi2Kpcjuq1vEVWRCe2DwIsxwTXQsvD7YkWlZhyg7Rnv+jccqvyAm8stg==
+X-Received: by 2002:aa7:8d4c:0:b029:21c:104b:f6cb with SMTP id
+ s12-20020aa78d4c0000b029021c104bf6cbmr27683675pfe.26.1617723074063; 
+ Tue, 06 Apr 2021 08:31:14 -0700 (PDT)
+Received: from [192.168.4.41] (cpe-72-132-29-68.dc.res.rr.com. [72.132.29.68])
+ by smtp.gmail.com with ESMTPSA id
+ kk6sm2953044pjb.51.2021.04.06.08.31.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Apr 2021 08:31:13 -0700 (PDT)
+Subject: Re: [PATCH] swim3: support highmem
+To: Christoph Hellwig <hch@lst.de>
+References: <20210406061839.811588-1-hch@lst.de>
+From: Jens Axboe <axboe@kernel.dk>
+Message-ID: <5b1e84c0-afbf-389d-2929-d92e914e2613@kernel.dk>
+Date: Tue, 6 Apr 2021 09:31:15 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Tue, 6 Apr 2021 17:09:50 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3PBvj_JEgxqSD6fg_J8kZzUz_KthZ66RdA5tF4CPPbdg@mail.gmail.com>
-Message-ID: <CAK8P3a3PBvj_JEgxqSD6fg_J8kZzUz_KthZ66RdA5tF4CPPbdg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] kernel.h: Split out panic and oops helpers
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:G79GJaMM0rCW6TjlLvX5rohYwYSRx27oahoXEuJ/9Z2gMfC/RLy
- Z0Qp6Fy+6K9mYwBWAq9yiRCsncEi528VqlojwSu6O3wYlOJAg19A5RgPWZPs/sfm17m2vwV
- 7KIun0Lz6HzzVj0MSBQQ+6mX1Jp337mT+wo6h8G7I919R7F11mctZnVt7U1k6/1ySZlQcHP
- j3oVLZZ68r3Xgz6L2U3Lg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:G55YZ9lU5GI=:pq0Znux1Dvj8OK9U0PEiRc
- yB3t3bgfGO5IzS8yEXv6QHZqXYhO2UqSZi5Ml9C/zvwqlxnl9+dsA4K8Z0RkAINF5xJF1ZvlW
- 8p0FVI7tploRrE4bPWHrJOruxCL2CtdbJuXTq5n2KUIFn1lDUTdvtjGJyY3CtWmzgOeP66ngE
- bOxLgwD2vQS0dKGsCLxNBzC8b4D7JKiKDhf1sicPN1t0/z1Enfw7+KKIpX6PYiIMTsDB/TdHd
- mVuUDE4Q+8swzBmLWU1o84nVCsNLfnY0U3XKkRbvvD57+HKQvbxzu//vplXUCWpmAWiAzqpYf
- cz/D5Oe2iS/Cztxe3mYaCYlwOBJRCFpgU/KN4pVBRwGcJmQOslwClpRMhq2Po93KdDmZUj/xK
- Lh0GlRavr3rh2FBk99LhY+NcPZ+YvSv1QyEw07J7QQe3xdpw9TXGWPX95FKx4Lh3CeYvkN5hd
- jW+YuDxXbsMz7+5asDtOaf18kXW5O17T3c407/tA9iUJ5aKlqvdxr9XmaD1n0chnL/QD3J1OH
- GsIf0XCbiyDBSzFBS/A4Ulo9GUFSQdjyVGXpY+mMquC4tWg5aYdqCLzReQMH+jbzPqG4rR4/H
- P27+CA4ni5rizWDkwb6AjjcmPgWCnSgw0v
+In-Reply-To: <20210406061839.811588-1-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,48 +87,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>,
- Linux on Hyper-V List <linux-hyperv@vger.kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- linux-remoteproc@vger.kernel.org, Michael Kelley <mikelley@microsoft.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Joel Fernandes <joel@joelfernandes.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arch <linux-arch@vger.kernel.org>, Wei Liu <wei.liu@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>, Corey Minyard <minyard@acm.org>,
- the arch/x86 maintainers <x86@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Iurii Zaikin <yzaikin@google.com>, Ohad Ben-Cohen <ohad@wizery.com>,
- Joerg Roedel <jroedel@suse.de>, Kees Cook <keescook@chromium.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Josh Triplett <josh@joshtriplett.org>,
- "Steven Rostedt \(VMware\)" <rostedt@goodmis.org>, rcu@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, openipmi-developer@lists.sourceforge.net,
- Bjorn Andersson <bjorn.andersson@linaro.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, kexec@lists.infradead.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Eric Biederman <ebiederm@xmission.com>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-block@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 6, 2021 at 3:31 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> kernel.h is being used as a dump for all kinds of stuff for a long time.
-> Here is the attempt to start cleaning it up by splitting out panic and
-> oops helpers.
->
-> At the same time convert users in header and lib folder to use new header.
-> Though for time being include new header back to kernel.h to avoid twisted
-> indirected includes for existing users.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+On 4/6/21 12:18 AM, Christoph Hellwig wrote:
+> swim3 only uses the virtual address of a bio to stash it into the data
+> transfer using virt_to_bus.  But the ppc32 virt_to_bus just uses the
+> physical address with an offset.  Replace virt_to_bus with a local hack
+> that performs the equivalent transformation and stop asking for block
+> layer bounce buffering.
 
-Nice!
+Applied, thanks.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+-- 
+Jens Axboe
+
