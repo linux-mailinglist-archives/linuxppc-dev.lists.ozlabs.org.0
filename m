@@ -2,76 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B611354D45
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 09:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 922B0354DD0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 09:27:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FDz7f2D75z3brX
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 17:05:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FDzcz4Pxtz30Df
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 17:27:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=sSdhwSHA;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=CpFe2fFT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
- helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=paulus@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=sSdhwSHA; dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
- [IPv6:2607:f8b0:4864:20::42e])
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=CpFe2fFT; dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FDz7C3qFtz302V
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Apr 2021 17:05:10 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id c204so5999214pfc.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Apr 2021 00:05:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=uS28LyyI+bi1kiY9qrGEaoICmXPsK96cE5clEwvIrlg=;
- b=sSdhwSHAEMAVPq/5SsZDPjDoQcLo+Zikg+iGPRxKIf5+QYQbULlfuzEinZ25/EKbhJ
- GwInAZPZnHPChlXonmvJv9wBJpe57D4161koWuqYKabgoaHxIdpdHdqVcvIYzwVa7A2F
- Y1jGyPxyWa3G3bxKJsWds70VNd+boE5ceZ7ya6lV0rqBlHl5SP9vK7KNjfnVOlwSYd3y
- +SoZaQbhFc9uhojgKwcDEdsT438f2Fo//g21WRjdoyKHHXB5tsyvuQpD8vF6aLBng4Uu
- pHiHTzoemc7RBhLPf/mW8Xm8UoO9GmwiYBjTLVP40s6G9AE3DOPJnsYsZl4HslrUvuBm
- 8cGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=uS28LyyI+bi1kiY9qrGEaoICmXPsK96cE5clEwvIrlg=;
- b=acJS4B5Lmzh1ekUbo4TZ+QXWc1B4t7nrXbYEtGpnOzqkodRMVjNmwkJor9vwAxtbtD
- 5c7LfeC7vJBYQFVz3FRxJHvMDpNVDVOtcg/u5YKC3Cq+D1kPGODWT6TTQDDdASF62RHy
- YjhIaHfBBGtEPZFO5A8DejO8MvEgd05FAbbkGS3qOGHl23xf0VIiq3f3fI6896FHmaY8
- GyD5kC7tHWQpi1JJwGzuYIrnQu9RFni6sHI1Bjm6oUBVrQukcV+3f93E2Ehn25hazPSv
- LkWjf3LsOYLwMV4g25tkU/YyvaumwK+yo7qaKlegxzipx7wRoiIpvqLWe65Ny541T41T
- 5Y3g==
-X-Gm-Message-State: AOAM533QT7dt/Q3gp72QO5WZoqHsF15IF5LItvgZw1ncYPfwhZAXfYxv
- G5iwIs7L+MvdhVy34tj9wNQ=
-X-Google-Smtp-Source: ABdhPJysgIrCHm/aCWkegmz+8NxzSXzD7Ogyz29u24a/n5t1b7BdMPRYR4a3HFgP7ULGgs3wd9Ye4A==
-X-Received: by 2002:aa7:9804:0:b029:1f1:5340:77c1 with SMTP id
- e4-20020aa798040000b02901f1534077c1mr26329965pfl.72.1617692705503; 
- Tue, 06 Apr 2021 00:05:05 -0700 (PDT)
-Received: from localhost ([144.130.156.129])
- by smtp.gmail.com with ESMTPSA id x7sm18114838pff.12.2021.04.06.00.05.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Apr 2021 00:05:05 -0700 (PDT)
-Date: Tue, 06 Apr 2021 17:04:59 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 16/48] KVM: PPC: Book3S 64: Move interrupt early
- register setup to KVM
-To: Paul Mackerras <paulus@ozlabs.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FDzcY3B1tz2xg5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Apr 2021 17:27:09 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4FDzcX1Xv7z9sWQ; Tue,  6 Apr 2021 17:27:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1617694028; bh=h5LepvJnn7BEH3+87DFMhDXLJgEPhf5h9r22uEAaw5A=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=CpFe2fFTxN7MslsmU1NXt7fFhhhqdgupgch6IumirQIx0pgckvAyDmkbqbeE4Tv/Z
+ 4MnYs33gpLyYDsS1BVBj73KCCJaLugNIdi9kur5YYe2Rf+MUXSWX7XQ8S6X8CDqb82
+ 5ndZNLTgy+1gqPa/fRIrjiYO8PZVM50PkLRSF/mGIsVA3Ai4ZG7L8f9ShJMe+wT2KK
+ GuUllJpCM/SH9e82e2/Hqv1dtD1e8p5Q5v+7llZbnANF4eodQ2SlLugp8324fg0UAD
+ em+Nya8djCzNUj48JMjm5Zi7TooySTfLDA63vb98inS4MFu/OADS0Y+oo9DNGGvleo
+ bb1raavSjgxrw==
+Date: Tue, 6 Apr 2021 17:27:01 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v6 30/48] KVM: PPC: Book3S HV P9: Implement the rest of
+ the P9 path in C
+Message-ID: <YGwNRUahuv42VZPR@thinks.paulus.ozlabs.org>
 References: <20210405011948.675354-1-npiggin@gmail.com>
- <20210405011948.675354-17-npiggin@gmail.com>
- <YGvlguoc6IjjwybE@thinks.paulus.ozlabs.org>
-In-Reply-To: <YGvlguoc6IjjwybE@thinks.paulus.ozlabs.org>
+ <20210405011948.675354-31-npiggin@gmail.com>
 MIME-Version: 1.0
-Message-Id: <1617692548.qxsokwkl3x.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210405011948.675354-31-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,18 +63,136 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Paul Mackerras's message of April 6, 2021 2:37 pm:
-> On Mon, Apr 05, 2021 at 11:19:16AM +1000, Nicholas Piggin wrote:
->> Like the earlier patch for hcalls, KVM interrupt entry requires a
->> different calling convention than the Linux interrupt handlers
->> set up. Move the code that converts from one to the other into KVM.
->=20
-> I don't see where you do anything to enable the new KVM entry code to
-> access the PACA_EXSLB area when handling DSegI and ISegI interrupts.
-> Have I missed something, or are you not testing PR KVM at all?
+On Mon, Apr 05, 2021 at 11:19:30AM +1000, Nicholas Piggin wrote:
+> Almost all logic is moved to C, by introducing a new in_guest mode for
+> the P9 path that branches very early in the KVM interrupt handler to
+> P9 exit code.
+> 
+> The main P9 entry and exit assembly is now only about 160 lines of low
+> level stack setup and register save/restore, plus a bad-interrupt
+> handler.
+> 
+> There are two motivations for this, the first is just make the code more
+> maintainable being in C. The second is to reduce the amount of code
+> running in a special KVM mode, "realmode". In quotes because with radix
+> it is no longer necessarily real-mode in the MMU, but it still has to be
+> treated specially because it may be in real-mode, and has various
+> important registers like PID, DEC, TB, etc set to guest. This is hostile
+> to the rest of Linux and can't use arbitrary kernel functionality or be
+> instrumented well.
+> 
+> This initial patch is a reasonably faithful conversion of the asm code,
+> but it does lack any loop to return quickly back into the guest without
+> switching out of realmode in the case of unimportant or easily handled
+> interrupts. As explained in previous changes, handling HV interrupts
+> in real mode is not so important for P9.
+> 
+> Use of Linux 64s interrupt entry code register conventions including
+> paca EX_ save areas are brought into the KVM code. There is no point
+> shuffling things into different paca save areas and making up a
+> different calling convention for KVM.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-We just got rid of PACA_EXSLB, commit ac7c5e9b08ac ("powerpc/64s:
-Remove EXSLB interrupt save area").
+[snip]
 
-Thanks,
-Nick
+> +/*
+> + * Took an interrupt somewhere right before HRFID to guest, so registers are
+> + * in a bad way. Return things hopefully enough to run host virtual code and
+> + * run the Linux interrupt handler (SRESET or MCE) to print something useful.
+> + *
+> + * We could be really clever and save all host registers in known locations
+> + * before setting HSTATE_IN_GUEST, then restoring them all here, and setting
+> + * return address to a fixup that sets them up again. But that's a lot of
+> + * effort for a small bit of code. Lots of other things to do first.
+> + */
+> +kvmppc_p9_bad_interrupt:
+> +	/*
+> +	 * Set GUEST_MODE_NONE so the handler won't branch to KVM, and clear
+> +	 * MSR_RI in r12 ([H]SRR1) so the handler won't try to return.
+> +	 */
+> +	li	r10,KVM_GUEST_MODE_NONE
+> +	stb	r10,HSTATE_IN_GUEST(r13)
+> +	li	r10,MSR_RI
+> +	andc	r12,r12,r10
+> +
+> +	/*
+> +	 * Clean up guest registers to give host a chance to run.
+> +	 */
+> +	li	r10,0
+> +	mtspr	SPRN_AMR,r10
+> +	mtspr	SPRN_IAMR,r10
+> +	mtspr	SPRN_CIABR,r10
+> +	mtspr	SPRN_DAWRX0,r10
+> +BEGIN_FTR_SECTION
+> +	mtspr	SPRN_DAWRX1,r10
+> +END_FTR_SECTION_IFSET(CPU_FTR_DAWR1)
+> +	mtspr	SPRN_PID,r10
+> +
+> +	/*
+> +	 * Switch to host MMU mode
+> +	 */
+> +	ld	r10, HSTATE_KVM_VCPU(r13)
+> +	ld	r10, VCPU_KVM(r10)
+> +	lwz	r10, KVM_HOST_LPID(r10)
+> +	mtspr	SPRN_LPID,r10
+> +
+> +	ld	r10, HSTATE_KVM_VCPU(r13)
+> +	ld	r10, VCPU_KVM(r10)
+> +	ld	r10, KVM_HOST_LPCR(r10)
+> +	mtspr	SPRN_LPCR,r10
+> +
+> +	/*
+> +	 * Go back to interrupt handler
+> +	 */
+> +	ld	r10,HSTATE_SCRATCH0(r13)
+> +	cmpwi	r10,BOOK3S_INTERRUPT_MACHINE_CHECK
+> +	beq	machine_check_common
+> +
+> +	ld	r10,HSTATE_SCRATCH0(r13)
+> +	cmpwi	r10,BOOK3S_INTERRUPT_SYSTEM_RESET
+> +	beq	system_reset_common
+> +
+> +	b	.
+
+So you only handle machine check and system reset here?  I would think
+that program check would also be useful, for the cases where people
+put BUG_ON in sensitive places (see below).  DSI and ISI could also be
+useful for the null pointer dereference cases, I would think.
+
+> +static inline void mtslb(unsigned int idx, u64 slbee, u64 slbev)
+> +{
+> +	BUG_ON((slbee & 0xfff) != idx);
+> +
+> +	asm volatile("slbmte %0,%1" :: "r" (slbev), "r" (slbee));
+> +}
+
+Using BUG_ON here feels dangerous, and the condition it is testing is
+certainly not one where the host kernel is in such trouble that it
+can't continue to run.  If the index was wrong then at worst the guest
+kernel would be in trouble.  So I don't believe BUG_ON is appropriate.
+
+> +
+> +/*
+> + * Malicious or buggy radix guests may have inserted SLB entries
+> + * (only 0..3 because radix always runs with UPRT=1), so these must
+> + * be cleared here to avoid side-channels. slbmte is used rather
+> + * than slbia, as it won't clear cached translations.
+> + */
+> +static void radix_clear_slb(void)
+> +{
+> +	u64 slbee, slbev;
+> +	int i;
+> +
+> +	for (i = 0; i < 4; i++) {
+> +		mfslb(i, &slbee, &slbev);
+> +		if (unlikely(slbee || slbev)) {
+> +			slbee = i;
+> +			slbev = 0;
+> +			mtslb(i, slbee, slbev);
+> +		}
+> +	}
+
+Are four slbmfee + slbmfev really faster than four slbmte?
+
+Paul.
