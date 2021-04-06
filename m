@@ -1,71 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9C9355BA3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 20:44:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3D7355C4A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 21:38:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFGf73hPnz3brL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 04:44:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFHrl56DSz3brs
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 05:38:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YAhhm9Bk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IsmWkyrF;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HWY1A4/X;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::629;
- helo=mail-pl1-x629.google.com; envelope-from=keescook@chromium.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com;
+ envelope-from=alex.williamson@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=YAhhm9Bk; dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=IsmWkyrF; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=HWY1A4/X; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFGdh71t5z2yZ8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 04:44:05 +1000 (AEST)
-Received: by mail-pl1-x629.google.com with SMTP id j7so3320174plx.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Apr 2021 11:44:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=eQnC4YbqcPkvvMzS/WXtytqd+L3POj6wkG54irRdxac=;
- b=YAhhm9BkpY5y7HrE34KfvVWOVgEO0sYzWSUTiqziDNEK4+3Lral7Ghh0posJjIrz61
- tfc63YozQ8TRMvb+TNGvA+LWvP4faXgXV6k8KT0Nv6y/u9B7f1LE4XzO3OjKob023F9j
- xZGLdr3UYpKw1f93SAnQ8fSdVZaYmuMHTRPdw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=eQnC4YbqcPkvvMzS/WXtytqd+L3POj6wkG54irRdxac=;
- b=P4Ay05zxiVsQcjR4DZmv9mxwTfJqEVx/k48u1/szIwv3Bh+T7D2TnF6fLpwAR8sKe6
- 0tyKWf2FZgVfg77nyTjYgcr3pZDhhocP5PAj8x9QUl6s9I+/A0F5wU1ol9FiWaxGJGTt
- 7bKFeRtyeOTsDMtoBWhMFNzsdLQqnXaMgFYD5SvaNgCd7LlLh3zpWouEo/XkwuW9/deH
- kn6cgpvcDAgOSlS+p7pPuyFKFci2jZU99vwrKG8/QRvC3gQZEMnxRgpXp5LDGcrgvvc4
- X46AXDkwqMPpVDrsa5vUwKYxm4fL3UuAXz5H1/YABJpiCLksMSt4x47eIQxiuKkfgxjX
- Lu6A==
-X-Gm-Message-State: AOAM530BFoUAjpnMrw6dvqGPWy1qYKQKR9jMJXMR/M0DI+yD9j2oFpFG
- RzYwqBzM61c/f393zuzREtkgxg==
-X-Google-Smtp-Source: ABdhPJyp4uPolhdsa5/w7momD80MPZDhhBi9SUuWfIFW/E/FawC4pgs3YQmUW7xHztXcPiXJ8/E+QQ==
-X-Received: by 2002:a17:902:e74e:b029:e5:bde4:2b80 with SMTP id
- p14-20020a170902e74eb02900e5bde42b80mr30088911plf.44.1617734642419; 
- Tue, 06 Apr 2021 11:44:02 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id i9sm3610423pjh.9.2021.04.06.11.44.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Apr 2021 11:44:01 -0700 (PDT)
-Date: Tue, 6 Apr 2021 11:44:00 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] kernel.h: Split out panic and oops helpers
-Message-ID: <202104061143.E11D2D0@keescook>
-References: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFHrJ6Fw7z2xxg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 05:38:22 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1617737892;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mJhQUKqEV20liVnsgwrQmVyuB9gKm/Ks+xvFCx56LWo=;
+ b=IsmWkyrFdqgIp635jhPURHVjUnh67zM4d2jBkwDQKrwS3vN310A1RCSQ8SQIzeag0AYngB
+ /QBJQaEuzzwNTLIVhNLbiFABgRV+mfnw4U/MgtVWLsjcOmAm7cPK+4Lvj770wvI/ax7ifS
+ bC9WpmW/rBBqBUafmQvvOcBek0aPMy0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1617737893;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mJhQUKqEV20liVnsgwrQmVyuB9gKm/Ks+xvFCx56LWo=;
+ b=HWY1A4/X0JK5BRdqmspWnNwtGxzyqsktsUq1cwUkkyrjfrE0BVUYQ87kHeQIC5Sgzjbtes
+ e0W3pOTBPjgz46kuKtXMuB8g2OgmUath0djjt0fL7Ul3FwLE9dFkktS+Ba7ABYaGRDldRS
+ hgCdt9IFh3h9oko8GyNoNwzOcWRCh50=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-597-y4Zh0538PROB9k8ijir18w-1; Tue, 06 Apr 2021 15:38:10 -0400
+X-MC-Unique: y4Zh0538PROB9k8ijir18w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 466FC108BD06;
+ Tue,  6 Apr 2021 19:38:08 +0000 (UTC)
+Received: from omen (ovpn-112-85.phx2.redhat.com [10.3.112.85])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5FD7A19D61;
+ Tue,  6 Apr 2021 19:38:06 +0000 (UTC)
+Date: Tue, 6 Apr 2021 13:38:05 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 1/2] vfio/pci: remove vfio_pci_nvlink2
+Message-ID: <20210406133805.715120bd@omen>
+In-Reply-To: <20210326061311.1497642-2-hch@lst.de>
+References: <20210326061311.1497642-1-hch@lst.de>
+ <20210326061311.1497642-2-hch@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,50 +85,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>, linux-hyperv@vger.kernel.org,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- linux-remoteproc@vger.kernel.org, Michael Kelley <mikelley@microsoft.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Joel Fernandes <joel@joelfernandes.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arch@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>, Corey Minyard <minyard@acm.org>,
- x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
- Iurii Zaikin <yzaikin@google.com>, Ohad Ben-Cohen <ohad@wizery.com>,
- Joerg Roedel <jroedel@suse.de>, "Paul E. McKenney" <paulmck@kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Josh Triplett <josh@joshtriplett.org>,
- "Steven Rostedt \(VMware\)" <rostedt@goodmis.org>, rcu@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, openipmi-developer@lists.sourceforge.net,
- Bjorn Andersson <bjorn.andersson@linaro.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Eric Biederman <ebiederm@xmission.com>,
- linux-fsdevel@vger.kernel.org,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, kvm@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Paul Mackerras <paulus@samba.org>,
+ Daniel Vetter <daniel@ffwll.ch>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-api@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 06, 2021 at 04:31:58PM +0300, Andy Shevchenko wrote:
-> kernel.h is being used as a dump for all kinds of stuff for a long time.
-> Here is the attempt to start cleaning it up by splitting out panic and
-> oops helpers.
+On Fri, 26 Mar 2021 07:13:10 +0100
+Christoph Hellwig <hch@lst.de> wrote:
+
+> This driver never had any open userspace (which for VFIO would include
+> VM kernel drivers) that use it, and thus should never have been added
+> by our normal userspace ABI rules.
 > 
-> At the same time convert users in header and lib folder to use new header.
-> Though for time being include new header back to kernel.h to avoid twisted
-> indirected includes for existing users.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/vfio/pci/Kconfig            |   6 -
+>  drivers/vfio/pci/Makefile           |   1 -
+>  drivers/vfio/pci/vfio_pci.c         |  18 -
+>  drivers/vfio/pci/vfio_pci_nvlink2.c | 490 ----------------------------
+>  drivers/vfio/pci/vfio_pci_private.h |  14 -
+>  include/uapi/linux/vfio.h           |  38 +--
+>  6 files changed, 4 insertions(+), 563 deletions(-)
+>  delete mode 100644 drivers/vfio/pci/vfio_pci_nvlink2.c
 
-I like it! Do you have a multi-arch CI to do allmodconfig builds to
-double-check this?
+Hearing no objections, applied to vfio next branch for v5.13.  Thanks,
 
-Acked-by: Kees Cook <keescook@chromium.org>
+Alex
 
--Kees
-
--- 
-Kees Cook
