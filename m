@@ -2,51 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 922B0354DD0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 09:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91167354F30
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 10:57:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FDzcz4Pxtz30Df
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 17:27:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FF1cm4LKRz3brl
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Apr 2021 18:57:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=CpFe2fFT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=WpscpUN2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=paulus@ozlabs.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d;
+ helo=mail-pf1-x42d.google.com; envelope-from=shorne@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=CpFe2fFT; dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=WpscpUN2; dkim-atps=neutral
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
+ [IPv6:2607:f8b0:4864:20::42d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FDzcY3B1tz2xg5
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Apr 2021 17:27:09 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4FDzcX1Xv7z9sWQ; Tue,  6 Apr 2021 17:27:08 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1617694028; bh=h5LepvJnn7BEH3+87DFMhDXLJgEPhf5h9r22uEAaw5A=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=CpFe2fFTxN7MslsmU1NXt7fFhhhqdgupgch6IumirQIx0pgckvAyDmkbqbeE4Tv/Z
- 4MnYs33gpLyYDsS1BVBj73KCCJaLugNIdi9kur5YYe2Rf+MUXSWX7XQ8S6X8CDqb82
- 5ndZNLTgy+1gqPa/fRIrjiYO8PZVM50PkLRSF/mGIsVA3Ai4ZG7L8f9ShJMe+wT2KK
- GuUllJpCM/SH9e82e2/Hqv1dtD1e8p5Q5v+7llZbnANF4eodQ2SlLugp8324fg0UAD
- em+Nya8djCzNUj48JMjm5Zi7TooySTfLDA63vb98inS4MFu/OADS0Y+oo9DNGGvleo
- bb1raavSjgxrw==
-Date: Tue, 6 Apr 2021 17:27:01 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 30/48] KVM: PPC: Book3S HV P9: Implement the rest of
- the P9 path in C
-Message-ID: <YGwNRUahuv42VZPR@thinks.paulus.ozlabs.org>
-References: <20210405011948.675354-1-npiggin@gmail.com>
- <20210405011948.675354-31-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FF1cK0Ystz2ysp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Apr 2021 18:57:03 +1000 (AEST)
+Received: by mail-pf1-x42d.google.com with SMTP id c17so9931825pfn.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Apr 2021 01:57:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=uZUmKkwLM2oSaojuTn4DZClVwuluaLe6PZbLvPR8s3c=;
+ b=WpscpUN2s8UcwB80GPNIwVjusSFrsDNimXL3met/I3dY8jN7f/vDKn6GC3ZCHm0gvJ
+ X0eSOYRoV3NrPws6+e881tyauDFR2DHTYRV6VDqRR6VreNS5QLy+z6a529MqZm6XO64F
+ lmZaxZTY8DzlbI/lOZk7FXot9YJCSbwMtxI73bs8JqKe+1fcadudbIefJQn+3yvE5QwO
+ v51LL2yCRBNsZZY7W/VBJY2QK9Zy7gCpGu0LKVY+ttIhCbpKZSiKfm34rIQ6oN64mUjr
+ ODCo1c/gMcffa6EZt3MRR1y4wMbMqMCvg55HnV7a22su7k7OVEgCuiZOOpr1Dun6mzcW
+ ahtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=uZUmKkwLM2oSaojuTn4DZClVwuluaLe6PZbLvPR8s3c=;
+ b=JTxfsPSBr0GLXz9fT8GKYHQODE3lElbLcM+fuRNoH46/fAoj0Kffe4deZ3XXuvWhGn
+ bUD5BBsqm9yuX2M55qjz/6Aj3DeCdxoLGgYkGDnSYXk4emRrVjyTfBGFzjEawh77DmRD
+ bBsPRIDyrpHwjerp+UVzopTHXN4rgfpB1UcGqIC5AYy+YS9lHPYBfcF+bssLza8u3kBy
+ OtpuLW2OP5qtvnDtsBoqWxbvVPqvmpy2Sptzr5ob4SxL8sSYClvJBPlGk49gsg+b7mjX
+ YC5pBViYzhYIobtrn79K9gJNMeVx8BJ1dVYg7Eg+3Iu7LtzRRnh6+IQR0BTKLCBSsuQW
+ 4mhA==
+X-Gm-Message-State: AOAM533+4SUPpo6O8FhVeha79unM92+lSdf5Ob/xgT0QqYU/gpcXc66w
+ guO/Ckrw4DGIX6q3mVO+2no=
+X-Google-Smtp-Source: ABdhPJyoX4fauwUz8/uRPC+PLrlDTqY/BbNhdRIQpb2w7mh6/qLvfq7K0aPB9a6PVbfbagmli9jcUQ==
+X-Received: by 2002:a63:e903:: with SMTP id i3mr21319346pgh.374.1617699421963; 
+ Tue, 06 Apr 2021 01:57:01 -0700 (PDT)
+Received: from localhost (g139.124-45-193.ppp.wakwak.ne.jp. [124.45.193.139])
+ by smtp.gmail.com with ESMTPSA id
+ y15sm20720606pgi.31.2021.04.06.01.57.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Apr 2021 01:57:01 -0700 (PDT)
+Date: Tue, 6 Apr 2021 17:56:59 +0900
+From: Stafford Horne <shorne@gmail.com>
+To: guoren@kernel.org
+Subject: Re: [PATCH v6 6/9] openrisc: qspinlock: Add
+ ARCH_USE_QUEUED_SPINLOCKS_XCHG32
+Message-ID: <20210406085659.GF3288043@lianli.shorne-pla.net>
+References: <1617201040-83905-1-git-send-email-guoren@kernel.org>
+ <1617201040-83905-7-git-send-email-guoren@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210405011948.675354-31-npiggin@gmail.com>
+In-Reply-To: <1617201040-83905-7-git-send-email-guoren@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,141 +82,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Guo Ren <guoren@linux.alibaba.com>, Arnd Bergmann <arnd@arndb.de>,
+ linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ Jonas Bonn <jonas@southpole.se>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 05, 2021 at 11:19:30AM +1000, Nicholas Piggin wrote:
-> Almost all logic is moved to C, by introducing a new in_guest mode for
-> the P9 path that branches very early in the KVM interrupt handler to
-> P9 exit code.
+On Wed, Mar 31, 2021 at 02:30:37PM +0000, guoren@kernel.org wrote:
+> From: Guo Ren <guoren@linux.alibaba.com>
 > 
-> The main P9 entry and exit assembly is now only about 160 lines of low
-> level stack setup and register save/restore, plus a bad-interrupt
-> handler.
+> We don't have native hw xchg16 instruction, so let qspinlock
+> generic code to deal with it.
 > 
-> There are two motivations for this, the first is just make the code more
-> maintainable being in C. The second is to reduce the amount of code
-> running in a special KVM mode, "realmode". In quotes because with radix
-> it is no longer necessarily real-mode in the MMU, but it still has to be
-> treated specially because it may be in real-mode, and has various
-> important registers like PID, DEC, TB, etc set to guest. This is hostile
-> to the rest of Linux and can't use arbitrary kernel functionality or be
-> instrumented well.
+> Using the full-word atomic xchg instructions implement xchg16 has
+> the semantic risk for atomic operations.
 > 
-> This initial patch is a reasonably faithful conversion of the asm code,
-> but it does lack any loop to return quickly back into the guest without
-> switching out of realmode in the case of unimportant or easily handled
-> interrupts. As explained in previous changes, handling HV interrupts
-> in real mode is not so important for P9.
+> This patch cancels the dependency of on qspinlock generic code on
+> architecture's xchg16.
 > 
-> Use of Linux 64s interrupt entry code register conventions including
-> paca EX_ save areas are brought into the KVM code. There is no point
-> shuffling things into different paca save areas and making up a
-> different calling convention for KVM.
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Jonas Bonn <jonas@southpole.se>
+> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+> Cc: Stafford Horne <shorne@gmail.com>
+> Cc: openrisc@lists.librecores.org
+
+Acked-by: Stafford Horne <shorne@gmail.com>
+
+> ---
+>  arch/openrisc/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-[snip]
-
-> +/*
-> + * Took an interrupt somewhere right before HRFID to guest, so registers are
-> + * in a bad way. Return things hopefully enough to run host virtual code and
-> + * run the Linux interrupt handler (SRESET or MCE) to print something useful.
-> + *
-> + * We could be really clever and save all host registers in known locations
-> + * before setting HSTATE_IN_GUEST, then restoring them all here, and setting
-> + * return address to a fixup that sets them up again. But that's a lot of
-> + * effort for a small bit of code. Lots of other things to do first.
-> + */
-> +kvmppc_p9_bad_interrupt:
-> +	/*
-> +	 * Set GUEST_MODE_NONE so the handler won't branch to KVM, and clear
-> +	 * MSR_RI in r12 ([H]SRR1) so the handler won't try to return.
-> +	 */
-> +	li	r10,KVM_GUEST_MODE_NONE
-> +	stb	r10,HSTATE_IN_GUEST(r13)
-> +	li	r10,MSR_RI
-> +	andc	r12,r12,r10
-> +
-> +	/*
-> +	 * Clean up guest registers to give host a chance to run.
-> +	 */
-> +	li	r10,0
-> +	mtspr	SPRN_AMR,r10
-> +	mtspr	SPRN_IAMR,r10
-> +	mtspr	SPRN_CIABR,r10
-> +	mtspr	SPRN_DAWRX0,r10
-> +BEGIN_FTR_SECTION
-> +	mtspr	SPRN_DAWRX1,r10
-> +END_FTR_SECTION_IFSET(CPU_FTR_DAWR1)
-> +	mtspr	SPRN_PID,r10
-> +
-> +	/*
-> +	 * Switch to host MMU mode
-> +	 */
-> +	ld	r10, HSTATE_KVM_VCPU(r13)
-> +	ld	r10, VCPU_KVM(r10)
-> +	lwz	r10, KVM_HOST_LPID(r10)
-> +	mtspr	SPRN_LPID,r10
-> +
-> +	ld	r10, HSTATE_KVM_VCPU(r13)
-> +	ld	r10, VCPU_KVM(r10)
-> +	ld	r10, KVM_HOST_LPCR(r10)
-> +	mtspr	SPRN_LPCR,r10
-> +
-> +	/*
-> +	 * Go back to interrupt handler
-> +	 */
-> +	ld	r10,HSTATE_SCRATCH0(r13)
-> +	cmpwi	r10,BOOK3S_INTERRUPT_MACHINE_CHECK
-> +	beq	machine_check_common
-> +
-> +	ld	r10,HSTATE_SCRATCH0(r13)
-> +	cmpwi	r10,BOOK3S_INTERRUPT_SYSTEM_RESET
-> +	beq	system_reset_common
-> +
-> +	b	.
-
-So you only handle machine check and system reset here?  I would think
-that program check would also be useful, for the cases where people
-put BUG_ON in sensitive places (see below).  DSI and ISI could also be
-useful for the null pointer dereference cases, I would think.
-
-> +static inline void mtslb(unsigned int idx, u64 slbee, u64 slbev)
-> +{
-> +	BUG_ON((slbee & 0xfff) != idx);
-> +
-> +	asm volatile("slbmte %0,%1" :: "r" (slbev), "r" (slbee));
-> +}
-
-Using BUG_ON here feels dangerous, and the condition it is testing is
-certainly not one where the host kernel is in such trouble that it
-can't continue to run.  If the index was wrong then at worst the guest
-kernel would be in trouble.  So I don't believe BUG_ON is appropriate.
-
-> +
-> +/*
-> + * Malicious or buggy radix guests may have inserted SLB entries
-> + * (only 0..3 because radix always runs with UPRT=1), so these must
-> + * be cleared here to avoid side-channels. slbmte is used rather
-> + * than slbia, as it won't clear cached translations.
-> + */
-> +static void radix_clear_slb(void)
-> +{
-> +	u64 slbee, slbev;
-> +	int i;
-> +
-> +	for (i = 0; i < 4; i++) {
-> +		mfslb(i, &slbee, &slbev);
-> +		if (unlikely(slbee || slbev)) {
-> +			slbee = i;
-> +			slbev = 0;
-> +			mtslb(i, slbee, slbev);
-> +		}
-> +	}
-
-Are four slbmfee + slbmfev really faster than four slbmte?
-
-Paul.
+> diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
+> index 591acc5990dc..b299e409429f 100644
+> --- a/arch/openrisc/Kconfig
+> +++ b/arch/openrisc/Kconfig
+> @@ -33,6 +33,7 @@ config OPENRISC
+>  	select OR1K_PIC
+>  	select CPU_NO_EFFICIENT_FFS if !OPENRISC_HAVE_INST_FF1
+>  	select ARCH_USE_QUEUED_SPINLOCKS
+> +	select ARCH_USE_QUEUED_SPINLOCKS_XCHG32
+>  	select ARCH_USE_QUEUED_RWLOCKS
+>  	select OMPIC if SMP
+>  	select ARCH_WANT_FRAME_POINTERS
+> -- 
+> 2.17.1
+> 
