@@ -2,97 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8900E356F9A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 17:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 428A6357050
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 17:30:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFnf83t5dz3bwK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 01:01:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V6o+p5Vy;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFpHh1hWlz3bwB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 01:30:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=V6o+p5Vy; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.216.51; helo=mail-pj1-f51.google.com;
+ envelope-from=mcgrof@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com
+ [209.85.216.51])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFndc35vZz2yym
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 01:00:51 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 137EYnBW175694; Wed, 7 Apr 2021 11:00:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Gxygs5tSf3/pSAvdRsUUxKwpp0MllRpDq0ykY3tMwSc=;
- b=V6o+p5Vy/aWJzpgjUe+k5erKAnWDyKbGwXw+afDu5f44s3DI8ovffmhU63G1fGem2dQA
- z1oKr75drRci134MPya5ImIH0rCaHdSjFMImJD0dF/QVJrTjjE/djHYjjgxCFucea6Sc
- 9dfZGFMLxt6oqRGliSyb4LRj0IM0lQ2h4M3S1oPzfNwDpk1lwjDNx+YoBKqjmZyK14yn
- pBSdKYX4VzgK0enwUXGglUq38cxH02x3w2ymd+6eiZ/S0dPoIMLzi1L2Cj0n/KR49F7I
- 9pS3Gu607qsLbG6UyQXNjTujS2F3ZjuHsbP8sPpykBglmeS7sHAMuKmBt807AffCU6Xv Pg== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37s5xsgv34-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Apr 2021 11:00:44 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 137EvPvP003582;
- Wed, 7 Apr 2021 15:00:42 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 37rvbqgtq9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Apr 2021 15:00:42 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 137F0dIP19530006
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 7 Apr 2021 15:00:39 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A48E7A4040;
- Wed,  7 Apr 2021 15:00:39 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 63534A4053;
- Wed,  7 Apr 2021 15:00:39 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.159.151])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  7 Apr 2021 15:00:39 +0000 (GMT)
-Subject: Re: [PATCH v3] pseries: prevent free CPU ids to be reused on another
- node
-To: Nathan Lynch <nathanl@linux.ibm.com>
-References: <20210406182554.85197-1-ldufour@linux.ibm.com>
- <87blaqkuty.fsf@linux.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Message-ID: <955e0f2f-bd5b-1610-2dfc-6c0b8e94e295@linux.ibm.com>
-Date: Wed, 7 Apr 2021 17:00:38 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFpHK4GG9z2yxl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 01:30:02 +1000 (AEST)
+Received: by mail-pj1-f51.google.com with SMTP id
+ lr1-20020a17090b4b81b02900ea0a3f38c1so3228152pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Apr 2021 08:30:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=+M5ErOA6vMHXgHMo812hqipKBEarvAzxNuznNu4dPh4=;
+ b=e1+clxQB/g4f+0BtEQG1H1NAAShfOPoQDUOwOyftcwd8G+FLUiYkJKofkN5Wjiw4ZI
+ bFd67VovgAVm5OX7xiGmrzzOMH6hUpQEhFLTs4HVB9H9eETsTBbGtcAuw4rSZhbmLkVG
+ ucoT5w4m1ZQQT5xsANtM8/wsC0rwLofTxWHIHaZO/5vQEXUj5MEzXWOG9ZyBG9EWSU71
+ eGLmI6EcvMdLkpSslUoM0HUsXITrGOSg4i9ced3NX3FXXlBPLACabJjeGwDBm0b+vDjk
+ S7uM9JT+FqIHgTk7kioO5PAH8am6blJozuonNMVBiZ6EwGwoWM7NwVU3K+qG3/uO74kC
+ //Yw==
+X-Gm-Message-State: AOAM530xxOpLaGFbxiboorMOQP1BvkgWblcaUxlZ+ZG2SsqEbO06q6Vt
+ dOUL4GO2XkwisivWiteH3WY=
+X-Google-Smtp-Source: ABdhPJxpL5KaAnDuQDJzuUb5KCGFxZ3YcW99M+WHBna9dnMuIO92XOsuZyqjUKOy0DftFppakeCj7Q==
+X-Received: by 2002:a17:902:b210:b029:e6:33b4:cd9e with SMTP id
+ t16-20020a170902b210b02900e633b4cd9emr3418197plr.67.1617809399828; 
+ Wed, 07 Apr 2021 08:29:59 -0700 (PDT)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+ by smtp.gmail.com with ESMTPSA id f65sm22129550pgc.19.2021.04.07.08.29.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Apr 2021 08:29:58 -0700 (PDT)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+ id 00948402D7; Wed,  7 Apr 2021 15:29:56 +0000 (UTC)
+Date: Wed, 7 Apr 2021 15:29:56 +0000
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v1 1/1] kernel.h: Split out panic and oops helpers
+Message-ID: <20210407152956.GE4332@42.do-not-panic.com>
+References: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
+ <20210406165108.GA4332@42.do-not-panic.com>
+ <CAHp75Ve9vBQqSegM2-ch9NUN-MdevxxOs5ZdHkk1W7AacN+Wrw@mail.gmail.com>
+ <20210407143040.GB4332@42.do-not-panic.com>
+ <CAHp75VeXiLa0b49eoZKVR1DSqTc9hKxpSgy294hMiaUzt0ugOA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <87blaqkuty.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Ns26HUKaXzTouJ28fVTHbQyFzINMa2GK
-X-Proofpoint-ORIG-GUID: Ns26HUKaXzTouJ28fVTHbQyFzINMa2GK
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-07_08:2021-04-07,
- 2021-04-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- malwarescore=0 mlxscore=0 spamscore=0 impostorscore=0 mlxlogscore=999
- bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104070103
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VeXiLa0b49eoZKVR1DSqTc9hKxpSgy294hMiaUzt0ugOA@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,75 +70,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cheloha@linux.ibm.com, linux-kernel@vger.kernel.org, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Corey Minyard <cminyard@mvista.com>,
+ Linux on Hyper-V List <linux-hyperv@vger.kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ linux-remoteproc@vger.kernel.org, Michael Kelley <mikelley@microsoft.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Joel Fernandes <joel@joelfernandes.org>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Linux-Arch <linux-arch@vger.kernel.org>, Wei Liu <wei.liu@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Stephen Hemminger <sthemmin@microsoft.com>, Corey Minyard <minyard@acm.org>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Iurii Zaikin <yzaikin@google.com>,
+ Ohad Ben-Cohen <ohad@wizery.com>, Joerg Roedel <jroedel@suse.de>,
+ Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+ Josh Triplett <josh@joshtriplett.org>,
+ "Steven Rostedt \(VMware\)" <rostedt@goodmis.org>, rcu@vger.kernel.org,
+ Borislav Petkov <bp@alien8.de>, openipmi-developer@lists.sourceforge.net,
+ Bjorn Andersson <bjorn.andersson@linaro.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, kexec@lists.infradead.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Eric Biederman <ebiederm@xmission.com>,
+ Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
+ <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 07/04/2021 à 16:55, Nathan Lynch a écrit :
-> Laurent Dufour <ldufour@linux.ibm.com> writes:
->> Changes since V2, addressing Nathan's comments:
->>   - Remove the retry feature
->>   - Reduce the number of local variables (removing 'i')
+On Wed, Apr 07, 2021 at 05:59:19PM +0300, Andy Shevchenko wrote:
+> On Wed, Apr 7, 2021 at 5:30 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
+> > On Wed, Apr 07, 2021 at 10:33:44AM +0300, Andy Shevchenko wrote:
+> > > On Wed, Apr 7, 2021 at 10:25 AM Luis Chamberlain <mcgrof@kernel.org> wrote:
+> > > > On Tue, Apr 06, 2021 at 04:31:58PM +0300, Andy Shevchenko wrote:
 > 
-> I was more interested in not having two variables for NUMA nodes in the
-> function named 'node' and 'nid', hoping at least one of them could have
-> a more descriptive name. See below.
+> ...
 > 
->>   static int pseries_add_processor(struct device_node *np)
->>   {
->> -	unsigned int cpu;
->> +	unsigned int cpu, node;
->>   	cpumask_var_t candidate_mask, tmp;
->> -	int err = -ENOSPC, len, nthreads, i;
->> +	int err = -ENOSPC, len, nthreads, nid;
->>   	const __be32 *intserv;
->>   
->>   	intserv = of_get_property(np, "ibm,ppc-interrupt-server#s", &len);
->> @@ -163,9 +169,17 @@ static int pseries_add_processor(struct device_node *np)
->>   	zalloc_cpumask_var(&candidate_mask, GFP_KERNEL);
->>   	zalloc_cpumask_var(&tmp, GFP_KERNEL);
->>   
->> +	/*
->> +	 * Fetch from the DT nodes read by dlpar_configure_connector() the NUMA
->> +	 * node id the added CPU belongs to.
->> +	 */
->> +	nid = of_node_to_nid(np);
->> +	if (nid < 0 || !node_possible(nid))
->> +		nid = first_online_node;
->> +
->>   	nthreads = len / sizeof(u32);
->> -	for (i = 0; i < nthreads; i++)
->> -		cpumask_set_cpu(i, tmp);
->> +	for (cpu = 0; cpu < nthreads; cpu++)
->> +		cpumask_set_cpu(cpu, tmp);
->>   
->>   	cpu_maps_update_begin();
->>   
->> @@ -173,6 +187,19 @@ static int pseries_add_processor(struct device_node *np)
->>   
->>   	/* Get a bitmap of unoccupied slots. */
->>   	cpumask_xor(candidate_mask, cpu_possible_mask, cpu_present_mask);
->> +
->> +	/*
->> +	 * Remove free ids previously assigned on the other nodes. We can walk
->> +	 * only online nodes because once a node became online it is not turned
->> +	 * offlined back.
->> +	 */
->> +	for_each_online_node(node) {
->> +		if (node == nid) /* Keep our node's recorded ids */
->> +			continue;
->> +		cpumask_andnot(candidate_mask, candidate_mask,
->> +			       node_recorded_ids_map[node]);
->> +	}
->> +
+> > > > Why is it worth it to add another file just for this?
+> > >
+> > > The main point is to break tons of loops that prevent having clean
+> > > headers anymore.
+> > >
+> > > In this case, see bug.h, which is very important in this sense.
+> >
+> > OK based on the commit log this was not clear, it seemed more of moving
+> > panic stuff to its own file, so just cleanup.
 > 
-> e.g. change 'nid' to 'assigned_node' or similar, and I think this
-> becomes easier to follow.
+> Sorry for that. it should have mentioned the kernel folder instead of
+> lib. But I think it won't clarify the above.
+> 
+> In any case there are several purposes in this case
+>  - dropping dependency in bug.h
+>  - dropping a loop by moving out panic_notifier.h
+>  - unload kernel.h from something which has its own domain
+> 
+> I think that you are referring to the commit message describing 3rd
+> one, but not 1st and 2nd.
 
-Fair enough, will send a v4
+Right!
 
-> Otherwise the patch looks fine to me now.
-> 
+> I will amend this for the future splits, thanks!
 
+Don't get me wrong, I love the motivation behind just the 3rd purpose,
+however I figured there might be something more when I saw panic_notifier.h.
+It was just not clear.
+
+But awesome stuff!
+
+  Luis
