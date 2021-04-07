@@ -1,69 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF7D356B6C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 13:39:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D27356B46
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 13:33:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFj9d71gqz30Qb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 21:39:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFj2n45LBz3btH
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 21:33:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=OFB2zo1d;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=PaKYhf+G;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=202.248.20.66;
- helo=condef-01.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=OFB2zo1d; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=PaKYhf+G; 
  dkim-atps=neutral
-X-Greylist: delayed 169 seconds by postgrey-1.36 at boromir;
- Wed, 07 Apr 2021 21:39:25 AEST
-Received: from condef-01.nifty.com (condef-01.nifty.com [202.248.20.66])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FFj9973DPz302x
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 21:39:25 +1000 (AEST)
-Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-01.nifty.com
- with ESMTP id 137BXCc3002845
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 7 Apr 2021 20:33:12 +0900
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com
- [209.85.215.175]) (authenticated)
- by conssluserg-01.nifty.com with ESMTP id 137BWpBV007278
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 7 Apr 2021 20:32:51 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 137BWpBV007278
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1617795171;
- bh=YE/3jAmw6G8yCwpeiXzDgIBF5HNw+SmvWOFzgsI9ku8=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=OFB2zo1di8wMHF9IPuMJoFpQMSkFi6QtvaiuuJ1uO+r6HSGOoY/60HVV5/OPcpkkx
- AFYPXTBUIVE2yyvQOVBnWJs+16lHf2BM6f5yfsVT56LyibDEAkOXenWXv2mPasSEEv
- 9aMZUtRtSoJMuJD7zzFW9xgwJUJ3kWQ5E2T6ZeEt++g96C2fhpWjGcQuVojzJiy+Vt
- pANcAWFI2Ir4ab+9SxV4NGYR2+FzP43iy4eDmfa5GaXwcxKtrlPo6wUlbDPnao5PoQ
- s6iHlwO85gqYD7+jSxQ8oSw382PPfTw2nsnPPmCmdj9pUhqhOB/t7GTZYLi6JaCBRu
- hFQfwWfBpMSlA==
-X-Nifty-SrcIP: [209.85.215.175]
-Received: by mail-pg1-f175.google.com with SMTP id g35so8066539pgg.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Apr 2021 04:32:51 -0700 (PDT)
-X-Gm-Message-State: AOAM532CbuDkmRpAF9AC6YIZ0gSKIky9lDgSJk9E/BNLyjzXI+vF6iQb
- xG5wnZvo706PlzllCGgh01QMSAQ230DUPpCF588=
-X-Google-Smtp-Source: ABdhPJyX462+iXRWfux7Z4xGcPCP6UQgdQ1H4XYGHRU9N2d8fzIA6kG7uhIhickmK5JeHy1+bAt+KLzwLmX8di1BRdc=
-X-Received: by 2002:a65:41c6:: with SMTP id b6mr2830311pgq.7.1617795170674;
- Wed, 07 Apr 2021 04:32:50 -0700 (PDT)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFj2Q23qbz2yRD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 21:33:34 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FFj2K26Yrz9sPf;
+ Wed,  7 Apr 2021 21:33:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1617795209;
+ bh=y0l2cj5THm1KD/rp1s2DbbyiQ8447KTyycDVAMuWir0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=PaKYhf+GI2NFfbUpaIVQvGYfB4g+oN/FQuz0XqD7E19sCrBZ0qdwOYiBBLFyWBlvN
+ 8Gk2+7nQSBnvR6zs5R4dH6Nlg5lqxjYUEPe4pgeUCQpgIQAL6l+WF9jmblUcT9IPkb
+ oW2cXKMKxUXI9ap/rmWeN3mMJ5KzXDVXevEPIWFWaL7F4/FLpcotBrIDn4ZvoUXOcS
+ v3kS2R6uvLH0aNxq92/BtxRvtyvbOUymuTrmFjRlCLB+iKTvCY/dRFPJ0JJBDxozSf
+ b1fkC3R0+4Mgm+b3IYqEZfkAkT1rPYgzxSIdbVOIvQVGGaB0Q4/Tlli1y6QsRTxdZu
+ vhfksNsLHIC/g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/powernv: Enable HAIL (HV AIL) for ISA v3.1
+ processors
+In-Reply-To: <20210402024124.545826-1-npiggin@gmail.com>
+References: <20210402024124.545826-1-npiggin@gmail.com>
+Date: Wed, 07 Apr 2021 21:33:28 +1000
+Message-ID: <87v98ye3cn.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20210407053419.449796-1-gregkh@linuxfoundation.org>
- <20210407053419.449796-17-gregkh@linuxfoundation.org>
-In-Reply-To: <20210407053419.449796-17-gregkh@linuxfoundation.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 7 Apr 2021 20:32:13 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASUO4XTKfmatCRcGT-nBQM15ueuS6DtU98_LCbo=9NeiA@mail.gmail.com>
-Message-ID: <CAK7LNASUO4XTKfmatCRcGT-nBQM15ueuS6DtU98_LCbo=9NeiA@mail.gmail.com>
-Subject: Re: [PATCH 16/20] kbuild: powerpc: use common install script
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,184 +62,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- Michal Marek <michal.lkml@markovi.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 7, 2021 at 2:34 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Starting with ISA v3.1, LPCR[AIL] no longer controls the interrupt
+> mode for HV=1 interrupts. Instead, a new LPCR[HAIL] bit is defined
+> which behaves like AIL=3 for HV interrupts when set.
 >
-> The common scripts/install.sh script will now work for powerpc, all that
-> is needed is to add it to the list of arches that do not put the version
-> number in the installed file name.
+> Set HAIL on bare metal to give us mmu-on interrupts and improve
+> performance.
 >
-> After the kernel is installed, powerpc also likes to install a few
-> random files, so provide the ability to do that as well.
->
-> With that we can remove the powerpc-only version of the install script.
->
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  arch/powerpc/boot/Makefile   |  4 +--
->  arch/powerpc/boot/install.sh | 55 ------------------------------------
->  scripts/install.sh           | 14 ++++++++-
->  3 files changed, 15 insertions(+), 58 deletions(-)
->  delete mode 100644 arch/powerpc/boot/install.sh
->
-> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-> index 2b8da923ceca..bbfcbd33e0b7 100644
-> --- a/arch/powerpc/boot/Makefile
-> +++ b/arch/powerpc/boot/Makefile
-> @@ -442,11 +442,11 @@ $(obj)/zImage.initrd:     $(addprefix $(obj)/, $(initrd-y))
->
->  # Only install the vmlinux
->  install: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
-> -       sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)"
-> +       sh -x $(srctree)/scripts/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)"
->
->  # Install the vmlinux and other built boot targets.
->  zInstall: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
-> -       sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)" $^
-> +       sh -x $(srctree)/scripts/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)" $^
+> This also fixes an scv bug: we don't implement scv real mode (AIL=0)
+> vectors because they are at an inconvenient location, so we just
+> disable scv support when AIL can not be set. However powernv assumes
+> that LPCR[AIL] will enable AIL mode so it enables scv support despite
+> HV interrupts being AIL=0, which causes scv interrupts to go off into
+> the weeds.
 
+Should we tag this as fixing the initial P10 support, or the scv
+support? Or neither?
 
-I want comments from the ppc maintainers
-because this code is already broken.
+cheers
 
-
-This 'zInstall' target is unreachable.
-
-See commit c913e5f95e546d8d3a9f99ba9908f7e095cbc1fb
-
-It added the new target 'zInstall', but it is not hooked anywhere.
-It is completely useless for 6 years, and nobody has pointed it out.
-So, I think nobody is caring about this broken code.
-
-One more thing, Kbuild does not recognize it as an installation target
-because the 'I' in 'zInstall' is a capital letter.
-
-The name of the installation target must be '*install',
-all letters in lower cases.
-
-
-
-
-
-
->  PHONY += install zInstall
->
-> diff --git a/arch/powerpc/boot/install.sh b/arch/powerpc/boot/install.sh
-> deleted file mode 100644
-> index b6a256bc96ee..000000000000
-> --- a/arch/powerpc/boot/install.sh
-> +++ /dev/null
-> @@ -1,55 +0,0 @@
-> -#!/bin/sh
-> -#
-> -# This file is subject to the terms and conditions of the GNU General Public
-> -# License.  See the file "COPYING" in the main directory of this archive
-> -# for more details.
-> -#
-> -# Copyright (C) 1995 by Linus Torvalds
-> -#
-> -# Blatantly stolen from in arch/i386/boot/install.sh by Dave Hansen
-> -#
-> -# "make install" script for ppc64 architecture
-> -#
-> -# Arguments:
-> -#   $1 - kernel version
-> -#   $2 - kernel image file
-> -#   $3 - kernel map file
-> -#   $4 - default install path (blank if root directory)
-> -#   $5 and more - kernel boot files; zImage*, uImage, cuImage.*, etc.
-> -#
-> -
-> -# Bail with error code if anything goes wrong
-> -set -e
-> -
-> -# User may have a custom install script
-> -
-> -if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
-> -if [ -x /sbin/${INSTALLKERNEL} ]; then exec /sbin/${INSTALLKERNEL} "$@"; fi
-> -
-> -# Default install
-> -
-> -# this should work for both the pSeries zImage and the iSeries vmlinux.sm
-> -image_name=`basename $2`
-> -
-> -if [ -f $4/$image_name ]; then
-> -       mv $4/$image_name $4/$image_name.old
-> -fi
-> -
-> -if [ -f $4/System.map ]; then
-> -       mv $4/System.map $4/System.old
-> -fi
-> -
-> -cat $2 > $4/$image_name
-> -cp $3 $4/System.map
-> -
-> -# Copy all the bootable image files
-> -path=$4
-> -shift 4
-> -while [ $# -ne 0 ]; do
-> -       image_name=`basename $1`
-> -       if [ -f $path/$image_name ]; then
-> -               mv $path/$image_name $path/$image_name.old
-> -       fi
-> -       cat $1 > $path/$image_name
-> -       shift
-> -done;
-> diff --git a/scripts/install.sh b/scripts/install.sh
-> index e0ffb95737d4..67c0a5f74af2 100644
-> --- a/scripts/install.sh
-> +++ b/scripts/install.sh
-> @@ -67,7 +67,7 @@ fi
->  # Some architectures name their files based on version number, and
->  # others do not.  Call out the ones that do not to make it obvious.
->  case "${ARCH}" in
-> -       ia64 | m68k | nios2 | x86)
-> +       ia64 | m68k | nios2 | powerpc | x86)
->                 version=""
->                 ;;
->         *)
-> @@ -93,6 +93,18 @@ case "${ARCH}" in
->                         /usr/sbin/elilo
->                 fi
->                 ;;
-> +       powerpc)
-> +               # powerpc installation can list other boot targets after the
-> +               # install path that should be copied to the correct location
-
-
-Perhaps, we can remove this if the ppc maintainers approve it ?
-
-
-
-
-> +               path=$4
-> +               shift 4
-> +               while [ $# -ne 0 ]; do
-> +                       image_name=$(basename "$1")
-> +                       install "$1" "$path"/"$image_name"
-> +                       shift
-> +               done;
-> +               sync
-> +               ;;
->         x86)
->                 if [ -x /sbin/lilo ]; then
->                         /sbin/lilo
-> --
-> 2.31.1
->
-
-
---
-Best Regards
-Masahiro Yamada
+> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+> index 1be20bc8dce2..9086a2644c89 100644
+> --- a/arch/powerpc/include/asm/reg.h
+> +++ b/arch/powerpc/include/asm/reg.h
+> @@ -441,6 +441,7 @@
+>  #define   LPCR_VRMA_LP1		ASM_CONST(0x0000800000000000)
+>  #define   LPCR_RMLS		0x1C000000	/* Implementation dependent RMO limit sel */
+>  #define   LPCR_RMLS_SH		26
+> +#define   LPCR_HAIL		ASM_CONST(0x0000000004000000)   /* HV AIL (ISAv3.1) */
+>  #define   LPCR_ILE		ASM_CONST(0x0000000002000000)   /* !HV irqs set MSR:LE */
+>  #define   LPCR_AIL		ASM_CONST(0x0000000001800000)	/* Alternate interrupt location */
+>  #define   LPCR_AIL_0		ASM_CONST(0x0000000000000000)	/* MMU off exception offset 0x0 */
+> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+> index 04a31586f760..671192afcdfd 100644
+> --- a/arch/powerpc/kernel/setup_64.c
+> +++ b/arch/powerpc/kernel/setup_64.c
+> @@ -233,10 +233,23 @@ static void cpu_ready_for_interrupts(void)
+>  	 * If we are not in hypervisor mode the job is done once for
+>  	 * the whole partition in configure_exceptions().
+>  	 */
+> -	if (cpu_has_feature(CPU_FTR_HVMODE) &&
+> -	    cpu_has_feature(CPU_FTR_ARCH_207S)) {
+> +	if (cpu_has_feature(CPU_FTR_HVMODE)) {
+>  		unsigned long lpcr = mfspr(SPRN_LPCR);
+> -		mtspr(SPRN_LPCR, lpcr | LPCR_AIL_3);
+> +		unsigned long new_lpcr = lpcr;
+> +
+> +		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+> +			/* P10 DD1 does not have HAIL */
+> +			if (pvr_version_is(PVR_POWER10) &&
+> +					(mfspr(SPRN_PVR) & 0xf00) == 0x100)
+> +				new_lpcr |= LPCR_AIL_3;
+> +			else
+> +				new_lpcr |= LPCR_HAIL;
+> +		} else if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
+> +			new_lpcr |= LPCR_AIL_3;
+> +		}
+> +
+> +		if (new_lpcr != lpcr)
+> +			mtspr(SPRN_LPCR, new_lpcr);
+>  	}
+>  
+>  	/*
+> -- 
+> 2.23.0
