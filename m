@@ -2,70 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2388C356F8F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 17:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8900E356F9A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 17:01:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFnck63N8z303S
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 01:00:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFnf83t5dz3bwK
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 01:01:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fYy1lWNP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V6o+p5Vy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=andy.shevchenko@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=fYy1lWNP; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=V6o+p5Vy; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFncD2cCbz300C
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 00:59:39 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id q5so13077245pfh.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Apr 2021 07:59:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=r/d1grSpme2mQqHlJWH4I0IMbDUguqI3gCUkY5Nr1Q4=;
- b=fYy1lWNPXiQ+yb67ebJZu+8zEC+h0pBnsXArakBNChEkh6CjoRMYl72lknBCAuRuX2
- jxuH9EpzzGDSCJWIUX2Ng7q0y9vsIP4Zr+Ek6u4yFt20hudhezjO5DOYAIxN+UZB5hMM
- FswWwQr3PpOF1lHlMFl2SjtB1/0Fx4MrlsWZAZT4dZpOxE8in8RosRGUfdrKX/M6x4Fq
- inZiwEl3DvszVRA5j32WLhIZYUUNpVuXdnve6hiU7XgFQUrk2IG/GFnBcXcqK58X9Wrd
- bbLLNR2m9dcbokFkoo+uH9b1jOTr6jOD6OdvmDZN/EImsXC0vxwvNHIMR6Dr2vU22cdq
- YTtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=r/d1grSpme2mQqHlJWH4I0IMbDUguqI3gCUkY5Nr1Q4=;
- b=BNQi0jZIqAJZFgnk7awD/2ElrN+SJgWK/ox9avsja3YelwlZVBBfYGI72ch9nNzOo2
- +m4DJabq9hR43Pzu8fbdJUUR+H+isRegfuj7WjSM9AsCu8+J0cciS8bOWoinns587YJu
- XWTuvDxVu92Dz2aJqgylpMsevnNTP92SllnNEom5E6vflJT1+j8OezOKWdhx7bl0QMNP
- xX17AUrSibsthUkNDFTnbo8Z8dVBSjXtXJKUcBpcr/UgJnqyHkasCF+h6CfLhX3L8/bn
- albXI07R/62f6DmpP6PBgiZAlvHNdLV3cIlX69nHWhAfCN2vrMOnaUzxDihq8257VWXa
- qfYA==
-X-Gm-Message-State: AOAM531axwn9jr2U+ZWbJJDQ7PX8sJ38dFtxeQFZSXoRb/iz6hJI3J4g
- tHj3BcgWx3i8JiZfj8XJcjnA50kxlL9qXFsDIxs=
-X-Google-Smtp-Source: ABdhPJyU4xbKR/hTcJT3i+4AmcxOkV7rwYOr2kWTFFANFENce/N3tHTgLI14O9XHpuyAeqcD9v6uZo0Kn/Dprv2XBvs=
-X-Received: by 2002:a62:528e:0:b029:1f5:c5ee:a487 with SMTP id
- g136-20020a62528e0000b02901f5c5eea487mr3114076pfb.7.1617807575856; Wed, 07
- Apr 2021 07:59:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFndc35vZz2yym
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 01:00:51 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 137EYnBW175694; Wed, 7 Apr 2021 11:00:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=Gxygs5tSf3/pSAvdRsUUxKwpp0MllRpDq0ykY3tMwSc=;
+ b=V6o+p5Vy/aWJzpgjUe+k5erKAnWDyKbGwXw+afDu5f44s3DI8ovffmhU63G1fGem2dQA
+ z1oKr75drRci134MPya5ImIH0rCaHdSjFMImJD0dF/QVJrTjjE/djHYjjgxCFucea6Sc
+ 9dfZGFMLxt6oqRGliSyb4LRj0IM0lQ2h4M3S1oPzfNwDpk1lwjDNx+YoBKqjmZyK14yn
+ pBSdKYX4VzgK0enwUXGglUq38cxH02x3w2ymd+6eiZ/S0dPoIMLzi1L2Cj0n/KR49F7I
+ 9pS3Gu607qsLbG6UyQXNjTujS2F3ZjuHsbP8sPpykBglmeS7sHAMuKmBt807AffCU6Xv Pg== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37s5xsgv34-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Apr 2021 11:00:44 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 137EvPvP003582;
+ Wed, 7 Apr 2021 15:00:42 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 37rvbqgtq9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Apr 2021 15:00:42 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 137F0dIP19530006
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 7 Apr 2021 15:00:39 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A48E7A4040;
+ Wed,  7 Apr 2021 15:00:39 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 63534A4053;
+ Wed,  7 Apr 2021 15:00:39 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.159.151])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  7 Apr 2021 15:00:39 +0000 (GMT)
+Subject: Re: [PATCH v3] pseries: prevent free CPU ids to be reused on another
+ node
+To: Nathan Lynch <nathanl@linux.ibm.com>
+References: <20210406182554.85197-1-ldufour@linux.ibm.com>
+ <87blaqkuty.fsf@linux.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <955e0f2f-bd5b-1610-2dfc-6c0b8e94e295@linux.ibm.com>
+Date: Wed, 7 Apr 2021 17:00:38 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.9.0
 MIME-Version: 1.0
-References: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
- <20210406165108.GA4332@42.do-not-panic.com>
- <CAHp75Ve9vBQqSegM2-ch9NUN-MdevxxOs5ZdHkk1W7AacN+Wrw@mail.gmail.com>
- <20210407143040.GB4332@42.do-not-panic.com>
-In-Reply-To: <20210407143040.GB4332@42.do-not-panic.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 7 Apr 2021 17:59:19 +0300
-Message-ID: <CAHp75VeXiLa0b49eoZKVR1DSqTc9hKxpSgy294hMiaUzt0ugOA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] kernel.h: Split out panic and oops helpers
-To: Luis Chamberlain <mcgrof@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <87blaqkuty.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Ns26HUKaXzTouJ28fVTHbQyFzINMa2GK
+X-Proofpoint-ORIG-GUID: Ns26HUKaXzTouJ28fVTHbQyFzINMa2GK
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-07_08:2021-04-07,
+ 2021-04-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0
+ malwarescore=0 mlxscore=0 spamscore=0 impostorscore=0 mlxlogscore=999
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104070103
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,75 +104,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>,
- Linux on Hyper-V List <linux-hyperv@vger.kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- linux-remoteproc@vger.kernel.org, Michael Kelley <mikelley@microsoft.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Joel Fernandes <joel@joelfernandes.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- Linux-Arch <linux-arch@vger.kernel.org>, Wei Liu <wei.liu@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Stephen Hemminger <sthemmin@microsoft.com>, Corey Minyard <minyard@acm.org>,
- "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Iurii Zaikin <yzaikin@google.com>,
- Ohad Ben-Cohen <ohad@wizery.com>, Joerg Roedel <jroedel@suse.de>,
- Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Josh Triplett <josh@joshtriplett.org>,
- "Steven Rostedt \(VMware\)" <rostedt@goodmis.org>, rcu@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, openipmi-developer@lists.sourceforge.net,
- Bjorn Andersson <bjorn.andersson@linaro.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, kexec@lists.infradead.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Eric Biederman <ebiederm@xmission.com>,
- Linux FS Devel <linux-fsdevel@vger.kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
- <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
+Cc: cheloha@linux.ibm.com, linux-kernel@vger.kernel.org, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 7, 2021 at 5:30 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
-> On Wed, Apr 07, 2021 at 10:33:44AM +0300, Andy Shevchenko wrote:
-> > On Wed, Apr 7, 2021 at 10:25 AM Luis Chamberlain <mcgrof@kernel.org> wrote:
-> > > On Tue, Apr 06, 2021 at 04:31:58PM +0300, Andy Shevchenko wrote:
+Le 07/04/2021 à 16:55, Nathan Lynch a écrit :
+> Laurent Dufour <ldufour@linux.ibm.com> writes:
+>> Changes since V2, addressing Nathan's comments:
+>>   - Remove the retry feature
+>>   - Reduce the number of local variables (removing 'i')
+> 
+> I was more interested in not having two variables for NUMA nodes in the
+> function named 'node' and 'nid', hoping at least one of them could have
+> a more descriptive name. See below.
+> 
+>>   static int pseries_add_processor(struct device_node *np)
+>>   {
+>> -	unsigned int cpu;
+>> +	unsigned int cpu, node;
+>>   	cpumask_var_t candidate_mask, tmp;
+>> -	int err = -ENOSPC, len, nthreads, i;
+>> +	int err = -ENOSPC, len, nthreads, nid;
+>>   	const __be32 *intserv;
+>>   
+>>   	intserv = of_get_property(np, "ibm,ppc-interrupt-server#s", &len);
+>> @@ -163,9 +169,17 @@ static int pseries_add_processor(struct device_node *np)
+>>   	zalloc_cpumask_var(&candidate_mask, GFP_KERNEL);
+>>   	zalloc_cpumask_var(&tmp, GFP_KERNEL);
+>>   
+>> +	/*
+>> +	 * Fetch from the DT nodes read by dlpar_configure_connector() the NUMA
+>> +	 * node id the added CPU belongs to.
+>> +	 */
+>> +	nid = of_node_to_nid(np);
+>> +	if (nid < 0 || !node_possible(nid))
+>> +		nid = first_online_node;
+>> +
+>>   	nthreads = len / sizeof(u32);
+>> -	for (i = 0; i < nthreads; i++)
+>> -		cpumask_set_cpu(i, tmp);
+>> +	for (cpu = 0; cpu < nthreads; cpu++)
+>> +		cpumask_set_cpu(cpu, tmp);
+>>   
+>>   	cpu_maps_update_begin();
+>>   
+>> @@ -173,6 +187,19 @@ static int pseries_add_processor(struct device_node *np)
+>>   
+>>   	/* Get a bitmap of unoccupied slots. */
+>>   	cpumask_xor(candidate_mask, cpu_possible_mask, cpu_present_mask);
+>> +
+>> +	/*
+>> +	 * Remove free ids previously assigned on the other nodes. We can walk
+>> +	 * only online nodes because once a node became online it is not turned
+>> +	 * offlined back.
+>> +	 */
+>> +	for_each_online_node(node) {
+>> +		if (node == nid) /* Keep our node's recorded ids */
+>> +			continue;
+>> +		cpumask_andnot(candidate_mask, candidate_mask,
+>> +			       node_recorded_ids_map[node]);
+>> +	}
+>> +
+> 
+> e.g. change 'nid' to 'assigned_node' or similar, and I think this
+> becomes easier to follow.
 
-...
+Fair enough, will send a v4
 
-> > > Why is it worth it to add another file just for this?
-> >
-> > The main point is to break tons of loops that prevent having clean
-> > headers anymore.
-> >
-> > In this case, see bug.h, which is very important in this sense.
->
-> OK based on the commit log this was not clear, it seemed more of moving
-> panic stuff to its own file, so just cleanup.
+> Otherwise the patch looks fine to me now.
+> 
 
-Sorry for that. it should have mentioned the kernel folder instead of
-lib. But I think it won't clarify the above.
-
-In any case there are several purposes in this case
- - dropping dependency in bug.h
- - dropping a loop by moving out panic_notifier.h
- - unload kernel.h from something which has its own domain
-
-I think that you are referring to the commit message describing 3rd
-one, but not 1st and 2nd.
-
-I will amend this for the future splits, thanks!
-
-> > >  Seems like a very
-> > > small file.
-> >
-> > If it is an argument, it's kinda strange. We have much smaller headers.
->
-> The motivation for such separate file was just not clear on the commit
-> log.
-
--- 
-With Best Regards,
-Andy Shevchenko
