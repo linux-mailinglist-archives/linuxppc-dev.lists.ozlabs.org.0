@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1167C356380
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 07:51:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333FA356382
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 07:51:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFYRX0bq4z304C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 15:51:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFYS81Cqsz3bvV
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 15:51:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FsnpT0b/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=my6t32Mj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,77 +18,77 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=FsnpT0b/; dkim-atps=neutral
+ header.s=pp1 header.b=my6t32Mj; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFYPx23kbz2ysp
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 15:49:56 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFYPz4N4Dz309s
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 15:49:59 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1375XNSU111947; Wed, 7 Apr 2021 01:49:53 -0400
+ 1375YEq0057593; Wed, 7 Apr 2021 01:49:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=ZoDWe1mpN7MQ+iHUv3uym53lUgglo1YTF76NRf/n8Q0=;
- b=FsnpT0b/WYqe/2Qct4NA582NPQnG57J26q0toXInzQbj2yOMZAxULBn3w2kXU08cGK3K
- d3fWP4NdeJz+j4dWYxASSXiPqotoCQ0Lc4tFTqmsVF4yE04KZ/3Qs1/LCEN7sAB6kqgd
- IxHhEBGFbq72S0NifBJFfPcJWd8v6+NlaN1Z8q0pPAqPn3fkHY8NIgSOjoPruOjXPTfw
- 0hPzoQR1iX3EZoCt6nxo2cQB/Ng3ohbF89yl2vs1hJpxuqDZFE/1xqx+MKc5mTXh383L
- 8VP8dQIZBxEYNru6VJylOfgXSWj6q/4VD3ZwuDa1dIo991DzuoLt1cd00ZPqoAwQxMVM bA== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37rvn05qsa-1
+ bh=ZUsZoG6SX8LR2xF6WUJylKWzC3HBZdn165NpFQjLc88=;
+ b=my6t32MjJiCUp6A2YwbD3gIe1+aTAz4A+FLekBTucOSH8aQlKo6+s9jP3LPxu/M4z0uj
+ Z0TUH75Pw2Ml/0EiitwqHvTHUCAjVIqeicn3DDVklagdNgsIKnTNat3UxYVdCWyuGnBS
+ GAJ/KGx+jj9fe56BopzpTcrTxWKGl5dnNToHbtn1JLfVVjBGWVW8yZs15PfGqJITxj6E
+ EIxkcdEA5Nq7jkWQCoFwxB5LmWJ8IX2GZMsWh237PXxFlBhMLkldEpToqrWegGfu8L86
+ uetHWngnmrLyIFPsvrKtD6D8Appicl808dXq0gAKkFF5Hn623zLtmGkXYHI4xQqbbOlD mQ== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37rvpu5bth-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Apr 2021 01:49:52 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1375mT2N020675;
- Wed, 7 Apr 2021 05:49:50 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma01fra.de.ibm.com with ESMTP id 37rvmq86ed-1
+ Wed, 07 Apr 2021 01:49:54 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1375lcst020641;
+ Wed, 7 Apr 2021 05:49:52 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 37rvbqgchv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Apr 2021 05:49:50 +0000
+ Wed, 07 Apr 2021 05:49:52 +0000
 Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
  [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1375nR0Y33096022
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1375no9u49152372
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 7 Apr 2021 05:49:27 GMT
+ Wed, 7 Apr 2021 05:49:50 GMT
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E5FCA4051;
+ by IMSVA (Postfix) with ESMTP id 4633AA4051;
+ Wed,  7 Apr 2021 05:49:50 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A1A4EA4040;
  Wed,  7 Apr 2021 05:49:48 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A721BA404D;
- Wed,  7 Apr 2021 05:49:46 +0000 (GMT)
 Received: from bangoria.ibmuc.com (unknown [9.199.44.100])
  by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  7 Apr 2021 05:49:46 +0000 (GMT)
+ Wed,  7 Apr 2021 05:49:48 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH v2 2/4] powerpc/selftests/perf-hwbreak: Coalesce event
- creation code
-Date: Wed,  7 Apr 2021 11:19:36 +0530
-Message-Id: <20210407054938.312857-3-ravi.bangoria@linux.ibm.com>
+Subject: [PATCH v2 3/4] powerpc/selftests/perf-hwbreak: Add testcases for 2nd
+ DAWR
+Date: Wed,  7 Apr 2021 11:19:37 +0530
+Message-Id: <20210407054938.312857-4-ravi.bangoria@linux.ibm.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210407054938.312857-1-ravi.bangoria@linux.ibm.com>
 References: <20210407054938.312857-1-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: st9yZgY6hxT4VIZ3CNYKvLH18yGgURue
-X-Proofpoint-ORIG-GUID: st9yZgY6hxT4VIZ3CNYKvLH18yGgURue
+X-Proofpoint-ORIG-GUID: h88a3TBatTna9RSdtKxKNhDxjlQHGsJS
+X-Proofpoint-GUID: h88a3TBatTna9RSdtKxKNhDxjlQHGsJS
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
  definitions=2021-04-07_03:2021-04-06,
  2021-04-07 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0
- mlxlogscore=999 bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
- spamscore=0 mlxscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104070039
+ bulkscore=0 adultscore=0
+ suspectscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 malwarescore=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104070039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,142 +106,648 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-perf-hwbreak selftest opens hw-breakpoint event at multiple places for
-which it has same code repeated. Coalesce that code into a function.
+Extend perf-hwbreak.c selftest to test multiple DAWRs. Also add
+testcase for testing 512 byte boundary removal.
+
+Sample o/p:
+  # ./perf-hwbreak
+  ...
+  TESTED: Process specific, Two events, diff addr
+  TESTED: Process specific, Two events, same addr
+  TESTED: Process specific, Two events, diff addr, one is RO, other is WO
+  TESTED: Process specific, Two events, same addr, one is RO, other is WO
+  TESTED: Systemwide, Two events, diff addr
+  TESTED: Systemwide, Two events, same addr
+  TESTED: Systemwide, Two events, diff addr, one is RO, other is WO
+  TESTED: Systemwide, Two events, same addr, one is RO, other is WO
+  TESTED: Process specific, 512 bytes, unaligned
+  success: perf_hwbreak
 
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 ---
- .../selftests/powerpc/ptrace/perf-hwbreak.c   | 78 +++++++++----------
- 1 file changed, 38 insertions(+), 40 deletions(-)
+ .../selftests/powerpc/ptrace/perf-hwbreak.c   | 568 +++++++++++++++++-
+ 1 file changed, 567 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c b/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-index c1f324afdbf3..bde475341c8a 100644
+index bde475341c8a..1dafba42c23d 100644
 --- a/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
 +++ b/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-@@ -34,28 +34,46 @@
+@@ -21,8 +21,13 @@
+ #include <assert.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <signal.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
++#include <sys/wait.h>
++#include <sys/ptrace.h>
++#include <sys/sysinfo.h>
++#include <asm/ptrace.h>
+ #include <elf.h>
+ #include <pthread.h>
+ #include <sys/syscall.h>
+@@ -34,6 +39,12 @@
  
  #define DAWR_LENGTH_MAX ((0x3f + 1) * 8)
  
--static inline int sys_perf_event_open(struct perf_event_attr *attr, pid_t pid,
--				      int cpu, int group_fd,
--				      unsigned long flags)
-+static void perf_event_attr_set(struct perf_event_attr *attr,
-+				__u32 type, __u64 addr, __u64 len,
-+				bool exclude_user)
- {
--	attr->size = sizeof(*attr);
--	return syscall(__NR_perf_event_open, attr, pid, cpu, group_fd, flags);
-+	memset(attr, 0, sizeof(struct perf_event_attr));
-+	attr->type           = PERF_TYPE_BREAKPOINT;
-+	attr->size           = sizeof(struct perf_event_attr);
-+	attr->bp_type        = type;
-+	attr->bp_addr        = addr;
-+	attr->bp_len         = len;
-+	attr->exclude_kernel = 1;
-+	attr->exclude_hv     = 1;
-+	attr->exclude_guest  = 1;
-+	attr->exclude_user   = exclude_user;
-+	attr->disabled       = 1;
++int nprocs;
++
++static volatile int a = 10;
++static volatile int b = 10;
++static volatile char c[512 + 8] __attribute__((aligned(512)));
++
+ static void perf_event_attr_set(struct perf_event_attr *attr,
+ 				__u32 type, __u64 addr, __u64 len,
+ 				bool exclude_user)
+@@ -68,6 +79,76 @@ static int perf_process_event_open(__u32 type, __u64 addr, __u64 len)
+ 	return syscall(__NR_perf_event_open, &attr, getpid(), -1, -1, 0);
  }
  
--static inline bool breakpoint_test(int len)
-+static int
-+perf_process_event_open_exclude_user(__u32 type, __u64 addr, __u64 len, bool exclude_user)
- {
- 	struct perf_event_attr attr;
-+
-+	perf_event_attr_set(&attr, type, addr, len, exclude_user);
-+	return syscall(__NR_perf_event_open, &attr, getpid(), -1, -1, 0);
-+}
-+
-+static int perf_process_event_open(__u32 type, __u64 addr, __u64 len)
++static int perf_cpu_event_open(long cpu, __u32 type, __u64 addr, __u64 len)
 +{
 +	struct perf_event_attr attr;
 +
 +	perf_event_attr_set(&attr, type, addr, len, 0);
-+	return syscall(__NR_perf_event_open, &attr, getpid(), -1, -1, 0);
++	return syscall(__NR_perf_event_open, &attr, -1, cpu, -1, 0);
 +}
 +
-+static inline bool breakpoint_test(int len)
++static void close_fds(int *fd, int n)
 +{
- 	int fd;
- 
--	/* setup counters */
--	memset(&attr, 0, sizeof(attr));
--	attr.disabled = 1;
--	attr.type = PERF_TYPE_BREAKPOINT;
--	attr.bp_type = HW_BREAKPOINT_R;
- 	/* bp_addr can point anywhere but needs to be aligned */
--	attr.bp_addr = (__u64)(&attr) & 0xfffffffffffff800;
--	attr.bp_len = len;
--	fd = sys_perf_event_open(&attr, 0, -1, -1, 0);
-+	fd = perf_process_event_open(HW_BREAKPOINT_R, (__u64)(&fd) & 0xfffffffffffff800, len);
- 	if (fd < 0)
- 		return false;
- 	close(fd);
-@@ -75,7 +93,6 @@ static inline bool dawr_supported(void)
- static int runtestsingle(int readwriteflag, int exclude_user, int arraytest)
++	int i;
++
++	for (i = 0; i < n; i++)
++		close(fd[i]);
++}
++
++static unsigned long read_fds(int *fd, int n)
++{
++	int i;
++	unsigned long c = 0;
++	unsigned long count = 0;
++	size_t res;
++
++	for (i = 0; i < n; i++) {
++		res = read(fd[i], &c, sizeof(c));
++		assert(res == sizeof(unsigned long long));
++		count += c;
++	}
++	return count;
++}
++
++static void reset_fds(int *fd, int n)
++{
++	int i;
++
++	for (i = 0; i < n; i++)
++		ioctl(fd[i], PERF_EVENT_IOC_RESET);
++}
++
++static void enable_fds(int *fd, int n)
++{
++	int i;
++
++	for (i = 0; i < n; i++)
++		ioctl(fd[i], PERF_EVENT_IOC_ENABLE);
++}
++
++static void disable_fds(int *fd, int n)
++{
++	int i;
++
++	for (i = 0; i < n; i++)
++		ioctl(fd[i], PERF_EVENT_IOC_DISABLE);
++}
++
++static int perf_systemwide_event_open(int *fd, __u32 type, __u64 addr, __u64 len)
++{
++	int i = 0;
++
++	/* Assume online processors are 0 to nprocs for simplisity */
++	for (i = 0; i < nprocs; i++) {
++		fd[i] = perf_cpu_event_open(i, type, addr, len);
++		if (fd[i] < 0) {
++			close_fds(fd, i);
++			return fd[i];
++		}
++	}
++	return 0;
++}
++
+ static inline bool breakpoint_test(int len)
  {
- 	int i,j;
--	struct perf_event_attr attr;
- 	size_t res;
- 	unsigned long long breaks, needed;
- 	int readint;
-@@ -94,19 +111,11 @@ static int runtestsingle(int readwriteflag, int exclude_user, int arraytest)
- 	if (arraytest)
- 		ptr = &readintalign[0];
+ 	int fd;
+@@ -261,11 +342,483 @@ static int runtest_dar_outside(void)
+ 	return fail;
+ }
  
--	/* setup counters */
--	memset(&attr, 0, sizeof(attr));
--	attr.disabled = 1;
--	attr.type = PERF_TYPE_BREAKPOINT;
--	attr.bp_type = readwriteflag;
--	attr.bp_addr = (__u64)ptr;
--	attr.bp_len = sizeof(int);
--	if (arraytest)
--		attr.bp_len = DAWR_LENGTH_MAX;
--	attr.exclude_user = exclude_user;
--	break_fd = sys_perf_event_open(&attr, 0, -1, -1, 0);
-+	break_fd = perf_process_event_open_exclude_user(readwriteflag, (__u64)ptr,
-+				arraytest ? DAWR_LENGTH_MAX : sizeof(int),
-+				exclude_user);
- 	if (break_fd < 0) {
--		perror("sys_perf_event_open");
-+		perror("perf_process_event_open_exclude_user");
- 		exit(1);
- 	}
- 
-@@ -153,7 +162,6 @@ static int runtest_dar_outside(void)
- 	void *target;
- 	volatile __u16 temp16;
- 	volatile __u64 temp64;
--	struct perf_event_attr attr;
- 	int break_fd;
- 	unsigned long long breaks;
- 	int fail = 0;
-@@ -165,21 +173,11 @@ static int runtest_dar_outside(void)
- 		exit(EXIT_FAILURE);
- 	}
- 
--	/* setup counters */
--	memset(&attr, 0, sizeof(attr));
--	attr.disabled = 1;
--	attr.type = PERF_TYPE_BREAKPOINT;
--	attr.exclude_kernel = 1;
--	attr.exclude_hv = 1;
--	attr.exclude_guest = 1;
--	attr.bp_type = HW_BREAKPOINT_RW;
- 	/* watch middle half of target array */
--	attr.bp_addr = (__u64)(target + 2);
--	attr.bp_len = 4;
--	break_fd = sys_perf_event_open(&attr, 0, -1, -1, 0);
-+	break_fd = perf_process_event_open(HW_BREAKPOINT_RW, (__u64)(target + 2), 4);
- 	if (break_fd < 0) {
- 		free(target);
--		perror("sys_perf_event_open");
++static void multi_dawr_workload(void)
++{
++	a += 10;
++	b += 10;
++	c[512 + 1] += 'a';
++}
++
++static int test_process_multi_diff_addr(void)
++{
++	unsigned long long breaks1 = 0, breaks2 = 0;
++	int fd1, fd2;
++	char *desc = "Process specific, Two events, diff addr";
++	size_t res;
++
++	fd1 = perf_process_event_open(HW_BREAKPOINT_RW, (__u64)&a, (__u64)sizeof(a));
++	if (fd1 < 0) {
 +		perror("perf_process_event_open");
- 		exit(EXIT_FAILURE);
++		exit(EXIT_FAILURE);
++	}
++
++	fd2 = perf_process_event_open(HW_BREAKPOINT_RW, (__u64)&b, (__u64)sizeof(b));
++	if (fd2 < 0) {
++		close(fd1);
++		perror("perf_process_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	ioctl(fd1, PERF_EVENT_IOC_RESET);
++	ioctl(fd2, PERF_EVENT_IOC_RESET);
++	ioctl(fd1, PERF_EVENT_IOC_ENABLE);
++	ioctl(fd2, PERF_EVENT_IOC_ENABLE);
++	multi_dawr_workload();
++	ioctl(fd1, PERF_EVENT_IOC_DISABLE);
++	ioctl(fd2, PERF_EVENT_IOC_DISABLE);
++
++	res = read(fd1, &breaks1, sizeof(breaks1));
++	assert(res == sizeof(unsigned long long));
++	res = read(fd2, &breaks2, sizeof(breaks2));
++	assert(res == sizeof(unsigned long long));
++
++	close(fd1);
++	close(fd2);
++
++	if (breaks1 != 2 || breaks2 != 2) {
++		printf("FAILED: %s: %lld != 2 || %lld != 2\n", desc,
++			breaks1, breaks2);
++		return 1;
++	}
++
++	printf("TESTED: %s\n", desc);
++	return 0;
++}
++
++static int test_process_multi_same_addr(void)
++{
++	unsigned long long breaks1 = 0, breaks2 = 0;
++	int fd1, fd2;
++	char *desc = "Process specific, Two events, same addr";
++	size_t res;
++
++	fd1 = perf_process_event_open(HW_BREAKPOINT_RW, (__u64)&a, (__u64)sizeof(a));
++	if (fd1 < 0) {
++		perror("perf_process_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	fd2 = perf_process_event_open(HW_BREAKPOINT_RW, (__u64)&a, (__u64)sizeof(a));
++	if (fd2 < 0) {
++		close(fd1);
++		perror("perf_process_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	ioctl(fd1, PERF_EVENT_IOC_RESET);
++	ioctl(fd2, PERF_EVENT_IOC_RESET);
++	ioctl(fd1, PERF_EVENT_IOC_ENABLE);
++	ioctl(fd2, PERF_EVENT_IOC_ENABLE);
++	multi_dawr_workload();
++	ioctl(fd1, PERF_EVENT_IOC_DISABLE);
++	ioctl(fd2, PERF_EVENT_IOC_DISABLE);
++
++	res = read(fd1, &breaks1, sizeof(breaks1));
++	assert(res == sizeof(unsigned long long));
++	res = read(fd2, &breaks2, sizeof(breaks2));
++	assert(res == sizeof(unsigned long long));
++
++	close(fd1);
++	close(fd2);
++
++	if (breaks1 != 2 || breaks2 != 2) {
++		printf("FAILED: %s: %lld != 2 || %lld != 2\n", desc,
++			breaks1, breaks2);
++		return 1;
++	}
++
++	printf("TESTED: %s\n", desc);
++	return 0;
++}
++
++static int test_process_multi_diff_addr_ro_wo(void)
++{
++	unsigned long long breaks1 = 0, breaks2 = 0;
++	int fd1, fd2;
++	char *desc = "Process specific, Two events, diff addr, one is RO, other is WO";
++	size_t res;
++
++	fd1 = perf_process_event_open(HW_BREAKPOINT_W, (__u64)&a, (__u64)sizeof(a));
++	if (fd1 < 0) {
++		perror("perf_process_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	fd2 = perf_process_event_open(HW_BREAKPOINT_R, (__u64)&b, (__u64)sizeof(b));
++	if (fd2 < 0) {
++		close(fd1);
++		perror("perf_process_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	ioctl(fd1, PERF_EVENT_IOC_RESET);
++	ioctl(fd2, PERF_EVENT_IOC_RESET);
++	ioctl(fd1, PERF_EVENT_IOC_ENABLE);
++	ioctl(fd2, PERF_EVENT_IOC_ENABLE);
++	multi_dawr_workload();
++	ioctl(fd1, PERF_EVENT_IOC_DISABLE);
++	ioctl(fd2, PERF_EVENT_IOC_DISABLE);
++
++	res = read(fd1, &breaks1, sizeof(breaks1));
++	assert(res == sizeof(unsigned long long));
++	res = read(fd2, &breaks2, sizeof(breaks2));
++	assert(res == sizeof(unsigned long long));
++
++	close(fd1);
++	close(fd2);
++
++	if (breaks1 != 1 || breaks2 != 1) {
++		printf("FAILED: %s: %lld != 1 || %lld != 1\n", desc,
++			breaks1, breaks2);
++		return 1;
++	}
++
++	printf("TESTED: %s\n", desc);
++	return 0;
++}
++
++static int test_process_multi_same_addr_ro_wo(void)
++{
++	unsigned long long breaks1 = 0, breaks2 = 0;
++	int fd1, fd2;
++	char *desc = "Process specific, Two events, same addr, one is RO, other is WO";
++	size_t res;
++
++	fd1 = perf_process_event_open(HW_BREAKPOINT_R, (__u64)&a, (__u64)sizeof(a));
++	if (fd1 < 0) {
++		perror("perf_process_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	fd2 = perf_process_event_open(HW_BREAKPOINT_W, (__u64)&a, (__u64)sizeof(a));
++	if (fd2 < 0) {
++		close(fd1);
++		perror("perf_process_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	ioctl(fd1, PERF_EVENT_IOC_RESET);
++	ioctl(fd2, PERF_EVENT_IOC_RESET);
++	ioctl(fd1, PERF_EVENT_IOC_ENABLE);
++	ioctl(fd2, PERF_EVENT_IOC_ENABLE);
++	multi_dawr_workload();
++	ioctl(fd1, PERF_EVENT_IOC_DISABLE);
++	ioctl(fd2, PERF_EVENT_IOC_DISABLE);
++
++	res = read(fd1, &breaks1, sizeof(breaks1));
++	assert(res == sizeof(unsigned long long));
++	res = read(fd2, &breaks2, sizeof(breaks2));
++	assert(res == sizeof(unsigned long long));
++
++	close(fd1);
++	close(fd2);
++
++	if (breaks1 != 1 || breaks2 != 1) {
++		printf("FAILED: %s: %lld != 1 || %lld != 1\n", desc,
++			breaks1, breaks2);
++		return 1;
++	}
++
++	printf("TESTED: %s\n", desc);
++	return 0;
++}
++
++static int test_syswide_multi_diff_addr(void)
++{
++	unsigned long long breaks1 = 0, breaks2 = 0;
++	int *fd1 = malloc(nprocs * sizeof(int));
++	int *fd2 = malloc(nprocs * sizeof(int));
++	char *desc = "Systemwide, Two events, diff addr";
++	int ret;
++
++	ret = perf_systemwide_event_open(fd1, HW_BREAKPOINT_RW, (__u64)&a,
++					(__u64)sizeof(a));
++	if (ret) {
++		perror("perf_systemwide_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	ret = perf_systemwide_event_open(fd2, HW_BREAKPOINT_RW, (__u64)&b,
++					(__u64)sizeof(b));
++	if (ret) {
++		close_fds(fd1, nprocs);
++		perror("perf_systemwide_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	reset_fds(fd1, nprocs);
++	reset_fds(fd2, nprocs);
++	enable_fds(fd1, nprocs);
++	enable_fds(fd2, nprocs);
++	multi_dawr_workload();
++	disable_fds(fd1, nprocs);
++	disable_fds(fd2, nprocs);
++
++	breaks1 = read_fds(fd1, nprocs);
++	breaks2 = read_fds(fd2, nprocs);
++
++	close_fds(fd1, nprocs);
++	close_fds(fd2, nprocs);
++
++	free(fd1);
++	free(fd2);
++
++	if (breaks1 != 2 || breaks2 != 2) {
++		printf("FAILED: %s: %lld != 2 || %lld != 2\n", desc,
++			breaks1, breaks2);
++		return 1;
++	}
++
++	printf("TESTED: %s\n", desc);
++	return 0;
++}
++
++static int test_syswide_multi_same_addr(void)
++{
++	unsigned long long breaks1 = 0, breaks2 = 0;
++	int *fd1 = malloc(nprocs * sizeof(int));
++	int *fd2 = malloc(nprocs * sizeof(int));
++	char *desc = "Systemwide, Two events, same addr";
++	int ret;
++
++	ret = perf_systemwide_event_open(fd1, HW_BREAKPOINT_RW, (__u64)&a,
++					(__u64)sizeof(a));
++	if (ret) {
++		perror("perf_systemwide_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	ret = perf_systemwide_event_open(fd2, HW_BREAKPOINT_RW, (__u64)&a,
++					(__u64)sizeof(a));
++	if (ret) {
++		close_fds(fd1, nprocs);
++		perror("perf_systemwide_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	reset_fds(fd1, nprocs);
++	reset_fds(fd2, nprocs);
++	enable_fds(fd1, nprocs);
++	enable_fds(fd2, nprocs);
++	multi_dawr_workload();
++	disable_fds(fd1, nprocs);
++	disable_fds(fd2, nprocs);
++
++	breaks1 = read_fds(fd1, nprocs);
++	breaks2 = read_fds(fd2, nprocs);
++
++	close_fds(fd1, nprocs);
++	close_fds(fd2, nprocs);
++
++	free(fd1);
++	free(fd2);
++
++	if (breaks1 != 2 || breaks2 != 2) {
++		printf("FAILED: %s: %lld != 2 || %lld != 2\n", desc,
++			breaks1, breaks2);
++		return 1;
++	}
++
++	printf("TESTED: %s\n", desc);
++	return 0;
++}
++
++static int test_syswide_multi_diff_addr_ro_wo(void)
++{
++	unsigned long long breaks1 = 0, breaks2 = 0;
++	int *fd1 = malloc(nprocs * sizeof(int));
++	int *fd2 = malloc(nprocs * sizeof(int));
++	char *desc = "Systemwide, Two events, diff addr, one is RO, other is WO";
++	int ret;
++
++	ret = perf_systemwide_event_open(fd1, HW_BREAKPOINT_W, (__u64)&a,
++					(__u64)sizeof(a));
++	if (ret) {
++		perror("perf_systemwide_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	ret = perf_systemwide_event_open(fd2, HW_BREAKPOINT_R, (__u64)&b,
++					(__u64)sizeof(b));
++	if (ret) {
++		close_fds(fd1, nprocs);
++		perror("perf_systemwide_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	reset_fds(fd1, nprocs);
++	reset_fds(fd2, nprocs);
++	enable_fds(fd1, nprocs);
++	enable_fds(fd2, nprocs);
++	multi_dawr_workload();
++	disable_fds(fd1, nprocs);
++	disable_fds(fd2, nprocs);
++
++	breaks1 = read_fds(fd1, nprocs);
++	breaks2 = read_fds(fd2, nprocs);
++
++	close_fds(fd1, nprocs);
++	close_fds(fd2, nprocs);
++
++	free(fd1);
++	free(fd2);
++
++	if (breaks1 != 1 || breaks2 != 1) {
++		printf("FAILED: %s: %lld != 1 || %lld != 1\n", desc,
++			breaks1, breaks2);
++		return 1;
++	}
++
++	printf("TESTED: %s\n", desc);
++	return 0;
++}
++
++static int test_syswide_multi_same_addr_ro_wo(void)
++{
++	unsigned long long breaks1 = 0, breaks2 = 0;
++	int *fd1 = malloc(nprocs * sizeof(int));
++	int *fd2 = malloc(nprocs * sizeof(int));
++	char *desc = "Systemwide, Two events, same addr, one is RO, other is WO";
++	int ret;
++
++	ret = perf_systemwide_event_open(fd1, HW_BREAKPOINT_W, (__u64)&a,
++					(__u64)sizeof(a));
++	if (ret) {
++		perror("perf_systemwide_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	ret = perf_systemwide_event_open(fd2, HW_BREAKPOINT_R, (__u64)&a,
++					(__u64)sizeof(a));
++	if (ret) {
++		close_fds(fd1, nprocs);
++		perror("perf_systemwide_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	reset_fds(fd1, nprocs);
++	reset_fds(fd2, nprocs);
++	enable_fds(fd1, nprocs);
++	enable_fds(fd2, nprocs);
++	multi_dawr_workload();
++	disable_fds(fd1, nprocs);
++	disable_fds(fd2, nprocs);
++
++	breaks1 = read_fds(fd1, nprocs);
++	breaks2 = read_fds(fd2, nprocs);
++
++	close_fds(fd1, nprocs);
++	close_fds(fd2, nprocs);
++
++	free(fd1);
++	free(fd2);
++
++	if (breaks1 != 1 || breaks2 != 1) {
++		printf("FAILED: %s: %lld != 1 || %lld != 1\n", desc,
++			breaks1, breaks2);
++		return 1;
++	}
++
++	printf("TESTED: %s\n", desc);
++	return 0;
++}
++
++static int runtest_multi_dawr(void)
++{
++	int ret = 0;
++
++	ret |= test_process_multi_diff_addr();
++	ret |= test_process_multi_same_addr();
++	ret |= test_process_multi_diff_addr_ro_wo();
++	ret |= test_process_multi_same_addr_ro_wo();
++	ret |= test_syswide_multi_diff_addr();
++	ret |= test_syswide_multi_same_addr();
++	ret |= test_syswide_multi_diff_addr_ro_wo();
++	ret |= test_syswide_multi_same_addr_ro_wo();
++
++	return ret;
++}
++
++static int runtest_unaligned_512bytes(void)
++{
++	unsigned long long breaks = 0;
++	int fd;
++	char *desc = "Process specific, 512 bytes, unaligned";
++	__u64 addr = (__u64)&c + 8;
++	size_t res;
++
++	fd = perf_process_event_open(HW_BREAKPOINT_RW, addr, 512);
++	if (fd < 0) {
++		perror("perf_process_event_open");
++		exit(EXIT_FAILURE);
++	}
++
++	ioctl(fd, PERF_EVENT_IOC_RESET);
++	ioctl(fd, PERF_EVENT_IOC_ENABLE);
++	multi_dawr_workload();
++	ioctl(fd, PERF_EVENT_IOC_DISABLE);
++
++	res = read(fd, &breaks, sizeof(breaks));
++	assert(res == sizeof(unsigned long long));
++
++	close(fd);
++
++	if (breaks != 2) {
++		printf("FAILED: %s: %lld != 2\n", desc, breaks);
++		return 1;
++	}
++
++	printf("TESTED: %s\n", desc);
++	return 0;
++}
++
++/* There is no perf api to find number of available watchpoints. Use ptrace. */
++static int get_nr_wps(bool *arch_31)
++{
++	struct ppc_debug_info dbginfo;
++	int child_pid;
++
++	child_pid = fork();
++	if (!child_pid) {
++		int ret = ptrace(PTRACE_TRACEME, 0, NULL, 0);
++		if (ret) {
++			perror("PTRACE_TRACEME failed\n");
++			exit(EXIT_FAILURE);
++		}
++		kill(getpid(), SIGUSR1);
++
++		sleep(1);
++		exit(EXIT_SUCCESS);
++	}
++
++	wait(NULL);
++	if (ptrace(PPC_PTRACE_GETHWDBGINFO, child_pid, NULL, &dbginfo)) {
++		perror("Can't get breakpoint info");
++		exit(EXIT_FAILURE);
++	}
++
++	*arch_31 = !!(dbginfo.features & PPC_DEBUG_FEATURE_DATA_BP_ARCH_31);
++	return dbginfo.num_data_bps;
++}
++
+ static int runtest(void)
+ {
+ 	int rwflag;
+ 	int exclude_user;
+ 	int ret;
++	bool dawr = dawr_supported();
++	bool arch_31 = false;
++	int nr_wps = get_nr_wps(&arch_31);
+ 
+ 	/*
+ 	 * perf defines rwflag as two bits read and write and at least
+@@ -278,7 +831,7 @@ static int runtest(void)
+ 				return ret;
+ 
+ 			/* if we have the dawr, we can do an array test */
+-			if (!dawr_supported())
++			if (!dawr)
+ 				continue;
+ 			ret = runtestsingle(rwflag, exclude_user, 1);
+ 			if (ret)
+@@ -287,6 +840,19 @@ static int runtest(void)
  	}
+ 
+ 	ret = runtest_dar_outside();
++	if (ret)
++		return ret;
++
++	if (dawr && nr_wps > 1) {
++		nprocs = get_nprocs();
++		ret = runtest_multi_dawr();
++		if (ret)
++			return ret;
++	}
++
++	if (dawr && arch_31)
++		ret = runtest_unaligned_512bytes();
++
+ 	return ret;
+ }
  
 -- 
 2.27.0
