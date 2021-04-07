@@ -1,83 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E36357551
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 21:58:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E710357557
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 21:59:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFwFY3njdz3bvx
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 05:58:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFwG729sdz3c2P
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 05:59:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=oF0cJJli;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YR5Q8XvU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::734;
- helo=mail-qk1-x734.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=oF0cJJli; dkim-atps=neutral
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com
- [IPv6:2607:f8b0:4864:20::734])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=YR5Q8XvU; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFwF74tX8z2xZp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 05:58:35 +1000 (AEST)
-Received: by mail-qk1-x734.google.com with SMTP id o5so20162656qkb.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Apr 2021 12:58:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=6fZ/ViiD+pHeXtQLFjb/Z7oHK2Q9bzwQJTyo6w74m6I=;
- b=oF0cJJlib378/ESJnMtKadOGiybdFVACJjzQfsNJalMkV4wHfu79umMG3ZsEGQ/zxw
- MSaGgy3Zmvj0ydbPI7/T3XsBqAP8y1etoI75nRNhBb5VL2TVNgbkhUusskyJ/BYql5lF
- xhVlI94jTfPARboVGM0L7+fdVxwXIR9L7ospIDPPdHFHIR3hLKlTwZRgACKqiake75YT
- B/xg/kS6qqkyvBhVxylHQOlr+5mu1WsttXrl0OdaNnIFTrlj6qV/kTrI7XaidLVcOUVc
- Xoy/jr7EWAIOkFmSib2A/ofJ1JQJ3XZ+BOGvfA2anjLQ/H+3+J8bfSuc1hWcVjmS2jdS
- EhQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=6fZ/ViiD+pHeXtQLFjb/Z7oHK2Q9bzwQJTyo6w74m6I=;
- b=ecNEh0NrL+6kqHF/JXoiTnG6jpFGHWgN1gG+2drJAlhrpO+1XdVi0DckT1DNIqZybW
- bCfpHOtFH3KSuhQWZvAdDIt8mq8cGYWMv1KWEggTXpuyaDPieHZtzDkXBHr92zjxcCKQ
- aWMWp/moxNn7ZHuBKv/afhRF4BeuWGmbvbJnsFNN5TPljP/M5F7ntMi7gBucauelqMry
- wnQosYsNrHQHvxUsw+G9gGosrD7T1NNVXAO9BgculaujGyoPfvG0JMsoHWL9pcS36geF
- zvvisNj2mmTzSF7hgu/ZMQBxVr7zT6CMTksKORe9QQJqEYQPUaXBcHq+Mdl7T06UnGEu
- mVRg==
-X-Gm-Message-State: AOAM530UmQW5QpY7BMN/GxcIUmATpHlbH1JHgHPMHSwEHIXCMr4b0j3b
- 10SdTBjRTD38WYKsOblgYWw=
-X-Google-Smtp-Source: ABdhPJyIv9lgQmEv8xFsxtKio+OVUdiYh2xUaxUzN9jf15s0SD4mozHeNa0kXvnguVRWV2ozvXVqtQ==
-X-Received: by 2002:ae9:e518:: with SMTP id w24mr4878314qkf.78.1617825512109; 
- Wed, 07 Apr 2021 12:58:32 -0700 (PDT)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
- ([2804:14c:482:7b04::1000])
- by smtp.gmail.com with ESMTPSA id j10sm17781787qti.94.2021.04.07.12.58.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Apr 2021 12:58:31 -0700 (PDT)
-Message-ID: <1af8c4ed38981332bcd8ffcf003d70c4a6f766ef.camel@gmail.com>
-Subject: Re: [PATCH 1/1] powerpc/iommu: Enable remaining IOMMU Pagesizes
- present in LoPAR
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
- <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Christophe Leroy
- <christophe.leroy@c-s.fr>,  Joel Stanley <joel@jms.id.au>,
- brking@linux.vnet.ibm.com
-Date: Wed, 07 Apr 2021 16:58:27 -0300
-In-Reply-To: <2088f84c-08fb-fecc-f5d4-5735357dc296@ozlabs.ru>
-References: <20210322190943.715368-1-leobras.c@gmail.com>
- <2088f84c-08fb-fecc-f5d4-5735357dc296@ozlabs.ru>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFwFk6fDsz3bxF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 05:59:06 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4FFFC6120E
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 19:59:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1617825544;
+ bh=k6+WEJUU1OZWMiE9a2UexjzaTvG2oDVuhVsZiW3o6Io=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=YR5Q8XvUn6JVjPjj1BNXaM7FVf4Br7ASmk3pta0uakqmw/dDkxpszknJ8UmJ+wudk
+ jtnQron+y3IvEv16sN69Mw5kfPI4AXsQxbLEhpVIJ6VbHzqWg73POVIX0llWl/7km5
+ C5FlmXQ8rbN0i9Vxa05RsKNzt1lJWE8dA81jJSsw16lZHdla3+ss/EqA9w0Ov7mUiT
+ SZ0MwgFHNkbJDQu8pDeuh77/V9ufcutwVYnuuQr0bHtLNkPC2i6qmFBiokoLyQfl0K
+ k42/vc95fEetqcc8H3yFXpNT13wDn+r1F/QiBRtpvqLPYIPxc013iptHec/3Sea2F4
+ 6YswdagWPNA+Q==
+Received: by mail-ed1-f52.google.com with SMTP id 18so4820399edx.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Apr 2021 12:59:04 -0700 (PDT)
+X-Gm-Message-State: AOAM530zuqDYCoZNey3CDDRy+kIUa5UWnL+T5JE5CJmwFCB1Qe9Amp3A
+ tmn0aA5P5JPtI6ogeFgstzkCIWiH+1G7u38Hug==
+X-Google-Smtp-Source: ABdhPJwY9GthufRHILDLTfwGTZSKr9CrrPh9cGzDOgcphaTRdGgVabGLGr25oYBpzfJepxjo3FsXe2sqmNbljCw070k=
+X-Received: by 2002:a05:6402:1b1c:: with SMTP id
+ by28mr6528263edb.62.1617825542888; 
+ Wed, 07 Apr 2021 12:59:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20210403020423.85278-1-syl.loop@gmail.com>
+ <87y2due3mt.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87y2due3mt.fsf@mpe.ellerman.id.au>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Wed, 7 Apr 2021 14:58:50 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+CKi6+FKO=-VHC538mFMsvpa785sp2Qv86iCTv=1PC1w@mail.gmail.com>
+Message-ID: <CAL_Jsq+CKi6+FKO=-VHC538mFMsvpa785sp2Qv86iCTv=1PC1w@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/dts: fix not include DTC_FLAGS
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,37 +66,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Youlin Song <syl.loop@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Alexey,
+On Wed, Apr 7, 2021 at 6:27 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Youlin Song <syl.loop@gmail.com> writes:
+> > I wanted to build the fsl dts in my machine and found that
+> > the dtb have not extra space,so uboot will cause about
+> > FDT_ERR_NOSPACE issue.
 
-On Tue, 2021-03-23 at 18:41 +1100, Alexey Kardashevskiy wrote:
-[...]
-> > +#define IOMMU_PAGE_SHIFT_16G	34
-> > +#define IOMMU_PAGE_SHIFT_256M	28
-> > +#define IOMMU_PAGE_SHIFT_128M	27
-> > +#define IOMMU_PAGE_SHIFT_64M	26
-> > +#define IOMMU_PAGE_SHIFT_32M	25
-> > +#define IOMMU_PAGE_SHIFT_16M	24
-> > +#define IOMMU_PAGE_SHIFT_64K	16
-> 
-> 
-> These are not very descriptive, these are just normal shifts, could be 
-> as simple as __builtin_ctz(SZ_4K) (gcc will optimize this) and so on.
-> 
-> OTOH the PAPR page sizes need macros as they are the ones which are 
-> weird and screaming for macros.
-> 
-> I'd steal/rework spapr_page_mask_to_query_mask() from QEMU. Thanks,
-> 
+How do we not have issues with arm and arm64 boards which don't have
+padding? Or what took so long to notice on powerpc?
 
-Thanks for this feedback!
-I just sent a v2 applying your suggestions.
+> >
+> > Signed-off-by: Youlin Song <syl.loop@gmail.com>
+> > ---
+> >  arch/powerpc/boot/dts/Makefile | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/arch/powerpc/boot/dts/Makefile b/arch/powerpc/boot/dts/Makefile
+> > index fb335d05aae8..c21165c0cd76 100644
+> > --- a/arch/powerpc/boot/dts/Makefile
+> > +++ b/arch/powerpc/boot/dts/Makefile
+> > @@ -2,5 +2,6 @@
+> >
+> >  subdir-y += fsl
+> >
+> > +DTC_FLAGS   ?= -p 1024
+> >  dtstree              := $(srctree)/$(src)
+> >  dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(wildcard $(dtstree)/*.dts))
+>
+> I guess that was missed in 1acf1cf8638a ("powerpc: build .dtb files in dts directory").
+>
+> Which I think means the assignment to DTC_FLAGS in
+> arch/powerpc/boot/Makefile is not needed anymore.
+>
+> Can you send a v2 removing that assignment and explaining that's what
+> happened?
 
-Best regards,
-Leonardo Bras
+I've wanted to make this common, but I guess that's a separate change.
 
-
+Rob
