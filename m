@@ -2,63 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90D4357820
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 00:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF9435782D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 01:02:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FG0G15vnFz3bpy
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 08:59:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FG0Kj2Bhrz3bw4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 09:02:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2016061301 header.b=i99BezLw;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.43; helo=mail-ot1-f43.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com
- [209.85.210.43])
+ smtp.mailfrom=walle.cc (client-ip=2a01:4f8:151:8464::1:2;
+ helo=ssl.serverraum.org; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
+ header.s=mail2016061301 header.b=i99BezLw; 
+ dkim-atps=neutral
+Received: from ssl.serverraum.org (ssl.serverraum.org
+ [IPv6:2a01:4f8:151:8464::1:2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FG0Fh38mKz2yxn
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 08:59:19 +1000 (AEST)
-Received: by mail-ot1-f43.google.com with SMTP id
- w31-20020a9d36220000b02901f2cbfc9743so435578otb.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Apr 2021 15:59:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=QKXgCn18Rr1eqfdzx55WXMaeSuXNDv2BM9yLmUwClbs=;
- b=sRFoW6WIbrafylp4u8YQwmLO2oUI/YE2sHU5+ABsk0/MURj+sZlilEobcMEbGeUqwz
- IRKvY8niNH2hn0VV25DYFtdCEFncflRwCFryIEGm72eaUF8FOh32tTcBzQCmzm9uQosS
- 5HOnksz1XFiiwbMbaDuV8dCiNVzlV2urYyhuhcWOzJMgJFdaYgGKCBKXC/fXWfYlg9fA
- GjR/nJtm+uylGi3Mf8dFKIu2ir9ZOa0mm4nGIjScoeYIKOF+NdEkRjKdeoYAs+072AWY
- SCBMqUrcUA1RhwXyIayafu6sTHRahBHp3OLB+IigBBOmYnsJ0bPMhdJofpJwkYz3vmCh
- h3sQ==
-X-Gm-Message-State: AOAM530c08PDDetxuNYBqET1sGGxsAAbjf1sRLZVoP2Mcnw2iQpUwF4M
- lB/rwxRdRa9FB0baDl0D5w==
-X-Google-Smtp-Source: ABdhPJyvr5jHBGk0riO06gjL1cJLFcP8LjEM1PludhoIvgfnmnAE6t/+wBnt/64MHZhkodj4W6TLdA==
-X-Received: by 2002:a05:6830:22c3:: with SMTP id
- q3mr4869906otc.56.1617836356986; 
- Wed, 07 Apr 2021 15:59:16 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net.
- [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id b22sm5786887ots.59.2021.04.07.15.59.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Apr 2021 15:59:16 -0700 (PDT)
-Received: (nullmailer pid 174484 invoked by uid 1000);
- Wed, 07 Apr 2021 22:59:15 -0000
-Date: Wed, 7 Apr 2021 17:59:15 -0500
-From: Rob Herring <robh@kernel.org>
-To: Daniel Walker <danielwa@cisco.com>
-Subject: Re: [PATCH 2/8] CMDLINE: drivers: of: ifdef out cmdline section
-Message-ID: <20210407225915.GA147338@robh.at.kernel.org>
-References: <41021d66db2ab427c14255d2a24bb4517c8b58fd.1617126961.git.danielwa@cisco.com>
- <0c4b839f023f87c451c8aa3c4f7a8d92729c2f02.1617126961.git.danielwa@cisco.com>
- <CAL_Jsq+_gF9Cy7H6ic2q8dxnPf4+FsBa5pFYYRydJsEmDhnNhA@mail.gmail.com>
- <20210330231717.GA2469518@zorba>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFqBF5zXWz2yRJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 02:10:43 +1000 (AEST)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ssl.serverraum.org (Postfix) with ESMTPSA id 18A9F22236;
+ Wed,  7 Apr 2021 18:10:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
+ s=mail2016061301; t=1617811836;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gjuAN9QqCnWD77UCettma95Ojaeyk86+8J2wmtLYYZo=;
+ b=i99BezLwmPOE6w4/hGL0FvjE3br7uwuw9VGO9aRg8uJTlzeGu8Ac4FIxGX9vOQ8oMVP/r/
+ vE3I00R508lGU6R1pfNebHfFNtH5wO92z1+kMGfRRoMcmLezfBux9iSvegup2fWrGU4qza
+ 5flIWUW4ulzNHWTXNBqNWa8WPLM3Izs=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210330231717.GA2469518@zorba>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Wed, 07 Apr 2021 18:10:30 +0200
+From: Michael Walle <michael@walle.cc>
+To: ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-amlogic@lists.infradead.org,
+ linux-oxnas@groups.io, linux-omap@vger.kernel.org,
+ linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-staging@lists.linux.dev
+Subject: Re: [PATCH net-next v3 1/2] of: net: pass the dst buffer to
+ of_get_mac_address()
+In-Reply-To: <20210406220921.24313-2-michael@walle.cc>
+References: <20210406220921.24313-1-michael@walle.cc>
+ <20210406220921.24313-2-michael@walle.cc>
+User-Agent: Roundcube Webmail/1.4.11
+Message-ID: <50f474611ecf0f5e61c9a14a24b28773@walle.cc>
+X-Sender: michael@walle.cc
+X-Mailman-Approved-At: Thu, 08 Apr 2021 09:02:25 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,68 +75,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Ruslan Ruslichenko <rruslich@cisco.com>,
- Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
- Frank Rowand <frowand.list@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, X86 ML <x86@kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- xe-linux-external@cisco.com, Andrew Morton <akpm@linux-foundation.org>,
- Will Deacon <will@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+ =?UTF-8?Q?J=C3=A9r=C3=B4me?= =?UTF-8?Q?_Pouiller?=
+ <jerome.pouiller@silabs.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Andreas Larsson <andreas@gaisler.com>, Rob Herring <robh+dt@kernel.org>,
+ Michal Simek <michal.simek@xilinx.com>,
+ Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
+ Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+ Li Yang <leoyang.li@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+ Jerome Brunet <jbrunet@baylibre.com>,
+ Stephen Hemminger <stephen@networkplumber.org>,
+ Florian Fainelli <f.fainelli@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
+ Vivien Didelot <vivien.didelot@gmail.com>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Madalin Bucur <madalin.bucur@nxp.com>, Russell King <linux@armlinux.org.uk>,
+ Neil Armstrong <narmstrong@baylibre.com>, Wingman Kwok <w-kwok2@ti.com>,
+ Chen-Yu Tsai <wens@csie.org>, Jose Abreu <joabreu@synopsys.com>,
+ bcm-kernel-feedback-list@broadcom.com, NXP Linux Team <linux-imx@nxp.com>,
+ Chris Snook <chris.snook@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+ Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+ Yisen Zhuang <yisen.zhuang@huawei.com>, Mark Lee <Mark-MC.Lee@mediatek.com>,
+ Sunil Goutham <sgoutham@marvell.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Grygorii Strashko <grygorii.strashko@ti.com>, Byungho An <bh74.an@samsung.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>, Stanislaw Gruszka <stf_xl@wp.pl>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Hauke Mehrtens <hauke@hauke-m.de>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Sean Wang <sean.wang@mediatek.com>, Salil Mehta <salil.mehta@huawei.com>,
+ Maxime Ripard <mripard@kernel.org>, Vladimir Zapolskiy <vz@mleia.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Ryder Lee <ryder.lee@mediatek.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Murali Karicheri <m-karicheri2@ti.com>, John Crispin <john@phrozen.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Kalle Valo <kvalo@codeaurora.org>, Mirko Lindner <mlindner@marvell.com>,
+ Jernej Skrabec <jernej.skrabec@siol.net>, Vladimir Oltean <olteanv@gmail.com>,
+ Fugang Duan <fugang.duan@nxp.com>, Vadym Kochan <vkochan@marvell.com>,
+ Kevin Hilman <khilman@baylibre.com>,
+ Bryan Whitehead <bryan.whitehead@microchip.com>,
+ Helmut Schaa <helmut.schaa@googlemail.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ "David S . Miller" <davem@davemloft.net>, Taras Chornyi <tchornyi@marvell.com>,
+ Vinod Koul <vkoul@kernel.org>, Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Joyce Ooi <joyce.ooi@intel.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ Claudiu Beznea <claudiu.beznea@microchip.com>, Felix Fietkau <nbd@nbd.name>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 30, 2021 at 04:17:53PM -0700, Daniel Walker wrote:
-> On Tue, Mar 30, 2021 at 02:49:13PM -0500, Rob Herring wrote:
-> > On Tue, Mar 30, 2021 at 12:57 PM Daniel Walker <danielwa@cisco.com> wrote:
-> > >
-> > > It looks like there's some seepage of cmdline stuff into
-> > > the generic device tree code. This conflicts with the
-> > > generic cmdline implementation so I remove it in the case
-> > > when that's enabled.
-> > >
-> > > Cc: xe-linux-external@cisco.com
-> > > Signed-off-by: Ruslan Ruslichenko <rruslich@cisco.com>
-> > > Signed-off-by: Daniel Walker <danielwa@cisco.com>
-> > > ---
-> > >  drivers/of/fdt.c | 14 ++++++++++++++
-> > >  1 file changed, 14 insertions(+)
-> > >
-> > > diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> > > index dcc1dd96911a..d8805cd9717a 100644
-> > > --- a/drivers/of/fdt.c
-> > > +++ b/drivers/of/fdt.c
-> > > @@ -25,6 +25,7 @@
-> > >  #include <linux/serial_core.h>
-> > >  #include <linux/sysfs.h>
-> > >  #include <linux/random.h>
-> > > +#include <linux/cmdline.h>
-> > >
-> > >  #include <asm/setup.h>  /* for COMMAND_LINE_SIZE */
-> > >  #include <asm/page.h>
-> > > @@ -1050,6 +1051,18 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
-> > >
-> > >         /* Retrieve command line */
-> > >         p = of_get_flat_dt_prop(node, "bootargs", &l);
-> > > +
-> > > +#if defined(CONFIG_GENERIC_CMDLINE) && defined(CONFIG_GENERIC_CMDLINE_OF)
-> > 
-> > Moving in the wrong direction... This code already has too many
-> > #ifdef's. I like Christophe's version as it gets rid of all the code
-> > here.
->  
-> It's temporary .. Notice CONFIG_GENERIC_CMDLINE_OF is only used on PowerPC. I
-> experienced doubling on arm64 when this was used (i.e. the append and prepend
-> was added twice).
+Am 2021-04-07 00:09, schrieb Michael Walle:
+[..]
+> diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
+> index bc0a27de69d4..2d5d5e59aea5 100644
+> --- a/drivers/of/of_net.c
+> +++ b/drivers/of/of_net.c
+> @@ -45,42 +45,35 @@ int of_get_phy_mode(struct device_node *np,
+> phy_interface_t *interface)
+>  }
+>  EXPORT_SYMBOL_GPL(of_get_phy_mode);
 > 
-> I don't think there are any other users which can't be moved outside the device
-> tree code, but powerpc uses this function three times during boot up plus the
-> prom_init user. It's possible to use the generic command line in all four places,
-> but it become space inefficient.
+> -static const void *of_get_mac_addr(struct device_node *np, const char 
+> *name)
+> +static int of_get_mac_addr(struct device_node *np, const char *name, 
+> u8 *addr)
+>  {
+>  	struct property *pp = of_find_property(np, name, NULL);
+> 
+> -	if (pp && pp->length == ETH_ALEN && is_valid_ether_addr(pp->value))
+> -		return pp->value;
+> -	return NULL;
+> +	if (pp && pp->length == ETH_ALEN && is_valid_ether_addr(pp->value)) {
+> +		ether_addr_copy(addr, pp->value);
 
-What's the 3rd use? I count kaslr code and in 
-early_init_dt_scan_chosen_ppc. Do we need to build the command line for 
-kaslr seed? Getting any build time value from the kernel is pointless.
+Mh, I guess this should rather be memcpy(addr, pp->value, ETH_ALEN) 
+because
+ether_addr_copy() needs 2 byte aligned source and destination buffers.
 
-Rob
+-michael
