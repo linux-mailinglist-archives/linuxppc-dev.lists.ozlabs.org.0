@@ -1,60 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E710357557
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 21:59:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5BE3575A0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 22:13:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFwG729sdz3c2P
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 05:59:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFwZH3wnFz3bvb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 06:13:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YR5Q8XvU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=dKW4tyxb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a;
+ helo=mail-pf1-x42a.google.com; envelope-from=shorne@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=YR5Q8XvU; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=dKW4tyxb; dkim-atps=neutral
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
+ [IPv6:2607:f8b0:4864:20::42a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFwFk6fDsz3bxF
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 05:59:06 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4FFFC6120E
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 19:59:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1617825544;
- bh=k6+WEJUU1OZWMiE9a2UexjzaTvG2oDVuhVsZiW3o6Io=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=YR5Q8XvUn6JVjPjj1BNXaM7FVf4Br7ASmk3pta0uakqmw/dDkxpszknJ8UmJ+wudk
- jtnQron+y3IvEv16sN69Mw5kfPI4AXsQxbLEhpVIJ6VbHzqWg73POVIX0llWl/7km5
- C5FlmXQ8rbN0i9Vxa05RsKNzt1lJWE8dA81jJSsw16lZHdla3+ss/EqA9w0Ov7mUiT
- SZ0MwgFHNkbJDQu8pDeuh77/V9ufcutwVYnuuQr0bHtLNkPC2i6qmFBiokoLyQfl0K
- k42/vc95fEetqcc8H3yFXpNT13wDn+r1F/QiBRtpvqLPYIPxc013iptHec/3Sea2F4
- 6YswdagWPNA+Q==
-Received: by mail-ed1-f52.google.com with SMTP id 18so4820399edx.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Apr 2021 12:59:04 -0700 (PDT)
-X-Gm-Message-State: AOAM530zuqDYCoZNey3CDDRy+kIUa5UWnL+T5JE5CJmwFCB1Qe9Amp3A
- tmn0aA5P5JPtI6ogeFgstzkCIWiH+1G7u38Hug==
-X-Google-Smtp-Source: ABdhPJwY9GthufRHILDLTfwGTZSKr9CrrPh9cGzDOgcphaTRdGgVabGLGr25oYBpzfJepxjo3FsXe2sqmNbljCw070k=
-X-Received: by 2002:a05:6402:1b1c:: with SMTP id
- by28mr6528263edb.62.1617825542888; 
- Wed, 07 Apr 2021 12:59:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFwYs0NMzz2xg3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 06:13:04 +1000 (AEST)
+Received: by mail-pf1-x42a.google.com with SMTP id g15so143893pfq.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Apr 2021 13:13:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=dwldfrHGB7cvjNDHe6gxp+OQ0DSzEe0anuIQnT5lIYc=;
+ b=dKW4tyxbGX73iHxH5Iha60EvcjCvKI+5hrpqwPPcbjELczGr/kzgfdsnLJJsWtOJbP
+ ubOwwaB3iZb/RBJ+1QPkWGQAjFPjPBqh2IboNE1nH7H1pZZqyeSqspXh1PeeRkVlyVq3
+ D+oq7t34NOHRn9OQqu4dUPDeY2QjjFesL1gh9WM+knJrz1i5ZQMIlvyZpNZOQKqZbOKS
+ 4CB8O8zOE9mVX0eyokxf96eDPzy8oTdAAN584lU799CDSvkBRtjLRtC/rvSTel9pIKWP
+ gshTMF9nTcU8N6w8UNgn+aG83qEZcXRIQj51bqqxl3MvzOMunlFLxakjAhVMSVBe674a
+ jRAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=dwldfrHGB7cvjNDHe6gxp+OQ0DSzEe0anuIQnT5lIYc=;
+ b=Qy+wrY7/vex2HCa6WTHxQx5AOva2Nblrc9CNInyLFdHVcFhoxABQNKYFLVYsWN42G7
+ P6G41TQA+WRrzqjoteeUCOuGiOZeqlp0GkYjoqpok8bZxnuQHFMEfbYYV6/AMJT/cpyq
+ 0qrFuvc83MeoXE7hHV01gaRyxkI3O6U2QB3eqOkEvAPSeZiA1wFQwjywqmNngXlzG93i
+ EC6EXHrG1qwFaRoQhfJBbqB5gK7waQSKFoVQbupbtsFugKL44yo2aXQcMGjEazStbmTP
+ T1w3YV9TQOojfJ1d2HQiSuq475+SeGQf2WvKi/qlITuve5GEHe26GRNX6FhBiwvIbIPj
+ CgDQ==
+X-Gm-Message-State: AOAM532Ys9SeT9gNYnipsEXAmRbvCzGn4sU18hAM0Da4dLvBVU5nzHRn
+ 9HXlnOlic3V+TOUZ7uBmnAM=
+X-Google-Smtp-Source: ABdhPJx1TzjDHM8SCpdazwwikZp8MB63xmALxAEXVlHdCjBoBVsMzPPllM88y4Piph/rcIdj06SGPw==
+X-Received: by 2002:a65:610f:: with SMTP id z15mr4931593pgu.360.1617826380553; 
+ Wed, 07 Apr 2021 13:13:00 -0700 (PDT)
+Received: from localhost (g191.124-44-145.ppp.wakwak.ne.jp. [124.44.145.191])
+ by smtp.gmail.com with ESMTPSA id
+ m1sm5878421pjk.24.2021.04.07.13.12.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Apr 2021 13:12:59 -0700 (PDT)
+Date: Thu, 8 Apr 2021 05:12:58 +0900
+From: Stafford Horne <shorne@gmail.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [OpenRISC] [PATCH v6 1/9] locking/qspinlock: Add
+ ARCH_USE_QUEUED_SPINLOCKS_XCHG32
+Message-ID: <20210407201258.GH3288043@lianli.shorne-pla.net>
+References: <1617201040-83905-1-git-send-email-guoren@kernel.org>
+ <1617201040-83905-2-git-send-email-guoren@kernel.org>
+ <YGyRrBjomDCPOBUd@boqun-archlinux>
+ <20210406235208.GG3288043@lianli.shorne-pla.net>
+ <YG1/xRgWlLHD4j/8@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-References: <20210403020423.85278-1-syl.loop@gmail.com>
- <87y2due3mt.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87y2due3mt.fsf@mpe.ellerman.id.au>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Wed, 7 Apr 2021 14:58:50 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+CKi6+FKO=-VHC538mFMsvpa785sp2Qv86iCTv=1PC1w@mail.gmail.com>
-Message-ID: <CAL_Jsq+CKi6+FKO=-VHC538mFMsvpa785sp2Qv86iCTv=1PC1w@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/dts: fix not include DTC_FLAGS
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YG1/xRgWlLHD4j/8@hirez.programming.kicks-ass.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,50 +85,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Youlin Song <syl.loop@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Guo Ren <guoren@linux.alibaba.com>, Arnd Bergmann <arnd@arndb.de>,
+ Anup Patel <anup@brainfault.org>, Boqun Feng <boqun.feng@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-csky@vger.kernel.org, openrisc@lists.librecores.org, guoren@kernel.org,
+ sparclinux@vger.kernel.org, Waiman Long <longman@redhat.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 7, 2021 at 6:27 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+On Wed, Apr 07, 2021 at 11:47:49AM +0200, Peter Zijlstra wrote:
+> On Wed, Apr 07, 2021 at 08:52:08AM +0900, Stafford Horne wrote:
+> > Why doesn't RISC-V add the xchg16 emulation code similar to OpenRISC?  For
+> > OpenRISC we added xchg16 and xchg8 emulation code to enable qspinlocks.  So
+> > one thought is with CONFIG_ARCH_USE_QUEUED_SPINLOCKS_XCHG32=y, can we remove our
+> > xchg16/xchg8 emulation code?
+> 
+> CONFIG_ARCH_USE_QUEUED_SPINLOCKS_XCHG32 is guaranteed crap.
 >
-> Youlin Song <syl.loop@gmail.com> writes:
-> > I wanted to build the fsl dts in my machine and found that
-> > the dtb have not extra space,so uboot will cause about
-> > FDT_ERR_NOSPACE issue.
+> All the architectures that have wanted it are RISC style LL/SC archs,
+> and for them a cmpxchg loop is a daft thing to do, since it reduces the
+> chance of it behaving sanely.
+> 
+> Why would we provide something that's known to be suboptimal? If an
+> architecture chooses to not care about determinism and or fwd progress,
+> then that's their choice. But not one, I feel, we should encourage.
 
-How do we not have issues with arm and arm64 boards which don't have
-padding? Or what took so long to notice on powerpc?
+Thanks, this is the response I was hoping my comment would provoke.
 
-> >
-> > Signed-off-by: Youlin Song <syl.loop@gmail.com>
-> > ---
-> >  arch/powerpc/boot/dts/Makefile | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/arch/powerpc/boot/dts/Makefile b/arch/powerpc/boot/dts/Makefile
-> > index fb335d05aae8..c21165c0cd76 100644
-> > --- a/arch/powerpc/boot/dts/Makefile
-> > +++ b/arch/powerpc/boot/dts/Makefile
-> > @@ -2,5 +2,6 @@
-> >
-> >  subdir-y += fsl
-> >
-> > +DTC_FLAGS   ?= -p 1024
-> >  dtstree              := $(srctree)/$(src)
-> >  dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(wildcard $(dtstree)/*.dts))
->
-> I guess that was missed in 1acf1cf8638a ("powerpc: build .dtb files in dts directory").
->
-> Which I think means the assignment to DTC_FLAGS in
-> arch/powerpc/boot/Makefile is not needed anymore.
->
-> Can you send a v2 removing that assignment and explaining that's what
-> happened?
+So not enabling CONFIG_ARCH_USE_QUEUED_SPINLOCKS_XCHG32 for architectures
+unless they really want it should be the way.
 
-I've wanted to make this common, but I guess that's a separate change.
-
-Rob
+-Stafford
