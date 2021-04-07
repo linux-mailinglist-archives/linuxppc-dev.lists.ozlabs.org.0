@@ -2,49 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8710D35633F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 07:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B4935637A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 07:50:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFY5D2rYWz3bry
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 15:35:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFYQV2GtQz3brc
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 15:50:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=C4jtnY4z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V7PoZGkq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=C4jtnY4z; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=V7PoZGkq; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFY4m13Cbz2yZ8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 15:35:01 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5097B613CE;
- Wed,  7 Apr 2021 05:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1617773698;
- bh=0om60PPyB8AjfB1ITSmbocahrr+Wf0G845qHknWIX6Y=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=C4jtnY4z2HLxWTcOOcTN6W4MiZyMAdia1o5HKoroUK2ACGE4CbbU/79glOZ/1jUVI
- rnXUZdQAB42ebhhn1gXsAA/XlkBJLoZ+P2Pe3X/2SqXzH8lyX/jzgJkpk2HKsUjWrZ
- 1bpI49yIdPP34X/f8lbP9Anjpv6MvDiZuBBfX8o0=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Masahiro Yamada <masahiroy@kernel.org>,
- Michal Marek <michal.lkml@markovi.net>
-Subject: [PATCH 16/20] kbuild: powerpc: use common install script
-Date: Wed,  7 Apr 2021 07:34:15 +0200
-Message-Id: <20210407053419.449796-17-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210407053419.449796-1-gregkh@linuxfoundation.org>
-References: <20210407053419.449796-1-gregkh@linuxfoundation.org>
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFYPv6nnpz2yxn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 15:49:55 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 1375XLxn111831; Wed, 7 Apr 2021 01:49:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=voUXV55wZ5rGFLWGS5aoysNdLTjS7e66EBBAqYPFbRs=;
+ b=V7PoZGkq9HYXPLIDtLtM0EQQ+soqxOpvaN6puhLsdUKIhMJc5Ao65fKRF3RX+KWqurH7
+ 3xb5FO67gSfrEx8VIJGc4rUu4Lj/3F1LPSxmPELp8yQVWk3wSl/XTgWHCfnl8Ptz8Lmk
+ QkLxric9mCsDdUWApx/4ot87lwQ8CGmutfv5nOVZNZJX7XrQVJ/k5HglN3kUlsk9+n8v
+ cbUqbH80XNVFzsEZc4nbpNrmmvv3SP67VMD7Os9S50eNDvqaSZZX6P9JfL6LDZNedC1T
+ /LOeLpQ5TVZbb4qAgB1Xhi4xupB1L8gTu/1Sz9EInveupafMSlw4HFRdVrJD8abkmJqy ew== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37rvn05qrg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Apr 2021 01:49:48 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1375lA9C020577;
+ Wed, 7 Apr 2021 05:49:46 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 37rvbqgchs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Apr 2021 05:49:45 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1375nhUF14877058
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 7 Apr 2021 05:49:43 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 74449A4051;
+ Wed,  7 Apr 2021 05:49:43 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6C624A4057;
+ Wed,  7 Apr 2021 05:49:41 +0000 (GMT)
+Received: from bangoria.ibmuc.com (unknown [9.199.44.100])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  7 Apr 2021 05:49:41 +0000 (GMT)
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v2 0/4] powerpc/selftests: Add Power10 2nd DAWR selftests
+Date: Wed,  7 Apr 2021 11:19:34 +0530
+Message-Id: <20210407054938.312857-1-ravi.bangoria@linux.ibm.com>
+X-Mailer: git-send-email 2.30.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: upfUNYGd_SVitN3ncxplpWkmBqcyGpLm
+X-Proofpoint-ORIG-GUID: upfUNYGd_SVitN3ncxplpWkmBqcyGpLm
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
+ definitions=2021-04-07_03:2021-04-06,
+ 2021-04-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0
+ mlxlogscore=999 bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
+ spamscore=0 mlxscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104070039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,143 +97,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: ravi.bangoria@linux.ibm.com, mikey@neuling.org, shuah@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The common scripts/install.sh script will now work for powerpc, all that
-is needed is to add it to the list of arches that do not put the version
-number in the installed file name.
+Add selftests for 2nd DAWR supported by Power10.
 
-After the kernel is installed, powerpc also likes to install a few
-random files, so provide the ability to do that as well.
+v1: https://lore.kernel.org/r/20200723102058.312282-1-ravi.bangoria@linux.ibm.com
+v1->v2:
+ - Kvm patches are already upstream
+ - Rebased selftests to powerpc/next
 
-With that we can remove the powerpc-only version of the install script.
+Ravi Bangoria (4):
+  powerpc/selftests/ptrace-hwbreak: Add testcases for 2nd DAWR
+  powerpc/selftests/perf-hwbreak: Coalesce event creation code
+  powerpc/selftests/perf-hwbreak: Add testcases for 2nd DAWR
+  powerpc/selftests: Add selftest to test concurrent perf/ptrace events
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/powerpc/boot/Makefile   |  4 +--
- arch/powerpc/boot/install.sh | 55 ------------------------------------
- scripts/install.sh           | 14 ++++++++-
- 3 files changed, 15 insertions(+), 58 deletions(-)
- delete mode 100644 arch/powerpc/boot/install.sh
+ .../selftests/powerpc/ptrace/.gitignore       |   1 +
+ .../testing/selftests/powerpc/ptrace/Makefile |   2 +-
+ .../selftests/powerpc/ptrace/perf-hwbreak.c   | 646 +++++++++++++++--
+ .../selftests/powerpc/ptrace/ptrace-hwbreak.c |  79 +++
+ .../powerpc/ptrace/ptrace-perf-hwbreak.c      | 659 ++++++++++++++++++
+ 5 files changed, 1345 insertions(+), 42 deletions(-)
+ create mode 100644 tools/testing/selftests/powerpc/ptrace/ptrace-perf-hwbreak.c
 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 2b8da923ceca..bbfcbd33e0b7 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -442,11 +442,11 @@ $(obj)/zImage.initrd:	$(addprefix $(obj)/, $(initrd-y))
- 
- # Only install the vmlinux
- install: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
--	sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)"
-+	sh -x $(srctree)/scripts/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)"
- 
- # Install the vmlinux and other built boot targets.
- zInstall: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
--	sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)" $^
-+	sh -x $(srctree)/scripts/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)" $^
- 
- PHONY += install zInstall
- 
-diff --git a/arch/powerpc/boot/install.sh b/arch/powerpc/boot/install.sh
-deleted file mode 100644
-index b6a256bc96ee..000000000000
---- a/arch/powerpc/boot/install.sh
-+++ /dev/null
-@@ -1,55 +0,0 @@
--#!/bin/sh
--#
--# This file is subject to the terms and conditions of the GNU General Public
--# License.  See the file "COPYING" in the main directory of this archive
--# for more details.
--#
--# Copyright (C) 1995 by Linus Torvalds
--#
--# Blatantly stolen from in arch/i386/boot/install.sh by Dave Hansen 
--#
--# "make install" script for ppc64 architecture
--#
--# Arguments:
--#   $1 - kernel version
--#   $2 - kernel image file
--#   $3 - kernel map file
--#   $4 - default install path (blank if root directory)
--#   $5 and more - kernel boot files; zImage*, uImage, cuImage.*, etc.
--#
--
--# Bail with error code if anything goes wrong
--set -e
--
--# User may have a custom install script
--
--if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
--if [ -x /sbin/${INSTALLKERNEL} ]; then exec /sbin/${INSTALLKERNEL} "$@"; fi
--
--# Default install
--
--# this should work for both the pSeries zImage and the iSeries vmlinux.sm
--image_name=`basename $2`
--
--if [ -f $4/$image_name ]; then
--	mv $4/$image_name $4/$image_name.old
--fi
--
--if [ -f $4/System.map ]; then
--	mv $4/System.map $4/System.old
--fi
--
--cat $2 > $4/$image_name
--cp $3 $4/System.map
--
--# Copy all the bootable image files
--path=$4
--shift 4
--while [ $# -ne 0 ]; do
--	image_name=`basename $1`
--	if [ -f $path/$image_name ]; then
--		mv $path/$image_name $path/$image_name.old
--	fi
--	cat $1 > $path/$image_name
--	shift
--done;
-diff --git a/scripts/install.sh b/scripts/install.sh
-index e0ffb95737d4..67c0a5f74af2 100644
---- a/scripts/install.sh
-+++ b/scripts/install.sh
-@@ -67,7 +67,7 @@ fi
- # Some architectures name their files based on version number, and
- # others do not.  Call out the ones that do not to make it obvious.
- case "${ARCH}" in
--	ia64 | m68k | nios2 | x86)
-+	ia64 | m68k | nios2 | powerpc | x86)
- 		version=""
- 		;;
- 	*)
-@@ -93,6 +93,18 @@ case "${ARCH}" in
- 			/usr/sbin/elilo
- 		fi
- 		;;
-+	powerpc)
-+		# powerpc installation can list other boot targets after the
-+		# install path that should be copied to the correct location
-+		path=$4
-+		shift 4
-+		while [ $# -ne 0 ]; do
-+			image_name=$(basename "$1")
-+			install "$1" "$path"/"$image_name"
-+			shift
-+		done;
-+		sync
-+		;;
- 	x86)
- 		if [ -x /sbin/lilo ]; then
- 			/sbin/lilo
 -- 
-2.31.1
+2.27.0
 
