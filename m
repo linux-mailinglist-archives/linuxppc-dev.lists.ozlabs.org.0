@@ -1,96 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0433562CA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 06:59:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8710D35633F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 07:35:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFXJ51xSCz3bry
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 14:59:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFY5D2rYWz3bry
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 15:35:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Pba1jUSj;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=C4jtnY4z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Pba1jUSj; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=C4jtnY4z; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFXHf01GYz2yZ3
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 14:59:25 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1374XO9U179864; Wed, 7 Apr 2021 00:59:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=bC3RazOxXaJbYUw1vL0KTDaB8oxaNHeDRXR4pDwnoEU=;
- b=Pba1jUSjMv9Z23Zp4h19yGssui6gvvF0VXfPim9HKHY48ii2LEq49f8bKQXlWPUyi+s8
- 7VvSPCJV7ytZbqWERVY2n0Dqolov0gK7wof3r6CksZSgL144tNeFKp+mKX2vfk1IYCoC
- sgK88DXUn35XrfQXQSyrnwbaErs8thjwKsXjIsG93RlvTt2ZkWwACGfrYttfQOpQ13Rs
- /JsbaGKb9hBq5SQet0svaQt4WfqaXTZFJf+NPc7eOUbaUJgmaHJcVyjstmmJXuIh+oD8
- 1AyK/Q9dyT3UJtF064OwFQLCjZWPxJWE8dWioSDE0S5Ngd130m8W9v5MjsxI6Z4eiDwf Ww== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37rw074hhb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Apr 2021 00:59:14 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1374aLbh192285;
- Wed, 7 Apr 2021 00:59:14 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37rw074hgt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Apr 2021 00:59:13 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1374w77H016449;
- Wed, 7 Apr 2021 04:59:12 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04fra.de.ibm.com with ESMTP id 37rvc5g602-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Apr 2021 04:59:12 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1374x9FO41026040
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 7 Apr 2021 04:59:09 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A95642041;
- Wed,  7 Apr 2021 04:59:09 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 64C3442045;
- Wed,  7 Apr 2021 04:59:07 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.199.50.157])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  7 Apr 2021 04:59:07 +0000 (GMT)
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/mce: save ignore_event flag unconditionally for UE
-Date: Wed,  7 Apr 2021 10:28:16 +0530
-Message-Id: <20210407045816.352276-1-ganeshgr@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFY4m13Cbz2yZ8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 15:35:01 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5097B613CE;
+ Wed,  7 Apr 2021 05:34:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1617773698;
+ bh=0om60PPyB8AjfB1ITSmbocahrr+Wf0G845qHknWIX6Y=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=C4jtnY4z2HLxWTcOOcTN6W4MiZyMAdia1o5HKoroUK2ACGE4CbbU/79glOZ/1jUVI
+ rnXUZdQAB42ebhhn1gXsAA/XlkBJLoZ+P2Pe3X/2SqXzH8lyX/jzgJkpk2HKsUjWrZ
+ 1bpI49yIdPP34X/f8lbP9Anjpv6MvDiZuBBfX8o0=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Masahiro Yamada <masahiroy@kernel.org>,
+ Michal Marek <michal.lkml@markovi.net>
+Subject: [PATCH 16/20] kbuild: powerpc: use common install script
+Date: Wed,  7 Apr 2021 07:34:15 +0200
+Message-Id: <20210407053419.449796-17-gregkh@linuxfoundation.org>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210407053419.449796-1-gregkh@linuxfoundation.org>
+References: <20210407053419.449796-1-gregkh@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: yoSYCDXrT7UZ-JRX7dYp2b4gCXf_2093
-X-Proofpoint-GUID: G99hqtbY3Ie7T7O6v7qS5JbKMH7OitQq
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.761
- definitions=2021-04-07_03:2021-04-06,
- 2021-04-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 priorityscore=1501
- bulkscore=0 malwarescore=0 clxscore=1011 impostorscore=0 mlxlogscore=999
- mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104070030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,60 +56,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com,
- npiggin@gmail.com
+Cc: linux-arch@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When we hit an UE while using machine check safe copy routines,
-ignore_event flag is set and the event is ignored by mce handler,
-And the flag is also saved for defered handling and printing of
-mce event information, But as of now saving of this flag is done
-on checking if the effective address is provided or physical address
-is calculated, which is not right.
+The common scripts/install.sh script will now work for powerpc, all that
+is needed is to add it to the list of arches that do not put the version
+number in the installed file name.
 
-Save ignore_event flag regardless of whether the effective address is
-provided or physical address is calculated.
+After the kernel is installed, powerpc also likes to install a few
+random files, so provide the ability to do that as well.
 
-Without this change following log is seen, when the event is to be
-ignored.
+With that we can remove the powerpc-only version of the install script.
 
-[  512.971365] MCE: CPU1: machine check (Severe)  UE Load/Store [Recovered]
-[  512.971509] MCE: CPU1: NIP: [c0000000000b67c0] memcpy+0x40/0x90
-[  512.971655] MCE: CPU1: Initiator CPU
-[  512.971739] MCE: CPU1: Unknown
-[  512.972209] MCE: CPU1: machine check (Severe)  UE Load/Store [Recovered]
-[  512.972334] MCE: CPU1: NIP: [c0000000000b6808] memcpy+0x88/0x90
-[  512.972456] MCE: CPU1: Initiator CPU
-[  512.972534] MCE: CPU1: Unknown
-
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/mce.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/boot/Makefile   |  4 +--
+ arch/powerpc/boot/install.sh | 55 ------------------------------------
+ scripts/install.sh           | 14 ++++++++-
+ 3 files changed, 15 insertions(+), 58 deletions(-)
+ delete mode 100644 arch/powerpc/boot/install.sh
 
-diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-index 11f0cae086ed..db9363e131ce 100644
---- a/arch/powerpc/kernel/mce.c
-+++ b/arch/powerpc/kernel/mce.c
-@@ -131,6 +131,8 @@ void save_mce_event(struct pt_regs *regs, long handled,
- 	 * Populate the mce error_type and type-specific error_type.
- 	 */
- 	mce_set_error_info(mce, mce_err);
-+	if (mce->error_type == MCE_ERROR_TYPE_UE)
-+		mce->u.ue_error.ignore_event = mce_err->ignore_event;
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index 2b8da923ceca..bbfcbd33e0b7 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -442,11 +442,11 @@ $(obj)/zImage.initrd:	$(addprefix $(obj)/, $(initrd-y))
  
- 	if (!addr)
- 		return;
-@@ -159,7 +161,6 @@ void save_mce_event(struct pt_regs *regs, long handled,
- 		if (phys_addr != ULONG_MAX) {
- 			mce->u.ue_error.physical_address_provided = true;
- 			mce->u.ue_error.physical_address = phys_addr;
--			mce->u.ue_error.ignore_event = mce_err->ignore_event;
- 			machine_check_ue_event(mce);
- 		}
- 	}
+ # Only install the vmlinux
+ install: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
+-	sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)"
++	sh -x $(srctree)/scripts/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)"
+ 
+ # Install the vmlinux and other built boot targets.
+ zInstall: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
+-	sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)" $^
++	sh -x $(srctree)/scripts/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)" $^
+ 
+ PHONY += install zInstall
+ 
+diff --git a/arch/powerpc/boot/install.sh b/arch/powerpc/boot/install.sh
+deleted file mode 100644
+index b6a256bc96ee..000000000000
+--- a/arch/powerpc/boot/install.sh
++++ /dev/null
+@@ -1,55 +0,0 @@
+-#!/bin/sh
+-#
+-# This file is subject to the terms and conditions of the GNU General Public
+-# License.  See the file "COPYING" in the main directory of this archive
+-# for more details.
+-#
+-# Copyright (C) 1995 by Linus Torvalds
+-#
+-# Blatantly stolen from in arch/i386/boot/install.sh by Dave Hansen 
+-#
+-# "make install" script for ppc64 architecture
+-#
+-# Arguments:
+-#   $1 - kernel version
+-#   $2 - kernel image file
+-#   $3 - kernel map file
+-#   $4 - default install path (blank if root directory)
+-#   $5 and more - kernel boot files; zImage*, uImage, cuImage.*, etc.
+-#
+-
+-# Bail with error code if anything goes wrong
+-set -e
+-
+-# User may have a custom install script
+-
+-if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
+-if [ -x /sbin/${INSTALLKERNEL} ]; then exec /sbin/${INSTALLKERNEL} "$@"; fi
+-
+-# Default install
+-
+-# this should work for both the pSeries zImage and the iSeries vmlinux.sm
+-image_name=`basename $2`
+-
+-if [ -f $4/$image_name ]; then
+-	mv $4/$image_name $4/$image_name.old
+-fi
+-
+-if [ -f $4/System.map ]; then
+-	mv $4/System.map $4/System.old
+-fi
+-
+-cat $2 > $4/$image_name
+-cp $3 $4/System.map
+-
+-# Copy all the bootable image files
+-path=$4
+-shift 4
+-while [ $# -ne 0 ]; do
+-	image_name=`basename $1`
+-	if [ -f $path/$image_name ]; then
+-		mv $path/$image_name $path/$image_name.old
+-	fi
+-	cat $1 > $path/$image_name
+-	shift
+-done;
+diff --git a/scripts/install.sh b/scripts/install.sh
+index e0ffb95737d4..67c0a5f74af2 100644
+--- a/scripts/install.sh
++++ b/scripts/install.sh
+@@ -67,7 +67,7 @@ fi
+ # Some architectures name their files based on version number, and
+ # others do not.  Call out the ones that do not to make it obvious.
+ case "${ARCH}" in
+-	ia64 | m68k | nios2 | x86)
++	ia64 | m68k | nios2 | powerpc | x86)
+ 		version=""
+ 		;;
+ 	*)
+@@ -93,6 +93,18 @@ case "${ARCH}" in
+ 			/usr/sbin/elilo
+ 		fi
+ 		;;
++	powerpc)
++		# powerpc installation can list other boot targets after the
++		# install path that should be copied to the correct location
++		path=$4
++		shift 4
++		while [ $# -ne 0 ]; do
++			image_name=$(basename "$1")
++			install "$1" "$path"/"$image_name"
++			shift
++		done;
++		sync
++		;;
+ 	x86)
+ 		if [ -x /sbin/lilo ]; then
+ 			/sbin/lilo
 -- 
-2.26.2
+2.31.1
 
