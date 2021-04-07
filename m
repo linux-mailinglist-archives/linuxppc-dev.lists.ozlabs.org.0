@@ -2,75 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B213565AA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 09:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BEE35672E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 10:47:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FFbzC1sGVz30C3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 17:45:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FFdLd2Jvqz3bsP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Apr 2021 18:47:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fb/P4hkT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=UDQs+QKz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
+ helo=mail-pf1-x433.google.com; envelope-from=andy.shevchenko@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=fb/P4hkT; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
+ header.s=20161025 header.b=UDQs+QKz; dkim-atps=neutral
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
+ [IPv6:2607:f8b0:4864:20::433])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FFbyj0gxyz300C
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 17:45:00 +1000 (AEST)
-Received: by mail-pg1-x532.google.com with SMTP id w10so6900769pgh.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Apr 2021 00:44:59 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FFdL92Qggz2xfS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Apr 2021 18:46:56 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id c17so12393253pfn.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Apr 2021 01:46:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=5Kphp8J3Yhi8mWW3z/UUIbkkrK9S0cYnMnP/5h5hC9o=;
- b=fb/P4hkTtXrWm0Zy01LAxM9nUEmCJ/7loqvlzxKdKW8aqNO/dwJ6lQSmyrZ1BGQdub
- 1KhDjiBJRQjo7yEe8CaZl3Ao2VeZFvzxq9uJtrwuPeMTZW+GSLjyB0OmMhJenyxZ8OXw
- 9Nw0AbP6DjjA+QwhYVbSLuhMWdrBkZ3UufXisnfkkmG+nXjD+2JauLvGMAFrrGfF5jSE
- 9WkRqr6heeqWzOdRbPcPXkoAH19P7++Vj7RgWn+MwS66MnXQ/NfIKoOSIRzNHOJ2AP7f
- XWLLp4aBZhPPCqNe1rrRUExTUfuKU6vMNDMukOkzxJ0idzyJLT3Sh9UyADqgg/EPRvy8
- yrkQ==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=NZttKhZHU6qaVsRmUnPJpvZt0Hi/pFu56dbeZNbDXtU=;
+ b=UDQs+QKztlc50Xzz9tDRt+AdeuvS//lqLAuKnWXU/KpkdRIyYns185alJd77pimmOQ
+ Rm+SXfRq7Nbp44iFj09DlIBP8pB9Q/wr1Jktw0TsONZCLU6cUjKoAcBW9MELgEDcm9Fe
+ pjdoHv/Z1K75roAdGxxxm60OLnxr6B3j/huNdwRUOBcR/NfWwdJ0T2Ry1GSBSm5M8gQG
+ cPX3YXLL7dtqUWW4/37Lsyk3k7L76r1KootJDPbDvQIsbhQfbSpG/LRrVUU53kFzKElU
+ mZPAf+0lfHR42X+g8hHRO6PYug2sgsVVq7CJaXGQetXBqPCEBbWZWj0if+0XEWIBGBV8
+ f3cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=5Kphp8J3Yhi8mWW3z/UUIbkkrK9S0cYnMnP/5h5hC9o=;
- b=kYgFkXE//RafozZXkpALuBy3tBO+wUGTlD+TYk65yRu51ZR4aMzLjHmdfBxJHSdAc6
- 3iUA6E4TEuA6CCYUUDXB/tSC+CLkzzowxxe2veFGj/bwHCHT3lruvka1OeAKBezHqNxM
- HYBVvGGrPs9DPJDxt815CSTm67UfiJPnzboBKFmpDC4z8H8DN/QjCt9t/v78BAKnMWnH
- vrgUOm9gMU+NqiBo5mb95ONBhwUNHCCYn+hu6mP354QrB5fP7fID5tTIQ1TSZigYluSI
- RPEOxeGuCF/PiLCT7pEKXwAekwwBi0in0m42gSRVlK+dqitSIW82s35XdImevZyMgO7p
- B7Nw==
-X-Gm-Message-State: AOAM53284uKuXZLIkSrX0u9tNyi3xqr7c5bvuNesRlaCXyA73khhfWHY
- zXAB+/u4npiiTlP3Rqm7LK8=
-X-Google-Smtp-Source: ABdhPJy9egQT77T6TcXp2e569RzNQaOwCsIksfN/29TRdDDt/tsJeWl0t6x+j99EqaMxnhscFN/HRA==
-X-Received: by 2002:a65:5cc2:: with SMTP id b2mr2060462pgt.280.1617781496843; 
- Wed, 07 Apr 2021 00:44:56 -0700 (PDT)
-Received: from localhost ([144.130.156.129])
- by smtp.gmail.com with ESMTPSA id j3sm20460295pfi.74.2021.04.07.00.44.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Apr 2021 00:44:56 -0700 (PDT)
-Date: Wed, 07 Apr 2021 17:44:51 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 38/48] KVM: PPC: Book3S HV: Remove support for
- dependent threads mode on P9
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <20210405011948.675354-1-npiggin@gmail.com>
- <20210405011948.675354-39-npiggin@gmail.com>
- <YG1WcjXTbGtsqHgY@thinks.paulus.ozlabs.org>
-In-Reply-To: <YG1WcjXTbGtsqHgY@thinks.paulus.ozlabs.org>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=NZttKhZHU6qaVsRmUnPJpvZt0Hi/pFu56dbeZNbDXtU=;
+ b=kJEgWDjZF+JydiQlL1VEfNIsLPzHjvTXw9/dGS6xPxUOJdDpZTzXh/IIt7KpYeRPmg
+ 18N3Deu0pzEwIgX6XOStpwi+WX0YubFWPEP75mbEpAWRNXZHRSrhayRdnZY1vzgLnvc1
+ KQENZ3vs3MY6O5Klj4eajE031NXCPr3s62XPccPMYLxKrwhh3o+CTdGbLAc18EZENad3
+ ANdr4ChgnBwkcxrB0cqHNmtTuhaCdTisKPV6wWPU1TGS5C/v0O/Z5dXTdaJIzx9c2IIP
+ yWaibIA+c7AKXmWUfvmPI6Y37tzXc9Mf0Ug10Deiq6MkNyyyAyUQTTx1VowULy8x2B9p
+ hpHg==
+X-Gm-Message-State: AOAM530MKzBsMC39Jjeb+GH+ILzOoUClaIYYJwz8IZ7EGtUB03nyIjzg
+ LsfyJHG3VjwGSoVXgkm/mesvnJ59qJcANOYJRes=
+X-Google-Smtp-Source: ABdhPJyOREH8pH5Yw3mdnLvelVM7fjh26m8MXKE2FHM7iVCNEkdX6M5hYPv1kbA5tQgLzWX2dL38Pt50r64dgAgPi18=
+X-Received: by 2002:a63:3e4b:: with SMTP id l72mr2244351pga.203.1617785213524; 
+ Wed, 07 Apr 2021 01:46:53 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <1617779718.vvrcxrnvnp.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
+ <202104061143.E11D2D0@keescook>
+In-Reply-To: <202104061143.E11D2D0@keescook>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 7 Apr 2021 11:46:37 +0300
+Message-ID: <CAHp75Ve+11u=dtNTO8BCohOJHGWSMJtb1nGCOrNde7bXaD4ehA@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] kernel.h: Split out panic and oops helpers
+To: Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,40 +74,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: Corey Minyard <cminyard@mvista.com>,
+ Linux on Hyper-V List <linux-hyperv@vger.kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ linux-remoteproc@vger.kernel.org, Michael Kelley <mikelley@microsoft.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Joel Fernandes <joel@joelfernandes.org>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Linux-Arch <linux-arch@vger.kernel.org>, Wei Liu <wei.liu@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Stephen Hemminger <sthemmin@microsoft.com>, Corey Minyard <minyard@acm.org>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Iurii Zaikin <yzaikin@google.com>,
+ Ohad Ben-Cohen <ohad@wizery.com>, Joerg Roedel <jroedel@suse.de>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+ Josh Triplett <josh@joshtriplett.org>,
+ "Steven Rostedt \(VMware\)" <rostedt@goodmis.org>, rcu@vger.kernel.org,
+ Borislav Petkov <bp@alien8.de>, openipmi-developer@lists.sourceforge.net,
+ Bjorn Andersson <bjorn.andersson@linaro.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, kexec@lists.infradead.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Eric Biederman <ebiederm@xmission.com>,
+ Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
+ <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Paul Mackerras's message of April 7, 2021 4:51 pm:
-> On Mon, Apr 05, 2021 at 11:19:38AM +1000, Nicholas Piggin wrote:
->> Radix guest support will be removed from the P7/8 path, so disallow
->> dependent threads mode on P9.
->=20
-> Dependent threads mode on P9 was added in order to support the mode
-> where for security reasons you want to restrict the vcpus that run on
-> a core to all be from the same VM, without requiring all guests to run
-> single-threaded.  This was (at least at one stage) thought to be a
-> useful mode for users that are worried about side-channel data leaks.
+On Wed, Apr 7, 2021 at 11:17 AM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Tue, Apr 06, 2021 at 04:31:58PM +0300, Andy Shevchenko wrote:
+> > kernel.h is being used as a dump for all kinds of stuff for a long time.
+> > Here is the attempt to start cleaning it up by splitting out panic and
+> > oops helpers.
+> >
+> > At the same time convert users in header and lib folder to use new header.
+> > Though for time being include new header back to kernel.h to avoid twisted
+> > indirected includes for existing users.
+> >
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>
+> I like it! Do you have a multi-arch CI to do allmodconfig builds to
+> double-check this?
 
-Right.
+Unfortunately no, I rely on plenty of bots that are harvesting mailing lists.
 
->=20
-> Now it's possible that that mode is not practically useful for some
-> reason, or that no-one actually wants it, but its removal should be
-> discussed.  Also, the fact that we are losing that mode should be
-> explicit in the commit message.
+But I will appreciate it if somebody can run this through various build tests.
 
-Let's discuss. Did / does anyone really use it or ask for it that you
-know of? What do other archs do? Compared with using standard options
-that would achive this kind of security (disable SMT, I guess?) how
-much is this worth keeping?
+> Acked-by: Kees Cook <keescook@chromium.org>
 
-It was pretty simple to support when the P8 dependent theads code had
-to support P9 anyway. After this series, now all that code is only for
-that one feature, so it would be pretty nice to be able to remove it.
-How do we reach a point where you'd be okay to remove this and tell=20
-people to just turn off SMT?
+Thanks!
 
-Thanks,
-Nick
+
+-- 
+With Best Regards,
+Andy Shevchenko
