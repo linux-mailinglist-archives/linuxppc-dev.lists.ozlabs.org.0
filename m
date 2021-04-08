@@ -1,95 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14CA357E6D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 10:51:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B7A357EB0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 11:05:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FGFPF1nfnz3btn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 18:51:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FGFhn5cXHz3bsH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 19:05:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TWt5iJjA;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TD9BlQ4K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TWt5iJjA; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=TD9BlQ4K; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FGFNp3Hzsz30CS
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 18:51:22 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1388XWlM090999; Thu, 8 Apr 2021 04:51:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=JPO31YIp7YaE736zm9EsNRTdPMdyNOMvBoyfNGhBkzs=;
- b=TWt5iJjAbs6J5d7WF4ckyg3UXiSzW/4eHGeL7A6M33BzXCspl2oiNmiTjMvYLgxt+X8v
- m7AO6omCoGNEwFRFZsiv9nzptxkfeccbtj46EsCHjRZudqjjopSYr5KIMkwI2X3lhpJS
- x0w6Yi5/liHD4NUPqN3j9t5j7hzR2JfV5AOn6IF7w+d/3lNwN7SVCMqXMnrtPak1+3lc
- VwgkfSG0+/3ixV1dFE3oqDCP0WTxfpMpyffHxt8T+Yvw9HpB4Gak4RCp1lC41cqpya4l
- MGxVO0RhOsW8AxxL27uEY+04QuOY/Svrz/9tTEah2QQjhdpLVVBpAYSDcsAn0bInNgtm Kg== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37rwf18xfs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Apr 2021 04:51:01 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1388hFNh013767;
- Thu, 8 Apr 2021 08:51:00 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma01dal.us.ibm.com with ESMTP id 37rvs1edkj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Apr 2021 08:51:00 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1388oxdM30343536
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 8 Apr 2021 08:50:59 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7ACC8112061;
- Thu,  8 Apr 2021 08:50:59 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 445DE112062;
- Thu,  8 Apr 2021 08:50:57 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.84.91])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  8 Apr 2021 08:50:56 +0000 (GMT)
-X-Mailer: emacs 27.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v1 2/8] powerpc/mem: Remove address argument to
- flush_coherent_icache()
-In-Reply-To: <8cbdcfc4446154bd3323cc68827f114aa9bbc5e7.1617816138.git.christophe.leroy@csgroup.eu>
-References: <311235752428dacbee81728767aacc2bf4222384.1617816138.git.christophe.leroy@csgroup.eu>
- <8cbdcfc4446154bd3323cc68827f114aa9bbc5e7.1617816138.git.christophe.leroy@csgroup.eu>
-Date: Thu, 08 Apr 2021 14:20:53 +0530
-Message-ID: <87k0pdb1n6.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FGFhK1zztz30Bp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 19:04:48 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FGFhD5T9Vz9sTD;
+ Thu,  8 Apr 2021 19:04:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1617872685;
+ bh=jJ23Uv9SuBdoUFRUHJtj+BuKUQNdlwNakAp8NjqmDMU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=TD9BlQ4KYg5syukVLShso+Dh9bk24ifvZOHrJ0B6YtACfSG174R/JDwoh6Rxm665c
+ JNRSlwrK3Z5TEorR3QCdNiV2lb5Kml5xspx976Ht/+dBGBbFFZf2UjvRHc1hleRL9l
+ 9JJgKxGYUu0qQdbP1KCeqLvdNMuFwnJ7zG8RvDRPGKGC5X/8hmlM5nVgHPvTatDJv9
+ K4yLpl6wN3YcBEuhC54UTwTeqfVbx3sigoKsLxUUXcLZ6+ll8H01r23Xq3aqUxhqh2
+ sgOkouqbH7+MtzUaYzHaUouO8bDKwzRFZ9ZEehbWV3w+hyJrA7NvOrz8SpyAL4rTle
+ pFbn17y12WZ6g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, Leonardo Bras
+ <leobras.c@gmail.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, brking@linux.vnet.ibm.com
+Subject: Re: [PATCH v2 1/1] powerpc/iommu: Enable remaining IOMMU Pagesizes
+ present in LoPAR
+In-Reply-To: <8e1ce7e9-415b-92ea-0437-a4331ed3c7f9@ozlabs.ru>
+References: <20210407195613.131140-1-leobras.c@gmail.com>
+ <87im4xe3pk.fsf@mpe.ellerman.id.au>
+ <8e1ce7e9-415b-92ea-0437-a4331ed3c7f9@ozlabs.ru>
+Date: Thu, 08 Apr 2021 19:04:43 +1000
+Message-ID: <87ft01du50.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 2vphEhvteFKzicvgIXlrqy998cGG_z-6
-X-Proofpoint-ORIG-GUID: 2vphEhvteFKzicvgIXlrqy998cGG_z-6
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-08_02:2021-04-08,
- 2021-04-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 bulkscore=0
- malwarescore=0 impostorscore=0 phishscore=0 suspectscore=0
- lowpriorityscore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0
- spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104080058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,48 +71,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-
-> flush_coherent_icache() can use any valid address as mentionned
-> by the comment.
+Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+> On 08/04/2021 15:37, Michael Ellerman wrote:
+>> Leonardo Bras <leobras.c@gmail.com> writes:
+>>> According to LoPAR, ibm,query-pe-dma-window output named "IO Page Sizes"
+>>> will let the OS know all possible pagesizes that can be used for creating a
+>>> new DDW.
+>>>
+>>> Currently Linux will only try using 3 of the 8 available options:
+>>> 4K, 64K and 16M. According to LoPAR, Hypervisor may also offer 32M, 64M,
+>>> 128M, 256M and 16G.
+>> 
+>> Do we know of any hardware & hypervisor combination that will actually
+>> give us bigger pages?
 >
-> Use PAGE_OFFSET as base address. This allows removing the
-> user access stuff.
 >
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/mm/mem.c | 13 +++++--------
->  1 file changed, 5 insertions(+), 8 deletions(-)
+> On P8 16MB host pages and 16MB hardware iommu pages worked.
 >
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index ce6c81ce4362..19f807b87697 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -342,10 +342,9 @@ void free_initmem(void)
->  
->  /**
->   * flush_coherent_icache() - if a CPU has a coherent icache, flush it
-> - * @addr: The base address to use (can be any valid address, the whole cache will be flushed)
->   * Return true if the cache was flushed, false otherwise
->   */
-> -static inline bool flush_coherent_icache(unsigned long addr)
-> +static inline bool flush_coherent_icache(void)
->  {
->  	/*
->  	 * For a snooping icache, we still need a dummy icbi to purge all the
-> @@ -355,9 +354,7 @@ static inline bool flush_coherent_icache(unsigned long addr)
->  	 */
->  	if (cpu_has_feature(CPU_FTR_COHERENT_ICACHE)) {
->  		mb(); /* sync */
-> -		allow_read_from_user((const void __user *)addr, L1_CACHE_BYTES);
-> -		icbi((void *)addr);
-> -		prevent_read_from_user((const void __user *)addr, L1_CACHE_BYTES);
-> +		icbi((void *)PAGE_OFFSET);
->  		mb(); /* sync */
->  		isync();
->  		return true;
+> On P9, VM's 16MB IOMMU pages worked on top of 2MB host pages + 2MB 
+> hardware IOMMU pages.
 
-do we need that followup sync? Usermanual suggest sync; icbi(any address);
-isync sequence. 
+The current code already tries 16MB though.
 
--aneesh
+I'm wondering if we're going to ask for larger sizes that have never
+been tested and possibly expose bugs. But it sounds like this is mainly
+targeted at future platforms.
+
+
+>>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+>>> index 9fc5217f0c8e..6cda1c92597d 100644
+>>> --- a/arch/powerpc/platforms/pseries/iommu.c
+>>> +++ b/arch/powerpc/platforms/pseries/iommu.c
+>>> @@ -53,6 +53,20 @@ enum {
+>>>   	DDW_EXT_QUERY_OUT_SIZE = 2
+>>>   };
+>> 
+>> A comment saying where the values come from would be good.
+>> 
+>>> +#define QUERY_DDW_PGSIZE_4K	0x01
+>>> +#define QUERY_DDW_PGSIZE_64K	0x02
+>>> +#define QUERY_DDW_PGSIZE_16M	0x04
+>>> +#define QUERY_DDW_PGSIZE_32M	0x08
+>>> +#define QUERY_DDW_PGSIZE_64M	0x10
+>>> +#define QUERY_DDW_PGSIZE_128M	0x20
+>>> +#define QUERY_DDW_PGSIZE_256M	0x40
+>>> +#define QUERY_DDW_PGSIZE_16G	0x80
+>> 
+>> I'm not sure the #defines really gain us much vs just putting the
+>> literal values in the array below?
+>
+> Then someone says "uuuuu magic values" :) I do not mind either way. Thanks,
+
+Yeah that's true. But #defining them doesn't make them less magic, if
+you only use them in one place :)
+
+cheers
