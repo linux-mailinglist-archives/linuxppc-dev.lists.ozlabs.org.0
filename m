@@ -1,59 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5F9357AA3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 05:06:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A1F357B26
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 06:18:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FG5l90G4Vz3bVL
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 13:06:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=nrI2O1As;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FG7KV5krmz3bV1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 14:18:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.77;
- helo=conuserg-10.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=nrI2O1As; 
- dkim-atps=neutral
-X-Greylist: delayed 55990 seconds by postgrey-1.36 at boromir;
- Thu, 08 Apr 2021 13:06:22 AEST
-Received: from conuserg-10.nifty.com (conuserg-10.nifty.com [210.131.2.77])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FG5kk4SVFz2yxV
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 13:06:22 +1000 (AEST)
-Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp
- [133.32.232.101]) (authenticated)
- by conuserg-10.nifty.com with ESMTP id 13835cFD004262;
- Thu, 8 Apr 2021 12:05:38 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-10.nifty.com 13835cFD004262
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1617851139;
- bh=GpXRb8Xvp/w1GnVfjTpR+YiZfspPXvv4oGzHOYIKuJ8=;
- h=From:To:Cc:Subject:Date:From;
- b=nrI2O1AshjyLr6gExlk9z/rNuTeLwGOkQIvLp48wdJShXAZLoZjnL8cEhKZAYi/RK
- FTqW+fcg6KHfT8A1Hn0mL3KRSTWXZv/eGo+gE0CvmtmcKO5ajHxpiYY7qULQjFgyBo
- UHurizwjEEk+pPIvlIJddKLdbK9p0zXtZp0fk7kqUfTVrN1VBqaOTevXO9kxqSfsKM
- 55X0GNJEhIeJOdVqarnt9z7ZAiSmQHxaBdKALOhq3ODwuFGnP5nlZnC0aig21NQt6r
- Shg+ATamzJ/QQtyh/M9Q/1ntijQW0WXLHpcaFhS7oWQ7VdaSdGMfWOEs7OiW2VaQZF
- y/+T0oM17y7gw==
-X-Nifty-SrcIP: [133.32.232.101]
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: remove old workaround for GCC < 4.9
-Date: Thu,  8 Apr 2021 12:05:34 +0900
-Message-Id: <20210408030534.196347-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.27.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com;
+ envelope-from=lihuafei1@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FG6Tf3ynpz2yx1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 13:40:02 +1000 (AEST)
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FG6QC0MGLzNtq1;
+ Thu,  8 Apr 2021 11:37:07 +0800 (CST)
+Received: from ubuntu1804.huawei.com (10.67.174.174) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.498.0; Thu, 8 Apr 2021 11:39:46 +0800
+From: Li Huafei <lihuafei1@huawei.com>
+To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+ <npiggin@gmail.com>, <jniethe5@gmail.com>, <alistair@popple.id.au>
+Subject: [PATCH -next] powerpc/security: Make symbol 'stf_barrier' static
+Date: Thu, 8 Apr 2021 11:39:51 +0800
+Message-ID: <20210408033951.28369-1-lihuafei1@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.174]
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Thu, 08 Apr 2021 14:17:47 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,39 +46,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org
+Cc: zhangjinhao2@huawei.com, yangjihong1@huawei.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ lihuafei1@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-According to Documentation/process/changes.rst, the minimum supported
-GCC version is 4.9.
+The sparse tool complains as follows:
 
-This workaround is dead code.
+arch/powerpc/kernel/security.c:253:6: warning:
+ symbol 'stf_barrier' was not declared. Should it be static?
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+This symbol is not used outside of security.c, so this commit marks it
+static.
+
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
 ---
+ arch/powerpc/kernel/security.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/powerpc/Makefile | 6 ------
- 1 file changed, 6 deletions(-)
-
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 5f8544cf724a..32dd693b4e42 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -181,12 +181,6 @@ CC_FLAGS_FTRACE := -pg
- ifdef CONFIG_MPROFILE_KERNEL
- CC_FLAGS_FTRACE += -mprofile-kernel
- endif
--# Work around gcc code-gen bugs with -pg / -fno-omit-frame-pointer in gcc <= 4.8
--# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=44199
--# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=52828
--ifndef CONFIG_CC_IS_CLANG
--CC_FLAGS_FTRACE	+= $(call cc-ifversion, -lt, 0409, -mno-sched-epilog)
--endif
- endif
+diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+index e4e1a94ccf6a..4de6bbd9672e 100644
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -250,7 +250,7 @@ ssize_t cpu_show_spectre_v2(struct device *dev, struct device_attribute *attr, c
  
- CFLAGS-$(CONFIG_TARGET_CPU_BOOL) += $(call cc-option,-mcpu=$(CONFIG_TARGET_CPU))
+ static enum stf_barrier_type stf_enabled_flush_types;
+ static bool no_stf_barrier;
+-bool stf_barrier;
++static bool stf_barrier;
+ 
+ static int __init handle_no_stf_barrier(char *p)
+ {
 -- 
-2.27.0
+2.17.1
 
