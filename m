@@ -1,61 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C810358D96
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 21:42:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E26C0358DFC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 22:01:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FGWql1fFwz3bVM
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 05:42:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FGXG16KHfz3bTr
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 06:01:29 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KuXAXrTF;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.176;
- helo=mail-oi1-f176.google.com; envelope-from=robherring2@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com
- [209.85.167.176])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=KuXAXrTF; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FGWqP59kXz2xZc
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 05:41:52 +1000 (AEST)
-Received: by mail-oi1-f176.google.com with SMTP id n8so3357777oie.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Apr 2021 12:41:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=FITwZl80gS3YR2FZtlgpQ5oYWS85Ct2sijj6jggUvFY=;
- b=eE3Q+YQOBRt4JTv1JIIKvcTop2T61jxnJHawZWFCyqwCLvPLQznca6TbbVM/Re6LCp
- SOADJ9Sn6qpkM9tiz3ifCFXzb9fHq5V8sx30RNB8+sgzJ0Jwtx76jFTqw5xQTBj/nNLL
- mitwfYg5uIF29doPZWUTjKIshwmz8XKq2UOdxcELhzgF+bqlIX9sag8x601uPvdMEJN8
- tWjvsR/2skbXJQFVkTOOmiLL0/llBAQLbuPr7DrZAe53mVsFgRghGgYdg44LxyjK8ib1
- n4IFSoyYYQ9fVjVByQFPhbwF0E3jSDxLZ47TUa4kM8WAfuMUft0nF8r05FLAutMvkl9+
- oTyA==
-X-Gm-Message-State: AOAM531vEeZN3Q2qNxWr/XTIjEerY1Z4VpQ99uxK+rsPbYTR3+wP9Nol
- br2GHXV0D2x6VmOPx1rG/g==
-X-Google-Smtp-Source: ABdhPJws8AH5mE+MDBnJXs7fKUy6WuwH3lOBsNvmWgFCUyZHpaJjOknPdkw2lABZOuOUgpOplmGZIg==
-X-Received: by 2002:aca:4ad2:: with SMTP id x201mr7515600oia.46.1617910910592; 
- Thu, 08 Apr 2021 12:41:50 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net.
- [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id y10sm72595oto.18.2021.04.08.12.41.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Apr 2021 12:41:49 -0700 (PDT)
-Received: (nullmailer pid 1844346 invoked by uid 1000);
- Thu, 08 Apr 2021 19:41:48 -0000
-Date: Thu, 8 Apr 2021 14:41:48 -0500
-From: Rob Herring <robh@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v4 18/20] x86: Convert to GENERIC_CMDLINE
-Message-ID: <20210408194148.GB1724284@robh.at.kernel.org>
-References: <cover.1617375802.git.christophe.leroy@csgroup.eu>
- <ab0fd4477964cdbf99e3dd2965a455aa3e738e4b.1617375802.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FGXFY2n04z30BM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 06:01:04 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 138JxPbZ099427; Thu, 8 Apr 2021 16:00:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=TnAleMvyumXa+sXW+bz9hhpNo3+lfh7b5sCaa4ciu1g=;
+ b=KuXAXrTFHFrAduFMtrjKsKxKtqAB2/GwdSnXGLkwiSpsaw6MwRqcceGd3lKY/IdtJRWB
+ F/5YgcpOc991F54bSUhE4/knys2Q01+zNISYO2K7hGmmV5eMERPCBTO3raLohEzr/JUH
+ 4HlNNISYsEmcP+kqduosleRvBeXjE7+qIWaDn9W/OWeIbrRwJjuTpOYNilpQnycfUnI8
+ YsqkTJsH43HpVULA0Xxnu8s3IVI4juY/8qeJbGCAwJ50WG+jcLLpgpod2aVNyKrDSoQ1
+ m/zVuzfzAKmp2G658jbEWMguPtXZlEr9cGkW0rj8MjRZIT5ZxtKVc0OXgeGpqjstMUeG fw== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37t8fm01hh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Apr 2021 16:00:40 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 138JpnVO023329;
+ Thu, 8 Apr 2021 20:00:40 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma02dal.us.ibm.com with ESMTP id 37rw2pjvu6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Apr 2021 20:00:40 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 138K0cGH30015800
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 8 Apr 2021 20:00:38 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4A1C3BE04F;
+ Thu,  8 Apr 2021 20:00:38 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 270D9BE058;
+ Thu,  8 Apr 2021 20:00:38 +0000 (GMT)
+Received: from localhost (unknown [9.211.35.170])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  8 Apr 2021 20:00:37 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/1] powerpc/smp: Set numa node before updating mask
+In-Reply-To: <20210408111150.GK2339179@linux.vnet.ibm.com>
+References: <20210401154200.150077-1-srikar@linux.vnet.ibm.com>
+ <87czvdbova.fsf@linux.ibm.com>
+ <20210402031815.GI2339179@linux.vnet.ibm.com>
+ <87eefml22p.fsf@linux.ibm.com>
+ <20210407164930.GJ2339179@linux.vnet.ibm.com>
+ <878s5tlvxr.fsf@linux.ibm.com>
+ <20210408111150.GK2339179@linux.vnet.ibm.com>
+Date: Thu, 08 Apr 2021 15:00:37 -0500
+Message-ID: <8735w0lf6i.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab0fd4477964cdbf99e3dd2965a455aa3e738e4b.1617375802.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: BiWMl7_zebAu-qvq9BUChUTOb2iP23u4
+X-Proofpoint-ORIG-GUID: BiWMl7_zebAu-qvq9BUChUTOb2iP23u4
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-08_04:2021-04-08,
+ 2021-04-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0
+ mlxlogscore=999 impostorscore=0 mlxscore=0 phishscore=0 bulkscore=0
+ clxscore=1015 suspectscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104080129
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,145 +103,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, arnd@kernel.org, microblaze <monstr@monstr.eu>,
- daniel@gimpelevich.san-francisco.ca.us, devicetree@vger.kernel.org,
- linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-xtensa@linux-xtensa.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- nios2 <ley.foon.tan@intel.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org,
- openrisc@lists.librecores.org, linux-hexagon@vger.kernel.org,
- sparclinux@vger.kernel.org, akpm@linux-foundation.org, will@kernel.org,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- danielwa@cisco.com
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Scott Cheloha <cheloha@linux.ibm.com>,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Laurent Dufour <ldufour@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 02, 2021 at 03:18:20PM +0000, Christophe Leroy wrote:
-> This converts the architecture to GENERIC_CMDLINE.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/x86/Kconfig        | 45 ++---------------------------------------
->  arch/x86/kernel/setup.c | 17 ++--------------
->  2 files changed, 4 insertions(+), 58 deletions(-)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index a20684d56b4b..66b384228ca3 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -104,6 +104,7 @@ config X86
->  	select ARCH_USE_QUEUED_SPINLOCKS
->  	select ARCH_USE_SYM_ANNOTATIONS
->  	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
-> +	select ARCH_WANT_CMDLINE_PREPEND_BY_DEFAULT
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> * Nathan Lynch <nathanl@linux.ibm.com> [2021-04-07 14:46:24]:
+>> I don't know. I guess this question just makes me wonder whether powerpc
+>> needs to have the additional lookup table. How is it different from the
+>> generic per_cpu numa_node?
+>
+> lookup table is for early cpu to node i.e when per_cpu variables may not be
+> available. This would mean that calling set_numa_node/set_cpu_numa_node from
+> map_cpu_to_node() may not always be an option, since map_cpu_to_node() does
+> end up getting called very early in the system.
 
-Seems to be non-existent kconfig option.
-
->  	select ARCH_WANT_DEFAULT_BPF_JIT	if X86_64
->  	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
->  	select ARCH_WANT_HUGE_PMD_SHARE
-> @@ -118,6 +119,7 @@ config X86
->  	select EDAC_SUPPORT
->  	select GENERIC_CLOCKEVENTS_BROADCAST	if X86_64 || (X86_32 && X86_LOCAL_APIC)
->  	select GENERIC_CLOCKEVENTS_MIN_ADJUST
-> +	select GENERIC_CMDLINE
->  	select GENERIC_CMOS_UPDATE
->  	select GENERIC_CPU_AUTOPROBE
->  	select GENERIC_CPU_VULNERABILITIES
-> @@ -2358,49 +2360,6 @@ choice
->  
->  endchoice
->  
-> -config CMDLINE_BOOL
-> -	bool "Built-in kernel command line"
-> -	help
-> -	  Allow for specifying boot arguments to the kernel at
-> -	  build time.  On some systems (e.g. embedded ones), it is
-> -	  necessary or convenient to provide some or all of the
-> -	  kernel boot arguments with the kernel itself (that is,
-> -	  to not rely on the boot loader to provide them.)
-> -
-> -	  To compile command line arguments into the kernel,
-> -	  set this option to 'Y', then fill in the
-> -	  boot arguments in CONFIG_CMDLINE.
-> -
-> -	  Systems with fully functional boot loaders (i.e. non-embedded)
-> -	  should leave this option set to 'N'.
-> -
-> -config CMDLINE
-> -	string "Built-in kernel command string"
-> -	depends on CMDLINE_BOOL
-> -	default ""
-> -	help
-> -	  Enter arguments here that should be compiled into the kernel
-> -	  image and used at boot time.  If the boot loader provides a
-> -	  command line at boot time, it is appended to this string to
-> -	  form the full kernel command line, when the system boots.
-> -
-> -	  However, you can use the CONFIG_CMDLINE_FORCE option to
-> -	  change this behavior.
-> -
-> -	  In most cases, the command line (whether built-in or provided
-> -	  by the boot loader) should specify the device for the root
-> -	  file system.
-> -
-> -config CMDLINE_FORCE
-> -	bool "Built-in command line overrides boot loader arguments"
-> -	depends on CMDLINE_BOOL && CMDLINE != ""
-> -	help
-> -	  Set this option to 'Y' to have the kernel ignore the boot loader
-> -	  command line, and use ONLY the built-in command line.
-> -
-> -	  This is used to work around broken boot loaders.  This should
-> -	  be set to 'N' under normal conditions.
-> -
->  config MODIFY_LDT_SYSCALL
->  	bool "Enable the LDT (local descriptor table)" if EXPERT
->  	default y
-> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-> index 6f2de58eeb54..3f274b02e51c 100644
-> --- a/arch/x86/kernel/setup.c
-> +++ b/arch/x86/kernel/setup.c
-> @@ -5,6 +5,7 @@
->   * This file contains the setup_arch() code, which handles the architecture-dependent
->   * parts of early kernel initialization.
->   */
-> +#include <linux/cmdline.h>
->  #include <linux/console.h>
->  #include <linux/crash_dump.h>
->  #include <linux/dma-map-ops.h>
-> @@ -161,9 +162,6 @@ unsigned long saved_video_mode;
->  #define RAMDISK_LOAD_FLAG		0x4000
->  
->  static char __initdata command_line[COMMAND_LINE_SIZE];
-> -#ifdef CONFIG_CMDLINE_BOOL
-> -static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
-> -#endif
->  
->  #if defined(CONFIG_EDD) || defined(CONFIG_EDD_MODULE)
->  struct edd edd;
-> @@ -883,18 +881,7 @@ void __init setup_arch(char **cmdline_p)
->  	bss_resource.start = __pa_symbol(__bss_start);
->  	bss_resource.end = __pa_symbol(__bss_stop)-1;
->  
-> -#ifdef CONFIG_CMDLINE_BOOL
-> -#ifdef CONFIG_CMDLINE_FORCE
-> -	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
-> -#else
-> -	if (builtin_cmdline[0]) {
-> -		/* append boot loader cmdline to builtin */
-> -		strlcat(builtin_cmdline, " ", COMMAND_LINE_SIZE);
-> -		strlcat(builtin_cmdline, boot_command_line, COMMAND_LINE_SIZE);
-> -		strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
-> -	}
-> -#endif
-> -#endif
-> +	cmdline_build(boot_command_line, boot_command_line);
->  
->  	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
->  	*cmdline_p = command_line;
-
-Once this is all done, I wonder if we can get rid of the strlcpy and 
-perhaps also cmdline_p.
-
-Rob
+Ah that's right, thanks.
