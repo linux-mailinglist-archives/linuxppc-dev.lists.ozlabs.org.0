@@ -1,38 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A1F357B26
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 06:18:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83D0357B28
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 06:18:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FG7KV5krmz3bV1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 14:18:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FG7LB5tRtz3c6H
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 14:18:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com;
- envelope-from=lihuafei1@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FG6Tf3ynpz2yx1
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 13:40:02 +1000 (AEST)
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FG6QC0MGLzNtq1;
- Thu,  8 Apr 2021 11:37:07 +0800 (CST)
-Received: from ubuntu1804.huawei.com (10.67.174.174) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.498.0; Thu, 8 Apr 2021 11:39:46 +0800
-From: Li Huafei <lihuafei1@huawei.com>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com;
+ envelope-from=johnny.chenyi@huawei.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 1102 seconds by postgrey-1.36 at boromir;
+ Thu, 08 Apr 2021 14:15:35 AEST
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FG7Gb57D2z2yxS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 14:15:31 +1000 (AEST)
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+ by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FG6ph4Vh3z7tpg;
+ Thu,  8 Apr 2021 11:54:52 +0800 (CST)
+Received: from huawei.com (10.67.174.142) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.498.0; Thu, 8 Apr 2021
+ 11:56:54 +0800
+From: <johnny.chenyi@huawei.com>
 To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
- <npiggin@gmail.com>, <jniethe5@gmail.com>, <alistair@popple.id.au>
-Subject: [PATCH -next] powerpc/security: Make symbol 'stf_barrier' static
-Date: Thu, 8 Apr 2021 11:39:51 +0800
-Message-ID: <20210408033951.28369-1-lihuafei1@huawei.com>
-X-Mailer: git-send-email 2.17.1
+ <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
+ <aneesh.kumar@linux.ibm.com>
+Subject: [PATCH-next] powerpc/interrupt: Remove duplicate header file
+Date: Thu, 8 Apr 2021 11:56:44 +0800
+Message-ID: <20210408035644.2417002-1-johnny.chenyi@huawei.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.67.174.174]
+X-Originating-IP: [10.67.174.142]
 X-CFilter-Loop: Reflected
 X-Mailman-Approved-At: Thu, 08 Apr 2021 14:17:47 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -46,39 +50,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: zhangjinhao2@huawei.com, yangjihong1@huawei.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- lihuafei1@huawei.com
+Cc: yuehaibing@huawei.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, heying24@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The sparse tool complains as follows:
+From: Chen Yi <johnny.chenyi@huawei.com>
 
-arch/powerpc/kernel/security.c:253:6: warning:
- symbol 'stf_barrier' was not declared. Should it be static?
+Delete one of the header files <asm/interrupt.h> that are included
+twice.
 
-This symbol is not used outside of security.c, so this commit marks it
-static.
-
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Signed-off-by: Chen Yi <johnny.chenyi@huawei.com>
 ---
- arch/powerpc/kernel/security.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/interrupt.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index e4e1a94ccf6a..4de6bbd9672e 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -250,7 +250,7 @@ ssize_t cpu_show_spectre_v2(struct device *dev, struct device_attribute *attr, c
- 
- static enum stf_barrier_type stf_enabled_flush_types;
- static bool no_stf_barrier;
--bool stf_barrier;
-+static bool stf_barrier;
- 
- static int __init handle_no_stf_barrier(char *p)
- {
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index c4dd4b8f9cfa..f64ace0208b7 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -7,7 +7,6 @@
+ #include <asm/asm-prototypes.h>
+ #include <asm/kup.h>
+ #include <asm/cputime.h>
+-#include <asm/interrupt.h>
+ #include <asm/hw_irq.h>
+ #include <asm/interrupt.h>
+ #include <asm/kprobes.h>
 -- 
-2.17.1
+2.31.0
 
