@@ -1,52 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4285D35889A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 17:34:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E6B358A4A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 18:56:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FGQLD1dm2z3dtZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 01:34:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FGS8D0q5Gz30KH
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 02:56:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o6+NQEY1;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=o6+NQEY1; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FGQK81NnHz3dh4
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 01:33:48 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FGQK41mn5z9txf6;
- Thu,  8 Apr 2021 17:33:44 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id XC6lpgGtyQ4o; Thu,  8 Apr 2021 17:33:44 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FGQK40s9Hz9txf3;
- Thu,  8 Apr 2021 17:33:44 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B9FD48B7D1;
- Thu,  8 Apr 2021 17:33:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id l72k1Wxepz7J; Thu,  8 Apr 2021 17:33:45 +0200 (CEST)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5ED968B7D0;
- Thu,  8 Apr 2021 17:33:45 +0200 (CEST)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 25DE3679BA; Thu,  8 Apr 2021 15:33:45 +0000 (UTC)
-Message-Id: <9f50b5fadeb090553e5c2fae025052d04d52f3c7.1617896018.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <09da6fec57792d6559d1ea64e00be9870b02dab4.1617896018.git.christophe.leroy@csgroup.eu>
-References: <09da6fec57792d6559d1ea64e00be9870b02dab4.1617896018.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v1 2/2] powerpc/atomics: Use immediate operand when possible
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu,  8 Apr 2021 15:33:45 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FGS7m4V00z30HW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 02:55:48 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5AAD36115B;
+ Thu,  8 Apr 2021 16:55:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1617900944;
+ bh=GWpb/4CWrW5dOgeUJNjVwnPmhCH3Tqxz6l+xlJjGsZs=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=o6+NQEY10TfULYi/XtxUE45DQd7LGoHX/+xCtDoIam/6qWkrXbsxqumFwCoNt8bwe
+ tQyL3mq7+Mp+0i4gjH9ZuoZz9fIhZUs7K0GflIVOmKjTS68Lh6QUNXgQ92QrnZ3NUz
+ swg92H8hYpLl7hzxgqYyFHHauARAcljBzSeLgj+Wrlgyr58Qn1RKsTS5hrtALWIqB6
+ LBls/auxgyXtr+I9gcmByIyYdOOOi71eok8Mk/fD4YBheay1Yvl/quoiZRAwXSUSVG
+ p7AR3On/otsnP4YNOFIZaA3pxGoTGP1nzc0xroUh/byr9K97xvCXjXBowWYx9dpME3
+ sAG9D5C+Mrxcw==
+From: Mark Brown <broonie@kernel.org>
+To: linux-kernel@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
+ Chen-Yu Tsai <wens@csie.org>, Muhammad Usama Anjum <musamaanjum@gmail.com>,
+ Jernej Skrabec <jernej.skrabec@siol.net>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ alsa-devel@alsa-project.org, linux-sunxi@lists.linux.dev,
+ Takashi Iwai <tiwai@suse.com>, Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, linuxppc-dev@lists.ozlabs.org,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Maxime Ripard <mripard@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, Timur Tabi <timur@kernel.org>
+Subject: Re: [PATCH] ASoC: fsl: sunxi: remove redundant dev_err call
+Date: Thu,  8 Apr 2021 17:54:43 +0100
+Message-Id: <161790012549.16915.4440454202344762892.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210407095634.GA1379642@LEGION>
+References: <20210407095634.GA1379642@LEGION>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,170 +66,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linqiheng@huawei.com, Mark Brown <broonie@kernel.org>,
+ kernel-janitors@vger.kernel.org, dan.carpenter@oracle.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Today we get the following code generation for atomic operations:
+On Wed, 7 Apr 2021 14:56:34 +0500, Muhammad Usama Anjum wrote:
+> devm_ioremap_resource() prints error message in itself. Remove the
+> dev_err call to avoid redundant error message.
 
-	c001bb2c:	39 20 00 01 	li      r9,1
-	c001bb30:	7d 40 18 28 	lwarx   r10,0,r3
-	c001bb34:	7d 09 50 50 	subf    r8,r9,r10
-	c001bb38:	7d 00 19 2d 	stwcx.  r8,0,r3
+Applied to
 
-	c001c7a8:	39 40 00 01 	li      r10,1
-	c001c7ac:	7d 00 18 28 	lwarx   r8,0,r3
-	c001c7b0:	7c ea 42 14 	add     r7,r10,r8
-	c001c7b4:	7c e0 19 2d 	stwcx.  r7,0,r3
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-By allowing GCC to choose between immediate or regular operation,
-we get:
+Thanks!
 
-	c001bb2c:	7d 20 18 28 	lwarx   r9,0,r3
-	c001bb30:	39 49 ff ff 	addi    r10,r9,-1
-	c001bb34:	7d 40 19 2d 	stwcx.  r10,0,r3
-	--
-	c001c7a4:	7d 40 18 28 	lwarx   r10,0,r3
-	c001c7a8:	39 0a 00 01 	addi    r8,r10,1
-	c001c7ac:	7d 00 19 2d 	stwcx.  r8,0,r3
+[1/1] ASoC: fsl: sunxi: remove redundant dev_err call
+      commit: a93799d55fd479f540ed97066e69114aa7709787
 
-For "and", the dot form has to be used because "andi" doesn't exist.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-For logical operations we use unsigned 16 bits immediate.
-For arithmetic operations we use signed 16 bits immediate.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-On pmac32_defconfig, it reduces the text by approx another 8 kbytes.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/atomic.h | 56 +++++++++++++++----------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
-index 61c6e8b200e8..e4b5e2f25ba7 100644
---- a/arch/powerpc/include/asm/atomic.h
-+++ b/arch/powerpc/include/asm/atomic.h
-@@ -37,62 +37,62 @@ static __inline__ void atomic_set(atomic_t *v, int i)
- 	__asm__ __volatile__("stw%U0%X0 %1,%0" : "=m"UPD_CONSTR(v->counter) : "r"(i));
- }
- 
--#define ATOMIC_OP(op, asm_op)						\
-+#define ATOMIC_OP(op, asm_op, dot, sign)				\
- static __inline__ void atomic_##op(int a, atomic_t *v)			\
- {									\
- 	int t;								\
- 									\
- 	__asm__ __volatile__(						\
- "1:	lwarx	%0,0,%3		# atomic_" #op "\n"			\
--	#asm_op " %0,%2,%0\n"						\
-+	#asm_op "%I2" dot " %0,%0,%2\n"					\
- "	stwcx.	%0,0,%3 \n"						\
- "	bne-	1b\n"							\
--	: "=&r" (t), "+m" (v->counter)					\
--	: "r" (a), "r" (&v->counter)					\
-+	: "=&b" (t), "+m" (v->counter)					\
-+	: "r"#sign (a), "r" (&v->counter)				\
- 	: "cc");							\
- }									\
- 
--#define ATOMIC_OP_RETURN_RELAXED(op, asm_op)				\
-+#define ATOMIC_OP_RETURN_RELAXED(op, asm_op, dot, sign)			\
- static inline int atomic_##op##_return_relaxed(int a, atomic_t *v)	\
- {									\
- 	int t;								\
- 									\
- 	__asm__ __volatile__(						\
- "1:	lwarx	%0,0,%3		# atomic_" #op "_return_relaxed\n"	\
--	#asm_op " %0,%2,%0\n"						\
-+	#asm_op "%I2" dot " %0,%0,%2\n"					\
- "	stwcx.	%0,0,%3\n"						\
- "	bne-	1b\n"							\
--	: "=&r" (t), "+m" (v->counter)					\
--	: "r" (a), "r" (&v->counter)					\
-+	: "=&b" (t), "+m" (v->counter)					\
-+	: "r"#sign (a), "r" (&v->counter)				\
- 	: "cc");							\
- 									\
- 	return t;							\
- }
- 
--#define ATOMIC_FETCH_OP_RELAXED(op, asm_op)				\
-+#define ATOMIC_FETCH_OP_RELAXED(op, asm_op, dot, sign)			\
- static inline int atomic_fetch_##op##_relaxed(int a, atomic_t *v)	\
- {									\
- 	int res, t;							\
- 									\
- 	__asm__ __volatile__(						\
- "1:	lwarx	%0,0,%4		# atomic_fetch_" #op "_relaxed\n"	\
--	#asm_op " %1,%3,%0\n"						\
-+	#asm_op "%I3" dot " %1,%0,%3\n"					\
- "	stwcx.	%1,0,%4\n"						\
- "	bne-	1b\n"							\
--	: "=&r" (res), "=&r" (t), "+m" (v->counter)			\
--	: "r" (a), "r" (&v->counter)					\
-+	: "=&b" (res), "=&r" (t), "+m" (v->counter)			\
-+	: "r"#sign (a), "r" (&v->counter)				\
- 	: "cc");							\
- 									\
- 	return res;							\
- }
- 
--#define ATOMIC_OPS(op, asm_op)						\
--	ATOMIC_OP(op, asm_op)						\
--	ATOMIC_OP_RETURN_RELAXED(op, asm_op)				\
--	ATOMIC_FETCH_OP_RELAXED(op, asm_op)
-+#define ATOMIC_OPS(op, asm_op, dot, sign)				\
-+	ATOMIC_OP(op, asm_op, dot, sign)				\
-+	ATOMIC_OP_RETURN_RELAXED(op, asm_op, dot, sign)			\
-+	ATOMIC_FETCH_OP_RELAXED(op, asm_op, dot, sign)
- 
--ATOMIC_OPS(add, add)
--ATOMIC_OPS(sub, subf)
-+ATOMIC_OPS(add, add, "", I)
-+ATOMIC_OPS(sub, sub, "", I)
- 
- #define atomic_add_return_relaxed atomic_add_return_relaxed
- #define atomic_sub_return_relaxed atomic_sub_return_relaxed
-@@ -101,13 +101,13 @@ ATOMIC_OPS(sub, subf)
- #define atomic_fetch_sub_relaxed atomic_fetch_sub_relaxed
- 
- #undef ATOMIC_OPS
--#define ATOMIC_OPS(op, asm_op)						\
--	ATOMIC_OP(op, asm_op)						\
--	ATOMIC_FETCH_OP_RELAXED(op, asm_op)
-+#define ATOMIC_OPS(op, asm_op, dot, sign)				\
-+	ATOMIC_OP(op, asm_op, dot, sign)				\
-+	ATOMIC_FETCH_OP_RELAXED(op, asm_op, dot, sign)
- 
--ATOMIC_OPS(and, and)
--ATOMIC_OPS(or, or)
--ATOMIC_OPS(xor, xor)
-+ATOMIC_OPS(and, and, ".", K)
-+ATOMIC_OPS(or, or, "", K)
-+ATOMIC_OPS(xor, xor, "", K)
- 
- #define atomic_fetch_and_relaxed atomic_fetch_and_relaxed
- #define atomic_fetch_or_relaxed  atomic_fetch_or_relaxed
-@@ -238,14 +238,14 @@ static __inline__ int atomic_fetch_add_unless(atomic_t *v, int a, int u)
- "1:	lwarx	%0,0,%1		# atomic_fetch_add_unless\n\
- 	cmpw	0,%0,%3 \n\
- 	beq	2f \n\
--	add	%0,%2,%0 \n"
-+	add%I2	%0,%0,%2 \n"
- "	stwcx.	%0,0,%1 \n\
- 	bne-	1b \n"
- 	PPC_ATOMIC_EXIT_BARRIER
--"	subf	%0,%2,%0 \n\
-+"	sub%I2	%0,%0,%2 \n\
- 2:"
--	: "=&r" (t)
--	: "r" (&v->counter), "r" (a), "r" (u)
-+	: "=&b" (t)
-+	: "r" (&v->counter), "rI" (a), "r" (u)
- 	: "cc", "memory");
- 
- 	return t;
--- 
-2.25.0
-
+Thanks,
+Mark
