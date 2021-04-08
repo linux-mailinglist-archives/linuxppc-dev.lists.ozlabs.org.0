@@ -1,97 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97DB358164
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 13:12:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB4235838B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 14:45:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FGJWk429pz30Dc
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 21:12:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FGLbJ4GRGz3btv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 22:45:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KqsxxYEi;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.a=rsa-sha256 header.s=google header.b=JXlbvdv6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::62b;
+ helo=mail-ej1-x62b.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=KqsxxYEi; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.a=rsa-sha256 header.s=google header.b=JXlbvdv6; 
+ dkim-atps=neutral
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com
+ [IPv6:2a00:1450:4864:20::62b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FGJWH0HMnz2ysk
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 21:12:10 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 138B3JH5106690; Thu, 8 Apr 2021 07:11:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=DIllNxFnS4MobjlLyoXeKUSBkebTQEjKPJFQNYbOwdM=;
- b=KqsxxYEiMAUZENnUk90QhouToVy1d/ZSqcVuaOi9FnZm//r0Xrt2fqIKaXt92hbmw2W3
- Z89MHVS/6f+zOqRVoKIV7BIxNvPNmJNEFLP+zjCwjRl3cp9tCvrMSV1HN0h2kciSrGcL
- usyUv+pyNqX0jmPsumbAtyuRXgPig4XtGqnsCtMOOZnx2qwR4c/nlpb5tWK+tOByJPap
- qla8fiqPyK1f3TJc97ajuZ9QQpA4ngZOl2tu8RiA8D4+TyVUrWDpz+48CDl6qlRui7il
- JScjFlMZed2ItVtW0jMv7GNYolES0Belm1MURks0UiP6EGWHvA01HpKKQWKS6K/ky6VL fg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37rvmrfs4t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Apr 2021 07:11:57 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 138BBOCh018240;
- Thu, 8 Apr 2021 11:11:55 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06ams.nl.ibm.com with ESMTP id 37rvbw9h21-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Apr 2021 11:11:55 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 138BBV0S34668828
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 8 Apr 2021 11:11:32 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E20F8A405C;
- Thu,  8 Apr 2021 11:11:52 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E41D8A4054;
- Thu,  8 Apr 2021 11:11:50 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Thu,  8 Apr 2021 11:11:50 +0000 (GMT)
-Date: Thu, 8 Apr 2021 16:41:50 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH 1/1] powerpc/smp: Set numa node before updating mask
-Message-ID: <20210408111150.GK2339179@linux.vnet.ibm.com>
-References: <20210401154200.150077-1-srikar@linux.vnet.ibm.com>
- <87czvdbova.fsf@linux.ibm.com>
- <20210402031815.GI2339179@linux.vnet.ibm.com>
- <87eefml22p.fsf@linux.ibm.com>
- <20210407164930.GJ2339179@linux.vnet.ibm.com>
- <878s5tlvxr.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FGLZr1dLjz300J
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 22:45:21 +1000 (AEST)
+Received: by mail-ej1-x62b.google.com with SMTP id a25so2854297ejk.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Apr 2021 05:45:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=UMuAklHy/tPt7YPBozpvIQsmWDAIa3a/la6+zoUVcdI=;
+ b=JXlbvdv6BKxL2QLt+A6EZMYCjKur7zKVGHA+SPjjhttU3LjU5J8CTsvMPL70CwGYsq
+ CUXz1jkKLkBNcttlxCmAirFDD+kjBSkQXhxTFfLF/zDE+suTqi1E02kHIf/SGivtkXXC
+ r7MEDlKMlo41vpb3rOrLkq/HnnmBY745AuXsE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=UMuAklHy/tPt7YPBozpvIQsmWDAIa3a/la6+zoUVcdI=;
+ b=rltO2/hwsgKE7ysqd42s2KfyFX3wYehHYKdnRRuGdVIaaKH6eidHd+kvqi7xdARoYt
+ kdyP82V1jnWmQ2xkcMR/ndaBCZFBY1Cfp6yXhqVkyMDUoQR9lUgCJYwWGdK9TiilWQSl
+ Xn0/1OJvTCeMRRwOhu5u1ssU5d8sJmpCNn3DwZpZIfCRPylfAl+RWcKnI92iGTq2xt8c
+ 9y0f/n8P4O5sN+pee2TXhd0tdz/n1+FQ1Ko+VGifxyCerrE1JObmA3INxyFy04cJnWxi
+ WxeiIQcF1BegF3jb0hNmI4mpbzZjutQz1a5hqxOxiizMF5wedDEk/9NsNrOzopmub4Vy
+ 7aiA==
+X-Gm-Message-State: AOAM531HicYycjXDoriiicBi0T8xTfOD08eISFQeprdXKUlschakiTJq
+ Q5FaHU+bYx5KZ0j1sEnPcMyNHQ==
+X-Google-Smtp-Source: ABdhPJwq7QZNDA3D6CGhNZXcz6mj8YzK/fNHfbq7NkBvOdUqzkgcZZF3Ehka2wUefbZcZbtsp6oq8w==
+X-Received: by 2002:a17:906:1fd7:: with SMTP id
+ e23mr400958ejt.528.1617885914623; 
+ Thu, 08 Apr 2021 05:45:14 -0700 (PDT)
+Received: from [192.168.1.149] ([80.208.71.248])
+ by smtp.gmail.com with ESMTPSA id r4sm14262813ejd.125.2021.04.08.05.45.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 08 Apr 2021 05:45:14 -0700 (PDT)
+Subject: Re: [PATCH v1 1/1] kernel.h: Split out panic and oops helpers
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Joerg Roedel <jroedel@suse.de>,
+ Wei Liu <wei.liu@kernel.org>, Michael Kelley <mikelley@microsoft.com>,
+ Mike Rapoport <rppt@kernel.org>, Corey Minyard <cminyard@mvista.com>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Vlastimil Babka <vbabka@suse.cz>, "Paul E. McKenney" <paulmck@kernel.org>,
+ "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+ linux-remoteproc@vger.kernel.org, linux-arch@vger.kernel.org,
+ kexec@lists.infradead.org, rcu@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <03be4ed9-8e8d-e2c2-611d-ac09c61d84f9@rasmusvillemoes.dk>
+Date: Thu, 8 Apr 2021 14:45:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <878s5tlvxr.fsf@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: mcgDT41QGUQZLoMwx9wU4eL5Rshn5AbA
-X-Proofpoint-ORIG-GUID: mcgDT41QGUQZLoMwx9wU4eL5Rshn5AbA
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-08_02:2021-04-08,
- 2021-04-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0
- mlxscore=0 clxscore=1015 impostorscore=0 mlxlogscore=999 spamscore=0
- phishscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104080075
+In-Reply-To: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,63 +96,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Scott Cheloha <cheloha@linux.ibm.com>,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Laurent Dufour <ldufour@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: Ohad Ben-Cohen <ohad@wizery.com>, Iurii Zaikin <yzaikin@google.com>,
+ Stephen Hemminger <sthemmin@microsoft.com>, Arnd Bergmann <arnd@arndb.de>,
+ Corey Minyard <minyard@acm.org>, Haiyang Zhang <haiyangz@microsoft.com>,
+ x86@kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>,
+ Josh Triplett <josh@joshtriplett.org>, Joel Fernandes <joel@joelfernandes.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Eric Biederman <ebiederm@xmission.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Nathan Lynch <nathanl@linux.ibm.com> [2021-04-07 14:46:24]:
+On 06/04/2021 15.31, Andy Shevchenko wrote:
+> kernel.h is being used as a dump for all kinds of stuff for a long time.
+> Here is the attempt to start cleaning it up by splitting out panic and
+> oops helpers.
 
-> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
-> 
-> > * Nathan Lynch <nathanl@linux.ibm.com> [2021-04-07 07:19:10]:
-> >
-> >> Sorry for the delay in following up here.
-> >> 
-> >
-> > No issues.
-> >
-> >> >> So I'd suggest that pseries_add_processor() be made to update
-> >> >> these things when the CPUs are marked present, before onlining them.
-> >> >
-> >> > In pseries_add_processor, we are only marking the cpu as present. i.e
-> >> > I believe numa_setup_cpu() would not have been called. So we may not have a
-> >> > way to associate the CPU to the node. Otherwise we will have to call
-> >> > numa_setup_cpu() or the hcall_vphn.
-> >> >
-> >> > We could try calling numa_setup_cpu() immediately after we set the
-> >> > CPU to be present, but that would be one more extra hcall + I dont know if
-> >> > there are any more steps needed before CPU being made present and
-> >> > associating the CPU to the node.
-> >> 
-> >> An additional hcall in this path doesn't seem too expensive.
-> >> 
-> >> > Are we sure the node is already online?
-> >> 
-> >> I see that dlpar_online_cpu() calls find_and_online_cpu_nid(), so yes I
-> >> think that's covered.
-> >
-> > Okay, 
-> >
-> > Can we just call set_cpu_numa_node() at the end of map_cpu_to_node().
-> > The advantage would be the update to numa_cpu_lookup_table and cpu_to_node
-> > would happen at the same time and would be in sync.
-> 
-> I don't know. I guess this question just makes me wonder whether powerpc
-> needs to have the additional lookup table. How is it different from the
-> generic per_cpu numa_node?
+Yay.
 
-lookup table is for early cpu to node i.e when per_cpu variables may not be
-available. This would mean that calling set_numa_node/set_cpu_numa_node from
-map_cpu_to_node() may not always be an option, since map_cpu_to_node() does
-end up getting called very early in the system.
+Acked-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+> At the same time convert users in header and lib folder to use new header.
+> Though for time being include new header back to kernel.h to avoid twisted
+> indirected includes for existing users.
+
+I think it would be good to have some place to note that "This #include
+is just for backwards compatibility, it will go away RealSoonNow, so if
+you rely on something from linux/panic.h, include that explicitly
+yourself TYVM. And if you're looking for a janitorial task, write a
+script to check that every file that uses some identifier defined in
+panic.h actually includes that file. When all offenders are found and
+dealt with, remove the #include and this note.".
+
+> +
+> +struct taint_flag {
+> +	char c_true;	/* character printed when tainted */
+> +	char c_false;	/* character printed when not tainted */
+> +	bool module;	/* also show as a per-module taint flag */
+> +};
+> +
+> +extern const struct taint_flag taint_flags[TAINT_FLAGS_COUNT];
+
+While you're doing this, nothing outside of kernel/panic.c cares about
+the definition of struct taint_flag or use the taint_flags array, so
+could you make the definition private to that file and make the array
+static? (Another patch, of course.)
+
+> +enum lockdep_ok {
+> +	LOCKDEP_STILL_OK,
+> +	LOCKDEP_NOW_UNRELIABLE,
+> +};
+> +
+> +extern const char *print_tainted(void);
+> +extern void add_taint(unsigned flag, enum lockdep_ok);
+> +extern int test_taint(unsigned flag);
+> +extern unsigned long get_taint(void);
+
+I know you're just moving code, but it would be a nice opportunity to
+drop the redundant externs.
+
+Rasmus
