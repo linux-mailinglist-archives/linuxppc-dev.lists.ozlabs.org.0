@@ -2,96 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E26C0358DFC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 22:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D807358E20
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 22:08:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FGXG16KHfz3bTr
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 06:01:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FGXQG1qSfz3bx9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 06:08:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KuXAXrTF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tBubWWY3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=KuXAXrTF; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=tBubWWY3; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FGXFY2n04z30BM
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 06:01:04 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 138JxPbZ099427; Thu, 8 Apr 2021 16:00:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=TnAleMvyumXa+sXW+bz9hhpNo3+lfh7b5sCaa4ciu1g=;
- b=KuXAXrTFHFrAduFMtrjKsKxKtqAB2/GwdSnXGLkwiSpsaw6MwRqcceGd3lKY/IdtJRWB
- F/5YgcpOc991F54bSUhE4/knys2Q01+zNISYO2K7hGmmV5eMERPCBTO3raLohEzr/JUH
- 4HlNNISYsEmcP+kqduosleRvBeXjE7+qIWaDn9W/OWeIbrRwJjuTpOYNilpQnycfUnI8
- YsqkTJsH43HpVULA0Xxnu8s3IVI4juY/8qeJbGCAwJ50WG+jcLLpgpod2aVNyKrDSoQ1
- m/zVuzfzAKmp2G658jbEWMguPtXZlEr9cGkW0rj8MjRZIT5ZxtKVc0OXgeGpqjstMUeG fw== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37t8fm01hh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Apr 2021 16:00:40 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 138JpnVO023329;
- Thu, 8 Apr 2021 20:00:40 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02dal.us.ibm.com with ESMTP id 37rw2pjvu6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Apr 2021 20:00:40 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 138K0cGH30015800
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 8 Apr 2021 20:00:38 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4A1C3BE04F;
- Thu,  8 Apr 2021 20:00:38 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 270D9BE058;
- Thu,  8 Apr 2021 20:00:38 +0000 (GMT)
-Received: from localhost (unknown [9.211.35.170])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  8 Apr 2021 20:00:37 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/1] powerpc/smp: Set numa node before updating mask
-In-Reply-To: <20210408111150.GK2339179@linux.vnet.ibm.com>
-References: <20210401154200.150077-1-srikar@linux.vnet.ibm.com>
- <87czvdbova.fsf@linux.ibm.com>
- <20210402031815.GI2339179@linux.vnet.ibm.com>
- <87eefml22p.fsf@linux.ibm.com>
- <20210407164930.GJ2339179@linux.vnet.ibm.com>
- <878s5tlvxr.fsf@linux.ibm.com>
- <20210408111150.GK2339179@linux.vnet.ibm.com>
-Date: Thu, 08 Apr 2021 15:00:37 -0500
-Message-ID: <8735w0lf6i.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FGXPq6QDVz2yZ6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 06:08:15 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EF43A6113A
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 20:08:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1617912493;
+ bh=lJBvFSudiDrxZs+SnGh4YtxaarzP38H043H9PsxfbKw=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=tBubWWY3+neAkzvUwVEoCp09FqswXCDaRx0c5tqpOKjvcYtVCmFe8JHZ54TSymAUN
+ LcUpHK9kiXHWgsLiDmBkRkBjUyBdxgg10Kg/vhYMlvwhM6Td33Bu/fEAPoZH7Rwzg3
+ y/02Yh1kIkod5A/25l6gmVy/uGkdg25wTAzvSArNYFnlkxuDzKdqut3U9ckR8RDs9P
+ vDjyKsx0P5LjQjJsrua6oISbMFMHmtnTHx3DuSW049FdIe7WaniCJJy7rcIwUJrymm
+ s/dYmx64TzuZ1Bdy4C5SW9baPR3AZmbYAPa+qWcEfy3HARHgLptgEEwfQza7x3mWiq
+ CQZwA4HwhhFsA==
+Received: by mail-ed1-f54.google.com with SMTP id x4so3916384edd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Apr 2021 13:08:12 -0700 (PDT)
+X-Gm-Message-State: AOAM530JWTbTn7EoB1UlwSvq2/HMV6102KjAZJDgiJazD6lS81m71uUa
+ QMEm058bScK7JFn1zFNIy1r4kONIhdZyXI5Taw==
+X-Google-Smtp-Source: ABdhPJyQM3sGNyB4lBHJyB/vMz0AuBm9hT4GnsJ9rwYhPZ4h1PIVlO3IzyI5ADQSr6ra6UOvePCEFavpVtRgMZ1GG6I=
+X-Received: by 2002:a05:6402:212:: with SMTP id
+ t18mr13947421edv.165.1617912491462; 
+ Thu, 08 Apr 2021 13:08:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: BiWMl7_zebAu-qvq9BUChUTOb2iP23u4
-X-Proofpoint-ORIG-GUID: BiWMl7_zebAu-qvq9BUChUTOb2iP23u4
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-08_04:2021-04-08,
- 2021-04-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0
- mlxlogscore=999 impostorscore=0 mlxscore=0 phishscore=0 bulkscore=0
- clxscore=1015 suspectscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104080129
+References: <34d20d1dbb88f26d418b33985557b0475374a1a5.1617556785.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <34d20d1dbb88f26d418b33985557b0475374a1a5.1617556785.git.christophe.leroy@csgroup.eu>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 8 Apr 2021 15:08:00 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJ=UNfptbNHR5XAS9BQRv3C5+YonW9rwypA5gGt2N7bGQ@mail.gmail.com>
+Message-ID: <CAL_JsqJ=UNfptbNHR5XAS9BQRv3C5+YonW9rwypA5gGt2N7bGQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v6 1/1] cmdline: Add capability to both append and
+ prepend at the same time
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,25 +66,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Scott Cheloha <cheloha@linux.ibm.com>,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Laurent Dufour <ldufour@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: "open list:GENERIC INCLUDE/ASM HEADER FILES" <linux-arch@vger.kernel.org>,
+ Arnd Bergmann <arnd@kernel.org>, microblaze <monstr@monstr.eu>,
+ Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
+ devicetree@vger.kernel.org, SH-Linux <linux-sh@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-xtensa@linux-xtensa.org,
+ X86 ML <x86@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ nios2 <ley.foon.tan@intel.com>, "open list:MIPS" <linux-mips@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, Openrisc <openrisc@lists.librecores.org>,
+ linux-hexagon@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Daniel Walker <danielwa@cisco.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
-> * Nathan Lynch <nathanl@linux.ibm.com> [2021-04-07 14:46:24]:
->> I don't know. I guess this question just makes me wonder whether powerpc
->> needs to have the additional lookup table. How is it different from the
->> generic per_cpu numa_node?
+On Sun, Apr 4, 2021 at 12:20 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
 >
-> lookup table is for early cpu to node i.e when per_cpu variables may not be
-> available. This would mean that calling set_numa_node/set_cpu_numa_node from
-> map_cpu_to_node() may not always be an option, since map_cpu_to_node() does
-> end up getting called very early in the system.
+> One user has expressed the need to both append and prepend some
+> built-in parameters to the command line provided by the bootloader.
+>
+> Allthough it is a corner case, it is easy to implement so let's do it.
+>
+> When the user chooses to prepend the bootloader provided command line
+> with the built-in command line, he is offered the possibility to enter
+> an additionnal built-in command line to be appended after the
+> bootloader provided command line.
+>
+> It is a complementary feature which has no impact on the already
+> existing ones and/or the existing defconfig.
+>
+> Suggested-by: Daniel Walker <danielwa@cisco.com>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+> Sending this out as an RFC, applies on top of the series
+> ("Implement GENERIC_CMDLINE"). I will add it to the series next spin
+> unless someone is against it.
 
-Ah that's right, thanks.
+Well, it works, but you are working around the existing kconfig and
+the result is not great. You'd never design it this way.
+
+Rob
