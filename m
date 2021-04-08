@@ -1,51 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D2BB3584B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 15:29:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 802553585E4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 16:07:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FGMZ03brKz3bwg
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 23:29:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FGNPB3SyPz3bwv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 00:07:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TVVXhIXs;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=TVVXhIXs; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FGMYf6kgwz30Cb
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Apr 2021 23:29:26 +1000 (AEST)
-IronPort-SDR: 8mMNjT6zL5zIdwR5Q72WiFx8B1x0eE/0R6mgsmGNZJvPhgsTDYoP57aTBcqpUCXC7+g6owmlyd
- TonBhTFXT/Bg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9948"; a="254876832"
-X-IronPort-AV: E=Sophos;i="5.82,206,1613462400"; d="scan'208";a="254876832"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2021 06:29:22 -0700
-IronPort-SDR: D3QHX5UVSB8YX34MZLNYlLK0kPKdVmkIBWjKvFADTZAC3rD9R9M8THaBbj3tnr/+TF6aChcI+z
- hErj278onk1A==
-X-IronPort-AV: E=Sophos;i="5.82,206,1613462400"; d="scan'208";a="419147368"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
- by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2021 06:29:13 -0700
-Received: from andy by smile with local (Exim 4.94)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1lUUia-002IVr-4H; Thu, 08 Apr 2021 16:29:08 +0300
-Date: Thu, 8 Apr 2021 16:29:08 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: Re: [PATCH v1 1/1] kernel.h: Split out panic and oops helpers
-Message-ID: <YG8FJOYVovYIOLXA@smile.fi.intel.com>
-References: <20210406133158.73700-1-andriy.shevchenko@linux.intel.com>
- <03be4ed9-8e8d-e2c2-611d-ac09c61d84f9@rasmusvillemoes.dk>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FGNNk38Rxz30D7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 00:06:45 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 138E4585112252; Thu, 8 Apr 2021 10:06:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=Gd5weCNEJHCIwaoSnlhMBjVIg2hj2uANNzhslPfYr5g=;
+ b=TVVXhIXsvwsb6Mb2ZoVpOolE3TWaOM0hfNd8ccqEcbpS+713xfdQiT4V2iRZ6Q0r8lW4
+ yoCdL2jFVQUgoyL6R1+Oap8WXAMgWcUpaOl+vzr4xdo16G4qIF7e+DLanrimBTtL/+7D
+ hJeHJXRXuvOtR9/knGdMxUh78HExGmBhh6+ayAnDegGvCqqc9635MxBtw4FYmQI7x+Gf
+ N0Y9XqpRDHP0EeDc16LLphXgpN+OiNBJFSfqpUX56mRPgkEw7OoXsgSwdL991en7s9Vf
+ 400y+EQM9D/FFRK56L8UmBjCsIKMqQ3LFUxIBxrV8aHj17rUIgMPermE3+Bvo4cP6hJN ZA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37rvm1cubp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Apr 2021 10:06:38 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 138E47R1112544;
+ Thu, 8 Apr 2021 10:06:36 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37rvm1cu7r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Apr 2021 10:06:36 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 138E1kRa025712;
+ Thu, 8 Apr 2021 14:06:32 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma02wdc.us.ibm.com with ESMTP id 37ryqcc9pb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Apr 2021 14:06:32 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 138E6Vrq16843088
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 8 Apr 2021 14:06:31 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 78FE628065;
+ Thu,  8 Apr 2021 14:06:31 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3E5E128059;
+ Thu,  8 Apr 2021 14:06:31 +0000 (GMT)
+Received: from localhost (unknown [9.211.35.170])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu,  8 Apr 2021 14:06:31 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 0/5] powerpc/rtas: miscellaneous cleanups
+Date: Thu,  8 Apr 2021 09:06:25 -0500
+Message-Id: <20210408140630.205502-1-nathanl@linux.ibm.com>
+X-Mailer: git-send-email 2.30.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: imtWcLKuW2J89UVM9TJj3Nl-OA8LmZur
+X-Proofpoint-ORIG-GUID: idfPnLOUh83x0ymoYnGjag535G3-ScZY
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <03be4ed9-8e8d-e2c2-611d-ac09c61d84f9@rasmusvillemoes.dk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-08_03:2021-04-08,
+ 2021-04-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 suspectscore=0
+ spamscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0 mlxscore=0
+ mlxlogscore=919 adultscore=0 priorityscore=1501 clxscore=1015 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104080099
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,93 +103,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>, linux-hyperv@vger.kernel.org,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- linux-remoteproc@vger.kernel.org, Michael Kelley <mikelley@microsoft.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Joel Fernandes <joel@joelfernandes.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arch@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>, Corey Minyard <minyard@acm.org>,
- x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
- Iurii Zaikin <yzaikin@google.com>, Ohad Ben-Cohen <ohad@wizery.com>,
- Joerg Roedel <jroedel@suse.de>, Kees Cook <keescook@chromium.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Josh Triplett <josh@joshtriplett.org>,
- "Steven Rostedt \(VMware\)" <rostedt@goodmis.org>, rcu@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, openipmi-developer@lists.sourceforge.net,
- Bjorn Andersson <bjorn.andersson@linaro.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Eric Biederman <ebiederm@xmission.com>,
- linux-fsdevel@vger.kernel.org,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Cc: tyreld@linux.ibm.com, ajd@linux.ibm.com, aik@ozlabs.ru,
+ aneesh.kumar@linux.ibm.com, npiggin@gmail.com, brking@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 08, 2021 at 02:45:12PM +0200, Rasmus Villemoes wrote:
-> On 06/04/2021 15.31, Andy Shevchenko wrote:
-> > kernel.h is being used as a dump for all kinds of stuff for a long time.
-> > Here is the attempt to start cleaning it up by splitting out panic and
-> > oops helpers.
-> 
-> Yay.
-> 
-> Acked-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+This is a reroll of the series posted here:
+https://lore.kernel.org/linuxppc-dev/20210114220004.1138993-1-nathanl@linux.ibm.com/
 
-Thanks!
+Originally this work was prompted by failures on radix MMU PowerVM
+guests when passing buffers to RTAS that lay outside of its idea of
+the RMA. In v1 I approached this as a problem to be solved in Linux,
+but RTAS development has since decided to change their code so that
+the RMA restriction does not apply with radix.
 
-> > At the same time convert users in header and lib folder to use new header.
-> > Though for time being include new header back to kernel.h to avoid twisted
-> > indirected includes for existing users.
-> 
-> I think it would be good to have some place to note that "This #include
-> is just for backwards compatibility, it will go away RealSoonNow, so if
-> you rely on something from linux/panic.h, include that explicitly
-> yourself TYVM. And if you're looking for a janitorial task, write a
-> script to check that every file that uses some identifier defined in
-> panic.h actually includes that file. When all offenders are found and
-> dealt with, remove the #include and this note.".
+So in v2 I retain the cleanups and discard the more significant change
+which accommodated the misbehaving RTAS versions.
 
-Good and...
+Changes since v1:
+- Correct missing conversion of RTAS_RMOBUF_MAX ->
+  RTAS_USER_REGION_SIZE in in_rmo_buf().
+- Remove unnecessary braces in rtas_syscall_filter_init().
+- Leave expression of RTAS_WORK_AREA_SIZE as-is instead of changing
+  the factors in a confusing way, per discussion with Alexey.
+- Drop "powerpc/rtas: constrain user region allocation to RMA"
 
-> > +struct taint_flag {
-> > +	char c_true;	/* character printed when tainted */
-> > +	char c_false;	/* character printed when not tainted */
-> > +	bool module;	/* also show as a per-module taint flag */
-> > +};
-> > +
-> > +extern const struct taint_flag taint_flags[TAINT_FLAGS_COUNT];
-> 
-> While you're doing this, nothing outside of kernel/panic.c cares about
-> the definition of struct taint_flag or use the taint_flags array, so
-> could you make the definition private to that file and make the array
-> static? (Another patch, of course.)
+Nathan Lynch (5):
+  powerpc/rtas: improve ppc_rtas_rmo_buf_show documentation
+  powerpc/rtas-proc: remove unused RMO_READ_BUF_MAX
+  powerpc/rtas: remove ibm_suspend_me_token
+  powerpc/rtas: move syscall filter setup into separate function
+  powerpc/rtas: rename RTAS_RMOBUF_MAX to RTAS_USER_REGION_SIZE
 
-...according to the above if *you are looking for a janitorial task*... :-))
-
-> > +enum lockdep_ok {
-> > +	LOCKDEP_STILL_OK,
-> > +	LOCKDEP_NOW_UNRELIABLE,
-> > +};
-> > +
-> > +extern const char *print_tainted(void);
-> > +extern void add_taint(unsigned flag, enum lockdep_ok);
-> > +extern int test_taint(unsigned flag);
-> > +extern unsigned long get_taint(void);
-> 
-> I know you're just moving code, but it would be a nice opportunity to
-> drop the redundant externs.
-
-As above. But for all these I have heard you. So, I'll keep this response
-as part of my always only growing TODO list.
+ arch/powerpc/include/asm/rtas.h |  6 +++---
+ arch/powerpc/kernel/rtas-proc.c | 15 +++++++++++----
+ arch/powerpc/kernel/rtas.c      | 34 +++++++++++++++++----------------
+ 3 files changed, 32 insertions(+), 23 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.2
 
