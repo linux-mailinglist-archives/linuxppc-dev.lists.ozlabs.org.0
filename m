@@ -2,75 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9AAC358ED4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 22:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D10D358F35
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Apr 2021 23:33:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FGYT654JLz3bTs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 06:56:10 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=hPD3m+Hb;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FGZJH3SV8z3bqT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 07:33:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72c;
- helo=mail-qk1-x72c.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.173;
+ helo=mail-oi1-f173.google.com; envelope-from=pku.leo@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hPD3m+Hb; dkim-atps=neutral
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com
- [IPv6:2607:f8b0:4864:20::72c])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com
+ [209.85.167.173])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FGYSg5XFYz30BJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 06:55:46 +1000 (AEST)
-Received: by mail-qk1-x72c.google.com with SMTP id g20so3769224qkk.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Apr 2021 13:55:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=zjjrWLOd+wnSFUUoajua48yZLA0y5VjsGqmoCyZiy74=;
- b=hPD3m+HbuA0TauWY/jX9or6vW8OZOVympwKhzk3nUDa1u0oIewLQWCBEGMDcR179cW
- ndmO2Wdf2C59DDCO7bnQ0FQswNsRDJwABlH/jcMTsKDeOJFPX/ZFqXbqcuwGq0pWEoXZ
- x+7+zOLW3MTJrB8d/uz2wSFhNjknWNG+dhBLV+eqVR/qmGVmi35Bwe/s+KELU0bjLMko
- TbVgOdcUpbVyHUZ5duWaCohZPHy36oqfzD7yLdYk3fkSNRKMrt4YDEsv/4C3hNpGtI5k
- mvAfTwJJYcpIenCFLLE5ttnLEPYcvRB0F4yKeOG5/aLvX6iUFrdayfqyEXMo9mQhgZT4
- Lr7g==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FGZHz0JXmz2xZj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 07:33:16 +1000 (AEST)
+Received: by mail-oi1-f173.google.com with SMTP id i81so3691481oif.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Apr 2021 14:33:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=zjjrWLOd+wnSFUUoajua48yZLA0y5VjsGqmoCyZiy74=;
- b=nNLyhgxAWAhq1mYvui7Z8kbbpx5LtsiqJyUIxlmK1frlQ3sCKFWVEPTfn2JBjDFmxK
- 1oT7pBtjOr7tQpm67uDeEBKBYZvFaJmiEeJ4/8o+7zCAM//eMFhTauDgAm/apXq7TBZk
- XvxVrnvsxRuJ2tu5bDzmCY0LGO3zcsY9H737OYApUvzZZQs37ooha1SgVnFyohS/pWPv
- zMS8KSEk0JZWkubzvHbriKYTn0kZsWhv284FdRKL91OR/ZPBMcFdWWacn3oSZcmBXcTJ
- ElW+patSjrB+2KBHvPhmAML29Bq/F1ne3cB+8/KbAgRhkZDMbEfvZrXMBJVK9v1PQ3qx
- t9Mw==
-X-Gm-Message-State: AOAM530TYwILKNwbRi+QmsGcMuXq/2n1AxJKl/fF5AI1IeMtL1xnvk3x
- 3w/ZnHSVxGEjMvu+8X+V/oQ=
-X-Google-Smtp-Source: ABdhPJxAGP4IcaK5aUHzAHHeaoBzXHgNUkKtebsPetrYDiGHYUv0dHLLo+wnithZ/HunWvcgBsWwnQ==
-X-Received: by 2002:a37:9e50:: with SMTP id h77mr10562580qke.138.1617915342082; 
- Thu, 08 Apr 2021 13:55:42 -0700 (PDT)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com.com
- ([2804:14c:482:7b04::1000])
- by smtp.gmail.com with ESMTPSA id g2sm517604qtu.0.2021.04.08.13.55.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Apr 2021 13:55:41 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Leonardo Bras <leobras.c@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, brking@linux.vnet.ibm.com
-Subject: [PATCH v3 1/1] powerpc/iommu: Enable remaining IOMMU Pagesizes
- present in LoPAR
-Date: Thu,  8 Apr 2021 17:19:16 -0300
-Message-Id: <20210408201915.174217-1-leobras.c@gmail.com>
-X-Mailer: git-send-email 2.30.2
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=mySPQZAxeKxPZ6g7lCnXPm49GveuRCHUb1NT0KmJXUE=;
+ b=TTK98X/PIaWtbFjP+b9nZgtzOzNiIYHbpj7bS3k6Ad9FH0vE4Fq3WZIwxUGA9Hodt9
+ mTrysRPNruXgNd0bhVUEoXbmmWS8HM5uQyM63pF5DUJO3m/EFlFHfR6ESIQBEhNgHz3T
+ g6bS+EkXmlle5UoYn5BzF0Rxu7icmvtSFppd56VKRAWjOhYEvY8PqRMnCZa/ziLNxtn1
+ rjbtSslf/4sQd4Nwg/L9jwMKa59yB0vroYM+ourmXOmNZGsIT3dEEC1lVoJfCqEcBrOH
+ uzMEBaQemRUn6Ch+MWuRsotE2rJFwh71FjeL4yHNh5saTfHQVT44BMdAt0og9W8/qDma
+ VqLQ==
+X-Gm-Message-State: AOAM530gLP/9ydSP318puVk6Oa/ofQJZt5P6Qs68AUk3L4Qqgk9oTDTW
+ rV5GFceLl0Koq9FbkS+pBfAgdhKL4KQ=
+X-Google-Smtp-Source: ABdhPJxuyyOWbyVo+aotQ4s/G46L9igATiHK6p74e19Ll1TdjSRnIngVa7Fcxs6o3iZ11gvKx9tUgA==
+X-Received: by 2002:aca:c349:: with SMTP id t70mr8061553oif.87.1617917594317; 
+ Thu, 08 Apr 2021 14:33:14 -0700 (PDT)
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com.
+ [209.85.167.180])
+ by smtp.gmail.com with ESMTPSA id 38sm139538oth.14.2021.04.08.14.33.13
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 08 Apr 2021 14:33:13 -0700 (PDT)
+Received: by mail-oi1-f180.google.com with SMTP id c16so3707517oib.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Apr 2021 14:33:13 -0700 (PDT)
+X-Received: by 2002:aca:3456:: with SMTP id b83mr7828412oia.51.1617917593399; 
+ Thu, 08 Apr 2021 14:33:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210408030353.37193-1-ran.wang_1@nxp.com>
+In-Reply-To: <20210408030353.37193-1-ran.wang_1@nxp.com>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Thu, 8 Apr 2021 16:33:02 -0500
+X-Gmail-Original-Message-ID: <CADRPPNR4_rmPPrQ2mhVY1zqShTm4vdg_v4iAUt_gxdo7jmOg5Q@mail.gmail.com>
+Message-ID: <CADRPPNR4_rmPPrQ2mhVY1zqShTm4vdg_v4iAUt_gxdo7jmOg5Q@mail.gmail.com>
+Subject: Re: [PATCH v7] soc: fsl: enable acpi support in RCPM driver
+To: Ran Wang <ran.wang_1@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,93 +69,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Peng Ma <peng.ma@nxp.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>, lkml <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-According to LoPAR, ibm,query-pe-dma-window output named "IO Page Sizes"
-will let the OS know all possible pagesizes that can be used for creating a
-new DDW.
+On Wed, Apr 7, 2021 at 9:58 PM Ran Wang <ran.wang_1@nxp.com> wrote:
+>
+> From: Peng Ma <peng.ma@nxp.com>
+>
+> This patch enables ACPI support in RCPM driver.
+>
+> Signed-off-by: Peng Ma <peng.ma@nxp.com>
+> Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
 
-Currently Linux will only try using 3 of the 8 available options:
-4K, 64K and 16M. According to LoPAR, Hypervisor may also offer 32M, 64M,
-128M, 256M and 16G.
+Applied for next.  Thanks.
 
-Enabling bigger pages would be interesting for direct mapping systems
-with a lot of RAM, while using less TCE entries.
-
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
----
-Changes since v2:
- - Restore 'int array & shift' strategy
- - Remove defines for RTAS "IO Page Size" output of ibm,query-pe-dma-window
- - Added/Improved comments
-Link: http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210407195613.131140-1-leobras.c@gmail.com/
-Changes since v1:
-- Remove page shift defines, replace by __builtin_ctzll(SZ_XXX)
-- Add bit field defines for RTAS "IO Page Shift" output of ibm,query-pe-dma-window
-- Use struct array instead of int array to be more explicit on pagesizes
-Link: http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210322190943.715368-1-leobras.c@gmail.com/ 
-
- arch/powerpc/platforms/pseries/iommu.c | 37 +++++++++++++++++++++-----
- 1 file changed, 30 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 9fc5217f0c8e..67c9953a6503 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1099,6 +1099,33 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
- 			 ret);
- }
- 
-+/* Return largest page shift based on "IO Page Sizes" output of ibm,query-pe-dma-window. */
-+static int iommu_get_page_shift(u32 query_page_size)
-+{
-+	/* Supported IO page-sizes according to LoPAR */
-+	const int shift[] = {
-+		__builtin_ctzll(SZ_4K),   __builtin_ctzll(SZ_64K), __builtin_ctzll(SZ_16M),
-+		__builtin_ctzll(SZ_32M),  __builtin_ctzll(SZ_64M), __builtin_ctzll(SZ_128M),
-+		__builtin_ctzll(SZ_256M), __builtin_ctzll(SZ_16G)
-+	};
-+
-+	int i = ARRAY_SIZE(shift) - 1;
-+
-+	/*
-+	 * On LoPAR, ibm,query-pe-dma-window outputs "IO Page Sizes" using a bit field:
-+	 * - bit 31 means 4k pages are supported,
-+	 * - bit 30 means 64k pages are supported, and so on.
-+	 * Larger pagesizes map more memory with the same amount of TCEs, so start probing them.
-+	 */
-+	for (; i >= 0 ; i--) {
-+		if (query_page_size & (1 << i))
-+			return shift[i];
-+	}
-+
-+	/* No valid page size found. */
-+	return 0;
-+}
-+
- /*
-  * If the PE supports dynamic dma windows, and there is space for a table
-  * that can map all pages in a linear offset, then setup such a table,
-@@ -1206,13 +1233,9 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 			goto out_failed;
- 		}
- 	}
--	if (query.page_size & 4) {
--		page_shift = 24; /* 16MB */
--	} else if (query.page_size & 2) {
--		page_shift = 16; /* 64kB */
--	} else if (query.page_size & 1) {
--		page_shift = 12; /* 4kB */
--	} else {
-+
-+	page_shift = iommu_get_page_shift(query.page_size);
-+	if (!page_shift) {
- 		dev_dbg(&dev->dev, "no supported direct page size in mask %x",
- 			  query.page_size);
- 		goto out_failed;
--- 
-2.30.2
-
+> ---
+> Change in v7:
+>  - Update comment for checking RCPM node which refferred to
+>
+> Change in v6:
+>  - Remove copyright udpate to rebase on latest mainline
+>
+> Change in v5:
+>  - Fix panic when dev->of_node is null
+>
+> Change in v4:
+>  - Make commit subject more accurate
+>  - Remove unrelated new blank line
+>
+> Change in v3:
+>  - Add #ifdef CONFIG_ACPI for acpi_device_id
+>  - Rename rcpm_acpi_imx_ids to rcpm_acpi_ids
+>
+> Change in v2:
+>  - Update acpi_device_id to fix conflict with other driver
+>
+>  drivers/soc/fsl/rcpm.c | 24 ++++++++++++++++++++++--
+>  1 file changed, 22 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
+> index 4ace28cab314..90d3f4060b0c 100644
+> --- a/drivers/soc/fsl/rcpm.c
+> +++ b/drivers/soc/fsl/rcpm.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/suspend.h>
+>  #include <linux/kernel.h>
+> +#include <linux/acpi.h>
+>
+>  #define RCPM_WAKEUP_CELL_MAX_SIZE      7
+>
+> @@ -78,10 +79,20 @@ static int rcpm_pm_prepare(struct device *dev)
+>                                 "fsl,rcpm-wakeup", value,
+>                                 rcpm->wakeup_cells + 1);
+>
+> -               /*  Wakeup source should refer to current rcpm device */
+> -               if (ret || (np->phandle != value[0]))
+> +               if (ret)
+>                         continue;
+>
+> +               /*
+> +                * For DT mode, would handle devices with "fsl,rcpm-wakeup"
+> +                * pointing to the current RCPM node.
+> +                *
+> +                * For ACPI mode, currently we assume there is only one
+> +                * RCPM controller existing.
+> +                */
+> +               if (is_of_node(dev->fwnode))
+> +                       if (np->phandle != value[0])
+> +                               continue;
+> +
+>                 /* Property "#fsl,rcpm-wakeup-cells" of rcpm node defines the
+>                  * number of IPPDEXPCR register cells, and "fsl,rcpm-wakeup"
+>                  * of wakeup source IP contains an integer array: <phandle to
+> @@ -172,10 +183,19 @@ static const struct of_device_id rcpm_of_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, rcpm_of_match);
+>
+> +#ifdef CONFIG_ACPI
+> +static const struct acpi_device_id rcpm_acpi_ids[] = {
+> +       {"NXP0015",},
+> +       { }
+> +};
+> +MODULE_DEVICE_TABLE(acpi, rcpm_acpi_ids);
+> +#endif
+> +
+>  static struct platform_driver rcpm_driver = {
+>         .driver = {
+>                 .name = "rcpm",
+>                 .of_match_table = rcpm_of_match,
+> +               .acpi_match_table = ACPI_PTR(rcpm_acpi_ids),
+>                 .pm     = &rcpm_pm_ops,
+>         },
+>         .probe = rcpm_probe,
+> --
+> 2.25.1
+>
