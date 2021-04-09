@@ -1,79 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2291E3591E8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 04:17:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A98D359202
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 04:29:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FGhbh0f14z3by2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 12:17:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=vUlcX0Jm;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FGhsD0DZWz3bxT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 12:29:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2c;
- helo=mail-qv1-xf2c.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vUlcX0Jm; dkim-atps=neutral
-Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com
- [IPv6:2607:f8b0:4864:20::f2c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FGhbB4jWxz2xg3
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 12:16:52 +1000 (AEST)
-Received: by mail-qv1-xf2c.google.com with SMTP id h3so1188311qve.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Apr 2021 19:16:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=vHCqILecOIPMQuLKMX6nqeGWPqCzxrgf7erUzPmed2M=;
- b=vUlcX0JmHoAeHVh7mvYJUTN5IFH3I+jOTc7imFq83Jp9W+LzGr01bfpD1NAdJONbx/
- vmHAARqJImYAeb863Nw2TMmzMLnBwCPpBhlVK7osUmveksTSMmyPS63zeKwEzbnyor2P
- BRI2aNvNZPLAaBl4snSim/3oaOiMgMN6xv4KlN4ndDDtOZVH/bRjjclTNHhpZMkw8LUo
- YSW0L1QUf0a8sA0NA3i0to87xFzxwEk8xOWWCK7KYYuDNupwRE9k9TU9Dy/fz5y0hgQi
- khqzeLYJW8ihZiO8tl9wqzEwi3PNd1hkfy3+jUJE6ZuixrOCdKP3JRtWJmD4ljQUsZf6
- 5E/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=vHCqILecOIPMQuLKMX6nqeGWPqCzxrgf7erUzPmed2M=;
- b=LDoCd0lG5fBl5XUwszScFTXJccaXoY3EGkyyJZulLB7vfxMPfDOgy2zGm+/OplXzNm
- XxupSiuSYnDRoZCjs19Zdx9T7PsL2AzY3N07ISeJpz755xBd7VnMTKYByt0cQ9MHm42c
- 5yQF6kA44XYgeRDc8oXnBmmfi1bTcR2BoQmxUwovd8chc2xJkvN3C+AdXBpVzaHbuJo/
- 16MYpib5SjGcrX2CwsnDqGiVS2NDYUponu0tMZErOZYNXWbx7kBR2pESQoTKOv9jOfIa
- XNq5qScyh0Qn0Wb2zqcytjsd/FIPEbGcpSN3TQEGzu+MhJ6ZzqkbibYcDuuJuO9wSncf
- J9lQ==
-X-Gm-Message-State: AOAM531MJamrMwhdBMHk1pxAvEM3B3dl3LwDPqGwGB8upHOQeQx16+uT
- NAEAmYEmqWQ2Uj3F3D9/YTg=
-X-Google-Smtp-Source: ABdhPJzxiJ8LOxfShzSQ06LGn73uHCtnki60lqvmhHu+BVJZf39NIe4lJ5RSfdLC0VSskVlAPboFQw==
-X-Received: by 2002:ad4:560e:: with SMTP id ca14mr9581170qvb.20.1617934608675; 
- Thu, 08 Apr 2021 19:16:48 -0700 (PDT)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
- ([2804:14c:482:7b04::1000])
- by smtp.gmail.com with ESMTPSA id z24sm843211qkz.65.2021.04.08.19.16.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Apr 2021 19:16:47 -0700 (PDT)
-Message-ID: <09c57b599f8dd95f4ff1c02b83aa093615257f2f.camel@gmail.com>
-Subject: Re: [PATCH 1/3] powerpc/mm/hash: Avoid resizing-down HPT on first
- memory hotplug
-From: Leonardo Bras <leobras.c@gmail.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Date: Thu, 08 Apr 2021 23:16:41 -0300
-In-Reply-To: <YFg+Edy6dfmZx3lr@yekko.fritz.box>
-References: <20210312072940.598696-1-leobras.c@gmail.com>
- <20210312072940.598696-2-leobras.c@gmail.com>
- <YFg+Edy6dfmZx3lr@yekko.fritz.box>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FGhrs4w99z2ywy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 12:28:43 +1000 (AEST)
+IronPort-SDR: j3WcmZ1jhDloH3QQ6pYb6lw1jxj/zMBApWO/FipiHRnJduu/2FbuDOQUBo6XBQGE+bjwC43ZTA
+ O4iBCOeyNa2w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9948"; a="191521523"
+X-IronPort-AV: E=Sophos;i="5.82,208,1613462400"; d="scan'208";a="191521523"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Apr 2021 19:28:40 -0700
+IronPort-SDR: /6bsddSVxA/5Afr6COJEypylCGpPTubKlv7yDTAD+UjxFb4xBeEAUT+3m69qkrpFWPRanpzHzR
+ h19AQ1KSlOJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,208,1613462400"; d="scan'208";a="422520686"
+Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
+ by orsmga008.jf.intel.com with ESMTP; 08 Apr 2021 19:28:39 -0700
+Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lUgsw-000G2y-TP; Fri, 09 Apr 2021 02:28:38 +0000
+Date: Fri, 09 Apr 2021 10:28:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS f2b8ef18c8e0634e176be99dcf242e515cfdb1d3
+Message-ID: <606fbbbd.hqkEp6Mx9BLsTyCr%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,41 +53,191 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
- Scott Cheloha <cheloha@linux.ibm.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- Bharata B Rao <bharata@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Sandipan Das <sandipan@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Laurent Dufour <ldufour@linux.ibm.com>, Logan Gunthorpe <logang@deltatee.com>,
- Dan Williams <dan.j.williams@intel.com>, Mike Rapoport <rppt@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello David, thanks for your feedback.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: f2b8ef18c8e0634e176be99dcf242e515cfdb1d3  Automatic merge of 'master' into merge (2021-04-07 21:54)
 
-On Mon, 2021-03-22 at 17:49 +1100, David Gibson wrote:
-> I don't love this approach.  Adding the extra flag at this level seems
-> a bit inelegant, and it means we're passing up an easy opportunity to
-> reduce our resource footprint on the host.
+elapsed time: 2263m
 
-I understand, but trying to reduce resource footprint in host, and
-mostly failing is what causes hot-add and hot-remove to take so long.
+configs tested: 165
+configs skipped: 3
 
-> But... maybe we'll have to do it.  I'd like to see if we can get
-> things to work well enough with just the "batching" to avoid multiple
-> resize attempts first.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-This batching is something I had thought a lot about.
-Problem is that there are a lot of generic interfaces between memory
-hotplug and actually resizing HPT. I tried a simpler approach in
-patches 2 & 3, so I don't touch much stuff there.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+i386                             allyesconfig
+riscv                            allyesconfig
+nds32                            alldefconfig
+powerpc                   motionpro_defconfig
+powerpc                 linkstation_defconfig
+mips                       capcella_defconfig
+arm                          pxa168_defconfig
+arm                         lpc18xx_defconfig
+arc                         haps_hs_defconfig
+riscv                            alldefconfig
+powerpc                     mpc83xx_defconfig
+openrisc                 simple_smp_defconfig
+arm                          gemini_defconfig
+mips                           mtx1_defconfig
+arm                      pxa255-idp_defconfig
+m68k                        stmark2_defconfig
+mips                      maltaaprp_defconfig
+m68k                         amcore_defconfig
+powerpc                   currituck_defconfig
+sh                            hp6xx_defconfig
+arc                     nsimosci_hs_defconfig
+s390                       zfcpdump_defconfig
+nios2                         3c120_defconfig
+m68k                        m5407c3_defconfig
+powerpc                    klondike_defconfig
+powerpc                      ppc44x_defconfig
+arm                         at91_dt_defconfig
+powerpc                 mpc8272_ads_defconfig
+sh                   sh7770_generic_defconfig
+arm                          collie_defconfig
+mips                           ip28_defconfig
+sh                          r7780mp_defconfig
+m68k                        mvme16x_defconfig
+arm                        multi_v5_defconfig
+powerpc                     kmeter1_defconfig
+sh                          urquell_defconfig
+sh                          kfr2r09_defconfig
+xtensa                  audio_kc705_defconfig
+xtensa                          iss_defconfig
+arm                        spear3xx_defconfig
+powerpc                      ppc64e_defconfig
+mips                          rb532_defconfig
+powerpc                 mpc834x_mds_defconfig
+arm                            zeus_defconfig
+openrisc                  or1klitex_defconfig
+sh                   rts7751r2dplus_defconfig
+powerpc                       maple_defconfig
+arm                        shmobile_defconfig
+mips                        maltaup_defconfig
+riscv             nommu_k210_sdcard_defconfig
+um                           x86_64_defconfig
+arc                    vdk_hs38_smp_defconfig
+arm                           u8500_defconfig
+arm                             ezx_defconfig
+arm                          ixp4xx_defconfig
+sh                  sh7785lcr_32bit_defconfig
+powerpc                     sbc8548_defconfig
+arm                       netwinder_defconfig
+sh                          lboxre2_defconfig
+mips                     loongson1c_defconfig
+arm                             rpc_defconfig
+powerpc                        warp_defconfig
+sh                              ul2_defconfig
+powerpc                     mpc5200_defconfig
+powerpc                      ep88xc_defconfig
+m68k                          amiga_defconfig
+arm                  colibri_pxa270_defconfig
+mips                           ip22_defconfig
+arm                         shannon_defconfig
+powerpc                 xes_mpc85xx_defconfig
+mips                  decstation_64_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20210408
+x86_64               randconfig-a005-20210408
+x86_64               randconfig-a003-20210408
+x86_64               randconfig-a001-20210408
+x86_64               randconfig-a002-20210408
+x86_64               randconfig-a006-20210408
+i386                 randconfig-a006-20210408
+i386                 randconfig-a003-20210408
+i386                 randconfig-a001-20210408
+i386                 randconfig-a004-20210408
+i386                 randconfig-a005-20210408
+i386                 randconfig-a002-20210408
+i386                 randconfig-a006-20210407
+i386                 randconfig-a003-20210407
+i386                 randconfig-a001-20210407
+i386                 randconfig-a004-20210407
+i386                 randconfig-a002-20210407
+i386                 randconfig-a005-20210407
+x86_64               randconfig-a014-20210407
+x86_64               randconfig-a015-20210407
+x86_64               randconfig-a013-20210407
+x86_64               randconfig-a011-20210407
+x86_64               randconfig-a012-20210407
+x86_64               randconfig-a016-20210407
+i386                 randconfig-a014-20210408
+i386                 randconfig-a016-20210408
+i386                 randconfig-a011-20210408
+i386                 randconfig-a012-20210408
+i386                 randconfig-a013-20210408
+i386                 randconfig-a015-20210408
+i386                 randconfig-a014-20210407
+i386                 randconfig-a011-20210407
+i386                 randconfig-a016-20210407
+i386                 randconfig-a012-20210407
+i386                 randconfig-a015-20210407
+i386                 randconfig-a013-20210407
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-Best regards,
-Leonardo Bras
+clang tested configs:
+x86_64               randconfig-a014-20210408
+x86_64               randconfig-a015-20210408
+x86_64               randconfig-a012-20210408
+x86_64               randconfig-a011-20210408
+x86_64               randconfig-a013-20210408
+x86_64               randconfig-a016-20210408
 
-
-
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
