@@ -1,72 +1,119 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7E035A554
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 20:10:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E95C35A884
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 23:56:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FH5lg5nRxz3c02
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 04:10:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FHBmh35fBz3byJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 07:56:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eeTThpnJ;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=JSDjr/pM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=eeTThpnJ; 
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.7.78; helo=eur04-he1-obe.outbound.protection.outlook.com;
+ envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=JSDjr/pM; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr70078.outbound.protection.outlook.com [40.107.7.78])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FH5lF2B7Pz3bTC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Apr 2021 04:10:17 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 2604C6115B
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 18:10:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1617991815;
- bh=5UlhbkUvii4M0SbxsDudAP/SdnpNZXKJ5xTscmhM2wI=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=eeTThpnJrcDIYsqEH20tbG398ApKwD18VnJzGUxrAdPIgDprGpPMY45iaRCKvncCn
- VYm2Xn8Uke/I931Y1ygLV6sZV74da9FfglGvtiepDGHvJb3+My585K7jcFlzo0MHVy
- ZjGnFR8fRw8FoNZM0qDrAbu2UK4NATBLnvQRANx/kRdysCOavkpct7ApxFI5mop3dc
- JCp/voxIpRfKp2UBGGVcJUa3Y3hFtExXDqIGSu7f7tgYECKWNUROAOjkfEAG+HiyXE
- V8k9fIDzwWbdXhroyRNF7TPLKGsRK4kt2Tuja+vm9e94zi+QuGzcrUnAuLctq/6n6u
- s2IaYor/+FFzw==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 0F29E6113B; Fri,  9 Apr 2021 18:10:15 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 212631] Misaligned floating point loads and store occasionally
- fail
-Date: Fri, 09 Apr 2021 18:10:14 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: trevor_davenport@selinc.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-212631-206035-WRoLvV3Zqb@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-212631-206035@https.bugzilla.kernel.org/>
-References: <bug-212631-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FHBmB3Mk9z3bTH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Apr 2021 07:56:24 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DYMSKTuRi2o7X/oL570QG3qiau8WPPn+evcGopL2uGqpWwkt3nt8iCWKtsr1o8IXLbml8jgeYhcn0bJiotLNVnjjWMyZM3dNyQMcc1JSakikws+7OOGt6/ZtuclUl7wzXo2s3RXhWtM5DtkC2hfyiqeI7IUpSPKKfjXW36IagbFbZ7ns3CEKoy3LLXoMEt9qBIex80z/Me3K27y+rMuhlGrwIVcQtPxCJuzbOem6da+fO/qAkVk04icGnRliyBLBC/gN5jVj7iS6HbJlYWxmW/3/1LhM0xGtWDEumvDDW0FA4KDk5p4pEJvrbVj9tqmBLw2o2rMz/d1n63io6M39oQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8iaSEqGmYlpiIHYKCpKnMALw/TWq8eXhy6MTOGwqd/A=;
+ b=VoB5TEKiw00yGDaVfY7dYhS2AYlO8yqUjod6IJl/WBd6K3bvIBELdVRqWm3aTmX+XuYYr2OIuRvqbXmY3iGuwDHanIJWPcek7ZUr7kgX7gZwURVy01QKacl/R/HpcG6VT9v+UTn7+CcyLsifpy60qEtaAAot34hPqoE3LEvEosmQfaw+BTcUXQkUpLNYcIQeQ15DA+axy7SGzF7dCqg07/+l6jX2X/+gYfW50sw9zxMMtwdDsLl7lfjmyhrvhV4E8orzP0RLN4VMr0MWEYFf6vTiqn3GtL/5ytQyPlTBjNxuAfmh0mUQF0XpcBpnYA7aakuiUR9ydyIcdUQBiErdkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8iaSEqGmYlpiIHYKCpKnMALw/TWq8eXhy6MTOGwqd/A=;
+ b=JSDjr/pMiwpInZBWWCqE5mk96lVO5Y/WK+CVcZS+cTqntV/CWOE9VxVJRe9qGSB22hWDM9Sv6w6ayMVdF4Hfi/YaD3XRcjgq8yYF9qaXaT5j+h6Ug9Sp1juMSbj8DbC4bTBxnVDvsgk7ueBC2HMUdnqFqCYHLALpQpRlEko8Nv8=
+Received: from AM6PR04MB4471.eurprd04.prod.outlook.com (2603:10a6:20b:1f::27)
+ by AM6PR04MB6166.eurprd04.prod.outlook.com (2603:10a6:20b:b6::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3999.27; Fri, 9 Apr
+ 2021 21:56:16 +0000
+Received: from AM6PR04MB4471.eurprd04.prod.outlook.com
+ ([fe80::5961:303c:4973:f21b]) by AM6PR04MB4471.eurprd04.prod.outlook.com
+ ([fe80::5961:303c:4973:f21b%6]) with mapi id 15.20.3999.032; Fri, 9 Apr 2021
+ 21:56:16 +0000
+From: Leo Li <leoyang.li@nxp.com>
+To: Ye Bin <yebin10@huawei.com>, Qiang Zhao <qiang.zhao@nxp.com>
+Subject: RE: [PATCH -next] soc: fsl: qe: use DEFINE_SPINLOCK() for spinlock
+Thread-Topic: [PATCH -next] soc: fsl: qe: use DEFINE_SPINLOCK() for spinlock
+Thread-Index: AQHXLSTUMJPMTYcgGEmdwjH8p41/uKqsu+wQ
+Date: Fri, 9 Apr 2021 21:56:16 +0000
+Message-ID: <AM6PR04MB4471507F0A759451E68FA8638F739@AM6PR04MB4471.eurprd04.prod.outlook.com>
+References: <20210409095152.2294487-1-yebin10@huawei.com>
+In-Reply-To: <20210409095152.2294487-1-yebin10@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: huawei.com; dkim=none (message not signed)
+ header.d=none;huawei.com; dmarc=none action=none header.from=nxp.com;
+x-originating-ip: [136.49.83.111]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: dd46d67c-e573-40e7-35e4-08d8fba24cc5
+x-ms-traffictypediagnostic: AM6PR04MB6166:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <AM6PR04MB6166D60485880084493EB5018F739@AM6PR04MB6166.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1728;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Utu+jVcHGUt2kcnmGan/d0xyuVSVpsoEbqinA1Y7T5MeY7lCE/cg4RaE3WAhATiue7ufQs2iAi2Qq6/ZIm4M5OY4vvOBOUB7j+vEM0RMGp46gbea/NeQcrs5bspdChyxs8cxKP5Is8GI4EiH+xLW/3I7SL7JMkXtS5lKGysXcQ+6A7xNVgF+j4OpGhZLgY1r+Um21kqDBUflJ2ccdSa3SkbI8KiCEI5tXhsdwBUB3uw5WvyYaPfkhu2k04d/53uX70WUfhw/6O45HxjSikgr8OszYkcfcJoL/EPHxpJwZhugz56J9eh+ncdjaFjBw8B2b0fPR761Vz2y1DuGnRlZY71vzOeHYSRsQlaaGUc/N6AeLYMZkaOt6dZ7k7GMk+j/VxP9AlIh6BjK5ZIgUIvUEPWoY1t5AsmQcUmyrDJf2KNFXNHeX28oAyIi3Ey5EnsasASb5bRQW7X1NcN5q960hVrZgcU9t7prRjUiB0TfRbjV2a4MKOVnQ17VybUvubpzvXCgBMm9vXO2r7bLpD5ppPr7g9Zd89LGlyapcYPtIDQfMyt+gqa1bz4VHKUeq5VnPInaN6xZRIgBF+c0t+JZIHWDxI9XWUpukjWIGDt6yXvMYVDD4fWvpDp1lyYMi8DC3lxQpLsB2mw8linwJ50vnrkfQcNQA1+nc0OsPqIVKno=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM6PR04MB4471.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(396003)(376002)(136003)(346002)(39860400002)(366004)(64756008)(66446008)(5660300002)(66556008)(66476007)(52536014)(26005)(83380400001)(110136005)(53546011)(86362001)(2906002)(6506007)(478600001)(6636002)(186003)(38100700001)(55016002)(7696005)(54906003)(66946007)(9686003)(8936002)(316002)(71200400001)(76116006)(33656002)(8676002)(4326008);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata: =?us-ascii?Q?pUp35RPrR6pJ9De/l5pSQLXidcDwLXrvrj6p2xKmFvNwIawbtoEwOvvYo4yy?=
+ =?us-ascii?Q?xzH9k/qXVds/qQZgCsii5z3ZMGeXhr4jpKnvIdERWBBOklxlkl5ryjPwlab4?=
+ =?us-ascii?Q?2ERbBHv02Rr9jQikNcaLrhJMXVTsYj0oQegm3uDHuflkSbtynKm0a5UELCN3?=
+ =?us-ascii?Q?nVUqCQId95TDebPbCYT1qW5J53OwSD5KJwmdDwhhMGj3MyY+hgcXcd5j/BP8?=
+ =?us-ascii?Q?2WLMK7TVwgp9Dgxh57PQciE17pY1yIB+or0s9v1pyzhaeqNv+RpHcA5DLtks?=
+ =?us-ascii?Q?p7wW1NMvQFHEUZ1cd6DzWcRH15p9LNX0Y8T6/R6m+duUEX6kOUz+Xrt+d8LP?=
+ =?us-ascii?Q?NYmY4Ji/1juJhfzfTZ/PdnN6/5esW9bY93+CkpfenVlEvSf1pOY+p5FtD7iJ?=
+ =?us-ascii?Q?NgTljgjn8Qew5r+SAgxhPGQHSlWJ4DVY7fNmd+GDPPK6NbjvUqHDXE8YKetO?=
+ =?us-ascii?Q?cESyz0BKp9Bla708jbcMK2TBx/GgUneM39OTmutm/R9iEGsTloTWmsvQKbBk?=
+ =?us-ascii?Q?YzSldPipJrSxV0TU0ewQVFy4spMyIkgb5wGgedGIafPFX8wVPucqFRq3ySzw?=
+ =?us-ascii?Q?KnlusuY2n/pKxeYyHNFPSrsgt92gEiQtHW85nuWbE1WjVLSC2TBsrzMz64ZX?=
+ =?us-ascii?Q?Xzi3hXVGdqHbD9NhdiV3/DavZL5L8XSVNfRDwxHh90kR0hd0HJVXxDVelJbg?=
+ =?us-ascii?Q?tT2W6x6NxzPjDKYxl4HL4FY2V5srSuaEwnludzg4yiThGgdtq2WNhVLvhjlx?=
+ =?us-ascii?Q?QCGkrurztlT8qHO9BBAQo1+xo97rULgPN725WCKc++HaH5U+2a6FDGfDH9vC?=
+ =?us-ascii?Q?lCFADvZA0r8c+vbr0ttcvd9OxyxxotmFpOWvOwpzTu84n228ajy0nbg0Y0Ft?=
+ =?us-ascii?Q?t0S3ZKEIgh5kUO4xUj5BZ2XX334zmAmL7Bio7Htv7Gg3rAP8yA3JQTK+GcmJ?=
+ =?us-ascii?Q?rKBIN2TEVmC0uJ2s5mqloPtkvGyUsNVl5IFV8n49knPHgqkK+D51/RuexdyJ?=
+ =?us-ascii?Q?/X1fjSZdDpq5oTcnVJCOI17SdwJ34JltdfavaKVuBf6Gu4PAZwFSo4eTuKFh?=
+ =?us-ascii?Q?3nYW7SM3wnod05XxkNZtpPLurx+gkQ4vgwPpWMQukC7SZ/ypfbQErlcxl87J?=
+ =?us-ascii?Q?WrblUOyET0WiSrrONawVXZNHDjFNvCIqQz2R9Ueh4mvyZ9BpkfqEHDg+tjiQ?=
+ =?us-ascii?Q?B9wDe1kYMZpdtBOpXm72ECiPhEHYJpjcBMiVsySlf3UrjS3XhDeMP8VN6JzE?=
+ =?us-ascii?Q?Fm12Jf7XyINHcsXAMWI+GQ2g8aVZjtFiBTAauqV4hhXsfQT36jbsSIZy0OwP?=
+ =?us-ascii?Q?QKyNZkyopUUNQBku3DtpCJF9?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
 MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4471.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd46d67c-e573-40e7-35e4-08d8fba24cc5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2021 21:56:16.2449 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4lqwp379Nl/i/6Iernp4tZeH74OfvJLJWb0BSbxrIWx0t33LwdOhNbECQe8OBqarfmKxk4GMlGM9vTvEncvBNw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB6166
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,133 +125,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Hulk Robot <hulkci@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D212631
-
---- Comment #2 from Trevor Davenport (trevor_davenport@selinc.com) ---
-A git bisect found this has existed for quite a while.=20
-
-git bisect start
-# bad: [0cc244011f40280b78fc344d5c2aac5a0c659f77] Linux 4.14.229
-git bisect bad 0cc244011f40280b78fc344d5c2aac5a0c659f77
-# good: [a0c646821e9dedc5368abd2f71f50ebe2c351d19] Linux 4.4.265
-git bisect good a0c646821e9dedc5368abd2f71f50ebe2c351d19
-# good: [afd2ff9b7e1b367172f18ba7f693dfb62bdcb2dc] Linux 4.4
-git bisect good afd2ff9b7e1b367172f18ba7f693dfb62bdcb2dc
-# good: [786a72d79140028537382fa63bea63d5640c27d6] Merge tag 'armsoc-dt' of
-git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc
-git bisect good 786a72d79140028537382fa63bea63d5640c27d6
-# good: [e0f25a3f2d052e36ff67a9b4db835c3e27e950d8] Merge tag 'hwlock-v4.13'=
- of
-git://github.com/andersson/remoteproc
-git bisect good e0f25a3f2d052e36ff67a9b4db835c3e27e950d8
-# bad: [dd9d064e34a1b1c96d631cca73e2a6efc5834f4a] Merge tag 'staging-4.14-r=
-c6'
-of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
-git bisect bad dd9d064e34a1b1c96d631cca73e2a6efc5834f4a
-# good: [b88f55774f20c0c306e0a95d22ca9ab5f08187c7] Merge tag 'spi-v4.14' of
-git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi
-git bisect good b88f55774f20c0c306e0a95d22ca9ab5f08187c7
-# good: [b88f55774f20c0c306e0a95d22ca9ab5f08187c7] Merge tag 'spi-v4.14' of
-git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi
-git bisect good b88f55774f20c0c306e0a95d22ca9ab5f08187c7
-# bad: [cef5d0f952a03d42051141742632078d488b0c6b] Merge branch 'for-linus' =
-of
-git://git.kernel.org/pub/scm/linux/kernel/git/pmladek/printk
-git bisect bad cef5d0f952a03d42051141742632078d488b0c6b
-# good: [aae3dbb4776e7916b6cd442d00159bea27a695c1] Merge
-git://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next
-git bisect good aae3dbb4776e7916b6cd442d00159bea27a695c1
-# good: [aae3dbb4776e7916b6cd442d00159bea27a695c1] Merge
-git://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next
-git bisect good aae3dbb4776e7916b6cd442d00159bea27a695c1
-# bad: [3645e6d0dc80be4376f87acc9ee527768387c909] Merge tag 'md/4.14-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/shli/md
-git bisect bad 3645e6d0dc80be4376f87acc9ee527768387c909
-# bad: [bac65d9d87b383471d8d29128319508d71b74180] Merge tag 'powerpc-4.14-1=
-' of
-git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux
-git bisect bad bac65d9d87b383471d8d29128319508d71b74180
-# good: [57e88b43b81301d9b28f124a5576ac43a1cf9e8d] Merge branch
-'x86-platform-for-linus' of
-git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
-git bisect good 57e88b43b81301d9b28f124a5576ac43a1cf9e8d
-# good: [f9065c83ccf4a6c1ff5419d216ad8276e99bee6c] powerpc/configs: Explici=
-tly
-drop CONFIG_INPUT_MOUSEDEV
-git bisect good f9065c83ccf4a6c1ff5419d216ad8276e99bee6c
-# good: [d1e1b351f50f9e5941f436f6c63949731979e00c] powerpc/xmon: Add ISA v3=
-.0
-SPRs to SPR dump
-git bisect good d1e1b351f50f9e5941f436f6c63949731979e00c
-# bad: [146e9f1b65478643f2729a97ccb8be60bb4492e5] crypto/nx: Add P9 NX spec=
-ific
-error codes for 842 engine
-git bisect bad 146e9f1b65478643f2729a97ccb8be60bb4492e5
-# good: [5762e08344bd7c5bfc41030f74c4ab6ce6e461d0] powerpc: Don't update CR=
-0 in
-emulation of popcnt, prty, bpermd instructions
-git bisect good 5762e08344bd7c5bfc41030f74c4ab6ce6e461d0
-# bad: [d2b65ac6526a82965212b632d42687251e122a36] powerpc: Emulate load/sto=
-re
-floating point as integer word instructions
-git bisect bad d2b65ac6526a82965212b632d42687251e122a36
-# good: [1f41fb790460acf432f826f4aeeff6f7da891ff7] powerpc: Emulate load/st=
-ore
-floating double pair instructions
-git bisect good 1f41fb790460acf432f826f4aeeff6f7da891ff7
-# good: [d955189ae42796621fb439e5e778ccaeebc2a1e7] powerpc: Handle
-opposite-endian processes in emulation code
-git bisect good d955189ae42796621fb439e5e778ccaeebc2a1e7
-# bad: [31bfdb036f1281831db2532178f0da41f4dc9bed] powerpc: Use instruction
-emulation infrastructure to handle alignment faults
-git bisect bad 31bfdb036f1281831db2532178f0da41f4dc9bed
-# good: [a53d5182e24c22986ad0e99e52f8fe343ee7d7ac] powerpc: Separate out
-load/store emulation into its own function
-git bisect good a53d5182e24c22986ad0e99e52f8fe343ee7d7ac
-# first bad commit: [31bfdb036f1281831db2532178f0da41f4dc9bed] powerpc: Use
-instruction emulation infrastructure to handle alignment faults
 
 
-31bfdb036f1281831db2532178f0da41f4dc9bed is the first bad commit
-commit 31bfdb036f1281831db2532178f0da41f4dc9bed
-Author: Paul Mackerras <paulus@ozlabs.org>
-Date:   Wed Aug 30 14:12:40 2017 +1000
+> -----Original Message-----
+> From: Ye Bin <yebin10@huawei.com>
+> Sent: Friday, April 9, 2021 4:52 AM
+> To: yebin10@huawei.com; Qiang Zhao <qiang.zhao@nxp.com>; Leo Li
+> <leoyang.li@nxp.com>
+> Cc: linuxppc-dev@lists.ozlabs.org; linux-arm-kernel@lists.infradead.org;
+> linux-kernel@vger.kernel.org; kernel-janitors@vger.kernel.org; Hulk Robot
+> <hulkci@huawei.com>
+> Subject: [PATCH -next] soc: fsl: qe: use DEFINE_SPINLOCK() for spinlock
+>=20
+> spinlock can be initialized automatically with DEFINE_SPINLOCK() rather t=
+han
+> explicitly calling spin_lock_init().
 
-    powerpc: Use instruction emulation infrastructure to handle alignment
-faults
+The previous version has been applied.  Thanks.
 
-    This replaces almost all of the instruction emulation code in
-    fix_alignment() with calls to analyse_instr(), emulate_loadstore()
-    and emulate_dcbz().  The only emulation code left is the SPE
-    emulation code; analyse_instr() etc. do not handle SPE instructions
-    at present.
+>=20
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Ye Bin <yebin10@huawei.com>
+> ---
+>  drivers/soc/fsl/qe/qe_common.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/soc/fsl/qe/qe_common.c
+> b/drivers/soc/fsl/qe/qe_common.c index 654e9246ce6b..a0cb8e746879
+> 100644
+> --- a/drivers/soc/fsl/qe/qe_common.c
+> +++ b/drivers/soc/fsl/qe/qe_common.c
+> @@ -26,7 +26,7 @@
+>  #include <soc/fsl/qe/qe.h>
+>=20
+>  static struct gen_pool *muram_pool;
+> -static spinlock_t cpm_muram_lock;
+> +static DEFINE_SPINLOCK(cpm_muram_lock);
+>  static void __iomem *muram_vbase;
+>  static phys_addr_t muram_pbase;
+>=20
+> @@ -54,7 +54,6 @@ int cpm_muram_init(void)
+>  	if (muram_pbase)
+>  		return 0;
+>=20
+> -	spin_lock_init(&cpm_muram_lock);
+>  	np =3D of_find_compatible_node(NULL, NULL, "fsl,cpm-muram-data");
+>  	if (!np) {
+>  		/* try legacy bindings */
 
-    One result of this is that we can now handle alignment faults on
-    all the new VSX load and store instructions that were added in POWER9.
-    VSX loads/stores will take alignment faults for unaligned accesses
-    to cache-inhibited memory.
-
-    Another effect is that we no longer rely on the DAR and DSISR values
-    set by the processor.
-
-    With this, we now need to include the instruction emulation code
-    unconditionally.
-
-    Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-    Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-
- arch/powerpc/Kconfig        |   4 -
- arch/powerpc/kernel/align.c | 803 ++--------------------------------------=
-----
- arch/powerpc/lib/Makefile   |   4 +-
- 3 files changed, 34 insertions(+), 777 deletions(-)
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
