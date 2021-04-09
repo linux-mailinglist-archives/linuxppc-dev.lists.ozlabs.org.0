@@ -1,105 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A054359F68
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 14:56:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37BA535A10A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 16:29:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FGynW6wjrz3bTm
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 22:56:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FH0r70Pmjz3bv3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 00:29:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aE8MyzoC;
+	dkim=pass (2048-bit key; unprotected) header.d=me.com header.i=@me.com header.a=rsa-sha256 header.s=1a1hai header.b=v/1pJ6Cu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=me.com
+ (client-ip=17.58.6.41; helo=pv50p00im-zteg10011401.me.com;
+ envelope-from=sxwjean@me.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=aE8MyzoC; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=me.com header.i=@me.com header.a=rsa-sha256
+ header.s=1a1hai header.b=v/1pJ6Cu; dkim-atps=neutral
+Received: from pv50p00im-zteg10011401.me.com (pv50p00im-zteg10011401.me.com
+ [17.58.6.41])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FGyn275N1z2yjP
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 22:56:22 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 139CXxjA102803; Fri, 9 Apr 2021 08:56:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=0P509MmLBlh98oicNoIESiOrgt6diqDBw+dExix6snU=;
- b=aE8MyzoCLf85iU01ybv124KZTCk+atrB4J/Xh0dbOwBKGcBLOgsbT4G+b5grXRMted1m
- eqx4zV8CDMvCT+HjCDzyE/6LA4aAIQ9Wg2pP/O6Ic2kQJ7S6gbNR43/X0muKDgMkjx3u
- H2eFUx4tQp2CNQkEQnZcyDB8ncl0XXDu8KX7RXWQWN9SyyniusGlnXWZC86rgLYk6v0N
- /ldrVqoP/dnSbKsphKUlqCcDyrJmsmO9BJTEZYV6uf6LqiQNc+J5aFGAcMtAvdkFPVOw
- 3MIRBvvB2OxOWF/i6X6bNSaGrln32yr5IlG3it9UiAknwGinc600/MWmq3Z2baiRW4Yw Jg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37rvpj7ekw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Apr 2021 08:56:14 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 139CcWYx127568;
- Fri, 9 Apr 2021 08:56:14 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37rvpj7ekc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Apr 2021 08:56:13 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 139ClDNM027359;
- Fri, 9 Apr 2021 12:56:12 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma01fra.de.ibm.com with ESMTP id 37rvmq9aps-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Apr 2021 12:56:12 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 139CtkSh37028162
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 9 Apr 2021 12:55:46 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3AFAE4204F;
- Fri,  9 Apr 2021 12:56:07 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F5B04204B;
- Fri,  9 Apr 2021 12:56:05 +0000 (GMT)
-Received: from [9.124.213.196] (unknown [9.124.213.196])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri,  9 Apr 2021 12:56:05 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.4\))
-Subject: Re: [PATCH] powerpc/perf: Fix PMU callbacks to clear pending PMI
- before resetting an overflown PMC
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <1617927471.vhjclnvhj3.astroid@bobo.none>
-Date: Fri, 9 Apr 2021 18:23:51 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6F7D0CD6-EA13-4D6F-9592-98CCC4537133@linux.vnet.ibm.com>
-References: <1617720464-1651-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1617720464-1651-2-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1617927471.vhjclnvhj3.astroid@bobo.none>
-To: Nicholas Piggin <npiggin@gmail.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.4)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -KvXytqKST9SE4s_w0qxRNwYL62tops4
-X-Proofpoint-GUID: tJVYrmlL3Pl6lhr001uwgEPVV8Dm49yj
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FH0qh1kbVz2yq9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Apr 2021 00:28:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
+ t=1617978526; bh=pvaBz+5lRBcsWP67c8Q1CqZeEtpj8crJ5u3DCAQ9ZpU=;
+ h=From:To:Subject:Date:Message-Id;
+ b=v/1pJ6CuqhJY81T8cAutr7I5xEQsPY+CwEnHWzY+Wr6kMVyYnac1w3UiqZQVld6Ht
+ gBx2p5ib7uEiUqTj3AP9X3HjiX//VH9I5gIb0TiemRLHAapV6r2evq3cQoaxphTiir
+ qtHNNf/nLbw+s6urzL8BrQH2u+0H+rtbLbQr1rYIaaHR45hv8gzIvg7v0UCk3HIdY9
+ of717Nn6HM3h/iBL30WrgAdfwMET7Ty7XPpVPFr7daMVw1+5Bp/OF4vbfcVenclLGd
+ we1snaH6+h61vFrIUZ+wko44KNeNFFHeeQ0MXTj+t+5eB4xjQaT+bG0elf8mvdF9AH
+ PBUZ1f6jxCg0w==
+Received: from localhost.localdomain (unknown [120.245.2.39])
+ by pv50p00im-zteg10011401.me.com (Postfix) with ESMTPSA id BFCC69003EE;
+ Fri,  9 Apr 2021 14:28:38 +0000 (UTC)
+From: Xiongwei Song <sxwjean@me.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ oleg@redhat.com, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+ aneesh.kumar@linux.ibm.com, ravi.bangoria@linux.ibm.com, mikey@neuling.org,
+ haren@linux.ibm.com, akpm@linux-foundation.org, rppt@kernel.org,
+ jniethe5@gmail.com, atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com,
+ peterz@infradead.org, kjain@linux.ibm.com, kan.liang@linux.intel.com,
+ aik@ozlabs.ru, alistair@popple.id.au, pmladek@suse.com,
+ john.ogness@linutronix.de
+Subject: [PATCH v4] powerpc/traps: Enhance readability for trap types
+Date: Fri,  9 Apr 2021 22:28:32 +0800
+Message-Id: <20210409142832.26063-1-sxwjean@me.com>
+X-Mailer: git-send-email 2.17.1
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-09_05:2021-04-09,
+ definitions=2021-04-09_06:2021-04-09,
  2021-04-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- mlxlogscore=999 priorityscore=1501 clxscore=1015 malwarescore=0
- suspectscore=0 bulkscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104090093
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 clxscore=1015 mlxscore=0
+ mlxlogscore=734 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-2009150000 definitions=main-2104090110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,415 +69,367 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "nasastry@in.ibm.com" <nasastry@in.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Xiongwei Song <sxwjean@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Xiongwei Song <sxwjean@gmail.com>
 
+Create a new header named traps.h, define macros to list ppc interrupt
+types in traps.h, replace the references of the trap hex values with these
+macros.
 
-> On 09-Apr-2021, at 6:38 AM, Nicholas Piggin <npiggin@gmail.com> wrote:
->=20
-Hi Nick,
+Referred the hex numbers in arch/powerpc/kernel/exceptions-64e.S,
+arch/powerpc/kernel/exceptions-64s.S and
+arch/powerpc/include/asm/kvm_asm.h.
 
-Thanks for checking the patch and sharing review comments.
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Xiongwei Song <sxwjean@gmail.com>
+---
 
-> I was going to nitpick "overflown" here as something birds do, but =
-some
-> sources says overflown is okay for past tense.
->=20
-> You could use "overflowed" for that, but I understand the issue with =
-the=20
-> word: you are talking about counters that are currently in an =
-"overflow"=20
-> state, but the overflow occurred in the past and is not still =
-happening
-> so you "overflowing" doesn't exactly fit either.
->=20
-> overflown kind of works for some reason you can kind of use it for
-> present tense!
+v3-v4:
+Fix compile issue:
+arch/powerpc/kernel/process.c:1473:14: error: 'INTERRUPT_MACHINE_CHECK' undeclared (first use in this function); did you mean 'TAINT_MACHINE_CHECK'?
+I didn't add "Reported-by: kernel test robot <lkp@intel.com>" here,
+because it's improper for this patch.
 
-Ok sure, Yes counter is currently in an =E2=80=9Coverflow=E2=80=9D =
-state.
+v2-v3:
+Correct the prefix of trap macros with INTERRUPT_, the previous prefix
+is TRAP_, which is not precise. This is suggested by Segher Boessenkool
+and Nicholas Piggin.
 
->=20
-> Excerpts from Athira Rajeev's message of April 7, 2021 12:47 am:
->> Running perf fuzzer showed below in dmesg logs:
->> "Can't find PMC that caused IRQ"
->>=20
->> This means a PMU exception happened, but none of the PMC's =
-(Performance
->> Monitor Counter) were found to be overflown. There are some corner =
-cases
->> that clears the PMCs after PMI gets masked. In such cases, the perf
->> interrupt handler will not find the active PMC values that had caused
->> the overflow and thus leads to this message while replaying.
->>=20
->> Case 1: PMU Interrupt happens during replay of other interrupts and
->> counter values gets cleared by PMU callbacks before replay:
->>=20
->> During replay of interrupts like timer, __do_irq and doorbell =
-exception, we
->> conditionally enable interrupts via may_hard_irq_enable(). This could
->> potentially create a window to generate a PMI. Since irq soft mask is =
-set
->> to ALL_DISABLED, the PMI will get masked here.
->=20
-> I wonder if may_hard_irq_enable shouldn't enable if PMI is soft
-> disabled. And also maybe replay should not set ALL_DISABLED if
-> there are no PMI interrupts pending.
->=20
-> Still, I think those are a bit more tricky and might take a while
-> to get right or just not be worth while, so I think your patch is
-> fine.
+v1-v2:
+Define more trap macros to replace more trap hexs in code, not just for
+the __show_regs function. This is suggested by Christophe Leroy.
 
-Ok Nick.
->=20
->> We could get IPIs run before
->> perf interrupt is replayed and the PMU events could deleted or =
-stopped.
->> This will change the PMU SPR values and resets the counters. Snippet =
-of
->> ftrace log showing PMU callbacks invoked in "__do_irq":
->>=20
->> <idle>-0 [051] dns. 132025441306354: __do_irq <-call_do_irq
->> <idle>-0 [051] dns. 132025441306430: irq_enter <-__do_irq
->> <idle>-0 [051] dns. 132025441306503: irq_enter_rcu <-__do_irq
->> <idle>-0 [051] dnH. 132025441306599: xive_get_irq <-__do_irq
->> <<>>
->> <idle>-0 [051] dnH. 132025441307770: =
-generic_smp_call_function_single_interrupt <-smp_ipi_demux_relaxed
->> <idle>-0 [051] dnH. 132025441307839: flush_smp_call_function_queue =
-<-smp_ipi_demux_relaxed
->> <idle>-0 [051] dnH. 132025441308057: _raw_spin_lock <-event_function
->> <idle>-0 [051] dnH. 132025441308206: power_pmu_disable =
-<-perf_pmu_disable
->> <idle>-0 [051] dnH. 132025441308337: power_pmu_del <-event_sched_out
->> <idle>-0 [051] dnH. 132025441308407: power_pmu_read <-power_pmu_del
->> <idle>-0 [051] dnH. 132025441308477: read_pmc <-power_pmu_read
->> <idle>-0 [051] dnH. 132025441308590: isa207_disable_pmc =
-<-power_pmu_del
->> <idle>-0 [051] dnH. 132025441308663: write_pmc <-power_pmu_del
->> <idle>-0 [051] dnH. 132025441308787: power_pmu_event_idx =
-<-perf_event_update_userpage
->> <idle>-0 [051] dnH. 132025441308859: rcu_read_unlock_strict =
-<-perf_event_update_userpage
->> <idle>-0 [051] dnH. 132025441308975: power_pmu_enable =
-<-perf_pmu_enable
->> <<>>
->> <idle>-0 [051] dnH. 132025441311108: irq_exit <-__do_irq
->> <idle>-0 [051] dns. 132025441311319: performance_monitor_exception =
-<-replay_soft_interrupts
->>=20
->> Case 2: PMI's masked during local_* operations, example local_add.
->> If the local_add operation happens within a local_irq_save, replay of
->> PMI will be during local_irq_restore. Similar to case 1, this could
->> also create a window before replay where PMU events gets deleted or
->> stopped.
->=20
-> Here as well perhaps PMIs should be replayed if they are unmasked
-> even if other interrupts are still masked. Again that might be more
-> complexity than it's worth.
-Ok..
+---
+ arch/powerpc/include/asm/interrupt.h  |  9 +++++---
+ arch/powerpc/include/asm/ptrace.h     |  3 ++-
+ arch/powerpc/include/asm/traps.h      | 32 +++++++++++++++++++++++++++
+ arch/powerpc/kernel/interrupt.c       |  3 ++-
+ arch/powerpc/kernel/process.c         |  5 ++++-
+ arch/powerpc/mm/book3s64/hash_utils.c |  5 +++--
+ arch/powerpc/mm/fault.c               | 21 +++++++++++-------
+ arch/powerpc/perf/core-book3s.c       |  5 +++--
+ arch/powerpc/xmon/xmon.c              | 16 +++++++++++---
+ 9 files changed, 78 insertions(+), 21 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/traps.h
 
->=20
->>=20
->> Patch adds a fix to update the PMU callback functions =
-(del,stop,enable) to
->> check for pending perf interrupt. If there is an overflown PMC and =
-pending
->> perf interrupt indicated in Paca, clear the PMI bit in paca to drop =
-that
->> sample. In case of power_pmu_del, also clear the MMCR0 PMAO bit which
->> otherwise could lead to spurious interrupts in some corner cases. =
-Example,
->> a timer after power_pmu_del which will re-enable interrupts since PMI =
-is
->> cleared and triggers a PMI again since PMAO bit is still set.
->>=20
->> We can't just replay PMI any time. Hence this approach is preferred =
-rather
->> than replaying PMI before resetting overflown PMC. Patch also =
-documents
->> core-book3s on a race condition which can trigger these PMC messages =
-during
->> idle path in PowerNV.
->>=20
->> Fixes: f442d004806e ("powerpc/64s: Add support to mask perf =
-interrupts and replay them")
->> Reported-by: Nageswara R Sastry <nasastry@in.ibm.com>
->> Suggested-by: Nicholas Piggin <npiggin@gmail.com>
->> Suggested-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->> arch/powerpc/include/asm/pmc.h  | 11 +++++++++
->> arch/powerpc/perf/core-book3s.c | 55 =
-+++++++++++++++++++++++++++++++++++++++++
->> 2 files changed, 66 insertions(+)
->>=20
->> diff --git a/arch/powerpc/include/asm/pmc.h =
-b/arch/powerpc/include/asm/pmc.h
->> index c6bbe9778d3c..97b4bd8de25b 100644
->> --- a/arch/powerpc/include/asm/pmc.h
->> +++ b/arch/powerpc/include/asm/pmc.h
->> @@ -34,11 +34,22 @@ static inline void ppc_set_pmu_inuse(int inuse)
->> #endif
->> }
->>=20
->> +static inline int clear_paca_irq_pmi(void)
->> +{
->> +	if (get_paca()->irq_happened & PACA_IRQ_PMI) {
->> +		WARN_ON_ONCE(mfmsr() & MSR_EE);
->> +		get_paca()->irq_happened &=3D ~PACA_IRQ_PMI;
->> +		return 1;
->> +	}
->> +	return 0;
->> +}
->=20
-> Could you put this in arch/powerpc/include/asm/hw_irq.h and
-> rather than paca_irq, call it irq_pending perhaps
->=20
->  clear_pmi_irq_pending()
->=20
->  get_clear_pmi_irq_pending() if you're also testing it.
-
-Sure,  I will use =E2=80=9Cget_clear_pmi_irq_pending()=E2=80=9D and try =
-with moving this to arch/powerpc/include/asm/hw_irq.h
-
->=20
-> Could you add a little comment about the corner cases above it too?
-> The root cause seem to be interrupt replay while a masked PMI is
-> pending can result in other interrupts arriving which clear the PMU
-> overflow so the pending PMI must be cleared.
-
-Ok, I will add comment and fix this in next version.
-
->=20
->> +
->> extern void power4_enable_pmcs(void);
->>=20
->> #else /* CONFIG_PPC64 */
->>=20
->> static inline void ppc_set_pmu_inuse(int inuse) { }
->> +static inline int clear_paca_irq_pmi(void) { return 0; }
->>=20
->> #endif
->>=20
->> diff --git a/arch/powerpc/perf/core-book3s.c =
-b/arch/powerpc/perf/core-book3s.c
->> index 766f064f00fb..18ca3c90f866 100644
->> --- a/arch/powerpc/perf/core-book3s.c
->> +++ b/arch/powerpc/perf/core-book3s.c
->> @@ -847,6 +847,20 @@ static void write_pmc(int idx, unsigned long =
-val)
->> 	}
->> }
->>=20
->> +static int pmc_overflown(int idx)
->> +{
->> +	unsigned long val[8];
->> +	int i;
->> +
->> +	for (i =3D 0; i < ppmu->n_counter; i++)
->> +		val[i] =3D read_pmc(i + 1);
->> +
->> +	if ((int)val[idx-1] < 0)
->> +		return 1;
->> +
->> +	return 0;
->> +}
->> +
->> /* Called from sysrq_handle_showregs() */
->> void perf_event_print_debug(void)
->> {
->> @@ -1438,6 +1452,15 @@ static void power_pmu_enable(struct pmu *pmu)
->> 		event =3D cpuhw->event[i];
->> 		if (event->hw.idx && event->hw.idx !=3D hwc_index[i] + =
-1) {
->> 			power_pmu_read(event);
->> +			/*
->> +			 * if the PMC corresponding to event->hw.idx is
->> +			 * overflown, check if there is any pending perf
->> +			 * interrupt set in paca. If so, disable the =
-interrupt
->> +			 * by clearing the paca bit for PMI since we are =
-going
->> +			 * to reset the PMC.
->> +			 */
->> +			if (pmc_overflown(event->hw.idx))
->> +				clear_paca_irq_pmi();
->=20
-> If the pmc is not overflown, could there still be a PMI pending?
-
-I didn=E2=80=99t hit that scenario where PMI is pending without an =
-overflown PMC.
-Also I believe if such a case happens, we will need an investigation =
-there. It could be a different case to be handled.
-
-I actually considered below two points for adding this PMC check instead =
-of just clearing the PMI.
-
-1. Make sure we are not masking any bug here by just clearing =
-PACA_IRQ_PMI.
-Ideally if PMI is set in irq_happened, it means there was a counter =
-overflow.
-2. If there is more than one PMU event, say two events. Make sure we are =
-clearing PMI only for the
-event whose counter is overflown.
-=20
->=20
->> 			write_pmc(event->hw.idx, 0);
->> 			event->hw.idx =3D 0;
->> 		}
->> @@ -1474,6 +1497,10 @@ static void power_pmu_enable(struct pmu *pmu)
->> 		event->hw.idx =3D idx;
->> 		if (event->hw.state & PERF_HES_STOPPED)
->> 			val =3D 0;
->> +
->> +		/* See above for clear_paca_irq_pmi */
->> +		if (pmc_overflown(event->hw.idx))
->> +			clear_paca_irq_pmi();
->> 		write_pmc(idx, val);
->>=20
->> 		perf_event_update_userpage(event);
->> @@ -1619,6 +1646,7 @@ static void power_pmu_del(struct perf_event =
-*event, int ef_flags)
->> 	struct cpu_hw_events *cpuhw;
->> 	long i;
->> 	unsigned long flags;
->> +	unsigned long val_mmcr0;
->>=20
->> 	local_irq_save(flags);
->> 	perf_pmu_disable(event->pmu);
->> @@ -1636,6 +1664,22 @@ static void power_pmu_del(struct perf_event =
-*event, int ef_flags)
->> 			--cpuhw->n_events;
->> 			ppmu->disable_pmc(event->hw.idx - 1, =
-&cpuhw->mmcr);
->> 			if (event->hw.idx) {
->> +				/*
->> +				 * if the PMC corresponding to =
-event->hw.idx is
->> +				 * overflown, check if there is any =
-pending perf
->> +				 * interrupt set in paca. If so, disable =
-the interrupt
->> +				 * and clear the MMCR0 PMAO bit since we =
-are going
->> +				 * to reset the PMC and delete the =
-event.
->> +				 */
->> +				if (pmc_overflown(event->hw.idx)) {
->> +					if (clear_paca_irq_pmi()) {
->> +						val_mmcr0 =3D =
-mfspr(SPRN_MMCR0);
->> +						val_mmcr0 &=3D =
-~MMCR0_PMAO;
->> +						write_mmcr0(cpuhw, =
-val_mmcr0);
->> +						mb();
->> +						isync();
->=20
-> I don't know the perf subsystem, but just out of curiosity why does
-> MMCR0 need to be cleared only in this case?
-
-I got a corner case in power_pmu_del, with only clearing PACA_IRQ_PMI =
-and without resetting MMCR0 PMAO bit.
-Here is the flow:
-
-1. We clear the PMI bit Paca, but MMCR0 has the PMAO bit still set. PMAO =
-bit indicates a PMI has occurred.
-2. A timer interrupt is replayed after power_pmu_del which does a =
-=E2=80=9Cmay_hard_irq_enable=E2=80=9D.
-This will re-enable interrupts and triggers a PMI again since PMAO bit =
-is still set.
-
-So clear PMAO bit to avoid such spurious interrupts.
-Ftrace logs showing the same with some debug trace_printks :
-
-     <idle>-0    [134] d.h. 327287888478: power_pmu_del =
-<-event_sched_out.isra.126
-     <<>>    Here we cleared the PMI
-     <idle>-0    [134] d.h. 327287889272: write_pmc <-power_pmu_del
-     <idle>-0    [134] d.h. 327287889346: rcu_read_unlock_strict =
-<-perf_event_update_userpage
-     <idle>-0    [134] d.h. 327287889711: power_pmu_del: In =
-power_pmu_del MMCR0 is 82004090, local_paca->irq_happened is 9
-     <idle>-0    [134] d.h. 327287889811: power_pmu_enable =
-<-perf_pmu_enable
-     <idle>-0    [134] d.h. 327287889982: irq_exit <-doorbell_exception
-     <idle>-0    [134] d... 327287890053: idle_cpu <-irq_exit
-     <idle>-0    [134] d... 327287890158: tick_nohz_irq_exit <-irq_exit
-     <idle>-0    [134] d... 327287890219: ktime_get <-tick_nohz_irq_exit
-     <idle>-0    [134] d... 327287890328: replay_soft_interrupts =
-<-interrupt_exit_kernel_prepare
-     <idle>-0    [134] d... 327287890399: irq_enter <-timer_interrupt
-     <<>>
-     <idle>-0    [134] d.h. 327287891163: timer_interrupt: Before =
-may_hard_irq_enable MMCR0 is 82004090, local_paca->irq_happened is 1
-     <<>>
-     <idle>-0    [134] d.h. 327287894310: timer_interrupt: After =
-may_hard_irq_enable MMCR0 is 82004090, local_paca->irq_happened is 21
-
-In case of other callbacks like pmu enable, we are programming MMCR0. =
-But in case of event getting deleted, there is no
-way we clear PMAO unless an event gets scheduled again in that cpu. =
-Hence added this check only in pmu_del callback.
-=20
-
-> What if we disabled MSR[EE]
-> right before a perf interrupt came in, so we don't get a pending PMI
-> but the condition is still close to the same.
-
-Nick, I didn=E2=80=99t get this question exactly. Can you please help =
-explain a bit ?
-=46rom my understanding, consider that we disabled MSR[EE] before perf =
-interrupt came in.
-So once the interrupts are re-enabled:
-
-1. If soft mask is set to IRQS_DISABLED, perf interrupt will be =
-triggered as NMI.
-2. In case of ALL_DISABLED, it will be masked for replay. If PMU =
-callbacks are invoked before replay,
-our present patch will take care of clearing PMI in corner cases.
-
-Thanks
-Athira.
->=20
->> +				}
->> 				write_pmc(event->hw.idx, 0);
->> 				event->hw.idx =3D 0;
->> 			}
->> @@ -1714,6 +1758,8 @@ static void power_pmu_stop(struct perf_event =
-*event, int ef_flags)
->>=20
->> 	local_irq_save(flags);
->> 	perf_pmu_disable(event->pmu);
->> +	if (pmc_overflown(event->hw.idx))
->> +		clear_paca_irq_pmi();
->>=20
->> 	power_pmu_read(event);
->> 	event->hw.state |=3D PERF_HES_STOPPED | PERF_HES_UPTODATE;
->> @@ -2343,6 +2389,15 @@ static void __perf_event_interrupt(struct =
-pt_regs *regs)
->> 			}
->> 		}
->> 	}
->> +
->> +	/*
->> +	 * During system wide profling or while specific CPU
->> +	 * is monitored for an event, some corner cases could
->> +	 * cause PMC to overflow in idle path. This will trigger
->> +	 * a PMI after waking up from idle. Since counter values
->> +	 * are _not_ saved/restored in idle path, can lead to
->> +	 * below "Can't find PMC" message.
->> +	 */
->> 	if (unlikely(!found) && !arch_irq_disabled_regs(regs))
->> 		printk_ratelimited(KERN_WARNING "Can't find PMC that =
-caused IRQ\n");
->>=20
->> --=20
->> 1.8.3.1
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index 05e7fc4ffb50..4fd904fb5d59 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -8,6 +8,7 @@
+ #include <asm/ftrace.h>
+ #include <asm/kprobes.h>
+ #include <asm/runlatch.h>
++#include <asm/traps.h>
+ 
+ static inline void nap_adjust_return(struct pt_regs *regs)
+ {
+@@ -70,7 +71,7 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
+ 		 * CT_WARN_ON comes here via program_check_exception,
+ 		 * so avoid recursion.
+ 		 */
+-		if (TRAP(regs) != 0x700)
++		if (TRAP(regs) != INTERRUPT_PROGRAM)
+ 			CT_WARN_ON(ct_state() != CONTEXT_KERNEL);
+ 	}
+ #endif
+@@ -175,7 +176,8 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
+ 	/* Don't do any per-CPU operations until interrupt state is fixed */
+ #endif
+ 	/* Allow DEC and PMI to be traced when they are soft-NMI */
+-	if (TRAP(regs) != 0x900 && TRAP(regs) != 0xf00 && TRAP(regs) != 0x260) {
++	if (TRAP(regs) != INTERRUPT_DECREMENTER &&
++	    TRAP(regs) != INTERRUPT_PERFMON) {
+ 		state->ftrace_enabled = this_cpu_get_ftrace_enabled();
+ 		this_cpu_set_ftrace_enabled(0);
+ 	}
+@@ -204,7 +206,8 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
+ 	 */
+ 
+ #ifdef CONFIG_PPC64
+-	if (TRAP(regs) != 0x900 && TRAP(regs) != 0xf00 && TRAP(regs) != 0x260)
++	if (TRAP(regs) != INTERRUPT_DECREMENTER &&
++	    TRAP(regs) != INTERRUPT_PERFMON)
+ 		this_cpu_set_ftrace_enabled(state->ftrace_enabled);
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
+diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
+index 95600f3a6523..07ff8629e776 100644
+--- a/arch/powerpc/include/asm/ptrace.h
++++ b/arch/powerpc/include/asm/ptrace.h
+@@ -21,6 +21,7 @@
+ 
+ #include <uapi/asm/ptrace.h>
+ #include <asm/asm-const.h>
++#include <asm/traps.h>
+ 
+ #ifndef __ASSEMBLY__
+ struct pt_regs
+@@ -237,7 +238,7 @@ static inline bool trap_is_unsupported_scv(struct pt_regs *regs)
+ 
+ static inline bool trap_is_syscall(struct pt_regs *regs)
+ {
+-	return (trap_is_scv(regs) || TRAP(regs) == 0xc00);
++	return (trap_is_scv(regs) || TRAP(regs) == INTERRUPT_SYSCALL);
+ }
+ 
+ static inline bool trap_norestart(struct pt_regs *regs)
+diff --git a/arch/powerpc/include/asm/traps.h b/arch/powerpc/include/asm/traps.h
+new file mode 100644
+index 000000000000..2e64e10afcef
+--- /dev/null
++++ b/arch/powerpc/include/asm/traps.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_PPC_TRAPS_H
++#define _ASM_PPC_TRAPS_H
++
++#if defined(CONFIG_BOOKE) || defined(CONFIG_4xx)
++#define INTERRUPT_MACHINE_CHECK   0x000
++#define INTERRUPT_CRITICAL_INPUT  0x100
++#define INTERRUPT_ALTIVEC_UNAVAIL 0x200
++#define INTERRUPT_PERFMON         0x260
++#define INTERRUPT_DOORBELL        0x280
++#define INTERRUPT_DEBUG           0xd00
++#else
++#define INTERRUPT_SYSTEM_RESET    0x100
++#define INTERRUPT_MACHINE_CHECK   0x200
++#define INTERRUPT_DATA_SEGMENT    0x380
++#define INTERRUPT_INST_SEGMENT    0x480
++#define INTERRUPT_DOORBELL        0xa00
++#define INTERRUPT_TRACE           0xd00
++#define INTERRUPT_H_DATA_STORAGE  0xe00
++#define INTERRUPT_PERFMON         0xf00
++#define INTERRUPT_H_FAC_UNAVAIL   0xf80
++#endif
++
++#define INTERRUPT_DATA_STORAGE    0x300
++#define INTERRUPT_INST_STORAGE    0x400
++#define INTERRUPT_ALIGNMENT       0x600
++#define INTERRUPT_PROGRAM         0x700
++#define INTERRUPT_FP_UNAVAIL      0x800
++#define INTERRUPT_DECREMENTER     0x900
++#define INTERRUPT_SYSCALL         0xc00
++
++#endif /* _ASM_PPC_TRAPS_H */
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index c4dd4b8f9cfa..72689f7ca7c8 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -19,6 +19,7 @@
+ #include <asm/syscall.h>
+ #include <asm/time.h>
+ #include <asm/unistd.h>
++#include <asm/traps.h>
+ 
+ #if defined(CONFIG_PPC_ADV_DEBUG_REGS) && defined(CONFIG_PPC32)
+ unsigned long global_dbcr0[NR_CPUS];
+@@ -456,7 +457,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
+ 	 * CT_WARN_ON comes here via program_check_exception,
+ 	 * so avoid recursion.
+ 	 */
+-	if (TRAP(regs) != 0x700)
++	if (TRAP(regs) != INTERRUPT_PROGRAM)
+ 		CT_WARN_ON(ct_state() == CONTEXT_USER);
+ 
+ 	kuap = kuap_get_and_assert_locked();
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index b966c8e0cead..92cd49427b2f 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -64,6 +64,7 @@
+ #include <asm/asm-prototypes.h>
+ #include <asm/stacktrace.h>
+ #include <asm/hw_breakpoint.h>
++#include <asm/traps.h>
+ 
+ #include <linux/kprobes.h>
+ #include <linux/kdebug.h>
+@@ -1469,7 +1470,9 @@ static void __show_regs(struct pt_regs *regs)
+ 	trap = TRAP(regs);
+ 	if (!trap_is_syscall(regs) && cpu_has_feature(CPU_FTR_CFAR))
+ 		pr_cont("CFAR: "REG" ", regs->orig_gpr3);
+-	if (trap == 0x200 || trap == 0x300 || trap == 0x600) {
++	if (trap == INTERRUPT_MACHINE_CHECK ||
++	    trap == INTERRUPT_DATA_STORAGE ||
++	    trap == INTERRUPT_ALIGNMENT) {
+ 		if (IS_ENABLED(CONFIG_4xx) || IS_ENABLED(CONFIG_BOOKE))
+ 			pr_cont("DEAR: "REG" ESR: "REG" ", regs->dar, regs->dsisr);
+ 		else
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 7719995323c3..2bf06e01b309 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -64,6 +64,7 @@
+ #include <asm/pte-walk.h>
+ #include <asm/asm-prototypes.h>
+ #include <asm/ultravisor.h>
++#include <asm/traps.h>
+ 
+ #include <mm/mmu_decl.h>
+ 
+@@ -1145,7 +1146,7 @@ unsigned int hash_page_do_lazy_icache(unsigned int pp, pte_t pte, int trap)
+ 
+ 	/* page is dirty */
+ 	if (!test_bit(PG_dcache_clean, &page->flags) && !PageReserved(page)) {
+-		if (trap == 0x400) {
++		if (trap == INTERRUPT_INST_STORAGE) {
+ 			flush_dcache_icache_page(page);
+ 			set_bit(PG_dcache_clean, &page->flags);
+ 		} else
+@@ -1545,7 +1546,7 @@ DEFINE_INTERRUPT_HANDLER_RET(__do_hash_fault)
+ 	if (user_mode(regs) || (region_id == USER_REGION_ID))
+ 		access &= ~_PAGE_PRIVILEGED;
+ 
+-	if (TRAP(regs) == 0x400)
++	if (TRAP(regs) == INTERRUPT_INST_STORAGE)
+ 		access |= _PAGE_EXEC;
+ 
+ 	err = hash_page_mm(mm, ea, access, TRAP(regs), flags);
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index 0c0b1c2cfb49..1215fa2a72a7 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -44,6 +44,7 @@
+ #include <asm/debug.h>
+ #include <asm/kup.h>
+ #include <asm/inst.h>
++#include <asm/traps.h>
+ 
+ 
+ /*
+@@ -197,7 +198,7 @@ static int mm_fault_error(struct pt_regs *regs, unsigned long addr,
+ static bool bad_kernel_fault(struct pt_regs *regs, unsigned long error_code,
+ 			     unsigned long address, bool is_write)
+ {
+-	int is_exec = TRAP(regs) == 0x400;
++	int is_exec = TRAP(regs) == INTERRUPT_INST_STORAGE;
+ 
+ 	/* NX faults set DSISR_PROTFAULT on the 8xx, DSISR_NOEXEC_OR_G on others */
+ 	if (is_exec && (error_code & (DSISR_NOEXEC_OR_G | DSISR_KEYFAULT |
+@@ -391,7 +392,7 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	struct vm_area_struct * vma;
+ 	struct mm_struct *mm = current->mm;
+ 	unsigned int flags = FAULT_FLAG_DEFAULT;
+- 	int is_exec = TRAP(regs) == 0x400;
++	int is_exec = TRAP(regs) == INTERRUPT_INST_STORAGE;
+ 	int is_user = user_mode(regs);
+ 	int is_write = page_fault_is_write(error_code);
+ 	vm_fault_t fault, major = 0;
+@@ -588,20 +589,24 @@ void __bad_page_fault(struct pt_regs *regs, int sig)
+ 	/* kernel has accessed a bad area */
+ 
+ 	switch (TRAP(regs)) {
+-	case 0x300:
+-	case 0x380:
+-	case 0xe00:
++	case INTERRUPT_DATA_STORAGE:
++#if !defined(CONFIG_BOOKE) && !defined(CONFIG_4xx)
++	case INTERRUPT_DATA_SEGMENT:
++	case INTERRUPT_H_DATA_STORAGE:
++#endif
+ 		pr_alert("BUG: %s on %s at 0x%08lx\n",
+ 			 regs->dar < PAGE_SIZE ? "Kernel NULL pointer dereference" :
+ 			 "Unable to handle kernel data access",
+ 			 is_write ? "write" : "read", regs->dar);
+ 		break;
+-	case 0x400:
+-	case 0x480:
++	case INTERRUPT_INST_STORAGE:
++#if !defined(CONFIG_BOOKE) && !defined(CONFIG_4xx)
++	case INTERRUPT_INST_SEGMENT:
++#endif
+ 		pr_alert("BUG: Unable to handle kernel instruction fetch%s",
+ 			 regs->nip < PAGE_SIZE ? " (NULL pointer?)\n" : "\n");
+ 		break;
+-	case 0x600:
++	case INTERRUPT_ALIGNMENT:
+ 		pr_alert("BUG: Unable to handle kernel unaligned access at 0x%08lx\n",
+ 			 regs->dar);
+ 		break;
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 766f064f00fb..6e34f5bba232 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -17,6 +17,7 @@
+ #include <asm/firmware.h>
+ #include <asm/ptrace.h>
+ #include <asm/code-patching.h>
++#include <asm/traps.h>
+ 
+ #ifdef CONFIG_PPC64
+ #include "internal.h"
+@@ -168,7 +169,7 @@ static bool regs_use_siar(struct pt_regs *regs)
+ 	 * they have not been setup using perf_read_regs() and so regs->result
+ 	 * is something random.
+ 	 */
+-	return ((TRAP(regs) == 0xf00) && regs->result);
++	return ((TRAP(regs) == INTERRUPT_PERFMON) && regs->result);
+ }
+ 
+ /*
+@@ -347,7 +348,7 @@ static inline void perf_read_regs(struct pt_regs *regs)
+ 	 * hypervisor samples as well as samples in the kernel with
+ 	 * interrupts off hence the userspace check.
+ 	 */
+-	if (TRAP(regs) != 0xf00)
++	if (TRAP(regs) != INTERRUPT_PERFMON)
+ 		use_siar = 0;
+ 	else if ((ppmu->flags & PPMU_NO_SIAR))
+ 		use_siar = 0;
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 3fe37495f63d..59136634c5ce 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -54,6 +54,7 @@
+ #include <asm/code-patching.h>
+ #include <asm/sections.h>
+ #include <asm/inst.h>
++#include <asm/traps.h>
+ 
+ #ifdef CONFIG_PPC64
+ #include <asm/hvcall.h>
+@@ -1769,7 +1770,12 @@ static void excprint(struct pt_regs *fp)
+ 	printf("    sp: %lx\n", fp->gpr[1]);
+ 	printf("   msr: %lx\n", fp->msr);
+ 
+-	if (trap == 0x300 || trap == 0x380 || trap == 0x600 || trap == 0x200) {
++	if (trap == INTERRUPT_DATA_STORAGE ||
++#if !defined(CONFIG_BOOKE) && !defined(CONFIG_4xx)
++	    trap == INTERRUPT_DATA_SEGMENT ||
++#endif
++	    trap == INTERRUPT_ALIGNMENT ||
++	    trap == INTERRUPT_MACHINE_CHECK) {
+ 		printf("   dar: %lx\n", fp->dar);
+ 		if (trap != 0x380)
+ 			printf(" dsisr: %lx\n", fp->dsisr);
+@@ -1785,7 +1791,7 @@ static void excprint(struct pt_regs *fp)
+ 		       current->pid, current->comm);
+ 	}
+ 
+-	if (trap == 0x700)
++	if (trap == INTERRUPT_PROGRAM)
+ 		print_bug_trap(fp);
+ 
+ 	printf(linux_banner);
+@@ -1846,7 +1852,11 @@ static void prregs(struct pt_regs *fp)
+ 	printf("ctr = "REG"   xer = "REG"   trap = %4lx\n",
+ 	       fp->ctr, fp->xer, fp->trap);
+ 	trap = TRAP(fp);
+-	if (trap == 0x300 || trap == 0x380 || trap == 0x600)
++	if (trap == INTERRUPT_DATA_STORAGE ||
++#if !defined(CONFIG_BOOKE) && !defined(CONFIG_4xx)
++	    trap == INTERRUPT_DATA_SEGMENT ||
++#endif
++	    trap == INTERRUPT_ALIGNMENT)
+ 		printf("dar = "REG"   dsisr = %.8lx\n", fp->dar, fp->dsisr);
+ }
+ 
+-- 
+2.17.1
 
