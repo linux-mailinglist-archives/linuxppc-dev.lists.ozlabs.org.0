@@ -2,71 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21DE35963F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 09:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB91A3596F8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 09:57:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FGqKJ65Yxz3bxn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 17:20:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FGr885FQZz3c0v
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Apr 2021 17:57:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=q+jIWwzI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=T4ScMsCh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::536;
- helo=mail-pg1-x536.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::633;
+ helo=mail-ej1-x633.google.com; envelope-from=syl.loop@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=q+jIWwzI; dkim-atps=neutral
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
- [IPv6:2607:f8b0:4864:20::536])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=T4ScMsCh; dkim-atps=neutral
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com
+ [IPv6:2a00:1450:4864:20::633])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FGqJp3y6rz303f
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 17:19:54 +1000 (AEST)
-Received: by mail-pg1-x536.google.com with SMTP id w10so3224634pgh.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Apr 2021 00:19:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=3jpQ3lZXMgzXRrsRMytSQQwKCg9AstxjxLrChn5w6cw=;
- b=q+jIWwzIzCXrBiItIjor8RfQsqmwt6DshA3PoZ7NMrJqyNtdyJ0LgUsNWVzl4aOKHg
- GayOOz+5vGt68tGX998K17zkv/pxUanMYMydbCfrUqNlv6zBUtlUOqABluYnslJkSYfj
- ouAymLwFd5ba8qNr2yRQ8Bs74Vjhiz3Dbee28=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FGqgs0SPWz2yyr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Apr 2021 17:36:22 +1000 (AEST)
+Received: by mail-ej1-x633.google.com with SMTP id v6so5861639ejo.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Apr 2021 00:36:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=aYu6DCXGfSXXaBL74AFXRcLOIQDKPV51FufAhX07leY=;
+ b=T4ScMsChUxxk3O+/alt0eCvRHhpSfTZyAdYZcC8g/ecgEo2ePtiFgNeOrlpwvado50
+ Bw6Yl9fwOItPaM7GZLIfS3wf9hFEFFWgnReku6XdqO7k26LOlnS1dGHbfRsLZEkjapZ1
+ nqUPKM2rmw2UuL9Trfp+SGwYRuszYEvV7I5CvdB9hJq6a3hovVrZADan8Jpdjf126wj0
+ idl9AEnst7grkkXAyppPpRcL3/jX/4wF7CRYX7+2qWcdsYFVzfDf5kcWSvPdXTV3g//I
+ owt9Z1ofEA4UYXIn8aQrUgJajYPr7De6F5q4TYTo6nmQ0ZpLhP1EpLZpudPG5sKZ+Wvd
+ yTKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=3jpQ3lZXMgzXRrsRMytSQQwKCg9AstxjxLrChn5w6cw=;
- b=TFCTXeKpdochpQZGAt2Zi3jQBRr/igrfpk4JgAZ+5dgT7BYdqBsLcm62oV/KjPzBPr
- REVjH1oto50esyNRmOqaGL7qho3A0ATJpkYpGZ7m0UiKsJG+DEarWCnTY96n9xtN4YT7
- hhoMWaP77/nuSItuM/CkikpP5FXgPdhNGlXvdrH6o+16AzmD/jKHtgTRQ5xxVKvf5fva
- mt+B2p5ggPx0PQ/4UsRJip0SP5aLNZPmdij1/NctSDLC0UGxPoq+FcP2Ze4KsmbYdN4L
- /2oeVq9zTlMKZy7pef1vy6E2UsChmzVbzm3W1xe/p/N9CMovUyCY8K4fB4qXb7WT/8EJ
- HUYw==
-X-Gm-Message-State: AOAM532n9V6SPgQ+pzvckKYDtQyiABQjff5r5UOaaw58huQfSEWprqSv
- 5Wqp8vpRkRmO+PA+iW8xyMCn4g==
-X-Google-Smtp-Source: ABdhPJwPfAya/vYfNmH8mZgcEYD6mXq9hmGnG4qDZ1azfbvW7kO+y+hKgSmjhSYDNtCBTNVyuPSGKw==
-X-Received: by 2002:a63:1c22:: with SMTP id c34mr5763854pgc.408.1617952791067; 
- Fri, 09 Apr 2021 00:19:51 -0700 (PDT)
-Received: from localhost
- (2001-44b8-111e-5c00-600a-73c5-13c4-f875.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:600a:73c5:13c4:f875])
- by smtp.gmail.com with ESMTPSA id b21sm1357924pji.39.2021.04.09.00.19.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Apr 2021 00:19:50 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au
-Subject: Re: [PATCH v2 2/4] powerpc/selftests/perf-hwbreak: Coalesce event
- creation code
-In-Reply-To: <20210407054938.312857-3-ravi.bangoria@linux.ibm.com>
-References: <20210407054938.312857-1-ravi.bangoria@linux.ibm.com>
- <20210407054938.312857-3-ravi.bangoria@linux.ibm.com>
-Date: Fri, 09 Apr 2021 17:19:47 +1000
-Message-ID: <87k0pbgc18.fsf@linkitivity.dja.id.au>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=aYu6DCXGfSXXaBL74AFXRcLOIQDKPV51FufAhX07leY=;
+ b=Ii6Yov28e8Hjode8z3UejTIHHcumtpumBYRkslFV9RnV6v2q/SMPpE4zcta5pHLJ0M
+ Y6qA9bPCqWurLhCJPuip9hW4JOaawtxh21EWWdPpeSW/oU0JIH7SeehGcE0T3SsuQZru
+ a/l/LRvEeTN9wZ7NYWt9qm65QiNHvBGtfAypRKMbCehP3HIVb69sd9Yq2yG80TYuG+wO
+ Nu3RPZJiy1YH8IlizmzVn0C0XA4xsf8KA/7gSqumHK5m1WNz98Gb1YVKFA8yHJuNJzdA
+ +YcRLnSl4GM4IIFdIjJrk9JtbZ8xg2J9FYLqomxXbe9v1hZhxTQ+rgkf9eZRrK3Qo6Mt
+ RFtA==
+X-Gm-Message-State: AOAM530pwWks0ruzNcys1iLivFec6myDAjdjsobLA/+RXCDriN25zZSe
+ 0a1KilLLQQCSmbwebCFC1UqNXEJ7E4E3QPZPOk4=
+X-Google-Smtp-Source: ABdhPJyS9Td4/gQngpUPSne6PlGiqzgscs62wnb5KfgJo61mwzKDDvI9a5iwAIojHFByexOhp1TIa0PpLot13qgM//s=
+X-Received: by 2002:a17:906:a155:: with SMTP id
+ bu21mr14801293ejb.400.1617953778383; 
+ Fri, 09 Apr 2021 00:36:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20210403020423.85278-1-syl.loop@gmail.com>
+ <87y2due3mt.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87y2due3mt.fsf@mpe.ellerman.id.au>
+From: Sam Song <syl.loop@gmail.com>
+Date: Fri, 9 Apr 2021 15:36:06 +0800
+Message-ID: <CA+DfQ-JjpFNdpB=D9AqJ75zFrpg504xOeCDD=cb-qnR2mYrgQw@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/dts: fix not include DTC_FLAGS
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: multipart/alternative; boundary="000000000000393c0705bf853846"
+X-Mailman-Approved-At: Fri, 09 Apr 2021 17:57:06 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,85 +76,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, mikey@neuling.org, shuah@kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ robh+dt@kernel.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Ravi,
+--000000000000393c0705bf853846
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> perf-hwbreak selftest opens hw-breakpoint event at multiple places for
-> which it has same code repeated. Coalesce that code into a function.
+ In my test, DTC_FLAGS in arch/powerpc/boot/Makefile is not to work,I will
+send V2 to removing it.
+
+Michael Ellerman <mpe@ellerman.id.au> =E4=BA=8E2021=E5=B9=B44=E6=9C=887=E6=
+=97=A5=E5=91=A8=E4=B8=89 =E4=B8=8B=E5=8D=887:27=E5=86=99=E9=81=93=EF=BC=9A
+
+> Youlin Song <syl.loop@gmail.com> writes:
+> > I wanted to build the fsl dts in my machine and found that
+> > the dtb have not extra space,so uboot will cause about
+> > FDT_ERR_NOSPACE issue.
+> >
+> > Signed-off-by: Youlin Song <syl.loop@gmail.com>
+> > ---
+> >  arch/powerpc/boot/dts/Makefile | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/arch/powerpc/boot/dts/Makefile
+> b/arch/powerpc/boot/dts/Makefile
+> > index fb335d05aae8..c21165c0cd76 100644
+> > --- a/arch/powerpc/boot/dts/Makefile
+> > +++ b/arch/powerpc/boot/dts/Makefile
+> > @@ -2,5 +2,6 @@
+> >
+> >  subdir-y +=3D fsl
+> >
+> > +DTC_FLAGS   ?=3D -p 1024
+> >  dtstree              :=3D $(srctree)/$(src)
+> >  dtb-$(CONFIG_OF_ALL_DTBS) :=3D $(patsubst $(dtstree)/%.dts,%.dtb,
+> $(wildcard $(dtstree)/*.dts))
 >
-> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> ---
->  .../selftests/powerpc/ptrace/perf-hwbreak.c   | 78 +++++++++----------
-
-This doesn't simplify things very much for the code as it stands now,
-but I think your next patch adds a bunch of calls to these functions, so
-I agree that it makes sense to consolidate them now.
-
->  1 file changed, 38 insertions(+), 40 deletions(-)
+> I guess that was missed in 1acf1cf8638a ("powerpc: build .dtb files in dt=
+s
+> directory").
 >
-> diff --git a/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c b/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-> index c1f324afdbf3..bde475341c8a 100644
-> --- a/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-> +++ b/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-> @@ -34,28 +34,46 @@
->  
->  #define DAWR_LENGTH_MAX ((0x3f + 1) * 8)
->  
-> -static inline int sys_perf_event_open(struct perf_event_attr *attr, pid_t pid,
-> -				      int cpu, int group_fd,
-> -				      unsigned long flags)
-> +static void perf_event_attr_set(struct perf_event_attr *attr,
-> +				__u32 type, __u64 addr, __u64 len,
-> +				bool exclude_user)
->  {
-> -	attr->size = sizeof(*attr);
-> -	return syscall(__NR_perf_event_open, attr, pid, cpu, group_fd, flags);
-> +	memset(attr, 0, sizeof(struct perf_event_attr));
-> +	attr->type           = PERF_TYPE_BREAKPOINT;
-> +	attr->size           = sizeof(struct perf_event_attr);
-> +	attr->bp_type        = type;
-> +	attr->bp_addr        = addr;
-> +	attr->bp_len         = len;
-> +	attr->exclude_kernel = 1;
-> +	attr->exclude_hv     = 1;
-> +	attr->exclude_guest  = 1;
+> Which I think means the assignment to DTC_FLAGS in
+> arch/powerpc/boot/Makefile is not needed anymore.
+>
+> Can you send a v2 removing that assignment and explaining that's what
+> happened?
+>
+> cheers
+>
 
-Only 1 of the calls to perf sets exclude_{kernel,hv,guest} - I assume
-there's no issue with setting them always but I wanted to check.
+--000000000000393c0705bf853846
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +	attr->exclude_user   = exclude_user;
-> +	attr->disabled       = 1;
->  }
->  
-> -	/* setup counters */
-> -	memset(&attr, 0, sizeof(attr));
-> -	attr.disabled = 1;
-> -	attr.type = PERF_TYPE_BREAKPOINT;
-> -	attr.bp_type = readwriteflag;
-> -	attr.bp_addr = (__u64)ptr;
-> -	attr.bp_len = sizeof(int);
-> -	if (arraytest)
-> -		attr.bp_len = DAWR_LENGTH_MAX;
-> -	attr.exclude_user = exclude_user;
-> -	break_fd = sys_perf_event_open(&attr, 0, -1, -1, 0);
-> +	break_fd = perf_process_event_open_exclude_user(readwriteflag, (__u64)ptr,
-> +				arraytest ? DAWR_LENGTH_MAX : sizeof(int),
-> +				exclude_user);
+<div dir=3D"ltr">
+In my test,=20
+DTC_FLAGS in arch/powerpc/boot/Makefile is not to work,I will send V2 to re=
+moving it.
 
-checkpatch doesn't like this very much:
+</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=
+Michael Ellerman &lt;<a href=3D"mailto:mpe@ellerman.id.au">mpe@ellerman.id.=
+au</a>&gt; =E4=BA=8E2021=E5=B9=B44=E6=9C=887=E6=97=A5=E5=91=A8=E4=B8=89 =E4=
+=B8=8B=E5=8D=887:27=E5=86=99=E9=81=93=EF=BC=9A<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex">Youlin Song &lt;<a href=3D"mailto:syl.loop=
+@gmail.com" target=3D"_blank">syl.loop@gmail.com</a>&gt; writes:<br>
+&gt; I wanted to build the fsl dts in my machine and found that<br>
+&gt; the dtb have not extra space,so uboot will cause about<br>
+&gt; FDT_ERR_NOSPACE issue.<br>
+&gt;<br>
+&gt; Signed-off-by: Youlin Song &lt;<a href=3D"mailto:syl.loop@gmail.com" t=
+arget=3D"_blank">syl.loop@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 arch/powerpc/boot/dts/Makefile | 1 +<br>
+&gt;=C2=A0 1 file changed, 1 insertion(+)<br>
+&gt;<br>
+&gt; diff --git a/arch/powerpc/boot/dts/Makefile b/arch/powerpc/boot/dts/Ma=
+kefile<br>
+&gt; index fb335d05aae8..c21165c0cd76 100644<br>
+&gt; --- a/arch/powerpc/boot/dts/Makefile<br>
+&gt; +++ b/arch/powerpc/boot/dts/Makefile<br>
+&gt; @@ -2,5 +2,6 @@<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 subdir-y +=3D fsl<br>
+&gt;=C2=A0 <br>
+&gt; +DTC_FLAGS=C2=A0 =C2=A0?=3D -p 1024<br>
+&gt;=C2=A0 dtstree=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 :=3D $(s=
+rctree)/$(src)<br>
+&gt;=C2=A0 dtb-$(CONFIG_OF_ALL_DTBS) :=3D $(patsubst $(dtstree)/%.dts,%.dtb=
+, $(wildcard $(dtstree)/*.dts))<br>
+<br>
+I guess that was missed in 1acf1cf8638a (&quot;powerpc: build .dtb files in=
+ dts directory&quot;).<br>
+<br>
+Which I think means the assignment to DTC_FLAGS in<br>
+arch/powerpc/boot/Makefile is not needed anymore.<br>
+<br>
+Can you send a v2 removing that assignment and explaining that&#39;s what<b=
+r>
+happened?<br>
+<br>
+cheers<br>
+</blockquote></div>
 
-CHECK: Alignment should match open parenthesis
-#103: FILE: tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c:115:
-+	break_fd = perf_process_event_open_exclude_user(readwriteflag, (__u64)ptr,
-+				arraytest ? DAWR_LENGTH_MAX : sizeof(int),
-
-Apart from that, this seems good but I haven't checked in super fine
-detail just yet :)
-
-Kind regards,
-Daniel
+--000000000000393c0705bf853846--
