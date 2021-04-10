@@ -1,58 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12FD35AE15
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 16:19:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C96935AE58
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 16:30:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FHcZN585gz3c28
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 00:19:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FHcqJ2znhz3c9g
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 00:30:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FHcZ30ZfWz2ysr
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 00:19:06 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-84-kCKo1-18OZuYsleNdk-yPA-1; Sat, 10 Apr 2021 15:17:06 +0100
-X-MC-Unique: kCKo1-18OZuYsleNdk-yPA-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.2; Sat, 10 Apr 2021 15:17:05 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.012; Sat, 10 Apr 2021 15:17:05 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Matthew Wilcox' <willy@infradead.org>, kernel test robot <lkp@intel.com>
-Subject: RE: Bogus struct page layout on 32-bit
-Thread-Topic: Bogus struct page layout on 32-bit
-Thread-Index: AQHXLbNopyewSd0HZEaZbqB5fscTXqqtw2Cg
-Date: Sat, 10 Apr 2021 14:17:04 +0000
-Message-ID: <b9d5b09eaec44334b29241e16b8605d5@AcuMS.aculab.com>
-References: <20210409185105.188284-3-willy@infradead.org>
- <202104100656.N7EVvkNZ-lkp@intel.com>
- <20210410024313.GX2531743@casper.infradead.org>
-In-Reply-To: <20210410024313.GX2531743@casper.infradead.org>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FHcp43tnnz3bVM
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 00:29:32 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4FHcp42Vcbz9sWc; Sun, 11 Apr 2021 00:29:32 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Paul Mackerras <paulus@samba.org>
+In-Reply-To: <cover.1615398265.git.christophe.leroy@csgroup.eu>
+References: <cover.1615398265.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 00/15] powerpc: Cleanup of uaccess.h and adding asm
+ goto for get_user()
+Message-Id: <161806493038.1467223.3176738134833493844.b4-ty@ellerman.id.au>
+Date: Sun, 11 Apr 2021 00:28:50 +1000
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,133 +45,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
- "clang-built-linux@googlegroups.com" <clang-built-linux@googlegroups.com>,
- Jesper Dangaard Brouer <brouer@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Matthew Wilcox
-> Sent: 10 April 2021 03:43
-> On Sat, Apr 10, 2021 at 06:45:35AM +0800, kernel test robot wrote:
-> > >> include/linux/mm_types.h:274:1: error: static_assert failed due to r=
-equirement
-> '__builtin_offsetof(struct page, lru) =3D=3D __builtin_offsetof(struct fo=
-lio, lru)' "offsetof(struct page,
-> lru) =3D=3D offsetof(struct folio, lru)"
-> >    FOLIO_MATCH(lru, lru);
-> >    include/linux/mm_types.h:272:2: note: expanded from macro 'FOLIO_MAT=
-CH'
-> >            static_assert(offsetof(struct page, pg) =3D=3D offsetof(stru=
-ct folio, fl))
->=20
-> Well, this is interesting.  pahole reports:
->=20
-> struct page {
->         long unsigned int          flags;                /*     0     4 *=
-/
->         /* XXX 4 bytes hole, try to pack */
->         union {
->                 struct {
->                         struct list_head lru;            /*     8     8 *=
-/
-> ...
-> struct folio {
->         union {
->                 struct {
->                         long unsigned int flags;         /*     0     4 *=
-/
->                         struct list_head lru;            /*     4     8 *=
-/
->=20
-> so this assert has absolutely done its job.
->=20
-> But why has this assert triggered?  Why is struct page layout not what
-> we thought it was?  Turns out it's the dma_addr added in 2019 by commit
-> c25fff7171be ("mm: add dma_addr_t to struct page").  On this particular
-> config, it's 64-bit, and ppc32 requires alignment to 64-bit.  So
-> the whole union gets moved out by 4 bytes.
->=20
-> Unfortunately, we can't just fix this by putting an 'unsigned long pad'
-> in front of it.  It still aligns the entire union to 8 bytes, and then
-> it skips another 4 bytes after the pad.
->=20
-> We can fix it like this ...
->=20
-> +++ b/include/linux/mm_types.h
-> @@ -96,11 +96,12 @@ struct page {
->                         unsigned long private;
->                 };
->                 struct {        /* page_pool used by netstack */
-> +                       unsigned long _page_pool_pad;
->                         /**
->                          * @dma_addr: might require a 64-bit value even o=
-n
->                          * 32-bit architectures.
->                          */
-> -                       dma_addr_t dma_addr;
-> +                       dma_addr_t dma_addr __packed;
->                 };
->                 struct {        /* slab, slob and slub */
->                         union {
->=20
-> but I don't know if GCC is smart enough to realise that dma_addr is now
-> on an 8 byte boundary and it can use a normal instruction to access it,
-> or whether it'll do something daft like use byte loads to access it.
+On Wed, 10 Mar 2021 17:46:39 +0000 (UTC), Christophe Leroy wrote:
+> This series cleans up uaccess.h and adds asm goto for get_user()
+> 
+> v2:
+> - Further clean ups
+> - asm goto for get_user()
+> - Move a few patches unrelated to put_user/get_user into another misc series.
+> 
+> [...]
 
-I'm betting it will use byte accesses.
-Checked - it does seem to use 4-byte accesses.
-(godbolt is rather short of 32 bit compilers...)
+Applied to powerpc/next.
 
->=20
-> We could also do:
->=20
-> +                       dma_addr_t dma_addr __packed __aligned(sizeof(voi=
-d *));
+[01/15] powerpc/uaccess: Remove __get_user_allowed() and unsafe_op_wrap()
+        https://git.kernel.org/powerpc/c/8cdf748d557f15ae6f9e0d4108cc3ea6e1ee4419
+[02/15] powerpc/uaccess: Define ___get_user_instr() for ppc32
+        https://git.kernel.org/powerpc/c/9bd68dc5d7463cb959bff9ac4b6c7e578171de35
+[03/15] powerpc/align: Convert emulate_spe() to user_access_begin
+        https://git.kernel.org/powerpc/c/3fa3db32956d74c0784171ae0334685502bb169a
+[04/15] powerpc/uaccess: Remove __get/put_user_inatomic()
+        https://git.kernel.org/powerpc/c/bad956b8fe1a8b3b634d596ed2023ec30726cdf1
+[05/15] powerpc/uaccess: Move get_user_instr helpers in asm/inst.h
+        https://git.kernel.org/powerpc/c/35506a3e2d7c4d93cb564e23471a448cbd98f085
+[06/15] powerpc/align: Don't use __get_user_instr() on kernel addresses
+        https://git.kernel.org/powerpc/c/111631b5e9dae764754657aad00bd6cd1a805d0d
+[07/15] powerpc/uaccess: Call might_fault() inconditionaly
+        https://git.kernel.org/powerpc/c/ed0d9c66f97c6865e87fa6e3631bbc3919a31ad6
+[08/15] powerpc/uaccess: Remove __unsafe_put_user_goto()
+        https://git.kernel.org/powerpc/c/be15a165796598cd3929ca9aac56ba5ec69e41c1
+[09/15] powerpc/uaccess: Remove __chk_user_ptr() in __get/put_user
+        https://git.kernel.org/powerpc/c/028e15616857add3ba4951f989027675370b0e82
+[10/15] powerpc/uaccess: Remove calls to __get_user_bad() and __put_user_bad()
+        https://git.kernel.org/powerpc/c/9975f852ce1bf041a1a81bf882e29ee7a3b78ca6
+[11/15] powerpc/uaccess: Split out __get_user_nocheck()
+        https://git.kernel.org/powerpc/c/f904c22f2a9fb09fe705efdedbe4af9a30bdf633
+[12/15] powerpc/uaccess: Rename __get/put_user_check/nocheck
+        https://git.kernel.org/powerpc/c/17f8c0bc21bbb7d1fe729c7f656924a6ea72079b
+[13/15] powerpc/uaccess: Refactor get/put_user() and __get/put_user()
+        https://git.kernel.org/powerpc/c/e72fcdb26cde72985c418b39f72ecaa222e1f4d5
+[14/15] powerpc/uaccess: Introduce __get_user_size_goto()
+        https://git.kernel.org/powerpc/c/035785ab2826beb43cfa65a2df37d60074915a4d
+[15/15] powerpc/uaccess: Use asm goto for get_user when compiler supports it
+        https://git.kernel.org/powerpc/c/5cd29b1fd3e8f2b45fe6d011588d832417defe31
 
-I wonder if __aligned(n) should be defined as
-=09__attribute__((packed,aligned(n))
-I don't think you ever want the 'unpacked' variant.
-
-But explicitly reducing the alignment of single member is much
-better than the habit of marking the structure 'packed'.
-
-(Never mind the habit of adding __packed 'because we don't want
-the compiler to add random padding.)
-
->=20
-> and I see pahole, at least sees this correctly:
->=20
->                 struct {
->                         long unsigned int _page_pool_pad; /*     4     4 =
-*/
->                         dma_addr_t dma_addr __attribute__((__aligned__(4)=
-)); /*     8     8 */
->                 } __attribute__((__packed__)) __attribute__((__aligned__(=
-4)));
-
-Is the attribute on the struct an artifact of pahole?
-It should just have an alignment of 4 without anything special.
-
->=20
-> This presumably affects any 32-bit architecture with a 64-bit phys_addr_t
-> / dma_addr_t.  Advice, please?
-
-Only those where a 64-bit value is 64-bit aligned.
-So that excludes x86 (which can have 64-bit dma) but includes sparc32
-(which probably doesn't).
-
-=09David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+cheers
