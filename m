@@ -2,61 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3DA35B007
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 21:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD6F35B086
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 22:53:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FHl3P5dHqz3bwH
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 05:11:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FHnKZ22lLz3c1q
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 06:53:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CIhhz328;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Ozahz+uj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=CIhhz328; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=Ozahz+uj; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FHl2z0KWvz2yyM
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 05:11:06 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C2CC2611AF
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Apr 2021 19:11:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1618081863;
- bh=rBfw+r2um68UpFbzVkxVlHHyJ+hgFPf/zBrFYQw7TNI=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=CIhhz328zzet5a/BvXZzSs9qZeOvsRmdTIQX8oHvPt4oPq31f6SdMiRQlV3wwxeNa
- GmirfKbnBbXy13rC5mPC5X4IYTxOrbfSp201pVc2ivwXNFWXhMjpUUd6Z3P6GdAypc
- hXQbk3jNgzXE4abVKr5LlTbMx3yus3tJYykOkPF4g5QUy/4sEmN3QnSl1XUTyImSG8
- +nrIDp4z3hEGajjGuvQYOwmAvld9GZf6ZqRXKlZ6kJNOxc2eYZ8HIjAVZ3TijeONug
- 5j3gyVLCEPaB6nGAjThA9V1IH5nKdc2cpKmOF0OJJIEPxgrvw2FaG4CSqtEAVnEU7R
- BXNDi+Akq/Lhw==
-Received: by mail-ot1-f42.google.com with SMTP id
- v24-20020a9d69d80000b02901b9aec33371so8983428oto.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Apr 2021 12:11:03 -0700 (PDT)
-X-Gm-Message-State: AOAM532clOMaMOkCMiTGX/GSrajPzMXgcRrpgPartsdG4px+fHiVkHUt
- kMNJEpjvfztvSZJ8xQ09qX3BFF/iVjoUscrvjlk=
-X-Google-Smtp-Source: ABdhPJy5fKRN+b0N+vdm7HuaN0voD9Ksx0FbjR4NiXXEFlqO3Rbtb6TftW/JNl1MSl+hXOUABL/gf3HkAiDbD0wFK7g=
-X-Received: by 2002:a05:6830:148c:: with SMTP id
- s12mr17843523otq.251.1618081863076; 
- Sat, 10 Apr 2021 12:11:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FHnK861yQz2xfy
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 06:53:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=HTkpYNC2wTW6Zm43v2gmt2r8ARHTWf8+PnXOPO0doXI=; b=Ozahz+ujymLR6HRV/gUOZ0gS1P
+ BDxgLs4uWmYMJEQ30kO1xYpxSOZuU3h08C7SIYNtLc/oIaEOgoADxjaJUBMDXKILVtnjSouZO/lPQ
+ aNoJocoo0y+OakKVQFsGfNC6hCM05ztUqOsU3MOgwCGgy+1ypt/X4LiFKiLuwLF6p6spu4OyVf58l
+ N5OKNtz1OCrsxBpSOE3NlX8z2plRdlW/ReN3u5na5rvYaJXfHDHZUmcZ+kaml3vrQ2iuDTwWob/C3
+ MwFjTKUtdre3pEAuqIyXnRJCGrKsKCsCGWHfLX1nMevAlwYQof1vRaKjR1TB0qnKxtw8nmsW7AiZW
+ zeNaEQmQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
+ Linux)) id 1lVKb2-0027v9-QT; Sat, 10 Apr 2021 20:52:57 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
+Subject: [PATCH 0/1] Fix struct page layout on 32-bit systems
+Date: Sat, 10 Apr 2021 21:52:44 +0100
+Message-Id: <20210410205246.507048-1-willy@infradead.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <20210409185105.188284-3-willy@infradead.org>
- <202104100656.N7EVvkNZ-lkp@intel.com>
- <20210410024313.GX2531743@casper.infradead.org>
-In-Reply-To: <20210410024313.GX2531743@casper.infradead.org>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Sat, 10 Apr 2021 21:10:47 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3uEGaEN-p06vFP+jwbFt3P=Bx4=aRN+kUyB4PcFPxLRg@mail.gmail.com>
-Message-ID: <CAK8P3a3uEGaEN-p06vFP+jwbFt3P=Bx4=aRN+kUyB4PcFPxLRg@mail.gmail.com>
-Subject: Re: Bogus struct page layout on 32-bit
-To: Matthew Wilcox <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,62 +58,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, kernel test robot <lkp@intel.com>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
+Cc: Arnd Bergmann <arnd@kernel.org>,
+ Grygorii Strashko <grygorii.strashko@ti.com>,
+ Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-mips@vger.kernel.org,
+ "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
  Jesper Dangaard Brouer <brouer@redhat.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+ Matteo Croce <mcroce@linux.microsoft.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Apr 10, 2021 at 4:44 AM Matthew Wilcox <willy@infradead.org> wrote:
-> +                       dma_addr_t dma_addr __packed;
->                 };
->                 struct {        /* slab, slob and slub */
->                         union {
->
-> but I don't know if GCC is smart enough to realise that dma_addr is now
-> on an 8 byte boundary and it can use a normal instruction to access it,
-> or whether it'll do something daft like use byte loads to access it.
->
-> We could also do:
->
-> +                       dma_addr_t dma_addr __packed __aligned(sizeof(void *));
->
-> and I see pahole, at least sees this correctly:
->
->                 struct {
->                         long unsigned int _page_pool_pad; /*     4     4 */
->                         dma_addr_t dma_addr __attribute__((__aligned__(4))); /*     8     8 */
->                 } __attribute__((__packed__)) __attribute__((__aligned__(4)));
->
-> This presumably affects any 32-bit architecture with a 64-bit phys_addr_t
-> / dma_addr_t.  Advice, please?
+I'd really appreciate people testing this, particularly on
+arm32/mips32/ppc32 systems with a 64-bit dma_addr_t.
 
-I've tried out what gcc would make of this:  https://godbolt.org/z/aTEbxxbG3
+Matthew Wilcox (Oracle) (1):
+  mm: Fix struct page layout on 32-bit systems
 
-struct page {
-    short a;
-    struct {
-        short b;
-        long long c __attribute__((packed, aligned(2)));
-    } __attribute__((packed));
-} __attribute__((aligned(8)));
+ include/linux/mm_types.h | 38 ++++++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
 
-In this structure, 'c' is clearly aligned to eight bytes, and gcc does
-realize that
-it is safe to use the 'ldrd' instruction for 32-bit arm, which is forbidden on
-struct members with less than 4 byte alignment. However, it also complains
-that passing a pointer to 'c' into a function that expects a 'long long' is not
-allowed because alignof(c) is only '2' here.
+-- 
+2.30.2
 
-(I used 'short' here because I having a 64-bit member misaligned by four
-bytes wouldn't make a difference to the instructions on Arm, or any other
-32-bit architecture I can think of, regardless of the ABI requirements).
-
-      Arnd
