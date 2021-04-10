@@ -1,54 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66B935B087
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 22:54:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C112D35B0C5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 01:40:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FHnLf5Xpmz3btC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 06:54:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FHs1f5L55z3bvl
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 09:40:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=i5gbw5w7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=TDBrsBDO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22e;
+ helo=mail-oi1-x22e.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=i5gbw5w7; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=TDBrsBDO; dkim-atps=neutral
+Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com
+ [IPv6:2607:f8b0:4864:20::22e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FHnLF3Xxlz2xfy
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 06:54:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
- Content-Type:Content-ID:Content-Description;
- bh=yEhz7y0CGZuP2jAZyLJRxF/+72ERrNclNPf+YZnthms=; b=i5gbw5w7uAuWK89bhf2Sg7mZPO
- Pe/IPgz7XQwGqe28En2+H4gPDf6Sym78McWLPJU3KV96pLYwkpSXhe6+oEJ3sAa1/Di6jsUAOzZgi
- ULC+GRiQllP9ZWO9bagsiISYHoJ2xBkKQS4JcFgd70jdxVMTzZv6ZMQNuvd2RX5rGpw0j6hxGI/6d
- xcHwuMMVnefYehJ8tSrn21Atv+iusGtsYROOGw9+gGNxnxg51m4pU3XYrT8rQ9Zf+ph7qJ8WMXrn3
- 4FByd97IikiPQkrYqwtPDLgJK/bD1Vt264ofkgkNfniLmGY8lOdL/mFCFddDljXke6n8E79zIv/UV
- yN30XbLQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
- Linux)) id 1lVKbS-0027wf-Fe; Sat, 10 Apr 2021 20:53:16 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
-Subject: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
-Date: Sat, 10 Apr 2021 21:52:45 +0100
-Message-Id: <20210410205246.507048-2-willy@infradead.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210410205246.507048-1-willy@infradead.org>
-References: <20210410205246.507048-1-willy@infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FHs172lzCz302g
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 09:39:54 +1000 (AEST)
+Received: by mail-oi1-x22e.google.com with SMTP id m13so9728845oiw.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Apr 2021 16:39:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=jbh9yWlGg2BNKfvTRjSRQJvtgak2JcPfucDME7L6Hms=;
+ b=TDBrsBDOgQO2yz/IwOBWyZR3aeSBrlRYc88mJ0J3cuHmUATj33Nln6vqyboKsUOsUO
+ KJvirM9eVf8WlNTnuoHT9pO46Rqlzs+DvxPBdh7oNqv03EJ2AG3zKiuooprzoMi9xha+
+ Hey/Jx4jsjv6bKpqpewrPEI4Hf41pmU3hXLiKE7nuPa0kn7tXlzkRLKDtpTkt67hvytH
+ 9+oZv1V2zlwZd1cZqhNT44nqtmAR+g5MvMZpdE7yLRY7TDe/FKLVRA3pb1UamuLM4ftS
+ p9gxLMTr2VV0kQqB6u1I3QU9hVO63b/tpLpN0ajg/bzqZUymsd4HPDHF29r+cVMRvLsQ
+ S8ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to:user-agent;
+ bh=jbh9yWlGg2BNKfvTRjSRQJvtgak2JcPfucDME7L6Hms=;
+ b=qJCdgCfvSoF35sS5Re1Az/NLBXjb4FsvnhJcVuk97duU5PokJf26RURQBTh0N/vWlT
+ 2gE9yhuZpFuOYPJdX2157q/Hu44EO1TJ7DQae0YWjkZOYSXu1CJ372aCboQP+mvVfS5w
+ 8jJ3ekeHEN4GnML3ol1hhQygTbIY+bhWmfWFNu7R68L9vzzZNzxMUZ4QdXhqHREdHyk8
+ c7nzXmVn4iprqHPiaIVCAuIVR9qsyoqPUC68nQcpEazn3CJxm/EbvThE5NoTGwYzds9B
+ 9zkGL2ebkbWu2Orn7sfNDHIhE+EdDn3/5oSy2J0GqtVDZ/5otu3Vl9KDgP/ktAsXXR79
+ wrpg==
+X-Gm-Message-State: AOAM530ivWPfsVjMgzkfCfNiF3oF5jEb8kZWbEh7DPB+FmSewIn//Vxk
+ kNpyVVg7EK5nhP12sDPtdhc=
+X-Google-Smtp-Source: ABdhPJyTDoW2zL12quMalKfpVkWtz6CY7vQs+OXkH7mWHcoSSFAacdHFNAIa9Rjp/Om/Bw+pFB14Kg==
+X-Received: by 2002:aca:cf95:: with SMTP id
+ f143mr14594033oig.104.1618097989394; 
+ Sat, 10 Apr 2021 16:39:49 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id p3sm1645085otk.9.2021.04.10.16.39.47
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Sat, 10 Apr 2021 16:39:48 -0700 (PDT)
+Date: Sat, 10 Apr 2021 16:39:47 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 08/10] powerpc/signal32: Convert restore_[tm]_user_regs()
+ to user access block
+Message-ID: <20210410233947.GA202696@roeck-us.net>
+References: <cover.1616151715.git.christophe.leroy@csgroup.eu>
+ <181adf15a6f644efcd1aeafb355f3578ff1b6bc5.1616151715.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <181adf15a6f644efcd1aeafb355f3578ff1b6bc5.1616151715.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,134 +83,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@kernel.org>,
- Grygorii Strashko <grygorii.strashko@ti.com>,
- Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-mips@vger.kernel.org,
- "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
- Jesper Dangaard Brouer <brouer@redhat.com>,
- Matteo Croce <mcroce@linux.microsoft.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, cmr@codefail.de,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-32-bit architectures which expect 8-byte alignment for 8-byte integers
-and need 64-bit DMA addresses (arc, arm, mips, ppc) had their struct
-page inadvertently expanded in 2019.  When the dma_addr_t was added,
-it forced the alignment of the union to 8 bytes, which inserted a 4 byte
-gap between 'flags' and the union.
+On Fri, Mar 19, 2021 at 11:06:57AM +0000, Christophe Leroy wrote:
+> Convert restore_user_regs() and restore_tm_user_regs()
+> to use user_access_read_begin/end blocks.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+...
+>  static long restore_user_regs(struct pt_regs *regs,
+>  			      struct mcontext __user *sr, int sig)
+>  {
+...
+> @@ -567,19 +569,22 @@ static long restore_user_regs(struct pt_regs *regs,
+>  	regs->msr &= ~MSR_SPE;
+>  	if (msr & MSR_SPE) {
+>  		/* restore spe registers from the stack */
+> -		if (__copy_from_user(current->thread.evr, &sr->mc_vregs,
+> -				     ELF_NEVRREG * sizeof(u32)))
+> -			return 1;
+> +		unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
+> +				      ELF_NEVRREG * sizeof(u32));
 
-We could fix this by telling the compiler to use a smaller alignment
-for the dma_addr, but that seems a little fragile.  Instead, move the
-'flags' into the union.  That causes dma_addr to shift into the same
-bits as 'mapping', so it would have to be cleared on free.  To avoid
-this, insert three words of padding and use the same bits as ->index
-and ->private, neither of which have to be cleared on free.
+arch/powerpc/kernel/signal_32.c: In function 'restore_user_regs':
+arch/powerpc/kernel/signal_32.c:565:36: error: macro "unsafe_copy_from_user" requires 4 arguments, but only 3 given
 
-Fixes: c25fff7171be ("mm: add dma_addr_t to struct page")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- include/linux/mm_types.h | 38 ++++++++++++++++++++++++++------------
- 1 file changed, 26 insertions(+), 12 deletions(-)
-
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 6613b26a8894..45c563e9b50e 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -68,16 +68,22 @@ struct mem_cgroup;
- #endif
- 
- struct page {
--	unsigned long flags;		/* Atomic flags, some possibly
--					 * updated asynchronously */
- 	/*
--	 * Five words (20/40 bytes) are available in this union.
--	 * WARNING: bit 0 of the first word is used for PageTail(). That
--	 * means the other users of this union MUST NOT use the bit to
-+	 * This union is six words (24 / 48 bytes) in size.
-+	 * The first word is reserved for atomic flags, often updated
-+	 * asynchronously.  Use the PageFoo() macros to access it.  Some
-+	 * of the flags can be reused for your own purposes, but the
-+	 * word as a whole often contains other information and overwriting
-+	 * it will cause functions like page_zone() and page_node() to stop
-+	 * working correctly.
-+	 *
-+	 * Bit 0 of the second word is used for PageTail(). That
-+	 * means the other users of this union MUST leave the bit zero to
- 	 * avoid collision and false-positive PageTail().
- 	 */
- 	union {
- 		struct {	/* Page cache and anonymous pages */
-+			unsigned long flags;
- 			/**
- 			 * @lru: Pageout list, eg. active_list protected by
- 			 * lruvec->lru_lock.  Sometimes used as a generic list
-@@ -96,13 +102,14 @@ struct page {
- 			unsigned long private;
- 		};
- 		struct {	/* page_pool used by netstack */
--			/**
--			 * @dma_addr: might require a 64-bit value even on
--			 * 32-bit architectures.
--			 */
--			dma_addr_t dma_addr;
-+			unsigned long _pp_flags;
-+			unsigned long pp_magic;
-+			unsigned long xmi;
-+			unsigned long _pp_mapping_pad;
-+			dma_addr_t dma_addr;	/* might be one or two words */
- 		};
- 		struct {	/* slab, slob and slub */
-+			unsigned long _slab_flags;
- 			union {
- 				struct list_head slab_list;
- 				struct {	/* Partial pages */
-@@ -130,6 +137,7 @@ struct page {
- 			};
- 		};
- 		struct {	/* Tail pages of compound page */
-+			unsigned long _t1_flags;
- 			unsigned long compound_head;	/* Bit zero is set */
- 
- 			/* First tail page only */
-@@ -139,12 +147,14 @@ struct page {
- 			unsigned int compound_nr; /* 1 << compound_order */
- 		};
- 		struct {	/* Second tail page of compound page */
-+			unsigned long _t2_flags;
- 			unsigned long _compound_pad_1;	/* compound_head */
- 			atomic_t hpage_pinned_refcount;
- 			/* For both global and memcg */
- 			struct list_head deferred_list;
- 		};
- 		struct {	/* Page table pages */
-+			unsigned long _pt_flags;
- 			unsigned long _pt_pad_1;	/* compound_head */
- 			pgtable_t pmd_huge_pte; /* protected by page->ptl */
- 			unsigned long _pt_pad_2;	/* mapping */
-@@ -159,6 +169,7 @@ struct page {
- #endif
- 		};
- 		struct {	/* ZONE_DEVICE pages */
-+			unsigned long _zd_flags;
- 			/** @pgmap: Points to the hosting device page map. */
- 			struct dev_pagemap *pgmap;
- 			void *zone_device_data;
-@@ -174,8 +185,11 @@ struct page {
- 			 */
- 		};
- 
--		/** @rcu_head: You can use this to free a page by RCU. */
--		struct rcu_head rcu_head;
-+		struct {
-+			unsigned long _rcu_flags;
-+			/** @rcu_head: You can use this to free a page by RCU. */
-+			struct rcu_head rcu_head;
-+		};
- 	};
- 
- 	union {		/* This union is 4 bytes in size. */
--- 
-2.30.2
-
+Guenter
