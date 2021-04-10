@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590AE35AE6F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 16:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4078B35AE6E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 16:35:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FHcx81qV8z3c25
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 00:35:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FHcwh0nk4z3fTs
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 00:35:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,17 +16,18 @@ Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FHcpJ6qYSz3c2J
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 00:29:44 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FHcpG1xfwz3btr
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 00:29:42 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FHcpG2JTPz9t0l; Sun, 11 Apr 2021 00:29:42 +1000 (AEST)
+ id 4FHcpF53B9z9sXH; Sun, 11 Apr 2021 00:29:41 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Yang Li <yang.lee@linux.alibaba.com>, mpe@ellerman.id.au
-In-Reply-To: <1617672785-81372-1-git-send-email-yang.lee@linux.alibaba.com>
-References: <1617672785-81372-1-git-send-email-yang.lee@linux.alibaba.com>
-Subject: Re: [PATCH] powerpc/pseries: remove unneeded semicolon
-Message-Id: <161806493784.1467223.15378617494093429902.b4-ty@ellerman.id.au>
-Date: Sun, 11 Apr 2021 00:28:57 +1000
+To: linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20210404192623.10697-1-rdunlap@infradead.org>
+References: <20210404192623.10697-1-rdunlap@infradead.org>
+Subject: Re: [PATCH v2] powerpc: iommu: fix build when neither PCI or IBMVIO
+ is set
+Message-Id: <161806493809.1467223.11225410842334545249.b4-ty@ellerman.id.au>
+Date: Sun, 11 Apr 2021 00:28:58 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -41,19 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, paulus@samba.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
+ Anton Blanchard <anton@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 6 Apr 2021 09:33:05 +0800, Yang Li wrote:
-> Eliminate the following coccicheck warning:
-> ./arch/powerpc/platforms/pseries/lpar.c:1633:2-3: Unneeded semicolon
+On Sun, 4 Apr 2021 12:26:23 -0700, Randy Dunlap wrote:
+> When neither CONFIG_PCI nor CONFIG_IBMVIO is set/enabled, iommu.c has a
+> build error. The fault injection code is not useful in that kernel config,
+> so make the FAIL_IOMMU option depend on PCI || IBMVIO.
+> 
+> Prevents this build error (warning escalated to error):
+> ../arch/powerpc/kernel/iommu.c:178:30: error: 'fail_iommu_bus_notifier' defined but not used [-Werror=unused-variable]
+>   178 | static struct notifier_block fail_iommu_bus_notifier = {
 
 Applied to powerpc/next.
 
-[1/1] powerpc/pseries: remove unneeded semicolon
-      https://git.kernel.org/powerpc/c/01ed0510941ae1350c501977132bdb54630614e2
+[1/1] powerpc: iommu: fix build when neither PCI or IBMVIO is set
+      https://git.kernel.org/powerpc/c/b27dadecdf9102838331b9a0b41ffc1cfe288154
 
 cheers
