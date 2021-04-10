@@ -1,37 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0296135A91C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 01:11:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CB835A95E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 02:05:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FHDQQ5rn0z3cMm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 09:11:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FHFd63743z3c1V
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Apr 2021 10:05:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=F3EPpP2A;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
- envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FHClP3K6kz30Bx
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Apr 2021 08:40:46 +1000 (AEST)
-Received: from uucp (helo=alpha)
- by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
- id 1lUznc-00038n-01; Sat, 10 Apr 2021 00:40:24 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
- id EDAA4C24FC; Sat, 10 Apr 2021 00:39:11 +0200 (CEST)
-Date: Sat, 10 Apr 2021 00:39:11 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v2 1/1] kernel.h: Split out panic and oops helpers
-Message-ID: <20210409223911.GA21445@alpha.franken.de>
-References: <20210409100250.25922-1-andriy.shevchenko@linux.intel.com>
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=F3EPpP2A; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FHFcf48T4z30CS
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Apr 2021 10:05:05 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FHFcS3gNBz9sW4;
+ Sat, 10 Apr 2021 10:04:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1618013099;
+ bh=0UpzDyN9WxIPWbZ5xFLUOA/9nu8DvdJ3YDveQaB65Lw=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=F3EPpP2Ar/DYclLcROCWkVY7jkokRFDxbTVhGUC/mRVYPDfYPLoaI48lWsMEp8Tan
+ ABXD1uyDYlZkFEhjIHk+9/dW1vIcqF2X3J82j9R1v3XolWcXozlbXHbhGA5tTIWKs0
+ 8PDpWyLcDxelKxnJAcdaLnx/tdzbMiBtckdiKlqTOAASAeeHnuKaj6c+dqV/7M4six
+ tWDygLG64Wttb5SpPfb1D9HaDZTqNl+S4vccn1VNlesVLfqS6Ek/XZ70HzgByCtw7D
+ zE9x/7L/sfVCSq6vY0mcj6MUQe66LtM4ySAzs7g3XNxRdAkfxBmnvUuY1eS7NnjGjF
+ X5I1woWwgLFnQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Xiongwei Song
+ <sxwjean@me.com>, benh@kernel.crashing.org, paulus@samba.org,
+ oleg@redhat.com, npiggin@gmail.com, aneesh.kumar@linux.ibm.com,
+ ravi.bangoria@linux.ibm.com, mikey@neuling.org, haren@linux.ibm.com,
+ akpm@linux-foundation.org, rppt@kernel.org, jniethe5@gmail.com,
+ atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com, peterz@infradead.org,
+ kjain@linux.ibm.com, kan.liang@linux.intel.com, aik@ozlabs.ru,
+ alistair@popple.id.au, pmladek@suse.com, john.ogness@linutronix.de
+Subject: Re: [PATCH v3] powerpc/traps: Enhance readability for trap types
+In-Reply-To: <70ece993-12bd-335c-d246-914564eb51dd@csgroup.eu>
+References: <20210408140750.26832-1-sxwjean@me.com>
+ <70ece993-12bd-335c-d246-914564eb51dd@csgroup.eu>
+Date: Sat, 10 Apr 2021 10:04:49 +1000
+Message-ID: <874kgfdmxq.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210409100250.25922-1-andriy.shevchenko@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Sat, 10 Apr 2021 09:09:32 +1000
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,120 +70,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>, dri-devel@lists.freedesktop.org,
- Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
- "K. Y. Srinivasan" <kys@microsoft.com>, linux-clk@vger.kernel.org,
- linux-arch@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Jens Frederich <jfrederich@gmail.com>,
- Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org,
- Matt Turner <mattst88@gmail.com>, Ohad Ben-Cohen <ohad@wizery.com>,
- linux-pm@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>,
- linux-um@lists.infradead.org, Daniel Drake <dsd@laptop.org>,
- Mihai Carabas <mihai.carabas@oracle.com>, Thomas Gleixner <tglx@linutronix.de>,
- Richard Henderson <rth@twiddle.net>, Alex Elder <elder@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Joe Perches <joe@perches.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Marek Czerski <ma.czerski@gmail.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Jon Nettleton <jon.nettleton@gmail.com>,
- Alexander Egorenkov <egorenar@linux.ibm.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Christian Brauner <christian.brauner@ubuntu.com>, linux-s390@vger.kernel.org,
- Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>, Corey Minyard <minyard@acm.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Helge Deller <deller@gmx.de>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Iurii Zaikin <yzaikin@google.com>, linux-xtensa@linux-xtensa.org,
- Joerg Roedel <jroedel@suse.de>, Vasily Gorbik <gor@linux.ibm.com>,
- Scott Branden <scott.branden@broadcom.com>, coresight@lists.linaro.org,
- linux-fsdevel@vger.kernel.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
- Tony Luck <tony.luck@intel.com>, Mathieu Poirier <mathieu.poirier@linaro.org>,
- Stephen Boyd <sboyd@kernel.org>, Peter Oberparleiter <oberpar@linux.ibm.com>,
- Dinh Nguyen <dinguyen@kernel.org>, James Morse <james.morse@arm.com>,
- Eric Biederman <ebiederm@xmission.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Michael Turquette <mturquette@baylibre.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-hyperv@vger.kernel.org,
- Vineeth Vijayan <vneethv@linux.ibm.com>,
- Joel Fernandes <joel@joelfernandes.org>, Will Deacon <will@kernel.org>,
- Florian Fainelli <f.fainelli@gmail.com>, linux-staging@lists.linux.dev,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- bcm-kernel-feedback-list@broadcom.com,
- "Jason J. Herne" <jjherne@linux.ibm.com>, Robert Richter <rric@kernel.org>,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- Haiyang Zhang <haiyangz@microsoft.com>, Josh Triplett <josh@joshtriplett.org>,
- "Steven Rostedt \(VMware\)" <rostedt@goodmis.org>, rcu@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, linux-fbdev@vger.kernel.org,
- openipmi-developer@lists.sourceforge.net,
- Michael Kelley <mikelley@microsoft.com>, linux-parisc@vger.kernel.org,
- Hongbo Yao <yaohongbo@huawei.com>, Sebastian Reichel <sre@kernel.org>,
- linux-alpha@vger.kernel.org, Olof Johansson <olof@lixom.net>,
- "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>,
- Alexander Lobakin <alobakin@pm.me>, linux-remoteproc@vger.kernel.org,
- Bjorn Andersson <bjorn.andersson@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org, linux-leds@vger.kernel.org,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Richard Weinberger <richard@nod.at>, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>, Wang Wenhu <wenhu.wang@vivo.com>,
- Jeff Dike <jdike@addtoit.com>, Mike Leach <mike.leach@linaro.org>,
- "Paul E. McKenney" <paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Vlastimil Babka <vbabka@suse.cz>,
- linux-edac@vger.kernel.org, Juergen Gross <jgross@suse.com>,
- netdev@vger.kernel.org, kexec@lists.infradead.org, linux-mips@vger.kernel.org,
- Leo Yan <leo.yan@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Xiongwei Song <sxwjean@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 09, 2021 at 01:02:50PM +0300, Andy Shevchenko wrote:
-> kernel.h is being used as a dump for all kinds of stuff for a long time.
-> Here is the attempt to start cleaning it up by splitting out panic and
-> oops helpers.
-> 
-> There are several purposes of doing this:
-> - dropping dependency in bug.h
-> - dropping a loop by moving out panic_notifier.h
-> - unload kernel.h from something which has its own domain
-> 
-> At the same time convert users tree-wide to use new headers, although
-> for the time being include new header back to kernel.h to avoid twisted
-> indirected includes for existing users.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-> Acked-by: Corey Minyard <cminyard@mvista.com>
-> Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> Acked-by: Kees Cook <keescook@chromium.org>
-> Acked-by: Wei Liu <wei.liu@kernel.org>
-> Acked-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> v2:
->  - fixed all errors with allmodconfig on x86_64 (Andrew)
->  - checked with allyesconfig on x86_64
->  - additionally grepped source code for panic notifier list usage
->    and converted all users
->  - elaborated commit message (Luis)
->  - collected given tags (incl. Andrew's SoB, see below)
-> 
-> I added Andrew's SoB since part of the fixes I took from him. Andrew,
-> feel free to amend or tell me how you want me to do.
-> 
->  arch/mips/kernel/relocate.c                   |  1 +
->  arch/mips/sgi-ip22/ip22-reset.c               |  1 +
->  arch/mips/sgi-ip32/ip32-reset.c               |  1 +
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 08/04/2021 =C3=A0 16:07, Xiongwei Song a =C3=A9crit=C2=A0:
+>> From: Xiongwei Song <sxwjean@gmail.com>
+>>=20
+>> Create a new header named traps.h, define macros to list ppc interrupt
+>> types in traps.h, replace the reference of the trap hex values with these
+>> macros.
+...
+>> diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include=
+/asm/interrupt.h
+>> index 7c633896d758..5ce9898bc9a6 100644
+>> --- a/arch/powerpc/include/asm/interrupt.h
+>> +++ b/arch/powerpc/include/asm/interrupt.h
+>> @@ -8,6 +8,7 @@
+>>   #include <asm/ftrace.h>
+>>   #include <asm/kprobes.h>
+>>   #include <asm/runlatch.h>
+>> +#include <asm/traps.h>
+>>=20=20=20
+>>   struct interrupt_state {
+>>   #ifdef CONFIG_PPC_BOOK3E_64
+>> @@ -59,7 +60,7 @@ static inline void interrupt_enter_prepare(struct pt_r=
+egs *regs, struct interrup
+>>   		 * CT_WARN_ON comes here via program_check_exception,
+>>   		 * so avoid recursion.
+>>   		 */
+>> -		if (TRAP(regs) !=3D 0x700)
+>> +		if (TRAP(regs) !=3D INTERRUPT_PROGRAM)
+>>   			CT_WARN_ON(ct_state() !=3D CONTEXT_KERNEL);
+>>   	}
+>>   #endif
+>> @@ -156,7 +157,8 @@ static inline void interrupt_nmi_enter_prepare(struc=
+t pt_regs *regs, struct inte
+>>   	/* Don't do any per-CPU operations until interrupt state is fixed */
+>>   #endif
+>>   	/* Allow DEC and PMI to be traced when they are soft-NMI */
+>> -	if (TRAP(regs) !=3D 0x900 && TRAP(regs) !=3D 0xf00 && TRAP(regs) !=3D =
+0x260) {
+>> +	if (TRAP(regs) !=3D INTERRUPT_DECREMENTER &&
+>> +	    TRAP(regs) !=3D INTERRUPT_PERFMON) {
+>
+> I think too long names hinder readability, see later for suggestions.
 
-Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+I asked for the longer names :)
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+I think they make it easier for people who are less familiar with the
+architecture than us to make sense of the names.
+
+And there's only a couple of cases where it requires splitting a line,
+and they could be converted to use switch if we think it's a problem.
+
+>> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+>> index 0c0b1c2cfb49..641b3feef7ee 100644
+>> --- a/arch/powerpc/mm/fault.c
+>> +++ b/arch/powerpc/mm/fault.c
+>> @@ -588,20 +589,24 @@ void __bad_page_fault(struct pt_regs *regs, int si=
+g)
+>>   	/* kernel has accessed a bad area */
+>>=20=20=20
+>>   	switch (TRAP(regs)) {
+>> -	case 0x300:
+>> -	case 0x380:
+>> -	case 0xe00:
+>> +	case INTERRUPT_DATA_STORAGE:
+>> +#ifdef CONFIG_PPC_BOOK3S
+>> +	case INTERRUPT_DATA_SEGMENT:
+>> +	case INTERRUPT_H_DATA_STORAGE:
+>> +#endif
+>
+> It would be better to avoid #ifdefs when none where necessary before.
+
+Yes I agree.
+
+I think these can all be avoided by defining most of the values
+regardless of what platform we're building for. Only the values that
+overlap need to be kept behind an ifdef.
+
+cheers
