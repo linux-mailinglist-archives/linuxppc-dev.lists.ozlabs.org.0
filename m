@@ -2,43 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8CD35B699
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 20:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B3535B741
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 00:36:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJLJX29pGz3c0b
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 04:39:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJRYs2hJbz3byD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 08:36:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ciV9TA9s;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
- envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=ciV9TA9s; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJLJF0r38z3021
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 04:39:38 +1000 (AEST)
-Received: from [192.168.0.2] (ip5f5aef24.dynamic.kabel-deutschland.de
- [95.90.239.36])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id C953B20645D43;
- Sun, 11 Apr 2021 20:39:31 +0200 (CEST)
-Subject: Re: sysctl: setting key "net.core.bpf_jit_enable": Invalid argument
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- Sandipan Das <sandipan@linux.ibm.com>
-References: <412d88b2-fa9a-149e-6f6e-3cfbce9edef0@molgen.mpg.de>
- <d880c38c-e410-0b69-0897-9cbf4b759045@csgroup.eu>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-Message-ID: <1b1b8cae-b852-2c4f-0a67-d40768758be9@molgen.mpg.de>
-Date: Sun, 11 Apr 2021 20:39:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJRYP15Bmz2yRY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 08:36:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=lvW0/1imLWgxPdvw89GQU7hXjnk5amCWvOf6j0ZGMxs=; b=ciV9TA9sI2hcmMk+5mvn6+GMnQ
+ NVm1V6dO3xEncplJkkDlPA7TgOj6ULsrH2ZS8g/+oRMVmxes2/l/PJUJomi09t748PLbrirAblFzt
+ 9+iYMHD4kchH5/T/s2uhJzpGrDIP0bzFwXjxq8K7Inz0QPgN16EnsQlshWENlti99ULd0pPPgC9Vj
+ MRC1FJZvgC1UEgNB5/X3wMh72XySjbvejFh2JgxyYnO2+gc/910Fy1f/DUK/AnFxSRP2HkYKAi5Ay
+ A1nkFFPlVvLZHDJQxw4PZDVM6/IWhLdR10szkk3VpbK2rFhz+VFvaptbayoyArEpMhzHHNLX4tSok
+ 49f9Ab7A==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
+ Linux)) id 1lVig5-003WFx-6L; Sun, 11 Apr 2021 22:35:44 +0000
+Date: Sun, 11 Apr 2021 23:35:37 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Subject: Re: Bogus struct page layout on 32-bit
+Message-ID: <20210411223537.GF2531743@casper.infradead.org>
+References: <20210409185105.188284-3-willy@infradead.org>
+ <202104100656.N7EVvkNZ-lkp@intel.com>
+ <20210410024313.GX2531743@casper.infradead.org>
+ <CAK8P3a3uEGaEN-p06vFP+jwbFt3P=Bx4=aRN+kUyB4PcFPxLRg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <d880c38c-e410-0b69-0897-9cbf4b759045@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a3uEGaEN-p06vFP+jwbFt3P=Bx4=aRN+kUyB4PcFPxLRg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,54 +63,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: it+linux-bpf@molgen.mpg.de, netdev@vger.kernel.org, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: kbuild-all@lists.01.org, kernel test robot <lkp@intel.com>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Jesper Dangaard Brouer <brouer@redhat.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dear Christophe,
-
-
-Am 11.04.21 um 18:23 schrieb Christophe Leroy:
-
-> Le 11/04/2021 à 13:09, Paul Menzel a écrit :
-
->> Related to * [CVE-2021-29154] Linux kernel incorrect computation of 
->> branch displacements in BPF JIT compiler can be abused to execute 
->> arbitrary code in Kernel mode* [1], on the POWER8 system IBM S822LC 
->> with self-built Linux 5.12.0-rc5+, I am unable to disable 
->> `bpf_jit_enable`.
->>
->>     $ /sbin/sysctl net.core.bpf_jit_enable
->>     net.core.bpf_jit_enable = 1
->>     $ sudo /sbin/sysctl -w net.core.bpf_jit_enable=0
->>     sysctl: setting key "net.core.bpf_jit_enable": Invalid argument
->>
->> It works on an x86 with Debian sid/unstable and Linux 5.10.26-1.
+On Sat, Apr 10, 2021 at 09:10:47PM +0200, Arnd Bergmann wrote:
+> On Sat, Apr 10, 2021 at 4:44 AM Matthew Wilcox <willy@infradead.org> wrote:
+> > +                       dma_addr_t dma_addr __packed;
+> >                 };
+> >                 struct {        /* slab, slob and slub */
+> >                         union {
+> >
+> > but I don't know if GCC is smart enough to realise that dma_addr is now
+> > on an 8 byte boundary and it can use a normal instruction to access it,
+> > or whether it'll do something daft like use byte loads to access it.
+> >
+> > We could also do:
+> >
+> > +                       dma_addr_t dma_addr __packed __aligned(sizeof(void *));
+> >
+> > and I see pahole, at least sees this correctly:
+> >
+> >                 struct {
+> >                         long unsigned int _page_pool_pad; /*     4     4 */
+> >                         dma_addr_t dma_addr __attribute__((__aligned__(4))); /*     8     8 */
+> >                 } __attribute__((__packed__)) __attribute__((__aligned__(4)));
+> >
+> > This presumably affects any 32-bit architecture with a 64-bit phys_addr_t
+> > / dma_addr_t.  Advice, please?
 > 
-> Maybe you have selected CONFIG_BPF_JIT_ALWAYS_ON in your self-built 
-> kernel ?
+> I've tried out what gcc would make of this:  https://godbolt.org/z/aTEbxxbG3
 > 
-> config BPF_JIT_ALWAYS_ON
->      bool "Permanently enable BPF JIT and remove BPF interpreter"
->      depends on BPF_SYSCALL && HAVE_EBPF_JIT && BPF_JIT
->      help
->        Enables BPF JIT and removes BPF interpreter to avoid
->        speculative execution of BPF instructions by the interpreter
+> struct page {
+>     short a;
+>     struct {
+>         short b;
+>         long long c __attribute__((packed, aligned(2)));
+>     } __attribute__((packed));
+> } __attribute__((aligned(8)));
+> 
+> In this structure, 'c' is clearly aligned to eight bytes, and gcc does
+> realize that
+> it is safe to use the 'ldrd' instruction for 32-bit arm, which is forbidden on
+> struct members with less than 4 byte alignment. However, it also complains
+> that passing a pointer to 'c' into a function that expects a 'long long' is not
+> allowed because alignof(c) is only '2' here.
+> 
+> (I used 'short' here because I having a 64-bit member misaligned by four
+> bytes wouldn't make a difference to the instructions on Arm, or any other
+> 32-bit architecture I can think of, regardless of the ABI requirements).
 
-Thank you. Indeed. In contrast to Debian, Ubuntu’s Linux configuration 
-selects that option, and I copied that.
+So ... we could do this:
 
-     $ grep _BPF_JIT /boot/config-5.8.0-49-generic
-     /boot/config-5.8.0-49-generic:CONFIG_BPF_JIT_ALWAYS_ON=y
-     /boot/config-5.8.0-49-generic:CONFIG_BPF_JIT_DEFAULT_ON=y
-     /boot/config-5.8.0-49-generic:CONFIG_BPF_JIT=y
++++ b/include/linux/types.h
+@@ -140,7 +140,7 @@ typedef u64 blkcnt_t;
+  * so they don't care about the size of the actual bus addresses.
+  */
+ #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+-typedef u64 dma_addr_t;
++typedef u64 __attribute__((aligned(sizeof(void *)))) dma_addr_t;
+ #else
+ typedef u32 dma_addr_t;
+ #endif
 
-I wonder, if there is a way to better integrate that option into 
-`/proc/sys`, so it’s clear, that it’s always enabled.
-
-
-Kind regards,
-
-Paul
+but I'm a little scared that this might have unintended consequences.
+And Jesper points out that a big-endian 64-bit dma_addr_t can impersonate
+a PageTail page, and we should solve that problem while we're at it.
+So I don't think we should do this, but thought I should mention it as
+a possibility.
