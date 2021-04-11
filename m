@@ -2,46 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4104935B146
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 05:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E50CE35B211
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 08:56:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FHyHM1TVbz3c1r
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 13:37:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJ2hd6P23z3c1W
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 16:56:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=IK2K2KTC;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::834;
+ helo=mail-qt1-x834.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=IK2K2KTC; dkim-atps=neutral
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com
+ [IPv6:2607:f8b0:4864:20::834])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FHyH03zGfz2yxq
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 13:37:11 +1000 (AEST)
-IronPort-SDR: XJONF5l57SEMZPjOrR9pECPt5JYX7v1VTtSySGJ7e/TQIKXmIgeMpzMby9m4Xupw3NT8NdyyDN
- ZQNp84uqrYPQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9950"; a="214435115"
-X-IronPort-AV: E=Sophos;i="5.82,213,1613462400"; d="scan'208";a="214435115"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2021 20:37:07 -0700
-IronPort-SDR: /yQty7L0DulTHgSv2qX/LTwjfySYJAml2xbIm2B1R0/bodlPETmzDVw6kgoRr/c8DXst3JkGaF
- fyre7c0ssDFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,213,1613462400"; d="scan'208";a="520742213"
-Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
- by fmsmga001.fm.intel.com with ESMTP; 10 Apr 2021 20:37:06 -0700
-Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1lVQuH-000IoI-Q4; Sun, 11 Apr 2021 03:37:05 +0000
-Date: Sun, 11 Apr 2021 11:36:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS d02429becbe77bc4d27a7357afaf28f9294945bb
-Message-ID: <60726ecb.aQW5SACZ1bHtYuVA%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJ2h80RLBz2ywy
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 16:55:49 +1000 (AEST)
+Received: by mail-qt1-x834.google.com with SMTP id f12so7565765qtf.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Apr 2021 23:55:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :organization:user-agent:mime-version:content-transfer-encoding;
+ bh=70M/iQVUNidswIAQUv9GYNm20KvHkN2/8VXgR1NpNf4=;
+ b=IK2K2KTCYldNtTWnQ/7s3x75eW8Gw74TgDo55C1qLbzEkHKGZfWuuRtaSe/Fc6E+dI
+ FduKdJN5AdKnqjEIfzymBDpybgJxkOC88rzZF9LLzOUroC9C97kksTayTaXKpt209nHy
+ jpwqJSs3kZwI5e5QcVHHMQIDuKWcJeScUx7xQCgnYicYX/1SpAD62sAPy9LI+d595rz0
+ 5MwKj6yXb6gx28NK4Nb5zmIEX5PU2JAV54qsnC+C1p62zXhw2abV5OWzT3UowKAq7KGt
+ 7qPSL5whhVPcVgiAjhUhEjIUaF1JHOpAYnv138WIrpayC2UoCknHd1DwSKNpToVal5Rw
+ OQHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:organization:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=70M/iQVUNidswIAQUv9GYNm20KvHkN2/8VXgR1NpNf4=;
+ b=dWjyUSp2kFcAg2TGVdFBiqqEE4deux2m83DZz27bhi6h2CNQ9ogpIwzKmDdn8ckNJN
+ tWRgLXG548plWKA5RETjuPd5Paw3m/lp7MLvO/ZcdHng5pkW2JTgvYXUIkswX2P7G7Cs
+ z3Z6CGQcdcxzasDpXkoMzZDIjdCDmpPveuHKaSiNpV3SXER79S8S85N/wmllOIVGawsU
+ 4DUUqk9hXcdQtp+o1wmV1oClZXusZeuv6kbxrMu5Zy4LquE/ERzeBEzr4zEg4RtPQjes
+ 9lPCmmZHORkcQSqa49YqOX3mxq3e53K+TceHmtu4RRkYzQML6mdFbdeez/8Lq9w5n6zD
+ j5Zg==
+X-Gm-Message-State: AOAM533CJvPnEiiwpR3kOP/NvjiDrWJAOv6Ygihla9XTf/fN4R8CYRx0
+ 6+6c+JAOO4DVJjmYdnmvP70=
+X-Google-Smtp-Source: ABdhPJyxn9N3iZZd0CB1Y5/Ka99i7Bw9NMsh+4GnGJFy2TQIwzdSODJOXkV2EvHbcJb3y9o6hSzM1w==
+X-Received: by 2002:ac8:5a42:: with SMTP id o2mr20964580qta.191.1618124145095; 
+ Sat, 10 Apr 2021 23:55:45 -0700 (PDT)
+Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
+ ([2804:14c:482:7b04::1000])
+ by smtp.gmail.com with ESMTPSA id 14sm5418457qkf.119.2021.04.10.23.55.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 10 Apr 2021 23:55:44 -0700 (PDT)
+Message-ID: <0921139e72c2ac186c8e718fbdec0a27af8caeaa.camel@gmail.com>
+Subject: Re: [PATCH v2 05/14] powerpc/kernel/iommu: Add new
+ iommu_table_in_use() helper
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
+ <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>, 
+ Christophe Leroy <christophe.leroy@c-s.fr>, Thiago Jung Bauermann
+ <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>, Brian King
+ <brking@linux.vnet.ibm.com>, Murilo Fossa Vicentini <muvic@linux.ibm.com>,
+ David Dai <zdai@linux.vnet.ibm.com>
+Date: Sun, 11 Apr 2021 03:55:39 -0300
+In-Reply-To: <7af21a72-507b-42ce-77ad-d7fc377590d1@ozlabs.ru>
+References: <20200911170738.82818-1-leobras.c@gmail.com>
+ <20200911170738.82818-6-leobras.c@gmail.com>
+ <7af21a72-507b-42ce-77ad-d7fc377590d1@ozlabs.ru>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,138 +97,81 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: d02429becbe77bc4d27a7357afaf28f9294945bb  Automatic merge of 'master' into merge (2021-04-11 00:30)
+Hello Alexey, thanks for the feedback!
 
-elapsed time: 720m
+On Tue, 2020-09-29 at 13:57 +1000, Alexey Kardashevskiy wrote:
+> 
+> On 12/09/2020 03:07, Leonardo Bras wrote:
+> > diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+> > index ffb2637dc82b..c838da3d8f32 100644
+> > --- a/arch/powerpc/kernel/iommu.c
+> > +++ b/arch/powerpc/kernel/iommu.c
+> > @@ -655,34 +655,21 @@ static void iommu_table_reserve_pages(struct iommu_table *tbl,
+> >   	if (tbl->it_offset == 0)
+> >   		set_bit(0, tbl->it_map);
+> >   
+> > 
+> > 
+> > 
+> > +	/* Check if res_start..res_end is a valid range in the table */
+> > +	if (res_start >= res_end || res_start < tbl->it_offset ||
+> > +	    res_end > (tbl->it_offset + tbl->it_size)) {
+> > +		tbl->it_reserved_start = tbl->it_offset;
+> > +		tbl->it_reserved_end = tbl->it_offset;
+> 
+> 
+> This silently ignores overlapped range of the reserved area and the 
+> window which does not seem right.
 
-configs tested: 117
-configs skipped: 2
+Humm, that makes sense.
+Would it be better to do something like this?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+if (res_start < tbl->it_offset) 
+	res_start = tbl->it_offset;
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm64                               defconfig
-x86_64                           allyesconfig
-riscv                            allmodconfig
-i386                             allyesconfig
-sh                   sh7724_generic_defconfig
-xtensa                    xip_kc705_defconfig
-powerpc                      ppc64e_defconfig
-arm                            hisi_defconfig
-xtensa                          iss_defconfig
-sh                           se7722_defconfig
-m68k                        m5307c3_defconfig
-powerpc                       ppc64_defconfig
-xtensa                generic_kc705_defconfig
-mips                         db1xxx_defconfig
-arm                       netwinder_defconfig
-openrisc                 simple_smp_defconfig
-sh                         ecovec24_defconfig
-s390                          debug_defconfig
-powerpc                       ebony_defconfig
-sh                   secureedge5410_defconfig
-powerpc                      tqm8xx_defconfig
-nios2                         3c120_defconfig
-sh                           se7724_defconfig
-arc                         haps_hs_defconfig
-xtensa                    smp_lx200_defconfig
-arm                        multi_v5_defconfig
-sh                      rts7751r2d1_defconfig
-h8300                     edosk2674_defconfig
-powerpc                      pasemi_defconfig
-m68k                         amcore_defconfig
-powerpc                     ksi8560_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a006-20210409
-i386                 randconfig-a003-20210409
-i386                 randconfig-a001-20210409
-i386                 randconfig-a004-20210409
-i386                 randconfig-a002-20210409
-i386                 randconfig-a005-20210409
-x86_64               randconfig-a014-20210410
-x86_64               randconfig-a015-20210410
-x86_64               randconfig-a011-20210410
-x86_64               randconfig-a013-20210410
-x86_64               randconfig-a012-20210410
-x86_64               randconfig-a016-20210410
-i386                 randconfig-a015-20210411
-i386                 randconfig-a014-20210411
-i386                 randconfig-a013-20210411
-i386                 randconfig-a012-20210411
-i386                 randconfig-a016-20210411
-i386                 randconfig-a011-20210411
-x86_64               randconfig-a003-20210411
-x86_64               randconfig-a002-20210411
-x86_64               randconfig-a001-20210411
-x86_64               randconfig-a005-20210411
-x86_64               randconfig-a006-20210411
-x86_64               randconfig-a004-20210411
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+if (res_end > (tbl->it_offset + tbl->it_size))
+	res_end = tbl->it_offset + tbl->it_size;
 
-clang tested configs:
-x86_64               randconfig-a004-20210409
-x86_64               randconfig-a005-20210409
-x86_64               randconfig-a003-20210409
-x86_64               randconfig-a001-20210409
-x86_64               randconfig-a002-20210409
-x86_64               randconfig-a006-20210409
-x86_64               randconfig-a014-20210411
-x86_64               randconfig-a015-20210411
-x86_64               randconfig-a011-20210411
-x86_64               randconfig-a013-20210411
-x86_64               randconfig-a012-20210411
-x86_64               randconfig-a016-20210411
+if (res_start >= res_end) {
+	tbl->it_reserved_start = tbl->it_offset;
+	tbl->it_reserved_end = tbl->it_offset;
+	return;
+}
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+
+> > +		return;
+> > +	}
+> > +
+> >   	tbl->it_reserved_start = res_start;
+> >   	tbl->it_reserved_end = res_end;
+
+> >   -	/* Check if res_start..res_end isn't empty and overlaps the table */
+> > -	if (res_start && res_end &&
+> > -			(tbl->it_offset + tbl->it_size < res_start ||
+> > -			 res_end < tbl->it_offset))
+> > -		return;
+> > -
+> >   	for (i = tbl->it_reserved_start; i < tbl->it_reserved_end; ++i)
+> >   		set_bit(i - tbl->it_offset, tbl->it_map);
+> >   }
+> > +bool iommu_table_in_use(struct iommu_table *tbl)
+> > +{
+> > +	unsigned long start = 0, end;
+> > +
+> > +	/* ignore reserved bit0 */
+> > +	if (tbl->it_offset == 0)
+> > +		start = 1;
+> > +	end = tbl->it_reserved_start - tbl->it_offset;
+> > +	if (find_next_bit(tbl->it_map, end, start) != end)
+> > +		return true;
+> > +
+> > +	start = tbl->it_reserved_end - tbl->it_offset;
+> > +	end = tbl->it_size;
+> > +	return find_next_bit(tbl->it_map, end, start) != end;
+> > +
+> 
+> Unnecessary empty line.
+
+Sure, removing. 
+Thanks!
+
