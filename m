@@ -1,85 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E6C35B0EC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 02:35:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1031B35B0EE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 02:36:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FHtFb2ntlz3cBj
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 10:35:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FHtGX6pZnz3cGC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 10:36:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P2vsBq9Z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RVpZnEPV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=P2vsBq9Z; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=RVpZnEPV; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FHtF83NvKz2xb8
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 10:35:24 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13B0WxrZ080318; Sat, 10 Apr 2021 20:35:18 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FHtG54HsSz2xYk
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 10:36:13 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13B0WYZA040206; Sat, 10 Apr 2021 20:36:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : subject :
  from : to : cc : date : in-reply-to : references : content-type :
  mime-version : content-transfer-encoding; s=pp1;
- bh=olc+eomlGw3902fdR0WGyXodUkT7w/7aW0MiC+MUNFk=;
- b=P2vsBq9ZgX9ke0/xcfArkPJ4jXYFDsAQHNMOLKXAhrzTyVRHm8Lxc7W3hK/87coMpNoX
- 3dnAk32GjmD2bHiR0AOtQeD828X0ZYdAAsVAkLpcS2QjlirQ21JEbTUxai6Fluh8iKKq
- zXTCrHd/gC90glwK5Dk70kJqTlhO+tahSCtlaJhrQeIuMlHs5jO8yEPp97ijHvV9cahk
- usTO3EFyUs12qU5xu03yKLxV8bCQnO0L/o0sFGaPMuACDQ4p725mp3d9DSQwWvs/6Vq5
- sm4Lvv104Cp3UbD81UF6f8i14wm32QC0eJnLc6VS4GlHQV7SKP3VAEL8by7eAj6ASOfv xA== 
+ bh=xAabvqf+7v65N95vm6otfwdaGYBW7MTh6Z+fcF2lOwU=;
+ b=RVpZnEPV3Xg17GX/FDUZ+QCcf88Zk+oGfn4yIiNIHwjbIBUDxQB2g2cLe2ZHHEuZ/9yI
+ nySu9NAEmwllWaO5OGA3ZQs3le9UD8rn8EfQy09cE/JAxXizCDHk+V60oqfxqcYqdtwA
+ GKabSWLO4oJp9Wj+wl8OMcSIVjEEOXr4ulAAm021OqMUDZ8zDTcffM7xy0u8wYPLh+Tr
+ P9HkKAIuWW6fGUgEr/5+7FA2QX7lZC/1SvmbLKuUEuL7PlHqOUxxKhw/Ygn92crUdOMD
+ i5FeQ3TVa0tDRRz+7Ou9jrOaFYoAjqycaiMRNPksWeniWJ6TfxIOtdj5Bpil7BhvpUod fw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37u7vyv9ed-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37u65nx0vu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 10 Apr 2021 20:35:17 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13B0YkWh083795;
- Sat, 10 Apr 2021 20:35:17 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37u7vyv9e8-1
+ Sat, 10 Apr 2021 20:36:06 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13B0XcZ4041930;
+ Sat, 10 Apr 2021 20:36:06 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37u65nx0vq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 10 Apr 2021 20:35:17 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13B0RWXw021395;
- Sun, 11 Apr 2021 00:35:16 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma01dal.us.ibm.com with ESMTP id 37u3n8pcyh-1
+ Sat, 10 Apr 2021 20:36:06 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13B0S5Js003799;
+ Sun, 11 Apr 2021 00:36:05 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma05wdc.us.ibm.com with ESMTP id 37u3n95403-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 11 Apr 2021 00:35:16 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13B0ZEuY18547188
+ Sun, 11 Apr 2021 00:36:05 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13B0a5j023396684
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 11 Apr 2021 00:35:14 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BBB626A051;
- Sun, 11 Apr 2021 00:35:14 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5ACB06A047;
- Sun, 11 Apr 2021 00:35:13 +0000 (GMT)
+ Sun, 11 Apr 2021 00:36:05 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3A544AE067;
+ Sun, 11 Apr 2021 00:36:05 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 127FCAE05C;
+ Sun, 11 Apr 2021 00:36:04 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.80.232.48])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Sun, 11 Apr 2021 00:35:13 +0000 (GMT)
-Message-ID: <65524fd88b91a30b0ba24b79d3866f71e4d349af.camel@linux.ibm.com>
-Subject: [PATCH 06/16] powerpc/pseries/vas: Define VAS/NXGZIP HCALLs and
- structs
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Sun, 11 Apr 2021 00:36:03 +0000 (GMT)
+Message-ID: <2489cf15fafb25fab3f608d6ecae72665738bd27.camel@linux.ibm.com>
+Subject: [PATCH 07/16] powerpc/vas: Define QoS credit flag to allocate window
 From: Haren Myneni <haren@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
  mpe@ellerman.id.au, herbert@gondor.apana.org.au, npiggin@gmail.com
-Date: Sat, 10 Apr 2021 17:35:11 -0700
+Date: Sat, 10 Apr 2021 17:35:54 -0700
 In-Reply-To: <b4631127bd025d9585246606c350ec88dbe1e99a.camel@linux.ibm.com>
 References: <b4631127bd025d9585246606c350ec88dbe1e99a.camel@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -87,16 +85,16 @@ User-Agent: Evolution 3.36.2 (3.36.2-1.fc32)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: k8uKKo1YE1IYyaNIHNTFq8DRqWkqRwxn
-X-Proofpoint-GUID: XbLNxBhYi7inCD4cYxoQT1u5mxkG_3hw
+X-Proofpoint-GUID: O047JVj8iGEMCghYtav-qZwvoKY_ts75
+X-Proofpoint-ORIG-GUID: 3bJgJnLaIjJNqwGQLoQ2COQ6vOJwefNB
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-04-10_07:2021-04-09,
  2021-04-10 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1015 spamscore=0
- suspectscore=0 adultscore=0 mlxscore=0 mlxlogscore=999 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ lowpriorityscore=0
+ spamscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0 adultscore=0
+ impostorscore=0 clxscore=1015 malwarescore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104060000 definitions=main-2104110000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -109,189 +107,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: haren@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-This patch adds HCALLs and other definitions. Also define structs
-that are used in VAS implementation on powerVM.
+pHyp introduces two different type of credits: Default and Quality
+of service (QoS).
+
+The total number of default credits available on each LPAR depends
+on CPU resources configured. But these credits can be shared or
+over-committed across LPARs in shared mode which can result in
+paste command failure (RMA_busy). To avoid NX HW contention, phyp
+introduces QoS credit type which makes sure guaranteed access to NX
+resources. The system admins can assign QoS credits for each LPAR
+via HMC.
+
+Default credit type is used to allocate a VAS window by default as
+on powerVM implementation. But the process can pass VAS_WIN_QOS_CREDITS
+flag with VAS_TX_WIN_OPEN ioctl to open VAS QoS type window.
 
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 ---
- arch/powerpc/include/asm/hvcall.h    |  7 ++
- arch/powerpc/include/asm/vas.h       | 28 ++++++++
- arch/powerpc/platforms/pseries/vas.h | 96 ++++++++++++++++++++++++++++
- 3 files changed, 131 insertions(+)
- create mode 100644 arch/powerpc/platforms/pseries/vas.h
+ arch/powerpc/include/uapi/asm/vas-api.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index ed6086d57b22..accbb7f6f272 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -294,6 +294,13 @@
- #define H_RESIZE_HPT_COMMIT	0x370
- #define H_REGISTER_PROC_TBL	0x37C
- #define H_SIGNAL_SYS_RESET	0x380
-+#define	H_ALLOCATE_VAS_WINDOW	0x388
-+#define	H_MODIFY_VAS_WINDOW	0x38C
-+#define	H_DEALLOCATE_VAS_WINDOW	0x390
-+#define	H_QUERY_VAS_WINDOW	0x394
-+#define	H_QUERY_VAS_CAPABILITIES	0x398
-+#define	H_QUERY_NX_CAPABILITIES	0x39C
-+#define	H_GET_NX_FAULT		0x3A0
- #define H_INT_GET_SOURCE_INFO   0x3A8
- #define H_INT_SET_SOURCE_CONFIG 0x3AC
- #define H_INT_GET_SOURCE_CONFIG 0x3B0
-diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
-index f928bf4c7e98..d15784506a54 100644
---- a/arch/powerpc/include/asm/vas.h
-+++ b/arch/powerpc/include/asm/vas.h
-@@ -179,6 +179,7 @@ struct vas_tx_win_attr {
- 	bool rx_win_ord_mode;
+diff --git a/arch/powerpc/include/uapi/asm/vas-api.h b/arch/powerpc/include/uapi/asm/vas-api.h
+index ebd4b2424785..eb7c8694174f 100644
+--- a/arch/powerpc/include/uapi/asm/vas-api.h
++++ b/arch/powerpc/include/uapi/asm/vas-api.h
+@@ -13,11 +13,15 @@
+ #define VAS_MAGIC	'v'
+ #define VAS_TX_WIN_OPEN	_IOW(VAS_MAGIC, 0x20, struct vas_tx_win_open_attr)
+ 
++/* Flags to VAS TX open window ioctl */
++/* To allocate a window with QoS credit, otherwise default credit is used */
++#define	VAS_WIN_QOS_CREDITS	0x0000000000000001
++
+ struct vas_tx_win_open_attr {
+ 	__u32	version;
+ 	__s16	vas_id;	/* specific instance of vas or -1 for default */
+ 	__u16	reserved1;
+-	__u64	flags;	/* Future use */
++	__u64	flags;
+ 	__u64	reserved2[6];
  };
  
-+#ifdef CONFIG_PPC_POWERNV
- /*
-  * Helper to map a chip id to VAS id.
-  * For POWER9, this is a 1:1 mapping. In the future this maybe a 1:N
-@@ -243,6 +244,33 @@ int vas_paste_crb(struct vas_window *win, int offset, bool re);
- int vas_register_api_powernv(struct module *mod, enum vas_cop_type cop_type,
- 			     const char *name);
- void vas_unregister_api_powernv(void);
-+#endif
-+
-+#ifdef CONFIG_PPC_PSERIES
-+
-+/* VAS Capabilities */
-+#define VAS_GZIP_QOS_FEAT	0x1
-+#define VAS_GZIP_DEF_FEAT	0x2
-+#define VAS_GZIP_QOS_FEAT_BIT	(1UL << (63 - VAS_GZIP_QOS_FEAT)) /* Bit 1 */
-+#define VAS_GZIP_DEF_FEAT_BIT	(1UL << (63 - VAS_GZIP_DEF_FEAT)) /* Bit 2 */
-+
-+/* NX Capabilities */
-+#define	VAS_NX_GZIP_FEAT	0x1
-+#define	VAS_NX_GZIP_FEAT_BIT	(1UL << (63 - VAS_NX_GZIP_FEAT)) /* Bit 1 */
-+#define	VAS_DESCR_LEN		8
-+
-+struct vas_all_capabs_be {
-+		__be64  descriptor;
-+		__be64  feat_type;
-+} __packed __aligned(0x1000);
-+
-+struct vas_all_capabs {
-+	char	name[VAS_DESCR_LEN + 1];
-+	u64     descriptor;
-+	u64     feat_type;
-+};
-+
-+#endif
- 
- /*
-  * Register / unregister coprocessor type to VAS API which will be exported
-diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platforms/pseries/vas.h
-new file mode 100644
-index 000000000000..208682fffa57
---- /dev/null
-+++ b/arch/powerpc/platforms/pseries/vas.h
-@@ -0,0 +1,96 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright 2020-21 IBM Corp.
-+ */
-+
-+#ifndef _VAS_H
-+#define _VAS_H
-+#include <asm/vas.h>
-+#include <linux/mutex.h>
-+#include <linux/stringify.h>
-+
-+/*
-+ * VAS window modify flags
-+ */
-+#define	VAS_MOD_WIN_CLOSE	(1UL << 63)
-+#define	VAS_MOD_WIN_JOBS_KILL	(1UL << (63 - 1))
-+#define	VAS_MOD_WIN_DR		(1UL << (63 - 3))
-+#define	VAS_MOD_WIN_PR		(1UL << (63 - 4))
-+#define	VAS_MOD_WIN_SF		(1UL << (63 - 5))
-+#define	VAS_MOD_WIN_TA		(1UL << (63 - 6))
-+#define	VAS_MOD_WIN_FLAGS	(VAS_MOD_WIN_JOBS_KILL | VAS_MOD_WIN_DR | \
-+				VAS_MOD_WIN_PR | VAS_MOD_WIN_SF)
-+
-+#define	VAS_WIN_ACTIVE		0x0
-+#define	VAS_WIN_CLOSED		0x1
-+#define	VAS_WIN_INACTIVE	0x2	/* Inactive due to HW failure */
-+/* Process of being modified, deallocated, or quiesced */
-+#define	VAS_WIN_MOD_IN_PROCESS	0x3
-+
-+#define	VAS_COPY_PASTE_USER_MODE	0x00000001
-+#define	VAS_COP_OP_USER_MODE		0x00000010
-+
-+/*
-+ * Co-processor feature - GZIP QoS windows or GZIP default windows
-+ */
-+enum vas_cop_feat_type {
-+	VAS_GZIP_QOS_FEAT_TYPE,
-+	VAS_GZIP_DEF_FEAT_TYPE,
-+	VAS_MAX_FEAT_TYPE,
-+};
-+
-+struct vas_ct_capabs_be {
-+	__be64	descriptor;
-+	u8	win_type;		/* Default or QoS type */
-+	u8	user_mode;
-+	__be16	max_lpar_creds;
-+	__be16	max_win_creds;
-+	union {
-+		__be16	reserved;
-+		__be16	def_lpar_creds; /* Used for default capabilities */
-+	};
-+	__be16	target_lpar_creds;
-+} __packed __aligned(0x1000);
-+
-+struct vas_ct_capabs {
-+	char		name[VAS_DESCR_LEN + 1];
-+	u64		descriptor;
-+	u8		win_type;	/* Default or QoS type */
-+	u8		user_mode;	/* User mode copy/paste or COP HCALL */
-+	u16		max_lpar_creds;	/* Max credits available in LPAR */
-+	/* Max credits can be assigned per window */
-+	u16		max_win_creds;
-+	union {
-+		u16	reserved;	/* Used for QoS credit type */
-+		u16	def_lpar_creds; /* Used for default credit type */
-+	};
-+	/* Total LPAR available credits. Can be different from max LPAR */
-+	/* credits due to DLPAR operation */
-+	atomic_t	target_lpar_creds;
-+	atomic_t	used_lpar_creds; /* Used credits so far */
-+	u16		avail_lpar_creds; /* Remaining available credits */
-+};
-+
-+struct vas_capabs {
-+	struct vas_ct_capabs capab;
-+	struct list_head list;
-+};
-+
-+struct vas_win_lpar_be {
-+	__be16	version;
-+	u8	win_type;
-+	u8	status;
-+	__be16	credits;	/* No of credits assigned to this window */
-+	__be16	reserved;
-+	__be32	pid;		/* LPAR Process ID */
-+	__be32	tid;		/* LPAR Thread ID */
-+	__be64	win_addr;
-+	__be32	interrupt;	/* Interrupt when NX request completes */
-+	__be32	fault;		/* Interrupt when NX sees fault */
-+	/* Associativity Domain Identifiers as returned in */
-+	/* H_HOME_NODE_ASSOCIATIVITY */
-+	__be64	domain[6];
-+	__be64	win_util;	/* Number of bytes processed */
-+} __packed __aligned(0x1000);
-+
-+#endif /* _VAS_H */
 -- 
 2.18.2
 
