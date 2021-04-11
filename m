@@ -1,85 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76E535B242
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 09:52:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B4335B256
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 10:07:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJ3xs35tQz3c28
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 17:52:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=SYmOP/+F;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJ4Gp72Cxz3bsc
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 18:07:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2e;
- helo=mail-qv1-xf2e.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=SYmOP/+F; dkim-atps=neutral
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com
- [IPv6:2607:f8b0:4864:20::f2e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJ3xR1Bf4z2xVt
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 17:52:26 +1000 (AEST)
-Received: by mail-qv1-xf2e.google.com with SMTP id i9so4626625qvo.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 00:52:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=ZHL5Soq7GXxkbink8aOs79DAE+cm2nszFnoS5U3vqyk=;
- b=SYmOP/+FniIMLhCqzp4yQzjnm66+MmXDagDWgYiwysFsyaL47/saSlbCi81cm8/kbZ
- 1FwLXN+/xofCmhv+UcnhNOgVhYSOb2qCBhTB3JlhzgE0JgUBG2biasEv/YmfdihvT/ik
- Qirj/0gyrpzbO0mH8rnVsaY3w/SxuEgvUmiT0Lx6U0/snv0v/Bv3Hftv9t5e0dXNv84R
- xXMXluKmxsTREpoLL68QzvXtLzOzEMz1TbN6auRKtFFYxVhvAjEkJGh7pgouR3Mn+Kdc
- B5g6C/oXFSFnzW2gHJ2vPBoiJEP46WhbWaJhW3tnCSKKxyyUcBt/2Co4jjtDBxVAb9gK
- wQyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=ZHL5Soq7GXxkbink8aOs79DAE+cm2nszFnoS5U3vqyk=;
- b=JfcO2u7EUxIHbfFFuk32g6cqDzkDhbrxZi+LsnJRzMthQPZAqsFC7SRdghTu0UJtvf
- SMxamDQJxbnY6TtnhFnvZrvPaWCvUTz/Xs1qd4xikAJYJNMNftNGYCi5KAsdBOJmZK66
- pbO1hHvt3L9KqXglrbtDFoPqJmwY+9Oh4AgMcR8cd3XqNbNfEeEWNl2sfNQuOT6D5soe
- x2dteN+sC1JFS4vl+iJ39+eBFlfs8ekkam6roedhzW/158/4Rua18hP0LueOdHENJXaf
- 8M7nHrGhtDVd/sVUlynbhRXwaEHsn7ut0WxChvbpB73ddMfTOFBnyTxJXk6PYIPec8rF
- Wq+A==
-X-Gm-Message-State: AOAM530uehhlzDTrxgYiYJ9RA6fHXGgedV1HtBQvtFFJRJxIycJEM3zu
- 2279Tj+2b0Dgh6wK6/6vx/E=
-X-Google-Smtp-Source: ABdhPJy6HJcz04P0d0K9zmViDhOirsec0RfIVOe1q0BvJ2/ZL9A4BuxXOlQNf/MqQtXIsLpX585aHQ==
-X-Received: by 2002:a0c:ee81:: with SMTP id u1mr22060154qvr.14.1618127542966; 
- Sun, 11 Apr 2021 00:52:22 -0700 (PDT)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
- ([2804:14c:482:7b04::1000])
- by smtp.gmail.com with ESMTPSA id a10sm5537644qkh.122.2021.04.11.00.52.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Apr 2021 00:52:22 -0700 (PDT)
-Message-ID: <d14e85a37b66916eee283c3b5560077008230581.camel@gmail.com>
-Subject: Re: [PATCH v2 09/14] powerpc/pseries/iommu: Add
- ddw_property_create() and refactor enable_ddw()
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
- <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>, 
- Christophe Leroy <christophe.leroy@c-s.fr>, Thiago Jung Bauermann
- <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>, Brian King
- <brking@linux.vnet.ibm.com>, Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- David Dai <zdai@linux.vnet.ibm.com>
-Date: Sun, 11 Apr 2021 04:52:16 -0300
-In-Reply-To: <8442d9df-d9f9-f919-211b-e94cc1822e26@ozlabs.ru>
-References: <20200911170738.82818-1-leobras.c@gmail.com>
- <20200911170738.82818-10-leobras.c@gmail.com>
- <8442d9df-d9f9-f919-211b-e94cc1822e26@ozlabs.ru>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJ4GT1bJ9z2yQt
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 18:07:09 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FJ4GJ1fsmz9ttx3;
+ Sun, 11 Apr 2021 10:07:04 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Ljg_kRftYD3T; Sun, 11 Apr 2021 10:07:04 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FJ4GJ0nTvz9ttx2;
+ Sun, 11 Apr 2021 10:07:04 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F05A58B770;
+ Sun, 11 Apr 2021 10:07:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id LJGONsb_Ell9; Sun, 11 Apr 2021 10:07:06 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 482B48B75B;
+ Sun, 11 Apr 2021 10:07:06 +0200 (CEST)
+Subject: Re: [PATCH 00/16] Enable VAS and NX-GZIP support on powerVM
+To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-crypto@vger.kernel.org, mpe@ellerman.id.au,
+ herbert@gondor.apana.org.au, npiggin@gmail.com
+References: <b4631127bd025d9585246606c350ec88dbe1e99a.camel@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <bfeef945-5843-074b-a861-af881ae06964@csgroup.eu>
+Date: Sun, 11 Apr 2021 10:07:04 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
+In-Reply-To: <b4631127bd025d9585246606c350ec88dbe1e99a.camel@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -92,35 +63,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-09-29 at 13:56 +1000, Alexey Kardashevskiy wrote:
-> > 
-> >   	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
-> > -		  create.liobn, dn);
-> > +		create.liobn, dn);
+
+
+Le 11/04/2021 à 02:27, Haren Myneni a écrit :
 > 
+> This patch series enables VAS / NX-GZIP on powerVM which allows
+> the user space to do copy/paste with the same existing interface
+> that is available on powerNV.
+
+Can you explain (here and in patch 1 at least) what VAS and NX means ?
+Is that Vector Addition System ? Is that Virtual Address Space ?
+(https://en.wikipedia.org/wiki/VAS)
+
 > 
-> Unrelated. If you think the spaces/tabs thing needs to be fixed, make it 
-> a separate patch and do all these changes there at once.
-
-Sorry, it was some issue with my editor / diff. 
-I removed those changes for next version.
-
-> > -out_free_prop:
-> > +out_prop_free:
+> VAS Enablement:
+> - Get all VAS capabilities using H_QUERY_VAS_CAPABILITIES that are
+>    available in the hypervisor. These capabilities tells OS which
+>    type of features (credit types such as Default and Quality of
+>    Service (QoS)). Also gives specific capabilities for each credit
+>    type: Maximum window credits, Maximum LPAR credits, Target credits
+>    in that parition (varies from max LPAR credits based DLPAR
+>    operation), whether supports user mode COPY/PASTE and etc.
+> - Register LPAR VAS operations such as open window. get paste
+>    address and close window with the current VAS user space API.
+> - Open window operation - Use H_ALLOCATE_VAS_WINDOW HCALL to open
+>    window and H_MODIFY_VAS_WINDOW HCALL to setup the window with LPAR
+>    PID and etc.
+> - mmap to paste address returned in H_ALLOCATE_VAS_WINDOW HCALL
+> - To close window, H_DEALLOCATE_VAS_WINDOW HCALL is used to close in
+>    the hypervisor.
 > 
+> NX Enablement:
+> - Get NX capabilities from the the hypervisor which provides Maximum
+>    buffer length in a single GZIP request, recommended minimum
+>    compression / decompression lengths.
+> - Register to VAS to enable user space VAS API
 > 
-> Really? :) s/out_prop_del/out_del_prop/ may be? The less unrelated 
-> changes the better.
-
-I changed all labels I added to have out_<action>_<target>, I think
-that will allow it to stay like existing labels.
-
-
-Thanks for reviewing!
-Leonardo Bras
-
+> Main feature differences with powerNV implementation:
+> - Each VAS window will be configured with a number of credits which
+>    means that many requests can be issues simultaniously on that
+>    window. On powerNV, 1K credits are configured per window.
+>    Whereas on powerVM, the hypervisor allows 1 credit per window
+>    at present.
+> - The hypervisor introduced 2 different types of credits: Default -
+>    Uses normal priority FIFO and Quality of Service (QoS) - Uses high
+>    priority FIFO. On powerVM, VAS/NX HW resources are shared across
+>    LPARs. The total number of credits available on a system depends
+>    on cores configured. We may see more credits are assigned across
+>    the system than the NX HW resources can handle. So to avoid NX HW
+>    contention, pHyp introduced QoS credits which can be configured
+>    by system administration with HMC API. Then the total number of
+>    available default credits on LPAR varies based on QoS credits
+>    configured.
+> - On powerNV, windows are allocated on a specific VAS instance
+>    and the user space can select VAS instance with the open window
+>    ioctl. Since VAS instances can be shared across partitions on
+>    powerVM, the hypervisor manages window allocations on different
+>    VAS instances. So H_ALLOCATE_VAS_WINDOW allows to select by domain
+>    indentifiers (H_HOME_NODE_ASSOCIATIVITY values by cpu). By default
+>    the hypervisor selects VAS instance closer to CPU resources that the
+>    parition uses. So vas_id in ioctl interface is ignored on powerVM
+>    except vas_id=-1 which is used to allocate window based on CPU that
+>    the process is executing. This option is needed for process affinity
+>    to NUMA node.
+> 
+>    The existing applications that linked with libnxz should work as
+>    long as the job request length is restricted to
+>    req_max_processed_len.
+> 
+>    Tested the following patches on P10 successfully with test cases
+>    given: https://github.com/libnxz/power-gzip
+> 
+>    Note: The hypervisor supports user mode NX from p10 onwards. Linux
+> 	supports user mode VAS/NX on P10 only with radix page tables.
+> 
+> Patches 1- 4:   Make the code that is needed for both powerNV and
+>                  powerVM to powerpc platform independent.
+> Patch5:         Modify vas-window struct to support both and the
+>                  related changes.
+> Patch 6:        Define HCALL and the related VAS/NXGZIP specific
+>                  structs.
+> Patch 7:        Define QoS credit flag in window open ioctl
+> Patch 8:        Implement Allocate, Modify and Deallocate HCALLs
+> Patch 9:        Retrieve VAS capabilities from the hypervisor
+> Patch 10;       Implement window operations and integrate with API
+> Patch 11:       Setup IRQ and NX fault handling
+> Patch 12;       Add sysfs interface to expose VAS capabilities
+> Patch 13 - 14:  Make the code common to add NX-GZIP enablement
+> Patch 15:       Get NX capabilities from the hypervisor
+> patch 16;       Add sysfs interface to expose NX capabilities
+> 
+> Haren Myneni (16):
+>    powerpc/powernv/vas: Rename register/unregister functions
+>    powerpc/vas: Make VAS API powerpc platform independent
+>    powerpc/vas: Create take/drop task reference functions
+>    powerpc/vas: Move update_csb/dump_crb to platform independent
+>    powerpc/vas:  Define and use common vas_window struct
+>    powerpc/pseries/vas: Define VAS/NXGZIP HCALLs and structs
+>    powerpc/vas: Define QoS credit flag to allocate window
+>    powerpc/pseries/vas: Implement allocate/modify/deallocate HCALLS
+>    powerpc/pseries/vas: Implement to get all capabilities
+>    powerpc/pseries/vas: Integrate API with open/close windows
+>    powerpc/pseries/vas: Setup IRQ and fault handling
+>    powerpc/pseries/vas: sysfs interface to export capabilities
+>    crypto/nx: Rename nx-842-pseries file name to nx-common-pseries
+>    crypto/nx: Register and unregister VAS interface
+>    crypto/nx: Get NX capabilities for GZIP coprocessor type
+>    crypto/nx: sysfs interface to export NX capabilities
+> 
+>   arch/powerpc/Kconfig                          |  15 +
+>   arch/powerpc/include/asm/hvcall.h             |   7 +
+>   arch/powerpc/include/asm/vas.h                | 122 +++-
+>   arch/powerpc/include/uapi/asm/vas-api.h       |   6 +-
+>   arch/powerpc/kernel/Makefile                  |   1 +
+>   arch/powerpc/kernel/vas-api.c                 | 485 +++++++++++++
+>   arch/powerpc/platforms/powernv/Kconfig        |  14 -
+>   arch/powerpc/platforms/powernv/Makefile       |   2 +-
+>   arch/powerpc/platforms/powernv/vas-api.c      | 278 --------
+>   arch/powerpc/platforms/powernv/vas-debug.c    |  12 +-
+>   arch/powerpc/platforms/powernv/vas-fault.c    | 155 +---
+>   arch/powerpc/platforms/powernv/vas-trace.h    |   6 +-
+>   arch/powerpc/platforms/powernv/vas-window.c   | 250 ++++---
+>   arch/powerpc/platforms/powernv/vas.h          |  42 +-
+>   arch/powerpc/platforms/pseries/Makefile       |   1 +
+>   arch/powerpc/platforms/pseries/vas-sysfs.c    | 173 +++++
+>   arch/powerpc/platforms/pseries/vas.c          | 674 ++++++++++++++++++
+>   arch/powerpc/platforms/pseries/vas.h          |  98 +++
+>   drivers/crypto/nx/Makefile                    |   2 +-
+>   drivers/crypto/nx/nx-common-powernv.c         |   6 +-
+>   .../{nx-842-pseries.c => nx-common-pseries.c} | 135 ++++
+>   21 files changed, 1885 insertions(+), 599 deletions(-)
+>   create mode 100644 arch/powerpc/kernel/vas-api.c
+>   delete mode 100644 arch/powerpc/platforms/powernv/vas-api.c
+>   create mode 100644 arch/powerpc/platforms/pseries/vas-sysfs.c
+>   create mode 100644 arch/powerpc/platforms/pseries/vas.c
+>   create mode 100644 arch/powerpc/platforms/pseries/vas.h
+>   rename drivers/crypto/nx/{nx-842-pseries.c => nx-common-pseries.c} (90%)
+> 
