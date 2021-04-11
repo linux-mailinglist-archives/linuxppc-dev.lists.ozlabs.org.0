@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD6735B611
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 18:24:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5EDE35B614
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Apr 2021 18:40:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJHHv3y0Gz3bp8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 02:24:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJHfY5btvz30DQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 02:40:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,43 +15,37 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJHHb1FChz2xyG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 02:23:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJHf92RXKz2yxY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 02:39:58 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FJHHM2Bm5zB09Zv;
- Sun, 11 Apr 2021 18:23:43 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FJHdy6tXMzB09bC;
+ Sun, 11 Apr 2021 18:39:50 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id M7H_TZ3xfLZz; Sun, 11 Apr 2021 18:23:43 +0200 (CEST)
+ with ESMTP id ccZeimTKb--K; Sun, 11 Apr 2021 18:39:50 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FJHHM11MkzB09Zt;
- Sun, 11 Apr 2021 18:23:43 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FJHdy5tmDzB09b7;
+ Sun, 11 Apr 2021 18:39:50 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A74A38B770;
- Sun, 11 Apr 2021 18:23:46 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 638FD8B770;
+ Sun, 11 Apr 2021 18:39:54 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id z7Gre_ROyeC9; Sun, 11 Apr 2021 18:23:46 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3131E8B75B;
- Sun, 11 Apr 2021 18:23:46 +0200 (CEST)
-Subject: Re: sysctl: setting key "net.core.bpf_jit_enable": Invalid argument
-To: Paul Menzel <pmenzel@molgen.mpg.de>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- Sandipan Das <sandipan@linux.ibm.com>
-References: <412d88b2-fa9a-149e-6f6e-3cfbce9edef0@molgen.mpg.de>
+ with ESMTP id oaTK-YMuW23J; Sun, 11 Apr 2021 18:39:54 +0200 (CEST)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 229C68B75B;
+ Sun, 11 Apr 2021 18:39:54 +0200 (CEST)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id C752D679DE; Sun, 11 Apr 2021 16:39:53 +0000 (UTC)
+Message-Id: <aad2cb1801a3cc99bc27081022925b9fc18a0dfb.1618159169.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <d880c38c-e410-0b69-0897-9cbf4b759045@csgroup.eu>
-Date: Sun, 11 Apr 2021 18:23:44 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
-MIME-Version: 1.0
-In-Reply-To: <412d88b2-fa9a-149e-6f6e-3cfbce9edef0@molgen.mpg.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH] powerpc/signal32: Fix build failure with CONFIG_SPE
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ linux@roeck-us.net
+Date: Sun, 11 Apr 2021 16:39:53 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,37 +57,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: it+linux-bpf@molgen.mpg.de, netdev@vger.kernel.org, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Add missing fault exit label in unsafe_copy_from_user() in order to
+avoid following build failure with CONFIG_SPE
 
+  CC      arch/powerpc/kernel/signal_32.o
+arch/powerpc/kernel/signal_32.c: In function 'restore_user_regs':
+arch/powerpc/kernel/signal_32.c:565:36: error: macro "unsafe_copy_from_user" requires 4 arguments, but only 3 given
+  565 |           ELF_NEVRREG * sizeof(u32));
+      |                                    ^
+In file included from ./include/linux/uaccess.h:11,
+                 from ./include/linux/sched/task.h:11,
+                 from ./include/linux/sched/signal.h:9,
+                 from ./include/linux/rcuwait.h:6,
+                 from ./include/linux/percpu-rwsem.h:7,
+                 from ./include/linux/fs.h:33,
+                 from ./include/linux/huge_mm.h:8,
+                 from ./include/linux/mm.h:707,
+                 from arch/powerpc/kernel/signal_32.c:17:
+./arch/powerpc/include/asm/uaccess.h:428: note: macro "unsafe_copy_from_user" defined here
+  428 | #define unsafe_copy_from_user(d, s, l, e) \
+      |
+arch/powerpc/kernel/signal_32.c:564:3: error: 'unsafe_copy_from_user' undeclared (first use in this function); did you mean 'raw_copy_from_user'?
+  564 |   unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
+      |   ^~~~~~~~~~~~~~~~~~~~~
+      |   raw_copy_from_user
+arch/powerpc/kernel/signal_32.c:564:3: note: each undeclared identifier is reported only once for each function it appears in
+make[3]: *** [arch/powerpc/kernel/signal_32.o] Error 1
 
-Le 11/04/2021 à 13:09, Paul Menzel a écrit :
-> Dear Linux folks,
-> 
-> 
-> Related to * [CVE-2021-29154] Linux kernel incorrect computation of branch displacements in BPF JIT 
-> compiler can be abused to execute arbitrary code in Kernel mode* [1], on the POWER8 system IBM 
-> S822LC with self-built Linux 5.12.0-rc5+, I am unable to disable `bpf_jit_enable`.
-> 
->     $ /sbin/sysctl net.core.bpf_jit_enable
->     net.core.bpf_jit_enable = 1
->     $ sudo /sbin/sysctl -w net.core.bpf_jit_enable=0
->     sysctl: setting key "net.core.bpf_jit_enable": Invalid argument
-> 
-> It works on an x86 with Debian sid/unstable and Linux 5.10.26-1.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 627b72bee84d ("powerpc/signal32: Convert restore_[tm]_user_regs() to user access block")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+---
+ arch/powerpc/kernel/signal_32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Maybe you have selected CONFIG_BPF_JIT_ALWAYS_ON in your self-built kernel ?
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index 23fdb364b511..d489ccea2ab3 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -562,7 +562,7 @@ static long restore_user_regs(struct pt_regs *regs,
+ 	if (msr & MSR_SPE) {
+ 		/* restore spe registers from the stack */
+ 		unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
+-				      ELF_NEVRREG * sizeof(u32));
++				      ELF_NEVRREG * sizeof(u32), failed);
+ 		current->thread.used_spe = true;
+ 	} else if (current->thread.used_spe)
+ 		memset(current->thread.evr, 0, ELF_NEVRREG * sizeof(u32));
+-- 
+2.25.0
 
-config BPF_JIT_ALWAYS_ON
-	bool "Permanently enable BPF JIT and remove BPF interpreter"
-	depends on BPF_SYSCALL && HAVE_EBPF_JIT && BPF_JIT
-	help
-	  Enables BPF JIT and removes BPF interpreter to avoid
-	  speculative execution of BPF instructions by the interpreter
-
-
-Christophe
