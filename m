@@ -2,55 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFC335C58C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 13:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF6A35C5D4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 14:00:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJn4S56vwz3cbx
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 21:46:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJnP54PP3z3c0P
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 22:00:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=osalvador@suse.de;
+ receiver=<UNKNOWN>)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJn373ZJyz30Gj
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 21:44:51 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FJn2Q0gGYz9tyR4;
- Mon, 12 Apr 2021 13:44:14 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 8X7oulgFcNTh; Mon, 12 Apr 2021 13:44:14 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FJn2P6xdzz9tyQT;
- Mon, 12 Apr 2021 13:44:13 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F32198B78E;
- Mon, 12 Apr 2021 13:44:18 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 2ATv1BrskHTA; Mon, 12 Apr 2021 13:44:18 +0200 (CEST)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 727708B78D;
- Mon, 12 Apr 2021 13:44:18 +0200 (CEST)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 3FF8E67A06; Mon, 12 Apr 2021 11:44:18 +0000 (UTC)
-Message-Id: <74944a1e3e5cfecc141e440a6ccd37920e186b70.1618227846.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <34d12a4f75cb8b53a925fada5e7ddddd3b145203.1618227846.git.christophe.leroy@csgroup.eu>
-References: <34d12a4f75cb8b53a925fada5e7ddddd3b145203.1618227846.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 3/3] powerpc/ebpf32: Use standard function call for functions
- within 32M distance
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, kafai@fb.com,
- songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
- kpsingh@chromium.org, naveen.n.rao@linux.ibm.com, sandipan@linux.ibm.com
-Date: Mon, 12 Apr 2021 11:44:18 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJnNb6HTvz2yxP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 21:59:59 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 9AAEEAE5C;
+ Mon, 12 Apr 2021 11:59:55 +0000 (UTC)
+Date: Mon, 12 Apr 2021 13:59:52 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V2 4/6] mm: Drop redundant
+ ARCH_ENABLE_[HUGEPAGE|THP]_MIGRATION
+Message-ID: <20210412115952.GC27818@linux>
+References: <1617259448-22529-1-git-send-email-anshuman.khandual@arm.com>
+ <1617259448-22529-5-git-send-email-anshuman.khandual@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1617259448-22529-5-git-send-email-anshuman.khandual@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,81 +46,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: x86@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ akpm@linux-foundation.org, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If the target of a function call is within 32 Mbytes distance, use a
-standard function call with 'bl' of the 'lis/ori/mtlr/blrl' sequence.
+On Thu, Apr 01, 2021 at 12:14:06PM +0530, Anshuman Khandual wrote:
+> ARCH_ENABLE_[HUGEPAGE|THP]_MIGRATION configs have duplicate definitions on
+> platforms that subscribe them. Drop these reduntant definitions and instead
+> just select them appropriately.
+> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: x86@kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com> (arm64)
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-In the first pass, no memory has been allocated yet and the code
-position is not known yet (image pointer is NULL). This pass is there
-to calculate the amount of memory to allocate for the EBPF code, so
-assume the 4 instructions sequence is required, so that enough memory
-is allocated.
+Hi Anshuman, 
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/ppc-opcode.h |  1 +
- arch/powerpc/net/bpf_jit.h            |  3 +++
- arch/powerpc/net/bpf_jit_comp32.c     | 16 +++++++++++-----
- 3 files changed, 15 insertions(+), 5 deletions(-)
+X86 needs fixing, see below:
 
-diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-index 5b60020dc1f4..ac41776661e9 100644
---- a/arch/powerpc/include/asm/ppc-opcode.h
-+++ b/arch/powerpc/include/asm/ppc-opcode.h
-@@ -265,6 +265,7 @@
- #define PPC_INST_ORI			0x60000000
- #define PPC_INST_ORIS			0x64000000
- #define PPC_INST_BRANCH			0x48000000
-+#define PPC_INST_BL			0x48000001
- #define PPC_INST_BRANCH_COND		0x40800000
- 
- /* Prefixes */
-diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-index 776abef4d2a0..99fad093f43e 100644
---- a/arch/powerpc/net/bpf_jit.h
-+++ b/arch/powerpc/net/bpf_jit.h
-@@ -26,6 +26,9 @@
- /* Long jump; (unconditional 'branch') */
- #define PPC_JMP(dest)		EMIT(PPC_INST_BRANCH |			      \
- 				     (((dest) - (ctx->idx * 4)) & 0x03fffffc))
-+/* blr; (unconditional 'branch' with link) to absolute address */
-+#define PPC_BL_ABS(dest)	EMIT(PPC_INST_BL |			      \
-+				     (((dest) - (unsigned long)(image + ctx->idx)) & 0x03fffffc))
- /* "cond" here covers BO:BI fields. */
- #define PPC_BCC_SHORT(cond, dest)	EMIT(PPC_INST_BRANCH_COND |	      \
- 					     (((cond) & 0x3ff) << 16) |	      \
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index ef21b09df76e..bbb16099e8c7 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -187,11 +187,17 @@ void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
- 
- void bpf_jit_emit_func_call_rel(u32 *image, struct codegen_context *ctx, u64 func)
- {
--	/* Load function address into r0 */
--	EMIT(PPC_RAW_LIS(__REG_R0, IMM_H(func)));
--	EMIT(PPC_RAW_ORI(__REG_R0, __REG_R0, IMM_L(func)));
--	EMIT(PPC_RAW_MTLR(__REG_R0));
--	EMIT(PPC_RAW_BLRL());
-+	s32 rel = (s32)func - (s32)(image + ctx->idx);
-+
-+	if (image && rel < 0x2000000 && rel >= -0x2000000) {
-+		PPC_BL_ABS(func);
-+	} else {
-+		/* Load function address into r0 */
-+		EMIT(PPC_RAW_LIS(__REG_R0, IMM_H(func)));
-+		EMIT(PPC_RAW_ORI(__REG_R0, __REG_R0, IMM_L(func)));
-+		EMIT(PPC_RAW_MTLR(__REG_R0));
-+		EMIT(PPC_RAW_BLRL());
-+	}
- }
- 
- static void bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 out)
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 503d8b2e8676..10702ef1eb57 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -60,8 +60,10 @@ config X86
+>  	select ACPI_SYSTEM_POWER_STATES_SUPPORT	if ACPI
+>  	select ARCH_32BIT_OFF_T			if X86_32
+>  	select ARCH_CLOCKSOURCE_INIT
+> +	select ARCH_ENABLE_HUGEPAGE_MIGRATION if x86_64 && HUGETLB_PAGE && MIGRATION
+>  	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64 || (X86_32 && HIGHMEM)
+>  	select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
+> +	select ARCH_ENABLE_THP_MIGRATION if x86_64 && TRANSPARENT_HUGEPAGE
+
+you need s/x86_64/X86_64/, otherwise we are left with no migration :-)
+
 -- 
-2.25.0
-
+Oscar Salvador
+SUSE L3
