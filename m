@@ -1,43 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B7E35CD0B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 18:34:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1006E35D044
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 20:24:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJvT71Psvz3c58
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 02:34:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJxwg6mc9z3c0k
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 04:24:51 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Wvk8Hyjs;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=Wvk8Hyjs; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJvSn3Kzxz304c
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 02:34:01 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 2B052AD71;
- Mon, 12 Apr 2021 16:33:58 +0000 (UTC)
-Date: Mon, 12 Apr 2021 18:33:55 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Mel Gorman <mgorman@techsingularity.net>
-Subject: Re: [RFC/PATCH] powerpc/smp: Add SD_SHARE_PKG_RESOURCES flag to MC
- sched-domain
-Message-ID: <20210412163355.GV6564@kitsune.suse.cz>
-References: <1617341874-1205-1-git-send-email-ego@linux.vnet.ibm.com>
- <20210412062436.GB2633526@linux.vnet.ibm.com>
- <20210412093722.GS3697@techsingularity.net>
- <CAKfTPtDX-p=gWAVgYzLNCNuQ2e=QP2pTeMs=BmNBo31fpGKxrg@mail.gmail.com>
- <20210412152444.GA3697@techsingularity.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJxwD1q3xz3027
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 04:24:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=djSd+P2nuqDFfB/9mLdQPbwoAlNn60FgiY/LPsvCEKc=; b=Wvk8Hyjsbg3T98nGoi7OKr8yII
+ 5eC9VyxYVI7KymL749Vz/DrsJLq7orZiLaP2l9sv55pYQ8loJ4skAMQ7j4/oQOsXj6TNQPZlnRLxW
+ +PLlXP5pJT95owrhGgU+kQbom/gfMiREOlixdQequzZ8aP4D2tLKew4x5klJ1mxCnT14rqDqgBQbf
+ K/SVD5viM3hKW7ErpzwIdyDChv38HYXREMyF0gj4pUs7MXHtnj7oyw23bo1QF2GpG2srIHZakmX7S
+ Vlxfoot5VdeBFdbjlhLKlrutfkIGCJDftBRvPZ5E5V8+cFOiSWFZrVPgrfqumahwHkusIApkof9zK
+ 3IN6MiNA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
+ Linux)) id 1lW1E2-004jlZ-2K; Mon, 12 Apr 2021 18:24:03 +0000
+Date: Mon, 12 Apr 2021 19:23:54 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jesper Dangaard Brouer <brouer@redhat.com>
+Subject: Re: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
+Message-ID: <20210412182354.GN2531743@casper.infradead.org>
+References: <20210410205246.507048-1-willy@infradead.org>
+ <20210410205246.507048-2-willy@infradead.org>
+ <20210411114307.5087f958@carbon>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210412152444.GA3697@techsingularity.net>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <20210411114307.5087f958@carbon>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,154 +62,189 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Michael Neuling <mikey@neuling.org>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Rik van Riel <riel@surriel.com>,
- LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Parth Shah <parth@linux.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Arnd Bergmann <arnd@kernel.org>,
+ Grygorii Strashko <grygorii.strashko@ti.com>,
+ Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>, netdev@vger.kernel.org,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-mips@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Matteo Croce <mcroce@linux.microsoft.com>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 12, 2021 at 04:24:44PM +0100, Mel Gorman wrote:
-> On Mon, Apr 12, 2021 at 02:21:47PM +0200, Vincent Guittot wrote:
-> > > > Peter, Valentin, Vincent, Mel, etal
-> > > >
-> > > > On architectures where we have multiple levels of cache access latencies
-> > > > within a DIE, (For example: one within the current LLC or SMT core and the
-> > > > other at MC or Hemisphere, and finally across hemispheres), do you have any
-> > > > suggestions on how we could handle the same in the core scheduler?
-> >
-> > I would say that SD_SHARE_PKG_RESOURCES is there for that and doesn't
-> > only rely on cache
-> >
->
-> From topology.c
->
-> 	SD_SHARE_PKG_RESOURCES - describes shared caches
->
-> I'm guessing here because I am not familiar with power10 but the central
-> problem appears to be when to prefer selecting a CPU sharing L2 or L3
-> cache and the core assumes the last-level-cache is the only relevant one.
+On Sun, Apr 11, 2021 at 11:43:07AM +0200, Jesper Dangaard Brouer wrote:
+> Could you explain your intent here?
+> I worry about @index.
+> 
+> As I mentioned in other thread[1] netstack use page_is_pfmemalloc()
+> (code copy-pasted below signature) which imply that the member @index
+> have to be kept intact. In above, I'm unsure @index is untouched.
 
-It does not seem to be the case according to original description:
+Well, I tried three different approaches.  Here's the one I hated the least.
 
->>>> When the scheduler tries to wakeup a task, it chooses between the
->>>> waker-CPU and the wakee's previous-CPU. Suppose this choice is called
->>>> the "target", then in the target's LLC domain, the scheduler
->>>> 
->>>> a) tries to find an idle core in the LLC. This helps exploit the
-This is the same as (b) Should this be SMT^^^ ?
->>>>    SMT folding that the wakee task can benefit from. If an idle
->>>>    core is found, the wakee is woken up on it.
->>>> 
->>>> b) Failing to find an idle core, the scheduler tries to find an idle
->>>>    CPU in the LLC. This helps minimise the wakeup latency for the
->>>>    wakee since it gets to run on the CPU immediately.
->>>> 
->>>> c) Failing this, it will wake it up on target CPU.
->>>> 
->>>> Thus, with P9-sched topology, since the CACHE domain comprises of two
->>>> SMT4 cores, there is a decent chance that we get an idle core, failing
->>>> which there is a relatively higher probability of finding an idle CPU
->>>> among the 8 threads in the domain.
->>>> 
->>>> However, in P10-sched topology, since the SMT domain is the LLC and it
->>>> contains only a single SMT4 core, the probability that we find that
->>>> core to be idle is less. Furthermore, since there are only 4 CPUs to
->>>> search for an idle CPU, there is lower probability that we can get an
->>>> idle CPU to wake up the task on.
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Date: Sat, 10 Apr 2021 16:12:06 -0400
+Subject: [PATCH] mm: Fix struct page layout on 32-bit systems
 
->
-> For this patch, I wondered if setting SD_SHARE_PKG_RESOURCES would have
-> unintended consequences for load balancing because load within a die may
-> not be spread between SMT4 domains if SD_SHARE_PKG_RESOURCES was set at
-> the MC level.
+32-bit architectures which expect 8-byte alignment for 8-byte integers
+and need 64-bit DMA addresses (arc, arm, mips, ppc) had their struct
+page inadvertently expanded in 2019.  When the dma_addr_t was added,
+it forced the alignment of the union to 8 bytes, which inserted a 4 byte
+gap between 'flags' and the union.
 
-Not spreading load between SMT4 domains within MC is exactly what setting LLC
-at MC level would address, wouldn't it?
+We could fix this by telling the compiler to use a smaller alignment
+for the dma_addr, but that seems a little fragile.  Instead, move the
+'flags' into the union.  That causes dma_addr to shift into the same
+bits as 'mapping', which causes problems with page_mapping() called from
+set_page_dirty() in the munmap path.  To avoid this, insert three words
+of padding and use the same bits as ->index and ->private, neither of
+which have to be cleared on free.
 
-As in on P10 we have two relevant levels but the topology as is describes only
-one, and moving the LLC level lower gives two levels the scheduler looks at
-again. Or am I missing something?
+However, page->index is currently used to indicate page_is_pfmemalloc.
+Move that information to bit 1 of page->lru (aka compound_head).  This
+has the same properties; it will be overwritten by callers who do
+not care about pfmemalloc (as opposed to using a bit in page->flags).
 
-Thanks
+Fixes: c25fff7171be ("mm: add dma_addr_t to struct page")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ include/linux/mm.h       | 12 +++++++-----
+ include/linux/mm_types.h | 38 ++++++++++++++++++++++++++------------
+ 2 files changed, 33 insertions(+), 17 deletions(-)
 
-Michal
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index b58c73e50da0..23cca0eaa9da 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1668,10 +1668,12 @@ struct address_space *page_mapping(struct page *page);
+ static inline bool page_is_pfmemalloc(const struct page *page)
+ {
+ 	/*
+-	 * Page index cannot be this large so this must be
+-	 * a pfmemalloc page.
++	 * This is not a tail page; compound_head of a head page is unused
++	 * at return from the page allocator, and will be overwritten
++	 * by callers who do not care whether the page came from the
++	 * reserves.
+ 	 */
+-	return page->index == -1UL;
++	return page->compound_head & 2;
+ }
+ 
+ /*
+@@ -1680,12 +1682,12 @@ static inline bool page_is_pfmemalloc(const struct page *page)
+  */
+ static inline void set_page_pfmemalloc(struct page *page)
+ {
+-	page->index = -1UL;
++	page->compound_head = 2;
+ }
+ 
+ static inline void clear_page_pfmemalloc(struct page *page)
+ {
+-	page->index = 0;
++	page->compound_head = 0;
+ }
+ 
+ /*
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 6613b26a8894..45c563e9b50e 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -68,16 +68,22 @@ struct mem_cgroup;
+ #endif
+ 
+ struct page {
+-	unsigned long flags;		/* Atomic flags, some possibly
+-					 * updated asynchronously */
+ 	/*
+-	 * Five words (20/40 bytes) are available in this union.
+-	 * WARNING: bit 0 of the first word is used for PageTail(). That
+-	 * means the other users of this union MUST NOT use the bit to
++	 * This union is six words (24 / 48 bytes) in size.
++	 * The first word is reserved for atomic flags, often updated
++	 * asynchronously.  Use the PageFoo() macros to access it.  Some
++	 * of the flags can be reused for your own purposes, but the
++	 * word as a whole often contains other information and overwriting
++	 * it will cause functions like page_zone() and page_node() to stop
++	 * working correctly.
++	 *
++	 * Bit 0 of the second word is used for PageTail(). That
++	 * means the other users of this union MUST leave the bit zero to
+ 	 * avoid collision and false-positive PageTail().
+ 	 */
+ 	union {
+ 		struct {	/* Page cache and anonymous pages */
++			unsigned long flags;
+ 			/**
+ 			 * @lru: Pageout list, eg. active_list protected by
+ 			 * lruvec->lru_lock.  Sometimes used as a generic list
+@@ -96,13 +102,14 @@ struct page {
+ 			unsigned long private;
+ 		};
+ 		struct {	/* page_pool used by netstack */
+-			/**
+-			 * @dma_addr: might require a 64-bit value even on
+-			 * 32-bit architectures.
+-			 */
+-			dma_addr_t dma_addr;
++			unsigned long _pp_flags;
++			unsigned long pp_magic;
++			unsigned long xmi;
++			unsigned long _pp_mapping_pad;
++			dma_addr_t dma_addr;	/* might be one or two words */
+ 		};
+ 		struct {	/* slab, slob and slub */
++			unsigned long _slab_flags;
+ 			union {
+ 				struct list_head slab_list;
+ 				struct {	/* Partial pages */
+@@ -130,6 +137,7 @@ struct page {
+ 			};
+ 		};
+ 		struct {	/* Tail pages of compound page */
++			unsigned long _t1_flags;
+ 			unsigned long compound_head;	/* Bit zero is set */
+ 
+ 			/* First tail page only */
+@@ -139,12 +147,14 @@ struct page {
+ 			unsigned int compound_nr; /* 1 << compound_order */
+ 		};
+ 		struct {	/* Second tail page of compound page */
++			unsigned long _t2_flags;
+ 			unsigned long _compound_pad_1;	/* compound_head */
+ 			atomic_t hpage_pinned_refcount;
+ 			/* For both global and memcg */
+ 			struct list_head deferred_list;
+ 		};
+ 		struct {	/* Page table pages */
++			unsigned long _pt_flags;
+ 			unsigned long _pt_pad_1;	/* compound_head */
+ 			pgtable_t pmd_huge_pte; /* protected by page->ptl */
+ 			unsigned long _pt_pad_2;	/* mapping */
+@@ -159,6 +169,7 @@ struct page {
+ #endif
+ 		};
+ 		struct {	/* ZONE_DEVICE pages */
++			unsigned long _zd_flags;
+ 			/** @pgmap: Points to the hosting device page map. */
+ 			struct dev_pagemap *pgmap;
+ 			void *zone_device_data;
+@@ -174,8 +185,11 @@ struct page {
+ 			 */
+ 		};
+ 
+-		/** @rcu_head: You can use this to free a page by RCU. */
+-		struct rcu_head rcu_head;
++		struct {
++			unsigned long _rcu_flags;
++			/** @rcu_head: You can use this to free a page by RCU. */
++			struct rcu_head rcu_head;
++		};
+ 	};
+ 
+ 	union {		/* This union is 4 bytes in size. */
+-- 
+2.30.2
 
-> > >
-> > > Minimally I think it would be worth detecting when there are multiple
-> > > LLCs per node and detecting that in generic code as a static branch. In
-> > > select_idle_cpu, consider taking two passes -- first on the LLC domain
-> > > and if no idle CPU is found then taking a second pass if the search depth
-> >
-> > We have done a lot of changes to reduce and optimize the fast path and
-> > I don't think re adding another layer  in the fast path makes sense as
-> > you will end up unrolling the for_each_domain behind some
-> > static_banches.
-> >
->
-> Searching the node would only happen if a) there was enough search depth
-> left and b) there were no idle CPUs at the LLC level. As no new domain
-> is added, it's not clear to me why for_each_domain would change.
->
-> But still, your comment reminded me that different architectures have
-> different requirements
->
-> Power 10 appears to prefer CPU selection sharing L2 cache but desires
-> 	spillover to L3 when selecting and idle CPU.
->
-> X86 varies, it might want the Power10 approach for some families and prefer
-> 	L3 spilling over to a CPU on the same node in others.
->
-> S390 cares about something called books and drawers although I've no
-> 	what it means as such and whether it has any preferences on
-> 	search order.
->
-> ARM has similar requirements again according to "scheduler: expose the
-> 	topology of clusters and add cluster scheduler" and that one *does*
-> 	add another domain.
->
-> I had forgotten about the ARM patches but remembered that they were
-> interesting because they potentially help the Zen situation but I didn't
-> get the chance to review them before they fell off my radar again. About
-> all I recall is that I thought the "cluster" terminology was vague.
->
-> The only commonality I thought might exist is that architectures may
-> like to define what the first domain to search for an idle CPU and a
-> second domain. Alternatively, architectures could specify a domain to
-> search primarily but also search the next domain in the hierarchy if
-> search depth permits. The default would be the existing behaviour --
-> search CPUs sharing a last-level-cache.
->
-> > SD_SHARE_PKG_RESOURCES should be set to the last level where we can
-> > efficiently move task between CPUs at wakeup
-> >
->
-> The definition of "efficiently" varies. Moving tasks between CPUs sharing
-> a cache is most efficient but moving the task to a CPU that at least has
-> local memory channels is a reasonable option if there are no idle CPUs
-> sharing cache and preferable to stacking.
->
-> > > allows within the node with the LLC CPUs masked out. While there would be
-> > > a latency hit because cache is not shared, it would still be a CPU local
-> > > to memory that is idle. That would potentially be beneficial on Zen*
-> > > as well without having to introduce new domains in the topology hierarchy.
-> >
-> > What is the current sched_domain topology description for zen ?
-> >
->
-> The cache and NUMA topologies differ slightly between each generation
-> of Zen. The common pattern is that a single NUMA node can have multiple
-> L3 caches and at one point I thought it might be reasonable to allow
-> spillover to select a local idle CPU instead of stacking multiple tasks
-> on a CPU sharing cache. I never got as far as thinking how it could be
-> done in a way that multiple architectures would be happy with.
->
-> --
-> Mel Gorman
-> SUSE Labs
