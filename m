@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D2235B855
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 03:53:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3748735B856
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 03:53:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJWwF1NzTz3c9T
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 11:53:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJWwj0xs1z30Dr
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 11:53:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=qTMiMu74;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=p7hMf2tY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536;
+ helo=mail-pg1-x536.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qTMiMu74; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
+ header.s=20161025 header.b=p7hMf2tY; dkim-atps=neutral
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
+ [IPv6:2607:f8b0:4864:20::536])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJWqy5gvTz304V
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 11:49:18 +1000 (AEST)
-Received: by mail-pj1-x1036.google.com with SMTP id t23so5789891pjy.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 18:49:18 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJWr13ShBz3bsB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 11:49:21 +1000 (AEST)
+Received: by mail-pg1-x536.google.com with SMTP id q10so8176699pgj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 18:49:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=qHa7loSaCaOe2yFractxh5MmgHLG7n6qdLPHRqtdv+o=;
- b=qTMiMu74C3cU7uIFkilT1+fdbkAhrt4ePW3vZD7pt2vGMQR63kuv9Y/ZyPOQh5i+Cp
- H6RJhtD9uB/idaD6j7WsiQYletAT4pRHb6pAt3DZX6uwAFPBlFV4rMPrR+TxojRhlhC2
- TF6PjjjCn81qqvIPxiTyi7GBlKY785mX6tmjSurLBA0PYE7OtxKuB6cn5QOfOW9MmzEp
- Dva4Z93i3Xyp/F/O4T7MsKcwMDLEdm323+FcteSrXO0W0aHZTp49XKGYejdXUgBWFD5x
- 3wmZ47JVlKE5a2BCirGvQiCZfQBjgSByslE3923G24MNzVSRCaFPZOC0VnD9pi97EEhF
- bhqQ==
+ bh=z2fLHBAlH6bMHiwD8ZSE8QbPd3NRupfIKb21fqNXnZg=;
+ b=p7hMf2tYA10VOWRMIzi44LqFQ2CoDByIZfx56TEpJUgd1gHL6CCsQmXTE8FTsgaMvD
+ peH4lGHU6CvfW++H+LD1R4Y7k46i028/OVBscxf8tOIz5zUnPnIsbDUPdLlkRYqIEVgf
+ ZHcTaGlworvRlmEnIQmfgYP7SDjFMeoymNAIVAU8pK+7JIQDMc34nYCjvT0+Ktpa8Q+I
+ aVGufIrDy3waGFh8SKgnbJpa6FWYQGfXX2UfMUdqBEjqQnnYsZrdVBBrJtZ2reVrxLiX
+ LMDm+Kou92cHhc2MmYao3uJCCkaoA/piS/1DpgTkc/X9ZnINTvg7afHtw9QjOUAEZmq0
+ ie9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=qHa7loSaCaOe2yFractxh5MmgHLG7n6qdLPHRqtdv+o=;
- b=jozoC46tzzT+8pzhAQtV1zIs6C4FXPEn8kE8/Ni/xeYPvkUNhrVplrYrAq6Fp8KSBT
- fFJ3lQ4u7adJcG/R9ap29wP0zcPbFT1BWrBygHyizOAG3J/X6lDwEfuMWwWmTC6duJAV
- k4TeCQHrm3cmsIkFjvNFm7FmLvetvY2lG/Fsba1lXIWfc6E3h5o7cVVXbzH+5WvxiUEC
- bez4YWlirkixRj1sHoOmngYzv4WXpMq/a0DXcK0KFoxlJpBN6dIjm30pyOHIM00PivMY
- LJUu2w0T0P2FarvxRSH2r/fMmjhjIRpAF0OlOmniyhUBwMPCP1WJzr3ihFE4i+zsCLXK
- abMA==
-X-Gm-Message-State: AOAM530JaezaWeqegXHQ1vNSlMakOqw6MPEg2JSxOCBRmo/Mxj5vZZd5
- FXB6p+BvtpuRXvAmcyHjvaU=
-X-Google-Smtp-Source: ABdhPJxsRw68Kuw9UM06lABNNgAc4DSU7v570Xv3VuVAxUNmDP4QdjaKk9VHiw+fQkRyT7bibRSJlg==
-X-Received: by 2002:a17:902:b483:b029:e9:eef4:4f16 with SMTP id
- y3-20020a170902b483b02900e9eef44f16mr14075893plr.38.1618192156440; 
- Sun, 11 Apr 2021 18:49:16 -0700 (PDT)
+ bh=z2fLHBAlH6bMHiwD8ZSE8QbPd3NRupfIKb21fqNXnZg=;
+ b=G+Em/UucJIDUqjcWYs2CWawZc4lAiYJs+LyKYT+8utEN2utVnEAsZ4ypmOmxZqwBXc
+ hs8XXN7bRrGscWRzxCsotXyVfOwLj2dC2W1AOaRmLijy3l/cHgZKgHaSnstCw2fs5i/9
+ eeqK4MEVmUFC5gEiJwRBRH4rytuRPzrEWY0zY4E6UaELoqqf7Ke9xkIAMnMXpkn/yR/Y
+ 4drvG2tYOp0+ApKIDoMxVkygRzucZ4A1U7+m+CwzkaGN2Figj2qDywi62111PoG6O/OX
+ bIPSu1aDAWpWAf0IJO2o+A8gOPPabCaTjuw+2xuACGWKh8GaAw3gih19OGu7Vp2ctVfu
+ MXfQ==
+X-Gm-Message-State: AOAM5319r0QTcnXobuIn+8+UGRGiG9Jz64W6HQvm6+gXsRGhxAYBtl6B
+ nVZCGSklULMZZlnAPCmN9Jg=
+X-Google-Smtp-Source: ABdhPJyGwKQHQ40lX6Tr0ZUdfWy4PrLWq/Nc/fBvKNzpneGC8SGnH8UVYCjX+1KZbFLpfw+CAVlbMQ==
+X-Received: by 2002:a63:6682:: with SMTP id
+ a124mr15283236pgc.363.1618192159275; 
+ Sun, 11 Apr 2021 18:49:19 -0700 (PDT)
 Received: from bobo.ibm.com (193-116-90-211.tpgi.com.au. [193.116.90.211])
- by smtp.gmail.com with ESMTPSA id m9sm9502345pgt.65.2021.04.11.18.49.13
+ by smtp.gmail.com with ESMTPSA id m9sm9502345pgt.65.2021.04.11.18.49.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Apr 2021 18:49:16 -0700 (PDT)
+ Sun, 11 Apr 2021 18:49:19 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v1 08/12] KVM: PPC: Book3S HV: Fix CONFIG_SPAPR_TCE_IOMMU=n
- default hcalls
-Date: Mon, 12 Apr 2021 11:48:41 +1000
-Message-Id: <20210412014845.1517916-9-npiggin@gmail.com>
+Subject: [PATCH v1 09/12] powerpc/64s: Remove KVM handler support from CBE_RAS
+ interrupts
+Date: Mon, 12 Apr 2021 11:48:42 +1000
+Message-Id: <20210412014845.1517916-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210412014845.1517916-1-npiggin@gmail.com>
 References: <20210412014845.1517916-1-npiggin@gmail.com>
@@ -82,37 +82,51 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Axtens <dja@axtens.net>
+ Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This config option causes the warning in init_default_hcalls to fire
-because the TCE handlers are in the default hcall list but not
-implemented.
+Cell does not support KVM.
 
 Acked-by: Paul Mackerras <paulus@ozlabs.org>
-Reviewed-by: Daniel Axtens <dja@axtens.net>
+Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kernel/exceptions-64s.S | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index b88df175aa76..4a532410e128 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -5412,8 +5412,10 @@ static unsigned int default_hcall_list[] = {
- 	H_READ,
- 	H_PROTECT,
- 	H_BULK_REMOVE,
-+#ifdef CONFIG_SPAPR_TCE_IOMMU
- 	H_GET_TCE,
- 	H_PUT_TCE,
-+#endif
- 	H_SET_DABR,
- 	H_SET_XDABR,
- 	H_CEDE,
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 8082b690e874..a0515cb829c2 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -2530,8 +2530,6 @@ EXC_VIRT_NONE(0x5100, 0x100)
+ INT_DEFINE_BEGIN(cbe_system_error)
+ 	IVEC=0x1200
+ 	IHSRR=1
+-	IKVM_SKIP=1
+-	IKVM_REAL=1
+ INT_DEFINE_END(cbe_system_error)
+ 
+ EXC_REAL_BEGIN(cbe_system_error, 0x1200, 0x100)
+@@ -2701,8 +2699,6 @@ EXC_COMMON_BEGIN(denorm_exception_common)
+ INT_DEFINE_BEGIN(cbe_maintenance)
+ 	IVEC=0x1600
+ 	IHSRR=1
+-	IKVM_SKIP=1
+-	IKVM_REAL=1
+ INT_DEFINE_END(cbe_maintenance)
+ 
+ EXC_REAL_BEGIN(cbe_maintenance, 0x1600, 0x100)
+@@ -2754,8 +2750,6 @@ EXC_COMMON_BEGIN(altivec_assist_common)
+ INT_DEFINE_BEGIN(cbe_thermal)
+ 	IVEC=0x1800
+ 	IHSRR=1
+-	IKVM_SKIP=1
+-	IKVM_REAL=1
+ INT_DEFINE_END(cbe_thermal)
+ 
+ EXC_REAL_BEGIN(cbe_thermal, 0x1800, 0x100)
 -- 
 2.23.0
 
