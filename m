@@ -1,46 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABF835C25B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 12:00:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A3435C2F1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 12:04:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJkl430XYz3bv8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 20:00:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJkq72jrCz3btG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 20:04:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=59.111.176.35; helo=mail-m17635.qiye.163.com;
- envelope-from=wanjiabing@vivo.com; receiver=<UNKNOWN>)
-Received: from mail-m17635.qiye.163.com (mail-m17635.qiye.163.com
- [59.111.176.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJkkj4MSrz309w
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 20:00:20 +1000 (AEST)
-Received: from wanjb-KLV-WX9.. (unknown [123.131.141.119])
- by mail-m17635.qiye.163.com (Hmail) with ESMTPA id 5C287400351;
- Mon, 12 Apr 2021 18:00:10 +0800 (CST)
-From: Wan Jiabing <wanjiabing@vivo.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Shuah Khan <shuah@kernel.org>,
- Jordan Niethe <jniethe5@gmail.com>, Michael Neuling <mikey@neuling.org>,
- Wan Jiabing <wanjiabing@vivo.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc: alignment: Remove unneeded variables
-Date: Mon, 12 Apr 2021 17:59:21 +0800
-Message-Id: <20210412095923.3916-1-wanjiabing@vivo.com>
-X-Mailer: git-send-email 2.30.2
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.130; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJkpn2PKYz309w
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 20:04:00 +1000 (AEST)
+Received: from mail-wm1-f51.google.com ([209.85.128.51]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MqbDs-1ls2yD1yNs-00mYH0 for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr
+ 2021 12:03:57 +0200
+Received: by mail-wm1-f51.google.com with SMTP id p19so6455572wmq.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 03:03:56 -0700 (PDT)
+X-Gm-Message-State: AOAM532CDlpIUzWGtnbOPAE5pZfeY88Yvl1eKGI+s4iaI+CeCVAwlOmC
+ rwvqbU5dTBU4VrLBDh9fmCUsIx/Uy7P+jSXfPlY=
+X-Google-Smtp-Source: ABdhPJz1GJVeZO+sIN2KpJ8Wn8donSpdvAqFqtcymRYAYBYot2xnOavBT3UwXj8nuP92Z994bQxnP3scv1qVkv9AVF0=
+X-Received: by 2002:a7b:c245:: with SMTP id b5mr25489890wmj.120.1618221836576; 
+ Mon, 12 Apr 2021 03:03:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
- oVCBIfWUFZGUJDHlYaGB5NH0lKQ0hIT0lVEwETFhoSFyQUDg9ZV1kWGg8SFR0UWUFZT0tIVUpKS0
- hKTFVLWQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PRQ6Szo*DD8JSx88MAkpEgsc
- CDxPFDZVSlVKTUpDSUlKTUpKSU9LVTMWGhIXVQwaFRESGhkSFRw7DRINFFUYFBZFWVdZEgtZQVlK
- SUhVSkhKVUpPSlVKSkJZV1kIAVlBTElCQzcG
-X-HM-Tid: 0a78c58636eed991kuws5c287400351
+References: <20210412085545.2595431-1-hch@lst.de>
+In-Reply-To: <20210412085545.2595431-1-hch@lst.de>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 12 Apr 2021 12:03:40 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a38qgkjkh4+fDKp4TufL+2_W-quZBFK9pJFf7wXP=84xQ@mail.gmail.com>
+Message-ID: <CAK8P3a38qgkjkh4+fDKp4TufL+2_W-quZBFK9pJFf7wXP=84xQ@mail.gmail.com>
+Subject: Re: consolidate the flock uapi definitions
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:LaH7q6QRgmrG4X/zcz8Nm7H8gTdtC62kAn7Ps6JbDtQ5K7FlcVk
+ uOAOuwxNHbSxjgwjA6Mgv8OLCW65SBZEmF13xfsFb/suEGL8j6DcNPMBfYeGYhPn8mqVrUS
+ ZnBBzNUeEQaTqWLA0l6DGif0lITmwRuxjJ310lkmDJmNOa0yYnOGxofueGxYoys2bwhkqsA
+ aPTKFmijw5HcQJSK3Xcpg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:paViTrMBc7s=:cWN9qWcHTC4rZj12LYf9Sf
+ KBFrU9Qk4d7RiDvKu0oI0MxVOsR4OEjt93VWw17Sb+3BM7rDLA13EwbmgVitc0pPHkS7wRpvi
+ yR6pNrLNu61L2DRqU22o62xxRbhr53xu2Cwb/1ryo64JU/f34lwu1+whFhZkpoGUqtgl/4SHx
+ FmiRDd2ORTGRZE5r/b9UMQliLa/skc5tkJSHSur195f09viSlFSFfIT6tlapxddzfGMurTv2L
+ 8ehWCe3o7352TuUoQUscjiNTz8SmufdoZzrnZ1FFE18y11Q1r14yTPKN1XjxADzSFMydVemXQ
+ l45k9IabPUqQR+V1k4idc5LI6iGs29A8VBg2vjJEqilA9ZvngEL8qpyQ/5UvvVpM0PwK9Rz6q
+ hKRs0Pm7jcF5tZ+FsN8wWkLaaYKIOo5u4eDtav6AX09VicqDSJ+1oMjJ/PR+XO5DAuiOBjbml
+ r968ovZ/hIoSMx0C5IuHu7rrO0R2WR+XgK2GvKv8iQa02+3LlsAJFRNZeA318wUHxlfgsUJ6J
+ tbOknHQdu848cIndFwPwdkOlNYT/ksfXheRPDvkSvaTdg3lZW/EQKoO1ZBt4nhtldpOIIOxFs
+ XhmBVAiYKzezO7EKzybPhRNVqcPoA83G8q
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,231 +66,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kael_w@yeah.net
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Parisc List <linux-parisc@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Helge Deller <deller@gmx.de>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix coccicheck warning:
+On Mon, Apr 12, 2021 at 10:55 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> Hi all,
+>
+> currently we deal with the slight differents in the various architecture
+> variants of the flock and flock64 stuctures in a very cruft way.  This
+> series switches to just use small arch hooks and define the rest in
+> asm-generic and linux/compat.h instead.
 
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:539:5-7:
-Unneeded variable: "rc". Return "0" on line 562
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:567:5-7:
-Unneeded variable: "rc". Return "0" on line 580
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:585:5-7:
-Unneeded variable: "rc". Return "0" on line 594
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:600:5-7:
-Unneeded variable: "rc". Return "0" on line 611
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:416:5-7:
-Unneeded variable: "rc". Return "0" on line 470
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:475:5-7:
-Unneeded variable: "rc". Return "0" on line 485
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:490:5-7:
-Unneeded variable: "rc". Return "0" on line 506
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:511:5-7:
-Unneeded variable: "rc". Return "0" on line 534
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:331:5-7:
-Unneeded variable: "rc". Return "0" on line 344
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:349:5-7:
-Unneeded variable: "rc". Return "0" on line 360
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:365:5-7:
-Unneeded variable: "rc". Return "0" on line 392
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:397:5-7:
-Unneeded variable: "rc". Return "0" on line 411
+Nice cleanup. I can merge it through the asm-generic tree if you like,
+though it's a little late just ahead of the merge window.
 
-Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
----
- .../powerpc/alignment/alignment_handler.c     | 48 +++++--------------
- 1 file changed, 12 insertions(+), 36 deletions(-)
+I would not want to change the compat_loff_t definition to compat_s64
+to avoid the padding at this time, though that might be a useful cleanup
+for a future cycle.
 
-diff --git a/tools/testing/selftests/powerpc/alignment/alignment_handler.c b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-index c25cf7cd45e9..48bfb7b36d84 100644
---- a/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-+++ b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-@@ -328,8 +328,6 @@ static bool can_open_cifile(void)
- 
- int test_alignment_handler_vsx_206(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
- 
-@@ -341,13 +339,11 @@ int test_alignment_handler_vsx_206(void)
- 	STORE_VSX_XFORM_TEST(stxvd2x);
- 	STORE_VSX_XFORM_TEST(stxvw4x);
- 	STORE_VSX_XFORM_TEST(stxsdx);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_vsx_207(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_2_07));
- 
-@@ -357,13 +353,11 @@ int test_alignment_handler_vsx_207(void)
- 	LOAD_VSX_XFORM_TEST(lxsiwzx);
- 	STORE_VSX_XFORM_TEST(stxsspx);
- 	STORE_VSX_XFORM_TEST(stxsiwx);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_vsx_300(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_00));
-@@ -389,13 +383,11 @@ int test_alignment_handler_vsx_300(void)
- 	STORE_VSX_XFORM_TEST(stxvx);
- 	STORE_VSX_XFORM_TEST(stxvl);
- 	STORE_VSX_XFORM_TEST(stxvll);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_vsx_prefix(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
- 
-@@ -408,13 +400,11 @@ int test_alignment_handler_vsx_prefix(void)
- 	STORE_VSX_8LS_PREFIX_TEST(PSTXSSP, 0);
- 	STORE_VSX_8LS_PREFIX_TEST(PSTXV0, 0);
- 	STORE_VSX_8LS_PREFIX_TEST(PSTXV1, 1);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_integer(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 
- 	printf("Integer\n");
-@@ -467,13 +457,11 @@ int test_alignment_handler_integer(void)
- 	STORE_DFORM_TEST(stmw);
- #endif
- 
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_integer_206(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
- 
-@@ -482,13 +470,11 @@ int test_alignment_handler_integer_206(void)
- 	LOAD_XFORM_TEST(ldbrx);
- 	STORE_XFORM_TEST(stdbrx);
- 
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_integer_prefix(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
- 
-@@ -503,13 +489,11 @@ int test_alignment_handler_integer_prefix(void)
- 	STORE_MLS_PREFIX_TEST(PSTH);
- 	STORE_MLS_PREFIX_TEST(PSTW);
- 	STORE_8LS_PREFIX_TEST(PSTD);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_vmx(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap(PPC_FEATURE_HAS_ALTIVEC));
- 
-@@ -531,13 +515,11 @@ int test_alignment_handler_vmx(void)
- 	STORE_VMX_XFORM_TEST(stvehx);
- 	STORE_VMX_XFORM_TEST(stvewx);
- 	STORE_VMX_XFORM_TEST(stvxl);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_fp(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 
- 	printf("Floating point\n");
-@@ -559,13 +541,11 @@ int test_alignment_handler_fp(void)
- 	STORE_FLOAT_XFORM_TEST(stfsux);
- 	STORE_FLOAT_XFORM_TEST(stfiwx);
- 
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_fp_205(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_05));
- 
-@@ -577,13 +557,11 @@ int test_alignment_handler_fp_205(void)
- 	STORE_FLOAT_DFORM_TEST(stfdp);
- 	STORE_FLOAT_XFORM_TEST(stfdpx);
- 
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_fp_206(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
- 
-@@ -591,14 +569,12 @@ int test_alignment_handler_fp_206(void)
- 
- 	LOAD_FLOAT_XFORM_TEST(lfiwzx);
- 
--	return rc;
-+	return 0;
- }
- 
- 
- int test_alignment_handler_fp_prefix(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
- 
-@@ -608,7 +584,7 @@ int test_alignment_handler_fp_prefix(void)
- 	LOAD_FLOAT_MLS_PREFIX_TEST(PLFD);
- 	STORE_FLOAT_MLS_PREFIX_TEST(PSTFS);
- 	STORE_FLOAT_MLS_PREFIX_TEST(PSTFD);
--	return rc;
-+	return 0;
- }
- 
- void usage(char *prog)
--- 
-2.30.2
-
+        Arnd
