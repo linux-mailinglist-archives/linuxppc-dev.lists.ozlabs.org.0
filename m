@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629AF35C6D4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 14:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE33735C6B9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 14:49:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJpfP1xKZz3c72
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 22:57:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJpVB4sdFz30Dv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 22:49:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ttKtKfHT;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=rsZEHxCy;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=KwLew2ae;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=XAOOXk0T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,42 +19,47 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=ttKtKfHT; 
+ header.s=2020 header.b=KwLew2ae; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=rsZEHxCy; 
+ header.a=ed25519-sha256 header.s=2020e header.b=XAOOXk0T; 
  dkim-atps=neutral
+X-Greylist: delayed 91 seconds by postgrey-1.36 at boromir;
+ Mon, 12 Apr 2021 22:49:31 AEST
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJpdW25SKz30C5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 22:56:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJpTl3xqBz309W
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 22:49:31 +1000 (AEST)
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1618231686;
+ s=2020; t=1618231769;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to; bh=msG8qht51owt3dOAb8bO2Q/JGreHFsZAw+taKjc/k/0=;
- b=ttKtKfHTkJMwc/7gd8FTEtSE7z6D37j94Fd9vBOq7/5KqXfG2VdD2seAIKa2ZxaQ4sr7+l
- nGov0CrV1JbRb/6kaL2bDGO5CNfBL55UWrXwSPTp/4omJnPFHeNed6WfSyqWBQ3KmL3ynH
- newr6bQfGxD9dMNXt6q5i0rz6hRhJHgMjhz3FnJwvjooffnIE6uwtqgu01N6O1OqwKInHm
- zkc7OCVHrlvOtjOeaZrixX0yZlVwt194a6ixyUZ9nJP1DJjxf/uBUshsd+nV+d7HP3FQNj
- 5oqdCabdmEpESdF41ciIKsY2CEGM6wPLhZWSPSB0fik0mvawW34S24fH2eHTaw==
+ in-reply-to:in-reply-to:references:references;
+ bh=l/XIlOnCEFK6wDuZUWOcTRIzT0SyL7XB9TwDJmOc63k=;
+ b=KwLew2aezRXKKOl6Pmjy0VKCuN+Gg2cN80wVBDPmGgpC26I54pVChs2mzOwwjq7rlbE4bL
+ wwzx9G+wKLZxwK21mjzocbgSicynrp52mDNBj3bhxXjiy8GzRWQg2Sw2VBy9zRPiExfVIa
+ GQde8qdyEknJInN0pvRtX08PtZEl4sh9BMtusOx/F1lOsFstPExBvKG4Gx/r4XSt0tQc+3
+ SHl0+dGXaxoWeoLML7acFg6vpHw+AwHaeVIeOKqn5i8Qal3rFoOAaQcwwAC2DNgxUa+C/B
+ etustzSxZsdmhNj4lzmWuswZq4zmKo3UZZpAdR9bOYkcy9mxSmlF4z5ueATQug==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1618231686;
+ s=2020e; t=1618231769;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to; bh=msG8qht51owt3dOAb8bO2Q/JGreHFsZAw+taKjc/k/0=;
- b=rsZEHxCyPYPtlclpxkmK9d9/VTx1jx273GBJjXOqpEEbmozWkgV2sLzK2xydvH3QpabVRr
- WclALlc+a7gZW9Ag==
+ in-reply-to:in-reply-to:references:references;
+ bh=l/XIlOnCEFK6wDuZUWOcTRIzT0SyL7XB9TwDJmOc63k=;
+ b=XAOOXk0TVAsPzEcoTVW4tVWa/HhqIhpKIomW9bTNeLJ821g8uwIaj2+g8oTfwzXJ9P2Sdn
+ YMwkGedwPu2VniBQ==
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH RESEND v1 2/4] lib/vdso: Add vdso_data pointer as input to
- __arch_get_timens_vdso_data()
-In-Reply-To: <539c4204b1baa77c55f758904a1ea239abbc7a5c.1617209142.git.christophe.leroy@csgroup.eu>
-Date: Mon, 12 Apr 2021 14:48:06 +0200
-Message-ID: <87pmyz1xfd.ffs@nanos.tec.linutronix.de>
+Subject: Re: [PATCH RESEND v1 0/4] powerpc/vdso: Add support for time
+ namespaces
+In-Reply-To: <cover.1617209141.git.christophe.leroy@csgroup.eu>
+References: <cover.1617209141.git.christophe.leroy@csgroup.eu>
+Date: Mon, 12 Apr 2021 14:49:28 +0200
+Message-ID: <87mtu31xd3.ffs@nanos.tec.linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,14 +81,14 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Wed, Mar 31 2021 at 16:48, Christophe Leroy wrote:
-> For the same reason as commit e876f0b69dc9 ("lib/vdso: Allow
-> architectures to provide the vdso data pointer"), powerpc wants to
-> avoid calculation of relative position to code.
+> [Sorry, resending with complete destination list, I used the wrong script on the first delivery]
 >
-> As the timens_vdso_data is next page to vdso_data, provide
-> vdso_data pointer to __arch_get_timens_vdso_data() in order
-> to ease the calculation on powerpc in following patches.
+> This series adds support for time namespaces on powerpc.
 >
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> All timens selftests are successfull.
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+If PPC people want to pick up the whole lot, no objections from my side.
+
+Thanks,
+
+        tglx
