@@ -1,69 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8C935B850
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 03:50:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 639BF35B851
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 03:51:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJWsc1ycGz3cG4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 11:50:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJWt72VLVz3cRp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 11:51:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=oEWyQKid;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=VvzPE5UU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430;
- helo=mail-pf1-x430.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
+ helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=oEWyQKid; dkim-atps=neutral
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
- [IPv6:2607:f8b0:4864:20::430])
+ header.s=20161025 header.b=VvzPE5UU; dkim-atps=neutral
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJWqg4YpFz30CF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 11:49:03 +1000 (AEST)
-Received: by mail-pf1-x430.google.com with SMTP id a85so7738020pfa.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 18:49:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJWql20vVz30H2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 11:49:07 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ ot17-20020a17090b3b51b0290109c9ac3c34so7915269pjb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Apr 2021 18:49:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=bHMMJ1bBn1zkHC5+ylovzEBfrAxZyP46YygKZ7eOaes=;
- b=oEWyQKid7q2UrUYlKoo1kKPGZ1P4xmq0Ou2ZE5nEt8906/mb9y68BDahSuPKkH0Mq7
- 20TgZwz0R+xHFeTTHwxbgw2ZAQhxmVm105cCjTlvtdSlS1jWv3+9nPijrp2dqaKcEDwy
- hubzVWkloMYyw55PCxA/IDcdnnNxj9m9ihS6qcdoDebQhzl2Q3TueWbit9dBdiNAU1NQ
- nhvVZShQ/LI4CHxmy4ugjQmRXqlJd5sZ3TR0wnYKc1GUcKaB9RiHkiXTv6FaN3sZMrDK
- ddx7072tkpb7WWKdHdbSIsL6rDiHkDjYsALmTyu0GT8VmXRiNJYmj5aDeZfpf47iXpbV
- RvoQ==
+ bh=uGMuXcs706W1WbX3G4YQ40n7ZTHeko237s34UogQXMQ=;
+ b=VvzPE5UUHzeT7qXKTS5YzcuXeU6aLDKX4JEikAx22eH4s4ilVaqIhdRIRZ+VK4Dl+s
+ zfzb3Eq0tzAxQ4/Nb1G6vzS1uHjfzWMLBzSlvWvQAegPa2OLEiNSwtQztnKx/aCglv9g
+ uCIk7l67Un+mw0HtiGAP4UOMQA2qWsojBsyEoD0K5+SbtPjojdq9F+nBdmTBEVaAGxBt
+ fPtg7kNcc5dpjrLaH/Kc0KvzCLZrTvAzBeyzntAckqHRLZ9Yj79PaK5sQJYcTx67ODkM
+ RpPL0LFuhlQfOSITvdrSrTnBMcVnXfpbTcwKKRWJQUOzLJfk84Sq9/hFRORLbFMErfJj
+ 6InA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=bHMMJ1bBn1zkHC5+ylovzEBfrAxZyP46YygKZ7eOaes=;
- b=iXg0vM18CMm4fOeZgp0/vV0Kwny/W+Yg6BTWHgyCPAPhJxgRYeRFwYiRiEI0KLryS3
- vFGRHZxdu62qABTAIfRqzg726KSyUM6IdL1mKYPF3ul+tbQBV6rW27h9NMgwH9rUAv6q
- EKd0MEpH+L0NNZBNS5+NdbkiAE5tgvLXGAoZokaoR707BL8ilCYKxb2WOeeuh2xjSlG1
- lXXXu0g8BoXyVouDQ7aSXQ9CbP8GDDGK5mLa+NEhRCyseKOcCn/zgQ4mKEKxlcEygNzw
- vp1QjU6uPkzfHQnv6xxGijuuh9VK97FUNXz2LoGLuG04B0LXjXSDsoc5qievgPsVx3Nb
- ssTQ==
-X-Gm-Message-State: AOAM532dfOrUsNxcAipGP4lQuAPrphZuHuyPnqHjWaDeAY58TK3f+AOk
- S3Kzw7wQ+ZMT3V4VhVkZNPo=
-X-Google-Smtp-Source: ABdhPJzao+p6qJTLxrT6zgF943n7L1u4OwFDjcAq7G9obKRcYVjADV2oV3eWhwI+vyeqh9VeTJX3aA==
-X-Received: by 2002:a63:d50c:: with SMTP id c12mr6648720pgg.145.1618192141836; 
- Sun, 11 Apr 2021 18:49:01 -0700 (PDT)
+ bh=uGMuXcs706W1WbX3G4YQ40n7ZTHeko237s34UogQXMQ=;
+ b=QjMSnDHc6EgJVxMW53MWQjKNBQdTcQdQb/6C5if4oiGmFQIjfaNO8PDNoeuXagX3Jt
+ ns8lzOfSvjKQvTMKAAyM/NZKA2yD7PMMVy7+yTLb1s7DlP6yMIUXLVKJ7vGPIbdsecZ+
+ Z9tzT25OwDJYAmPmdl1fCpniph8AUdBNxACrjKcrsO27L8XIPBtlAICFjTA5b6sM6V4D
+ W7HCdLMW0lP0g0oZi5QOgJ37ZnfnKQQxfFftStIUZReaUmdQmwBRkBZMZ2ZKnfrtyFlF
+ 7lt8iU/oJqHcwFxBBG4JUuUw+U3yHEw7pf+wxGwdE5fy8gGoXVRLLwn3wWXE32EP0sMK
+ F0ZA==
+X-Gm-Message-State: AOAM5320DVAJ+Kgw1fTsZYikLp86m5RR6nKzG5TTR4oe5/Dsl/8qhMIs
+ peieriWYaZiYR1vGA7SI4RI=
+X-Google-Smtp-Source: ABdhPJxowsYUEbRFMRe0mazdV/T9VA4uysRjEZ1Cu9bz/VPnPbSdw4JNr0uDSTPsboXRnc1kPjALeQ==
+X-Received: by 2002:a17:902:e803:b029:e9:1f79:2427 with SMTP id
+ u3-20020a170902e803b02900e91f792427mr24307901plg.21.1618192144662; 
+ Sun, 11 Apr 2021 18:49:04 -0700 (PDT)
 Received: from bobo.ibm.com (193-116-90-211.tpgi.com.au. [193.116.90.211])
- by smtp.gmail.com with ESMTPSA id m9sm9502345pgt.65.2021.04.11.18.48.59
+ by smtp.gmail.com with ESMTPSA id m9sm9502345pgt.65.2021.04.11.18.49.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Apr 2021 18:49:01 -0700 (PDT)
+ Sun, 11 Apr 2021 18:49:04 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v1 03/12] KVM: PPC: Book3S HV: Add a function to filter guest
- LPCR bits
-Date: Mon, 12 Apr 2021 11:48:36 +1000
-Message-Id: <20210412014845.1517916-4-npiggin@gmail.com>
+Subject: [PATCH v1 04/12] KVM: PPC: Book3S HV: Disallow LPCR[AIL] to be set to
+ 1 or 2
+Date: Mon, 12 Apr 2021 11:48:37 +1000
+Message-Id: <20210412014845.1517916-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210412014845.1517916-1-npiggin@gmail.com>
 References: <20210412014845.1517916-1-npiggin@gmail.com>
@@ -86,165 +88,44 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Guest LPCR depends on hardware type, and future changes will add
-restrictions based on errata and guest MMU mode. Move this logic
-to a common function and use it for the cases where the guest
-wants to update its LPCR (or the LPCR of a nested guest).
+These are already disallowed by H_SET_MODE from the guest, also disallow
+these by updating LPCR directly.
 
-This also adds a warning in other places that set or update LPCR
-if we try to set something that would have been disallowed by
-the filter, as a sanity check.
+AIL modes can affect the host interrupt behaviour while the guest LPCR
+value is set, so filter it here too.
 
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+Acked-by: Paul Mackerras <paulus@ozlabs.org>
+Suggested-by: Fabiano Rosas <farosas@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/kvm_book3s.h |  2 +
- arch/powerpc/kvm/book3s_hv.c          | 68 ++++++++++++++++++++-------
- arch/powerpc/kvm/book3s_hv_nested.c   |  8 +++-
- 3 files changed, 59 insertions(+), 19 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
-index 2f5f919f6cd3..c58121508157 100644
---- a/arch/powerpc/include/asm/kvm_book3s.h
-+++ b/arch/powerpc/include/asm/kvm_book3s.h
-@@ -258,6 +258,8 @@ extern long kvmppc_hv_get_dirty_log_hpt(struct kvm *kvm,
- extern void kvmppc_harvest_vpa_dirty(struct kvmppc_vpa *vpa,
- 			struct kvm_memory_slot *memslot,
- 			unsigned long *map);
-+extern unsigned long kvmppc_filter_lpcr_hv(struct kvm *kvm,
-+			unsigned long lpcr);
- extern void kvmppc_update_lpcr(struct kvm *kvm, unsigned long lpcr,
- 			unsigned long mask);
- extern void kvmppc_set_fscr(struct kvm_vcpu *vcpu, u64 fscr);
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 208a053c9adf..268e31c7e49c 100644
+index 268e31c7e49c..3de8a1f89a7d 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1635,6 +1635,35 @@ static int kvm_arch_vcpu_ioctl_set_sregs_hv(struct kvm_vcpu *vcpu,
- 	return 0;
- }
- 
-+/*
-+ * Enforce limits on guest LPCR values based on hardware availability,
-+ * guest configuration, and possibly hypervisor support and security
-+ * concerns.
-+ */
-+unsigned long kvmppc_filter_lpcr_hv(struct kvm *kvm, unsigned long lpcr)
-+{
-+	/* On POWER8 and above, userspace can modify AIL */
-+	if (!cpu_has_feature(CPU_FTR_ARCH_207S))
-+		lpcr &= ~LPCR_AIL;
-+
-+	/*
-+	 * On POWER9, allow userspace to enable large decrementer for the
-+	 * guest, whether or not the host has it enabled.
-+	 */
-+	if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+		lpcr &= ~LPCR_LD;
-+
-+	return lpcr;
-+}
-+
-+static void verify_lpcr(struct kvm *kvm, unsigned long lpcr)
-+{
-+	if (lpcr != kvmppc_filter_lpcr_hv(kvm, lpcr)) {
-+		WARN_ONCE(1, "lpcr 0x%lx differs from filtered 0x%lx\n",
-+			  lpcr, kvmppc_filter_lpcr_hv(kvm, lpcr));
-+	}
-+}
-+
- static void kvmppc_set_lpcr(struct kvm_vcpu *vcpu, u64 new_lpcr,
- 		bool preserve_top32)
- {
-@@ -1643,6 +1672,23 @@ static void kvmppc_set_lpcr(struct kvm_vcpu *vcpu, u64 new_lpcr,
- 	u64 mask;
- 
- 	spin_lock(&vc->lock);
-+
-+	/*
-+	 * Userspace can only modify
-+	 * DPFD (default prefetch depth), ILE (interrupt little-endian),
-+	 * TC (translation control), AIL (alternate interrupt location),
-+	 * LD (large decrementer).
-+	 * These are subject to restrictions from kvmppc_filter_lcpr_hv().
-+	 */
-+	mask = LPCR_DPFD | LPCR_ILE | LPCR_TC | LPCR_AIL | LPCR_LD;
-+
-+	/* Broken 32-bit version of LPCR must not clear top bits */
-+	if (preserve_top32)
-+		mask &= 0xFFFFFFFF;
-+
-+	new_lpcr = kvmppc_filter_lpcr_hv(kvm,
-+			(vc->lpcr & ~mask) | (new_lpcr & mask));
-+
- 	/*
- 	 * If ILE (interrupt little-endian) has changed, update the
- 	 * MSR_LE bit in the intr_msr for each vcpu in this vcore.
-@@ -1661,25 +1707,8 @@ static void kvmppc_set_lpcr(struct kvm_vcpu *vcpu, u64 new_lpcr,
- 		}
- 	}
- 
--	/*
--	 * Userspace can only modify DPFD (default prefetch depth),
--	 * ILE (interrupt little-endian) and TC (translation control).
--	 * On POWER8 and POWER9 userspace can also modify AIL (alt. interrupt loc.).
--	 */
--	mask = LPCR_DPFD | LPCR_ILE | LPCR_TC;
--	if (cpu_has_feature(CPU_FTR_ARCH_207S))
--		mask |= LPCR_AIL;
--	/*
--	 * On POWER9, allow userspace to enable large decrementer for the
--	 * guest, whether or not the host has it enabled.
--	 */
--	if (cpu_has_feature(CPU_FTR_ARCH_300))
--		mask |= LPCR_LD;
-+	vc->lpcr = new_lpcr;
- 
--	/* Broken 32-bit version of LPCR must not clear top bits */
--	if (preserve_top32)
--		mask &= 0xFFFFFFFF;
--	vc->lpcr = (vc->lpcr & ~mask) | (new_lpcr & mask);
- 	spin_unlock(&vc->lock);
- }
- 
-@@ -4644,8 +4673,10 @@ void kvmppc_update_lpcr(struct kvm *kvm, unsigned long lpcr, unsigned long mask)
- 		struct kvmppc_vcore *vc = kvm->arch.vcores[i];
- 		if (!vc)
- 			continue;
-+
- 		spin_lock(&vc->lock);
- 		vc->lpcr = (vc->lpcr & ~mask) | lpcr;
-+		verify_lpcr(kvm, vc->lpcr);
- 		spin_unlock(&vc->lock);
- 		if (++cores_done >= kvm->arch.online_vcores)
- 			break;
-@@ -4973,6 +5004,7 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
- 		kvmppc_setup_partition_table(kvm);
- 	}
- 
-+	verify_lpcr(kvm, lpcr);
- 	kvm->arch.lpcr = lpcr;
- 
- 	/* Initialization for future HPT resizes */
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 3060e5deffc8..d14fe32f167b 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -151,7 +151,13 @@ static void sanitise_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
- 	 */
- 	mask = LPCR_DPFD | LPCR_ILE | LPCR_TC | LPCR_AIL | LPCR_LD |
- 		LPCR_LPES | LPCR_MER;
--	hr->lpcr = (vc->lpcr & ~mask) | (hr->lpcr & mask);
-+
-+	/*
-+	 * Additional filtering is required depending on hardware
-+	 * and configuration.
-+	 */
-+	hr->lpcr = kvmppc_filter_lpcr_hv(vcpu->kvm,
-+			(vc->lpcr & ~mask) | (hr->lpcr & mask));
+@@ -803,7 +803,10 @@ static int kvmppc_h_set_mode(struct kvm_vcpu *vcpu, unsigned long mflags,
+ 		vcpu->arch.dawrx1 = value2;
+ 		return H_SUCCESS;
+ 	case H_SET_MODE_RESOURCE_ADDR_TRANS_MODE:
+-		/* KVM does not support mflags=2 (AIL=2) */
++		/*
++		 * KVM does not support mflags=2 (AIL=2) and AIL=1 is reserved.
++		 * Keep this in synch with kvmppc_filter_guest_lpcr_hv.
++		 */
+ 		if (mflags != 0 && mflags != 3)
+ 			return H_UNSUPPORTED_FLAG_START;
+ 		return H_TOO_HARD;
+@@ -1645,6 +1648,8 @@ unsigned long kvmppc_filter_lpcr_hv(struct kvm *kvm, unsigned long lpcr)
+ 	/* On POWER8 and above, userspace can modify AIL */
+ 	if (!cpu_has_feature(CPU_FTR_ARCH_207S))
+ 		lpcr &= ~LPCR_AIL;
++	if ((lpcr & LPCR_AIL) != LPCR_AIL_3)
++		lpcr &= ~LPCR_AIL; /* LPCR[AIL]=1/2 is disallowed */
  
  	/*
- 	 * Don't let L1 enable features for L2 which we've disabled for L1,
+ 	 * On POWER9, allow userspace to enable large decrementer for the
 -- 
 2.23.0
 
