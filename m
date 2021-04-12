@@ -2,43 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C007835C6D9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 14:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0479535C6E6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 14:59:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJpfv4dv9z3cFR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 22:57:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJphd6b81z3bmt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 22:58:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=vincenzo.frascino@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FJpdn0DVTz3bpH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 22:56:28 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDA50D6E;
- Mon, 12 Apr 2021 05:56:26 -0700 (PDT)
-Received: from [10.37.12.6] (unknown [10.37.12.6])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BEDEF3F73B;
- Mon, 12 Apr 2021 05:56:24 -0700 (PDT)
-Subject: Re: [PATCH RESEND v1 2/4] lib/vdso: Add vdso_data pointer as input to
- __arch_get_timens_vdso_data()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=vivo.com (client-ip=59.111.176.35; helo=mail-m17635.qiye.163.com;
+ envelope-from=wanjiabing@vivo.com; receiver=<UNKNOWN>)
+Received: from mail-m17635.qiye.163.com (mail-m17635.qiye.163.com
+ [59.111.176.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJphH5Zq1z30CC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 22:58:33 +1000 (AEST)
+Received: from wanjb-KLV-WX9.lan (unknown [60.232.195.58])
+ by mail-m17635.qiye.163.com (Hmail) with ESMTPA id 14220400381;
+ Mon, 12 Apr 2021 20:58:23 +0800 (CST)
+From: Wan Jiabing <wanjiabing@vivo.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <cover.1617209141.git.christophe.leroy@csgroup.eu>
- <539c4204b1baa77c55f758904a1ea239abbc7a5c.1617209142.git.christophe.leroy@csgroup.eu>
-From: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Message-ID: <d3f27278-b555-ad6b-c3a3-573774ec486e@arm.com>
-Date: Mon, 12 Apr 2021 13:56:23 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ Paul Mackerras <paulus@samba.org>, Shuah Khan <shuah@kernel.org>,
+ Jordan Niethe <jniethe5@gmail.com>, Michael Neuling <mikey@neuling.org>,
+ Wan Jiabing <wanjiabing@vivo.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] [v2] selftests: powerpc: Remove unneeded variables
+Date: Mon, 12 Apr 2021 20:57:44 +0800
+Message-Id: <20210412125746.2766-1-wanjiabing@vivo.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <539c4204b1baa77c55f758904a1ea239abbc7a5c.1617209142.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
+ oVCBIfWUFZQktISlZDTh1CT0JPS04YTENVEwETFhoSFyQUDg9ZV1kWGg8SFR0UWUFZT0tIVUpKS0
+ hKTFVLWQY+
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6ND46SRw4NT8NEh8XDwEUAUgY
+ NDEKCwlVSlVKTUpDSUhJSEtPS0JJVTMWGhIXVQwaFRESGhkSFRw7DRINFFUYFBZFWVdZEgtZQVlN
+ S1VJSElVSkJOVU5DWVdZCAFZQUxITkM3Bg++
+X-HM-Tid: 0a78c6296015d991kuws14220400381
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,160 +52,235 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, arnd@arndb.de, dima@arista.com,
- linux-kernel@vger.kernel.org, avagin@gmail.com, luto@kernel.org,
- tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org
+Cc: kael_w@yeah.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Fix coccicheck warning:
 
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:539:5-7:
+Unneeded variable: "rc". Return "0" on line 562
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:567:5-7:
+Unneeded variable: "rc". Return "0" on line 580
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:585:5-7:
+Unneeded variable: "rc". Return "0" on line 594
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:600:5-7:
+Unneeded variable: "rc". Return "0" on line 611
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:416:5-7:
+Unneeded variable: "rc". Return "0" on line 470
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:475:5-7:
+Unneeded variable: "rc". Return "0" on line 485
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:490:5-7:
+Unneeded variable: "rc". Return "0" on line 506
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:511:5-7:
+Unneeded variable: "rc". Return "0" on line 534
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:331:5-7:
+Unneeded variable: "rc". Return "0" on line 344
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:349:5-7:
+Unneeded variable: "rc". Return "0" on line 360
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:365:5-7:
+Unneeded variable: "rc". Return "0" on line 392
+./tools/testing/selftests/powerpc/alignment/alignment_handler.c:397:5-7:
+Unneeded variable: "rc". Return "0" on line 411
 
-On 3/31/21 5:48 PM, Christophe Leroy wrote:
-> For the same reason as commit e876f0b69dc9 ("lib/vdso: Allow
-> architectures to provide the vdso data pointer"), powerpc wants to
-> avoid calculation of relative position to code.
-> 
-> As the timens_vdso_data is next page to vdso_data, provide
-> vdso_data pointer to __arch_get_timens_vdso_data() in order
-> to ease the calculation on powerpc in following patches.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+---
+Changelog:
+v2:
+- Modify the subject line.
+---
+ .../powerpc/alignment/alignment_handler.c     | 48 +++++--------------
+ 1 file changed, 12 insertions(+), 36 deletions(-)
 
-Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
-
-> ---
->  arch/arm64/include/asm/vdso/compat_gettimeofday.h |  3 ++-
->  arch/arm64/include/asm/vdso/gettimeofday.h        |  2 +-
->  arch/s390/include/asm/vdso/gettimeofday.h         |  3 ++-
->  arch/x86/include/asm/vdso/gettimeofday.h          |  3 ++-
->  lib/vdso/gettimeofday.c                           | 15 +++++++++------
->  5 files changed, 16 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/vdso/compat_gettimeofday.h b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-> index 7508b0ac1d21..ecb6fd4c3c64 100644
-> --- a/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-> +++ b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-> @@ -155,7 +155,8 @@ static __always_inline const struct vdso_data *__arch_get_vdso_data(void)
->  }
->  
->  #ifdef CONFIG_TIME_NS
-> -static __always_inline const struct vdso_data *__arch_get_timens_vdso_data(void)
-> +static __always_inline
-> +const struct vdso_data *__arch_get_timens_vdso_data(const struct vdso_data *vd)
->  {
->  	const struct vdso_data *ret;
->  
-> diff --git a/arch/arm64/include/asm/vdso/gettimeofday.h b/arch/arm64/include/asm/vdso/gettimeofday.h
-> index 631ab1281633..de86230a9436 100644
-> --- a/arch/arm64/include/asm/vdso/gettimeofday.h
-> +++ b/arch/arm64/include/asm/vdso/gettimeofday.h
-> @@ -100,7 +100,7 @@ const struct vdso_data *__arch_get_vdso_data(void)
->  
->  #ifdef CONFIG_TIME_NS
->  static __always_inline
-> -const struct vdso_data *__arch_get_timens_vdso_data(void)
-> +const struct vdso_data *__arch_get_timens_vdso_data(const struct vdso_data *vd)
->  {
->  	return _timens_data;
->  }
-> diff --git a/arch/s390/include/asm/vdso/gettimeofday.h b/arch/s390/include/asm/vdso/gettimeofday.h
-> index ed89ef742530..383c53c3dddd 100644
-> --- a/arch/s390/include/asm/vdso/gettimeofday.h
-> +++ b/arch/s390/include/asm/vdso/gettimeofday.h
-> @@ -68,7 +68,8 @@ long clock_getres_fallback(clockid_t clkid, struct __kernel_timespec *ts)
->  }
->  
->  #ifdef CONFIG_TIME_NS
-> -static __always_inline const struct vdso_data *__arch_get_timens_vdso_data(void)
-> +static __always_inline
-> +const struct vdso_data *__arch_get_timens_vdso_data(const struct vdso_data *vd)
->  {
->  	return _timens_data;
->  }
-> diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/asm/vdso/gettimeofday.h
-> index df01d7349d79..1936f21ed8cd 100644
-> --- a/arch/x86/include/asm/vdso/gettimeofday.h
-> +++ b/arch/x86/include/asm/vdso/gettimeofday.h
-> @@ -58,7 +58,8 @@ extern struct ms_hyperv_tsc_page hvclock_page
->  #endif
->  
->  #ifdef CONFIG_TIME_NS
-> -static __always_inline const struct vdso_data *__arch_get_timens_vdso_data(void)
-> +static __always_inline
-> +const struct vdso_data *__arch_get_timens_vdso_data(const struct vdso_data *vd)
->  {
->  	return __timens_vdso_data;
->  }
-> diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-> index c6f6dee08746..ce2f69552003 100644
-> --- a/lib/vdso/gettimeofday.c
-> +++ b/lib/vdso/gettimeofday.c
-> @@ -49,13 +49,15 @@ static inline bool vdso_cycles_ok(u64 cycles)
->  static __always_inline int do_hres_timens(const struct vdso_data *vdns, clockid_t clk,
->  					  struct __kernel_timespec *ts)
->  {
-> -	const struct vdso_data *vd = __arch_get_timens_vdso_data();
-> +	const struct vdso_data *vd;
->  	const struct timens_offset *offs = &vdns->offset[clk];
->  	const struct vdso_timestamp *vdso_ts;
->  	u64 cycles, last, ns;
->  	u32 seq;
->  	s64 sec;
->  
-> +	vd = vdns - (clk == CLOCK_MONOTONIC_RAW ? CS_RAW : CS_HRES_COARSE);
-> +	vd = __arch_get_timens_vdso_data(vd);
->  	if (clk != CLOCK_MONOTONIC_RAW)
->  		vd = &vd[CS_HRES_COARSE];
->  	else
-> @@ -92,7 +94,8 @@ static __always_inline int do_hres_timens(const struct vdso_data *vdns, clockid_
->  	return 0;
->  }
->  #else
-> -static __always_inline const struct vdso_data *__arch_get_timens_vdso_data(void)
-> +static __always_inline
-> +const struct vdso_data *__arch_get_timens_vdso_data(const struct vdso_data *vd)
->  {
->  	return NULL;
->  }
-> @@ -162,7 +165,7 @@ static __always_inline int do_hres(const struct vdso_data *vd, clockid_t clk,
->  static __always_inline int do_coarse_timens(const struct vdso_data *vdns, clockid_t clk,
->  					    struct __kernel_timespec *ts)
->  {
-> -	const struct vdso_data *vd = __arch_get_timens_vdso_data();
-> +	const struct vdso_data *vd = __arch_get_timens_vdso_data(vdns);
->  	const struct vdso_timestamp *vdso_ts = &vd->basetime[clk];
->  	const struct timens_offset *offs = &vdns->offset[clk];
->  	u64 nsec;
-> @@ -310,7 +313,7 @@ __cvdso_gettimeofday_data(const struct vdso_data *vd,
->  	if (unlikely(tz != NULL)) {
->  		if (IS_ENABLED(CONFIG_TIME_NS) &&
->  		    vd->clock_mode == VDSO_CLOCKMODE_TIMENS)
-> -			vd = __arch_get_timens_vdso_data();
-> +			vd = __arch_get_timens_vdso_data(vd);
->  
->  		tz->tz_minuteswest = vd[CS_HRES_COARSE].tz_minuteswest;
->  		tz->tz_dsttime = vd[CS_HRES_COARSE].tz_dsttime;
-> @@ -333,7 +336,7 @@ __cvdso_time_data(const struct vdso_data *vd, __kernel_old_time_t *time)
->  
->  	if (IS_ENABLED(CONFIG_TIME_NS) &&
->  	    vd->clock_mode == VDSO_CLOCKMODE_TIMENS)
-> -		vd = __arch_get_timens_vdso_data();
-> +		vd = __arch_get_timens_vdso_data(vd);
->  
->  	t = READ_ONCE(vd[CS_HRES_COARSE].basetime[CLOCK_REALTIME].sec);
->  
-> @@ -363,7 +366,7 @@ int __cvdso_clock_getres_common(const struct vdso_data *vd, clockid_t clock,
->  
->  	if (IS_ENABLED(CONFIG_TIME_NS) &&
->  	    vd->clock_mode == VDSO_CLOCKMODE_TIMENS)
-> -		vd = __arch_get_timens_vdso_data();
-> +		vd = __arch_get_timens_vdso_data(vd);
->  
->  	/*
->  	 * Convert the clockid to a bitmask and use it to check which
-> 
-
+diff --git a/tools/testing/selftests/powerpc/alignment/alignment_handler.c b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
+index c25cf7cd45e9..48bfb7b36d84 100644
+--- a/tools/testing/selftests/powerpc/alignment/alignment_handler.c
++++ b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
+@@ -328,8 +328,6 @@ static bool can_open_cifile(void)
+ 
+ int test_alignment_handler_vsx_206(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
+ 
+@@ -341,13 +339,11 @@ int test_alignment_handler_vsx_206(void)
+ 	STORE_VSX_XFORM_TEST(stxvd2x);
+ 	STORE_VSX_XFORM_TEST(stxvw4x);
+ 	STORE_VSX_XFORM_TEST(stxsdx);
+-	return rc;
++	return 0;
+ }
+ 
+ int test_alignment_handler_vsx_207(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_2_07));
+ 
+@@ -357,13 +353,11 @@ int test_alignment_handler_vsx_207(void)
+ 	LOAD_VSX_XFORM_TEST(lxsiwzx);
+ 	STORE_VSX_XFORM_TEST(stxsspx);
+ 	STORE_VSX_XFORM_TEST(stxsiwx);
+-	return rc;
++	return 0;
+ }
+ 
+ int test_alignment_handler_vsx_300(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 
+ 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_00));
+@@ -389,13 +383,11 @@ int test_alignment_handler_vsx_300(void)
+ 	STORE_VSX_XFORM_TEST(stxvx);
+ 	STORE_VSX_XFORM_TEST(stxvl);
+ 	STORE_VSX_XFORM_TEST(stxvll);
+-	return rc;
++	return 0;
+ }
+ 
+ int test_alignment_handler_vsx_prefix(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
+ 
+@@ -408,13 +400,11 @@ int test_alignment_handler_vsx_prefix(void)
+ 	STORE_VSX_8LS_PREFIX_TEST(PSTXSSP, 0);
+ 	STORE_VSX_8LS_PREFIX_TEST(PSTXV0, 0);
+ 	STORE_VSX_8LS_PREFIX_TEST(PSTXV1, 1);
+-	return rc;
++	return 0;
+ }
+ 
+ int test_alignment_handler_integer(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 
+ 	printf("Integer\n");
+@@ -467,13 +457,11 @@ int test_alignment_handler_integer(void)
+ 	STORE_DFORM_TEST(stmw);
+ #endif
+ 
+-	return rc;
++	return 0;
+ }
+ 
+ int test_alignment_handler_integer_206(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
+ 
+@@ -482,13 +470,11 @@ int test_alignment_handler_integer_206(void)
+ 	LOAD_XFORM_TEST(ldbrx);
+ 	STORE_XFORM_TEST(stdbrx);
+ 
+-	return rc;
++	return 0;
+ }
+ 
+ int test_alignment_handler_integer_prefix(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
+ 
+@@ -503,13 +489,11 @@ int test_alignment_handler_integer_prefix(void)
+ 	STORE_MLS_PREFIX_TEST(PSTH);
+ 	STORE_MLS_PREFIX_TEST(PSTW);
+ 	STORE_8LS_PREFIX_TEST(PSTD);
+-	return rc;
++	return 0;
+ }
+ 
+ int test_alignment_handler_vmx(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 	SKIP_IF(!have_hwcap(PPC_FEATURE_HAS_ALTIVEC));
+ 
+@@ -531,13 +515,11 @@ int test_alignment_handler_vmx(void)
+ 	STORE_VMX_XFORM_TEST(stvehx);
+ 	STORE_VMX_XFORM_TEST(stvewx);
+ 	STORE_VMX_XFORM_TEST(stvxl);
+-	return rc;
++	return 0;
+ }
+ 
+ int test_alignment_handler_fp(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 
+ 	printf("Floating point\n");
+@@ -559,13 +541,11 @@ int test_alignment_handler_fp(void)
+ 	STORE_FLOAT_XFORM_TEST(stfsux);
+ 	STORE_FLOAT_XFORM_TEST(stfiwx);
+ 
+-	return rc;
++	return 0;
+ }
+ 
+ int test_alignment_handler_fp_205(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_05));
+ 
+@@ -577,13 +557,11 @@ int test_alignment_handler_fp_205(void)
+ 	STORE_FLOAT_DFORM_TEST(stfdp);
+ 	STORE_FLOAT_XFORM_TEST(stfdpx);
+ 
+-	return rc;
++	return 0;
+ }
+ 
+ int test_alignment_handler_fp_206(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
+ 
+@@ -591,14 +569,12 @@ int test_alignment_handler_fp_206(void)
+ 
+ 	LOAD_FLOAT_XFORM_TEST(lfiwzx);
+ 
+-	return rc;
++	return 0;
+ }
+ 
+ 
+ int test_alignment_handler_fp_prefix(void)
+ {
+-	int rc = 0;
+-
+ 	SKIP_IF(!can_open_cifile());
+ 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
+ 
+@@ -608,7 +584,7 @@ int test_alignment_handler_fp_prefix(void)
+ 	LOAD_FLOAT_MLS_PREFIX_TEST(PLFD);
+ 	STORE_FLOAT_MLS_PREFIX_TEST(PSTFS);
+ 	STORE_FLOAT_MLS_PREFIX_TEST(PSTFD);
+-	return rc;
++	return 0;
+ }
+ 
+ void usage(char *prog)
 -- 
-Regards,
-Vincenzo
+2.30.2
+
