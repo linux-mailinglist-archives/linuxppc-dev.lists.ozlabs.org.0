@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5488C35CBAC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 18:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FDD35CBAB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 18:26:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJvJq1h0hz3c90
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 02:27:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJvJS5zWDz3c8l
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 02:26:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,37 +15,39 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJvHs3l4Fz3cFY
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJvHs3fcyz3c8M
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 02:26:15 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FJvHc75LKz9tyRb;
- Mon, 12 Apr 2021 18:26:04 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FJvHf0gKTz9tyRc;
+ Mon, 12 Apr 2021 18:26:06 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id CZx_zcfbY0_X; Mon, 12 Apr 2021 18:26:04 +0200 (CEST)
+ with ESMTP id eI-OtnajV8hN; Mon, 12 Apr 2021 18:26:06 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FJvHc6HCQz9tyRZ;
- Mon, 12 Apr 2021 18:26:04 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FJvHd6CFGz9tyRZ;
+ Mon, 12 Apr 2021 18:26:05 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2F5E48B78F;
- Mon, 12 Apr 2021 18:26:10 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3EA498B78F;
+ Mon, 12 Apr 2021 18:26:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 0iiBwKeqXYnR; Mon, 12 Apr 2021 18:26:10 +0200 (CEST)
+ with ESMTP id ficxVWvXmek0; Mon, 12 Apr 2021 18:26:11 +0200 (CEST)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D57D08B78E;
- Mon, 12 Apr 2021 18:26:09 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BE3978B78E;
+ Mon, 12 Apr 2021 18:26:10 +0200 (CEST)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 9BD30679DE; Mon, 12 Apr 2021 16:26:09 +0000 (UTC)
-Message-Id: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618244758.git.christophe.leroy@csgroup.eu>
+ id 9BBAB679DE; Mon, 12 Apr 2021 16:26:10 +0000 (UTC)
+Message-Id: <1bb9d3f49f3c720e62cb0842adc3813fe15f7505.1618244758.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618244758.git.christophe.leroy@csgroup.eu>
+References: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618244758.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 1/2] powerpc/bug: Remove specific powerpc BUG_ON() and
- WARN_ON() on PPC32
+Subject: [PATCH 2/2] powerpc/bug: Provide better flexibility to
+ WARN_ON/__WARN_FLAGS() with asm goto
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 12 Apr 2021 16:26:09 +0000 (UTC)
+Date: Mon, 12 Apr 2021 16:26:10 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,43 +64,24 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc BUG_ON() and WARN_ON() are based on using twnei instruction.
+Using asm goto in __WARN_FLAGS() and WARN_ON() allows more
+flexibility to GCC.
 
-For catching simple conditions like a variable having value 0, this
-is efficient because it does the test and the trap at the same time.
-But most conditions used with BUG_ON or WARN_ON are more complex and
-forces GCC to format the condition into a 0 or 1 value in a register.
-This will usually require 2 to 3 instructions.
+For that add an entry to the exception table so that
+program_check_exception() knowns where to resume execution
+after a WARNING.
 
-The most efficient solution would be to use __builtin_trap() because
-GCC is able to optimise the use of the different trap instructions
-based on the requested condition, but this is complex if not
-impossible for the following reasons:
-- __builtin_trap() is a non-recoverable instruction, so it can't be
-used for WARN_ON
-- Knowing which line of code generated the trap would require the
-analysis of DWARF information. This is not a feature we have today.
+Here are two exemples. The first one is done on PPC32 (which
+benefits from the previous patch), the second is on PPC64.
 
-As mentioned in commit 8d4fbcfbe0a4 ("Fix WARN_ON() on bitfield ops")
-the way WARN_ON() is implemented is suboptimal. That commit also
-mentions an issue with 'long long' condition. It fixed it for
-WARN_ON() but the same problem still exists today with BUG_ON() on
-PPC32. It will be fixed by using the generic implementation.
+	unsigned long test(struct pt_regs *regs)
+	{
+		int ret;
 
-By using the generic implementation, gcc will naturally generate a
-branch to the unconditional trap generated by BUG().
+		WARN_ON(regs->msr & MSR_PR);
 
-As modern powerpc implement zero-cycle branch,
-that's even more efficient.
-
-And for the functions using WARN_ON() and its return, the test
-on return from WARN_ON() is now also used for the WARN_ON() itself.
-
-On PPC64 we don't want it because we want to be able to use CFAR
-register to track how we entered the code that trapped. The CFAR
-register would be clobbered by the branch.
-
-A simple test function:
+		return regs->gpr[3];
+	}
 
 	unsigned long test9w(unsigned long a, unsigned long b)
 	{
@@ -109,116 +92,306 @@ A simple test function:
 
 Before the patch:
 
-	0000046c <test9w>:
-	 46c:	7c 89 00 34 	cntlzw  r9,r4
-	 470:	55 29 d9 7e 	rlwinm  r9,r9,27,5,31
-	 474:	0f 09 00 00 	twnei   r9,0
-	 478:	2c 04 00 00 	cmpwi   r4,0
-	 47c:	41 82 00 0c 	beq     488 <test9w+0x1c>
-	 480:	7c 63 23 96 	divwu   r3,r3,r4
-	 484:	4e 80 00 20 	blr
+	000003a8 <test>:
+	 3a8:	81 23 00 84 	lwz     r9,132(r3)
+	 3ac:	71 29 40 00 	andi.   r9,r9,16384
+	 3b0:	40 82 00 0c 	bne     3bc <test+0x14>
+	 3b4:	80 63 00 0c 	lwz     r3,12(r3)
+	 3b8:	4e 80 00 20 	blr
 
-	 488:	38 60 00 00 	li      r3,0
-	 48c:	4e 80 00 20 	blr
+	 3bc:	0f e0 00 00 	twui    r0,0
+	 3c0:	80 63 00 0c 	lwz     r3,12(r3)
+	 3c4:	4e 80 00 20 	blr
+
+	0000000000000bf0 <.test9w>:
+	 bf0:	7c 89 00 74 	cntlzd  r9,r4
+	 bf4:	79 29 d1 82 	rldicl  r9,r9,58,6
+	 bf8:	0b 09 00 00 	tdnei   r9,0
+	 bfc:	2c 24 00 00 	cmpdi   r4,0
+	 c00:	41 82 00 0c 	beq     c0c <.test9w+0x1c>
+	 c04:	7c 63 23 92 	divdu   r3,r3,r4
+	 c08:	4e 80 00 20 	blr
+
+	 c0c:	38 60 00 00 	li      r3,0
+	 c10:	4e 80 00 20 	blr
 
 After the patch:
 
-	00000468 <test9w>:
-	 468:	2c 04 00 00 	cmpwi   r4,0
-	 46c:	41 82 00 0c 	beq     478 <test9w+0x10>
-	 470:	7c 63 23 96 	divwu   r3,r3,r4
-	 474:	4e 80 00 20 	blr
+	000003a8 <test>:
+	 3a8:	81 23 00 84 	lwz     r9,132(r3)
+	 3ac:	71 29 40 00 	andi.   r9,r9,16384
+	 3b0:	40 82 00 0c 	bne     3bc <test+0x14>
+	 3b4:	80 63 00 0c 	lwz     r3,12(r3)
+	 3b8:	4e 80 00 20 	blr
 
-	 478:	0f e0 00 00 	twui    r0,0
-	 47c:	38 60 00 00 	li      r3,0
-	 480:	4e 80 00 20 	blr
+	 3bc:	0f e0 00 00 	twui    r0,0
 
-So we see before the patch we need 3 instructions on the likely path
-to handle the WARN_ON(). With the patch the trap goes on the unlikely
-path.
+	0000000000000c50 <.test9w>:
+	 c50:	7c 89 00 74 	cntlzd  r9,r4
+	 c54:	79 29 d1 82 	rldicl  r9,r9,58,6
+	 c58:	0b 09 00 00 	tdnei   r9,0
+	 c5c:	7c 63 23 92 	divdu   r3,r3,r4
+	 c60:	4e 80 00 20 	blr
 
-See below the difference at the entry of system_call_exception where
-we have several BUG_ON(), allthough less impressing.
+	 c70:	38 60 00 00 	li      r3,0
+	 c74:	4e 80 00 20 	blr
 
-With the patch:
+In the first exemple, we see GCC doesn't need to duplicate what
+happens after the trap.
 
-	00000000 <system_call_exception>:
-	   0:	81 6a 00 84 	lwz     r11,132(r10)
-	   4:	90 6a 00 88 	stw     r3,136(r10)
-	   8:	71 60 00 02 	andi.   r0,r11,2
-	   c:	41 82 00 70 	beq     7c <system_call_exception+0x7c>
-	  10:	71 60 40 00 	andi.   r0,r11,16384
-	  14:	41 82 00 6c 	beq     80 <system_call_exception+0x80>
-	  18:	71 6b 80 00 	andi.   r11,r11,32768
-	  1c:	41 82 00 68 	beq     84 <system_call_exception+0x84>
-	  20:	94 21 ff e0 	stwu    r1,-32(r1)
-	  24:	93 e1 00 1c 	stw     r31,28(r1)
-	  28:	7d 8c 42 e6 	mftb    r12
-	...
-	  7c:	0f e0 00 00 	twui    r0,0
-	  80:	0f e0 00 00 	twui    r0,0
-	  84:	0f e0 00 00 	twui    r0,0
+In the second exemple, we see that GCC doesn't need to emit a test
+and a branch in the likely path in addition to the trap.
 
-Without the patch:
-
-	00000000 <system_call_exception>:
-	   0:	94 21 ff e0 	stwu    r1,-32(r1)
-	   4:	93 e1 00 1c 	stw     r31,28(r1)
-	   8:	90 6a 00 88 	stw     r3,136(r10)
-	   c:	81 6a 00 84 	lwz     r11,132(r10)
-	  10:	69 60 00 02 	xori    r0,r11,2
-	  14:	54 00 ff fe 	rlwinm  r0,r0,31,31,31
-	  18:	0f 00 00 00 	twnei   r0,0
-	  1c:	69 60 40 00 	xori    r0,r11,16384
-	  20:	54 00 97 fe 	rlwinm  r0,r0,18,31,31
-	  24:	0f 00 00 00 	twnei   r0,0
-	  28:	69 6b 80 00 	xori    r11,r11,32768
-	  2c:	55 6b 8f fe 	rlwinm  r11,r11,17,31,31
-	  30:	0f 0b 00 00 	twnei   r11,0
-	  34:	7d 8c 42 e6 	mftb    r12
+We've got some WARN_ON() in .softirqentry.text section so it needs
+to be added in the OTHER_TEXT_SECTIONS in modpost.c
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/bug.h | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/book3s/64/kup.h |  2 +-
+ arch/powerpc/include/asm/bug.h           | 51 +++++++++++++++++++-----
+ arch/powerpc/include/asm/extable.h       | 14 +++++++
+ arch/powerpc/include/asm/ppc_asm.h       | 11 +----
+ arch/powerpc/kernel/entry_64.S           |  2 +-
+ arch/powerpc/kernel/exceptions-64e.S     |  2 +-
+ arch/powerpc/kernel/misc_32.S            |  2 +-
+ arch/powerpc/kernel/traps.c              |  9 ++++-
+ scripts/mod/modpost.c                    |  2 +-
+ 9 files changed, 69 insertions(+), 26 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
+index 9700da3a4093..a22839cba32e 100644
+--- a/arch/powerpc/include/asm/book3s/64/kup.h
++++ b/arch/powerpc/include/asm/book3s/64/kup.h
+@@ -90,7 +90,7 @@
+ 	/* Prevent access to userspace using any key values */
+ 	LOAD_REG_IMMEDIATE(\gpr2, AMR_KUAP_BLOCKED)
+ 999:	tdne	\gpr1, \gpr2
+-	EMIT_BUG_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
++	EMIT_WARN_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
+ 	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_BOOK3S_KUAP, 67)
+ #endif
+ .endm
 diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index d1635ffbb179..101dea4eec8d 100644
+index 101dea4eec8d..d92afdbd4449 100644
 --- a/arch/powerpc/include/asm/bug.h
 +++ b/arch/powerpc/include/asm/bug.h
-@@ -68,7 +68,11 @@
- 	BUG_ENTRY("twi 31, 0, 0", 0);				\
- 	unreachable();						\
- } while (0)
-+#define HAVE_ARCH_BUG
-+
-+#define __WARN_FLAGS(flags) BUG_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags))
+@@ -4,6 +4,7 @@
+ #ifdef __KERNEL__
  
-+#ifdef CONFIG_PPC64
- #define BUG_ON(x) do {						\
- 	if (__builtin_constant_p(x)) {				\
- 		if (x)						\
-@@ -78,8 +82,6 @@
- 	}							\
+ #include <asm/asm-compat.h>
++#include <asm/extable.h>
+ 
+ #ifdef CONFIG_BUG
+ 
+@@ -30,6 +31,11 @@
+ .endm
+ #endif /* verbose */
+ 
++.macro EMIT_WARN_ENTRY addr,file,line,flags
++	EX_TABLE(\addr,\addr+4)
++	EMIT_BUG_ENTRY \addr,\file,\line,\flags
++.endm
++
+ #else /* !__ASSEMBLY__ */
+ /* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
+    sizeof(struct bug_entry), respectively */
+@@ -58,6 +64,16 @@
+ 		  "i" (sizeof(struct bug_entry)),	\
+ 		  ##__VA_ARGS__)
+ 
++#define WARN_ENTRY(insn, flags, label, ...)		\
++	asm_volatile_goto(				\
++		"1:	" insn "\n"			\
++		EX_TABLE(1b, %l[label])			\
++		_EMIT_BUG_ENTRY				\
++		: : "i" (__FILE__), "i" (__LINE__),	\
++		  "i" (flags),				\
++		  "i" (sizeof(struct bug_entry)),	\
++		  ##__VA_ARGS__ : : label)
++
+ /*
+  * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
+  * optimisations. However depending on the complexity of the condition
+@@ -70,7 +86,15 @@
  } while (0)
+ #define HAVE_ARCH_BUG
  
 -#define __WARN_FLAGS(flags) BUG_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags))
--
++#define __WARN_FLAGS(flags) do {				\
++	__label__ __label_warn_on;				\
++								\
++	WARN_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags), __label_warn_on); \
++	unreachable();						\
++								\
++__label_warn_on:						\
++	break;							\
++} while (0)
+ 
+ #ifdef CONFIG_PPC64
+ #define BUG_ON(x) do {						\
+@@ -83,15 +107,24 @@
+ } while (0)
+ 
  #define WARN_ON(x) ({						\
- 	int __ret_warn_on = !!(x);				\
- 	if (__builtin_constant_p(__ret_warn_on)) {		\
-@@ -93,9 +95,10 @@
+-	int __ret_warn_on = !!(x);				\
+-	if (__builtin_constant_p(__ret_warn_on)) {		\
+-		if (__ret_warn_on)				\
++	bool __ret_warn_on = false;				\
++	do {							\
++		if (__builtin_constant_p((x))) {		\
++			if (!(x)) 				\
++				break; 				\
+ 			__WARN();				\
+-	} else {						\
+-		BUG_ENTRY(PPC_TLNEI " %4, 0",			\
+-			  BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
+-			  "r" (__ret_warn_on));	\
+-	}							\
++			__ret_warn_on = true;			\
++		} else {					\
++			__label__ __label_warn_on;		\
++								\
++			WARN_ENTRY(PPC_TLNEI " %4, 0",		\
++				   BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
++				   __label_warn_on, "r" (x));	\
++			break;					\
++__label_warn_on:						\
++			__ret_warn_on = true;			\
++		}						\
++	} while (0);						\
  	unlikely(__ret_warn_on);				\
  })
  
--#define HAVE_ARCH_BUG
- #define HAVE_ARCH_BUG_ON
- #define HAVE_ARCH_WARN_ON
-+#endif
+diff --git a/arch/powerpc/include/asm/extable.h b/arch/powerpc/include/asm/extable.h
+index eb91b2d2935a..26ce2e5c0fa8 100644
+--- a/arch/powerpc/include/asm/extable.h
++++ b/arch/powerpc/include/asm/extable.h
+@@ -17,6 +17,8 @@
+ 
+ #define ARCH_HAS_RELATIVE_EXTABLE
+ 
++#ifndef __ASSEMBLY__
 +
- #endif /* __ASSEMBLY __ */
- #else
+ struct exception_table_entry {
+ 	int insn;
+ 	int fixup;
+@@ -28,3 +30,15 @@ static inline unsigned long extable_fixup(const struct exception_table_entry *x)
+ }
+ 
+ #endif
++
++/*
++ * Helper macro for exception table entries
++ */
++#define EX_TABLE(_fault, _target)		\
++	stringify_in_c(.section __ex_table,"a";)\
++	stringify_in_c(.balign 4;)		\
++	stringify_in_c(.long (_fault) - . ;)	\
++	stringify_in_c(.long (_target) - . ;)	\
++	stringify_in_c(.previous)
++
++#endif
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index 8998122fc7e2..a74e1561535a 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -10,6 +10,7 @@
+ #include <asm/ppc-opcode.h>
+ #include <asm/firmware.h>
+ #include <asm/feature-fixups.h>
++#include <asm/extable.h>
+ 
  #ifdef __ASSEMBLY__
+ 
+@@ -772,16 +773,6 @@ END_FTR_SECTION_NESTED(CPU_FTR_CELL_TB_BUG, CPU_FTR_CELL_TB_BUG, 96)
+ 
+ #endif /*  __ASSEMBLY__ */
+ 
+-/*
+- * Helper macro for exception table entries
+- */
+-#define EX_TABLE(_fault, _target)		\
+-	stringify_in_c(.section __ex_table,"a";)\
+-	stringify_in_c(.balign 4;)		\
+-	stringify_in_c(.long (_fault) - . ;)	\
+-	stringify_in_c(.long (_target) - . ;)	\
+-	stringify_in_c(.previous)
+-
+ #ifdef CONFIG_PPC_FSL_BOOK3E
+ #define BTB_FLUSH(reg)			\
+ 	lis reg,BUCSR_INIT@h;		\
+diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+index 6c4d9e276c4d..faa64cc90f02 100644
+--- a/arch/powerpc/kernel/entry_64.S
++++ b/arch/powerpc/kernel/entry_64.S
+@@ -835,7 +835,7 @@ _GLOBAL(enter_rtas)
+ 	 */
+ 	lbz	r0,PACAIRQSOFTMASK(r13)
+ 1:	tdeqi	r0,IRQS_ENABLED
+-	EMIT_BUG_ENTRY 1b,__FILE__,__LINE__,BUGFLAG_WARNING
++	EMIT_WARN_ENTRY 1b,__FILE__,__LINE__,BUGFLAG_WARNING
+ #endif
+ 
+ 	/* Hard-disable interrupts */
+diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+index e8eb9992a270..3f8c51390a04 100644
+--- a/arch/powerpc/kernel/exceptions-64e.S
++++ b/arch/powerpc/kernel/exceptions-64e.S
+@@ -1249,7 +1249,7 @@ fast_exception_return:
+ 	/* The interrupt should not have soft enabled. */
+ 	lbz	r7,PACAIRQSOFTMASK(r13)
+ 1:	tdeqi	r7,IRQS_ENABLED
+-	EMIT_BUG_ENTRY 1b,__FILE__,__LINE__,BUGFLAG_WARNING
++	EMIT_WARN_ENTRY 1b,__FILE__,__LINE__,BUGFLAG_WARNING
+ #endif
+ 	b	fast_exception_return
+ 
+diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
+index 6a076bef2932..21390f3119a9 100644
+--- a/arch/powerpc/kernel/misc_32.S
++++ b/arch/powerpc/kernel/misc_32.S
+@@ -237,7 +237,7 @@ _GLOBAL(copy_page)
+ 	addi	r3,r3,-4
+ 
+ 0:	twnei	r5, 0	/* WARN if r3 is not cache aligned */
+-	EMIT_BUG_ENTRY 0b,__FILE__,__LINE__, BUGFLAG_WARNING
++	EMIT_WARN_ENTRY 0b,__FILE__,__LINE__, BUGFLAG_WARNING
+ 
+ 	addi	r4,r4,-4
+ 
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index efba99870691..ee40a637313d 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1467,8 +1467,13 @@ static void do_program_check(struct pt_regs *regs)
+ 
+ 		if (!(regs->msr & MSR_PR) &&  /* not user-mode */
+ 		    report_bug(bugaddr, regs) == BUG_TRAP_TYPE_WARN) {
+-			regs->nip += 4;
+-			return;
++			const struct exception_table_entry *entry;
++
++			entry = search_exception_tables(bugaddr);
++			if (entry) {
++				regs->nip = extable_fixup(entry) + regs->nip - bugaddr;
++				return;
++			}
+ 		}
+ 		_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
+ 		return;
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 24725e50c7b4..34745f239208 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -926,7 +926,7 @@ static void check_section(const char *modname, struct elf_info *elf,
+ 		".kprobes.text", ".cpuidle.text", ".noinstr.text"
+ #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
+ 		".fixup", ".entry.text", ".exception.text", ".text.*", \
+-		".coldtext"
++		".coldtext .softirqentry.text"
+ 
+ #define INIT_SECTIONS      ".init.*"
+ #define MEM_INIT_SECTIONS  ".meminit.*"
 -- 
 2.25.0
 
