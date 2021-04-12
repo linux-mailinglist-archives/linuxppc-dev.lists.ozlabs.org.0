@@ -2,45 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0479535C6E6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 14:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 576E935C6E7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 14:59:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJphd6b81z3bmt
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 22:58:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJpj01b0Tz3cPd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 22:59:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=59.111.176.35; helo=mail-m17635.qiye.163.com;
- envelope-from=wanjiabing@vivo.com; receiver=<UNKNOWN>)
-Received: from mail-m17635.qiye.163.com (mail-m17635.qiye.163.com
- [59.111.176.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJphH5Zq1z30CC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 22:58:33 +1000 (AEST)
-Received: from wanjb-KLV-WX9.lan (unknown [60.232.195.58])
- by mail-m17635.qiye.163.com (Hmail) with ESMTPA id 14220400381;
- Mon, 12 Apr 2021 20:58:23 +0800 (CST)
-From: Wan Jiabing <wanjiabing@vivo.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=vincenzo.frascino@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FJphd0lFdz3c4W
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 22:58:56 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE55D101E;
+ Mon, 12 Apr 2021 05:58:54 -0700 (PDT)
+Received: from [10.37.12.6] (unknown [10.37.12.6])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 993EB3F73B;
+ Mon, 12 Apr 2021 05:58:51 -0700 (PDT)
+Subject: Re: [PATCH RESEND v1 3/4] powerpc/vdso: Separate vvar vma from vdso
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Shuah Khan <shuah@kernel.org>,
- Jordan Niethe <jniethe5@gmail.com>, Michael Neuling <mikey@neuling.org>,
- Wan Jiabing <wanjiabing@vivo.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] [v2] selftests: powerpc: Remove unneeded variables
-Date: Mon, 12 Apr 2021 20:57:44 +0800
-Message-Id: <20210412125746.2766-1-wanjiabing@vivo.com>
-X-Mailer: git-send-email 2.30.2
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <cover.1617209141.git.christophe.leroy@csgroup.eu>
+ <f401eb1ebc0bfc4d8f0e10dc8e525fd409eb68e2.1617209142.git.christophe.leroy@csgroup.eu>
+From: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Message-ID: <58a3ad23-cbbd-40ff-0b5f-b1128674fccb@arm.com>
+Date: Mon, 12 Apr 2021 13:58:49 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
- oVCBIfWUFZQktISlZDTh1CT0JPS04YTENVEwETFhoSFyQUDg9ZV1kWGg8SFR0UWUFZT0tIVUpKS0
- hKTFVLWQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6ND46SRw4NT8NEh8XDwEUAUgY
- NDEKCwlVSlVKTUpDSUhJSEtPS0JJVTMWGhIXVQwaFRESGhkSFRw7DRINFFUYFBZFWVdZEgtZQVlN
- S1VJSElVSkJOVU5DWVdZCAFZQUxITkM3Bg++
-X-HM-Tid: 0a78c6296015d991kuws14220400381
+In-Reply-To: <f401eb1ebc0bfc4d8f0e10dc8e525fd409eb68e2.1617209142.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,235 +49,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kael_w@yeah.net
+Cc: linux-arch@vger.kernel.org, arnd@arndb.de, dima@arista.com,
+ linux-kernel@vger.kernel.org, avagin@gmail.com, luto@kernel.org,
+ tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix coccicheck warning:
 
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:539:5-7:
-Unneeded variable: "rc". Return "0" on line 562
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:567:5-7:
-Unneeded variable: "rc". Return "0" on line 580
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:585:5-7:
-Unneeded variable: "rc". Return "0" on line 594
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:600:5-7:
-Unneeded variable: "rc". Return "0" on line 611
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:416:5-7:
-Unneeded variable: "rc". Return "0" on line 470
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:475:5-7:
-Unneeded variable: "rc". Return "0" on line 485
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:490:5-7:
-Unneeded variable: "rc". Return "0" on line 506
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:511:5-7:
-Unneeded variable: "rc". Return "0" on line 534
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:331:5-7:
-Unneeded variable: "rc". Return "0" on line 344
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:349:5-7:
-Unneeded variable: "rc". Return "0" on line 360
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:365:5-7:
-Unneeded variable: "rc". Return "0" on line 392
-./tools/testing/selftests/powerpc/alignment/alignment_handler.c:397:5-7:
-Unneeded variable: "rc". Return "0" on line 411
 
-Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
----
-Changelog:
-v2:
-- Modify the subject line.
----
- .../powerpc/alignment/alignment_handler.c     | 48 +++++--------------
- 1 file changed, 12 insertions(+), 36 deletions(-)
+On 3/31/21 5:48 PM, Christophe Leroy wrote:
+> From: Dmitry Safonov <dima@arista.com>
+> 
+> Since commit 511157ab641e ("powerpc/vdso: Move vdso datapage up front")
+> VVAR page is in front of the VDSO area. In result it breaks CRIU
+> (Checkpoint Restore In Userspace) [1], where CRIU expects that "[vdso]"
+> from /proc/../maps points at ELF/vdso image, rather than at VVAR data page.
+> Laurent made a patch to keep CRIU working (by reading aux vector).
+> But I think it still makes sence to separate two mappings into different
+> VMAs. It will also make ppc64 less "special" for userspace and as
+> a side-bonus will make VVAR page un-writable by debugger (which previously
+> would COW page and can be unexpected).
+> 
+> I opportunistically Cc stable on it: I understand that usually such
+> stuff isn't a stable material, but that will allow us in CRIU have
+> one workaround less that is needed just for one release (v5.11) on
+> one platform (ppc64), which we otherwise have to maintain.
+> I wouldn't go as far as to say that the commit 511157ab641e is ABI
+> regression as no other userspace got broken, but I'd really appreciate
+> if it gets backported to v5.11 after v5.12 is released, so as not
+> to complicate already non-simple CRIU-vdso code. Thanks!
+> 
+> Cc: Andrei Vagin <avagin@gmail.com>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Laurent Dufour <ldufour@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: stable@vger.kernel.org # v5.11
+> [1]: https://github.com/checkpoint-restore/criu/issues/1417
+> Signed-off-by: Dmitry Safonov <dima@arista.com>
+> Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-diff --git a/tools/testing/selftests/powerpc/alignment/alignment_handler.c b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-index c25cf7cd45e9..48bfb7b36d84 100644
---- a/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-+++ b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-@@ -328,8 +328,6 @@ static bool can_open_cifile(void)
- 
- int test_alignment_handler_vsx_206(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
- 
-@@ -341,13 +339,11 @@ int test_alignment_handler_vsx_206(void)
- 	STORE_VSX_XFORM_TEST(stxvd2x);
- 	STORE_VSX_XFORM_TEST(stxvw4x);
- 	STORE_VSX_XFORM_TEST(stxsdx);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_vsx_207(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_2_07));
- 
-@@ -357,13 +353,11 @@ int test_alignment_handler_vsx_207(void)
- 	LOAD_VSX_XFORM_TEST(lxsiwzx);
- 	STORE_VSX_XFORM_TEST(stxsspx);
- 	STORE_VSX_XFORM_TEST(stxsiwx);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_vsx_300(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_00));
-@@ -389,13 +383,11 @@ int test_alignment_handler_vsx_300(void)
- 	STORE_VSX_XFORM_TEST(stxvx);
- 	STORE_VSX_XFORM_TEST(stxvl);
- 	STORE_VSX_XFORM_TEST(stxvll);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_vsx_prefix(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
- 
-@@ -408,13 +400,11 @@ int test_alignment_handler_vsx_prefix(void)
- 	STORE_VSX_8LS_PREFIX_TEST(PSTXSSP, 0);
- 	STORE_VSX_8LS_PREFIX_TEST(PSTXV0, 0);
- 	STORE_VSX_8LS_PREFIX_TEST(PSTXV1, 1);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_integer(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 
- 	printf("Integer\n");
-@@ -467,13 +457,11 @@ int test_alignment_handler_integer(void)
- 	STORE_DFORM_TEST(stmw);
- #endif
- 
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_integer_206(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
- 
-@@ -482,13 +470,11 @@ int test_alignment_handler_integer_206(void)
- 	LOAD_XFORM_TEST(ldbrx);
- 	STORE_XFORM_TEST(stdbrx);
- 
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_integer_prefix(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
- 
-@@ -503,13 +489,11 @@ int test_alignment_handler_integer_prefix(void)
- 	STORE_MLS_PREFIX_TEST(PSTH);
- 	STORE_MLS_PREFIX_TEST(PSTW);
- 	STORE_8LS_PREFIX_TEST(PSTD);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_vmx(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap(PPC_FEATURE_HAS_ALTIVEC));
- 
-@@ -531,13 +515,11 @@ int test_alignment_handler_vmx(void)
- 	STORE_VMX_XFORM_TEST(stvehx);
- 	STORE_VMX_XFORM_TEST(stvewx);
- 	STORE_VMX_XFORM_TEST(stvxl);
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_fp(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 
- 	printf("Floating point\n");
-@@ -559,13 +541,11 @@ int test_alignment_handler_fp(void)
- 	STORE_FLOAT_XFORM_TEST(stfsux);
- 	STORE_FLOAT_XFORM_TEST(stfiwx);
- 
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_fp_205(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_05));
- 
-@@ -577,13 +557,11 @@ int test_alignment_handler_fp_205(void)
- 	STORE_FLOAT_DFORM_TEST(stfdp);
- 	STORE_FLOAT_XFORM_TEST(stfdpx);
- 
--	return rc;
-+	return 0;
- }
- 
- int test_alignment_handler_fp_206(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
- 
-@@ -591,14 +569,12 @@ int test_alignment_handler_fp_206(void)
- 
- 	LOAD_FLOAT_XFORM_TEST(lfiwzx);
- 
--	return rc;
-+	return 0;
- }
- 
- 
- int test_alignment_handler_fp_prefix(void)
- {
--	int rc = 0;
--
- 	SKIP_IF(!can_open_cifile());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
- 
-@@ -608,7 +584,7 @@ int test_alignment_handler_fp_prefix(void)
- 	LOAD_FLOAT_MLS_PREFIX_TEST(PLFD);
- 	STORE_FLOAT_MLS_PREFIX_TEST(PSTFS);
- 	STORE_FLOAT_MLS_PREFIX_TEST(PSTFD);
--	return rc;
-+	return 0;
- }
- 
- void usage(char *prog)
+Reviewed-by: Vincenzo Frascino <vincenzo.frascino@arm.com> # vDSO parts.
+
+> ---
+>  arch/powerpc/include/asm/mmu_context.h |  2 +-
+>  arch/powerpc/kernel/vdso.c             | 54 +++++++++++++++++++-------
+>  2 files changed, 40 insertions(+), 16 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+> index 652ce85f9410..4bc45d3ed8b0 100644
+> --- a/arch/powerpc/include/asm/mmu_context.h
+> +++ b/arch/powerpc/include/asm/mmu_context.h
+> @@ -263,7 +263,7 @@ extern void arch_exit_mmap(struct mm_struct *mm);
+>  static inline void arch_unmap(struct mm_struct *mm,
+>  			      unsigned long start, unsigned long end)
+>  {
+> -	unsigned long vdso_base = (unsigned long)mm->context.vdso - PAGE_SIZE;
+> +	unsigned long vdso_base = (unsigned long)mm->context.vdso;
+>  
+>  	if (start <= vdso_base && vdso_base < end)
+>  		mm->context.vdso = NULL;
+> diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+> index e839a906fdf2..b14907209822 100644
+> --- a/arch/powerpc/kernel/vdso.c
+> +++ b/arch/powerpc/kernel/vdso.c
+> @@ -55,10 +55,10 @@ static int vdso_mremap(const struct vm_special_mapping *sm, struct vm_area_struc
+>  {
+>  	unsigned long new_size = new_vma->vm_end - new_vma->vm_start;
+>  
+> -	if (new_size != text_size + PAGE_SIZE)
+> +	if (new_size != text_size)
+>  		return -EINVAL;
+>  
+> -	current->mm->context.vdso = (void __user *)new_vma->vm_start + PAGE_SIZE;
+> +	current->mm->context.vdso = (void __user *)new_vma->vm_start;
+>  
+>  	return 0;
+>  }
+> @@ -73,6 +73,10 @@ static int vdso64_mremap(const struct vm_special_mapping *sm, struct vm_area_str
+>  	return vdso_mremap(sm, new_vma, &vdso64_end - &vdso64_start);
+>  }
+>  
+> +static struct vm_special_mapping vvar_spec __ro_after_init = {
+> +	.name = "[vvar]",
+> +};
+> +
+>  static struct vm_special_mapping vdso32_spec __ro_after_init = {
+>  	.name = "[vdso]",
+>  	.mremap = vdso32_mremap,
+> @@ -89,11 +93,11 @@ static struct vm_special_mapping vdso64_spec __ro_after_init = {
+>   */
+>  static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+>  {
+> -	struct mm_struct *mm = current->mm;
+> +	unsigned long vdso_size, vdso_base, mappings_size;
+>  	struct vm_special_mapping *vdso_spec;
+> +	unsigned long vvar_size = PAGE_SIZE;
+> +	struct mm_struct *mm = current->mm;
+>  	struct vm_area_struct *vma;
+> -	unsigned long vdso_size;
+> -	unsigned long vdso_base;
+>  
+>  	if (is_32bit_task()) {
+>  		vdso_spec = &vdso32_spec;
+> @@ -110,8 +114,8 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
+>  		vdso_base = 0;
+>  	}
+>  
+> -	/* Add a page to the vdso size for the data page */
+> -	vdso_size += PAGE_SIZE;
+> +	mappings_size = vdso_size + vvar_size;
+> +	mappings_size += (VDSO_ALIGNMENT - 1) & PAGE_MASK;
+>  
+>  	/*
+>  	 * pick a base address for the vDSO in process space. We try to put it
+> @@ -119,9 +123,7 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
+>  	 * and end up putting it elsewhere.
+>  	 * Add enough to the size so that the result can be aligned.
+>  	 */
+> -	vdso_base = get_unmapped_area(NULL, vdso_base,
+> -				      vdso_size + ((VDSO_ALIGNMENT - 1) & PAGE_MASK),
+> -				      0, 0);
+> +	vdso_base = get_unmapped_area(NULL, vdso_base, mappings_size, 0, 0);
+>  	if (IS_ERR_VALUE(vdso_base))
+>  		return vdso_base;
+>  
+> @@ -133,7 +135,13 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
+>  	 * install_special_mapping or the perf counter mmap tracking code
+>  	 * will fail to recognise it as a vDSO.
+>  	 */
+> -	mm->context.vdso = (void __user *)vdso_base + PAGE_SIZE;
+> +	mm->context.vdso = (void __user *)vdso_base + vvar_size;
+> +
+> +	vma = _install_special_mapping(mm, vdso_base, vvar_size,
+> +				       VM_READ | VM_MAYREAD | VM_IO |
+> +				       VM_DONTDUMP | VM_PFNMAP, &vvar_spec);
+> +	if (IS_ERR(vma))
+> +		return PTR_ERR(vma);
+>  
+>  	/*
+>  	 * our vma flags don't have VM_WRITE so by default, the process isn't
+> @@ -145,9 +153,12 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
+>  	 * It's fine to use that for setting breakpoints in the vDSO code
+>  	 * pages though.
+>  	 */
+> -	vma = _install_special_mapping(mm, vdso_base, vdso_size,
+> +	vma = _install_special_mapping(mm, vdso_base + vvar_size, vdso_size,
+>  				       VM_READ | VM_EXEC | VM_MAYREAD |
+>  				       VM_MAYWRITE | VM_MAYEXEC, vdso_spec);
+> +	if (IS_ERR(vma))
+> +		do_munmap(mm, vdso_base, vvar_size, NULL);
+> +
+>  	return PTR_ERR_OR_ZERO(vma);
+>  }
+>  
+> @@ -249,11 +260,22 @@ static struct page ** __init vdso_setup_pages(void *start, void *end)
+>  	if (!pagelist)
+>  		panic("%s: Cannot allocate page list for VDSO", __func__);
+>  
+> -	pagelist[0] = virt_to_page(vdso_data);
+> -
+>  	for (i = 0; i < pages; i++)
+> -		pagelist[i + 1] = virt_to_page(start + i * PAGE_SIZE);
+> +		pagelist[i] = virt_to_page(start + i * PAGE_SIZE);
+> +
+> +	return pagelist;
+> +}
+> +
+> +static struct page ** __init vvar_setup_pages(void)
+> +{
+> +	struct page **pagelist;
+>  
+> +	/* .pages is NULL-terminated */
+> +	pagelist = kcalloc(2, sizeof(struct page *), GFP_KERNEL);
+> +	if (!pagelist)
+> +		panic("%s: Cannot allocate page list for VVAR", __func__);
+> +
+> +	pagelist[0] = virt_to_page(vdso_data);
+>  	return pagelist;
+>  }
+>  
+> @@ -295,6 +317,8 @@ static int __init vdso_init(void)
+>  	if (IS_ENABLED(CONFIG_PPC64))
+>  		vdso64_spec.pages = vdso_setup_pages(&vdso64_start, &vdso64_end);
+>  
+> +	vvar_spec.pages = vvar_setup_pages();
+> +
+>  	smp_wmb();
+>  
+>  	return 0;
+> 
+
 -- 
-2.30.2
-
+Regards,
+Vincenzo
