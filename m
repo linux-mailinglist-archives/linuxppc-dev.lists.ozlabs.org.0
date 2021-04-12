@@ -1,60 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4090835C737
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 15:12:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EAE35C845
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 16:06:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJpzx1WYJz3bwm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 23:12:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJrBd5k8Fz3c1J
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 00:06:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tg/J37Hz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
  receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Tg/J37Hz; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJpzY3yXzz30C5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 23:11:51 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-107-jlA7rlBNM9W_p6yNzfFSUA-1; Mon, 12 Apr 2021 14:11:46 +0100
-X-MC-Unique: jlA7rlBNM9W_p6yNzfFSUA-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.2; Mon, 12 Apr 2021 14:11:45 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.012; Mon, 12 Apr 2021 14:11:45 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Arnd Bergmann' <arnd@arndb.de>
-Subject: RE: [PATCH 5/5] compat: consolidate the compat_flock{,64} definition
-Thread-Topic: [PATCH 5/5] compat: consolidate the compat_flock{, 64} definition
-Thread-Index: AQHXL3nAXViKKuH90kqxIUkBtWSuL6qwmWXwgAATjVCAAACRAIAAKVLA
-Date: Mon, 12 Apr 2021 13:11:45 +0000
-Message-ID: <0bef075082b244d2b7a5a140336a40d5@AcuMS.aculab.com>
-References: <20210412085545.2595431-1-hch@lst.de>
- <20210412085545.2595431-6-hch@lst.de>
- <15be19af19174c7692dd795297884096@AcuMS.aculab.com>
- <5c3635a2b44a496b88d665e8686d9436@AcuMS.aculab.com>
- <CAK8P3a1JZ=JerasdkntzX_ApaCF7C29ZS1E31aPQATOts0ZiLw@mail.gmail.com>
-In-Reply-To: <CAK8P3a1JZ=JerasdkntzX_ApaCF7C29ZS1E31aPQATOts0ZiLw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJrB96dMxz30BD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 00:06:09 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13CE2wLG055751; Mon, 12 Apr 2021 10:06:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=imMop1+fNcGEidP7nMLbVS3Ggwi8E+o5W0jjoJmMAYA=;
+ b=Tg/J37HzpIcjVUQ6qGsgTaLjeThJOoVvAQvXL3x1cnzwPmzTvrk1l/BhUzAO7pCiVXs7
+ DL3MMy4EPirWMHs+Anwodzjvcl9mR0EwxieGY/VUk2g/Hs6TYuqEI9OegRZPUCVJjW0x
+ bdaOU8gghIjQjDe8OYkEGJKBLYJQ33ldCC+GTgXVRPLc6hBduKHsHecWz7wleRo2RhO8
+ 74V2u6Kp+CHQayCJXjKngGIFnGVN4wfviYVw45hjXqp3uMNesoI2ZUTHi7JwLQ/qaMHS
+ 6om/XdGBJO82yyfClag7gfKEDUvRN5NYjB20keCVwl8giNF5IK5UY2mmWFGw8fSxbDhR /Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37vn535vve-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Apr 2021 10:06:06 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13CE4X69063390;
+ Mon, 12 Apr 2021 10:06:05 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37vn535vux-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Apr 2021 10:06:05 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13CDvhFB022514;
+ Mon, 12 Apr 2021 14:06:05 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma01dal.us.ibm.com with ESMTP id 37u3n94pvw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Apr 2021 14:06:05 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13CE63rK56427010
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 Apr 2021 14:06:03 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B605CBE056;
+ Mon, 12 Apr 2021 14:06:03 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 06C02BE053;
+ Mon, 12 Apr 2021 14:06:02 +0000 (GMT)
+Received: from localhost (unknown [9.211.82.34])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Mon, 12 Apr 2021 14:06:02 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH v1 01/12] KVM: PPC: Book3S HV P9: Restore host CTRL SPR
+ after guest exit
+In-Reply-To: <20210412014845.1517916-2-npiggin@gmail.com>
+References: <20210412014845.1517916-1-npiggin@gmail.com>
+ <20210412014845.1517916-2-npiggin@gmail.com>
+Date: Mon, 12 Apr 2021 11:06:00 -0300
+Message-ID: <877dl761iv.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: BvqzYckQoTSCpfDpSvpAs70PjxRx4jMp
+X-Proofpoint-GUID: QjqkTGjAIVpxQC3VDsMqqinVgAfYHYs1
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-12_10:2021-04-12,
+ 2021-04-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ suspectscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015
+ impostorscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104120096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,68 +106,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- Vasily Gorbik <gor@linux.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Helge Deller <deller@gmx.de>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Heiko Carstens <hca@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogQXJuZCBCZXJnbWFubg0KPiBTZW50OiAxMiBBcHJpbCAyMDIxIDEyOjI2DQo+IA0KPiBP
-biBNb24sIEFwciAxMiwgMjAyMSBhdCAxMjo1NCBQTSBEYXZpZCBMYWlnaHQgPERhdmlkLkxhaWdo
-dEBhY3VsYWIuY29tPiB3cm90ZToNCj4gPiBGcm9tOiBEYXZpZCBMYWlnaHQgPiBTZW50OiAxMiBB
-cHJpbCAyMDIxIDEwOjM3DQo+ID4gLi4uDQo+ID4gPiBJJ20gZ3Vlc3NpbmcgdGhhdCBjb21wYXRf
-cGlkX3QgaXMgMTYgYml0cz8NCj4gPiA+IFNvIHRoZSBuYXRpdmUgMzJiaXQgdmVyc2lvbiBoYXMg
-YW4gdW5uYW1lZCAyIGJ5dGUgc3RydWN0dXJlIHBhZC4NCj4gPiA+IFRoZSAncGFja2VkJyByZW1v
-dmVzIHRoaXMgcGFkIGZyb20gdGhlIGNvbXBhdCBzdHJ1Y3R1cmUuDQo+ID4gPg0KPiA+ID4gQUZB
-SUNUIChhcGFydCBmcm9tIG1pcHMpIHRoZSBfX0FSQ0hfQ09NUEFUX0ZMT0NLX1BBRCBpcyBqdXN0
-DQo+ID4gPiBhZGRpbmcgYW4gZXhwbGljaXQgcGFkIGZvciB0aGUgaW1wbGljaXQgcGFkIHRoZSBj
-b21waWxlcg0KPiA+ID4gd291bGQgZ2VuZXJhdGUgYmVjYXVzZSBjb21wYXRfcGlkX3QgaXMgMTYg
-Yml0cy4NCj4gPg0KPiA+IEkndmUganVzdCBsb29rZWQgYXQgdGhlIGhlYWRlci4NCj4gPiBjb21w
-YXRfcGlkX3QgaXMgMzIgYml0cy4NCj4gPiBTbyBMaW51eCBtdXN0IGhhdmUgZ2FpbmVkIDMyYml0
-IHBpZHMgYXQgc29tZSBlYXJsaWVyIHRpbWUuDQo+ID4gKEhpc3RvcmljYWxseSBVbml4IHBpZHMg
-d2VyZSAxNiBiaXQgLSBldmVuIG9uIDMyYml0IHN5c3RlbXMuKQ0KPiA+DQo+ID4gV2hpY2ggbWFr
-ZXMgdGhlIGV4cGxpY2l0IHBhZCBpbiAnc3BhcmMnIHJhdGhlciAnaW50ZXJlc3RpbmcnLg0KPiAN
-Cj4gSSBzYXcgaXQgd2FzIHRoZXJlIHNpbmNlIHRoZSBzcGFyYyBrZXJuZWwgc3VwcG9ydCBnb3Qg
-bWVyZ2VkIGluDQo+IGxpbnV4LTEuMywgcG9zc2libHkgY29waWVkIGZyb20gYW4gb2xkZXIgc3Vu
-b3MgdmVyc2lvbi4NCg0KV2hpY2ggaGFkIGEgMTZiaXQgcGlkIHdoZW4gSSB1c2VkIGl0Lg0KU28g
-dGhpcyBpcyBhIGJ1ZyBpbiB0aGUgc3BhcmMgbWVyZ2UhDQoNClRoZSBleHBsaWNpdCAnc2hvcnQn
-IHBhZCBjb3VsZCBiZSByZW1vdmVkIGZyb20gdGhlIDY0Yml0IHZhcmlhbnQNCmJlY2F1c2UgdGhl
-cmUgYXJlIGFsd2F5cyA0IGJ5dGVzIG9mIHBhZCBhZnRlciBsX3BpZC4NCkJ1dCBpdCBkb2VzIGV4
-dGVuZCB0aGUgYXBwbGljYXRpb24gc3RydWN0dXJlIG9uIDMyYml0IHNwYXJjIHNvIG11c3QNCnJl
-bWFpbiBpbiB0aGUgdWFwaSBoZWFkZXIuDQpJdCBkb2Vzbid0IG5lZWQgdG8gYmUgaW4gdGhlICdj
-b21wYXQnIGRlZmluaXRpb24uDQoNCj4gPiBvaCAtIGNvbXBhdF9sb2ZmX3QgaXMgb25seSB1c2Vk
-IGluIGEgY291cGxlIG9mIG90aGVyIHBsYWNlcy4NCj4gPiBuZWl0aGVyIGNhcmUgaW4gYW55IHdh
-eSBhYm91dCB0aGUgYWxpZ25tZW50Lg0KPiA+IChQcm92aWRlZCBnZXRfdXNlcigpIGRvZXNuJ3Qg
-ZmF1bHQgb24gYSA4bis0IGFsaWduZWQgYWRkcmVzcy4pDQo+IA0KPiBBaCByaWdodCwgSSBhbHNv
-IHNlZSB0aGF0IGFmdGVyIHRoaXMgc2VyaWVzIGl0J3Mgb25seSB1c2VkIGluIHRvIG90aGVyDQo+
-IHBsYWNlczogIGNvbXBhdF9yZXN1bWVfc3dhcF9hcmVhLCB3aGljaCBjb3VsZCBhbHNvIGxvc2Ug
-dGhlDQo+IF9fcGFja2VkIGFubm90YXRpb24sDQoNClRoYXQgc3RydWN0dXJlIGp1c3QgZGVmaW5l
-cyAwIGFuZCA4LCB0aGUgc3RydWN0dXJlIHNpemUgZG9lc24ndA0KbWF0dGVyIGFuZCB0aGUgb2Zm
-c2V0cyBhcmUgJ3Bhc3NlZCB0bycgZ2V0X3VzZXIoKSBzbyBieXRlDQphY2Nlc3NlcyBhcmVuJ3Qg
-cGVyZm9ybWVkLg0KDQo+IGFuZCBpbiB0aGUgZGVjbGFyYXRpb24gb2YNCj4gY29tcGF0X3N5c19z
-ZW5kZmlsZTY0LCB3aGVyZSBpdCBtYWtlcyBubyBkaWZmZXJlbmNlLg0KDQpXaGljaCBzaG91bGQg
-cHJvYmFibHkgdXNlIGdldF91c2VyKCkgcmF0aGVyIHRoYW4gY29weV9mcm9tX3VzZXIoKS4NCg0K
-QWx0aG91Z2ggc29tZSBhcmNoaXRlY3R1cmVzIG1heSBuZWVkIGZhbGxiYWNrIGNvZGUgZm9yDQpt
-aXNhbGlnbmVkIGdldF91c2VyKCkgPw0KT3IgaXMgdGhlcmUgYSBnZW5lcmFsICdjb3Agb3V0JyB0
-aGF0IHN0cnVjdHVyZXMgcGFzc2VkIHRvIHRoZQ0Ka2VybmVsIGFyZSByZXF1aXJlZCB0byBiZSBj
-b3JyZWN0bHkgYWxpZ25lZC4NClRoZXkgc2hvdWxkIGJlIGFsaWduZWQgdW5sZXNzIHRoZSBrZXJu
-ZWwgaXMgJ3BsYXlpbmcgZ2FtZXMnDQpsaWtlIHJlYWRpbmcgJ3N0cnVjdCBwb2xsZmQnIGFzIGEg
-NjRiaXQgaXRlbS4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwg
-QnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVn
-aXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
+Nicholas Piggin <npiggin@gmail.com> writes:
 
+> The host CTRL (runlatch) value is not restored after guest exit. The
+> host CTRL should always be 1 except in CPU idle code, so this can result
+> in the host running with runlatch clear, and potentially switching to
+> a different vCPU which then runs with runlatch clear as well.
+>
+> This has little effect on P9 machines, CTRL is only responsible for some
+> PMU counter logic in the host and so other than corner cases of software
+> relying on that, or explicitly reading the runlatch value (Linux does
+> not appear to be affected but it's possible non-Linux guests could be),
+> there should be no execution correctness problem, though it could be
+> used as a covert channel between guests.
+>
+> There may be microcontrollers, firmware or monitoring tools that sample
+> the runlatch value out-of-band, however since the register is writable
+> by guests, these values would (should) not be relied upon for correct
+> operation of the host, so suboptimal performance or incorrect reporting
+> should be the worst problem.
+>
+> Fixes: 95a6432ce9038 ("KVM: PPC: Book3S HV: Streamlined guest entry/exit path on P9 for radix guests")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 13bad6bf4c95..208a053c9adf 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -3728,7 +3728,10 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>  	vcpu->arch.dec_expires = dec + tb;
+>  	vcpu->cpu = -1;
+>  	vcpu->arch.thread_cpu = -1;
+> +	/* Save guest CTRL register, set runlatch to 1 */
+>  	vcpu->arch.ctrl = mfspr(SPRN_CTRLF);
+> +	if (!(vcpu->arch.ctrl & 1))
+> +		mtspr(SPRN_CTRLT, vcpu->arch.ctrl | 1);
+
+Maybe ditch the comment and use the already defined CTRL_RUNLATCH?
+
+>
+>  	vcpu->arch.iamr = mfspr(SPRN_IAMR);
+>  	vcpu->arch.pspb = mfspr(SPRN_PSPB);
