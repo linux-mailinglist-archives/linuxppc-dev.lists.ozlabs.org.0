@@ -2,124 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B315535CA7F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 17:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2598735CB13
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Apr 2021 18:23:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FJtZ24qs2z3bpv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 01:53:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FJvDx0vDfz3byQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 02:23:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Da5wxyjt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pO9yaXxN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22e;
- helo=mail-oi1-x22e.google.com; envelope-from=groeck7@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Da5wxyjt; dkim-atps=neutral
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com
- [IPv6:2607:f8b0:4864:20::22e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=pO9yaXxN; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FJtYb2jT7z2yxm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 01:53:06 +1000 (AEST)
-Received: by mail-oi1-x22e.google.com with SMTP id d12so13844744oiw.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 08:53:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:autocrypt:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=EGgrX92i1CB3OPQao+cuq1musN3IzhJqLg7gLbewWcE=;
- b=Da5wxyjtIT2eqpyD3nJJD9VgkhZv8oJJzx+vhKV6gXH4lv50bb4ibs/61+gyjW3O7C
- zUUpg6pyKEE1QM+EZc7bVY5MCkQ/d7nccSmQ9egsSnWr4d4ULpRZwWqRCahSx5nZuusw
- el91K1lVklsu2/Jbw6aRQzK7XdI+yP+etcvNVeJ90fqEhDdDehppHYjXUNJQ5VG+FSJa
- z98sRt5BxA+kUTZNtM16Evp9WyDXevDgcQyAS5Qr2ECrxG1nlh7nZvwI+Pv8UDwDrR3M
- 0sAl5tMT+SOvEA+jUvMRe1MB3a7jwUjAg57LPcgt26i7kCU55jkT7Ek7/l5thgAZW0wd
- ohTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=EGgrX92i1CB3OPQao+cuq1musN3IzhJqLg7gLbewWcE=;
- b=Z2FNM1BsSn7xNOjnKYKHO8yeC41qFo2yfyqsltxYGUMPOgwLWm70Ujr51UxJsKtpxO
- 5bS+CniPNxc5sblJi1nSZVXbIsFn8f1uFx4pCqTjGr4ShtKHDtfH+9IBO55R1JHrRmWv
- K2El7yFQjJ5WTa/PZ+a+JGWvSOySaVg7rVUiUwIQJJ8ElIu+9QIySmRhdLefI6csu5jo
- 4Bc05rDGfpFidpoBbyreFBqfVlUwrjobeaiZnMksQdqFnFpCLoDisFgblMRHaDdSVbQW
- Ulcf+p0c8Rhvml3Dqv3nP5ly5g8CEoSxVqsUJzGVJwEVDwc2cPHC4Txekhe51iWk/PVh
- q13Q==
-X-Gm-Message-State: AOAM53083xQ/eJNaK66H5XRek6/cbKA6v2+XrSAV6Pxv51xAM3sToOon
- ZG45QUHb7+Oq0OeaA7aupwE=
-X-Google-Smtp-Source: ABdhPJzzaa2P9f/w1olkcrEJJkz5Syr+wkQK42HLVbh5QNzj01EPqL4qtMBWXuu7v9cYRwlZPNnjOg==
-X-Received: by 2002:aca:4284:: with SMTP id
- p126mr18911026oia.178.1618242782134; 
- Mon, 12 Apr 2021 08:53:02 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- d2sm2776817otl.48.2021.04.12.08.53.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Apr 2021 08:53:01 -0700 (PDT)
-Subject: Re: [PATCH] ASoC: fsl_sai: Don't use devm_regmap_init_mmio_clk
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-References: <1616141203-13344-1-git-send-email-shengjiu.wang@nxp.com>
- <20210411144157.GA80935@roeck-us.net>
- <CAA+D8AOKuGivfPxKRL6r6z1=dbLCWDHR0BRAi=T1uOHq6cUd-w@mail.gmail.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-Message-ID: <2d2ce2e8-cfdb-89e7-9c79-60770f2c24f0@roeck-us.net>
-Date: Mon, 12 Apr 2021 08:52:59 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FJvDV6rm1z2yxF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 02:23:22 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B71F461288;
+ Mon, 12 Apr 2021 16:23:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1618244600;
+ bh=rkm6X9OKesAxMZd4NC2/70SbIw1V88Qvylcs74rdNc0=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=pO9yaXxNuQLTY684DSBMOQKPkBmc39EwjXZDp8pwB9kaFaWL1eDIlXfp1fmqcofFS
+ EHFLYjXXn1aSF+JSgnb1YrmKzYN5JNthLrcltzQW19vqYegBHriQfMcYZxa+B6QFLK
+ EXTAjNbzQKclNKixHaeAVfjvZiI8IgEXYyui8lpNUqpjByRErA/zAZp4hHlcBz7/qc
+ CO+TGi8GCKgNZmkraRntf2aBozxfltR12h+HYCszAh9cyJbGY7GHguYN432HkBX6qB
+ 6YOf5gpp1ZDuRbhHwSmSggl4WcIN7K8Y3r0z06f4cb4FHLblEKbuyzbB0BO0QuYYwM
+ geSPjV4D2E+jw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.11 19/51] powerpc/signal32: Fix Oops on sigreturn
+ with unmapped VDSO
+Date: Mon, 12 Apr 2021 12:22:24 -0400
+Message-Id: <20210412162256.313524-19-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210412162256.313524-1-sashal@kernel.org>
+References: <20210412162256.313524-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAA+D8AOKuGivfPxKRL6r6z1=dbLCWDHR0BRAi=T1uOHq6cUd-w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,38 +61,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Mark Brown <broonie@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/12/21 3:37 AM, Shengjiu Wang wrote:
-[ ... ]
-> The SAI module is not supported in QEMU, so the access of the register
-> failed.
-> 
-> you can add bypass the access in QEMU, for example:
-> 
-> diff --git a/hw/arm/fsl-imx6ul.c b/hw/arm/fsl-imx6ul.c
-> index e0128d7316..62f7bd92a4 100644
-> --- a/hw/arm/fsl-imx6ul.c
-> +++ b/hw/arm/fsl-imx6ul.c
-> @@ -534,6 +534,10 @@ static void fsl_imx6ul_realize(DeviceState *dev,
-> Error **errp)
->       */
->      create_unimplemented_device("sdma", FSL_IMX6UL_SDMA_ADDR, 0x4000);
-> 
-> +    create_unimplemented_device("sai1", 0x02028000, 0x4000);
-> +    create_unimplemented_device("sai2", 0x0202c000, 0x4000);
-> +    create_unimplemented_device("sai3", 0x02030000, 0x4000);
-> 
-Ah, yes, that takes care of the problem.
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Thanks, and sorry for the noise.
+[ Upstream commit acca57217c688c5bbbd5140974533d81e8757cc9 ]
 
-Guenter
+PPC32 encounters a KUAP fault when trying to handle a signal with
+VDSO unmapped.
+
+	Kernel attempted to read user page (7fc07ec0) - exploit attempt? (uid: 0)
+	BUG: Unable to handle kernel data access on read at 0x7fc07ec0
+	Faulting instruction address: 0xc00111d4
+	Oops: Kernel access of bad area, sig: 11 [#1]
+	BE PAGE_SIZE=16K PREEMPT CMPC885
+	CPU: 0 PID: 353 Comm: sigreturn_vdso Not tainted 5.12.0-rc4-s3k-dev-01553-gb30c310ea220 #4814
+	NIP:  c00111d4 LR: c0005a28 CTR: 00000000
+	REGS: cadb3dd0 TRAP: 0300   Not tainted  (5.12.0-rc4-s3k-dev-01553-gb30c310ea220)
+	MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 48000884  XER: 20000000
+	DAR: 7fc07ec0 DSISR: 88000000
+	GPR00: c0007788 cadb3e90 c28d4a40 7fc07ec0 7fc07ed0 000004e0 7fc07ce0 00000000
+	GPR08: 00000001 00000001 7fc07ec0 00000000 28000282 1001b828 100a0920 00000000
+	GPR16: 100cac0c 100b0000 105c43a4 105c5685 100d0000 100d0000 100d0000 100b2e9e
+	GPR24: ffffffff 105c43c8 00000000 7fc07ec8 cadb3f40 cadb3ec8 c28d4a40 00000000
+	NIP [c00111d4] flush_icache_range+0x90/0xb4
+	LR [c0005a28] handle_signal32+0x1bc/0x1c4
+	Call Trace:
+	[cadb3e90] [100d0000] 0x100d0000 (unreliable)
+	[cadb3ec0] [c0007788] do_notify_resume+0x260/0x314
+	[cadb3f20] [c000c764] syscall_exit_prepare+0x120/0x184
+	[cadb3f30] [c00100b4] ret_from_syscall+0xc/0x28
+	--- interrupt: c00 at 0xfe807f8
+	NIP:  0fe807f8 LR: 10001060 CTR: c0139378
+	REGS: cadb3f40 TRAP: 0c00   Not tainted  (5.12.0-rc4-s3k-dev-01553-gb30c310ea220)
+	MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 28000482  XER: 20000000
+
+	GPR00: 00000025 7fc081c0 77bb1690 00000000 0000000a 28000482 00000001 0ff03a38
+	GPR08: 0000d032 00006de5 c28d4a40 00000009 88000482 1001b828 100a0920 00000000
+	GPR16: 100cac0c 100b0000 105c43a4 105c5685 100d0000 100d0000 100d0000 100b2e9e
+	GPR24: ffffffff 105c43c8 00000000 77ba7628 10002398 10010000 10002124 00024000
+	NIP [0fe807f8] 0xfe807f8
+	LR [10001060] 0x10001060
+	--- interrupt: c00
+	Instruction dump:
+	38630010 7c001fac 38630010 4200fff0 7c0004ac 4c00012c 4e800020 7c001fac
+	2c0a0000 38630010 4082ffcc 4bffffe4 <7c00186c> 2c070000 39430010 4082ff8c
+	---[ end trace 3973fb72b049cb06 ]---
+
+This is because flush_icache_range() is called on user addresses.
+
+The same problem was detected some time ago on PPC64. It was fixed by
+enabling KUAP in commit 59bee45b9712 ("powerpc/mm: Fix missing KUAP
+disable in flush_coherent_icache()").
+
+PPC32 doesn't use flush_coherent_icache() and fallbacks on
+clean_dcache_range() and invalidate_icache_range().
+
+We could fix it similarly by enabling user access in those functions,
+but this is overkill for just flushing two instructions.
+
+The two instructions are 8 bytes aligned, so a single dcbst/icbi is
+enough to flush them. Do like __patch_instruction() and inline
+a dcbst followed by an icbi just after the write of the instructions,
+while user access is still allowed. The isync is not required because
+rfi will be used to return to user.
+
+icbi() is handled as a read so read-write user access is needed.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/bde9154e5351a5ac7bca3d59cdb5a5e8edacbb79.1617199569.git.christophe.leroy@csgroup.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/kernel/signal_32.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
+
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index 934cbdf6dd10..30eddc69c9cf 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -775,7 +775,7 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 	else
+ 		prepare_save_user_regs(1);
+ 
+-	if (!user_write_access_begin(frame, sizeof(*frame)))
++	if (!user_access_begin(frame, sizeof(*frame)))
+ 		goto badframe;
+ 
+ 	/* Put the siginfo & fill in most of the ucontext */
+@@ -809,17 +809,15 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 		unsafe_put_user(PPC_INST_ADDI + __NR_rt_sigreturn, &mctx->mc_pad[0],
+ 				failed);
+ 		unsafe_put_user(PPC_INST_SC, &mctx->mc_pad[1], failed);
++		asm("dcbst %y0; sync; icbi %y0; sync" :: "Z" (mctx->mc_pad[0]));
+ 	}
+ 	unsafe_put_sigset_t(&frame->uc.uc_sigmask, oldset, failed);
+ 
+-	user_write_access_end();
++	user_access_end();
+ 
+ 	if (copy_siginfo_to_user(&frame->info, &ksig->info))
+ 		goto badframe;
+ 
+-	if (tramp == (unsigned long)mctx->mc_pad)
+-		flush_icache_range(tramp, tramp + 2 * sizeof(unsigned long));
+-
+ 	regs->link = tramp;
+ 
+ #ifdef CONFIG_PPC_FPU_REGS
+@@ -844,7 +842,7 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 	return 0;
+ 
+ failed:
+-	user_write_access_end();
++	user_access_end();
+ 
+ badframe:
+ 	signal_fault(tsk, regs, "handle_rt_signal32", frame);
+@@ -879,7 +877,7 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 	else
+ 		prepare_save_user_regs(1);
+ 
+-	if (!user_write_access_begin(frame, sizeof(*frame)))
++	if (!user_access_begin(frame, sizeof(*frame)))
+ 		goto badframe;
+ 	sc = (struct sigcontext __user *) &frame->sctx;
+ 
+@@ -908,11 +906,9 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 		/* Set up the sigreturn trampoline: li r0,sigret; sc */
+ 		unsafe_put_user(PPC_INST_ADDI + __NR_sigreturn, &mctx->mc_pad[0], failed);
+ 		unsafe_put_user(PPC_INST_SC, &mctx->mc_pad[1], failed);
++		asm("dcbst %y0; sync; icbi %y0; sync" :: "Z" (mctx->mc_pad[0]));
+ 	}
+-	user_write_access_end();
+-
+-	if (tramp == (unsigned long)mctx->mc_pad)
+-		flush_icache_range(tramp, tramp + 2 * sizeof(unsigned long));
++	user_access_end();
+ 
+ 	regs->link = tramp;
+ 
+@@ -934,7 +930,7 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 	return 0;
+ 
+ failed:
+-	user_write_access_end();
++	user_access_end();
+ 
+ badframe:
+ 	signal_fault(tsk, regs, "handle_signal32", frame);
+-- 
+2.30.2
+
