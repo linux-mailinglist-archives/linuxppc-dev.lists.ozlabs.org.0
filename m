@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB00935E421
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 18:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9598335E423
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 18:37:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKWVT2n5bz3cBn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 02:37:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKWVq3lbNz3cPD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 02:37:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,38 +15,39 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FKWTc1Wx7z3bt6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 02:36:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKWTd2ctHz3bvT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 02:36:52 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FKWTX0MBDz9v4hH;
+ by localhost (Postfix) with ESMTP id 4FKWTX6Cc3z9vBLN;
  Tue, 13 Apr 2021 18:36:48 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id IpQDecXDxOQ1; Tue, 13 Apr 2021 18:36:47 +0200 (CEST)
+ with ESMTP id 7z0KEN-lxBd0; Tue, 13 Apr 2021 18:36:48 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FKWTW6bYyz9v4h8;
- Tue, 13 Apr 2021 18:36:47 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FKWTX51mTz9v4h8;
+ Tue, 13 Apr 2021 18:36:48 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5F2E78B7AA;
- Tue, 13 Apr 2021 18:36:49 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 586E78B7AA;
+ Tue, 13 Apr 2021 18:36:50 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id SnH2_Hb2WNwL; Tue, 13 Apr 2021 18:36:49 +0200 (CEST)
+ with ESMTP id Wm6VGzvOlh3o; Tue, 13 Apr 2021 18:36:50 +0200 (CEST)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1ABC38B75F;
- Tue, 13 Apr 2021 18:36:49 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 193D58B75F;
+ Tue, 13 Apr 2021 18:36:50 +0200 (CEST)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E5A0867A15; Tue, 13 Apr 2021 16:36:48 +0000 (UTC)
-Message-Id: <aa9ead13b8eeae755ede0856a7635b0b16ab6a99.1618331293.git.christophe.leroy@csgroup.eu>
+ id EC4E167A15; Tue, 13 Apr 2021 16:36:49 +0000 (UTC)
+Message-Id: <770c0963b9e1fd519b2fa9aabf5c19a6bf25bd30.1618331293.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <3e42149aeff047f50770a72e1617c171edaa86da.1618331293.git.christophe.leroy@csgroup.eu>
 References: <3e42149aeff047f50770a72e1617c171edaa86da.1618331293.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 2/3] powerpc/atomics: Use immediate operand when possible
+Subject: [PATCH v2 3/3] powerpc/atomics: Remove atomic_inc()/atomic_dec() and
+ friends
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 13 Apr 2021 16:36:48 +0000 (UTC)
+Date: Tue, 13 Apr 2021 16:36:49 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,169 +64,134 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Today we get the following code generation for atomic operations:
+Now that atomic_add() and atomic_sub() handle immediate operands,
+atomic_inc() and atomic_dec() have no added value compared to the
+generic fallback which calls atomic_add(1) and atomic_sub(1).
 
-	c001bb2c:	39 20 00 01 	li      r9,1
-	c001bb30:	7d 40 18 28 	lwarx   r10,0,r3
-	c001bb34:	7d 09 50 50 	subf    r8,r9,r10
-	c001bb38:	7d 00 19 2d 	stwcx.  r8,0,r3
-
-	c001c7a8:	39 40 00 01 	li      r10,1
-	c001c7ac:	7d 00 18 28 	lwarx   r8,0,r3
-	c001c7b0:	7c ea 42 14 	add     r7,r10,r8
-	c001c7b4:	7c e0 19 2d 	stwcx.  r7,0,r3
-
-By allowing GCC to choose between immediate or regular operation,
-we get:
-
-	c001bb2c:	7d 20 18 28 	lwarx   r9,0,r3
-	c001bb30:	39 49 ff ff 	addi    r10,r9,-1
-	c001bb34:	7d 40 19 2d 	stwcx.  r10,0,r3
-	--
-	c001c7a4:	7d 40 18 28 	lwarx   r10,0,r3
-	c001c7a8:	39 0a 00 01 	addi    r8,r10,1
-	c001c7ac:	7d 00 19 2d 	stwcx.  r8,0,r3
-
-For "and", the dot form has to be used because "andi" doesn't exist.
-
-For logical operations we use unsigned 16 bits immediate.
-For arithmetic operations we use signed 16 bits immediate.
-
-On pmac32_defconfig, it reduces the text by approx another 8 kbytes.
+Also remove atomic_inc_not_zero() which fallsback to
+atomic_add_unless() which itself fallsback to
+atomic_fetch_add_unless() which now handles immediate operands.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
 ---
-v2: Use "addc/addic"
+v2: New
 ---
- arch/powerpc/include/asm/atomic.h | 56 +++++++++++++++----------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ arch/powerpc/include/asm/atomic.h | 95 -------------------------------
+ 1 file changed, 95 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
-index 61c6e8b200e8..eb1bdf14f67c 100644
+index eb1bdf14f67c..00ba5d9e837b 100644
 --- a/arch/powerpc/include/asm/atomic.h
 +++ b/arch/powerpc/include/asm/atomic.h
-@@ -37,62 +37,62 @@ static __inline__ void atomic_set(atomic_t *v, int i)
- 	__asm__ __volatile__("stw%U0%X0 %1,%0" : "=m"UPD_CONSTR(v->counter) : "r"(i));
+@@ -118,71 +118,6 @@ ATOMIC_OPS(xor, xor, "", K)
+ #undef ATOMIC_OP_RETURN_RELAXED
+ #undef ATOMIC_OP
+ 
+-static __inline__ void atomic_inc(atomic_t *v)
+-{
+-	int t;
+-
+-	__asm__ __volatile__(
+-"1:	lwarx	%0,0,%2		# atomic_inc\n\
+-	addic	%0,%0,1\n"
+-"	stwcx.	%0,0,%2 \n\
+-	bne-	1b"
+-	: "=&r" (t), "+m" (v->counter)
+-	: "r" (&v->counter)
+-	: "cc", "xer");
+-}
+-#define atomic_inc atomic_inc
+-
+-static __inline__ int atomic_inc_return_relaxed(atomic_t *v)
+-{
+-	int t;
+-
+-	__asm__ __volatile__(
+-"1:	lwarx	%0,0,%2		# atomic_inc_return_relaxed\n"
+-"	addic	%0,%0,1\n"
+-"	stwcx.	%0,0,%2\n"
+-"	bne-	1b"
+-	: "=&r" (t), "+m" (v->counter)
+-	: "r" (&v->counter)
+-	: "cc", "xer");
+-
+-	return t;
+-}
+-
+-static __inline__ void atomic_dec(atomic_t *v)
+-{
+-	int t;
+-
+-	__asm__ __volatile__(
+-"1:	lwarx	%0,0,%2		# atomic_dec\n\
+-	addic	%0,%0,-1\n"
+-"	stwcx.	%0,0,%2\n\
+-	bne-	1b"
+-	: "=&r" (t), "+m" (v->counter)
+-	: "r" (&v->counter)
+-	: "cc", "xer");
+-}
+-#define atomic_dec atomic_dec
+-
+-static __inline__ int atomic_dec_return_relaxed(atomic_t *v)
+-{
+-	int t;
+-
+-	__asm__ __volatile__(
+-"1:	lwarx	%0,0,%2		# atomic_dec_return_relaxed\n"
+-"	addic	%0,%0,-1\n"
+-"	stwcx.	%0,0,%2\n"
+-"	bne-	1b"
+-	: "=&r" (t), "+m" (v->counter)
+-	: "r" (&v->counter)
+-	: "cc", "xer");
+-
+-	return t;
+-}
+-
+-#define atomic_inc_return_relaxed atomic_inc_return_relaxed
+-#define atomic_dec_return_relaxed atomic_dec_return_relaxed
+-
+ #define atomic_cmpxchg(v, o, n) (cmpxchg(&((v)->counter), (o), (n)))
+ #define atomic_cmpxchg_relaxed(v, o, n) \
+ 	cmpxchg_relaxed(&((v)->counter), (o), (n))
+@@ -252,36 +187,6 @@ static __inline__ int atomic_fetch_add_unless(atomic_t *v, int a, int u)
  }
+ #define atomic_fetch_add_unless atomic_fetch_add_unless
  
--#define ATOMIC_OP(op, asm_op)						\
-+#define ATOMIC_OP(op, asm_op, suffix, sign, ...)			\
- static __inline__ void atomic_##op(int a, atomic_t *v)			\
- {									\
- 	int t;								\
- 									\
- 	__asm__ __volatile__(						\
- "1:	lwarx	%0,0,%3		# atomic_" #op "\n"			\
--	#asm_op " %0,%2,%0\n"						\
-+	#asm_op "%I2" suffix " %0,%0,%2\n"				\
- "	stwcx.	%0,0,%3 \n"						\
- "	bne-	1b\n"							\
- 	: "=&r" (t), "+m" (v->counter)					\
--	: "r" (a), "r" (&v->counter)					\
--	: "cc");							\
-+	: "r"#sign (a), "r" (&v->counter)				\
-+	: "cc", ##__VA_ARGS__);						\
- }									\
- 
--#define ATOMIC_OP_RETURN_RELAXED(op, asm_op)				\
-+#define ATOMIC_OP_RETURN_RELAXED(op, asm_op, suffix, sign, ...)		\
- static inline int atomic_##op##_return_relaxed(int a, atomic_t *v)	\
- {									\
- 	int t;								\
- 									\
- 	__asm__ __volatile__(						\
- "1:	lwarx	%0,0,%3		# atomic_" #op "_return_relaxed\n"	\
--	#asm_op " %0,%2,%0\n"						\
-+	#asm_op "%I2" suffix " %0,%0,%2\n"				\
- "	stwcx.	%0,0,%3\n"						\
- "	bne-	1b\n"							\
- 	: "=&r" (t), "+m" (v->counter)					\
--	: "r" (a), "r" (&v->counter)					\
--	: "cc");							\
-+	: "r"#sign (a), "r" (&v->counter)				\
-+	: "cc", ##__VA_ARGS__);						\
- 									\
- 	return t;							\
- }
- 
--#define ATOMIC_FETCH_OP_RELAXED(op, asm_op)				\
-+#define ATOMIC_FETCH_OP_RELAXED(op, asm_op, suffix, sign, ...)		\
- static inline int atomic_fetch_##op##_relaxed(int a, atomic_t *v)	\
- {									\
- 	int res, t;							\
- 									\
- 	__asm__ __volatile__(						\
- "1:	lwarx	%0,0,%4		# atomic_fetch_" #op "_relaxed\n"	\
--	#asm_op " %1,%3,%0\n"						\
-+	#asm_op "%I3" suffix " %1,%0,%3\n"				\
- "	stwcx.	%1,0,%4\n"						\
- "	bne-	1b\n"							\
- 	: "=&r" (res), "=&r" (t), "+m" (v->counter)			\
--	: "r" (a), "r" (&v->counter)					\
--	: "cc");							\
-+	: "r"#sign (a), "r" (&v->counter)				\
-+	: "cc", ##__VA_ARGS__);						\
- 									\
- 	return res;							\
- }
- 
--#define ATOMIC_OPS(op, asm_op)						\
--	ATOMIC_OP(op, asm_op)						\
--	ATOMIC_OP_RETURN_RELAXED(op, asm_op)				\
--	ATOMIC_FETCH_OP_RELAXED(op, asm_op)
-+#define ATOMIC_OPS(op, asm_op, suffix, sign, ...)			\
-+	ATOMIC_OP(op, asm_op, suffix, sign, ##__VA_ARGS__)		\
-+	ATOMIC_OP_RETURN_RELAXED(op, asm_op, suffix, sign, ##__VA_ARGS__)\
-+	ATOMIC_FETCH_OP_RELAXED(op, asm_op, suffix, sign, ##__VA_ARGS__)
- 
--ATOMIC_OPS(add, add)
--ATOMIC_OPS(sub, subf)
-+ATOMIC_OPS(add, add, "c", I, "xer")
-+ATOMIC_OPS(sub, sub, "c", I, "xer")
- 
- #define atomic_add_return_relaxed atomic_add_return_relaxed
- #define atomic_sub_return_relaxed atomic_sub_return_relaxed
-@@ -101,13 +101,13 @@ ATOMIC_OPS(sub, subf)
- #define atomic_fetch_sub_relaxed atomic_fetch_sub_relaxed
- 
- #undef ATOMIC_OPS
--#define ATOMIC_OPS(op, asm_op)						\
--	ATOMIC_OP(op, asm_op)						\
--	ATOMIC_FETCH_OP_RELAXED(op, asm_op)
-+#define ATOMIC_OPS(op, asm_op, suffix, sign)				\
-+	ATOMIC_OP(op, asm_op, suffix, sign)				\
-+	ATOMIC_FETCH_OP_RELAXED(op, asm_op, suffix, sign)
- 
--ATOMIC_OPS(and, and)
--ATOMIC_OPS(or, or)
--ATOMIC_OPS(xor, xor)
-+ATOMIC_OPS(and, and, ".", K)
-+ATOMIC_OPS(or, or, "", K)
-+ATOMIC_OPS(xor, xor, "", K)
- 
- #define atomic_fetch_and_relaxed atomic_fetch_and_relaxed
- #define atomic_fetch_or_relaxed  atomic_fetch_or_relaxed
-@@ -238,15 +238,15 @@ static __inline__ int atomic_fetch_add_unless(atomic_t *v, int a, int u)
- "1:	lwarx	%0,0,%1		# atomic_fetch_add_unless\n\
- 	cmpw	0,%0,%3 \n\
- 	beq	2f \n\
--	add	%0,%2,%0 \n"
-+	add%I2c	%0,%0,%2 \n"
- "	stwcx.	%0,0,%1 \n\
- 	bne-	1b \n"
- 	PPC_ATOMIC_EXIT_BARRIER
--"	subf	%0,%2,%0 \n\
-+"	sub%I2c	%0,%0,%2 \n\
- 2:"
- 	: "=&r" (t)
--	: "r" (&v->counter), "r" (a), "r" (u)
--	: "cc", "memory");
-+	: "r" (&v->counter), "rI" (a), "r" (u)
-+	: "cc", "memory", "xer");
- 
- 	return t;
- }
+-/**
+- * atomic_inc_not_zero - increment unless the number is zero
+- * @v: pointer of type atomic_t
+- *
+- * Atomically increments @v by 1, so long as @v is non-zero.
+- * Returns non-zero if @v was non-zero, and zero otherwise.
+- */
+-static __inline__ int atomic_inc_not_zero(atomic_t *v)
+-{
+-	int t1, t2;
+-
+-	__asm__ __volatile__ (
+-	PPC_ATOMIC_ENTRY_BARRIER
+-"1:	lwarx	%0,0,%2		# atomic_inc_not_zero\n\
+-	cmpwi	0,%0,0\n\
+-	beq-	2f\n\
+-	addic	%1,%0,1\n"
+-"	stwcx.	%1,0,%2\n\
+-	bne-	1b\n"
+-	PPC_ATOMIC_EXIT_BARRIER
+-	"\n\
+-2:"
+-	: "=&r" (t1), "=&r" (t2)
+-	: "r" (&v->counter)
+-	: "cc", "xer", "memory");
+-
+-	return t1;
+-}
+-#define atomic_inc_not_zero(v) atomic_inc_not_zero((v))
+-
+ /*
+  * Atomically test *v and decrement if it is greater than 0.
+  * The function returns the old value of *v minus 1, even if
 -- 
 2.25.0
 
