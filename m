@@ -1,78 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3AA35DFAA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 15:06:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7AB35E03C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 15:38:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKQpX0svqz3bTD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 23:06:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKRX03465z3c0x
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 23:38:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ZDeoC+Y0;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kaod.org (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436;
+ helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ZDeoC+Y0; dkim-atps=neutral
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com
+ [IPv6:2607:f8b0:4864:20::436])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FKQp954knz303F
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 23:05:52 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13DD5TrT166109; Tue, 13 Apr 2021 09:05:39 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37w6wmhh25-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Apr 2021 09:05:37 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13DD3Nig008970;
- Tue, 13 Apr 2021 13:03:57 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06ams.nl.ibm.com with ESMTP id 37u39hjpqv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Apr 2021 13:03:57 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 13DD3XVx12255660
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 13 Apr 2021 13:03:33 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 98D9C5204E;
- Tue, 13 Apr 2021 13:03:55 +0000 (GMT)
-Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id 7C02F5204F;
- Tue, 13 Apr 2021 13:03:55 +0000 (GMT)
-Received: from yukon.ibmuc.com (unknown [9.171.50.152])
- by smtp.tlslab.ibm.com (Postfix) with ESMTP id 8B3FD220179;
- Tue, 13 Apr 2021 15:03:54 +0200 (CEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/xive: Use the "ibm,
- chip-id" property only under PowerNV
-Date: Tue, 13 Apr 2021 15:03:52 +0200
-Message-Id: <20210413130352.1183267-1-clg@kaod.org>
-X-Mailer: git-send-email 2.26.3
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKRWZ4nT7z309j
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 23:38:17 +1000 (AEST)
+Received: by mail-pf1-x436.google.com with SMTP id n38so11462410pfv.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 06:38:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=L3zviddbu4FywH3tQoKCEQUjQPPIAzmC3fAfOKoQjFA=;
+ b=ZDeoC+Y0JLX7bPSKxVFW0YyXw/Mp0DkHYYuy9uVP2MrS6HwCqKFJirTYwlQ2t+e0tZ
+ gj8buA/xjd8UZ8r7SE6S15FeIwyPQ4wG4iyujy7fEU9fvQU2FV2BKACEsjZBL8Idvy5I
+ mXF7rv1wC4z992x2BQlPS5JxDDmjFC9JShQVVj49pcB4A2S6Gz1ppXp0OoqPbH9ci5k1
+ /+N7O2y4lpE420TDIu/ibx3NRK/zD26ndRwBK26AQRVaID2LtMtA8vnAx3TIsV5Lz2rl
+ Ne614cOoUwALCUvuYj4TO41Py96p3sL1QG0Ro/G6D41Nu7BU9tnADb5Bxk62dC72nvSd
+ N9JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=L3zviddbu4FywH3tQoKCEQUjQPPIAzmC3fAfOKoQjFA=;
+ b=LimVkuIkJ50fWz11Q8Av0/gW0scBLbm451N+72yv+q6teOG3IW+VHEaWQOqC9VFAmB
+ SYmKD764FwL2x7h8K5tmCzlobZEEOaCty3HtYVsJWVoWs8dTlHVP5BgquTdzsIRRQjvO
+ L9vX9Y92/yVV4Qn/iTsDLGZCQziZMVEsW+ESQkOwaFim6VpnPBHP9CfCAc+oNqocSeGn
+ PzA3GUYZkk76IbN7sLoS5lsO2cwD9FBpPUJKqNRnll+jVCz1bBfOdk4zluY5KZQ23CuA
+ EjVrpyxj3X6iF09jNPQkA4VjdKD5WORNiIVpwkFUhsrCiHQjlOoTLVmOxHM/9J0Ovu7R
+ bmDg==
+X-Gm-Message-State: AOAM532jX3B7eDokwW4qL6PEaobgw7rOtPp3SqkipC6YSgMx/tk8Bo8X
+ 36OujG7HOLlABB4Cw2AmXPE=
+X-Google-Smtp-Source: ABdhPJy41gB5ttRaa/37YrBy3uHBItjiUYbJAj8D83EqGrt34H4aaj5PKGhIXVqPpiGklIDfxwT9aw==
+X-Received: by 2002:a63:1d41:: with SMTP id d1mr31119332pgm.135.1618321092698; 
+ Tue, 13 Apr 2021 06:38:12 -0700 (PDT)
+Received: from bobo.ibm.com (193-116-90-211.tpgi.com.au. [193.116.90.211])
+ by smtp.gmail.com with ESMTPSA id k21sm12630090pfi.28.2021.04.13.06.38.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Apr 2021 06:38:12 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: kvm-ppc@vger.kernel.org
+Subject: [PATCH v1] KVM: PPC: Book3S HV P9: implement kvmppc_xive_pull_vcpu in
+ C
+Date: Tue, 13 Apr 2021 23:38:02 +1000
+Message-Id: <20210413133802.1691660-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9uUvOjqFiDig1KtNCEk4eJoNZOkL5dfi
-X-Proofpoint-GUID: 9uUvOjqFiDig1KtNCEk4eJoNZOkL5dfi
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-13_07:2021-04-13,
- 2021-04-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0
- mlxscore=0 suspectscore=0 spamscore=0 bulkscore=0 clxscore=1034
- phishscore=0 lowpriorityscore=0 priorityscore=1501 mlxlogscore=999
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104130091
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,99 +79,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The 'chip_id' field of the XIVE CPU structure is used to choose a
-target for a source located on the same chip. For that, the XIVE
-driver queries the chip identifier from the "ibm,chip-id" property
-and compares it to a 'src_chip' field identifying the chip of a
-source. This information is only available on the PowerNV platform,
-'src_chip' being assigned to XIVE_INVALID_CHIP_ID under pSeries.
+This is more symmetric with kvmppc_xive_push_vcpu, and has the advantage
+that it runs with the MMU on.
 
-The "ibm,chip-id" property is also not available on all platforms. It
-was first introduced on PowerNV and later, under QEMU for pSeries/KVM.
-However, the property is not part of PAPR and does not exist under
-pSeries/PowerVM.
+The extra test added to the asm will go away with a future change.
 
-Assign 'chip_id' to XIVE_INVALID_CHIP_ID by default and let the
-PowerNV platform override the value with the "ibm,chip-id" property.
-
-Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/sysdev/xive/xive-internal.h | 1 +
- arch/powerpc/sysdev/xive/common.c        | 9 +++------
- arch/powerpc/sysdev/xive/native.c        | 6 ++++++
- 3 files changed, 10 insertions(+), 6 deletions(-)
+Another bit that came from the KVM Cify series.
 
-diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysd=
-ev/xive/xive-internal.h
-index b3a456fdd3a5..504e7edce358 100644
---- a/arch/powerpc/sysdev/xive/xive-internal.h
-+++ b/arch/powerpc/sysdev/xive/xive-internal.h
-@@ -44,6 +44,7 @@ struct xive_ops {
- 				  u32 *sw_irq);
- 	int	(*setup_queue)(unsigned int cpu, struct xive_cpu *xc, u8 prio);
- 	void	(*cleanup_queue)(unsigned int cpu, struct xive_cpu *xc, u8 prio);
-+	void	(*prepare_cpu)(unsigned int cpu, struct xive_cpu *xc);
- 	void	(*setup_cpu)(unsigned int cpu, struct xive_cpu *xc);
- 	void	(*teardown_cpu)(unsigned int cpu, struct xive_cpu *xc);
- 	bool	(*match)(struct device_node *np);
-diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
-/common.c
-index 587738ec4229..5acd76403ee7 100644
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@ -1414,17 +1414,14 @@ static int xive_prepare_cpu(unsigned int cpu)
-=20
- 	xc =3D per_cpu(xive_cpu, cpu);
- 	if (!xc) {
--		struct device_node *np;
--
- 		xc =3D kzalloc_node(sizeof(struct xive_cpu),
- 				  GFP_KERNEL, cpu_to_node(cpu));
- 		if (!xc)
- 			return -ENOMEM;
--		np =3D of_get_cpu_node(cpu, NULL);
--		if (np)
--			xc->chip_id =3D of_get_ibm_chip_id(np);
--		of_node_put(np);
- 		xc->hw_ipi =3D XIVE_BAD_IRQ;
-+		xc->chip_id =3D XIVE_INVALID_CHIP_ID;
-+		if (xive_ops->prepare_cpu)
-+			xive_ops->prepare_cpu(cpu, xc);
-=20
- 		per_cpu(xive_cpu, cpu) =3D xc;
- 	}
-diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive=
-/native.c
-index 1bb84febbaee..4fcd2dd1de71 100644
---- a/arch/powerpc/sysdev/xive/native.c
-+++ b/arch/powerpc/sysdev/xive/native.c
-@@ -382,6 +382,11 @@ static void xive_native_update_pending(struct xive_c=
-pu *xc)
- 	}
- }
-=20
-+static void xive_native_prepare_cpu(unsigned int cpu, struct xive_cpu *x=
-c)
-+{
-+	xc->chip_id =3D cpu_to_chip_id(cpu);
-+}
-+
- static void xive_native_setup_cpu(unsigned int cpu, struct xive_cpu *xc)
+Thanks,
+Nick
+
+ arch/powerpc/include/asm/kvm_ppc.h      |  2 ++
+ arch/powerpc/kvm/book3s_hv.c            |  2 ++
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S |  5 ++++
+ arch/powerpc/kvm/book3s_xive.c          | 31 +++++++++++++++++++++++++
+ 4 files changed, 40 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index 9531b1c1b190..73b1ca5a6471 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -672,6 +672,7 @@ extern int kvmppc_xive_set_icp(struct kvm_vcpu *vcpu, u64 icpval);
+ extern int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
+ 			       int level, bool line_status);
+ extern void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu);
++extern void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu);
+ 
+ static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
  {
- 	s64 rc;
-@@ -464,6 +469,7 @@ static const struct xive_ops xive_native_ops =3D {
- 	.match			=3D xive_native_match,
- 	.shutdown		=3D xive_native_shutdown,
- 	.update_pending		=3D xive_native_update_pending,
-+	.prepare_cpu		=3D xive_native_prepare_cpu,
- 	.setup_cpu		=3D xive_native_setup_cpu,
- 	.teardown_cpu		=3D xive_native_teardown_cpu,
- 	.sync_source		=3D xive_native_sync_source,
---=20
-2.26.3
+@@ -712,6 +713,7 @@ static inline int kvmppc_xive_set_icp(struct kvm_vcpu *vcpu, u64 icpval) { retur
+ static inline int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
+ 				      int level, bool line_status) { return -ENODEV; }
+ static inline void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu) { }
++static inline void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu) { }
+ 
+ static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
+ 	{ return 0; }
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 4a532410e128..981bcaf787a8 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3570,6 +3570,8 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 
+ 	trap = __kvmhv_vcpu_entry_p9(vcpu);
+ 
++	kvmppc_xive_pull_vcpu(vcpu);
++
+ 	/* Advance host PURR/SPURR by the amount used by guest */
+ 	purr = mfspr(SPRN_PURR);
+ 	spurr = mfspr(SPRN_SPURR);
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index 75405ef53238..c11597f815e4 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -1442,6 +1442,11 @@ guest_exit_cont:		/* r9 = vcpu, r12 = trap, r13 = paca */
+ 	bl	kvmhv_accumulate_time
+ #endif
+ #ifdef CONFIG_KVM_XICS
++	/* If we came in through the P9 short path, xive pull is done in C */
++	lwz	r0, STACK_SLOT_SHORT_PATH(r1)
++	cmpwi	r0, 0
++	bne	1f
++
+ 	/* We are exiting, pull the VP from the XIVE */
+ 	lbz	r0, VCPU_XIVE_PUSHED(r9)
+ 	cmpwi	cr0, r0, 0
+diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
+index e7219b6f5f9a..741bf1f4387a 100644
+--- a/arch/powerpc/kvm/book3s_xive.c
++++ b/arch/powerpc/kvm/book3s_xive.c
+@@ -127,6 +127,37 @@ void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu)
+ }
+ EXPORT_SYMBOL_GPL(kvmppc_xive_push_vcpu);
+ 
++/*
++ * Pull a vcpu's context from the XIVE on guest exit.
++ * This assumes we are in virtual mode (MMU on)
++ */
++void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu)
++{
++	void __iomem *tima = local_paca->kvm_hstate.xive_tima_virt;
++
++	if (!vcpu->arch.xive_pushed)
++		return;
++
++	/*
++	 * Should not have been pushed if there is no tima
++	 */
++	if (WARN_ON(!tima))
++		return;
++
++	eieio();
++	/* First load to pull the context, we ignore the value */
++	__raw_readl(tima + TM_SPC_PULL_OS_CTX);
++	/* Second load to recover the context state (Words 0 and 1) */
++	vcpu->arch.xive_saved_state.w01 = __raw_readq(tima + TM_QW1_OS);
++
++	/* Fixup some of the state for the next load */
++	vcpu->arch.xive_saved_state.lsmfb = 0;
++	vcpu->arch.xive_saved_state.ack = 0xff;
++	vcpu->arch.xive_pushed = 0;
++	eieio();
++}
++EXPORT_SYMBOL_GPL(kvmppc_xive_pull_vcpu);
++
+ /*
+  * This is a simple trigger for a generic XIVE IRQ. This must
+  * only be called for interrupts that support a trigger page
+-- 
+2.23.0
 
