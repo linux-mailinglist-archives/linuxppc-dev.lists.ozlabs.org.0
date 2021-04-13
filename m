@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9598335E423
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 18:37:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2888335E424
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 18:38:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKWVq3lbNz3cPD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 02:37:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKWWV0QkTz3c2k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 02:38:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,39 +15,37 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FKWTd2ctHz3bvT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 02:36:52 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKWW90Fcxz2xg0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 02:38:12 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FKWTX6Cc3z9vBLN;
- Tue, 13 Apr 2021 18:36:48 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FKWW45VSQz9v4hH;
+ Tue, 13 Apr 2021 18:38:08 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 7z0KEN-lxBd0; Tue, 13 Apr 2021 18:36:48 +0200 (CEST)
+ with ESMTP id bqKT4YHHhrjn; Tue, 13 Apr 2021 18:38:08 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FKWTX51mTz9v4h8;
- Tue, 13 Apr 2021 18:36:48 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FKWW44hB0z9v4h8;
+ Tue, 13 Apr 2021 18:38:08 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 586E78B7AA;
- Tue, 13 Apr 2021 18:36:50 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2F4768B7AA;
+ Tue, 13 Apr 2021 18:38:10 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Wm6VGzvOlh3o; Tue, 13 Apr 2021 18:36:50 +0200 (CEST)
+ with ESMTP id 64xtLPtuoMsE; Tue, 13 Apr 2021 18:38:10 +0200 (CEST)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 193D58B75F;
- Tue, 13 Apr 2021 18:36:50 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C97CF8B75F;
+ Tue, 13 Apr 2021 18:38:09 +0200 (CEST)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id EC4E167A15; Tue, 13 Apr 2021 16:36:49 +0000 (UTC)
-Message-Id: <770c0963b9e1fd519b2fa9aabf5c19a6bf25bd30.1618331293.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <3e42149aeff047f50770a72e1617c171edaa86da.1618331293.git.christophe.leroy@csgroup.eu>
-References: <3e42149aeff047f50770a72e1617c171edaa86da.1618331293.git.christophe.leroy@csgroup.eu>
+ id 9D25067A15; Tue, 13 Apr 2021 16:38:09 +0000 (UTC)
+Message-Id: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 3/3] powerpc/atomics: Remove atomic_inc()/atomic_dec() and
- friends
+Subject: [PATCH v2 1/2] powerpc/bug: Remove specific powerpc BUG_ON() and
+ WARN_ON() on PPC32
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 13 Apr 2021 16:36:49 +0000 (UTC)
+Date: Tue, 13 Apr 2021 16:38:09 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,134 +62,163 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that atomic_add() and atomic_sub() handle immediate operands,
-atomic_inc() and atomic_dec() have no added value compared to the
-generic fallback which calls atomic_add(1) and atomic_sub(1).
+powerpc BUG_ON() and WARN_ON() are based on using twnei instruction.
 
-Also remove atomic_inc_not_zero() which fallsback to
-atomic_add_unless() which itself fallsback to
-atomic_fetch_add_unless() which now handles immediate operands.
+For catching simple conditions like a variable having value 0, this
+is efficient because it does the test and the trap at the same time.
+But most conditions used with BUG_ON or WARN_ON are more complex and
+forces GCC to format the condition into a 0 or 1 value in a register.
+This will usually require 2 to 3 instructions.
+
+The most efficient solution would be to use __builtin_trap() because
+GCC is able to optimise the use of the different trap instructions
+based on the requested condition, but this is complex if not
+impossible for the following reasons:
+- __builtin_trap() is a non-recoverable instruction, so it can't be
+used for WARN_ON
+- Knowing which line of code generated the trap would require the
+analysis of DWARF information. This is not a feature we have today.
+
+As mentioned in commit 8d4fbcfbe0a4 ("Fix WARN_ON() on bitfield ops")
+the way WARN_ON() is implemented is suboptimal. That commit also
+mentions an issue with 'long long' condition. It fixed it for
+WARN_ON() but the same problem still exists today with BUG_ON() on
+PPC32. It will be fixed by using the generic implementation.
+
+By using the generic implementation, gcc will naturally generate a
+branch to the unconditional trap generated by BUG().
+
+As modern powerpc implement zero-cycle branch,
+that's even more efficient.
+
+And for the functions using WARN_ON() and its return, the test
+on return from WARN_ON() is now also used for the WARN_ON() itself.
+
+On PPC64 we don't want it because we want to be able to use CFAR
+register to track how we entered the code that trapped. The CFAR
+register would be clobbered by the branch.
+
+A simple test function:
+
+	unsigned long test9w(unsigned long a, unsigned long b)
+	{
+		if (WARN_ON(!b))
+			return 0;
+		return a / b;
+	}
+
+Before the patch:
+
+	0000046c <test9w>:
+	 46c:	7c 89 00 34 	cntlzw  r9,r4
+	 470:	55 29 d9 7e 	rlwinm  r9,r9,27,5,31
+	 474:	0f 09 00 00 	twnei   r9,0
+	 478:	2c 04 00 00 	cmpwi   r4,0
+	 47c:	41 82 00 0c 	beq     488 <test9w+0x1c>
+	 480:	7c 63 23 96 	divwu   r3,r3,r4
+	 484:	4e 80 00 20 	blr
+
+	 488:	38 60 00 00 	li      r3,0
+	 48c:	4e 80 00 20 	blr
+
+After the patch:
+
+	00000468 <test9w>:
+	 468:	2c 04 00 00 	cmpwi   r4,0
+	 46c:	41 82 00 0c 	beq     478 <test9w+0x10>
+	 470:	7c 63 23 96 	divwu   r3,r3,r4
+	 474:	4e 80 00 20 	blr
+
+	 478:	0f e0 00 00 	twui    r0,0
+	 47c:	38 60 00 00 	li      r3,0
+	 480:	4e 80 00 20 	blr
+
+So we see before the patch we need 3 instructions on the likely path
+to handle the WARN_ON(). With the patch the trap goes on the unlikely
+path.
+
+See below the difference at the entry of system_call_exception where
+we have several BUG_ON(), allthough less impressing.
+
+With the patch:
+
+	00000000 <system_call_exception>:
+	   0:	81 6a 00 84 	lwz     r11,132(r10)
+	   4:	90 6a 00 88 	stw     r3,136(r10)
+	   8:	71 60 00 02 	andi.   r0,r11,2
+	   c:	41 82 00 70 	beq     7c <system_call_exception+0x7c>
+	  10:	71 60 40 00 	andi.   r0,r11,16384
+	  14:	41 82 00 6c 	beq     80 <system_call_exception+0x80>
+	  18:	71 6b 80 00 	andi.   r11,r11,32768
+	  1c:	41 82 00 68 	beq     84 <system_call_exception+0x84>
+	  20:	94 21 ff e0 	stwu    r1,-32(r1)
+	  24:	93 e1 00 1c 	stw     r31,28(r1)
+	  28:	7d 8c 42 e6 	mftb    r12
+	...
+	  7c:	0f e0 00 00 	twui    r0,0
+	  80:	0f e0 00 00 	twui    r0,0
+	  84:	0f e0 00 00 	twui    r0,0
+
+Without the patch:
+
+	00000000 <system_call_exception>:
+	   0:	94 21 ff e0 	stwu    r1,-32(r1)
+	   4:	93 e1 00 1c 	stw     r31,28(r1)
+	   8:	90 6a 00 88 	stw     r3,136(r10)
+	   c:	81 6a 00 84 	lwz     r11,132(r10)
+	  10:	69 60 00 02 	xori    r0,r11,2
+	  14:	54 00 ff fe 	rlwinm  r0,r0,31,31,31
+	  18:	0f 00 00 00 	twnei   r0,0
+	  1c:	69 60 40 00 	xori    r0,r11,16384
+	  20:	54 00 97 fe 	rlwinm  r0,r0,18,31,31
+	  24:	0f 00 00 00 	twnei   r0,0
+	  28:	69 6b 80 00 	xori    r11,r11,32768
+	  2c:	55 6b 8f fe 	rlwinm  r11,r11,17,31,31
+	  30:	0f 0b 00 00 	twnei   r11,0
+	  34:	7d 8c 42 e6 	mftb    r12
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: New
----
- arch/powerpc/include/asm/atomic.h | 95 -------------------------------
- 1 file changed, 95 deletions(-)
+ arch/powerpc/include/asm/bug.h | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
-index eb1bdf14f67c..00ba5d9e837b 100644
---- a/arch/powerpc/include/asm/atomic.h
-+++ b/arch/powerpc/include/asm/atomic.h
-@@ -118,71 +118,6 @@ ATOMIC_OPS(xor, xor, "", K)
- #undef ATOMIC_OP_RETURN_RELAXED
- #undef ATOMIC_OP
+diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+index d1635ffbb179..101dea4eec8d 100644
+--- a/arch/powerpc/include/asm/bug.h
++++ b/arch/powerpc/include/asm/bug.h
+@@ -68,7 +68,11 @@
+ 	BUG_ENTRY("twi 31, 0, 0", 0);				\
+ 	unreachable();						\
+ } while (0)
++#define HAVE_ARCH_BUG
++
++#define __WARN_FLAGS(flags) BUG_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags))
  
--static __inline__ void atomic_inc(atomic_t *v)
--{
--	int t;
--
--	__asm__ __volatile__(
--"1:	lwarx	%0,0,%2		# atomic_inc\n\
--	addic	%0,%0,1\n"
--"	stwcx.	%0,0,%2 \n\
--	bne-	1b"
--	: "=&r" (t), "+m" (v->counter)
--	: "r" (&v->counter)
--	: "cc", "xer");
--}
--#define atomic_inc atomic_inc
--
--static __inline__ int atomic_inc_return_relaxed(atomic_t *v)
--{
--	int t;
--
--	__asm__ __volatile__(
--"1:	lwarx	%0,0,%2		# atomic_inc_return_relaxed\n"
--"	addic	%0,%0,1\n"
--"	stwcx.	%0,0,%2\n"
--"	bne-	1b"
--	: "=&r" (t), "+m" (v->counter)
--	: "r" (&v->counter)
--	: "cc", "xer");
--
--	return t;
--}
--
--static __inline__ void atomic_dec(atomic_t *v)
--{
--	int t;
--
--	__asm__ __volatile__(
--"1:	lwarx	%0,0,%2		# atomic_dec\n\
--	addic	%0,%0,-1\n"
--"	stwcx.	%0,0,%2\n\
--	bne-	1b"
--	: "=&r" (t), "+m" (v->counter)
--	: "r" (&v->counter)
--	: "cc", "xer");
--}
--#define atomic_dec atomic_dec
--
--static __inline__ int atomic_dec_return_relaxed(atomic_t *v)
--{
--	int t;
--
--	__asm__ __volatile__(
--"1:	lwarx	%0,0,%2		# atomic_dec_return_relaxed\n"
--"	addic	%0,%0,-1\n"
--"	stwcx.	%0,0,%2\n"
--"	bne-	1b"
--	: "=&r" (t), "+m" (v->counter)
--	: "r" (&v->counter)
--	: "cc", "xer");
--
--	return t;
--}
--
--#define atomic_inc_return_relaxed atomic_inc_return_relaxed
--#define atomic_dec_return_relaxed atomic_dec_return_relaxed
--
- #define atomic_cmpxchg(v, o, n) (cmpxchg(&((v)->counter), (o), (n)))
- #define atomic_cmpxchg_relaxed(v, o, n) \
- 	cmpxchg_relaxed(&((v)->counter), (o), (n))
-@@ -252,36 +187,6 @@ static __inline__ int atomic_fetch_add_unless(atomic_t *v, int a, int u)
- }
- #define atomic_fetch_add_unless atomic_fetch_add_unless
++#ifdef CONFIG_PPC64
+ #define BUG_ON(x) do {						\
+ 	if (__builtin_constant_p(x)) {				\
+ 		if (x)						\
+@@ -78,8 +82,6 @@
+ 	}							\
+ } while (0)
  
--/**
-- * atomic_inc_not_zero - increment unless the number is zero
-- * @v: pointer of type atomic_t
-- *
-- * Atomically increments @v by 1, so long as @v is non-zero.
-- * Returns non-zero if @v was non-zero, and zero otherwise.
-- */
--static __inline__ int atomic_inc_not_zero(atomic_t *v)
--{
--	int t1, t2;
+-#define __WARN_FLAGS(flags) BUG_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags))
 -
--	__asm__ __volatile__ (
--	PPC_ATOMIC_ENTRY_BARRIER
--"1:	lwarx	%0,0,%2		# atomic_inc_not_zero\n\
--	cmpwi	0,%0,0\n\
--	beq-	2f\n\
--	addic	%1,%0,1\n"
--"	stwcx.	%1,0,%2\n\
--	bne-	1b\n"
--	PPC_ATOMIC_EXIT_BARRIER
--	"\n\
--2:"
--	: "=&r" (t1), "=&r" (t2)
--	: "r" (&v->counter)
--	: "cc", "xer", "memory");
--
--	return t1;
--}
--#define atomic_inc_not_zero(v) atomic_inc_not_zero((v))
--
- /*
-  * Atomically test *v and decrement if it is greater than 0.
-  * The function returns the old value of *v minus 1, even if
+ #define WARN_ON(x) ({						\
+ 	int __ret_warn_on = !!(x);				\
+ 	if (__builtin_constant_p(__ret_warn_on)) {		\
+@@ -93,9 +95,10 @@
+ 	unlikely(__ret_warn_on);				\
+ })
+ 
+-#define HAVE_ARCH_BUG
+ #define HAVE_ARCH_BUG_ON
+ #define HAVE_ARCH_WARN_ON
++#endif
++
+ #endif /* __ASSEMBLY __ */
+ #else
+ #ifdef __ASSEMBLY__
 -- 
 2.25.0
 
