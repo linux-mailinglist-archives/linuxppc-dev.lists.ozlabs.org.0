@@ -1,96 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E782135D9F9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 10:25:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304BD35D9FC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 10:25:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKJZV6F3Cz3bwM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 18:25:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKJb008Vdz3dYT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 18:25:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=gcm9kE3G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EmugSNyt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::42a;
- helo=mail-pf1-x42a.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=gcm9kE3G; dkim-atps=neutral
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
- [IPv6:2607:f8b0:4864:20::42a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=EmugSNyt; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FKJYp6QmVz3d8v
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 18:24:45 +1000 (AEST)
-Received: by mail-pf1-x42a.google.com with SMTP id d124so10922640pfa.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 01:24:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=fA8bNJj6LVJhm+HnIXyLieBZMpOojGEeSw7XODwgERA=;
- b=gcm9kE3GFbiT0yagyPYRx8uaswQYKFAZxNpQc92RqHQ8tE6wT19CnX7P7dwCpWigYw
- HqjaeX+nrmQBix7Ghgk9RnnZ2eczFsAn+C6NbI2BVGqTp8cRKCCw3WuU8syDz0Z+XXPD
- AFZWwvOQoMye9MQTPSo+F6LiNI0VqoJkVRqKsrflLwU+djfKDFjM6kSjBb4f3VN04+ua
- zrjIonc+6Z60M7bXYNyr2LKVt1g52segOtXAo9KMRx2O/5Wm9AfSijYbcoFsHESvBYxW
- ifgibQKQ/WK7+W5+JzaR+t/YkEtNeb73XIrw5jfToqwhb6XkLgkP/sDovRCyp2YneV/N
- T+PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=fA8bNJj6LVJhm+HnIXyLieBZMpOojGEeSw7XODwgERA=;
- b=reEzZGG59mDzDzbfjfV5lNOtMhl1AL38TYKQVT2JVGvB9CwmSeA6fInwp7f4eOkOKg
- ni7tUt0QXlF8Y4QWAxbnWDw77l6H4uiq9zx126ZxavUruzLGIdm4o5NDirjVd9vKr/8v
- ip2BeNstZqYGRBRyAIFmZCBYX7/nKAdX/VnoJKTiDwEj9PQCGgBEhbp1JgTIGnWsUJsB
- NA+VtXtZGgqIAFHHXCXJSdYpRfecTXZM3Yiapg3AupIa9iXcJROAgYRJlMiJxBeEBBgw
- uJoGWQ3XcJ4C8eCi/plJ2pc5Qx6m3FltvdVCwA0wk+lLiCBQWbxT2N0eaJqUWczRUCWs
- VKcA==
-X-Gm-Message-State: AOAM532VvMNTh82r3C9quIO8AC6n41ucze3UA4UVsvJB0yeC6A5fl1mL
- XHk4sFM1fY3Usj+i2CCI8TfcZg==
-X-Google-Smtp-Source: ABdhPJzVOQPCyRUQOYGcBVPhhc91kioApHH/cKPIhluLrX5ViXxxS4G24Xm7QNhHXSKoRCa5lHf7tQ==
-X-Received: by 2002:a62:187:0:b029:241:fc67:d41f with SMTP id
- 129-20020a6201870000b0290241fc67d41fmr28497266pfb.55.1618302282076; 
- Tue, 13 Apr 2021 01:24:42 -0700 (PDT)
-Received: from localhost
- (ppp121-45-194-51.cbr-trn-nor-bras38.tpg.internode.on.net. [121.45.194.51])
- by smtp.gmail.com with UTF8SMTPSA id c129sm12229468pfb.141.2021.04.13.01.24.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Apr 2021 01:24:41 -0700 (PDT)
-Message-ID: <5d7c85a1-967c-9ad3-e984-bd57fca3cb77@ozlabs.ru>
-Date: Tue, 13 Apr 2021 18:24:35 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKJZD3W77z3dDr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 18:25:08 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13D89Td6089149; Tue, 13 Apr 2021 04:25:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=9ETTbJjrjvw9mMBYfehCAwyxedjykqeURiOMtjUAEwo=;
+ b=EmugSNytv1RI+E/pyZh3g+gYcAAhJ2E1eTAXIBgaTR9uyBOjvV0Fv77u4j7eeS588U+q
+ GtBaodZyup0NP+Ulf8tRZF1JwLztcMHcrXXYi0xdoXy76YbuLZch866djfy/L7smI6Um
+ wXH15aBoYvR/gzNkk6I+0Ap2gez09qzBASnli/YHnrB4FBRoM0c8JQhDATHnAn8UkDwL
+ C+D79+owq3PkzMyc8dHBl60YrTi7EMhwO8zhwR5ul4w0ZtjYVmDC9/7xqyFR0HY98mdz
+ kioj/uhuTYKSMYmWcWlIiQvBI/Wqd4n8Vi31VmNI6PfdNUL93wunUF4kx5eQli9tsg0r 7w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37vkdkthjv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 13 Apr 2021 04:25:03 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13D89Xfs089428;
+ Tue, 13 Apr 2021 04:25:02 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37vkdkthhx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 13 Apr 2021 04:25:02 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13D8M7xh007019;
+ Tue, 13 Apr 2021 08:25:01 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma04dal.us.ibm.com with ESMTP id 37u3n8vvyh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 13 Apr 2021 08:25:01 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13D8P1n620447710
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 13 Apr 2021 08:25:01 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 08C22124055;
+ Tue, 13 Apr 2021 08:25:01 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2B92C124053;
+ Tue, 13 Apr 2021 08:25:00 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.232.48])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 13 Apr 2021 08:24:59 +0000 (GMT)
+Message-ID: <347ce23b6d8ab3a05b0f2b9ae59ec3977a7b981a.camel@linux.ibm.com>
+Subject: [V2 PATCH 08/16] powerpc/pseries/VAS: Implement
+ allocate/modify/deallocate HCALLS
+From: Haren Myneni <haren@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
+ mpe@ellerman.id.au, herbert@gondor.apana.org.au, npiggin@gmail.com
+Date: Tue, 13 Apr 2021 01:24:58 -0700
+In-Reply-To: <68aa9f2860f9acffa41469d3858883c938634722.camel@linux.ibm.com>
+References: <68aa9f2860f9acffa41469d3858883c938634722.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101
- Thunderbird/88.0
-Subject: Re: [PATCH v2 13/14] powerpc/pseries/iommu: Make use of DDW for
- indirect mapping
-Content-Language: en-US
-To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
- Christophe Leroy <christophe.leroy@c-s.fr>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai
- <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
- Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- David Dai <zdai@linux.vnet.ibm.com>
-References: <20200911170738.82818-1-leobras.c@gmail.com>
- <20200911170738.82818-14-leobras.c@gmail.com>
- <f3bc958f-a656-6481-0a19-3cff4dd3a4ff@ozlabs.ru>
- <0c6eef8181aeb69d69ce72ec86c646dfa7591414.camel@gmail.com>
- <94ef78d5-467e-0492-4b7d-90077fe37343@ozlabs.ru>
- <e8789bb568c9cae99f07b1e6021f85c39d92f7ea.camel@gmail.com>
- <e518d514-5f76-c88f-d38e-fb8a46a41597@ozlabs.ru>
- <7e2a7e3abb4e7df492fcb4209e7b1f2021ff17c5.camel@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <7e2a7e3abb4e7df492fcb4209e7b1f2021ff17c5.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: tXbMTvUeV2LG8MMCxTAYuxd-vThv8AZE
+X-Proofpoint-GUID: Cmp7BWr4_b6tb0GKatK3NxjG0bjJ95Hn
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-13_03:2021-04-13,
+ 2021-04-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ phishscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 bulkscore=0 impostorscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104130055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,106 +108,251 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+This patch adds the following HCALLs which are used to allocate,
+modify and deallocate VAS windows.
 
-On 13/04/2021 17:58, Leonardo Bras wrote:
-> On Tue, 2021-04-13 at 17:41 +1000, Alexey Kardashevskiy wrote:
->>
->> On 13/04/2021 17:33, Leonardo Bras wrote:
->>> On Tue, 2021-04-13 at 17:18 +1000, Alexey Kardashevskiy wrote:
->>>>
->>>> On 13/04/2021 15:49, Leonardo Bras wrote:
->>>>> Thanks for the feedback!
->>>>>
->>>>> On Tue, 2020-09-29 at 13:56 +1000, Alexey Kardashevskiy wrote:
->>>>>>> -static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr)
->>>>>>> +static phys_addr_t ddw_memory_hotplug_max(void)
->>>>>>
->>>>>>
->>>>>> Please, forward declaration or a separate patch; this creates
->>>>>> unnecessary noise to the actual change.
->>>>>>
->>>>>
->>>>> Sure, done!
->>>>>
->>>>>>
->>>>>>> +		_iommu_table_setparms(tbl, pci->phb->bus->number, create.liobn, win_addr,
->>>>>>> +				      1UL << len, page_shift, 0, &iommu_table_lpar_multi_ops);
->>>>>>> +		iommu_init_table(tbl, pci->phb->node, 0, 0);
->>>>>>
->>>>>>
->>>>>> It is 0,0 only if win_addr>0 which is not the QEMU case.
->>>>>>
->>>>>
->>>>> Oh, ok.
->>>>> I previously though it was ok to use 0,0 here as any other usage in
->>>>> this file was also 0,0.
->>>>>
->>>>> What should I use to get the correct parameters? Use the previous tbl
->>>>> it_reserved_start and tbl->it_reserved_end is enough?
->>>>
->>>> depends on whether you carry reserved start/end even if they are outside
->>>> of the dma window.
->>>>
->>>
->>> Oh, that makes sense.
->>> On a previous patch (5/14 IIRC), I changed the behavior to only store
->>> the valid range on tbl, but now I understand why it's important to
->>> store the raw value.
->>>
->>> Ok, I will change it back so the reserved range stays in tbl even if it
->>> does not intersect with the DMA window. This way I can reuse the values
->>> in case of indirect mapping with DDW.
->>>
->>> Is that ok? Are the reserved values are supposed to stay the same after
->>> changing from Default DMA window to DDW?
->>
->> I added them to know what bits in it_map to ignore when checking if
->> there is any active user of the table. If you have non zero reserved
->> start/end but they do not affect it_map, then it is rather weird way to
->> carry reserved start/end from DDW to no-DDW.
->>
-> 
-> Ok, agreed.
-> 
->>   May be do not set these at
->> all for DDW with window start at 1<<59 and when going back to no-DDW (or
->> if DDW starts at 0) - just set them from MMIO32, just as they are
->> initialized in the first place.
->>
-> 
-> If I get it correctly from pci_of_scan.c, MMIO32 = {0, 32MB}, is that
-> correct?
+H_ALLOCATE_VAS_WINDOW: Allocate VAS window
+H_DEALLOCATE_VAS_WINDOW: Close VAS window
+H_MODIFY_VAS_WINDOW: Setup window before using
 
-No, under QEMU it is 0x8000.0000-0x1.0000.0000:
+Also adds phyp call (H_QUERY_VAS_CAPABILITIES) to get all VAS
+capabilities that phyp provides.
 
-/proc/device-tree/pci@800000020000000/ranges
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/vas.c | 217 +++++++++++++++++++++++++++
+ 1 file changed, 217 insertions(+)
+ create mode 100644 arch/powerpc/platforms/pseries/vas.c
 
-7 cells for each resource, the second one is MMIO32 (the first is IO 
-ports, the last is 64bit MMIO).
-
-> 
-> So, if DDW starts at any value in this range (most probably at zero),
-> we should remove the rest, is that correct?
-> 
-> Could it always use iommu_init_table(..., 0, 32MB) here, so it always
-> reserve any part of the DMA window that's in this range? Ot there may
-> be other reserved values range?
-> 
->> and when going back to no-DDW
-> 
-> After iommu_init_table() there should be no failure, so it looks like
-> there is no 'going back to no-DDW'. Am I missing something?
-
-Well, a random driver could request 32bit DMA and if the new window is 
-1:1, then it would break but this does not seem to happen and we do not 
-support it anyway so no loss here.
-
-
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+new file mode 100644
+index 000000000000..06960151477c
+--- /dev/null
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -0,0 +1,217 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright 2020-21 IBM Corp.
++ */
++
++#define pr_fmt(fmt) "vas: " fmt
++
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/export.h>
++#include <linux/types.h>
++#include <linux/delay.h>
++#include <linux/slab.h>
++#include <linux/irqdomain.h>
++#include <linux/interrupt.h>
++#include <linux/sched/mm.h>
++#include <linux/mmu_context.h>
++#include <asm/hvcall.h>
++#include <asm/hvconsole.h>
++#include <asm/machdep.h>
++#include <asm/plpar_wrappers.h>
++#include <asm/vas.h>
++#include "vas.h"
++
++#define	VAS_INVALID_WIN_ADDRESS	0xFFFFFFFFFFFFFFFFul
++#define	VAS_DEFAULT_DOMAIN_ID	0xFFFFFFFFFFFFFFFFul
++/* Authority Mask Register (AMR) value is not supported in */
++/* linux implementation. So pass '0' to modify window HCALL */
++#define	VAS_AMR_VALUE	0
++/* phyp allows one credit per window right now */
++#define DEF_WIN_CREDS		1
++
++static int64_t hcall_return_busy_check(int64_t rc)
++{
++	/* Check if we are stalled for some time */
++	if (H_IS_LONG_BUSY(rc)) {
++		msleep(get_longbusy_msecs(rc));
++		rc = H_BUSY;
++	} else if (rc == H_BUSY) {
++		cond_resched();
++	}
++
++	return rc;
++}
++
++/*
++ * Allocate VAS window HCALL
++ */
++static int plpar_vas_allocate_window(struct vas_window *win, u64 *domain,
++				     u8 wintype, u16 credits)
++{
++	long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	int64_t rc;
++
++	do {
++		rc = plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf, wintype,
++				  credits, domain[0], domain[1], domain[2],
++				  domain[3], domain[4], domain[5]);
++
++		rc = hcall_return_busy_check(rc);
++	} while (rc == H_BUSY);
++
++	switch (rc) {
++	case H_SUCCESS:
++		win->winid = retbuf[0];
++		win->lpar.win_addr = retbuf[1];
++		win->lpar.complete_irq = retbuf[2];
++		win->lpar.fault_irq = retbuf[3];
++		if (win->lpar.win_addr == VAS_INVALID_WIN_ADDRESS) {
++			pr_err("HCALL(%x): COPY/PASTE is not supported\n",
++				H_ALLOCATE_VAS_WINDOW);
++			return -ENOTSUPP;
++		}
++		return 0;
++	case H_PARAMETER:
++		pr_err("HCALL(%x): Invalid window type (%u)\n",
++			H_ALLOCATE_VAS_WINDOW, wintype);
++		return -EINVAL;
++	case H_P2:
++		pr_err("HCALL(%x): Credits(%u) exceed maximum window credits\n",
++			H_ALLOCATE_VAS_WINDOW, credits);
++		return -EINVAL;
++	case H_COP_HW:
++		pr_err("HCALL(%x): User-mode COPY/PASTE is not supported\n",
++			H_ALLOCATE_VAS_WINDOW);
++		return -ENOTSUPP;
++	case H_RESOURCE:
++		pr_err("HCALL(%x): LPAR credit limit exceeds window limit\n",
++			H_ALLOCATE_VAS_WINDOW);
++		return -EPERM;
++	case H_CONSTRAINED:
++		pr_err("HCALL(%x): Credits (%u) are not available\n",
++			H_ALLOCATE_VAS_WINDOW, credits);
++		return -EPERM;
++	default:
++		pr_err("HCALL(%x): Unexpected error %lld\n",
++			H_ALLOCATE_VAS_WINDOW, rc);
++		return -EIO;
++	}
++}
++
++/*
++ * Deallocate VAS window HCALL.
++ */
++static int plpar_vas_deallocate_window(u64 winid)
++{
++	int64_t rc;
++
++	do {
++		rc = plpar_hcall_norets(H_DEALLOCATE_VAS_WINDOW, winid);
++
++		rc = hcall_return_busy_check(rc);
++	} while (rc == H_BUSY);
++
++	switch (rc) {
++	case H_SUCCESS:
++		return 0;
++	case H_PARAMETER:
++		pr_err("HCALL(%x): Invalid window ID %llu\n",
++			H_DEALLOCATE_VAS_WINDOW, winid);
++		return -EINVAL;
++	case H_STATE:
++		pr_err("HCALL(%x): Window(%llu): Invalid page table entries\n",
++			H_DEALLOCATE_VAS_WINDOW, winid);
++		return -EPERM;
++	default:
++		pr_err("HCALL(%x): Unexpected error %lld for window(%llu)\n",
++			H_DEALLOCATE_VAS_WINDOW, rc, winid);
++		return -EIO;
++	}
++}
++
++/*
++ * Modify VAS window.
++ * After the window is opened with allocate window HCALL, configure it
++ * with flags and LPAR PID before using.
++ */
++static int plpar_vas_modify_window(struct vas_window *win)
++{
++	int64_t rc;
++	u32 lpid = mfspr(SPRN_PID);
++
++	/*
++	 * AMR value is not supported in Linux implementation
++	 * phyp ignores it if 0 is passed.
++	 */
++	do {
++		rc = plpar_hcall_norets(H_MODIFY_VAS_WINDOW, win->winid,
++					lpid, 0, VAS_MOD_WIN_FLAGS,
++					VAS_AMR_VALUE);
++
++		rc = hcall_return_busy_check(rc);
++	} while (rc == H_BUSY);
++
++	switch (rc) {
++	case H_SUCCESS:
++		return 0;
++	case H_PARAMETER:
++		pr_err("HCALL(%x): Invalid window ID %u\n",
++			H_MODIFY_VAS_WINDOW, win->winid);
++		return -EINVAL;
++	case H_P2:
++		pr_err("HCALL(%x): Window(%d): Invalid LPAR Process ID %u\n",
++			H_MODIFY_VAS_WINDOW, lpid, win->winid);
++		return -EINVAL;
++	case H_P3:
++		/* LPAR thread ID is deprecated on P10 */
++		pr_err("HCALL(%x): Invalid LPAR Thread ID for window(%u)\n",
++			H_MODIFY_VAS_WINDOW, win->winid);
++		return -EINVAL;
++	case H_STATE:
++		pr_err("HCALL(%x): Jobs in progress, Can't modify window(%u)\n",
++			H_MODIFY_VAS_WINDOW, win->winid);
++		return -EBUSY;
++	default:
++		pr_err("HCALL(%x): Unexpected error %lld for window(%u)\n",
++			H_MODIFY_VAS_WINDOW, rc, win->winid);
++		return -EIO;
++	}
++}
++
++/*
++ * This HCALL is used to determine the capabilities that pHyp provides.
++ * @hcall: H_QUERY_VAS_CAPABILITIES or H_QUERY_NX_CAPABILITIES
++ * @query_type: If 0 is passed, phyp returns the overall capabilities
++ *		which provides all feature(s) that are available. Then
++ *		query phyp to get the corresponding capabilities for
++ *		the specific feature.
++ *		Example: H_QUERY_VAS_CAPABILITIES provides VAS GZIP QoS
++ *			and VAS GZIP Default capabilities.
++ *			H_QUERY_NX_CAPABILITIES provides NX GZIP
++ *			capabilities.
++ * @result: Return buffer to save capabilities.
++ */
++int plpar_vas_query_capabilities(const u64 hcall, u8 query_type,
++					u64 result)
++{
++	int64_t rc;
++
++	rc = plpar_hcall_norets(hcall, query_type, result);
++
++	switch (rc) {
++	case H_SUCCESS:
++		return 0;
++	case H_PARAMETER:
++		pr_err("HCALL(%llx): Invalid query type %u\n", hcall,
++			query_type);
++		return -EINVAL;
++	case H_PRIVILEGE:
++		pr_err("HCALL(%llx): Invalid result buffer 0x%llx\n",
++			hcall, result);
++		return -EACCES;
++	default:
++		pr_err("HCALL(%llx): Unexpected error %lld\n", hcall, rc);
++		return -EIO;
++	}
++}
 -- 
-Alexey
+2.18.2
+
+
