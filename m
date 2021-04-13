@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13AB135D780
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 07:50:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0992F35D7B3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 08:04:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKF7f0PP9z3bxF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 15:50:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKFRj663Lz3c06
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 16:04:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=KsDrrWyj;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=LbjjzMLJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::832;
- helo=mail-qt1-x832.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f31;
+ helo=mail-qv1-xf31.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=KsDrrWyj; dkim-atps=neutral
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com
- [IPv6:2607:f8b0:4864:20::832])
+ header.s=20161025 header.b=LbjjzMLJ; dkim-atps=neutral
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com
+ [IPv6:2607:f8b0:4864:20::f31])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FKF746dvYz3028
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 15:49:50 +1000 (AEST)
-Received: by mail-qt1-x832.google.com with SMTP id j7so11884060qtx.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 22:49:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKFRF1V5zz2yYt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 16:03:52 +1000 (AEST)
+Received: by mail-qv1-xf31.google.com with SMTP id i11so2038550qvu.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 23:03:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=message-id:subject:from:to:cc:date:in-reply-to:references
  :organization:user-agent:mime-version:content-transfer-encoding;
- bh=mD523XYWL5LGtTDQ6WsvNEB3UAUTtlnCgbVBIrgqbG8=;
- b=KsDrrWyjcDfqTt9qLGi6CF9ba832s3mKKUz+1P2rEs2m6vN8QeoChkPk+aXcqZSx7W
- 9jx60anCX/QpYoj8uuTcBKlXujOclgwCBcspwLcnmgvPGDA7xVOa8TBATFaNyr9rnunZ
- adyHg3XDRKEjGToPCoHHSquJqX0nUO1WAcKbVB0rZWzi8aBcM4F+GCd6U+lhgmvBChrU
- JhHEdRUAa92dxGQBiNNjgKnlfUuMA4nBLBArRo9QMYvjFuZX1qh7MiyqthrhfdH799Xt
- vs0aS5G1VebZhuu4xzRl28K/yXzO02N1uOiF2h5GR+VXiDbuQJscIwKZhjst/QGsOtlA
- qygg==
+ bh=fx7eFNUKgyLqMFjNQzxMGTEq+3zGtZwIiSrJiXnUMTQ=;
+ b=LbjjzMLJTSyr3ydl2ZeJzKd3yMZNG1/ScI66UJ7qGkXeUgcn3DyOHq65g56Vuu3v9L
+ S0Uy9ooqbcBX/mj1uQCwqz1PNWzfY/fRKqFS0MiOg68AokoMi2cyNESKVBNQb8p0oPXO
+ W28RwnoB2YBM+8hEAaB/jlx0885aj1jJtby1UlsiWnqLoD5iqWR6/3wnCfTBGgv2TiqH
+ C4b5IwHj2qlo7wu/XfhZ/Oci3xZ7hG0BYkabLaP49djTriQZFNMsstEaL8dSBzs2J47j
+ uy3HrbZd65xpOxjGrEjtZW9+kktYZKgoZ2vLGf+im5uGIl3hjhTcWcyTC+m/lroMmr5u
+ UlHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
  :references:organization:user-agent:mime-version
  :content-transfer-encoding;
- bh=mD523XYWL5LGtTDQ6WsvNEB3UAUTtlnCgbVBIrgqbG8=;
- b=esN4q1/lOE1LZgSCvdndMAWndFyArKS5tzkhLi4UTQLsmuisXHFz/wHgdsRVE3Ots+
- nal2cOWvsnpMMpBvwejNMxChmozEGa0QqfNReKEW6KyjtlKBo+wMZGbQXHUX/hde8FKm
- m839WQm1apwit0YLtfiT5RQUsgofhGCtBxzn2oJerMi94QTelg8ZIFgRkpeSkwK+8g3V
- h9mPm65xUZP4aKxIpyMp289WKa6s9cePsuRVhA0zZxMcgtpZad/MYIjcVPGlNcX+1gwm
- tOeS6t7gYVf1mbThD9XC0Zgj23TN1mLY4uVzhAGtw06hbblG8r1TSrMhBiptJ+qlD2KC
- 51zQ==
-X-Gm-Message-State: AOAM533AnBTa5fbjVyr9qAAOcqtgf89Q2uppo4fDv/dU2lDmrxaJkjTQ
- JCgnYAmzwgMBA3E7cJmW5Rk=
-X-Google-Smtp-Source: ABdhPJyGdGhUwyzIrHHbNTlfK0RpjG20v5+3IUa5CbV32sqKapA8PG/aJnVd5o7ziiZbmXCR6Avyxg==
-X-Received: by 2002:ac8:5f0a:: with SMTP id x10mr7309172qta.143.1618292987022; 
- Mon, 12 Apr 2021 22:49:47 -0700 (PDT)
+ bh=fx7eFNUKgyLqMFjNQzxMGTEq+3zGtZwIiSrJiXnUMTQ=;
+ b=NAkQmzhxcsnWG85QE1se/rL4En9WxptkKae1qpVc4bNi2dRjgZKQL3LgIsJq8PaAZ1
+ z+NLxMiIH+AgWq7pvpHLwsVAVW1RmneoJYCpt7gQf/scN9+Wrbtvn16JDU725RvRvAfa
+ dNXPKATVcaAlzCQn/PNczG7PfxpGf4jcFGXjw4U40LjOZD/QDQt/ZN3uyKV+SPLF8T29
+ LAJc+qyc1ga3wnLg8YEB0ltXA6pv5gBcCt3Heh7BBNzTLTYG5KbZRKrZE+/bzAeeES5q
+ kWnrng3IzjDHM5FD/JAkGVjtWe/4Cj09mOH3TAcocvfonRE+Hn560SwK0jQhgt3XDOIr
+ Atqw==
+X-Gm-Message-State: AOAM531z6Ub0VW/J5WijBS/3jHqzsVuqXzJLUNrVx2mqaFF3d2SVi86A
+ zklWbLB8ycWY6c7XNg1GoiLI4qvscHE=
+X-Google-Smtp-Source: ABdhPJwH7IhpnjlAl4gbj0jRWDGBxHQxpUBpnnlqeXkA7cS1cLGiRlOLEUcm8WHpwYmEcR80dKXRnQ==
+X-Received: by 2002:a0c:fd41:: with SMTP id j1mr31683143qvs.29.1618293828741; 
+ Mon, 12 Apr 2021 23:03:48 -0700 (PDT)
 Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
  ([2804:14c:482:7b04::1000])
- by smtp.gmail.com with ESMTPSA id q15sm9087079qtx.47.2021.04.12.22.49.43
+ by smtp.gmail.com with ESMTPSA id j129sm9525483qkf.110.2021.04.12.23.03.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Apr 2021 22:49:46 -0700 (PDT)
-Message-ID: <0c6eef8181aeb69d69ce72ec86c646dfa7591414.camel@gmail.com>
-Subject: Re: [PATCH v2 13/14] powerpc/pseries/iommu: Make use of DDW for
- indirect mapping
+ Mon, 12 Apr 2021 23:03:48 -0700 (PDT)
+Message-ID: <2ac19d2ab5da87c196bc9b3f6db1d80881f73a10.camel@gmail.com>
+Subject: Re: [PATCH v2 14/14] powerpc/pseries/iommu: Rename "direct window"
+ to "dma window"
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
  <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -71,11 +71,13 @@ To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
  <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>, Brian King
  <brking@linux.vnet.ibm.com>, Murilo Fossa Vicentini <muvic@linux.ibm.com>,
  David Dai <zdai@linux.vnet.ibm.com>
-Date: Tue, 13 Apr 2021 02:49:41 -0300
-In-Reply-To: <f3bc958f-a656-6481-0a19-3cff4dd3a4ff@ozlabs.ru>
+Date: Tue, 13 Apr 2021 03:03:44 -0300
+In-Reply-To: <1167e804-eddb-345e-539d-009b7c8d35fe@ozlabs.ru>
 References: <20200911170738.82818-1-leobras.c@gmail.com>
- <20200911170738.82818-14-leobras.c@gmail.com>
- <f3bc958f-a656-6481-0a19-3cff4dd3a4ff@ozlabs.ru>
+ <20200911170738.82818-15-leobras.c@gmail.com>
+ <2ba89065-4e9c-57c2-3825-aed9a7d8451a@ozlabs.ru>
+ <1b813ab38869e2e6770ed09487a3fba7befaca86.camel@gmail.com>
+ <1167e804-eddb-345e-539d-009b7c8d35fe@ozlabs.ru>
 Organization: IBM
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
@@ -97,36 +99,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks for the feedback!
+On Wed, 2020-09-30 at 17:29 +1000, Alexey Kardashevskiy wrote:
+> 
+> On 30/09/2020 06:54, Leonardo Bras wrote:
+> > On Tue, 2020-09-29 at 13:55 +1000, Alexey Kardashevskiy wrote:
+> > > 
+> > > On 12/09/2020 03:07, Leonardo Bras wrote:
+> > > > Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+> > > > 
+> > > > A previous change introduced the usage of DDW as a bigger indirect DMA
+> > > > mapping when the DDW available size does not map the whole partition.
+> > > > 
+> > > > As most of the code that manipulates direct mappings was reused for
+> > > > indirect mappings, it's necessary to rename all names and debug/info
+> > > > messages to reflect that it can be used for both kinds of mapping.
+> > > > 
+> > > > Also, defines DEFAULT_DMA_WIN as "ibm,dma-window" to document that
+> > > > it's the name of the default DMA window.
+> > > 
+> > > "ibm,dma-window" is so old so it does not need a macro (which btw would
+> > > be DMA_WIN_PROPNAME to match the other names) :)
+> > 
+> > Thanks for bringing that to my attention!
+> > In fact, DMA_WIN_PROPNAME makes more sense, but it's still generic and
+> > doesn't look to point to a generic one.
+> > 
+> > Would that be ok to call it DEFAULT_WIN_PROPNAME ?
+> 
+> 
+> I would not touch it at all, the property name is painfully known and 
+> not going to change ever. Does anyone else define it as a macro? I do 
+> not see any:
 
-On Tue, 2020-09-29 at 13:56 +1000, Alexey Kardashevskiy wrote:
-> > -static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr)
-> > +static phys_addr_t ddw_memory_hotplug_max(void)
-> 
-> 
-> Please, forward declaration or a separate patch; this creates 
-> unnecessary noise to the actual change.
-> 
+Ok then, reverting define :)
 
-Sure, done!
+Thanks!
 
 > 
-> > +		_iommu_table_setparms(tbl, pci->phb->bus->number, create.liobn, win_addr,
-> > +				      1UL << len, page_shift, 0, &iommu_table_lpar_multi_ops);
-> > +		iommu_init_table(tbl, pci->phb->node, 0, 0);
+> [fstn1-p1 kernel-dma-bypass]$ git grep "ibm,dma-window"  | wc -l
+> 8
+> [fstn1-p1 kernel-dma-bypass]$ git grep "define.*ibm,dma-window"  | wc -l
+> 0
 > 
 > 
-> It is 0,0 only if win_addr>0 which is not the QEMU case.
+> 
+> > 
+> > 
+> > > 
+> > > 
+> > > > Those changes are not supposed to change how the code works in any
+> > > > way, just adjust naming.
+> > > 
+> > > I simply have this in my .vimrc for the cases like this one:
+> > > 
+> > > ===
+> > > This should cause no behavioural change.
+> > > ===
+> > 
+> > Great tip! I will make sure to have this saved here :)
+> > 
+> > Thank you!
+> > 
 > 
 
-Oh, ok.
-I previously though it was ok to use 0,0 here as any other usage in
-this file was also 0,0. 
-
-What should I use to get the correct parameters? Use the previous tbl
-it_reserved_start and tbl->it_reserved_end is enough?
-
-Best regards,
-Leonardo Bras
-> 
 
