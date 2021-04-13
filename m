@@ -1,91 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DED35DEA0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 14:25:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 874A635DF97
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 14:59:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKPw158LBz3btG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 22:25:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKQg43Z9Sz3bx4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 22:59:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OG2y81Ne;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Vst/PGnL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=OG2y81Ne; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Vst/PGnL; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FKPvZ5dwvz2xyG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 22:25:30 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13DC56cB009542; Tue, 13 Apr 2021 08:25:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=dHIo7LlYA2sKxb9eN7d5BXK3+U/RL0u4RDxgVNzFEpE=;
- b=OG2y81NetUUZfrO6PvaL7nzNAudl16jObA4U/KeH4RzBIG71uLN06dPn3fRmmTIxjE74
- 8Zf556mkWpRhvUE6ZGyw97FDv4BJGPvkS9TILen7JTYv4aLIyS8dNE9covIVRCA/3pCc
- TTuU/vBhTbLQB2CpLe52NuNoYrm0PByy3MPOMkoN4WKBrfBIjFQG0JbG/nlpkVwWeqZ5
- ugPi8gXUcnytgsZ0ohJeeMu++plOQTCoB4+1VbO/Afm7QvI9ZF9YuR8qHI91dZPt/FAD
- Yj3WEtM19mh56Cgq3w13SreJqWPE8Cr/ellgzf2AGveXulxwVIo19zkCA0qbV8r2/MFp ow== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37vjtu97c3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Apr 2021 08:25:16 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13DCKAIa030930;
- Tue, 13 Apr 2021 12:25:15 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com
- (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
- by ppma04wdc.us.ibm.com with ESMTP id 37u3na0fy2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Apr 2021 12:25:15 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13DCPE4e30999016
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 13 Apr 2021 12:25:14 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 801E0C6059;
- Tue, 13 Apr 2021 12:25:14 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 49C2AC6055;
- Tue, 13 Apr 2021 12:25:14 +0000 (GMT)
-Received: from localhost (unknown [9.163.8.142])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 13 Apr 2021 12:25:14 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/1] powerpc/smp: Set numa node before updating mask
-In-Reply-To: <20210401154200.150077-1-srikar@linux.vnet.ibm.com>
-References: <20210401154200.150077-1-srikar@linux.vnet.ibm.com>
-Date: Tue, 13 Apr 2021 07:25:13 -0500
-Message-ID: <87k0p6fk2e.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKQfg4cyFz2yxk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 22:59:22 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FKQfc2M6Cz9sTD;
+ Tue, 13 Apr 2021 22:59:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1618318760;
+ bh=PQMdde3Q/u/+DhIAdo157u2UL2FmxdhSw43wx/CBgoE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Vst/PGnLBUNUc5kbbYlpN8YQWiGIWYxaIpfuCEQDm+trkRMBUgupmRNnUG63/mTMk
+ spK/Ee5FKey2HBkmXg950byJAz3daS1WCmbPDK8KJX9SPUjQ4wVvHK5aVwxWasmhg/
+ 3ko1rsWW5FQ5bMl5OZtAVyrlvlz/ttOJsMHIU9HJ6FWcdHaA7JohEDqY6XOTDp7MI5
+ DiG6JSNSAk0Gvg0Cgl2sWhH65GgPRK7MTwUtCUYPxMs/c+0P8drA/5kTwYdGZk+qqi
+ KTiV6EoBRQmyprt8RdPCLXdoHjrtCzq/f2GSpOyITjqfODwqfxYmu131MavzQ70qH1
+ HzlbrSR5ZuesA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Haren Myneni
+ <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
+ npiggin@gmail.com
+Subject: Re: [PATCH 02/16] powerpc/vas: Make VAS API powerpc platform
+ independent
+In-Reply-To: <1804692b-f9d4-964d-bbe4-cb809dad5ee8@csgroup.eu>
+References: <b4631127bd025d9585246606c350ec88dbe1e99a.camel@linux.ibm.com>
+ <d416c7c03dfa20211bf84b760ceaeed307364509.camel@linux.ibm.com>
+ <1804692b-f9d4-964d-bbe4-cb809dad5ee8@csgroup.eu>
+Date: Tue, 13 Apr 2021 22:59:15 +1000
+Message-ID: <87k0p6s5lo.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: VzfuMwsmycBQCkdTPpjJNVI4LTzEi0fG
-X-Proofpoint-ORIG-GUID: VzfuMwsmycBQCkdTPpjJNVI4LTzEi0fG
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-13_04:2021-04-13,
- 2021-04-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 suspectscore=0 bulkscore=0 adultscore=0
- mlxscore=0 mlxlogscore=999 clxscore=1015 phishscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104130086
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,28 +68,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Scott Cheloha <cheloha@linux.ibm.com>,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
- Ingo Molnar <mingo@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Valentin Schneider <valentin.schneider@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 11/04/2021 =C3=A0 02:31, Haren Myneni a =C3=A9crit=C2=A0:
+>>=20
+>> Using the same /dev/crypto/nx-gzip interface for both powerNV and
+>> pseries. So this patcb moves VAS API to powerpc platform indepedent
+>> directory. The actual functionality is not changed in this patch.
 >
-> Some of the per-CPU masks use cpu_cpu_mask as a filter to limit the search
-> for related CPUs. On a dlpar add of a CPU, update cpu_cpu_mask before
-> updating the per-CPU masks. This will ensure the cpu_cpu_mask is updated
-> correctly before its used in setting the masks. Setting the numa_node will
-> ensure that when cpu_cpu_mask() gets called, the correct node number is
-> used. This code movement helped fix the above call trace.
+> This patch seems to do a lot more than moving VAS API to independent dire=
+ctory. A more detailed=20
+> description would help.
 >
-> Reported-by: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> And it is not something defined in the powerpc architecture I think, so i=
+t should
+> remain in some common platform related directory.
+>
+>>=20
+>> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+>> ---
+>>   arch/powerpc/Kconfig                          | 15 +++++
+>>   arch/powerpc/include/asm/vas.h                | 22 ++++++-
+>>   arch/powerpc/kernel/Makefile                  |  1 +
+>>   .../{platforms/powernv =3D> kernel}/vas-api.c   | 64 ++++++++++--------
+>>   arch/powerpc/platforms/powernv/Kconfig        | 14 ----
+>>   arch/powerpc/platforms/powernv/Makefile       |  2 +-
+>>   arch/powerpc/platforms/powernv/vas-window.c   | 66 +++++++++++++++++++
+>>   7 files changed, 140 insertions(+), 44 deletions(-)
+>>   rename arch/powerpc/{platforms/powernv =3D> kernel}/vas-api.c (83%)
+>>=20
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index 386ae12d8523..7aa1fbf7c1dc 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -478,6 +478,21 @@ config PPC_UV
+>>=20=20=20
+>>   	  If unsure, say "N".
+>>=20=20=20
+>> +config PPC_VAS
+>> +	bool "IBM Virtual Accelerator Switchboard (VAS)"
+>> +	depends on PPC_POWERNV && PPC_64K_PAGES
+>> +	default y
+>> +	help
+>> +	  This enables support for IBM Virtual Accelerator Switchboard (VAS).
+>
+> IIUC is a functionnality in a coprocessor of some IBM processors. Somethi=
+ng similar in principle to=20
+> the communication coprocessors we find in Freescale processors.
 
-Reviewed-by: Nathan Lynch <nathanl@linux.ibm.com>
+It's not a coprocessor, it's a way you talk to coprocessors.
 
-Thanks.
+> It is not a generic functionnality part of the powerpc architecture, I do=
+n't think this belongs to=20
+> arch/powerpc/Kconfig
+
+But you're right it's not part of the ISA.
+
+> I think it should go in arch/powerpc/platform/Kconfig
+
+The problem with that is it's shared between two existing platforms, ie.
+powernv and pseries. We don't want to put it in one or the other.
+
+In the past we have put code like that in arch/powerpc/sysdev, but I am
+not a big fan of it, because it's just a bit of a dumping ground.
+
+A while back I created arch/powerpc/platforms/4xx for 40x and 44x
+related things, even though there's no actual 4xx platform. I don't
+think that's caused any problems.
+
+So I'm inclined to say we should make a arch/powerpc/platforms/book3s
+and put VAS in there.
+
+The naming is a bit fishy, because not all book3s CPUs do or will have
+VAS. But we would expect any future CPU with VAS to be book3s.
+
+In contrast if we named it platforms/ibm, we could potentially have a
+future non-IBM CPU that contains VAS, which would then make the ibm name
+confusing.
+
+cheers
