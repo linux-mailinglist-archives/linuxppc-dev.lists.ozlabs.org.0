@@ -2,76 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B6435D4CD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 03:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9D735D4F0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 03:47:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FK7H50x48z3c12
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 11:26:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Tv5h1waf;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FK7ll2BB5z3bnM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 11:47:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e;
- helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch
+ (client-ip=185.16.172.187; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Tv5h1waf; dkim-atps=neutral
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
- [IPv6:2607:f8b0:4864:20::102e])
+Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FK7Gd4FzBz3015
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 11:25:59 +1000 (AEST)
-Received: by mail-pj1-x102e.google.com with SMTP id
- b8-20020a17090a5508b029014d0fbe9b64so9826580pji.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Apr 2021 18:25:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=eTsr3d6eEOR1XzCTesXBOr0Fg+ji7sYoXLS4ON7fZRs=;
- b=Tv5h1wafbEIH7n1k/NLIvBt0+QeeH1lYum69s1tNNMTWJjDDNrcvVBMpMxsoEjApBe
- lbeSZQHtbnzqRchKUAd/SCjzVbZlVGotVtwusLfGdCA9XV57zsQhNWSBSeYXtdXuqZxv
- j3Vgov3oI1JFGsdU9c987DKs2ayTirLd/2B8RgRgvRKf8uvgLzsxkaNDbdm2k291MCvw
- N89jGeh76rD5AsYa0meWzErHPrW60pJOuYHl/vQ/Eohl50AP0q4T0vFTwbegGMQ4MtyA
- 2eAJTrkPEaPhEpnfLcwJXWFJoDzxsT0+u7BGxrMs4+IZ0jSiBR7nu6oq4sQqtsr9jJEF
- z+rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=eTsr3d6eEOR1XzCTesXBOr0Fg+ji7sYoXLS4ON7fZRs=;
- b=DWekk4uLWd0cqCfgwE93/Yp3akCn7JRQyWMWyxC3iT2h0kdT/aRBK1pX69j37lF0Fn
- v5yiBPJvaKSxuiq8rxV8ko5yYoq1aZ3jtJmwl4txOdWfqcNP2R+WkvgJA6+CgXhMoKac
- xVjqcKFGXZaum3Jc0RDooi/SNDs2/l8Khkpk6HCA+QwrhU8tPBLpsocLl029YGJ+oMWS
- 7bZLu84aRay+S/QyCSLqm7Om/xyx/G8KU6fW439RDouEQlgKDBiG85vHb6pH9/TohD+A
- lxyTzBf3xSoTQHo0L4aIENsRl4nWli8wsTUJMGQrwvp1q5JOx8LxmDTYwW+/fS4mg7Kq
- gsaA==
-X-Gm-Message-State: AOAM533bfmNLA29OwIH2PS+CnkOIlLyFMRK1pK6YNH8qKAQMgnWO4Ppz
- XrPydfC8a9FkTcSpwkwGmDw=
-X-Google-Smtp-Source: ABdhPJyhhV03O9hReo/24ro8yI4w/s0Iu7Uy2z6ZbFA4lwVcHK63Y8NhRy90xm45ymE6+owSdK5aeA==
-X-Received: by 2002:a17:90b:608:: with SMTP id
- gb8mr2071317pjb.121.1618277157501; 
- Mon, 12 Apr 2021 18:25:57 -0700 (PDT)
-Received: from localhost (193-116-90-211.tpgi.com.au. [193.116.90.211])
- by smtp.gmail.com with ESMTPSA id q17sm11893966pfq.171.2021.04.12.18.25.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Apr 2021 18:25:57 -0700 (PDT)
-Date: Tue, 13 Apr 2021 11:25:51 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v1 01/12] KVM: PPC: Book3S HV P9: Restore host CTRL SPR
- after guest exit
-To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
-References: <20210412014845.1517916-1-npiggin@gmail.com>
- <20210412014845.1517916-2-npiggin@gmail.com> <877dl761iv.fsf@linux.ibm.com>
-In-Reply-To: <877dl761iv.fsf@linux.ibm.com>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FK6cR0V4Zz2xYn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 10:56:22 +1000 (AEST)
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
+ (envelope-from <andrew@lunn.ch>)
+ id 1lW7LN-00GOEl-SK; Tue, 13 Apr 2021 02:55:53 +0200
+Date: Tue, 13 Apr 2021 02:55:53 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Michael Walle <michael@walle.cc>
+Subject: Re: [PATCH net-next v4 1/2] of: net: pass the dst buffer to
+ of_get_mac_address()
+Message-ID: <YHTsGXbbr8mkifDo@lunn.ch>
+References: <20210412174718.17382-1-michael@walle.cc>
+ <20210412174718.17382-2-michael@walle.cc>
 MIME-Version: 1.0
-Message-Id: <1618276972.38i1q7a28t.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210412174718.17382-2-michael@walle.cc>
+X-Mailman-Approved-At: Tue, 13 Apr 2021 11:47:28 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,60 +46,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Paul Mackerras <paulus@samba.org>,
+ =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+ Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+ linux-stm32@st-md-mailman.stormreply.com, Jerome Brunet <jbrunet@baylibre.com>,
+ Neil Armstrong <narmstrong@baylibre.com>,
+ Michal Simek <michal.simek@xilinx.com>, Jose Abreu <joabreu@synopsys.com>,
+ NXP Linux Team <linux-imx@nxp.com>, Mark Lee <Mark-MC.Lee@mediatek.com>,
+ Hauke Mehrtens <hauke@hauke-m.de>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>, linux-omap@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Vladimir Oltean <olteanv@gmail.com>,
+ Claudiu Beznea <claudiu.beznea@microchip.com>,
+ =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Chris Snook <chris.snook@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Madalin Bucur <madalin.bucur@nxp.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Murali Karicheri <m-karicheri2@ti.com>, Yisen Zhuang <yisen.zhuang@huawei.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>, Wingman Kwok <w-kwok2@ti.com>,
+ Sean Wang <sean.wang@mediatek.com>, Maxime Ripard <mripard@kernel.org>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, linux-amlogic@lists.infradead.org,
+ Kalle Valo <kvalo@codeaurora.org>, Mirko Lindner <mlindner@marvell.com>,
+ Fugang Duan <fugang.duan@nxp.com>,
+ Bryan Whitehead <bryan.whitehead@microchip.com>, ath9k-devel@qca.qualcomm.com,
+ UNGLinuxDriver@microchip.com, Taras Chornyi <tchornyi@marvell.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Kevin Hilman <khilman@baylibre.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Fabio Estevam <festevam@gmail.com>, Stanislaw Gruszka <stf_xl@wp.pl>,
+ Florian Fainelli <f.fainelli@gmail.com>, linux-staging@lists.linux.dev,
+ Chen-Yu Tsai <wens@csie.org>, bcm-kernel-feedback-list@broadcom.com,
+ linux-arm-kernel@lists.infradead.org,
+ Grygorii Strashko <grygorii.strashko@ti.com>, Byungho An <bh74.an@samsung.com>,
+ Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+ Vladimir Zapolskiy <vz@mleia.com>, John Crispin <john@phrozen.org>,
+ Salil Mehta <salil.mehta@huawei.com>,
+ Sergei Shtylyov <sergei.shtylyov@gmail.com>, linux-oxnas@groups.io,
+ Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Helmut Schaa <helmut.schaa@googlemail.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-renesas-soc@vger.kernel.org, Ryder Lee <ryder.lee@mediatek.com>,
+ Russell King <linux@armlinux.org.uk>, Vadym Kochan <vkochan@marvell.com>,
+ Jakub Kicinski <kuba@kernel.org>, Vivien Didelot <vivien.didelot@gmail.com>,
+ Sunil Goutham <sgoutham@marvell.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ linux-mediatek@lists.infradead.org, Matthias Brugger <matthias.bgg@gmail.com>,
+ Jernej Skrabec <jernej.skrabec@siol.net>, netdev@vger.kernel.org,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, Li Yang <leoyang.li@nxp.com>,
+ Stephen Hemminger <stephen@networkplumber.org>, Vinod Koul <vkoul@kernel.org>,
+ Joyce Ooi <joyce.ooi@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ Felix Fietkau <nbd@nbd.name>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Fabiano Rosas's message of April 13, 2021 12:06 am:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->=20
->> The host CTRL (runlatch) value is not restored after guest exit. The
->> host CTRL should always be 1 except in CPU idle code, so this can result
->> in the host running with runlatch clear, and potentially switching to
->> a different vCPU which then runs with runlatch clear as well.
->>
->> This has little effect on P9 machines, CTRL is only responsible for some
->> PMU counter logic in the host and so other than corner cases of software
->> relying on that, or explicitly reading the runlatch value (Linux does
->> not appear to be affected but it's possible non-Linux guests could be),
->> there should be no execution correctness problem, though it could be
->> used as a covert channel between guests.
->>
->> There may be microcontrollers, firmware or monitoring tools that sample
->> the runlatch value out-of-band, however since the register is writable
->> by guests, these values would (should) not be relied upon for correct
->> operation of the host, so suboptimal performance or incorrect reporting
->> should be the worst problem.
->>
->> Fixes: 95a6432ce9038 ("KVM: PPC: Book3S HV: Streamlined guest entry/exit=
- path on P9 for radix guests")
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>  arch/powerpc/kvm/book3s_hv.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->> index 13bad6bf4c95..208a053c9adf 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
->> @@ -3728,7 +3728,10 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *=
-vcpu, u64 time_limit,
->>  	vcpu->arch.dec_expires =3D dec + tb;
->>  	vcpu->cpu =3D -1;
->>  	vcpu->arch.thread_cpu =3D -1;
->> +	/* Save guest CTRL register, set runlatch to 1 */
->>  	vcpu->arch.ctrl =3D mfspr(SPRN_CTRLF);
->> +	if (!(vcpu->arch.ctrl & 1))
->> +		mtspr(SPRN_CTRLT, vcpu->arch.ctrl | 1);
->=20
-> Maybe ditch the comment and use the already defined CTRL_RUNLATCH?
+On Mon, Apr 12, 2021 at 07:47:17PM +0200, Michael Walle wrote:
+> of_get_mac_address() returns a "const void*" pointer to a MAC address.
+> Lately, support to fetch the MAC address by an NVMEM provider was added.
+> But this will only work with platform devices. It will not work with
+> PCI devices (e.g. of an integrated root complex) and esp. not with DSA
+> ports.
+> 
+> There is an of_* variant of the nvmem binding which works without
+> devices. The returned data of a nvmem_cell_read() has to be freed after
+> use. On the other hand the return of_get_mac_address() points to some
+> static data without a lifetime. The trick for now, was to allocate a
+> device resource managed buffer which is then returned. This will only
+> work if we have an actual device.
+> 
+> Change it, so that the caller of of_get_mac_address() has to supply a
+> buffer where the MAC address is written to. Unfortunately, this will
+> touch all drivers which use the of_get_mac_address().
+> 
+> Usually the code looks like:
+> 
+>   const char *addr;
+>   addr = of_get_mac_address(np);
+>   if (!IS_ERR(addr))
+>     ether_addr_copy(ndev->dev_addr, addr);
+> 
+> This can then be simply rewritten as:
+> 
+>   of_get_mac_address(np, ndev->dev_addr);
+> 
+> Sometimes is_valid_ether_addr() is used to test the MAC address.
+> of_get_mac_address() already makes sure, it just returns a valid MAC
+> address. Thus we can just test its return code. But we have to be
+> careful if there are still other sources for the MAC address before the
+> of_get_mac_address(). In this case we have to keep the
+> is_valid_ether_addr() call.
+> 
+> The following coccinelle patch was used to convert common cases to the
+> new style. Afterwards, I've manually gone over the drivers and fixed the
+> return code variable: either used a new one or if one was already
+> available use that. Mansour Moufid, thanks for that coccinelle patch!
+> 
+> <spml>
+> @a@
+> identifier x;
+> expression y, z;
+> @@
+> - x = of_get_mac_address(y);
+> + x = of_get_mac_address(y, z);
+>   <...
+> - ether_addr_copy(z, x);
+>   ...>
+> 
+> @@
+> identifier a.x;
+> @@
+> - if (<+... x ...+>) {}
+> 
+> @@
+> identifier a.x;
+> @@
+>   if (<+... x ...+>) {
+>       ...
+>   }
+> - else {}
+> 
+> @@
+> identifier a.x;
+> expression e;
+> @@
+> - if (<+... x ...+>@e)
+> -     {}
+> - else
+> + if (!(e))
+>       {...}
+> 
+> @@
+> expression x, y, z;
+> @@
+> - x = of_get_mac_address(y, z);
+> + of_get_mac_address(y, z);
+>   ... when != x
+> </spml>
+> 
+> All drivers, except drivers/net/ethernet/aeroflex/greth.c, were
+> compile-time tested.
+> 
+> Suggested-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Michael Walle <michael@walle.cc>
 
-I did it this way so you can more easily match up the C with the=20
-existing asm version.
+I cannot say i looked at all the changes, but the ones i did exam
+seemed O.K.
 
-I have a later patch to clean up CTRL handling a bit (in both C and=20
-asm).
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Thanks,
-Nick
+    Andrew
