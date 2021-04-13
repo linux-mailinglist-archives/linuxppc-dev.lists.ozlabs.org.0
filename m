@@ -2,43 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD07035E8AF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 00:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9D135E8C5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 00:09:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKfgR1BsVz3c0p
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 08:00:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKfs23rSXz3bvb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 08:09:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pRV3XRV8;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FKfg44Ztlz2xYv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 08:00:31 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 13DLw5dB022427;
- Tue, 13 Apr 2021 16:58:05 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 13DLw41j022426;
- Tue, 13 Apr 2021 16:58:04 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Tue, 13 Apr 2021 16:58:03 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v1 1/2] powerpc/bitops: Use immediate operand when possible
-Message-ID: <20210413215803.GT26583@gate.crashing.org>
-References: <09da6fec57792d6559d1ea64e00be9870b02dab4.1617896018.git.christophe.leroy@csgroup.eu>
- <20210412215428.GM26583@gate.crashing.org>
- <ecb1b1a5-ae92-e8a3-6490-26341edfbccb@csgroup.eu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=pRV3XRV8; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKfCj4Xfgz301N
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 07:40:17 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id B533E613C0;
+ Tue, 13 Apr 2021 21:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1618350012;
+ bh=toVub+slEHyxpan1zl2EKjAs+n9L+DqJjmVyXdpSda8=;
+ h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+ b=pRV3XRV88aPlnwLClx5LDM21mdefxIbRGFcsOMAWKDGAPSf1o7HWMcUJArQ3XXTo2
+ omQ7Z2UBYmJ/4VEgdmDWMtz3nLyeoWfPZMbM/epzVuNn/dfLkNcaqGX/sQ3OpMjUBS
+ bAKgZugFWBnTeaINp8LqtfjdEpx90+cwvi+asWJoSAi80GbrFagrnhafBEMs9d/q64
+ V1GuK22jWWyeImHuDUYrsXisI7HOHaVrq3GZpA1n6OF84dCG4EQ57enrHgZGDRNpgk
+ +wx2yJOLG9rxC5gEKrr9mBBot2pLRQqzLRJSzYPRKCwgwQuIOp0m7AJtIXo8z3kOIr
+ TcOoK6hf+PaXg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
+ [127.0.0.1])
+ by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 9A519609B9;
+ Tue, 13 Apr 2021 21:40:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ecb1b1a5-ae92-e8a3-6490-26341edfbccb@csgroup.eu>
-User-Agent: Mutt/1.4.2.3i
+Subject: Re: [PATCH net-next v4 0/2] of: net: support non-platform devices in
+ of_get_mac_address()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161835001262.18297.4500601910911096840.git-patchwork-notify@kernel.org>
+Date: Tue, 13 Apr 2021 21:40:12 +0000
+References: <20210412174718.17382-1-michael@walle.cc>
+In-Reply-To: <20210412174718.17382-1-michael@walle.cc>
+To: Michael Walle <michael@walle.cc>
+X-Mailman-Approved-At: Wed, 14 Apr 2021 08:08:46 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,74 +63,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: andrew@lunn.ch, paulus@samba.org, rafal@milecki.pl,
+ nobuhiro1.iwamatsu@toshiba.co.jp, linux-stm32@st-md-mailman.stormreply.com,
+ jbrunet@baylibre.com, narmstrong@baylibre.com, michal.simek@xilinx.com,
+ joabreu@synopsys.com, linux-imx@nxp.com, Mark-MC.Lee@mediatek.com,
+ hauke@hauke-m.de, s.hauer@pengutronix.de, lorenzo.bianconi83@gmail.com,
+ linux-omap@vger.kernel.org, gregkh@linuxfoundation.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel@pengutronix.de, olteanv@gmail.com, claudiu.beznea@microchip.com,
+ jerome.pouiller@silabs.com, hayashi.kunihiko@socionext.com,
+ chris.snook@gmail.com, joyce.ooi@intel.com, gregory.clement@bootlin.com,
+ madalin.bucur@nxp.com, martin.blumenstingl@googlemail.com, m-karicheri2@ti.com,
+ yisen.zhuang@huawei.com, alexandre.torgue@st.com, w-kwok2@ti.com,
+ sean.wang@mediatek.com, mripard@kernel.org, claudiu.manoil@nxp.com,
+ linux-amlogic@lists.infradead.org, kvalo@codeaurora.org, mlindner@marvell.com,
+ fugang.duan@nxp.com, bryan.whitehead@microchip.com,
+ ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
+ tchornyi@marvell.com, mcoquelin.stm32@gmail.com, khilman@baylibre.com,
+ hkallweit1@gmail.com, andreas@gaisler.com, peppe.cavallaro@st.com,
+ festevam@gmail.com, stf_xl@wp.pl, f.fainelli@gmail.com, frowand.list@gmail.com,
+ linux-staging@lists.linux.dev, wens@csie.org,
+ bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
+ grygorii.strashko@ti.com, bh74.an@samsung.com, radhey.shyam.pandey@xilinx.com,
+ vz@mleia.com, john@phrozen.org, salil.mehta@huawei.com,
+ sergei.shtylyov@gmail.com, linux-oxnas@groups.io, shawnguo@kernel.org,
+ davem@davemloft.net, helmut.schaa@googlemail.com, thomas.petazzoni@bootlin.com,
+ linux-renesas-soc@vger.kernel.org, ryder.lee@mediatek.com,
+ linux@armlinux.org.uk, vkochan@marvell.com, kuba@kernel.org,
+ vivien.didelot@gmail.com, sgoutham@marvell.com,
+ sebastian.hesselbarth@gmail.com, devicetree@vger.kernel.org,
+ robh+dt@kernel.org, linux-mediatek@lists.infradead.org, matthias.bgg@gmail.com,
+ jernej.skrabec@siol.net, netdev@vger.kernel.org, nicolas.ferre@microchip.com,
+ leoyang.li@nxp.com, stephen@networkplumber.org, vkoul@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, nbd@nbd.name
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 13, 2021 at 06:33:19PM +0200, Christophe Leroy wrote:
-> Le 12/04/2021 à 23:54, Segher Boessenkool a écrit :
-> >On Thu, Apr 08, 2021 at 03:33:44PM +0000, Christophe Leroy wrote:
-> >>For clear bits, on 32 bits 'rlwinm' can be used instead or 'andc' for
-> >>when all bits to be cleared are consecutive.
-> >
-> >Also on 64-bits, as long as both the top and bottom bits are in the low
-> >32-bit half (for 32 bit mode, it can wrap as well).
+Hello:
+
+This series was applied to netdev/net-next.git (refs/heads/master):
+
+On Mon, 12 Apr 2021 19:47:16 +0200 you wrote:
+> of_get_mac_address() is commonly used to fetch the MAC address
+> from the device tree. It also supports reading it from a NVMEM
+> provider. But the latter is only possible for platform devices,
+> because only platform devices are searched for a matching device
+> node.
 > 
-> Yes. But here we are talking about clearing a few bits, all other ones must 
-> remain unchanged. An rlwinm on PPC64 will always clear the upper part, 
-> which is unlikely what we want.
-
-No, it does not.  It takes the low 32 bits of the source reg, duplicated
-to the top half as well, then rotated, then ANDed with the mask (which
-can wrap around).  This isn't very often very useful, but :-)
-
-(One useful operation is splatting 32 bits to both halves of a 64-bit
-register, which is just rlwinm d,s,0,1,0).
-
-If you only look at the low 32 bits, it does exactly the same as on
-32-bit implementations.
-
-> >>For the time being only
-> >>handle the single bit case, which we detect by checking whether the
-> >>mask is a power of two.
-> >
-> >You could look at rs6000_is_valid_mask in GCC:
-> >   <https://gcc.gnu.org/git/?p=gcc.git;a=blob;f=gcc/config/rs6000/rs6000.c;h=48b8efd732b251c059628096314848305deb0c0b;hb=HEAD#l11148>
-> >used by rs6000_is_valid_and_mask immediately after it.  You probably
-> >want to allow only rlwinm in your case, and please note this checks if
-> >something is a valid mask, not the inverse of a valid mask (as you
-> >want here).
+> Add a second method to fetch the NVMEM cell by a device tree node
+> instead of a "struct device".
 > 
-> This check looks more complex than what I need. It is used for both rlw... 
-> and rld..., and it calculates the operants.  The only thing I need is to 
-> validate the mask.
+> [...]
 
-It has to do exactly the same thing for rlwinm as for all 64-bit
-variants (rldicl, rldicr, rldic).
+Here is the summary with links:
+  - [net-next,v4,1/2] of: net: pass the dst buffer to of_get_mac_address()
+    https://git.kernel.org/netdev/net-next/c/83216e3988cd
+  - [net-next,v4,2/2] of: net: fix of_get_mac_addr_nvmem() for non-platform devices
+    https://git.kernel.org/netdev/net-next/c/f10843e04a07
 
-One side effect of calculation the bit positions with exact_log2 is that
-that returns negative if the argument is not a power of two.
-
-Here is a simpler way, that handles all cases:  input in "u32 val":
-
-	if (!val)
-		return nonono;
-	if (val & 1)
-		val = ~val;	// make the mask non-wrapping
-	val += val & -val;	// adding the low set bit should result in
-				// at most one bit set
-	if (!(val & (val - 1)))
-		return okidoki_all_good;
-
-> I found a way: By anding the mask with the complement of itself rotated by 
-> left bits to 1, we identify the transitions from 0 to 1. If the result is a 
-> power of 2, it means there's only one transition so the mask is as expected.
-
-That does not handle all cases (it misses all bits set at least).  Which
-isn't all that interesting of course, but is a valid mask (but won't
-clear any bits, so not too interesting for your specific case :-) )
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Segher
