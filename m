@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F082A35E425
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 18:38:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539D835E438
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Apr 2021 18:40:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKWWy5vz3z3d3G
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 02:38:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKWZ92CDdz3dBT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 02:40:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,39 +15,37 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FKWW967KVz2xg0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 02:38:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKWYS2Tc9z30C9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 02:40:11 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FKWW55mr2z9vBLN;
- Tue, 13 Apr 2021 18:38:09 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FKWYL5rNQz9v4hC;
+ Tue, 13 Apr 2021 18:40:06 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id QSM6Vb-9EqKB; Tue, 13 Apr 2021 18:38:09 +0200 (CEST)
+ with ESMTP id BXSJ1lPoczHR; Tue, 13 Apr 2021 18:40:06 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FKWW54knkz9v4h8;
- Tue, 13 Apr 2021 18:38:09 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FKWYL4ygWz9v4h8;
+ Tue, 13 Apr 2021 18:40:06 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 366138B7AA;
- Tue, 13 Apr 2021 18:38:11 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 47CC78B7AA;
+ Tue, 13 Apr 2021 18:40:08 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id t_w4HAtxxMMJ; Tue, 13 Apr 2021 18:38:11 +0200 (CEST)
+ with ESMTP id EjpCKukzhsnv; Tue, 13 Apr 2021 18:40:08 +0200 (CEST)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D63598B75F;
- Tue, 13 Apr 2021 18:38:10 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 11A428B75F;
+ Tue, 13 Apr 2021 18:40:08 +0200 (CEST)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id A468367A15; Tue, 13 Apr 2021 16:38:10 +0000 (UTC)
-Message-Id: <389962b1b702e3c78d169e59bcfac56282889173.1618331882.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
-References: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
+ id BDDF567A15; Tue, 13 Apr 2021 16:40:07 +0000 (UTC)
+Message-Id: <857ceb23b6a614aea2522e770b067593d5f9e906.1618331980.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 2/2] powerpc/bug: Provide better flexibility to
- WARN_ON/__WARN_FLAGS() with asm goto
+Subject: [PATCH v2 1/4] powerpc: Remove probe_user_read_inst()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 13 Apr 2021 16:38:10 +0000 (UTC)
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ jniethe5@gmail.com
+Date: Tue, 13 Apr 2021 16:40:07 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,348 +62,88 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Using asm goto in __WARN_FLAGS() and WARN_ON() allows more
-flexibility to GCC.
+Its name comes from former probe_user_read() function.
+That function is now called copy_from_user_nofault().
 
-For that add an entry to the exception table so that
-program_check_exception() knowns where to resume execution
-after a WARNING.
+probe_user_read_inst() uses copy_from_user_nofault() to read only
+a few bytes. It is suboptimal.
 
-Here are two exemples. The first one is done on PPC32 (which
-benefits from the previous patch), the second is on PPC64.
+It does the same as get_user_inst() but in addition disables
+page faults.
 
-	unsigned long test(struct pt_regs *regs)
-	{
-		int ret;
-
-		WARN_ON(regs->msr & MSR_PR);
-
-		return regs->gpr[3];
-	}
-
-	unsigned long test9w(unsigned long a, unsigned long b)
-	{
-		if (WARN_ON(!b))
-			return 0;
-		return a / b;
-	}
-
-Before the patch:
-
-	000003a8 <test>:
-	 3a8:	81 23 00 84 	lwz     r9,132(r3)
-	 3ac:	71 29 40 00 	andi.   r9,r9,16384
-	 3b0:	40 82 00 0c 	bne     3bc <test+0x14>
-	 3b4:	80 63 00 0c 	lwz     r3,12(r3)
-	 3b8:	4e 80 00 20 	blr
-
-	 3bc:	0f e0 00 00 	twui    r0,0
-	 3c0:	80 63 00 0c 	lwz     r3,12(r3)
-	 3c4:	4e 80 00 20 	blr
-
-	0000000000000bf0 <.test9w>:
-	 bf0:	7c 89 00 74 	cntlzd  r9,r4
-	 bf4:	79 29 d1 82 	rldicl  r9,r9,58,6
-	 bf8:	0b 09 00 00 	tdnei   r9,0
-	 bfc:	2c 24 00 00 	cmpdi   r4,0
-	 c00:	41 82 00 0c 	beq     c0c <.test9w+0x1c>
-	 c04:	7c 63 23 92 	divdu   r3,r3,r4
-	 c08:	4e 80 00 20 	blr
-
-	 c0c:	38 60 00 00 	li      r3,0
-	 c10:	4e 80 00 20 	blr
-
-After the patch:
-
-	000003a8 <test>:
-	 3a8:	81 23 00 84 	lwz     r9,132(r3)
-	 3ac:	71 29 40 00 	andi.   r9,r9,16384
-	 3b0:	40 82 00 0c 	bne     3bc <test+0x14>
-	 3b4:	80 63 00 0c 	lwz     r3,12(r3)
-	 3b8:	4e 80 00 20 	blr
-
-	 3bc:	0f e0 00 00 	twui    r0,0
-
-	0000000000000c50 <.test9w>:
-	 c50:	7c 89 00 74 	cntlzd  r9,r4
-	 c54:	79 29 d1 82 	rldicl  r9,r9,58,6
-	 c58:	0b 09 00 00 	tdnei   r9,0
-	 c5c:	7c 63 23 92 	divdu   r3,r3,r4
-	 c60:	4e 80 00 20 	blr
-
-	 c70:	38 60 00 00 	li      r3,0
-	 c74:	4e 80 00 20 	blr
-
-In the first exemple, we see GCC doesn't need to duplicate what
-happens after the trap.
-
-In the second exemple, we see that GCC doesn't need to emit a test
-and a branch in the likely path in addition to the trap.
-
-We've got some WARN_ON() in .softirqentry.text section so it needs
-to be added in the OTHER_TEXT_SECTIONS in modpost.c
+But on the other hand, it is not used for the time being. So remove it
+for now. If one day it is really needed, we can give it a new name
+more in line with today's naming, and implement it using get_user_inst()
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: Fix build failure when CONFIG_BUG is not selected.
----
- arch/powerpc/include/asm/book3s/64/kup.h |  2 +-
- arch/powerpc/include/asm/bug.h           | 54 ++++++++++++++++++++----
- arch/powerpc/include/asm/extable.h       | 14 ++++++
- arch/powerpc/include/asm/ppc_asm.h       | 11 +----
- arch/powerpc/kernel/entry_64.S           |  2 +-
- arch/powerpc/kernel/exceptions-64e.S     |  2 +-
- arch/powerpc/kernel/misc_32.S            |  2 +-
- arch/powerpc/kernel/traps.c              |  9 +++-
- scripts/mod/modpost.c                    |  2 +-
- 9 files changed, 72 insertions(+), 26 deletions(-)
+ arch/powerpc/include/asm/inst.h |  3 ---
+ arch/powerpc/lib/inst.c         | 31 -------------------------------
+ 2 files changed, 34 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index 9700da3a4093..a22839cba32e 100644
---- a/arch/powerpc/include/asm/book3s/64/kup.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -90,7 +90,7 @@
- 	/* Prevent access to userspace using any key values */
- 	LOAD_REG_IMMEDIATE(\gpr2, AMR_KUAP_BLOCKED)
- 999:	tdne	\gpr1, \gpr2
--	EMIT_BUG_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
-+	EMIT_WARN_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
- 	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_BOOK3S_KUAP, 67)
- #endif
- .endm
-diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index 101dea4eec8d..e22dc503fb2f 100644
---- a/arch/powerpc/include/asm/bug.h
-+++ b/arch/powerpc/include/asm/bug.h
-@@ -4,6 +4,7 @@
- #ifdef __KERNEL__
- 
- #include <asm/asm-compat.h>
-+#include <asm/extable.h>
- 
- #ifdef CONFIG_BUG
- 
-@@ -30,6 +31,11 @@
- .endm
- #endif /* verbose */
- 
-+.macro EMIT_WARN_ENTRY addr,file,line,flags
-+	EX_TABLE(\addr,\addr+4)
-+	EMIT_BUG_ENTRY \addr,\file,\line,\flags
-+.endm
-+
- #else /* !__ASSEMBLY__ */
- /* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
-    sizeof(struct bug_entry), respectively */
-@@ -58,6 +64,16 @@
- 		  "i" (sizeof(struct bug_entry)),	\
- 		  ##__VA_ARGS__)
- 
-+#define WARN_ENTRY(insn, flags, label, ...)		\
-+	asm_volatile_goto(				\
-+		"1:	" insn "\n"			\
-+		EX_TABLE(1b, %l[label])			\
-+		_EMIT_BUG_ENTRY				\
-+		: : "i" (__FILE__), "i" (__LINE__),	\
-+		  "i" (flags),				\
-+		  "i" (sizeof(struct bug_entry)),	\
-+		  ##__VA_ARGS__ : : label)
-+
- /*
-  * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
-  * optimisations. However depending on the complexity of the condition
-@@ -70,7 +86,15 @@
- } while (0)
- #define HAVE_ARCH_BUG
- 
--#define __WARN_FLAGS(flags) BUG_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags))
-+#define __WARN_FLAGS(flags) do {				\
-+	__label__ __label_warn_on;				\
-+								\
-+	WARN_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags), __label_warn_on); \
-+	unreachable();						\
-+								\
-+__label_warn_on:						\
-+	break;							\
-+} while (0)
- 
- #ifdef CONFIG_PPC64
- #define BUG_ON(x) do {						\
-@@ -83,15 +107,24 @@
- } while (0)
- 
- #define WARN_ON(x) ({						\
--	int __ret_warn_on = !!(x);				\
--	if (__builtin_constant_p(__ret_warn_on)) {		\
--		if (__ret_warn_on)				\
-+	bool __ret_warn_on = false;				\
-+	do {							\
-+		if (__builtin_constant_p((x))) {		\
-+			if (!(x)) 				\
-+				break; 				\
- 			__WARN();				\
--	} else {						\
--		BUG_ENTRY(PPC_TLNEI " %4, 0",			\
--			  BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
--			  "r" (__ret_warn_on));	\
--	}							\
-+			__ret_warn_on = true;			\
-+		} else {					\
-+			__label__ __label_warn_on;		\
-+								\
-+			WARN_ENTRY(PPC_TLNEI " %4, 0",		\
-+				   BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
-+				   __label_warn_on, "r" (x));	\
-+			break;					\
-+__label_warn_on:						\
-+			__ret_warn_on = true;			\
-+		}						\
-+	} while (0);						\
- 	unlikely(__ret_warn_on);				\
+diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
+index 19e18af2fac9..2902d4e6a363 100644
+--- a/arch/powerpc/include/asm/inst.h
++++ b/arch/powerpc/include/asm/inst.h
+@@ -175,9 +175,6 @@ static inline char *__ppc_inst_as_str(char str[PPC_INST_STR_LEN], struct ppc_ins
+ 	__str;				\
  })
  
-@@ -104,8 +137,11 @@
- #ifdef __ASSEMBLY__
- .macro EMIT_BUG_ENTRY addr,file,line,flags
- .endm
-+.macro EMIT_WARN_ENTRY addr,file,line,flags
-+.endm
- #else /* !__ASSEMBLY__ */
- #define _EMIT_BUG_ENTRY
-+#define _EMIT_WARN_ENTRY
- #endif
- #endif /* CONFIG_BUG */
- 
-diff --git a/arch/powerpc/include/asm/extable.h b/arch/powerpc/include/asm/extable.h
-index eb91b2d2935a..26ce2e5c0fa8 100644
---- a/arch/powerpc/include/asm/extable.h
-+++ b/arch/powerpc/include/asm/extable.h
-@@ -17,6 +17,8 @@
- 
- #define ARCH_HAS_RELATIVE_EXTABLE
- 
-+#ifndef __ASSEMBLY__
-+
- struct exception_table_entry {
- 	int insn;
- 	int fixup;
-@@ -28,3 +30,15 @@ static inline unsigned long extable_fixup(const struct exception_table_entry *x)
- }
- 
- #endif
-+
-+/*
-+ * Helper macro for exception table entries
-+ */
-+#define EX_TABLE(_fault, _target)		\
-+	stringify_in_c(.section __ex_table,"a";)\
-+	stringify_in_c(.balign 4;)		\
-+	stringify_in_c(.long (_fault) - . ;)	\
-+	stringify_in_c(.long (_target) - . ;)	\
-+	stringify_in_c(.previous)
-+
-+#endif
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index 8998122fc7e2..a74e1561535a 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -10,6 +10,7 @@
- #include <asm/ppc-opcode.h>
- #include <asm/firmware.h>
- #include <asm/feature-fixups.h>
-+#include <asm/extable.h>
- 
- #ifdef __ASSEMBLY__
- 
-@@ -772,16 +773,6 @@ END_FTR_SECTION_NESTED(CPU_FTR_CELL_TB_BUG, CPU_FTR_CELL_TB_BUG, 96)
- 
- #endif /*  __ASSEMBLY__ */
- 
--/*
-- * Helper macro for exception table entries
-- */
--#define EX_TABLE(_fault, _target)		\
--	stringify_in_c(.section __ex_table,"a";)\
--	stringify_in_c(.balign 4;)		\
--	stringify_in_c(.long (_fault) - . ;)	\
--	stringify_in_c(.long (_target) - . ;)	\
--	stringify_in_c(.previous)
+-int probe_user_read_inst(struct ppc_inst *inst,
+-			 struct ppc_inst __user *nip);
 -
- #ifdef CONFIG_PPC_FSL_BOOK3E
- #define BTB_FLUSH(reg)			\
- 	lis reg,BUCSR_INIT@h;		\
-diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-index 6c4d9e276c4d..faa64cc90f02 100644
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -835,7 +835,7 @@ _GLOBAL(enter_rtas)
- 	 */
- 	lbz	r0,PACAIRQSOFTMASK(r13)
- 1:	tdeqi	r0,IRQS_ENABLED
--	EMIT_BUG_ENTRY 1b,__FILE__,__LINE__,BUGFLAG_WARNING
-+	EMIT_WARN_ENTRY 1b,__FILE__,__LINE__,BUGFLAG_WARNING
- #endif
+ int probe_kernel_read_inst(struct ppc_inst *inst,
+ 			   struct ppc_inst *src);
  
- 	/* Hard-disable interrupts */
-diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-index e8eb9992a270..3f8c51390a04 100644
---- a/arch/powerpc/kernel/exceptions-64e.S
-+++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -1249,7 +1249,7 @@ fast_exception_return:
- 	/* The interrupt should not have soft enabled. */
- 	lbz	r7,PACAIRQSOFTMASK(r13)
- 1:	tdeqi	r7,IRQS_ENABLED
--	EMIT_BUG_ENTRY 1b,__FILE__,__LINE__,BUGFLAG_WARNING
-+	EMIT_WARN_ENTRY 1b,__FILE__,__LINE__,BUGFLAG_WARNING
- #endif
- 	b	fast_exception_return
+diff --git a/arch/powerpc/lib/inst.c b/arch/powerpc/lib/inst.c
+index 9cc17eb62462..c57b3548de37 100644
+--- a/arch/powerpc/lib/inst.c
++++ b/arch/powerpc/lib/inst.c
+@@ -9,24 +9,6 @@
+ #include <asm/ppc-opcode.h>
  
-diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
-index 6a076bef2932..21390f3119a9 100644
---- a/arch/powerpc/kernel/misc_32.S
-+++ b/arch/powerpc/kernel/misc_32.S
-@@ -237,7 +237,7 @@ _GLOBAL(copy_page)
- 	addi	r3,r3,-4
- 
- 0:	twnei	r5, 0	/* WARN if r3 is not cache aligned */
--	EMIT_BUG_ENTRY 0b,__FILE__,__LINE__, BUGFLAG_WARNING
-+	EMIT_WARN_ENTRY 0b,__FILE__,__LINE__, BUGFLAG_WARNING
- 
- 	addi	r4,r4,-4
- 
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index efba99870691..ee40a637313d 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -1467,8 +1467,13 @@ static void do_program_check(struct pt_regs *regs)
- 
- 		if (!(regs->msr & MSR_PR) &&  /* not user-mode */
- 		    report_bug(bugaddr, regs) == BUG_TRAP_TYPE_WARN) {
--			regs->nip += 4;
--			return;
-+			const struct exception_table_entry *entry;
-+
-+			entry = search_exception_tables(bugaddr);
-+			if (entry) {
-+				regs->nip = extable_fixup(entry) + regs->nip - bugaddr;
-+				return;
-+			}
- 		}
- 		_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
- 		return;
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 24725e50c7b4..34745f239208 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -926,7 +926,7 @@ static void check_section(const char *modname, struct elf_info *elf,
- 		".kprobes.text", ".cpuidle.text", ".noinstr.text"
- #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
- 		".fixup", ".entry.text", ".exception.text", ".text.*", \
--		".coldtext"
-+		".coldtext .softirqentry.text"
- 
- #define INIT_SECTIONS      ".init.*"
- #define MEM_INIT_SECTIONS  ".meminit.*"
+ #ifdef CONFIG_PPC64
+-int probe_user_read_inst(struct ppc_inst *inst,
+-			 struct ppc_inst __user *nip)
+-{
+-	unsigned int val, suffix;
+-	int err;
+-
+-	err = copy_from_user_nofault(&val, nip, sizeof(val));
+-	if (err)
+-		return err;
+-	if (get_op(val) == OP_PREFIX) {
+-		err = copy_from_user_nofault(&suffix, (void __user *)nip + 4, 4);
+-		*inst = ppc_inst_prefix(val, suffix);
+-	} else {
+-		*inst = ppc_inst(val);
+-	}
+-	return err;
+-}
+-
+ int probe_kernel_read_inst(struct ppc_inst *inst,
+ 			   struct ppc_inst *src)
+ {
+@@ -45,19 +27,6 @@ int probe_kernel_read_inst(struct ppc_inst *inst,
+ 	return err;
+ }
+ #else /* !CONFIG_PPC64 */
+-int probe_user_read_inst(struct ppc_inst *inst,
+-			 struct ppc_inst __user *nip)
+-{
+-	unsigned int val;
+-	int err;
+-
+-	err = copy_from_user_nofault(&val, nip, sizeof(val));
+-	if (!err)
+-		*inst = ppc_inst(val);
+-
+-	return err;
+-}
+-
+ int probe_kernel_read_inst(struct ppc_inst *inst,
+ 			   struct ppc_inst *src)
+ {
 -- 
 2.25.0
 
