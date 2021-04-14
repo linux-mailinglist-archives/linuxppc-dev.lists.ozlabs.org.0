@@ -1,53 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E0A35F486
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 15:10:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A26C35F765
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 17:21:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FL2rR2hbcz3bqC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 23:09:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FL5mb0D3Cz3bqG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 01:21:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FL2q33b4Jz304Q
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 23:08:47 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FL2py6yVdzB09bL;
- Wed, 14 Apr 2021 15:08:42 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id OgntRogQhiC4; Wed, 14 Apr 2021 15:08:42 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FL2py639CzB09bK;
- Wed, 14 Apr 2021 15:08:42 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 42E328B7C6;
- Wed, 14 Apr 2021 15:08:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id HOYKRiajt72k; Wed, 14 Apr 2021 15:08:44 +0200 (CEST)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DD9178B7C4;
- Wed, 14 Apr 2021 15:08:43 +0200 (CEST)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id BA732679D8; Wed, 14 Apr 2021 13:08:43 +0000 (UTC)
-Message-Id: <9655d8957313906b77b8db5700a0e33ce06f45e5.1618405715.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <5f6f82572242a59bfee1e19a71194d8f7ef5fca4.1618405715.git.christophe.leroy@csgroup.eu>
-References: <5f6f82572242a59bfee1e19a71194d8f7ef5fca4.1618405715.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 4/4] powerpc: Move copy_from_kernel_nofault_inst()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- jniethe5@gmail.com
-Date: Wed, 14 Apr 2021 13:08:43 +0000 (UTC)
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FL5mG6nq0z30C1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 01:21:34 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 13EFJM4R012182;
+ Wed, 14 Apr 2021 10:19:22 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 13EFJLFh012181;
+ Wed, 14 Apr 2021 10:19:21 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 14 Apr 2021 10:19:21 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v1 1/2] powerpc/bitops: Use immediate operand when possible
+Message-ID: <20210414151921.GW26583@gate.crashing.org>
+References: <09da6fec57792d6559d1ea64e00be9870b02dab4.1617896018.git.christophe.leroy@csgroup.eu>
+ <20210412215428.GM26583@gate.crashing.org>
+ <ecb1b1a5-ae92-e8a3-6490-26341edfbccb@csgroup.eu>
+ <20210413215803.GT26583@gate.crashing.org>
+ <1618365589.67fxh7cot9.astroid@bobo.none>
+ <20210414122409.GV26583@gate.crashing.org>
+ <daacce9f-1900-1034-980b-be5a58d6be09@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <daacce9f-1900-1034-980b-be5a58d6be09@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,108 +54,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When probe_kernel_read_inst() was created, there was no good place to
-put it, so a file called lib/inst.c was dedicated for it.
+On Wed, Apr 14, 2021 at 02:42:51PM +0200, Christophe Leroy wrote:
+> Le 14/04/2021 à 14:24, Segher Boessenkool a écrit :
+> >On Wed, Apr 14, 2021 at 12:01:21PM +1000, Nicholas Piggin wrote:
+> >>Would be nice if we could let the compiler deal with it all...
+> >>
+> >>static inline unsigned long lr(unsigned long *mem)
+> >>{
+> >>         unsigned long val;
+> >>
+> >>         /*
+> >>          * This doesn't clobber memory but want to avoid memory 
+> >>          operations
+> >>          * moving ahead of it
+> >>          */
+> >>         asm volatile("ldarx     %0, %y1" : "=r"(val) : "Z"(*mem) : 
+> >>         "memory");
+> >>
+> >>         return val;
+> >>}
+> >
+> >(etc.)
+> >
+> >That can not work reliably: the compiler can put random instructions
+> >between the larx and stcx. this way, and you then do not have guaranteed
+> >forward progress anymore.  It can put the two in different routines
+> >(after inlining and other interprocedural optimisations), duplicate
+> >them, make a different number of copies of them, etc.
+> >
+> >Nothing of that is okay if you want to guarantee forward progress on all
+> >implementations, and also not if you want to have good performance
+> >everywhere (or anywhere even).  Unfortunately you have to write all
+> >larx/stcx. loops as one block of assembler, so that you know exactly
+> >what instructions will end up in your binary.
+> >
+> >If you don't, it will fail mysteriously after random recompilations, or
+> >have performance degradations, etc.  You don't want to go there :-)
+> >
+> 
+> Could the kernel use GCC builtin atomic functions instead ?
+> 
+> https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html
 
-Since then, probe_kernel_read_inst() has been renamed
-copy_from_kernel_nofault_inst(). And mm/maccess.h didn't exist at that
-time. Today, mm/maccess.h is related to copy_from_kernel_nofault().
+Certainly that should work fine for the simpler cases that the atomic
+operations are meant to provide.  But esp. for not-so-simple cases the
+kernel may require some behaviour provided by the existing assembler
+implementation, and not by the atomic builtins.
 
-Move copy_from_kernel_nofault_inst() into mm/maccess.c
+I'm not saying this cannot work, just that some serious testing will be
+needed.  If it works it should be the best of all worlds, so then it is
+a really good idea yes :-)
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v2: Remove inst.o from Makefile
----
- arch/powerpc/lib/Makefile |  2 +-
- arch/powerpc/lib/inst.c   | 26 --------------------------
- arch/powerpc/mm/maccess.c | 21 +++++++++++++++++++++
- 3 files changed, 22 insertions(+), 27 deletions(-)
- delete mode 100644 arch/powerpc/lib/inst.c
 
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index d4efc182662a..f2c690ee75d1 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -16,7 +16,7 @@ CFLAGS_code-patching.o += -DDISABLE_BRANCH_PROFILING
- CFLAGS_feature-fixups.o += -DDISABLE_BRANCH_PROFILING
- endif
- 
--obj-y += alloc.o code-patching.o feature-fixups.o pmem.o inst.o test_code-patching.o
-+obj-y += alloc.o code-patching.o feature-fixups.o pmem.o test_code-patching.o
- 
- ifndef CONFIG_KASAN
- obj-y	+=	string.o memcmp_$(BITS).o
-diff --git a/arch/powerpc/lib/inst.c b/arch/powerpc/lib/inst.c
-deleted file mode 100644
-index e554d1357f2f..000000000000
---- a/arch/powerpc/lib/inst.c
-+++ /dev/null
-@@ -1,26 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- *  Copyright 2020, IBM Corporation.
-- */
--
--#include <linux/uaccess.h>
--#include <asm/disassemble.h>
--#include <asm/inst.h>
--#include <asm/ppc-opcode.h>
--
--int copy_inst_from_kernel_nofault(struct ppc_inst *inst, struct ppc_inst *src)
--{
--	unsigned int val, suffix;
--	int err;
--
--	err = copy_from_kernel_nofault(&val, src, sizeof(val));
--	if (err)
--		return err;
--	if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
--		err = copy_from_kernel_nofault(&suffix, (void *)src + 4, 4);
--		*inst = ppc_inst_prefix(val, suffix);
--	} else {
--		*inst = ppc_inst(val);
--	}
--	return err;
--}
-diff --git a/arch/powerpc/mm/maccess.c b/arch/powerpc/mm/maccess.c
-index fa9a7a718fc6..a3c30a884076 100644
---- a/arch/powerpc/mm/maccess.c
-+++ b/arch/powerpc/mm/maccess.c
-@@ -3,7 +3,28 @@
- #include <linux/uaccess.h>
- #include <linux/kernel.h>
- 
-+#include <asm/disassemble.h>
-+#include <asm/inst.h>
-+#include <asm/ppc-opcode.h>
-+
- bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
- {
- 	return is_kernel_addr((unsigned long)unsafe_src);
- }
-+
-+int copy_inst_from_kernel_nofault(struct ppc_inst *inst, struct ppc_inst *src)
-+{
-+	unsigned int val, suffix;
-+	int err;
-+
-+	err = copy_from_kernel_nofault(&val, src, sizeof(val));
-+	if (err)
-+		return err;
-+	if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
-+		err = copy_from_kernel_nofault(&suffix, (void *)src + 4, 4);
-+		*inst = ppc_inst_prefix(val, suffix);
-+	} else {
-+		*inst = ppc_inst(val);
-+	}
-+	return err;
-+}
--- 
-2.25.0
-
+Segher
