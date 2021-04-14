@@ -1,92 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8B535E965
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 01:02:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD3935EA8F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 04:01:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKh295vxlz3bvQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 09:02:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKm1b3r3pz3bsp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 12:01:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=m5k6vOAM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=aLI/RIRO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72a;
- helo=mail-qk1-x72a.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
+ helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=m5k6vOAM; dkim-atps=neutral
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com
- [IPv6:2607:f8b0:4864:20::72a])
+ header.s=20161025 header.b=aLI/RIRO; dkim-atps=neutral
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
+ [IPv6:2607:f8b0:4864:20::433])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FKh1j1DSNz302p
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 09:01:44 +1000 (AEST)
-Received: by mail-qk1-x72a.google.com with SMTP id o5so19710080qkb.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 16:01:43 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKm1865KXz2xYj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 12:01:31 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id a85so12246883pfa.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Apr 2021 19:01:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=OCkP5AHNiha8/R6QxJA+sGxnbipzDLqBjSi74rMzmhI=;
- b=m5k6vOAMSVU72Sbi3nQga0F/+zWR9gTQqmKtYegyoeGD+ZSwPHVG5v/5pmy3YuZETs
- 0UQsiULdSNiSadB1rPqgJa7bYRo/qf1aR2Jt3uptNQZk0GYw4fQibM7rkhfRFaJL/pUv
- EnpfKRkC4wck93yXrYGEr0qxW/Ywo40244JUBN2g+BIXFaK/MQ/PRNYeeFf5QUbzldGr
- GavFssbDjpDD9eAAFvyxuovtlCc4BldO4Lc9ldYQD7Yglct3j/x+X1LHSrF/TJmz0+A1
- B3oqKODF5xY2ozT3zNg+8xYi56OcigWfgrKh1i7Xii2WF2Ou1qqqOj1iD9F2IquhZ/r1
- JDxw==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=KdzJGtbQKMM6WovwoQdkjGUf5Ve7opMXsRdxXEuGt3o=;
+ b=aLI/RIROmUMi3ydioh2HN1kPYgyUQiUlXEBvMHyruO5qAy6N5m2O081qsEqViXebn8
+ mtoUBuWkBGyj8c7eyh/iJOtZzrBfQiq2tb1mpjka66qO4C6xCHNyngpEIfG8bcewB17+
+ 2lGeYWO6FfDybSD+5UcHlvn+SVtLyMJRq0rVQmmPgjliU43e/wk+eMdbWzbCNr2MQgP+
+ VoYAT+b+h8x17t4uavo5BxEZVjMTdf6/mXLbLZDFQ/IVHnJyHZqlPqN7FHQeGpcs7kSC
+ hJtZm7hzP1v23afXdJAuUnOVOi/XIXu5J3zkjBG02zq+JGAS7KW3ZqY0ihXHoTf0dGEB
+ JoIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=OCkP5AHNiha8/R6QxJA+sGxnbipzDLqBjSi74rMzmhI=;
- b=PFppFAUpdMG7p//4qBgxM/csf9T8zR+KfEeDvmY1BVLkx5l4CVXm5gGQFXzobqiO0H
- BN/3Kjq0pV+NTCUNRocn7/HCKfitpN1DJZhBn2eDF5oNhLP2RMeTp0t2Ri6f9NESqF8l
- HnVwbfJ9+PowGlzMAv9Nt59CS2hCQOWzT/2SD7H6+NfpIc3zfAfkOwtwgw6+ybuKSuUL
- dLdeST8kMxxRlt1TxtTR5H+6lfI3jNKR/1PqYJ0tKP7m/hEu7+07d3sKbHynM+rPKpU2
- AiGhuOxfCFZuKNEcL1JlzVkWQIjgZSztJzTFcastzBApQb+dyCVwBV8oceKzAYCX+FDb
- zq8w==
-X-Gm-Message-State: AOAM532086uyWYMFIdFTorzPQLTriAphpHuYgaf+JDug/mnDvvQwCaKK
- 0WIpX14JxgYdM7YcKcUr2+M=
-X-Google-Smtp-Source: ABdhPJyvJaUtoclmLCPQ17y6gqmkxTML9nSi3QpiLjQ1p24d6Z/J1GnGRx8q1SKkrVwMGAUCrWKCQA==
-X-Received: by 2002:a37:a2c3:: with SMTP id l186mr3476447qke.495.1618354900224; 
- Tue, 13 Apr 2021 16:01:40 -0700 (PDT)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
- ([2804:14c:482:7b04::1000])
- by smtp.gmail.com with ESMTPSA id o189sm1960630qka.86.2021.04.13.16.01.36
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=KdzJGtbQKMM6WovwoQdkjGUf5Ve7opMXsRdxXEuGt3o=;
+ b=VjwBH1J6772w6BRLqdbJivjJxcoW9WQaQkabvAqMuiXu4KQMd9EoxyD/wqM1P4Gu+R
+ aN0e2XeR9lU0NDONO0vfKXPFvvQjl45V8LoiKt/qxdZIQOQFT1EWfxAd3Ab1ZB2jFK6L
+ 0INGgHOjMmLjiJCn7avtCUD5qP8T3+0zzM3OtjQfKxaeTkAQb3qQAvFBRE0J8LQgyjfL
+ q1rVW1HkG3+BOVUGkKiKxGOfdiSR++bUT/rYOrAfTX3ajbYidb9+Btw4pzeGS83R6PLZ
+ hXP9fwxGiy430fula5UDaC8aG2kcAaZeBMU9wvNh+5ZNPXpuQWM+27dz30vQrjQt86OP
+ ghJw==
+X-Gm-Message-State: AOAM530E+GI1gIihlbKca7H8B9za8Rv48s1/knu+chmakGbTZc5PiyG0
+ eVqSIxNVtrkRpdEkW7N9Pq0=
+X-Google-Smtp-Source: ABdhPJyjMTVIofFw6yPVpUTmU6h8P2cKeEpO2QgNpRYonh3f5mixQfrTzTRCIRkV9uYgNRuKaM1Ixw==
+X-Received: by 2002:a63:30c1:: with SMTP id
+ w184mr34535722pgw.230.1618365686734; 
+ Tue, 13 Apr 2021 19:01:26 -0700 (PDT)
+Received: from localhost (193-116-90-211.tpgi.com.au. [193.116.90.211])
+ by smtp.gmail.com with ESMTPSA id i18sm5039212pfq.168.2021.04.13.19.01.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Apr 2021 16:01:39 -0700 (PDT)
-Message-ID: <108c6fa11f0037bd4379fe28a11f3a16e624bc63.camel@gmail.com>
-Subject: Re: [PATCH v2 13/14] powerpc/pseries/iommu: Make use of DDW for
- indirect mapping
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
- <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>, 
- Christophe Leroy <christophe.leroy@c-s.fr>, Thiago Jung Bauermann
- <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>, Brian King
- <brking@linux.vnet.ibm.com>, Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- David Dai <zdai@linux.vnet.ibm.com>
-Date: Tue, 13 Apr 2021 20:01:34 -0300
-In-Reply-To: <5d7c85a1-967c-9ad3-e984-bd57fca3cb77@ozlabs.ru>
-References: <20200911170738.82818-1-leobras.c@gmail.com>
- <20200911170738.82818-14-leobras.c@gmail.com>
- <f3bc958f-a656-6481-0a19-3cff4dd3a4ff@ozlabs.ru>
- <0c6eef8181aeb69d69ce72ec86c646dfa7591414.camel@gmail.com>
- <94ef78d5-467e-0492-4b7d-90077fe37343@ozlabs.ru>
- <e8789bb568c9cae99f07b1e6021f85c39d92f7ea.camel@gmail.com>
- <e518d514-5f76-c88f-d38e-fb8a46a41597@ozlabs.ru>
- <7e2a7e3abb4e7df492fcb4209e7b1f2021ff17c5.camel@gmail.com>
- <5d7c85a1-967c-9ad3-e984-bd57fca3cb77@ozlabs.ru>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ Tue, 13 Apr 2021 19:01:26 -0700 (PDT)
+Date: Wed, 14 Apr 2021 12:01:21 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v1 1/2] powerpc/bitops: Use immediate operand when possible
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Segher Boessenkool
+ <segher@kernel.crashing.org>
+References: <09da6fec57792d6559d1ea64e00be9870b02dab4.1617896018.git.christophe.leroy@csgroup.eu>
+ <20210412215428.GM26583@gate.crashing.org>
+ <ecb1b1a5-ae92-e8a3-6490-26341edfbccb@csgroup.eu>
+ <20210413215803.GT26583@gate.crashing.org>
+In-Reply-To: <20210413215803.GT26583@gate.crashing.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <1618365589.67fxh7cot9.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,111 +84,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2021-04-13 at 18:24 +1000, Alexey Kardashevskiy wrote:
-> 
-> On 13/04/2021 17:58, Leonardo Bras wrote:
-> > On Tue, 2021-04-13 at 17:41 +1000, Alexey Kardashevskiy wrote:
-> > > 
-> > > On 13/04/2021 17:33, Leonardo Bras wrote:
-> > > > On Tue, 2021-04-13 at 17:18 +1000, Alexey Kardashevskiy wrote:
-> > > > > 
-> > > > > On 13/04/2021 15:49, Leonardo Bras wrote:
-> > > > > > Thanks for the feedback!
-> > > > > > 
-> > > > > > On Tue, 2020-09-29 at 13:56 +1000, Alexey Kardashevskiy wrote:
-> > > > > > > > -static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr)
-> > > > > > > > +static phys_addr_t ddw_memory_hotplug_max(void)
-> > > > > > > 
-> > > > > > > 
-> > > > > > > Please, forward declaration or a separate patch; this creates
-> > > > > > > unnecessary noise to the actual change.
-> > > > > > > 
-> > > > > > 
-> > > > > > Sure, done!
-> > > > > > 
-> > > > > > > 
-> > > > > > > > +		_iommu_table_setparms(tbl, pci->phb->bus->number, create.liobn, win_addr,
-> > > > > > > > +				      1UL << len, page_shift, 0, &iommu_table_lpar_multi_ops);
-> > > > > > > > +		iommu_init_table(tbl, pci->phb->node, 0, 0);
-> > > > > > > 
-> > > > > > > 
-> > > > > > > It is 0,0 only if win_addr>0 which is not the QEMU case.
-> > > > > > > 
-> > > > > > 
-> > > > > > Oh, ok.
-> > > > > > I previously though it was ok to use 0,0 here as any other usage in
-> > > > > > this file was also 0,0.
-> > > > > > 
-> > > > > > What should I use to get the correct parameters? Use the previous tbl
-> > > > > > it_reserved_start and tbl->it_reserved_end is enough?
-> > > > > 
-> > > > > depends on whether you carry reserved start/end even if they are outside
-> > > > > of the dma window.
-> > > > > 
-> > > > 
-> > > > Oh, that makes sense.
-> > > > On a previous patch (5/14 IIRC), I changed the behavior to only store
-> > > > the valid range on tbl, but now I understand why it's important to
-> > > > store the raw value.
-> > > > 
-> > > > Ok, I will change it back so the reserved range stays in tbl even if it
-> > > > does not intersect with the DMA window. This way I can reuse the values
-> > > > in case of indirect mapping with DDW.
-> > > > 
-> > > > Is that ok? Are the reserved values are supposed to stay the same after
-> > > > changing from Default DMA window to DDW?
-> > > 
-> > > I added them to know what bits in it_map to ignore when checking if
-> > > there is any active user of the table. If you have non zero reserved
-> > > start/end but they do not affect it_map, then it is rather weird way to
-> > > carry reserved start/end from DDW to no-DDW.
-> > > 
-> > 
-> > Ok, agreed.
-> > 
-> > >   May be do not set these at
-> > > all for DDW with window start at 1<<59 and when going back to no-DDW (or
-> > > if DDW starts at 0) - just set them from MMIO32, just as they are
-> > > initialized in the first place.
-> > > 
-> > 
-> > If I get it correctly from pci_of_scan.c, MMIO32 = {0, 32MB}, is that
-> > correct?
-> 
-> No, under QEMU it is 0x8000.0000-0x1.0000.0000:
-> 
-> /proc/device-tree/pci@800000020000000/ranges
-> 
-> 7 cells for each resource, the second one is MMIO32 (the first is IO 
-> ports, the last is 64bit MMIO).
-> > 
-> > So, if DDW starts at any value in this range (most probably at zero),
-> > we should remove the rest, is that correct?
-> > 
-> > Could it always use iommu_init_table(..., 0, 32MB) here, so it always
-> > reserve any part of the DMA window that's in this range? Ot there may
-> > be other reserved values range?
-> > 
-> > > and when going back to no-DDW
-> > 
-> > After iommu_init_table() there should be no failure, so it looks like
-> > there is no 'going back to no-DDW'. Am I missing something?
-> 
-> Well, a random driver could request 32bit DMA and if the new window is 
-> 1:1, then it would break but this does not seem to happen and we do not 
-> support it anyway so no loss here.
-> 
+Excerpts from Segher Boessenkool's message of April 14, 2021 7:58 am:
+> On Tue, Apr 13, 2021 at 06:33:19PM +0200, Christophe Leroy wrote:
+>> Le 12/04/2021 =C3=A0 23:54, Segher Boessenkool a =C3=A9crit=C2=A0:
+>> >On Thu, Apr 08, 2021 at 03:33:44PM +0000, Christophe Leroy wrote:
+>> >>For clear bits, on 32 bits 'rlwinm' can be used instead or 'andc' for
+>> >>when all bits to be cleared are consecutive.
+>> >
+>> >Also on 64-bits, as long as both the top and bottom bits are in the low
+>> >32-bit half (for 32 bit mode, it can wrap as well).
+>>=20
+>> Yes. But here we are talking about clearing a few bits, all other ones m=
+ust=20
+>> remain unchanged. An rlwinm on PPC64 will always clear the upper part,=20
+>> which is unlikely what we want.
+>=20
+> No, it does not.  It takes the low 32 bits of the source reg, duplicated
+> to the top half as well, then rotated, then ANDed with the mask (which
+> can wrap around).  This isn't very often very useful, but :-)
+>=20
+> (One useful operation is splatting 32 bits to both halves of a 64-bit
+> register, which is just rlwinm d,s,0,1,0).
+>=20
+> If you only look at the low 32 bits, it does exactly the same as on
+> 32-bit implementations.
+>=20
+>> >>For the time being only
+>> >>handle the single bit case, which we detect by checking whether the
+>> >>mask is a power of two.
+>> >
+>> >You could look at rs6000_is_valid_mask in GCC:
+>> >   <https://gcc.gnu.org/git/?p=3Dgcc.git;a=3Dblob;f=3Dgcc/config/rs6000=
+/rs6000.c;h=3D48b8efd732b251c059628096314848305deb0c0b;hb=3DHEAD#l11148>
+>> >used by rs6000_is_valid_and_mask immediately after it.  You probably
+>> >want to allow only rlwinm in your case, and please note this checks if
+>> >something is a valid mask, not the inverse of a valid mask (as you
+>> >want here).
+>>=20
+>> This check looks more complex than what I need. It is used for both rlw.=
+..=20
+>> and rld..., and it calculates the operants.  The only thing I need is to=
+=20
+>> validate the mask.
+>=20
+> It has to do exactly the same thing for rlwinm as for all 64-bit
+> variants (rldicl, rldicr, rldic).
+>=20
+> One side effect of calculation the bit positions with exact_log2 is that
+> that returns negative if the argument is not a power of two.
+>=20
+> Here is a simpler way, that handles all cases:  input in "u32 val":
+>=20
+> 	if (!val)
+> 		return nonono;
+> 	if (val & 1)
+> 		val =3D ~val;	// make the mask non-wrapping
+> 	val +=3D val & -val;	// adding the low set bit should result in
+> 				// at most one bit set
+> 	if (!(val & (val - 1)))
+> 		return okidoki_all_good;
+>=20
+>> I found a way: By anding the mask with the complement of itself rotated =
+by=20
+>> left bits to 1, we identify the transitions from 0 to 1. If the result i=
+s a=20
+>> power of 2, it means there's only one transition so the mask is as expec=
+ted.
+>=20
+> That does not handle all cases (it misses all bits set at least).  Which
+> isn't all that interesting of course, but is a valid mask (but won't
+> clear any bits, so not too interesting for your specific case :-) )
 
-So you would recommend reading "ranges" with of_get_property() and
-using the second entry (cells 7 - 13) in this point, get base & size to
-make sure it does not map anything here? (should have no effect if the
-value does not intersect with the DMA window)
+Would be nice if we could let the compiler deal with it all...
 
-Thank you for reviewing!
-Leonardo Bras
+static inline unsigned long lr(unsigned long *mem)
+{
+        unsigned long val;
+
+        /*
+         * This doesn't clobber memory but want to avoid memory operations
+         * moving ahead of it
+         */
+        asm volatile("ldarx     %0, %y1" : "=3Dr"(val) : "Z"(*mem) : "memor=
+y");
+
+        return val;
+}
+
+static inline bool stc(unsigned long *mem, unsigned long val)
+{
+        /*
+         * This doesn't really clobber memory but same as above, also can't
+         * specify output in asm goto.
+         */
+        asm volatile goto(
+                "stdcx. %0, %y1 \n\t"
+                "bne-   %l[fail]        \n\t"
+                : : "r"(val), "Z"(*mem) : "cr0", "memory" : fail);
+
+        return true;
+fail: __attribute__((cold))
+        return false;
+}
+
+static inline void atomic_add(unsigned long *mem, unsigned long val)
+{
+        unsigned long old, new;
+
+        do {
+                old =3D lr(mem);
+                new =3D old + val;
+        } while (unlikely(!stc(mem, new)));
+}
 
