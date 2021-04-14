@@ -2,98 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A09635F062
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 11:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 409B635F07B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 11:11:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKxNv0xM9z3dhX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 19:04:15 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Jge010hd;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKxXx1bdfz3c3k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 19:11:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Jge010hd; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FKxJ34rngz3bxb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 19:00:03 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13E8ZRYQ191940; Wed, 14 Apr 2021 04:59:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=wkE3A3LH0ytpBXwOtwJN3P5u5VXIgOO6zsh/YfwNF9o=;
- b=Jge010hdg7zl+EAvT6BIqpdmyoj1kGzh0MFcSk5rxxpVH/bRfXyexhkJkpz1V68J95Y8
- ZvNAPbzFEARrXBZKeS1Yx777IvIxKVAWX9b9j/jnBUXVp3l+r2Iihm/q5WJm7XmCe30w
- DZHDKKZ4l2k32vusmkA8VnksZV7R7HvtHmC3qWT2/n3x/+bxUmCuHroR7vLzvizKvo8O
- 9kZVl9jfGcPmAdjj2D8WUL24OAs8vPQIgFjfg+ypxE5tbsTSplt+pCTu47OBb6DpfcZp
- IMZuRh7JF7Px/Q9BWoP5qYXNblKbX3CaB2YcL0e61QaVq+zFdTAGL6LhB2pV5LZHgq2P ig== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37wvaua202-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Apr 2021 04:59:57 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13E8a4g8193569;
- Wed, 14 Apr 2021 04:59:56 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37wvaua1yr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Apr 2021 04:59:56 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13E8v29F003421;
- Wed, 14 Apr 2021 08:59:56 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma03dal.us.ibm.com with ESMTP id 37u3n9fpvd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Apr 2021 08:59:56 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13E8xtvw26870018
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Apr 2021 08:59:55 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 71A05AE062;
- Wed, 14 Apr 2021 08:59:55 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 95768AE060;
- Wed, 14 Apr 2021 08:59:52 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.77.205.193])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 14 Apr 2021 08:59:52 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: [PATCH v4 9/9] powerpc/mm: Enable move pmd/pud
-Date: Wed, 14 Apr 2021 14:29:15 +0530
-Message-Id: <20210414085915.301189-10-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210414085915.301189-1-aneesh.kumar@linux.ibm.com>
-References: <20210414085915.301189-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKxXZ47rTz2yhq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 19:10:50 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FKxXQ05PXz9txRC;
+ Wed, 14 Apr 2021 11:10:46 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 0zeBA9ZPccDQ; Wed, 14 Apr 2021 11:10:45 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FKxXP4rdvz9ttBY;
+ Wed, 14 Apr 2021 11:10:45 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BE0B88B7BC;
+ Wed, 14 Apr 2021 11:10:46 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id QZ2BMSlNARn7; Wed, 14 Apr 2021 11:10:46 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 098558B7BA;
+ Wed, 14 Apr 2021 11:10:44 +0200 (CEST)
+Subject: Re: [PATCH] init: consolidate trap_init()
+To: Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
+ Vineet Gupta <vgupta@synopsys.com>, Russell King <linux@armlinux.org.uk>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Brian Cain <bcain@codeaurora.org>, Nick Hu <nickhu@andestech.com>,
+ Greentime Hu <green.hu@gmail.com>, Vincent Chen <deanbo422@gmail.com>,
+ Ley Foon Tan <ley.foon.tan@intel.com>, Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Jeff Dike <jdike@addtoit.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>
+References: <20210414165808.458a3d11@xhacker.debian>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <44bdf1f1-117d-0f10-fc59-9edd32d1ad61@csgroup.eu>
+Date: Wed, 14 Apr 2021 11:10:42 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
+In-Reply-To: <20210414165808.458a3d11@xhacker.debian>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: gnOE0nxdVD--96UR0BYFbl9DFRf3upFw
-X-Proofpoint-GUID: H4ombGMCNTopIAvO8xvChalLHDLTNKHo
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-14_03:2021-04-14,
- 2021-04-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0
- mlxscore=0 suspectscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
- clxscore=1015 priorityscore=1501 phishscore=0 spamscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104140060
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,39 +75,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kaleshsingh@google.com, npiggin@gmail.com,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, joel@joelfernandes.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: uclinux-h8-devel@lists.sourceforge.jp, linux-parisc@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
+ Anup Patel <anup@brainfault.org>, linux-riscv@lists.infradead.org,
+ linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-mremap HAVE_MOVE_PMD/PUD optimization time comparison for 1GB region:
-1GB mremap - Source PTE-aligned, Destination PTE-aligned
-  mremap time:      1127034ns
-1GB mremap - Source PMD-aligned, Destination PMD-aligned
-  mremap time:       508817ns
-1GB mremap - Source PUD-aligned, Destination PUD-aligned
-  mremap time:        23046ns
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/platforms/Kconfig.cputype | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 3ce907523b1e..2e666e569fdf 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -97,6 +97,8 @@ config PPC_BOOK3S_64
- 	select PPC_HAVE_PMU_SUPPORT
- 	select SYS_SUPPORTS_HUGETLBFS
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-+	select HAVE_MOVE_PMD
-+	select HAVE_MOVE_PUD
- 	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
- 	select ARCH_SUPPORTS_NUMA_BALANCING
- 	select IRQ_WORK
--- 
-2.30.2
+Le 14/04/2021 à 10:58, Jisheng Zhang a écrit :
+> Many architectures implement the trap_init() as NOP, since there is
+> no such default for trap_init(), this empty stub is duplicated among
+> these architectures. Provide a generic but weak NOP implementation
+> to drop the empty stubs of trap_init() in these architectures.
 
+You define the weak function in the __init section.
+
+Most but not all architectures had it in __init section.
+
+And the remaining ones may not be defined in __init section. For instance look at the one in alpha 
+architecture.
+
+Have you checked that it is not a problem ? It would be good to say something about it in the commit 
+description.
+
+
+> 
+> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+> ---
+>   arch/arc/kernel/traps.c      |  5 -----
+>   arch/arm/kernel/traps.c      |  5 -----
+>   arch/h8300/kernel/traps.c    | 13 -------------
+>   arch/hexagon/kernel/traps.c  |  4 ----
+>   arch/nds32/kernel/traps.c    |  5 -----
+>   arch/nios2/kernel/traps.c    |  5 -----
+>   arch/openrisc/kernel/traps.c |  5 -----
+>   arch/parisc/kernel/traps.c   |  4 ----
+>   arch/powerpc/kernel/traps.c  |  5 -----
+>   arch/riscv/kernel/traps.c    |  5 -----
+>   arch/um/kernel/trap.c        |  4 ----
+>   init/main.c                  |  2 ++
+>   12 files changed, 2 insertions(+), 60 deletions(-)
+> 
+> diff --git a/init/main.c b/init/main.c
+> index 53b278845b88..4bdbe2928530 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -790,6 +790,8 @@ static inline void initcall_debug_enable(void)
+>   }
+>   #endif
+>   
+> +void __init __weak trap_init(void) { }
+> +
+
+I think in a C file we don't try to save space as much as in a header file.
+
+I would prefer something like:
+
+
+void __init __weak trap_init(void)
+{
+}
+
+
+>   /* Report memory auto-initialization states for this boot. */
+>   static void __init report_meminit(void)
+>   {
+> 
