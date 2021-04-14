@@ -2,48 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DB535F9B1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 19:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8734035FB70
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 21:15:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FL8S858m8z3bwr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 03:22:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FLBy82wrjz3bsv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 05:15:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DukjTDvl;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DukjTDvl;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FL8Rp5xqhz304X
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 03:22:29 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 13EHK42L023677;
- Wed, 14 Apr 2021 12:20:04 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 13EHK3HZ023672;
- Wed, 14 Apr 2021 12:20:03 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Wed, 14 Apr 2021 12:20:03 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: David Laight <David.Laight@aculab.com>
-Subject: Re: [PATCH v1 1/2] powerpc/bitops: Use immediate operand when possible
-Message-ID: <20210414172003.GX26583@gate.crashing.org>
-References: <09da6fec57792d6559d1ea64e00be9870b02dab4.1617896018.git.christophe.leroy@csgroup.eu>
- <20210412215428.GM26583@gate.crashing.org>
- <ecb1b1a5-ae92-e8a3-6490-26341edfbccb@csgroup.eu>
- <20210413215803.GT26583@gate.crashing.org>
- <1618365589.67fxh7cot9.astroid@bobo.none>
- <20210414122409.GV26583@gate.crashing.org>
- <daacce9f-1900-1034-980b-be5a58d6be09@csgroup.eu>
- <20210414151921.GW26583@gate.crashing.org>
- <efcabc9410cf4d03b203749a02e5a935@AcuMS.aculab.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <efcabc9410cf4d03b203749a02e5a935@AcuMS.aculab.com>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=brouer@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=DukjTDvl; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=DukjTDvl; 
+ dkim-atps=neutral
+X-Greylist: delayed 82 seconds by postgrey-1.36 at boromir;
+ Thu, 15 Apr 2021 05:15:04 AEST
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FLBxh6YyGz302D
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 05:15:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1618427702;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=F6FTiB8UzDW4wKvTNKebl00UCwFSLpS/fkluHFZvJPI=;
+ b=DukjTDvlfVxTgWXHwUsNvgeJO/PUgsmkDnkVHEKbKxYY6VySqtZJWxZilrVs8PNgEpQqUB
+ NHlQRqOncaYFb/CUfXahq4RJiNfcClB/6vjI8HEfv2FjG1jYcKyTySgMheMkhvYrS+1pKl
+ Jp50E+Kl5thoza5h97VECdiqGA9p+9g=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1618427702;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=F6FTiB8UzDW4wKvTNKebl00UCwFSLpS/fkluHFZvJPI=;
+ b=DukjTDvlfVxTgWXHwUsNvgeJO/PUgsmkDnkVHEKbKxYY6VySqtZJWxZilrVs8PNgEpQqUB
+ NHlQRqOncaYFb/CUfXahq4RJiNfcClB/6vjI8HEfv2FjG1jYcKyTySgMheMkhvYrS+1pKl
+ Jp50E+Kl5thoza5h97VECdiqGA9p+9g=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-390-dEgJCfFYO6qLSVsI6D4wlQ-1; Wed, 14 Apr 2021 15:13:32 -0400
+X-MC-Unique: dEgJCfFYO6qLSVsI6D4wlQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F38BC6D241;
+ Wed, 14 Apr 2021 19:13:30 +0000 (UTC)
+Received: from carbon (unknown [10.36.110.19])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 666961000324;
+ Wed, 14 Apr 2021 19:13:23 +0000 (UTC)
+Date: Wed, 14 Apr 2021 21:13:22 +0200
+From: Jesper Dangaard Brouer <brouer@redhat.com>
+To: Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
+Message-ID: <20210414211322.3799afd4@carbon>
+In-Reply-To: <20210414115052.GS2531743@casper.infradead.org>
+References: <20210410205246.507048-1-willy@infradead.org>
+ <20210410205246.507048-2-willy@infradead.org>
+ <20210411114307.5087f958@carbon>
+ <20210411103318.GC2531743@casper.infradead.org>
+ <20210412011532.GG2531743@casper.infradead.org>
+ <20210414101044.19da09df@carbon>
+ <20210414115052.GS2531743@casper.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,49 +92,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Paul Mackerras <paulus@samba.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Arnd Bergmann <arnd@kernel.org>,
+ Grygorii Strashko <grygorii.strashko@ti.com>, netdev@vger.kernel.org,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-mips@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, brouer@redhat.com,
+ Matteo Croce <mcroce@linux.microsoft.com>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 14, 2021 at 03:32:04PM +0000, David Laight wrote:
-> From: Segher Boessenkool
-> > Sent: 14 April 2021 16:19
-> ...
-> > > Could the kernel use GCC builtin atomic functions instead ?
-> > >
-> > > https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html
-> > 
-> > Certainly that should work fine for the simpler cases that the atomic
-> > operations are meant to provide.  But esp. for not-so-simple cases the
-> > kernel may require some behaviour provided by the existing assembler
-> > implementation, and not by the atomic builtins.
-> > 
-> > I'm not saying this cannot work, just that some serious testing will be
-> > needed.  If it works it should be the best of all worlds, so then it is
-> > a really good idea yes :-)
-> 
-> I suspect they just add an extra layer of abstraction that makes it
-> even more difficult to verify and could easily get broken by a compiler
-> update (etc).
+On Wed, 14 Apr 2021 12:50:52 +0100
+Matthew Wilcox <willy@infradead.org> wrote:
 
-I would say it uses an existing facility, instead of creating a kernel-
-specific one.
+> > That said, I think we need to have a quicker fix for the immediate
+> > issue with 64-bit bit dma_addr on 32-bit arch and the misalignment hole
+> > it leaves[3] in struct page.  In[3] you mention ppc32, does it only
+> > happens on certain 32-bit archs? =20
+>=20
+> AFAICT it happens on mips32, ppc32, arm32 and arc.  It doesn't happen
+> on x86-32 because dma_addr_t is 32-bit aligned.
 
-> The other issue is that the code needs to be correct with compiled
-> with (for example) -O0.
-> That could very easily break anything except the asm implementation
-> if additional memory accesses and/or increased code size cause grief.
+(If others want to reproduce).  First I could not reproduce on ARM32.
+Then I found out that enabling CONFIG_XEN on ARCH=3Darm was needed to
+cause the issue by enabling CONFIG_ARCH_DMA_ADDR_T_64BIT.
 
-The compiler generates correct code.  New versions of the compiler or
-old, -O0 or not, under any phase of the moon.
+Details below signature.
+--=20
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
 
-Of course sometimes the compiler is broken, but there are pre-existing
-ways of dealing with that, and there is no reason at all to think this
-would break more often than random other code.
+=46rom file: arch/arm/Kconfig
+
+config XEN
+	bool "Xen guest support on ARM"
+	depends on ARM && AEABI && OF
+	depends on CPU_V7 && !CPU_V6
+	depends on !GENERIC_ATOMIC64
+	depends on MMU
+	select ARCH_DMA_ADDR_T_64BIT
+	select ARM_PSCI
+	select SWIOTLB
+	select SWIOTLB_XEN
+	select PARAVIRT
+	help
+	  Say Y if you want to run Linux in a Virtual Machine on Xen on ARM.
+
+My make compile command:
+
+ export VERSION=3Dgcc-arm-10.2-2020.11-x86_64-arm-none-linux-gnueabihf/
+ export CROSS_COMPILE=3D"/home/${USER}/cross-compilers/${VERSION}/bin/arm-n=
+one-linux-gnueabihf-"
+ make -j8 ARCH=3Darm CROSS_COMPILE=3D$CROSS_COMPILE
+
+Pahole output:
+ $ pahole -C page mm/page_alloc.o
+
+ struct page {
+        long unsigned int          flags;                /*     0     4 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        union {
+                struct {
+                        struct list_head lru;            /*     8     8 */
+                        struct address_space * mapping;  /*    16     4 */
+                        long unsigned int index;         /*    20     4 */
+                        long unsigned int private;       /*    24     4 */
+                };                                       /*     8    20 */
+                struct {
+                        dma_addr_t dma_addr;             /*     8     8 */
+                };                                       /*     8     8 */
+                struct {
+                        union {
+                                struct list_head slab_list; /*     8     8 =
+*/
+                                struct {
+                                        struct page * next; /*     8     4 =
+*/
+                                        short int pages; /*    12     2 */
+                                        short int pobjects; /*    14     2 =
+*/
+                                };                       /*     8     8 */
+                        };                               /*     8     8 */
+                        struct kmem_cache * slab_cache;  /*    16     4 */
+                        void *     freelist;             /*    20     4 */
+                        union {
+                                void * s_mem;            /*    24     4 */
+                                long unsigned int counters; /*    24     4 =
+*/
+                                struct {
+                                        unsigned int inuse:16; /*    24: 0 =
+ 4 */
+                                        unsigned int objects:15; /*    24:1=
+6  4 */
+                                        unsigned int frozen:1; /*    24:31 =
+ 4 */
+                                };                       /*    24     4 */
+                        };                               /*    24     4 */
+                };                                       /*     8    20 */
+                struct {
+                        long unsigned int compound_head; /*     8     4 */
+                        unsigned char compound_dtor;     /*    12     1 */
+                        unsigned char compound_order;    /*    13     1 */
+
+                        /* XXX 2 bytes hole, try to pack */
+
+                        atomic_t   compound_mapcount;    /*    16     4 */
+                        unsigned int compound_nr;        /*    20     4 */
+                };                                       /*     8    16 */
+                struct {
+                        long unsigned int _compound_pad_1; /*     8     4 */
+                        atomic_t   hpage_pinned_refcount; /*    12     4 */
+                        struct list_head deferred_list;  /*    16     8 */
+                };                                       /*     8    16 */
+                struct {
+                        long unsigned int _pt_pad_1;     /*     8     4 */
+                        pgtable_t  pmd_huge_pte;         /*    12     4 */
+                        long unsigned int _pt_pad_2;     /*    16     4 */
+                        union {
+                                struct mm_struct * pt_mm; /*    20     4 */
+                                atomic_t pt_frag_refcount; /*    20     4 */
+                        };                               /*    20     4 */
+                        spinlock_t ptl;                  /*    24     4 */
+                };                                       /*     8    20 */
+                struct {
+                        struct dev_pagemap * pgmap;      /*     8     4 */
+                        void *     zone_device_data;     /*    12     4 */
+                };                                       /*     8     8 */
+                struct callback_head callback_head __attribute__((__aligned=
+__(4))); /*     8     8 */
+        } __attribute__((__aligned__(8)));               /*     8    24 */
+        union {
+                atomic_t           _mapcount;            /*    32     4 */
+                unsigned int       page_type;            /*    32     4 */
+                unsigned int       active;               /*    32     4 */
+                int                units;                /*    32     4 */
+        };                                               /*    32     4 */
+        atomic_t                   _refcount;            /*    36     4 */
+
+        /* size: 40, cachelines: 1, members: 4 */
+        /* sum members: 36, holes: 1, sum holes: 4 */
+        /* forced alignments: 1, forced holes: 1, sum forced holes: 4 */
+        /* last cacheline: 40 bytes */
+} __attribute__((__aligned__(8)));
 
 
-Segher
+
