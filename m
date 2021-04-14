@@ -1,56 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F0335EC24
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 07:22:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDB435EC30
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 07:24:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FKrT23Wr0z3c1Q
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 15:22:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FKrW86wykz3bwP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 15:24:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PteWUTUy;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=PteWUTUy; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FKrSj36krz2xZ0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 15:22:10 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FKrSZ3r2Lz9tvhy;
- Wed, 14 Apr 2021 07:22:06 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id QQLegraZ5N-Q; Wed, 14 Apr 2021 07:22:06 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FKrSZ0tq1z9tvg5;
- Wed, 14 Apr 2021 07:22:06 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E4B348B7B6;
- Wed, 14 Apr 2021 07:22:06 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id yJq5yeVH30mK; Wed, 14 Apr 2021 07:22:06 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D7878B75F;
- Wed, 14 Apr 2021 07:22:05 +0200 (CEST)
-Subject: Re: [PATCH] mm: Define ARCH_HAS_FIRST_USER_ADDRESS
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-References: <1618368899-20311-1-git-send-email-anshuman.khandual@arm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <f29ba8e2-3071-c963-1e9f-e8c88526ed8d@csgroup.eu>
-Date: Wed, 14 Apr 2021 07:22:06 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FKrVj4D7cz2ydK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Apr 2021 15:23:57 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13E53oSD048940; Wed, 14 Apr 2021 01:23:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=ZXNcef9HhIw8CQ/oyjT8H90mcUTWDFkyPmQay6v4kyU=;
+ b=PteWUTUykO0PLrH1dDFwO2MC1IumcXgyL8P+TeBl1sjRt8blhRH9e0nd9LVtdiVrQ3ky
+ SYTMtoOZbKcpsnMTGEz+StJvnpJeLb+ex3dT3xJ4cfyTaaG9ixNCw9wEGNK/0RgB7oAW
+ ZwW+g+YV4EZzc2eOVf3TVhdo7A7DIRb1ENeFlKAJFEO2OvOZfih6AUrH2BJWS9jqFHq8
+ n6HLZUCUqBvTLnT4fMF9Ms4pS4H7SiEQN7c7huR7C0/16bY1tmjpy8EiP85qp7Gh6StB
+ UO6JhjdoQF1bZqpIymaHPee9Xe4wtzBEYL7fZ0mPVGSULw8dW1aGjI1YrMhqLBTQQYiH 3w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37w7sdvjpy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 14 Apr 2021 01:23:43 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13E5HntN095002;
+ Wed, 14 Apr 2021 01:23:43 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37w7sdvjpu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 14 Apr 2021 01:23:43 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13E5KtCs014404;
+ Wed, 14 Apr 2021 05:23:43 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma02wdc.us.ibm.com with ESMTP id 37u3n9xjsv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 14 Apr 2021 05:23:43 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13E5NgIF10289728
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 14 Apr 2021 05:23:42 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7ED6EB2065;
+ Wed, 14 Apr 2021 05:23:42 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D87E8B205F;
+ Wed, 14 Apr 2021 05:23:39 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.77.205.193])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 14 Apr 2021 05:23:39 +0000 (GMT)
+X-Mailer: emacs 27.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, jniethe5@gmail.com
+Subject: Re: [PATCH v2 3/4] powerpc: Rename probe_kernel_read_inst()
+In-Reply-To: <e2fbccd1a0b4e8ed7e12936e03be76588202c7a0.1618331980.git.christophe.leroy@csgroup.eu>
+References: <857ceb23b6a614aea2522e770b067593d5f9e906.1618331980.git.christophe.leroy@csgroup.eu>
+ <e2fbccd1a0b4e8ed7e12936e03be76588202c7a0.1618331980.git.christophe.leroy@csgroup.eu>
+Date: Wed, 14 Apr 2021 10:53:37 +0530
+Message-ID: <874kg930di.fsf@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <1618368899-20311-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: h5Fop8qgyL9NvRPzr95NH2Lmu-9tAK3E
+X-Proofpoint-GUID: Mc4n80NnfrTdkRAM1VJUo4p-c3ZlUomN
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-14_01:2021-04-13,
+ 2021-04-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0
+ phishscore=0 impostorscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0
+ adultscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104140034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,122 +108,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
- linux-um@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+
+> When probe_kernel_read_inst() was created, it was to mimic
+> probe_kernel_read() function.
+>
+> Since then, probe_kernel_read() has been renamed
+> copy_from_kernel_nofault().
+>
+> Rename probe_kernel_read_inst() into copy_from_kernel_nofault_inst().
+
+At first glance I read it as copy from kernel nofault instruction.
+How about copy_inst_from_kernel_nofault()? 
 
 
-Le 14/04/2021 à 04:54, Anshuman Khandual a écrit :
-> Currently most platforms define FIRST_USER_ADDRESS as 0UL duplicating the
-> same code all over. Instead define a new option ARCH_HAS_FIRST_USER_ADDRESS
-> for those platforms which would override generic default FIRST_USER_ADDRESS
-> value 0UL. This makes it much cleaner with reduced code.
-> 
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-csky@vger.kernel.org
-> Cc: linux-hexagon@vger.kernel.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: openrisc@lists.librecores.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: linux-um@lists.infradead.org
-> Cc: linux-xtensa@linux-xtensa.org
-> Cc: x86@kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->   arch/alpha/include/asm/pgtable.h             | 1 -
->   arch/arc/include/asm/pgtable.h               | 6 ------
->   arch/arm/Kconfig                             | 1 +
->   arch/arm64/include/asm/pgtable.h             | 2 --
->   arch/csky/include/asm/pgtable.h              | 1 -
->   arch/hexagon/include/asm/pgtable.h           | 3 ---
->   arch/ia64/include/asm/pgtable.h              | 1 -
->   arch/m68k/include/asm/pgtable_mm.h           | 1 -
->   arch/microblaze/include/asm/pgtable.h        | 2 --
->   arch/mips/include/asm/pgtable-32.h           | 1 -
->   arch/mips/include/asm/pgtable-64.h           | 1 -
->   arch/nds32/Kconfig                           | 1 +
->   arch/nios2/include/asm/pgtable.h             | 2 --
->   arch/openrisc/include/asm/pgtable.h          | 1 -
->   arch/parisc/include/asm/pgtable.h            | 2 --
->   arch/powerpc/include/asm/book3s/pgtable.h    | 1 -
->   arch/powerpc/include/asm/nohash/32/pgtable.h | 1 -
->   arch/powerpc/include/asm/nohash/64/pgtable.h | 2 --
->   arch/riscv/include/asm/pgtable.h             | 2 --
->   arch/s390/include/asm/pgtable.h              | 2 --
->   arch/sh/include/asm/pgtable.h                | 2 --
->   arch/sparc/include/asm/pgtable_32.h          | 1 -
->   arch/sparc/include/asm/pgtable_64.h          | 3 ---
->   arch/um/include/asm/pgtable-2level.h         | 1 -
->   arch/um/include/asm/pgtable-3level.h         | 1 -
->   arch/x86/include/asm/pgtable_types.h         | 2 --
->   arch/xtensa/include/asm/pgtable.h            | 1 -
->   include/linux/mm.h                           | 4 ++++
->   mm/Kconfig                                   | 4 ++++
->   29 files changed, 10 insertions(+), 43 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 8ba434287387..47098ccd715e 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -46,6 +46,10 @@ extern int sysctl_page_lock_unfairness;
->   
->   void init_mm_internals(void);
->   
-> +#ifndef ARCH_HAS_FIRST_USER_ADDRESS
-
-I guess you didn't test it ..... :)
-
-should be #ifndef CONFIG_ARCH_HAS_FIRST_USER_ADDRESS
-
-> +#define FIRST_USER_ADDRESS	0UL
-> +#endif
-
-But why do we need a config option at all for that ?
-
-Why not just:
-
-#ifndef FIRST_USER_ADDRESS
-#define FIRST_USER_ADDRESS	0UL
-#endif
-
-> +
->   #ifndef CONFIG_NEED_MULTIPLE_NODES	/* Don't use mapnrs, do it properly */
->   extern unsigned long max_mapnr;
->   
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 24c045b24b95..373fbe377075 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -806,6 +806,10 @@ config VMAP_PFN
->   
->   config ARCH_USES_HIGH_VMA_FLAGS
->   	bool
-> +
-> +config ARCH_HAS_FIRST_USER_ADDRESS
-> +	bool
-> +
->   config ARCH_HAS_PKEYS
->   	bool
->   
-> 
+-aneesh
