@@ -2,85 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8734035FB70
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 21:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9776F35FD42
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 23:24:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FLBy82wrjz3bsv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 05:15:28 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DukjTDvl;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DukjTDvl;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FLFqJ3DsZz3c06
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 07:24:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=brouer@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=DukjTDvl; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=DukjTDvl; 
- dkim-atps=neutral
-X-Greylist: delayed 82 seconds by postgrey-1.36 at boromir;
- Thu, 15 Apr 2021 05:15:04 AEST
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FLBxh6YyGz302D
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 05:15:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1618427702;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=F6FTiB8UzDW4wKvTNKebl00UCwFSLpS/fkluHFZvJPI=;
- b=DukjTDvlfVxTgWXHwUsNvgeJO/PUgsmkDnkVHEKbKxYY6VySqtZJWxZilrVs8PNgEpQqUB
- NHlQRqOncaYFb/CUfXahq4RJiNfcClB/6vjI8HEfv2FjG1jYcKyTySgMheMkhvYrS+1pKl
- Jp50E+Kl5thoza5h97VECdiqGA9p+9g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1618427702;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=F6FTiB8UzDW4wKvTNKebl00UCwFSLpS/fkluHFZvJPI=;
- b=DukjTDvlfVxTgWXHwUsNvgeJO/PUgsmkDnkVHEKbKxYY6VySqtZJWxZilrVs8PNgEpQqUB
- NHlQRqOncaYFb/CUfXahq4RJiNfcClB/6vjI8HEfv2FjG1jYcKyTySgMheMkhvYrS+1pKl
- Jp50E+Kl5thoza5h97VECdiqGA9p+9g=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-390-dEgJCfFYO6qLSVsI6D4wlQ-1; Wed, 14 Apr 2021 15:13:32 -0400
-X-MC-Unique: dEgJCfFYO6qLSVsI6D4wlQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F38BC6D241;
- Wed, 14 Apr 2021 19:13:30 +0000 (UTC)
-Received: from carbon (unknown [10.36.110.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 666961000324;
- Wed, 14 Apr 2021 19:13:23 +0000 (UTC)
-Date: Wed, 14 Apr 2021 21:13:22 +0200
-From: Jesper Dangaard Brouer <brouer@redhat.com>
-To: Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
-Message-ID: <20210414211322.3799afd4@carbon>
-In-Reply-To: <20210414115052.GS2531743@casper.infradead.org>
-References: <20210410205246.507048-1-willy@infradead.org>
- <20210410205246.507048-2-willy@infradead.org>
- <20210411114307.5087f958@carbon>
- <20210411103318.GC2531743@casper.infradead.org>
- <20210412011532.GG2531743@casper.infradead.org>
- <20210414101044.19da09df@carbon>
- <20210414115052.GS2531743@casper.infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FLFpz049Fz303q
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 07:24:21 +1000 (AEST)
+IronPort-SDR: dyKYvq1Y1i/q+m10MCxumSJK7x7GwLGxQT8t4qmdn4q0jXJldaevDUf1OJyaSrATe5PFrIE4Lx
+ YV7DbIau2Tag==
+X-IronPort-AV: E=McAfee;i="6200,9189,9954"; a="181863134"
+X-IronPort-AV: E=Sophos;i="5.82,223,1613462400"; d="scan'208";a="181863134"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2021 14:24:17 -0700
+IronPort-SDR: OQisyYjSRzHMWbR1sr/zXCDxGy72+URmxBOoD1fbM+AL9NfJQcgg2I0UHNQN18pC0s0enQ9zW4
+ HhdrOg8+GkbQ==
+X-IronPort-AV: E=Sophos;i="5.82,223,1613462400"; d="scan'208";a="522128834"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+ by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2021 14:24:17 -0700
+Date: Wed, 14 Apr 2021 14:24:17 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/papr_scm: Reduce error severity if nvdimm stats
+ inaccessible
+Message-ID: <20210414212417.GC1904484@iweiny-DESK2.sc.intel.com>
+References: <20210414124026.332472-1-vaibhav@linux.ibm.com>
+ <20210414153625.GB1904484@iweiny-DESK2.sc.intel.com>
+ <87lf9kkfaj.fsf@vajain21.in.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87lf9kkfaj.fsf@vajain21.in.ibm.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,152 +55,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@kernel.org>,
- Grygorii Strashko <grygorii.strashko@ti.com>, netdev@vger.kernel.org,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, brouer@redhat.com,
- Matteo Croce <mcroce@linux.microsoft.com>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org
+Cc: Santosh Sivaraj <santosh@fossix.org>, linux-nvdimm@lists.01.org,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 14 Apr 2021 12:50:52 +0100
-Matthew Wilcox <willy@infradead.org> wrote:
+On Wed, Apr 14, 2021 at 09:51:40PM +0530, Vaibhav Jain wrote:
+> Thanks for looking into this patch Ira,
+> 
+> Ira Weiny <ira.weiny@intel.com> writes:
+> 
+> > On Wed, Apr 14, 2021 at 06:10:26PM +0530, Vaibhav Jain wrote:
+> >> Currently drc_pmem_qeury_stats() generates a dev_err in case
+> >> "Enable Performance Information Collection" feature is disabled from
+> >> HMC. The error is of the form below:
+> >> 
+> >> papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
+> >> 	 performance stats, Err:-10
+> >> 
+> >> This error message confuses users as it implies a possible problem
+> >> with the nvdimm even though its due to a disabled feature.
+> >> 
+> >> So we fix this by explicitly handling the H_AUTHORITY error from the
+> >> H_SCM_PERFORMANCE_STATS hcall and generating a warning instead of an
+> >> error, saying that "Performance stats in-accessible".
+> >> 
+> >> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
+> >> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> >> ---
+> >>  arch/powerpc/platforms/pseries/papr_scm.c | 3 +++
+> >>  1 file changed, 3 insertions(+)
+> >> 
+> >> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> >> index 835163f54244..9216424f8be3 100644
+> >> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> >> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> >> @@ -277,6 +277,9 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
+> >>  		dev_err(&p->pdev->dev,
+> >>  			"Unknown performance stats, Err:0x%016lX\n", ret[0]);
+> >>  		return -ENOENT;
+> >> +	} else if (rc == H_AUTHORITY) {
+> >> +		dev_warn(&p->pdev->dev, "Performance stats in-accessible");
+> >> +		return -EPERM;
+> >
+> > Is this because of a disabled feature or because of permissions?
+> 
+> Its because of a disabled feature that revokes permission for a guest to
+> retrieve performance statistics.
+> 
+> The feature is called "Enable Performance Information Collection" and
+> once disabled the hcall H_SCM_PERFORMANCE_STATS returns an error
+> H_AUTHORITY indicating that the guest doesn't have permission to retrieve
+> performance statistics.
 
-> > That said, I think we need to have a quicker fix for the immediate
-> > issue with 64-bit bit dma_addr on 32-bit arch and the misalignment hole
-> > it leaves[3] in struct page.  In[3] you mention ppc32, does it only
-> > happens on certain 32-bit archs? =20
->=20
-> AFAICT it happens on mips32, ppc32, arm32 and arc.  It doesn't happen
-> on x86-32 because dma_addr_t is 32-bit aligned.
+In that case would it be appropriate to have the error message indicate a
+permission issue?
 
-(If others want to reproduce).  First I could not reproduce on ARM32.
-Then I found out that enabling CONFIG_XEN on ARCH=3Darm was needed to
-cause the issue by enabling CONFIG_ARCH_DMA_ADDR_T_64BIT.
+Something like 'permission denied'?
 
-Details below signature.
---=20
-Best regards,
-  Jesper Dangaard Brouer
-  MSc.CS, Principal Kernel Engineer at Red Hat
-  LinkedIn: http://www.linkedin.com/in/brouer
-
-=46rom file: arch/arm/Kconfig
-
-config XEN
-	bool "Xen guest support on ARM"
-	depends on ARM && AEABI && OF
-	depends on CPU_V7 && !CPU_V6
-	depends on !GENERIC_ATOMIC64
-	depends on MMU
-	select ARCH_DMA_ADDR_T_64BIT
-	select ARM_PSCI
-	select SWIOTLB
-	select SWIOTLB_XEN
-	select PARAVIRT
-	help
-	  Say Y if you want to run Linux in a Virtual Machine on Xen on ARM.
-
-My make compile command:
-
- export VERSION=3Dgcc-arm-10.2-2020.11-x86_64-arm-none-linux-gnueabihf/
- export CROSS_COMPILE=3D"/home/${USER}/cross-compilers/${VERSION}/bin/arm-n=
-one-linux-gnueabihf-"
- make -j8 ARCH=3Darm CROSS_COMPILE=3D$CROSS_COMPILE
-
-Pahole output:
- $ pahole -C page mm/page_alloc.o
-
- struct page {
-        long unsigned int          flags;                /*     0     4 */
-
-        /* XXX 4 bytes hole, try to pack */
-
-        union {
-                struct {
-                        struct list_head lru;            /*     8     8 */
-                        struct address_space * mapping;  /*    16     4 */
-                        long unsigned int index;         /*    20     4 */
-                        long unsigned int private;       /*    24     4 */
-                };                                       /*     8    20 */
-                struct {
-                        dma_addr_t dma_addr;             /*     8     8 */
-                };                                       /*     8     8 */
-                struct {
-                        union {
-                                struct list_head slab_list; /*     8     8 =
-*/
-                                struct {
-                                        struct page * next; /*     8     4 =
-*/
-                                        short int pages; /*    12     2 */
-                                        short int pobjects; /*    14     2 =
-*/
-                                };                       /*     8     8 */
-                        };                               /*     8     8 */
-                        struct kmem_cache * slab_cache;  /*    16     4 */
-                        void *     freelist;             /*    20     4 */
-                        union {
-                                void * s_mem;            /*    24     4 */
-                                long unsigned int counters; /*    24     4 =
-*/
-                                struct {
-                                        unsigned int inuse:16; /*    24: 0 =
- 4 */
-                                        unsigned int objects:15; /*    24:1=
-6  4 */
-                                        unsigned int frozen:1; /*    24:31 =
- 4 */
-                                };                       /*    24     4 */
-                        };                               /*    24     4 */
-                };                                       /*     8    20 */
-                struct {
-                        long unsigned int compound_head; /*     8     4 */
-                        unsigned char compound_dtor;     /*    12     1 */
-                        unsigned char compound_order;    /*    13     1 */
-
-                        /* XXX 2 bytes hole, try to pack */
-
-                        atomic_t   compound_mapcount;    /*    16     4 */
-                        unsigned int compound_nr;        /*    20     4 */
-                };                                       /*     8    16 */
-                struct {
-                        long unsigned int _compound_pad_1; /*     8     4 */
-                        atomic_t   hpage_pinned_refcount; /*    12     4 */
-                        struct list_head deferred_list;  /*    16     8 */
-                };                                       /*     8    16 */
-                struct {
-                        long unsigned int _pt_pad_1;     /*     8     4 */
-                        pgtable_t  pmd_huge_pte;         /*    12     4 */
-                        long unsigned int _pt_pad_2;     /*    16     4 */
-                        union {
-                                struct mm_struct * pt_mm; /*    20     4 */
-                                atomic_t pt_frag_refcount; /*    20     4 */
-                        };                               /*    20     4 */
-                        spinlock_t ptl;                  /*    24     4 */
-                };                                       /*     8    20 */
-                struct {
-                        struct dev_pagemap * pgmap;      /*     8     4 */
-                        void *     zone_device_data;     /*    12     4 */
-                };                                       /*     8     8 */
-                struct callback_head callback_head __attribute__((__aligned=
-__(4))); /*     8     8 */
-        } __attribute__((__aligned__(8)));               /*     8    24 */
-        union {
-                atomic_t           _mapcount;            /*    32     4 */
-                unsigned int       page_type;            /*    32     4 */
-                unsigned int       active;               /*    32     4 */
-                int                units;                /*    32     4 */
-        };                                               /*    32     4 */
-        atomic_t                   _refcount;            /*    36     4 */
-
-        /* size: 40, cachelines: 1, members: 4 */
-        /* sum members: 36, holes: 1, sum holes: 4 */
-        /* forced alignments: 1, forced holes: 1, sum forced holes: 4 */
-        /* last cacheline: 40 bytes */
-} __attribute__((__aligned__(8)));
-
-
+Ira
 
