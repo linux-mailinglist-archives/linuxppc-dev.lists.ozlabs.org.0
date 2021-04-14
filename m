@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98EF35F952
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 18:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D90C835F953
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 18:59:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FL7xM6XQdz3bTy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 02:59:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FL7xj63YBz3bs5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 02:59:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,36 +15,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FL7x339mVz2yS0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FL7x33Fv3z2yx3
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 02:59:16 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FL7wt0Jt8zB09ZG;
- Wed, 14 Apr 2021 18:59:10 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FL7wv2tHxzB09ZH;
+ Wed, 14 Apr 2021 18:59:11 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 7pWPN0vEV4Vx; Wed, 14 Apr 2021 18:59:09 +0200 (CEST)
+ with ESMTP id u3BYiVK7Ivpp; Wed, 14 Apr 2021 18:59:11 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FL7ws6cQ4zB09ZC;
- Wed, 14 Apr 2021 18:59:09 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AE7D58B7CE;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FL7wv1pJPzB09ZC;
  Wed, 14 Apr 2021 18:59:11 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E71A88B7CE;
+ Wed, 14 Apr 2021 18:59:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 6jxSwQRpf5LT; Wed, 14 Apr 2021 18:59:11 +0200 (CEST)
+ with ESMTP id 4NvEI6NJYSUF; Wed, 14 Apr 2021 18:59:12 +0200 (CEST)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6510D8B7C4;
- Wed, 14 Apr 2021 18:59:11 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6F8708B7C4;
+ Wed, 14 Apr 2021 18:59:12 +0200 (CEST)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 38A04679F3; Wed, 14 Apr 2021 16:59:11 +0000 (UTC)
-Message-Id: <7aaa03114d8bc4ba1805b51993fb92ec520899e0.1618419539.git.christophe.leroy@csgroup.eu>
+ id 4C14A679F3; Wed, 14 Apr 2021 16:59:12 +0000 (UTC)
+Message-Id: <e2034df6606fad6f8c9708c9fb375594c5be8bf7.1618419539.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <7aaa03114d8bc4ba1805b51993fb92ec520899e0.1618419539.git.christophe.leroy@csgroup.eu>
+References: <7aaa03114d8bc4ba1805b51993fb92ec520899e0.1618419539.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 1/3] powerpc/bitops: Use immediate operand when possible
+Subject: [PATCH v3 2/3] powerpc/atomics: Use immediate operand when possible
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed, 14 Apr 2021 16:59:11 +0000 (UTC)
+Date: Wed, 14 Apr 2021 16:59:12 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,186 +63,169 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Today we get the following code generation for bitops like
-set or clear bit:
+Today we get the following code generation for atomic operations:
 
-	c0009fe0:	39 40 08 00 	li      r10,2048
-	c0009fe4:	7c e0 40 28 	lwarx   r7,0,r8
-	c0009fe8:	7c e7 53 78 	or      r7,r7,r10
-	c0009fec:	7c e0 41 2d 	stwcx.  r7,0,r8
+	c001bb2c:	39 20 00 01 	li      r9,1
+	c001bb30:	7d 40 18 28 	lwarx   r10,0,r3
+	c001bb34:	7d 09 50 50 	subf    r8,r9,r10
+	c001bb38:	7d 00 19 2d 	stwcx.  r8,0,r3
 
-	c000d568:	39 00 18 00 	li      r8,6144
-	c000d56c:	7c c0 38 28 	lwarx   r6,0,r7
-	c000d570:	7c c6 40 78 	andc    r6,r6,r8
-	c000d574:	7c c0 39 2d 	stwcx.  r6,0,r7
+	c001c7a8:	39 40 00 01 	li      r10,1
+	c001c7ac:	7d 00 18 28 	lwarx   r8,0,r3
+	c001c7b0:	7c ea 42 14 	add     r7,r10,r8
+	c001c7b4:	7c e0 19 2d 	stwcx.  r7,0,r3
 
-Most set bits are constant on lower 16 bits, so it can easily
-be replaced by the "immediate" version of the operation. Allow
-GCC to choose between the normal or immediate form.
+By allowing GCC to choose between immediate or regular operation,
+we get:
 
-For clear bits, on 32 bits 'rlwinm' can be used instead of 'andc' for
-when all bits to be cleared are consecutive.
+	c001bb2c:	7d 20 18 28 	lwarx   r9,0,r3
+	c001bb30:	39 49 ff ff 	addi    r10,r9,-1
+	c001bb34:	7d 40 19 2d 	stwcx.  r10,0,r3
+	--
+	c001c7a4:	7d 40 18 28 	lwarx   r10,0,r3
+	c001c7a8:	39 0a 00 01 	addi    r8,r10,1
+	c001c7ac:	7d 00 19 2d 	stwcx.  r8,0,r3
 
-On 64 bits we don't have any equivalent single operation for clearing,
-single bits or a few bits, we'd need two 'rldicl' so it is not
-worth it, the li/andc sequence is doing the same.
+For "and", the dot form has to be used because "andi" doesn't exist.
 
-With this patch we get:
+For logical operations we use unsigned 16 bits immediate.
+For arithmetic operations we use signed 16 bits immediate.
 
-	c0009fe0:	7d 00 50 28 	lwarx   r8,0,r10
-	c0009fe4:	61 08 08 00 	ori     r8,r8,2048
-	c0009fe8:	7d 00 51 2d 	stwcx.  r8,0,r10
-
-	c000d558:	7c e0 40 28 	lwarx   r7,0,r8
-	c000d55c:	54 e7 05 64 	rlwinm  r7,r7,0,21,18
-	c000d560:	7c e0 41 2d 	stwcx.  r7,0,r8
-
-On pmac32_defconfig, it reduces the text by approx 10 kbytes.
+On pmac32_defconfig, it reduces the text by approx another 8 kbytes.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
 ---
-v3:
-- Using the mask validation proposed by Segher
-
-v2:
-- Use "n" instead of "i" as constraint for the rlwinm mask
-- Improve mask verification to handle more than single bit masks
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+v2: Use "addc/addic"
 ---
- arch/powerpc/include/asm/bitops.h | 89 ++++++++++++++++++++++++++++---
- 1 file changed, 81 insertions(+), 8 deletions(-)
+ arch/powerpc/include/asm/atomic.h | 56 +++++++++++++++----------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/bitops.h b/arch/powerpc/include/asm/bitops.h
-index 299ab33505a6..09500c789972 100644
---- a/arch/powerpc/include/asm/bitops.h
-+++ b/arch/powerpc/include/asm/bitops.h
-@@ -71,19 +71,61 @@ static inline void fn(unsigned long mask,	\
- 	__asm__ __volatile__ (			\
- 	prefix					\
- "1:"	PPC_LLARX(%0,0,%3,0) "\n"		\
--	stringify_in_c(op) "%0,%0,%2\n"		\
-+	#op "%I2 %0,%0,%2\n"			\
- 	PPC_STLCX "%0,0,%3\n"			\
- 	"bne- 1b\n"				\
- 	: "=&r" (old), "+m" (*p)		\
--	: "r" (mask), "r" (p)			\
-+	: "rK" (mask), "r" (p)			\
- 	: "cc", "memory");			\
+diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
+index 61c6e8b200e8..eb1bdf14f67c 100644
+--- a/arch/powerpc/include/asm/atomic.h
++++ b/arch/powerpc/include/asm/atomic.h
+@@ -37,62 +37,62 @@ static __inline__ void atomic_set(atomic_t *v, int i)
+ 	__asm__ __volatile__("stw%U0%X0 %1,%0" : "=m"UPD_CONSTR(v->counter) : "r"(i));
  }
  
- DEFINE_BITOP(set_bits, or, "")
--DEFINE_BITOP(clear_bits, andc, "")
--DEFINE_BITOP(clear_bits_unlock, andc, PPC_RELEASE_BARRIER)
- DEFINE_BITOP(change_bits, xor, "")
+-#define ATOMIC_OP(op, asm_op)						\
++#define ATOMIC_OP(op, asm_op, suffix, sign, ...)			\
+ static __inline__ void atomic_##op(int a, atomic_t *v)			\
+ {									\
+ 	int t;								\
+ 									\
+ 	__asm__ __volatile__(						\
+ "1:	lwarx	%0,0,%3		# atomic_" #op "\n"			\
+-	#asm_op " %0,%2,%0\n"						\
++	#asm_op "%I2" suffix " %0,%0,%2\n"				\
+ "	stwcx.	%0,0,%3 \n"						\
+ "	bne-	1b\n"							\
+ 	: "=&r" (t), "+m" (v->counter)					\
+-	: "r" (a), "r" (&v->counter)					\
+-	: "cc");							\
++	: "r"#sign (a), "r" (&v->counter)				\
++	: "cc", ##__VA_ARGS__);						\
+ }									\
  
-+static __always_inline bool is_rlwinm_mask_valid(unsigned long x)
-+{
-+	if (!x)
-+		return false;
-+	if (x & 1)
-+		x = ~x;	// make the mask non-wrapping
-+	x += x & -x;	// adding the low set bit results in at most one bit set
-+
-+	return !(x & (x - 1));
-+}
-+
-+#define DEFINE_CLROP(fn, prefix)					\
-+static inline void fn(unsigned long mask, volatile unsigned long *_p)	\
-+{									\
-+	unsigned long old;						\
-+	unsigned long *p = (unsigned long *)_p;				\
-+									\
-+	if (IS_ENABLED(CONFIG_PPC32) &&					\
-+	    __builtin_constant_p(mask) && is_rlwinm_mask_valid(~mask)) {\
-+		asm volatile (						\
-+			prefix						\
-+		"1:"	"lwarx	%0,0,%3\n"				\
-+			"rlwinm	%0,%0,0,%2\n"				\
-+			"stwcx.	%0,0,%3\n"				\
-+			"bne- 1b\n"					\
-+			: "=&r" (old), "+m" (*p)			\
-+			: "n" (~mask), "r" (p)				\
-+			: "cc", "memory");				\
-+	} else {							\
-+		asm volatile (						\
-+			prefix						\
-+		"1:"	PPC_LLARX(%0,0,%3,0) "\n"			\
-+			"andc %0,%0,%2\n"				\
-+			PPC_STLCX "%0,0,%3\n"				\
-+			"bne- 1b\n"					\
-+			: "=&r" (old), "+m" (*p)			\
-+			: "r" (mask), "r" (p)				\
-+			: "cc", "memory");				\
-+	}								\
-+}
-+
-+DEFINE_CLROP(clear_bits, "")
-+DEFINE_CLROP(clear_bits_unlock, PPC_RELEASE_BARRIER)
-+
- static inline void arch_set_bit(int nr, volatile unsigned long *addr)
- {
- 	set_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
-@@ -116,12 +158,12 @@ static inline unsigned long fn(			\
- 	__asm__ __volatile__ (				\
- 	prefix						\
- "1:"	PPC_LLARX(%0,0,%3,eh) "\n"			\
--	stringify_in_c(op) "%1,%0,%2\n"			\
-+	#op "%I2 %1,%0,%2\n"				\
- 	PPC_STLCX "%1,0,%3\n"				\
- 	"bne- 1b\n"					\
- 	postfix						\
- 	: "=&r" (old), "=&r" (t)			\
--	: "r" (mask), "r" (p)				\
-+	: "rK" (mask), "r" (p)				\
- 	: "cc", "memory");				\
- 	return (old & mask);				\
+-#define ATOMIC_OP_RETURN_RELAXED(op, asm_op)				\
++#define ATOMIC_OP_RETURN_RELAXED(op, asm_op, suffix, sign, ...)		\
+ static inline int atomic_##op##_return_relaxed(int a, atomic_t *v)	\
+ {									\
+ 	int t;								\
+ 									\
+ 	__asm__ __volatile__(						\
+ "1:	lwarx	%0,0,%3		# atomic_" #op "_return_relaxed\n"	\
+-	#asm_op " %0,%2,%0\n"						\
++	#asm_op "%I2" suffix " %0,%0,%2\n"				\
+ "	stwcx.	%0,0,%3\n"						\
+ "	bne-	1b\n"							\
+ 	: "=&r" (t), "+m" (v->counter)					\
+-	: "r" (a), "r" (&v->counter)					\
+-	: "cc");							\
++	: "r"#sign (a), "r" (&v->counter)				\
++	: "cc", ##__VA_ARGS__);						\
+ 									\
+ 	return t;							\
  }
-@@ -130,11 +172,42 @@ DEFINE_TESTOP(test_and_set_bits, or, PPC_ATOMIC_ENTRY_BARRIER,
- 	      PPC_ATOMIC_EXIT_BARRIER, 0)
- DEFINE_TESTOP(test_and_set_bits_lock, or, "",
- 	      PPC_ACQUIRE_BARRIER, 1)
--DEFINE_TESTOP(test_and_clear_bits, andc, PPC_ATOMIC_ENTRY_BARRIER,
--	      PPC_ATOMIC_EXIT_BARRIER, 0)
- DEFINE_TESTOP(test_and_change_bits, xor, PPC_ATOMIC_ENTRY_BARRIER,
- 	      PPC_ATOMIC_EXIT_BARRIER, 0)
  
-+static inline unsigned long test_and_clear_bits(unsigned long mask, volatile unsigned long *_p)
-+{
-+	unsigned long old, t;
-+	unsigned long *p = (unsigned long *)_p;
-+
-+	if (IS_ENABLED(CONFIG_PPC32) &&
-+	    __builtin_constant_p(mask) && is_rlwinm_mask_valid(mask)) {
-+		asm volatile (
-+			PPC_ATOMIC_ENTRY_BARRIER
-+		"1:"	"lwarx %0,0,%3\n"
-+			"rlwinm	%1,%0,0,%2\n"
-+			"stwcx. %1,0,%3\n"
-+			"bne- 1b\n"
-+			PPC_ATOMIC_EXIT_BARRIER
-+			: "=&r" (old), "=&r" (t)
-+			: "n" (~mask), "r" (p)
-+			: "cc", "memory");
-+	} else {
-+		asm volatile (
-+			PPC_ATOMIC_ENTRY_BARRIER
-+		"1:"	PPC_LLARX(%0,0,%3,0) "\n"
-+			"andc	%1,%0,%2\n"
-+			PPC_STLCX "%1,0,%3\n"
-+			"bne- 1b\n"
-+			PPC_ATOMIC_EXIT_BARRIER
-+			: "=&r" (old), "=&r" (t)
-+			: "r" (mask), "r" (p)
-+			: "cc", "memory");
-+	}
-+
-+	return (old & mask);
-+}
-+
- static inline int arch_test_and_set_bit(unsigned long nr,
- 					volatile unsigned long *addr)
- {
+-#define ATOMIC_FETCH_OP_RELAXED(op, asm_op)				\
++#define ATOMIC_FETCH_OP_RELAXED(op, asm_op, suffix, sign, ...)		\
+ static inline int atomic_fetch_##op##_relaxed(int a, atomic_t *v)	\
+ {									\
+ 	int res, t;							\
+ 									\
+ 	__asm__ __volatile__(						\
+ "1:	lwarx	%0,0,%4		# atomic_fetch_" #op "_relaxed\n"	\
+-	#asm_op " %1,%3,%0\n"						\
++	#asm_op "%I3" suffix " %1,%0,%3\n"				\
+ "	stwcx.	%1,0,%4\n"						\
+ "	bne-	1b\n"							\
+ 	: "=&r" (res), "=&r" (t), "+m" (v->counter)			\
+-	: "r" (a), "r" (&v->counter)					\
+-	: "cc");							\
++	: "r"#sign (a), "r" (&v->counter)				\
++	: "cc", ##__VA_ARGS__);						\
+ 									\
+ 	return res;							\
+ }
+ 
+-#define ATOMIC_OPS(op, asm_op)						\
+-	ATOMIC_OP(op, asm_op)						\
+-	ATOMIC_OP_RETURN_RELAXED(op, asm_op)				\
+-	ATOMIC_FETCH_OP_RELAXED(op, asm_op)
++#define ATOMIC_OPS(op, asm_op, suffix, sign, ...)			\
++	ATOMIC_OP(op, asm_op, suffix, sign, ##__VA_ARGS__)		\
++	ATOMIC_OP_RETURN_RELAXED(op, asm_op, suffix, sign, ##__VA_ARGS__)\
++	ATOMIC_FETCH_OP_RELAXED(op, asm_op, suffix, sign, ##__VA_ARGS__)
+ 
+-ATOMIC_OPS(add, add)
+-ATOMIC_OPS(sub, subf)
++ATOMIC_OPS(add, add, "c", I, "xer")
++ATOMIC_OPS(sub, sub, "c", I, "xer")
+ 
+ #define atomic_add_return_relaxed atomic_add_return_relaxed
+ #define atomic_sub_return_relaxed atomic_sub_return_relaxed
+@@ -101,13 +101,13 @@ ATOMIC_OPS(sub, subf)
+ #define atomic_fetch_sub_relaxed atomic_fetch_sub_relaxed
+ 
+ #undef ATOMIC_OPS
+-#define ATOMIC_OPS(op, asm_op)						\
+-	ATOMIC_OP(op, asm_op)						\
+-	ATOMIC_FETCH_OP_RELAXED(op, asm_op)
++#define ATOMIC_OPS(op, asm_op, suffix, sign)				\
++	ATOMIC_OP(op, asm_op, suffix, sign)				\
++	ATOMIC_FETCH_OP_RELAXED(op, asm_op, suffix, sign)
+ 
+-ATOMIC_OPS(and, and)
+-ATOMIC_OPS(or, or)
+-ATOMIC_OPS(xor, xor)
++ATOMIC_OPS(and, and, ".", K)
++ATOMIC_OPS(or, or, "", K)
++ATOMIC_OPS(xor, xor, "", K)
+ 
+ #define atomic_fetch_and_relaxed atomic_fetch_and_relaxed
+ #define atomic_fetch_or_relaxed  atomic_fetch_or_relaxed
+@@ -238,15 +238,15 @@ static __inline__ int atomic_fetch_add_unless(atomic_t *v, int a, int u)
+ "1:	lwarx	%0,0,%1		# atomic_fetch_add_unless\n\
+ 	cmpw	0,%0,%3 \n\
+ 	beq	2f \n\
+-	add	%0,%2,%0 \n"
++	add%I2c	%0,%0,%2 \n"
+ "	stwcx.	%0,0,%1 \n\
+ 	bne-	1b \n"
+ 	PPC_ATOMIC_EXIT_BARRIER
+-"	subf	%0,%2,%0 \n\
++"	sub%I2c	%0,%0,%2 \n\
+ 2:"
+ 	: "=&r" (t)
+-	: "r" (&v->counter), "r" (a), "r" (u)
+-	: "cc", "memory");
++	: "r" (&v->counter), "rI" (a), "r" (u)
++	: "cc", "memory", "xer");
+ 
+ 	return t;
+ }
 -- 
 2.25.0
 
