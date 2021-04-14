@@ -1,95 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97AA35F928
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 18:47:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98EF35F952
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 18:59:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FL7fy4Rtzz30FX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 02:47:06 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qEUb/FTx;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FL7xM6XQdz3bTy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 02:59:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=qEUb/FTx; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FL7fW5gh2z2xMd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 02:46:43 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13EGZFKv048968; Wed, 14 Apr 2021 12:46:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=hcRtu2hVZ9Tgc8MPJOkfWeVL3suyMdreVgEwXwE4Bh8=;
- b=qEUb/FTxQNli3D3XdIXHQSln6qsXfybT/4oAo/ju9fyVo5jyBKJVOIah57LioXgU0f39
- 2KSMH7QvJwSL5GcRHFXOz/TRyv6qgnp3v1wj6EMSmG5RT5Skdv7fNGl+ixnbPEAKXj/2
- JpianPNyiq7Cf17nAOnPEGS1HzjU/CS19Zmi7gFEitX2yd5xIYmGOcUP+rCSIka+na6T
- FvTatnlFg/AcfQ3uCb9ONYyRJbNpf3q03M6MG+CLfLbJYOILDiiV3sT8L2ZliF4TZnn2
- Y4SnN+ZUA7/lTSx/BaUCqAPirRbORKZKGNpC0RcLy9GrMG4xln8M1EZTAeTzs7NtXBCn 7g== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37wxjwav7x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Apr 2021 12:46:30 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13EGhQXC020811;
- Wed, 14 Apr 2021 16:46:28 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06fra.de.ibm.com with ESMTP id 37u39h9u2j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Apr 2021 16:46:28 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 13EGk3YL19136782
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Apr 2021 16:46:03 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9776A4285A;
- Wed, 14 Apr 2021 16:21:44 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 023A242854;
- Wed, 14 Apr 2021 16:21:42 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.85.72.167])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Wed, 14 Apr 2021 16:21:41 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
- Wed, 14 Apr 2021 21:51:41 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH] powerpc/papr_scm: Reduce error severity if nvdimm stats
- inaccessible
-In-Reply-To: <20210414153625.GB1904484@iweiny-DESK2.sc.intel.com>
-References: <20210414124026.332472-1-vaibhav@linux.ibm.com>
- <20210414153625.GB1904484@iweiny-DESK2.sc.intel.com>
-Date: Wed, 14 Apr 2021 21:51:40 +0530
-Message-ID: <87lf9kkfaj.fsf@vajain21.in.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: WmB2GR3nSPblUZCacqQ7Wf-gvQRT5y-P
-X-Proofpoint-GUID: WmB2GR3nSPblUZCacqQ7Wf-gvQRT5y-P
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-14_10:2021-04-14,
- 2021-04-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 spamscore=0
- adultscore=0 malwarescore=0 bulkscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104060000 definitions=main-2104140107
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FL7x339mVz2yS0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 02:59:16 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FL7wt0Jt8zB09ZG;
+ Wed, 14 Apr 2021 18:59:10 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 7pWPN0vEV4Vx; Wed, 14 Apr 2021 18:59:09 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FL7ws6cQ4zB09ZC;
+ Wed, 14 Apr 2021 18:59:09 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AE7D58B7CE;
+ Wed, 14 Apr 2021 18:59:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 6jxSwQRpf5LT; Wed, 14 Apr 2021 18:59:11 +0200 (CEST)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6510D8B7C4;
+ Wed, 14 Apr 2021 18:59:11 +0200 (CEST)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 38A04679F3; Wed, 14 Apr 2021 16:59:11 +0000 (UTC)
+Message-Id: <7aaa03114d8bc4ba1805b51993fb92ec520899e0.1618419539.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 1/3] powerpc/bitops: Use immediate operand when possible
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Wed, 14 Apr 2021 16:59:11 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,70 +56,191 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>, linux-nvdimm@lists.01.org,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks for looking into this patch Ira,
+Today we get the following code generation for bitops like
+set or clear bit:
 
-Ira Weiny <ira.weiny@intel.com> writes:
+	c0009fe0:	39 40 08 00 	li      r10,2048
+	c0009fe4:	7c e0 40 28 	lwarx   r7,0,r8
+	c0009fe8:	7c e7 53 78 	or      r7,r7,r10
+	c0009fec:	7c e0 41 2d 	stwcx.  r7,0,r8
 
-> On Wed, Apr 14, 2021 at 06:10:26PM +0530, Vaibhav Jain wrote:
->> Currently drc_pmem_qeury_stats() generates a dev_err in case
->> "Enable Performance Information Collection" feature is disabled from
->> HMC. The error is of the form below:
->> 
->> papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
->> 	 performance stats, Err:-10
->> 
->> This error message confuses users as it implies a possible problem
->> with the nvdimm even though its due to a disabled feature.
->> 
->> So we fix this by explicitly handling the H_AUTHORITY error from the
->> H_SCM_PERFORMANCE_STATS hcall and generating a warning instead of an
->> error, saying that "Performance stats in-accessible".
->> 
->> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
->> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->> ---
->>  arch/powerpc/platforms/pseries/papr_scm.c | 3 +++
->>  1 file changed, 3 insertions(+)
->> 
->> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->> index 835163f54244..9216424f8be3 100644
->> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->> @@ -277,6 +277,9 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
->>  		dev_err(&p->pdev->dev,
->>  			"Unknown performance stats, Err:0x%016lX\n", ret[0]);
->>  		return -ENOENT;
->> +	} else if (rc == H_AUTHORITY) {
->> +		dev_warn(&p->pdev->dev, "Performance stats in-accessible");
->> +		return -EPERM;
->
-> Is this because of a disabled feature or because of permissions?
+	c000d568:	39 00 18 00 	li      r8,6144
+	c000d56c:	7c c0 38 28 	lwarx   r6,0,r7
+	c000d570:	7c c6 40 78 	andc    r6,r6,r8
+	c000d574:	7c c0 39 2d 	stwcx.  r6,0,r7
 
-Its because of a disabled feature that revokes permission for a guest to
-retrieve performance statistics.
+Most set bits are constant on lower 16 bits, so it can easily
+be replaced by the "immediate" version of the operation. Allow
+GCC to choose between the normal or immediate form.
 
-The feature is called "Enable Performance Information Collection" and
-once disabled the hcall H_SCM_PERFORMANCE_STATS returns an error
-H_AUTHORITY indicating that the guest doesn't have permission to retrieve
-performance statistics.
+For clear bits, on 32 bits 'rlwinm' can be used instead of 'andc' for
+when all bits to be cleared are consecutive.
 
->
-> Ira
->
->>  	} else if (rc != H_SUCCESS) {
->>  		dev_err(&p->pdev->dev,
->>  			"Failed to query performance stats, Err:%lld\n", rc);
->> -- 
->> 2.30.2
->> 
+On 64 bits we don't have any equivalent single operation for clearing,
+single bits or a few bits, we'd need two 'rldicl' so it is not
+worth it, the li/andc sequence is doing the same.
 
+With this patch we get:
+
+	c0009fe0:	7d 00 50 28 	lwarx   r8,0,r10
+	c0009fe4:	61 08 08 00 	ori     r8,r8,2048
+	c0009fe8:	7d 00 51 2d 	stwcx.  r8,0,r10
+
+	c000d558:	7c e0 40 28 	lwarx   r7,0,r8
+	c000d55c:	54 e7 05 64 	rlwinm  r7,r7,0,21,18
+	c000d560:	7c e0 41 2d 	stwcx.  r7,0,r8
+
+On pmac32_defconfig, it reduces the text by approx 10 kbytes.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v3:
+- Using the mask validation proposed by Segher
+
+v2:
+- Use "n" instead of "i" as constraint for the rlwinm mask
+- Improve mask verification to handle more than single bit masks
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/bitops.h | 89 ++++++++++++++++++++++++++++---
+ 1 file changed, 81 insertions(+), 8 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/bitops.h b/arch/powerpc/include/asm/bitops.h
+index 299ab33505a6..09500c789972 100644
+--- a/arch/powerpc/include/asm/bitops.h
++++ b/arch/powerpc/include/asm/bitops.h
+@@ -71,19 +71,61 @@ static inline void fn(unsigned long mask,	\
+ 	__asm__ __volatile__ (			\
+ 	prefix					\
+ "1:"	PPC_LLARX(%0,0,%3,0) "\n"		\
+-	stringify_in_c(op) "%0,%0,%2\n"		\
++	#op "%I2 %0,%0,%2\n"			\
+ 	PPC_STLCX "%0,0,%3\n"			\
+ 	"bne- 1b\n"				\
+ 	: "=&r" (old), "+m" (*p)		\
+-	: "r" (mask), "r" (p)			\
++	: "rK" (mask), "r" (p)			\
+ 	: "cc", "memory");			\
+ }
+ 
+ DEFINE_BITOP(set_bits, or, "")
+-DEFINE_BITOP(clear_bits, andc, "")
+-DEFINE_BITOP(clear_bits_unlock, andc, PPC_RELEASE_BARRIER)
+ DEFINE_BITOP(change_bits, xor, "")
+ 
++static __always_inline bool is_rlwinm_mask_valid(unsigned long x)
++{
++	if (!x)
++		return false;
++	if (x & 1)
++		x = ~x;	// make the mask non-wrapping
++	x += x & -x;	// adding the low set bit results in at most one bit set
++
++	return !(x & (x - 1));
++}
++
++#define DEFINE_CLROP(fn, prefix)					\
++static inline void fn(unsigned long mask, volatile unsigned long *_p)	\
++{									\
++	unsigned long old;						\
++	unsigned long *p = (unsigned long *)_p;				\
++									\
++	if (IS_ENABLED(CONFIG_PPC32) &&					\
++	    __builtin_constant_p(mask) && is_rlwinm_mask_valid(~mask)) {\
++		asm volatile (						\
++			prefix						\
++		"1:"	"lwarx	%0,0,%3\n"				\
++			"rlwinm	%0,%0,0,%2\n"				\
++			"stwcx.	%0,0,%3\n"				\
++			"bne- 1b\n"					\
++			: "=&r" (old), "+m" (*p)			\
++			: "n" (~mask), "r" (p)				\
++			: "cc", "memory");				\
++	} else {							\
++		asm volatile (						\
++			prefix						\
++		"1:"	PPC_LLARX(%0,0,%3,0) "\n"			\
++			"andc %0,%0,%2\n"				\
++			PPC_STLCX "%0,0,%3\n"				\
++			"bne- 1b\n"					\
++			: "=&r" (old), "+m" (*p)			\
++			: "r" (mask), "r" (p)				\
++			: "cc", "memory");				\
++	}								\
++}
++
++DEFINE_CLROP(clear_bits, "")
++DEFINE_CLROP(clear_bits_unlock, PPC_RELEASE_BARRIER)
++
+ static inline void arch_set_bit(int nr, volatile unsigned long *addr)
+ {
+ 	set_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
+@@ -116,12 +158,12 @@ static inline unsigned long fn(			\
+ 	__asm__ __volatile__ (				\
+ 	prefix						\
+ "1:"	PPC_LLARX(%0,0,%3,eh) "\n"			\
+-	stringify_in_c(op) "%1,%0,%2\n"			\
++	#op "%I2 %1,%0,%2\n"				\
+ 	PPC_STLCX "%1,0,%3\n"				\
+ 	"bne- 1b\n"					\
+ 	postfix						\
+ 	: "=&r" (old), "=&r" (t)			\
+-	: "r" (mask), "r" (p)				\
++	: "rK" (mask), "r" (p)				\
+ 	: "cc", "memory");				\
+ 	return (old & mask);				\
+ }
+@@ -130,11 +172,42 @@ DEFINE_TESTOP(test_and_set_bits, or, PPC_ATOMIC_ENTRY_BARRIER,
+ 	      PPC_ATOMIC_EXIT_BARRIER, 0)
+ DEFINE_TESTOP(test_and_set_bits_lock, or, "",
+ 	      PPC_ACQUIRE_BARRIER, 1)
+-DEFINE_TESTOP(test_and_clear_bits, andc, PPC_ATOMIC_ENTRY_BARRIER,
+-	      PPC_ATOMIC_EXIT_BARRIER, 0)
+ DEFINE_TESTOP(test_and_change_bits, xor, PPC_ATOMIC_ENTRY_BARRIER,
+ 	      PPC_ATOMIC_EXIT_BARRIER, 0)
+ 
++static inline unsigned long test_and_clear_bits(unsigned long mask, volatile unsigned long *_p)
++{
++	unsigned long old, t;
++	unsigned long *p = (unsigned long *)_p;
++
++	if (IS_ENABLED(CONFIG_PPC32) &&
++	    __builtin_constant_p(mask) && is_rlwinm_mask_valid(mask)) {
++		asm volatile (
++			PPC_ATOMIC_ENTRY_BARRIER
++		"1:"	"lwarx %0,0,%3\n"
++			"rlwinm	%1,%0,0,%2\n"
++			"stwcx. %1,0,%3\n"
++			"bne- 1b\n"
++			PPC_ATOMIC_EXIT_BARRIER
++			: "=&r" (old), "=&r" (t)
++			: "n" (~mask), "r" (p)
++			: "cc", "memory");
++	} else {
++		asm volatile (
++			PPC_ATOMIC_ENTRY_BARRIER
++		"1:"	PPC_LLARX(%0,0,%3,0) "\n"
++			"andc	%1,%0,%2\n"
++			PPC_STLCX "%1,0,%3\n"
++			"bne- 1b\n"
++			PPC_ATOMIC_EXIT_BARRIER
++			: "=&r" (old), "=&r" (t)
++			: "r" (mask), "r" (p)
++			: "cc", "memory");
++	}
++
++	return (old & mask);
++}
++
+ static inline int arch_test_and_set_bit(unsigned long nr,
+ 					volatile unsigned long *addr)
+ {
 -- 
-Cheers
-~ Vaibhav
+2.25.0
+
