@@ -2,48 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0DB35F7C0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 17:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 975D835F83B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Apr 2021 17:52:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FL67827yhz3byV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 01:37:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FL6SB3H3lz3c0G
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 01:52:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 66 seconds by postgrey-1.36 at boromir;
- Thu, 15 Apr 2021 01:37:39 AEST
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FL66q1J8Sz2xb3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 01:37:38 +1000 (AEST)
-IronPort-SDR: 9gqtLKk2Y3mwcoZuAgevdsl+cLiafI8t02qYKiHTa1swwWrQNZDiLBPz56Ea5Te2acQ5wztgPJ
- wxrSSPWoT7iw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9954"; a="258629503"
-X-IronPort-AV: E=Sophos;i="5.82,222,1613462400"; d="scan'208";a="258629503"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2021 08:36:27 -0700
-IronPort-SDR: YOFmNhdSD6rj5biwF6S8sP44DpEx2BRSevzpj+1MtSohxzvtIwMeYXkpeuewHzgOXrKPd0cZ7F
- V8xmG/XyCDSw==
-X-IronPort-AV: E=Sophos;i="5.82,222,1613462400"; d="scan'208";a="615333128"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
- by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2021 08:36:26 -0700
-Date: Wed, 14 Apr 2021 08:36:26 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/papr_scm: Reduce error severity if nvdimm stats
- inaccessible
-Message-ID: <20210414153625.GB1904484@iweiny-DESK2.sc.intel.com>
-References: <20210414124026.332472-1-vaibhav@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FL6Rs1ZbFz2yxx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 01:52:24 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-15-m9cXnC2KMlaJybEViQCuIg-1; Wed, 14 Apr 2021 16:52:18 +0100
+X-MC-Unique: m9cXnC2KMlaJybEViQCuIg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Wed, 14 Apr 2021 16:52:16 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.012; Wed, 14 Apr 2021 16:52:16 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Matthew Wilcox' <willy@infradead.org>, Jesper Dangaard Brouer
+ <brouer@redhat.com>
+Subject: RE: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
+Thread-Topic: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
+Thread-Index: AQHXMSRrwdfrgigLI0exh4xFUSZq9Kq0J1eg
+Date: Wed, 14 Apr 2021 15:52:16 +0000
+Message-ID: <7f6cee3dcf1749fbb7b54eaf129141e7@AcuMS.aculab.com>
+References: <20210410205246.507048-1-willy@infradead.org>
+ <20210410205246.507048-2-willy@infradead.org>
+ <20210411114307.5087f958@carbon>
+ <20210411103318.GC2531743@casper.infradead.org>
+ <20210412011532.GG2531743@casper.infradead.org>
+ <20210414101044.19da09df@carbon>
+ <20210414115052.GS2531743@casper.infradead.org>
+In-Reply-To: <20210414115052.GS2531743@casper.infradead.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210414124026.332472-1-vaibhav@linux.ibm.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,53 +69,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>, linux-nvdimm@lists.01.org,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Arnd Bergmann <arnd@kernel.org>,
+ Grygorii Strashko <grygorii.strashko@ti.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ Matteo Croce <mcroce@linux.microsoft.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Christoph
+ Hellwig <hch@lst.de>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 14, 2021 at 06:10:26PM +0530, Vaibhav Jain wrote:
-> Currently drc_pmem_qeury_stats() generates a dev_err in case
-> "Enable Performance Information Collection" feature is disabled from
-> HMC. The error is of the form below:
-> 
-> papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
-> 	 performance stats, Err:-10
-> 
-> This error message confuses users as it implies a possible problem
-> with the nvdimm even though its due to a disabled feature.
-> 
-> So we fix this by explicitly handling the H_AUTHORITY error from the
-> H_SCM_PERFORMANCE_STATS hcall and generating a warning instead of an
-> error, saying that "Performance stats in-accessible".
-> 
-> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index 835163f54244..9216424f8be3 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -277,6 +277,9 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
->  		dev_err(&p->pdev->dev,
->  			"Unknown performance stats, Err:0x%016lX\n", ret[0]);
->  		return -ENOENT;
-> +	} else if (rc == H_AUTHORITY) {
-> +		dev_warn(&p->pdev->dev, "Performance stats in-accessible");
-> +		return -EPERM;
+> Doing this fixes it:
+>=20
+> +++ b/include/linux/types.h
+> @@ -140,7 +140,7 @@ typedef u64 blkcnt_t;
+>   * so they don't care about the size of the actual bus addresses.
+>   */
+>  #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+> -typedef u64 dma_addr_t;
+> +typedef u64 __attribute__((aligned(sizeof(void *)))) dma_addr_t;
+>  #else
+>  typedef u32 dma_addr_t;
+>  #endif
 
-Is this because of a disabled feature or because of permissions?
+I hate __packed so much I've been checking what it does!
 
-Ira
+If you add __packed to the dma_addr_t field inside the union
+then gcc (at least) removes the pad from before it, but also
+'remembers' the alignment that is enforced by other members
+of the structure.
 
->  	} else if (rc != H_SUCCESS) {
->  		dev_err(&p->pdev->dev,
->  			"Failed to query performance stats, Err:%lld\n", rc);
-> -- 
-> 2.30.2
-> 
+So you don't need the extra aligned(sizeof (void *)) since
+that is implicit.
+
+So in this case __packed probably has no side effects.
+(Unless a 32bit arch has instructions for a 64bit read
+that must not be on an 8n+4 boundary and the address is taken).
+
+It also doesn't affect 64bit - since the previous field
+forces 64bit alignment.
+
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
