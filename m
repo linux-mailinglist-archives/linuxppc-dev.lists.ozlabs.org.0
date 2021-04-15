@@ -1,104 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77573610D0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 19:10:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1B23610D5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 19:12:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FLm7Q2YkFz3bvN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 03:10:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FLm9y1y6kz3byY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 03:12:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E83ohc5Y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Hyc5y4Ad;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=E83ohc5Y; dkim-atps=neutral
+ header.s=pp1 header.b=Hyc5y4Ad; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FLm6t1Yfdz2yys
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 03:09:57 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FLm9W4pj2z2yxj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 03:12:15 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13FH5QoL109381; Thu, 15 Apr 2021 13:09:46 -0400
+ 13FH5reN093584; Thu, 15 Apr 2021 13:11:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=RNOY/d8yZYRP0pLhpV+4fVvzfWSWc4YU6tDtd0XuG74=;
- b=E83ohc5YAGm8DZMiH2sUboATQCBIZU8MzD5q0bzbAMU+Au/WK3l80BU7NshxFrGTOLC/
- PUGFW/sKAmDMRwyJwU8a6f+WlseUc3bwsGtmfjJ5QtKAyVjuussJAqYNM0lAhzmMXjRx
- pF/Ed8M/60GbAQXzwSWTlSqxfkpKPMGmtna0hlcvsrEjys93iUoJmaoY0YbWDVLoEqc4
- CNgnIekb93v6bxqU3AggG0jIsrcbBBsdXXJUtFVOEyB3e+vZwnO03ApQlVzZuzm1Jur2
- HYAxoFSuDZcCC+mWNnzR0fp5WK8Ic0v0f3AVcLZ1iZRzihFM5PhFkM517/R+tssmtW9b WQ== 
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=tI4JiFu4FyQykYXsyYqSOMJDF5gPW5FPlJ7iuj83CP8=;
+ b=Hyc5y4AdnBhhmuvhyLIiZkRRxMHX4wwQ2Ny+Zn9XbTsJTyBMkE15sqkfeO/LZBQKFlvz
+ 7Qru85qIpj0+KqGQhRGWCrtY1vagEUwcVlkS2ymWzY7uFHXdsq6Hq5l+C1RXlHNcd4+Y
+ 3aHSzS4xrxueQDwmSROJslRwoyB6vslS6qBDhvQoOOE6X57ybGDTNhUiAE3H0VuoSMXx
+ lG15AT2c7xwszeOL2U0H8nwVaxTwGNPqzSbd0HxT9lf89CDt2dxF+if2pcBf8EOvdxHk
+ PiE/Ij63M0yNDhVEZ8/p+a7Knxd1EesH3s9lZW7u6bXWHGXoD3PU2xTvUoMG1XDkl9RK kA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37xs4k8x49-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37x5aprwmv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Apr 2021 13:09:46 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13FH68Zv114010;
- Thu, 15 Apr 2021 13:09:46 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37xs4k8x3e-1
+ Thu, 15 Apr 2021 13:11:53 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13FH693B095207;
+ Thu, 15 Apr 2021 13:11:53 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37x5aprwmd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Apr 2021 13:09:45 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13FH9HkA025538;
- Thu, 15 Apr 2021 17:09:43 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03ams.nl.ibm.com with ESMTP id 37u3n8c189-1
+ Thu, 15 Apr 2021 13:11:53 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13FHB1ZX020112;
+ Thu, 15 Apr 2021 17:11:51 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma03wdc.us.ibm.com with ESMTP id 37uhcn7a9g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Apr 2021 17:09:43 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 13FH9Jxd27329006
+ Thu, 15 Apr 2021 17:11:51 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13FHBo3R46596832
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 Apr 2021 17:09:19 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 394F4AE056;
- Thu, 15 Apr 2021 17:09:41 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 40AB5AE053;
- Thu, 15 Apr 2021 17:09:38 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.199.56.7])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Thu, 15 Apr 2021 17:09:38 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
- Thu, 15 Apr 2021 22:39:37 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] powerpc/papr_scm: Properly handle UUID types and
- API
-In-Reply-To: <20210415134637.17770-1-andriy.shevchenko@linux.intel.com>
-References: <20210415134637.17770-1-andriy.shevchenko@linux.intel.com>
-Date: Thu, 15 Apr 2021 22:39:37 +0530
-Message-ID: <87eefblbji.fsf@vajain21.in.ibm.com>
+ Thu, 15 Apr 2021 17:11:50 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8B7B0136404;
+ Thu, 15 Apr 2021 17:11:50 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5AA0A13650E;
+ Thu, 15 Apr 2021 17:11:39 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.199.57.176])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 15 Apr 2021 17:11:39 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id ED9692E2E70; Thu, 15 Apr 2021 22:41:34 +0530 (IST)
+Date: Thu, 15 Apr 2021 22:41:34 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/3] powerpc/smp: Reintroduce cpu_core_mask
+Message-ID: <20210415171134.GA16351@in.ibm.com>
+References: <20210415120934.232271-1-srikar@linux.vnet.ibm.com>
+ <20210415120934.232271-2-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210415120934.232271-2-srikar@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: jdyrEc2zCvE--isOIPFNk9uE2Dg2D-xg
-X-Proofpoint-ORIG-GUID: fkD8rdMtqEd7WlUBrb8Ef_ID3XQ4kkOs
+X-Proofpoint-GUID: t7d63j0fvlVfV0-p6mm_dJ-K7ytIhQEV
+X-Proofpoint-ORIG-GUID: PZpmR5lVfKIraxiBtMfmKF-q59KAcbaE
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-04-15_09:2021-04-15,
  2021-04-15 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 mlxscore=0
- adultscore=0 clxscore=1011 bulkscore=0 mlxlogscore=999 priorityscore=1501
- lowpriorityscore=0 phishscore=0 spamscore=0 malwarescore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104150106
+ spamscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 suspectscore=0 mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1011
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104150106
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,91 +109,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Paul Mackerras <paulus@samba.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reply-To: ego@linux.vnet.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, qemu-ppc@nongnu.org,
+ Cedric Le Goater <clg@kaod.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Ingo Molnar <mingo@kernel.org>, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Srikar,
 
-Thanks for the patch Andy,
+On Thu, Apr 15, 2021 at 05:39:32PM +0530, Srikar Dronamraju wrote:
+ [..snip..]
 
-Unfortunately ran into a compilation issue due to missing "#include
-<asm/unaligned.h>" that provides definition for
-get_unaligned_le64(). Gcc reported following error:
-=20
-error: implicit declaration of function =E2=80=98get_unaligned_le64=E2=80=99
 
-After including the necessary header file, kernel compiled fine and I
-was able to test & verify the patch.
 
---=20
-Cheers
-~ Vaibhav
-
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
-
-> Parse to and export from UUID own type, before dereferencing.
-> This also fixes wrong comment (Little Endian UUID is something else)
-> and should fix Sparse warnings about assigning strict types to POD.
->
-> Fixes: 43001c52b603 ("powerpc/papr_scm: Use ibm,unit-guid as the iset coo=
-kie")
-> Fixes: 259a948c4ba1 ("powerpc/pseries/scm: Use a specific endian format f=
-or storing uuid from the device tree")
-> Cc: Oliver O'Halloran <oohall@gmail.com>
-> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> Not tested
->  arch/powerpc/platforms/pseries/papr_scm.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/pla=
-tforms/pseries/papr_scm.c
-> index ae6f5d80d5ce..4366e1902890 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -1085,8 +1085,9 @@ static int papr_scm_probe(struct platform_device *p=
-dev)
->  	u32 drc_index, metadata_size;
->  	u64 blocks, block_size;
->  	struct papr_scm_priv *p;
-> +	u8 uuid_raw[UUID_SIZE];
->  	const char *uuid_str;
-> -	u64 uuid[2];
-> +	uuid_t uuid;
->  	int rc;
->=20=20
->  	/* check we have all the required DT properties */
-> @@ -1129,16 +1130,18 @@ static int papr_scm_probe(struct platform_device =
-*pdev)
->  	p->hcall_flush_required =3D of_property_read_bool(dn, "ibm,hcall-flush-=
-required");
->=20=20
->  	/* We just need to ensure that set cookies are unique across */
-> -	uuid_parse(uuid_str, (uuid_t *) uuid);
-> +	uuid_parse(uuid_str, &uuid);
+> @@ -1485,12 +1486,36 @@ static void add_cpu_to_masks(int cpu)
+>  	add_cpu_to_smallcore_masks(cpu);
+> 
+>  	/* In CPU-hotplug path, hence use GFP_ATOMIC */
+> -	alloc_cpumask_var_node(&mask, GFP_ATOMIC, cpu_to_node(cpu));
+> +	ret = alloc_cpumask_var_node(&mask, GFP_ATOMIC, cpu_to_node(cpu));
+>  	update_mask_by_l2(cpu, &mask);
+> 
+>  	if (has_coregroup_support())
+>  		update_coregroup_mask(cpu, &mask);
+> 
+> +	if (chip_id == -1 || !ret) {
+> +		cpumask_copy(per_cpu(cpu_core_map, cpu), cpu_cpu_mask(cpu));
+> +		goto out;
+> +	}
 > +
->  	/*
->  	 * cookie1 and cookie2 are not really little endian
-> -	 * we store a little endian representation of the
-> +	 * we store a raw buffer representation of the
->  	 * uuid str so that we can compare this with the label
->  	 * area cookie irrespective of the endian config with which
->  	 * the kernel is built.
->  	 */
-> -	p->nd_set.cookie1 =3D cpu_to_le64(uuid[0]);
-> -	p->nd_set.cookie2 =3D cpu_to_le64(uuid[1]);
-> +	export_uuid(uuid_raw, &uuid);
-> +	p->nd_set.cookie1 =3D get_unaligned_le64(&uuid_raw[0]);
-> +	p->nd_set.cookie2 =3D get_unaligned_le64(&uuid_raw[8]);
->=20=20
->  	/* might be zero */
->  	p->metadata_size =3D metadata_size;
-> --=20
-> 2.30.2
+> +	if (shared_caches)
+> +		submask_fn = cpu_l2_cache_mask;
+> +
+> +	/* Update core_mask with all the CPUs that are part of submask */
+> +	or_cpumasks_related(cpu, cpu, submask_fn, cpu_core_mask);
 >
 
+If coregroups exist, we can add the cpus of the coregroup to the
+cpu_core_mask thereby reducing the scope of the for_each_cpu() search
+below. This will still cut down the time on Baremetal systems
+supporting coregroups.
+
+
+> +	/* Skip all CPUs already part of current CPU core mask */
+> +	cpumask_andnot(mask, cpu_online_mask, cpu_core_mask(cpu));
+> +
+> +	for_each_cpu(i, mask) {
+> +		if (chip_id == cpu_to_chip_id(i)) {
+> +			or_cpumasks_related(cpu, i, submask_fn, cpu_core_mask);
+> +			cpumask_andnot(mask, mask, submask_fn(i));
+> +		} else {
+> +			cpumask_andnot(mask, mask, cpu_core_mask(i));
+> +		}
+> +	}
+> +
+> +out:
+>  	free_cpumask_var(mask);
+>  }
+> 
+> -- 
+> 2.25.1
+> 
