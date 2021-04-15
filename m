@@ -1,47 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A418D36001A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 04:46:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4FE36012C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 06:40:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FLNyS4V5wz3c5f
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 12:46:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FLRTx07M7z3byP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 14:40:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FLNxl0hbDz2yxL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 12:45:46 +1000 (AEST)
-IronPort-SDR: aRWPARiLcGl3g/nHTeLF5BSM9S3A1P/woEUtztQNy3ykq9KVWe7T5VW97UkiwErG3SOxWuUPa/
- 0/mYewtbTHVA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9954"; a="256097167"
-X-IronPort-AV: E=Sophos;i="5.82,223,1613462400"; d="scan'208";a="256097167"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2021 19:45:43 -0700
-IronPort-SDR: 6Z+AthynNbPVQN8FWnOJtoVLpQYGR/H0UhPe6eGh29Cw2WsFXU5onWDcat8nBL37eOOeZLxfhS
- CYE9qvJ2zSzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,223,1613462400"; d="scan'208";a="452732508"
-Received: from lkp-server02.sh.intel.com (HELO fa9c8fcc3464) ([10.239.97.151])
- by fmsmga002.fm.intel.com with ESMTP; 14 Apr 2021 19:45:40 -0700
-Received: from kbuild by fa9c8fcc3464 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1lWs0h-0000b2-6s; Thu, 15 Apr 2021 02:45:39 +0000
-Date: Thu, 15 Apr 2021 10:45:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS 7098f8f0cf0387443fd8702f24a8a2521d5133f3
-Message-ID: <6077a8b5.I36DSv4ElwF2rrR5%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FLRTY3TFsz300C
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 14:39:58 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0098113E;
+ Wed, 14 Apr 2021 21:39:55 -0700 (PDT)
+Received: from [10.163.73.114] (unknown [10.163.73.114])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6A6073F73B;
+ Wed, 14 Apr 2021 21:39:49 -0700 (PDT)
+Subject: Re: [PATCH] mm: Define ARCH_HAS_FIRST_USER_ADDRESS
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+References: <1618368899-20311-1-git-send-email-anshuman.khandual@arm.com>
+ <f29ba8e2-3071-c963-1e9f-e8c88526ed8d@csgroup.eu>
+ <6d24d3cc-b2df-f0d7-f4bf-f505f679c77e@arm.com>
+ <ec7bbb30-dbbd-197b-4d65-eb3600fe6413@csgroup.eu>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <e9d1a342-b444-efd5-d11f-79aa4d11fabc@arm.com>
+Date: Thu, 15 Apr 2021 10:10:38 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <ec7bbb30-dbbd-197b-4d65-eb3600fe6413@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,179 +50,203 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
+ linux-um@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
+ linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 7098f8f0cf0387443fd8702f24a8a2521d5133f3  powerpc/mm/radix: Make radix__change_memory_range() static
+On 4/14/21 11:40 AM, Christophe Leroy wrote:
+> 
+> 
+> Le 14/04/2021 à 07:59, Anshuman Khandual a écrit :
+>>
+>>
+>> On 4/14/21 10:52 AM, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 14/04/2021 à 04:54, Anshuman Khandual a écrit :
+>>>> Currently most platforms define FIRST_USER_ADDRESS as 0UL duplicating the
+>>>> same code all over. Instead define a new option ARCH_HAS_FIRST_USER_ADDRESS
+>>>> for those platforms which would override generic default FIRST_USER_ADDRESS
+>>>> value 0UL. This makes it much cleaner with reduced code.
+>>>>
+>>>> Cc: linux-alpha@vger.kernel.org
+>>>> Cc: linux-snps-arc@lists.infradead.org
+>>>> Cc: linux-arm-kernel@lists.infradead.org
+>>>> Cc: linux-csky@vger.kernel.org
+>>>> Cc: linux-hexagon@vger.kernel.org
+>>>> Cc: linux-ia64@vger.kernel.org
+>>>> Cc: linux-m68k@lists.linux-m68k.org
+>>>> Cc: linux-mips@vger.kernel.org
+>>>> Cc: openrisc@lists.librecores.org
+>>>> Cc: linux-parisc@vger.kernel.org
+>>>> Cc: linuxppc-dev@lists.ozlabs.org
+>>>> Cc: linux-riscv@lists.infradead.org
+>>>> Cc: linux-s390@vger.kernel.org
+>>>> Cc: linux-sh@vger.kernel.org
+>>>> Cc: sparclinux@vger.kernel.org
+>>>> Cc: linux-um@lists.infradead.org
+>>>> Cc: linux-xtensa@linux-xtensa.org
+>>>> Cc: x86@kernel.org
+>>>> Cc: linux-mm@kvack.org
+>>>> Cc: linux-kernel@vger.kernel.org
+>>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>>> ---
+>>>>    arch/alpha/include/asm/pgtable.h             | 1 -
+>>>>    arch/arc/include/asm/pgtable.h               | 6 ------
+>>>>    arch/arm/Kconfig                             | 1 +
+>>>>    arch/arm64/include/asm/pgtable.h             | 2 --
+>>>>    arch/csky/include/asm/pgtable.h              | 1 -
+>>>>    arch/hexagon/include/asm/pgtable.h           | 3 ---
+>>>>    arch/ia64/include/asm/pgtable.h              | 1 -
+>>>>    arch/m68k/include/asm/pgtable_mm.h           | 1 -
+>>>>    arch/microblaze/include/asm/pgtable.h        | 2 --
+>>>>    arch/mips/include/asm/pgtable-32.h           | 1 -
+>>>>    arch/mips/include/asm/pgtable-64.h           | 1 -
+>>>>    arch/nds32/Kconfig                           | 1 +
+>>>>    arch/nios2/include/asm/pgtable.h             | 2 --
+>>>>    arch/openrisc/include/asm/pgtable.h          | 1 -
+>>>>    arch/parisc/include/asm/pgtable.h            | 2 --
+>>>>    arch/powerpc/include/asm/book3s/pgtable.h    | 1 -
+>>>>    arch/powerpc/include/asm/nohash/32/pgtable.h | 1 -
+>>>>    arch/powerpc/include/asm/nohash/64/pgtable.h | 2 --
+>>>>    arch/riscv/include/asm/pgtable.h             | 2 --
+>>>>    arch/s390/include/asm/pgtable.h              | 2 --
+>>>>    arch/sh/include/asm/pgtable.h                | 2 --
+>>>>    arch/sparc/include/asm/pgtable_32.h          | 1 -
+>>>>    arch/sparc/include/asm/pgtable_64.h          | 3 ---
+>>>>    arch/um/include/asm/pgtable-2level.h         | 1 -
+>>>>    arch/um/include/asm/pgtable-3level.h         | 1 -
+>>>>    arch/x86/include/asm/pgtable_types.h         | 2 --
+>>>>    arch/xtensa/include/asm/pgtable.h            | 1 -
+>>>>    include/linux/mm.h                           | 4 ++++
+>>>>    mm/Kconfig                                   | 4 ++++
+>>>>    29 files changed, 10 insertions(+), 43 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>>> index 8ba434287387..47098ccd715e 100644
+>>>> --- a/include/linux/mm.h
+>>>> +++ b/include/linux/mm.h
+>>>> @@ -46,6 +46,10 @@ extern int sysctl_page_lock_unfairness;
+>>>>      void init_mm_internals(void);
+>>>>    +#ifndef ARCH_HAS_FIRST_USER_ADDRESS
+>>>
+>>> I guess you didn't test it ..... :)
+>>
+>> In fact I did :) Though just booted it on arm64 and cross compiled on
+>> multiple others platforms.
 
-elapsed time: 728m
+I guess for all platforms, ARCH_HAS_FIRST_USER_ADDRESS would have just
+evaluated to be false hence falling back on the generic definition. So
+this never complained during build any where or during boot on arm64.
 
-configs tested: 153
-configs skipped: 2
+>>
+>>>
+>>> should be #ifndef CONFIG_ARCH_HAS_FIRST_USER_ADDRESS
+>>
+>> Right, meant that instead.
+>>
+>>>
+>>>> +#define FIRST_USER_ADDRESS    0UL
+>>>> +#endif
+>>>
+>>> But why do we need a config option at all for that ?
+>>>
+>>> Why not just:
+>>>
+>>> #ifndef FIRST_USER_ADDRESS
+>>> #define FIRST_USER_ADDRESS    0UL
+>>> #endif
+>>
+>> This sounds simpler. But just wondering, would not there be any possibility
+>> of build problems due to compilation sequence between arch and generic code ?
+>>
+> 
+> For sure it has to be addresses carefully, but there are already a lot of stuff like that around pgtables.h
+> 
+> For instance, pte_offset_kernel() has a generic definition in linux/pgtables.h based on whether it is already defined or not.
+> 
+> Taking into account that FIRST_USER_ADDRESS is today in the architectures's asm/pgtables.h, I think putting the fallback definition in linux/pgtable.h would do the trick.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Agreed, <linux/pgtable.h> includes <asm/pgtable.h> at the beginning and
+if the arch defines FIRST_USER_ADDRESS, the generic one afterwards would
+be skipped. The following change builds on multiple platforms.
 
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm64                            allyesconfig
-arm64                               defconfig
-x86_64                           allyesconfig
-riscv                            allmodconfig
-i386                             allyesconfig
-riscv                            allyesconfig
-powerpc                 mpc8272_ads_defconfig
-arc                 nsimosci_hs_smp_defconfig
-powerpc                      cm5200_defconfig
-mips                        maltaup_defconfig
-xtensa                    smp_lx200_defconfig
-mips                           rs90_defconfig
-ia64                            zx1_defconfig
-powerpc                     tqm8540_defconfig
-powerpc                     tqm8560_defconfig
-sh                          urquell_defconfig
-arm                            mmp2_defconfig
-arm                       cns3420vb_defconfig
-powerpc                          g5_defconfig
-arm                         palmz72_defconfig
-mips                         tb0287_defconfig
-arm                          pxa3xx_defconfig
-sh                           se7722_defconfig
-powerpc                     ep8248e_defconfig
-x86_64                              defconfig
-s390                          debug_defconfig
-powerpc                     tqm8555_defconfig
-powerpc                      makalu_defconfig
-arm                         bcm2835_defconfig
-sh                            migor_defconfig
-mips                      maltasmvp_defconfig
-xtensa                  cadence_csp_defconfig
-sh                         ap325rxa_defconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-arm                         s3c2410_defconfig
-sh                          rsk7264_defconfig
-powerpc               mpc834x_itxgp_defconfig
-arm                        spear6xx_defconfig
-mips                      bmips_stb_defconfig
-mips                          malta_defconfig
-arm                            zeus_defconfig
-mips                     cu1830-neo_defconfig
-arm                          gemini_defconfig
-microblaze                          defconfig
-riscv                          rv32_defconfig
-m68k                             allmodconfig
-riscv                            alldefconfig
-arm                          exynos_defconfig
-xtensa                          iss_defconfig
-powerpc                     ksi8560_defconfig
-powerpc                     ppa8548_defconfig
-arm                            qcom_defconfig
-powerpc                     pq2fads_defconfig
-mips                     loongson1c_defconfig
-powerpc                      bamboo_defconfig
-mips                         cobalt_defconfig
-xtensa                         virt_defconfig
-powerpc64                           defconfig
-sh                        edosk7760_defconfig
-mips                  decstation_64_defconfig
-h8300                            alldefconfig
-powerpc                      arches_defconfig
-powerpc                 mpc837x_rdb_defconfig
-arm                         axm55xx_defconfig
-m68k                       m5475evb_defconfig
-mips                     decstation_defconfig
-powerpc                     tqm8548_defconfig
-arm                         at91_dt_defconfig
-sparc                            alldefconfig
-arm                        realview_defconfig
-arc                        nsim_700_defconfig
-m68k                       m5275evb_defconfig
-arc                           tb10x_defconfig
-powerpc                   motionpro_defconfig
-m68k                          hp300_defconfig
-sh                          landisk_defconfig
-mips                     loongson1b_defconfig
-powerpc                      acadia_defconfig
-powerpc                 mpc834x_itx_defconfig
-m68k                            q40_defconfig
-m68k                       m5249evb_defconfig
-um                                allnoconfig
-arc                     nsimosci_hs_defconfig
-sh                        edosk7705_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                             allyesconfig
-s390                                defconfig
-parisc                              defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a003-20210414
-i386                 randconfig-a006-20210414
-i386                 randconfig-a004-20210414
-i386                 randconfig-a001-20210414
-i386                 randconfig-a005-20210414
-i386                 randconfig-a002-20210414
-x86_64               randconfig-a014-20210414
-x86_64               randconfig-a015-20210414
-x86_64               randconfig-a011-20210414
-x86_64               randconfig-a013-20210414
-x86_64               randconfig-a012-20210414
-x86_64               randconfig-a016-20210414
-i386                 randconfig-a015-20210414
-i386                 randconfig-a014-20210414
-i386                 randconfig-a013-20210414
-i386                 randconfig-a012-20210414
-i386                 randconfig-a016-20210414
-i386                 randconfig-a011-20210414
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-um                               allmodconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a003-20210414
-x86_64               randconfig-a002-20210414
-x86_64               randconfig-a005-20210414
-x86_64               randconfig-a001-20210414
-x86_64               randconfig-a006-20210414
-x86_64               randconfig-a004-20210414
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index ad086e6d7155..5da96f5df48f 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -7,7 +7,6 @@ config ARM
+ 	select ARCH_HAS_DEBUG_VIRTUAL if MMU
+ 	select ARCH_HAS_DMA_WRITE_COMBINE if !ARM_DMA_MEM_BUFFERABLE
+ 	select ARCH_HAS_ELF_RANDOMIZE
+-	select ARCH_HAS_FIRST_USER_ADDRESS
+ 	select ARCH_HAS_FORTIFY_SOURCE
+ 	select ARCH_HAS_KEEPINITRD
+ 	select ARCH_HAS_KCOV
+diff --git a/arch/nds32/Kconfig b/arch/nds32/Kconfig
+index 23ec4fcc0d0f..62313902d75d 100644
+--- a/arch/nds32/Kconfig
++++ b/arch/nds32/Kconfig
+@@ -8,7 +8,6 @@ config NDS32
+ 	def_bool y
+ 	select ARCH_32BIT_OFF_T
+ 	select ARCH_HAS_DMA_PREP_COHERENT
+-	select ARCH_HAS_FIRST_USER_ADDRESS
+ 	select ARCH_HAS_SYNC_DMA_FOR_CPU
+ 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+ 	select ARCH_WANT_FRAME_POINTERS if FTRACE
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 47098ccd715e..8ba434287387 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -46,10 +46,6 @@ extern int sysctl_page_lock_unfairness;
+ 
+ void init_mm_internals(void);
+ 
+-#ifndef ARCH_HAS_FIRST_USER_ADDRESS
+-#define FIRST_USER_ADDRESS	0UL
+-#endif
+-
+ #ifndef CONFIG_NEED_MULTIPLE_NODES	/* Don't use mapnrs, do it properly */
+ extern unsigned long max_mapnr;
+ 
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 5e772392a379..f3da6a5cc35a 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -28,6 +28,10 @@
+ #define USER_PGTABLES_CEILING	0UL
+ #endif
+ 
++#ifndef FIRST_USER_ADDRESS
++#define FIRST_USER_ADDRESS	0UL
++#endif
++
+ /*
+  * A page table page can be thought of an array like this: pXd_t[PTRS_PER_PxD]
+  *
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 373fbe377075..4494501aa403 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -807,9 +807,6 @@ config VMAP_PFN
+ config ARCH_USES_HIGH_VMA_FLAGS
+ 	bool
+ 
+-config ARCH_HAS_FIRST_USER_ADDRESS
+-	bool
+-
+ config ARCH_HAS_PKEYS
+ 	bool
+ 
+-- 
+2.20.1
