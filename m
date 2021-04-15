@@ -2,66 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951DC3613F0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 23:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DBC361469
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 23:59:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FLsVc4WLVz3bV3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 07:12:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FLtXY6TXyz3c0Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 07:59:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62;
+ helo=www62.your-server.de; envelope-from=daniel@iogearbox.net;
  receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 1537 seconds by postgrey-1.36 at boromir;
+ Fri, 16 Apr 2021 01:04:47 AEST
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FLsVH1S0Kz30NN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 07:12:04 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-157-edG-rOXuODirktZxzgM_1A-1; Thu, 15 Apr 2021 22:11:57 +0100
-X-MC-Unique: edG-rOXuODirktZxzgM_1A-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.2; Thu, 15 Apr 2021 22:11:56 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.012; Thu, 15 Apr 2021 22:11:56 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Matthew Wilcox' <willy@infradead.org>, Jesper Dangaard Brouer
- <brouer@redhat.com>
-Subject: RE: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
-Thread-Topic: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
-Thread-Index: AQHXMXYmwdfrgigLI0exh4xFUSZq9Kq0jZ3ggAFYFFmAAC15oA==
-Date: Thu, 15 Apr 2021 21:11:56 +0000
-Message-ID: <5179a01a462f43d6951a65de2a299070@AcuMS.aculab.com>
-References: <20210410205246.507048-2-willy@infradead.org>
- <20210411114307.5087f958@carbon>
- <20210411103318.GC2531743@casper.infradead.org>
- <20210412011532.GG2531743@casper.infradead.org>
- <20210414101044.19da09df@carbon>
- <20210414115052.GS2531743@casper.infradead.org>
- <20210414211322.3799afd4@carbon>
- <20210414213556.GY2531743@casper.infradead.org>
- <a50c3156fe8943ef964db4345344862f@AcuMS.aculab.com>
- <20210415200832.32796445@carbon>
- <20210415182155.GD2531743@casper.infradead.org>
-In-Reply-To: <20210415182155.GD2531743@casper.infradead.org>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FLjLR6CmSz2yxv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 01:04:47 +1000 (AEST)
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+ by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+ (Exim 4.92.3) (envelope-from <daniel@iogearbox.net>)
+ id 1lX37j-000708-Ga; Thu, 15 Apr 2021 16:37:39 +0200
+Received: from [85.7.101.30] (helo=pc-6.home)
+ by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <daniel@iogearbox.net>)
+ id 1lX37i-000EJ3-8n; Thu, 15 Apr 2021 16:37:38 +0200
+Subject: Re: [PATCH bpf-next 1/2] bpf: Remove bpf_jit_enable=2 debugging mode
+To: Jianlin Lv <Jianlin.Lv@arm.com>, bpf@vger.kernel.org
+References: <20210415093250.3391257-1-Jianlin.Lv@arm.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <9c4a78d2-f73c-832a-e6e2-4b4daa729e07@iogearbox.net>
+Date: Thu, 15 Apr 2021 16:37:36 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
+In-Reply-To: <20210415093250.3391257-1-Jianlin.Lv@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.4/26141/Thu Apr 15 13:13:26 2021)
+X-Mailman-Approved-At: Fri, 16 Apr 2021 07:58:52 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,62 +56,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@kernel.org>,
- Grygorii Strashko <grygorii.strashko@ti.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- Matteo Croce <mcroce@linux.microsoft.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Christoph
- Hellwig <hch@lst.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: irogers@google.com, songliubraving@fb.com, catalin.marinas@arm.com,
+ linux-doc@vger.kernel.org, zlim.lnx@gmail.com, paul.walmsley@sifive.com,
+ ast@kernel.org, andrii@kernel.org, paulus@samba.org, sandipan@linux.ibm.com,
+ hpa@zytor.com, sparclinux@vger.kernel.org, illusionist.neo@gmail.com,
+ maheshb@google.com, will@kernel.org, nicolas.dichtel@6wind.com,
+ linux-s390@vger.kernel.org, iii@linux.ibm.com, paulburton@kernel.org,
+ corbet@lwn.net, mchehab+huawei@kernel.org, masahiroy@kernel.org,
+ x86@kernel.org, john.fastabend@gmail.com, linux@armlinux.org.uk,
+ linux-riscv@lists.infradead.org, borntraeger@de.ibm.com, mingo@redhat.com,
+ linux-arm-kernel@lists.infradead.org, naveen.n.rao@linux.ibm.com,
+ kuba@kernel.org, tklauser@distanz.ch, linux-mips@vger.kernel.org,
+ grantseltzer@gmail.com, xi.wang@gmail.com, aou@eecs.berkeley.edu,
+ keescook@chromium.org, gor@linux.ibm.com, luke.r.nels@gmail.com,
+ linux-kernel@vger.kernel.org, hca@linux.ibm.com, kpsingh@kernel.org,
+ iecedge@gmail.com, horms@verge.net.au, bp@alien8.de, viro@zeniv.linux.org.uk,
+ yhs@fb.com, tglx@linutronix.de, dvyukov@google.com, tsbogend@alpha.franken.de,
+ yoshfuji@linux-ipv6.org, netdev@vger.kernel.org, dsahern@kernel.org,
+ udknight@gmail.com, kafai@fb.com, bjorn@kernel.org, palmer@dabbelt.com,
+ quentin@isovalent.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Matthew Wilcox <willy@infradead.org>
-> Sent: 15 April 2021 19:22
->=20
-> On Thu, Apr 15, 2021 at 08:08:32PM +0200, Jesper Dangaard Brouer wrote:
-> > +static inline
-> > +dma_addr_t page_pool_dma_addr_read(dma_addr_t dma_addr)
-> > +{
-> > +=09/* Workaround for storing 64-bit DMA-addr on 32-bit machines in str=
-uct
-> > +=09 * page.  The page->dma_addr share area with page->compound_head wh=
-ich
-> > +=09 * use bit zero to mark compound pages. This is okay, as DMA-addr a=
-re
-> > +=09 * aligned pointers which have bit zero cleared.
-> > +=09 *
-> > +=09 * In the 32-bit case, page->compound_head is 32-bit.  Thus, when
-> > +=09 * dma_addr_t is 64-bit it will be located in top 32-bit.  Solve by
-> > +=09 * swapping dma_addr 32-bit segments.
-> > +=09 */
-> > +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
->=20
-> #if defined(CONFIG_ARCH_DMA_ADDR_T_64BIT) && defined(__BIG_ENDIAN)
-> otherwise you'll create the problem on ARM that you're avoiding on PPC ..=
-.
->=20
-> I think you want to delete the word '_read' from this function name becau=
-se
-> you're using it for both read and write.
+On 4/15/21 11:32 AM, Jianlin Lv wrote:
+> For debugging JITs, dumping the JITed image to kernel log is discouraged,
+> "bpftool prog dump jited" is much better way to examine JITed dumps.
+> This patch get rid of the code related to bpf_jit_enable=2 mode and
+> update the proc handler of bpf_jit_enable, also added auxiliary
+> information to explain how to use bpf_jit_disasm tool after this change.
+> 
+> Signed-off-by: Jianlin Lv <Jianlin.Lv@arm.com>
+[...]
+> diff --git a/arch/x86/net/bpf_jit_comp32.c b/arch/x86/net/bpf_jit_comp32.c
+> index 0a7a2870f111..8d36b4658076 100644
+> --- a/arch/x86/net/bpf_jit_comp32.c
+> +++ b/arch/x86/net/bpf_jit_comp32.c
+> @@ -2566,9 +2566,6 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+>   		cond_resched();
+>   	}
+>   
+> -	if (bpf_jit_enable > 1)
+> -		bpf_jit_dump(prog->len, proglen, pass + 1, image);
+> -
+>   	if (image) {
+>   		bpf_jit_binary_lock_ro(header);
+>   		prog->bpf_func = (void *)image;
+> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+> index c8496c1142c9..990b1720c7a4 100644
+> --- a/net/core/sysctl_net_core.c
+> +++ b/net/core/sysctl_net_core.c
+> @@ -273,16 +273,8 @@ static int proc_dointvec_minmax_bpf_enable(struct ctl_table *table, int write,
+>   
+>   	tmp.data = &jit_enable;
+>   	ret = proc_dointvec_minmax(&tmp, write, buffer, lenp, ppos);
+> -	if (write && !ret) {
+> -		if (jit_enable < 2 ||
+> -		    (jit_enable == 2 && bpf_dump_raw_ok(current_cred()))) {
+> -			*(int *)table->data = jit_enable;
+> -			if (jit_enable == 2)
+> -				pr_warn("bpf_jit_enable = 2 was set! NEVER use this in production, only for JIT debugging!\n");
+> -		} else {
+> -			ret = -EPERM;
+> -		}
+> -	}
+> +	if (write && !ret)
+> +		*(int *)table->data = jit_enable;
+>   	return ret;
+>   }
+>   
+> @@ -389,7 +381,7 @@ static struct ctl_table net_core_table[] = {
+>   		.extra2		= SYSCTL_ONE,
+>   # else
+>   		.extra1		= SYSCTL_ZERO,
+> -		.extra2		= &two,
+> +		.extra2		= SYSCTL_ONE,
+>   # endif
+>   	},
+>   # ifdef CONFIG_HAVE_EBPF_JIT
+> diff --git a/tools/bpf/bpf_jit_disasm.c b/tools/bpf/bpf_jit_disasm.c
+> index c8ae95804728..efa4b17ae016 100644
+> --- a/tools/bpf/bpf_jit_disasm.c
+> +++ b/tools/bpf/bpf_jit_disasm.c
+> @@ -7,7 +7,7 @@
+>    *
+>    * To get the disassembly of the JIT code, do the following:
+>    *
+> - *  1) `echo 2 > /proc/sys/net/core/bpf_jit_enable`
+> + *  1) Insert bpf_jit_dump() and recompile the kernel to output JITed image into log
 
-I think I'd use explicit dma_addr_hi and dma_addr_lo and
-separate read/write functions just to make absolutely sure
-nothing picks up the swapped value.
+Hmm, if we remove bpf_jit_dump(), the next drive-by cleanup patch will be thrown
+at bpf@vger stating that bpf_jit_dump() has no in-tree users and should be removed.
+Maybe we should be removing bpf_jit_disasm.c along with it as well as bpf_jit_dump()
+itself ... I guess if it's ever needed in those rare occasions for JIT debugging we
+can resurrect it from old kernels just locally. But yeah, bpftool's jit dump should
+suffice for vast majority of use cases.
 
-Isn't it possible to move the field down one long?
-This might require an explicit zero - but this is not a common
-code path - the extra write will be noise.
+There was a recent set for ppc32 jit which was merged into ppc tree which will create
+a merge conflict with this one [0]. So we would need a rebase and take it maybe during
+merge win once the ppc32 landed..
 
-=09David
+   [0] https://lore.kernel.org/bpf/cover.1616430991.git.christophe.leroy@csgroup.eu/
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+>    *  2) Load a BPF filter (e.g. `tcpdump -p -n -s 0 -i eth1 host 192.168.20.0/24`)
+>    *  3) Run e.g. `bpf_jit_disasm -o` to read out the last JIT code
+>    *
+> diff --git a/tools/bpf/bpftool/feature.c b/tools/bpf/bpftool/feature.c
+> index 40a88df275f9..98c7eec2923f 100644
+> --- a/tools/bpf/bpftool/feature.c
+> +++ b/tools/bpf/bpftool/feature.c
+> @@ -203,9 +203,6 @@ static void probe_jit_enable(void)
+>   		case 1:
+>   			printf("JIT compiler is enabled\n");
+>   			break;
+> -		case 2:
+> -			printf("JIT compiler is enabled with debugging traces in kernel logs\n");
+> -			break;
+
+This would still need to be there for older kernels ...
+
+>   		case -1:
+>   			printf("Unable to retrieve JIT-compiler status\n");
+>   			break;
+> 
 
