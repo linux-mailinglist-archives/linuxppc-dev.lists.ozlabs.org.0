@@ -2,62 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA58D361210
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 20:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C3E361295
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 20:55:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FLnlT5tQhz3c0N
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 04:23:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FLpT81mbrz3c0v
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 04:55:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=wG2nyDBr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=HNXlP42L;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=wG2nyDBr; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=korg header.b=HNXlP42L; 
  dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FLnkz1grrz2yjL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 04:22:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=gKCpPVH0zLH7350hew5abAqhtVNiLjtRV76fLbYYb+0=; b=wG2nyDBrfmLZ4TcBpx88r9PWVl
- 3U4kADELcVjuOPtZ5l8fWM5FpiPi0MvBChU6z4pigm+4d3/IyA/rykcPa6Ez2VigbwsC3UPnAkc+W
- vmN6atSs4SENxN5qvX557Ool3O69b3V6wSZcG/sJdVonl+UIoHK4kJPxespkgvCzKBL4WcPuyLpsq
- dViYcOw65GEk5Yxkc7RgzTl1+mj9yvOsC/RM+WdC+denGdvUNnPA+IkH0/brZB3SoO7Z69nF0JFbG
- amnxq8lvQoXIjmGnk8OMhvVLPob0uEI+l0LEm5vy67THKuFe7CM62OBgG/ON01RHKhpOZ7BZZS/fQ
- ZY8+hw0g==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
- Linux)) id 1lX6cl-008vZa-Uh; Thu, 15 Apr 2021 18:22:01 +0000
-Date: Thu, 15 Apr 2021 19:21:55 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Jesper Dangaard Brouer <brouer@redhat.com>
-Subject: Re: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
-Message-ID: <20210415182155.GD2531743@casper.infradead.org>
-References: <20210410205246.507048-2-willy@infradead.org>
- <20210411114307.5087f958@carbon>
- <20210411103318.GC2531743@casper.infradead.org>
- <20210412011532.GG2531743@casper.infradead.org>
- <20210414101044.19da09df@carbon>
- <20210414115052.GS2531743@casper.infradead.org>
- <20210414211322.3799afd4@carbon>
- <20210414213556.GY2531743@casper.infradead.org>
- <a50c3156fe8943ef964db4345344862f@AcuMS.aculab.com>
- <20210415200832.32796445@carbon>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210415200832.32796445@carbon>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FLpSj6Y11z30Dr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 04:55:32 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B112961152;
+ Thu, 15 Apr 2021 18:55:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+ s=korg; t=1618512930;
+ bh=tAQpTOBvkJ3hO9SBP+PvxFjqv3ZJBkP6NKwXUOWSDMQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=HNXlP42LpU+p8j7cbvKDbs0kNEL4K3d+jo0sxGNF5GAA1tEMwmLmF9ldGris8qG6T
+ UPNLhbgnVGH8C4oOOf+LYW9+B5hMrMsQr/AJg4HXVzgV2yRa7pJo7/rf7X9lVOg68+
+ NIrZ+0NCp39XcGwwQZH1V2i2PGLStNBOuQwhRgRw=
+Date: Thu, 15 Apr 2021 11:55:29 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v13 14/14] powerpc/64s/radix: Enable huge vmalloc mappings
+Message-Id: <20210415115529.9703ba8e9f7a38dea39efa56@linux-foundation.org>
+In-Reply-To: <a5c57276-737d-930b-670c-58dc0c815501@csgroup.eu>
+References: <20210317062402.533919-1-npiggin@gmail.com>
+ <20210317062402.533919-15-npiggin@gmail.com>
+ <a5c57276-737d-930b-670c-58dc0c815501@csgroup.eu>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,40 +58,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@kernel.org>,
- Grygorii Strashko <grygorii.strashko@ti.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- David Laight <David.Laight@aculab.com>,
- Matteo Croce <mcroce@linux.microsoft.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Christoph Hellwig <hch@lst.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Ding Tianhong <dingtianhong@huawei.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ linux-mm@kvack.org, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 15, 2021 at 08:08:32PM +0200, Jesper Dangaard Brouer wrote:
-> +static inline
-> +dma_addr_t page_pool_dma_addr_read(dma_addr_t dma_addr)
-> +{
-> +	/* Workaround for storing 64-bit DMA-addr on 32-bit machines in struct
-> +	 * page.  The page->dma_addr share area with page->compound_head which
-> +	 * use bit zero to mark compound pages. This is okay, as DMA-addr are
-> +	 * aligned pointers which have bit zero cleared.
-> +	 *
-> +	 * In the 32-bit case, page->compound_head is 32-bit.  Thus, when
-> +	 * dma_addr_t is 64-bit it will be located in top 32-bit.  Solve by
-> +	 * swapping dma_addr 32-bit segments.
-> +	 */
-> +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+On Thu, 15 Apr 2021 12:23:55 +0200 Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+> > +	 * is done. STRICT_MODULE_RWX may require extra work to support this
+> > +	 * too.
+> > +	 */
+> >   
+> > -	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END, GFP_KERNEL,
+> > -				    PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
+> 
+> 
+> I think you should add the following in <asm/pgtable.h>
+> 
+> #ifndef MODULES_VADDR
+> #define MODULES_VADDR VMALLOC_START
+> #define MODULES_END VMALLOC_END
+> #endif
+> 
+> And leave module_alloc() as is (just removing the enclosing #ifdef MODULES_VADDR and adding the 
+> VM_NO_HUGE_VMAP  flag)
+> 
+> This would minimise the conflits with the changes I did in powerpc/next reported by Stephen R.
+> 
 
-#if defined(CONFIG_ARCH_DMA_ADDR_T_64BIT) && defined(__BIG_ENDIAN)
-otherwise you'll create the problem on ARM that you're avoiding on PPC ...
+I'll drop powerpc-64s-radix-enable-huge-vmalloc-mappings.patch for now,
+make life simpler.
 
-I think you want to delete the word '_read' from this function name because
-you're using it for both read and write.
+Nick, a redo on top of Christophe's changes in linux-next would be best
+please.
 
