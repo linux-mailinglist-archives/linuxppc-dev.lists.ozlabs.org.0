@@ -1,50 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8AD3605C1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 11:32:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DC8360614
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 11:44:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FLYys3sW2z30DG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 19:32:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FLZFB4Lm9z3byn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 19:44:46 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=BsfLSY40;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=canb.auug.org.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=BsfLSY40; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FLYyY07TXz2yxY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 19:32:00 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FLYyN3yNnz9tyJB;
- Thu, 15 Apr 2021 11:31:56 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id jYLUuz7htGs8; Thu, 15 Apr 2021 11:31:56 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FLYyN32rjz9tyHy;
- Thu, 15 Apr 2021 11:31:56 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 879A98B7F5;
- Thu, 15 Apr 2021 11:31:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id AeQRkRJL5mAJ; Thu, 15 Apr 2021 11:31:57 +0200 (CEST)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 374FA8B7F3;
- Thu, 15 Apr 2021 11:31:57 +0200 (CEST)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id ED028679F6; Thu, 15 Apr 2021 09:31:56 +0000 (UTC)
-Message-Id: <912b349e2bcaa88939904815ca0af945740c6bd4.1618478922.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] mm: ptdump: Fix build failure
-To: Andrew Morton <akpm@linux-foundation.org>,
- Steven Price <steven.price@arm.com>
-Date: Thu, 15 Apr 2021 09:31:56 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FLZDn2h5nz2ym4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 19:44:23 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FLZDd64Wkz9sCD;
+ Thu, 15 Apr 2021 19:44:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1618479858;
+ bh=RArAJTCC/ZsrvJupSUTPB3sBlqWIRoaht0fIS/nB95g=;
+ h=Date:From:To:Cc:Subject:From;
+ b=BsfLSY40emsL0vivTjnEkhsGnCJs8cEpyKuPyXAP8NMMGbnPBwdvNADn6YKVi14Le
+ mN6JzuWvqbonYnHmFsWcc2oCZ5lmSie0bDW9ur8j9A6iDpuFZ1eUZAt0nToLPE8NMs
+ P9nT827Znb8aFV/tNMQKOjaxH83mwbXPFmeyW3JmdPhr5IbvlMTV6fikKNig4n3z32
+ aGqCFbgnggMvtzBJSsbd+nwCXzoi6C+YJHXV987hszLdT1zVDQlIY2rtJGone+dejB
+ 9swXIpTDtk4VsdB11GJCSNJK8cE89/huNhwFPDD74iV22E4pWcO1KgggjxvQBMxwEJ
+ EZ8fjopNUu9QQ==
+Date: Thu, 15 Apr 2021 19:44:17 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman
+ <mpe@ellerman.id.au>, PowerPC <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: manual merge of the akpm-current tree with the powerpc
+ tree
+Message-ID: <20210415194417.498e71b7@canb.auug.org.au>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/szb=KuBpGlQVv4KE55mef8A";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,60 +62,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-	  CC      mm/ptdump.o
-	In file included from <command-line>:
-	mm/ptdump.c: In function 'ptdump_pte_entry':
-	././include/linux/compiler_types.h:320:38: error: call to '__compiletime_assert_207' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().
-	  320 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-	      |                                      ^
-	././include/linux/compiler_types.h:301:4: note: in definition of macro '__compiletime_assert'
-	  301 |    prefix ## suffix();    \
-	      |    ^~~~~~
-	././include/linux/compiler_types.h:320:2: note: in expansion of macro '_compiletime_assert'
-	  320 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-	      |  ^~~~~~~~~~~~~~~~~~~
-	./include/asm-generic/rwonce.h:36:2: note: in expansion of macro 'compiletime_assert'
-	   36 |  compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long), \
-	      |  ^~~~~~~~~~~~~~~~~~
-	./include/asm-generic/rwonce.h:49:2: note: in expansion of macro 'compiletime_assert_rwonce_type'
-	   49 |  compiletime_assert_rwonce_type(x);    \
-	      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	mm/ptdump.c:114:14: note: in expansion of macro 'READ_ONCE'
-	  114 |  pte_t val = READ_ONCE(*pte);
-	      |              ^~~~~~~~~
-	make[2]: *** [mm/ptdump.o] Error 1
+--Sig_/szb=KuBpGlQVv4KE55mef8A
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-READ_ONCE() cannot be used for reading PTEs. Use ptep_get()
-instead. See commit 481e980a7c19 ("mm: Allow arches to provide ptep_get()")
-and commit c0e1c8c22beb ("powerpc/8xx: Provide ptep_get() with 16k pages")
-for details.
+Hi all,
 
-Fixes: 30d621f6723b ("mm: add generic ptdump")
-Cc: Steven Price <steven.price@arm.com>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- mm/ptdump.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Today's linux-next merge of the akpm-current tree got a conflict in:
 
-diff --git a/mm/ptdump.c b/mm/ptdump.c
-index 4354c1422d57..da751448d0e4 100644
---- a/mm/ptdump.c
-+++ b/mm/ptdump.c
-@@ -111,7 +111,7 @@ static int ptdump_pte_entry(pte_t *pte, unsigned long addr,
- 			    unsigned long next, struct mm_walk *walk)
- {
- 	struct ptdump_state *st = walk->private;
--	pte_t val = READ_ONCE(*pte);
-+	pte_t val = ptep_get(pte);
- 
- 	if (st->effective_prot)
- 		st->effective_prot(st, 4, pte_val(val));
--- 
-2.25.0
+  arch/powerpc/kernel/module.c
 
+between commit:
+
+  2ec13df16704 ("powerpc/modules: Load modules closer to kernel text")
+
+from the powerpc tree and commit:
+
+  4930ba789f8d ("powerpc/64s/radix: enable huge vmalloc mappings")
+
+from the akpm-current tree.
+
+I fixed it up (I think - see below) and can carry the fix as
+necessary. This is now fixed as far as linux-next is concerned, but any
+non trivial conflicts should be mentioned to your upstream maintainer
+when your tree is submitted for merging.  You may also want to consider
+cooperating with the maintainer of the conflicting tree to minimise any
+particularly complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc arch/powerpc/kernel/module.c
+index fab84024650c,cdb2d88c54e7..000000000000
+--- a/arch/powerpc/kernel/module.c
++++ b/arch/powerpc/kernel/module.c
+@@@ -88,29 -88,26 +89,42 @@@ int module_finalize(const Elf_Ehdr *hdr
+  	return 0;
+  }
+ =20
+- #ifdef MODULES_VADDR
+ -void *module_alloc(unsigned long size)
+ +static __always_inline void *
+ +__module_alloc(unsigned long size, unsigned long start, unsigned long end)
+  {
+ -	unsigned long start =3D VMALLOC_START;
+ -	unsigned long end =3D VMALLOC_END;
+ -
+ -#ifdef MODULES_VADDR
+ -	BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
+ -	start =3D MODULES_VADDR;
+ -	end =3D MODULES_END;
+ -#endif
+ -
++ 	/*
++ 	 * Don't do huge page allocations for modules yet until more testing
++ 	 * is done. STRICT_MODULE_RWX may require extra work to support this
++ 	 * too.
++ 	 */
++=20
+  	return __vmalloc_node_range(size, 1, start, end, GFP_KERNEL,
+- 				    PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
++ 				    PAGE_KERNEL_EXEC,
++ 				    VM_NO_HUGE_VMAP | VM_FLUSH_RESET_PERMS,
++ 				    NUMA_NO_NODE,
+  				    __builtin_return_address(0));
+  }
+ +
+++
+ +void *module_alloc(unsigned long size)
+ +{
+++	unsigned long start =3D VMALLOC_START;
+++	unsigned long end =3D VMALLOC_END;
+ +	unsigned long limit =3D (unsigned long)_etext - SZ_32M;
+ +	void *ptr =3D NULL;
+ +
+++#ifdef MODULES_VADDR
+ +	BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
+++	start =3D MODULES_VADDR;
+++	end =3D MODULES_END;
+ +
+ +	/* First try within 32M limit from _etext to avoid branch trampolines */
+ +	if (MODULES_VADDR < PAGE_OFFSET && MODULES_END > limit)
+- 		ptr =3D __module_alloc(size, limit, MODULES_END);
+++		ptr =3D __module_alloc(size, limit, end);
+ +
+ +	if (!ptr)
+- 		ptr =3D __module_alloc(size, MODULES_VADDR, MODULES_END);
+++#endif
+++		ptr =3D __module_alloc(size, start, end);
+ +
+ +	return ptr;
+ +}
+- #endif
+
+--Sig_/szb=KuBpGlQVv4KE55mef8A
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmB4CvEACgkQAVBC80lX
+0GwD/QgAgJkGhiT2ejF09nPIJxN78qxXool7C4G+20Rj1C+FobjN8ZRQM6DfN9rD
+wRPUraPTJCOAxgebasRcPzbHQMQkpeMQP2JCvOI//NTm/UxKoAdgEnVJzSvZO34b
+FE2mgTAyDK457IiuKu1/JyW77NA8MH33XVHyZdckw3pcivkqgErNCb5bd39VG+de
+vzhGH+0U8clZPJwJnCEhaQshsdbtxrGHq+E9YTiwnzjQreIP/Nqf3rnbrGdjFE/X
+ly4Ai0VLcj0OBzUFs6AyMIoXs83BuvMj8OgEnoLBfaCpiVX0KiUuOJNrRgxSNaWo
+MaKvwQJ00nwZQ9tqNqNhV4flRYFwKA==
+=oaik
+-----END PGP SIGNATURE-----
+
+--Sig_/szb=KuBpGlQVv4KE55mef8A--
