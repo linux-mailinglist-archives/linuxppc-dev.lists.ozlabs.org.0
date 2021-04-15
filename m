@@ -2,99 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2528D3615DD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 01:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E54683615ED
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 01:13:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FLw810K0hz3cD0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 09:11:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FLw9p62xgz3c6D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 09:13:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LuyppWQD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=dlBNCIJG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::632;
+ helo=mail-pl1-x632.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=LuyppWQD; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=dlBNCIJG; dkim-atps=neutral
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
+ [IPv6:2607:f8b0:4864:20::632])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FLw6T09mJz3bT2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 09:10:08 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13FN3tOb112873; Thu, 15 Apr 2021 19:10:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=wkgpCgw9r5JacrDF539TwlrUElD6UMurSaMCEc08CAY=;
- b=LuyppWQD68a3x5dlLS70RJaR3BuoiNns0vnTPoZsIJ7ecuhEL/LG3puTgLzYHbIZWTN/
- GiBGtG7RgQn3Uz7OPNDlNb8flMXf3mu799lr1QUNn9M3stUS4Mn83WVKWqL73lM2hyiA
- 4QWoeTdQPsBvx5EOIbNZyqu+Qd3OwvP/Q8hQzB7EDKYhXiSXCfOXORx00+UrWXr1yRVI
- mvjnc4ak84qjmWIGUVx65t6KlYAiEtXKs5ZHa475R1horErc4fTsNoacYlNq0xVfMQRT
- SAwpvH6KmvlDNrnfofFqYePxiocxUF2qjzml4Q2SCFneksZ37OkWvee9YcYVzsNeb33L IQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37xtq9p8v6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Apr 2021 19:10:03 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13FN8asr131002;
- Thu, 15 Apr 2021 19:10:02 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37xtq9p8uw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Apr 2021 19:10:02 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13FN79vm006236;
- Thu, 15 Apr 2021 23:10:02 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma01wdc.us.ibm.com with ESMTP id 37u3n9w6ns-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Apr 2021 23:10:02 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13FNA14J30736736
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 Apr 2021 23:10:01 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C4F411206E;
- Thu, 15 Apr 2021 23:10:01 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6A839112063;
- Thu, 15 Apr 2021 23:09:59 +0000 (GMT)
-Received: from farosas.linux.ibm.com.com (unknown [9.211.84.45])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 15 Apr 2021 23:09:59 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v3 2/2] KVM: PPC: Book3S HV: Stop forwarding all HFSCR cause
- bits to L1
-Date: Thu, 15 Apr 2021 20:09:48 -0300
-Message-Id: <20210415230948.3563415-3-farosas@linux.ibm.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210415230948.3563415-1-farosas@linux.ibm.com>
-References: <20210415230948.3563415-1-farosas@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FLw9N3qfwz30F9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 09:12:39 +1000 (AEST)
+Received: by mail-pl1-x632.google.com with SMTP id h20so12963363plr.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 16:12:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=quZmVxdkfveDUtpLM1NU/LuQrdZNONtDpXYzxh0MMQU=;
+ b=dlBNCIJGr0qL38amaMZRkug9NjLuSZKepOmlGO/a/0dku+GQVYqb2GS0jPTD9w2gLe
+ mxyKCuERedST3RGnVbk4l07BD+E5BOSCp/2NFPvySo56I89CsE7aDSCbVRn53Jv8Ql5N
+ hSp7xLsHsW85pUai/ansn/rQu7ZvTTszyfp0E=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=quZmVxdkfveDUtpLM1NU/LuQrdZNONtDpXYzxh0MMQU=;
+ b=pexWgrbXT8W8NImyM4ozxDddtkF9zx3thHFSGlwzjAAUJIWzu6WzPxBEaMoi+1lOLn
+ rixqG3/XGXY8c+Dc3aDiYzxjzBU9I2bmhszk0jbHA/3U7DMHO3ol9pFsAxy+oeCiVYpV
+ CjpsIEnaSurswZKShz8/VnnKTNRa8IqRR6i5tSQuMoNKzF52+dAratTpfPCohqL7awZ3
+ 5TtnFkaiztqSfbVvDlV/cDCCZs5mhGZWwhrFgxELPWp5cXuoB7Slj+1qTgTfUl1N65Mz
+ tchIbRXBe3oczCawbQOB7hPXHsyT02yNyUqQiOgftLIMDKFDmClSDuyHy3rVveS8yVOg
+ pNAA==
+X-Gm-Message-State: AOAM532QbJ3z64nrlenvBF2QO4iIHBsa20FsH3q5DXeU053U2dWX6qyH
+ k+UQ+7JB3tLe6gxdmV/rmvRXwA==
+X-Google-Smtp-Source: ABdhPJxtoW/lfV/Z4uQg/42K/o4Py3SAIqP7jABAruwS7PxREUqkSHGAEbZJMX/djPbOm2w9XfP5tw==
+X-Received: by 2002:a17:902:59d4:b029:ea:bbc5:c775 with SMTP id
+ d20-20020a17090259d4b02900eabbc5c775mr6469026plj.11.1618528357637; 
+ Thu, 15 Apr 2021 16:12:37 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-111e-5c00-3f8b-a64e-9a27-b872.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:3f8b:a64e:9a27:b872])
+ by smtp.gmail.com with ESMTPSA id x11sm3055779pfr.7.2021.04.15.16.12.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 15 Apr 2021 16:12:37 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Steven Price <steven.price@arm.com>, akpm@linux-foundation.org
+Subject: Re: [PATCH v1 3/5] mm: ptdump: Provide page size to notepage()
+In-Reply-To: <1ef6b954fb7b0f4dfc78820f1e612d2166c13227.1618506910.git.christophe.leroy@csgroup.eu>
+References: <cover.1618506910.git.christophe.leroy@csgroup.eu>
+ <1ef6b954fb7b0f4dfc78820f1e612d2166c13227.1618506910.git.christophe.leroy@csgroup.eu>
+Date: Fri, 16 Apr 2021 09:12:34 +1000
+Message-ID: <8735vr16sd.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: hFyaHsjNUp8Nxs_DPmBrZf17ocvkgU-M
-X-Proofpoint-ORIG-GUID: v2SqktxZPeX_4ruGhls6sJuwX0sP6b8q
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-15_10:2021-04-15,
- 2021-04-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 bulkscore=0
- adultscore=0 mlxscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104060000 definitions=main-2104150142
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,65 +81,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit 73937deb4b2d ("KVM: PPC: Book3S HV: Sanitise hv_regs on
-nested guest entry") we have been disabling for the nested guest the
-hypervisor facility bits that its nested hypervisor don't have access
-to.
+Hi Christophe,
 
-If the nested guest tries to use one of those facilities, the hardware
-will cause a Hypervisor Facility Unavailable interrupt. The HFSCR
-register is modified by the hardware to contain information about the
-cause of the interrupt.
+>  static void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
+> -		      u64 val)
+> +		      u64 val, unsigned long page_size)
 
-We have been returning the cause bits to the nested hypervisor but
-since commit 549e29b458c5 ("KVM: PPC: Book3S HV: Sanitise vcpu
-registers in nested path") we are reducing the amount of information
-exposed to L1, so it seems like a good idea to restrict some of the
-cause bits as well.
+Compilers can warn about unused parameters at -Wextra level.  However,
+reading scripts/Makefile.extrawarn it looks like the warning is
+explicitly _disabled_ in the kernel at W=1 and not reenabled at W=2 or
+W=3. So I guess this is fine...
 
-With this patch the L1 guest will be allowed to handle only the
-interrupts caused by facilities it has disabled for L2. The interrupts
-caused by facilities that L0 denied will cause a Program Interrupt in
-L1.
+> @@ -126,7 +126,7 @@ static int ptdump_hole(unsigned long addr, unsigned long next,
+>  {
+>  	struct ptdump_state *st = walk->private;
+>  
+> -	st->note_page(st, addr, depth, 0);
+> +	st->note_page(st, addr, depth, 0, 0);
 
-Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_hv_nested.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+I know it doesn't matter at this point, but I'm not really thrilled by
+the idea of passing 0 as the size here. Doesn't the hole have a known
+page size?
 
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 270552dd42c5..912a2bcdf7b0 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -138,6 +138,23 @@ static void save_hv_return_state(struct kvm_vcpu *vcpu, int trap,
- 	case BOOK3S_INTERRUPT_H_EMUL_ASSIST:
- 		hr->heir = vcpu->arch.emul_inst;
- 		break;
-+	case BOOK3S_INTERRUPT_H_FAC_UNAVAIL:
-+	{
-+		u8 cause = vcpu->arch.hfscr >> 56;
-+
-+		WARN_ON_ONCE(cause >= BITS_PER_LONG);
-+
-+		if (hr->hfscr & (1UL << cause)) {
-+			hr->hfscr &= ~HFSCR_INTR_CAUSE;
-+			/*
-+			 * We have not restored L1 state yet, so queue
-+			 * this interrupt instead of delivering it
-+			 * immediately.
-+			 */
-+			kvmppc_book3s_queue_irqprio(vcpu, BOOK3S_INTERRUPT_PROGRAM);
-+		}
-+		break;
-+	}
- 	}
- }
- 
--- 
-2.29.2
+>  
+>  	return 0;
+>  }
+> @@ -153,5 +153,5 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
+>  	mmap_read_unlock(mm);
+>  
+>  	/* Flush out the last page */
+> -	st->note_page(st, 0, -1, 0);
+> +	st->note_page(st, 0, -1, 0, 0);
+
+I'm more OK with the idea of passing 0 as the size when the depth is -1
+(don't know): if we don't know the depth we conceptually can't know the
+page size.
+
+Regards,
+Daniel
 
