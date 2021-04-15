@@ -1,54 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2EF3612D7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 21:19:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 951DC3613F0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 23:12:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FLpzs4V7Nz3c11
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 05:19:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=CtwSi4up;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FLsVc4WLVz3bV3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 07:12:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
- helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=CtwSi4up; 
- dkim-atps=neutral
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FLpzR6Q2nz2yRy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 05:18:43 +1000 (AEST)
-Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
- [73.42.176.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 6706420B8001;
- Thu, 15 Apr 2021 12:18:40 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6706420B8001
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1618514320;
- bh=oyFzwjqkQUSMMuJGF+BPS7fDUWKbfKx4hV8I/ckQs5A=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=CtwSi4uptCk042u834hYAeLfhdQdIUHrBndx6yJJXS16i0c0YTri5i4Y0vAHP0n0B
- mxZcAVjPsGATh47mM7jTp+caG+GuwTDJz+o4P8hFa2YbqkDdgVBjJVktpuV9zIvwGc
- 6/tnQ9IckAa0xc4yOwSKZWxSDZ9XWjq64xkg8Rho=
-Subject: Re: [PATCH] powerpc: Initialize local variable fdt to NULL in
- elf64_load()
-To: robh@kernel.org, dan.carpenter@oracle.com
-References: <20210415191437.20212-1-nramas@linux.microsoft.com>
-From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <4edb1433-4d1e-5719-ec9c-fd232b7cf71f@linux.microsoft.com>
-Date: Thu, 15 Apr 2021 12:18:39 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FLsVH1S0Kz30NN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 07:12:04 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-157-edG-rOXuODirktZxzgM_1A-1; Thu, 15 Apr 2021 22:11:57 +0100
+X-MC-Unique: edG-rOXuODirktZxzgM_1A-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Thu, 15 Apr 2021 22:11:56 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.012; Thu, 15 Apr 2021 22:11:56 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Matthew Wilcox' <willy@infradead.org>, Jesper Dangaard Brouer
+ <brouer@redhat.com>
+Subject: RE: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
+Thread-Topic: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
+Thread-Index: AQHXMXYmwdfrgigLI0exh4xFUSZq9Kq0jZ3ggAFYFFmAAC15oA==
+Date: Thu, 15 Apr 2021 21:11:56 +0000
+Message-ID: <5179a01a462f43d6951a65de2a299070@AcuMS.aculab.com>
+References: <20210410205246.507048-2-willy@infradead.org>
+ <20210411114307.5087f958@carbon>
+ <20210411103318.GC2531743@casper.infradead.org>
+ <20210412011532.GG2531743@casper.infradead.org>
+ <20210414101044.19da09df@carbon>
+ <20210414115052.GS2531743@casper.infradead.org>
+ <20210414211322.3799afd4@carbon>
+ <20210414213556.GY2531743@casper.infradead.org>
+ <a50c3156fe8943ef964db4345344862f@AcuMS.aculab.com>
+ <20210415200832.32796445@carbon>
+ <20210415182155.GD2531743@casper.infradead.org>
+In-Reply-To: <20210415182155.GD2531743@casper.infradead.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-In-Reply-To: <20210415191437.20212-1-nramas@linux.microsoft.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,45 +73,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- kbuild-all@lists.01.org, lkp@intel.com, bauerman@linux.ibm.com
+Cc: Arnd Bergmann <arnd@kernel.org>,
+ Grygorii Strashko <grygorii.strashko@ti.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ Matteo Croce <mcroce@linux.microsoft.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Christoph
+ Hellwig <hch@lst.de>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/15/21 12:14 PM, Lakshmi Ramasubramanian wrote:
+From: Matthew Wilcox <willy@infradead.org>
+> Sent: 15 April 2021 19:22
+>=20
+> On Thu, Apr 15, 2021 at 08:08:32PM +0200, Jesper Dangaard Brouer wrote:
+> > +static inline
+> > +dma_addr_t page_pool_dma_addr_read(dma_addr_t dma_addr)
+> > +{
+> > +=09/* Workaround for storing 64-bit DMA-addr on 32-bit machines in str=
+uct
+> > +=09 * page.  The page->dma_addr share area with page->compound_head wh=
+ich
+> > +=09 * use bit zero to mark compound pages. This is okay, as DMA-addr a=
+re
+> > +=09 * aligned pointers which have bit zero cleared.
+> > +=09 *
+> > +=09 * In the 32-bit case, page->compound_head is 32-bit.  Thus, when
+> > +=09 * dma_addr_t is 64-bit it will be located in top 32-bit.  Solve by
+> > +=09 * swapping dma_addr 32-bit segments.
+> > +=09 */
+> > +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+>=20
+> #if defined(CONFIG_ARCH_DMA_ADDR_T_64BIT) && defined(__BIG_ENDIAN)
+> otherwise you'll create the problem on ARM that you're avoiding on PPC ..=
+.
+>=20
+> I think you want to delete the word '_read' from this function name becau=
+se
+> you're using it for both read and write.
 
-Sorry - missed copying device-tree and powerpc mailing lists.
+I think I'd use explicit dma_addr_hi and dma_addr_lo and
+separate read/write functions just to make absolutely sure
+nothing picks up the swapped value.
 
-> There are a few "goto out;" statements before the local variable "fdt"
-> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
-> elf64_load(). This will result in an uninitialized "fdt" being passed
-> to kvfree() in this function if there is an error before the call to
-> of_kexec_alloc_and_setup_fdt().
-> 
-> Initialize the local variable "fdt" to NULL.
-> 
-> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->   arch/powerpc/kexec/elf_64.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-> index 5a569bb51349..0051440c1f77 100644
-> --- a/arch/powerpc/kexec/elf_64.c
-> +++ b/arch/powerpc/kexec/elf_64.c
-> @@ -32,7 +32,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->   	int ret;
->   	unsigned long kernel_load_addr;
->   	unsigned long initrd_load_addr = 0, fdt_load_addr;
-> -	void *fdt;
-> +	void *fdt = NULL;
->   	const void *slave_code;
->   	struct elfhdr ehdr;
->   	char *modified_cmdline = NULL;
-> 
+Isn't it possible to move the field down one long?
+This might require an explicit zero - but this is not a common
+code path - the extra write will be noise.
 
-thanks,
-  -lakshmi
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
