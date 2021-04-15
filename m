@@ -2,99 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801F836112E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 19:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 185D836116E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Apr 2021 19:51:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FLmkH2s0kz3bxF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 03:37:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FLn3H6yCFz3bqs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 03:51:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PLkrZaK8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ad2glWOM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=PLkrZaK8; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=Ad2glWOM; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FLmjp6hQKz300J
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 03:36:46 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13FHXVGX049897; Thu, 15 Apr 2021 13:36:32 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FLn2r0NWyz309X
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 03:51:31 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13FHYrh1042903; Thu, 15 Apr 2021 13:51:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=date : from : to : cc :
  subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=DW64rjdI1cuyU64w5jp6pGksg11yq3aDpRhA9FKT2WQ=;
- b=PLkrZaK8gq9pkZT3+grKv18MnbVtI4ZPEXadZ5ftXmvAebVhx8LUYmOF7sgCKcLsD0RK
- DC59sYnfYBKxt35NmeYodFG5BfjNLIcpAg7Byvx/jnkChDyrKxybGwIuNdESn1BM4ZPY
- ukIGP43uVb1aFGBP7QHuKTamenJCLyFzzOY5E8bYKhsKL33YDlLMfKw2gdB83nhVu2Y1
- yIPz6IJRIH+ah7Abt1NHrPdpjFLjt+c7Wjnnw0ek/EsEmyBFrw4VkyGyEwOaOntcz7Oe
- pWx668HQ4T+KCCudp6tZinhJij37DYOhjEp8/6FagD7prj+HsMGg/LJdWXn2AaIoI9Bl jA== 
+ : in-reply-to; s=pp1; bh=f3bbhzPCDmP7JUfVR9orh93YXeJN9bLXytDu5EICHpU=;
+ b=Ad2glWOMlxOAdU3rn4qQumERNeulSIN7PKSu9n74E5VUvZvGNwyNNXywl54iGB5W6Q9u
+ C29YuTBST8HFIqEkvTKcRYZqkU9pbdgYypFRP8OyMXvfSdIe+P4XDmESB7GkFtQjncNr
+ AYRvzhzWu1qEiUQqV7JD/MXngXvCRs37bnp4mJq+hSQF9n4rAcfg+MQiW98HD4BnDtl4
+ n6lejqUjyQwqNIGHvEXaLnhGsDNsqCA55yocxx4Teibkm1cT61CfMZKjIIV30pnrCVxn
+ 69GcWa2i7/1w1QNurUjHMbId0NopdlH9relhCWedPWlUep+8H4JSqL4Cs3sC6UJ1jxaF nA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37x88jcrac-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37xscy1eg8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Apr 2021 13:36:32 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13FHXj0T050874;
- Thu, 15 Apr 2021 13:36:31 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37x88jcr9n-1
+ Thu, 15 Apr 2021 13:51:17 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13FHZ3Sa043635;
+ Thu, 15 Apr 2021 13:51:17 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37xscy1efn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Apr 2021 13:36:31 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13FHWJ6f019696;
- Thu, 15 Apr 2021 17:36:29 GMT
+ Thu, 15 Apr 2021 13:51:17 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13FHlQHM024166;
+ Thu, 15 Apr 2021 17:51:15 GMT
 Received: from b06cxnps4074.portsmouth.uk.ibm.com
  (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04ams.nl.ibm.com with ESMTP id 37u3n8v1kw-1
+ by ppma03ams.nl.ibm.com with ESMTP id 37u3n8c1nv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Apr 2021 17:36:29 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
+ Thu, 15 Apr 2021 17:51:15 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
  by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13FHaROb40960510
+ 13FHpDsF46334454
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 Apr 2021 17:36:27 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 86B27AE055;
- Thu, 15 Apr 2021 17:36:27 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 27C91AE051;
- Thu, 15 Apr 2021 17:36:25 +0000 (GMT)
+ Thu, 15 Apr 2021 17:51:13 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 31D81A4053;
+ Thu, 15 Apr 2021 17:51:13 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3BA86A4055;
+ Thu, 15 Apr 2021 17:51:11 +0000 (GMT)
 Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Thu, 15 Apr 2021 17:36:24 +0000 (GMT)
-Date: Thu, 15 Apr 2021 23:06:24 +0530
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Thu, 15 Apr 2021 17:51:11 +0000 (GMT)
+Date: Thu, 15 Apr 2021 23:21:10 +0530
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/3] powerpc/smp: Reintroduce cpu_core_mask
-Message-ID: <20210415173624.GD2633526@linux.vnet.ibm.com>
+Subject: Re: [PATCH 3/3] powerpc/smp: Cache CPU to chip lookup
+Message-ID: <20210415175110.GE2633526@linux.vnet.ibm.com>
 References: <20210415120934.232271-1-srikar@linux.vnet.ibm.com>
- <20210415120934.232271-2-srikar@linux.vnet.ibm.com>
- <20210415171134.GA16351@in.ibm.com>
+ <20210415120934.232271-4-srikar@linux.vnet.ibm.com>
+ <20210415171921.GB16351@in.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20210415171134.GA16351@in.ibm.com>
+In-Reply-To: <20210415171921.GB16351@in.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8jFMJfTb-8yThZdwpSV8pby5JOq97-LI
-X-Proofpoint-ORIG-GUID: zoAc7Nt_nHIq7lI3yuFChwTRNQWDPbe8
+X-Proofpoint-ORIG-GUID: RQYrXLPbyCyR98EZ9_OkInMgp-cMBRfd
+X-Proofpoint-GUID: ncVAzCGVssJ1MmY0eQewGlfS0RDA9K22
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-04-15_09:2021-04-15,
  2021-04-15 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 clxscore=1015
- mlxscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ suspectscore=0 phishscore=0
+ spamscore=0 mlxscore=0 mlxlogscore=827 clxscore=1015 impostorscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104060000 definitions=main-2104150108
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -117,51 +117,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Gautham R Shenoy <ego@linux.vnet.ibm.com> [2021-04-15 22:41:34]:
+* Gautham R Shenoy <ego@linux.vnet.ibm.com> [2021-04-15 22:49:21]:
 
-> Hi Srikar,
-> 
-> 
-
-Thanks for taking a look.
-
-> > @@ -1485,12 +1486,36 @@ static void add_cpu_to_masks(int cpu)
-> >  	add_cpu_to_smallcore_masks(cpu);
 > > 
-> >  	/* In CPU-hotplug path, hence use GFP_ATOMIC */
-> > -	alloc_cpumask_var_node(&mask, GFP_ATOMIC, cpu_to_node(cpu));
-> > +	ret = alloc_cpumask_var_node(&mask, GFP_ATOMIC, cpu_to_node(cpu));
-> >  	update_mask_by_l2(cpu, &mask);
-> > 
-> >  	if (has_coregroup_support())
-> >  		update_coregroup_mask(cpu, &mask);
-> > 
-> > +	if (chip_id == -1 || !ret) {
-> > +		cpumask_copy(per_cpu(cpu_core_map, cpu), cpu_cpu_mask(cpu));
-> > +		goto out;
-> > +	}
+> > +int *chip_id_lookup_table;
 > > +
-> > +	if (shared_caches)
-> > +		submask_fn = cpu_l2_cache_mask;
+> >  #ifdef CONFIG_PPC64
+> >  int __initdata iommu_is_off;
+> >  int __initdata iommu_force_on;
+> > @@ -914,13 +916,22 @@ EXPORT_SYMBOL(of_get_ibm_chip_id);
+> >  int cpu_to_chip_id(int cpu)
+> >  {
+> >  	struct device_node *np;
+> > +	int ret = -1, idx;
 > > +
-> > +	/* Update core_mask with all the CPUs that are part of submask */
-> > +	or_cpumasks_related(cpu, cpu, submask_fn, cpu_core_mask);
-> >
-> 
-> If coregroups exist, we can add the cpus of the coregroup to the
-> cpu_core_mask thereby reducing the scope of the for_each_cpu() search
-> below. This will still cut down the time on Baremetal systems
-> supporting coregroups.
+> > +	idx = cpu / threads_per_core;
+> > +	if (chip_id_lookup_table && chip_id_lookup_table[idx] != -1)
 > 
 
-Yes, once we upstream coregroup support to Baremetal, we should look
-at adding it. Also do note, number of CPUs we support for Baremetal is
-comparatively lower than in PowerVM + QEMU. And more importantly the
-number of cores per coregroup is also very low. So the optimization
-may not yield too much of a benefit.
+> The value -1 is ambiguous since we won't be able to determine if
+> it is because we haven't yet made a of_get_ibm_chip_id() call
+> or if of_get_ibm_chip_id() call was made and it returned a -1.
+> 
 
-Its only in the QEMU case, where we end up having too many cores in
-the same chip, where we see a drastic increase in the boot-up time.
+We don't allocate chip_id_lookup_table unless cpu_to_chip_id() return
+!-1 value for the boot-cpuid. So this ensures that we dont
+unnecessarily allocate chip_id_lookup_table. Also I check for
+chip_id_lookup_table before calling cpu_to_chip_id() for other CPUs.
+So this avoids overhead of calling cpu_to_chip_id() for platforms that
+dont support it.  Also its most likely that if the
+chip_id_lookup_table is initialized then of_get_ibm_chip_id() call
+would return a valid value.
+
++ Below we are only populating the lookup table, only when the
+of_get_cpu_node is valid.
+
+So I dont see any drawbacks of initializing it to -1. Do you see any?
+
+> Thus, perhaps we can initialize chip_id_lookup_table[idx] with a
+> different unique negative value. How about S32_MIN ? and check
+> chip_id_lookup_table[idx] is different here ?
+> 
+
+I had initially initialized to -2, But then I thought we adding in
+more confusion than necessary and it was not solving any issues.
+
 
 -- 
 Thanks and Regards
