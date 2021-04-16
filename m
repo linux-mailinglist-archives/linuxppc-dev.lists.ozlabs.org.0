@@ -1,97 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C88362926
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 22:21:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 335773629C7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 22:58:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMSKj057Jz3c5B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 06:21:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMT8B0Yxfz3c4j
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 06:58:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qMqB4Mdh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=pz/bSOQm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::730;
+ helo=mail-qk1-x730.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=qMqB4Mdh; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=pz/bSOQm; dkim-atps=neutral
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com
+ [IPv6:2607:f8b0:4864:20::730])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMSKF0lmBz3bqg
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 06:21:20 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13GK3Ra5095602; Fri, 16 Apr 2021 16:21:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=EXbZeS34P+SiTyeIevH74JohvMoAWHhbNDjOk0wj1yk=;
- b=qMqB4MdhnwZTma4lXPYmUBMlDrsgLtsfwxOkSpgrOgpK2kyDjYih5EAXctQ4CmZWVKCL
- wz79+BPE41lCmR6949/nv+Ewd+/sKpbaUqjfc4bNnm7aG+oTz29EbU/CjFugQvhFoDg2
- /uxSrXxYAyErDyu2mWQtarH9c8XIRyY2Oo8vc9hYWi7q5CFFmHL1DNXvVKsOFzBCr/Sw
- Dk9e9f53tZGQ/yK7IrphECnxxszZeEcezwt4ppOYUogoxtjyrkJgsRJQ+Xk205e1Gkw/
- CjpDv+eW6IjbDUdz9dHzk69VJffqnT0FpCsLMDdl415Ivt+sDS1cmCLnxiVdGwhrF3k4 7g== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37yecx586q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 16:21:12 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13GKIANc021101;
- Fri, 16 Apr 2021 20:21:12 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma01dal.us.ibm.com with ESMTP id 37u3nah3m3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 20:21:12 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13GKLBMA10223886
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Apr 2021 20:21:11 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 31D1BB206B;
- Fri, 16 Apr 2021 20:21:11 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 83A26B2064;
- Fri, 16 Apr 2021 20:21:10 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.160.122.125])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 16 Apr 2021 20:21:10 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/pseries: extract host bridge from pci_bus prior
- to bus removal
-To: Daniel Axtens <dja@axtens.net>, mpe@ellerman.id.au
-References: <20210211182435.47968-1-tyreld@linux.ibm.com>
- <878s5ig0p7.fsf@linkitivity.dja.id.au>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <9ff72ca1-debd-9bc5-c445-db68e673f3ef@linux.ibm.com>
-Date: Fri, 16 Apr 2021 13:21:09 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMT7k4Lrwz30Bh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 06:58:09 +1000 (AEST)
+Received: by mail-qk1-x730.google.com with SMTP id d23so18235934qko.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 13:58:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :organization:user-agent:mime-version:content-transfer-encoding;
+ bh=qnIWecU4j0go3BHki/tPX89ICgmbfzbrXzKLY+iWOac=;
+ b=pz/bSOQmz9g+p6n0hHD1XQp4RAoq2j/Dj0uYmko1vHfn5u7RxBa80ABt2yiEG25v68
+ haJilWm4NQoEiFZmf6ZCbgXgD0WEvFImh7UxgbDrysgLT0RyxcXbeAQsfenuXFUhxMZ0
+ kqgYHnrvKY1kb9ACeLaIhxNJTlueR0VDBoK5nyTA7AWNFEcOVXwKX/bhRfyDzO5BDxYu
+ iyyzTYTkUbhk8xG+XjJB0unQDDTTmiCESPhkYjks9+OV4j3FvRjcw8FUhL+gaUffJ1XI
+ Ix5RU/RXzOdSgrB+BelgyWuXjivn2djucxlh6gW5fRKzGgkoysyHferoLsZxEue8M1RI
+ O/Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:organization:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=qnIWecU4j0go3BHki/tPX89ICgmbfzbrXzKLY+iWOac=;
+ b=nSaeQ4M43qkszTtASKAZliUvDS4okaQxAwD1k8WyCfl+lTAjNJ4LaG/LQHwlI2LgbC
+ EBB/WTKQ4gNi/PhrN1yeD22MCYxoI4fww8PKqJjQIGyRcNEg5mmyPE/yo83KZVIuLCPq
+ eCMBlG2VQ0p5c+EzgiRWCYsq6OKfpPg5DdfHoJbfsmWfCUVYfII5gXrlsUkM9SJiqEyV
+ OiB69vNDj9MlL4xP8dPvvoiLFuCgygEQtnwDkR6kAdUls2LVj+WOs8O20k+MRnbPpa6g
+ IfgNxz7DINcoY6udbyR8jpgB7FmzbYWe6IaewdX8hqO6WpGs1NM51nNl7aFtXRWkq5tX
+ f9Lw==
+X-Gm-Message-State: AOAM5332FYM1n5xjWLbGRJFb8bzv0hnprOkomLO28iRotjTy7azvbFN8
+ g7hYL99lGvLf7cmSTb9ZGTU=
+X-Google-Smtp-Source: ABdhPJxFhinlHNn02trTin40jfBumlNTfk5ie7OrDNyXW4/JI/YC1pS+0OjO1mDC9iZf7UePRpjcKg==
+X-Received: by 2002:a37:d4e:: with SMTP id 75mr1110422qkn.457.1618606685688;
+ Fri, 16 Apr 2021 13:58:05 -0700 (PDT)
+Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
+ ([177.35.200.187])
+ by smtp.gmail.com with ESMTPSA id n15sm4860020qkk.109.2021.04.16.13.58.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 16 Apr 2021 13:58:05 -0700 (PDT)
+Message-ID: <7b089cd48b90f2445c7cb80da1ce8638607c46fc.camel@gmail.com>
+Subject: Re: [PATCH 1/1] of/pci: Add IORESOURCE_MEM_64 to resource flags for
+ 64-bit memory addresses
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Rob Herring <robh+dt@kernel.org>
+Date: Fri, 16 Apr 2021 17:57:59 -0300
+In-Reply-To: <CAL_Jsq+WwAeziGN4EfPAWfA0fieAjfcxfi29=StOx0GeKjAe_g@mail.gmail.com>
+References: <20210415180050.373791-1-leobras.c@gmail.com>
+ <CAL_Jsq+WwAeziGN4EfPAWfA0fieAjfcxfi29=StOx0GeKjAe_g@mail.gmail.com>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-In-Reply-To: <878s5ig0p7.fsf@linkitivity.dja.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: SWU3kPdSE_fHBZtWaq6ahJVrfr8XNqfA
-X-Proofpoint-GUID: SWU3kPdSE_fHBZtWaq6ahJVrfr8XNqfA
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-16_09:2021-04-16,
- 2021-04-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- malwarescore=0 impostorscore=0 clxscore=1011 priorityscore=1501
- adultscore=0 phishscore=0 bulkscore=0 suspectscore=0 spamscore=0
- mlxlogscore=999 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104160140
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,76 +85,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Frank Rowand <frowand.list@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ PCI <linux-pci@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/16/21 12:15 AM, Daniel Axtens wrote:
-> Hi Tyrel,
+Hello Rob, thanks for this feedback!
+
+On Thu, 2021-04-15 at 13:59 -0500, Rob Herring wrote:
+> +PPC and PCI lists
 > 
->> The pci_bus->bridge reference may no longer be valid after
->> pci_bus_remove() resulting in passing a bad value to device_unregister()
->> for the associated bridge device.
->>
->> Store the host_bridge reference in a separate variable prior to
->> pci_bus_remove().
->>
-> The patch certainly seems to do what you say. I'm not really up on the
-> innards of PCI, so I'm struggling to figure out by what code path
-> pci_bus_remove() might invalidate pci_bus->bridge? A quick look at
-> pci_remove_bus was not very illuminating but I didn't chase down every
-> call it made.
+> On Thu, Apr 15, 2021 at 1:01 PM Leonardo Bras <leobras.c@gmail.com> wrote:
+> > 
+> > Many other resource flag parsers already add this flag when the input
+> > has bits 24 & 25 set, so update this one to do the same.
+> 
+> Many others? Looks like sparc and powerpc to me. 
+> 
 
-remove_phb_dynamic()
-|--> pci_remove_bus(bus)
-     |--> device_unregister(&bus->dev)
-          |--> put_device(dev)
-               |--> device_release(kobj)
-                    |--> dev->class->dev_release(dev) == release_pci_bus(dev)
-                         |--> kfree(bus)
+s390 also does that, but it look like it comes from a device-tree.
 
-We have the above call chain that takes place in the when put_device() triggers
-the kobject ref count to go zero. The kobject_release function in this case is
-device_release() which in turn calls dev->class->dev_release(dev). For a pci_bus
-the class is appropriately pcibus_class whose dev_release() callback points to
-release_pci_bus(). This in turn calls kfree() on the bus. Which means we can no
-longer safely dereference any fields of the pci_bus struct.
+> Those would be the
+> ones I worry about breaking. Sparc doesn't use of/address.c so it's
+> fine. Powerpc version of the flags code was only fixed in 2019, so I
+> don't think powerpc will care either.
 
--Tyrel
+In powerpc I reach this function with this stack, while configuring a
+virtio-net device for a qemu/KVM pseries guest:
+
+pci_process_bridge_OF_ranges+0xac/0x2d4
+pSeries_discover_phbs+0xc4/0x158
+discover_phbs+0x40/0x60
+do_one_initcall+0x60/0x2d0
+kernel_init_freeable+0x308/0x3a8
+kernel_init+0x2c/0x168
+ret_from_kernel_thread+0x5c/0x70
+
+For this, both MMIO32 and MMIO64 resources will have flags 0x200.
 
 > 
-> Kind regards,
-> Daniel
+> I noticed both sparc and powerpc set PCI_BASE_ADDRESS_MEM_TYPE_64 in
+> the flags. AFAICT, that's not set anywhere outside of arch code. So
+> never for riscv, arm and arm64 at least. That leads me to
+> pci_std_update_resource() which is where the PCI code sets BARs and
+> just copies the flags in PCI_BASE_ADDRESS_MEM_MASK ignoring
+> IORESOURCE_* flags. So it seems like 64-bit is still not handled and
+> neither is prefetch.
 > 
->> Fixes: 7340056567e3 ("powerpc/pci: Reorder pci bus/bridge unregistration during PHB removal")
->> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
->> ---
->>  arch/powerpc/platforms/pseries/pci_dlpar.c | 4 +++-
->>  1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
->> index f9ae17e8a0f4..a8f9140a24fa 100644
->> --- a/arch/powerpc/platforms/pseries/pci_dlpar.c
->> +++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
->> @@ -50,6 +50,7 @@ EXPORT_SYMBOL_GPL(init_phb_dynamic);
->>  int remove_phb_dynamic(struct pci_controller *phb)
->>  {
->>  	struct pci_bus *b = phb->bus;
->> +	struct pci_host_bridge *host_bridge = to_pci_host_bridge(b->bridge);
->>  	struct resource *res;
->>  	int rc, i;
->>  
->> @@ -76,7 +77,8 @@ int remove_phb_dynamic(struct pci_controller *phb)
->>  	/* Remove the PCI bus and unregister the bridge device from sysfs */
->>  	phb->bus = NULL;
->>  	pci_remove_bus(b);
->> -	device_unregister(b->bridge);
->> +	host_bridge->bus = NULL;
->> +	device_unregister(&host_bridge->dev);
->>  
->>  	/* Now release the IO resource */
->>  	if (res->flags & IORESOURCE_IO)
->> -- 
->> 2.27.0
+
+I am not sure if you mean here:
+a) it's ok to add IORESOURCE_MEM_64 here, because it does not affect
+anything else, or
+b) it should be using PCI_BASE_ADDRESS_MEM_TYPE_64 
+(or IORESOURCE_MEM_64 | PCI_BASE_ADDRESS_MEM_TYPE_64) instead, since
+it's how it's added in powerpc/sparc, and else there is no point.
+
+Again, thanks for helping!
+
+Best regards,
+Leonardo Bras
 
