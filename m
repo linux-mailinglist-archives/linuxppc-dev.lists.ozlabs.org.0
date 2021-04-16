@@ -2,104 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7349436237A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 17:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 326A6362396
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 17:15:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMKLz6w24z3c6S
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 01:07:23 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HlVktblG;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMKXm17t3z3bvZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 01:15:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=HlVktblG; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMKLY1Qd1z2xZH
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 01:07:00 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13GF45SC117001; Fri, 16 Apr 2021 11:06:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=WbWU7a4i5njKdlMB6x5Fpyc2NkH9nMPMKZadNALON/Q=;
- b=HlVktblGK6gqeiRweZgWYoquklRYUdtUraNG5Cuf+1mjxFF7IGjYHYP41BcvPT63Z2Mv
- FDk3EXzNIfppD2i/h4hQP6Bocu2oM0LJm0TTWdNzgz0qcndbq4+YFxOQSrOF5gUgU+Hx
- wtzBMLuOTUht6FU7V1L9RKndrIvef0NuaEu+sa98tya/RqUarLvW/FV925h2K/viIsPL
- QV7I+kteFdHA3CAYYxuA5jx9GNw5mMFrrTLlEGhaRc7eVvLBrujrmit1+7uHA3At34v/
- xLGdWBJCo/TMYY93S1clNFFzIetv/O+SzBQEzV8Ov4lDESFpWn1VJ1G/zXWKTXaVuU7S hw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37x88k9y2b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 11:06:50 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13GF4XLs119292;
- Fri, 16 Apr 2021 11:06:50 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37x88k9y19-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 11:06:50 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13GEvPjC000821;
- Fri, 16 Apr 2021 15:06:48 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 37u39hmht6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 15:06:48 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13GF6kB545613366
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Apr 2021 15:06:46 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 13820A4040;
- Fri, 16 Apr 2021 15:06:46 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 16DF5A4051;
- Fri, 16 Apr 2021 15:06:43 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.85.72.155])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri, 16 Apr 2021 15:06:42 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
- Fri, 16 Apr 2021 20:36:42 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v1 1/1] powerpc/papr_scm: Properly handle UUID types and
- API
-In-Reply-To: <CAHp75VcPANL+LBTxy2V8f2Ksy=FJmdbU1=r60KKO7YSUf9BCLg@mail.gmail.com>
-References: <20210415134637.17770-1-andriy.shevchenko@linux.intel.com>
- <87eefblbji.fsf@vajain21.in.ibm.com>
- <CAHp75VcPANL+LBTxy2V8f2Ksy=FJmdbU1=r60KKO7YSUf9BCLg@mail.gmail.com>
-Date: Fri, 16 Apr 2021 20:36:42 +0530
-Message-ID: <87a6pyl14t.fsf@vajain21.in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMKXN3G6Pz300J
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 01:15:28 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FMKXD004dz9v3Lf;
+ Fri, 16 Apr 2021 17:15:23 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id WK3DlU5pFCvu; Fri, 16 Apr 2021 17:15:23 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FMKXC6BwFz9v3Ld;
+ Fri, 16 Apr 2021 17:15:23 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 766108B84E;
+ Fri, 16 Apr 2021 17:15:25 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 5GrWiUHi_Hri; Fri, 16 Apr 2021 17:15:25 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5295F8B84C;
+ Fri, 16 Apr 2021 17:15:24 +0200 (CEST)
+Subject: Re: [PATCH v1 3/5] mm: ptdump: Provide page size to notepage()
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Steven Price <steven.price@arm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ akpm@linux-foundation.org
+References: <cover.1618506910.git.christophe.leroy@csgroup.eu>
+ <1ef6b954fb7b0f4dfc78820f1e612d2166c13227.1618506910.git.christophe.leroy@csgroup.eu>
+ <41819925-3ee5-4771-e98b-0073e8f095cf@arm.com>
+ <da53d2f2-b472-0c38-bdd5-99c5a098675d@csgroup.eu>
+ <1102cda1-b00f-b6ef-6bf3-22068cc11510@arm.com>
+ <6ff4816b-8ff6-19de-73a2-3fcadc003ccd@csgroup.eu>
+ <e39d500a-2154-3c5d-9393-8bf53a567fad@arm.com>
+ <b6b5300d-35a0-3bc0-ad1d-f2af433ef27e@csgroup.eu>
+ <b245cf06-f2e5-87a5-9a5e-64efc39d415a@csgroup.eu>
+Message-ID: <10adad00-14de-61b6-ce2a-bdde23a34bcf@csgroup.eu>
+Date: Fri, 16 Apr 2021 17:15:23 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Gj3h6l7E5xP8Yl02kFNPJ50ytsfvNNx9
-X-Proofpoint-ORIG-GUID: ckxZAx8zOlRRvIGCHqvJ3VpMz7ME06ar
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-16_08:2021-04-16,
- 2021-04-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 clxscore=1015
- mlxscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104160112
+In-Reply-To: <b245cf06-f2e5-87a5-9a5e-64efc39d415a@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,73 +72,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, "open list:LINUX
- FOR POWERPC PA SEMI PWRFICIENT" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andy Shevchenko <andy.shevchenko@gmail.com> writes:
 
-> On Thu, Apr 15, 2021 at 8:10 PM Vaibhav Jain <vaibhav@linux.ibm.com> wrot=
-e:
+
+Le 16/04/2021 à 17:04, Christophe Leroy a écrit :
+> 
+> 
+> Le 16/04/2021 à 16:40, Christophe Leroy a écrit :
 >>
 >>
->> Thanks for the patch Andy,
+>> Le 16/04/2021 à 15:00, Steven Price a écrit :
+>>> On 16/04/2021 12:08, Christophe Leroy wrote:
+>>>>
+>>>>
+>>>> Le 16/04/2021 à 12:51, Steven Price a écrit :
+>>>>> On 16/04/2021 11:38, Christophe Leroy wrote:
+>>>>>>
+>>>>>>
+>>>>>> Le 16/04/2021 à 11:28, Steven Price a écrit :
+>>>>>>> To be honest I don't fully understand why powerpc requires the page_size - it appears to be 
+>>>>>>> using it purely to find "holes" in the calls to note_page(), but I haven't worked out why 
+>>>>>>> such holes would occur.
+>>>>>>
+>>>>>> I was indeed introduced for KASAN. We have a first commit 
+>>>>>> https://github.com/torvalds/linux/commit/cabe8138 which uses page size to detect whether it is 
+>>>>>> a KASAN like stuff.
+>>>>>>
+>>>>>> Then came https://github.com/torvalds/linux/commit/b00ff6d8c as a fix. I can't remember what 
+>>>>>> the problem was exactly, something around the use of hugepages for kernel memory, came as part 
+>>>>>> of the series 
+>>>>>> https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1589866984.git.christophe.leroy@csgroup.eu/ 
+>>>>>
+>>>>>
+>>>>>
+>>>>>
+>>>>>
+>>>>>
+>>>>> Ah, that's useful context. So it looks like powerpc took a different route to reducing the 
+>>>>> KASAN output to x86.
+>>>>>
+>>>>> Given the generic ptdump code has handling for KASAN already it should be possible to drop that 
+>>>>> from the powerpc arch code, which I think means we don't actually need to provide page size to 
+>>>>> notepage(). Hopefully that means more code to delete ;)
+>>>>>
+>>>>
+>>>> Yes ... and no.
+>>>>
+>>>> It looks like the generic ptdump handles the case when several pgdir entries points to the same 
+>>>> kasan_early_shadow_pte. But it doesn't take into account the powerpc case where we have regular 
+>>>> page tables where several (if not all) PTEs are pointing to the kasan_early_shadow_page .
+>>>
+>>> I'm not sure I follow quite how powerpc is different here. But could you have a similar check for 
+>>> PTEs against kasan_early_shadow_pte as the other levels already have?
+>>>
+>>> I'm just worried that page_size isn't well defined in this interface and it's going to cause 
+>>> problems in the future.
+>>>
 >>
->> Unfortunately ran into a compilation issue due to missing "#include
->> <asm/unaligned.h>" that provides definition for
->> get_unaligned_le64(). Gcc reported following error:
+>> I'm trying. I reverted the two commits b00ff6d8c and cabe8138.
 >>
->> error: implicit declaration of function =E2=80=98get_unaligned_le64=E2=
-=80=99
->
-> Right, I have not tested it (as mentioned in the comments to the patch)
->
->> After including the necessary header file, kernel compiled fine and I
->> was able to test & verify the patch.
->
-> Thank you very much for the testing.
->
-> I'm not sure what the coverage of your test is.
+>> At the moment, I don't get exactly what I expect: For linear memory I get one line for each 8M 
+>> page whereas before reverting the patches I got one 16M line and one 112M line.
+>>
+>> And for KASAN shadow area I get two lines for the 2x 8M pages shadowing linear mem then I get one 
+>> 4M line for each PGDIR entry pointing to kasan_early_shadow_pte.
+>>
+>> 0xf8000000-0xf87fffff 0x07000000         8M   huge        rw       present
+>> 0xf8800000-0xf8ffffff 0x07800000         8M   huge        rw       present
+>> 0xf9000000-0xf93fffff 0x01430000         4M               r        present
+> ...
+>> 0xfec00000-0xfeffffff 0x01430000         4M               r        present
+>>
+>> Any idea ?
+>>
+> 
+> 
+> I think the different with other architectures is here:
+> 
+>      } else if (flag != st->current_flags || level != st->level ||
+>             addr >= st->marker[1].start_address ||
+>             pa != st->last_pa + PAGE_SIZE) {
+> 
+> 
+> In addition to the checks everyone do, powerpc also checks "pa != st->last_pa + PAGE_SIZE".
+> And it is definitely for that test that page_size argument add been added.
 
-Your patch updates the way the interleaved set-cookies are populated in
-papr_scm which are then used to populate label entry for a namespace. I
-verified that the reported region setcookie hasnt changed for an nvdimm
-region before and after applying your patch for both BE and LE variants:
+By replacing that test by (pa - st->start_pa != addr - st->start_address) it works again. So we 
+definitely don't need the real page size.
 
-# 64-bit Little endian kernel before applying the patch
-$ sudo cat /sys/devices/ndbus0/region0/set_cookie
-0x8b6b26cbc930e2b5
 
-# 64-bit Little endian kernel after applying your patch
-$ sudo cat /sys/devices/ndbus0/region0/set_cookie
-0x8b6b26cbc930e2b5
-
-# 64-bit Big endian kernel before applying your patch
-$ sudo cat /sys/devices/ndbus0/region0/set_cookie
-0x8b6b26cbc930e2b5
-
-# 64-bit Big endian kernel after applying your patch
-$ sudo cat /sys/devices/ndbus0/region0/set_cookie
-0x8b6b26cbc930e2b5
-
-> That's why I have an
-> additional question below. Is the byte ordering kept the same in BE
-> (32- and 64-bit) cases? Because I'm worrying that I might have missed
-> something.
-Libnvdimm store these cookies in label area as little endian values and
-based on the results above I think we are good.
->
->
-> --=20
-> With Best Regards,
-> Andy Shevchenko
-
---=20
-Cheers
-~ Vaibhav
+> 
+> I see that other architectures except RISCV don't dump the physical address. But even RISCV doesn't 
+> include that check.
+> 
+> That physical address dump was added by commit aaa229529244 ("powerpc/mm: Add physical address to 
+> Linux page table dump") [https://github.com/torvalds/linux/commit/aaa2295]
+> 
+> How do other architectures deal with the problem described by the commit log of that patch ?
+> 
+> Christophe
