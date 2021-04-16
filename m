@@ -1,107 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DE33620E6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 15:28:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC943621D9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 16:11:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMH8b300jz3c6S
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 23:28:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMJ662pg2z3c31
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 00:11:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z94XpQHv;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWU2PJWf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bWtljR/0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Z94XpQHv; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWU2PJWf; 
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=bWtljR/0; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMH874n4vz30Cy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 23:27:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1618579665;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JAKUqXFHXuyIOfRcOhTnPnVKgo/XPbGiNpXU9KPW1QA=;
- b=Z94XpQHvuhQ3w8zOHIMkRRau4BO+WQaM+PRypVmTn+TDqAfgrIFOge9nX+cGMuX7r+ELEn
- HFheITuz4wJACJltQu5Nfn3yJ6Z0ZNVrXnADmVeoyK6RJa0TRCymaRBEnB228xdN7JVcVM
- lrNh8SlHhOu/vnAlZCc2VOvgpJD+BMM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1618579666;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JAKUqXFHXuyIOfRcOhTnPnVKgo/XPbGiNpXU9KPW1QA=;
- b=aWU2PJWfaAucIpxu3Q8DgkHMD+KRJDXCR5gqKVhZYkRBFOFbcQ3jWQYjIRfefU9qRaPpby
- tjaH33B49Jo5OCUyrkd8yEBM1abDhUT5gVg43F+mM+YYQ7LgLkHMgwLIhg7Zwmi97MNhfp
- NY/PjSoQREUdnfHgJti6SQSwzUykPQY=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-247--yg4zKJDMQ-ueDeB6tHN6Q-1; Fri, 16 Apr 2021 09:27:43 -0400
-X-MC-Unique: -yg4zKJDMQ-ueDeB6tHN6Q-1
-Received: by mail-ej1-f71.google.com with SMTP id
- lf6-20020a1709071746b029037cee5e31c4so2008143ejc.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 06:27:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=JAKUqXFHXuyIOfRcOhTnPnVKgo/XPbGiNpXU9KPW1QA=;
- b=o6dBukP07f/9+pzdrhoVOarIcHH0W+zzafQH9sfguguEly/OzJwNXBsrfH9xSaPHNZ
- cfliv/uCMU2m6tqFo26mfK5GsmD4YM2x9DtEf02V7393ojrrnKzem8jtqZgtYuONREfs
- /HILjG6aJrjimU/H8MJTnAbHZfh/U+wfFzoiWpwFAevOeK8RSMukoi1xUb1tlCntKr8k
- FPTd5Kj8TpaHcB/S8OSC3X3KhCkMF/ko64VXgj7vXVhInKodNzf3ijmWamRlXYpqx81E
- PPYJVAeedhxlUN7+OmB3GO6K7sgA76ThZ9PrseX1a/0A6FhjmNkJQPgfPv3UpEG5dMxb
- JeoA==
-X-Gm-Message-State: AOAM533SQWNcXL4+o6dcx8aqKfyElQ+EgwApsW7nr8lanpc3RIlMzjQd
- LCbnNP5WWY9HdJdISvLQ9Bk256gTaz+zCly3d0x92BWUCRgJXAAZF4UA4bfNb+feYMEwK5DSNkb
- NQ4AyqbZx0d+iv32+J5MDEnGlEw==
-X-Received: by 2002:a17:906:3e4a:: with SMTP id
- t10mr7812301eji.553.1618579662296; 
- Fri, 16 Apr 2021 06:27:42 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw6UeUn5HRMxz6UHppX8f3UHpv0mBTcngffZpbHmagQPNNqqfWIQKVS47kiiMglIJ9lySwYmg==
-X-Received: by 2002:a17:906:3e4a:: with SMTP id
- t10mr7812280eji.553.1618579662121; 
- Fri, 16 Apr 2021 06:27:42 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:c8dd:75d4:99ab:290a?
- ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
- by smtp.gmail.com with ESMTPSA id p7sm4198620eja.103.2021.04.16.06.27.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Apr 2021 06:27:41 -0700 (PDT)
-Subject: Re: [PATCH v2] tools: do not include scripts/Kbuild.include
-To: Christian Borntraeger <borntraeger@de.ibm.com>,
- Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org
-References: <20210416130051.239782-1-masahiroy@kernel.org>
- <ee99eb80-5711-9349-23a4-0faf8d7b60a8@de.ibm.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <c2b0b348-e114-14d0-44c0-11d0ce6f7760@redhat.com>
-Date: Fri, 16 Apr 2021 15:27:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMJ5f1rhBz30Dr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 00:10:46 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C3D986121F
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 14:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1618582242;
+ bh=1s9sCrJo44Veolfwl+MwQWl66gowBJVDh4jCcMWmw20=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=bWtljR/0v+ciclhWmYZDIUGhhvFJ3qQ7nO0uU82MghhOsGFdSMyacApx9Rv+nHL6X
+ W5cY5QnPwP6g7dxd13lON+NP7T3wxEgswnDncwfQXbUpDa1noe9/ic1qeaxTeqr1An
+ xJUGxVeiTwbDQol4BcT+uJeJ/K8GtjgPzMatA+QGLBn8/pwaCrhafWYek6SKXGeGJX
+ JrnAkRBsacpGTrsZXVT6wqIi5rnqa1PtXSpagwrGhkYyDEvybabUi7RBZVXZcudA+H
+ 4dZgdBI6yZkxxw1SMBUj5RKBCe9Uqk2xt0sX7dm9fywiRJ0wfW8Bx5Y3FStVzaPeVS
+ VyQ7HbK3kn2jA==
+Received: by mail-wm1-f48.google.com with SMTP id
+ n4-20020a05600c4f84b029013151278decso3089604wmq.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 07:10:42 -0700 (PDT)
+X-Gm-Message-State: AOAM53090YTVCjBEjz2bmfQ88UhFri3wgCuuQh3JXBMorheZhLXHxzj5
+ JOMIQEGjqgX86C/FHCIdtoGfAVH74g/ixGHAOHg=
+X-Google-Smtp-Source: ABdhPJwer78kcpt2KUTk7pLNWv4YpxxYqG4ncdMLFchwkUndSOMZjtA8z9tZUxzlPor4R9hASXWQZTamma1KWyeXMwk=
+X-Received: by 2002:a7b:c14a:: with SMTP id z10mr8250595wmi.75.1618582241293; 
+ Fri, 16 Apr 2021 07:10:41 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <ee99eb80-5711-9349-23a4-0faf8d7b60a8@de.ibm.com>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pbonzini@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20210409185105.188284-3-willy@infradead.org>
+ <202104100656.N7EVvkNZ-lkp@intel.com>
+ <20210410024313.GX2531743@casper.infradead.org>
+ <20210410082158.79ad09a6@carbon>
+ <CAC_iWjLXZ6-hhvmvee6r4R_N64u-hrnLqE_CSS1nQk+YaMQQnA@mail.gmail.com>
+ <ab9f1a6c-4099-2b59-457d-fcc45d2396f4@ti.com>
+In-Reply-To: <ab9f1a6c-4099-2b59-457d-fcc45d2396f4@ti.com>
+From: Arnd Bergmann <arnd@kernel.org>
+Date: Fri, 16 Apr 2021 16:10:37 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1+Dpu3ef+VYA+owTVGoGqfK6APbYbLSH1_ZKT0aMYQCw@mail.gmail.com>
+Message-ID: <CAK8P3a1+Dpu3ef+VYA+owTVGoGqfK6APbYbLSH1_ZKT0aMYQCw@mail.gmail.com>
+Subject: Re: Bogus struct page layout on 32-bit
+To: Grygorii Strashko <grygorii.strashko@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,70 +70,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, kvm@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- Janosch Frank <frankja@linux.ibm.com>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- clang-built-linux@googlegroups.com, Yonghong Song <yhs@fb.com>,
- KP Singh <kpsingh@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- netdev@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>
+Cc: kbuild-all@lists.01.org, kernel test robot <lkp@intel.com>,
+ clang-built-linux@googlegroups.com,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ open list <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ "David S. Miller" <davem@davemloft.net>, Linux-MM <linux-mm@kvack.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Jesper Dangaard Brouer <brouer@redhat.com>, linux-fsdevel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Matteo Croce <mcroce@linux.microsoft.com>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 16/04/21 15:26, Christian Borntraeger wrote:
-> 
-> 
-> On 16.04.21 15:00, Masahiro Yamada wrote:
->> Since commit d9f4ff50d2aa ("kbuild: spilt cc-option and friends to
->> scripts/Makefile.compiler"), some kselftests fail to build.
->>
->> The tools/ directory opted out Kbuild, and went in a different
->> direction. They copy any kind of files to the tools/ directory
->> in order to do whatever they want in their world.
->>
->> tools/build/Build.include mimics scripts/Kbuild.include, but some
->> tool Makefiles included the Kbuild one to import a feature that is
->> missing in tools/build/Build.include:
->>
->>   - Commit ec04aa3ae87b ("tools/thermal: tmon: use "-fstack-protector"
->>     only if supported") included scripts/Kbuild.include from
->>     tools/thermal/tmon/Makefile to import the cc-option macro.
->>
->>   - Commit c2390f16fc5b ("selftests: kvm: fix for compilers that do
->>     not support -no-pie") included scripts/Kbuild.include from
->>     tools/testing/selftests/kvm/Makefile to import the try-run macro.
->>
->>   - Commit 9cae4ace80ef ("selftests/bpf: do not ignore clang
->>     failures") included scripts/Kbuild.include from
->>     tools/testing/selftests/bpf/Makefile to import the .DELETE_ON_ERROR
->>     target.
->>
->>   - Commit 0695f8bca93e ("selftests/powerpc: Handle Makefile for
->>     unrecognized option") included scripts/Kbuild.include from
->>     tools/testing/selftests/powerpc/pmu/ebb/Makefile to import the
->>     try-run macro.
->>
->> Copy what they need into tools/build/Build.include, and make them
->> include it instead of scripts/Kbuild.include.
->>
->> Link: 
->> https://lore.kernel.org/lkml/86dadf33-70f7-a5ac-cb8c-64966d2f45a1@linux.ibm.com/ 
->>
->> Fixes: d9f4ff50d2aa ("kbuild: spilt cc-option and friends to 
->> scripts/Makefile.compiler")
->> Reported-by: Janosch Frank <frankja@linux.ibm.com>
->> Reported-by: Christian Borntraeger <borntraeger@de.ibm.com>
->> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> 
-> looks better.
-> Tested-by: Christian Borntraeger <borntraeger@de.ibm.com>
-> 
+On Fri, Apr 16, 2021 at 11:27 AM 'Grygorii Strashko' via Clang Built
+Linux <clang-built-linux@googlegroups.com> wrote:
+> On 10/04/2021 11:52, Ilias Apalodimas wrote:
+> > +CC Grygorii for the cpsw part as Ivan's email is not valid anymore
+> The TI platforms am3/4/5 (cpsw) and Keystone 2 (netcp) can do only 32bit DMA even in case of LPAE (dma-ranges are used).
+> Originally, as I remember, CONFIG_ARCH_DMA_ADDR_T_64BIT has not been selected for the LPAE case
+> on TI platforms and the fact that it became set is the result of multi-paltform/allXXXconfig/DMA
+> optimizations and unification.
+> (just checked - not set in 4.14)
+>
+> Probable commit 4965a68780c5 ("arch: define the ARCH_DMA_ADDR_T_64BIT config symbol in lib/Kconfig").
 
-Thank you very much Masahiro, this look great.
+I completely missed this change in the past, and I don't really agree
+with it either.
 
-Paolo
+Most 32-bit Arm platforms are in fact limited to 32-bit DMA, even when they have
+MMIO or RAM areas above the 4GB boundary that require LPAE.
 
+> The TI drivers have been updated, finally to accept ARCH_DMA_ADDR_T_64BIT=y by using
+> things like (__force u32) for example.
+>
+> Honestly, I've done sanity check of CPSW with LPAE=y (ARCH_DMA_ADDR_T_64BIT=y) very long time ago.
+
+This is of course a good idea, drivers should work with any
+combination of 32-bit
+or 64-bit phys_addr_t and dma_addr_t.
+
+        Arnd
