@@ -2,62 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AD2361E66
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 13:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE60361E6F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 13:08:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMD1L0MGYz3c3V
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 21:06:46 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=hh9zQfxD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMD3h44Zjz3c3m
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 21:08:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=hh9zQfxD; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMD0t6r3Yz30Hk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 21:06:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=q8yzRZdY2wah1G/yCTkxWNbB0jFfZUvqQ3uEjV6WRbg=; b=hh9zQfxDvG2X4xo9Vk3zOGv+gZ
- QKntKgbYQxOmJbb/qwMrADTgbL8yz3oUhd3HEVZJgrY81Z+RWvtUKKoC8013lyugG2k8O7umfbJam
- gAhDbhGAPve6oN0MKZsJdwlfW5fC1MWvd6G5LMajXM5TqmIFfFtrkgHcaAZHgvXMnGtFGhwT/4HmK
- CsjhiBL3nsVtLo7E7Dvy9fj8xomDDJge0rOCzwzXKycyeIlDt/8ml1XDq6Qx+KbmBhQ5d1+BhQ6W5
- Piq3UrI2NLCuHxk3SVM4ryUk+gw6UwwBM7IiZJ4NrS7iOhjfU6YhJB+tUEtO+rntTBicYBF62ikeR
- Oi9OJ1dA==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
- Linux)) id 1lXMIL-009rDn-92; Fri, 16 Apr 2021 11:06:01 +0000
-Date: Fri, 16 Apr 2021 12:05:53 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: David Laight <David.Laight@aculab.com>
-Subject: Re: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
-Message-ID: <20210416110553.GH2531743@casper.infradead.org>
-References: <20210414101044.19da09df@carbon>
- <20210414115052.GS2531743@casper.infradead.org>
- <20210414211322.3799afd4@carbon>
- <20210414213556.GY2531743@casper.infradead.org>
- <a50c3156fe8943ef964db4345344862f@AcuMS.aculab.com>
- <20210415200832.32796445@carbon>
- <20210415182155.GD2531743@casper.infradead.org>
- <5179a01a462f43d6951a65de2a299070@AcuMS.aculab.com>
- <20210415222211.GG2531743@casper.infradead.org>
- <f51e1aa98cb94880a236d58c75c20994@AcuMS.aculab.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMD3M3wVlz2yhx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 21:08:29 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FMD3F2534z9vBKy;
+ Fri, 16 Apr 2021 13:08:25 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id uWkPYTn7eSjH; Fri, 16 Apr 2021 13:08:25 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FMD3F1Bmrz9vBKv;
+ Fri, 16 Apr 2021 13:08:25 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 476858B83A;
+ Fri, 16 Apr 2021 13:08:26 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id nrkV0nkn-42U; Fri, 16 Apr 2021 13:08:26 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0214D8B81A;
+ Fri, 16 Apr 2021 13:08:24 +0200 (CEST)
+Subject: Re: [PATCH v1 3/5] mm: ptdump: Provide page size to notepage()
+To: Steven Price <steven.price@arm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ akpm@linux-foundation.org
+References: <cover.1618506910.git.christophe.leroy@csgroup.eu>
+ <1ef6b954fb7b0f4dfc78820f1e612d2166c13227.1618506910.git.christophe.leroy@csgroup.eu>
+ <41819925-3ee5-4771-e98b-0073e8f095cf@arm.com>
+ <da53d2f2-b472-0c38-bdd5-99c5a098675d@csgroup.eu>
+ <1102cda1-b00f-b6ef-6bf3-22068cc11510@arm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <6ff4816b-8ff6-19de-73a2-3fcadc003ccd@csgroup.eu>
+Date: Fri, 16 Apr 2021 13:08:25 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f51e1aa98cb94880a236d58c75c20994@AcuMS.aculab.com>
+In-Reply-To: <1102cda1-b00f-b6ef-6bf3-22068cc11510@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,46 +68,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@kernel.org>,
- Grygorii Strashko <grygorii.strashko@ti.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- Jesper Dangaard Brouer <brouer@redhat.com>,
- Matteo Croce <mcroce@linux.microsoft.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Christoph Hellwig <hch@lst.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 16, 2021 at 07:32:35AM +0000, David Laight wrote:
-> From: Matthew Wilcox <willy@infradead.org>
-> > Sent: 15 April 2021 23:22
-> > 
-> > On Thu, Apr 15, 2021 at 09:11:56PM +0000, David Laight wrote:
-> > > Isn't it possible to move the field down one long?
-> > > This might require an explicit zero - but this is not a common
-> > > code path - the extra write will be noise.
-> > 
-> > Then it overlaps page->mapping.  See emails passim.
-> 
-> The rules on overlaps make be wonder if every 'long'
-> should be in its own union.
 
-That was what we used to have.  It was worse.
 
-> The comments would need to say when each field is used.
-> It would, at least, make these errors less common.
+Le 16/04/2021 à 12:51, Steven Price a écrit :
+> On 16/04/2021 11:38, Christophe Leroy wrote:
+>>
+>>
+>> Le 16/04/2021 à 11:28, Steven Price a écrit :
+>>> On 15/04/2021 18:18, Christophe Leroy wrote:
+>>>> In order to support large pages on powerpc, notepage()
+>>>> needs to know the page size of the page.
+>>>>
+>>>> Add a page_size argument to notepage().
+>>>>
+>>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>>> ---
+>>>>   arch/arm64/mm/ptdump.c         |  2 +-
+>>>>   arch/riscv/mm/ptdump.c         |  2 +-
+>>>>   arch/s390/mm/dump_pagetables.c |  3 ++-
+>>>>   arch/x86/mm/dump_pagetables.c  |  2 +-
+>>>>   include/linux/ptdump.h         |  2 +-
+>>>>   mm/ptdump.c                    | 16 ++++++++--------
+>>>>   6 files changed, 14 insertions(+), 13 deletions(-)
+>>>>
+>>> [...]
+>>>> diff --git a/mm/ptdump.c b/mm/ptdump.c
+>>>> index da751448d0e4..61cd16afb1c8 100644
+>>>> --- a/mm/ptdump.c
+>>>> +++ b/mm/ptdump.c
+>>>> @@ -17,7 +17,7 @@ static inline int note_kasan_page_table(struct mm_walk *walk,
+>>>>   {
+>>>>       struct ptdump_state *st = walk->private;
+>>>> -    st->note_page(st, addr, 4, pte_val(kasan_early_shadow_pte[0]));
+>>>> +    st->note_page(st, addr, 4, pte_val(kasan_early_shadow_pte[0]), PAGE_SIZE);
+>>>
+>>> I'm not completely sure what the page_size is going to be used for, but note that KASAN presents 
+>>> an interesting case here. We short-cut by detecting it's a KASAN region at a high level 
+>>> (PGD/P4D/PUD/PMD) and instead of walking the tree down just call note_page() *once* but with 
+>>> level==4 because we know KASAN sets up the page table like that.
+>>>
+>>> However the one call actually covers a much larger region - so while PAGE_SIZE matches the level 
+>>> it doesn't match the region covered. AFAICT this will lead to odd results if you enable KASAN on 
+>>> powerpc.
+>>
+>> Hum .... I successfully tested it with KASAN, I now realise that I tested it with 
+>> CONFIG_KASAN_VMALLOC selected. In this situation, since 
+>> https://github.com/torvalds/linux/commit/af3d0a686 we don't have any common shadow page table 
+>> anymore.
+>>
+>> I'll test again without CONFIG_KASAN_VMALLOC.
+>>
+>>>
+>>> To be honest I don't fully understand why powerpc requires the page_size - it appears to be using 
+>>> it purely to find "holes" in the calls to note_page(), but I haven't worked out why such holes 
+>>> would occur.
+>>
+>> I was indeed introduced for KASAN. We have a first commit 
+>> https://github.com/torvalds/linux/commit/cabe8138 which uses page size to detect whether it is a 
+>> KASAN like stuff.
+>>
+>> Then came https://github.com/torvalds/linux/commit/b00ff6d8c as a fix. I can't remember what the 
+>> problem was exactly, something around the use of hugepages for kernel memory, came as part of the 
+>> series 
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1589866984.git.christophe.leroy@csgroup.eu/ 
 > 
-> That doesn't solve the 64bit dma_addr though.
 > 
-> Actually rather that word-swapping dma_addr on 32bit BE
-> could you swap over the two fields it overlays with.
-> That might look messy in the .h, but it doesn't require
-> an accessor function to do the swap - easily missed.
+> Ah, that's useful context. So it looks like powerpc took a different route to reducing the KASAN 
+> output to x86.
+> 
+> Given the generic ptdump code has handling for KASAN already it should be possible to drop that from 
+> the powerpc arch code, which I think means we don't actually need to provide page size to 
+> notepage(). Hopefully that means more code to delete ;)
+> 
 
-No.
+Yes ... and no.
+
+It looks like the generic ptdump handles the case when several pgdir entries points to the same 
+kasan_early_shadow_pte. But it doesn't take into account the powerpc case where we have regular page 
+tables where several (if not all) PTEs are pointing to the kasan_early_shadow_page .
+
+Christophe
