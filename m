@@ -2,56 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF21362285
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 16:38:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2F43622AB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 16:41:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMJj9353Fz3c4W
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 00:38:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=iMRHKbiJ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMJms59c4z3bq2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 00:41:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
- helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=iMRHKbiJ; 
- dkim-atps=neutral
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FMJhk6xw1z30Bh
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 00:37:42 +1000 (AEST)
-Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
- [73.42.176.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 9764920B8001;
- Fri, 16 Apr 2021 07:37:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9764920B8001
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1618583859;
- bh=om/3vGgOZg+LIEcRJf0M9Ny9BhltFs3g4GQ3a2n92l0=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=iMRHKbiJoMe8luxwHTdfwJwXv0Zkz9XxY1n3v7T/KCX9IapcU85Sd3YKDZyS97TJf
- a+n+FKvcKXNG9LVU0KVPIARBA+W02Gh+MyaTY1p/uLXZPIeO0wzbBRYzKywKAddSFc
- sfpB57Bo2uiuXYLIZgdKcQ4/VJiDOpF5ndlYV87o=
-Subject: Re: [PATCH] powerpc: Initialize local variable fdt to NULL in
- elf64_load()
-To: Michael Ellerman <mpe@ellerman.id.au>, Daniel Axtens <dja@axtens.net>,
- robh@kernel.org, dan.carpenter@oracle.com
-References: <20210415191437.20212-1-nramas@linux.microsoft.com>
- <4edb1433-4d1e-5719-ec9c-fd232b7cf71f@linux.microsoft.com>
- <87eefag241.fsf@linkitivity.dja.id.au> <87tuo6eh0j.fsf@mpe.ellerman.id.au>
-From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <2817d674-d420-580f-a0c1-b842da915a80@linux.microsoft.com>
-Date: Fri, 16 Apr 2021 07:37:39 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMJmW5KZqz30Cy
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 00:40:56 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FMJmN2hxGz9vBnG;
+ Fri, 16 Apr 2021 16:40:52 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 4QkMRAzEi_DN; Fri, 16 Apr 2021 16:40:52 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FMJmN11tvz9vBnC;
+ Fri, 16 Apr 2021 16:40:52 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 781F48B84E;
+ Fri, 16 Apr 2021 16:40:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id D0sjjGIwO1la; Fri, 16 Apr 2021 16:40:53 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 91A338B84C;
+ Fri, 16 Apr 2021 16:40:52 +0200 (CEST)
+Subject: Re: [PATCH v1 3/5] mm: ptdump: Provide page size to notepage()
+To: Steven Price <steven.price@arm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ akpm@linux-foundation.org
+References: <cover.1618506910.git.christophe.leroy@csgroup.eu>
+ <1ef6b954fb7b0f4dfc78820f1e612d2166c13227.1618506910.git.christophe.leroy@csgroup.eu>
+ <41819925-3ee5-4771-e98b-0073e8f095cf@arm.com>
+ <da53d2f2-b472-0c38-bdd5-99c5a098675d@csgroup.eu>
+ <1102cda1-b00f-b6ef-6bf3-22068cc11510@arm.com>
+ <6ff4816b-8ff6-19de-73a2-3fcadc003ccd@csgroup.eu>
+ <e39d500a-2154-3c5d-9393-8bf53a567fad@arm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <b6b5300d-35a0-3bc0-ad1d-f2af433ef27e@csgroup.eu>
+Date: Fri, 16 Apr 2021 16:40:52 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
-In-Reply-To: <87tuo6eh0j.fsf@mpe.ellerman.id.au>
+In-Reply-To: <e39d500a-2154-3c5d-9393-8bf53a567fad@arm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,90 +70,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- kbuild-all@lists.01.org, bauerman@linux.ibm.com, lkp@intel.com
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/16/21 2:05 AM, Michael Ellerman wrote:
 
-> Daniel Axtens <dja@axtens.net> writes:
->>> On 4/15/21 12:14 PM, Lakshmi Ramasubramanian wrote:
->>>
->>> Sorry - missed copying device-tree and powerpc mailing lists.
->>>
->>>> There are a few "goto out;" statements before the local variable "fdt"
->>>> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
->>>> elf64_load(). This will result in an uninitialized "fdt" being passed
->>>> to kvfree() in this function if there is an error before the call to
->>>> of_kexec_alloc_and_setup_fdt().
+
+Le 16/04/2021 à 15:00, Steven Price a écrit :
+> On 16/04/2021 12:08, Christophe Leroy wrote:
+>>
+>>
+>> Le 16/04/2021 à 12:51, Steven Price a écrit :
+>>> On 16/04/2021 11:38, Christophe Leroy wrote:
 >>>>
->>>> Initialize the local variable "fdt" to NULL.
 >>>>
->> I'm a huge fan of initialising local variables! But I'm struggling to
->> find the code path that will lead to an uninit fdt being returned...
+>>>> Le 16/04/2021 à 11:28, Steven Price a écrit :
+>>>>> On 15/04/2021 18:18, Christophe Leroy wrote:
+>>>>>> In order to support large pages on powerpc, notepage()
+>>>>>> needs to know the page size of the page.
+>>>>>>
+>>>>>> Add a page_size argument to notepage().
+>>>>>>
+>>>>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>>>>> ---
+>>>>>>   arch/arm64/mm/ptdump.c         |  2 +-
+>>>>>>   arch/riscv/mm/ptdump.c         |  2 +-
+>>>>>>   arch/s390/mm/dump_pagetables.c |  3 ++-
+>>>>>>   arch/x86/mm/dump_pagetables.c  |  2 +-
+>>>>>>   include/linux/ptdump.h         |  2 +-
+>>>>>>   mm/ptdump.c                    | 16 ++++++++--------
+>>>>>>   6 files changed, 14 insertions(+), 13 deletions(-)
+>>>>>>
+>>>>> [...]
+>>>>>> diff --git a/mm/ptdump.c b/mm/ptdump.c
+>>>>>> index da751448d0e4..61cd16afb1c8 100644
+>>>>>> --- a/mm/ptdump.c
+>>>>>> +++ b/mm/ptdump.c
+>>>>>> @@ -17,7 +17,7 @@ static inline int note_kasan_page_table(struct mm_walk *walk,
+>>>>>>   {
+>>>>>>       struct ptdump_state *st = walk->private;
+>>>>>> -    st->note_page(st, addr, 4, pte_val(kasan_early_shadow_pte[0]));
+>>>>>> +    st->note_page(st, addr, 4, pte_val(kasan_early_shadow_pte[0]), PAGE_SIZE);
+>>>>>
+>>>>> I'm not completely sure what the page_size is going to be used for, but note that KASAN 
+>>>>> presents an interesting case here. We short-cut by detecting it's a KASAN region at a high 
+>>>>> level (PGD/P4D/PUD/PMD) and instead of walking the tree down just call note_page() *once* but 
+>>>>> with level==4 because we know KASAN sets up the page table like that.
+>>>>>
+>>>>> However the one call actually covers a much larger region - so while PAGE_SIZE matches the 
+>>>>> level it doesn't match the region covered. AFAICT this will lead to odd results if you enable 
+>>>>> KASAN on powerpc.
+>>>>
+>>>> Hum .... I successfully tested it with KASAN, I now realise that I tested it with 
+>>>> CONFIG_KASAN_VMALLOC selected. In this situation, since 
+>>>> https://github.com/torvalds/linux/commit/af3d0a686 we don't have any common shadow page table 
+>>>> anymore.
+>>>>
+>>>> I'll test again without CONFIG_KASAN_VMALLOC.
+>>>>
+>>>>>
+>>>>> To be honest I don't fully understand why powerpc requires the page_size - it appears to be 
+>>>>> using it purely to find "holes" in the calls to note_page(), but I haven't worked out why such 
+>>>>> holes would occur.
+>>>>
+>>>> I was indeed introduced for KASAN. We have a first commit 
+>>>> https://github.com/torvalds/linux/commit/cabe8138 which uses page size to detect whether it is a 
+>>>> KASAN like stuff.
+>>>>
+>>>> Then came https://github.com/torvalds/linux/commit/b00ff6d8c as a fix. I can't remember what the 
+>>>> problem was exactly, something around the use of hugepages for kernel memory, came as part of 
+>>>> the series 
+>>>> https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1589866984.git.christophe.leroy@csgroup.eu/ 
+>>>
+>>>
+>>>
+>>>
+>>> Ah, that's useful context. So it looks like powerpc took a different route to reducing the KASAN 
+>>> output to x86.
+>>>
+>>> Given the generic ptdump code has handling for KASAN already it should be possible to drop that 
+>>> from the powerpc arch code, which I think means we don't actually need to provide page size to 
+>>> notepage(). Hopefully that means more code to delete ;)
+>>>
 >>
->> The out label reads in part:
+>> Yes ... and no.
 >>
->> 	/* Make kimage_file_post_load_cleanup free the fdt buffer for us. */
->> 	return ret ? ERR_PTR(ret) : fdt;
->>
->> As far as I can tell, any time we get a non-zero ret, we're going to
->> return an error pointer rather than the uninitialised value...
-
-As Dan pointed out, the new code is in linux-next.
-
-I have copied the new one below - the function doesn't return fdt, but 
-instead sets it in the arch specific field (please see the link to the 
-updated elf_64.c below).
-
-https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git/tree/arch/powerpc/kexec/elf_64.c?h=for-next
-
->>
->> (btw, it does look like we might leak fdt if we have an error after we
->> successfully kmalloc it.)
->>
->> Am I missing something? Can you link to the report for the kernel test
->> robot or from Dan?
-
-/*
-          * Once FDT buffer has been successfully passed to 
-kexec_add_buffer(),
-          * the FDT buffer address is saved in image->arch.fdt. In that 
-case,
-          * the memory cannot be freed here in case of any other error.
-          */
-         if (ret && !image->arch.fdt)
-                 kvfree(fdt);
-
-         return ret ? ERR_PTR(ret) : NULL;
-
-In case of an error, the memory allocated for fdt is freed unless it has 
-already been passed to kexec_add_buffer().
-
-thanks,
-  -lakshmi
-
->>
->> FWIW, I think it's worth including this patch _anyway_ because initing
->> local variables is good practice, but I'm just not sure on the
->> justification.
+>> It looks like the generic ptdump handles the case when several pgdir entries points to the same 
+>> kasan_early_shadow_pte. But it doesn't take into account the powerpc case where we have regular 
+>> page tables where several (if not all) PTEs are pointing to the kasan_early_shadow_page .
 > 
-> Why is it good practice?
+> I'm not sure I follow quite how powerpc is different here. But could you have a similar check for 
+> PTEs against kasan_early_shadow_pte as the other levels already have?
 > 
-> It defeats -Wuninitialized. So you're guaranteed to be returning
-> something initialised, but not necessarily initialised to the right
-> value.
-> 
-> In a case like this NULL seems like a safe choice, but it's still wrong.
-> The function is meant to return a pointer to the successfully allocated
-> fdt, or an ERR_PTR() value. NULL is neither of those.
-> 
-> I agree there are security reasons that initialising stack variables is
-> desirable, but I think that should be handled by the compiler, not at
-> the source level.
-> 
-> cheers
+> I'm just worried that page_size isn't well defined in this interface and it's going to cause 
+> problems in the future.
 > 
 
+I'm trying. I reverted the two commits b00ff6d8c and cabe8138.
+
+At the moment, I don't get exactly what I expect: For linear memory I get one line for each 8M page 
+whereas before reverting the patches I got one 16M line and one 112M line.
+
+And for KASAN shadow area I get two lines for the 2x 8M pages shadowing linear mem then I get one 4M 
+line for each PGDIR entry pointing to kasan_early_shadow_pte.
+
+0xf8000000-0xf87fffff 0x07000000         8M   huge        rw       present
+0xf8800000-0xf8ffffff 0x07800000         8M   huge        rw       present
+0xf9000000-0xf93fffff 0x01430000         4M               r        present
+0xf9400000-0xf97fffff 0x01430000         4M               r        present
+0xf9800000-0xf9bfffff 0x01430000         4M               r        present
+0xf9c00000-0xf9ffffff 0x01430000         4M               r        present
+0xfa000000-0xfa3fffff 0x01430000         4M               r        present
+0xfa400000-0xfa7fffff 0x01430000         4M               r        present
+0xfa800000-0xfabfffff 0x01430000         4M               r        present
+0xfac00000-0xfaffffff 0x01430000         4M               r        present
+0xfb000000-0xfb3fffff 0x01430000         4M               r        present
+0xfb400000-0xfb7fffff 0x01430000         4M               r        present
+0xfb800000-0xfbbfffff 0x01430000         4M               r        present
+0xfbc00000-0xfbffffff 0x01430000         4M               r        present
+0xfc000000-0xfc3fffff 0x01430000         4M               r        present
+0xfc400000-0xfc7fffff 0x01430000         4M               r        present
+0xfc800000-0xfcbfffff 0x01430000         4M               r        present
+0xfcc00000-0xfcffffff 0x01430000         4M               r        present
+0xfd000000-0xfd3fffff 0x01430000         4M               r        present
+0xfd400000-0xfd7fffff 0x01430000         4M               r        present
+0xfd800000-0xfdbfffff 0x01430000         4M               r        present
+0xfdc00000-0xfdffffff 0x01430000         4M               r        present
+0xfe000000-0xfe3fffff 0x01430000         4M               r        present
+0xfe400000-0xfe7fffff 0x01430000         4M               r        present
+0xfe800000-0xfebfffff 0x01430000         4M               r        present
+0xfec00000-0xfeffffff 0x01430000         4M               r        present
+
+Any idea ?
+
+Christophe
