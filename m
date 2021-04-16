@@ -1,74 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DE6361AC1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 09:45:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872E2361AEB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 09:59:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FM7Y246xGz3c1v
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 17:45:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FM7rm3Gcmz3c2M
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 17:59:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=evsmI4HO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=spzbPzZM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::634;
- helo=mail-pl1-x634.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=evsmI4HO; dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=spzbPzZM; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FM7XX5ZwXz2yhf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 17:44:58 +1000 (AEST)
-Received: by mail-pl1-x634.google.com with SMTP id u7so11711327plr.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 00:44:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=t/id0wyOsCydqGS0W0OkKvZDNtBCnbXewdap74KCFaI=;
- b=evsmI4HOr1qq2ei5rTm0AzM9kMGdLwNrZVOzqVMe9YJNqdV4KE6n1OgxENyX6ROqRg
- 0LPfWPCLj1rqirHVcLEKQt98R/otnIOOObLnLoHzMWV2Qglv1XoS7tGwYMO3XPrTUKlf
- 3mvNYOwVybmowto3dok07kwWkVKUgGe9xxJo4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=t/id0wyOsCydqGS0W0OkKvZDNtBCnbXewdap74KCFaI=;
- b=tVS1Dtnaw8oEsVB4XU7CJcZOvYxfhnjncxInBU7vzBJvB0eleJtn4SpTcms+T2ykT8
- 7a+pm4X5JccezOuUxqnL2A00pQbbHNmGT1U+1W+SnjfOU3002+wOCKOSGkaeV/6oSHjq
- QUzquHH8tLZOqIb5alm8q/+0tHkKEH2WwkL+fzQTeWGnzT/LrQEly7waBp88BcO2jiqM
- pkIfFc8ePkAsr7ZQF53z0nN1qPzuPqJD9RBcEaOi3HjOwFn8qNIFLLzF8lUhQX0NxxYB
- 1hEtLcv+VYGQ9VvqThPeMAfXHxPQPfYCX0yz1Fz6wgN9uf71CpPz6x+CWPyAiCOO200j
- 4ZKg==
-X-Gm-Message-State: AOAM531WCRhQdCctnQLg2mUOlSYLE1kGW4zHdlpACFXbWxr1ZQ3S2a4c
- CQh/kDULNwKp+V/w/lxBJKpRNQ==
-X-Google-Smtp-Source: ABdhPJyO9GO4ANwRxneweRN1cyRwlum6KdXM9yjCH0cCY55PVeUsYcxZPRKvCOKYw/K3BaMxxNTMnw==
-X-Received: by 2002:a17:90a:fa84:: with SMTP id
- cu4mr8452063pjb.2.1618559096458; 
- Fri, 16 Apr 2021 00:44:56 -0700 (PDT)
-Received: from localhost
- (2001-44b8-111e-5c00-09c3-a49e-2955-78c6.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:9c3:a49e:2955:78c6])
- by smtp.gmail.com with ESMTPSA id k20sm4001348pfa.34.2021.04.16.00.44.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Apr 2021 00:44:55 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/2] powerpc/sstep: Add emulation support for
- =?utf-8?B?4oCYc2V0YuKAmQ==?= instruction
-In-Reply-To: <767e53c4c27da024ca277e21ffcd0cff131f5c73.1618469454.git.sathvika@linux.vnet.ibm.com>
-References: <cover.1618469454.git.sathvika@linux.vnet.ibm.com>
- <767e53c4c27da024ca277e21ffcd0cff131f5c73.1618469454.git.sathvika@linux.vnet.ibm.com>
-Date: Fri, 16 Apr 2021 17:44:52 +1000
-Message-ID: <875z0mfzbf.fsf@linkitivity.dja.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FM7rJ1Q2tz2yYh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 17:58:39 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13G7XxHN138687; Fri, 16 Apr 2021 03:58:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=a60hQsz0xpYXDiJLKWxC2W4MYc6pkB5sdNqBWr6ssRM=;
+ b=spzbPzZMF3zeVl4NFNSTDSMdK0r/jGaaX6AKC9buToIO8TcKoy8+E04Sb87Bnp+FAt9a
+ buSSS2hjv6/og1ImD1DElmf67k4ZbaPnrE4iVPCnDFW26DbCwQA/3xNW55Vg9jNRLBPx
+ n4B2iqeJYktPHfWjnH0w3hy5s5yBY4p9R3djnyZlHY68SGlgrP8QEuayCVfui4b27vHm
+ B89lz1zNIefD2PSjRRdLnScwYYl1YOBVZyqyqk4B4CkMgSZetAAEbjulx4tjqzZqPpr9
+ wt//4Bv3MrwSVM1KC10aybQRxIgfXyoGhOclGMmegUqF8MdhSWSmotczkI0R3wh9rtpu sA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37xtqa07cg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 03:58:29 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13G7Z88Q141859;
+ Fri, 16 Apr 2021 03:58:29 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37xtqa07c4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 03:58:29 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13G7vGCH020596;
+ Fri, 16 Apr 2021 07:58:27 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06ams.nl.ibm.com with ESMTP id 37u39hmb6w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 07:58:27 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13G7wO4W34341168
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 16 Apr 2021 07:58:25 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D00ADA4051;
+ Fri, 16 Apr 2021 07:58:24 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 85222A4040;
+ Fri, 16 Apr 2021 07:58:22 +0000 (GMT)
+Received: from [9.85.71.75] (unknown [9.85.71.75])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 16 Apr 2021 07:58:22 +0000 (GMT)
+Subject: Re: [PATCH v1 1/1] powerpc/papr_scm: Properly handle UUID types and
+ API
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20210415134637.17770-1-andriy.shevchenko@linux.intel.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <af677216-82b4-f1fa-1d90-3d32dabf8583@linux.ibm.com>
+Date: Fri, 16 Apr 2021 13:28:21 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20210415134637.17770-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rnJsI56rpExDF3Bo1wlmngO1NTDBBViL
+X-Proofpoint-ORIG-GUID: VhrjLmthWVmM633LBBbNsjhsOjnPESOb
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-15_11:2021-04-15,
+ 2021-04-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ suspectscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 bulkscore=0
+ adultscore=0 mlxscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104060000 definitions=main-2104160056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,110 +112,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.ibm.com,
- Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>
+Cc: Oliver O'Halloran <oohall@gmail.com>, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sathvika Vasireddy <sathvika@linux.vnet.ibm.com> writes:
-
-> This adds emulation support for the following instruction:
->    * Set Boolean (setb)
->
-> Signed-off-by: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>
+On 4/15/21 7:16 PM, Andy Shevchenko wrote:
+> Parse to and export from UUID own type, before dereferencing.
+> This also fixes wrong comment (Little Endian UUID is something else)
+> and should fix Sparse warnings about assigning strict types to POD.
+> 
+> Fixes: 43001c52b603 ("powerpc/papr_scm: Use ibm,unit-guid as the iset cookie")
+> Fixes: 259a948c4ba1 ("powerpc/pseries/scm: Use a specific endian format for storing uuid from the device tree")
+> Cc: Oliver O'Halloran <oohall@gmail.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  arch/powerpc/lib/sstep.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-> index c6aebc149d14..263c613d7490 100644
-> --- a/arch/powerpc/lib/sstep.c
-> +++ b/arch/powerpc/lib/sstep.c
-> @@ -1964,6 +1964,18 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
->  			op->val = ~(regs->gpr[rd] | regs->gpr[rb]);
->  			goto logical_done;
->  
-> +		case 128:	/* setb */
-> +			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-> +				goto unknown_opcode;
-
-Ok, if I've understood correctly...
-
-> +			ra = ra & ~0x3;
-
-This masks off the bits of RA that are not part of BTF:
-
-ra is in [0, 31] which is [0b00000, 0b11111]
-Then ~0x3 = ~0b00011
-ra = ra & 0b11100
-
-This gives us then,
-ra = btf << 2; or
-btf = ra >> 2;
-
-Let's then check to see if your calculations read the right fields.
-
-> +			if ((regs->ccr) & (1 << (31 - ra)))
-> +				op->val = -1;
-> +			else if ((regs->ccr) & (1 << (30 - ra)))
-> +				op->val = 1;
-> +			else
-> +				op->val = 0;
-
-
-CR field:      7    6    5    4    3    2    1    0
-bit:          0123 0123 0123 0123 0123 0123 0123 0123
-normal bit #: 0.....................................31
-ibm bit #:   31.....................................0
-
-If btf = 0, ra = 0, check normal bits 31 and 30, which are both in CR0.
-CR field:      7    6    5    4    3    2    1    0
-bit:          0123 0123 0123 0123 0123 0123 0123 0123
-                                                   ^^
-
-If btf = 7, ra = 0b11100 = 28, so check normal bits 31-28 and 30-28,
-which are 3 and 2.
-
-CR field:      7    6    5    4    3    2    1    0
-bit:          0123 0123 0123 0123 0123 0123 0123 0123
-                ^^
-
-If btf = 3, ra = 0b01100 = 12, for normal bits 19 and 18:
-
-CR field:      7    6    5    4    3    2    1    0
-bit:          0123 0123 0123 0123 0123 0123 0123 0123
-                                    ^^
-
-So yes, your calculations, while I struggle to follow _how_ they work,
-do in fact seem to work.
-
-Checkpatch does have one complaint:
-
-CHECK:UNNECESSARY_PARENTHESES: Unnecessary parentheses around 'regs->ccr'
-#30: FILE: arch/powerpc/lib/sstep.c:1971:
-+			if ((regs->ccr) & (1 << (31 - ra)))
-
-I don't really mind the parenteses: I think you are safe to ignore
-checkpatch here unless someone else complains :)
-
-If you do end up respinning the patch, I think it would be good to make
-the maths a bit clearer. I think it works because a left shift of 2 is
-the same as multiplying by 4, but it would be easier to follow if you
-used a temporary variable for btf.
-
-However, I do think this is still worth adding to the kernel either way,
-so:
-
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Kind regards,
-Daniel
-
-> +			goto compute_done;
+> Not tested
+>   arch/powerpc/platforms/pseries/papr_scm.c | 13 ++++++++-----
+>   1 file changed, 8 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index ae6f5d80d5ce..4366e1902890 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -1085,8 +1085,9 @@ static int papr_scm_probe(struct platform_device *pdev)
+>   	u32 drc_index, metadata_size;
+>   	u64 blocks, block_size;
+>   	struct papr_scm_priv *p;
+> +	u8 uuid_raw[UUID_SIZE];
+>   	const char *uuid_str;
+> -	u64 uuid[2];
+> +	uuid_t uuid;
+>   	int rc;
+>   
+>   	/* check we have all the required DT properties */
+> @@ -1129,16 +1130,18 @@ static int papr_scm_probe(struct platform_device *pdev)
+>   	p->hcall_flush_required = of_property_read_bool(dn, "ibm,hcall-flush-required");
+>   
+>   	/* We just need to ensure that set cookies are unique across */
+> -	uuid_parse(uuid_str, (uuid_t *) uuid);
+> +	uuid_parse(uuid_str, &uuid);
 > +
->  		case 154:	/* prtyw */
->  			do_prty(regs, op, regs->gpr[rd], 32);
->  			goto logical_done_nocc;
-> -- 
-> 2.16.4
+>   	/*
+>   	 * cookie1 and cookie2 are not really little endian
+> -	 * we store a little endian representation of the
+> +	 * we store a raw buffer representation of the
+>   	 * uuid str so that we can compare this with the label
+>   	 * area cookie irrespective of the endian config with which
+>   	 * the kernel is built.
+>   	 */
+> -	p->nd_set.cookie1 = cpu_to_le64(uuid[0]);
+> -	p->nd_set.cookie2 = cpu_to_le64(uuid[1]);
+> +	export_uuid(uuid_raw, &uuid);
+> +	p->nd_set.cookie1 = get_unaligned_le64(&uuid_raw[0]);
+> +	p->nd_set.cookie2 = get_unaligned_le64(&uuid_raw[8]);
+>   
+
+ok that does the equivalent of cpu_to_le64 there. So we are good. But 
+the comment update is missing the details why we did that 
+get_unaligned_le64. Maybe raw buffer representation is the correct term?
+Should we add an example in the comment. ie,
+
+/*
+  * Historically we stored the cookie in the below format.
+for a uuid str 72511b67-0b3b-42fd-8d1d-5be3cae8bcaa
+cookie1 was  0xfd423b0b671b5172 cookie2 was 0xaabce8cae35b1d8d
+*/
+
+
+
+>   	/* might be zero */
+>   	p->metadata_size = metadata_size;
+> 
+
