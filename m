@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4021F361E77
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 13:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FCF361E79
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 13:13:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMD8G1cj8z3c43
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 21:12:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMD8h1HDVz3c9T
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 21:13:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Hs85lksD;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ZgYFYmGx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Hs85lksD; 
+ header.a=rsa-sha256 header.s=201909 header.b=ZgYFYmGx; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMD7t6Mswz2yyK
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMD7t6Pdxz300C
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 21:12:26 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FMD7j5Z7bz9sW4; Fri, 16 Apr 2021 21:12:17 +1000 (AEST)
+ id 4FMD7k34t6z9sWD; Fri, 16 Apr 2021 21:12:18 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1618571537;
- bh=3Rlyv9Vg7qoH6KqBUiP7QqB19FryoGIXO4RgKUFMc/c=;
- h=From:To:Subject:Date:From;
- b=Hs85lksD6qugUVTBJ2tO3oOMtiTE4gAMvjTTkwjhsLjqqfRvPa6piqgLI9XOyAZrl
- ME/xTurjHqI2fSvKDNmWNQPJ5390nAP0Z7+w/Z7/WmU1bJXakXhZfsGYtc6mMhjjZw
- pjlPaiOfZvHQQ7ydYgYz+MsO8sPHCjZ/vTJhVHc69PsPBIEaPxNF4SMQsGP6bE80iS
- mAfaRxOZESTutp6cUzlVeZIUvsOxBAlW2NJRB357GLeSbXSyL9xlx32uiplR3JiMyf
- XXkD0hNHNO7Jgx3LA9f18TV8vqX7n5pTM39ECLdYaWvTQV1eXd5u6Ba5tKpyRUtf3B
- aUf1/5liIFkHA==
+ s=201909; t=1618571538;
+ bh=K7YTqxtrJPMNZTltGAO0MVUHMJiEzeN58Dt0hTySp2w=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=ZgYFYmGxuwGr2JCSR3i2nMlmOHFmRI07FBmBZPK4RetrHKKmvaNq5227JIsQb9IYb
+ f0YLg+SOt1OzVdQ1XCc5xfGJZbwLrp4VgGUKXe3aFa45ZoBwZkSgHwbtFD/BWCAH4W
+ U4HWl3DWReOwGwB+sDVoHpIHcoNnh1nanOS7PGLxmPclFiJ0GMw7Wpm9Fr0XVCnXhP
+ VPVv8STjOrnesIepavAJbvZ+QIgRDgvNFRhog/KgSAJWu0k6niVxeT+r5QJDViLnvO
+ zabx7F4TiSksRWPiDH8gvnjUDwMbF0ULNq19P9zwMFIkdiPJ/jVzASpAudLGmrZ6B1
+ JL98YB+PVQ7FA==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/2] powerpc/configs: Add PAPR_SCM to pseries_defconfig
-Date: Fri, 16 Apr 2021 21:12:08 +1000
-Message-Id: <20210416111209.765444-1-mpe@ellerman.id.au>
+Subject: [PATCH 2/2] powerpc/papr_scm: Fix build error due to wrong printf
+ specifier
+Date: Fri, 16 Apr 2021 21:12:09 +1000
+Message-Id: <20210416111209.765444-2-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210416111209.765444-1-mpe@ellerman.id.au>
+References: <20210416111209.765444-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,26 +63,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a pseries only driver, it should be built by default as part of
-pseries_defconfig to get some build coverage.
+When I changed the rc variable to be long rather than int64_t I
+neglected to update the printk(), leading to a build break:
 
+  arch/powerpc/platforms/pseries/papr_scm.c: In function 'papr_scm_pmem_flush':
+  arch/powerpc/platforms/pseries/papr_scm.c:144:26: warning: format
+    '%lld' expects argument of type 'long long int', but argument 3 has
+    type 'long int' [-Wformat=]
+
+Fixes: 75b7c05ebf90 ("powerpc/papr_scm: Implement support for H_SCM_FLUSH hcall")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/configs/pseries_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/platforms/pseries/papr_scm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/configs/pseries_defconfig b/arch/powerpc/configs/pseries_defconfig
-index 777221775c83..968095d7682c 100644
---- a/arch/powerpc/configs/pseries_defconfig
-+++ b/arch/powerpc/configs/pseries_defconfig
-@@ -41,6 +41,7 @@ CONFIG_DTL=y
- CONFIG_SCANLOG=m
- CONFIG_PPC_SMLPAR=y
- CONFIG_IBMEBUS=y
-+CONFIG_PAPR_SCM=m
- CONFIG_PPC_SVM=y
- # CONFIG_PPC_PMAC is not set
- CONFIG_RTAS_FLASH=m
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index ae6f5d80d5ce..48de21902116 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -141,7 +141,7 @@ static int papr_scm_pmem_flush(struct nd_region *nd_region,
+ 	} while (rc == H_BUSY);
+ 
+ 	if (rc) {
+-		dev_err(&p->pdev->dev, "flush error: %lld", rc);
++		dev_err(&p->pdev->dev, "flush error: %ld", rc);
+ 		rc = -EIO;
+ 	} else {
+ 		dev_dbg(&p->pdev->dev, "flush drc 0x%x complete", p->drc_index);
 -- 
 2.25.1
 
