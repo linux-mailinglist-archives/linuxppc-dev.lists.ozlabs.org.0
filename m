@@ -2,57 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C0EE3618AA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 06:13:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 341113618AB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 06:13:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FM2r800Svz3dSY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 14:13:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FM2rd0jZ6z3dcL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 14:13:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=KdO6oPwx;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=Ed7SYlCI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.86.78; helo=rcdn-iport-7.cisco.com;
+ smtp.mailfrom=cisco.com (client-ip=173.37.86.75; helo=rcdn-iport-4.cisco.com;
  envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=KdO6oPwx; dkim-atps=neutral
-Received: from rcdn-iport-7.cisco.com (rcdn-iport-7.cisco.com [173.37.86.78])
+ header.s=iport header.b=Ed7SYlCI; dkim-atps=neutral
+Received: from rcdn-iport-4.cisco.com (rcdn-iport-4.cisco.com [173.37.86.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FM2m768Npz3br1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 14:09:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FM2mC1RR2z3btV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 14:09:46 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=3912; q=dns/txt; s=iport;
- t=1618546183; x=1619755783;
+ d=cisco.com; i=@cisco.com; l=3563; q=dns/txt; s=iport;
+ t=1618546187; x=1619755787;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VP7PAoaR3l2w3et6aEwl6bAiAhFA9JKl6Z/MedxCeK8=;
- b=KdO6oPwx6NgLC3SBQsSM8Teex/WenXlC05iTRxTTt8VYQtqEGD/clB9o
- 8orrc5czKbyK0aLVgsa2dMKFeQEtqimKexhIdEOcSRiRVwcSMRd4RjDBT
- iBb70Y/wraTfUnIulKNDR5p1YqHUteYSKdsCZjSUreJCxrAl06VYWNtUb 4=;
-IronPort-HdrOrdr: =?us-ascii?q?A9a23=3AfmS0yqCf5eLAQ2PlHejxsceALOonbusQ8z?=
- =?us-ascii?q?AX/mp6ICY4TuWzkceykPMHkSLugDEKV3063fyGMq+MQXTTnKQFhbU5EL++UG?=
- =?us-ascii?q?Dd1leAA5pl6eLZqQHIOyq7zeJF0LclTq4WMqySMXFfreLXpDa1CMwhxt7vyt?=
- =?us-ascii?q?HMuc77w212RQ9nL4Fshj0ZNi+hHkd7RBZLCPMCffL22uN9qzWtYngRZMigb0?=
- =?us-ascii?q?N1PdTrncHBl57tfHc9aCIP1Q/mt16VwY+/OwSE2FMkXylXx7A5/Sz+jxXh/a?=
- =?us-ascii?q?m4qZiAu3jh/l6Wy5xXndf7o+EiOOW8zu4INz7rlgGkIKNmVrHqhkFNnMifrH?=
- =?us-ascii?q?A3jdLLvxAse/5W1kqUVGS0rRzxsjOQtgoT1w=3D=3D?=
+ bh=GO4wmk8aV0OUxVhW9VMyBb9l4wFj18+YTePQSCcYNiM=;
+ b=Ed7SYlCIalp8fHnSDtzO7GLNpGxKpF7ENpDQWO0vPsCNpoeUpghQnSJm
+ aoMMjqpSb5nLQXpKaiM5a8+J63We3k3HwawUl3G4te7OKrn95EojRV5LI
+ wfvZdjTaWNq95HV8rQ5vigM24Dmr2j2rX1HCenpesp5PWqB8J1yMPoyj8 I=;
+IronPort-HdrOrdr: =?us-ascii?q?A9a23=3AIILAOaPeW6nIHMBcT5z155DYdL4zR+YMi2?=
+ =?us-ascii?q?QD/UoZc3BoW+afkN2jm+le6AT9jywfVGpltdeLPqSBRn20z+8Q3aA9NaqvNT?=
+ =?us-ascii?q?OJhEKGN4dnhLGJ/xTBHGnE+vdZxeNcdcFFeb7NJHxbqeq/3wWiCdYnx7C8gc?=
+ =?us-ascii?q?WVrMPT1W1kQw0vS6wI1WZEIz2WGEF3WwVKbKBRfPGhz/FKqDa6dXMcYt7TPA?=
+ =?us-ascii?q?hmY8H4u9bJmJj6CCRoOzcb7mC14A+A2frTDwWfmiwTSSpIxq0vtVLYihXj6r?=
+ =?us-ascii?q?+42svLrSP05iv255RSlMCJ8Lt+Lf3JrNQJITPxjQvtQ4JtV9S5zUkIidDqzk?=
+ =?us-ascii?q?o2m9/RpBplBeBP0jf6e2G4pgaF4XiH7AoT?=
 X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0BMAABLDXlg/4sNJK1aHAEBAQEBAQc?=
- =?us-ascii?q?BARIBAQQEAQGBfgcBAQsBAYF6L4FNATkxjGeJTYEMlCyFNoF8CwEBAQ80BAE?=
- =?us-ascii?q?BhFACgXMCJTQJDgIDAQEMAQEFAQEBAgEGBHEThV1DFgGFawYyAUYQHTRJDgY?=
- =?us-ascii?q?BEoJxgwisB4IrgQGIM4FEFIElAYhrdIN1JxyBSUKBE4JsdIo5BIJABwaBCII?=
- =?us-ascii?q?6IwGRG41TnC2DFoEmm1EPI6R8LZRro2KBVDqBWTMaCBsVgyRQGQ6OKxaBAgE?=
- =?us-ascii?q?CjGYBWyEDLzgCBgoBAQMJiU6DQAEB?=
-X-IronPort-AV: E=Sophos;i="5.82,226,1613433600"; d="scan'208";a="871030791"
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0BMAAAiDXlg/4sNJK1aHAEBAQEBAQc?=
+ =?us-ascii?q?BARIBAQQEAQGBfgcBAQsBAYIpgU0BOTGMZ6Q7gXwLAQEBDzQEAQGEUAKBcwI?=
+ =?us-ascii?q?lNAkOAgMBAQwBAQUBAQECAQYEcROFXUMWAYVrBjIBRhBRVwYBEoJxgwisCII?=
+ =?us-ascii?q?rgQGIM4FEFIElAYhrdIN1JxyBSUKEc4o5BIJGAYEPggRskQQEjVOcLYMWgSa?=
+ =?us-ascii?q?bUQ8jpHyVGJ5YhQqBVDqBWTMaCBsVgyRQGQ6OKxaNawFbIQMvOAIGCgEBAwm?=
+ =?us-ascii?q?JToNAAQE?=
+X-IronPort-AV: E=Sophos;i="5.82,226,1613433600"; d="scan'208";a="861122364"
 Received: from alln-core-6.cisco.com ([173.36.13.139])
- by rcdn-iport-7.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 16 Apr 2021 04:09:40 +0000
+ by rcdn-iport-4.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
+ 16 Apr 2021 04:09:41 +0000
 Received: from zorba.cisco.com ([10.24.7.67])
- by alln-core-6.cisco.com (8.15.2/8.15.2) with ESMTP id 13G49OHm016753;
- Fri, 16 Apr 2021 04:09:39 GMT
+ by alln-core-6.cisco.com (8.15.2/8.15.2) with ESMTP id 13G49OHn016753;
+ Fri, 16 Apr 2021 04:09:40 GMT
 From: Daniel Walker <danielwa@cisco.com>
 To: Will Deacon <will@kernel.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -60,11 +60,10 @@ To: Will Deacon <will@kernel.org>,
  Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
  Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
  linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>
-Subject: [PATCH 7/8] of: allow sending a NULL value to
- early_init_dt_scan_chosen
-Date: Thu, 15 Apr 2021 21:09:18 -0700
-Message-Id: <20210416040924.2882771-8-danielwa@cisco.com>
+ Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 8/8] CMDLINE: arm64: convert to generic builtin command line
+Date: Thu, 15 Apr 2021 21:09:19 -0700
+Message-Id: <20210416040924.2882771-9-danielwa@cisco.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210416040924.2882771-1-danielwa@cisco.com>
 References: <20210416040924.2882771-1-danielwa@cisco.com>
@@ -84,116 +83,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  xe-linux-external@cisco.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It's possible that an architecture may want to populate
-boot_command_line before calling the device tree code.
-Currently, early_init_dt_scan_chosen won't accept a NULL
-in the data parameter and it returns immediately if you
-send one.
+This removes arm64 from the device tree handling of the
+command line arguments.
 
-I changed early_init_dt_scan_nodes() to send a NULL into
-early_init_dt_scan_chosen() , then I made
-early_init_dt_scan_chosen() to do the initrd checking, and
-the rng-seed checking and skip all the command line related
-code.
+The boot_command_line variable is populated inside the earliest
+user of the command line, which is in idreg-override.c.
 
-Given lots of changes to the command line, I think it makes sense
-to allow the initrd code and rng-seed code to be run without
-forcing the command line handling. I'm also submitting changes
-to arm64 which populate boot_command_line much early and this
-device tree code overwrites boot_command_line in that case.
-
-This code depends on all architecture to have a NULL
-boot_command_line at boot up when this function runs, unless
-it's already populated.
-
-This code was boot tested on powerpc 32bit, x86, and arm64.
+The device tree should not be needed to do any further handling
+of the boot command line options.
 
 Cc: xe-linux-external@cisco.com
 Signed-off-by: Daniel Walker <danielwa@cisco.com>
 ---
- drivers/of/fdt.c | 44 +++++++++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 19 deletions(-)
+ arch/arm64/Kconfig                 | 33 +-----------------------------
+ arch/arm64/include/asm/setup.h     |  2 ++
+ arch/arm64/kernel/idreg-override.c |  9 ++++----
+ 3 files changed, 8 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index adb26aff481d..a1fda952ce60 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -1052,36 +1052,38 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index e4e1b6550115..9781ba3758b1 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -105,6 +105,7 @@ config ARM64
+ 	select GENERIC_ALLOCATOR
+ 	select GENERIC_ARCH_TOPOLOGY
+ 	select GENERIC_CLOCKEVENTS_BROADCAST
++	select GENERIC_CMDLINE
+ 	select GENERIC_CPU_AUTOPROBE
+ 	select GENERIC_CPU_VULNERABILITIES
+ 	select GENERIC_EARLY_IOREMAP
+@@ -1841,38 +1842,6 @@ config ARM64_ACPI_PARKING_PROTOCOL
+ 	  protocol even if the corresponding data is present in the ACPI
+ 	  MADT table.
  
- 	pr_debug("search \"chosen\", depth: %d, uname: %s\n", depth, uname);
+-config CMDLINE
+-	string "Default kernel command string"
+-	default ""
+-	help
+-	  Provide a set of default command-line options at build time by
+-	  entering them here. As a minimum, you should specify the the
+-	  root device (e.g. root=/dev/nfs).
+-
+-choice
+-	prompt "Kernel command line type" if CMDLINE != ""
+-	default CMDLINE_FROM_BOOTLOADER
+-	help
+-	  Choose how the kernel will handle the provided default kernel
+-	  command line string.
+-
+-config CMDLINE_FROM_BOOTLOADER
+-	bool "Use bootloader kernel arguments if available"
+-	help
+-	  Uses the command-line options passed by the boot loader. If
+-	  the boot loader doesn't provide any, the default kernel command
+-	  string provided in CMDLINE will be used.
+-
+-config CMDLINE_FORCE
+-	bool "Always use the default kernel command string"
+-	help
+-	  Always use the default kernel command string, even if the boot
+-	  loader passes other arguments to the kernel.
+-	  This is useful if you cannot or don't want to change the
+-	  command-line options your boot loader passes to the kernel.
+-
+-endchoice
+-
+ config EFI_STUB
+ 	bool
  
--	if (depth != 1 || !data ||
--	    (strcmp(uname, "chosen") != 0 && strcmp(uname, "chosen@0") != 0))
-+	if (depth != 1 || (strcmp(uname, "chosen") != 0
-+				&& strcmp(uname, "chosen@0") != 0))
- 		return 0;
+diff --git a/arch/arm64/include/asm/setup.h b/arch/arm64/include/asm/setup.h
+index d3320618ed14..1f5b6d8f2433 100644
+--- a/arch/arm64/include/asm/setup.h
++++ b/arch/arm64/include/asm/setup.h
+@@ -5,7 +5,9 @@
  
- 	early_init_dt_check_for_initrd(node);
+ #include <uapi/asm/setup.h>
  
--	/* Retrieve command line */
--	p = of_get_flat_dt_prop(node, "bootargs", &l);
--	if (p != NULL && l > 0)
--		strlcpy(data, p, min(l, COMMAND_LINE_SIZE));
-+	if (data) {
-+		/* Retrieve command line */
-+		p = of_get_flat_dt_prop(node, "bootargs", &l);
-+		if (p != NULL && l > 0)
-+			strlcpy(data, p, min(l, COMMAND_LINE_SIZE));
++#ifndef __ASSEMBLY__
+ void *get_early_fdt_ptr(void);
+ void early_fdt_map(u64 dt_phys);
++#endif /* __ASSEMBLY__ */
  
--	/*
--	 * CONFIG_CMDLINE is meant to be a default in case nothing else
--	 * managed to set the command line, unless CONFIG_CMDLINE_FORCE
--	 * is set in which case we override whatever was found earlier.
--	 */
-+		/*
-+		 * CONFIG_CMDLINE is meant to be a default in case nothing else
-+		 * managed to set the command line, unless CONFIG_CMDLINE_FORCE
-+		 * is set in which case we override whatever was found earlier.
-+		 */
- #ifdef CONFIG_CMDLINE
- #if defined(CONFIG_CMDLINE_EXTEND)
--	strlcat(data, " ", COMMAND_LINE_SIZE);
--	strlcat(data, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
-+		strlcat(data, " ", COMMAND_LINE_SIZE);
-+		strlcat(data, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
- #elif defined(CONFIG_CMDLINE_FORCE)
--	strlcpy(data, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
--#else
--	/* No arguments from boot loader, use kernel's  cmdl*/
--	if (!((char *)data)[0])
- 		strlcpy(data, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
-+#else
-+		/* No arguments from boot loader, use kernel's  cmdl*/
-+		if (!((char *)data)[0])
-+			strlcpy(data, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
  #endif
- #endif /* CONFIG_CMDLINE */
+diff --git a/arch/arm64/kernel/idreg-override.c b/arch/arm64/kernel/idreg-override.c
+index 83f1c4b92095..0a3fcae13043 100644
+--- a/arch/arm64/kernel/idreg-override.c
++++ b/arch/arm64/kernel/idreg-override.c
+@@ -9,6 +9,7 @@
+ #include <linux/ctype.h>
+ #include <linux/kernel.h>
+ #include <linux/libfdt.h>
++#include <linux/cmdline.h>
  
--	pr_debug("Command line is: %s\n", (char *)data);
-+		pr_debug("Command line is: %s\n", (char *)data);
-+	}
+ #include <asm/cacheflush.h>
+ #include <asm/cpufeature.h>
+@@ -188,11 +189,11 @@ static __init void parse_cmdline(void)
+ {
+ 	const u8 *prop = get_bootargs_cmdline();
  
- 	rng_seed = of_get_flat_dt_prop(node, "rng-seed", &l);
- 	if (rng_seed && l > 0) {
-@@ -1202,7 +1204,11 @@ void __init early_init_dt_scan_nodes(void)
- 	int rc = 0;
+-	if (IS_ENABLED(CONFIG_CMDLINE_FORCE) || !prop)
+-		__parse_cmdline(CONFIG_CMDLINE, true);
++	strscpy(boot_command_line, prop, COMMAND_LINE_SIZE);
++	cmdline_add_builtin(boot_command_line);
++
++	__parse_cmdline(boot_command_line, true);
  
- 	/* Retrieve various information from the /chosen node */
--	rc = of_scan_flat_dt(early_init_dt_scan_chosen, boot_command_line);
-+	if (boot_command_line[0])
-+		rc = of_scan_flat_dt(early_init_dt_scan_chosen, NULL);
-+	else
-+		rc = of_scan_flat_dt(early_init_dt_scan_chosen,
-+					boot_command_line);
- 	if (!rc)
- 		pr_warn("No chosen node found, continuing without\n");
+-	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE) && prop)
+-		__parse_cmdline(prop, true);
+ }
  
+ /* Keep checkers quiet */
 -- 
 2.25.1
 
