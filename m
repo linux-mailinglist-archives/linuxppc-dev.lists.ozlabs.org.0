@@ -1,41 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27BC361BA8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 10:42:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87ED2361CB0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 11:06:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FM8q56xGdz3bvT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 18:42:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FM9L722s3z3c10
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 19:06:07 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=N5K+P5uI;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FM8pn4mlSz2yy9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 18:42:22 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 11A64106F;
- Fri, 16 Apr 2021 01:42:20 -0700 (PDT)
-Received: from [192.168.1.179] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 43FFA3FA45;
- Fri, 16 Apr 2021 01:42:19 -0700 (PDT)
-Subject: Re: [PATCH] mm: ptdump: Fix build failure
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <912b349e2bcaa88939904815ca0af945740c6bd4.1618478922.git.christophe.leroy@csgroup.eu>
-From: Steven Price <steven.price@arm.com>
-Message-ID: <c6c50422-9566-8667-0ad6-627c51c9b7aa@arm.com>
-Date: Fri, 16 Apr 2021 09:42:14 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=N5K+P5uI; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FM9Kh4njLz3bSv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 19:05:43 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FM9KY0PN8z9sRR;
+ Fri, 16 Apr 2021 19:05:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1618563938;
+ bh=ODI74klkPteUtUE2RViGCzX+1GpV6bkKxunEM80VHEQ=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=N5K+P5uI8zLBgHhpJPdrouDzj3Tny9rxGnD0pO2rxvh6hAcHhkrH2GnJzAHuxkDUY
+ QhdfK8K1Z0Pumw3BaNMxLkURu41hYxQScn1jm+DC+Y0/YWQnJDQnggSf+N6VK9MTgy
+ xPXEKynNnpM618/eFJ4jzWxZJluP/fyzeYrFH3X6FVIhmKUAHFv5TtBR+JNIgx7IY9
+ miVOR70+UkJncVLS75fElHdIOMFkcnkH1Vw1y2NNvol0YkXopOT5kVxkpBbMoBq1Po
+ /ksN+pHOxpvoTo5Qrp14GAUQXaHJfklM7hV8vLg8FT/wX73M/5gvI1JxiRSBYFh26h
+ peuneCnGS+9Gg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Daniel Axtens <dja@axtens.net>, Lakshmi Ramasubramanian
+ <nramas@linux.microsoft.com>, robh@kernel.org, dan.carpenter@oracle.com
+Subject: Re: [PATCH] powerpc: Initialize local variable fdt to NULL in
+ elf64_load()
+In-Reply-To: <87eefag241.fsf@linkitivity.dja.id.au>
+References: <20210415191437.20212-1-nramas@linux.microsoft.com>
+ <4edb1433-4d1e-5719-ec9c-fd232b7cf71f@linux.microsoft.com>
+ <87eefag241.fsf@linkitivity.dja.id.au>
+Date: Fri, 16 Apr 2021 19:05:32 +1000
+Message-ID: <87tuo6eh0j.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <912b349e2bcaa88939904815ca0af945740c6bd4.1618478922.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,70 +65,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ kbuild-all@lists.01.org, bauerman@linux.ibm.com, lkp@intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15/04/2021 10:31, Christophe Leroy wrote:
-> 	  CC      mm/ptdump.o
-> 	In file included from <command-line>:
-> 	mm/ptdump.c: In function 'ptdump_pte_entry':
-> 	././include/linux/compiler_types.h:320:38: error: call to '__compiletime_assert_207' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().
-> 	  320 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-> 	      |                                      ^
-> 	././include/linux/compiler_types.h:301:4: note: in definition of macro '__compiletime_assert'
-> 	  301 |    prefix ## suffix();    \
-> 	      |    ^~~~~~
-> 	././include/linux/compiler_types.h:320:2: note: in expansion of macro '_compiletime_assert'
-> 	  320 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-> 	      |  ^~~~~~~~~~~~~~~~~~~
-> 	./include/asm-generic/rwonce.h:36:2: note: in expansion of macro 'compiletime_assert'
-> 	   36 |  compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long), \
-> 	      |  ^~~~~~~~~~~~~~~~~~
-> 	./include/asm-generic/rwonce.h:49:2: note: in expansion of macro 'compiletime_assert_rwonce_type'
-> 	   49 |  compiletime_assert_rwonce_type(x);    \
-> 	      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 	mm/ptdump.c:114:14: note: in expansion of macro 'READ_ONCE'
-> 	  114 |  pte_t val = READ_ONCE(*pte);
-> 	      |              ^~~~~~~~~
-> 	make[2]: *** [mm/ptdump.o] Error 1
-> 
-> READ_ONCE() cannot be used for reading PTEs. Use ptep_get()
-> instead. See commit 481e980a7c19 ("mm: Allow arches to provide ptep_get()")
-> and commit c0e1c8c22beb ("powerpc/8xx: Provide ptep_get() with 16k pages")
-> for details.
+Daniel Axtens <dja@axtens.net> writes:
+>> On 4/15/21 12:14 PM, Lakshmi Ramasubramanian wrote:
+>>
+>> Sorry - missed copying device-tree and powerpc mailing lists.
+>>
+>>> There are a few "goto out;" statements before the local variable "fdt"
+>>> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
+>>> elf64_load(). This will result in an uninitialized "fdt" being passed
+>>> to kvfree() in this function if there is an error before the call to
+>>> of_kexec_alloc_and_setup_fdt().
+>>> 
+>>> Initialize the local variable "fdt" to NULL.
+>>>
+> I'm a huge fan of initialising local variables! But I'm struggling to
+> find the code path that will lead to an uninit fdt being returned...
+>
+> The out label reads in part:
+>
+> 	/* Make kimage_file_post_load_cleanup free the fdt buffer for us. */
+> 	return ret ? ERR_PTR(ret) : fdt;
+>
+> As far as I can tell, any time we get a non-zero ret, we're going to
+> return an error pointer rather than the uninitialised value...
+>
+> (btw, it does look like we might leak fdt if we have an error after we
+> successfully kmalloc it.)
+>
+> Am I missing something? Can you link to the report for the kernel test
+> robot or from Dan? 
+>
+> FWIW, I think it's worth including this patch _anyway_ because initing
+> local variables is good practice, but I'm just not sure on the
+> justification.
 
-It was cargo-culted from the arm64/x86 implementations (where this 
-happens to be safe).
+Why is it good practice?
 
-> Fixes: 30d621f6723b ("mm: add generic ptdump")
-> Cc: Steven Price <steven.price@arm.com>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+It defeats -Wuninitialized. So you're guaranteed to be returning
+something initialised, but not necessarily initialised to the right
+value.
 
-Reviewed-by: Steven Price <steven.price@arm.com>
+In a case like this NULL seems like a safe choice, but it's still wrong.
+The function is meant to return a pointer to the successfully allocated
+fdt, or an ERR_PTR() value. NULL is neither of those.
 
-Thanks,
+I agree there are security reasons that initialising stack variables is
+desirable, but I think that should be handled by the compiler, not at
+the source level.
 
-Steve
-
-> ---
->   mm/ptdump.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/ptdump.c b/mm/ptdump.c
-> index 4354c1422d57..da751448d0e4 100644
-> --- a/mm/ptdump.c
-> +++ b/mm/ptdump.c
-> @@ -111,7 +111,7 @@ static int ptdump_pte_entry(pte_t *pte, unsigned long addr,
->   			    unsigned long next, struct mm_walk *walk)
->   {
->   	struct ptdump_state *st = walk->private;
-> -	pte_t val = READ_ONCE(*pte);
-> +	pte_t val = ptep_get(pte);
->   
->   	if (st->effective_prot)
->   		st->effective_prot(st, 4, pte_val(val));
-> 
-
+cheers
