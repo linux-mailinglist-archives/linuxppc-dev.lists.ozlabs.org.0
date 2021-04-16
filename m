@@ -1,67 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8921362C85
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 03:00:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A956362C88
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 03:01:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMZWZ5FHYz3c68
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 11:00:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMZX52BBDz3cBF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 11:01:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=LHOOZCdm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Uf7m8Z8p;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b29;
- helo=mail-yb1-xb29.google.com; envelope-from=iecedge@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=LHOOZCdm; dkim-atps=neutral
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com
- [IPv6:2607:f8b0:4864:20::b29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Uf7m8Z8p; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMHNq2HNXz2y8P
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 23:38:50 +1000 (AEST)
-Received: by mail-yb1-xb29.google.com with SMTP id 82so30132371yby.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 06:38:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=0mHucleBm3GX7Z1SOPiFjIocZZ3cy927o5LfpjbehY0=;
- b=LHOOZCdmhtYRgZeIr5lEhO6KXFFYOEi/8AF39AtF41E0Kj5ox6YUrLbD1vh18P9Lgw
- sAVjw8PPsAkREA+eH+IscJhlq1h6M6yaFa7D2Ul9LpLgbbeOdwpmPXCeDFpcWsTP6nHq
- SCI7Oj+YXaVgCPpr7CLkYRTDlBDXPOunOileWzKluP9csVXr0LkmjxeyoNNj/y0KHa8o
- m1iDnTxmuwSUOqb9QqmuJjAcD1igAGYaIOj4rbRGNsMZcZ9Vp6C8Phtn32KKQWyVGS+x
- HZbKvd+3/cmY7P4s96LQpYPFB1lT9xTMKroDuLgw++dQkCoTbyaprK8bjyaAEOyDTD6R
- ve0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=0mHucleBm3GX7Z1SOPiFjIocZZ3cy927o5LfpjbehY0=;
- b=eibYsb4OmT8Y+MGE0bewym3euzEnsg9qzdAqnNWdfXV7dG7LEuc+OriK1auqakMwhT
- TuHWl0fInpd1zsihu80BLsZsO3sL2a2O4C7oW4Oa+ySGjEsRK3d9G/Z5AoCEFFdkZmYo
- Thv2Nk/4onRt1KN/66yC8TV5lNHxBbOoKBZWcOM/XHJ3wF1Fs5Fksy9hJDy83JZRYxv2
- fqRTAyg2ynOySZG4LUhNYfnUPKUa1FDb++OodFeLoD4boFPlHjMtu2EfPSZ7y4k4goLK
- JqMWpLDbg5yJPcKEqNq4PQuQ9DT8QkcCJvFPJbnjK58IAagvFtMRZrKbAk0ig/OaWKX1
- 1sNw==
-X-Gm-Message-State: AOAM533rz4B2r/QFu4M2QyRFtu0MA3FOggQpTbNyxmJAUWOmbKSqS7m3
- wRkGRbtQhyjVRlBhTMalMYPXnacAc84qKw6ac4g=
-X-Google-Smtp-Source: ABdhPJw5sY0mgMHNVNaARBdH4/XL7aCQwPNekTw5pB2njQeJlgreCNQsgFDRpI0R7ZiYJLGMXF7BF2idqTBCgkAwAiE=
-X-Received: by 2002:a25:7004:: with SMTP id l4mr12503620ybc.304.1618580325409; 
- Fri, 16 Apr 2021 06:38:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMKdS0C63z301B
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 01:19:56 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E56786101E
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 15:19:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1618586392;
+ bh=pSsgz6SFE9awjWhpCd9doKdNFULnoUddJE0eDHwlPEw=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=Uf7m8Z8ptnraoZ51IQdKXyFPpb17ObjRbvh/tgHJQQ5o+ciQAAcW4tbcnun59sBJX
+ Ov85d36wXd57lDyw06gGeyqcFbb5FjxK1gFC7Qrxt0siWMpBPxslLI1Ib7jRn6v++F
+ cAmJS6suNmYyLsln2n1OJnlvyXwMidQQNjPAbPQs7MfkhM0fJUKSB+nyMr8L4qzQud
+ HTwRuAwiftEcwCLZDIRxIKUVRJ/SoYxXJ/sWW/PMvfAdr8QdP7WvJBtbdVkTfMRnMB
+ pphfcPjJEo4hhDegHATnmlmSQaHF3XNmwJ/bD1K3yRsXX8ChKcHmEOFBr928TWvaEy
+ TDNKkp8iMeOHg==
+Received: by mail-qv1-f46.google.com with SMTP id i9so13411166qvo.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 08:19:52 -0700 (PDT)
+X-Gm-Message-State: AOAM533q/H23BgRSfOOpCoTjCY0ihbfM/jp1XeXaxc3CjIgC+xxXwMm7
+ e7HTeRTreazbkDZ9hSod7ZuJz16zGGSN0W2W+A==
+X-Google-Smtp-Source: ABdhPJwFV5j0PpR0OOvbKTHrtQGM0/UHlnjLPz7IjIHFauq3IAwfsuj1+lSbzphYfDXiggRtdMYLzMTYnQvOIyCHQj8=
+X-Received: by 2002:ad4:5a07:: with SMTP id ei7mr8951384qvb.50.1618586391992; 
+ Fri, 16 Apr 2021 08:19:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210415093250.3391257-1-Jianlin.Lv@arm.com>
- <9c4a78d2-f73c-832a-e6e2-4b4daa729e07@iogearbox.net>
-In-Reply-To: <9c4a78d2-f73c-832a-e6e2-4b4daa729e07@iogearbox.net>
-From: Jianlin Lv <iecedge@gmail.com>
-Date: Fri, 16 Apr 2021 21:38:33 +0800
-Message-ID: <CAFA-uR8H2MMy_vjQ_ZL96ifKcVg2goK3nozOFavN+gnJ+=V6Rw@mail.gmail.com>
-Subject: Re: [PATCH bpf-next 1/2] bpf: Remove bpf_jit_enable=2 debugging mode
-To: Daniel Borkmann <daniel@iogearbox.net>
+References: <20210412174718.17382-1-michael@walle.cc>
+ <20210412174718.17382-3-michael@walle.cc>
+ <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org>
+ <8157eba9317609294da80472622deb28@walle.cc>
+In-Reply-To: <8157eba9317609294da80472622deb28@walle.cc>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Fri, 16 Apr 2021 10:19:40 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
+Message-ID: <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem() for
+ non-platform devices
+To: Michael Walle <michael@walle.cc>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Sat, 17 Apr 2021 11:00:18 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -75,143 +69,179 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, Song Liu <songliubraving@fb.com>,
- linux-doc@vger.kernel.org, zlim.lnx@gmail.com, paul.walmsley@sifive.com,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- paulus@samba.org, sandipan@linux.ibm.com, hpa@zytor.com,
- sparclinux@vger.kernel.org, illusionist.neo@gmail.com,
- Mahesh Bandewar <maheshb@google.com>, Will Deacon <will@kernel.org>,
- Nicolas Dichtel <nicolas.dichtel@6wind.com>, linux-s390@vger.kernel.org,
- iii@linux.ibm.com, paulburton@kernel.org, corbet@lwn.net,
- mchehab+huawei@kernel.org, Masahiro Yamada <masahiroy@kernel.org>,
- x86@kernel.org, John Fastabend <john.fastabend@gmail.com>,
- linux@armlinux.org.uk, linux-riscv@lists.infradead.org, borntraeger@de.ibm.com,
- mingo@redhat.com, linux-arm-kernel@lists.infradead.org,
- catalin.marinas@arm.com, naveen.n.rao@linux.ibm.com,
- Jakub Kicinski <kuba@kernel.org>, tklauser@distanz.ch,
- linux-mips@vger.kernel.org, grantseltzer@gmail.com, xi.wang@gmail.com,
- aou@eecs.berkeley.edu, Kees Cook <keescook@chromium.org>, gor@linux.ibm.com,
- luke.r.nels@gmail.com, LKML <linux-kernel@vger.kernel.org>, hca@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, KP Singh <kpsingh@kernel.org>,
- horms@verge.net.au, bp@alien8.de, Alexander Viro <viro@zeniv.linux.org.uk>,
- Yonghong Song <yhs@fb.com>, tglx@linutronix.de,
- Dmitry Vyukov <dvyukov@google.com>, tsbogend@alpha.franken.de,
- yoshfuji@linux-ipv6.org, Network Development <netdev@vger.kernel.org>,
- dsahern@kernel.org, udknight@gmail.com, Martin KaFai Lau <kafai@fb.com>,
- bjorn@kernel.org, palmer@dabbelt.com, quentin@isovalent.com,
- bpf <bpf@vger.kernel.org>, Jianlin Lv <Jianlin.Lv@arm.com>,
- "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew@lunn.ch>, Paul Mackerras <paulus@samba.org>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+ Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+ "moderated list:ARM/STM32 ARCHITECTURE"
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ Jerome Brunet <jbrunet@baylibre.com>, Neil Armstrong <narmstrong@baylibre.com>,
+ Michal Simek <michal.simek@xilinx.com>, Jose Abreu <joabreu@synopsys.com>,
+ NXP Linux Team <linux-imx@nxp.com>, Mark Lee <Mark-MC.Lee@mediatek.com>,
+ Hauke Mehrtens <hauke@hauke-m.de>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+ linux-omap <linux-omap@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-wireless <linux-wireless@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Vladimir Oltean <olteanv@gmail.com>,
+ Claudiu Beznea <claudiu.beznea@microchip.com>,
+ =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Chris Snook <chris.snook@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Madalin Bucur <madalin.bucur@nxp.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Murali Karicheri <m-karicheri2@ti.com>, Yisen Zhuang <yisen.zhuang@huawei.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>, Wingman Kwok <w-kwok2@ti.com>,
+ Sean Wang <sean.wang@mediatek.com>, Maxime Ripard <mripard@kernel.org>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+ Kalle Valo <kvalo@codeaurora.org>, Mirko Lindner <mlindner@marvell.com>,
+ Fugang Duan <fugang.duan@nxp.com>,
+ Bryan Whitehead <bryan.whitehead@microchip.com>,
+ QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+ Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+ Taras Chornyi <tchornyi@marvell.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Kevin Hilman <khilman@baylibre.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Fabio Estevam <festevam@gmail.com>, Stanislaw Gruszka <stf_xl@wp.pl>,
+ Florian Fainelli <f.fainelli@gmail.com>, linux-staging@lists.linux.dev,
+ Chen-Yu Tsai <wens@csie.org>,
+ "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE"
+ <bcm-kernel-feedback-list@broadcom.com>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Grygorii Strashko <grygorii.strashko@ti.com>, Byungho An <bh74.an@samsung.com>,
+ Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+ Vladimir Zapolskiy <vz@mleia.com>, John Crispin <john@phrozen.org>,
+ Salil Mehta <salil.mehta@huawei.com>,
+ Sergei Shtylyov <sergei.shtylyov@gmail.com>, linux-oxnas@groups.io,
+ Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Helmut Schaa <helmut.schaa@googlemail.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ "open list:MEDIA DRIVERS FOR RENESAS - FCP"
+ <linux-renesas-soc@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
+ Russell King <linux@armlinux.org.uk>, Vadym Kochan <vkochan@marvell.com>,
+ Jakub Kicinski <kuba@kernel.org>, Vivien Didelot <vivien.didelot@gmail.com>,
+ Sunil Goutham <sgoutham@marvell.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ devicetree@vger.kernel.org,
+ "moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Jernej Skrabec <jernej.skrabec@siol.net>, netdev <netdev@vger.kernel.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, Li Yang <leoyang.li@nxp.com>,
+ Stephen Hemminger <stephen@networkplumber.org>, Vinod Koul <vkoul@kernel.org>,
+ Joyce Ooi <joyce.ooi@intel.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Felix Fietkau <nbd@nbd.name>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 15, 2021 at 10:38 PM Daniel Borkmann <daniel@iogearbox.net> wrote:
+On Fri, Apr 16, 2021 at 2:30 AM Michael Walle <michael@walle.cc> wrote:
 >
-> On 4/15/21 11:32 AM, Jianlin Lv wrote:
-> > For debugging JITs, dumping the JITed image to kernel log is discouraged,
-> > "bpftool prog dump jited" is much better way to examine JITed dumps.
-> > This patch get rid of the code related to bpf_jit_enable=2 mode and
-> > update the proc handler of bpf_jit_enable, also added auxiliary
-> > information to explain how to use bpf_jit_disasm tool after this change.
+> Am 2021-04-16 05:24, schrieb Benjamin Herrenschmidt:
+> > On Mon, 2021-04-12 at 19:47 +0200, Michael Walle wrote:
+> >>
+> >>  /**
+> >>   * of_get_phy_mode - Get phy mode for given device_node
+> >> @@ -59,15 +60,39 @@ static int of_get_mac_addr(struct device_node *np,
+> >> const char *name, u8 *addr)
+> >>  static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
+> >>  {
+> >>         struct platform_device *pdev = of_find_device_by_node(np);
+> >> +       struct nvmem_cell *cell;
+> >> +       const void *mac;
+> >> +       size_t len;
+> >>         int ret;
+> >>
+> >> -       if (!pdev)
+> >> -               return -ENODEV;
+> >> +       /* Try lookup by device first, there might be a
+> >> nvmem_cell_lookup
+> >> +        * associated with a given device.
+> >> +        */
+> >> +       if (pdev) {
+> >> +               ret = nvmem_get_mac_address(&pdev->dev, addr);
+> >> +               put_device(&pdev->dev);
+> >> +               return ret;
+> >> +       }
+> >> +
 > >
-> > Signed-off-by: Jianlin Lv <Jianlin.Lv@arm.com>
-> [...]
-> > diff --git a/arch/x86/net/bpf_jit_comp32.c b/arch/x86/net/bpf_jit_comp32.c
-> > index 0a7a2870f111..8d36b4658076 100644
-> > --- a/arch/x86/net/bpf_jit_comp32.c
-> > +++ b/arch/x86/net/bpf_jit_comp32.c
-> > @@ -2566,9 +2566,6 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
-> >               cond_resched();
-> >       }
+> > This smells like the wrong band aid :)
 > >
-> > -     if (bpf_jit_enable > 1)
-> > -             bpf_jit_dump(prog->len, proglen, pass + 1, image);
-> > -
-> >       if (image) {
-> >               bpf_jit_binary_lock_ro(header);
-> >               prog->bpf_func = (void *)image;
-> > diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-> > index c8496c1142c9..990b1720c7a4 100644
-> > --- a/net/core/sysctl_net_core.c
-> > +++ b/net/core/sysctl_net_core.c
-> > @@ -273,16 +273,8 @@ static int proc_dointvec_minmax_bpf_enable(struct ctl_table *table, int write,
-> >
-> >       tmp.data = &jit_enable;
-> >       ret = proc_dointvec_minmax(&tmp, write, buffer, lenp, ppos);
-> > -     if (write && !ret) {
-> > -             if (jit_enable < 2 ||
-> > -                 (jit_enable == 2 && bpf_dump_raw_ok(current_cred()))) {
-> > -                     *(int *)table->data = jit_enable;
-> > -                     if (jit_enable == 2)
-> > -                             pr_warn("bpf_jit_enable = 2 was set! NEVER use this in production, only for JIT debugging!\n");
-> > -             } else {
-> > -                     ret = -EPERM;
-> > -             }
-> > -     }
-> > +     if (write && !ret)
-> > +             *(int *)table->data = jit_enable;
-> >       return ret;
-> >   }
-> >
-> > @@ -389,7 +381,7 @@ static struct ctl_table net_core_table[] = {
-> >               .extra2         = SYSCTL_ONE,
-> >   # else
-> >               .extra1         = SYSCTL_ZERO,
-> > -             .extra2         = &two,
-> > +             .extra2         = SYSCTL_ONE,
-> >   # endif
-> >       },
-> >   # ifdef CONFIG_HAVE_EBPF_JIT
-> > diff --git a/tools/bpf/bpf_jit_disasm.c b/tools/bpf/bpf_jit_disasm.c
-> > index c8ae95804728..efa4b17ae016 100644
-> > --- a/tools/bpf/bpf_jit_disasm.c
-> > +++ b/tools/bpf/bpf_jit_disasm.c
-> > @@ -7,7 +7,7 @@
-> >    *
-> >    * To get the disassembly of the JIT code, do the following:
-> >    *
-> > - *  1) `echo 2 > /proc/sys/net/core/bpf_jit_enable`
-> > + *  1) Insert bpf_jit_dump() and recompile the kernel to output JITed image into log
+> > Any struct device can contain an OF node pointer these days.
 >
-> Hmm, if we remove bpf_jit_dump(), the next drive-by cleanup patch will be thrown
-> at bpf@vger stating that bpf_jit_dump() has no in-tree users and should be removed.
-> Maybe we should be removing bpf_jit_disasm.c along with it as well as bpf_jit_dump()
-> itself ... I guess if it's ever needed in those rare occasions for JIT debugging we
-> can resurrect it from old kernels just locally. But yeah, bpftool's jit dump should
-> suffice for vast majority of use cases.
->
-> There was a recent set for ppc32 jit which was merged into ppc tree which will create
-> a merge conflict with this one [0]. So we would need a rebase and take it maybe during
-> merge win once the ppc32 landed..
->
->    [0] https://lore.kernel.org/bpf/cover.1616430991.git.christophe.leroy@csgroup.eu/
->
-> >    *  2) Load a BPF filter (e.g. `tcpdump -p -n -s 0 -i eth1 host 192.168.20.0/24`)
-> >    *  3) Run e.g. `bpf_jit_disasm -o` to read out the last JIT code
-> >    *
-> > diff --git a/tools/bpf/bpftool/feature.c b/tools/bpf/bpftool/feature.c
-> > index 40a88df275f9..98c7eec2923f 100644
-> > --- a/tools/bpf/bpftool/feature.c
-> > +++ b/tools/bpf/bpftool/feature.c
-> > @@ -203,9 +203,6 @@ static void probe_jit_enable(void)
-> >               case 1:
-> >                       printf("JIT compiler is enabled\n");
-> >                       break;
-> > -             case 2:
-> > -                     printf("JIT compiler is enabled with debugging traces in kernel logs\n");
-> > -                     break;
->
-> This would still need to be there for older kernels ...
+> But not all nodes might have an associated device, see DSA for example.
 
-I will submit another version after ppc32 landed to remove
-bpf_jit_disasm.c and restore bpftool/feature.c
+I believe what Ben is saying and what I said earlier is going from dev
+-> OF node is right and OF node -> dev is wrong. If you only have an
+OF node, then use an of_* function.
 
-Jianlin
-
-
+> And as the name suggests of_get_mac_address() operates on a node. So
+> if a driver calls of_get_mac_address() it should work on the node. What
+> is wrong IMHO, is that the ethernet drivers where the corresponding
+> board
+> has a nvmem_cell_lookup registered is calling of_get_mac_address(node).
+> It should rather call eth_get_mac_address(dev) in the first place.
 >
-> >               case -1:
-> >                       printf("Unable to retrieve JIT-compiler status\n");
-> >                       break;
-> >
->
+> One would need to figure out if there is an actual device (with an
+> assiciated of_node), then call eth_get_mac_address(dev) and if there
+> isn't a device call of_get_mac_address(node).
+
+Yes, I think we're all in agreement.
+
+> But I don't know if that is easy to figure out. Well, one could start
+> with just the device where nvmem_cell_lookup is used. Then we could
+> drop the workaround above.
+
+Start with the ones just passing dev.of_node directly:
+
+$ git grep 'of_get_mac_address(.*of_node)'
+drivers/net/ethernet/aeroflex/greth.c:          addr =
+of_get_mac_address(ofdev->dev.of_node);
+drivers/net/ethernet/altera/altera_tse_main.c:  macaddr =
+of_get_mac_address(pdev->dev.of_node);
+drivers/net/ethernet/arc/emac_main.c:   mac_addr =
+of_get_mac_address(dev->of_node);
+drivers/net/ethernet/broadcom/bgmac-bcma.c:             mac =
+of_get_mac_address(bgmac->dev->of_node);
+drivers/net/ethernet/cavium/octeon/octeon_mgmt.c:       mac =
+of_get_mac_address(pdev->dev.of_node);
+drivers/net/ethernet/ethoc.c:           mac =
+of_get_mac_address(pdev->dev.of_node);
+drivers/net/ethernet/ezchip/nps_enet.c: mac_addr =
+of_get_mac_address(dev->of_node);
+drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c:  mac_addr =
+of_get_mac_address(ofdev->dev.of_node);
+drivers/net/ethernet/marvell/pxa168_eth.c:              mac_addr =
+of_get_mac_address(pdev->dev.of_node);
+drivers/net/ethernet/marvell/sky2.c:    iap =
+of_get_mac_address(hw->pdev->dev.of_node);
+drivers/net/ethernet/mediatek/mtk_eth_soc.c:    mac_addr =
+of_get_mac_address(mac->of_node);
+drivers/net/ethernet/microchip/lan743x_main.c:  mac_addr =
+of_get_mac_address(pdev->dev.of_node);
+drivers/net/ethernet/qualcomm/qca_spi.c:        mac =
+of_get_mac_address(spi->dev.of_node);
+drivers/net/ethernet/qualcomm/qca_uart.c:       mac =
+of_get_mac_address(serdev->dev.of_node);
+drivers/net/ethernet/wiznet/w5100-spi.c:        const void *mac =
+of_get_mac_address(spi->dev.of_node);
+drivers/net/ethernet/xilinx/xilinx_axienet_main.c:      mac_addr =
+of_get_mac_address(pdev->dev.of_node);
+drivers/net/ethernet/xilinx/xilinx_emaclite.c:  mac_address =
+of_get_mac_address(ofdev->dev.of_node);
+drivers/net/wireless/ralink/rt2x00/rt2x00dev.c: mac_addr =
+of_get_mac_address(rt2x00dev->dev->of_node);
+drivers/staging/octeon/ethernet.c:              mac =
+of_get_mac_address(priv->of_node);
+drivers/staging/wfx/main.c:             macaddr =
+of_get_mac_address(wdev->dev->of_node);
+net/ethernet/eth.c:             addr = of_get_mac_address(dev->of_node);
+
+Then this will find most of the rest:
+git grep -W 'of_get_mac_address([a-z]*)'| grep -E '(node|np)'
+
+Rob
