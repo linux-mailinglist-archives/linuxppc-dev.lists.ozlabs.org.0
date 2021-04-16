@@ -1,103 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08A5362634
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 18:58:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C598E36265A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 19:09:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMMpk5qKLz3byg
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 02:58:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMN3b4v3jz3brV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 03:09:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Pqc1+jNG;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EBTEYHFC;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EBTEYHFC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=brouer@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Pqc1+jNG; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=EBTEYHFC; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=EBTEYHFC; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMMpH1GBGz302y
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 02:57:42 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13GGYSHZ054382; Fri, 16 Apr 2021 12:57:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=FhcpdImEoIm2TiybHoHvM3KHNt1Ze0TL5IbuX5AK7OM=;
- b=Pqc1+jNGzpDuyHkEKzPxEsm5TITflE0PnM/HE+qO6YF3R7m6Wekht3TfWKvHzthr7OAc
- aew9M8EkN1ZoeCFyVvQRNW/G15rfpL3AY0cBOhtO5O6YXuRCq/Yg4NtesMiXP2OaYygc
- ff+cAEg+Dj3fHt9PJDvzQVGsHnadZlDJqLYnq9Zo09MOqBJkHV++qe4ts/GD/8TJuYoZ
- SvXu04zgi/BQiI5cZUK0Pm9piy+wODGVduaNjbY5I+1zZ7ZmAbANi6pyLvU05GGPfZvj
- g2uieAYjXVTcncYRdnIFLxJ921/54rcukJcjzHeqPU71h3s1FmO8DT025/N3ERad4A9A Dw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37xsvb0u6m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 12:57:22 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13GGZW34059763;
- Fri, 16 Apr 2021 12:57:22 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 37xsvb0u62-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 12:57:22 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13GGvKHM010040;
- Fri, 16 Apr 2021 16:57:20 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06ams.nl.ibm.com with ESMTP id 37u39hmk77-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 16:57:20 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 13GGutrd30867780
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Apr 2021 16:56:55 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BFF914C04E;
- Fri, 16 Apr 2021 16:57:17 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 79C4A4C046;
- Fri, 16 Apr 2021 16:57:15 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri, 16 Apr 2021 16:57:15 +0000 (GMT)
-Date: Fri, 16 Apr 2021 22:27:14 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH 3/3] powerpc/smp: Cache CPU to chip lookup
-Message-ID: <20210416165714.GG2633526@linux.vnet.ibm.com>
-References: <20210415120934.232271-1-srikar@linux.vnet.ibm.com>
- <20210415120934.232271-4-srikar@linux.vnet.ibm.com>
- <20210415171921.GB16351@in.ibm.com>
- <20210415175110.GE2633526@linux.vnet.ibm.com>
- <20210416155748.GA26496@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMN370PHcz2xxt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 03:08:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1618592919;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=04d/YP/XeREquXdVGX4E7+iWkSvKezEziIy7Br93wNo=;
+ b=EBTEYHFC05RVzbHV+IM21itH7EZJjPt3eex0ghXI2GKillFEQ0OzninC3yjJk/sTxFKIT6
+ alcn2OeUR9y9Pb5D0IYp2LiyKPB9W/Ogqs3UY6McONsyWYVwFHnkuWKAl3j25rdX8kRpQR
+ uuw8elh0SnDqUubr439k3eOhxSwYxDw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1618592919;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=04d/YP/XeREquXdVGX4E7+iWkSvKezEziIy7Br93wNo=;
+ b=EBTEYHFC05RVzbHV+IM21itH7EZJjPt3eex0ghXI2GKillFEQ0OzninC3yjJk/sTxFKIT6
+ alcn2OeUR9y9Pb5D0IYp2LiyKPB9W/Ogqs3UY6McONsyWYVwFHnkuWKAl3j25rdX8kRpQR
+ uuw8elh0SnDqUubr439k3eOhxSwYxDw=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-154-t1CdtVGrNiG8scC-Sd9o6A-1; Fri, 16 Apr 2021 13:08:35 -0400
+X-MC-Unique: t1CdtVGrNiG8scC-Sd9o6A-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B8AC1874998;
+ Fri, 16 Apr 2021 17:08:33 +0000 (UTC)
+Received: from carbon (unknown [10.36.110.19])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0E9675D749;
+ Fri, 16 Apr 2021 17:08:24 +0000 (UTC)
+Date: Fri, 16 Apr 2021 19:08:23 +0200
+From: Jesper Dangaard Brouer <brouer@redhat.com>
+To: Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
+Message-ID: <20210416190823.3b3aace0@carbon>
+In-Reply-To: <20210416152755.GL2531743@casper.infradead.org>
+References: <20210410205246.507048-2-willy@infradead.org>
+ <20210411114307.5087f958@carbon>
+ <20210411103318.GC2531743@casper.infradead.org>
+ <20210412011532.GG2531743@casper.infradead.org>
+ <20210414101044.19da09df@carbon>
+ <20210414115052.GS2531743@casper.infradead.org>
+ <20210414211322.3799afd4@carbon>
+ <20210414213556.GY2531743@casper.infradead.org>
+ <a50c3156fe8943ef964db4345344862f@AcuMS.aculab.com>
+ <20210415200832.32796445@carbon>
+ <20210416152755.GL2531743@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20210416155748.GA26496@in.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 8bp4HaOlLpK87NpjPmEm9_9qTCrb9y8L
-X-Proofpoint-GUID: X4gHH-xksQmxB6DAc_s7gGb323e9WAJc
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-16_08:2021-04-16,
- 2021-04-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0
- phishscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104160119
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,92 +94,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>, qemu-ppc@nongnu.org,
- Cedric Le Goater <clg@kaod.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Ingo Molnar <mingo@kernel.org>, David Gibson <david@gibson.dropbear.id.au>
+Cc: Arnd Bergmann <arnd@kernel.org>,
+ Grygorii Strashko <grygorii.strashko@ti.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ David Laight <David.Laight@aculab.com>, brouer@redhat.com,
+ Matteo Croce <mcroce@linux.microsoft.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Christoph Hellwig <hch@lst.de>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Gautham R Shenoy <ego@linux.vnet.ibm.com> [2021-04-16 21:27:48]:
+On Fri, 16 Apr 2021 16:27:55 +0100
+Matthew Wilcox <willy@infradead.org> wrote:
 
-> On Thu, Apr 15, 2021 at 11:21:10PM +0530, Srikar Dronamraju wrote:
-> > * Gautham R Shenoy <ego@linux.vnet.ibm.com> [2021-04-15 22:49:21]:
-> > 
-> > > > 
-> > > > +int *chip_id_lookup_table;
-> > > > +
-> > > >  #ifdef CONFIG_PPC64
-> > > >  int __initdata iommu_is_off;
-> > > >  int __initdata iommu_force_on;
-> > > > @@ -914,13 +916,22 @@ EXPORT_SYMBOL(of_get_ibm_chip_id);
-> > > >  int cpu_to_chip_id(int cpu)
-> > > >  {
-> > > >  	struct device_node *np;
-> > > > +	int ret = -1, idx;
-> > > > +
-> > > > +	idx = cpu / threads_per_core;
-> > > > +	if (chip_id_lookup_table && chip_id_lookup_table[idx] != -1)
-> > > 
-> > 
-> > > The value -1 is ambiguous since we won't be able to determine if
-> > > it is because we haven't yet made a of_get_ibm_chip_id() call
-> > > or if of_get_ibm_chip_id() call was made and it returned a -1.
-> > > 
-> > 
-> > We don't allocate chip_id_lookup_table unless cpu_to_chip_id() return
-> > !-1 value for the boot-cpuid. So this ensures that we dont
-> > unnecessarily allocate chip_id_lookup_table. Also I check for
-> > chip_id_lookup_table before calling cpu_to_chip_id() for other CPUs.
-> > So this avoids overhead of calling cpu_to_chip_id() for platforms that
-> > dont support it.  Also its most likely that if the
-> > chip_id_lookup_table is initialized then of_get_ibm_chip_id() call
-> > would return a valid value.
-> > 
-> > + Below we are only populating the lookup table, only when the
-> > of_get_cpu_node is valid.
-> > 
-> > So I dont see any drawbacks of initializing it to -1. Do you see
-> any?
+> On Thu, Apr 15, 2021 at 08:08:32PM +0200, Jesper Dangaard Brouer wrote:
+> > See below patch.  Where I swap32 the dma address to satisfy
+> > page->compound having bit zero cleared. (It is the simplest fix I could
+> > come up with).  
 > 
+> I think this is slightly simpler, and as a bonus code that assumes the
+> old layout won't compile.
+
+This is clever, I like it!  When reading the code one just have to
+remember 'unsigned long' size difference between 64-bit vs 32-bit.
+And I assume compiler can optimize the sizeof check out then doable.
+
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 6613b26a8894..5aacc1c10a45 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -97,10 +97,10 @@ struct page {
+>  		};
+>  		struct {	/* page_pool used by netstack */
+>  			/**
+> -			 * @dma_addr: might require a 64-bit value even on
+> +			 * @dma_addr: might require a 64-bit value on
+>  			 * 32-bit architectures.
+>  			 */
+> -			dma_addr_t dma_addr;
+> +			unsigned long dma_addr[2];
+>  		};
+>  		struct {	/* slab, slob and slub */
+>  			union {
+> diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+> index b5b195305346..db7c7020746a 100644
+> --- a/include/net/page_pool.h
+> +++ b/include/net/page_pool.h
+> @@ -198,7 +198,17 @@ static inline void page_pool_recycle_direct(struct page_pool *pool,
+>  
+>  static inline dma_addr_t page_pool_get_dma_addr(struct page *page)
+>  {
+> -	return page->dma_addr;
+> +	dma_addr_t ret = page->dma_addr[0];
+> +	if (sizeof(dma_addr_t) > sizeof(unsigned long))
+> +		ret |= (dma_addr_t)page->dma_addr[1] << 32;
+> +	return ret;
+> +}
+> +
+> +static inline void page_pool_set_dma_addr(struct page *page, dma_addr_t addr)
+> +{
+> +	page->dma_addr[0] = addr;
+> +	if (sizeof(dma_addr_t) > sizeof(unsigned long))
+> +		page->dma_addr[1] = addr >> 32;
+>  }
+>  
+>  static inline bool is_page_pool_compiled_in(void)
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index ad8b0707af04..f014fd8c19a6 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -174,8 +174,10 @@ static void page_pool_dma_sync_for_device(struct page_pool *pool,
+>  					  struct page *page,
+>  					  unsigned int dma_sync_size)
+>  {
+> +	dma_addr_t dma_addr = page_pool_get_dma_addr(page);
+> +
+>  	dma_sync_size = min(dma_sync_size, pool->p.max_len);
+> -	dma_sync_single_range_for_device(pool->p.dev, page->dma_addr,
+> +	dma_sync_single_range_for_device(pool->p.dev, dma_addr,
+>  					 pool->p.offset, dma_sync_size,
+>  					 pool->p.dma_dir);
+>  }
+> @@ -226,7 +228,7 @@ static struct page *__page_pool_alloc_pages_slow(struct page_pool *pool,
+>  		put_page(page);
+>  		return NULL;
+>  	}
+> -	page->dma_addr = dma;
+> +	page_pool_set_dma_addr(page, dma);
+>  
+>  	if (pool->p.flags & PP_FLAG_DMA_SYNC_DEV)
+>  		page_pool_dma_sync_for_device(pool, page, pool->p.max_len);
+> @@ -294,13 +296,13 @@ void page_pool_release_page(struct page_pool *pool, struct page *page)
+>  		 */
+>  		goto skip_dma_unmap;
+>  
+> -	dma = page->dma_addr;
+> +	dma = page_pool_get_dma_addr(page);
+>  
+> -	/* When page is unmapped, it cannot be returned our pool */
+> +	/* When page is unmapped, it cannot be returned to our pool */
+>  	dma_unmap_page_attrs(pool->p.dev, dma,
+>  			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
+>  			     DMA_ATTR_SKIP_CPU_SYNC);
+> -	page->dma_addr = 0;
+> +	page_pool_set_dma_addr(page, 0);
+>  skip_dma_unmap:
+>  	/* This may be the last page returned, releasing the pool, so
+>  	 * it is not safe to reference pool afterwards.
 > 
-> Only if other callers of cpu_to_chip_id() don't check for whether the
-> chip_id_lookup_table() has been allocated or not. From a code
-> readability point of view, it is easier to have that check  this inside
-> cpu_to_chip_id() instead of requiring all its callers to make that
-> check.
-> 
 
-I didn't understand your comment. However let me reiterate what I said
-earlier. We don't have control over who and when cpu_to_chip_id() gets
-called. If the cpu_to_chip_id() might be called for non present CPU,
-in which case it will return -1, Should we cache it or not?
 
-If we cache it, we will return wrong value when the CPU may turn out
-to be present. If we cache and retry it then having one value for
-initializing and another for invalid is all the same as having just 1
-value for initializing and invalid. Just that we end up adding more
-confusing code. Atleast to me, code isnt readable if I say retry for
--1 and -2 too. After few years, we ourselves will wonder why we have
-two values if we are checking and performing same actions.
-
-> > 
-> > > Thus, perhaps we can initialize chip_id_lookup_table[idx] with a
-> > > different unique negative value. How about S32_MIN ? and check
-> > > chip_id_lookup_table[idx] is different here ?
-> > > 
-> > 
-> > I had initially initialized to -2, But then I thought we adding in
-> > more confusion than necessary and it was not solving any issues.
-> > 
-> > 
-> > -- 
-> > Thanks and Regards
-> > Srikar Dronamraju
 
 -- 
-Thanks and Regards
-Srikar Dronamraju
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
+
