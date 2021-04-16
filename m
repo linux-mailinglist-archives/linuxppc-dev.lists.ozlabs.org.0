@@ -1,44 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DB7361CD1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 11:29:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 789BC361CD5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 11:34:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FM9s13ZrNz3c45
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 19:29:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FM9yd3F2Kz3c0D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 19:34:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fl4Lq67L;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FM9rg6wcsz30hc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 19:29:05 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E41111396;
- Fri, 16 Apr 2021 02:29:03 -0700 (PDT)
-Received: from [192.168.1.179] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0C9EB3FA35;
- Fri, 16 Apr 2021 02:29:01 -0700 (PDT)
-Subject: Re: [PATCH v1 3/5] mm: ptdump: Provide page size to notepage()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- akpm@linux-foundation.org
-References: <cover.1618506910.git.christophe.leroy@csgroup.eu>
- <1ef6b954fb7b0f4dfc78820f1e612d2166c13227.1618506910.git.christophe.leroy@csgroup.eu>
-From: Steven Price <steven.price@arm.com>
-Message-ID: <41819925-3ee5-4771-e98b-0073e8f095cf@arm.com>
-Date: Fri, 16 Apr 2021 10:28:56 +0100
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=srs0=sb2e=jn=linux.ibm.com=hbathini@ozlabs.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=fl4Lq67L; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FM9y96cN9z2yy9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 19:33:53 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by ozlabs.org (Postfix) with ESMTP id 4FM9y86wk8z9sW4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 19:33:52 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4FM9y86VDSz9sVb; Fri, 16 Apr 2021 19:33:52 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=fl4Lq67L; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4FM9y75BYwz9sSC;
+ Fri, 16 Apr 2021 19:33:50 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13G941Qt099018; Fri, 16 Apr 2021 05:33:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=WK9ZHnjIfRIuS8OH5gbd+xot7IxDbuuJKa54sA4gQv0=;
+ b=fl4Lq67LkU6GCGLweF+x1bojrxO9r+WumF2LRwAp/mnnN3JzOc3CTq263MI43WP8TqWK
+ /LqQSVMtrdGqCG5UtNsKtAiSAPmoTXFIeoTsKeq82WOFDsajP6IXkwqILz2ccHgLDcZe
+ 3FY46DyPewsmk9/Zhg9QBLRU2KUEtsaunXIBzJ+kgo06Uytpc0OPsmZKeM7Eao3vuhCk
+ msOIdBV8sAtr24c517tgXusa651FiQBOtLH8gU2QqSPYbaOQYRE+vjpnRXg1AzIj/6vw
+ uckkhNzkyewl+28mHndz8dAmp+iEDyt4LNYcYNklhMl5aJeddiJQUIIuCXBOHEJfd6en SQ== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37xtqa2vm6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 05:33:48 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13G9RedB028803;
+ Fri, 16 Apr 2021 09:33:46 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06fra.de.ibm.com with ESMTP id 37u39habvp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 09:33:46 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13G9XhB358917288
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 16 Apr 2021 09:33:44 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D2BE542045;
+ Fri, 16 Apr 2021 09:33:43 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4680042041;
+ Fri, 16 Apr 2021 09:33:41 +0000 (GMT)
+Received: from [9.163.28.215] (unknown [9.163.28.215])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 16 Apr 2021 09:33:40 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/kdump: fix kdump kernel hangup issue with hot add
+ CPUs
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, mpe@ellerman.id.au
+References: <20210416064749.657585-1-sourabhjain@linux.ibm.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+Message-ID: <b8f5fad8-3ea8-cb8d-84d2-8769ed41cc38@linux.ibm.com>
+Date: Fri, 16 Apr 2021 15:03:38 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <1ef6b954fb7b0f4dfc78820f1e612d2166c13227.1618506910.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <20210416064749.657585-1-sourabhjain@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ZyoryQs7cw4Cy4bfSmEWsACKD6B34kHb
+X-Proofpoint-ORIG-GUID: ZyoryQs7cw4Cy4bfSmEWsACKD6B34kHb
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-16_05:2021-04-15,
+ 2021-04-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ suspectscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 bulkscore=0
+ adultscore=0 mlxscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104060000 definitions=main-2104160069
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,121 +121,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: mahesh@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
+ linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15/04/2021 18:18, Christophe Leroy wrote:
-> In order to support large pages on powerpc, notepage()
-> needs to know the page size of the page.
+
+
+On 16/04/21 12:17 pm, Sourabh Jain wrote:
+> With the kexec_file_load system call when system crashes on the hot add
+> CPU the capture kernel hangs and failed to collect the vmcore.
 > 
-> Add a page_size argument to notepage().
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->   arch/arm64/mm/ptdump.c         |  2 +-
->   arch/riscv/mm/ptdump.c         |  2 +-
->   arch/s390/mm/dump_pagetables.c |  3 ++-
->   arch/x86/mm/dump_pagetables.c  |  2 +-
->   include/linux/ptdump.h         |  2 +-
->   mm/ptdump.c                    | 16 ++++++++--------
->   6 files changed, 14 insertions(+), 13 deletions(-)
->
-[...]
-> diff --git a/mm/ptdump.c b/mm/ptdump.c
-> index da751448d0e4..61cd16afb1c8 100644
-> --- a/mm/ptdump.c
-> +++ b/mm/ptdump.c
-> @@ -17,7 +17,7 @@ static inline int note_kasan_page_table(struct mm_walk *walk,
->   {
->   	struct ptdump_state *st = walk->private;
->   
-> -	st->note_page(st, addr, 4, pte_val(kasan_early_shadow_pte[0]));
-> +	st->note_page(st, addr, 4, pte_val(kasan_early_shadow_pte[0]), PAGE_SIZE);
+>   Kernel panic - not syncing: sysrq triggered crash
+>   CPU: 24 PID: 6065 Comm: echo Kdump: loaded Not tainted 5.12.0-rc5upstream #54
+>   Call Trace:
+>   [c0000000e590fac0] [c0000000007b2400] dump_stack+0xc4/0x114 (unreliable)
+>   [c0000000e590fb00] [c000000000145290] panic+0x16c/0x41c
+>   [c0000000e590fba0] [c0000000008892e0] sysrq_handle_crash+0x30/0x40
+>   [c0000000e590fc00] [c000000000889cdc] __handle_sysrq+0xcc/0x1f0
+>   [c0000000e590fca0] [c00000000088a538] write_sysrq_trigger+0xd8/0x178
+>   [c0000000e590fce0] [c0000000005e9b7c] proc_reg_write+0x10c/0x1b0
+>   [c0000000e590fd10] [c0000000004f26d0] vfs_write+0xf0/0x330
+>   [c0000000e590fd60] [c0000000004f2aec] ksys_write+0x7c/0x140
+>   [c0000000e590fdb0] [c000000000031ee0] system_call_exception+0x150/0x290
+>   [c0000000e590fe10] [c00000000000ca5c] system_call_common+0xec/0x278
+>   --- interrupt: c00 at 0x7fff905b9664
+>   NIP:  00007fff905b9664 LR: 00007fff905320c4 CTR: 0000000000000000
+>   REGS: c0000000e590fe80 TRAP: 0c00   Not tainted  (5.12.0-rc5upstream)
+>   MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 28000242
+>         XER: 00000000
+>   IRQMASK: 0
+>   GPR00: 0000000000000004 00007ffff5fedf30 00007fff906a7300 0000000000000001
+>   GPR04: 000001002a7355b0 0000000000000002 0000000000000001 00007ffff5fef616
+>   GPR08: 0000000000000001 0000000000000000 0000000000000000 0000000000000000
+>   GPR12: 0000000000000000 00007fff9073a160 0000000000000000 0000000000000000
+>   GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>   GPR20: 0000000000000000 00007fff906a4ee0 0000000000000002 0000000000000001
+>   GPR24: 00007fff906a0898 0000000000000000 0000000000000002 000001002a7355b0
+>   GPR28: 0000000000000002 00007fff906a1790 000001002a7355b0 0000000000000002
+>   NIP [00007fff905b9664] 0x7fff905b9664
+>   LR [00007fff905320c4] 0x7fff905320c4
+>   --- interrupt: c00
 
-I'm not completely sure what the page_size is going to be used for, but 
-note that KASAN presents an interesting case here. We short-cut by 
-detecting it's a KASAN region at a high level (PGD/P4D/PUD/PMD) and 
-instead of walking the tree down just call note_page() *once* but with 
-level==4 because we know KASAN sets up the page table like that.
+<SNIP>
 
-However the one call actually covers a much larger region - so while 
-PAGE_SIZE matches the level it doesn't match the region covered. AFAICT 
-this will lead to odd results if you enable KASAN on powerpc.
+>   /**
+>    * setup_new_fdt_ppc64 - Update the flattend device-tree of the kernel
+>    *                       being loaded.
+> @@ -1020,6 +1113,13 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+>   		}
+>   	}
+>   
+> +	/* Update cpus nodes information to account hotplug CPUs. */
+> +	if (image->type == KEXEC_TYPE_CRASH) {
 
-To be honest I don't fully understand why powerpc requires the page_size 
-- it appears to be using it purely to find "holes" in the calls to 
-note_page(), but I haven't worked out why such holes would occur.
+Shouldn't this apply to regular kexec_file_load case as well? Yeah, 
+there won't be a hang in regular kexec_file_load case but for 
+correctness, that kernel should also not see stale CPU info in FDT?
 
-Steve
 
->   
->   	walk->action = ACTION_CONTINUE;
->   
-> @@ -41,7 +41,7 @@ static int ptdump_pgd_entry(pgd_t *pgd, unsigned long addr,
->   		st->effective_prot(st, 0, pgd_val(val));
->   
->   	if (pgd_leaf(val))
-> -		st->note_page(st, addr, 0, pgd_val(val));
-> +		st->note_page(st, addr, 0, pgd_val(val), PGDIR_SIZE);
->   
->   	return 0;
->   }
-> @@ -62,7 +62,7 @@ static int ptdump_p4d_entry(p4d_t *p4d, unsigned long addr,
->   		st->effective_prot(st, 1, p4d_val(val));
->   
->   	if (p4d_leaf(val))
-> -		st->note_page(st, addr, 1, p4d_val(val));
-> +		st->note_page(st, addr, 1, p4d_val(val), P4D_SIZE);
->   
->   	return 0;
->   }
-> @@ -83,7 +83,7 @@ static int ptdump_pud_entry(pud_t *pud, unsigned long addr,
->   		st->effective_prot(st, 2, pud_val(val));
->   
->   	if (pud_leaf(val))
-> -		st->note_page(st, addr, 2, pud_val(val));
-> +		st->note_page(st, addr, 2, pud_val(val), PUD_SIZE);
->   
->   	return 0;
->   }
-> @@ -102,7 +102,7 @@ static int ptdump_pmd_entry(pmd_t *pmd, unsigned long addr,
->   	if (st->effective_prot)
->   		st->effective_prot(st, 3, pmd_val(val));
->   	if (pmd_leaf(val))
-> -		st->note_page(st, addr, 3, pmd_val(val));
-> +		st->note_page(st, addr, 3, pmd_val(val), PMD_SIZE);
->   
->   	return 0;
->   }
-> @@ -116,7 +116,7 @@ static int ptdump_pte_entry(pte_t *pte, unsigned long addr,
->   	if (st->effective_prot)
->   		st->effective_prot(st, 4, pte_val(val));
->   
-> -	st->note_page(st, addr, 4, pte_val(val));
-> +	st->note_page(st, addr, 4, pte_val(val), PAGE_SIZE);
->   
->   	return 0;
->   }
-> @@ -126,7 +126,7 @@ static int ptdump_hole(unsigned long addr, unsigned long next,
->   {
->   	struct ptdump_state *st = walk->private;
->   
-> -	st->note_page(st, addr, depth, 0);
-> +	st->note_page(st, addr, depth, 0, 0);
->   
->   	return 0;
->   }
-> @@ -153,5 +153,5 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
->   	mmap_read_unlock(mm);
->   
->   	/* Flush out the last page */
-> -	st->note_page(st, 0, -1, 0);
-> +	st->note_page(st, 0, -1, 0, 0);
->   }
-> 
-
+Thanks
+Hari
