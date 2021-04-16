@@ -2,87 +2,119 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C598E36265A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 19:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44259362686
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 19:15:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMN3b4v3jz3brV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 03:09:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMNBl1593z3c00
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 03:15:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EBTEYHFC;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EBTEYHFC;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=DRKv0+L/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=brouer@redhat.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.2.63; helo=eur02-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=claudiu.manoil@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=EBTEYHFC; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=EBTEYHFC; 
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=DRKv0+L/; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from EUR02-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr20063.outbound.protection.outlook.com [40.107.2.63])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMN370PHcz2xxt
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 03:08:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1618592919;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=04d/YP/XeREquXdVGX4E7+iWkSvKezEziIy7Br93wNo=;
- b=EBTEYHFC05RVzbHV+IM21itH7EZJjPt3eex0ghXI2GKillFEQ0OzninC3yjJk/sTxFKIT6
- alcn2OeUR9y9Pb5D0IYp2LiyKPB9W/Ogqs3UY6McONsyWYVwFHnkuWKAl3j25rdX8kRpQR
- uuw8elh0SnDqUubr439k3eOhxSwYxDw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1618592919;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=04d/YP/XeREquXdVGX4E7+iWkSvKezEziIy7Br93wNo=;
- b=EBTEYHFC05RVzbHV+IM21itH7EZJjPt3eex0ghXI2GKillFEQ0OzninC3yjJk/sTxFKIT6
- alcn2OeUR9y9Pb5D0IYp2LiyKPB9W/Ogqs3UY6McONsyWYVwFHnkuWKAl3j25rdX8kRpQR
- uuw8elh0SnDqUubr439k3eOhxSwYxDw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-154-t1CdtVGrNiG8scC-Sd9o6A-1; Fri, 16 Apr 2021 13:08:35 -0400
-X-MC-Unique: t1CdtVGrNiG8scC-Sd9o6A-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B8AC1874998;
- Fri, 16 Apr 2021 17:08:33 +0000 (UTC)
-Received: from carbon (unknown [10.36.110.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0E9675D749;
- Fri, 16 Apr 2021 17:08:24 +0000 (UTC)
-Date: Fri, 16 Apr 2021 19:08:23 +0200
-From: Jesper Dangaard Brouer <brouer@redhat.com>
-To: Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
-Message-ID: <20210416190823.3b3aace0@carbon>
-In-Reply-To: <20210416152755.GL2531743@casper.infradead.org>
-References: <20210410205246.507048-2-willy@infradead.org>
- <20210411114307.5087f958@carbon>
- <20210411103318.GC2531743@casper.infradead.org>
- <20210412011532.GG2531743@casper.infradead.org>
- <20210414101044.19da09df@carbon>
- <20210414115052.GS2531743@casper.infradead.org>
- <20210414211322.3799afd4@carbon>
- <20210414213556.GY2531743@casper.infradead.org>
- <a50c3156fe8943ef964db4345344862f@AcuMS.aculab.com>
- <20210415200832.32796445@carbon>
- <20210416152755.GL2531743@casper.infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMNBC2NjRz2yyl
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 03:14:57 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=c92l7bqTsqLfF+WN2kJP+lnQJinop/zRCiQ6NgIFJojK1LIDfgxnJPt1GJecMMeskLKI3iqh7gABmDywP2cxioGeI4TpkpoANwMRLJop+QT3bjq8SK1gdW1qP7v3AWs9khhWSlRWxc//iy7dAqLepwkp0KCWhjlb2Uhc+tTUvdJ9OJEiDizhv7a//EAOAQvMscKpR8AfITGAWN+UucyzuueggQgnhW9uEjEqBm0Z1kiD2ZD64qfxNcw2XzYfe6FsjNSktjncFfJXP9z64w6wv0PSvlyldmn8l3YGD6A1BVx/8/fDLfUr3s3DX5qm8daVTfzUiT+D0+f4tQSJzmJQYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vhP2ZrnznC8LmMHfGAaaPEnsqwCibS59UYB8bWoQrFk=;
+ b=nNZjILMRmAgtAQ52sxm4TtgQYvX1yt7YiIPS8fFMD14Fjh7uJnAZYwvbooRvTRXAUcT6TWcaN+VpsVOo6tgZsbTRjfTkbtAvV9Jedja8r6kyWwfKMLZFyEepkIFXBF78gNkMgMSCvQ3iNHB7P1vvFGFgv+tckdBa2c+5RJkunm6LZgrhTGfFxqtcp7TyEZdtEzndzzKK2UeeotoiLUwm50Xtqz5l9QbgyAfnZy/5upII789s6Yq/E4zC6MdV5PnGtD9TmzYuvpf1jno9dXkKA85PRA+e5W1TDAYSr1spRGhFMoi7WBxybrffqDP5wcVM+qzxRjr0DDJeon6OuEM6Wg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vhP2ZrnznC8LmMHfGAaaPEnsqwCibS59UYB8bWoQrFk=;
+ b=DRKv0+L/mByb/z4dMe59Li9FA81me2NsJAIm+zt7vky+RkIutHCreqj080pxJsTno2HsoNbs1LrwGsIXkxSxiJk+GdKaoUGWFv1/RwbD5APDhB36qeNvm3dkdVp7eEouGPf/ls5++v4fNn+XIHJBc0+Xr7MzQZ6846Yho5sy0js=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6754.eurprd04.prod.outlook.com (2603:10a6:208:170::28)
+ by AM0PR04MB5140.eurprd04.prod.outlook.com (2603:10a6:208:ca::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.19; Fri, 16 Apr
+ 2021 17:14:43 +0000
+Received: from AM0PR04MB6754.eurprd04.prod.outlook.com
+ ([fe80::f12c:54bd:ccfc:819a]) by AM0PR04MB6754.eurprd04.prod.outlook.com
+ ([fe80::f12c:54bd:ccfc:819a%7]) with mapi id 15.20.4042.018; Fri, 16 Apr 2021
+ 17:14:43 +0000
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: netdev@vger.kernel.org
+Subject: [PATCH net-next 0/2] net: gianfar: Drop GFAR_MQ_POLLING support
+Date: Fri, 16 Apr 2021 20:11:21 +0300
+Message-Id: <20210416171123.22969-1-claudiu.manoil@nxp.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-Originating-IP: [83.217.231.2]
+X-ClientProxiedBy: AM0PR05CA0088.eurprd05.prod.outlook.com
+ (2603:10a6:208:136::28) To AM0PR04MB6754.eurprd04.prod.outlook.com
+ (2603:10a6:208:170::28)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from lsv15141.swis.ro-buh01.nxp.com (83.217.231.2) by
+ AM0PR05CA0088.eurprd05.prod.outlook.com (2603:10a6:208:136::28) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.19 via Frontend
+ Transport; Fri, 16 Apr 2021 17:14:42 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: fe5ebab8-7989-40ac-cdd2-08d900fb2097
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5140:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB51402A042AD59935731E1DD0964C9@AM0PR04MB5140.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2089;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UAMqncm+SmcufmXpk5r2WAhesHeNKrILpquXoD/WVkNV8dKtaMnTmosrgX87cPn818jhezVOxVVg8hBhsO/1mWQ07Y9bKsVf2VBHEgABZyVnL6mdoxhbwgzvGMe831P1eMP8p0laiUoMYqIeLBYCr3+YhrfAutXavnDsak85B+YN7v9LRHOgr7dcRD2+4DQZIalHaeDtOaJelIafQT6TDgtMQN0V3UfqJCF/Q7RQi4YUMJzDei5LT/VzaL0XMu+Ahd0ipd8Q1VE4adrnyYX/PONrd8EIGlG8UICLrbHwBOsruv92A1ZI2m+UfEngrKAu4ub/hKyaeFkhtvz74vAOmz9HkllgfyQLZ1FKk3R1sYXmMZBCIBGlzvOQK+CL8MHMtV98elD5juR09f+DtWABMvDNyeZR5qV4fJlYlef2LP3USKis+LcGpVK1TnRe9hPjGq6YXtPCthKUoy1dRQTAMEUwadCABoln0lux8uz/BPfvgfNJWSXCLEEnT6Cl9EzZrGFS2b0vA78CMw0F2UzICMMyZZCV2V+4Cp8LgZlRdkxHzDrq1BmlQeuOqAFE1WP1FEVa2DxYhtse6G+osLKwRmdI6rRsq5wIuSPuY6sOYU0cwOFpgv82yp/eSa94riVqB2VEDS43Qecdpw2UbDx/Gw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM0PR04MB6754.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(396003)(136003)(376002)(346002)(39860400002)(366004)(66556008)(8676002)(38100700002)(38350700002)(2906002)(16526019)(4326008)(8936002)(5660300002)(36756003)(52116002)(86362001)(7696005)(66946007)(66476007)(6916009)(4744005)(316002)(54906003)(186003)(1076003)(26005)(6666004)(6486002)(83380400001)(478600001)(956004)(2616005)(44832011);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?1WCQ7eARa7xkI9MnFLqnSVX9hDNPfAcp6S0JdeBdFzn3d4PAHtkAKuWnlAVV?=
+ =?us-ascii?Q?LRJ9j9KEYDGDA8Vzkc6QNvPdXiPzSn5PwX04FD1DIlpa6zDULvG7klpOmNRF?=
+ =?us-ascii?Q?KAPLYQWvDGYZyihmFWtCqHi1ncAf4zuy6rnWzVLHabNsz4KOQnXqHFJsvQ1S?=
+ =?us-ascii?Q?ThvxVv2SfRHQ9fSkO0ALjPOJKky6eZANEf3mNZT8hN861d85b20iSbsOPwl5?=
+ =?us-ascii?Q?nC9jgGrkok8ZyxUEH86Xdf/+Hb+EmVKTkx5uRGIijQ4MEDG2iYkN9Ry+Wi+u?=
+ =?us-ascii?Q?rMkZI5qZldUoN15r2mEBlc+Eck72qOms+M1GYw9m7Qu5uf3MxW7HCIdzM9YZ?=
+ =?us-ascii?Q?iQInaAP2Ky5tM/bmjALG5V16Pcm5PblDAYipjnDtdgg5+mmH4wEFKHEeuTfI?=
+ =?us-ascii?Q?MQ0IA81dO9Jrfq2JeONS5yMmkrRPBsTYVGKJfopazlSZZxSX2kEteIgJ+Bkz?=
+ =?us-ascii?Q?0UEBpwwiKkgPuSV9wJtCPryfO9dsfXfBG5ZSBz2yGOJgLAf1MiMXfT/TsAKS?=
+ =?us-ascii?Q?kuPbNtvFI3F10HMR6ZQTZzRaq/9bKppino8tNUDZBiA8HD4bbmnn6QtBX0mF?=
+ =?us-ascii?Q?i9qbYWpCkWs8bPC4o0faTKBIZzY88OzLL8styY0Q/6qL0FyxGFTIjbbQQV/v?=
+ =?us-ascii?Q?uUQY0QVIEnahi11dlQrV/L14+mAud7VZQueF57m5suAwKAqMV114Y/VYPUYe?=
+ =?us-ascii?Q?jln3h4fOr6K3xG9yvvr3pcc2cw2DOjZpiWC5gmr4x1t3sp5cJFlavjm4kb33?=
+ =?us-ascii?Q?eRZUoe+HxoafyqOyekO0H1jXFkR1zlyG9k4OBS5pYP/byX/KBPca863jb4pC?=
+ =?us-ascii?Q?lFlTXCeK/i5P5oOin3CztJGau15ZtiLxxGjH8mCeuoXXtWMp2ZiM6Q23A5DO?=
+ =?us-ascii?Q?zzTOqr/yg4Vy26WiJiwo1DoH+m55VRhwmpjLRYiFz5u/j+Uto4CPMbzFeexI?=
+ =?us-ascii?Q?eT3GgOVz9hopHArkxJ4QwRNHgidqK6MbwgTGxxUHeJfJ0//9BapIcRiQoezj?=
+ =?us-ascii?Q?Gqlsd2To9kwUSytKRj9O6uHY8qjLN1KNmzneMiMZ+6ds6/MlF7LKXGWnGGkf?=
+ =?us-ascii?Q?ag0HSbiQMEBA3llPbl2oiolDUZ5KEqHuxeVnGaAxIBvrefUgrV7GTnv7yGe5?=
+ =?us-ascii?Q?tQwi3cksf+t2FB0Vxo+9f0wU63wPsPosKtyHIgOFRjMWXHuiCDgjTc4TYS+0?=
+ =?us-ascii?Q?kVu8uZdhTWDpLpHlsoOf68ua/V40g5tTgGC2nzsGtd6l6lOllmY/ezfSZTap?=
+ =?us-ascii?Q?Rvc3jjgh58MNuWZtnVqsMCF25coOijk1nArTuDuSvoDjLAqiXgWg7Qkidd/m?=
+ =?us-ascii?Q?1YRztImvGmtQYjX1W5/tcCjj?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe5ebab8-7989-40ac-cdd2-08d900fb2097
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6754.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2021 17:14:43.6055 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FEGuyz9D2ZgbqaWyxO2Eudt3fWEQE0zU5BV3DSnJdR/wSCBrVi9B1IDYiUhzevDHuhy1C1ITxdFwFbWbdpdZ3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB5140
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,126 +126,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@kernel.org>,
- Grygorii Strashko <grygorii.strashko@ti.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- David Laight <David.Laight@aculab.com>, brouer@redhat.com,
- Matteo Croce <mcroce@linux.microsoft.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Christoph Hellwig <hch@lst.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: devicetree@vger.kernel.org, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Rob Herring <robh+dt@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 16 Apr 2021 16:27:55 +0100
-Matthew Wilcox <willy@infradead.org> wrote:
+Drop long time obsolete "per NAPI multi-queue" support in gianfar,
+and related (and undocumented) device tree properties.
 
-> On Thu, Apr 15, 2021 at 08:08:32PM +0200, Jesper Dangaard Brouer wrote:
-> > See below patch.  Where I swap32 the dma address to satisfy
-> > page->compound having bit zero cleared. (It is the simplest fix I could
-> > come up with).  
-> 
-> I think this is slightly simpler, and as a bonus code that assumes the
-> old layout won't compile.
+Claudiu Manoil (2):
+  gianfar: Drop GFAR_MQ_POLLING support
+  powerpc: dts: fsl: Drop obsolete fsl,rx-bit-map and fsl,tx-bit-map
+    properties
 
-This is clever, I like it!  When reading the code one just have to
-remember 'unsigned long' size difference between 64-bit vs 32-bit.
-And I assume compiler can optimize the sizeof check out then doable.
-
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 6613b26a8894..5aacc1c10a45 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -97,10 +97,10 @@ struct page {
->  		};
->  		struct {	/* page_pool used by netstack */
->  			/**
-> -			 * @dma_addr: might require a 64-bit value even on
-> +			 * @dma_addr: might require a 64-bit value on
->  			 * 32-bit architectures.
->  			 */
-> -			dma_addr_t dma_addr;
-> +			unsigned long dma_addr[2];
->  		};
->  		struct {	/* slab, slob and slub */
->  			union {
-> diff --git a/include/net/page_pool.h b/include/net/page_pool.h
-> index b5b195305346..db7c7020746a 100644
-> --- a/include/net/page_pool.h
-> +++ b/include/net/page_pool.h
-> @@ -198,7 +198,17 @@ static inline void page_pool_recycle_direct(struct page_pool *pool,
->  
->  static inline dma_addr_t page_pool_get_dma_addr(struct page *page)
->  {
-> -	return page->dma_addr;
-> +	dma_addr_t ret = page->dma_addr[0];
-> +	if (sizeof(dma_addr_t) > sizeof(unsigned long))
-> +		ret |= (dma_addr_t)page->dma_addr[1] << 32;
-> +	return ret;
-> +}
-> +
-> +static inline void page_pool_set_dma_addr(struct page *page, dma_addr_t addr)
-> +{
-> +	page->dma_addr[0] = addr;
-> +	if (sizeof(dma_addr_t) > sizeof(unsigned long))
-> +		page->dma_addr[1] = addr >> 32;
->  }
->  
->  static inline bool is_page_pool_compiled_in(void)
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index ad8b0707af04..f014fd8c19a6 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -174,8 +174,10 @@ static void page_pool_dma_sync_for_device(struct page_pool *pool,
->  					  struct page *page,
->  					  unsigned int dma_sync_size)
->  {
-> +	dma_addr_t dma_addr = page_pool_get_dma_addr(page);
-> +
->  	dma_sync_size = min(dma_sync_size, pool->p.max_len);
-> -	dma_sync_single_range_for_device(pool->p.dev, page->dma_addr,
-> +	dma_sync_single_range_for_device(pool->p.dev, dma_addr,
->  					 pool->p.offset, dma_sync_size,
->  					 pool->p.dma_dir);
->  }
-> @@ -226,7 +228,7 @@ static struct page *__page_pool_alloc_pages_slow(struct page_pool *pool,
->  		put_page(page);
->  		return NULL;
->  	}
-> -	page->dma_addr = dma;
-> +	page_pool_set_dma_addr(page, dma);
->  
->  	if (pool->p.flags & PP_FLAG_DMA_SYNC_DEV)
->  		page_pool_dma_sync_for_device(pool, page, pool->p.max_len);
-> @@ -294,13 +296,13 @@ void page_pool_release_page(struct page_pool *pool, struct page *page)
->  		 */
->  		goto skip_dma_unmap;
->  
-> -	dma = page->dma_addr;
-> +	dma = page_pool_get_dma_addr(page);
->  
-> -	/* When page is unmapped, it cannot be returned our pool */
-> +	/* When page is unmapped, it cannot be returned to our pool */
->  	dma_unmap_page_attrs(pool->p.dev, dma,
->  			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
->  			     DMA_ATTR_SKIP_CPU_SYNC);
-> -	page->dma_addr = 0;
-> +	page_pool_set_dma_addr(page, 0);
->  skip_dma_unmap:
->  	/* This may be the last page returned, releasing the pool, so
->  	 * it is not safe to reference pool afterwards.
-> 
-
-
+ arch/powerpc/boot/dts/fsl/bsc9131si-post.dtsi |   4 -
+ arch/powerpc/boot/dts/fsl/bsc9132si-post.dtsi |   4 -
+ arch/powerpc/boot/dts/fsl/c293si-post.dtsi    |   4 -
+ arch/powerpc/boot/dts/fsl/p1010si-post.dtsi   |  21 ---
+ drivers/net/ethernet/freescale/gianfar.c      | 170 ++----------------
+ drivers/net/ethernet/freescale/gianfar.h      |  17 --
+ 6 files changed, 11 insertions(+), 209 deletions(-)
 
 -- 
-Best regards,
-  Jesper Dangaard Brouer
-  MSc.CS, Principal Kernel Engineer at Red Hat
-  LinkedIn: http://www.linkedin.com/in/brouer
+2.25.1
 
