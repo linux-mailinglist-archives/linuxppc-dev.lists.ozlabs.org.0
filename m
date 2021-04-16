@@ -2,51 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8233624E3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 18:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C08A5362634
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 18:58:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMLXj3gl8z3brX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 02:00:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMMpk5qKLz3byg
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 02:58:06 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Pqc1+jNG;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FMLXL63l2z2y8C
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 02:00:33 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DCBA011B3;
- Fri, 16 Apr 2021 09:00:29 -0700 (PDT)
-Received: from [192.168.1.179] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 098F13F99C;
- Fri, 16 Apr 2021 09:00:27 -0700 (PDT)
-Subject: Re: [PATCH v1 3/5] mm: ptdump: Provide page size to notepage()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- akpm@linux-foundation.org
-References: <cover.1618506910.git.christophe.leroy@csgroup.eu>
- <1ef6b954fb7b0f4dfc78820f1e612d2166c13227.1618506910.git.christophe.leroy@csgroup.eu>
- <41819925-3ee5-4771-e98b-0073e8f095cf@arm.com>
- <da53d2f2-b472-0c38-bdd5-99c5a098675d@csgroup.eu>
- <1102cda1-b00f-b6ef-6bf3-22068cc11510@arm.com>
- <6ff4816b-8ff6-19de-73a2-3fcadc003ccd@csgroup.eu>
- <e39d500a-2154-3c5d-9393-8bf53a567fad@arm.com>
- <b6b5300d-35a0-3bc0-ad1d-f2af433ef27e@csgroup.eu>
- <b245cf06-f2e5-87a5-9a5e-64efc39d415a@csgroup.eu>
- <10adad00-14de-61b6-ce2a-bdde23a34bcf@csgroup.eu>
-From: Steven Price <steven.price@arm.com>
-Message-ID: <a94fa51b-577f-b520-f8e8-a9304425c265@arm.com>
-Date: Fri, 16 Apr 2021 17:00:22 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Pqc1+jNG; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMMpH1GBGz302y
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 02:57:42 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13GGYSHZ054382; Fri, 16 Apr 2021 12:57:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=FhcpdImEoIm2TiybHoHvM3KHNt1Ze0TL5IbuX5AK7OM=;
+ b=Pqc1+jNGzpDuyHkEKzPxEsm5TITflE0PnM/HE+qO6YF3R7m6Wekht3TfWKvHzthr7OAc
+ aew9M8EkN1ZoeCFyVvQRNW/G15rfpL3AY0cBOhtO5O6YXuRCq/Yg4NtesMiXP2OaYygc
+ ff+cAEg+Dj3fHt9PJDvzQVGsHnadZlDJqLYnq9Zo09MOqBJkHV++qe4ts/GD/8TJuYoZ
+ SvXu04zgi/BQiI5cZUK0Pm9piy+wODGVduaNjbY5I+1zZ7ZmAbANi6pyLvU05GGPfZvj
+ g2uieAYjXVTcncYRdnIFLxJ921/54rcukJcjzHeqPU71h3s1FmO8DT025/N3ERad4A9A Dw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37xsvb0u6m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 12:57:22 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13GGZW34059763;
+ Fri, 16 Apr 2021 12:57:22 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 37xsvb0u62-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 12:57:22 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13GGvKHM010040;
+ Fri, 16 Apr 2021 16:57:20 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma06ams.nl.ibm.com with ESMTP id 37u39hmk77-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 16:57:20 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 13GGutrd30867780
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 16 Apr 2021 16:56:55 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BFF914C04E;
+ Fri, 16 Apr 2021 16:57:17 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 79C4A4C046;
+ Fri, 16 Apr 2021 16:57:15 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri, 16 Apr 2021 16:57:15 +0000 (GMT)
+Date: Fri, 16 Apr 2021 22:27:14 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Subject: Re: [PATCH 3/3] powerpc/smp: Cache CPU to chip lookup
+Message-ID: <20210416165714.GG2633526@linux.vnet.ibm.com>
+References: <20210415120934.232271-1-srikar@linux.vnet.ibm.com>
+ <20210415120934.232271-4-srikar@linux.vnet.ibm.com>
+ <20210415171921.GB16351@in.ibm.com>
+ <20210415175110.GE2633526@linux.vnet.ibm.com>
+ <20210416155748.GA26496@in.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <10adad00-14de-61b6-ce2a-bdde23a34bcf@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20210416155748.GA26496@in.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 8bp4HaOlLpK87NpjPmEm9_9qTCrb9y8L
+X-Proofpoint-GUID: X4gHH-xksQmxB6DAc_s7gGb323e9WAJc
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-16_08:2021-04-16,
+ 2021-04-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0
+ phishscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0 malwarescore=0
+ adultscore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104160119
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,139 +109,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, qemu-ppc@nongnu.org,
+ Cedric Le Goater <clg@kaod.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Ingo Molnar <mingo@kernel.org>, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 16/04/2021 16:15, Christophe Leroy wrote:
+* Gautham R Shenoy <ego@linux.vnet.ibm.com> [2021-04-16 21:27:48]:
+
+> On Thu, Apr 15, 2021 at 11:21:10PM +0530, Srikar Dronamraju wrote:
+> > * Gautham R Shenoy <ego@linux.vnet.ibm.com> [2021-04-15 22:49:21]:
+> > 
+> > > > 
+> > > > +int *chip_id_lookup_table;
+> > > > +
+> > > >  #ifdef CONFIG_PPC64
+> > > >  int __initdata iommu_is_off;
+> > > >  int __initdata iommu_force_on;
+> > > > @@ -914,13 +916,22 @@ EXPORT_SYMBOL(of_get_ibm_chip_id);
+> > > >  int cpu_to_chip_id(int cpu)
+> > > >  {
+> > > >  	struct device_node *np;
+> > > > +	int ret = -1, idx;
+> > > > +
+> > > > +	idx = cpu / threads_per_core;
+> > > > +	if (chip_id_lookup_table && chip_id_lookup_table[idx] != -1)
+> > > 
+> > 
+> > > The value -1 is ambiguous since we won't be able to determine if
+> > > it is because we haven't yet made a of_get_ibm_chip_id() call
+> > > or if of_get_ibm_chip_id() call was made and it returned a -1.
+> > > 
+> > 
+> > We don't allocate chip_id_lookup_table unless cpu_to_chip_id() return
+> > !-1 value for the boot-cpuid. So this ensures that we dont
+> > unnecessarily allocate chip_id_lookup_table. Also I check for
+> > chip_id_lookup_table before calling cpu_to_chip_id() for other CPUs.
+> > So this avoids overhead of calling cpu_to_chip_id() for platforms that
+> > dont support it.  Also its most likely that if the
+> > chip_id_lookup_table is initialized then of_get_ibm_chip_id() call
+> > would return a valid value.
+> > 
+> > + Below we are only populating the lookup table, only when the
+> > of_get_cpu_node is valid.
+> > 
+> > So I dont see any drawbacks of initializing it to -1. Do you see
+> any?
 > 
 > 
-> Le 16/04/2021 à 17:04, Christophe Leroy a écrit :
->>
->>
->> Le 16/04/2021 à 16:40, Christophe Leroy a écrit :
->>>
->>>
->>> Le 16/04/2021 à 15:00, Steven Price a écrit :
->>>> On 16/04/2021 12:08, Christophe Leroy wrote:
->>>>>
->>>>>
->>>>> Le 16/04/2021 à 12:51, Steven Price a écrit :
->>>>>> On 16/04/2021 11:38, Christophe Leroy wrote:
->>>>>>>
->>>>>>>
->>>>>>> Le 16/04/2021 à 11:28, Steven Price a écrit :
->>>>>>>> To be honest I don't fully understand why powerpc requires the 
->>>>>>>> page_size - it appears to be using it purely to find "holes" in 
->>>>>>>> the calls to note_page(), but I haven't worked out why such 
->>>>>>>> holes would occur.
->>>>>>>
->>>>>>> I was indeed introduced for KASAN. We have a first commit 
->>>>>>> https://github.com/torvalds/linux/commit/cabe8138 which uses page 
->>>>>>> size to detect whether it is a KASAN like stuff.
->>>>>>>
->>>>>>> Then came https://github.com/torvalds/linux/commit/b00ff6d8c as a 
->>>>>>> fix. I can't remember what the problem was exactly, something 
->>>>>>> around the use of hugepages for kernel memory, came as part of 
->>>>>>> the series 
->>>>>>> https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1589866984.git.christophe.leroy@csgroup.eu/ 
->>>>>>
->>>>>>
->>>>>>
->>>>>>
->>>>>>
->>>>>>
->>>>>>
->>>>>> Ah, that's useful context. So it looks like powerpc took a 
->>>>>> different route to reducing the KASAN output to x86.
->>>>>>
->>>>>> Given the generic ptdump code has handling for KASAN already it 
->>>>>> should be possible to drop that from the powerpc arch code, which 
->>>>>> I think means we don't actually need to provide page size to 
->>>>>> notepage(). Hopefully that means more code to delete ;)
->>>>>>
->>>>>
->>>>> Yes ... and no.
->>>>>
->>>>> It looks like the generic ptdump handles the case when several 
->>>>> pgdir entries points to the same kasan_early_shadow_pte. But it 
->>>>> doesn't take into account the powerpc case where we have regular 
->>>>> page tables where several (if not all) PTEs are pointing to the 
->>>>> kasan_early_shadow_page .
->>>>
->>>> I'm not sure I follow quite how powerpc is different here. But could 
->>>> you have a similar check for PTEs against kasan_early_shadow_pte as 
->>>> the other levels already have?
->>>>
->>>> I'm just worried that page_size isn't well defined in this interface 
->>>> and it's going to cause problems in the future.
->>>>
->>>
->>> I'm trying. I reverted the two commits b00ff6d8c and cabe8138.
->>>
->>> At the moment, I don't get exactly what I expect: For linear memory I 
->>> get one line for each 8M page whereas before reverting the patches I 
->>> got one 16M line and one 112M line.
->>>
->>> And for KASAN shadow area I get two lines for the 2x 8M pages 
->>> shadowing linear mem then I get one 4M line for each PGDIR entry 
->>> pointing to kasan_early_shadow_pte.
->>>
->>> 0xf8000000-0xf87fffff 0x07000000         8M   huge        rw       
->>> present
->>> 0xf8800000-0xf8ffffff 0x07800000         8M   huge        rw       
->>> present
->>> 0xf9000000-0xf93fffff 0x01430000         4M               r        
->>> present
->> ...
->>> 0xfec00000-0xfeffffff 0x01430000         4M               r        
->>> present
->>>
->>> Any idea ?
->>>
->>
->>
->> I think the different with other architectures is here:
->>
->>      } else if (flag != st->current_flags || level != st->level ||
->>             addr >= st->marker[1].start_address ||
->>             pa != st->last_pa + PAGE_SIZE) {
->>
->>
->> In addition to the checks everyone do, powerpc also checks "pa != 
->> st->last_pa + PAGE_SIZE".
->> And it is definitely for that test that page_size argument add been 
->> added.
+> Only if other callers of cpu_to_chip_id() don't check for whether the
+> chip_id_lookup_table() has been allocated or not. From a code
+> readability point of view, it is easier to have that check  this inside
+> cpu_to_chip_id() instead of requiring all its callers to make that
+> check.
 > 
-> By replacing that test by (pa - st->start_pa != addr - 
-> st->start_address) it works again. So we definitely don't need the real 
-> page size.
 
-Yes that should work. Thanks for figuring it out!
+I didn't understand your comment. However let me reiterate what I said
+earlier. We don't have control over who and when cpu_to_chip_id() gets
+called. If the cpu_to_chip_id() might be called for non present CPU,
+in which case it will return -1, Should we cache it or not?
 
-> 
->>
->> I see that other architectures except RISCV don't dump the physical 
->> address. But even RISCV doesn't include that check.
+If we cache it, we will return wrong value when the CPU may turn out
+to be present. If we cache and retry it then having one value for
+initializing and another for invalid is all the same as having just 1
+value for initializing and invalid. Just that we end up adding more
+confusing code. Atleast to me, code isnt readable if I say retry for
+-1 and -2 too. After few years, we ourselves will wonder why we have
+two values if we are checking and performing same actions.
 
-Yes not having the physical address certainly simplifies things - 
-although I can see why that can be handy to see. The disadvantage is 
-that user space or vmalloc()'d memory will produce a lot of output 
-because the physical addresses are unlikely to be contiguous. And for 
-most uses you don't need the information.
+> > 
+> > > Thus, perhaps we can initialize chip_id_lookup_table[idx] with a
+> > > different unique negative value. How about S32_MIN ? and check
+> > > chip_id_lookup_table[idx] is different here ?
+> > > 
+> > 
+> > I had initially initialized to -2, But then I thought we adding in
+> > more confusion than necessary and it was not solving any issues.
+> > 
+> > 
+> > -- 
+> > Thanks and Regards
+> > Srikar Dronamraju
 
->> That physical address dump was added by commit aaa229529244 
->> ("powerpc/mm: Add physical address to Linux page table dump") 
->> [https://github.com/torvalds/linux/commit/aaa2295]
->>
->> How do other architectures deal with the problem described by the 
->> commit log of that patch ?
-
-AFAIK other architectures are "broken" in this regard. In practice I 
-don't think it often causes an issue though.
-
-Steve
+-- 
+Thanks and Regards
+Srikar Dronamraju
