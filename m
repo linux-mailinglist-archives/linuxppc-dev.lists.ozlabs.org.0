@@ -1,77 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335773629C7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 22:58:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D6B3629E2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 23:02:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMT8B0Yxfz3c4j
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 06:58:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMTF72Vn2z3c56
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 07:02:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=pz/bSOQm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Au8/f8Z1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::730;
- helo=mail-qk1-x730.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2e;
+ helo=mail-qv1-xf2e.google.com; envelope-from=danielhb413@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=pz/bSOQm; dkim-atps=neutral
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com
- [IPv6:2607:f8b0:4864:20::730])
+ header.s=20161025 header.b=Au8/f8Z1; dkim-atps=neutral
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com
+ [IPv6:2607:f8b0:4864:20::f2e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMT7k4Lrwz30Bh
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 06:58:09 +1000 (AEST)
-Received: by mail-qk1-x730.google.com with SMTP id d23so18235934qko.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 13:58:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMTDk3DNdz30NG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 07:02:30 +1000 (AEST)
+Received: by mail-qv1-xf2e.google.com with SMTP id h15so4325488qvu.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 14:02:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=qnIWecU4j0go3BHki/tPX89ICgmbfzbrXzKLY+iWOac=;
- b=pz/bSOQmz9g+p6n0hHD1XQp4RAoq2j/Dj0uYmko1vHfn5u7RxBa80ABt2yiEG25v68
- haJilWm4NQoEiFZmf6ZCbgXgD0WEvFImh7UxgbDrysgLT0RyxcXbeAQsfenuXFUhxMZ0
- kqgYHnrvKY1kb9ACeLaIhxNJTlueR0VDBoK5nyTA7AWNFEcOVXwKX/bhRfyDzO5BDxYu
- iyyzTYTkUbhk8xG+XjJB0unQDDTTmiCESPhkYjks9+OV4j3FvRjcw8FUhL+gaUffJ1XI
- Ix5RU/RXzOdSgrB+BelgyWuXjivn2djucxlh6gW5fRKzGgkoysyHferoLsZxEue8M1RI
- O/Og==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=gT4wQkvN5Ixvsn/4sCDxq8yX8MuHOkcLWPbfUYcxm3I=;
+ b=Au8/f8Z1A56Cns34Kbo4AUkGJAHislwJo88Gr2mteSE25BHM/9NVKVncckuDzmlg+Z
+ W2ndPtMNaxs5cCWoOxNdIfdpxMKvrHHzy065R9aLJT7ie7J9zyRorkabQpZ5vHdz1vVY
+ JF6QEED3S3UxmvvzIklbXlDCKiPnux3ymzv/P6bV8cy4LnFkErGxNS/hikTmBX5Vc8N5
+ t07Zxrc9D1ioZe4XuJLu8sVUFCJXMxmxwDN1Ym5/ytTIYlt0Xxg5TmAgdAYUn5yYK4Op
+ ve7gwl7fkljawxqOd0i0PZQymebBinjnqDAmhPrQ8nh/lk/mNuyMPHTQDH4K3vT7DZ2+
+ eGQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=qnIWecU4j0go3BHki/tPX89ICgmbfzbrXzKLY+iWOac=;
- b=nSaeQ4M43qkszTtASKAZliUvDS4okaQxAwD1k8WyCfl+lTAjNJ4LaG/LQHwlI2LgbC
- EBB/WTKQ4gNi/PhrN1yeD22MCYxoI4fww8PKqJjQIGyRcNEg5mmyPE/yo83KZVIuLCPq
- eCMBlG2VQ0p5c+EzgiRWCYsq6OKfpPg5DdfHoJbfsmWfCUVYfII5gXrlsUkM9SJiqEyV
- OiB69vNDj9MlL4xP8dPvvoiLFuCgygEQtnwDkR6kAdUls2LVj+WOs8O20k+MRnbPpa6g
- IfgNxz7DINcoY6udbyR8jpgB7FmzbYWe6IaewdX8hqO6WpGs1NM51nNl7aFtXRWkq5tX
- f9Lw==
-X-Gm-Message-State: AOAM5332FYM1n5xjWLbGRJFb8bzv0hnprOkomLO28iRotjTy7azvbFN8
- g7hYL99lGvLf7cmSTb9ZGTU=
-X-Google-Smtp-Source: ABdhPJxFhinlHNn02trTin40jfBumlNTfk5ie7OrDNyXW4/JI/YC1pS+0OjO1mDC9iZf7UePRpjcKg==
-X-Received: by 2002:a37:d4e:: with SMTP id 75mr1110422qkn.457.1618606685688;
- Fri, 16 Apr 2021 13:58:05 -0700 (PDT)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
- ([177.35.200.187])
- by smtp.gmail.com with ESMTPSA id n15sm4860020qkk.109.2021.04.16.13.58.02
+ bh=gT4wQkvN5Ixvsn/4sCDxq8yX8MuHOkcLWPbfUYcxm3I=;
+ b=h/8H2rSH7ms+iNmC+qF030vD6b/3HrL9zqA6jvuKheJyChAaBw7Er3jUwXrt0RhAwy
+ Bt3JDDqOWaKoSibi4q9DzkJT3yctR4Am140Go5wikyqD3BWH2B5F5Qu0imY+aiwBLAOH
+ 47OOQHjzQVDrNZZFgMj9TMLdNdZMvjVp4UzgV6g0bUi0MxXbUzb8+YuT4JbZJk8lFeBv
+ 6R1S2zBfP9cU1n7sz7QkADPjz/1SXXXlr5a9PvA5bZBssTP4YPwxz63GVRiEQFCrH4nG
+ JLTCykfieg6CEm/9InekUz1dP/QMgig79Tye+TTpUEyPJF44/oj/VqIBqpORpSb4FGW1
+ TbOA==
+X-Gm-Message-State: AOAM530rVpKDWMMQmt4D4gfBj0MwnGa9D2iqpc1icKsMPMnxRJhadvQ9
+ Ha7kLqzBES/0LFsij3sRu+JcRNakIdQjihWxPxg=
+X-Google-Smtp-Source: ABdhPJz1R+iAe85cPCbAiTe+kcbcNVtn+9IJfl3VbyD33IC9trcqFeK/BLzJtRAAFRkOYEA8ZnLINA==
+X-Received: by 2002:a05:6214:d65:: with SMTP id
+ 5mr10456853qvs.56.1618606946317; 
+ Fri, 16 Apr 2021 14:02:26 -0700 (PDT)
+Received: from rekt.ibmuc.com ([2804:431:c7c7:8811:45c7:4abc:f19a:be81])
+ by smtp.gmail.com with ESMTPSA id y6sm5020671qkd.106.2021.04.16.14.02.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Apr 2021 13:58:05 -0700 (PDT)
-Message-ID: <7b089cd48b90f2445c7cb80da1ce8638607c46fc.camel@gmail.com>
-Subject: Re: [PATCH 1/1] of/pci: Add IORESOURCE_MEM_64 to resource flags for
- 64-bit memory addresses
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Rob Herring <robh+dt@kernel.org>
-Date: Fri, 16 Apr 2021 17:57:59 -0300
-In-Reply-To: <CAL_Jsq+WwAeziGN4EfPAWfA0fieAjfcxfi29=StOx0GeKjAe_g@mail.gmail.com>
-References: <20210415180050.373791-1-leobras.c@gmail.com>
- <CAL_Jsq+WwAeziGN4EfPAWfA0fieAjfcxfi29=StOx0GeKjAe_g@mail.gmail.com>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ Fri, 16 Apr 2021 14:02:25 -0700 (PDT)
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/2] pseries: UNISOLATE DRCs to signal device removal error
+Date: Fri, 16 Apr 2021 18:02:14 -0300
+Message-Id: <20210416210216.380291-1-danielhb413@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,66 +78,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Frank Rowand <frowand.list@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- PCI <linux-pci@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Rob, thanks for this feedback!
+At this moment, PAPR [1] does not have a way to report errors during a device
+removal operation. This puts a strain in the hypervisor, which needs extra
+mechanisms to try to fallback and recover from an error that might have
+happened during the removal. The QEMU community has dealt with it during these
+years by either trying to preempt the error before sending the HP event or, in
+case of a guest side failure, reboot the guest to complete the removal process.
 
-On Thu, 2021-04-15 at 13:59 -0500, Rob Herring wrote:
-> +PPC and PCI lists
-> 
-> On Thu, Apr 15, 2021 at 1:01 PM Leonardo Bras <leobras.c@gmail.com> wrote:
-> > 
-> > Many other resource flag parsers already add this flag when the input
-> > has bits 24 & 25 set, so update this one to do the same.
-> 
-> Many others? Looks like sparc and powerpc to me. 
-> 
+This started to change with QEMU commit fe1831eff8a4 ("spapr_drc.c: use DRC
+reconfiguration to cleanup DIMM unplug state"), where a way to fallback from a
+memory removal error was introduced. In this case, when QEMU detects that the
+kernel is reconfiguring LMBs DRCs that were marked as pending removal, the
+entire process is reverted from the QEMU side as well. Around the same time,
+other discussions in the QEMU mailing discussed an alternative for other device
+as well.
 
-s390 also does that, but it look like it comes from a device-tree.
+In [2] the idea of using RTAS set-indicator for this role was first introduced.
+The RTAS set-indicator call, when attempting to UNISOLATE a DRC that is already
+UNISOLATED or CONFIGURED, returns RTAS_OK and does nothing else for both QEMU
+and phyp. This gives us an opportunity to use this behavior to signal the
+hypervisor layer when a device removal happens, allowing it to do a proper
+error handling knowing for sure that the removal failed in the kernel. Using
+set-indicator to report HP errors isn't strange to PAPR, as per R1-13.5.3.4-4.
+of table 13.7 of [1]:
 
-> Those would be the
-> ones I worry about breaking. Sparc doesn't use of/address.c so it's
-> fine. Powerpc version of the flags code was only fixed in 2019, so I
-> don't think powerpc will care either.
+"For all DR options: If this is a DR operation that involves the user insert-
+ing a DR entity, then if the firmware can determine that the inserted entity
+would cause a system disturbance, then the set-indicator RTAS call must not
+unisolate the entity and must return an error status which is unique to the
+particular error."
 
-In powerpc I reach this function with this stack, while configuring a
-virtio-net device for a qemu/KVM pseries guest:
+PAPR does not make any restrictions or considerations about setting an already
+Unisolated/Configured DRC to 'unisolate', meaning we have a chance to use it
+for this purpose - signal an OS side error when attempting to remove a DR
+entity.  To validate the design, this is being implemented only for CPUs.
 
-pci_process_bridge_OF_ranges+0xac/0x2d4
-pSeries_discover_phbs+0xc4/0x158
-discover_phbs+0x40/0x60
-do_one_initcall+0x60/0x2d0
-kernel_init_freeable+0x308/0x3a8
-kernel_init+0x2c/0x168
-ret_from_kernel_thread+0x5c/0x70
+QEMU will use this mechanism to rollback the device removal (hotunplug) state,
+allowing for a better error handling mechanism. A implementation of how QEMU
+can do it is in [3]. When using a kernel with this series applied, together
+with this QEMU build, this is what happens in a common CPU removal/hotunplug
+error scenario (trying to remove the last online CPU):
 
-For this, both MMIO32 and MMIO64 resources will have flags 0x200.
+( QEMU command line: qemu-system-ppc64 -machine pseries,accel=kvm,usb=off
+-smp 1,maxcpus=2,threads=1,cores=2,sockets=1 ... )
 
-> 
-> I noticed both sparc and powerpc set PCI_BASE_ADDRESS_MEM_TYPE_64 in
-> the flags. AFAICT, that's not set anywhere outside of arch code. So
-> never for riscv, arm and arm64 at least. That leads me to
-> pci_std_update_resource() which is where the PCI code sets BARs and
-> just copies the flags in PCI_BASE_ADDRESS_MEM_MASK ignoring
-> IORESOURCE_* flags. So it seems like 64-bit is still not handled and
-> neither is prefetch.
-> 
+[root@localhost ~]# QEMU 5.2.92 monitor - type 'help' for more information
+(qemu) device_add host-spapr-cpu-core,core-id=1,id=core1
+(qemu) 
 
-I am not sure if you mean here:
-a) it's ok to add IORESOURCE_MEM_64 here, because it does not affect
-anything else, or
-b) it should be using PCI_BASE_ADDRESS_MEM_TYPE_64 
-(or IORESOURCE_MEM_64 | PCI_BASE_ADDRESS_MEM_TYPE_64) instead, since
-it's how it's added in powerpc/sparc, and else there is no point.
+[root@localhost ~]# echo 0 > /sys/devices/system/cpu/cpu0/online
+[   77.548442][   T13] IRQ 19: no longer affine to CPU0
+[   77.548452][   T13] IRQ 20: no longer affine to CPU0
+[   77.548458][   T13] IRQ 256: no longer affine to CPU0
+[   77.548465][   T13] IRQ 258: no longer affine to CPU0
+[   77.548472][   T13] IRQ 259: no longer affine to CPU0
+[   77.548479][   T13] IRQ 260: no longer affine to CPU0
+[   77.548485][   T13] IRQ 261: no longer affine to CPU0
+[   77.548590][    T0] cpu 0 (hwid 0) Ready to die...
+[root@localhost ~]# (qemu) 
+(qemu) device_del core1
+(qemu) [   83.214073][  T100] pseries-hotplug-cpu: Failed to offline CPU PowerPC,POWER9, rc: -16
+qemu-system-ppc64: Device hotunplug rejected by the guest for device core1
 
-Again, thanks for helping!
+(qemu) 
 
-Best regards,
-Leonardo Bras
+As soon as the CPU removal fails in dlpar_cpu(), QEMU becames aware of
+it and is able to do error recovery.
+
+If this solution is well received, I'll push for an architecture change
+request internally at IBM to make this mechanism PAPR official.
+
+
+[1] https://openpowerfoundation.org/wp-content/uploads/2020/07/LoPAR-20200611.pdf
+[2] https://lists.gnu.org/archive/html/qemu-devel/2021-02/msg06395.html
+[3] https://github.com/danielhb/qemu/tree/unisolate_drc_callback_v1
+
+Daniel Henrique Barboza (2):
+  dlpar.c: introduce dlpar_unisolate_drc()
+  hotplug-cpu.c: set UNISOLATE on dlpar_cpu_remove() failure
+
+ arch/powerpc/platforms/pseries/dlpar.c       | 14 ++++++++++++++
+ arch/powerpc/platforms/pseries/hotplug-cpu.c |  9 ++++++++-
+ arch/powerpc/platforms/pseries/pseries.h     |  1 +
+ 3 files changed, 23 insertions(+), 1 deletion(-)
+
+-- 
+2.30.2
 
