@@ -2,65 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F7D63630C8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 16:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF4E36313A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 18:40:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMx6g1Rntz3bVb
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 00:58:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMzNG02pyz3c3x
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 02:40:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=tsRfa+eE;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=ti-com-17Q1 header.b=q6CHJQ5y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.80;
- helo=conssluserg-01.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=tsRfa+eE; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=ti.com
+ (client-ip=198.47.19.141; helo=fllv0015.ext.ti.com;
+ envelope-from=grygorii.strashko@ti.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256
+ header.s=ti-com-17Q1 header.b=q6CHJQ5y; 
  dkim-atps=neutral
-Received: from conssluserg-01.nifty.com (conssluserg-01.nifty.com
- [210.131.2.80])
+X-Greylist: delayed 112366 seconds by postgrey-1.36 at boromir;
+ Sun, 18 Apr 2021 02:40:22 AEST
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMx6C3Nccz2ydJ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Apr 2021 00:58:27 +1000 (AEST)
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com
- [209.85.216.43]) (authenticated)
- by conssluserg-01.nifty.com with ESMTP id 13HEw2Em030183
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 23:58:02 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 13HEw2Em030183
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1618671482;
- bh=rq83/8SBq3PTT68e2iZ8nPK/k8i2Myf6G/JabZ9UCXk=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=tsRfa+eEfdTmqIymhILUvndqoTKosq4Sjxhsjft92vzrOkajkLEqsraqc83peHvxK
- qofCX1GFf+xVl5mo5SCLqZ4Y2R77cjUr7go6JdEbbpjI7y1LKR1oHbQUBeDfENUE7a
- e2A3fo7t2mKn+I1Z61dnmpjjvoAOfJn908Me8IF+N1dGCtiy2BUwf6m9mxpywTK0k0
- /H3nUWF13fJBcH5tdSLofIeMM9FtMqt4JrsZDZ5IohLuPpVBjnhuijjCfOYtxwup2M
- dZkFAR+TbHxo07Vu/1hsQmSwBwPjkn/1XM8Lzc29WHueI1L+B18X0X84yoz0oiuNR2
- cKGyYlK/RXBDw==
-X-Nifty-SrcIP: [209.85.216.43]
-Received: by mail-pj1-f43.google.com with SMTP id cu16so13534226pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 07:58:02 -0700 (PDT)
-X-Gm-Message-State: AOAM531zY3WH/B6ocRWnJ0jshs8I0zc5rQ/nKmD2x1WepqUX6TyLFUQD
- D+FJkYTEX3zez8vQ8PpwmEozuceJhlwB+XyC29g=
-X-Google-Smtp-Source: ABdhPJxWkCXt7g4Du/Ih7Ckz0ekVFUITURxJW3giTvuAUEWpP1/B8Iy1Q/VxSxCEtVTt62gkLz8TXtY7EWsJFR/AdpY=
-X-Received: by 2002:a17:90a:1056:: with SMTP id
- y22mr14523757pjd.153.1618671481674; 
- Sat, 17 Apr 2021 07:58:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMzMp5STPz302y
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Apr 2021 02:40:21 +1000 (AEST)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+ by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 13G9QoXq061900;
+ Fri, 16 Apr 2021 04:26:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+ s=ti-com-17Q1; t=1618565210;
+ bh=iUN+ZAwoZO98VUtAbHnorakjrh71xOPMrXkAMJ4Hqpo=;
+ h=Subject:To:CC:References:From:Date:In-Reply-To;
+ b=q6CHJQ5yHhCUxTvsb7LWnrHojwq4z5fdGhcq05XBA0YlrsKJOlZL44mFXdrMXAW0R
+ wUKB5uUpmeYwcbTk0M0RI9dOZ3CPFoP6cgHnph+X7GsjlxLhWiVAP157Q4A/cGg0Yj
+ nGxzGQi4XUQ1CBnf2HhNuMpn9s6wtsVxUbfTVjAk=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+ by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 13G9Qotj047995
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Fri, 16 Apr 2021 04:26:50 -0500
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 16
+ Apr 2021 04:26:49 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Fri, 16 Apr 2021 04:26:49 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+ by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 13G9QjO8101592;
+ Fri, 16 Apr 2021 04:26:46 -0500
+Subject: Re: Bogus struct page layout on 32-bit
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>, Jesper Dangaard Brouer
+ <brouer@redhat.com>, Christoph Hellwig <hch@lst.de>
+References: <20210409185105.188284-3-willy@infradead.org>
+ <202104100656.N7EVvkNZ-lkp@intel.com>
+ <20210410024313.GX2531743@casper.infradead.org>
+ <20210410082158.79ad09a6@carbon>
+ <CAC_iWjLXZ6-hhvmvee6r4R_N64u-hrnLqE_CSS1nQk+YaMQQnA@mail.gmail.com>
+From: Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <ab9f1a6c-4099-2b59-457d-fcc45d2396f4@ti.com>
+Date: Fri, 16 Apr 2021 12:26:44 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210416130051.239782-1-masahiroy@kernel.org>
-In-Reply-To: <20210416130051.239782-1-masahiroy@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 17 Apr 2021 23:57:23 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAS90BwrVZzpoavVE8AE0D01Ei7BuQg1E5eObQR+o74fow@mail.gmail.com>
-Message-ID: <CAK7LNAS90BwrVZzpoavVE8AE0D01Ei7BuQg1E5eObQR+o74fow@mail.gmail.com>
-Subject: Re: [PATCH v2] tools: do not include scripts/Kbuild.include
-To: Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAC_iWjLXZ6-hhvmvee6r4R_N64u-hrnLqE_CSS1nQk+YaMQQnA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,169 +82,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, kvm@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>, Paul Mackerras <paulus@samba.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Shuah Khan <shuah@kernel.org>, Janosch Frank <frankja@linux.ibm.com>,
- Daniel Borkmann <daniel@iogearbox.net>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Yonghong Song <yhs@fb.com>,
- KP Singh <kpsingh@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Networking <netdev@vger.kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, bpf <bpf@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Martin KaFai Lau <kafai@fb.com>
+Cc: kbuild-all@lists.01.org, kernel test robot <lkp@intel.com>,
+ clang-built-linux@googlegroups.com, open list <linux-kernel@vger.kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Linux-MM <linux-mm@kvack.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, linux-fsdevel@vger.kernel.org,
+ Matteo Croce <mcroce@linux.microsoft.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 16, 2021 at 10:01 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> Since commit d9f4ff50d2aa ("kbuild: spilt cc-option and friends to
-> scripts/Makefile.compiler"), some kselftests fail to build.
->
-> The tools/ directory opted out Kbuild, and went in a different
-> direction. They copy any kind of files to the tools/ directory
-> in order to do whatever they want in their world.
->
-> tools/build/Build.include mimics scripts/Kbuild.include, but some
-> tool Makefiles included the Kbuild one to import a feature that is
-> missing in tools/build/Build.include:
->
->  - Commit ec04aa3ae87b ("tools/thermal: tmon: use "-fstack-protector"
->    only if supported") included scripts/Kbuild.include from
->    tools/thermal/tmon/Makefile to import the cc-option macro.
->
->  - Commit c2390f16fc5b ("selftests: kvm: fix for compilers that do
->    not support -no-pie") included scripts/Kbuild.include from
->    tools/testing/selftests/kvm/Makefile to import the try-run macro.
->
->  - Commit 9cae4ace80ef ("selftests/bpf: do not ignore clang
->    failures") included scripts/Kbuild.include from
->    tools/testing/selftests/bpf/Makefile to import the .DELETE_ON_ERROR
->    target.
->
->  - Commit 0695f8bca93e ("selftests/powerpc: Handle Makefile for
->    unrecognized option") included scripts/Kbuild.include from
->    tools/testing/selftests/powerpc/pmu/ebb/Makefile to import the
->    try-run macro.
->
-> Copy what they need into tools/build/Build.include, and make them
-> include it instead of scripts/Kbuild.include.
->
-> Link: https://lore.kernel.org/lkml/86dadf33-70f7-a5ac-cb8c-64966d2f45a1@linux.ibm.com/
-> Fixes: d9f4ff50d2aa ("kbuild: spilt cc-option and friends to scripts/Makefile.compiler")
-> Reported-by: Janosch Frank <frankja@linux.ibm.com>
-> Reported-by: Christian Borntraeger <borntraeger@de.ibm.com>
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Hi Ilias, All,
 
+On 10/04/2021 11:52, Ilias Apalodimas wrote:
+> +CC Grygorii for the cpsw part as Ivan's email is not valid anymore
+> 
+> Thanks for catching this. Interesting indeed...
+> 
+> On Sat, 10 Apr 2021 at 09:22, Jesper Dangaard Brouer <brouer@redhat.com> wrote:
+>>
+>> On Sat, 10 Apr 2021 03:43:13 +0100
+>> Matthew Wilcox <willy@infradead.org> wrote:
+>>
+>>> On Sat, Apr 10, 2021 at 06:45:35AM +0800, kernel test robot wrote:
+>>>>>> include/linux/mm_types.h:274:1: error: static_assert failed due to requirement '__builtin_offsetof(struct page, lru) == __builtin_offsetof(struct folio, lru)' "offsetof(struct page, lru) == offsetof(struct folio, lru)"
+>>>>     FOLIO_MATCH(lru, lru);
+>>>>     include/linux/mm_types.h:272:2: note: expanded from macro 'FOLIO_MATCH'
+>>>>             static_assert(offsetof(struct page, pg) == offsetof(struct folio, fl))
+>>>
+>>> Well, this is interesting.  pahole reports:
+>>>
+>>> struct page {
+>>>          long unsigned int          flags;                /*     0     4 */
+>>>          /* XXX 4 bytes hole, try to pack */
+>>>          union {
+>>>                  struct {
+>>>                          struct list_head lru;            /*     8     8 */
+>>> ...
+>>> struct folio {
+>>>          union {
+>>>                  struct {
+>>>                          long unsigned int flags;         /*     0     4 */
+>>>                          struct list_head lru;            /*     4     8 */
+>>>
+>>> so this assert has absolutely done its job.
+>>>
+>>> But why has this assert triggered?  Why is struct page layout not what
+>>> we thought it was?  Turns out it's the dma_addr added in 2019 by commit
+>>> c25fff7171be ("mm: add dma_addr_t to struct page").  On this particular
+>>> config, it's 64-bit, and ppc32 requires alignment to 64-bit.  So
+>>> the whole union gets moved out by 4 bytes.
+>>
+>> Argh, good that you are catching this!
+>>
+>>> Unfortunately, we can't just fix this by putting an 'unsigned long pad'
+>>> in front of it.  It still aligns the entire union to 8 bytes, and then
+>>> it skips another 4 bytes after the pad.
+>>>
+>>> We can fix it like this ...
+>>>
+>>> +++ b/include/linux/mm_types.h
+>>> @@ -96,11 +96,12 @@ struct page {
+>>>                          unsigned long private;
+>>>                  };
+>>>                  struct {        /* page_pool used by netstack */
+>>> +                       unsigned long _page_pool_pad;
+>>
+>> I'm fine with this pad.  Matteo is currently proposing[1] to add a 32-bit
+>> value after @dma_addr, and he could use this area instead.
+>>
+>> [1] https://lore.kernel.org/netdev/20210409223801.104657-3-mcroce@linux.microsoft.com/
+>>
+>> When adding/changing this, we need to make sure that it doesn't overlap
+>> member @index, because network stack use/check page_is_pfmemalloc().
+>> As far as my calculations this is safe to add.  I always try to keep an
+>> eye out for this, but I wonder if we could have a build check like yours.
+>>
+>>
+>>>                          /**
+>>>                           * @dma_addr: might require a 64-bit value even on
+>>>                           * 32-bit architectures.
+>>>                           */
+>>> -                       dma_addr_t dma_addr;
+>>> +                       dma_addr_t dma_addr __packed;
+>>>                  };
+>>>                  struct {        /* slab, slob and slub */
+>>>                          union {
+>>>
+>>> but I don't know if GCC is smart enough to realise that dma_addr is now
+>>> on an 8 byte boundary and it can use a normal instruction to access it,
+>>> or whether it'll do something daft like use byte loads to access it.
+>>>
+>>> We could also do:
+>>>
+>>> +                       dma_addr_t dma_addr __packed __aligned(sizeof(void *));
+>>>
+>>> and I see pahole, at least sees this correctly:
+>>>
+>>>                  struct {
+>>>                          long unsigned int _page_pool_pad; /*     4     4 */
+>>>                          dma_addr_t dma_addr __attribute__((__aligned__(4))); /*     8     8 */
+>>>                  } __attribute__((__packed__)) __attribute__((__aligned__(4)));
+>>>
+>>> This presumably affects any 32-bit architecture with a 64-bit phys_addr_t
+>>> / dma_addr_t.  Advice, please?
+>>
+>> I'm not sure that the 32-bit behavior is with 64-bit (dma) addrs.
+>>
+>> I don't have any 32-bit boards with 64-bit DMA.  Cc. Ivan, wasn't your
+>> board (572x ?) 32-bit with driver 'cpsw' this case (where Ivan added
+>> XDP+page_pool) ?
 
-Applied to linux-kbuild.
+Sry, for delayed reply.
 
+The TI platforms am3/4/5 (cpsw) and Keystone 2 (netcp) can do only 32bit DMA even in case of LPAE (dma-ranges are used).
+Originally, as I remember, CONFIG_ARCH_DMA_ADDR_T_64BIT has not been selected for the LPAE case
+on TI platforms and the fact that it became set is the result of multi-paltform/allXXXconfig/DMA
+optimizations and unification.
+(just checked - not set in 4.14)
 
+Probable commit 4965a68780c5 ("arch: define the ARCH_DMA_ADDR_T_64BIT config symbol in lib/Kconfig").
 
+The TI drivers have been updated, finally to accept ARCH_DMA_ADDR_T_64BIT=y by using things like (__force u32)
+for example.
 
-> ---
->
-> Changes in v2:
->   - copy macros to tools/build/BUild.include
->
->  tools/build/Build.include                     | 24 +++++++++++++++++++
->  tools/testing/selftests/bpf/Makefile          |  2 +-
->  tools/testing/selftests/kvm/Makefile          |  2 +-
->  .../selftests/powerpc/pmu/ebb/Makefile        |  2 +-
->  tools/thermal/tmon/Makefile                   |  2 +-
->  5 files changed, 28 insertions(+), 4 deletions(-)
->
-> diff --git a/tools/build/Build.include b/tools/build/Build.include
-> index 585486e40995..2cf3b1bde86e 100644
-> --- a/tools/build/Build.include
-> +++ b/tools/build/Build.include
-> @@ -100,3 +100,27 @@ cxx_flags = -Wp,-MD,$(depfile) -Wp,-MT,$@ $(CXXFLAGS) -D"BUILD_STR(s)=\#s" $(CXX
->  ## HOSTCC C flags
->
->  host_c_flags = -Wp,-MD,$(depfile) -Wp,-MT,$@ $(KBUILD_HOSTCFLAGS) -D"BUILD_STR(s)=\#s" $(HOSTCFLAGS_$(basetarget).o) $(HOSTCFLAGS_$(obj))
-> +
-> +# output directory for tests below
-> +TMPOUT = .tmp_$$$$
-> +
-> +# try-run
-> +# Usage: option = $(call try-run, $(CC)...-o "$$TMP",option-ok,otherwise)
-> +# Exit code chooses option. "$$TMP" serves as a temporary file and is
-> +# automatically cleaned up.
-> +try-run = $(shell set -e;              \
-> +       TMP=$(TMPOUT)/tmp;              \
-> +       mkdir -p $(TMPOUT);             \
-> +       trap "rm -rf $(TMPOUT)" EXIT;   \
-> +       if ($(1)) >/dev/null 2>&1;      \
-> +       then echo "$(2)";               \
-> +       else echo "$(3)";               \
-> +       fi)
-> +
-> +# cc-option
-> +# Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
-> +cc-option = $(call try-run, \
-> +       $(CC) -Werror $(1) -c -x c /dev/null -o "$$TMP",$(1),$(2))
-> +
-> +# delete partially updated (i.e. corrupted) files on error
-> +.DELETE_ON_ERROR:
-> diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-> index 044bfdcf5b74..17a5cdf48d37 100644
-> --- a/tools/testing/selftests/bpf/Makefile
-> +++ b/tools/testing/selftests/bpf/Makefile
-> @@ -1,5 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0
-> -include ../../../../scripts/Kbuild.include
-> +include ../../../build/Build.include
->  include ../../../scripts/Makefile.arch
->  include ../../../scripts/Makefile.include
->
-> diff --git a/tools/testing/selftests/kvm/Makefile b/tools/testing/selftests/kvm/Makefile
-> index a6d61f451f88..5ef141f265bd 100644
-> --- a/tools/testing/selftests/kvm/Makefile
-> +++ b/tools/testing/selftests/kvm/Makefile
-> @@ -1,5 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> -include ../../../../scripts/Kbuild.include
-> +include ../../../build/Build.include
->
->  all:
->
-> diff --git a/tools/testing/selftests/powerpc/pmu/ebb/Makefile b/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-> index af3df79d8163..c5ecb4634094 100644
-> --- a/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-> +++ b/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-> @@ -1,5 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0
-> -include ../../../../../../scripts/Kbuild.include
-> +include ../../../../../build/Build.include
->
->  noarg:
->         $(MAKE) -C ../../
-> diff --git a/tools/thermal/tmon/Makefile b/tools/thermal/tmon/Makefile
-> index 59e417ec3e13..9db867df7679 100644
-> --- a/tools/thermal/tmon/Makefile
-> +++ b/tools/thermal/tmon/Makefile
-> @@ -1,6 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # We need this for the "cc-option" macro.
-> -include ../../../scripts/Kbuild.include
-> +include ../../build/Build.include
->
->  VERSION = 1.0
->
-> --
-> 2.27.0
->
-> --
-> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20210416130051.239782-1-masahiroy%40kernel.org.
-
-
+Honestly, I've done sanity check of CPSW with LPAE=y (ARCH_DMA_ADDR_T_64BIT=y) very long time ago.
 
 -- 
-Best Regards
-Masahiro Yamada
+Best regards,
+grygorii
