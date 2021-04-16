@@ -1,106 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872E2361AEB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 09:59:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18AC3361B2A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 10:10:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FM7rm3Gcmz3c2M
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 17:59:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FM8620TmMz3bsL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 18:10:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=spzbPzZM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=cF7nXLe1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=141.146.126.79; helo=aserp2130.oracle.com;
+ envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=spzbPzZM; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=cF7nXLe1; 
+ dkim-atps=neutral
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FM7rJ1Q2tz2yYh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 17:58:39 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13G7XxHN138687; Fri, 16 Apr 2021 03:58:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=a60hQsz0xpYXDiJLKWxC2W4MYc6pkB5sdNqBWr6ssRM=;
- b=spzbPzZMF3zeVl4NFNSTDSMdK0r/jGaaX6AKC9buToIO8TcKoy8+E04Sb87Bnp+FAt9a
- buSSS2hjv6/og1ImD1DElmf67k4ZbaPnrE4iVPCnDFW26DbCwQA/3xNW55Vg9jNRLBPx
- n4B2iqeJYktPHfWjnH0w3hy5s5yBY4p9R3djnyZlHY68SGlgrP8QEuayCVfui4b27vHm
- B89lz1zNIefD2PSjRRdLnScwYYl1YOBVZyqyqk4B4CkMgSZetAAEbjulx4tjqzZqPpr9
- wt//4Bv3MrwSVM1KC10aybQRxIgfXyoGhOclGMmegUqF8MdhSWSmotczkI0R3wh9rtpu sA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37xtqa07cg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 03:58:29 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13G7Z88Q141859;
- Fri, 16 Apr 2021 03:58:29 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37xtqa07c4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 03:58:29 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13G7vGCH020596;
- Fri, 16 Apr 2021 07:58:27 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 37u39hmb6w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Apr 2021 07:58:27 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13G7wO4W34341168
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Apr 2021 07:58:25 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D00ADA4051;
- Fri, 16 Apr 2021 07:58:24 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 85222A4040;
- Fri, 16 Apr 2021 07:58:22 +0000 (GMT)
-Received: from [9.85.71.75] (unknown [9.85.71.75])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 16 Apr 2021 07:58:22 +0000 (GMT)
-Subject: Re: [PATCH v1 1/1] powerpc/papr_scm: Properly handle UUID types and
- API
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-References: <20210415134637.17770-1-andriy.shevchenko@linux.intel.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <af677216-82b4-f1fa-1d90-3d32dabf8583@linux.ibm.com>
-Date: Fri, 16 Apr 2021 13:28:21 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FM85Z0NNhz303f
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 18:10:09 +1000 (AEST)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+ by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13G89lxu134768;
+ Fri, 16 Apr 2021 08:09:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
+ bh=TnjrNqXGwzrmLLe3F50P/kR2nYY4gyJkqThCBP01mmg=;
+ b=cF7nXLe1SDiiik8nJ3mwtWOKSrLB63xl+MisOQqDXbLoK9mN3dFrh7Dcn4d5T2j/ILy9
+ KOc1Mj68iwObAwEfn2Nc0jr/IK9wtbFkI54KOVuPfgZH1uEQf17Yi+KGKI1Y+j856Psl
+ oAPDFB8YIip2owg8GMJ+vJ+3ZaUvVCQmsU8CNcYlrHrq34eWzdPfWROFrILzv4UVUP/B
+ Vw9upcZHdGNzbEge7o0X3+MzgBdHq4T4uPaFlzTPrSL72Qw40G8LG/hCUNjnAAJeBzr2
+ S79vGN6cSfA1IvSnL1wl1LpkXtX5Ke9lTqeWqfh1bb1U4yLS8PgJlhdQYa30bIzMKSio YA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by aserp2130.oracle.com with ESMTP id 37u1hbrda6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 16 Apr 2021 08:09:54 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13G80gTT002449;
+ Fri, 16 Apr 2021 08:09:53 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+ by aserp3030.oracle.com with ESMTP id 37unkttprp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 16 Apr 2021 08:09:52 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+ by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13G89oV9006168;
+ Fri, 16 Apr 2021 08:09:50 GMT
+Received: from kadam (/102.36.221.92) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Fri, 16 Apr 2021 01:09:50 -0700
+Date: Fri, 16 Apr 2021 11:09:41 +0300
+From: Dan Carpenter <dan.carpenter@oracle.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc: Initialize local variable fdt to NULL in
+ elf64_load()
+Message-ID: <20210416080941.GO6048@kadam>
+References: <20210415191437.20212-1-nramas@linux.microsoft.com>
+ <4edb1433-4d1e-5719-ec9c-fd232b7cf71f@linux.microsoft.com>
+ <87eefag241.fsf@linkitivity.dja.id.au>
+ <f82a9fe2-3254-3f25-616c-10e56103bdc6@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <20210415134637.17770-1-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: rnJsI56rpExDF3Bo1wlmngO1NTDBBViL
-X-Proofpoint-ORIG-GUID: VhrjLmthWVmM633LBBbNsjhsOjnPESOb
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-15_11:2021-04-15,
- 2021-04-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 bulkscore=0
- adultscore=0 mlxscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104060000 definitions=main-2104160056
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f82a9fe2-3254-3f25-616c-10e56103bdc6@csgroup.eu>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9955
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxlogscore=999
+ adultscore=0 phishscore=0 malwarescore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104160060
+X-Proofpoint-GUID: 6HXQ_LEuwfVp63QXRqzWQcS2rPDaKaDw
+X-Proofpoint-ORIG-GUID: 6HXQ_LEuwfVp63QXRqzWQcS2rPDaKaDw
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9955
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ priorityscore=1501
+ clxscore=1011 adultscore=0 mlxlogscore=999 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104160061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,77 +98,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, Paul Mackerras <paulus@samba.org>
+Cc: devicetree@vger.kernel.org, kbuild-all@lists.01.org, lkp@intel.com,
+ robh@kernel.org, Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bauerman@linux.ibm.com,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/15/21 7:16 PM, Andy Shevchenko wrote:
-> Parse to and export from UUID own type, before dereferencing.
-> This also fixes wrong comment (Little Endian UUID is something else)
-> and should fix Sparse warnings about assigning strict types to POD.
+On Fri, Apr 16, 2021 at 09:00:12AM +0200, Christophe Leroy wrote:
 > 
-> Fixes: 43001c52b603 ("powerpc/papr_scm: Use ibm,unit-guid as the iset cookie")
-> Fixes: 259a948c4ba1 ("powerpc/pseries/scm: Use a specific endian format for storing uuid from the device tree")
-> Cc: Oliver O'Halloran <oohall@gmail.com>
-> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> Not tested
->   arch/powerpc/platforms/pseries/papr_scm.c | 13 ++++++++-----
->   1 file changed, 8 insertions(+), 5 deletions(-)
 > 
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index ae6f5d80d5ce..4366e1902890 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -1085,8 +1085,9 @@ static int papr_scm_probe(struct platform_device *pdev)
->   	u32 drc_index, metadata_size;
->   	u64 blocks, block_size;
->   	struct papr_scm_priv *p;
-> +	u8 uuid_raw[UUID_SIZE];
->   	const char *uuid_str;
-> -	u64 uuid[2];
-> +	uuid_t uuid;
->   	int rc;
->   
->   	/* check we have all the required DT properties */
-> @@ -1129,16 +1130,18 @@ static int papr_scm_probe(struct platform_device *pdev)
->   	p->hcall_flush_required = of_property_read_bool(dn, "ibm,hcall-flush-required");
->   
->   	/* We just need to ensure that set cookies are unique across */
-> -	uuid_parse(uuid_str, (uuid_t *) uuid);
-> +	uuid_parse(uuid_str, &uuid);
-> +
->   	/*
->   	 * cookie1 and cookie2 are not really little endian
-> -	 * we store a little endian representation of the
-> +	 * we store a raw buffer representation of the
->   	 * uuid str so that we can compare this with the label
->   	 * area cookie irrespective of the endian config with which
->   	 * the kernel is built.
->   	 */
-> -	p->nd_set.cookie1 = cpu_to_le64(uuid[0]);
-> -	p->nd_set.cookie2 = cpu_to_le64(uuid[1]);
-> +	export_uuid(uuid_raw, &uuid);
-> +	p->nd_set.cookie1 = get_unaligned_le64(&uuid_raw[0]);
-> +	p->nd_set.cookie2 = get_unaligned_le64(&uuid_raw[8]);
->   
-
-ok that does the equivalent of cpu_to_le64 there. So we are good. But 
-the comment update is missing the details why we did that 
-get_unaligned_le64. Maybe raw buffer representation is the correct term?
-Should we add an example in the comment. ie,
-
-/*
-  * Historically we stored the cookie in the below format.
-for a uuid str 72511b67-0b3b-42fd-8d1d-5be3cae8bcaa
-cookie1 was  0xfd423b0b671b5172 cookie2 was 0xaabce8cae35b1d8d
-*/
-
-
-
->   	/* might be zero */
->   	p->metadata_size = metadata_size;
+> Le 16/04/2021 à 08:44, Daniel Axtens a écrit :
+> > Hi Lakshmi,
+> > 
+> > > On 4/15/21 12:14 PM, Lakshmi Ramasubramanian wrote:
+> > > 
+> > > Sorry - missed copying device-tree and powerpc mailing lists.
+> > > 
+> > > > There are a few "goto out;" statements before the local variable "fdt"
+> > > > is initialized through the call to of_kexec_alloc_and_setup_fdt() in
+> > > > elf64_load(). This will result in an uninitialized "fdt" being passed
+> > > > to kvfree() in this function if there is an error before the call to
+> > > > of_kexec_alloc_and_setup_fdt().
+> > > > 
+> > > > Initialize the local variable "fdt" to NULL.
+> > > > 
+> > I'm a huge fan of initialising local variables! But I'm struggling to
+> > find the code path that will lead to an uninit fdt being returned...
+> > 
+> > The out label reads in part:
+> > 
+> > 	/* Make kimage_file_post_load_cleanup free the fdt buffer for us. */
+> > 	return ret ? ERR_PTR(ret) : fdt;
+> > 
+> > As far as I can tell, any time we get a non-zero ret, we're going to
+> > return an error pointer rather than the uninitialised value...
+> 
+> I don't think GCC is smart enough to detect that.
 > 
 
+We disabled uninitialized variable checking for GCC.
+
+But actually is something that has been on my mind recently.  Smatch is
+supposed to parse this correctly but there is a bug that affects powerpc
+and I don't know how to debug it.  The kbuild bot is doing cross
+platform compiles but I don't have one set up on myself.  Could someone
+with Smatch installed test something for me?
+
+Or if you don't have Smatch installed then you should definitely install
+it.  :P
+https://www.spinics.net/lists/smatch/msg00568.html
+
+Apply the patch from below and edit the path to point to the correct
+directory.  Then run kchecker and email me the output?
+
+~/path/to/smatch_scripts/kchecker arch/powerpc/kernel/hw_breakpoint.c
+
+regads,
+dan carpenter
+
+diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+index 8fc7a14e4d71..f2dfba54e14d 100644
+--- a/arch/powerpc/kernel/hw_breakpoint.c
++++ b/arch/powerpc/kernel/hw_breakpoint.c
+@@ -167,13 +167,19 @@ static bool can_co_exist(struct breakpoint *b, struct perf_event *bp)
+ 	return !(alternate_infra_bp(b, bp) && bp_addr_range_overlap(b->bp, bp));
+ }
+ 
++#include "/home/XXX/path/to/smatch/check_debug.h"
+ static int task_bps_add(struct perf_event *bp)
+ {
+ 	struct breakpoint *tmp;
+ 
+ 	tmp = alloc_breakpoint(bp);
+-	if (IS_ERR(tmp))
++	__smatch_about(tmp);
++	__smatch_debug_on();
++	if (IS_ERR(tmp)) {
++		__smatch_debug_off();
++		__smatch_about(tmp);
+ 		return PTR_ERR(tmp);
++	}
+ 
+ 	list_add(&tmp->list, &task_bps);
+ 	return 0;
