@@ -2,68 +2,105 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AF93618F2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 06:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D97EB3618F8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 06:39:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FM3Kc3xk5z3c0l
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 14:35:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FM3QS5XYxz3c0f
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 14:39:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=SeofBIy3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YYuMSPze;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2f;
- helo=mail-io1-xd2f.google.com; envelope-from=tony.ambardar@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=SeofBIy3; dkim-atps=neutral
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com
- [IPv6:2607:f8b0:4864:20::d2f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=YYuMSPze; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FM3K70C1Dz30Dl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 14:34:48 +1000 (AEST)
-Received: by mail-io1-xd2f.google.com with SMTP id k25so26492542iob.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Apr 2021 21:34:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Wj0LmQcX4T3RD/LCUSwlZuN9U0k4EZ8z0GPjE5eqJ+c=;
- b=SeofBIy31lvaGo4ip2O0oyx2LsxzePZb/9lOB5C9/D+k6qqrK4+LfDdJT4Mtoj5Rw9
- QPXKrV/lFBRuv/SJ5LnbvZBDIK6pm+jc6J4mvF8ccSsB6avWE0IHq6EbS2DvYJZXC/jm
- i0ta7IKIkkgq/MX5hpCxGaA7mixRoz0T2cZ8dMDtx5RrFgFSteRq5nns1W2HlOoVv2fG
- LB/cwCQ6SO0DLfWqoHzZbzqBqZwM5zF+snorjJSGY8KpJBvNQ+cni0oeEJRFHot9ovle
- tlVN1aCCYLMa49lJ3RxGzhSTGdpbFQmRearzZmcvCGKONJuOWN4MllJizUsi3PIGCLax
- i39A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Wj0LmQcX4T3RD/LCUSwlZuN9U0k4EZ8z0GPjE5eqJ+c=;
- b=fyoOr/fWLZ3QJXBzuuPdy4IMFgTIJasJr0T6U4c/hQrr+Rp8IjOLaWAYyL30i3bzwf
- 5nTW1dX3piRlwUKsaW79zd2r9MeHwcnN11Uq8ATaC2YnUePPq/y+uTQzOdPaOvZJmMLT
- 2psB4Vckabkad56U18y8/Ow6/Y9R79g38zkaLfqueSdo6E56q5zPBRi2oqO7U/eN+p9l
- zMvxFr4L2T7VQ/0i9MLx1GgRiWKvnqpezxs5pdounX8Bpc+vyWYYcBXKKKTzzCrkiL3p
- KOJm86OlhLHcRF3cPGaLEQDlX0deM5hbq6NCBbhibGPo6T50Q9Ie928VaSXiyPzzRggf
- P0zg==
-X-Gm-Message-State: AOAM530bpQNcGC3KAdSMvgYp0IaAIEhQfcii6GrtnkpMFivHMrtOvjT5
- WH9T7KWl0m8Py44SKG0un0QHHOQDTMoNEGhfJkk=
-X-Google-Smtp-Source: ABdhPJytOPUOKUWf/eTtPMePF5L6DxvqY6VglSQ6/SSxDKWH2L5q4cw/KTLhsa10kl+UaBOEIqA4+If5fE/i8rTFXOI=
-X-Received: by 2002:a5d:8ad2:: with SMTP id e18mr2068967iot.51.1618547685088; 
- Thu, 15 Apr 2021 21:34:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FM3Q10DmWz30DF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 14:39:04 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13G4Y3j9022685; Fri, 16 Apr 2021 00:38:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=Qg3sUk81HK+aS8G8kz99tD1f+4C08Ppu6ef3glezsJA=;
+ b=YYuMSPzeN9W+kwvAEKA7kOn9LX7MjuNZ9+epu7drmVlfmlaI/0Yjv6Zd71Aa51NX0iIw
+ 625eZBEN0L2FGzTHHRP3jaksobM2W6DZplZkkitk6KtjpGle1yRORYKpPqQWn91tUxYR
+ A8O6lkutyqCuCn1x40MQ3Otv2mGoYblAMfGmYA6TyWzDjoNwbuotcbZ2UTVaaf9vVlA3
+ zvlcaYKALH68h4D25XilhwY9ABGxxkgo4BDbnn5km+c9x5D+vB47TC7P9LDv06zdp+sM
+ hEIjhqF7KxmgHNfefADKKjMG1k4boqyB19doUNj09XsAyPKHWsEN2JIEgvwkt5ibJuDw nA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37xbpu3m36-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 00:38:53 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13G4YjJl023816;
+ Fri, 16 Apr 2021 00:38:53 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 37xbpu3m1m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 00:38:52 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13G4bc0l019194;
+ Fri, 16 Apr 2021 04:38:51 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 37u3n8c7u4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Apr 2021 04:38:50 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 13G4cQXW36962698
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 16 Apr 2021 04:38:26 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B17F9A4051;
+ Fri, 16 Apr 2021 04:38:48 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D40CFA4040;
+ Fri, 16 Apr 2021 04:38:46 +0000 (GMT)
+Received: from [9.85.71.75] (unknown [9.85.71.75])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 16 Apr 2021 04:38:46 +0000 (GMT)
+Subject: Re: [PATCH v1 1/1] powerpc/papr_scm: Properly handle UUID types and
+ API
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20210415134637.17770-1-andriy.shevchenko@linux.intel.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <266684c6-e2c8-e19b-214d-809f16e79e7b@linux.ibm.com>
+Date: Fri, 16 Apr 2021 10:08:45 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-References: <20200917000757.1232850-1-Tony.Ambardar@gmail.com>
- <20200917135437.1238787-1-Tony.Ambardar@gmail.com>
-In-Reply-To: <20200917135437.1238787-1-Tony.Ambardar@gmail.com>
-From: Tony Ambardar <tony.ambardar@gmail.com>
-Date: Thu, 15 Apr 2021 21:34:36 -0700
-Message-ID: <CAPGftE-Q+Q479j7SikDBQLiM+VKbpXpRYnTeEJeAHeZrh_Ok2A@mail.gmail.com>
-Subject: Re: [PATCH v3] powerpc: fix EDEADLOCK redefinition error in
- uapi/asm/errno.h
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210415134637.17770-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0PxvgveLwHLjJYd3ClaSZb_jAgO70mft
+X-Proofpoint-GUID: EvIvTXs2ncKiE5pD93RJbCRHHo_9nM4i
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-15_11:2021-04-15,
+ 2021-04-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ mlxlogscore=999 clxscore=1011 suspectscore=0 adultscore=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 mlxscore=0 spamscore=0
+ phishscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104060000 definitions=main-2104160033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,90 +112,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- LKML <linux-kernel@vger.kernel.org>, Stable <stable@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Rosen Penev <rosenp@gmail.com>,
- bpf <bpf@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Oliver O'Halloran <oohall@gmail.com>, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Michael,
+On 4/15/21 7:16 PM, Andy Shevchenko wrote:
+> Parse to and export from UUID own type, before dereferencing.
+> This also fixes wrong comment (Little Endian UUID is something else)
+> and should fix Sparse warnings about assigning strict types to POD.
+> 
 
-The latest version of this patch addressed all feedback I'm aware of
-when submitted last September, and I've seen no further comments from
-reviewers since then.
+I am wondering whether this will break older namespace created. IIRC 
+that cpu_to_le64 was done to be backward compatible with namespaces 
+created before 259a948c4ba1.
 
-Could you please let me know where this stands and if anything further
-is needed?
+What we need to test is create a namespace in little endian kernel and 
+read it back in via big endian and vice versa. Also we need to make sure 
+we can read the already created namespace before this patch.
 
-Kind regards,
-Tony
 
-On Thu, 17 Sept 2020 at 06:54, Tony Ambardar <tony.ambardar@gmail.com> wrote:
->
-> A few archs like powerpc have different errno.h values for macros
-> EDEADLOCK and EDEADLK. In code including both libc and linux versions of
-> errno.h, this can result in multiple definitions of EDEADLOCK in the
-> include chain. Definitions to the same value (e.g. seen with mips) do
-> not raise warnings, but on powerpc there are redefinitions changing the
-> value, which raise warnings and errors (if using "-Werror").
->
-> Guard against these redefinitions to avoid build errors like the following,
-> first seen cross-compiling libbpf v5.8.9 for powerpc using GCC 8.4.0 with
-> musl 1.1.24:
->
->   In file included from ../../arch/powerpc/include/uapi/asm/errno.h:5,
->                    from ../../include/linux/err.h:8,
->                    from libbpf.c:29:
->   ../../include/uapi/asm-generic/errno.h:40: error: "EDEADLOCK" redefined [-Werror]
->    #define EDEADLOCK EDEADLK
->
->   In file included from toolchain-powerpc_8540_gcc-8.4.0_musl/include/errno.h:10,
->                    from libbpf.c:26:
->   toolchain-powerpc_8540_gcc-8.4.0_musl/include/bits/errno.h:58: note: this is the location of the previous definition
->    #define EDEADLOCK       58
->
->   cc1: all warnings being treated as errors
->
-> CC: Stable <stable@vger.kernel.org>
-> Reported-by: Rosen Penev <rosenp@gmail.com>
-> Signed-off-by: Tony Ambardar <Tony.Ambardar@gmail.com>
+> Fixes: 43001c52b603 ("powerpc/papr_scm: Use ibm,unit-guid as the iset cookie")
+> Fixes: 259a948c4ba1 ("powerpc/pseries/scm: Use a specific endian format for storing uuid from the device tree")
+> Cc: Oliver O'Halloran <oohall@gmail.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
-> v1 -> v2:
->  * clean up commit description formatting
->
-> v2 -> v3: (per Michael Ellerman)
->  * drop indeterminate 'Fixes' tags, request stable backports instead
-> ---
->  arch/powerpc/include/uapi/asm/errno.h       | 1 +
->  tools/arch/powerpc/include/uapi/asm/errno.h | 1 +
->  2 files changed, 2 insertions(+)
->
-> diff --git a/arch/powerpc/include/uapi/asm/errno.h b/arch/powerpc/include/uapi/asm/errno.h
-> index cc79856896a1..4ba87de32be0 100644
-> --- a/arch/powerpc/include/uapi/asm/errno.h
-> +++ b/arch/powerpc/include/uapi/asm/errno.h
-> @@ -2,6 +2,7 @@
->  #ifndef _ASM_POWERPC_ERRNO_H
->  #define _ASM_POWERPC_ERRNO_H
->
-> +#undef EDEADLOCK
->  #include <asm-generic/errno.h>
->
->  #undef EDEADLOCK
-> diff --git a/tools/arch/powerpc/include/uapi/asm/errno.h b/tools/arch/powerpc/include/uapi/asm/errno.h
-> index cc79856896a1..4ba87de32be0 100644
-> --- a/tools/arch/powerpc/include/uapi/asm/errno.h
-> +++ b/tools/arch/powerpc/include/uapi/asm/errno.h
-> @@ -2,6 +2,7 @@
->  #ifndef _ASM_POWERPC_ERRNO_H
->  #define _ASM_POWERPC_ERRNO_H
->
-> +#undef EDEADLOCK
->  #include <asm-generic/errno.h>
->
->  #undef EDEADLOCK
-> --
-> 2.25.1
->
+> Not tested
+>   arch/powerpc/platforms/pseries/papr_scm.c | 13 ++++++++-----
+>   1 file changed, 8 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index ae6f5d80d5ce..4366e1902890 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -1085,8 +1085,9 @@ static int papr_scm_probe(struct platform_device *pdev)
+>   	u32 drc_index, metadata_size;
+>   	u64 blocks, block_size;
+>   	struct papr_scm_priv *p;
+> +	u8 uuid_raw[UUID_SIZE];
+>   	const char *uuid_str;
+> -	u64 uuid[2];
+> +	uuid_t uuid;
+>   	int rc;
+>   
+>   	/* check we have all the required DT properties */
+> @@ -1129,16 +1130,18 @@ static int papr_scm_probe(struct platform_device *pdev)
+>   	p->hcall_flush_required = of_property_read_bool(dn, "ibm,hcall-flush-required");
+>   
+>   	/* We just need to ensure that set cookies are unique across */
+> -	uuid_parse(uuid_str, (uuid_t *) uuid);
+> +	uuid_parse(uuid_str, &uuid);
+> +
+>   	/*
+>   	 * cookie1 and cookie2 are not really little endian
+> -	 * we store a little endian representation of the
+> +	 * we store a raw buffer representation of the
+>   	 * uuid str so that we can compare this with the label
+>   	 * area cookie irrespective of the endian config with which
+>   	 * the kernel is built.
+>   	 */
+> -	p->nd_set.cookie1 = cpu_to_le64(uuid[0]);
+> -	p->nd_set.cookie2 = cpu_to_le64(uuid[1]);
+> +	export_uuid(uuid_raw, &uuid);
+> +	p->nd_set.cookie1 = get_unaligned_le64(&uuid_raw[0]);
+> +	p->nd_set.cookie2 = get_unaligned_le64(&uuid_raw[8]);
+>   
+>   	/* might be zero */
+>   	p->metadata_size = metadata_size;
+> 
+
