@@ -1,62 +1,163 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A956362C88
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 03:01:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C27362C8D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 03:01:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMZX52BBDz3cBF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 11:01:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMZXg2cmBz3c6B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 11:01:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Uf7m8Z8p;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=fb.com header.i=@fb.com header.a=rsa-sha256 header.s=facebook header.b=hFsKX5fI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Uf7m8Z8p; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=fb.com
+ (client-ip=67.231.145.42; helo=mx0a-00082601.pphosted.com;
+ envelope-from=prvs=37402b7ba9=yhs@fb.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=fb.com header.i=@fb.com header.a=rsa-sha256
+ header.s=facebook header.b=hFsKX5fI; dkim-atps=neutral
+X-Greylist: delayed 2026 seconds by postgrey-1.36 at boromir;
+ Sat, 17 Apr 2021 02:13:49 AEST
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com
+ [67.231.145.42])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMKdS0C63z301B
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 01:19:56 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E56786101E
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 15:19:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1618586392;
- bh=pSsgz6SFE9awjWhpCd9doKdNFULnoUddJE0eDHwlPEw=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=Uf7m8Z8ptnraoZ51IQdKXyFPpb17ObjRbvh/tgHJQQ5o+ciQAAcW4tbcnun59sBJX
- Ov85d36wXd57lDyw06gGeyqcFbb5FjxK1gFC7Qrxt0siWMpBPxslLI1Ib7jRn6v++F
- cAmJS6suNmYyLsln2n1OJnlvyXwMidQQNjPAbPQs7MfkhM0fJUKSB+nyMr8L4qzQud
- HTwRuAwiftEcwCLZDIRxIKUVRJ/SoYxXJ/sWW/PMvfAdr8QdP7WvJBtbdVkTfMRnMB
- pphfcPjJEo4hhDegHATnmlmSQaHF3XNmwJ/bD1K3yRsXX8ChKcHmEOFBr928TWvaEy
- TDNKkp8iMeOHg==
-Received: by mail-qv1-f46.google.com with SMTP id i9so13411166qvo.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 08:19:52 -0700 (PDT)
-X-Gm-Message-State: AOAM533q/H23BgRSfOOpCoTjCY0ihbfM/jp1XeXaxc3CjIgC+xxXwMm7
- e7HTeRTreazbkDZ9hSod7ZuJz16zGGSN0W2W+A==
-X-Google-Smtp-Source: ABdhPJwFV5j0PpR0OOvbKTHrtQGM0/UHlnjLPz7IjIHFauq3IAwfsuj1+lSbzphYfDXiggRtdMYLzMTYnQvOIyCHQj8=
-X-Received: by 2002:ad4:5a07:: with SMTP id ei7mr8951384qvb.50.1618586391992; 
- Fri, 16 Apr 2021 08:19:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMLqd5vc6z3bTD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 02:13:48 +1000 (AEST)
+Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
+ by mx0a-00082601.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13GFZdHO025560; Fri, 16 Apr 2021 08:39:30 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=facebook;
+ bh=yFiKKtK1+hkiAuT0g442sJ0xzL1mtHVUUVjyCLo1AzI=;
+ b=hFsKX5fIDG7ELXjP4+8mZDCWKwaB7VLohzzKoUrGxGvQ2QWy+UZ0ka1RpG5Zfj8jLhmZ
+ fAFOYmk7ee2WWxGKPJb4pEVy0CPbuk7oKYxAii1i1lj+u+gSXti15MnZNQUdnjxeyoWZ
+ 6GgkV181YINWcN2JgiIAzfJNIzf4IO8xIDw= 
+Received: from maileast.thefacebook.com ([163.114.130.16])
+ by mx0a-00082601.pphosted.com with ESMTP id 37yb9y0sng-5
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+ Fri, 16 Apr 2021 08:39:29 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (100.104.31.183)
+ by o365-in.thefacebook.com (100.104.36.102) with Microsoft SMTP
+ Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 16 Apr 2021 08:39:27 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fAAMouYlVtapTsZxwpMk7VIyNwZcb31LtFDxX4sR5KJIZ4dixDyYxosdgJfLmK3nzyaIU9P5vVnTj4Zq8pMSC7pwZdxJ8T5ZisatzSM3gZr8DO7f85p4Kr5sREhH6NHPg2eCelVlDbAqiXelpBWP2LR+qVLmu+ydvjeFqpZ7Jmq4RqHyHR2RPOcqPJJYFldICA8WmfW4K8GMZSRBhWIr2kIpfqdexRXFxKYELx0Sfa/QucrMUgL7rr+7FugHI0sMhedHuoo+aYm0EIxFoKbZp0uwszhjetJWtjI4aEai0CaPnR+bHcWupJL6kkFtgd31MuD3aVs9Ix8uU5Zq6szDLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yFiKKtK1+hkiAuT0g442sJ0xzL1mtHVUUVjyCLo1AzI=;
+ b=aRQQYYT9bR1IauX+CpIIZ7lvJEJjdUk0IUlNUnNQuuWRtvG1c8VWPrg9QuxQpJF1X5O/4uBa4/EEG90Bsuk9qDBH3WTQBNWxwvz+ugZWmQEz7JmTsQEhcsDZwfg0nkdcawF7zH9eky+3lBsqbCrLGyUZtZNPbeke++9MNvmRQ6wWWwEXJCiyHTVd4/njCP84E0kJGfS6dWOO4g0dcQlITp4p61/ULc24qdIGKkXZ7IBDaxekLznGwltjqfoXyWRqiyckLcvYBL7zj687uDGr5MuShJtFgHEuQZ+aIPP2+xU0AThiLVp2x7K/wgQHbUwMMSaVzCVTaGf0mIbKPJuF8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fb.com; dmarc=pass action=none header.from=fb.com; dkim=pass
+ header.d=fb.com; arc=none
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=fb.com;
+Received: from SN6PR1501MB2064.namprd15.prod.outlook.com (2603:10b6:805:d::27)
+ by SN6PR1501MB4096.namprd15.prod.outlook.com (2603:10b6:805:53::23)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4020.21; Fri, 16 Apr
+ 2021 15:39:25 +0000
+Received: from SN6PR1501MB2064.namprd15.prod.outlook.com
+ ([fe80::f433:fd99:f905:8912]) by SN6PR1501MB2064.namprd15.prod.outlook.com
+ ([fe80::f433:fd99:f905:8912%3]) with mapi id 15.20.3999.038; Fri, 16 Apr 2021
+ 15:39:25 +0000
+Subject: Re: [PATCH v2] tools: do not include scripts/Kbuild.include
+To: Masahiro Yamada <masahiroy@kernel.org>, <linux-kbuild@vger.kernel.org>
+References: <20210416130051.239782-1-masahiroy@kernel.org>
+From: Yonghong Song <yhs@fb.com>
+Message-ID: <7e449775-7e57-384f-8d96-a32f651c2ff0@fb.com>
+Date: Fri, 16 Apr 2021 08:39:19 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.9.1
+In-Reply-To: <20210416130051.239782-1-masahiroy@kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+X-Originating-IP: [2620:10d:c090:400::5:7e08]
+X-ClientProxiedBy: MW4PR02CA0028.namprd02.prod.outlook.com
+ (2603:10b6:303:80::28) To SN6PR1501MB2064.namprd15.prod.outlook.com
+ (2603:10b6:805:d::27)
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [IPv6:2620:10d:c085:21d6::112e] (2620:10d:c090:400::5:7e08) by
+ MW4PR02CA0028.namprd02.prod.outlook.com (2603:10b6:303:80::28) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4042.18 via Frontend Transport; Fri, 16 Apr 2021 15:39:22 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 73019d81-c0f8-40bb-2576-08d900edd01d
+X-MS-TrafficTypeDiagnostic: SN6PR1501MB4096:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SN6PR1501MB4096BCF66F47839B45EBD760D34C9@SN6PR1501MB4096.namprd15.prod.outlook.com>
+X-FB-Source: Internal
+X-MS-Oob-TLC-OOBClassifiers: OLM:632;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: bdWa4frvnXP+f1ftHF6UxntSVmZ/hwGYWWStCl4PB0HMzkkRi/jZHKw7qAeAH3olxfsIyczu8PBrvswNpoN5GVgm7RHVWhkz/JF5S7BEmjMD4wllSzyXooesOZBjoNXczBGsoKT+HgNu5PnT9Zrjep3HPXSt2V8zKTNfQERlRDAjpWCqsg6mS1JFcin+kD6Eh9NQGjk5USOSXQkuM/oPBOPxQm+hKo+9OLmf5vBPpEhj/YYaLVuy8pAi6oRvCyiEh9zjze4lmj59lsXbz4HjsBy7ItqaACZDmK9bXbQf7G1nNspHztgIXp6r9WcE2oyoTP8jl2rEgz9ahzP8WczDfnBwytnVk0Dtw3tJXXwJiS8d8E917514inpWUatEVknMK7+mxjWxsnijHCUNNNbkHcFZB7bhwiTc98BVxYFxFeJIaoVd9C5DYQqjrDahlSfLcforiFMmuEt1MXshb2kCmVR6+bJ4Djhr3mcfkDzqsN7vaasWge+PiBAhyyotNzkGzOo5dlpK6SeR1dvGVLhC2Xb9PDFlM8RdnJOZr4ADu9mr0b7p7RUbBgYOwIEhpzC9JLddnP24e2OFqmfUc/OBtlnEI3ccJJUPp+4JqeODJ7DEnu5RQgVuWYiJ5llOdDIp4X6Slrtw4EB8dX65OanVV19QYYn/BclTO+YUaE1JuPmaPbm3QC5QZfyrRCv9uzA3sI6iDMFAdVv80bOSLRjRt2XMM/lxUGkyMNJIo0ssKeVMJO86NY83HST63K65ZzQjS57BACZC3BCzQrconkmEhQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SN6PR1501MB2064.namprd15.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(396003)(346002)(376002)(39860400002)(366004)(136003)(8936002)(16526019)(38100700002)(966005)(31686004)(54906003)(66476007)(186003)(8676002)(36756003)(83380400001)(52116002)(478600001)(2616005)(2906002)(5660300002)(4326008)(53546011)(6666004)(316002)(31696002)(7416002)(66946007)(66556008)(6486002)(86362001)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?RmtlR1hkMm1udlc5VjNGWVZuSnlTTVJtYnhvZjRQSjRNWm0zMGo3QlV0L05D?=
+ =?utf-8?B?QkJ0SjNicGRFRGNOUGhKTjBNQ2crQ1cyc0trYmEvdEFta1lETjh1VnQ5dnJE?=
+ =?utf-8?B?eXFnMjJBN3ZQOU9XRHVjWVhNRjBOanBGWDl6bm9NRG5xdXVsMENCUTU4SmhV?=
+ =?utf-8?B?RHIvaFBrekxJQTNVZ1NWRTZQUU9QcFJpelJSaUpzZ29RcFl1S1lhc1Rrc09y?=
+ =?utf-8?B?emlNdm15dkNqeTAxaUJwYkxreVhOdks5V2pkYVNiODE1Q0dUWG1UWVdTcGFY?=
+ =?utf-8?B?QldIdENEU2RabEVBdE0vV1p5dVVxWkM3M0lqRjUrWFpjR08yd09lQU1jcEJJ?=
+ =?utf-8?B?S2FRdFB2UzVaODdCZ0hXOHJhRk1yOXNiZk1CazFLTDBZcXhmUWhqSkt3eVVr?=
+ =?utf-8?B?ZVpxSUxraEtUUEZwb0ZFSkdvWVN3RXpGczJUVEJMVGlCVUtqTjFUcE0rWkFt?=
+ =?utf-8?B?ejhJMWhEcEJ1Y0VDSDdwN1FLbUtidlFoYnJEdm9kb2NkODNtQnprd2UxWXVX?=
+ =?utf-8?B?M1oxd2hNVk5ocGpKdlMvbGF6N3lRUG4yMkIwQTRxd0xoeXMyU0NSa1c5cnU1?=
+ =?utf-8?B?dk1tQmdDNytPbVBWSGV4VVlzVTlMRjN4am5yYUhiZmlHazltdUNCYUtJbktG?=
+ =?utf-8?B?Y2VDNTdsTDg3SGwxMUtuOUdkbHJpN2tCUDE1UUt2d3QyMkpXVkdOYTA2MWw5?=
+ =?utf-8?B?cEovR1AzNEZIaTNxbTkrRm1taVJzbWpXZk54WEpmZVMyUCtzRjlLZ2NOM3VK?=
+ =?utf-8?B?VkZKc2c3Rk5sanBvL3R1VHhMRFJxR250OVJKVUlBS3RaQlgrVFZoNFlPUnZU?=
+ =?utf-8?B?WjFwbHpPMjdjU0ltRDBwVkJqdnBuaVFRanRWYzU4bnhWSlN6RGtBbjNlVzZ0?=
+ =?utf-8?B?U1NBNlNFRFp0SGY0cGZ2OU1mMzBCbDcxNTZQajBLMmFrbzJhek1vMFlSMjgr?=
+ =?utf-8?B?VkdOVW1mT0hvemlrY3hFZ1ludUtKODJDSWtsYWt3N3VVMjhXcEc1MXRkd1d1?=
+ =?utf-8?B?clBVVHZKK0F6NElpenl6QUhUa2JWRTNvbVMxeTRkVjJzRlBXRGhPalFUcWlO?=
+ =?utf-8?B?MXd5M3ZLSjhYR1Q0aDNDaEJwamtySzB6L0VteW1lenczMUFBczRKQVd6Y0N0?=
+ =?utf-8?B?ZDRIOU1EZk5BeUNGRFdoK1dqQktCZC94NGx5UWwrbU9zTi83SGJwQmIrYlZ1?=
+ =?utf-8?B?TEtlTmhObllDU2R4Ukp2SFp6YjJJWlpRNVc2V01jRkN3aUtCK3NyT08zaTRF?=
+ =?utf-8?B?bXZJUnRLTkRucnM0bEFyclpmeUtBNFlmdFJWOThyY3l2d3BNUi9Vc3VZc2NO?=
+ =?utf-8?B?bHFlT2pYODBBalZYL3V0S1RobGNYd1ZNTHhmcEhXcitsQU9JajhXeVZmQUcz?=
+ =?utf-8?B?THRCbGkwSktIVXFZZ2JsRXJpMWpzWENlLzB5SFVjQWJ2TWxpaThvREpUS2hl?=
+ =?utf-8?B?L01LZHY4dVlPVllDZDJqQzYvdlVUazBxRGIwZWNxeUxtT1VGTndibnJNMmNj?=
+ =?utf-8?B?REJuaVU2YWNHOEQwU0V2S0czUTN2WUY0UGNPLzZZMDRvN0c5YWpOdzUvVTNF?=
+ =?utf-8?B?WkVmMTFNT1hFSjEreGdnaEthOCtybkphN0c3YkVrVEZQSGJmRmJKTm1zL2M4?=
+ =?utf-8?B?bVZweTNONU5PTmt3bzNXOStLdkhBRzNPMTFKOUlaZzlNWFIvTUFOdXJmcFNp?=
+ =?utf-8?B?WlFDV3ExMVZuNEYrRkI2bTJLV3NZc3ptRklaaHNhL2ZnMy8wS2xha2hidVhH?=
+ =?utf-8?B?MGh5dm5xTU5hY3AyVHJNMUlEdlMzSzROYUpUUnQwdDRFSzJrbUpFK1BGdDdZ?=
+ =?utf-8?B?ZUlMMWd0bHRGR0Z3SElqdz09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73019d81-c0f8-40bb-2576-08d900edd01d
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR1501MB2064.namprd15.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2021 15:39:24.9815 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: frQYsBVKrAJuF7vR7Ase/SOP0L9L2ECQ258+t52vP1ugcNmlbB5gbRxycKzqTur9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR1501MB4096
+X-OriginatorOrg: fb.com
+X-Proofpoint-ORIG-GUID: k9WzYygd2JGmHK6poT92UlZawSVUkF2v
+X-Proofpoint-GUID: k9WzYygd2JGmHK6poT92UlZawSVUkF2v
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20210412174718.17382-1-michael@walle.cc>
- <20210412174718.17382-3-michael@walle.cc>
- <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org>
- <8157eba9317609294da80472622deb28@walle.cc>
-In-Reply-To: <8157eba9317609294da80472622deb28@walle.cc>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Fri, 16 Apr 2021 10:19:40 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
-Message-ID: <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem() for
- non-platform devices
-To: Michael Walle <michael@walle.cc>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-16_08:2021-04-16,
+ 2021-04-16 signatures=0
+X-Proofpoint-Spam-Details: rule=fb_default_notspam policy=fb_default score=0
+ malwarescore=0
+ spamscore=0 priorityscore=1501 phishscore=0 adultscore=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 suspectscore=0 impostorscore=0
+ mlxlogscore=999 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104060000 definitions=main-2104160114
+X-FB-Internal: deliver
 X-Mailman-Approved-At: Sat, 17 Apr 2021 11:00:18 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -69,179 +170,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Paul Mackerras <paulus@samba.org>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
- "moderated list:ARM/STM32 ARCHITECTURE"
- <linux-stm32@st-md-mailman.stormreply.com>,
- Jerome Brunet <jbrunet@baylibre.com>, Neil Armstrong <narmstrong@baylibre.com>,
- Michal Simek <michal.simek@xilinx.com>, Jose Abreu <joabreu@synopsys.com>,
- NXP Linux Team <linux-imx@nxp.com>, Mark Lee <Mark-MC.Lee@mediatek.com>,
- Hauke Mehrtens <hauke@hauke-m.de>, Sascha Hauer <s.hauer@pengutronix.de>,
- Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
- linux-omap <linux-omap@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-wireless <linux-wireless@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Vladimir Oltean <olteanv@gmail.com>,
- Claudiu Beznea <claudiu.beznea@microchip.com>,
- =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Chris Snook <chris.snook@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
- Gregory Clement <gregory.clement@bootlin.com>,
- Madalin Bucur <madalin.bucur@nxp.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Murali Karicheri <m-karicheri2@ti.com>, Yisen Zhuang <yisen.zhuang@huawei.com>,
- Alexandre Torgue <alexandre.torgue@st.com>, Wingman Kwok <w-kwok2@ti.com>,
- Sean Wang <sean.wang@mediatek.com>, Maxime Ripard <mripard@kernel.org>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
- Kalle Valo <kvalo@codeaurora.org>, Mirko Lindner <mlindner@marvell.com>,
- Fugang Duan <fugang.duan@nxp.com>,
- Bryan Whitehead <bryan.whitehead@microchip.com>,
- QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
- Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
- Taras Chornyi <tchornyi@marvell.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Kevin Hilman <khilman@baylibre.com>, Heiner Kallweit <hkallweit1@gmail.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Fabio Estevam <festevam@gmail.com>, Stanislaw Gruszka <stf_xl@wp.pl>,
- Florian Fainelli <f.fainelli@gmail.com>, linux-staging@lists.linux.dev,
- Chen-Yu Tsai <wens@csie.org>,
- "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE"
- <bcm-kernel-feedback-list@broadcom.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Grygorii Strashko <grygorii.strashko@ti.com>, Byungho An <bh74.an@samsung.com>,
- Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
- Vladimir Zapolskiy <vz@mleia.com>, John Crispin <john@phrozen.org>,
- Salil Mehta <salil.mehta@huawei.com>,
- Sergei Shtylyov <sergei.shtylyov@gmail.com>, linux-oxnas@groups.io,
- Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Helmut Schaa <helmut.schaa@googlemail.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- "open list:MEDIA DRIVERS FOR RENESAS - FCP"
- <linux-renesas-soc@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
- Russell King <linux@armlinux.org.uk>, Vadym Kochan <vkochan@marvell.com>,
- Jakub Kicinski <kuba@kernel.org>, Vivien Didelot <vivien.didelot@gmail.com>,
- Sunil Goutham <sgoutham@marvell.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- devicetree@vger.kernel.org,
- "moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Jernej Skrabec <jernej.skrabec@siol.net>, netdev <netdev@vger.kernel.org>,
- Nicolas Ferre <nicolas.ferre@microchip.com>, Li Yang <leoyang.li@nxp.com>,
- Stephen Hemminger <stephen@networkplumber.org>, Vinod Koul <vkoul@kernel.org>,
- Joyce Ooi <joyce.ooi@intel.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Felix Fietkau <nbd@nbd.name>
+Cc: Song Liu <songliubraving@fb.com>, kvm@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ Janosch Frank <frankja@linux.ibm.com>, Daniel Borkmann <daniel@iogearbox.net>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+ clang-built-linux@googlegroups.com, KP Singh <kpsingh@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, netdev@vger.kernel.org,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 16, 2021 at 2:30 AM Michael Walle <michael@walle.cc> wrote:
->
-> Am 2021-04-16 05:24, schrieb Benjamin Herrenschmidt:
-> > On Mon, 2021-04-12 at 19:47 +0200, Michael Walle wrote:
-> >>
-> >>  /**
-> >>   * of_get_phy_mode - Get phy mode for given device_node
-> >> @@ -59,15 +60,39 @@ static int of_get_mac_addr(struct device_node *np,
-> >> const char *name, u8 *addr)
-> >>  static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
-> >>  {
-> >>         struct platform_device *pdev = of_find_device_by_node(np);
-> >> +       struct nvmem_cell *cell;
-> >> +       const void *mac;
-> >> +       size_t len;
-> >>         int ret;
-> >>
-> >> -       if (!pdev)
-> >> -               return -ENODEV;
-> >> +       /* Try lookup by device first, there might be a
-> >> nvmem_cell_lookup
-> >> +        * associated with a given device.
-> >> +        */
-> >> +       if (pdev) {
-> >> +               ret = nvmem_get_mac_address(&pdev->dev, addr);
-> >> +               put_device(&pdev->dev);
-> >> +               return ret;
-> >> +       }
-> >> +
-> >
-> > This smells like the wrong band aid :)
-> >
-> > Any struct device can contain an OF node pointer these days.
->
-> But not all nodes might have an associated device, see DSA for example.
 
-I believe what Ben is saying and what I said earlier is going from dev
--> OF node is right and OF node -> dev is wrong. If you only have an
-OF node, then use an of_* function.
 
-> And as the name suggests of_get_mac_address() operates on a node. So
-> if a driver calls of_get_mac_address() it should work on the node. What
-> is wrong IMHO, is that the ethernet drivers where the corresponding
-> board
-> has a nvmem_cell_lookup registered is calling of_get_mac_address(node).
-> It should rather call eth_get_mac_address(dev) in the first place.
->
-> One would need to figure out if there is an actual device (with an
-> assiciated of_node), then call eth_get_mac_address(dev) and if there
-> isn't a device call of_get_mac_address(node).
+On 4/16/21 6:00 AM, Masahiro Yamada wrote:
+> Since commit d9f4ff50d2aa ("kbuild: spilt cc-option and friends to
+> scripts/Makefile.compiler"), some kselftests fail to build.
+> 
+> The tools/ directory opted out Kbuild, and went in a different
+> direction. They copy any kind of files to the tools/ directory
+> in order to do whatever they want in their world.
+> 
+> tools/build/Build.include mimics scripts/Kbuild.include, but some
+> tool Makefiles included the Kbuild one to import a feature that is
+> missing in tools/build/Build.include:
+> 
+>   - Commit ec04aa3ae87b ("tools/thermal: tmon: use "-fstack-protector"
+>     only if supported") included scripts/Kbuild.include from
+>     tools/thermal/tmon/Makefile to import the cc-option macro.
+> 
+>   - Commit c2390f16fc5b ("selftests: kvm: fix for compilers that do
+>     not support -no-pie") included scripts/Kbuild.include from
+>     tools/testing/selftests/kvm/Makefile to import the try-run macro.
+> 
+>   - Commit 9cae4ace80ef ("selftests/bpf: do not ignore clang
+>     failures") included scripts/Kbuild.include from
+>     tools/testing/selftests/bpf/Makefile to import the .DELETE_ON_ERROR
+>     target.
+> 
+>   - Commit 0695f8bca93e ("selftests/powerpc: Handle Makefile for
+>     unrecognized option") included scripts/Kbuild.include from
+>     tools/testing/selftests/powerpc/pmu/ebb/Makefile to import the
+>     try-run macro.
+> 
+> Copy what they need into tools/build/Build.include, and make them
+> include it instead of scripts/Kbuild.include.
+> 
+> Link: https://lore.kernel.org/lkml/86dadf33-70f7-a5ac-cb8c-64966d2f45a1@linux.ibm.com/
+> Fixes: d9f4ff50d2aa ("kbuild: spilt cc-option and friends to scripts/Makefile.compiler")
+> Reported-by: Janosch Frank <frankja@linux.ibm.com>
+> Reported-by: Christian Borntraeger <borntraeger@de.ibm.com>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-Yes, I think we're all in agreement.
+LGTM although I see some tools Makefile directly added 
+".DELETE_ON_ERROR:" in their Makefile.
 
-> But I don't know if that is easy to figure out. Well, one could start
-> with just the device where nvmem_cell_lookup is used. Then we could
-> drop the workaround above.
-
-Start with the ones just passing dev.of_node directly:
-
-$ git grep 'of_get_mac_address(.*of_node)'
-drivers/net/ethernet/aeroflex/greth.c:          addr =
-of_get_mac_address(ofdev->dev.of_node);
-drivers/net/ethernet/altera/altera_tse_main.c:  macaddr =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/arc/emac_main.c:   mac_addr =
-of_get_mac_address(dev->of_node);
-drivers/net/ethernet/broadcom/bgmac-bcma.c:             mac =
-of_get_mac_address(bgmac->dev->of_node);
-drivers/net/ethernet/cavium/octeon/octeon_mgmt.c:       mac =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/ethoc.c:           mac =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/ezchip/nps_enet.c: mac_addr =
-of_get_mac_address(dev->of_node);
-drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c:  mac_addr =
-of_get_mac_address(ofdev->dev.of_node);
-drivers/net/ethernet/marvell/pxa168_eth.c:              mac_addr =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/marvell/sky2.c:    iap =
-of_get_mac_address(hw->pdev->dev.of_node);
-drivers/net/ethernet/mediatek/mtk_eth_soc.c:    mac_addr =
-of_get_mac_address(mac->of_node);
-drivers/net/ethernet/microchip/lan743x_main.c:  mac_addr =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/qualcomm/qca_spi.c:        mac =
-of_get_mac_address(spi->dev.of_node);
-drivers/net/ethernet/qualcomm/qca_uart.c:       mac =
-of_get_mac_address(serdev->dev.of_node);
-drivers/net/ethernet/wiznet/w5100-spi.c:        const void *mac =
-of_get_mac_address(spi->dev.of_node);
-drivers/net/ethernet/xilinx/xilinx_axienet_main.c:      mac_addr =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/xilinx/xilinx_emaclite.c:  mac_address =
-of_get_mac_address(ofdev->dev.of_node);
-drivers/net/wireless/ralink/rt2x00/rt2x00dev.c: mac_addr =
-of_get_mac_address(rt2x00dev->dev->of_node);
-drivers/staging/octeon/ethernet.c:              mac =
-of_get_mac_address(priv->of_node);
-drivers/staging/wfx/main.c:             macaddr =
-of_get_mac_address(wdev->dev->of_node);
-net/ethernet/eth.c:             addr = of_get_mac_address(dev->of_node);
-
-Then this will find most of the rest:
-git grep -W 'of_get_mac_address([a-z]*)'| grep -E '(node|np)'
-
-Rob
+Acked-by: Yonghong Song <yhs@fb.com>
