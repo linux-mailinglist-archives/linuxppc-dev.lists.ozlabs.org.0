@@ -1,90 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FCDE361AB7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 09:41:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DE6361AC1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 09:45:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FM7SQ0Zzmz3c1m
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 17:41:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FM7Y246xGz3c1v
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Apr 2021 17:45:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=eQPVRVL+;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=evsmI4HO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=156.151.31.86; helo=userp2130.oracle.com;
- envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=eQPVRVL+; 
- dkim-atps=neutral
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::634;
+ helo=mail-pl1-x634.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=evsmI4HO; dkim-atps=neutral
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
+ [IPv6:2607:f8b0:4864:20::634])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FM7Rz3rY8z3bSj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 17:41:02 +1000 (AEST)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
- by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13G7XvJx008767;
- Fri, 16 Apr 2021 07:40:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=ljDSDK3Q1ImvITaEF0v+ltA3ZnYUagyVmRJFy5Xu9UU=;
- b=eQPVRVL+7ECrSdEhckrbFCa5aHAsjIujPsQ/dyeOJVCXiHl64BqkEcJ+yWTVXC4CofbD
- WUVMaCKrcSAuBL8YZz5HUrNjvXBbxiegHAvIqzgg+pBp8b91l7X2eSaC5bpQQZNzPPax
- 2ECyhwhUmZrvP3Ov2ddcYr+Q/ytzcqmQ7H8UIxuDYOAE2KTDHVRReEAmbG9hYfIfKV0l
- 2vDQkkuqhmxs2yzsaroG9vA+JNZkKu5Sb/06MLFTWN5PvrZPnt8fIGcKQGAmNoOWsBDC
- m7j48WooLDuaBeIfQepiGPwuDTsCYSn35XIfocqi9D3gymfOPWAi+AHK4sXRQRqksqvP Gw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by userp2130.oracle.com with ESMTP id 37u3err83p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Apr 2021 07:40:48 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13G7dp7K132935;
- Fri, 16 Apr 2021 07:40:47 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by aserp3020.oracle.com with ESMTP id 37unx43x6e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Apr 2021 07:40:46 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 13G7efs0010074;
- Fri, 16 Apr 2021 07:40:41 GMT
-Received: from kadam (/102.36.221.92) by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Fri, 16 Apr 2021 00:40:41 -0700
-Date: Fri, 16 Apr 2021 10:40:34 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: [PATCH] powerpc: Initialize local variable fdt to NULL in
- elf64_load()
-Message-ID: <20210416074034.GN6048@kadam>
-References: <20210415191437.20212-1-nramas@linux.microsoft.com>
- <4edb1433-4d1e-5719-ec9c-fd232b7cf71f@linux.microsoft.com>
- <87eefag241.fsf@linkitivity.dja.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FM7XX5ZwXz2yhf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 17:44:58 +1000 (AEST)
+Received: by mail-pl1-x634.google.com with SMTP id u7so11711327plr.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Apr 2021 00:44:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=t/id0wyOsCydqGS0W0OkKvZDNtBCnbXewdap74KCFaI=;
+ b=evsmI4HOr1qq2ei5rTm0AzM9kMGdLwNrZVOzqVMe9YJNqdV4KE6n1OgxENyX6ROqRg
+ 0LPfWPCLj1rqirHVcLEKQt98R/otnIOOObLnLoHzMWV2Qglv1XoS7tGwYMO3XPrTUKlf
+ 3mvNYOwVybmowto3dok07kwWkVKUgGe9xxJo4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=t/id0wyOsCydqGS0W0OkKvZDNtBCnbXewdap74KCFaI=;
+ b=tVS1Dtnaw8oEsVB4XU7CJcZOvYxfhnjncxInBU7vzBJvB0eleJtn4SpTcms+T2ykT8
+ 7a+pm4X5JccezOuUxqnL2A00pQbbHNmGT1U+1W+SnjfOU3002+wOCKOSGkaeV/6oSHjq
+ QUzquHH8tLZOqIb5alm8q/+0tHkKEH2WwkL+fzQTeWGnzT/LrQEly7waBp88BcO2jiqM
+ pkIfFc8ePkAsr7ZQF53z0nN1qPzuPqJD9RBcEaOi3HjOwFn8qNIFLLzF8lUhQX0NxxYB
+ 1hEtLcv+VYGQ9VvqThPeMAfXHxPQPfYCX0yz1Fz6wgN9uf71CpPz6x+CWPyAiCOO200j
+ 4ZKg==
+X-Gm-Message-State: AOAM531WCRhQdCctnQLg2mUOlSYLE1kGW4zHdlpACFXbWxr1ZQ3S2a4c
+ CQh/kDULNwKp+V/w/lxBJKpRNQ==
+X-Google-Smtp-Source: ABdhPJyO9GO4ANwRxneweRN1cyRwlum6KdXM9yjCH0cCY55PVeUsYcxZPRKvCOKYw/K3BaMxxNTMnw==
+X-Received: by 2002:a17:90a:fa84:: with SMTP id
+ cu4mr8452063pjb.2.1618559096458; 
+ Fri, 16 Apr 2021 00:44:56 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-111e-5c00-09c3-a49e-2955-78c6.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:9c3:a49e:2955:78c6])
+ by smtp.gmail.com with ESMTPSA id k20sm4001348pfa.34.2021.04.16.00.44.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 16 Apr 2021 00:44:55 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/2] powerpc/sstep: Add emulation support for
+ =?utf-8?B?4oCYc2V0YuKAmQ==?= instruction
+In-Reply-To: <767e53c4c27da024ca277e21ffcd0cff131f5c73.1618469454.git.sathvika@linux.vnet.ibm.com>
+References: <cover.1618469454.git.sathvika@linux.vnet.ibm.com>
+ <767e53c4c27da024ca277e21ffcd0cff131f5c73.1618469454.git.sathvika@linux.vnet.ibm.com>
+Date: Fri, 16 Apr 2021 17:44:52 +1000
+Message-ID: <875z0mfzbf.fsf@linkitivity.dja.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87eefag241.fsf@linkitivity.dja.id.au>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9955
- signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- suspectscore=0
- mlxscore=0 malwarescore=0 adultscore=0 bulkscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104160057
-X-Proofpoint-ORIG-GUID: PIKedz6Dm6ImVWbKw9yHjEjKggRYogvD
-X-Proofpoint-GUID: PIKedz6Dm6ImVWbKw9yHjEjKggRYogvD
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9955
- signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 clxscore=1011
- adultscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0
- impostorscore=0 suspectscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104160056
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,89 +80,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, kbuild-all@lists.01.org, lkp@intel.com,
- robh@kernel.org, Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bauerman@linux.ibm.com
+Cc: naveen.n.rao@linux.ibm.com,
+ Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 16, 2021 at 04:44:30PM +1000, Daniel Axtens wrote:
-> Hi Lakshmi,
-> 
-> > On 4/15/21 12:14 PM, Lakshmi Ramasubramanian wrote:
-> >
-> > Sorry - missed copying device-tree and powerpc mailing lists.
-> >
-> >> There are a few "goto out;" statements before the local variable "fdt"
-> >> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
-> >> elf64_load(). This will result in an uninitialized "fdt" being passed
-> >> to kvfree() in this function if there is an error before the call to
-> >> of_kexec_alloc_and_setup_fdt().
-> >> 
-> >> Initialize the local variable "fdt" to NULL.
-> >>
-> I'm a huge fan of initialising local variables!
+Sathvika Vasireddy <sathvika@linux.vnet.ibm.com> writes:
 
-Don't be!  It just disables static checker warnings and hides bugs.
-The kbuild emails are archived but the email is mangled and unreadable.
-https://www.mail-archive.com/kbuild@lists.01.org/msg06371.html
+> This adds emulation support for the following instruction:
+>    * Set Boolean (setb)
+>
+> Signed-off-by: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>
+> ---
+>  arch/powerpc/lib/sstep.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> index c6aebc149d14..263c613d7490 100644
+> --- a/arch/powerpc/lib/sstep.c
+> +++ b/arch/powerpc/lib/sstep.c
+> @@ -1964,6 +1964,18 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+>  			op->val = ~(regs->gpr[rd] | regs->gpr[rb]);
+>  			goto logical_done;
+>  
+> +		case 128:	/* setb */
+> +			if (!cpu_has_feature(CPU_FTR_ARCH_300))
+> +				goto unknown_opcode;
 
-I think maybe you're not on the most recent code.  In linux-next this
-code looks like:
+Ok, if I've understood correctly...
 
-arch/powerpc/kexec/elf_64.c
-    27  static void *elf64_load(struct kimage *image, char *kernel_buf,
-    28                          unsigned long kernel_len, char *initrd,
-    29                          unsigned long initrd_len, char *cmdline,
-    30                          unsigned long cmdline_len)
-    31  {
-    32          int ret;
-    33          unsigned long kernel_load_addr;
-    34          unsigned long initrd_load_addr = 0, fdt_load_addr;
-    35          void *fdt;
-    36          const void *slave_code;
-    37          struct elfhdr ehdr;
-    38          char *modified_cmdline = NULL;
-    39          struct kexec_elf_info elf_info;
-    40          struct kexec_buf kbuf = { .image = image, .buf_min = 0,
-    41                                    .buf_max = ppc64_rma_size };
-    42          struct kexec_buf pbuf = { .image = image, .buf_min = 0,
-    43                                    .buf_max = ppc64_rma_size, .top_down = true,
-    44                                    .mem = KEXEC_BUF_MEM_UNKNOWN };
-    45  
-    46          ret = kexec_build_elf_info(kernel_buf, kernel_len, &ehdr, &elf_info);
-    47          if (ret)
-    48                  goto out;
-                        ^^^^^^^^
-I really despise "goto out;" because freeing things which haven't been
-allocated is always dangerous.
+> +			ra = ra & ~0x3;
 
-[ snip ].
+This masks off the bits of RA that are not part of BTF:
+
+ra is in [0, 31] which is [0b00000, 0b11111]
+Then ~0x3 = ~0b00011
+ra = ra & 0b11100
+
+This gives us then,
+ra = btf << 2; or
+btf = ra >> 2;
+
+Let's then check to see if your calculations read the right fields.
+
+> +			if ((regs->ccr) & (1 << (31 - ra)))
+> +				op->val = -1;
+> +			else if ((regs->ccr) & (1 << (30 - ra)))
+> +				op->val = 1;
+> +			else
+> +				op->val = 0;
 
 
-   143  out:
-   144          kfree(modified_cmdline);
-   145          kexec_free_elf_info(&elf_info);
-                                     ^^^^^^^^
-There is a possibility that "elf_info" has holds uninitialized stack
-data if elf_read_ehdr() fails so that's probably fixing as well.  kexec()
-is root only so this can't be exploited.
+CR field:      7    6    5    4    3    2    1    0
+bit:          0123 0123 0123 0123 0123 0123 0123 0123
+normal bit #: 0.....................................31
+ibm bit #:   31.....................................0
 
-   146  
-   147          /*
-   148           * Once FDT buffer has been successfully passed to kexec_add_buffer(),
-   149           * the FDT buffer address is saved in image->arch.fdt. In that case,
-   150           * the memory cannot be freed here in case of any other error.
-   151           */
-   152          if (ret && !image->arch.fdt)
-   153                  kvfree(fdt);
-                               ^^^
-Uninitialized.
+If btf = 0, ra = 0, check normal bits 31 and 30, which are both in CR0.
+CR field:      7    6    5    4    3    2    1    0
+bit:          0123 0123 0123 0123 0123 0123 0123 0123
+                                                   ^^
 
-   154  
-   155          return ret ? ERR_PTR(ret) : NULL;
-   156  }
+If btf = 7, ra = 0b11100 = 28, so check normal bits 31-28 and 30-28,
+which are 3 and 2.
 
-regards,
-dan carpenter
+CR field:      7    6    5    4    3    2    1    0
+bit:          0123 0123 0123 0123 0123 0123 0123 0123
+                ^^
+
+If btf = 3, ra = 0b01100 = 12, for normal bits 19 and 18:
+
+CR field:      7    6    5    4    3    2    1    0
+bit:          0123 0123 0123 0123 0123 0123 0123 0123
+                                    ^^
+
+So yes, your calculations, while I struggle to follow _how_ they work,
+do in fact seem to work.
+
+Checkpatch does have one complaint:
+
+CHECK:UNNECESSARY_PARENTHESES: Unnecessary parentheses around 'regs->ccr'
+#30: FILE: arch/powerpc/lib/sstep.c:1971:
++			if ((regs->ccr) & (1 << (31 - ra)))
+
+I don't really mind the parenteses: I think you are safe to ignore
+checkpatch here unless someone else complains :)
+
+If you do end up respinning the patch, I think it would be good to make
+the maths a bit clearer. I think it works because a left shift of 2 is
+the same as multiplying by 4, but it would be easier to follow if you
+used a temporary variable for btf.
+
+However, I do think this is still worth adding to the kernel either way,
+so:
+
+Reviewed-by: Daniel Axtens <dja@axtens.net>
+
+Kind regards,
+Daniel
+
+> +			goto compute_done;
+> +
+>  		case 154:	/* prtyw */
+>  			do_prty(regs, op, regs->gpr[rd], 32);
+>  			goto logical_done_nocc;
+> -- 
+> 2.16.4
