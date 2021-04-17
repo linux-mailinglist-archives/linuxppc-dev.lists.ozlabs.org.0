@@ -2,59 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DBB363063
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 15:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B4836307E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 15:58:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMvCJ440Gz3c4D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 23:32:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMvmW5rDNz3byF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 23:58:03 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=SZN1IHMP;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=SZN1IHMP; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMmBX20vpz2xZK
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 18:16:32 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FMmBL3J3fz9vBnF;
- Sat, 17 Apr 2021 10:16:26 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id wonQJcvXPfFi; Sat, 17 Apr 2021 10:16:26 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FMmBL1x8Xz9vBn9;
- Sat, 17 Apr 2021 10:16:26 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3776F8B778;
- Sat, 17 Apr 2021 10:16:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id eGIdiAD4X9M2; Sat, 17 Apr 2021 10:16:27 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3BFFF8B75B;
- Sat, 17 Apr 2021 10:16:24 +0200 (CEST)
-Subject: Re: [PATCH bpf-next 1/2] bpf: Remove bpf_jit_enable=2 debugging mode
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Quentin Monnet <quentin@isovalent.com>
-References: <20210415093250.3391257-1-Jianlin.Lv@arm.com>
- <9c4a78d2-f73c-832a-e6e2-4b4daa729e07@iogearbox.net>
- <d3949501-8f7d-57c4-b3fe-bcc3b24c09d8@isovalent.com>
- <CAADnVQJ2oHbYfgY9jqM_JMxUsoZxaNrxKSVFYfgCXuHVpDehpQ@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <0dea05ba-9467-0d84-4515-b8766f60318e@csgroup.eu>
-Date: Sat, 17 Apr 2021 10:16:22 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMvm40xjfz2yhl
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 23:57:39 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=xqgFJlR+jU3BMFPCC8NQxTzbFxfigD7vTUNnUGq4vIY=; b=SZN1IHMPzUuDEQpeH8U5/v7rff
+ H6wrF1LIVDWRSRtlMXzSRwuAre+050GPjLA2iogcsGTXqqfEDGxaC4rXfUbOM25eg0E50CHt5+SJL
+ 1DjWYV0FM+08rQ1DpvQpoRCUX1YJJPp0dedZYxJ9aY2NaXbG+K3aifWyE0y411QrrJCRsyswU33Sa
+ YbZV2+Q8TcIZK7v5N7lFZg8nXNefltcXpFfCGcJzW2rxXoRzVgIZbtuchtRjCKjJct4ZvMbIHXCjN
+ otbSGYMAGgTgXFZOZWNCv3haV2wRKBJOwIRzHCU6S+6H0uqypx9YY5LVvS6Yy/6PQ424wGJ7CYdGm
+ 5eCR6yHQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
+ Linux)) id 1lXlRC-00BJyr-Q7; Sat, 17 Apr 2021 13:56:47 +0000
+Date: Sat, 17 Apr 2021 14:56:42 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH 1/1] mm: Fix struct page layout on 32-bit systems
+Message-ID: <20210417135642.GR2531743@casper.infradead.org>
+References: <20210411103318.GC2531743@casper.infradead.org>
+ <20210412011532.GG2531743@casper.infradead.org>
+ <20210414101044.19da09df@carbon>
+ <20210414115052.GS2531743@casper.infradead.org>
+ <20210414211322.3799afd4@carbon>
+ <20210414213556.GY2531743@casper.infradead.org>
+ <a50c3156fe8943ef964db4345344862f@AcuMS.aculab.com>
+ <20210415200832.32796445@carbon>
+ <20210416152755.GL2531743@casper.infradead.org>
+ <CAK8P3a2dekzohOrHpLq6yyuaoyC4UOxxucu6kX2oddeq5Jdqfg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAADnVQJ2oHbYfgY9jqM_JMxUsoZxaNrxKSVFYfgCXuHVpDehpQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Sat, 17 Apr 2021 23:32:25 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a2dekzohOrHpLq6yyuaoyC4UOxxucu6kX2oddeq5Jdqfg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,86 +69,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Song Liu <songliubraving@fb.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Zi Shen Lim <zlim.lnx@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
- Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Paul Mackerras <paulus@samba.org>, Sandipan Das <sandipan@linux.ibm.com>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Shubham Bansal <illusionist.neo@gmail.com>,
- Mahesh Bandewar <maheshb@google.com>, Will Deacon <will@kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Ilya Leoshkevich <iii@linux.ibm.com>,
- paulburton@kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Masahiro Yamada <masahiroy@kernel.org>, X86 ML <x86@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Dmitry Vyukov <dvyukov@google.com>, Catalin Marinas <catalin.marinas@arm.com>,
- "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
- Jakub Kicinski <kuba@kernel.org>, Tobias Klauser <tklauser@distanz.ch>,
- grantseltzer@gmail.com, Xi Wang <xi.wang@gmail.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Luke Nelson <luke.r.nels@gmail.com>,
- Heiko Carstens <hca@linux.ibm.com>, KP Singh <kpsingh@kernel.org>,
- iecedge@gmail.com, Simon Horman <horms@verge.net.au>,
- Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Paul Walmsley <paul.walmsley@sifive.com>, Jianlin Lv <Jianlin.Lv@arm.com>,
- Nicolas Dichtel <nicolas.dichtel@6wind.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Wang YanQing <udknight@gmail.com>, tsbogend@alpha.franken.de,
- Daniel Borkmann <daniel@iogearbox.net>,
- Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
- Network Development <netdev@vger.kernel.org>, David Ahern <dsahern@kernel.org>,
- linux-mips@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Yonghong Song <yhs@fb.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, bpf <bpf@vger.kernel.org>,
- ppc-dev <linuxppc-dev@lists.ozlabs.org>, Martin KaFai Lau <kafai@fb.com>
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ David Laight <David.Laight@aculab.com>,
+ Jesper Dangaard Brouer <brouer@redhat.com>,
+ Matteo Croce <mcroce@linux.microsoft.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Christoph Hellwig <hch@lst.de>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 16/04/2021 à 01:49, Alexei Starovoitov a écrit :
-> On Thu, Apr 15, 2021 at 8:41 AM Quentin Monnet <quentin@isovalent.com> wrote:
->>
->> 2021-04-15 16:37 UTC+0200 ~ Daniel Borkmann <daniel@iogearbox.net>
->>> On 4/15/21 11:32 AM, Jianlin Lv wrote:
->>>> For debugging JITs, dumping the JITed image to kernel log is discouraged,
->>>> "bpftool prog dump jited" is much better way to examine JITed dumps.
->>>> This patch get rid of the code related to bpf_jit_enable=2 mode and
->>>> update the proc handler of bpf_jit_enable, also added auxiliary
->>>> information to explain how to use bpf_jit_disasm tool after this change.
->>>>
->>>> Signed-off-by: Jianlin Lv <Jianlin.Lv@arm.com>
->>
->> Hello,
->>
->> For what it's worth, I have already seen people dump the JIT image in
->> kernel logs in Qemu VMs running with just a busybox, not for kernel
->> development, but in a context where buiding/using bpftool was not
->> possible.
+On Sat, Apr 17, 2021 at 12:31:37PM +0200, Arnd Bergmann wrote:
+> On Fri, Apr 16, 2021 at 5:27 PM Matthew Wilcox <willy@infradead.org> wrote:
+> > diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+> > index b5b195305346..db7c7020746a 100644
+> > --- a/include/net/page_pool.h
+> > +++ b/include/net/page_pool.h
+> > @@ -198,7 +198,17 @@ static inline void page_pool_recycle_direct(struct page_pool *pool,
+> >
+> >  static inline dma_addr_t page_pool_get_dma_addr(struct page *page)
+> >  {
+> > -       return page->dma_addr;
+> > +       dma_addr_t ret = page->dma_addr[0];
+> > +       if (sizeof(dma_addr_t) > sizeof(unsigned long))
+> > +               ret |= (dma_addr_t)page->dma_addr[1] << 32;
+> > +       return ret;
+> > +}
 > 
-> If building/using bpftool is not possible then majority of selftests won't
-> be exercised. I don't think such environment is suitable for any kind
-> of bpf development. Much so for JIT debugging.
-> While bpf_jit_enable=2 is nothing but the debugging tool for JIT developers.
-> I'd rather nuke that code instead of carrying it from kernel to kernel.
-> 
+> Have you considered using a PFN type address here? I suspect you
+> can prove that shifting the DMA address by PAGE_BITS would
+> make it fit into an 'unsigned long' on all 32-bit architectures with
+> 64-bit dma_addr_t. This requires that page->dma_addr to be
+> page aligned, as well as fit into 44 bits. I recently went through the
+> maximum address space per architecture to define a
+> MAX_POSSIBLE_PHYSMEM_BITS, and none of them have more than
+> 40 here, presumably the same is true for dma address space.
 
-When I implemented JIT for PPC32, it was extremely helpfull.
+I wouldn't like to make that assumption.  I've come across IOMMUs (maybe
+on parisc?  powerpc?) that like to encode fun information in the top
+few bits.  So we could get it down to 52 bits, but I don't think we can
+get all the way down to 32 bits.  Also, we need to keep the bottom bit
+clear for PageTail, so that further constrains us.
 
-As far as I understand, for the time being bpftool is not usable in my environment because it 
-doesn't support cross compilation when the target's endianess differs from the building host 
-endianess, see discussion at 
-https://lore.kernel.org/bpf/21e66a09-514f-f426-b9e2-13baab0b938b@csgroup.eu/
-
-That's right that selftests can't be exercised because they don't build.
-
-The question might be candid as I didn't investigate much about the replacement of "bpf_jit_enable=2 
-debugging mode" by bpftool, how do we use bpftool exactly for that ? Especially when using the BPF 
-test module ?
-
+Anyway, I like the "two unsigned longs" approach I posted yesterday,
+but thanks for the suggestion.
