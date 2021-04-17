@@ -2,55 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71A9363230
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 22:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41114363236
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 22:23:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FN4Cn2LJgz3bTH
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 06:18:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FN4KF1KMzz3bTc
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 06:23:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=GZSLEoK2;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=OEMC9XOg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=GZSLEoK2; 
+ header.s=casper.20170209 header.b=OEMC9XOg; 
  dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org
- [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FN4CL00d3z2xy1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Apr 2021 06:18:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FN4Jp3ZwWz2yZR
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Apr 2021 06:23:06 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
- :MIME-Version:Date:Message-ID:Subject:From:Cc:To:Sender:Reply-To:Content-ID:
- Content-Description:In-Reply-To:References;
- bh=8Uc7dhzIc/p5Iji54e1aRZ450Xs9Pb7y+6pkjxagzLA=; b=GZSLEoK2gynTCSRjWeTnq3bQeh
- Yh9OLJ4OibIw5oCLBjvsehNiN+S80FKnpFxPhpvu6I12wCe/TM8nob8DjN4oRtEcyQNbBO6hPH7u6
- tO2w/FdELtV770/4v7wwXZES+VALvUOfS4rtbGQ2evjkviQQVgkwWX5tCydtVazMZvRuxfeYvBzkM
- lT/vQjJYKxuBB4L8QEJMdnxsVSScogvk0g2tTny+Zxhp8Y59osuxdDtXnTacrKdSje1zmq8OQ8WSu
- zH72KWE5G4gVLxC4aZQ/XPyOTQTLzt6+CscuugQD39URHof95HKR1iXmFaBrERiSboZ+Y0MeCU5+3
- Y0QAjbYQ==;
-Received: from [2601:1c0:6280:3f0::df68]
- by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lXrOG-006AUO-5D; Sat, 17 Apr 2021 20:18:04 +0000
-To: PowerPC <linuxppc-dev@lists.ozlabs.org>
-From: Randy Dunlap <rdunlap@infradead.org>
-Subject: PPC_FPU, ALTIVEC: enable_kernel_fp, put_vr, get_vr
-Message-ID: <7107fcae-5c7a-ac94-8d89-326f2cd4cd33@infradead.org>
-Date: Sat, 17 Apr 2021 13:17:59 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=BnSKcc0JSuohlN33+Pj8bhxKsI7DT+Owp2PFJxUm9vg=; b=OEMC9XOgR/fKU/0oPNUu/P7cCL
+ FT4t01GafWZlc1vjwl9KSjRt1IY8zFxgga7gHLRR+WCKupSKq6t9mxOaZIZufePDNN7mCVh1kH9jR
+ F0u0g7a9CwiXrlGEHglrLCjcUmY6riPVWU0Qfcwq6bjvHqJmgaIV9kM3woRxgGCelw9NDnFMhLDTu
+ ddS052/dNjJg/5EC844nFoPlje4sglQZ/dDMtCOaSHxgsq/MS3GcQFiMjlzkT3lk3nRsLRtoZo+VR
+ X2xbTp+70dqUigqbpfzkNLRorcOijpiu4WZdd3t8LIzJQrj1saQRlw3+7gG/AlVzE/uFz4w1OL3ap
+ wbKEi5/Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
+ Linux)) id 1lXrSi-00Belm-JF; Sat, 17 Apr 2021 20:22:44 +0000
+Date: Sat, 17 Apr 2021 21:22:40 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: Re: [PATCH 1/2] mm: Fix struct page layout on 32-bit systems
+Message-ID: <20210417202240.GS2531743@casper.infradead.org>
+References: <20210416230724.2519198-1-willy@infradead.org>
+ <20210416230724.2519198-2-willy@infradead.org>
+ <20210417024522.GP2531743@casper.infradead.org>
+ <YHspptFx+T588KcG@apalos.home>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YHspptFx+T588KcG@apalos.home>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,43 +63,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>
+Cc: arnd@kernel.org, grygorii.strashko@ti.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, mhocko@kernel.org,
+ linux-mm@kvack.org, mgorman@suse.de, brouer@redhat.com,
+ mcroce@linux.microsoft.com, linux-snps-arc@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Sat, Apr 17, 2021 at 09:32:06PM +0300, Ilias Apalodimas wrote:
+> > +static inline void page_pool_set_dma_addr(struct page *page, dma_addr_t addr)
+> > +{
+> > +	page->dma_addr[0] = addr;
+> > +	if (sizeof(dma_addr_t) > sizeof(unsigned long))
+> > +		page->dma_addr[1] = addr >> 16 >> 16;
+> 
+> The 'error' that was reported will never trigger right?
+> I assume this was compiled with dma_addr_t as 32bits (so it triggered the
+> compilation error), but the if check will never allow this codepath to run.
+> If so can we add a comment explaining this, since none of us will remember why
+> in 6 months from now?
 
-kernel test robot reports:
+That's right.  I compiled it all three ways -- 32-bit, 64-bit dma, 32-bit long
+and 64-bit.  The 32/64 bit case turn into:
 
->> drivers/cpufreq/pmac32-cpufreq.c:262:2: error: implicit declaration of function 'enable_kernel_fp' [-Werror,-Wimplicit-function-declaration]
-           enable_kernel_fp();
-           ^
+	if (0)
+		page->dma_addr[1] = addr >> 16 >> 16;
 
-when
-# CONFIG_PPC_FPU is not set
-CONFIG_ALTIVEC=y
+which gets elided.  So the only case that has to work is 64-bit dma and
+32-bit long.
 
-I see at least one other place that does not handle that
-combination well, here:
-
-../arch/powerpc/lib/sstep.c: In function 'do_vec_load':
-../arch/powerpc/lib/sstep.c:637:3: error: implicit declaration of function 'put_vr' [-Werror=implicit-function-declaration]
-  637 |   put_vr(rn, &u.v);
-      |   ^~~~~~
-../arch/powerpc/lib/sstep.c: In function 'do_vec_store':
-../arch/powerpc/lib/sstep.c:660:3: error: implicit declaration of function 'get_vr'; did you mean 'get_oc'? [-Werror=implicit-function-declaration]
-  660 |   get_vr(rn, &u.v);
-      |   ^~~~~~
-
-
-Should the code + Kconfigs/Makefiles handle that kind of
-kernel config or should ALTIVEC always mean PPC_FPU as well?
-
-I have patches to fix the build errors with the config as
-reported but I don't know if that's the right thing to do...
-
-thanks.
--- 
-~Randy
+I can replace this with upper_32_bits().
 
