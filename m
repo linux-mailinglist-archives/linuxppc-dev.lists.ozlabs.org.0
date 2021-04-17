@@ -2,110 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B520362DE8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 07:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B69362E5C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 09:36:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMhhQ4NfBz3c5v
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 15:38:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMlJD34Qhz3c5x
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 17:36:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lJEBR2ao;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T87Kmy8K;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jSsZ52VS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=srs0=2noe=jo=linux.ibm.com=sourabhjain@ozlabs.org;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=brouer@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=lJEBR2ao; dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMhgy1S86z2yS0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 15:38:21 +1000 (AEST)
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by ozlabs.org (Postfix) with ESMTP id 4FMhgx0Y6Fz9vGZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 15:38:21 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4FMhgx01DYz9vGW; Sat, 17 Apr 2021 15:38:21 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=lJEBR2ao; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=T87Kmy8K; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=jSsZ52VS; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4FMhgv3TPcz9tl2;
- Sat, 17 Apr 2021 15:38:18 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13H5Y5cI159372; Sat, 17 Apr 2021 01:38:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=O1IUq7X26PWRAdpYIy72iYDYjuX2w4Yg6d77bmK0WFU=;
- b=lJEBR2aoyCgs3wV2rkqW5x1fPPwoBybtJCqx1AV8DdPWWhysodO73moeV/useu9wJpQ3
- KQHg0sYIVIsV33LfZO190rh8CL4ijgwo7ecjpGVTg+s8b2BNstUanHB/Jsw9wevAfBKS
- +rYXvcVEPcMthe3+Q0hh1NJPRnNDTkXStBWwQqGbQmlzo74j0r/SJOpTlC6EPcvNYtIU
- WP0yUkRtS99tUKjGzqWeQUonRZumHvKFPh7g6L+FV3AsINxBdtfYCt8JYdVmVsTpvimW
- M30cFBh1ZKljJ7h49wNfxnzF7t8BcCq8JqXFTor+kAqxG0N6GfLj3ggI7FB+5ZFNXSYl VA== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 37yehg5guh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 17 Apr 2021 01:38:14 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13H5YNVl020498;
- Sat, 17 Apr 2021 05:38:13 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06ams.nl.ibm.com with ESMTP id 37ypxhg23x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 17 Apr 2021 05:38:12 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13H5cAIC29491584
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 17 Apr 2021 05:38:10 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ECCD511C050;
- Sat, 17 Apr 2021 05:38:09 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3EC3E11C04C;
- Sat, 17 Apr 2021 05:38:08 +0000 (GMT)
-Received: from sjain014.ibmuc.com (unknown [9.85.91.163])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sat, 17 Apr 2021 05:38:08 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v3] powerpc/kexec_file: use current CPU info while setting up
- FDT
-Date: Sat, 17 Apr 2021 11:08:05 +0530
-Message-Id: <20210417053805.800907-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.26.3
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: C36PGGozJTjqmaOfZM6A_0aukXt5ZrSu
-X-Proofpoint-ORIG-GUID: C36PGGozJTjqmaOfZM6A_0aukXt5ZrSu
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMlHn3mCgz30BP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 17:36:05 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1618644962;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ukfumMluZP0EnUtJDPV+zqcuT6EyAAYlsiNwPNai6SA=;
+ b=T87Kmy8Kfj6Acc/gOc90eumHqFd/OFSesTbXTGInrC2pj8o6EFGW/xOrSRVbOdZd+gF01Z
+ 7Rg8bw5WfV9aexLqwjlRbdJT0QAMGMkQuL5I4/K4rvpHRlgqvh+/LCXpLdteClMUGV/1V/
+ ++qEZLpA0+elkAReualr5o/0hp/enWk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1618644963;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ukfumMluZP0EnUtJDPV+zqcuT6EyAAYlsiNwPNai6SA=;
+ b=jSsZ52VSVXpRnCFGwJEX59cgVlb6k8Kp/ThJO5gQkcjrZHkGY247gDHnEJQdCSoE7yxw7a
+ f9ROnmIQ4ewnRY7eh0N5xI/MqyQl6e/QccBOn3lLYii+C2LTQ+I9K+mwL5B9BFjNFmMXuA
+ 7Y36RcRwMfT1lmQTEcaLlnoCPJD6EtY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-542-NiqHmWmsNzuzO21lRXyc-g-1; Sat, 17 Apr 2021 03:34:26 -0400
+X-MC-Unique: NiqHmWmsNzuzO21lRXyc-g-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 897248189C6;
+ Sat, 17 Apr 2021 07:34:24 +0000 (UTC)
+Received: from carbon (unknown [10.36.110.19])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4F89E5D9C6;
+ Sat, 17 Apr 2021 07:34:17 +0000 (UTC)
+Date: Sat, 17 Apr 2021 09:34:15 +0200
+From: Jesper Dangaard Brouer <brouer@redhat.com>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: Re: [PATCH 1/2] mm: Fix struct page layout on 32-bit systems
+Message-ID: <20210417093415.41bcfde7@carbon>
+In-Reply-To: <20210416230724.2519198-2-willy@infradead.org>
+References: <20210416230724.2519198-1-willy@infradead.org>
+ <20210416230724.2519198-2-willy@infradead.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-17_03:2021-04-16,
- 2021-04-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- clxscore=1011 lowpriorityscore=0 bulkscore=0 suspectscore=0
- impostorscore=0 spamscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
- mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104170037
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,194 +85,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, Sourabh Jain <sourabhjain@linux.ibm.com>,
- linuxppc-dev@ozlabs.org, stable@vger.kernel.org, hbathini@linux.ibm.com,
- bauerman@linux.ibm.com
+Cc: arnd@kernel.org, grygorii.strashko@ti.com, netdev@vger.kernel.org,
+ ilias.apalodimas@linaro.org, linux-mips@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mhocko@kernel.org, linux-mm@kvack.org,
+ mgorman@suse.de, brouer@redhat.com, mcroce@linux.microsoft.com,
+ linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, hch@lst.de,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kexec_file_load uses initial_boot_params in setting up the device-tree
-for the kernel to be loaded. Though initial_boot_params holds info
-about CPUs at the time of boot, it doesn't account for hot added CPUs.
+On Sat, 17 Apr 2021 00:07:23 +0100
+"Matthew Wilcox (Oracle)" <willy@infradead.org> wrote:
 
-So, kexec'ing with kexec_file_load syscall would leave the kexec'ed
-kernel with inaccurate CPU info. Also, if kdump kernel is loaded with
-kexec_file_load syscall and the system crashes on a hot added CPU,
-capture kernel hangs failing to identify the boot CPU.
+> 32-bit architectures which expect 8-byte alignment for 8-byte integers
+> and need 64-bit DMA addresses (arc, arm, mips, ppc) had their struct
+> page inadvertently expanded in 2019.  When the dma_addr_t was added,
+> it forced the alignment of the union to 8 bytes, which inserted a 4 byte
+> gap between 'flags' and the union.
+> 
+> Fix this by storing the dma_addr_t in one or two adjacent unsigned longs.
+> This restores the alignment to that of an unsigned long, and also fixes a
+> potential problem where (on a big endian platform), the bit used to denote
+> PageTail could inadvertently get set, and a racing get_user_pages_fast()
+> could dereference a bogus compound_head().
+> 
+> Fixes: c25fff7171be ("mm: add dma_addr_t to struct page")
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
 
- Kernel panic - not syncing: sysrq triggered crash
- CPU: 24 PID: 6065 Comm: echo Kdump: loaded Not tainted 5.12.0-rc5upstream #54
- Call Trace:
- [c0000000e590fac0] [c0000000007b2400] dump_stack+0xc4/0x114 (unreliable)
- [c0000000e590fb00] [c000000000145290] panic+0x16c/0x41c
- [c0000000e590fba0] [c0000000008892e0] sysrq_handle_crash+0x30/0x40
- [c0000000e590fc00] [c000000000889cdc] __handle_sysrq+0xcc/0x1f0
- [c0000000e590fca0] [c00000000088a538] write_sysrq_trigger+0xd8/0x178
- [c0000000e590fce0] [c0000000005e9b7c] proc_reg_write+0x10c/0x1b0
- [c0000000e590fd10] [c0000000004f26d0] vfs_write+0xf0/0x330
- [c0000000e590fd60] [c0000000004f2aec] ksys_write+0x7c/0x140
- [c0000000e590fdb0] [c000000000031ee0] system_call_exception+0x150/0x290
- [c0000000e590fe10] [c00000000000ca5c] system_call_common+0xec/0x278
- --- interrupt: c00 at 0x7fff905b9664
- NIP:  00007fff905b9664 LR: 00007fff905320c4 CTR: 0000000000000000
- REGS: c0000000e590fe80 TRAP: 0c00   Not tainted  (5.12.0-rc5upstream)
- MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 28000242
-       XER: 00000000
- IRQMASK: 0
- GPR00: 0000000000000004 00007ffff5fedf30 00007fff906a7300 0000000000000001
- GPR04: 000001002a7355b0 0000000000000002 0000000000000001 00007ffff5fef616
- GPR08: 0000000000000001 0000000000000000 0000000000000000 0000000000000000
- GPR12: 0000000000000000 00007fff9073a160 0000000000000000 0000000000000000
- GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
- GPR20: 0000000000000000 00007fff906a4ee0 0000000000000002 0000000000000001
- GPR24: 00007fff906a0898 0000000000000000 0000000000000002 000001002a7355b0
- GPR28: 0000000000000002 00007fff906a1790 000001002a7355b0 0000000000000002
- NIP [00007fff905b9664] 0x7fff905b9664
- LR [00007fff905320c4] 0x7fff905320c4
- --- interrupt: c00
+Acked-by: Jesper Dangaard Brouer <brouer@redhat.com>
 
-To avoid this from happening, extract current CPU info from of_root
-device node and use it for setting up the fdt in kexec_file_load case.
+Thanks you Matthew for working on a fix for this.  It's been a pleasure
+working with you and exchanging crazy ideas with you for solving this.
+Most of them didn't work out, especially those that came to me during
+restless nights ;-).
 
-Fixes: 6ecd0163d360 ("powerpc/kexec_file: Add appropriate regions for memory reserve map")
+Having worked through the other solutions, some very intrusive and some
+could even be consider ugly.  I think we have a good and non-intrusive
+solution/workaround in this patch.  Thanks!
 
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
----
- arch/powerpc/kexec/file_load_64.c | 98 +++++++++++++++++++++++++++++++
- 1 file changed, 98 insertions(+)
 
- ---
-Changelog:
+>  include/linux/mm_types.h |  4 ++--
+>  include/net/page_pool.h  | 12 +++++++++++-
+>  net/core/page_pool.c     | 12 +++++++-----
+>  3 files changed, 20 insertions(+), 8 deletions(-)
+>
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 6613b26a8894..5aacc1c10a45 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -97,10 +97,10 @@ struct page {
+>  		};
+>  		struct {	/* page_pool used by netstack */
+>  			/**
+> -			 * @dma_addr: might require a 64-bit value even on
+> +			 * @dma_addr: might require a 64-bit value on
+>  			 * 32-bit architectures.
+>  			 */
+> -			dma_addr_t dma_addr;
+> +			unsigned long dma_addr[2];
+>  		};
+>  		struct {	/* slab, slob and slub */
+>  			union {
+> diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+> index b5b195305346..db7c7020746a 100644
+> --- a/include/net/page_pool.h
+> +++ b/include/net/page_pool.h
+> @@ -198,7 +198,17 @@ static inline void page_pool_recycle_direct(struct page_pool *pool,
+>  
+>  static inline dma_addr_t page_pool_get_dma_addr(struct page *page)
+>  {
+> -	return page->dma_addr;
+> +	dma_addr_t ret = page->dma_addr[0];
+> +	if (sizeof(dma_addr_t) > sizeof(unsigned long))
+> +		ret |= (dma_addr_t)page->dma_addr[1] << 32;
+> +	return ret;
+> +}
+> +
+> +static inline void page_pool_set_dma_addr(struct page *page, dma_addr_t addr)
+> +{
+> +	page->dma_addr[0] = addr;
+> +	if (sizeof(dma_addr_t) > sizeof(unsigned long))
+> +		page->dma_addr[1] = addr >> 32;
+>  }
+>  
+>  static inline bool is_page_pool_compiled_in(void)
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index ad8b0707af04..f014fd8c19a6 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -174,8 +174,10 @@ static void page_pool_dma_sync_for_device(struct page_pool *pool,
+>  					  struct page *page,
+>  					  unsigned int dma_sync_size)
+>  {
+> +	dma_addr_t dma_addr = page_pool_get_dma_addr(page);
+> +
+>  	dma_sync_size = min(dma_sync_size, pool->p.max_len);
+> -	dma_sync_single_range_for_device(pool->p.dev, page->dma_addr,
+> +	dma_sync_single_range_for_device(pool->p.dev, dma_addr,
+>  					 pool->p.offset, dma_sync_size,
+>  					 pool->p.dma_dir);
+>  }
+> @@ -226,7 +228,7 @@ static struct page *__page_pool_alloc_pages_slow(struct page_pool *pool,
+>  		put_page(page);
+>  		return NULL;
+>  	}
+> -	page->dma_addr = dma;
+> +	page_pool_set_dma_addr(page, dma);
+>  
+>  	if (pool->p.flags & PP_FLAG_DMA_SYNC_DEV)
+>  		page_pool_dma_sync_for_device(pool, page, pool->p.max_len);
+> @@ -294,13 +296,13 @@ void page_pool_release_page(struct page_pool *pool, struct page *page)
+>  		 */
+>  		goto skip_dma_unmap;
+>  
+> -	dma = page->dma_addr;
+> +	dma = page_pool_get_dma_addr(page);
+>  
+> -	/* When page is unmapped, it cannot be returned our pool */
+> +	/* When page is unmapped, it cannot be returned to our pool */
+>  	dma_unmap_page_attrs(pool->p.dev, dma,
+>  			     PAGE_SIZE << pool->p.order, pool->p.dma_dir,
+>  			     DMA_ATTR_SKIP_CPU_SYNC);
+> -	page->dma_addr = 0;
+> +	page_pool_set_dma_addr(page, 0);
+>  skip_dma_unmap:
+>  	/* This may be the last page returned, releasing the pool, so
+>  	 * it is not safe to reference pool afterwards.
 
-v1 -> v2
-  - fdt should be updated regardless of kexec type
-  - updated commit message and title
 
-v2 -> v3
-  - Fixed warnings reported by patchwork
-    (https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210416124658.718860-1-sourabhjain@linux.ibm.com/)
-     - argument aligned to open parenthesis
-     - declared add_node_prop and update_cpus_node function static
- ---
 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 02b9e4d0dc40..878f8297fbed 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -960,6 +960,99 @@ unsigned int kexec_fdt_totalsize_ppc64(struct kimage *image)
- 	return fdt_size;
- }
- 
-+/**
-+ * add_node_prop - Read property from device node structure and add
-+ *			them to fdt.
-+ * @fdt:		Flattened device tree of the kernel
-+ * @node_offset:	offset of the node to add a property at
-+ * np:			device node pointer
-+ *
-+ * Returns 0 on success, negative errno on error.
-+ */
-+static int add_node_prop(void *fdt, int node_offset, const struct device_node *np)
-+{
-+	int ret = 0;
-+	struct property *pp;
-+	unsigned long flags;
-+
-+	if (!np)
-+		return -EINVAL;
-+
-+	raw_spin_lock_irqsave(&devtree_lock, flags);
-+	for (pp = np->properties; pp; pp = pp->next) {
-+		ret = fdt_setprop(fdt, node_offset, pp->name,
-+				  pp->value, pp->length);
-+		if (ret < 0) {
-+			pr_err("Unable to add %s property: %s\n",
-+			       pp->name, fdt_strerror(ret));
-+			goto out;
-+		}
-+	}
-+out:
-+	raw_spin_unlock_irqrestore(&devtree_lock, flags);
-+	return ret;
-+}
-+
-+/**
-+ * update_cpus_node - Update cpus node of flattened device-tree using of_root
-+ *			device node.
-+ * @fdt:		Flattened device tree of the kernel.
-+ *
-+ * Returns 0 on success, negative errno on error.
-+ */
-+static int update_cpus_node(void *fdt)
-+{
-+	struct device_node *cpus_node, *dn;
-+	int cpus_offset, cpus_subnode_off, ret = 0;
-+
-+	cpus_offset = fdt_path_offset(fdt, "/cpus");
-+	if (cpus_offset == -FDT_ERR_NOTFOUND || cpus_offset > 0) {
-+		if (cpus_offset > 0) {
-+			ret = fdt_del_node(fdt, cpus_offset);
-+			if (ret < 0) {
-+				pr_err("Error deleting /cpus node: %s\n",
-+				       fdt_strerror(ret));
-+				return -EINVAL;
-+			}
-+		}
-+
-+		/* Add cpus node to fdt */
-+		cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"),
-+					      "cpus");
-+		if (cpus_offset < 0) {
-+			pr_err("Error creating /cpus node: %s\n",
-+			       fdt_strerror(cpus_offset));
-+			return -EINVAL;
-+		}
-+
-+		/* Add cpus node properties */
-+		cpus_node = of_find_node_by_path("/cpus");
-+		ret = add_node_prop(fdt, cpus_offset, cpus_node);
-+		if (ret < 0)
-+			return ret;
-+
-+		/* Loop through all subnodes of cpus and add them to fdt */
-+		for_each_node_by_type(dn, "cpu") {
-+			cpus_subnode_off = fdt_add_subnode(fdt,
-+							   cpus_offset,
-+							   dn->full_name);
-+			if (cpus_subnode_off < 0) {
-+				pr_err("Unable to add %s subnode: %s\n",
-+				       dn->full_name, fdt_strerror(cpus_subnode_off));
-+				return cpus_subnode_off;
-+			}
-+			ret = add_node_prop(fdt, cpus_subnode_off, dn);
-+			if (ret < 0)
-+				return ret;
-+		}
-+	} else if (cpus_offset < 0) {
-+		pr_err("Malformed device tree: error reading /cpus node: %s\n",
-+		       fdt_strerror(cpus_offset));
-+	}
-+
-+	return ret;
-+}
-+
- /**
-  * setup_new_fdt_ppc64 - Update the flattend device-tree of the kernel
-  *                       being loaded.
-@@ -1020,6 +1113,11 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
- 		}
- 	}
- 
-+	/* Update cpus nodes information to account hotplug CPUs. */
-+	ret =  update_cpus_node(fdt);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* Update memory reserve map */
- 	ret = get_reserved_memory_ranges(&rmem);
- 	if (ret)
 -- 
-2.26.3
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
 
