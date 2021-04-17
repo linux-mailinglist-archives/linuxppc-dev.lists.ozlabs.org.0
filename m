@@ -1,55 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEAF362FCF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 14:36:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FCF36302A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 15:09:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FMsyg3j07z3c2j
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 22:36:43 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Q4RIughh;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FMtgv5R07z3c0l
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Apr 2021 23:08:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Q4RIughh; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=aculab.com (client-ip=185.58.85.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FMsyH2N0Rz2yx3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 22:36:23 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4FMsyG48Tfz9vG3;
- Sat, 17 Apr 2021 22:36:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1618662982;
- bh=VKZMySyOCrG8pbMyLfSSW/LSXdZWDZsO77f8t7ttDrs=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Q4RIughheHFi3MTHZsfPqc5dwJP5WBjLLnmxr8mp8WE5lvd6z/NiEQKyRZUvz8GCE
- Otsx9ID43jyAw7WMBSkrwLrl/q2uKvndN0XV3K7ZdV3WGrSbisCvrZlXnl/8K8y/ne
- rO/K1go15ilF62jbul45FqZhOCFY88OJO8rkNGFBg0jnfZS6xCtQ1J2isMN36P5vE5
- EYLsCep29oZ6guG6jfvRO3lkGwEEGn/8mEPzmjKheTodoOnygWmb0W10XedI+4mD1o
- bDR+ohPuyjnDaXJNmKGfhSFyks05FJKIAb6pS7bAcgniZSzGiy1JPYAmx4Lu2xNqcN
- 3v0FuFzangdIg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/pseries/mce: Fix a typo in error type assignment
-In-Reply-To: <20210416125750.49550-1-ganeshgr@linux.ibm.com>
-References: <20210416125750.49550-1-ganeshgr@linux.ibm.com>
-Date: Sat, 17 Apr 2021 22:36:21 +1000
-Message-ID: <87fszpdr5m.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FMtgY2PH8z303g
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Apr 2021 23:08:39 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-40-NxhZsd9HMzmFc3zLPSZr6w-1; Sat, 17 Apr 2021 14:08:31 +0100
+X-MC-Unique: NxhZsd9HMzmFc3zLPSZr6w-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Sat, 17 Apr 2021 14:08:30 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.015; Sat, 17 Apr 2021 14:08:30 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Grygorii Strashko' <grygorii.strashko@ti.com>, Ilias Apalodimas
+ <ilias.apalodimas@linaro.org>, Jesper Dangaard Brouer <brouer@redhat.com>,
+ Christoph Hellwig <hch@lst.de>
+Subject: RE: Bogus struct page layout on 32-bit
+Thread-Topic: Bogus struct page layout on 32-bit
+Thread-Index: AQHXMqLVEv6dx6LXIEqsc09GLT7Ydaq4r3RA
+Date: Sat, 17 Apr 2021 13:08:30 +0000
+Message-ID: <e8247c8d079d45928990031870db7a9e@AcuMS.aculab.com>
+References: <20210409185105.188284-3-willy@infradead.org>
+ <202104100656.N7EVvkNZ-lkp@intel.com>
+ <20210410024313.GX2531743@casper.infradead.org>
+ <20210410082158.79ad09a6@carbon>
+ <CAC_iWjLXZ6-hhvmvee6r4R_N64u-hrnLqE_CSS1nQk+YaMQQnA@mail.gmail.com>
+ <ab9f1a6c-4099-2b59-457d-fcc45d2396f4@ti.com>
+In-Reply-To: <ab9f1a6c-4099-2b59-457d-fcc45d2396f4@ti.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,36 +69,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com,
- npiggin@gmail.com
+Cc: "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
+ kernel test robot <lkp@intel.com>,
+ "clang-built-linux@googlegroups.com" <clang-built-linux@googlegroups.com>,
+ open list <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Linux-MM <linux-mm@kvack.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ Matteo Croce <mcroce@linux.microsoft.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
-> The error type is ICACHE and DCACHE, for case MCE_ERROR_TYPE_ICACHE.
+RnJvbTogR3J5Z29yaWkgU3RyYXNoa28NCj4gU2VudDogMTYgQXByaWwgMjAyMSAxMDoyNw0KLi4u
+DQo+IFNyeSwgZm9yIGRlbGF5ZWQgcmVwbHkuDQo+IA0KPiBUaGUgVEkgcGxhdGZvcm1zIGFtMy80
+LzUgKGNwc3cpIGFuZCBLZXlzdG9uZSAyIChuZXRjcCkgY2FuIGRvIG9ubHkgMzJiaXQgRE1BIGV2
+ZW4gaW4gY2FzZSBvZiBMUEFFDQo+IChkbWEtcmFuZ2VzIGFyZSB1c2VkKS4NCj4gT3JpZ2luYWxs
+eSwgYXMgSSByZW1lbWJlciwgQ09ORklHX0FSQ0hfRE1BX0FERFJfVF82NEJJVCBoYXMgbm90IGJl
+ZW4gc2VsZWN0ZWQgZm9yIHRoZSBMUEFFIGNhc2UNCj4gb24gVEkgcGxhdGZvcm1zIGFuZCB0aGUg
+ZmFjdCB0aGF0IGl0IGJlY2FtZSBzZXQgaXMgdGhlIHJlc3VsdCBvZiBtdWx0aS1wYWx0Zm9ybS9h
+bGxYWFhjb25maWcvRE1BDQo+IG9wdGltaXphdGlvbnMgYW5kIHVuaWZpY2F0aW9uLg0KPiAoanVz
+dCBjaGVja2VkIC0gbm90IHNldCBpbiA0LjE0KQ0KPiANCj4gUHJvYmFibGUgY29tbWl0IDQ5NjVh
+Njg3ODBjNSAoImFyY2g6IGRlZmluZSB0aGUgQVJDSF9ETUFfQUREUl9UXzY0QklUIGNvbmZpZyBz
+eW1ib2wgaW4gbGliL0tjb25maWciKS4NCj4gDQo+IFRoZSBUSSBkcml2ZXJzIGhhdmUgYmVlbiB1
+cGRhdGVkLCBmaW5hbGx5IHRvIGFjY2VwdCBBUkNIX0RNQV9BRERSX1RfNjRCSVQ9eSBieSB1c2lu
+ZyB0aGluZ3MgbGlrZQ0KPiAoX19mb3JjZSB1MzIpDQo+IGZvciBleGFtcGxlLg0KDQpIbW1tIHVz
+aW5nIChfX2ZvcmNlIHUzMikgaXMgcHJvYmFibHkgd3JvbmcuDQpJZiBhbiBhZGRyZXNzICtsZW5n
+dGggPj0gMioqMzIgY2FuIGdldCBwYXNzZWQgdGhlbiB0aGUgSU8gcmVxdWVzdA0KbmVlZHMgdG8g
+YmUgZXJyb3JlZCAob3IgYSBib3VuY2UgYnVmZmVyIHVzZWQpLg0KDQpPdGhlcndpc2UgeW91IGNh
+biBnZXQgcGFydGljdWxhcmx5IGhvcnJpZCBjb3JydXB0aW9ucy4NCg0KCURhdmlkDQoNCi0NClJl
+Z2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0
+b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykN
+Cg==
 
-Do you mean "is ICACHE not DCACHE" ?
-
-cheers
-
-> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/ras.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-> index f8b390a9d9fb..9d4ef65da7f3 100644
-> --- a/arch/powerpc/platforms/pseries/ras.c
-> +++ b/arch/powerpc/platforms/pseries/ras.c
-> @@ -699,7 +699,7 @@ static int mce_handle_err_virtmode(struct pt_regs *regs,
->  		mce_err.error_type = MCE_ERROR_TYPE_DCACHE;
->  		break;
->  	case MC_ERROR_TYPE_I_CACHE:
-> -		mce_err.error_type = MCE_ERROR_TYPE_DCACHE;
-> +		mce_err.error_type = MCE_ERROR_TYPE_ICACHE;
->  		break;
->  	case MC_ERROR_TYPE_UNKNOWN:
->  	default:
-> -- 
-> 2.26.2
