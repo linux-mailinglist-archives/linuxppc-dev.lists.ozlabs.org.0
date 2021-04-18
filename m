@@ -1,60 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FC3363717
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 20:00:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031E636372A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 20:36:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNd5Z50Vsz3bqr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 04:00:18 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=rZV+/Htv;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNdtq6lGZz3bnx
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 04:36:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=rZV+/Htv; 
- dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org
- [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNd5127Wbz301g
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 03:59:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
- :In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:
- Sender:Reply-To:Content-ID:Content-Description;
- bh=DixjZSGhchXGN78hxITF/gn2KSp43gRdNvHSUXdK2NY=; b=rZV+/HtvZfmgPQShevnkqzBc8O
- D5eEh9JGECyRqRzkRU9Sr4ZKJ0MbSj+TjIh/uWEGwoAPJFbgF6QS8G7k2l52pdvu4VPOUsGsmhsMA
- gUpuiXunDeP+TaW6jHndoLsmDvwJfIwu9mWOMXtFQNxGgBLXy1GvuhearB8cQIdultR6rGEQ5bUMd
- ZyrQqUpzxsqvo9jDf03lVv+XCvME+m55fyKYMIaqlnM57cvwynM9dX4XsnKKUwTLT1x0dEtiby0d5
- y092q32zZLNueeDwlUCkO5Tqcp8fDpXTJjMc7MPutYs3W4m2xm73qDZTyLTK0O4WPgtPu34Dy6Jxg
- zU5sJmog==;
-Received: from [2601:1c0:6280:3f0::df68]
- by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lYBhx-008O4U-46; Sun, 18 Apr 2021 17:59:45 +0000
-Subject: Re: PPC_FPU, ALTIVEC: enable_kernel_fp, put_vr, get_vr
-To: Segher Boessenkool <segher@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <7107fcae-5c7a-ac94-8d89-326f2cd4cd33@infradead.org>
- <8b1cb0a2-ed3a-7da0-a73a-febbda528703@csgroup.eu>
- <20210418174648.GN26583@gate.crashing.org>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <bf119bfe-7db1-e7f3-d837-f910635eeebb@infradead.org>
-Date: Sun, 18 Apr 2021 10:59:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNdtT29Ffz3023
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 04:35:41 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FNdtG6y9sz9twvm;
+ Sun, 18 Apr 2021 20:35:34 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id DxofNuagOesa; Sun, 18 Apr 2021 20:35:34 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FNdtG1mqtz9twvl;
+ Sun, 18 Apr 2021 20:35:34 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C3B298B79B;
+ Sun, 18 Apr 2021 20:35:37 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Qh9Hr9gyU_oQ; Sun, 18 Apr 2021 20:35:37 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 506898B797;
+ Sun, 18 Apr 2021 20:35:37 +0200 (CEST)
+Subject: Re: mmu.c:undefined reference to `patch__hash_page_A0'
+To: Randy Dunlap <rdunlap@infradead.org>, kernel test robot <lkp@intel.com>
+References: <202102271820.WlZCxtzY-lkp@intel.com>
+ <06227600-c5c5-3da7-a495-ae0b0849b62d@infradead.org>
+ <ab9d4f9e-add6-900b-9fa7-83d5f7d1108b@csgroup.eu>
+ <0a301d17-136c-df65-17cc-3c9ddbe06de8@infradead.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <2eff6845-2695-b82c-9e37-43685abc5cd6@csgroup.eu>
+Date: Sun, 18 Apr 2021 20:35:29 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
-In-Reply-To: <20210418174648.GN26583@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <0a301d17-136c-df65-17cc-3c9ddbe06de8@infradead.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,56 +64,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>
+Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>, kbuild-all@lists.01.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/18/21 10:46 AM, Segher Boessenkool wrote:
-> On Sun, Apr 18, 2021 at 06:24:29PM +0200, Christophe Leroy wrote:
->> Le 17/04/2021 Ã  22:17, Randy Dunlap a Ã©critÂ :
->>> Should the code + Kconfigs/Makefiles handle that kind of
->>> kernel config or should ALTIVEC always mean PPC_FPU as well?
+
+
+Le 18/04/2021 à 19:15, Randy Dunlap a écrit :
+> On 4/18/21 3:43 AM, Christophe Leroy wrote:
 >>
->> As far as I understand, Altivec is completely independant of FPU in Theory. 
+>>
+>> Le 18/04/2021 à 02:02, Randy Dunlap a écrit :
+>>> HI--
+>>>
+>>> I no longer see this build error.
+>>
+>> Fixed by https://github.com/torvalds/linux/commit/acdad8fb4a1574323db88f98a38b630691574e16
+>>
+>>> However:
+>>>
+>>> On 2/27/21 2:24 AM, kernel test robot wrote:
+>>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+>>>> head:   3fb6d0e00efc958d01c2f109c8453033a2d96796
+>>>> commit: 259149cf7c3c6195e6199e045ca988c31d081cab powerpc/32s: Only build hash code when CONFIG_PPC_BOOK3S_604 is selected
+>>>> date:   4 weeks ago
+>>>> config: powerpc64-randconfig-r013-20210227 (attached as .config)
+>>>
+>>> ktr/lkp, this is a PPC32 .config file that is attached, not PPC64.
+>>>
+>>> Also:
+>>>
+>>>> compiler: powerpc-linux-gcc (GCC) 9.3.0
+>>
+>> ...
+>>
+>>>
+>>> I do see this build error:
+>>>
+>>> powerpc-linux-ld: arch/powerpc/boot/wrapper.a(decompress.o): in function `partial_decompress':
+>>> decompress.c:(.text+0x1f0): undefined reference to `__decompress'
+>>>
+>>> when either
+>>> CONFIG_KERNEL_LZO=y
+>>> or
+>>> CONFIG_KERNEL_LZMA=y
+>>>
+>>> but the build succeeds when either
+>>> CONFIG_KERNEL_GZIP=y
+>>> or
+>>> CONFIG_KERNEL_XZ=y
+>>>
+>>> I guess that is due to arch/powerpc/boot/decompress.c doing this:
+>>>
+>>> #ifdef CONFIG_KERNEL_GZIP
+>>> #    include "decompress_inflate.c"
+>>> #endif
+>>>
+>>> #ifdef CONFIG_KERNEL_XZ
+>>> #    include "xz_config.h"
+>>> #    include "../../../lib/decompress_unxz.c"
+>>> #endif
+>>>
+>>>
+>>> It would be nice to require one of KERNEL_GZIP or KERNEL_XZ
+>>> to be set/enabled (maybe unless a uImage is being built?).
+>>
+>>
+>> Can you test by https://patchwork.ozlabs.org/project/linuxppc-dev/patch/a74fce4dfc9fa32da6ce3470bbedcecf795de1ec.1591189069.git.christophe.leroy@csgroup.eu/ ?
 > 
-> And, as far as the hardware is concerned, in practice as well.
+> Hi Christophe,
 > 
->> So it should be possible to use Altivec without using FPU.
-> 
-> Yup.
-> 
->> However, until recently, it was not possible to de-activate FPU support on 
->> book3s/32. I made it possible in order to reduce unneccessary processing on 
->> processors like the 832x that has no FPU.
-> 
-> The processor has to implement FP to be compliant to any version of
-> PowerPC, as far as I know?  So that is all done by emulation, including
-> all the registers?  Wow painful.
-> 
->> As far as I can see in cputable.h/.c, 832x is the only book3s/32 without 
->> FPU, and it doesn't have ALTIVEC either.
-> 
-> 602 doesn't have double-precision hardware, also no 64-bit FP registers.
-> But that CPU was never any widely used :-)
-> 
->> So we can in the future ensure that Altivec can be used without FPU 
->> support, but for the time being I think it is OK to force selection of FPU 
->> when selecting ALTIVEC in order to avoid build failures.
-> 
-> It is useful to allow MSR[VEC,FP]=1,0 but yeah there are no CPUs that
-> have VMX (aka AltiVec) but that do not have FP.  I don't see how making
-> that artificial dependency buys anything, but maybe it does?
-> 
->>> I have patches to fix the build errors with the config as
->>> reported but I don't know if that's the right thing to do...
-> 
-> Neither do we, we cannot see those patches :-)
+> I get build errors for both LZO and LZMA:
 
-Sure.  I'll post them later today.
-They keep FPU and ALTIVEC as independent (build) features.
+Ok, the patch is almost 1 year old, I guess there has been changes that break it. Will see if I can 
+find some time to look at it.
 
--- 
-~Randy
-
+Christophe
