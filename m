@@ -2,58 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEE03632C2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 02:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0729036343D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 09:40:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FN9B86y9Qz3bvt
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 10:02:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNMLs73XFz30N5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 17:40:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=JTEG1RVX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BXFDxYB6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=JTEG1RVX; 
- dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org
- [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BXFDxYB6; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FN99g1T12z2yqD
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Apr 2021 10:02:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
- :In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:
- Sender:Reply-To:Content-ID:Content-Description;
- bh=jan+rayNZyuIvP7QAc319+FzdNIqlXIptjr7wP5+bDc=; b=JTEG1RVXhAIPzHRdppONmKOM1M
- 6Hu0T6cJeOc0qfV/x6M8grdlevWQ6/tP0GcxkCUppgLkFEJexK79Smh0+008xgc0iPtt1aIajFhgS
- Kl14LifAW9efM5E+wMxYmoA93W/YCEhNoYR8V85SRmuJH3bcROwh/SJQ09lIm0+7nYg3yqB9QBzpm
- f6v8GoANNp4IxXZNMZ+gyLtfYKhpHF6pGoROGtk9IQ52lJr56eDgeIkTJmc2pG9mh8lOh/5gGRaIh
- mZkeyANN4CaGTdV8JNM8NIut/FG/7CsuYlq4ClnpHApHoS3ycxaRJFtlNxKKFY5pNMRHxsa5ftVZm
- MmAM6dgQ==;
-Received: from [2601:1c0:6280:3f0::df68]
- by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lXut5-006dnd-Jb; Sun, 18 Apr 2021 00:02:08 +0000
-Subject: Re: mmu.c:undefined reference to `patch__hash_page_A0'
-To: kernel test robot <lkp@intel.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <202102271820.WlZCxtzY-lkp@intel.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <06227600-c5c5-3da7-a495-ae0b0849b62d@infradead.org>
-Date: Sat, 17 Apr 2021 17:02:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNMLQ6DpSz303y
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Apr 2021 17:40:30 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13I7XY1W050896; Sun, 18 Apr 2021 03:40:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=vqEB4bPbr15e8fePRFJjM/dPPIdp976wu4HLPUMYjw4=;
+ b=BXFDxYB6SIfTOhbdDiWOGr3V1UwhSm1ayH23QrjDQyybamGCiW6GuCpdr0m7CytAAUE6
+ SMTBGZJBXVgTOuw0s1DbO/w4YCr0AtBcIldmp0NS+zwVWvsU/ACprybgYm2E/JCaQ5uk
+ pjqfbryDw47KJwEmymfoOhiOOW3utgfQ864Y/k/hS0VPgjEAZNc2Je42vHlIXnDGlAcs
+ 6pNANW8d3LbUQwPsyvgihjoud80rU3Mx7IWGY/lylBODDpAIcWSNU7gdrezjsVP0CKhs
+ 14F+E5I8vuHBiHuCieAtMbYondSsLXMvBrUVqvw2aW25FaE+BZSWWJrLHiuPRi//ALH8 AQ== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 380cyau5yd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 18 Apr 2021 03:40:20 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13I7amqa032182;
+ Sun, 18 Apr 2021 07:40:18 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03fra.de.ibm.com with ESMTP id 37yqa887xh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 18 Apr 2021 07:40:18 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 13I7dq9B35717488
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 18 Apr 2021 07:39:53 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 93C274C04E;
+ Sun, 18 Apr 2021 07:40:15 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 77AA44C044;
+ Sun, 18 Apr 2021 07:40:13 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.199.43.108])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sun, 18 Apr 2021 07:40:13 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/papr_scm: trivial: fix typo in a comment
+Date: Sun, 18 Apr 2021 13:10:03 +0530
+Message-Id: <20210418074003.6651-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-In-Reply-To: <202102271820.WlZCxtzY-lkp@intel.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: V_KrWldtVgqR5EbWehUA7lDwZ0NTQc30
+X-Proofpoint-ORIG-GUID: V_KrWldtVgqR5EbWehUA7lDwZ0NTQc30
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-18_03:2021-04-16,
+ 2021-04-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0
+ spamscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
+ impostorscore=0 mlxscore=0 suspectscore=0 clxscore=1011 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104180053
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,97 +96,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>, kbuild-all@lists.01.org,
- linux-kernel@vger.kernel.org
+Cc: maddy@linux.vnet.ibm.com, trivial@kernel.org, kjain@linux.ibm.com,
+ linux-kernel@vger.kernel.org, vaibhav@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-HI--
+There is a spelling mistake "byes" -> "bytes" in a comment of
+function drc_pmem_query_stats(). Fix that typo.
 
-I no longer see this build error.
-However:
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/papr_scm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 2/27/21 2:24 AM, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> head:   3fb6d0e00efc958d01c2f109c8453033a2d96796
-> commit: 259149cf7c3c6195e6199e045ca988c31d081cab powerpc/32s: Only build hash code when CONFIG_PPC_BOOK3S_604 is selected
-> date:   4 weeks ago
-> config: powerpc64-randconfig-r013-20210227 (attached as .config)
-
-ktr/lkp, this is a PPC32 .config file that is attached, not PPC64.
-
-Also:
-
-> compiler: powerpc-linux-gcc (GCC) 9.3.0
-> reproduce (this is a W=1 build):
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=259149cf7c3c6195e6199e045ca988c31d081cab
->         git remote add linus https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
->         git fetch --no-tags linus master
->         git checkout 259149cf7c3c6195e6199e045ca988c31d081cab
->         # save the attached .config to linux build tree
->         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=powerpc64 
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
->    powerpc-linux-ld: arch/powerpc/mm/book3s32/mmu.o: in function `MMU_init_hw_patch':
->>> mmu.c:(.init.text+0x75e): undefined reference to `patch__hash_page_A0'
->>> powerpc-linux-ld: mmu.c:(.init.text+0x76a): undefined reference to `patch__hash_page_A0'
->>> powerpc-linux-ld: mmu.c:(.init.text+0x776): undefined reference to `patch__hash_page_A1'
->    powerpc-linux-ld: mmu.c:(.init.text+0x782): undefined reference to `patch__hash_page_A1'
->>> powerpc-linux-ld: mmu.c:(.init.text+0x78e): undefined reference to `patch__hash_page_A2'
->    powerpc-linux-ld: mmu.c:(.init.text+0x79a): undefined reference to `patch__hash_page_A2'
->>> powerpc-linux-ld: mmu.c:(.init.text+0x7aa): undefined reference to `patch__hash_page_B'
->    powerpc-linux-ld: mmu.c:(.init.text+0x7b6): undefined reference to `patch__hash_page_B'
->>> powerpc-linux-ld: mmu.c:(.init.text+0x7c2): undefined reference to `patch__hash_page_C'
->    powerpc-linux-ld: mmu.c:(.init.text+0x7ce): undefined reference to `patch__hash_page_C'
->>> powerpc-linux-ld: mmu.c:(.init.text+0x7da): undefined reference to `patch__flush_hash_A0'
->    powerpc-linux-ld: mmu.c:(.init.text+0x7e6): undefined reference to `patch__flush_hash_A0'
->>> powerpc-linux-ld: mmu.c:(.init.text+0x7f2): undefined reference to `patch__flush_hash_A1'
->    powerpc-linux-ld: mmu.c:(.init.text+0x7fe): undefined reference to `patch__flush_hash_A1'
->>> powerpc-linux-ld: mmu.c:(.init.text+0x80a): undefined reference to `patch__flush_hash_A2'
->    powerpc-linux-ld: mmu.c:(.init.text+0x816): undefined reference to `patch__flush_hash_A2'
->>> powerpc-linux-ld: mmu.c:(.init.text+0x83e): undefined reference to `patch__flush_hash_B'
->    powerpc-linux-ld: mmu.c:(.init.text+0x84e): undefined reference to `patch__flush_hash_B'
->    powerpc-linux-ld: arch/powerpc/mm/book3s32/mmu.o: in function `update_mmu_cache':
->>> mmu.c:(.text.update_mmu_cache+0xa0): undefined reference to `add_hash_page'
-
-I do see this build error:
-
-powerpc-linux-ld: arch/powerpc/boot/wrapper.a(decompress.o): in function `partial_decompress':
-decompress.c:(.text+0x1f0): undefined reference to `__decompress'
-
-when either
-CONFIG_KERNEL_LZO=y
-or
-CONFIG_KERNEL_LZMA=y
-
-but the build succeeds when either
-CONFIG_KERNEL_GZIP=y
-or
-CONFIG_KERNEL_XZ=y
-
-I guess that is due to arch/powerpc/boot/decompress.c doing this:
-
-#ifdef CONFIG_KERNEL_GZIP
-#	include "decompress_inflate.c"
-#endif
-
-#ifdef CONFIG_KERNEL_XZ
-#	include "xz_config.h"
-#	include "../../../lib/decompress_unxz.c"
-#endif
-
-
-It would be nice to require one of KERNEL_GZIP or KERNEL_XZ
-to be set/enabled (maybe unless a uImage is being built?).
-
-ta.
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 835163f54244..ba4faa513a74 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -227,7 +227,7 @@ static int drc_pmem_query_n_bind(struct papr_scm_priv *p)
+  * Query the Dimm performance stats from PHYP and copy them (if returned) to
+  * provided struct papr_scm_perf_stats instance 'stats' that can hold atleast
+  * (num_stats + header) bytes.
+- * - If buff_stats == NULL the return value is the size in byes of the buffer
++ * - If buff_stats == NULL the return value is the size in bytes of the buffer
+  * needed to hold all supported performance-statistics.
+  * - If buff_stats != NULL and num_stats == 0 then we copy all known
+  * performance-statistics to 'buff_stat' and expect to be large enough to
 -- 
-~Randy
+2.27.0
 
