@@ -1,49 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D1A3635C0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 15:54:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30754363696
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 18:24:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNWf64Lq9z3c0D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 23:54:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EsUR0jmm;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNZzW1Cwmz3bSv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 02:24:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=EsUR0jmm; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNWdj64wMz300J
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Apr 2021 23:54:17 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FNWdh4VCPz9vFw; Sun, 18 Apr 2021 23:54:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1618754056;
- bh=kfsM+rTNtSsxB5i27Fxr65yD7ye26wCG4rKkWJ3z9yo=;
- h=From:To:Subject:Date:From;
- b=EsUR0jmmR+xmr4Ge56pi5pvaGwFx5nP7OxFkT9jc3s7msV9DkQrm8Pqfy6rEIT9C8
- qOg2kaT8VeTy/vgaYauPdkJe90ydQSWYsneFo0ZykZRmU/vPtG6v5I5IA3PQW+RRFj
- ZTu7H+yNr6wBt8CJN3BBB33tDyKeBEyV5BIDYr98s0cctkqbp9C+HoHWyzCH240lv1
- uSBbiBzfBLiBpJjvCoZrJAZjbFv0j8Qu4ZQdn7tVLKCNiLMwnMRc3g/kdZxiEDnQxX
- SjKkH+KrTh9AnFJtESFcZmv5/KKdYOENXdCSm+EvrJRWBzFmNyBazGtScX9RA1LESB
- TVe29azDhbS+w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/pseries: Stop calling printk in rtas_stop_self()
-Date: Sun, 18 Apr 2021 23:54:13 +1000
-Message-Id: <20210418135413.1204031-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNZzB2vhmz302H
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 02:24:34 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FNZyz5sfkz9tynS;
+ Sun, 18 Apr 2021 18:24:27 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 6vOFJhRsGw-R; Sun, 18 Apr 2021 18:24:27 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FNZyz4n1kz9tynR;
+ Sun, 18 Apr 2021 18:24:27 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D9BB8B79C;
+ Sun, 18 Apr 2021 18:24:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id w_yOQKn4wsA3; Sun, 18 Apr 2021 18:24:31 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D1FDA8B79B;
+ Sun, 18 Apr 2021 18:24:30 +0200 (CEST)
+Subject: Re: PPC_FPU, ALTIVEC: enable_kernel_fp, put_vr, get_vr
+To: Randy Dunlap <rdunlap@infradead.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
+References: <7107fcae-5c7a-ac94-8d89-326f2cd4cd33@infradead.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <8b1cb0a2-ed3a-7da0-a73a-febbda528703@csgroup.eu>
+Date: Sun, 18 Apr 2021 18:24:29 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
+In-Reply-To: <7107fcae-5c7a-ac94-8d89-326f2cd4cd33@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -56,68 +62,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RCU complains about us calling printk() from an offline CPU:
 
-  =============================
-  WARNING: suspicious RCU usage
-  5.12.0-rc7-02874-g7cf90e481cb8 #1 Not tainted
-  -----------------------------
-  kernel/locking/lockdep.c:3568 RCU-list traversed in non-reader section!!
 
-  other info that might help us debug this:
+Le 17/04/2021 à 22:17, Randy Dunlap a écrit :
+> Hi,
+> 
+> kernel test robot reports:
+> 
+>>> drivers/cpufreq/pmac32-cpufreq.c:262:2: error: implicit declaration of function 'enable_kernel_fp' [-Werror,-Wimplicit-function-declaration]
+>             enable_kernel_fp();
+>             ^
+> 
+> when
+> # CONFIG_PPC_FPU is not set
+> CONFIG_ALTIVEC=y
+> 
+> I see at least one other place that does not handle that
+> combination well, here:
+> 
+> ../arch/powerpc/lib/sstep.c: In function 'do_vec_load':
+> ../arch/powerpc/lib/sstep.c:637:3: error: implicit declaration of function 'put_vr' [-Werror=implicit-function-declaration]
+>    637 |   put_vr(rn, &u.v);
+>        |   ^~~~~~
+> ../arch/powerpc/lib/sstep.c: In function 'do_vec_store':
+> ../arch/powerpc/lib/sstep.c:660:3: error: implicit declaration of function 'get_vr'; did you mean 'get_oc'? [-Werror=implicit-function-declaration]
+>    660 |   get_vr(rn, &u.v);
+>        |   ^~~~~~
+> 
+> 
+> Should the code + Kconfigs/Makefiles handle that kind of
+> kernel config or should ALTIVEC always mean PPC_FPU as well?
 
-  RCU used illegally from offline CPU!
-  rcu_scheduler_active = 2, debug_locks = 1
-  no locks held by swapper/0/0.
+As far as I understand, Altivec is completely independant of FPU in Theory. So it should be possible 
+to use Altivec without using FPU.
 
-  stack backtrace:
-  CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.12.0-rc7-02874-g7cf90e481cb8 #1
-  Call Trace:
-    dump_stack+0xec/0x144 (unreliable)
-    lockdep_rcu_suspicious+0x124/0x144
-    __lock_acquire+0x1098/0x28b0
-    lock_acquire+0x128/0x600
-    _raw_spin_lock_irqsave+0x6c/0xc0
-    down_trylock+0x2c/0x70
-    __down_trylock_console_sem+0x60/0x140
-    vprintk_emit+0x1a8/0x4b0
-    vprintk_func+0xcc/0x200
-    printk+0x40/0x54
-    pseries_cpu_offline_self+0xc0/0x120
-    arch_cpu_idle_dead+0x54/0x70
-    do_idle+0x174/0x4a0
-    cpu_startup_entry+0x38/0x40
-    rest_init+0x268/0x388
-    start_kernel+0x748/0x790
-    start_here_common+0x1c/0x614
+However, until recently, it was not possible to de-activate FPU support on book3s/32. I made it 
+possible in order to reduce unneccessary processing on processors like the 832x that has no FPU.
+As far as I can see in cputable.h/.c, 832x is the only book3s/32 without FPU, and it doesn't have 
+ALTIVEC either.
 
-Which happens because by the time we get to rtas_stop_self() we are
-already offline. In addition the message can be spammy, and is not that
-helpful for users, so remove it.
+So we can in the future ensure that Altivec can be used without FPU support, but for the time being 
+I think it is OK to force selection of FPU when selecting ALTIVEC in order to avoid build failures.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/platforms/pseries/hotplug-cpu.c | 3 ---
- 1 file changed, 3 deletions(-)
+> 
+> I have patches to fix the build errors with the config as
+> reported but I don't know if that's the right thing to do...
+> 
 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-index ec478f8a98ff..48d9dfc3fad1 100644
---- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-@@ -47,9 +47,6 @@ static void rtas_stop_self(void)
- 
- 	BUG_ON(rtas_stop_self_token == RTAS_UNKNOWN_SERVICE);
- 
--	printk("cpu %u (hwid %u) Ready to die...\n",
--	       smp_processor_id(), hard_smp_processor_id());
--
- 	rtas_call_unlocked(&args, rtas_stop_self_token, 0, 1, NULL);
- 
- 	panic("Alas, I survived.\n");
--- 
-2.25.1
+Lets see them.
 
+Christophe
