@@ -2,99 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBE5363447
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 09:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A113634A9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 12:44:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNMmC4snSz3btw
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 17:59:23 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HW+r8U+3;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNRQl51Vpz302l
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 20:44:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=HW+r8U+3; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNMll37llz3036
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Apr 2021 17:58:59 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13I7YDqT121739; Sun, 18 Apr 2021 03:58:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=ULaC95HYjCDtIig+69jp0n4CTfNHbL+8hAecd284Ipw=;
- b=HW+r8U+3DyprtpAdNGDLyfshuM6puZ3FdPlVJYdSobpw0dZKVbQ/4w8D4FLd7WtAHsLo
- PCt9UCFjMm370AKrW/NPdLJaPymYoERph1+5SY93DeMC/Hz226ZBo/7BVRiX0nhg+G4L
- nf5y1QdBKNeg8HLML2oVS4J94FypyyYej1aSFZR8FyKBfdh6ofVwO7oW5Q0PQp8m06f4
- lRUfdHKd6kw2c2EiVe92yAcwz0xtgwsgokgvHHdeZ6ii8t1mguit8F5HFUmXjSWqkwaA
- SvrbV56eMRVBXGVrgGqUuMTNAblKMiiwyb4Fncx2y2E3lxSoylqyHzGbTkjDN0C2Fv4t TQ== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 380crakkcb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 18 Apr 2021 03:58:51 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13I7uXae010621;
- Sun, 18 Apr 2021 07:58:51 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma02dal.us.ibm.com with ESMTP id 37yqa9k8wj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 18 Apr 2021 07:58:51 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13I7woRW15860200
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 18 Apr 2021 07:58:50 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 50317124055;
- Sun, 18 Apr 2021 07:58:50 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44067124053;
- Sun, 18 Apr 2021 07:58:48 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.43.108])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Sun, 18 Apr 2021 07:58:47 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/papr_scm: Reduce error severity if nvdimm stats
- inaccessible
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, Ira Weiny <ira.weiny@intel.com>
-References: <20210414124026.332472-1-vaibhav@linux.ibm.com>
- <20210414153625.GB1904484@iweiny-DESK2.sc.intel.com>
- <87lf9kkfaj.fsf@vajain21.in.ibm.com>
- <20210414212417.GC1904484@iweiny-DESK2.sc.intel.com>
- <87h7k7lqf8.fsf@vajain21.in.ibm.com>
-From: kajoljain <kjain@linux.ibm.com>
-Message-ID: <50e2df73-ae82-89da-a780-5dcf07328d96@linux.ibm.com>
-Date: Sun, 18 Apr 2021 13:28:46 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNRQP5Fn9z301q
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Apr 2021 20:44:09 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FNRQ86t5cz9vBmS;
+ Sun, 18 Apr 2021 12:44:00 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id d54YPj4tRfSP; Sun, 18 Apr 2021 12:44:00 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FNRQ85vyTz9vBmQ;
+ Sun, 18 Apr 2021 12:44:00 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DB7918B79B;
+ Sun, 18 Apr 2021 12:44:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Dh9WCAivhXwx; Sun, 18 Apr 2021 12:44:03 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A5CC8B799;
+ Sun, 18 Apr 2021 12:44:03 +0200 (CEST)
+Subject: Re: mmu.c:undefined reference to `patch__hash_page_A0'
+To: Randy Dunlap <rdunlap@infradead.org>, kernel test robot <lkp@intel.com>
+References: <202102271820.WlZCxtzY-lkp@intel.com>
+ <06227600-c5c5-3da7-a495-ae0b0849b62d@infradead.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <ab9d4f9e-add6-900b-9fa7-83d5f7d1108b@csgroup.eu>
+Date: Sun, 18 Apr 2021 12:43:54 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
-In-Reply-To: <87h7k7lqf8.fsf@vajain21.in.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vtromN3D3YzRZv2cxxJN6j5OZt-BmHnf
-X-Proofpoint-ORIG-GUID: vtromN3D3YzRZv2cxxJN6j5OZt-BmHnf
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-17_16:2021-04-16,
- 2021-04-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0
- priorityscore=1501 malwarescore=0 adultscore=0 mlxscore=0 suspectscore=0
- bulkscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104180053
+In-Reply-To: <06227600-c5c5-3da7-a495-ae0b0849b62d@infradead.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,86 +62,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Santosh Sivaraj <santosh@fossix.org>, linuxppc-dev@lists.ozlabs.org,
- Dan Williams <dan.j.williams@intel.com>, linux-nvdimm@lists.01.org
+Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>, kbuild-all@lists.01.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 4/15/21 5:18 PM, Vaibhav Jain wrote:
-> Ira Weiny <ira.weiny@intel.com> writes:
+Le 18/04/2021 à 02:02, Randy Dunlap a écrit :
+> HI--
 > 
->> On Wed, Apr 14, 2021 at 09:51:40PM +0530, Vaibhav Jain wrote:
->>> Thanks for looking into this patch Ira,
->>>
->>> Ira Weiny <ira.weiny@intel.com> writes:
->>>
->>>> On Wed, Apr 14, 2021 at 06:10:26PM +0530, Vaibhav Jain wrote:
->>>>> Currently drc_pmem_qeury_stats() generates a dev_err in case
->>>>> "Enable Performance Information Collection" feature is disabled from
->>>>> HMC. The error is of the form below:
->>>>>
->>>>> papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
->>>>> 	 performance stats, Err:-10
->>>>>
->>>>> This error message confuses users as it implies a possible problem
->>>>> with the nvdimm even though its due to a disabled feature.
->>>>>
->>>>> So we fix this by explicitly handling the H_AUTHORITY error from the
->>>>> H_SCM_PERFORMANCE_STATS hcall and generating a warning instead of an
->>>>> error, saying that "Performance stats in-accessible".
->>>>>
->>>>> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
->>>>> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->>>>> ---
->>>>>  arch/powerpc/platforms/pseries/papr_scm.c | 3 +++
->>>>>  1 file changed, 3 insertions(+)
->>>>>
->>>>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->>>>> index 835163f54244..9216424f8be3 100644
->>>>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->>>>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->>>>> @@ -277,6 +277,9 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
->>>>>  		dev_err(&p->pdev->dev,
->>>>>  			"Unknown performance stats, Err:0x%016lX\n", ret[0]);
->>>>>  		return -ENOENT;
->>>>> +	} else if (rc == H_AUTHORITY) {
->>>>> +		dev_warn(&p->pdev->dev, "Performance stats in-accessible");
->>>>> +		return -EPERM;
->>>>
->>>> Is this because of a disabled feature or because of permissions?
->>>
->>> Its because of a disabled feature that revokes permission for a guest to
->>> retrieve performance statistics.
->>>
->>> The feature is called "Enable Performance Information Collection" and
->>> once disabled the hcall H_SCM_PERFORMANCE_STATS returns an error
->>> H_AUTHORITY indicating that the guest doesn't have permission to retrieve
->>> performance statistics.
->>
->> In that case would it be appropriate to have the error message indicate a
->> permission issue?
->>
->> Something like 'permission denied'?
-> 
-> Yes, Something like "Permission denied while accessing performance
-> stats" might be more clear and intuitive.
+> I no longer see this build error.
 
-Hi Vaibhav,
-   Thanks for the patch. I agree with Ira and above warning message with "Permission denied" looks more clear.
-With that change, patch looks good to me.
+Fixed by https://github.com/torvalds/linux/commit/acdad8fb4a1574323db88f98a38b630691574e16
 
-Reviewed-By: Kajol Jain<kjain@linux.ibm.com>
+> However:
+> 
+> On 2/27/21 2:24 AM, kernel test robot wrote:
+>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+>> head:   3fb6d0e00efc958d01c2f109c8453033a2d96796
+>> commit: 259149cf7c3c6195e6199e045ca988c31d081cab powerpc/32s: Only build hash code when CONFIG_PPC_BOOK3S_604 is selected
+>> date:   4 weeks ago
+>> config: powerpc64-randconfig-r013-20210227 (attached as .config)
+> 
+> ktr/lkp, this is a PPC32 .config file that is attached, not PPC64.
+> 
+> Also:
+> 
+>> compiler: powerpc-linux-gcc (GCC) 9.3.0
 
-Thanks,
-Kajol Jain
+...
+
 > 
-> Will update the warn message in v2.
+> I do see this build error:
 > 
->>
->> Ira
->>
+> powerpc-linux-ld: arch/powerpc/boot/wrapper.a(decompress.o): in function `partial_decompress':
+> decompress.c:(.text+0x1f0): undefined reference to `__decompress'
 > 
+> when either
+> CONFIG_KERNEL_LZO=y
+> or
+> CONFIG_KERNEL_LZMA=y
+> 
+> but the build succeeds when either
+> CONFIG_KERNEL_GZIP=y
+> or
+> CONFIG_KERNEL_XZ=y
+> 
+> I guess that is due to arch/powerpc/boot/decompress.c doing this:
+> 
+> #ifdef CONFIG_KERNEL_GZIP
+> #	include "decompress_inflate.c"
+> #endif
+> 
+> #ifdef CONFIG_KERNEL_XZ
+> #	include "xz_config.h"
+> #	include "../../../lib/decompress_unxz.c"
+> #endif
+> 
+> 
+> It would be nice to require one of KERNEL_GZIP or KERNEL_XZ
+> to be set/enabled (maybe unless a uImage is being built?).
+
+
+Can you test by 
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/a74fce4dfc9fa32da6ce3470bbedcecf795de1ec.1591189069.git.christophe.leroy@csgroup.eu/ 
+?
+
+Thanks
+Christophe
