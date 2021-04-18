@@ -1,58 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031E636372A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 20:36:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5AFF363761
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Apr 2021 21:43:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNdtq6lGZz3bnx
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 04:36:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNgNB4jXGz3bxp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 05:43:06 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ltNUX/vo;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ltNUX/vo; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNdtT29Ffz3023
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 04:35:41 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FNdtG6y9sz9twvm;
- Sun, 18 Apr 2021 20:35:34 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id DxofNuagOesa; Sun, 18 Apr 2021 20:35:34 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FNdtG1mqtz9twvl;
- Sun, 18 Apr 2021 20:35:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C3B298B79B;
- Sun, 18 Apr 2021 20:35:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Qh9Hr9gyU_oQ; Sun, 18 Apr 2021 20:35:37 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 506898B797;
- Sun, 18 Apr 2021 20:35:37 +0200 (CEST)
-Subject: Re: mmu.c:undefined reference to `patch__hash_page_A0'
-To: Randy Dunlap <rdunlap@infradead.org>, kernel test robot <lkp@intel.com>
-References: <202102271820.WlZCxtzY-lkp@intel.com>
- <06227600-c5c5-3da7-a495-ae0b0849b62d@infradead.org>
- <ab9d4f9e-add6-900b-9fa7-83d5f7d1108b@csgroup.eu>
- <0a301d17-136c-df65-17cc-3c9ddbe06de8@infradead.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <2eff6845-2695-b82c-9e37-43685abc5cd6@csgroup.eu>
-Date: Sun, 18 Apr 2021 20:35:29 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNgMk65Htz2xfp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 05:42:41 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13IJXMAp058465; Sun, 18 Apr 2021 15:42:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : content-type : date : content-transfer-encoding :
+ mime-version; s=pp1; bh=1L9M3MBvLYPTpjSJpnK/SmAcOxfoJFoBng0cr61AYJk=;
+ b=ltNUX/vo3FQqkJDY4jngxFT3TiHiKOQ6EBj9VeRQtAOPPqjRO8sWH0uQB3ZLwFxNL+Vh
+ DxkwqxrWNOYVYRWa6fAL47av+liHRCWmdETd5ZziGgrk//FKRZJNN5ZrAYuA7pzYdffL
+ QrB4HlSxE3xdyG08Zw2HuQmjRG93Q5ucHmNeyHY8p+pgyXpdx6PzXaBh9xMOHeyxDk9e
+ /53hYBolHnDn134EGHJED515yB3TxhNH8ztlwqy9HlndM1q81qAxxrbCcNaR+WTbSCit
+ jXK3g24nlWZPF9V9Mt6sk5XGkLpasNlyXyA8d5jqY9SPZR8VvpM6sOeTYcK8ysVGfq17 nQ== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 380d883mtu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 18 Apr 2021 15:42:30 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13IJcfBP016892;
+ Sun, 18 Apr 2021 19:42:30 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma05wdc.us.ibm.com with ESMTP id 37yqa8mevq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 18 Apr 2021 19:42:30 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13IJgTL68389014
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 18 Apr 2021 19:42:29 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 48BFE112064;
+ Sun, 18 Apr 2021 19:42:29 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 95C7B11206B;
+ Sun, 18 Apr 2021 19:42:28 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.149.131])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Sun, 18 Apr 2021 19:42:28 +0000 (GMT)
+Message-ID: <08511c1e92ac239f20ac88c73c59d1f8cf02e6ad.camel@linux.ibm.com>
+Subject: [PATCH] Documentation/powerpc: Add proper links for manual and tests
+From: Haren Myneni <haren@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Content-Type: text/plain; charset="UTF-8"
+Date: Sun, 18 Apr 2021 12:29:42 -0700
+User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: nF4KemfJDei3fNcvZiqcBdwIHa71nk1h
+X-Proofpoint-GUID: nF4KemfJDei3fNcvZiqcBdwIHa71nk1h
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-In-Reply-To: <0a301d17-136c-df65-17cc-3c9ddbe06de8@infradead.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-18_12:2021-04-16,
+ 2021-04-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxlogscore=925
+ mlxscore=0 malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501
+ clxscore=1015 lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104180138
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,81 +97,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>, kbuild-all@lists.01.org,
- linux-kernel@vger.kernel.org
+Cc: abali@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+The links that are mentioned in this document are no longer
+valid. So changed the proper links for NXGZIP user manual and
+test cases.
 
-Le 18/04/2021 à 19:15, Randy Dunlap a écrit :
-> On 4/18/21 3:43 AM, Christophe Leroy wrote:
->>
->>
->> Le 18/04/2021 à 02:02, Randy Dunlap a écrit :
->>> HI--
->>>
->>> I no longer see this build error.
->>
->> Fixed by https://github.com/torvalds/linux/commit/acdad8fb4a1574323db88f98a38b630691574e16
->>
->>> However:
->>>
->>> On 2/27/21 2:24 AM, kernel test robot wrote:
->>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
->>>> head:   3fb6d0e00efc958d01c2f109c8453033a2d96796
->>>> commit: 259149cf7c3c6195e6199e045ca988c31d081cab powerpc/32s: Only build hash code when CONFIG_PPC_BOOK3S_604 is selected
->>>> date:   4 weeks ago
->>>> config: powerpc64-randconfig-r013-20210227 (attached as .config)
->>>
->>> ktr/lkp, this is a PPC32 .config file that is attached, not PPC64.
->>>
->>> Also:
->>>
->>>> compiler: powerpc-linux-gcc (GCC) 9.3.0
->>
->> ...
->>
->>>
->>> I do see this build error:
->>>
->>> powerpc-linux-ld: arch/powerpc/boot/wrapper.a(decompress.o): in function `partial_decompress':
->>> decompress.c:(.text+0x1f0): undefined reference to `__decompress'
->>>
->>> when either
->>> CONFIG_KERNEL_LZO=y
->>> or
->>> CONFIG_KERNEL_LZMA=y
->>>
->>> but the build succeeds when either
->>> CONFIG_KERNEL_GZIP=y
->>> or
->>> CONFIG_KERNEL_XZ=y
->>>
->>> I guess that is due to arch/powerpc/boot/decompress.c doing this:
->>>
->>> #ifdef CONFIG_KERNEL_GZIP
->>> #    include "decompress_inflate.c"
->>> #endif
->>>
->>> #ifdef CONFIG_KERNEL_XZ
->>> #    include "xz_config.h"
->>> #    include "../../../lib/decompress_unxz.c"
->>> #endif
->>>
->>>
->>> It would be nice to require one of KERNEL_GZIP or KERNEL_XZ
->>> to be set/enabled (maybe unless a uImage is being built?).
->>
->>
->> Can you test by https://patchwork.ozlabs.org/project/linuxppc-dev/patch/a74fce4dfc9fa32da6ce3470bbedcecf795de1ec.1591189069.git.christophe.leroy@csgroup.eu/ ?
-> 
-> Hi Christophe,
-> 
-> I get build errors for both LZO and LZMA:
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Reported-by: Bulent Abali <abali@us.ibm.com>
+---
+ Documentation/powerpc/vas-api.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Ok, the patch is almost 1 year old, I guess there has been changes that break it. Will see if I can 
-find some time to look at it.
+diff --git a/Documentation/powerpc/vas-api.rst b/Documentation/powerpc/vas-api.rst
+index 90c50ed839f3..bdb50fed903e 100644
+--- a/Documentation/powerpc/vas-api.rst
++++ b/Documentation/powerpc/vas-api.rst
+@@ -254,7 +254,7 @@ using this window. the signal will be issued to the thread group leader
+ signals.
+ 
+ NX-GZIP User's Manual:
+-https://github.com/libnxz/power-gzip/blob/master/power_nx_gzip_um.pdf
++https://github.com/libnxz/power-gzip/blob/master/doc/power_nx_gzip_um.pdf
+ 
+ Simple example
+ ==============
+@@ -301,5 +301,5 @@ Simple example
+ 			close(fd) or window can be closed upon process exit
+ 		}
+ 
+-	Refer https://github.com/abalib/power-gzip for tests or more
++	Refer https://github.com/libnxz/power-gzip for tests or more
+ 	use cases.
+-- 
+2.26.2
 
-Christophe
+
