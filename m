@@ -1,33 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0F33639F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 06:06:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2CF23639F6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 06:06:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNtXq3r6vz3dhn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 14:06:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNtY85q3Wz3dnp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 14:06:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNtVP514Zz3byr
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 14:04:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNtVQ4Mtdz3cDv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 14:04:14 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FNtVP1HGSz9vGp; Mon, 19 Apr 2021 14:04:13 +1000 (AEST)
+ id 4FNtVQ0MPcz9vG3; Mon, 19 Apr 2021 14:04:13 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>,
  Bixuan Cui <cuibixuan@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Kajol Jain <kjain@linux.ibm.com>, "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-In-Reply-To: <20210409090124.59492-1-cuibixuan@huawei.com>
-References: <20210409090124.59492-1-cuibixuan@huawei.com>
-Subject: Re: [PATCH -next] powerpc/perf/hv-24x7: Make some symbols static
-Message-Id: <161880479840.1398509.5195313938984929332.b4-ty@ellerman.id.au>
+ Kajol Jain <kjain@linux.ibm.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20210409090119.59444-1-cuibixuan@huawei.com>
+References: <20210409090119.59444-1-cuibixuan@huawei.com>
+Subject: Re: [PATCH -next] powerpc/perf: Make symbol 'isa207_pmu_format_attr'
+ static
+Message-Id: <161880479814.1398509.6067179315782910479.b4-ty@ellerman.id.au>
 Date: Mon, 19 Apr 2021 13:59:58 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -49,25 +50,18 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 9 Apr 2021 17:01:24 +0800, Bixuan Cui wrote:
+On Fri, 9 Apr 2021 17:01:19 +0800, Bixuan Cui wrote:
 > The sparse tool complains as follows:
 > 
-> arch/powerpc/perf/hv-24x7.c:229:1: warning:
->  symbol '__pcpu_scope_hv_24x7_txn_flags' was not declared. Should it be static?
-> arch/powerpc/perf/hv-24x7.c:230:1: warning:
->  symbol '__pcpu_scope_hv_24x7_txn_err' was not declared. Should it be static?
-> arch/powerpc/perf/hv-24x7.c:236:1: warning:
->  symbol '__pcpu_scope_hv_24x7_hw' was not declared. Should it be static?
-> arch/powerpc/perf/hv-24x7.c:244:1: warning:
->  symbol '__pcpu_scope_hv_24x7_reqb' was not declared. Should it be static?
-> arch/powerpc/perf/hv-24x7.c:245:1: warning:
->  symbol '__pcpu_scope_hv_24x7_resb' was not declared. Should it be static?
+> arch/powerpc/perf/isa207-common.c:24:18: warning:
+>  symbol 'isa207_pmu_format_attr' was not declared. Should it be static?
 > 
-> [...]
+> This symbol is not used outside of isa207-common.c, so this
+> commit marks it static.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/perf/hv-24x7: Make some symbols static
-      https://git.kernel.org/powerpc/c/cc331eee03eadd750af1fb957d020b3f24e5e056
+[1/1] powerpc/perf: Make symbol 'isa207_pmu_format_attr' static
+      https://git.kernel.org/powerpc/c/107dadb046178173dea18e0a78ff8ea3cc27c213
 
 cheers
