@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1891363A1D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 06:10:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E77363A1C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 06:09:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNtdC4Wjmz3fkS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 14:10:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNtcn2zHsz3fg2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 14:09:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,17 +16,17 @@ Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNtVp4cStz3cTH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 14:04:34 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNtVn6vVnz3cRY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 14:04:33 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FNtVj1sHCz9vHY; Mon, 19 Apr 2021 14:04:28 +1000 (AEST)
+ id 4FNtVf3BZYz9vHL; Mon, 19 Apr 2021 14:04:25 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-In-Reply-To: <20210412014845.1517916-1-npiggin@gmail.com>
-References: <20210412014845.1517916-1-npiggin@gmail.com>
-Subject: Re: [PATCH v1 00/12] minor KVM fixes and cleanups
-Message-Id: <161880479451.1398509.3440383363531390198.b4-ty@ellerman.id.au>
-Date: Mon, 19 Apr 2021 13:59:54 +1000
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210408140630.205502-1-nathanl@linux.ibm.com>
+References: <20210408140630.205502-1-nathanl@linux.ibm.com>
+Subject: Re: [PATCH v2 0/5] powerpc/rtas: miscellaneous cleanups
+Message-Id: <161880479617.1398509.1154162955998163040.b4-ty@ellerman.id.au>
+Date: Mon, 19 Apr 2021 13:59:56 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -41,48 +41,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: tyreld@linux.ibm.com, ajd@linux.ibm.com, aik@ozlabs.ru,
+ aneesh.kumar@linux.ibm.com, npiggin@gmail.com, brking@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 12 Apr 2021 11:48:33 +1000, Nicholas Piggin wrote:
-> Here is the first batch of patches are extracted from the patches of the
-> KVM C conversion series, plus one new fix (host CTRL not restored) since
-> v6 was posted.
+On Thu, 8 Apr 2021 09:06:25 -0500, Nathan Lynch wrote:
+> This is a reroll of the series posted here:
+> https://lore.kernel.org/linuxppc-dev/20210114220004.1138993-1-nathanl@linux.ibm.com/
 > 
-> Please consider for merging.
-> 
-> Thanks,
-> Nick
+> Originally this work was prompted by failures on radix MMU PowerVM
+> guests when passing buffers to RTAS that lay outside of its idea of
+> the RMA. In v1 I approached this as a problem to be solved in Linux,
+> but RTAS development has since decided to change their code so that
+> the RMA restriction does not apply with radix.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[01/12] KVM: PPC: Book3S HV P9: Restore host CTRL SPR after guest exit
-        https://git.kernel.org/powerpc/c/5088eb4092df12d701af8e0e92860b7186365279
-[02/12] KVM: PPC: Book3S HV: Nested move LPCR sanitising to sanitise_hv_regs
-        https://git.kernel.org/powerpc/c/a19b70abc69aea8ea5974c57e1c3457d9df6aff2
-[03/12] KVM: PPC: Book3S HV: Add a function to filter guest LPCR bits
-        https://git.kernel.org/powerpc/c/67145ef4960f55923b9e404c0b184944bfeded4d
-[04/12] KVM: PPC: Book3S HV: Disallow LPCR[AIL] to be set to 1 or 2
-        https://git.kernel.org/powerpc/c/bcc92a0d6d6eae1e7b34a88f58ae69c081d85f97
-[05/12] KVM: PPC: Book3S HV: Prevent radix guests setting LPCR[TC]
-        https://git.kernel.org/powerpc/c/72c15287210f7433f5fcb55452b05e4b6ccc6c15
-[06/12] KVM: PPC: Book3S HV: Remove redundant mtspr PSPB
-        https://git.kernel.org/powerpc/c/4b5f0a0d49e663adf1c7c6f2dd05cb18dd53db8c
-[07/12] KVM: PPC: Book3S HV: remove unused kvmppc_h_protect argument
-        https://git.kernel.org/powerpc/c/6c12c4376bbbc89fc84480096ba838e07ab7c405
-[08/12] KVM: PPC: Book3S HV: Fix CONFIG_SPAPR_TCE_IOMMU=n default hcalls
-        https://git.kernel.org/powerpc/c/0fd85cb83fbd7048d8a024ba1338924349e26fd5
-[09/12] powerpc/64s: Remove KVM handler support from CBE_RAS interrupts
-        https://git.kernel.org/powerpc/c/5eee8371828a92a2620453907d6b2b6dc819ab3a
-[10/12] powerpc/64s: remove KVM SKIP test from instruction breakpoint handler
-        https://git.kernel.org/powerpc/c/da487a5d1bee6a30798a8db15986d3d028c8ac92
-[11/12] KVM: PPC: Book3S HV: Ensure MSR[ME] is always set in guest MSR
-        https://git.kernel.org/powerpc/c/946cf44ac6ce61378ea02386d39394a06d502f28
-[12/12] KVM: PPC: Book3S HV: Ensure MSR[HV] is always clear in guest MSR
-        https://git.kernel.org/powerpc/c/732f21a3053cf279eb6b85d19b7818a8f1dd2071
+[1/5] powerpc/rtas: improve ppc_rtas_rmo_buf_show documentation
+      https://git.kernel.org/powerpc/c/c13ff6f3251318f5e1ff5b1a6d05f76996db672a
+[2/5] powerpc/rtas-proc: remove unused RMO_READ_BUF_MAX
+      https://git.kernel.org/powerpc/c/01c1b9984a12a379f332c39c4b1fd96e473b93b0
+[3/5] powerpc/rtas: remove ibm_suspend_me_token
+      https://git.kernel.org/powerpc/c/0ab1c929ae38262c4deb18b4a2e03a4f0cb5c5ed
+[4/5] powerpc/rtas: move syscall filter setup into separate function
+      https://git.kernel.org/powerpc/c/0649cdc8237943c15fc977e96033dc8ae28cc2bd
+[5/5] powerpc/rtas: rename RTAS_RMOBUF_MAX to RTAS_USER_REGION_SIZE
+      https://git.kernel.org/powerpc/c/e5d56763525e65417dad0d46572b234fa0008e40
 
 cheers
