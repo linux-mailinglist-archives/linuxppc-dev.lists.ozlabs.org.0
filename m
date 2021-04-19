@@ -1,54 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054C936399B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 05:08:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3533E3639C3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 05:38:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNsGB5jy4z3c0k
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 13:08:34 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=gqxOC5yy;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNswg1mzvz3bV7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 13:38:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=gqxOC5yy; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNsFL6Wcwz30RG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 13:07:50 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4FNsFD5Mhpz9vGP; Mon, 19 Apr 2021 13:07:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1618801664;
- bh=D4aFOk9iIBTmEBLZ9tpdnV9/EcjrL9FXbggNofbOtfw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=gqxOC5yyedj5NetDVbTSYnQYg6v6pzgCsmXLUaGCtn6jq3MEERZBx823awFX48ZLb
- SGTsGqmhdwq/r9Gro06WTkLFalsC3ydoyNTeFyaUGjSv7uUwy3thUO5uzr/XghBhhH
- QIuebsKwQTFrRd/5VAkbQlBdgLT2uCZvt5RiA0mU=
-Date: Mon, 19 Apr 2021 11:19:38 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH 3/3] powerpc/smp: Cache CPU to chip lookup
-Message-ID: <YHzaqqYDRtTuVEdH@yekko.fritz.box>
-References: <20210415120934.232271-1-srikar@linux.vnet.ibm.com>
- <20210415120934.232271-4-srikar@linux.vnet.ibm.com>
- <20210415171921.GB16351@in.ibm.com>
- <20210415175110.GE2633526@linux.vnet.ibm.com>
- <20210416155748.GA26496@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNswK6wdbz30Cw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 13:38:06 +1000 (AEST)
+IronPort-SDR: 8tYiTUEJmxJXlb59AiB+Z7WTU2lRWm5ROpchLE9rm+rUNth5vQ8xkg+knBoSOCqjKCulzKWklq
+ TEk3oHeOi1tQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9958"; a="174751630"
+X-IronPort-AV: E=Sophos;i="5.82,233,1613462400"; d="scan'208";a="174751630"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Apr 2021 20:38:02 -0700
+IronPort-SDR: ogZT9i4UcvSe3Eg7tL9Nd3dM1UeTJlmTgdvUtfYs3I1pFca55tBzXz8iKmiq0NbT8Q7M7eHc32
+ gWu7kusoOHDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,233,1613462400"; d="scan'208";a="602024241"
+Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
+ by orsmga005.jf.intel.com with ESMTP; 18 Apr 2021 20:38:01 -0700
+Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lYKjY-0001WR-KD; Mon, 19 Apr 2021 03:38:00 +0000
+Date: Mon, 19 Apr 2021 11:37:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS e4361a664ee985c1f54ddecf80b93159750d93d3
+Message-ID: <607cfaeb.IJdQLy1i3mAYPjgU%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="NARE3flw2kjIKyVm"
-Content-Disposition: inline
-In-Reply-To: <20210416155748.GA26496@in.ibm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,113 +53,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>, qemu-ppc@nongnu.org,
- Cedric Le Goater <clg@kaod.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Ingo Molnar <mingo@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: e4361a664ee985c1f54ddecf80b93159750d93d3  Automatic merge of 'next' into merge (2021-04-19 00:04)
 
---NARE3flw2kjIKyVm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+elapsed time: 720m
 
-On Fri, Apr 16, 2021 at 09:27:48PM +0530, Gautham R Shenoy wrote:
-> On Thu, Apr 15, 2021 at 11:21:10PM +0530, Srikar Dronamraju wrote:
-> > * Gautham R Shenoy <ego@linux.vnet.ibm.com> [2021-04-15 22:49:21]:
-> >=20
-> > > >=20
-> > > > +int *chip_id_lookup_table;
-> > > > +
-> > > >  #ifdef CONFIG_PPC64
-> > > >  int __initdata iommu_is_off;
-> > > >  int __initdata iommu_force_on;
-> > > > @@ -914,13 +916,22 @@ EXPORT_SYMBOL(of_get_ibm_chip_id);
-> > > >  int cpu_to_chip_id(int cpu)
-> > > >  {
-> > > >  	struct device_node *np;
-> > > > +	int ret =3D -1, idx;
-> > > > +
-> > > > +	idx =3D cpu / threads_per_core;
-> > > > +	if (chip_id_lookup_table && chip_id_lookup_table[idx] !=3D -1)
-> > >=20
-> >=20
-> > > The value -1 is ambiguous since we won't be able to determine if
-> > > it is because we haven't yet made a of_get_ibm_chip_id() call
-> > > or if of_get_ibm_chip_id() call was made and it returned a -1.
-> > >=20
-> >=20
-> > We don't allocate chip_id_lookup_table unless cpu_to_chip_id() return
-> > !-1 value for the boot-cpuid. So this ensures that we dont
-> > unnecessarily allocate chip_id_lookup_table. Also I check for
-> > chip_id_lookup_table before calling cpu_to_chip_id() for other CPUs.
-> > So this avoids overhead of calling cpu_to_chip_id() for platforms that
-> > dont support it.  Also its most likely that if the
-> > chip_id_lookup_table is initialized then of_get_ibm_chip_id() call
-> > would return a valid value.
-> >=20
-> > + Below we are only populating the lookup table, only when the
-> > of_get_cpu_node is valid.
-> >=20
-> > So I dont see any drawbacks of initializing it to -1. Do you see
-> any?
->=20
->=20
-> Only if other callers of cpu_to_chip_id() don't check for whether the
-> chip_id_lookup_table() has been allocated or not. From a code
-> readability point of view, it is easier to have that check  this inside
-> cpu_to_chip_id() instead of requiring all its callers to make that
-> check.
+configs tested: 99
+configs skipped: 2
 
-Even if they do, and the bad invalid value should never be read, I
-think it's worth initializing that way.  If means if there's a mistake
-and we do accidentally read the value, then the error is likely to be
-much clearer.  Likewise if someone looks at this value from a
-debugger, it will be clearer what's going on.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->=20
-> >=20
-> > > Thus, perhaps we can initialize chip_id_lookup_table[idx] with a
-> > > different unique negative value. How about S32_MIN ? and check
-> > > chip_id_lookup_table[idx] is different here ?
-> > >=20
-> >=20
-> > I had initially initialized to -2, But then I thought we adding in
-> > more confusion than necessary and it was not solving any issues.
-> >=20
-> >=20
->=20
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+riscv                            allmodconfig
+i386                             allyesconfig
+riscv                            allyesconfig
+arm                      pxa255-idp_defconfig
+xtensa                  audio_kc705_defconfig
+mips                        nlm_xlr_defconfig
+m68k                           sun3_defconfig
+sh                        sh7785lcr_defconfig
+sh                           se7751_defconfig
+mips                           xway_defconfig
+powerpc                     sbc8548_defconfig
+powerpc                     tqm8548_defconfig
+mips                 decstation_r4k_defconfig
+arm                          lpd270_defconfig
+m68k                         apollo_defconfig
+powerpc                     asp8347_defconfig
+m68k                        mvme147_defconfig
+riscv                             allnoconfig
+powerpc                mpc7448_hpc2_defconfig
+powerpc                      ep88xc_defconfig
+sh                          rsk7264_defconfig
+sh                          sdk7786_defconfig
+mips                          rb532_defconfig
+sh                           se7619_defconfig
+arm                        trizeps4_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a003-20210418
+i386                 randconfig-a001-20210418
+i386                 randconfig-a006-20210418
+i386                 randconfig-a005-20210418
+i386                 randconfig-a004-20210418
+i386                 randconfig-a002-20210418
+x86_64               randconfig-a014-20210418
+x86_64               randconfig-a015-20210418
+x86_64               randconfig-a013-20210418
+x86_64               randconfig-a011-20210418
+x86_64               randconfig-a012-20210418
+x86_64               randconfig-a016-20210418
+i386                 randconfig-a015-20210418
+i386                 randconfig-a013-20210418
+i386                 randconfig-a014-20210418
+i386                 randconfig-a016-20210418
+i386                 randconfig-a012-20210418
+i386                 randconfig-a011-20210418
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+clang tested configs:
+x86_64               randconfig-a003-20210418
+x86_64               randconfig-a001-20210418
+x86_64               randconfig-a005-20210418
+x86_64               randconfig-a002-20210418
+x86_64               randconfig-a006-20210418
+x86_64               randconfig-a004-20210418
 
---NARE3flw2kjIKyVm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmB82qkACgkQbDjKyiDZ
-s5LBiA//XZbMczDNargTsR+q7EcnrqGSZkt+mK8XB7f6mY9aoBm/vZQBt6UDx8sh
-B1xI+/mPzbNpg6OAtbqzxAMe4bXwbm1TYtxQLQ+h0+1p1dlRdNdSHyMHpSFhMLj5
-CafDuAe+uTFH4i6tXTm4oZq7VUqzn/KVb6i6mV/hIk9NJJLc1exhShJ/5eMc0HjQ
-2tQTeEclZQKv180jh7MwFsn/pfhegn+pUbydhZJCVTpmGwfjExQDIajO7M76cMZH
-9nHfz5Hnud2bgsDKC1b3sydIn+Hg9B9ju+GatV4nxrrbL6+DWGITbxfTi5TFLfPj
-AgsVgmO1lWRU6ZJ5VOqqav7IV5BlZxRQU7th3gpCn892sFAhSNUqUseAJ3h8EOD4
-fFJUw0NnepMEGEKvDPO8BnCkHE1R8pus+klmGjnVlGKyHwpd3FSpeZ/LjCCAZ7rN
-BFZPjuGfSN9I0d9gqiX60g5DyrsvvxhgU/Trn5xefFFRjHd/A3wO5b6FJNFP8EEB
-736DKBiWEryQ5J5H0f2b2dpmLC2yv3PjmpLNYScimImdWgtKAkZqMWurSsTwEfui
-zpE+LwEmGzPG3OAl1xlBtn9MyuR60ULSfG+lwRI2DF71aIKzT0lsNPcXZU/ej1nU
-R68cClaJ6rO+K6Gu//sYUDPFjCND7rA8saw8JO9ijf4TiNwBCaQ=
-=Ddir
------END PGP SIGNATURE-----
-
---NARE3flw2kjIKyVm--
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
