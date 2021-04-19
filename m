@@ -1,117 +1,144 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A49363B2A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 07:55:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B388363B63
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 08:21:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNwzH6sJyz3c0D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 15:55:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNxYD1Y9Jz3bww
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 16:21:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d5lX5mW7;
+	dkim=pass (1024-bit key; unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=j+dOYrXf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=srs0=oagm=jq=linux.ibm.com=hbathini@ozlabs.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=d5lX5mW7; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNwyq5wMZz2ysv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 15:55:31 +1000 (AEST)
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by ozlabs.org (Postfix) with ESMTP id 4FNwyq49f3z9vFg
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 15:55:31 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4FNwyq3mkYz9vFb; Mon, 19 Apr 2021 15:55:31 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=d5lX5mW7; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=oss.nxp.com (client-ip=40.107.0.45;
+ helo=eur02-am5-obe.outbound.protection.outlook.com;
+ envelope-from=alice.guo@oss.nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=j+dOYrXf;
+ dkim-atps=neutral
+Received: from EUR02-AM5-obe.outbound.protection.outlook.com
+ (mail-eopbgr00045.outbound.protection.outlook.com [40.107.0.45])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4FNwyq05Rnz9vFR;
- Mon, 19 Apr 2021 15:55:30 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13J5YKC6157375; Mon, 19 Apr 2021 01:55:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=juRWTAe37MqEmqMeXTX2/f4zDfT5Y3rJM+GGdIj/p4g=;
- b=d5lX5mW7XqEgUk9sKC06Nzwrv1sE6hND4az3k49UHq6AZDqayD0sH9/fzG5glNIy+UIe
- 9X4dnC5w/ERxMd17Ge2/NQPTCCrUMmANYOZjw2CxOIo3mC6tXV8m9Ry8oCVw+Go0PIK/
- hGFg+pLGUvQPqRKKLrOvyJM5K0MMcYQCtYNg0fR6BjzGvlcnrvlCldhSktpcW/ZK+oi/
- eRCG8TEKpxfsDo36ggvvwJSBqdhJeEhenWJlvnTWX7VvSksbE6lWI23R9fTZf5EbSotP
- 3kN0xXrVU/vsvBhSMcEjZQGYTbdyMO/klJQW1IxHlKUFq+elEPBRNKAbes1OIr37NH6o XQ== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 380d0amx5s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Apr 2021 01:55:28 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13J5tDZg032016;
- Mon, 19 Apr 2021 05:55:26 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 37yt2rrsjk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Apr 2021 05:55:26 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13J5tNtg34472318
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Apr 2021 05:55:23 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A99C6AE04D;
- Mon, 19 Apr 2021 05:55:23 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D07D0AE045;
- Mon, 19 Apr 2021 05:55:20 +0000 (GMT)
-Received: from [9.211.74.96] (unknown [9.211.74.96])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 19 Apr 2021 05:55:20 +0000 (GMT)
-Subject: Re: [PATCH v3] powerpc/kexec_file: use current CPU info while setting
- up FDT
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, mpe@ellerman.id.au
-References: <20210417053805.800907-1-sourabhjain@linux.ibm.com>
-From: Hari Bathini <hbathini@linux.ibm.com>
-Message-ID: <50f1259c-c9b3-1255-8b40-f151f1a60ebf@linux.ibm.com>
-Date: Mon, 19 Apr 2021 11:25:18 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
-In-Reply-To: <20210417053805.800907-1-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: DYQXp8hq9Ul7qVvpRy6HeEu5XjLV9Gjh
-X-Proofpoint-ORIG-GUID: DYQXp8hq9Ul7qVvpRy6HeEu5XjLV9Gjh
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNv100FvQz2xYp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 14:27:13 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BIfUylbF1u6g42Ih0vw50xP6D7xRSLWW2I9zIv8xpPfI+8QTA+Yvqs8rcEhgkShhN1F5VCTfikyuN00lU7MYQpLyAi61zSBXde+lBtKtZ91KF4JkDryrkKImQc4jtArTgkvv22rGSlWBi+316rG07ozzVX8yH+lrNaB4Y76q0iQ4zUQW6K3d9JzIJkWsU1QsvjfqMy2v6XzsDlch5VnExSBZi1Fditx7GwrKrLI7E/sfpEmjrnivx/IpLa9EXSocY6lD/yML7X4WAKNF1EY300fyMYpWitucXgZ/XL8CLbbwDx1OQw7Fi2QoTb2TSXTWyC1GIFPgb1qOvwl4cLPWlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EGsFEeNS52w1ZRf0E7RmTdDzsa/XGegT9oBy+olcLfY=;
+ b=hGFFrgJo2nl82ALdcCWukVL33RkUM6iFcTbkS0Q6cbKM62pdvYnFsqLLOtlF+2o2VdYauLw4dwP2SOeHtc3aZK7MlLjtddm7LhJTrWTkIj6VkevHMcvevTOm0Iaa1xW8T6J+3i8PR8ODJ/vsRcMpNN5h52SiwRYematUkUoYYgadgMtAVfcWh/leBm2L8Tg51aG1SFFROj7+y2jsXIW81DOM/gOKW31vHMKMqX6qmnynX8F75iYwa4zb9oeycrCf1V0DNBxu5cGiiQ81HZj1l4KbQ6UDlERn6Pd76e3un4zKWXsAtWQNRqdFc0IAvJ55fTvey3xfXI4mXsOkubJDog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com; 
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EGsFEeNS52w1ZRf0E7RmTdDzsa/XGegT9oBy+olcLfY=;
+ b=j+dOYrXfIk7Kfa0Fobi8pj2zSP1kRkdYvZPRfIcM8F+/XY2p5O6m146Lg8uw11qr8f1XCxfgzTkNhGiUBKIwzqfro+IOGzrsiOB/EFGQjxCT+tmokcK5gMw090mHbYn4cAawbUShERe9QsYw1J905qk2uPKxj/G1mOjHNwIbMt4=
+Authentication-Results: linuxfoundation.org; dkim=none (message not signed)
+ header.d=none;linuxfoundation.org; dmarc=none action=none
+ header.from=oss.nxp.com;
+Received: from AM6PR04MB6053.eurprd04.prod.outlook.com (2603:10a6:20b:b9::10)
+ by AS8PR04MB7912.eurprd04.prod.outlook.com (2603:10a6:20b:2ae::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16; Mon, 19 Apr
+ 2021 04:27:06 +0000
+Received: from AM6PR04MB6053.eurprd04.prod.outlook.com
+ ([fe80::b034:690:56aa:7b18]) by AM6PR04MB6053.eurprd04.prod.outlook.com
+ ([fe80::b034:690:56aa:7b18%4]) with mapi id 15.20.4042.024; Mon, 19 Apr 2021
+ 04:26:59 +0000
+From: "Alice Guo (OSS)" <alice.guo@oss.nxp.com>
+To: gregkh@linuxfoundation.org, rafael@kernel.org, horia.geanta@nxp.com,
+ aymen.sghaier@nxp.com, herbert@gondor.apana.org.au, davem@davemloft.net,
+ tony@atomide.com, geert+renesas@glider.be, mturquette@baylibre.com,
+ sboyd@kernel.org, vkoul@kernel.org, peter.ujfalusi@gmail.com,
+ a.hajda@samsung.com, narmstrong@baylibre.com, robert.foss@linaro.org,
+ airlied@linux.ie, daniel@ffwll.ch, khilman@baylibre.com, tomba@kernel.org,
+ jyri.sarha@iki.fi, joro@8bytes.org, will@kernel.org, mchehab@kernel.org,
+ ulf.hansson@linaro.org, adrian.hunter@intel.com, kishon@ti.com,
+ kuba@kernel.org, linus.walleij@linaro.org, Roy.Pledge@nxp.com,
+ leoyang.li@nxp.com, ssantosh@kernel.org, matthias.bgg@gmail.com,
+ edubezval@gmail.com, j-keerthy@ti.com, balbi@kernel.org,
+ linux@prisktech.co.nz, stern@rowland.harvard.edu, wim@linux-watchdog.org,
+ linux@roeck-us.net
+Subject: [RFC v1 PATCH 0/3] support soc_device_match to return -EPROBE_DEFER
+Date: Mon, 19 Apr 2021 12:27:19 +0800
+Message-Id: <20210419042722.27554-1-alice.guo@oss.nxp.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [119.31.174.71]
+X-ClientProxiedBy: AM0PR02CA0207.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28f::14) To AM6PR04MB6053.eurprd04.prod.outlook.com
+ (2603:10a6:20b:b9::10)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-19_02:2021-04-16,
- 2021-04-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 mlxscore=0
- spamscore=0 adultscore=0 suspectscore=0 phishscore=0 priorityscore=1501
- clxscore=1011 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104190037
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from nxf55104-OptiPlex-7060.ap.freescale.net (119.31.174.71) by
+ AM0PR02CA0207.eurprd02.prod.outlook.com (2603:10a6:20b:28f::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.19 via Frontend
+ Transport; Mon, 19 Apr 2021 04:26:40 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 9896ff12-c5b4-421f-f9a1-08d902eb5f30
+X-MS-TrafficTypeDiagnostic: AS8PR04MB7912:
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AS8PR04MB7912513CE4C6A5F1A16187D3A3499@AS8PR04MB7912.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: AK1XnEs7EIU/2ApqujL4ENEsdD7cfE1FbgcvAaPgea6Hbv0vJgmkFlrJQc9Zwe0hRvg6ODWJqw7DeYSJRkwBUI6Dg9CvBg76tQsc/zECgFN9N0rU1PraAub2z1SmPXooxUEKWedxX5mry6PHesrXtLa56siBXEvmuwr/ay92Ty2P7nHxHjCjlwvncBhFzscBGAd2Tlz6ly4vsWI7jjwFt5zemq9s1tZzujO+pRaFFN0jLicObMUjXbOCYpNjld7qp3nLx4wkcfdipmjFsCJXiTk+x7LXtjQ3SFz3tJFe1/gciMsGU9oMwC2wF7hUdL1RdpiZLDgJVep6zFnA56/ISZh0nJOUfxYyH5cueA1KZK3QNB6PMI7kZ0ex8+hoQL0dXjtTG6c4tOkauz1CuRnqiQ/2rBiwXb+SekuC44XZa1J4ady1C9t8Mg9honhFO5TtLtkNxiEbL90A14r7TxjM2Q61qy6OxOtFSpF1+lPl2Gkvxu+yivq0TNugxczd2YY6WAE1PONiwqP0D3oJlk28nEJrxZ1QsCEJrWIDpRmBdvt7cHDmn2IGnX0rbRNtHwm5Vj50Bwo2EmrqFvgMs/NwPESfADARD49yW+UCIFJAQxRl681Nbj7s55lka7wcQkZinoUggVYz1CbaryPIzm2Z/V/Nb1WtEpnxWWjL8aF5R7M=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM6PR04MB6053.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(376002)(346002)(136003)(396003)(366004)(39860400002)(1076003)(66946007)(7406005)(478600001)(52116002)(66556008)(66476007)(2906002)(7366002)(7416002)(8936002)(921005)(8676002)(4326008)(5660300002)(16526019)(26005)(38100700002)(83380400001)(956004)(2616005)(38350700002)(6486002)(6666004)(6506007)(6512007)(186003)(316002)(86362001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?aVdtSGVXV002Y2NaaDlsL2RhYzBTbFFsLzI0RnNqcmI3U2hjTTg1LzQvMEFx?=
+ =?utf-8?B?VE0ySXJiSmRSNEVPMG9SZ1p4OUxzb3hSbGkwK1VuZmJzcExSUkVXbmp1dUR1?=
+ =?utf-8?B?WlNoVFVCdmFpdEZ5KzNjV3ZhdkwrUG10L3IzQ3ViMndabVJPMHVjTUlLb210?=
+ =?utf-8?B?OTdnNFhLVUd6TEpwajVpdzdFaFRzVTVaTXUvMWFwa1J3V0RuS3FBalV6bkMw?=
+ =?utf-8?B?REtXbEh0RGR4cGlxMHpxN1ZmNFBmT3dBR285Q2k2QjZUSU9mUDZ4VzgvelpR?=
+ =?utf-8?B?bVhwVGZsT0hITTdha09TVnoyYnZCWVQvdUFhemJibnB4UXp1UTd3Z21xWHNO?=
+ =?utf-8?B?S2VDRm1oandzWHpTVjc0Qks2NFpuYmsxaUpRRlMyTTVhVHNvTXVJN0cvZURD?=
+ =?utf-8?B?c294ODZVaDdHb2ZRaVRNQXV4N1B4dmgxcHM5NXh4UFRVYWlGdTRmeTYwVjRX?=
+ =?utf-8?B?elpNU3VUMzNud2UrNFlxRFpQUytHVmorOFRRb2N6dlVMQ0t4Vmdua2lVQy80?=
+ =?utf-8?B?dWRZMDBJdWNZRjJZRlVRWlZKczdaK1hPSFlxOWJ0cC94aFo0eEk4czhkZDA2?=
+ =?utf-8?B?Q0NCdExiWXFGb1B3U3YyeXFRYjZjdmpTM1RJYTZIaVhiY1JTRDFVcXNobUIr?=
+ =?utf-8?B?Q3dDS2xHTHNZd1A5dy9rS29Jc0MvSVhMeU9LeFU1WllrSi9ZVFNoQWJvcHNw?=
+ =?utf-8?B?NlpKOFZXdnd1Y2YzcEJoOW1JYTVMRFhwcjdJQUlKRUp1S1RPUmd5L0R5cXAz?=
+ =?utf-8?B?WVRSbnRsNmZUM2hTeVRHdFdpdCtIMkJkZ0x2aitSdTJPVjNCTVRaU0w1dzBR?=
+ =?utf-8?B?SnNqZHBVREdVb25lVHVzTlpZSFcxMjRGb2JZNFhvU1hjc0tXWHk3clJMTEt5?=
+ =?utf-8?B?YVdqNEp0NENmT0RTcTNFZ3dWUjc4Z0UwUkdTSGdKeUNXRi94ZEI0RFQrTTdW?=
+ =?utf-8?B?UVVZY1pTSVpyMkg5VEZVM1hMUmdXTWF4WDJ3UTN3dEZzRmpEQUhrMTNtY2tM?=
+ =?utf-8?B?dHVOSitKdWpYWWcybmprNUl1N2Eyclp1T29rUlRsVnNIdzJmeVBSdjloTVhN?=
+ =?utf-8?B?RXk2cXZIR2RsQ2pBMHRreUw1TnBLYUZOWENzSGtTUXlnZlFnSDJUNXR1QzVV?=
+ =?utf-8?B?YVJlbXZFMFVFTXZjOVRtQlJlMkJXTzNad0NPRjlkRGd5UzlXdGRMd2FEdUFk?=
+ =?utf-8?B?bTJSVGVueTk1Q290MmFSN1dkSzlCYWxhVnhqZUdYb3Q1RTQ1eldkbkdVa1N6?=
+ =?utf-8?B?TXovZERmclBxY0xjemkrbUNHVjRNMU1GOW4vMXFjc3pnR0wrd201dmpqSllU?=
+ =?utf-8?B?SVIxV2Y2MlhaU2svdzVvMldRcUdyK2hRVitkUUpPeVd1S2hNNlRxMkpSUDE1?=
+ =?utf-8?B?OUY0UEFoUmNEMWVCdS9aeUFURG56bngrYWVSMUJoTFhSMmVqdjAvM05mblVn?=
+ =?utf-8?B?bVYxYm5LeWNXbWNGeHFZQXdBZlZHd2JXbTFhWVNWR2taTzZnQTZQV2hVOFhJ?=
+ =?utf-8?B?QjMyYXNTcy9ab0x3eHdhS3lUd2pQUkJZWXFocU14Q2tTTGFwY3ZvZWlzYkpk?=
+ =?utf-8?B?ZkFwMXI0VHlxRXZ5SkdtZW1iMW04blZWTlVuWWRtV1MydkdTYUp4UDF0ZkVq?=
+ =?utf-8?B?V3hJSm1UQ0Jqc2xqSkNXZ2ZWT05JdVBKQStUVzI5RWRwU2dvRVcybXh5cWFy?=
+ =?utf-8?B?TllJSDNqVENVSExBZmVSd3g0NzJvenVsUUZVU3dpbGhISjd6WmlmYytnNEpN?=
+ =?utf-8?Q?QGHOnxCgvOAwMkAbgHRHefjr/WYqcT969phCLa9?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9896ff12-c5b4-421f-f9a1-08d902eb5f30
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB6053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2021 04:26:59.4616 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1IYHRUj96ZFPUGM224m5kKukwj6GivUjSaU/anOesbfoQxqSi1R6BEaAG0+PdVaFc474JX9J+PecEtTuEmLjOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7912
+X-Mailman-Approved-At: Mon, 19 Apr 2021 16:21:18 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,212 +150,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, bauerman@linux.ibm.com, stable@vger.kernel.org,
- linuxppc-dev@ozlabs.org
+Cc: linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+ linux-gpio@vger.kernel.org, netdev@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-mmc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-renesas-soc@vger.kernel.org, linux-phy@lists.infradead.org,
+ iommu@lists.linux-foundation.org, linux-mediatek@lists.infradead.org,
+ linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sourabh,
+From: Alice Guo <alice.guo@nxp.com>
 
-Thanks for fixing this.
+In patch "soc: imx8m: change to use platform driver", change soc-imx8m.c to use
+module platform driver and use NVMEM APIs to ocotp register, the reason is that
+directly reading ocotp egister causes kexec kernel hang because kernel will
+disable unused clks after kernel boots up. This patch makes the SoC driver
+ready. This patch makes the SoC driver ready later than before, and causes device
+depends on soc_device_match() for initialization are affected, resulting in
+kernel boot error.
 
-Generating an FDT based on of_root (the latest unflattened device-tree) 
-should be ideal as something similar to what is done for /cpus here 
-applies to /memory@* & /ibm,dynamic-reconfiguration-memory nodes too 
-(probably also applies to other nodes like pci@* ?). But IIUC, there is 
-no API in the kernel currently that converts an unflattened device-tree 
-(struct device_node *of_root) to FDT and having one might have it's own 
-challenges.
+CAAM driver is one of these affected drivers. It uses soc_device_match() to find
+the first matching entry of caam_imx_soc_table, if none of them match, the next
+instruction will be executed without any processing because CAAM driver is used
+not only on i.MX and LS, but also PPC and Vybrid. We hope that
+soc_device_match() could support to return -EPROBE_DEFER(or some other error
+code, e.g. -ENODEV, but not NULL) in case of “no SoC device registered” to SoC
+bus. We tried it and updated all the code that is using soc_device_match()
+throughout the tree.
 
-Should pursue fixing /memory@* and other nodes for kexec as follow-up to 
-this patch either with the unflattened DT to FDT approach or otherwise...
+Alice Guo (3):
+  drivers: soc: add support for soc_device_match returning -EPROBE_DEFER
+  caam: add defer probe when the caam driver cannot identify SoC
+  driver: update all the code that use soc_device_match
 
-On 17/04/21 11:08 am, Sourabh Jain wrote:
-> kexec_file_load uses initial_boot_params in setting up the device-tree
-> for the kernel to be loaded. Though initial_boot_params holds info
-> about CPUs at the time of boot, it doesn't account for hot added CPUs.
-> 
-> So, kexec'ing with kexec_file_load syscall would leave the kexec'ed
-> kernel with inaccurate CPU info. Also, if kdump kernel is loaded with
-> kexec_file_load syscall and the system crashes on a hot added CPU,
-> capture kernel hangs failing to identify the boot CPU.
-> 
->   Kernel panic - not syncing: sysrq triggered crash
->   CPU: 24 PID: 6065 Comm: echo Kdump: loaded Not tainted 5.12.0-rc5upstream #54
->   Call Trace:
->   [c0000000e590fac0] [c0000000007b2400] dump_stack+0xc4/0x114 (unreliable)
->   [c0000000e590fb00] [c000000000145290] panic+0x16c/0x41c
->   [c0000000e590fba0] [c0000000008892e0] sysrq_handle_crash+0x30/0x40
->   [c0000000e590fc00] [c000000000889cdc] __handle_sysrq+0xcc/0x1f0
->   [c0000000e590fca0] [c00000000088a538] write_sysrq_trigger+0xd8/0x178
->   [c0000000e590fce0] [c0000000005e9b7c] proc_reg_write+0x10c/0x1b0
->   [c0000000e590fd10] [c0000000004f26d0] vfs_write+0xf0/0x330
->   [c0000000e590fd60] [c0000000004f2aec] ksys_write+0x7c/0x140
->   [c0000000e590fdb0] [c000000000031ee0] system_call_exception+0x150/0x290
->   [c0000000e590fe10] [c00000000000ca5c] system_call_common+0xec/0x278
->   --- interrupt: c00 at 0x7fff905b9664
->   NIP:  00007fff905b9664 LR: 00007fff905320c4 CTR: 0000000000000000
->   REGS: c0000000e590fe80 TRAP: 0c00   Not tainted  (5.12.0-rc5upstream)
->   MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 28000242
->         XER: 00000000
->   IRQMASK: 0
->   GPR00: 0000000000000004 00007ffff5fedf30 00007fff906a7300 0000000000000001
->   GPR04: 000001002a7355b0 0000000000000002 0000000000000001 00007ffff5fef616
->   GPR08: 0000000000000001 0000000000000000 0000000000000000 0000000000000000
->   GPR12: 0000000000000000 00007fff9073a160 0000000000000000 0000000000000000
->   GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
->   GPR20: 0000000000000000 00007fff906a4ee0 0000000000000002 0000000000000001
->   GPR24: 00007fff906a0898 0000000000000000 0000000000000002 000001002a7355b0
->   GPR28: 0000000000000002 00007fff906a1790 000001002a7355b0 0000000000000002
->   NIP [00007fff905b9664] 0x7fff905b9664
->   LR [00007fff905320c4] 0x7fff905320c4
->   --- interrupt: c00
-> 
-> To avoid this from happening, extract current CPU info from of_root
-> device node and use it for setting up the fdt in kexec_file_load case.
-> 
-> Fixes: 6ecd0163d360 ("powerpc/kexec_file: Add appropriate regions for memory reserve map")
-> 
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Cc: <stable@vger.kernel.org>
+ drivers/base/soc.c                            |  5 +++++
+ drivers/bus/ti-sysc.c                         |  2 +-
+ drivers/clk/renesas/r8a7795-cpg-mssr.c        |  4 +++-
+ drivers/clk/renesas/rcar-gen2-cpg.c           |  2 +-
+ drivers/clk/renesas/rcar-gen3-cpg.c           |  2 +-
+ drivers/crypto/caam/ctrl.c                    |  3 +++
+ drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c       |  7 ++++++-
+ drivers/dma/ti/k3-psil.c                      |  3 +++
+ drivers/dma/ti/k3-udma.c                      |  2 +-
+ drivers/gpu/drm/bridge/nwl-dsi.c              |  2 +-
+ drivers/gpu/drm/meson/meson_drv.c             |  4 +++-
+ drivers/gpu/drm/omapdrm/dss/dispc.c           |  2 +-
+ drivers/gpu/drm/omapdrm/dss/dpi.c             |  4 +++-
+ drivers/gpu/drm/omapdrm/dss/dsi.c             |  3 +++
+ drivers/gpu/drm/omapdrm/dss/dss.c             |  3 +++
+ drivers/gpu/drm/omapdrm/dss/hdmi4_core.c      |  3 +++
+ drivers/gpu/drm/omapdrm/dss/venc.c            |  4 +++-
+ drivers/gpu/drm/omapdrm/omap_drv.c            |  3 +++
+ drivers/gpu/drm/rcar-du/rcar_du_crtc.c        |  4 +++-
+ drivers/gpu/drm/rcar-du/rcar_lvds.c           |  2 +-
+ drivers/gpu/drm/tidss/tidss_dispc.c           |  4 +++-
+ drivers/iommu/ipmmu-vmsa.c                    |  7 +++++--
+ drivers/media/platform/rcar-vin/rcar-core.c   |  2 +-
+ drivers/media/platform/rcar-vin/rcar-csi2.c   |  2 +-
+ drivers/media/platform/vsp1/vsp1_uif.c        |  4 +++-
+ drivers/mmc/host/renesas_sdhi_core.c          |  2 +-
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c |  2 +-
+ drivers/mmc/host/sdhci-of-esdhc.c             | 21 ++++++++++++++-----
+ drivers/mmc/host/sdhci-omap.c                 |  2 +-
+ drivers/mmc/host/sdhci_am654.c                |  2 +-
+ drivers/net/ethernet/renesas/ravb_main.c      |  4 +++-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c      |  2 +-
+ drivers/net/ethernet/ti/cpsw.c                |  2 +-
+ drivers/net/ethernet/ti/cpsw_new.c            |  2 +-
+ drivers/phy/ti/phy-omap-usb2.c                |  4 +++-
+ drivers/pinctrl/renesas/core.c                |  2 +-
+ drivers/pinctrl/renesas/pfc-r8a7790.c         |  5 ++++-
+ drivers/pinctrl/renesas/pfc-r8a7794.c         |  5 ++++-
+ drivers/soc/fsl/dpio/dpio-driver.c            | 13 ++++++++----
+ drivers/soc/renesas/r8a774c0-sysc.c           |  5 ++++-
+ drivers/soc/renesas/r8a7795-sysc.c            |  2 +-
+ drivers/soc/renesas/r8a77990-sysc.c           |  5 ++++-
+ drivers/soc/ti/k3-ringacc.c                   |  2 +-
+ drivers/staging/mt7621-pci/pci-mt7621.c       |  2 +-
+ drivers/thermal/rcar_gen3_thermal.c           |  4 +++-
+ drivers/thermal/ti-soc-thermal/ti-bandgap.c   | 10 +++++++--
+ drivers/usb/gadget/udc/renesas_usb3.c         |  2 +-
+ drivers/usb/host/ehci-platform.c              |  4 +++-
+ drivers/usb/host/xhci-rcar.c                  |  2 +-
+ drivers/watchdog/renesas_wdt.c                |  2 +-
+ 50 files changed, 139 insertions(+), 52 deletions(-)
 
-Fow now, this should be a good stop-gap fix for /cpus node case.
+-- 
+2.17.1
 
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-
-> ---
->   arch/powerpc/kexec/file_load_64.c | 98 +++++++++++++++++++++++++++++++
->   1 file changed, 98 insertions(+)
-> 
->   ---
-> Changelog:
-> 
-> v1 -> v2
->    - fdt should be updated regardless of kexec type
->    - updated commit message and title
-> 
-> v2 -> v3
->    - Fixed warnings reported by patchwork
->      (https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210416124658.718860-1-sourabhjain@linux.ibm.com/)
->       - argument aligned to open parenthesis
->       - declared add_node_prop and update_cpus_node function static
->   ---
-> 
-> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-> index 02b9e4d0dc40..878f8297fbed 100644
-> --- a/arch/powerpc/kexec/file_load_64.c
-> +++ b/arch/powerpc/kexec/file_load_64.c
-> @@ -960,6 +960,99 @@ unsigned int kexec_fdt_totalsize_ppc64(struct kimage *image)
->   	return fdt_size;
->   }
->   
-> +/**
-> + * add_node_prop - Read property from device node structure and add
-> + *			them to fdt.
-> + * @fdt:		Flattened device tree of the kernel
-> + * @node_offset:	offset of the node to add a property at
-> + * np:			device node pointer
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +static int add_node_prop(void *fdt, int node_offset, const struct device_node *np)
-> +{
-> +	int ret = 0;
-> +	struct property *pp;
-> +	unsigned long flags;
-> +
-> +	if (!np)
-> +		return -EINVAL;
-> +
-> +	raw_spin_lock_irqsave(&devtree_lock, flags);
-> +	for (pp = np->properties; pp; pp = pp->next) {
-> +		ret = fdt_setprop(fdt, node_offset, pp->name,
-> +				  pp->value, pp->length);
-> +		if (ret < 0) {
-> +			pr_err("Unable to add %s property: %s\n",
-> +			       pp->name, fdt_strerror(ret));
-> +			goto out;
-> +		}
-> +	}
-> +out:
-> +	raw_spin_unlock_irqrestore(&devtree_lock, flags);
-> +	return ret;
-> +}
-> +
-> +/**
-> + * update_cpus_node - Update cpus node of flattened device-tree using of_root
-> + *			device node.
-> + * @fdt:		Flattened device tree of the kernel.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +static int update_cpus_node(void *fdt)
-> +{
-> +	struct device_node *cpus_node, *dn;
-> +	int cpus_offset, cpus_subnode_off, ret = 0;
-> +
-> +	cpus_offset = fdt_path_offset(fdt, "/cpus");
-> +	if (cpus_offset == -FDT_ERR_NOTFOUND || cpus_offset > 0) {
-> +		if (cpus_offset > 0) {
-> +			ret = fdt_del_node(fdt, cpus_offset);
-> +			if (ret < 0) {
-> +				pr_err("Error deleting /cpus node: %s\n",
-> +				       fdt_strerror(ret));
-> +				return -EINVAL;
-> +			}
-> +		}
-> +
-> +		/* Add cpus node to fdt */
-> +		cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"),
-> +					      "cpus");
-> +		if (cpus_offset < 0) {
-> +			pr_err("Error creating /cpus node: %s\n",
-> +			       fdt_strerror(cpus_offset));
-> +			return -EINVAL;
-> +		}
-> +
-> +		/* Add cpus node properties */
-> +		cpus_node = of_find_node_by_path("/cpus");
-> +		ret = add_node_prop(fdt, cpus_offset, cpus_node);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		/* Loop through all subnodes of cpus and add them to fdt */
-> +		for_each_node_by_type(dn, "cpu") {
-> +			cpus_subnode_off = fdt_add_subnode(fdt,
-> +							   cpus_offset,
-> +							   dn->full_name);
-> +			if (cpus_subnode_off < 0) {
-> +				pr_err("Unable to add %s subnode: %s\n",
-> +				       dn->full_name, fdt_strerror(cpus_subnode_off));
-> +				return cpus_subnode_off;
-> +			}
-> +			ret = add_node_prop(fdt, cpus_subnode_off, dn);
-> +			if (ret < 0)
-> +				return ret;
-> +		}
-> +	} else if (cpus_offset < 0) {
-> +		pr_err("Malformed device tree: error reading /cpus node: %s\n",
-> +		       fdt_strerror(cpus_offset));
-> +	}
-> +
-> +	return ret;
-> +}
-> +
->   /**
->    * setup_new_fdt_ppc64 - Update the flattend device-tree of the kernel
->    *                       being loaded.
-> @@ -1020,6 +1113,11 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
->   		}
->   	}
->   
-> +	/* Update cpus nodes information to account hotplug CPUs. */
-> +	ret =  update_cpus_node(fdt);
-> +	if (ret < 0)
-> +		return ret;
-> +
->   	/* Update memory reserve map */
->   	ret = get_reserved_memory_ranges(&rmem);
->   	if (ret)
-> 
