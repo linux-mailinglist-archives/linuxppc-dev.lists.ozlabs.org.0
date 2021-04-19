@@ -1,53 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5BF363F1C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 11:46:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03621363F45
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 12:00:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FP25p3v36z3c2k
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 19:46:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FP2PX0CmFz3btG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 20:00:32 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=EZHTNLZo;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=l.stach@pengutronix.de;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::129;
+ helo=mail-lf1-x129.google.com; envelope-from=sxwjean@gmail.com;
  receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (unknown
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=EZHTNLZo; dkim-atps=neutral
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
+ [IPv6:2a00:1450:4864:20::129])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FP25T2pP4z2yyj
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 19:46:34 +1000 (AEST)
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>)
- id 1lYQTz-0008Uf-0A; Mon, 19 Apr 2021 11:46:19 +0200
-Message-ID: <97262466d537402ad4032098ef277d6d47734f1f.camel@pengutronix.de>
-Subject: Re: [PATCH] ASoC: fsl: imx-pcm-dma: Don't request dma channel in probe
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Robin Gong <yibin.gong@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Mon, 19 Apr 2021 11:46:15 +0200
-In-Reply-To: <VE1PR04MB6638EE85485768351755557B89499@VE1PR04MB6638.eurprd04.prod.outlook.com>
-References: <1589881301-4143-1-git-send-email-shengjiu.wang@nxp.com>
- <0866cd8cdb0c22f0b2a6814c4dafa29202aad5f3.camel@pengutronix.de>
- <CAA+D8APhHvA39wmCayeCsAEKmOJ0n7qOQiT1tZmFHr4+yASgTw@mail.gmail.com>
- <53258cd99caaf1199036737f8fad6cc097939567.camel@pengutronix.de>
- <VE1PR04MB66387217EDE5133FD2D8F793894E9@VE1PR04MB6638.eurprd04.prod.outlook.com>
- <50ef17a2d57b022c48bbca71fd4e074cc3ca9be5.camel@pengutronix.de>
- <VE1PR04MB6638EE85485768351755557B89499@VE1PR04MB6638.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FP2P11x1gz2yRh
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 20:00:01 +1000 (AEST)
+Received: by mail-lf1-x129.google.com with SMTP id j18so55040464lfg.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 03:00:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=FDGOhqaPmu3im/JE4IpXZ09jQoRV39s/gRjkoNBVyKY=;
+ b=EZHTNLZouZoMLyLTmgLvuz8FG1YMM1x2h1vcFtvYUFM9I3x+VTT/guKRngXHMdilqU
+ UenNks47/087slpJVH6kkd3EK9GJysXYoWvpIbywOE0HRwkQO0BxiGA34+D9VeYUK6/4
+ xi+kt4YZSX7SOuZq+lgSFo+7t33ZKpTEmCZA2A4kG+mc6FoSzCG1MrJkDIiBOYKeKYdw
+ L91N1iRzsCLxjc5sAgMzSQdo7aICHWO+vbZsrVQs5Uw7f/PNL2DrIY6HMABRMNple8ic
+ daQpbfCSZcOI5xj+H0/o1L6bBnaCk7Xq95WyWkAKm9uVGWGY40M0YzWa1P6rTob6BrSv
+ Fg3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=FDGOhqaPmu3im/JE4IpXZ09jQoRV39s/gRjkoNBVyKY=;
+ b=qWky1ftjl2047DMDh9WFLdCjgYipxyAMvuAXC0Srtgzy987M9Xcr/banEXlbCL60/2
+ 87kihWfBaghWG9OMZfPcaUHKcn11RKmrDfYu91wzklP+CvsZ8S7JnrxoWc/PE46pNTcO
+ N1fAmM/O5ISYFag+XGjoyJsFpYLfrU+4iPANMAJTijjqBrfnodRZbm6g5/uMf5P/ekjc
+ T3FdshRMaSQwed0JYAHj3NH+DpAvdZspMbWlqTWYpiyxJMeNQ/Kb3N6g7gz80d6JcG+W
+ fhEumHh3Ef5t9UhqdwEHNgRJLl3/6rIkZeRCcAHZIyvK2wL19uLAvlAd6AtouBxf7RoA
+ vyOw==
+X-Gm-Message-State: AOAM532HM/XJtGcvFhsKtKLbdAJYP3HgWPfBMGcfLxId2fg5+CSyY00M
+ K1JDAlM7yrfo48LGmkL0SCgteE/U+U0+i9d9Olg=
+X-Google-Smtp-Source: ABdhPJwQnGpTascKyiJ1cToLttIEuyb6KjHxOCs6RhEKgClnJH+QO6ghlbyQBC2V5G3V6PWC8LHym4Qbkl9gA+t/ghQ=
+X-Received: by 2002:a19:58a:: with SMTP id 132mr11989778lff.520.1618826394783; 
+ Mon, 19 Apr 2021 02:59:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+References: <20210419191425.281dc58a@canb.auug.org.au>
+In-Reply-To: <20210419191425.281dc58a@canb.auug.org.au>
+From: Xiongwei Song <sxwjean@gmail.com>
+Date: Mon, 19 Apr 2021 17:59:28 +0800
+Message-ID: <CAEVVKH905HJoJ_WVVZadXiy3LG5y+XDpMBVVtUNOwF2MtYTv8Q@mail.gmail.com>
+Subject: Re: linux-next: build failure after merge of the powerpc tree
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,158 +73,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicolin Chen <nicoleotsuka@gmail.com>,
- Linux-ALSA <alsa-devel@alsa-project.org>, Liam Girdwood <lgirdwood@gmail.com>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>, "S.j.
- Wang" <shengjiu.wang@nxp.com>, linux-kernel <linux-kernel@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- Takashi Iwai <tiwai@suse.com>,
- "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
- Mark Brown <broonie@kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, "perex@perex.cz" <perex@perex.cz>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "sumit.semwal@linaro.org" <sumit.semwal@linaro.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am Montag, dem 19.04.2021 um 07:17 +0000 schrieb Robin Gong:
-> Hi Lucas,
-> 
-> On 2021/04/14 Lucas Stach <l.stach@pengutronix.de> wrote:
-> > Hi Robin,
-> > 
-> > Am Mittwoch, dem 14.04.2021 um 14:33 +0000 schrieb Robin Gong:
-> > > On 2020/05/20 17:43 Lucas Stach <l.stach@pengutronix.de> wrote:
-> > > > Am Mittwoch, den 20.05.2020, 16:20 +0800 schrieb Shengjiu Wang:
-> > > > > Hi
-> > > > > 
-> > > > > On Tue, May 19, 2020 at 6:04 PM Lucas Stach
-> > > > > <l.stach@pengutronix.de>
-> > > > wrote:
-> > > > > > Am Dienstag, den 19.05.2020, 17:41 +0800 schrieb Shengjiu Wang:
-> > > > > > > There are two requirements that we need to move the request of
-> > > > > > > dma channel from probe to open.
-> > > > > > 
-> > > > > > How do you handle -EPROBE_DEFER return code from the channel
-> > > > > > request if you don't do it in probe?
-> > > > > 
-> > > > > I use the dma_request_slave_channel or dma_request_channel instead
-> > > > > of dmaengine_pcm_request_chan_of. so there should be not
-> > > > > -EPROBE_DEFER return code.
-> > > > 
-> > > > This is a pretty weak argument. The dmaengine device might probe
-> > > > after you try to get the channel. Using a function to request the
-> > > > channel that doesn't allow you to handle probe deferral is IMHO a
-> > > > bug and should be fixed, instead of building even more assumptions on top
-> > of it.
-> > > > 
-> > > > > > > - When dma device binds with power-domains, the power will be
-> > > > > > > enabled when we request dma channel. If the request of dma
-> > > > > > > channel happen on probe, then the power-domains will be always
-> > > > > > > enabled after kernel boot up,  which is not good for power
-> > > > > > > saving,  so we need to move the request of dma channel to
-> > > > > > > .open();
-> > > > > > 
-> > > > > > This is certainly something which could be fixed in the
-> > > > > > dmaengine driver.
-> > > > > 
-> > > > > Dma driver always call the pm_runtime_get_sync in
-> > > > > device_alloc_chan_resources, the device_alloc_chan_resources is
-> > > > > called when channel is requested. so power is enabled on channel
-> > request.
-> > > > 
-> > > > So why can't you fix the dmaengine driver to do that RPM call at a
-> > > > later time when the channel is actually going to be used? This will
-> > > > allow further power savings with other slave devices than the audio PCM.
-> > > Hi Lucas,
-> > >   Thanks for your suggestion. I have tried to implement runtime
-> > > autosuspend in fsl-edma driver on i.mx8qm/qxp with delay time (2 sec)
-> > > for this feature as below (or you can refer to
-> > > drivers/dma/qcom/hidma.c), and pm_runtime_get_sync/
-> > > pm_runtime_put_autosuspend in all dmaengine driver interface like
-> > > device_alloc_chan_resources/device_prep_slave_sg/device_prep_dma_cycli
-> > > c/
-> > > device_tx_status...
-> > > 
-> > > 
-> > >                 pm_runtime_use_autosuspend(fsl_chan->dev);
-> > >                 pm_runtime_set_autosuspend_delay(fsl_chan->dev,
-> > 2000);
-> > > 
-> > > That could resolve this audio case since the autosuspend could suspend
-> > > runtime after
-> > > 2 seconds if there is no further dma transfer but only channel
-> > request(device_alloc_chan_resources).
-> > > But unfortunately, it cause another issue. As you know, on our
-> > > i.mx8qm/qxp, power domain done by scfw (drivers/firmware/imx/scu-pd.c)
-> > over mailbox:
-> > >  imx_sc_pd_power()->imx_scu_call_rpc()->
-> > > imx_scu_ipc_write()->mbox_send_message()
-> > > which means have to 'waits for completion', meanwhile, some driver
-> > > like tty will call dmaengine interfaces in non-atomic case as below,
-> > > 
-> > > static int uart_write(struct tty_struct *tty, const unsigned char
-> > > *buf, int count) {
-> > >    .......
-> > > 	    port = uart_port_lock(state, flags);
-> > >    ......
-> > >         __uart_start(tty);  //call start_tx()->dmaengine_prep_slave_sg...
-> > >         uart_port_unlock(port, flags);
-> > >         return ret;
-> > > }
-> > > 
-> > > Thus dma runtime resume may happen in that timing window and cause
-> > kernel alarm.
-> > > I'm not sure whether there are similar limitations on other driver
-> > > subsystem. But for me, It looks like the only way to resolve the
-> > > contradiction between tty and scu-pd (hardware limitation on
-> > > i.mx8qm/qxp) is to give up autosuspend and keep pm_runtime_get_sync
-> > only in device_alloc_chan_resources because request channel is a safe
-> > non-atomic phase.
-> > > Do you have any idea? Thanks in advance.
-> > 
-> > If you look closely at the driver you used as an example (hidma.c) it looks like
-> > there is already something in there, which looks very much like what you need
-> > here:
-> > 
-> > In hidma_issue_pending() the driver tries to get the device to runtime resume.
-> > If this doesn't work, maybe due to the power domain code not being able to
-> > be called in atomic context, the actual work of waking up the dma hardware
-> > and issuing the descriptor is shunted to a tasklet.
-> > 
-> > If I'm reading this right, this is exactly what you need here to be able to call the
-> > dmaengine code from atomic context: try the rpm get and issue immediately
-> > when possible, otherwise shunt the work to a non- atomic context where you
-> > can deal with the requirements of scu-pd.
-> Yes, I can schedule_work to worker to runtime resume edma channel by calling scu-pd.
-> But that means all dmaengine interfaces should be taken care, not only issue_pending()
-> but also dmaengine_terminate_all()/dmaengine_pause()/dmaengine_resume()/
-> dmaengine_tx_status(). Not sure why hidma only take care issue_pending. Maybe
-> their user case is just for memcpy/memset so that no further complicate case as ALSA
-> or TTY.
-> Besides, for autosuspend in cyclic, we have to add pm_runtime_get_sync into interrupt
-> handler as qcom/bam_dma.c. but how could resolve the scu-pd's non-atmoic limitation
-> in interrupt handler?  
+Thank you so much Stephen. Sorry for my negligence.
 
-Sure, this all needs some careful analysis on how those functions are
-called and what to do about atomic callers, but it should be doable. I
-don't see any fundamental issues here.
-
-I don't see why you would ever need to wake the hardware in an
-interrupt handler. Surely the hardware is already awake, as it wouldn't
-signal an interrupt otherwise. And for the issue with scu-pd you only
-care about the state transition of suspended->running. If the hardware
-is already running/awake, the runtime pm state handling is nothing more
-than bumping a refcount, which is atomic safe. Putting the HW in
-suspend is already handled asynchronously in a worker, so this is also
-atomic safe.
+Should I fix this myself on powerpc tree?
 
 Regards,
-Lucas
+Xiongwei
 
+On Mon, Apr 19, 2021 at 5:14 PM Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+>
+> Hi all,
+>
+> After merging the powerpc tree, today's linux-next build (powerpc
+> allyesconfig) failed like this:
+>
+> arch/powerpc/kernel/fadump.c: In function 'crash_fadump':
+> arch/powerpc/kernel/fadump.c:731:28: error: 'INTERRUPT_SYSTEM_RESET' undeclared (first use in this function)
+>   731 |  if (TRAP(&(fdh->regs)) == INTERRUPT_SYSTEM_RESET) {
+>       |                            ^~~~~~~~~~~~~~~~~~~~~~
+> arch/powerpc/kernel/fadump.c:731:28: note: each undeclared identifier is reported only once for each function it appears in
+>
+> Caused by commit
+>
+>   7153d4bf0b37 ("powerpc/traps: Enhance readability for trap types")
+>
+> I have applied the following patch for today.
+>
+> From: Stephen Rothwell <sfr@canb.auug.org.au>
+> Date: Mon, 19 Apr 2021 19:05:05 +1000
+> Subject: [PATCH] fix up for "powerpc/traps: Enhance readability for trap types"
+>
+> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> ---
+>  arch/powerpc/kernel/fadump.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index b55b4c23f3b6..000e3b7f3fca 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -31,6 +31,7 @@
+>  #include <asm/fadump.h>
+>  #include <asm/fadump-internal.h>
+>  #include <asm/setup.h>
+> +#include <asm/interrupt.h>
+>
+>  /*
+>   * The CPU who acquired the lock to trigger the fadump crash should
+> --
+> 2.30.2
+>
+> --
+> Cheers,
+> Stephen Rothwell
