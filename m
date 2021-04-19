@@ -2,34 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D553639EE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 06:04:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51505363A20
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 06:10:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNtW05T3Sz3cXB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 14:04:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNtf11yVRz3ft0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 14:10:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNtVK4PSRz30FD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 14:04:09 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNtVr04Pgz3cTd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 14:04:34 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FNtVK2KxVz9vFw; Mon, 19 Apr 2021 14:04:09 +1000 (AEST)
+ id 4FNtVd24ZHz9vHP; Mon, 19 Apr 2021 14:04:24 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Paul Mackerras <paulus@samba.org>,
+To: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>, linux@roeck-us.net
-In-Reply-To: <aad2cb1801a3cc99bc27081022925b9fc18a0dfb.1618159169.git.christophe.leroy@csgroup.eu>
-References: <aad2cb1801a3cc99bc27081022925b9fc18a0dfb.1618159169.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/signal32: Fix build failure with CONFIG_SPE
-Message-Id: <161880479652.1398509.9868352965277693855.b4-ty@ellerman.id.au>
-Date: Mon, 19 Apr 2021 13:59:56 +1000
+ Masahiro Yamada <masahiroy@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20210301153019.362742-1-masahiroy@kernel.org>
+References: <20210301153019.362742-1-masahiroy@kernel.org>
+Subject: Re: [PATCH 1/2] powerpc: syscalls: switch to generic syscalltbl.sh
+Message-Id: <161880479712.1398509.4808432527378753490.b4-ty@ellerman.id.au>
+Date: Mon, 19 Apr 2021 13:59:57 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,42 +43,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Sean Christopherson <seanjc@google.com>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Ben Gardon <bgardon@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Suchanek <msuchanek@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 11 Apr 2021 16:39:53 +0000 (UTC), Christophe Leroy wrote:
-> Add missing fault exit label in unsafe_copy_from_user() in order to
-> avoid following build failure with CONFIG_SPE
+On Tue, 2 Mar 2021 00:30:18 +0900, Masahiro Yamada wrote:
+> Many architectures duplicate similar shell scripts.
 > 
->   CC      arch/powerpc/kernel/signal_32.o
-> arch/powerpc/kernel/signal_32.c: In function 'restore_user_regs':
-> arch/powerpc/kernel/signal_32.c:565:36: error: macro "unsafe_copy_from_user" requires 4 arguments, but only 3 given
->   565 |           ELF_NEVRREG * sizeof(u32));
->       |                                    ^
-> In file included from ./include/linux/uaccess.h:11,
->                  from ./include/linux/sched/task.h:11,
->                  from ./include/linux/sched/signal.h:9,
->                  from ./include/linux/rcuwait.h:6,
->                  from ./include/linux/percpu-rwsem.h:7,
->                  from ./include/linux/fs.h:33,
->                  from ./include/linux/huge_mm.h:8,
->                  from ./include/linux/mm.h:707,
->                  from arch/powerpc/kernel/signal_32.c:17:
-> ./arch/powerpc/include/asm/uaccess.h:428: note: macro "unsafe_copy_from_user" defined here
->   428 | #define unsafe_copy_from_user(d, s, l, e) \
->       |
-> arch/powerpc/kernel/signal_32.c:564:3: error: 'unsafe_copy_from_user' undeclared (first use in this function); did you mean 'raw_copy_from_user'?
->   564 |   unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
->       |   ^~~~~~~~~~~~~~~~~~~~~
->       |   raw_copy_from_user
-> arch/powerpc/kernel/signal_32.c:564:3: note: each undeclared identifier is reported only once for each function it appears in
-> make[3]: *** [arch/powerpc/kernel/signal_32.o] Error 1
+> This commit converts powerpc to use scripts/syscalltbl.sh. This also
+> unifies syscall_table_32.h and syscall_table_c32.h.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/signal32: Fix build failure with CONFIG_SPE
-      https://git.kernel.org/powerpc/c/af072b1a9d4d9edc24da84a071b0671e147026cb
+[1/2] powerpc: syscalls: switch to generic syscalltbl.sh
+      https://git.kernel.org/powerpc/c/14b3c9d24a7a5c274a9df27d245516f466d3bc5f
+[2/2] powerpc: syscalls: switch to generic syscallhdr.sh
+      https://git.kernel.org/powerpc/c/672bff581e19d5d7bef993f910ed385c4054cbbc
 
 cheers
