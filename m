@@ -1,53 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B31C363999
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 05:08:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054C936399B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 05:08:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNsFk4rTVz3bqM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 13:08:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNsGB5jy4z3c0k
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 13:08:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=WyWGtrmK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=gqxOC5yy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=WyWGtrmK; 
+ header.a=rsa-sha256 header.s=201602 header.b=gqxOC5yy; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNsFG4rztz304D
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 13:07:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNsFL6Wcwz30RG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 13:07:50 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1007)
- id 4FNsFD4bfyz9vG3; Mon, 19 Apr 2021 13:07:44 +1000 (AEST)
+ id 4FNsFD5Mhpz9vGP; Mon, 19 Apr 2021 13:07:44 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=gibson.dropbear.id.au; s=201602; t=1618801664;
- bh=5b9p2pFUf9CvasgQR2C2eohBtdxAe1bRW7b9lyDorGc=;
+ bh=D4aFOk9iIBTmEBLZ9tpdnV9/EcjrL9FXbggNofbOtfw=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=WyWGtrmKuwtXAtyzrGCxvTcsYEIYhyJcRn20YmgITLthNgn+InvHIwnvrGeQn87Cc
- eg4/3u/WBtgBNOzObBzhE7NcEu01tk2u/eF6DXCKSHh/Op5RSJ3D9jnq3aPwcXq4fT
- HDjUItbxKh1bjibsvw9RZfObetf3yvw1ayP29SVQ=
-Date: Mon, 19 Apr 2021 11:17:37 +1000
+ b=gqxOC5yyedj5NetDVbTSYnQYg6v6pzgCsmXLUaGCtn6jq3MEERZBx823awFX48ZLb
+ SGTsGqmhdwq/r9Gro06WTkLFalsC3ydoyNTeFyaUGjSv7uUwy3thUO5uzr/XghBhhH
+ QIuebsKwQTFrRd/5VAkbQlBdgLT2uCZvt5RiA0mU=
+Date: Mon, 19 Apr 2021 11:19:38 +1000
 From: David Gibson <david@gibson.dropbear.id.au>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/3] powerpc/smp: Reintroduce cpu_core_mask
-Message-ID: <YHzaMVm3nJfTtDrs@yekko.fritz.box>
+To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Subject: Re: [PATCH 3/3] powerpc/smp: Cache CPU to chip lookup
+Message-ID: <YHzaqqYDRtTuVEdH@yekko.fritz.box>
 References: <20210415120934.232271-1-srikar@linux.vnet.ibm.com>
- <20210415120934.232271-2-srikar@linux.vnet.ibm.com>
- <YHkCvuNfZLQRxjU8@yekko.fritz.box>
- <20210416054549.GF2633526@linux.vnet.ibm.com>
+ <20210415120934.232271-4-srikar@linux.vnet.ibm.com>
+ <20210415171921.GB16351@in.ibm.com>
+ <20210415175110.GE2633526@linux.vnet.ibm.com>
+ <20210416155748.GA26496@in.ibm.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="MFiVFzh7bcjXr8e3"
+ protocol="application/pgp-signature"; boundary="NARE3flw2kjIKyVm"
 Content-Disposition: inline
-In-Reply-To: <20210416054549.GF2633526@linux.vnet.ibm.com>
+In-Reply-To: <20210416155748.GA26496@in.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,11 +61,10 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
  Peter Zijlstra <peterz@infradead.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>,
- hegdevasant@linux.vnet.ibm.com, qemu-ppc@nongnu.org,
+ Valentin Schneider <valentin.schneider@arm.com>, qemu-ppc@nongnu.org,
  Cedric Le Goater <clg@kaod.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
  Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
@@ -72,85 +72,76 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---MFiVFzh7bcjXr8e3
-Content-Type: text/plain; charset=iso-8859-1
+--NARE3flw2kjIKyVm
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 16, 2021 at 11:15:49AM +0530, Srikar Dronamraju wrote:
-> * David Gibson <david@gibson.dropbear.id.au> [2021-04-16 13:21:34]:
->=20
-> Thanks for having a look at the patches.
->=20
-> > On Thu, Apr 15, 2021 at 05:39:32PM +0530, Srikar Dronamraju wrote:
-> > > Daniel reported that with Commit 4ca234a9cbd7 ("powerpc/smp: Stop
-> > > updating cpu_core_mask") QEMU was unable to set single NUMA node SMP
-> > > topologies such as:
-> > >  -smp 8,maxcpus=3D8,cores=3D2,threads=3D2,sockets=3D2
-> > >  i.e he expected 2 sockets in one NUMA node.
+On Fri, Apr 16, 2021 at 09:27:48PM +0530, Gautham R Shenoy wrote:
+> On Thu, Apr 15, 2021 at 11:21:10PM +0530, Srikar Dronamraju wrote:
+> > * Gautham R Shenoy <ego@linux.vnet.ibm.com> [2021-04-15 22:49:21]:
 > >=20
-> > Well, strictly speaking, you can still set that toplogy in qemu but a
-> > PAPR guest with that commit will show as having 1 socket in lscpu and
-> > similar things.
-> >=20
->=20
-> Right, I did mention the o/p of lscpu in QEMU with the said commit and
-> with the new patches in the cover letter. Somehow I goofed up the cc
-> list for the cover letter.
->=20
-> Reference for the cover letter:
-> https://lore.kernel.org/linuxppc-dev/20210415120934.232271-1-srikar@linux=
-=2Evnet.ibm.com/t/#u
->=20
-> > Basically, this is because PAPR has no meaningful distinction between
-> > cores and sockets.  So it's kind of a cosmetic problem, but it is a
-> > user-unexpected behaviour that it would be nice to avoid if it's not
-> > excessively difficult.
-> >=20
-> > > The above commit helped to reduce boot time on Large Systems for
-> > > example 4096 vCPU single socket QEMU instance. PAPR is silent on
-> > > having more than one socket within a NUMA node.
+> > > >=20
+> > > > +int *chip_id_lookup_table;
+> > > > +
+> > > >  #ifdef CONFIG_PPC64
+> > > >  int __initdata iommu_is_off;
+> > > >  int __initdata iommu_force_on;
+> > > > @@ -914,13 +916,22 @@ EXPORT_SYMBOL(of_get_ibm_chip_id);
+> > > >  int cpu_to_chip_id(int cpu)
+> > > >  {
+> > > >  	struct device_node *np;
+> > > > +	int ret =3D -1, idx;
+> > > > +
+> > > > +	idx =3D cpu / threads_per_core;
+> > > > +	if (chip_id_lookup_table && chip_id_lookup_table[idx] !=3D -1)
 > > >=20
-> > > cpu_core_mask and cpu_cpu_mask for any CPU would be same unless the
-> > > number of sockets is different from the number of NUMA nodes.
 > >=20
-> > Number of sockets being different from number of NUMA nodes is routine
-> > in qemu, and I don't think it's something we should enforce.
-> >=20
-> > > One option is to reintroduce cpu_core_mask but use a slightly
-> > > different method to arrive at the cpu_core_mask. Previously each CPU's
-> > > chip-id would be compared with all other CPU's chip-id to verify if
-> > > both the CPUs were related at the chip level. Now if a CPU 'A' is
-> > > found related / (unrelated) to another CPU 'B', all the thread
-> > > siblings of 'A' and thread siblings of 'B' are automatically marked as
-> > > related / (unrelated).
+> > > The value -1 is ambiguous since we won't be able to determine if
+> > > it is because we haven't yet made a of_get_ibm_chip_id() call
+> > > or if of_get_ibm_chip_id() call was made and it returned a -1.
 > > >=20
-> > > Also if a platform doesn't support ibm,chip-id property, i.e its
-> > > cpu_to_chip_id returns -1, cpu_core_map holds a copy of
-> > > cpu_cpu_mask().
 > >=20
-> > Yeah, the other weirdness here is that ibm,chip-id isn't a PAPR
-> > property at all - it was added for powernv.  We then added it to qemu
-> > for PAPR guests because that was the way at the time to get the guest
-> > to advertise the expected number of sockets.  It therefore basically
-> > *only* exists on PAPR/qemu for that purpose, so if it's not serving it
-> > we need to come up with something else.
+> > We don't allocate chip_id_lookup_table unless cpu_to_chip_id() return
+> > !-1 value for the boot-cpuid. So this ensures that we dont
+> > unnecessarily allocate chip_id_lookup_table. Also I check for
+> > chip_id_lookup_table before calling cpu_to_chip_id() for other CPUs.
+> > So this avoids overhead of calling cpu_to_chip_id() for platforms that
+> > dont support it.  Also its most likely that if the
+> > chip_id_lookup_table is initialized then of_get_ibm_chip_id() call
+> > would return a valid value.
+> >=20
+> > + Below we are only populating the lookup table, only when the
+> > of_get_cpu_node is valid.
+> >=20
+> > So I dont see any drawbacks of initializing it to -1. Do you see
+> any?
+>=20
+>=20
+> Only if other callers of cpu_to_chip_id() don't check for whether the
+> chip_id_lookup_table() has been allocated or not. From a code
+> readability point of view, it is easier to have that check  this inside
+> cpu_to_chip_id() instead of requiring all its callers to make that
+> check.
+
+Even if they do, and the bad invalid value should never be read, I
+think it's worth initializing that way.  If means if there's a mistake
+and we do accidentally read the value, then the error is likely to be
+much clearer.  Likewise if someone looks at this value from a
+debugger, it will be clearer what's going on.
+
+>=20
+> >=20
+> > > Thus, perhaps we can initialize chip_id_lookup_table[idx] with a
+> > > different unique negative value. How about S32_MIN ? and check
+> > > chip_id_lookup_table[idx] is different here ?
+> > >=20
+> >=20
+> > I had initially initialized to -2, But then I thought we adding in
+> > more confusion than necessary and it was not solving any issues.
+> >=20
 > >=20
 >=20
-> Do you have ideas on what that something could be like?
-
-Not really, sorry.
-
-> So if that's
-> more beneficial then we could move over to that scheme. Also apart
-> from ibm,chip-id being not a PAPR property, do you have any other
-> concerns with it.
-
-I think if we can keep ibm,chip-id doing this job, that would be
-simplest - as long as our PAPR usage isn't implying semantics which
-contradict what it does on powernv.  AIUI C=E9dric thought it did that,
-but with further discussion it seems like that might have been a
-misunderstanding incorrectly conflating chip-id with NUMA nodes.
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -158,24 +149,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---MFiVFzh7bcjXr8e3
+--NARE3flw2kjIKyVm
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmB82jEACgkQbDjKyiDZ
-s5L7sxAAhOOsv20tBp2GK9H74lgiIMHzZYvxtL8LXsmmEllEszIn4NFHtlXS5Kj9
-33rre6qjE8mqITuBW0678YHDmbaLssYUrSfWuSLHvhN1aFQc84jMUDYf0wkG3MvW
-hb4sXwrSE4AYmWzWQFQ9No1fqIxITRqJbx1xmu6I+/dn4T0mbWzVBI4GPcq05wjK
-VrHVjaFbZ+i0CQJfvMImDWdT4ALump4nKz/99am4JctJ3YgOQMhbb4nQaYdmrBGL
-/wh47cbBF6x8iBZU/F2KCAGfT5cefBhiRs1KYQkqXoG4NJuDlQXNcVPA6ozrmCec
-qdah3VGQ3uTc5LgKzDBJ8RtCHd3Dz/xD3mB+Wr0b/HCc9uhGjeOb82z44T0jkWB7
-+Dhgd804L1elKr3W8xApXVbeC0Z654mqbX8vlFaaNtgZb9hghVcpQutIM+SjGXtE
-VIxDSWDTGIWU6OerLDYGH4JkAVCA84HXzmrg5Y7mcPqB3EwCoOLXdFeAfdTG2WI9
-SXk7D+4UF1oV2Sr63L9kJQOUEpNcV/SgGexc5FM74+zunaTh4tC+SG7dYTL59a4Z
-wnbypGc4evJNsbma22I+Ae8+q5boTf+cltBjKDeMbldokc2lz29lKFuRA+YdTuTd
-hq6zhjcBKfblduNq1rSMJER+ud+ZtqagRz1dlBjYXeJZ04mLzO0=
-=VaNN
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmB82qkACgkQbDjKyiDZ
+s5LBiA//XZbMczDNargTsR+q7EcnrqGSZkt+mK8XB7f6mY9aoBm/vZQBt6UDx8sh
+B1xI+/mPzbNpg6OAtbqzxAMe4bXwbm1TYtxQLQ+h0+1p1dlRdNdSHyMHpSFhMLj5
+CafDuAe+uTFH4i6tXTm4oZq7VUqzn/KVb6i6mV/hIk9NJJLc1exhShJ/5eMc0HjQ
+2tQTeEclZQKv180jh7MwFsn/pfhegn+pUbydhZJCVTpmGwfjExQDIajO7M76cMZH
+9nHfz5Hnud2bgsDKC1b3sydIn+Hg9B9ju+GatV4nxrrbL6+DWGITbxfTi5TFLfPj
+AgsVgmO1lWRU6ZJ5VOqqav7IV5BlZxRQU7th3gpCn892sFAhSNUqUseAJ3h8EOD4
+fFJUw0NnepMEGEKvDPO8BnCkHE1R8pus+klmGjnVlGKyHwpd3FSpeZ/LjCCAZ7rN
+BFZPjuGfSN9I0d9gqiX60g5DyrsvvxhgU/Trn5xefFFRjHd/A3wO5b6FJNFP8EEB
+736DKBiWEryQ5J5H0f2b2dpmLC2yv3PjmpLNYScimImdWgtKAkZqMWurSsTwEfui
+zpE+LwEmGzPG3OAl1xlBtn9MyuR60ULSfG+lwRI2DF71aIKzT0lsNPcXZU/ej1nU
+R68cClaJ6rO+K6Gu//sYUDPFjCND7rA8saw8JO9ijf4TiNwBCaQ=
+=Ddir
 -----END PGP SIGNATURE-----
 
---MFiVFzh7bcjXr8e3--
+--NARE3flw2kjIKyVm--
