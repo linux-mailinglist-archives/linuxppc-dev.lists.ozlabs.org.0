@@ -2,70 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9E2363B69
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 08:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46129363B6E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 08:24:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNxby4tmRz3bvj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 16:24:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNxcX1NsPz3ccB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 16:24:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q2aSyWKa;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=atmark-techno.com (client-ip=13.115.124.170;
- helo=gw.atmark-techno.com; envelope-from=dominique.martinet@atmark-techno.com;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 531 seconds by postgrey-1.36 at boromir;
- Mon, 19 Apr 2021 14:58:29 AEST
-Received: from gw.atmark-techno.com (gw.atmark-techno.com [13.115.124.170])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FNvj16kj3z30Dk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 14:58:28 +1000 (AEST)
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69])
- by gw.atmark-techno.com (Postfix) with ESMTPS id 8CF2C8056E
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 13:49:33 +0900 (JST)
-Received: by mail-ot1-f69.google.com with SMTP id
- u19-20020a9d4d930000b02902876395d43dso9223947otk.21
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Apr 2021 21:49:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=nwmKkdj5vxFBpFK3bj8w7Gz2YNFOXfPhegLyPurLzW0=;
- b=unMmiYjzbuRG94xtK4RZs4k21NvF0q7sNSGpiiEOeOe0wsWVJmPfZoZgZsWUUqatib
- lD6n9XzmZbsPnL425tDYpCgcL4bB2IbPnZpkcxlWX5S7emlgwmFq2gEvFRiLPCgLPL1y
- CIo71wnauhojFkRXcNCugYciBkwVtkMa+4ZwR9gzwOC3Gqf+0md2evO2RXfBtlPCgdmJ
- 8zXLqNnSCS685+gPtmsHJZXhAmBwyCNuLU9iH5z45TiTNjOKTANtn1ziPoH2d7gzTa/U
- 98ueXZVmpzMonzv6vG/AN75OjwSDuIZBmctxn7mnlGNEWIyNoZw06viTSkCKqgQKzSRG
- qeEQ==
-X-Gm-Message-State: AOAM532yspvr8u1RMshlFy1sA7Tt1idTBIgln1NAINWV32z0ePxZcHOp
- x6DXl7wyp+hGI/zq0n6f2Rz3Smhyk3FyOvPW6Yoi1sDSMZurdh8CTkJi9zmOtOjEqcmfMXXB7Mq
- 7T3TzORqgsGem9EWNgbwIL0ZKqu6tGQ==
-X-Received: by 2002:a17:90a:430e:: with SMTP id
- q14mr10145467pjg.189.1618807761124; 
- Sun, 18 Apr 2021 21:49:21 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyxUh9TJ2x/K//IB2lTaeXhs2rGXIpLK5cuzzNIi1YdNWpQlLZsRv610IvzYjHsCM08ZYf1MA==
-X-Received: by 2002:a17:90a:430e:: with SMTP id
- q14mr10145444pjg.189.1618807760853; 
- Sun, 18 Apr 2021 21:49:20 -0700 (PDT)
-Received: from pc-0115 (117.209.187.35.bc.googleusercontent.com.
- [35.187.209.117])
- by smtp.gmail.com with ESMTPSA id l22sm13247239pjc.13.2021.04.18.21.49.19
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 18 Apr 2021 21:49:20 -0700 (PDT)
-Received: from martinet by pc-0115 with local (Exim 4.94)
- (envelope-from <martinet@pc-0115>)
- id 1lYLqX-0016Kg-U8; Mon, 19 Apr 2021 13:49:17 +0900
-Date: Mon, 19 Apr 2021 13:49:07 +0900
-From: Dominique MARTINET <dominique.martinet@atmark-techno.com>
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=leon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Q2aSyWKa; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNvnW0NyPz30GH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 15:02:22 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 65BC961078;
+ Mon, 19 Apr 2021 05:02:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1618808539;
+ bh=srAR5o/oGq5ioibP/eXNEOXMJgehSJWXVDMJHT8j86M=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Q2aSyWKadyluHjWWN1SwyxF3iNnBxBRV4eFwfMyHPgeuOCbx3zVu4VA/PQblKt1mX
+ LG/8Qa12wOxexoPdM1AtRUqEwffA6hhUzg5XvoNYf5i8CVaEzIb5aHKsxdmdIZ0VNh
+ EB/GtCUOovxwGQ5QiY5CwzbiGBepA6YRCHaOc9bFp2O+m0lnHel/QMKuqas1XJG+Ml
+ vece3azY0OPvilnrF9TxEM4Y2QEUh42RCB/qgDYU4n+IIRFMdKunRACTXFpDc2oJTx
+ Tw4u0mxUHQNeAMruPlzpJF4CCm1VJVvyur9NU2SbLDowYlZY9RFqgpKroyAxadDiZV
+ 1t4tD3zjj0ZKQ==
+Date: Mon, 19 Apr 2021 08:02:15 +0300
+From: Leon Romanovsky <leon@kernel.org>
 To: "Alice Guo (OSS)" <alice.guo@oss.nxp.com>
-Subject: Re: [RFC v1 PATCH 1/3] drivers: soc: add support for
- soc_device_match returning -EPROBE_DEFER
-Message-ID: <YH0Lwy2AYpXaJIex@atmark-techno.com>
+Subject: Re: [RFC v1 PATCH 3/3] driver: update all the code that use
+ soc_device_match
+Message-ID: <YH0O1104YEdjY9mb@unreal>
 References: <20210419042722.27554-1-alice.guo@oss.nxp.com>
- <20210419042722.27554-2-alice.guo@oss.nxp.com>
+ <20210419042722.27554-4-alice.guo@oss.nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210419042722.27554-2-alice.guo@oss.nxp.com>
+In-Reply-To: <20210419042722.27554-4-alice.guo@oss.nxp.com>
 X-Mailman-Approved-At: Mon, 19 Apr 2021 16:21:18 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -103,35 +85,97 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-First comment overall for the whole serie:
-Since it is the solution I had suggested when I reported the problem[1]
-I have no qualm on the approach, comments for individual patches
-follow.
-
-[1] http://lore.kernel.org/r/YGGZJjAxA1IO+/VU@atmark-techno.com
-
-
-Alice Guo (OSS) wrote on Mon, Apr 19, 2021 at 12:27:20PM +0800:
+On Mon, Apr 19, 2021 at 12:27:22PM +0800, Alice Guo (OSS) wrote:
 > From: Alice Guo <alice.guo@nxp.com>
 > 
-> In i.MX8M boards, the registration of SoC device is later than caam
-> driver which needs it. Caam driver needs soc_device_match to provide
-> -EPROBE_DEFER when no SoC device is registered and no
-> early_soc_dev_attr.
-
-This patch should be last in the set: you can't have soc_device_match
-return an error before its callers handle it.
-
+> Update all the code that use soc_device_match because add support for
+> soc_device_match returning -EPROBE_DEFER.
+> 
 > Signed-off-by: Alice Guo <alice.guo@nxp.com>
+> ---
+>  drivers/bus/ti-sysc.c                         |  2 +-
+>  drivers/clk/renesas/r8a7795-cpg-mssr.c        |  4 +++-
+>  drivers/clk/renesas/rcar-gen2-cpg.c           |  2 +-
+>  drivers/clk/renesas/rcar-gen3-cpg.c           |  2 +-
+>  drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c       |  7 ++++++-
+>  drivers/dma/ti/k3-psil.c                      |  3 +++
+>  drivers/dma/ti/k3-udma.c                      |  2 +-
+>  drivers/gpu/drm/bridge/nwl-dsi.c              |  2 +-
+>  drivers/gpu/drm/meson/meson_drv.c             |  4 +++-
+>  drivers/gpu/drm/omapdrm/dss/dispc.c           |  2 +-
+>  drivers/gpu/drm/omapdrm/dss/dpi.c             |  4 +++-
+>  drivers/gpu/drm/omapdrm/dss/dsi.c             |  3 +++
+>  drivers/gpu/drm/omapdrm/dss/dss.c             |  3 +++
+>  drivers/gpu/drm/omapdrm/dss/hdmi4_core.c      |  3 +++
+>  drivers/gpu/drm/omapdrm/dss/venc.c            |  4 +++-
+>  drivers/gpu/drm/omapdrm/omap_drv.c            |  3 +++
+>  drivers/gpu/drm/rcar-du/rcar_du_crtc.c        |  4 +++-
+>  drivers/gpu/drm/rcar-du/rcar_lvds.c           |  2 +-
+>  drivers/gpu/drm/tidss/tidss_dispc.c           |  4 +++-
+>  drivers/iommu/ipmmu-vmsa.c                    |  7 +++++--
+>  drivers/media/platform/rcar-vin/rcar-core.c   |  2 +-
+>  drivers/media/platform/rcar-vin/rcar-csi2.c   |  2 +-
+>  drivers/media/platform/vsp1/vsp1_uif.c        |  4 +++-
+>  drivers/mmc/host/renesas_sdhi_core.c          |  2 +-
+>  drivers/mmc/host/renesas_sdhi_internal_dmac.c |  2 +-
+>  drivers/mmc/host/sdhci-of-esdhc.c             | 21 ++++++++++++++-----
+>  drivers/mmc/host/sdhci-omap.c                 |  2 +-
+>  drivers/mmc/host/sdhci_am654.c                |  2 +-
+>  drivers/net/ethernet/renesas/ravb_main.c      |  4 +++-
+>  drivers/net/ethernet/ti/am65-cpsw-nuss.c      |  2 +-
+>  drivers/net/ethernet/ti/cpsw.c                |  2 +-
+>  drivers/net/ethernet/ti/cpsw_new.c            |  2 +-
+>  drivers/phy/ti/phy-omap-usb2.c                |  4 +++-
+>  drivers/pinctrl/renesas/core.c                |  2 +-
+>  drivers/pinctrl/renesas/pfc-r8a7790.c         |  5 ++++-
+>  drivers/pinctrl/renesas/pfc-r8a7794.c         |  5 ++++-
+>  drivers/soc/fsl/dpio/dpio-driver.c            | 13 ++++++++----
+>  drivers/soc/renesas/r8a774c0-sysc.c           |  5 ++++-
+>  drivers/soc/renesas/r8a7795-sysc.c            |  2 +-
+>  drivers/soc/renesas/r8a77990-sysc.c           |  5 ++++-
+>  drivers/soc/ti/k3-ringacc.c                   |  2 +-
+>  drivers/staging/mt7621-pci/pci-mt7621.c       |  2 +-
+>  drivers/thermal/rcar_gen3_thermal.c           |  4 +++-
+>  drivers/thermal/ti-soc-thermal/ti-bandgap.c   | 10 +++++++--
+>  drivers/usb/gadget/udc/renesas_usb3.c         |  2 +-
+>  drivers/usb/host/ehci-platform.c              |  4 +++-
+>  drivers/usb/host/xhci-rcar.c                  |  2 +-
+>  drivers/watchdog/renesas_wdt.c                |  2 +-
+>  48 files changed, 131 insertions(+), 52 deletions(-)
+> 
+> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> index 5fae60f8c135..00c59aa217c1 100644
+> --- a/drivers/bus/ti-sysc.c
+> +++ b/drivers/bus/ti-sysc.c
+> @@ -2909,7 +2909,7 @@ static int sysc_init_soc(struct sysc *ddata)
+>  	}
+>  
+>  	match = soc_device_match(sysc_soc_feat_match);
+> -	if (!match)
+> +	if (!match || IS_ERR(match))
+>  		return 0;
+>  
+>  	if (match->data)
+> diff --git a/drivers/clk/renesas/r8a7795-cpg-mssr.c b/drivers/clk/renesas/r8a7795-cpg-mssr.c
+> index c32d2c678046..90a18336a4c3 100644
+> --- a/drivers/clk/renesas/r8a7795-cpg-mssr.c
+> +++ b/drivers/clk/renesas/r8a7795-cpg-mssr.c
+> @@ -439,6 +439,7 @@ static const unsigned int r8a7795es2_mod_nullify[] __initconst = {
+>  
+>  static int __init r8a7795_cpg_mssr_init(struct device *dev)
+>  {
+> +	const struct soc_device_attribute *match;
+>  	const struct rcar_gen3_cpg_pll_config *cpg_pll_config;
+>  	u32 cpg_mode;
+>  	int error;
+> @@ -453,7 +454,8 @@ static int __init r8a7795_cpg_mssr_init(struct device *dev)
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (soc_device_match(r8a7795es1)) {
+> +	match = soc_device_match(r8a7795es1);
+> +	if (!IS_ERR(match) && match) {
 
-As the one who reported the problem I would have been appreciated being
-at least added to Ccs... I only happened to notice you posted this by
-chance.
+"if (!IS_ERR_OR_NULL(match))" in all places.
 
-There is also not a single Fixes tag -- I believe this commit should
-have Fixes: 7d981405d0fd ("soc: imx8m: change to use platform driver")
-but I'm not sure how such tags should be handled in case of multiple
-patches fixing something.
-
--- 
-Dominique
+Thanks
