@@ -2,53 +2,116 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17199363B13
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 07:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A49363B2A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 07:55:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FNwbL04GTz3bTp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 15:38:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FNwzH6sJyz3c0D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 15:55:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=p3cfQPwG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d5lX5mW7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=p3cfQPwG; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ envelope-from=srs0=oagm=jq=linux.ibm.com=hbathini@ozlabs.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=d5lX5mW7; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FNwZN3dqJz2ysp
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 15:37:47 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4FNwZM15p1z9vFP; Mon, 19 Apr 2021 15:37:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1618810667;
- bh=QTO/JmKonyWowSuB9ptog568D8fxSsKUTGolY+teoLw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=p3cfQPwGqHiIebmsm3t1zK9po09rMyOJ5XhAri8tMCywYbjZnmvwsuIVuS6H+RIe2
- ec0NJn6aE1DXx8vlI/TLncnMzVc99JPrQMXaeko5Dp8YpM4NgYEaIFq/R8di1Sl/eo
- FLo9evkxzsb7fftYNHnTGJVeQXQvF5/nIsmCfDOM=
-Date: Mon, 19 Apr 2021 15:37:41 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Leonardo Bras <leobras.c@gmail.com>
-Subject: Re: [PATCH 3/3] powerpc/mm/hash: Avoid multiple HPT resize-downs on
- memory hotunplug
-Message-ID: <YH0XJYKlBTFQz/4v@yekko.fritz.box>
-References: <20210312072940.598696-1-leobras.c@gmail.com>
- <20210312072940.598696-4-leobras.c@gmail.com>
- <YFksMw8Hw/mC48yb@yekko.fritz.box>
- <418f044aab385389681529b0b6057e75825b0e5f.camel@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FNwyq5wMZz2ysv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 15:55:31 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by ozlabs.org (Postfix) with ESMTP id 4FNwyq49f3z9vFg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 15:55:31 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4FNwyq3mkYz9vFb; Mon, 19 Apr 2021 15:55:31 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=d5lX5mW7; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4FNwyq05Rnz9vFR;
+ Mon, 19 Apr 2021 15:55:30 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13J5YKC6157375; Mon, 19 Apr 2021 01:55:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=juRWTAe37MqEmqMeXTX2/f4zDfT5Y3rJM+GGdIj/p4g=;
+ b=d5lX5mW7XqEgUk9sKC06Nzwrv1sE6hND4az3k49UHq6AZDqayD0sH9/fzG5glNIy+UIe
+ 9X4dnC5w/ERxMd17Ge2/NQPTCCrUMmANYOZjw2CxOIo3mC6tXV8m9Ry8oCVw+Go0PIK/
+ hGFg+pLGUvQPqRKKLrOvyJM5K0MMcYQCtYNg0fR6BjzGvlcnrvlCldhSktpcW/ZK+oi/
+ eRCG8TEKpxfsDo36ggvvwJSBqdhJeEhenWJlvnTWX7VvSksbE6lWI23R9fTZf5EbSotP
+ 3kN0xXrVU/vsvBhSMcEjZQGYTbdyMO/klJQW1IxHlKUFq+elEPBRNKAbes1OIr37NH6o XQ== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 380d0amx5s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Apr 2021 01:55:28 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13J5tDZg032016;
+ Mon, 19 Apr 2021 05:55:26 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06ams.nl.ibm.com with ESMTP id 37yt2rrsjk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Apr 2021 05:55:26 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13J5tNtg34472318
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 19 Apr 2021 05:55:23 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A99C6AE04D;
+ Mon, 19 Apr 2021 05:55:23 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D07D0AE045;
+ Mon, 19 Apr 2021 05:55:20 +0000 (GMT)
+Received: from [9.211.74.96] (unknown [9.211.74.96])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Apr 2021 05:55:20 +0000 (GMT)
+Subject: Re: [PATCH v3] powerpc/kexec_file: use current CPU info while setting
+ up FDT
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, mpe@ellerman.id.au
+References: <20210417053805.800907-1-sourabhjain@linux.ibm.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+Message-ID: <50f1259c-c9b3-1255-8b40-f151f1a60ebf@linux.ibm.com>
+Date: Mon, 19 Apr 2021 11:25:18 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+In-Reply-To: <20210417053805.800907-1-sourabhjain@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: DYQXp8hq9Ul7qVvpRy6HeEu5XjLV9Gjh
+X-Proofpoint-ORIG-GUID: DYQXp8hq9Ul7qVvpRy6HeEu5XjLV9Gjh
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="cd90VBRJ04ikWx9V"
-Content-Disposition: inline
-In-Reply-To: <418f044aab385389681529b0b6057e75825b0e5f.camel@gmail.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-19_02:2021-04-16,
+ 2021-04-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 mlxscore=0
+ spamscore=0 adultscore=0 suspectscore=0 phishscore=0 priorityscore=1501
+ clxscore=1011 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104190037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,169 +123,212 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
- Scott Cheloha <cheloha@linux.ibm.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- Bharata B Rao <bharata@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Sandipan Das <sandipan@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Laurent Dufour <ldufour@linux.ibm.com>, Logan Gunthorpe <logang@deltatee.com>,
- Dan Williams <dan.j.williams@intel.com>, Mike Rapoport <rppt@kernel.org>
+Cc: mahesh@linux.vnet.ibm.com, bauerman@linux.ibm.com, stable@vger.kernel.org,
+ linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Sourabh,
 
---cd90VBRJ04ikWx9V
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for fixing this.
 
-On Fri, Apr 09, 2021 at 12:31:03AM -0300, Leonardo Bras wrote:
-> Hello David, thanks for commenting.
->=20
-> On Tue, 2021-03-23 at 10:45 +1100, David Gibson wrote:
-> > > @@ -805,6 +808,10 @@ static int resize_hpt_for_hotplug(unsigned long =
-new_mem_size, bool shrinking)
-> > > =A0	if (shrinking) {
-> > >=20
-> > > +		/* When batch removing entries, only resizes HPT at the end. */
-> > > +		if (atomic_read_acquire(&hpt_resize_disable))
-> > > +			return 0;
-> > > +
-> >=20
-> > I'm not quite convinced by this locking.  Couldn't hpt_resize_disable
-> > be set after this point, but while you're still inside
-> > resize_hpt_for_hotplug()?  Probably better to use an explicit mutex
-> > (and mutex_trylock()) to make the critical sections clearer.
->=20
-> Sure, I can do that for v2.
->=20
-> > Except... do we even need the fancy mechanics to suppress the resizes
-> > in one place to do them elswhere.  Couldn't we just replace the
-> > existing resize calls with the batched ones?
->=20
-> How do you think of having batched resizes-down in HPT?
+Generating an FDT based on of_root (the latest unflattened device-tree) 
+should be ideal as something similar to what is done for /cpus here 
+applies to /memory@* & /ibm,dynamic-reconfiguration-memory nodes too 
+(probably also applies to other nodes like pci@* ?). But IIUC, there is 
+no API in the kernel currently that converts an unflattened device-tree 
+(struct device_node *of_root) to FDT and having one might have it's own 
+challenges.
 
-I think it's a good idea.  We still have to have the loop to resize
-bigger if we can't fit everything into the smallest target size, but
-that still only makes the worst case as bad at the always-case is
-currently.
+Should pursue fixing /memory@* and other nodes for kexec as follow-up to 
+this patch either with the unflattened DT to FDT approach or otherwise...
 
-> Other than the current approach, I could only think of a way that would
-> touch a lot of generic code, and/or duplicate some functions, as
-> dlpar_add_lmb() does a lot of other stuff.
->=20
-> > > +void hash_memory_batch_shrink_end(void)
-> > > +{
-> > > +	unsigned long newsize;
-> > > +
-> > > +	/* Re-enables HPT resize-down after hot-unplug */
-> > > +	atomic_set_release(&hpt_resize_disable, 0);
-> > > +
-> > > +	newsize =3D memblock_phys_mem_size();
-> > > +	/* Resize to smallest SHIFT possible */
-> > > +	while (resize_hpt_for_hotplug(newsize, true) =3D=3D -ENOSPC) {
-> > > +		newsize *=3D 2;
-> >=20
-> > As noted earlier, doing this without an explicit cap on the new hpt
-> > size (of the existing size) this makes me nervous.=A0
-> >=20
->=20
-> I can add a stop in v2.
->=20
-> >  Less so, but doing
-> > the calculations on memory size, rather than explictly on HPT size /
-> > HPT order also seems kinda clunky.
->=20
-> Agree, but at this point, it would seem kind of a waste to find the
-> shift from newsize, then calculate (1 << shift) for each retry of
-> resize_hpt_for_hotplug() only to point that we are retrying the order
-> value.
+On 17/04/21 11:08 am, Sourabh Jain wrote:
+> kexec_file_load uses initial_boot_params in setting up the device-tree
+> for the kernel to be loaded. Though initial_boot_params holds info
+> about CPUs at the time of boot, it doesn't account for hot added CPUs.
+> 
+> So, kexec'ing with kexec_file_load syscall would leave the kexec'ed
+> kernel with inaccurate CPU info. Also, if kdump kernel is loaded with
+> kexec_file_load syscall and the system crashes on a hot added CPU,
+> capture kernel hangs failing to identify the boot CPU.
+> 
+>   Kernel panic - not syncing: sysrq triggered crash
+>   CPU: 24 PID: 6065 Comm: echo Kdump: loaded Not tainted 5.12.0-rc5upstream #54
+>   Call Trace:
+>   [c0000000e590fac0] [c0000000007b2400] dump_stack+0xc4/0x114 (unreliable)
+>   [c0000000e590fb00] [c000000000145290] panic+0x16c/0x41c
+>   [c0000000e590fba0] [c0000000008892e0] sysrq_handle_crash+0x30/0x40
+>   [c0000000e590fc00] [c000000000889cdc] __handle_sysrq+0xcc/0x1f0
+>   [c0000000e590fca0] [c00000000088a538] write_sysrq_trigger+0xd8/0x178
+>   [c0000000e590fce0] [c0000000005e9b7c] proc_reg_write+0x10c/0x1b0
+>   [c0000000e590fd10] [c0000000004f26d0] vfs_write+0xf0/0x330
+>   [c0000000e590fd60] [c0000000004f2aec] ksys_write+0x7c/0x140
+>   [c0000000e590fdb0] [c000000000031ee0] system_call_exception+0x150/0x290
+>   [c0000000e590fe10] [c00000000000ca5c] system_call_common+0xec/0x278
+>   --- interrupt: c00 at 0x7fff905b9664
+>   NIP:  00007fff905b9664 LR: 00007fff905320c4 CTR: 0000000000000000
+>   REGS: c0000000e590fe80 TRAP: 0c00   Not tainted  (5.12.0-rc5upstream)
+>   MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 28000242
+>         XER: 00000000
+>   IRQMASK: 0
+>   GPR00: 0000000000000004 00007ffff5fedf30 00007fff906a7300 0000000000000001
+>   GPR04: 000001002a7355b0 0000000000000002 0000000000000001 00007ffff5fef616
+>   GPR08: 0000000000000001 0000000000000000 0000000000000000 0000000000000000
+>   GPR12: 0000000000000000 00007fff9073a160 0000000000000000 0000000000000000
+>   GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>   GPR20: 0000000000000000 00007fff906a4ee0 0000000000000002 0000000000000001
+>   GPR24: 00007fff906a0898 0000000000000000 0000000000000002 000001002a7355b0
+>   GPR28: 0000000000000002 00007fff906a1790 000001002a7355b0 0000000000000002
+>   NIP [00007fff905b9664] 0x7fff905b9664
+>   LR [00007fff905320c4] 0x7fff905320c4
+>   --- interrupt: c00
+> 
+> To avoid this from happening, extract current CPU info from of_root
+> device node and use it for setting up the fdt in kexec_file_load case.
+> 
+> Fixes: 6ecd0163d360 ("powerpc/kexec_file: Add appropriate regions for memory reserve map")
+> 
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Cc: <stable@vger.kernel.org>
 
-Yeah, I see your poiint.
+Fow now, this should be a good stop-gap fix for /cpus node case.
 
->=20
-> But sure, if you think it looks better, I can change that.=20
->=20
-> > > +void memory_batch_shrink_begin(void)
-> > > +{
-> > > +	if (!radix_enabled())
-> > > +		hash_memory_batch_shrink_begin();
-> > > +}
-> > > +
-> > > +void memory_batch_shrink_end(void)
-> > > +{
-> > > +	if (!radix_enabled())
-> > > +		hash_memory_batch_shrink_end();
-> > > +}
-> >=20
-> > Again, these wrappers don't seem particularly useful to me.
->=20
-> Options would be add 'if (!radix_enabled())' to hotplug-memory.c
-> functions or to hash* functions, which look kind of wrong.
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
 
-I think the if !radix_enabled in hotplug-memory.c isn't too bad, in
-fact possibly helpful as a hint that this is HPT only logic.
-
->=20
-> > > +	memory_batch_shrink_end();
-> >=20
-> > remove_by_index only removes a single LMB, so there's no real point to
-> > batching here.
->=20
-> Sure, will be fixed for v2.
->=20
-> > > @@ -700,6 +712,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_=
-add)
-> > > =A0	if (lmbs_added !=3D lmbs_to_add) {
-> > > =A0		pr_err("Memory hot-add failed, removing any added LMBs\n");
-> > >=20
-> > > +		memory_batch_shrink_begin();
-> >=20
-> >=20
-> > The effect of these on the memory grow path is far from clear.
-> >=20
->=20
-> On hotplug, HPT is resized-up before adding LMBs.
-> On hotunplug, HPT is resized-down after removing LMBs.
-> And each one has it's own mechanism to batch HPT resizes...
->=20
-> I can't understand exactly how using it on hotplug fail path can be any
-> different than using it on hotunplug.
-> >=20
->=20
-> Can you please help me understanding this?
->=20
-> Best regards,
-> Leonardo Bras
->=20
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---cd90VBRJ04ikWx9V
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmB9FyUACgkQbDjKyiDZ
-s5Jd8hAAgYd5VNaWzqV/Ubm2ANlWLkjy5xitcPE1T0TgOc5cC0lhocQGs+l+Pa/f
-Wf8GIzdddlJ61eS/SXSEPzVaw6cMAXfZ9SQ8XWOXOw/RGollDm8h4inGkWdnZ/o9
-1P5VG4/F9lKzUtkEyqe9ztlqdy0bqmd1lts+BRfQSsEbuFUe8XSECpvM/COC7g85
-w0EDiCGYYArIDNb/1tm3X2/glA89xmg0xt2Fv1d0uDrMDfDNhoR4Kx+UkvqPRbeO
-S7/Y8Av9o8wlIUk+oojpUaJdHWeIsBvRfFYmEZsQw1nGIJQsUn0NC5XV6/36AZkr
-lb2JPojicBDu/bsHixkQojtdxk8i+ibxPqco1CI3++Dhs+5GxHsxZkVnH1PC8cpW
-7Oy/nK0VDSoGU5oxKlObv9eNCb9Wkepjkdtvl+6Bb1I/fJiklBivyVctGyC4enko
-XOH7fGJ11jFUgtozJGqdpWT5IC1bfPn0T8Unuk5IFvlueBiD2LMx17y9yTNe+x3Y
-30GBg1Yc78juzklG2YcH9dRuHzhiDUtXdW+RnSz5l6gjyUh0Ow40mW+ltcSd+P+H
-NWzKtqvFzsws67JgE9b4BH29l0wxF0Y3qKZF1z+RL+mtrBQCJq54XTJNcuSHX/bL
-TizB/SolcPju36R48/V4iVCLQ5T1cKusyomknNWtqwWhzaHRvMQ=
-=OcHV
------END PGP SIGNATURE-----
-
---cd90VBRJ04ikWx9V--
+> ---
+>   arch/powerpc/kexec/file_load_64.c | 98 +++++++++++++++++++++++++++++++
+>   1 file changed, 98 insertions(+)
+> 
+>   ---
+> Changelog:
+> 
+> v1 -> v2
+>    - fdt should be updated regardless of kexec type
+>    - updated commit message and title
+> 
+> v2 -> v3
+>    - Fixed warnings reported by patchwork
+>      (https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210416124658.718860-1-sourabhjain@linux.ibm.com/)
+>       - argument aligned to open parenthesis
+>       - declared add_node_prop and update_cpus_node function static
+>   ---
+> 
+> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+> index 02b9e4d0dc40..878f8297fbed 100644
+> --- a/arch/powerpc/kexec/file_load_64.c
+> +++ b/arch/powerpc/kexec/file_load_64.c
+> @@ -960,6 +960,99 @@ unsigned int kexec_fdt_totalsize_ppc64(struct kimage *image)
+>   	return fdt_size;
+>   }
+>   
+> +/**
+> + * add_node_prop - Read property from device node structure and add
+> + *			them to fdt.
+> + * @fdt:		Flattened device tree of the kernel
+> + * @node_offset:	offset of the node to add a property at
+> + * np:			device node pointer
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int add_node_prop(void *fdt, int node_offset, const struct device_node *np)
+> +{
+> +	int ret = 0;
+> +	struct property *pp;
+> +	unsigned long flags;
+> +
+> +	if (!np)
+> +		return -EINVAL;
+> +
+> +	raw_spin_lock_irqsave(&devtree_lock, flags);
+> +	for (pp = np->properties; pp; pp = pp->next) {
+> +		ret = fdt_setprop(fdt, node_offset, pp->name,
+> +				  pp->value, pp->length);
+> +		if (ret < 0) {
+> +			pr_err("Unable to add %s property: %s\n",
+> +			       pp->name, fdt_strerror(ret));
+> +			goto out;
+> +		}
+> +	}
+> +out:
+> +	raw_spin_unlock_irqrestore(&devtree_lock, flags);
+> +	return ret;
+> +}
+> +
+> +/**
+> + * update_cpus_node - Update cpus node of flattened device-tree using of_root
+> + *			device node.
+> + * @fdt:		Flattened device tree of the kernel.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int update_cpus_node(void *fdt)
+> +{
+> +	struct device_node *cpus_node, *dn;
+> +	int cpus_offset, cpus_subnode_off, ret = 0;
+> +
+> +	cpus_offset = fdt_path_offset(fdt, "/cpus");
+> +	if (cpus_offset == -FDT_ERR_NOTFOUND || cpus_offset > 0) {
+> +		if (cpus_offset > 0) {
+> +			ret = fdt_del_node(fdt, cpus_offset);
+> +			if (ret < 0) {
+> +				pr_err("Error deleting /cpus node: %s\n",
+> +				       fdt_strerror(ret));
+> +				return -EINVAL;
+> +			}
+> +		}
+> +
+> +		/* Add cpus node to fdt */
+> +		cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"),
+> +					      "cpus");
+> +		if (cpus_offset < 0) {
+> +			pr_err("Error creating /cpus node: %s\n",
+> +			       fdt_strerror(cpus_offset));
+> +			return -EINVAL;
+> +		}
+> +
+> +		/* Add cpus node properties */
+> +		cpus_node = of_find_node_by_path("/cpus");
+> +		ret = add_node_prop(fdt, cpus_offset, cpus_node);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		/* Loop through all subnodes of cpus and add them to fdt */
+> +		for_each_node_by_type(dn, "cpu") {
+> +			cpus_subnode_off = fdt_add_subnode(fdt,
+> +							   cpus_offset,
+> +							   dn->full_name);
+> +			if (cpus_subnode_off < 0) {
+> +				pr_err("Unable to add %s subnode: %s\n",
+> +				       dn->full_name, fdt_strerror(cpus_subnode_off));
+> +				return cpus_subnode_off;
+> +			}
+> +			ret = add_node_prop(fdt, cpus_subnode_off, dn);
+> +			if (ret < 0)
+> +				return ret;
+> +		}
+> +	} else if (cpus_offset < 0) {
+> +		pr_err("Malformed device tree: error reading /cpus node: %s\n",
+> +		       fdt_strerror(cpus_offset));
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+>   /**
+>    * setup_new_fdt_ppc64 - Update the flattend device-tree of the kernel
+>    *                       being loaded.
+> @@ -1020,6 +1113,11 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+>   		}
+>   	}
+>   
+> +	/* Update cpus nodes information to account hotplug CPUs. */
+> +	ret =  update_cpus_node(fdt);
+> +	if (ret < 0)
+> +		return ret;
+> +
+>   	/* Update memory reserve map */
+>   	ret = get_reserved_memory_ranges(&rmem);
+>   	if (ret)
+> 
