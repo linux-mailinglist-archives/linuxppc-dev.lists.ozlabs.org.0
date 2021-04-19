@@ -1,44 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB963645AC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 16:08:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23416364758
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 17:45:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FP7vG4tgmz30Lc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 00:08:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPB3F15nhz30Gx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 01:45:13 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WNizhiRq;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FP7tx4896z2xZ7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 00:07:51 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1290C31B;
- Mon, 19 Apr 2021 07:07:50 -0700 (PDT)
-Received: from [192.168.1.179] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8CA2C3F7D7;
- Mon, 19 Apr 2021 07:07:48 -0700 (PDT)
-Subject: Re: [PATCH v2 1/4] mm: pagewalk: Fix walk for hugepage tables
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- akpm@linux-foundation.org, dja@axtens.net
-References: <cover.1618828806.git.christophe.leroy@csgroup.eu>
- <db6981c69f96a8c9c6dcf688b7f485e15993ddef.1618828806.git.christophe.leroy@csgroup.eu>
-From: Steven Price <steven.price@arm.com>
-Message-ID: <1fdb0abe-b4b5-937c-0d9b-859a5cbb5726@arm.com>
-Date: Mon, 19 Apr 2021 15:07:47 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=WNizhiRq; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPB2m0Bzkz2xZf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 01:44:47 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 163EE61284
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 15:44:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1618847085;
+ bh=1hglvV4GjA2advCM06OW1Eit/4/3I8x0HflbVk4wpuY=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=WNizhiRqZajO+MiOARISqtKtGpPmaO3wBUEXBYaZcF6e7reYd0/YMFWwxNeUTgfe5
+ N0tLt+LESGZ0BdkDW3AuEDpdlHVeG7V2YZc2pw1QfKfGNHfgkp27nLA+HX2gYT/PlF
+ jjwDuzd486c9+/Ek2R9WiHAh1F83drMgZjVy6M5HwtRkmYgbUgIZFHsKtDfO6a2rfA
+ +4bBRNSkFbnMxtKkhdWLWX/zAHKy0j8hPIOlI2tARuJQBD9r8jCYQv7fwWP70ews22
+ 4xF7qVIGlwcnhnZhLcuSOudwPys6pA43cQdtZi4ARk833UdG1HnVntK56j4MBHe2Os
+ Gkj2cUSl0uVVQ==
+Received: by mail-ej1-f41.google.com with SMTP id r9so53652495ejj.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 08:44:45 -0700 (PDT)
+X-Gm-Message-State: AOAM530F9pTrB0ChB2OkPNTI2gHOoXEjwPhZ7mYCYZRbVsAwckrJ3p6v
+ JGWnw3/MJ6AyyHPCKYjOZgbYfnb+RNsZnevOCw==
+X-Google-Smtp-Source: ABdhPJzBXwETiXa9YzZ6qf4GsLL82HMp0uZcY/aPM/9WWzio+BYfi1hv5Mfge2u58qRhymWTxr7qLgFRkOJydeQPCks=
+X-Received: by 2002:a17:906:9ac5:: with SMTP id
+ ah5mr22189976ejc.360.1618847083667; 
+ Mon, 19 Apr 2021 08:44:43 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <db6981c69f96a8c9c6dcf688b7f485e15993ddef.1618828806.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+References: <20210415180050.373791-1-leobras.c@gmail.com>
+ <CAL_Jsq+WwAeziGN4EfPAWfA0fieAjfcxfi29=StOx0GeKjAe_g@mail.gmail.com>
+ <7b089cd48b90f2445c7cb80da1ce8638607c46fc.camel@gmail.com>
+In-Reply-To: <7b089cd48b90f2445c7cb80da1ce8638607c46fc.camel@gmail.com>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Mon, 19 Apr 2021 10:44:31 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+m6CkGj_NYGvwxoKwoQ4PkEu6hfGdMTT3i4APoHSkNeg@mail.gmail.com>
+Message-ID: <CAL_Jsq+m6CkGj_NYGvwxoKwoQ4PkEu6hfGdMTT3i4APoHSkNeg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] of/pci: Add IORESOURCE_MEM_64 to resource flags for
+ 64-bit memory addresses
+To: Leonardo Bras <leobras.c@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,129 +68,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Oliver O'Halloran <oohall@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
+Cc: devicetree@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Frank Rowand <frowand.list@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ PCI <linux-pci@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 19/04/2021 11:47, Christophe Leroy wrote:
-> Pagewalk ignores hugepd entries and walk down the tables
-> as if it was traditionnal entries, leading to crazy result.
-> 
-> Add walk_hugepd_range() and use it to walk hugepage tables.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+On Fri, Apr 16, 2021 at 3:58 PM Leonardo Bras <leobras.c@gmail.com> wrote:
+>
+> Hello Rob, thanks for this feedback!
+>
+> On Thu, 2021-04-15 at 13:59 -0500, Rob Herring wrote:
+> > +PPC and PCI lists
+> >
+> > On Thu, Apr 15, 2021 at 1:01 PM Leonardo Bras <leobras.c@gmail.com> wrote:
+> > >
+> > > Many other resource flag parsers already add this flag when the input
+> > > has bits 24 & 25 set, so update this one to do the same.
+> >
+> > Many others? Looks like sparc and powerpc to me.
+> >
+>
+> s390 also does that, but it look like it comes from a device-tree.
 
-Looks correct to me, sadly I don't have a suitable system to test it.
+I'm only looking at DT based platforms, and s390 doesn't use DT.
 
-Reviewed-by: Steven Price <steven.price@arm.com>
+> > Those would be the
+> > ones I worry about breaking. Sparc doesn't use of/address.c so it's
+> > fine. Powerpc version of the flags code was only fixed in 2019, so I
+> > don't think powerpc will care either.
+>
+> In powerpc I reach this function with this stack, while configuring a
+> virtio-net device for a qemu/KVM pseries guest:
+>
+> pci_process_bridge_OF_ranges+0xac/0x2d4
+> pSeries_discover_phbs+0xc4/0x158
+> discover_phbs+0x40/0x60
+> do_one_initcall+0x60/0x2d0
+> kernel_init_freeable+0x308/0x3a8
+> kernel_init+0x2c/0x168
+> ret_from_kernel_thread+0x5c/0x70
+>
+> For this, both MMIO32 and MMIO64 resources will have flags 0x200.
 
-> ---
-> v2:
-> - Add a guard for NULL ops->pte_entry
-> - Take mm->page_table_lock when walking hugepage table, as suggested by follow_huge_pd()
-> ---
->   mm/pagewalk.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++-----
->   1 file changed, 53 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index e81640d9f177..9b3db11a4d1d 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -58,6 +58,45 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->   	return err;
->   }
->   
-> +#ifdef CONFIG_ARCH_HAS_HUGEPD
-> +static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
-> +			     unsigned long end, struct mm_walk *walk, int pdshift)
-> +{
-> +	int err = 0;
-> +	const struct mm_walk_ops *ops = walk->ops;
-> +	int shift = hugepd_shift(*phpd);
-> +	int page_size = 1 << shift;
-> +
-> +	if (!ops->pte_entry)
-> +		return 0;
-> +
-> +	if (addr & (page_size - 1))
-> +		return 0;
-> +
-> +	for (;;) {
-> +		pte_t *pte;
-> +
-> +		spin_lock(&walk->mm->page_table_lock);
-> +		pte = hugepte_offset(*phpd, addr, pdshift);
-> +		err = ops->pte_entry(pte, addr, addr + page_size, walk);
-> +		spin_unlock(&walk->mm->page_table_lock);
-> +
-> +		if (err)
-> +			break;
-> +		if (addr >= end - page_size)
-> +			break;
-> +		addr += page_size;
-> +	}
-> +	return err;
-> +}
-> +#else
-> +static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
-> +			     unsigned long end, struct mm_walk *walk, int pdshift)
-> +{
-> +	return 0;
-> +}
-> +#endif
-> +
->   static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->   			  struct mm_walk *walk)
->   {
-> @@ -108,7 +147,10 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->   				goto again;
->   		}
->   
-> -		err = walk_pte_range(pmd, addr, next, walk);
-> +		if (is_hugepd(__hugepd(pmd_val(*pmd))))
-> +			err = walk_hugepd_range((hugepd_t *)pmd, addr, next, walk, PMD_SHIFT);
-> +		else
-> +			err = walk_pte_range(pmd, addr, next, walk);
->   		if (err)
->   			break;
->   	} while (pmd++, addr = next, addr != end);
-> @@ -157,7 +199,10 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->   		if (pud_none(*pud))
->   			goto again;
->   
-> -		err = walk_pmd_range(pud, addr, next, walk);
-> +		if (is_hugepd(__hugepd(pud_val(*pud))))
-> +			err = walk_hugepd_range((hugepd_t *)pud, addr, next, walk, PUD_SHIFT);
-> +		else
-> +			err = walk_pmd_range(pud, addr, next, walk);
->   		if (err)
->   			break;
->   	} while (pud++, addr = next, addr != end);
-> @@ -189,7 +234,9 @@ static int walk_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
->   			if (err)
->   				break;
->   		}
-> -		if (ops->pud_entry || ops->pmd_entry || ops->pte_entry)
-> +		if (is_hugepd(__hugepd(p4d_val(*p4d))))
-> +			err = walk_hugepd_range((hugepd_t *)p4d, addr, next, walk, P4D_SHIFT);
-> +		else if (ops->pud_entry || ops->pmd_entry || ops->pte_entry)
->   			err = walk_pud_range(p4d, addr, next, walk);
->   		if (err)
->   			break;
-> @@ -224,8 +271,9 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
->   			if (err)
->   				break;
->   		}
-> -		if (ops->p4d_entry || ops->pud_entry || ops->pmd_entry ||
-> -		    ops->pte_entry)
-> +		if (is_hugepd(__hugepd(pgd_val(*pgd))))
-> +			err = walk_hugepd_range((hugepd_t *)pgd, addr, next, walk, PGDIR_SHIFT);
-> +		else if (ops->p4d_entry || ops->pud_entry || ops->pmd_entry || ops->pte_entry)
->   			err = walk_p4d_range(pgd, addr, next, walk);
->   		if (err)
->   			break;
-> 
+Oh good, powerpc has 2 possible flags parsing functions. So in the
+above path, do we need to set PCI_BASE_ADDRESS_MEM_TYPE_64?
 
+Does pci_parse_of_flags() get called in your case?
+
+> > I noticed both sparc and powerpc set PCI_BASE_ADDRESS_MEM_TYPE_64 in
+> > the flags. AFAICT, that's not set anywhere outside of arch code. So
+> > never for riscv, arm and arm64 at least. That leads me to
+> > pci_std_update_resource() which is where the PCI code sets BARs and
+> > just copies the flags in PCI_BASE_ADDRESS_MEM_MASK ignoring
+> > IORESOURCE_* flags. So it seems like 64-bit is still not handled and
+> > neither is prefetch.
+> >
+>
+> I am not sure if you mean here:
+> a) it's ok to add IORESOURCE_MEM_64 here, because it does not affect
+> anything else, or
+> b) it should be using PCI_BASE_ADDRESS_MEM_TYPE_64
+> (or IORESOURCE_MEM_64 | PCI_BASE_ADDRESS_MEM_TYPE_64) instead, since
+> it's how it's added in powerpc/sparc, and else there is no point.
+
+I'm wondering if a) is incomplete and PCI_BASE_ADDRESS_MEM_TYPE_64
+also needs to be set. The question is ultimately are BARs getting set
+correctly for 64-bit? It looks to me like they aren't.
+
+Rob
