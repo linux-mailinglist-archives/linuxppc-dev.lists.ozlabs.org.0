@@ -1,55 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AEAF363E56
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 11:14:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 921A0363E80
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 11:30:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FP1Np2fyxz3d33
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 19:14:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FP1kT3Zy4z3c00
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 19:30:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=FgU4M1Vb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C/S6BOZz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canb.auug.org.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=FgU4M1Vb; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=C/S6BOZz; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FP1NN2QGHz2ydH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 19:14:26 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4FP1NL1sDFz9vDw;
- Mon, 19 Apr 2021 19:14:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1618823666;
- bh=U0cJZcwN5kd0CZDhnPI3sGatSBR5W6x83YHl7PmoKss=;
- h=Date:From:To:Cc:Subject:From;
- b=FgU4M1VbkYuuTSBRonfWtFS+tXhH0Kn5Skg9rSxe9eybR7oQcSW/EHjyO5C/hflwm
- wDGxqCKOwtVS8z9ORZqWnkQX6YIEiLp3iUeTU7JrNgoVHZwW2a+bPS9zzG9QyWlWOc
- ISw07N9Km1bhboUCjLc90MfZ7o5mcLMAqd8mP+pS6OJRHyQGHqzDVXk9/tmAM5Y9Gq
- lvGUD094wjxwEHJsd/H6kE/GtGfexZ6u6jX97d3KB9qT8W4DWNfeRLOPZdMSJwG47T
- I1VBnnHxA7c6qtfkaiE9AHP6FgF7etFWemJOXe5fpSB7QWmVWv0ajTvcNmCKg5B4rs
- J6gIwVeWuW74A==
-Date: Mon, 19 Apr 2021 19:14:25 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: build failure after merge of the powerpc tree
-Message-ID: <20210419191425.281dc58a@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FP1jy3P4Yz304j
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 19:29:41 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13J92ZuV036614; Mon, 19 Apr 2021 05:29:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ROS/7MQK0yVtjqoDHgCjwN0KFaEEfjIgY3Gmlg7e9ZM=;
+ b=C/S6BOZz9XLfLzbsJ2fYb95ph+uCnfNjUq0IuhXY9XhLG1A5JuhlJGprUwGnhcMjAIQs
+ 6zKwrEskMD4NlKiVR4dM3uRnmmMxOg/MfhUV8+cxXVEBg5jq/UMhnyGXtw87hFITzPl+
+ jtBeZ6QZ+V2bo2p0FbL6tkp+bc289Qx9TMYTwpUO3Ux1/y3L3Y2QfYUlgUzkhKUuoa0t
+ UGwnEUoHwkWFpHCo7RCnJopx4Mg9s58WP9Kg/4lMPIKA4Ac2XjxvxeUPSUc9HjNOVM+l
+ Nbhqufms8HeWbWIbSt8GKo/M+at/hnu01LtKoZuCkRVTMOjgZ+b2XDgbZtpeiiKDfv3S 0A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 380cny2pdw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Apr 2021 05:29:34 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13J92iKX038147;
+ Mon, 19 Apr 2021 05:29:33 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 380cny2pda-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Apr 2021 05:29:33 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13J9BZxT031861;
+ Mon, 19 Apr 2021 09:29:31 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06ams.nl.ibm.com with ESMTP id 37yt2rrx77-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Apr 2021 09:29:31 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 13J9T6wJ34079088
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 19 Apr 2021 09:29:06 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 597F5AE055;
+ Mon, 19 Apr 2021 09:29:29 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 134E7AE045;
+ Mon, 19 Apr 2021 09:29:27 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.77.192.155])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Apr 2021 09:29:26 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/pseries/mce: Fix a typo in error type assignment
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20210416125750.49550-1-ganeshgr@linux.ibm.com>
+ <87fszpdr5m.fsf@mpe.ellerman.id.au>
+From: Ganesh <ganeshgr@linux.ibm.com>
+Message-ID: <4c45d421-ea8c-6243-ee15-ebc85dc733a6@linux.ibm.com>
+Date: Mon, 19 Apr 2021 14:59:25 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/88=dafUnaphWXTJ0zHB+_3m";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+In-Reply-To: <87fszpdr5m.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: xYrMShdv6UmjafkOPLNilI1nbNJu4Vpp
+X-Proofpoint-ORIG-GUID: IBbSVCzikiUj35ivR8ms-IhpmQBXjDzJ
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-19_05:2021-04-16,
+ 2021-04-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 mlxlogscore=999 spamscore=0
+ impostorscore=0 clxscore=1015 bulkscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104190063
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,79 +110,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Xiongwei Song <sxwjean@gmail.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: mahesh@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/88=dafUnaphWXTJ0zHB+_3m
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 4/17/21 6:06 PM, Michael Ellerman wrote:
 
-Hi all,
+> Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
+>> The error type is ICACHE and DCACHE, for case MCE_ERROR_TYPE_ICACHE.
+> Do you mean "is ICACHE not DCACHE" ?
 
-After merging the powerpc tree, today's linux-next build (powerpc
-allyesconfig) failed like this:
+Right :), Should I send v2 ?
 
-arch/powerpc/kernel/fadump.c: In function 'crash_fadump': =20
-arch/powerpc/kernel/fadump.c:731:28: error: 'INTERRUPT_SYSTEM_RESET' undecl=
-ared (first use in this function)
-  731 |  if (TRAP(&(fdh->regs)) =3D=3D INTERRUPT_SYSTEM_RESET) {
-      |                            ^~~~~~~~~~~~~~~~~~~~~~
-arch/powerpc/kernel/fadump.c:731:28: note: each undeclared identifier is re=
-ported only once for each function it appears in
-
-Caused by commit
-
-  7153d4bf0b37 ("powerpc/traps: Enhance readability for trap types")
-
-I have applied the following patch for today.
-
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-Date: Mon, 19 Apr 2021 19:05:05 +1000
-Subject: [PATCH] fix up for "powerpc/traps: Enhance readability for trap ty=
-pes"
-
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
----
- arch/powerpc/kernel/fadump.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index b55b4c23f3b6..000e3b7f3fca 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -31,6 +31,7 @@
- #include <asm/fadump.h>
- #include <asm/fadump-internal.h>
- #include <asm/setup.h>
-+#include <asm/interrupt.h>
-=20
- /*
-  * The CPU who acquired the lock to trigger the fadump crash should
---=20
-2.30.2
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/88=dafUnaphWXTJ0zHB+_3m
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmB9SfEACgkQAVBC80lX
-0GxDOgf/U8+CxtKOnf6CZSpcm6aRJR+DOz+n6FD69G7bYDEcxlpLlmcH76mfHHPl
-mEUFsU8At5CA7Clz6UiIvITGgA9roVm9AGpk44/9+gY3fRPmGQ+lywO1KvH5pk/z
-LLFeXHzslP0hhzbWGi3xa8Gg160GrlDa9joBIf9mnLbhUsC+bh3US+cyjABG/HOx
-+C7aSur6D/GX5ugp2wKlcKdesb9UGQC9LPo/jhSOLWJtOeUNKG0G2EMz5jJ6bW98
-KgLVfPlihv9qlBvM+OzLaY2LPo6BWLZfnRUE+6EA9SU5ZVQEYt4lObT8JW2zDJKz
-QtP05uG1PmiAxer7AjBsB68GVpNowA==
-=MRFq
------END PGP SIGNATURE-----
-
---Sig_/88=dafUnaphWXTJ0zHB+_3m--
+>
+> cheers
+>
+>> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+>> ---
+>>   arch/powerpc/platforms/pseries/ras.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+>> index f8b390a9d9fb..9d4ef65da7f3 100644
+>> --- a/arch/powerpc/platforms/pseries/ras.c
+>> +++ b/arch/powerpc/platforms/pseries/ras.c
+>> @@ -699,7 +699,7 @@ static int mce_handle_err_virtmode(struct pt_regs *regs,
+>>   		mce_err.error_type = MCE_ERROR_TYPE_DCACHE;
+>>   		break;
+>>   	case MC_ERROR_TYPE_I_CACHE:
+>> -		mce_err.error_type = MCE_ERROR_TYPE_DCACHE;
+>> +		mce_err.error_type = MCE_ERROR_TYPE_ICACHE;
+>>   		break;
+>>   	case MC_ERROR_TYPE_UNKNOWN:
+>>   	default:
+>> -- 
+>> 2.26.2
