@@ -2,45 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A4F36458B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 16:01:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB963645AC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Apr 2021 16:08:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FP7l32Gljz3brw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 00:01:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FP7vG4tgmz30Lc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 00:08:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FP7kb2XR0z30Jw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 00:00:38 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 13JDvFjo030774;
- Mon, 19 Apr 2021 08:57:15 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 13JDvEBR030773;
- Mon, 19 Apr 2021 08:57:14 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Mon, 19 Apr 2021 08:57:14 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 2/2] powerpc: add ALTIVEC support to lib/ when PPC_FPU not
- set
-Message-ID: <20210419135714.GS26583@gate.crashing.org>
-References: <20210418201726.32130-1-rdunlap@infradead.org>
- <20210418201726.32130-2-rdunlap@infradead.org>
- <20210419133209.GR26583@gate.crashing.org>
- <4f5aea37-f638-3fde-0680-ec456ad91141@csgroup.eu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4f5aea37-f638-3fde-0680-ec456ad91141@csgroup.eu>
-User-Agent: Mutt/1.4.2.3i
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FP7tx4896z2xZ7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 00:07:51 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1290C31B;
+ Mon, 19 Apr 2021 07:07:50 -0700 (PDT)
+Received: from [192.168.1.179] (unknown [172.31.20.19])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8CA2C3F7D7;
+ Mon, 19 Apr 2021 07:07:48 -0700 (PDT)
+Subject: Re: [PATCH v2 1/4] mm: pagewalk: Fix walk for hugepage tables
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ akpm@linux-foundation.org, dja@axtens.net
+References: <cover.1618828806.git.christophe.leroy@csgroup.eu>
+ <db6981c69f96a8c9c6dcf688b7f485e15993ddef.1618828806.git.christophe.leroy@csgroup.eu>
+From: Steven Price <steven.price@arm.com>
+Message-ID: <1fdb0abe-b4b5-937c-0d9b-859a5cbb5726@arm.com>
+Date: Mon, 19 Apr 2021 15:07:47 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
+MIME-Version: 1.0
+In-Reply-To: <db6981c69f96a8c9c6dcf688b7f485e15993ddef.1618828806.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,32 +50,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Oliver O'Halloran <oohall@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 19, 2021 at 03:38:02PM +0200, Christophe Leroy wrote:
-> Le 19/04/2021 à 15:32, Segher Boessenkool a écrit :
-> >On Sun, Apr 18, 2021 at 01:17:26PM -0700, Randy Dunlap wrote:
-> >>Add ldstfp.o to the Makefile for CONFIG_ALTIVEC and add
-> >>externs for get_vr() and put_vr() in lib/sstep.c to fix the
-> >>build errors.
-> >
-> >>  obj-$(CONFIG_PPC_FPU)	+= ldstfp.o
-> >>+obj-$(CONFIG_ALTIVEC)	+= ldstfp.o
-> >
-> >It is probably a good idea to split ldstfp.S into two, one for each of
-> >the two configuration options?
-> >
+On 19/04/2021 11:47, Christophe Leroy wrote:
+> Pagewalk ignores hugepd entries and walk down the tables
+> as if it was traditionnal entries, leading to crazy result.
 > 
-> Or we can build it all the time and #ifdef the FPU part.
+> Add walk_hugepd_range() and use it to walk hugepage tables.
 > 
-> Because it contains FPU, ALTIVEC and VSX stuff.
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-So it becomes an empty object file if none of the options are selected?
-Good idea :-)
+Looks correct to me, sadly I don't have a suitable system to test it.
 
+Reviewed-by: Steven Price <steven.price@arm.com>
 
-Segher
+> ---
+> v2:
+> - Add a guard for NULL ops->pte_entry
+> - Take mm->page_table_lock when walking hugepage table, as suggested by follow_huge_pd()
+> ---
+>   mm/pagewalk.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++-----
+>   1 file changed, 53 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> index e81640d9f177..9b3db11a4d1d 100644
+> --- a/mm/pagewalk.c
+> +++ b/mm/pagewalk.c
+> @@ -58,6 +58,45 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+>   	return err;
+>   }
+>   
+> +#ifdef CONFIG_ARCH_HAS_HUGEPD
+> +static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
+> +			     unsigned long end, struct mm_walk *walk, int pdshift)
+> +{
+> +	int err = 0;
+> +	const struct mm_walk_ops *ops = walk->ops;
+> +	int shift = hugepd_shift(*phpd);
+> +	int page_size = 1 << shift;
+> +
+> +	if (!ops->pte_entry)
+> +		return 0;
+> +
+> +	if (addr & (page_size - 1))
+> +		return 0;
+> +
+> +	for (;;) {
+> +		pte_t *pte;
+> +
+> +		spin_lock(&walk->mm->page_table_lock);
+> +		pte = hugepte_offset(*phpd, addr, pdshift);
+> +		err = ops->pte_entry(pte, addr, addr + page_size, walk);
+> +		spin_unlock(&walk->mm->page_table_lock);
+> +
+> +		if (err)
+> +			break;
+> +		if (addr >= end - page_size)
+> +			break;
+> +		addr += page_size;
+> +	}
+> +	return err;
+> +}
+> +#else
+> +static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
+> +			     unsigned long end, struct mm_walk *walk, int pdshift)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+>   static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>   			  struct mm_walk *walk)
+>   {
+> @@ -108,7 +147,10 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>   				goto again;
+>   		}
+>   
+> -		err = walk_pte_range(pmd, addr, next, walk);
+> +		if (is_hugepd(__hugepd(pmd_val(*pmd))))
+> +			err = walk_hugepd_range((hugepd_t *)pmd, addr, next, walk, PMD_SHIFT);
+> +		else
+> +			err = walk_pte_range(pmd, addr, next, walk);
+>   		if (err)
+>   			break;
+>   	} while (pmd++, addr = next, addr != end);
+> @@ -157,7 +199,10 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+>   		if (pud_none(*pud))
+>   			goto again;
+>   
+> -		err = walk_pmd_range(pud, addr, next, walk);
+> +		if (is_hugepd(__hugepd(pud_val(*pud))))
+> +			err = walk_hugepd_range((hugepd_t *)pud, addr, next, walk, PUD_SHIFT);
+> +		else
+> +			err = walk_pmd_range(pud, addr, next, walk);
+>   		if (err)
+>   			break;
+>   	} while (pud++, addr = next, addr != end);
+> @@ -189,7 +234,9 @@ static int walk_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
+>   			if (err)
+>   				break;
+>   		}
+> -		if (ops->pud_entry || ops->pmd_entry || ops->pte_entry)
+> +		if (is_hugepd(__hugepd(p4d_val(*p4d))))
+> +			err = walk_hugepd_range((hugepd_t *)p4d, addr, next, walk, P4D_SHIFT);
+> +		else if (ops->pud_entry || ops->pmd_entry || ops->pte_entry)
+>   			err = walk_pud_range(p4d, addr, next, walk);
+>   		if (err)
+>   			break;
+> @@ -224,8 +271,9 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
+>   			if (err)
+>   				break;
+>   		}
+> -		if (ops->p4d_entry || ops->pud_entry || ops->pmd_entry ||
+> -		    ops->pte_entry)
+> +		if (is_hugepd(__hugepd(pgd_val(*pgd))))
+> +			err = walk_hugepd_range((hugepd_t *)pgd, addr, next, walk, PGDIR_SHIFT);
+> +		else if (ops->p4d_entry || ops->pud_entry || ops->pmd_entry || ops->pte_entry)
+>   			err = walk_p4d_range(pgd, addr, next, walk);
+>   		if (err)
+>   			break;
+> 
+
