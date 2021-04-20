@@ -2,71 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1668364F92
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 02:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 520B0364F8B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 02:36:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPPyr5FvJz302D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 10:42:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPPqd6tYFz30Gj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 10:35:57 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=nGKjCKGk;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=atmark-techno.com (client-ip=13.115.124.170;
- helo=gw.atmark-techno.com; envelope-from=dominique.martinet@atmark-techno.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::835;
+ helo=mail-qt1-x835.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
-Received: from gw.atmark-techno.com (gw.atmark-techno.com [13.115.124.170])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FPNfn5gs5z2xZt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 09:43:11 +1000 (AEST)
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198])
- by gw.atmark-techno.com (Postfix) with ESMTPS id BC2CB804CA
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 08:43:09 +0900 (JST)
-Received: by mail-oi1-f198.google.com with SMTP id
- s9-20020acadb090000b0290101bacefaa4so12259265oig.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 16:43:09 -0700 (PDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=nGKjCKGk; dkim-atps=neutral
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com
+ [IPv6:2607:f8b0:4864:20::835])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPPqC2SWvz2xgK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 10:35:32 +1000 (AEST)
+Received: by mail-qt1-x835.google.com with SMTP id f12so27577618qtf.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 17:35:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :organization:user-agent:mime-version:content-transfer-encoding;
+ bh=pEYRyKVxUjCxsNQMksqG31lLFUmgL2MrXrf40tljCg4=;
+ b=nGKjCKGkH1i15sEaijoImhaKj8wjyiOB5eGaqdzOJrfsAhjZZ3ChAxhYXlt+6b55fp
+ yKYLwdWXIeaY75bmJPJqeqhj8Us+Q0+CwJCAihgCJKztck/ofYwGnDa6+NYt14Yn7BAi
+ nvxnGgEfGVLth+2boPNIYGqitfIuomiMt1bMUB1eQbfFGhQB+eUPb0oM/G4HGpXW1Abu
+ HrBCM9CErcTG3nTbrD6JXH5AqLNuAYXCZq37x2o4+O8C7ZjWW8pfY5EXSrkF94VbwTuW
+ RleKkrgwUrY4kwhas3BcWvYa/xG1GmulkOzRXg0nWqceRAcR82ebG3fJhNr7mO0toMK1
+ JKNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=YfTDNxUjME1kzwn4ONpBlmaWp5uEs0PGjlewRbiJ8O0=;
- b=NpLdI0/B3EJg0dK0LMy5hUyT+HlDRboSqM6F0ZKUHp9sLTE6QpiqZ7toe5QKJNy+6q
- DwbZLB/Tk3guTkTizqN/lBpBo8pYT5u5+xxGUrkrP0LWqwMJKt6IXZp8G6yzAOl2POoh
- vV5HBmnNEbQ4Nm+j4Yo/y5ZI/9s6KOwxwevTmt+vH+eA9raauJDdO/9nH98U41xbvyMX
- R0Vy2rVSnh4RSGDbXsd/THH0yt/J7TLUxUCkSxOIURQcRmyUYiahCB6Bat3z7o7W4CuU
- kFZ2wlFGq35m+J/CnD38Rk2Bvg94z+gY9J+ImL6nutHH0OUwD3BUuKzRvsxho00yaTli
- 8mKA==
-X-Gm-Message-State: AOAM531gjUbc03GjGINppqo/NDUQO4lhfW2Z2Q5aIJIZAO9SreifCEKA
- bOxvGuWlNEhI9vvFIpRjtMZ2CI9qHT1FAP6PiKFcJEL4OQ8RRJkZY9NvxiR9WaTabLWcpeYBiH/
- D2S3iG36UPWX78PW3BTr8lFsS7kzh8A==
-X-Received: by 2002:a17:90a:1c1:: with SMTP id 1mr1708187pjd.190.1618875776933; 
- Mon, 19 Apr 2021 16:42:56 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzRGNIqy2AO5m9iOwuC4N09BxordE8LmUXYTIIeyniOtbCQKfA0MKaQl391n1ZLV3YIJOra8w==
-X-Received: by 2002:a17:90a:1c1:: with SMTP id 1mr1708139pjd.190.1618875776711; 
- Mon, 19 Apr 2021 16:42:56 -0700 (PDT)
-Received: from pc-0115 (76.125.194.35.bc.googleusercontent.com.
- [35.194.125.76])
- by smtp.gmail.com with ESMTPSA id r3sm8384971pgn.82.2021.04.19.16.42.55
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 19 Apr 2021 16:42:55 -0700 (PDT)
-Received: from martinet by pc-0115 with local (Exim 4.94)
- (envelope-from <martinet@pc-0115>)
- id 1lYdXa-002mPj-58; Tue, 20 Apr 2021 08:42:54 +0900
-Date: Tue, 20 Apr 2021 08:42:44 +0900
-From: Dominique MARTINET <dominique.martinet@atmark-techno.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [RFC v1 PATCH 3/3] driver: update all the code that use
- soc_device_match
-Message-ID: <YH4VdPNO9cdzc5MD@atmark-techno.com>
-References: <20210419042722.27554-1-alice.guo@oss.nxp.com>
- <20210419042722.27554-4-alice.guo@oss.nxp.com>
- <YH0O907dfGY9jQRZ@atmark-techno.com>
- <CAMuHMdVY1SLZ0K30T2pimyrR6Mm=VoSTO=L-xxCy2Bj7_kostw@mail.gmail.com>
- <YH1OeFy+SepIYYG0@atmark-techno.com>
- <CAK8P3a1Mu2F0irDDCL-50HiHth29iYFL5b7WHZ=UX6W7zzoxAg@mail.gmail.com>
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:organization:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=pEYRyKVxUjCxsNQMksqG31lLFUmgL2MrXrf40tljCg4=;
+ b=KIgxQSLJ/fuq5qqNfP/xNcbSPLQJ81zdy1ISGFQbBEBInSw8PkCDX8Xde3HCC/NmpB
+ NxjGI4TpoVowaNGGSVqd7iiQTEXjJQWTRfx4B4fUhZhbSqKk/DhiTdKRcWFHygMHgRWw
+ 24Kk2GfsBL+vpcC8Tpl6XECxz9cJR8Q/LnqwulOY3D6yLr1xzP/bXRDMT1ZyPF4SJhpo
+ iBXThpgryLUliNDvbLDnvgg480WAM67/gxWzo9IkAW0jmxbaCmCGDoGlTnu6hpiagucU
+ fOz32ikV24dFOOYlEculH+nspJslmvmPBnk+TmSA2aqcjH/aUugO1wb2ieAdr0UdJUZZ
+ 9aZA==
+X-Gm-Message-State: AOAM531x29XAyPsp6bXMq8nSSOS+mwNl7aEaNN29rukajo0jwDIqmVzD
+ RRjubxE1vqdt/56/3Z3dZSk=
+X-Google-Smtp-Source: ABdhPJxsZEYxx8OIGG9YIGcVVmVZRAeygEPIj5D+OTRiDUAKNgAm/jDK5Qo7LSQj5tMoj8ccxnnDvg==
+X-Received: by 2002:ac8:5559:: with SMTP id o25mr2748109qtr.36.1618878928589; 
+ Mon, 19 Apr 2021 17:35:28 -0700 (PDT)
+Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
+ ([177.35.200.187])
+ by smtp.gmail.com with ESMTPSA id h79sm8706785qke.129.2021.04.19.17.35.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 Apr 2021 17:35:28 -0700 (PDT)
+Message-ID: <b875ef1778e17a87ee1f4b71d26f2782831b1d07.camel@gmail.com>
+Subject: Re: [PATCH 1/1] of/pci: Add IORESOURCE_MEM_64 to resource flags for
+ 64-bit memory addresses
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Rob Herring <robh+dt@kernel.org>
+Date: Mon, 19 Apr 2021 21:35:24 -0300
+In-Reply-To: <CAL_Jsq+m6CkGj_NYGvwxoKwoQ4PkEu6hfGdMTT3i4APoHSkNeg@mail.gmail.com>
+References: <20210415180050.373791-1-leobras.c@gmail.com>
+ <CAL_Jsq+WwAeziGN4EfPAWfA0fieAjfcxfi29=StOx0GeKjAe_g@mail.gmail.com>
+ <7b089cd48b90f2445c7cb80da1ce8638607c46fc.camel@gmail.com>
+ <CAL_Jsq+m6CkGj_NYGvwxoKwoQ4PkEu6hfGdMTT3i4APoHSkNeg@mail.gmail.com>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a1Mu2F0irDDCL-50HiHth29iYFL5b7WHZ=UX6W7zzoxAg@mail.gmail.com>
-X-Mailman-Approved-At: Tue, 20 Apr 2021 10:41:52 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,94 +87,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, aymen.sghaier@nxp.com,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Rafael Wysocki <rafael@kernel.org>, David Airlie <airlied@linux.ie>,
- Michael Turquette <mturquette@baylibre.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Andrzej Hajda <a.hajda@samsung.com>, Networking <netdev@vger.kernel.org>,
- linux-phy@lists.infradead.org, peter.ujfalusi@gmail.com,
- linux-clk <linux-clk@vger.kernel.org>,
- Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
- Wim Van Sebroeck <wim@linux-watchdog.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
- Kevin Hilman <khilman@baylibre.com>, Joerg Roedel <joro@8bytes.org>,
- Neil Armstrong <narmstrong@baylibre.com>, linux-staging@lists.linux.dev,
- "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Kishon <kishon@ti.com>, Tony Lindgren <tony@atomide.com>,
- linux-omap <linux-omap@vger.kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Jakub Kicinski <kuba@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>, Guenter Roeck <linux@roeck-us.net>,
- Linux Media Mailing List <linux-media@vger.kernel.org>,
- LINUXWATCHDOG <linux-watchdog@vger.kernel.org>, Will Deacon <will@kernel.org>,
- Linux PM list <linux-pm@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Eduardo Valentin <edubezval@gmail.com>,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- "moderated list:ARM/Mediatek SoC..." <linux-mediatek@lists.infradead.org>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- "open list:ARM/Amlogic Meson SoC support" <linux-amlogic@lists.infradead.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- "Alice Guo \(OSS\)" <alice.guo@oss.nxp.com>, Felipe Balbi <balbi@kernel.org>,
- tomba@kernel.org, Stephen Boyd <sboyd@kernel.org>,
- gregkh <gregkh@linuxfoundation.org>, Alan Stern <stern@rowland.harvard.edu>,
- USB list <linux-usb@vger.kernel.org>, linux-mmc <linux-mmc@vger.kernel.org>,
- Adrian Hunter <adrian.hunter@intel.com>, Robert Foss <robert.foss@linaro.org>,
- Leo Li <leoyang.li@nxp.com>, Tony Prisk <linux@prisktech.co.nz>,
- Vinod Koul <vkoul@kernel.org>,
- "open list:HARDWARE RANDOM NUMBER GENERATOR CORE"
- <linux-crypto@vger.kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Keerthy <j-keerthy@ti.com>, dmaengine@vger.kernel.org,
- Roy Pledge <Roy.Pledge@nxp.com>, jyri.sarha@iki.fi,
- David Miller <davem@davemloft.net>
+Cc: devicetree@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Frank Rowand <frowand.list@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ PCI <linux-pci@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Arnd Bergmann wrote on Mon, Apr 19, 2021 at 02:16:36PM +0200:
-> In some cases, you can use the device_link infrastructure to deal
-> with dependencies between devices. Not sure if this would help
-> in your case, but have a look at device_link_add() etc in drivers/base/core.c
-
-I'll need to actually try to convince myself but if creating the link
-forces driver registration then it should be workable.
-
-> > In this particular case the problem is that since 7d981405d0fd ("soc:
-> > imx8m: change to use platform driver") the soc probe tries to use the
-> > nvmem driver for ocotp fuses for imx8m devices, which isn't ready yet.
-> > So soc loading gets pushed back to the end of the list because it gets
-> > defered and other drivers relying on soc_device_match get confused
-> > because they wrongly think a device doesn't match a quirk when it
-> > actually does.
-> >
-> > If there is a way to ensure the nvmem driver gets loaded before the soc,
-> > that would also solve the problem nicely, and avoid the need to mess
-> > with all the ~50 drivers which use it.
-> >
-> > Is there a way to control in what order drivers get loaded? Something in
-> > the dtb perhaps?
+On Mon, 2021-04-19 at 10:44 -0500, Rob Herring wrote:
+> On Fri, Apr 16, 2021 at 3:58 PM Leonardo Bras <leobras.c@gmail.com> wrote:
+> > 
+> > Hello Rob, thanks for this feedback!
+> > 
+> > On Thu, 2021-04-15 at 13:59 -0500, Rob Herring wrote:
+> > > +PPC and PCI lists
+> > > 
+> > > On Thu, Apr 15, 2021 at 1:01 PM Leonardo Bras <leobras.c@gmail.com> wrote:
+> > > > 
+> > > > Many other resource flag parsers already add this flag when the input
+> > > > has bits 24 & 25 set, so update this one to do the same.
+> > > 
+> > > Many others? Looks like sparc and powerpc to me.
+> > > 
+> > 
+> > s390 also does that, but it look like it comes from a device-tree.
 > 
-> For built-in drivers, load order depends on the initcall level and
-> link order (how things are lined listed in the Makefile hierarchy).
+> I'm only looking at DT based platforms, and s390 doesn't use DT.
+
+Correct. 
+Sorry, I somehow write above the opposite of what I was thinking.
+
 > 
-> For loadable modules, this is up to user space in the end.
+> > > Those would be the
+> > > ones I worry about breaking. Sparc doesn't use of/address.c so it's
+> > > fine. Powerpc version of the flags code was only fixed in 2019, so I
+> > > don't think powerpc will care either.
+> > 
+> > In powerpc I reach this function with this stack, while configuring a
+> > virtio-net device for a qemu/KVM pseries guest:
+> > 
+> > pci_process_bridge_OF_ranges+0xac/0x2d4
+> > pSeries_discover_phbs+0xc4/0x158
+> > discover_phbs+0x40/0x60
+> > do_one_initcall+0x60/0x2d0
+> > kernel_init_freeable+0x308/0x3a8
+> > kernel_init+0x2c/0x168
+> > ret_from_kernel_thread+0x5c/0x70
+> > 
+> > For this, both MMIO32 and MMIO64 resources will have flags 0x200.
 > 
-> Which of the drivers in this scenario are loadable modules?
+> Oh good, powerpc has 2 possible flags parsing functions. So in the
+> above path, do we need to set PCI_BASE_ADDRESS_MEM_TYPE_64?
+> 
+> Does pci_parse_of_flags() get called in your case?
+> 
 
-All the drivers involved in my case are built-in (nvmem, soc and final
-soc_device_match consumer e.g. caam_jr that crashes the kernel if soc is
-not identified properly).
+It's called in some cases, but not for the device I am debugging
+(virtio-net pci@800000020000000). 
 
-I frankly don't like the idea of moving nvmem/ above soc/ in
-drivers/Makefile as a "solution" to this (especially as there is one
-that seems to care about what soc they run on...), so I'll have a look
-at links first, hopefully that will work out.
+For the above device, here is an expanded stack trace:
 
+of_bus_pci_get_flags() (from parser->bus->get_flags()) 
+of_pci_range_parser_one() (from macro for_each_of_pci_range)
+pci_process_bridge_OF_ranges+0xac/0x2d4
+pSeries_discover_phbs+0xc4/0x158
+discover_phbs+0x40/0x60
+do_one_initcall+0x60/0x2d0
+kernel_init_freeable+0x308/0x3a8
+kernel_init+0x2c/0x168
+ret_from_kernel_thread+0x5c/0x70
 
-Thanks,
--- 
-Dominique
+For other devices, I could also see the following stack trace:
+## device ethernet@8
+
+pci_parse_of_flags()
+of_create_pci_dev+0x7f0/0xa40
+__of_scan_bus+0x248/0x320
+pcibios_scan_phb+0x370/0x3b0
+pcibios_init+0x8c/0x12c
+do_one_initcall+0x60/0x2d0
+kernel_init_freeable+0x308/0x3a8
+kernel_init+0x2c/0x168
+ret_from_kernel_thread+0x5c/0x70
+
+Devices that get parsed with of_bus_pci_get_flags() appears first at
+dmesg (around 0.015s in my test), while devices that get parsed by
+pci_parse_of_flags() appears later (0.025s in my test).
+
+I am not really used to this code, but having the term "discover phbs"
+in the first trace and the term "scan phb" in the second, makes me
+wonder if the first trace is seen on devices that are seen/described in
+the device-tree and the second trace is seen in devices not present in
+the device-tree and found scanning pci bus.
+
+> > > I noticed both sparc and powerpc set PCI_BASE_ADDRESS_MEM_TYPE_64 in
+> > > the flags. AFAICT, that's not set anywhere outside of arch code. So
+> > > never for riscv, arm and arm64 at least. That leads me to
+> > > pci_std_update_resource() which is where the PCI code sets BARs and
+> > > just copies the flags in PCI_BASE_ADDRESS_MEM_MASK ignoring
+> > > IORESOURCE_* flags. So it seems like 64-bit is still not handled and
+> > > neither is prefetch.
+> > > 
+> > 
+> > I am not sure if you mean here:
+> > a) it's ok to add IORESOURCE_MEM_64 here, because it does not affect
+> > anything else, or
+> > b) it should be using PCI_BASE_ADDRESS_MEM_TYPE_64
+> > (or IORESOURCE_MEM_64 | PCI_BASE_ADDRESS_MEM_TYPE_64) instead, since
+> > it's how it's added in powerpc/sparc, and else there is no point.
+> 
+> I'm wondering if a) is incomplete and PCI_BASE_ADDRESS_MEM_TYPE_64
+> also needs to be set. The question is ultimately are BARs getting set
+> correctly for 64-bit? It looks to me like they aren't.
+
+I am not used to these terms, does BAR means 'Base Address Register'?
+
+If so, those are the addresses stored in pci->phb->mem_resources[i] and
+pci->phb->mem_offset[i], printed from enable_ddw() (which takes place a
+lot after discovering the device (0.17s in my run)).
+
+resource #1 pci@800000020000000: start=0x200080000000
+end=0x2000ffffffff flags=0x200 desc=0x0 offset=0x200000000000
+resource #2 pci@800000020000000: start=0x210000000000
+end=0x21ffffffffff flags=0x200 desc=0x0 offset=0x0
+
+The message above was printed without this patch.
+With the patch, the flags for memory resource #2 gets ORed with 
+0x00100000.
+
+Is it enough to know if BARs are correctly set for 64-bit?
+If it's not, how can I check?
+
+> 
+> Rob
+
+Thanks Rob!
+
+Leonardo Brás
+
