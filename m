@@ -2,94 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038723661B7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 23:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6FF366222
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 00:19:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPxxY74jTz30Dr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 07:42:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPylF6NHvz302m
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 08:19:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XuNGN8gT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=mzrAyP3z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ljp@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=205.220.177.32;
+ helo=mx0b-00069f02.pphosted.com; envelope-from=dan.carpenter@oracle.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=XuNGN8gT; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=mzrAyP3z; 
+ dkim-atps=neutral
+X-Greylist: delayed 210 seconds by postgrey-1.36 at boromir;
+ Tue, 20 Apr 2021 21:27:06 AEST
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com
+ [205.220.177.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPxx62X6cz2y8N
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 07:42:33 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13KLYIUk190410; Tue, 20 Apr 2021 17:42:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=zoeQ6vkUw400/4294RH+pt+SzJY+sKC0woi28HS+zsY=;
- b=XuNGN8gTfvauoLudl0JDCJzffdkChgPMpvEHdz7GQ6nzU9+ZTOgvmZ1v4wi0QqdFlKFd
- ARExKQ6gEu3UzULE3ih87NeDK08TG+XClFPyc2a0qvsHuxXOORVmiyOTQdhFUm1UxLmg
- p36Idjrgr5dKlQ8jpOYUG/3iN5CCYE2tuCCPfUMQETsB7RVq9AHRMnszWj5AkQMKodF/
- qnwqpRym1U4pAYb5sOMMx0vWOUFJF1QJjBXUjZYWpFvHsGOb8UJZRYHmuuf1D7Bv90z7
- gM1K9+DDjc2NngWZe694mxroEd1mi0XnZMeCOOIuviejp2u7FinrHK+EVjiEM4DsO8yn ww== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3824atv4qu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Apr 2021 17:42:27 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13KLX1Cr002698;
- Tue, 20 Apr 2021 21:42:26 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01wdc.us.ibm.com with ESMTP id 37yqa8wbe3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Apr 2021 21:42:26 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13KLgPK719202520
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Apr 2021 21:42:25 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DC09E124058;
- Tue, 20 Apr 2021 21:42:25 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6205C124054;
- Tue, 20 Apr 2021 21:42:25 +0000 (GMT)
-Received: from [9.80.196.76] (unknown [9.80.196.76])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTPS;
- Tue, 20 Apr 2021 21:42:25 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: Re: [PATCH V2 net] ibmvnic: Continue with reset if set link down
- failed
-From: Lijun Pan <ljp@linux.vnet.ibm.com>
-In-Reply-To: <20210420213517.24171-1-drt@linux.ibm.com>
-Date: Tue, 20 Apr 2021 16:42:24 -0500
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <60C99F56-617D-455B-9ACF-8CE1EED64D92@linux.vnet.ibm.com>
-References: <20210420213517.24171-1-drt@linux.ibm.com>
-To: Dany Madden <drt@linux.ibm.com>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: qtBITTJRaRjxuCurwKIuGWi6KPggGyxn
-X-Proofpoint-ORIG-GUID: qtBITTJRaRjxuCurwKIuGWi6KPggGyxn
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-20_11:2021-04-20,
- 2021-04-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- suspectscore=0 impostorscore=0 spamscore=0 phishscore=0 bulkscore=0
- priorityscore=1501 clxscore=1011 mlxlogscore=999 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104200150
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPhGy4DTGz2xdP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 21:27:06 +1000 (AEST)
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13KBMmuM012376; Tue, 20 Apr 2021 11:22:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=R7JGUmF3J71wLA6dPwUce8FwqmxU6JTnhs1XaoTWtpc=;
+ b=mzrAyP3z3vTbOYF05fKTtm1FSfsRhaXIMtNI32junvaq2xixqdu4DFtiOEnKHMCjmDAu
+ pzOmg6bFqIFulJfFAK3gAc4G1ubri2zL7y+ukl2ZTNZd4enmkHEeJ6kOxa09vXbI9Cau
+ pxckDe5aQNXRp1SihBx1WvxHHU5bOAl0qwzbdRlKb6bAcGZRRvbBEvMsbe3h/AM/l6mO
+ 6K0B0emzos5cXJDAWeD+zogdWeN4yukpTfk465biG7Agf/JhaT7Tq2FLJjNIss62qUS9
+ j74qQsLbz2k9Dn5eRznUZ+6NPhFOVGc2XKyCruqh+CG4TG6qi4y3ofFXm87t+4F6DYgG CQ== 
+Received: from oracle.com (aserp3020.oracle.com [141.146.126.70])
+ by mx0b-00069f02.pphosted.com with ESMTP id 381bjn86tg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Apr 2021 11:22:48 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+ by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 13KBKXsp006877;
+ Tue, 20 Apr 2021 11:22:47 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by aserp3020.oracle.com with ESMTP id 3809k06m19-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Apr 2021 11:22:47 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 13KBKAbB005467;
+ Tue, 20 Apr 2021 11:22:46 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+ by aserp3020.oracle.com with ESMTP id 3809k06m07-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Apr 2021 11:22:46 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+ by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13KBMEHV030572;
+ Tue, 20 Apr 2021 11:22:18 GMT
+Received: from kadam (/102.36.221.92) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Tue, 20 Apr 2021 04:22:13 -0700
+Date: Tue, 20 Apr 2021 14:21:52 +0300
+From: Dan Carpenter <dan.carpenter@oracle.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [RFC v1 PATCH 1/3] drivers: soc: add support for
+ soc_device_match returning -EPROBE_DEFER
+Message-ID: <20210420112151.GE1981@kadam>
+References: <20210419042722.27554-1-alice.guo@oss.nxp.com>
+ <20210419042722.27554-2-alice.guo@oss.nxp.com>
+ <CAMuHMdUbrPxtJ9DCP0_nFrReuuO4vFY2J79LrKY82D7bCOfzRw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUbrPxtJ9DCP0_nFrReuuO4vFY2J79LrKY82D7bCOfzRw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-GUID: e0r_GcH24oUhB4PQiI_vI2-dauff_ZRM
+X-Proofpoint-ORIG-GUID: e0r_GcH24oUhB4PQiI_vI2-dauff_ZRM
+X-Mailman-Approved-At: Wed, 21 Apr 2021 08:18:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,74 +92,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, Tom Falcon <tlfalcon@linux.ibm.com>,
- paulus@samba.org, Jakub Kicinski <kuba@kernel.org>,
- Sukadev Bhattiprolu <sukadev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- David Miller <davem@davemloft.net>
+Cc: ulf.hansson@linaro.org, aymen.sghaier@nxp.com, geert+renesas@glider.be,
+ rafael@kernel.org, airlied@linux.ie, mturquette@baylibre.com,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ a.hajda@samsung.com, netdev@vger.kernel.org, linux-phy@lists.infradead.org,
+ peter.ujfalusi@gmail.com, linux-clk@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, wim@linux-watchdog.org,
+ herbert@gondor.apana.org.au, horia.geanta@nxp.com, khilman@baylibre.com,
+ joro@8bytes.org, narmstrong@baylibre.com, linux-staging@lists.linux.dev,
+ iommu@lists.linux-foundation.org, kishon@ti.com, tony@atomide.com,
+ linux-omap@vger.kernel.org, stern@rowland.harvard.edu, kuba@kernel.org,
+ linus.walleij@linaro.org, linux@roeck-us.net, linux-media@vger.kernel.org,
+ linux-watchdog@vger.kernel.org, will@kernel.org, linux-pm@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, edubezval@gmail.com, linux-gpio@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, ssantosh@kernel.org,
+ matthias.bgg@gmail.com, linux-amlogic@lists.infradead.org, mchehab@kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ "Alice Guo \(OSS\)" <alice.guo@oss.nxp.com>, balbi@kernel.org,
+ tomba@kernel.org, sboyd@kernel.org, gregkh@linuxfoundation.org,
+ linux-usb@vger.kernel.org, linux-mmc@vger.kernel.org, adrian.hunter@intel.com,
+ robert.foss@linaro.org, leoyang.li@nxp.com, linux@prisktech.co.nz,
+ vkoul@kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-crypto@vger.kernel.org,
+ daniel@ffwll.ch, j-keerthy@ti.com, dmaengine@vger.kernel.org,
+ Roy.Pledge@nxp.com, jyri.sarha@iki.fi, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Apr 19, 2021 at 10:20:13AM +0200, Geert Uytterhoeven wrote:
+> Hi Alice,
+> 
+> CC Arnd (soc_device_match() author)
+> 
+> On Mon, Apr 19, 2021 at 6:28 AM Alice Guo (OSS) <alice.guo@oss.nxp.com> wrote:
+> > From: Alice Guo <alice.guo@nxp.com>
+> >
+> > In i.MX8M boards, the registration of SoC device is later than caam
+> > driver which needs it. Caam driver needs soc_device_match to provide
+> > -EPROBE_DEFER when no SoC device is registered and no
+> > early_soc_dev_attr.
+> 
+> I'm wondering if this is really a good idea: soc_device_match() is a
+> last-resort low-level check, and IMHO should be made available early on,
+> so there is no need for -EPROBE_DEFER.
+> 
+> >
+> > Signed-off-by: Alice Guo <alice.guo@nxp.com>
+> 
+> Thanks for your patch!
+> 
+> > --- a/drivers/base/soc.c
+> > +++ b/drivers/base/soc.c
+> > @@ -110,6 +110,7 @@ static void soc_release(struct device *dev)
+> >  }
+> >
+> >  static struct soc_device_attribute *early_soc_dev_attr;
+> > +static bool soc_dev_attr_init_done = false;
+> 
+> Do you need this variable?
+> 
+> >
+> >  struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr)
+> >  {
+> > @@ -157,6 +158,7 @@ struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr
+> >                 return ERR_PTR(ret);
+> >         }
+> >
+> > +       soc_dev_attr_init_done = true;
+> >         return soc_dev;
+> >
+> >  out3:
+> > @@ -246,6 +248,9 @@ const struct soc_device_attribute *soc_device_match(
+> >         if (!matches)
+> >                 return NULL;
+> >
+> > +       if (!soc_dev_attr_init_done && !early_soc_dev_attr)
+> 
+> if (!soc_bus_type.p && !early_soc_dev_attr)
 
+There is one place checking this already.  We could wrap it in a helper
+function:
 
-> On Apr 20, 2021, at 4:35 PM, Dany Madden <drt@linux.ibm.com> wrote:
->=20
-> When ibmvnic gets a FATAL error message from the vnicserver, it marks
-> the Command Respond Queue (CRQ) inactive and resets the adapter. If =
-this
-> FATAL reset fails and a transmission timeout reset follows, the CRQ is
-> still inactive, ibmvnic's attempt to set link down will also fail. If
-> ibmvnic abandons the reset because of this failed set link down and =
-this
-> is the last reset in the workqueue, then this adapter will be left in =
-an
-> inoperable state.
->=20
-> Instead, make the driver ignore this link down failure and continue to
-> free and re-register CRQ so that the adapter has an opportunity to
-> recover.
+static bool device_init_done(void)
+{
+	return soc_bus_type.p ? true : false;
+}
 
-This v2 does not adddress the concerns mentioned in v1.
-And I think it is better to exit with error from do_reset, and schedule =
-a thorough
-do_hard_reset if the the adapter is already in unstable state.
-
->=20
-> Fixes: ed651a10875f ("ibmvnic: Updated reset handling")
-> Signed-off-by: Dany Madden <drt@linux.ibm.com>
-> Reviewed-by: Rick Lindsley <ricklind@linux.ibm.com>
-> Reviewed-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-> ---
-> Changes in V2:
-> - Update description to clarify background for the patch
-> - Include Reviewed-by tags
-> ---
-> drivers/net/ethernet/ibm/ibmvnic.c | 6 ++++--
-> 1 file changed, 4 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c =
-b/drivers/net/ethernet/ibm/ibmvnic.c
-> index ffb2a91750c7..4bd8c5d1a275 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> @@ -1970,8 +1970,10 @@ static int do_reset(struct ibmvnic_adapter =
-*adapter,
-> 			rtnl_unlock();
-> 			rc =3D set_link_state(adapter, =
-IBMVNIC_LOGICAL_LNK_DN);
-> 			rtnl_lock();
-> -			if (rc)
-> -				goto out;
-> +			if (rc) {
-> +				netdev_dbg(netdev,
-> +					   "Setting link down failed =
-rc=3D%d. Continue anyway\n", rc);
-> +			}
->=20
-> 			if (adapter->state =3D=3D VNIC_OPEN) {
-> 				/* When we dropped rtnl, ibmvnic_open() =
-got
-> --=20
-> 2.26.2
->=20
-
+regards,
+dan carpenter
