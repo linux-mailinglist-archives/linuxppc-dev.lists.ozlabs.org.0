@@ -2,74 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4EB3651A9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 06:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6E43651AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 06:55:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPWZH4ZrPz30Bm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 14:54:47 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=bq2Fqkoq;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPWbd3rvfz30Fd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 14:55:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::733;
- helo=mail-qk1-x733.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=bq2Fqkoq; dkim-atps=neutral
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com
- [IPv6:2607:f8b0:4864:20::733])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPWYs23z1z2xb7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 14:54:22 +1000 (AEST)
-Received: by mail-qk1-x733.google.com with SMTP id t17so9750762qkg.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 21:54:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=knEsnqVVpHBAjh8i95W10HK2zNEcEEQ59QU8Kyx/Vek=;
- b=bq2FqkoqFeOqQJDjYkFKExA6zH8OpGUykxjhtJTGayymtQoErLUJeDmJs6EZ/rNSs0
- ndAnArkadebgcSDRHxAknJxszrFhVcvkzaXQfDMxbYGSNXNCXouNBUJ3a/XMvXgSpK0M
- W2lEIcAGeetVj2JZkpxgGTxUQqiTJFqwG1Otde4GWCKdvcp2LbN3DcmQMUyC8pszxcfo
- WwSA46Cy3r9KdLqPaCkwthNlajAATRD0lDadB92WDtRFZY0zkotr+LBRqIm6ZS+UL+wW
- Ea8ZRsd5tZchDCYfRRrWT9ojV9J2CmO8S1op2ysGbDZegRIhYpmhVNdqc6HXK9+cofjr
- K7ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=knEsnqVVpHBAjh8i95W10HK2zNEcEEQ59QU8Kyx/Vek=;
- b=SwIhO2NvYRXqa+zcsF4MESkXIAizaeOSP0u6Omqz2inG0hNl9RsIEhWSmi7YO+d4lg
- QHzlD3DUYO5Lox2WO+TI9kHhYX4l4iH2sdlOs4cv1NLKVQ1wDvDRNtMBXHtddMZK82rI
- Lra47JccqVjIHzeYBEQxrjASBxghIeP8RQu5pFwZeGxNVGEHI37RsLWrINhmSIhM4xbQ
- aKqcuCUVsK/mQDnZAco6d9u6U5JJfDIVszp9uW0+q1yyHxjgyb1SeT3Bl0ILOFAW+4ZV
- eTUJmM7u8Y7RBa07OCBhC+oyzWZxLpRVh1C5Qq4vYydEKg8FxjYQIx1diY4JbcJUGxR9
- /jCA==
-X-Gm-Message-State: AOAM530vZgyhCLjMCOK+WXFQ4Q2gqrgqkRxLc6CYO0F6QetstARzHyGs
- GCpBAO+nssjR43cXTPxL1Xk=
-X-Google-Smtp-Source: ABdhPJyoJY8zIXqIQ542ji0NV7LsWtIE3/ZDBBL5Hhcs46ZrQzz7kOr/MoUgzDkXTMF4fQVLUhNWFA==
-X-Received: by 2002:ae9:e912:: with SMTP id x18mr15662415qkf.315.1618894459007; 
- Mon, 19 Apr 2021 21:54:19 -0700 (PDT)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
- ([177.35.200.187])
- by smtp.gmail.com with ESMTPSA id y29sm10930176qtm.13.2021.04.19.21.54.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Apr 2021 21:54:18 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Leonardo Bras <leobras.c@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: [PATCH 1/1] powerpc/pseries/iommu: Fix window size for direct mapping
- with pmem
-Date: Tue, 20 Apr 2021 01:54:04 -0300
-Message-Id: <20210420045404.438735-1-leobras.c@gmail.com>
-X-Mailer: git-send-email 2.30.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPWbH33TFz2xb7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 14:55:37 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FPWb91nFPz9vBKZ;
+ Tue, 20 Apr 2021 06:55:33 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ie5cxGwG9F7s; Tue, 20 Apr 2021 06:55:33 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FPWb90hkBz9vBKT;
+ Tue, 20 Apr 2021 06:55:33 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C58218B7D6;
+ Tue, 20 Apr 2021 06:55:33 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id wk-bweOaRv6E; Tue, 20 Apr 2021 06:55:33 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3642D8B7CB;
+ Tue, 20 Apr 2021 06:55:33 +0200 (CEST)
+Subject: Re: PPC_FPU, ALTIVEC: enable_kernel_fp, put_vr, get_vr
+To: Randy Dunlap <rdunlap@infradead.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Segher Boessenkool <segher@kernel.crashing.org>
+References: <7107fcae-5c7a-ac94-8d89-326f2cd4cd33@infradead.org>
+ <8b1cb0a2-ed3a-7da0-a73a-febbda528703@csgroup.eu>
+ <20210418174648.GN26583@gate.crashing.org>
+ <bf119bfe-7db1-e7f3-d837-f910635eeebb@infradead.org>
+ <87sg3mct3x.fsf@mpe.ellerman.id.au>
+ <bd83b06d-ed36-e600-e988-c1e0014fb9cf@infradead.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <1f337b4c-940e-110c-d0a2-2ad95cfb2dc8@csgroup.eu>
+Date: Tue, 20 Apr 2021 06:55:32 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
+In-Reply-To: <bd83b06d-ed36-e600-e988-c1e0014fb9cf@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,40 +68,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As of today, if the DDW is big enough to fit (1 << MAX_PHYSMEM_BITS) it's
-possible to use direct DMA mapping even with pmem region.
 
-But, if that happens, the window size (len) is set to
-(MAX_PHYSMEM_BITS - page_shift) instead of MAX_PHYSMEM_BITS, causing a
-pagesize times smaller DDW to be created, being insufficient for correct
-usage.
 
-Fix this so the correct window size is used in this case.
+Le 19/04/2021 à 23:39, Randy Dunlap a écrit :
+> On 4/19/21 6:16 AM, Michael Ellerman wrote:
+>> Randy Dunlap <rdunlap@infradead.org> writes:
+> 
+>>> Sure.  I'll post them later today.
+>>> They keep FPU and ALTIVEC as independent (build) features.
+>>
+>> Those patches look OK.
+>>
+>> But I don't think it makes sense to support that configuration, FPU=n
+>> ALTVEC=y. No one is ever going to make a CPU like that. We have enough
+>> testing surface due to configuration options, without adding artificial
+>> combinations that no one is ever going to use.
+>>
+>> IMHO :)
+>>
+>> So I'd rather we just make ALTIVEC depend on FPU.
+> 
+> That's rather simple. See below.
+> I'm doing a bunch of randconfig builds with it now.
+> 
+> ---
+> From: Randy Dunlap <rdunlap@infradead.org>
+> Subject: [PATCH] powerpc: make ALTIVEC depend PPC_FPU
+> 
+> On a kernel config with ALTIVEC=y and PPC_FPU not set/enabled,
+> there are build errors:
+> 
+> drivers/cpufreq/pmac32-cpufreq.c:262:2: error: implicit declaration of function 'enable_kernel_fp' [-Werror,-Wimplicit-function-declaration]
+>             enable_kernel_fp();
+> ../arch/powerpc/lib/sstep.c: In function 'do_vec_load':
+> ../arch/powerpc/lib/sstep.c:637:3: error: implicit declaration of function 'put_vr' [-Werror=implicit-function-declaration]
+>    637 |   put_vr(rn, &u.v);
+>        |   ^~~~~~
+> ../arch/powerpc/lib/sstep.c: In function 'do_vec_store':
+> ../arch/powerpc/lib/sstep.c:660:3: error: implicit declaration of function 'get_vr'; did you mean 'get_oc'? [-Werror=implicit-function-declaration]
+>    660 |   get_vr(rn, &u.v);
+>        |   ^~~~~~
+> 
+> In theory ALTIVEC is independent of PPC_FPU but in practice nobody
+> is going to build such a machine, so make ALTIVEC require PPC_FPU
+> by depending on PPC_FPU.
+> 
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Segher Boessenkool <segher@kernel.crashing.org>
+> Cc: lkp@intel.com
+> ---
+>   arch/powerpc/platforms/86xx/Kconfig    |    1 +
+>   arch/powerpc/platforms/Kconfig.cputype |    2 ++
+>   2 files changed, 3 insertions(+)
+> 
+> --- linux-next-20210416.orig/arch/powerpc/platforms/86xx/Kconfig
+> +++ linux-next-20210416/arch/powerpc/platforms/86xx/Kconfig
+> @@ -4,6 +4,7 @@ menuconfig PPC_86xx
+>   	bool "86xx-based boards"
+>   	depends on PPC_BOOK3S_32
+>   	select FSL_SOC
+> +	select PPC_FPU
+>   	select ALTIVEC
+>   	help
+>   	  The Freescale E600 SoCs have 74xx cores.
+> --- linux-next-20210416.orig/arch/powerpc/platforms/Kconfig.cputype
+> +++ linux-next-20210416/arch/powerpc/platforms/Kconfig.cputype
+> @@ -186,6 +186,7 @@ config E300C3_CPU
+>   config G4_CPU
+>   	bool "G4 (74xx)"
+>   	depends on PPC_BOOK3S_32
+> +	select PPC_FPU
+>   	select ALTIVEC
+>   
+>   endchoice
+> @@ -309,6 +310,7 @@ config PHYS_64BIT
+>   
+>   config ALTIVEC
+>   	bool "AltiVec Support"
+> +	depends on PPC_FPU
 
-Fixes: bf6e2d562bbc4("powerpc/dma: Fallback to dma_ops when persistent memory present")
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
----
- arch/powerpc/platforms/pseries/iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Shouldn't we do it the other way round ? In extenso make ALTIVEC select PPC_FPU and avoid the two 
+selects that are above ?
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 9fc5217f0c8e..836cbbe0ecc5 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1229,7 +1229,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	if (pmem_present) {
- 		if (query.largest_available_block >=
- 		    (1ULL << (MAX_PHYSMEM_BITS - page_shift)))
--			len = MAX_PHYSMEM_BITS - page_shift;
-+			len = MAX_PHYSMEM_BITS;
- 		else
- 			dev_info(&dev->dev, "Skipping ibm,pmemory");
- 	}
--- 
-2.30.2
-
+>   	depends on PPC_BOOK3S_32 || PPC_BOOK3S_64 || (PPC_E500MC && PPC64)
+>   	help
+>   	  This option enables kernel support for the Altivec extensions to the
+> 
