@@ -2,57 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5637C3651C9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 07:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEF13651D5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 07:30:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPX8H2SZWz30B9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 15:20:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPXMB1mmBz302V
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 15:30:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=ZmJxG2Ln;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=JCafrJcS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
- helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72b;
+ helo=mail-qk1-x72b.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=ZmJxG2Ln; 
- dkim-atps=neutral
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FPX7r2z0Gz2xb7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 15:20:24 +1000 (AEST)
-Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
- [73.42.176.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 9AD9520B8001;
- Mon, 19 Apr 2021 22:20:20 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9AD9520B8001
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1618896020;
- bh=aRBA6FfHHK8DUXurr79VpD5khf52ADOGAt/z6uwGduE=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=ZmJxG2Ln1dU115nL8LgzhlnlMUetr4GlEku/w0IgKXMVbtw43U9lP1k6VQYctS9mc
- eXKMoTENBa5HPFsiNTYSRq2zDvWR3Nzv1UsS1kKZirVBAIQZCye2/SvM0stqko+7Xs
- mcUGQY2v2PDw8dnBzsyeOQgEN650A9k4u3UrPyjY=
-Subject: Re: [PATCH] powerpc: Initialize local variable fdt to NULL in
- elf64_load()
-To: Dan Carpenter <dan.carpenter@oracle.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20210415191437.20212-1-nramas@linux.microsoft.com>
- <4edb1433-4d1e-5719-ec9c-fd232b7cf71f@linux.microsoft.com>
- <87eefag241.fsf@linkitivity.dja.id.au> <87tuo6eh0j.fsf@mpe.ellerman.id.au>
- <2817d674-d420-580f-a0c1-b842da915a80@linux.microsoft.com>
- <87pmypdf93.fsf@mpe.ellerman.id.au> <20210420050015.GA1959@kadam>
-From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <b84c76d6-2be8-77a4-3c0f-ad8657c0e508@linux.microsoft.com>
-Date: Mon, 19 Apr 2021 22:20:20 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=JCafrJcS; dkim-atps=neutral
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com
+ [IPv6:2607:f8b0:4864:20::72b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPXLg3WByz2xb6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 15:29:45 +1000 (AEST)
+Received: by mail-qk1-x72b.google.com with SMTP id z2so1266052qkb.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 22:29:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :organization:user-agent:mime-version:content-transfer-encoding;
+ bh=CD5KgC7jtIRxFp9L5EX0XqWGl1RUghQJwWPnq/cGmzA=;
+ b=JCafrJcSXX4Mn66ZWw8U8ND0HHkGqhAmFRiw8OMyTHMosRl8XNVwao/iHwNS7jMLX1
+ /N7bbezhvWpt+Iqas9/VOpTAJrx4FkJp16RYUuY7uI6+ufT58hn2Lkk2gei8Or6L8eOS
+ pPm3UWa12JX9fTiXDsRAF82Qrq92UEv3Qi6zkHFgExT0gNh+CmoNr3fpsvKM5pCD8REE
+ xmVPf2zAPQetho4L8Gz6N/1cXKukAoxpvXHCTPuBnDDst5T8fNKgPTTbQTasdckAOFur
+ lfTbDyKvTK+fqPslxjcFuGjRG7OC8RIU6BlXRrkQ99635WyW5KLZYWjN4b9OGUCv1KJf
+ raWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:organization:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=CD5KgC7jtIRxFp9L5EX0XqWGl1RUghQJwWPnq/cGmzA=;
+ b=JLPSVixAdj2Gorn4oQOv+hfBP4PYF2EIzHeY5k0s13cQEe8wmawCS6JQ14OiBxSCCJ
+ d2c9I7YZtYtA/eOpgHPiwwjQ3Aa+cDPE7U0V4FDmXALT26DspWyp2qFL5LO4KmUs40uD
+ nDfABzE9wFUwbDka3bmAqZs0M+s+9FUazXGRdyibwbmEavwb1cq76qfuS61HwIouK0I8
+ zuSW83ScLBsX0sGk6UyRw9xmM3VQttW2dy7RAYS+RA0vwtg7MWGlkCBkeqxSGOsmfkQY
+ M9ZHACxTL/Adedkb008O3E72RzsdLcjFlP4e0DghmvV0oOuHob3KL4hpsJMSIGyuF3e6
+ xelQ==
+X-Gm-Message-State: AOAM533XFGViJufQTIU+LSZgBIKjjRoUQoXvApTZUjje/FUdakAyjwRW
+ qmQaaeadxte0nuMJfwUFrsQ=
+X-Google-Smtp-Source: ABdhPJwZS2BpuCSdCWdDvSF5KnO6hp7JbxTakxD8Xsi7lNH9Uo+5o2UZGcERr3xdBBoefGdvXPZw9w==
+X-Received: by 2002:a37:a206:: with SMTP id l6mr15817573qke.5.1618896581783;
+ Mon, 19 Apr 2021 22:29:41 -0700 (PDT)
+Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
+ ([177.35.200.187])
+ by smtp.gmail.com with ESMTPSA id v3sm5539052qkb.124.2021.04.19.22.29.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 Apr 2021 22:29:41 -0700 (PDT)
+Message-ID: <2977fdf112bce230ca6739c0a7f9f1f55bd2f693.camel@gmail.com>
+Subject: Re: [PATCH 1/1] powerpc/pseries/iommu: Fix window size for direct
+ mapping with pmem
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
+ <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Date: Tue, 20 Apr 2021 02:29:38 -0300
+In-Reply-To: <58b28a98-37aa-055f-5dec-d8c0005c9519@ozlabs.ru>
+References: <20210420045404.438735-1-leobras.c@gmail.com>
+ <58b28a98-37aa-055f-5dec-d8c0005c9519@ozlabs.ru>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-In-Reply-To: <20210420050015.GA1959@kadam>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,152 +87,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: robh@kernel.org, kbuild-all@lists.01.org, lkp@intel.com,
- devicetree@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- bauerman@linux.ibm.com, Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/19/21 10:00 PM, Dan Carpenter wrote:
-> On Tue, Apr 20, 2021 at 09:30:16AM +1000, Michael Ellerman wrote:
->> Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
->>> On 4/16/21 2:05 AM, Michael Ellerman wrote:
->>>
->>>> Daniel Axtens <dja@axtens.net> writes:
->>>>>> On 4/15/21 12:14 PM, Lakshmi Ramasubramanian wrote:
->>>>>>
->>>>>> Sorry - missed copying device-tree and powerpc mailing lists.
->>>>>>
->>>>>>> There are a few "goto out;" statements before the local variable "fdt"
->>>>>>> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
->>>>>>> elf64_load(). This will result in an uninitialized "fdt" being passed
->>>>>>> to kvfree() in this function if there is an error before the call to
->>>>>>> of_kexec_alloc_and_setup_fdt().
->>>>>>>
->>>>>>> Initialize the local variable "fdt" to NULL.
->>>>>>>
->>>>> I'm a huge fan of initialising local variables! But I'm struggling to
->>>>> find the code path that will lead to an uninit fdt being returned...
->>>>>
->>>>> The out label reads in part:
->>>>>
->>>>> 	/* Make kimage_file_post_load_cleanup free the fdt buffer for us. */
->>>>> 	return ret ? ERR_PTR(ret) : fdt;
->>>>>
->>>>> As far as I can tell, any time we get a non-zero ret, we're going to
->>>>> return an error pointer rather than the uninitialised value...
->>>
->>> As Dan pointed out, the new code is in linux-next.
->>>
->>> I have copied the new one below - the function doesn't return fdt, but
->>> instead sets it in the arch specific field (please see the link to the
->>> updated elf_64.c below).
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git/tree/arch/powerpc/kexec/elf_64.c?h=for-next
->>>
->>>>>
->>>>> (btw, it does look like we might leak fdt if we have an error after we
->>>>> successfully kmalloc it.)
->>>>>
->>>>> Am I missing something? Can you link to the report for the kernel test
->>>>> robot or from Dan?
->>>
->>> /*
->>>            * Once FDT buffer has been successfully passed to
->>> kexec_add_buffer(),
->>>            * the FDT buffer address is saved in image->arch.fdt. In that
->>> case,
->>>            * the memory cannot be freed here in case of any other error.
->>>            */
->>>           if (ret && !image->arch.fdt)
->>>                   kvfree(fdt);
->>>
->>>           return ret ? ERR_PTR(ret) : NULL;
->>>
->>> In case of an error, the memory allocated for fdt is freed unless it has
->>> already been passed to kexec_add_buffer().
->>
->> It feels like the root of the problem is that the kvfree of fdt is in
->> the wrong place. It's only allocated later in the function, so the error
->> path should reflect that. Something like the patch below.
->>
->> cheers
->>
->>
->> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
->> index 5a569bb51349..02662e72c53d 100644
->> --- a/arch/powerpc/kexec/elf_64.c
->> +++ b/arch/powerpc/kexec/elf_64.c
->> @@ -114,7 +114,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->>   	ret = setup_new_fdt_ppc64(image, fdt, initrd_load_addr,
->>   				  initrd_len, cmdline);
->>   	if (ret)
->> -		goto out;
->> +		goto out_free_fdt;
->>   
->>   	fdt_pack(fdt);
->>   
->> @@ -125,7 +125,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->>   	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
->>   	ret = kexec_add_buffer(&kbuf);
->>   	if (ret)
->> -		goto out;
->> +		goto out_free_fdt;
->>   
->>   	/* FDT will be freed in arch_kimage_file_post_load_cleanup */
->>   	image->arch.fdt = fdt;
->> @@ -140,18 +140,14 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->>   	if (ret)
->>   		pr_err("Error setting up the purgatory.\n");
->>   
->> +	goto out;
+On Tue, 2021-04-20 at 15:18 +1000, Alexey Kardashevskiy wrote:
 > 
-> This will leak.  It would need to be something like:
+> On 20/04/2021 14:54, Leonardo Bras wrote:
+> > As of today, if the DDW is big enough to fit (1 << MAX_PHYSMEM_BITS) it's
+> > possible to use direct DMA mapping even with pmem region.
+> > 
+> > But, if that happens, the window size (len) is set to
+> > (MAX_PHYSMEM_BITS - page_shift) instead of MAX_PHYSMEM_BITS, causing a
+> > pagesize times smaller DDW to be created, being insufficient for correct
+> > usage.
+> > 
+> > Fix this so the correct window size is used in this case.
 > 
-> 	if (ret) {
-> 		pr_err("Error setting up the purgatory.\n");
-> 		goto out_free_fdt;
-> 	}
-Once "fdt" buffer is successfully passed to kexec_add_buffer() it cannot 
-be freed here - it will be freed when the kexec cleanup function is called.
+> Good find indeed.
+> 
+> afaict this does not create a huge problem though as 
+> query.largest_available_block is always smaller than (MAX_PHYSMEM_BITS - 
+> page_shift) where it matters (phyp).
+> 
+> 
+> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> 
 
-> 
-> 	goto out;
-> 
-> But we should also fix the uninitialized variable of "elf_info" if
-> kexec_build_elf_info() fails.
+Thanks for reviewing!
 
-kexec_build_elf_info() frees elf_info and zeroes it in error paths, 
-except when elf_read_ehdr() fails. So, I think it is better to 
-initialize the local variable "elf_info" before calling 
-kexec_build_elf_info().
-
-	memset(&elf_info, 0, sizeof(elf_info));
-
-thanks,
-  -lakshmi
-
-> 
->> +
->> +out_free_fdt:
->> +	kvfree(fdt);
->>   out:
->>   	kfree(modified_cmdline);
->>   	kexec_free_elf_info(&elf_info);
->>   
->> -	/*
->> -	 * Once FDT buffer has been successfully passed to kexec_add_buffer(),
->> -	 * the FDT buffer address is saved in image->arch.fdt. In that case,
->> -	 * the memory cannot be freed here in case of any other error.
->> -	 */
->> -	if (ret && !image->arch.fdt)
->> -		kvfree(fdt);
->> -
->>   	return ret ? ERR_PTR(ret) : NULL;
->>   }
-> 
-> regards,
-> dan carpenter
-> 
+Leonardo Bras
 
