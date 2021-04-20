@@ -2,77 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90503657A4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 13:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BA1365980
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 15:06:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPhTZ5KkMz30CX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 21:36:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPkV05gbPz30Fc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 23:06:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=fossix-org.20150623.gappssmtp.com header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=JG9D83lF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fl2BhKlm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com;
- envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=JG9D83lF; dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Fl2BhKlm; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPhT76k3Tz2xfs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 21:35:55 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id
- em21-20020a17090b0155b029014e204a81e6so1166376pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 04:35:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fossix-org.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=Fi6+fC+9nI6RI6HCFc2tjwgCOEud/oGFC8Oue8ByrTI=;
- b=JG9D83lFsIg7C0ommTVyRh6YSbmySmLDrh2yrXIykbmpS65HCUTrIbVglu58aipY/D
- uy5y9Fu4Cv6mTtbW+PXLrIVyxDLgOuAbDOXNntTtQWtdjWs6kJmkkQVZeFS7CMzP5vN6
- ztkACpHMHnh93q9qO1loeQLXIcPmPXytbgbMpVrmIFKmKL5ZSH1qEF8SMNGxtqr3kZmw
- +gi1qUN0P4RBv8l9rjq5LbxUtP2O/703U83N3fR7HG622sLJ7utPNxk2y7iRlN8/+/tt
- i9P6iJp0b/pgRzWUBWLJ48MnqWXtP0BZjy+gnatdo55I7SVeT53po/vfYovlMqwvfNhm
- Fnug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=Fi6+fC+9nI6RI6HCFc2tjwgCOEud/oGFC8Oue8ByrTI=;
- b=kAlLzJEEAQBKPfjnkP/9KbuUY/Wvc+p7FXwxaulUwRjnuKMwfjvAR3nmNZFf2YklAk
- 0oB68ruvrLYdCde4FHuMhxq/LcdwSHKtSpvzjh7Y4m65JN0vYw9qbd/khm6K1GzHcgIZ
- 7UvUQu0Rqubk0wDA8Tgn6c5TvS1JNnVTiEfof4LxsZWqclXtbxr4tWUY3kqv0XM4OkEP
- 7cNQ8GnXYMldfQ/kOrwGsxcXeQ7deKknshSXHVl/XL03/8RIyEyXsZS/BBxIRMLfjoqw
- JOQjhzB3UuC5B5WpQB/nrArHYMlX4+qmScdXp6biZqkrVP54qqYVvjzNnqVAYg6LThJt
- bsbw==
-X-Gm-Message-State: AOAM530Ck6t02mBeVK13ek2cBz/HhR+qjynHZ5AAjch7gC85CrjITQAL
- KkL9/HZEXkLlG/JgZDJjKrSt1A==
-X-Google-Smtp-Source: ABdhPJz64idVedT1P4xZuROdPcAjglS/ic5tLIgjzuGkWAtcKKfHnlpheN1PKrQs7qPzfIipXhmFig==
-X-Received: by 2002:a17:90b:d92:: with SMTP id
- bg18mr4588712pjb.155.1618918551928; 
- Tue, 20 Apr 2021 04:35:51 -0700 (PDT)
-Received: from localhost ([103.21.79.4])
- by smtp.gmail.com with ESMTPSA id j13sm14744909pfn.103.2021.04.20.04.35.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Apr 2021 04:35:51 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Ganesh <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-Subject: Re: [PATCH] powerpc/mce: save ignore_event flag unconditionally for UE
-In-Reply-To: <9b8c7347-47fe-822d-7fae-9365bb7cde7c@linux.ibm.com>
-References: <20210407045816.352276-1-ganeshgr@linux.ibm.com>
- <87bla9zae7.fsf@fossix.org>
- <9b8c7347-47fe-822d-7fae-9365bb7cde7c@linux.ibm.com>
-Date: Tue, 20 Apr 2021 17:05:47 +0530
-Message-ID: <878s5dyyr0.fsf@fossix.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPkTZ2Yy7z2xfY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 23:06:26 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CCAB7613C7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 13:06:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1618923982;
+ bh=CfqZXCjLwBP0f+W+AaxrMRRsIoRAmM/sskwxdAjlPg4=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=Fl2BhKlmGiK4e6nKiiMFrM0Am2XibPm4gRwNRXM4/rt/hVLsNNHFFbLtAts6K6VEA
+ XQhRMvgbHpod0W3WZWrsojXlpLOKgoSIS5BkD0c/EchX/hFb6tnL24D0SgSdbzQwfO
+ PE7iHjNRHfJoA4SWBbLwKrO/OdAq/qhUxFlMKlF4pNg3j+6+OCdVDc9Bl9IKBk4yV9
+ 6Y2cWVUsp2pDXunfMJN0Eq9xF2iatkemFq1l0pcEF4RtFGrzQQ1kDs/hseaSw+0qJ2
+ 1upPGdMSHOXKIbVrDDcyKqSSpORq9yfflO0Brjyf31HjasrYA2GKbRQYYTy0u8dLcw
+ FqLX1mHvWq3pg==
+Received: by mail-qk1-f174.google.com with SMTP id h13so20489384qka.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 06:06:22 -0700 (PDT)
+X-Gm-Message-State: AOAM531SCZ2nwWHZADeJSFlCaTwpDSjNRTxDShYZvc9h+lkmSmyNxApC
+ tUwBkOFq6ivuU/NiR87YYt01+kQcKzP0k/P7Zw==
+X-Google-Smtp-Source: ABdhPJyxRmeQRtP34kVgJ1VcAt/5/6Rr319QqoBi2Fg/d6DssQfy2PWRrBwLl1DEPzI5MZkaE9xhv2zuR2uj7FpF9lM=
+X-Received: by 2002:a05:620a:1118:: with SMTP id
+ o24mr9366188qkk.128.1618923981791; 
+ Tue, 20 Apr 2021 06:06:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20210415191437.20212-1-nramas@linux.microsoft.com>
+ <4edb1433-4d1e-5719-ec9c-fd232b7cf71f@linux.microsoft.com>
+ <87eefag241.fsf@linkitivity.dja.id.au> <87tuo6eh0j.fsf@mpe.ellerman.id.au>
+ <2817d674-d420-580f-a0c1-b842da915a80@linux.microsoft.com>
+ <87pmypdf93.fsf@mpe.ellerman.id.au> <20210420050015.GA1959@kadam>
+ <b84c76d6-2be8-77a4-3c0f-ad8657c0e508@linux.microsoft.com>
+In-Reply-To: <b84c76d6-2be8-77a4-3c0f-ad8657c0e508@linux.microsoft.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 20 Apr 2021 08:06:10 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLS9Wu_+_S-2wwMb3Chd_8RYAtFe_uLh5tjj_sAkTgRJA@mail.gmail.com>
+Message-ID: <CAL_JsqLS9Wu_+_S-2wwMb3Chd_8RYAtFe_uLh5tjj_sAkTgRJA@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: Initialize local variable fdt to NULL in
+ elf64_load()
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,85 +71,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: devicetree@vger.kernel.org, kbuild-all@lists.01.org,
+ kbuild test robot <lkp@intel.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Dan Carpenter <dan.carpenter@oracle.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ganesh <ganeshgr@linux.ibm.com> writes:
-
-> On 4/20/21 12:54 PM, Santosh Sivaraj wrote:
+On Tue, Apr 20, 2021 at 12:20 AM Lakshmi Ramasubramanian
+<nramas@linux.microsoft.com> wrote:
 >
->> Hi Ganesh,
->>
->> Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
->>
->>> When we hit an UE while using machine check safe copy routines,
->>> ignore_event flag is set and the event is ignored by mce handler,
->>> And the flag is also saved for defered handling and printing of
->>> mce event information, But as of now saving of this flag is done
->>> on checking if the effective address is provided or physical address
->>> is calculated, which is not right.
->>>
->>> Save ignore_event flag regardless of whether the effective address is
->>> provided or physical address is calculated.
->>>
->>> Without this change following log is seen, when the event is to be
->>> ignored.
->>>
->>> [  512.971365] MCE: CPU1: machine check (Severe)  UE Load/Store [Recovered]
->>> [  512.971509] MCE: CPU1: NIP: [c0000000000b67c0] memcpy+0x40/0x90
->>> [  512.971655] MCE: CPU1: Initiator CPU
->>> [  512.971739] MCE: CPU1: Unknown
->>> [  512.972209] MCE: CPU1: machine check (Severe)  UE Load/Store [Recovered]
->>> [  512.972334] MCE: CPU1: NIP: [c0000000000b6808] memcpy+0x88/0x90
->>> [  512.972456] MCE: CPU1: Initiator CPU
->>> [  512.972534] MCE: CPU1: Unknown
->>>
->>> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
->>> ---
->>>   arch/powerpc/kernel/mce.c | 3 ++-
->>>   1 file changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
->>> index 11f0cae086ed..db9363e131ce 100644
->>> --- a/arch/powerpc/kernel/mce.c
->>> +++ b/arch/powerpc/kernel/mce.c
->>> @@ -131,6 +131,8 @@ void save_mce_event(struct pt_regs *regs, long handled,
->>>   	 * Populate the mce error_type and type-specific error_type.
->>>   	 */
->>>   	mce_set_error_info(mce, mce_err);
->>> +	if (mce->error_type == MCE_ERROR_TYPE_UE)
->>> +		mce->u.ue_error.ignore_event = mce_err->ignore_event;
->>>   
->>>   	if (!addr)
->>>   		return;
->>> @@ -159,7 +161,6 @@ void save_mce_event(struct pt_regs *regs, long handled,
->>>   		if (phys_addr != ULONG_MAX) {
->>>   			mce->u.ue_error.physical_address_provided = true;
->>>   			mce->u.ue_error.physical_address = phys_addr;
->>> -			mce->u.ue_error.ignore_event = mce_err->ignore_event;
->>>   			machine_check_ue_event(mce);
->>>   		}
->>>   	}
->> Small nit:
->> Setting ignore event can happen before the phys_addr check, under the existing
->> check for MCE_ERROR_TYPE_UE, instead of repeating the same condition again.
->
-> In some cases we may not get effective address also, so it is placed before
-> effective address check.
+> On 4/19/21 10:00 PM, Dan Carpenter wrote:
+> > On Tue, Apr 20, 2021 at 09:30:16AM +1000, Michael Ellerman wrote:
+> >> Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
+> >>> On 4/16/21 2:05 AM, Michael Ellerman wrote:
+> >>>
+> >>>> Daniel Axtens <dja@axtens.net> writes:
+> >>>>>> On 4/15/21 12:14 PM, Lakshmi Ramasubramanian wrote:
+> >>>>>>
+> >>>>>> Sorry - missed copying device-tree and powerpc mailing lists.
+> >>>>>>
+> >>>>>>> There are a few "goto out;" statements before the local variable "fdt"
+> >>>>>>> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
+> >>>>>>> elf64_load(). This will result in an uninitialized "fdt" being passed
+> >>>>>>> to kvfree() in this function if there is an error before the call to
+> >>>>>>> of_kexec_alloc_and_setup_fdt().
+> >>>>>>>
+> >>>>>>> Initialize the local variable "fdt" to NULL.
+> >>>>>>>
+> >>>>> I'm a huge fan of initialising local variables! But I'm struggling to
+> >>>>> find the code path that will lead to an uninit fdt being returned...
+> >>>>>
+> >>>>> The out label reads in part:
+> >>>>>
+> >>>>>   /* Make kimage_file_post_load_cleanup free the fdt buffer for us. */
+> >>>>>   return ret ? ERR_PTR(ret) : fdt;
+> >>>>>
+> >>>>> As far as I can tell, any time we get a non-zero ret, we're going to
+> >>>>> return an error pointer rather than the uninitialised value...
+> >>>
+> >>> As Dan pointed out, the new code is in linux-next.
+> >>>
+> >>> I have copied the new one below - the function doesn't return fdt, but
+> >>> instead sets it in the arch specific field (please see the link to the
+> >>> updated elf_64.c below).
+> >>>
+> >>> https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git/tree/arch/powerpc/kexec/elf_64.c?h=for-next
+> >>>
+> >>>>>
+> >>>>> (btw, it does look like we might leak fdt if we have an error after we
+> >>>>> successfully kmalloc it.)
+> >>>>>
+> >>>>> Am I missing something? Can you link to the report for the kernel test
+> >>>>> robot or from Dan?
+> >>>
+> >>> /*
+> >>>            * Once FDT buffer has been successfully passed to
+> >>> kexec_add_buffer(),
+> >>>            * the FDT buffer address is saved in image->arch.fdt. In that
+> >>> case,
+> >>>            * the memory cannot be freed here in case of any other error.
+> >>>            */
+> >>>           if (ret && !image->arch.fdt)
+> >>>                   kvfree(fdt);
+> >>>
+> >>>           return ret ? ERR_PTR(ret) : NULL;
+> >>>
+> >>> In case of an error, the memory allocated for fdt is freed unless it has
+> >>> already been passed to kexec_add_buffer().
+> >>
+> >> It feels like the root of the problem is that the kvfree of fdt is in
+> >> the wrong place. It's only allocated later in the function, so the error
+> >> path should reflect that. Something like the patch below.
+> >>
+> >> cheers
+> >>
+> >>
+> >> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+> >> index 5a569bb51349..02662e72c53d 100644
+> >> --- a/arch/powerpc/kexec/elf_64.c
+> >> +++ b/arch/powerpc/kexec/elf_64.c
+> >> @@ -114,7 +114,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+> >>      ret = setup_new_fdt_ppc64(image, fdt, initrd_load_addr,
+> >>                                initrd_len, cmdline);
+> >>      if (ret)
+> >> -            goto out;
+> >> +            goto out_free_fdt;
+> >>
+> >>      fdt_pack(fdt);
+> >>
+> >> @@ -125,7 +125,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+> >>      kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+> >>      ret = kexec_add_buffer(&kbuf);
+> >>      if (ret)
+> >> -            goto out;
+> >> +            goto out_free_fdt;
+> >>
+> >>      /* FDT will be freed in arch_kimage_file_post_load_cleanup */
+> >>      image->arch.fdt = fdt;
+> >> @@ -140,18 +140,14 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+> >>      if (ret)
+> >>              pr_err("Error setting up the purgatory.\n");
+> >>
+> >> +    goto out;
+> >
+> > This will leak.  It would need to be something like:
+> >
+> >       if (ret) {
+> >               pr_err("Error setting up the purgatory.\n");
+> >               goto out_free_fdt;
+> >       }
+> Once "fdt" buffer is successfully passed to kexec_add_buffer() it cannot
+> be freed here - it will be freed when the kexec cleanup function is called.
 
-Yes, I forgot the last two lines in the changelog after I applied the patch :-)
+That may be the case currently, but really if a function returns an
+error it should have undone anything it did like memory allocations. I
+don't think you should do that to fix this issue, but it would be a
+good clean-up.
 
-Thanks,
-Santosh
->
->>
->> Except for the above nit
->>
->> Reviewed-by: Santosh Sivaraj <santosh@fossix.org>
->>
->> Thanks,
->> Santosh
->>> -- 
->>> 2.26.2
+Rob
