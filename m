@@ -1,63 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E24436599E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 15:15:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE0F365A33
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 15:33:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPkhF1QzNz30FQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 23:15:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=k2bus5aw;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPl4w3FN1z304D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 23:33:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=k2bus5aw; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPkgr3VQHz2xfY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 23:15:19 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4FPkgp73Lkz9tlB;
- Tue, 20 Apr 2021 23:15:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1618924519;
- bh=UI0o3Fd/uLM07Bexdon7KWXa2iOf9VNOAMVICkVRMOA=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=k2bus5awbaMgVM0Ns6wKbxineVVY2j79KhrIvn74R1fA7QXHOG7MZiUtSLeY1NpF9
- pEJTQvp5tDNN74LoICIwNbIhw7YrKRlO9ev37YKmiLwowDUoGWG6ogRN82qVU1S7qY
- JqfJDtpsbubG0TfDqzpXgac7CQq2jTPHO5XVvtAzNz+aaNu0iW2GGr8mYoAGrAX3Bc
- wSFlRM+bohB+xjJQX041uxKVOp/4XhFCIknd/o5xjpk6iukabU3Bq6LF+jwn7BYtQc
- uWFI+pSAm07Xdv1lkWq0XvrC7y0yGMBoFxCPEYC1iQbYIV9VjXbXtbJ8XP9eLCVBNd
- wu14uXGQlZ9+A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Randy Dunlap
- <rdunlap@infradead.org>, Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: PPC_FPU, ALTIVEC: enable_kernel_fp, put_vr, get_vr
-In-Reply-To: <1f337b4c-940e-110c-d0a2-2ad95cfb2dc8@csgroup.eu>
-References: <7107fcae-5c7a-ac94-8d89-326f2cd4cd33@infradead.org>
- <8b1cb0a2-ed3a-7da0-a73a-febbda528703@csgroup.eu>
- <20210418174648.GN26583@gate.crashing.org>
- <bf119bfe-7db1-e7f3-d837-f910635eeebb@infradead.org>
- <87sg3mct3x.fsf@mpe.ellerman.id.au>
- <bd83b06d-ed36-e600-e988-c1e0014fb9cf@infradead.org>
- <1f337b4c-940e-110c-d0a2-2ad95cfb2dc8@csgroup.eu>
-Date: Tue, 20 Apr 2021 23:15:14 +1000
-Message-ID: <871rb5cd25.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPl492xH6z2xgJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 23:32:54 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FPl3z4k02z9vBKk;
+ Tue, 20 Apr 2021 15:32:47 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id kny706gwQGVr; Tue, 20 Apr 2021 15:32:47 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FPl3z3ndPz9vBKj;
+ Tue, 20 Apr 2021 15:32:47 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C307A8B80A;
+ Tue, 20 Apr 2021 15:32:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id iymder7MgE1A; Tue, 20 Apr 2021 15:32:48 +0200 (CEST)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6A55A8B7ED;
+ Tue, 20 Apr 2021 15:32:48 +0200 (CEST)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 2DA1A6770B; Tue, 20 Apr 2021 13:32:48 +0000 (UTC)
+Message-Id: <0d51620eacf036d683d1a3c41328f69adb601dc0.1618925560.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 1/2] powerpc/64: Fix the definition of the fixmap area
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ chris.packham@alliedtelesis.co.nz
+Date: Tue, 20 Apr 2021 13:32:48 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,109 +57,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 19/04/2021 =C3=A0 23:39, Randy Dunlap a =C3=A9crit=C2=A0:
->> On 4/19/21 6:16 AM, Michael Ellerman wrote:
->>> Randy Dunlap <rdunlap@infradead.org> writes:
->>=20
->>>> Sure.  I'll post them later today.
->>>> They keep FPU and ALTIVEC as independent (build) features.
->>>
->>> Those patches look OK.
->>>
->>> But I don't think it makes sense to support that configuration, FPU=3Dn
->>> ALTVEC=3Dy. No one is ever going to make a CPU like that. We have enough
->>> testing surface due to configuration options, without adding artificial
->>> combinations that no one is ever going to use.
->>>
->>> IMHO :)
->>>
->>> So I'd rather we just make ALTIVEC depend on FPU.
->>=20
->> That's rather simple. See below.
->> I'm doing a bunch of randconfig builds with it now.
->>=20
->> ---
->> From: Randy Dunlap <rdunlap@infradead.org>
->> Subject: [PATCH] powerpc: make ALTIVEC depend PPC_FPU
->>=20
->> On a kernel config with ALTIVEC=3Dy and PPC_FPU not set/enabled,
->> there are build errors:
->>=20
->> drivers/cpufreq/pmac32-cpufreq.c:262:2: error: implicit declaration of f=
-unction 'enable_kernel_fp' [-Werror,-Wimplicit-function-declaration]
->>             enable_kernel_fp();
->> ../arch/powerpc/lib/sstep.c: In function 'do_vec_load':
->> ../arch/powerpc/lib/sstep.c:637:3: error: implicit declaration of functi=
-on 'put_vr' [-Werror=3Dimplicit-function-declaration]
->>    637 |   put_vr(rn, &u.v);
->>        |   ^~~~~~
->> ../arch/powerpc/lib/sstep.c: In function 'do_vec_store':
->> ../arch/powerpc/lib/sstep.c:660:3: error: implicit declaration of functi=
-on 'get_vr'; did you mean 'get_oc'? [-Werror=3Dimplicit-function-declaratio=
-n]
->>    660 |   get_vr(rn, &u.v);
->>        |   ^~~~~~
->>=20
->> In theory ALTIVEC is independent of PPC_FPU but in practice nobody
->> is going to build such a machine, so make ALTIVEC require PPC_FPU
->> by depending on PPC_FPU.
->>=20
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Cc: Segher Boessenkool <segher@kernel.crashing.org>
->> Cc: lkp@intel.com
->> ---
->>   arch/powerpc/platforms/86xx/Kconfig    |    1 +
->>   arch/powerpc/platforms/Kconfig.cputype |    2 ++
->>   2 files changed, 3 insertions(+)
->>=20
->> --- linux-next-20210416.orig/arch/powerpc/platforms/86xx/Kconfig
->> +++ linux-next-20210416/arch/powerpc/platforms/86xx/Kconfig
->> @@ -4,6 +4,7 @@ menuconfig PPC_86xx
->>   	bool "86xx-based boards"
->>   	depends on PPC_BOOK3S_32
->>   	select FSL_SOC
->> +	select PPC_FPU
->>   	select ALTIVEC
->>   	help
->>   	  The Freescale E600 SoCs have 74xx cores.
->> --- linux-next-20210416.orig/arch/powerpc/platforms/Kconfig.cputype
->> +++ linux-next-20210416/arch/powerpc/platforms/Kconfig.cputype
->> @@ -186,6 +186,7 @@ config E300C3_CPU
->>   config G4_CPU
->>   	bool "G4 (74xx)"
->>   	depends on PPC_BOOK3S_32
->> +	select PPC_FPU
->>   	select ALTIVEC
->>=20=20=20
->>   endchoice
->> @@ -309,6 +310,7 @@ config PHYS_64BIT
->>=20=20=20
->>   config ALTIVEC
->>   	bool "AltiVec Support"
->> +	depends on PPC_FPU
->
-> Shouldn't we do it the other way round ? In extenso make ALTIVEC select P=
-PC_FPU and avoid the two=20
-> selects that are above ?
+At the time being, the fixmap area is defined at the top of
+the address space or just below KASAN.
 
-Yes, ALTIVEC should select PPC_FPU.
+This definition is not valid for PPC64.
 
-The latter is (generally) not user selectable, so there's no issue with
-selecting it, whereas the reverse is not true.
+For PPC64, use the top of the I/O space.
 
-For 64-bit Book3S I think we could just always enable ALTIVEC these
-days. It's only Power5 that doesn't have it, and essentially no one is
-running mainline on those AFAIK. But that can be done separately.
+Because of circular dependencies, it is not possible to include
+asm/fixmap.h in asm/book3s/64/pgtable.h , so define a fixed size
+AREA at the top of the I/O space for fixmap and ensure during
+build that the size is big enough.
 
-cheers
+Fixes: 265c3491c4bc ("powerpc: Add support for GENERIC_EARLY_IOREMAP")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 4 +++-
+ arch/powerpc/include/asm/fixmap.h            | 9 +++++++++
+ arch/powerpc/include/asm/nohash/64/pgtable.h | 5 ++++-
+ 3 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 0c89977ec10b..a666d561b44d 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -7,6 +7,7 @@
+ #ifndef __ASSEMBLY__
+ #include <linux/mmdebug.h>
+ #include <linux/bug.h>
++#include <linux/sizes.h>
+ #endif
+ 
+ /*
+@@ -324,7 +325,8 @@ extern unsigned long pci_io_base;
+ #define  PHB_IO_END	(KERN_IO_START + FULL_IO_SIZE)
+ #define IOREMAP_BASE	(PHB_IO_END)
+ #define IOREMAP_START	(ioremap_bot)
+-#define IOREMAP_END	(KERN_IO_END)
++#define IOREMAP_END	(KERN_IO_END - FIXADDR_SIZE)
++#define FIXADDR_SIZE	SZ_32M
+ 
+ /* Advertise special mapping type for AGP */
+ #define HAVE_PAGE_AGP
+diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/fixmap.h
+index 8d03c16a3663..947b5b9c4424 100644
+--- a/arch/powerpc/include/asm/fixmap.h
++++ b/arch/powerpc/include/asm/fixmap.h
+@@ -23,12 +23,17 @@
+ #include <asm/kmap_size.h>
+ #endif
+ 
++#ifdef CONFIG_PPC64
++#define FIXADDR_TOP	(IOREMAP_END + FIXADDR_SIZE)
++#else
++#define FIXADDR_SIZE	0
+ #ifdef CONFIG_KASAN
+ #include <asm/kasan.h>
+ #define FIXADDR_TOP	(KASAN_SHADOW_START - PAGE_SIZE)
+ #else
+ #define FIXADDR_TOP	((unsigned long)(-PAGE_SIZE))
+ #endif
++#endif
+ 
+ /*
+  * Here we define all the compile-time 'special' virtual
+@@ -50,6 +55,7 @@
+  */
+ enum fixed_addresses {
+ 	FIX_HOLE,
++#ifdef CONFIG_PPC32
+ 	/* reserve the top 128K for early debugging purposes */
+ 	FIX_EARLY_DEBUG_TOP = FIX_HOLE,
+ 	FIX_EARLY_DEBUG_BASE = FIX_EARLY_DEBUG_TOP+(ALIGN(SZ_128K, PAGE_SIZE)/PAGE_SIZE)-1,
+@@ -72,6 +78,7 @@ enum fixed_addresses {
+ 		       FIX_IMMR_SIZE,
+ #endif
+ 	/* FIX_PCIE_MCFG, */
++#endif /* CONFIG_PPC32 */
+ 	__end_of_permanent_fixed_addresses,
+ 
+ #define NR_FIX_BTMAPS		(SZ_256K / PAGE_SIZE)
+@@ -98,6 +105,8 @@ enum fixed_addresses {
+ static inline void __set_fixmap(enum fixed_addresses idx,
+ 				phys_addr_t phys, pgprot_t flags)
+ {
++	BUILD_BUG_ON(IS_ENABLED(CONFIG_PPC64) && __FIXADDR_SIZE > FIXADDR_SIZE);
++
+ 	if (__builtin_constant_p(idx))
+ 		BUILD_BUG_ON(idx >= __end_of_fixed_addresses);
+ 	else if (WARN_ON(idx >= __end_of_fixed_addresses))
+diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
+index 6cb8aa357191..57cd3892bfe0 100644
+--- a/arch/powerpc/include/asm/nohash/64/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
+@@ -6,6 +6,8 @@
+  * the ppc64 non-hashed page table.
+  */
+ 
++#include <linux/sizes.h>
++
+ #include <asm/nohash/64/pgtable-4k.h>
+ #include <asm/barrier.h>
+ #include <asm/asm-const.h>
+@@ -54,7 +56,8 @@
+ #define  PHB_IO_END	(KERN_IO_START + FULL_IO_SIZE)
+ #define IOREMAP_BASE	(PHB_IO_END)
+ #define IOREMAP_START	(ioremap_bot)
+-#define IOREMAP_END	(KERN_VIRT_START + KERN_VIRT_SIZE)
++#define IOREMAP_END	(KERN_VIRT_START + KERN_VIRT_SIZE - FIXADDR_SIZE)
++#define FIXADDR_SIZE	SZ_32M
+ 
+ 
+ /*
+-- 
+2.25.0
+
