@@ -1,58 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86039365127
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 05:57:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3890636512E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 06:03:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPVJh3sbqz30Bk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 13:57:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPVRP128lz309k
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 14:03:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hC0I0Ggm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WAzcjt4G;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=hC0I0Ggm; 
+ header.a=rsa-sha256 header.s=201909 header.b=WAzcjt4G; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPVJJ39CCz2xZR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 13:57:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPVQy2cwNz2xZR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 14:03:21 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4FPVJH5FLhz9vDw;
- Tue, 20 Apr 2021 13:57:35 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FPVQt5v9Kz9vDw;
+ Tue, 20 Apr 2021 14:03:18 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1618891055;
- bh=Mm7azyGwSu+QPaCGF+C9AeL9WEx/cUbRkwVin3txMN8=;
+ s=201909; t=1618891401;
+ bh=ykDn0c4Pei/ni8JeosESXjK9PStd/mFtGxVh8YrZKPo=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=hC0I0GgmEBLOXikSZ5kyUwk4yPS7RZ9Q+qEbU9rjqn9iBKrxZXMoAks6AiJ8b8doZ
- Dvsx+LtLtOrAk1dyKCd2Ia8aibWJKmbD0hMhF8wRwFP3a/tPy9sYVFjUMcZUcyz+ia
- UimuKBRw4qCnKPcJWST+Dy/JjW3Bm1LhXZJgHOCbqYZSTzaVNgebOH9zz815/SRd/q
- H/Tf69zCuxV77ulAx/UnQn+napAba5AFmrUSf1U2FgrnrZh86EOTNiIi1cYJtrim1C
- UMutPCFWhaUD4aU5pyHsXiSZjT0y1DnWUT0uNLQ9W3kc9xJHcocWTQsweXWRrbZoin
- I4cqYFmLA31gw==
+ b=WAzcjt4GF5woknj0LOcFLLaZXQt4dxoP7XPsbd7Tfc1ZG1omi42FFMVoV9nSFqQho
+ Nm9HeadCpbCSiKDCzKxPEin83TkkOVRNfkkriIZRvLAzVPgdswB9tsavwJleQekRLX
+ enavKzaRFnyMjr49Bu8x4BXaAh50ERXzYbqbZnasQSQJjlRWT8GT0o8YyeWj7yNT8H
+ SAQkKiu9Z5cM3IrONxJBmovgdEC2V3CpOs3qXHVGyk37PLNqcK3YziP+GQJMOP3Um8
+ uEqVHGZl6+7aGF0tu9EUML9m1weR+PZkuPR+Wlqofl74HscYVDBxO8zGG3CBwzRoKJ
+ ca8b0iHu4Cymg==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/2] hotplug-cpu.c: set UNISOLATE on dlpar_cpu_remove()
- failure
-In-Reply-To: <f4d65cf6-08d1-0bcc-cba2-845099a82aa4@gmail.com>
-References: <20210416210216.380291-1-danielhb413@gmail.com>
- <20210416210216.380291-3-danielhb413@gmail.com>
- <87v98icuek.fsf@mpe.ellerman.id.au>
- <f4d65cf6-08d1-0bcc-cba2-845099a82aa4@gmail.com>
-Date: Tue, 20 Apr 2021 13:57:34 +1000
-Message-ID: <878s5dd2vl.fsf@mpe.ellerman.id.au>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, brouer@redhat.com
+Subject: Re: [PATCH 0/2] Change struct page layout for page_pool
+In-Reply-To: <20210416230724.2519198-1-willy@infradead.org>
+References: <20210416230724.2519198-1-willy@infradead.org>
+Date: Tue, 20 Apr 2021 14:03:18 +1000
+Message-ID: <874kg1d2m1.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -66,34 +61,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: david@gibson.dropbear.id.au
+Cc: arnd@kernel.org, grygorii.strashko@ti.com,
+ linux-snps-arc@lists.infradead.org, netdev@vger.kernel.org,
+ ilias.apalodimas@linaro.org, linux-kernel@vger.kernel.org, "Matthew Wilcox
+ \(Oracle\)" <willy@infradead.org>, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, mgorman@suse.de, mcroce@linux.microsoft.com,
+ mhocko@kernel.org, linuxppc-dev@lists.ozlabs.org, hch@lst.de,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Henrique Barboza <danielhb413@gmail.com> writes:
-> On 4/19/21 9:48 AM, Michael Ellerman wrote:
->> Daniel Henrique Barboza <danielhb413@gmail.com> writes:
->>> The RTAS set-indicator call, when attempting to UNISOLATE a DRC that is
->>> already UNISOLATED or CONFIGURED, returns RTAS_OK and does nothing else
->>> for both QEMU and phyp. This gives us an opportunity to use this
->>> behavior to signal the hypervisor layer when an error during device
->>> removal happens, allowing it to do a proper error handling, while not
->>> breaking QEMU/phyp implementations that don't have this support.
->>>
->>> This patch introduces this idea by unisolating all CPU DRCs that failed
->>> to be removed by dlpar_cpu_remove_by_index(), when handling the
->>> PSERIES_HP_ELOG_ID_DRC_INDEX event. This is being done for this event
->>> only because its the only CPU removal event QEMU uses, and there's no
->>> need at this moment to add this mechanism for phyp only code.
->> 
->> Have you also confirmed that phyp is not bothered by it? ie. everything
->> seems to continue working when you trigger this path on phyp.
->
-> Yes. Daniel Bueso (dbuesom@us.ibm.com) from the partition firmware team
-> helped me with that. We confirmed that phyp returns RTAS_OK under these
-> conditions (Unisolating an unisolated/configured DRC).
+"Matthew Wilcox (Oracle)" <willy@infradead.org> writes:
+> The first patch here fixes two bugs on ppc32, and mips32.  It fixes one
+> bug on arc and arm32 (in certain configurations).  It probably makes
+> sense to get it in ASAP through the networking tree.  I'd like to see
+> testing on those four architectures if possible?
 
-Thanks.
+Sorry I don't have easy access to any hardware that fits the bill. At
+some point I'll be able to go to the office and setup a machine that (I
+think) can test these paths, but I don't have an ETA on that.
+
+You and others seem to have done lots of analysis on this though, so I
+think you should merge the fixes without waiting on ppc32 testing.
 
 cheers
+
+
+>
+> The second patch enables new functionality.  It is much less urgent.
+> I'd really like to see Mel & Michal's thoughts on it.
+>
+> I have only compile-tested these patches.
+>
+> Matthew Wilcox (Oracle) (2):
+>   mm: Fix struct page layout on 32-bit systems
+>   mm: Indicate pfmemalloc pages in compound_head
+>
+>  include/linux/mm.h       | 12 +++++++-----
+>  include/linux/mm_types.h |  9 ++++-----
+>  include/net/page_pool.h  | 12 +++++++++++-
+>  net/core/page_pool.c     | 12 +++++++-----
+>  4 files changed, 29 insertions(+), 16 deletions(-)
+>
+> -- 
+> 2.30.2
