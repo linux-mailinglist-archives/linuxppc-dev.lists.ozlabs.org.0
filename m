@@ -2,64 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581E2366179
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 23:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 720CE3661AE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 23:36:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPxSK1qk5z302y
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 07:21:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPxpR2f3nz304J
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 07:36:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vAe8p2Dz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EHWjaaxG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=drt@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=vAe8p2Dz; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=EHWjaaxG; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPxRq6pt2z2xZn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 07:20:39 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E520F613FA
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 21:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1618953636;
- bh=D/HoBu+aWo6sy7+88V9ZJnpot0ZpiBRBCM4AzeXp6I8=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=vAe8p2Dzo0p/1DzAvmk3xA9uTkzgCZz+eSqDOB/ryS0GOOeapQ5uE8I65EWIWYBE4
- IMFGcCAqURUY6psWn70FWpbxr9lKHhXPGbHiwVaAbAFYomKE7vRVb0IMZ+jpLt4XPN
- yTq7Kb2AJ3ZEgheK0Rn91W5gF/PwoZiOD67xuJ/FVe6l9LjYWMmiwT13tL3545+OqE
- o2wDlVYDVO8kqeTNxUaYQboz5d2iZbekWPSw3gtZR04LPxTyRIgU+qddOr8dwJxn/J
- zgmXNsjS4fMh02jRkrdeGbCTBBrvvOFpsPQwG3DILsTQJDgInlZZQZxj7TfUlhxtbJ
- fhQUjN7vwSorg==
-Received: by mail-wm1-f48.google.com with SMTP id n127so9224242wmb.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 14:20:36 -0700 (PDT)
-X-Gm-Message-State: AOAM532GrZNti/GPUUZpPAHoDn3l6TCU9J7e71sUndYYcb0PHyr1p35a
- PSGe8Fj988CfD1gOixJd2nUA2OQ7hhJ+Ggp2+Ns=
-X-Google-Smtp-Source: ABdhPJwrEit0y72qRaTuoH/3wg/uStL6F0tnFo57QDj1Zmqkrq7O3+IN+SwFnfTQrVplKgk1AFIl7KVtwhj1AIi6XmY=
-X-Received: by 2002:a05:600c:4149:: with SMTP id
- h9mr6135531wmm.43.1618953635407; 
- Tue, 20 Apr 2021 14:20:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210416230724.2519198-1-willy@infradead.org>
- <20210416230724.2519198-2-willy@infradead.org>
- <20210417024522.GP2531743@casper.infradead.org>
- <9f99b0a0-f1c1-f3b0-5f84-3a4bfc711725@synopsys.com>
- <20210420031029.GI2531743@casper.infradead.org>
- <CAK8P3a0KUwf1Z0bHiUaHC2nHztevkxg5_FBSzHddNeSsBayWUA@mail.gmail.com>
- <8d0fce1c-be7c-1c9b-bf5c-0c531db496ac@synopsys.com>
-In-Reply-To: <8d0fce1c-be7c-1c9b-bf5c-0c531db496ac@synopsys.com>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Tue, 20 Apr 2021 23:20:19 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3rzz1gfNLoGC8aZJiAC-tgZYD6P8pQsoEfgCAmQK=FAw@mail.gmail.com>
-Message-ID: <CAK8P3a3rzz1gfNLoGC8aZJiAC-tgZYD6P8pQsoEfgCAmQK=FAw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm: Fix struct page layout on 32-bit systems
-To: Vineet Gupta <Vineet.Gupta1@synopsys.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPxp14s2Yz2yZC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 07:36:24 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13KLYiOp019260; Tue, 20 Apr 2021 17:36:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=279KTkTlVNPPXoGes996qXDFJXDvMSQYOJw4ZGTV3gY=;
+ b=EHWjaaxGrMGntr/+VSIrQxMsz0q421GO73ws/1oW6RpdeBp+TElZfzO4p27T5Hx6sHit
+ pJd8+qw5SqzjtN4j+GxHed4KnjOqlREnUD+elISQFNq6uE2JhBdbSd2DYjAp+cbn8Hyd
+ hojDvaepr1LL2vx6oAf40nN4x7N16VF0VFC1qoKIpLs07stBJwjshyWJ+lhWZ1Tn05oP
+ uGccHqcNZ8VKcALv8+68b3CXkkIajlZpPhZkvij0DOWd6yT/Q57NXgQ1H4Grk3CrMwpz
+ UXeFvCOKLdEqnueCSHVWci5ZTzy7qeFAcNCF1hbbXKCWzPIHbBEMP+VWNYco1SdqTdol Ew== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3821dk24m1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Apr 2021 17:36:12 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13KLShBw031741;
+ Tue, 20 Apr 2021 21:36:11 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 37yqaa4hjp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Apr 2021 21:36:11 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13KLaBu532244124
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Apr 2021 21:36:11 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E8DFBAE060;
+ Tue, 20 Apr 2021 21:36:10 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 52FC6AE05F;
+ Tue, 20 Apr 2021 21:36:10 +0000 (GMT)
+Received: from ltcalpine2-lp16.aus.stglabs.ibm.com (unknown [9.40.195.199])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 20 Apr 2021 21:36:10 +0000 (GMT)
+From: Dany Madden <drt@linux.ibm.com>
+To: davem@davemloft.net, kuba@kernel.org
+Subject: [PATCH V2 net] ibmvnic: Continue with reset if set link down failed
+Date: Tue, 20 Apr 2021 17:35:17 -0400
+Message-Id: <20210420213517.24171-1-drt@linux.ibm.com>
+X-Mailer: git-send-email 2.18.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: eAGn6iyy4PhayeiLV7RrjpBpq3V1izUI
+X-Proofpoint-ORIG-GUID: eAGn6iyy4PhayeiLV7RrjpBpq3V1izUI
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-20_11:2021-04-20,
+ 2021-04-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 clxscore=1011 impostorscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 priorityscore=1501 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104200150
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,65 +92,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "grygorii.strashko@ti.com" <grygorii.strashko@ti.com>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "ilias.apalodimas@linaro.org" <ilias.apalodimas@linaro.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Matthew Wilcox <willy@infradead.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "mgorman@suse.de" <mgorman@suse.de>,
- "brouer@redhat.com" <brouer@redhat.com>,
- "mcroce@linux.microsoft.com" <mcroce@linux.microsoft.com>,
- "mhocko@kernel.org" <mhocko@kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "hch@lst.de" <hch@lst.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: tlfalcon@linux.ibm.com, netdev@vger.kernel.org, paulus@samba.org,
+ drt@linux.ibm.com, sukadev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 20, 2021 at 11:14 PM Vineet Gupta
-<Vineet.Gupta1@synopsys.com> wrote:
-> On 4/20/21 12:07 AM, Arnd Bergmann wrote:
+When ibmvnic gets a FATAL error message from the vnicserver, it marks
+the Command Respond Queue (CRQ) inactive and resets the adapter. If this
+FATAL reset fails and a transmission timeout reset follows, the CRQ is
+still inactive, ibmvnic's attempt to set link down will also fail. If
+ibmvnic abandons the reset because of this failed set link down and this
+is the last reset in the workqueue, then this adapter will be left in an
+inoperable state.
 
-> >
-> > which means that half the 32-bit architectures do this. This may
-> > cause more problems when arc and/or microblaze want to support
-> > 64-bit kernels and compat mode in the future on their latest hardware,
-> > as that means duplicating the x86 specific hacks we have for compat.
-> >
-> > What is alignof(u64) on 64-bit arc?
->
-> $ echo 'int a = __alignof__(long long);' | arc64-linux-gnu-gcc -xc -
-> -Wall -S -o - | grep -A1 a: | tail -n 1 | cut -f 3
-> 8
+Instead, make the driver ignore this link down failure and continue to
+free and re-register CRQ so that the adapter has an opportunity to
+recover.
 
-Ok, good.
+Fixes: ed651a10875f ("ibmvnic: Updated reset handling")
+Signed-off-by: Dany Madden <drt@linux.ibm.com>
+Reviewed-by: Rick Lindsley <ricklind@linux.ibm.com>
+Reviewed-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+---
+Changes in V2:
+- Update description to clarify background for the patch
+- Include Reviewed-by tags
+---
+ drivers/net/ethernet/ibm/ibmvnic.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-> Yeah ARCv2 alignment of 4 for 64-bit data was a bit of surprise finding
-> for me as well. When 64-bit load/stores were initially targeted by the
-> internal Metaware compiler (llvm based) they decided to keep alignment
-> to 4 still (granted hardware allowed this) and then gcc guys decided to
-> follow the same ABI. I only found this by accident :-)
->
-> Can you point me to some specifics on the compat issue. For better of
-> worse, arc64 does''t have a compat 32-bit mode, so everything is
-> 64-on-64 or 32-on-32 (ARC32 flavor of ARCv3)
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index ffb2a91750c7..4bd8c5d1a275 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -1970,8 +1970,10 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+ 			rtnl_unlock();
+ 			rc = set_link_state(adapter, IBMVNIC_LOGICAL_LNK_DN);
+ 			rtnl_lock();
+-			if (rc)
+-				goto out;
++			if (rc) {
++				netdev_dbg(netdev,
++					   "Setting link down failed rc=%d. Continue anyway\n", rc);
++			}
+ 
+ 			if (adapter->state == VNIC_OPEN) {
+ 				/* When we dropped rtnl, ibmvnic_open() got
+-- 
+2.26.2
 
-In that case, there should be no problem for you.
-
-The main issue is with system calls and ioctls that contain a misaligned
-struct member like
-
-struct s {
-       u32 a;
-       u64 b;
-};
-
-Passing this structure by reference from a 32-bit user space application
-to a 64-bit kernel with different alignment constraints means that the
-kernel has to convert the structure layout. See
-compat_ioctl_preallocate() in fs/ioctl.c for one such example.
-
-       Arnd
