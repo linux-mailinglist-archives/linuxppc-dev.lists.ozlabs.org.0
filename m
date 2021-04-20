@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82890365110
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 05:43:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C476365111
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 05:43:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPTzd3g5Cz30CS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 13:43:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPV0X3ZkNz30Q9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 13:43:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nsmhuMsi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=k6jJY9Wr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,42 +17,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=nsmhuMsi; 
+ header.a=rsa-sha256 header.s=201909 header.b=k6jJY9Wr; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPTzC3QZmz2xYn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 13:42:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPV070KlFz2xfk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 13:43:35 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4FPTz61kNBz9vDk;
- Tue, 20 Apr 2021 13:42:41 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FPV055YrFz9vFD;
+ Tue, 20 Apr 2021 13:43:33 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1618890162;
- bh=dO9ijqum0XbZRHvNMx1Ir45bBqpQfOH8pKy6EjA/0Vs=;
+ s=201909; t=1618890214;
+ bh=jxmTx0ZoVRaEB7nRR/gUMFpdqQqapvdEocelqPt1wTs=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=nsmhuMsiUqufy7si0DK/4vPCU6jhDeb6cGiOyWiVvVAkLHt4vBDYqBNB/YUMgQmXO
- 3I4f+otHvFsdbT6rPWkTL+kVrKSQJu/tNs6dHhWuqIC0J36JHnEqXvrJJaUYdAH4ul
- 5S11zyrfEKQiBJdNDhZiZ9uTTEaprloZmp7SCTFCY21k7THgZtXBk8qS8JHyZ4DgBn
- Sx1VbBms6uZP6qr4RmBSNnYNhAlSRVNPCdGTjv/Bg34oW9d38ttl8QBpoi2n3Edvaj
- Ws33JiRGUp6LeaG3yFJExbV7HOuREF7awx+mVrRodNEU+o3YhwQxJBD+H+/WPyDgNp
- SA1qIDbreGfwA==
+ b=k6jJY9WrR/0O7CjJyN3N7nXe1Hu4GwfDNn3en9SPZ55OBPPipQe8mhrv0m2DYBf7N
+ k58RcU/d96WEZ1WbwR5PTrUfh6M+7sPBQJpRpo97yDn32WEAxRhzd0qyUULmvRsJbO
+ nULlirbofIIlMzDEiwTwb6Ku1MtfMHGGcl3t9gOugHPzUK0muw1rXCK7yiEmH0YNgC
+ tkfHPFhBcEoFK7+xoIcn14YxQ2cY/XoVTF7T6JOF+3lJ2OUo6VeXbr39YsIQo1emoC
+ N0+VrkcjQ7wQQ17+V2ZL5EcQ/HHyP5U9mm4pJ6N04agF5z4YBFh7RjcPrJq+PBG0tz
+ 0Llwet/PhB3iA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries: Add shutdown() to vio_driver and vio_bus
-In-Reply-To: <59bd8028-cb1a-fdf6-74ce-68e868e4f486@linux.ibm.com>
-References: <20210402001325.939668-1-tyreld@linux.ibm.com>
- <f326def4-0db0-f924-1700-dd7be3154153@linux.ibm.com>
- <87im4ldrft.fsf@mpe.ellerman.id.au>
- <59bd8028-cb1a-fdf6-74ce-68e868e4f486@linux.ibm.com>
-Date: Tue, 20 Apr 2021 13:42:37 +1000
-Message-ID: <87mtttd3ki.fsf@mpe.ellerman.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+Subject: Re: [PATCH v4 4/9] powerpc/mm/book3s64: Fix possible build error
+In-Reply-To: <20210414085915.301189-5-aneesh.kumar@linux.ibm.com>
+References: <20210414085915.301189-1-aneesh.kumar@linux.ibm.com>
+ <20210414085915.301189-5-aneesh.kumar@linux.ibm.com>
+Date: Tue, 20 Apr 2021 13:43:33 +1000
+Message-ID: <87k0oxd3iy.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,63 +64,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com,
+ kaleshsingh@google.com, joel@joelfernandes.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tyrel Datwyler <tyreld@linux.ibm.com> writes:
-> On 4/17/21 5:30 AM, Michael Ellerman wrote:
->> Tyrel Datwyler <tyreld@linux.ibm.com> writes:
->>> On 4/1/21 5:13 PM, Tyrel Datwyler wrote:
->>>> Currently, neither the vio_bus or vio_driver structures provide support
->>>> for a shutdown() routine.
->>>>
->>>> Add support for shutdown() by allowing drivers to provide a
->>>> implementation via function pointer in their vio_driver struct and
->>>> provide a proper implementation in the driver template for the vio_bus
->>>> that calls a vio drivers shutdown() if defined.
->>>>
->>>> In the case that no shutdown() is defined by a vio driver and a kexec is
->>>> in progress we implement a big hammer that calls remove() to ensure no
->>>> further DMA for the devices is possible.
->>>>
->>>> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
->>>> ---
->>>
->>> Ping... any comments, problems with this approach?
->> 
->> The kexec part seems like a bit of a hack.
->> 
->> It also doesn't help for kdump, when none of the shutdown code is run.
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> Update _tlbiel_pid() such that we can avoid build errors like below when
+> using this function in other places.
 >
-> If I understand correctly for kdump we have a reserved memory space where the
-> kdump kernel is loaded, but for kexec the memory region isn't reserved ahead of
-> time meaning we can try and load the kernel over potential memory used for DMA
-> by the current kernel.
-
-That's correct.
-
->> How many drivers do we have? Can we just implement a proper shutdown for
->> them?
+> arch/powerpc/mm/book3s64/radix_tlb.c: In function =E2=80=98__radix__flush=
+_tlb_range_psize=E2=80=99:
+> arch/powerpc/mm/book3s64/radix_tlb.c:114:2: warning: =E2=80=98asm=E2=80=
+=99 operand 3 probably does not match constraints
+>   114 |  asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
+>       |  ^~~
+> arch/powerpc/mm/book3s64/radix_tlb.c:114:2: error: impossible constraint =
+in =E2=80=98asm=E2=80=99
+> make[4]: *** [scripts/Makefile.build:271: arch/powerpc/mm/book3s64/radix_=
+tlb.o] Error 1
+> m
 >
-> Well that is the end goal. I just don't currently have the bandwidth to do each
-> driver myself with a proper shutdown sequence, and thought this was a launching
-> off point to at least introduce the shutdown callback to the VIO bus.
-
-Fair enough.
-
-> Off the top of my head we have 3 storage drivers, 2 network drivers, vtpm, vmc,
-> pseries_rng, nx, nx842, hvcs, hvc_vio.
+> With this fix, we can also drop the __always_inline in __radix_flush_tlb_=
+range_psize
+> which was added by commit e12d6d7d46a6 ("powerpc/mm/radix: mark __radix__=
+flush_tlb_range_psize() as __always_inline")
 >
-> I can drop the kexec_in_progress hammer and just have each driver call remove()
-> themselves in their shutdown function. Leave it to each maintainer to decide if
-> remove() is enough or if there is a more lightweight quiesce sequence they
-> choose to implement.
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/mm/book3s64/radix_tlb.c | 26 +++++++++++++++++---------
+>  1 file changed, 17 insertions(+), 9 deletions(-)
 
-That's OK, you've convinced me. I'll take it as-is.
-
-Eventually it would be good for drivers to implement shutdown in the
-optimal way for their device, but that can be done incrementally.
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
 cheers
+
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3=
+s64/radix_tlb.c
+> index 409e61210789..817a02ef6032 100644
+> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+> @@ -291,22 +291,30 @@ static inline void fixup_tlbie_lpid(unsigned long l=
+pid)
+>  /*
+>   * We use 128 set in radix mode and 256 set in hpt mode.
+>   */
+> -static __always_inline void _tlbiel_pid(unsigned long pid, unsigned long=
+ ric)
+> +static inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
+>  {
+>  	int set;
+>=20=20
+>  	asm volatile("ptesync": : :"memory");
+>=20=20
+> -	/*
+> -	 * Flush the first set of the TLB, and if we're doing a RIC_FLUSH_ALL,
+> -	 * also flush the entire Page Walk Cache.
+> -	 */
+> -	__tlbiel_pid(pid, 0, ric);
+> +	switch (ric) {
+> +	case RIC_FLUSH_PWC:
+>=20=20
+> -	/* For PWC, only one flush is needed */
+> -	if (ric =3D=3D RIC_FLUSH_PWC) {
+> +		/* For PWC, only one flush is needed */
+> +		__tlbiel_pid(pid, 0, RIC_FLUSH_PWC);
+>  		ppc_after_tlbiel_barrier();
+>  		return;
+> +	case RIC_FLUSH_TLB:
+> +		__tlbiel_pid(pid, 0, RIC_FLUSH_TLB);
+> +		break;
+> +	case RIC_FLUSH_ALL:
+> +	default:
+> +		/*
+> +		 * Flush the first set of the TLB, and if
+> +		 * we're doing a RIC_FLUSH_ALL, also flush
+> +		 * the entire Page Walk Cache.
+> +		 */
+> +		__tlbiel_pid(pid, 0, RIC_FLUSH_ALL);
+>  	}
+>=20=20
+>  	if (!cpu_has_feature(CPU_FTR_ARCH_31)) {
+> @@ -1176,7 +1184,7 @@ void radix__tlb_flush(struct mmu_gather *tlb)
+>  	}
+>  }
+>=20=20
+> -static __always_inline void __radix__flush_tlb_range_psize(struct mm_str=
+uct *mm,
+> +static void __radix__flush_tlb_range_psize(struct mm_struct *mm,
+>  				unsigned long start, unsigned long end,
+>  				int psize, bool also_pwc)
+>  {
+> --=20
+> 2.30.2
