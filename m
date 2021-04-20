@@ -1,57 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829013650B0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 05:11:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82890365110
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 05:43:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPTHH3LxCz2xZL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 13:11:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPTzd3g5Cz30CS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 13:43:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=cmFm54dB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nsmhuMsi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=cmFm54dB; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=nsmhuMsi; 
  dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPTGq2ZBVz2xYk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 13:11:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=AqTuRNKIkAmLe8Av3ztkUAdmYLIeq8PftziUxkdnED4=; b=cmFm54dBhWL/FJIZPa1qLdPQCh
- Hw3d+6yeN1BRhVLA8lXi0+OxBNGlwLN0iOxnz1tNw19z7dwED70uUHLHZ0QHCfVKNKBQenpL6sjTp
- RiTDO60rG0H/+Io0sMW2Sl9Yi8uXuQbOmHCm5NzIBmET6uhHQgkerVA9dwlFEY8qLE05GHB/V0PuZ
- Ao/jqa8j5AAd9wR8FIZ6K7RUe8Zya2Y8SayHTkT8KDCcVbyrGWXzGbXLEMb2IexWdlSkgwpOFyitu
- JUjQ4dGrsXV5WoOuWngimlVppnjX5FKsAVbm0+zGZtX6LrP+cU2NI9VCFMIOrg0zh0XBFnqcrMJKV
- Y0NuvgGw==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
- Linux)) id 1lYgmT-00Ee86-KY; Tue, 20 Apr 2021 03:10:34 +0000
-Date: Tue, 20 Apr 2021 04:10:29 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Vineet Gupta <Vineet.Gupta1@synopsys.com>
-Subject: Re: [PATCH 1/2] mm: Fix struct page layout on 32-bit systems
-Message-ID: <20210420031029.GI2531743@casper.infradead.org>
-References: <20210416230724.2519198-1-willy@infradead.org>
- <20210416230724.2519198-2-willy@infradead.org>
- <20210417024522.GP2531743@casper.infradead.org>
- <9f99b0a0-f1c1-f3b0-5f84-3a4bfc711725@synopsys.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPTzC3QZmz2xYn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 13:42:46 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FPTz61kNBz9vDk;
+ Tue, 20 Apr 2021 13:42:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1618890162;
+ bh=dO9ijqum0XbZRHvNMx1Ir45bBqpQfOH8pKy6EjA/0Vs=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=nsmhuMsiUqufy7si0DK/4vPCU6jhDeb6cGiOyWiVvVAkLHt4vBDYqBNB/YUMgQmXO
+ 3I4f+otHvFsdbT6rPWkTL+kVrKSQJu/tNs6dHhWuqIC0J36JHnEqXvrJJaUYdAH4ul
+ 5S11zyrfEKQiBJdNDhZiZ9uTTEaprloZmp7SCTFCY21k7THgZtXBk8qS8JHyZ4DgBn
+ Sx1VbBms6uZP6qr4RmBSNnYNhAlSRVNPCdGTjv/Bg34oW9d38ttl8QBpoi2n3Edvaj
+ Ws33JiRGUp6LeaG3yFJExbV7HOuREF7awx+mVrRodNEU+o3YhwQxJBD+H+/WPyDgNp
+ SA1qIDbreGfwA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries: Add shutdown() to vio_driver and vio_bus
+In-Reply-To: <59bd8028-cb1a-fdf6-74ce-68e868e4f486@linux.ibm.com>
+References: <20210402001325.939668-1-tyreld@linux.ibm.com>
+ <f326def4-0db0-f924-1700-dd7be3154153@linux.ibm.com>
+ <87im4ldrft.fsf@mpe.ellerman.id.au>
+ <59bd8028-cb1a-fdf6-74ce-68e868e4f486@linux.ibm.com>
+Date: Tue, 20 Apr 2021 13:42:37 +1000
+Message-ID: <87mtttd3ki.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9f99b0a0-f1c1-f3b0-5f84-3a4bfc711725@synopsys.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,32 +64,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "arnd@kernel.org" <arnd@kernel.org>,
- "grygorii.strashko@ti.com" <grygorii.strashko@ti.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "ilias.apalodimas@linaro.org" <ilias.apalodimas@linaro.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "mhocko@kernel.org" <mhocko@kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "mgorman@suse.de" <mgorman@suse.de>,
- "brouer@redhat.com" <brouer@redhat.com>,
- "mcroce@linux.microsoft.com" <mcroce@linux.microsoft.com>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "hch@lst.de" <hch@lst.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 20, 2021 at 02:48:17AM +0000, Vineet Gupta wrote:
-> > 32-bit architectures which expect 8-byte alignment for 8-byte integers
-> > and need 64-bit DMA addresses (arc, arm, mips, ppc) had their struct
-> > page inadvertently expanded in 2019.
-> 
-> FWIW, ARC doesn't require 8 byte alignment for 8 byte integers. This is 
-> only needed for 8-byte atomics due to the requirements of LLOCKD/SCOND 
-> instructions.
+Tyrel Datwyler <tyreld@linux.ibm.com> writes:
+> On 4/17/21 5:30 AM, Michael Ellerman wrote:
+>> Tyrel Datwyler <tyreld@linux.ibm.com> writes:
+>>> On 4/1/21 5:13 PM, Tyrel Datwyler wrote:
+>>>> Currently, neither the vio_bus or vio_driver structures provide support
+>>>> for a shutdown() routine.
+>>>>
+>>>> Add support for shutdown() by allowing drivers to provide a
+>>>> implementation via function pointer in their vio_driver struct and
+>>>> provide a proper implementation in the driver template for the vio_bus
+>>>> that calls a vio drivers shutdown() if defined.
+>>>>
+>>>> In the case that no shutdown() is defined by a vio driver and a kexec is
+>>>> in progress we implement a big hammer that calls remove() to ensure no
+>>>> further DMA for the devices is possible.
+>>>>
+>>>> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+>>>> ---
+>>>
+>>> Ping... any comments, problems with this approach?
+>> 
+>> The kexec part seems like a bit of a hack.
+>> 
+>> It also doesn't help for kdump, when none of the shutdown code is run.
+>
+> If I understand correctly for kdump we have a reserved memory space where the
+> kdump kernel is loaded, but for kexec the memory region isn't reserved ahead of
+> time meaning we can try and load the kernel over potential memory used for DMA
+> by the current kernel.
 
-Ah, like x86?  OK, great, I'll drop your arch from the list of
-affected.  Thanks!
+That's correct.
+
+>> How many drivers do we have? Can we just implement a proper shutdown for
+>> them?
+>
+> Well that is the end goal. I just don't currently have the bandwidth to do each
+> driver myself with a proper shutdown sequence, and thought this was a launching
+> off point to at least introduce the shutdown callback to the VIO bus.
+
+Fair enough.
+
+> Off the top of my head we have 3 storage drivers, 2 network drivers, vtpm, vmc,
+> pseries_rng, nx, nx842, hvcs, hvc_vio.
+>
+> I can drop the kexec_in_progress hammer and just have each driver call remove()
+> themselves in their shutdown function. Leave it to each maintainer to decide if
+> remove() is enough or if there is a more lightweight quiesce sequence they
+> choose to implement.
+
+That's OK, you've convinced me. I'll take it as-is.
+
+Eventually it would be good for drivers to implement shutdown in the
+optimal way for their device, but that can be done incrementally.
+
+cheers
