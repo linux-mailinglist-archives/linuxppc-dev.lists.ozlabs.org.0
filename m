@@ -2,72 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76CA365335
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 09:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 687E4365337
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 09:24:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPZsm510Pz301s
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 17:23:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPZvK33kXz30Bk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 17:24:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=fossix-org.20150623.gappssmtp.com header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=dEr5M99l;
+	dkim=pass (2048-bit key; unprotected) header.d=fossix-org.20150623.gappssmtp.com header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=Cr3apiOe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com;
+ (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com;
  envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=fossix-org.20150623.gappssmtp.com
  header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=dEr5M99l; dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
- [IPv6:2607:f8b0:4864:20::1034])
+ header.s=20150623 header.b=Cr3apiOe; dkim-atps=neutral
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPZsL29jMz2xZt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 17:23:01 +1000 (AEST)
-Received: by mail-pj1-x1034.google.com with SMTP id nk8so6194078pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 00:23:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPZtw3zj6z2xZt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 17:24:24 +1000 (AEST)
+Received: by mail-pj1-x102a.google.com with SMTP id
+ u14-20020a17090a1f0eb029014e38011b09so15120151pja.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 00:24:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=fossix-org.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=uCuS/cB4YZiJlCq7ud3/A4RuS13zTWOK52tEKreg/fI=;
- b=dEr5M99lbGaSE9G5XBYJs6N+ViDRVsTEh8fwUynKbW2Jy1VhlAe/B2LZdRw72JrZK7
- +8DI4hUanKOC7haCtEY5zwZhwIZONaZ3zvTXmWa8wANprEls91RT3hxl8SidmwEWai95
- 6vEDUBh/PVGU80qaZooBeTlGW52JwSbzOJaI3lGWLeh5wW+PnEHiMREy4kKUjiGuUlJ7
- KCc67DDTT6j7A55d1OEnDD1jQHGK6ubZ+oQb6Z+aDXIVFsF6i9cJM/T/05zvJBYw65sl
- S4R8WfYwE5/Gz4z1DMNkC0lawHnuDuUYH00uwGcd4aqla01JojKnAvAfoWj5GjoZ9kpg
- x+wg==
+ h=from:to:cc:subject:in-reply-to:references:reviewed-by:date
+ :message-id:mime-version;
+ bh=O1OrhR38q4N2avuzNsnSKvEpxjKEnimSEKoMMTI3jEY=;
+ b=Cr3apiOezxEVepCDhOQQyT15ul3v/Xx3qyN1c0k1SMc/c8HIEnxndMfoQO5lRiKhjV
+ RV477qN4G3Th2fBac+o5mTKOJ+VRczoKz12w10XlyBJu10Cxezy2R3hvl77vRzJx8yyj
+ Fqqf+AtEcZggHhFYhmhqgZuNVQZ0Fx58E0xwnNsBLe77r/Cdhmst+Chn22Gz4scW00Mz
+ AzThL9JWA2u24BUEX84s0O2xjO1Ap984Kn2MXzIEHgYqMq1jfk/ThGJXKg92EVjHPQIJ
+ fa27HGG150roXf9pGANY2CLxr5NBjChVYYBV0C1Pivcw1WXXyvsYAdDpeB8GU5+Gs8qa
+ dApQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=uCuS/cB4YZiJlCq7ud3/A4RuS13zTWOK52tEKreg/fI=;
- b=tsZG2pszeB+QjZCWrjp2lzKqqKO/3MKpbhOkQelJTEXcYRQ8qWWSaRU3v5zCBQJv/r
- OYi/FdYdPUvU8MSdYtc5G1reI66VP7ylwLImBSYq/BQVM6zsLay7xMJMLuA384k8Y3Jo
- XYKn8cUWy8ToDt9xtV6Ang70H7deAtuv60baM6RDAB6B7kN8XK4PjGGeHllCzurMsCza
- 6QmvLv7EJtQ0whqpSHrWRVvPEerdD1IRehj+BjuSHSs231Pc6E5BimG8HTFGjM5dAZvz
- 1DV8tsHivthsBok1v4bSVcT63eWufhTVg0mQN+q5Nk3MiIEDtQ/+FJNQz+YVUFpfUKkU
- Di8g==
-X-Gm-Message-State: AOAM531xct8dFdXy1ZcRiwqXUf4DEbD7KDjQmdLSy6pr+tZxXU9Zdo/S
- 5J/G1X7sViVd5HQDbD3l8VVRlQ==
-X-Google-Smtp-Source: ABdhPJxjKpxF+IBrp2fLed/h1EfiR/iguCib9COfdVek/gTYFiS4kxdlI4gIi1oh+NJujcshTKBkrg==
-X-Received: by 2002:a17:903:20ca:b029:eb:6c72:fdbb with SMTP id
- i10-20020a17090320cab02900eb6c72fdbbmr28098732plb.18.1618903379773; 
- Tue, 20 Apr 2021 00:22:59 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references
+ :reviewed-by:date:message-id:mime-version;
+ bh=O1OrhR38q4N2avuzNsnSKvEpxjKEnimSEKoMMTI3jEY=;
+ b=iy+34Y1yEvpplXDicqcqZhp9hnIPDpRuPsLp7zBkqgyGcPbG1/j5PMNqchS5H6IUYz
+ bOzHKMFrup+6qfvwnjqdH6H0mUJPg/eJcW4IJv9Sx1z77XBItdm2AWGQJyv30PNk+fuW
+ 0CxpH+f/v9bjcaXojwdvvimbji4lusyatql8takBWQnRUxtOmyRoc4xpCf7685S5RAYX
+ +v/k/vQD/yWyG2xrh82ZVIYhm6eU9YELVQ7DEXb9YIQtHPUiQpX5VlicfkVuqy7VbHoM
+ PoSa9i/i8b+0ZLyX1A8VL0hTPzF7mIRh+Wsgt1tZwjrWicWfULk5ntSMfunEUQqfenPD
+ MH8g==
+X-Gm-Message-State: AOAM532N6INy7UCVfm2zU36RUmlHcww/DzxCKd9ZXBCxHC2pJ3DetUnU
+ mtk5PlaNmMxSPhkBif5dpW9+YA==
+X-Google-Smtp-Source: ABdhPJx+QT1ziDSztABYFkJSAA17XStiINosL6qdHFnLWZM8oEJcEJ1DF1jP+tyUfJ+u35LBeNIQCA==
+X-Received: by 2002:a17:90b:249:: with SMTP id
+ fz9mr3338742pjb.167.1618903461120; 
+ Tue, 20 Apr 2021 00:24:21 -0700 (PDT)
 Received: from localhost ([103.21.79.4])
- by smtp.gmail.com with ESMTPSA id w6sm1261548pfj.85.2021.04.20.00.22.59
+ by smtp.gmail.com with ESMTPSA id 14sm14233546pfl.1.2021.04.20.00.24.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Apr 2021 00:22:59 -0700 (PDT)
+ Tue, 20 Apr 2021 00:24:20 -0700 (PDT)
 From: Santosh Sivaraj <santosh@fossix.org>
 To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
  mpe@ellerman.id.au
 Subject: Re: [PATCH] powerpc/mce: save ignore_event flag unconditionally for UE
 In-Reply-To: <20210407045816.352276-1-ganeshgr@linux.ibm.com>
 References: <20210407045816.352276-1-ganeshgr@linux.ibm.com>
-Date: Tue, 20 Apr 2021 12:52:55 +0530
-Message-ID: <87eef5zagg.fsf@fossix.org>
+Reviewed-by: Santosh Sivaraj <santosh@fossix.org>
+Date: Tue, 20 Apr 2021 12:54:16 +0530
+Message-ID: <87bla9zae7.fsf@fossix.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -147,7 +150,7 @@ check for MCE_ERROR_TYPE_UE, instead of repeating the same condition again.
 
 Except for the above nit
 
-
+Reviewed-by: Santosh Sivaraj <santosh@fossix.org>
 
 Thanks,
 Santosh
