@@ -2,61 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A6C13652E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 09:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4541E365329
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 09:22:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPZXl6bYQz30BJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 17:08:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPZr64qHLz30Bl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 17:21:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bGeMIcK4;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.a=rsa-sha256 header.s=google header.b=JDcuGmSn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=bGeMIcK4; 
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::634;
+ helo=mail-ej1-x634.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.a=rsa-sha256 header.s=google header.b=JDcuGmSn; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com
+ [IPv6:2a00:1450:4864:20::634])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPZXK0ykhz2xYj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 17:08:16 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3EC1A613BF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 07:08:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1618902493;
- bh=DOW/KsRt5H6t1Pgz46XK8iIY+rilYGODWaTzp+KKVBg=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=bGeMIcK4oyaw9PKWK4LZfywrca9QFox2DwtXtJf3Rpcw/1K0zEYwkxTvdm9Wy2p/k
- 6FGb/yaJGmnEbuwRVwyZQkwjZldF6m9tFCT+KATXFY8IrIR886CLL8liQSNzWyh2yw
- iJSJjHp3Z+yxDM9fPgaOfcQdSbHoO+TCqiHV+U8+DlXk0kyo+sveadEsfFEWKESyT3
- JVcLzmur1EbwKBuEBrxveDtDEWusqRL4P/EY4pV14VHKqTqzeLRn2qWiYT9IAC9QW1
- bErddbD2N2wX+mbwamKuFEVf0NAPJ+BT3maEQ6dNvAXY5/xnZvWRUHB1OYwLit78CN
- d989R9HQVE2fA==
-Received: by mail-wm1-f54.google.com with SMTP id z6so1693350wmg.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 00:08:13 -0700 (PDT)
-X-Gm-Message-State: AOAM530QBuC0r0eiI5urKwvX0saAga/Zoh+Me37fBqIziqaJ4Uv5Tk3h
- xQtxLWf65SrUmayipQBs8dvz+ZQLCIU0aGb6oG0=
-X-Google-Smtp-Source: ABdhPJzw8YTyu5KshxUEZlu3irZnfAegvQ8VILMGpH1RGSIFiQhsKgjG1gjcqz1I3fFsHj1Q1aLjZg7NWbZtj6Nq3DE=
-X-Received: by 2002:a7b:c14a:: with SMTP id z10mr2758133wmi.75.1618902491684; 
- Tue, 20 Apr 2021 00:08:11 -0700 (PDT)
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPZqf3zQLz2xZt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 17:21:31 +1000 (AEST)
+Received: by mail-ej1-x634.google.com with SMTP id mh2so35162263ejb.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 00:21:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=Fdo4mE/+cjJuC72UnytwwUxZcVyYzOvI58iBPYYyS4o=;
+ b=JDcuGmSnwgEFOWi0Hol09StsvZpHTO8W+O/Gz5MCGTk1hrnPT23hDPfAyBVwJSNZpt
+ czBoQS5EsqxfrGVAbix+Te7AGsP7UXhIx8YFBmygfQto+b48SP2efSg7JWmJOpyukexr
+ FTsu8EMSbjXVSgncFtnRCeoktgRoY0XVLaFrk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=Fdo4mE/+cjJuC72UnytwwUxZcVyYzOvI58iBPYYyS4o=;
+ b=fQ9CDtHvjDipveTeXMW93oaeP5EzzDiGj92tpI96yqFe/Hm8FOAdjvSIXdga8crxUC
+ Hxgyf2hZXs7ZLCx4pvJmlNpPgJtQ2Z95QDKRf/73sxQAq1RBMD2DqzVESaMM1ZeAdWmA
+ 7RhiQizMy7DC5cA6iZKJg+55TLpqQ5sQikb/0hYYJRfVMg2YsRfdrsm6cHaEYsauFLk5
+ GsTYfaT237mdXN/kW3uKrtBuTIybUvZIqj7sblGCLL6WG3FZ/z1IkQNPv2AP3DTCt1cS
+ NRokSFEvfTA6+gI7yBhw85/X4OmDiEA4PTTXP1LGkrPTyK1cTfk/RuSX7lwNgbT3rPMb
+ F1tg==
+X-Gm-Message-State: AOAM531ajn/fj4l8uRZj6d7Fqfo6oxmT/Pkx3Crpllw+5CZDP+z4g+s7
+ uzoO/ArgzhKV8X+AEn4RgChssg==
+X-Google-Smtp-Source: ABdhPJwk6gzZ2A5irFuyneT8BrQdebb3nmjVkes+GHHyVGt7Uear5nG59XVGsiWotx3n47m/ELrbzA==
+X-Received: by 2002:a17:906:4d10:: with SMTP id
+ r16mr25604487eju.169.1618903284093; 
+ Tue, 20 Apr 2021 00:21:24 -0700 (PDT)
+Received: from [192.168.1.149] ([80.208.71.248])
+ by smtp.gmail.com with ESMTPSA id p3sm11836507ejd.65.2021.04.20.00.21.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Apr 2021 00:21:23 -0700 (PDT)
+Subject: Re: [PATCH 1/2] mm: Fix struct page layout on 32-bit systems
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, brouer@redhat.com
 References: <20210416230724.2519198-1-willy@infradead.org>
  <20210416230724.2519198-2-willy@infradead.org>
- <20210417024522.GP2531743@casper.infradead.org>
- <9f99b0a0-f1c1-f3b0-5f84-3a4bfc711725@synopsys.com>
- <20210420031029.GI2531743@casper.infradead.org>
-In-Reply-To: <20210420031029.GI2531743@casper.infradead.org>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Tue, 20 Apr 2021 09:07:55 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0KUwf1Z0bHiUaHC2nHztevkxg5_FBSzHddNeSsBayWUA@mail.gmail.com>
-Message-ID: <CAK8P3a0KUwf1Z0bHiUaHC2nHztevkxg5_FBSzHddNeSsBayWUA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm: Fix struct page layout on 32-bit systems
-To: Matthew Wilcox <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <d0c32751-0a12-1f7f-4f6a-b1f6535a6b6e@rasmusvillemoes.dk>
+Date: Tue, 20 Apr 2021 09:21:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
+MIME-Version: 1.0
+In-Reply-To: <20210416230724.2519198-2-willy@infradead.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,80 +84,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "grygorii.strashko@ti.com" <grygorii.strashko@ti.com>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Vineet Gupta <Vineet.Gupta1@synopsys.com>,
- "ilias.apalodimas@linaro.org" <ilias.apalodimas@linaro.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "mgorman@suse.de" <mgorman@suse.de>,
- "brouer@redhat.com" <brouer@redhat.com>,
- "mcroce@linux.microsoft.com" <mcroce@linux.microsoft.com>,
- "mhocko@kernel.org" <mhocko@kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "hch@lst.de" <hch@lst.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: arnd@kernel.org, grygorii.strashko@ti.com, netdev@vger.kernel.org,
+ ilias.apalodimas@linaro.org, linux-mips@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mhocko@kernel.org, linux-mm@kvack.org,
+ mgorman@suse.de, mcroce@linux.microsoft.com,
+ linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, hch@lst.de,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 20, 2021 at 5:10 AM Matthew Wilcox <willy@infradead.org> wrote:
->
-> On Tue, Apr 20, 2021 at 02:48:17AM +0000, Vineet Gupta wrote:
-> > > 32-bit architectures which expect 8-byte alignment for 8-byte integers
-> > > and need 64-bit DMA addresses (arc, arm, mips, ppc) had their struct
-> > > page inadvertently expanded in 2019.
-> >
-> > FWIW, ARC doesn't require 8 byte alignment for 8 byte integers. This is
-> > only needed for 8-byte atomics due to the requirements of LLOCKD/SCOND
-> > instructions.
->
-> Ah, like x86?  OK, great, I'll drop your arch from the list of
-> affected.  Thanks!
+On 17/04/2021 01.07, Matthew Wilcox (Oracle) wrote:
+> 32-bit architectures which expect 8-byte alignment for 8-byte integers
+> and need 64-bit DMA addresses (arc, arm, mips, ppc) had their struct
+> page inadvertently expanded in 2019.  When the dma_addr_t was added,
+> it forced the alignment of the union to 8 bytes, which inserted a 4 byte
+> gap between 'flags' and the union.
+> 
+> Fix this by storing the dma_addr_t in one or two adjacent unsigned longs.
+> This restores the alignment to that of an unsigned long, and also fixes a
+> potential problem where (on a big endian platform), the bit used to denote
+> PageTail could inadvertently get set, and a racing get_user_pages_fast()
+> could dereference a bogus compound_head().
+> 
+> Fixes: c25fff7171be ("mm: add dma_addr_t to struct page")
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+>  include/linux/mm_types.h |  4 ++--
+>  include/net/page_pool.h  | 12 +++++++++++-
+>  net/core/page_pool.c     | 12 +++++++-----
+>  3 files changed, 20 insertions(+), 8 deletions(-)
+> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 6613b26a8894..5aacc1c10a45 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -97,10 +97,10 @@ struct page {
+>  		};
+>  		struct {	/* page_pool used by netstack */
+>  			/**
+> -			 * @dma_addr: might require a 64-bit value even on
+> +			 * @dma_addr: might require a 64-bit value on
+>  			 * 32-bit architectures.
+>  			 */
+> -			dma_addr_t dma_addr;
+> +			unsigned long dma_addr[2];
 
-I mistakenly assumed that i386 and m68k were the only supported
-architectures with 32-bit alignment on u64. I checked it now and found
+Shouldn't that member get another name (_dma_addr?) to be sure the
+buildbots catch every possible (ab)user and get them turned into the new
+accessors? Sure, page->dma_addr is now "pointer to unsigned long"
+instead of "dma_addr_t", but who knows if there's a
+"(long)page->dma_addr" somewhere?
 
-$ for i in /home/arnd/cross/x86_64/gcc-10.1.0-nolibc/*/bin/*-gcc ; do
-echo `echo 'int a = __alignof__(long long);' | $i -xc - -Wall -S -o- |
-grep -A1 a: | tail -n 1 | cut -f 3 -d\   `
-${i#/home/arnd/cross/x86_64/gcc-10.1.0-nolibc/*/bin/} ; done
-8 aarch64-linux-gcc
-8 alpha-linux-gcc
-4 arc-linux-gcc
-8 arm-linux-gnueabi-gcc
-8 c6x-elf-gcc
-4 csky-linux-gcc
-4 h8300-linux-gcc
-8 hppa-linux-gcc
-8 hppa64-linux-gcc
-8 i386-linux-gcc
-8 ia64-linux-gcc
-2 m68k-linux-gcc
-4 microblaze-linux-gcc
-8 mips-linux-gcc
-8 mips64-linux-gcc
-8 nds32le-linux-gcc
-4 nios2-linux-gcc
-4 or1k-linux-gcc
-8 powerpc-linux-gcc
-8 powerpc64-linux-gcc
-8 riscv32-linux-gcc
-8 riscv64-linux-gcc
-8 s390-linux-gcc
-4 sh2-linux-gcc
-4 sh4-linux-gcc
-8 sparc-linux-gcc
-8 sparc64-linux-gcc
-8 x86_64-linux-gcc
-8 xtensa-linux-gcc
-
-which means that half the 32-bit architectures do this. This may
-cause more problems when arc and/or microblaze want to support
-64-bit kernels and compat mode in the future on their latest hardware,
-as that means duplicating the x86 specific hacks we have for compat.
-
-What is alignof(u64) on 64-bit arc?
-
-      Arnd
+Rasmus
