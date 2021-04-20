@@ -2,80 +2,110 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EEF13651D5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 07:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 524203651E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 07:47:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPXMB1mmBz302V
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 15:30:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPXl82MQpz30BJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 15:47:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=JCafrJcS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KuGIhSh4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72b;
- helo=mail-qk1-x72b.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=srs0=vax4=jr=linux.ibm.com=sourabhjain@ozlabs.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JCafrJcS; dkim-atps=neutral
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com
- [IPv6:2607:f8b0:4864:20::72b])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=KuGIhSh4; dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPXLg3WByz2xb6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 15:29:45 +1000 (AEST)
-Received: by mail-qk1-x72b.google.com with SMTP id z2so1266052qkb.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 22:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=CD5KgC7jtIRxFp9L5EX0XqWGl1RUghQJwWPnq/cGmzA=;
- b=JCafrJcSXX4Mn66ZWw8U8ND0HHkGqhAmFRiw8OMyTHMosRl8XNVwao/iHwNS7jMLX1
- /N7bbezhvWpt+Iqas9/VOpTAJrx4FkJp16RYUuY7uI6+ufT58hn2Lkk2gei8Or6L8eOS
- pPm3UWa12JX9fTiXDsRAF82Qrq92UEv3Qi6zkHFgExT0gNh+CmoNr3fpsvKM5pCD8REE
- xmVPf2zAPQetho4L8Gz6N/1cXKukAoxpvXHCTPuBnDDst5T8fNKgPTTbQTasdckAOFur
- lfTbDyKvTK+fqPslxjcFuGjRG7OC8RIU6BlXRrkQ99635WyW5KLZYWjN4b9OGUCv1KJf
- raWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=CD5KgC7jtIRxFp9L5EX0XqWGl1RUghQJwWPnq/cGmzA=;
- b=JLPSVixAdj2Gorn4oQOv+hfBP4PYF2EIzHeY5k0s13cQEe8wmawCS6JQ14OiBxSCCJ
- d2c9I7YZtYtA/eOpgHPiwwjQ3Aa+cDPE7U0V4FDmXALT26DspWyp2qFL5LO4KmUs40uD
- nDfABzE9wFUwbDka3bmAqZs0M+s+9FUazXGRdyibwbmEavwb1cq76qfuS61HwIouK0I8
- zuSW83ScLBsX0sGk6UyRw9xmM3VQttW2dy7RAYS+RA0vwtg7MWGlkCBkeqxSGOsmfkQY
- M9ZHACxTL/Adedkb008O3E72RzsdLcjFlP4e0DghmvV0oOuHob3KL4hpsJMSIGyuF3e6
- xelQ==
-X-Gm-Message-State: AOAM533XFGViJufQTIU+LSZgBIKjjRoUQoXvApTZUjje/FUdakAyjwRW
- qmQaaeadxte0nuMJfwUFrsQ=
-X-Google-Smtp-Source: ABdhPJwZS2BpuCSdCWdDvSF5KnO6hp7JbxTakxD8Xsi7lNH9Uo+5o2UZGcERr3xdBBoefGdvXPZw9w==
-X-Received: by 2002:a37:a206:: with SMTP id l6mr15817573qke.5.1618896581783;
- Mon, 19 Apr 2021 22:29:41 -0700 (PDT)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
- ([177.35.200.187])
- by smtp.gmail.com with ESMTPSA id v3sm5539052qkb.124.2021.04.19.22.29.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Apr 2021 22:29:41 -0700 (PDT)
-Message-ID: <2977fdf112bce230ca6739c0a7f9f1f55bd2f693.camel@gmail.com>
-Subject: Re: [PATCH 1/1] powerpc/pseries/iommu: Fix window size for direct
- mapping with pmem
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
- <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Date: Tue, 20 Apr 2021 02:29:38 -0300
-In-Reply-To: <58b28a98-37aa-055f-5dec-d8c0005c9519@ozlabs.ru>
-References: <20210420045404.438735-1-leobras.c@gmail.com>
- <58b28a98-37aa-055f-5dec-d8c0005c9519@ozlabs.ru>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPXkg1JGrz2xZg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 15:47:06 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by ozlabs.org (Postfix) with ESMTP id 4FPXkW5ZH8z9vFD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 15:46:59 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4FPXkW5GKBz9vDw; Tue, 20 Apr 2021 15:46:59 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=KuGIhSh4; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4FPXkT5sVwz9vDx;
+ Tue, 20 Apr 2021 15:46:56 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13K5Yc3M090887; Tue, 20 Apr 2021 01:46:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=206p6hfJ0Ewr8vho6VcnE/W9AxRmF2psc/AQavftmU4=;
+ b=KuGIhSh4oteBiThLeLyekfsfdRAEPS/bB4Tr8ZdsSORt0AbbVY3Gu8/hveTFLx56jzrB
+ /8X7SGwJlXQUizPXBKWzOj0MvNkYs3cYDZ7lq+LapSRuBFA/xEUvfXGFsHPpdWkG84ua
+ Tc3rXfePjnBJ4wbqzbtVru9Mibsw8Dqigv188Go2U77144op50gzpW/H4PBtoiuM2qZU
+ xNwWuJgRdhPUhRjaNak0WLg1wrqDeGPxDbSHOX0WEpwZhDEalOATgaJJ0AifkcGxtMA7
+ XXVWoJctBvGdzBY/wepPNII/7iQ66sq29KYSy/yX/zF4wcHNHHtbyK1SvG54LiFlLoAt RQ== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 381fmycsmj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Apr 2021 01:46:53 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13K5fbLi018874;
+ Tue, 20 Apr 2021 05:46:51 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03fra.de.ibm.com with ESMTP id 37yqa88t5p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Apr 2021 05:46:51 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 13K5kPhu29557006
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Apr 2021 05:46:25 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 38947A4054;
+ Tue, 20 Apr 2021 05:46:48 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6B3D2A405B;
+ Tue, 20 Apr 2021 05:46:46 +0000 (GMT)
+Received: from sjain014.ibmuc.com (unknown [9.85.72.203])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 20 Apr 2021 05:46:46 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v5] powerpc/kexec_file: use current CPU info while setting up
+ FDT
+Date: Tue, 20 Apr 2021 11:16:44 +0530
+Message-Id: <20210420054644.1218593-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.26.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 8EqPm3gpUVvSKBtgwPG5bP-sQruX5mQT
+X-Proofpoint-GUID: 8EqPm3gpUVvSKBtgwPG5bP-sQruX5mQT
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-20_01:2021-04-19,
+ 2021-04-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 adultscore=0
+ impostorscore=0 bulkscore=0 suspectscore=0 priorityscore=1501 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104200042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,35 +117,194 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: mahesh@linux.vnet.ibm.com, Sourabh Jain <sourabhjain@linux.ibm.com>,
+ linuxppc-dev@ozlabs.org, stable@vger.kernel.org, hbathini@linux.ibm.com,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2021-04-20 at 15:18 +1000, Alexey Kardashevskiy wrote:
-> 
-> On 20/04/2021 14:54, Leonardo Bras wrote:
-> > As of today, if the DDW is big enough to fit (1 << MAX_PHYSMEM_BITS) it's
-> > possible to use direct DMA mapping even with pmem region.
-> > 
-> > But, if that happens, the window size (len) is set to
-> > (MAX_PHYSMEM_BITS - page_shift) instead of MAX_PHYSMEM_BITS, causing a
-> > pagesize times smaller DDW to be created, being insufficient for correct
-> > usage.
-> > 
-> > Fix this so the correct window size is used in this case.
-> 
-> Good find indeed.
-> 
-> afaict this does not create a huge problem though as 
-> query.largest_available_block is always smaller than (MAX_PHYSMEM_BITS - 
-> page_shift) where it matters (phyp).
-> 
-> 
-> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> 
+kexec_file_load uses initial_boot_params in setting up the device-tree
+for the kernel to be loaded. Though initial_boot_params holds info
+about CPUs at the time of boot, it doesn't account for hot added CPUs.
 
-Thanks for reviewing!
+So, kexec'ing with kexec_file_load syscall would leave the kexec'ed
+kernel with inaccurate CPU info. Also, if kdump kernel is loaded with
+kexec_file_load syscall and the system crashes on a hot added CPU,
+capture kernel hangs failing to identify the boot CPU.
 
-Leonardo Bras
+ Kernel panic - not syncing: sysrq triggered crash
+ CPU: 24 PID: 6065 Comm: echo Kdump: loaded Not tainted 5.12.0-rc5upstream #54
+ Call Trace:
+ [c0000000e590fac0] [c0000000007b2400] dump_stack+0xc4/0x114 (unreliable)
+ [c0000000e590fb00] [c000000000145290] panic+0x16c/0x41c
+ [c0000000e590fba0] [c0000000008892e0] sysrq_handle_crash+0x30/0x40
+ [c0000000e590fc00] [c000000000889cdc] __handle_sysrq+0xcc/0x1f0
+ [c0000000e590fca0] [c00000000088a538] write_sysrq_trigger+0xd8/0x178
+ [c0000000e590fce0] [c0000000005e9b7c] proc_reg_write+0x10c/0x1b0
+ [c0000000e590fd10] [c0000000004f26d0] vfs_write+0xf0/0x330
+ [c0000000e590fd60] [c0000000004f2aec] ksys_write+0x7c/0x140
+ [c0000000e590fdb0] [c000000000031ee0] system_call_exception+0x150/0x290
+ [c0000000e590fe10] [c00000000000ca5c] system_call_common+0xec/0x278
+ --- interrupt: c00 at 0x7fff905b9664
+ NIP:  00007fff905b9664 LR: 00007fff905320c4 CTR: 0000000000000000
+ REGS: c0000000e590fe80 TRAP: 0c00   Not tainted  (5.12.0-rc5upstream)
+ MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 28000242
+       XER: 00000000
+ IRQMASK: 0
+ GPR00: 0000000000000004 00007ffff5fedf30 00007fff906a7300 0000000000000001
+ GPR04: 000001002a7355b0 0000000000000002 0000000000000001 00007ffff5fef616
+ GPR08: 0000000000000001 0000000000000000 0000000000000000 0000000000000000
+ GPR12: 0000000000000000 00007fff9073a160 0000000000000000 0000000000000000
+ GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+ GPR20: 0000000000000000 00007fff906a4ee0 0000000000000002 0000000000000001
+ GPR24: 00007fff906a0898 0000000000000000 0000000000000002 000001002a7355b0
+ GPR28: 0000000000000002 00007fff906a1790 000001002a7355b0 0000000000000002
+ NIP [00007fff905b9664] 0x7fff905b9664
+ LR [00007fff905320c4] 0x7fff905320c4
+ --- interrupt: c00
+
+To avoid this from happening, extract current CPU info from of_root
+device node and use it for setting up the fdt in kexec_file_load case.
+
+Fixes: 6ecd0163d360 ("powerpc/kexec_file: Add appropriate regions for memory reserve map")
+
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+---
+ arch/powerpc/kexec/file_load_64.c | 97 +++++++++++++++++++++++++++++++
+ 1 file changed, 97 insertions(+)
+
+ ---
+Changelog:
+
+v1 -> v3
+  - https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-April/227756.html
+
+v3 -> v4
+  - Rearranged if-else statement in update_cpus_node function to avoid
+    redundant checks for positive cpus_offset. 
+
+v4 -> v5
+  - removed unnecessary else condition in update_cpus_node function
+ ---
+
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 02b9e4d0dc40..6af3792dbf18 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -960,6 +960,98 @@ unsigned int kexec_fdt_totalsize_ppc64(struct kimage *image)
+ 	return fdt_size;
+ }
+ 
++/**
++ * add_node_prop - Read property from device node structure and add
++ *			them to fdt.
++ * @fdt:		Flattened device tree of the kernel
++ * @node_offset:	offset of the node to add a property at
++ * np:			device node pointer
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++static int add_node_prop(void *fdt, int node_offset, const struct device_node *np)
++{
++	int ret = 0;
++	struct property *pp;
++	unsigned long flags;
++
++	if (!np)
++		return -EINVAL;
++
++	raw_spin_lock_irqsave(&devtree_lock, flags);
++	for (pp = np->properties; pp; pp = pp->next) {
++		ret = fdt_setprop(fdt, node_offset, pp->name,
++				  pp->value, pp->length);
++		if (ret < 0) {
++			pr_err("Unable to add %s property: %s\n",
++			       pp->name, fdt_strerror(ret));
++			goto out;
++		}
++	}
++out:
++	raw_spin_unlock_irqrestore(&devtree_lock, flags);
++	return ret;
++}
++
++/**
++ * update_cpus_node - Update cpus node of flattened device-tree using of_root
++ *			device node.
++ * @fdt:		Flattened device tree of the kernel.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++static int update_cpus_node(void *fdt)
++{
++	struct device_node *cpus_node, *dn;
++	int cpus_offset, cpus_subnode_off, ret = 0;
++
++	cpus_offset = fdt_path_offset(fdt, "/cpus");
++	if (cpus_offset < 0 && cpus_offset != -FDT_ERR_NOTFOUND) {
++		pr_err("Malformed device tree: error reading /cpus node: %s\n",
++		       fdt_strerror(cpus_offset));
++		return cpus_offset;
++	}
++
++	if (cpus_offset > 0) {
++		ret = fdt_del_node(fdt, cpus_offset);
++		if (ret < 0) {
++			pr_err("Error deleting /cpus node: %s\n",
++			       fdt_strerror(ret));
++			return -EINVAL;
++		}
++	}
++
++	/* Add cpus node to fdt */
++	cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"),
++				      "cpus");
++	if (cpus_offset < 0) {
++		pr_err("Error creating /cpus node: %s\n",
++		       fdt_strerror(cpus_offset));
++		return -EINVAL;
++	}
++
++	/* Add cpus node properties */
++	cpus_node = of_find_node_by_path("/cpus");
++	ret = add_node_prop(fdt, cpus_offset, cpus_node);
++	if (ret < 0)
++		return ret;
++
++	/* Loop through all subnodes of cpus and add them to fdt */
++	for_each_node_by_type(dn, "cpu") {
++		cpus_subnode_off = fdt_add_subnode(fdt, cpus_offset,
++						   dn->full_name);
++		if (cpus_subnode_off < 0) {
++			pr_err("Unable to add %s subnode: %s\n",
++			       dn->full_name, fdt_strerror(cpus_subnode_off));
++			return cpus_subnode_off;
++		}
++		ret = add_node_prop(fdt, cpus_subnode_off, dn);
++		if (ret < 0)
++			return ret;
++	}
++	return ret;
++}
++
+ /**
+  * setup_new_fdt_ppc64 - Update the flattend device-tree of the kernel
+  *                       being loaded.
+@@ -1020,6 +1112,11 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+ 		}
+ 	}
+ 
++	/* Update cpus nodes information to account hotplug CPUs. */
++	ret =  update_cpus_node(fdt);
++	if (ret < 0)
++		return ret;
++
+ 	/* Update memory reserve map */
+ 	ret = get_reserved_memory_ranges(&rmem);
+ 	if (ret)
+-- 
+2.26.3
 
