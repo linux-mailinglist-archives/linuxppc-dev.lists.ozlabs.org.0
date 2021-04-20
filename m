@@ -1,112 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504CF3654BD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 11:04:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DCD6365535
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 11:23:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPd6D2Wbfz30BJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 19:04:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FN0Ja/cv;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FN0Ja/cv;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPdXS0jVfz30Fc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 19:23:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=FN0Ja/cv; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=FN0Ja/cv; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPd5k3SwFz2xZW
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 19:03:53 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1618909428;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zOmqfkZfJ81cGODs96B5RU3aGjEyMHtTRJDCqNpS4YI=;
- b=FN0Ja/cvm7Bl/F4MSgWPK/+OOr3vGCYjjGJ1+pQLsoN93f2H8R+EVcVMMXmLYxthwxA52W
- Zbvk0nmxpsLS8Y9zf2KKt7IgWvRaxqEGIQBwwyTho+xU9x8TwwQNgkkup8nRYouKE3cdcp
- nbKG5/5Nf2VFyc6XfLEWCkEEMJKUkpg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1618909428;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zOmqfkZfJ81cGODs96B5RU3aGjEyMHtTRJDCqNpS4YI=;
- b=FN0Ja/cvm7Bl/F4MSgWPK/+OOr3vGCYjjGJ1+pQLsoN93f2H8R+EVcVMMXmLYxthwxA52W
- Zbvk0nmxpsLS8Y9zf2KKt7IgWvRaxqEGIQBwwyTho+xU9x8TwwQNgkkup8nRYouKE3cdcp
- nbKG5/5Nf2VFyc6XfLEWCkEEMJKUkpg=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-17-DWdGoRozPRyphjMnTyjMmQ-1; Tue, 20 Apr 2021 05:03:46 -0400
-X-MC-Unique: DWdGoRozPRyphjMnTyjMmQ-1
-Received: by mail-ed1-f71.google.com with SMTP id
- o4-20020a0564024384b0290378d45ecf57so12862162edc.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 02:03:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:to:cc:references:from:organization:subject
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=zOmqfkZfJ81cGODs96B5RU3aGjEyMHtTRJDCqNpS4YI=;
- b=O4CArT8SloapP9bcNerBhbNCYilC5qewC96XiYpOYJrS0xxAQDxo3yM4aX+MtVBZk1
- Q0+WenQAdXiwivRIosDEAOma1YpogVOf0ceCwiPQl0v5Kr7tfD2ppdXJXpsZUFRNIAmh
- WQ+om7H4Dy/a/ffwHfOkQM2ehx7GulSbHuN04xmLzvbI8aNtXEG/dsr2tgmBc7O1yzoX
- FmaJnajJTnT+31z920D3PoXoOI2tvfE8rhMYQWKkCPFBIufPvxjYqoXxsqe1Hnf3bPqF
- 38k+mx1rsHfSzO4xaW9RzsUrdAyOzijHAUuLm4iwStKAXIuJGbdaoK8XSRRXjJ0A+2oe
- bdHQ==
-X-Gm-Message-State: AOAM533wEzdTFZPOs1rNf7vl5VAMILClPu7QuHl1lZTgfWneu3ihKGhU
- 8O8VgwM6agnYFX0ySj1eUisSQqcuX3KRZ87ruZnLUyyRUvoPgE2dh46GHxW3aBiC915wfiRzQo7
- 6Yl17VFw7Oktx1VOWmPCvgxjtpg==
-X-Received: by 2002:aa7:cd6e:: with SMTP id
- ca14mr14443008edb.111.1618909425303; 
- Tue, 20 Apr 2021 02:03:45 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxZ3pRylkvogdCY5d+NpiLzbIuTxXYQR0frVwMnQm2/ZbN0JlGpq74b49bjg7gPVq+dRBi8IA==
-X-Received: by 2002:aa7:cd6e:: with SMTP id
- ca14mr14442958edb.111.1618909425009; 
- Tue, 20 Apr 2021 02:03:45 -0700 (PDT)
-Received: from [192.168.3.132] (p4ff2390a.dip0.t-ipconnect.de. [79.242.57.10])
- by smtp.gmail.com with ESMTPSA id
- gu14sm10625639ejb.114.2021.04.20.02.03.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Apr 2021 02:03:44 -0700 (PDT)
-To: Christoph Lameter <cl@gentwo.de>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-References: <1618199302-29335-1-git-send-email-anshuman.khandual@arm.com>
- <09284b9a-cfe1-fc49-e1f6-3cf0c1b74c76@arm.com>
- <162877dd-e6ba-d465-d301-2956bb034429@redhat.com>
- <ce4f9838-da4b-1423-4123-23c0941a2198@arm.com>
- <alpine.DEB.2.22.394.2104191236500.777076@gentwo.de>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH V2] mm/page_alloc: Ensure that HUGETLB_PAGE_ORDER is less
- than MAX_ORDER
-Message-ID: <01bdeedc-f77d-ebd0-9d42-62f09b0a2d1a@redhat.com>
-Date: Tue, 20 Apr 2021 11:03:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPdX64FwVz2xZW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 19:23:17 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 59ECA68C4E; Tue, 20 Apr 2021 11:23:12 +0200 (CEST)
+Date: Tue, 20 Apr 2021 11:23:12 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: swiotlb cleanups v3
+Message-ID: <20210420092312.GB26092@lst.de>
+References: <20210318161424.489045-1-hch@lst.de>
+ <0349082c-59c5-20d7-f324-279981c3f6ea@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.22.394.2104191236500.777076@gentwo.de>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0349082c-59c5-20d7-f324-279981c3f6ea@amd.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,117 +43,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- Mel Gorman <mgorman@techsingularity.net>, linux-kernel@vger.kernel.org,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, akpm@linux-foundation.org,
- "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: xen-devel@lists.xenproject.org, konrad.wilk@oracle.com,
+ iommu@lists.linux-foundation.org, dongli.zhang@oracle.com,
+ tientzu@chromium.org, linuxppc-dev@lists.ozlabs.org, hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christoph,
-
-thanks for your insight.
-
-> You can have larger blocks but you would need to allocate multiple
-> contigous max order blocks or do it at boot time before the buddy
-> allocator is active.
+On Sat, Apr 17, 2021 at 11:39:22AM -0500, Tom Lendacky wrote:
+> Somewhere between the 1st and 2nd patch, specifying a specific swiotlb
+> for an SEV guest is no longer honored. For example, if I start an SEV
+> guest with 16GB of memory and specify swiotlb=131072 I used to get a
+> 256MB SWIOTLB. However, after the 2nd patch, the swiotlb=131072 is no
+> longer honored and I get a 982MB SWIOTLB (as set via sev_setup_arch() in
+> arch/x86/mm/mem_encrypt.c).
 > 
-> What IA64 did was to do this at boot time thereby avoiding the buddy
-> lists. And it had a separate virtual address range and page table for the
-> huge pages.
-> 
-> Looks like the current code does these allocations via CMA which should
-> also bypass the buddy allocator.
+> I can't be sure which patch caused the issue since an SEV guest fails to
+> boot with the 1st patch but can boot with the 2nd patch, at which point
+> the SWIOTLB comes in at 982MB (I haven't had a chance to debug it and so
+> I'm hoping you might be able to quickly spot what's going on).
 
-Using CMA doesn't really care about the pageblock size when it comes to 
-fragmentation avoidance a.k.a. somewhat reliable allocation of memory 
-chunks with an order > MAX_ORDER - 1.
+Can you try this patch?
 
-IOW, when using CMA for hugetlb, we don't need pageblock_order > 
-MAX_ORDER - 1.
-
-> 
-> 
->>>      }
->>>
->>>
->>> But it's kind of weird, isn't it? Let's assume we have MAX_ORDER - 1 correspond to 4 MiB and pageblock_order correspond to 8 MiB.
->>>
->>> Sure, we'd be grouping pages in 8 MiB chunks, however, we cannot even
->>> allocate 8 MiB chunks via the buddy. So only alloc_contig_range()
->>> could really grab them (IOW: gigantic pages).
->>
->> Right.
-> 
-> But then you can avoid the buddy allocator.
-> 
->>> Further, we have code like deferred_free_range(), where we end up
->>> calling __free_pages_core()->...->__free_one_page() with
->>> pageblock_order. Wouldn't we end up setting the buddy order to
->>> something > MAX_ORDER -1 on that path?
->>
->> Agreed.
-> 
-> We would need to return the supersized block to the huge page pool and not
-> to the buddy allocator. There is a special callback in the compound page
-> sos that you can call an alternate free function that is not the buddy
-> allocator.
-
-Sorry, but that doesn't make any sense. We are talking about bringup 
-code, where we transition from memblock to the buddy and fill the free 
-page lists. Looking at the code, deferred initialization of the memmap 
-is broken on these setups -- so I deferred memmap init is never enabled.
-
-> 
->>
->>>
->>> Having pageblock_order > MAX_ORDER feels wrong and looks shaky.
->>>
->> Agreed, definitely does not look right. Lets see what other folks
->> might have to say on this.
->>
->> + Christoph Lameter <cl@linux.com>
->>
-> 
-> It was done for a long time successfully and is running in numerous
-> configurations.
-
-Enforcing pageblock_order < MAX_ORDER would mean that runtime allocation 
-of gigantic (here:huge) pages (HUGETLB_PAGE_ORDER >= MAX_ORDER) via 
-alloc_contig_pages() becomes less reliable. To compensate, relevant 
-archs could switch to "hugetlb_cma=", to improve the reliability of 
-runtime allocation.
-
-I wonder which configurations we are talking about:
-
-a) ia64
-
-At least I couldn't care less; it's a dead architecture -- not
-sure how much people care about "more reliable runtime
-allocation of gigantic (here: huge) pages". Also, not sure about which 
-exact configurations.
-
-b) ppc64
-
-We have variable hpage size only with CONFIG_PPC_BOOK3S_64. We 
-initialize the hugepage either to 1M, 2M or 16M. 16M seems to be the 
-primary choice.
-
-ppc64 has CONFIG_FORCE_MAX_ZONEORDER
-
-default "9" if PPC64 && PPC_64K_PAGES
--> 16M effective buddy maximum size
-default "13" if PPC64 && !PPC_64K_PAGES
--> 16M effective buddy maximum size
-
-So I fail to see in which scenario we even could end up with 
-pageblock_order < MAX_ORDER. I did not check ppc32.
-
--- 
-Thanks,
-
-David / dhildenb
-
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 0a5b6f7e75bce6..ac81ef97df32f5 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -71,15 +71,17 @@ struct io_tlb_mem *io_tlb_default_mem;
+  */
+ static unsigned int max_segment;
+ 
+-static unsigned long default_nslabs = IO_TLB_DEFAULT_SIZE >> IO_TLB_SHIFT;
++static unsigned long swiotlb_cmdline_size;
+ 
+ static int __init
+ setup_io_tlb_npages(char *str)
+ {
+ 	if (isdigit(*str)) {
+ 		/* avoid tail segment of size < IO_TLB_SEGSIZE */
+-		default_nslabs =
+-			ALIGN(simple_strtoul(str, &str, 0), IO_TLB_SEGSIZE);
++		unsigned long nslabs = simple_strtoul(str, &str, 0);
++
++		swiotlb_cmdline_size =
++			ALIGN(nslabs, IO_TLB_SEGSIZE) << IO_TLB_SHIFT;
+ 	}
+ 	if (*str == ',')
+ 		++str;
+@@ -108,7 +110,9 @@ void swiotlb_set_max_segment(unsigned int val)
+ 
+ unsigned long swiotlb_size_or_default(void)
+ {
+-	return default_nslabs << IO_TLB_SHIFT;
++	if (swiotlb_cmdline_size)
++		return swiotlb_cmdline_size;
++	return IO_TLB_DEFAULT_SIZE;
+ }
+ 
+ void __init swiotlb_adjust_size(unsigned long size)
+@@ -118,9 +122,10 @@ void __init swiotlb_adjust_size(unsigned long size)
+ 	 * architectures such as those supporting memory encryption to
+ 	 * adjust/expand SWIOTLB size for their use.
+ 	 */
+-	size = ALIGN(size, IO_TLB_SIZE);
+-	default_nslabs = ALIGN(size >> IO_TLB_SHIFT, IO_TLB_SEGSIZE);
+-	pr_info("SWIOTLB bounce buffer size adjusted to %luMB", size >> 20);
++	if (!swiotlb_cmdline_size)
++		swiotlb_cmdline_size = ALIGN(size, IO_TLB_SIZE);
++	pr_info("SWIOTLB bounce buffer size adjusted to %luMB",
++		swiotlb_cmdline_size >> 20);
+ }
+ 
+ void swiotlb_print_info(void)
+@@ -209,7 +214,7 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+ void  __init
+ swiotlb_init(int verbose)
+ {
+-	size_t bytes = PAGE_ALIGN(default_nslabs << IO_TLB_SHIFT);
++	size_t bytes = PAGE_ALIGN(swiotlb_size_or_default());
+ 	void *tlb;
+ 
+ 	if (swiotlb_force == SWIOTLB_NO_FORCE)
+@@ -219,7 +224,7 @@ swiotlb_init(int verbose)
+ 	tlb = memblock_alloc_low(bytes, PAGE_SIZE);
+ 	if (!tlb)
+ 		goto fail;
+-	if (swiotlb_init_with_tbl(tlb, default_nslabs, verbose))
++	if (swiotlb_init_with_tbl(tlb, bytes >> IO_TLB_SHIFT, verbose))
+ 		goto fail_free_mem;
+ 	return;
+ 
