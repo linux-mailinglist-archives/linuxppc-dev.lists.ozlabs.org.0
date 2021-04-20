@@ -2,105 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5A7365187
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 06:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4EB3651A9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 06:54:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FPW3M1FrBz30BM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 14:31:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FPWZH4ZrPz30Bm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Apr 2021 14:54:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mYTB8af5;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=bq2Fqkoq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::733;
+ helo=mail-qk1-x733.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=mYTB8af5; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=bq2Fqkoq; dkim-atps=neutral
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com
+ [IPv6:2607:f8b0:4864:20::733])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FPW2v2Lnqz2xfs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 14:31:02 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13K43boO042247; Tue, 20 Apr 2021 00:30:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=sih98mTZAIYnyeSLTC2gyp6bq6iMluxVfiiv3Vdb94w=;
- b=mYTB8af5BMvZ52K3kx6jTcbnYH15luJ89VETeNp7yXfKSZNbHmiRqsiW/fwR8xlfZkyj
- A9A3y5v91u/g2Rp3FMB5duKTpzcSJosAthwLytlQNM+n6jrOHWqJjNOXDeZ9f/QVe/YQ
- agR2sj7b7q6E8L3iUzwcj9V5+vhBuTuQ9AwsSOb74jzfZjKCLJStblWu0yzMwCmmWPxk
- Kz+nY32hGjQ4o77Eou8o9sr5Hc4AC9kea+hwjeqeguspLB+fcXxhu6fDRYmT6ti1Esoj
- 9Z1DoFHl5XILtkQizEGKJyFkJGHO1njWuwFwxYkQ6nY4v90Uh3SjBusm3cEBANygyD63 9Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 381nj7axj4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Apr 2021 00:30:54 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13K4UlZB129872;
- Tue, 20 Apr 2021 00:30:54 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 381nj7axhr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Apr 2021 00:30:53 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13K4MoCf018133;
- Tue, 20 Apr 2021 04:30:52 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma04ams.nl.ibm.com with ESMTP id 37yqa8hemw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Apr 2021 04:30:52 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13K4Unur23724304
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Apr 2021 04:30:50 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E1417A405B;
- Tue, 20 Apr 2021 04:30:49 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3FF08A4065;
- Tue, 20 Apr 2021 04:30:48 +0000 (GMT)
-Received: from [9.199.43.214] (unknown [9.199.43.214])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 20 Apr 2021 04:30:48 +0000 (GMT)
-Subject: Re: [PATCH v4 8/9] mm/mremap: Allow arch runtime override
-To: Michael Ellerman <mpe@ellerman.id.au>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-References: <20210414085915.301189-1-aneesh.kumar@linux.ibm.com>
- <20210414085915.301189-9-aneesh.kumar@linux.ibm.com>
- <87bla9d34m.fsf@mpe.ellerman.id.au>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <aa3d090c-0785-08b9-3c91-d8c5cf564937@linux.ibm.com>
-Date: Tue, 20 Apr 2021 10:00:47 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FPWYs23z1z2xb7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 14:54:22 +1000 (AEST)
+Received: by mail-qk1-x733.google.com with SMTP id t17so9750762qkg.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Apr 2021 21:54:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=knEsnqVVpHBAjh8i95W10HK2zNEcEEQ59QU8Kyx/Vek=;
+ b=bq2FqkoqFeOqQJDjYkFKExA6zH8OpGUykxjhtJTGayymtQoErLUJeDmJs6EZ/rNSs0
+ ndAnArkadebgcSDRHxAknJxszrFhVcvkzaXQfDMxbYGSNXNCXouNBUJ3a/XMvXgSpK0M
+ W2lEIcAGeetVj2JZkpxgGTxUQqiTJFqwG1Otde4GWCKdvcp2LbN3DcmQMUyC8pszxcfo
+ WwSA46Cy3r9KdLqPaCkwthNlajAATRD0lDadB92WDtRFZY0zkotr+LBRqIm6ZS+UL+wW
+ Ea8ZRsd5tZchDCYfRRrWT9ojV9J2CmO8S1op2ysGbDZegRIhYpmhVNdqc6HXK9+cofjr
+ K7ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=knEsnqVVpHBAjh8i95W10HK2zNEcEEQ59QU8Kyx/Vek=;
+ b=SwIhO2NvYRXqa+zcsF4MESkXIAizaeOSP0u6Omqz2inG0hNl9RsIEhWSmi7YO+d4lg
+ QHzlD3DUYO5Lox2WO+TI9kHhYX4l4iH2sdlOs4cv1NLKVQ1wDvDRNtMBXHtddMZK82rI
+ Lra47JccqVjIHzeYBEQxrjASBxghIeP8RQu5pFwZeGxNVGEHI37RsLWrINhmSIhM4xbQ
+ aKqcuCUVsK/mQDnZAco6d9u6U5JJfDIVszp9uW0+q1yyHxjgyb1SeT3Bl0ILOFAW+4ZV
+ eTUJmM7u8Y7RBa07OCBhC+oyzWZxLpRVh1C5Qq4vYydEKg8FxjYQIx1diY4JbcJUGxR9
+ /jCA==
+X-Gm-Message-State: AOAM530vZgyhCLjMCOK+WXFQ4Q2gqrgqkRxLc6CYO0F6QetstARzHyGs
+ GCpBAO+nssjR43cXTPxL1Xk=
+X-Google-Smtp-Source: ABdhPJyoJY8zIXqIQ542ji0NV7LsWtIE3/ZDBBL5Hhcs46ZrQzz7kOr/MoUgzDkXTMF4fQVLUhNWFA==
+X-Received: by 2002:ae9:e912:: with SMTP id x18mr15662415qkf.315.1618894459007; 
+ Mon, 19 Apr 2021 21:54:19 -0700 (PDT)
+Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
+ ([177.35.200.187])
+ by smtp.gmail.com with ESMTPSA id y29sm10930176qtm.13.2021.04.19.21.54.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 Apr 2021 21:54:18 -0700 (PDT)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Leonardo Bras <leobras.c@gmail.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: [PATCH 1/1] powerpc/pseries/iommu: Fix window size for direct mapping
+ with pmem
+Date: Tue, 20 Apr 2021 01:54:04 -0300
+Message-Id: <20210420045404.438735-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <87bla9d34m.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8Jr_IZcIoTWcQEmigRXKyFDOWBbYf-un
-X-Proofpoint-ORIG-GUID: fUzxqS6LAaGGU7TsJoEBrg72ikUKUKcX
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-20_01:2021-04-19,
- 2021-04-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0
- phishscore=0 malwarescore=0 clxscore=1015 mlxscore=0 adultscore=0
- spamscore=0 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104200028
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,45 +82,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: joel@joelfernandes.org, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
- kaleshsingh@google.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/20/21 9:22 AM, Michael Ellerman wrote:
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->> Architectures like ppc64 support faster mremap only with radix
->> translation. Hence allow a runtime check w.r.t support for fast mremap.
->>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>   arch/powerpc/include/asm/tlb.h |  6 ++++++
->>   mm/mremap.c                    | 15 ++++++++++++++-
->>   2 files changed, 20 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/asm/tlb.h
->> index 160422a439aa..058918a7cd3c 100644
->> --- a/arch/powerpc/include/asm/tlb.h
->> +++ b/arch/powerpc/include/asm/tlb.h
->> @@ -83,5 +83,11 @@ static inline int mm_is_thread_local(struct mm_struct *mm)
->>   }
->>   #endif
->>   
->> +#define arch_supports_page_tables_move arch_supports_page_tables_move
->> +static inline bool arch_supports_page_tables_move(void)
->> +{
->> +	return radix_enabled();
->> +}
-> 
-> Not sure it's worth a respin on its own, but page table*s* move is
-> slightly strange phrasing.
-> 
-> arch_supports_move_page_tables() or arch_supports_page_table_move()
-> would be more typical.
-> 
+As of today, if the DDW is big enough to fit (1 << MAX_PHYSMEM_BITS) it's
+possible to use direct DMA mapping even with pmem region.
 
-I will switch to arch_supports_page_table_move()
+But, if that happens, the window size (len) is set to
+(MAX_PHYSMEM_BITS - page_shift) instead of MAX_PHYSMEM_BITS, causing a
+pagesize times smaller DDW to be created, being insufficient for correct
+usage.
 
--aneesh
+Fix this so the correct window size is used in this case.
+
+Fixes: bf6e2d562bbc4("powerpc/dma: Fallback to dma_ops when persistent memory present")
+Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+---
+ arch/powerpc/platforms/pseries/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 9fc5217f0c8e..836cbbe0ecc5 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -1229,7 +1229,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	if (pmem_present) {
+ 		if (query.largest_available_block >=
+ 		    (1ULL << (MAX_PHYSMEM_BITS - page_shift)))
+-			len = MAX_PHYSMEM_BITS - page_shift;
++			len = MAX_PHYSMEM_BITS;
+ 		else
+ 			dev_info(&dev->dev, "Skipping ibm,pmemory");
+ 	}
+-- 
+2.30.2
 
