@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DA6366C4A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 15:13:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBD3366C24
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 15:12:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQLbD6yQfz3dnv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 23:13:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQLYV4NBPz3d3T
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 23:11:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,17 +16,18 @@ Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQLVQ5G11z30Dd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 23:09:18 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQLVL4VNVz2yy9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 23:09:14 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FQLVQ0XFqz9vFV; Wed, 21 Apr 2021 23:09:17 +1000 (AEST)
+ id 4FQLVK4GTYz9vFX; Wed, 21 Apr 2021 23:09:13 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20210419120139.1455937-1-mpe@ellerman.id.au>
-References: <20210419120139.1455937-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/kvm: Fix PR KVM with KUAP/MEM_KEYS enabled
-Message-Id: <161901050110.1961279.2234377326774194068.b4-ty@ellerman.id.au>
-Date: Wed, 21 Apr 2021 23:08:21 +1000
+To: Ganesh Goudar <ganeshgr@linux.ibm.com>, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210407045816.352276-1-ganeshgr@linux.ibm.com>
+References: <20210407045816.352276-1-ganeshgr@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/mce: save ignore_event flag unconditionally for UE
+Message-Id: <161901050296.1961279.14875938612170335400.b4-ty@ellerman.id.au>
+Date: Wed, 21 Apr 2021 23:08:22 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -41,24 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, kvm-ppc@vger.kernel.org
+Cc: mahesh@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 19 Apr 2021 22:01:39 +1000, Michael Ellerman wrote:
-> The changes to add KUAP support with the hash MMU broke booting of KVM
-> PR guests. The symptom is no visible progress of the guest, or possibly
-> just "SLOF" being printed to the qemu console.
-> 
-> Host code is still executing, but breaking into xmon might show a stack
-> trace such as:
+On Wed, 7 Apr 2021 10:28:16 +0530, Ganesh Goudar wrote:
+> When we hit an UE while using machine check safe copy routines,
+> ignore_event flag is set and the event is ignored by mce handler,
+> And the flag is also saved for defered handling and printing of
+> mce event information, But as of now saving of this flag is done
+> on checking if the effective address is provided or physical address
+> is calculated, which is not right.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/kvm: Fix PR KVM with KUAP/MEM_KEYS enabled
-      https://git.kernel.org/powerpc/c/e4e8bc1df691ba5ba749d1e2b67acf9827e51a35
+[1/1] powerpc/mce: save ignore_event flag unconditionally for UE
+      https://git.kernel.org/powerpc/c/92d9d61be519f32f16c07602db5bcbe30a0836fe
 
 cheers
