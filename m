@@ -1,57 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D254366AD1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 14:30:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2358A366B51
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 14:54:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQKd83Ly2z3035
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 22:30:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQL9q0mv7z30BP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 22:54:55 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lNUNMmi7;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=lNUNMmi7; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQKcm2xLbz2xZS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 22:29:41 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FQKcc4dPYz9tvqS;
- Wed, 21 Apr 2021 14:29:36 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id CeELRF3p2Hho; Wed, 21 Apr 2021 14:29:36 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FQKcc3hDwz9tvq9;
- Wed, 21 Apr 2021 14:29:36 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D6FBC8B825;
- Wed, 21 Apr 2021 14:29:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id T1yXWHZXlfsX; Wed, 21 Apr 2021 14:29:37 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 62B1F8B770;
- Wed, 21 Apr 2021 14:29:37 +0200 (CEST)
-Subject: Re: [PATCH v11 6/6] powerpc: Book3S 64-bit outline-only KASAN support
-To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- kasan-dev@googlegroups.com, aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
-References: <20210319144058.772525-1-dja@axtens.net>
- <20210319144058.772525-7-dja@axtens.net>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <fc849719-e2c0-bbcb-c58e-f4ff3e9c5f18@csgroup.eu>
-Date: Wed, 21 Apr 2021 14:29:38 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQL906b7bz2y6C
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 22:54:12 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4FQL8y1flTz9sjJ; Wed, 21 Apr 2021 22:54:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1619009650;
+ bh=6cIFyphky6rR2z9zAMe/Lia36NTbG3iJv907gzjueI8=;
+ h=From:To:Cc:Subject:Date:From;
+ b=lNUNMmi796D3JkiKuKK7Si6H0GL0JJzhGNcMuvtMJvPRbSGqzbtOHCo0pDz3RDgvG
+ SKlfdEd13TF+Uf82mYQ5S5iEnIZW2JEWo+r/CIra9IiUQZMF6aJbUXZMyokkVAE5wy
+ Cj2wqarRuFIit8ywxyoUSKrWKBE+IqFCFW45bwO9QKVuWDc7sk0Qdh2YKEDJk+i7aM
+ 3iQgEyPz0oMvSdIZECb0kJTcS75p4Q7syerNOOPWVPylFLJ3WlU/+ko9lZMF1IRTSU
+ 8Y6cDkSluitwyipa2CkgYbz15jp/S5uBlKVXctc9Qnt/cTa/EE1T5jy5Ol0jPTnJsY
+ oXJoC+jaQ3uuA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] powerpc/fadump: Fix sparse warnings
+Date: Wed, 21 Apr 2021 22:54:01 +1000
+Message-Id: <20210421125402.1955013-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210319144058.772525-7-dja@axtens.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -64,54 +56,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Sparse says:
+  arch/powerpc/kernel/fadump.c:48:16: warning: symbol 'fadump_kobj' was not declared. Should it be static?
+  arch/powerpc/kernel/fadump.c:55:27: warning: symbol 'crash_mrange_info' was not declared. Should it be static?
+  arch/powerpc/kernel/fadump.c:61:27: warning: symbol 'reserved_mrange_info' was not declared. Should it be static?
+  arch/powerpc/kernel/fadump.c:83:12: warning: symbol 'fadump_cma_init' was not declared. Should it be static?
 
+And indeed none of them are used outside this file, they can all be made
+static. Also fadump_kobj needs to be moved inside the ifdef where it's
+used.
 
-Le 19/03/2021 à 15:40, Daniel Axtens a écrit :
-> diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-> index aca354fb670b..63672aa656e8 100644
-> --- a/arch/powerpc/mm/ptdump/ptdump.c
-> +++ b/arch/powerpc/mm/ptdump/ptdump.c
-> @@ -20,6 +20,7 @@
->   #include <linux/seq_file.h>
->   #include <asm/fixmap.h>
->   #include <linux/const.h>
-> +#include <linux/kasan.h>
->   #include <asm/page.h>
->   #include <asm/hugetlb.h>
->   
-> @@ -317,6 +318,23 @@ static void walk_pud(struct pg_state *st, p4d_t *p4d, unsigned long start)
->   	unsigned long addr;
->   	unsigned int i;
->   
-> +#if defined(CONFIG_KASAN) && defined(CONFIG_PPC_BOOK3S_64)
-> +	/*
-> +	 * On radix + KASAN, we want to check for the KASAN "early" shadow
-> +	 * which covers huge quantities of memory with the same set of
-> +	 * read-only PTEs. If it is, we want to note the first page (to see
-> +	 * the status change), and then note the last page. This gives us good
-> +	 * results without spending ages noting the exact same PTEs over 100s of
-> +	 * terabytes of memory.
-> +	 */
-> +	if (p4d_page(*p4d) == virt_to_page(lm_alias(kasan_early_shadow_pud))) {
-> +		walk_pmd(st, pud, start);
-> +		addr = start + (PTRS_PER_PUD - 1) * PUD_SIZE;
-> +		walk_pmd(st, pud, addr);
-> +		return;
-> +	}
-> +#endif
-> +
->   	for (i = 0; i < PTRS_PER_PUD; i++, pud++) {
->   		addr = start + i * PUD_SIZE;
->   		if (!pud_none(*pud) && !pud_is_leaf(*pud))
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/fadump.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index 000e3b7f3fca..b990075285f5 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -45,22 +45,21 @@ static struct fw_dump fw_dump;
+ 
+ static void __init fadump_reserve_crash_area(u64 base);
+ 
+-struct kobject *fadump_kobj;
+-
+ #ifndef CONFIG_PRESERVE_FA_DUMP
+ 
++static struct kobject *fadump_kobj;
++
+ static atomic_t cpus_in_fadump;
+ static DEFINE_MUTEX(fadump_mutex);
+ 
+-struct fadump_mrange_info crash_mrange_info = { "crash", NULL, 0, 0, 0, false };
++static struct fadump_mrange_info crash_mrange_info = { "crash", NULL, 0, 0, 0, false };
+ 
+ #define RESERVED_RNGS_SZ	16384 /* 16K - 128 entries */
+ #define RESERVED_RNGS_CNT	(RESERVED_RNGS_SZ / \
+ 				 sizeof(struct fadump_memory_range))
+ static struct fadump_memory_range rngs[RESERVED_RNGS_CNT];
+-struct fadump_mrange_info reserved_mrange_info = { "reserved", rngs,
+-						   RESERVED_RNGS_SZ, 0,
+-						   RESERVED_RNGS_CNT, true };
++static struct fadump_mrange_info
++reserved_mrange_info = { "reserved", rngs, RESERVED_RNGS_SZ, 0, RESERVED_RNGS_CNT, true };
+ 
+ static void __init early_init_dt_scan_reserved_ranges(unsigned long node);
+ 
+@@ -80,7 +79,7 @@ static struct cma *fadump_cma;
+  * But for some reason even if it fails we still have the memory reservation
+  * with us and we can still continue doing fadump.
+  */
+-int __init fadump_cma_init(void)
++static int __init fadump_cma_init(void)
+ {
+ 	unsigned long long base, size;
+ 	int rc;
+-- 
+2.25.1
 
-The above changes should not be necessary once PPC_PTDUMP is converted to GENERIC_PTDUMP.
-
-See https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=239795
-
-
-Christophe
