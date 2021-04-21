@@ -2,45 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF29366695
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 09:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F9436672A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 10:43:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQCZh5L4Sz30Gb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 17:57:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQDbm3MPcz30Dk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 18:43:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.56;
- helo=out30-56.freemail.mail.aliyun.com;
- envelope-from=jiapeng.chong@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-56.freemail.mail.aliyun.com
- (out30-56.freemail.mail.aliyun.com [115.124.30.56])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=aculab.com (client-ip=185.58.85.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQCZM4D0Rz2xZN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 17:57:12 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R161e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394;
- MF=jiapeng.chong@linux.alibaba.com; NM=1; PH=DS; RN=4; SR=0;
- TI=SMTPD_---0UWHHbmP_1618991814; 
-Received: from 30.0.161.206(mailfrom:jiapeng.chong@linux.alibaba.com
- fp:SMTPD_---0UWHHbmP_1618991814) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 21 Apr 2021 15:56:55 +0800
-Subject: Re: [PATCH] soc: fsl: qe: remove unused function
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <1618475663-100748-1-git-send-email-jiapeng.chong@linux.alibaba.com>
- <87blaeg1ig.fsf@linkitivity.dja.id.au>
- <76468b5b-0eb0-8772-b7b5-21bb708aa053@csgroup.eu>
-From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Message-ID: <fafbfcb2-e9d7-4992-a104-1523039807f9@linux.alibaba.com>
-Date: Wed, 21 Apr 2021 15:56:09 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQDbP5rR3z2xg6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 18:43:10 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-118-CrBwdaVmPfOEx9eMOh2cMQ-1; Wed, 21 Apr 2021 09:43:02 +0100
+X-MC-Unique: CrBwdaVmPfOEx9eMOh2cMQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Wed, 21 Apr 2021 09:43:01 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.015; Wed, 21 Apr 2021 09:43:01 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Arnd Bergmann' <arnd@kernel.org>, Vineet Gupta
+ <Vineet.Gupta1@synopsys.com>
+Subject: RE: [PATCH 1/2] mm: Fix struct page layout on 32-bit systems
+Thread-Topic: [PATCH 1/2] mm: Fix struct page layout on 32-bit systems
+Thread-Index: AQHXNir2f1yRrc3ugkWz9MvyD1ZvgKq+pqyQ
+Date: Wed, 21 Apr 2021 08:43:01 +0000
+Message-ID: <5c41d562589b497ca3c1047e0e18b3a1@AcuMS.aculab.com>
+References: <20210416230724.2519198-1-willy@infradead.org>
+ <20210416230724.2519198-2-willy@infradead.org>
+ <20210417024522.GP2531743@casper.infradead.org>
+ <9f99b0a0-f1c1-f3b0-5f84-3a4bfc711725@synopsys.com>
+ <20210420031029.GI2531743@casper.infradead.org>
+ <CAK8P3a0KUwf1Z0bHiUaHC2nHztevkxg5_FBSzHddNeSsBayWUA@mail.gmail.com>
+ <8d0fce1c-be7c-1c9b-bf5c-0c531db496ac@synopsys.com>
+ <CAK8P3a3rzz1gfNLoGC8aZJiAC-tgZYD6P8pQsoEfgCAmQK=FAw@mail.gmail.com>
+In-Reply-To: <CAK8P3a3rzz1gfNLoGC8aZJiAC-tgZYD6P8pQsoEfgCAmQK=FAw@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-In-Reply-To: <76468b5b-0eb0-8772-b7b5-21bb708aa053@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,77 +70,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: "grygorii.strashko@ti.com" <grygorii.strashko@ti.com>,
+ "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "ilias.apalodimas@linaro.org" <ilias.apalodimas@linaro.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "mgorman@suse.de" <mgorman@suse.de>,
+ "brouer@redhat.com" <brouer@redhat.com>,
+ "mcroce@linux.microsoft.com" <mcroce@linux.microsoft.com>,
+ "mhocko@kernel.org" <mhocko@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "hch@lst.de" <hch@lst.de>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/4/16 15:06, Christophe Leroy wrote:
-> 
-> 
-> Le 16/04/2021 à 08:57, Daniel Axtens a écrit :
->> Hi Jiapeng,
->>
->>> Fix the following clang warning:
-> 
-> You are not fixing a warning, you are removing a function in order to 
-> fix a warning ...
-> 
->>>
->>> drivers/soc/fsl/qe/qe_ic.c:234:29: warning: unused function
->>> 'qe_ic_from_irq' [-Wunused-function].
-> 
-> Would be wise to tell that the last users of the function where removed 
-> by commit d7c2878cfcfa ("soc: fsl: qe: remove unused qe_ic_set_* 
-> functions")
-> 
-> https://github.com/torvalds/linux/commit/d7c2878cfcfa
-> 
->>>
->>> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
->>> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
->>> ---
->>>   drivers/soc/fsl/qe/qe_ic.c | 5 -----
->>>   1 file changed, 5 deletions(-)
->>>
->>> diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
->>> index 0390af9..b573712 100644
->>> --- a/drivers/soc/fsl/qe/qe_ic.c
->>> +++ b/drivers/soc/fsl/qe/qe_ic.c
->>> @@ -231,11 +231,6 @@ static inline void qe_ic_write(__be32  __iomem 
->>> *base, unsigned int reg,
->>>       qe_iowrite32be(value, base + (reg >> 2));
->>>   }
->>> -static inline struct qe_ic *qe_ic_from_irq(unsigned int virq)
->>> -{
->>> -    return irq_get_chip_data(virq);
->>> -}
->>
->> This seems good to me.
->>
->>   * We know that this function can't be called directly from outside the
->>    file, because it is static.
->>
->>   * The function address isn't used as a function pointer anywhere, so
->>     that means it can't be called from outside the file that way (also
->>     it's inline, which would make using a function pointer unwise!)
->>
->>   * There's no obvious macros in that file that might construct the name
->>     of the function in a way that is hidden from grep.
->>
->> All in all, I am fairly confident that the function is indeed not used.
->>
->> Reviewed-by: Daniel Axtens <dja@axtens.net>
->>
->> Kind regards,
->> Daniel
->>
->>> -
->>>   static inline struct qe_ic *qe_ic_from_irq_data(struct irq_data *d)
->>>   {
->>>       return irq_data_get_irq_chip_data(d);
->>> -- 
->>> 1.8.3.1
-Hi,
-I will follow the advice and send V2 later.
+RnJvbTogQXJuZCBCZXJnbWFubg0KPiBTZW50OiAyMCBBcHJpbCAyMDIxIDIyOjIwDQo+IA0KPiBP
+biBUdWUsIEFwciAyMCwgMjAyMSBhdCAxMToxNCBQTSBWaW5lZXQgR3VwdGENCj4gPFZpbmVldC5H
+dXB0YTFAc3lub3BzeXMuY29tPiB3cm90ZToNCj4gPiBPbiA0LzIwLzIxIDEyOjA3IEFNLCBBcm5k
+IEJlcmdtYW5uIHdyb3RlOg0KPiANCj4gPiA+DQo+ID4gPiB3aGljaCBtZWFucyB0aGF0IGhhbGYg
+dGhlIDMyLWJpdCBhcmNoaXRlY3R1cmVzIGRvIHRoaXMuIFRoaXMgbWF5DQo+ID4gPiBjYXVzZSBt
+b3JlIHByb2JsZW1zIHdoZW4gYXJjIGFuZC9vciBtaWNyb2JsYXplIHdhbnQgdG8gc3VwcG9ydA0K
+PiA+ID4gNjQtYml0IGtlcm5lbHMgYW5kIGNvbXBhdCBtb2RlIGluIHRoZSBmdXR1cmUgb24gdGhl
+aXIgbGF0ZXN0IGhhcmR3YXJlLA0KPiA+ID4gYXMgdGhhdCBtZWFucyBkdXBsaWNhdGluZyB0aGUg
+eDg2IHNwZWNpZmljIGhhY2tzIHdlIGhhdmUgZm9yIGNvbXBhdC4NCj4gPiA+DQo+ID4gPiBXaGF0
+IGlzIGFsaWdub2YodTY0KSBvbiA2NC1iaXQgYXJjPw0KPiA+DQo+ID4gJCBlY2hvICdpbnQgYSA9
+IF9fYWxpZ25vZl9fKGxvbmcgbG9uZyk7JyB8IGFyYzY0LWxpbnV4LWdudS1nY2MgLXhjIC0NCj4g
+PiAtV2FsbCAtUyAtbyAtIHwgZ3JlcCAtQTEgYTogfCB0YWlsIC1uIDEgfCBjdXQgLWYgMw0KPiA+
+IDgNCj4gDQo+IE9rLCBnb29kLg0KDQpUaGF0IHRlc3QgZG9lc24ndCBwcm92ZSBhbnl0aGluZy4N
+ClRyeSBydW5uaW5nIG9uIHg4NjoNCiQgZWNobyAnaW50IGEgPSBfX2FsaWdub2ZfXyhsb25nIGxv
+bmcpOycgfCBnY2MgLXhjIC0gLVdhbGwgLVMgLW8gLSAtbTMyDQogICAgICAgIC5maWxlICAgIiIN
+CiAgICAgICAgLmdsb2JsICBhDQogICAgICAgIC5kYXRhDQogICAgICAgIC5hbGlnbiA0DQogICAg
+ICAgIC50eXBlICAgYSwgQG9iamVjdA0KICAgICAgICAuc2l6ZSAgIGEsIDQNCmE6DQogICAgICAg
+IC5sb25nICAgOA0KICAgICAgICAuaWRlbnQgICJHQ0M6IChVYnVudHUgNS40LjAtNnVidW50dTF+
+MTYuMDQuMTApIDUuNC4wIDIwMTYwNjA5Ig0KICAgICAgICAuc2VjdGlvbiAgICAgICAgLm5vdGUu
+R05VLXN0YWNrLCIiLEBwcm9nYml0cw0KDQpVc2luZyAnX19hbGlnbm9mX18oc3RydWN0IHtsb25n
+IGxvbmcgeDt9KScgZG9lcyBnaXZlIHRoZSBleHBlY3RlZCA0Lg0KDQpfX2FsaWdub2ZfXygpIHJl
+dHVybnMgdGhlIHByZWZlcnJlZCBhbGlnbm1lbnQsIG5vdCB0aGUgZW5mb3JjZWQNCmFsaWdubW5l
+dCAtIGdvIGZpZ3VyZS4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lk
+ZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0K
+UmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
+
