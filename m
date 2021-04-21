@@ -2,96 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FBEB36659D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 08:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA693665B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 08:52:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQB0X2mBPz301j
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 16:46:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQB7F5k9Gz302y
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 16:52:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rn5DXPgJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FNoseHrP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=sukadev@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=rn5DXPgJ; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=FNoseHrP; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQ9zl1F5pz302Y
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 16:45:38 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13L6XZif099323; Wed, 21 Apr 2021 02:45:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=Wr99daJ5LCLrKVJQQwcYjwTnR5ygMys3ePj3mAnH1Kw=;
- b=rn5DXPgJ4yr44SlH7TAqGp7ISW31LDnl5hpyNcI6EL055REo1CnPikgYAv9Fg1JQF54h
- i5MeEtYBXjH9f0ZkRgq1hmSS2dfGdJvM1QlK+6g1mlfy7xIX62uo09a2iMd1wJYwdZtM
- eJF5Anl3cFh2n7YleHE86v5DCc/PS6JXzXjGEle/hrlDR9/nzyS+7vX7virMpdj4DiCG
- c+nh5MFWUn8sGuOopexa1V7WRHl5mgomYt78vJBA+jVrZOoYVNOWOABR7LBvRqNTU9xh
- Bb9qZGrMQaIt8101s+pOlfIL25MP1wsBcDnbgxIThCIi8lrBnSckv8EzMy5KJ3q0dc5U aA== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 382e5qhe7f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Apr 2021 02:45:32 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13L6gVH4023162;
- Wed, 21 Apr 2021 06:45:31 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma04wdc.us.ibm.com with ESMTP id 3813tarddk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Apr 2021 06:45:31 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13L6jUHq30015876
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 21 Apr 2021 06:45:30 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AA54ABE051;
- Wed, 21 Apr 2021 06:45:30 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 77E8BBE054;
- Wed, 21 Apr 2021 06:45:30 +0000 (GMT)
-Received: from suka-w540.localdomain (unknown [9.85.204.101])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 21 Apr 2021 06:45:30 +0000 (GMT)
-Received: by suka-w540.localdomain (Postfix, from userid 1000)
- id 545A72E188A; Tue, 20 Apr 2021 23:45:27 -0700 (PDT)
-Date: Tue, 20 Apr 2021 23:45:27 -0700
-From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-To: Lijun Pan <ljp@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2 net] ibmvnic: Continue with reset if set link down
- failed
-Message-ID: <20210421064527.GA2648262@us.ibm.com>
-References: <20210420213517.24171-1-drt@linux.ibm.com>
- <60C99F56-617D-455B-9ACF-8CE1EED64D92@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQB6p6lRDz2y07
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 16:51:45 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FQB6Z68ZCz9tB1;
+ Wed, 21 Apr 2021 16:51:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1618987895;
+ bh=uA2hTlCrBexgLM/6u4kMgngO8YfJd4Ykb4JUjZKiLOQ=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=FNoseHrPAQSKXddjnrEL6cDE1s6S+Hm+CLVb/4BpaSgN06mxeuRX4eVceHmHRJDEy
+ kN5ll+6/FQybDyVJsoXOcwlX+sE5+sBAo+fqpCtu0uh1VGYIGr/6Z87V7/CHw70Snq
+ awTqhBwLZf6HdQW6zwD2oWDdhOWmaIMxcmJ7/jePr3K09sD5eGE5hH18sN2uJ+ldoF
+ NPu/KiFp43rMYxbZl3TUlllzypUx+xyC8gvSOTMEU14nCgxQPn0p28/IPWM1VmkG+e
+ 1BOfu7ME02YDWopEfXTNz0CiywhWVrqmbBGvoGQEwtsTpreXXAw5yqkoyiOpFcCvrH
+ Ed0tkXl240gjg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jordan Niethe <jniethe5@gmail.com>
+Subject: Re: [PATCH v10 05/10] powerpc/bpf: Write protect JIT code
+In-Reply-To: <CACzsE9oERR+KKBe=+eQU1skwTOpDAmi8=_rOMAwM8+LtfBqRKA@mail.gmail.com>
+References: <20210330045132.722243-1-jniethe5@gmail.com>
+ <20210330045132.722243-6-jniethe5@gmail.com>
+ <87wntnwqw9.fsf@mpe.ellerman.id.au>
+ <CACzsE9oERR+KKBe=+eQU1skwTOpDAmi8=_rOMAwM8+LtfBqRKA@mail.gmail.com>
+Date: Wed, 21 Apr 2021 16:51:30 +1000
+Message-ID: <87wnswb05p.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <60C99F56-617D-455B-9ACF-8CE1EED64D92@linux.vnet.ibm.com>
-X-Operating-System: Linux 2.0.32 on an i486
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: csMnvHEGnph8RIrAXXNizupgMkVXY60g
-X-Proofpoint-ORIG-GUID: csMnvHEGnph8RIrAXXNizupgMkVXY60g
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-21_02:2021-04-20,
- 2021-04-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501
- impostorscore=0 adultscore=0 clxscore=1011 suspectscore=0 mlxlogscore=999
- malwarescore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104210052
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,68 +64,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, Tom Falcon <tlfalcon@linux.ibm.com>,
- paulus@samba.org, Dany Madden <drt@linux.ibm.com>,
- Jakub Kicinski <kuba@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- David Miller <davem@davemloft.net>
+Cc: ajd@linux.ibm.com, cmr@codefail.de, Nicholas Piggin <npiggin@gmail.com>,
+ naveen.n.rao@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Lijun Pan [ljp@linux.vnet.ibm.com] wrote:
-> 
-> 
-> > On Apr 20, 2021, at 4:35 PM, Dany Madden <drt@linux.ibm.com> wrote:
-> > 
-> > When ibmvnic gets a FATAL error message from the vnicserver, it marks
-> > the Command Respond Queue (CRQ) inactive and resets the adapter. If this
-> > FATAL reset fails and a transmission timeout reset follows, the CRQ is
-> > still inactive, ibmvnic's attempt to set link down will also fail. If
-> > ibmvnic abandons the reset because of this failed set link down and this
-> > is the last reset in the workqueue, then this adapter will be left in an
-> > inoperable state.
-> > 
-> > Instead, make the driver ignore this link down failure and continue to
-> > free and re-register CRQ so that the adapter has an opportunity to
-> > recover.
-> 
-> This v2 does not adddress the concerns mentioned in v1.
-> And I think it is better to exit with error from do_reset, and schedule a thorough
-> do_hard_reset if the the adapter is already in unstable state.
+Jordan Niethe <jniethe5@gmail.com> writes:
+> On Wed, Mar 31, 2021 at 9:37 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>
+>> Jordan Niethe <jniethe5@gmail.com> writes:
+>>
+>> > Once CONFIG_STRICT_MODULE_RWX is enabled there will be no need to
+>> > override bpf_jit_free() because it is now possible to set images
+>> > read-only. So use the default implementation.
+>> >
+>> > Also add the necessary call to bpf_jit_binary_lock_ro() which will
+>> > remove write protection and add exec protection to the JIT image after
+>> > it has finished being written.
+>> >
+>> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+>> > ---
+>> > v10: New to series
+>> > ---
+>> >  arch/powerpc/net/bpf_jit_comp.c   | 5 ++++-
+>> >  arch/powerpc/net/bpf_jit_comp64.c | 4 ++++
+>> >  2 files changed, 8 insertions(+), 1 deletion(-)
+>> >
+>> > diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+>> > index e809cb5a1631..8015e4a7d2d4 100644
+>> > --- a/arch/powerpc/net/bpf_jit_comp.c
+>> > +++ b/arch/powerpc/net/bpf_jit_comp.c
+>> > @@ -659,12 +659,15 @@ void bpf_jit_compile(struct bpf_prog *fp)
+>> >               bpf_jit_dump(flen, proglen, pass, code_base);
+>> >
+>> >       bpf_flush_icache(code_base, code_base + (proglen/4));
+>> > -
+>> >  #ifdef CONFIG_PPC64
+>> >       /* Function descriptor nastiness: Address + TOC */
+>> >       ((u64 *)image)[0] = (u64)code_base;
+>> >       ((u64 *)image)[1] = local_paca->kernel_toc;
+>> >  #endif
+>> > +     if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX)) {
+>> > +             set_memory_ro((unsigned long)image, alloclen >> PAGE_SHIFT);
+>> > +             set_memory_x((unsigned long)image, alloclen >> PAGE_SHIFT);
+>> > +     }
+>>
+>> You don't need to check the ifdef in a caller, there are stubs that
+>> compile to nothing when CONFIG_ARCH_HAS_SET_MEMORY=n.
 
-We had a FATAL error and when handling it, we failed to send a 
-link-down message to the VIOS. So what we need to try next is to 
-reset the connection with the VIOS. For this we must talk to the 
-firmware using the H_FREE_CRQ and H_REG_CRQ hcalls. do_reset()
-does just that in ibmvnic_reset_crq().
+> As Christophe pointed out we could have !CONFIG_STRICT_MODULE_RWX and
+> CONFIG_ARCH_HAS_SET_MEMORY which would then be wrong here.
+> Probably we could make CONFIG_ARCH_HAS_SET_MEMORY depend on
+> CONFIG_STRICT_MODULE_RWX?
 
-Now, sure we can attempt a "thorough hard reset" which also does
-the same hcalls to reestablish the connection. Is there any
-other magic in do_hard_reset()? But in addition, it also frees lot
-more Linux kernel buffers and reallocates them for instance.
+I thought it already did depend on it :)
 
-If we are having a communication problem with the VIOS, what is
-the point of freeing and reallocating Linux kernel buffers? Beside
-being inefficient, it would expose us to even more errors during
-reset under heavy workloads?
+That seems a reasonable dependency to me.
 
-From what I understand so far, do_reset() is complicated because
-it is attempting some optimizations.  If we are going to fall back
-to hard reset for every error we might as well drop the do_reset()
-and just do the "thorough hard reset" every time right?
-
-The protocol spec is ambiguous and so far I did not get a clear
-answer on whether the link-down is even needed. If it is needed,
-then should we add it to do_hard_reset() also? If not, we should
-remove it (like you mentioned your earlier) completely but am
-waiting for confirmation on that. git history has not been helpful.
-
-While there are other rough edges around do_reset() that we are
-working on fixing separately (eg: ignore the error return from 
-__ibmvnic_close() right above this change) I see a benefit to
-the customer with this patch.
-
-I am not convinced we should perform a hard reset just because
-the link down failed.
-
-Sukadev
+cheers
