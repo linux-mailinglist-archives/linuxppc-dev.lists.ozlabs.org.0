@@ -2,54 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A64F83664B8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 07:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCC13664C7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 07:23:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQ85K5450z3bcq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 15:20:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQ88k2Qk7z30D9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 15:23:18 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=mzqbLV7i;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b30;
+ helo=mail-yb1-xb30.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=mzqbLV7i; dkim-atps=neutral
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com
+ [IPv6:2607:f8b0:4864:20::b30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQ84y58BRz2yqD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 15:20:01 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FQ84t0yFMzB09Zx;
- Wed, 21 Apr 2021 07:19:58 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id gwq0mv73agO5; Wed, 21 Apr 2021 07:19:58 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FQ84s74jZzB09Zr;
- Wed, 21 Apr 2021 07:19:57 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C12EA8B814;
- Wed, 21 Apr 2021 07:19:58 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 37EEIdynIZD1; Wed, 21 Apr 2021 07:19:58 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 588E38B770;
- Wed, 21 Apr 2021 07:19:58 +0200 (CEST)
-Subject: Re: [PATCH v2] powerpc: make ALTIVEC select PPC_FPU
-To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-References: <20210421025605.10868-1-rdunlap@infradead.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <60ac6ff1-6bfa-d335-ac0e-336fe3e50587@csgroup.eu>
-Date: Wed, 21 Apr 2021 07:19:55 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQ88H0fmLz2xYb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 15:22:53 +1000 (AEST)
+Received: by mail-yb1-xb30.google.com with SMTP id 82so45809525yby.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 22:22:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=iSbVU2V2KlZYBib7kF9wWJnnbWlfSncdeHXWKO6mFas=;
+ b=mzqbLV7iHItHXVjD6BwHJrgl9xVdywWlhos6w3GFu8JnSqaE6M0WvQlBfoyDBy2Mgl
+ bJBAMvcXgr/XiT62FGccGX66KFygPJfl+4ogekSjwSqXlYIvR9HlmkyiryM6n3zD1tJX
+ 87eXN1mOHV1FOfsBP1bCLJeMO2Rk5gFVe52vOANUOo7MaYNIc8ufyQkKRN55dlTCJXZn
+ PmuBpRVNm9cGUFI2uwl0HsyXgz9pZwaQ9RuwCaEbLM9zHR2ZAuRCd31aUkMOF419jRGp
+ CWjc7dLiiBWQwu0uBLsfUfZ05rWA9B+eQbAilQst3H2I6R9QdR0VfGzTFrVt4oYso2in
+ p77Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=iSbVU2V2KlZYBib7kF9wWJnnbWlfSncdeHXWKO6mFas=;
+ b=fg2VBjhbdBSdMEkg3rGRTBpYWmFoTMYt2SEkgw512NDjAKCs7OOJySLS/7w/jsX9q2
+ GY0GQtOrvHunPXDJuczZjkOCosBBKJslwJTFqLPPAcRL6y5J/S9t0jXZqJBETrQDEuo8
+ BNyqTSd6WUzby5/i6e0KA8xxcl5fi91S81KeBabKtPYE3LM3ezv4TWoIvigIUqj99Xaj
+ BOULdgbQC4m0XJa39d8E9qxzDsXtkD09bwtxKuXKXb7WQCQ2PIAi2JK9t74R7nwWDgqT
+ VXR8djL4Acsn5p6AGoc6Khv41YsJyrcRvHykr5YwwzoRZT7wNu+GJmYB8cTEjIsv5Qjh
+ Qbkw==
+X-Gm-Message-State: AOAM532/IMCe8t0piywpi/Y39rPG6Jb3czPmum4V9QQBA82DKv9m3qcN
+ Pr1m9evMhXvdvngj6O11Cj4cBDKTlzs0jdTjWKs=
+X-Google-Smtp-Source: ABdhPJyPvT/aDPRx7sdUr5SXMb22Jy1Uw+55Rj/CXIyO84VbSrG3Xvm1HKMenpMH8LMex1fJeGSSVWP8vdhVvGUUG4o=
+X-Received: by 2002:a5b:b01:: with SMTP id z1mr6314168ybp.342.1618982571945;
+ Tue, 20 Apr 2021 22:22:51 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210421025605.10868-1-rdunlap@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20210330045132.722243-1-jniethe5@gmail.com>
+ <20210330045132.722243-4-jniethe5@gmail.com>
+ <c4977cfb-6d9d-063e-b74b-ba0ffd9feaeb@csgroup.eu>
+ <CACzsE9oNQuymvv5FRUvzQ9uiytvFOcke5RsXA_urfKS1mtMnLg@mail.gmail.com>
+ <8e0e850d-79b5-03ab-56c7-3d92ec72c7dc@csgroup.eu>
+In-Reply-To: <8e0e850d-79b5-03ab-56c7-3d92ec72c7dc@csgroup.eu>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Wed, 21 Apr 2021 15:22:39 +1000
+Message-ID: <CACzsE9rZinwdvwQj-HU5XwiaYETOcDj+avVLAhfZUsz8hOPAJQ@mail.gmail.com>
+Subject: Re: [PATCH v10 03/10] powerpc: Always define MODULES_{VADDR,END}
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,78 +79,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>
+Cc: ajd@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, cmr@codefail.de,
+ naveen.n.rao@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 21/04/2021 à 04:56, Randy Dunlap a écrit :
-> On a kernel config with ALTIVEC=y and PPC_FPU not set/enabled,
-> there are build errors:
-> 
-> drivers/cpufreq/pmac32-cpufreq.c:262:2: error: implicit declaration of function 'enable_kernel_fp' [-Werror,-Wimplicit-function-declaration]
->             enable_kernel_fp();
-> ../arch/powerpc/lib/sstep.c: In function 'do_vec_load':
-> ../arch/powerpc/lib/sstep.c:637:3: error: implicit declaration of function 'put_vr' [-Werror=implicit-function-declaration]
->    637 |   put_vr(rn, &u.v);
->        |   ^~~~~~
-> ../arch/powerpc/lib/sstep.c: In function 'do_vec_store':
-> ../arch/powerpc/lib/sstep.c:660:3: error: implicit declaration of function 'get_vr'; did you mean 'get_oc'? [-Werror=implicit-function-declaration]
->    660 |   get_vr(rn, &u.v);
->        |   ^~~~~~
-> 
-> In theory ALTIVEC is independent of PPC_FPU but in practice nobody
-> is going to build such a machine, so make ALTIVEC require PPC_FPU
-> by selecting it.
-> 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Segher Boessenkool <segher@kernel.crashing.org>
-> Cc: lkp@intel.com
-> ---
-> v2: change ALTIVEC depends on PPC_FPU to select (Christophe and Michael)
-> 
->   arch/powerpc/platforms/86xx/Kconfig    |    1 +
->   arch/powerpc/platforms/Kconfig.cputype |    2 ++
->   2 files changed, 3 insertions(+)
-> 
-> --- linux-next-20210416.orig/arch/powerpc/platforms/86xx/Kconfig
-> +++ linux-next-20210416/arch/powerpc/platforms/86xx/Kconfig
-> @@ -4,6 +4,7 @@ menuconfig PPC_86xx
->   	bool "86xx-based boards"
->   	depends on PPC_BOOK3S_32
->   	select FSL_SOC
-> +	select PPC_FPU
-
-Now that ALTIVEC selects PPC_FPU by itself, I don't think you need that.
-
->   	select ALTIVEC
->   	help
->   	  The Freescale E600 SoCs have 74xx cores.
-> --- linux-next-20210416.orig/arch/powerpc/platforms/Kconfig.cputype
-> +++ linux-next-20210416/arch/powerpc/platforms/Kconfig.cputype
-> @@ -186,6 +186,7 @@ config E300C3_CPU
->   config G4_CPU
->   	bool "G4 (74xx)"
->   	depends on PPC_BOOK3S_32
-> +	select PPC_FPU
-
-Same
-
->   	select ALTIVEC
->   
->   endchoice
-> @@ -310,6 +311,7 @@ config PHYS_64BIT
->   config ALTIVEC
->   	bool "AltiVec Support"
->   	depends on PPC_BOOK3S_32 || PPC_BOOK3S_64 || (PPC_E500MC && PPC64)
-> +	select PPC_FPU
->   	help
->   	  This option enables kernel support for the Altivec extensions to the
->   	  PowerPC processor. The kernel currently supports saving and restoring
-> 
+On Wed, Apr 21, 2021 at 3:14 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 21/04/2021 =C3=A0 04:46, Jordan Niethe a =C3=A9crit :
+> > On Fri, Apr 2, 2021 at 12:36 AM Christophe Leroy
+> > <christophe.leroy@csgroup.eu> wrote:
+> >>
+> >>
+> >>
+> >> Le 30/03/2021 =C3=A0 06:51, Jordan Niethe a =C3=A9crit :
+> >>> If MODULES_{VADDR,END} are not defined set them to VMALLOC_START and
+> >>> VMALLOC_END respectively. This reduces the need for special cases. Fo=
+r
+> >>> example, powerpc's module_alloc() was previously predicated on
+> >>> MODULES_VADDR being defined but now is unconditionally defined.
+> >>>
+> >>> This will be useful reducing conditional code in other places that ne=
+ed
+> >>> to allocate from the module region (i.e., kprobes).
+> >>>
+> >>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> >>> ---
+> >>> v10: New to series
+> >>> ---
+> >>>    arch/powerpc/include/asm/pgtable.h | 5 +++++
+> >>>    arch/powerpc/kernel/module.c       | 5 +----
+> >>
+> >> You probably also have changes to do in kernel/ptdump.c
+> >>
+> >> In mm/book3s32/mmu.c and mm/kasan/kasan_init_32.c as well allthough th=
+at's harmless here.
+> >>
+> >>>    2 files changed, 6 insertions(+), 4 deletions(-)
+> >>>
+> >>> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/includ=
+e/asm/pgtable.h
+> >>> index 4eed82172e33..014c2921f26a 100644
+> >>> --- a/arch/powerpc/include/asm/pgtable.h
+> >>> +++ b/arch/powerpc/include/asm/pgtable.h
+> >>> @@ -167,6 +167,11 @@ struct seq_file;
+> >>>    void arch_report_meminfo(struct seq_file *m);
+> >>>    #endif /* CONFIG_PPC64 */
+> >>>
+> >>> +#ifndef MODULES_VADDR
+> >>> +#define MODULES_VADDR VMALLOC_START
+> >>> +#define MODULES_END VMALLOC_END
+> >>> +#endif
+> >>> +
+> >>>    #endif /* __ASSEMBLY__ */
+> >>>
+> >>>    #endif /* _ASM_POWERPC_PGTABLE_H */
+> >>> diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/modul=
+e.c
+> >>> index a211b0253cdb..f1fb58389d58 100644
+> >>> --- a/arch/powerpc/kernel/module.c
+> >>> +++ b/arch/powerpc/kernel/module.c
+> >>> @@ -14,6 +14,7 @@
+> >>>    #include <asm/firmware.h>
+> >>>    #include <linux/sort.h>
+> >>>    #include <asm/setup.h>
+> >>> +#include <linux/mm.h>
+> >>>
+> >>>    static LIST_HEAD(module_bug_list);
+> >>>
+> >>> @@ -87,13 +88,9 @@ int module_finalize(const Elf_Ehdr *hdr,
+> >>>        return 0;
+> >>>    }
+> >>>
+> >>> -#ifdef MODULES_VADDR
+> >>>    void *module_alloc(unsigned long size)
+> >>>    {
+> >>> -     BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
+> >>> -
+> >>
+> >> The above check is needed somewhere, if you remove it from here you ha=
+ve to perform the check
+> >> somewhere else.
+> >
+> > This also introduces this warning:
+> > fs/proc/kcore.c:626:52: warning: self-comparison always evaluates to
+> > false [-Wtautological-compare]
+> >    626 |  if (MODULES_VADDR !=3D VMALLOC_START && MODULES_END !=3D VMAL=
+LOC_END) {
+> > I might leave this patch out of this series and use an #ifdef for now
+> > and make this change separately as a follow up.
+>
+> x86/32 at least does the same (see
+> https://elixir.bootlin.com/linux/v5.12-rc8/source/arch/x86/include/asm/pg=
+table_32_areas.h#L47)
+>
+> They probably also get the warning, so I think would shouldn't bother.
+> One day someone will fix fs/proc/kcore.c , that's not a powerpc problem.
+Yeah you are right. I'll add the BUILD_BUG_ON() check to
+asm/task_size_32.h and keep the patch.
+>
+> >
+> >>
+> >>>        return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_EN=
+D, GFP_KERNEL,
+> >>>                                    PAGE_KERNEL_EXEC, VM_FLUSH_RESET_P=
+ERMS, NUMA_NO_NODE,
+> >>>                                    __builtin_return_address(0));
+> >>>    }
+> >>> -#endif
+> >>>
