@@ -2,72 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CCC13664C7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 07:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A96D3664E3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 07:35:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQ88k2Qk7z30D9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 15:23:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQ8RC2WL4z30Dk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 15:35:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=mzqbLV7i;
+	dkim=pass (2048-bit key; unprotected) header.d=fossix-org.20150623.gappssmtp.com header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=FGcmYqzV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b30;
- helo=mail-yb1-xb30.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=fossix.org
+ (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com;
+ envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=mzqbLV7i; dkim-atps=neutral
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com
- [IPv6:2607:f8b0:4864:20::b30])
+ unprotected) header.d=fossix-org.20150623.gappssmtp.com
+ header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=FGcmYqzV; dkim-atps=neutral
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
+ [IPv6:2607:f8b0:4864:20::530])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQ88H0fmLz2xYb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 15:22:53 +1000 (AEST)
-Received: by mail-yb1-xb30.google.com with SMTP id 82so45809525yby.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 22:22:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=iSbVU2V2KlZYBib7kF9wWJnnbWlfSncdeHXWKO6mFas=;
- b=mzqbLV7iHItHXVjD6BwHJrgl9xVdywWlhos6w3GFu8JnSqaE6M0WvQlBfoyDBy2Mgl
- bJBAMvcXgr/XiT62FGccGX66KFygPJfl+4ogekSjwSqXlYIvR9HlmkyiryM6n3zD1tJX
- 87eXN1mOHV1FOfsBP1bCLJeMO2Rk5gFVe52vOANUOo7MaYNIc8ufyQkKRN55dlTCJXZn
- PmuBpRVNm9cGUFI2uwl0HsyXgz9pZwaQ9RuwCaEbLM9zHR2ZAuRCd31aUkMOF419jRGp
- CWjc7dLiiBWQwu0uBLsfUfZ05rWA9B+eQbAilQst3H2I6R9QdR0VfGzTFrVt4oYso2in
- p77Q==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQ8Qm690Wz2y0B
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 15:35:26 +1000 (AEST)
+Received: by mail-pg1-x530.google.com with SMTP id q10so28679025pgj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 22:35:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fossix-org.20150623.gappssmtp.com; s=20150623;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=8jaI/y7tQyXNZ0F/lE5w04XvuFfJHK0sIg7D3ehWa2I=;
+ b=FGcmYqzVAfCk4jZIBjwgNdwOcU2kAKiyBAlZAz+ld7OMjWEuPFpr5v0FYC0Up6U3/M
+ 75av7TzaEn9BqYEkEkhPWjQ/c78xqZTzy8RSSu9IVOBalVrqxIXB/Rh1kf2RKq2CA6JX
+ lVNZ3kLxnbe5kzk7m7gWUD6ABlmIhmIz37QewnwLucbI2oMaKDHXvM95aS08FmnjmUCf
+ qXSu/4Rkf7GJQdQVJTOKJ4RgeDn6xoCXwATaIG4RnLlPHyhkCttwxrKj05PTriAeqpxp
+ 5xqF/dV4lq3b58mACsurclxYjVBOWMzVLZ943pXQ9E0F+TzdqPKU3oIo8593CsO/Qwaa
+ +kVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=iSbVU2V2KlZYBib7kF9wWJnnbWlfSncdeHXWKO6mFas=;
- b=fg2VBjhbdBSdMEkg3rGRTBpYWmFoTMYt2SEkgw512NDjAKCs7OOJySLS/7w/jsX9q2
- GY0GQtOrvHunPXDJuczZjkOCosBBKJslwJTFqLPPAcRL6y5J/S9t0jXZqJBETrQDEuo8
- BNyqTSd6WUzby5/i6e0KA8xxcl5fi91S81KeBabKtPYE3LM3ezv4TWoIvigIUqj99Xaj
- BOULdgbQC4m0XJa39d8E9qxzDsXtkD09bwtxKuXKXb7WQCQ2PIAi2JK9t74R7nwWDgqT
- VXR8djL4Acsn5p6AGoc6Khv41YsJyrcRvHykr5YwwzoRZT7wNu+GJmYB8cTEjIsv5Qjh
- Qbkw==
-X-Gm-Message-State: AOAM532/IMCe8t0piywpi/Y39rPG6Jb3czPmum4V9QQBA82DKv9m3qcN
- Pr1m9evMhXvdvngj6O11Cj4cBDKTlzs0jdTjWKs=
-X-Google-Smtp-Source: ABdhPJyPvT/aDPRx7sdUr5SXMb22Jy1Uw+55Rj/CXIyO84VbSrG3Xvm1HKMenpMH8LMex1fJeGSSVWP8vdhVvGUUG4o=
-X-Received: by 2002:a5b:b01:: with SMTP id z1mr6314168ybp.342.1618982571945;
- Tue, 20 Apr 2021 22:22:51 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=8jaI/y7tQyXNZ0F/lE5w04XvuFfJHK0sIg7D3ehWa2I=;
+ b=QBJFHdz6al9mOq+3Q/PNVWTtsLh8ap5AkhiXaRBCIr7nlAQH4GdWFuxzI/xD6lH0vt
+ DJh6YY0XmW0EfjLVrtbIL2oh+BQFi7+ehJHcKsadJ39tJZG1g1Z4G5uwErsoKD6N6qTb
+ 3iLHKYLwm8IvizmXh4JR8n2VNZX2k4GvKdKKzRyn90tWkOTwLaRNSJ40jum62c/FqpPt
+ j5jW0U/E1DU33Z2sw3avvh7jDTMTtLcMmF8BTNTBurKu3lgmTeiJzNy8/QXy2W1ZXokF
+ MULvTWsnC8JmqqU9Tk6fgw52svvujBBAe4Ge+neRXMqDzF/iAcKb+CYiY/2qLRZ/9V8d
+ knSw==
+X-Gm-Message-State: AOAM530+k98FLtx6MTQbsn0B9R11HaKZO3XCjNFXaZtxNkWHSrw86Gsg
+ CdyfZ1iik6pSXgNXkpYyuaR8jg==
+X-Google-Smtp-Source: ABdhPJyNYSTIUuRRGnWXbcE6S1PfsjcCNWhOMuarMEDyCvHeQDVuTaBITj2UW4m2Z1fYij25QGu6vg==
+X-Received: by 2002:aa7:9394:0:b029:264:82c4:34ce with SMTP id
+ t20-20020aa793940000b029026482c434cemr4944123pfe.34.1618983323069; 
+ Tue, 20 Apr 2021 22:35:23 -0700 (PDT)
+Received: from localhost ([103.21.79.4])
+ by smtp.gmail.com with ESMTPSA id a20sm646452pfk.46.2021.04.20.22.35.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Apr 2021 22:35:22 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>, robh@kernel.org,
+ dan.carpenter@oracle.com, mpe@ellerman.id.au
+Subject: Re: [PATCH 1/2] powerpc: Free fdt on error in elf64_load()
+In-Reply-To: <20210420190355.10059-1-nramas@linux.microsoft.com>
+References: <20210420190355.10059-1-nramas@linux.microsoft.com>
+Date: Wed, 21 Apr 2021 11:05:17 +0530
+Message-ID: <871rb4yzca.fsf@fossix.org>
 MIME-Version: 1.0
-References: <20210330045132.722243-1-jniethe5@gmail.com>
- <20210330045132.722243-4-jniethe5@gmail.com>
- <c4977cfb-6d9d-063e-b74b-ba0ffd9feaeb@csgroup.eu>
- <CACzsE9oNQuymvv5FRUvzQ9uiytvFOcke5RsXA_urfKS1mtMnLg@mail.gmail.com>
- <8e0e850d-79b5-03ab-56c7-3d92ec72c7dc@csgroup.eu>
-In-Reply-To: <8e0e850d-79b5-03ab-56c7-3d92ec72c7dc@csgroup.eu>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Wed, 21 Apr 2021 15:22:39 +1000
-Message-ID: <CACzsE9rZinwdvwQj-HU5XwiaYETOcDj+avVLAhfZUsz8hOPAJQ@mail.gmail.com>
-Subject: Re: [PATCH v10 03/10] powerpc: Always define MODULES_{VADDR,END}
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,117 +81,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, cmr@codefail.de,
- naveen.n.rao@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Daniel Axtens <dja@axtens.net>
+Cc: devicetree@vger.kernel.org, kbuild-all@lists.01.org, lkp@intel.com,
+ nramas@linux.microsoft.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 21, 2021 at 3:14 PM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
+
+Hi Lakshmi,
+
+Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
+
+> There are a few "goto out;" statements before the local variable "fdt"
+> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
+> elf64_load().  This will result in an uninitialized "fdt" being passed
+> to kvfree() in this function if there is an error before the call to
+> of_kexec_alloc_and_setup_fdt().
 >
+> If there is any error after fdt is allocated, but before it is
+> saved in the arch specific kimage struct, free the fdt.
 >
+> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/kexec/elf_64.c | 16 ++++++----------
+>  1 file changed, 6 insertions(+), 10 deletions(-)
 >
-> Le 21/04/2021 =C3=A0 04:46, Jordan Niethe a =C3=A9crit :
-> > On Fri, Apr 2, 2021 at 12:36 AM Christophe Leroy
-> > <christophe.leroy@csgroup.eu> wrote:
-> >>
-> >>
-> >>
-> >> Le 30/03/2021 =C3=A0 06:51, Jordan Niethe a =C3=A9crit :
-> >>> If MODULES_{VADDR,END} are not defined set them to VMALLOC_START and
-> >>> VMALLOC_END respectively. This reduces the need for special cases. Fo=
-r
-> >>> example, powerpc's module_alloc() was previously predicated on
-> >>> MODULES_VADDR being defined but now is unconditionally defined.
-> >>>
-> >>> This will be useful reducing conditional code in other places that ne=
-ed
-> >>> to allocate from the module region (i.e., kprobes).
-> >>>
-> >>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> >>> ---
-> >>> v10: New to series
-> >>> ---
-> >>>    arch/powerpc/include/asm/pgtable.h | 5 +++++
-> >>>    arch/powerpc/kernel/module.c       | 5 +----
-> >>
-> >> You probably also have changes to do in kernel/ptdump.c
-> >>
-> >> In mm/book3s32/mmu.c and mm/kasan/kasan_init_32.c as well allthough th=
-at's harmless here.
-> >>
-> >>>    2 files changed, 6 insertions(+), 4 deletions(-)
-> >>>
-> >>> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/includ=
-e/asm/pgtable.h
-> >>> index 4eed82172e33..014c2921f26a 100644
-> >>> --- a/arch/powerpc/include/asm/pgtable.h
-> >>> +++ b/arch/powerpc/include/asm/pgtable.h
-> >>> @@ -167,6 +167,11 @@ struct seq_file;
-> >>>    void arch_report_meminfo(struct seq_file *m);
-> >>>    #endif /* CONFIG_PPC64 */
-> >>>
-> >>> +#ifndef MODULES_VADDR
-> >>> +#define MODULES_VADDR VMALLOC_START
-> >>> +#define MODULES_END VMALLOC_END
-> >>> +#endif
-> >>> +
-> >>>    #endif /* __ASSEMBLY__ */
-> >>>
-> >>>    #endif /* _ASM_POWERPC_PGTABLE_H */
-> >>> diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/modul=
-e.c
-> >>> index a211b0253cdb..f1fb58389d58 100644
-> >>> --- a/arch/powerpc/kernel/module.c
-> >>> +++ b/arch/powerpc/kernel/module.c
-> >>> @@ -14,6 +14,7 @@
-> >>>    #include <asm/firmware.h>
-> >>>    #include <linux/sort.h>
-> >>>    #include <asm/setup.h>
-> >>> +#include <linux/mm.h>
-> >>>
-> >>>    static LIST_HEAD(module_bug_list);
-> >>>
-> >>> @@ -87,13 +88,9 @@ int module_finalize(const Elf_Ehdr *hdr,
-> >>>        return 0;
-> >>>    }
-> >>>
-> >>> -#ifdef MODULES_VADDR
-> >>>    void *module_alloc(unsigned long size)
-> >>>    {
-> >>> -     BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
-> >>> -
-> >>
-> >> The above check is needed somewhere, if you remove it from here you ha=
-ve to perform the check
-> >> somewhere else.
-> >
-> > This also introduces this warning:
-> > fs/proc/kcore.c:626:52: warning: self-comparison always evaluates to
-> > false [-Wtautological-compare]
-> >    626 |  if (MODULES_VADDR !=3D VMALLOC_START && MODULES_END !=3D VMAL=
-LOC_END) {
-> > I might leave this patch out of this series and use an #ifdef for now
-> > and make this change separately as a follow up.
->
-> x86/32 at least does the same (see
-> https://elixir.bootlin.com/linux/v5.12-rc8/source/arch/x86/include/asm/pg=
-table_32_areas.h#L47)
->
-> They probably also get the warning, so I think would shouldn't bother.
-> One day someone will fix fs/proc/kcore.c , that's not a powerpc problem.
-Yeah you are right. I'll add the BUILD_BUG_ON() check to
-asm/task_size_32.h and keep the patch.
->
-> >
-> >>
-> >>>        return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_EN=
-D, GFP_KERNEL,
-> >>>                                    PAGE_KERNEL_EXEC, VM_FLUSH_RESET_P=
-ERMS, NUMA_NO_NODE,
-> >>>                                    __builtin_return_address(0));
-> >>>    }
-> >>> -#endif
-> >>>
+> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+> index 5a569bb51349..02662e72c53d 100644
+> --- a/arch/powerpc/kexec/elf_64.c
+> +++ b/arch/powerpc/kexec/elf_64.c
+> @@ -114,7 +114,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>  	ret = setup_new_fdt_ppc64(image, fdt, initrd_load_addr,
+>  				  initrd_len, cmdline);
+>  	if (ret)
+> -		goto out;
+> +		goto out_free_fdt;
+
+Shouldn't there be a goto out_free_fdt if fdt_open_into fails?
+
+>  
+>  	fdt_pack(fdt);
+>  
+> @@ -125,7 +125,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>  	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+>  	ret = kexec_add_buffer(&kbuf);
+>  	if (ret)
+> -		goto out;
+> +		goto out_free_fdt;
+>  
+>  	/* FDT will be freed in arch_kimage_file_post_load_cleanup */
+>  	image->arch.fdt = fdt;
+> @@ -140,18 +140,14 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>  	if (ret)
+>  		pr_err("Error setting up the purgatory.\n");
+>  
+> +	goto out;
+> +
+> +out_free_fdt:
+> +	kvfree(fdt);
+
+Can just use kfree here?
+
+Thanks,
+Santosh
+>  out:
+>  	kfree(modified_cmdline);
+>  	kexec_free_elf_info(&elf_info);
+>  
+> -	/*
+> -	 * Once FDT buffer has been successfully passed to kexec_add_buffer(),
+> -	 * the FDT buffer address is saved in image->arch.fdt. In that case,
+> -	 * the memory cannot be freed here in case of any other error.
+> -	 */
+> -	if (ret && !image->arch.fdt)
+> -		kvfree(fdt);
+> -
+>  	return ret ? ERR_PTR(ret) : NULL;
+>  }
+>  
+> -- 
+> 2.31.0
