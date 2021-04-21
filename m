@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32FB36704B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 18:37:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2066636704C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 18:37:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQR6T46zbz309k
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 02:37:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQR6w0vPZz3bcq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 02:37:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=Yb8oEHyS;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=F3yvtSkz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,31 +18,34 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=Yb8oEHyS; 
+ header.a=rsa-sha256 header.s=default header.b=F3yvtSkz; 
  dkim-atps=neutral
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FQR616Rr4z2yjB
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FQR616NJlz2yhq
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 02:36:57 +1000 (AEST)
 Received: from localhost.localdomain (c-73-42-176-67.hsd1.wa.comcast.net
  [73.42.176.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 4D40720B8001;
+ by linux.microsoft.com (Postfix) with ESMTPSA id 9D42D20B8002;
  Wed, 21 Apr 2021 09:36:55 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4D40720B8001
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9D42D20B8002
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
  s=default; t=1619023015;
- bh=W/WrYxxnKEKrs3E4gMvZTNUBttn6ZQvvtZcnC/gDa8g=;
- h=From:To:Cc:Subject:Date:From;
- b=Yb8oEHySdpd8BsyUBXdOGGUt1kIqBGYostq3b4avONLdDKWvBvB+vNSCuMA2VtPJN
- k11FCr3+szgrv2dQCPzTflc+yHBLgGqJG+kBUsKfq2c5Nk/g9nKrqpet3kQpDxTaO9
- gqd5OdqndNbNHh7x/+bt7SaxqQQpPwEr79lwlU90=
+ bh=NOOpoPZXnSLmDIJujo8R5fO3CgtODufAiSEyJxKNrqc=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=F3yvtSkzFSAEZavQuRXbomdeKOWMiTzhjItvLZeRO6oBC1Id3V4x3nGc26g93JmCX
+ w+gHm/irSEGlS2EJJR2xWQb2wBohczO68u9b8xHAj/B3Q0IUwkcdroFH5yPXIOdpUJ
+ yzPH1OiZgjeq4RL1Jpl3EPuKVpCWTkei3KJsImtc=
 From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
 To: robh@kernel.org,
 	dan.carpenter@oracle.com,
 	mpe@ellerman.id.au
-Subject: [PATCH v2 1/2] powerpc: Free fdt on error in elf64_load()
-Date: Wed, 21 Apr 2021 09:36:09 -0700
-Message-Id: <20210421163610.23775-1-nramas@linux.microsoft.com>
+Subject: [PATCH v2 2/2] powerpc: If kexec_build_elf_info() fails return
+ immediately from elf64_load()
+Date: Wed, 21 Apr 2021 09:36:10 -0700
+Message-Id: <20210421163610.23775-2-nramas@linux.microsoft.com>
 X-Mailer: git-send-email 2.31.0
+In-Reply-To: <20210421163610.23775-1-nramas@linux.microsoft.com>
+References: <20210421163610.23775-1-nramas@linux.microsoft.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -63,68 +66,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are a few "goto out;" statements before the local variable "fdt"
-is initialized through the call to of_kexec_alloc_and_setup_fdt() in
-elf64_load().  This will result in an uninitialized "fdt" being passed
-to kvfree() in this function if there is an error before the call to
-of_kexec_alloc_and_setup_fdt().
+Uninitialized local variable "elf_info" would be passed to
+kexec_free_elf_info() if kexec_build_elf_info() returns an error
+in elf64_load().
 
-If there is any error after fdt is allocated, but before it is
-saved in the arch specific kimage struct, free the fdt.
+If kexec_build_elf_info() returns an error, return the error
+immediately.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kexec/elf_64.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ arch/powerpc/kexec/elf_64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-index 5a569bb51349..02662e72c53d 100644
+index 02662e72c53d..eeb258002d1e 100644
 --- a/arch/powerpc/kexec/elf_64.c
 +++ b/arch/powerpc/kexec/elf_64.c
-@@ -114,7 +114,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 	ret = setup_new_fdt_ppc64(image, fdt, initrd_load_addr,
- 				  initrd_len, cmdline);
+@@ -45,7 +45,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+ 
+ 	ret = kexec_build_elf_info(kernel_buf, kernel_len, &ehdr, &elf_info);
  	if (ret)
 -		goto out;
-+		goto out_free_fdt;
++		return ERR_PTR(ret);
  
- 	fdt_pack(fdt);
- 
-@@ -125,7 +125,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
- 	ret = kexec_add_buffer(&kbuf);
- 	if (ret)
--		goto out;
-+		goto out_free_fdt;
- 
- 	/* FDT will be freed in arch_kimage_file_post_load_cleanup */
- 	image->arch.fdt = fdt;
-@@ -140,18 +140,14 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 	if (ret)
- 		pr_err("Error setting up the purgatory.\n");
- 
-+	goto out;
-+
-+out_free_fdt:
-+	kvfree(fdt);
- out:
- 	kfree(modified_cmdline);
- 	kexec_free_elf_info(&elf_info);
- 
--	/*
--	 * Once FDT buffer has been successfully passed to kexec_add_buffer(),
--	 * the FDT buffer address is saved in image->arch.fdt. In that case,
--	 * the memory cannot be freed here in case of any other error.
--	 */
--	if (ret && !image->arch.fdt)
--		kvfree(fdt);
--
- 	return ret ? ERR_PTR(ret) : NULL;
- }
- 
+ 	if (image->type == KEXEC_TYPE_CRASH) {
+ 		/* min & max buffer values for kdump case */
 -- 
 2.31.0
 
