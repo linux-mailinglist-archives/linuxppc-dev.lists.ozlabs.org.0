@@ -1,31 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D70366C4D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 15:14:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08A0366C4B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 15:13:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQLcF098Gz3f3S
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 23:14:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQLbY5tMFz3ds2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 23:13:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQLVV5lPrz30Q9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 23:09:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQLVS1xKtz30Fd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 23:09:20 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FQLVV2DJpz9vFw; Wed, 21 Apr 2021 23:09:22 +1000 (AEST)
+ id 4FQLVR2ZCrz9vFt; Wed, 21 Apr 2021 23:09:19 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>, mpe@ellerman.id.au
-In-Reply-To: <20210402001325.939668-1-tyreld@linux.ibm.com>
-References: <20210402001325.939668-1-tyreld@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries: Add shutdown() to vio_driver and vio_bus
-Message-Id: <161901050031.1961279.6886013508565602654.b4-ty@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210418131641.1186227-1-mpe@ellerman.id.au>
+References: <20210418131641.1186227-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: Only define _TASK_CPU for 32-bit
+Message-Id: <161901050058.1961279.3127679270657985277.b4-ty@ellerman.id.au>
 Date: Wed, 21 Apr 2021 23:08:20 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -41,25 +41,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 1 Apr 2021 18:13:25 -0600, Tyrel Datwyler wrote:
-> Currently, neither the vio_bus or vio_driver structures provide support
-> for a shutdown() routine.
+On Sun, 18 Apr 2021 23:16:41 +1000, Michael Ellerman wrote:
+> We have some interesting code in our Makefile to define _TASK_CPU, based
+> on awk'ing the value out of asm-offsets.h. It exists to circumvent some
+> circular header dependencies that prevent us from referring to
+> task_struct in the relevant code. See the comment around _TASK_CPU in
+> smp.h for more detail.
 > 
-> Add support for shutdown() by allowing drivers to provide a
-> implementation via function pointer in their vio_driver struct and
-> provide a proper implementation in the driver template for the vio_bus
-> that calls a vio drivers shutdown() if defined.
-> 
-> [...]
+> Maybe one day we can come up with a better solution, but for now we can
+> at least limit that logic to 32-bit, because it's not needed for 64-bit.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/pseries: Add shutdown() to vio_driver and vio_bus
-      https://git.kernel.org/powerpc/c/39d0099f94390eb7a677e1a5c9bb56a4daa242a1
+[1/1] powerpc: Only define _TASK_CPU for 32-bit
+      https://git.kernel.org/powerpc/c/3027a37c06be364e6443d3df3adf45576fba50cb
 
 cheers
