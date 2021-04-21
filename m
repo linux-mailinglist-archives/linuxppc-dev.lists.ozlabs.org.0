@@ -2,55 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F865366634
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 09:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BADA0366643
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 09:31:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQBnT0qX1z30Bm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 17:21:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQC075JxLz30DT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 17:31:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Qt148EfW;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qpHc+zb1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Qt148EfW; 
+ header.a=rsa-sha256 header.s=201909 header.b=qpHc+zb1; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQBn43xXRz2y07
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 17:21:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQBzj6PZDz2xZN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 17:30:41 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4FQBn34lbPz9tkF;
- Wed, 21 Apr 2021 17:21:27 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FQBzh4Fdbz9tk7;
+ Wed, 21 Apr 2021 17:30:40 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1618989687;
- bh=V7YakiLh0lc5pULnRDAJvj1kBlxh5nVIClHoUbjkUYc=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Qt148EfW9rQWMC7MzMoJKNRohR6fSDEaLPaHkHNoaCMsvwg/I/pTYkPsv+FmQ+5Uv
- TYQXOOZ12cNKIPVoSwzemRDHsFGmpzBEaCziEXZu8+ASKoNA1bYGEYUVsrhajeQJiH
- YA3GofUQ9PdL4hdNZXuxxVzPoJDJZQ1JWKIQUL2AI/dKWQEBG4p0164YIwdvQvgRVN
- kTi1tS2LptSM0XzkBiAmCJGdojfRCqFopxnk7ltlqtqMGTuXZmH9kXY1wQmBfoSgzI
- SYh0e7cbbSSYn5N8XWzdbr7krgyJGGzOzxo1AVhxkZKtJzGOhBcGn2nU0m2C/+1fJ/
- nonFQWbvKYvmQ==
+ s=201909; t=1618990241;
+ bh=05qa/uEa3kDOY1QiKL8tjTnj6osJUyJBCp7Q+LVFsDc=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=qpHc+zb14AouVo2DVlFwdusnpL88sugen5A8ikgraqCx/WaXo3jvUlu/9dGZUzZ3Z
+ 0nNdGutaEVx8fCSLrdzej3iTpIAU34py3mrErTmTAdXidx+/KAMHGVROwgrISS5Oht
+ XUcw2ADJ3n40nkKXAQcoUH8598UNYE4y28L0vaD62XO77Dl9xbqnxcpsL0OjYH8zH2
+ GBB7AyCR5B50blPAhRz8n2xadE/4wfDcz8w6cfJ0V9GaIliQBa/5Q0xLDg35cviQIB
+ Qq0hz5Phscw5aaxr3QzNucCRhRawMl2WFEhF0Fzpdki6upxsBajo4x3bog20rb6mh9
+ ct/zL5En1aXMg==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>, robh@kernel.org,
- dan.carpenter@oracle.com
-Subject: Re: [PATCH 2/2] powerpc: If kexec_build_elf_info() fails return
- immediately from elf64_load()
-In-Reply-To: <20210420190355.10059-2-nramas@linux.microsoft.com>
-References: <20210420190355.10059-1-nramas@linux.microsoft.com>
- <20210420190355.10059-2-nramas@linux.microsoft.com>
-Date: Wed, 21 Apr 2021 17:21:26 +1000
-Message-ID: <87o8e8ayrt.fsf@mpe.ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Daniel Axtens
+ <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org, Sathvika Vasireddy
+ <sathvika@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc/sstep: Add emulation support for
+ =?utf-8?B?4oCYc2V0YuKAmQ==?= instruction
+In-Reply-To: <1618899164.u2uju6vw3c.naveen@linux.ibm.com>
+References: <cover.1618469454.git.sathvika@linux.vnet.ibm.com>
+ <767e53c4c27da024ca277e21ffcd0cff131f5c73.1618469454.git.sathvika@linux.vnet.ibm.com>
+ <875z0mfzbf.fsf@linkitivity.dja.id.au>
+ <1618899164.u2uju6vw3c.naveen@linux.ibm.com>
+Date: Wed, 21 Apr 2021 17:30:39 +1000
+Message-ID: <87lf9caycg.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -64,41 +67,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, kbuild-all@lists.01.org, lkp@intel.com,
- nramas@linux.microsoft.com, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
-
-> Uninitialized local variable "elf_info" would be passed to
-> kexec_free_elf_info() if kexec_build_elf_info() returns an error
-> in elf64_load().
+"Naveen N. Rao" <naveen.n.rao@linux.ibm.com> writes:
+> Daniel Axtens wrote:
+>> Sathvika Vasireddy <sathvika@linux.vnet.ibm.com> writes:
+>> 
+>>> This adds emulation support for the following instruction:
+>>>    * Set Boolean (setb)
+>>>
+>>> Signed-off-by: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>
+...
+>> 
+>> If you do end up respinning the patch, I think it would be good to make
+>> the maths a bit clearer. I think it works because a left shift of 2 is
+>> the same as multiplying by 4, but it would be easier to follow if you
+>> used a temporary variable for btf.
 >
-> If kexec_build_elf_info() returns an error, return the error
-> immediately.
+> Indeed. I wonder if it is better to follow the ISA itself. Per the ISA, 
+> the bit we are interested in is:
+> 	4 x BFA + 32
 >
-> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> So, if we use that along with the PPC_BIT() macro, we get:
+> 	if (regs->ccr & PPC_BIT(ra + 32))
 
-Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
+Use of PPC_BIT risks annoying your maintainer :)
 
 cheers
-
-> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-> index 02662e72c53d..eeb258002d1e 100644
-> --- a/arch/powerpc/kexec/elf_64.c
-> +++ b/arch/powerpc/kexec/elf_64.c
-> @@ -45,7 +45,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->  
->  	ret = kexec_build_elf_info(kernel_buf, kernel_len, &ehdr, &elf_info);
->  	if (ret)
-> -		goto out;
-> +		return ERR_PTR(ret);
->  
->  	if (image->type == KEXEC_TYPE_CRASH) {
->  		/* min & max buffer values for kdump case */
-> -- 
-> 2.31.0
