@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8BF366C43
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 15:13:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A000F366C25
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 15:12:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQLZv4PRNz30FX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 23:13:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQLYt3yvHz3dCy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 23:12:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQLVQ4Shkz303k
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 23:09:18 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQLVM2dvCz30DT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 23:09:15 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FQLVP1Cj4z9vFq; Wed, 21 Apr 2021 23:09:16 +1000 (AEST)
+ id 4FQLVL40C0z9vFf; Wed, 21 Apr 2021 23:09:14 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au
-In-Reply-To: <20210408074504.248211-2-maddy@linux.ibm.com>
-References: <20210408074504.248211-1-maddy@linux.ibm.com>
- <20210408074504.248211-2-maddy@linux.ibm.com>
-Subject: Re: [PATCH 2/2] powerpc/perf: Add platform specific check_attr_config
-Message-Id: <161901049871.1961279.17170059383027204088.b4-ty@ellerman.id.au>
+To: Ganesh Goudar <ganeshgr@linux.ibm.com>, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210416125750.49550-1-ganeshgr@linux.ibm.com>
+References: <20210416125750.49550-1-ganeshgr@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries/mce: Fix a typo in error type assignment
+Message-Id: <161901049898.1961279.13178176794089393730.b4-ty@ellerman.id.au>
 Date: Wed, 21 Apr 2021 23:08:18 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,18 +42,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: mahesh@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 8 Apr 2021 13:15:04 +0530, Madhavan Srinivasan wrote:
-> Add platform specific attr.config value checks. Patch
-> includes checks for both power9 and power10.
+On Fri, 16 Apr 2021 18:27:50 +0530, Ganesh Goudar wrote:
+> The error type is ICACHE and DCACHE, for case MCE_ERROR_TYPE_ICACHE.
 
 Applied to powerpc/next.
 
-[2/2] powerpc/perf: Add platform specific check_attr_config
-      https://git.kernel.org/powerpc/c/d8a1d6c58986d8778768b15dc5bac0b4b082d345
+[1/1] powerpc/pseries/mce: Fix a typo in error type assignment
+      https://git.kernel.org/powerpc/c/864ec4d40c83365b16483d88990e7e579537635c
 
 cheers
