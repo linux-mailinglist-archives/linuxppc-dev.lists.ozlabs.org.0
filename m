@@ -2,67 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C22736639E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 04:24:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E343663A7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 04:35:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQ4BT19hkz2yhm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 12:24:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQ4RQ0SQqz302p
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Apr 2021 12:35:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=aiC0xXu0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=AfP2Y28l;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b34;
- helo=mail-yb1-xb34.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2c;
+ helo=mail-yb1-xb2c.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=aiC0xXu0; dkim-atps=neutral
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com
- [IPv6:2607:f8b0:4864:20::b34])
+ header.s=20161025 header.b=AfP2Y28l; dkim-atps=neutral
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com
+ [IPv6:2607:f8b0:4864:20::b2c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQ4B25KmBz2xZj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 12:24:08 +1000 (AEST)
-Received: by mail-yb1-xb34.google.com with SMTP id p202so1800722ybg.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 19:24:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQ4R11qYyz2xZj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 12:35:22 +1000 (AEST)
+Received: by mail-yb1-xb2c.google.com with SMTP id p3so24812985ybk.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Apr 2021 19:35:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=aUd0rlyTJsHIyxAtkp6ITtvZKr4JaYN52eEf+GEPEHc=;
- b=aiC0xXu0EaC3i7AY09GnTA/b+S4XriNAO7cmw0l5RDOAmQVkLxjA55vl0w2bJtdzoD
- 7hYxDjgoFezUn2Ilq5VDTzfjnLjSNnxnXnSwAK8juYaS+KZ+hbut92xRPywgKBKxyYVr
- 7TONhBVJEVMl3UOar3QWgVpUu+tR3VrWuZ8kVVHY28Fu9mQw2P6yQYl8LK46eN1/bg70
- c4V7XkeDm2bpzX3VJUv/kgtpioBfyMA0eMZirEK7hJ913gyaxpuCUfRtaQYtw0PpIG9t
- cejn+CpRuX2pWgMpsX7l8MQwi2wc/DDtZ4iHujb67QaSV35GZrjUZbTN6jwUwt8V/0ut
- kRYg==
+ :cc; bh=d0rVbtvpHHNRAK2+dBk3sgYQRVyXiZILBCyxN4HtT2o=;
+ b=AfP2Y28lzRYq5mIUrMEQZH+EUi3TAolULghhMW3NOjo1aihXjEqlZfcrIzMnKxB9Ss
+ cANrd8Q/TA9esek+lNYuNtFDyQMtqhDsKRg64leIQVufn6HEZQCiKB088NFnJkYjnPLI
+ JK8MBJf0+s3LyDclWK7rZ2liXkq6RY9egMQ/co4BHZxn4FbmKMp8hDzo17SLb922cnbp
+ VNbWhCTkop0HsN33l6KA8JeEE8C6a08C9ry+nnWzulQk8+gaL9l9jLMNd2EaVSliQ+RH
+ eeV0D3DuhjXvzPgTsJQ3ie023JlqTMamtW+NcNUaPmMyHCMl2P80dWwzV/KLdDFYSnlx
+ DxAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=aUd0rlyTJsHIyxAtkp6ITtvZKr4JaYN52eEf+GEPEHc=;
- b=BSr44BYzOxzPBaaUXd1lpJr29ERZliLRA6AR/Mo8SqYqUBGZgfzH4iLyaMMetzHIQc
- DnqhC2XikLythbSKxds6vBBlHnn3FQHoAwrwUdOzOxeXJCMWUmodqHjNp9cdw7M83rcw
- /SuIJYO99+7JURRo31tPPoC2yT8c//hh85KR1OGfnuqTPpskkMGIhF3YiiQmf+53UGZq
- r6hz3o+OZY7t8SPeisq/1X4vm0pWdEcMGlARGBBwmOpcCsJDzBnp3iCGfaDQyIJy6Inu
- 3iBupuyAMK5wetfBv08LcERfJKj13C4nKBN6VV+TLAV+WKTZ/lp9UpXkJ0RLwqmEbq9B
- rM+w==
-X-Gm-Message-State: AOAM531KRAfYKrozGlZDLPmg1u1cj59xy8dvPDcJ1eYlcgNtk3wZBkzl
- PTuxR3Q1gavFtHLgt2r57Ijr0h10aKFYvFcugbM=
-X-Google-Smtp-Source: ABdhPJzaDjuBw4gtQYvvvxcCC6ROb2/vKvLkZYad1aMYY10f9PXU1GMsTYa98K1/rOQjteFfXi/2Wwa8BtV4BPOLql8=
-X-Received: by 2002:a25:5146:: with SMTP id f67mr28436206ybb.332.1618971844317; 
- Tue, 20 Apr 2021 19:24:04 -0700 (PDT)
+ bh=d0rVbtvpHHNRAK2+dBk3sgYQRVyXiZILBCyxN4HtT2o=;
+ b=IsErMx04OjzEJipIGrhAcgYHYKCmF+JMqBDY921bfHvpzSKUdpdqnHYUx9uWkvPuXN
+ PzUqPE39tNqXNWW97f7O2CgZLMvjXwiNeAZc6w/CIXGsJkYOrJKphrlul3V8QGxskTm9
+ CrJC6m4GORxOj6dOwxF6L7wvuUoJdsT71Rsjg0B47zXe4ydaL4BppLbOD6Cyxg8/tINa
+ 4pk0iKrUoTQS/ijh1e7GCbToFztqrsKoU3s4oqZ8pLJk4Tw8SE383cgRT09y8BAfVIRX
+ AKDkMzHrhdnTygFN7V+oJZewKw/V+RGsYvvcxGB42z6QxQqf/tlMJ31SU1oKeypyuvqg
+ AHXA==
+X-Gm-Message-State: AOAM530T9UyVYoKyQLJmskncGsngWpNCz9GnDdyuySBckyUFj6uQeQrA
+ Fk7Jlc6+0KnY3GeQa00XBUQpqEkiiK4Fs7VRsbs=
+X-Google-Smtp-Source: ABdhPJywxFZhZSiClVJRkE29U7cQGz44poQgPJeGv6FJKG7WKuOD8P/Z6Rc1Jr8ys84KHL160S/IbuMIXAYoEOZsPz8=
+X-Received: by 2002:a25:aa2d:: with SMTP id s42mr29558831ybi.265.1618972519296; 
+ Tue, 20 Apr 2021 19:35:19 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210330045132.722243-1-jniethe5@gmail.com>
- <20210330045132.722243-7-jniethe5@gmail.com>
- <87im577eh3.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87im577eh3.fsf@mpe.ellerman.id.au>
+ <20210330045132.722243-6-jniethe5@gmail.com>
+ <87wntnwqw9.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87wntnwqw9.fsf@mpe.ellerman.id.au>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Wed, 21 Apr 2021 12:23:53 +1000
-Message-ID: <CACzsE9pgZRaoHT0Ca=NB3srEMJMvLuiFkYA98xFDiUPyfmoV5Q@mail.gmail.com>
-Subject: Re: [PATCH v10 06/10] powerpc/mm/ptdump: debugfs handler for W+X
- checks at runtime
+Date: Wed, 21 Apr 2021 12:35:08 +1000
+Message-ID: <CACzsE9oERR+KKBe=+eQU1skwTOpDAmi8=_rOMAwM8+LtfBqRKA@mail.gmail.com>
+Subject: Re: [PATCH v10 05/10] powerpc/bpf: Write protect JIT code
 To: Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,62 +75,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, Kees Cook <keescook@chromium.org>, cmr@codefail.de,
- Nicholas Piggin <npiggin@gmail.com>, naveen.n.rao@linux.ibm.com,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
+Cc: ajd@linux.ibm.com, cmr@codefail.de, Nicholas Piggin <npiggin@gmail.com>,
+ naveen.n.rao@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 31, 2021 at 10:24 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+On Wed, Mar 31, 2021 at 9:37 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
 >
 > Jordan Niethe <jniethe5@gmail.com> writes:
-> > From: Russell Currey <ruscur@russell.cc>
+>
+> > Once CONFIG_STRICT_MODULE_RWX is enabled there will be no need to
+> > override bpf_jit_free() because it is now possible to set images
+> > read-only. So use the default implementation.
 > >
-> > Optionally run W+X checks when dumping pagetable information to
-> > debugfs' kernel_page_tables.
+> > Also add the necessary call to bpf_jit_binary_lock_ro() which will
+> > remove write protection and add exec protection to the JIT image after
+> > it has finished being written.
 > >
-> > To use:
-> >     $ echo 1 > /sys/kernel/debug/check_wx_pages
-> >     $ cat /sys/kernel/debug/kernel_page_tables
-> >
-> > and check the kernel log.  Useful for testing strict module RWX.
-> >
-> > To disable W+X checks:
-> >       $ echo 0 > /sys/kernel/debug/check_wx_pages
-> >
-> > Update the Kconfig entry to reflect this.
-> >
-> > Also fix a typo.
-> >
-> > Reviewed-by: Kees Cook <keescook@chromium.org>
-> > Signed-off-by: Russell Currey <ruscur@russell.cc>
-> > [jpn: Change check_wx_pages to act as mode bit affecting
-> >       kernel_page_tables instead of triggering action on its own]
 > > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > > ---
-> > v10: check_wx_pages now affects kernel_page_tables rather then triggers
-> >      its own action.
+> > v10: New to series
+> > ---
+> >  arch/powerpc/net/bpf_jit_comp.c   | 5 ++++-
+> >  arch/powerpc/net/bpf_jit_comp64.c | 4 ++++
+> >  2 files changed, 8 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> > index e809cb5a1631..8015e4a7d2d4 100644
+> > --- a/arch/powerpc/net/bpf_jit_comp.c
+> > +++ b/arch/powerpc/net/bpf_jit_comp.c
+> > @@ -659,12 +659,15 @@ void bpf_jit_compile(struct bpf_prog *fp)
+> >               bpf_jit_dump(flen, proglen, pass, code_base);
+> >
+> >       bpf_flush_icache(code_base, code_base + (proglen/4));
+> > -
+> >  #ifdef CONFIG_PPC64
+> >       /* Function descriptor nastiness: Address + TOC */
+> >       ((u64 *)image)[0] = (u64)code_base;
+> >       ((u64 *)image)[1] = local_paca->kernel_toc;
+> >  #endif
+> > +     if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX)) {
+> > +             set_memory_ro((unsigned long)image, alloclen >> PAGE_SHIFT);
+> > +             set_memory_x((unsigned long)image, alloclen >> PAGE_SHIFT);
+> > +     }
 >
-> Hmm. I liked the old version better :)
+> You don't need to check the ifdef in a caller, there are stubs that
+> compile to nothing when CONFIG_ARCH_HAS_SET_MEMORY=n.
+As Christophe pointed out we could have !CONFIG_STRICT_MODULE_RWX and
+CONFIG_ARCH_HAS_SET_MEMORY which would then be wrong here.
+Probably we could make CONFIG_ARCH_HAS_SET_MEMORY depend on
+CONFIG_STRICT_MODULE_RWX?
 >
-> I think you changed it based on Christophe's comment:
+> > diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> > index aaf1a887f653..1484ad588685 100644
+> > --- a/arch/powerpc/net/bpf_jit_comp64.c
+> > +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> > @@ -1240,6 +1240,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+> >       fp->jited_len = alloclen;
+> >
+> >       bpf_flush_icache(bpf_hdr, (u8 *)bpf_hdr + (bpf_hdr->pages * PAGE_SIZE));
+> > +     if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
+> > +             bpf_jit_binary_lock_ro(bpf_hdr);
 >
->   Why not just perform the test everytime someone dumps kernel_page_tables ?
+> Do we need the ifdef here either? Looks like it should be safe to call
+> due to the stubs.
 >
+> > @@ -1262,6 +1264,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+> >  }
+> >
+> >  /* Overriding bpf_jit_free() as we don't set images read-only. */
+> > +#ifndef CONFIG_STRICT_MODULE_RWX
 >
-> But I think he meant *always* do the check when someone dumps
-> kernel_page_tables, not have another file to enable checking and then
-> require someone to dump kernel_page_tables to do the actual check.
-Yes, I guess I misinterpreted that.
+> Did you test without this and notice something broken?
 >
-> Still I like the previous version where you can do the checks
-> separately, without having to dump the page tables, because dumping can
-> sometimes take quite a while.
->
-> What would be even better is if ptdump_check_wx() returned an error when
-> wx pages were found, and that was plumbed out to the debugs file. That
-> way you can script around it.
-Ok I'll go back to how it was and add in returning an error.
+> Looking at the generic version I can't tell why we need to override
+> this. Maybe we don't (anymore?) ?
+Yeah we don't.
 >
 > cheers
+>
+> >  void bpf_jit_free(struct bpf_prog *fp)
+> >  {
+> >       unsigned long addr = (unsigned long)fp->bpf_func & PAGE_MASK;
+> > @@ -1272,3 +1275,4 @@ void bpf_jit_free(struct bpf_prog *fp)
+> >
+> >       bpf_prog_unlock_free(fp);
+> >  }
+> > +#endif
+> > --
+> > 2.25.1
