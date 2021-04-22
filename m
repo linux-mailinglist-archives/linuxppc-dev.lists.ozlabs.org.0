@@ -2,64 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B02E367AA6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 09:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 916B3367AA7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 09:10:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQpT11Bc4z3c3G
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 17:09:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQpTW3T6Wz3c97
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 17:10:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=XpqwUuL2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=kWxMvTk4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72f;
- helo=mail-qk1-x72f.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2d;
+ helo=mail-qv1-xf2d.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=XpqwUuL2; dkim-atps=neutral
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com
- [IPv6:2607:f8b0:4864:20::72f])
+ header.s=20161025 header.b=kWxMvTk4; dkim-atps=neutral
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com
+ [IPv6:2607:f8b0:4864:20::f2d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQpRG51HLz309p
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 17:08:10 +1000 (AEST)
-Received: by mail-qk1-x72f.google.com with SMTP id z2so8398230qkb.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 00:08:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQpRN0nQZz30H3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 17:08:15 +1000 (AEST)
+Received: by mail-qv1-xf2d.google.com with SMTP id d1so9962109qvy.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 00:08:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=I4QRVxLCAXlMYXP/RCpevP+dV/qRZSoD5enD89iFcqY=;
- b=XpqwUuL2ZYmiSKlOyucgu6dStg2r0g9v1+y3IUG9PU/je4dSGI2x+nekvye5OMleu8
- xK+SzgD9hIiIWRaFrbK5ETC8y9gGnQpzYX8Dc5UVoqKa/zYLbCLucIZu9hja5H6chE8w
- r4rD61GQxLvAqp+BYPhbK4e0GS+bR+WevdEo5FaIBnPMWXFGOoAWFSy3QxAsEZ17LEHd
- ANjK2QsR6Oc1HLG5QKTqyHUJVROyrIwO5/mgbaXizf/6h8l9uE8wA9j4r1ov0PBIQeNP
- RBNpZTxO32v6zj9jrzC3zCHu3Crw1YJR1wLUScaJXIksZxGTTQR9FrXk0QflG9lbGtRk
- Vq3w==
+ bh=VYO/WSrJUAQuhWN9PmepPjluMGVj7vrr4kT01MiVYuU=;
+ b=kWxMvTk4s6xV02bgiiwW4Vt9R1l9ULpEn1AJ/KlPj6EDJPaBl+d/RsYEJ3tAhzPohH
+ DMWRlrW7uST8omMQG5kCdpym7Sun2ZVVH4zV0DbXHqtLEKBl7X47iyhv5g/lw/V8BGwD
+ sHn07B/9vH2tR5EatcpiXZngF3wPTfWobyNJhOikyt6s5KHXZKhGNyFGgytCUh/DGfZe
+ LCNm3jPwvtKkBSNcnc/nZxG7E4F0vGLEmgAhNc0pJAIGC/mjNZLwnirpGiS9y93OsXEH
+ FwSWPSlcOZewRFFMDY4QI20hxsKApRpYc3ysxuUpy1bohfXTiR7poAuJfLN5oa3aNrRm
+ M/1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=I4QRVxLCAXlMYXP/RCpevP+dV/qRZSoD5enD89iFcqY=;
- b=RZeTxvqbKzr7YapX5pcCGfKCPpjImOcWvyDIM/Ob85yjuptQC8k7RXuGkbthaM2Vne
- xBws9WRErD4n9zlroDbVRiT5iTYCq4G22jkLLgRYMd1+ekUtHo7N673Wo6b5boDlzQEY
- 6gsjucUu8VP+beB+Jb2PvKy7ueC7JOBHIunwR4yAL+y3bp8xszmpdLOXvvX1bNhYNmzx
- +d6qvnu+utuLIwBbLrf6PIRZsjdIY1FJfeXqGFN5RsmtbW2wrMJFukqkrwnzRvyZIW/g
- sghpysMEsxysbCphNGKpPX+hvkEDNyfd1ppKEtDNTT8YmBUL1/nNCKdbmSQDhMvtydSa
- fy4g==
-X-Gm-Message-State: AOAM5305bYIn0UsQItpnDICWKMDx9r5vFudCl/PgRHM4UQQfZwGmA0xV
- 3V/r/fJtTLzIThyfIGS/Gr4=
-X-Google-Smtp-Source: ABdhPJz/8+PHDvo2/6In/AoYq1bfyfq0t/wW7Alj0qzagwbFO+22iYQOHQzYN0WsWZX96UTwUbTNtA==
-X-Received: by 2002:a05:620a:1092:: with SMTP id
- g18mr2212434qkk.57.1619075288518; 
- Thu, 22 Apr 2021 00:08:08 -0700 (PDT)
+ bh=VYO/WSrJUAQuhWN9PmepPjluMGVj7vrr4kT01MiVYuU=;
+ b=lgD2p/pKF9yPaFgWIeL5gfGadsaZKBHdyGbRB64uUvYVKebYwQoLyB64OsUGCglolo
+ jyzxZKszs9zhQRRVvQiQqt0fonau236prrOcfz3n18MwFkDb69vSTYDN2JhHNoYIWEaG
+ 7fV38TWSWluQQ1EtbG+tCqmsDaiJtDixCDyJ/1+jU7jOvTTQK643hgvvKMyLOP7+VWvF
+ eGBR1994k1uy1Rzj7aegtSw8vjGSaQWX8+bZXSc24ZTYh38zvITKPnx9N1Fqc82knGyg
+ yJncjWQEYD+23l1YzmtkhRCfOK43o/+NmNwKa5Va8yJyjHn+dzHzVO5gySOaCl+7mgo1
+ 7Gmg==
+X-Gm-Message-State: AOAM532PGPvEGqP8iAGEynRzdDVJAE45u4J+cA5yZmX0brrjX0FSq+X7
+ OhUfnnSdxXBL8oxN4zY6yCA=
+X-Google-Smtp-Source: ABdhPJzlCrT7uAANQ2LSFJPELAJ9m8CfM2/wnmanAuGDDIoGU4hN9JCP/l2I1Fyid5sfe+06ZXVleg==
+X-Received: by 2002:a0c:fb43:: with SMTP id b3mr1837220qvq.42.1619075293159;
+ Thu, 22 Apr 2021 00:08:13 -0700 (PDT)
 Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com.com
  ([177.35.200.187])
- by smtp.gmail.com with ESMTPSA id w67sm1658329qkc.79.2021.04.22.00.08.04
+ by smtp.gmail.com with ESMTPSA id w67sm1658329qkc.79.2021.04.22.00.08.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Apr 2021 00:08:08 -0700 (PDT)
+ Thu, 22 Apr 2021 00:08:12 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -68,10 +67,10 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Alexey Kardashevskiy <aik@ozlabs.ru>,
  Nicolin Chen <nicoleotsuka@gmail.com>,
  Niklas Schnelle <schnelle@linux.ibm.com>
-Subject: [PATCH v3 02/11] powerpc/kernel/iommu: Add new iommu_table_in_use()
- helper
-Date: Thu, 22 Apr 2021 04:07:14 -0300
-Message-Id: <20210422070721.463912-3-leobras.c@gmail.com>
+Subject: [PATCH v3 03/11] powerpc/pseries/iommu: Add
+ iommu_pseries_alloc_table() helper
+Date: Thu, 22 Apr 2021 04:07:15 -0300
+Message-Id: <20210422070721.463912-4-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210422070721.463912-1-leobras.c@gmail.com>
 References: <20210422070721.463912-1-leobras.c@gmail.com>
@@ -93,144 +92,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Having a function to check if the iommu table has any allocation helps
-deciding if a tbl can be reset for using a new DMA window.
+Creates a helper to allow allocating a new iommu_table without the need
+to reallocate the iommu_group.
 
-It should be enough to replace all instances of !bitmap_empty(tbl...).
-
-iommu_table_in_use() skips reserved memory, so we don't need to worry about
-releasing it before testing. This causes iommu_table_release_pages() to
-become unnecessary, given it is only used to remove reserved memory for
-testing.
-
-Also, only allow storing reserved memory values in tbl if they are valid
-in the table, so there is no need to check it in the new helper.
+This will be helpful for replacing the iommu_table for the new DMA window,
+after we remove the old one with iommu_tce_table_put().
 
 Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/include/asm/iommu.h |  1 +
- arch/powerpc/kernel/iommu.c      | 65 ++++++++++++++++----------------
- 2 files changed, 34 insertions(+), 32 deletions(-)
+ arch/powerpc/platforms/pseries/iommu.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-index deef7c94d7b6..bf3b84128525 100644
---- a/arch/powerpc/include/asm/iommu.h
-+++ b/arch/powerpc/include/asm/iommu.h
-@@ -154,6 +154,7 @@ extern int iommu_tce_table_put(struct iommu_table *tbl);
-  */
- extern struct iommu_table *iommu_init_table(struct iommu_table *tbl,
- 		int nid, unsigned long res_start, unsigned long res_end);
-+bool iommu_table_in_use(struct iommu_table *tbl);
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 796ab356341c..d02359ca1f9f 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -53,28 +53,31 @@ enum {
+ 	DDW_EXT_QUERY_OUT_SIZE = 2
+ };
  
- #define IOMMU_TABLE_GROUP_MAX_TABLES	2
- 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index ad82dda81640..5e168bd91401 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -691,32 +691,24 @@ static void iommu_table_reserve_pages(struct iommu_table *tbl,
- 	if (tbl->it_offset == 0)
- 		set_bit(0, tbl->it_map);
- 
--	tbl->it_reserved_start = res_start;
--	tbl->it_reserved_end = res_end;
--
--	/* Check if res_start..res_end isn't empty and overlaps the table */
--	if (res_start && res_end &&
--			(tbl->it_offset + tbl->it_size < res_start ||
--			 res_end < tbl->it_offset))
--		return;
-+	if (res_start < tbl->it_offset)
-+		res_start = tbl->it_offset;
- 
--	for (i = tbl->it_reserved_start; i < tbl->it_reserved_end; ++i)
--		set_bit(i - tbl->it_offset, tbl->it_map);
--}
-+	if (res_end > (tbl->it_offset + tbl->it_size))
-+		res_end = tbl->it_offset + tbl->it_size;
- 
--static void iommu_table_release_pages(struct iommu_table *tbl)
--{
--	int i;
-+	/* Check if res_start..res_end is a valid range in the table */
-+	if (res_start >= res_end) {
-+		tbl->it_reserved_start = tbl->it_offset;
-+		tbl->it_reserved_end = tbl->it_offset;
-+		return;
-+	}
- 
--	/*
--	 * In case we have reserved the first bit, we should not emit
--	 * the warning below.
--	 */
--	if (tbl->it_offset == 0)
--		clear_bit(0, tbl->it_map);
-+	tbl->it_reserved_start = res_start;
-+	tbl->it_reserved_end = res_end;
- 
- 	for (i = tbl->it_reserved_start; i < tbl->it_reserved_end; ++i)
--		clear_bit(i - tbl->it_offset, tbl->it_map);
-+		set_bit(i - tbl->it_offset, tbl->it_map);
- }
- 
- /*
-@@ -781,6 +773,22 @@ struct iommu_table *iommu_init_table(struct iommu_table *tbl, int nid,
- 	return tbl;
- }
- 
-+bool iommu_table_in_use(struct iommu_table *tbl)
-+{
-+	unsigned long start = 0, end;
-+
-+	/* ignore reserved bit0 */
-+	if (tbl->it_offset == 0)
-+		start = 1;
-+	end = tbl->it_reserved_start - tbl->it_offset;
-+	if (find_next_bit(tbl->it_map, end, start) != end)
-+		return true;
-+
-+	start = tbl->it_reserved_end - tbl->it_offset;
-+	end = tbl->it_size;
-+	return find_next_bit(tbl->it_map, end, start) != end;
-+}
-+
- static void iommu_table_free(struct kref *kref)
+-static struct iommu_table_group *iommu_pseries_alloc_group(int node)
++static struct iommu_table *iommu_pseries_alloc_table(int node)
  {
- 	unsigned long bitmap_sz;
-@@ -799,10 +807,8 @@ static void iommu_table_free(struct kref *kref)
+-	struct iommu_table_group *table_group;
+ 	struct iommu_table *tbl;
  
- 	iommu_debugfs_del(tbl);
- 
--	iommu_table_release_pages(tbl);
+-	table_group = kzalloc_node(sizeof(struct iommu_table_group), GFP_KERNEL,
+-			   node);
+-	if (!table_group)
+-		return NULL;
 -
- 	/* verify that table contains no entries */
--	if (!bitmap_empty(tbl->it_map, tbl->it_size))
-+	if (iommu_table_in_use(tbl))
- 		pr_warn("%s: Unexpected TCEs\n", __func__);
+ 	tbl = kzalloc_node(sizeof(struct iommu_table), GFP_KERNEL, node);
+ 	if (!tbl)
+-		goto free_group;
++		return NULL;
  
- 	/* calculate bitmap size in bytes */
-@@ -1108,18 +1114,13 @@ int iommu_take_ownership(struct iommu_table *tbl)
- 	for (i = 0; i < tbl->nr_pools; i++)
- 		spin_lock(&tbl->pools[i].lock);
+ 	INIT_LIST_HEAD_RCU(&tbl->it_group_list);
+ 	kref_init(&tbl->it_kref);
++	return tbl;
++}
  
--	iommu_table_release_pages(tbl);
--
--	if (!bitmap_empty(tbl->it_map, tbl->it_size)) {
-+	if (iommu_table_in_use(tbl)) {
- 		pr_err("iommu_tce: it_map is not empty");
- 		ret = -EBUSY;
--		/* Undo iommu_table_release_pages, i.e. restore bit#0, etc */
--		iommu_table_reserve_pages(tbl, tbl->it_reserved_start,
--				tbl->it_reserved_end);
--	} else {
--		memset(tbl->it_map, 0xff, sz);
- 	}
- 
-+	memset(tbl->it_map, 0xff, sz);
+-	table_group->tables[0] = tbl;
++static struct iommu_table_group *iommu_pseries_alloc_group(int node)
++{
++	struct iommu_table_group *table_group;
 +
- 	for (i = 0; i < tbl->nr_pools; i++)
- 		spin_unlock(&tbl->pools[i].lock);
- 	spin_unlock_irqrestore(&tbl->large_pool.lock, flags);
++	table_group = kzalloc_node(sizeof(*table_group), GFP_KERNEL, node);
++	if (!table_group)
++		return NULL;
+ 
+-	return table_group;
++	table_group->tables[0] = iommu_pseries_alloc_table(node);
++	if (table_group->tables[0])
++		return table_group;
+ 
+-free_group:
+ 	kfree(table_group);
+ 	return NULL;
+ }
 -- 
 2.30.2
 
