@@ -1,77 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C148F368900
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 00:27:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F694368920
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 00:44:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRBr45xdDz301g
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 08:27:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRCCy6lvBz2yxv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 08:44:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=DKIM header.b=FKdPkzsf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=J+EDgb6l;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=iram.es
- (client-ip=130.206.19.150; helo=mx01.puc.rediris.es;
- envelope-from=paubert@iram.es; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::135;
+ helo=mail-lf1-x135.google.com; envelope-from=ndesaulniers@google.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256
- header.s=DKIM header.b=FKdPkzsf; dkim-atps=neutral
-X-Greylist: delayed 619 seconds by postgrey-1.36 at boromir;
- Fri, 23 Apr 2021 08:27:08 AEST
-Received: from mx01.puc.rediris.es (outbound6mad.lav.puc.rediris.es
- [130.206.19.150])
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=J+EDgb6l; dkim-atps=neutral
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com
+ [IPv6:2a00:1450:4864:20::135])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRBqc4DR3z2xZF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 08:27:07 +1000 (AEST)
-Received: from mta-out02.sim.rediris.es (mta-out02.sim.rediris.es
- [130.206.24.44])
- by mx01.puc.rediris.es  with ESMTP id 13MMGRPi005826-13MMGRPk005826
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Fri, 23 Apr 2021 00:16:27 +0200
-Received: from mta-out02.sim.rediris.es (localhost.localdomain [127.0.0.1])
- by mta-out02.sim.rediris.es (Postfix) with ESMTPS id 65BAAC4DEE3;
- Fri, 23 Apr 2021 00:16:26 +0200 (CEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
- by mta-out02.sim.rediris.es (Postfix) with ESMTP id ED4F7C1A25F;
- Fri, 23 Apr 2021 00:16:25 +0200 (CEST)
-X-Amavis-Modified: Mail body modified (using disclaimer) -
- mta-out02.sim.rediris.es
-Received: from mta-out02.sim.rediris.es ([127.0.0.1])
- by localhost (mta-out02.sim.rediris.es [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id He-OWa-w0KdH; Fri, 23 Apr 2021 00:16:25 +0200 (CEST)
-Received: from lt-gp.iram.es (haproxy01.sim.rediris.es [130.206.24.69])
- by mta-out02.sim.rediris.es (Postfix) with ESMTPA id C098EC4DEE3;
- Fri, 23 Apr 2021 00:16:23 +0200 (CEST)
-Date: Fri, 23 Apr 2021 00:16:18 +0200
-From: Gabriel Paubert <paubert@iram.es>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH 1/2] powerpc/sstep: =?utf-8?Q?A?=
- =?utf-8?Q?dd_emulation_support_for_=E2=80=98setb=E2=80=99?= instruction
-Message-ID: <20210422221618.GA30594@lt-gp.iram.es>
-References: <cover.1618469454.git.sathvika@linux.vnet.ibm.com>
- <767e53c4c27da024ca277e21ffcd0cff131f5c73.1618469454.git.sathvika@linux.vnet.ibm.com>
- <875z0mfzbf.fsf@linkitivity.dja.id.au>
- <20210422191334.GE27473@gate.crashing.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRCCY1bgNz2xYd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 08:44:22 +1000 (AEST)
+Received: by mail-lf1-x135.google.com with SMTP id y4so34438733lfl.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 15:44:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=eVWWvugI8DB7tGc32EIZh1dbZnwGe5Bt+f006OvhJS0=;
+ b=J+EDgb6lx4Ai3flNJZAUBsqJDvUXLA67oGcIqHVqt7rpFgBUDYNJsQZ4o3h5AaNI3U
+ GBJgJVmfbnA5xfbL/uUHu/bVkU6Sj4caOjrq2RimVAS1IpWEHeNACHQ6BydOG9JyMNnn
+ rEw+vXuijPm+PTk0G/Ng9czw8gxh5Tyj32N1PN4cZPV1UTvXaDAZCqY5QOba6u74G4Ue
+ kEye3LPZtcdetcvoVY7Z07WlPTfZbdwmphfwX1vLe97GhJClaq9upYRf86HqJLT97uvh
+ RwbYzzRqbTBsKr0m+Vf2+aiNwKCTDeKAJrOKYp1I+CAPPQ477hnmGf9mlfzm9JUHeXu2
+ Tuyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=eVWWvugI8DB7tGc32EIZh1dbZnwGe5Bt+f006OvhJS0=;
+ b=ZRFiBdOtvIm7g9y032zqB8cfTPvwH5FxxSZcMvMISaofG7T+BZuKkSzJaFLrZyYaXq
+ CEAG1Jr1+XJvIsyLIsdKxYQUzU9OT2MmZ6g0RBAMLT0RMFTy5Z8Yr2yjx0Ps9j9oy6Ap
+ LR575C4z60TNt66DusfkrA7jdrOP+bYDZwkTN6kdEBaFo2RgVXrZT8ZkBjx39tWjTb4X
+ XcSHa9y5HyY3u+sIAHc0O5uMo1rd7QcJrgyrXIhqP5l8RvUKqDlgNQpPUE3d6ahv6p+1
+ 2TsekGK7umFS9kEBP4HvR15vp9993yMrqDpsGWKh+iwWG6V2A7ch/uvvRQuj09DvYqeY
+ dTLg==
+X-Gm-Message-State: AOAM532h/ZkpWRmjfZoEg8ilt3cVUOVutVeozzpkoCwZ/ai+IIQ6BDyY
+ A84SUbDzsTBSL5renQdBoA87e6Kok0P+dVXrquh47w==
+X-Google-Smtp-Source: ABdhPJwYSO43FuRfyDZjVX5z5UG55Qn0AtKaW1+5Fl21nVwrVVRCd3KaER5zMUSJFG13eTZoMQSkycXBXphkTb373o8=
+X-Received: by 2002:a05:6512:159:: with SMTP id
+ m25mr454486lfo.73.1619131454440; 
+ Thu, 22 Apr 2021 15:44:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210422191334.GE27473@gate.crashing.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-FE-Policy-ID: 2:8:0:SYSTEM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=iram.es; s=DKIM;
- c=relaxed/relaxed; 
- h=date:from:to:cc:subject:message-id:references:mime-version:content-type;
- bh=Kf4/sJHzrq+xNadIEPH/sB7I765GgxANtaQbGxvzZDY=;
- b=FKdPkzsfKeRnRLhVF5a0e/72JqmkJmqllWm5tCe8NW+YRZABEdGYdmmxB4SZVnxUJOXvSvsT+DBZ
- OHRwSoAjXXgMgB0jbhYF+zNuRJNUjz7PmjVFvJ782ZmKEba+uvkwr4LXFETkJL3kJE9lqjEAOoH1
- 7uN6mv5OhlpE0+e4EvGxF9ekd6XDHgPFxTOeozQ2sfbPagpo8qZZnsRqSYqLtGtPsE0p9uE632Qd
- aqTPOIgbp3ulznfC28ANaEKc07+2g+EjV8mvkkG4w5JgC9M9LxRgNvOSidPDC5uKOoVCISbaI7PK
- yeNQfvP6nfhpFfcbxz1vWMcb6jcK6aM5Cz8xOw==
+References: <20200901222523.1941988-1-ndesaulniers@google.com>
+ <20200901222523.1941988-2-ndesaulniers@google.com>
+ <87blio1ilu.fsf@mpe.ellerman.id.au>
+ <CAKwvOd=ZeJU+vLUk2P7FpX35haj7AC50B9Yps4pyoGCpd7ueTw@mail.gmail.com>
+ <3d837a36-a186-6789-7924-eaa97f056b68@csgroup.eu>
+In-Reply-To: <3d837a36-a186-6789-7924-eaa97f056b68@csgroup.eu>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Thu, 22 Apr 2021 15:44:02 -0700
+Message-ID: <CAKwvOd=KP5CZ5wOrczC6qPAzN7DdFCJ_XvU6e=zvB3XpQrp_-g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] powerpc/vdso64: link vdso64 with linker
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,119 +80,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>,
- naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Daniel Axtens <dja@axtens.net>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Fangrui Song <maskray@google.com>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Sep 2, 2020 at 11:02 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 02/09/2020 =C3=A0 19:41, Nick Desaulniers a =C3=A9crit :
+> > On Wed, Sep 2, 2020 at 5:14 AM Michael Ellerman <mpe@ellerman.id.au> wr=
+ote:
+> >>
+> >> Nick Desaulniers <ndesaulniers@google.com> writes:
+> >>> Fixes: commit f2af201002a8 ("powerpc/build: vdso linker warning for o=
+rphan sections")
+> >>
+> >> I think I'll just revert that for v5.9 ?
+> >
+> > SGTM; you'll probably still want these changes with some modifications
+> > at some point; vdso32 did have at least one orphaned section, and will
+> > be important for hermetic builds.  Seeing crashes in supported
+> > versions of the tools ties our hands at the moment.
+> >
+>
+> Keeping the tool problem aside with binutils 2.26, do you have a way to
+> really link an elf32ppc object when  building vdso32 for PPC64 ?
 
-	Hi,
+Sorry, I'm doing a bug scrub and found
+https://github.com/ClangBuiltLinux/linux/issues/774 still open (and my
+reply to this thread still in Drafts; never sent). With my patches
+rebased:
+$ file arch/powerpc/kernel/vdso32/vdso32.so
+arch/powerpc/kernel/vdso32/vdso32.so: ELF 32-bit MSB shared object,
+PowerPC or cisco 4500, version 1 (SYSV), dynamically linked, stripped
 
-On Thu, Apr 22, 2021 at 02:13:34PM -0500, Segher Boessenkool wrote:
-> Hi!
-> 
-> On Fri, Apr 16, 2021 at 05:44:52PM +1000, Daniel Axtens wrote:
-> > Sathvika Vasireddy <sathvika@linux.vnet.ibm.com> writes:
-> > Ok, if I've understood correctly...
-> > 
-> > > +			ra = ra & ~0x3;
-> > 
-> > This masks off the bits of RA that are not part of BTF:
-> > 
-> > ra is in [0, 31] which is [0b00000, 0b11111]
-> > Then ~0x3 = ~0b00011
-> > ra = ra & 0b11100
-> > 
-> > This gives us then,
-> > ra = btf << 2; or
-> > btf = ra >> 2;
-> 
-> Yes.  In effect, you want the offset in bits of the CR field, which is
-> just fine like this.  But a comment would not hurt.
-> 
-> > Let's then check to see if your calculations read the right fields.
-> > 
-> > > +			if ((regs->ccr) & (1 << (31 - ra)))
-> > > +				op->val = -1;
-> > > +			else if ((regs->ccr) & (1 << (30 - ra)))
-> > > +				op->val = 1;
-> > > +			else
-> > > +				op->val = 0;
-> 
-> It imo is clearer if written
-> 
-> 			if ((regs->ccr << ra) & 0x80000000)
-> 				op->val = -1;
-> 			else if ((regs->ccr << ra) & 0x40000000)
-> 				op->val = 1;
-> 			else
-> 				op->val = 0;
-> 
-> but I guess not everyone agrees :-)
-> 
+Are you still using 2.26?
 
-But this can be made jump free :-):
+I'm not able to repro Nathan's reported issue from
+https://lore.kernel.org/lkml/20200902052123.GA2687902@ubuntu-n2-xlarge-x86/=
+,
+so I'm curious if I should resend the rebased patches as v2?
 
-	int tmp = regs->ccr << ra;
-	op->val = (tmp >> 31) | ((tmp >> 30) & 1);
-
-(IIRC the srawi instruction sign-extends its result to 64 bits).
-
-
-
-> > CR field:      7    6    5    4    3    2    1    0
-> > bit:          0123 0123 0123 0123 0123 0123 0123 0123
-> > normal bit #: 0.....................................31
-> > ibm bit #:   31.....................................0
-> 
-> The bit numbers in CR fields are *always* numbered left-to-right.  I
-> have never seen anyone use LE for it, anyway.
-> 
-> Also, even people who write LE have the bigger end on the left normally
-> (they just write some things right-to-left, and other things
-> left-to-right).
-
-Around 1985, I had a documentation for the the National's 32032
-(little-endian) processor family, and all the instruction encodings were
-presented with the LSB on the left and MSB on the right.
-
-BTW on these processors, the immediate operands and the offsets (1, 2 or
-4 bytes) for the addressing modes were encoded in big-endian byte order,
-but I digress. Consistency is overrated ;-)
-
-	Gabriel
-
-
-> 
-> > Checkpatch does have one complaint:
-> > 
-> > CHECK:UNNECESSARY_PARENTHESES: Unnecessary parentheses around 'regs->ccr'
-> > #30: FILE: arch/powerpc/lib/sstep.c:1971:
-> > +			if ((regs->ccr) & (1 << (31 - ra)))
-> > 
-> > I don't really mind the parenteses: I think you are safe to ignore
-> > checkpatch here unless someone else complains :)
-> 
-> I find them annoying.  If there are too many parentheses, it is hard to
-> see at a glance what groups where.  Also, a suspicious reader might
-> think there is something special going on (with macros for example).
-> 
-> This is simple code of course, but :-)
-> 
-> > If you do end up respinning the patch, I think it would be good to make
-> > the maths a bit clearer. I think it works because a left shift of 2 is
-> > the same as multiplying by 4, but it would be easier to follow if you
-> > used a temporary variable for btf.
-> 
-> It is very simple.  The BFA instruction field is closely related to the
-> BI instruction field, which is 5 bits, and selects one of the 32 bits in
-> the CR.  If you have "BFA00 BFA01 BFA10 BFA11", that gives the bit
-> numbers of all four bits in the selected CR field.  So the "& ~3" does
-> all you need.  It is quite pretty :-)
-> 
-> 
-> Segher
- 
-
+--
+Thanks,
+~Nick Desaulniers
