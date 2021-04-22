@@ -2,106 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DFF367A8D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 09:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0F4367A93
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 09:08:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQpPW6Nfbz3bVS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 17:06:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQpRP6RcZz3034
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 17:08:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cwA4Hhmm;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=tNcJs0R0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ricklind@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72b;
+ helo=mail-qk1-x72b.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=cwA4Hhmm; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=tNcJs0R0; dkim-atps=neutral
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com
+ [IPv6:2607:f8b0:4864:20::72b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQpP00ypvz3048
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 17:06:11 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13M72oaK001418; Thu, 22 Apr 2021 03:06:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=jgx6h0ae9zoQ7N5bBYsdcAYTRtjADEfHi6BOzPEF2uo=;
- b=cwA4Hhmmcn1CQ0q+z6wvCZmAzgYqw4etX5V5/wdwI2nKZxrYwaZGromwngE/cioAfXu6
- hwVFtLlP8xGtUKYRPxjbyG+0gtmumKODv1CiPbmOHCnDYgx4EvPFeLxa8ihitAiewnwI
- T260IQ3hPPi1og9ynI9EofXhGY+Y9TkPITl+hY0b8QetRCvesnNF5AJl5kW+HNQ+LW66
- h/TJYcnnryEQ63PXI02uaua1/btNSKz78VvRZaw/9NcdUBYCVxwBfiHDl/bOKxnRLiB1
- nwFfhjg8/dn7G0doqJOBYPTVw5aimxrRthAjT73th9uLU4R4O9PCtJ5EJNmlkEhEoLpD cw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 382yaapyjb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Apr 2021 03:06:08 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13M72xUf002462;
- Thu, 22 Apr 2021 03:06:07 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 382yaapydv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Apr 2021 03:06:07 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13M6vgM0011550;
- Thu, 22 Apr 2021 07:05:59 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma03dal.us.ibm.com with ESMTP id 37yqaasygn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Apr 2021 07:05:59 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13M75wWm35324264
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Apr 2021 07:05:58 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4B3A6AE068;
- Thu, 22 Apr 2021 07:05:58 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B1DEFAE05C;
- Thu, 22 Apr 2021 07:05:56 +0000 (GMT)
-Received: from [9.160.109.21] (unknown [9.160.109.21])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 22 Apr 2021 07:05:56 +0000 (GMT)
-Subject: Re: [PATCH V2 net] ibmvnic: Continue with reset if set link down
- failed
-To: Lijun Pan <lijunp213@gmail.com>,
- Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-References: <20210420213517.24171-1-drt@linux.ibm.com>
- <60C99F56-617D-455B-9ACF-8CE1EED64D92@linux.vnet.ibm.com>
- <20210421064527.GA2648262@us.ibm.com>
- <CAOhMmr4ckVFTZtSeHFHNgGPUA12xYO8WcUoakx7WdwQfSKBJhA@mail.gmail.com>
-From: Rick Lindsley <ricklind@linux.vnet.ibm.com>
-Message-ID: <376383c3-3fbd-25bf-8fb3-6cd54c218e34@linux.vnet.ibm.com>
-Date: Thu, 22 Apr 2021 00:05:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQpQx3hrpz2xb2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 17:07:52 +1000 (AEST)
+Received: by mail-qk1-x72b.google.com with SMTP id o5so45405871qkb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 00:07:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=hZ8JN3i4Kj5YpOQnOolDJMaTu+l/AsLN7rU+u4Ddbao=;
+ b=tNcJs0R0wv699ZcmUt/WV35IZaMJ4fjyER6d5VTIKQUJw36E7kLbOjuoSffdJ62qmx
+ PyhEvN/b8AtPlgUuoC0w8kk/ba2tr/6MouC8QKCjALVWPF4TYRLLgGUiexpyOh6qBozH
+ HlX/uCs/vcrm1CzpTb1iggA1Y4jsdtJ0+G7JBGF+JMZpjHav+iq9HCwwyOBJm8Gmri1A
+ 96GWGLHThrhhFS70JbGPc0EseQ558LHlzl9gHetNRd5ln2Y9xokuWwZi9Rnc3/IlIgno
+ sM+dGTvg6sNKIjKrrIDI8wn2HLJh5P4ovBc8EOU8DsdhQYxI84tUblYttNf/5onUuz/9
+ cRJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=hZ8JN3i4Kj5YpOQnOolDJMaTu+l/AsLN7rU+u4Ddbao=;
+ b=Yf7m2t4oCu0ENk1o1yK8T5LtzqyvOW0elCbe5uiFk57AMfOfXIS61dBUIOz2ao1Fga
+ OeNG1jycF/J5ljgGt04OzVumSRfYXEJoEyy71m67wr9VsPrZy/b4G5F3tHQHgXuPp1VE
+ zImb2qVmQ9RBH1ZpsO+o2IH5H2EuNtgw3eceG6PwED7VF7S7aVFy7QxzKyFS9x8PPrHz
+ 4Yl7ECnzJZY4nXPUMHH1Gq3ZxQglFsLF+8h0kteayow4/vXbfZMfat4dhFHGB655UPGM
+ ViKW1eBGuJQO+npqeYCcCmCywTVImBR6WR2551S5i9+DQA6scgDTZAk6439cDvDnEi2z
+ VXJQ==
+X-Gm-Message-State: AOAM530ebzxeFMlUP6OgK+MwsrmMmBQ+H3dbtlbo1o2BrdFlbW8GWzt5
+ +q9E8nGd6viz63hVEdf5pBwdhPaoYQM=
+X-Google-Smtp-Source: ABdhPJxmMmwBHAC6MV1jGxKUHNNOegGk5bUlTkwUorBleYhiFdB6IDSc3N8e0pdtkPxvQAWJIsXHfA==
+X-Received: by 2002:ae9:ef8a:: with SMTP id d132mr2119249qkg.481.1619075269130; 
+ Thu, 22 Apr 2021 00:07:49 -0700 (PDT)
+Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com.com
+ ([177.35.200.187])
+ by smtp.gmail.com with ESMTPSA id w67sm1658329qkc.79.2021.04.22.00.07.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 Apr 2021 00:07:48 -0700 (PDT)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Leonardo Bras <leobras.c@gmail.com>,
+ Joel Stanley <joel@jms.id.au>, Christophe Leroy <christophe.leroy@c-s.fr>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Nicolin Chen <nicoleotsuka@gmail.com>,
+ Niklas Schnelle <schnelle@linux.ibm.com>
+Subject: [PATCH v3 00/11] DDW + Indirect Mapping
+Date: Thu, 22 Apr 2021 04:07:11 -0300
+Message-Id: <20210422070721.463912-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <CAOhMmr4ckVFTZtSeHFHNgGPUA12xYO8WcUoakx7WdwQfSKBJhA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UKj3PdAtvpU9SNzMs46BjZtxaWT2YN9v
-X-Proofpoint-ORIG-GUID: tbN13I2qbP5U4AgiF5AgwX_V0eMZnNv_
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-22_01:2021-04-21,
- 2021-04-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- clxscore=1015 malwarescore=0 spamscore=0 bulkscore=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104220059
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,26 +84,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, Lijun Pan <ljp@linux.vnet.ibm.com>,
- Tom Falcon <tlfalcon@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Dany Madden <drt@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, David Miller <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/21/21 10:06 PM, Lijun Pan wrote:
-> No real customer runs the system under that heavy load created by
-> HTX stress test, which can tear down any working system.
+So far it's assumed possible to map the guest RAM 1:1 to the bus, which
+works with a small number of devices. SRIOV changes it as the user can
+configure hundreds VFs and since phyp preallocates TCEs and does not
+allow IOMMU pages bigger than 64K, it has to limit the number of TCEs
+per a PE to limit waste of physical pages.
 
-So, are you saying the bugs that HTX uncovers are not worth fixing?
+As of today, if the assumed direct mapping is not possible, DDW creation
+is skipped and the default DMA window "ibm,dma-window" is used instead.
 
-There's a fair number of individuals and teams out there that
-utilize HTX in the absence of such a workload, and not just for vnic.
-What workload would you suggest to better serve "real customers"?
+Using the DDW instead of the default DMA window may allow to expand the
+amount of memory that can be DMA-mapped, given the number of pages (TCEs)
+may stay the same (or increase) and the default DMA window offers only
+4k-pages while DDW may offer larger pages (4k, 64k, 16M ...).
 
-> I think such optimizations are catered for passing HTX tests.
+Patch #1 replaces hard-coded 4K page size with a variable containing the
+correct page size for the window.
 
-Well, yes.  If the bugs are found with HTX, the fixes are verified
-against HTX.  If they were found with a "real customer workload" they'd
-be verified against a "real customer workload."
+Patch #2 introduces iommu_table_in_use(), and replace manual bit-field
+checking where it's used. It will be used for aborting enable_ddw() if
+there is any current iommu allocation and we are trying single window
+indirect mapping.
+
+Patch #3 introduces iommu_pseries_alloc_table() that will be helpful
+when indirect mapping needs to replace the iommu_table.
+
+Patch #4 adds helpers for adding DDWs in the list.
+
+Patch #5 refactors enable_ddw() so it returns if direct mapping is
+possible, instead of DMA offset. It helps for next patches on
+indirect DMA mapping and also allows DMA windows starting at 0x00.
+
+Patch #6 bring new helper to simplify enable_ddw(), allowing
+some reorganization for introducing indirect mapping DDW.
+
+Patch #7 adds new helper _iommu_table_setparms() and use it in other
+*setparams*() to fill iommu_table. It will also be used for creating a
+new iommu_table for indirect mapping.
+
+Patch #8 updates remove_dma_window() to accept different property names,
+so we can introduce a new property for indirect mapping.
+
+Patch #9 extracts find_existing_ddw_windows() into
+find_existing_ddw_windows_named(), and calls it by it's property name.
+This will be useful when the property for indirect mapping is created,
+so we can search the device-tree for both properties.
+
+Patch #10:
+Instead of destroying the created DDW if it doesn't map the whole
+partition, make use of it instead of the default DMA window as it improves
+performance. Also, update the iommu_table and re-generate the pools.
+It introduces a new property name for DDW with indirect DMA mapping.
+
+Patch #11:
+Does some renaming of 'direct window' to 'dma window', given the DDW
+created can now be also used in indirect mapping if direct mapping is not
+available.
+
+All patches were tested into an LPAR with an virtio-net interface that
+allows default DMA window and DDW to coexist.
+
+Leonardo Bras (11):
+  powerpc/pseries/iommu: Replace hard-coded page shift
+  powerpc/kernel/iommu: Add new iommu_table_in_use() helper
+  powerpc/pseries/iommu: Add iommu_pseries_alloc_table() helper
+  powerpc/pseries/iommu: Add ddw_list_new_entry() helper
+  powerpc/pseries/iommu: Allow DDW windows starting at 0x00
+  powerpc/pseries/iommu: Add ddw_property_create() and refactor
+    enable_ddw()
+  powerpc/pseries/iommu: Reorganize iommu_table_setparms*() with new
+    helper
+  powerpc/pseries/iommu: Update remove_dma_window() to accept property
+    name
+  powerpc/pseries/iommu: Find existing DDW with given property name
+  powerpc/pseries/iommu: Make use of DDW for indirect mapping
+  powerpc/pseries/iommu: Rename "direct window" to "dma window"
+
+ arch/powerpc/include/asm/iommu.h       |   1 +
+ arch/powerpc/include/asm/tce.h         |   8 -
+ arch/powerpc/kernel/iommu.c            |  65 ++--
+ arch/powerpc/platforms/pseries/iommu.c | 504 +++++++++++++++----------
+ 4 files changed, 338 insertions(+), 240 deletions(-)
+
+-- 
+2.30.2
+
