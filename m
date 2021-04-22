@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E20367C00
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 10:16:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB9D367C0F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 10:17:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQqyP1Pbpz3btQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 18:16:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQqz13BTtz3c0Y
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 18:17:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=PCD+TgwZ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Cisfd6jf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52e;
- helo=mail-pg1-x52e.google.com; envelope-from=tientzu@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52d;
+ helo=mail-pg1-x52d.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=PCD+TgwZ; dkim-atps=neutral
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
- [IPv6:2607:f8b0:4864:20::52e])
+ header.s=google header.b=Cisfd6jf; dkim-atps=neutral
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com
+ [IPv6:2607:f8b0:4864:20::52d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQqx63kT5z2yxv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 18:15:38 +1000 (AEST)
-Received: by mail-pg1-x52e.google.com with SMTP id w10so32311217pgh.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 01:15:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQqxH30Rgz309j
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 18:15:46 +1000 (AEST)
+Received: by mail-pg1-x52d.google.com with SMTP id f29so32276192pgm.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 01:15:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=DCqTI/hrajjPwkk8HEowW3TBxQKFywGZJ7zj1kAgSTY=;
- b=PCD+TgwZ3AiIHtjyLdB6UVXLjDV96H7O710PE71qja4j6uBcwL6eMs8rIbMv0cvAFQ
- cknTAU+f5ughf4xS8sPG0t3S2Z5C3uFec0t2GAey9KzOD4hvmC5srj0EUFUk8IMbKFFx
- HuDL4t5SO2wRDWgfMYB4sF73Mazkige4becoA=
+ bh=C3ItV5y5XoEhSqi+d51HdmwBWLH2Hb4UsI3M8OVWu24=;
+ b=Cisfd6jfRp7ZntllQG9J21QpT0tbDCUmO7Sd4z/S5YfmrCvvZiaBUR0BPZFuQ5hvd/
+ gxJhZ2pu34BRLPXqvLavDRaBXVqLQLA1W1/STuSvpHuqa+BPpv9DUpeEZVvPd4m/EZM3
+ aXG1VDvl65ykf2+uaD2EnhVf7WefQlXtPpuHg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=DCqTI/hrajjPwkk8HEowW3TBxQKFywGZJ7zj1kAgSTY=;
- b=bbuGcRsmzx7np/FacPaB8OmXCNHHOuxq5+Y70Eyzo57ucjNxBG9ePy8zIMwMJFxpXM
- 3lopK/UUEiYB52+h86baGb4v+nWJ+8YVr8c++GUoxTzt7NGAFje7QLcmlrxcHcvH7dIQ
- 2sFTEvX9zHKCzTAIJIHOF3TObSb4i8RyrAyYU1XXzvXfDZySmHPkW+Wx+IGs9FZP3ZFv
- vh8kFvma8AIvPbvjsnbpBs/C186o5maM6AmrstZpcKf7iatoy4dz6P1U3Ggq9XMKcqnG
- nLGLjiUAHY4uUbkQoxJ7sLBiG2N+JXnu14AnhPPNk845onFLocJ47aNRhOzaKME8/a09
- U4oQ==
-X-Gm-Message-State: AOAM5311MUWSbHLgQGglzmbg74MIT3kYOsdAly00pvrMyeISvDDSpKC6
- 4jTcMn2TkGclFu3nde3jma6TZg==
-X-Google-Smtp-Source: ABdhPJzCAPtMPZjZd4TjI7FfrTaFcb2I4L39Wwlj9XGgVexb3c0kbKDiOe3PnJYnNG72JITLPFAsSA==
-X-Received: by 2002:a63:145a:: with SMTP id 26mr2332561pgu.300.1619079335503; 
- Thu, 22 Apr 2021 01:15:35 -0700 (PDT)
+ bh=C3ItV5y5XoEhSqi+d51HdmwBWLH2Hb4UsI3M8OVWu24=;
+ b=VxB8qs2/lb7d8oLzkPQ0YhRGpWrXhmXgSeoI9uO7T5edeC2FYMTAWKEk5+yMyYprJV
+ 2QMdKsyAWrua5Wmd2kdgw5YX42ZomoN4mgT589iDCKypCndeyTn0Xsc3MB7PZ1Tv8woo
+ MbqXEiGwNH76U5NT8IzUP2tM+W1uV+MR5CVtZrXdA5t3aQ/6vvFX/mvs+iejTjX2wMnU
+ rHj4HA6lB3OezF/DIqNzc1Cu5PQwH01fBx582KZlkkY3UqIbzk0DEYate+e4DV2zryIF
+ cwC9wXJcZ3pqciaqtsSWrQQ4RsLpiBhgkom/Pzske/96syLMxX5WXfNozhBAHqnzKDAU
+ Hw/g==
+X-Gm-Message-State: AOAM530ZMj8sAQC+Bz8nzpHagGK6RS/2XwhiebxKwbplHEW99KtqPZCu
+ PzHj5Wp+bA7rOPMY0uFFZ8CqhA==
+X-Google-Smtp-Source: ABdhPJxkEqOgBe8WdlOJ16Imv3NTakOO84xcsb4CT6RBz2bwANEVo+9MWgQ4ffM3wlaap5K1DgM+6A==
+X-Received: by 2002:a63:4106:: with SMTP id o6mr2436897pga.104.1619079344334; 
+ Thu, 22 Apr 2021 01:15:44 -0700 (PDT)
 Received: from localhost ([2401:fa00:1:10:1a8e:1bde:f79e:c302])
- by smtp.gmail.com with UTF8SMTPSA id h24sm4254231pjv.50.2021.04.22.01.15.28
+ by smtp.gmail.com with UTF8SMTPSA id n48sm1357349pfv.130.2021.04.22.01.15.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Apr 2021 01:15:35 -0700 (PDT)
+ Thu, 22 Apr 2021 01:15:43 -0700 (PDT)
 From: Claire Chang <tientzu@chromium.org>
 To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
  Frank Rowand <frowand.list@gmail.com>,
  Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, boris.ostrovsky@oracle.com,
  jgross@suse.com, Christoph Hellwig <hch@lst.de>,
  Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH v5 02/16] swiotlb: Refactor swiotlb init functions
-Date: Thu, 22 Apr 2021 16:14:54 +0800
-Message-Id: <20210422081508.3942748-3-tientzu@chromium.org>
+Subject: [PATCH v5 03/16] swiotlb: Refactor swiotlb_create_debugfs
+Date: Thu, 22 Apr 2021 16:14:55 +0800
+Message-Id: <20210422081508.3942748-4-tientzu@chromium.org>
 X-Mailer: git-send-email 2.31.1.368.gbe11c130af-goog
 In-Reply-To: <20210422081508.3942748-1-tientzu@chromium.org>
 References: <20210422081508.3942748-1-tientzu@chromium.org>
@@ -106,105 +106,49 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a new function, swiotlb_init_io_tlb_mem, for the io_tlb_mem struct
-initialization to make the code reusable.
-
-Note that we now also call set_memory_decrypted in swiotlb_init_with_tbl.
+Split the debugfs creation to make the code reusable for supporting
+different bounce buffer pools, e.g. restricted DMA pool.
 
 Signed-off-by: Claire Chang <tientzu@chromium.org>
 ---
- kernel/dma/swiotlb.c | 51 ++++++++++++++++++++++----------------------
- 1 file changed, 25 insertions(+), 26 deletions(-)
+ kernel/dma/swiotlb.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 8635a57f88e9..3f1adee35097 100644
+index 3f1adee35097..57a9adb920bf 100644
 --- a/kernel/dma/swiotlb.c
 +++ b/kernel/dma/swiotlb.c
-@@ -166,9 +166,30 @@ void __init swiotlb_update_mem_attributes(void)
- 	memset(vaddr, 0, bytes);
- }
+@@ -660,18 +660,24 @@ EXPORT_SYMBOL_GPL(is_swiotlb_active);
  
--int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
-+static void swiotlb_init_io_tlb_mem(struct io_tlb_mem *mem, phys_addr_t start,
-+				    unsigned long nslabs, bool late_alloc)
+ #ifdef CONFIG_DEBUG_FS
+ 
+-static int __init swiotlb_create_debugfs(void)
++static void swiotlb_create_debugfs(struct io_tlb_mem *mem, const char *name,
++				   struct dentry *node)
  {
-+	void *vaddr = phys_to_virt(start);
- 	unsigned long bytes = nslabs << IO_TLB_SHIFT, i;
+-	struct io_tlb_mem *mem = io_tlb_default_mem;
+-
+ 	if (!mem)
+-		return 0;
+-	mem->debugfs = debugfs_create_dir("swiotlb", NULL);
++		return;
 +
-+	mem->nslabs = nslabs;
-+	mem->start = start;
-+	mem->end = mem->start + bytes;
-+	mem->index = 0;
-+	mem->late_alloc = late_alloc;
-+	spin_lock_init(&mem->lock);
-+	for (i = 0; i < mem->nslabs; i++) {
-+		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
-+		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
-+		mem->slots[i].alloc_size = 0;
-+	}
-+
-+	set_memory_decrypted((unsigned long)vaddr, bytes >> PAGE_SHIFT);
-+	memset(vaddr, 0, bytes);
++	mem->debugfs = debugfs_create_dir(name, node);
+ 	debugfs_create_ulong("io_tlb_nslabs", 0400, mem->debugfs, &mem->nslabs);
+ 	debugfs_create_ulong("io_tlb_used", 0400, mem->debugfs, &mem->used);
 +}
 +
-+int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
++static int __init swiotlb_create_default_debugfs(void)
 +{
- 	struct io_tlb_mem *mem;
- 	size_t alloc_size;
- 
-@@ -184,16 +205,8 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
- 	if (!mem)
- 		panic("%s: Failed to allocate %zu bytes align=0x%lx\n",
- 		      __func__, alloc_size, PAGE_SIZE);
--	mem->nslabs = nslabs;
--	mem->start = __pa(tlb);
--	mem->end = mem->start + bytes;
--	mem->index = 0;
--	spin_lock_init(&mem->lock);
--	for (i = 0; i < mem->nslabs; i++) {
--		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
--		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
--		mem->slots[i].alloc_size = 0;
--	}
++	swiotlb_create_debugfs(io_tlb_default_mem, "swiotlb", NULL);
 +
-+	swiotlb_init_io_tlb_mem(mem, __pa(tlb), nslabs, false);
+ 	return 0;
+ }
  
- 	io_tlb_default_mem = mem;
- 	if (verbose)
-@@ -280,7 +293,6 @@ swiotlb_late_init_with_default_size(size_t default_size)
- int
- swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
- {
--	unsigned long bytes = nslabs << IO_TLB_SHIFT, i;
- 	struct io_tlb_mem *mem;
+-late_initcall(swiotlb_create_debugfs);
++late_initcall(swiotlb_create_default_debugfs);
  
- 	if (swiotlb_force == SWIOTLB_NO_FORCE)
-@@ -295,20 +307,7 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
- 	if (!mem)
- 		return -ENOMEM;
- 
--	mem->nslabs = nslabs;
--	mem->start = virt_to_phys(tlb);
--	mem->end = mem->start + bytes;
--	mem->index = 0;
--	mem->late_alloc = 1;
--	spin_lock_init(&mem->lock);
--	for (i = 0; i < mem->nslabs; i++) {
--		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
--		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
--		mem->slots[i].alloc_size = 0;
--	}
--
--	set_memory_decrypted((unsigned long)tlb, bytes >> PAGE_SHIFT);
--	memset(tlb, 0, bytes);
-+	swiotlb_init_io_tlb_mem(mem, virt_to_phys(tlb), nslabs, true);
- 
- 	io_tlb_default_mem = mem;
- 	swiotlb_print_info();
+ #endif
 -- 
-
-I'm not 100% sure if set_memory_decrypted is safe to call in
-swiotlb_init_with_tbl, but I didn't hit any issue booting with this.
-
 2.31.1.368.gbe11c130af-goog
 
