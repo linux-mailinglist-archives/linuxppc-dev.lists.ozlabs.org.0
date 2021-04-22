@@ -2,62 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A53367749
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 04:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA30367751
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 04:21:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQgz60lWYz30BJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 12:16:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQh4X1yKhz30D9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 12:21:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=F777hQDb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=e9ZQBA84;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=F777hQDb; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102e;
+ helo=mail-pj1-x102e.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=e9ZQBA84; dkim-atps=neutral
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
+ [IPv6:2607:f8b0:4864:20::102e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQgyf1Rmlz2yQq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 12:16:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=JuQAmZqUk3bRNh1XZwrWFpM3HTNgjK1ts7jiO0LN48c=; b=F777hQDbPDuiwIs+waU1S9C5+L
- GpkOWCurFKa85QLdjS7vbpkS0e0K1ZTM3/tsgOmM3RPY+HQuALOiCu3yZB/pAxHlUTwOtTFmMsK/E
- MQGXlT35VrZGI96F7+HEyUdwjsU2BnpQ1JuZW4xvvAEkfn99IvHVJK7c17ByrWuIYAhRydSvXR/rE
- q8MDIsSTCvBZUyOr4yRlbNcbCwky9aRcxVV1waGaAL5qMZqWr6aGS1wEzWmBB50PTx5opG/bJzcUZ
- 43lkYfB0WP4Cx3GXnrEwn2mP7hRZeSoXVMDWLB4rMd/lSquSnfWOD1HYIsI1NO5sZ7P0RCdUXQxPp
- 3Vsa/e3A==;
-Received: from [2601:1c0:6280:3f0::df68]
- by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lZOsy-00HK4T-D3; Thu, 22 Apr 2021 02:16:12 +0000
-Subject: Re: mmu.c:undefined reference to `patch__hash_page_A0'
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- kernel test robot <lkp@intel.com>
-References: <202102271820.WlZCxtzY-lkp@intel.com>
- <06227600-c5c5-3da7-a495-ae0b0849b62d@infradead.org>
- <ab9d4f9e-add6-900b-9fa7-83d5f7d1108b@csgroup.eu>
- <0a301d17-136c-df65-17cc-3c9ddbe06de8@infradead.org>
- <fce1f2a1-a4ea-03d1-20ab-f0c716884819@csgroup.eu>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <bcc70465-78fa-3b2e-6506-2b9917f21e0d@infradead.org>
-Date: Wed, 21 Apr 2021 19:16:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQh461Z9Vz2xg1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 12:21:09 +1000 (AEST)
+Received: by mail-pj1-x102e.google.com with SMTP id
+ j14-20020a17090a694eb0290152d92c205dso132043pjm.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Apr 2021 19:21:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=rtMvEVhQW7PSxXx3gDEY/7/ndA+VJactp7XJCyvYRds=;
+ b=e9ZQBA84dRYzG3c8qvB3M8kCpiwPbX0MF0xpeInbdqk0aAlkzOGlE/VTdOSoydcYJZ
+ jH4i3Da7Gg5jq9AOdbo6muUudMD4MZaRMQF8uI8YLSQD++Ng8nmb7seDkOSdRvAVEDBL
+ OO1kpq/LngnBf+Hk+gHoS86FQhMtGk3ET4xj8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=rtMvEVhQW7PSxXx3gDEY/7/ndA+VJactp7XJCyvYRds=;
+ b=XsXUXcdnS1dMmg1/ufNyEDm9XR9bV1W51AlgA+sDba6k8GcrWQFmR0KoeBilKabf0T
+ Gdc4+JKxGhco0AUO9Wo+Zn2Afo4bBU3JTEXCytlDzKZePUo3PMwnLPWX+a6JJFNeW3w0
+ wt7iZayyo3V8iyPQ4ZZQsHinq8lQ0Z18jX8YEhPG+NHGqCtRinUFS3Isu2/Hr1UkVFsV
+ maehkYWRcvj1mxof1U+XQ+RhjaiDbfiFmsahPGBsgcieWLRTMJfgNimf3/UIwpgmuuZl
+ bRvBNbBWm1WbLT7szIe5Vzh4KD14s8519i+XqY+GsPq4pGX6i6cQi7WgAdCn1/hBX/gm
+ 7ffA==
+X-Gm-Message-State: AOAM532/dfXophccqaJfaU8vH8aYJnCnyClz27xpvgfatalSFAgQpmP4
+ Jh8grUPA2Nhoj3QWR74D9gsXDQ==
+X-Google-Smtp-Source: ABdhPJzSfBbIuocRNt5X/klBmTsHAtSRfJcc6vLLNyDfYWk2IMBm6IUeS/HlmWtYoMPitwmt5p0UEQ==
+X-Received: by 2002:a17:90a:c404:: with SMTP id
+ i4mr14838105pjt.10.1619058065160; 
+ Wed, 21 Apr 2021 19:21:05 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-1113-6700-0077-ddd3-a27e-431c.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:77:ddd3:a27e:431c])
+ by smtp.gmail.com with ESMTPSA id nv7sm3032529pjb.18.2021.04.21.19.21.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Apr 2021 19:21:04 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>, robh@kernel.org,
+ dan.carpenter@oracle.com
+Subject: Re: [PATCH] powerpc: Initialize local variable fdt to NULL in
+ elf64_load()
+In-Reply-To: <87eefag241.fsf@linkitivity.dja.id.au>
+References: <20210415191437.20212-1-nramas@linux.microsoft.com>
+ <4edb1433-4d1e-5719-ec9c-fd232b7cf71f@linux.microsoft.com>
+ <87eefag241.fsf@linkitivity.dja.id.au>
+Date: Thu, 22 Apr 2021 12:21:01 +1000
+Message-ID: <87r1j3ys8i.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-In-Reply-To: <fce1f2a1-a4ea-03d1-20ab-f0c716884819@csgroup.eu>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,151 +82,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>, kbuild-all@lists.01.org,
- linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ kbuild-all@lists.01.org, bauerman@linux.ibm.com, lkp@intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/21/21 1:43 AM, Christophe Leroy wrote:
-> 
-> 
-> Le 18/04/2021 à 19:15, Randy Dunlap a écrit :
->> On 4/18/21 3:43 AM, Christophe Leroy wrote:
->>>
->>>
->>> Le 18/04/2021 à 02:02, Randy Dunlap a écrit :
->>>> HI--
->>>>
->>>> I no longer see this build error.
->>>
->>> Fixed by https://github.com/torvalds/linux/commit/acdad8fb4a1574323db88f98a38b630691574e16
->>>
->>>> However:
->>>>
+Daniel Axtens <dja@axtens.net> writes:
 
-...
-
->>>>
->>>> I do see this build error:
->>>>
->>>> powerpc-linux-ld: arch/powerpc/boot/wrapper.a(decompress.o): in function `partial_decompress':
->>>> decompress.c:(.text+0x1f0): undefined reference to `__decompress'
->>>>
->>>> when either
->>>> CONFIG_KERNEL_LZO=y
->>>> or
->>>> CONFIG_KERNEL_LZMA=y
->>>>
->>>> but the build succeeds when either
->>>> CONFIG_KERNEL_GZIP=y
->>>> or
->>>> CONFIG_KERNEL_XZ=y
->>>>
->>>> I guess that is due to arch/powerpc/boot/decompress.c doing this:
->>>>
->>>> #ifdef CONFIG_KERNEL_GZIP
->>>> #    include "decompress_inflate.c"
->>>> #endif
->>>>
->>>> #ifdef CONFIG_KERNEL_XZ
->>>> #    include "xz_config.h"
->>>> #    include "../../../lib/decompress_unxz.c"
->>>> #endif
->>>>
->>>>
->>>> It would be nice to require one of KERNEL_GZIP or KERNEL_XZ
->>>> to be set/enabled (maybe unless a uImage is being built?).
->>>
->>>
->>> Can you test by https://patchwork.ozlabs.org/project/linuxppc-dev/patch/a74fce4dfc9fa32da6ce3470bbedcecf795de1ec.1591189069.git.christophe.leroy@csgroup.eu/ ?
+> Hi Lakshmi,
+>
+>> On 4/15/21 12:14 PM, Lakshmi Ramasubramanian wrote:
 >>
->> Hi Christophe,
+>> Sorry - missed copying device-tree and powerpc mailing lists.
 >>
->> I get build errors for both LZO and LZMA:
+>>> There are a few "goto out;" statements before the local variable "fdt"
+>>> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
+>>> elf64_load(). This will result in an uninitialized "fdt" being passed
+>>> to kvfree() in this function if there is an error before the call to
+>>> of_kexec_alloc_and_setup_fdt().
+>>> 
+>>> Initialize the local variable "fdt" to NULL.
+>>>
+> I'm a huge fan of initialising local variables! But I'm struggling to
+> find the code path that will lead to an uninit fdt being returned...
+
+OK, so perhaps this was putting it too strongly. I have been bitten
+by uninitialised things enough in C that I may have taken a slightly
+overly-agressive view of fixing them in the source rather than the
+compiler. I do think compiler-level mitigations are better, and I take
+the point that we don't want to defeat compiler checking.
+
+(Does anyone - and by anyone I mean any large distro - compile with
+local variables inited by the compiler?)
+
+I was reading the version in powerpc/next, clearly I should have looked
+at linux-next. Having said that, I think I will leave the rest of the
+bikeshedding to the rest of you, you all seem to have it in hand :)
+
+Kind regards,
+Daniel
+
+>
+> The out label reads in part:
+>
+> 	/* Make kimage_file_post_load_cleanup free the fdt buffer for us. */
+> 	return ret ? ERR_PTR(ret) : fdt;
+>
+> As far as I can tell, any time we get a non-zero ret, we're going to
+> return an error pointer rather than the uninitialised value...
+>
+> (btw, it does look like we might leak fdt if we have an error after we
+> successfully kmalloc it.)
+>
+> Am I missing something? Can you link to the report for the kernel test
+> robot or from Dan? 
+>
+> FWIW, I think it's worth including this patch _anyway_ because initing
+> local variables is good practice, but I'm just not sure on the
+> justification.
+>
+> Kind regards,
+> Daniel
+>
+>>> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+>>> ---
+>>>   arch/powerpc/kexec/elf_64.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>> 
+>>> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+>>> index 5a569bb51349..0051440c1f77 100644
+>>> --- a/arch/powerpc/kexec/elf_64.c
+>>> +++ b/arch/powerpc/kexec/elf_64.c
+>>> @@ -32,7 +32,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>>>   	int ret;
+>>>   	unsigned long kernel_load_addr;
+>>>   	unsigned long initrd_load_addr = 0, fdt_load_addr;
+>>> -	void *fdt;
+>>> +	void *fdt = NULL;
+>>>   	const void *slave_code;
+>>>   	struct elfhdr ehdr;
+>>>   	char *modified_cmdline = NULL;
+>>> 
 >>
-> 
-> Can you check with the following changes on top of my patch:
-> 
-> diff --git a/lib/decompress_unlzo.c b/lib/decompress_unlzo.c
-> index a8dbde4b32d4..f06f925385c0 100644
-> --- a/lib/decompress_unlzo.c
-> +++ b/lib/decompress_unlzo.c
-> @@ -23,13 +23,15 @@
->  #include <linux/decompress/unlzo.h>
->  #endif
-> 
-> -#include <linux/lzo.h>
->  #ifdef __KERNEL__
->  #include <linux/types.h>
-> +#endif
-> +#include <linux/lzo.h>
-> +#ifdef __KERNEL__
->  #include <linux/decompress/mm.h>
-> +#include <linux/compiler.h>
->  #endif
-> 
-> -#include <linux/compiler.h>
->  #include <asm/unaligned.h>
-> 
->  static const unsigned char lzop_magic[] = {
-
-Hi Christophe,
-Sorry for the delay -- it's been a very busy day here.
-
-For CONFIG_KERNEL_LZMA=y, I get a couple of warnings:
-
-  BOOTCC  arch/powerpc/boot/decompress.o
-In file included from ../arch/powerpc/boot/decompress.c:38:
-../arch/powerpc/boot/../../../lib/decompress_unlzma.c: In function 'unlzma':
-../arch/powerpc/boot/../../../lib/decompress_unlzma.c:582:21: warning: pointer targets in passing argument 3 of 'rc_init' differ in signedness [-Wpointer-sign]
-  582 |  rc_init(&rc, fill, inbuf, in_len);
-      |                     ^~~~~
-      |                     |
-      |                     unsigned char *
-../arch/powerpc/boot/../../../lib/decompress_unlzma.c:107:18: note: expected 'char *' but argument is of type 'unsigned char *'
-  107 |            char *buffer, long buffer_size)
-      |            ~~~~~~^~~~~~
-
-
-and for CONFIG_KERNEL_LZO=y, this one warning:
-
-  BOOTCC  arch/powerpc/boot/decompress.o
-In file included from ../arch/powerpc/boot/decompress.c:43:
-../arch/powerpc/boot/../../../lib/decompress_unlzo.c: In function 'parse_header':
-../arch/powerpc/boot/../../../lib/decompress_unlzo.c:51:5: warning: variable 'level' set but not used [-Wunused-but-set-variable]
-   51 |  u8 level = 0;
-      |     ^~~~~
-
-Note: the patch above did not apply cleanly for me so any problems
-above could be due to my mangling the patch.
-The patch that I used is below.
-
-Thanks.
----
----
- lib/decompress_unlzo.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
---- linux-next-20210421.orig/lib/decompress_unlzo.c
-+++ linux-next-20210421/lib/decompress_unlzo.c
-@@ -23,13 +23,16 @@
- #include <linux/decompress/unlzo.h>
- #endif
- 
--#include <linux/lzo.h>
- #ifdef __KERNEL__
- #include <linux/types.h>
--#include <linux/decompress/mm.h>
- #endif
-+#include <linux/lzo.h>
- 
-+#ifdef __KERNEL__
-+#include <linux/decompress/mm.h>
- #include <linux/compiler.h>
-+#endif
-+
- #include <asm/unaligned.h>
- 
- static const unsigned char lzop_magic[] = {
-
+>> thanks,
+>>   -lakshmi
