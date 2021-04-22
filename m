@@ -1,105 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EA9367A70
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 08:59:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 819A2367A8A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 09:06:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQpF15FrYz3bV3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 16:59:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQpP33936z2ysw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 17:06:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=U8ZqPUAV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZvpBNqnM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=sukadev@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ricklind@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=U8ZqPUAV; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=ZvpBNqnM; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQpDZ1lgNz2xZQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 16:58:53 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQpNc08yKz2xZS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 17:05:51 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13M6WYWD169608; Thu, 22 Apr 2021 02:58:47 -0400
+ 13M74CXX065781; Thu, 22 Apr 2021 03:05:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=N/IKgJ4xDNqpVJKJDbm3LPm5qfQ5LyT/cXo+WFHtVr0=;
- b=U8ZqPUAVvwvLvGlY+6Qwy5LkFK5yvZgpHWxVoKbMjWLc5kCyUtTtlyHZgZG0F11dRvUG
- PmC76aGps9sVE79kOuGr1o0NHI30GbbQtKchTKUv+5y0cTMorSm0hfELrLyUZDlbqBlX
- +JZ0DW1gRNniSIQM2Qh7R+cqQM8Q/SWXbAjpvF/+LQYlpvC1lgKT5WBoTk6shB3zlcEW
- qXPK49OJumwCCtaDrfAOKVNiAe6siit55AWny0qshB1GVP3qbufYTJAsRN86WqGT0tjW
- K1l1pqXgz6Zprb//FWVOl+1KVUJ9iGPzOwQYrD/+LF4Sy1kXdwgLibp2znn/jwf3tzUy 9Q== 
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=NrlE+0erGU7/ciMtnZrJoG/XFKoSNrCnPtiUlJykfTo=;
+ b=ZvpBNqnM413ItqMccsmAF6rY4kmzSoDdCezOAxFp27EOvy5rkMSvK1gxylOITKJISuuo
+ 3hMfRm/DKM/HMPGqbm3G8sjfmYGH/FM8bzh395MBq9oqqa0i1YKmB2fG9BXnpw1ksHtu
+ jT7IaWoGX4w+AztrLMp5Ow1604Iv4BYhtNjYpwS96zTK1aWbquryeDsoD5ptD0D3RHwq
+ qwveMmbdrf4H+61LQOww1XhVlHmpFFc28Wj5VJvaS1L2bBboKy4QQJ23VTQG6ytCin7D
+ 2jy66Gl3eDX94nZRyZK9AAhqtNeQdUYH/3CB8/OhfOb4WSyCV9IZoPSL72E1ALjRq6/B mQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 383344hx1w-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38331na9k5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Apr 2021 02:58:47 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13M6Wpwh174099;
- Thu, 22 Apr 2021 02:58:47 -0400
+ Thu, 22 Apr 2021 03:05:46 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13M751kv069514;
+ Thu, 22 Apr 2021 03:05:46 -0400
 Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
  [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 383344hx1q-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38331na9jb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Apr 2021 02:58:47 -0400
+ Thu, 22 Apr 2021 03:05:45 -0400
 Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13M6vGeq025465;
- Thu, 22 Apr 2021 06:58:46 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma02wdc.us.ibm.com with ESMTP id 37yqaa7yrd-1
+ by ppma02wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13M6vIqc025486;
+ Thu, 22 Apr 2021 07:05:44 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma02wdc.us.ibm.com with ESMTP id 37yqaa81fa-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Apr 2021 06:58:46 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13M6wkmv34800034
+ Thu, 22 Apr 2021 07:05:44 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13M75i6032571862
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Apr 2021 06:58:46 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4D5A828064;
- Thu, 22 Apr 2021 06:58:46 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2B1E228059;
- Thu, 22 Apr 2021 06:58:46 +0000 (GMT)
-Received: from suka-w540.localdomain (unknown [9.85.159.236])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 22 Apr 2021 06:58:46 +0000 (GMT)
-Received: by suka-w540.localdomain (Postfix, from userid 1000)
- id 3B6722E0948; Wed, 21 Apr 2021 23:58:43 -0700 (PDT)
-Date: Wed, 21 Apr 2021 23:58:43 -0700
-From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-To: Lijun Pan <lijunp213@gmail.com>
+ Thu, 22 Apr 2021 07:05:44 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3C244AE05F;
+ Thu, 22 Apr 2021 07:05:44 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2B604AE05C;
+ Thu, 22 Apr 2021 07:05:42 +0000 (GMT)
+Received: from [9.160.109.21] (unknown [9.160.109.21])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 22 Apr 2021 07:05:41 +0000 (GMT)
 Subject: Re: [PATCH V2 net] ibmvnic: Continue with reset if set link down
  failed
-Message-ID: <20210422065843.GA2743610@us.ibm.com>
+To: Lijun Pan <lijunp213@gmail.com>
 References: <20210420213517.24171-1-drt@linux.ibm.com>
  <60C99F56-617D-455B-9ACF-8CE1EED64D92@linux.vnet.ibm.com>
- <20210421064527.GA2648262@us.ibm.com>
- <CAOhMmr4ckVFTZtSeHFHNgGPUA12xYO8WcUoakx7WdwQfSKBJhA@mail.gmail.com>
+ <51a63be8-9b24-3f72-71d0-111959649059@linux.vnet.ibm.com>
+ <CAOhMmr4YF6HyBfa4gZZFQqUK6tyw5io=WzSb6G08zhbtu1sU-g@mail.gmail.com>
+From: Rick Lindsley <ricklind@linux.vnet.ibm.com>
+Message-ID: <877cbb4b-8bc6-75ad-9cd4-a3ffccfc8405@linux.vnet.ibm.com>
+Date: Thu, 22 Apr 2021 00:05:41 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOhMmr4ckVFTZtSeHFHNgGPUA12xYO8WcUoakx7WdwQfSKBJhA@mail.gmail.com>
-X-Operating-System: Linux 2.0.32 on an i486
+In-Reply-To: <CAOhMmr4YF6HyBfa4gZZFQqUK6tyw5io=WzSb6G08zhbtu1sU-g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GfwI-kOWaECHjoBtMq1EWWBeScQcfUux
-X-Proofpoint-ORIG-GUID: snAdYgpPcE9dnAUvkG3T6jD4G0npnwE8
+X-Proofpoint-GUID: 5mVYkVRhA1D24UeXsx-lo3aBAw1c3p2w
+X-Proofpoint-ORIG-GUID: jRGLKjVfTCZUEjBT74ddEBSM67vi4ryr
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-04-22_01:2021-04-21,
  2021-04-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- clxscore=1015 impostorscore=0 suspectscore=0 mlxscore=0 phishscore=0
- malwarescore=0 adultscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104220056
+ impostorscore=0
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 mlxscore=0 clxscore=1015
+ phishscore=0 adultscore=0 priorityscore=1501 spamscore=0 mlxlogscore=999
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104220059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,41 +115,44 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: netdev@vger.kernel.org, Lijun Pan <ljp@linux.vnet.ibm.com>,
  Tom Falcon <tlfalcon@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
  Dany Madden <drt@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, David Miller <davem@davemloft.net>
+ Sukadev Bhattiprolu <sukadev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Lijun Pan [lijunp213@gmail.com] wrote:
-> > Now, sure we can attempt a "thorough hard reset" which also does
-> > the same hcalls to reestablish the connection. Is there any
-> > other magic in do_hard_reset()? But in addition, it also frees lot
-> > more Linux kernel buffers and reallocates them for instance.
-> 
-> Working around everything in do_reset will make the code very difficult
+On Wed, Apr 21, 2021 at 3:06 AM Rick Lindsley
+<ricklind@linux.vnet.ibm.com> wrote:
 
-We are not working around everything. We are doing in do_reset()
-exactly what we would do in hard reset for this error (ignore the
-set link down error and try to reestablish the connection with the
-VIOS).
+>> Please describe the advantage in deferring it further by routing it through
+>> do_hard_reset().  I don't see one.
 
-What we are avoiding is unnecessary work on the Linux side for a
-communication problem on the VIOS side.
+On 4/21/21 10:12 PM, Lijun Pan replied:
 
-> to manage. Ultimately do_reset can do anything I am afraid, and do_hard_reset
-> can be removed completely or merged into do_reset.
-> 
-> >
-> > If we are having a communication problem with the VIOS, what is
-> > the point of freeing and reallocating Linux kernel buffers? Beside
-> > being inefficient, it would expose us to even more errors during
-> > reset under heavy workloads?
-> 
-> No real customer runs the system under that heavy load created by
-> HTX stress test, which can tear down any working system.
+> It is not deferred. It exits with error and calls do_hard_reset.
+> See my reply to Suka's.
 
-We need to talk to capacity planning and test architects about that,
-but all I want to know is what hard reset would do differently to
-fix this communication error with VIOS.
+I saw your reply, but it does not answer the question I asked.  The patch
+would have us reinitialize and restart the communication queues.  Your
+suggestion would do more work than that.  Please describe the advantage
+in deferring the reinitialization - and yes, defer is the right word -
+by routing it through do_hard_reset() and executing that extra code.  I
+see that route as doing more work than necessary and so introducing
+additional risk, for no clear advantage.  So I would find it helpful
+if you would describe the advantage.
 
-Sukadev
+> The testing was done on this patch. It was not performed on a full hard reset.
+> So I don't think you could even compare the two results.
+
+A problem has been noted, a patch has been proposed, and the reasoning that
+the patch is correct has been given.  Testing with this patch has
+demonstrated the problem has not returned.  So far, that sounds like a
+pretty reasonable solution.
+
+Your comment is curious - why would testing for this patch be done on a full
+hard reset when this patch does not invoke a full hard reset?  If you have
+data to consider then let's have it. I'm willing to be convinced, but so far
+this just sounds like "I wouldn't do it that way myself, and I have a bad
+feeling about doing it any other way."
+
+Rick
