@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7FF367C5E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 10:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 996A0367C5F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 10:20:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQr2c11PHz3btn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 18:20:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQr364gmxz3dFV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 18:20:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fyVWiuO/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=n24zPnvu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::533;
- helo=mail-pg1-x533.google.com; envelope-from=tientzu@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::633;
+ helo=mail-pl1-x633.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=fyVWiuO/; dkim-atps=neutral
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
+ header.s=google header.b=n24zPnvu; dkim-atps=neutral
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
+ [IPv6:2607:f8b0:4864:20::633])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQqyR3dzGz3btw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 18:16:47 +1000 (AEST)
-Received: by mail-pg1-x533.google.com with SMTP id 31so373135pgn.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 01:16:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQqyb5tknz3bvt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 18:16:55 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id s20so7295924plr.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 01:16:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=mJ/TkgMbos7HDgzEvAyBSSssik5oYm9C9TjgiTYpXv4=;
- b=fyVWiuO//zdOOIo4SNTiuA/vCunrGgmzPak8fgrlfn9FPjJtgikPITZX5MyU4Hcylj
- tgKqZuvWduZLAhM+rwSwIdzf6cV8Ibpo2L8LCLq3qaaOJec+GA7MgH1YQyREX968hpEE
- gwnKW1kbzKADPcPn9LNFq1IfmA/7hwp+Ov4LQ=
+ bh=qkwA0MhFMUu0PR/fEN042I8GYXA93G+HHJQKQB3SQ/4=;
+ b=n24zPnvuNl2SXMT6Lwyk4tHWvipaN24pDTC4bKN1c4QYL0U2nK0+5N3vBaxPFaX5jf
+ jVJT7R6TR9puuY7CsVnNk7gaY8P2a9BoR7/+2GKzdYiqobiUj21G70dmzDdpYhUlxZJw
+ jvg8gdJ0MycI55fZwqnmwlqq6E/R7NUO9utzM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=mJ/TkgMbos7HDgzEvAyBSSssik5oYm9C9TjgiTYpXv4=;
- b=CMRoCZH1lMxRvBjV8pFXdgKiVS90DaZdLijHXWE/+7/MjsXWGyI6UA3osv2B7fxfgp
- F+ouFRElJhQ0RsbAk7tgQRhwQP6KrUkijNr/Q8ee8PnHeFveT7crNfJN+Nh1ufNdS2o/
- FsX4WSwjjhn1ybTrUJnNykt+TzEn+g9TOOa4nc+eeRnXlXmLNSIczyDu3boFFMLzjifM
- FeDBYDTS/+FvywYmkLnzNF2QJtaUXXZOJ8rggIZIkGtvUOKuhE9C7x/mQ5MTws8DdDaA
- IL2Tnu6BhCEgUXip9C+4M8Bk6boRKE9LLoRar9xgXHMRe2Vs1IGxZyY9OFCbEraZSiFz
- 5KOg==
-X-Gm-Message-State: AOAM533+smrTiKOejt8mF0zr4uoR2awmRmr7ighXzWSfA+X/IT9FSMgE
- 8+bsGqAP2AnE6nQt0IQ7K+XQ8Q==
-X-Google-Smtp-Source: ABdhPJy4vYC2gsYRFQJC6RH0GCA/bYSUMJf7hfMB4cYSbbJiyMgDRqknqyiPj0fvHGhXeIZCrRTI2A==
-X-Received: by 2002:a62:8cd0:0:b029:256:a7a9:2a3a with SMTP id
- m199-20020a628cd00000b0290256a7a92a3amr2221884pfd.69.1619079404706; 
- Thu, 22 Apr 2021 01:16:44 -0700 (PDT)
+ bh=qkwA0MhFMUu0PR/fEN042I8GYXA93G+HHJQKQB3SQ/4=;
+ b=AhQr67gM5PWKoDme0JhSAr3m7Pdwz5pR6sOTcMPD2RCSvLdaqJk8ImJaLTs6R6VdBj
+ pOYyuBho6O9eA5P336n4oubmis5yTqTzL02iSEpOprzt4AEAGHkhJCI+jWKZpcnnURLO
+ 3Ptl3hHk6YdWxLdYA6azH1M/25yJ21IhtoPmfTH6lpJGR2vH9NXQkz+K2TX8AOu/M6lZ
+ d7T1r8J+wVrtux84Sf9nvIlVns5d7gSIKjN+MRAJWUd3qJXkFBo7lA7teft3g9L+ApAC
+ hUbT60kGj12ql6O5YgXuhdLAHwN095PKyINk6S+bIF7IkOyv/lT5/HvZR9I6G1fqe4jD
+ 0tvg==
+X-Gm-Message-State: AOAM530UJVnNbtxKuMxltvPFjAAJ8/Aflikm3DVKurl0rZM3pOZ7nWfz
+ djREFTu00aKYoOo/TatC2vbooQ==
+X-Google-Smtp-Source: ABdhPJzVJLpBCYw0WSyr4j5165U0UOHdyEL1ymXrvCVvRWjQBHVXQWAEaEzYKj1TvEvauEG2merRVg==
+X-Received: by 2002:a17:902:ac89:b029:e6:d199:29ac with SMTP id
+ h9-20020a170902ac89b02900e6d19929acmr2225078plr.46.1619079413150; 
+ Thu, 22 Apr 2021 01:16:53 -0700 (PDT)
 Received: from localhost ([2401:fa00:1:10:1a8e:1bde:f79e:c302])
- by smtp.gmail.com with UTF8SMTPSA id u20sm1609788pgl.27.2021.04.22.01.16.37
+ by smtp.gmail.com with UTF8SMTPSA id 137sm1375933pfx.172.2021.04.22.01.16.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Apr 2021 01:16:44 -0700 (PDT)
+ Thu, 22 Apr 2021 01:16:52 -0700 (PDT)
 From: Claire Chang <tientzu@chromium.org>
 To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
  Frank Rowand <frowand.list@gmail.com>,
  Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, boris.ostrovsky@oracle.com,
  jgross@suse.com, Christoph Hellwig <hch@lst.de>,
  Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH v5 10/16] swiotlb: Move alloc_size to find_slots
-Date: Thu, 22 Apr 2021 16:15:02 +0800
-Message-Id: <20210422081508.3942748-11-tientzu@chromium.org>
+Subject: [PATCH v5 11/16] swiotlb: Refactor swiotlb_tbl_unmap_single
+Date: Thu, 22 Apr 2021 16:15:03 +0800
+Message-Id: <20210422081508.3942748-12-tientzu@chromium.org>
 X-Mailer: git-send-email 2.31.1.368.gbe11c130af-goog
 In-Reply-To: <20210422081508.3942748-1-tientzu@chromium.org>
 References: <20210422081508.3942748-1-tientzu@chromium.org>
@@ -107,44 +107,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move the maintenance of alloc_size to find_slots for better code
-reusability later.
+Add a new function, release_slots, to make the code reusable for supporting
+different bounce buffer pools, e.g. restricted DMA pool.
 
 Signed-off-by: Claire Chang <tientzu@chromium.org>
 ---
- kernel/dma/swiotlb.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ kernel/dma/swiotlb.c | 35 ++++++++++++++++++++---------------
+ 1 file changed, 20 insertions(+), 15 deletions(-)
 
 diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 96ff36d8ec53..b7d634d7a7eb 100644
+index b7d634d7a7eb..af0feb8eaead 100644
 --- a/kernel/dma/swiotlb.c
 +++ b/kernel/dma/swiotlb.c
-@@ -479,8 +479,11 @@ static int find_slots(struct device *dev, phys_addr_t orig_addr,
- 	return -1;
+@@ -547,27 +547,15 @@ phys_addr_t swiotlb_tbl_map_single(struct device *dev, phys_addr_t orig_addr,
+ 	return tlb_addr;
+ }
  
- found:
--	for (i = index; i < index + nslots; i++)
-+	for (i = index; i < index + nslots; i++) {
- 		mem->slots[i].list = 0;
-+		mem->slots[i].alloc_size =
-+			alloc_size - ((i - index) << IO_TLB_SHIFT);
-+	}
- 	for (i = index - 1;
- 	     io_tlb_offset(i) != IO_TLB_SEGSIZE - 1 &&
- 	     mem->slots[i].list; i--)
-@@ -535,11 +538,8 @@ phys_addr_t swiotlb_tbl_map_single(struct device *dev, phys_addr_t orig_addr,
- 	 * This is needed when we sync the memory.  Then we sync the buffer if
- 	 * needed.
- 	 */
--	for (i = 0; i < nr_slots(alloc_size + offset); i++) {
-+	for (i = 0; i < nr_slots(alloc_size + offset); i++)
- 		mem->slots[index + i].orig_addr = slot_addr(orig_addr, i);
--		mem->slots[index + i].alloc_size =
--			alloc_size - (i << IO_TLB_SHIFT);
--	}
- 	tlb_addr = slot_addr(mem->start, index) + offset;
- 	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
- 	    (dir == DMA_TO_DEVICE || dir == DMA_BIDIRECTIONAL))
+-/*
+- * tlb_addr is the physical address of the bounce buffer to unmap.
+- */
+-void swiotlb_tbl_unmap_single(struct device *hwdev, phys_addr_t tlb_addr,
+-			      size_t mapping_size, enum dma_data_direction dir,
+-			      unsigned long attrs)
++static void release_slots(struct device *dev, phys_addr_t tlb_addr)
+ {
+-	struct io_tlb_mem *mem = get_io_tlb_mem(hwdev);
++	struct io_tlb_mem *mem = get_io_tlb_mem(dev);
+ 	unsigned long flags;
+-	unsigned int offset = swiotlb_align_offset(hwdev, tlb_addr);
++	unsigned int offset = swiotlb_align_offset(dev, tlb_addr);
+ 	int index = (tlb_addr - offset - mem->start) >> IO_TLB_SHIFT;
+ 	int nslots = nr_slots(mem->slots[index].alloc_size + offset);
+ 	int count, i;
+ 
+-	/*
+-	 * First, sync the memory before unmapping the entry
+-	 */
+-	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
+-	    (dir == DMA_FROM_DEVICE || dir == DMA_BIDIRECTIONAL))
+-		swiotlb_bounce(hwdev, tlb_addr, mapping_size, DMA_FROM_DEVICE);
+-
+ 	/*
+ 	 * Return the buffer to the free list by setting the corresponding
+ 	 * entries to indicate the number of contiguous entries available.
+@@ -602,6 +590,23 @@ void swiotlb_tbl_unmap_single(struct device *hwdev, phys_addr_t tlb_addr,
+ 	spin_unlock_irqrestore(&mem->lock, flags);
+ }
+ 
++/*
++ * tlb_addr is the physical address of the bounce buffer to unmap.
++ */
++void swiotlb_tbl_unmap_single(struct device *dev, phys_addr_t tlb_addr,
++			      size_t mapping_size, enum dma_data_direction dir,
++			      unsigned long attrs)
++{
++	/*
++	 * First, sync the memory before unmapping the entry
++	 */
++	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
++	    (dir == DMA_FROM_DEVICE || dir == DMA_BIDIRECTIONAL))
++		swiotlb_bounce(dev, tlb_addr, mapping_size, DMA_FROM_DEVICE);
++
++	release_slots(dev, tlb_addr);
++}
++
+ void swiotlb_sync_single_for_device(struct device *dev, phys_addr_t tlb_addr,
+ 		size_t size, enum dma_data_direction dir)
+ {
 -- 
 2.31.1.368.gbe11c130af-goog
 
