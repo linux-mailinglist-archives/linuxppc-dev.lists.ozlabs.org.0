@@ -2,42 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0E83676FF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 03:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5883676FE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 03:47:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQgKv1Xsmz3btb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 11:48:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQgKW73Z8z3bV8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 11:47:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQgJr3qrcz2y6F
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 11:47:04 +1000 (AEST)
-IronPort-SDR: 8wP6AmLjELhU8Gx0sAcnOnyxWaKsU4W7viuQellDgFI1BO5NgLoafZO4CUxqpCYJR3Tgr3By++
- zi5NUOttiY/A==
-X-IronPort-AV: E=McAfee;i="6200,9189,9961"; a="183296416"
-X-IronPort-AV: E=Sophos;i="5.82,241,1613462400"; d="scan'208";a="183296416"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Apr 2021 18:47:00 -0700
-IronPort-SDR: Oe4MQTnjDJD7VFVt8AlTxfHW7HFq+fNBhpiZtOA0J2FAALS3tbNNoHtkFv+qW9K5HiNPmje+51
- lVSUt9p30ebw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQgJr1LLPz2xYt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 11:47:05 +1000 (AEST)
+IronPort-SDR: C2iYYrK3Y8YId1fV7ZGgiCQn5k3xX+NcsVPu3wD662BwQf4/FdZr+TFeAILeWj/pbxS5VGkL7j
+ IpTIpkjP7SCw==
+X-IronPort-AV: E=McAfee;i="6200,9189,9961"; a="175917978"
+X-IronPort-AV: E=Sophos;i="5.82,241,1613462400"; d="scan'208";a="175917978"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Apr 2021 18:47:01 -0700
+IronPort-SDR: 2STbIMZ8uy+HkBBVa/HkfxgjKNIi7NiQgQgFTk/qaQa+/RZ2J1KMr1MBGYOZYQSZyLcvjEzVM2
+ Zo92tHfjBobA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,241,1613462400"; d="scan'208";a="421188663"
+X-IronPort-AV: E=Sophos;i="5.82,241,1613462400"; d="scan'208";a="535044980"
 Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
- by fmsmga008.fm.intel.com with ESMTP; 21 Apr 2021 18:46:59 -0700
+ by orsmga004.jf.intel.com with ESMTP; 21 Apr 2021 18:46:59 -0700
 Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1lZOQk-0003uX-QP; Thu, 22 Apr 2021 01:46:58 +0000
-Date: Thu, 22 Apr 2021 09:46:47 +0800
+ id 1lZOQk-0003uc-Rp; Thu, 22 Apr 2021 01:46:58 +0000
+Date: Thu, 22 Apr 2021 09:46:50 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS 39352430aaa05fbe4ba710231c70b334513078f2
-Message-ID: <6080d587.rftkINpnMO3epRoO%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD REGRESSION
+ f76c7820fc6ef641b75b5142aea72f1485c73bb1
+Message-ID: <6080d58a.XD/Jp0uALq6wN+AM%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -58,16 +59,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 39352430aaa05fbe4ba710231c70b334513078f2  powerpc: Move copy_inst_from_kernel_nofault()
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: f76c7820fc6ef641b75b5142aea72f1485c73bb1  powerpc/powernv: Fix type of opal_mpipl_query_tag() addr argument
+
+Error/Warning reports:
+
+https://lore.kernel.org/linuxppc-dev/202104220600.1Zf0gKVF-lkp@intel.com
+
+Error/Warning in current branch:
+
+arch/powerpc/include/asm/book3s/64/hash-pkey.h:10:23: error: 'VM_PKEY_BIT0' undeclared (first use in this function); did you mean 'H_PTE_PKEY_BIT0'?
+arch/powerpc/include/asm/book3s/64/hash-pkey.h:11:16: error: 'VM_PKEY_BIT1' undeclared (first use in this function); did you mean 'H_PTE_PKEY_BIT1'?
+arch/powerpc/include/asm/book3s/64/hash-pkey.h:12:16: error: 'VM_PKEY_BIT2' undeclared (first use in this function)
+arch/powerpc/include/asm/book3s/64/hash-pkey.h:13:16: error: 'VM_PKEY_BIT3' undeclared (first use in this function); did you mean 'H_PTE_PKEY_BIT3'?
+arch/powerpc/include/asm/book3s/64/hash-pkey.h:14:16: error: 'VM_PKEY_BIT4' undeclared (first use in this function); did you mean 'H_PTE_PKEY_BIT4'?
+arch/powerpc/include/asm/mmu_context.h:287:19: error: redefinition of 'pte_to_hpte_pkey_bits'
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+`-- powerpc64-randconfig-p001-20210421
+    |-- arch-powerpc-include-asm-book3s-hash-pkey.h:error:VM_PKEY_BIT0-undeclared-(first-use-in-this-function)
+    |-- arch-powerpc-include-asm-book3s-hash-pkey.h:error:VM_PKEY_BIT1-undeclared-(first-use-in-this-function)
+    |-- arch-powerpc-include-asm-book3s-hash-pkey.h:error:VM_PKEY_BIT2-undeclared-(first-use-in-this-function)
+    |-- arch-powerpc-include-asm-book3s-hash-pkey.h:error:VM_PKEY_BIT3-undeclared-(first-use-in-this-function)
+    |-- arch-powerpc-include-asm-book3s-hash-pkey.h:error:VM_PKEY_BIT4-undeclared-(first-use-in-this-function)
+    `-- arch-powerpc-include-asm-mmu_context.h:error:redefinition-of-pte_to_hpte_pkey_bits
 
 elapsed time: 721m
 
 configs tested: 162
 configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
 gcc tested configs:
 arm                                 defconfig
@@ -123,6 +145,8 @@ powerpc                       eiger_defconfig
 mips                       rbtx49xx_defconfig
 arm                          exynos_defconfig
 sh                           se7619_defconfig
+sh                          sdk7780_defconfig
+sh                            titan_defconfig
 arm                         cm_x300_defconfig
 arm                         bcm2835_defconfig
 arm                        keystone_defconfig
@@ -140,9 +164,6 @@ powerpc                         wii_defconfig
 mips                        maltaup_defconfig
 mips                        bcm47xx_defconfig
 powerpc                 canyonlands_defconfig
-powerpc                     tqm5200_defconfig
-powerpc               mpc834x_itxgp_defconfig
-mips                     loongson1b_defconfig
 arm                        magician_defconfig
 mips                           jazz_defconfig
 arm                         s3c2410_defconfig
@@ -156,6 +177,7 @@ sh                          sdk7786_defconfig
 powerpc                     ksi8560_defconfig
 arc                          axs103_defconfig
 arm                        clps711x_defconfig
+powerpc               mpc834x_itxgp_defconfig
 arc                 nsimosci_hs_smp_defconfig
 m68k                          sun3x_defconfig
 sh                          rsk7201_defconfig
