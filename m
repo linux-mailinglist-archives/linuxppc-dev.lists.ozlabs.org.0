@@ -2,42 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7B93676FC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 03:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0E83676FF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 03:48:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FQgK90ybyz30Dy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 11:47:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FQgKv1Xsmz3btb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Apr 2021 11:48:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FQgJr1Rc7z2y0J
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FQgJr3qrcz2y6F
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 11:47:04 +1000 (AEST)
-IronPort-SDR: iScQ/t5aaif+yK7PMAUxbOJDy2BsOQxVCpToiZVvoOtNNRvR2C3NkIrvq4p+RSfeB6spKduuXL
- mZEFXYlr7vyQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9961"; a="216468767"
-X-IronPort-AV: E=Sophos;i="5.82,241,1613462400"; d="scan'208";a="216468767"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+IronPort-SDR: 8wP6AmLjELhU8Gx0sAcnOnyxWaKsU4W7viuQellDgFI1BO5NgLoafZO4CUxqpCYJR3Tgr3By++
+ zi5NUOttiY/A==
+X-IronPort-AV: E=McAfee;i="6200,9189,9961"; a="183296416"
+X-IronPort-AV: E=Sophos;i="5.82,241,1613462400"; d="scan'208";a="183296416"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  21 Apr 2021 18:47:00 -0700
-IronPort-SDR: nQ2gHLqHi9CTJR+YARjhP1vqB8wUl78NvaGY/S2FVjgTpCum03X3/K50M/Mgis6ZBDYOC2OTbP
- QMKcGIc15GHQ==
+IronPort-SDR: Oe4MQTnjDJD7VFVt8AlTxfHW7HFq+fNBhpiZtOA0J2FAALS3tbNNoHtkFv+qW9K5HiNPmje+51
+ lVSUt9p30ebw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,241,1613462400"; d="scan'208";a="524477884"
+X-IronPort-AV: E=Sophos;i="5.82,241,1613462400"; d="scan'208";a="421188663"
 Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
- by fmsmga001.fm.intel.com with ESMTP; 21 Apr 2021 18:46:59 -0700
+ by fmsmga008.fm.intel.com with ESMTP; 21 Apr 2021 18:46:59 -0700
 Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1lZOQk-0003uZ-RC; Thu, 22 Apr 2021 01:46:58 +0000
-Date: Thu, 22 Apr 2021 09:46:45 +0800
+ id 1lZOQk-0003uX-QP; Thu, 22 Apr 2021 01:46:58 +0000
+Date: Thu, 22 Apr 2021 09:46:47 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS d20f726744a0312b4b6613333bda7da9bc52fb75
-Message-ID: <6080d585.zRZVLhGBSLkaK+Ss%lkp@intel.com>
+Subject: [powerpc:next] BUILD SUCCESS 39352430aaa05fbe4ba710231c70b334513078f2
+Message-ID: <6080d587.rftkINpnMO3epRoO%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -58,12 +58,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: d20f726744a0312b4b6613333bda7da9bc52fb75  Automatic merge of 'next' into merge (2021-04-21 22:57)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 39352430aaa05fbe4ba710231c70b334513078f2  powerpc: Move copy_inst_from_kernel_nofault()
 
-elapsed time: 724m
+elapsed time: 721m
 
-configs tested: 178
+configs tested: 162
 configs skipped: 3
 
 The following configs have been built successfully.
@@ -83,8 +83,8 @@ arm                            lart_defconfig
 mips                malta_qemu_32r6_defconfig
 mips                          malta_defconfig
 sh                             shx3_defconfig
-um                                  defconfig
 powerpc                      ppc44x_defconfig
+um                                  defconfig
 mips                        workpad_defconfig
 powerpc                   currituck_defconfig
 powerpc                 mpc837x_mds_defconfig
@@ -104,12 +104,6 @@ arm                      footbridge_defconfig
 h8300                    h8300h-sim_defconfig
 xtensa                              defconfig
 alpha                               defconfig
-mips                  cavium_octeon_defconfig
-sh                   secureedge5410_defconfig
-powerpc                       eiger_defconfig
-mips                       bmips_be_defconfig
-m68k                           sun3_defconfig
-arm                           sunxi_defconfig
 sparc                               defconfig
 powerpc                     asp8347_defconfig
 ia64                          tiger_defconfig
@@ -125,14 +119,10 @@ arm                        mvebu_v7_defconfig
 powerpc                          allmodconfig
 xtensa                  nommu_kc705_defconfig
 arm                             ezx_defconfig
+powerpc                       eiger_defconfig
 mips                       rbtx49xx_defconfig
 arm                          exynos_defconfig
 sh                           se7619_defconfig
-sh                          urquell_defconfig
-m68k                         apollo_defconfig
-arm                        mvebu_v5_defconfig
-powerpc                       holly_defconfig
-m68k                        m5272c3_defconfig
 arm                         cm_x300_defconfig
 arm                         bcm2835_defconfig
 arm                        keystone_defconfig
@@ -147,12 +137,12 @@ arc                        vdk_hs38_defconfig
 powerpc                      mgcoge_defconfig
 arc                        nsim_700_defconfig
 powerpc                         wii_defconfig
-powerpc                       ppc64_defconfig
-m68k                            mac_defconfig
-arm                        multi_v7_defconfig
 mips                        maltaup_defconfig
 mips                        bcm47xx_defconfig
 powerpc                 canyonlands_defconfig
+powerpc                     tqm5200_defconfig
+powerpc               mpc834x_itxgp_defconfig
+mips                     loongson1b_defconfig
 arm                        magician_defconfig
 mips                           jazz_defconfig
 arm                         s3c2410_defconfig
@@ -166,19 +156,13 @@ sh                          sdk7786_defconfig
 powerpc                     ksi8560_defconfig
 arc                          axs103_defconfig
 arm                        clps711x_defconfig
-powerpc               mpc834x_itxgp_defconfig
 arc                 nsimosci_hs_smp_defconfig
 m68k                          sun3x_defconfig
 sh                          rsk7201_defconfig
 i386                             alldefconfig
 arc                      axs103_smp_defconfig
+m68k                         apollo_defconfig
 sh                           sh2007_defconfig
-mips                     loongson1b_defconfig
-powerpc                 mpc8313_rdb_defconfig
-powerpc                        fsp2_defconfig
-arm                         mv78xx0_defconfig
-powerpc                     mpc83xx_defconfig
-xtensa                           alldefconfig
 sh                           se7722_defconfig
 openrisc                         alldefconfig
 powerpc                      acadia_defconfig
