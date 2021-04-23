@@ -1,39 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43561368DFD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 09:36:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37903368E07
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 09:40:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRR1B25Zhz303g
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 17:36:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRR640nyBz30B7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 17:40:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRR0r246qz2xZF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 17:35:56 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 35199B008;
- Fri, 23 Apr 2021 07:35:53 +0000 (UTC)
-Date: Fri, 23 Apr 2021 09:35:51 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH] cpuidle/pseries: Fixup CEDE0 latency only for POWER10
- onwards
-Message-ID: <20210423073551.GZ6564@kitsune.suse.cz>
-References: <1619104049-5118-1-git-send-email-ego@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRR5j2dZ9z2xZF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 17:40:07 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FRR5b1yHcz9typ8;
+ Fri, 23 Apr 2021 09:40:03 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ELss1ENvDDh3; Fri, 23 Apr 2021 09:40:03 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FRR5b14z2z9typ7;
+ Fri, 23 Apr 2021 09:40:03 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 80B0A8B79D;
+ Fri, 23 Apr 2021 09:40:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id KUSTaPnXfcX5; Fri, 23 Apr 2021 09:40:04 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D6ACA8B79A;
+ Fri, 23 Apr 2021 09:40:03 +0200 (CEST)
+Subject: Re: [PATCH 1/2] powerpc/vdso64: link vdso64 with linker
+To: Nick Desaulniers <ndesaulniers@google.com>
+References: <20200901222523.1941988-1-ndesaulniers@google.com>
+ <20200901222523.1941988-2-ndesaulniers@google.com>
+ <87blio1ilu.fsf@mpe.ellerman.id.au>
+ <CAKwvOd=ZeJU+vLUk2P7FpX35haj7AC50B9Yps4pyoGCpd7ueTw@mail.gmail.com>
+ <3d837a36-a186-6789-7924-eaa97f056b68@csgroup.eu>
+ <CAKwvOd=KP5CZ5wOrczC6qPAzN7DdFCJ_XvU6e=zvB3XpQrp_-g@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <b73db2b3-16c5-caaf-acf4-9d22d45cba5d@csgroup.eu>
+Date: Fri, 23 Apr 2021 09:40:01 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1619104049-5118-1-git-send-email-ego@linux.vnet.ibm.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <CAKwvOd=KP5CZ5wOrczC6qPAzN7DdFCJ_XvU6e=zvB3XpQrp_-g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,34 +66,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pm@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, joedecke@de.ibm.com,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Joe Lawrence <joe.lawrence@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Fangrui Song <maskray@google.com>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 22, 2021 at 08:37:29PM +0530, Gautham R. Shenoy wrote:
-> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+
+
+Le 23/04/2021 à 00:44, Nick Desaulniers a écrit :
+> On Wed, Sep 2, 2020 at 11:02 AM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>>
+>>
+>> Le 02/09/2020 à 19:41, Nick Desaulniers a écrit :
+>>> On Wed, Sep 2, 2020 at 5:14 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>>>
+>>>> Nick Desaulniers <ndesaulniers@google.com> writes:
+>>>>> Fixes: commit f2af201002a8 ("powerpc/build: vdso linker warning for orphan sections")
+>>>>
+>>>> I think I'll just revert that for v5.9 ?
+>>>
+>>> SGTM; you'll probably still want these changes with some modifications
+>>> at some point; vdso32 did have at least one orphaned section, and will
+>>> be important for hermetic builds.  Seeing crashes in supported
+>>> versions of the tools ties our hands at the moment.
+>>>
+>>
+>> Keeping the tool problem aside with binutils 2.26, do you have a way to
+>> really link an elf32ppc object when  building vdso32 for PPC64 ?
 > 
-> Commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
-> CEDE(0)") sets the exit latency of CEDE(0) based on the latency values
-> of the Extended CEDE states advertised by the platform
+> Sorry, I'm doing a bug scrub and found
+> https://github.com/ClangBuiltLinux/linux/issues/774 still open (and my
+> reply to this thread still in Drafts; never sent). With my patches
+> rebased:
+> $ file arch/powerpc/kernel/vdso32/vdso32.so
+> arch/powerpc/kernel/vdso32/vdso32.so: ELF 32-bit MSB shared object,
+> PowerPC or cisco 4500, version 1 (SYSV), dynamically linked, stripped
 > 
-> On some of the POWER9 LPARs, the older firmwares advertise a very low
-> value of 2us for CEDE1 exit latency on a Dedicated LPAR. However the
-Can you be more specific about 'older firmwares'?
+> Are you still using 2.26?
 
-Also while this is a performance regression on such firmwares it
-should be fixed by updating the firmware to current version.
+Yes, our production kernels and applications are built with gcc 5.5 and binutils 2.26
 
-Having sub-optimal performance on obsolete firmware should not require a
-kernel workaround, should it?
+> 
+> I'm not able to repro Nathan's reported issue from
+> https://lore.kernel.org/lkml/20200902052123.GA2687902@ubuntu-n2-xlarge-x86/,
+> so I'm curious if I should resend the rebased patches as v2?
+> 
 
-It's not like the kernel would crash on the affected firmware.
+I can't remember what was all this discussion about.
 
-Thanks
+I gave a try to your rebased patches.
 
-Michal
+Still an issue with binutils 2.26:
+
+   VDSO32L arch/powerpc/kernel/vdso32/vdso32.so.dbg
+ppc-linux-ld: warning: orphan section `.rela.got' from `arch/powerpc/kernel/vdso32/sigtramp.o' being 
+placed in section `.rela.dyn'.
+ppc-linux-ld: warning: orphan section `.rela.plt' from `arch/powerpc/kernel/vdso32/sigtramp.o' being 
+placed in section `.rela.dyn'.
+ppc-linux-ld: warning: orphan section `.glink' from `arch/powerpc/kernel/vdso32/sigtramp.o' being 
+placed in section `.glink'.
+ppc-linux-ld: warning: orphan section `.iplt' from `arch/powerpc/kernel/vdso32/sigtramp.o' being 
+placed in section `.iplt'.
+ppc-linux-ld: warning: orphan section `.rela.iplt' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
+being placed in section `.rela.dyn'.
+ppc-linux-ld: warning: orphan section `.rela.text' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
+being placed in section `.rela.dyn'.
+/bin/sh: line 1:  7850 Segmentation fault      (core dumped) ppc-linux-ld -EB -m elf32ppc -shared 
+-soname linux-vdso32.so.1 --eh-frame-hdr --orphan-handling=warn -T 
+arch/powerpc/kernel/vdso32/vdso32.lds arch/powerpc/kernel/vdso32/sigtramp.o 
+arch/powerpc/kernel/vdso32/gettimeofday.o arch/powerpc/kernel/vdso32/datapage.o 
+arch/powerpc/kernel/vdso32/cacheflush.o arch/powerpc/kernel/vdso32/note.o 
+arch/powerpc/kernel/vdso32/getcpu.o arch/powerpc/kernel/vdso32/vgettimeofday.o -o 
+arch/powerpc/kernel/vdso32/vdso32.so.dbg
+make[2]: *** [arch/powerpc/kernel/vdso32/vdso32.so.dbg] Error 139
+make[2]: *** Deleting file `arch/powerpc/kernel/vdso32/vdso32.so.dbg'
+
+
+
+With gcc 10.1 and binutils 2.34 I get:
+
+PPC32 build:
+
+   VDSO32L arch/powerpc/kernel/vdso32/vdso32.so.dbg
+powerpc64-linux-ld: warning: orphan section `.rela.got' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
+being placed in section `.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.rela.plt' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
+being placed in section `.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.glink' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
+being placed in section `.glink'
+powerpc64-linux-ld: warning: orphan section `.iplt' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
+being placed in section `.iplt'
+powerpc64-linux-ld: warning: orphan section `.rela.iplt' from 
+`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.rela.branch_lt' from 
+`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.rela.text' from 
+`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
+
+
+PPC64 build:
+
+   VDSO32L arch/powerpc/kernel/vdso32/vdso32.so.dbg
+powerpc64-linux-ld: warning: orphan section `.rela.got' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
+being placed in section `.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.rela.plt' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
+being placed in section `.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.glink' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
+being placed in section `.glink'
+powerpc64-linux-ld: warning: orphan section `.iplt' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
+being placed in section `.iplt'
+powerpc64-linux-ld: warning: orphan section `.rela.iplt' from 
+`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.rela.branch_lt' from 
+`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.rela.text' from 
+`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
+   VDSOSYM include/generated/vdso32-offsets.h
+   VDSO64L arch/powerpc/kernel/vdso64/vdso64.so.dbg
+powerpc64-linux-ld: warning: orphan section `.iplt' from `linker stubs' being placed in section `.iplt'
+powerpc64-linux-ld: warning: orphan section `.rela.iplt' from `linker stubs' being placed in section 
+`.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.rela.branch_lt' from `linker stubs' being placed in 
+section `.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.rela.branch_lt' from `linker stubs' being placed in 
+section `.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.plt' from `linker stubs' being placed in section `.plt'
+powerpc64-linux-ld: warning: orphan section `.rela.plt' from `linker stubs' being placed in section 
+`.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.rela.got' from `linker stubs' being placed in section 
+`.rela.dyn'
+powerpc64-linux-ld: warning: orphan section `.rela.opd' from `linker stubs' being placed in section 
+`.rela.dyn'
+
+
+Christophe
