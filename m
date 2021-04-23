@@ -1,53 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63977369884
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 19:34:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B7A3698A1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 19:45:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRhHs1zl9z303F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 03:34:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=kcMCoRkt;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRhX928H5z2yyj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 03:45:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
- helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=kcMCoRkt; 
- dkim-atps=neutral
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FRhHS20ZWz2xy7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 03:34:28 +1000 (AEST)
-Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
- [73.42.176.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 1900820B8001;
- Fri, 23 Apr 2021 10:34:26 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1900820B8001
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1619199266;
- bh=wauSRbWpWMAp2gLVa1RG3QS9v1f1bggDujvhpEqfnDo=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=kcMCoRktudKFcWP0+SIZ1vixpBadwk75Mgtm8GrSChiUcXV/X24QaUvQl7PligvKP
- MNqsG96/qR1qk7o/wixGXQXcVexeUVInCV5xCcAE+Vb6gzqPSVC07nepQCcAtPnQzj
- pRHskL+Ov8mK82/D3cOp0KTIT+B7VqVgNfJshqwM=
-Subject: Re: [PATCH v2 1/2] powerpc: Free fdt on error in elf64_load()
-To: robh@kernel.org, dan.carpenter@oracle.com, mpe@ellerman.id.au
-References: <20210421163610.23775-1-nramas@linux.microsoft.com>
-From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <4e434de5-522c-a7fd-3178-d1636cb9bbc1@linux.microsoft.com>
-Date: Fri, 23 Apr 2021 10:34:25 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRhWr1mQkz2xfd
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 03:45:12 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id F2562B19B;
+ Fri, 23 Apr 2021 17:45:07 +0000 (UTC)
+Date: Fri, 23 Apr 2021 19:45:05 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+Subject: Re: [PATCH] cpuidle/pseries: Fixup CEDE0 latency only for POWER10
+ onwards
+Message-ID: <20210423174505.GE6564@kitsune.suse.cz>
+References: <1619104049-5118-1-git-send-email-ego@linux.vnet.ibm.com>
+ <20210423073551.GZ6564@kitsune.suse.cz>
+ <YILu6/GK+RwpskCc@drishya.in.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20210421163610.23775-1-nramas@linux.microsoft.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YILu6/GK+RwpskCc@drishya.in.ibm.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,83 +47,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, kbuild-all@lists.01.org, lkp@intel.com,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com, dja@axtens.net
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linux-pm@vger.kernel.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, joedecke@de.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/21/21 9:36 AM, Lakshmi Ramasubramanian wrote:
-
-Hi Dan,
-
-> There are a few "goto out;" statements before the local variable "fdt"
-> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
-> elf64_load().  This will result in an uninitialized "fdt" being passed
-> to kvfree() in this function if there is an error before the call to
-> of_kexec_alloc_and_setup_fdt().
+On Fri, Apr 23, 2021 at 09:29:39PM +0530, Vaidyanathan Srinivasan wrote:
+> * Michal Such?nek <msuchanek@suse.de> [2021-04-23 09:35:51]:
 > 
-> If there is any error after fdt is allocated, but before it is
-> saved in the arch specific kimage struct, free the fdt.
+> > On Thu, Apr 22, 2021 at 08:37:29PM +0530, Gautham R. Shenoy wrote:
+> > > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+> > > 
+> > > Commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
+> > > CEDE(0)") sets the exit latency of CEDE(0) based on the latency values
+> > > of the Extended CEDE states advertised by the platform
+> > > 
+> > > On some of the POWER9 LPARs, the older firmwares advertise a very low
+> > > value of 2us for CEDE1 exit latency on a Dedicated LPAR. However the
+> > Can you be more specific about 'older firmwares'?
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-> ---
->   arch/powerpc/kexec/elf_64.c | 16 ++++++----------
->   1 file changed, 6 insertions(+), 10 deletions(-)
+> Hi Michal,
 > 
+> This is POWER9 vs POWER10 difference, not really an obsolete FW.  The
+> key idea behind the original patch was to make the H_CEDE latency and
+> hence target residency come from firmware instead of being decided by
+> the kernel.  The advantage is such that, different type of systems in
+> POWER10 generation can adjust this value and have an optimal H_CEDE
+> entry criteria which balances good single thread performance and
+> wakeup latency.  Further we can have additional H_CEDE state to feed
+> into the cpuidle.  
 
-Please review this patch and Patch 2/2.
+So all POWER9 machines are affected by the firmware bug where firmware
+reports CEDE1 exit latency of 2us and the real latency is 5us which
+causes the kernel to prefer CEDE1 too much when relying on the values
+supplied by the firmware. It is not about 'older firmware'.
 
-thanks,
-  -lakshmi
+I still think it would be preferrable to adjust the latency value
+reported by the firmware to match reality over a kernel workaround.
 
-> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-> index 5a569bb51349..02662e72c53d 100644
-> --- a/arch/powerpc/kexec/elf_64.c
-> +++ b/arch/powerpc/kexec/elf_64.c
-> @@ -114,7 +114,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->   	ret = setup_new_fdt_ppc64(image, fdt, initrd_load_addr,
->   				  initrd_len, cmdline);
->   	if (ret)
-> -		goto out;
-> +		goto out_free_fdt;
->   
->   	fdt_pack(fdt);
->   
-> @@ -125,7 +125,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->   	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
->   	ret = kexec_add_buffer(&kbuf);
->   	if (ret)
-> -		goto out;
-> +		goto out_free_fdt;
->   
->   	/* FDT will be freed in arch_kimage_file_post_load_cleanup */
->   	image->arch.fdt = fdt;
-> @@ -140,18 +140,14 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->   	if (ret)
->   		pr_err("Error setting up the purgatory.\n");
->   
-> +	goto out;
-> +
-> +out_free_fdt:
-> +	kvfree(fdt);
->   out:
->   	kfree(modified_cmdline);
->   	kexec_free_elf_info(&elf_info);
->   
-> -	/*
-> -	 * Once FDT buffer has been successfully passed to kexec_add_buffer(),
-> -	 * the FDT buffer address is saved in image->arch.fdt. In that case,
-> -	 * the memory cannot be freed here in case of any other error.
-> -	 */
-> -	if (ret && !image->arch.fdt)
-> -		kvfree(fdt);
-> -
->   	return ret ? ERR_PTR(ret) : NULL;
->   }
->   
-> 
+Thanks
 
+Michal
