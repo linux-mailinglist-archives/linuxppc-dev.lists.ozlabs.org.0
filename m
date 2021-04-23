@@ -2,93 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DBC1369694
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 18:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6CC3697E2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 19:02:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRfC24CXTz30Cm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 02:00:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TVK1sPzD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRgZP42j7z30Jw
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 03:02:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=svaidy@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TVK1sPzD; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRfBN38GPz2xYt
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 01:59:55 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13NFXiCf074326; Fri, 23 Apr 2021 11:59:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=YN4MaMne+t2iBBy9ri4SqOYm8FYZRv3XIWLdKanHvXE=;
- b=TVK1sPzD5wYrfHET8Q16xqaLx+zgYuay8y4ZMxz19ScyLe4ZScPDMHV/UxYpYbyVHryQ
- xzcLW+QZnaNz1lSLqRvKK3MbyArsTtLhytN0Gc340oLIoVzm2ytVXeI3lIkuAfp+3sF9
- ZYXu/GBhEjUSvxKlvsoEmjKcnBQogRNVYn9fO8T6jhIEb/We07cOdfFA7idPsPRe4zwk
- hFc2Y0l3m9Pu82/8nHuQOfgcjaH+Pi6gatqQlCNN+eSa0WHSga+tR0nZXQMZ0MXOx04C
- 7oZ1DGAARsjN+NlNB3snMlbgyHr8Zh/2vOf6l5rVQBZapCjWDXH+iFZlC5L5/fo2Kbrm lA== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 383yemc9ag-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Apr 2021 11:59:48 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13NFrFLh030597;
- Fri, 23 Apr 2021 15:59:46 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma05fra.de.ibm.com with ESMTP id 37yqa89wyk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Apr 2021 15:59:46 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13NFxh7126607984
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 23 Apr 2021 15:59:43 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 88368AE045;
- Fri, 23 Apr 2021 15:59:43 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CE9A0AE04D;
- Fri, 23 Apr 2021 15:59:41 +0000 (GMT)
-Received: from drishya.in.ibm.com (unknown [9.199.57.164])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 23 Apr 2021 15:59:41 +0000 (GMT)
-Date: Fri, 23 Apr 2021 21:29:39 +0530
-From: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-To: Michal Such?nek <msuchanek@suse.de>
-Subject: Re: [PATCH] cpuidle/pseries: Fixup CEDE0 latency only for POWER10
- onwards
-Message-ID: <YILu6/GK+RwpskCc@drishya.in.ibm.com>
-References: <1619104049-5118-1-git-send-email-ego@linux.vnet.ibm.com>
- <20210423073551.GZ6564@kitsune.suse.cz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FRgZ453Wsz2xb3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 03:02:02 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 13NGviDx012674;
+ Fri, 23 Apr 2021 11:57:44 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 13NGvgAY012668;
+ Fri, 23 Apr 2021 11:57:42 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Fri, 23 Apr 2021 11:57:42 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Gabriel Paubert <paubert@iram.es>
+Subject: Re: [PATCH 1/2] powerpc/sstep: =?utf-8?Q?A?=
+ =?utf-8?Q?dd_emulation_support_for_=E2=80=98setb=E2=80=99?= instruction
+Message-ID: <20210423165742.GO27473@gate.crashing.org>
+References: <cover.1618469454.git.sathvika@linux.vnet.ibm.com>
+ <767e53c4c27da024ca277e21ffcd0cff131f5c73.1618469454.git.sathvika@linux.vnet.ibm.com>
+ <875z0mfzbf.fsf@linkitivity.dja.id.au>
+ <20210422191334.GE27473@gate.crashing.org>
+ <20210422221618.GA30594@lt-gp.iram.es>
+ <20210422232616.GI27473@gate.crashing.org>
+ <20210423102657.GA22427@lt-gp.iram.es>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210423073551.GZ6564@kitsune.suse.cz>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oATxFiE923wyNw6jy8w07RzUPHm1xTTp
-X-Proofpoint-GUID: oATxFiE923wyNw6jy8w07RzUPHm1xTTp
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-23_07:2021-04-23,
- 2021-04-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0
- clxscore=1011 suspectscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 bulkscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104230100
+In-Reply-To: <20210423102657.GA22427@lt-gp.iram.es>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,92 +54,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: svaidy@linux.ibm.com
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linux-pm@vger.kernel.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, joedecke@de.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>,
+ naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Michal Such?nek <msuchanek@suse.de> [2021-04-23 09:35:51]:
-
-> On Thu, Apr 22, 2021 at 08:37:29PM +0530, Gautham R. Shenoy wrote:
-> > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+On Fri, Apr 23, 2021 at 12:26:57PM +0200, Gabriel Paubert wrote:
+> On Thu, Apr 22, 2021 at 06:26:16PM -0500, Segher Boessenkool wrote:
+> > > But this can be made jump free :-):
+> > > 
+> > > 	int tmp = regs->ccr << ra;
+> > > 	op->val = (tmp >> 31) | ((tmp >> 30) & 1);
 > > 
-> > Commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
-> > CEDE(0)") sets the exit latency of CEDE(0) based on the latency values
-> > of the Extended CEDE states advertised by the platform
-> > 
-> > On some of the POWER9 LPARs, the older firmwares advertise a very low
-> > value of 2us for CEDE1 exit latency on a Dedicated LPAR. However the
-> Can you be more specific about 'older firmwares'?
-
-Hi Michal,
-
-This is POWER9 vs POWER10 difference, not really an obsolete FW.  The
-key idea behind the original patch was to make the H_CEDE latency and
-hence target residency come from firmware instead of being decided by
-the kernel.  The advantage is such that, different type of systems in
-POWER10 generation can adjust this value and have an optimal H_CEDE
-entry criteria which balances good single thread performance and
-wakeup latency.  Further we can have additional H_CEDE state to feed
-into the cpuidle.  
-
-> Also while this is a performance regression on such firmwares it
-> should be fixed by updating the firmware to current version.
+> > The compiler will do so automatically (or think of some better way to
+> > get the same result); in source code, what matters most is readability,
+> > or clarity in general (also clarity to the compiler).
 > 
-> Having sub-optimal performance on obsolete firmware should not require a
-> kernel workaround, should it?
+> I just did a test (trivial code attached) and the original code always
+> produces one conditional branch at -O2, at least with the cross-compiler
+> I have on Debian (gcc 8.3). I have tested both -m32 and -m64. The 64 bit
+> version produces an unnecessary "extsw", so I wrote the second version
+> splitting the setting of the return value which gets rid of it.
 
-When we designed and tested this change on POWER9 and POWER10 systems
-the values that were set in F/w were working out fine with positive
-results in all our micro benchmarks and no regression in context
-switch tests.  These repeatable results gave us the confidence that we
-can go ahead and set the values from F/w and remove the kernel's value
-for all future Linux versions.
+That is an older compiler, and it will be out-of-service any day now.
 
-But where we slipped is the fact that real world workload show
-variations in performance and regressions in specific case because we
-are favouring H_CEDE state more often than snooze loop.  The root
-cause is we have to send more IPIs to wakeup now because more cpus
-will be in H_CEDE state than before.
+It depends on what compiler flags you use, and what version of the ISA
+you are targetting.
 
-This is a performance problem on POWER9 systems where we actually
-expected good benefit and also proved them with micro benchmarks, but
-later it turned out to have an impact for some workloads.  Further the
-challenge is not that regressions are severe, it is the fact that on
-exact same hardware and firmware end users expect similar or better
-performance for everything when updating to a newer kernel and no
-regressions.
+> The second "if" is fairly simple to optimize and the compiler does it
+> properly.
 
-We have these setting adjusted for POWER10 in F/w and hence behaviour
-will be similar when we come from old kernel on P9 to a new kernel on
-P10.  We did test the reverse also like new kernel on P9 should show
-benefit.  But as explained, the benefit came at the cost of regressing
-in few cases which were discovered later.
+Yeah.
 
-Hence this fix is to keep exact same behaviour for POWER9 and use this
-F/w driven heuristics only from POWER10.
+> Of course with my suggestion the compiler does not produce any branch. 
+> But it needs a really good comment.
 
-> It's not like the kernel would crash on the affected firmware.
+Or you could try and help improve the compiler ;-)  You can do this
+without writing compiler code yourself, by writing up some good
+enhancement request in bugzilla.
 
-Correct. We do not have a functional issue, but only a performance
-regression observable on certain real workloads.
+The wider and more OoO the processors become, the more important it
+becomes to have branch-free code, in situations where the branches would
+not be well-predictable.
 
-This is a minor change in cpuidle's H_CEDE usage which will show up
-only in certain workload patterns where we need idle CPU threads to
-wakeup faster to get the job done as compared to keeping busy CPU
-threads in single thread mode to get more execution slices.
+> > (Right shifts of negative numbers are implementation-defined in C,
+> > fwiw -- but work like you expect in GCC).
+> 
+> Well, I'm not worried about it, since I'd expect a compiler that does
+> logical right shifts on signed valued to break so much code that it
+> would be easily noticed (also in the kernel).
 
-This fix is primarily to ensure kernel update does not change H_CEDE
-behaviour on same hardware generation there by causing performance
-variation and also regression in some case.
+Yup.  And it *is* defined for signed values, as long as they are
+non-negative (the common case).
 
-Thanks for the questions and comments, I hope this gives additional
-context for this fix.
+> > > > Also, even people who write LE have the bigger end on the left normally
+> > > > (they just write some things right-to-left, and other things
+> > > > left-to-right).
+> > > 
+> > > Around 1985, I had a documentation for the the National's 32032
+> > > (little-endian) processor family, and all the instruction encodings were
+> > > presented with the LSB on the left and MSB on the right.
+> > 
+> > Ouch!  Did they write "regular" numbers with the least significant digit
+> > on the left as well?
+> 
+> No, they were not that sadistic!
 
---Vaidy
+But more inconsistent :-)
 
+
+Segher
