@@ -1,50 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B30F368CF9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 08:11:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FE8368DB9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 09:11:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRP7J6Q1jz304Q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 16:11:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRQT64Wcfz309w
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 17:11:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRP6Z4Ry3z2xZQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 16:10:46 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2431420415A;
- Fri, 23 Apr 2021 08:10:44 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 52EB120416D;
- Fri, 23 Apr 2021 08:10:37 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id CF91340339;
- Fri, 23 Apr 2021 08:10:28 +0200 (CEST)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, linux-imx@nxp.com, linux-kernel@vger.kernel.org,
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, robh+dt@kernel.org,
- devicetree@vger.kernel.org
-Subject: [PATCH 2/2] ASoC: dt-bindings: imx-akcodec: Add binding doc for
- akcodec machine driver
-Date: Fri, 23 Apr 2021 13:51:47 +0800
-Message-Id: <1619157107-3734-2-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1619157107-3734-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1619157107-3734-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRQSl4s5Qz2xZH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 17:11:34 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id E833068B05; Fri, 23 Apr 2021 09:11:26 +0200 (CEST)
+Date: Fri, 23 Apr 2021 09:11:26 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Claire Chang <tientzu@chromium.org>
+Subject: Re: [PATCH v5 01/16] swiotlb: Fix the type of index
+Message-ID: <20210423071126.GA6404@lst.de>
+References: <20210422081508.3942748-1-tientzu@chromium.org>
+ <20210422081508.3942748-2-tientzu@chromium.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210422081508.3942748-2-tientzu@chromium.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,85 +43,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, lkml <linux-kernel@vger.kernel.org>,
+ grant.likely@arm.com, paulus@samba.org, Will Deacon <will@kernel.org>,
+ mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ xypron.glpk@gmx.de, Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ jxgao@google.com, daniel@ffwll.ch,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ maarten.lankhorst@linux.intel.com, airlied@linux.ie,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ jani.nikula@linux.intel.com, Nicolas Boichat <drinkcat@chromium.org>,
+ rodrigo.vivi@intel.com, bhelgaas@google.com, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ chris@chris-wilson.co.uk, nouveau@lists.freedesktop.org,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Frank Rowand <frowand.list@gmail.com>, tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Imx-akcodec is a new added machine driver for supporting
-ak4458/ak5558/ak5552/ak4497 codec on i.MX platforms.
+On Thu, Apr 22, 2021 at 04:14:53PM +0800, Claire Chang wrote:
+> Fix the type of index from unsigned int to int since find_slots() might
+> return -1.
+> 
+> Fixes: 0774983bc923 ("swiotlb: refactor swiotlb_tbl_map_single")
+> Signed-off-by: Claire Chang <tientzu@chromium.org>
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- .../bindings/sound/imx-audio-akcodec.yaml     | 60 +++++++++++++++++++
- 1 file changed, 60 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml
+Looks good:
 
-diff --git a/Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml b/Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml
-new file mode 100644
-index 000000000000..7419bf7224e9
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml
-@@ -0,0 +1,60 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/imx-audio-akcodec.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: NXP i.MX audio complex with AK4458/AK5558/AK5552/AK4497 codec
-+
-+maintainers:
-+  - Shengjiu Wang <shengjiu.wang@nxp.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,imx8mq-audio-ak4458
-+      - fsl,imx8mq-audio-ak4497
-+      - fsl,imx8mq-audio-ak5558
-+      - fsl,imx-audio-ak4497
-+      - fsl,imx-audio-ak4458
-+      - fsl,imx-audio-ak5558
-+      - fsl,imx-audio-ak5552
-+
-+  model:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description: User specified audio sound card name
-+
-+  audio-cpu:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle of a CPU DAI controller
-+
-+  audio-codec:
-+    description: The phandle of Codec DAI controllers, there are two
-+                 controllers maximum.
-+
-+  audio-asrc:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle of ASRC. It can be absent if there's no
-+                 need to add ASRC support via DPCM.
-+
-+  fsl,tdm:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: |
-+      This is a boolean property. If present, the TDM mode is enabled.
-+
-+required:
-+  - compatible
-+  - model
-+  - audio-cpu
-+  - audio-codec
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    sound-ak4458 {
-+        compatible = "fsl,imx-audio-ak4458";
-+        model = "ak4458-audio";
-+        audio-cpu = <&sai1>;
-+        audio-codec = <&ak4458_1>, <&ak4458_2>;
-+    };
--- 
-2.17.1
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
+it really should go into 5.12.  I'm not sure if Konrad is going to
+be able to queue this up due to his vacation, so I'm tempted to just
+queue it up in the dma-mapping tree.
