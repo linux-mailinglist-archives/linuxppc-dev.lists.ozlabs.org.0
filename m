@@ -1,63 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E642B3694FD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 16:42:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF12E369533
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 16:56:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRcTL60Gzz3br4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 00:42:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRcmx5fdXz30Ds
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 00:56:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OHb9hJ26;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.85.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=OHb9hJ26; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRcT12tvZz2xZH
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 00:42:28 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-284-PmE_EISXMrO369CsnbPo2Q-1; Fri, 23 Apr 2021 15:42:22 +0100
-X-MC-Unique: PmE_EISXMrO369CsnbPo2Q-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.2; Fri, 23 Apr 2021 15:42:21 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.015; Fri, 23 Apr 2021 15:42:21 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Michael Ellerman' <mpe@ellerman.id.au>, Daniel Axtens <dja@axtens.net>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>, "robh@kernel.org"
- <robh@kernel.org>, "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>
-Subject: RE: [PATCH] powerpc: Initialize local variable fdt to NULL in
- elf64_load()
-Thread-Topic: [PATCH] powerpc: Initialize local variable fdt to NULL in
- elf64_load()
-Thread-Index: AQHXOEeqL6Jjg9Iqf02Ssp9xJukHBarCLKqw
-Date: Fri, 23 Apr 2021 14:42:21 +0000
-Message-ID: <3a6b9c56f81e47d08e6bf70d8222725f@AcuMS.aculab.com>
-References: <20210415191437.20212-1-nramas@linux.microsoft.com>
- <4edb1433-4d1e-5719-ec9c-fd232b7cf71f@linux.microsoft.com>
- <87eefag241.fsf@linkitivity.dja.id.au>
- <87r1j3ys8i.fsf@dja-thinkpad.axtens.net> <875z0daz46.fsf@mpe.ellerman.id.au>
-In-Reply-To: <875z0daz46.fsf@mpe.ellerman.id.au>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRcmY0VdWz2xfh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 00:55:57 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3A14E61463
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 14:55:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1619189753;
+ bh=R62pLNjA9noFl2JNlwS4diwF3n2+vBGPxhkGlcLJqNU=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=OHb9hJ26La3xCDjCdmfC0+DTMmtSZqIETEbpFB4o43Tg/CTphiDmkdeR+WrZmRY8R
+ Ufvva8FGnrC0dFC++suE5LUFdwceIbXSqdjwrlkfaKIFXP4WzUDu4CLz+8uJd78zUQ
+ FnjER9fWRSWtX5UDAX/zukAGdAQUZUSAN3yoqYBZ6J50N+vJbWDnCcYfJOPBeXjQw+
+ TTHM8E1HhfKfstD+QeiB+Nz8Zs1HxNzAqUeot1n/54Xeu8LPr9julfcFa1xzISbhXp
+ gL5uGd23NSKjolrFBXEsZFFD+NewSw7jEh1PmdNbLc4HTdCJuRQCJ/cTNdatMUurOB
+ NVBYxw/+ZvdZQ==
+Received: by mail-ej1-f50.google.com with SMTP id n2so74293917ejy.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 07:55:53 -0700 (PDT)
+X-Gm-Message-State: AOAM530x8apDw1bcNyfzaHjyDWhzFWPLH3ZkEke9QOAsnq1T3+9kcqsT
+ gM85CxxMDiDZKvfybA/5xDGTZ86IVDBqT8pfig==
+X-Google-Smtp-Source: ABdhPJyzSYoCrQUp8AZOe/VzsaOGQ7Ex2FewksH/32fJAahVFtRK2yHuqsRqIXD3LON0ZjaWUzCbhgXMiHLQGar8l38=
+X-Received: by 2002:a17:906:1984:: with SMTP id
+ g4mr4558298ejd.525.1619189751774; 
+ Fri, 23 Apr 2021 07:55:51 -0700 (PDT)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <f2186955f310494f10990b5c402ada164d7834b8.1619188632.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <f2186955f310494f10990b5c402ada164d7834b8.1619188632.git.christophe.jaillet@wanadoo.fr>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 23 Apr 2021 09:55:40 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJkR94s107S0yiJpjNWKbi6yuqDcV7DaxbjBF-o80meaA@mail.gmail.com>
+Message-ID: <CAL_JsqJkR94s107S0yiJpjNWKbi6yuqDcV7DaxbjBF-o80meaA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] powerpc: Fix a memory leak in error handling paths
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,36 +65,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
- "bauerman@linux.ibm.com" <bauerman@linux.ibm.com>,
- "lkp@intel.com" <lkp@intel.com>
+Cc: kernel-janitors@vger.kernel.org, gustavoars@kernel.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman
-> Sent: 23 April 2021 14:51
-...
-> > (Does anyone - and by anyone I mean any large distro - compile with
-> > local variables inited by the compiler?)
->=20
-> This is where I say, "yes, Android" and you say "ugh no I meant a real
-> distro", and I say "well ...".
->=20
-> But yeah doesn't help us much.
+On Fri, Apr 23, 2021 at 9:40 AM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> If we exit the for_each_of_cpu_node loop early, the reference on the
+> current node must be decremented, otherwise there is a leak.
+>
+> Fixes: a94fe366340a ("powerpc: use for_each_of_cpu_node iterator")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> Strangely, the commit above added the needed of_node_put in one place but
+> missed 2 other places!
 
-And it doesn't seem to stop my phone crashing either :-)
+Well, maintained it in one place and forgot to add in the other two.
 
-Of course, I've absolutely no way of finding out where it is crashing.
-Nor where the massive memory leaks are that means it need rebooting
-every few days.
+> This is strange, so maybe I misunderstand something. Review carefully
+> ---
+>  arch/powerpc/platforms/powermac/feature.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-=09David
+Reviewed-by: Rob Herring <robh@kernel.org>
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+I don't really think patch 2 is worthwhile but that's up to the
+powerpc maintainers.
 
+Rob
