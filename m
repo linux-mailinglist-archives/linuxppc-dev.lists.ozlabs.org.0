@@ -1,88 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB947368DE9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 09:27:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594BB368DF6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 09:35:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRQqS73rYz30D5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 17:27:48 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=ydCpWvop;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRR021x2fz30Dv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 17:35:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::62c;
- helo=mail-pl1-x62c.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=ydCpWvop; dkim-atps=neutral
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
- [IPv6:2607:f8b0:4864:20::62c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRQq040pmz2xZy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 17:27:21 +1000 (AEST)
-Received: by mail-pl1-x62c.google.com with SMTP id p16so20850659plf.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 00:27:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=bf8XMS3q7qHp98r6O1wqMq+9yKwqUsu4CYn3uOvQmYc=;
- b=ydCpWvopw9Lk7qZ2HRluIsTaAGrAe8HR4OMWDL1CKuxdI9y4l9tejX/UKpXlodSBog
- WxckIsMNYplypAGADIqxuLtT9JoO0qlvaLJruE0GDlPAvcjCAlSSYIl5IbX9gerPcC8Z
- YTiyKViV+F8yugnAphFFyb5x5l0FIRpQTW3FyfxhuGPiZz+iROdHTHcthg7gVI05TDvT
- eke5lHnvPwvoGRK6lIMhdnDHwe4r6nrUAqke1tiF6USnlhtOu3QnytMPuWsMhGG/R2HC
- pKr8yf+gIwwqBg+/k0ZBekkjlqIzp34nMgn8FF/gZnBojBZCmpqYpYDbdydl3cGrJr92
- KRrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=bf8XMS3q7qHp98r6O1wqMq+9yKwqUsu4CYn3uOvQmYc=;
- b=gjdpGbvCGlEyOGB6MzZWR9Hi7LxvzFV/Ius0tgMiY7tarhjzcrOK1HxVTzCWMdNH8i
- k9/5rmBAkF5ceFuqFZA7uQu6Ov6By2DikrM6yjj9i8KpxWJq8Quny/Bh3CYumFl/gwXq
- 4/C5jdSbvJLAjMKqziiJFqtkmwnEo5jJ/hCnrorZMb3gSOTlPXPpGWU7RRwTTJvbChjj
- WyYVrmKHU745yyRA8cP6iEKG6vosC1B17yuRcQ4Sq7YF/8V3U7MWLXNbP8//8XrxX+ua
- BwfRth/YjX0luGv6RsQQzdCp00VesIeyBaj0rmEF5vjlDqgvQOEnAZm7uXIvZiRb8vfu
- lCzg==
-X-Gm-Message-State: AOAM5324gQbSr5vA+GeoGAXLFOnt0jMqR57yXNst1+ZjC94r/cuoHFdy
- yWjiSMJziMbYZfhfbPOlDdIWOQ==
-X-Google-Smtp-Source: ABdhPJyOUYCnGYT9dzhCEEikOKwsNfRLyB2bXudUyTdEw0+CdqKyaHjnhi+DUHaW8++t+uOrDA+aUg==
-X-Received: by 2002:a17:90b:2314:: with SMTP id
- mt20mr4269535pjb.99.1619162836833; 
- Fri, 23 Apr 2021 00:27:16 -0700 (PDT)
-Received: from localhost
- (ppp121-45-194-51.cbr-trn-nor-bras38.tpg.internode.on.net. [121.45.194.51])
- by smtp.gmail.com with UTF8SMTPSA id h6sm3965789pfb.157.2021.04.23.00.27.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Apr 2021 00:27:16 -0700 (PDT)
-Message-ID: <7d0fec07-a663-f683-8d09-39e952cba418@ozlabs.ru>
-Date: Fri, 23 Apr 2021 17:27:06 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRQdd1lKmz2xZH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 17:19:13 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FRQdS4skxz9tynf;
+ Fri, 23 Apr 2021 09:19:08 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id fnYGk8CMAaDT; Fri, 23 Apr 2021 09:19:08 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FRQdS3s2Dz9tynj;
+ Fri, 23 Apr 2021 09:19:08 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C93748B79A;
+ Fri, 23 Apr 2021 09:19:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id udWXeu0dKgsI; Fri, 23 Apr 2021 09:19:09 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D2C2E8B765;
+ Fri, 23 Apr 2021 09:19:06 +0200 (CEST)
+Subject: Re: [PATCH bpf-next 1/2] bpf: Remove bpf_jit_enable=2 debugging mode
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+References: <20210415093250.3391257-1-Jianlin.Lv@arm.com>
+ <9c4a78d2-f73c-832a-e6e2-4b4daa729e07@iogearbox.net>
+ <d3949501-8f7d-57c4-b3fe-bcc3b24c09d8@isovalent.com>
+ <CAADnVQJ2oHbYfgY9jqM_JMxUsoZxaNrxKSVFYfgCXuHVpDehpQ@mail.gmail.com>
+ <0dea05ba-9467-0d84-4515-b8766f60318e@csgroup.eu>
+ <CAADnVQ+oQT6C7Qv7P5TV-x7im54omKoCYYKtYhcnhb1Uv3LPMQ@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <be132117-f267-5817-136d-e1aeb8409c2a@csgroup.eu>
+Date: Fri, 23 Apr 2021 09:19:06 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101
- Thunderbird/88.0
-Subject: Re: [PATCH v3 01/11] powerpc/pseries/iommu: Replace hard-coded page
- shift
-Content-Language: en-US
-To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
- Christophe Leroy <christophe.leroy@c-s.fr>,
- Nicolin Chen <nicoleotsuka@gmail.com>,
- Niklas Schnelle <schnelle@linux.ibm.com>
-References: <20210422070721.463912-1-leobras.c@gmail.com>
- <20210422070721.463912-2-leobras.c@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20210422070721.463912-2-leobras.c@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <CAADnVQ+oQT6C7Qv7P5TV-x7im54omKoCYYKtYhcnhb1Uv3LPMQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Fri, 23 Apr 2021 17:34:52 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,211 +67,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Ian Rogers <irogers@google.com>, Song Liu <songliubraving@fb.com>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ Zi Shen Lim <zlim.lnx@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Paul Mackerras <paulus@samba.org>, Sandipan Das <sandipan@linux.ibm.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Shubham Bansal <illusionist.neo@gmail.com>,
+ Mahesh Bandewar <maheshb@google.com>, Will Deacon <will@kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ paulburton@kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, X86 ML <x86@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Quentin Monnet <quentin@isovalent.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+ Jakub Kicinski <kuba@kernel.org>, Tobias Klauser <tklauser@distanz.ch>,
+ grantseltzer@gmail.com, Xi Wang <xi.wang@gmail.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
+ Vasily Gorbik <gor@linux.ibm.com>, Luke Nelson <luke.r.nels@gmail.com>,
+ Heiko Carstens <hca@linux.ibm.com>, KP Singh <kpsingh@kernel.org>,
+ iecedge@gmail.com, Simon Horman <horms@verge.net.au>,
+ Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Jianlin Lv <Jianlin.Lv@arm.com>,
+ Nicolas Dichtel <nicolas.dichtel@6wind.com>, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Wang YanQing <udknight@gmail.com>, tsbogend@alpha.franken.de,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+ Network Development <netdev@vger.kernel.org>, David Ahern <dsahern@kernel.org>,
+ linux-mips@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Yonghong Song <yhs@fb.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Thomas Gleixner <tglx@linutronix.de>,
+ bpf <bpf@vger.kernel.org>, ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Martin KaFai Lau <kafai@fb.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 22/04/2021 17:07, Leonardo Bras wrote:
-> Some functions assume IOMMU page size can only be 4K (pageshift == 12).
-> Update them to accept any page size passed, so we can use 64K pages.
+Le 20/04/2021 à 05:28, Alexei Starovoitov a écrit :
+> On Sat, Apr 17, 2021 at 1:16 AM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>>
+>>
+>> Le 16/04/2021 à 01:49, Alexei Starovoitov a écrit :
+>>> On Thu, Apr 15, 2021 at 8:41 AM Quentin Monnet <quentin@isovalent.com> wrote:
+>>>>
+>>>> 2021-04-15 16:37 UTC+0200 ~ Daniel Borkmann <daniel@iogearbox.net>
+>>>>> On 4/15/21 11:32 AM, Jianlin Lv wrote:
+>>>>>> For debugging JITs, dumping the JITed image to kernel log is discouraged,
+>>>>>> "bpftool prog dump jited" is much better way to examine JITed dumps.
+>>>>>> This patch get rid of the code related to bpf_jit_enable=2 mode and
+>>>>>> update the proc handler of bpf_jit_enable, also added auxiliary
+>>>>>> information to explain how to use bpf_jit_disasm tool after this change.
+>>>>>>
+>>>>>> Signed-off-by: Jianlin Lv <Jianlin.Lv@arm.com>
+>>>>
+>>>> Hello,
+>>>>
+>>>> For what it's worth, I have already seen people dump the JIT image in
+>>>> kernel logs in Qemu VMs running with just a busybox, not for kernel
+>>>> development, but in a context where buiding/using bpftool was not
+>>>> possible.
+>>>
+>>> If building/using bpftool is not possible then majority of selftests won't
+>>> be exercised. I don't think such environment is suitable for any kind
+>>> of bpf development. Much so for JIT debugging.
+>>> While bpf_jit_enable=2 is nothing but the debugging tool for JIT developers.
+>>> I'd rather nuke that code instead of carrying it from kernel to kernel.
+>>>
+>>
+>> When I implemented JIT for PPC32, it was extremely helpfull.
+>>
+>> As far as I understand, for the time being bpftool is not usable in my environment because it
+>> doesn't support cross compilation when the target's endianess differs from the building host
+>> endianess, see discussion at
+>> https://lore.kernel.org/bpf/21e66a09-514f-f426-b9e2-13baab0b938b@csgroup.eu/
+>>
+>> That's right that selftests can't be exercised because they don't build.
+>>
+>> The question might be candid as I didn't investigate much about the replacement of "bpf_jit_enable=2
+>> debugging mode" by bpftool, how do we use bpftool exactly for that ? Especially when using the BPF
+>> test module ?
 > 
-> In the process, some defines like TCE_SHIFT were made obsolete, and then
-> removed.
-> 
-> IODA3 Revision 3.0_prd1 (OpenPowerFoundation), Figures 3.4 and 3.5 show
-> a RPN of 52-bit, and considers a 12-bit pageshift, so there should be
-> no need of using TCE_RPN_MASK, which masks out any bit after 40 in rpn.
-> It's usage removed from tce_build_pSeries(), tce_build_pSeriesLP(), and
-> tce_buildmulti_pSeriesLP().
-
-
-After rereading the patch, I wonder why we had this TCE_RPN_MASK at all 
-but what is certain is that this has nothing to do with IODA3 as these 
-TCEs are guest phys addresses in pseries and IODA3 is bare metal. Except...
-
-
-> Most places had a tbl struct, so using tbl->it_page_shift was simple.
-> tce_free_pSeriesLP() was a special case, since callers not always have a
-> tbl struct, so adding a tceshift parameter seems the right thing to do.
-> 
-> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> ---
->   arch/powerpc/include/asm/tce.h         |  8 ------
->   arch/powerpc/platforms/pseries/iommu.c | 39 +++++++++++++++-----------
->   2 files changed, 23 insertions(+), 24 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/tce.h b/arch/powerpc/include/asm/tce.h
-> index db5fc2f2262d..0c34d2756d92 100644
-> --- a/arch/powerpc/include/asm/tce.h
-> +++ b/arch/powerpc/include/asm/tce.h
-> @@ -19,15 +19,7 @@
->   #define TCE_VB			0
->   #define TCE_PCI			1
->   
-> -/* TCE page size is 4096 bytes (1 << 12) */
-> -
-> -#define TCE_SHIFT	12
-> -#define TCE_PAGE_SIZE	(1 << TCE_SHIFT)
-> -
->   #define TCE_ENTRY_SIZE		8		/* each TCE is 64 bits */
-> -
-> -#define TCE_RPN_MASK		0xfffffffffful  /* 40-bit RPN (4K pages) */
-> -#define TCE_RPN_SHIFT		12
->   #define TCE_VALID		0x800		/* TCE valid */
->   #define TCE_ALLIO		0x400		/* TCE valid for all lpars */
->   #define TCE_PCI_WRITE		0x2		/* write from PCI allowed */
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index 67c9953a6503..796ab356341c 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -107,6 +107,8 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
->   	u64 proto_tce;
->   	__be64 *tcep;
->   	u64 rpn;
-> +	const unsigned long tceshift = tbl->it_page_shift;
-> +	const unsigned long pagesize = IOMMU_PAGE_SIZE(tbl);
-
-(nit: only used once)
-
->   
->   	proto_tce = TCE_PCI_READ; // Read allowed
->   
-> @@ -117,10 +119,10 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
-
-
-... this pseries which is not pseriesLP, i.e. no LPAR == bare metal 
-pseries such as ancient power5 or cellbe (I guess) and for those 
-TCE_RPN_MASK may actually make sense, keep it.
-
-The rest of the patch looks good. Thanks,
-
-
->   
->   	while (npages--) {
->   		/* can't move this out since we might cross MEMBLOCK boundary */
-> -		rpn = __pa(uaddr) >> TCE_SHIFT;
-> -		*tcep = cpu_to_be64(proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT);
-> +		rpn = __pa(uaddr) >> tceshift;
-> +		*tcep = cpu_to_be64(proto_tce | rpn << tceshift);
->   
-> -		uaddr += TCE_PAGE_SIZE;
-> +		uaddr += pagesize;
->   		tcep++;
->   	}
->   	return 0;
-> @@ -146,7 +148,7 @@ static unsigned long tce_get_pseries(struct iommu_table *tbl, long index)
->   	return be64_to_cpu(*tcep);
->   }
->   
-> -static void tce_free_pSeriesLP(unsigned long liobn, long, long);
-> +static void tce_free_pSeriesLP(unsigned long liobn, long, long, long);
->   static void tce_freemulti_pSeriesLP(struct iommu_table*, long, long);
->   
->   static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
-> @@ -166,12 +168,12 @@ static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
->   		proto_tce |= TCE_PCI_WRITE;
->   
->   	while (npages--) {
-> -		tce = proto_tce | (rpn & TCE_RPN_MASK) << tceshift;
-> +		tce = proto_tce | rpn << tceshift;
->   		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, tce);
->   
->   		if (unlikely(rc == H_NOT_ENOUGH_RESOURCES)) {
->   			ret = (int)rc;
-> -			tce_free_pSeriesLP(liobn, tcenum_start,
-> +			tce_free_pSeriesLP(liobn, tcenum_start, tceshift,
->   			                   (npages_start - (npages + 1)));
->   			break;
->   		}
-> @@ -205,10 +207,11 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->   	long tcenum_start = tcenum, npages_start = npages;
->   	int ret = 0;
->   	unsigned long flags;
-> +	const unsigned long tceshift = tbl->it_page_shift;
->   
->   	if ((npages == 1) || !firmware_has_feature(FW_FEATURE_PUT_TCE_IND)) {
->   		return tce_build_pSeriesLP(tbl->it_index, tcenum,
-> -					   tbl->it_page_shift, npages, uaddr,
-> +					   tceshift, npages, uaddr,
->   		                           direction, attrs);
->   	}
->   
-> @@ -225,13 +228,13 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->   		if (!tcep) {
->   			local_irq_restore(flags);
->   			return tce_build_pSeriesLP(tbl->it_index, tcenum,
-> -					tbl->it_page_shift,
-> +					tceshift,
->   					npages, uaddr, direction, attrs);
->   		}
->   		__this_cpu_write(tce_page, tcep);
->   	}
->   
-> -	rpn = __pa(uaddr) >> TCE_SHIFT;
-> +	rpn = __pa(uaddr) >> tceshift;
->   	proto_tce = TCE_PCI_READ;
->   	if (direction != DMA_TO_DEVICE)
->   		proto_tce |= TCE_PCI_WRITE;
-> @@ -245,12 +248,12 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->   		limit = min_t(long, npages, 4096/TCE_ENTRY_SIZE);
->   
->   		for (l = 0; l < limit; l++) {
-> -			tcep[l] = cpu_to_be64(proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT);
-> +			tcep[l] = cpu_to_be64(proto_tce | rpn << tceshift);
->   			rpn++;
->   		}
->   
->   		rc = plpar_tce_put_indirect((u64)tbl->it_index,
-> -					    (u64)tcenum << 12,
-> +					    (u64)tcenum << tceshift,
->   					    (u64)__pa(tcep),
->   					    limit);
->   
-> @@ -277,12 +280,13 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->   	return ret;
->   }
->   
-> -static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long npages)
-> +static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
-> +			       long npages)
->   {
->   	u64 rc;
->   
->   	while (npages--) {
-> -		rc = plpar_tce_put((u64)liobn, (u64)tcenum << 12, 0);
-> +		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, 0);
->   
->   		if (rc && printk_ratelimit()) {
->   			printk("tce_free_pSeriesLP: plpar_tce_put failed. rc=%lld\n", rc);
-> @@ -301,9 +305,11 @@ static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long n
->   	u64 rc;
->   
->   	if (!firmware_has_feature(FW_FEATURE_STUFF_TCE))
-> -		return tce_free_pSeriesLP(tbl->it_index, tcenum, npages);
-> +		return tce_free_pSeriesLP(tbl->it_index, tcenum,
-> +					  tbl->it_page_shift, npages);
->   
-> -	rc = plpar_tce_stuff((u64)tbl->it_index, (u64)tcenum << 12, 0, npages);
-> +	rc = plpar_tce_stuff((u64)tbl->it_index,
-> +			     (u64)tcenum << tbl->it_page_shift, 0, npages);
->   
->   	if (rc && printk_ratelimit()) {
->   		printk("tce_freemulti_pSeriesLP: plpar_tce_stuff failed\n");
-> @@ -319,7 +325,8 @@ static unsigned long tce_get_pSeriesLP(struct iommu_table *tbl, long tcenum)
->   	u64 rc;
->   	unsigned long tce_ret;
->   
-> -	rc = plpar_tce_get((u64)tbl->it_index, (u64)tcenum << 12, &tce_ret);
-> +	rc = plpar_tce_get((u64)tbl->it_index,
-> +			   (u64)tcenum << tbl->it_page_shift, &tce_ret);
->   
->   	if (rc && printk_ratelimit()) {
->   		printk("tce_get_pSeriesLP: plpar_tce_get failed. rc=%lld\n", rc);
+> the kernel developers can add any amount of printk and dumps to debug
+> their code,
+> but such debugging aid should not be part of the production kernel.
+> That sysctl was two things at once: debugging tool for kernel devs and
+> introspection for users.
+> bpftool jit dump solves the 2nd part. It provides JIT introspection to users.
+> Debugging of the kernel can be done with any amount of auxiliary code
+> including calling print_hex_dump() during jiting.
 > 
 
--- 
-Alexey
+I finally managed to cross compile bpftool with libbpf, libopcodes, readline, ncurses, libcap, libz 
+and all needed stuff. Was not easy but I made it.
+
+Now, how do I use it ?
+
+Let say I want to dump the jitted code generated from a call to 'tcpdump'. How do I do that with 
+'bpftool prog dump jited' ?
+
+I thought by calling this line I would then get programs dumped in a way or another just like when 
+setting 'bpf_jit_enable=2', but calling that line just provides me some bpftool help text.
+
+By the way, I would be nice to have a kernel OPTION that selects all OPTIONS required for building 
+bpftool. Because you discover them one by one at every build failure. I had to had CONFIG_IPV6, 
+CONFIG_DEBUG_BTF, CONFIG_CGROUPS, ... If there could be an option like "Build a 'bpftool' ready 
+kernel" that selected all those, it would be great.
+
+Christophe
