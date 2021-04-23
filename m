@@ -1,70 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A47D368B71
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 05:12:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EB71368B72
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 05:12:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRK8s3msRz3bsr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 13:12:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRK9K3Jcqz3byh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 13:12:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=su7WFMcj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=mwm4jume;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=su7WFMcj; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
+ header.s=20161025 header.b=mwm4jume; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRK7Y2k97z2yyl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 13:11:20 +1000 (AEST)
-Received: by mail-pj1-x102c.google.com with SMTP id
- y22-20020a17090a8b16b0290150ae1a6d2bso512294pjn.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 20:11:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRK7b4PB8z2ysm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 13:11:23 +1000 (AEST)
+Received: by mail-pl1-x636.google.com with SMTP id t22so24226445ply.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 20:11:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=kZsVNwKd6mmQBVRVWzAHbFHT2atr7kRthOt9m2x6uEI=;
- b=su7WFMcjJlCbyGlq4wCUW2fIMUMZjk0BF6mn0G2ywz+GK0vjhV4K7vZZwm9hEcPa0K
- U+XRvBRcPIwqOKqBXWnrE4HWN1IrJvZQiEwYMHsi3X5Ez/cHgwVUIDJMkKeqLfqxcu/9
- WxUyfAVrZDXE9GQn1mWFsHZ6lamQTnVTK9P/nFvTvVHhX2QGvgcPFBfTQhg6+NzgYjnX
- gLU06WwCTXhAWMNg2IluvwsSJo6Ll8njemI45vY3rQo7gyl29kjEgZVHq45+kr+HYdyM
- B+Bnk5sKTfJl4thCFTuz45o2m74HtbGpZkjsR5HYTp2M6B3+Jq+5F4ffdz/5tak0yDdl
- l6/A==
+ bh=KC1MpzfZtSO0WGF5h+z+8jnyGB55U8R9yQfcOBF9yio=;
+ b=mwm4jumeHO+N54uTgl1iv/3DRcBHD2Eg8F7qBw8h6YV0QEHhKRDw7xYgHshhhJ9Zmo
+ 3cS4zMB70v1uNDKAXj/Mq1RPPFtmYdazMMYO0dzAHPG5uIzriBv/v1ruAXGCw9i/npdE
+ TR5I1Cvm/lK5GvBTCyavnh3+igdKYG+UvE9awP0cxjpGR0AdKW+2rB/1yc4fAzyrJlrF
+ IVM4sntCBGBqDMtpEHGZJXkNBXBcoJIJRxMXNOABF1f3WgyNgVM48bB/vCIMG4hxVkl+
+ +0cnaTPu70+SlhnpioLmxW9s6tNnnuwLkbFccFx9jFEdU/Kx/kISIdLf7IrbTuOQXifg
+ 5DTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=kZsVNwKd6mmQBVRVWzAHbFHT2atr7kRthOt9m2x6uEI=;
- b=SHdI8Tdy53bWYsxvldEFWGXYuwvXpZxh6q0LW+fzJTO0tD0RvrLN/tojqxOR2wj0qd
- GlZViK9GnDATJJa0vpqI05Gms+QG6YiYO1/WK170az+LAAbzyu7A0R+mnB/mpK9N9DnT
- xTg9BMMInecdP5TwhKUniFqt4gf46VaBGdWWWFucorvduO/ovZ5+5p3pD84ljHn66XN1
- ZKhvWSOV8iq1EGTTeHRgHtz4du0D9oqbLL5B9s2K1HxAY+e4hmMWMROy7VEqjZgB4G5e
- ALv4CEudriIEoGEvCfoJXtF7MORNdnRtrZCdIIjBK++PgA6HVyfZjDqAVg403ilbonnV
- D7Sw==
-X-Gm-Message-State: AOAM530KUqROBSkrqBQGYwXuFAuVQTeDMwyQVcJOOLFJviE3fESTk8Kj
- YanBUMCjfnsItLIj1o8cVl58aP+AJFg=
-X-Google-Smtp-Source: ABdhPJwWbdslr3Fdy9HTHmg1exRpFaZePs+C1bAGRDpfXEK0rrulmCJs8gRiz3gHQJ6RFC1TY2Xc7g==
-X-Received: by 2002:a17:90b:d92:: with SMTP id
- bg18mr2071766pjb.155.1619147478930; 
- Thu, 22 Apr 2021 20:11:18 -0700 (PDT)
+ bh=KC1MpzfZtSO0WGF5h+z+8jnyGB55U8R9yQfcOBF9yio=;
+ b=QypqkbHN5W8mUxnczKeo5pF59T9ZPShlbkTBKGMtwORBsZ7a5EKzHBelGv8TBwtp43
+ YQWlyl7PWIjCkgGBUn1ec0QtK+MGNoONoeFFahN4AvSrfUHxtVG3eI1CUWQ6J1cau6Vx
+ CV4zUBFxqvLqUSQJAZsqeEuG1xyPIElJinELV6pgCjb2aauoIzqZB/CqT9Fx+SkK1AtU
+ sIvfuJUpKMx1PUKuXmWESfNMpDqIXF69diK00vc2C9f05X58vsPNftTmPekMHKcix9g2
+ yh733lqWGrYqbbnvj4SDBcCbf70AbTVrdiYk+5hexNQhgc3pl6lXkr5dB/GRFcPe9VBD
+ YEQw==
+X-Gm-Message-State: AOAM532sofMlNM9hzQDn3TMNJfz1BqSBjm4zSeXwNTrwW70yS6Nyph0n
+ RiPRJ7yH5ZOm0wCt0+y7zi7U41THgmM=
+X-Google-Smtp-Source: ABdhPJzTdbTfHxPsFg/xPehHDiFzxuWqEq7gTBHbkUFz/NWY6UutQSzQ+zE6IVMIQrSB6XLJNm0nzA==
+X-Received: by 2002:a17:90a:8b97:: with SMTP id
+ z23mr2068133pjn.65.1619147481135; 
+ Thu, 22 Apr 2021 20:11:21 -0700 (PDT)
 Received: from bobo.ibm.com ([59.102.87.99])
- by smtp.gmail.com with ESMTPSA id k1sm3511962pgk.9.2021.04.22.20.11.17
+ by smtp.gmail.com with ESMTPSA id k1sm3511962pgk.9.2021.04.22.20.11.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Apr 2021 20:11:18 -0700 (PDT)
+ Thu, 22 Apr 2021 20:11:20 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/4] powerpc/pseries: Don't trace hcall tracing wrapper
-Date: Fri, 23 Apr 2021 13:11:06 +1000
-Message-Id: <20210423031108.1046067-3-npiggin@gmail.com>
+Subject: [PATCH 3/4] powerpc/pseries: use notrace hcall variant for H_CEDE idle
+Date: Fri, 23 Apr 2021 13:11:07 +1000
+Message-Id: <20210423031108.1046067-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210423031108.1046067-1-npiggin@gmail.com>
 References: <20210423031108.1046067-1-npiggin@gmail.com>
@@ -87,38 +86,60 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This doesn't seem very useful to trace before the recursion check, even
-if the ftrace code has any recursion checks of its own. Be on the safe
-side and don't trace the hcall trace wrappers.
+Rather than special-case H_CEDE in the hcall trace wrappers, make the
+idle H_CEDE call use plpar_hcall_norets_notrace().
 
-Reported-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/pseries/lpar.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/plpar_wrappers.h |  6 +++++-
+ arch/powerpc/platforms/pseries/lpar.c     | 10 ----------
+ 2 files changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 6011b7b80946..0641779e5cde 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -1834,7 +1834,7 @@ void hcall_tracepoint_unregfunc(void)
- static DEFINE_PER_CPU(unsigned int, hcall_trace_depth);
+diff --git a/arch/powerpc/include/asm/plpar_wrappers.h b/arch/powerpc/include/asm/plpar_wrappers.h
+index ece84a430701..83e0f701ebc6 100644
+--- a/arch/powerpc/include/asm/plpar_wrappers.h
++++ b/arch/powerpc/include/asm/plpar_wrappers.h
+@@ -28,7 +28,11 @@ static inline void set_cede_latency_hint(u8 latency_hint)
  
- 
--void __trace_hcall_entry(unsigned long opcode, unsigned long *args)
-+notrace void __trace_hcall_entry(unsigned long opcode, unsigned long *args)
+ static inline long cede_processor(void)
  {
- 	unsigned long flags;
- 	unsigned int *depth;
-@@ -1862,7 +1862,7 @@ void __trace_hcall_entry(unsigned long opcode, unsigned long *args)
- 	local_irq_restore(flags);
+-	return plpar_hcall_norets(H_CEDE);
++	/*
++	 * We cannot call tracepoints inside RCU idle regions which
++	 * means we must not trace H_CEDE.
++	 */
++	return plpar_hcall_norets_notrace(H_CEDE);
  }
  
--void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
-+notrace void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
- {
+ static inline long extended_cede_processor(unsigned long latency_hint)
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 0641779e5cde..835e7f661a05 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -1839,13 +1839,6 @@ notrace void __trace_hcall_entry(unsigned long opcode, unsigned long *args)
  	unsigned long flags;
  	unsigned int *depth;
+ 
+-	/*
+-	 * We cannot call tracepoints inside RCU idle regions which
+-	 * means we must not trace H_CEDE.
+-	 */
+-	if (opcode == H_CEDE)
+-		return;
+-
+ 	local_irq_save(flags);
+ 
+ 	depth = this_cpu_ptr(&hcall_trace_depth);
+@@ -1867,9 +1860,6 @@ notrace void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
+ 	unsigned long flags;
+ 	unsigned int *depth;
+ 
+-	if (opcode == H_CEDE)
+-		return;
+-
+ 	local_irq_save(flags);
+ 
+ 	depth = this_cpu_ptr(&hcall_trace_depth);
 -- 
 2.23.0
 
