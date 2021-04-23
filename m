@@ -1,48 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6CC3697E2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 19:02:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459C136982A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 19:19:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRgZP42j7z30Jw
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 03:02:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRgxk1TjTz30Hr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 03:19:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FRgZ453Wsz2xb3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 03:02:02 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 13NGviDx012674;
- Fri, 23 Apr 2021 11:57:44 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 13NGvgAY012668;
- Fri, 23 Apr 2021 11:57:42 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Fri, 23 Apr 2021 11:57:42 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Gabriel Paubert <paubert@iram.es>
-Subject: Re: [PATCH 1/2] powerpc/sstep: =?utf-8?Q?A?=
- =?utf-8?Q?dd_emulation_support_for_=E2=80=98setb=E2=80=99?= instruction
-Message-ID: <20210423165742.GO27473@gate.crashing.org>
-References: <cover.1618469454.git.sathvika@linux.vnet.ibm.com>
- <767e53c4c27da024ca277e21ffcd0cff131f5c73.1618469454.git.sathvika@linux.vnet.ibm.com>
- <875z0mfzbf.fsf@linkitivity.dja.id.au>
- <20210422191334.GE27473@gate.crashing.org>
- <20210422221618.GA30594@lt-gp.iram.es>
- <20210422232616.GI27473@gate.crashing.org>
- <20210423102657.GA22427@lt-gp.iram.es>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210423102657.GA22427@lt-gp.iram.es>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRgxN0fN9z2xZ2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 03:18:44 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4FRgx91x1wz9ttRv;
+ Fri, 23 Apr 2021 19:18:37 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ALw1zRGnK-kI; Fri, 23 Apr 2021 19:18:37 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FRgx916p8z9ttRt;
+ Fri, 23 Apr 2021 19:18:37 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7D15C8B886;
+ Fri, 23 Apr 2021 19:18:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HOCbVO0OVlWb; Fri, 23 Apr 2021 19:18:39 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CB56D8B765;
+ Fri, 23 Apr 2021 19:18:38 +0200 (CEST)
+Subject: Re: [PATCH 1/2] powerpc/vdso64: link vdso64 with linker
+To: Nick Desaulniers <ndesaulniers@google.com>
+References: <20200901222523.1941988-1-ndesaulniers@google.com>
+ <20200901222523.1941988-2-ndesaulniers@google.com>
+ <87blio1ilu.fsf@mpe.ellerman.id.au>
+ <CAKwvOd=ZeJU+vLUk2P7FpX35haj7AC50B9Yps4pyoGCpd7ueTw@mail.gmail.com>
+ <3d837a36-a186-6789-7924-eaa97f056b68@csgroup.eu>
+ <CAKwvOd=KP5CZ5wOrczC6qPAzN7DdFCJ_XvU6e=zvB3XpQrp_-g@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <bfa4fa45-9887-d7d4-21a7-ac48835b10c1@csgroup.eu>
+Date: Fri, 23 Apr 2021 19:18:34 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
+MIME-Version: 1.0
+In-Reply-To: <CAKwvOd=KP5CZ5wOrczC6qPAzN7DdFCJ_XvU6e=zvB3XpQrp_-g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,75 +66,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>,
- naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Daniel Axtens <dja@axtens.net>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Fangrui Song <maskray@google.com>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 23, 2021 at 12:26:57PM +0200, Gabriel Paubert wrote:
-> On Thu, Apr 22, 2021 at 06:26:16PM -0500, Segher Boessenkool wrote:
-> > > But this can be made jump free :-):
-> > > 
-> > > 	int tmp = regs->ccr << ra;
-> > > 	op->val = (tmp >> 31) | ((tmp >> 30) & 1);
-> > 
-> > The compiler will do so automatically (or think of some better way to
-> > get the same result); in source code, what matters most is readability,
-> > or clarity in general (also clarity to the compiler).
+
+
+Le 23/04/2021 à 00:44, Nick Desaulniers a écrit :
+> On Wed, Sep 2, 2020 at 11:02 AM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>>
+>>
+>> Le 02/09/2020 à 19:41, Nick Desaulniers a écrit :
+>>> On Wed, Sep 2, 2020 at 5:14 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>>>
+>>>> Nick Desaulniers <ndesaulniers@google.com> writes:
+>>>>> Fixes: commit f2af201002a8 ("powerpc/build: vdso linker warning for orphan sections")
+>>>>
+>>>> I think I'll just revert that for v5.9 ?
+>>>
+>>> SGTM; you'll probably still want these changes with some modifications
+>>> at some point; vdso32 did have at least one orphaned section, and will
+>>> be important for hermetic builds.  Seeing crashes in supported
+>>> versions of the tools ties our hands at the moment.
+>>>
+>>
+>> Keeping the tool problem aside with binutils 2.26, do you have a way to
+>> really link an elf32ppc object when  building vdso32 for PPC64 ?
 > 
-> I just did a test (trivial code attached) and the original code always
-> produces one conditional branch at -O2, at least with the cross-compiler
-> I have on Debian (gcc 8.3). I have tested both -m32 and -m64. The 64 bit
-> version produces an unnecessary "extsw", so I wrote the second version
-> splitting the setting of the return value which gets rid of it.
-
-That is an older compiler, and it will be out-of-service any day now.
-
-It depends on what compiler flags you use, and what version of the ISA
-you are targetting.
-
-> The second "if" is fairly simple to optimize and the compiler does it
-> properly.
-
-Yeah.
-
-> Of course with my suggestion the compiler does not produce any branch. 
-> But it needs a really good comment.
-
-Or you could try and help improve the compiler ;-)  You can do this
-without writing compiler code yourself, by writing up some good
-enhancement request in bugzilla.
-
-The wider and more OoO the processors become, the more important it
-becomes to have branch-free code, in situations where the branches would
-not be well-predictable.
-
-> > (Right shifts of negative numbers are implementation-defined in C,
-> > fwiw -- but work like you expect in GCC).
+> Sorry, I'm doing a bug scrub and found
+> https://github.com/ClangBuiltLinux/linux/issues/774 still open (and my
+> reply to this thread still in Drafts; never sent). With my patches
+> rebased:
+> $ file arch/powerpc/kernel/vdso32/vdso32.so
+> arch/powerpc/kernel/vdso32/vdso32.so: ELF 32-bit MSB shared object,
+> PowerPC or cisco 4500, version 1 (SYSV), dynamically linked, stripped
 > 
-> Well, I'm not worried about it, since I'd expect a compiler that does
-> logical right shifts on signed valued to break so much code that it
-> would be easily noticed (also in the kernel).
-
-Yup.  And it *is* defined for signed values, as long as they are
-non-negative (the common case).
-
-> > > > Also, even people who write LE have the bigger end on the left normally
-> > > > (they just write some things right-to-left, and other things
-> > > > left-to-right).
-> > > 
-> > > Around 1985, I had a documentation for the the National's 32032
-> > > (little-endian) processor family, and all the instruction encodings were
-> > > presented with the LSB on the left and MSB on the right.
-> > 
-> > Ouch!  Did they write "regular" numbers with the least significant digit
-> > on the left as well?
+> Are you still using 2.26?
 > 
-> No, they were not that sadistic!
+> I'm not able to repro Nathan's reported issue from
+> https://lore.kernel.org/lkml/20200902052123.GA2687902@ubuntu-n2-xlarge-x86/,
+> so I'm curious if I should resend the rebased patches as v2?
 
-But more inconsistent :-)
+One comment on your rebased patch:
+
+ > diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
+ > index 8542e9bbeead..0bd06ec06aaa 100644
+ > --- a/arch/powerpc/include/asm/vdso.h
+ > +++ b/arch/powerpc/include/asm/vdso.h
+ > @@ -25,19 +25,7 @@ int vdso_getcpu_init(void);
+ >
+ >   #else /* __ASSEMBLY__ */
+ >
+ > -#ifdef __VDSO64__
+ > -#define V_FUNCTION_BEGIN(name)		\
+ > -	.globl name;			\
+ > -	name:				\
+ > -
+ > -#define V_FUNCTION_END(name)		\
+ > -	.size name,.-name;
+ > -
+ > -#define V_LOCAL_FUNC(name) (name)
+ > -#endif /* __VDSO64__ */
+ > -
+ > -#ifdef __VDSO32__
+ > -
+ > +#if defined(__VDSO32__) || defined (__VDSO64__)
+
+You always have either __VDSO32__ or __VDSO64__ so this #if is pointless
+
+ >   #define V_FUNCTION_BEGIN(name)		\
+ >   	.globl name;			\
+ >   	.type name,@function; 		\
+ > @@ -47,8 +35,7 @@ int vdso_getcpu_init(void);
+ >   	.size name,.-name;
+ >
+ >   #define V_LOCAL_FUNC(name) (name)
+ > -
+ > -#endif /* __VDSO32__ */
+ > +#endif /* __VDSO{32|64}__ */
+ >
+ >   #endif /* __ASSEMBLY__ */
+ >
 
 
-Segher
+Christophe
