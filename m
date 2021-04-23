@@ -2,67 +2,108 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BBC368A43
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 03:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 466AB368B01
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 04:28:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRGWw15Lfz30DN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 11:13:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRJ9k1vl7z301v
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 12:28:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=mgdTLS5W;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cVzLJhJx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::732;
- helo=mail-qk1-x732.google.com; envelope-from=oohall@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ricklind@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=mgdTLS5W; dkim-atps=neutral
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com
- [IPv6:2607:f8b0:4864:20::732])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=cVzLJhJx; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRGWS469Lz2xZW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 11:13:22 +1000 (AEST)
-Received: by mail-qk1-x732.google.com with SMTP id v7so20224076qkj.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Apr 2021 18:13:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Cyx9PZhhSqw92stXaMId3qxBJwezQqU3jTPjAxVlHlk=;
- b=mgdTLS5W8PQoNS/dXi6oYepC4uoCembez+MudJ0h+KNNWTwpFw1pwUm8ZDNjGtBYk4
- I9qHtwvaD3FG2VGm3M6GovfzgKhq27EOw2f8sGVqyD6N3dMQVxLVDLOxPMgZs7Z/mEUW
- tsKee86jzEscppvMZ1Yx3HeM214Tq9mKQTkSMUA+sEGB3UM7DVXTUCxK33YAEv+16OKf
- 0GdsESez/v+Ln92dv1DTXMw1iAgsw6335n5PgG42tBlLOqRwxTrnJ5Z8nitCCNOvMLru
- pYKf5YR73dtORqGwHzHR/bPFqGWGhzzeZmb8LCVb5TiVp0Z5uM37LrsJoLx7PZOi8z7F
- UIuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Cyx9PZhhSqw92stXaMId3qxBJwezQqU3jTPjAxVlHlk=;
- b=RzRhVnu15bDjYqYJSDPfth7MrGl/+ISLfbkevjlc26ISB/kNsNmwkYMcYBw6fFesRr
- GZOCBN862W5bngE0/LABYFGidhQk6+qAn0QJHjRJugzRyn46rYK192B5B2i9Em0GNkb6
- zNjAUUafvHQQI9VPiHvFR+wox0MVG7OSQmkIE0MyynxGy04FNL/mM1Kj2qsmXR8gahHq
- GVOdHXN5xHymZU1dYL3J777NQ0jFoNzt0jqb2qz21cYgud1ArDjXE+IqlRBPp8W6e8Nq
- SxsCaekr4wHWQOxelb5//GNBh08yM8iAEhkP2tBIKBCdj8dQbVjJa6W92x7kGtZ0CAlJ
- x7mA==
-X-Gm-Message-State: AOAM531y1orX3nY/vXFFr0ZnYfZkg5pNZpIvqqjeMTAsxbydtjgDbQKp
- 5PyKN4oMIfH1APvRVTmq9o0S5ndNlLSbzI+mYWM=
-X-Google-Smtp-Source: ABdhPJwJH1UEhJGG3Lec9f5cL3X8GJPl5O+T7Hkxm277gfreNh5f9baH0Kl+KtZN9Nlb/WaapdjLW510gb5y7s+bRCM=
-X-Received: by 2002:a37:de14:: with SMTP id h20mr1613385qkj.34.1619140398678; 
- Thu, 22 Apr 2021 18:13:18 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRJ9F5YwHz2xfy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 12:27:45 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13N22lxU113351; Thu, 22 Apr 2021 22:26:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=cYeJn2we0b5nvyzcKIrHpPFcBxuUAeiaum1tA94OSKw=;
+ b=cVzLJhJxHYD7EWVM59Ws3+tage82CyNcBxLTogz465u46alqjEI4czRsr7oN5sAxHRha
+ wNPVMMVg7gPsQlWVzAKNeAuovTvbcEarHcO2Z5PGBfYTITaxO5HoRcUGq9ilyfADMlNw
+ LU0HowvQtO7Q4DrptYJyn+gKsANALfdGPn+WoVRvwk9DwkYm5wtKTcP+GFrtAmI34sD7
+ aY+qEy/sc/1LbsnvLAJdTvYcGcSBx2FHu/2y9KZ1PTG+wxt7EdtnH3hY0bhlUVaEWcUF
+ ldg5PPJSbYUHT4v4cp21i4TsiIDXvVKwdGPKSZ2GgTeAI3JpBOVC99tw1F0esQMkpPw+ cw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 383btyf16y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Apr 2021 22:26:30 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13N2CVwj143570;
+ Thu, 22 Apr 2021 22:26:30 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 383btyf16p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Apr 2021 22:26:30 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13N26csk032205;
+ Fri, 23 Apr 2021 02:26:29 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma03wdc.us.ibm.com with ESMTP id 37yqa9nytq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Apr 2021 02:26:29 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13N2QSMx37355950
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 23 Apr 2021 02:26:28 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 26460BE0A6;
+ Fri, 23 Apr 2021 02:26:28 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 68BE3BE0A0;
+ Fri, 23 Apr 2021 02:26:25 +0000 (GMT)
+Received: from [9.160.109.21] (unknown [9.160.109.21])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 23 Apr 2021 02:26:25 +0000 (GMT)
+Subject: Re: [PATCH V2 net] ibmvnic: Continue with reset if set link down
+ failed
+To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
+ Lijun Pan <lijunp213@gmail.com>
+References: <20210420213517.24171-1-drt@linux.ibm.com>
+ <60C99F56-617D-455B-9ACF-8CE1EED64D92@linux.vnet.ibm.com>
+ <20210421064527.GA2648262@us.ibm.com>
+ <CAOhMmr4ckVFTZtSeHFHNgGPUA12xYO8WcUoakx7WdwQfSKBJhA@mail.gmail.com>
+ <20210422172135.GY6564@kitsune.suse.cz>
+From: Rick Lindsley <ricklind@linux.vnet.ibm.com>
+Message-ID: <9e46d7ad-55dd-7caf-0a39-344b80bdceb3@linux.vnet.ibm.com>
+Date: Thu, 22 Apr 2021 19:26:24 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-References: <20210422195405.4053917-1-ndesaulniers@google.com>
- <87lf99zzl3.fsf@dja-thinkpad.axtens.net>
-In-Reply-To: <87lf99zzl3.fsf@dja-thinkpad.axtens.net>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Fri, 23 Apr 2021 11:13:07 +1000
-Message-ID: <CAOSf1CGoN5R0LUrU=Y=UWho1Z_9SLgCX8s3SbFJXwJXc5BYz4A@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/powernv/pci: remove dead code from !CONFIG_EEH
-To: Daniel Axtens <dja@axtens.net>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210422172135.GY6564@kitsune.suse.cz>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: jWsLpFXxeuukBeTNMw6M3Tj4tQ9V-Or9
+X-Proofpoint-ORIG-GUID: i2GYQ9voH4e4uhVWf5V27_zHgg52w8rr
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-22_15:2021-04-22,
+ 2021-04-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ adultscore=0 mlxscore=0 clxscore=1011 malwarescore=0 lowpriorityscore=0
+ mlxlogscore=999 spamscore=0 phishscore=0 suspectscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104230012
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,68 +115,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Joe Perches <joe@perches.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: netdev@vger.kernel.org, Lijun Pan <ljp@linux.vnet.ibm.com>,
+ Tom Falcon <tlfalcon@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Dany Madden <drt@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>,
+ Sukadev Bhattiprolu <sukadev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 23, 2021 at 9:09 AM Daniel Axtens <dja@axtens.net> wrote:
->
-> Hi Nick,
->
-> > While looking at -Wundef warnings, the #if CONFIG_EEH stood out as a
-> > possible candidate to convert to #ifdef CONFIG_EEH, but it seems that
-> > based on Kconfig dependencies it's not possible to build this file
-> > without CONFIG_EEH enabled.
->
-> This seemed odd to me, but I think you're right:
->
-> arch/powerpc/platforms/Kconfig contains:
->
-> config EEH
->         bool
->         depends on (PPC_POWERNV || PPC_PSERIES) && PCI
->         default y
->
-> It's not configurable from e.g. make menuconfig because there's no prompt.
-> You can attempt to explicitly disable it with e.g. `scripts/config -d EEH`
-> but then something like `make oldconfig` will silently re-enable it for
-> you.
->
-> It's been forced on since commit e49f7a9997c6 ("powerpc/pseries: Rivet
-> CONFIG_EEH for pSeries platform") in 2012 which fixed it for
-> pseries. That moved out from pseries to pseries + powernv later on.
->
-> There are other cleanups in the same vein that could be made, from the
-> Makefile (which has files only built with CONFIG_EEH) through to other
-> source files. It looks like there's one `#ifdef CONFIG_EEH` in
-> arch/powerpc/platforms/powernv/pci-ioda.c that could be pulled out, for
-> example.
->
-> I think it's probably worth trying to rip out all of those in one patch?
+On 4/22/21 10:21 AM, Michal Suchánek wrote:
 
-The change in commit e49f7a9997c6 ("powerpc/pseries: Rivet CONFIG_EEH
-for pSeries platform") never should have been made.
+> Merging do_reset and do_hard_reset might be a good code cleanup which is
+> out of the scope of this fix.
 
-There's no inherent reason why EEH needs to be enabled and forcing it
-on is (IMO) a large part of why EEH support is the byzantine
-clusterfuck that it is. One of the things I was working towards was
-allowing pseries and powernv to be built with !CONFIG_EEH since that
-would help define a clearer boundary between what is "eeh support" and
-what is required to support PCI on the platform. Pseries is
-particularly bad for this since PAPR says the RTAS calls needed to do
-a PCI bus reset are part of the EEH extension, but there's non-EEH
-reasons why you might want to use those RTAS calls. The PHB reset that
-we do when entering a kdump kernel is a good example since that uses
-the same RTAS calls, but it has nothing to do with the EEH recovery
-machinery enabled by CONFIG_EEH.
+I agree, on both points. Accepting the patch, and improving the reset
+path are not in conflict with each other.
 
-I was looking into that largely because people were considering using
-OPAL for microwatt platforms. Breaking the assumption that
-powernv==EEH support is one of the few bits of work required to enable
-that, but even if you don't go down that road I think everyone would
-be better off if you kept a degree of separation between the two.
+My position is that improving the reset path is certainly on the table,
+but not with this bug or this fix.  Within the context of this discovered
+problem, the issue is well understood, the fix is small and addresses the
+immediate problem, and it has not generated new bugs under subsequent
+testing.  For those reasons, the submitted patch has my support.
+
+Rick
+
