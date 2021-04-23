@@ -2,59 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37903368E07
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 09:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F1F368E22
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 09:49:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRR640nyBz30B7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 17:40:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRRHt4GhPz30G6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 17:48:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=cuc7=ju=ubuntu.com=christian.brauner@kernel.org;
+ receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRR5j2dZ9z2xZF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 17:40:07 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FRR5b1yHcz9typ8;
- Fri, 23 Apr 2021 09:40:03 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ELss1ENvDDh3; Fri, 23 Apr 2021 09:40:03 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FRR5b14z2z9typ7;
- Fri, 23 Apr 2021 09:40:03 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 80B0A8B79D;
- Fri, 23 Apr 2021 09:40:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id KUSTaPnXfcX5; Fri, 23 Apr 2021 09:40:04 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D6ACA8B79A;
- Fri, 23 Apr 2021 09:40:03 +0200 (CEST)
-Subject: Re: [PATCH 1/2] powerpc/vdso64: link vdso64 with linker
-To: Nick Desaulniers <ndesaulniers@google.com>
-References: <20200901222523.1941988-1-ndesaulniers@google.com>
- <20200901222523.1941988-2-ndesaulniers@google.com>
- <87blio1ilu.fsf@mpe.ellerman.id.au>
- <CAKwvOd=ZeJU+vLUk2P7FpX35haj7AC50B9Yps4pyoGCpd7ueTw@mail.gmail.com>
- <3d837a36-a186-6789-7924-eaa97f056b68@csgroup.eu>
- <CAKwvOd=KP5CZ5wOrczC6qPAzN7DdFCJ_XvU6e=zvB3XpQrp_-g@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <b73db2b3-16c5-caaf-acf4-9d22d45cba5d@csgroup.eu>
-Date: Fri, 23 Apr 2021 09:40:01 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRRHY3Bjdz2xZy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 17:48:41 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 57E79611C2;
+ Fri, 23 Apr 2021 07:48:34 +0000 (UTC)
+Date: Fri, 23 Apr 2021 09:48:31 +0200
+From: Christian Brauner <christian.brauner@ubuntu.com>
+To: Richard Guy Briggs <rgb@redhat.com>
+Subject: Re: [PATCH 1/2] audit: add support for the openat2 syscall
+Message-ID: <20210423074831.lc4jqqtyuun2fnws@wittgenstein>
+References: <cover.1616031035.git.rgb@redhat.com>
+ <49510cacfb5fbbaa312a4a389f3a6619675007ab.1616031035.git.rgb@redhat.com>
+ <20210318104843.uiga6tmmhn5wfhbs@wittgenstein>
+ <20210318120801.GK3141668@madcap2.tricolour.ca>
+ <20210423023408.GB2174828@madcap2.tricolour.ca>
 MIME-Version: 1.0
-In-Reply-To: <CAKwvOd=KP5CZ5wOrczC6qPAzN7DdFCJ_XvU6e=zvB3XpQrp_-g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210423023408.GB2174828@madcap2.tricolour.ca>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,144 +45,327 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joe Lawrence <joe.lawrence@redhat.com>, Kees Cook <keescook@chromium.org>,
- Fangrui Song <maskray@google.com>, LKML <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, x86@kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, sparclinux@vger.kernel.org,
+ Aleksa Sarai <cyphar@cyphar.com>,
+ Linux-Audit Mailing List <linux-audit@redhat.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 23/04/2021 à 00:44, Nick Desaulniers a écrit :
-> On Wed, Sep 2, 2020 at 11:02 AM Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->>
->>
->>
->> Le 02/09/2020 à 19:41, Nick Desaulniers a écrit :
->>> On Wed, Sep 2, 2020 at 5:14 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>>>
->>>> Nick Desaulniers <ndesaulniers@google.com> writes:
->>>>> Fixes: commit f2af201002a8 ("powerpc/build: vdso linker warning for orphan sections")
->>>>
->>>> I think I'll just revert that for v5.9 ?
->>>
->>> SGTM; you'll probably still want these changes with some modifications
->>> at some point; vdso32 did have at least one orphaned section, and will
->>> be important for hermetic builds.  Seeing crashes in supported
->>> versions of the tools ties our hands at the moment.
->>>
->>
->> Keeping the tool problem aside with binutils 2.26, do you have a way to
->> really link an elf32ppc object when  building vdso32 for PPC64 ?
+On Thu, Apr 22, 2021 at 10:34:08PM -0400, Richard Guy Briggs wrote:
+> On 2021-03-18 08:08, Richard Guy Briggs wrote:
+> > On 2021-03-18 11:48, Christian Brauner wrote:
+> > > [+Cc Aleksa, the author of openat2()]
+> > 
+> > Ah!  Thanks for pulling in Aleksa.  I thought I caught everyone...
+> > 
+> > > and a comment below. :)
+> > 
+> > Same...
+> > 
+> > > On Wed, Mar 17, 2021 at 09:47:17PM -0400, Richard Guy Briggs wrote:
+> > > > The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
+> > > > ("open: introduce openat2(2) syscall")
+> > > > 
+> > > > Add the openat2(2) syscall to the audit syscall classifier.
+> > > > 
+> > > > See the github issue
+> > > > https://github.com/linux-audit/audit-kernel/issues/67
+> > > > 
+> > > > Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+> > > > ---
+> > > >  arch/alpha/kernel/audit.c          | 2 ++
+> > > >  arch/ia64/kernel/audit.c           | 2 ++
+> > > >  arch/parisc/kernel/audit.c         | 2 ++
+> > > >  arch/parisc/kernel/compat_audit.c  | 2 ++
+> > > >  arch/powerpc/kernel/audit.c        | 2 ++
+> > > >  arch/powerpc/kernel/compat_audit.c | 2 ++
+> > > >  arch/s390/kernel/audit.c           | 2 ++
+> > > >  arch/s390/kernel/compat_audit.c    | 2 ++
+> > > >  arch/sparc/kernel/audit.c          | 2 ++
+> > > >  arch/sparc/kernel/compat_audit.c   | 2 ++
+> > > >  arch/x86/ia32/audit.c              | 2 ++
+> > > >  arch/x86/kernel/audit_64.c         | 2 ++
+> > > >  kernel/auditsc.c                   | 3 +++
+> > > >  lib/audit.c                        | 4 ++++
+> > > >  lib/compat_audit.c                 | 4 ++++
+> > > >  15 files changed, 35 insertions(+)
+> > > > 
+> > > > diff --git a/arch/alpha/kernel/audit.c b/arch/alpha/kernel/audit.c
+> > > > index 96a9d18ff4c4..06a911b685d1 100644
+> > > > --- a/arch/alpha/kernel/audit.c
+> > > > +++ b/arch/alpha/kernel/audit.c
+> > > > @@ -42,6 +42,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > > >  		return 3;
+> > > >  	case __NR_execve:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 0;
+> > > >  	}
+> > > > diff --git a/arch/ia64/kernel/audit.c b/arch/ia64/kernel/audit.c
+> > > > index 5192ca899fe6..5eaa888c8fd3 100644
+> > > > --- a/arch/ia64/kernel/audit.c
+> > > > +++ b/arch/ia64/kernel/audit.c
+> > > > @@ -43,6 +43,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > > >  		return 3;
+> > > >  	case __NR_execve:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 0;
+> > > >  	}
+> > > > diff --git a/arch/parisc/kernel/audit.c b/arch/parisc/kernel/audit.c
+> > > > index 9eb47b2225d2..fc721a7727ba 100644
+> > > > --- a/arch/parisc/kernel/audit.c
+> > > > +++ b/arch/parisc/kernel/audit.c
+> > > > @@ -52,6 +52,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > > >  		return 3;
+> > > >  	case __NR_execve:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 0;
+> > > >  	}
+> > > > diff --git a/arch/parisc/kernel/compat_audit.c b/arch/parisc/kernel/compat_audit.c
+> > > > index 20c39c9d86a9..fc6d35918c44 100644
+> > > > --- a/arch/parisc/kernel/compat_audit.c
+> > > > +++ b/arch/parisc/kernel/compat_audit.c
+> > > > @@ -35,6 +35,8 @@ int parisc32_classify_syscall(unsigned syscall)
+> > > >  		return 3;
+> > > >  	case __NR_execve:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 1;
+> > > >  	}
+> > > > diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
+> > > > index a2dddd7f3d09..8f32700b0baa 100644
+> > > > --- a/arch/powerpc/kernel/audit.c
+> > > > +++ b/arch/powerpc/kernel/audit.c
+> > > > @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > > >  		return 4;
+> > > >  	case __NR_execve:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 0;
+> > > >  	}
+> > > > diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
+> > > > index 55c6ccda0a85..ebe45534b1c9 100644
+> > > > --- a/arch/powerpc/kernel/compat_audit.c
+> > > > +++ b/arch/powerpc/kernel/compat_audit.c
+> > > > @@ -38,6 +38,8 @@ int ppc32_classify_syscall(unsigned syscall)
+> > > >  		return 4;
+> > > >  	case __NR_execve:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 1;
+> > > >  	}
+> > > > diff --git a/arch/s390/kernel/audit.c b/arch/s390/kernel/audit.c
+> > > > index d395c6c9944c..d964cb94cfaf 100644
+> > > > --- a/arch/s390/kernel/audit.c
+> > > > +++ b/arch/s390/kernel/audit.c
+> > > > @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > > >  		return 4;
+> > > >  	case __NR_execve:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 0;
+> > > >  	}
+> > > > diff --git a/arch/s390/kernel/compat_audit.c b/arch/s390/kernel/compat_audit.c
+> > > > index 444fb1f66944..f7b32933ce0e 100644
+> > > > --- a/arch/s390/kernel/compat_audit.c
+> > > > +++ b/arch/s390/kernel/compat_audit.c
+> > > > @@ -39,6 +39,8 @@ int s390_classify_syscall(unsigned syscall)
+> > > >  		return 4;
+> > > >  	case __NR_execve:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 1;
+> > > >  	}
+> > > > diff --git a/arch/sparc/kernel/audit.c b/arch/sparc/kernel/audit.c
+> > > > index a6e91bf34d48..b6dcca9c6520 100644
+> > > > --- a/arch/sparc/kernel/audit.c
+> > > > +++ b/arch/sparc/kernel/audit.c
+> > > > @@ -55,6 +55,8 @@ int audit_classify_syscall(int abi, unsigned int syscall)
+> > > >  		return 4;
+> > > >  	case __NR_execve:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 0;
+> > > >  	}
+> > > > diff --git a/arch/sparc/kernel/compat_audit.c b/arch/sparc/kernel/compat_audit.c
+> > > > index 10eeb4f15b20..d2652a1083ad 100644
+> > > > --- a/arch/sparc/kernel/compat_audit.c
+> > > > +++ b/arch/sparc/kernel/compat_audit.c
+> > > > @@ -39,6 +39,8 @@ int sparc32_classify_syscall(unsigned int syscall)
+> > > >  		return 4;
+> > > >  	case __NR_execve:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 1;
+> > > >  	}
+> > > > diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
+> > > > index 6efe6cb3768a..57a02ade5503 100644
+> > > > --- a/arch/x86/ia32/audit.c
+> > > > +++ b/arch/x86/ia32/audit.c
+> > > > @@ -39,6 +39,8 @@ int ia32_classify_syscall(unsigned syscall)
+> > > >  	case __NR_execve:
+> > > >  	case __NR_execveat:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 1;
+> > > >  	}
+> > > > diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
+> > > > index 83d9cad4e68b..39de1e021258 100644
+> > > > --- a/arch/x86/kernel/audit_64.c
+> > > > +++ b/arch/x86/kernel/audit_64.c
+> > > > @@ -53,6 +53,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
+> > > >  	case __NR_execve:
+> > > >  	case __NR_execveat:
+> > > >  		return 5;
+> > > > +	case __NR_openat2:
+> > > > +		return 6;
+> > > >  	default:
+> > > >  		return 0;
+> > > >  	}
+> > > > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> > > > index 8bb9ac84d2fb..f5616e70d129 100644
+> > > > --- a/kernel/auditsc.c
+> > > > +++ b/kernel/auditsc.c
+> > > > @@ -76,6 +76,7 @@
+> > > >  #include <linux/fsnotify_backend.h>
+> > > >  #include <uapi/linux/limits.h>
+> > > >  #include <uapi/linux/netfilter/nf_tables.h>
+> > > > +#include <uapi/linux/openat2.h>
+> > > >  
+> > > >  #include "audit.h"
+> > > >  
+> > > > @@ -195,6 +196,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+> > > >  		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+> > > >  	case 5: /* execve */
+> > > >  		return mask & AUDIT_PERM_EXEC;
+> > > > +	case 6: /* openat2 */
+> > > > +		return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
+> > > 
+> > > That looks a bit dodgy. Maybe sm like the below would be a bit better?
+> > 
+> > Ah, ok, fair enough, since original flags use a u32 and this was picked
+> > as u64 for alignment.  It was just occurring to me last night that I
+> > might have the dubious honour of being the first usage of 0%llo format
+> > specifier in the kernel...  ;-)
 > 
-> Sorry, I'm doing a bug scrub and found
-> https://github.com/ClangBuiltLinux/linux/issues/774 still open (and my
-> reply to this thread still in Drafts; never sent). With my patches
-> rebased:
-> $ file arch/powerpc/kernel/vdso32/vdso32.so
-> arch/powerpc/kernel/vdso32/vdso32.so: ELF 32-bit MSB shared object,
-> PowerPC or cisco 4500, version 1 (SYSV), dynamically linked, stripped
+> > > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> > > index 47fb48f42c93..531e882a5096 100644
+> > > --- a/kernel/auditsc.c
+> > > +++ b/kernel/auditsc.c
+> > > @@ -159,6 +159,7 @@ static const struct audit_nfcfgop_tab audit_nfcfgs[] = {
+> > > 
+> > >  static int audit_match_perm(struct audit_context *ctx, int mask)
+> > >  {
+> > > +       struct open_how *openat2;
+> > >         unsigned n;
+> > >         if (unlikely(!ctx))
+> > >                 return 0;
+> > > @@ -195,6 +196,12 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+> > >                 return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+> > >         case 5: /* execve */
+> > >                 return mask & AUDIT_PERM_EXEC;
+> > > +       case 6: /* openat2 */
+> > > +               openat2 = ctx->argv[2];
+> > > +               if (upper_32_bits(openat2->flags))
+> > > +                       pr_warn("Some sensible warning about unknown flags");
+> > > +
+> > > +               return mask & ACC_MODE(lower_32_bits(openat2->flags));
+> > >         default:
+> > >                 return 0;
+> > >         }
+> > > 
+> > > (Ideally we'd probably notice at build-time that we've got flags
+> > > exceeding 32bits. Could probably easily been done by exposing an all
+> > > flags macro somewhere and then we can place a BUILD_BUG_ON() or sm into
+> > > such places.)
 > 
-> Are you still using 2.26?
+> open_how arguments are translated to open_flags which is limited to 32 bits.
+> 
+> This code is shared with the other open functions that are limited to 32 bits
+> in open_flags.  openat2 was created to avoid the limitations of openat, so at
+> some point it isn't unreasonable that flags exceed 32 bits, but open_flags
+> would have to be modified at that point to accommodate.
+> 
+> This value is handed in from userspace, and could be handed in without being
+> defined in the kernel, so those values need to be properly checked regardless
+> of the flags defined in the kernel.
+> 
+> The openat2 syscall claims to check all flags but no check is done on the top
+> 32 bits.
 
-Yes, our production kernels and applications are built with gcc 5.5 and binutils 2.26
+Hm, I think this is an oversight because of the different semantics for
+openat() and openat2(). We should check that no upper 32 bits are set
+for openat2(). That's the intended semantics. For old openat()
+we can't error on unknown flags because it has traditionally ignored
+unknown flags.
 
 > 
-> I'm not able to repro Nathan's reported issue from
-> https://lore.kernel.org/lkml/20200902052123.GA2687902@ubuntu-n2-xlarge-x86/,
-> so I'm curious if I should resend the rebased patches as v2?
+> build_open_flags() assigns how->flags to an int, effectively dropping the top
+> 32 bits, before being checked against ~VALID_OPEN_FLAGS.  This happens after
+> audit mode filtering, but has the same result.
+
+Right. That's at bug we should return an error to userspace. We do for
+any unkown values that fall within the lower 32 bit range so it's silly
+to ignore unknown values in the upper 32 bit range.
+
 > 
+> Audit mode filtering using ACC_MODE() already masks out all but the lowest two
+> bits with O_ACCMODE, so there is no danger of overflowing a u32.
+> 
+> tomoyo_check_open_permission() assigns ACC_MODE() to u8 without a check.
+> 
+> All FMODE_* flags are clamped at u32.
+> 
+> 6 bits remain at top and 4 bits just above O_ACCMODE, so there is no immediate
+> danger of overflow and if any additional mode bits are needed they are
+> available.
+> 000377777703 used
+> 037777777777 available
+> 10 bits remaining
+> 
+> So, I don't think a check at this point in the code is useful, but do agree
 
-I can't remember what was all this discussion about.
+Maybe but note that a defensive posture here might be a good thing
+instead of tripping over the issue later.
 
-I gave a try to your rebased patches.
+> that there should be some changes and checks added in sys_openat2 and
+> build_open_flags().
+> 
+> 
+> Also noticed: It looks like fddb5d430ad9f left in VALID_UPGRADE_FLAGS for
+> how->upgrade_mask that was removed.  This may be used at a later date, but at
+> this point is dead code.
 
-Still an issue with binutils 2.26:
+I'll take a look now.
 
-   VDSO32L arch/powerpc/kernel/vdso32/vdso32.so.dbg
-ppc-linux-ld: warning: orphan section `.rela.got' from `arch/powerpc/kernel/vdso32/sigtramp.o' being 
-placed in section `.rela.dyn'.
-ppc-linux-ld: warning: orphan section `.rela.plt' from `arch/powerpc/kernel/vdso32/sigtramp.o' being 
-placed in section `.rela.dyn'.
-ppc-linux-ld: warning: orphan section `.glink' from `arch/powerpc/kernel/vdso32/sigtramp.o' being 
-placed in section `.glink'.
-ppc-linux-ld: warning: orphan section `.iplt' from `arch/powerpc/kernel/vdso32/sigtramp.o' being 
-placed in section `.iplt'.
-ppc-linux-ld: warning: orphan section `.rela.iplt' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
-being placed in section `.rela.dyn'.
-ppc-linux-ld: warning: orphan section `.rela.text' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
-being placed in section `.rela.dyn'.
-/bin/sh: line 1:  7850 Segmentation fault      (core dumped) ppc-linux-ld -EB -m elf32ppc -shared 
--soname linux-vdso32.so.1 --eh-frame-hdr --orphan-handling=warn -T 
-arch/powerpc/kernel/vdso32/vdso32.lds arch/powerpc/kernel/vdso32/sigtramp.o 
-arch/powerpc/kernel/vdso32/gettimeofday.o arch/powerpc/kernel/vdso32/datapage.o 
-arch/powerpc/kernel/vdso32/cacheflush.o arch/powerpc/kernel/vdso32/note.o 
-arch/powerpc/kernel/vdso32/getcpu.o arch/powerpc/kernel/vdso32/vgettimeofday.o -o 
-arch/powerpc/kernel/vdso32/vdso32.so.dbg
-make[2]: *** [arch/powerpc/kernel/vdso32/vdso32.so.dbg] Error 139
-make[2]: *** Deleting file `arch/powerpc/kernel/vdso32/vdso32.so.dbg'
-
-
-
-With gcc 10.1 and binutils 2.34 I get:
-
-PPC32 build:
-
-   VDSO32L arch/powerpc/kernel/vdso32/vdso32.so.dbg
-powerpc64-linux-ld: warning: orphan section `.rela.got' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
-being placed in section `.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.rela.plt' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
-being placed in section `.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.glink' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
-being placed in section `.glink'
-powerpc64-linux-ld: warning: orphan section `.iplt' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
-being placed in section `.iplt'
-powerpc64-linux-ld: warning: orphan section `.rela.iplt' from 
-`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.rela.branch_lt' from 
-`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.rela.text' from 
-`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
-
-
-PPC64 build:
-
-   VDSO32L arch/powerpc/kernel/vdso32/vdso32.so.dbg
-powerpc64-linux-ld: warning: orphan section `.rela.got' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
-being placed in section `.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.rela.plt' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
-being placed in section `.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.glink' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
-being placed in section `.glink'
-powerpc64-linux-ld: warning: orphan section `.iplt' from `arch/powerpc/kernel/vdso32/sigtramp.o' 
-being placed in section `.iplt'
-powerpc64-linux-ld: warning: orphan section `.rela.iplt' from 
-`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.rela.branch_lt' from 
-`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.rela.text' from 
-`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.rela.dyn'
-   VDSOSYM include/generated/vdso32-offsets.h
-   VDSO64L arch/powerpc/kernel/vdso64/vdso64.so.dbg
-powerpc64-linux-ld: warning: orphan section `.iplt' from `linker stubs' being placed in section `.iplt'
-powerpc64-linux-ld: warning: orphan section `.rela.iplt' from `linker stubs' being placed in section 
-`.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.rela.branch_lt' from `linker stubs' being placed in 
-section `.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.rela.branch_lt' from `linker stubs' being placed in 
-section `.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.plt' from `linker stubs' being placed in section `.plt'
-powerpc64-linux-ld: warning: orphan section `.rela.plt' from `linker stubs' being placed in section 
-`.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.rela.got' from `linker stubs' being placed in section 
-`.rela.dyn'
-powerpc64-linux-ld: warning: orphan section `.rela.opd' from `linker stubs' being placed in section 
-`.rela.dyn'
-
-
-Christophe
+Christian
