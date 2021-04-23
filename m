@@ -2,59 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459C136982A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 19:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63977369884
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 19:34:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRgxk1TjTz30Hr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 03:19:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRhHs1zl9z303F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 03:34:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=kcMCoRkt;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRgxN0fN9z2xZ2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 03:18:44 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FRgx91x1wz9ttRv;
- Fri, 23 Apr 2021 19:18:37 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ALw1zRGnK-kI; Fri, 23 Apr 2021 19:18:37 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FRgx916p8z9ttRt;
- Fri, 23 Apr 2021 19:18:37 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7D15C8B886;
- Fri, 23 Apr 2021 19:18:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id HOCbVO0OVlWb; Fri, 23 Apr 2021 19:18:39 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CB56D8B765;
- Fri, 23 Apr 2021 19:18:38 +0200 (CEST)
-Subject: Re: [PATCH 1/2] powerpc/vdso64: link vdso64 with linker
-To: Nick Desaulniers <ndesaulniers@google.com>
-References: <20200901222523.1941988-1-ndesaulniers@google.com>
- <20200901222523.1941988-2-ndesaulniers@google.com>
- <87blio1ilu.fsf@mpe.ellerman.id.au>
- <CAKwvOd=ZeJU+vLUk2P7FpX35haj7AC50B9Yps4pyoGCpd7ueTw@mail.gmail.com>
- <3d837a36-a186-6789-7924-eaa97f056b68@csgroup.eu>
- <CAKwvOd=KP5CZ5wOrczC6qPAzN7DdFCJ_XvU6e=zvB3XpQrp_-g@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <bfa4fa45-9887-d7d4-21a7-ac48835b10c1@csgroup.eu>
-Date: Fri, 23 Apr 2021 19:18:34 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
+ helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
+ header.a=rsa-sha256 header.s=default header.b=kcMCoRkt; 
+ dkim-atps=neutral
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FRhHS20ZWz2xy7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 03:34:28 +1000 (AEST)
+Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
+ [73.42.176.67])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 1900820B8001;
+ Fri, 23 Apr 2021 10:34:26 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1900820B8001
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1619199266;
+ bh=wauSRbWpWMAp2gLVa1RG3QS9v1f1bggDujvhpEqfnDo=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=kcMCoRktudKFcWP0+SIZ1vixpBadwk75Mgtm8GrSChiUcXV/X24QaUvQl7PligvKP
+ MNqsG96/qR1qk7o/wixGXQXcVexeUVInCV5xCcAE+Vb6gzqPSVC07nepQCcAtPnQzj
+ pRHskL+Ov8mK82/D3cOp0KTIT+B7VqVgNfJshqwM=
+Subject: Re: [PATCH v2 1/2] powerpc: Free fdt on error in elf64_load()
+To: robh@kernel.org, dan.carpenter@oracle.com, mpe@ellerman.id.au
+References: <20210421163610.23775-1-nramas@linux.microsoft.com>
+From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <4e434de5-522c-a7fd-3178-d1636cb9bbc1@linux.microsoft.com>
+Date: Fri, 23 Apr 2021 10:34:25 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <CAKwvOd=KP5CZ5wOrczC6qPAzN7DdFCJ_XvU6e=zvB3XpQrp_-g@mail.gmail.com>
+In-Reply-To: <20210421163610.23775-1-nramas@linux.microsoft.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,96 +59,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Joe Lawrence <joe.lawrence@redhat.com>, Kees Cook <keescook@chromium.org>,
- Fangrui Song <maskray@google.com>, LKML <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: devicetree@vger.kernel.org, kbuild-all@lists.01.org, lkp@intel.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 4/21/21 9:36 AM, Lakshmi Ramasubramanian wrote:
 
+Hi Dan,
 
-Le 23/04/2021 à 00:44, Nick Desaulniers a écrit :
-> On Wed, Sep 2, 2020 at 11:02 AM Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->>
->>
->>
->> Le 02/09/2020 à 19:41, Nick Desaulniers a écrit :
->>> On Wed, Sep 2, 2020 at 5:14 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>>>
->>>> Nick Desaulniers <ndesaulniers@google.com> writes:
->>>>> Fixes: commit f2af201002a8 ("powerpc/build: vdso linker warning for orphan sections")
->>>>
->>>> I think I'll just revert that for v5.9 ?
->>>
->>> SGTM; you'll probably still want these changes with some modifications
->>> at some point; vdso32 did have at least one orphaned section, and will
->>> be important for hermetic builds.  Seeing crashes in supported
->>> versions of the tools ties our hands at the moment.
->>>
->>
->> Keeping the tool problem aside with binutils 2.26, do you have a way to
->> really link an elf32ppc object when  building vdso32 for PPC64 ?
+> There are a few "goto out;" statements before the local variable "fdt"
+> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
+> elf64_load().  This will result in an uninitialized "fdt" being passed
+> to kvfree() in this function if there is an error before the call to
+> of_kexec_alloc_and_setup_fdt().
 > 
-> Sorry, I'm doing a bug scrub and found
-> https://github.com/ClangBuiltLinux/linux/issues/774 still open (and my
-> reply to this thread still in Drafts; never sent). With my patches
-> rebased:
-> $ file arch/powerpc/kernel/vdso32/vdso32.so
-> arch/powerpc/kernel/vdso32/vdso32.so: ELF 32-bit MSB shared object,
-> PowerPC or cisco 4500, version 1 (SYSV), dynamically linked, stripped
+> If there is any error after fdt is allocated, but before it is
+> saved in the arch specific kimage struct, free the fdt.
 > 
-> Are you still using 2.26?
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+> ---
+>   arch/powerpc/kexec/elf_64.c | 16 ++++++----------
+>   1 file changed, 6 insertions(+), 10 deletions(-)
 > 
-> I'm not able to repro Nathan's reported issue from
-> https://lore.kernel.org/lkml/20200902052123.GA2687902@ubuntu-n2-xlarge-x86/,
-> so I'm curious if I should resend the rebased patches as v2?
 
-One comment on your rebased patch:
+Please review this patch and Patch 2/2.
 
- > diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
- > index 8542e9bbeead..0bd06ec06aaa 100644
- > --- a/arch/powerpc/include/asm/vdso.h
- > +++ b/arch/powerpc/include/asm/vdso.h
- > @@ -25,19 +25,7 @@ int vdso_getcpu_init(void);
- >
- >   #else /* __ASSEMBLY__ */
- >
- > -#ifdef __VDSO64__
- > -#define V_FUNCTION_BEGIN(name)		\
- > -	.globl name;			\
- > -	name:				\
- > -
- > -#define V_FUNCTION_END(name)		\
- > -	.size name,.-name;
- > -
- > -#define V_LOCAL_FUNC(name) (name)
- > -#endif /* __VDSO64__ */
- > -
- > -#ifdef __VDSO32__
- > -
- > +#if defined(__VDSO32__) || defined (__VDSO64__)
+thanks,
+  -lakshmi
 
-You always have either __VDSO32__ or __VDSO64__ so this #if is pointless
+> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+> index 5a569bb51349..02662e72c53d 100644
+> --- a/arch/powerpc/kexec/elf_64.c
+> +++ b/arch/powerpc/kexec/elf_64.c
+> @@ -114,7 +114,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>   	ret = setup_new_fdt_ppc64(image, fdt, initrd_load_addr,
+>   				  initrd_len, cmdline);
+>   	if (ret)
+> -		goto out;
+> +		goto out_free_fdt;
+>   
+>   	fdt_pack(fdt);
+>   
+> @@ -125,7 +125,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>   	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+>   	ret = kexec_add_buffer(&kbuf);
+>   	if (ret)
+> -		goto out;
+> +		goto out_free_fdt;
+>   
+>   	/* FDT will be freed in arch_kimage_file_post_load_cleanup */
+>   	image->arch.fdt = fdt;
+> @@ -140,18 +140,14 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>   	if (ret)
+>   		pr_err("Error setting up the purgatory.\n");
+>   
+> +	goto out;
+> +
+> +out_free_fdt:
+> +	kvfree(fdt);
+>   out:
+>   	kfree(modified_cmdline);
+>   	kexec_free_elf_info(&elf_info);
+>   
+> -	/*
+> -	 * Once FDT buffer has been successfully passed to kexec_add_buffer(),
+> -	 * the FDT buffer address is saved in image->arch.fdt. In that case,
+> -	 * the memory cannot be freed here in case of any other error.
+> -	 */
+> -	if (ret && !image->arch.fdt)
+> -		kvfree(fdt);
+> -
+>   	return ret ? ERR_PTR(ret) : NULL;
+>   }
+>   
+> 
 
- >   #define V_FUNCTION_BEGIN(name)		\
- >   	.globl name;			\
- >   	.type name,@function; 		\
- > @@ -47,8 +35,7 @@ int vdso_getcpu_init(void);
- >   	.size name,.-name;
- >
- >   #define V_LOCAL_FUNC(name) (name)
- > -
- > -#endif /* __VDSO32__ */
- > +#endif /* __VDSO{32|64}__ */
- >
- >   #endif /* __ASSEMBLY__ */
- >
-
-
-Christophe
