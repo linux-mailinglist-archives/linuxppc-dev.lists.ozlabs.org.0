@@ -1,66 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F623693F6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 15:46:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0D4369360
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 15:31:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRbCp2SCcz3bxn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 23:45:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRZvY2dZxz30H2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 23:31:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRXC56930z2xYY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 21:30:06 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FRXBx1lS5z9ttBV;
- Fri, 23 Apr 2021 13:30:01 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id YdSTSv2p5ZBt; Fri, 23 Apr 2021 13:30:01 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FRXBx0Vjkz9ttBQ;
- Fri, 23 Apr 2021 13:30:01 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B81628B84D;
- Fri, 23 Apr 2021 13:30:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id PdVzE1YVA3q8; Fri, 23 Apr 2021 13:30:02 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9748F8B765;
- Fri, 23 Apr 2021 13:29:59 +0200 (CEST)
-Subject: Re: [PATCH bpf-next 1/2] bpf: Remove bpf_jit_enable=2 debugging mode
-To: Quentin Monnet <quentin@isovalent.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>
-References: <20210415093250.3391257-1-Jianlin.Lv@arm.com>
- <9c4a78d2-f73c-832a-e6e2-4b4daa729e07@iogearbox.net>
- <d3949501-8f7d-57c4-b3fe-bcc3b24c09d8@isovalent.com>
- <CAADnVQJ2oHbYfgY9jqM_JMxUsoZxaNrxKSVFYfgCXuHVpDehpQ@mail.gmail.com>
- <0dea05ba-9467-0d84-4515-b8766f60318e@csgroup.eu>
- <CAADnVQ+oQT6C7Qv7P5TV-x7im54omKoCYYKtYhcnhb1Uv3LPMQ@mail.gmail.com>
- <be132117-f267-5817-136d-e1aeb8409c2a@csgroup.eu>
- <58296f87-ad00-a0f5-954b-2150aa84efc4@isovalent.com>
- <6a809d3f-c9e3-0eb7-9c1d-a202ad848424@csgroup.eu>
- <ab1c3803-179c-7882-2bba-9eeda5211ad1@isovalent.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <90e2da42-6924-4246-f2f6-cfb2778cd804@csgroup.eu>
-Date: Fri, 23 Apr 2021 13:29:59 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FRZvD19Fwz2xZy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 23:31:34 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4DBFB1396;
+ Fri, 23 Apr 2021 06:31:31 -0700 (PDT)
+Received: from [10.57.62.63] (unknown [10.57.62.63])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B58A3F73B;
+ Fri, 23 Apr 2021 06:31:22 -0700 (PDT)
+Subject: Re: [PATCH v5 08/16] swiotlb: Update is_swiotlb_active to add a
+ struct device argument
+To: Claire Chang <tientzu@chromium.org>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, boris.ostrovsky@oracle.com,
+ jgross@suse.com, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
+References: <20210422081508.3942748-1-tientzu@chromium.org>
+ <20210422081508.3942748-9-tientzu@chromium.org>
+From: Robin Murphy <robin.murphy@arm.com>
+Message-ID: <1f84aa4c-f966-0986-b5a4-eecbf3b454ec@arm.com>
+Date: Fri, 23 Apr 2021 14:31:16 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
  Thunderbird/78.10.0
 MIME-Version: 1.0
-In-Reply-To: <ab1c3803-179c-7882-2bba-9eeda5211ad1@isovalent.com>
+In-Reply-To: <20210422081508.3942748-9-tientzu@chromium.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 23 Apr 2021 23:44:23 +1000
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,79 +52,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Song Liu <songliubraving@fb.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Zi Shen Lim <zlim.lnx@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
- Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Paul Mackerras <paulus@samba.org>, Sandipan Das <sandipan@linux.ibm.com>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Shubham Bansal <illusionist.neo@gmail.com>,
- Mahesh Bandewar <maheshb@google.com>, Will Deacon <will@kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Ilya Leoshkevich <iii@linux.ibm.com>,
- paulburton@kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Masahiro Yamada <masahiroy@kernel.org>, X86 ML <x86@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Dmitry Vyukov <dvyukov@google.com>, Catalin Marinas <catalin.marinas@arm.com>,
- "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
- Jakub Kicinski <kuba@kernel.org>, Tobias Klauser <tklauser@distanz.ch>,
- grantseltzer@gmail.com, Xi Wang <xi.wang@gmail.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Luke Nelson <luke.r.nels@gmail.com>,
- Heiko Carstens <hca@linux.ibm.com>, KP Singh <kpsingh@kernel.org>,
- iecedge@gmail.com, Simon Horman <horms@verge.net.au>,
- Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Paul Walmsley <paul.walmsley@sifive.com>, Jianlin Lv <Jianlin.Lv@arm.com>,
- Nicolas Dichtel <nicolas.dichtel@6wind.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Wang YanQing <udknight@gmail.com>, tsbogend@alpha.franken.de,
- Daniel Borkmann <daniel@iogearbox.net>,
- Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
- Network Development <netdev@vger.kernel.org>, David Ahern <dsahern@kernel.org>,
- linux-mips@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Yonghong Song <yhs@fb.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, bpf <bpf@vger.kernel.org>,
- ppc-dev <linuxppc-dev@lists.ozlabs.org>, Martin KaFai Lau <kafai@fb.com>
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, mingo@kernel.org, jxgao@google.com,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ xypron.glpk@gmx.de, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ daniel@ffwll.ch, airlied@linux.ie, maarten.lankhorst@linux.intel.com,
+ jani.nikula@linux.intel.com, Nicolas Boichat <drinkcat@chromium.org>,
+ rodrigo.vivi@intel.com, bhelgaas@google.com,
+ Dan Williams <dan.j.williams@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ nouveau@lists.freedesktop.org, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
+ tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 23/04/2021 à 12:59, Quentin Monnet a écrit :
-> 2021-04-23 12:46 UTC+0200 ~ Christophe Leroy <christophe.leroy@csgroup.eu>
->>
->>
->> Le 23/04/2021 à 12:26, Quentin Monnet a écrit :
->>> 2021-04-23 09:19 UTC+0200 ~ Christophe Leroy
->>> <christophe.leroy@csgroup.eu>
->>>
->>> [...]
->>>
->>>> I finally managed to cross compile bpftool with libbpf, libopcodes,
->>>> readline, ncurses, libcap, libz and all needed stuff. Was not easy but I
->>>> made it.
->>>
->>> Libcap is optional and bpftool does not use readline or ncurses. May I
->>> ask how you tried to build it?
->>
->> cd tools/bpf/
->>
->> make ARCH=powerpc CROSS_COMPILE=ppc-linux-
+On 2021-04-22 09:15, Claire Chang wrote:
+> Update is_swiotlb_active to add a struct device argument. This will be
+> useful later to allow for restricted DMA pool.
 > 
-> Ok, you could try running directly from tools/bpf/bpftool/ next time
-> instead.
+> Signed-off-by: Claire Chang <tientzu@chromium.org>
+> ---
+>   drivers/gpu/drm/i915/gem/i915_gem_internal.c | 2 +-
+>   drivers/gpu/drm/nouveau/nouveau_ttm.c        | 2 +-
+>   drivers/pci/xen-pcifront.c                   | 2 +-
+>   include/linux/swiotlb.h                      | 4 ++--
+>   kernel/dma/direct.c                          | 2 +-
+>   kernel/dma/swiotlb.c                         | 4 ++--
+>   6 files changed, 8 insertions(+), 8 deletions(-)
 > 
-> Readline at least is for a different tool under tools/bpf/, bpf_dbg (But
-> I'm still not sure where that ncurses requirement was pulled from). The
-> requirements for specific kernel options probably came from yet another
-> tool (runqslower, I think).
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_internal.c b/drivers/gpu/drm/i915/gem/i915_gem_internal.c
+> index ce6b664b10aa..7d48c433446b 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_internal.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_internal.c
+> @@ -42,7 +42,7 @@ static int i915_gem_object_get_pages_internal(struct drm_i915_gem_object *obj)
+>   
+>   	max_order = MAX_ORDER;
+>   #ifdef CONFIG_SWIOTLB
+> -	if (is_swiotlb_active()) {
+> +	if (is_swiotlb_active(NULL)) {
+>   		unsigned int max_segment;
+>   
+>   		max_segment = swiotlb_max_segment();
+> diff --git a/drivers/gpu/drm/nouveau/nouveau_ttm.c b/drivers/gpu/drm/nouveau/nouveau_ttm.c
+> index e8b506a6685b..2a2ae6d6cf6d 100644
+> --- a/drivers/gpu/drm/nouveau/nouveau_ttm.c
+> +++ b/drivers/gpu/drm/nouveau/nouveau_ttm.c
+> @@ -321,7 +321,7 @@ nouveau_ttm_init(struct nouveau_drm *drm)
+>   	}
+>   
+>   #if IS_ENABLED(CONFIG_SWIOTLB) && IS_ENABLED(CONFIG_X86)
+> -	need_swiotlb = is_swiotlb_active();
+> +	need_swiotlb = is_swiotlb_active(NULL);
+>   #endif
+>   
+>   	ret = ttm_device_init(&drm->ttm.bdev, &nouveau_bo_driver, drm->dev->dev,
+> diff --git a/drivers/pci/xen-pcifront.c b/drivers/pci/xen-pcifront.c
+> index b7a8f3a1921f..6d548ce53ce7 100644
+> --- a/drivers/pci/xen-pcifront.c
+> +++ b/drivers/pci/xen-pcifront.c
+> @@ -693,7 +693,7 @@ static int pcifront_connect_and_init_dma(struct pcifront_device *pdev)
+>   
+>   	spin_unlock(&pcifront_dev_lock);
+>   
+> -	if (!err && !is_swiotlb_active()) {
+> +	if (!err && !is_swiotlb_active(NULL)) {
+>   		err = pci_xen_swiotlb_init_late();
+>   		if (err)
+>   			dev_err(&pdev->xdev->dev, "Could not setup SWIOTLB!\n");
+> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
+> index 2a6cca07540b..c530c976d18b 100644
+> --- a/include/linux/swiotlb.h
+> +++ b/include/linux/swiotlb.h
+> @@ -123,7 +123,7 @@ static inline bool is_swiotlb_buffer(struct device *dev, phys_addr_t paddr)
+>   void __init swiotlb_exit(void);
+>   unsigned int swiotlb_max_segment(void);
+>   size_t swiotlb_max_mapping_size(struct device *dev);
+> -bool is_swiotlb_active(void);
+> +bool is_swiotlb_active(struct device *dev);
+>   void __init swiotlb_adjust_size(unsigned long size);
+>   #else
+>   #define swiotlb_force SWIOTLB_NO_FORCE
+> @@ -143,7 +143,7 @@ static inline size_t swiotlb_max_mapping_size(struct device *dev)
+>   	return SIZE_MAX;
+>   }
+>   
+> -static inline bool is_swiotlb_active(void)
+> +static inline bool is_swiotlb_active(struct device *dev)
+>   {
+>   	return false;
+>   }
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index 84c9feb5474a..7a88c34d0867 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -495,7 +495,7 @@ int dma_direct_supported(struct device *dev, u64 mask)
+>   size_t dma_direct_max_mapping_size(struct device *dev)
+>   {
+>   	/* If SWIOTLB is active, use its maximum mapping size */
+> -	if (is_swiotlb_active() &&
+> +	if (is_swiotlb_active(dev) &&
+>   	    (dma_addressing_limited(dev) || swiotlb_force == SWIOTLB_FORCE))
+
+I wonder if it's worth trying to fold these other conditions into 
+is_swiotlb_active() itself? I'm not entirely sure what matters for Xen, 
+but for the other cases it seems like they probably only care about 
+whether bouncing may occur for their particular device or not (possibly 
+they want to be using dma_max_mapping_size() now anyway - TBH I'm 
+struggling to make sense of what the swiotlb_max_segment business is 
+supposed to mean).
+
+Otherwise, patch #9 will need to touch here as well to make sure that 
+per-device forced bouncing is reflected correctly.
+
+Robin.
+
+>   		return swiotlb_max_mapping_size(dev);
+>   	return SIZE_MAX;
+> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+> index ffbb8724e06c..1d221343f1c8 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -659,9 +659,9 @@ size_t swiotlb_max_mapping_size(struct device *dev)
+>   	return ((size_t)IO_TLB_SIZE) * IO_TLB_SEGSIZE;
+>   }
+>   
+> -bool is_swiotlb_active(void)
+> +bool is_swiotlb_active(struct device *dev)
+>   {
+> -	return io_tlb_default_mem != NULL;
+> +	return get_io_tlb_mem(dev) != NULL;
+>   }
+>   EXPORT_SYMBOL_GPL(is_swiotlb_active);
+>   
 > 
-
-ncurses (or termcap) is required by readline
-
-Christophe
