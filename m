@@ -1,39 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F1F368E22
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 09:49:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C24A3368F29
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 11:04:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FRRHt4GhPz30G6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 17:48:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FRSzG5k5Hz30BC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Apr 2021 19:04:42 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=TJlAo4Zg;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=cuc7=ju=ubuntu.com=christian.brauner@kernel.org;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=TJlAo4Zg; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FRRHY3Bjdz2xZy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 17:48:41 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 57E79611C2;
- Fri, 23 Apr 2021 07:48:34 +0000 (UTC)
-Date: Fri, 23 Apr 2021 09:48:31 +0200
-From: Christian Brauner <christian.brauner@ubuntu.com>
-To: Richard Guy Briggs <rgb@redhat.com>
-Subject: Re: [PATCH 1/2] audit: add support for the openat2 syscall
-Message-ID: <20210423074831.lc4jqqtyuun2fnws@wittgenstein>
-References: <cover.1616031035.git.rgb@redhat.com>
- <49510cacfb5fbbaa312a4a389f3a6619675007ab.1616031035.git.rgb@redhat.com>
- <20210318104843.uiga6tmmhn5wfhbs@wittgenstein>
- <20210318120801.GK3141668@madcap2.tricolour.ca>
- <20210423023408.GB2174828@madcap2.tricolour.ca>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FRSyq3Zpbz2xfh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 19:04:15 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id f29so34749358pgm.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Apr 2021 02:04:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=vbroHLFLWPyRkw+YoohbjK33O8aa6D9yRkpoFtIshG0=;
+ b=TJlAo4ZgtBOBj3UrvRMHDlqCiz5scj0Uew1iKUT0LwJRCzixp2AZFj7sALyKvBhzCa
+ TIzQzFpXt/ejAsxGZKHvmmXE9/zwrxHYUCkyVy0q2O3b92gqiEztEHOQtMx6tNFfafYE
+ lJG4vSKcDP+Bh2+wUBfFNJfvfdLqc5tld0LHYxU7kM+/6flGg1dD9vgjPBMFtRNh5hUi
+ w/Rgf2lS7NT2GWQ64jGvd0U24j5sp1qtH1hSaVkOf8uMunFBsjrT4Fttecr3vP2/L06W
+ eErMBRxnYAwb8GVQLUYI+8iddZXGpCU1yVR3gRGHA35/dssEw3j4F5HCUn3SVqp3TQ/q
+ 4QhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=vbroHLFLWPyRkw+YoohbjK33O8aa6D9yRkpoFtIshG0=;
+ b=WnZAZgyPZfQES8dcMk8tGeaJhEUG7IZQRyglfQiophl218MmZ2n8i8Zuc0EmhW3xiz
+ HBO6qkRT38PFjZ7aUqrOS+WALpMVlE6A3rgftA8T949VFgUMhQo6Km/c5maH81E31Zxo
+ YByJ06CoDQH+DZFuHQFB69Kju62TMEXBWp+wb3dirhFQZLf5pQljkvKk+8oD4lNzkg4A
+ r6/618HZdsWFv8jnOXS9nLji3ZRyLQxCl6oFL7huPryIKMuk+bUH5I33A5agZP5J/OmC
+ Zm8rcD1PJkXCaytuIelf7vHFCfW/DnUgXemPCr7NGeEO9o8XgHPXUA6ImLXafjAUKByt
+ 2hWA==
+X-Gm-Message-State: AOAM530NLYJALcR+ZBevA97LbbayetpjUYkT1qOhh/h+tQkp1CnrCmg3
+ pK5A5Me7GmqFSH7VITi0TED98w==
+X-Google-Smtp-Source: ABdhPJySXmpi3EhoIC7+CHlWcpUUImOqCbV+ZaWEOlOpsuQSqHEyd8t5l7FRnoSErRC+nnkRj2ZGZA==
+X-Received: by 2002:a63:1851:: with SMTP id 17mr2796735pgy.329.1619168652344; 
+ Fri, 23 Apr 2021 02:04:12 -0700 (PDT)
+Received: from localhost
+ (ppp121-45-194-51.cbr-trn-nor-bras38.tpg.internode.on.net. [121.45.194.51])
+ by smtp.gmail.com with UTF8SMTPSA id n50sm4223377pfv.69.2021.04.23.02.04.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 23 Apr 2021 02:04:11 -0700 (PDT)
+Message-ID: <e214f457-fcf0-c9ff-4574-93ed20298119@ozlabs.ru>
+Date: Fri, 23 Apr 2021 19:04:06 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210423023408.GB2174828@madcap2.tricolour.ca>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101
+ Thunderbird/88.0
+Subject: Re: [PATCH v3 06/11] powerpc/pseries/iommu: Add ddw_property_create()
+ and refactor enable_ddw()
+Content-Language: en-US
+To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Nicolin Chen <nicoleotsuka@gmail.com>,
+ Niklas Schnelle <schnelle@linux.ibm.com>
+References: <20210422070721.463912-1-leobras.c@gmail.com>
+ <20210422070721.463912-7-leobras.c@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <20210422070721.463912-7-leobras.c@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,327 +93,212 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, x86@kernel.org,
- LKML <linux-kernel@vger.kernel.org>, sparclinux@vger.kernel.org,
- Aleksa Sarai <cyphar@cyphar.com>,
- Linux-Audit Mailing List <linux-audit@redhat.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 22, 2021 at 10:34:08PM -0400, Richard Guy Briggs wrote:
-> On 2021-03-18 08:08, Richard Guy Briggs wrote:
-> > On 2021-03-18 11:48, Christian Brauner wrote:
-> > > [+Cc Aleksa, the author of openat2()]
-> > 
-> > Ah!  Thanks for pulling in Aleksa.  I thought I caught everyone...
-> > 
-> > > and a comment below. :)
-> > 
-> > Same...
-> > 
-> > > On Wed, Mar 17, 2021 at 09:47:17PM -0400, Richard Guy Briggs wrote:
-> > > > The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
-> > > > ("open: introduce openat2(2) syscall")
-> > > > 
-> > > > Add the openat2(2) syscall to the audit syscall classifier.
-> > > > 
-> > > > See the github issue
-> > > > https://github.com/linux-audit/audit-kernel/issues/67
-> > > > 
-> > > > Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
-> > > > ---
-> > > >  arch/alpha/kernel/audit.c          | 2 ++
-> > > >  arch/ia64/kernel/audit.c           | 2 ++
-> > > >  arch/parisc/kernel/audit.c         | 2 ++
-> > > >  arch/parisc/kernel/compat_audit.c  | 2 ++
-> > > >  arch/powerpc/kernel/audit.c        | 2 ++
-> > > >  arch/powerpc/kernel/compat_audit.c | 2 ++
-> > > >  arch/s390/kernel/audit.c           | 2 ++
-> > > >  arch/s390/kernel/compat_audit.c    | 2 ++
-> > > >  arch/sparc/kernel/audit.c          | 2 ++
-> > > >  arch/sparc/kernel/compat_audit.c   | 2 ++
-> > > >  arch/x86/ia32/audit.c              | 2 ++
-> > > >  arch/x86/kernel/audit_64.c         | 2 ++
-> > > >  kernel/auditsc.c                   | 3 +++
-> > > >  lib/audit.c                        | 4 ++++
-> > > >  lib/compat_audit.c                 | 4 ++++
-> > > >  15 files changed, 35 insertions(+)
-> > > > 
-> > > > diff --git a/arch/alpha/kernel/audit.c b/arch/alpha/kernel/audit.c
-> > > > index 96a9d18ff4c4..06a911b685d1 100644
-> > > > --- a/arch/alpha/kernel/audit.c
-> > > > +++ b/arch/alpha/kernel/audit.c
-> > > > @@ -42,6 +42,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  		return 3;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/ia64/kernel/audit.c b/arch/ia64/kernel/audit.c
-> > > > index 5192ca899fe6..5eaa888c8fd3 100644
-> > > > --- a/arch/ia64/kernel/audit.c
-> > > > +++ b/arch/ia64/kernel/audit.c
-> > > > @@ -43,6 +43,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  		return 3;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/parisc/kernel/audit.c b/arch/parisc/kernel/audit.c
-> > > > index 9eb47b2225d2..fc721a7727ba 100644
-> > > > --- a/arch/parisc/kernel/audit.c
-> > > > +++ b/arch/parisc/kernel/audit.c
-> > > > @@ -52,6 +52,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  		return 3;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/parisc/kernel/compat_audit.c b/arch/parisc/kernel/compat_audit.c
-> > > > index 20c39c9d86a9..fc6d35918c44 100644
-> > > > --- a/arch/parisc/kernel/compat_audit.c
-> > > > +++ b/arch/parisc/kernel/compat_audit.c
-> > > > @@ -35,6 +35,8 @@ int parisc32_classify_syscall(unsigned syscall)
-> > > >  		return 3;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 1;
-> > > >  	}
-> > > > diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
-> > > > index a2dddd7f3d09..8f32700b0baa 100644
-> > > > --- a/arch/powerpc/kernel/audit.c
-> > > > +++ b/arch/powerpc/kernel/audit.c
-> > > > @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
-> > > > index 55c6ccda0a85..ebe45534b1c9 100644
-> > > > --- a/arch/powerpc/kernel/compat_audit.c
-> > > > +++ b/arch/powerpc/kernel/compat_audit.c
-> > > > @@ -38,6 +38,8 @@ int ppc32_classify_syscall(unsigned syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 1;
-> > > >  	}
-> > > > diff --git a/arch/s390/kernel/audit.c b/arch/s390/kernel/audit.c
-> > > > index d395c6c9944c..d964cb94cfaf 100644
-> > > > --- a/arch/s390/kernel/audit.c
-> > > > +++ b/arch/s390/kernel/audit.c
-> > > > @@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/s390/kernel/compat_audit.c b/arch/s390/kernel/compat_audit.c
-> > > > index 444fb1f66944..f7b32933ce0e 100644
-> > > > --- a/arch/s390/kernel/compat_audit.c
-> > > > +++ b/arch/s390/kernel/compat_audit.c
-> > > > @@ -39,6 +39,8 @@ int s390_classify_syscall(unsigned syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 1;
-> > > >  	}
-> > > > diff --git a/arch/sparc/kernel/audit.c b/arch/sparc/kernel/audit.c
-> > > > index a6e91bf34d48..b6dcca9c6520 100644
-> > > > --- a/arch/sparc/kernel/audit.c
-> > > > +++ b/arch/sparc/kernel/audit.c
-> > > > @@ -55,6 +55,8 @@ int audit_classify_syscall(int abi, unsigned int syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/arch/sparc/kernel/compat_audit.c b/arch/sparc/kernel/compat_audit.c
-> > > > index 10eeb4f15b20..d2652a1083ad 100644
-> > > > --- a/arch/sparc/kernel/compat_audit.c
-> > > > +++ b/arch/sparc/kernel/compat_audit.c
-> > > > @@ -39,6 +39,8 @@ int sparc32_classify_syscall(unsigned int syscall)
-> > > >  		return 4;
-> > > >  	case __NR_execve:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 1;
-> > > >  	}
-> > > > diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
-> > > > index 6efe6cb3768a..57a02ade5503 100644
-> > > > --- a/arch/x86/ia32/audit.c
-> > > > +++ b/arch/x86/ia32/audit.c
-> > > > @@ -39,6 +39,8 @@ int ia32_classify_syscall(unsigned syscall)
-> > > >  	case __NR_execve:
-> > > >  	case __NR_execveat:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 1;
-> > > >  	}
-> > > > diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
-> > > > index 83d9cad4e68b..39de1e021258 100644
-> > > > --- a/arch/x86/kernel/audit_64.c
-> > > > +++ b/arch/x86/kernel/audit_64.c
-> > > > @@ -53,6 +53,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
-> > > >  	case __NR_execve:
-> > > >  	case __NR_execveat:
-> > > >  		return 5;
-> > > > +	case __NR_openat2:
-> > > > +		return 6;
-> > > >  	default:
-> > > >  		return 0;
-> > > >  	}
-> > > > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-> > > > index 8bb9ac84d2fb..f5616e70d129 100644
-> > > > --- a/kernel/auditsc.c
-> > > > +++ b/kernel/auditsc.c
-> > > > @@ -76,6 +76,7 @@
-> > > >  #include <linux/fsnotify_backend.h>
-> > > >  #include <uapi/linux/limits.h>
-> > > >  #include <uapi/linux/netfilter/nf_tables.h>
-> > > > +#include <uapi/linux/openat2.h>
-> > > >  
-> > > >  #include "audit.h"
-> > > >  
-> > > > @@ -195,6 +196,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
-> > > >  		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
-> > > >  	case 5: /* execve */
-> > > >  		return mask & AUDIT_PERM_EXEC;
-> > > > +	case 6: /* openat2 */
-> > > > +		return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
-> > > 
-> > > That looks a bit dodgy. Maybe sm like the below would be a bit better?
-> > 
-> > Ah, ok, fair enough, since original flags use a u32 and this was picked
-> > as u64 for alignment.  It was just occurring to me last night that I
-> > might have the dubious honour of being the first usage of 0%llo format
-> > specifier in the kernel...  ;-)
-> 
-> > > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-> > > index 47fb48f42c93..531e882a5096 100644
-> > > --- a/kernel/auditsc.c
-> > > +++ b/kernel/auditsc.c
-> > > @@ -159,6 +159,7 @@ static const struct audit_nfcfgop_tab audit_nfcfgs[] = {
-> > > 
-> > >  static int audit_match_perm(struct audit_context *ctx, int mask)
-> > >  {
-> > > +       struct open_how *openat2;
-> > >         unsigned n;
-> > >         if (unlikely(!ctx))
-> > >                 return 0;
-> > > @@ -195,6 +196,12 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
-> > >                 return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
-> > >         case 5: /* execve */
-> > >                 return mask & AUDIT_PERM_EXEC;
-> > > +       case 6: /* openat2 */
-> > > +               openat2 = ctx->argv[2];
-> > > +               if (upper_32_bits(openat2->flags))
-> > > +                       pr_warn("Some sensible warning about unknown flags");
-> > > +
-> > > +               return mask & ACC_MODE(lower_32_bits(openat2->flags));
-> > >         default:
-> > >                 return 0;
-> > >         }
-> > > 
-> > > (Ideally we'd probably notice at build-time that we've got flags
-> > > exceeding 32bits. Could probably easily been done by exposing an all
-> > > flags macro somewhere and then we can place a BUILD_BUG_ON() or sm into
-> > > such places.)
-> 
-> open_how arguments are translated to open_flags which is limited to 32 bits.
-> 
-> This code is shared with the other open functions that are limited to 32 bits
-> in open_flags.  openat2 was created to avoid the limitations of openat, so at
-> some point it isn't unreasonable that flags exceed 32 bits, but open_flags
-> would have to be modified at that point to accommodate.
-> 
-> This value is handed in from userspace, and could be handed in without being
-> defined in the kernel, so those values need to be properly checked regardless
-> of the flags defined in the kernel.
-> 
-> The openat2 syscall claims to check all flags but no check is done on the top
-> 32 bits.
 
-Hm, I think this is an oversight because of the different semantics for
-openat() and openat2(). We should check that no upper 32 bits are set
-for openat2(). That's the intended semantics. For old openat()
-we can't error on unknown flags because it has traditionally ignored
-unknown flags.
 
+On 22/04/2021 17:07, Leonardo Bras wrote:
+> Code used to create a ddw property that was previously scattered in
+> enable_ddw() is now gathered in ddw_property_create(), which deals with
+> allocation and filling the property, letting it ready for
+> of_property_add(), which now occurs in sequence.
 > 
-> build_open_flags() assigns how->flags to an int, effectively dropping the top
-> 32 bits, before being checked against ~VALID_OPEN_FLAGS.  This happens after
-> audit mode filtering, but has the same result.
+> This created an opportunity to reorganize the second part of enable_ddw():
+> 
+> Without this patch enable_ddw() does, in order:
+> kzalloc() property & members, create_ddw(), fill ddwprop inside property,
+> ddw_list_new_entry(), do tce_setrange_multi_pSeriesLP_walk in all memory,
+> of_add_property(), and list_add().
+> 
+> With this patch enable_ddw() does, in order:
+> create_ddw(), ddw_property_create(), of_add_property(),
+> ddw_list_new_entry(), do tce_setrange_multi_pSeriesLP_walk in all memory,
+> and list_add().
+> 
+> This change requires of_remove_property() in case anything fails after
+> of_add_property(), but we get to do tce_setrange_multi_pSeriesLP_walk
+> in all memory, which looks the most expensive operation, only if
+> everything else succeeds.
+> 
+> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+> ---
+>   arch/powerpc/platforms/pseries/iommu.c | 93 ++++++++++++++++----------
+>   1 file changed, 57 insertions(+), 36 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index 955cf095416c..48c029386d94 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -1122,6 +1122,35 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
+>   			 ret);
+>   }
+>   
+> +static struct property *ddw_property_create(const char *propname, u32 liobn, u64 dma_addr,
+> +					    u32 page_shift, u32 window_shift)
+> +{
+> +	struct dynamic_dma_window_prop *ddwprop;
+> +	struct property *win64;
+> +
+> +	win64 = kzalloc(sizeof(*win64), GFP_KERNEL);
+> +	if (!win64)
+> +		return NULL;
+> +
+> +	win64->name = kstrdup(propname, GFP_KERNEL);
+> +	ddwprop = kzalloc(sizeof(*ddwprop), GFP_KERNEL);
+> +	win64->value = ddwprop;
+> +	win64->length = sizeof(*ddwprop);
+> +	if (!win64->name || !win64->value) {
+> +		kfree(win64);
+> +		kfree(win64->name);
+> +		kfree(win64->value);
 
-Right. That's at bug we should return an error to userspace. We do for
-any unkown values that fall within the lower 32 bit range so it's silly
-to ignore unknown values in the upper 32 bit range.
 
-> 
-> Audit mode filtering using ACC_MODE() already masks out all but the lowest two
-> bits with O_ACCMODE, so there is no danger of overflowing a u32.
-> 
-> tomoyo_check_open_permission() assigns ACC_MODE() to u8 without a check.
-> 
-> All FMODE_* flags are clamped at u32.
-> 
-> 6 bits remain at top and 4 bits just above O_ACCMODE, so there is no immediate
-> danger of overflow and if any additional mode bits are needed they are
-> available.
-> 000377777703 used
-> 037777777777 available
-> 10 bits remaining
-> 
-> So, I don't think a check at this point in the code is useful, but do agree
+Wrong order.
 
-Maybe but note that a defensive posture here might be a good thing
-instead of tripping over the issue later.
 
-> that there should be some changes and checks added in sys_openat2 and
-> build_open_flags().
+
+
+> +		return NULL;
+> +	}
+> +
+> +	ddwprop->liobn = cpu_to_be32(liobn);
+> +	ddwprop->dma_base = cpu_to_be64(dma_addr);
+> +	ddwprop->tce_shift = cpu_to_be32(page_shift);
+> +	ddwprop->window_shift = cpu_to_be32(window_shift);
+> +
+> +	return win64;
+> +}
+> +
+>   /* Return largest page shift based on "IO Page Sizes" output of ibm,query-pe-dma-window. */
+>   static int iommu_get_page_shift(u32 query_page_size)
+>   {
+> @@ -1167,11 +1196,11 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   	struct ddw_query_response query;
+>   	struct ddw_create_response create;
+>   	int page_shift;
+> +	u64 win_addr;
+>   	struct device_node *dn;
+>   	u32 ddw_avail[DDW_APPLICABLE_SIZE];
+>   	struct direct_window *window;
+>   	struct property *win64 = NULL;
+> -	struct dynamic_dma_window_prop *ddwprop;
+>   	struct failed_ddw_pdn *fpdn;
+>   	bool default_win_removed = false;
+>   	bool pmem_present;
+> @@ -1286,65 +1315,54 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   			1ULL << page_shift);
+>   		goto out_failed;
+>   	}
+> -	win64 = kzalloc(sizeof(struct property), GFP_KERNEL);
+> -	if (!win64) {
+> -		dev_info(&dev->dev,
+> -			"couldn't allocate property for 64bit dma window\n");
+> -		goto out_failed;
+> -	}
+> -	win64->name = kstrdup(DIRECT64_PROPNAME, GFP_KERNEL);
+> -	win64->value = ddwprop = kmalloc(sizeof(*ddwprop), GFP_KERNEL);
+> -	win64->length = sizeof(*ddwprop);
+> -	if (!win64->name || !win64->value) {
+> -		dev_info(&dev->dev,
+> -			"couldn't allocate property name and value\n");
+> -		goto out_free_prop;
+> -	}
+>   
+>   	ret = create_ddw(dev, ddw_avail, &create, page_shift, len);
+>   	if (ret != 0)
+> -		goto out_free_prop;
+> -
+> -	ddwprop->liobn = cpu_to_be32(create.liobn);
+> -	ddwprop->dma_base = cpu_to_be64(((u64)create.addr_hi << 32) |
+> -			create.addr_lo);
+> -	ddwprop->tce_shift = cpu_to_be32(page_shift);
+> -	ddwprop->window_shift = cpu_to_be32(len);
+> +		goto out_failed;
+>   
+>   	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
+>   		  create.liobn, dn);
+>   
+> -	window = ddw_list_new_entry(pdn, ddwprop);
+> +	win_addr = ((u64)create.addr_hi << 32) | create.addr_lo;
+> +	win64 = ddw_property_create(DIRECT64_PROPNAME, create.liobn, win_addr,
+> +				    page_shift, len);
+> +	if (!win64) {
+> +		dev_info(&dev->dev,
+> +			 "couldn't allocate property, property name, or value\n");
+> +		goto out_del_win;
+> +	}
+> +
+> +	ret = of_add_property(pdn, win64);
+> +	if (ret) {
+> +		dev_err(&dev->dev, "unable to add dma window property for %pOF: %d",
+> +			pdn, ret);
+> +		goto out_free_prop;
+> +	}
+> +
+> +	window = ddw_list_new_entry(pdn, win64->value);
+>   	if (!window)
+> -		goto out_clear_window;
+> +		goto out_del_prop;
+>   
+>   	ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
+>   			win64->value, tce_setrange_multi_pSeriesLP_walk);
+>   	if (ret) {
+>   		dev_info(&dev->dev, "failed to map direct window for %pOF: %d\n",
+>   			 dn, ret);
+> -		goto out_free_window;
+> -	}
+> -
+> -	ret = of_add_property(pdn, win64);
+> -	if (ret) {
+> -		dev_err(&dev->dev, "unable to add dma window property for %pOF: %d",
+> -			 pdn, ret);
+> -		goto out_free_window;
+> +		goto out_del_list;
+>   	}
+>   
+>   	spin_lock(&direct_window_list_lock);
+>   	list_add(&window->list, &direct_window_list);
+>   	spin_unlock(&direct_window_list_lock);
+>   
+> -	dev->dev.archdata.dma_offset = be64_to_cpu(ddwprop->dma_base);
+> +	dev->dev.archdata.dma_offset = win_addr;
+>   	goto out_unlock;
+>   
+> -out_free_window:
+> +out_del_list:
+>   	kfree(window);
+>   
+> -out_clear_window:
+> -	remove_ddw(pdn, true);
+> +out_del_prop:
+> +	of_remove_property(pdn, win64);
+>   
+>   out_free_prop:
+>   	kfree(win64->name);
+> @@ -1352,6 +1370,9 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   	kfree(win64);
+>   	win64 = NULL;
+>   
+> +out_del_win:
+
+
+(I would not bother but since I am commenting on the patch)
+
+nit: the new name is not that much better than the old 
+"out_clear_window:" ("out_remove_win" would be a bit better) and it does 
+make reviewing a little bit harder. Thanks,
+
+
+
+> +	remove_ddw(pdn, true);
+> +
+>   out_failed:
+>   	if (default_win_removed)
+>   		reset_dma_window(dev, pdn);
 > 
-> 
-> Also noticed: It looks like fddb5d430ad9f left in VALID_UPGRADE_FLAGS for
-> how->upgrade_mask that was removed.  This may be used at a later date, but at
-> this point is dead code.
 
-I'll take a look now.
-
-Christian
+-- 
+Alexey
