@@ -1,70 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF4B36A1A1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 16:37:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A05336A1FD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 18:14:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FSDK861k9z30F3
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Apr 2021 00:37:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FSGSj3nHJz30Fw
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Apr 2021 02:14:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=R5+47fg2;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=OBiFt15B;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22f;
- helo=mail-lj1-x22f.google.com; envelope-from=sxwjean@gmail.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=R5+47fg2; dkim-atps=neutral
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com
- [IPv6:2a00:1450:4864:20::22f])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=OBiFt15B; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FSDJk3KyZz2xZF
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Apr 2021 00:37:23 +1000 (AEST)
-Received: by mail-lj1-x22f.google.com with SMTP id a5so21879354ljk.0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 07:37:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=uoH4H/qXa4Hgq9FClpPx5Dd1jyM5vAg3STeuwuUsMrM=;
- b=R5+47fg2JRT8b1JFcau5QKkKNNrVbDJ9eorTWPmron02FSe1B6uz22b6WJRS9xk6vy
- ryaJvb91zrghAXcsNyFmSj1Mmd/AaOcrw57gha4nL2MwH3QSVcqKfLYPHSINGRQE2W8W
- KWPAKE2+bZ+SrCZntoEYkx75yT1cjKasMn864wU8PMP9dO6PIFPShZZvb8vyinC5FHkW
- SfVq0+e3yKpyOEGHJ5nrqexpIHEHRusjtC5QFbkq9NMLl1ZZzSbJ8wypyZ98W2Gj8np/
- nKxvwBho8zISh+gR9kkNhnwxtuC7DFcRa2w0wqEhu4bFVcMcBYSAfwEYa+4+Wp7naA0i
- UjqA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FSGSG4jLCz2yR7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Apr 2021 02:14:03 +1000 (AEST)
+Received: by mail-pj1-x102f.google.com with SMTP id
+ f2-20020a17090a4a82b02900c67bf8dc69so2783204pjh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 09:14:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=ehOCyEa8WMG6Db0WeyaEQpqkMdxESpkq3GkVwETZTyE=;
+ b=OBiFt15BLpM3JJOqchE/Cl52dFoVBU9iC/uImyHRjHrqeRnZ3Izu3f0T6Sef4g5mqO
+ aZuxHcBRIQWZi13LEQQORMcJLak2Yujic/llUvwgl7xZJL97mFnPFWgb0p23eC5XaTf9
+ jKNgff16W9FvFjpIRTwDU/FIrCdFmLUISxnCA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=uoH4H/qXa4Hgq9FClpPx5Dd1jyM5vAg3STeuwuUsMrM=;
- b=quJ0TsIh9bNp6cQfWRBTyYQRJ0fsuM0QnhlJZ+kjQni1PUB+7bQYZ6hvuOrJ7zbRO0
- Ro71DikBqNZY4JcYCTqygS32nnnAq/YRCcdrDzXra/7k0/viTIHiCbD7uoyyLUhPCswn
- kzXXLP2QF4H57BlKmefZt6IwJ7Hno+1Zt7wnNpQHMeqsPAeYJl5EZ0ndG2SlFTanQ2v4
- v3fEOslvOCvrgWQzixknii7ak+SagjHUYhLEo9F7Vz/TLUnatGacPrMkelv6kSj13e4c
- W9S+UgrWoUuQmeCZpVYruaM8xBRN1DAhWyFHA25VZJuz/PVpKdA4nSJAkl7pTaqk5h06
- VoJg==
-X-Gm-Message-State: AOAM532lY49bZmzDm6BVChe/oXaR7VKDBs3+xgSNpqVI/+MJ6Ta5rFcy
- WBWumqoThRWkeC0WKwnNtOCQMdXMy5XR5LdtvOY=
-X-Google-Smtp-Source: ABdhPJySHRSJNlYs06zs6c5IJXEasLWi9mJck6gduE1wPps9RrO4Ua2TDbKsgpqrqeqnccCSersGmdTwtjCdUgHzV6o=
-X-Received: by 2002:a2e:3c1a:: with SMTP id j26mr6138999lja.297.1619275039634; 
- Sat, 24 Apr 2021 07:37:19 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=ehOCyEa8WMG6Db0WeyaEQpqkMdxESpkq3GkVwETZTyE=;
+ b=kcf03IgLmaiR7IMTJ83RSjRC4tc7uZwhZvCUrOfelga9mYaSu9dTJmyh6YRHVZTyry
+ Nl5Gw81T9Bmp14V6dG4GvMQSXwkzENRh5HLR0QDZ/fQS//9LwirBDOM6TQUKZW45qXSj
+ e00zGbBGW1Nc77FBkbmnJQwdLrGjIpmrv0MNBmDwQa/3RpmhLrU3skOrcxKQcbfSkv66
+ wMsU9vI729ZqRriuUhD+6e9M7YW/GjOTKKlAKif1B4G9F1gDsYS+1mpfrIsiFT/j0Cn9
+ GB0o/oSLSu31fOWgWmVtxLgeM8hWBWqUzE/ai3WrgCv61buHyTzmq4w69skxFficBIKQ
+ dL0Q==
+X-Gm-Message-State: AOAM532TdCWd40+yAAA3i5wrt2gPuvrCl+jsJYquz8+oPv5q5R4q8rlK
+ v4GCCcBx17UavegoUDOv5Wk9CQ==
+X-Google-Smtp-Source: ABdhPJwwyP7qwNFsce/OSeLMxrpDuJuBbR4dZcz+FlvrXs1F0TB8w7HdfLRuWF8jcK9GTlUXh89xdA==
+X-Received: by 2002:a17:90a:d352:: with SMTP id
+ i18mr12495546pjx.19.1619280838607; 
+ Sat, 24 Apr 2021 09:13:58 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-1113-6700-7127-7935-12a3-ff68.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:7127:7935:12a3:ff68])
+ by smtp.gmail.com with ESMTPSA id pc17sm7641190pjb.19.2021.04.24.09.13.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 24 Apr 2021 09:13:58 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH 1/2] powerpc/sstep: Add emulation support for
+ =?utf-8?B?4oCYc2V0YuKAmQ==?= instruction
+In-Reply-To: <20210422191334.GE27473@gate.crashing.org>
+References: <cover.1618469454.git.sathvika@linux.vnet.ibm.com>
+ <767e53c4c27da024ca277e21ffcd0cff131f5c73.1618469454.git.sathvika@linux.vnet.ibm.com>
+ <875z0mfzbf.fsf@linkitivity.dja.id.au>
+ <20210422191334.GE27473@gate.crashing.org>
+Date: Sun, 25 Apr 2021 02:13:55 +1000
+Message-ID: <87h7jvzmm4.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-References: <20210422151022.17868-1-sxwjean@me.com>
- <15aac264-8626-ad15-7301-044c622d7f60@csgroup.eu>
-In-Reply-To: <15aac264-8626-ad15-7301-044c622d7f60@csgroup.eu>
-From: Xiongwei Song <sxwjean@gmail.com>
-Date: Sat, 24 Apr 2021 22:36:53 +0800
-Message-ID: <CAEVVKH8K84=DuQy370eVv4kx24nHiOqnputtERLuGoc4-MwYtg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] powerpc: Make the code in __show_regs nice-looking
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,58 +82,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, mikey@neuling.org,
- Xiongwei Song <sxwjean@me.com>, 0x7f454c46@gmail.com,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, npiggin@gmail.com,
- Paul Mackerras <paulus@samba.org>, aneesh.kumar@linux.ibm.com,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>,
+ naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 22, 2021 at 11:27 PM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 22/04/2021 =C3=A0 17:10, Xiongwei Song a =C3=A9crit :
-> > From: Xiongwei Song <sxwjean@gmail.com>
-> >
-> > Create a new function named interrupt_detail_printable to judge which
-> > interrupts can print esr/dsisr register.
->
-> What is the benefit of that function ? It may be interesting if the test =
-was done at several places,
-> but as it is done at only one place, I don't thing it is an improvement.
->
-> Until know, you new immediately what was the traps that would print it. N=
-ow you have to go and look
-> into a sub-function.
+Segher Boessenkool <segher@kernel.crashing.org> writes:
 
-How about replace if statement with switch statement directly, like
-the changes below:
+> Hi!
+>
+> On Fri, Apr 16, 2021 at 05:44:52PM +1000, Daniel Axtens wrote:
+>> Sathvika Vasireddy <sathvika@linux.vnet.ibm.com> writes:
+>> Ok, if I've understood correctly...
+>> 
+>> > +			ra = ra & ~0x3;
+>> 
+>> This masks off the bits of RA that are not part of BTF:
+>> 
+>> ra is in [0, 31] which is [0b00000, 0b11111]
+>> Then ~0x3 = ~0b00011
+>> ra = ra & 0b11100
+>> 
+>> This gives us then,
+>> ra = btf << 2; or
+>> btf = ra >> 2;
+>
+> Yes.  In effect, you want the offset in bits of the CR field, which is
+> just fine like this.  But a comment would not hurt.
+>
+>> Let's then check to see if your calculations read the right fields.
+>> 
+>> > +			if ((regs->ccr) & (1 << (31 - ra)))
+>> > +				op->val = -1;
+>> > +			else if ((regs->ccr) & (1 << (30 - ra)))
+>> > +				op->val = 1;
+>> > +			else
+>> > +				op->val = 0;
+>
+> It imo is clearer if written
+>
+> 			if ((regs->ccr << ra) & 0x80000000)
+> 				op->val = -1;
+> 			else if ((regs->ccr << ra) & 0x40000000)
+> 				op->val = 1;
+> 			else
+> 				op->val = 0;
+>
+> but I guess not everyone agrees :-)
+>
+>> CR field:      7    6    5    4    3    2    1    0
+>> bit:          0123 0123 0123 0123 0123 0123 0123 0123
+>> normal bit #: 0.....................................31
+>> ibm bit #:   31.....................................0
+>
+> The bit numbers in CR fields are *always* numbered left-to-right.  I
+> have never seen anyone use LE for it, anyway.
+>
+> Also, even people who write LE have the bigger end on the left normally
+> (they just write some things right-to-left, and other things
+> left-to-right).
 
-@@ -1467,13 +1481,17 @@ static void __show_regs(struct pt_regs *regs)
-        trap =3D TRAP(regs);
-        if (!trap_is_syscall(regs) && cpu_has_feature(CPU_FTR_CFAR))
-                pr_cont("CFAR: "REG" ", regs->orig_gpr3);
--       if (trap =3D=3D INTERRUPT_MACHINE_CHECK ||
--           trap =3D=3D INTERRUPT_DATA_STORAGE ||
--           trap =3D=3D INTERRUPT_ALIGNMENT) {
-+       switch(trap){
-+       case INTERRUPT_MACHINE_CHECK:
-+       case INTERRUPT_DATA_STORAGE:
-+       case INTERRUPT_ALIGNMENT:
-                if (IS_ENABLED(CONFIG_4xx) || IS_ENABLED(CONFIG_BOOKE))
-                        pr_cont("DEAR: "REG" ESR: "REG" ", regs->dar,
-regs->dsisr);
-                else
-                        pr_cont("DAR: "REG" DSISR: %08lx ", regs->dar,
-regs->dsisr);
-+               break;
-+       default:
-+               break;
-        }
+Sorry, the numbers in the CR fields weren't meant to be especially
+meaningful, I was just trying to convince myself that we referenced the
+same bits doing the ISA way vs the way this code did it.
 
-Thanks,
-Xiongwei
+Kind regards,
+Daniel
+>
+>> Checkpatch does have one complaint:
+>> 
+>> CHECK:UNNECESSARY_PARENTHESES: Unnecessary parentheses around 'regs->ccr'
+>> #30: FILE: arch/powerpc/lib/sstep.c:1971:
+>> +			if ((regs->ccr) & (1 << (31 - ra)))
+>> 
+>> I don't really mind the parenteses: I think you are safe to ignore
+>> checkpatch here unless someone else complains :)
+>
+> I find them annoying.  If there are too many parentheses, it is hard to
+> see at a glance what groups where.  Also, a suspicious reader might
+> think there is something special going on (with macros for example).
+>
+> This is simple code of course, but :-)
+>
+>> If you do end up respinning the patch, I think it would be good to make
+>> the maths a bit clearer. I think it works because a left shift of 2 is
+>> the same as multiplying by 4, but it would be easier to follow if you
+>> used a temporary variable for btf.
+>
+> It is very simple.  The BFA instruction field is closely related to the
+> BI instruction field, which is 5 bits, and selects one of the 32 bits in
+> the CR.  If you have "BFA00 BFA01 BFA10 BFA11", that gives the bit
+> numbers of all four bits in the selected CR field.  So the "& ~3" does
+> all you need.  It is quite pretty :-)
+>
+>
+> Segher
