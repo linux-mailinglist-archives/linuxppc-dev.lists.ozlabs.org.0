@@ -2,49 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A13C36A0A4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 12:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BF636A0F5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 13:50:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FS6xD4X7Nz309c
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 20:35:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FS8cd06swz30Ft
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 21:50:57 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=OgS1xS1p;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=210.131.2.79;
+ helo=conuserg-12.nifty.com; envelope-from=masahiroy@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
+ header.s=dec2015msa header.b=OgS1xS1p; 
+ dkim-atps=neutral
+Received: from conuserg-12.nifty.com (conuserg-12.nifty.com [210.131.2.79])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FS6wr66jMz2xdL
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 20:34:46 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4FS6wf0yQ5z9tvrL;
- Sat, 24 Apr 2021 12:34:42 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id i8t7Nss1EpfW; Sat, 24 Apr 2021 12:34:42 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FS6wd74yTz9tvrF;
- Sat, 24 Apr 2021 12:34:41 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 97F6D8B76E;
- Sat, 24 Apr 2021 12:34:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id JbBAbgqlwU61; Sat, 24 Apr 2021 12:34:43 +0200 (CEST)
-Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6CA5E8B75F;
- Sat, 24 Apr 2021 12:34:43 +0200 (CEST)
-Received: by localhost.localdomain (Postfix, from userid 0)
- id 342BB63977; Sat, 24 Apr 2021 10:34:43 +0000 (UTC)
-Message-Id: <c68163065163f303f5af1e4bbdd9f1ce69f0543e.1619260465.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/kasan: Fix shadow start address with modules
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Sat, 24 Apr 2021 10:34:43 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FS8c92GcSz2xZG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 21:50:32 +1000 (AEST)
+Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp
+ [133.32.232.101]) (authenticated)
+ by conuserg-12.nifty.com with ESMTP id 13OBmmYp018893;
+ Sat, 24 Apr 2021 20:48:48 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 13OBmmYp018893
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1619264929;
+ bh=QZtRNPI9tcJewNEkn9qFVV65UXR5+ejTwS0WZTz9ytE=;
+ h=From:To:Cc:Subject:Date:From;
+ b=OgS1xS1pH9Ae7mvvS/tN0XQ1KlXN6XJGvC6a13xxxGpBWrmoZDHvSad9U/i4OE8GB
+ SCxToXKcTar8y85/ZgdttfyNTyNT4QrOt9teXbme+DbWLOvA6ZrXrCO9RRSno8lrbq
+ LjUaRUllsq7tNZxY6TW1P2027e2ET3kGuIHAKskUXsNQpb0WM+C5rMbvyGoCM6Ek/7
+ Q/SeGxa5kazVx8r7jeV7piS2uH99EolfxgJA1jfMxcGW50i+Le9Z1lHf7UOa7+H1Z8
+ 9PSecdZ0jU7Sa07LWptBy+FREZsqXgLxyhpbsEsyDWHdwWRB00Ubg9Phg50IHfqaLC
+ nNznHrSvYzgDQ==
+X-Nifty-SrcIP: [133.32.232.101]
+From: Masahiro Yamada <masahiroy@kernel.org>
+To: linux-kbuild@vger.kernel.org
+Subject: [PATCH] kbuild: replace LANG=C with LC_ALL=C
+Date: Sat, 24 Apr 2021 20:48:41 +0900
+Message-Id: <20210424114841.394239-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,34 +61,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, Masahiro Yamada <masahiroy@kernel.org>,
+ Mat Martineau <mathew.j.martineau@linux.intel.com>,
+ Matthias Maennich <maennich@google.com>, linux-kernel@vger.kernel.org,
+ mptcp@lists.01.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org,
+ Matthieu Baerts <matthieu.baerts@tessares.net>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Modules are now located before kernel, KASAN area has to
-be extended accordingly.
+LANG gives a weak default to each LC_* in case it is not explicitly
+defined. LC_ALL, if set, overrides all other LC_* variables.
 
-Fixes: 80edc68e0479 ("powerpc/32s: Define a MODULE area below kernel text all the time")
-Fixes: 9132a2e82adc ("powerpc/8xx: Define a MODULE area below kernel text")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+  LANG  <  LC_CTYPE, LC_COLLATE, LC_MONETARY, LC_NUMERIC, ...  <  LC_ALL
+
+This is why documentation such as [1] suggests to set LC_ALL in build
+scripts to get the deterministic result.
+
+LANG=C is not strong enough to override LC_* that may be set by end
+users.
+
+[1]: https://reproducible-builds.org/docs/locales/
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- arch/powerpc/include/asm/kasan.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
-index 7355ed05e65e..3c478e5ef24c 100644
---- a/arch/powerpc/include/asm/kasan.h
-+++ b/arch/powerpc/include/asm/kasan.h
-@@ -19,7 +19,7 @@
+ arch/powerpc/boot/wrapper                          | 2 +-
+ scripts/nsdeps                                     | 2 +-
+ scripts/recordmcount.pl                            | 2 +-
+ scripts/setlocalversion                            | 2 +-
+ scripts/tags.sh                                    | 2 +-
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh | 2 +-
+ usr/gen_initramfs.sh                               | 2 +-
+ 7 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+index 41fa0a8715e3..cdb796b76e2e 100755
+--- a/arch/powerpc/boot/wrapper
++++ b/arch/powerpc/boot/wrapper
+@@ -191,7 +191,7 @@ if [ -z "$kernel" ]; then
+     kernel=vmlinux
+ fi
  
- #define KASAN_SHADOW_SCALE_SHIFT	3
+-LANG=C elfformat="`${CROSS}objdump -p "$kernel" | grep 'file format' | awk '{print $4}'`"
++LC_ALL=C elfformat="`${CROSS}objdump -p "$kernel" | grep 'file format' | awk '{print $4}'`"
+ case "$elfformat" in
+     elf64-powerpcle)	format=elf64lppc	;;
+     elf64-powerpc)	format=elf32ppc	;;
+diff --git a/scripts/nsdeps b/scripts/nsdeps
+index e8ce2a4d704a..04c4b96e95ec 100644
+--- a/scripts/nsdeps
++++ b/scripts/nsdeps
+@@ -44,7 +44,7 @@ generate_deps() {
+ 		for source_file in $mod_source_files; do
+ 			sed '/MODULE_IMPORT_NS/Q' $source_file > ${source_file}.tmp
+ 			offset=$(wc -l ${source_file}.tmp | awk '{print $1;}')
+-			cat $source_file | grep MODULE_IMPORT_NS | LANG=C sort -u >> ${source_file}.tmp
++			cat $source_file | grep MODULE_IMPORT_NS | LC_ALL=C sort -u >> ${source_file}.tmp
+ 			tail -n +$((offset +1)) ${source_file} | grep -v MODULE_IMPORT_NS >> ${source_file}.tmp
+ 			if ! diff -q ${source_file} ${source_file}.tmp; then
+ 				mv ${source_file}.tmp ${source_file}
+diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
+index 867860ea57da..0a7fc9507d6f 100755
+--- a/scripts/recordmcount.pl
++++ b/scripts/recordmcount.pl
+@@ -497,7 +497,7 @@ sub update_funcs
+ #
+ # Step 2: find the sections and mcount call sites
+ #
+-open(IN, "LANG=C $objdump -hdr $inputfile|") || die "error running $objdump";
++open(IN, "LC_ALL=C $objdump -hdr $inputfile|") || die "error running $objdump";
  
--#if defined(CONFIG_PPC_BOOK3S_32) && defined(CONFIG_MODULES) && defined(CONFIG_STRICT_KERNEL_RWX)
-+#ifdef CONFIG_MODULES
- #define KASAN_KERN_START	ALIGN_DOWN(PAGE_OFFSET - SZ_256M, SZ_256M)
- #else
- #define KASAN_KERN_START	PAGE_OFFSET
+ my $text;
+ 
+diff --git a/scripts/setlocalversion b/scripts/setlocalversion
+index bb709eda96cd..db941f6d9591 100755
+--- a/scripts/setlocalversion
++++ b/scripts/setlocalversion
+@@ -126,7 +126,7 @@ scm_version()
+ 	fi
+ 
+ 	# Check for svn and a svn repo.
+-	if rev=$(LANG= LC_ALL= LC_MESSAGES=C svn info 2>/dev/null | grep '^Last Changed Rev'); then
++	if rev=$(LC_ALL=C svn info 2>/dev/null | grep '^Last Changed Rev'); then
+ 		rev=$(echo $rev | awk '{print $NF}')
+ 		printf -- '-svn%s' "$rev"
+ 
+diff --git a/scripts/tags.sh b/scripts/tags.sh
+index fd96734deff1..db8ba411860a 100755
+--- a/scripts/tags.sh
++++ b/scripts/tags.sh
+@@ -326,5 +326,5 @@ esac
+ 
+ # Remove structure forward declarations.
+ if [ -n "$remove_structs" ]; then
+-    LANG=C sed -i -e '/^\([a-zA-Z_][a-zA-Z0-9_]*\)\t.*\t\/\^struct \1;.*\$\/;"\tx$/d' $1
++    LC_ALL=C sed -i -e '/^\([a-zA-Z_][a-zA-Z0-9_]*\)\t.*\t\/\^struct \1;.*\$\/;"\tx$/d' $1
+ fi
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.sh b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+index 10a030b53b23..1d2a6e7b877c 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -273,7 +273,7 @@ check_mptcp_disabled()
+ 	ip netns exec ${disabled_ns} sysctl -q net.mptcp.enabled=0
+ 
+ 	local err=0
+-	LANG=C ip netns exec ${disabled_ns} ./mptcp_connect -t $timeout -p 10000 -s MPTCP 127.0.0.1 < "$cin" 2>&1 | \
++	LC_ALL=C ip netns exec ${disabled_ns} ./mptcp_connect -t $timeout -p 10000 -s MPTCP 127.0.0.1 < "$cin" 2>&1 | \
+ 		grep -q "^socket: Protocol not available$" && err=1
+ 	ip netns delete ${disabled_ns}
+ 
+diff --git a/usr/gen_initramfs.sh b/usr/gen_initramfs.sh
+index 8ae831657e5d..63476bb70b41 100755
+--- a/usr/gen_initramfs.sh
++++ b/usr/gen_initramfs.sh
+@@ -147,7 +147,7 @@ dir_filelist() {
+ 	header "$1"
+ 
+ 	srcdir=$(echo "$1" | sed -e 's://*:/:g')
+-	dirlist=$(find "${srcdir}" -printf "%p %m %U %G\n" | LANG=C sort)
++	dirlist=$(find "${srcdir}" -printf "%p %m %U %G\n" | LC_ALL=C sort)
+ 
+ 	# If $dirlist is only one line, then the directory is empty
+ 	if [  "$(echo "${dirlist}" | wc -l)" -gt 1 ]; then
 -- 
-2.25.0
+2.27.0
 
