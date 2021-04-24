@@ -2,54 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20BF636A0F5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 13:50:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A7736A16E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 15:52:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FS8cd06swz30Ft
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 21:50:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FSCJp5C7Nz30Dk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Apr 2021 23:52:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=OgS1xS1p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=XzK4dnfU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.79;
- helo=conuserg-12.nifty.com; envelope-from=masahiroy@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::133;
+ helo=mail-lf1-x133.google.com; envelope-from=sxwjean@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=OgS1xS1p; 
- dkim-atps=neutral
-Received: from conuserg-12.nifty.com (conuserg-12.nifty.com [210.131.2.79])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=XzK4dnfU; dkim-atps=neutral
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
+ [IPv6:2a00:1450:4864:20::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FS8c92GcSz2xZG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 21:50:32 +1000 (AEST)
-Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp
- [133.32.232.101]) (authenticated)
- by conuserg-12.nifty.com with ESMTP id 13OBmmYp018893;
- Sat, 24 Apr 2021 20:48:48 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 13OBmmYp018893
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1619264929;
- bh=QZtRNPI9tcJewNEkn9qFVV65UXR5+ejTwS0WZTz9ytE=;
- h=From:To:Cc:Subject:Date:From;
- b=OgS1xS1pH9Ae7mvvS/tN0XQ1KlXN6XJGvC6a13xxxGpBWrmoZDHvSad9U/i4OE8GB
- SCxToXKcTar8y85/ZgdttfyNTyNT4QrOt9teXbme+DbWLOvA6ZrXrCO9RRSno8lrbq
- LjUaRUllsq7tNZxY6TW1P2027e2ET3kGuIHAKskUXsNQpb0WM+C5rMbvyGoCM6Ek/7
- Q/SeGxa5kazVx8r7jeV7piS2uH99EolfxgJA1jfMxcGW50i+Le9Z1lHf7UOa7+H1Z8
- 9PSecdZ0jU7Sa07LWptBy+FREZsqXgLxyhpbsEsyDWHdwWRB00Ubg9Phg50IHfqaLC
- nNznHrSvYzgDQ==
-X-Nifty-SrcIP: [133.32.232.101]
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: linux-kbuild@vger.kernel.org
-Subject: [PATCH] kbuild: replace LANG=C with LC_ALL=C
-Date: Sat, 24 Apr 2021 20:48:41 +0900
-Message-Id: <20210424114841.394239-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.27.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FSCJN01GTz2yR7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 23:52:01 +1000 (AEST)
+Received: by mail-lf1-x133.google.com with SMTP id g8so81631983lfv.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Apr 2021 06:52:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=jCOp7RZ+iu6cfzLw/VonyR2hYz8LTHhRBEdxzPYuVcg=;
+ b=XzK4dnfUjaa18YTv5ERftP59UulNix2QP1HZGGPY7zmpnt+C2OBLGwsn2qCXHIlt9h
+ 53Tz6YR+Cfb7/Oa4RnaMsiSFxCgFt7mGpRi59uxVfarHRhx54VJe9oQYscLkZvGm8XAd
+ ZxLHtbZQkp92s+8Hz0bxzlDDyJbR1xITI4j2TphaCDiNo9Q424354c7k93C1enUBwAX3
+ WVtNnI5Vpla+dLynsdWqW6uEOhJWjZSF5AItV9PZdnJR6iFjhq8M1qDEjkf74Ep77wfq
+ 5ONu4xgqi5fhP2tLH3fDqv0/JfdO1cNKH960kGxjjscKrbwDtyYf1Ztm+s8W/OgX6/yg
+ LKjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=jCOp7RZ+iu6cfzLw/VonyR2hYz8LTHhRBEdxzPYuVcg=;
+ b=jTY0lsTz0P/X87y3oREOzWn3w7RgGb22MfyrTzIvB8oP9Bh8B0nj+U9qNC8nZYSeGc
+ f/wqSwiaWDKL1ADLo9gx/db+zMsDp/+/VkYgW/HJS3IUalnnLJtVCLsOnYfFvPss7jF4
+ 799uO361RdvGoygq+VjDCvqiNEsd9NMDeook+6sUH2H7NN+5wqIvt9AZp3cLD/ljdBmm
+ dZ4kTB5IBb87h5dreqPAHPZmQ8vhSV0pAazZAhjrS80BzE6ZJ7DfkPMqkPpmnKhN9Iym
+ 1+cfKDrUw19Cd9gQYCmmb7eCABvY4PaZfHjf6XOfI2JLj+0chRnE57Z5Dh5q/jiPRkY0
+ P2mg==
+X-Gm-Message-State: AOAM532nphEHgSHiWbOlKM9OhL4U8wW4zRJki+io93sTfuj2blOgSQYK
+ 5Xzs8R1v2bQETyPhP0u7my7uN2oEqKHsQeciXSQ=
+X-Google-Smtp-Source: ABdhPJxNSl4Ds3+3NRYLP1M4XlNF4lsytCjH8ibqpqR58NCb8atatdL9iMeH3luV4c8AR4aW+fVwDYb2EZkHlWL8NFg=
+X-Received: by 2002:ac2:5042:: with SMTP id a2mr6027441lfm.650.1619272314835; 
+ Sat, 24 Apr 2021 06:51:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210422151022.17868-1-sxwjean@me.com>
+ <20210422151022.17868-2-sxwjean@me.com>
+ <ac6cf0ae-7565-180e-03b2-5e72f89a823a@csgroup.eu>
+In-Reply-To: <ac6cf0ae-7565-180e-03b2-5e72f89a823a@csgroup.eu>
+From: Xiongwei Song <sxwjean@gmail.com>
+Date: Sat, 24 Apr 2021 21:51:28 +0800
+Message-ID: <CAEVVKH-p4NqizZjC0DNEUgsw9eWurd1YWxW5QQwTxvUZHR5g4A@mail.gmail.com>
+Subject: Re: [PATCH 2/2] powerpc: Print esr register when hitting Program
+ Interrupt
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,132 +78,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Masahiro Yamada <masahiroy@kernel.org>,
- Mat Martineau <mathew.j.martineau@linux.intel.com>,
- Matthias Maennich <maennich@google.com>, linux-kernel@vger.kernel.org,
- mptcp@lists.01.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org,
- Matthieu Baerts <matthieu.baerts@tessares.net>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>
+Cc: ravi.bangoria@linux.ibm.com, mikey@neuling.org,
+ Xiongwei Song <sxwjean@me.com>, 0x7f454c46@gmail.com,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, npiggin@gmail.com,
+ Paul Mackerras <paulus@samba.org>, aneesh.kumar@linux.ibm.com,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-LANG gives a weak default to each LC_* in case it is not explicitly
-defined. LC_ALL, if set, overrides all other LC_* variables.
+On Thu, Apr 22, 2021 at 11:29 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 22/04/2021 =C3=A0 17:10, Xiongwei Song a =C3=A9crit :
+> > From: Xiongwei Song <sxwjean@gmail.com>
+> >
+> > The esr register has the details of Program Interrupt on BookE/4xx cpus=
+,
+> > printing its value is helpful.
+> >
+> > Signed-off-by: Xiongwei Song <sxwjean@gmail.com>
+> > ---
+> >   arch/powerpc/kernel/process.c | 1 +
+> >   1 file changed, 1 insertion(+)
+> >
+> > diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/proces=
+s.c
+> > index 5c3830837f3a..664aecf8ee2e 100644
+> > --- a/arch/powerpc/kernel/process.c
+> > +++ b/arch/powerpc/kernel/process.c
+> > @@ -1459,6 +1459,7 @@ static bool interrupt_detail_printable(int trap)
+> >       case INTERRUPT_MACHINE_CHECK:
+> >       case INTERRUPT_DATA_STORAGE:
+> >       case INTERRUPT_ALIGNMENT:
+> > +     case INTERRUPT_PROGRAM:
+>
+> With this, it will also print the DSISR on 8xx/6xx so it will print garba=
+ge.
+>
+> 8xx/6xx provide the information in SRR1. If you want to proceed, you have=
+ to do the same as in ISI:
+> Copy the content of SRR1 into regs->dsisr in the assembly handler in head=
+_book3s_32.S and in the
+> instruction TLB error handler in head_8xx.S
 
-  LANG  <  LC_CTYPE, LC_COLLATE, LC_MONETARY, LC_NUMERIC, ...  <  LC_ALL
-
-This is why documentation such as [1] suggests to set LC_ALL in build
-scripts to get the deterministic result.
-
-LANG=C is not strong enough to override LC_* that may be set by end
-users.
-
-[1]: https://reproducible-builds.org/docs/locales/
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
- arch/powerpc/boot/wrapper                          | 2 +-
- scripts/nsdeps                                     | 2 +-
- scripts/recordmcount.pl                            | 2 +-
- scripts/setlocalversion                            | 2 +-
- scripts/tags.sh                                    | 2 +-
- tools/testing/selftests/net/mptcp/mptcp_connect.sh | 2 +-
- usr/gen_initramfs.sh                               | 2 +-
- 7 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index 41fa0a8715e3..cdb796b76e2e 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -191,7 +191,7 @@ if [ -z "$kernel" ]; then
-     kernel=vmlinux
- fi
- 
--LANG=C elfformat="`${CROSS}objdump -p "$kernel" | grep 'file format' | awk '{print $4}'`"
-+LC_ALL=C elfformat="`${CROSS}objdump -p "$kernel" | grep 'file format' | awk '{print $4}'`"
- case "$elfformat" in
-     elf64-powerpcle)	format=elf64lppc	;;
-     elf64-powerpc)	format=elf32ppc	;;
-diff --git a/scripts/nsdeps b/scripts/nsdeps
-index e8ce2a4d704a..04c4b96e95ec 100644
---- a/scripts/nsdeps
-+++ b/scripts/nsdeps
-@@ -44,7 +44,7 @@ generate_deps() {
- 		for source_file in $mod_source_files; do
- 			sed '/MODULE_IMPORT_NS/Q' $source_file > ${source_file}.tmp
- 			offset=$(wc -l ${source_file}.tmp | awk '{print $1;}')
--			cat $source_file | grep MODULE_IMPORT_NS | LANG=C sort -u >> ${source_file}.tmp
-+			cat $source_file | grep MODULE_IMPORT_NS | LC_ALL=C sort -u >> ${source_file}.tmp
- 			tail -n +$((offset +1)) ${source_file} | grep -v MODULE_IMPORT_NS >> ${source_file}.tmp
- 			if ! diff -q ${source_file} ${source_file}.tmp; then
- 				mv ${source_file}.tmp ${source_file}
-diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
-index 867860ea57da..0a7fc9507d6f 100755
---- a/scripts/recordmcount.pl
-+++ b/scripts/recordmcount.pl
-@@ -497,7 +497,7 @@ sub update_funcs
- #
- # Step 2: find the sections and mcount call sites
- #
--open(IN, "LANG=C $objdump -hdr $inputfile|") || die "error running $objdump";
-+open(IN, "LC_ALL=C $objdump -hdr $inputfile|") || die "error running $objdump";
- 
- my $text;
- 
-diff --git a/scripts/setlocalversion b/scripts/setlocalversion
-index bb709eda96cd..db941f6d9591 100755
---- a/scripts/setlocalversion
-+++ b/scripts/setlocalversion
-@@ -126,7 +126,7 @@ scm_version()
- 	fi
- 
- 	# Check for svn and a svn repo.
--	if rev=$(LANG= LC_ALL= LC_MESSAGES=C svn info 2>/dev/null | grep '^Last Changed Rev'); then
-+	if rev=$(LC_ALL=C svn info 2>/dev/null | grep '^Last Changed Rev'); then
- 		rev=$(echo $rev | awk '{print $NF}')
- 		printf -- '-svn%s' "$rev"
- 
-diff --git a/scripts/tags.sh b/scripts/tags.sh
-index fd96734deff1..db8ba411860a 100755
---- a/scripts/tags.sh
-+++ b/scripts/tags.sh
-@@ -326,5 +326,5 @@ esac
- 
- # Remove structure forward declarations.
- if [ -n "$remove_structs" ]; then
--    LANG=C sed -i -e '/^\([a-zA-Z_][a-zA-Z0-9_]*\)\t.*\t\/\^struct \1;.*\$\/;"\tx$/d' $1
-+    LC_ALL=C sed -i -e '/^\([a-zA-Z_][a-zA-Z0-9_]*\)\t.*\t\/\^struct \1;.*\$\/;"\tx$/d' $1
- fi
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.sh b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-index 10a030b53b23..1d2a6e7b877c 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -273,7 +273,7 @@ check_mptcp_disabled()
- 	ip netns exec ${disabled_ns} sysctl -q net.mptcp.enabled=0
- 
- 	local err=0
--	LANG=C ip netns exec ${disabled_ns} ./mptcp_connect -t $timeout -p 10000 -s MPTCP 127.0.0.1 < "$cin" 2>&1 | \
-+	LC_ALL=C ip netns exec ${disabled_ns} ./mptcp_connect -t $timeout -p 10000 -s MPTCP 127.0.0.1 < "$cin" 2>&1 | \
- 		grep -q "^socket: Protocol not available$" && err=1
- 	ip netns delete ${disabled_ns}
- 
-diff --git a/usr/gen_initramfs.sh b/usr/gen_initramfs.sh
-index 8ae831657e5d..63476bb70b41 100755
---- a/usr/gen_initramfs.sh
-+++ b/usr/gen_initramfs.sh
-@@ -147,7 +147,7 @@ dir_filelist() {
- 	header "$1"
- 
- 	srcdir=$(echo "$1" | sed -e 's://*:/:g')
--	dirlist=$(find "${srcdir}" -printf "%p %m %U %G\n" | LANG=C sort)
-+	dirlist=$(find "${srcdir}" -printf "%p %m %U %G\n" | LC_ALL=C sort)
- 
- 	# If $dirlist is only one line, then the directory is empty
- 	if [  "$(echo "${dirlist}" | wc -l)" -gt 1 ]; then
--- 
-2.27.0
-
+Good point.
