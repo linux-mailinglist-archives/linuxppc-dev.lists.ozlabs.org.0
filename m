@@ -1,78 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F9736B731
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Apr 2021 18:46:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7085E36B963
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Apr 2021 20:50:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FTW4l48mzz3bcW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 02:46:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FTYrK3K3yz30GN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 04:50:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FfxC6YTf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WAxgPwen;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::72a;
- helo=mail-qk1-x72a.google.com; envelope-from=tientzu@chromium.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=FfxC6YTf; dkim-atps=neutral
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com
- [IPv6:2607:f8b0:4864:20::72a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=WAxgPwen; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FTW462m3wz30Bc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 02:45:58 +1000 (AEST)
-Received: by mail-qk1-x72a.google.com with SMTP id k127so1523032qkc.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 09:45:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=KlgosoMJOAaR/ET01AhknsNf3mj6gtcliiDg0dLL1e0=;
- b=FfxC6YTfTyKRjULzScvZeh080rowzObsgfkNkB6PbFU85WK18TorFZb3nTplFpotQN
- FCzKzeHFiWHC6SAAz0H1ZvobWir4E6RenbNbEqtrFbyTUyimRczwWol0BDixJHUTha+x
- eXWW6lC9g26ZhTBX/V5pk140gf+3zGj/JaWxQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=KlgosoMJOAaR/ET01AhknsNf3mj6gtcliiDg0dLL1e0=;
- b=oqe0IYzbg+tf9btGzReFjCNiEf7gfbp3vq4D6VHRVEU3ZyvPhdEw4lWOBSPmCqrNqg
- rOAMBj9f0ic0Bxo5qjPLUwtBSMYs6pmbHOMpgc+qIgEeTOVq6luzaYH2YvaOVtHESckS
- DRGEOXTjuLZq9n9Xix5aMw/mVAATrpvkCyMwqvdGYIdFAHutufqWWCSPRQlub1fDCBK7
- eHibhTNA2tn94om7ic+KkRbEMnYhRPasunTPV1REu5l29Nb0uDChKrgAzmC4V64rarAP
- I7RxM0cKGljwRNCNy8xVZqBy5lMB9gYs8vtqKSS35/ImUzLbMiHO1ptQ/HS7SVWZZRzf
- 0Afg==
-X-Gm-Message-State: AOAM532Zv1A9pb9JM/VcafqfNVCKEUhJ8eNiWPsbgl7j3WG/VPoLlsS3
- AbbS8Xlk2ExFE5qfyDNJSD4icY3RXTmLQQ==
-X-Google-Smtp-Source: ABdhPJzxzU+ImBzb/sTTOwXvRg6fSCzun2ybzwqmjfoGKlpov9xloSr5TGWXZaX+g4w88H9Jh+s+Jw==
-X-Received: by 2002:a37:680e:: with SMTP id d14mr19009605qkc.48.1619455554938; 
- Mon, 26 Apr 2021 09:45:54 -0700 (PDT)
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com.
- [209.85.222.175])
- by smtp.gmail.com with ESMTPSA id o130sm462231qke.121.2021.04.26.09.45.54
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Apr 2021 09:45:54 -0700 (PDT)
-Received: by mail-qk1-f175.google.com with SMTP id y136so25032555qkb.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 09:45:54 -0700 (PDT)
-X-Received: by 2002:a05:6638:68b:: with SMTP id
- i11mr17242768jab.90.1619455099476; 
- Mon, 26 Apr 2021 09:38:19 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FTYqt0tFwz2yx4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 04:50:34 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 225D36103E;
+ Mon, 26 Apr 2021 18:50:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1619463031;
+ bh=67YQP+YJX5WYLyI5yzALdZrvKq+wBnhXpG37k4FJDM0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=WAxgPweny/MbsKOkrJ3btl083n/qK/EZREsAOqwQQgPcYid1hiieHlziAY1M/twEs
+ 9IyeAcpRzazKKeWfuC9FbVqrsAd8mQM4wKGohM5LQO20ZWSEEd8s846oMCzg1aryWD
+ pdPe5fOkL98vhMXjM+uQkWNcn6woneRmzJcNVdhLP1a6pvBwNiV6cOjyjxNDy5ubEb
+ PCQq5n223V0ew3EIgXMo3b9Gkywv07DwrYtz8uo6Q3UW/rpiwphJZcmrGeqM4T+9tS
+ 4QO4/uSw11eiOiYz53KzN4jcCVFqD2AJqZnS0IKxmyoBtZA4fhl6bziQ4IilNbNZ1h
+ LJAYIEs7+us2Q==
+Date: Mon, 26 Apr 2021 11:50:26 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v7] powerpc/irq: Inline call_do_irq() and call_do_softirq()
+Message-ID: <YIcLcujmoK6Yet9d@archlinux-ax161>
+References: <20210320122227.345427-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-References: <20210422081508.3942748-1-tientzu@chromium.org>
- <20210422081508.3942748-17-tientzu@chromium.org>
- <03c5bc8a-3965-bf1d-01a4-97d074dfbe2b@arm.com>
-In-Reply-To: <03c5bc8a-3965-bf1d-01a4-97d074dfbe2b@arm.com>
-From: Claire Chang <tientzu@chromium.org>
-Date: Tue, 27 Apr 2021 00:38:08 +0800
-X-Gmail-Original-Message-ID: <CALiNf28ExE8OLsuDaN9nC=eAi-iG0rct_TJCCxAcWW4+_pdj2g@mail.gmail.com>
-Message-ID: <CALiNf28ExE8OLsuDaN9nC=eAi-iG0rct_TJCCxAcWW4+_pdj2g@mail.gmail.com>
-Subject: Re: [PATCH v5 16/16] of: Add plumbing for restricted DMA pool
-To: Robin Murphy <robin.murphy@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210320122227.345427-1-mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,141 +57,212 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
- peterz@infradead.org, joonas.lahtinen@linux.intel.com,
- dri-devel@lists.freedesktop.org, lkml <linux-kernel@vger.kernel.org>,
- grant.likely@arm.com, paulus@samba.org, Will Deacon <will@kernel.org>,
- mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
- sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
- xypron.glpk@gmx.de, Joerg Roedel <joro@8bytes.org>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Christoph Hellwig <hch@lst.de>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
- matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
- Jianxiong Gao <jxgao@google.com>, Daniel Vetter <daniel@ffwll.ch>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- maarten.lankhorst@linux.intel.com, airlied@linux.ie,
- Dan Williams <dan.j.williams@intel.com>, jani.nikula@linux.intel.com,
- Nicolas Boichat <drinkcat@chromium.org>, rodrigo.vivi@intel.com,
- Bjorn Helgaas <bhelgaas@google.com>, boris.ostrovsky@oracle.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
- chris@chris-wilson.co.uk, nouveau@lists.freedesktop.org,
- Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
- Frank Rowand <frowand.list@gmail.com>, Tomasz Figa <tfiga@chromium.org>,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Jim Quinlan <james.quinlan@broadcom.com>, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com
+Cc: clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 23, 2021 at 9:35 PM Robin Murphy <robin.murphy@arm.com> wrote:
->
-> On 2021-04-22 09:15, Claire Chang wrote:
-> > If a device is not behind an IOMMU, we look up the device node and set
-> > up the restricted DMA when the restricted-dma-pool is presented.
-> >
-> > Signed-off-by: Claire Chang <tientzu@chromium.org>
-> > ---
-> >   drivers/of/address.c    | 25 +++++++++++++++++++++++++
-> >   drivers/of/device.c     |  3 +++
-> >   drivers/of/of_private.h |  5 +++++
-> >   3 files changed, 33 insertions(+)
-> >
-> > diff --git a/drivers/of/address.c b/drivers/of/address.c
-> > index 54f221dde267..fff3adfe4986 100644
-> > --- a/drivers/of/address.c
-> > +++ b/drivers/of/address.c
-> > @@ -8,6 +8,7 @@
-> >   #include <linux/logic_pio.h>
-> >   #include <linux/module.h>
-> >   #include <linux/of_address.h>
-> > +#include <linux/of_reserved_mem.h>
-> >   #include <linux/pci.h>
-> >   #include <linux/pci_regs.h>
-> >   #include <linux/sizes.h>
-> > @@ -1109,6 +1110,30 @@ bool of_dma_is_coherent(struct device_node *np)
-> >   }
-> >   EXPORT_SYMBOL_GPL(of_dma_is_coherent);
-> >
-> > +int of_dma_set_restricted_buffer(struct device *dev)
-> > +{
-> > +     struct device_node *node;
-> > +     int count, i;
-> > +
-> > +     if (!dev->of_node)
-> > +             return 0;
-> > +
-> > +     count = of_property_count_elems_of_size(dev->of_node, "memory-region",
-> > +                                             sizeof(phandle));
-> > +     for (i = 0; i < count; i++) {
-> > +             node = of_parse_phandle(dev->of_node, "memory-region", i);
-> > +             /* There might be multiple memory regions, but only one
-> > +              * restriced-dma-pool region is allowed.
-> > +              */
->
-> What's the use-case for having multiple regions if the restricted pool
-> is by definition the only one accessible?
+On Sat, Mar 20, 2021 at 11:22:27PM +1100, Michael Ellerman wrote:
+> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+> call_do_irq() and call_do_softirq() are simple enough to be
+> worth inlining.
+> 
+> Inlining them avoids an mflr/mtlr pair plus a save/reload on stack. It
+> also allows GCC to keep the saved ksp_limit in an nonvolatile reg.
+> 
+> This is inspired from S390 arch. Several other arches do more or
+> less the same. The way sparc arch does seems odd thought.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+> 
+> v2: no change.
+> v3: no change.
+> v4:
+> - comment reminding the purpose of the inline asm block.
+> - added r2 as clobbered reg
+> v5:
+> - Limiting the change to PPC32 for now.
+> - removed r2 from the clobbered regs list (on PPC32 r2 points to current all the time)
+> - Removed patch 1 and merged ksp_limit handling in here.
+> v6:
+> - Rebase on top of merge-test (ca6e327fefb2).
+> - Remove the ksp_limit stuff as it's doesn't exist anymore.
+> 
+> v7:
+> mpe:
+> - Enable for 64-bit too. This all in-kernel code calling in-kernel
+>   code, and must use the kernel TOC.
+> - Use named parameters for the inline asm.
+> - Reformat inline asm.
+> - Mark as always_inline.
+> - Drop unused ret from call_do_softirq(), add r3 as clobbered.
+> ---
+>  arch/powerpc/include/asm/irq.h |  2 --
+>  arch/powerpc/kernel/irq.c      | 41 ++++++++++++++++++++++++++++++++++
+>  arch/powerpc/kernel/misc_32.S  | 25 ---------------------
+>  arch/powerpc/kernel/misc_64.S  | 22 ------------------
+>  4 files changed, 41 insertions(+), 49 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
+> index f3f264e441a7..b2bd58830430 100644
+> --- a/arch/powerpc/include/asm/irq.h
+> +++ b/arch/powerpc/include/asm/irq.h
+> @@ -53,8 +53,6 @@ extern void *mcheckirq_ctx[NR_CPUS];
+>  extern void *hardirq_ctx[NR_CPUS];
+>  extern void *softirq_ctx[NR_CPUS];
+>  
+> -void call_do_softirq(void *sp);
+> -void call_do_irq(struct pt_regs *regs, void *sp);
+>  extern void do_IRQ(struct pt_regs *regs);
+>  extern void __init init_IRQ(void);
+>  extern void __do_irq(struct pt_regs *regs);
+> diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+> index 5b72abbff96c..260effc0a435 100644
+> --- a/arch/powerpc/kernel/irq.c
+> +++ b/arch/powerpc/kernel/irq.c
+> @@ -667,6 +667,47 @@ static inline void check_stack_overflow(void)
+>  	}
+>  }
+>  
+> +static __always_inline void call_do_softirq(const void *sp)
+> +{
+> +	/* Temporarily switch r1 to sp, call __do_softirq() then restore r1. */
+> +	asm volatile (
+> +		 PPC_STLU "	%%r1, %[offset](%[sp])	;"
+> +		"mr		%%r1, %[sp]		;"
+> +		"bl		%[callee]		;"
+> +		 PPC_LL "	%%r1, 0(%%r1)		;"
+> +		 : // Outputs
+> +		 : // Inputs
+> +		   [sp] "b" (sp), [offset] "i" (THREAD_SIZE - STACK_FRAME_OVERHEAD),
+> +		   [callee] "i" (__do_softirq)
+> +		 : // Clobbers
+> +		   "lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr6",
+> +		   "cr7", "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10",
+> +		   "r11", "r12"
+> +	);
+> +}
+> +
+> +static __always_inline void call_do_irq(struct pt_regs *regs, void *sp)
+> +{
+> +	register unsigned long r3 asm("r3") = (unsigned long)regs;
+> +
+> +	/* Temporarily switch r1 to sp, call __do_irq() then restore r1. */
+> +	asm volatile (
+> +		 PPC_STLU "	%%r1, %[offset](%[sp])	;"
+> +		"mr		%%r1, %[sp]		;"
+> +		"bl		%[callee]		;"
+> +		 PPC_LL "	%%r1, 0(%%r1)		;"
+> +		 : // Outputs
+> +		   "+r" (r3)
+> +		 : // Inputs
+> +		   [sp] "b" (sp), [offset] "i" (THREAD_SIZE - STACK_FRAME_OVERHEAD),
+> +		   [callee] "i" (__do_irq)
+> +		 : // Clobbers
+> +		   "lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr6",
+> +		   "cr7", "r0", "r4", "r5", "r6", "r7", "r8", "r9", "r10",
+> +		   "r11", "r12"
+> +	);
+> +}
+> +
+>  void __do_irq(struct pt_regs *regs)
+>  {
+>  	unsigned int irq;
+> diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
+> index acc410043b96..6a076bef2932 100644
+> --- a/arch/powerpc/kernel/misc_32.S
+> +++ b/arch/powerpc/kernel/misc_32.S
+> @@ -27,31 +27,6 @@
+>  
+>  	.text
+>  
+> -_GLOBAL(call_do_softirq)
+> -	mflr	r0
+> -	stw	r0,4(r1)
+> -	stwu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r3)
+> -	mr	r1,r3
+> -	bl	__do_softirq
+> -	lwz	r1,0(r1)
+> -	lwz	r0,4(r1)
+> -	mtlr	r0
+> -	blr
+> -
+> -/*
+> - * void call_do_irq(struct pt_regs *regs, void *sp);
+> - */
+> -_GLOBAL(call_do_irq)
+> -	mflr	r0
+> -	stw	r0,4(r1)
+> -	stwu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r4)
+> -	mr	r1,r4
+> -	bl	__do_irq
+> -	lwz	r1,0(r1)
+> -	lwz	r0,4(r1)
+> -	mtlr	r0
+> -	blr
+> -
+>  /*
+>   * This returns the high 64 bits of the product of two 64-bit numbers.
+>   */
+> diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
+> index 070465825c21..4b761a18a74d 100644
+> --- a/arch/powerpc/kernel/misc_64.S
+> +++ b/arch/powerpc/kernel/misc_64.S
+> @@ -27,28 +27,6 @@
+>  
+>  	.text
+>  
+> -_GLOBAL(call_do_softirq)
+> -	mflr	r0
+> -	std	r0,16(r1)
+> -	stdu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r3)
+> -	mr	r1,r3
+> -	bl	__do_softirq
+> -	ld	r1,0(r1)
+> -	ld	r0,16(r1)
+> -	mtlr	r0
+> -	blr
+> -
+> -_GLOBAL(call_do_irq)
+> -	mflr	r0
+> -	std	r0,16(r1)
+> -	stdu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r4)
+> -	mr	r1,r4
+> -	bl	__do_irq
+> -	ld	r1,0(r1)
+> -	ld	r0,16(r1)
+> -	mtlr	r0
+> -	blr
+> -
+>  _GLOBAL(__bswapdi2)
+>  EXPORT_SYMBOL(__bswapdi2)
+>  	srdi	r8,r3,32
+> -- 
+> 2.25.1
+> 
 
-There might be a device coherent pool (shared-dma-pool) and
-dma_alloc_attrs might allocate memory from that pool [1].
-I'm not sure if it makes sense to have another device coherent pool
-while using restricted DMA pool though.
+This change caused our ppc44x_defconfig builds to hang when powering
+down in QEMU:
 
-[1] https://elixir.bootlin.com/linux/v5.12/source/kernel/dma/mapping.c#L435
+https://github.com/ClangBuiltLinux/continuous-integration2/runs/2304364629?check_suite_focus=true#logs
 
+This is probably something with clang given that GCC 10.3.0 works fine
+but due to the nature of the change, I have no idea how to tell what is
+going wrong. I tried to do some rudimentary debugging with gdb but that
+did not really get me anywhere.
 
->
-> Robin.
->
-> > +             if (of_device_is_compatible(node, "restricted-dma-pool") &&
-> > +                 of_device_is_available(node))
-> > +                     return of_reserved_mem_device_init_by_idx(
-> > +                             dev, dev->of_node, i);
-> > +     }
-> > +
-> > +     return 0;
-> > +}
-> > +
-> >   /**
-> >    * of_mmio_is_nonposted - Check if device uses non-posted MMIO
-> >    * @np:     device node
-> > diff --git a/drivers/of/device.c b/drivers/of/device.c
-> > index c5a9473a5fb1..d8d865223e51 100644
-> > --- a/drivers/of/device.c
-> > +++ b/drivers/of/device.c
-> > @@ -165,6 +165,9 @@ int of_dma_configure_id(struct device *dev, struct device_node *np,
-> >
-> >       arch_setup_dma_ops(dev, dma_start, size, iommu, coherent);
-> >
-> > +     if (!iommu)
-> > +             return of_dma_set_restricted_buffer(dev);
-> > +
-> >       return 0;
-> >   }
-> >   EXPORT_SYMBOL_GPL(of_dma_configure_id);
-> > diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
-> > index d717efbd637d..e9237f5eff48 100644
-> > --- a/drivers/of/of_private.h
-> > +++ b/drivers/of/of_private.h
-> > @@ -163,12 +163,17 @@ struct bus_dma_region;
-> >   #if defined(CONFIG_OF_ADDRESS) && defined(CONFIG_HAS_DMA)
-> >   int of_dma_get_range(struct device_node *np,
-> >               const struct bus_dma_region **map);
-> > +int of_dma_set_restricted_buffer(struct device *dev);
-> >   #else
-> >   static inline int of_dma_get_range(struct device_node *np,
-> >               const struct bus_dma_region **map)
-> >   {
-> >       return -ENODEV;
-> >   }
-> > +static inline int of_dma_get_restricted_buffer(struct device *dev)
-> > +{
-> > +     return -ENODEV;
-> > +}
-> >   #endif
-> >
-> >   #endif /* _LINUX_OF_PRIVATE_H */
-> >
+The kernel was built with just 'CC=clang' and it is reproducible with
+all versions of clang that the kernel supports.
+
+The QEMU invocation is visible at the link above, it is done with our
+boot-qemu.sh in this repo, which also houses the rootfs:
+
+https://github.com/ClangBuiltLinux/boot-utils
+
+Happy to provide any other information or debug/test as directed!
+
+Cheers,
+Nathan
