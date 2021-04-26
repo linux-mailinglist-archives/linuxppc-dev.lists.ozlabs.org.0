@@ -1,60 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB35F36BB2A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Apr 2021 23:25:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C641736BB2E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Apr 2021 23:26:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FTdGy6Mltz301J
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 07:25:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FTdHk4Hzsz3bVJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 07:26:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.53; helo=mail-ot1-f53.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com
- [209.85.210.53])
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.172;
+ helo=mail-oi1-f172.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com
+ [209.85.167.172])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FTdGc3KPgz2yR4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 07:25:26 +1000 (AEST)
-Received: by mail-ot1-f53.google.com with SMTP id
- f75-20020a9d03d10000b0290280def9ab76so48384143otf.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 14:25:26 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FTdHP6RScz2yRT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 07:26:09 +1000 (AEST)
+Received: by mail-oi1-f172.google.com with SMTP id d25so20296926oij.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 14:26:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=if+kpOrEBMc7EsjeYPdnBYrLSadizKO99PTh1HWp/+w=;
- b=GZEcN8sl+n6/iHDATKEM5n31kS9UT2AhTEh7XRp03Qxr93bOXBAyVoIE7diHXN+PKP
- WSn9odmYwmxXEG/u88pcLRTmqAdfouU9EBEY+X0P+BcMcx8nzw3Gcr+KSTsXtvJ/wq1a
- V0IvfNCUm77nOXwhoLbiX1BnOIrr+pchleCiMSKsEw8SBisMnY9D38VmoRPF1HXTESaa
- Lyk9anGycGzgtgOFgQDGnzeqhr4Vy9r3vp/G+u0ei3hGS9Z18xGEgqL7N2Hg5upa3KI/
- 5fKz3rlASa1DjhAdQDmYU+Qj8TLkfL2kgq/iS/eQe1argMdd/Ci8XM10XoaHWMTCljw+
- Wfxw==
-X-Gm-Message-State: AOAM5304zz4wmT2yzWnAs3fPJL8WVCO4evsyhosLVxvuB3eEZLzhXgON
- t/PNu5JFMEsar3ci2VPYJg==
-X-Google-Smtp-Source: ABdhPJytQsNTWy1y3O3rVhWawKgoMbsNBLoMOI596n65aAt19DCMYv0gC0X7OPoXraB6/B6TdKT2Yw==
-X-Received: by 2002:a9d:4616:: with SMTP id y22mr6630504ote.250.1619472322465; 
- Mon, 26 Apr 2021 14:25:22 -0700 (PDT)
+ bh=M+kfr4IPPCFa5xs3ch/ZaXobs80sSVS0cUKODNu4aNk=;
+ b=pEQ+3ZtCjKrUby3Kh9uMn/CAnE+GDAu/G05HDxtqqlV9wQzV6MOZ7lOibN6/pW51uA
+ mLIb3JAdCnOoNbCAeTaOv2rIEGxAILRfr4pOu6ta34txTZwZQA0m80zKWGcBHRjDdSpw
+ O8Zua9Arw+W15g/jso7uMI9GoFWE7lp0XnuEJI6nJSeusVvxGBF+y0/f+bBoRRlRcO87
+ 01nxJVDf2mL8kT7Rb42l5zjvpayO6CdF48DUVdTcpyijQ5vHcLPnoOvnOqrZBkvYPuxB
+ u6CNMqf0nn0yAXG1BEdyWy6YlIaVJ5dQ4wIvhHZrxuKYO+t1/IoYAxjKF66NUHAUTdqX
+ SD9A==
+X-Gm-Message-State: AOAM5337Rty04/r+LJ44rtGgZ9h3Yg8rOYk8efcUC9MLPlE/olpNmR3Q
+ HCQW2LNDIUnvsaNil9RySQ==
+X-Google-Smtp-Source: ABdhPJymQOo1uyvNJPBJdLq+1+tIGbTJ76YWtc9yIVl/sqkwqsFLlW1N8Tl5ylMP6eq+Do6LLCOacg==
+X-Received: by 2002:aca:cf12:: with SMTP id f18mr13856265oig.75.1619472366628; 
+ Mon, 26 Apr 2021 14:26:06 -0700 (PDT)
 Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net.
  [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id p2sm227792ool.15.2021.04.26.14.25.21
+ by smtp.gmail.com with ESMTPSA id g96sm3767686otg.39.2021.04.26.14.26.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Apr 2021 14:25:21 -0700 (PDT)
-Received: (nullmailer pid 4112837 invoked by uid 1000);
- Mon, 26 Apr 2021 21:25:20 -0000
-Date: Mon, 26 Apr 2021 16:25:20 -0500
+ Mon, 26 Apr 2021 14:26:05 -0700 (PDT)
+Received: (nullmailer pid 4113914 invoked by uid 1000);
+ Mon, 26 Apr 2021 21:26:04 -0000
+Date: Mon, 26 Apr 2021 16:26:04 -0500
 From: Rob Herring <robh@kernel.org>
 To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Subject: Re: [PATCH v2 1/2] powerpc: Free fdt on error in elf64_load()
-Message-ID: <20210426212520.GA4112479@robh.at.kernel.org>
+Subject: Re: [PATCH v2 2/2] powerpc: If kexec_build_elf_info() fails return
+ immediately from elf64_load()
+Message-ID: <20210426212604.GA4113688@robh.at.kernel.org>
 References: <20210421163610.23775-1-nramas@linux.microsoft.com>
+ <20210421163610.23775-2-nramas@linux.microsoft.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210421163610.23775-1-nramas@linux.microsoft.com>
+In-Reply-To: <20210421163610.23775-2-nramas@linux.microsoft.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,23 +75,20 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 21 Apr 2021 09:36:09 -0700, Lakshmi Ramasubramanian wrote:
-> There are a few "goto out;" statements before the local variable "fdt"
-> is initialized through the call to of_kexec_alloc_and_setup_fdt() in
-> elf64_load().  This will result in an uninitialized "fdt" being passed
-> to kvfree() in this function if there is an error before the call to
-> of_kexec_alloc_and_setup_fdt().
+On Wed, 21 Apr 2021 09:36:10 -0700, Lakshmi Ramasubramanian wrote:
+> Uninitialized local variable "elf_info" would be passed to
+> kexec_free_elf_info() if kexec_build_elf_info() returns an error
+> in elf64_load().
 > 
-> If there is any error after fdt is allocated, but before it is
-> saved in the arch specific kimage struct, free the fdt.
+> If kexec_build_elf_info() returns an error, return the error
+> immediately.
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 > Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
 > ---
->  arch/powerpc/kexec/elf_64.c | 16 ++++++----------
->  1 file changed, 6 insertions(+), 10 deletions(-)
+>  arch/powerpc/kexec/elf_64.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 
 Applied, thanks!
