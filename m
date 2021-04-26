@@ -2,64 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56A636B25B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Apr 2021 13:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A07436B254
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Apr 2021 13:28:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FTN4c4ndlz3bc4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Apr 2021 21:30:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FTN194GB0z30Ff
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Apr 2021 21:27:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2016061301 header.b=aBLItzwT;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=J0qyEGaT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=walle.cc (client-ip=2a01:4f8:151:8464::1:2;
- helo=ssl.serverraum.org; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
- header.s=mail2016061301 header.b=aBLItzwT; 
- dkim-atps=neutral
-Received: from ssl.serverraum.org (ssl.serverraum.org
- [IPv6:2a01:4f8:151:8464::1:2])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
+ helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=J0qyEGaT; dkim-atps=neutral
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
+ [IPv6:2607:f8b0:4864:20::635])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FTMGf4Lt3z2xdQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 20:54:34 +1000 (AEST)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ssl.serverraum.org (Postfix) with ESMTPSA id C353C22236;
- Mon, 26 Apr 2021 12:54:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
- s=mail2016061301; t=1619434464;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Wk++B/L7nejW/Tu85IzTL8HKq5haXmWBuSRGMq5G9Vc=;
- b=aBLItzwTpMLhnbBUfRwBioPVMyZiTU0Pj1H6UNIlRFQlCvrRQC9+sCwg7Wn5J+XsvHZln5
- Tw13ybstx1ba3ts9pwi2ty81rvOdnoEZ8zIsZqSHZ7psnqzBT46f85vFqJlTddaAXCPvqK
- P1t1rcsQHgB7iSTeBLTyQ5gE26gcAtQ=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FTN0k1Nlnz2ysm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 21:27:31 +1000 (AEST)
+Received: by mail-pl1-x635.google.com with SMTP id v13so15170384ple.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 04:27:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:mime-version:message-id
+ :content-transfer-encoding;
+ bh=WojHIOCE9IiTbGPzqxYFTTTCnqu0elAJH1s4+uNOyEQ=;
+ b=J0qyEGaT/rxkDjFcDO08MAVfnAPIxzrvr3SopwvSmi8Kg5iAdQfEtv74oiHHIQS1iS
+ CGLqfsIBlnJrP/15yYko6TCtMHOz/ntk1azufroxAT5BsYlXp+RtQsaUbD73K+FQ1vZV
+ zzsLUUNiT2vCss/eeZyE1ZUEL+trqdkNsenJcyDOQU44ca1oN7Rmvf5RUPhUPgWdhPJJ
+ eqiWkRep4QEiwst/6jC0mQwsISQbu7EK5mJzTLyAmyJhEGlGuMBSU1sJvw6BJ5tfgRww
+ XKx3RV+jNz+GN4YfzuCgcg0+VGRvXHeoWlC1N2IuwJYL4ggS7AYew65Xi8VPNUYfphvi
+ RzZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:mime-version:message-id
+ :content-transfer-encoding;
+ bh=WojHIOCE9IiTbGPzqxYFTTTCnqu0elAJH1s4+uNOyEQ=;
+ b=VCqGrBYDBKO08tm+w6kmmRWf79SDNZw4WPiExZIbj91JRvpJyq/Riibl2epMGG9ezK
+ MPz7KpB7Aug99911pzaiTHEslapRwKkWB8xjO2IuDMfN+FJ7FW15PuqSGHz2uG8gRrG3
+ h/TVwAivUvFyFg0aK5c94j9h+qSzMY36tzhDUXdCWqNOMDMoPJXpuZFF2actdiw8apAn
+ RL8wZ8QUUb+Fcuf0PKn7He49xBjy83UUJe6n1kIi8k54MAIzomyy1G0PQkW1dmcQApYB
+ HGwMnxHWkCWkgg2v4qufnFiPGfGKxmyW91X9NGziTs5FMPsfkF1PHIe1DGuGDj31gOkT
+ cvHA==
+X-Gm-Message-State: AOAM532ENd0luGU8TrPrxXmASC0HntXsb8v9iiJQjtWvfn8+kKCU0qlV
+ C0Aqpy3jTvy5xcoy8ISPsvY=
+X-Google-Smtp-Source: ABdhPJxhCUd6Iz5KibdnBFl8Aeh3Pkjodv3kU3GM9TTu89lVrTHu03yLezPM6rMYrMwwWgtdYFJtGQ==
+X-Received: by 2002:a17:90a:d707:: with SMTP id
+ y7mr22928289pju.50.1619436444496; 
+ Mon, 26 Apr 2021 04:27:24 -0700 (PDT)
+Received: from localhost ([59.102.87.99])
+ by smtp.gmail.com with ESMTPSA id a7sm11167389pfg.65.2021.04.26.04.27.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Apr 2021 04:27:24 -0700 (PDT)
+Date: Mon, 26 Apr 2021 21:27:18 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Guest entry/exit performance work and observations
+To: kvm-ppc@vger.kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Mon, 26 Apr 2021 12:54:08 +0200
-From: Michael Walle <michael@walle.cc>
-To: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem() for
- non-platform devices
-In-Reply-To: <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
-References: <20210412174718.17382-1-michael@walle.cc>
- <20210412174718.17382-3-michael@walle.cc>
- <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org>
- <8157eba9317609294da80472622deb28@walle.cc>
- <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
-User-Agent: Roundcube Webmail/1.4.11
-Message-ID: <108f268a35843368466004f7fe5f9f88@walle.cc>
-X-Sender: michael@walle.cc
-X-Mailman-Approved-At: Mon, 26 Apr 2021 21:30:07 +1000
+Message-Id: <1619432976.tfqsjlu7r9.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,159 +78,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Paul Mackerras <paulus@samba.org>,
- =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
- Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
- "moderated list:ARM/STM32
- ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
- Jerome Brunet <jbrunet@baylibre.com>, Neil Armstrong <narmstrong@baylibre.com>,
- Michal Simek <michal.simek@xilinx.com>, Jose Abreu <joabreu@synopsys.com>,
- NXP Linux Team <linux-imx@nxp.com>, Mark Lee <Mark-MC.Lee@mediatek.com>,
- Hauke Mehrtens <hauke@hauke-m.de>, Sascha Hauer <s.hauer@pengutronix.de>,
- Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
- linux-omap <linux-omap@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-wireless <linux-wireless@vger.kernel.org>, linux-kernel@vger.kernel.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Vladimir Oltean <olteanv@gmail.com>,
- Claudiu Beznea <claudiu.beznea@microchip.com>,
- =?UTF-8?Q?J=C3=A9r=C3=B4me_Pouiller?= <jerome.pouiller@silabs.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Chris Snook <chris.snook@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
- Gregory Clement <gregory.clement@bootlin.com>,
- Madalin Bucur <madalin.bucur@nxp.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Murali Karicheri <m-karicheri2@ti.com>, Yisen Zhuang <yisen.zhuang@huawei.com>,
- Alexandre Torgue <alexandre.torgue@st.com>, Wingman Kwok <w-kwok2@ti.com>,
- Sean Wang <sean.wang@mediatek.com>, Maxime Ripard <mripard@kernel.org>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, "open
- list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
- Kalle Valo <kvalo@codeaurora.org>, Mirko Lindner <mlindner@marvell.com>,
- Fugang Duan <fugang.duan@nxp.com>,
- Bryan Whitehead <bryan.whitehead@microchip.com>,
- QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
- Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
- Taras Chornyi <tchornyi@marvell.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Kevin Hilman <khilman@baylibre.com>, Heiner Kallweit <hkallweit1@gmail.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Fabio Estevam <festevam@gmail.com>, Stanislaw Gruszka <stf_xl@wp.pl>,
- Florian Fainelli <f.fainelli@gmail.com>, linux-staging@lists.linux.dev,
- Chen-Yu Tsai <wens@csie.org>,
- "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE"
- <bcm-kernel-feedback-list@broadcom.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Grygorii Strashko <grygorii.strashko@ti.com>, Byungho An <bh74.an@samsung.com>,
- Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
- Vladimir Zapolskiy <vz@mleia.com>, John Crispin <john@phrozen.org>,
- Salil Mehta <salil.mehta@huawei.com>,
- Sergei Shtylyov <sergei.shtylyov@gmail.com>, linux-oxnas@groups.io,
- Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Helmut Schaa <helmut.schaa@googlemail.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- "open list:MEDIA DRIVERS FOR RENESAS -
- FCP" <linux-renesas-soc@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
- Russell King <linux@armlinux.org.uk>, Vadym Kochan <vkochan@marvell.com>,
- Jakub Kicinski <kuba@kernel.org>, Vivien Didelot <vivien.didelot@gmail.com>,
- Sunil Goutham <sgoutham@marvell.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- devicetree@vger.kernel.org,
- "moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Jernej Skrabec <jernej.skrabec@siol.net>, netdev <netdev@vger.kernel.org>,
- Nicolas Ferre <nicolas.ferre@microchip.com>, Li Yang <leoyang.li@nxp.com>,
- Stephen Hemminger <stephen@networkplumber.org>, Vinod Koul <vkoul@kernel.org>,
- Joyce Ooi <joyce.ooi@intel.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Felix Fietkau <nbd@nbd.name>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am 2021-04-16 17:19, schrieb Rob Herring:
-> On Fri, Apr 16, 2021 at 2:30 AM Michael Walle <michael@walle.cc> wrote:
->> 
->> Am 2021-04-16 05:24, schrieb Benjamin Herrenschmidt:
->> > On Mon, 2021-04-12 at 19:47 +0200, Michael Walle wrote:
->> >>
->> >>  /**
->> >>   * of_get_phy_mode - Get phy mode for given device_node
->> >> @@ -59,15 +60,39 @@ static int of_get_mac_addr(struct device_node *np,
->> >> const char *name, u8 *addr)
->> >>  static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
->> >>  {
->> >>         struct platform_device *pdev = of_find_device_by_node(np);
->> >> +       struct nvmem_cell *cell;
->> >> +       const void *mac;
->> >> +       size_t len;
->> >>         int ret;
->> >>
->> >> -       if (!pdev)
->> >> -               return -ENODEV;
->> >> +       /* Try lookup by device first, there might be a
->> >> nvmem_cell_lookup
->> >> +        * associated with a given device.
->> >> +        */
->> >> +       if (pdev) {
->> >> +               ret = nvmem_get_mac_address(&pdev->dev, addr);
->> >> +               put_device(&pdev->dev);
->> >> +               return ret;
->> >> +       }
->> >> +
->> >
->> > This smells like the wrong band aid :)
->> >
->> > Any struct device can contain an OF node pointer these days.
->> 
->> But not all nodes might have an associated device, see DSA for 
->> example.
-> 
-> I believe what Ben is saying and what I said earlier is going from dev
-> -> OF node is right and OF node -> dev is wrong. If you only have an
-> OF node, then use an of_* function.
-> 
->> And as the name suggests of_get_mac_address() operates on a node. So
->> if a driver calls of_get_mac_address() it should work on the node. 
->> What
->> is wrong IMHO, is that the ethernet drivers where the corresponding
->> board
->> has a nvmem_cell_lookup registered is calling 
->> of_get_mac_address(node).
->> It should rather call eth_get_mac_address(dev) in the first place.
->> 
->> One would need to figure out if there is an actual device (with an
->> assiciated of_node), then call eth_get_mac_address(dev) and if there
->> isn't a device call of_get_mac_address(node).
-> 
-> Yes, I think we're all in agreement.
-> 
->> But I don't know if that is easy to figure out. Well, one could start
->> with just the device where nvmem_cell_lookup is used. Then we could
->> drop the workaround above.
-> 
-> Start with the ones just passing dev.of_node directly:
-> 
-> $ git grep 'of_get_mac_address(.*of_node)'
+I'm looking at KVM HV P9 path guest exit/entry performance with the Cify
+patches, plus some further work to see what we can do.
 
-[..]
+Measurement is done in the guest making a "NULL hcall" and return back=20
+to a non-nested guest. Two cases considered: First, returning to guest=20
+at the "try_real_mode" hcall handler. Second, returning back to guest=20
+after going around a loop in kvmppc_vcpu_run_hv (i.e., exit into full=20
+host kernel context, but not to host usermode).
 
-Before I'll try to come up with a patch for this, I'd like to get
-your opinion on it.
+The real-mode test is a proxy for real mode hcall and other interrupt
+handlers, and the full exit is a proxy for virtual mode hcalls and=20
+interrupt handlers.
 
-(1) replacing of_get_mac_address(node) with eth_get_mac_address(dev)
-     might sometimes lead to confusing comments like in
-     drivers/net/ethernet/allwinner/sun4i-emac.c:
+The test was done with powernv_defconfig, radix guest and radix host on
+a POWER9 with meltdown mitigations disabled. A minor hack was made
+just to get the immediate return / NULL hcall behaviour to measure
+performance.
 
-     /* Read MAC-address from DT */
-     ret = of_get_mac_address(np, ndev->dev_addr);
+* Upstream try_real_mode return	-  509 cycles
+* Upstream virt NULL hcall	- 9587 cycles
+* KVM Cify virt NULL hcall	- 9333 cycles
+* KVM Cify+opt virt NULL hcall	- 5754 cycles (167% faster than upstream,
+				               or 60% the cycles required)
 
-     Do we live with that or should the new name somehow reflect that
-     it is taken from the device tree.
+The KVM Cify series (which you have already seen) plus the further
+optimisations patch series is here:
 
-(2) What do you think of eth_get_mac_address(ndev). That is, the
-     second argument is missing and ndev->dev_addr is used.
-     I'm unsure about it. We'd still need a second function for drivers
-     which don't write ndev->dev_addr directly, but have some custom
-     logic in between. OTOH it would be like eth_hw_addr_random(ndev).
+https://github.com/npiggin/linux/tree/kvm-in-c-new
 
--michael
+Some of the important / major further optimisation patches have
+individual cycle time improvement contribution annotated. In many cases
+things are inter-dependent, e.g., patch A might improve 100 cycles and
+B 50 cycles but A+B might be 250 due to together avoiding an SPR stall.
+So take the individual numbers with a grain of salt, and the cumulative
+result above is most important.
+
+In summary the Cify series does not hurt performance of entry/exit,=20
+which is good. It actually helps a bit, I'm not sure exactly where.
+And we can make quite a lot more improvement with this series.
+
+HOWEVER! The Cify series removes the very fast real mode hcall and=20
+interrupt handlers (except some things like machine check). So any real=20
+mode handler will be handled as a virt mode handler on P9 after Cify.
+
+Now I have some further patches in progress that should shave about 1000=20
+more cycles more from the full exit, but beyond that it gets pretty=20
+tough to improve. That still leaves it an order of magnitude slower. =20
+
+Now I did say this doesn't matter so much with a P9/radix/xive guest
+which is true, except possibly for TCE hcalls that Alexey brought to my
+attention (any other important cases?). So we will have to think about=20
+that.
+
+Alexey did say that the real mode TCE hcalls were added for P8, and
+were less important for P9, but it is something to keep an eye on. We=20
+might end up adding a faster handler back, but I would much prefer if
+wasn't entirely run in guest context as they do today (maybe switch
+MMU context, TB, and a few other important SPRs, and enable translation
+so it can run practically as host kernel context). But I think we should
+wait and see, and add the complexity only if it comes up as a problem.
+
+The other thing is the P9 path now implements the P9 hash guest support=20
+after the Cify series. Hash does a lot more exits due to translation=20
+hcalls and interrupts. I did do some basic measurements (e.g., kernel=20
+compile) and couldn't see a significant slowdown. But in any case I=20
+think the P9 hash code is not important to micro optimise, it was only
+done to simplify code and remove asm, so I would rather not add=20
+complexity for that.
+
+Thanks,
+Nick
