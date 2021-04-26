@@ -1,77 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4E936B6FB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Apr 2021 18:38:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F9736B731
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Apr 2021 18:46:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FTVvh3vRWz30FK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 02:38:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FTW4l48mzz3bcW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 02:46:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=hQyrvIvY;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FfxC6YTf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d32;
- helo=mail-io1-xd32.google.com; envelope-from=tientzu@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::72a;
+ helo=mail-qk1-x72a.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=hQyrvIvY; dkim-atps=neutral
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com
- [IPv6:2607:f8b0:4864:20::d32])
+ header.s=google header.b=FfxC6YTf; dkim-atps=neutral
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com
+ [IPv6:2607:f8b0:4864:20::72a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FTVvD1W4Bz2yRX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 02:38:15 +1000 (AEST)
-Received: by mail-io1-xd32.google.com with SMTP id t21so5801133iob.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 09:38:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FTW462m3wz30Bc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 02:45:58 +1000 (AEST)
+Received: by mail-qk1-x72a.google.com with SMTP id k127so1523032qkc.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 09:45:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=cFKXKq/sKurvSVgvNvGkxgOiMlOZ5bG92GQyZxG6/Ow=;
- b=hQyrvIvY0OkwlUkO65L/o3TMJboyrA/EOLuUe0Pq7KgqeFtR8O9LJWrjeU2EQISYlu
- bJHPBsPqEo2jNERM7Qly7inrbryADiFPyU5whSnn5mfATXbgH1UnC4GjWrov7E7itgl/
- y/vmAUUGiGEmxu0IFynSQLccMWdifgG50rRhw=
+ :cc; bh=KlgosoMJOAaR/ET01AhknsNf3mj6gtcliiDg0dLL1e0=;
+ b=FfxC6YTfTyKRjULzScvZeh080rowzObsgfkNkB6PbFU85WK18TorFZb3nTplFpotQN
+ FCzKzeHFiWHC6SAAz0H1ZvobWir4E6RenbNbEqtrFbyTUyimRczwWol0BDixJHUTha+x
+ eXWW6lC9g26ZhTBX/V5pk140gf+3zGj/JaWxQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=cFKXKq/sKurvSVgvNvGkxgOiMlOZ5bG92GQyZxG6/Ow=;
- b=YT4pAHQau3X8gdqWlc7J4IKQY37yCgi7vp618YiSm4fOYzVTNwYxUTWctqdH2kLZzn
- aVaemZEUppjnoBJLufd5NIKzb7kBoNChOrSUk693yiwD1Rfbc0G0kcGHnZru05chZE03
- lf4ACh+xqAKngRzLNN05ncIo09sH7se33X3G9Z1+A0aOUj/F4ODxV9NWhZiKVctdHfc5
- P+zN3skuWj5p/3Q6NS1vHMKh/kUsxyctBIZkaKNjH5VppOeJfeC0sriJMUDLxbgVr7B0
- JlDV7eFILCfwRDnWmMNh3Mlq6mc3aPev2o0YAHBwTANR1tF0WrUnn806Zcq8f4sixVZa
- stTA==
-X-Gm-Message-State: AOAM530ElXVU93VkzZhZUoozQgUJHX9n6PDr1BM/wolqqE1UEe3PJgcO
- Vb0HUlE9uhALsmUpMUsrYpc8eIi2sMUhaA==
-X-Google-Smtp-Source: ABdhPJwXy8B1HwZYNTGfF5zFSg13X8mq0yaqzz3jNlNzwGDiv8dRY4N9zHcIUziWcHLRHU9kpXdyUQ==
-X-Received: by 2002:a05:6602:1689:: with SMTP id
- s9mr14725210iow.171.1619455090915; 
- Mon, 26 Apr 2021 09:38:10 -0700 (PDT)
-Received: from mail-il1-f175.google.com (mail-il1-f175.google.com.
- [209.85.166.175])
- by smtp.gmail.com with ESMTPSA id j20sm174501ilo.17.2021.04.26.09.38.08
+ bh=KlgosoMJOAaR/ET01AhknsNf3mj6gtcliiDg0dLL1e0=;
+ b=oqe0IYzbg+tf9btGzReFjCNiEf7gfbp3vq4D6VHRVEU3ZyvPhdEw4lWOBSPmCqrNqg
+ rOAMBj9f0ic0Bxo5qjPLUwtBSMYs6pmbHOMpgc+qIgEeTOVq6luzaYH2YvaOVtHESckS
+ DRGEOXTjuLZq9n9Xix5aMw/mVAATrpvkCyMwqvdGYIdFAHutufqWWCSPRQlub1fDCBK7
+ eHibhTNA2tn94om7ic+KkRbEMnYhRPasunTPV1REu5l29Nb0uDChKrgAzmC4V64rarAP
+ I7RxM0cKGljwRNCNy8xVZqBy5lMB9gYs8vtqKSS35/ImUzLbMiHO1ptQ/HS7SVWZZRzf
+ 0Afg==
+X-Gm-Message-State: AOAM532Zv1A9pb9JM/VcafqfNVCKEUhJ8eNiWPsbgl7j3WG/VPoLlsS3
+ AbbS8Xlk2ExFE5qfyDNJSD4icY3RXTmLQQ==
+X-Google-Smtp-Source: ABdhPJzxzU+ImBzb/sTTOwXvRg6fSCzun2ybzwqmjfoGKlpov9xloSr5TGWXZaX+g4w88H9Jh+s+Jw==
+X-Received: by 2002:a37:680e:: with SMTP id d14mr19009605qkc.48.1619455554938; 
+ Mon, 26 Apr 2021 09:45:54 -0700 (PDT)
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com.
+ [209.85.222.175])
+ by smtp.gmail.com with ESMTPSA id o130sm462231qke.121.2021.04.26.09.45.54
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Apr 2021 09:38:10 -0700 (PDT)
-Received: by mail-il1-f175.google.com with SMTP id a9so1530617ilh.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 09:38:08 -0700 (PDT)
-X-Received: by 2002:a92:7307:: with SMTP id o7mr14655769ilc.5.1619455077553;
- Mon, 26 Apr 2021 09:37:57 -0700 (PDT)
+ Mon, 26 Apr 2021 09:45:54 -0700 (PDT)
+Received: by mail-qk1-f175.google.com with SMTP id y136so25032555qkb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Apr 2021 09:45:54 -0700 (PDT)
+X-Received: by 2002:a05:6638:68b:: with SMTP id
+ i11mr17242768jab.90.1619455099476; 
+ Mon, 26 Apr 2021 09:38:19 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210422081508.3942748-1-tientzu@chromium.org>
- <20210422081508.3942748-9-tientzu@chromium.org>
- <1f84aa4c-f966-0986-b5a4-eecbf3b454ec@arm.com>
-In-Reply-To: <1f84aa4c-f966-0986-b5a4-eecbf3b454ec@arm.com>
+ <20210422081508.3942748-17-tientzu@chromium.org>
+ <03c5bc8a-3965-bf1d-01a4-97d074dfbe2b@arm.com>
+In-Reply-To: <03c5bc8a-3965-bf1d-01a4-97d074dfbe2b@arm.com>
 From: Claire Chang <tientzu@chromium.org>
-Date: Tue, 27 Apr 2021 00:37:46 +0800
-X-Gmail-Original-Message-ID: <CALiNf29N3U5GZKNN90NzjSeQ0WG4dxyRzU97fJ-r9OuChzLWKA@mail.gmail.com>
-Message-ID: <CALiNf29N3U5GZKNN90NzjSeQ0WG4dxyRzU97fJ-r9OuChzLWKA@mail.gmail.com>
-Subject: Re: [PATCH v5 08/16] swiotlb: Update is_swiotlb_active to add a
- struct device argument
+Date: Tue, 27 Apr 2021 00:38:08 +0800
+X-Gmail-Original-Message-ID: <CALiNf28ExE8OLsuDaN9nC=eAi-iG0rct_TJCCxAcWW4+_pdj2g@mail.gmail.com>
+Message-ID: <CALiNf28ExE8OLsuDaN9nC=eAi-iG0rct_TJCCxAcWW4+_pdj2g@mail.gmail.com>
+Subject: Re: [PATCH v5 16/16] of: Add plumbing for restricted DMA pool
 To: Robin Murphy <robin.murphy@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -115,134 +114,111 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 23, 2021 at 9:31 PM Robin Murphy <robin.murphy@arm.com> wrote:
+On Fri, Apr 23, 2021 at 9:35 PM Robin Murphy <robin.murphy@arm.com> wrote:
 >
 > On 2021-04-22 09:15, Claire Chang wrote:
-> > Update is_swiotlb_active to add a struct device argument. This will be
-> > useful later to allow for restricted DMA pool.
+> > If a device is not behind an IOMMU, we look up the device node and set
+> > up the restricted DMA when the restricted-dma-pool is presented.
 > >
 > > Signed-off-by: Claire Chang <tientzu@chromium.org>
 > > ---
-> >   drivers/gpu/drm/i915/gem/i915_gem_internal.c | 2 +-
-> >   drivers/gpu/drm/nouveau/nouveau_ttm.c        | 2 +-
-> >   drivers/pci/xen-pcifront.c                   | 2 +-
-> >   include/linux/swiotlb.h                      | 4 ++--
-> >   kernel/dma/direct.c                          | 2 +-
-> >   kernel/dma/swiotlb.c                         | 4 ++--
-> >   6 files changed, 8 insertions(+), 8 deletions(-)
+> >   drivers/of/address.c    | 25 +++++++++++++++++++++++++
+> >   drivers/of/device.c     |  3 +++
+> >   drivers/of/of_private.h |  5 +++++
+> >   3 files changed, 33 insertions(+)
 > >
-> > diff --git a/drivers/gpu/drm/i915/gem/i915_gem_internal.c b/drivers/gpu/drm/i915/gem/i915_gem_internal.c
-> > index ce6b664b10aa..7d48c433446b 100644
-> > --- a/drivers/gpu/drm/i915/gem/i915_gem_internal.c
-> > +++ b/drivers/gpu/drm/i915/gem/i915_gem_internal.c
-> > @@ -42,7 +42,7 @@ static int i915_gem_object_get_pages_internal(struct drm_i915_gem_object *obj)
-> >
-> >       max_order = MAX_ORDER;
-> >   #ifdef CONFIG_SWIOTLB
-> > -     if (is_swiotlb_active()) {
-> > +     if (is_swiotlb_active(NULL)) {
-> >               unsigned int max_segment;
-> >
-> >               max_segment = swiotlb_max_segment();
-> > diff --git a/drivers/gpu/drm/nouveau/nouveau_ttm.c b/drivers/gpu/drm/nouveau/nouveau_ttm.c
-> > index e8b506a6685b..2a2ae6d6cf6d 100644
-> > --- a/drivers/gpu/drm/nouveau/nouveau_ttm.c
-> > +++ b/drivers/gpu/drm/nouveau/nouveau_ttm.c
-> > @@ -321,7 +321,7 @@ nouveau_ttm_init(struct nouveau_drm *drm)
-> >       }
-> >
-> >   #if IS_ENABLED(CONFIG_SWIOTLB) && IS_ENABLED(CONFIG_X86)
-> > -     need_swiotlb = is_swiotlb_active();
-> > +     need_swiotlb = is_swiotlb_active(NULL);
-> >   #endif
-> >
-> >       ret = ttm_device_init(&drm->ttm.bdev, &nouveau_bo_driver, drm->dev->dev,
-> > diff --git a/drivers/pci/xen-pcifront.c b/drivers/pci/xen-pcifront.c
-> > index b7a8f3a1921f..6d548ce53ce7 100644
-> > --- a/drivers/pci/xen-pcifront.c
-> > +++ b/drivers/pci/xen-pcifront.c
-> > @@ -693,7 +693,7 @@ static int pcifront_connect_and_init_dma(struct pcifront_device *pdev)
-> >
-> >       spin_unlock(&pcifront_dev_lock);
-> >
-> > -     if (!err && !is_swiotlb_active()) {
-> > +     if (!err && !is_swiotlb_active(NULL)) {
-> >               err = pci_xen_swiotlb_init_late();
-> >               if (err)
-> >                       dev_err(&pdev->xdev->dev, "Could not setup SWIOTLB!\n");
-> > diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-> > index 2a6cca07540b..c530c976d18b 100644
-> > --- a/include/linux/swiotlb.h
-> > +++ b/include/linux/swiotlb.h
-> > @@ -123,7 +123,7 @@ static inline bool is_swiotlb_buffer(struct device *dev, phys_addr_t paddr)
-> >   void __init swiotlb_exit(void);
-> >   unsigned int swiotlb_max_segment(void);
-> >   size_t swiotlb_max_mapping_size(struct device *dev);
-> > -bool is_swiotlb_active(void);
-> > +bool is_swiotlb_active(struct device *dev);
-> >   void __init swiotlb_adjust_size(unsigned long size);
-> >   #else
-> >   #define swiotlb_force SWIOTLB_NO_FORCE
-> > @@ -143,7 +143,7 @@ static inline size_t swiotlb_max_mapping_size(struct device *dev)
-> >       return SIZE_MAX;
+> > diff --git a/drivers/of/address.c b/drivers/of/address.c
+> > index 54f221dde267..fff3adfe4986 100644
+> > --- a/drivers/of/address.c
+> > +++ b/drivers/of/address.c
+> > @@ -8,6 +8,7 @@
+> >   #include <linux/logic_pio.h>
+> >   #include <linux/module.h>
+> >   #include <linux/of_address.h>
+> > +#include <linux/of_reserved_mem.h>
+> >   #include <linux/pci.h>
+> >   #include <linux/pci_regs.h>
+> >   #include <linux/sizes.h>
+> > @@ -1109,6 +1110,30 @@ bool of_dma_is_coherent(struct device_node *np)
 > >   }
+> >   EXPORT_SYMBOL_GPL(of_dma_is_coherent);
 > >
-> > -static inline bool is_swiotlb_active(void)
-> > +static inline bool is_swiotlb_active(struct device *dev)
-> >   {
-> >       return false;
-> >   }
-> > diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> > index 84c9feb5474a..7a88c34d0867 100644
-> > --- a/kernel/dma/direct.c
-> > +++ b/kernel/dma/direct.c
-> > @@ -495,7 +495,7 @@ int dma_direct_supported(struct device *dev, u64 mask)
-> >   size_t dma_direct_max_mapping_size(struct device *dev)
-> >   {
-> >       /* If SWIOTLB is active, use its maximum mapping size */
-> > -     if (is_swiotlb_active() &&
-> > +     if (is_swiotlb_active(dev) &&
-> >           (dma_addressing_limited(dev) || swiotlb_force == SWIOTLB_FORCE))
+> > +int of_dma_set_restricted_buffer(struct device *dev)
+> > +{
+> > +     struct device_node *node;
+> > +     int count, i;
+> > +
+> > +     if (!dev->of_node)
+> > +             return 0;
+> > +
+> > +     count = of_property_count_elems_of_size(dev->of_node, "memory-region",
+> > +                                             sizeof(phandle));
+> > +     for (i = 0; i < count; i++) {
+> > +             node = of_parse_phandle(dev->of_node, "memory-region", i);
+> > +             /* There might be multiple memory regions, but only one
+> > +              * restriced-dma-pool region is allowed.
+> > +              */
 >
-> I wonder if it's worth trying to fold these other conditions into
-> is_swiotlb_active() itself? I'm not entirely sure what matters for Xen,
-> but for the other cases it seems like they probably only care about
-> whether bouncing may occur for their particular device or not (possibly
-> they want to be using dma_max_mapping_size() now anyway - TBH I'm
-> struggling to make sense of what the swiotlb_max_segment business is
-> supposed to mean).
+> What's the use-case for having multiple regions if the restricted pool
+> is by definition the only one accessible?
 
-I think leaving those conditions outside of is_swiotlb_active() might
-help avoid confusion with is_dev_swiotlb_force() in patch #9? We need
-is_dev_swiotlb_force() only because the restricted DMA pool supports
-memory allocation, but the default swiotlb doesn't.
+There might be a device coherent pool (shared-dma-pool) and
+dma_alloc_attrs might allocate memory from that pool [1].
+I'm not sure if it makes sense to have another device coherent pool
+while using restricted DMA pool though.
 
->
-> Otherwise, patch #9 will need to touch here as well to make sure that
-> per-device forced bouncing is reflected correctly.
-
-You're right. Otherwise, is_dev_swiotlb_force is needed here.
+[1] https://elixir.bootlin.com/linux/v5.12/source/kernel/dma/mapping.c#L435
 
 
 >
 > Robin.
 >
-> >               return swiotlb_max_mapping_size(dev);
-> >       return SIZE_MAX;
-> > diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> > index ffbb8724e06c..1d221343f1c8 100644
-> > --- a/kernel/dma/swiotlb.c
-> > +++ b/kernel/dma/swiotlb.c
-> > @@ -659,9 +659,9 @@ size_t swiotlb_max_mapping_size(struct device *dev)
-> >       return ((size_t)IO_TLB_SIZE) * IO_TLB_SEGSIZE;
-> >   }
+> > +             if (of_device_is_compatible(node, "restricted-dma-pool") &&
+> > +                 of_device_is_available(node))
+> > +                     return of_reserved_mem_device_init_by_idx(
+> > +                             dev, dev->of_node, i);
+> > +     }
+> > +
+> > +     return 0;
+> > +}
+> > +
+> >   /**
+> >    * of_mmio_is_nonposted - Check if device uses non-posted MMIO
+> >    * @np:     device node
+> > diff --git a/drivers/of/device.c b/drivers/of/device.c
+> > index c5a9473a5fb1..d8d865223e51 100644
+> > --- a/drivers/of/device.c
+> > +++ b/drivers/of/device.c
+> > @@ -165,6 +165,9 @@ int of_dma_configure_id(struct device *dev, struct device_node *np,
 > >
-> > -bool is_swiotlb_active(void)
-> > +bool is_swiotlb_active(struct device *dev)
+> >       arch_setup_dma_ops(dev, dma_start, size, iommu, coherent);
+> >
+> > +     if (!iommu)
+> > +             return of_dma_set_restricted_buffer(dev);
+> > +
+> >       return 0;
+> >   }
+> >   EXPORT_SYMBOL_GPL(of_dma_configure_id);
+> > diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
+> > index d717efbd637d..e9237f5eff48 100644
+> > --- a/drivers/of/of_private.h
+> > +++ b/drivers/of/of_private.h
+> > @@ -163,12 +163,17 @@ struct bus_dma_region;
+> >   #if defined(CONFIG_OF_ADDRESS) && defined(CONFIG_HAS_DMA)
+> >   int of_dma_get_range(struct device_node *np,
+> >               const struct bus_dma_region **map);
+> > +int of_dma_set_restricted_buffer(struct device *dev);
+> >   #else
+> >   static inline int of_dma_get_range(struct device_node *np,
+> >               const struct bus_dma_region **map)
 > >   {
-> > -     return io_tlb_default_mem != NULL;
-> > +     return get_io_tlb_mem(dev) != NULL;
+> >       return -ENODEV;
 > >   }
-> >   EXPORT_SYMBOL_GPL(is_swiotlb_active);
+> > +static inline int of_dma_get_restricted_buffer(struct device *dev)
+> > +{
+> > +     return -ENODEV;
+> > +}
+> >   #endif
 > >
+> >   #endif /* _LINUX_OF_PRIVATE_H */
 > >
