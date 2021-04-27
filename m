@@ -1,124 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B441936C686
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 14:56:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E903F36C72E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 15:44:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FV1xL5TfJz30D5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 22:56:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FV2zv6GfLz30Bq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 23:44:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Hy8OlSmG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GOhxLeV6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22c;
- helo=mail-oi1-x22c.google.com; envelope-from=groeck7@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Hy8OlSmG; dkim-atps=neutral
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com
- [IPv6:2607:f8b0:4864:20::22c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=GOhxLeV6; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FV1wv0zCBz2xYY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 22:56:28 +1000 (AEST)
-Received: by mail-oi1-x22c.google.com with SMTP id n184so33609756oia.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 05:56:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:autocrypt:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=/XHlLEpNzjuI0S1WcxDA8cWcp8kFneZ/84y6W8LPunk=;
- b=Hy8OlSmGuQRhZolNM6RCVQiaeOmSs0cjSyaMjfbqrQ8bJfjW3myN8F0lf7x5839IKO
- I/QmmsQuTozpkwaqiNu7Ncm96IFz1KidBqimpMvo16pYZsHfb9gWOEdA4O17HX4emXns
- QfjOpXQcRoGnKmz67RKK5VCinlpTIAojXPJDn6kZ/k7HsBKY+JuBfGn1Un5KlbmGgjm4
- pwa9rNPZseKCaDMl+ciWhjfDQDHvavx7bDdYtsCPmWGzMLBbyHrBGCPHaymYpRNQr3Yd
- cXqzLBOFQpZJ+/Now90QfGyw7KZyE59EAqMNSwc6N7Q/wsB01m5ItcCRomFjSrb0np+q
- 59mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=/XHlLEpNzjuI0S1WcxDA8cWcp8kFneZ/84y6W8LPunk=;
- b=WfwQK8fAx4QkNWpcvdYFSO5eZfKgwg61j1Jx+ed8+3jEFkpR4KlDubV9SoFwNT0/AY
- Q/H0I0q4YATHWs1V9tIUnP8WolttEZwO4v/lOrN4ITnsl/vjcDgM6ljB/WHo9zkcl7iV
- zNfURE8pMDB4d8L4R06bH2wVPejYL/ib2ztgmb1ea3HVHRVbSQgTZB6+UvRV11iW5UqG
- d1yyXQaKrLwBnhcN+aiI3h1XS8ektX8+xiMsR5JBh4/zvtGPSqqAw/H+3mPtyQU+KzpG
- F81p2sEG3TTTUKj+4PI+nrOx5daZqujlfF6dvNEDcYZTPOX/H4uW7KtdxSmEz+riIulF
- KfOw==
-X-Gm-Message-State: AOAM530GMmf07Q+N4O461Lca8ZJGRN0uurIZ9Ve0aXDDuAlnjDTQJIvb
- rDMA3VIewmOA0zHFl6kO64g=
-X-Google-Smtp-Source: ABdhPJwv6yPj3k2iJ+m26/JwYoEhIcrcrGKxZXl/f6pcHYx9T5xVJUliPEFb3xsAiLbb+lAdaMgGHw==
-X-Received: by 2002:aca:ed12:: with SMTP id l18mr3276455oih.24.1619528184323; 
- Tue, 27 Apr 2021 05:56:24 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- q1sm4098236otm.26.2021.04.27.05.56.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Apr 2021 05:56:23 -0700 (PDT)
-Subject: Re: [PATCH 2/9] ARM: PXA: Kill use of irq_create_strict_mappings()
-To: Marc Zyngier <maz@kernel.org>
-References: <20210406093557.1073423-1-maz@kernel.org>
- <20210406093557.1073423-3-maz@kernel.org>
- <20210426223942.GA213931@roeck-us.net> <87o8e0nn8u.wl-maz@kernel.org>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
- RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
- nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
- 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
- gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
- IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
- kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
- VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
- jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
- BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
- ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
- CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
- nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
- hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
- c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
- 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
- GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
- sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
- Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
- HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
- BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
- l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
- 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
- pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
- J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
- pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
- 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
- ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
- I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
- nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
- HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
- JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
- J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
- cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
- wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
- hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
- nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
- QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
- trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
- WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
- HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-Message-ID: <4dfcc837-8474-0173-2de8-146e5cf1d142@roeck-us.net>
-Date: Tue, 27 Apr 2021 05:56:21 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FV2zR2BwBz2xfd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 23:43:46 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13RDZpTr063682
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 09:43:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : references : in-reply-to : mime-version : message-id : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=BqwhvmyAKyyi4L11/2Tw1kcxtfbkYgn4aUr7JeBN/2g=;
+ b=GOhxLeV6VQyGPI6Mic9WTSLLQUq9q89FDqRX9GtOTneXQEDgabOMbONRMb4TGz2SmdKg
+ xBKQ+9lTXg9gy3A+OLHoyrVShcOhjSzlSuNwXzGw6XQzdSCkDReGri0f6CtlKMYjypGC
+ xmKOHUVAWiaBLqLu0NVKL2CfPbUycxOMCK7nCUYHrm0YLpjMMUefwiCBFaZo4dQzEjVd
+ xsZJKRvSTWkr9wpqcVipz1nOFHpseJHkI7Or++0rSIVVO3zaBwNo8X3iSQytndjKJNON
+ CfZQRbzVvViUDjSJM9d3Mq1iiQDU8YQbN1oRggS9bAVfhotKL+VyQ+otlBModKzuC89M 8Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 386hacwm50-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 09:43:42 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13RDZvpl064265
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 09:43:42 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 386hacwm3j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Apr 2021 09:43:42 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13RDTp6Z000924;
+ Tue, 27 Apr 2021 13:43:39 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03fra.de.ibm.com with ESMTP id 384ay8rs56-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Apr 2021 13:43:39 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 13RDhCCl37683542
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Apr 2021 13:43:12 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 362EFAE055;
+ Tue, 27 Apr 2021 13:43:36 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 259DDAE04D;
+ Tue, 27 Apr 2021 13:43:35 +0000 (GMT)
+Received: from localhost (unknown [9.85.74.4])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Apr 2021 13:43:34 +0000 (GMT)
+Date: Tue, 27 Apr 2021 19:13:33 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/4] powerpc/pseries: Fix hcall tracing recursion in pv
+ queued spinlocks
+To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+References: <20210423031108.1046067-1-npiggin@gmail.com>
+ <20210423031108.1046067-2-npiggin@gmail.com>
+In-Reply-To: <20210423031108.1046067-2-npiggin@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <87o8e0nn8u.wl-maz@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+User-Agent: astroid/v0.15-23-gcdc62b30 (https://github.com/astroidmail/astroid)
+Message-Id: <1619529780.yjjzv9cw5m.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: kkokDQ44qHZHq-FUVOoIZvBenjRGMYtl
+X-Proofpoint-GUID: hcTewmivWxmT4PkTXQeFu49ka4GIRtit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-27_08:2021-04-27,
+ 2021-04-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ adultscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
+ impostorscore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104270098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,98 +110,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-sh@vger.kernel.org, Robert Jarzmik <robert.jarzmik@free.fr>,
- linux-kernel@vger.kernel.org, Haojian Zhuang <haojian.zhuang@gmail.com>,
- linux-mips@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linux-arm-kernel@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, Daniel Mack <daniel@zonque.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/27/21 1:30 AM, Marc Zyngier wrote:
-> Hi Guenter,
-> 
-> Thanks for the heads up.
-> 
-> On Mon, 26 Apr 2021 23:39:42 +0100,
-> Guenter Roeck <linux@roeck-us.net> wrote:
->>
->> On Tue, Apr 06, 2021 at 10:35:50AM +0100, Marc Zyngier wrote:
->>> irq_create_strict_mappings() is a poor way to allow the use of
->>> a linear IRQ domain as a legacy one. Let's be upfront about
->>> it and use a legacy domain when appropriate.
->>>
->>> Signed-off-by: Marc Zyngier <maz@kernel.org>
->>> ---
->>
->> When running the "mainstone" qemu emulation, this patch results
->> in many (32, actually) runtime warnings such as the following.
->>
->> [    0.528272] ------------[ cut here ]------------
->> [    0.528285] WARNING: CPU: 0 PID: 1 at kernel/irq/irqdomain.c:550 irq_domain_associate+0x194/0x1f0
->> [    0.528315] error: virq335 is not allocated
-> 
-> [...]
-> 
-> This looks like a case of CONFIG_SPARSE_IRQ, combined with a lack of
-> brain engagement. I've come up with the following patch, which lets
-> the kernel boot in QEMU without screaming (other than the lack of a
-> rootfs...).
-> 
-> Please let me know if this helps.
-> 
-
-It does.
-
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-
-Thanks,
-Guenter
-
-> Thanks,
-> 
-> 	M.
-> 
-> From 4d7f6ddbbfdff1c9f029bafca79020d3294dc32c Mon Sep 17 00:00:00 2001
-> From: Marc Zyngier <maz@kernel.org>
-> Date: Tue, 27 Apr 2021 09:00:28 +0100
-> Subject: [PATCH] ARM: PXA: Fix cplds irqdesc allocation when using legacy mode
-> 
-> The Mainstone PXA platform uses CONFIG_SPARSE_IRQ, and thus we
-> cannot rely on the irq descriptors to be readilly allocated
-> before creating the irqdomain in legacy mode. The kernel then
-> complains loudly about not being able to associate the interrupt
-> in the domain -- can't blame it.
-> 
-> Fix it by allocating the irqdescs upfront in the legacy case.
-> 
-> Fixes: b68761da0111 ("ARM: PXA: Kill use of irq_create_strict_mappings()")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
+Nicholas Piggin wrote:
+> The paravit queued spinlock slow path adds itself to the queue then
+> calls pv_wait to wait for the lock to become free. This is implemented
+> by calling H_CONFER to donate cycles.
+>=20
+> When hcall tracing is enabled, this H_CONFER call can lead to a spin
+> lock being taken in the tracing code, which will result in the lock to
+> be taken again, which will also go to the slow path because it queues
+> behind itself and so won't ever make progress.
+>=20
+> An example trace of a deadlock:
+>=20
+>   __pv_queued_spin_lock_slowpath
+>   trace_clock_global
+>   ring_buffer_lock_reserve
+>   trace_event_buffer_lock_reserve
+>   trace_event_buffer_reserve
+>   trace_event_raw_event_hcall_exit
+>   __trace_hcall_exit
+>   plpar_hcall_norets_trace
+>   __pv_queued_spin_lock_slowpath
+>   trace_clock_global
+>   ring_buffer_lock_reserve
+>   trace_event_buffer_lock_reserve
+>   trace_event_buffer_reserve
+>   trace_event_raw_event_rcu_dyntick
+>   rcu_irq_exit
+>   irq_exit
+>   __do_irq
+>   call_do_irq
+>   do_IRQ
+>   hardware_interrupt_common_virt
+>=20
+> Fix this by introducing plpar_hcall_norets_notrace(), and using that to
+> make SPLPAR virtual processor dispatching hcalls by the paravirt
+> spinlock code.
+>=20
+> Fixes: 20c0e8269e9d ("powerpc/pseries: Implement paravirt qspinlocks for =
+SPLPAR")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/arm/mach-pxa/pxa_cplds_irqs.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-pxa/pxa_cplds_irqs.c b/arch/arm/mach-pxa/pxa_cplds_irqs.c
-> index ec0d9b094744..bddfc7cd5d40 100644
-> --- a/arch/arm/mach-pxa/pxa_cplds_irqs.c
-> +++ b/arch/arm/mach-pxa/pxa_cplds_irqs.c
-> @@ -121,8 +121,13 @@ static int cplds_probe(struct platform_device *pdev)
->  		return fpga->irq;
->  
->  	base_irq = platform_get_irq(pdev, 1);
-> -	if (base_irq < 0)
-> +	if (base_irq < 0) {
->  		base_irq = 0;
-> +	} else {
-> +		ret = devm_irq_alloc_descs(&pdev->dev, base_irq, base_irq, CPLDS_NB_IRQ, 0);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
->  
->  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->  	fpga->base = devm_ioremap_resource(&pdev->dev, res);
-> 
+>  arch/powerpc/include/asm/hvcall.h       |  3 +++
+>  arch/powerpc/include/asm/paravirt.h     | 22 +++++++++++++++++++---
+>  arch/powerpc/platforms/pseries/hvCall.S | 10 ++++++++++
+>  arch/powerpc/platforms/pseries/lpar.c   |  4 ++--
+>  4 files changed, 34 insertions(+), 5 deletions(-)
+
+Thanks for the fix! Some very minor nits below, but none the less:
+Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+
+>=20
+> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm=
+/hvcall.h
+> index ed6086d57b22..0c92b01a3c3c 100644
+> --- a/arch/powerpc/include/asm/hvcall.h
+> +++ b/arch/powerpc/include/asm/hvcall.h
+> @@ -446,6 +446,9 @@
+>   */
+>  long plpar_hcall_norets(unsigned long opcode, ...);
+>=20
+> +/* Variant which does not do hcall tracing */
+> +long plpar_hcall_norets_notrace(unsigned long opcode, ...);
+> +
+>  /**
+>   * plpar_hcall: - Make a pseries hypervisor call
+>   * @opcode: The hypervisor call to make.
+> diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/a=
+sm/paravirt.h
+> index 5d1726bb28e7..3c13c2ec70a9 100644
+> --- a/arch/powerpc/include/asm/paravirt.h
+> +++ b/arch/powerpc/include/asm/paravirt.h
+> @@ -30,17 +30,33 @@ static inline u32 yield_count_of(int cpu)
+>=20
+>  static inline void yield_to_preempted(int cpu, u32 yield_count)
+>  {
+
+It looks like yield_to_preempted() is only used by simple spin locks=20
+today. I wonder if it makes more sense to put the below comment in=20
+yield_to_any() which is used by the qspinlock code.
+
+> -	plpar_hcall_norets(H_CONFER, get_hard_smp_processor_id(cpu), yield_coun=
+t);
+> +	/*
+> +	 * Spinlock code yields and prods, so don't trace the hcalls because
+> +	 * tracing code takes spinlocks which could recurse.
+> +	 *
+> +	 * These calls are made while the lock is not held, the lock slowpath
+> +	 * yields if it can not acquire the lock, and unlock slow path might
+> +	 * prod if a waiter has yielded). So this did not seem to be a problem
+> +	 * for simple spin locks because technically it didn't recuse on the
+							       ^^^^^^
+							       recurse
+
+> +	 * lock. However the queued spin lock contended path is more strictly
+> +	 * ordered: the H_CONFER hcall is made after the task has queued itself
+> +	 * on the lock, so then recursing on the lock will queue up behind that
+> +	 * (or worse: queued spinlocks uses tricks that assume a context never
+> +	 * waits on more than one spinlock, so that may cause random
+> +	 * corruption).
+> +	 */
+> +	plpar_hcall_norets_notrace(H_CONFER,
+> +				   get_hard_smp_processor_id(cpu), yield_count);
+
+This can all be on a single line.
+
+
+- Naveen
 
