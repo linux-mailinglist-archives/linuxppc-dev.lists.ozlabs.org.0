@@ -2,103 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA75E36C758
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 15:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C9436C770
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 16:00:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FV3C95spqz30G7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 23:53:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FV3Ld0Gyxz302c
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 00:00:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qihG6Y1i;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VMmXJfQZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=qihG6Y1i; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=VMmXJfQZ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FV3Bl0b1Gz2xgJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 23:53:34 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13RDkHPr098377
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 09:53:33 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FV3Kr0VDRz2xYY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 23:59:43 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13RDqVaB126556
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 09:59:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=date : from : subject :
  to : references : in-reply-to : mime-version : message-id : content-type :
  content-transfer-encoding; s=pp1;
- bh=UKLizG1MVgM/IGtjrbRqFX1stuNYFcPF0JQPFKiK4RA=;
- b=qihG6Y1ij6ejS7S7ZZmGc0bJvkGwMX1W8inOrYtTRQhS7Njj9j+tJs0cdMzqcYE+a89C
- BPimyJ+jCV2R/H0EARZMuC+tIxUOto3OY/kWIkJGpj9DXovekRShLbHjuPEXTPGGVxhM
- QZIDi3eADczXxIBLNn+WP2hi+pi7xyCUBICJ1df1AcOAs3sQeCpPZvTtfpHPR1rsQAra
- Uiqg14lMgcE/HKebspZz2PNhWH+mvDoROJo4SNcbIVgXR8GXjXu2o3JfU5qkA5Uyq40p
- xogMuuIZoyvMjArF8oh9QQ2o1GUSGyU/WpZSr9fKkRtO2KNXA+XRkXLwIDDjB6AR4N6T jQ== 
+ bh=Aaq5Wp/NCuUfLwUnG1XMYDfT++xkqCioxL4mR8dXNIc=;
+ b=VMmXJfQZbBokDWWKXjMd6OWVhFk4EniBJVM/RJLCE+bE675I1OiU+508iUIA9dnDkc0s
+ eEqlTjq/4YppLDYk+IGyr308Zby3tEPjIM3Uh8NermK59NrAThWqA/65AsPXGRb5jhFT
+ Wzqc2bq4bqCDNGv0QFeV9mS1wZYHoSyqvNFS2vQ1udChCH+OZYydCja8chcgHhsV+0NG
+ 5x2K0nLeET00q6VG0W7gy3oSbcffN0EhJfZiIoRIZq1MLP4mutSoS2TehAHbTzDEF0HT
+ ytUgv8BI2FN57w75FVVdMj/9e7o8fgpoABMUku0HLtxDSoAHyxkzLyDWFd9WeRfImfEB ow== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 386ksjg8mr-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 386kvpr5ng-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 09:53:32 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13RDkVjX099783
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 09:53:32 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 386ksjg8kd-1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 09:59:40 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 13RDsKZk133137
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 09:59:40 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 386kvpr5kh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Apr 2021 09:53:32 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13RDlMLC009219;
- Tue, 27 Apr 2021 13:53:29 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06ams.nl.ibm.com with ESMTP id 384akh9cme-1
+ Tue, 27 Apr 2021 09:59:39 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13RDwpXj017572;
+ Tue, 27 Apr 2021 13:59:37 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma01fra.de.ibm.com with ESMTP id 384ay80sas-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Apr 2021 13:53:29 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13RDrQxv3474012
+ Tue, 27 Apr 2021 13:59:37 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 13RDxALq28508506
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Apr 2021 13:53:26 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4DF1B4C050;
- Tue, 27 Apr 2021 13:53:26 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A77714C04E;
- Tue, 27 Apr 2021 13:53:25 +0000 (GMT)
+ Tue, 27 Apr 2021 13:59:10 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 52FC411C058;
+ Tue, 27 Apr 2021 13:59:34 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C9ACB11C04A;
+ Tue, 27 Apr 2021 13:59:33 +0000 (GMT)
 Received: from localhost (unknown [9.85.74.4])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 27 Apr 2021 13:53:25 +0000 (GMT)
-Date: Tue, 27 Apr 2021 19:23:24 +0530
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Apr 2021 13:59:33 +0000 (GMT)
+Date: Tue, 27 Apr 2021 19:29:32 +0530
 From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 3/4] powerpc/pseries: use notrace hcall variant for H_CEDE
- idle
+Subject: Re: [PATCH 4/4] powerpc/pseries: warn if recursing into the hcall
+ tracing code
 To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 References: <20210423031108.1046067-1-npiggin@gmail.com>
- <20210423031108.1046067-4-npiggin@gmail.com>
-In-Reply-To: <20210423031108.1046067-4-npiggin@gmail.com>
+ <20210423031108.1046067-5-npiggin@gmail.com>
+In-Reply-To: <20210423031108.1046067-5-npiggin@gmail.com>
 MIME-Version: 1.0
 User-Agent: astroid/v0.15-23-gcdc62b30 (https://github.com/astroidmail/astroid)
-Message-Id: <1619531562.cz82rwv12g.naveen@linux.ibm.com>
+Message-Id: <1619531703.lv0qigovgz.naveen@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VPqBRmQ69HdGjsIjbn61dI6pPwf_pMD7
-X-Proofpoint-GUID: NFFbXbO68YtjbFh-stGjHP1ahR7NbR3V
+X-Proofpoint-ORIG-GUID: tHl7_2m9Dta1ClFhZ0I0Sj8WmrIjaeZg
+X-Proofpoint-GUID: teDWpr5flz_Yct81pNK8I2yI6Wz7NCkZ
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-04-27_08:2021-04-27,
  2021-04-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- clxscore=1015 mlxscore=0 impostorscore=0 suspectscore=0 phishscore=0
- lowpriorityscore=0 spamscore=0 mlxlogscore=989 bulkscore=0 adultscore=0
+ lowpriorityscore=0
+ bulkscore=0 phishscore=0 priorityscore=1501 mlxscore=0 suspectscore=0
+ adultscore=0 impostorscore=0 clxscore=1015 spamscore=0 mlxlogscore=999
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104270098
+ engine=8.12.0-2104060000 definitions=main-2104270094
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,16 +115,48 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Nicholas Piggin wrote:
-> Rather than special-case H_CEDE in the hcall trace wrappers, make the
-> idle H_CEDE call use plpar_hcall_norets_notrace().
->=20
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/powerpc/include/asm/plpar_wrappers.h |  6 +++++-
->  arch/powerpc/platforms/pseries/lpar.c     | 10 ----------
->  2 files changed, 5 insertions(+), 11 deletions(-)
+>  arch/powerpc/platforms/pseries/lpar.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platfor=
+ms/pseries/lpar.c
+> index 835e7f661a05..a961a7ebeab3 100644
+> --- a/arch/powerpc/platforms/pseries/lpar.c
+> +++ b/arch/powerpc/platforms/pseries/lpar.c
+> @@ -1828,8 +1828,11 @@ void hcall_tracepoint_unregfunc(void)
+>=20
+>  /*
+>   * Since the tracing code might execute hcalls we need to guard against
+> - * recursion. H_CONFER from spin locks must be treated separately though
+> - * and use _notrace plpar_hcall variants, see yield_to_preempted().
+> + * recursion, but this always seems risky -- __trace_hcall_entry might b=
+e
+> + * ftraced, for example. So warn in this case.
 
-Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+__trace_hcall_[entry|exit] aren't traced anymore since they now have the=20
+'notrace' annotation.
+
+> + *
+> + * H_CONFER from spin locks must be treated separately though and use _n=
+otrace
+> + * plpar_hcall variants, see yield_to_preempted().
+>   */
+>  static DEFINE_PER_CPU(unsigned int, hcall_trace_depth);
+>=20
+> @@ -1843,7 +1846,7 @@ notrace void __trace_hcall_entry(unsigned long opco=
+de, unsigned long *args)
+>=20
+>  	depth =3D this_cpu_ptr(&hcall_trace_depth);
+>=20
+> -	if (*depth)
+> +	if (WARN_ON_ONCE(*depth))
+>  		goto out;
+
+I don't think this will be helpful. The hcall trace depth tracking is=20
+for the tracepoint and I suspect that this warning will be triggered=20
+quite easily. Since we have recursion protection, I don't think we=20
+should warn here.
 
 
 - Naveen
