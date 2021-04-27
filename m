@@ -2,110 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A22136BEA8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 06:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFAE36BEB9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 07:05:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FTq9y2gsPz30C8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 14:52:06 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JTSxYW9x;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FTqTc62jKz30G8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 15:05:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=srs0=bdip=jy=linux.ibm.com=sourabhjain@ozlabs.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=JTSxYW9x; dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FTq9S27Thz2xfd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 14:51:38 +1000 (AEST)
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by ozlabs.org (Postfix) with ESMTP id 4FTq9Q2mTBz9sXM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 14:51:38 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4FTq9Q28wvz9sXL; Tue, 27 Apr 2021 14:51:38 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=JTSxYW9x; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4FTq9P1bkFz9sXG;
- Tue, 27 Apr 2021 14:51:36 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13R4XsbR006877; Tue, 27 Apr 2021 00:51:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=f04Uj4MoSfyTw+TE7TKptfw7YtIShfnoI9IKQOgYaK4=;
- b=JTSxYW9xNbeY4dwBE5a0R2ZhGELoP0dmM4l6e5Q55jp9NkE0Ho4kVLJ76gOt86KhuK9f
- cmRvSTDbAlnxR/wMoxcxQCjxswWTUojEisqqZNPHD0ctWTnL4aUoNMaAFPcoS6vQLUYk
- yEWdz5eptwPIrTK9yBFADt0fWUAkb8g7ECm0eTyRkxKcjLXXPclXZXellUfO0z+gVbTv
- 6xabw+CLQUcc/nphXS8Q64oJ9RAr3+M1/UAhj5IOeAKVXnswsKewSXPY+m38gHyYcErm
- cMIYa7cSHpwGe7Xmu9IbM9dp4z9p389JDHAl8xjmincOFncMkfNhS/ysgZZ+q2+FGCsP 9A== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0b-001b2d01.pphosted.com with ESMTP id 386aym95md-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Apr 2021 00:51:32 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13R4laWs009207;
- Tue, 27 Apr 2021 04:51:30 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma05fra.de.ibm.com with ESMTP id 384gjxrju7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Apr 2021 04:51:30 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13R4pQRk30147012
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Apr 2021 04:51:26 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 49911A4053;
- Tue, 27 Apr 2021 04:51:26 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 82FBDA404D;
- Tue, 27 Apr 2021 04:51:24 +0000 (GMT)
-Received: from sjain014.ibmuc.com (unknown [9.85.90.110])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 27 Apr 2021 04:51:24 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v6] powerpc/kexec_file: use current CPU info while setting up
- FDT
-Date: Tue, 27 Apr 2021 10:21:20 +0530
-Message-Id: <20210427045120.2109980-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.26.3
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KFzD2XM2ayxOQfI6gIVFvdKXVpSXSoPu
-X-Proofpoint-ORIG-GUID: KFzD2XM2ayxOQfI6gIVFvdKXVpSXSoPu
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FTqTH0LBZz2xfk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 15:05:19 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4FTqT63mM3z4gf;
+ Tue, 27 Apr 2021 07:05:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id e4PMjbRIQiGt; Tue, 27 Apr 2021 07:05:14 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FTqT62gmzz4jM;
+ Tue, 27 Apr 2021 07:05:14 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 125F38B77C;
+ Tue, 27 Apr 2021 07:05:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id je4m3tj14JOn; Tue, 27 Apr 2021 07:05:14 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9BD808B777;
+ Tue, 27 Apr 2021 07:05:12 +0200 (CEST)
+Subject: Re: [PATCH] powerpc: Avoid clang uninitialized warning in
+ __get_user_size_allowed
+To: Nathan Chancellor <nathan@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20210426203518.981550-1-nathan@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <32a0f305-031b-e4da-345d-0f03b2b42189@csgroup.eu>
+Date: Tue, 27 Apr 2021 07:05:12 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-27_01:2021-04-26,
- 2021-04-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 mlxscore=0 bulkscore=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 mlxlogscore=999 spamscore=0
- clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104270030
+In-Reply-To: <20210426203518.981550-1-nathan@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,184 +64,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, Sourabh Jain <sourabhjain@linux.ibm.com>,
- linuxppc-dev@ozlabs.org, stable@vger.kernel.org, hbathini@linux.ibm.com,
- bauerman@linux.ibm.com
+Cc: clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kexec_file_load uses initial_boot_params in setting up the device-tree
-for the kernel to be loaded. Though initial_boot_params holds info
-about CPUs at the time of boot, it doesn't account for hot added CPUs.
 
-So, kexec'ing with kexec_file_load syscall would leave the kexec'ed
-kernel with inaccurate CPU info. Also, if kdump kernel is loaded with
-kexec_file_load syscall and the system crashes on a hot added CPU,
-capture kernel hangs failing to identify the boot CPU.
 
- Kernel panic - not syncing: sysrq triggered crash
- CPU: 24 PID: 6065 Comm: echo Kdump: loaded Not tainted 5.12.0-rc5upstream #54
- Call Trace:
- [c0000000e590fac0] [c0000000007b2400] dump_stack+0xc4/0x114 (unreliable)
- [c0000000e590fb00] [c000000000145290] panic+0x16c/0x41c
- [c0000000e590fba0] [c0000000008892e0] sysrq_handle_crash+0x30/0x40
- [c0000000e590fc00] [c000000000889cdc] __handle_sysrq+0xcc/0x1f0
- [c0000000e590fca0] [c00000000088a538] write_sysrq_trigger+0xd8/0x178
- [c0000000e590fce0] [c0000000005e9b7c] proc_reg_write+0x10c/0x1b0
- [c0000000e590fd10] [c0000000004f26d0] vfs_write+0xf0/0x330
- [c0000000e590fd60] [c0000000004f2aec] ksys_write+0x7c/0x140
- [c0000000e590fdb0] [c000000000031ee0] system_call_exception+0x150/0x290
- [c0000000e590fe10] [c00000000000ca5c] system_call_common+0xec/0x278
- --- interrupt: c00 at 0x7fff905b9664
- NIP:  00007fff905b9664 LR: 00007fff905320c4 CTR: 0000000000000000
- REGS: c0000000e590fe80 TRAP: 0c00   Not tainted  (5.12.0-rc5upstream)
- MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 28000242
-       XER: 00000000
- IRQMASK: 0
- GPR00: 0000000000000004 00007ffff5fedf30 00007fff906a7300 0000000000000001
- GPR04: 000001002a7355b0 0000000000000002 0000000000000001 00007ffff5fef616
- GPR08: 0000000000000001 0000000000000000 0000000000000000 0000000000000000
- GPR12: 0000000000000000 00007fff9073a160 0000000000000000 0000000000000000
- GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
- GPR20: 0000000000000000 00007fff906a4ee0 0000000000000002 0000000000000001
- GPR24: 00007fff906a0898 0000000000000000 0000000000000002 000001002a7355b0
- GPR28: 0000000000000002 00007fff906a1790 000001002a7355b0 0000000000000002
- NIP [00007fff905b9664] 0x7fff905b9664
- LR [00007fff905320c4] 0x7fff905320c4
- --- interrupt: c00
+Le 26/04/2021 à 22:35, Nathan Chancellor a écrit :
+> Commit 9975f852ce1b ("powerpc/uaccess: Remove calls to __get_user_bad()
+> and __put_user_bad()") switch to BUILD_BUG() in the default case, which
+> leaves x uninitialized. This will not be an issue because the build will
+> be broken in that case but clang does static analysis before it realizes
+> the default case will be done so it warns about x being uninitialized
+> (trimmed for brevity):
+> 
+>   In file included from mm/mprotect.c:13:
+>   In file included from ./include/linux/hugetlb.h:28:
+>   In file included from ./include/linux/mempolicy.h:16:
+>   ./include/linux/pagemap.h:772:16: warning: variable '__gu_val' is used
+>   uninitialized whenever switch default is taken [-Wsometimes-uninitialized]
+>                   if (unlikely(__get_user(c, uaddr) != 0))
+>                                ^~~~~~~~~~~~~~~~~~~~
+>   ./arch/powerpc/include/asm/uaccess.h:266:2: note: expanded from macro '__get_user'
+>           __get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err);      \
+>           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   ./arch/powerpc/include/asm/uaccess.h:235:2: note: expanded from macro
+>   '__get_user_size_allowed'
+>          default: BUILD_BUG();                                   \
+>          ^~~~~~~
+> 
+> Commit 5cd29b1fd3e8 ("powerpc/uaccess: Use asm goto for get_user when
+> compiler supports it") added an initialization for x because of the same
+> reason. Do the same thing here so there is no warning across all
+> versions of clang.
 
-To avoid this from happening, extract current CPU info from of_root
-device node and use it for setting up the fdt in kexec_file_load case.
+Ah yes, I tested with Clang 11 which has CONFIG_CC_HAS_ASM_GOTO_OUTPUT, that's the reason why I hit 
+that warning only in the CONFIG_CC_HAS_ASM_GOTO_OUTPUT branch.
 
-Fixes: 6ecd0163d360 ("powerpc/kexec_file: Add appropriate regions for memory reserve map")
+But regardless, is that normal that Clang warns that on a never taken branch ? That's puzzling.
 
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
----
- arch/powerpc/kexec/file_load_64.c | 88 +++++++++++++++++++++++++++++++
- 1 file changed, 88 insertions(+)
+> 
+> Link: https://github.com/ClangBuiltLinux/linux/issues/1359
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
- ---
-Changelog:
+Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-v1 -> v5
-  - https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-April/227950.html
-
-v5 -> v6
-  - use exiting macro (for_each_property_of_node) to loop through all
-    properties of a node.
-  - removed devtree_lock while accessing the node properties.
-  - function name update, add_node_prop to add_node_props.
- ---
-
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 02b9e4d0dc40..4f7d4c10f939 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -960,6 +960,89 @@ unsigned int kexec_fdt_totalsize_ppc64(struct kimage *image)
- 	return fdt_size;
- }
- 
-+/**
-+ * add_node_props - Reads node properties from device node structure and add
-+ *                  them to fdt.
-+ * @fdt:            Flattened device tree of the kernel
-+ * @node_offset:    offset of the node to add a property at
-+ * @dn:             device node pointer
-+ *
-+ * Returns 0 on success, negative errno on error.
-+ */
-+static int add_node_props(void *fdt, int node_offset, const struct device_node *dn)
-+{
-+	int ret = 0;
-+	struct property *pp;
-+
-+	if (!dn)
-+		return -EINVAL;
-+
-+	for_each_property_of_node(dn, pp) {
-+		ret = fdt_setprop(fdt, node_offset, pp->name, pp->value, pp->length);
-+		if (ret < 0) {
-+			pr_err("Unable to add %s property: %s\n", pp->name, fdt_strerror(ret));
-+			return ret;
-+		}
-+	}
-+	return ret;
-+}
-+
-+/**
-+ * update_cpus_node - Update cpus node of flattened device tree using of_root
-+ *                    device node.
-+ * @fdt:              Flattened device tree of the kernel.
-+ *
-+ * Returns 0 on success, negative errno on error.
-+ */
-+static int update_cpus_node(void *fdt)
-+{
-+	struct device_node *cpus_node, *dn;
-+	int cpus_offset, cpus_subnode_offset, ret = 0;
-+
-+	cpus_offset = fdt_path_offset(fdt, "/cpus");
-+	if (cpus_offset < 0 && cpus_offset != -FDT_ERR_NOTFOUND) {
-+		pr_err("Malformed device tree: error reading /cpus node: %s\n",
-+		       fdt_strerror(cpus_offset));
-+		return cpus_offset;
-+	}
-+
-+	if (cpus_offset > 0) {
-+		ret = fdt_del_node(fdt, cpus_offset);
-+		if (ret < 0) {
-+			pr_err("Error deleting /cpus node: %s\n", fdt_strerror(ret));
-+			return -EINVAL;
-+		}
-+	}
-+
-+	/* Add cpus node to fdt */
-+	cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"), "cpus");
-+	if (cpus_offset < 0) {
-+		pr_err("Error creating /cpus node: %s\n", fdt_strerror(cpus_offset));
-+		return -EINVAL;
-+	}
-+
-+	/* Add cpus node properties */
-+	cpus_node = of_find_node_by_path("/cpus");
-+	ret = add_node_props(fdt, cpus_offset, cpus_node);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Loop through all subnodes of cpus and add them to fdt */
-+	for_each_node_by_type(dn, "cpu") {
-+		cpus_subnode_offset = fdt_add_subnode(fdt, cpus_offset, dn->full_name);
-+		if (cpus_subnode_offset < 0) {
-+			pr_err("Unable to add %s subnode: %s\n", dn->full_name,
-+			       fdt_strerror(cpus_subnode_offset));
-+			return cpus_subnode_offset;
-+		}
-+		ret = add_node_props(fdt, cpus_subnode_offset, dn);
-+		if (ret < 0)
-+			return ret;
-+	}
-+	of_node_put(dn);
-+	return ret;
-+}
-+
- /**
-  * setup_new_fdt_ppc64 - Update the flattend device-tree of the kernel
-  *                       being loaded.
-@@ -1020,6 +1103,11 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
- 		}
- 	}
- 
-+	/* Update cpus nodes information to account hotplug CPUs. */
-+	ret =  update_cpus_node(fdt);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* Update memory reserve map */
- 	ret = get_reserved_memory_ranges(&rmem);
- 	if (ret)
--- 
-2.26.3
-
+> ---
+>   arch/powerpc/include/asm/uaccess.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+> index a4e791bcd3fe..a09e4240c5b1 100644
+> --- a/arch/powerpc/include/asm/uaccess.h
+> +++ b/arch/powerpc/include/asm/uaccess.h
+> @@ -232,7 +232,7 @@ do {								\
+>   	case 2: __get_user_asm(x, (u16 __user *)ptr, retval, "lhz"); break;	\
+>   	case 4: __get_user_asm(x, (u32 __user *)ptr, retval, "lwz"); break;	\
+>   	case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;	\
+> -	default: BUILD_BUG();					\
+> +	default: x = 0; BUILD_BUG();				\
+>   	}							\
+>   } while (0)
+>   
+> 
+> base-commit: ee6b25fa7c037e42cc5f3b5c024b2a779edab6dd
+> 
