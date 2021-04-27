@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCFAE36BEB9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 07:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC99736BF60
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 08:40:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FTqTc62jKz30G8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 15:05:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FTsZk5mj7z30Dq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 16:40:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,40 +16,40 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FTqTH0LBZz2xfk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 15:05:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FTsZJ40vjz2xfk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 16:39:48 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FTqT63mM3z4gf;
- Tue, 27 Apr 2021 07:05:14 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FTsZ85kqlz4nl;
+ Tue, 27 Apr 2021 08:39:44 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id e4PMjbRIQiGt; Tue, 27 Apr 2021 07:05:14 +0200 (CEST)
+ with ESMTP id WDzfQGNzyGc1; Tue, 27 Apr 2021 08:39:44 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FTqT62gmzz4jM;
- Tue, 27 Apr 2021 07:05:14 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FTsZ84lNXz4nk;
+ Tue, 27 Apr 2021 08:39:44 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 125F38B77C;
- Tue, 27 Apr 2021 07:05:14 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8B8E48B77F;
+ Tue, 27 Apr 2021 08:39:44 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id je4m3tj14JOn; Tue, 27 Apr 2021 07:05:14 +0200 (CEST)
+ with ESMTP id GUT3BZWyiBHb; Tue, 27 Apr 2021 08:39:44 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9BD808B777;
- Tue, 27 Apr 2021 07:05:12 +0200 (CEST)
-Subject: Re: [PATCH] powerpc: Avoid clang uninitialized warning in
- __get_user_size_allowed
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EC88D8B777;
+ Tue, 27 Apr 2021 08:39:43 +0200 (CEST)
+Subject: Re: [PATCH v7] powerpc/irq: Inline call_do_irq() and call_do_softirq()
 To: Nathan Chancellor <nathan@kernel.org>,
  Michael Ellerman <mpe@ellerman.id.au>
-References: <20210426203518.981550-1-nathan@kernel.org>
+References: <20210320122227.345427-1-mpe@ellerman.id.au>
+ <YIcLcujmoK6Yet9d@archlinux-ax161>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <32a0f305-031b-e4da-345d-0f03b2b42189@csgroup.eu>
-Date: Tue, 27 Apr 2021 07:05:12 +0200
+Message-ID: <de6fc09f-97f5-c934-6393-998ec766b48a@csgroup.eu>
+Date: Tue, 27 Apr 2021 08:39:41 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210426203518.981550-1-nathan@kernel.org>
+In-Reply-To: <YIcLcujmoK6Yet9d@archlinux-ax161>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -64,71 +64,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>
+Cc: clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 26/04/2021 à 22:35, Nathan Chancellor a écrit :
-> Commit 9975f852ce1b ("powerpc/uaccess: Remove calls to __get_user_bad()
-> and __put_user_bad()") switch to BUILD_BUG() in the default case, which
-> leaves x uninitialized. This will not be an issue because the build will
-> be broken in that case but clang does static analysis before it realizes
-> the default case will be done so it warns about x being uninitialized
-> (trimmed for brevity):
+Le 26/04/2021 à 20:50, Nathan Chancellor a écrit :
+> On Sat, Mar 20, 2021 at 11:22:27PM +1100, Michael Ellerman wrote:
+>> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>
+>> call_do_irq() and call_do_softirq() are simple enough to be
+>> worth inlining.
+>>
+>> Inlining them avoids an mflr/mtlr pair plus a save/reload on stack. It
+>> also allows GCC to keep the saved ksp_limit in an nonvolatile reg.
+>>
+>> This is inspired from S390 arch. Several other arches do more or
+>> less the same. The way sparc arch does seems odd thought.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>>
 > 
->   In file included from mm/mprotect.c:13:
->   In file included from ./include/linux/hugetlb.h:28:
->   In file included from ./include/linux/mempolicy.h:16:
->   ./include/linux/pagemap.h:772:16: warning: variable '__gu_val' is used
->   uninitialized whenever switch default is taken [-Wsometimes-uninitialized]
->                   if (unlikely(__get_user(c, uaddr) != 0))
->                                ^~~~~~~~~~~~~~~~~~~~
->   ./arch/powerpc/include/asm/uaccess.h:266:2: note: expanded from macro '__get_user'
->           __get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err);      \
->           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->   ./arch/powerpc/include/asm/uaccess.h:235:2: note: expanded from macro
->   '__get_user_size_allowed'
->          default: BUILD_BUG();                                   \
->          ^~~~~~~
+> This change caused our ppc44x_defconfig builds to hang when powering
+> down in QEMU:
 > 
-> Commit 5cd29b1fd3e8 ("powerpc/uaccess: Use asm goto for get_user when
-> compiler supports it") added an initialization for x because of the same
-> reason. Do the same thing here so there is no warning across all
-> versions of clang.
+> https://github.com/ClangBuiltLinux/continuous-integration2/runs/2304364629?check_suite_focus=true#logs
+> 
+> This is probably something with clang given that GCC 10.3.0 works fine
+> but due to the nature of the change, I have no idea how to tell what is
+> going wrong. I tried to do some rudimentary debugging with gdb but that
+> did not really get me anywhere.
+> 
+> The kernel was built with just 'CC=clang' and it is reproducible with
+> all versions of clang that the kernel supports.
+> 
+> The QEMU invocation is visible at the link above, it is done with our
+> boot-qemu.sh in this repo, which also houses the rootfs:
+> 
+> https://github.com/ClangBuiltLinux/boot-utils
+> 
+> Happy to provide any other information or debug/test as directed!
+> 
 
-Ah yes, I tested with Clang 11 which has CONFIG_CC_HAS_ASM_GOTO_OUTPUT, that's the reason why I hit 
-that warning only in the CONFIG_CC_HAS_ASM_GOTO_OUTPUT branch.
+With GCC:
 
-But regardless, is that normal that Clang warns that on a never taken branch ? That's puzzling.
+000003f0 <do_softirq_own_stack>:
+  3f0:	94 21 ff f0 	stwu    r1,-16(r1)
+  3f4:	7c 08 02 a6 	mflr    r0
+  3f8:	3d 20 00 00 	lis     r9,0
+			3fa: R_PPC_ADDR16_HA	.data..read_mostly+0x4
+  3fc:	93 e1 00 0c 	stw     r31,12(r1)
+  400:	90 01 00 14 	stw     r0,20(r1)
+  404:	83 e9 00 00 	lwz     r31,0(r9)
+			406: R_PPC_ADDR16_LO	.data..read_mostly+0x4
+  408:	94 3f 1f f0 	stwu    r1,8176(r31)
+  40c:	7f e1 fb 78 	mr      r1,r31
+  410:	48 00 00 01 	bl      410 <do_softirq_own_stack+0x20>
+			410: R_PPC_REL24	__do_softirq
+  414:	80 21 00 00 	lwz     r1,0(r1)
+  418:	80 01 00 14 	lwz     r0,20(r1)
+  41c:	83 e1 00 0c 	lwz     r31,12(r1)
+  420:	38 21 00 10 	addi    r1,r1,16
+  424:	7c 08 03 a6 	mtlr    r0
+  428:	4e 80 00 20 	blr
 
-> 
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1359
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+With CLANG:
 
-> ---
->   arch/powerpc/include/asm/uaccess.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-> index a4e791bcd3fe..a09e4240c5b1 100644
-> --- a/arch/powerpc/include/asm/uaccess.h
-> +++ b/arch/powerpc/include/asm/uaccess.h
-> @@ -232,7 +232,7 @@ do {								\
->   	case 2: __get_user_asm(x, (u16 __user *)ptr, retval, "lhz"); break;	\
->   	case 4: __get_user_asm(x, (u32 __user *)ptr, retval, "lwz"); break;	\
->   	case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;	\
-> -	default: BUILD_BUG();					\
-> +	default: x = 0; BUILD_BUG();				\
->   	}							\
->   } while (0)
->   
-> 
-> base-commit: ee6b25fa7c037e42cc5f3b5c024b2a779edab6dd
-> 
+000003e8 <do_softirq_own_stack>:
+  3e8:	94 21 ff f0 	stwu    r1,-16(r1)
+  3ec:	93 c1 00 08 	stw     r30,8(r1)
+  3f0:	3c 60 00 00 	lis     r3,0
+			3f2: R_PPC_ADDR16_HA	softirq_ctx
+  3f4:	83 c3 00 00 	lwz     r30,0(r3)
+			3f6: R_PPC_ADDR16_LO	softirq_ctx
+  3f8:	94 3e 1f f0 	stwu    r1,8176(r30)
+  3fc:	7f c1 f3 78 	mr      r1,r30
+  400:	48 00 00 01 	bl      400 <do_softirq_own_stack+0x18>
+			400: R_PPC_REL24	__do_softirq
+  404:	80 21 00 00 	lwz     r1,0(r1)
+  408:	83 c1 00 08 	lwz     r30,8(r1)
+  40c:	38 21 00 10 	addi    r1,r1,16
+  410:	4e 80 00 20 	blr
+
+
+As you can see, CLANG doesn't save/restore 'lr' allthought 'lr' is explicitely listed in the 
+registers clobbered by the inline assembly:
+
+ >> +static __always_inline void call_do_softirq(const void *sp)
+ >> +{
+ >> +	/* Temporarily switch r1 to sp, call __do_softirq() then restore r1. */
+ >> +	asm volatile (
+ >> +		 PPC_STLU "	%%r1, %[offset](%[sp])	;"
+ >> +		"mr		%%r1, %[sp]		;"
+ >> +		"bl		%[callee]		;"
+ >> +		 PPC_LL "	%%r1, 0(%%r1)		;"
+ >> +		 : // Outputs
+ >> +		 : // Inputs
+ >> +		   [sp] "b" (sp), [offset] "i" (THREAD_SIZE - STACK_FRAME_OVERHEAD),
+ >> +		   [callee] "i" (__do_softirq)
+ >> +		 : // Clobbers
+ >> +		   "lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr6",
+ >> +		   "cr7", "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10",
+ >> +		   "r11", "r12"
+ >> +	);
