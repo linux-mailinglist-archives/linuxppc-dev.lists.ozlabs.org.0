@@ -1,97 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A1536CBC4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 21:38:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42ACC36CC78
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Apr 2021 22:43:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FVBrT2dGRz301k
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 05:38:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FVDHc1KNMz2yxm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 06:43:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TqFhozY3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=cPoj7vyx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::132;
+ helo=mail-lf1-x132.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TqFhozY3; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=cPoj7vyx; dkim-atps=neutral
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com
+ [IPv6:2a00:1450:4864:20::132])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FVBr13T8fz2y8P
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 05:37:52 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13RJXHmJ177005; Tue, 27 Apr 2021 15:37:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=4SIH/+UGufAepLuHzfpxXUXRTKXWIo956SsozOH2pgU=;
- b=TqFhozY3U40JI5uWQv46HKTwD/I2y5AHckemVLxfTEicgxBDRZTk24dLncMifL+KugSU
- sTkxXTq8BPInKQXl8GTH30mSu/Yy/8PRaFarflT8RLF0IV/+n2LSJOeSJYsXHSjAUEWJ
- mUg5Thnz8zURd37EB8obZ4HhNcI5syxRgho8N2qaNutWZFgFwGkVHCrI7k9Eg4us4cm1
- AHZ++6MNGjJ1y6Mu0qv/qYW11rrIbDBOuneR+Zavct5wJSI2XdRRGXQe6hzPxPhLUttF
- ibs8duyNibpQl1MDl9USWZvfI3OWg/Elxz/NfaS4OTsLisIdZErHtdvsbMCYkY320X8h AQ== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 386rtsg5e1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Apr 2021 15:37:45 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13RJaU9I025674;
- Tue, 27 Apr 2021 19:37:44 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma03dal.us.ibm.com with ESMTP id 384ay95j9d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Apr 2021 19:37:44 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13RJbh4N30605696
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Apr 2021 19:37:43 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D4EF6A047;
- Tue, 27 Apr 2021 19:37:43 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 446A16A04D;
- Tue, 27 Apr 2021 19:37:42 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.65.213.116])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 27 Apr 2021 19:37:41 +0000 (GMT)
-Subject: Re: [PATCH] pseries/drmem: update LMBs after LPM
-To: Laurent Dufour <ldufour@linux.ibm.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org
-References: <20210427181308.17640-1-ldufour@linux.ibm.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <25fc405a-6de1-5b21-6692-831ddede7c83@linux.ibm.com>
-Date: Tue, 27 Apr 2021 12:37:41 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FVDH85Mjjz2y8P
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 06:42:58 +1000 (AEST)
+Received: by mail-lf1-x132.google.com with SMTP id x19so65326106lfa.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 13:42:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=VuRmkFXiA1v6q9YqeqOSwr2jhpD+5Gg836AGzkZvAKo=;
+ b=cPoj7vyx/9IheK/fLh29pvcdN6ASbcRvq0lMP2k+HC2u6nIJWhMgMFMF9UGcW9nlAb
+ dJMJ3p3ryvvtHtjLDwUK0HDAJP6QB4XAHUdzq2V0neH5iDnqhGAcSNw7HrX2GzQT7l+C
+ Im7Evc025V5jNKSMN8S+RZgoh+ux8CyAFuK1baIcFwI8GG0IeBqwgAwvT3ljDbfgZ1JD
+ wl8YI9Ezl9hpadUuYMzaml9s63EKUzztClnqs/gtwv6VfuF2KfedOv9SzOM/NSZKjkdm
+ NnDZW12hm9w2+VazRPn4UQT+bgJ6KC0J5+arRYyRnIqcP+K6tJMCOeaZt14SarHgwIo+
+ /ZKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=VuRmkFXiA1v6q9YqeqOSwr2jhpD+5Gg836AGzkZvAKo=;
+ b=M1HNtWnaQzWgHs7O1aUy26eB2CDGByjk/0lebuB9pSVK7L+Yffb5E3pdignmYsU8/q
+ oHyQYvk03zTU8g+dQkhWHOzXQCv4u7aBO0wq6jYdTlmKFAd1CMcAlyLHR/hwY/JdVvvO
+ 2IWcnjaYAa6IMUhsR5gcqAe3p25z4ac6xsmkanviCaBfSlqkFCO6XDfZJvB9RfUMcFfy
+ dY1LLQ07jl5KXzKVbNm+KssfxM+0XGPpsLovrUR9eUeBgXPMw7OEvs2WHJuRmxkUrBrA
+ KmmXTKJqKRrljgDboTl88CSfa+NoAfyZwTdoER8SR3lg7BJ2mk03Y/VL0vpMjPs0FVq1
+ 5vrw==
+X-Gm-Message-State: AOAM533Qg0tRogogyILYcE29k4qNys/m7wVtwXQWBYTxYy0/kQkW15yx
+ A+ECYz+Rg0yV8iWA9YKcs6tqdxevMl3IICq+/Ajiog==
+X-Google-Smtp-Source: ABdhPJwUQjLpJ2zzOsSY9iSXK3O2tv3yoEX3hYxLbmzlW0rsCVDLzJGWKmWoES6FMK3nXpNXaTJRWsO4LVIGWfr0IgA=
+X-Received: by 2002:a05:6512:2190:: with SMTP id
+ b16mr912912lft.122.1619556168586; 
+ Tue, 27 Apr 2021 13:42:48 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210427181308.17640-1-ldufour@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: HQdKSyTQB1io-OQ0STWV_TZc24Fnfx1F
-X-Proofpoint-GUID: HQdKSyTQB1io-OQ0STWV_TZc24Fnfx1F
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-27_11:2021-04-27,
- 2021-04-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- adultscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 spamscore=0
- clxscore=1015 suspectscore=0 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104270129
+References: <20210320122227.345427-1-mpe@ellerman.id.au>
+ <YIcLcujmoK6Yet9d@archlinux-ax161>
+ <de6fc09f-97f5-c934-6393-998ec766b48a@csgroup.eu>
+In-Reply-To: <de6fc09f-97f5-c934-6393-998ec766b48a@csgroup.eu>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Tue, 27 Apr 2021 13:42:36 -0700
+Message-ID: <CAKwvOd=SkPtOij0tCx=AzUsLD3RrJZBFs0WZKuQJ3c4JM3Nn6Q@mail.gmail.com>
+Subject: Re: [PATCH v7] powerpc/irq: Inline call_do_irq() and call_do_softirq()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,124 +78,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/27/21 11:13 AM, Laurent Dufour wrote:
-> After a LPM, the device tree node ibm,dynamic-reconfiguration-memory may be
-> updated by the hypervisor in the case the NUMA topology of the LPAR's
-> memory is updated.
-> 
-> This is caught by the kernel, but the memory's node is updated because
-> there is no way to move a memory block between nodes.
-> 
-> If later a memory block is added or removed, drmem_update_dt() is called
-> and it is overwriting the DT node to match the added or removed LMB. But
-> the LMB's associativity node has not been updated after the DT node update
-> and thus the node is overwritten by the Linux's topology instead of the
-> hypervisor one.
-> 
-> Introduce a hook called when the ibm,dynamic-reconfiguration-memory node is
-> updated to force an update of the LMB's associativity.
-> 
-> Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> 
-> Change since V1:
->  - Take Tyrel's idea to rely on OF_RECONFIG_UPDATE_PROPERTY instead of
->  introducing a new hook mechanism.
-> ---
->  arch/powerpc/include/asm/drmem.h              |  1 +
->  arch/powerpc/mm/drmem.c                       | 35 +++++++++++++++++++
->  .../platforms/pseries/hotplug-memory.c        |  4 +++
->  3 files changed, 40 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
-> index bf2402fed3e0..4265d5e95c2c 100644
-> --- a/arch/powerpc/include/asm/drmem.h
-> +++ b/arch/powerpc/include/asm/drmem.h
-> @@ -111,6 +111,7 @@ int drmem_update_dt(void);
->  int __init
->  walk_drmem_lmbs_early(unsigned long node, void *data,
->  		      int (*func)(struct drmem_lmb *, const __be32 **, void *));
-> +void drmem_update_lmbs(struct property *prop);
->  #endif
->  
->  static inline void invalidate_lmb_associativity_index(struct drmem_lmb *lmb)
-> diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
-> index 9af3832c9d8d..f0a6633132af 100644
-> --- a/arch/powerpc/mm/drmem.c
-> +++ b/arch/powerpc/mm/drmem.c
-> @@ -307,6 +307,41 @@ int __init walk_drmem_lmbs_early(unsigned long node, void *data,
->  	return ret;
->  }
->  
-> +/*
-> + * Update the LMB associativity index.
-> + */
-> +static int update_lmb(struct drmem_lmb *updated_lmb,
-> +		      __maybe_unused const __be32 **usm,
-> +		      __maybe_unused void *data)
-> +{
-> +	struct drmem_lmb *lmb;
-> +
-> +	/*
-> +	 * Brut force there may be better way to fetch the LMB
-> +	 */
-> +	for_each_drmem_lmb(lmb) {
-> +		if (lmb->drc_index != updated_lmb->drc_index)
-> +			continue;
-> +
-> +		lmb->aa_index = updated_lmb->aa_index;
-> +		break;
-> +	}
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Update the LMB associativity index.
-> + *
-> + * This needs to be called when the hypervisor is updating the
-> + * dynamic-reconfiguration-memory node property.
-> + */
-> +void drmem_update_lmbs(struct property *prop)
-> +{
-> +	if (!strcmp(prop->name, "ibm,dynamic-memory"))
-> +		__walk_drmem_v1_lmbs(prop->value, NULL, NULL, update_lmb);
-> +	else if (!strcmp(prop->name, "ibm,dynamic-memory-v2"))
-> +		__walk_drmem_v2_lmbs(prop->value, NULL, NULL, update_lmb);
-> +}
->  #endif
->  
->  static int init_drmem_lmb_size(struct device_node *dn)
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index 8377f1f7c78e..8aabaafc484b 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -949,6 +949,10 @@ static int pseries_memory_notifier(struct notifier_block *nb,
->  	case OF_RECONFIG_DETACH_NODE:
->  		err = pseries_remove_mem_node(rd->dn);
->  		break;
-> +	case OF_RECONFIG_UPDATE_PROPERTY:
-> +		if (!strcmp(rd->dn->full_name,
+On Mon, Apr 26, 2021 at 11:39 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 26/04/2021 =C3=A0 20:50, Nathan Chancellor a =C3=A9crit :
+> > On Sat, Mar 20, 2021 at 11:22:27PM +1100, Michael Ellerman wrote:
+> >> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+> >>
+> >> call_do_irq() and call_do_softirq() are simple enough to be
+> >> worth inlining.
+> >>
+> >> Inlining them avoids an mflr/mtlr pair plus a save/reload on stack. It
+> >> also allows GCC to keep the saved ksp_limit in an nonvolatile reg.
+> >>
+> >> This is inspired from S390 arch. Several other arches do more or
+> >> less the same. The way sparc arch does seems odd thought.
+> >>
+> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> >> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> >>
+> >
+> > This change caused our ppc44x_defconfig builds to hang when powering
+> > down in QEMU:
+> >
+> > https://github.com/ClangBuiltLinux/continuous-integration2/runs/2304364=
+629?check_suite_focus=3Dtrue#logs
+> >
+> > This is probably something with clang given that GCC 10.3.0 works fine
+> > but due to the nature of the change, I have no idea how to tell what is
+> > going wrong. I tried to do some rudimentary debugging with gdb but that
+> > did not really get me anywhere.
+> >
+> > The kernel was built with just 'CC=3Dclang' and it is reproducible with
+> > all versions of clang that the kernel supports.
+> >
+> > The QEMU invocation is visible at the link above, it is done with our
+> > boot-qemu.sh in this repo, which also houses the rootfs:
+> >
+> > https://github.com/ClangBuiltLinux/boot-utils
+> >
+> > Happy to provide any other information or debug/test as directed!
+> >
+>
+> With GCC:
+>
+> 000003f0 <do_softirq_own_stack>:
+>   3f0:  94 21 ff f0     stwu    r1,-16(r1)
+>   3f4:  7c 08 02 a6     mflr    r0
+>   3f8:  3d 20 00 00     lis     r9,0
+>                         3fa: R_PPC_ADDR16_HA    .data..read_mostly+0x4
+>   3fc:  93 e1 00 0c     stw     r31,12(r1)
+>   400:  90 01 00 14     stw     r0,20(r1)
+>   404:  83 e9 00 00     lwz     r31,0(r9)
+>                         406: R_PPC_ADDR16_LO    .data..read_mostly+0x4
+>   408:  94 3f 1f f0     stwu    r1,8176(r31)
+>   40c:  7f e1 fb 78     mr      r1,r31
+>   410:  48 00 00 01     bl      410 <do_softirq_own_stack+0x20>
+>                         410: R_PPC_REL24        __do_softirq
+>   414:  80 21 00 00     lwz     r1,0(r1)
+>   418:  80 01 00 14     lwz     r0,20(r1)
+>   41c:  83 e1 00 0c     lwz     r31,12(r1)
+>   420:  38 21 00 10     addi    r1,r1,16
+>   424:  7c 08 03 a6     mtlr    r0
+>   428:  4e 80 00 20     blr
+>
+>
+> With CLANG:
+>
+> 000003e8 <do_softirq_own_stack>:
+>   3e8:  94 21 ff f0     stwu    r1,-16(r1)
+>   3ec:  93 c1 00 08     stw     r30,8(r1)
+>   3f0:  3c 60 00 00     lis     r3,0
+>                         3f2: R_PPC_ADDR16_HA    softirq_ctx
+>   3f4:  83 c3 00 00     lwz     r30,0(r3)
+>                         3f6: R_PPC_ADDR16_LO    softirq_ctx
+>   3f8:  94 3e 1f f0     stwu    r1,8176(r30)
+>   3fc:  7f c1 f3 78     mr      r1,r30
+>   400:  48 00 00 01     bl      400 <do_softirq_own_stack+0x18>
+>                         400: R_PPC_REL24        __do_softirq
+>   404:  80 21 00 00     lwz     r1,0(r1)
+>   408:  83 c1 00 08     lwz     r30,8(r1)
+>   40c:  38 21 00 10     addi    r1,r1,16
+>   410:  4e 80 00 20     blr
+>
+>
+> As you can see, CLANG doesn't save/restore 'lr' allthought 'lr' is explic=
+itely listed in the
+> registers clobbered by the inline assembly:
 
-Pretty much a self nit on myself since I just copied the device node name field
-from your initial patch into my suggested code block.
+Ah, thanks for debugging this. Will follow up in
+https://bugs.llvm.org/show_bug.cgi?id=3D50147.
 
-It used to be that dn->full_name was intended to store the full device-tree path
-name of the device node ane dn->name simply the base name. These days the values
-of both name fields are simply the basename for pseries. Regardless,
-rd->dn->name is technically correct and shorter.
+>
+>  >> +static __always_inline void call_do_softirq(const void *sp)
+>  >> +{
+>  >> +   /* Temporarily switch r1 to sp, call __do_softirq() then restore =
+r1. */
+>  >> +   asm volatile (
+>  >> +            PPC_STLU "     %%r1, %[offset](%[sp])  ;"
+>  >> +           "mr             %%r1, %[sp]             ;"
+>  >> +           "bl             %[callee]               ;"
+>  >> +            PPC_LL "       %%r1, 0(%%r1)           ;"
+>  >> +            : // Outputs
+>  >> +            : // Inputs
+>  >> +              [sp] "b" (sp), [offset] "i" (THREAD_SIZE - STACK_FRAME=
+_OVERHEAD),
+>  >> +              [callee] "i" (__do_softirq)
+>  >> +            : // Clobbers
+>  >> +              "lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr=
+6",
+>  >> +              "cr7", "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9",=
+ "r10",
+>  >> +              "r11", "r12"
+>  >> +   );
+>
+> --
+> You received this message because you are subscribed to the Google Groups=
+ "Clang Built Linux" group.
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to clang-built-linux+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgi=
+d/clang-built-linux/de6fc09f-97f5-c934-6393-998ec766b48a%40csgroup.eu.
 
--Tyrel
 
-> +			    "ibm,dynamic-reconfiguration-memory"))
-> +			drmem_update_lmbs(rd->prop);
->  	}
->  	return notifier_from_errno(err);
->  }
-> 
 
+--=20
+Thanks,
+~Nick Desaulniers
