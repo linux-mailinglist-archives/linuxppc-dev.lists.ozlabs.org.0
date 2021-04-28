@@ -2,47 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7EE36D39D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 10:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9605E36D4FA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 11:48:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FVWNh6xcnz30Gx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 18:03:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FVYjc3ZmRz30BK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 19:48:36 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FbI1FSjm;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=FbI1FSjm; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FVWNM1ln5z2xg6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 18:03:31 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id E23F8AF8C;
- Wed, 28 Apr 2021 08:03:27 +0000 (UTC)
-Date: Wed, 28 Apr 2021 10:03:26 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH] cpuidle/pseries: Fixup CEDE0 latency only for POWER10
- onwards
-Message-ID: <20210428080326.GL6564@kitsune.suse.cz>
-References: <1619104049-5118-1-git-send-email-ego@linux.vnet.ibm.com>
- <20210423073551.GZ6564@kitsune.suse.cz>
- <YILu6/GK+RwpskCc@drishya.in.ibm.com>
- <20210423174505.GE6564@kitsune.suse.cz>
- <YIMSCjTzcSwjQtRi@drishya.in.ibm.com>
- <20210423184216.GG6564@kitsune.suse.cz>
- <YIPKrIb+tY39taZv@drishya.in.ibm.com>
- <20210425110714.GH6564@kitsune.suse.cz>
- <20210428055848.GA6675@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FVYj90925z2yRB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 19:48:12 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13S9XRc9161159; Wed, 28 Apr 2021 05:48:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=tit3hb7m3zYdZhFI0+cPTFP8j/KlEFlZwtxvK/e1Wfs=;
+ b=FbI1FSjmKE9U8xsoMiKMSgSkpCwiKLa1Er03TRRSqggmgU4epDp02B1sq1xSScvI86LJ
+ +Bw2F+/CLznTAWylUUoiW7EtBgV/bvB1kL6n4pVsC663TDX8joixa3uBER2Z8d3ZAiRY
+ n4EfVXO/AwL9O/Nj9m8NjIZ521B9Hv1luq6nmS53siqhbpIsQCT+0javLEZA6o2OUmhu
+ reZV8brfDD9vovp6k7sgDvsplfCBsOQMs0gndO72k7rgZ0R94/8ASvBNsOeIVDD/iblo
+ 0LenE+EeXqldLGLurInaiEX8H2JZfUbTx3VohtDl2O0c4i9t3vK4GNAIsQ43qo3J2z0J 5A== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38740tahvc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Apr 2021 05:48:05 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13S9m3kj018635;
+ Wed, 28 Apr 2021 09:48:03 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03fra.de.ibm.com with ESMTP id 384ay8s0sh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Apr 2021 09:48:03 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13S9lxx318809090
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 28 Apr 2021 09:47:59 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9BCA6A405C;
+ Wed, 28 Apr 2021 09:47:59 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4B582A405B;
+ Wed, 28 Apr 2021 09:47:59 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.14.58])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 28 Apr 2021 09:47:59 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org
+Subject: [PATCH v3] pseries/drmem: update LMBs after LPM
+Date: Wed, 28 Apr 2021 11:47:58 +0200
+Message-Id: <20210428094758.28665-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210428055848.GA6675@in.ibm.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: exmDS7dCltIpB86W1CWWoY5aWuRA-z_F
+X-Proofpoint-ORIG-GUID: exmDS7dCltIpB86W1CWWoY5aWuRA-z_F
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-28_03:2021-04-27,
+ 2021-04-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxlogscore=999
+ spamscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
+ malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104280064
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,153 +96,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pm@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, joedecke@de.ibm.com,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, Tyrel Datwyler <tyreld@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 28, 2021 at 11:28:48AM +0530, Gautham R Shenoy wrote:
-> Hello Michal,
-> 
-> On Sun, Apr 25, 2021 at 01:07:14PM +0200, Michal Suchánek wrote:
-> > On Sat, Apr 24, 2021 at 01:07:16PM +0530, Vaidyanathan Srinivasan wrote:
-> > > * Michal Such?nek <msuchanek@suse.de> [2021-04-23 20:42:16]:
-> > > 
-> > > > On Fri, Apr 23, 2021 at 11:59:30PM +0530, Vaidyanathan Srinivasan wrote:
-> > > > > * Michal Such?nek <msuchanek@suse.de> [2021-04-23 19:45:05]:
-> > > > > 
-> > > > > > On Fri, Apr 23, 2021 at 09:29:39PM +0530, Vaidyanathan Srinivasan wrote:
-> > > > > > > * Michal Such?nek <msuchanek@suse.de> [2021-04-23 09:35:51]:
-> > > > > > > 
-> > > > > > > > On Thu, Apr 22, 2021 at 08:37:29PM +0530, Gautham R. Shenoy wrote:
-> > > > > > > > > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-> > > > > > > > > 
-> > > > > > > > > Commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
-> > > > > > > > > CEDE(0)") sets the exit latency of CEDE(0) based on the latency values
-> > > > > > > > > of the Extended CEDE states advertised by the platform
-> > > > > > > > > 
-> > > > > > > > > On some of the POWER9 LPARs, the older firmwares advertise a very low
-> > > > > > > > > value of 2us for CEDE1 exit latency on a Dedicated LPAR. However the
-> > > > > > > > Can you be more specific about 'older firmwares'?
-> > > > > > > 
-> > > > > > > Hi Michal,
-> > > > > > > 
-> > > > > > > This is POWER9 vs POWER10 difference, not really an obsolete FW.  The
-> > > > > > > key idea behind the original patch was to make the H_CEDE latency and
-> > > > > > > hence target residency come from firmware instead of being decided by
-> > > > > > > the kernel.  The advantage is such that, different type of systems in
-> > > > > > > POWER10 generation can adjust this value and have an optimal H_CEDE
-> > > > > > > entry criteria which balances good single thread performance and
-> > > > > > > wakeup latency.  Further we can have additional H_CEDE state to feed
-> > > > > > > into the cpuidle.  
-> > > > > > 
-> > > > > > So all POWER9 machines are affected by the firmware bug where firmware
-> > > > > > reports CEDE1 exit latency of 2us and the real latency is 5us which
-> > > > > > causes the kernel to prefer CEDE1 too much when relying on the values
-> > > > > > supplied by the firmware. It is not about 'older firmware'.
-> > > > > 
-> > > > > Correct.  All POWER9 systems running Linux as guest LPARs will see
-> > > > > extra usage of CEDE idle state, but not baremetal (PowerNV).
-> > > > > 
-> > > > > The correct definition of the bug or miss-match in expectation is that
-> > > > > firmware reports wakeup latency from a core/thread wakeup timing, but
-> > > > > not end-to-end time from sending a wakeup event like an IPI using
-> > > > > H_calls and receiving the events on the target.  Practically there are
-> > > > > few extra micro-seconds needed after deciding to wakeup a target
-> > > > > core/thread to getting the target to start executing instructions
-> > > > > within the LPAR instance.
-> > > > 
-> > > > Thanks for the detailed explanation.
-> > > > 
-> > > > Maybe just adding a few microseconds to the reported time would be a
-> > > > more reasonable workaround than using a blanket fixed value then.
-> > > 
-> > > Yes, that is an option.  But that may only reduce the difference
-> > > between existing kernel and new kernel unless we make it the same
-> > > number.  Further we are fixing this in P10 and hence we will have to
-> > > add "if(P9) do the compensation" and otherwise take it as is.  That
-> > > would not be elegant.  Given that our goal for P9 platform is to not
-> > > introduce changes in H_CEDE entry behaviour, we arrived at this
-> > > approach (this small patch) and this also makes it easy to backport to
-> > > various distro products.
-> > 
-> > I don't see how this is more elegent.
-> > 
-> > The current patch is
-> > 
-> > if(p9)
-> > 	use fixed value
-> > 
-> > the suggested patch is
-> > 
-> > if(p9)
-> > 	apply compensation
-> 
-> 
-> We could do that, however, from the recent measurements the default
-> value is closer to the latency value measured using an IPI.
-> 
-> As Vaidy described earlier, on POWER9 and prior platforms, the wakeup
-> latency advertized by the PHYP hypervisor corresponds to the latency
-> required to wakeup from the underlying hardware idle state (Nap in
-> POWER8 and stop0/1/2 on POWER9) into the hypervisor. That's 2us on
-> POWER9.
-> 
-> We need to apply two kinds of compensation,
-> 
-> 1. Compensation for the time taken to transition the CPU from the
->    Hypervisor into the LPAR post wakeup from platform idle state
-> 
-> 2. Compensation for the time taken to send the IPI from the source CPU
->    (waker) to the idle target CPU (wakee).
-> 
-> 1. can be measured via timer idle test (I am using Pratik's
-> cpuidle self-test posted here
-> https://lore.kernel.org/lkml/20210412074309.38484-1-psampat@linux.ibm.com/)
-> 
-> We queue a timer, say for 1ms, and enter the CEDE state. When the
-> timer fires, in the timer handler we compute how much extra timer over
-> the expected 1ms have we consumed. This is what it looks like on
-> POWER9 LPAR
-> 
-> CEDE latency measured using a timer (numbers in ns)
-> ===================================================================
-> N       Min      Median   Avg       90%ile  99%ile    Max    Stddev
-> 400     2601     5677     5668.74    5917    6413     9299   455.01
-> 
-> If we consider the avg and the 99th %ile values, it takes on an avg
-> about somewhere between 3.5-4.5 us to transition from the Hypervisor
-> to the guest VCPU after the CPU has woken up from the idle state. 
-> 
-> 1. and 2. combined can be determined by an IPI latency test (from the
-> same self-test linked above). We send an IPI to an idle CPU and in the
-> handler compute the time difference between when the IPI was sent and
-> when the handler ran. We see the following numbers on POWER9 LPAR.
-> 
-> CEDE latency measured using an IPI (numbers in us)
-> ==================================================
-> N       Min      Median   Avg       90%ile  99%ile    Max    Stddev
-> 400     711      7564     7369.43   8559    9514      9698   1200.01
-> 
-> Thus considering the avg and the 99th percentile this compensation
-> would be 5.4-7.5us.
-> 
-> Suppose, we consider the compensation corresponding to the 99th
-> percentile latency value measured using the IPI, the compensation will
-> be 7.5us, which will take the total CEDE latency to 9.5us.
-> 
-> This is in the ballpark of the default value of 10us which we obtain
-> if we do
-> 
-> if (!p10)
->    use default hardcoded value;
-> 
-That's a nice detailed explanation. Maybe you could summarize it in the
-commit message so that people looking at the patch in the future can
-tell where the value comes from.
+After a LPM, the device tree node ibm,dynamic-reconfiguration-memory may be
+updated by the hypervisor in the case the NUMA topology of the LPAR's
+memory is updated.
 
-Thanks
+This is caught by the kernel, but the memory's node is updated because
+there is no way to move a memory block between nodes.
 
-Michal
+If later a memory block is added or removed, drmem_update_dt() is called
+and it is overwriting the DT node to match the added or removed LMB. But
+the LMB's associativity node has not been updated after the DT node update
+and thus the node is overwritten by the Linux's topology instead of the
+hypervisor one.
+
+Introduce a hook called when the ibm,dynamic-reconfiguration-memory node is
+updated to force an update of the LMB's associativity.
+
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+---
+
+V3:
+ - Check rd->dn->name instead of rd->dn->full_name
+V2:
+ - Take Tyrel's idea to rely on OF_RECONFIG_UPDATE_PROPERTY instead of
+ introducing a new hook mechanism.
+---
+ arch/powerpc/include/asm/drmem.h              |  1 +
+ arch/powerpc/mm/drmem.c                       | 35 +++++++++++++++++++
+ .../platforms/pseries/hotplug-memory.c        |  4 +++
+ 3 files changed, 40 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+index bf2402fed3e0..4265d5e95c2c 100644
+--- a/arch/powerpc/include/asm/drmem.h
++++ b/arch/powerpc/include/asm/drmem.h
+@@ -111,6 +111,7 @@ int drmem_update_dt(void);
+ int __init
+ walk_drmem_lmbs_early(unsigned long node, void *data,
+ 		      int (*func)(struct drmem_lmb *, const __be32 **, void *));
++void drmem_update_lmbs(struct property *prop);
+ #endif
+ 
+ static inline void invalidate_lmb_associativity_index(struct drmem_lmb *lmb)
+diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
+index 9af3832c9d8d..f0a6633132af 100644
+--- a/arch/powerpc/mm/drmem.c
++++ b/arch/powerpc/mm/drmem.c
+@@ -307,6 +307,41 @@ int __init walk_drmem_lmbs_early(unsigned long node, void *data,
+ 	return ret;
+ }
+ 
++/*
++ * Update the LMB associativity index.
++ */
++static int update_lmb(struct drmem_lmb *updated_lmb,
++		      __maybe_unused const __be32 **usm,
++		      __maybe_unused void *data)
++{
++	struct drmem_lmb *lmb;
++
++	/*
++	 * Brut force there may be better way to fetch the LMB
++	 */
++	for_each_drmem_lmb(lmb) {
++		if (lmb->drc_index != updated_lmb->drc_index)
++			continue;
++
++		lmb->aa_index = updated_lmb->aa_index;
++		break;
++	}
++	return 0;
++}
++
++/*
++ * Update the LMB associativity index.
++ *
++ * This needs to be called when the hypervisor is updating the
++ * dynamic-reconfiguration-memory node property.
++ */
++void drmem_update_lmbs(struct property *prop)
++{
++	if (!strcmp(prop->name, "ibm,dynamic-memory"))
++		__walk_drmem_v1_lmbs(prop->value, NULL, NULL, update_lmb);
++	else if (!strcmp(prop->name, "ibm,dynamic-memory-v2"))
++		__walk_drmem_v2_lmbs(prop->value, NULL, NULL, update_lmb);
++}
+ #endif
+ 
+ static int init_drmem_lmb_size(struct device_node *dn)
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 8377f1f7c78e..672ffbee2e78 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -949,6 +949,10 @@ static int pseries_memory_notifier(struct notifier_block *nb,
+ 	case OF_RECONFIG_DETACH_NODE:
+ 		err = pseries_remove_mem_node(rd->dn);
+ 		break;
++	case OF_RECONFIG_UPDATE_PROPERTY:
++		if (!strcmp(rd->dn->name,
++			    "ibm,dynamic-reconfiguration-memory"))
++			drmem_update_lmbs(rd->prop);
+ 	}
+ 	return notifier_from_errno(err);
+ }
+-- 
+2.31.1
+
