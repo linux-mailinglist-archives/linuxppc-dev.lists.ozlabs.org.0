@@ -1,73 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0157D36DF34
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 20:50:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AC536E031
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 22:20:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FVnkt6SHRz30Bl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 04:50:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=NEa9FZMq;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FVqkp2n2tz30BF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 06:20:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=youling257@gmail.com;
+ smtp.mailfrom=bootlin.com (client-ip=217.70.183.193;
+ helo=relay1-d.mail.gandi.net; envelope-from=alexandre.belloni@bootlin.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=NEa9FZMq; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
+ [217.70.183.193])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FVnkR3sl5z2xgP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 04:50:05 +1000 (AEST)
-Received: by mail-pg1-x532.google.com with SMTP id z16so4477681pga.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 11:50:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=oIRIEOVJimwmXciBNwHjV56oidjYB1LUygCarYNWZok=;
- b=NEa9FZMqA/a/HxerVeksfaslwYtBDsUdVZmQCspOgGu5bQ+RmByLk3b1OjsU819kBi
- DiVomnSK0SlTfXfTx8KzyYbUIVMt7WrW/hHfZoHyc3gKKtaOj1yoVUKE1UAdx/eneOh9
- dWui7YpDER5wM5wktdAoic0w33iy4U2/sytknod4URLZLGX+ICSvMu7VDYC88ilG7b5K
- lfk3w/GIa3g76CSGRs+tLqUk8YS8/eevKKI0fCXrfYYbL0/cJUcIBrHsY6ZxGdxNbcoN
- qKxClbq/WIFRMvVgX2MdcisukSdvU+zGc9TbYSg2Y0NMd+pmao5A1C8XFOdei9ix5gqC
- q7Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=oIRIEOVJimwmXciBNwHjV56oidjYB1LUygCarYNWZok=;
- b=ZBSH2Jl7VFZ3jOHgsOpyWMkRgr52fCZUjHfAvtAjL3eVb1j4VlaKVb1rZfz5wsPxmG
- 3dt0ggiHcnIMK072vGcpJn/ACa3oZquNmZb6adfrlBPEC/SoBlXfRp+meVOGTH2ZwruK
- hB8v1ux8TcoMIC5KRLuip9IC3F9h7jLY2auarqXXZFR4ueSChlv7n2AowRL5Dld3e6Cs
- UlPPMoKrbAAXLB14OR6p+abe2Be3qjAyqBPyfggu1oCRF6CakTwkdLOU+7p452yOEaNq
- VjQZbn0tYgzNHkZqxnvLP287AfJ6cwYHjf64mpSR/DIQGM/WFQoT9d5Ou73Gw5rQ2Bky
- CGWw==
-X-Gm-Message-State: AOAM532tuTj/wZ04UNdUtJevmzpxTYSwiv+x7uv9H9FasAISkuqxMDtA
- 3wS3rOJ+2YOCbp4LCQuQ67g=
-X-Google-Smtp-Source: ABdhPJyb1Ps1V/ROHrusZW90RzMS0bfqWGFsXWdlUBiDgNEj5EePAesHPrS2GlXB5ODKytPRpnlBxQ==
-X-Received: by 2002:a63:8c4a:: with SMTP id q10mr28459766pgn.106.1619635800526; 
- Wed, 28 Apr 2021 11:50:00 -0700 (PDT)
-Received: from localhost.localdomain ([198.148.102.224])
- by smtp.gmail.com with ESMTPSA id g14sm378239pfm.143.2021.04.28.11.49.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Apr 2021 11:49:59 -0700 (PDT)
-From: youling257 <youling257@gmail.com>
-To: alexandre.belloni@bootlin.com
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FVqkT1p3sz2xYx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 06:20:13 +1000 (AEST)
+X-Originating-IP: 90.65.108.55
+Received: from localhost (lfbn-lyo-1-1676-55.w90-65.abo.wanadoo.fr
+ [90.65.108.55]) (Authenticated sender: alexandre.belloni@bootlin.com)
+ by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 3B541240008;
+ Wed, 28 Apr 2021 20:20:07 +0000 (UTC)
+Date: Wed, 28 Apr 2021 22:20:06 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: youling257 <youling257@gmail.com>
 Subject: Re: [PATCH 04/17] rtc: cmos: remove cmos_rtc_ops_no_alarm
-Date: Thu, 29 Apr 2021 02:49:46 +0800
-Message-Id: <20210428184946.23999-1-youling257@gmail.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210110231752.1418816-5-alexandre.belloni@bootlin.com>
+Message-ID: <YInDdgd2r1SDdv4k@piout.net>
 References: <20210110231752.1418816-5-alexandre.belloni@bootlin.com>
+ <20210428184946.23999-1-youling257@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210428184946.23999-1-youling257@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,7 +53,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-this patch cause suspend failed on my Bay trail z3735f tablet.
+Hello,
 
-[  162.038713] PM: dpm_run_callback(): platform_pm_suspend+0x0/0x40 returns -22
-[  162.038760] alarmtimer alarmtimer.0.auto: PM: failed to suspend: error -22
+On 29/04/2021 02:49:46+0800, youling257 wrote:
+> this patch cause suspend failed on my Bay trail z3735f tablet.
+> 
+> [  162.038713] PM: dpm_run_callback(): platform_pm_suspend+0x0/0x40 returns -22
+> [  162.038760] alarmtimer alarmtimer.0.auto: PM: failed to suspend: error -22
+
+I think I know what is happening, there is one patch I wanted to send
+this cycle but didn't, can you test it?
+
+https://github.com/alexandrebelloni/linux/commit/50641a5a19cedf7561410d7db614da46c228bacc
+
+Thanks for the report!
+
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
