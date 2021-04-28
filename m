@@ -1,43 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C361D36D0F7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 05:47:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 232A336D0F8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 05:47:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FVPj15j31z3bnX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 13:47:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FVPjN0SHmz3bvg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 13:47:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FVPhH6gq3z2yZL
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FVPhJ03M2z2yZR
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 13:46:52 +1000 (AEST)
-IronPort-SDR: NiOnikjAfFE4PZZ5XfLb/ErlFOASLPLFlkEAOwsV4sHDLj/F3xufTCly2+HRJMICOkZOK3zv7R
- iwSAP6Mb5lTw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9967"; a="193459178"
-X-IronPort-AV: E=Sophos;i="5.82,257,1613462400"; d="scan'208";a="193459178"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+IronPort-SDR: yOLAZAgB3OtQcTXfMWiYz6ZC9NK4IgXOMWUvO5G4pepxKjBD7YWoztj2/auylm1Wjprjz1qHfS
+ 3MFtv0qs7aIg==
+X-IronPort-AV: E=McAfee;i="6200,9189,9967"; a="217363447"
+X-IronPort-AV: E=Sophos;i="5.82,257,1613462400"; d="scan'208";a="217363447"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  27 Apr 2021 20:46:49 -0700
-IronPort-SDR: w5cWmvkyaKtMPU+EVeGz2tPpR2PCTxLMuePgNNrp4Y0Smg7STwlsX2Gf7rDn6YLNafqZB+UpIu
- pTna2UFpADQA==
+IronPort-SDR: wUyzbAfuam7lq5iQP0H+ASpKLg1VUV6R/3pw4BEqqLreS0ZCCHt905a8y4KBb7UNL+syQGkzFO
+ KsQ/PyRW18RQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,257,1613462400"; d="scan'208";a="619149153"
+X-IronPort-AV: E=Sophos;i="5.82,257,1613462400"; d="scan'208";a="536809314"
 Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
- by fmsmga005.fm.intel.com with ESMTP; 27 Apr 2021 20:46:48 -0700
+ by orsmga004.jf.intel.com with ESMTP; 27 Apr 2021 20:46:47 -0700
 Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1lbb9y-0006ux-UD; Wed, 28 Apr 2021 03:46:46 +0000
-Date: Wed, 28 Apr 2021 11:45:49 +0800
+ id 1lbb9z-0006v5-0f; Wed, 28 Apr 2021 03:46:47 +0000
+Date: Wed, 28 Apr 2021 11:45:53 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS ee1bc694fbaec1a662770703fc34a74abf418938
-Message-ID: <6088da6d.iZbnxdpMI6fOYIet%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ adb68c38d8d49a3d60805479c558649bb2182473
+Message-ID: <6088da71.euXdzOI8yHQ7uGNa%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -58,12 +59,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: ee1bc694fbaec1a662770703fc34a74abf418938  powerpc/kvm: Fix build error when PPC_MEM_KEYS/PPC_PSERIES=n
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: adb68c38d8d49a3d60805479c558649bb2182473  powerpc/papr_scm: Mark nvdimm as unarmed if needed during probe
 
-elapsed time: 813m
+elapsed time: 812m
 
-configs tested: 175
+configs tested: 174
 configs skipped: 2
 
 The following configs have been built successfully.
@@ -88,9 +89,6 @@ arm                        keystone_defconfig
 arc                              alldefconfig
 arm                  colibri_pxa270_defconfig
 sh                     magicpanelr2_defconfig
-arm                      pxa255-idp_defconfig
-sh                         ecovec24_defconfig
-powerpc                 mpc836x_mds_defconfig
 m68k                        m5407c3_defconfig
 mips                           mtx1_defconfig
 powerpc                    mvme5100_defconfig
@@ -103,6 +101,7 @@ openrisc                 simple_smp_defconfig
 mips                        bcm47xx_defconfig
 h8300                            alldefconfig
 powerpc                 linkstation_defconfig
+arm                      pxa255-idp_defconfig
 powerpc                     kmeter1_defconfig
 arm                              alldefconfig
 arm                         shannon_defconfig
@@ -117,7 +116,6 @@ m68k                          sun3x_defconfig
 m68k                        m5272c3_defconfig
 arm                         socfpga_defconfig
 openrisc                  or1klitex_defconfig
-ia64                                defconfig
 parisc                generic-64bit_defconfig
 arm                         nhk8815_defconfig
 arm                  colibri_pxa300_defconfig
@@ -138,10 +136,10 @@ arm                            xcep_defconfig
 sh                            titan_defconfig
 sh                           se7619_defconfig
 arm                      integrator_defconfig
-arc                                 defconfig
-arc                              allyesconfig
 mips                            ar7_defconfig
 mips                       capcella_defconfig
+arc                                 defconfig
+arc                              allyesconfig
 s390                       zfcpdump_defconfig
 mips                     cu1000-neo_defconfig
 sh                          r7785rp_defconfig
@@ -157,6 +155,7 @@ powerpc                     tqm8548_defconfig
 powerpc                         wii_defconfig
 arm                       spear13xx_defconfig
 powerpc                     ppa8548_defconfig
+powerpc                 mpc836x_mds_defconfig
 mips                      malta_kvm_defconfig
 sh                             espt_defconfig
 powerpc                      bamboo_defconfig
@@ -176,6 +175,7 @@ riscv                            alldefconfig
 m68k                         amcore_defconfig
 sh                  sh7785lcr_32bit_defconfig
 ia64                             allmodconfig
+ia64                                defconfig
 ia64                             allyesconfig
 m68k                             allmodconfig
 m68k                                defconfig
