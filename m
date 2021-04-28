@@ -1,70 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCEDB36D050
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 03:34:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A8F36D0F6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 05:47:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FVLl15vWtz30CZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 11:34:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=s0XyQudJ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FVPhg0GLvz30D5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 13:47:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2b;
- helo=mail-yb1-xb2b.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=s0XyQudJ; dkim-atps=neutral
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com
- [IPv6:2607:f8b0:4864:20::b2b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FVLkb2p3cz2xMd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 11:33:42 +1000 (AEST)
-Received: by mail-yb1-xb2b.google.com with SMTP id 130so27984635ybd.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Apr 2021 18:33:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=LcoLsON92ufC6avzQd5ISwSwN9YcqNjio4BD0RFj14k=;
- b=s0XyQudJ9znl6kdcYU0f93STwwBPfXhiYeAyh9BmtNVRfL4OMvOYM3tmfgzXw4fYOG
- DjmEOj2U8nxdttlnqrS+l7h9xU7c+tSyI9+PeV6b9zGWxcnpLPJSR0IeW9HbxixHre/J
- lxCaCOXTZDNsbMBvZAYS+Jv7l0FbhJ5LothmvLE0AjLmidEp0DKbntTc5LYozN6zOw3u
- pse900ubGch3clgrz9jZtI2uVoCV4Fo6kc957iTaCaK3A1IvREt7EfuL0FM9oZb5jkmp
- OW41sjPqhAumfyLCSoBoCVe2Mnb4hDH4dC8/KxDXDYzACtLh4ldMLvLEU2g4OpwGAja8
- bQpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=LcoLsON92ufC6avzQd5ISwSwN9YcqNjio4BD0RFj14k=;
- b=Ms/elVLbqCucxV/UvRgF1HUKeV04/b3v/QXu73+1eTuW5g/IVNsiaACgsnFnY3wrUf
- 2uGSrDMnvx0q31mCXtgXin1Eismek8IuaI1adGht42edQcv1bChYKQFsb9YnCd2Hu8l0
- wb26fiFAdGjI6hEW6LdVJWO6Ey+7orKIXcXoBqNaceIiI2Rs+rNFIYGWWHU/wkeSRrbh
- ZxvU8cHlJ1vuqXF/kIp+nvjssaiT88Xl5VoUdtrhTkE2mEVgDfhjYH8385lH5U+f3mdb
- XMDlsRNBC1XzkODUq3TiyO6IKZarHhqaIBCsQZxY1/T5LJOZ3K5TSyustNOKOOrkTWTG
- nLFA==
-X-Gm-Message-State: AOAM530dzqklJ6v06aqqOdIiVqRWC7dxsUQLOG3bupFJGNkHciCdOCcn
- jRJIimsodYC160zugObbN+6biZK3hZa3bGNT9zI=
-X-Google-Smtp-Source: ABdhPJxpOvqltvWayel5pFsQoFOnmD02+RM4igoxgj4fvQVJbDbJCtXHBUZvr8OoLKnIDf5gG5aRxYumpJZrZ0mBEOM=
-X-Received: by 2002:a25:e64b:: with SMTP id d72mr20598946ybh.343.1619573617495; 
- Tue, 27 Apr 2021 18:33:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FVPhH6dzgz2xg6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 13:46:52 +1000 (AEST)
+IronPort-SDR: qhoWv+Ab85VKlBnVWfzcF5RpreLB8u+cWFqnj0CMuArfFmMCBYbXjArK/XAHNN7W2o1HcqHnua
+ D2wKn+3vgKAw==
+X-IronPort-AV: E=McAfee;i="6200,9189,9967"; a="196203087"
+X-IronPort-AV: E=Sophos;i="5.82,257,1613462400"; d="scan'208";a="196203087"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Apr 2021 20:46:48 -0700
+IronPort-SDR: zwdPyXvv95ifaeJ2CIqOQ4FAGuTYqPwcCPdMM0/oecY8Ol/PVX2HbUpfl+/v0FFZuA1OXi9KsY
+ v2MI3C41qvfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,257,1613462400"; d="scan'208";a="526341414"
+Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
+ by fmsmga001.fm.intel.com with ESMTP; 27 Apr 2021 20:46:47 -0700
+Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lbb9z-0006v2-03; Wed, 28 Apr 2021 03:46:47 +0000
+Date: Wed, 28 Apr 2021 11:45:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 1b628dbc3ccb0b51963fcb3c60b57daac21dc016
+Message-ID: <6088da6a.ZJxXHaEisex5KoXN%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <YIWNZI4YhFuRZwHg@latitude>
-In-Reply-To: <YIWNZI4YhFuRZwHg@latitude>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Wed, 28 Apr 2021 11:33:24 +1000
-Message-ID: <CACzsE9qOj2Fp4A9dYopQddw1oc7w--BCe_2_3xJfEo=d9WoC1Q@mail.gmail.com>
-Subject: Re: PPC32: Boot regression on Nintendo Wii, after create_branch
- rework in 5.8
-To: =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,84 +53,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alistair Popple <alistair@popple.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 26, 2021 at 1:40 AM Jonathan Neusch=C3=A4fer
-<j.neuschaefer@gmx.net> wrote:
->
-> Hi,
->
-> I recently booted my Wii again, and I noticed a regression at boot time.
-> Output stops after the "Finalizing device tree... flat tree at 0xXXXXXX"
-> message. I bisected it to this commit in the 5.8 development cycle:
->
-> commit 7c95d8893fb55869882c9f68f4c94840dc43f18f
-> Author: Jordan Niethe <jniethe5@gmail.com>
-> Date:   Wed May 6 13:40:25 2020 +1000
->
->     powerpc: Change calling convention for create_branch() et. al.
->
->     create_branch(), create_cond_branch() and translate_branch() return t=
-he
->     instruction that they create, or return 0 to signal an error. Separat=
-e
->     these concerns in preparation for an instruction type that is not jus=
-t
->     an unsigned int.  Fill the created instruction to a pointer passed as
->     the first parameter to the function and use a non-zero return value t=
-o
->     signify an error.
->
->     Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
->     Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->     Reviewed-by: Alistair Popple <alistair@popple.id.au>
->     Link: https://lore.kernel.org/r/20200506034050.24806-6-jniethe5@gmail=
-.com
->
->  arch/powerpc/include/asm/code-patching.h |  12 +--
->  arch/powerpc/kernel/optprobes.c          |  24 +++---
->  arch/powerpc/kernel/setup_32.c           |   4 +-
->  arch/powerpc/kernel/trace/ftrace.c       |  24 +++---
->  arch/powerpc/lib/code-patching.c         | 134 ++++++++++++++++++-------=
-------
->  arch/powerpc/lib/feature-fixups.c        |   5 +-
->  6 files changed, 119 insertions(+), 84 deletions(-)
->
->
-> Do you have any hints on how to debug and/or fix this issue?
-Thanks for bisecting and reporting.
-The "Finalizing device tree... flat tree at 0xXXXXXX" message comes
-from the bootwrapper so if that is the last output it must be crashing
-pretty early.
-Commit 7c95d8893fb5 ("powerpc: Change calling convention for
-create_branch() et. al.") made a change to machine_init() in
-setup_32.c which seems like it might be a likely culprit for causing
-early crashing.
-The branch that is created and patched is just for optimization, so to
-see if that is in fact the problem it might be worth trying to boot
-with a patch like below
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 1b628dbc3ccb0b51963fcb3c60b57daac21dc016  Automatic merge of 'master' into merge (2021-04-27 23:47)
 
-diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.=
-c
---- a/arch/powerpc/kernel/setup_32.c
-+++ b/arch/powerpc/kernel/setup_32.c
-@@ -87,9 +87,6 @@ notrace void __init machine_init(u64 dt_ptr)
+elapsed time: 814m
 
-        patch_instruction_site(&patch__memcpy_nocache, ppc_inst(PPC_INST_NO=
-P));
+configs tested: 131
+configs skipped: 2
 
--       create_cond_branch(&insn, addr, branch_target(addr), 0x820000);
--       patch_instruction(addr, insn);  /* replace b by bne cr0 */
--
-        /* Do some early initialization based on the flat device tree */
-        early_init_devtree(__va(dt_ptr));
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->
->
-> Best regards,
-> Jonathan Neusch=C3=A4fer
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+i386                             allyesconfig
+riscv                            allyesconfig
+mips                        maltaup_defconfig
+mips                           rs90_defconfig
+powerpc                     mpc83xx_defconfig
+microblaze                          defconfig
+openrisc                 simple_smp_defconfig
+mips                        bcm47xx_defconfig
+h8300                            alldefconfig
+sh                 kfr2r09-romimage_defconfig
+arm                        spear6xx_defconfig
+powerpc                          g5_defconfig
+m68k                          sun3x_defconfig
+m68k                        m5272c3_defconfig
+arm                  colibri_pxa300_defconfig
+xtensa                    xip_kc705_defconfig
+sh                         apsh4a3a_defconfig
+arm                           stm32_defconfig
+s390                             alldefconfig
+mips                      maltaaprp_defconfig
+powerpc                    amigaone_defconfig
+sh                   sh7724_generic_defconfig
+ia64                          tiger_defconfig
+mips                        jmr3927_defconfig
+arm                            xcep_defconfig
+powerpc                  mpc885_ads_defconfig
+powerpc                      chrp32_defconfig
+powerpc                     powernv_defconfig
+sh                         microdev_defconfig
+arm                            mmp2_defconfig
+mips                           ip22_defconfig
+arm                          moxart_defconfig
+arm                          pcm027_defconfig
+arm                           tegra_defconfig
+xtensa                       common_defconfig
+sh                           se7721_defconfig
+powerpc                   bluestone_defconfig
+arm                       mainstone_defconfig
+arm                   milbeaut_m10v_defconfig
+powerpc                     tqm8548_defconfig
+sh                               alldefconfig
+m68k                       m5475evb_defconfig
+mips                      fuloong2e_defconfig
+sh                          sdk7780_defconfig
+arm                        keystone_defconfig
+h8300                     edosk2674_defconfig
+xtensa                         virt_defconfig
+sh                          rsk7203_defconfig
+microblaze                      mmu_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a005-20210426
+i386                 randconfig-a002-20210426
+i386                 randconfig-a001-20210426
+i386                 randconfig-a006-20210426
+i386                 randconfig-a004-20210426
+i386                 randconfig-a003-20210426
+i386                 randconfig-a005-20210427
+i386                 randconfig-a002-20210427
+i386                 randconfig-a001-20210427
+i386                 randconfig-a006-20210427
+i386                 randconfig-a004-20210427
+i386                 randconfig-a003-20210427
+x86_64               randconfig-a015-20210426
+x86_64               randconfig-a016-20210426
+x86_64               randconfig-a011-20210426
+x86_64               randconfig-a014-20210426
+x86_64               randconfig-a012-20210426
+x86_64               randconfig-a013-20210426
+i386                 randconfig-a014-20210426
+i386                 randconfig-a012-20210426
+i386                 randconfig-a011-20210426
+i386                 randconfig-a013-20210426
+i386                 randconfig-a015-20210426
+i386                 randconfig-a016-20210426
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a002-20210426
+x86_64               randconfig-a004-20210426
+x86_64               randconfig-a001-20210426
+x86_64               randconfig-a006-20210426
+x86_64               randconfig-a005-20210426
+x86_64               randconfig-a003-20210426
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
