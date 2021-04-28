@@ -1,60 +1,117 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045AE36CFA3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 01:46:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1272236CFFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 02:33:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FVJLK6l6Gz30Cy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 09:46:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FVKPb0mVSz30CZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Apr 2021 10:33:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=lpzhV1ii;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kVTd2kdx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=srs0=nbca=jz=linux.ibm.com=tyreld@ozlabs.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=lpzhV1ii; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=kVTd2kdx; dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FVJKq4Zpnz2xZt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 09:45:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=bjHYw5aHmkNeX7gCuVfcrHLOJEpKEgOqk23ARRx2OIw=; b=lpzhV1iinBNfc/QWyDj7fkDa1p
- ExQn3Q+M+DYUJm4WQs3yrh5BTfsf3tsib18tYLL9Ly3qzGG4oS127rl3hUI4KgO8Ncr45M7lARMFo
- LeAi1BGMR8I0Bf58pq8QBaGhsCVoMjcFPxtDLDp6jUrdWIaz7KE1RgipadXuJIgl/47ZvuV+yTAi8
- zOhhSB7IyldyPjiB2qwj1Svy23YKP07RQ1YxEKp8BzWmktZe3kpUlkesJkBUuYK7LtyPOx1UqstdU
- NJFUrUTuNbGL/t7UAex++7iE0XV/t/qvrxZVYwzszRfNKNs+Hvr0FWMbCG+N9ERNkKvrGKqvt7CWe
- rBRC6vAQ==;
-Received: from [2601:1c0:6280:3f0::df68]
- by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lbXOL-007c8l-JX; Tue, 27 Apr 2021 23:45:26 +0000
-Subject: Re: powerpc{32,64} randconfigs
-To: Michael Ellerman <mpe@ellerman.id.au>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
-References: <45afab41-cc5f-dffa-712a-d5fb1a9d0a23@infradead.org>
- <87tuo0az16.fsf@mpe.ellerman.id.au>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <4514b768-ef07-0b01-c87e-4c2d9eb95f65@infradead.org>
-Date: Tue, 27 Apr 2021 16:45:19 -0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FVKP71d9tz2xZt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 10:33:30 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by ozlabs.org (Postfix) with ESMTP id 4FVKNx0prYz9t0k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 10:33:21 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4FVKNx0Z4pz9srX; Wed, 28 Apr 2021 10:33:21 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=kVTd2kdx; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4FVKNw0Zs0z9sXh;
+ Wed, 28 Apr 2021 10:33:19 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13S0FBgK117443; Tue, 27 Apr 2021 20:33:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=Bqh0XR4uvdMmpYoD5Ge/9QTxs+C6jyiYEkkYUMqiENE=;
+ b=kVTd2kdx+r6K1I1dp4HGBjmr6JjjLbauzSrfBrU2AelSa8JUmtN6OxHQh/UWbET/bbLM
+ NLvmoudPkPxVRomnHy1zsni+EuvNBh5wap7WX5mj+aebk0k2flaevoghQjmlnjA+4Wvo
+ f41lNiF50NKTL2lf1Ar4HG6Jo/si1BahYv8vKp2EP8GDz18SaKInkKds++tYIe1yWKvQ
+ R6W8WuG4zrnLNohlaxuuOe4x7eLuEalgnKjxE2Xzx1lO4wQvuOVAfSpDIw+v56E/DPh4
+ 0Qu5MisgMnXYERp4PJqRme5wRjQO/NW5GV8KLq/6kcVkzGB3dcaOkTZVHoQdTY/0LT7C Dg== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 386w0a0b00-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Apr 2021 20:33:17 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13S0X7fb015090;
+ Wed, 28 Apr 2021 00:33:16 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma01dal.us.ibm.com with ESMTP id 384ay97gw6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Apr 2021 00:33:16 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13S0WsN929294964
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 28 Apr 2021 00:32:54 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 87E846A04D;
+ Wed, 28 Apr 2021 00:32:54 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 35B4F6A04F;
+ Wed, 28 Apr 2021 00:32:53 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.65.213.116])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed, 28 Apr 2021 00:32:52 +0000 (GMT)
+Subject: Re: [PATCH v6] powerpc/kexec_file: use current CPU info while setting
+ up FDT
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, mpe@ellerman.id.au
+References: <20210427045120.2109980-1-sourabhjain@linux.ibm.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <8c3da505-f034-289a-819d-2841a5c7e580@linux.ibm.com>
+Date: Tue, 27 Apr 2021 17:32:52 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
-MIME-Version: 1.0
-In-Reply-To: <87tuo0az16.fsf@mpe.ellerman.id.au>
+ Thunderbird/78.9.0
+In-Reply-To: <20210427045120.2109980-1-sourabhjain@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: tJrfGveXQOJMWSZ-aW_UGZIY2Y2N-ZXG
+X-Proofpoint-ORIG-GUID: tJrfGveXQOJMWSZ-aW_UGZIY2Y2N-ZXG
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-27_13:2021-04-27,
+ 2021-04-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ impostorscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 lowpriorityscore=0
+ phishscore=0 bulkscore=0 clxscore=1011 priorityscore=1501 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104270165
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,102 +123,192 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kbuild <linux-kbuild@vger.kernel.org>
+Cc: mahesh@linux.vnet.ibm.com, bauerman@linux.ibm.com, hbathini@linux.ibm.com,
+ stable@vger.kernel.org, linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/21/21 12:15 AM, Michael Ellerman wrote:
-> Randy Dunlap <rdunlap@infradead.org> writes:
->> Hi,
->>
->> Is there a way to do this?
->>
->> $ make ARCH=powerpc randconfig # and force PPC32
+On 4/26/21 9:51 PM, Sourabh Jain wrote:
+> kexec_file_load uses initial_boot_params in setting up the device-tree
+> for the kernel to be loaded. Though initial_boot_params holds info
+> about CPUs at the time of boot, it doesn't account for hot added CPUs.
 > 
-> Sort of:
+> So, kexec'ing with kexec_file_load syscall would leave the kexec'ed
+> kernel with inaccurate CPU info. Also, if kdump kernel is loaded with
+> kexec_file_load syscall and the system crashes on a hot added CPU,
+> capture kernel hangs failing to identify the boot CPU.
 > 
-> $ KCONFIG_ALLCONFIG=arch/powerpc/configs/book3s_32.config make randconfig
+>  Kernel panic - not syncing: sysrq triggered crash
+>  CPU: 24 PID: 6065 Comm: echo Kdump: loaded Not tainted 5.12.0-rc5upstream #54
+>  Call Trace:
+>  [c0000000e590fac0] [c0000000007b2400] dump_stack+0xc4/0x114 (unreliable)
+>  [c0000000e590fb00] [c000000000145290] panic+0x16c/0x41c
+>  [c0000000e590fba0] [c0000000008892e0] sysrq_handle_crash+0x30/0x40
+>  [c0000000e590fc00] [c000000000889cdc] __handle_sysrq+0xcc/0x1f0
+>  [c0000000e590fca0] [c00000000088a538] write_sysrq_trigger+0xd8/0x178
+>  [c0000000e590fce0] [c0000000005e9b7c] proc_reg_write+0x10c/0x1b0
+>  [c0000000e590fd10] [c0000000004f26d0] vfs_write+0xf0/0x330
+>  [c0000000e590fd60] [c0000000004f2aec] ksys_write+0x7c/0x140
+>  [c0000000e590fdb0] [c000000000031ee0] system_call_exception+0x150/0x290
+>  [c0000000e590fe10] [c00000000000ca5c] system_call_common+0xec/0x278
+>  --- interrupt: c00 at 0x7fff905b9664
+>  NIP:  00007fff905b9664 LR: 00007fff905320c4 CTR: 0000000000000000
+>  REGS: c0000000e590fe80 TRAP: 0c00   Not tainted  (5.12.0-rc5upstream)
+>  MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 28000242
+>        XER: 00000000
+>  IRQMASK: 0
+>  GPR00: 0000000000000004 00007ffff5fedf30 00007fff906a7300 0000000000000001
+>  GPR04: 000001002a7355b0 0000000000000002 0000000000000001 00007ffff5fef616
+>  GPR08: 0000000000000001 0000000000000000 0000000000000000 0000000000000000
+>  GPR12: 0000000000000000 00007fff9073a160 0000000000000000 0000000000000000
+>  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>  GPR20: 0000000000000000 00007fff906a4ee0 0000000000000002 0000000000000001
+>  GPR24: 00007fff906a0898 0000000000000000 0000000000000002 000001002a7355b0
+>  GPR28: 0000000000000002 00007fff906a1790 000001002a7355b0 0000000000000002
+>  NIP [00007fff905b9664] 0x7fff905b9664
+>  LR [00007fff905320c4] 0x7fff905320c4
+>  --- interrupt: c00
 > 
-> But that also forces BOOK3S.
+> To avoid this from happening, extract current CPU info from of_root
+> device node and use it for setting up the fdt in kexec_file_load case.
 > 
->> and separately
->> $ make ARCH=powerpc randconfig # and force PPC64
+> Fixes: 6ecd0163d360 ("powerpc/kexec_file: Add appropriate regions for memory reserve map")
 > 
-> No.
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: <stable@vger.kernel.org>
+> ---
+>  arch/powerpc/kexec/file_load_64.c | 88 +++++++++++++++++++++++++++++++
+>  1 file changed, 88 insertions(+)
 > 
-> ...
->> OK, I have a patch that seems for work as far as setting
->> PPC32=y or PPC64=y... but it has a problem during linking
->> of vmlinux:
->>
->> crosstool/gcc-9.3.0-nolibc/powerpc-linux/bin/powerpc-linux-ld:./arch/powerpc/kernel/vmlinux.lds:6: syntax error
->>
->> and the (bad) generated vmlinux.lds file says (at line 6):
->>
->> OUTPUT_ARCH(1:common)
->>
->> while it should say:
->>
->> OUTPUT_ARCH(powerpc:common)
->>
->> Does anyone have any ideas about this problem?
+>  ---
+> Changelog:
 > 
-> I guess your patch broke something? :D
-> Not sure sorry.
+> v1 -> v5
+>   - https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-April/227950.html
 > 
-> What about something like this?
+> v5 -> v6
+>   - use exiting macro (for_each_property_of_node) to loop through all
+>     properties of a node.
+>   - removed devtree_lock while accessing the node properties.
+>   - function name update, add_node_prop to add_node_props.
+>  ---
 > 
-> cheers
+> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+> index 02b9e4d0dc40..4f7d4c10f939 100644
+> --- a/arch/powerpc/kexec/file_load_64.c
+> +++ b/arch/powerpc/kexec/file_load_64.c
+> @@ -960,6 +960,89 @@ unsigned int kexec_fdt_totalsize_ppc64(struct kimage *image)
+>  	return fdt_size;
+>  }
 > 
-> 
-> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> index 3212d076ac6a..712c5e8768ce 100644
-> --- a/arch/powerpc/Makefile
-> +++ b/arch/powerpc/Makefile
-> @@ -376,6 +376,16 @@ PHONY += ppc64_book3e_allmodconfig
->  	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/85xx-64bit.config \
->  		-f $(srctree)/Makefile allmodconfig
->  
-> +PHONY += ppc32_randconfig
-> +ppc32_randconfig:
-> +	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/32-bit.config \
-> +		-f $(srctree)/Makefile randconfig
+> +/**
+> + * add_node_props - Reads node properties from device node structure and add
+> + *                  them to fdt.
+> + * @fdt:            Flattened device tree of the kernel
+> + * @node_offset:    offset of the node to add a property at
+> + * @dn:             device node pointer
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int add_node_props(void *fdt, int node_offset, const struct device_node *dn)
+> +{
+> +	int ret = 0;
+> +	struct property *pp;
 > +
-> +PHONY += ppc64_randconfig
-> +ppc64_randconfig:
-> +	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/64-bit.config \
-> +		-f $(srctree)/Makefile randconfig
+> +	if (!dn)
+> +		return -EINVAL;
 > +
->  define archhelp
->    @echo '* zImage          - Build default images selected by kernel config'
->    @echo '  zImage.*        - Compressed kernel image (arch/$(ARCH)/boot/zImage.*)'
-> diff --git a/arch/powerpc/configs/32-bit.config b/arch/powerpc/configs/32-bit.config
-> new file mode 100644
-> index 000000000000..bdf833009006
-> --- /dev/null
-> +++ b/arch/powerpc/configs/32-bit.config
-> @@ -0,0 +1 @@
-> +CONFIG_PPC64=n
+> +	for_each_property_of_node(dn, pp) {
+> +		ret = fdt_setprop(fdt, node_offset, pp->name, pp->value, pp->length);
+> +		if (ret < 0) {
+> +			pr_err("Unable to add %s property: %s\n", pp->name, fdt_strerror(ret));
+> +			return ret;
+> +		}
+> +	}
+> +	return ret;
+> +}
+> +
+> +/**
+> + * update_cpus_node - Update cpus node of flattened device tree using of_root
+> + *                    device node.
+> + * @fdt:              Flattened device tree of the kernel.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int update_cpus_node(void *fdt)
+> +{
+> +	struct device_node *cpus_node, *dn;
+> +	int cpus_offset, cpus_subnode_offset, ret = 0;
+> +
+> +	cpus_offset = fdt_path_offset(fdt, "/cpus");
+> +	if (cpus_offset < 0 && cpus_offset != -FDT_ERR_NOTFOUND) {
+> +		pr_err("Malformed device tree: error reading /cpus node: %s\n",
+> +		       fdt_strerror(cpus_offset));
+> +		return cpus_offset;
+> +	}
+> +
+> +	if (cpus_offset > 0) {
+> +		ret = fdt_del_node(fdt, cpus_offset);
+> +		if (ret < 0) {
+> +			pr_err("Error deleting /cpus node: %s\n", fdt_strerror(ret));
+> +			return -EINVAL;
+> +		}
+> +	}
+> +
+> +	/* Add cpus node to fdt */
+> +	cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"), "cpus");
+> +	if (cpus_offset < 0) {
+> +		pr_err("Error creating /cpus node: %s\n", fdt_strerror(cpus_offset));
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* Add cpus node properties */
+> +	cpus_node = of_find_node_by_path("/cpus");
 
-I used the suggested change here (above).
+Pretty sure that of_find_node_by_path() returns a device_node with its refcount
+incremented.
 
-> diff --git a/arch/powerpc/configs/64-bit.config b/arch/powerpc/configs/64-bit.config
-> new file mode 100644
-> index 000000000000..0fe6406929e2
-> --- /dev/null
-> +++ b/arch/powerpc/configs/64-bit.config
-> @@ -0,0 +1 @@
-> +CONFIG_PPC64=y
+> +	ret = add_node_props(fdt, cpus_offset, cpus_node);
+
+Need a of_node_put(cpus_node) here.
+
+-Tyrel
+
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Loop through all subnodes of cpus and add them to fdt */
+> +	for_each_node_by_type(dn, "cpu") {
+> +		cpus_subnode_offset = fdt_add_subnode(fdt, cpus_offset, dn->full_name);
+> +		if (cpus_subnode_offset < 0) {
+> +			pr_err("Unable to add %s subnode: %s\n", dn->full_name,
+> +			       fdt_strerror(cpus_subnode_offset));
+> +			return cpus_subnode_offset;
+> +		}
+> +		ret = add_node_props(fdt, cpus_subnode_offset, dn);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+> +	of_node_put(dn);
+> +	return ret;
+> +}
+> +
+>  /**
+>   * setup_new_fdt_ppc64 - Update the flattend device-tree of the kernel
+>   *                       being loaded.
+> @@ -1020,6 +1103,11 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+>  		}
+>  	}
 > 
-
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-
-
-Please merge this. :)
-
-thanks.
--- 
-~Randy
+> +	/* Update cpus nodes information to account hotplug CPUs. */
+> +	ret =  update_cpus_node(fdt);
+> +	if (ret < 0)
+> +		return ret;
+> +
+>  	/* Update memory reserve map */
+>  	ret = get_reserved_memory_ranges(&rmem);
+>  	if (ret)
+> 
 
