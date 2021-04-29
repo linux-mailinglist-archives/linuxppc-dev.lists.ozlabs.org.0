@@ -1,51 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2223F36E2BD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 02:54:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BBE436E392
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 05:17:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FVxpV0Qbnz30DN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 10:54:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FW0zp0j63z3bTp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 13:17:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=GTME8irL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=PBuFlSE/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=GTME8irL; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=PBuFlSE/; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FVxp14jY4z2xg1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 10:53:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:In-Reply-To:References;
- bh=ias16OQcBsl8ZkDBEGSPojETSjzryLxJi3zCN7d/i4E=; b=GTME8irLh4yirVajHMss5bhE0m
- 7i1RAaFww73oFMbbYd0JrHof4s+TMXrucW6CGr3kkbhsBf8q6s5DdEMDqGDJGD0LWfOKw5Wj6+hXJ
- gpb68XEd42+3C5w2QFfuLtvXv/1ExB9xhRjty8Wc5BsnGBX/32nQiIQlP78e31U/5YRWDyCIwQLxs
- UBQ/lr6+8zb8wwDxweO7GwWWjEVzEb/QKLsU34ZkxKy6Wt3lhT4YV4tr0/OTWb/oxitrSkJzYBj/N
- aMp6SjGofFyNorhZU3fAsN//GPO+gx9GiFBOObxJHnXKrWN3XPozkuT9WBmaOffhc9TgtjUqUKnB0
- e5+LOTsg==;
-Received: from [2601:1c0:6280:3f0::3bc5] (helo=casper.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1lbuvn-0090nA-OF; Thu, 29 Apr 2021 00:53:35 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc: mpc52xx: fix some pr_debug() issues
-Date: Wed, 28 Apr 2021 17:53:23 -0700
-Message-Id: <20210429005323.8195-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FW0yt28g3z2y0J
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 13:16:35 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ f11-20020a17090a638bb02901524d3a3d48so10118702pjj.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Apr 2021 20:16:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=1uGkd+2Hw/3qGp7jNFABfj0N7L8s7hCqyFHj5IEXo6s=;
+ b=PBuFlSE/uGaki9bGKybhqUen3tXFleOO4VA8KaINTXdmugaHohtwsrVTq05OKn7x5p
+ 15ptoHJThhDMfQBoY72HCvJ/mVj8bnG6tFeIUOj7JXrI82ct417StegK8W6N5YmDp2Yr
+ rGTrFcJhDJHXAhC/UYJKx8k1e4Jn9CA+4NF0shKBdGyo65CP4A/k5UfXs2blanMjg8AE
+ HQ1/OmFTvNU5ApWi3o1+uIUs9XX5M+zLYtElWUOvPa6xq6M1tmAsan/Vb0dQKlhVfLxz
+ Ub9+2Z67RhouCKHvFGkHg0+GKyd1cWY58iI96aQOqPLJpbaKgdQvegD9UdRhF9MiQ0Pe
+ OyaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=1uGkd+2Hw/3qGp7jNFABfj0N7L8s7hCqyFHj5IEXo6s=;
+ b=QInoxevAgarqMb3aIh7AxiwvKMNOhqafQrouldr8GrDumdUTgaTYRsv+bWCpDkPV8W
+ 8sQtp9wpfnUGf9qwTSeaiSM3RM8kyW78kgKm2CrGvwsOE+fQ+lvieFHhd88914uO7JQ3
+ dA/B297e2Sractvc+LB8Luk1j51e9q+qbNwfUxI3suw143qWWad7SAvQn6Ausk84J2WR
+ GAWynh9pWZdCxGGdMUF2ZEoGd1JbHTAsMA0jgJc3RyhHXZUtawL24hmCNjvihQpYowcp
+ U8k4nLjXSORKrLrHxjcyz4BEuqQVixtILllECLLeoEIj9pC2W36fAnUwTwb707am7fI8
+ dTrA==
+X-Gm-Message-State: AOAM532CI9e1Hb+vVFxVmSwm2Ip72n0ej9niKmEddDwWvlhegzKfkk+G
+ wIPZvA2nMvGwpMF/jqupgUUmH1RgrA8=
+X-Google-Smtp-Source: ABdhPJyjr5ZTwooF81BVAIDDPcWwkBhmk2fEfSFKLG4ysFhKDQXayUXg0OiOAoRJLPNdkBnvaq1pLA==
+X-Received: by 2002:a17:90a:6682:: with SMTP id m2mr394068pjj.90.1619666190406; 
+ Wed, 28 Apr 2021 20:16:30 -0700 (PDT)
+Received: from tee480.ozlabs.ibm.com
+ (159-196-117-139.9fc475.syd.nbn.aussiebb.net. [159.196.117.139])
+ by smtp.gmail.com with ESMTPSA id l16sm3650742pjl.32.2021.04.28.20.16.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Apr 2021 20:16:29 -0700 (PDT)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v11 0/9] powerpc: Further Strict RWX support 
+Date: Thu, 29 Apr 2021 13:15:53 +1000
+Message-Id: <20210429031602.2606654-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,110 +79,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Anatolij Gustschin <agust@denx.de>
+Cc: ajd@linux.ibm.com, cmr@codefail.de, npiggin@gmail.com,
+ aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com,
+ Jordan Niethe <jniethe5@gmail.com>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix some pr_debug() issues in mpc52xx_pci.c:
+Adding more Strict RWX support on powerpc, in particular Strict Module RWX.
+Thanks for all of the feedback everyone.
+It is now rebased on linux-next.
 
-- use __func__ to print function names
-- use "%pr" to print struct resource entries
-- use "%pa" to print a resource_size_t (phys_addr_t)
+For reference the previous revision is available here: 
+https://lore.kernel.org/linuxppc-dev/20210330045132.722243-1-jniethe5@gmail.com/
 
-The latter two fix several build warnings:
+The changes in v11 for each patch:
 
-../arch/powerpc/platforms/52xx/mpc52xx_pci.c: In function 'mpc52xx_pci_setup':
-../include/linux/kern_levels.h:5:18: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
-../arch/powerpc/platforms/52xx/mpc52xx_pci.c:277:40: note: format string is defined here
-  277 |   pr_debug("mem_resource[1] = {.start=%x, .end=%x, .flags=%lx}\n",
-      |                                       ~^
-      |                                        |
-      |                                        unsigned int
-      |                                       %llx
-../include/linux/kern_levels.h:5:18: warning: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
-../arch/powerpc/platforms/52xx/mpc52xx_pci.c:277:49: note: format string is defined here
-  277 |   pr_debug("mem_resource[1] = {.start=%x, .end=%x, .flags=%lx}\n",
-      |                                                ~^
-      |                                                 |
-      |                                                 unsigned int
-      |                                                %llx
+Christophe Leroy (2):
+  powerpc/mm: implement set_memory_attr()
+  powerpc/32: use set_memory_attr()
 
-../arch/powerpc/platforms/52xx/mpc52xx_pci.c:299:36: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
-  299 |    (unsigned long long)res->flags, (void*)hose->io_base_phys);
-      |                                    ^
-../arch/powerpc/platforms/52xx/mpc52xx_pci.c:295:2: note: in expansion of macro 'pr_debug'
-  295 |  pr_debug(".io_resource={.start=%llx,.end=%llx,.flags=%llx} "
-      |  ^~~~~~~~
+Jordan Niethe (4):
+  powerpc/lib/code-patching: Set up Strict RWX patching earlier
+  powerpc: Always define MODULES_{VADDR,END}
+    v11: - Consider more places MODULES_VADDR was being used
+  powerpc/bpf: Remove bpf_jit_free()
+    v11: - New to series
+  powerpc/bpf: Write protect JIT code
+    v11: - Remove CONFIG_STRICT_MODULE_RWX conditional
 
-The change to print mem_resource[0] is for consistency within this
-source file and to use the kernel API -- there were no warnings here.
+Russell Currey (3):
+  powerpc/mm: Implement set_memory() routines
+    v11: - Update copywrite dates
+         - Allow set memory functions to be used without Strict RW
+         - Hash: Disallow certain regions and add comment explaining why
+         - Have change_page_attr() take function pointers to manipulate ptes
+         - Clarify change_page_attr()'s comment
+         - Radix: Add ptesync after set_pte_at()
+  powerpc/kprobes: Mark newly allocated probes as ROX
+    v11: Neaten up
+  powerpc: Set ARCH_HAS_STRICT_MODULE_RWX
+    v11: Neaten up
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Anatolij Gustschin <agust@denx.de>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/platforms/52xx/mpc52xx_pci.c |   22 ++++++--------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+Some patches were dropped from this revision:
+  powerpc/mm/ptdump: debugfs handler for W+X checks at runtime
+    - Will use Christophe's generic ptdump series
+  powerpc/configs: Enable STRICT_MODULE_RWX in skiroot_defconfig
+    - Will enable STRICT_MODULE_RWX by default later
 
---- linux-next-20210427.orig/arch/powerpc/platforms/52xx/mpc52xx_pci.c
-+++ linux-next-20210427/arch/powerpc/platforms/52xx/mpc52xx_pci.c
-@@ -242,7 +242,7 @@ mpc52xx_pci_setup(struct pci_controller
- 	u32 tmp;
- 	int iwcr0 = 0, iwcr1 = 0, iwcr2 = 0;
- 
--	pr_debug("mpc52xx_pci_setup(hose=%p, pci_regs=%p)\n", hose, pci_regs);
-+	pr_debug("%s(hose=%p, pci_regs=%p)\n", __func__, hose, pci_regs);
- 
- 	/* pci_process_bridge_OF_ranges() found all our addresses for us;
- 	 * now store them in the right places */
-@@ -257,11 +257,7 @@ mpc52xx_pci_setup(struct pci_controller
- 	/* Memory windows */
- 	res = &hose->mem_resources[0];
- 	if (res->flags) {
--		pr_debug("mem_resource[0] = "
--		         "{.start=%llx, .end=%llx, .flags=%llx}\n",
--		         (unsigned long long)res->start,
--			 (unsigned long long)res->end,
--			 (unsigned long long)res->flags);
-+		pr_debug("mem_resource[0] = %pr\n", res);
- 		out_be32(&pci_regs->iw0btar,
- 		         MPC52xx_PCI_IWBTAR_TRANSLATION(res->start, res->start,
- 							resource_size(res)));
-@@ -274,8 +270,7 @@ mpc52xx_pci_setup(struct pci_controller
- 
- 	res = &hose->mem_resources[1];
- 	if (res->flags) {
--		pr_debug("mem_resource[1] = {.start=%x, .end=%x, .flags=%lx}\n",
--		         res->start, res->end, res->flags);
-+		pr_debug("mem_resource[1] = %pr\n", res);
- 		out_be32(&pci_regs->iw1btar,
- 		         MPC52xx_PCI_IWBTAR_TRANSLATION(res->start, res->start,
- 							resource_size(res)));
-@@ -292,11 +287,8 @@ mpc52xx_pci_setup(struct pci_controller
- 		printk(KERN_ERR "%s: Didn't find IO resources\n", __FILE__);
- 		return;
- 	}
--	pr_debug(".io_resource={.start=%llx,.end=%llx,.flags=%llx} "
--	         ".io_base_phys=0x%p\n",
--	         (unsigned long long)res->start,
--		 (unsigned long long)res->end,
--		 (unsigned long long)res->flags, (void*)hose->io_base_phys);
-+	pr_debug(".io_resource = %pr .io_base_phys=0x%pa\n",
-+			res, &hose->io_base_phys);
- 	out_be32(&pci_regs->iw2btar,
- 	         MPC52xx_PCI_IWBTAR_TRANSLATION(hose->io_base_phys,
- 	                                        res->start,
-@@ -336,8 +328,8 @@ mpc52xx_pci_fixup_resources(struct pci_d
- {
- 	int i;
- 
--	pr_debug("mpc52xx_pci_fixup_resources() %.4x:%.4x\n",
--	         dev->vendor, dev->device);
-+	pr_debug("%s() %.4x:%.4x\n",
-+	         __func__, dev->vendor, dev->device);
- 
- 	/* We don't rely on boot loader for PCI and resets all
- 	   devices */
+
+ arch/powerpc/Kconfig                  |   2 +
+ arch/powerpc/include/asm/pgtable.h    |  11 ++
+ arch/powerpc/include/asm/set_memory.h |  12 +++
+ arch/powerpc/kernel/kprobes.c         |  11 ++
+ arch/powerpc/kernel/module.c          |  14 +--
+ arch/powerpc/lib/code-patching.c      |  12 +--
+ arch/powerpc/mm/Makefile              |   2 +-
+ arch/powerpc/mm/kasan/kasan_init_32.c |  10 +-
+ arch/powerpc/mm/pageattr.c            | 138 ++++++++++++++++++++++++++
+ arch/powerpc/mm/pgtable_32.c          |  60 ++---------
+ arch/powerpc/mm/ptdump/ptdump.c       |   4 +-
+ arch/powerpc/net/bpf_jit_comp.c       |  13 +--
+ 12 files changed, 204 insertions(+), 85 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/set_memory.h
+ create mode 100644 arch/powerpc/mm/pageattr.c
+
+-- 
+2.25.1
+
