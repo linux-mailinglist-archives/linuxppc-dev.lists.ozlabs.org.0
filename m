@@ -1,49 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A6936E614
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 09:34:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8448D36E607
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 09:32:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FW6hL6dnLz3dX7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 17:34:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FW6dg33yPz3bvs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 17:32:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bluescreens.de (client-ip=91.198.250.236;
- helo=mout-y-111.mailbox.org; envelope-from=cmr@bluescreens.de;
+ smtp.mailfrom=bluescreens.de (client-ip=2001:67c:2050:1::465:209;
+ helo=mout-y-209.mailbox.org; envelope-from=cmr@bluescreens.de;
  receiver=<UNKNOWN>)
-Received: from mout-y-111.mailbox.org (mout-y-111.mailbox.org [91.198.250.236])
+X-Greylist: delayed 574 seconds by postgrey-1.36 at boromir;
+ Thu, 29 Apr 2021 17:31:10 AEST
+Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org
+ [IPv6:2001:67c:2050:1::465:209])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FW6ch479gz3046
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 17:31:16 +1000 (AEST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org
- [IPv6:2001:67c:2050:105:465:1:2:0])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FW6cZ4gp5z2yjc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 17:31:09 +1000 (AEST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mout-y-111.mailbox.org (Postfix) with ESMTPS id 4FW6PQ2cNrzQjn5;
- Thu, 29 Apr 2021 09:21:30 +0200 (CEST)
+ by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4FW6PS25tRzQjnf;
+ Thu, 29 Apr 2021 09:21:32 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp2.mailbox.org ([80.241.60.241])
  by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de
  [80.241.56.115]) (amavisd-new, port 10030)
- with ESMTP id vXW0DGaQY74F; Thu, 29 Apr 2021 09:21:27 +0200 (CEST)
+ with ESMTP id NN2a4URMhZGs; Thu, 29 Apr 2021 09:21:29 +0200 (CEST)
 From: "Christopher M. Riedl" <cmr@bluescreens.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 03/11] x86_64: Add LKDTM accessor for patching addr
-Date: Thu, 29 Apr 2021 02:20:49 -0500
-Message-Id: <20210429072057.8870-4-cmr@bluescreens.de>
+Subject: [PATCH v4 04/11] lkdtm/x86_64: Add test to hijack a patch mapping
+Date: Thu, 29 Apr 2021 02:20:50 -0500
+Message-Id: <20210429072057.8870-5-cmr@bluescreens.de>
 In-Reply-To: <20210429072057.8870-1-cmr@bluescreens.de>
 References: <20210429072057.8870-1-cmr@bluescreens.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-SPAM-Probability: **
-X-Rspamd-Score: 1.59 / 15.00 / 15.00
-X-Rspamd-Queue-Id: 6FA3117F3
-X-Rspamd-UID: cf277a
+X-MBO-SPAM-Probability: *
+X-Rspamd-Score: 1.26 / 15.00 / 15.00
+X-Rspamd-Queue-Id: 519EF17E8
+X-Rspamd-UID: c86d02
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,49 +63,91 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When live patching with STRICT_KERNEL_RWX a mapping is installed at a
-"patching address" with temporary write permissions. Provide a
-LKDTM-only accessor function for this address in preparation for a LKDTM
-test which attempts to "hijack" this mapping by writing to it from
-another CPU.
+A previous commit implemented an LKDTM test on powerpc to exploit the
+temporary mapping established when patching code with STRICT_KERNEL_RWX
+enabled. Extend the test to work on x86_64 as well.
 
 Signed-off-by: Christopher M. Riedl <cmr@bluescreens.de>
 ---
- arch/x86/include/asm/text-patching.h | 4 ++++
- arch/x86/kernel/alternative.c        | 7 +++++++
- 2 files changed, 11 insertions(+)
+ drivers/misc/lkdtm/perms.c | 29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
-index b7421780e4e92..f0caf9ee13bd8 100644
---- a/arch/x86/include/asm/text-patching.h
-+++ b/arch/x86/include/asm/text-patching.h
-@@ -167,4 +167,8 @@ void int3_emulate_ret(struct pt_regs *regs)
+diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+index c6f96ebffccfd..55c3bec6d3b72 100644
+--- a/drivers/misc/lkdtm/perms.c
++++ b/drivers/misc/lkdtm/perms.c
+@@ -224,7 +224,7 @@ void lkdtm_ACCESS_NULL(void)
  }
- #endif /* !CONFIG_UML_X86 */
  
-+#if IS_BUILTIN(CONFIG_LKDTM)
-+unsigned long read_cpu_patching_addr(unsigned int cpu);
+ #if (IS_BUILTIN(CONFIG_LKDTM) && defined(CONFIG_STRICT_KERNEL_RWX) && \
+-	defined(CONFIG_PPC))
++	(defined(CONFIG_PPC) || defined(CONFIG_X86_64)))
+ /*
+  * This is just a dummy location to patch-over.
+  */
+@@ -233,28 +233,51 @@ static void patching_target(void)
+ 	return;
+ }
+ 
++#ifdef CONFIG_PPC
+ #include <asm/code-patching.h>
+ struct ppc_inst * const patch_site = (struct ppc_inst *)&patching_target;
 +#endif
 +
- #endif /* _ASM_X86_TEXT_PATCHING_H */
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 8d778e46725d2..4c95fdd9b1965 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -852,6 +852,13 @@ static inline void unuse_temporary_mm(temp_mm_state_t prev_state)
- __ro_after_init struct mm_struct *poking_mm;
- __ro_after_init unsigned long poking_addr;
- 
-+#if IS_BUILTIN(CONFIG_LKDTM)
-+unsigned long read_cpu_patching_addr(unsigned int cpu)
-+{
-+	return poking_addr;
-+}
++#ifdef CONFIG_X86_64
++#include <asm/text-patching.h>
++u32 * const patch_site = (u32 *)&patching_target;
 +#endif
-+
- static void *__text_poke(void *addr, const void *opcode, size_t len)
+ 
+ static inline int lkdtm_do_patch(u32 data)
  {
- 	bool cross_page_boundary = offset_in_page(addr) + len > PAGE_SIZE;
++#ifdef CONFIG_PPC
+ 	return patch_instruction(patch_site, ppc_inst(data));
++#endif
++#ifdef CONFIG_X86_64
++	text_poke(patch_site, &data, sizeof(u32));
++	return 0;
++#endif
+ }
+ 
+ static inline u32 lkdtm_read_patch_site(void)
+ {
++#ifdef CONFIG_PPC
+ 	struct ppc_inst inst = READ_ONCE(*patch_site);
+ 	return ppc_inst_val(ppc_inst_read(&inst));
++#endif
++#ifdef CONFIG_X86_64
++	return READ_ONCE(*patch_site);
++#endif
+ }
+ 
+ /* Returns True if the write succeeds */
+ static inline bool lkdtm_try_write(u32 data, u32 *addr)
+ {
++#ifdef CONFIG_PPC
+ 	__put_kernel_nofault(addr, &data, u32, err);
+ 	return true;
+ 
+ err:
+ 	return false;
++#endif
++#ifdef CONFIG_X86_64
++	return !__put_user(data, addr);
++#endif
+ }
+ 
+ static int lkdtm_patching_cpu(void *data)
+@@ -347,8 +370,8 @@ void lkdtm_HIJACK_PATCH(void)
+ 
+ void lkdtm_HIJACK_PATCH(void)
+ {
+-	if (!IS_ENABLED(CONFIG_PPC))
+-		pr_err("XFAIL: this test only runs on powerpc\n");
++	if (!IS_ENABLED(CONFIG_PPC) && !IS_ENABLED(CONFIG_X86_64))
++		pr_err("XFAIL: this test only runs on powerpc and x86_64\n");
+ 	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
+ 		pr_err("XFAIL: this test requires CONFIG_STRICT_KERNEL_RWX\n");
+ 	if (!IS_BUILTIN(CONFIG_LKDTM))
 -- 
 2.26.1
 
