@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3FF36EBF1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 16:05:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A6736EBEA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 16:04:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FWHMg0WCQz3btx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 00:05:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FWHLv5NlHz3dZw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 00:04:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,21 +16,20 @@ Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FWHJ90QYWz30KH
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 00:02:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FWHJ61MRLz30FK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 00:02:30 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FWHJ70nrLz9t1D; Fri, 30 Apr 2021 00:02:30 +1000 (AEST)
+ id 4FWHJ36Hwsz9t1r; Fri, 30 Apr 2021 00:02:27 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>,
+To: Colin King <colin.king@canonical.com>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Leonardo Bras <leobras.c@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Niklas Schnelle <schnelle@linux.ibm.com>, Paul Mackerras <paulus@samba.org>
-In-Reply-To: <20210318174414.684630-1-leobras.c@gmail.com>
-References: <20210318174414.684630-1-leobras.c@gmail.com>
-Subject: Re: [PATCH 1/1] powerpc/kernel/iommu: Align size for
- IOMMU_PAGE_SIZE() to save TCEs
-Message-Id: <161970488591.4033873.12136899463811308450.b4-ty@ellerman.id.au>
+ linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, Paul Mackerras <paulus@samba.org>
+In-Reply-To: <20201216113608.11812-1-colin.king@canonical.com>
+References: <20201216113608.11812-1-colin.king@canonical.com>
+Subject: Re: [PATCH] powerpc/44x: fix spelling mistake in Kconfig "varients"
+ -> "variants"
+Message-Id: <161970488570.4033873.12486603627255933756.b4-ty@ellerman.id.au>
 Date: Fri, 30 Apr 2021 00:01:25 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -46,24 +45,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 18 Mar 2021 14:44:14 -0300, Leonardo Bras wrote:
-> Currently both iommu_alloc_coherent() and iommu_free_coherent() align the
-> desired allocation size to PAGE_SIZE, and gets system pages and IOMMU
-> mappings (TCEs) for that value.
-> 
-> When IOMMU_PAGE_SIZE < PAGE_SIZE, this behavior may cause unnecessary
-> TCEs to be created for mapping the whole system page.
-> 
-> [...]
+On Wed, 16 Dec 2020 11:36:08 +0000, Colin King wrote:
+> There is a spelling mistake in the Kconfig help text. Fix it.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/kernel/iommu: Align size for IOMMU_PAGE_SIZE() to save TCEs
-      https://git.kernel.org/powerpc/c/3c0468d4451eb6b4f6604370639f163f9637a479
+[1/1] powerpc/44x: fix spelling mistake in Kconfig "varients" -> "variants"
+      https://git.kernel.org/powerpc/c/ee6b25fa7c037e42cc5f3b5c024b2a779edab6dd
 
 cheers
