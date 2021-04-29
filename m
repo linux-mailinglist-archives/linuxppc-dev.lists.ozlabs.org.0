@@ -1,95 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D240836E996
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 13:31:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D57A36E99D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 13:32:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FWCxl6GJ9z300x
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 21:31:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FWCz56TQrz30HP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 21:32:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HeUEocEn;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W+TIVEw1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=HeUEocEn; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=W+TIVEw1; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FWCxJ4CP9z2xZG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 21:30:59 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13TB5ms0087623; Thu, 29 Apr 2021 07:30:52 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FWCyg1xshz2xfY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 21:32:10 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13TB4Gcv182189; Thu, 29 Apr 2021 07:32:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=YmJXi57H4EYKKd0lNxc2ASrsFxYwFFpdZqwcakff7w8=;
- b=HeUEocEnhvDB8SjpvEusnLjDjFTaYC69ZHsIuukCVBfovTO0/h4oOVKYv30rLSlJJtAn
- w3JXN7u4sFsXfIxeZrQyEC3ZdixdCvdYAMuP0nB/aYOhwENqJ6iFQENTSn1Jw5MgY/7y
- RrtuWnjINkNRBN+WjpdMPj7FaqWzsvZnshV4Ldo+k4P5TBCCrqfWzELzJP8r5fCT1F6S
- uKXegYQ7HML8xrf4uqKgjN1htCUd4mbX59AlPbSc5C7tY4bU9yrue67h+upPn9XG82d2
- GBI3Z96GiZTAKqiK/dU3DoBZlBq1zagc83BsedPsC9kYTdy4GZ1F5l1qwtfsEN5XWJGv BA== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 387te0ty4f-1
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=UWvtbK8dcp1l3VZpp6JuyPfV2zCIrVCruA0h5n2duuA=;
+ b=W+TIVEw1R2OIszzlYR+Ptq1rSfRffbXH1l1C8oessfKHTW5rr6r7JweN+Bua+dsNXPvX
+ /DmALLco25tMrMnHwjdhK0eCn5TEPVz2ouxitfH50/sFM+Y80d0nZdOlEEVSgQIthkzN
+ T4L6I5BXFTZVz0kNFT8F1qAlfyW6ocTJycYG66IUusYtFG+sdVALfOvPq5xz+U97IwHy
+ T1/XTDGzMQCEzR+Z7FnIZ4Snnky78Y169eLagcOPBZCpSVcySg8xwV9vcj+zvqbfNKRW
+ iywEEj9QhqGP9pTHWQ/ClfSI+VGR1a6G2Vzr8hp+JNtggvM2N2yx2kqMcZPmKKQt23MN Dg== 
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 387tkmaq87-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Apr 2021 07:30:52 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13TBRTn7032338;
- Thu, 29 Apr 2021 11:30:51 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma01dal.us.ibm.com with ESMTP id 384ay9mv07-1
+ Thu, 29 Apr 2021 07:32:04 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13TBRs2w020501;
+ Thu, 29 Apr 2021 11:32:03 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma05fra.de.ibm.com with ESMTP id 384gjxs9xa-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Apr 2021 11:30:51 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13TBUoHw40042774
+ Thu, 29 Apr 2021 11:32:02 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13TBVx3B54001964
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Apr 2021 11:30:50 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DF7D6B24B3;
- Thu, 29 Apr 2021 11:30:49 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8DCC2B3860;
- Thu, 29 Apr 2021 11:10:44 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.199.46.50])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 29 Apr 2021 11:10:44 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 6AF4F2E2E70; Thu, 29 Apr 2021 16:40:40 +0530 (IST)
-Date: Thu, 29 Apr 2021 16:40:40 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2] cpuidle/pseries: Fixup CEDE0 latency only for POWER10
- onwards
-Message-ID: <20210429111040.GA13183@in.ibm.com>
-References: <1619673517-10853-1-git-send-email-ego@linux.vnet.ibm.com>
- <87r1it9zxy.fsf@mpe.ellerman.id.au>
+ Thu, 29 Apr 2021 11:31:59 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 231CD5208D;
+ Thu, 29 Apr 2021 11:31:59 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.30.132])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id D0BD852091;
+ Thu, 29 Apr 2021 11:31:58 +0000 (GMT)
+Subject: Re: [PATCH v3] pseries/drmem: update LMBs after LPM
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org
+References: <20210428094758.28665-1-ldufour@linux.ibm.com>
+ <87fsz95qso.fsf@linux.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <e3fcd8b6-6d43-85ed-7036-42430aad4979@linux.ibm.com>
+Date: Thu, 29 Apr 2021 13:31:58 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87r1it9zxy.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <87fsz95qso.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: A1lc2brbgi1tTgwdTq79jIjV8xI7WPdQ
-X-Proofpoint-ORIG-GUID: A1lc2brbgi1tTgwdTq79jIjV8xI7WPdQ
+X-Proofpoint-ORIG-GUID: GBrDq5Ha8ZcjzGgs3wfu21e5lzsZ6u6t
+X-Proofpoint-GUID: GBrDq5Ha8ZcjzGgs3wfu21e5lzsZ6u6t
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-04-29_06:2021-04-28,
  2021-04-29 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0
- lowpriorityscore=0 impostorscore=0 malwarescore=0 mlxlogscore=999
- bulkscore=0 phishscore=0 clxscore=1015 suspectscore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015
+ mlxlogscore=999 spamscore=0 adultscore=0 malwarescore=0 mlxscore=0
+ bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104060000 definitions=main-2104290075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -102,118 +101,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Michal Suchanek <msuchanek@suse.de>, linux-pm@vger.kernel.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, joedecke@de.ibm.com,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, Tyrel Datwyler <tyreld@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Michael,
-
-On Thu, Apr 29, 2021 at 07:56:25PM +1000, Michael Ellerman wrote:
-> "Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
-> > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-> >
-> > Commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
-> > CEDE(0)") sets the exit latency of CEDE(0) based on the latency values
-> > of the Extended CEDE states advertised by the platform
-> >
-> > On POWER9 LPARs, the firmwares advertise a very low value of 2us for
-> > CEDE1 exit latency on a Dedicated LPAR. The latency advertized by the
-> > PHYP hypervisor corresponds to the latency required to wakeup from the
-> > underlying hardware idle state. However the wakeup latency from the
-> > LPAR perspective should include
-> >
-> > 1. The time taken to transition the CPU from the Hypervisor into the
-> >    LPAR post wakeup from platform idle state
-> >
-> > 2. Time taken to send the IPI from the source CPU (waker) to the idle
-> >    target CPU (wakee).
-> >
-> > 1. can be measured via timer idle test, where we queue a timer, say
-> > for 1ms, and enter the CEDE state. When the timer fires, in the timer
-> > handler we compute how much extra timer over the expected 1ms have we
-> > consumed. On a a POWER9 LPAR the numbers are
-> >
-> > CEDE latency measured using a timer (numbers in ns)
-> > N       Min      Median   Avg       90%ile  99%ile    Max    Stddev
-> > 400     2601     5677     5668.74    5917    6413     9299   455.01
-> >
-> > 1. and 2. combined can be determined by an IPI latency test where we
-> > send an IPI to an idle CPU and in the handler compute the time
-> > difference between when the IPI was sent and when the handler ran. We
-> > see the following numbers on POWER9 LPAR.
-> >
-> > CEDE latency measured using an IPI (numbers in ns)
-> > N       Min      Median   Avg       90%ile  99%ile    Max    Stddev
-> > 400     711      7564     7369.43   8559    9514      9698   1200.01
-> >
-> > Suppose, we consider the 99th percentile latency value measured using
-> > the IPI to be the wakeup latency, the value would be 9.5us This is in
-> > the ballpark of the default value of 10us.
-> >
-> > Hence, use the exit latency of CEDE(0) based on the latency values
-> > advertized by platform only from POWER10 onwards. The values
->                                            ^^^^^^^
-> > advertized on POWER10 platforms is more realistic and informed by the
-> > latency measurements. For earlier platforms stick to the default value
-> > of 10us.
+Le 29/04/2021 à 12:27, Aneesh Kumar K.V a écrit :
+> Laurent Dufour <ldufour@linux.ibm.com> writes:
 > 
-> ...
+>> After a LPM, the device tree node ibm,dynamic-reconfiguration-memory may be
+>> updated by the hypervisor in the case the NUMA topology of the LPAR's
+>> memory is updated.
+>>
+>> This is caught by the kernel, but the memory's node is updated because
+>> there is no way to move a memory block between nodes.
+>>
+>> If later a memory block is added or removed, drmem_update_dt() is called
+>> and it is overwriting the DT node to match the added or removed LMB. But
+>> the LMB's associativity node has not been updated after the DT node update
+>> and thus the node is overwritten by the Linux's topology instead of the
+>> hypervisor one.
+>>
+>> Introduce a hook called when the ibm,dynamic-reconfiguration-memory node is
+>> updated to force an update of the LMB's associativity.
+>>
+>> Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
+>> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+>> ---
+>>
+>> V3:
+>>   - Check rd->dn->name instead of rd->dn->full_name
+>> V2:
+>>   - Take Tyrel's idea to rely on OF_RECONFIG_UPDATE_PROPERTY instead of
+>>   introducing a new hook mechanism.
+>> ---
+>>   arch/powerpc/include/asm/drmem.h              |  1 +
+>>   arch/powerpc/mm/drmem.c                       | 35 +++++++++++++++++++
+>>   .../platforms/pseries/hotplug-memory.c        |  4 +++
+>>   3 files changed, 40 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+>> index bf2402fed3e0..4265d5e95c2c 100644
+>> --- a/arch/powerpc/include/asm/drmem.h
+>> +++ b/arch/powerpc/include/asm/drmem.h
+>> @@ -111,6 +111,7 @@ int drmem_update_dt(void);
+>>   int __init
+>>   walk_drmem_lmbs_early(unsigned long node, void *data,
+>>   		      int (*func)(struct drmem_lmb *, const __be32 **, void *));
+>> +void drmem_update_lmbs(struct property *prop);
+>>   #endif
+>>   
+>>   static inline void invalidate_lmb_associativity_index(struct drmem_lmb *lmb)
+>> diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
+>> index 9af3832c9d8d..f0a6633132af 100644
+>> --- a/arch/powerpc/mm/drmem.c
+>> +++ b/arch/powerpc/mm/drmem.c
+>> @@ -307,6 +307,41 @@ int __init walk_drmem_lmbs_early(unsigned long node, void *data,
+>>   	return ret;
+>>   }
+>>   
+>> +/*
+>> + * Update the LMB associativity index.
+>> + */
+>> +static int update_lmb(struct drmem_lmb *updated_lmb,
+>> +		      __maybe_unused const __be32 **usm,
+>> +		      __maybe_unused void *data)
+>> +{
+>> +	struct drmem_lmb *lmb;
+>> +
+>> +	/*
+>> +	 * Brut force there may be better way to fetch the LMB
+>> +	 */
+>> +	for_each_drmem_lmb(lmb) {
+>> +		if (lmb->drc_index != updated_lmb->drc_index)
+>> +			continue;
+>> +
+>> +		lmb->aa_index = updated_lmb->aa_index;
+>> +		break;
+>> +	}
+>> +	return 0;
+>> +}
+>> +
+>> +/*
+>> + * Update the LMB associativity index.
+>> + *
+>> + * This needs to be called when the hypervisor is updating the
+>> + * dynamic-reconfiguration-memory node property.
+>> + */
+>> +void drmem_update_lmbs(struct property *prop)
+>> +{
+>> +	if (!strcmp(prop->name, "ibm,dynamic-memory"))
+>> +		__walk_drmem_v1_lmbs(prop->value, NULL, NULL, update_lmb);
+>> +	else if (!strcmp(prop->name, "ibm,dynamic-memory-v2"))
+>> +		__walk_drmem_v2_lmbs(prop->value, NULL, NULL, update_lmb);
+>> +}
+>>   #endif
+>>   
+>>   static int init_drmem_lmb_size(struct device_node *dn)
+>> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+>> index 8377f1f7c78e..672ffbee2e78 100644
+>> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+>> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+>> @@ -949,6 +949,10 @@ static int pseries_memory_notifier(struct notifier_block *nb,
+>>   	case OF_RECONFIG_DETACH_NODE:
+>>   		err = pseries_remove_mem_node(rd->dn);
+>>   		break;
+>> +	case OF_RECONFIG_UPDATE_PROPERTY:
+>> +		if (!strcmp(rd->dn->name,
+>> +			    "ibm,dynamic-reconfiguration-memory"))
+>> +			drmem_update_lmbs(rd->prop);
+>>   	}
+>>   	return notifier_from_errno(err);
 > 
-> > diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
-> > index a2b5c6f..7207467 100644
-> > --- a/drivers/cpuidle/cpuidle-pseries.c
-> > +++ b/drivers/cpuidle/cpuidle-pseries.c
-> > @@ -419,7 +419,8 @@ static int pseries_idle_probe(void)
-> >  			cpuidle_state_table = shared_states;
-> >  			max_idle_state = ARRAY_SIZE(shared_states);
-> >  		} else {
-> > -			fixup_cede0_latency();
-> > +			if (pvr_version_is(PVR_POWER10))
-> > +				fixup_cede0_latency();
-> 
-> A PVR check like that tests for *only* Power10, not Power10 and onwards
-> as you say in the change log.
+> How will this interact with DLPAR memory? When we dlpar memory,
+> ibm,configure-connector is used to fetch the new associativity details
+> and set drmem_lmb->aa_index correctly there. Once that is done kernel
+> then call drmem_update_dt() which will result in the above notifier
+> callback?
 
-Right. The accurate thing would be to check not do the fix up for
+When a memory DLPAR operation is done, the in memory DT property 
+"ibm,dynamic-memory" or "ibm,dynamic-memory-v2" (if existing) have to be updated 
+to reflect the added/removed memory part. This is done by calling drmem_update_dt().
 
+This patch is addressing the case where the hypervisor has updated the DT 
+property mentioned above. In that case, the LMB tree should be updated so the 
+aa_index fields are matching the DT one. This way the next time a memory DLPAR 
+operation is done the DT properties "ibm,dynamic-memory" or 
+"ibm,dynamic-memory-v2" will be rebuilt correctly.
 
-!(PVR_POWER4 || PVR_POWER4p || POWER_POWER5 || PVR_POWER5p  || PVR_POWER6  || PVR_POWER7
-	     || PVR_POWER8  || PVR_POWER9)
+> IIUC, the call back then will update drmem_lmb->aa_index again?
 
-But that was a bit mouthful. I will go with your suggestion (from
-private correspondence)
+drmem_update_dt() is not updating drmem_lmb->aa_index, that's the oppposite, it 
+is rebuilding the in memory DT property "ibm,dynamic-memory" or 
+"ibm,dynamic-memory-v2" based on the data stored in the LMB tree.
 
-if (cpu_has_feature(CPU_FTR_ARCH_31) || pvr_version_is(PVR_POWER10))
-	fixup_cede0_latency(); 
-
-since it will allow the fixup for Processors suporting ISA 3.1
-(POWER10 and above) and also on POWER10 CPUs running in compat mode.
-
-
-> 
-> The other question is what should happen on a Power10 LPAR that's
-> running in Power9 compat mode. I assume in that case we *do* want to use
-> the firmware provided values, because they're tied to the underlying
-> CPU, not the compat mode?
->
-
-Yes, the firmware provided values are tied to the underlying CPU. Not
-the compat mode.
-
-
-> In which case a check for !PVR_POWER9 would seem to achieve what we
-> want?
-> 
-> cheers
-
---
-Thanks and Regards
-gautham.
+Laurent.
