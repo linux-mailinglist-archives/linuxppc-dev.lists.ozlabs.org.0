@@ -1,49 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571A636E692
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 10:08:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAFC36E841
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 11:56:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FW7R22b8wz30C1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 18:07:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FW9rm70JNz30Ds
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 19:56:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mymJPklf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Fv7Y9NWG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=mymJPklf; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Fv7Y9NWG; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FW7Qc06rwz2xgP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 18:07:36 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 08B9E61446;
- Thu, 29 Apr 2021 08:07:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1619683652;
- bh=2DlbYxunUevwnqh+Ong8MaEHb0LiPaIl1Ok8WmzGuC0=;
- h=From:To:Cc:Subject:Date:From;
- b=mymJPklfL0ZdniTD3N+MWED8nyjPviqzLYjhTAO9CwOtOlMAc5Yikt0vbNuMpsMcq
- JJcLc8HGlhvjlKM94tLwKjShqHZQ+6JgLliD1lz+WxxHaDN1V0m1FTVk0IeMQDJn/O
- f2t0RwiL5h+1KtZy5SB8QFo3zjbTv/SgBa28WbpwaC+drlFM6tXiC5vXASU3qu996F
- VrLQk6nuZMtZMvU95X3Pp3ZqofFnubP+rS1eKkUeqkD8/6iuaCAt+wuohcmb0uk+UA
- plLQVK9tGKsIcd4rtNkQxruxahYKNzyKeGNZI7MmIl7hoWRvduXtaYGv91cmaBf/IW
- rmtY1ZJj8MZAQ==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: mark local variables around longjmp as volatile
-Date: Thu, 29 Apr 2021 10:06:38 +0200
-Message-Id: <20210429080708.1520360-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FW9rM2Qkjz2xfT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 19:56:34 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FW9rB5yF0z9sXM;
+ Thu, 29 Apr 2021 19:56:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1619690188;
+ bh=6PPQKIc7lD5HrR4bsQtHG16u/E9ccQvQAEcyj1Ns58Q=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Fv7Y9NWGEezzDYtM0nzzds6GD8Lh9f6ttsNHfLyJ2LXuYcS6CU8LCALX7oQT415jC
+ sdq0teQrSuPDfEl1r1+N5y1bHBMzwhDQgXNYvDQddh+OPoPaq61/hIz2LNg0rOEjk0
+ gHUFQNiEqBA3Zl+YXTAdY6lMnmH16DlusPvHq0iS4otS+9+QABzfqgyEvQdoEgBlXK
+ IvIFXecw3o1WPxl+/2t+QCGQVb1ifi1oTruuyTM0KU3pir2e95oJ6RKE3+ROn6fCVG
+ 5QcDBMRIwJ3POG4yuZmvwiEmm19Fk8omu8oB8BKhLl9veQ9R6L3JvRYfaSlzBoER0p
+ PVXzWlFD6zypQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, "Rafael J. Wysocki"
+ <rjw@rjwysocki.net>, Daniel Lezcano <daniel.lezcano@linaro.org>, "Aneesh
+ Kumar K.V" <aneesh.kumar@linux.ibm.com>, Vaidyanathan Srinivasan
+ <svaidy@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2] cpuidle/pseries: Fixup CEDE0 latency only for
+ POWER10 onwards
+In-Reply-To: <1619673517-10853-1-git-send-email-ego@linux.vnet.ibm.com>
+References: <1619673517-10853-1-git-send-email-ego@linux.vnet.ibm.com>
+Date: Thu, 29 Apr 2021 19:56:25 +1000
+Message-ID: <87r1it9zxy.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,155 +65,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linux-pm@vger.kernel.org,
+ joedecke@de.ibm.com, Michal Suchanek <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+"Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
+> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+>
+> Commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
+> CEDE(0)") sets the exit latency of CEDE(0) based on the latency values
+> of the Extended CEDE states advertised by the platform
+>
+> On POWER9 LPARs, the firmwares advertise a very low value of 2us for
+> CEDE1 exit latency on a Dedicated LPAR. The latency advertized by the
+> PHYP hypervisor corresponds to the latency required to wakeup from the
+> underlying hardware idle state. However the wakeup latency from the
+> LPAR perspective should include
+>
+> 1. The time taken to transition the CPU from the Hypervisor into the
+>    LPAR post wakeup from platform idle state
+>
+> 2. Time taken to send the IPI from the source CPU (waker) to the idle
+>    target CPU (wakee).
+>
+> 1. can be measured via timer idle test, where we queue a timer, say
+> for 1ms, and enter the CEDE state. When the timer fires, in the timer
+> handler we compute how much extra timer over the expected 1ms have we
+> consumed. On a a POWER9 LPAR the numbers are
+>
+> CEDE latency measured using a timer (numbers in ns)
+> N       Min      Median   Avg       90%ile  99%ile    Max    Stddev
+> 400     2601     5677     5668.74    5917    6413     9299   455.01
+>
+> 1. and 2. combined can be determined by an IPI latency test where we
+> send an IPI to an idle CPU and in the handler compute the time
+> difference between when the IPI was sent and when the handler ran. We
+> see the following numbers on POWER9 LPAR.
+>
+> CEDE latency measured using an IPI (numbers in ns)
+> N       Min      Median   Avg       90%ile  99%ile    Max    Stddev
+> 400     711      7564     7369.43   8559    9514      9698   1200.01
+>
+> Suppose, we consider the 99th percentile latency value measured using
+> the IPI to be the wakeup latency, the value would be 9.5us This is in
+> the ballpark of the default value of 10us.
+>
+> Hence, use the exit latency of CEDE(0) based on the latency values
+> advertized by platform only from POWER10 onwards. The values
+                                           ^^^^^^^
+> advertized on POWER10 platforms is more realistic and informed by the
+> latency measurements. For earlier platforms stick to the default value
+> of 10us.
 
-gcc-11 points out that modifying local variables next to a
-longjmp/setjmp may cause undefined behavior:
+...
 
-arch/powerpc/kexec/crash.c: In function 'crash_kexec_prepare_cpus.constprop':
-arch/powerpc/kexec/crash.c:108:22: error: variable 'ncpus' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbere
-d]
-arch/powerpc/kexec/crash.c:109:13: error: variable 'tries' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbere
-d]
-arch/powerpc/xmon/xmon.c: In function 'xmon_print_symbol':
-arch/powerpc/xmon/xmon.c:3625:21: error: variable 'name' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
-arch/powerpc/xmon/xmon.c: In function 'stop_spus':
-arch/powerpc/xmon/xmon.c:4057:13: error: variable 'i' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
-arch/powerpc/xmon/xmon.c: In function 'restart_spus':
-arch/powerpc/xmon/xmon.c:4098:13: error: variable 'i' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
-arch/powerpc/xmon/xmon.c: In function 'dump_opal_msglog':
-arch/powerpc/xmon/xmon.c:3008:16: error: variable 'pos' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
-arch/powerpc/xmon/xmon.c: In function 'show_pte':
-arch/powerpc/xmon/xmon.c:3207:29: error: variable 'tsk' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
-arch/powerpc/xmon/xmon.c: In function 'show_tasks':
-arch/powerpc/xmon/xmon.c:3302:29: error: variable 'tsk' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
-arch/powerpc/xmon/xmon.c: In function 'xmon_core':
-arch/powerpc/xmon/xmon.c:494:13: error: variable 'cmd' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
-arch/powerpc/xmon/xmon.c:860:21: error: variable 'bp' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
-arch/powerpc/xmon/xmon.c:860:21: error: variable 'bp' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
-arch/powerpc/xmon/xmon.c:492:48: error: argument 'fromipi' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
+> diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
+> index a2b5c6f..7207467 100644
+> --- a/drivers/cpuidle/cpuidle-pseries.c
+> +++ b/drivers/cpuidle/cpuidle-pseries.c
+> @@ -419,7 +419,8 @@ static int pseries_idle_probe(void)
+>  			cpuidle_state_table = shared_states;
+>  			max_idle_state = ARRAY_SIZE(shared_states);
+>  		} else {
+> -			fixup_cede0_latency();
+> +			if (pvr_version_is(PVR_POWER10))
+> +				fixup_cede0_latency();
 
-According to the documentation, marking these as 'volatile' is
-sufficient to avoid the problem, and it shuts up the warning.
+A PVR check like that tests for *only* Power10, not Power10 and onwards
+as you say in the change log.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/powerpc/kexec/crash.c |  4 ++--
- arch/powerpc/xmon/xmon.c   | 22 +++++++++++-----------
- 2 files changed, 13 insertions(+), 13 deletions(-)
+The other question is what should happen on a Power10 LPAR that's
+running in Power9 compat mode. I assume in that case we *do* want to use
+the firmware provided values, because they're tied to the underlying
+CPU, not the compat mode?
 
-diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
-index 0196d0c211ac..10f997e6bb95 100644
---- a/arch/powerpc/kexec/crash.c
-+++ b/arch/powerpc/kexec/crash.c
-@@ -105,8 +105,8 @@ void crash_ipi_callback(struct pt_regs *regs)
- static void crash_kexec_prepare_cpus(int cpu)
- {
- 	unsigned int msecs;
--	unsigned int ncpus = num_online_cpus() - 1;/* Excluding the panic cpu */
--	int tries = 0;
-+	volatile unsigned int ncpus = num_online_cpus() - 1;/* Excluding the panic cpu */
-+	volatile int tries = 0;
- 	int (*old_handler)(struct pt_regs *regs);
- 
- 	printk(KERN_EMERG "Sending IPI to other CPUs\n");
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index c8173e92f19d..ce0eacf77645 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -489,10 +489,10 @@ static void xmon_touch_watchdogs(void)
- 	touch_nmi_watchdog();
- }
- 
--static int xmon_core(struct pt_regs *regs, int fromipi)
-+static int xmon_core(struct pt_regs *regs, volatile int fromipi)
- {
--	int cmd = 0;
--	struct bpt *bp;
-+	volatile int cmd = 0;
-+	struct bpt *volatile bp;
- 	long recurse_jmp[JMP_BUF_LEN];
- 	bool locked_down;
- 	unsigned long offset;
-@@ -857,7 +857,7 @@ static inline void force_enable_xmon(void)
- static struct bpt *at_breakpoint(unsigned long pc)
- {
- 	int i;
--	struct bpt *bp;
-+	struct bpt *volatile bp;
- 
- 	bp = bpts;
- 	for (i = 0; i < NBPTS; ++i, ++bp)
-@@ -3005,7 +3005,7 @@ static void dump_opal_msglog(void)
- {
- 	unsigned char buf[128];
- 	ssize_t res;
--	loff_t pos = 0;
-+	volatile loff_t pos = 0;
- 
- 	if (!firmware_has_feature(FW_FEATURE_OPAL)) {
- 		printf("Machine is not running OPAL firmware.\n");
-@@ -3160,7 +3160,7 @@ memzcan(void)
- 		printf("%.8lx\n", a - mskip);
- }
- 
--static void show_task(struct task_struct *tsk)
-+static void show_task(struct task_struct *volatile tsk)
- {
- 	char state;
- 
-@@ -3204,7 +3204,7 @@ static void format_pte(void *ptep, unsigned long pte)
- static void show_pte(unsigned long addr)
- {
- 	unsigned long tskv = 0;
--	struct task_struct *tsk = NULL;
-+	struct task_struct *volatile tsk = NULL;
- 	struct mm_struct *mm;
- 	pgd_t *pgdp;
- 	p4d_t *p4dp;
-@@ -3299,7 +3299,7 @@ static void show_pte(unsigned long addr)
- static void show_tasks(void)
- {
- 	unsigned long tskv;
--	struct task_struct *tsk = NULL;
-+	struct task_struct *volatile tsk = NULL;
- 
- 	printf("     task_struct     ->thread.ksp    ->thread.regs    PID   PPID S  P CMD\n");
- 
-@@ -3622,7 +3622,7 @@ static void xmon_print_symbol(unsigned long address, const char *mid,
- 			      const char *after)
- {
- 	char *modname;
--	const char *name = NULL;
-+	const char *volatile name = NULL;
- 	unsigned long offset, size;
- 
- 	printf(REG, address);
-@@ -4054,7 +4054,7 @@ void xmon_register_spus(struct list_head *list)
- static void stop_spus(void)
- {
- 	struct spu *spu;
--	int i;
-+	volatile int i;
- 	u64 tmp;
- 
- 	for (i = 0; i < XMON_NUM_SPUS; i++) {
-@@ -4095,7 +4095,7 @@ static void stop_spus(void)
- static void restart_spus(void)
- {
- 	struct spu *spu;
--	int i;
-+	volatile int i;
- 
- 	for (i = 0; i < XMON_NUM_SPUS; i++) {
- 		if (!spu_info[i].spu)
--- 
-2.29.2
+In which case a check for !PVR_POWER9 would seem to achieve what we
+want?
 
+cheers
