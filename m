@@ -2,37 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD7C36EBF3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 16:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E78336EBE3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 16:04:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FWHN033nHz3dws
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 00:05:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FWHLF3D7Xz3cns
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 00:04:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FWHJ96720z30Mf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 00:02:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FWHJ26FRLz30Bw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 00:02:26 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FWHJ85c88z9sXL; Fri, 30 Apr 2021 00:02:32 +1000 (AEST)
+ id 4FWHJ14Ptvz9sjD; Fri, 30 Apr 2021 00:02:25 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>,
+To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Leonardo Bras <leobras.c@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Niklas Schnelle <schnelle@linux.ibm.com>, Paul Mackerras <paulus@samba.org>
-In-Reply-To: <20210318174414.684630-2-leobras.c@gmail.com>
-References: <20210318174414.684630-1-leobras.c@gmail.com>
- <20210318174414.684630-2-leobras.c@gmail.com>
-Subject: Re: [PATCH 1/1] powerpc/kernel/iommu: Use largepool as a last resort
- when !largealloc
-Message-Id: <161970488610.4033873.6555670052413265008.b4-ty@ellerman.id.au>
-Date: Fri, 30 Apr 2021 00:01:26 +1000
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Paul Mackerras <paulus@samba.org>
+In-Reply-To: <a29aadc54c93bcbf069a83615fa102ca0f59c3ae.1619185912.git.christophe.leroy@csgroup.eu>
+References: <a29aadc54c93bcbf069a83615fa102ca0f59c3ae.1619185912.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/signal32: Fix erroneous SIGSEGV on RT signal
+ return
+Message-Id: <161970488799.4033873.13546091065982026265.b4-ty@ellerman.id.au>
+Date: Fri, 30 Apr 2021 00:01:27 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,19 +50,16 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 18 Mar 2021 14:44:17 -0300, Leonardo Bras wrote:
-> As of today, doing iommu_range_alloc() only for !largealloc (npages <= 15)
-> will only be able to use 3/4 of the available pages, given pages on
-> largepool  not being available for !largealloc.
+On Fri, 23 Apr 2021 13:52:10 +0000 (UTC), Christophe Leroy wrote:
+> Return of user_read_access_begin() is tested the wrong way,
+> leading to a SIGSEGV when the user address is valid and likely
+> an Oops when the user address is bad.
 > 
-> This could mean some drivers not being able to fully use all the available
-> pages for the DMA window.
-> 
-> [...]
+> Fix the test.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/kernel/iommu: Use largepool as a last resort when !largealloc
-      https://git.kernel.org/powerpc/c/fc5590fd56c9608f317729b59a56dad2a75d633f
+[1/1] powerpc/signal32: Fix erroneous SIGSEGV on RT signal return
+      https://git.kernel.org/powerpc/c/5256426247837feb8703625bda7fcfc824af04cf
 
 cheers
