@@ -1,31 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E6F36EBF7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 16:06:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3B736EBFB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 16:06:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FWHNS1Ybkz3f40
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 00:06:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FWHNn2CfXz3f9N
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 00:06:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FWHJJ6CJ3z30Ds
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FWHJK3rHYz3bVG
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 00:02:40 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FWHJC14Jsz9tJD; Fri, 30 Apr 2021 00:02:33 +1000 (AEST)
+ id 4FWHJC74Pzz9tD3; Fri, 30 Apr 2021 00:02:35 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20210421125402.1955013-1-mpe@ellerman.id.au>
-References: <20210421125402.1955013-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc/fadump: Fix sparse warnings
-Message-Id: <161970488123.4033873.8516662789483389479.b4-ty@ellerman.id.au>
+In-Reply-To: <20210420042209.1641634-1-mpe@ellerman.id.au>
+References: <20210420042209.1641634-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/64s: Add FA_DUMP to defconfig
+Message-Id: <161970488164.4033873.2774659565097317172.b4-ty@ellerman.id.au>
 Date: Fri, 30 Apr 2021 00:01:21 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -41,27 +41,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 21 Apr 2021 22:54:01 +1000, Michael Ellerman wrote:
-> Sparse says:
->   arch/powerpc/kernel/fadump.c:48:16: warning: symbol 'fadump_kobj' was not declared. Should it be static?
->   arch/powerpc/kernel/fadump.c:55:27: warning: symbol 'crash_mrange_info' was not declared. Should it be static?
->   arch/powerpc/kernel/fadump.c:61:27: warning: symbol 'reserved_mrange_info' was not declared. Should it be static?
->   arch/powerpc/kernel/fadump.c:83:12: warning: symbol 'fadump_cma_init' was not declared. Should it be static?
-> 
-> And indeed none of them are used outside this file, they can all be made
-> static. Also fadump_kobj needs to be moved inside the ifdef where it's
-> used.
+On Tue, 20 Apr 2021 14:22:09 +1000, Michael Ellerman wrote:
+> FA_DUMP (Firmware Assisted Dump) is a powerpc only feature that should
+> be enabled in our defconfig to get some build / test coverage.
 
 Applied to powerpc/next.
 
-[1/2] powerpc/fadump: Fix sparse warnings
-      https://git.kernel.org/powerpc/c/2e341f56a16a71f240c87ec69711aad0d95a704c
-[2/2] powerpc/powernv: Fix type of opal_mpipl_query_tag() addr argument
-      https://git.kernel.org/powerpc/c/d936f8182e1bd18f5e9e6c5e8d8b69261200ca96
+[1/1] powerpc/64s: Add FA_DUMP to defconfig
+      https://git.kernel.org/powerpc/c/7d946276570755d6b53d29bd100271f18cb8bf95
 
 cheers
