@@ -2,55 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9087D36E619
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 09:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 571A636E692
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 10:08:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FW6jl4XZzz3ds5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 17:35:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FW7R22b8wz30C1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 18:07:58 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mymJPklf;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=mymJPklf; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FW6fQ5tDbz3c8X
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 17:32:44 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FW6fD4NZkz9vMG;
- Thu, 29 Apr 2021 09:32:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id obvgDa1NObxO; Thu, 29 Apr 2021 09:32:36 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FW6fD3Mccz9vMD;
- Thu, 29 Apr 2021 09:32:36 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 616658B84B;
- Thu, 29 Apr 2021 09:32:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ZU_vJh7bEvhP; Thu, 29 Apr 2021 09:32:36 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AB4D28B849;
- Thu, 29 Apr 2021 09:32:35 +0200 (CEST)
-Subject: Re: [PATCH v11 1/9] powerpc/mm: Implement set_memory() routines
-To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210429031602.2606654-1-jniethe5@gmail.com>
- <20210429031602.2606654-2-jniethe5@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <eef1fef9-515c-3d7c-dbb7-6b93d97e35a1@csgroup.eu>
-Date: Thu, 29 Apr 2021 09:32:33 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FW7Qc06rwz2xgP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 18:07:36 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 08B9E61446;
+ Thu, 29 Apr 2021 08:07:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1619683652;
+ bh=2DlbYxunUevwnqh+Ong8MaEHb0LiPaIl1Ok8WmzGuC0=;
+ h=From:To:Cc:Subject:Date:From;
+ b=mymJPklfL0ZdniTD3N+MWED8nyjPviqzLYjhTAO9CwOtOlMAc5Yikt0vbNuMpsMcq
+ JJcLc8HGlhvjlKM94tLwKjShqHZQ+6JgLliD1lz+WxxHaDN1V0m1FTVk0IeMQDJn/O
+ f2t0RwiL5h+1KtZy5SB8QFo3zjbTv/SgBa28WbpwaC+drlFM6tXiC5vXASU3qu996F
+ VrLQk6nuZMtZMvU95X3Pp3ZqofFnubP+rS1eKkUeqkD8/6iuaCAt+wuohcmb0uk+UA
+ plLQVK9tGKsIcd4rtNkQxruxahYKNzyKeGNZI7MmIl7hoWRvduXtaYGv91cmaBf/IW
+ rmtY1ZJj8MZAQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc: mark local variables around longjmp as volatile
+Date: Thu, 29 Apr 2021 10:06:38 +0200
+Message-Id: <20210429080708.1520360-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <20210429031602.2606654-2-jniethe5@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,219 +55,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, npiggin@gmail.com, cmr@codefail.de,
- aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com, dja@axtens.net
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Arnd Bergmann <arnd@arndb.de>
 
+gcc-11 points out that modifying local variables next to a
+longjmp/setjmp may cause undefined behavior:
 
-Le 29/04/2021 à 05:15, Jordan Niethe a écrit :
-> From: Russell Currey <ruscur@russell.cc>
-> 
-> The set_memory_{ro/rw/nx/x}() functions are required for
-> STRICT_MODULE_RWX, and are generally useful primitives to have.  This
-> implementation is designed to be generic across powerpc's many MMUs.
-> It's possible that this could be optimised to be faster for specific
-> MMUs.
-> 
-> This implementation does not handle cases where the caller is attempting
-> to change the mapping of the page it is executing from, or if another
-> CPU is concurrently using the page being altered.  These cases likely
-> shouldn't happen, but a more complex implementation with MMU-specific code
-> could safely handle them.
-> 
-> On hash, the linear mapping is not kept in the linux pagetable, so this
-> will not change the protection if used on that range. Currently these
-> functions are not used on the linear map so just WARN for now.
-> 
-> Reviewed-by: Daniel Axtens <dja@axtens.net>
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> [jpn: - Allow set memory functions to be used without Strict RWX
->        - Hash: Disallow certain regions
->        - Have change_page_attr() take function pointers to manipulate ptes
+arch/powerpc/kexec/crash.c: In function 'crash_kexec_prepare_cpus.constprop':
+arch/powerpc/kexec/crash.c:108:22: error: variable 'ncpus' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbere
+d]
+arch/powerpc/kexec/crash.c:109:13: error: variable 'tries' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbere
+d]
+arch/powerpc/xmon/xmon.c: In function 'xmon_print_symbol':
+arch/powerpc/xmon/xmon.c:3625:21: error: variable 'name' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
+arch/powerpc/xmon/xmon.c: In function 'stop_spus':
+arch/powerpc/xmon/xmon.c:4057:13: error: variable 'i' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
+arch/powerpc/xmon/xmon.c: In function 'restart_spus':
+arch/powerpc/xmon/xmon.c:4098:13: error: variable 'i' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
+arch/powerpc/xmon/xmon.c: In function 'dump_opal_msglog':
+arch/powerpc/xmon/xmon.c:3008:16: error: variable 'pos' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
+arch/powerpc/xmon/xmon.c: In function 'show_pte':
+arch/powerpc/xmon/xmon.c:3207:29: error: variable 'tsk' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
+arch/powerpc/xmon/xmon.c: In function 'show_tasks':
+arch/powerpc/xmon/xmon.c:3302:29: error: variable 'tsk' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
+arch/powerpc/xmon/xmon.c: In function 'xmon_core':
+arch/powerpc/xmon/xmon.c:494:13: error: variable 'cmd' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
+arch/powerpc/xmon/xmon.c:860:21: error: variable 'bp' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
+arch/powerpc/xmon/xmon.c:860:21: error: variable 'bp' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
+arch/powerpc/xmon/xmon.c:492:48: error: argument 'fromipi' might be clobbered by 'longjmp' or 'vfork' [-Werror=clobbered]
 
-Did you look at the resulting generated code ? I find it awful.
+According to the documentation, marking these as 'volatile' is
+sufficient to avoid the problem, and it shuts up the warning.
 
-pte manipulation helpers are meant to be inlined. Here you force the compiler to outline them. This 
-also means that the input and output goes through memory.
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/powerpc/kexec/crash.c |  4 ++--
+ arch/powerpc/xmon/xmon.c   | 22 +++++++++++-----------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-And now set_memory_xx are not tiny inlined functions anymore.
+diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+index 0196d0c211ac..10f997e6bb95 100644
+--- a/arch/powerpc/kexec/crash.c
++++ b/arch/powerpc/kexec/crash.c
+@@ -105,8 +105,8 @@ void crash_ipi_callback(struct pt_regs *regs)
+ static void crash_kexec_prepare_cpus(int cpu)
+ {
+ 	unsigned int msecs;
+-	unsigned int ncpus = num_online_cpus() - 1;/* Excluding the panic cpu */
+-	int tries = 0;
++	volatile unsigned int ncpus = num_online_cpus() - 1;/* Excluding the panic cpu */
++	volatile int tries = 0;
+ 	int (*old_handler)(struct pt_regs *regs);
+ 
+ 	printk(KERN_EMERG "Sending IPI to other CPUs\n");
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index c8173e92f19d..ce0eacf77645 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -489,10 +489,10 @@ static void xmon_touch_watchdogs(void)
+ 	touch_nmi_watchdog();
+ }
+ 
+-static int xmon_core(struct pt_regs *regs, int fromipi)
++static int xmon_core(struct pt_regs *regs, volatile int fromipi)
+ {
+-	int cmd = 0;
+-	struct bpt *bp;
++	volatile int cmd = 0;
++	struct bpt *volatile bp;
+ 	long recurse_jmp[JMP_BUF_LEN];
+ 	bool locked_down;
+ 	unsigned long offset;
+@@ -857,7 +857,7 @@ static inline void force_enable_xmon(void)
+ static struct bpt *at_breakpoint(unsigned long pc)
+ {
+ 	int i;
+-	struct bpt *bp;
++	struct bpt *volatile bp;
+ 
+ 	bp = bpts;
+ 	for (i = 0; i < NBPTS; ++i, ++bp)
+@@ -3005,7 +3005,7 @@ static void dump_opal_msglog(void)
+ {
+ 	unsigned char buf[128];
+ 	ssize_t res;
+-	loff_t pos = 0;
++	volatile loff_t pos = 0;
+ 
+ 	if (!firmware_has_feature(FW_FEATURE_OPAL)) {
+ 		printf("Machine is not running OPAL firmware.\n");
+@@ -3160,7 +3160,7 @@ memzcan(void)
+ 		printf("%.8lx\n", a - mskip);
+ }
+ 
+-static void show_task(struct task_struct *tsk)
++static void show_task(struct task_struct *volatile tsk)
+ {
+ 	char state;
+ 
+@@ -3204,7 +3204,7 @@ static void format_pte(void *ptep, unsigned long pte)
+ static void show_pte(unsigned long addr)
+ {
+ 	unsigned long tskv = 0;
+-	struct task_struct *tsk = NULL;
++	struct task_struct *volatile tsk = NULL;
+ 	struct mm_struct *mm;
+ 	pgd_t *pgdp;
+ 	p4d_t *p4dp;
+@@ -3299,7 +3299,7 @@ static void show_pte(unsigned long addr)
+ static void show_tasks(void)
+ {
+ 	unsigned long tskv;
+-	struct task_struct *tsk = NULL;
++	struct task_struct *volatile tsk = NULL;
+ 
+ 	printf("     task_struct     ->thread.ksp    ->thread.regs    PID   PPID S  P CMD\n");
+ 
+@@ -3622,7 +3622,7 @@ static void xmon_print_symbol(unsigned long address, const char *mid,
+ 			      const char *after)
+ {
+ 	char *modname;
+-	const char *name = NULL;
++	const char *volatile name = NULL;
+ 	unsigned long offset, size;
+ 
+ 	printf(REG, address);
+@@ -4054,7 +4054,7 @@ void xmon_register_spus(struct list_head *list)
+ static void stop_spus(void)
+ {
+ 	struct spu *spu;
+-	int i;
++	volatile int i;
+ 	u64 tmp;
+ 
+ 	for (i = 0; i < XMON_NUM_SPUS; i++) {
+@@ -4095,7 +4095,7 @@ static void stop_spus(void)
+ static void restart_spus(void)
+ {
+ 	struct spu *spu;
+-	int i;
++	volatile int i;
+ 
+ 	for (i = 0; i < XMON_NUM_SPUS; i++) {
+ 		if (!spu_info[i].spu)
+-- 
+2.29.2
 
-What is the reason you abandonned the way it was done up to now, through the use of an 'action' 
-value ? With the previous approach the generated code was a lot lighter.
-
->        - Radix: Add ptesync after set_pte_at()]
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> ---
-> v10: WARN if trying to change the hash linear map
-> v11: - Update copywrite dates
->       - Allow set memory functions to be used without Strict RWX
->       - Hash: Disallow certain regions and add comment explaining why
->       - Have change_page_attr() take function pointers to manipulate ptes
->       - Clarify change_page_attr()'s comment
->       - Radix: Add ptesync after set_pte_at()
-> ---
->   arch/powerpc/Kconfig                  |   1 +
->   arch/powerpc/include/asm/set_memory.h |  10 +++
->   arch/powerpc/mm/Makefile              |   2 +-
->   arch/powerpc/mm/pageattr.c            | 105 ++++++++++++++++++++++++++
->   4 files changed, 117 insertions(+), 1 deletion(-)
->   create mode 100644 arch/powerpc/include/asm/set_memory.h
->   create mode 100644 arch/powerpc/mm/pageattr.c
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index cb2d44ee4e38..94c34932a74b 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -138,6 +138,7 @@ config PPC
->   	select ARCH_HAS_MEMBARRIER_CALLBACKS
->   	select ARCH_HAS_MEMBARRIER_SYNC_CORE
->   	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
-> +	select ARCH_HAS_SET_MEMORY
->   	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !HIBERNATION)
->   	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
->   	select ARCH_HAS_UACCESS_FLUSHCACHE
-> diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
-> new file mode 100644
-> index 000000000000..d1cd69b1a43a
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/set_memory.h
-> @@ -0,0 +1,10 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_POWERPC_SET_MEMORY_H
-> +#define _ASM_POWERPC_SET_MEMORY_H
-> +
-> +int set_memory_ro(unsigned long addr, int numpages);
-> +int set_memory_rw(unsigned long addr, int numpages);
-> +int set_memory_nx(unsigned long addr, int numpages);
-> +int set_memory_x(unsigned long addr, int numpages);
-> +
-> +#endif
-> diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
-> index c3df3a8501d4..9142cf1fb0d5 100644
-> --- a/arch/powerpc/mm/Makefile
-> +++ b/arch/powerpc/mm/Makefile
-> @@ -5,7 +5,7 @@
->   
->   ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
->   
-> -obj-y				:= fault.o mem.o pgtable.o mmap.o maccess.o \
-> +obj-y				:= fault.o mem.o pgtable.o mmap.o maccess.o pageattr.o \
->   				   init_$(BITS).o pgtable_$(BITS).o \
->   				   pgtable-frag.o ioremap.o ioremap_$(BITS).o \
->   				   init-common.o mmu_context.o drmem.o \
-> diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-> new file mode 100644
-> index 000000000000..3b4aa72e555e
-> --- /dev/null
-> +++ b/arch/powerpc/mm/pageattr.c
-> @@ -0,0 +1,105 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/*
-> + * MMU-generic set_memory implementation for powerpc
-> + *
-> + * Copyright 2019-2021, IBM Corporation.
-> + */
-> +
-> +#include <linux/mm.h>
-> +#include <linux/set_memory.h>
-> +
-> +#include <asm/mmu.h>
-> +#include <asm/page.h>
-> +#include <asm/pgtable.h>
-> +
-> +
-> +/*
-> + * Updates the attributes of a page in three steps:
-> + *
-> + * 1. invalidate the page table entry
-> + * 2. flush the TLB
-> + * 3. install the new entry with the updated attributes
-> + *
-> + * Invalidating the pte means there are situations where this will not work
-> + * when in theory it should.
-> + * For example:
-> + * - removing write from page whilst it is being executed
-> + * - setting a page read-only whilst it is being read by another CPU
-> + *
-> + */
-> +static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
-> +{
-> +	pte_t (*fn)(pte_t) = data;
-> +	pte_t pte;
-> +
-> +	spin_lock(&init_mm.page_table_lock);
-> +
-> +	/* invalidate the PTE so it's safe to modify */
-> +	pte = ptep_get_and_clear(&init_mm, addr, ptep);
-> +	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-> +
-> +	/* modify the PTE bits as desired, then apply */
-> +	pte = fn(pte);
-> +
-> +	set_pte_at(&init_mm, addr, ptep, pte);
-> +
-> +	/* See ptesync comment in radix__set_pte_at() */
-> +	if (radix_enabled())
-> +		asm volatile("ptesync": : :"memory");
-> +	spin_unlock(&init_mm.page_table_lock);
-> +
-> +	return 0;
-> +}
-> +
-> +static int change_memory_attr(unsigned long addr, int numpages, pte_t (*fn)(pte_t))
-> +{
-> +	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
-> +	unsigned long size = numpages * PAGE_SIZE;
-> +
-> +	if (!numpages)
-> +		return 0;
-> +
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +	/*
-> +	 * On hash, the linear mapping is not in the Linux page table so
-> +	 * apply_to_existing_page_range() will have no effect. If in the future
-> +	 * the set_memory_* functions are used on the linear map this will need
-> +	 * to be updated.
-> +	 */
-> +	if (!radix_enabled()) {
-> +		int region = get_region_id(addr);
-> +
-> +		if (WARN_ON_ONCE(region != VMALLOC_REGION_ID && region != IO_REGION_ID))
-> +			return -EINVAL;
-> +	}
-> +#endif
-> +
-> +	return apply_to_existing_page_range(&init_mm, start, size,
-> +					    change_page_attr, fn);
-> +}
-> +
-> +int set_memory_ro(unsigned long addr, int numpages)
-> +{
-> +	return change_memory_attr(addr, numpages, pte_wrprotect);
-> +}
-> +
-> +static pte_t pte_mkdirtywrite(pte_t pte)
-> +{
-> +	return pte_mkwrite(pte_mkdirty(pte));
-> +}
-> +
-> +int set_memory_rw(unsigned long addr, int numpages)
-> +{
-> +	return change_memory_attr(addr, numpages, pte_mkdirtywrite);
-> +}
-> +
-> +int set_memory_nx(unsigned long addr, int numpages)
-> +{
-> +	return change_memory_attr(addr, numpages, pte_exprotect);
-> +}
-> +
-> +int set_memory_x(unsigned long addr, int numpages)
-> +{
-> +	return change_memory_attr(addr, numpages, pte_mkexec);
-> +}
-> 
