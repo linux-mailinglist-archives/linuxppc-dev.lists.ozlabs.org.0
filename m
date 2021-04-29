@@ -2,48 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC24436E60C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 09:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9087D36E619
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 09:35:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FW6fv5Gqbz30KL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 17:33:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FW6jl4XZzz3ds5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 17:35:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bluescreens.de (client-ip=2001:67c:2050:1::465:209;
- helo=mout-y-209.mailbox.org; envelope-from=cmr@bluescreens.de;
- receiver=<UNKNOWN>)
-Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org
- [IPv6:2001:67c:2050:1::465:209])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FW6cd1BBmz2yyP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 17:31:13 +1000 (AEST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4FW6Pj0ftyzQjbj;
- Thu, 29 Apr 2021 09:21:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de
- [80.241.56.115]) (amavisd-new, port 10030)
- with ESMTP id N-bp2Uw-0WFG; Thu, 29 Apr 2021 09:21:41 +0200 (CEST)
-From: "Christopher M. Riedl" <cmr@bluescreens.de>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 11/11] powerpc: Use patch_instruction_unlocked() in loops
-Date: Thu, 29 Apr 2021 02:20:57 -0500
-Message-Id: <20210429072057.8870-12-cmr@bluescreens.de>
-In-Reply-To: <20210429072057.8870-1-cmr@bluescreens.de>
-References: <20210429072057.8870-1-cmr@bluescreens.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FW6fQ5tDbz3c8X
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 17:32:44 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4FW6fD4NZkz9vMG;
+ Thu, 29 Apr 2021 09:32:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id obvgDa1NObxO; Thu, 29 Apr 2021 09:32:36 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FW6fD3Mccz9vMD;
+ Thu, 29 Apr 2021 09:32:36 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 616658B84B;
+ Thu, 29 Apr 2021 09:32:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ZU_vJh7bEvhP; Thu, 29 Apr 2021 09:32:36 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AB4D28B849;
+ Thu, 29 Apr 2021 09:32:35 +0200 (CEST)
+Subject: Re: [PATCH v11 1/9] powerpc/mm: Implement set_memory() routines
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210429031602.2606654-1-jniethe5@gmail.com>
+ <20210429031602.2606654-2-jniethe5@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <eef1fef9-515c-3d7c-dbb7-6b93d97e35a1@csgroup.eu>
+Date: Thu, 29 Apr 2021 09:32:33 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
+In-Reply-To: <20210429031602.2606654-2-jniethe5@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-MBO-SPAM-Probability: *
-X-Rspamd-Score: 0.90 / 15.00 / 15.00
-X-Rspamd-Queue-Id: 219BC17E8
-X-Rspamd-UID: 9b4904
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,498 +63,219 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tglx@linutronix.de, x86@kernel.org, linux-hardening@vger.kernel.org,
- keescook@chromium.org
+Cc: ajd@linux.ibm.com, npiggin@gmail.com, cmr@codefail.de,
+ aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that patching requires a lock to prevent concurrent access to
-patching_mm, every call to patch_instruction() acquires and releases a
-spinlock. There are several places where patch_instruction() is called
-in a loop. Convert these to acquire the lock once before the loop, call
-patch_instruction_unlocked() in the loop body, and then release the lock
-again after the loop terminates - as in:
 
-	for (i = 0; i < n; ++i)
-		patch_instruction(...); <-- lock/unlock every iteration
 
-changes to:
+Le 29/04/2021 à 05:15, Jordan Niethe a écrit :
+> From: Russell Currey <ruscur@russell.cc>
+> 
+> The set_memory_{ro/rw/nx/x}() functions are required for
+> STRICT_MODULE_RWX, and are generally useful primitives to have.  This
+> implementation is designed to be generic across powerpc's many MMUs.
+> It's possible that this could be optimised to be faster for specific
+> MMUs.
+> 
+> This implementation does not handle cases where the caller is attempting
+> to change the mapping of the page it is executing from, or if another
+> CPU is concurrently using the page being altered.  These cases likely
+> shouldn't happen, but a more complex implementation with MMU-specific code
+> could safely handle them.
+> 
+> On hash, the linear mapping is not kept in the linux pagetable, so this
+> will not change the protection if used on that range. Currently these
+> functions are not used on the linear map so just WARN for now.
+> 
+> Reviewed-by: Daniel Axtens <dja@axtens.net>
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> [jpn: - Allow set memory functions to be used without Strict RWX
+>        - Hash: Disallow certain regions
+>        - Have change_page_attr() take function pointers to manipulate ptes
 
-	flags = lock_patching(); <-- lock once
+Did you look at the resulting generated code ? I find it awful.
 
-	for (i = 0; i < n; ++i)
-		patch_instruction_unlocked(...);
+pte manipulation helpers are meant to be inlined. Here you force the compiler to outline them. This 
+also means that the input and output goes through memory.
 
-	unlock_patching(flags); <-- unlock once
+And now set_memory_xx are not tiny inlined functions anymore.
 
-Signed-off-by: Christopher M. Riedl <cmr@bluescreens.de>
+What is the reason you abandonned the way it was done up to now, through the use of an 'action' 
+value ? With the previous approach the generated code was a lot lighter.
 
----
-
-v4:  * New to series.
----
- arch/powerpc/kernel/epapr_paravirt.c |   9 ++-
- arch/powerpc/kernel/optprobes.c      |  22 ++++--
- arch/powerpc/lib/feature-fixups.c    | 114 +++++++++++++++++++--------
- arch/powerpc/xmon/xmon.c             |  22 ++++--
- 4 files changed, 120 insertions(+), 47 deletions(-)
-
-diff --git a/arch/powerpc/kernel/epapr_paravirt.c b/arch/powerpc/kernel/epapr_paravirt.c
-index 2ed14d4a47f59..b639e71cf9dec 100644
---- a/arch/powerpc/kernel/epapr_paravirt.c
-+++ b/arch/powerpc/kernel/epapr_paravirt.c
-@@ -28,6 +28,7 @@ static int __init early_init_dt_scan_epapr(unsigned long node,
- 	const u32 *insts;
- 	int len;
- 	int i;
-+	unsigned long flags;
- 
- 	insts = of_get_flat_dt_prop(node, "hcall-instructions", &len);
- 	if (!insts)
-@@ -36,14 +37,18 @@ static int __init early_init_dt_scan_epapr(unsigned long node,
- 	if (len % 4 || len > (4 * 4))
- 		return -1;
- 
-+	flags = lock_patching();
-+
- 	for (i = 0; i < (len / 4); i++) {
- 		struct ppc_inst inst = ppc_inst(be32_to_cpu(insts[i]));
--		patch_instruction((struct ppc_inst *)(epapr_hypercall_start + i), inst);
-+		patch_instruction_unlocked((struct ppc_inst *)(epapr_hypercall_start + i), inst);
- #if !defined(CONFIG_64BIT) || defined(CONFIG_PPC_BOOK3E_64)
--		patch_instruction((struct ppc_inst *)(epapr_ev_idle_start + i), inst);
-+		patch_instruction_unlocked((struct ppc_inst *)(epapr_ev_idle_start + i), inst);
- #endif
- 	}
- 
-+	unlock_patching(flags);
-+
- #if !defined(CONFIG_64BIT) || defined(CONFIG_PPC_BOOK3E_64)
- 	if (of_get_flat_dt_prop(node, "has-idle", NULL))
- 		epapr_has_idle = true;
-diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
-index cdf87086fa33a..deaeb6e8d1a00 100644
---- a/arch/powerpc/kernel/optprobes.c
-+++ b/arch/powerpc/kernel/optprobes.c
-@@ -200,7 +200,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 	struct ppc_inst branch_op_callback, branch_emulate_step, temp;
- 	kprobe_opcode_t *op_callback_addr, *emulate_step_addr, *buff;
- 	long b_offset;
--	unsigned long nip, size;
-+	unsigned long nip, size, flags;
- 	int rc, i;
- 
- 	kprobe_ppc_optinsn_slots.insn_size = MAX_OPTINSN_SIZE;
-@@ -237,13 +237,20 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 	/* We can optimize this via patch_instruction_window later */
- 	size = (TMPL_END_IDX * sizeof(kprobe_opcode_t)) / sizeof(int);
- 	pr_devel("Copying template to %p, size %lu\n", buff, size);
-+
-+	flags = lock_patching();
-+
- 	for (i = 0; i < size; i++) {
--		rc = patch_instruction((struct ppc_inst *)(buff + i),
--				       ppc_inst(*(optprobe_template_entry + i)));
--		if (rc < 0)
-+		rc = patch_instruction_unlocked((struct ppc_inst *)(buff + i),
-+						ppc_inst(*(optprobe_template_entry + i)));
-+		if (rc < 0) {
-+			unlock_patching(flags);
- 			goto error;
-+		}
- 	}
- 
-+	unlock_patching(flags);
-+
- 	/*
- 	 * Fixup the template with instructions to:
- 	 * 1. load the address of the actual probepoint
-@@ -322,6 +329,9 @@ void arch_optimize_kprobes(struct list_head *oplist)
- 	struct ppc_inst instr;
- 	struct optimized_kprobe *op;
- 	struct optimized_kprobe *tmp;
-+	unsigned long flags;
-+
-+	flags = lock_patching();
- 
- 	list_for_each_entry_safe(op, tmp, oplist, list) {
- 		/*
-@@ -333,9 +343,11 @@ void arch_optimize_kprobes(struct list_head *oplist)
- 		create_branch(&instr,
- 			      (struct ppc_inst *)op->kp.addr,
- 			      (unsigned long)op->optinsn.insn, 0);
--		patch_instruction((struct ppc_inst *)op->kp.addr, instr);
-+		patch_instruction_unlocked((struct ppc_inst *)op->kp.addr, instr);
- 		list_del_init(&op->list);
- 	}
-+
-+	unlock_patching(flags);
- }
- 
- void arch_unoptimize_kprobe(struct optimized_kprobe *op)
-diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
-index 1fd31b4b0e139..2c3d413c9d9b3 100644
---- a/arch/powerpc/lib/feature-fixups.c
-+++ b/arch/powerpc/lib/feature-fixups.c
-@@ -123,6 +123,7 @@ static void do_stf_entry_barrier_fixups(enum stf_barrier_type types)
- 	unsigned int instrs[3], *dest;
- 	long *start, *end;
- 	int i;
-+	unsigned long flags;
- 
- 	start = PTRRELOC(&__start___stf_entry_barrier_fixup);
- 	end = PTRRELOC(&__stop___stf_entry_barrier_fixup);
-@@ -144,24 +145,29 @@ static void do_stf_entry_barrier_fixups(enum stf_barrier_type types)
- 		instrs[i++] = 0x63ff0000; /* ori 31,31,0 speculation barrier */
- 	}
- 
-+	flags = lock_patching();
-+
- 	for (i = 0; start < end; start++, i++) {
- 		dest = (void *)start + *start;
- 
- 		pr_devel("patching dest %lx\n", (unsigned long)dest);
- 
--		patch_instruction((struct ppc_inst *)dest, ppc_inst(instrs[0]));
-+		patch_instruction_unlocked((struct ppc_inst *)dest, ppc_inst(instrs[0]));
- 
- 		if (types & STF_BARRIER_FALLBACK)
--			patch_branch((struct ppc_inst *)(dest + 1),
--				     (unsigned long)&stf_barrier_fallback,
--				     BRANCH_SET_LINK);
-+			patch_branch_unlocked((struct ppc_inst *)(dest + 1),
-+					      (unsigned long)&stf_barrier_fallback,
-+					      BRANCH_SET_LINK);
- 		else
--			patch_instruction((struct ppc_inst *)(dest + 1),
--					  ppc_inst(instrs[1]));
-+			patch_instruction_unlocked((struct ppc_inst *)(dest + 1),
-+						   ppc_inst(instrs[1]));
- 
--		patch_instruction((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 2),
-+					   ppc_inst(instrs[2]));
- 	}
- 
-+	unlock_patching(flags);
-+
- 	printk(KERN_DEBUG "stf-barrier: patched %d entry locations (%s barrier)\n", i,
- 		(types == STF_BARRIER_NONE)                  ? "no" :
- 		(types == STF_BARRIER_FALLBACK)              ? "fallback" :
-@@ -175,6 +181,7 @@ static void do_stf_exit_barrier_fixups(enum stf_barrier_type types)
- 	unsigned int instrs[6], *dest;
- 	long *start, *end;
- 	int i;
-+	unsigned long flags;
- 
- 	start = PTRRELOC(&__start___stf_exit_barrier_fixup);
- 	end = PTRRELOC(&__stop___stf_exit_barrier_fixup);
-@@ -207,18 +214,23 @@ static void do_stf_exit_barrier_fixups(enum stf_barrier_type types)
- 		instrs[i++] = 0x7e0006ac; /* eieio + bit 6 hint */
- 	}
- 
-+	flags = lock_patching();
-+
- 	for (i = 0; start < end; start++, i++) {
- 		dest = (void *)start + *start;
- 
- 		pr_devel("patching dest %lx\n", (unsigned long)dest);
- 
--		patch_instruction((struct ppc_inst *)dest, ppc_inst(instrs[0]));
--		patch_instruction((struct ppc_inst *)(dest + 1), ppc_inst(instrs[1]));
--		patch_instruction((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
--		patch_instruction((struct ppc_inst *)(dest + 3), ppc_inst(instrs[3]));
--		patch_instruction((struct ppc_inst *)(dest + 4), ppc_inst(instrs[4]));
--		patch_instruction((struct ppc_inst *)(dest + 5), ppc_inst(instrs[5]));
-+		patch_instruction_unlocked((struct ppc_inst *)dest, ppc_inst(instrs[0]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 1), ppc_inst(instrs[1]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 3), ppc_inst(instrs[3]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 4), ppc_inst(instrs[4]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 5), ppc_inst(instrs[5]));
- 	}
-+
-+	unlock_patching(flags);
-+
- 	printk(KERN_DEBUG "stf-barrier: patched %d exit locations (%s barrier)\n", i,
- 		(types == STF_BARRIER_NONE)                  ? "no" :
- 		(types == STF_BARRIER_FALLBACK)              ? "fallback" :
-@@ -239,6 +251,7 @@ void do_uaccess_flush_fixups(enum l1d_flush_type types)
- 	unsigned int instrs[4], *dest;
- 	long *start, *end;
- 	int i;
-+	unsigned long flags;
- 
- 	start = PTRRELOC(&__start___uaccess_flush_fixup);
- 	end = PTRRELOC(&__stop___uaccess_flush_fixup);
-@@ -262,18 +275,22 @@ void do_uaccess_flush_fixups(enum l1d_flush_type types)
- 	if (types & L1D_FLUSH_MTTRIG)
- 		instrs[i++] = 0x7c12dba6; /* mtspr TRIG2,r0 (SPR #882) */
- 
-+	flags = lock_patching();
-+
- 	for (i = 0; start < end; start++, i++) {
- 		dest = (void *)start + *start;
- 
- 		pr_devel("patching dest %lx\n", (unsigned long)dest);
- 
--		patch_instruction((struct ppc_inst *)dest, ppc_inst(instrs[0]));
-+		patch_instruction_unlocked((struct ppc_inst *)dest, ppc_inst(instrs[0]));
- 
--		patch_instruction((struct ppc_inst *)(dest + 1), ppc_inst(instrs[1]));
--		patch_instruction((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
--		patch_instruction((struct ppc_inst *)(dest + 3), ppc_inst(instrs[3]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 1), ppc_inst(instrs[1]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 3), ppc_inst(instrs[3]));
- 	}
- 
-+	unlock_patching(flags);
-+
- 	printk(KERN_DEBUG "uaccess-flush: patched %d locations (%s flush)\n", i,
- 		(types == L1D_FLUSH_NONE)       ? "no" :
- 		(types == L1D_FLUSH_FALLBACK)   ? "fallback displacement" :
-@@ -289,6 +306,7 @@ void do_entry_flush_fixups(enum l1d_flush_type types)
- 	unsigned int instrs[3], *dest;
- 	long *start, *end;
- 	int i;
-+	unsigned long flags;
- 
- 	instrs[0] = 0x60000000; /* nop */
- 	instrs[1] = 0x60000000; /* nop */
-@@ -309,6 +327,8 @@ void do_entry_flush_fixups(enum l1d_flush_type types)
- 	if (types & L1D_FLUSH_MTTRIG)
- 		instrs[i++] = 0x7c12dba6; /* mtspr TRIG2,r0 (SPR #882) */
- 
-+	flags = lock_patching();
-+
- 	start = PTRRELOC(&__start___entry_flush_fixup);
- 	end = PTRRELOC(&__stop___entry_flush_fixup);
- 	for (i = 0; start < end; start++, i++) {
-@@ -316,15 +336,17 @@ void do_entry_flush_fixups(enum l1d_flush_type types)
- 
- 		pr_devel("patching dest %lx\n", (unsigned long)dest);
- 
--		patch_instruction((struct ppc_inst *)dest, ppc_inst(instrs[0]));
-+		patch_instruction_unlocked((struct ppc_inst *)dest, ppc_inst(instrs[0]));
- 
- 		if (types == L1D_FLUSH_FALLBACK)
--			patch_branch((struct ppc_inst *)(dest + 1), (unsigned long)&entry_flush_fallback,
--				     BRANCH_SET_LINK);
-+			patch_branch_unlocked((struct ppc_inst *)(dest + 1),
-+					      (unsigned long)&entry_flush_fallback,
-+					      BRANCH_SET_LINK);
- 		else
--			patch_instruction((struct ppc_inst *)(dest + 1), ppc_inst(instrs[1]));
-+			patch_instruction_unlocked((struct ppc_inst *)(dest + 1),
-+						   ppc_inst(instrs[1]));
- 
--		patch_instruction((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
- 	}
- 
- 	start = PTRRELOC(&__start___scv_entry_flush_fixup);
-@@ -334,17 +356,20 @@ void do_entry_flush_fixups(enum l1d_flush_type types)
- 
- 		pr_devel("patching dest %lx\n", (unsigned long)dest);
- 
--		patch_instruction((struct ppc_inst *)dest, ppc_inst(instrs[0]));
-+		patch_instruction_unlocked((struct ppc_inst *)dest, ppc_inst(instrs[0]));
- 
- 		if (types == L1D_FLUSH_FALLBACK)
--			patch_branch((struct ppc_inst *)(dest + 1), (unsigned long)&scv_entry_flush_fallback,
--				     BRANCH_SET_LINK);
-+			patch_branch_unlocked((struct ppc_inst *)(dest + 1),
-+					      (unsigned long)&scv_entry_flush_fallback,
-+					      BRANCH_SET_LINK);
- 		else
--			patch_instruction((struct ppc_inst *)(dest + 1), ppc_inst(instrs[1]));
-+			patch_instruction_unlocked((struct ppc_inst *)(dest + 1),
-+						   ppc_inst(instrs[1]));
- 
--		patch_instruction((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
- 	}
- 
-+	unlock_patching(flags);
- 
- 	printk(KERN_DEBUG "entry-flush: patched %d locations (%s flush)\n", i,
- 		(types == L1D_FLUSH_NONE)       ? "no" :
-@@ -361,6 +386,7 @@ void do_rfi_flush_fixups(enum l1d_flush_type types)
- 	unsigned int instrs[3], *dest;
- 	long *start, *end;
- 	int i;
-+	unsigned long flags;
- 
- 	start = PTRRELOC(&__start___rfi_flush_fixup);
- 	end = PTRRELOC(&__stop___rfi_flush_fixup);
-@@ -382,16 +408,20 @@ void do_rfi_flush_fixups(enum l1d_flush_type types)
- 	if (types & L1D_FLUSH_MTTRIG)
- 		instrs[i++] = 0x7c12dba6; /* mtspr TRIG2,r0 (SPR #882) */
- 
-+	flags = lock_patching();
-+
- 	for (i = 0; start < end; start++, i++) {
- 		dest = (void *)start + *start;
- 
- 		pr_devel("patching dest %lx\n", (unsigned long)dest);
- 
--		patch_instruction((struct ppc_inst *)dest, ppc_inst(instrs[0]));
--		patch_instruction((struct ppc_inst *)(dest + 1), ppc_inst(instrs[1]));
--		patch_instruction((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
-+		patch_instruction_unlocked((struct ppc_inst *)dest, ppc_inst(instrs[0]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 1), ppc_inst(instrs[1]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
- 	}
- 
-+	unlock_patching(flags);
-+
- 	printk(KERN_DEBUG "rfi-flush: patched %d locations (%s flush)\n", i,
- 		(types == L1D_FLUSH_NONE)       ? "no" :
- 		(types == L1D_FLUSH_FALLBACK)   ? "fallback displacement" :
-@@ -407,6 +437,7 @@ void do_barrier_nospec_fixups_range(bool enable, void *fixup_start, void *fixup_
- 	unsigned int instr, *dest;
- 	long *start, *end;
- 	int i;
-+	unsigned long flags;
- 
- 	start = fixup_start;
- 	end = fixup_end;
-@@ -418,13 +449,17 @@ void do_barrier_nospec_fixups_range(bool enable, void *fixup_start, void *fixup_
- 		instr = 0x63ff0000; /* ori 31,31,0 speculation barrier */
- 	}
- 
-+	flags = lock_patching();
-+
- 	for (i = 0; start < end; start++, i++) {
- 		dest = (void *)start + *start;
- 
- 		pr_devel("patching dest %lx\n", (unsigned long)dest);
--		patch_instruction((struct ppc_inst *)dest, ppc_inst(instr));
-+		patch_instruction_unlocked((struct ppc_inst *)dest, ppc_inst(instr));
- 	}
- 
-+	unlock_patching(flags);
-+
- 	printk(KERN_DEBUG "barrier-nospec: patched %d locations\n", i);
- }
- 
-@@ -448,6 +483,7 @@ void do_barrier_nospec_fixups_range(bool enable, void *fixup_start, void *fixup_
- 	unsigned int instr[2], *dest;
- 	long *start, *end;
- 	int i;
-+	unsigned long flags;
- 
- 	start = fixup_start;
- 	end = fixup_end;
-@@ -461,27 +497,37 @@ void do_barrier_nospec_fixups_range(bool enable, void *fixup_start, void *fixup_
- 		instr[1] = PPC_INST_SYNC;
- 	}
- 
-+	flags = lock_patching();
-+
- 	for (i = 0; start < end; start++, i++) {
- 		dest = (void *)start + *start;
- 
- 		pr_devel("patching dest %lx\n", (unsigned long)dest);
--		patch_instruction((struct ppc_inst *)dest, ppc_inst(instr[0]));
--		patch_instruction((struct ppc_inst *)(dest + 1), ppc_inst(instr[1]));
-+		patch_instruction_unlocked((struct ppc_inst *)dest, ppc_inst(instr[0]));
-+		patch_instruction_unlocked((struct ppc_inst *)(dest + 1), ppc_inst(instr[1]));
- 	}
- 
-+	unlock_patching(flags);
-+
- 	printk(KERN_DEBUG "barrier-nospec: patched %d locations\n", i);
- }
- 
- static void patch_btb_flush_section(long *curr)
- {
- 	unsigned int *start, *end;
-+	unsigned long flags;
- 
- 	start = (void *)curr + *curr;
- 	end = (void *)curr + *(curr + 1);
-+
-+	flags = lock_patching();
-+
- 	for (; start < end; start++) {
- 		pr_devel("patching dest %lx\n", (unsigned long)start);
--		patch_instruction((struct ppc_inst *)start, ppc_inst(PPC_INST_NOP));
-+		patch_instruction_unlocked((struct ppc_inst *)start, ppc_inst(PPC_INST_NOP));
- 	}
-+
-+	unlock_patching(flags);
- }
- 
- void do_btb_flush_fixups(void)
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index ff2b92bfeedcc..e8a00041c04bf 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -905,6 +905,9 @@ static void insert_bpts(void)
- 	int i;
- 	struct ppc_inst instr, instr2;
- 	struct bpt *bp, *bp2;
-+	unsigned long flags;
-+
-+	flags = lock_patching();
- 
- 	bp = bpts;
- 	for (i = 0; i < NBPTS; ++i, ++bp) {
-@@ -945,19 +948,21 @@ static void insert_bpts(void)
- 			continue;
- 		}
- 
--		patch_instruction(bp->instr, instr);
--		patch_instruction(ppc_inst_next(bp->instr, &instr),
--				  ppc_inst(bpinstr));
-+		patch_instruction_unlocked(bp->instr, instr);
-+		patch_instruction_unlocked(ppc_inst_next(bp->instr, &instr),
-+					   ppc_inst(bpinstr));
- 		if (bp->enabled & BP_CIABR)
- 			continue;
--		if (patch_instruction((struct ppc_inst *)bp->address,
--				      ppc_inst(bpinstr)) != 0) {
-+		if (patch_instruction_unlocked((struct ppc_inst *)bp->address,
-+						ppc_inst(bpinstr)) != 0) {
- 			printf("Couldn't write instruction at %lx, "
- 			       "disabling breakpoint there\n", bp->address);
- 			bp->enabled &= ~BP_TRAP;
- 			continue;
- 		}
- 	}
-+
-+	unlock_patching(flags);
- }
- 
- static void insert_cpu_bpts(void)
-@@ -984,6 +989,9 @@ static void remove_bpts(void)
- 	int i;
- 	struct bpt *bp;
- 	struct ppc_inst instr;
-+	unsigned long flags;
-+
-+	flags = lock_patching();
- 
- 	bp = bpts;
- 	for (i = 0; i < NBPTS; ++i, ++bp) {
-@@ -991,11 +999,13 @@ static void remove_bpts(void)
- 			continue;
- 		if (mread_instr(bp->address, &instr)
- 		    && ppc_inst_equal(instr, ppc_inst(bpinstr))
--		    && patch_instruction(
-+		    && patch_instruction_unlocked(
- 			(struct ppc_inst *)bp->address, ppc_inst_read(bp->instr)) != 0)
- 			printf("Couldn't remove breakpoint at %lx\n",
- 			       bp->address);
- 	}
-+
-+	unlock_patching(flags);
- }
- 
- static void remove_cpu_bpts(void)
--- 
-2.26.1
-
+>        - Radix: Add ptesync after set_pte_at()]
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v10: WARN if trying to change the hash linear map
+> v11: - Update copywrite dates
+>       - Allow set memory functions to be used without Strict RWX
+>       - Hash: Disallow certain regions and add comment explaining why
+>       - Have change_page_attr() take function pointers to manipulate ptes
+>       - Clarify change_page_attr()'s comment
+>       - Radix: Add ptesync after set_pte_at()
+> ---
+>   arch/powerpc/Kconfig                  |   1 +
+>   arch/powerpc/include/asm/set_memory.h |  10 +++
+>   arch/powerpc/mm/Makefile              |   2 +-
+>   arch/powerpc/mm/pageattr.c            | 105 ++++++++++++++++++++++++++
+>   4 files changed, 117 insertions(+), 1 deletion(-)
+>   create mode 100644 arch/powerpc/include/asm/set_memory.h
+>   create mode 100644 arch/powerpc/mm/pageattr.c
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index cb2d44ee4e38..94c34932a74b 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -138,6 +138,7 @@ config PPC
+>   	select ARCH_HAS_MEMBARRIER_CALLBACKS
+>   	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+>   	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+> +	select ARCH_HAS_SET_MEMORY
+>   	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !HIBERNATION)
+>   	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+>   	select ARCH_HAS_UACCESS_FLUSHCACHE
+> diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
+> new file mode 100644
+> index 000000000000..d1cd69b1a43a
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/set_memory.h
+> @@ -0,0 +1,10 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_POWERPC_SET_MEMORY_H
+> +#define _ASM_POWERPC_SET_MEMORY_H
+> +
+> +int set_memory_ro(unsigned long addr, int numpages);
+> +int set_memory_rw(unsigned long addr, int numpages);
+> +int set_memory_nx(unsigned long addr, int numpages);
+> +int set_memory_x(unsigned long addr, int numpages);
+> +
+> +#endif
+> diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
+> index c3df3a8501d4..9142cf1fb0d5 100644
+> --- a/arch/powerpc/mm/Makefile
+> +++ b/arch/powerpc/mm/Makefile
+> @@ -5,7 +5,7 @@
+>   
+>   ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
+>   
+> -obj-y				:= fault.o mem.o pgtable.o mmap.o maccess.o \
+> +obj-y				:= fault.o mem.o pgtable.o mmap.o maccess.o pageattr.o \
+>   				   init_$(BITS).o pgtable_$(BITS).o \
+>   				   pgtable-frag.o ioremap.o ioremap_$(BITS).o \
+>   				   init-common.o mmu_context.o drmem.o \
+> diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+> new file mode 100644
+> index 000000000000..3b4aa72e555e
+> --- /dev/null
+> +++ b/arch/powerpc/mm/pageattr.c
+> @@ -0,0 +1,105 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * MMU-generic set_memory implementation for powerpc
+> + *
+> + * Copyright 2019-2021, IBM Corporation.
+> + */
+> +
+> +#include <linux/mm.h>
+> +#include <linux/set_memory.h>
+> +
+> +#include <asm/mmu.h>
+> +#include <asm/page.h>
+> +#include <asm/pgtable.h>
+> +
+> +
+> +/*
+> + * Updates the attributes of a page in three steps:
+> + *
+> + * 1. invalidate the page table entry
+> + * 2. flush the TLB
+> + * 3. install the new entry with the updated attributes
+> + *
+> + * Invalidating the pte means there are situations where this will not work
+> + * when in theory it should.
+> + * For example:
+> + * - removing write from page whilst it is being executed
+> + * - setting a page read-only whilst it is being read by another CPU
+> + *
+> + */
+> +static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
+> +{
+> +	pte_t (*fn)(pte_t) = data;
+> +	pte_t pte;
+> +
+> +	spin_lock(&init_mm.page_table_lock);
+> +
+> +	/* invalidate the PTE so it's safe to modify */
+> +	pte = ptep_get_and_clear(&init_mm, addr, ptep);
+> +	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> +
+> +	/* modify the PTE bits as desired, then apply */
+> +	pte = fn(pte);
+> +
+> +	set_pte_at(&init_mm, addr, ptep, pte);
+> +
+> +	/* See ptesync comment in radix__set_pte_at() */
+> +	if (radix_enabled())
+> +		asm volatile("ptesync": : :"memory");
+> +	spin_unlock(&init_mm.page_table_lock);
+> +
+> +	return 0;
+> +}
+> +
+> +static int change_memory_attr(unsigned long addr, int numpages, pte_t (*fn)(pte_t))
+> +{
+> +	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
+> +	unsigned long size = numpages * PAGE_SIZE;
+> +
+> +	if (!numpages)
+> +		return 0;
+> +
+> +#ifdef CONFIG_PPC_BOOK3S_64
+> +	/*
+> +	 * On hash, the linear mapping is not in the Linux page table so
+> +	 * apply_to_existing_page_range() will have no effect. If in the future
+> +	 * the set_memory_* functions are used on the linear map this will need
+> +	 * to be updated.
+> +	 */
+> +	if (!radix_enabled()) {
+> +		int region = get_region_id(addr);
+> +
+> +		if (WARN_ON_ONCE(region != VMALLOC_REGION_ID && region != IO_REGION_ID))
+> +			return -EINVAL;
+> +	}
+> +#endif
+> +
+> +	return apply_to_existing_page_range(&init_mm, start, size,
+> +					    change_page_attr, fn);
+> +}
+> +
+> +int set_memory_ro(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, pte_wrprotect);
+> +}
+> +
+> +static pte_t pte_mkdirtywrite(pte_t pte)
+> +{
+> +	return pte_mkwrite(pte_mkdirty(pte));
+> +}
+> +
+> +int set_memory_rw(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, pte_mkdirtywrite);
+> +}
+> +
+> +int set_memory_nx(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, pte_exprotect);
+> +}
+> +
+> +int set_memory_x(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, pte_mkexec);
+> +}
+> 
