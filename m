@@ -1,57 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D2836E464
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 07:04:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1469436E46B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 07:19:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FW3MM283Qz30DQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 15:04:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FW3hR0bTyz300T
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 15:19:19 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Kqo19dAD;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Kqo19dAD; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FW3M22XRxz2xZ0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 15:04:12 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FW3Lx3YqYz9vDs;
- Thu, 29 Apr 2021 07:04:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id fRpeOGMYEeso; Thu, 29 Apr 2021 07:04:09 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FW3Lx2K7Yz9vDm;
- Thu, 29 Apr 2021 07:04:09 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 96CD78B843;
- Thu, 29 Apr 2021 07:04:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id TxEZKB0Ca0X7; Thu, 29 Apr 2021 07:04:09 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E906B8B765;
- Thu, 29 Apr 2021 07:04:08 +0200 (CEST)
-Subject: Re: [PATCH v11 3/9] powerpc: Always define MODULES_{VADDR,END}
-To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210429031602.2606654-1-jniethe5@gmail.com>
- <20210429031602.2606654-4-jniethe5@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <111c8736-fff9-ba0a-4749-f9388b32c9bf@csgroup.eu>
-Date: Thu, 29 Apr 2021 07:04:08 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
-MIME-Version: 1.0
-In-Reply-To: <20210429031602.2606654-4-jniethe5@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FW3gy74PCz2xZ0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 15:18:54 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 13T54rhs101732; Thu, 29 Apr 2021 01:18:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=nD5a2mB0T56HgBFjR492HhSCDTpz0YNDcChxpBKxzMI=;
+ b=Kqo19dADjGcCBFfCO7VStowzUCFTxU1mi/qzOPUd7UjGfLGSxIV0dgtKgCPQ7OumPypC
+ C2FG2EOohWpLIRdj0iSdcbO3fJ0AWbWh0AfVHKNoPsiP8TKxC1EyyjepJ7QhitRi8zyk
+ UwVAK5SwPSaUbLsN866tyUJkyy6qC4RDXTxeY1pJ2VmAhTMVWC0ay5POvWDIIH6LKzaK
+ nXIG0b13Coz1w2czWu9MMyLpHcXhMaVpCYWmIw0mg/K3gllmBNUwAj7bpHhbUbU4R3cr
+ sumw5xOc1Y46s6GicLNIK/2pZoXXwruhFE3QxqnRruTfut6T1U4Hg4hyw9nghsnY5o3m vQ== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 387m1130t6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 29 Apr 2021 01:18:47 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13T5Gq1P001568;
+ Thu, 29 Apr 2021 05:18:47 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma01wdc.us.ibm.com with ESMTP id 384ay9t6gw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 29 Apr 2021 05:18:47 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13T5IjFX37814616
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 29 Apr 2021 05:18:46 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D339D28059;
+ Thu, 29 Apr 2021 05:18:45 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5D19828058;
+ Thu, 29 Apr 2021 05:18:45 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.102.17.6])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 29 Apr 2021 05:18:45 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 987F32E2EAC; Thu, 29 Apr 2021 10:48:41 +0530 (IST)
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Subject: [PATCH v2] cpuidle/pseries: Fixup CEDE0 latency only for POWER10
+ onwards
+Date: Thu, 29 Apr 2021 10:48:37 +0530
+Message-Id: <1619673517-10853-1-git-send-email-ego@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 5t4tBNP0zo6cyHcS5qiTrlBOTPCPIP53
+X-Proofpoint-GUID: 5t4tBNP0zo6cyHcS5qiTrlBOTPCPIP53
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-04-29_02:2021-04-28,
+ 2021-04-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 mlxscore=0
+ mlxlogscore=999 phishscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ clxscore=1015 malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104290038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,159 +99,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, npiggin@gmail.com, cmr@codefail.de,
- aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com, dja@axtens.net
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linux-pm@vger.kernel.org,
+ joedecke@de.ibm.com, Michal Suchanek <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
+Commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
+CEDE(0)") sets the exit latency of CEDE(0) based on the latency values
+of the Extended CEDE states advertised by the platform
 
-Le 29/04/2021 à 05:15, Jordan Niethe a écrit :
-> If MODULES_{VADDR,END} are not defined set them to VMALLOC_START and
-> VMALLOC_END respectively. This reduces the need for special cases. For
-> example, powerpc's module_alloc() was previously predicated on
-> MODULES_VADDR being defined but now is unconditionally defined.
-> 
-> This will be useful reducing conditional code in other places that need
-> to allocate from the module region (i.e., kprobes).
-> 
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> ---
-> v10: New to series
-> v11: - Consider more places MODULES_VADDR was being used
-> ---
->   arch/powerpc/include/asm/pgtable.h    | 11 +++++++++++
->   arch/powerpc/kernel/module.c          |  5 +----
->   arch/powerpc/mm/kasan/kasan_init_32.c | 10 +++++-----
->   arch/powerpc/mm/ptdump/ptdump.c       |  4 ++--
->   4 files changed, 19 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-> index c6a676714f04..882fda779648 100644
-> --- a/arch/powerpc/include/asm/pgtable.h
-> +++ b/arch/powerpc/include/asm/pgtable.h
-> @@ -39,6 +39,17 @@ struct mm_struct;
->   #define __S110	PAGE_SHARED_X
->   #define __S111	PAGE_SHARED_X
->   
-> +#ifndef MODULES_VADDR
-> +#define MODULES_VADDR VMALLOC_START
-> +#define MODULES_END VMALLOC_END
-> +#endif
-> +
-> +#if defined(CONFIG_PPC_BOOK3S_32) && defined(CONFIG_STRICT_KERNEL_RWX)
+On POWER9 LPARs, the firmwares advertise a very low value of 2us for
+CEDE1 exit latency on a Dedicated LPAR. The latency advertized by the
+PHYP hypervisor corresponds to the latency required to wakeup from the
+underlying hardware idle state. However the wakeup latency from the
+LPAR perspective should include
 
-No no.
+1. The time taken to transition the CPU from the Hypervisor into the
+   LPAR post wakeup from platform idle state
 
-TASK_SIZE > MODULES_VADDR is ALWAYS wrong, for any target, in any configuration.
+2. Time taken to send the IPI from the source CPU (waker) to the idle
+   target CPU (wakee).
 
-Why is it a problem to leave the test as a BUILD_BUG_ON() in module_alloc() ?
+1. can be measured via timer idle test, where we queue a timer, say
+for 1ms, and enter the CEDE state. When the timer fires, in the timer
+handler we compute how much extra timer over the expected 1ms have we
+consumed. On a a POWER9 LPAR the numbers are
 
-> +#if TASK_SIZE > MODULES_VADDR
-> +#error TASK_SIZE > MODULES_VADDR
-> +#endif
-> +#endif
-> +
->   #ifndef __ASSEMBLY__
->   
->   /* Keep these as a macros to avoid include dependency mess */
-> diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.c
-> index fab84024650c..c60c7457ff47 100644
-> --- a/arch/powerpc/kernel/module.c
-> +++ b/arch/powerpc/kernel/module.c
-> @@ -15,6 +15,7 @@
->   #include <linux/sort.h>
->   #include <asm/setup.h>
->   #include <asm/sections.h>
-> +#include <linux/mm.h>
->   
->   static LIST_HEAD(module_bug_list);
->   
-> @@ -88,7 +89,6 @@ int module_finalize(const Elf_Ehdr *hdr,
->   	return 0;
->   }
->   
-> -#ifdef MODULES_VADDR
->   static __always_inline void *
->   __module_alloc(unsigned long size, unsigned long start, unsigned long end)
->   {
-> @@ -102,8 +102,6 @@ void *module_alloc(unsigned long size)
->   	unsigned long limit = (unsigned long)_etext - SZ_32M;
->   	void *ptr = NULL;
->   
-> -	BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
-> -
->   	/* First try within 32M limit from _etext to avoid branch trampolines */
->   	if (MODULES_VADDR < PAGE_OFFSET && MODULES_END > limit)
->   		ptr = __module_alloc(size, limit, MODULES_END);
-> @@ -113,4 +111,3 @@ void *module_alloc(unsigned long size)
->   
->   	return ptr;
->   }
-> -#endif
-> diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
-> index cf8770b1a692..42c057366ac7 100644
-> --- a/arch/powerpc/mm/kasan/kasan_init_32.c
-> +++ b/arch/powerpc/mm/kasan/kasan_init_32.c
-> @@ -116,11 +116,11 @@ static void __init kasan_unmap_early_shadow_vmalloc(void)
->   
->   	kasan_update_early_region(k_start, k_end, __pte(0));
->   
-> -#ifdef MODULES_VADDR
-> -	k_start = (unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR);
-> -	k_end = (unsigned long)kasan_mem_to_shadow((void *)MODULES_END);
-> -	kasan_update_early_region(k_start, k_end, __pte(0));
-> -#endif
-> +	if (MODULES_VADDR != VMALLOC_START && MODULES_END != VMALLOC_END) {
+CEDE latency measured using a timer (numbers in ns)
+N       Min      Median   Avg       90%ile  99%ile    Max    Stddev
+400     2601     5677     5668.74    5917    6413     9299   455.01
 
-Shouldn't it be an || ?
+1. and 2. combined can be determined by an IPI latency test where we
+send an IPI to an idle CPU and in the handler compute the time
+difference between when the IPI was sent and when the handler ran. We
+see the following numbers on POWER9 LPAR.
 
-As soon as either MODULES_VADDR or MODULES_END differs from the vmalloc boundaries, it needs to be 
-done I think.
+CEDE latency measured using an IPI (numbers in ns)
+N       Min      Median   Avg       90%ile  99%ile    Max    Stddev
+400     711      7564     7369.43   8559    9514      9698   1200.01
 
-> +		k_start = (unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR);
-> +		k_end = (unsigned long)kasan_mem_to_shadow((void *)MODULES_END);
-> +		kasan_update_early_region(k_start, k_end, __pte(0));
-> +	}
->   }
->   
->   void __init kasan_mmu_init(void)
-> diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-> index aca354fb670b..0431457f668f 100644
-> --- a/arch/powerpc/mm/ptdump/ptdump.c
-> +++ b/arch/powerpc/mm/ptdump/ptdump.c
-> @@ -73,7 +73,7 @@ struct addr_marker {
->   
->   static struct addr_marker address_markers[] = {
->   	{ 0,	"Start of kernel VM" },
-> -#ifdef MODULES_VADDR
-> +#if defined(CONFIG_BOOK32_32) && defined(CONFIG_STRICT_KERNEL_RWX)
+Suppose, we consider the 99th percentile latency value measured using
+the IPI to be the wakeup latency, the value would be 9.5us This is in
+the ballpark of the default value of 10us.
 
-Not valid anymore, see https://github.com/linuxppc/linux/commit/80edc68e0479 and 
-https://github.com/linuxppc/linux/commit/9132a2e82adc
+Hence, use the exit latency of CEDE(0) based on the latency values
+advertized by platform only from POWER10 onwards. The values
+advertized on POWER10 platforms is more realistic and informed by the
+latency measurements. For earlier platforms stick to the default value
+of 10us.
 
-The best would be to be able to do something like:
+Reported-by: Enrico Joedecke <joedecke@de.ibm.com>
+Fixes: commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
+CEDE(0)")
+Cc: Michal Suchanek <msuchanek@suse.de>
+Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+---
+v1-->v2 : Updated the commit log with the details of the measured
+          latencies on POWER9 LPARs.
+ drivers/cpuidle/cpuidle-pseries.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-#if MODULES_VADDR != VMALLOC_START
+diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
+index a2b5c6f..7207467 100644
+--- a/drivers/cpuidle/cpuidle-pseries.c
++++ b/drivers/cpuidle/cpuidle-pseries.c
+@@ -419,7 +419,8 @@ static int pseries_idle_probe(void)
+ 			cpuidle_state_table = shared_states;
+ 			max_idle_state = ARRAY_SIZE(shared_states);
+ 		} else {
+-			fixup_cede0_latency();
++			if (pvr_version_is(PVR_POWER10))
++				fixup_cede0_latency();
+ 			cpuidle_state_table = dedicated_states;
+ 			max_idle_state = NR_DEDICATED_STATES;
+ 		}
+-- 
+1.8.3.1
 
-If it doesn't work, then it has to be
-
-#if defined(CONFIG_BOOK32_32) || defined(CONFIG_PPC_8xx)
-
->   	{ 0,	"modules start" },
->   	{ 0,	"modules end" },
->   #endif
-> @@ -359,7 +359,7 @@ static void populate_markers(void)
->   #else
->   	address_markers[i++].start_address = TASK_SIZE;
->   #endif
-> -#ifdef MODULES_VADDR
-> +#if defined(CONFIG_BOOK32_32) && defined(CONFIG_STRICT_KERNEL_RWX)
-
-Same.
-
->   	address_markers[i++].start_address = MODULES_VADDR;
->   	address_markers[i++].start_address = MODULES_END;
->   #endif
-> 
