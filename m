@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E635936E610
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 09:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B74D136E618
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 09:35:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FW6gc65dcz3cmT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 17:33:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FW6j74lh9z3dkn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Apr 2021 17:35:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,33 +18,33 @@ Received: from mout-y-111.mailbox.org (mout-y-111.mailbox.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FW6cg6b7yz2yxP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 17:31:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FW6ck5VMlz30B3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Apr 2021 17:31:18 +1000 (AEST)
 Received: from smtp2.mailbox.org (smtp2.mailbox.org
  [IPv6:2001:67c:2050:105:465:1:2:0])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mout-y-111.mailbox.org (Postfix) with ESMTPS id 4FW6PV1TFHzQjp4;
- Thu, 29 Apr 2021 09:21:34 +0200 (CEST)
+ by mout-y-111.mailbox.org (Postfix) with ESMTPS id 4FW6PX17FyzQjp6;
+ Thu, 29 Apr 2021 09:21:36 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp2.mailbox.org ([80.241.60.241])
  by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de
  [80.241.56.115]) (amavisd-new, port 10030)
- with ESMTP id wUODJZPqggbl; Thu, 29 Apr 2021 09:21:31 +0200 (CEST)
+ with ESMTP id yS90OHEXOS7O; Thu, 29 Apr 2021 09:21:32 +0200 (CEST)
 From: "Christopher M. Riedl" <cmr@bluescreens.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 05/11] powerpc/64s: Add ability to skip SLB preload
-Date: Thu, 29 Apr 2021 02:20:51 -0500
-Message-Id: <20210429072057.8870-6-cmr@bluescreens.de>
+Subject: [PATCH v4 06/11] powerpc: Introduce temporary mm
+Date: Thu, 29 Apr 2021 02:20:52 -0500
+Message-Id: <20210429072057.8870-7-cmr@bluescreens.de>
 In-Reply-To: <20210429072057.8870-1-cmr@bluescreens.de>
 References: <20210429072057.8870-1-cmr@bluescreens.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-MBO-SPAM-Probability: *
 X-Rspamd-Score: 0.57 / 15.00 / 15.00
-X-Rspamd-Queue-Id: 418D917F6
-X-Rspamd-UID: ea0d8a
+X-Rspamd-Queue-Id: 3282917FD
+X-Rspamd-UID: df5873
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,158 +62,164 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Switching to a different mm with Hash translation causes SLB entries to
-be preloaded from the current thread_info. This reduces SLB faults, for
-example when threads share a common mm but operate on different address
-ranges.
+x86 supports the notion of a temporary mm which restricts access to
+temporary PTEs to a single CPU. A temporary mm is useful for situations
+where a CPU needs to perform sensitive operations (such as patching a
+STRICT_KERNEL_RWX kernel) requiring temporary mappings without exposing
+said mappings to other CPUs. A side benefit is that other CPU TLBs do
+not need to be flushed when the temporary mm is torn down.
 
-Preloading entries from the thread_info struct may not always be
-appropriate - such as when switching to a temporary mm. Introduce a new
-boolean in mm_context_t to skip the SLB preload entirely. Also move the
-SLB preload code into a separate function since switch_slb() is already
-quite long. The default behavior (preloading SLB entries from the
-current thread_info struct) remains unchanged.
+Mappings in the temporary mm can be set in the userspace portion of the
+address-space.
+
+Interrupts must be disabled while the temporary mm is in use. HW
+breakpoints, which may have been set by userspace as watchpoints on
+addresses now within the temporary mm, are saved and disabled when
+loading the temporary mm. The HW breakpoints are restored when unloading
+the temporary mm. All HW breakpoints are indiscriminately disabled while
+the temporary mm is in use.
+
+With the Book3s64 Hash MMU the SLB is preloaded with entries from the
+current thread_info struct during switch_slb(). This could cause a
+Machine Check (MCE) due to an SLB Multihit when creating arbitrary
+userspace mappings in the temporary mm later. Disable SLB preload from
+the thread_info struct for any temporary mm to avoid this.
+
+Based on x86 implementation:
+
+commit cefa929c034e
+("x86/mm: Introduce temporary mm structs")
 
 Signed-off-by: Christopher M. Riedl <cmr@bluescreens.de>
 
 ---
 
-v4:  * New to series.
+v4:  * Pass the prev mm instead of NULL to switch_mm_irqs_off() when
+       using/unusing the temp mm as suggested by Jann Horn to keep
+       the context.active counter in-sync on mm/nohash.
+     * Disable SLB preload in the temporary mm when initializing the
+       temp_mm struct.
+     * Include asm/debug.h header to fix build issue with
+       ppc44x_defconfig.
 ---
- arch/powerpc/include/asm/book3s/64/mmu.h |  3 ++
- arch/powerpc/include/asm/mmu_context.h   | 13 ++++++
- arch/powerpc/mm/book3s64/mmu_context.c   |  2 +
- arch/powerpc/mm/book3s64/slb.c           | 56 ++++++++++++++----------
- 4 files changed, 50 insertions(+), 24 deletions(-)
+ arch/powerpc/include/asm/debug.h |  1 +
+ arch/powerpc/kernel/process.c    |  5 +++
+ arch/powerpc/lib/code-patching.c | 67 ++++++++++++++++++++++++++++++++
+ 3 files changed, 73 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-index eace8c3f7b0a1..b23a9dcdee5af 100644
---- a/arch/powerpc/include/asm/book3s/64/mmu.h
-+++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-@@ -130,6 +130,9 @@ typedef struct {
- 	u32 pkey_allocation_map;
- 	s16 execute_only_pkey; /* key holding execute-only protection */
+diff --git a/arch/powerpc/include/asm/debug.h b/arch/powerpc/include/asm/debug.h
+index 86a14736c76c3..dfd82635ea8b3 100644
+--- a/arch/powerpc/include/asm/debug.h
++++ b/arch/powerpc/include/asm/debug.h
+@@ -46,6 +46,7 @@ static inline int debugger_fault_handler(struct pt_regs *regs) { return 0; }
  #endif
-+
-+	/* Do not preload SLB entries from thread_info during switch_slb() */
-+	bool skip_slb_preload;
- } mm_context_t;
  
- static inline u16 mm_ctx_user_psize(mm_context_t *ctx)
-diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
-index 4bc45d3ed8b0e..264787e90b1a1 100644
---- a/arch/powerpc/include/asm/mmu_context.h
-+++ b/arch/powerpc/include/asm/mmu_context.h
-@@ -298,6 +298,19 @@ static inline int arch_dup_mmap(struct mm_struct *oldmm,
+ void __set_breakpoint(int nr, struct arch_hw_breakpoint *brk);
++void __get_breakpoint(int nr, struct arch_hw_breakpoint *brk);
+ bool ppc_breakpoint_available(void);
+ #ifdef CONFIG_PPC_ADV_DEBUG_REGS
+ extern void do_send_trap(struct pt_regs *regs, unsigned long address,
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 89e34aa273e21..8e94cabaea3c3 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -864,6 +864,11 @@ static inline int set_breakpoint_8xx(struct arch_hw_breakpoint *brk)
  	return 0;
  }
  
-+#ifdef CONFIG_PPC_BOOK3S_64
-+
-+static inline void skip_slb_preload_mm(struct mm_struct *mm)
++void __get_breakpoint(int nr, struct arch_hw_breakpoint *brk)
 +{
-+	mm->context.skip_slb_preload = true;
++	memcpy(brk, this_cpu_ptr(&current_brk[nr]), sizeof(*brk));
 +}
 +
-+#else
-+
-+static inline void skip_slb_preload_mm(struct mm_struct *mm) {}
-+
-+#endif /* CONFIG_PPC_BOOK3S_64 */
-+
- #include <asm-generic/mmu_context.h>
+ void __set_breakpoint(int nr, struct arch_hw_breakpoint *brk)
+ {
+ 	memcpy(this_cpu_ptr(&current_brk[nr]), brk, sizeof(*brk));
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 2b1b3e9043ade..cbdfba8a39360 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -17,6 +17,8 @@
+ #include <asm/code-patching.h>
+ #include <asm/setup.h>
+ #include <asm/inst.h>
++#include <asm/mmu_context.h>
++#include <asm/debug.h>
  
- #endif /* __KERNEL__ */
-diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
-index c10fc8a72fb37..3479910264c59 100644
---- a/arch/powerpc/mm/book3s64/mmu_context.c
-+++ b/arch/powerpc/mm/book3s64/mmu_context.c
-@@ -202,6 +202,8 @@ int init_new_context(struct task_struct *tsk, struct mm_struct *mm)
- 	atomic_set(&mm->context.active_cpus, 0);
- 	atomic_set(&mm->context.copros, 0);
- 
-+	mm->context.skip_slb_preload = false;
-+
- 	return 0;
+ static int __patch_instruction(struct ppc_inst *exec_addr, struct ppc_inst instr,
+ 			       struct ppc_inst *patch_addr)
+@@ -46,6 +48,71 @@ int raw_patch_instruction(struct ppc_inst *addr, struct ppc_inst instr)
  }
  
-diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
-index c91bd85eb90e3..da0836cb855af 100644
---- a/arch/powerpc/mm/book3s64/slb.c
-+++ b/arch/powerpc/mm/book3s64/slb.c
-@@ -441,10 +441,39 @@ static void slb_cache_slbie_user(unsigned int index)
- 	asm volatile("slbie %0" : : "r" (slbie_data));
- }
- 
-+static void preload_slb_entries(struct task_struct *tsk, struct mm_struct *mm)
+ #ifdef CONFIG_STRICT_KERNEL_RWX
++
++struct temp_mm {
++	struct mm_struct *temp;
++	struct mm_struct *prev;
++	struct arch_hw_breakpoint brk[HBP_NUM_MAX];
++};
++
++static inline void init_temp_mm(struct temp_mm *temp_mm, struct mm_struct *mm)
 +{
-+	struct thread_info *ti = task_thread_info(tsk);
-+	unsigned char i;
++	/* Do not preload SLB entries from the thread_info struct */
++	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && !radix_enabled())
++		skip_slb_preload_mm(mm);
++
++	temp_mm->temp = mm;
++	temp_mm->prev = NULL;
++	memset(&temp_mm->brk, 0, sizeof(temp_mm->brk));
++}
++
++static inline void use_temporary_mm(struct temp_mm *temp_mm)
++{
++	lockdep_assert_irqs_disabled();
++
++	temp_mm->prev = current->active_mm;
++	switch_mm_irqs_off(temp_mm->prev, temp_mm->temp, current);
++
++	WARN_ON(!mm_is_thread_local(temp_mm->temp));
++
++	if (ppc_breakpoint_available()) {
++		struct arch_hw_breakpoint null_brk = {0};
++		int i = 0;
++
++		for (; i < nr_wp_slots(); ++i) {
++			__get_breakpoint(i, &temp_mm->brk[i]);
++			if (temp_mm->brk[i].type != 0)
++				__set_breakpoint(i, &null_brk);
++		}
++	}
++}
++
++static inline void unuse_temporary_mm(struct temp_mm *temp_mm)
++{
++	lockdep_assert_irqs_disabled();
++
++	switch_mm_irqs_off(temp_mm->temp, temp_mm->prev, current);
 +
 +	/*
-+	 * We gradually age out SLBs after a number of context switches to
-+	 * reduce reload overhead of unused entries (like we do with FP/VEC
-+	 * reload). Each time we wrap 256 switches, take an entry out of the
-+	 * SLB preload cache.
++	 * On book3s64 the active_cpus counter increments in
++	 * switch_mm_irqs_off(). With the Hash MMU this counter affects if TLB
++	 * flushes are local. We have to manually decrement that counter here
++	 * along with removing our current CPU from the mm's cpumask so that in
++	 * the future a different CPU can reuse the temporary mm and still rely
++	 * on local TLB flushes.
 +	 */
-+	tsk->thread.load_slb++;
-+	if (!tsk->thread.load_slb) {
-+		unsigned long pc = KSTK_EIP(tsk);
++	dec_mm_active_cpus(temp_mm->temp);
++	cpumask_clear_cpu(smp_processor_id(), mm_cpumask(temp_mm->temp));
 +
-+		preload_age(ti);
-+		preload_add(ti, pc);
-+	}
++	if (ppc_breakpoint_available()) {
++		int i = 0;
 +
-+	for (i = 0; i < ti->slb_preload_nr; i++) {
-+		unsigned char idx;
-+		unsigned long ea;
-+
-+		idx = (ti->slb_preload_tail + i) % SLB_PRELOAD_NR;
-+		ea = (unsigned long)ti->slb_preload_esid[idx] << SID_SHIFT;
-+
-+		slb_allocate_user(mm, ea);
++		for (; i < nr_wp_slots(); ++i)
++			if (temp_mm->brk[i].type != 0)
++				__set_breakpoint(i, &temp_mm->brk[i]);
 +	}
 +}
 +
- /* Flush all user entries from the segment table of the current processor. */
- void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
- {
--	struct thread_info *ti = task_thread_info(tsk);
- 	unsigned char i;
+ static DEFINE_PER_CPU(struct vm_struct *, text_poke_area);
  
- 	/*
-@@ -502,29 +531,8 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
- 
- 	copy_mm_to_paca(mm);
- 
--	/*
--	 * We gradually age out SLBs after a number of context switches to
--	 * reduce reload overhead of unused entries (like we do with FP/VEC
--	 * reload). Each time we wrap 256 switches, take an entry out of the
--	 * SLB preload cache.
--	 */
--	tsk->thread.load_slb++;
--	if (!tsk->thread.load_slb) {
--		unsigned long pc = KSTK_EIP(tsk);
--
--		preload_age(ti);
--		preload_add(ti, pc);
--	}
--
--	for (i = 0; i < ti->slb_preload_nr; i++) {
--		unsigned char idx;
--		unsigned long ea;
--
--		idx = (ti->slb_preload_tail + i) % SLB_PRELOAD_NR;
--		ea = (unsigned long)ti->slb_preload_esid[idx] << SID_SHIFT;
--
--		slb_allocate_user(mm, ea);
--	}
-+	if (!mm->context.skip_slb_preload)
-+		preload_slb_entries(tsk, mm);
- 
- 	/*
- 	 * Synchronize slbmte preloads with possible subsequent user memory
+ #if IS_BUILTIN(CONFIG_LKDTM)
 -- 
 2.26.1
 
