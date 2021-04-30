@@ -1,84 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07B836FE32
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 17:58:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3893A36FE63
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 18:19:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FWxqd022Tz30Dq
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 01:58:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FWyHm1GTWz2yy9
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 02:19:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=V77eyNJ+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=DkVi50Av;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::836;
- helo=mail-qt1-x836.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=embeddedor.com (client-ip=192.185.45.95;
+ helo=gateway21.websitewelcome.com; envelope-from=gustavo@embeddedor.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=V77eyNJ+; dkim-atps=neutral
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com
- [IPv6:2607:f8b0:4864:20::836])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=embeddedor.com header.i=@embeddedor.com
+ header.a=rsa-sha256 header.s=default header.b=DkVi50Av; 
+ dkim-atps=neutral
+X-Greylist: delayed 1364 seconds by postgrey-1.36 at boromir;
+ Sat, 01 May 2021 02:19:07 AEST
+Received: from gateway21.websitewelcome.com (gateway21.websitewelcome.com
+ [192.185.45.95])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FWxq96QNdz2xxv
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 May 2021 01:58:13 +1000 (AEST)
-Received: by mail-qt1-x836.google.com with SMTP id j19so11647160qtx.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 08:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=txpnggSRy0s2gYU5zTHUPO9Qh59BlspuRXR7po+v5tA=;
- b=V77eyNJ+FDEzu3uhX7KcS/udKdeOhM1xkLgFWzkH6f4Wo7Df+TixEcBzMvGgEfTYhg
- QZpZ16d88ST5UjWy+pxNbIWBuVlydpDFZSEglY2ardttttEn7bucQC5nujukc1RUQd3M
- 0XyrRB1Q+kIN0bIdzGcRTlTBxovKPBvcJCCAZhhDFm0aEWfM9i37mjYVO4WMraaPsi4U
- 1/weS/HtRleHsvl4bhOfowXZGPdQVy+gfDKTrgMF4KNIj8S8K80ABBAdUPC96qtFg2VJ
- +ERoCFixHbtL/83N8vg8Qi7PZjF8HHzSKxIsf0gBxa2RuAMs6fPFNpkaYCIF27UTp9Ot
- UHDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=txpnggSRy0s2gYU5zTHUPO9Qh59BlspuRXR7po+v5tA=;
- b=ikn8Kzc6aIcyUdtMtiCamAEbEzbhkkG/5FT/TgbpD9MMtaebcAS5EBvE+4eF7RvR31
- 8F3sQFYa4GzgWugjKcWbArAaNgzzzy5Pv0v7MHGzN32wBPHfYciklfQZJSRUmyEAzhns
- eOuEEftQjbeJukVsxm9mpTkf7IQ93KZcJmyE6YCnOdhyd5Q5WPyk0B9AxPPH3HoRoILW
- d4kKTegxuo3Dh7eqKiYS3xbKvtV7OsKuEKXrhntY0cyNekAZcsifMh2WM/jyRyc31cDF
- a+TIx0TqKhavjilWRr2PIbhIsKYeNONztzgXC8OA7JObmYlacCmwfrbVwJIN5hYWjY15
- o1aw==
-X-Gm-Message-State: AOAM532OU2v5dz87RX8q7YOeSPWsN9i7Rk684IK/HjO1v/myP2dhuZ7S
- zYQHfkRiC54PGKvngE4bIA0=
-X-Google-Smtp-Source: ABdhPJzBB5lwBJT3CBidEwnCFEsZ0inMPFXsG1Jf5aBj3/N3JcS6JJQTg4HfIpLGEe2E0JSPF08Nsw==
-X-Received: by 2002:ac8:6703:: with SMTP id e3mr4924342qtp.247.1619798289826; 
- Fri, 30 Apr 2021 08:58:09 -0700 (PDT)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
- ([2804:14c:482:7b04::1001])
- by smtp.gmail.com with ESMTPSA id 75sm2517661qta.58.2021.04.30.08.58.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Apr 2021 08:58:09 -0700 (PDT)
-Message-ID: <dafc859cbd2759d3560364302b492c0dd0df1658.camel@gmail.com>
-Subject: Re: [PATCH v3 01/11] powerpc/pseries/iommu: Replace hard-coded page
- shift
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
- <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>, 
- Christophe Leroy <christophe.leroy@c-s.fr>, Nicolin Chen
- <nicoleotsuka@gmail.com>, Niklas Schnelle <schnelle@linux.ibm.com>
-Date: Fri, 30 Apr 2021 12:58:03 -0300
-In-Reply-To: <7d0fec07-a663-f683-8d09-39e952cba418@ozlabs.ru>
-References: <20210422070721.463912-1-leobras.c@gmail.com>
- <20210422070721.463912-2-leobras.c@gmail.com>
- <7d0fec07-a663-f683-8d09-39e952cba418@ozlabs.ru>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FWyHH0Rqsz2xZG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 May 2021 02:19:07 +1000 (AEST)
+Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
+ by gateway21.websitewelcome.com (Postfix) with ESMTP id 9EEE7400CAC7E
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 10:56:17 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22]) by cmsmtp with SMTP
+ id cVV3lE5HTb8LycVV3l6ywG; Fri, 30 Apr 2021 10:56:17 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+ :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Om4ZY5IbR19QUfg7UpptCRqjveQax7WqnKvkVNKEw60=; b=DkVi50Avya1CiFlM/pC74kdFZb
+ DC5++rKV2ax2Pj+xzqzHZIp0+MzKKyA9u7coLXcUQ3S19AIyxbS0UXXkenkHuhghE9mjzRyNElVzb
+ EiaXYAIefqo22e44jo5Gt+BnoZvFiKQexMpOdYL2Gpx6qKIf7NvSfKP4QpDKFy/cRyS/ceK4t5zEf
+ BP9mJydmEVVwIpXm1EDvjEoi2yb5IKBzilP4xtQpAMKV4YmyS99k14k00wozGpCM2zZKA6DyabKj9
+ VutcrxfmfxU+t2FWRHBzUllg6XvZdWWynd3nL20MWZjruty9oOVOR1tBUtFfUzvE1BpiWCdJn8bWs
+ A9j85RSg==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:33768
+ helo=[192.168.15.8])
+ by gator4166.hostgator.com with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94)
+ (envelope-from <gustavo@embeddedor.com>)
+ id 1lcVUy-003wNy-PP; Fri, 30 Apr 2021 10:56:12 -0500
+Subject: Re: Radeon NI: GIT kernel with the nislands_smc commit doesn't boot
+ on a Freescale P5040 board and P.A.Semi Nemo board
+To: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>,
+ "gustavoars@kernel.org" <gustavoars@kernel.org>,
+ "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>
+References: <3eedbe78-1fbd-4763-a7f3-ac5665e76a4a@xenosoft.de>
+ <MN2PR12MB44881C5F5E24888E2590BF74F75E9@MN2PR12MB4488.namprd12.prod.outlook.com>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Message-ID: <eaf27853-916c-e095-7b7a-afb5256a6f67@embeddedor.com>
+Date: Fri, 30 Apr 2021 10:56:43 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
+In-Reply-To: <MN2PR12MB44881C5F5E24888E2590BF74F75E9@MN2PR12MB4488.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - lists.ozlabs.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1lcVUy-003wNy-PP
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8])
+ [187.162.31.110]:33768
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 8
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,236 +100,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>,
+ Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
+ mad skateman <madskateman@gmail.com>, Olof Johansson <olof@lixom.net>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks Alexey!
-
-On Fri, 2021-04-23 at 17:27 +1000, Alexey Kardashevskiy wrote:
-> 
-> On 22/04/2021 17:07, Leonardo Bras wrote:
-> > Some functions assume IOMMU page size can only be 4K (pageshift == 12).
-> > Update them to accept any page size passed, so we can use 64K pages.
-> > 
-> > In the process, some defines like TCE_SHIFT were made obsolete, and then
-> > removed.
-> > 
-> > IODA3 Revision 3.0_prd1 (OpenPowerFoundation), Figures 3.4 and 3.5 show
-> > a RPN of 52-bit, and considers a 12-bit pageshift, so there should be
-> > no need of using TCE_RPN_MASK, which masks out any bit after 40 in rpn.
-> > It's usage removed from tce_build_pSeries(), tce_build_pSeriesLP(), and
-> > tce_buildmulti_pSeriesLP().
-> 
-> 
-> After rereading the patch, I wonder why we had this TCE_RPN_MASK at all 
-> but what is certain is that this has nothing to do with IODA3 as these 
-> TCEs are guest phys addresses in pseries and IODA3 is bare metal. Except...
-> 
-> 
-> > Most places had a tbl struct, so using tbl->it_page_shift was simple.
-> > tce_free_pSeriesLP() was a special case, since callers not always have a
-> > tbl struct, so adding a tceshift parameter seems the right thing to do.
-> > 
-> > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-> > Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> > ---
-> >   arch/powerpc/include/asm/tce.h         |  8 ------
-> >   arch/powerpc/platforms/pseries/iommu.c | 39 +++++++++++++++-----------
-> >   2 files changed, 23 insertions(+), 24 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/tce.h b/arch/powerpc/include/asm/tce.h
-> > index db5fc2f2262d..0c34d2756d92 100644
-> > --- a/arch/powerpc/include/asm/tce.h
-> > +++ b/arch/powerpc/include/asm/tce.h
-> > @@ -19,15 +19,7 @@
-> >   #define TCE_VB			0
-> >   #define TCE_PCI			1
-> >   
-> > 
-> > -/* TCE page size is 4096 bytes (1 << 12) */
-> > -
-> > -#define TCE_SHIFT	12
-> > -#define TCE_PAGE_SIZE	(1 << TCE_SHIFT)
-> > -
-> >   #define TCE_ENTRY_SIZE		8		/* each TCE is 64 bits */
-> > -
-> > -#define TCE_RPN_MASK		0xfffffffffful  /* 40-bit RPN (4K pages) */
-> > -#define TCE_RPN_SHIFT		12
-> >   #define TCE_VALID		0x800		/* TCE valid */
-> >   #define TCE_ALLIO		0x400		/* TCE valid for all lpars */
-> >   #define TCE_PCI_WRITE		0x2		/* write from PCI allowed */
-> > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> > index 67c9953a6503..796ab356341c 100644
-> > --- a/arch/powerpc/platforms/pseries/iommu.c
-> > +++ b/arch/powerpc/platforms/pseries/iommu.c
-> > @@ -107,6 +107,8 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
-> >   	u64 proto_tce;
-> >   	__be64 *tcep;
-> >   	u64 rpn;
-> > +	const unsigned long tceshift = tbl->it_page_shift;
-> > +	const unsigned long pagesize = IOMMU_PAGE_SIZE(tbl);
-> 
-> (nit: only used once)
-> 
-> >   
-> > 
-> >   	proto_tce = TCE_PCI_READ; // Read allowed
-> >   
-> > 
-> > @@ -117,10 +119,10 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
-> 
-> 
-> ... this pseries which is not pseriesLP, i.e. no LPAR == bare metal 
-> pseries such as ancient power5 or cellbe (I guess) and for those 
-> TCE_RPN_MASK may actually make sense, keep it.
-> 
-> The rest of the patch looks good. Thanks,
-> 
-> 
-> >   
-> > 
-> >   	while (npages--) {
-> >   		/* can't move this out since we might cross MEMBLOCK boundary */
-> > -		rpn = __pa(uaddr) >> TCE_SHIFT;
-> > -		*tcep = cpu_to_be64(proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT);
-> > +		rpn = __pa(uaddr) >> tceshift;
-> > +		*tcep = cpu_to_be64(proto_tce | rpn << tceshift);
-> >   
-> > 
-> > -		uaddr += TCE_PAGE_SIZE;
-> > +		uaddr += pagesize;
-> >   		tcep++;
-> >   	}
-> >   	return 0;
-> > @@ -146,7 +148,7 @@ static unsigned long tce_get_pseries(struct iommu_table *tbl, long index)
-> >   	return be64_to_cpu(*tcep);
-> >   }
-> >   
-> > 
-> > -static void tce_free_pSeriesLP(unsigned long liobn, long, long);
-> > +static void tce_free_pSeriesLP(unsigned long liobn, long, long, long);
-> >   static void tce_freemulti_pSeriesLP(struct iommu_table*, long, long);
-> >   
-> > 
-> >   static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
-> > @@ -166,12 +168,12 @@ static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
-> >   		proto_tce |= TCE_PCI_WRITE;
-> >   
-> > 
-> >   	while (npages--) {
-> > -		tce = proto_tce | (rpn & TCE_RPN_MASK) << tceshift;
-> > +		tce = proto_tce | rpn << tceshift;
-> >   		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, tce);
-> >   
-> > 
-> >   		if (unlikely(rc == H_NOT_ENOUGH_RESOURCES)) {
-> >   			ret = (int)rc;
-> > -			tce_free_pSeriesLP(liobn, tcenum_start,
-> > +			tce_free_pSeriesLP(liobn, tcenum_start, tceshift,
-> >   			                   (npages_start - (npages + 1)));
-> >   			break;
-> >   		}
-> > @@ -205,10 +207,11 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
-> >   	long tcenum_start = tcenum, npages_start = npages;
-> >   	int ret = 0;
-> >   	unsigned long flags;
-> > +	const unsigned long tceshift = tbl->it_page_shift;
-> >   
-> > 
-> >   	if ((npages == 1) || !firmware_has_feature(FW_FEATURE_PUT_TCE_IND)) {
-> >   		return tce_build_pSeriesLP(tbl->it_index, tcenum,
-> > -					   tbl->it_page_shift, npages, uaddr,
-> > +					   tceshift, npages, uaddr,
-> >   		                           direction, attrs);
-> >   	}
-> >   
-> > 
-> > @@ -225,13 +228,13 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
-> >   		if (!tcep) {
-> >   			local_irq_restore(flags);
-> >   			return tce_build_pSeriesLP(tbl->it_index, tcenum,
-> > -					tbl->it_page_shift,
-> > +					tceshift,
-> >   					npages, uaddr, direction, attrs);
-> >   		}
-> >   		__this_cpu_write(tce_page, tcep);
-> >   	}
-> >   
-> > 
-> > -	rpn = __pa(uaddr) >> TCE_SHIFT;
-> > +	rpn = __pa(uaddr) >> tceshift;
-> >   	proto_tce = TCE_PCI_READ;
-> >   	if (direction != DMA_TO_DEVICE)
-> >   		proto_tce |= TCE_PCI_WRITE;
-> > @@ -245,12 +248,12 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
-> >   		limit = min_t(long, npages, 4096/TCE_ENTRY_SIZE);
-> >   
-> > 
-> >   		for (l = 0; l < limit; l++) {
-> > -			tcep[l] = cpu_to_be64(proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT);
-> > +			tcep[l] = cpu_to_be64(proto_tce | rpn << tceshift);
-> >   			rpn++;
-> >   		}
-> >   
-> > 
-> >   		rc = plpar_tce_put_indirect((u64)tbl->it_index,
-> > -					    (u64)tcenum << 12,
-> > +					    (u64)tcenum << tceshift,
-> >   					    (u64)__pa(tcep),
-> >   					    limit);
-> >   
-> > 
-> > @@ -277,12 +280,13 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
-> >   	return ret;
-> >   }
-> >   
-> > 
-> > -static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long npages)
-> > +static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
-> > +			       long npages)
-> >   {
-> >   	u64 rc;
-> >   
-> > 
-> >   	while (npages--) {
-> > -		rc = plpar_tce_put((u64)liobn, (u64)tcenum << 12, 0);
-> > +		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, 0);
-> >   
-> > 
-> >   		if (rc && printk_ratelimit()) {
-> >   			printk("tce_free_pSeriesLP: plpar_tce_put failed. rc=%lld\n", rc);
-> > @@ -301,9 +305,11 @@ static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long n
-> >   	u64 rc;
-> >   
-> > 
-> >   	if (!firmware_has_feature(FW_FEATURE_STUFF_TCE))
-> > -		return tce_free_pSeriesLP(tbl->it_index, tcenum, npages);
-> > +		return tce_free_pSeriesLP(tbl->it_index, tcenum,
-> > +					  tbl->it_page_shift, npages);
-> >   
-> > 
-> > -	rc = plpar_tce_stuff((u64)tbl->it_index, (u64)tcenum << 12, 0, npages);
-> > +	rc = plpar_tce_stuff((u64)tbl->it_index,
-> > +			     (u64)tcenum << tbl->it_page_shift, 0, npages);
-> >   
-> > 
-> >   	if (rc && printk_ratelimit()) {
-> >   		printk("tce_freemulti_pSeriesLP: plpar_tce_stuff failed\n");
-> > @@ -319,7 +325,8 @@ static unsigned long tce_get_pSeriesLP(struct iommu_table *tbl, long tcenum)
-> >   	u64 rc;
-> >   	unsigned long tce_ret;
-> >   
-> > 
-> > -	rc = plpar_tce_get((u64)tbl->it_index, (u64)tcenum << 12, &tce_ret);
-> > +	rc = plpar_tce_get((u64)tbl->it_index,
-> > +			   (u64)tcenum << tbl->it_page_shift, &tce_ret);
-> >   
-> > 
-> >   	if (rc && printk_ratelimit()) {
-> >   		printk("tce_get_pSeriesLP: plpar_tce_get failed. rc=%lld\n", rc);
-> > 
-> 
 
 
+On 4/30/21 10:26, Deucher, Alexander wrote:
+> [AMD Public Use]
+> 
+> + Gustavo, amd-gfx
+> 
+>> -----Original Message-----
+>> From: Christian Zigotzky <chzigotzky@xenosoft.de>
+>> Sent: Friday, April 30, 2021 8:00 AM
+>> To: gustavoars@kernel.org; Deucher, Alexander 
+>> <Alexander.Deucher@amd.com>
+>> Cc: R.T.Dickinson <rtd2@xtra.co.nz>; Darren Stevens <darren@stevens- 
+>> zone.net>; mad skateman <madskateman@gmail.com>; linuxppc-dev 
+>> <linuxppc-dev@lists.ozlabs.org>; Olof Johansson <olof@lixom.net>; 
+>> Maling list - DRI developers <dri-devel@lists.freedesktop.org>; Michel 
+>> Dänzer <michel@daenzer.net>; Christian Zigotzky <info@xenosoft.de>
+>> Subject: Radeon NI: GIT kernel with the nislands_smc commit doesn't 
+>> boot on a Freescale P5040 board and P.A.Semi Nemo board
+>>
+>> Hello,
+>>
+>> The Nemo board (A-EON AmigaOne X1000) [1] and the FSL P5040 Cyrus+ 
+>> board (A-EON AmigaOne X5000) [2] with installed AMD Radeon HD6970 NI 
+>> graphics cards (Cayman XT) [3] don't boot with the latest git kernel 
+>> anymore after the commit "drm/radeon/nislands_smc.h: Replace 
+>> one-element array with flexible-array member in struct NISLANDS_SMC_SWSTATE branch" [4].
+>> This git kernel boots in a virtual e5500 QEMU machine with a VirtIO-GPU [5].
+>>
+>> I bisected today [6].
+>>
+>> Result: drm/radeon/nislands_smc.h: Replace one-element array with 
+>> flexible-array member in struct NISLANDS_SMC_SWSTATE branch
+>> (434fb1e7444a2efc3a4ebd950c7f771ebfcffa31) [4] is the first bad commit.
+>>
+>> I was able to revert this commit [7] and after a new compiling, the 
+>> kernel boots without any problems on my AmigaOnes.
+>>
+>> After that I created a patch for reverting this commit for new git test kernels.
+>> [3]
+>>
+>> The kernel compiles and boots with this patch on my AmigaOnes. Please 
+>> find attached the kernel config files.
+>>
+>> Please check the first bad commit.
+
+I'll have a look.
+
+Thanks for the report!
+--
+Gustavo
+
+>>
+>> Thanks,
+>> Christian
+>>
+>> [1]
+>> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fen.
+>> wikipedia.org%2Fwiki%2FAmigaOne_X1000&amp;data=04%7C01%7Calexand
+>> er.deucher%40amd.com%7C0622549383fb4320346b08d90bcf7be1%7C3dd89
+>> 61fe4884e608e11a82d994e183d%7C0%7C0%7C637553808670161651%7CUnkn
+>> own%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik
+>> 1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=PNSrApUdMrku20hH7dEKlJJ
+>> TBi7Qp5JOkqpA4MvKqdE%3D&amp;reserved=0
+>> [2]
+>> https://nam11.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwiki.
+>> a miga.org%2Findex.php%3Ftitle%3DX5000&amp;data=04%7C01%7Calexander
+>> .deucher%40amd.com%7C0622549383fb4320346b08d90bcf7be1%7C3dd8961f
+>> e4884e608e11a82d994e183d%7C0%7C0%7C637553808670161651%7CUnknow
+>> n%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1ha
+>> WwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=B8Uvhs25%2FP3RfnL1AgICN3Y4
+>> CEXeCE1yIoi3vvwvGto%3D&amp;reserved=0
+>> [3]
+>> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforu
+>> m.hyperion-
+>> entertainment.com%2Fviewtopic.php%3Ff%3D35%26t%3D4377&amp;data=
+>> 04%7C01%7Calexander.deucher%40amd.com%7C0622549383fb4320346b08d
+>> 90bcf7be1%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C63755380
+>> 8670161651%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIj
+>> oiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=TokXplD
+>> Tvg3%2BZMPLCgR1fs%2BN2X9MIfLXLW67MAM2Qsk%3D&amp;reserved=0
+>> [4]
+>> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.
+>> k ernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git%
+>> 2Fcommit%2F%3Fid%3D434fb1e7444a2efc3a4ebd950c7f771ebfcffa31&amp;d
+>> ata=04%7C01%7Calexander.deucher%40amd.com%7C0622549383fb4320346
+>> b08d90bcf7be1%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C6375
+>> 53808670161651%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiL
+>> CJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=JC
+>> M4xvPEnWdckcTPbQ2Ujv%2FAiMMsFMzzl4Pr%2FRPlcMQ%3D&amp;reserve
+>> d=0
+>> [5] qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage - 
+>> drive format=raw,file=MintPPC32-X5000.img,index=0,if=virtio -netdev
+>> user,id=mynet0 -device virtio-net-pci,netdev=mynet0 -append "rw 
+>> root=/dev/vda" -device virtio-vga -usb -device usb-ehci,id=ehci 
+>> -device usb- tablet -device virtio-keyboard-pci -smp 4 -vnc :1 [6] 
+>> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforu
+>> m.hyperion-
+>> entertainment.com%2Fviewtopic.php%3Fp%3D53074%23p53074&amp;data
+>> =04%7C01%7Calexander.deucher%40amd.com%7C0622549383fb4320346b08
+>> d90bcf7be1%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C6375538
+>> 08670161651%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQ
+>> IjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=RXfSlY
+>> A3bDEFas0%2Fk2vMWsl2l0nuhS2ecjZgSBLc%2Bs4%3D&amp;reserved=0
+>> [7] git revert 434fb1e7444a2efc3a4ebd950c7f771ebfcffa3
