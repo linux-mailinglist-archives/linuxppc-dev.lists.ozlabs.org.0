@@ -1,61 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9167F37015E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 21:39:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DA737022B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 22:37:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FX2kB3dVJz300Q
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 05:39:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FX40x3hRjz30D8
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 06:37:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F3L610vR;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RlxmxGYJ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RlxmxGYJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=F3L610vR; 
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=rgb@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=RlxmxGYJ; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=RlxmxGYJ; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FX2jk1wM9z2xgP
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 May 2021 05:38:50 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 86A636146D;
- Fri, 30 Apr 2021 19:38:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1619811525;
- bh=prevvquMQad1iKc+Q61AiVTlFP+5a6b0Bb82z59oqIo=;
- h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
- b=F3L610vRGq5ve5N4OTCm4+tfqZF82gXDvkX1PHAPX+lSguuFiIna4hyTWP2zFrHq2
- yQ2KjIlPU05LAzR+Ksau6mDH2apGxydZFct6o/Myn9UHEprxSraVhURzlcypkQVWiE
- g9SMiiRD405Z/AYVqrS52m/8dy1RY4BerRa2XzCDXqWNkvoHk5Q+9ymOPICF3lWhTg
- wknv3SM0wwBdPW6L4dxvVm8Lt4s1kOP/v7VhThu9JQZHaywwcP8RRgj/Dc7dKtG2Pt
- mBX0AzRhx/xp2qFJzOiBF7aHp3kDsk5mtZREHKcTZIkLeVETq1Lmt7G1FWXgPAJWuI
- kwhSbMjyjNT0A==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
- [127.0.0.1])
- by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 6A88360A3A;
- Fri, 30 Apr 2021 19:38:45 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.13-1 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87im44a087.fsf@mpe.ellerman.id.au>
-References: <87im44a087.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List
- <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <87im44a087.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.13-1
-X-PR-Tracked-Commit-Id: 5256426247837feb8703625bda7fcfc824af04cf
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: c70a4be130de333ea079c59da41cc959712bb01c
-Message-Id: <161981152537.3374.17497450277630518410.pr-tracker-bot@kernel.org>
-Date: Fri, 30 Apr 2021 19:38:45 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FX40T5y7Rz2y6N
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 May 2021 06:36:40 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1619814995;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6dBy9l8QU+7ZgqdM7cr2pe0TQ8wrq76o+ZpCXmDmlQY=;
+ b=RlxmxGYJCkJIasKPMiC4ynIT3tVhRcmC8A1gdrGc/AHZ3CLgXoKRAuCPomQxt5R8Om0EMa
+ tqUPInkKKTSfOVXCtHbFIddlG/fRqrbJ5kHikwBi6KXw6oyA95drCqIlg7qtN76kRz87YT
+ odTMhwwN9lbu6lRxEKmlTHkUedC8mAQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1619814995;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6dBy9l8QU+7ZgqdM7cr2pe0TQ8wrq76o+ZpCXmDmlQY=;
+ b=RlxmxGYJCkJIasKPMiC4ynIT3tVhRcmC8A1gdrGc/AHZ3CLgXoKRAuCPomQxt5R8Om0EMa
+ tqUPInkKKTSfOVXCtHbFIddlG/fRqrbJ5kHikwBi6KXw6oyA95drCqIlg7qtN76kRz87YT
+ odTMhwwN9lbu6lRxEKmlTHkUedC8mAQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-251-T2MzehsUP4mNxEb4snvoHg-1; Fri, 30 Apr 2021 16:36:30 -0400
+X-MC-Unique: T2MzehsUP4mNxEb4snvoHg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4B0C318B613D;
+ Fri, 30 Apr 2021 20:36:28 +0000 (UTC)
+Received: from madcap2.tricolour.ca (unknown [10.3.128.45])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4939C614EF;
+ Fri, 30 Apr 2021 20:36:15 +0000 (UTC)
+From: Richard Guy Briggs <rgb@redhat.com>
+To: Linux-Audit Mailing List <linux-audit@redhat.com>,
+ LKML <linux-kernel@vger.kernel.org>, linux-fsdevel@vger.kernel.org
+Subject: [PATCH v3 0/3] audit: add support for openat2
+Date: Fri, 30 Apr 2021 16:35:20 -0400
+Message-Id: <cover.1619811762.git.rgb@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,38 +80,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cascardo@canonical.com, tony.ambardar@gmail.com, srikar@linux.vnet.ibm.com,
- sbhat@linux.ibm.com, tyreld@linux.ibm.com, aik@ozlabs.ru, jniethe5@gmail.com,
- bigeasy@linutronix.de, cmr@codefail.de, avagin@gmail.com,
- sandipan@linux.ibm.com, lee.jones@linaro.org, jiapeng.chong@linux.alibaba.com,
- dave@stgolabs.net, unixbhaskar@gmail.com, lkp@intel.com, dima@arista.com,
- aneesh.kumar@linux.ibm.com, masahiroy@kernel.org, danielhb413@gmail.com,
- haren@linux.ibm.com, dingsenjie@yulong.com, ganeshgr@linux.ibm.com,
- geert@linux-m68k.org, naveen.n.rao@linux.vnet.ibm.com, nathanl@linux.ibm.com,
- ravi.bangoria@linux.ibm.com, elver@google.com, ajd@linux.ibm.com,
- leobras.c@gmail.com, chenhuang5@huawei.com, efremov@linux.com,
- nathan@kernel.org, maddy@linux.ibm.com, cuibixuan@huawei.com, clg@kaod.org,
- pulehui@huawei.com, yukuai3@huawei.com, ldufour@linux.ibm.com,
- heying24@huawei.com, colin.king@canonical.com, dja@axtens.net,
- christophe.leroy@c-s.fr, atrajeev@linux.vnet.ibm.com, sxwjean@gmail.com,
- linuxppc-dev@lists.ozlabs.org, rdunlap@infradead.org, npiggin@gmail.com,
- mahesh@linux.ibm.com, lihuafei1@huawei.com, linux-kernel@vger.kernel.org,
- wsa@kernel.org, zhang.yunkai@zte.com.cn, yang.lee@linux.alibaba.com,
- fbarrat@linux.ibm.com, vaibhav@linux.ibm.com,
- Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ Paul Moore <paul@paul-moore.com>, linux-parisc@vger.kernel.org,
+ Arnd Bergmann <arnd@kernel.org>, Richard Guy Briggs <rgb@redhat.com>,
+ x86@kernel.org, Eric Paris <eparis@redhat.com>,
+ Aleksa Sarai <cyphar@cyphar.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+ Eric Paris <eparis@parisplace.org>, Steve Grubb <sgrubb@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Fri, 30 Apr 2021 14:02:32 +1000:
+The openat2(2) syscall was added in v5.6.  Add support for openat2 to the
+audit syscall classifier and for recording openat2 parameters that cannot
+be captured in the syscall parameters of the SYSCALL record.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.13-1
+Supporting userspace code can be found in
+https://github.com/rgbriggs/audit-userspace/tree/ghau-openat2
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c70a4be130de333ea079c59da41cc959712bb01c
+Supporting test case can be found in
+https://github.com/linux-audit/audit-testsuite/pull/103
 
-Thank you!
+Changelog:
+v3:
+- re-add commit descriptions that somehow got dropped
+- add new file to MAINTAINERS
+
+v2:
+- add include/linux/auditscm.h for audit syscall class macros due to syscall redefinition warnings:
+        arch/x86/ia32/audit.c:3:
+        ./include/linux/audit.h:12,
+        ./include/linux/sched.h:22,
+        ./include/linux/seccomp.h:21,
+        ./arch/x86/include/asm/seccomp.h:5,
+        ./arch/x86/include/asm/unistd.h:20,
+        ./arch/x86/include/generated/uapi/asm/unistd_64.h:4: warning: "__NR_read" redefined #define __NR_read 0
+	...
+        ./arch/x86/include/generated/uapi/asm/unistd_64.h:338: warning: "__NR_rseq" redefined #define __NR_rseq 334
+    previous:
+        arch/x86/ia32/audit.c:2:
+        ./arch/x86/include/generated/uapi/asm/unistd_32.h:7: note: this is the location of the previous definition #define __NR_read 3                                                                                                      
+	...
+        ./arch/x86/include/generated/uapi/asm/unistd_32.h:386: note: this is the location of the previous definition #define __NR_rseq 386
+
+Richard Guy Briggs (3):
+  audit: replace magic audit syscall class numbers with macros
+  audit: add support for the openat2 syscall
+  audit: add OPENAT2 record to list how
+
+ MAINTAINERS                        |  1 +
+ arch/alpha/kernel/audit.c          | 10 ++++++----
+ arch/ia64/kernel/audit.c           | 10 ++++++----
+ arch/parisc/kernel/audit.c         | 10 ++++++----
+ arch/parisc/kernel/compat_audit.c  | 11 +++++++----
+ arch/powerpc/kernel/audit.c        | 12 +++++++-----
+ arch/powerpc/kernel/compat_audit.c | 13 ++++++++-----
+ arch/s390/kernel/audit.c           | 12 +++++++-----
+ arch/s390/kernel/compat_audit.c    | 13 ++++++++-----
+ arch/sparc/kernel/audit.c          | 12 +++++++-----
+ arch/sparc/kernel/compat_audit.c   | 13 ++++++++-----
+ arch/x86/ia32/audit.c              | 13 ++++++++-----
+ arch/x86/kernel/audit_64.c         | 10 ++++++----
+ fs/open.c                          |  2 ++
+ include/linux/audit.h              | 11 +++++++++++
+ include/linux/auditscm.h           | 24 +++++++++++++++++++++++
+ include/uapi/linux/audit.h         |  1 +
+ kernel/audit.h                     |  2 ++
+ kernel/auditsc.c                   | 31 ++++++++++++++++++++++++------
+ lib/audit.c                        | 14 +++++++++-----
+ lib/compat_audit.c                 | 15 ++++++++++-----
+ 21 files changed, 169 insertions(+), 71 deletions(-)
+ create mode 100644 include/linux/auditscm.h
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.27.0
+
