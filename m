@@ -2,99 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C7B36FE4C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 18:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0618536FE93
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 18:32:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FWy9g32Jmz30Cw
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 02:14:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FWyZm08Kzz2yxn
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 02:32:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N0ul8jnC;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=KVk4ryPU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f29;
+ helo=mail-qv1-xf29.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=N0ul8jnC; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=KVk4ryPU; dkim-atps=neutral
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com
+ [IPv6:2607:f8b0:4864:20::f29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FWy9B2Rvcz2y6N
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 May 2021 02:13:49 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13UG4fp9098661; Fri, 30 Apr 2021 12:13:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=EOZHrgGSMmfA8sfZIsPC7o2SDQRDRpbJl5mRXAW0OUU=;
- b=N0ul8jnCilykbevS0aNrDQfE7i1yaogwee8oO5/GkD3WQhVbQhRkUdSaD0FKcDOoSopJ
- yaTFKzASX14+eKPafEqWP/HfSvK+6zYCBncoFoz+NAfHCL8kWnF7z0K8MnFnfYCQDpbf
- X1IOMfhWnJqpBgeAOw8MxaHvJhAFOH2TpRLmvv/kPDdCwVuC3FxN6Q2EcCvDEMsgD9SB
- mJomJta1qdYMLW3Et/s+dplXaLdHgExMvOFOQvYtBjH4BI3pIk5VzTKh6LtBPrzs199C
- MsrV1mnGB9BEWm8koH3PdMK/SnpcDCVazvgfU8kOkAYv5Y+WtMMn0kopQZVs+OUSKmjr sQ== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 388mer9t8c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Apr 2021 12:13:34 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13UG44ju008864;
- Fri, 30 Apr 2021 16:13:32 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma03ams.nl.ibm.com with ESMTP id 384ay8kafc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Apr 2021 16:13:32 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 13UGDTo840239550
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Apr 2021 16:13:29 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3A336A4051;
- Fri, 30 Apr 2021 16:13:29 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E102DA4040;
- Fri, 30 Apr 2021 16:13:28 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.168.97])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 30 Apr 2021 16:13:28 +0000 (GMT)
-Subject: Re: [PATCH v3] pseries/drmem: update LMBs after LPM
-To: Tyrel Datwyler <tyreld@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org
-References: <20210428094758.28665-1-ldufour@linux.ibm.com>
- <87fsz95qso.fsf@linux.ibm.com>
- <9d29bf8c-9e97-c179-6897-8e25fa4eb516@linux.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Message-ID: <271ef351-b89c-ba68-3b6d-baa24cc0021b@linux.ibm.com>
-Date: Fri, 30 Apr 2021 18:13:28 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FWyZK0scQz2xZG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 May 2021 02:32:06 +1000 (AEST)
+Received: by mail-qv1-xf29.google.com with SMTP id q5so590244qvv.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 09:32:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=mXl9TXxVJ9ZoOKdTz5acN42lAgeZGmOu/NfPJbITIgY=;
+ b=KVk4ryPUxovH5g+4PI/OhD3YTlt+ZsjpbPXay1UVQQiZy5NqzRWo9XpzV2oL+9sgok
+ QYF8R4aYTd8aFDvBtwSbhbzR9BY4AO+oJ3+fHvC78ePgjDvRmqkOY++/Euez8PEhX14/
+ ByIteixks64eXimHCL6FZ/UEug6EElKRmLu0O5jMAqqJWPCaAhNnlX6d7STyQGSYESfr
+ 4Bj+Ran7/xeTuoYjEsSScvqkWx9GZM9XVeC0nL62tF7/OjEupMarJtZaJ2FYH15UbqHr
+ nkq/LeOI4XZAtTYQOa5dZCnTodJxTV+wmfFqDMaydyCWb5qbArmF3ZpNOO5POv79aDA/
+ BoNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=mXl9TXxVJ9ZoOKdTz5acN42lAgeZGmOu/NfPJbITIgY=;
+ b=AHDRGxcflQej/1YTt53ZqGiKdO2YKaFrJQyvdPjDR4twoUQX+xTlsp0fGDzCI+UE/c
+ z5b/Iodft2AcHOGHV9nAGjnsq3VbUX/esCirlKdDZtYWUZeM3X7QbfcQFAEKjWDQ+JZi
+ g6XTmjrayP+Z4KKP4Ip7p60tohrqL8xYLiUCEDQ7v/4TfM6EZC8Ly73FC5W/g8MEMhuy
+ anSvqReUDu3o8kHY/lRXhlKLWmQQDRdRWTrK2I6O2xuBzWZhhdh1DfgHlHXyb31LEiWX
+ oZUMOC+PFou7gjY7IOihhBZR28vJBHl7ViHx3ieKDoIZl8GZ3yoCP3gyrvPj6mhMxEWL
+ +VPw==
+X-Gm-Message-State: AOAM530U4TzU2VMIDEjQ7RO0D8AEFnHTGnTvemB80R+LjnnBTHhiCZ7l
+ p1Sb/eNB8BmhWG21Bp88MSo=
+X-Google-Smtp-Source: ABdhPJxCn4n5c7NWTvW22Rt+ze6/yWTg5sBVX4VPrqCZGBqWwOMSQdHOUU8sJKXBzUCXQP1HgRvCyA==
+X-Received: by 2002:ad4:538a:: with SMTP id i10mr6135443qvv.9.1619800322608;
+ Fri, 30 Apr 2021 09:32:02 -0700 (PDT)
+Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com.com
+ ([2804:14c:482:7b04::1001])
+ by smtp.gmail.com with ESMTPSA id p1sm2624334qtu.89.2021.04.30.09.31.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 30 Apr 2021 09:32:01 -0700 (PDT)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Leonardo Bras <leobras.c@gmail.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Nicolin Chen <nicoleotsuka@gmail.com>,
+ Niklas Schnelle <schnelle@linux.ibm.com>
+Subject: [PATCH v4 00/11] DDW + Indirect Mapping
+Date: Fri, 30 Apr 2021 13:31:35 -0300
+Message-Id: <20210430163145.146984-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <9d29bf8c-9e97-c179-6897-8e25fa4eb516@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ejYf8IUz8E6jXXe4R_z-qeDTsBweZaE5
-X-Proofpoint-GUID: ejYf8IUz8E6jXXe4R_z-qeDTsBweZaE5
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-30_10:2021-04-30,
- 2021-04-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 mlxscore=0
- spamscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0 phishscore=0
- suspectscore=0 bulkscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104300108
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,162 +84,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 29/04/2021 à 21:12, Tyrel Datwyler a écrit :
-> On 4/29/21 3:27 AM, Aneesh Kumar K.V wrote:
->> Laurent Dufour <ldufour@linux.ibm.com> writes:
->>
->>> After a LPM, the device tree node ibm,dynamic-reconfiguration-memory may be
->>> updated by the hypervisor in the case the NUMA topology of the LPAR's
->>> memory is updated.
->>>
->>> This is caught by the kernel, but the memory's node is updated because
->>> there is no way to move a memory block between nodes.
->>>
->>> If later a memory block is added or removed, drmem_update_dt() is called
->>> and it is overwriting the DT node to match the added or removed LMB. But
->>> the LMB's associativity node has not been updated after the DT node update
->>> and thus the node is overwritten by the Linux's topology instead of the
->>> hypervisor one.
->>>
->>> Introduce a hook called when the ibm,dynamic-reconfiguration-memory node is
->>> updated to force an update of the LMB's associativity.
->>>
->>> Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
->>> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
->>> ---
->>>
->>> V3:
->>>   - Check rd->dn->name instead of rd->dn->full_name
->>> V2:
->>>   - Take Tyrel's idea to rely on OF_RECONFIG_UPDATE_PROPERTY instead of
->>>   introducing a new hook mechanism.
->>> ---
->>>   arch/powerpc/include/asm/drmem.h              |  1 +
->>>   arch/powerpc/mm/drmem.c                       | 35 +++++++++++++++++++
->>>   .../platforms/pseries/hotplug-memory.c        |  4 +++
->>>   3 files changed, 40 insertions(+)
->>>
->>> diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
->>> index bf2402fed3e0..4265d5e95c2c 100644
->>> --- a/arch/powerpc/include/asm/drmem.h
->>> +++ b/arch/powerpc/include/asm/drmem.h
->>> @@ -111,6 +111,7 @@ int drmem_update_dt(void);
->>>   int __init
->>>   walk_drmem_lmbs_early(unsigned long node, void *data,
->>>   		      int (*func)(struct drmem_lmb *, const __be32 **, void *));
->>> +void drmem_update_lmbs(struct property *prop);
->>>   #endif
->>>   
->>>   static inline void invalidate_lmb_associativity_index(struct drmem_lmb *lmb)
->>> diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
->>> index 9af3832c9d8d..f0a6633132af 100644
->>> --- a/arch/powerpc/mm/drmem.c
->>> +++ b/arch/powerpc/mm/drmem.c
->>> @@ -307,6 +307,41 @@ int __init walk_drmem_lmbs_early(unsigned long node, void *data,
->>>   	return ret;
->>>   }
->>>   
->>> +/*
->>> + * Update the LMB associativity index.
->>> + */
->>> +static int update_lmb(struct drmem_lmb *updated_lmb,
->>> +		      __maybe_unused const __be32 **usm,
->>> +		      __maybe_unused void *data)
->>> +{
->>> +	struct drmem_lmb *lmb;
->>> +
->>> +	/*
->>> +	 * Brut force there may be better way to fetch the LMB
->>> +	 */
->>> +	for_each_drmem_lmb(lmb) {
->>> +		if (lmb->drc_index != updated_lmb->drc_index)
->>> +			continue;
->>> +
->>> +		lmb->aa_index = updated_lmb->aa_index;
->>> +		break;
->>> +	}
->>> +	return 0;
->>> +}
->>> +
->>> +/*
->>> + * Update the LMB associativity index.
->>> + *
->>> + * This needs to be called when the hypervisor is updating the
->>> + * dynamic-reconfiguration-memory node property.
->>> + */
->>> +void drmem_update_lmbs(struct property *prop)
->>> +{
->>> +	if (!strcmp(prop->name, "ibm,dynamic-memory"))
->>> +		__walk_drmem_v1_lmbs(prop->value, NULL, NULL, update_lmb);
->>> +	else if (!strcmp(prop->name, "ibm,dynamic-memory-v2"))
->>> +		__walk_drmem_v2_lmbs(prop->value, NULL, NULL, update_lmb);
->>> +}
->>>   #endif
->>>   
->>>   static int init_drmem_lmb_size(struct device_node *dn)
->>> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
->>> index 8377f1f7c78e..672ffbee2e78 100644
->>> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
->>> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
->>> @@ -949,6 +949,10 @@ static int pseries_memory_notifier(struct notifier_block *nb,
->>>   	case OF_RECONFIG_DETACH_NODE:
->>>   		err = pseries_remove_mem_node(rd->dn);
->>>   		break;
->>> +	case OF_RECONFIG_UPDATE_PROPERTY:
->>> +		if (!strcmp(rd->dn->name,
->>> +			    "ibm,dynamic-reconfiguration-memory"))
->>> +			drmem_update_lmbs(rd->prop);
->>>   	}
->>>   	return notifier_from_errno(err);
->>
->> How will this interact with DLPAR memory? When we dlpar memory,
->> ibm,configure-connector is used to fetch the new associativity details
->> and set drmem_lmb->aa_index correctly there. Once that is done kernel
->> then call drmem_update_dt() which will result in the above notifier
->> callback?
->>
->> IIUC, the call back then will update drmem_lmb->aa_index again?
-> 
-> After digging through some of this code I'm a bit concerned about all the kernel
-> device tree manipulation around memory DLPAR both with the assoc-lookup-array
-> prop update and post dynamic-memory prop updating. We build a drmem_info array
-> of the LMBs from the device-tree at boot. I don't really understand why we are
-> manipulating the device tree property every time we add/remove an LMB. Not sure
-> the reasoning was to write back in particular the aa_index and flags for each
-> LMB into the device tree when we already have them in the drmem_info array. On
-> the other hand the assoc-lookup-array I suppose would need to have an in kernel
-> representation to avoid updating the device tree property every time.
+So far it's assumed possible to map the guest RAM 1:1 to the bus, which
+works with a small number of devices. SRIOV changes it as the user can
+configure hundreds VFs and since phyp preallocates TCEs and does not
+allow IOMMU pages bigger than 64K, it has to limit the number of TCEs
+per a PE to limit waste of physical pages.
 
-I think the reason is to keep the device tree in sync with the current set of LMBs.
+As of today, if the assumed direct mapping is not possible, DDW creation
+is skipped and the default DMA window "ibm,dma-window" is used instead.
 
-My understanding is that the kernel is not really using the 
-'ibm,dynamic-memory*' DT property once the boot is done. But user space tools 
-(like lsslot and drmgr) read it to built the LMB tree and get the DRC index for 
-each LMBs as it is not available in SYSFS.
+Using the DDW instead of the default DMA window may allow to expand the
+amount of memory that can be DMA-mapped, given the number of pages (TCEs)
+may stay the same (or increase) and the default DMA window offers only
+4k-pages while DDW may offer larger pages (4k, 64k, 16M ...).
 
-> Changes to the device tree should be things reported to the system from the
-> hypervisor through the proper interfaces, and as a result any code that cares
-> can register an of_reconfig_notifier to resepond to device tree updates. The
-> memory dlpar code seems to be needlessly manipulating the device-tree which
-> leads to the problem here where a notifier callback is now duplicating work.
+Patch #1 replaces hard-coded 4K page size with a variable containing the
+correct page size for the window.
 
-I don't think the hypervisor is expected to update the 'ibm,dynamic-memory' each 
-time a LMB is added, this is not design this way AFAIK.
+Patch #2 introduces iommu_table_in_use(), and replace manual bit-field
+checking where it's used. It will be used for aborting enable_ddw() if
+there is any current iommu allocation and we are trying single window
+indirect mapping.
 
-Laurent.
+Patch #3 introduces iommu_pseries_alloc_table() that will be helpful
+when indirect mapping needs to replace the iommu_table.
 
-> Just my two cents FWIW.
-> 
-> -Tyrel
-> 
->>
->> -aneesh
->>
-> 
+Patch #4 adds helpers for adding DDWs in the list.
+
+Patch #5 refactors enable_ddw() so it returns if direct mapping is
+possible, instead of DMA offset. It helps for next patches on
+indirect DMA mapping and also allows DMA windows starting at 0x00.
+
+Patch #6 bring new helper to simplify enable_ddw(), allowing
+some reorganization for introducing indirect mapping DDW.
+
+Patch #7 adds new helper _iommu_table_setparms() and use it in other
+*setparams*() to fill iommu_table. It will also be used for creating a
+new iommu_table for indirect mapping.
+
+Patch #8 updates remove_dma_window() to accept different property names,
+so we can introduce a new property for indirect mapping.
+
+Patch #9 extracts find_existing_ddw_windows() into
+find_existing_ddw_windows_named(), and calls it by it's property name.
+This will be useful when the property for indirect mapping is created,
+so we can search the device-tree for both properties.
+
+Patch #10:
+Instead of destroying the created DDW if it doesn't map the whole
+partition, make use of it instead of the default DMA window as it improves
+performance. Also, update the iommu_table and re-generate the pools.
+It introduces a new property name for DDW with indirect DMA mapping.
+
+Patch #11:
+Does some renaming of 'direct window' to 'dma window', given the DDW
+created can now be also used in indirect mapping if direct mapping is not
+available.
+
+All patches were tested into an LPAR with an virtio-net interface that
+allows default DMA window and DDW to coexist.
+
+Changes since v3:
+- Fixed inverted free order at ddw_property_create()
+- Updated goto tag naming
+
+Changes since v2:
+- Some patches got removed from the series and sent by themselves,
+- New tbl created for DDW + indirect mapping reserves MMIO32 space,
+- Improved reserved area algorithm,
+- Improved commit messages,
+- Removed define for default DMA window prop name,
+- Avoided some unnecessary renaming,
+- Removed some unnecessary empty lines,
+- Changed some code moving to forward declarations.
+v2
+Link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=201210&state=%2A&archive=both
+ 
+
+Leonardo Bras (11):
+  powerpc/pseries/iommu: Replace hard-coded page shift
+  powerpc/kernel/iommu: Add new iommu_table_in_use() helper
+  powerpc/pseries/iommu: Add iommu_pseries_alloc_table() helper
+  powerpc/pseries/iommu: Add ddw_list_new_entry() helper
+  powerpc/pseries/iommu: Allow DDW windows starting at 0x00
+  powerpc/pseries/iommu: Add ddw_property_create() and refactor
+    enable_ddw()
+  powerpc/pseries/iommu: Reorganize iommu_table_setparms*() with new
+    helper
+  powerpc/pseries/iommu: Update remove_dma_window() to accept property
+    name
+  powerpc/pseries/iommu: Find existing DDW with given property name
+  powerpc/pseries/iommu: Make use of DDW for indirect mapping
+  powerpc/pseries/iommu: Rename "direct window" to "dma window"
+
+ arch/powerpc/include/asm/iommu.h       |   1 +
+ arch/powerpc/include/asm/tce.h         |   8 -
+ arch/powerpc/kernel/iommu.c            |  65 ++--
+ arch/powerpc/platforms/pseries/iommu.c | 504 +++++++++++++++----------
+ 4 files changed, 338 insertions(+), 240 deletions(-)
+
+-- 
+2.30.2
 
