@@ -2,63 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D606136F6ED
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 10:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C69E36F6D2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 10:04:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FWlRy5dCTz3dtv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 18:10:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FWlJt1VX1z3bcf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 18:04:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kaod.org (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
+ host) smtp.mailfrom=kaod.org (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
  receiver=<UNKNOWN>)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FWlJl0dsmz30Ml
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 18:04:38 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FWlJW29Jfz2yRS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 18:04:26 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 13U84GNu191280; Fri, 30 Apr 2021 04:04:23 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 388cm3jn1h-1
+ 13U83IBm076259; Fri, 30 Apr 2021 04:04:20 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 388dxgg71f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Apr 2021 04:04:23 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13U8464q018091;
+ Fri, 30 Apr 2021 04:04:19 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13U80ND3032463;
  Fri, 30 Apr 2021 08:04:17 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04fra.de.ibm.com with ESMTP id 384ay8hn3a-1
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 384ay8jy9d-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 30 Apr 2021 08:04:17 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 13U83oSU36438424
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 13U84Fes32178636
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Apr 2021 08:03:50 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E1625A4055;
- Fri, 30 Apr 2021 08:04:14 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B2E75A4053;
- Fri, 30 Apr 2021 08:04:14 +0000 (GMT)
+ Fri, 30 Apr 2021 08:04:15 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 537AEA405B;
+ Fri, 30 Apr 2021 08:04:15 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2F787A4054;
+ Fri, 30 Apr 2021 08:04:15 +0000 (GMT)
 Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri, 30 Apr 2021 08:04:14 +0000 (GMT)
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri, 30 Apr 2021 08:04:15 +0000 (GMT)
 Received: from yukon.ibmuc.com (unknown [9.171.40.192])
- by smtp.tlslab.ibm.com (Postfix) with ESMTP id 19089220193;
+ by smtp.tlslab.ibm.com (Postfix) with ESMTP id A58952200B7;
  Fri, 30 Apr 2021 10:04:14 +0200 (CEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 05/31] powerpc/pseries/pci: Add MSI domains
-Date: Fri, 30 Apr 2021 10:03:41 +0200
-Message-Id: <20210430080407.4030767-6-clg@kaod.org>
+Subject: [PATCH 06/31] powerpc/xive: Drop unmask of MSIs at startup
+Date: Fri, 30 Apr 2021 10:03:42 +0200
+Message-Id: <20210430080407.4030767-7-clg@kaod.org>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20210430080407.4030767-1-clg@kaod.org>
 References: <20210430080407.4030767-1-clg@kaod.org>
@@ -66,16 +66,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: iXoLWLm-FviyfooCe7whV1DWa-HWz5o-
-X-Proofpoint-GUID: iXoLWLm-FviyfooCe7whV1DWa-HWz5o-
+X-Proofpoint-ORIG-GUID: uh9nVkqD1qNUmYOUIZ2VAMWzYoGv9fZU
+X-Proofpoint-GUID: uh9nVkqD1qNUmYOUIZ2VAMWzYoGv9fZU
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-04-30_05:2021-04-28,
+ definitions=2021-04-30_03:2021-04-28,
  2021-04-30 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- mlxlogscore=999 clxscore=1034 bulkscore=0 adultscore=0 phishscore=0
- spamscore=0 impostorscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
+ clxscore=1034 impostorscore=0 adultscore=0 mlxlogscore=999 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104060000 definitions=main-2104300056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -88,331 +88,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Two IRQ domains are added on top of default machine IRQ domain.
+That was a workaround in the XIVE domain because of the lack of MSI
+domain. This is now handled.
 
-First, the top level "PCI-MSI" domain deals with the MSI specificities.
-In this domain, the HW IRQ numbers are generated by the PCI MSI layer,
-they compose a unique ID for an MSI source with the PCI device
-identifier and the MSI vector number.
-
-These numbers can be quite large on a pSeries machine running under
-the IBM Hypervisor and /sys/kernel/irq/ and /proc/interrupts will
-require small fixes to show them correctly.
-
-Then, the in-the-middle "MSI" domain acts as a proxy between the PCI
-MSI subsystem and the machine IRQ subsystem. It usually handles the
-MSI allocator but on pSeries machines, this is done by the RTAS
-FW. RTAS returns IRQ numbers in the IRQ number space of the machine.
-This is why this in-the-middle "Pseries-MSI" domain has the same HW
-IRQ numbers as its parent domain.
-
-Only the XIVE (P9/P10) parent domain is supported for now. We still
-need to add support for IRQ domain hierarchy under XICS.
-
-Cc: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 ---
- arch/powerpc/include/asm/pci-bridge.h    |   5 +
- arch/powerpc/platforms/pseries/pseries.h |   1 +
- arch/powerpc/kernel/pci-common.c         |   6 +
- arch/powerpc/platforms/pseries/msi.c     | 185 +++++++++++++++++++++++
- arch/powerpc/platforms/pseries/setup.c   |   2 +
- 5 files changed, 199 insertions(+)
+ arch/powerpc/sysdev/xive/common.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include=
-/asm/pci-bridge.h
-index d2a2a14e56f9..fb35d340a739 100644
---- a/arch/powerpc/include/asm/pci-bridge.h
-+++ b/arch/powerpc/include/asm/pci-bridge.h
-@@ -127,6 +127,11 @@ struct pci_controller {
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
+/common.c
+index 9cb7ae728b46..96737938e8e3 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -616,16 +616,6 @@ static unsigned int xive_irq_startup(struct irq_data=
+ *d)
+ 	pr_devel("xive_irq_startup: irq %d [0x%x] data @%p\n",
+ 		 d->irq, hw_irq, d);
 =20
- 	void *private_data;
- 	struct npu *npu;
-+
-+	/* IRQ domain hierarchy */
-+	struct irq_domain	*dev_domain;
-+	struct irq_domain	*msi_domain;
-+	struct fwnode_handle	*fwnode;
- };
-=20
- /* These are used for config access before all the PCI probing
-diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/plat=
-forms/pseries/pseries.h
-index 4fe48c04c6c2..91cf2afcf423 100644
---- a/arch/powerpc/platforms/pseries/pseries.h
-+++ b/arch/powerpc/platforms/pseries/pseries.h
-@@ -87,6 +87,7 @@ struct pci_host_bridge;
- int pseries_root_bridge_prepare(struct pci_host_bridge *bridge);
-=20
- extern struct pci_controller_ops pseries_pci_controller_ops;
-+int pseries_msi_allocate_domains(struct pci_controller *phb);
-=20
- unsigned long pseries_memory_block_size(void);
-=20
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-c=
-ommon.c
-index 001e90cd8948..c3573430919d 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -29,6 +29,7 @@
- #include <linux/slab.h>
- #include <linux/vgaarb.h>
- #include <linux/numa.h>
-+#include <linux/msi.h>
-=20
- #include <asm/processor.h>
- #include <asm/io.h>
-@@ -1060,11 +1061,16 @@ void pcibios_bus_add_device(struct pci_dev *dev)
-=20
- int pcibios_add_device(struct pci_dev *dev)
- {
-+	struct irq_domain *d;
-+
- #ifdef CONFIG_PCI_IOV
- 	if (ppc_md.pcibios_fixup_sriov)
- 		ppc_md.pcibios_fixup_sriov(dev);
- #endif /* CONFIG_PCI_IOV */
-=20
-+	d =3D dev_get_msi_domain(&dev->bus->dev);
-+	if (d)
-+		dev_set_msi_domain(&dev->dev, d);
- 	return 0;
- }
-=20
-diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platform=
-s/pseries/msi.c
-index 4bf14f27e1aa..a9bd1e991df5 100644
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -13,6 +13,7 @@
- #include <asm/hw_irq.h>
- #include <asm/ppc-pci.h>
- #include <asm/machdep.h>
-+#include <asm/xive.h>
-=20
- #include "pseries.h"
-=20
-@@ -518,6 +519,190 @@ static int rtas_setup_msi_irqs(struct pci_dev *pdev=
-, int nvec_in, int type)
- 	return 0;
- }
-=20
-+static int pseries_msi_ops_prepare(struct irq_domain *domain, struct dev=
-ice *dev,
-+				   int nvec, msi_alloc_info_t *arg)
-+{
-+	struct pci_dev *pdev =3D to_pci_dev(dev);
-+	struct msi_desc *desc =3D first_pci_msi_entry(pdev);
-+	int type =3D desc->msi_attrib.is_msix ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MS=
-I;
-+
-+	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
-+}
-+
-+static struct msi_domain_ops pseries_pci_msi_domain_ops =3D {
-+	.msi_prepare	=3D pseries_msi_ops_prepare,
-+};
-+
-+static void pseries_msi_shutdown(struct irq_data *d)
-+{
-+	d =3D d->parent_data;
-+	if (d->chip->irq_shutdown)
-+		d->chip->irq_shutdown(d);
-+}
-+
-+static void pseries_msi_mask(struct irq_data *d)
-+{
-+	pci_msi_mask_irq(d);
-+	irq_chip_mask_parent(d);
-+}
-+
-+static void pseries_msi_unmask(struct irq_data *d)
-+{
-+	pci_msi_unmask_irq(d);
-+	irq_chip_unmask_parent(d);
-+}
-+
-+static struct irq_chip pseries_pci_msi_irq_chip =3D {
-+	.name		=3D "Pseries-PCI-MSI",
-+	.irq_shutdown	=3D pseries_msi_shutdown,
-+	.irq_mask	=3D pseries_msi_mask,
-+	.irq_unmask	=3D pseries_msi_unmask,
-+	.irq_eoi	=3D irq_chip_eoi_parent,
-+};
-+
-+static struct msi_domain_info pseries_msi_domain_info =3D {
-+	.flags =3D (MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
-+		  MSI_FLAG_MULTI_PCI_MSI  | MSI_FLAG_PCI_MSIX),
-+	.ops   =3D &pseries_pci_msi_domain_ops,
-+	.chip  =3D &pseries_pci_msi_irq_chip,
-+};
-+
-+static void pseries_msi_compose_msg(struct irq_data *data, struct msi_ms=
-g *msg)
-+{
-+	__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
-+}
-+
-+static struct irq_chip pseries_msi_irq_chip =3D {
-+	.name			=3D "Pseries-MSI",
-+	.irq_shutdown		=3D pseries_msi_shutdown,
-+	.irq_mask		=3D irq_chip_mask_parent,
-+	.irq_unmask		=3D irq_chip_unmask_parent,
-+	.irq_eoi		=3D irq_chip_eoi_parent,
-+	.irq_set_affinity	=3D irq_chip_set_affinity_parent,
-+	.irq_compose_msi_msg	=3D pseries_msi_compose_msg,
-+};
-+
-+static int pseries_irq_parent_domain_alloc(struct irq_domain *domain, un=
-signed int virq,
-+					   irq_hw_number_t hwirq)
-+{
-+	struct irq_fwspec parent_fwspec;
-+	int ret;
-+
-+	parent_fwspec.fwnode =3D domain->parent->fwnode;
-+	parent_fwspec.param_count =3D 2;
-+	parent_fwspec.param[0] =3D hwirq;
-+	parent_fwspec.param[1] =3D IRQ_TYPE_EDGE_RISING;
-+
-+	ret =3D irq_domain_alloc_irqs_parent(domain, virq, 1, &parent_fwspec);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned =
-int virq,
-+				    unsigned int nr_irqs, void *arg)
-+{
-+	struct pci_controller *phb =3D domain->host_data;
-+	msi_alloc_info_t *info =3D arg;
-+	struct msi_desc *desc =3D info->desc;
-+	struct pci_dev *pdev =3D msi_desc_to_pci_dev(desc);
-+	int hwirq;
-+	int i, ret;
-+
-+	hwirq =3D rtas_query_irq_number(pci_get_pdn(pdev), desc->msi_attrib.ent=
-ry_nr);
-+	if (hwirq < 0) {
-+		dev_err(&pdev->dev, "Failed to query HW IRQ: %d\n", hwirq);
-+		return hwirq;
-+	}
-+
-+	dev_dbg(&pdev->dev, "%s bridge %pOF %d/%x #%d\n", __func__,
-+		phb->dn, virq, hwirq, nr_irqs);
-+
-+	for (i =3D 0; i < nr_irqs; i++) {
-+		ret =3D pseries_irq_parent_domain_alloc(domain, virq + i, hwirq + i);
-+		if (ret)
-+			goto out;
-+
-+		irq_domain_set_hwirq_and_chip(domain, virq + i, hwirq + i,
-+					      &pseries_msi_irq_chip, domain->host_data);
-+	}
-+
-+	return 0;
-+
-+out:
-+	/* TODO: handle RTAS cleanup in ->msi_finish() ? */
-+	irq_domain_free_irqs_parent(domain, virq, i - 1);
-+	return ret;
-+}
-+
-+static void pseries_irq_domain_free(struct irq_domain *domain, unsigned =
-int virq,
-+				    unsigned int nr_irqs)
-+{
-+	struct irq_data *d =3D irq_domain_get_irq_data(domain, virq);
-+	struct pci_controller *phb =3D irq_data_get_irq_chip_data(d);
-+
-+	pr_debug("%s bridge %pOF %d #%d\n", __func__, phb->dn, virq, nr_irqs);
-+
-+	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
-+}
-+
-+static const struct irq_domain_ops pseries_irq_domain_ops =3D {
-+	.alloc  =3D pseries_irq_domain_alloc,
-+	.free   =3D pseries_irq_domain_free,
-+};
-+
-+static int __pseries_msi_allocate_domains(struct pci_controller *phb,
-+					  unsigned int count)
-+{
-+	struct irq_domain *parent =3D irq_get_default_host();
-+
-+	phb->fwnode =3D irq_domain_alloc_named_id_fwnode("Pseries-MSI",
-+						       phb->global_number);
-+	if (!phb->fwnode)
-+		return -ENOMEM;
-+
-+	phb->dev_domain =3D irq_domain_create_hierarchy(parent, 0, count,
-+						      phb->fwnode,
-+						      &pseries_irq_domain_ops, phb);
-+	if (!phb->dev_domain) {
-+		pr_err("PCI: failed to create IRQ domain bridge %pOF (domain %d)\n",
-+		       phb->dn, phb->global_number);
-+		irq_domain_free_fwnode(phb->fwnode);
-+		return -ENOMEM;
-+	}
-+
-+	phb->msi_domain =3D pci_msi_create_irq_domain(of_node_to_fwnode(phb->dn=
-),
-+						    &pseries_msi_domain_info,
-+						    phb->dev_domain);
-+	if (!phb->msi_domain) {
-+		pr_err("PCI: failed to create MSI IRQ domain bridge %pOF (domain %d)\n=
-",
-+		       phb->dn, phb->global_number);
-+		irq_domain_free_fwnode(phb->fwnode);
-+		irq_domain_remove(phb->dev_domain);
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+int pseries_msi_allocate_domains(struct pci_controller *phb)
-+{
-+	int count;
-+
-+	/* Only supported by the XIVE driver */
-+	if (!xive_enabled())
-+		return -ENODEV;
-+
-+	if (!__find_pe_total_msi(phb->dn, &count)) {
-+		pr_err("PCI: failed to find MSIs for bridge %pOF (domain %d)\n",
-+		       phb->dn, phb->global_number);
-+		return -ENOSPC;
-+	}
-+
-+	return __pseries_msi_allocate_domains(phb, count);
-+}
-+
- static void rtas_msi_pci_irq_fixup(struct pci_dev *pdev)
- {
- 	/* No LSI -> leave MSIs (if any) configured */
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platfo=
-rms/pseries/setup.c
-index 46e1540abc22..178a50787a26 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -484,6 +484,8 @@ static void __init pSeries_discover_phbs(void)
-=20
- 		/* create pci_dn's for DT nodes under this PHB */
- 		pci_devs_phb_init_dynamic(phb);
-+
-+		pseries_msi_allocate_domains(phb);
- 	}
-=20
- 	of_node_put(root);
+-#ifdef CONFIG_PCI_MSI
+-	/*
+-	 * The generic MSI code returns with the interrupt disabled on the
+-	 * card, using the MSI mask bits. Firmware doesn't appear to unmask
+-	 * at that level, so we do it here by hand.
+-	 */
+-	if (irq_data_get_msi_desc(d))
+-		pci_msi_unmask_irq(d);
+-#endif
+-
+ 	/* Pick a target */
+ 	target =3D xive_pick_irq_target(d, irq_data_get_affinity_mask(d));
+ 	if (target =3D=3D XIVE_INVALID_TARGET) {
 --=20
 2.26.3
 
