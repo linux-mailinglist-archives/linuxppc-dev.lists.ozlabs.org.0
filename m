@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC09B36F4E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 06:23:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEA636F4E4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 06:22:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FWfPn6T48z3bss
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 14:23:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FWfNq1n9gz2yy9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Apr 2021 14:22:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=CYC0Jev7;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=Fq5DnJRE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cisco.com (client-ip=173.37.86.76; helo=rcdn-iport-5.cisco.com;
+ smtp.mailfrom=cisco.com (client-ip=173.37.142.91; helo=alln-iport-4.cisco.com;
  envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
- header.s=iport header.b=CYC0Jev7; dkim-atps=neutral
-Received: from rcdn-iport-5.cisco.com (rcdn-iport-5.cisco.com [173.37.86.76])
+ header.s=iport header.b=Fq5DnJRE; dkim-atps=neutral
+Received: from alln-iport-4.cisco.com (alln-iport-4.cisco.com [173.37.142.91])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FWfNL3yMnz2xZp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 14:22:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FWfNL403Mz2yYp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 14:22:26 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=cisco.com; i=@cisco.com; l=12631; q=dns/txt;
+ d=cisco.com; i=@cisco.com; l=14323; q=dns/txt;
  s=iport; t=1619756546; x=1620966146;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=S2XyC9Vs/8UkSD4/6EjEFcdfd/1g+e3eE3pXSDnb2u0=;
- b=CYC0Jev7G4vggFQYbPXjQvYuCywPks6J8z+3G8y6bNldyYtUIhjhatY/
- 2ywiEGw155oqBkhjXCkf3iGdXPV0Zv1f0EclPYFVaT0M1FfMvlQieOKcr
- TZPVsaPB5ZX0Wokuk84jP+Os9yxo0vfEmbdZVAAzmmTf5Y0M1Dok8Aq1m M=;
-IronPort-HdrOrdr: =?us-ascii?q?A9a23=3A1pCTC6zW9851hc0wCERnKrPwkL1zdoIgy1?=
- =?us-ascii?q?knxilNYDZeG/b1q+mFmvMH2RjozAsLUHY7ltyafIWGS3XQ9Zl6iLNhX4uKcQ?=
- =?us-ascii?q?H6tAKTQr1KwpDlx1TbcRHW0s54+eNef7NlCNv2ZGIK7vrSxAWjCd4vzJ2m/c?=
- =?us-ascii?q?mT5Nv29HtmQQF0Z6wI1W4QYTqzKFF8RwVNGPMCe6a028wvnVedUEVSRtinAD?=
- =?us-ascii?q?0/U/LbodrQmNbdfQceHBI88mC1/FaVwY+/NxCZ2xsEOgku/Z4StU7Yjgf++q?=
- =?us-ascii?q?Kv99a8xxO07R61071m3P3819BEGMuAzvIwFwypoAOpaIN9Mofy2AwInA=3D?=
- =?us-ascii?q?=3D?=
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=MiuyJ/6WMT2bf34yrEL4yQukUGungehil+h/8EuYpkk=;
+ b=Fq5DnJREqhgJLTydm8TZhIFAQAvGhHJrcNlh+UERl7lX8Mg4b5Rdd1NZ
+ WpjT9+ocb02gTEmKSqAlbsrR4yBX1Dkmwm3rKg939bsXK2aABW9+2E1ut
+ aOgEUzmp4QtZcXtyOzFkgXt5LqDEe2bazxjj1H7s880NB0t5vp+O2d3fH U=;
+X-IPAS-Result: =?us-ascii?q?A0A5AACLhYtgmIcNJK1aHQEBAQEJARIBBQUBggQHAQsBA?=
+ =?us-ascii?q?YN2ATkxljuafoF8CwEBAQ80BAEBhFACgXsCJTUIDgIEAQEBAwIDAQEBAQEFA?=
+ =?us-ascii?q?QEBAgEGBBQBAQEBAQEBAWiFXUMWAYVrBjIBRhBRVwYBEoJxgwioVYIsgQGIM?=
+ =?us-ascii?q?oFEFIEmAYhsdIN2JxyBSUKBFYNghCSDY4IzBIJHBictNU1vCoEskG0mi2WCB?=
+ =?us-ascii?q?Jw9gxqBJ5tzECalHS2UfZ51X4QwNYEgATaBWzMaCBsVgyRQGQ6OKw0JjkshA?=
+ =?us-ascii?q?y84AgYKAQEDCYlOg0EBAQ?=
+IronPort-HdrOrdr: A9a23:eafuX6N+d5NuLMBcT5z155DYdL4zR+YMi2QD/UoZc3BoW+afkN
+ 2jm+le6AT9jywfVGpltdeLPqSBRn20z+8Q3aA9NaqvNTOJhEKGN4dnhLGJ/xTBHGnE+vdZxe
+ NcdcFFeb7NJHxbqeq/3wWiCdYnx7C8gcWVrMPT1W1kQw0vS6wI1WZEIz2WGEF3WwVKbKBRfP
+ Ghz/FKqDa6dXMcYt7TPAhmY8H4u9bJmJj6CCRoOzcb7mC14A+A2frTDwWfmiwTSSpIxq0vtV
+ LYihXj6r+42svLrSP05iv255RSlMCJ8Lt+Lf3JrNQJITPxjQvtQ4JtV9S5zUkIidDqzko2m9
+ /RpBplBeBP0jf6e2G4pgaF4XiH7AoT
 X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0B9AAAYhYtg/4cNJK1aHQEBAQEJARI?=
- =?us-ascii?q?BBQUBggMIAQsBAYIpgU0BOTGMaIlTgQ+ZbxSBaAsBAQEPNAQBAYRQgX0CJTQ?=
- =?us-ascii?q?JDgIEAQEMAQEFAQEBAgEGBHEThV1DFgGGIwFGgT4BEoJxgwioVYIsgQGIMoF?=
- =?us-ascii?q?EFIEmAYhsdIQdHIFJQoEVgmx0hAUUg26CMwSCRzEpGhoBejZ3ASmRNI1pmym?=
- =?us-ascii?q?BFIMagSebcxAmpR0tlH2fGTuEMDWBHzqBWTMaCBsVgyRQGQ6OKAMWjkshAy8?=
- =?us-ascii?q?4AgYKAQEDCYlOe4JGAQE?=
-X-IronPort-AV: E=Sophos;i="5.82,260,1613433600"; d="scan'208";a="620387833"
+X-IronPort-AV: E=Sophos;i="5.82,260,1613433600"; d="scan'208";a="678191681"
 Received: from alln-core-2.cisco.com ([173.36.13.135])
- by rcdn-iport-5.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
- 30 Apr 2021 04:22:18 +0000
+ by alln-iport-4.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
+ 30 Apr 2021 04:22:19 +0000
 Received: from zorba.cisco.com ([10.24.18.92])
- by alln-core-2.cisco.com (8.15.2/8.15.2) with ESMTP id 13U4MHxu023118;
- Fri, 30 Apr 2021 04:22:18 GMT
+ by alln-core-2.cisco.com (8.15.2/8.15.2) with ESMTP id 13U4MHxv023118;
+ Fri, 30 Apr 2021 04:22:19 GMT
 From: Daniel Walker <danielwa@cisco.com>
 To: linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
  Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 1/3] lib: early_string: allow early usage of some string
- functions
-Date: Thu, 29 Apr 2021 21:22:14 -0700
-Message-Id: <20210430042217.1198052-1-danielwa@cisco.com>
+Subject: [PATCH 2/3] powerpc: prom_init: switch to early string functions
+Date: Thu, 29 Apr 2021 21:22:15 -0700
+Message-Id: <20210430042217.1198052-2-danielwa@cisco.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210430042217.1198052-1-danielwa@cisco.com>
+References: <20210430042217.1198052-1-danielwa@cisco.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Auto-Response-Suppress: DR, OOF, AutoReply
@@ -77,372 +77,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, xe-linux-external@cisco.com
+Cc: xe-linux-external@cisco.com, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This systems allows some string functions to be moved into
-lib/early_string.c and they will be prepended with "early_" and compiled
-without debugging like KASAN.
-
-This is already done on x86 for,
-"AMD Secure Memory Encryption (SME) support"
-
-and on powerpc prom_init.c , and EFI's libstub.
-
-The AMD memory feature disabled KASAN for all string functions, and
-prom_init.c and efi libstub implement their own versions of the
-functions.
-
-This implementation allows sharing of the string functions without
-removing the debugging features for the whole system.
+This converts the prom_init string users to the early string function
+which don't suffer from KASAN or any other debugging enabled.
 
 Cc: xe-linux-external@cisco.com
 Signed-off-by: Daniel Walker <danielwa@cisco.com>
 ---
- include/linux/string.h |   6 ++
- lib/Makefile           |  23 +++++-
- lib/early_string.c     | 172 +++++++++++++++++++++++++++++++++++++++++
- lib/string.c           | 154 ------------------------------------
- 4 files changed, 200 insertions(+), 155 deletions(-)
- create mode 100644 lib/early_string.c
+ arch/powerpc/kernel/prom_init.c        | 185 ++++++-------------------
+ arch/powerpc/kernel/prom_init_check.sh |   9 +-
+ 2 files changed, 51 insertions(+), 143 deletions(-)
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index 9521d8cab18e..c0d45b92ba9e 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -20,6 +20,7 @@ extern void *memdup_user_nul(const void __user *, size_t);
-  */
- #include <asm/string.h>
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index ccf77b985c8f..4d4343da1280 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -225,105 +225,6 @@ static bool  __prombss rtas_has_query_cpu_stopped;
+ #define PHANDLE_VALID(p)	((p) != 0 && (p) != PROM_ERROR)
+ #define IHANDLE_VALID(i)	((i) != 0 && (i) != PROM_ERROR)
  
-+extern char * early_strcpy(char *,const char *);
- #ifndef __HAVE_ARCH_STRCPY
- extern char * strcpy(char *,const char *);
- #endif
-@@ -42,12 +43,15 @@ extern char * strcat(char *, const char *);
- #ifndef __HAVE_ARCH_STRNCAT
- extern char * strncat(char *, const char *, __kernel_size_t);
- #endif
-+extern size_t early_strlcat(char *, const char *, __kernel_size_t);
- #ifndef __HAVE_ARCH_STRLCAT
- extern size_t strlcat(char *, const char *, __kernel_size_t);
- #endif
-+extern int early_strcmp(const char *,const char *);
- #ifndef __HAVE_ARCH_STRCMP
- extern int strcmp(const char *,const char *);
- #endif
-+extern int early_strncmp(const char *,const char *,__kernel_size_t);
- #ifndef __HAVE_ARCH_STRNCMP
- extern int strncmp(const char *,const char *,__kernel_size_t);
- #endif
-@@ -79,12 +83,14 @@ static inline __must_check char *strstrip(char *str)
- 	return strim(str);
- }
- 
-+extern char * early_strstr(const char *, const char *);
- #ifndef __HAVE_ARCH_STRSTR
- extern char * strstr(const char *, const char *);
- #endif
- #ifndef __HAVE_ARCH_STRNSTR
- extern char * strnstr(const char *, const char *, size_t);
- #endif
-+extern __kernel_size_t early_strlen(const char *);
- #ifndef __HAVE_ARCH_STRLEN
- extern __kernel_size_t strlen(const char *);
- #endif
-diff --git a/lib/Makefile b/lib/Makefile
-index b5307d3eec1a..25cc664f027e 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -9,6 +9,8 @@ ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
- # flaky coverage that is not a function of syscall inputs. For example,
- # rbtree can be global and individual rotations don't correlate with inputs.
- KCOV_INSTRUMENT_string.o := n
-+KCOV_INSTRUMENT_early_string.o := n
-+KCOV_INSTRUMENT_early_string.nosan.o := n
- KCOV_INSTRUMENT_rbtree.o := n
- KCOV_INSTRUMENT_list_debug.o := n
- KCOV_INSTRUMENT_debugobjects.o := n
-@@ -19,6 +21,12 @@ KCOV_INSTRUMENT_fault-inject.o := n
- # Use -ffreestanding to ensure that the compiler does not try to "optimize"
- # them into calls to themselves.
- CFLAGS_string.o := -ffreestanding
-+CFLAGS_early_string.o := -ffreestanding
-+CFLAGS_early_string.nosan.o := -ffreestanding -D__EARLY_STRING_ENABLED
-+
-+KASAN_SANITIZE_early_string.nosan.o := n
-+
-+CFLAGS_early_string.nosan.o += -fno-stack-protector
- 
- # Early boot use of cmdline, don't instrument it
- ifdef CONFIG_AMD_MEM_ENCRYPT
-@@ -27,7 +35,20 @@ KASAN_SANITIZE_string.o := n
- CFLAGS_string.o += -fno-stack-protector
- endif
- 
--lib-y := ctype.o string.o vsprintf.o cmdline.o \
-+$(obj)/early_string.nosan.o: $(src)/early_string.c $(recordmcount_source) $(objtool_dep) FORCE
-+	$(call if_changed_rule,cc_o_c)
-+	$(call cmd,force_checksrc)
-+	$(Q)$(OBJCOPY) \
-+		--rename-section .text=.init.text \
-+		--redefine-sym strcmp=early_strcmp \
-+		--redefine-sym strncmp=early_strncmp \
-+		--redefine-sym strcpy=early_strcpy \
-+		--redefine-sym strlcat=early_strlcat \
-+		--redefine-sym strlen=early_strlen \
-+		--redefine-sym strstr=early_strstr \
-+		--redefine-sym memcmp=early_memcmp $@
-+
-+lib-y := ctype.o string.o early_string.o early_string.nosan.o vsprintf.o cmdline.o \
- 	 rbtree.o radix-tree.o timerqueue.o xarray.o \
- 	 idr.o extable.o sha1.o irq_regs.o argv_split.o \
- 	 flex_proportions.o ratelimit.o show_mem.o \
-diff --git a/lib/early_string.c b/lib/early_string.c
-new file mode 100644
-index 000000000000..21004e82159c
---- /dev/null
-+++ b/lib/early_string.c
-@@ -0,0 +1,172 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ *  linux/lib/string.c
-+ *
-+ *  Copyright (C) 1991, 1992  Linus Torvalds
-+ */
-+
-+#include <linux/types.h>
-+#include <linux/export.h>
-+#include <linux/bug.h>
-+
-+#ifdef __EARLY_STRING_ENABLED
-+#undef EXPORT_SYMBOL
-+#define EXPORT_SYMBOL(x)
-+#endif
-+
-+#include <linux/string.h>
-+
-+#if !defined(__HAVE_ARCH_MEMCMP) || defined(__EARLY_STRING_ENABLED)
-+/**
-+ * memcmp - Compare two areas of memory
-+ * @cs: One area of memory
-+ * @ct: Another area of memory
-+ * @count: The size of the area.
-+ */
-+#undef memcmp
-+__visible int memcmp(const void *cs, const void *ct, size_t count)
-+{
-+	const unsigned char *su1, *su2;
-+	int res = 0;
-+
-+	for (su1 = cs, su2 = ct; 0 < count; ++su1, ++su2, count--)
-+		if ((res = *su1 - *su2) != 0)
-+			break;
-+	return res;
-+}
-+EXPORT_SYMBOL(memcmp);
-+#endif
-+
-+#if !defined(HAVE_ARCH_STRCMP) || defined(__EARLY_STRING_ENABLED)
-+/**
-+ * strcmp - Compare two strings
-+ * @cs: One string
-+ * @ct: Another string
-+ */
-+int strcmp(const char *cs, const char *ct)
-+{
-+	unsigned char c1, c2;
-+
-+	while (1) {
-+		c1 = *cs++;
-+		c2 = *ct++;
-+		if (c1 != c2)
-+			return c1 < c2 ? -1 : 1;
-+		if (!c1)
-+			break;
-+	}
-+	return 0;
-+}
-+EXPORT_SYMBOL(strcmp);
-+#endif
-+
-+#if !defined(__HAVE_ARCH_STRCPY) || defined(__EARLY_STRING_ENABLED)
-+/**
-+ * strcpy - Copy a %NUL terminated string
-+ * @dest: Where to copy the string to
-+ * @src: Where to copy the string from
-+ */
-+char *strcpy(char *dest, const char *src)
-+{
-+	char *tmp = dest;
-+
-+	while ((*dest++ = *src++) != '\0')
-+		/* nothing */;
-+	return tmp;
-+}
-+EXPORT_SYMBOL(strcpy);
-+#endif
-+
-+#if !defined(__HAVE_ARCH_STRLCAT) || defined(__EARLY_STRING_ENABLED)
-+/**
-+ * strlcat - Append a length-limited, C-string to another
-+ * @dest: The string to be appended to
-+ * @src: The string to append to it
-+ * @count: The size of the destination buffer.
-+ */
-+size_t strlcat(char *dest, const char *src, size_t count)
-+{
-+	size_t dsize = strlen(dest);
-+	size_t len = strlen(src);
-+	size_t res = dsize + len;
-+
-+	/* This would be a bug */
-+	BUG_ON(dsize >= count);
-+
-+	dest += dsize;
-+	count -= dsize;
-+	if (len >= count)
-+		len = count-1;
-+	memcpy(dest, src, len);
-+	dest[len] = 0;
-+	return res;
-+}
-+EXPORT_SYMBOL(strlcat);
-+#endif
-+
-+#if !defined(__HAVE_ARCH_STRLEN) || defined(__EARLY_STRING_ENABLED)
-+/**
-+ * strlen - Find the length of a string
-+ * @s: The string to be sized
-+ */
-+size_t strlen(const char *s)
-+{
-+	const char *sc;
-+
-+	for (sc = s; *sc != '\0'; ++sc)
-+		/* nothing */;
-+	return sc - s;
-+}
-+EXPORT_SYMBOL(strlen);
-+#endif
-+
-+#if !defined(__HAVE_ARCH_STRNCMP) || defined(__EARLY_STRING_ENABLED)
-+/**
-+ * strncmp - Compare two length-limited strings
-+ * @cs: One string
-+ * @ct: Another string
-+ * @count: The maximum number of bytes to compare
-+ */
-+int strncmp(const char *cs, const char *ct, size_t count)
-+{
-+	unsigned char c1, c2;
-+
-+	while (count) {
-+		c1 = *cs++;
-+		c2 = *ct++;
-+		if (c1 != c2)
-+			return c1 < c2 ? -1 : 1;
-+		if (!c1)
-+			break;
-+		count--;
-+	}
-+	return 0;
-+}
-+EXPORT_SYMBOL(strncmp);
-+#endif
-+
-+#if !defined(__HAVE_ARCH_STRSTR) || defined(__EARLY_STRING_ENABLED)
-+/**
-+ * strstr - Find the first substring in a %NUL terminated string
-+ * @s1: The string to be searched
-+ * @s2: The string to search for
-+ */
-+char *strstr(const char *s1, const char *s2)
-+{
-+	size_t l1, l2;
-+
-+	l2 = strlen(s2);
-+	if (!l2)
-+		return (char *)s1;
-+	l1 = strlen(s1);
-+	while (l1 >= l2) {
-+		l1--;
-+		if (!memcmp(s1, s2, l2))
-+			return (char *)s1;
-+		s1++;
-+	}
-+	return NULL;
-+}
-+EXPORT_SYMBOL(strstr);
-+#endif
-+
-diff --git a/lib/string.c b/lib/string.c
-index 7548eb715ddb..328649ccb34d 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -79,23 +79,6 @@ int strcasecmp(const char *s1, const char *s2)
- EXPORT_SYMBOL(strcasecmp);
- #endif
- 
--#ifndef __HAVE_ARCH_STRCPY
--/**
-- * strcpy - Copy a %NUL terminated string
-- * @dest: Where to copy the string to
-- * @src: Where to copy the string from
-- */
--char *strcpy(char *dest, const char *src)
--{
--	char *tmp = dest;
+-/* Copied from lib/string.c and lib/kstrtox.c */
 -
--	while ((*dest++ = *src++) != '\0')
--		/* nothing */;
--	return tmp;
--}
--EXPORT_SYMBOL(strcpy);
--#endif
--
- #ifndef __HAVE_ARCH_STRNCPY
- /**
-  * strncpy - Copy a length-limited, C-string
-@@ -343,81 +326,6 @@ char *strncat(char *dest, const char *src, size_t count)
- EXPORT_SYMBOL(strncat);
- #endif
- 
--#ifndef __HAVE_ARCH_STRLCAT
--/**
-- * strlcat - Append a length-limited, C-string to another
-- * @dest: The string to be appended to
-- * @src: The string to append to it
-- * @count: The size of the destination buffer.
-- */
--size_t strlcat(char *dest, const char *src, size_t count)
--{
--	size_t dsize = strlen(dest);
--	size_t len = strlen(src);
--	size_t res = dsize + len;
--
--	/* This would be a bug */
--	BUG_ON(dsize >= count);
--
--	dest += dsize;
--	count -= dsize;
--	if (len >= count)
--		len = count-1;
--	memcpy(dest, src, len);
--	dest[len] = 0;
--	return res;
--}
--EXPORT_SYMBOL(strlcat);
--#endif
--
--#ifndef __HAVE_ARCH_STRCMP
--/**
-- * strcmp - Compare two strings
-- * @cs: One string
-- * @ct: Another string
-- */
--int strcmp(const char *cs, const char *ct)
+-static int __init prom_strcmp(const char *cs, const char *ct)
 -{
 -	unsigned char c1, c2;
 -
@@ -456,17 +117,17 @@ index 7548eb715ddb..328649ccb34d 100644
 -	}
 -	return 0;
 -}
--EXPORT_SYMBOL(strcmp);
--#endif
 -
--#ifndef __HAVE_ARCH_STRNCMP
--/**
-- * strncmp - Compare two length-limited strings
-- * @cs: One string
-- * @ct: Another string
-- * @count: The maximum number of bytes to compare
-- */
--int strncmp(const char *cs, const char *ct, size_t count)
+-static char __init *prom_strcpy(char *dest, const char *src)
+-{
+-	char *tmp = dest;
+-
+-	while ((*dest++ = *src++) != '\0')
+-		/* nothing */;
+-	return tmp;
+-}
+-
+-static int __init prom_strncmp(const char *cs, const char *ct, size_t count)
 -{
 -	unsigned char c1, c2;
 -
@@ -481,22 +142,8 @@ index 7548eb715ddb..328649ccb34d 100644
 -	}
 -	return 0;
 -}
--EXPORT_SYMBOL(strncmp);
--#endif
 -
- #ifndef __HAVE_ARCH_STRCHR
- /**
-  * strchr - Find the first occurrence of a character in a string
-@@ -553,22 +461,6 @@ char *strim(char *s)
- }
- EXPORT_SYMBOL(strim);
- 
--#ifndef __HAVE_ARCH_STRLEN
--/**
-- * strlen - Find the length of a string
-- * @s: The string to be sized
-- */
--size_t strlen(const char *s)
+-static size_t __init prom_strlen(const char *s)
 -{
 -	const char *sc;
 -
@@ -504,25 +151,8 @@ index 7548eb715ddb..328649ccb34d 100644
 -		/* nothing */;
 -	return sc - s;
 -}
--EXPORT_SYMBOL(strlen);
--#endif
 -
- #ifndef __HAVE_ARCH_STRNLEN
- /**
-  * strnlen - Find the length of a length-limited string
-@@ -922,27 +814,6 @@ void *memmove(void *dest, const void *src, size_t count)
- EXPORT_SYMBOL(memmove);
- #endif
- 
--#ifndef __HAVE_ARCH_MEMCMP
--/**
-- * memcmp - Compare two areas of memory
-- * @cs: One area of memory
-- * @ct: Another area of memory
-- * @count: The size of the area.
-- */
--#undef memcmp
--__visible int memcmp(const void *cs, const void *ct, size_t count)
+-static int __init prom_memcmp(const void *cs, const void *ct, size_t count)
 -{
 -	const unsigned char *su1, *su2;
 -	int res = 0;
@@ -532,44 +162,358 @@ index 7548eb715ddb..328649ccb34d 100644
 -			break;
 -	return res;
 -}
--EXPORT_SYMBOL(memcmp);
--#endif
 -
- #ifndef __HAVE_ARCH_BCMP
- /**
-  * bcmp - returns 0 if and only if the buffers have identical contents.
-@@ -987,31 +858,6 @@ void *memscan(void *addr, int c, size_t size)
- EXPORT_SYMBOL(memscan);
- #endif
- 
--#ifndef __HAVE_ARCH_STRSTR
--/**
-- * strstr - Find the first substring in a %NUL terminated string
-- * @s1: The string to be searched
-- * @s2: The string to search for
-- */
--char *strstr(const char *s1, const char *s2)
+-static char __init *prom_strstr(const char *s1, const char *s2)
 -{
 -	size_t l1, l2;
 -
--	l2 = strlen(s2);
+-	l2 = prom_strlen(s2);
 -	if (!l2)
 -		return (char *)s1;
--	l1 = strlen(s1);
+-	l1 = prom_strlen(s1);
 -	while (l1 >= l2) {
 -		l1--;
--		if (!memcmp(s1, s2, l2))
+-		if (!prom_memcmp(s1, s2, l2))
 -			return (char *)s1;
 -		s1++;
 -	}
 -	return NULL;
 -}
--EXPORT_SYMBOL(strstr);
--#endif
 -
- #ifndef __HAVE_ARCH_STRNSTR
- /**
-  * strnstr - Find the first substring in a length-limited string
+-static size_t __init prom_strlcat(char *dest, const char *src, size_t count)
+-{
+-	size_t dsize = prom_strlen(dest);
+-	size_t len = prom_strlen(src);
+-	size_t res = dsize + len;
+-
+-	/* This would be a bug */
+-	if (dsize >= count)
+-		return count;
+-
+-	dest += dsize;
+-	count -= dsize;
+-	if (len >= count)
+-		len = count-1;
+-	memcpy(dest, src, len);
+-	dest[len] = 0;
+-	return res;
+-
+-}
+-
+ #ifdef CONFIG_PPC_PSERIES
+ static int __init prom_strtobool(const char *s, bool *res)
+ {
+@@ -694,7 +595,7 @@ static int __init prom_setprop(phandle node, const char *nodename,
+ 	add_string(&p, tohex((u32)(unsigned long) value));
+ 	add_string(&p, tohex(valuelen));
+ 	add_string(&p, tohex(ADDR(pname)));
+-	add_string(&p, tohex(prom_strlen(pname)));
++	add_string(&p, tohex(early_strlen(pname)));
+ 	add_string(&p, "property");
+ 	*p = 0;
+ 	return call_prom("interpret", 1, 1, (u32)(unsigned long) cmd);
+@@ -779,25 +680,25 @@ static void __init early_cmdline_parse(void)
+ 		l = prom_getprop(prom.chosen, "bootargs", p, COMMAND_LINE_SIZE-1);
+ 
+ 	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) || l <= 0 || p[0] == '\0')
+-		prom_strlcat(prom_cmd_line, " " CONFIG_CMDLINE,
++		early_strlcat(prom_cmd_line, " " CONFIG_CMDLINE,
+ 			     sizeof(prom_cmd_line));
+ 
+ 	prom_printf("command line: %s\n", prom_cmd_line);
+ 
+ #ifdef CONFIG_PPC64
+-	opt = prom_strstr(prom_cmd_line, "iommu=");
++	opt = early_strstr(prom_cmd_line, "iommu=");
+ 	if (opt) {
+ 		prom_printf("iommu opt is: %s\n", opt);
+ 		opt += 6;
+ 		while (*opt && *opt == ' ')
+ 			opt++;
+-		if (!prom_strncmp(opt, "off", 3))
++		if (!early_strncmp(opt, "off", 3))
+ 			prom_iommu_off = 1;
+-		else if (!prom_strncmp(opt, "force", 5))
++		else if (!early_strncmp(opt, "force", 5))
+ 			prom_iommu_force_on = 1;
+ 	}
+ #endif
+-	opt = prom_strstr(prom_cmd_line, "mem=");
++	opt = early_strstr(prom_cmd_line, "mem=");
+ 	if (opt) {
+ 		opt += 4;
+ 		prom_memory_limit = prom_memparse(opt, (const char **)&opt);
+@@ -809,7 +710,7 @@ static void __init early_cmdline_parse(void)
+ 
+ #ifdef CONFIG_PPC_PSERIES
+ 	prom_radix_disable = !IS_ENABLED(CONFIG_PPC_RADIX_MMU_DEFAULT);
+-	opt = prom_strstr(prom_cmd_line, "disable_radix");
++	opt = early_strstr(prom_cmd_line, "disable_radix");
+ 	if (opt) {
+ 		opt += 13;
+ 		if (*opt && *opt == '=') {
+@@ -825,13 +726,13 @@ static void __init early_cmdline_parse(void)
+ 	if (prom_radix_disable)
+ 		prom_debug("Radix disabled from cmdline\n");
+ 
+-	opt = prom_strstr(prom_cmd_line, "radix_hcall_invalidate=on");
++	opt = early_strstr(prom_cmd_line, "radix_hcall_invalidate=on");
+ 	if (opt) {
+ 		prom_radix_gtse_disable = true;
+ 		prom_debug("Radix GTSE disabled from cmdline\n");
+ 	}
+ 
+-	opt = prom_strstr(prom_cmd_line, "xive=off");
++	opt = early_strstr(prom_cmd_line, "xive=off");
+ 	if (opt) {
+ 		prom_xive_disable = true;
+ 		prom_debug("XIVE disabled from cmdline\n");
+@@ -839,7 +740,7 @@ static void __init early_cmdline_parse(void)
+ #endif /* CONFIG_PPC_PSERIES */
+ 
+ #ifdef CONFIG_PPC_SVM
+-	opt = prom_strstr(prom_cmd_line, "svm=");
++	opt = early_strstr(prom_cmd_line, "svm=");
+ 	if (opt) {
+ 		bool val;
+ 
+@@ -1199,7 +1100,7 @@ static int __init prom_count_smt_threads(void)
+ 		type[0] = 0;
+ 		prom_getprop(node, "device_type", type, sizeof(type));
+ 
+-		if (prom_strcmp(type, "cpu"))
++		if (early_strcmp(type, "cpu"))
+ 			continue;
+ 		/*
+ 		 * There is an entry for each smt thread, each entry being
+@@ -1650,7 +1551,7 @@ static void __init prom_init_mem(void)
+ 			 */
+ 			prom_getprop(node, "name", type, sizeof(type));
+ 		}
+-		if (prom_strcmp(type, "memory"))
++		if (early_strcmp(type, "memory"))
+ 			continue;
+ 
+ 		plen = prom_getprop(node, "reg", regbuf, sizeof(regbuf));
+@@ -1972,19 +1873,19 @@ static void __init prom_initialize_tce_table(void)
+ 		prom_getprop(node, "device_type", type, sizeof(type));
+ 		prom_getprop(node, "model", model, sizeof(model));
+ 
+-		if ((type[0] == 0) || (prom_strstr(type, "pci") == NULL))
++		if ((type[0] == 0) || (early_strstr(type, "pci") == NULL))
+ 			continue;
+ 
+ 		/* Keep the old logic intact to avoid regression. */
+ 		if (compatible[0] != 0) {
+-			if ((prom_strstr(compatible, "python") == NULL) &&
+-			    (prom_strstr(compatible, "Speedwagon") == NULL) &&
+-			    (prom_strstr(compatible, "Winnipeg") == NULL))
++			if ((early_strstr(compatible, "python") == NULL) &&
++			    (early_strstr(compatible, "Speedwagon") == NULL) &&
++			    (early_strstr(compatible, "Winnipeg") == NULL))
+ 				continue;
+ 		} else if (model[0] != 0) {
+-			if ((prom_strstr(model, "ython") == NULL) &&
+-			    (prom_strstr(model, "peedwagon") == NULL) &&
+-			    (prom_strstr(model, "innipeg") == NULL))
++			if ((early_strstr(model, "ython") == NULL) &&
++			    (early_strstr(model, "peedwagon") == NULL) &&
++			    (early_strstr(model, "innipeg") == NULL))
+ 				continue;
+ 		}
+ 
+@@ -2133,12 +2034,12 @@ static void __init prom_hold_cpus(void)
+ 
+ 		type[0] = 0;
+ 		prom_getprop(node, "device_type", type, sizeof(type));
+-		if (prom_strcmp(type, "cpu") != 0)
++		if (early_strcmp(type, "cpu") != 0)
+ 			continue;
+ 
+ 		/* Skip non-configured cpus. */
+ 		if (prom_getprop(node, "status", type, sizeof(type)) > 0)
+-			if (prom_strcmp(type, "okay") != 0)
++			if (early_strcmp(type, "okay") != 0)
+ 				continue;
+ 
+ 		reg = cpu_to_be32(-1); /* make sparse happy */
+@@ -2214,9 +2115,9 @@ static void __init prom_find_mmu(void)
+ 		return;
+ 	version[sizeof(version) - 1] = 0;
+ 	/* XXX might need to add other versions here */
+-	if (prom_strcmp(version, "Open Firmware, 1.0.5") == 0)
++	if (early_strcmp(version, "Open Firmware, 1.0.5") == 0)
+ 		of_workarounds = OF_WA_CLAIM;
+-	else if (prom_strncmp(version, "FirmWorks,3.", 12) == 0) {
++	else if (early_strncmp(version, "FirmWorks,3.", 12) == 0) {
+ 		of_workarounds = OF_WA_CLAIM | OF_WA_LONGTRAIL;
+ 		call_prom("interpret", 1, 1, "dev /memory 0 to allow-reclaim");
+ 	} else
+@@ -2249,7 +2150,7 @@ static void __init prom_init_stdout(void)
+ 	call_prom("instance-to-path", 3, 1, prom.stdout, path, 255);
+ 	prom_printf("OF stdout device is: %s\n", of_stdout_device);
+ 	prom_setprop(prom.chosen, "/chosen", "linux,stdout-path",
+-		     path, prom_strlen(path) + 1);
++		     path, early_strlen(path) + 1);
+ 
+ 	/* instance-to-package fails on PA-Semi */
+ 	stdout_node = call_prom("instance-to-package", 1, 1, prom.stdout);
+@@ -2259,7 +2160,7 @@ static void __init prom_init_stdout(void)
+ 		/* If it's a display, note it */
+ 		memset(type, 0, sizeof(type));
+ 		prom_getprop(stdout_node, "device_type", type, sizeof(type));
+-		if (prom_strcmp(type, "display") == 0)
++		if (early_strcmp(type, "display") == 0)
+ 			prom_setprop(stdout_node, path, "linux,boot-display", NULL, 0);
+ 	}
+ }
+@@ -2280,19 +2181,19 @@ static int __init prom_find_machine_type(void)
+ 		compat[len] = 0;
+ 		while (i < len) {
+ 			char *p = &compat[i];
+-			int sl = prom_strlen(p);
++			int sl = early_strlen(p);
+ 			if (sl == 0)
+ 				break;
+-			if (prom_strstr(p, "Power Macintosh") ||
+-			    prom_strstr(p, "MacRISC"))
++			if (early_strstr(p, "Power Macintosh") ||
++			    early_strstr(p, "MacRISC"))
+ 				return PLATFORM_POWERMAC;
+ #ifdef CONFIG_PPC64
+ 			/* We must make sure we don't detect the IBM Cell
+ 			 * blades as pSeries due to some firmware issues,
+ 			 * so we do it here.
+ 			 */
+-			if (prom_strstr(p, "IBM,CBEA") ||
+-			    prom_strstr(p, "IBM,CPBW-1.0"))
++			if (early_strstr(p, "IBM,CBEA") ||
++			    early_strstr(p, "IBM,CPBW-1.0"))
+ 				return PLATFORM_GENERIC;
+ #endif /* CONFIG_PPC64 */
+ 			i += sl + 1;
+@@ -2309,7 +2210,7 @@ static int __init prom_find_machine_type(void)
+ 			   compat, sizeof(compat)-1);
+ 	if (len <= 0)
+ 		return PLATFORM_GENERIC;
+-	if (prom_strcmp(compat, "chrp"))
++	if (early_strcmp(compat, "chrp"))
+ 		return PLATFORM_GENERIC;
+ 
+ 	/* Default to pSeries. We need to know if we are running LPAR */
+@@ -2371,7 +2272,7 @@ static void __init prom_check_displays(void)
+ 	for (node = 0; prom_next_node(&node); ) {
+ 		memset(type, 0, sizeof(type));
+ 		prom_getprop(node, "device_type", type, sizeof(type));
+-		if (prom_strcmp(type, "display") != 0)
++		if (early_strcmp(type, "display") != 0)
+ 			continue;
+ 
+ 		/* It seems OF doesn't null-terminate the path :-( */
+@@ -2485,9 +2386,9 @@ static unsigned long __init dt_find_string(char *str)
+ 	s = os = (char *)dt_string_start;
+ 	s += 4;
+ 	while (s <  (char *)dt_string_end) {
+-		if (prom_strcmp(s, str) == 0)
++		if (early_strcmp(s, str) == 0)
+ 			return s - os;
+-		s += prom_strlen(s) + 1;
++		s += early_strlen(s) + 1;
+ 	}
+ 	return 0;
+ }
+@@ -2520,7 +2421,7 @@ static void __init scan_dt_build_strings(phandle node,
+ 		}
+ 
+  		/* skip "name" */
+-		if (prom_strcmp(namep, "name") == 0) {
++		if (early_strcmp(namep, "name") == 0) {
+  			*mem_start = (unsigned long)namep;
+  			prev_name = "name";
+  			continue;
+@@ -2532,7 +2433,7 @@ static void __init scan_dt_build_strings(phandle node,
+ 			namep = sstart + soff;
+ 		} else {
+ 			/* Trim off some if we can */
+-			*mem_start = (unsigned long)namep + prom_strlen(namep) + 1;
++			*mem_start = (unsigned long)namep + early_strlen(namep) + 1;
+ 			dt_string_end = *mem_start;
+ 		}
+ 		prev_name = namep;
+@@ -2601,7 +2502,7 @@ static void __init scan_dt_build_struct(phandle node, unsigned long *mem_start,
+ 			break;
+ 
+  		/* skip "name" */
+-		if (prom_strcmp(pname, "name") == 0) {
++		if (early_strcmp(pname, "name") == 0) {
+  			prev_name = "name";
+  			continue;
+  		}
+@@ -2632,7 +2533,7 @@ static void __init scan_dt_build_struct(phandle node, unsigned long *mem_start,
+ 		call_prom("getprop", 4, 1, node, pname, valp, l);
+ 		*mem_start = ALIGN(*mem_start, 4);
+ 
+-		if (!prom_strcmp(pname, "phandle"))
++		if (!early_strcmp(pname, "phandle"))
+ 			has_phandle = 1;
+ 	}
+ 
+@@ -2702,8 +2603,8 @@ static void __init flatten_device_tree(void)
+ 
+ 	/* Add "phandle" in there, we'll need it */
+ 	namep = make_room(&mem_start, &mem_end, 16, 1);
+-	prom_strcpy(namep, "phandle");
+-	mem_start = (unsigned long)namep + prom_strlen(namep) + 1;
++	early_strcpy(namep, "phandle");
++	mem_start = (unsigned long)namep + early_strlen(namep) + 1;
+ 
+ 	/* Build string array */
+ 	prom_printf("Building dt strings...\n"); 
+@@ -3025,7 +2926,7 @@ static void __init fixup_device_tree_efika(void)
+ 	rv = prom_getprop(node, "model", prop, sizeof(prop));
+ 	if (rv == PROM_ERROR)
+ 		return;
+-	if (prom_strcmp(prop, "EFIKA5K2"))
++	if (early_strcmp(prop, "EFIKA5K2"))
+ 		return;
+ 
+ 	prom_printf("Applying EFIKA device tree fixups\n");
+@@ -3033,13 +2934,13 @@ static void __init fixup_device_tree_efika(void)
+ 	/* Claiming to be 'chrp' is death */
+ 	node = call_prom("finddevice", 1, 1, ADDR("/"));
+ 	rv = prom_getprop(node, "device_type", prop, sizeof(prop));
+-	if (rv != PROM_ERROR && (prom_strcmp(prop, "chrp") == 0))
++	if (rv != PROM_ERROR && (early_strcmp(prop, "chrp") == 0))
+ 		prom_setprop(node, "/", "device_type", "efika", sizeof("efika"));
+ 
+ 	/* CODEGEN,description is exposed in /proc/cpuinfo so
+ 	   fix that too */
+ 	rv = prom_getprop(node, "CODEGEN,description", prop, sizeof(prop));
+-	if (rv != PROM_ERROR && (prom_strstr(prop, "CHRP")))
++	if (rv != PROM_ERROR && (early_strstr(prop, "CHRP")))
+ 		prom_setprop(node, "/", "CODEGEN,description",
+ 			     "Efika 5200B PowerPC System",
+ 			     sizeof("Efika 5200B PowerPC System"));
+diff --git a/arch/powerpc/kernel/prom_init_check.sh b/arch/powerpc/kernel/prom_init_check.sh
+index b183ab9c5107..bbdeba750d52 100644
+--- a/arch/powerpc/kernel/prom_init_check.sh
++++ b/arch/powerpc/kernel/prom_init_check.sh
+@@ -27,7 +27,14 @@ __secondary_hold_acknowledge __secondary_hold_spinloop __start
+ logo_linux_clut224 btext_prepare_BAT
+ reloc_got2 kernstart_addr memstart_addr linux_banner _stext
+ __prom_init_toc_start __prom_init_toc_end btext_setup_display TOC.
+-relocate"
++relocate
++early_strcmp
++early_strcpy
++early_strlcat
++early_strlen
++early_strncmp
++early_strstr
++"
+ 
+ NM="$1"
+ OBJ="$2"
 -- 
 2.25.1
 
