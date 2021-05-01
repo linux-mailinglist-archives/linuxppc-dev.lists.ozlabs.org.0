@@ -1,56 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58833707AD
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 17:18:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F5693707BB
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 17:32:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FXXvB56rHz2yyS
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 May 2021 01:18:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FXYBr2H7dz2yyK
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 May 2021 01:32:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=E/Y5NiHG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FBbCdNxU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.76;
- helo=conuserg-09.nifty.com; envelope-from=masahiroy@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=E/Y5NiHG; 
- dkim-atps=neutral
-Received: from conuserg-09.nifty.com (conuserg-09.nifty.com [210.131.2.76])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=FBbCdNxU; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FXXtY4vXYz2yhr
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 May 2021 01:18:13 +1000 (AEST)
-Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp
- [133.32.232.101]) (authenticated)
- by conuserg-09.nifty.com with ESMTP id 141FFirA014188;
- Sun, 2 May 2021 00:15:44 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com 141FFirA014188
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1619882145;
- bh=u9G2y9j8kDI7ZQJXHPzFbSaa9rJKSH6IgG7TTQj7jqQ=;
- h=From:To:Cc:Subject:Date:From;
- b=E/Y5NiHGYWBCdK49NO0y6Qu2vvGHmQlyFFVptGIbXAAaoIGy8pjC6imlkiakgytni
- JZP2Z5pzajhdbQ/0C2H8goOoY8HdgxdHI8DfHIm4hSK/ZRB/SUnIBq+3rXrZFHJ+uJ
- HpDbDONoTW3tLDb+7U7GLOtj5WThv70KojHnCZVi/QhIhVbQlVrEB99glwjEO1fm0s
- zleWaVpLEnonAvu1y8hGYYJhm20aLE9Bq17KoF92T1gBaUxlMNJT5uGIPCSIIz0gN9
- 5YKXQD0zN3lojtQzZOpjBYpy0dfkkVKLEJSUz2DixNVjUEJaCN3+/W1t1wZPC4dCsF
- L7ZzM5deu0ZTA==
-X-Nifty-SrcIP: [133.32.232.101]
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: linux-kernel@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH] Raise the minimum GCC version to 5.2
-Date: Sun,  2 May 2021 00:15:38 +0900
-Message-Id: <20210501151538.145449-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.27.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FXYBC4Jddz2yR8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 May 2021 01:31:47 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 141FFRCI130190; Sat, 1 May 2021 11:31:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=fLdOvdSUPv1sLW/wTo2TgGXxtZVWjGygpLXtAelTbkc=;
+ b=FBbCdNxUJWFjx4trYGx5iaxgmnoNkFLJUjWUEc+ybTK8q4XHotSKiBNGa/3YiHJ3j3/t
+ 1lDask5pY0ctVC+BwZ3E1g/45n8PhyN4ciALbW/HffVkku2GYgiJgWiwrEAqN1tN2z+3
+ X2xk0BIHgtfMyMHYhFAJCp64gWF7/w/WWAkw84YWBNP/LXy4hEduda+apWdPXQXxGVMC
+ rJ8T6GcZu6X+FMWVXt+ORwmURk2l+jTWFupGU7opgMgTYPxEWHmR9RmH4HyMePY3UfKi
+ +stNGVTjHJNE/fbHM1MOHKZ034voSy8jsocmowDfNYYa6EN4aeTVeqqnXiJopusSCmoT Ng== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3899fe06bd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 01 May 2021 11:31:34 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 141FGPRa132028;
+ Sat, 1 May 2021 11:31:34 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3899fe06ay-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 01 May 2021 11:31:34 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 141FRSKN005397;
+ Sat, 1 May 2021 15:31:32 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 388xm8r50y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 01 May 2021 15:31:31 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 141FVT4L16515544
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 1 May 2021 15:31:29 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 66353A4054;
+ Sat,  1 May 2021 15:31:29 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A511AA405B;
+ Sat,  1 May 2021 15:31:27 +0000 (GMT)
+Received: from [9.77.192.134] (unknown [9.77.192.134])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sat,  1 May 2021 15:31:27 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/powernv/memtrace: Fix dcache flushing
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, mpe@ellerman.id.au
+References: <20210430075557.893819-1-sandipan@linux.ibm.com>
+ <cb700884-b9f3-f3b9-4fae-272d678d1626@csgroup.eu>
+From: Sandipan Das <sandipan@linux.ibm.com>
+Message-ID: <6d585ff1-f238-d18b-5cc5-9259ebddbdbd@linux.ibm.com>
+Date: Sat, 1 May 2021 21:01:26 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
+In-Reply-To: <cb700884-b9f3-f3b9-4fae-272d678d1626@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: FtNbahig1GwNnvPjeXzefYP79rtj_ZTs
+X-Proofpoint-ORIG-GUID: vjzrwdTHoJ8d_biFWDTUUOIuaxuLxYiJ
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-01_10:2021-04-30,
+ 2021-05-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0
+ phishscore=0 adultscore=0 impostorscore=0 clxscore=1011 spamscore=0
+ mlxlogscore=999 mlxscore=0 suspectscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2105010110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,160 +110,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- linux-kbuild@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>,
- Paul Mackerras <paulus@samba.org>, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: aneesh.kumar@linux.ibm.com, rashmica.g@gmail.com, jniethe5@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, david@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The current minimum GCC version is 4.9 except ARCH=arm64 requiring
-GCC 5.1.
 
-When we discussed last time, we agreed to raise the minimum GCC version
-to 5.1 globally. [1]
+On 30/04/21 2:12 pm, Christophe Leroy wrote:
+> 
+> 
+> Le 30/04/2021 à 09:55, Sandipan Das a écrit :
+>> Trace memory is cleared and the corresponding dcache lines
+>> are flushed after allocation. However, this should not be
+>> done using the PFN. This adds the missing __va() conversion.
+>>
+>> Fixes: 2ac02e5ecec0 ("powerpc/mm: Remove dcache flush from memory remove.")
+>> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
+>> ---
+>>   arch/powerpc/platforms/powernv/memtrace.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
+>> index 71c1262589fe..a31f13814f2e 100644
+>> --- a/arch/powerpc/platforms/powernv/memtrace.c
+>> +++ b/arch/powerpc/platforms/powernv/memtrace.c
+>> @@ -104,8 +104,8 @@ static void memtrace_clear_range(unsigned long start_pfn,
+>>        * Before we go ahead and use this range as cache inhibited range
+>>        * flush the cache.
+>>        */
+>> -    flush_dcache_range_chunked(PFN_PHYS(start_pfn),
+>> -                   PFN_PHYS(start_pfn + nr_pages),
+>> +    flush_dcache_range_chunked((unsigned long)__va(PFN_PHYS(start_pfn)),
+>> +                   (unsigned long)__va(PFN_PHYS(start_pfn + nr_pages)),
+> 
+> Can you use pfn_to_virt() instead ?
+> 
+>>                      FLUSH_CHUNK_SIZE);
+>>   }
+>>  
 
-I'd like to propose GCC 5.2 to clean up arch/powerpc/Kconfig as well.
+Sure, that looks cleaner. Thanks for the suggestion.
 
-This commit updates the minimum versions in scripts/min-tool-version.sh
-and Documentation/process/changes.rst with trivial code cleanups.
-
-More cleanups will be possible as follow-up patches, but this one must
-be agreed and applied to the mainline first.
-
-[1]: https://lore.kernel.org/lkml/CAHk-=wjHTpG+gMx9vqrZgo8Uw0NqA2kNjS87o63Zv3=WG2K3zA@mail.gmail.com/
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
-I'd like Linus to pick up this patch
-if there is no objection.
-
-
- Documentation/process/changes.rst | 2 +-
- arch/arm64/Kconfig                | 2 +-
- arch/powerpc/Kconfig              | 2 +-
- arch/riscv/Kconfig                | 2 +-
- include/linux/compiler-gcc.h      | 6 +-----
- lib/Kconfig.debug                 | 2 +-
- scripts/min-tool-version.sh       | 8 +-------
- 7 files changed, 7 insertions(+), 17 deletions(-)
-
-diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
-index dac17711dc11..cf104a8d1850 100644
---- a/Documentation/process/changes.rst
-+++ b/Documentation/process/changes.rst
-@@ -29,7 +29,7 @@ you probably needn't concern yourself with pcmciautils.
- ====================== ===============  ========================================
-         Program        Minimal version       Command to check the version
- ====================== ===============  ========================================
--GNU C                  4.9              gcc --version
-+GNU C                  5.2              gcc --version
- Clang/LLVM (optional)  10.0.1           clang --version
- GNU make               3.81             make --version
- binutils               2.23             ld -v
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 7f2a80091337..fae9514dabab 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -78,7 +78,7 @@ config ARM64
- 	select ARCH_SUPPORTS_LTO_CLANG_THIN
- 	select ARCH_SUPPORTS_CFI_CLANG
- 	select ARCH_SUPPORTS_ATOMIC_RMW
--	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128 && (GCC_VERSION >= 50000 || CC_IS_CLANG)
-+	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
- 	select ARCH_SUPPORTS_NUMA_BALANCING
- 	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION if COMPAT
- 	select ARCH_WANT_DEFAULT_BPF_JIT
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1e6230bea09d..10dc47eac122 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -212,7 +212,7 @@ config PPC
- 	select HAVE_FUNCTION_ERROR_INJECTION
- 	select HAVE_FUNCTION_GRAPH_TRACER
- 	select HAVE_FUNCTION_TRACER
--	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
-+	select HAVE_GCC_PLUGINS
- 	select HAVE_GENERIC_VDSO
- 	select HAVE_HW_BREAKPOINT		if PERF_EVENTS && (PPC_BOOK3S || PPC_8xx)
- 	select HAVE_IDE
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 4515a10c5d22..748a5b37a0e5 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -226,7 +226,7 @@ config ARCH_RV32I
- config ARCH_RV64I
- 	bool "RV64I"
- 	select 64BIT
--	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128 && GCC_VERSION >= 50000
-+	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128 && CC_IS_GCC
- 	select HAVE_DYNAMIC_FTRACE if MMU
- 	select HAVE_DYNAMIC_FTRACE_WITH_REGS if HAVE_DYNAMIC_FTRACE
- 	select HAVE_FTRACE_MCOUNT_RECORD
-diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-index 5d97ef738a57..3608189dfc29 100644
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -98,10 +98,8 @@
- 
- #if GCC_VERSION >= 70000
- #define KASAN_ABI_VERSION 5
--#elif GCC_VERSION >= 50000
-+#else
- #define KASAN_ABI_VERSION 4
--#elif GCC_VERSION >= 40902
--#define KASAN_ABI_VERSION 3
- #endif
- 
- #if __has_attribute(__no_sanitize_address__)
-@@ -122,9 +120,7 @@
- #define __no_sanitize_undefined
- #endif
- 
--#if GCC_VERSION >= 50100
- #define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
--#endif
- 
- /*
-  * Turn individual warnings and errors on and off locally, depending
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 678c13967580..0d0ed298905d 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -284,7 +284,7 @@ config DEBUG_INFO_DWARF4
- 
- config DEBUG_INFO_DWARF5
- 	bool "Generate DWARF Version 5 debuginfo"
--	depends on GCC_VERSION >= 50000 || (CC_IS_CLANG && (AS_IS_LLVM || (AS_IS_GNU && AS_VERSION >= 23502)))
-+	depends on CC_IS_GCC || (CC_IS_CLANG && (AS_IS_LLVM || (AS_IS_GNU && AS_VERSION >= 23502)))
- 	depends on !DEBUG_INFO_BTF
- 	help
- 	  Generate DWARF v5 debug info. Requires binutils 2.35.2, gcc 5.0+ (gcc
-diff --git a/scripts/min-tool-version.sh b/scripts/min-tool-version.sh
-index d22cf91212b0..d5d0d26b8e7d 100755
---- a/scripts/min-tool-version.sh
-+++ b/scripts/min-tool-version.sh
-@@ -17,13 +17,7 @@ binutils)
- 	echo 2.23.0
- 	;;
- gcc)
--	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=63293
--	# https://lore.kernel.org/r/20210107111841.GN1551@shell.armlinux.org.uk
--	if [ "$SRCARCH" = arm64 ]; then
--		echo 5.1.0
--	else
--		echo 4.9.0
--	fi
-+	echo 5.2.0
- 	;;
- icc)
- 	# temporary
--- 
-2.27.0
-
+- Sandipan
