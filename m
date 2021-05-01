@@ -1,74 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FACC3704EA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 04:05:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 497EA3705A3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 06:48:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FXCHg01gNz309c
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 12:05:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FXGwS2TCFz30Cr
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 14:48:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Il8/p3uU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=aYMb0Fic;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
- helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
+ helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Il8/p3uU; dkim-atps=neutral
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
- [IPv6:2607:f8b0:4864:20::62b])
+ header.s=20161025 header.b=aYMb0Fic; dkim-atps=neutral
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FXCHB3fGlz2xff
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 May 2021 12:04:51 +1000 (AEST)
-Received: by mail-pl1-x62b.google.com with SMTP id y1so21890906plg.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 19:04:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FXGw06TVpz2yhr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 May 2021 14:48:30 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id v13so58575ple.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Apr 2021 21:48:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=OqlARIZFGaQEYSUN7r1N3UZjjucgcBkK/+tx6C+Zyu4=;
- b=Il8/p3uUo1d9BjKXjJz9vrAE7TpJmC4eoYx7tZ3r7iaelPrbc3PqnO4iFXsahEXU2x
- RYsUaf+kPEK6o2rv2Izl0zM73SaE55AwnA7bM7q4DegJL6AZe1dUhYQSU6ooxz8B9vZt
- luuSHN+X0Vg0dpuLeFTotZRVOyLV62KYanxZDvd33MNS6E02iFRBC+XXgH346E9GteIH
- SY7iN4IL25wTOSb8QsavA6w+ZJ5C4DRLllqRbK7JyKQ7cojTD6MSeR5qn8ZnZL4/ICDp
- 7njhP6MxhNCFFeZoKLBAzPzrS147mvzGsGNOk/Bu2I6XE0rmWESlwoRBAFYoIoaV3RJG
- emLw==
+ bh=Vve40T7v4v8sPBu5ZCJti+LTma9Wj/95l94bxGIOxwQ=;
+ b=aYMb0FicCqqAY2CBZS7UN9m57q78PA4YYBWswN9i8Dcl+uGScrayqt25tJ5fFcpPuJ
+ obaahCy/PTXHbZucyrGGwgp4exclGiK5BBWP4NDNSHDq6V1Yp/3SeWwxLW1ks6YU+17T
+ Bd+ZffFmu6UZadwthE+KcKaOSL62UWX5/Y6vACFLXOYjyGJktr2U57CkzotFT6kAx3Hk
+ 20ZbY4HyeDtH+zeGUvsVstVJpVrJOSJ/ySVUZcsX9Q1mEecWbriZ5zTj6+KJCKzWzYGO
+ oC4mSbrZ7tpBOjxKQGspOVhP28g8hBTbq7IW9usImHqa0K3cP00z4q6elny2JFsKxpWW
+ 7djA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=OqlARIZFGaQEYSUN7r1N3UZjjucgcBkK/+tx6C+Zyu4=;
- b=CTwI4NlJ1WpR7c8u9+6LElnJF5mJnbW8he4ouYpTA7J+W6sRMqI6eX0S15lsw39C/F
- FdDLZ2IhADvYNB3yziUAiAK39U3C0I3amPqBlwW7Pc0pSq9uPG6pv7GfA8Q+DZmnQ4aE
- Cjac0E98HfKCwFA0kAFnP5rfDRAWtDG0PFokmhREnPvIsNpTq1y495Iqfigsgj5s6KTm
- UOk/pZvy9hAm2wM6rRxXvty8/dE5xMIdw77LbXuhx6nwI7tmfo/o5cEA6HuCfPfN0DvD
- CQXniAty5mV459IXKtDhVsQjUrGw/gQdy55Q7gJ2JaEBeQedI3vVlO7ZJxs2A+T6EJNy
- UZuQ==
-X-Gm-Message-State: AOAM530WdBgBLQ/VEhxpL8v7sO4jhpbcoJkGgY4kCJVRadKfuLqgXLNL
- 5+90srSjChfm+shAdXdBiMhKtqtL/VYCSQ==
-X-Google-Smtp-Source: ABdhPJxo3OsZ9dn384DmMOWfnFR5URsVUNBG17f/wxigK1KU6u2h9Je/gIqOc+vWg1qWmhTPzayGTg==
-X-Received: by 2002:a17:90a:c28e:: with SMTP id
- f14mr8460177pjt.56.1619834688530; 
- Fri, 30 Apr 2021 19:04:48 -0700 (PDT)
+ bh=Vve40T7v4v8sPBu5ZCJti+LTma9Wj/95l94bxGIOxwQ=;
+ b=F/Rq3Ampq7tnKCr+jcklL2LXDD2MNG/MQnyqJaS52O1rSL3w62VN8sx6lyQjF8Edeq
+ kfrwcnUuzyFKdlkFMlVmysxLTheWBAFa2qMKBfxXVKgpJ1TUuYYoCpDzNnEgLAwBNRmr
+ Ywoi7b94hcL7lydmh033Ih0vnwvskpr9fwk+5Y1sxQXsTcZ8eIVim990opP7/f2lNqeZ
+ GSl0DWNbct1Y7nWawP5JOILnsp6L8ccQWzeVFVyP4oElICIudjfuHoJxSPCAJ8PTjRbp
+ hPlpdcmMc8oXe9TM9chl+lvDgHggpXbUN64/RHMuvAa8cQ4+xCUm0t8SGWOdlRtkquux
+ DpZQ==
+X-Gm-Message-State: AOAM5306de+uP4Kx2AGu7J+h1PN7hcpcyS4mN0iyQ32z/ZnEF8abvUY+
+ osFDKv3lLfI1l1Nm3v3MmZg=
+X-Google-Smtp-Source: ABdhPJyOFe9iA+1R8quHO2lV+HuAcLeerjAKwAuBtc4DTr68hFVUALTTvde42YCpEPiuELD2sHbNtQ==
+X-Received: by 2002:a17:90a:4748:: with SMTP id
+ y8mr8620782pjg.31.1619844504683; 
+ Fri, 30 Apr 2021 21:48:24 -0700 (PDT)
 Received: from localhost ([61.68.127.20])
- by smtp.gmail.com with ESMTPSA id e2sm3118070pjk.31.2021.04.30.19.04.47
+ by smtp.gmail.com with ESMTPSA id 23sm3662091pfz.91.2021.04.30.21.48.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Apr 2021 19:04:48 -0700 (PDT)
-Date: Sat, 01 May 2021 12:04:43 +1000
+ Fri, 30 Apr 2021 21:48:24 -0700 (PDT)
+Date: Sat, 01 May 2021 14:48:19 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 2/2] KVM: PPC: Book3S HV: Stop forwarding all HFSCR
- cause bits to L1
+Subject: Re: [PATCH v3 1/2] KVM: PPC: Book3S HV: Sanitise vcpu registers in
+ nested path
 To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
 References: <20210415230948.3563415-1-farosas@linux.ibm.com>
- <20210415230948.3563415-3-farosas@linux.ibm.com>
-In-Reply-To: <20210415230948.3563415-3-farosas@linux.ibm.com>
+ <20210415230948.3563415-2-farosas@linux.ibm.com>
+In-Reply-To: <20210415230948.3563415-2-farosas@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1619834387.ttgzg40bpb.astroid@bobo.none>
+Message-Id: <1619844035.sdrijkoiu4.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,78 +87,137 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Oh sorry, I didn't skim this one before replying to the first.
-
 Excerpts from Fabiano Rosas's message of April 16, 2021 9:09 am:
-> Since commit 73937deb4b2d ("KVM: PPC: Book3S HV: Sanitise hv_regs on
-> nested guest entry") we have been disabling for the nested guest the
-> hypervisor facility bits that its nested hypervisor don't have access
-> to.
+> As one of the arguments of the H_ENTER_NESTED hypercall, the nested
+> hypervisor (L1) prepares a structure containing the values of various
+> hypervisor-privileged registers with which it wants the nested guest
+> (L2) to run. Since the nested HV runs in supervisor mode it needs the
+> host to write to these registers.
 >=20
-> If the nested guest tries to use one of those facilities, the hardware
-> will cause a Hypervisor Facility Unavailable interrupt. The HFSCR
-> register is modified by the hardware to contain information about the
-> cause of the interrupt.
+> To stop a nested HV manipulating this mechanism and using a nested
+> guest as a proxy to access a facility that has been made unavailable
+> to it, we have a routine that sanitises the values of the HV registers
+> before copying them into the nested guest's vcpu struct.
 >=20
-> We have been returning the cause bits to the nested hypervisor but
-> since commit 549e29b458c5 ("KVM: PPC: Book3S HV: Sanitise vcpu
-> registers in nested path") we are reducing the amount of information
-> exposed to L1, so it seems like a good idea to restrict some of the
-> cause bits as well.
+> However, when coming out of the guest the values are copied as they
+> were back into L1 memory, which means that any sanitisation we did
+> during guest entry will be exposed to L1 after H_ENTER_NESTED returns.
 >=20
-> With this patch the L1 guest will be allowed to handle only the
-> interrupts caused by facilities it has disabled for L2. The interrupts
-> caused by facilities that L0 denied will cause a Program Interrupt in
-> L1.
+> This patch alters this sanitisation to have effect on the vcpu->arch
+> registers directly before entering and after exiting the guest,
+> leaving the structure that is copied back into L1 unchanged (except
+> when we really want L1 to access the value, e.g the Cause bits of
+> HFSCR).
+>=20
+> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv_nested.c | 55 ++++++++++++++++++-----------
+>  1 file changed, 34 insertions(+), 21 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3=
+s_hv_nested.c
+> index 0cd0e7aad588..270552dd42c5 100644
+> --- a/arch/powerpc/kvm/book3s_hv_nested.c
+> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+> @@ -102,8 +102,17 @@ static void save_hv_return_state(struct kvm_vcpu *vc=
+pu, int trap,
+>  {
+>  	struct kvmppc_vcore *vc =3D vcpu->arch.vcore;
+> =20
+> +	/*
+> +	 * When loading the hypervisor-privileged registers to run L2,
+> +	 * we might have used bits from L1 state to restrict what the
+> +	 * L2 state is allowed to be. Since L1 is not allowed to read
+> +	 * the HV registers, do not include these modifications in the
+> +	 * return state.
+> +	 */
+> +	hr->hfscr =3D ((~HFSCR_INTR_CAUSE & hr->hfscr) |
+> +		     (HFSCR_INTR_CAUSE & vcpu->arch.hfscr));
+> +
+>  	hr->dpdes =3D vc->dpdes;
+> -	hr->hfscr =3D vcpu->arch.hfscr;
+>  	hr->purr =3D vcpu->arch.purr;
+>  	hr->spurr =3D vcpu->arch.spurr;
+>  	hr->ic =3D vcpu->arch.ic;
 
-I'm not sure if this is a good solution. This would be randomly killing=20
-guest processes or kernels with no way for them to understand what's going
-on or deal with it.
-
-The problem is really a nested hypervisor mismatch / configuration=20
-error, so it should be handled between the L0 and L1. Returning failure
-from H_ENTER_NESTED, for example (which is probe-able, but not really=20
-any less probe-able than this approach).
+The below parts of the patch I have no problem with, I think it's good to=20
+be able to restore the hv_guest_state for return, e.g., for cases where=20
+the L0 might emulate some HV behaviour transparently it will be useful,
+at least.
 
 Thanks,
 Nick
 
->=20
-> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
-> ---
->  arch/powerpc/kvm/book3s_hv_nested.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->=20
-> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3=
-s_hv_nested.c
-> index 270552dd42c5..912a2bcdf7b0 100644
-> --- a/arch/powerpc/kvm/book3s_hv_nested.c
-> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
-> @@ -138,6 +138,23 @@ static void save_hv_return_state(struct kvm_vcpu *vc=
+> @@ -132,24 +141,7 @@ static void save_hv_return_state(struct kvm_vcpu *vc=
 pu, int trap,
->  	case BOOK3S_INTERRUPT_H_EMUL_ASSIST:
->  		hr->heir =3D vcpu->arch.emul_inst;
->  		break;
-> +	case BOOK3S_INTERRUPT_H_FAC_UNAVAIL:
-> +	{
-> +		u8 cause =3D vcpu->arch.hfscr >> 56;
-> +
-> +		WARN_ON_ONCE(cause >=3D BITS_PER_LONG);
-> +
-> +		if (hr->hfscr & (1UL << cause)) {
-> +			hr->hfscr &=3D ~HFSCR_INTR_CAUSE;
-> +			/*
-> +			 * We have not restored L1 state yet, so queue
-> +			 * this interrupt instead of delivering it
-> +			 * immediately.
-> +			 */
-> +			kvmppc_book3s_queue_irqprio(vcpu, BOOK3S_INTERRUPT_PROGRAM);
-> +		}
-> +		break;
-> +	}
 >  	}
 >  }
 > =20
+> -static void sanitise_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_stat=
+e *hr)
+> -{
+> -	/*
+> -	 * Don't let L1 enable features for L2 which we've disabled for L1,
+> -	 * but preserve the interrupt cause field.
+> -	 */
+> -	hr->hfscr &=3D (HFSCR_INTR_CAUSE | vcpu->arch.hfscr);
+> -
+> -	/* Don't let data address watchpoint match in hypervisor state */
+> -	hr->dawrx0 &=3D ~DAWRX_HYP;
+> -	hr->dawrx1 &=3D ~DAWRX_HYP;
+> -
+> -	/* Don't let completed instruction address breakpt match in HV state */
+> -	if ((hr->ciabr & CIABR_PRIV) =3D=3D CIABR_PRIV_HYPER)
+> -		hr->ciabr &=3D ~CIABR_PRIV;
+> -}
+> -
+> -static void restore_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state=
+ *hr)
+> +static void restore_hv_regs(struct kvm_vcpu *vcpu, const struct hv_guest=
+_state *hr)
+>  {
+>  	struct kvmppc_vcore *vc =3D vcpu->arch.vcore;
+> =20
+> @@ -261,6 +253,27 @@ static int kvmhv_write_guest_state_and_regs(struct k=
+vm_vcpu *vcpu,
+>  				     sizeof(struct pt_regs));
+>  }
+> =20
+> +static void load_l2_hv_regs(struct kvm_vcpu *vcpu,
+> +			    const struct hv_guest_state *l2_hv,
+> +			    const struct hv_guest_state *l1_hv)
+> +{
+> +	restore_hv_regs(vcpu, l2_hv);
+> +
+> +	/*
+> +	 * Don't let L1 enable features for L2 which we've disabled for L1,
+> +	 * but preserve the interrupt cause field.
+> +	 */
+> +	vcpu->arch.hfscr =3D l2_hv->hfscr & (HFSCR_INTR_CAUSE | l1_hv->hfscr);
+> +
+> +	/* Don't let data address watchpoint match in hypervisor state */
+> +	vcpu->arch.dawrx0 =3D l2_hv->dawrx0 & ~DAWRX_HYP;
+> +	vcpu->arch.dawrx1 =3D l2_hv->dawrx1 & ~DAWRX_HYP;
+> +
+> +	/* Don't let completed instruction address breakpt match in HV state */
+> +	if ((l2_hv->ciabr & CIABR_PRIV) =3D=3D CIABR_PRIV_HYPER)
+> +		vcpu->arch.ciabr =3D l2_hv->ciabr & ~CIABR_PRIV;
+> +}
+> +
+>  long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+>  {
+>  	long int err, r;
+> @@ -324,8 +337,8 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+>  	mask =3D LPCR_DPFD | LPCR_ILE | LPCR_TC | LPCR_AIL | LPCR_LD |
+>  		LPCR_LPES | LPCR_MER;
+>  	lpcr =3D (vc->lpcr & ~mask) | (l2_hv.lpcr & mask);
+> -	sanitise_hv_regs(vcpu, &l2_hv);
+> -	restore_hv_regs(vcpu, &l2_hv);
+> +
+> +	load_l2_hv_regs(vcpu, &l2_hv, &saved_l1_hv);
+> =20
+>  	vcpu->arch.ret =3D RESUME_GUEST;
+>  	vcpu->arch.trap =3D 0;
 > --=20
 > 2.29.2
 >=20
