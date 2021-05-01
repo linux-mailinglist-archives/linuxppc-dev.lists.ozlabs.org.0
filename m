@@ -2,66 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E653707C8
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 17:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B88F93707CC
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 May 2021 18:03:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FXYfm5xKrz2yyQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 May 2021 01:53:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FXYv45MkJz30Dr
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 May 2021 02:03:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=blRUIoJd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n77PJZuw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b34;
- helo=mail-yb1-xb34.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=blRUIoJd; dkim-atps=neutral
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com
- [IPv6:2607:f8b0:4864:20::b34])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=n77PJZuw; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FXYfC6PRrz2xYd
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 May 2021 01:52:35 +1000 (AEST)
-Received: by mail-yb1-xb34.google.com with SMTP id y2so1850509ybq.13
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 May 2021 08:52:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=JjYGMVIHK5n7yoxDPMXd66Acol9hZKelHx5UT6nH47Y=;
- b=blRUIoJdCmVMNiQDMHNaVJve98qPVFj9/24WjJdA429iQkxxVreNispe+BqiBA3d8W
- Acr7BVauP7zkcs15L+68w5EqDvJuqgqAQiUpqTLpjFrGI4w60FlbBjkAovszT+DhAO2Y
- tHmFz//OpI0cdY7Ho2lJ17ud/C/jzzNtemRy5ooBS5sildh6tdH/JXdOSWzcu0kUHuRk
- sWuz3sEcBwnrjw3SmYkDYCFW6/LI+qbeU5bNDNEyCV8lhk15528w6zCTI7qv8GD3C2Qr
- /6S1azORvcFztQ4nBtiPy2tzzOKKF9suofex4xX1vd9C6oVASMofpqqBqVOFa9w2DOS8
- wBsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=JjYGMVIHK5n7yoxDPMXd66Acol9hZKelHx5UT6nH47Y=;
- b=dax7ufg5118nHpxfk2smtdqkK77MyYvh5bcCXVwVD435bi6ycyQx7J5uCZ3hKAYGew
- ertDqpbo4hIAu7O3OyBlVTjt9JVjGZTu5qyjMxS11ursXX8Kubu5kUVqAQZFgdKMELgo
- YgdoCTFYUWj+oapbTllJ6AF5swt8/mEmCaIwyrXFPFTQhpCjwKbxGZJHQ2r5vHtiFJw/
- hXMwbLXhPJfNuSjdfnOmQ66IpeWkucPkwNP0q+8Rzh33o7mQX7Z3YkGjJkcRlTmppXsR
- qQomgNbQ/VoR1rKq92rthWuC+ck97Vnh2CMb6Q//LtVfn4U0CqJN/btkZ1aSKODfbyW+
- effA==
-X-Gm-Message-State: AOAM531yoTTQ35KMNRTRO/NWr5z4d4rHpCboahxrYuHZVYlb2agym9zX
- wykf953KJJo81DG7fFt0rw9uITrPFJQyQj8dRxk=
-X-Google-Smtp-Source: ABdhPJwv4Dai1oxa4I+vtOog2Hw6tEyYe4CX42qPfvaPtHahj/3ak3VQm5m0KU7mUuftqlcL6+PQQToSr4CzLa32hoM=
-X-Received: by 2002:a25:c444:: with SMTP id u65mr14862039ybf.93.1619884352129; 
- Sat, 01 May 2021 08:52:32 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FXYtW0dvyz2xYd
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 May 2021 02:03:14 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 141Fj4nN113369; Sat, 1 May 2021 12:03:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=QUROK0O3RBRMPVQOkAZz/GgaqEJmkmgVRQSkpuAOQMI=;
+ b=n77PJZuwvdCQMBmDf0rk8aUfIynGP1s+UWEk3GXrlYLPQrbpv0adRy1y5+zovXf20D6H
+ b8qcF7xT3/tKAojkpYYFKwLx7pooY5FmZEg7giXXc125IR7eP6MXLegXaRNQkqHcs5xW
+ PJyQEJVEsZ0R4Yrs7hTDClH3i3HCCzOs/AbysJ+S30qpCJ4jaLYojURapc/ElHzsqx4U
+ 4YwsRrzSVSvXUHaPIYQ+ZI+oKcMveKzoFRa6PXGEuWy5z/iAEqanRod3R6+ueJxSpM65
+ OQspg0bd4RolGabv5hc7IWiBhMHnrk0uhRPwhB4sjfNYp4tNSW3wa73CuDVtQEwbBdS1 Tg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3899w5g7pf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 01 May 2021 12:03:01 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 141FkCFg114773;
+ Sat, 1 May 2021 12:03:01 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3899w5g7p1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 01 May 2021 12:03:00 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 141G2xm3002049;
+ Sat, 1 May 2021 16:02:59 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 388xm8r58b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 01 May 2021 16:02:59 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 141G2WMo36176354
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 1 May 2021 16:02:32 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E09C3AE045;
+ Sat,  1 May 2021 16:02:56 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 727CAAE053;
+ Sat,  1 May 2021 16:02:55 +0000 (GMT)
+Received: from fir03.in.ibm.com (unknown [9.121.59.65])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sat,  1 May 2021 16:02:55 +0000 (GMT)
+From: Sandipan Das <sandipan@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc/powernv/memtrace: Fix dcache flushing
+Date: Sat,  1 May 2021 21:32:54 +0530
+Message-Id: <20210501160254.1179831-1-sandipan@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 6ZIAc8AZLkdKMazRUZcNKQgHoltA3IjM
+X-Proofpoint-GUID: qtlRgfCHNyaISvbqvyRTYioE4seRASoT
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20210501151538.145449-1-masahiroy@kernel.org>
-In-Reply-To: <20210501151538.145449-1-masahiroy@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 1 May 2021 17:52:21 +0200
-Message-ID: <CANiq72k1hB3X6+Nc_iu=f=BoB-F9JW2j_B4ZMcv8_UpW5QQ2Og@mail.gmail.com>
-Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-To: Masahiro Yamada <masahiroy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-01_10:2021-04-30,
+ 2021-05-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
+ impostorscore=0 spamscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
+ bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2105010112
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,31 +104,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>,
- Paul Mackerras <paulus@samba.org>, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, Will Deacon <will@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: david@redhat.com, aneesh.kumar@linux.ibm.com, jniethe5@gmail.com,
+ rashmica.g@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 1, 2021 at 5:17 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> More cleanups will be possible as follow-up patches, but this one must
-> be agreed and applied to the mainline first.
+Trace memory is cleared and the corresponding dcache lines
+are flushed after allocation. However, this should not be
+done using the PFN. This adds the missing conversion to
+virtual address.
 
-+1 This will allow me to remove the __has_attribute hack in
-include/linux/compiler_attributes.h.
+Fixes: 2ac02e5ecec0 ("powerpc/mm: Remove dcache flush from memory remove.")
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
+---
+Previous versions can be found at:
+v1: https://lore.kernel.org/linuxppc-dev/20210430075557.893819-1-sandipan@linux.ibm.com/
 
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+Changes in v2:
+- Added review tag from Aneesh.
+- Used pfn_to_kaddr() based on Christophe's suggestion.
 
-Cheers,
-Miguel
+---
+ arch/powerpc/platforms/powernv/memtrace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
+index 71c1262589fe..537a4daed614 100644
+--- a/arch/powerpc/platforms/powernv/memtrace.c
++++ b/arch/powerpc/platforms/powernv/memtrace.c
+@@ -104,8 +104,8 @@ static void memtrace_clear_range(unsigned long start_pfn,
+ 	 * Before we go ahead and use this range as cache inhibited range
+ 	 * flush the cache.
+ 	 */
+-	flush_dcache_range_chunked(PFN_PHYS(start_pfn),
+-				   PFN_PHYS(start_pfn + nr_pages),
++	flush_dcache_range_chunked((unsigned long)pfn_to_kaddr(start_pfn),
++				   (unsigned long)pfn_to_kaddr(start_pfn + nr_pages),
+ 				   FLUSH_CHUNK_SIZE);
+ }
+ 
+-- 
+2.25.1
+
