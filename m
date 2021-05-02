@@ -1,60 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2786370BBA
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 May 2021 15:49:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCF7370E18
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 May 2021 18:58:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FY6sk4zTBz302l
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 May 2021 23:49:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ga5+1IFs;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYC3h3kGTz2ysr
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 02:58:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ga5+1IFs; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FY6sF0DpVz2ydJ
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 May 2021 23:49:04 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4FY6s542HYz9sRR;
- Sun,  2 May 2021 23:48:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1619963338;
- bh=eSFDQN893VS1d4R/dc90A/omXmW2fciFt+qa1w2wZC0=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=ga5+1IFsk/5y09VHlAq7ww7+mlWAD9bEHH/HPpjkxWpUvd1GErEdrpYiv25zBOsqi
- S5lMOW5PZ179BOP2/FCXkHCkJeISZKzS6TUVcJhsowzI1hium+uPrydyXZft38bR2y
- YsdkfebQP55Ekrme6mdQCWA784G4m0ZTGZIoebk1h1S2Hos/VbYqQdhBCRQFa6zMIW
- 980ZSysrPPa0lHMJy4IRcpPhKPDFnAgI5lGNyElA3lzi9EzTq7aHJcpK3jS1svTc8q
- ACTIWWPHTBTXUKD2/rTKSkZR5cnIWuuA2iLPwS9Kmh0teHiYc7EEzUOEBi81Txbhfc
- Gj/RsR5kq/V2Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/4] powerpc/pseries: Fix hcall tracing recursion in pv
- queued spinlocks
-In-Reply-To: <1619832010.xbqdcxufia.astroid@bobo.none>
-References: <20210423031108.1046067-1-npiggin@gmail.com>
- <20210423031108.1046067-2-npiggin@gmail.com>
- <1619529780.yjjzv9cw5m.naveen@linux.ibm.com>
- <1619832010.xbqdcxufia.astroid@bobo.none>
-Date: Sun, 02 May 2021 23:48:55 +1000
-Message-ID: <878s4x9rg8.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYC3H6ZWkz2xZg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 02:58:03 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 33530AF3E;
+ Sun,  2 May 2021 16:57:59 +0000 (UTC)
+Date: Sun, 2 May 2021 18:57:57 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc/64: BE option to use ELFv2 ABI for big endian
+ kernels
+Message-ID: <20210502165757.GH6564@kitsune.suse.cz>
+References: <20200428112517.1402927-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200428112517.1402927-1-npiggin@gmail.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,122 +46,223 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Excerpts from Naveen N. Rao's message of April 27, 2021 11:43 pm:
->> Nicholas Piggin wrote:
->>> The paravit queued spinlock slow path adds itself to the queue then
->>> calls pv_wait to wait for the lock to become free. This is implemented
->>> by calling H_CONFER to donate cycles.
->>> 
->>> When hcall tracing is enabled, this H_CONFER call can lead to a spin
->>> lock being taken in the tracing code, which will result in the lock to
->>> be taken again, which will also go to the slow path because it queues
->>> behind itself and so won't ever make progress.
->>> 
->>> An example trace of a deadlock:
->>> 
->>>   __pv_queued_spin_lock_slowpath
->>>   trace_clock_global
->>>   ring_buffer_lock_reserve
->>>   trace_event_buffer_lock_reserve
->>>   trace_event_buffer_reserve
->>>   trace_event_raw_event_hcall_exit
->>>   __trace_hcall_exit
->>>   plpar_hcall_norets_trace
->>>   __pv_queued_spin_lock_slowpath
->>>   trace_clock_global
->>>   ring_buffer_lock_reserve
->>>   trace_event_buffer_lock_reserve
->>>   trace_event_buffer_reserve
->>>   trace_event_raw_event_rcu_dyntick
->>>   rcu_irq_exit
->>>   irq_exit
->>>   __do_irq
->>>   call_do_irq
->>>   do_IRQ
->>>   hardware_interrupt_common_virt
->>> 
->>> Fix this by introducing plpar_hcall_norets_notrace(), and using that to
->>> make SPLPAR virtual processor dispatching hcalls by the paravirt
->>> spinlock code.
->>> 
->>> Fixes: 20c0e8269e9d ("powerpc/pseries: Implement paravirt qspinlocks for SPLPAR")
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>>  arch/powerpc/include/asm/hvcall.h       |  3 +++
->>>  arch/powerpc/include/asm/paravirt.h     | 22 +++++++++++++++++++---
->>>  arch/powerpc/platforms/pseries/hvCall.S | 10 ++++++++++
->>>  arch/powerpc/platforms/pseries/lpar.c   |  4 ++--
->>>  4 files changed, 34 insertions(+), 5 deletions(-)
->> 
->> Thanks for the fix! Some very minor nits below, but none the less:
->> Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
->> 
->>> 
->>> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
->>> index ed6086d57b22..0c92b01a3c3c 100644
->>> --- a/arch/powerpc/include/asm/hvcall.h
->>> +++ b/arch/powerpc/include/asm/hvcall.h
->>> @@ -446,6 +446,9 @@
->>>   */
->>>  long plpar_hcall_norets(unsigned long opcode, ...);
->>> 
->>> +/* Variant which does not do hcall tracing */
->>> +long plpar_hcall_norets_notrace(unsigned long opcode, ...);
->>> +
->>>  /**
->>>   * plpar_hcall: - Make a pseries hypervisor call
->>>   * @opcode: The hypervisor call to make.
->>> diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
->>> index 5d1726bb28e7..3c13c2ec70a9 100644
->>> --- a/arch/powerpc/include/asm/paravirt.h
->>> +++ b/arch/powerpc/include/asm/paravirt.h
->>> @@ -30,17 +30,33 @@ static inline u32 yield_count_of(int cpu)
->>> 
->>>  static inline void yield_to_preempted(int cpu, u32 yield_count)
->>>  {
->> 
->> It looks like yield_to_preempted() is only used by simple spin locks 
->> today. I wonder if it makes more sense to put the below comment in 
->> yield_to_any() which is used by the qspinlock code.
->
-> Yeah, I just put it above the functions entirely because it refers to 
-> all of them.
->
->> 
->>> -	plpar_hcall_norets(H_CONFER, get_hard_smp_processor_id(cpu), yield_count);
->>> +	/*
->>> +	 * Spinlock code yields and prods, so don't trace the hcalls because
->>> +	 * tracing code takes spinlocks which could recurse.
->>> +	 *
->>> +	 * These calls are made while the lock is not held, the lock slowpath
->>> +	 * yields if it can not acquire the lock, and unlock slow path might
->>> +	 * prod if a waiter has yielded). So this did not seem to be a problem
->>> +	 * for simple spin locks because technically it didn't recuse on the
->> 							       ^^^^^^
->> 							       recurse
->> 
->>> +	 * lock. However the queued spin lock contended path is more strictly
->>> +	 * ordered: the H_CONFER hcall is made after the task has queued itself
->>> +	 * on the lock, so then recursing on the lock will queue up behind that
->>> +	 * (or worse: queued spinlocks uses tricks that assume a context never
->>> +	 * waits on more than one spinlock, so that may cause random
->>> +	 * corruption).
->>> +	 */
->>> +	plpar_hcall_norets_notrace(H_CONFER,
->>> +				   get_hard_smp_processor_id(cpu), yield_count);
->> 
->> This can all be on a single line.
->
-> Should it though? Linux in general allegedly changed to 100 column 
-> lines for checkpatch, but it seems to still be frowned upon to go
-> beyond 80 deliberately. What about arch/powerpc?
+On Tue, Apr 28, 2020 at 09:25:17PM +1000, Nicholas Piggin wrote:
+> Provide an option to use ELFv2 ABI for big endian builds. This works on
+> GCC and clang (since 2014). It is less well tested and supported by the
+> GNU toolchain, but it can give some useful advantages of the ELFv2 ABI
+> for BE (e.g., less stack usage). Some distros even build BE ELFv2
+> userspace.
 
-Splitting it provides zero benefit to code readability IMO. And it would
-be only 89 by my count, which is not grossly long.
+Fixes BTFID failure on BE for me and the ELF ABIv2 kernel boots.
 
-cheers
+Tested-by: Michal Suchánek <msuchanek@suse.de>
+
+Also can we enable mprofile on BE now?
+
+I don't see anything endian-specific in the mprofile code at a glance
+but don't have any idea how to test it.
+
+Thanks
+
+Michal
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 6a4ad11f6349..75b3afbfc378 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -495,7 +495,7 @@ config LD_HEAD_STUB_CATCH
+ 	  If unsure, say "N".
+ 
+ config MPROFILE_KERNEL
+-	depends on PPC64 && CPU_LITTLE_ENDIAN && FUNCTION_TRACER
++	depends on PPC64 && BUILD_ELF_V2 && FUNCTION_TRACER
+ 	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-mprofile-kernel.sh $(CC) -I$(srctree)/include -D__KERNEL__)
+ 
+ config HOTPLUG_CPU
+> 
+> Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> Since v1:
+> - Improved the override flavour name suggested by Segher.
+> - Improved changelog wording.
+> 
+> 
+>  arch/powerpc/Kconfig            | 19 +++++++++++++++++++
+>  arch/powerpc/Makefile           | 15 ++++++++++-----
+>  arch/powerpc/boot/Makefile      |  4 ++++
+>  drivers/crypto/vmx/Makefile     |  8 ++++++--
+>  drivers/crypto/vmx/ppc-xlate.pl | 10 ++++++----
+>  5 files changed, 45 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 924c541a9260..d9d2abc06c2c 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -147,6 +147,7 @@ config PPC
+>  	select ARCH_WEAK_RELEASE_ACQUIRE
+>  	select BINFMT_ELF
+>  	select BUILDTIME_TABLE_SORT
+> +	select BUILD_ELF_V2			if PPC64 && CPU_LITTLE_ENDIAN
+>  	select CLONE_BACKWARDS
+>  	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
+>  	select DYNAMIC_FTRACE			if FUNCTION_TRACER
+> @@ -541,6 +542,24 @@ config KEXEC_FILE
+>  config ARCH_HAS_KEXEC_PURGATORY
+>  	def_bool KEXEC_FILE
+>  
+> +config BUILD_ELF_V2
+> +	bool
+> +
+> +config BUILD_BIG_ENDIAN_ELF_V2
+> +	bool "Build big-endian kernel using ELFv2 ABI (EXPERIMENTAL)"
+> +	depends on PPC64 && CPU_BIG_ENDIAN && EXPERT
+> +	default n
+> +	select BUILD_ELF_V2
+> +	help
+> +	  This builds the kernel image using the ELFv2 ABI, which has a
+> +	  reduced stack overhead and faster function calls. This does not
+> +	  affect the userspace ABIs.
+> +
+> +	  ELFv2 is the standard ABI for little-endian, but for big-endian
+> +	  this is an experimental option that is less tested (kernel and
+> +	  toolchain). This requires gcc 4.9 or newer and binutils 2.24 or
+> +	  newer.
+> +
+>  config RELOCATABLE
+>  	bool "Build a relocatable kernel"
+>  	depends on PPC64 || (FLATMEM && (44x || FSL_BOOKE))
+> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> index f310c32e88a4..e306b39d847e 100644
+> --- a/arch/powerpc/Makefile
+> +++ b/arch/powerpc/Makefile
+> @@ -92,10 +92,14 @@ endif
+>  
+>  ifdef CONFIG_PPC64
+>  ifndef CONFIG_CC_IS_CLANG
+> -cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
+> -cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mcall-aixdesc)
+> -aflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
+> -aflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -mabi=elfv2
+> +ifdef CONFIG_BUILD_ELF_V2
+> +cflags-y				+= $(call cc-option,-mabi=elfv2,$(call cc-option,-mcall-aixdesc))
+> +aflags-y				+= $(call cc-option,-mabi=elfv2)
+> +else
+> +cflags-y				+= $(call cc-option,-mabi=elfv1)
+> +cflags-y				+= $(call cc-option,-mcall-aixdesc)
+> +aflags-y				+= $(call cc-option,-mabi=elfv1)
+> +endif
+>  endif
+>  endif
+>  
+> @@ -144,7 +148,7 @@ endif
+>  
+>  CFLAGS-$(CONFIG_PPC64)	:= $(call cc-option,-mtraceback=no)
+>  ifndef CONFIG_CC_IS_CLANG
+> -ifdef CONFIG_CPU_LITTLE_ENDIAN
+> +ifdef CONFIG_BUILD_ELF_V2
+>  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2,$(call cc-option,-mcall-aixdesc))
+>  AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2)
+>  else
+> @@ -153,6 +157,7 @@ CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcall-aixdesc)
+>  AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
+>  endif
+>  endif
+> +
+>  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcmodel=medium,$(call cc-option,-mminimal-toc))
+>  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mno-pointers-to-nested-functions)
+>  
+> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+> index c53a1b8bba8b..03942d08695d 100644
+> --- a/arch/powerpc/boot/Makefile
+> +++ b/arch/powerpc/boot/Makefile
+> @@ -41,6 +41,10 @@ endif
+>  
+>  BOOTCFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
+>  
+> +ifdef CONFIG_BUILD_ELF_V2
+> +BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
+> +endif
+> +
+>  ifdef CONFIG_CPU_BIG_ENDIAN
+>  BOOTCFLAGS	+= -mbig-endian
+>  else
+> diff --git a/drivers/crypto/vmx/Makefile b/drivers/crypto/vmx/Makefile
+> index 709670d2b553..9aea34602beb 100644
+> --- a/drivers/crypto/vmx/Makefile
+> +++ b/drivers/crypto/vmx/Makefile
+> @@ -5,18 +5,22 @@ vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes
+>  ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
+>  override flavour := linux-ppc64le
+>  else
+> +ifdef CONFIG_BUILD_ELF_V2
+> +override flavour := linux-ppc64-elfv2
+> +else
+>  override flavour := linux-ppc64
+>  endif
+> +endif
+>  
+>  quiet_cmd_perl = PERL $@
+>        cmd_perl = $(PERL) $(<) $(flavour) > $(@)
+>  
+>  targets += aesp8-ppc.S ghashp8-ppc.S
+>  
+> -$(obj)/aesp8-ppc.S: $(src)/aesp8-ppc.pl FORCE
+> +$(obj)/aesp8-ppc.S: $(src)/aesp8-ppc.pl $(src)/ppc-xlate.pl FORCE
+>  	$(call if_changed,perl)
+>    
+> -$(obj)/ghashp8-ppc.S: $(src)/ghashp8-ppc.pl FORCE
+> +$(obj)/ghashp8-ppc.S: $(src)/ghashp8-ppc.pl $(src)/ppc-xlate.pl FORCE
+>  	$(call if_changed,perl)
+>  
+>  clean-files := aesp8-ppc.S ghashp8-ppc.S
+> diff --git a/drivers/crypto/vmx/ppc-xlate.pl b/drivers/crypto/vmx/ppc-xlate.pl
+> index 36db2ef09e5b..9db0937d318b 100644
+> --- a/drivers/crypto/vmx/ppc-xlate.pl
+> +++ b/drivers/crypto/vmx/ppc-xlate.pl
+> @@ -9,6 +9,8 @@ open STDOUT,">$output" || die "can't open $output: $!";
+>  
+>  my %GLOBALS;
+>  my $dotinlocallabels=($flavour=~/linux/)?1:0;
+> +my $abielfv2=(($flavour =~ /linux-ppc64le/) or ($flavour =~ /linux-ppc64-elfv2/))?1:0;
+> +my $dotfunctions=($abielfv2=~1)?0:1;
+>  
+>  ################################################################
+>  # directives which need special treatment on different platforms
+> @@ -40,7 +42,7 @@ my $globl = sub {
+>  };
+>  my $text = sub {
+>      my $ret = ($flavour =~ /aix/) ? ".csect\t.text[PR],7" : ".text";
+> -    $ret = ".abiversion	2\n".$ret	if ($flavour =~ /linux.*64le/);
+> +    $ret = ".abiversion	2\n".$ret	if ($abielfv2);
+>      $ret;
+>  };
+>  my $machine = sub {
+> @@ -56,8 +58,8 @@ my $size = sub {
+>      if ($flavour =~ /linux/)
+>      {	shift;
+>  	my $name = shift; $name =~ s|^[\.\_]||;
+> -	my $ret  = ".size	$name,.-".($flavour=~/64$/?".":"").$name;
+> -	$ret .= "\n.size	.$name,.-.$name" if ($flavour=~/64$/);
+> +	my $ret  = ".size	$name,.-".($dotfunctions?".":"").$name;
+> +	$ret .= "\n.size	.$name,.-.$name" if ($dotfunctions);
+>  	$ret;
+>      }
+>      else
+> @@ -142,7 +144,7 @@ my $vmr = sub {
+>  
+>  # Some ABIs specify vrsave, special-purpose register #256, as reserved
+>  # for system use.
+> -my $no_vrsave = ($flavour =~ /linux-ppc64le/);
+> +my $no_vrsave = ($abielfv2);
+>  my $mtspr = sub {
+>      my ($f,$idx,$ra) = @_;
+>      if ($idx == 256 && $no_vrsave) {
+> -- 
+> 2.23.0
+> 
