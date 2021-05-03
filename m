@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D64337118F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 08:17:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2CE37119A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 08:22:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYXp625NVz3bSx
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 16:17:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYXvb2zP6z301p
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 16:22:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,41 +14,45 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYXnH0c8qz2xff
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 16:17:03 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYXvF1ddCz2xb8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 16:22:15 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FYXn84YcGz9sTN;
- Mon,  3 May 2021 08:17:00 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FYXv80Lqwz9sSL;
+ Mon,  3 May 2021 08:22:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id MGmplfnQL6Sb; Mon,  3 May 2021 08:17:00 +0200 (CEST)
+ with ESMTP id T3x2Agj68V0y; Mon,  3 May 2021 08:22:11 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FYXn83Sl9z9sTM;
- Mon,  3 May 2021 08:17:00 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FYXv76S3cz9sSG;
+ Mon,  3 May 2021 08:22:11 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5696A8B776;
- Mon,  3 May 2021 08:17:00 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B51748B776;
+ Mon,  3 May 2021 08:22:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id CP2hKwLive3m; Mon,  3 May 2021 08:17:00 +0200 (CEST)
+ with ESMTP id IIzEpR6L9fk5; Mon,  3 May 2021 08:22:11 +0200 (CEST)
 Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 140408B775;
- Mon,  3 May 2021 08:17:00 +0200 (CEST)
-Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-To: Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>
-References: <20210501151538.145449-1-masahiroy@kernel.org>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 693138B775;
+ Mon,  3 May 2021 08:22:11 +0200 (CEST)
+Subject: Re: [PATCH v11 3/9] powerpc: Always define MODULES_{VADDR,END}
+To: Jordan Niethe <jniethe5@gmail.com>
+References: <20210429031602.2606654-1-jniethe5@gmail.com>
+ <20210429031602.2606654-4-jniethe5@gmail.com>
+ <111c8736-fff9-ba0a-4749-f9388b32c9bf@csgroup.eu>
+ <CACzsE9q1QoSMVZD7yoE=3pHaRc-i14X2++ewFbBxSeZn-2u78A@mail.gmail.com>
+ <6fa81d25-4313-5f15-23d9-06b314bb7d02@csgroup.eu>
+ <CACzsE9r-FBSo9F79cKj9c3gE7g821AhoLsRPWwd=7eFm+gMpTw@mail.gmail.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <8b5f1d57-1357-affd-565f-f4826f3ecbdf@csgroup.eu>
-Date: Mon, 3 May 2021 08:16:58 +0200
+Message-ID: <e3997b2b-cc39-e4c7-4c8b-2d004333d26a@csgroup.eu>
+Date: Mon, 3 May 2021 08:22:10 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210501151538.145449-1-masahiroy@kernel.org>
+In-Reply-To: <CACzsE9r-FBSo9F79cKj9c3gE7g821AhoLsRPWwd=7eFm+gMpTw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -63,38 +67,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
- Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Jonathan Corbet <corbet@lwn.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org,
- Will Deacon <will@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- linux-arm-kernel@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>,
- Miguel Ojeda <ojeda@kernel.org>, Paul Mackerras <paulus@samba.org>,
- linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-kbuild@vger.kernel.org
+Cc: ajd@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, cmr@codefail.de,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, naveen.n.rao@linux.ibm.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 01/05/2021 à 17:15, Masahiro Yamada a écrit :
-> The current minimum GCC version is 4.9 except ARCH=arm64 requiring
-> GCC 5.1.
-> 
-> When we discussed last time, we agreed to raise the minimum GCC version
-> to 5.1 globally. [1]
-> 
-> I'd like to propose GCC 5.2 to clean up arch/powerpc/Kconfig as well.
+Le 03/05/2021 à 08:16, Jordan Niethe a écrit :
+> On Mon, May 3, 2021 at 3:57 PM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>>
+>>
+>> Le 03/05/2021 à 07:39, Jordan Niethe a écrit :
+>>> On Thu, Apr 29, 2021 at 3:04 PM Christophe Leroy
+>>> <christophe.leroy@csgroup.eu> wrote:
+>>>>
+>>>>
+>>>>
+>>>> Le 29/04/2021 à 05:15, Jordan Niethe a écrit :
+>>>>> If MODULES_{VADDR,END} are not defined set them to VMALLOC_START and
+>>>>> VMALLOC_END respectively. This reduces the need for special cases. For
+>>>>> example, powerpc's module_alloc() was previously predicated on
+>>>>> MODULES_VADDR being defined but now is unconditionally defined.
+>>>>>
+>>>>> This will be useful reducing conditional code in other places that need
+>>>>> to allocate from the module region (i.e., kprobes).
+>>>>>
+>>>>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+>>>>> ---
+>>>>> v10: New to series
+>>>>> v11: - Consider more places MODULES_VADDR was being used
+>>>>> ---
+>>>>>     arch/powerpc/include/asm/pgtable.h    | 11 +++++++++++
+>>>>>     arch/powerpc/kernel/module.c          |  5 +----
+>>>>>     arch/powerpc/mm/kasan/kasan_init_32.c | 10 +++++-----
+>>>>>     arch/powerpc/mm/ptdump/ptdump.c       |  4 ++--
+>>>>>     4 files changed, 19 insertions(+), 11 deletions(-)
+>>>>>
+>>>>> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+>>>>> index c6a676714f04..882fda779648 100644
+>>>>> --- a/arch/powerpc/include/asm/pgtable.h
+>>>>> +++ b/arch/powerpc/include/asm/pgtable.h
+>>>>> @@ -39,6 +39,17 @@ struct mm_struct;
+>>>>>     #define __S110      PAGE_SHARED_X
+>>>>>     #define __S111      PAGE_SHARED_X
+>>>>>
+>>>>> +#ifndef MODULES_VADDR
+>>>>> +#define MODULES_VADDR VMALLOC_START
+>>>>> +#define MODULES_END VMALLOC_END
+>>>>> +#endif
+>>>>> +
+>>>>> +#if defined(CONFIG_PPC_BOOK3S_32) && defined(CONFIG_STRICT_KERNEL_RWX)
+>>>>
+>>>> No no.
+>>>>
+>>>> TASK_SIZE > MODULES_VADDR is ALWAYS wrong, for any target, in any configuration.
+>>>>
+>>>> Why is it a problem to leave the test as a BUILD_BUG_ON() in module_alloc() ?
+>>> On ppc64s, MODULES_VADDR is __vmalloc_start (a variable)  and
+>>> TASK_SIZE depends on current.
+>>> Also for nohash like 44x, MODULES_VADDR is defined based on high_memory.
+>>> If I put it back in module_alloc() and wrap it with #ifdef
+>>> CONFIG_PPC_BOOK3S_32 will that be fine?
+>>
+>> Thinking about it once more, I think the best approach is the one taken by Nick in
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210502110050.324953-1-npiggin@gmail.com/
+>>
+>> Use MODULES_VADDR/MODULES_END when it exists, use VMALLOC_START/VMALLOC_END otherwise.
+>>
+>> I know I suggested to always define MODULES_VADDR, but maybe that's not the best solution at the end.
+> Sure, let's do it like that.
+>>
+>> For kprobes, is there a way to re-use functions from modules.c in alloc_insn_page() ?
+> Probably we can use module_alloc() then the set_memory_ functions to
+> get the permissions right.
+> Something like we had in v9:
+> https://lore.kernel.org/linuxppc-dev/20210316031741.1004850-3-jniethe5@gmail.com/
 
-One point I missed when I saw your patch first time, but I realised during the discussion:
+Yes, more or less, but using module_alloc() instead of vmalloc().
+And module_alloc() implies EXEC, so only the set_memory_ro() will be required.
 
-Up to 4.9, GCC was numbered with 3 digits, we had 4.8.0, 4.8.1, ... 4.8.5, 4.9.0, 4.9.1, .... 4.9.4
-
-Then starting at 5, GCC switched to a 2 digits scheme, with 5.0, 5.1, 5.2, ... 5.5
-
-So, that is not GCC 5.1 or 5.2 that you should target, but only GCC 5.
-Then it is up to the user to use the latest available version of GCC 5, which is 5.5 at the time 
-begin, just like the user would have selected 4.9.4 when 4.9 was the minimum GCC version.
+I see no point in doing any set_memory_xxx() in free_insn_page(), because as soon as you do a 
+vfree() the page is not mapped anymore so any access will lead to a fault.
 
 Christophe
