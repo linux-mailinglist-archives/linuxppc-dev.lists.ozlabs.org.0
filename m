@@ -2,56 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D56A3712BC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 10:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C663712E4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 11:18:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYcJ13P67z30F3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 18:55:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYcpc5hZvz301x
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 19:18:32 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=CcFCLtmk;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=perches.com
- (client-ip=216.40.44.201; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
-Received: from smtprelay.hostedemail.com (smtprelay0201.hostedemail.com
- [216.40.44.201])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
+ helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=CcFCLtmk; dkim-atps=neutral
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
+ [IPv6:2607:f8b0:4864:20::62b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYcHd5cwJz2xxn
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 18:55:08 +1000 (AEST)
-Received: from omf03.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
- by smtprelay04.hostedemail.com (Postfix) with ESMTP id 659F0180C2CD0;
- Mon,  3 May 2021 08:55:03 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by
- omf03.hostedemail.com (Postfix) with ESMTPA id 7813213D93; 
- Mon,  3 May 2021 08:54:58 +0000 (UTC)
-Message-ID: <de86b54eb783204ef174a05c60b0d190de7cd85c.camel@perches.com>
-Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-From: Joe Perches <joe@perches.com>
-To: Alexander Dahl <ada@thorsis.com>, Matthew Wilcox <willy@infradead.org>
-Date: Mon, 03 May 2021 01:54:57 -0700
-In-Reply-To: <YI+nhMcPSTs/5Ydp@ada-deb-carambola.ifak-system.com>
-References: <20210501151538.145449-1-masahiroy@kernel.org>
- <CANiq72k1hB3X6+Nc_iu=f=BoB-F9JW2j_B4ZMcv8_UpW5QQ2Og@mail.gmail.com>
- <3943bc020f6227c8801907317fc113aa13ad4bad.camel@perches.com>
- <20210502183030.GF10366@gate.crashing.org>
- <81a926a3bdb70debe3ae2b13655ea8d249fb9991.camel@perches.com>
- <20210502203253.GH10366@gate.crashing.org>
- <CAHk-=wjGJskk5EwnDCccs6DcLytE2yx76+P_W-n1-B5zq0M3KA@mail.gmail.com>
- <20210502223007.GZ1847222@casper.infradead.org>
- <YI+nhMcPSTs/5Ydp@ada-deb-carambola.ifak-system.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYcp72T56z2xZF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 19:18:07 +1000 (AEST)
+Received: by mail-pl1-x62b.google.com with SMTP id t4so1684114plc.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 02:18:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=8lZLIjdRv2iJ6Jk7O4RDLuQXlFIX5TSR3xcay3SvWDs=;
+ b=CcFCLtmkJxNw2XwNq/IYP6Hfjz9kb/RXMvsyXqRz/EjwAh8k+T4bMlx8fMEeSC5u+K
+ SSenKhlJVfQWhh/XHYgOZBOlOywOAh1Jo63ausU3n7vN6XRCc+Gp7aASCjpuaeSfKpiP
+ V0+W/Gn+BwIiqyEbRwJofzeThQW/1Wx6gfHTLDuYiAlbwvleTswRvOzQhsH9sr/4fTCY
+ I3mtnlQ5BOPWM9MXA15b7x1JSyEaAgWUikU+JMcebUMVQpEN5UuJ8bA9M16H+1gYXR1j
+ G9oUSxja2qkmYEgZBcUXiqk2YxgixPi70ZEv+XTbAFphb9NdHck0ZQLwZveZ5sc19R2E
+ szHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=8lZLIjdRv2iJ6Jk7O4RDLuQXlFIX5TSR3xcay3SvWDs=;
+ b=qSpijmNCO4xk6QsqxnuvlUzQgxP/R+kogvjlgIOHbF4BVOtxgSkrtPhNZtIhFxwBOR
+ TgITjeVg8bb/8gjOhlLCvwYshmFoUqIIHV0JFloy6zg4j9P4X2/KevfzJ23N9At7smby
+ 9V5zM3h8X9GFc644xKgdTJ0sq79qmmzXWGtnTnVoPU43vtBP+oLwM7Wm55kKZQpe/ia2
+ AsBmvaAYMy7hI+2ZFYfOQrdnL/ubZfCZQUMqQQwIwv5gtIlG5SwB3cL3xDSFWCgKd1Fh
+ taW9Zd8+5sK4uTuBVcJg2K1v8nMHzH3vuy7QmSAR2zKpfXoBH9WjQmT8CLqaZ2wpiNy6
+ XxNw==
+X-Gm-Message-State: AOAM532umRu5MTNG0vtnvwRMSWTEMsVyL9HYoBJmy43NmUDT0eZYVa/U
+ z3PUe7jI172vTKWtolzKrgyTnI+iuGQ=
+X-Google-Smtp-Source: ABdhPJwCvT+Ks3qprOxRggCn9ZjPr5yFMGTKsHzOuNj7OGuGMRL5wyC8Xb7B75mqyRaiV2XQoj2rmA==
+X-Received: by 2002:a17:90a:31ce:: with SMTP id
+ j14mr19359326pjf.98.1620033482143; 
+ Mon, 03 May 2021 02:18:02 -0700 (PDT)
+Received: from bobo.ibm.com ([61.68.127.20])
+ by smtp.gmail.com with ESMTPSA id c16sm9452541pgl.79.2021.05.03.02.18.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 May 2021 02:18:01 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3] powerpc/64s/radix: Enable huge vmalloc mappings
+Date: Mon,  3 May 2021 19:17:55 +1000
+Message-Id: <20210503091755.613393-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7813213D93
-X-Spam-Status: No, score=1.44
-X-Stat-Signature: kzayu4orffhmqaa8ff8iq8d4a8ipzp46
-X-Rspamd-Server: rspamout01
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1952/ks3MY8TXp5Ug6xsGLjA9GLFC3+spA=
-X-HE-Tag: 1620032098-353050
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,35 +78,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
- Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Will Deacon <will@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Miguel Ojeda <ojeda@kernel.org>, Paul Mackerras <paulus@samba.org>,
- linux-riscv@lists.infradead.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2021-05-03 at 09:34 +0200, Alexander Dahl wrote:
-> Desktops and servers are all nice, however I just want to make you
-> aware, there are embedded users forced to stick to older cross
-> toolchains for different reasons as well, e.g. in industrial
-> environment. :-)
+This reduces TLB misses by nearly 30x on a `git diff` workload on a
+2-node POWER9 (59,800 -> 2,100) and reduces CPU cycles by 0.54%, due
+to vfs hashes being allocated with 2MB pages.
 
-In your embedded case, what kernel version do you use?
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+Since v2:
+- Fix ppc32 compile bug.
 
-For older toolchains, unless it's kernel version 5.13+,
-it wouldn't matter.
+Since v1:
+- Don't define MODULES_VADDR which has some other side effect (e.g.,
+  ptdump).
+- Fixed (hopefully) kbuild warning.
+- Keep __vmalloc_node_range call on 3 lines.
 
-And all the supported architectures have gcc 10.3 available at
-http://cdn.kernel.org/pub/tools/crosstool/
+ .../admin-guide/kernel-parameters.txt          |  2 ++
+ arch/powerpc/Kconfig                           |  1 +
+ arch/powerpc/kernel/module.c                   | 18 +++++++++++++-----
+ 3 files changed, 16 insertions(+), 5 deletions(-)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 1c0a3cf6fcc9..1be38b25c485 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3250,6 +3250,8 @@
+ 
+ 	nohugeiomap	[KNL,X86,PPC,ARM64] Disable kernel huge I/O mappings.
+ 
++	nohugevmalloc	[PPC] Disable kernel huge vmalloc mappings.
++
+ 	nosmt		[KNL,S390] Disable symmetric multithreading (SMT).
+ 			Equivalent to smt=1.
+ 
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 1e6230bea09d..c547a9d6a2dd 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -185,6 +185,7 @@ config PPC
+ 	select GENERIC_VDSO_TIME_NS
+ 	select HAVE_ARCH_AUDITSYSCALL
+ 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
++	select HAVE_ARCH_HUGE_VMALLOC		if HAVE_ARCH_HUGE_VMAP
+ 	select HAVE_ARCH_JUMP_LABEL
+ 	select HAVE_ARCH_JUMP_LABEL_RELATIVE
+ 	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
+diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.c
+index fab84024650c..3f35c8d20be7 100644
+--- a/arch/powerpc/kernel/module.c
++++ b/arch/powerpc/kernel/module.c
+@@ -8,6 +8,7 @@
+ #include <linux/moduleloader.h>
+ #include <linux/err.h>
+ #include <linux/vmalloc.h>
++#include <linux/mm.h>
+ #include <linux/bug.h>
+ #include <asm/module.h>
+ #include <linux/uaccess.h>
+@@ -88,17 +89,22 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 	return 0;
+ }
+ 
+-#ifdef MODULES_VADDR
+ static __always_inline void *
+ __module_alloc(unsigned long size, unsigned long start, unsigned long end)
+ {
+-	return __vmalloc_node_range(size, 1, start, end, GFP_KERNEL,
+-				    PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
+-				    __builtin_return_address(0));
++	/*
++	 * Don't do huge page allocations for modules yet until more testing
++	 * is done. STRICT_MODULE_RWX may require extra work to support this
++	 * too.
++	 */
++	return __vmalloc_node_range(size, 1, start, end, GFP_KERNEL, PAGE_KERNEL_EXEC,
++				    VM_FLUSH_RESET_PERMS | VM_NO_HUGE_VMAP,
++				    NUMA_NO_NODE, __builtin_return_address(0));
+ }
+ 
+ void *module_alloc(unsigned long size)
+ {
++#ifdef MODULES_VADDR
+ 	unsigned long limit = (unsigned long)_etext - SZ_32M;
+ 	void *ptr = NULL;
+ 
+@@ -112,5 +118,7 @@ void *module_alloc(unsigned long size)
+ 		ptr = __module_alloc(size, MODULES_VADDR, MODULES_END);
+ 
+ 	return ptr;
+-}
++#else
++	return __module_alloc(size, VMALLOC_START, VMALLOC_END);
+ #endif
++}
+-- 
+2.23.0
 
