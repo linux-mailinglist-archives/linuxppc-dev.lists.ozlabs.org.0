@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843DF37111A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 07:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B08C037114F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 07:40:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYW8F4DBpz30DR
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 15:03:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYWyQ5NMYz30BM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 15:39:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=IijfUSU7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=OS7tmO1r;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b34;
- helo=mail-yb1-xb34.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b29;
+ helo=mail-yb1-xb29.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=IijfUSU7; dkim-atps=neutral
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com
- [IPv6:2607:f8b0:4864:20::b34])
+ header.s=20161025 header.b=OS7tmO1r; dkim-atps=neutral
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com
+ [IPv6:2607:f8b0:4864:20::b29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYW7l5nZ6z2xb8
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 15:02:57 +1000 (AEST)
-Received: by mail-yb1-xb34.google.com with SMTP id p126so6012127yba.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 May 2021 22:02:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYWxx1Jzjz2xff
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 15:39:30 +1000 (AEST)
+Received: by mail-yb1-xb29.google.com with SMTP id l7so6044845ybf.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 May 2021 22:39:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
  :cc:content-transfer-encoding;
- bh=mBrL2ZqmsgwNOa057zWt9ab9/QZrhMvwFD6jQjOP5TI=;
- b=IijfUSU7scLygnwhwS9y2lorj1wwgs9uZ/uqGyIgHWLQT41okhMwaGiDwiNK01IPYK
- RlnKOpMjqWH/X/aLw7216FsIyUYjCwdLz7ewOFO9J/0yzDQf70AcRXhvvs4VTIymB4lE
- LntgVDi5Js10ISkzYovg7/HJvOOLV4GW5R9Lg8guMtN0CghUCpLRBLen2LOk+qTCzPIO
- gNCptmeIWnANyInypn9jQCSRD9j8WcnYXfWtLcUZJGrjkiBDD5xmG3nMgVGkZplQ25dO
- hricdsegLv2XouViZ5IKRHvbcYi1USlEiHC/SWUhI9W8roPuUi2Mwq9a1xyDbMEvM3N0
- wcvw==
+ bh=zooXzjYkdIrStgjWvqRltfH6CyU8MbP6tdE/8Pct3RU=;
+ b=OS7tmO1rY05fz0cpTvZvcVCct3Jaz+qjgmW6/A5eua4V9nB/+ME1NctoApGBwVkA0y
+ jMM97wE6eQNqBYDYE4t+dj3ZjXaRnLbIpJPE+P/bHScZ6278AwtdK54L7JKGYYB6uc8+
+ QQIw5Wu/rjvGKd+1WovHA3GLQch6NSfS1PkY+XWRRWQnJM9oxurWi6pfTMfpq4Sur2i3
+ RxRxDo5TKVWLidROYgyC/iOiYtwbrt2uAmo2mLR/Aat4WmrmNHMzrNDEYalDoPQByjKf
+ YzNUd0MN7vbStGoo24C4ST4vn1nXjpGV2wlWBuCn2EfgeU/TMntBNDS/OssHj7/muwOZ
+ TzOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc:content-transfer-encoding;
- bh=mBrL2ZqmsgwNOa057zWt9ab9/QZrhMvwFD6jQjOP5TI=;
- b=HsqD/W569IUZeMyXPV+rdYEMlGQnT2zUWDLNubswEmrqnUFGOCwEbzOwtmPbOaB0k3
- irFwiyL6vlY88vKWkN3PNm6QgC2q5P0eJ7gVU01/YG7uZGFuGSoh/MfgtSxJV6OnEVi/
- PzBHXlXv6dq8nLnUdFkUGLIhmei8Oo6srx6O5hMwacqdnoJePZnhdZAOThuUdYcO0Ipy
- k/waNGM4z1wr6QmYw841C7WTW8YXLCpAcRlKdufmAeVMFXJ/SEH+flHV/ny1YaVDObJU
- FwYFYctt4O2wYzoZHOCJK+/RcDjTJd2AZMyCpqUAT6Inf55U2RhtkjWvtK3bapwo+LgP
- zXJA==
-X-Gm-Message-State: AOAM5309zDdWXk+LX1dBSUWo257a/owEfqR3AVEGnym/hSPLYRfCWp0L
- 5oVoNjQsmC/08ibfCNj3Ab5TUIiLX0jerOmsXQI=
-X-Google-Smtp-Source: ABdhPJxGU5wqWL/uw0xZss4GfgfHnrEpalpVEn20eyhKN5PnXh1LlR2ra3nSrPahcKUZWIDbwq719G8KSVAHgU2H3w8=
-X-Received: by 2002:a25:e64b:: with SMTP id d72mr23376879ybh.343.1620018172791; 
- Sun, 02 May 2021 22:02:52 -0700 (PDT)
+ bh=zooXzjYkdIrStgjWvqRltfH6CyU8MbP6tdE/8Pct3RU=;
+ b=mIMw1IQgoMZae16f5Nf/2cwDLWCRYr7cetV+dlMgjcAMchrSjgFwGwRLvA8862CpWz
+ PfdbjQaVT6B6zDRAU+JG8Ar0ixFo2vfwkE2Ev//VZAq+mEZ2KmE04jUXICtI+dxUsdL7
+ 5p1yMCguDDZxszfOGP33YJMk3eJhtlURBra8+vGAuNs009xvI+LsF5B5HD3nOgJt5oVd
+ Tmz1rUEVPk4VB0n6Fnoj1j8CZgRObmB9UfinFdCwj9oMB2MMIJHqH/+ubQAoUbLA5M1m
+ Ob+JAFdUpU8ZWGvRfVQFomkad8yWwIJBLqj6xBcge1Eu2jiXICQ+ivYEyyEJl7q8seRy
+ 3PnA==
+X-Gm-Message-State: AOAM531NeAPj3rp1S1IlZk2yfgLVGz6fRV+Ivp3zSWNeKGgWsTGa1oEM
+ a6T4yf/x9XZY3VcbYiXd6oZ5lpzgZ2KUjzIDgfM=
+X-Google-Smtp-Source: ABdhPJyDlXjXEAftR/xLPXcGZzT2UVLg4mdFydq7ZfppKDM0yFl3u1AmwYWBdKZiBq3MKue0pqBsvbSRkqaDK2Ux+G4=
+X-Received: by 2002:a25:18c6:: with SMTP id 189mr25141530yby.342.1620020366938; 
+ Sun, 02 May 2021 22:39:26 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210429031602.2606654-1-jniethe5@gmail.com>
- <20210429031602.2606654-2-jniethe5@gmail.com>
- <eef1fef9-515c-3d7c-dbb7-6b93d97e35a1@csgroup.eu>
-In-Reply-To: <eef1fef9-515c-3d7c-dbb7-6b93d97e35a1@csgroup.eu>
+ <20210429031602.2606654-4-jniethe5@gmail.com>
+ <111c8736-fff9-ba0a-4749-f9388b32c9bf@csgroup.eu>
+In-Reply-To: <111c8736-fff9-ba0a-4749-f9388b32c9bf@csgroup.eu>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Mon, 3 May 2021 15:02:41 +1000
-Message-ID: <CACzsE9qamXsq+c+8wF5nieBZ+VfmmCbBZ9_sUux1wsm6tvVf9w@mail.gmail.com>
-Subject: Re: [PATCH v11 1/9] powerpc/mm: Implement set_memory() routines
+Date: Mon, 3 May 2021 15:39:15 +1000
+Message-ID: <CACzsE9q1QoSMVZD7yoE=3pHaRc-i14X2++ewFbBxSeZn-2u78A@mail.gmail.com>
+Subject: Re: [PATCH v11 3/9] powerpc: Always define MODULES_{VADDR,END}
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -84,240 +84,184 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 29, 2021 at 5:32 PM Christophe Leroy
+On Thu, Apr 29, 2021 at 3:04 PM Christophe Leroy
 <christophe.leroy@csgroup.eu> wrote:
 >
 >
 >
 > Le 29/04/2021 =C3=A0 05:15, Jordan Niethe a =C3=A9crit :
-> > From: Russell Currey <ruscur@russell.cc>
+> > If MODULES_{VADDR,END} are not defined set them to VMALLOC_START and
+> > VMALLOC_END respectively. This reduces the need for special cases. For
+> > example, powerpc's module_alloc() was previously predicated on
+> > MODULES_VADDR being defined but now is unconditionally defined.
 > >
-> > The set_memory_{ro/rw/nx/x}() functions are required for
-> > STRICT_MODULE_RWX, and are generally useful primitives to have.  This
-> > implementation is designed to be generic across powerpc's many MMUs.
-> > It's possible that this could be optimised to be faster for specific
-> > MMUs.
+> > This will be useful reducing conditional code in other places that need
+> > to allocate from the module region (i.e., kprobes).
 > >
-> > This implementation does not handle cases where the caller is attemptin=
-g
-> > to change the mapping of the page it is executing from, or if another
-> > CPU is concurrently using the page being altered.  These cases likely
-> > shouldn't happen, but a more complex implementation with MMU-specific c=
-ode
-> > could safely handle them.
-> >
-> > On hash, the linear mapping is not kept in the linux pagetable, so this
-> > will not change the protection if used on that range. Currently these
-> > functions are not used on the linear map so just WARN for now.
-> >
-> > Reviewed-by: Daniel Axtens <dja@axtens.net>
-> > Signed-off-by: Russell Currey <ruscur@russell.cc>
-> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > [jpn: - Allow set memory functions to be used without Strict RWX
-> >        - Hash: Disallow certain regions
-> >        - Have change_page_attr() take function pointers to manipulate p=
-tes
->
-> Did you look at the resulting generated code ? I find it awful.
->
-> pte manipulation helpers are meant to be inlined. Here you force the comp=
-iler to outline them. This
-> also means that the input and output goes through memory.
->
-> And now set_memory_xx are not tiny inlined functions anymore.
->
-> What is the reason you abandonned the way it was done up to now, through =
-the use of an 'action'
-> value ? With the previous approach the generated code was a lot lighter.
-When I was looking at the patch again, it started to look to me like
-the action values were an unneeded abstraction. But yeah doing it like
-this makes the generated code much worse. I'll change back in the next
-version.
->
-> >        - Radix: Add ptesync after set_pte_at()]
 > > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > > ---
-> > v10: WARN if trying to change the hash linear map
-> > v11: - Update copywrite dates
-> >       - Allow set memory functions to be used without Strict RWX
-> >       - Hash: Disallow certain regions and add comment explaining why
-> >       - Have change_page_attr() take function pointers to manipulate pt=
-es
-> >       - Clarify change_page_attr()'s comment
-> >       - Radix: Add ptesync after set_pte_at()
+> > v10: New to series
+> > v11: - Consider more places MODULES_VADDR was being used
 > > ---
-> >   arch/powerpc/Kconfig                  |   1 +
-> >   arch/powerpc/include/asm/set_memory.h |  10 +++
-> >   arch/powerpc/mm/Makefile              |   2 +-
-> >   arch/powerpc/mm/pageattr.c            | 105 +++++++++++++++++++++++++=
-+
-> >   4 files changed, 117 insertions(+), 1 deletion(-)
-> >   create mode 100644 arch/powerpc/include/asm/set_memory.h
-> >   create mode 100644 arch/powerpc/mm/pageattr.c
+> >   arch/powerpc/include/asm/pgtable.h    | 11 +++++++++++
+> >   arch/powerpc/kernel/module.c          |  5 +----
+> >   arch/powerpc/mm/kasan/kasan_init_32.c | 10 +++++-----
+> >   arch/powerpc/mm/ptdump/ptdump.c       |  4 ++--
+> >   4 files changed, 19 insertions(+), 11 deletions(-)
 > >
-> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > index cb2d44ee4e38..94c34932a74b 100644
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -138,6 +138,7 @@ config PPC
-> >       select ARCH_HAS_MEMBARRIER_CALLBACKS
-> >       select ARCH_HAS_MEMBARRIER_SYNC_CORE
-> >       select ARCH_HAS_SCALED_CPUTIME          if VIRT_CPU_ACCOUNTING_NA=
-TIVE && PPC_BOOK3S_64
-> > +     select ARCH_HAS_SET_MEMORY
-> >       select ARCH_HAS_STRICT_KERNEL_RWX       if ((PPC_BOOK3S_64 || PPC=
-32) && !HIBERNATION)
-> >       select ARCH_HAS_TICK_BROADCAST          if GENERIC_CLOCKEVENTS_BR=
-OADCAST
-> >       select ARCH_HAS_UACCESS_FLUSHCACHE
-> > diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/inclu=
-de/asm/set_memory.h
-> > new file mode 100644
-> > index 000000000000..d1cd69b1a43a
-> > --- /dev/null
-> > +++ b/arch/powerpc/include/asm/set_memory.h
-> > @@ -0,0 +1,10 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#ifndef _ASM_POWERPC_SET_MEMORY_H
-> > +#define _ASM_POWERPC_SET_MEMORY_H
-> > +
-> > +int set_memory_ro(unsigned long addr, int numpages);
-> > +int set_memory_rw(unsigned long addr, int numpages);
-> > +int set_memory_nx(unsigned long addr, int numpages);
-> > +int set_memory_x(unsigned long addr, int numpages);
-> > +
+> > diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/=
+asm/pgtable.h
+> > index c6a676714f04..882fda779648 100644
+> > --- a/arch/powerpc/include/asm/pgtable.h
+> > +++ b/arch/powerpc/include/asm/pgtable.h
+> > @@ -39,6 +39,17 @@ struct mm_struct;
+> >   #define __S110      PAGE_SHARED_X
+> >   #define __S111      PAGE_SHARED_X
+> >
+> > +#ifndef MODULES_VADDR
+> > +#define MODULES_VADDR VMALLOC_START
+> > +#define MODULES_END VMALLOC_END
 > > +#endif
-> > diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
-> > index c3df3a8501d4..9142cf1fb0d5 100644
-> > --- a/arch/powerpc/mm/Makefile
-> > +++ b/arch/powerpc/mm/Makefile
-> > @@ -5,7 +5,7 @@
-> >
-> >   ccflags-$(CONFIG_PPC64)     :=3D $(NO_MINIMAL_TOC)
-> >
-> > -obj-y                                :=3D fault.o mem.o pgtable.o mmap=
-.o maccess.o \
-> > +obj-y                                :=3D fault.o mem.o pgtable.o mmap=
-.o maccess.o pageattr.o \
-> >                                  init_$(BITS).o pgtable_$(BITS).o \
-> >                                  pgtable-frag.o ioremap.o ioremap_$(BIT=
-S).o \
-> >                                  init-common.o mmu_context.o drmem.o \
-> > diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-> > new file mode 100644
-> > index 000000000000..3b4aa72e555e
-> > --- /dev/null
-> > +++ b/arch/powerpc/mm/pageattr.c
-> > @@ -0,0 +1,105 @@
-> > +// SPDX-License-Identifier: GPL-2.0
 > > +
-> > +/*
-> > + * MMU-generic set_memory implementation for powerpc
-> > + *
-> > + * Copyright 2019-2021, IBM Corporation.
-> > + */
+> > +#if defined(CONFIG_PPC_BOOK3S_32) && defined(CONFIG_STRICT_KERNEL_RWX)
+>
+> No no.
+>
+> TASK_SIZE > MODULES_VADDR is ALWAYS wrong, for any target, in any configu=
+ration.
+>
+> Why is it a problem to leave the test as a BUILD_BUG_ON() in module_alloc=
+() ?
+On ppc64s, MODULES_VADDR is __vmalloc_start (a variable)  and
+TASK_SIZE depends on current.
+Also for nohash like 44x, MODULES_VADDR is defined based on high_memory.
+If I put it back in module_alloc() and wrap it with #ifdef
+CONFIG_PPC_BOOK3S_32 will that be fine?
+
+>
+> > +#if TASK_SIZE > MODULES_VADDR
+> > +#error TASK_SIZE > MODULES_VADDR
+> > +#endif
+> > +#endif
 > > +
+> >   #ifndef __ASSEMBLY__
+> >
+> >   /* Keep these as a macros to avoid include dependency mess */
+> > diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.=
+c
+> > index fab84024650c..c60c7457ff47 100644
+> > --- a/arch/powerpc/kernel/module.c
+> > +++ b/arch/powerpc/kernel/module.c
+> > @@ -15,6 +15,7 @@
+> >   #include <linux/sort.h>
+> >   #include <asm/setup.h>
+> >   #include <asm/sections.h>
 > > +#include <linux/mm.h>
-> > +#include <linux/set_memory.h>
-> > +
-> > +#include <asm/mmu.h>
-> > +#include <asm/page.h>
-> > +#include <asm/pgtable.h>
-> > +
-> > +
-> > +/*
-> > + * Updates the attributes of a page in three steps:
-> > + *
-> > + * 1. invalidate the page table entry
-> > + * 2. flush the TLB
-> > + * 3. install the new entry with the updated attributes
-> > + *
-> > + * Invalidating the pte means there are situations where this will not=
- work
-> > + * when in theory it should.
-> > + * For example:
-> > + * - removing write from page whilst it is being executed
-> > + * - setting a page read-only whilst it is being read by another CPU
-> > + *
-> > + */
-> > +static int change_page_attr(pte_t *ptep, unsigned long addr, void *dat=
-a)
-> > +{
-> > +     pte_t (*fn)(pte_t) =3D data;
-> > +     pte_t pte;
-> > +
-> > +     spin_lock(&init_mm.page_table_lock);
-> > +
-> > +     /* invalidate the PTE so it's safe to modify */
-> > +     pte =3D ptep_get_and_clear(&init_mm, addr, ptep);
-> > +     flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-> > +
-> > +     /* modify the PTE bits as desired, then apply */
-> > +     pte =3D fn(pte);
-> > +
-> > +     set_pte_at(&init_mm, addr, ptep, pte);
-> > +
-> > +     /* See ptesync comment in radix__set_pte_at() */
-> > +     if (radix_enabled())
-> > +             asm volatile("ptesync": : :"memory");
-> > +     spin_unlock(&init_mm.page_table_lock);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int change_memory_attr(unsigned long addr, int numpages, pte_t =
-(*fn)(pte_t))
-> > +{
-> > +     unsigned long start =3D ALIGN_DOWN(addr, PAGE_SIZE);
-> > +     unsigned long size =3D numpages * PAGE_SIZE;
-> > +
-> > +     if (!numpages)
-> > +             return 0;
-> > +
-> > +#ifdef CONFIG_PPC_BOOK3S_64
-> > +     /*
-> > +      * On hash, the linear mapping is not in the Linux page table so
-> > +      * apply_to_existing_page_range() will have no effect. If in the =
-future
-> > +      * the set_memory_* functions are used on the linear map this wil=
-l need
-> > +      * to be updated.
-> > +      */
-> > +     if (!radix_enabled()) {
-> > +             int region =3D get_region_id(addr);
-> > +
-> > +             if (WARN_ON_ONCE(region !=3D VMALLOC_REGION_ID && region =
-!=3D IO_REGION_ID))
-> > +                     return -EINVAL;
+> >
+> >   static LIST_HEAD(module_bug_list);
+> >
+> > @@ -88,7 +89,6 @@ int module_finalize(const Elf_Ehdr *hdr,
+> >       return 0;
+> >   }
+> >
+> > -#ifdef MODULES_VADDR
+> >   static __always_inline void *
+> >   __module_alloc(unsigned long size, unsigned long start, unsigned long=
+ end)
+> >   {
+> > @@ -102,8 +102,6 @@ void *module_alloc(unsigned long size)
+> >       unsigned long limit =3D (unsigned long)_etext - SZ_32M;
+> >       void *ptr =3D NULL;
+> >
+> > -     BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
+> > -
+> >       /* First try within 32M limit from _etext to avoid branch trampol=
+ines */
+> >       if (MODULES_VADDR < PAGE_OFFSET && MODULES_END > limit)
+> >               ptr =3D __module_alloc(size, limit, MODULES_END);
+> > @@ -113,4 +111,3 @@ void *module_alloc(unsigned long size)
+> >
+> >       return ptr;
+> >   }
+> > -#endif
+> > diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/ka=
+san/kasan_init_32.c
+> > index cf8770b1a692..42c057366ac7 100644
+> > --- a/arch/powerpc/mm/kasan/kasan_init_32.c
+> > +++ b/arch/powerpc/mm/kasan/kasan_init_32.c
+> > @@ -116,11 +116,11 @@ static void __init kasan_unmap_early_shadow_vmall=
+oc(void)
+> >
+> >       kasan_update_early_region(k_start, k_end, __pte(0));
+> >
+> > -#ifdef MODULES_VADDR
+> > -     k_start =3D (unsigned long)kasan_mem_to_shadow((void *)MODULES_VA=
+DDR);
+> > -     k_end =3D (unsigned long)kasan_mem_to_shadow((void *)MODULES_END)=
+;
+> > -     kasan_update_early_region(k_start, k_end, __pte(0));
+> > -#endif
+> > +     if (MODULES_VADDR !=3D VMALLOC_START && MODULES_END !=3D VMALLOC_=
+END) {
+>
+> Shouldn't it be an || ?
+Yeah
+>
+> As soon as either MODULES_VADDR or MODULES_END differs from the vmalloc b=
+oundaries, it needs to be
+> done I think.
+>
+> > +             k_start =3D (unsigned long)kasan_mem_to_shadow((void *)MO=
+DULES_VADDR);
+> > +             k_end =3D (unsigned long)kasan_mem_to_shadow((void *)MODU=
+LES_END);
+> > +             kasan_update_early_region(k_start, k_end, __pte(0));
 > > +     }
-> > +#endif
-> > +
-> > +     return apply_to_existing_page_range(&init_mm, start, size,
-> > +                                         change_page_attr, fn);
-> > +}
-> > +
-> > +int set_memory_ro(unsigned long addr, int numpages)
-> > +{
-> > +     return change_memory_attr(addr, numpages, pte_wrprotect);
-> > +}
-> > +
-> > +static pte_t pte_mkdirtywrite(pte_t pte)
-> > +{
-> > +     return pte_mkwrite(pte_mkdirty(pte));
-> > +}
-> > +
-> > +int set_memory_rw(unsigned long addr, int numpages)
-> > +{
-> > +     return change_memory_attr(addr, numpages, pte_mkdirtywrite);
-> > +}
-> > +
-> > +int set_memory_nx(unsigned long addr, int numpages)
-> > +{
-> > +     return change_memory_attr(addr, numpages, pte_exprotect);
-> > +}
-> > +
-> > +int set_memory_x(unsigned long addr, int numpages)
-> > +{
-> > +     return change_memory_attr(addr, numpages, pte_mkexec);
-> > +}
+> >   }
+> >
+> >   void __init kasan_mmu_init(void)
+> > diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/p=
+tdump.c
+> > index aca354fb670b..0431457f668f 100644
+> > --- a/arch/powerpc/mm/ptdump/ptdump.c
+> > +++ b/arch/powerpc/mm/ptdump/ptdump.c
+> > @@ -73,7 +73,7 @@ struct addr_marker {
+> >
+> >   static struct addr_marker address_markers[] =3D {
+> >       { 0,    "Start of kernel VM" },
+> > -#ifdef MODULES_VADDR
+> > +#if defined(CONFIG_BOOK32_32) && defined(CONFIG_STRICT_KERNEL_RWX)
+>
+> Not valid anymore, see https://github.com/linuxppc/linux/commit/80edc68e0=
+479 and
+> https://github.com/linuxppc/linux/commit/9132a2e82adc
+>
+> The best would be to be able to do something like:
+>
+> #if MODULES_VADDR !=3D VMALLOC_START
+I tried to do it like that originally but with stuff like
+#define VMALLOC_START ((((long)high_memory + VMALLOC_OFFSET) &
+~(VMALLOC_OFFSET-1)))
+it doesn't work.
+>
+> If it doesn't work, then it has to be
+>
+> #if defined(CONFIG_BOOK32_32) || defined(CONFIG_PPC_8xx)
+Ok, thanks.
+>
+> >       { 0,    "modules start" },
+> >       { 0,    "modules end" },
+> >   #endif
+> > @@ -359,7 +359,7 @@ static void populate_markers(void)
+> >   #else
+> >       address_markers[i++].start_address =3D TASK_SIZE;
+> >   #endif
+> > -#ifdef MODULES_VADDR
+> > +#if defined(CONFIG_BOOK32_32) && defined(CONFIG_STRICT_KERNEL_RWX)
+>
+> Same.
+>
+> >       address_markers[i++].start_address =3D MODULES_VADDR;
+> >       address_markers[i++].start_address =3D MODULES_END;
+> >   #endif
 > >
