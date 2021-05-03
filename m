@@ -2,75 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3960E3715C4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 15:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 655B5371696
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 16:27:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYjz92H3Gz301N
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 23:11:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYlfT4JFVz301F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 00:26:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lqGGCtzE;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=nOyrfh2t;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2a;
- helo=mail-yb1-xb2a.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::134;
+ helo=mail-il1-x134.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lqGGCtzE; dkim-atps=neutral
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com
- [IPv6:2607:f8b0:4864:20::b2a])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=nOyrfh2t; dkim-atps=neutral
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com
+ [IPv6:2607:f8b0:4864:20::134])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYjyh71Nkz2xZS
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 23:10:51 +1000 (AEST)
-Received: by mail-yb1-xb2a.google.com with SMTP id b131so7422152ybg.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 06:10:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYldy4P00z2xYd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 00:26:27 +1000 (AEST)
+Received: by mail-il1-x134.google.com with SMTP id c3so3810846ils.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 07:26:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=q6aPtToSrVgBi/90t1ZUB9kHaOhzD5C9bj4BQEcePPk=;
- b=lqGGCtzE5m8F9orYtPate6N4BTFbRDldnXzGj2tE87HBcn1BRn7f5XfxsJmYODrxik
- e8EkfaDCxloU/Q9iBapQyXgVjXP0S4DEJ0fXLrl9h3WPztOm88MubRYvbs9d3jfqGqx+
- iy9k59bjEyTqA/JJgPQ3YBDSOg4s+trVOYoxK6J7Lt5Gi2GwquvTtB02IITfC21XkxNA
- lGyAB0OIcRbwh0FVuTlthtGxfWSXpeBK0cMQGMm7c6fDD1CV4+4N2Ay8M/08fvry9jyw
- TF22FDOSLWt3qkPw5KtV5L2sv6tZ8jOFNTAw83cA9C4ThWwXkIpT0aLKrSpPx/QUefiX
- Kbxg==
+ :cc; bh=ELcNibbwxopbe4wnzShPTb7xRMLVvYpqQ8un28QQp9U=;
+ b=nOyrfh2thpmQagEkzKEHJkMTgRy+3FJJdT9Oo6MZndwooAl8msGQ2IZHFMeS6aJ6Md
+ +OeRGM111zl+0t7XmNgYC8WpP2ka9OwZM9VN//prTwlXpUXb+Muztthx/dt4YfUeTqwD
+ ene0+k2RSvchnHpwNfAnGfkLV6l7GmkYIbRvE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=q6aPtToSrVgBi/90t1ZUB9kHaOhzD5C9bj4BQEcePPk=;
- b=KZFhdgS2Tmk2s1aJrOFzxWJs25iQJ4nZw3Fa9N/6lSd1T670QjbB7G/hPiS/if23zz
- 4A0hfANNbtz/ai3q9Ne0ScCpvu0tuOyxzoqrKhBQnF1maKzrIXJZdZB6ZMaEaCq8uBwF
- YuiIMtLDxzhlzRALfaUnnZHqsb1xnwhJ7OrfTSbK1SKcrzCowYbr6klmNiLItZ8uLThJ
- V/9MtOzr4jnITVk3h/rL6oc3QJ4NW1a0Sz4TWKCkrkvnMSs8UFzEeAFhMxNz1IyT3vz6
- lHSgqAVhf8jrNPCsTu7uSZJHVl5K4oNeulrtwWO1Fla/Ye8Ys44llYBDuZsgEGA/SO56
- 9iaw==
-X-Gm-Message-State: AOAM532EIrliubKF9iFoldKfNoLXV0nTYaAGZS0qDvhn2+Y/cy3ajt/5
- 9+zowGn8w7j6CDnJTYzDR0Fju/QOicdEFAW1hFw=
-X-Google-Smtp-Source: ABdhPJxvygbDWGxmRr6V8Vm4D83Fq4MRol9PEQb74s8BS9df3UUbSP8yls4vcRx2kU2tZhdFxHQp30hnnaM7RamlTpQ=
-X-Received: by 2002:a25:7909:: with SMTP id u9mr25466002ybc.22.1620047448169; 
- Mon, 03 May 2021 06:10:48 -0700 (PDT)
+ bh=ELcNibbwxopbe4wnzShPTb7xRMLVvYpqQ8un28QQp9U=;
+ b=iB8Orw+1xkLNuwjNWZgO5wcWGy//8iZuvL03/sYIl1Wp/d2fFjb27yLzXRYP820I9Z
+ 1PW5AHLdMTldsddJQIddiyM7V7jKFL3zzE4Juz4Vbc62X6/ZK0wvu7K2eZ+KlKy57Bl2
+ Hapn+L29Pf7YpiNVbECcKPu8yAHryFKf44YXPs2OQFWvWKUXQ7GpPD7s+1fuH365ekBW
+ swasoKNx05Zrz92cMAaelPkPLaqmQPdD8vIqNlOsFbBYTaRcCdcTHP+dDHm6i2G7MUCi
+ lApXz18mu/zYqyDcCb6GbeCRpr8ir09PvnfJ3g6yc/46i5AOkqX7q9cGS/h//a7VJef5
+ VUMA==
+X-Gm-Message-State: AOAM5309yac4KeJbW0kDn9DeLrpaXiW9JjYmCwve2d/zqsVxG4wIPYMz
+ bJiG7LCRpBO4SU40vN8tw3yhP5zmQ3vC3A==
+X-Google-Smtp-Source: ABdhPJxLKjVx49DVNacXlzScnq3+8i+bXW2cphdYD+/E/NRLqgdr6n+MBUBXGEy7a701s+nsA5jLPg==
+X-Received: by 2002:a05:6e02:1baf:: with SMTP id
+ n15mr16382496ili.148.1620051984187; 
+ Mon, 03 May 2021 07:26:24 -0700 (PDT)
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com.
+ [209.85.166.175])
+ by smtp.gmail.com with ESMTPSA id h4sm5488960ili.52.2021.05.03.07.26.22
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 May 2021 07:26:23 -0700 (PDT)
+Received: by mail-il1-f175.google.com with SMTP id j12so3806669ils.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 07:26:22 -0700 (PDT)
+X-Received: by 2002:a05:6e02:f4e:: with SMTP id
+ y14mr3397094ilj.18.1620051971892; 
+ Mon, 03 May 2021 07:26:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210501151538.145449-1-masahiroy@kernel.org>
- <CANiq72k1hB3X6+Nc_iu=f=BoB-F9JW2j_B4ZMcv8_UpW5QQ2Og@mail.gmail.com>
- <3943bc020f6227c8801907317fc113aa13ad4bad.camel@perches.com>
- <20210502183030.GF10366@gate.crashing.org>
- <81a926a3bdb70debe3ae2b13655ea8d249fb9991.camel@perches.com>
- <20210502203253.GH10366@gate.crashing.org>
- <CAHk-=wjGJskk5EwnDCccs6DcLytE2yx76+P_W-n1-B5zq0M3KA@mail.gmail.com>
- <20210502223007.GZ1847222@casper.infradead.org>
- <YI+nhMcPSTs/5Ydp@ada-deb-carambola.ifak-system.com>
- <CAK8P3a0kV4ZfMEFh0DcMDjXqxA0yhj8a8CL-YFGV6B4pszHeGg@mail.gmail.com>
- <fc0c7c092f274ab8b760b3c897830347@AcuMS.aculab.com>
-In-Reply-To: <fc0c7c092f274ab8b760b3c897830347@AcuMS.aculab.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 3 May 2021 15:10:37 +0200
-Message-ID: <CANiq72nyvrb6ZrVVeaT9py7D_Sv9q-a1HGYH-hNpqfmcCmb4dg@mail.gmail.com>
-Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-To: David Laight <David.Laight@aculab.com>
+References: <20210422081508.3942748-1-tientzu@chromium.org>
+ <20210422081508.3942748-15-tientzu@chromium.org>
+ <70b895c2-4a39-bbbd-a719-5c8b6b922026@arm.com>
+In-Reply-To: <70b895c2-4a39-bbbd-a719-5c8b6b922026@arm.com>
+From: Claire Chang <tientzu@chromium.org>
+Date: Mon, 3 May 2021 22:26:00 +0800
+X-Gmail-Original-Message-ID: <CALiNf28cc5T-cMZxNPZnrTQvqu2Ge_MmZj-teN4mE_-E-6_6XQ@mail.gmail.com>
+Message-ID: <CALiNf28cc5T-cMZxNPZnrTQvqu2Ge_MmZj-teN4mE_-E-6_6XQ@mail.gmail.com>
+Subject: Re: [PATCH v5 14/16] dma-direct: Allocate memory from restricted DMA
+ pool if available
+To: Robin Murphy <robin.murphy@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,34 +86,162 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
- Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Will Deacon <will@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Joe Perches <joe@perches.com>,
- Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, lkml <linux-kernel@vger.kernel.org>,
+ grant.likely@arm.com, paulus@samba.org, Will Deacon <will@kernel.org>,
+ mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ xypron.glpk@gmx.de, Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ Jianxiong Gao <jxgao@google.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ maarten.lankhorst@linux.intel.com, airlied@linux.ie,
+ Dan Williams <dan.j.williams@intel.com>, jani.nikula@linux.intel.com,
+ Nicolas Boichat <drinkcat@chromium.org>, rodrigo.vivi@intel.com,
+ Bjorn Helgaas <bhelgaas@google.com>, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ chris@chris-wilson.co.uk, nouveau@lists.freedesktop.org,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Frank Rowand <frowand.list@gmail.com>, Tomasz Figa <tfiga@chromium.org>,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 3, 2021 at 2:20 PM David Laight <David.Laight@aculab.com> wrote:
+On Fri, Apr 23, 2021 at 9:46 PM Robin Murphy <robin.murphy@arm.com> wrote:
 >
-> It would be nice to be able to build current kernels (for local
-> use) on the 'new' system - but gcc is already too old.
+> On 2021-04-22 09:15, Claire Chang wrote:
+> > The restricted DMA pool is preferred if available.
+> >
+> > The restricted DMA pools provide a basic level of protection against the
+> > DMA overwriting buffer contents at unexpected times. However, to protect
+> > against general data leakage and system memory corruption, the system
+> > needs to provide a way to lock down the memory access, e.g., MPU.
+> >
+> > Signed-off-by: Claire Chang <tientzu@chromium.org>
+> > ---
+> >   kernel/dma/direct.c | 35 ++++++++++++++++++++++++++---------
+> >   1 file changed, 26 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> > index 7a27f0510fcc..29523d2a9845 100644
+> > --- a/kernel/dma/direct.c
+> > +++ b/kernel/dma/direct.c
+> > @@ -78,6 +78,10 @@ static bool dma_coherent_ok(struct device *dev, phys_addr_t phys, size_t size)
+> >   static void __dma_direct_free_pages(struct device *dev, struct page *page,
+> >                                   size_t size)
+> >   {
+> > +#ifdef CONFIG_DMA_RESTRICTED_POOL
+> > +     if (swiotlb_free(dev, page, size))
+> > +             return;
+> > +#endif
+> >       dma_free_contiguous(dev, page, size);
+> >   }
+> >
+> > @@ -92,7 +96,17 @@ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
+> >
+> >       gfp |= dma_direct_optimal_gfp_mask(dev, dev->coherent_dma_mask,
+> >                                          &phys_limit);
+> > -     page = dma_alloc_contiguous(dev, size, gfp);
+> > +
+> > +#ifdef CONFIG_DMA_RESTRICTED_POOL
+> > +     page = swiotlb_alloc(dev, size);
+> > +     if (page && !dma_coherent_ok(dev, page_to_phys(page), size)) {
+> > +             __dma_direct_free_pages(dev, page, size);
+> > +             page = NULL;
+> > +     }
+> > +#endif
+> > +
+> > +     if (!page)
+> > +             page = dma_alloc_contiguous(dev, size, gfp);
+> >       if (page && !dma_coherent_ok(dev, page_to_phys(page), size)) {
+> >               dma_free_contiguous(dev, page, size);
+> >               page = NULL;
+> > @@ -148,7 +162,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+> >               gfp |= __GFP_NOWARN;
+> >
+> >       if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
+> > -         !force_dma_unencrypted(dev)) {
+> > +         !force_dma_unencrypted(dev) && !is_dev_swiotlb_force(dev)) {
+> >               page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO);
+> >               if (!page)
+> >                       return NULL;
+> > @@ -161,8 +175,8 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+> >       }
+> >
+> >       if (!IS_ENABLED(CONFIG_ARCH_HAS_DMA_SET_UNCACHED) &&
+> > -         !IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) &&
+> > -         !dev_is_dma_coherent(dev))
+> > +         !IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) && !dev_is_dma_coherent(dev) &&
+> > +         !is_dev_swiotlb_force(dev))
+> >               return arch_dma_alloc(dev, size, dma_handle, gfp, attrs);
+> >
+> >       /*
+> > @@ -172,7 +186,9 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+> >       if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
+> >           !gfpflags_allow_blocking(gfp) &&
+> >           (force_dma_unencrypted(dev) ||
+> > -          (IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) && !dev_is_dma_coherent(dev))))
+> > +          (IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) &&
+> > +           !dev_is_dma_coherent(dev))) &&
+> > +         !is_dev_swiotlb_force(dev))
+> >               return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
+> >
+> >       /* we always manually zero the memory once we are done */
+> > @@ -253,15 +269,15 @@ void dma_direct_free(struct device *dev, size_t size,
+> >       unsigned int page_order = get_order(size);
+> >
+> >       if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
+> > -         !force_dma_unencrypted(dev)) {
+> > +         !force_dma_unencrypted(dev) && !is_dev_swiotlb_force(dev)) {
+> >               /* cpu_addr is a struct page cookie, not a kernel address */
+> >               dma_free_contiguous(dev, cpu_addr, size);
+> >               return;
+> >       }
+> >
+> >       if (!IS_ENABLED(CONFIG_ARCH_HAS_DMA_SET_UNCACHED) &&
+> > -         !IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) &&
+> > -         !dev_is_dma_coherent(dev)) {
+> > +         !IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) && !dev_is_dma_coherent(dev) &&
+> > +         !is_dev_swiotlb_force(dev)) {
+> >               arch_dma_free(dev, size, cpu_addr, dma_addr, attrs);
+> >               return;
+> >       }
+> > @@ -289,7 +305,8 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
+> >       void *ret;
+> >
+> >       if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
+> > -         force_dma_unencrypted(dev) && !gfpflags_allow_blocking(gfp))
+> > +         force_dma_unencrypted(dev) && !gfpflags_allow_blocking(gfp) &&
+> > +         !is_dev_swiotlb_force(dev))
+> >               return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
+>
+> Wait, this seems broken for non-coherent devices - in that case we need
+> to return a non-cacheable address, but we can't simply fall through into
+> the remapping path below in GFP_ATOMIC context. That's why we need the
+> atomic pool concept in the first place :/
 
-I have seen such environments too... However, for the kernel in
-particular, you could install a newer GCC in the 'new' machine (just
-for the kernel builds) or do your kernel builds in a different machine
--- a 'new' 'new' one :)
+Sorry for the late reply. I'm not very familiar with this. I wonder if
+the memory returned here must be coherent. If yes, could we say for
+this case, one must set up another device coherent pool
+(shared-dma-pool) and go with dma_alloc_from_dev_coherent()[1]?
 
-Cheers,
-Miguel
+[1] https://elixir.bootlin.com/linux/v5.12/source/kernel/dma/mapping.c#L435
+
+>
+> Unless I've overlooked something, we're still using the regular
+> cacheable linear map address of the dma_io_tlb_mem buffer, no?
+>
+> Robin.
+>
+> >
+> >       page = __dma_direct_alloc_pages(dev, size, gfp);
+> >
