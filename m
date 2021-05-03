@@ -1,56 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D625371541
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 14:30:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEF537159E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 15:03:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYj472Zb7z30FJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 22:30:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYjp04TBHz30Gb
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 23:03:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=VcsGOPeW;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=dsterba@suse.cz;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535;
+ helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=VcsGOPeW; dkim-atps=neutral
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
+ [IPv6:2607:f8b0:4864:20::535])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYj3h0p33z2yR2
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 22:30:07 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 52E8DAD22;
- Mon,  3 May 2021 12:30:04 +0000 (UTC)
-Received: by ds.suse.cz (Postfix, from userid 10065)
- id C7B22DA733; Mon,  3 May 2021 14:27:36 +0200 (CEST)
-Date: Mon, 3 May 2021 14:27:36 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-Message-ID: <20210503122736.GG7604@twin.jikos.cz>
-Mail-Followup-To: dsterba@suse.cz, Masahiro Yamada <masahiroy@kernel.org>,
- linux-kernel@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linux-kbuild@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Will Deacon <will@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Mackerras <paulus@samba.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
-References: <20210501151538.145449-1-masahiroy@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYjnX1Pszz2yQq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 23:02:53 +1000 (AEST)
+Received: by mail-pg1-x535.google.com with SMTP id y30so3524221pgl.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 06:02:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=5MoALY1xrhNG4EhyRfiTojMzytneQQ0UwGMNVmCBthc=;
+ b=VcsGOPeWugXHkdyuMKClEoc41yG/qXl6LcZOekWrUlqkDDqaMXbkzF5COVgoz9mPfP
+ PjtpeKValYQLjqYBGkCY+a2Y1tm94vGWyc0EXcg771liE5tyzyomB5RyPgAqaTLcKtT0
+ nRMjHUb01Z1ulXKXNWpLn/q/z9V2Pv9TgFGqxtvVGpwa6ygTLuQ70owfkk7ndx1deeVF
+ CQm1ulVDNXr65t67cB7H8KHUegJeM5GP4A5aaAXgHLxcCBSnsxT7HafhaEXDxTa060Uw
+ d1bTfJFK+JpP/aqJYZhwDBsOpu8YsrKld5yvUnzglmziqARxA4qFa1wwb2wlnp7KHScP
+ y1Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=5MoALY1xrhNG4EhyRfiTojMzytneQQ0UwGMNVmCBthc=;
+ b=ajAFuRSDx174+erb7ndaVeMn3L4X0y8W/L9M2BuwlD59/TpBTGuVSB64h53bkgkHMQ
+ zKMERnbCe6MTlyHRsWNEjZrQCuTr/DpNaCxSfDEJikfymRADxbdp6O3G3RH7UrqZNt8e
+ fZX1pbHJ0JzGd+L28bmkl8Z/1dMiOHPM6i02DrDMoQKQiYbyZ6/NSgZhb3GgqmAdyU1F
+ 6fnhfB9MXRfGqw+3x/19pkobwy6PlB7XwkOcyuQ96fi74D19tWMnbvZm8+yNYzsxJ9h+
+ bhfmjAWDJssRZPnEbUhyAg8rZeBjCjYUF2ombJSWvqTM7SxmhC4yqqMQG/Bhdgu9pwRU
+ 4i4A==
+X-Gm-Message-State: AOAM532XCcGc9munNhsISiR4cPrHQLY0Ns+sb2TeY8IUGhA+7mNwGPOj
+ BTUteCnydPL5nHelAH7JZ1rp1Lam2qs=
+X-Google-Smtp-Source: ABdhPJwV+AmKPxeO+dkQ9cjX5La4OKN2NjDl6/X7tGa90dwJckje+rCsRyajZmDQ5+LIMp4OHZd9wQ==
+X-Received: by 2002:a65:4c8e:: with SMTP id m14mr17625891pgt.377.1620046969253; 
+ Mon, 03 May 2021 06:02:49 -0700 (PDT)
+Received: from bobo.ibm.com ([61.68.127.20])
+ by smtp.gmail.com with ESMTPSA id f1sm18069053pjt.50.2021.05.03.06.02.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 May 2021 06:02:49 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/4] powerpc/security mitigation updates
+Date: Mon,  3 May 2021 23:02:39 +1000
+Message-Id: <20210503130243.891868-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210501151538.145449-1-masahiroy@kernel.org>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,47 +77,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: dsterba@suse.cz
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- linux-kbuild@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>,
- Paul Mackerras <paulus@samba.org>, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, Will Deacon <will@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, May 02, 2021 at 12:15:38AM +0900, Masahiro Yamada wrote:
-> The current minimum GCC version is 4.9 except ARCH=arm64 requiring
-> GCC 5.1.
-> 
-> When we discussed last time, we agreed to raise the minimum GCC version
-> to 5.1 globally. [1]
+This series adds a few missing bits added to recent pseries
+H_GET_CPU_CHARACTERISTICS and implements them, also removes
+a restriction from powernv for some of the flushes.
 
-There are still a lot of comment references to old gcc releases with
-workarounds or bugfixes, a quick serarch:
+This is tested mianly in qemu where I just submitted a patch
+that adds support for these bits (not upstream yet).
 
-$ git grep -in 'gcc.*[234]\.x'
-arch/alpha/include/asm/string.h:30:/* For gcc 3.x, we cannot have the inline function named "memset" because
-arch/arc/include/asm/checksum.h:9: *  -gcc 4.4.x broke networking. Alias analysis needed to be primed.
-arch/arm/Makefile:127:# Need -Uarm for gcc < 3.x
-arch/ia64/lib/memcpy_mck.S:535: * Due to lack of local tag support in gcc 2.x assembler, it is not clear which
-arch/mips/include/asm/page.h:210: * also affect MIPS so we keep this one until GCC 3.x has been retired
-arch/x86/include/asm/page.h:53: * remove this Voodoo magic stuff. (i.e. once gcc3.x is deprecated)
-arch/x86/kvm/x86.c:5569:         * This union makes it completely explicit to gcc-3.x
-arch/x86/mm/pgtable.c:302:      if (PREALLOCATED_PMDS == 0) /* Work around gcc-3.4.x bug */
-drivers/net/ethernet/renesas/sh_eth.c:51: * that warning from W=1 builds. GCC has supported this option since 4.2.X, but
-lib/xz/xz_dec_lzma2.c:494: * of the code generated by GCC 3.x decreases 10-15 %. (GCC 4.3 doesn't care,
-lib/xz/xz_dec_lzma2.c:495: * and it generates 10-20 % faster code than GCC 3.x from this file anyway.)
-net/core/skbuff.c:32: * The functions in this file will not compile correctly with gcc 2.4.x
+Nicholas Piggin (4):
+  powerpc/pseries: Get entry and uaccess flush required bits from
+    H_GET_CPU_CHARACTERISTICS
+  powerpc/security: Add a security feature for STF barrier
+  powerpc/pesries: Get STF barrier requirement from
+    H_GET_CPU_CHARACTERISTICS
+  powerpc/powernv: Remove POWER9 PVR version check for entry and uaccess
+    flushes
 
-This misses version-specific quirks, but the following returns 216
-results and not all are problematic (eg. just referring to gcc for some
-historical reason) so I'm not pasting it here.
+ arch/powerpc/include/asm/hvcall.h            | 3 +++
+ arch/powerpc/include/asm/security_features.h | 4 ++++
+ arch/powerpc/kernel/security.c               | 7 ++-----
+ arch/powerpc/platforms/powernv/setup.c       | 9 ---------
+ arch/powerpc/platforms/pseries/setup.c       | 9 +++++++++
+ 5 files changed, 18 insertions(+), 14 deletions(-)
 
-$ git grep -in 'gcc.*[234]\.[0-9]'
-...
+-- 
+2.23.0
+
