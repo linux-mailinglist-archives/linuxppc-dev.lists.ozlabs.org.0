@@ -2,68 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AEF537159E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 15:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A396C37159F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 15:03:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYjp04TBHz30Gb
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 23:03:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYjpS56M5z3bpf
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 23:03:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=VcsGOPeW;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=r/TQBZvc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535;
- helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
+ helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VcsGOPeW; dkim-atps=neutral
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
- [IPv6:2607:f8b0:4864:20::535])
+ header.s=20161025 header.b=r/TQBZvc; dkim-atps=neutral
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYjnX1Pszz2yQq
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 23:02:53 +1000 (AEST)
-Received: by mail-pg1-x535.google.com with SMTP id y30so3524221pgl.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 06:02:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYjnX0tBqz2xZS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 23:02:54 +1000 (AEST)
+Received: by mail-pf1-x434.google.com with SMTP id v191so4031070pfc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 06:02:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=5MoALY1xrhNG4EhyRfiTojMzytneQQ0UwGMNVmCBthc=;
- b=VcsGOPeWugXHkdyuMKClEoc41yG/qXl6LcZOekWrUlqkDDqaMXbkzF5COVgoz9mPfP
- PjtpeKValYQLjqYBGkCY+a2Y1tm94vGWyc0EXcg771liE5tyzyomB5RyPgAqaTLcKtT0
- nRMjHUb01Z1ulXKXNWpLn/q/z9V2Pv9TgFGqxtvVGpwa6ygTLuQ70owfkk7ndx1deeVF
- CQm1ulVDNXr65t67cB7H8KHUegJeM5GP4A5aaAXgHLxcCBSnsxT7HafhaEXDxTa060Uw
- d1bTfJFK+JpP/aqJYZhwDBsOpu8YsrKld5yvUnzglmziqARxA4qFa1wwb2wlnp7KHScP
- y1Pg==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=7U/Bo9+3wof6VuFTXdCACGU/D8iEr1wLRCC9uuwzsF8=;
+ b=r/TQBZvco86GOC7/tu4dHB9hmu6lXVjwQPo7cnRWg4h3reI6eTK7gr4KARp+L70uQ4
+ DBsNG6yJlS1YktjfCVPOy7ntXQ6hzZfSvDpzlwMK4EkD7ccAeCRsMTaAqLdl2LLAYxkX
+ VmJ0gk/D5fqJ32l6Hkz27Rc9olsj7FUmiMh0CWCrhTm3H6YUgqf3+kElQA1cGTUByrEg
+ 6TmyGHfMbpUY2fzp2wA3nG/Mlp1zVPHGuTOTf7OKo28FBh/P0pSrQ5+ZcosNvBQQ5RWE
+ bzJXFtiuaGa0W7IxPV4gG6xiZgatb1I4tm2E2NuIAQ8U2CRwZ4c+NEp1HJg5P+0Axx2z
+ aOCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=5MoALY1xrhNG4EhyRfiTojMzytneQQ0UwGMNVmCBthc=;
- b=ajAFuRSDx174+erb7ndaVeMn3L4X0y8W/L9M2BuwlD59/TpBTGuVSB64h53bkgkHMQ
- zKMERnbCe6MTlyHRsWNEjZrQCuTr/DpNaCxSfDEJikfymRADxbdp6O3G3RH7UrqZNt8e
- fZX1pbHJ0JzGd+L28bmkl8Z/1dMiOHPM6i02DrDMoQKQiYbyZ6/NSgZhb3GgqmAdyU1F
- 6fnhfB9MXRfGqw+3x/19pkobwy6PlB7XwkOcyuQ96fi74D19tWMnbvZm8+yNYzsxJ9h+
- bhfmjAWDJssRZPnEbUhyAg8rZeBjCjYUF2ombJSWvqTM7SxmhC4yqqMQG/Bhdgu9pwRU
- 4i4A==
-X-Gm-Message-State: AOAM532XCcGc9munNhsISiR4cPrHQLY0Ns+sb2TeY8IUGhA+7mNwGPOj
- BTUteCnydPL5nHelAH7JZ1rp1Lam2qs=
-X-Google-Smtp-Source: ABdhPJwV+AmKPxeO+dkQ9cjX5La4OKN2NjDl6/X7tGa90dwJckje+rCsRyajZmDQ5+LIMp4OHZd9wQ==
-X-Received: by 2002:a65:4c8e:: with SMTP id m14mr17625891pgt.377.1620046969253; 
- Mon, 03 May 2021 06:02:49 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=7U/Bo9+3wof6VuFTXdCACGU/D8iEr1wLRCC9uuwzsF8=;
+ b=fifuvsmEJ3VL8mxd+uj57et7mnAg0M/5Lyr3KtHWMAMAKFTB/CH8SiNTVS7FEHKQjM
+ SqohKvtwOuqEUseKFg2Dn2U6zIBm5AcUtILd4+djHxnlHV+akH+DAztzKhXyu2DJJA7U
+ Msg4mnH7iR86aTriWjvJmFvVb31hrafEdItziCAMY0XbI8ao8jVUEqVGss17L+rSGR2k
+ dj3yXzEDdfm/Muf4lQt8nqkcgQoNsiLB83OjmT43h0y+PXTq4Cfi3vxNgkjA+CuiT2mg
+ pw8NI0i4R90/XYwZMdTrNXRP1CA7drohfb+uYSgqBiB+KVtrJuKcgNdW/LCDlQEH9MgS
+ 86wg==
+X-Gm-Message-State: AOAM530XYFwh9UQkvCGHJ2OojnT6ng/vY68Ci7nSppTAtuUltbfQlJTi
+ Td0+aMpkwAAZPkvsUeO3RnlKD0AWE+M=
+X-Google-Smtp-Source: ABdhPJyHbmGNt5TO4d+GxikWsWl5BP2ZjIGunIYy/m97w/XYhFzIGNxZXK8t/1CIVVuwossQhUv57Q==
+X-Received: by 2002:a62:3344:0:b029:28c:6f0f:cb90 with SMTP id
+ z65-20020a6233440000b029028c6f0fcb90mr16697167pfz.58.1620046971668; 
+ Mon, 03 May 2021 06:02:51 -0700 (PDT)
 Received: from bobo.ibm.com ([61.68.127.20])
- by smtp.gmail.com with ESMTPSA id f1sm18069053pjt.50.2021.05.03.06.02.47
+ by smtp.gmail.com with ESMTPSA id f1sm18069053pjt.50.2021.05.03.06.02.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 May 2021 06:02:49 -0700 (PDT)
+ Mon, 03 May 2021 06:02:50 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 0/4] powerpc/security mitigation updates
-Date: Mon,  3 May 2021 23:02:39 +1000
-Message-Id: <20210503130243.891868-1-npiggin@gmail.com>
+Subject: [PATCH 1/4] powerpc/pseries: Get entry and uaccess flush required
+ bits from H_GET_CPU_CHARACTERISTICS
+Date: Mon,  3 May 2021 23:02:40 +1000
+Message-Id: <20210503130243.891868-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20210503130243.891868-1-npiggin@gmail.com>
+References: <20210503130243.891868-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,29 +86,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series adds a few missing bits added to recent pseries
-H_GET_CPU_CHARACTERISTICS and implements them, also removes
-a restriction from powernv for some of the flushes.
+This allows the hypervisor / firmware to describe these workarounds to
+the guest.
 
-This is tested mianly in qemu where I just submitted a patch
-that adds support for these bits (not upstream yet).
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/hvcall.h      | 2 ++
+ arch/powerpc/platforms/pseries/setup.c | 6 ++++++
+ 2 files changed, 8 insertions(+)
 
-Nicholas Piggin (4):
-  powerpc/pseries: Get entry and uaccess flush required bits from
-    H_GET_CPU_CHARACTERISTICS
-  powerpc/security: Add a security feature for STF barrier
-  powerpc/pesries: Get STF barrier requirement from
-    H_GET_CPU_CHARACTERISTICS
-  powerpc/powernv: Remove POWER9 PVR version check for entry and uaccess
-    flushes
-
- arch/powerpc/include/asm/hvcall.h            | 3 +++
- arch/powerpc/include/asm/security_features.h | 4 ++++
- arch/powerpc/kernel/security.c               | 7 ++-----
- arch/powerpc/platforms/powernv/setup.c       | 9 ---------
- arch/powerpc/platforms/pseries/setup.c       | 9 +++++++++
- 5 files changed, 18 insertions(+), 14 deletions(-)
-
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 443050906018..f962b339865c 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -393,6 +393,8 @@
+ #define H_CPU_BEHAV_FAVOUR_SECURITY_H	(1ull << 60) // IBM bit 3
+ #define H_CPU_BEHAV_FLUSH_COUNT_CACHE	(1ull << 58) // IBM bit 5
+ #define H_CPU_BEHAV_FLUSH_LINK_STACK	(1ull << 57) // IBM bit 6
++#define H_CPU_BEHAV_NO_L1D_FLUSH_ENTRY	(1ull << 56) // IBM bit 7
++#define H_CPU_BEHAV_NO_L1D_FLUSH_UACCESS (1ull << 55) // IBM bit 8
+ 
+ /* Flag values used in H_REGISTER_PROC_TBL hcall */
+ #define PROC_TABLE_OP_MASK	0x18
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 754e493b7c05..287f33645419 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -549,6 +549,12 @@ static void init_cpu_char_feature_flags(struct h_cpu_char_result *result)
+ 	if (!(result->behaviour & H_CPU_BEHAV_L1D_FLUSH_PR))
+ 		security_ftr_clear(SEC_FTR_L1D_FLUSH_PR);
+ 
++	if (result->behaviour & H_CPU_BEHAV_NO_L1D_FLUSH_ENTRY)
++		security_ftr_clear(SEC_FTR_L1D_FLUSH_ENTRY);
++
++	if (result->behaviour & H_CPU_BEHAV_NO_L1D_FLUSH_UACCESS)
++		security_ftr_clear(SEC_FTR_L1D_FLUSH_UACCESS);
++
+ 	if (!(result->behaviour & H_CPU_BEHAV_BNDS_CHK_SPEC_BAR))
+ 		security_ftr_clear(SEC_FTR_BNDS_CHK_SPEC_BAR);
+ }
 -- 
 2.23.0
 
