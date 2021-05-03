@@ -1,69 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8AF13715A0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 15:04:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3075C3715A2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 15:04:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYjpw6WKCz2yxS
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 23:04:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYjqN1kNGz3c2j
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 23:04:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=hFDF+G5q;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=dGabkijm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
- helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
+ helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hFDF+G5q; dkim-atps=neutral
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
+ header.s=20161025 header.b=dGabkijm; dkim-atps=neutral
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
+ [IPv6:2607:f8b0:4864:20::630])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYjnY0y19z2xZS
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 23:02:56 +1000 (AEST)
-Received: by mail-pg1-x533.google.com with SMTP id p12so3513669pgj.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 06:02:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYjnb1Bq5z2xZS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 23:02:59 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id b21so2762640plz.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 06:02:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=JEFoaHpYo4S5tQ+mk5otYjO32aWJH7KCFvgal9BUlRQ=;
- b=hFDF+G5q0COO5fEPjestQI4jRbqHOD0OfGCOLNMWsJAF4gNTusiEPQV0icWZApvesm
- 1zLdvl/nadXgYUkjOaLSK/aOtFN5sXXpGjB/9JAiCpZdFeF14XQgtYpV2ueL1MOpX8e/
- 8l02Wy1BEAHwFQyW2aElIMcM7Fqf+FKdY1Bla6LvdcXbnIxxHEvcbhTtG2/M+wUzeuyV
- anuNTzGwHqEmU/CL1+Bt10ddYHSMvr7xJoqfXoMUix+kQZ5S5X34NjgwtKfOaLgystxK
- NOjgSCJclHejPEgaU6b/g0p/4oww52NsAKmKW1sBWd2ANr80Vg6y7GdUrqNn6D3/G8PZ
- YX4w==
+ bh=WAQqpAgTTsGEbbkxR70JxT+IBdrvdRzWuqwtavlOARE=;
+ b=dGabkijm0he+4nD4cKIy7hV9zN1Th6hYuEhRi3ml1BB/eiw2DxKIxak8cP3AuJnROZ
+ IqzdptHV8CJP+L2SyWmBrTfE2LRf/fuCe3ONOVvBCxOztUK7AtGoMFviULPqLzSyuoQ2
+ LE0xi6YQNDhZZe58udVq8j8tRdJFm/mueYrs+2vDz6mv8bWXNa2I2T7+YluPVVOqNHkD
+ 2y5IcA1F+yK8kifhos7MVX3Hboua8n4BNRHAwYxV/IkRxcNOKnVPjHswx7f+eT81jGJQ
+ kmEnEc36voOhrRY1WRhywdrDFiYgj023XPZW+mNI2O5dZECFDKtUypbnWoO8U3gT7Map
+ 0ttA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=JEFoaHpYo4S5tQ+mk5otYjO32aWJH7KCFvgal9BUlRQ=;
- b=pMb0Q/K5IUKxZfnHp3kN9EE5Q0gxLg+wj+pjbpuUYUYBAGBUVoTFWm8BqKH5E18QbY
- x4KK/0Xlt8gh90Cqt+5BctPAOTHRiTDV1iqHDTlruQh03s7DGZvKVG+4h7/95hxqlvGw
- zBx3oRamdn6FkIQgzM7Mu25LiBo0QPsR4dSQapMbCNMnJp1P1DXwOmK8sW53O0HWTUu4
- W+zxueyfbuP9JlERJtMwKi73QhG0oZsSgMIuvH/o6uG0B3yF0arJzMRa4bpeGMHpz0Uc
- LTY5ERfem5YlHLzJ4g8BdgebgL0qGIC6P70vJFDlSxiOPw+xo+F3QbE/5ZWSGXnLAaZy
- GH1Q==
-X-Gm-Message-State: AOAM532s3+7xJImT8BjJYuxGGCzgGgHEcJjrMcnId7sDPZBZbPy7hD3J
- fNYAaUMlJKDCIxbRZnm6pe/HxCiRsAg=
-X-Google-Smtp-Source: ABdhPJx7BD8ndviaIXTpDIXHhWOLPgThVsegW2NQ+vSa4j4AVIO9sSxz36l5gp5+Fb9CU4Nj9Vw0TA==
-X-Received: by 2002:aa7:9190:0:b029:22d:6789:cc83 with SMTP id
- x16-20020aa791900000b029022d6789cc83mr19193653pfa.9.1620046974376; 
- Mon, 03 May 2021 06:02:54 -0700 (PDT)
+ bh=WAQqpAgTTsGEbbkxR70JxT+IBdrvdRzWuqwtavlOARE=;
+ b=s6NmO+7BMWomTqMJhVHedq5g+oVEp5uEsdD1LEcqyJaXaoY0A/qpKm18RNyv1sDuZi
+ XMIinI9iUYVaiFjd/MuKTh/unZajmPpjt5OSnmVC27OTzIqYQU5eG/tu4r9UP58jyTrk
+ oG+YeB6VrMudjT7sx+ZRVImimEvKEerf5SexE1+ep8yK8/5slHZYkUz/7sEkjp0F3KrJ
+ 43u1a2KXE4MR1j61ZcfvZr5W75idOY8DYZfYCByZ/Lr2CwTsAjS8lutBVtTRDuSnqCYb
+ 8F/+vN4P+88Wo67AaK67u2GJFWCxT7lEc4LMrMd7Z/N5kHGTCgzZlgWVdZbDGyQzHrYm
+ GrRQ==
+X-Gm-Message-State: AOAM530M40TlIQKK0A8d+35HGBxI/hNX7kB3N3Nbkf5eQGcBXdx0J3jS
+ +ryM5dAXY49wjLYkXhRmKb5fJwVWq9I=
+X-Google-Smtp-Source: ABdhPJwwRsscfIt52e8CIgWSiUqeYh5LWJ/OCS2e7EPMbUleVB/U7lmuEhs+9UMtSN849sp+tN0rXw==
+X-Received: by 2002:a17:90a:c42:: with SMTP id
+ u2mr21225032pje.76.1620046976236; 
+ Mon, 03 May 2021 06:02:56 -0700 (PDT)
 Received: from bobo.ibm.com ([61.68.127.20])
- by smtp.gmail.com with ESMTPSA id f1sm18069053pjt.50.2021.05.03.06.02.52
+ by smtp.gmail.com with ESMTPSA id f1sm18069053pjt.50.2021.05.03.06.02.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 May 2021 06:02:53 -0700 (PDT)
+ Mon, 03 May 2021 06:02:56 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/4] powerpc/security: Add a security feature for STF barrier
-Date: Mon,  3 May 2021 23:02:41 +1000
-Message-Id: <20210503130243.891868-3-npiggin@gmail.com>
+Subject: [PATCH 3/4] powerpc/pesries: Get STF barrier requirement from
+ H_GET_CPU_CHARACTERISTICS
+Date: Mon,  3 May 2021 23:02:42 +1000
+Message-Id: <20210503130243.891868-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210503130243.891868-1-npiggin@gmail.com>
 References: <20210503130243.891868-1-npiggin@gmail.com>
@@ -85,62 +86,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rather than tying this mitigation to RFI L1D flush requirement, add a
-new bit for it.
+This allows the hypervisor / firmware to describe this workarounds to
+the guest.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/security_features.h | 4 ++++
- arch/powerpc/kernel/security.c               | 7 ++-----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ arch/powerpc/include/asm/hvcall.h      | 1 +
+ arch/powerpc/platforms/pseries/setup.c | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/security_features.h b/arch/powerpc/include/asm/security_features.h
-index b774a4477d5f..792eefaf230b 100644
---- a/arch/powerpc/include/asm/security_features.h
-+++ b/arch/powerpc/include/asm/security_features.h
-@@ -92,6 +92,9 @@ static inline bool security_ftr_enabled(u64 feature)
- // The L1-D cache should be flushed after user accesses from the kernel
- #define SEC_FTR_L1D_FLUSH_UACCESS	0x0000000000008000ull
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index f962b339865c..a60ef261f63a 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -395,6 +395,7 @@
+ #define H_CPU_BEHAV_FLUSH_LINK_STACK	(1ull << 57) // IBM bit 6
+ #define H_CPU_BEHAV_NO_L1D_FLUSH_ENTRY	(1ull << 56) // IBM bit 7
+ #define H_CPU_BEHAV_NO_L1D_FLUSH_UACCESS (1ull << 55) // IBM bit 8
++#define H_CPU_BEHAV_NO_STF_BARRIER	(1ull << 54) // IBM bit 9
  
-+// The STF flush should be executed on privilege state switch
-+#define SEC_FTR_STF_BARRIER		0x0000000000010000ull
+ /* Flag values used in H_REGISTER_PROC_TBL hcall */
+ #define PROC_TABLE_OP_MASK	0x18
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 287f33645419..631a0d57b6cd 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -555,6 +555,9 @@ static void init_cpu_char_feature_flags(struct h_cpu_char_result *result)
+ 	if (result->behaviour & H_CPU_BEHAV_NO_L1D_FLUSH_UACCESS)
+ 		security_ftr_clear(SEC_FTR_L1D_FLUSH_UACCESS);
+ 
++	if (result->behaviour & H_CPU_BEHAV_NO_STF_BARRIER)
++		security_ftr_clear(SEC_FTR_STF_BARRIER);
 +
- // Features enabled by default
- #define SEC_FTR_DEFAULT \
- 	(SEC_FTR_L1D_FLUSH_HV | \
-@@ -99,6 +102,7 @@ static inline bool security_ftr_enabled(u64 feature)
- 	 SEC_FTR_BNDS_CHK_SPEC_BAR | \
- 	 SEC_FTR_L1D_FLUSH_ENTRY | \
- 	 SEC_FTR_L1D_FLUSH_UACCESS | \
-+	 SEC_FTR_STF_BARRIER | \
- 	 SEC_FTR_FAVOUR_SECURITY)
- 
- #endif /* _ASM_POWERPC_SECURITY_FEATURES_H */
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index 0fdfcdd9d880..2eb257b759c6 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -300,9 +300,7 @@ static void stf_barrier_enable(bool enable)
- void setup_stf_barrier(void)
- {
- 	enum stf_barrier_type type;
--	bool enable, hv;
--
--	hv = cpu_has_feature(CPU_FTR_HVMODE);
-+	bool enable;
- 
- 	/* Default to fallback in case fw-features are not available */
- 	if (cpu_has_feature(CPU_FTR_ARCH_300))
-@@ -315,8 +313,7 @@ void setup_stf_barrier(void)
- 		type = STF_BARRIER_NONE;
- 
- 	enable = security_ftr_enabled(SEC_FTR_FAVOUR_SECURITY) &&
--		(security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR) ||
--		 (security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV) && hv));
-+		 security_ftr_enabled(SEC_FTR_STF_BARRIER);
- 
- 	if (type == STF_BARRIER_FALLBACK) {
- 		pr_info("stf-barrier: fallback barrier available\n");
+ 	if (!(result->behaviour & H_CPU_BEHAV_BNDS_CHK_SPEC_BAR))
+ 		security_ftr_clear(SEC_FTR_BNDS_CHK_SPEC_BAR);
+ }
 -- 
 2.23.0
 
