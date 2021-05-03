@@ -1,46 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920003717BB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 17:20:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5A9371B9C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 18:46:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYmrc4DY4z30C0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 01:20:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYplf72nQz30H2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 02:46:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FYmrG3yLbz2xfr
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 01:20:28 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 143FIPbe031669;
- Mon, 3 May 2021 10:18:25 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 143FIPs9031667;
- Mon, 3 May 2021 10:18:25 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Mon, 3 May 2021 10:18:24 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2] powerpc/64: BE option to use ELFv2 ABI for big endian
- kernels
-Message-ID: <20210503151824.GJ10366@gate.crashing.org>
-References: <20200428112517.1402927-1-npiggin@gmail.com>
- <20200428234046.GP17645@gate.crashing.org>
- <1588121596.7zej1imag0.astroid@bobo.none>
- <20210502175506.GE10366@gate.crashing.org>
- <1620002801.0iaahdk9xn.astroid@bobo.none>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1620002801.0iaahdk9xn.astroid@bobo.none>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYplG3YXpz2xZ3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 02:46:13 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4FYpl71cbKz9sTm;
+ Mon,  3 May 2021 18:46:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id bKQXAsNS0dTN; Mon,  3 May 2021 18:46:11 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FYpl70gF0z9sTl;
+ Mon,  3 May 2021 18:46:11 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E91FF8B781;
+ Mon,  3 May 2021 18:46:10 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id tU4iKblBdZFQ; Mon,  3 May 2021 18:46:10 +0200 (CEST)
+Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B18AA8B763;
+ Mon,  3 May 2021 18:46:10 +0200 (CEST)
+Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 72ACF642A7; Mon,  3 May 2021 16:46:10 +0000 (UTC)
+Message-Id: <f38728dbe96df5fef84c868640def5f6d7c114bc.1620060357.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 1/2] powerpc/asm-offset: Remove unused items related to paca
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com
+Date: Mon,  3 May 2021 16:46:10 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,61 +58,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+PACA_SIZE, PACACONTEXTID, PACALOWSLICESPSIZE, PACAHIGHSLICEPSIZE,
+PACA_SLB_ADDR_LIMIT, MMUPSIZEDEFSIZE, PACASLBCACHE, PACASLBCACHEPTR,
+PACASTABRR, PACAVMALLOCSLLP, MMUPSIZESLLP, PACACONTEXTSLLP,
+PACALPPACAPTR, LPPACA_DTLIDX and PACA_DTL_RIDX are not used anymore
+by ASM code.
 
-On Mon, May 03, 2021 at 10:51:41AM +1000, Nicholas Piggin wrote:
-> Excerpts from Segher Boessenkool's message of May 3, 2021 3:55 am:
-> > On Wed, Apr 29, 2020 at 10:57:16AM +1000, Nicholas Piggin wrote:
-> >> Excerpts from Segher Boessenkool's message of April 29, 2020 9:40 am:
-> >> I blame toolchain for -mabi=elfv2 ! And also some blame on ABI document 
-> >> which is called ELF V2 ABI rather than ELF ABI V2 which would have been 
-> >> unambiguous.
-> > 
-> > At least ELFv2 ABI is correct.  "ELF ABI v2" is not.
-> > 
-> >> I can go through and change all my stuff and config options to ELF_ABI_v2.
-> > 
-> > Please don't.  It is wrong.
-> 
-> Then I'm not sure what the point of your previous mail was, what did I 
-> miss?
+Remove them.
 
-I asked if you could make it clearer to people who do not know what this
-is whether they want to use it.  Or that was my intention, anyhow :-/
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/asm-offsets.c | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-> > Both the original PowerPC ELF ABI and the
-> > ELFv2 one have versions themselves.  Also, the base ELF standard has a
-> > version, and is set up so there can be incompatible versions even!  Of
-> > course it still is version 1 to this day, but :-)
-> 
-> The point was for people who don't know ELFv2 has a specific meaning for 
-> powerpc,
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index 28af4efb4587..419ab4a89114 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -197,7 +197,6 @@ int main(void)
+ 	OFFSET(ICACHEL1LOGBLOCKSIZE, ppc64_caches, l1i.log_block_size);
+ 	OFFSET(ICACHEL1BLOCKSPERPAGE, ppc64_caches, l1i.blocks_per_page);
+ 	/* paca */
+-	DEFINE(PACA_SIZE, sizeof(struct paca_struct));
+ 	OFFSET(PACAPACAINDEX, paca_struct, paca_index);
+ 	OFFSET(PACAPROCSTART, paca_struct, cpu_start);
+ 	OFFSET(PACAKSAVE, paca_struct, kstack);
+@@ -212,15 +211,6 @@ int main(void)
+ 	OFFSET(PACAIRQSOFTMASK, paca_struct, irq_soft_mask);
+ 	OFFSET(PACAIRQHAPPENED, paca_struct, irq_happened);
+ 	OFFSET(PACA_FTRACE_ENABLED, paca_struct, ftrace_enabled);
+-#ifdef CONFIG_PPC_BOOK3S
+-	OFFSET(PACACONTEXTID, paca_struct, mm_ctx_id);
+-#ifdef CONFIG_PPC_MM_SLICES
+-	OFFSET(PACALOWSLICESPSIZE, paca_struct, mm_ctx_low_slices_psize);
+-	OFFSET(PACAHIGHSLICEPSIZE, paca_struct, mm_ctx_high_slices_psize);
+-	OFFSET(PACA_SLB_ADDR_LIMIT, paca_struct, mm_ctx_slb_addr_limit);
+-	DEFINE(MMUPSIZEDEFSIZE, sizeof(struct mmu_psize_def));
+-#endif /* CONFIG_PPC_MM_SLICES */
+-#endif
+ 
+ #ifdef CONFIG_PPC_BOOK3E
+ 	OFFSET(PACAPGD, paca_struct, pgd);
+@@ -241,21 +231,9 @@ int main(void)
+ #endif /* CONFIG_PPC_BOOK3E */
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
+-	OFFSET(PACASLBCACHE, paca_struct, slb_cache);
+-	OFFSET(PACASLBCACHEPTR, paca_struct, slb_cache_ptr);
+-	OFFSET(PACASTABRR, paca_struct, stab_rr);
+-	OFFSET(PACAVMALLOCSLLP, paca_struct, vmalloc_sllp);
+-#ifdef CONFIG_PPC_MM_SLICES
+-	OFFSET(MMUPSIZESLLP, mmu_psize_def, sllp);
+-#else
+-	OFFSET(PACACONTEXTSLLP, paca_struct, mm_ctx_sllp);
+-#endif /* CONFIG_PPC_MM_SLICES */
+ 	OFFSET(PACA_EXGEN, paca_struct, exgen);
+ 	OFFSET(PACA_EXMC, paca_struct, exmc);
+ 	OFFSET(PACA_EXNMI, paca_struct, exnmi);
+-#ifdef CONFIG_PPC_PSERIES
+-	OFFSET(PACALPPACAPTR, paca_struct, lppaca_ptr);
+-#endif
+ 	OFFSET(PACA_SLBSHADOWPTR, paca_struct, slb_shadow_ptr);
+ 	OFFSET(SLBSHADOW_STACKVSID, slb_shadow, save_area[SLB_NUM_BOLTED - 1].vsid);
+ 	OFFSET(SLBSHADOW_STACKESID, slb_shadow, save_area[SLB_NUM_BOLTED - 1].esid);
+@@ -264,9 +242,7 @@ int main(void)
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+ 	OFFSET(PACA_PMCINUSE, paca_struct, pmcregs_in_use);
+ #endif
+-	OFFSET(LPPACA_DTLIDX, lppaca, dtl_idx);
+ 	OFFSET(LPPACA_YIELDCOUNT, lppaca, yield_count);
+-	OFFSET(PACA_DTL_RIDX, paca_struct, dtl_ridx);
+ #endif /* CONFIG_PPC_BOOK3S_64 */
+ 	OFFSET(PACAEMERGSP, paca_struct, emergency_sp);
+ #ifdef CONFIG_PPC_BOOK3S_64
+-- 
+2.25.0
 
-It does not have *any* meaning outside of Power.  But people who do not
-know what it is can assume the wrong things about it.  It isn't a great
-name because of that :-(
-
-(It's not as bad as the MIPS ABIs -- an older one is called "new" :-) )
-
-> then ELF ABIv2 is more explanatory about it being an abi change
-> rather than base elf change, even if it's not the "correct" name.
-
-I very much disagree.  "ELF ABIv2" is completely meaningless.
-
-> If you don't want that then good, I also prefer to just use ELFv2. I 
-
-Good :-)
-
-> think people who change this option can easily look up the name in 
-> toolchain and other docs.
-
-Yeah.  As long as the defaults are good, whoever blows themselves up has
-only themselves to blame :-P
-
-
-Segher
