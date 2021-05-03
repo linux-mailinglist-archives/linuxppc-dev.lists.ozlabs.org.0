@@ -1,67 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A41371F79
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 20:21:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD14372131
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 22:18:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYrsT0XDjz30D7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 04:21:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=RsH1aj2S;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYvS02Gfzz30Gx
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 06:18:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::436;
- helo=mail-wr1-x436.google.com; envelope-from=lijunp213@gmail.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=RsH1aj2S; dkim-atps=neutral
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com
- [IPv6:2a00:1450:4864:20::436])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYrrx49PJz2xg1
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 04:21:18 +1000 (AEST)
-Received: by mail-wr1-x436.google.com with SMTP id a4so6591051wrr.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 11:21:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=JH9uEbFZLY261RSwVYxFlsQtuJncx5cqZ11oI51lAM0=;
- b=RsH1aj2SWOf7/OWs6Lj6sH6NuMbg63P1+KsTqkyzR1WEWHEMpxniHYsHrBMf4mwO0S
- aB0cEatMVEkWzFNyCiWSQGetrUetLHNO6RR/K3+JVfZYObmqUE0BBEYnsvCpzUbcHEDP
- eje01Z1hETfrHhLD/G8M3eclFKeJ5rQ5tULTYcAV309yYrdZRlj99WNZEmWETTs3J1oz
- yAKOGjFaRC+9HE9Avcs2txy1M7xdI2mNzzMFLNIYEZ9LjTbqasnlV4pfSTQd+s60nq3W
- HWoQV78p5AsqZ/dQ1L5u313GH94nBiWYZhIAAFX47FDAYShixu6AP6Jvxk9De89/SdY8
- NkEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=JH9uEbFZLY261RSwVYxFlsQtuJncx5cqZ11oI51lAM0=;
- b=ApdL4Q4TFsnVe7zqsIPQM8g5XzgnFvpixgP5rCnQrpsZ65diUTfkjOOborp7ufTzTX
- MihXIvrKffm6zFD4ECYr3kKZqmkhWoGGJceImYfeX8XdSCsfoN6SNhcILEES6hoi/gY9
- 9lSiCln2ec20jtjdcPB6zcsZcsu3iDfyg+xHFIkh1o3H7bqMn+P9CwoX6jrfsGorpaz5
- a0hgSQVD/2i+SnIaOchCCq329JNuike9OcnSXFO0bFMptN3G5LH4y9aJmt14UhOO1Mda
- K5ucokREr/BGnwnArIVf1PbTBNZoqe/2+r1bwa2IozqK+57THcLOlp0+WUWeUHT1MMwU
- Si0A==
-X-Gm-Message-State: AOAM533wTqCA2hUM4so1jDJWgcQLVvZJJ+KvDhzHH3m1xlBcVn+zT9RG
- 9d5omHeHBHxCwI3Xj3hLOIu2mgwGHtxPU6GG2gA=
-X-Google-Smtp-Source: ABdhPJz1nRQ6kJzh7PewOUUDY4/llzeUg1g/85JQFPFE81/cAxRnMCa9uKpEY5nUNYP8vftC4K6q38CMskJBbjTfX2U=
-X-Received: by 2002:adf:dc4f:: with SMTP id m15mr26720403wrj.420.1620066072241; 
- Mon, 03 May 2021 11:21:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYvRX37q1z2xZ9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 06:17:59 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 51D53AFD7;
+ Mon,  3 May 2021 20:17:54 +0000 (UTC)
+Date: Mon, 3 May 2021 22:17:52 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc/64: BE option to use ELFv2 ABI for big endian
+ kernels
+Message-ID: <20210503201752.GP6564@kitsune.suse.cz>
+References: <20200428112517.1402927-1-npiggin@gmail.com>
+ <20210502165757.GH6564@kitsune.suse.cz>
+ <1620003110.kzo64haq0d.astroid@bobo.none>
+ <20210503071116.GI6564@kitsune.suse.cz>
+ <20210503093425.GK6564@kitsune.suse.cz>
 MIME-Version: 1.0
-References: <20210503102323.17804-1-msuchanek@suse.de>
-In-Reply-To: <20210503102323.17804-1-msuchanek@suse.de>
-From: Lijun Pan <lijunp213@gmail.com>
-Date: Mon, 3 May 2021 13:21:00 -0500
-Message-ID: <CAOhMmr701LecfuNM+EozqbiTxFvDiXjFdY2aYeKJYaXq9kqVDg@mail.gmail.com>
-Subject: Re: [PATCH] ibmvnic: remove default label from to_string switch
-To: Michal Suchanek <msuchanek@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210503093425.GK6564@kitsune.suse.cz>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,70 +50,258 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Thomas Falcon <tlfalcon@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Dany Madden <drt@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>,
- Sukadev Bhattiprolu <sukadev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 3, 2021 at 5:54 AM Michal Suchanek <msuchanek@suse.de> wrote:
->
-> This way the compiler warns when a new value is added to the enum but
-> not the string transation like:
+On Mon, May 03, 2021 at 11:34:25AM +0200, Michal Suchánek wrote:
+> On Mon, May 03, 2021 at 09:11:16AM +0200, Michal Suchánek wrote:
+> > On Mon, May 03, 2021 at 10:58:33AM +1000, Nicholas Piggin wrote:
+> > > Excerpts from Michal Suchánek's message of May 3, 2021 2:57 am:
+> > > > On Tue, Apr 28, 2020 at 09:25:17PM +1000, Nicholas Piggin wrote:
+> > > >> Provide an option to use ELFv2 ABI for big endian builds. This works on
+> > > >> GCC and clang (since 2014). It is less well tested and supported by the
+> > > >> GNU toolchain, but it can give some useful advantages of the ELFv2 ABI
+> > > >> for BE (e.g., less stack usage). Some distros even build BE ELFv2
+> > > >> userspace.
+> > > > 
+> > > > Fixes BTFID failure on BE for me and the ELF ABIv2 kernel boots.
+> > > 
+> > > What's the BTFID failure? Anything we can do to fix it on the v1 ABI or 
+> > > at least make it depend on BUILD_ELF_V2?
+> > 
+> > Looks like symbols are prefixed with a dot in ABIv1 and BTFID tool is
+> > not aware of that. It can be disabled on ABIv1 easily.
+> > 
+> > Thanks
+> > 
+> > Michal
+> > 
+> > diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> > index 678c13967580..e703c26e9b80 100644
+> > --- a/lib/Kconfig.debug
+> > +++ b/lib/Kconfig.debug
+> > @@ -305,6 +305,7 @@ config DEBUG_INFO_BTF
+> >  	bool "Generate BTF typeinfo"
+> >  	depends on !DEBUG_INFO_SPLIT && !DEBUG_INFO_REDUCED
+> >  	depends on !GCC_PLUGIN_RANDSTRUCT || COMPILE_TEST
+> > +	depends on !PPC64 || BUILD_ELF_V2
+> >  	help
+> >  	  Generate deduplicated BTF type information from DWARF debug info.
+> >  	  Turning this on expects presence of pahole tool, which will convert
+> > 
+> > > 
+> > > > 
+> > > > Tested-by: Michal Suchánek <msuchanek@suse.de>
+> > > > 
+> > > > Also can we enable mprofile on BE now?
+> > > > 
+> > > > I don't see anything endian-specific in the mprofile code at a glance
+> > > > but don't have any idea how to test it.
+> > > 
+> > > AFAIK it's just a different ABI for the _mcount call so just running
+> > > some ftrace and ftrace with call graph should test it reasonably well.
+> 
+> It does not crash and burn but there are some regressions from LE to BE
+> on the ftrace kernel selftest:
+> 
+> --- ftraceLE.txt	2021-05-03 11:19:14.830000000 +0200
+> +++ ftraceBE.txt	2021-05-03 11:27:24.770000000 +0200
+> @@ -7,8 +7,8 @@
+>  [n] Change the ringbuffer size	[PASS]
+>  [n] Snapshot and tracing setting	[PASS]
+>  [n] trace_pipe and trace_marker	[PASS]
+> -[n] Test ftrace direct functions against tracers	[UNRESOLVED]
+> -[n] Test ftrace direct functions against kprobes	[UNRESOLVED]
+> +[n] Test ftrace direct functions against tracers	[FAIL]
+> +[n] Test ftrace direct functions against kprobes	[FAIL]
+>  [n] Generic dynamic event - add/remove kprobe events	[PASS]
+>  [n] Generic dynamic event - add/remove synthetic events	[PASS]
+>  [n] Generic dynamic event - selective clear (compatibility)	[PASS]
+> @@ -16,10 +16,10 @@
+>  [n] event tracing - enable/disable with event level files	[PASS]
+>  [n] event tracing - restricts events based on pid notrace filtering	[PASS]
+>  [n] event tracing - restricts events based on pid	[PASS]
+> -[n] event tracing - enable/disable with subsystem level files	[PASS]
+> +[n] event tracing - enable/disable with subsystem level files	[FAIL]
+>  [n] event tracing - enable/disable with top level files	[PASS]
+> -[n] Test trace_printk from module	[UNRESOLVED]
+> -[n] ftrace - function graph filters with stack tracer	[PASS]
+> +[n] Test trace_printk from module	[FAIL]
+> +[n] ftrace - function graph filters with stack tracer	[FAIL]
+>  [n] ftrace - function graph filters	[PASS]
+>  [n] ftrace - function trace with cpumask	[PASS]
+>  [n] ftrace - test for function event triggers	[PASS]
+> @@ -27,7 +27,7 @@
+>  [n] ftrace - function pid notrace filters	[PASS]
+>  [n] ftrace - function pid filters	[PASS]
+>  [n] ftrace - stacktrace filter command	[PASS]
+> -[n] ftrace - function trace on module	[UNRESOLVED]
+> +[n] ftrace - function trace on module	[FAIL]
+>  [n] ftrace - function profiler with function tracing	[PASS]
+>  [n] ftrace - function profiling	[PASS]
+>  [n] ftrace - test reading of set_ftrace_filter	[PASS]
+> @@ -44,10 +44,10 @@
+>  [n] Kprobe event argument syntax	[PASS]
+>  [n] Kprobe dynamic event with arguments	[PASS]
+>  [n] Kprobes event arguments with types	[PASS]
+> -[n] Kprobe event user-memory access	[UNSUPPORTED]
+> +[n] Kprobe event user-memory access	[FAIL]
+>  [n] Kprobe event auto/manual naming	[PASS]
+>  [n] Kprobe dynamic event with function tracer	[PASS]
+> -[n] Kprobe dynamic event - probing module	[UNRESOLVED]
+> +[n] Kprobe dynamic event - probing module	[FAIL]
+>  [n] Create/delete multiprobe on kprobe event	[PASS]
+>  [n] Kprobe event parser error log check	[PASS]
+>  [n] Kretprobe dynamic event with arguments	[PASS]
+> @@ -57,11 +57,11 @@
+>  [n] Kprobe events - probe points	[PASS]
+>  [n] Kprobe dynamic event - adding and removing	[PASS]
+>  [n] Uprobe event parser error log check	[PASS]
+> -[n] test for the preemptirqsoff tracer	[UNSUPPORTED]
+> -[n] Meta-selftest: Checkbashisms	[UNRESOLVED]
+> +[n] test for the preemptirqsoff tracer	[FAIL]
+> +[n] Meta-selftest: Checkbashisms	[FAIL]
+>  [n] Test wakeup RT tracer	[PASS]
+>  [n] Test wakeup tracer	[PASS]
+> -[n] event trigger - test inter-event histogram trigger expected fail actions	[XFAIL]
+> +[n] event trigger - test inter-event histogram trigger expected fail actions	[FAIL]
+>  [n] event trigger - test field variable support	[PASS]
+>  [n] event trigger - test inter-event combined histogram trigger	[PASS]
+>  [n] event trigger - test multiple actions on hist trigger	[PASS]
+> @@ -96,7 +96,8 @@
+>  [n] (instance)  event tracing - enable/disable with event level files	[PASS]
+>  [n] (instance)  event tracing - restricts events based on pid notrace filtering	[PASS]
+>  [n] (instance)  event tracing - restricts events based on pid	[PASS]
+> -[n] (instance)  event tracing - enable/disable with subsystem level files	[PASS]
+> +[n] (instance)  event tracing - enable/disable with subsystem level files	[FAIL]
+> +rmdir: failed to remove '/sys/kernel/tracing/instances/ftracetest.mceByV': Device or resource busy
+>  [n] (instance)  ftrace - test for function event triggers	[PASS]
+>  [n] (instance)  ftrace - function pid notrace filters	[PASS]
+>  [n] (instance)  ftrace - function pid filters	[PASS]
+> 
+> I needed to add a test timeout to get this far because
+> "event tracing - enable/disable with subsystem level files" gets stuck.
 
-s/transation/translation/
+There is some regression from mprofile on BE ABIv2
 
-This trick works.
-Since the original code does not generate gcc warnings/errors, should
-this patch be sent to net-next as an improvement?
+--- ftraceBEv2.txt	2021-05-03 18:11:01.100000000 +0200
++++ ftraceBE.mprofile.txt	2021-05-03 11:27:24.770000000 +0200
+@@ -19,7 +19,7 @@
+ [n] event tracing - enable/disable with subsystem level files	[FAIL]
+ [n] event tracing - enable/disable with top level files	[PASS]
+ [n] Test trace_printk from module	[FAIL]
+-[n] ftrace - function graph filters with stack tracer	[PASS]
++[n] ftrace - function graph filters with stack tracer	[FAIL]
+ [n] ftrace - function graph filters	[PASS]
+ [n] ftrace - function trace with cpumask	[PASS]
+ [n] ftrace - test for function event triggers	[PASS]
+@@ -31,7 +31,7 @@
+ [n] ftrace - function profiler with function tracing	[PASS]
+ [n] ftrace - function profiling	[PASS]
+ [n] ftrace - test reading of set_ftrace_filter	[PASS]
+-[n] ftrace - Max stack tracer	[PASS]
++[n] ftrace - Max stack tracer	[FAIL]
+ [n] ftrace - test for function traceon/off triggers	[PASS]
+ [n] ftrace - test tracing error log support	[PASS]
+ [n] Test creation and deletion of trace instances while setting an event	[PASS]
 
->
-> drivers/net/ethernet/ibm/ibmvnic.c: In function 'adapter_state_to_string':
-> drivers/net/ethernet/ibm/ibmvnic.c:832:2: warning: enumeration value 'VNIC_FOOBAR' not handled in switch [-Wswitch]
->   switch (state) {
->   ^~~~~~
-> drivers/net/ethernet/ibm/ibmvnic.c: In function 'reset_reason_to_string':
-> drivers/net/ethernet/ibm/ibmvnic.c:1935:2: warning: enumeration value 'VNIC_RESET_FOOBAR' not handled in switch [-Wswitch]
->   switch (reason) {
->   ^~~~~~
->
-> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> ---
+but generally the ftrace on BE is broken overall. The test
+"event tracing - enable/disable with subsystem level files" gets stuck
+and has to be killed by timeout. Running the testsuite twice the test
+"Basic test for tracers" locks up the machine regardless of using
+mprofile. The ABIV1 is even much worse with the exception of
+"(instance)  event tracing - enable/disable with subsystem level files"
+which regresses on BE ABIv2 in general.
 
-Acked-by: Lijun Pan <lijunp213@gmail.com>
+--- ftraceBEv1.txt	2021-05-03 22:09:10.690000000 +0200
++++ ftraceBEv2.txt	2021-05-03 18:11:01.100000000 +0200
+@@ -9,10 +9,10 @@
+ [n] trace_pipe and trace_marker	[PASS]
+ [n] Test ftrace direct functions against tracers	[FAIL]
+ [n] Test ftrace direct functions against kprobes	[FAIL]
+-[n] Generic dynamic event - add/remove kprobe events	[FAIL]
++[n] Generic dynamic event - add/remove kprobe events	[PASS]
+ [n] Generic dynamic event - add/remove synthetic events	[PASS]
+-[n] Generic dynamic event - selective clear (compatibility)	[FAIL]
+-[n] Generic dynamic event - generic clear event	[FAIL]
++[n] Generic dynamic event - selective clear (compatibility)	[PASS]
++[n] Generic dynamic event - generic clear event	[PASS]
+ [n] event tracing - enable/disable with event level files	[PASS]
+ [n] event tracing - restricts events based on pid notrace filtering	[PASS]
+ [n] event tracing - restricts events based on pid	[PASS]
+@@ -23,39 +23,39 @@
+ [n] ftrace - function graph filters	[PASS]
+ [n] ftrace - function trace with cpumask	[PASS]
+ [n] ftrace - test for function event triggers	[PASS]
+-[n] ftrace - function glob filters	[FAIL]
++[n] ftrace - function glob filters	[PASS]
+ [n] ftrace - function pid notrace filters	[PASS]
+ [n] ftrace - function pid filters	[PASS]
+ [n] ftrace - stacktrace filter command	[PASS]
+ [n] ftrace - function trace on module	[FAIL]
+ [n] ftrace - function profiler with function tracing	[PASS]
+ [n] ftrace - function profiling	[PASS]
+-[n] ftrace - test reading of set_ftrace_filter	[FAIL]
++[n] ftrace - test reading of set_ftrace_filter	[PASS]
+ [n] ftrace - Max stack tracer	[PASS]
+ [n] ftrace - test for function traceon/off triggers	[PASS]
+ [n] ftrace - test tracing error log support	[PASS]
+ [n] Test creation and deletion of trace instances while setting an event	[PASS]
+ [n] Test creation and deletion of trace instances	[PASS]
+-[n] Kprobe dynamic event - adding and removing	[FAIL]
+-[n] Kprobe dynamic event - busy event check	[FAIL]
+-[n] Kprobe dynamic event with arguments	[FAIL]
+-[n] Kprobe event with comm arguments	[FAIL]
+-[n] Kprobe event string type argument	[FAIL]
+-[n] Kprobe event symbol argument	[FAIL]
+-[n] Kprobe event argument syntax	[FAIL]
+-[n] Kprobes event arguments with types	[FAIL]
++[n] Kprobe dynamic event - adding and removing	[PASS]
++[n] Kprobe dynamic event - busy event check	[PASS]
++[n] Kprobe event with comm arguments	[PASS]
++[n] Kprobe event string type argument	[PASS]
++[n] Kprobe event symbol argument	[PASS]
++[n] Kprobe event argument syntax	[PASS]
++[n] Kprobe dynamic event with arguments	[PASS]
++[n] Kprobes event arguments with types	[PASS]
+ [n] Kprobe event user-memory access	[FAIL]
+ [n] Kprobe event auto/manual naming	[PASS]
+-[n] Kprobe dynamic event with function tracer	[FAIL]
++[n] Kprobe dynamic event with function tracer	[PASS]
+ [n] Kprobe dynamic event - probing module	[FAIL]
+-[n] Create/delete multiprobe on kprobe event	[FAIL]
+-[n] Kprobe event parser error log check	[FAIL]
+-[n] Kretprobe dynamic event with arguments	[FAIL]
+-[n] Kretprobe dynamic event with maxactive	[FAIL]
+-[n] Kretprobe %return suffix test	[FAIL]
+-[n] Register/unregister many kprobe events	[FAIL]
+-[n] Kprobe events - probe points	[FAIL]
+-[n] Kprobe dynamic event - adding and removing	[FAIL]
++[n] Create/delete multiprobe on kprobe event	[PASS]
++[n] Kprobe event parser error log check	[PASS]
++[n] Kretprobe dynamic event with arguments	[PASS]
++[n] Kretprobe dynamic event with maxactive	[PASS]
++[n] Kretprobe %return suffix test	[PASS]
++[n] Register/unregister many kprobe events	[PASS]
++[n] Kprobe events - probe points	[PASS]
++[n] Kprobe dynamic event - adding and removing	[PASS]
+ [n] Uprobe event parser error log check	[PASS]
+ [n] test for the preemptirqsoff tracer	[FAIL]
+ [n] Meta-selftest: Checkbashisms	[FAIL]
+@@ -96,7 +96,8 @@
+ [n] (instance)  event tracing - enable/disable with event level files	[PASS]
+ [n] (instance)  event tracing - restricts events based on pid notrace filtering	[PASS]
+ [n] (instance)  event tracing - restricts events based on pid	[PASS]
+-[n] (instance)  event tracing - enable/disable with subsystem level files	[PASS]
++[n] (instance)  event tracing - enable/disable with subsystem level files	[FAIL]
++rmdir: failed to remove '/sys/kernel/tracing/instances/ftracetest.lxCI5k': Device or resource busy
+ [n] (instance)  ftrace - test for function event triggers	[PASS]
+ [n] (instance)  ftrace - function pid notrace filters	[PASS]
+ [n] (instance)  ftrace - function pid filters	[PASS]
 
->  drivers/net/ethernet/ibm/ibmvnic.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-> index 5788bb956d73..4d439413f6d9 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> @@ -846,9 +846,8 @@ static const char *adapter_state_to_string(enum vnic_state state)
->                 return "REMOVING";
->         case VNIC_REMOVED:
->                 return "REMOVED";
-> -       default:
-> -               return "UNKNOWN";
->         }
-> +       return "UNKNOWN";
->  }
->
->  static int ibmvnic_login(struct net_device *netdev)
-> @@ -1946,9 +1945,8 @@ static const char *reset_reason_to_string(enum ibmvnic_reset_reason reason)
->                 return "TIMEOUT";
->         case VNIC_RESET_CHANGE_PARAM:
->                 return "CHANGE_PARAM";
-> -       default:
-> -               return "UNKNOWN";
->         }
-> +       return "UNKNOWN";
->  }
->
->  /*
-> --
-> 2.26.2
->
+
+Thanks
+
+Michal
