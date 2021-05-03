@@ -2,90 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6270371F0F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 19:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F7F371F19
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 20:02:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYrLp4rsdz30Cb
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 03:58:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYrQz1XF2z2yx3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 04:02:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WfFrYLw+;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=Zfc3rxRR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=WfFrYLw+; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYrLK3gRpz2xfn
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 03:58:16 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 143HXOEQ046168
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 May 2021 13:58:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Dh8ISY4foAHpF++DcYAUv7nUYOMZUtTXiz4lBWX8adM=;
- b=WfFrYLw+u1Crm+SNqtvsTZs+GI4UqObABcx1x7tywvx/VXHUC7zyt1SNbSewVIvU9Pxa
- J3UDTRHKOQmYydYtUyXl7hJjs1UvGKUIztx/lRyz0zGowAt/jo0miwwo2GOyc9tB35O7
- hoN2DpbisTxlXhpAXT33mHwBM7cDEjcu0TxZXN3a7TAypS2ceQc+jPTVFZIJVT0dlGa3
- ortFfAf0rQjFtSJch4EHgVSnFkntAhn8M9Ax3bmG1bpSeCUQkKJhcbAiq4XiPMN9M6B4
- S3S0yU4osBAB8+EgYF0V2Nl0twNh815fIE1aUNZUGiTmYfOwcWYfcIrUob/2GwpVpyb+ 5A== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38an8cs9ap-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 13:58:14 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 143HvSMv010200
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 May 2021 17:58:12 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma03wdc.us.ibm.com with ESMTP id 388xm9yt86-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 17:58:12 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 143HwCYb36110810
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 May 2021 17:58:12 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 13045136051
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 17:58:12 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D047D13604F
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 17:58:11 +0000 (GMT)
-Received: from localhost (unknown [9.211.126.236])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 17:58:11 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/rtas-rtc: remove unused constant
-Date: Mon,  3 May 2021 12:58:11 -0500
-Message-Id: <20210503175811.1528208-1-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.30.2
+ smtp.mailfrom=cisco.com (client-ip=173.37.142.88; helo=alln-iport-1.cisco.com;
+ envelope-from=danielwa@cisco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256
+ header.s=iport header.b=Zfc3rxRR; dkim-atps=neutral
+Received: from alln-iport-1.cisco.com (alln-iport-1.cisco.com [173.37.142.88])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYrQR42sQz2xZS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 04:01:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=cisco.com; i=@cisco.com; l=921; q=dns/txt; s=iport;
+ t=1620064911; x=1621274511;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=11OIbKeLQbrAmtYBHBv7IUPUzo44ctCWght7Qdc/mM4=;
+ b=Zfc3rxRRjf2lPjssubfSWfMS6FfIZM4sGAn5ZUzbv4/llk8gCBMB3/a+
+ oA5NEYX1WSNn7b9V3cyiZArkVd+wB31wmkMAy8NamxX18BnUdnH94Av5i
+ DbyG6q/nkHwGVQEeP0Ne1lHqFwPZVvnXPpi3XW23jcfZ8Q5LnqRRctj7S k=;
+X-IPAS-Result: =?us-ascii?q?A0ABAABeOZBgmIENJK1aGQEBAQEBAQEBAQEBAQEBAQEBA?=
+ =?us-ascii?q?RIBAQEBAQEBAQEBAQFAgUMEAQEBAQELAYMhVgE5MYxoiVGQG4pkgXwLAQEBD?=
+ =?us-ascii?q?QEBKAwEAQGBFgGCdT8DAgKBewIlNAkOAgQBAQEDAgMBAQEBAQUBAQECAQYEF?=
+ =?us-ascii?q?AEBAQEBAQEBaIVQDYZEAQEBAwEyAUYFCwsYLjwbBoMEAYJmIQ+oEniBNIEBg?=
+ =?us-ascii?q?1xBhA6BPgYUD4EXAY1fJxyBSUKENz6CYAECAYdWBIFlghoCgUySRI03nD6DG?=
+ =?us-ascii?q?oEom3Y3EKUSLbhiAgQGBQIWgVQ4gVszGggbFYMkUBkOjjiIa4VpIQMvAjYCB?=
+ =?us-ascii?q?goBAQMJjQ8BAQ?=
+IronPort-HdrOrdr: A9a23:yK4s+KrHpEuia7oOGiAk4nMaV5tRL9V00zAX/kB9WHVpW+aT/v
+ rAoN0w0xjohDENHFwhg8mHIqmcQXXanKQFhLU5F7GkQQXgpS+UN4lk94Tv2HnNHCf5++5b28
+ 5bAsxDIff3CkV3itu/3RmgH78bsbu62Y2hmOu29R1QZC5wbaUI1WpEIyadVnZ7XQxXQac+fa
+ DsgfZvgxqFVTApYt+gBn8DNtKzxOHjsJ79exYJC1oGxWC17A+A07LxHxiG0hp2aVomqosKym
+ TLnxf04a+uqZiAqiP07XPZ7JhdhbLapOdrOcrksKQoAwSpohq0YsBbV6eaujcurKWU9E8yi9
+ XXuX4bTqJOwkKUWH2pqh3w3ASl9zAi5xbZuCelqEqmh9DlTzQnDMcEv6ZlS1/y7kotu8wU6t
+ Mz416k
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="5.82,270,1613433600"; d="scan'208";a="686368801"
+Received: from alln-core-9.cisco.com ([173.36.13.129])
+ by alln-iport-1.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA;
+ 03 May 2021 18:01:44 +0000
+Received: from zorba ([10.24.21.191])
+ by alln-core-9.cisco.com (8.15.2/8.15.2) with ESMTPS id 143I1fkQ017898
+ (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Mon, 3 May 2021 18:01:43 GMT
+Date: Mon, 3 May 2021 11:01:41 -0700
+From: Daniel Walker <danielwa@cisco.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 1/3] lib: early_string: allow early usage of some string
+ functions
+Message-ID: <20210503180141.GO3844417@zorba>
+References: <20210430042217.1198052-1-danielwa@cisco.com>
+ <dc26a67e-dba0-1b8c-3718-3c75415c61f1@csgroup.eu>
+ <1929b3a8-f882-c930-4b99-10c6a8f127c7@csgroup.eu>
+ <e355ecc9-574a-dbcb-7864-5aa4974e1971@csgroup.eu>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: nSIj5V_cW2lic22Lx1zQRoE7KUcLYHnK
-X-Proofpoint-GUID: nSIj5V_cW2lic22Lx1zQRoE7KUcLYHnK
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-03_13:2021-05-03,
- 2021-05-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0
- clxscore=1015 mlxscore=0 phishscore=0 mlxlogscore=987 suspectscore=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2105030116
+In-Reply-To: <e355ecc9-574a-dbcb-7864-5aa4974e1971@csgroup.eu>
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+X-Outbound-SMTP-Client: 10.24.21.191, [10.24.21.191]
+X-Outbound-Node: alln-core-9.cisco.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,30 +84,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ xe-linux-external@cisco.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RTAS_CLOCK_BUSY is unused, remove it.
+On Sat, May 01, 2021 at 09:31:47AM +0200, Christophe Leroy wrote:
+> 
+> > In fact, should be like in prom_init today:
+> > 
+> > #ifdef __EARLY_STRING_ENABLED
+> >      if (dsize >= count)
+> >          return count;
+> > #else
+> >      BUG_ON(dsize >= count);
+> > #endif
+> 
+> Thinking about it once more, this BUG_ON() is overkill and should be
+> avoided, see https://www.kernel.org/doc/html/latest/process/deprecated.html
+> 
+> Therefore, something like the following would make it:
+> 
+> 	if (dsize >= count) {
+> 		WARN_ON(!__is_defined(__EARLY_STRING_ENABLED));
+> 
+> 		return count;
+> 	}
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
----
- arch/powerpc/kernel/rtas-rtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I agree, it's overkill it stop the system for this condition.
 
-diff --git a/arch/powerpc/kernel/rtas-rtc.c b/arch/powerpc/kernel/rtas-rtc.c
-index a28239b8b0c0..33c07c8af6c8 100644
---- a/arch/powerpc/kernel/rtas-rtc.c
-+++ b/arch/powerpc/kernel/rtas-rtc.c
-@@ -12,7 +12,7 @@
- 
- 
- #define MAX_RTC_WAIT 5000	/* 5 sec */
--#define RTAS_CLOCK_BUSY (-2)
-+
- time64_t __init rtas_get_boot_time(void)
- {
- 	int ret[8];
--- 
-2.30.2
+how about I do something more like this for my changes,
 
+
+> 	if (WARN_ON(dsize >= count && !__is_defined(__EARLY_STRING_ENABLED)))
+> 		return count;
+
+and for generic kernel,
+
+> 	if (WARN_ON(dsize >= count))
+> 		return count;
+
+
+
+Daniel
