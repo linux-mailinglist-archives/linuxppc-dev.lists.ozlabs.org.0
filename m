@@ -1,63 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AB33711A8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 08:32:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 183323711E0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 09:11:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYY7B5gqSz30FC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 16:32:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYZ0J0P56z30DR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 17:11:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYY6r4f7Pz2xb8
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 16:32:17 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FYY6k52ksz9sTQ;
- Mon,  3 May 2021 08:32:14 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 0Bss0bVgFYKE; Mon,  3 May 2021 08:32:14 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FYY6k41kMz9sSL;
- Mon,  3 May 2021 08:32:14 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 59FF98B775;
- Mon,  3 May 2021 08:32:14 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id heZpRwhL8hUI; Mon,  3 May 2021 08:32:14 +0200 (CEST)
-Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2450F8B763;
- Mon,  3 May 2021 08:32:14 +0200 (CEST)
-Subject: Re: [PATCH v11 3/9] powerpc: Always define MODULES_{VADDR,END}
-To: Jordan Niethe <jniethe5@gmail.com>
-References: <20210429031602.2606654-1-jniethe5@gmail.com>
- <20210429031602.2606654-4-jniethe5@gmail.com>
- <111c8736-fff9-ba0a-4749-f9388b32c9bf@csgroup.eu>
- <CACzsE9q1QoSMVZD7yoE=3pHaRc-i14X2++ewFbBxSeZn-2u78A@mail.gmail.com>
- <6fa81d25-4313-5f15-23d9-06b314bb7d02@csgroup.eu>
- <CACzsE9r-FBSo9F79cKj9c3gE7g821AhoLsRPWwd=7eFm+gMpTw@mail.gmail.com>
- <e3997b2b-cc39-e4c7-4c8b-2d004333d26a@csgroup.eu>
- <CACzsE9rWVepY7v0ZFA=yG7-u5JSS=nUDDebHgVXL6Xu-BBPM+A@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <426ad3d8-a71b-5fc5-e936-0908ed923838@csgroup.eu>
-Date: Mon, 3 May 2021 08:32:13 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYYzt1Zmzz2xff
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 17:11:21 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id D0818B048;
+ Mon,  3 May 2021 07:11:17 +0000 (UTC)
+Date: Mon, 3 May 2021 09:11:16 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc/64: BE option to use ELFv2 ABI for big endian
+ kernels
+Message-ID: <20210503071116.GI6564@kitsune.suse.cz>
+References: <20200428112517.1402927-1-npiggin@gmail.com>
+ <20210502165757.GH6564@kitsune.suse.cz>
+ <1620003110.kzo64haq0d.astroid@bobo.none>
 MIME-Version: 1.0
-In-Reply-To: <CACzsE9rWVepY7v0ZFA=yG7-u5JSS=nUDDebHgVXL6Xu-BBPM+A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <1620003110.kzo64haq0d.astroid@bobo.none>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,100 +48,262 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, cmr@codefail.de,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, naveen.n.rao@linux.ibm.com,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, May 03, 2021 at 10:58:33AM +1000, Nicholas Piggin wrote:
+> Excerpts from Michal Such�nek's message of May 3, 2021 2:57 am:
+> > On Tue, Apr 28, 2020 at 09:25:17PM +1000, Nicholas Piggin wrote:
+> >> Provide an option to use ELFv2 ABI for big endian builds. This works on
+> >> GCC and clang (since 2014). It is less well tested and supported by the
+> >> GNU toolchain, but it can give some useful advantages of the ELFv2 ABI
+> >> for BE (e.g., less stack usage). Some distros even build BE ELFv2
+> >> userspace.
+> > 
+> > Fixes BTFID failure on BE for me and the ELF ABIv2 kernel boots.
+> 
+> What's the BTFID failure? Anything we can do to fix it on the v1 ABI or 
+> at least make it depend on BUILD_ELF_V2?
 
+Looks like symbols are prefixed with a dot in ABIv1 and BTFID tool is
+not aware of that. It can be disabled on ABIv1 easily.
 
-Le 03/05/2021 à 08:26, Jordan Niethe a écrit :
-> On Mon, May 3, 2021 at 4:22 PM Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->>
->>
->>
->> Le 03/05/2021 à 08:16, Jordan Niethe a écrit :
->>> On Mon, May 3, 2021 at 3:57 PM Christophe Leroy
->>> <christophe.leroy@csgroup.eu> wrote:
->>>>
->>>>
->>>>
->>>> Le 03/05/2021 à 07:39, Jordan Niethe a écrit :
->>>>> On Thu, Apr 29, 2021 at 3:04 PM Christophe Leroy
->>>>> <christophe.leroy@csgroup.eu> wrote:
->>>>>>
->>>>>>
->>>>>>
->>>>>> Le 29/04/2021 à 05:15, Jordan Niethe a écrit :
->>>>>>> If MODULES_{VADDR,END} are not defined set them to VMALLOC_START and
->>>>>>> VMALLOC_END respectively. This reduces the need for special cases. For
->>>>>>> example, powerpc's module_alloc() was previously predicated on
->>>>>>> MODULES_VADDR being defined but now is unconditionally defined.
->>>>>>>
->>>>>>> This will be useful reducing conditional code in other places that need
->>>>>>> to allocate from the module region (i.e., kprobes).
->>>>>>>
->>>>>>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
->>>>>>> ---
->>>>>>> v10: New to series
->>>>>>> v11: - Consider more places MODULES_VADDR was being used
->>>>>>> ---
->>>>>>>      arch/powerpc/include/asm/pgtable.h    | 11 +++++++++++
->>>>>>>      arch/powerpc/kernel/module.c          |  5 +----
->>>>>>>      arch/powerpc/mm/kasan/kasan_init_32.c | 10 +++++-----
->>>>>>>      arch/powerpc/mm/ptdump/ptdump.c       |  4 ++--
->>>>>>>      4 files changed, 19 insertions(+), 11 deletions(-)
->>>>>>>
->>>>>>> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
->>>>>>> index c6a676714f04..882fda779648 100644
->>>>>>> --- a/arch/powerpc/include/asm/pgtable.h
->>>>>>> +++ b/arch/powerpc/include/asm/pgtable.h
->>>>>>> @@ -39,6 +39,17 @@ struct mm_struct;
->>>>>>>      #define __S110      PAGE_SHARED_X
->>>>>>>      #define __S111      PAGE_SHARED_X
->>>>>>>
->>>>>>> +#ifndef MODULES_VADDR
->>>>>>> +#define MODULES_VADDR VMALLOC_START
->>>>>>> +#define MODULES_END VMALLOC_END
->>>>>>> +#endif
->>>>>>> +
->>>>>>> +#if defined(CONFIG_PPC_BOOK3S_32) && defined(CONFIG_STRICT_KERNEL_RWX)
->>>>>>
->>>>>> No no.
->>>>>>
->>>>>> TASK_SIZE > MODULES_VADDR is ALWAYS wrong, for any target, in any configuration.
->>>>>>
->>>>>> Why is it a problem to leave the test as a BUILD_BUG_ON() in module_alloc() ?
->>>>> On ppc64s, MODULES_VADDR is __vmalloc_start (a variable)  and
->>>>> TASK_SIZE depends on current.
->>>>> Also for nohash like 44x, MODULES_VADDR is defined based on high_memory.
->>>>> If I put it back in module_alloc() and wrap it with #ifdef
->>>>> CONFIG_PPC_BOOK3S_32 will that be fine?
->>>>
->>>> Thinking about it once more, I think the best approach is the one taken by Nick in
->>>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210502110050.324953-1-npiggin@gmail.com/
->>>>
->>>> Use MODULES_VADDR/MODULES_END when it exists, use VMALLOC_START/VMALLOC_END otherwise.
->>>>
->>>> I know I suggested to always define MODULES_VADDR, but maybe that's not the best solution at the end.
->>> Sure, let's do it like that.
->>>>
->>>> For kprobes, is there a way to re-use functions from modules.c in alloc_insn_page() ?
->>> Probably we can use module_alloc() then the set_memory_ functions to
->>> get the permissions right.
->>> Something like we had in v9:
->>> https://lore.kernel.org/linuxppc-dev/20210316031741.1004850-3-jniethe5@gmail.com/
->>
->> Yes, more or less, but using module_alloc() instead of vmalloc().
->> And module_alloc() implies EXEC, so only the set_memory_ro() will be required.
-> Yep.
->>
->> I see no point in doing any set_memory_xxx() in free_insn_page(), because as soon as you do a
->> vfree() the page is not mapped anymore so any access will lead to a fault.
-> Yeah, I'd not realised we had VM_FLUSH_RESET_PERMS when I added that.
-> I agree it's pointless.
+Thanks
 
-At the end if should be quite similar to what S390 architecture does.
+Michal
+
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 678c13967580..e703c26e9b80 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -305,6 +305,7 @@ config DEBUG_INFO_BTF
+ 	bool "Generate BTF typeinfo"
+ 	depends on !DEBUG_INFO_SPLIT && !DEBUG_INFO_REDUCED
+ 	depends on !GCC_PLUGIN_RANDSTRUCT || COMPILE_TEST
++	depends on !PPC64 || BUILD_ELF_V2
+ 	help
+ 	  Generate deduplicated BTF type information from DWARF debug info.
+ 	  Turning this on expects presence of pahole tool, which will convert
+
+> 
+> > 
+> > Tested-by: Michal Such�nek <msuchanek@suse.de>
+> > 
+> > Also can we enable mprofile on BE now?
+> > 
+> > I don't see anything endian-specific in the mprofile code at a glance
+> > but don't have any idea how to test it.
+> 
+> AFAIK it's just a different ABI for the _mcount call so just running
+> some ftrace and ftrace with call graph should test it reasonably well.
+> 
+> > 
+> > Thanks
+> > 
+> > Michal
+> > 
+> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > index 6a4ad11f6349..75b3afbfc378 100644
+> > --- a/arch/powerpc/Kconfig
+> > +++ b/arch/powerpc/Kconfig
+> > @@ -495,7 +495,7 @@ config LD_HEAD_STUB_CATCH
+> >  	  If unsure, say "N".
+> >  
+> >  config MPROFILE_KERNEL
+> > -	depends on PPC64 && CPU_LITTLE_ENDIAN && FUNCTION_TRACER
+> > +	depends on PPC64 && BUILD_ELF_V2 && FUNCTION_TRACER
+> >  	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-mprofile-kernel.sh $(CC) -I$(srctree)/include -D__KERNEL__)
+> 
+> Good idea. I can't remember if I did a grep for LITTLE_ENDIAN to check 
+> for other such opportunities.
+> 
+> Thanks,
+> Nick
+> 
+> >  
+> >  config HOTPLUG_CPU
+> >> 
+> >> Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+> >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> >> ---
+> >> Since v1:
+> >> - Improved the override flavour name suggested by Segher.
+> >> - Improved changelog wording.
+> >> 
+> >> 
+> >>  arch/powerpc/Kconfig            | 19 +++++++++++++++++++
+> >>  arch/powerpc/Makefile           | 15 ++++++++++-----
+> >>  arch/powerpc/boot/Makefile      |  4 ++++
+> >>  drivers/crypto/vmx/Makefile     |  8 ++++++--
+> >>  drivers/crypto/vmx/ppc-xlate.pl | 10 ++++++----
+> >>  5 files changed, 45 insertions(+), 11 deletions(-)
+> >> 
+> >> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> >> index 924c541a9260..d9d2abc06c2c 100644
+> >> --- a/arch/powerpc/Kconfig
+> >> +++ b/arch/powerpc/Kconfig
+> >> @@ -147,6 +147,7 @@ config PPC
+> >>  	select ARCH_WEAK_RELEASE_ACQUIRE
+> >>  	select BINFMT_ELF
+> >>  	select BUILDTIME_TABLE_SORT
+> >> +	select BUILD_ELF_V2			if PPC64 && CPU_LITTLE_ENDIAN
+> >>  	select CLONE_BACKWARDS
+> >>  	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
+> >>  	select DYNAMIC_FTRACE			if FUNCTION_TRACER
+> >> @@ -541,6 +542,24 @@ config KEXEC_FILE
+> >>  config ARCH_HAS_KEXEC_PURGATORY
+> >>  	def_bool KEXEC_FILE
+> >>  
+> >> +config BUILD_ELF_V2
+> >> +	bool
+> >> +
+> >> +config BUILD_BIG_ENDIAN_ELF_V2
+> >> +	bool "Build big-endian kernel using ELFv2 ABI (EXPERIMENTAL)"
+> >> +	depends on PPC64 && CPU_BIG_ENDIAN && EXPERT
+> >> +	default n
+> >> +	select BUILD_ELF_V2
+> >> +	help
+> >> +	  This builds the kernel image using the ELFv2 ABI, which has a
+> >> +	  reduced stack overhead and faster function calls. This does not
+> >> +	  affect the userspace ABIs.
+> >> +
+> >> +	  ELFv2 is the standard ABI for little-endian, but for big-endian
+> >> +	  this is an experimental option that is less tested (kernel and
+> >> +	  toolchain). This requires gcc 4.9 or newer and binutils 2.24 or
+> >> +	  newer.
+> >> +
+> >>  config RELOCATABLE
+> >>  	bool "Build a relocatable kernel"
+> >>  	depends on PPC64 || (FLATMEM && (44x || FSL_BOOKE))
+> >> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> >> index f310c32e88a4..e306b39d847e 100644
+> >> --- a/arch/powerpc/Makefile
+> >> +++ b/arch/powerpc/Makefile
+> >> @@ -92,10 +92,14 @@ endif
+> >>  
+> >>  ifdef CONFIG_PPC64
+> >>  ifndef CONFIG_CC_IS_CLANG
+> >> -cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
+> >> -cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mcall-aixdesc)
+> >> -aflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
+> >> -aflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -mabi=elfv2
+> >> +ifdef CONFIG_BUILD_ELF_V2
+> >> +cflags-y				+= $(call cc-option,-mabi=elfv2,$(call cc-option,-mcall-aixdesc))
+> >> +aflags-y				+= $(call cc-option,-mabi=elfv2)
+> >> +else
+> >> +cflags-y				+= $(call cc-option,-mabi=elfv1)
+> >> +cflags-y				+= $(call cc-option,-mcall-aixdesc)
+> >> +aflags-y				+= $(call cc-option,-mabi=elfv1)
+> >> +endif
+> >>  endif
+> >>  endif
+> >>  
+> >> @@ -144,7 +148,7 @@ endif
+> >>  
+> >>  CFLAGS-$(CONFIG_PPC64)	:= $(call cc-option,-mtraceback=no)
+> >>  ifndef CONFIG_CC_IS_CLANG
+> >> -ifdef CONFIG_CPU_LITTLE_ENDIAN
+> >> +ifdef CONFIG_BUILD_ELF_V2
+> >>  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2,$(call cc-option,-mcall-aixdesc))
+> >>  AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2)
+> >>  else
+> >> @@ -153,6 +157,7 @@ CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcall-aixdesc)
+> >>  AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
+> >>  endif
+> >>  endif
+> >> +
+> >>  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcmodel=medium,$(call cc-option,-mminimal-toc))
+> >>  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mno-pointers-to-nested-functions)
+> >>  
+> >> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+> >> index c53a1b8bba8b..03942d08695d 100644
+> >> --- a/arch/powerpc/boot/Makefile
+> >> +++ b/arch/powerpc/boot/Makefile
+> >> @@ -41,6 +41,10 @@ endif
+> >>  
+> >>  BOOTCFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
+> >>  
+> >> +ifdef CONFIG_BUILD_ELF_V2
+> >> +BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
+> >> +endif
+> >> +
+> >>  ifdef CONFIG_CPU_BIG_ENDIAN
+> >>  BOOTCFLAGS	+= -mbig-endian
+> >>  else
+> >> diff --git a/drivers/crypto/vmx/Makefile b/drivers/crypto/vmx/Makefile
+> >> index 709670d2b553..9aea34602beb 100644
+> >> --- a/drivers/crypto/vmx/Makefile
+> >> +++ b/drivers/crypto/vmx/Makefile
+> >> @@ -5,18 +5,22 @@ vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes
+> >>  ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
+> >>  override flavour := linux-ppc64le
+> >>  else
+> >> +ifdef CONFIG_BUILD_ELF_V2
+> >> +override flavour := linux-ppc64-elfv2
+> >> +else
+> >>  override flavour := linux-ppc64
+> >>  endif
+> >> +endif
+> >>  
+> >>  quiet_cmd_perl = PERL $@
+> >>        cmd_perl = $(PERL) $(<) $(flavour) > $(@)
+> >>  
+> >>  targets += aesp8-ppc.S ghashp8-ppc.S
+> >>  
+> >> -$(obj)/aesp8-ppc.S: $(src)/aesp8-ppc.pl FORCE
+> >> +$(obj)/aesp8-ppc.S: $(src)/aesp8-ppc.pl $(src)/ppc-xlate.pl FORCE
+> >>  	$(call if_changed,perl)
+> >>    
+> >> -$(obj)/ghashp8-ppc.S: $(src)/ghashp8-ppc.pl FORCE
+> >> +$(obj)/ghashp8-ppc.S: $(src)/ghashp8-ppc.pl $(src)/ppc-xlate.pl FORCE
+> >>  	$(call if_changed,perl)
+> >>  
+> >>  clean-files := aesp8-ppc.S ghashp8-ppc.S
+> >> diff --git a/drivers/crypto/vmx/ppc-xlate.pl b/drivers/crypto/vmx/ppc-xlate.pl
+> >> index 36db2ef09e5b..9db0937d318b 100644
+> >> --- a/drivers/crypto/vmx/ppc-xlate.pl
+> >> +++ b/drivers/crypto/vmx/ppc-xlate.pl
+> >> @@ -9,6 +9,8 @@ open STDOUT,">$output" || die "can't open $output: $!";
+> >>  
+> >>  my %GLOBALS;
+> >>  my $dotinlocallabels=($flavour=~/linux/)?1:0;
+> >> +my $abielfv2=(($flavour =~ /linux-ppc64le/) or ($flavour =~ /linux-ppc64-elfv2/))?1:0;
+> >> +my $dotfunctions=($abielfv2=~1)?0:1;
+> >>  
+> >>  ################################################################
+> >>  # directives which need special treatment on different platforms
+> >> @@ -40,7 +42,7 @@ my $globl = sub {
+> >>  };
+> >>  my $text = sub {
+> >>      my $ret = ($flavour =~ /aix/) ? ".csect\t.text[PR],7" : ".text";
+> >> -    $ret = ".abiversion	2\n".$ret	if ($flavour =~ /linux.*64le/);
+> >> +    $ret = ".abiversion	2\n".$ret	if ($abielfv2);
+> >>      $ret;
+> >>  };
+> >>  my $machine = sub {
+> >> @@ -56,8 +58,8 @@ my $size = sub {
+> >>      if ($flavour =~ /linux/)
+> >>      {	shift;
+> >>  	my $name = shift; $name =~ s|^[\.\_]||;
+> >> -	my $ret  = ".size	$name,.-".($flavour=~/64$/?".":"").$name;
+> >> -	$ret .= "\n.size	.$name,.-.$name" if ($flavour=~/64$/);
+> >> +	my $ret  = ".size	$name,.-".($dotfunctions?".":"").$name;
+> >> +	$ret .= "\n.size	.$name,.-.$name" if ($dotfunctions);
+> >>  	$ret;
+> >>      }
+> >>      else
+> >> @@ -142,7 +144,7 @@ my $vmr = sub {
+> >>  
+> >>  # Some ABIs specify vrsave, special-purpose register #256, as reserved
+> >>  # for system use.
+> >> -my $no_vrsave = ($flavour =~ /linux-ppc64le/);
+> >> +my $no_vrsave = ($abielfv2);
+> >>  my $mtspr = sub {
+> >>      my ($f,$idx,$ra) = @_;
+> >>      if ($idx == 256 && $no_vrsave) {
+> >> -- 
+> >> 2.23.0
+> >> 
+> > 
