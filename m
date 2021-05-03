@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7743713F9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 13:08:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E9C371423
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 13:17:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYgDt1dbqz30Cw
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 21:07:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYgS72RJgz30CC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 21:17:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=foDl80rg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=kRaQqUes;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f;
+ helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=foDl80rg; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
+ header.s=20161025 header.b=kRaQqUes; dkim-atps=neutral
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
+ [IPv6:2607:f8b0:4864:20::62f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYgDL3Fs8z2yR2
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 21:07:28 +1000 (AEST)
-Received: by mail-pj1-x1032.google.com with SMTP id
- b14-20020a17090a6e0eb0290155c7f6a356so8499370pjk.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 04:07:27 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYgRg5pWkz2xZB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 21:17:17 +1000 (AEST)
+Received: by mail-pl1-x62f.google.com with SMTP id b21so2624692plz.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 04:17:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=3PieYteKgTvP+y7sXZgVYVDsys920lEg3Xf/Z7N/Bfc=;
- b=foDl80rg64FhIfF8G/4OPEMVU0P4sr6g8N2JocWYqJOgJXnMUquLRH36XB2jSkT+Ag
- MvWHPQxIg5IJi5NOKnAg1XpbgvgtCDOIdMhSkHFv3H7Z7O4iFRzEFTb3EXuebHsKmdVB
- djKGyT2y7lpB2k9mg45+aj21xZZAXHGJeiR7faXKRB0PKid9l8DAQ6tscSmJMJ8gpy3U
- SozbsAO5xTwG5Ejn+nWPetG103+hwzRdnaDyDyZLbmiiPjp5K8E59FbniVsh63do7RE7
- 9DFLW25lpPYXlY/e/8/MD4j1Nidd9TSoZDNSKSkdi9V5UB0LJnqtcZIqxSRRpZx6S0uk
- Y1FQ==
+ bh=krG94cuP8AG+F9dfZcu8mi+I3MLc9hSlR5ZOi1BEiJI=;
+ b=kRaQqUesvByNZitXZjVqyJT6D23vyTAI9uklfx2UJrHZ70hhFDwkwho9G+9BT59sTG
+ DTJY8Hhq4I+e7D4KnbqRozSlTtJaihcqif3IPwuUDY2V5+YOje98Nt60KPcRkAdt+Q4o
+ 1OI4PvNsRR8nTvdbmh3doV39W2AlXPI8CIZid8QgGpsZzTTor4IpHTs4pt460N5su+DZ
+ ts6qrAP3w4LiVd6hBdcHfOR0cn5LFAAZOa0cewDJ3qnp+jz/qedlo5l8AGnxr8XppbAs
+ t5FIg2GcAvAqz89lLwZR28Ffp916jOFEXwtSuYUH+YEOrfUQvmq7sxDVoriO+eCqfIr+
+ KTpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=3PieYteKgTvP+y7sXZgVYVDsys920lEg3Xf/Z7N/Bfc=;
- b=kEZ7XcZK5DGZQJOPq/yllpp1uLrsQq+KtcCHAUJBXzQjB1j6AZCoiRavWZtaVrhIGy
- 1YAQYxGUTIA1E3CbeMv3ahA/SqCoBSOrGXq/vr10GeP5nZI4Axpw3W8ADepwtobP3w06
- hP0wtj42EFMMmJoJPwlYw/dR+t2X279n6OCK2YMXxBEWjxyTfjrB233P1mEsuZ/VvwQA
- LV4honFgPxscz5i9i6EEeqleBzLOKXiJ9l908dm6VzqiQqSH8oiN039EzoqIlkAExkh0
- n0tsein5M/ljfHEN0kzI8eUnQx276eYs2XPaKzXIxvrbb1Xv1dDXREXizU0kgE52W8gh
- if6A==
-X-Gm-Message-State: AOAM531Br1m9P5Oqd9iSePnDlaY+qr1M84dXts6JpgJsFla631QSSVhU
- VtpwuayGtDaxM6JCAdELQ0E9USuWcKg=
-X-Google-Smtp-Source: ABdhPJwBVppWj5l1luf9nmlOqJjyX+ynvrKFL8KtrasHv91JuPkh0y83LgPGwm+ijV074PusokRpjw==
-X-Received: by 2002:a17:902:7603:b029:ec:f560:7d66 with SMTP id
- k3-20020a1709027603b02900ecf5607d66mr20001275pll.39.1620040043721; 
- Mon, 03 May 2021 04:07:23 -0700 (PDT)
+ bh=krG94cuP8AG+F9dfZcu8mi+I3MLc9hSlR5ZOi1BEiJI=;
+ b=IerUgjXMI4Y9FICqqxmyiUky6O81swbNin1MbJ2BrhCiYNh+3AuVPGd+Bj6/Z0+mUJ
+ sRQ+BJzu0jlpq37DyW9AFR/lHoSfinn/pEP52R3mSOT/gecID4fNOX1IQbUr9OBnI0EU
+ pe4jUsnfKScKacTD1CHth8IH1rKy4Jk6uC6NoC6ZbTOB3+kDLrMNQXgvW2ijWCkKcXaY
+ X0EWdqAMZxETALkFbsbUCKVnj0SKcBi7uZWsuCAtqoBWraf0o8bIOe60bhrfn5byqzFA
+ D589Lwn1Ybne/D/8LZn3ALWrA6YcDM4wudPcoF8udyQIKd2hDbbHYnbyc0f+YsPUpvpD
+ T1Cw==
+X-Gm-Message-State: AOAM530rDXvFTfwBLq0BNRSBduRBIgUh35Or7kY4zkqtsPlxOg2gJ0Dk
+ AXJNLJYoT3r3ufkfSiN5RkFkHw+2BpI=
+X-Google-Smtp-Source: ABdhPJwVY5aj6c4dqUv/k7RXB0vxWsjm72vkSoXN66dAV9aFmKC/q5Vg2bijP+nKs7vjkgEoL/XqOg==
+X-Received: by 2002:a17:90a:9203:: with SMTP id
+ m3mr10893542pjo.21.1620040634214; 
+ Mon, 03 May 2021 04:17:14 -0700 (PDT)
 Received: from bobo.ibm.com ([61.68.127.20])
- by smtp.gmail.com with ESMTPSA id t11sm8997308pji.54.2021.05.03.04.07.20
+ by smtp.gmail.com with ESMTPSA id a7sm5350379pfo.211.2021.05.03.04.17.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 May 2021 04:07:23 -0700 (PDT)
+ Mon, 03 May 2021 04:17:13 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc/64: Option to use ELFv2 ABI for big-endian kernels
-Date: Mon,  3 May 2021 21:07:13 +1000
-Message-Id: <20210503110713.751840-1-npiggin@gmail.com>
+Subject: [PATCH] powerpc/64s: Make NMI record implicitly soft-masked code as
+ irqs disabled
+Date: Mon,  3 May 2021 21:17:08 +1000
+Message-Id: <20210503111708.758261-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -80,248 +80,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Provide an option to build big-endian kernels using the ELFv2 ABI. This
-works on GCC only so far, although it is rumored to work with clang
-that's not been tested yet.
+scv support introduced the notion of code that implicitly soft-masks
+irqs due to the instruction addresses. This is required because scv
+enters the kernel with MSR[EE]=1.
 
-This can give big-endian kernels some useful advantages of the ELFv2 ABI
-(e.g., less stack usage, -mprofile-kernel, better compatibility with bpf
-tools).
+If a NMI (including soft-NMI) interrupt hits when we are implicitly
+soft-masked then its regs->softe does not reflect this because it is
+derived from the explicit soft mask state (paca->irq_soft_mask). This
+makes arch_irq_disabled_regs(regs) return false.
 
-BE+ELFv2 is not officially supported by the GNU toolchain, but it works
-fine in testing and has been used by some userspace for some time (e.g.,
-Void Linux).
+This can trigger a warning in the soft-NMI watchdog code (shown below).
+Fix it by having NMI interrupts set regs->softe to disabled in case of
+interrupting an implicit soft-masked region.
 
-Tested-by: Michal Suchánek <msuchanek@suse.de>
-Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+  ------------[ cut here ]------------
+  WARNING: CPU: 41 PID: 1103 at arch/powerpc/kernel/watchdog.c:259 soft_nmi_interrupt+0x3e4/0x5f0
+  CPU: 41 PID: 1103 Comm: (spawn) Not tainted
+  NIP:  c000000000039534 LR: c000000000039234 CTR: c000000000009a00
+  REGS: c000007fffbcf940 TRAP: 0700   Not tainted
+  MSR:  9000000000021033 <SF,HV,ME,IR,DR,RI,LE>  CR: 22042482  XER: 200400ad
+  CFAR: c000000000039260 IRQMASK: 3
+  GPR00: c000000000039204 c000007fffbcfbe0 c000000001d6c300 0000000000000003
+  GPR04: 00007ffffa45d078 0000000000000000 0000000000000008 0000000000000020
+  GPR08: 0000007ffd4e0000 0000000000000000 c000007ffffceb00 7265677368657265
+  GPR12: 9000000000009033 c000007ffffceb00 00000f7075bf4480 000000000000002a
+  GPR16: 00000f705745a528 00007ffffa45ddd8 00000f70574d0008 0000000000000000
+  GPR20: 00000f7075c58d70 00000f7057459c38 0000000000000001 0000000000000040
+  GPR24: 0000000000000000 0000000000000029 c000000001dae058 0000000000000029
+  GPR28: 0000000000000000 0000000000000800 0000000000000009 c000007fffbcfd60
+  NIP [c000000000039534] soft_nmi_interrupt+0x3e4/0x5f0
+  LR [c000000000039234] soft_nmi_interrupt+0xe4/0x5f0
+  Call Trace:
+  [c000007fffbcfbe0] [c000000000039204] soft_nmi_interrupt+0xb4/0x5f0 (unreliable)
+  [c000007fffbcfcf0] [c00000000000c0e8] soft_nmi_common+0x138/0x1c4
+  --- interrupt: 900 at end_real_trampolines+0x0/0x1000
+  NIP:  c000000000003000 LR: 00007ca426adb03c CTR: 900000000280f033
+  REGS: c000007fffbcfd60 TRAP: 0900
+  MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 44042482  XER: 200400ad
+  CFAR: 00007ca426946020 IRQMASK: 0
+  GPR00: 00000000000000ad 00007ffffa45d050 00007ca426b07f00 0000000000000035
+  GPR04: 00007ffffa45d078 0000000000000000 0000000000000008 0000000000000020
+  GPR08: 0000000000000000 0000000000100000 0000000010000000 00007ffffa45d110
+  GPR12: 0000000000000001 00007ca426d4e680 00000f7075bf4480 000000000000002a
+  GPR16: 00000f705745a528 00007ffffa45ddd8 00000f70574d0008 0000000000000000
+  GPR20: 00000f7075c58d70 00000f7057459c38 0000000000000001 0000000000000040
+  GPR24: 0000000000000000 00000f7057473f68 0000000000000003 000000000000041b
+  GPR28: 00007ffffa45d4c4 0000000000000035 0000000000000000 00000f7057473f68
+  NIP [c000000000003000] end_real_trampolines+0x0/0x1000
+  LR [00007ca426adb03c] 0x7ca426adb03c
+  --- interrupt: 900
+  Instruction dump:
+  60000000 60000000 60420000 38600001 482b3ae5 60000000 e93f0138 a36d0008
+  7daa6b78 71290001 7f7907b4 4082fd34 <0fe00000> 4bfffd2c 60420000 ea6100a8
+  ---[ end trace dc75f67d819779da ]---
+
+Fixes: 118178e62e2e ("powerpc: move NMI entry/exit code into wrapper")
+Reported-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
+ arch/powerpc/include/asm/interrupt.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-I didn't add the -mprofile-kernel change but I think it would be a good
-one that can be merged independently if it works.
-
-Since v2:
-- Rebased, tweaked changelog.
-- Changed ELF_V2 to ELF_V2_ABI in config options, to be clearer.
-
-Since v1:
-- Improved the override flavour name suggested by Segher.
-- Improved changelog wording.
-
- arch/powerpc/Kconfig                | 22 ++++++++++++++++++++++
- arch/powerpc/Makefile               | 18 ++++++++++++------
- arch/powerpc/boot/Makefile          |  4 +++-
- arch/powerpc/kernel/vdso64/Makefile | 13 +++++++++++++
- drivers/crypto/vmx/Makefile         |  8 ++++++--
- drivers/crypto/vmx/ppc-xlate.pl     | 10 ++++++----
- 6 files changed, 62 insertions(+), 13 deletions(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1e6230bea09d..d3f78d3d574d 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -160,6 +160,7 @@ config PPC
- 	select ARCH_WEAK_RELEASE_ACQUIRE
- 	select BINFMT_ELF
- 	select BUILDTIME_TABLE_SORT
-+	select PPC64_BUILD_ELF_V2_ABI		if PPC64 && CPU_LITTLE_ENDIAN
- 	select CLONE_BACKWARDS
- 	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
- 	select DMA_OPS				if PPC64
-@@ -568,6 +569,27 @@ config KEXEC_FILE
- config ARCH_HAS_KEXEC_PURGATORY
- 	def_bool KEXEC_FILE
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index 44cde2e129b8..299e51337aca 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -222,6 +222,13 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
+ 	local_paca->irq_soft_mask = IRQS_ALL_DISABLED;
+ 	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
  
-+config PPC64_BUILD_ELF_V2_ABI
-+	bool
++	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && !(regs->msr & MSR_PR) &&
++				regs->nip < (unsigned long)__end_interrupts) {
++		/* Kernel code running below __end_interrupts is implicitly
++		 * soft-masked */
++		regs->softe = IRQS_ALL_DISABLED;
++	}
 +
-+config PPC64_BUILD_BIG_ENDIAN_ELF_V2_ABI
-+	bool "Build big-endian kernel using ELF ABI V2 (EXPERIMENTAL)"
-+	depends on PPC64 && CPU_BIG_ENDIAN && EXPERT
-+	depends on CC_IS_GCC && LD_VERSION >= 22400
-+	default n
-+	select PPC64_BUILD_ELF_V2_ABI
-+	help
-+	  This builds the kernel image using the "Power Architecture 64-Bit ELF
-+	  V2 ABI Specification", which has a reduced stack overhead and faster
-+	  function calls. This internal kernel ABI option does not affect
-+          userspace compatibility.
-+
-+	  The V2 ABI is standard for 64-bit little-endian, but for big-endian
-+	  it is less well tested by kernel and toolchain. However some distros
-+	  build userspace this way, and it can produce a functioning kernel.
-+
-+	  This requires GCC and binutils 2.24 or newer.
-+
- config RELOCATABLE
- 	bool "Build a relocatable kernel"
- 	depends on PPC64 || (FLATMEM && (44x || FSL_BOOKE))
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 3212d076ac6a..b90b5cb799aa 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -91,10 +91,14 @@ endif
+ 	/* Don't do any per-CPU operations until interrupt state is fixed */
  
- ifdef CONFIG_PPC64
- ifndef CONFIG_CC_IS_CLANG
--cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
--cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mcall-aixdesc)
--aflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
--aflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -mabi=elfv2
-+ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-+cflags-y				+= $(call cc-option,-mabi=elfv2)
-+aflags-y				+= $(call cc-option,-mabi=elfv2)
-+else
-+cflags-y				+= $(call cc-option,-mabi=elfv1)
-+cflags-y				+= $(call cc-option,-mcall-aixdesc)
-+aflags-y				+= $(call cc-option,-mabi=elfv1)
-+endif
- endif
- endif
- 
-@@ -142,15 +146,17 @@ endif
- 
- CFLAGS-$(CONFIG_PPC64)	:= $(call cc-option,-mtraceback=no)
- ifndef CONFIG_CC_IS_CLANG
--ifdef CONFIG_CPU_LITTLE_ENDIAN
--CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2,$(call cc-option,-mcall-aixdesc))
-+ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-+CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2)
- AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2)
- else
-+# Keep these in synch with arch/powerpc/kernel/vdso64/Makefile
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcall-aixdesc)
- AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
- endif
- endif
-+
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcmodel=medium,$(call cc-option,-mminimal-toc))
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mno-pointers-to-nested-functions)
- 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 2b8da923ceca..be84a72f8258 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -40,6 +40,9 @@ BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
- 
- ifdef CONFIG_PPC64_BOOT_WRAPPER
- BOOTCFLAGS	+= -m64
-+ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-+BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
-+endif
- else
- BOOTCFLAGS	+= -m32
- endif
-@@ -50,7 +53,6 @@ ifdef CONFIG_CPU_BIG_ENDIAN
- BOOTCFLAGS	+= -mbig-endian
- else
- BOOTCFLAGS	+= -mlittle-endian
--BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
- endif
- 
- BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
-diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
-index 2813e3f98db6..d783c07e558f 100644
---- a/arch/powerpc/kernel/vdso64/Makefile
-+++ b/arch/powerpc/kernel/vdso64/Makefile
-@@ -25,6 +25,19 @@ KCOV_INSTRUMENT := n
- UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
- 
-+# Always build vdso64 with ELFv1 ABI for BE kernels
-+ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-+ifdef CONFIG_CPU_BIG_ENDIAN
-+KBUILD_CFLAGS := $(filter-out -mabi=elfv2,$(KBUILD_CFLAGS))
-+KBUILD_AFLAGS := $(filter-out -mabi=elfv2,$(KBUILD_AFLAGS))
-+
-+# These are derived from arch/powerpc/Makefile
-+KBUILD_CFLAGS += $(call cc-option,-mabi=elfv1)
-+KBUILD_CFLAGS += $(call cc-option,-mcall-aixdesc)
-+KBUILD_AFLAGS += $(call cc-option,-mabi=elfv1)
-+endif
-+endif
-+
- ccflags-y := -shared -fno-common -fno-builtin -nostdlib \
- 	-Wl,-soname=linux-vdso64.so.1 -Wl,--hash-style=both
- asflags-y := -D__VDSO64__ -s
-diff --git a/drivers/crypto/vmx/Makefile b/drivers/crypto/vmx/Makefile
-index 709670d2b553..d9ccf9fc3483 100644
---- a/drivers/crypto/vmx/Makefile
-+++ b/drivers/crypto/vmx/Makefile
-@@ -5,18 +5,22 @@ vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes
- ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
- override flavour := linux-ppc64le
- else
-+ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-+override flavour := linux-ppc64-elfv2
-+else
- override flavour := linux-ppc64
- endif
-+endif
- 
- quiet_cmd_perl = PERL $@
-       cmd_perl = $(PERL) $(<) $(flavour) > $(@)
- 
- targets += aesp8-ppc.S ghashp8-ppc.S
- 
--$(obj)/aesp8-ppc.S: $(src)/aesp8-ppc.pl FORCE
-+$(obj)/aesp8-ppc.S: $(src)/aesp8-ppc.pl $(src)/ppc-xlate.pl FORCE
- 	$(call if_changed,perl)
-   
--$(obj)/ghashp8-ppc.S: $(src)/ghashp8-ppc.pl FORCE
-+$(obj)/ghashp8-ppc.S: $(src)/ghashp8-ppc.pl $(src)/ppc-xlate.pl FORCE
- 	$(call if_changed,perl)
- 
- clean-files := aesp8-ppc.S ghashp8-ppc.S
-diff --git a/drivers/crypto/vmx/ppc-xlate.pl b/drivers/crypto/vmx/ppc-xlate.pl
-index 36db2ef09e5b..b583898c11ae 100644
---- a/drivers/crypto/vmx/ppc-xlate.pl
-+++ b/drivers/crypto/vmx/ppc-xlate.pl
-@@ -9,6 +9,8 @@ open STDOUT,">$output" || die "can't open $output: $!";
- 
- my %GLOBALS;
- my $dotinlocallabels=($flavour=~/linux/)?1:0;
-+my $elfv2abi=(($flavour =~ /linux-ppc64le/) or ($flavour =~ /linux-ppc64-elfv2/))?1:0;
-+my $dotfunctions=($elfv2abi=~1)?0:1;
- 
- ################################################################
- # directives which need special treatment on different platforms
-@@ -40,7 +42,7 @@ my $globl = sub {
- };
- my $text = sub {
-     my $ret = ($flavour =~ /aix/) ? ".csect\t.text[PR],7" : ".text";
--    $ret = ".abiversion	2\n".$ret	if ($flavour =~ /linux.*64le/);
-+    $ret = ".abiversion	2\n".$ret	if ($elfv2abi);
-     $ret;
- };
- my $machine = sub {
-@@ -56,8 +58,8 @@ my $size = sub {
-     if ($flavour =~ /linux/)
-     {	shift;
- 	my $name = shift; $name =~ s|^[\.\_]||;
--	my $ret  = ".size	$name,.-".($flavour=~/64$/?".":"").$name;
--	$ret .= "\n.size	.$name,.-.$name" if ($flavour=~/64$/);
-+	my $ret  = ".size	$name,.-".($dotfunctions?".":"").$name;
-+	$ret .= "\n.size	.$name,.-.$name" if ($dotfunctions);
- 	$ret;
-     }
-     else
-@@ -142,7 +144,7 @@ my $vmr = sub {
- 
- # Some ABIs specify vrsave, special-purpose register #256, as reserved
- # for system use.
--my $no_vrsave = ($flavour =~ /linux-ppc64le/);
-+my $no_vrsave = ($elfv2abi);
- my $mtspr = sub {
-     my ($f,$idx,$ra) = @_;
-     if ($idx == 256 && $no_vrsave) {
+ 	if (nmi_disables_ftrace(regs)) {
 -- 
 2.23.0
 
