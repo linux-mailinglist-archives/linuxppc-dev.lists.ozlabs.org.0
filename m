@@ -2,83 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340E03712F8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 11:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A55BA37130F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 11:34:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FYczw1Fbzz30F3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 19:26:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FYd9P3yqTz301k
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 May 2021 19:34:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=217.72.192.75; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FYczT0KXyz2xZF
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 19:26:12 +1000 (AEST)
-Received: from mail-wm1-f41.google.com ([209.85.128.41]) by
- mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MI4cT-1lopMv3QvP-00F9wB for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May
- 2021 11:26:06 +0200
-Received: by mail-wm1-f41.google.com with SMTP id
- o26-20020a1c4d1a0000b0290146e1feccdaso4609884wmh.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 02:26:05 -0700 (PDT)
-X-Gm-Message-State: AOAM531YipsjNHNXGzOwNDTmHlhci/Zlhono7yd4PqfthocQ+QMwybAc
- qFHqrQXoY7tqqpOq8O7/js4qrIXFpMnQjma272s=
-X-Google-Smtp-Source: ABdhPJyImR0lXDOWh/rFmKSSJQOuX4SzDcgMMWQ8OtmjXS6cOp8lf5wEACKwu1MdktyqNDYlMn4UdggeZ8LLn0fAS0M=
-X-Received: by 2002:a7b:c344:: with SMTP id l4mr30642981wmj.120.1620033965603; 
- Mon, 03 May 2021 02:26:05 -0700 (PDT)
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FYd922C25z2y86
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 May 2021 19:34:29 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id DA031B132;
+ Mon,  3 May 2021 09:34:26 +0000 (UTC)
+Date: Mon, 3 May 2021 11:34:25 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc/64: BE option to use ELFv2 ABI for big endian
+ kernels
+Message-ID: <20210503093425.GK6564@kitsune.suse.cz>
+References: <20200428112517.1402927-1-npiggin@gmail.com>
+ <20210502165757.GH6564@kitsune.suse.cz>
+ <1620003110.kzo64haq0d.astroid@bobo.none>
+ <20210503071116.GI6564@kitsune.suse.cz>
 MIME-Version: 1.0
-References: <20210501151538.145449-1-masahiroy@kernel.org>
- <CANiq72k1hB3X6+Nc_iu=f=BoB-F9JW2j_B4ZMcv8_UpW5QQ2Og@mail.gmail.com>
- <3943bc020f6227c8801907317fc113aa13ad4bad.camel@perches.com>
- <20210502183030.GF10366@gate.crashing.org>
- <81a926a3bdb70debe3ae2b13655ea8d249fb9991.camel@perches.com>
- <20210502203253.GH10366@gate.crashing.org>
- <CAHk-=wjGJskk5EwnDCccs6DcLytE2yx76+P_W-n1-B5zq0M3KA@mail.gmail.com>
- <20210502223007.GZ1847222@casper.infradead.org>
- <YI+nhMcPSTs/5Ydp@ada-deb-carambola.ifak-system.com>
-In-Reply-To: <YI+nhMcPSTs/5Ydp@ada-deb-carambola.ifak-system.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 3 May 2021 11:25:21 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0kV4ZfMEFh0DcMDjXqxA0yhj8a8CL-YFGV6B4pszHeGg@mail.gmail.com>
-Message-ID: <CAK8P3a0kV4ZfMEFh0DcMDjXqxA0yhj8a8CL-YFGV6B4pszHeGg@mail.gmail.com>
-Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-To: Matthew Wilcox <willy@infradead.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, 
- Segher Boessenkool <segher@kernel.crashing.org>, Joe Perches <joe@perches.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Masahiro Yamada <masahiroy@kernel.org>, 
- Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, 
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jonathan Corbet <corbet@lwn.net>, 
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, 
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Will Deacon <will@kernel.org>, 
- Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:Yt8y2oAEvHtZyOEZmHalfXHLhoY/ILWrhc1Almw/GsQZ1Ws8zJK
- fnqam3apDhj3xKlwpy6OyhfYxR0bVI7DD9xrb4Z2Yx6YcHed3krvTsHiQDiLUTlyvRXntxf
- QU8ORQdec8+2ngsZx8K7sJL0aio63+jLUSXa8NPKSCoNl5+UAW7+HLcAuClR51r8k5i9CPZ
- g5WgarmCzRotjLtFdJ+zQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:KhnPSLrTO8E=:EYxMAhVcTAdKnY6AZrLXjw
- YOZ2RwftwvJDNtqAiJE6Pp2OizZzMQOxcv4IvPHZDCUqwkFkNi1tsTZaGORU2hLQY7oJqKhq4
- WSNMQPOoRI4dQLT1MvpCUUp5Gmu3+Qp/L71ctBGHpRxCcfihYXlfuiZfaChn5jWnaUjxFNCDd
- lUwdjrieU0cerEBCoMs9SQ2lMlgk7201uKg69c+jqOMd1V3UED7x/hEquVvqwj4jv+9mcH+xk
- hQ4SbQURL6Q5/lQClbEkfwXguvxMZ1V3PedyL4G9ZBCm1jomlLj7clqrw05kByXWR/X49Mp1l
- 6+fGvUhKcDk+uqiiv70eWpWRGuR3ejje8LpRYCSLtBe3kpBOMhgL4MzuttSC5ViScWfUvoUKW
- LSrK3WqoxximBnPM7RcbdAotXrfdvA9SbK9Ip4PvpKFyF7nmjBfFqsh9kjwP2fEQRf0fZfJ8+
- lEf3m5bndTREUwUipzKo6sKVk9c+bxJ+RGIlGUQXcG1IP4jeOpn5lBPZ0F6U7a5z6/L47Jxyr
- 6za/qBrRusrjYM+F8xBN5Q=
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210503071116.GI6564@kitsune.suse.cz>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,43 +49,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 3, 2021 at 9:35 AM Alexander Dahl <ada@thorsis.com> wrote:
->
-> Desktops and servers are all nice, however I just want to make you
-> aware, there are embedded users forced to stick to older cross
-> toolchains for different reasons as well, e.g. in industrial
-> environment. :-)
->
-> This is no show stopper for us, I just wanted to let you be aware.
+On Mon, May 03, 2021 at 09:11:16AM +0200, Michal Suchánek wrote:
+> On Mon, May 03, 2021 at 10:58:33AM +1000, Nicholas Piggin wrote:
+> > Excerpts from Michal Suchánek's message of May 3, 2021 2:57 am:
+> > > On Tue, Apr 28, 2020 at 09:25:17PM +1000, Nicholas Piggin wrote:
+> > >> Provide an option to use ELFv2 ABI for big endian builds. This works on
+> > >> GCC and clang (since 2014). It is less well tested and supported by the
+> > >> GNU toolchain, but it can give some useful advantages of the ELFv2 ABI
+> > >> for BE (e.g., less stack usage). Some distros even build BE ELFv2
+> > >> userspace.
+> > > 
+> > > Fixes BTFID failure on BE for me and the ELF ABIv2 kernel boots.
+> > 
+> > What's the BTFID failure? Anything we can do to fix it on the v1 ABI or 
+> > at least make it depend on BUILD_ELF_V2?
+> 
+> Looks like symbols are prefixed with a dot in ABIv1 and BTFID tool is
+> not aware of that. It can be disabled on ABIv1 easily.
+> 
+> Thanks
+> 
+> Michal
+> 
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 678c13967580..e703c26e9b80 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -305,6 +305,7 @@ config DEBUG_INFO_BTF
+>  	bool "Generate BTF typeinfo"
+>  	depends on !DEBUG_INFO_SPLIT && !DEBUG_INFO_REDUCED
+>  	depends on !GCC_PLUGIN_RANDSTRUCT || COMPILE_TEST
+> +	depends on !PPC64 || BUILD_ELF_V2
+>  	help
+>  	  Generate deduplicated BTF type information from DWARF debug info.
+>  	  Turning this on expects presence of pahole tool, which will convert
+> 
+> > 
+> > > 
+> > > Tested-by: Michal Suchánek <msuchanek@suse.de>
+> > > 
+> > > Also can we enable mprofile on BE now?
+> > > 
+> > > I don't see anything endian-specific in the mprofile code at a glance
+> > > but don't have any idea how to test it.
+> > 
+> > AFAIK it's just a different ABI for the _mcount call so just running
+> > some ftrace and ftrace with call graph should test it reasonably well.
 
-Can you be more specific about what scenarios you are thinking of,
-what the motivations are for using an old compiler with a new kernel
-on embedded systems, and what you think a realistic maximum
-time would be between compiler updates?
+It does not crash and burn but there are some regressions from LE to BE
+on the ftrace kernel selftest:
 
-One scenario that I've seen previously is where user space and
-kernel are built together as a source based distribution (OE, buildroot,
-openwrt, ...), and the compiler is picked to match the original sources
-of the user space because that is best tested, but the same compiler
-then gets used to build the kernel as well because that is the default
-in the build environment.
+--- ftraceLE.txt	2021-05-03 11:19:14.830000000 +0200
++++ ftraceBE.txt	2021-05-03 11:27:24.770000000 +0200
+@@ -7,8 +7,8 @@
+ [n] Change the ringbuffer size	[PASS]
+ [n] Snapshot and tracing setting	[PASS]
+ [n] trace_pipe and trace_marker	[PASS]
+-[n] Test ftrace direct functions against tracers	[UNRESOLVED]
+-[n] Test ftrace direct functions against kprobes	[UNRESOLVED]
++[n] Test ftrace direct functions against tracers	[FAIL]
++[n] Test ftrace direct functions against kprobes	[FAIL]
+ [n] Generic dynamic event - add/remove kprobe events	[PASS]
+ [n] Generic dynamic event - add/remove synthetic events	[PASS]
+ [n] Generic dynamic event - selective clear (compatibility)	[PASS]
+@@ -16,10 +16,10 @@
+ [n] event tracing - enable/disable with event level files	[PASS]
+ [n] event tracing - restricts events based on pid notrace filtering	[PASS]
+ [n] event tracing - restricts events based on pid	[PASS]
+-[n] event tracing - enable/disable with subsystem level files	[PASS]
++[n] event tracing - enable/disable with subsystem level files	[FAIL]
+ [n] event tracing - enable/disable with top level files	[PASS]
+-[n] Test trace_printk from module	[UNRESOLVED]
+-[n] ftrace - function graph filters with stack tracer	[PASS]
++[n] Test trace_printk from module	[FAIL]
++[n] ftrace - function graph filters with stack tracer	[FAIL]
+ [n] ftrace - function graph filters	[PASS]
+ [n] ftrace - function trace with cpumask	[PASS]
+ [n] ftrace - test for function event triggers	[PASS]
+@@ -27,7 +27,7 @@
+ [n] ftrace - function pid notrace filters	[PASS]
+ [n] ftrace - function pid filters	[PASS]
+ [n] ftrace - stacktrace filter command	[PASS]
+-[n] ftrace - function trace on module	[UNRESOLVED]
++[n] ftrace - function trace on module	[FAIL]
+ [n] ftrace - function profiler with function tracing	[PASS]
+ [n] ftrace - function profiling	[PASS]
+ [n] ftrace - test reading of set_ftrace_filter	[PASS]
+@@ -44,10 +44,10 @@
+ [n] Kprobe event argument syntax	[PASS]
+ [n] Kprobe dynamic event with arguments	[PASS]
+ [n] Kprobes event arguments with types	[PASS]
+-[n] Kprobe event user-memory access	[UNSUPPORTED]
++[n] Kprobe event user-memory access	[FAIL]
+ [n] Kprobe event auto/manual naming	[PASS]
+ [n] Kprobe dynamic event with function tracer	[PASS]
+-[n] Kprobe dynamic event - probing module	[UNRESOLVED]
++[n] Kprobe dynamic event - probing module	[FAIL]
+ [n] Create/delete multiprobe on kprobe event	[PASS]
+ [n] Kprobe event parser error log check	[PASS]
+ [n] Kretprobe dynamic event with arguments	[PASS]
+@@ -57,11 +57,11 @@
+ [n] Kprobe events - probe points	[PASS]
+ [n] Kprobe dynamic event - adding and removing	[PASS]
+ [n] Uprobe event parser error log check	[PASS]
+-[n] test for the preemptirqsoff tracer	[UNSUPPORTED]
+-[n] Meta-selftest: Checkbashisms	[UNRESOLVED]
++[n] test for the preemptirqsoff tracer	[FAIL]
++[n] Meta-selftest: Checkbashisms	[FAIL]
+ [n] Test wakeup RT tracer	[PASS]
+ [n] Test wakeup tracer	[PASS]
+-[n] event trigger - test inter-event histogram trigger expected fail actions	[XFAIL]
++[n] event trigger - test inter-event histogram trigger expected fail actions	[FAIL]
+ [n] event trigger - test field variable support	[PASS]
+ [n] event trigger - test inter-event combined histogram trigger	[PASS]
+ [n] event trigger - test multiple actions on hist trigger	[PASS]
+@@ -96,7 +96,8 @@
+ [n] (instance)  event tracing - enable/disable with event level files	[PASS]
+ [n] (instance)  event tracing - restricts events based on pid notrace filtering	[PASS]
+ [n] (instance)  event tracing - restricts events based on pid	[PASS]
+-[n] (instance)  event tracing - enable/disable with subsystem level files	[PASS]
++[n] (instance)  event tracing - enable/disable with subsystem level files	[FAIL]
++rmdir: failed to remove '/sys/kernel/tracing/instances/ftracetest.mceByV': Device or resource busy
+ [n] (instance)  ftrace - test for function event triggers	[PASS]
+ [n] (instance)  ftrace - function pid notrace filters	[PASS]
+ [n] (instance)  ftrace - function pid filters	[PASS]
 
-There are two problems I see with this logic:
+I needed to add a test timeout to get this far because
+"event tracing - enable/disable with subsystem level files" gets stuck.
 
-- Running the latest kernel to avoid security problems is of course
-  a good idea, but if one runs that with ten year old user space that
-  is never updated, the system is likely to end up just as insecure.
-  Not all bugs are in the kernel.
+Thanks
 
-- The same logic that applies to ancient user space staying with
-  an ancient compiler (it's better tested in this combination) also
-  applies to the kernel: running the latest kernel on an old compiler
-  is something that few people test, and tends to run into more bugs
-  than using the compiler that other developers used to test that
-  kernel.
-
-       Arnd
+Michal
