@@ -1,74 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507B53729DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 14:10:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9CEB3729EF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 14:16:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZJZ92ZK9z30FJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 22:10:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZJhy4yr9z30CC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 22:16:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=tckQoMf4;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aRGdb6rm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2d;
- helo=mail-yb1-xb2d.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tckQoMf4; dkim-atps=neutral
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com
- [IPv6:2607:f8b0:4864:20::b2d])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=aRGdb6rm; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZJYd1wGgz2xYf
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 22:09:40 +1000 (AEST)
-Received: by mail-yb1-xb2d.google.com with SMTP id e190so2258051ybb.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 05:09:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=GoONfpBLyMysB/FhmzAT7uuw2J/Ov3DAFLCcF6TfPu0=;
- b=tckQoMf463vNPurJ8/DE4FlF1sR1Nq0y0BGfCjVf8H5j3Et6hVbvUaiODNjIcMs8Mt
- /jviFaGyjUN7LjTPIxRHFL6MbcW/qsfvx7daHYGdThRFhwx1eXpFdf80lgbrdZv5XAjV
- q4gQ4TPa7fL+vnbwn0z/rAJc/sZkrwddRBwa++gDz+AHI7QIQYmqAdOtMto9fFmvT2bc
- fVvw/3LRWi+nbFtSTZbFEIN/PYyaBpsjosnuewLM9WmkMpdXmIGMx9D0R9AaZW8PuyET
- eTYCcWQ8qBfkV4daDjJf5RPZUriDmdZ2ym+kRWtgTKy71x49yqybOjhVhEz2ORMPpte6
- O99Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=GoONfpBLyMysB/FhmzAT7uuw2J/Ov3DAFLCcF6TfPu0=;
- b=EXnHnrcpl0xLQqI2SMeHlRC08pcB2HAx9jTsrI+wM8G0COO7zrCMm0qAhkGnLx6xxI
- OeQViB8Y/c8m9HvI07LVXt99Cbw5iDV7PLQdQLZWM8CkPBLeDSO8ET73An7qKdkCjPYa
- 8ySNx6jLPY572tybOHybdrg81AtmVtnuPcc29x6sB4EzPpMRrSTMPM4Av+azFdhRoRQ8
- S6q6lLGzL6P1tdt0RMLHQPWBOF83xuxiv9mAat5Yf8lpBgiBbV0X/pv4H9SYmypFkXcB
- mEc7X8e78zM7Fmq5vt6YvTO+825gAYXRd2COyqkWRK9sY81oInj5V5sn18Y0w70lzoVl
- 42GQ==
-X-Gm-Message-State: AOAM530Oij/DNpwCAkck9qhnp4PUONAmHCKoKuPWFZMlauNp/r4BUqQz
- 6ZiVhBFkpXmwzFG8oo1I4iypyEE4AEtfNNMJjl8=
-X-Google-Smtp-Source: ABdhPJyVieeZ40YfvrO3ib1FXeZbp8MAXFqo0Q4vUyeRjydd2sG818ixSt8PiKN39BRhtEFPC21X4DYHtphGIkl2Kro=
-X-Received: by 2002:a25:bc8b:: with SMTP id e11mr34501993ybk.115.1620130175246; 
- Tue, 04 May 2021 05:09:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZJhW2xFJz2xYf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 22:15:38 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FZJhS5Lf8z9sV5;
+ Tue,  4 May 2021 22:15:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1620130537;
+ bh=uWtdbCI0TNtx0mLD+ufT/ZYFqrfLvco2t5eCGabi+Ls=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=aRGdb6rmJlqeBhjJKYH/xQUBheRefJmDz05mp58PuIFHnZnuxYRRf0bOWdHo6E3M5
+ +60MYoaIT0QIaZY7EoY/bny2HpzGJduKMIQcdn0+boa52Z1+R81WgJ93rwKQ2E0KWk
+ /62tgRVq4igx6Jms/XM/RPxuqD/lrizECAreQq3QN7Sk3kVC3e5nulNjxLlaWfHg8G
+ GeoQeT3JieqtLqR2CQgEvDwPUwAgyUL52Ilil6LrfNUrRBbGcIQ8eDAax8JMDlK/za
+ Pv/5nkdUCBXhyY5uGg1K6LbcBmtNTTDfWAlIiUMmA0MyLoIyOXWqjETVx8L0xAKs4B
+ 6kBz3C8iJTRXg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Segher Boessenkool <segher@kernel.crashing.org>, Nicholas Piggin
+ <npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc/64: BE option to use ELFv2 ABI for big
+ endian kernels
+In-Reply-To: <20210503151824.GJ10366@gate.crashing.org>
+References: <20200428112517.1402927-1-npiggin@gmail.com>
+ <20200428234046.GP17645@gate.crashing.org>
+ <1588121596.7zej1imag0.astroid@bobo.none>
+ <20210502175506.GE10366@gate.crashing.org>
+ <1620002801.0iaahdk9xn.astroid@bobo.none>
+ <20210503151824.GJ10366@gate.crashing.org>
+Date: Tue, 04 May 2021 22:15:34 +1000
+Message-ID: <875yzyae55.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20210501151538.145449-1-masahiroy@kernel.org>
- <CANiq72k1hB3X6+Nc_iu=f=BoB-F9JW2j_B4ZMcv8_UpW5QQ2Og@mail.gmail.com>
- <3943bc020f6227c8801907317fc113aa13ad4bad.camel@perches.com>
- <65cda2bb-1b02-6ebc-0ea2-c48927524aa0@codethink.co.uk>
- <CANiq72mk84uay--BWOLT4zF12-rat9erohKazB8SpTPoVCTX1A@mail.gmail.com>
- <20210504092225.GS6564@kitsune.suse.cz>
-In-Reply-To: <20210504092225.GS6564@kitsune.suse.cz>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 4 May 2021 14:09:24 +0200
-Message-ID: <CANiq72kHwAeQ+vhFqg9tiQA-QHEK_xvP_Sro-_c5LJ2XDzjzxQ@mail.gmail.com>
-Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-To: =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,60 +68,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
- Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Joe Perches <joe@perches.com>,
- Ben Dooks <ben.dooks@codethink.co.uk>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Miguel Ojeda <ojeda@kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Will Deacon <will@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 4, 2021 at 11:22 AM Michal Such=C3=A1nek <msuchanek@suse.de> wr=
-ote:
+Segher Boessenkool <segher@kernel.crashing.org> writes:
+> On Mon, May 03, 2021 at 10:51:41AM +1000, Nicholas Piggin wrote:
+>> Excerpts from Segher Boessenkool's message of May 3, 2021 3:55 am:
+>> > On Wed, Apr 29, 2020 at 10:57:16AM +1000, Nicholas Piggin wrote:
+>> >> Excerpts from Segher Boessenkool's message of April 29, 2020 9:40 am:
+>> >> I blame toolchain for -mabi=elfv2 ! And also some blame on ABI document 
+>> >> which is called ELF V2 ABI rather than ELF ABI V2 which would have been 
+>> >> unambiguous.
+>> > 
+>> > At least ELFv2 ABI is correct.  "ELF ABI v2" is not.
+>> > 
+>> >> I can go through and change all my stuff and config options to ELF_ABI_v2.
+>> > 
+>> > Please don't.  It is wrong.
+>> 
+>> Then I'm not sure what the point of your previous mail was, what did I 
+>> miss?
 >
-> Except it makes answering the question "Is this bug we see on this
-> ancient system still present in upstream?" needlessly more difficult to
-> answer.
+> I asked if you could make it clearer to people who do not know what this
+> is whether they want to use it.  Or that was my intention, anyhow :-/
+>
+>> > Both the original PowerPC ELF ABI and the
+>> > ELFv2 one have versions themselves.  Also, the base ELF standard has a
+>> > version, and is set up so there can be incompatible versions even!  Of
+>> > course it still is version 1 to this day, but :-)
+>> 
+>> The point was for people who don't know ELFv2 has a specific meaning for 
+>> powerpc,
+>
+> It does not have *any* meaning outside of Power.  But people who do not
+> know what it is can assume the wrong things about it.  It isn't a great
+> name because of that :-(
+>
+> (It's not as bad as the MIPS ABIs -- an older one is called "new" :-) )
+>
+>> then ELF ABIv2 is more explanatory about it being an abi change
+>> rather than base elf change, even if it's not the "correct" name.
+>
+> I very much disagree.  "ELF ABIv2" is completely meaningless.
 
-Can you please provide some details? If you are talking about testing
-a new kernel image in the ancient system "as-is", why wouldn't you
-build it in a newer system? If you are talking about  particular
-problems about bisecting (kernel, compiler) pairs etc., details would
-also be welcome.
+Except:
 
-> Sure, throwing out old compiler versions that are known to cause
-> problems makes sense. Updating to latest just because much less so.
+$ readelf -h /bin/true
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           PowerPC64
+  Version:                           0x1
+  Entry point address:               0x1990
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          66176 (bytes into file)
+  Flags:                             0x2, abiv2
+                                          ^^^^^
 
-I definitely did not argue for "latest compiler" or "updating just because"=
-.
+:)
 
-> One of the selling point of C in general and gcc in particular is
-> stability. If we need the latest compiler we can as well rewrite the
-> kernel in Rust which has a required update cycle of a few months.
-
-Rust does not have a "required update cycle" and it does not break old
-code unless really required, just like C and common compilers.
-
-Concerning GCC, they patch releases for ~2.5 years, sure, but for many
-projects that is not nearly enough. So you still need custom support,
-which is anyway what most people care about.
-
-> Because some mainline kernel features rely on bleeding edge tools I end
-> up building mainline with current tools anyway but if you do not need
-> BTF or whatever other latest gimmick older toolchains should do.
-
-It would be better to hear concrete arguments about why "older
-toolchains should do", rather than calling things a gimmick.
-
-Cheers,
-Miguel
+cheers
