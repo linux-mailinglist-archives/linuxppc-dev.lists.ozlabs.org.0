@@ -1,59 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E46437253B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 06:57:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E01037256F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 07:27:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZ6yz3FX9z30FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 14:57:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZ7d3534Qz30CT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 15:27:03 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=QGVxmngj;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631;
+ helo=mail-pl1-x631.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=QGVxmngj; dkim-atps=neutral
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com
+ [IPv6:2607:f8b0:4864:20::631])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZ6yY0Lrkz2xxp
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 14:57:05 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FZ6yQ4TVnz9sVS;
- Tue,  4 May 2021 06:57:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id SYtrN8i6KVvp; Tue,  4 May 2021 06:57:02 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FZ6yQ3HzWz9sVR;
- Tue,  4 May 2021 06:57:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C20AE8B78B;
- Tue,  4 May 2021 06:57:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id bqB3rxvuS9iN; Tue,  4 May 2021 06:57:00 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E3E238B763;
- Tue,  4 May 2021 06:56:58 +0200 (CEST)
-Subject: Re: [FSL P50x0] Xorg always restarts again and again after the the
- PowerPC updates 5.13-1
-To: Christian Zigotzky <chzigotzky@xenosoft.de>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <3eedbe78-1fbd-4763-a7f3-ac5665e76a4a@xenosoft.de>
- <c5b0ac7c-525f-0208-7587-c90427eae137@xenosoft.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <0886c1dc-e946-69cb-a0a9-57247acfd080@csgroup.eu>
-Date: Tue, 4 May 2021 06:56:58 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZ7cX3Rn1z2xZn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 15:26:33 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id t21so4213497plo.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 May 2021 22:26:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=6z5nHoo/tCCuNRDjKYAHjek4wA0FT8tyb9dnvsuvr2k=;
+ b=QGVxmngjWiP1gR5vT6ekl/Axm+mWdgujfYBQYZLdQEnQzPxsP1eCAtkxm/uOUOHByQ
+ C41Slr1ld2UoE5I9Md+rVhAcAT0UWG0saKrWzNe1y9qO7GDSTQn5ElPHKP7CA6AO46Qp
+ xU9EUk7K3Wnl6zY5YRo2ndPxL+NDgCk+Cl3crTaCf27vmUbh8QQA36octLumN7DtNkOh
+ pdAuhSvnK6GdGUASZ6RZun3uYo7f7FBPwu8JDZfT/0rvm54kPcFArah7xzXNI65kD4Sw
+ yYIg5Aqw4CMK9JuSJJGET9GH1sL+jWAXrbDaOXCoozfEgaRGP20483g3Z3WSDhfRSY/x
+ s4IA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=6z5nHoo/tCCuNRDjKYAHjek4wA0FT8tyb9dnvsuvr2k=;
+ b=njMeder0q1uIF/HRwcAsTlUnFr8Ae0eihjR5dluBau1042Ajk+QzZudyO3Vb+a5Lvt
+ kOH/V++oqBo2BCigqHjQ4qF4D2jkPGLCJuTeof2hNQ369JXDasuZduWRyrWa89kXqCvJ
+ mcAaj1zbk6Zjgne/1tHZBIx4gPm9aT5nijHvnl0j8DOtMJ9jsTuFkZWN5AfWc60/QukV
+ i7ZznneRIAI/yivyozDY5XKc+F6giYBEGb+6kpVeUop0pKmSKDFe4DtS608YbBBLFw42
+ Y5DbrNVYfVut/qlUc13ZZm7o3MZPzq5zQl4PjQD9ogcpXK3JQoGQR3N7/t3EXCls0bt5
+ rDww==
+X-Gm-Message-State: AOAM531J7B728WBn0R5BwBGC6ak9pG7Fo9ynZ7Scy8Zifbr1L9dLEMNK
+ E143Nqap6cgg2Lv9fn3X3+4=
+X-Google-Smtp-Source: ABdhPJyiwoYCCGL9IF5a52YArUljkVB5biWW9/k/HSb5pPmATWfTVGVJpDd7Mv0Hoh1/M9oSyVTtoA==
+X-Received: by 2002:a17:902:7683:b029:ec:a434:1921 with SMTP id
+ m3-20020a1709027683b02900eca4341921mr23873281pll.67.1620105989826; 
+ Mon, 03 May 2021 22:26:29 -0700 (PDT)
+Received: from localhost ([61.68.127.20])
+ by smtp.gmail.com with ESMTPSA id v22sm10920069pff.105.2021.05.03.22.26.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 May 2021 22:26:29 -0700 (PDT)
+Date: Tue, 04 May 2021 15:26:24 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 1/2] KVM: PPC: Book3S HV: Sanitise vcpu registers in
+ nested path
+To: Paul Mackerras <paulus@ozlabs.org>
+References: <20210415230948.3563415-1-farosas@linux.ibm.com>
+ <20210415230948.3563415-2-farosas@linux.ibm.com>
+ <1619833560.k4eybr40bg.astroid@bobo.none>
+ <YJDNbFQlB9DHnI6Z@thinks.paulus.ozlabs.org>
+In-Reply-To: <YJDNbFQlB9DHnI6Z@thinks.paulus.ozlabs.org>
 MIME-Version: 1.0
-In-Reply-To: <c5b0ac7c-525f-0208-7587-c90427eae137@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Message-Id: <1620105163.ok9nw6k5yz.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,58 +84,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Paul Mackerras's message of May 4, 2021 2:28 pm:
+> On Sat, May 01, 2021 at 11:58:36AM +1000, Nicholas Piggin wrote:
+>> Excerpts from Fabiano Rosas's message of April 16, 2021 9:09 am:
+>> > As one of the arguments of the H_ENTER_NESTED hypercall, the nested
+>> > hypervisor (L1) prepares a structure containing the values of various
+>> > hypervisor-privileged registers with which it wants the nested guest
+>> > (L2) to run. Since the nested HV runs in supervisor mode it needs the
+>> > host to write to these registers.
+>> >=20
+>> > To stop a nested HV manipulating this mechanism and using a nested
+>> > guest as a proxy to access a facility that has been made unavailable
+>> > to it, we have a routine that sanitises the values of the HV registers
+>> > before copying them into the nested guest's vcpu struct.
+>> >=20
+>> > However, when coming out of the guest the values are copied as they
+>> > were back into L1 memory, which means that any sanitisation we did
+>> > during guest entry will be exposed to L1 after H_ENTER_NESTED returns.
+>> >=20
+>> > This patch alters this sanitisation to have effect on the vcpu->arch
+>> > registers directly before entering and after exiting the guest,
+>> > leaving the structure that is copied back into L1 unchanged (except
+>> > when we really want L1 to access the value, e.g the Cause bits of
+>> > HFSCR).
+>> >=20
+>> > Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+>> > ---
+>> >  arch/powerpc/kvm/book3s_hv_nested.c | 55 ++++++++++++++++++----------=
+-
+>> >  1 file changed, 34 insertions(+), 21 deletions(-)
+>> >=20
+>> > diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/bo=
+ok3s_hv_nested.c
+>> > index 0cd0e7aad588..270552dd42c5 100644
+>> > --- a/arch/powerpc/kvm/book3s_hv_nested.c
+>> > +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+>> > @@ -102,8 +102,17 @@ static void save_hv_return_state(struct kvm_vcpu =
+*vcpu, int trap,
+>> >  {
+>> >  	struct kvmppc_vcore *vc =3D vcpu->arch.vcore;
+>> > =20
+>> > +	/*
+>> > +	 * When loading the hypervisor-privileged registers to run L2,
+>> > +	 * we might have used bits from L1 state to restrict what the
+>> > +	 * L2 state is allowed to be. Since L1 is not allowed to read
+>> > +	 * the HV registers, do not include these modifications in the
+>> > +	 * return state.
+>> > +	 */
+>> > +	hr->hfscr =3D ((~HFSCR_INTR_CAUSE & hr->hfscr) |
+>> > +		     (HFSCR_INTR_CAUSE & vcpu->arch.hfscr));
+>> > +
+>> >  	hr->dpdes =3D vc->dpdes;
+>> > -	hr->hfscr =3D vcpu->arch.hfscr;
+>> >  	hr->purr =3D vcpu->arch.purr;
+>> >  	hr->spurr =3D vcpu->arch.spurr;
+>> >  	hr->ic =3D vcpu->arch.ic;
+>>=20
+>> Do we still have the problem here that hfac interrupts due to bits clear=
+ed
+>> by the hfscr sanitisation would have the cause bits returned to the L1,
+>> so in theory it could probe hfscr directly that way? I don't see a good
+>> solution to this except either have the L0 intercept these faults and do
+>> "something" transparent, or return error from H_ENTER_NESTED (which woul=
+d
+>> also allow trivial probing of the facilities).
+>=20
+> It seems to me that there are various specific reasons why L0 would
+> clear HFSCR bits, and if we think about the specific reasons, what we
+> should do becomes clear.  (I say "L0" but in fact the same reasoning
+> applies to any hypervisor that lets its guest do hypervisor-ish
+> things.)
+>=20
+> 1. Emulating a version of the architecture which doesn't have the
+> feature in question - in that case the bit should appear to L1 as a
+> reserved bit in HFSCR (i.e. always read 0), the associated facility
+> code should never appear in the top 8 bits of any HFSCR value that L1
+> sees, and any HFU interrupt received by L0 for the facility should be
+> changed into an illegal instruction interrupt (or HEAI) forwarded to
+> L1.  In this case the real HFSCR should always have the enable bit for
+> the facility set to 0.
+>=20
+> 2. Lazy save/restore of the state associated with a facility - in this
+> case, while the system is in the "lazy" state (i.e. the state is not
+> that of the currently running guest), the real HFSCR bit for the
+> facility should be 0.  On an HFU interrupt for the facility, L0 looks
+> at L1's HFSCR value: if it's 0, forward the HFU interrupt to L1; if
+> it's 1, load up the facility state, set the facility's bit in HFSCR,
+> and resume the guest.
+>=20
+> 3. Emulating a facility in software - in this case, the real HFSCR
+> bit for the facility would always be 0.  On an HFU interrupt, L0 reads
+> the instruction and emulates it, then resumes the guest.
+>=20
+> One thing this all makes clear is that the IC field of the "virtual"
+> HFSCR value seen by L1 should only ever be changed when L0 forwards a
+> HFU interrupt to L1.
+>=20
+> In fact we currently never do (1) or (2), and we only do (3) for
+> msgsndp etc., so this discussion is mostly theoretical.
 
+Yeah it's somewhat theoretical, and I guess I mostly agree with you.
 
-Le 04/05/2021 à 00:25, Christian Zigotzky a écrit :
-> Hello,
-> 
-> Xorg always restarts again and again after the the PowerPC updates 5.13-1 [1] on my FSL P5040 Cyrus+ 
-> board (A-EON AmigaOne X5000) [2]. Xorg doesn't start anymore in a virtual e5500 QEMU machine [3].
-> 
-> I bisected today [4].
-> 
-> Result: powerpc/signal32: Convert do_setcontext[_tm]() to user access block 
-> (887f3ceb51cd34109ac17bfc98695162e299e657) [5] is the first bad commit.
-> 
-> Please find attached the kernel config.
-> 
-> Please check the first bad commit.
+Missing is the case where the L0 does not implement a feature at all.
+Let's say TM is broken so it disables it, or nobody uses TAR so it=20
+doesn't bother to switch it.
 
-I'm not sure you can conclude anything here. There is a problem in that commit, but it is fixed by 
-525642624783 ("powerpc/signal32: Fix erroneous SIGSEGV on RT signal return") which is the last 
-commit of powerpc-5.13-1.
+In those cases what do you tell the L1 if it enables a bit that you
+don't support at all, and it takes a fault?
 
-So any bisect from there will for sure point to 887f3ceb51cd ("powerpc/signal32: Convert 
-do_setcontext[_tm]() to user access block") but that's unconclusive. If the problem is still there 
-at the HEAD of powerpc-5.13-1, the problem is likely somewhere else.
+I guess the right thing to do is advertise that to the guest by some
+other means, and expect it does the right thing. And you could have
+the proviso in the nested HV specification that the returned IC field
+might trip for a feature you enabled in the L1 HFSCR.
 
-I think you need to do the bisect again with a cherry-pick of 525642624783 at each step.
+>=20
+>> Returning an hfac interrupt to a hypervisor that thought it enabled the=20
+>> bit would be strange. But so does appearing to modify the register=20
+>> underneath it and then returning a fault.
+>=20
+> I don't think we should ever do either of those things.  The closest
+> would be (1) above, but in that case the fault has to be either an
+> illegal instruction type program interrupt, or a HEAI.
+>=20
+>> I think the sanest thing would actually be to return failure from the=20
+>> hcall.
+>=20
+> I don't think we should do that either.
 
-Thanks
-Christophe
+I still think it's preferable for case 4. No point waiting for the
+guest to boot and some user program eventually hits a bad instruction,
+even if it was due to some host vs guest configuration problem.
 
+At any rate, this patch 1 not overwriting the L2 HV state with the
+sanitization step is fine and clearly required for any kind of non
+trivial handling of missing bits.
 
-> 
-> Thanks,
-> Christian
-> 
-> [1] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c70a4be130de333ea079c59da41cc959712bb01c 
-> 
-> [2] http://wiki.amiga.org/index.php?title=X5000
-> [3] qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage -drive 
-> format=raw,file=fedora28-2.img,index=0,if=virtio -netdev user,id=mynet0 -device 
-> virtio-net-pci,netdev=mynet0 -append "rw root=/dev/vda" -device virtio-vga -usb -device 
-> usb-ehci,id=ehci -device usb-tablet -device virtio-keyboard-pci -smp 4 -vnc :1
-> [4] https://forum.hyperion-entertainment.com/viewtopic.php?p=53101#p53101
-> [5] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=887f3ceb51cd34109ac17bfc98695162e299e657 
-> 
+Thanks,
+Nick
