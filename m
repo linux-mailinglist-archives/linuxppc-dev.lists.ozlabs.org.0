@@ -2,99 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8708B372B57
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 15:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A312372C0D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 16:30:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZLn63fHKz30DF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 23:49:46 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=UBZRAVm5;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZMh46jyGz30FK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 00:30:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.219;
- helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=UBZRAVm5; 
- dkim-atps=neutral
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
- [81.169.146.219])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kaod.org (client-ip=46.105.77.235; helo=10.mo51.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 602 seconds by postgrey-1.36 at boromir;
+ Wed, 05 May 2021 00:30:07 AEST
+Received: from 10.mo51.mail-out.ovh.net (10.mo51.mail-out.ovh.net
+ [46.105.77.235])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZLmZ6J02z2yYm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 23:49:17 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1620136115; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=bJmR/qJC6EAS2IMg2Z8tpPdRby5qjWWPJI06cbu3xhxTuO2uAEIxtkYAZP5Tp5733u
- bIOXH1vwOyDaNH13yypD0Ho23nh+Eg6R6sW6/8IG9vlD/HVBJE1F0cQdHI5bUKUbCYNx
- 1tz1/afJQ1lGFqWSHJtKhmwFGDmTR5yaVf53DDhPw7K+o3MRqZTi3eve/8B/JUlycACn
- ePrGUDCyOgmllFumjOHWQEYoG8Z2n+LegEZbNExxTF6ATMblYBxgCOqLRFxp/Vp6C8Ty
- bJ8w492Tl2Z7cZwxbmDCOfsNd2a+N0O7DBuxHYmqA8Oq68BXRBrTCGuw45acoNw8HB/+
- wafw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620136115;
- s=strato-dkim-0002; d=strato.com;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
- From:Subject:Sender;
- bh=odTIoKCC8513wiCnzu1BtBgTLb8HkDNsWkM0IPDCGTE=;
- b=QvtqCkqCd92efhDqqida6QrWaumLw257H78Rnvz0er1KQvSHs6EIQWrAFY7p6nBhY9
- 1vbV6/ogP0y/uU533AX6Ycypx91k0b+IhR+rsR8GQXWS8ZPs69HGcAua6NtloAo9IYBi
- 1s8L2UCXeX0rzlSA5lsPzgNVL/wrlziaYzz/rHK9uy7lxpbpRYMpVNaspg6QrK1UmI//
- HFoflcgS9Ci1ZBV1+sJ5aRga0MG70cJ5Ri7r2Vpyo3ZehABrbsFU8Vb+J1Ykg5dTWXa9
- H5tPlMnPdDSG4Wdcpxzos2Dyp2fdgN8WYYMuWrXdO2V/N/tumY7jx5bFQ8NKGtCdP/+y
- OZaA==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620136115;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
- From:Subject:Sender;
- bh=odTIoKCC8513wiCnzu1BtBgTLb8HkDNsWkM0IPDCGTE=;
- b=UBZRAVm5aJXJsrMXfoTxetvBYvO+PrBJpNdXE2jFvOUGI8HDAFVidRtRxpx6RUflUz
- UW/qskjYTKjzfsxta5zHNdxAka149DT8F6JKXuRQcjL0JV+NheeUBSZRgdGbm8hJ/vW9
- ISnwamoKTJTYIrHxyPK0pvHsidGZwtMJSlVsVesOwnkNTPhZQdEaO6+63iMHtuJR6aO9
- cBYxCj7AmA/+arvksgPRln8kLjiCXZQKtbuUsL3NvJtoHurac69fT3xc4sq44okwnEwc
- wt4D/A85yCH25YhgGrLePLQjYDe8iZR07IdKJBWqCTNdGs4e5rl1XDkJZ0BQ2qNF4UGn
- 6H3Q==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSIwJp9hde4IG39Acg/ZIdVUvyTg=="
-X-RZG-CLASS-ID: mo00
-Received: from Christians-iMac.fritz.box by smtp.strato.de (RZmta 47.25.6 AUTH)
- with ESMTPSA id D075c0x44DmZ2TA
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 4 May 2021 15:48:35 +0200 (CEST)
-Subject: Re: [FSL P50x0] Xorg always restarts again and again after the the
- PowerPC updates 5.13-1
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <3eedbe78-1fbd-4763-a7f3-ac5665e76a4a@xenosoft.de>
- <c5b0ac7c-525f-0208-7587-c90427eae137@xenosoft.de>
- <0886c1dc-e946-69cb-a0a9-57247acfd080@csgroup.eu>
- <9864cd72-f1aa-4cf5-1cda-b3a10233b24d@xenosoft.de>
- <1b0307be-05cd-ab62-8b22-75ffb59ff76b@csgroup.eu>
- <daace050-6233-77ea-4517-0fd3c4b21057@xenosoft.de>
- <30f559f4-b50a-de63-94e1-761022468684@csgroup.eu>
- <c9a692b4-0ac0-d595-10fa-c3213b1518fc@xenosoft.de>
- <3b7daea5-7b2b-a089-0427-3becb986b6f5@csgroup.eu>
- <1502fb22-680c-7393-238c-f82570806717@xenosoft.de>
- <6a322f04-a81e-ae31-1425-19fda9307b23@csgroup.eu>
- <f253fc33-daa1-e668-31b3-593991531ffb@xenosoft.de>
- <6d3ae417-48de-3b61-f6fe-da951d74fef3@xenosoft.de>
-Message-ID: <070042db-0ac6-f4f6-1232-2f37c5e63d14@xenosoft.de>
-Date: Tue, 4 May 2021 15:48:34 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZMgg2Nfdz2y88
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 00:30:04 +1000 (AEST)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.143.103])
+ by mo51.mail-out.ovh.net (Postfix) with ESMTPS id 1829F297B71;
+ Tue,  4 May 2021 16:11:55 +0200 (CEST)
+Received: from kaod.org (37.59.142.104) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Tue, 4 May 2021
+ 16:11:32 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-104R0059937f50a-f377-4106-9467-b3b86bf2979e,
+ 233BADB9E061AA125F593C9F78707CF28220F307) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Tue, 4 May 2021 16:11:31 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: remove the nvlink2 pci_vfio subdriver v2
+Message-ID: <20210504161131.2ed74d7b@bahia.lan>
+In-Reply-To: <YJFMZ8KYVCDwUBPU@kroah.com>
+References: <20210326061311.1497642-1-hch@lst.de>
+ <20210504142236.76994047@bahia.lan> <YJFFG1tSP0dUCxcX@kroah.com>
+ <20210504152034.18e41ec3@bahia.lan> <YJFMZ8KYVCDwUBPU@kroah.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <6d3ae417-48de-3b61-f6fe-da951d74fef3@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.104]
+X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: effd68a3-6459-416d-a28c-4964cefb2245
+X-Ovh-Tracer-Id: 6202864065056512385
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdefiedgjeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfhisehtqhertdertdejnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeevlefhtddufffhieevhefhleegleelgfetffetkedugeehjeffgfehhfefueduffenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtohepqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,104 +63,184 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: Daniel Vetter <daniel@ffwll.ch>, kvm@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, qemu-devel@nongnu.org,
+ Alex Williamson <alex.williamson@redhat.com>, Paul
+ Mackerras <paulus@samba.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ linux-api@vger.kernel.org, qemu-ppc@nongnu.org, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am 04.05.21 um 13:02 schrieb Christian Zigotzky:
-> Am 04.05.21 um 12:07 schrieb Christian Zigotzky:
->> Am 04.05.21 um 11:49 schrieb Christophe Leroy:
->>>
->>>
->>> Le 04/05/2021 à 11:46, Christian Zigotzky a écrit :
->>>> Am 04.05.21 um 11:11 schrieb Christophe Leroy:
->>>>>
->>>>>
->>>>> Le 04/05/2021 à 11:09, Christian Zigotzky a écrit :
->>>>>> Am 04.05.21 um 10:58 schrieb Christophe Leroy:
->>>>>>>
->>>>>>>
->>>>>>> Le 04/05/2021 à 10:29, Christian Zigotzky a écrit :
->>>>>>>> On 04 May 2021 at 09:47am, Christophe Leroy wrote:
->>>>>>>>> Hi
->>>>>>>>>
->>>>>>>>> Le 04/05/2021 à 09:21, Christian Zigotzky a écrit :
->>>>>>>>>> Hi Christophe,
->>>>>>>>>>
->>>>>>>>>> Thanks for your answer but I think I don't know how it works 
->>>>>>>>>> with the cherry-pick.
->>>>>>>>>>
->>>>>>>>>> $ git bisect start
->>>>>>>>>
->>>>>>>>> As you suspect the problem to be specific to powerpc, I can do
->>>>>>>>>
->>>>>>>>> git bisect start -- arch/powerpc
->>>>>>>>>
->>>>>>>>>
->>>>>>>>>> $ git bisect good 68a32ba14177d4a21c4a9a941cf1d7aea86d436f
->>>>>>>>>> $ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
->>>>>>>>>
->>>>>>>>> You said that powerpc-5.13-1 is bad so you can narrow the 
->>>>>>>>> search I think:
->>>>>>>>>
->>>>>>>>> git bisect bad powerpc-5.13-1
->>>>>>>>> git bisect good 887f3ceb51cd3~
->>>>>>>> I tried it but without any success.
->>>>>>>>
->>>>>>>> git bisect bad powerpc-5.13-1
->>>>>>>>
->>>>>>>> Output:
->>>>>>>> fatal: Needed a single revision
->>>>>>>> Bad rev input: powerpc-5.13-1
->>>>>>>
->>>>>>> I don't understand, on my side it works. Maybe a difference 
->>>>>>> between your version of git and mine.
->>>>>>>
->>>>>>> In that case, just use the SHA corresponding to the merge:
->>>>>>>
->>>>>>> git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
->>>>>>>
->>>>>>> Christophe
->>>>>> Do you use a BookE machine?
->>>>>
->>>>> No I don't unfortunately, and I have tried booting in QEMU a 
->>>>> kernel built with your config, but it freezes before any output.
->>>> You can use my kernels and distributions.
->>>>
->>>
->>> Ok, I'll see if I can do something with them.
->>>
->>> In the meantime, have you been able to bisect ?
->>>
->>> Thanks
->>> Christophe
->> I am bisecting currently.
->>
->> $ git bisect start -- arch/powerpc
->> $ git bisect good 887f3ceb51cd3~
->> $ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
-> OK, there is another issue after the second bisecting step. The boot 
-> stops after loading the dtb and uImage file. I can't solve 2 issues 
-> with bisecting at the same time.
-Xorg restarts again and again.
+On Tue, 4 May 2021 15:30:15 +0200
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-Here are some interesting error messages:
+> On Tue, May 04, 2021 at 03:20:34PM +0200, Greg Kurz wrote:
+> > On Tue, 4 May 2021 14:59:07 +0200
+> > Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> >=20
+> > > On Tue, May 04, 2021 at 02:22:36PM +0200, Greg Kurz wrote:
+> > > > On Fri, 26 Mar 2021 07:13:09 +0100
+> > > > Christoph Hellwig <hch@lst.de> wrote:
+> > > >=20
+> > > > > Hi all,
+> > > > >=20
+> > > > > the nvlink2 vfio subdriver is a weird beast.  It supports a hardw=
+are
+> > > > > feature without any open source component - what would normally be
+> > > > > the normal open source userspace that we require for kernel drive=
+rs,
+> > > > > although in this particular case user space could of course be a
+> > > > > kernel driver in a VM.  It also happens to be a complete mess that
+> > > > > does not properly bind to PCI IDs, is hacked into the vfio_pci dr=
+iver
+> > > > > and also pulles in over 1000 lines of code always build into powe=
+rpc
+> > > > > kernels that have Power NV support enabled.  Because of all these
+> > > > > issues and the lack of breaking userspace when it is removed I th=
+ink
+> > > > > the best idea is to simply kill.
+> > > > >=20
+> > > > > Changes since v1:
+> > > > >  - document the removed subtypes as reserved
+> > > > >  - add the ACK from Greg
+> > > > >=20
+> > > > > Diffstat:
+> > > > >  arch/powerpc/platforms/powernv/npu-dma.c     |  705 ------------=
+---------------
+> > > > >  b/arch/powerpc/include/asm/opal.h            |    3=20
+> > > > >  b/arch/powerpc/include/asm/pci-bridge.h      |    1=20
+> > > > >  b/arch/powerpc/include/asm/pci.h             |    7=20
+> > > > >  b/arch/powerpc/platforms/powernv/Makefile    |    2=20
+> > > > >  b/arch/powerpc/platforms/powernv/opal-call.c |    2=20
+> > > > >  b/arch/powerpc/platforms/powernv/pci-ioda.c  |  185 -------
+> > > > >  b/arch/powerpc/platforms/powernv/pci.c       |   11=20
+> > > > >  b/arch/powerpc/platforms/powernv/pci.h       |   17=20
+> > > > >  b/arch/powerpc/platforms/pseries/pci.c       |   23=20
+> > > > >  b/drivers/vfio/pci/Kconfig                   |    6=20
+> > > > >  b/drivers/vfio/pci/Makefile                  |    1=20
+> > > > >  b/drivers/vfio/pci/vfio_pci.c                |   18=20
+> > > > >  b/drivers/vfio/pci/vfio_pci_private.h        |   14=20
+> > > > >  b/include/uapi/linux/vfio.h                  |   38 -
+> > > >=20
+> > > >=20
+> > > > Hi Christoph,
+> > > >=20
+> > > > FYI, these uapi changes break build of QEMU.
+> > >=20
+> > > What uapi changes?
+> > >=20
+> >=20
+> > All macros and structure definitions that are being removed
+> > from include/uapi/linux/vfio.h by patch 1.
+> >=20
+> > > What exactly breaks?
+> > >=20
+> >=20
+> > These macros and types are used by the current QEMU code base.
+> > Next time the QEMU source tree updates its copy of the kernel
+> > headers, the compilation of affected code will fail.
+>=20
+> So does QEMU use this api that is being removed, or does it just have
+> some odd build artifacts of the uapi things?
+>=20
 
-May 04 15:24:53 dc1.a-eon.tld kernel: lxsession[7255]: segfault (11) at 
-800000 nip ff6a770 lr ff6a760 code 1 in 
-libglib-2.0.so.0.4800.2[feaf000+11f000]
-May 04 15:24:53 dc1.a-eon.tld kernel: lxsession[7255]: code: 4bfc9401 
-3920ffff 91210054 8061005c 2f830000 419c0014 38800000 4bfc93e5
-May 04 15:24:53 dc1.a-eon.tld kernel: lxsession[7255]: code: 3920ffff 
-9121005c 2f8f0000 419e0008 <93ef0000> 418e000c 81210040 913b0000
+These are region subtypes definition and associated capabilities.
+QEMU basically gets information on VFIO regions from the kernel
+driver and for those regions with a nvlink2 subtype, it tries
+to extract some more nvlink2 related info.
 
-May 04 15:37:40 mintppc.a-eon.tld kernel: packagekitd[4290]: segfault 
-(11) at 8 nip 92dbc8 lr 92dae8 code 1 in packagekitd[920000+51000]
-May 04 15:37:40 mintppc.a-eon.tld kernel: packagekitd[4290]: code: 
-38800080 3be001f4 4cc63182 4802c8ad 4bffff64 60000000 81210018 80be8048
-May 04 15:37:40 mintppc.a-eon.tld kernel: packagekitd[4290]: code: 
-7fa6eb78 38800010 807e801c 3be0ffff <80e90008> 4cc63182 4802c881 4bffff38
+> What exactly is the error messages here?
+>=20
+
+[55/143] Compiling C object libqemu-ppc64-softmmu.fa.p/hw_vfio_pci-quirks.c=
+.o
+FAILED: libqemu-ppc64-softmmu.fa.p/hw_vfio_pci-quirks.c.o=20
+cc -Ilibqemu-ppc64-softmmu.fa.p -I. -I../.. -Itarget/ppc -I../../target/ppc=
+ -I../../capstone/include/capstone -Iqapi -Itrace -Iui -Iui/shader -I/usr/i=
+nclude/pixman-1 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -fdia=
+gnostics-color=3Dauto -pipe -Wall -Winvalid-pch -Werror -std=3Dgnu99 -O2 -g=
+ -isystem /home/greg/Work/qemu/qemu-virtiofs/linux-headers -isystem linux-h=
+eaders -iquote . -iquote /home/greg/Work/qemu/qemu-virtiofs -iquote /home/g=
+reg/Work/qemu/qemu-virtiofs/include -iquote /home/greg/Work/qemu/qemu-virti=
+ofs/disas/libvixl -iquote /home/greg/Work/qemu/qemu-virtiofs/tcg/ppc -iquot=
+e /home/greg/Work/qemu/qemu-virtiofs/accel/tcg -pthread -U_FORTIFY_SOURCE -=
+D_FORTIFY_SOURCE=3D2 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SO=
+URCE -Wstrict-prototypes -Wredundant-decls -Wundef -Wwrite-strings -Wmissin=
+g-prototypes -fno-strict-aliasing -fno-common -fwrapv -Wold-style-declarati=
+on -Wold-style-definition -Wtype-limits -Wformat-security -Wformat-y2k -Win=
+it-self -Wignored-qualifiers -Wempty-body -Wnested-externs -Wendif-labels -=
+Wexpansion-to-defined -Wimplicit-fallthrough=3D2 -Wno-missing-include-dirs =
+-Wno-shift-negative-value -Wno-psabi -fstack-protector-strong -fPIC -isyste=
+m../../linux-headers -isystemlinux-headers -DNEED_CPU_H '-DCONFIG_TARGET=3D=
+"ppc64-softmmu-config-target.h"' '-DCONFIG_DEVICES=3D"ppc64-softmmu-config-=
+devices.h"' -MD -MQ libqemu-ppc64-softmmu.fa.p/hw_vfio_pci-quirks.c.o -MF l=
+ibqemu-ppc64-softmmu.fa.p/hw_vfio_pci-quirks.c.o.d -o libqemu-ppc64-softmmu=
+.fa.p/hw_vfio_pci-quirks.c.o -c ../../hw/vfio/pci-quirks.c
+../../hw/vfio/pci-quirks.c: In function =E2=80=98vfio_pci_nvidia_v100_ram_i=
+nit=E2=80=99:
+../../hw/vfio/pci-quirks.c:1597:36: error: =E2=80=98VFIO_REGION_SUBTYPE_NVI=
+DIA_NVLINK2_RAM=E2=80=99 undeclared (first use in this function); did you m=
+ean =E2=80=98VFIO_REGION_SUBTYPE_CCW_ASYNC_CMD=E2=80=99?
+                                    VFIO_REGION_SUBTYPE_NVIDIA_NVLINK2_RAM,
+                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                    VFIO_REGION_SUBTYPE_CCW_ASYNC_CMD
+../../hw/vfio/pci-quirks.c:1597:36: note: each undeclared identifier is rep=
+orted only once for each function it appears in
+../../hw/vfio/pci-quirks.c:1603:44: error: =E2=80=98VFIO_REGION_INFO_CAP_NV=
+LINK2_SSATGT=E2=80=99 undeclared (first use in this function); did you mean=
+ =E2=80=98VFIO_REGION_INFO_CAP_SPARSE_MMAP=E2=80=99?
+     hdr =3D vfio_get_region_info_cap(nv2reg, VFIO_REGION_INFO_CAP_NVLINK2_=
+SSATGT);
+                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~
+                                            VFIO_REGION_INFO_CAP_SPARSE_MMAP
+../../hw/vfio/pci-quirks.c:1624:49: error: dereferencing pointer to incompl=
+ete type =E2=80=98struct vfio_region_info_cap_nvlink2_ssatgt=E2=80=99
+                         (void *) (uintptr_t) cap->tgt);
+                                                 ^~
+../../hw/vfio/pci-quirks.c: In function =E2=80=98vfio_pci_nvlink2_init=E2=
+=80=99:
+../../hw/vfio/pci-quirks.c:1646:36: error: =E2=80=98VFIO_REGION_SUBTYPE_IBM=
+_NVLINK2_ATSD=E2=80=99 undeclared (first use in this function); did you mea=
+n =E2=80=98VFIO_REGION_SUBTYPE_CCW_ASYNC_CMD=E2=80=99?
+                                    VFIO_REGION_SUBTYPE_IBM_NVLINK2_ATSD,
+                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                    VFIO_REGION_SUBTYPE_CCW_ASYNC_CMD
+../../hw/vfio/pci-quirks.c:1653:36: error: =E2=80=98VFIO_REGION_INFO_CAP_NV=
+LINK2_SSATGT=E2=80=99 undeclared (first use in this function); did you mean=
+ =E2=80=98VFIO_REGION_INFO_CAP_SPARSE_MMAP=E2=80=99?
+                                    VFIO_REGION_INFO_CAP_NVLINK2_SSATGT);
+                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                    VFIO_REGION_INFO_CAP_SPARSE_MMAP
+../../hw/vfio/pci-quirks.c:1661:36: error: =E2=80=98VFIO_REGION_INFO_CAP_NV=
+LINK2_LNKSPD=E2=80=99 undeclared (first use in this function); did you mean=
+ =E2=80=98VFIO_REGION_INFO_CAP_SPARSE_MMAP=E2=80=99?
+                                    VFIO_REGION_INFO_CAP_NVLINK2_LNKSPD);
+                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                    VFIO_REGION_INFO_CAP_SPARSE_MMAP
+../../hw/vfio/pci-quirks.c:1685:52: error: dereferencing pointer to incompl=
+ete type =E2=80=98struct vfio_region_info_cap_nvlink2_ssatgt=E2=80=99
+                         (void *) (uintptr_t) captgt->tgt);
+                                                    ^~
+../../hw/vfio/pci-quirks.c:1691:54: error: dereferencing pointer to incompl=
+ete type =E2=80=98struct vfio_region_info_cap_nvlink2_lnkspd=E2=80=99
+                         (void *) (uintptr_t) capspeed->link_speed);
+                                                      ^~
+
+> And if we put the uapi .h file stuff back, is that sufficient for qemu
+> to work, as it should be checking at runtime what the kernel has / has
+> not anyway, right?
+>=20
+
+Right. This will just be dead code in QEMU for newer kernels.
+
+Anyway, as said in some other mail, it is probably time for QEMU to
+start deprecating this code as well.
+
+> thanks,
+>=20
+> greg k-h
+
