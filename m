@@ -1,43 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CFD37248D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 04:51:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C237E37248A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 04:50:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZ49C1lsxz3btn
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 12:51:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZ48P6M85z30Dd
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 12:50:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZ47y32WKz2y6N
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 12:49:59 +1000 (AEST)
-IronPort-SDR: OApuum/CbN7y3AOdFHw0t+cJsVq4LaLpuO2F5YpJgYCYrTuOWhPAHp3BOUj6DRfKjPGxLjymjk
- uBLc+MuxG68g==
-X-IronPort-AV: E=McAfee;i="6200,9189,9973"; a="197973785"
-X-IronPort-AV: E=Sophos;i="5.82,271,1613462400"; d="scan'208";a="197973785"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZ47y1Mftz2xfy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 12:50:00 +1000 (AEST)
+IronPort-SDR: vAUEiCT2cBimj5cCxR8JJYF4HnXk59qAOGdoI1dvNSVi4rXxziBkNd2CVGyOEyICa+/Tj7zpc6
+ hYzRSUDAJiuQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9973"; a="178092840"
+X-IronPort-AV: E=Sophos;i="5.82,271,1613462400"; d="scan'208";a="178092840"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 May 2021 19:49:55 -0700
-IronPort-SDR: ngNJAWrwKFzZPwtVDUGZIpoF8+xI75vrAj8z7mpxC54ZIVN/QVvN9bVZiQ/uxWO7qbbQsdn19B
- JLZ5b/sRQN9w==
+IronPort-SDR: LDCkUfmueScDOvDkL/9r5gY5pnDIZHCpJS6/2Cu9uw37nVjuw8YO0vZLmodhHDF7Df0eqDurGJ
+ qK853K58h+Mg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,271,1613462400"; d="scan'208";a="539008060"
+X-IronPort-AV: E=Sophos;i="5.82,271,1613462400"; d="scan'208";a="530793965"
 Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
- by orsmga004.jf.intel.com with ESMTP; 03 May 2021 19:49:54 -0700
+ by fmsmga001.fm.intel.com with ESMTP; 03 May 2021 19:49:54 -0700
 Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1ldl8D-0009R1-Pq; Tue, 04 May 2021 02:49:53 +0000
-Date: Tue, 04 May 2021 10:49:19 +0800
+ id 1ldl8D-0009Qz-O6; Tue, 04 May 2021 02:49:53 +0000
+Date: Tue, 04 May 2021 10:49:21 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS 562d1e207d322e6346e8db91bbd11d94f16427d2
-Message-ID: <6090b62f.Y3jjI1G2L6e+4rK3%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 7905dafdefe9f1238a3ca2795cf975b311b5a5f6
+Message-ID: <6090b631.4yKJxsQZwWTjMpwr%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -58,32 +59,66 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 562d1e207d322e6346e8db91bbd11d94f16427d2  powerpc/powernv: remove the nvlink support
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 7905dafdefe9f1238a3ca2795cf975b311b5a5f6  powerpc/pseries: warn if recursing into the hcall tracing code
 
-elapsed time: 726m
+elapsed time: 2157m
 
-configs tested: 44
-configs skipped: 78
+configs tested: 108
+configs skipped: 98
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
 
 gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+riscv                            allyesconfig
 mips                         tb0219_defconfig
 mips                           ip27_defconfig
 sh                        apsh4ad0a_defconfig
 riscv                             allnoconfig
 arm                        neponset_defconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                        warp_defconfig
+xtensa                              defconfig
+mips                            e55_defconfig
 arm                             pxa_defconfig
 arm                        clps711x_defconfig
 m68k                       m5475evb_defconfig
 mips                     loongson1c_defconfig
 arm                          exynos_defconfig
-arm                                 defconfig
-nios2                               defconfig
+sh                          polaris_defconfig
+powerpc                      cm5200_defconfig
+sparc64                          alldefconfig
+powerpc                mpc7448_hpc2_defconfig
+powerpc                     kmeter1_defconfig
 arc                              allyesconfig
+arm                            lart_defconfig
+powerpc                     ep8248e_defconfig
+arm                        multi_v5_defconfig
+arm                          pxa910_defconfig
+m68k                          multi_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
 nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
 parisc                              defconfig
 s390                             allyesconfig
 s390                             allmodconfig
@@ -104,12 +139,42 @@ i386                 randconfig-a001-20210503
 i386                 randconfig-a005-20210503
 i386                 randconfig-a004-20210503
 i386                 randconfig-a002-20210503
+i386                 randconfig-a003-20210502
+i386                 randconfig-a006-20210502
+i386                 randconfig-a001-20210502
+i386                 randconfig-a005-20210502
+i386                 randconfig-a004-20210502
+i386                 randconfig-a002-20210502
+x86_64               randconfig-a014-20210502
+x86_64               randconfig-a015-20210502
+x86_64               randconfig-a012-20210502
+x86_64               randconfig-a011-20210502
+x86_64               randconfig-a013-20210502
+x86_64               randconfig-a016-20210502
+i386                 randconfig-a013-20210502
+i386                 randconfig-a015-20210502
+i386                 randconfig-a016-20210502
+i386                 randconfig-a014-20210502
+i386                 randconfig-a011-20210502
+i386                 randconfig-a012-20210502
 um                               allmodconfig
 um                                allnoconfig
 um                               allyesconfig
 um                                  defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
 clang tested configs:
+x86_64               randconfig-a001-20210502
+x86_64               randconfig-a005-20210502
+x86_64               randconfig-a003-20210502
+x86_64               randconfig-a002-20210502
+x86_64               randconfig-a006-20210502
+x86_64               randconfig-a004-20210502
 x86_64               randconfig-a014-20210503
 x86_64               randconfig-a015-20210503
 x86_64               randconfig-a012-20210503
