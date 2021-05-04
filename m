@@ -1,71 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FFF372AD4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 15:19:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93056372B0C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 15:31:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZL6B4vBLz301L
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 23:19:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=HUCmFuhh;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZLMZ3zrNz3bmX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 23:31:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435;
- helo=mail-pf1-x435.google.com; envelope-from=andy.shevchenko@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=HUCmFuhh; dkim-atps=neutral
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
- [IPv6:2607:f8b0:4864:20::435])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kaod.org (client-ip=178.33.254.192; helo=3.mo52.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+Received: from 3.mo52.mail-out.ovh.net (3.mo52.mail-out.ovh.net
+ [178.33.254.192])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZL5j1Fn3z2y88
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 23:19:02 +1000 (AEST)
-Received: by mail-pf1-x435.google.com with SMTP id k19so4413426pfu.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 06:19:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=CblgwW7Ud4f+9B1bK3aZ/7Lhxg480Ys59O+QR93vR6A=;
- b=HUCmFuhh8rWhVdsZN+H9ct9cpQQQ8X/8g5TSNpCqhizZ8EbPmq5SSLxpKk2jeUMdaX
- Tj9yd9u0iJ0+fauwyryct8gHTiPFZj6s+oGlCBMXIEenq7xhQhcoDyUjJJnTvFcswe4G
- kvI65Ho+kQrl2l3KFtE6JOsBNLDlKGMenC/VffsODCsr4+WtgNGh8Vdn/eHvTRdHQyrt
- XMRsS43lgRgSqlQQPaedD7v9I5rEUNCo2b0cfLiNvnFweSGe0SD5mJrLPaklTOGdbo/x
- q0TOBJBYgVHNa+tO2YzSKYk817yKK3IV1bzf14n9rSOL8mbUx4mXvj74RSVzQHw+2W9K
- Tr8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=CblgwW7Ud4f+9B1bK3aZ/7Lhxg480Ys59O+QR93vR6A=;
- b=dPhRy5F19OFMIPnolMk30y1cp4Hu8MeCRV5pFdTTDJgCZ9LS/vPhmlLVwAfVFKmT+h
- VyAIV7TpBMQTC1TvQcI9nyKFiKlkj3I2aTu/8PcFiIXp183ZXthAqwVmhVbacrLI6zgy
- 3jd5mqCP/yqBb9qveffcv1KqC14WAFZLOslXNmReLBENfN+IJllYQBT2oUk8YAYmJ1pF
- 9nhfbJQTsesbKFjyvcUFlS/R9aiOyR3oZXZdTC2Y0jlO2KjUX8oYP8sAPxvhfwd6oL/2
- 72DX9Cy1eGpJDUmRY88CT2tS+kNvL1FnB4wB2CVGMqVhOBU1h7ibKY+VgDpcBHMcsF3Q
- 8cSg==
-X-Gm-Message-State: AOAM533TBGls0aHiYEDYOqVHUOOY7K+0MGPwMWeFqE5hCxJRXwgHAmj1
- TvrF7qnGj/GAFhfMPqkLAzftBwdTlAdm5OGgZY4=
-X-Google-Smtp-Source: ABdhPJx5/8RQyp1LMuT4Dl9J/CS/IVFtFhu6zNbV+WzSdT3rLdKRijmds7H+X6buGhqrh+XMoJnP1gnFM230fMgVSDo=
-X-Received: by 2002:a17:90a:bd13:: with SMTP id
- y19mr5273402pjr.181.1620134338124; 
- Tue, 04 May 2021 06:18:58 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZLM54LLnz302W
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 23:30:40 +1000 (AEST)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.146.44])
+ by mo52.mail-out.ovh.net (Postfix) with ESMTPS id D5D53271E7E;
+ Tue,  4 May 2021 15:20:36 +0200 (CEST)
+Received: from kaod.org (37.59.142.95) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Tue, 4 May 2021
+ 15:20:35 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-95G001561d069d-41f7-46fe-a360-76441386f8a7,
+ 233BADB9E061AA125F593C9F78707CF28220F307) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Tue, 4 May 2021 15:20:34 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: remove the nvlink2 pci_vfio subdriver v2
+Message-ID: <20210504152034.18e41ec3@bahia.lan>
+In-Reply-To: <YJFFG1tSP0dUCxcX@kroah.com>
+References: <20210326061311.1497642-1-hch@lst.de>
+ <20210504142236.76994047@bahia.lan> <YJFFG1tSP0dUCxcX@kroah.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20210501151538.145449-1-masahiroy@kernel.org>
- <8b5f1d57-1357-affd-565f-f4826f3ecbdf@csgroup.eu>
-In-Reply-To: <8b5f1d57-1357-affd-565f-f4826f3ecbdf@csgroup.eu>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 4 May 2021 16:18:41 +0300
-Message-ID: <CAHp75VevBN1AKpZetMfY7tUU0ghjc7_g7Vw=+rPxTfdifqqhFw@mail.gmail.com>
-Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.95]
+X-ClientProxiedBy: DAG7EX1.mxp5.local (172.16.2.61) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: 5cc3bb94-3971-431f-b7fb-ec3b378d2bfe
+X-Ovh-Tracer-Id: 5342395058935667073
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdefiedgieehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfhisehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeefuddtieejjeevheekieeltefgleetkeetheettdeifeffvefhffelffdtfeeljeenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddrleehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopehqvghmuhdqphhptgesnhhonhhgnhhurdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,54 +60,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
- Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Linux Documentation List <linux-doc@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
- <linuxppc-dev@lists.ozlabs.org>, Will Deacon <will@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Miguel Ojeda <ojeda@kernel.org>, Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>
+Cc: Daniel Vetter <daniel@ffwll.ch>, kvm@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, qemu-devel@nongnu.org,
+ Alex Williamson <alex.williamson@redhat.com>, Paul
+ Mackerras <paulus@samba.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ linux-api@vger.kernel.org, qemu-ppc@nongnu.org, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 3, 2021 at 9:17 AM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> Le 01/05/2021 =C3=A0 17:15, Masahiro Yamada a =C3=A9crit :
-> > The current minimum GCC version is 4.9 except ARCH=3Darm64 requiring
-> > GCC 5.1.
-> >
-> > When we discussed last time, we agreed to raise the minimum GCC version
-> > to 5.1 globally. [1]
-> >
-> > I'd like to propose GCC 5.2 to clean up arch/powerpc/Kconfig as well.
->
-> One point I missed when I saw your patch first time, but I realised durin=
-g the discussion:
->
-> Up to 4.9, GCC was numbered with 3 digits, we had 4.8.0, 4.8.1, ... 4.8.5=
-, 4.9.0, 4.9.1, .... 4.9.4
->
-> Then starting at 5, GCC switched to a 2 digits scheme, with 5.0, 5.1, 5.2=
-, ... 5.5
->
-> So, that is not GCC 5.1 or 5.2 that you should target, but only GCC 5.
-> Then it is up to the user to use the latest available version of GCC 5, w=
-hich is 5.5 at the time
-> begin, just like the user would have selected 4.9.4 when 4.9 was the mini=
-mum GCC version.
+On Tue, 4 May 2021 14:59:07 +0200
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-And we may end up in the case when gcc 5.x will be more buggy than
-v4.9.y (as once proved by nice detective story where compiler bug
-produces a file system corruption).
+> On Tue, May 04, 2021 at 02:22:36PM +0200, Greg Kurz wrote:
+> > On Fri, 26 Mar 2021 07:13:09 +0100
+> > Christoph Hellwig <hch@lst.de> wrote:
+> > 
+> > > Hi all,
+> > > 
+> > > the nvlink2 vfio subdriver is a weird beast.  It supports a hardware
+> > > feature without any open source component - what would normally be
+> > > the normal open source userspace that we require for kernel drivers,
+> > > although in this particular case user space could of course be a
+> > > kernel driver in a VM.  It also happens to be a complete mess that
+> > > does not properly bind to PCI IDs, is hacked into the vfio_pci driver
+> > > and also pulles in over 1000 lines of code always build into powerpc
+> > > kernels that have Power NV support enabled.  Because of all these
+> > > issues and the lack of breaking userspace when it is removed I think
+> > > the best idea is to simply kill.
+> > > 
+> > > Changes since v1:
+> > >  - document the removed subtypes as reserved
+> > >  - add the ACK from Greg
+> > > 
+> > > Diffstat:
+> > >  arch/powerpc/platforms/powernv/npu-dma.c     |  705 ---------------------------
+> > >  b/arch/powerpc/include/asm/opal.h            |    3 
+> > >  b/arch/powerpc/include/asm/pci-bridge.h      |    1 
+> > >  b/arch/powerpc/include/asm/pci.h             |    7 
+> > >  b/arch/powerpc/platforms/powernv/Makefile    |    2 
+> > >  b/arch/powerpc/platforms/powernv/opal-call.c |    2 
+> > >  b/arch/powerpc/platforms/powernv/pci-ioda.c  |  185 -------
+> > >  b/arch/powerpc/platforms/powernv/pci.c       |   11 
+> > >  b/arch/powerpc/platforms/powernv/pci.h       |   17 
+> > >  b/arch/powerpc/platforms/pseries/pci.c       |   23 
+> > >  b/drivers/vfio/pci/Kconfig                   |    6 
+> > >  b/drivers/vfio/pci/Makefile                  |    1 
+> > >  b/drivers/vfio/pci/vfio_pci.c                |   18 
+> > >  b/drivers/vfio/pci/vfio_pci_private.h        |   14 
+> > >  b/include/uapi/linux/vfio.h                  |   38 -
+> > 
+> > 
+> > Hi Christoph,
+> > 
+> > FYI, these uapi changes break build of QEMU.
+> 
+> What uapi changes?
+> 
 
---=20
-With Best Regards,
-Andy Shevchenko
+All macros and structure definitions that are being removed
+from include/uapi/linux/vfio.h by patch 1.
+
+> What exactly breaks?
+> 
+
+These macros and types are used by the current QEMU code base.
+Next time the QEMU source tree updates its copy of the kernel
+headers, the compilation of affected code will fail.
+
+> Why does QEMU require kernel driver stuff?
+> 
+
+Not sure to understand the question... is there a problem
+with QEMU using an already published uapi ?
+
+> thanks,
+> 
+> greg k-h
+
