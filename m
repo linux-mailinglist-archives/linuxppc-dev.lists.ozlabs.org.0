@@ -1,80 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16F237292C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 12:46:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A57372964
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 13:03:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZGjC5GKyz30CY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 20:46:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZH5c0dSkz30DF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 21:03:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=p7DkYeio;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=N0XJMVzc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
- helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
+ smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.51;
+ helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=p7DkYeio; dkim-atps=neutral
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=N0XJMVzc; 
+ dkim-atps=neutral
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
+ [85.215.255.51])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZGhm4lh4z2xYf
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 20:45:43 +1000 (AEST)
-Received: by mail-pf1-x434.google.com with SMTP id m11so6994069pfc.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 03:45:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=NzulqpGXM5w5pbBDoWf6Zt2lL0qyQDu7glAD68APliU=;
- b=p7DkYeioViJvjMJTbrXN9jB35aFlGdkToMQwMRyApflylJ7Kektylvh18Y9Rrxinkt
- uzro21bu3tfZdhNM5XAL+BfnxNRL2KCEZuYFNo/pFyWIHWJM7+r0/xCjmi+VQGAY8Cm0
- 7/ZbdIbCryQn/nG95MCHqbIBjk+HTn52+3tIZh57qSgRmbivYIDar6x5vasp/yR7jRdW
- JRbWi+543+b0L35YNApI5D/m1/4lQaZV/DV+V2hBGq4MDavU0bexh+N2GBofStPaJToe
- gWRdaeEmbhoxBJkeaRjqHlo3X+UseszgHsX/8zudmBjPRKlkmhT+1K5Elp/2NRHAUyYH
- 8GZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=NzulqpGXM5w5pbBDoWf6Zt2lL0qyQDu7glAD68APliU=;
- b=EbS/MC/DRvjZHeIOCPaMbjiAlUuwx8wAANG6vsYQb/R9fa/Os8tZEFbpwdJYIINE4M
- V25GJy4jRQGiroVVb16B690N/hhewxg280hljHZUbsZZGtDGUhflS3FOJRrw1yifQ5GN
- 6ZNphQKqSokVDAByIX5Bh6aH5+4p5mmWSk15YttyG0l7N/rjOpTmMKrk6gLMj6CV6ADM
- NkFDqwPFtvR3SHxS4/DjFc+gSC1QP2LMQIAgQTux9Hw06GEiCHa2ApIzgVhDJxkU9sIK
- YWANEvQHSZyu4CFMiRSw8JdM2odURL8DxNswr1KiiSWnOEBh3IOrkNu0rUv01UjrIyOe
- HARA==
-X-Gm-Message-State: AOAM533r2cC+1llSorVGcH5p6gtS87SEhtGq0APVEhAV1eDRC+0M/oUE
- oQmUdFt5KN/+C0pywWnmOtbyCNw3GIA=
-X-Google-Smtp-Source: ABdhPJy1My9LYPZ1e7JRoyVzM8wMjJUDPWR1LuYSSprisqfMmWBKMpJejj3b3nqOKsuRsbKyD3ECtA==
-X-Received: by 2002:aa7:814c:0:b029:250:13db:3c6e with SMTP id
- d12-20020aa7814c0000b029025013db3c6emr23445626pfn.65.1620125140012; 
- Tue, 04 May 2021 03:45:40 -0700 (PDT)
-Received: from localhost ([61.68.127.20])
- by smtp.gmail.com with ESMTPSA id ga1sm13446243pjb.5.2021.05.04.03.45.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 May 2021 03:45:39 -0700 (PDT)
-Date: Tue, 04 May 2021 20:45:34 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 4/4] powerpc/pseries: warn if recursing into the hcall
- tracing code
-To: linuxppc-dev@lists.ozlabs.org, "Naveen N. Rao"
- <naveen.n.rao@linux.vnet.ibm.com>
-References: <20210423031108.1046067-1-npiggin@gmail.com>
- <20210423031108.1046067-5-npiggin@gmail.com>
- <1619531703.lv0qigovgz.naveen@linux.ibm.com>
- <1619832142.gw4mrldjdp.astroid@bobo.none>
- <1620123377.d2jb7v70z0.naveen@linux.ibm.com>
-In-Reply-To: <1620123377.d2jb7v70z0.naveen@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZH515P40z2xy4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 21:03:15 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1620126145; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=Bcj2b/OeLCSXbshNqgLc6AcHKlMB+rnJ1fzkDRsVz2UO7U7tq3UH6DaP2b8SbE7inR
+ ncvCzPm6KYt3CwBEv4/s+f/futnRbqi36/h0P4aLwCtj6X6KE/UiUDHFu1jm5FAiVTTU
+ jdiGDPDHCkouP3vpbSB+n7slIWkvt36zHTO2neXaLpZmI1mtJwthwzhAp3bSZyTxPmwj
+ jx92JEDtclTi8QDvRURz13bsHIYlFwLpJz57AeEgr0vrBbZYZf8/6Cs8udE67RnFDx6O
+ Ag6aWphlsjEq6G72IoyNY4C84cmU/1LBcQGBTHGHTowIxNQ0VToLnk+a30FvAyxrg/TA
+ KJkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620126145;
+ s=strato-dkim-0002; d=strato.com;
+ h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=bLdEt7pxkc6ROYKkNXiF2l/dABLikkh1oOwkkMpjZk4=;
+ b=ssNSDiC3hm8qM+JSG2qSPsWpWQparWQX1MHjrk+EhNQlT9ZOPKFzQWYgfglDz+nXmc
+ xdNYgvzgKq2xVVk+Z2LIGVOwC4zlxclME5wkL0spJkF+Dxp1cTLcKX+Es3xxrhJ9X2dV
+ ptuP4834qjJGfPee+yhl1iPzXKCjnsQFwylx41MruWYnDZzhnN9hauXOvxOgmQNm/mSr
+ 5tH6AgD1twBs0DxEH2bpBDSTE1FHpOKxLO9zGKYdb50nDro/TrJx9ZmDzwhUFya9XJOI
+ GdD+RgDMUnaFp7v7R35Nn85Kp5KuYm6/j0gDqfL4XdTgJjPX1qYols6ibMwwhO70ugHq
+ NFpQ==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620126145;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=bLdEt7pxkc6ROYKkNXiF2l/dABLikkh1oOwkkMpjZk4=;
+ b=N0XJMVzcd/RHkMfysFjCeKr/5WkcvMQKoGG8w5EupHcRwzCqSH/lB68Ix24aa/vzm+
+ Uiy6KUwgFUYvtV/7DcoZshrxqzn+deTuI8TSP+FecJ4OWEjEANq7rsug3arLTlBzLPXk
+ kjoa3NMJs8zkBcv5Zf/46t8kMkc/EPJ4cSeYregehzp0X1gc/k4OEms2HDlZeSNEXNGX
+ Ov8piS5NnFVTK27rXiDX8ThNbH7qRuXMRbFKSxeBVKpUGQD5Lmq/B0SXsGsMtxEBThFA
+ 0SmRHc8twehs4tiS49IDXQkJa4dxdIyKVQxws5Pya8B8mhk9E9Efky/QrvpqwivdCF/6
+ HYgw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSIhsJhhV/a8MrHM5J4CoqSoOzBQ=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:14dd:6e8f:db34:91bd]
+ by smtp.strato.de (RZmta 47.25.6 AUTH)
+ with ESMTPSA id D075c0x44B2N1VB
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Tue, 4 May 2021 13:02:23 +0200 (CEST)
+Subject: Re: [FSL P50x0] Xorg always restarts again and again after the the
+ PowerPC updates 5.13-1
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <3eedbe78-1fbd-4763-a7f3-ac5665e76a4a@xenosoft.de>
+ <c5b0ac7c-525f-0208-7587-c90427eae137@xenosoft.de>
+ <0886c1dc-e946-69cb-a0a9-57247acfd080@csgroup.eu>
+ <9864cd72-f1aa-4cf5-1cda-b3a10233b24d@xenosoft.de>
+ <1b0307be-05cd-ab62-8b22-75ffb59ff76b@csgroup.eu>
+ <daace050-6233-77ea-4517-0fd3c4b21057@xenosoft.de>
+ <30f559f4-b50a-de63-94e1-761022468684@csgroup.eu>
+ <c9a692b4-0ac0-d595-10fa-c3213b1518fc@xenosoft.de>
+ <3b7daea5-7b2b-a089-0427-3becb986b6f5@csgroup.eu>
+ <1502fb22-680c-7393-238c-f82570806717@xenosoft.de>
+ <6a322f04-a81e-ae31-1425-19fda9307b23@csgroup.eu>
+ <f253fc33-daa1-e668-31b3-593991531ffb@xenosoft.de>
+Message-ID: <6d3ae417-48de-3b61-f6fe-da951d74fef3@xenosoft.de>
+Date: Tue, 4 May 2021 13:02:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Message-Id: <1620124973.i3ngst0czr.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <f253fc33-daa1-e668-31b3-593991531ffb@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,60 +106,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Darren Stevens <darren@stevens-zone.net>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Naveen N. Rao's message of May 4, 2021 8:25 pm:
-> Nicholas Piggin wrote:
->> Excerpts from Naveen N. Rao's message of April 27, 2021 11:59 pm:
->>> Nicholas Piggin wrote:
->>>> + *
->>>> + * H_CONFER from spin locks must be treated separately though and use=
- _notrace
->>>> + * plpar_hcall variants, see yield_to_preempted().
->>>>   */
->>>>  static DEFINE_PER_CPU(unsigned int, hcall_trace_depth);
->>>>=20
->>>> @@ -1843,7 +1846,7 @@ notrace void __trace_hcall_entry(unsigned long o=
-pcode, unsigned long *args)
->>>>=20
->>>>  	depth =3D this_cpu_ptr(&hcall_trace_depth);
->>>>=20
->>>> -	if (*depth)
->>>> +	if (WARN_ON_ONCE(*depth))
->>>>  		goto out;
->>>=20
->>> I don't think this will be helpful. The hcall trace depth tracking is=20
->>> for the tracepoint and I suspect that this warning will be triggered=20
->>> quite easily. Since we have recursion protection, I don't think we=20
->>> should warn here.
->>=20
->> What would trigger recursion?
->=20
-> The trace code that this protects: trace_hcall_entry(). The tracing code=20
-> itself can end up doing a hcall as we see in the first patch in this=20
-> series:
->   plpar_hcall_norets_trace+0x34/0x8c (unreliable)
->   __pv_queued_spin_lock_slowpath+0x684/0x710
->   trace_clock_global+0x148/0x150
->   ring_buffer_lock_reserve+0x12c/0x630
->   trace_event_buffer_lock_reserve+0x80/0x220
->   trace_event_buffer_reserve+0x7c/0xd0
->   trace_event_raw_event_hcall_entry+0x68/0x150
->   __trace_hcall_entry+0x160/0x180
->=20
->=20
-> There is also a comment aroung hcall_trace_depth that mentions this:
->=20
->   /*
->    * Since the tracing code might execute hcalls we need to guard against
->    * recursion. One example of this are spinlocks calling H_YIELD on
->    * shared processor partitions.
->    */
-
-Right but since fixing those, my thought is we better not cause more
-any recursion, so we should fix anything that does.
-
-Thanks,
-Nick
+Am 04.05.21 um 12:07 schrieb Christian Zigotzky:
+> Am 04.05.21 um 11:49 schrieb Christophe Leroy:
+>>
+>>
+>> Le 04/05/2021 à 11:46, Christian Zigotzky a écrit :
+>>> Am 04.05.21 um 11:11 schrieb Christophe Leroy:
+>>>>
+>>>>
+>>>> Le 04/05/2021 à 11:09, Christian Zigotzky a écrit :
+>>>>> Am 04.05.21 um 10:58 schrieb Christophe Leroy:
+>>>>>>
+>>>>>>
+>>>>>> Le 04/05/2021 à 10:29, Christian Zigotzky a écrit :
+>>>>>>> On 04 May 2021 at 09:47am, Christophe Leroy wrote:
+>>>>>>>> Hi
+>>>>>>>>
+>>>>>>>> Le 04/05/2021 à 09:21, Christian Zigotzky a écrit :
+>>>>>>>>> Hi Christophe,
+>>>>>>>>>
+>>>>>>>>> Thanks for your answer but I think I don't know how it works 
+>>>>>>>>> with the cherry-pick.
+>>>>>>>>>
+>>>>>>>>> $ git bisect start
+>>>>>>>>
+>>>>>>>> As you suspect the problem to be specific to powerpc, I can do
+>>>>>>>>
+>>>>>>>> git bisect start -- arch/powerpc
+>>>>>>>>
+>>>>>>>>
+>>>>>>>>> $ git bisect good 68a32ba14177d4a21c4a9a941cf1d7aea86d436f
+>>>>>>>>> $ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
+>>>>>>>>
+>>>>>>>> You said that powerpc-5.13-1 is bad so you can narrow the 
+>>>>>>>> search I think:
+>>>>>>>>
+>>>>>>>> git bisect bad powerpc-5.13-1
+>>>>>>>> git bisect good 887f3ceb51cd3~
+>>>>>>> I tried it but without any success.
+>>>>>>>
+>>>>>>> git bisect bad powerpc-5.13-1
+>>>>>>>
+>>>>>>> Output:
+>>>>>>> fatal: Needed a single revision
+>>>>>>> Bad rev input: powerpc-5.13-1
+>>>>>>
+>>>>>> I don't understand, on my side it works. Maybe a difference 
+>>>>>> between your version of git and mine.
+>>>>>>
+>>>>>> In that case, just use the SHA corresponding to the merge:
+>>>>>>
+>>>>>> git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
+>>>>>>
+>>>>>> Christophe
+>>>>> Do you use a BookE machine?
+>>>>
+>>>> No I don't unfortunately, and I have tried booting in QEMU a kernel 
+>>>> built with your config, but it freezes before any output.
+>>> You can use my kernels and distributions.
+>>>
+>>
+>> Ok, I'll see if I can do something with them.
+>>
+>> In the meantime, have you been able to bisect ?
+>>
+>> Thanks
+>> Christophe
+> I am bisecting currently.
+>
+> $ git bisect start -- arch/powerpc
+> $ git bisect good 887f3ceb51cd3~
+> $ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
+OK, there is another issue after the second bisecting step. The boot 
+stops after loading the dtb and uImage file. I can't solve 2 issues with 
+bisecting at the same time.
