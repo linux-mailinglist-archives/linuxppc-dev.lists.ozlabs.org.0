@@ -1,51 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E95F372B0B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 15:30:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F04372B4A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 15:46:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZLMB2KVJz301C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 23:30:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZLj52dlvz2yxk
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 23:46:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=rtsctj9O;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fpFybIt/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=rtsctj9O; 
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=fpFybIt/; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZLLj2pGGz2yRK
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 23:30:21 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0354A611AC;
- Tue,  4 May 2021 13:30:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1620135017;
- bh=K7jOMW5zxYrXVgqj4YX3jlgoXwGfte8Q1gPc0IQQxmg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=rtsctj9Ov4ebaVfqmb8gRZiVYEWb9O63QSOpgigHe4Bfem/KRiz924DWKfJrXCA1x
- W4d/PdSPAuO3zWlqN2xdW0Ro5Srwxz2EwzPkSRaNhB9OEvbctTVDx4HN9Behn8Fwwp
- nhrWTmovaEXCGQD5zqQXRd2b0oKZ8L3sVy0jARV8=
-Date: Tue, 4 May 2021 15:30:15 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Greg Kurz <groug@kaod.org>
-Subject: Re: remove the nvlink2 pci_vfio subdriver v2
-Message-ID: <YJFMZ8KYVCDwUBPU@kroah.com>
-References: <20210326061311.1497642-1-hch@lst.de>
- <20210504142236.76994047@bahia.lan> <YJFFG1tSP0dUCxcX@kroah.com>
- <20210504152034.18e41ec3@bahia.lan>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZLhG2JPmz2yjc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 23:45:34 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4FZLh820RJz9sRR; Tue,  4 May 2021 23:45:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1620135928;
+ bh=VdP4NZy0Ndy017D9KLQZzMqWq8C4q4bKR7op3ZOM8ms=;
+ h=From:To:Cc:Subject:Date:From;
+ b=fpFybIt/BPjlcIVIshJzSgOxRpjNWYcuUxMg5YNcg7HZAhUI/gtHKf8qqf4/KnLgi
+ ypGhMswv0DB2US9uCYHzHZ6SHFZ8oEnK+BOYHlEXqjndEJce6YQPBdvrFyUNFKrEeu
+ WrzdomhqQZZJfvtbDvWEV1ne4Yp4aGYYTf5TYwnKMm2VN9kvXMN0i5Zd5qeQPbqJHQ
+ WIVz7fL5zEZHN0rr0Zi7DRcN1QPIbRfGnteOPbsNsYv4kdEvVPS74/j+nEQWqu0Sxo
+ LOd9h187Q4IRRXd6V6BLlNUhRLsb6MeA1S2EDQpXmuW+djTtmI4iV1UREchw/hrF+t
+ tkL0ok9b4y2aA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] powerpc/64s: Fix crashes when toggling stf barrier
+Date: Tue,  4 May 2021 23:42:49 +1000
+Message-Id: <20210504134250.890401-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210504152034.18e41ec3@bahia.lan>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,86 +56,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Vetter <daniel@ffwll.ch>, kvm@vger.kernel.org,
- David Airlie <airlied@linux.ie>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, qemu-devel@nongnu.org,
- Alex Williamson <alex.williamson@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Jason Gunthorpe <jgg@nvidia.com>,
- linux-api@vger.kernel.org, qemu-ppc@nongnu.org, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>
+Cc: nathanl@linux.ibm.com, anton@samba.org, npiggin@gmail.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 04, 2021 at 03:20:34PM +0200, Greg Kurz wrote:
-> On Tue, 4 May 2021 14:59:07 +0200
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> 
-> > On Tue, May 04, 2021 at 02:22:36PM +0200, Greg Kurz wrote:
-> > > On Fri, 26 Mar 2021 07:13:09 +0100
-> > > Christoph Hellwig <hch@lst.de> wrote:
-> > > 
-> > > > Hi all,
-> > > > 
-> > > > the nvlink2 vfio subdriver is a weird beast.  It supports a hardware
-> > > > feature without any open source component - what would normally be
-> > > > the normal open source userspace that we require for kernel drivers,
-> > > > although in this particular case user space could of course be a
-> > > > kernel driver in a VM.  It also happens to be a complete mess that
-> > > > does not properly bind to PCI IDs, is hacked into the vfio_pci driver
-> > > > and also pulles in over 1000 lines of code always build into powerpc
-> > > > kernels that have Power NV support enabled.  Because of all these
-> > > > issues and the lack of breaking userspace when it is removed I think
-> > > > the best idea is to simply kill.
-> > > > 
-> > > > Changes since v1:
-> > > >  - document the removed subtypes as reserved
-> > > >  - add the ACK from Greg
-> > > > 
-> > > > Diffstat:
-> > > >  arch/powerpc/platforms/powernv/npu-dma.c     |  705 ---------------------------
-> > > >  b/arch/powerpc/include/asm/opal.h            |    3 
-> > > >  b/arch/powerpc/include/asm/pci-bridge.h      |    1 
-> > > >  b/arch/powerpc/include/asm/pci.h             |    7 
-> > > >  b/arch/powerpc/platforms/powernv/Makefile    |    2 
-> > > >  b/arch/powerpc/platforms/powernv/opal-call.c |    2 
-> > > >  b/arch/powerpc/platforms/powernv/pci-ioda.c  |  185 -------
-> > > >  b/arch/powerpc/platforms/powernv/pci.c       |   11 
-> > > >  b/arch/powerpc/platforms/powernv/pci.h       |   17 
-> > > >  b/arch/powerpc/platforms/pseries/pci.c       |   23 
-> > > >  b/drivers/vfio/pci/Kconfig                   |    6 
-> > > >  b/drivers/vfio/pci/Makefile                  |    1 
-> > > >  b/drivers/vfio/pci/vfio_pci.c                |   18 
-> > > >  b/drivers/vfio/pci/vfio_pci_private.h        |   14 
-> > > >  b/include/uapi/linux/vfio.h                  |   38 -
-> > > 
-> > > 
-> > > Hi Christoph,
-> > > 
-> > > FYI, these uapi changes break build of QEMU.
-> > 
-> > What uapi changes?
-> > 
-> 
-> All macros and structure definitions that are being removed
-> from include/uapi/linux/vfio.h by patch 1.
-> 
-> > What exactly breaks?
-> > 
-> 
-> These macros and types are used by the current QEMU code base.
-> Next time the QEMU source tree updates its copy of the kernel
-> headers, the compilation of affected code will fail.
+The STF (store-to-load forwarding) barrier mitigation can be
+enabled/disabled at runtime via a debugfs file (stf_barrier), which
+causes the kernel to patch itself to enable/disable the relevant
+mitigations.
 
-So does QEMU use this api that is being removed, or does it just have
-some odd build artifacts of the uapi things?
+However depending on which mitigation we're using, it may not be safe to
+do that patching while other CPUs are active. For example the following
+crash:
 
-What exactly is the error messages here?
+  User access of kernel address (c00000003fff5af0) - exploit attempt? (uid: 0)
+  segfault (11) at c00000003fff5af0 nip 7fff8ad12198 lr 7fff8ad121f8 code 1
+  code: 40820128 e93c00d0 e9290058 7c292840 40810058 38600000 4bfd9a81 e8410018
+  code: 2c030006 41810154 3860ffb6 e9210098 <e94d8ff0> 7d295279 39400000 40820a3c
 
-And if we put the uapi .h file stuff back, is that sufficient for qemu
-to work, as it should be checking at runtime what the kernel has / has
-not anyway, right?
+Shows that we returned to userspace without restoring the user r13
+value, due to executing the partially patched STF exit code.
 
-thanks,
+Fix it by doing the patching under stop machine. The CPUs that aren't
+doing the patching will be spinning in the core of the stop machine
+logic. That is currently sufficient for our purposes, because none of
+the patching we do is to that code or anywhere in the vicinity.
 
-greg k-h
+Fixes: a048a07d7f45 ("powerpc/64s: Add support for a store forwarding barrier at kernel entry/exit")
+Cc: stable@vger.kernel.org # v4.17+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/lib/feature-fixups.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
+index 1fd31b4b0e13..8f8c8c98a6ac 100644
+--- a/arch/powerpc/lib/feature-fixups.c
++++ b/arch/powerpc/lib/feature-fixups.c
+@@ -14,6 +14,7 @@
+ #include <linux/string.h>
+ #include <linux/init.h>
+ #include <linux/sched/mm.h>
++#include <linux/stop_machine.h>
+ #include <asm/cputable.h>
+ #include <asm/code-patching.h>
+ #include <asm/page.h>
+@@ -227,11 +228,25 @@ static void do_stf_exit_barrier_fixups(enum stf_barrier_type types)
+ 		                                           : "unknown");
+ }
+ 
+-
+-void do_stf_barrier_fixups(enum stf_barrier_type types)
++static int __do_stf_barrier_fixups(void *data)
+ {
++	enum stf_barrier_type types = (enum stf_barrier_type)data;
++
+ 	do_stf_entry_barrier_fixups(types);
+ 	do_stf_exit_barrier_fixups(types);
++
++	return 0;
++}
++
++void do_stf_barrier_fixups(enum stf_barrier_type types)
++{
++	/*
++	 * The call to the fallback entry flush, and the fallback/sync-ori exit
++	 * flush can not be safely patched in/out while other CPUs are executing
++	 * them. So call __do_stf_barrier_fixups() on one CPU while all other CPUs
++	 * spin in the stop machine core with interrupts hard disabled.
++	 */
++	stop_machine_cpuslocked(__do_stf_barrier_fixups, (void *)types, NULL);
+ }
+ 
+ void do_uaccess_flush_fixups(enum l1d_flush_type types)
+-- 
+2.25.1
+
