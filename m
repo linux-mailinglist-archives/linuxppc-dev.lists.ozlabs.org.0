@@ -2,98 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B829D372874
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 12:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA79372895
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 12:14:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZFsP5fvzz3001
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 20:08:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZG103yGkz301F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 20:14:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=SGHUYHPc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ntW8xcKQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.164;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
+ helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=SGHUYHPc; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [81.169.146.164])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ntW8xcKQ; dkim-atps=neutral
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
+ [IPv6:2607:f8b0:4864:20::62b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZFrt13c8z2yRK
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 20:07:40 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1620122828; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=kT40niqsnGntUP2AzEwK/9KCoYvl0yLPDdEXVyn+30se4XYGgoctp7GuWfIhazAwpf
- mP/hilePWTA8QoKL1UuSaUuzVeQwvK2fjaTjbLhuuhvlKHMgwHdbaDJsApaDkW6cLLOc
- 816TSQfl+msyUnNxQn+5EBroELRZKrdb6S8bsvEBMoiL7w2rqIW0t1jFif5VqbyVmAGv
- oemozGVoufVBtYTua3jOng0Pdahd3yejnn0biBCQ+Gpr3UFtDwth8m7CmhnQXnDHrdnD
- k/yz9VAlb5I3PMYx8ykYLeOKqBpCuXiTOuktmj8/65H7mgpJq/rWAcaqDie6ujH5DCjn
- WPoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620122828;
- s=strato-dkim-0002; d=strato.com;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
- From:Subject:Sender;
- bh=ftNwKecT/lbbzSRvvxruyi+GhNbJ2Go83E59q1ttgWc=;
- b=f4pdSMhx21tY4EUB7sXlkXBoJjd+zHfubwgDxO71paOXhiGICiksZlWI6Ujm1n3ZM6
- PgJ3/oXpWbjT6FFq29dLmcYQJrBuf3bkg1PcXcJ/RGjre96Awygzd8zBhjiNzDGfkSlq
- clTDfnPs0+blvF9tRqMpU5lqJKHL20dUdX4+4yKTc/6rtfU5aRYsQvutbhhU7miVEn7T
- fN6sRrFSZ7YrM2gXzTJYVxEip7NxdQawN8vyZU/9hFG8y+vLpaSAav8haj5ZVVAL85NA
- IoDivSbAPnqhXQDMY7At4p40l90brCcDHhduOyW/KAIM/sADMvcKZShlPTZOyN7Xc37+
- ILoA==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620122828;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
- From:Subject:Sender;
- bh=ftNwKecT/lbbzSRvvxruyi+GhNbJ2Go83E59q1ttgWc=;
- b=SGHUYHPcsR0tiz3xEHHz4CnthsfV+g9H6zPu0ltApDtBmX/WHfIl7G4ZWmujJjOlFB
- rtMDHVR6Zd1VacuwIrcvjJ6laemppyeiMnYdyA6FfsfgIsDfxD6Xbrpl+Nz73140L1nK
- Oxu6/E431McitYm6rqBBIsfJNrWflk9COJxFwDsgI3PDabpcrhfQES6rkciTRB/dOQy0
- RHH4PMEQQS0Ruwq+KNm0DKonFptW8IRO7uiPoGLYtcNMNnz47Y+1wkjqoLNeCrpj+OZH
- V7w4hOFaFRHuDFdoNMYh/BpXYExxyTbwuEtkK8ZXNGgvv3JmsNUeB9h/iKK0A5JLmL5g
- 6AZA==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSIhsJhhV/a8MrHM5J4CoqSoOzBQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:14dd:6e8f:db34:91bd]
- by smtp.strato.de (RZmta 47.25.6 AUTH)
- with ESMTPSA id D075c0x44A771B2
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 4 May 2021 12:07:07 +0200 (CEST)
-Subject: Re: [FSL P50x0] Xorg always restarts again and again after the the
- PowerPC updates 5.13-1
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <3eedbe78-1fbd-4763-a7f3-ac5665e76a4a@xenosoft.de>
- <c5b0ac7c-525f-0208-7587-c90427eae137@xenosoft.de>
- <0886c1dc-e946-69cb-a0a9-57247acfd080@csgroup.eu>
- <9864cd72-f1aa-4cf5-1cda-b3a10233b24d@xenosoft.de>
- <1b0307be-05cd-ab62-8b22-75ffb59ff76b@csgroup.eu>
- <daace050-6233-77ea-4517-0fd3c4b21057@xenosoft.de>
- <30f559f4-b50a-de63-94e1-761022468684@csgroup.eu>
- <c9a692b4-0ac0-d595-10fa-c3213b1518fc@xenosoft.de>
- <3b7daea5-7b2b-a089-0427-3becb986b6f5@csgroup.eu>
- <1502fb22-680c-7393-238c-f82570806717@xenosoft.de>
- <6a322f04-a81e-ae31-1425-19fda9307b23@csgroup.eu>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <f253fc33-daa1-e668-31b3-593991531ffb@xenosoft.de>
-Date: Tue, 4 May 2021 12:07:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZG0Y28J5z2xy4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 20:14:18 +1000 (AEST)
+Received: by mail-pl1-x62b.google.com with SMTP id h7so4590954plt.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 03:14:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=G4WSnegt7sWFXhiZUo/H8mFA8YOfhqB3H/FcAZj7hT8=;
+ b=ntW8xcKQmgkUHISGAF4IzI224Ye5tabfMbPJRLiGbqY7Rr3tclDi+8u7+XIWZyZtp8
+ W+24vVGh+Kb8PFB+eQPqOIeCNFJpo0a340nCJBRd3HIg5i0kBMtxTV6QbGjpSw5VUzPr
+ Es0CARIQQfdBNbktqpmur+D+QCZX0ULZyXeGUbQHEgula8cLINk5YZ7mFyfkirrg/Xr7
+ yDKIvXXPAtuNV4KAYn+xfXt2c4rFpKGP7HswvwXxlMCQtAfrysEUsciTLeiOxAc/wAEc
+ U5TiqfL3po4tzJvQhJDbGhCfniUbK7Mchh6W4VAF1acttTlXf3QjdwcGFm0jCXD8cv2+
+ PPyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=G4WSnegt7sWFXhiZUo/H8mFA8YOfhqB3H/FcAZj7hT8=;
+ b=ueIDO3xMwFs3A4+H28bzbZaRhL8c5Hci54JSzQtzK099B7qP7Z+IqYzYw9kssQTz+N
+ qGXqJLHrvqtJLzGtRI9TmplIPw7POj/c5an/zdB4m64huGdwcFrgznvjSKyHWkWCzUrQ
+ LGTIxc4Kpe2rPzMgQmom4BXkk6irrnwuFTpMgiWThXODhH1uPdEu/86bu2wP+kClVW/+
+ lIrm85KRkwVtQRr/VRshVevRUgpfHhBLqndaDE3+dbF9PTcVH6ifq74caO1E67AfA8uI
+ LOEM15HVC7ZgdesYLX+qpRbfQnkdCS8MeEkWDRt8cLEJ/vQg5MYeSTItNJpdu50W5hNo
+ 2cWQ==
+X-Gm-Message-State: AOAM531mhAeRuS4pQODC5l0K8DBNBGNh1K0BXNCXp21qxvJzPwl8hOUC
+ 26QlraVnQvCjSaOepMcoK3s=
+X-Google-Smtp-Source: ABdhPJxdWLerj3PVzICFvrxooqDo1msdzSUrDqhSN6Tldy17O34vbf0IFxgXhrojl9ihycNwkeo44w==
+X-Received: by 2002:a17:902:c211:b029:ed:7a6b:d4bf with SMTP id
+ 17-20020a170902c211b02900ed7a6bd4bfmr25144155pll.63.1620123255583; 
+ Tue, 04 May 2021 03:14:15 -0700 (PDT)
+Received: from localhost ([61.68.127.20])
+ by smtp.gmail.com with ESMTPSA id b1sm3120712pgf.84.2021.05.04.03.14.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 May 2021 03:14:15 -0700 (PDT)
+Date: Tue, 04 May 2021 20:14:09 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 1/2] powerpc/asm-offset: Remove unused items related to
+ paca
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <f38728dbe96df5fef84c868640def5f6d7c114bc.1620060357.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <f38728dbe96df5fef84c868640def5f6d7c114bc.1620060357.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <6a322f04-a81e-ae31-1425-19fda9307b23@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+Message-Id: <1620121538.q0b7uiea5y.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,81 +83,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am 04.05.21 um 11:49 schrieb Christophe Leroy:
->
->
-> Le 04/05/2021 à 11:46, Christian Zigotzky a écrit :
->> Am 04.05.21 um 11:11 schrieb Christophe Leroy:
->>>
->>>
->>> Le 04/05/2021 à 11:09, Christian Zigotzky a écrit :
->>>> Am 04.05.21 um 10:58 schrieb Christophe Leroy:
->>>>>
->>>>>
->>>>> Le 04/05/2021 à 10:29, Christian Zigotzky a écrit :
->>>>>> On 04 May 2021 at 09:47am, Christophe Leroy wrote:
->>>>>>> Hi
->>>>>>>
->>>>>>> Le 04/05/2021 à 09:21, Christian Zigotzky a écrit :
->>>>>>>> Hi Christophe,
->>>>>>>>
->>>>>>>> Thanks for your answer but I think I don't know how it works 
->>>>>>>> with the cherry-pick.
->>>>>>>>
->>>>>>>> $ git bisect start
->>>>>>>
->>>>>>> As you suspect the problem to be specific to powerpc, I can do
->>>>>>>
->>>>>>> git bisect start -- arch/powerpc
->>>>>>>
->>>>>>>
->>>>>>>> $ git bisect good 68a32ba14177d4a21c4a9a941cf1d7aea86d436f
->>>>>>>> $ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
->>>>>>>
->>>>>>> You said that powerpc-5.13-1 is bad so you can narrow the search 
->>>>>>> I think:
->>>>>>>
->>>>>>> git bisect bad powerpc-5.13-1
->>>>>>> git bisect good 887f3ceb51cd3~
->>>>>> I tried it but without any success.
->>>>>>
->>>>>> git bisect bad powerpc-5.13-1
->>>>>>
->>>>>> Output:
->>>>>> fatal: Needed a single revision
->>>>>> Bad rev input: powerpc-5.13-1
->>>>>
->>>>> I don't understand, on my side it works. Maybe a difference 
->>>>> between your version of git and mine.
->>>>>
->>>>> In that case, just use the SHA corresponding to the merge:
->>>>>
->>>>> git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
->>>>>
->>>>> Christophe
->>>> Do you use a BookE machine?
->>>
->>> No I don't unfortunately, and I have tried booting in QEMU a kernel 
->>> built with your config, but it freezes before any output.
->> You can use my kernels and distributions.
->>
->
-> Ok, I'll see if I can do something with them.
->
-> In the meantime, have you been able to bisect ?
->
-> Thanks
-> Christophe
-I am bisecting currently.
+Excerpts from Christophe Leroy's message of May 4, 2021 2:46 am:
+> PACA_SIZE, PACACONTEXTID, PACALOWSLICESPSIZE, PACAHIGHSLICEPSIZE,
+> PACA_SLB_ADDR_LIMIT, MMUPSIZEDEFSIZE, PACASLBCACHE, PACASLBCACHEPTR,
+> PACASTABRR, PACAVMALLOCSLLP, MMUPSIZESLLP, PACACONTEXTSLLP,
+> PACALPPACAPTR, LPPACA_DTLIDX and PACA_DTL_RIDX are not used anymore
+> by ASM code.
 
-$ git bisect start -- arch/powerpc
-$ git bisect good 887f3ceb51cd3~
-$ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+Also I think SIGSEGV, NMI_MASK, THREAD_DBCR0, KUAP?, TI_FLAGS,
+TI_PREEMPT, [ID]CACHEL1*, STACK_REGS_KUAP, EXC_LVL_SIZE, KVM_NEED_FLUSH,=20
+KVM_FWNMI, VCPU_DEC, VCPU_SPMC, HSTATE_XICS_PHYS, HSTATE_SAVED_XIRR,
+PPC_DBELL_MSGTYPE I think. While we're cleaning it up.
+
+>=20
+> Remove them.
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/kernel/asm-offsets.c | 24 ------------------------
+>  1 file changed, 24 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-=
+offsets.c
+> index 28af4efb4587..419ab4a89114 100644
+> --- a/arch/powerpc/kernel/asm-offsets.c
+> +++ b/arch/powerpc/kernel/asm-offsets.c
+> @@ -197,7 +197,6 @@ int main(void)
+>  	OFFSET(ICACHEL1LOGBLOCKSIZE, ppc64_caches, l1i.log_block_size);
+>  	OFFSET(ICACHEL1BLOCKSPERPAGE, ppc64_caches, l1i.blocks_per_page);
+>  	/* paca */
+> -	DEFINE(PACA_SIZE, sizeof(struct paca_struct));
+>  	OFFSET(PACAPACAINDEX, paca_struct, paca_index);
+>  	OFFSET(PACAPROCSTART, paca_struct, cpu_start);
+>  	OFFSET(PACAKSAVE, paca_struct, kstack);
+> @@ -212,15 +211,6 @@ int main(void)
+>  	OFFSET(PACAIRQSOFTMASK, paca_struct, irq_soft_mask);
+>  	OFFSET(PACAIRQHAPPENED, paca_struct, irq_happened);
+>  	OFFSET(PACA_FTRACE_ENABLED, paca_struct, ftrace_enabled);
+> -#ifdef CONFIG_PPC_BOOK3S
+> -	OFFSET(PACACONTEXTID, paca_struct, mm_ctx_id);
+> -#ifdef CONFIG_PPC_MM_SLICES
+> -	OFFSET(PACALOWSLICESPSIZE, paca_struct, mm_ctx_low_slices_psize);
+> -	OFFSET(PACAHIGHSLICEPSIZE, paca_struct, mm_ctx_high_slices_psize);
+> -	OFFSET(PACA_SLB_ADDR_LIMIT, paca_struct, mm_ctx_slb_addr_limit);
+> -	DEFINE(MMUPSIZEDEFSIZE, sizeof(struct mmu_psize_def));
+> -#endif /* CONFIG_PPC_MM_SLICES */
+> -#endif
+> =20
+>  #ifdef CONFIG_PPC_BOOK3E
+>  	OFFSET(PACAPGD, paca_struct, pgd);
+> @@ -241,21 +231,9 @@ int main(void)
+>  #endif /* CONFIG_PPC_BOOK3E */
+> =20
+>  #ifdef CONFIG_PPC_BOOK3S_64
+> -	OFFSET(PACASLBCACHE, paca_struct, slb_cache);
+> -	OFFSET(PACASLBCACHEPTR, paca_struct, slb_cache_ptr);
+> -	OFFSET(PACASTABRR, paca_struct, stab_rr);
+> -	OFFSET(PACAVMALLOCSLLP, paca_struct, vmalloc_sllp);
+> -#ifdef CONFIG_PPC_MM_SLICES
+> -	OFFSET(MMUPSIZESLLP, mmu_psize_def, sllp);
+> -#else
+> -	OFFSET(PACACONTEXTSLLP, paca_struct, mm_ctx_sllp);
+> -#endif /* CONFIG_PPC_MM_SLICES */
+>  	OFFSET(PACA_EXGEN, paca_struct, exgen);
+>  	OFFSET(PACA_EXMC, paca_struct, exmc);
+>  	OFFSET(PACA_EXNMI, paca_struct, exnmi);
+> -#ifdef CONFIG_PPC_PSERIES
+> -	OFFSET(PACALPPACAPTR, paca_struct, lppaca_ptr);
+> -#endif
+>  	OFFSET(PACA_SLBSHADOWPTR, paca_struct, slb_shadow_ptr);
+>  	OFFSET(SLBSHADOW_STACKVSID, slb_shadow, save_area[SLB_NUM_BOLTED - 1].v=
+sid);
+>  	OFFSET(SLBSHADOW_STACKESID, slb_shadow, save_area[SLB_NUM_BOLTED - 1].e=
+sid);
+> @@ -264,9 +242,7 @@ int main(void)
+>  #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+>  	OFFSET(PACA_PMCINUSE, paca_struct, pmcregs_in_use);
+>  #endif
+> -	OFFSET(LPPACA_DTLIDX, lppaca, dtl_idx);
+>  	OFFSET(LPPACA_YIELDCOUNT, lppaca, yield_count);
+> -	OFFSET(PACA_DTL_RIDX, paca_struct, dtl_ridx);
+>  #endif /* CONFIG_PPC_BOOK3S_64 */
+>  	OFFSET(PACAEMERGSP, paca_struct, emergency_sp);
+>  #ifdef CONFIG_PPC_BOOK3S_64
+> --=20
+> 2.25.0
+>=20
+>=20
