@@ -1,92 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91ECC37249A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 05:06:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BB537249B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 05:06:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZ4VS3V0Rz30Dl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 13:06:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZ4W068Phz3c4J
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 13:06:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V5peBaYF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Vla0jKa2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=V5peBaYF; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=Vla0jKa2; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZ4S858LCz2y6N
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZ4S93bSPz2yQw
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 13:04:08 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1442YObW120330; Mon, 3 May 2021 23:04:03 -0400
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 1442XbW2030601; Mon, 3 May 2021 23:04:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=IsNjmXBjLzS/W3YHvr0F63hKFSimB4Sh0H1ojNYSjqM=;
- b=V5peBaYFL0aRP0eMdxUciiCfim+rsE8XRvDDxroT/1fwkJe2vlfNIUjAeuZZZkYS0QMx
- tSg4vN78kSNnhKar2/GZg9S+8SSiZvWqy3+081yIzUaM4Xrm2/VCW2XWHOUAQIKLG8FA
- He4RWV6sVA/5nmmFJuD9KB9joRfDLkUIBORJxqcgI0qoJRH+1XvdvFob/BY1d/2jn5ty
- Fe+7l470ceV2ZP32Je9MtXclRTsDiM9nDJeaSLyCHuerZNyj1je9/0BkSF7sA4zViLbl
- +ETGCqkYE33r8hhTJZVrDSwoQO4bEOPpzJzeG4yDWHFzsnYukhVU2hUilTc3oSM5hOcB nA== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38awcg0nht-1
+ bh=G6wyuUYp2A/yx3daQThCxp7+e9BBg03KiMVepsRnfAc=;
+ b=Vla0jKa2ipYAWmIQQ3j4jKWs2PtMFnJLYr5ZIAYE5dHAjPDkUHwkTlrusQ7bV/78Ix/c
+ EGLWzzGXeDbxABE7RgnwUOiNPWaXCCNXJr6cGcApnKxciYmQlCP/HDwFpVgNtLuyBTiX
+ NgFxlgV1KRrO068GiA4F56jcpiy7RJxiXNFYBa4dQIfi8u+eI6wZYrrcHAjgakjpjoqG
+ kBzC1s86Mo+6P/F/C675Ymwtxw3CJYd9g1Y0+x4cpfSQWSnPB4Ye4gahzaZOIqoQdCRK
+ 3yKkSxPB6M3uc4OQRmGdOIW72KwoFKBA0MPnL1aHmP/s2+njHJ/ZusyjsfLU/vh3R3/m Og== 
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 38awe7gmaq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 03 May 2021 23:04:03 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1442wX1X017387;
- Tue, 4 May 2021 03:04:02 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma03dal.us.ibm.com with ESMTP id 388xm972gv-1
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1442vZsj016832;
+ Tue, 4 May 2021 03:04:03 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma04dal.us.ibm.com with ESMTP id 388xm9q1yw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 May 2021 03:04:02 +0000
+ Tue, 04 May 2021 03:04:03 +0000
 Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
  [9.57.199.111])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 144341g835848524
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 144342mT40567078
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 May 2021 03:04:01 GMT
+ Tue, 4 May 2021 03:04:02 GMT
 Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B1D5EAC059;
- Tue,  4 May 2021 03:04:01 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 8DE53AC059;
+ Tue,  4 May 2021 03:04:02 +0000 (GMT)
 Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7A45DAC068;
- Tue,  4 May 2021 03:04:01 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 46454AC05B;
+ Tue,  4 May 2021 03:04:02 +0000 (GMT)
 Received: from localhost (unknown [9.211.126.236])
  by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  4 May 2021 03:04:01 +0000 (GMT)
+ Tue,  4 May 2021 03:04:02 +0000 (GMT)
 From: Nathan Lynch <nathanl@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC 03/10] powerpc/rtas-rtc: convert get-time-of-day to
- rtas_force_spin_if_busy()
-Date: Mon,  3 May 2021 22:03:51 -0500
-Message-Id: <20210504030358.1715034-4-nathanl@linux.ibm.com>
+Subject: [RFC 04/10] powerpc/rtas-rtc: convert set-time-of-day to
+ rtas_sched_if_busy()
+Date: Mon,  3 May 2021 22:03:52 -0500
+Message-Id: <20210504030358.1715034-5-nathanl@linux.ibm.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210504030358.1715034-1-nathanl@linux.ibm.com>
 References: <20210504030358.1715034-1-nathanl@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: VGzJO8kPqkoZlaSIyhWEtr-6YJN0O8EW
-X-Proofpoint-ORIG-GUID: VGzJO8kPqkoZlaSIyhWEtr-6YJN0O8EW
+X-Proofpoint-ORIG-GUID: 0FRudzH1dlo2dvFoMoH1qcT2-CXK80IO
+X-Proofpoint-GUID: 0FRudzH1dlo2dvFoMoH1qcT2-CXK80IO
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-05-04_01:2021-05-03,
  2021-05-04 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- mlxlogscore=999 mlxscore=0 spamscore=0 bulkscore=0 malwarescore=0
- clxscore=1015 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ adultscore=0 mlxscore=0
+ malwarescore=0 bulkscore=0 mlxlogscore=999 impostorscore=0
+ priorityscore=1501 phishscore=0 clxscore=1015 spamscore=0
+ lowpriorityscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2104060000 definitions=main-2105040018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -104,79 +104,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The functions in rtas-rtc which call get-time-of-day can be invoked in
-boot, suspend, and resume paths with interrupts off. Unfortunately
-get-time-of-day can return an extended delay status, so we use
-rtas_force_spin_if_busy().
-
-In the specific case of rtas_get_rtc_time(), it is not clear why
-returning an incorrect result is better than calling again even if we
-are in interrupt context. Remove this logic.
+rtas_set_rtc_time() is called only in process context; convert this to
+rtas_sched_if_busy().
 
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
- arch/powerpc/kernel/rtas-rtc.c | 28 ++--------------------------
- 1 file changed, 2 insertions(+), 26 deletions(-)
+ arch/powerpc/kernel/rtas-rtc.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
 diff --git a/arch/powerpc/kernel/rtas-rtc.c b/arch/powerpc/kernel/rtas-rtc.c
-index a28239b8b0c0..82cb95f29a11 100644
+index 82cb95f29a11..421b92f95669 100644
 --- a/arch/powerpc/kernel/rtas-rtc.c
 +++ b/arch/powerpc/kernel/rtas-rtc.c
-@@ -17,19 +17,12 @@ time64_t __init rtas_get_boot_time(void)
+@@ -62,7 +62,7 @@ void rtas_get_rtc_time(struct rtc_time *rtc_tm)
+ 
+ int rtas_set_rtc_time(struct rtc_time *tm)
  {
- 	int ret[8];
- 	int error;
--	unsigned int wait_time;
+-	int error, wait_time;
++	int error;
  	u64 max_wait_tb;
  
  	max_wait_tb = get_tb() + tb_ticks_per_usec * 1000 * MAX_RTC_WAIT;
- 	do {
- 		error = rtas_call(rtas_token("get-time-of-day"), 0, 8, ret);
--
+@@ -72,13 +72,7 @@ int rtas_set_rtc_time(struct rtc_time *tm)
+ 				  tm->tm_mday, tm->tm_hour, tm->tm_min,
+ 				  tm->tm_sec, 0);
+ 
 -		wait_time = rtas_busy_delay_time(error);
 -		if (wait_time) {
--			/* This is boot time so we spin. */
--			udelay(wait_time*1000);
--		}
--	} while (wait_time && (get_tb() < max_wait_tb));
-+	} while (rtas_force_spin_if_busy(error) && (get_tb() < max_wait_tb));
- 
- 	if (error != 0) {
- 		printk_ratelimited(KERN_WARNING
-@@ -41,33 +34,16 @@ time64_t __init rtas_get_boot_time(void)
- 	return mktime64(ret[0], ret[1], ret[2], ret[3], ret[4], ret[5]);
- }
- 
--/* NOTE: get_rtc_time will get an error if executed in interrupt context
-- * and if a delay is needed to read the clock.  In this case we just
-- * silently return without updating rtc_tm.
-- */
- void rtas_get_rtc_time(struct rtc_time *rtc_tm)
- {
-         int ret[8];
- 	int error;
--	unsigned int wait_time;
- 	u64 max_wait_tb;
- 
- 	max_wait_tb = get_tb() + tb_ticks_per_usec * 1000 * MAX_RTC_WAIT;
- 	do {
- 		error = rtas_call(rtas_token("get-time-of-day"), 0, 8, ret);
--
--		wait_time = rtas_busy_delay_time(error);
--		if (wait_time) {
--			if (in_interrupt()) {
--				memset(rtc_tm, 0, sizeof(struct rtc_time));
--				printk_ratelimited(KERN_WARNING
--						   "error: reading clock "
--						   "would delay interrupt\n");
--				return;	/* delay not allowed */
--			}
+-			if (in_interrupt())
+-				return 1;	/* probably decrementer */
 -			msleep(wait_time);
 -		}
 -	} while (wait_time && (get_tb() < max_wait_tb));
 +	} while (rtas_sched_if_busy(error) && (get_tb() < max_wait_tb));
  
- 	if (error != 0) {
+ 	if (error != 0)
  		printk_ratelimited(KERN_WARNING
 -- 
 2.30.2
