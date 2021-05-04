@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714FD373067
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 21:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 265BC373068
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 21:09:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZTsz3Vqnz3bxg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 05:09:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZTtL1N6kz3c1P
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 05:09:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,28 +16,27 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZTrn0dr6z2yqC
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 05:08:24 +1000 (AEST)
-IronPort-SDR: 6Z0hBB9OZdLz5lhheRTUT/Eccw+9m+ftVMF5hLpvX0wb99F0XKvEEFfBz4yuD4M88/nvzzc7Dc
- BmyMorKmQuYQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9974"; a="283467381"
-X-IronPort-AV: E=Sophos;i="5.82,272,1613462400"; d="scan'208";a="283467381"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZTrn47nvz2yxX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 05:08:25 +1000 (AEST)
+IronPort-SDR: UWiN2kcRdGIibnbrdIv7XaPrVoYg+5mDqA+w7mApSsvsjK6THmEAgDEoR5+NoLq3eDkzp8qfvJ
+ lbBjza1feChA==
+X-IronPort-AV: E=McAfee;i="6200,9189,9974"; a="283467388"
+X-IronPort-AV: E=Sophos;i="5.82,272,1613462400"; d="scan'208";a="283467388"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2021 12:07:17 -0700
-IronPort-SDR: IEZzPeDB0k7JtjwQZXsL9YJMoORegrMFtldd/c/ZlkEuCvaxjP4yJZ8oboU4zjtrIbGHsBQMYO
- tyHOoNk386Xw==
+ 04 May 2021 12:07:18 -0700
+IronPort-SDR: 5t1wJq0ned5QVzhquYFXXy/H3YaNTACGOfa3FXOh7/O0IBPXKL050SdG2cXy0mi49ncGZT1wuI
+ uIrLgMe4pCnw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,272,1613462400"; d="scan'208";a="618591753"
+X-IronPort-AV: E=Sophos;i="5.82,272,1613462400"; d="scan'208";a="618591763"
 Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by fmsmga006.fm.intel.com with ESMTP; 04 May 2021 12:07:17 -0700
+ by fmsmga006.fm.intel.com with ESMTP; 04 May 2021 12:07:18 -0700
 From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
  Borislav Petkov <bp@suse.de>
-Subject: [RFC PATCH v5 12/16] watchdog/hardlockup: Use parse_option_str() to
- handle "nmi_watchdog"
-Date: Tue,  4 May 2021 12:05:22 -0700
-Message-Id: <20210504190526.22347-13-ricardo.neri-calderon@linux.intel.com>
+Subject: [RFC PATCH v5 15/16] watchdog: Expose lockup_detector_reconfigure()
+Date: Tue,  4 May 2021 12:05:25 -0700
+Message-Id: <20210504190526.22347-16-ricardo.neri-calderon@linux.intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210504190526.22347-1-ricardo.neri-calderon@linux.intel.com>
 References: <20210504190526.22347-1-ricardo.neri-calderon@linux.intel.com>
@@ -66,11 +65,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Prepare hardlockup_panic_setup() to handle a comma-separated list of
-options. Thus, it can continue parsing its own command-line options while
-ignoring paremeters that are relevant only to specific implementations of
-the hardlockup detector. Such implementations may use an early_param to
-parse their own options.
+When there are more than one implementation of the NMI watchdog, there may
+be situations in which switching from one to another is needed. For
+if the time-stamp counter becomes unstable, the HPET-based NMI watchdog
+an no longer be used.
+
+Switching to another hardlockup detector can be done cleanly by updating
+the arch-specific stub and then reconfiguring the whole lockup detector.
+Expose lockup_detector_reconfigure() to achieve this goal.
 
 Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Ashok Raj <ashok.raj@intel.com>
@@ -87,7 +89,8 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 ---
 Changes since v4:
- * None
+ * Switching to the perf-based lockup detector under the hood is hacky.
+   Instead, reconfigure the whole lockup detector.
 
 Changes since v3:
  * None
@@ -96,33 +99,54 @@ Changes since v2:
  * Introduced this patch.
 
 Changes since v1:
- * None
+ * N/A
 ---
- kernel/watchdog.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/nmi.h | 2 ++
+ kernel/watchdog.c   | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+index cf12380e51b3..73827a477288 100644
+--- a/include/linux/nmi.h
++++ b/include/linux/nmi.h
+@@ -16,6 +16,7 @@ void lockup_detector_init(void);
+ void lockup_detector_soft_poweroff(void);
+ void lockup_detector_cleanup(void);
+ bool is_hardlockup(void);
++void lockup_detector_reconfigure(void);
+ 
+ extern int watchdog_user_enabled;
+ extern int nmi_watchdog_user_enabled;
+@@ -37,6 +38,7 @@ extern int sysctl_hardlockup_all_cpu_backtrace;
+ static inline void lockup_detector_init(void) { }
+ static inline void lockup_detector_soft_poweroff(void) { }
+ static inline void lockup_detector_cleanup(void) { }
++static inline void lockup_detector_reconfigure(void) { }
+ #endif /* !CONFIG_LOCKUP_DETECTOR */
+ 
+ #ifdef CONFIG_SOFTLOCKUP_DETECTOR
 diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 107bc38b1945..4615064ee282 100644
+index 4615064ee282..96f06938dc83 100644
 --- a/kernel/watchdog.c
 +++ b/kernel/watchdog.c
-@@ -73,13 +73,13 @@ void __init hardlockup_detector_disable(void)
- 
- static int __init hardlockup_panic_setup(char *str)
- {
--	if (!strncmp(str, "panic", 5))
-+	if (parse_option_str(str, "panic"))
- 		hardlockup_panic = 1;
--	else if (!strncmp(str, "nopanic", 7))
-+	else if (parse_option_str(str, "nopanic"))
- 		hardlockup_panic = 0;
--	else if (!strncmp(str, "0", 1))
-+	else if (parse_option_str(str, "0"))
- 		nmi_watchdog_user_enabled = 0;
--	else if (!strncmp(str, "1", 1))
-+	else if (parse_option_str(str, "1"))
- 		nmi_watchdog_user_enabled = 1;
- 	return 1;
+@@ -531,7 +531,7 @@ int lockup_detector_offline_cpu(unsigned int cpu)
+ 	return 0;
  }
+ 
+-static void lockup_detector_reconfigure(void)
++void lockup_detector_reconfigure(void)
+ {
+ 	cpus_read_lock();
+ 	watchdog_nmi_stop();
+@@ -577,7 +577,7 @@ static __init void lockup_detector_setup(void)
+ }
+ 
+ #else /* CONFIG_SOFTLOCKUP_DETECTOR */
+-static void lockup_detector_reconfigure(void)
++void lockup_detector_reconfigure(void)
+ {
+ 	cpus_read_lock();
+ 	watchdog_nmi_stop();
 -- 
 2.17.1
 
