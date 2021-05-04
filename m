@@ -2,104 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEB7372FDA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 20:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63996372FDE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 20:42:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZT9z2Rd7z30Dv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 04:38:15 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hCtUV8bf;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZTGd346kz30Gj
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 04:42:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hCtUV8bf; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZT9R0XY4z2yYm
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 04:37:46 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 144IWlql003724; Tue, 4 May 2021 14:37:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=EDsTIsMyOgbB1j3Z8yy4M20ccVYQAHcvYJCex0x5/ww=;
- b=hCtUV8bfuBWr/TVFe7Og1/VbFq/IRtFXWoKFUivsCqOxATrewgqP6Fm2+5t+R1yN4F5D
- vrUghqx++60kvN+OcWFt0kKkrAPvczBE99WCoDLDHkqd/qhy6nGR5aS1xujL5TwGOLmN
- aVTCPkhKwp5O7+gQHHzMAmYLqThaYmk+Xw4YdvvoR3HxKN8c5RpYcPBaBxOXMUzbA/Od
- P7w34Q2TXZ5Vli75jj8POT+G1OxX1qlUe0bMuaj1BwAZpyuMcWLrXARTPRX3Qz42bMxh
- MM6jkUNwe8JKQXRPgeb7VWFVhOG7TiZ4jCDGr7/M+oWBzTeMknLRjvY7Pav5iASD2HH9 Wg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38bajmj7mu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 May 2021 14:37:38 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 144IX6SD004473;
- Tue, 4 May 2021 14:37:37 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38bajmj7md-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 May 2021 14:37:37 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 144ISTTJ005205;
- Tue, 4 May 2021 18:37:37 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma03dal.us.ibm.com with ESMTP id 388xm9d47j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 May 2021 18:37:37 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 144IbZ8F34996700
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 May 2021 18:37:36 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DCE4978060;
- Tue,  4 May 2021 18:37:35 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2C2DD7805C;
- Tue,  4 May 2021 18:37:35 +0000 (GMT)
-Received: from localhost (unknown [9.211.49.100])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Tue,  4 May 2021 18:37:34 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@ozlabs.org>
-Subject: Re: [PATCH v3 1/2] KVM: PPC: Book3S HV: Sanitise vcpu registers in
- nested path
-In-Reply-To: <1620115928.pogd4nj1qc.astroid@bobo.none>
-References: <20210415230948.3563415-1-farosas@linux.ibm.com>
- <20210415230948.3563415-2-farosas@linux.ibm.com>
- <1619833560.k4eybr40bg.astroid@bobo.none>
- <YJDNbFQlB9DHnI6Z@thinks.paulus.ozlabs.org>
- <1620105163.ok9nw6k5yz.astroid@bobo.none>
- <YJD5lwY4JXyS1VgH@thinks.paulus.ozlabs.org>
- <1620115928.pogd4nj1qc.astroid@bobo.none>
-Date: Tue, 04 May 2021 15:37:32 -0300
-Message-ID: <87mtta1h1v.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZTGF519Cz2ysp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 04:41:55 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4FZTG842cFz9sWF;
+ Tue,  4 May 2021 20:41:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id F3wZgbFmhloe; Tue,  4 May 2021 20:41:52 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FZTG832frz9sWD;
+ Tue,  4 May 2021 20:41:52 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 441C28B7B2;
+ Tue,  4 May 2021 20:41:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id uKQT-f3ZD8C7; Tue,  4 May 2021 20:41:52 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C74E68B78D;
+ Tue,  4 May 2021 20:41:51 +0200 (CEST)
+Subject: Re: [powerpc:next-test 8/8] arch/powerpc/lib/feature-fixups.c:304:30:
+ error: cast to smaller integer type 'enum l1d_flush_type' from 'void
+ *'
+To: kernel test robot <lkp@intel.com>, Michael Ellerman <mpe@ellerman.id.au>
+References: <202105050231.wjhXNTzu-lkp@intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <c6f6d3d7-8331-9be0-6f15-271f9c5755a1@csgroup.eu>
+Date: Tue, 4 May 2021 20:41:42 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9OaZE3BgUE6TjGvjPQyWUOVjuoSV0O1c
-X-Proofpoint-ORIG-GUID: BX1fOBompBgt98_E5dKoy5-uAF6M1aT3
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-04_12:2021-05-04,
- 2021-05-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0
- priorityscore=1501 mlxscore=0 bulkscore=0 malwarescore=0 mlxlogscore=712
- clxscore=1015 suspectscore=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2105040122
+In-Reply-To: <202105050231.wjhXNTzu-lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,50 +64,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: clang-built-linux@googlegroups.com, kbuild-all@lists.01.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
 
-> An error message when you try to start the nested guest telling you
-> pass -machine cap-htm=off would be better... I guess that should
-> really all work with caps etc today though so TM's a bad example.
-> But assume we don't have a cap for the bit we disable? Maybe we
-> should have caps for all HFSCR bits, or I'm just worried about
-> something not very important.
 
-I'm avoiding returning an error from H_ENTER_NESTED at first run
-specifically because of this. I think it interferes with L1 migration.
+Le 04/05/2021 à 20:31, kernel test robot a écrit :
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+> head:   a5014a5c936a2a9a223e699e1f3abd54d5f68d2c
+> commit: a5014a5c936a2a9a223e699e1f3abd54d5f68d2c [8/8] powerpc/64s: Fix crashes when toggling entry flush barrier
+> config: powerpc-randconfig-r022-20210503 (attached as .config)
+> compiler: clang version 13.0.0 (https://github.com/llvm/llvm-project 8f5a2a5836cc8e4c1def2bdeb022e7b496623439)
+> reproduce (this is a W=1 build):
+>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>          chmod +x ~/bin/make.cross
+>          # install powerpc cross compiling tool for clang build
+>          # apt-get install binutils-powerpc-linux-gnu
+>          # https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=a5014a5c936a2a9a223e699e1f3abd54d5f68d2c
+>          git remote add powerpc https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+>          git fetch --no-tags powerpc next-test
+>          git checkout a5014a5c936a2a9a223e699e1f3abd54d5f68d2c
+>          # save the attached .config to linux build tree
+>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 ARCH=powerpc
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>     arch/powerpc/lib/feature-fixups.c:233:32: error: cast to smaller integer type 'enum stf_barrier_type' from 'void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+>             enum stf_barrier_type types = (enum stf_barrier_type)data;
+>                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>> arch/powerpc/lib/feature-fixups.c:304:30: error: cast to smaller integer type 'enum l1d_flush_type' from 'void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+>             enum l1d_flush_type types = (enum l1d_flush_type)data;
+>                                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+>     2 errors generated.
+> 
+> 
+> vim +304 arch/powerpc/lib/feature-fixups.c
+> 
+>     301	
+>     302	static int __do_entry_flush_fixups(void *data)
+>     303	{
+>   > 304		enum l1d_flush_type types = (enum l1d_flush_type)data;
 
-Say we have an L1 that has an workload that involves nested guests. It
-can boot and run them just fine (i.e. it uses the same HFSCR value for
-its guests as L0). If we migrate that L1 into a host that uses different
-HFSCR bits and therefore will always fail the H_ENTER_NESTED, that is
-effectively the same as migrating into a host that does not provide
-KVM_CAP_PPC_NESTED_HV.
+That looks strange to use an enumeration for 'types', as we perform logical ops with it below (eg: 
+types & L1D_FLUSH_ORI).
 
-We would need some way to inform the migration code that the remote host
-will not allow L1 to run nested guests with that particular HFSCR value
-so that it can decide whether that host is a suitable migration
-target. Otherwise we're migrating the guest into a host that will not
-allow its operation to continue.
+I think it should be an int.
 
-Returning an error later on during the nested guest lifetime I think it
-is less harmful, but nothing really went wrong with the hypercall. It
-did its job and ran L2 like L1 asked, although it ignored some bits. Can
-we say that L1 misconfigured L2 when there is no way for L1 to negotiate
-which bits it can use? The same set of bits could be considered valid by
-another L0. It seems that as long as we hardcode some bits we shouldn't
-fail the hcall because of them.
-
-I think since this is all a bit theoretical right now, forwarding a
-program interrupt into L1 is a good less permanent solution for the
-moment, it does not alter the hcall's API and if we start stumbling into
-similar issues in the future we'll have more information then to come up
-with a proper solution.
-
->
-> Thanks,
-> Nick
+>     305		unsigned int instrs[3], *dest;
+>     306		long *start, *end;
+>     307		int i;
+>     308	
+>     309		instrs[0] = 0x60000000; /* nop */
+>     310		instrs[1] = 0x60000000; /* nop */
+>     311		instrs[2] = 0x60000000; /* nop */
+>     312	
+>     313		i = 0;
+>     314		if (types == L1D_FLUSH_FALLBACK) {
+>     315			instrs[i++] = 0x7d4802a6; /* mflr r10		*/
+>     316			instrs[i++] = 0x60000000; /* branch patched below */
+>     317			instrs[i++] = 0x7d4803a6; /* mtlr r10		*/
+>     318		}
+>     319	
+>     320		if (types & L1D_FLUSH_ORI) {
+>     321			instrs[i++] = 0x63ff0000; /* ori 31,31,0 speculation barrier */
+>     322			instrs[i++] = 0x63de0000; /* ori 30,30,0 L1d flush*/
+>     323		}
+>     324	
+>     325		if (types & L1D_FLUSH_MTTRIG)
+>     326			instrs[i++] = 0x7c12dba6; /* mtspr TRIG2,r0 (SPR #882) */
+>     327	
+>     328		start = PTRRELOC(&__start___entry_flush_fixup);
+>     329		end = PTRRELOC(&__stop___entry_flush_fixup);
+>     330		for (i = 0; start < end; start++, i++) {
+>     331			dest = (void *)start + *start;
+>     332	
+>     333			pr_devel("patching dest %lx\n", (unsigned long)dest);
+>     334	
+>     335			patch_instruction((struct ppc_inst *)dest, ppc_inst(instrs[0]));
+>     336	
+>     337			if (types == L1D_FLUSH_FALLBACK)
+>     338				patch_branch((struct ppc_inst *)(dest + 1), (unsigned long)&entry_flush_fallback,
+>     339					     BRANCH_SET_LINK);
+>     340			else
+>     341				patch_instruction((struct ppc_inst *)(dest + 1), ppc_inst(instrs[1]));
+>     342	
+>     343			patch_instruction((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
+>     344		}
+>     345	
+>     346		start = PTRRELOC(&__start___scv_entry_flush_fixup);
+>     347		end = PTRRELOC(&__stop___scv_entry_flush_fixup);
+>     348		for (; start < end; start++, i++) {
+>     349			dest = (void *)start + *start;
+>     350	
+>     351			pr_devel("patching dest %lx\n", (unsigned long)dest);
+>     352	
+>     353			patch_instruction((struct ppc_inst *)dest, ppc_inst(instrs[0]));
+>     354	
+>     355			if (types == L1D_FLUSH_FALLBACK)
+>     356				patch_branch((struct ppc_inst *)(dest + 1), (unsigned long)&scv_entry_flush_fallback,
+>     357					     BRANCH_SET_LINK);
+>     358			else
+>     359				patch_instruction((struct ppc_inst *)(dest + 1), ppc_inst(instrs[1]));
+>     360	
+>     361			patch_instruction((struct ppc_inst *)(dest + 2), ppc_inst(instrs[2]));
+>     362		}
+>     363	
+>     364	
+>     365		printk(KERN_DEBUG "entry-flush: patched %d locations (%s flush)\n", i,
+>     366			(types == L1D_FLUSH_NONE)       ? "no" :
+>     367			(types == L1D_FLUSH_FALLBACK)   ? "fallback displacement" :
+>     368			(types &  L1D_FLUSH_ORI)        ? (types & L1D_FLUSH_MTTRIG)
+>     369								? "ori+mttrig type"
+>     370								: "ori type" :
+>     371			(types &  L1D_FLUSH_MTTRIG)     ? "mttrig type"
+>     372							: "unknown");
+>     373	
+>     374		return 0;
+>     375	}
+>     376	
+> 
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
