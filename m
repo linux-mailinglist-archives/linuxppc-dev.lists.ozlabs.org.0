@@ -1,72 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E3C372CD7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 17:18:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2F3372D01
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 17:34:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZNl00DBRz30G7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 01:18:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZP5V0cgHz30Fb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 01:34:06 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L7sp14P3;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L7sp14P3;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com;
+ envelope-from=alex.williamson@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=L7sp14P3; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=L7sp14P3; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZNkd41Z7z2xfr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 01:17:42 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FZNkV6mm7z9sWC;
- Tue,  4 May 2021 17:17:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 2U51XEl42gmq; Tue,  4 May 2021 17:17:38 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FZNkV5ldvz9sWB;
- Tue,  4 May 2021 17:17:38 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AB8538B7AF;
- Tue,  4 May 2021 17:17:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id zuFq165ruu97; Tue,  4 May 2021 17:17:38 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2274F8B78D;
- Tue,  4 May 2021 17:17:38 +0200 (CEST)
-Subject: Re: [FSL P50x0] Xorg always restarts again and again after the the
- PowerPC updates 5.13-1
-To: Christian Zigotzky <chzigotzky@xenosoft.de>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <3eedbe78-1fbd-4763-a7f3-ac5665e76a4a@xenosoft.de>
- <c5b0ac7c-525f-0208-7587-c90427eae137@xenosoft.de>
- <0886c1dc-e946-69cb-a0a9-57247acfd080@csgroup.eu>
- <9864cd72-f1aa-4cf5-1cda-b3a10233b24d@xenosoft.de>
- <1b0307be-05cd-ab62-8b22-75ffb59ff76b@csgroup.eu>
- <daace050-6233-77ea-4517-0fd3c4b21057@xenosoft.de>
- <30f559f4-b50a-de63-94e1-761022468684@csgroup.eu>
- <c9a692b4-0ac0-d595-10fa-c3213b1518fc@xenosoft.de>
- <3b7daea5-7b2b-a089-0427-3becb986b6f5@csgroup.eu>
- <1502fb22-680c-7393-238c-f82570806717@xenosoft.de>
- <6a322f04-a81e-ae31-1425-19fda9307b23@csgroup.eu>
- <f253fc33-daa1-e668-31b3-593991531ffb@xenosoft.de>
- <6d3ae417-48de-3b61-f6fe-da951d74fef3@xenosoft.de>
- <07541597-f309-0d33-2c29-6da8fcd10aa1@csgroup.eu>
- <c4914f77-f8c2-e869-d731-4d0882e12af0@xenosoft.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <c103a1a5-4a22-1738-1d65-3314a4457a0d@csgroup.eu>
-Date: Tue, 4 May 2021 17:17:33 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZP4z3mJ0z2xYk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 01:33:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1620142411;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=HLdHIElXsh+Br5DFDsP1+YjonXAJx6g75JUakM7EhX0=;
+ b=L7sp14P3Ja5xwEFUVLYLsX2NGR06TKzmsEbTOiAfIdKi3b9dqjYrubdwY1/rjUK/AKVzir
+ 1UvSWWHlp+1etZd72bfdiqpG6AakaFlSVvILIihlklXDXng1taUpjHAqbc1ZGnwiH7iZiv
+ 2Ju3qEZUL2+Bwf6OEpVcyAWjZn1LeCE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1620142411;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=HLdHIElXsh+Br5DFDsP1+YjonXAJx6g75JUakM7EhX0=;
+ b=L7sp14P3Ja5xwEFUVLYLsX2NGR06TKzmsEbTOiAfIdKi3b9dqjYrubdwY1/rjUK/AKVzir
+ 1UvSWWHlp+1etZd72bfdiqpG6AakaFlSVvILIihlklXDXng1taUpjHAqbc1ZGnwiH7iZiv
+ 2Ju3qEZUL2+Bwf6OEpVcyAWjZn1LeCE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-586-oGqKZBKrOxqxLaLvFcQSeQ-1; Tue, 04 May 2021 11:33:28 -0400
+X-MC-Unique: oGqKZBKrOxqxLaLvFcQSeQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C45CF1922039;
+ Tue,  4 May 2021 15:33:26 +0000 (UTC)
+Received: from redhat.com (ovpn-113-225.phx2.redhat.com [10.3.113.225])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 13D425C230;
+ Tue,  4 May 2021 15:33:25 +0000 (UTC)
+Date: Tue, 4 May 2021 09:33:24 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Greg Kurz <groug@kaod.org>
+Subject: Re: remove the nvlink2 pci_vfio subdriver v2
+Message-ID: <20210504093324.4f0cafc7@redhat.com>
+In-Reply-To: <20210504161131.2ed74d7b@bahia.lan>
+References: <20210326061311.1497642-1-hch@lst.de>
+ <20210504142236.76994047@bahia.lan> <YJFFG1tSP0dUCxcX@kroah.com>
+ <20210504152034.18e41ec3@bahia.lan> <YJFMZ8KYVCDwUBPU@kroah.com>
+ <20210504161131.2ed74d7b@bahia.lan>
 MIME-Version: 1.0
-In-Reply-To: <c4914f77-f8c2-e869-d731-4d0882e12af0@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,106 +87,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: Daniel Vetter <daniel@ffwll.ch>, kvm@vger.kernel.org,
+ David Airlie <airlied@linux.ie>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, qemu-devel@nongnu.org, Paul
+ Mackerras <paulus@samba.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ qemu-ppc@nongnu.org, linux-api@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, 4 May 2021 16:11:31 +0200
+Greg Kurz <groug@kaod.org> wrote:
+
+> On Tue, 4 May 2021 15:30:15 +0200
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> 
+> > On Tue, May 04, 2021 at 03:20:34PM +0200, Greg Kurz wrote:  
+> > > On Tue, 4 May 2021 14:59:07 +0200
+> > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > >   
+> > > > On Tue, May 04, 2021 at 02:22:36PM +0200, Greg Kurz wrote:  
+> > > > > On Fri, 26 Mar 2021 07:13:09 +0100
+> > > > > Christoph Hellwig <hch@lst.de> wrote:
+> > > > >   
+> > > > > > Hi all,
+> > > > > > 
+> > > > > > the nvlink2 vfio subdriver is a weird beast.  It supports a hardware
+> > > > > > feature without any open source component - what would normally be
+> > > > > > the normal open source userspace that we require for kernel drivers,
+> > > > > > although in this particular case user space could of course be a
+> > > > > > kernel driver in a VM.  It also happens to be a complete mess that
+> > > > > > does not properly bind to PCI IDs, is hacked into the vfio_pci driver
+> > > > > > and also pulles in over 1000 lines of code always build into powerpc
+> > > > > > kernels that have Power NV support enabled.  Because of all these
+> > > > > > issues and the lack of breaking userspace when it is removed I think
+> > > > > > the best idea is to simply kill.
+> > > > > > 
+> > > > > > Changes since v1:
+> > > > > >  - document the removed subtypes as reserved
+> > > > > >  - add the ACK from Greg
+> > > > > > 
+> > > > > > Diffstat:
+> > > > > >  arch/powerpc/platforms/powernv/npu-dma.c     |  705 ---------------------------
+> > > > > >  b/arch/powerpc/include/asm/opal.h            |    3 
+> > > > > >  b/arch/powerpc/include/asm/pci-bridge.h      |    1 
+> > > > > >  b/arch/powerpc/include/asm/pci.h             |    7 
+> > > > > >  b/arch/powerpc/platforms/powernv/Makefile    |    2 
+> > > > > >  b/arch/powerpc/platforms/powernv/opal-call.c |    2 
+> > > > > >  b/arch/powerpc/platforms/powernv/pci-ioda.c  |  185 -------
+> > > > > >  b/arch/powerpc/platforms/powernv/pci.c       |   11 
+> > > > > >  b/arch/powerpc/platforms/powernv/pci.h       |   17 
+> > > > > >  b/arch/powerpc/platforms/pseries/pci.c       |   23 
+> > > > > >  b/drivers/vfio/pci/Kconfig                   |    6 
+> > > > > >  b/drivers/vfio/pci/Makefile                  |    1 
+> > > > > >  b/drivers/vfio/pci/vfio_pci.c                |   18 
+> > > > > >  b/drivers/vfio/pci/vfio_pci_private.h        |   14 
+> > > > > >  b/include/uapi/linux/vfio.h                  |   38 -  
+> > > > > 
+> > > > > 
+> > > > > Hi Christoph,
+> > > > > 
+> > > > > FYI, these uapi changes break build of QEMU.  
+> > > > 
+> > > > What uapi changes?
+> > > >   
+> > > 
+> > > All macros and structure definitions that are being removed
+> > > from include/uapi/linux/vfio.h by patch 1.
+> > >   
+> > > > What exactly breaks?
+> > > >   
+> > > 
+> > > These macros and types are used by the current QEMU code base.
+> > > Next time the QEMU source tree updates its copy of the kernel
+> > > headers, the compilation of affected code will fail.  
+> > 
+> > So does QEMU use this api that is being removed, or does it just have
+> > some odd build artifacts of the uapi things?
+> >   
+> 
+> These are region subtypes definition and associated capabilities.
+> QEMU basically gets information on VFIO regions from the kernel
+> driver and for those regions with a nvlink2 subtype, it tries
+> to extract some more nvlink2 related info.
 
 
-Le 04/05/2021 à 16:59, Christian Zigotzky a écrit :
-> Am 04.05.21 um 16:41 schrieb Christophe Leroy:
->>
->>
->> Le 04/05/2021 à 13:02, Christian Zigotzky a écrit :
->>> Am 04.05.21 um 12:07 schrieb Christian Zigotzky:
->>>> Am 04.05.21 um 11:49 schrieb Christophe Leroy:
->>>>>
->>>>>
->>>>> Le 04/05/2021 à 11:46, Christian Zigotzky a écrit :
->>>>>> Am 04.05.21 um 11:11 schrieb Christophe Leroy:
->>>>>>>
->>>>>>>
->>>>>>> Le 04/05/2021 à 11:09, Christian Zigotzky a écrit :
->>>>>>>> Am 04.05.21 um 10:58 schrieb Christophe Leroy:
->>>>>>>>>
->>>>>>>>>
->>>>>>>>> Le 04/05/2021 à 10:29, Christian Zigotzky a écrit :
->>>>>>>>>> On 04 May 2021 at 09:47am, Christophe Leroy wrote:
->>>>>>>>>>> Hi
->>>>>>>>>>>
->>>>>>>>>>> Le 04/05/2021 à 09:21, Christian Zigotzky a écrit :
->>>>>>>>>>>> Hi Christophe,
->>>>>>>>>>>>
->>>>>>>>>>>> Thanks for your answer but I think I don't know how it works with the cherry-pick.
->>>>>>>>>>>>
->>>>>>>>>>>> $ git bisect start
->>>>>>>>>>>
->>>>>>>>>>> As you suspect the problem to be specific to powerpc, I can do
->>>>>>>>>>>
->>>>>>>>>>> git bisect start -- arch/powerpc
->>>>>>>>>>>
->>>>>>>>>>>
->>>>>>>>>>>> $ git bisect good 68a32ba14177d4a21c4a9a941cf1d7aea86d436f
->>>>>>>>>>>> $ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
->>>>>>>>>>>
->>>>>>>>>>> You said that powerpc-5.13-1 is bad so you can narrow the search I think:
->>>>>>>>>>>
->>>>>>>>>>> git bisect bad powerpc-5.13-1
->>>>>>>>>>> git bisect good 887f3ceb51cd3~
->>>>>>>>>> I tried it but without any success.
->>>>>>>>>>
->>>>>>>>>> git bisect bad powerpc-5.13-1
->>>>>>>>>>
->>>>>>>>>> Output:
->>>>>>>>>> fatal: Needed a single revision
->>>>>>>>>> Bad rev input: powerpc-5.13-1
->>>>>>>>>
->>>>>>>>> I don't understand, on my side it works. Maybe a difference between your version of git and 
->>>>>>>>> mine.
->>>>>>>>>
->>>>>>>>> In that case, just use the SHA corresponding to the merge:
->>>>>>>>>
->>>>>>>>> git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
->>>>>>>>>
->>>>>>>>> Christophe
->>>>>>>> Do you use a BookE machine?
->>>>>>>
->>>>>>> No I don't unfortunately, and I have tried booting in QEMU a kernel built with your config, 
->>>>>>> but it freezes before any output.
->>>>>> You can use my kernels and distributions.
->>>>>>
->>>>>
->>>>> Ok, I'll see if I can do something with them.
->>>>>
->>>>> In the meantime, have you been able to bisect ?
->>>>>
->>>>> Thanks
->>>>> Christophe
->>>> I am bisecting currently.
->>>>
->>>> $ git bisect start -- arch/powerpc
->>>> $ git bisect good 887f3ceb51cd3~
->>>> $ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
->>> OK, there is another issue after the second bisecting step. The boot stops after loading the dtb 
->>> and uImage file. I can't solve 2 issues with bisecting at the same time.
->>
->> In that case, you can use 'git bisect skip' to skip the one that is not booting at all.
-> In my point of view 'git bisect skip' isn't a good idea because I will not find out if the skipped 
-> commit is good or bad and maybe the first bad commit.
+Urgh, let's put the uapi header back in place with a deprecation
+notice.  Userspace should never have a dependency on the existence of a
+given region, but clearly will have code to parse the data structure
+describing that region.  I'll post a patch.  Thanks,
 
-The second problem may be completely unrelated to the first one so it could work.
+Alex
 
-In any case, if 'git bisect' finds out that the bad commit is in the middle of a skipped area, it 
-will tell you. So I think it is worth it.
-
-The second solution could be to first focus on that 'boot stops after loading problem' and try to 
-find out which commit introduces the bug, then which one fixes it. But it may not be necessary.
-
-Other solution, as you were thinking that the conversion of 'booke' to C interrupt entry/exit, you 
-can also try around that: See if d738ee8 has the problem and 2e2a441 doesn't have the problem.
-
-If so, you can bisect between those two commits (There are 8 commits inbetween).
