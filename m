@@ -1,100 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A57372964
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 13:03:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B54F3729D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 14:09:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZH5c0dSkz30DF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 21:03:48 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=N0XJMVzc;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZJY23YsFz2yyF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 22:09:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.51;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=N0XJMVzc; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [85.215.255.51])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.131; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZH515P40z2xy4
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 21:03:15 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1620126145; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=Bcj2b/OeLCSXbshNqgLc6AcHKlMB+rnJ1fzkDRsVz2UO7U7tq3UH6DaP2b8SbE7inR
- ncvCzPm6KYt3CwBEv4/s+f/futnRbqi36/h0P4aLwCtj6X6KE/UiUDHFu1jm5FAiVTTU
- jdiGDPDHCkouP3vpbSB+n7slIWkvt36zHTO2neXaLpZmI1mtJwthwzhAp3bSZyTxPmwj
- jx92JEDtclTi8QDvRURz13bsHIYlFwLpJz57AeEgr0vrBbZYZf8/6Cs8udE67RnFDx6O
- Ag6aWphlsjEq6G72IoyNY4C84cmU/1LBcQGBTHGHTowIxNQ0VToLnk+a30FvAyxrg/TA
- KJkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620126145;
- s=strato-dkim-0002; d=strato.com;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
- From:Subject:Sender;
- bh=bLdEt7pxkc6ROYKkNXiF2l/dABLikkh1oOwkkMpjZk4=;
- b=ssNSDiC3hm8qM+JSG2qSPsWpWQparWQX1MHjrk+EhNQlT9ZOPKFzQWYgfglDz+nXmc
- xdNYgvzgKq2xVVk+Z2LIGVOwC4zlxclME5wkL0spJkF+Dxp1cTLcKX+Es3xxrhJ9X2dV
- ptuP4834qjJGfPee+yhl1iPzXKCjnsQFwylx41MruWYnDZzhnN9hauXOvxOgmQNm/mSr
- 5tH6AgD1twBs0DxEH2bpBDSTE1FHpOKxLO9zGKYdb50nDro/TrJx9ZmDzwhUFya9XJOI
- GdD+RgDMUnaFp7v7R35Nn85Kp5KuYm6/j0gDqfL4XdTgJjPX1qYols6ibMwwhO70ugHq
- NFpQ==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620126145;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
- From:Subject:Sender;
- bh=bLdEt7pxkc6ROYKkNXiF2l/dABLikkh1oOwkkMpjZk4=;
- b=N0XJMVzcd/RHkMfysFjCeKr/5WkcvMQKoGG8w5EupHcRwzCqSH/lB68Ix24aa/vzm+
- Uiy6KUwgFUYvtV/7DcoZshrxqzn+deTuI8TSP+FecJ4OWEjEANq7rsug3arLTlBzLPXk
- kjoa3NMJs8zkBcv5Zf/46t8kMkc/EPJ4cSeYregehzp0X1gc/k4OEms2HDlZeSNEXNGX
- Ov8piS5NnFVTK27rXiDX8ThNbH7qRuXMRbFKSxeBVKpUGQD5Lmq/B0SXsGsMtxEBThFA
- 0SmRHc8twehs4tiS49IDXQkJa4dxdIyKVQxws5Pya8B8mhk9E9Efky/QrvpqwivdCF/6
- HYgw==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSIhsJhhV/a8MrHM5J4CoqSoOzBQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:14dd:6e8f:db34:91bd]
- by smtp.strato.de (RZmta 47.25.6 AUTH)
- with ESMTPSA id D075c0x44B2N1VB
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 4 May 2021 13:02:23 +0200 (CEST)
-Subject: Re: [FSL P50x0] Xorg always restarts again and again after the the
- PowerPC updates 5.13-1
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <3eedbe78-1fbd-4763-a7f3-ac5665e76a4a@xenosoft.de>
- <c5b0ac7c-525f-0208-7587-c90427eae137@xenosoft.de>
- <0886c1dc-e946-69cb-a0a9-57247acfd080@csgroup.eu>
- <9864cd72-f1aa-4cf5-1cda-b3a10233b24d@xenosoft.de>
- <1b0307be-05cd-ab62-8b22-75ffb59ff76b@csgroup.eu>
- <daace050-6233-77ea-4517-0fd3c4b21057@xenosoft.de>
- <30f559f4-b50a-de63-94e1-761022468684@csgroup.eu>
- <c9a692b4-0ac0-d595-10fa-c3213b1518fc@xenosoft.de>
- <3b7daea5-7b2b-a089-0427-3becb986b6f5@csgroup.eu>
- <1502fb22-680c-7393-238c-f82570806717@xenosoft.de>
- <6a322f04-a81e-ae31-1425-19fda9307b23@csgroup.eu>
- <f253fc33-daa1-e668-31b3-593991531ffb@xenosoft.de>
-Message-ID: <6d3ae417-48de-3b61-f6fe-da951d74fef3@xenosoft.de>
-Date: Tue, 4 May 2021 13:02:22 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZJXb2frrz2xy4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 22:08:46 +1000 (AEST)
+Received: from mail-wr1-f45.google.com ([209.85.221.45]) by
+ mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1Mow4E-1lD2Ig2dby-00qVKx for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May
+ 2021 14:08:40 +0200
+Received: by mail-wr1-f45.google.com with SMTP id z6so9151453wrm.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 05:08:39 -0700 (PDT)
+X-Gm-Message-State: AOAM532OOMheR5gR5yFL+ZVLgaG36N9+RTxDAIbDYJhLV2nM2864BmD0
+ SXsBuKUNc5MJ3G1iStmG6/2qG+dzim9jhbCPH7w=
+X-Google-Smtp-Source: ABdhPJw20yUwLjuDm4O2f4JNErVjYHf0sVRY4Y7yimcYIwg2TBud2AGVYmDyXDJ9tJQqulD0dlHRWOk7iwc1IQFkZg8=
+X-Received: by 2002:a5d:4452:: with SMTP id x18mr32138876wrr.286.1620130119473; 
+ Tue, 04 May 2021 05:08:39 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <f253fc33-daa1-e668-31b3-593991531ffb@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+References: <20210501151538.145449-1-masahiroy@kernel.org>
+ <CANiq72k1hB3X6+Nc_iu=f=BoB-F9JW2j_B4ZMcv8_UpW5QQ2Og@mail.gmail.com>
+ <3943bc020f6227c8801907317fc113aa13ad4bad.camel@perches.com>
+ <20210502183030.GF10366@gate.crashing.org>
+ <81a926a3bdb70debe3ae2b13655ea8d249fb9991.camel@perches.com>
+ <20210502203253.GH10366@gate.crashing.org>
+ <CAHk-=wjGJskk5EwnDCccs6DcLytE2yx76+P_W-n1-B5zq0M3KA@mail.gmail.com>
+ <20210502223007.GZ1847222@casper.infradead.org>
+ <YI+nhMcPSTs/5Ydp@ada-deb-carambola.ifak-system.com>
+ <CAK8P3a0kV4ZfMEFh0DcMDjXqxA0yhj8a8CL-YFGV6B4pszHeGg@mail.gmail.com>
+ <YJDb9uLQBgoy94Ub@ada-deb-carambola.ifak-system.com>
+In-Reply-To: <YJDb9uLQBgoy94Ub@ada-deb-carambola.ifak-system.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Tue, 4 May 2021 14:07:58 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0Ono1gMwt9tKUZtV_jX8iFxLp9rWiWUuE8jXQNhZ+yWA@mail.gmail.com>
+Message-ID: <CAK8P3a0Ono1gMwt9tKUZtV_jX8iFxLp9rWiWUuE8jXQNhZ+yWA@mail.gmail.com>
+Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
+To: Arnd Bergmann <arnd@arndb.de>, Matthew Wilcox <willy@infradead.org>, 
+ Linus Torvalds <torvalds@linux-foundation.org>, 
+ Segher Boessenkool <segher@kernel.crashing.org>, Joe Perches <joe@perches.com>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, 
+ Albert Ou <aou@eecs.berkeley.edu>, 
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jonathan Corbet <corbet@lwn.net>, 
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Paul Mackerras <paulus@samba.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>, 
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Will Deacon <will@kernel.org>, 
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:ud7ql832SBGjeDwwKIPi1NU2HLz58s0mjWp+62KTJeCy9RU33qj
+ X6gUXGznkuZhldu5GZ8hIYIcrNHbFYkWB0u5tKH8BHoQx2QJz8QtAt8BYHzbLew/WuwNA2S
+ XCTJVczPL7Y6fyRRbJHux+0La4FiilNYmdsOQHow8YMBhfuuq/ch2s7ltJh9UFlunljczgV
+ q9cpQ73Zd2mhxQwP9sBbg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Wjh+y+rSGls=:90elk4WytCpsxKq2Y2G4F4
+ jj+JhIxhmZlYoO2h741dQ++9+BgmU83BhF85QAQQwyDk0s1B+w1i08UpxAiCnW0nySqM5OEWr
+ SLT6wEwDVV9CnEH3QvcLOl8TPOxZhww4MYJgK+vwT9l4s3x8lMW1vKY9lWsgEVX4DuTk4VW//
+ 59wacuJh4WcpZ67N9FUryJU37v3NGKQi9DgvzA7ammAfmVS/zCMG5T8nkqe13eXf1X5fqmao6
+ kn1ZyNwmrhXXG3+3G7PkpFXHQVsToPM+w6uXG7KztLydFqtgD/swxpBjK2lP/gdRh4Zrcxmws
+ AcUB3eeaySe1/41AAfj8u1Iu+M4ElAJHhb2LV5Ij4YPCl52fCiDhSIcAxCrYsK/gQHN9MHrZu
+ RM4WJX/rJ/dqnCA/hwcOfeC7Se/xb3139/ZTrM69Wb0zIBeVcAPS1YsKCJvzd53Nav6bgZi5C
+ ZpC2XP+x9ctJP3mVEvY6rlb5ImouTGHGVMfvwhd3bIVOj17cf/oTt/1MDZcIsFL7E1mR4Os31
+ jJ6Kdv2XZ2/Lq/eGXp+m5o=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,85 +91,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am 04.05.21 um 12:07 schrieb Christian Zigotzky:
-> Am 04.05.21 um 11:49 schrieb Christophe Leroy:
->>
->>
->> Le 04/05/2021 à 11:46, Christian Zigotzky a écrit :
->>> Am 04.05.21 um 11:11 schrieb Christophe Leroy:
->>>>
->>>>
->>>> Le 04/05/2021 à 11:09, Christian Zigotzky a écrit :
->>>>> Am 04.05.21 um 10:58 schrieb Christophe Leroy:
->>>>>>
->>>>>>
->>>>>> Le 04/05/2021 à 10:29, Christian Zigotzky a écrit :
->>>>>>> On 04 May 2021 at 09:47am, Christophe Leroy wrote:
->>>>>>>> Hi
->>>>>>>>
->>>>>>>> Le 04/05/2021 à 09:21, Christian Zigotzky a écrit :
->>>>>>>>> Hi Christophe,
->>>>>>>>>
->>>>>>>>> Thanks for your answer but I think I don't know how it works 
->>>>>>>>> with the cherry-pick.
->>>>>>>>>
->>>>>>>>> $ git bisect start
->>>>>>>>
->>>>>>>> As you suspect the problem to be specific to powerpc, I can do
->>>>>>>>
->>>>>>>> git bisect start -- arch/powerpc
->>>>>>>>
->>>>>>>>
->>>>>>>>> $ git bisect good 68a32ba14177d4a21c4a9a941cf1d7aea86d436f
->>>>>>>>> $ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
->>>>>>>>
->>>>>>>> You said that powerpc-5.13-1 is bad so you can narrow the 
->>>>>>>> search I think:
->>>>>>>>
->>>>>>>> git bisect bad powerpc-5.13-1
->>>>>>>> git bisect good 887f3ceb51cd3~
->>>>>>> I tried it but without any success.
->>>>>>>
->>>>>>> git bisect bad powerpc-5.13-1
->>>>>>>
->>>>>>> Output:
->>>>>>> fatal: Needed a single revision
->>>>>>> Bad rev input: powerpc-5.13-1
->>>>>>
->>>>>> I don't understand, on my side it works. Maybe a difference 
->>>>>> between your version of git and mine.
->>>>>>
->>>>>> In that case, just use the SHA corresponding to the merge:
->>>>>>
->>>>>> git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
->>>>>>
->>>>>> Christophe
->>>>> Do you use a BookE machine?
->>>>
->>>> No I don't unfortunately, and I have tried booting in QEMU a kernel 
->>>> built with your config, but it freezes before any output.
->>> You can use my kernels and distributions.
->>>
->>
->> Ok, I'll see if I can do something with them.
->>
->> In the meantime, have you been able to bisect ?
->>
->> Thanks
->> Christophe
-> I am bisecting currently.
+On Tue, May 4, 2021 at 7:31 AM Alexander Dahl <ada@thorsis.com> wrote:
+> Am Mon, May 03, 2021 at 11:25:21AM +0200 schrieb Arnd Bergmann:
+> > On Mon, May 3, 2021 at 9:35 AM Alexander Dahl <ada@thorsis.com> wrote:
+> > >
+> > > Desktops and servers are all nice, however I just want to make you
+> > > aware, there are embedded users forced to stick to older cross
+> > > toolchains for different reasons as well, e.g. in industrial
+> > > environment. :-)
+> > >
+> > > This is no show stopper for us, I just wanted to let you be aware.
+> >
+> > Can you be more specific about what scenarios you are thinking of,
+> > what the motivations are for using an old compiler with a new kernel
+> > on embedded systems, and what you think a realistic maximum
+> > time would be between compiler updates?
 >
-> $ git bisect start -- arch/powerpc
-> $ git bisect good 887f3ceb51cd3~
-> $ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
-OK, there is another issue after the second bisecting step. The boot 
-stops after loading the dtb and uImage file. I can't solve 2 issues with 
-bisecting at the same time.
+> One reason might be certification. For certain industrial applications
+> like support for complex field bus protocols, you need to get your
+> devices tested by an external partner running extensive test suites.
+> This is time consuming and expensive.
+>
+> Changing the toolchain of your system then, would be a massive change
+> which would require recertification, while you could argue just
+> updating a single component like the kernel and building everything
+> again, does not require the whole testing process again.
+>
+> Thin ice, I know.
+
+As Christophe said, I don't think this is a valid example. I agree that
+if rebuilding everything with a new toolchain requires certification, you
+shouldn't rebuild everything.
+
+If replacing the kernel does not require recertification for your
+specific system, that is fine, but that does not mean the new kernel
+should be built with an outdated toolchain. If the certification
+allows replacing linux-3.18 with linux-5.10 but doesn't allow building
+the kernel with a different toolchain compared to the rest, then
+the point of the certification is rather questionable.
+
+Do you know specific certifications that would require you to
+do this?
+
+> One problem we actually ran into in BSPs like that (we build with
+> ptxdist, however build system doesn't matter here, it could as well
+> have been buildroot etc.) was things* failing to build with newer
+> compilers, things we could not or did not want to fix, so staying with
+> an older toolchain was the obvious choice.
+>
+> *Things as in bootloaders for an armv5 platform.
+...
+>
+> What we actually did: building recent userspace and kernel with older
+> toolchains, because bootloader.
+
+It sounds like you are trying to make an argument in favour of
+deprecating old toolchains *earlier* in new kernels ;-)
+
+If we simply made it impossible to have users build kernels with
+the same old toolchain that is needed for building the old bootloader
+or the old user space, it sounds like more people would do the
+right thing and build the updated kernels with a better tested
+toolchain, or update their bootloader as well. The only downside
+is that some users would choose to remain on the older kernels,
+so it shouldn't be too aggressive either.
+
+         Arnd
