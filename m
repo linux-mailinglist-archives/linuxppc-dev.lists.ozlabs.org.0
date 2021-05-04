@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5253730D2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 21:31:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B213730F1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 21:39:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZVMw2pgcz30Cb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 05:31:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZVY23yJVz30DQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 05:39:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=j/WXxxfQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=aXymTqrJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42d;
- helo=mail-wr1-x42d.google.com; envelope-from=lijunp213@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::429;
+ helo=mail-wr1-x429.google.com; envelope-from=lijunp213@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=j/WXxxfQ; dkim-atps=neutral
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com
- [IPv6:2a00:1450:4864:20::42d])
+ header.s=20161025 header.b=aXymTqrJ; dkim-atps=neutral
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com
+ [IPv6:2a00:1450:4864:20::429])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZVMR1Xn5z2yRX
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 05:31:30 +1000 (AEST)
-Received: by mail-wr1-x42d.google.com with SMTP id l14so10632874wrx.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 12:31:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZVXZ0Vsrz2yqC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 05:39:24 +1000 (AEST)
+Received: by mail-wr1-x429.google.com with SMTP id h4so10611256wrt.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 12:39:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=YpfdYp+JammDZESyHmE088kxmPUUqxIHCGvlq8nXxpY=;
- b=j/WXxxfQsZvVmuZVliChNFVU7aT9nwZKZxJlgw8j6vwyBMJQIDgTvMhhvvsb/aUZ+s
- Ht66WoLanlTS7w9OzbVIO4pBrL1SDrzveyJqBQcgydbq5AHDz52J7G4IwZ5QD4E5wS3o
- RZBHxKj0+d9H9Jt6a+PClKmf1/PShoGnd51aJrIrfBG6q2CM7k7dbFG/3hkl9wI5MF2q
- HH3Jgh5Sz2T0KC/V+R8TjzmNZB1QZyVL4U95jMbd4yZ1LEGWiB1/8kVE68PcW9BMYs2p
- mGeQasLLosgauSyWkceQWjraHgRS1J+EDrwqea7x6EtXyltMADF4sH6tC+wwXlIJsSvV
- 0aAw==
+ :cc; bh=GDyWX0q7nbyvuzEr5U4jc0HN+67Caz0FfP8gT+cK9CI=;
+ b=aXymTqrJX5ndGEh0jKK+icbf6rvTAkZPknIFPTjoPU+LsKPY8wmIKr47uiQnvw6UQV
+ jXairnmn44SEEtETHV/uZnWM9Dl3l6n+ePHgNKiBrppVAESTIYpze3ntxzhxvRGIGm+F
+ u6p0Lu9BTl2jbtXZFrD5r8SeM/eR1YK18voshYYsE6jSkXEhQK3X0tGsOnVb0/LaFnAD
+ xD4N+w0cZQTpW3NePqfbuQdo1KZKZb02upMjK5GvHyqMlRMZkmLeHkQQbCo30PVRJhSh
+ BPjaaXct+fz0P6hvbok9UM5ehZ0bjnItABBzjLTyH9Lz6i+sv2EjHKDJPpZZjOh+bDpv
+ fzjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=YpfdYp+JammDZESyHmE088kxmPUUqxIHCGvlq8nXxpY=;
- b=AVaYxlIT/9Xwaj4SKiC9b/KYYkpjuRBhw+9CDKqwxBcgMo1aQVlsGXBHJZPkB9pjZA
- HQN9mTYem/7wCs9+Pt4eJoeK6CbheOh8hk/vd/rPG80AuX6FbHKob+dhpbBf9JDxMQy5
- ZglscQqvSt/MKufyaXyHkcvOofZgaRZcHPDdNMt/nQkZabQssRO8fHd85+Y3gkXED/qc
- Ym3Iz+KllXhdnzfJm1/58ZOKgAb6ziw6TDRNgssYuiLwXIyOWwmu9rqfzimerHGLKJ1z
- Bv4TJV7yZUFX0TxNGJcmkavVQ9DuK5AUZ18n1x56CIYi2letky7BEZ2NW2uSczgu6RKn
- bLjg==
-X-Gm-Message-State: AOAM531m0oOsH95yCvcfBomTJI0MVN9gUn7HPaLZfgY1qDjucrHbL/i8
- 4MMJqmFOrvKeOrW0MP9i2nLokuIJDFZ7UCwmw+Q=
-X-Google-Smtp-Source: ABdhPJzlr3EBkUDz4QZQc+t8xlVBDRUzjeEjuYXu+QICXxPO21RTvGT5X0wWy19CMAWDQyOS6niN1HtdNW7El1YSueQ=
-X-Received: by 2002:a5d:64e4:: with SMTP id g4mr33808275wri.366.1620156686702; 
- Tue, 04 May 2021 12:31:26 -0700 (PDT)
+ bh=GDyWX0q7nbyvuzEr5U4jc0HN+67Caz0FfP8gT+cK9CI=;
+ b=iIQPGxtlR2rXaas5TtvZt1tMovrjkd85KFeK4Y4b4LP+l8HUfD+vhyM1NK/ZQ2SHp/
+ 61rSiQAdJsHdsUmuIuaPnD5ogtm8L6uAH31C8PlScM/Iyto981nRfEggbS0Q2VuXkL7u
+ fdgYFEngrFQL46z7Yp2Y1e5sukwGuNQsbVkQSyLiXKItQDTk9NCgtduNck86Cl+xgQDM
+ AUDm5FQfym8nN/Blzc01dFDQsXsxjFpDHhWx4AwF2+C5s9Y8QSh9jNKkwl5R0gfAEtSn
+ gqaJiCk/pNu6ExdjXlQECEXfkdan3xzjDEYq9JjPyVTklM8qTc33Tfrgw7cmzo454wVD
+ zO3g==
+X-Gm-Message-State: AOAM531k7pdDlSB4n7CCDdFJZG71LTchXhgK0koxiuiSS3nUpp6D4AHq
+ jzvh1NZK7UfHPTZJO6hfnohv5T8uZp8VmwVPFr8=
+X-Google-Smtp-Source: ABdhPJzw2M+VQweZcHVDuN3fz4HlHtVDrzhc2eQ7ho9FCcN3ovlIwvTDxuYgzfaiq5WPRRTPy50crSd9zLqC72Yz7PM=
+X-Received: by 2002:adf:ed43:: with SMTP id u3mr27027448wro.334.1620157160659; 
+ Tue, 04 May 2021 12:39:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210504191142.2872696-1-drt@linux.ibm.com>
- <CAOhMmr5T_BLkqGspnzck=xtiX0rPABv8oX4=LCRbH00T8-B6qw@mail.gmail.com>
-In-Reply-To: <CAOhMmr5T_BLkqGspnzck=xtiX0rPABv8oX4=LCRbH00T8-B6qw@mail.gmail.com>
+References: <20210503.134721.2149322673805635760.davem@davemloft.net>
+ <20210504191923.32313-1-msuchanek@suse.de>
+In-Reply-To: <20210504191923.32313-1-msuchanek@suse.de>
 From: Lijun Pan <lijunp213@gmail.com>
-Date: Tue, 4 May 2021 14:31:15 -0500
-Message-ID: <CAOhMmr5ucF3pa4jp9RLEzJNs29oVT0qAXmywNnd+Xe2seoRJfg@mail.gmail.com>
-Subject: Re: [PATCH net v3] ibmvnic: Continue with reset if set link down
- failed
-To: Dany Madden <drt@linux.ibm.com>
+Date: Tue, 4 May 2021 14:39:10 -0500
+Message-ID: <CAOhMmr4tYOuTVNquU5oZ=1G7vVR4mz+5q8Gb8Zy96PBioLPnUA@mail.gmail.com>
+Subject: Re: [PATCH v2 net-next resend] ibmvnic: remove default label from
+ to_string switch
+To: Michal Suchanek <msuchanek@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,78 +75,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Falcon <tlfalcon@linux.ibm.com>, netdev@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Jakub Kicinski <kuba@kernel.org>,
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Thomas Falcon <tlfalcon@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Dany Madden <drt@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>,
  Sukadev Bhattiprolu <sukadev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
  "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 4, 2021 at 2:27 PM Lijun Pan <lijunp213@gmail.com> wrote:
+On Tue, May 4, 2021 at 2:19 PM Michal Suchanek <msuchanek@suse.de> wrote:
 >
-> On Tue, May 4, 2021 at 2:14 PM Dany Madden <drt@linux.ibm.com> wrote:
-> >
-> > When ibmvnic gets a FATAL error message from the vnicserver, it marks
-> > the Command Respond Queue (CRQ) inactive and resets the adapter. If this
-> > FATAL reset fails and a transmission timeout reset follows, the CRQ is
-> > still inactive, ibmvnic's attempt to set link down will also fail. If
-> > ibmvnic abandons the reset because of this failed set link down and this
-> > is the last reset in the workqueue, then this adapter will be left in an
-> > inoperable state.
-> >
-> > Instead, make the driver ignore this link down failure and continue to
-> > free and re-register CRQ so that the adapter has an opportunity to
-> > recover.
-> >
-> > Fixes: ed651a10875f ("ibmvnic: Updated reset handling")
-> > Signed-off-by: Dany Madden <drt@linux.ibm.com>
-> > Reviewed-by: Rick Lindsley <ricklind@linux.ibm.com>
-> > Reviewed-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-> > ---
-> > Changes in V2:
-> > - Update description to clarify background for the patch
-> > - Include Reviewed-by tags
-> > Changes in V3:
-> > - Add comment above the code change
-> > ---
-> >  drivers/net/ethernet/ibm/ibmvnic.c | 11 +++++++++--
-> >  1 file changed, 9 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-> > index 5788bb956d73..9e005a08d43b 100644
-> > --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> > +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> > @@ -2017,8 +2017,15 @@ static int do_reset(struct ibmvnic_adapter *adapter,
-> >                         rtnl_unlock();
-> >                         rc = set_link_state(adapter, IBMVNIC_LOGICAL_LNK_DN);
-> >                         rtnl_lock();
-> > -                       if (rc)
-> > -                               goto out;
-> > +
-> > +                       /* Attempted to set the link down. It could fail if the
-> > +                        * vnicserver has already torn down the CRQ. We will
-> > +                        * note it and continue with reset to reinit the CRQ.
-> > +                        */
-> > +                       if (rc) {
-> > +                               netdev_dbg(netdev,
-> > +                                          "Setting link down failed rc=%d. Continue anyway\n", rc);
-> > +                       }
+> This way the compiler warns when a new value is added to the enum but
+> not to the string translation like:
 >
-> There are other places which check and rely on the return value of
-> this function. Your change makes that inconsistent. Can you stop
+> drivers/net/ethernet/ibm/ibmvnic.c: In function 'adapter_state_to_string':
+> drivers/net/ethernet/ibm/ibmvnic.c:832:2: warning: enumeration value 'VNIC_FOOBAR' not handled in switch [-Wswitch]
+>   switch (state) {
+>   ^~~~~~
+> drivers/net/ethernet/ibm/ibmvnic.c: In function 'reset_reason_to_string':
+> drivers/net/ethernet/ibm/ibmvnic.c:1935:2: warning: enumeration value 'VNIC_RESET_FOOBAR' not handled in switch [-Wswitch]
+>   switch (reason) {
+>   ^~~~~~
+>
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> Acked-by: Lijun Pan <lijunp213@gmail.com>
+> ---
+> v2: Fix typo in commit message
+> ---
 
-To be more specific, __ibmvnic_close, __ibmvnic_open both call this
-set_link_state.
+Hi Michal,
 
-> posting new versions and soliciting the maintainer to accept it before
-> there is material change? There are many ways to make reset
-> successful. I think this is the worst approach of all.
->
->
-> >
-> >                         if (adapter->state == VNIC_OPEN) {
-> >                                 /* When we dropped rtnl, ibmvnic_open() got
-> > --
-> > 2.18.2
-> >
+Thank you for reposting the patch and including the Ack-by tag. I
+think you need to wait till next Tuesday or so when net-next reopens,
+then you can repost the patch.
+http://vger.kernel.org/~davem/net-next.html.
+
+Thanks,
+Lijun
