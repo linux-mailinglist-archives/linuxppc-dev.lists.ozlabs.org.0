@@ -2,69 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5FD372750
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 10:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A6D3727AD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 10:58:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZCtl2Mg5z2yxl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 18:39:11 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=heYaieXD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZDKH6PJ0z303q
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 18:58:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b36;
- helo=mail-yb1-xb36.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=heYaieXD; dkim-atps=neutral
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com
- [IPv6:2607:f8b0:4864:20::b36])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZCtH1tQLz2xZG
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 18:38:47 +1000 (AEST)
-Received: by mail-yb1-xb36.google.com with SMTP id 82so11118041yby.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 01:38:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Y8qb2bfAFrI9QM8sR79PgwC4m456KUQvtxQw7QErVO0=;
- b=heYaieXDiOzidFq+kRcjvjjBmYI/4xzMD4IZ1Yw76TNQUNkDgLOIYrp8Bys7niIi+O
- jvSzvlHAX5/hbPR7mdg8Mr3KtVFEXJixdX0zDUsRdWPm2M6sI96KtXYPzM4z98Sk6HbK
- IclA9mcqDUz7trpk3h4rJfxcBfa44/1jzoziaYOQVlXYek/pEzc7jPCbtcmkJIT+9VUH
- WT0HpfKiSiMrkqlHze4lvrBlnkSpkcOokMm27Bo95W5SsjuKtg5kMxCDmKeB7yAkY8kq
- yjjrUt79LeHM1TFBZ+4oGyOBeB8Esqx0U2hDdis4OHVxSJOXEo006EcEEdIvOFlYc3Lc
- 5pTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Y8qb2bfAFrI9QM8sR79PgwC4m456KUQvtxQw7QErVO0=;
- b=SlQH2FvtYCRX3MG4VIbyiGH/El7kvYBYyN7EVde9AjJNww/fhUSjd7KiD4F3jMtNQh
- muKk+AFBS6oXrYPqxXWVfipDhK0aC6QGwg2eGjIc90zOOGCtQweibz31j0aKxIMdNDEr
- Nc/t4vG1POP3oi6SrjWXUSeDudfcvW/e2/omtfH00dA8eNZaGIuh1hcxly3uJTnstHe0
- X3rCNBeb3mtINgOUghdwkWYAQ6qe0lG24rXOfv7butBTKBZBDyxaXdptGo+e/tF9qcb3
- OJvKV+xsp4mlPjXAMItc1zRVuZfCRA5/dNdIwdzW0zJzNDPUKZ86yiW1vwmydqY7XM3g
- 7cdw==
-X-Gm-Message-State: AOAM530VHLzjxu/vgWOaNCXPExWpSbTuU7Rm5tMvYifvWqGV4z+zoP6u
- C0hIi53zCnHG9oGqYrUxhMw6jre83wSuLv2F6p8=
-X-Google-Smtp-Source: ABdhPJwgJRTy4oD3Q4bEwMIiI0PESgNj4LF3XmVCbNwY/lWmcIYnmds0Q6QwiZMB0/f4EUTpPAx1ux8l25XkeS6oEUM=
-X-Received: by 2002:a25:880f:: with SMTP id c15mr31896545ybl.247.1620117523381; 
- Tue, 04 May 2021 01:38:43 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZDJy2Hymz2xZM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 18:58:23 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4FZDJr5BZNz9sVk;
+ Tue,  4 May 2021 10:58:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Lgq-uMdin7q6; Tue,  4 May 2021 10:58:20 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FZDJq4FLBz9sSX;
+ Tue,  4 May 2021 10:58:19 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C5748B792;
+ Tue,  4 May 2021 10:58:19 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id mmHh7DYM-r4W; Tue,  4 May 2021 10:58:19 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E66708B78D;
+ Tue,  4 May 2021 10:58:18 +0200 (CEST)
+Subject: Re: [FSL P50x0] Xorg always restarts again and again after the the
+ PowerPC updates 5.13-1
+To: Christian Zigotzky <chzigotzky@xenosoft.de>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <3eedbe78-1fbd-4763-a7f3-ac5665e76a4a@xenosoft.de>
+ <c5b0ac7c-525f-0208-7587-c90427eae137@xenosoft.de>
+ <0886c1dc-e946-69cb-a0a9-57247acfd080@csgroup.eu>
+ <9864cd72-f1aa-4cf5-1cda-b3a10233b24d@xenosoft.de>
+ <1b0307be-05cd-ab62-8b22-75ffb59ff76b@csgroup.eu>
+ <daace050-6233-77ea-4517-0fd3c4b21057@xenosoft.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <30f559f4-b50a-de63-94e1-761022468684@csgroup.eu>
+Date: Tue, 4 May 2021 10:58:14 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-References: <20210501151538.145449-1-masahiroy@kernel.org>
- <CANiq72k1hB3X6+Nc_iu=f=BoB-F9JW2j_B4ZMcv8_UpW5QQ2Og@mail.gmail.com>
- <3943bc020f6227c8801907317fc113aa13ad4bad.camel@perches.com>
- <65cda2bb-1b02-6ebc-0ea2-c48927524aa0@codethink.co.uk>
-In-Reply-To: <65cda2bb-1b02-6ebc-0ea2-c48927524aa0@codethink.co.uk>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 4 May 2021 10:38:32 +0200
-Message-ID: <CANiq72mk84uay--BWOLT4zF12-rat9erohKazB8SpTPoVCTX1A@mail.gmail.com>
-Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-To: Ben Dooks <ben.dooks@codethink.co.uk>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <daace050-6233-77ea-4517-0fd3c4b21057@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,43 +69,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Will Deacon <will@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Joe Perches <joe@perches.com>,
- Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
+Cc: Darren Stevens <darren@stevens-zone.net>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+ mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 4, 2021 at 9:57 AM Ben Dooks <ben.dooks@codethink.co.uk> wrote:
->
-> Some of us are a bit stuck as either customer refuses to upgrade
-> their build infrastructure or has paid for some old but safety
-> blessed version of gcc. These often lag years behind the recent
-> gcc releases :(
 
-In those scenarios, why do you need to build mainline? Aren't your
-customers using longterm or frozen kernels? If they are paying for
-certified GCC images, aren't they already paying for supported kernel
-images from some vendor too?
 
-I understand where you are coming from -- I have also dealt with
-projects/machines running ancient, unsupported software/toolchains for
-various reasons; but nobody expected upstream (and in particular the
-mainline kernel source) to support them. In the cases I experienced,
-those use cases require not touching anything at all, and when the
-time came of doing so, everything would be updated at once,
-re-certified/validated as needed and frozen again.
+Le 04/05/2021 à 10:29, Christian Zigotzky a écrit :
+> On 04 May 2021 at 09:47am, Christophe Leroy wrote:
+>> Hi
+>>
+>> Le 04/05/2021 à 09:21, Christian Zigotzky a écrit :
+>>> Hi Christophe,
+>>>
+>>> Thanks for your answer but I think I don't know how it works with the cherry-pick.
+>>>
+>>> $ git bisect start
+>>
+>> As you suspect the problem to be specific to powerpc, I can do
+>>
+>> git bisect start -- arch/powerpc
+>>
+>>
+>>> $ git bisect good 68a32ba14177d4a21c4a9a941cf1d7aea86d436f
+>>> $ git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
+>>
+>> You said that powerpc-5.13-1 is bad so you can narrow the search I think:
+>>
+>> git bisect bad powerpc-5.13-1
+>> git bisect good 887f3ceb51cd3~
+> I tried it but without any success.
+> 
+> git bisect bad powerpc-5.13-1
+> 
+> Output:
+> fatal: Needed a single revision
+> Bad rev input: powerpc-5.13-1
 
-Cheers,
-Miguel
+I don't understand, on my side it works. Maybe a difference between your version of git and mine.
+
+In that case, just use the SHA corresponding to the merge:
+
+git bisect bad c70a4be130de333ea079c59da41cc959712bb01c
+
+Christophe
