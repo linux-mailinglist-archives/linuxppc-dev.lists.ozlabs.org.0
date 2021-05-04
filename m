@@ -1,62 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9CEB3729EF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 14:16:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50183729F4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 14:17:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZJhy4yr9z30CC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 22:16:02 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aRGdb6rm;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZJkl6Kmxz30Fd
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 22:17:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=aRGdb6rm; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZJhW2xFJz2xYf
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 22:15:38 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4FZJhS5Lf8z9sV5;
- Tue,  4 May 2021 22:15:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1620130537;
- bh=uWtdbCI0TNtx0mLD+ufT/ZYFqrfLvco2t5eCGabi+Ls=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=aRGdb6rmJlqeBhjJKYH/xQUBheRefJmDz05mp58PuIFHnZnuxYRRf0bOWdHo6E3M5
- +60MYoaIT0QIaZY7EoY/bny2HpzGJduKMIQcdn0+boa52Z1+R81WgJ93rwKQ2E0KWk
- /62tgRVq4igx6Jms/XM/RPxuqD/lrizECAreQq3QN7Sk3kVC3e5nulNjxLlaWfHg8G
- GeoQeT3JieqtLqR2CQgEvDwPUwAgyUL52Ilil6LrfNUrRBbGcIQ8eDAax8JMDlK/za
- Pv/5nkdUCBXhyY5uGg1K6LbcBmtNTTDfWAlIiUMmA0MyLoIyOXWqjETVx8L0xAKs4B
- 6kBz3C8iJTRXg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>, Nicholas Piggin
- <npiggin@gmail.com>
-Subject: Re: [PATCH v2] powerpc/64: BE option to use ELFv2 ABI for big
- endian kernels
-In-Reply-To: <20210503151824.GJ10366@gate.crashing.org>
-References: <20200428112517.1402927-1-npiggin@gmail.com>
- <20200428234046.GP17645@gate.crashing.org>
- <1588121596.7zej1imag0.astroid@bobo.none>
- <20210502175506.GE10366@gate.crashing.org>
- <1620002801.0iaahdk9xn.astroid@bobo.none>
- <20210503151824.GJ10366@gate.crashing.org>
-Date: Tue, 04 May 2021 22:15:34 +1000
-Message-ID: <875yzyae55.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZJkQ1H5yz2xYf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 22:17:18 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id A0178AE5E;
+ Tue,  4 May 2021 12:17:15 +0000 (UTC)
+Date: Tue, 4 May 2021 14:17:13 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
+Message-ID: <20210504121713.GT6564@kitsune.suse.cz>
+References: <20210501151538.145449-1-masahiroy@kernel.org>
+ <CANiq72k1hB3X6+Nc_iu=f=BoB-F9JW2j_B4ZMcv8_UpW5QQ2Og@mail.gmail.com>
+ <3943bc020f6227c8801907317fc113aa13ad4bad.camel@perches.com>
+ <65cda2bb-1b02-6ebc-0ea2-c48927524aa0@codethink.co.uk>
+ <CANiq72mk84uay--BWOLT4zF12-rat9erohKazB8SpTPoVCTX1A@mail.gmail.com>
+ <20210504092225.GS6564@kitsune.suse.cz>
+ <CANiq72kHwAeQ+vhFqg9tiQA-QHEK_xvP_Sro-_c5LJ2XDzjzxQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kHwAeQ+vhFqg9tiQA-QHEK_xvP_Sro-_c5LJ2XDzjzxQ@mail.gmail.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,70 +51,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>,
+ Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Joe Perches <joe@perches.com>,
+ Ben Dooks <ben.dooks@codethink.co.uk>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Will Deacon <will@kernel.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Segher Boessenkool <segher@kernel.crashing.org> writes:
-> On Mon, May 03, 2021 at 10:51:41AM +1000, Nicholas Piggin wrote:
->> Excerpts from Segher Boessenkool's message of May 3, 2021 3:55 am:
->> > On Wed, Apr 29, 2020 at 10:57:16AM +1000, Nicholas Piggin wrote:
->> >> Excerpts from Segher Boessenkool's message of April 29, 2020 9:40 am:
->> >> I blame toolchain for -mabi=elfv2 ! And also some blame on ABI document 
->> >> which is called ELF V2 ABI rather than ELF ABI V2 which would have been 
->> >> unambiguous.
->> > 
->> > At least ELFv2 ABI is correct.  "ELF ABI v2" is not.
->> > 
->> >> I can go through and change all my stuff and config options to ELF_ABI_v2.
->> > 
->> > Please don't.  It is wrong.
->> 
->> Then I'm not sure what the point of your previous mail was, what did I 
->> miss?
->
-> I asked if you could make it clearer to people who do not know what this
-> is whether they want to use it.  Or that was my intention, anyhow :-/
->
->> > Both the original PowerPC ELF ABI and the
->> > ELFv2 one have versions themselves.  Also, the base ELF standard has a
->> > version, and is set up so there can be incompatible versions even!  Of
->> > course it still is version 1 to this day, but :-)
->> 
->> The point was for people who don't know ELFv2 has a specific meaning for 
->> powerpc,
->
-> It does not have *any* meaning outside of Power.  But people who do not
-> know what it is can assume the wrong things about it.  It isn't a great
-> name because of that :-(
->
-> (It's not as bad as the MIPS ABIs -- an older one is called "new" :-) )
->
->> then ELF ABIv2 is more explanatory about it being an abi change
->> rather than base elf change, even if it's not the "correct" name.
->
-> I very much disagree.  "ELF ABIv2" is completely meaningless.
+On Tue, May 04, 2021 at 02:09:24PM +0200, Miguel Ojeda wrote:
+> On Tue, May 4, 2021 at 11:22 AM Michal Suchánek <msuchanek@suse.de> wrote:
+> >
+> > Except it makes answering the question "Is this bug we see on this
+> > ancient system still present in upstream?" needlessly more difficult to
+> > answer.
+> 
+> Can you please provide some details? If you are talking about testing
+> a new kernel image in the ancient system "as-is", why wouldn't you
+> build it in a newer system? If you are talking about  particular
+> problems about bisecting (kernel, compiler) pairs etc., details would
+> also be welcome.
 
-Except:
+Yes, bisecting comes to mind. If you need to switch the userspace as
+well the bisection results are not that solid. You may not be even able
+to bisect because the workload does not exist on a new system at all.
+Crafting a minimal test case that can be forward-ported to a new system
+is not always trivial - if you understood the problem to that extent you
+might not even need to bisect it in the first place.
 
-$ readelf -h /bin/true
-ELF Header:
-  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
-  Class:                             ELF64
-  Data:                              2's complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              DYN (Shared object file)
-  Machine:                           PowerPC64
-  Version:                           0x1
-  Entry point address:               0x1990
-  Start of program headers:          64 (bytes into file)
-  Start of section headers:          66176 (bytes into file)
-  Flags:                             0x2, abiv2
-                                          ^^^^^
+Thanks
 
-:)
-
-cheers
+Michal
