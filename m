@@ -2,75 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CC83727F0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 11:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25500372805
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 11:21:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZDkc1Gr4z304X
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 19:17:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZDqN0pr1z2yxP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 19:21:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=jC4W0jtx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C2g+OzlS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
- helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jC4W0jtx; dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=C2g+OzlS; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZDkB1WC5z2y0J
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 19:16:49 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id k19so3839322pfu.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 02:16:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=7b9XieOLKOJyF/uBT/Ov2mFmHkd3aZXuNAt6k73jsU4=;
- b=jC4W0jtxXd1hyD/jgdcCoVMiBHKSJu3EcYjav25KcKcGIZ6pzR5SM7Lyh1HLXmeFaT
- QTpuO3qxlDSlCmCjz4V3KFomGMKtYyvfAzutYF4/ra8Fn+5iE0qHWbX7847PyWOHijyT
- Ayu2JXWZ/IR55RBQNjusyrsyuuIegxKFI/TGDmTmFz7B8DIHQQD6TmxMYyYUUd9ARZ5o
- sO6z1C91aXJgoHrUiYHrNlQi5BqQEMljHXquLRTAZsRdJbKGGm2ZqtKTbjGwRTL6hdU4
- U3C2HSsYFrrO5lm77IFDSpwp1SVK7OYRL7QEQSfZNCMnpB10FfOyPYeveiGALhNAjjV4
- 0WhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=7b9XieOLKOJyF/uBT/Ov2mFmHkd3aZXuNAt6k73jsU4=;
- b=I/CoTWWNaQhRb/+glI5inPi362DZ5PSe5m94NmGlCmnmNnyWPUjM5xdwdwlRXeN6bk
- SngDxH7KMc7r9zcQjb1wKWfU28K1Us3D5vWjFVLia7c/6jUGLXnjwEdS8hQdbddsL34P
- atsV00NCxW+be3yI48pvTOp/phOnsDUFyTXzDVUFc8vJ7dvGbIuh78n2LQTDHmJpK2JN
- 1epkcaxwFpNDoKX7L/f4ZTikuq7KqRE7z3JkboYWRsAoiHO8DlRgmZ/pFtdKbR5iIJmh
- s19GY2hBkb986JzuqeDHVkQTHPiHBGmrrXyQHA2gBdtlg61ZySW0xP20gIdX7edMpYvw
- 6fxg==
-X-Gm-Message-State: AOAM531N3vkGBg4wcIFj8rZJCRbefliTIqwrbfJ2yodXNnuS/KFItx+x
- 4SP5h7eSGKGd56UFrRRuwqUNkYJpqt8=
-X-Google-Smtp-Source: ABdhPJzg5B6Rz4lzHmRa8i6rjoZOqyfDyP6tGHslNs+E3XgMkEwvD+1+tfGYVf0uRCTU7UP7tmCUdA==
-X-Received: by 2002:a63:5249:: with SMTP id s9mr22146259pgl.192.1620119807942; 
- Tue, 04 May 2021 02:16:47 -0700 (PDT)
-Received: from localhost ([61.68.127.20])
- by smtp.gmail.com with ESMTPSA id s32sm11586857pfw.2.2021.05.04.02.16.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 May 2021 02:16:47 -0700 (PDT)
-Date: Tue, 04 May 2021 19:16:42 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 4/4] powerpc/powernv: Remove POWER9 PVR version check for
- entry and uaccess flushes
-To: Joel Stanley <joel@jms.id.au>
-References: <20210503130243.891868-1-npiggin@gmail.com>
- <20210503130243.891868-5-npiggin@gmail.com>
- <CACPK8XekEXgqA1bML6A+NbsshzsLe+pLTzGJzRLdC+QKrV5T9Q@mail.gmail.com>
-In-Reply-To: <CACPK8XekEXgqA1bML6A+NbsshzsLe+pLTzGJzRLdC+QKrV5T9Q@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZDps3JbYz2xxp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 May 2021 19:20:52 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 1449IApQ146629; Tue, 4 May 2021 05:20:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=ghASH/1ZjKnCf6B2pmQxxmRZuCfU5tGuXnSxSWfI9+I=;
+ b=C2g+OzlS9dN+EZZkB4MXK3F3eMBANMrRHfNwkYwLgaTvc9GL+w+O4X9oLgjTRHKYFryW
+ 5vPEBKTy22cBk9gqMQ5iD4LL6VCbWWC5JkT+qhKkoVDztQroPh8FCK8EVWhbLu9Y1hYR
+ 8PIdA9zI1gOIZMVTFlIAQpEWL/L4tiPrDm8RKZ9fI02/l8V4OBBEDt3v+qmZJb7COav/
+ 9p4Ovp37cPM5hWROFfVvK1wkYq1Pc9nFoBY6xHbDLcRDXRsMvUX/4a6G6bXg+q+2QqhE
+ C2lcI2Z+FrUiQY1rlj8akYQIhwu/RT4FgCOUc689oL8N9OQdsS6X2T2UHFQ62w4nbe9q Ew== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38b3h381tf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 May 2021 05:20:44 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1449CAWX001876;
+ Tue, 4 May 2021 09:20:43 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 388xm8h3ms-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 May 2021 09:20:43 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1449KeNd39649774
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 May 2021 09:20:40 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 30BEA52057;
+ Tue,  4 May 2021 09:20:40 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.18.121])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id CFC7052052;
+ Tue,  4 May 2021 09:20:39 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org
+Subject: [PATCH v4] pseries/drmem: update LMBs after LPM
+Date: Tue,  4 May 2021 11:20:38 +0200
+Message-Id: <20210504092038.8514-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Message-Id: <1620119643.r94ggot8r7.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: spypsdd0VtkukeYQ_Hd_k6BH3C1qnZQ8
+X-Proofpoint-ORIG-GUID: spypsdd0VtkukeYQ_Hd_k6BH3C1qnZQ8
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-04_05:2021-05-04,
+ 2021-05-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0
+ phishscore=0 clxscore=1015 adultscore=0 mlxlogscore=999 priorityscore=1501
+ malwarescore=0 bulkscore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2105040067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,69 +93,159 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: nathanl@linux.ibm.com, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Tyrel Datwyler <tyreld@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Joel Stanley's message of May 4, 2021 10:51 am:
-> On Mon, 3 May 2021 at 13:04, Nicholas Piggin <npiggin@gmail.com> wrote:
->>
->> These aren't necessarily POWER9 only, and it's not to say some new
->> vulnerability may not get discovered on other processors for which
->> we would like the flexibility of having the workaround enabled by
->> firmware.
->>
->> Remove the restriction that they only apply to POWER9.
->=20
-> I was wondering how these worked which led me to reviewing your patch.
-> From what I could see, these are enabled by default (SEC_FTR_DEFAULT
-> in arch/powerpc/include/asm/security_features.h), so unless all
-> non-POWER9 machines have set the "please don't" bit in their firmware
-> this patch will enable the feature for those machines. Is that what
-> you wanted?
+After a LPM, the device tree node ibm,dynamic-reconfiguration-memory may be
+updated by the hypervisor in the case the NUMA topology of the LPAR's
+memory is updated.
 
-Yes. POWER7/8 should be affected (it's similar mechanism that requires
-the meltdown RFI flush, which those processors need).
+This is caught by the kernel, but the memory's node is updated because
+there is no way to move a memory block between nodes.
 
-POWER10 we haven't released a bare metal firmware with the right bits
-yet. Not urgent at the moment but wouldn't hurt to specify them and
-add the Linux code for them.
+If later a memory block is added or removed, drmem_update_dt() is called
+and it is overwriting the DT node to match the added or removed LMB. But
+the LMB's associativity node has not been updated after the DT node update
+and thus the node is overwritten by the Linux's topology instead of the
+hypervisor one.
 
-Thanks,
-Nick
+Introduce a hook called when the ibm,dynamic-reconfiguration-memory node is
+updated to force an update of the LMB's associativity. However, ignore the
+call to that hook when the update has been triggered by drmem_update_dt().
+Because, in that case, the LMB tree has been used to set the DT property
+and thus it doesn't need to be updated back. Since drmem_update_dt() is
+called under the protection of the device_hotplug_lock and the hook is
+called in the same context, use a simple boolean variable to detect that
+call.
 
->=20
->>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>  arch/powerpc/platforms/powernv/setup.c | 9 ---------
->>  1 file changed, 9 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platf=
-orms/powernv/setup.c
->> index a8db3f153063..6ec67223f8c7 100644
->> --- a/arch/powerpc/platforms/powernv/setup.c
->> +++ b/arch/powerpc/platforms/powernv/setup.c
->> @@ -122,15 +122,6 @@ static void pnv_setup_security_mitigations(void)
->>                         type =3D L1D_FLUSH_ORI;
->>         }
->>
->> -       /*
->> -        * If we are non-Power9 bare metal, we don't need to flush on ke=
-rnel
->> -        * entry or after user access: they fix a P9 specific vulnerabil=
-ity.
->> -        */
->> -       if (!pvr_version_is(PVR_POWER9)) {
->> -               security_ftr_clear(SEC_FTR_L1D_FLUSH_ENTRY);
->> -               security_ftr_clear(SEC_FTR_L1D_FLUSH_UACCESS);
->> -       }
->> -
->>         enable =3D security_ftr_enabled(SEC_FTR_FAVOUR_SECURITY) && \
->>                  (security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR)   || \
->>                   security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV));
->> --
->> 2.23.0
->>
->=20
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+---
+
+V4:
+ - Prevent the LMB to be updated back in the case the request came from the
+ LMB tree's update.
+V3:
+ - Check rd->dn->name instead of rd->dn->full_name
+V2:
+ - Take Tyrel's idea to rely on OF_RECONFIG_UPDATE_PROPERTY instead of
+ introducing a new hook mechanism.
+---
+ arch/powerpc/include/asm/drmem.h              |  1 +
+ arch/powerpc/mm/drmem.c                       | 46 +++++++++++++++++++
+ .../platforms/pseries/hotplug-memory.c        |  4 ++
+ 3 files changed, 51 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+index bf2402fed3e0..4265d5e95c2c 100644
+--- a/arch/powerpc/include/asm/drmem.h
++++ b/arch/powerpc/include/asm/drmem.h
+@@ -111,6 +111,7 @@ int drmem_update_dt(void);
+ int __init
+ walk_drmem_lmbs_early(unsigned long node, void *data,
+ 		      int (*func)(struct drmem_lmb *, const __be32 **, void *));
++void drmem_update_lmbs(struct property *prop);
+ #endif
+ 
+ static inline void invalidate_lmb_associativity_index(struct drmem_lmb *lmb)
+diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
+index 9af3832c9d8d..22197b18d85e 100644
+--- a/arch/powerpc/mm/drmem.c
++++ b/arch/powerpc/mm/drmem.c
+@@ -18,6 +18,7 @@ static int n_root_addr_cells, n_root_size_cells;
+ 
+ static struct drmem_lmb_info __drmem_info;
+ struct drmem_lmb_info *drmem_info = &__drmem_info;
++static bool in_drmem_update;
+ 
+ u64 drmem_lmb_memory_max(void)
+ {
+@@ -178,6 +179,11 @@ int drmem_update_dt(void)
+ 	if (!memory)
+ 		return -1;
+ 
++	/*
++	 * Set in_drmem_update to prevent the notifier callback to process the
++	 * DT property back since the change is coming from the LMB tree.
++	 */
++	in_drmem_update = true;
+ 	prop = of_find_property(memory, "ibm,dynamic-memory", NULL);
+ 	if (prop) {
+ 		rc = drmem_update_dt_v1(memory, prop);
+@@ -186,6 +192,7 @@ int drmem_update_dt(void)
+ 		if (prop)
+ 			rc = drmem_update_dt_v2(memory, prop);
+ 	}
++	in_drmem_update = false;
+ 
+ 	of_node_put(memory);
+ 	return rc;
+@@ -307,6 +314,45 @@ int __init walk_drmem_lmbs_early(unsigned long node, void *data,
+ 	return ret;
+ }
+ 
++/*
++ * Update the LMB associativity index.
++ */
++static int update_lmb(struct drmem_lmb *updated_lmb,
++		      __maybe_unused const __be32 **usm,
++		      __maybe_unused void *data)
++{
++	struct drmem_lmb *lmb;
++
++	for_each_drmem_lmb(lmb) {
++		if (lmb->drc_index != updated_lmb->drc_index)
++			continue;
++
++		lmb->aa_index = updated_lmb->aa_index;
++		break;
++	}
++	return 0;
++}
++
++/*
++ * Update the LMB associativity index.
++ *
++ * This needs to be called when the hypervisor is updating the
++ * dynamic-reconfiguration-memory node property.
++ */
++void drmem_update_lmbs(struct property *prop)
++{
++	/*
++	 * Don't update the LMBs if triggered by the update done in
++	 * drmem_update_dt(), the LMB values have been used to the update the DT
++	 * property in that case.
++	 */
++	if (in_drmem_update)
++		return;
++	if (!strcmp(prop->name, "ibm,dynamic-memory"))
++		__walk_drmem_v1_lmbs(prop->value, NULL, NULL, update_lmb);
++	else if (!strcmp(prop->name, "ibm,dynamic-memory-v2"))
++		__walk_drmem_v2_lmbs(prop->value, NULL, NULL, update_lmb);
++}
+ #endif
+ 
+ static int init_drmem_lmb_size(struct device_node *dn)
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 8377f1f7c78e..672ffbee2e78 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -949,6 +949,10 @@ static int pseries_memory_notifier(struct notifier_block *nb,
+ 	case OF_RECONFIG_DETACH_NODE:
+ 		err = pseries_remove_mem_node(rd->dn);
+ 		break;
++	case OF_RECONFIG_UPDATE_PROPERTY:
++		if (!strcmp(rd->dn->name,
++			    "ibm,dynamic-reconfiguration-memory"))
++			drmem_update_lmbs(rd->prop);
+ 	}
+ 	return notifier_from_errno(err);
+ }
+-- 
+2.31.1
+
