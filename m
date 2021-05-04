@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2F3372D01
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 17:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 996D7372D54
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 May 2021 17:52:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZP5V0cgHz30Fb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 01:34:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZPVy4lBmz309g
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 01:52:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L7sp14P3;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L7sp14P3;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iIwrKLcv;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iIwrKLcv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,63 +19,58 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=alex.williamson@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=L7sp14P3; 
+ header.s=mimecast20190719 header.b=iIwrKLcv; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=L7sp14P3; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=iIwrKLcv; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
  (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZP4z3mJ0z2xYk
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 01:33:37 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZPVW0q1jz2yYm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 01:52:18 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1620142411;
+ s=mimecast20190719; t=1620143535;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HLdHIElXsh+Br5DFDsP1+YjonXAJx6g75JUakM7EhX0=;
- b=L7sp14P3Ja5xwEFUVLYLsX2NGR06TKzmsEbTOiAfIdKi3b9dqjYrubdwY1/rjUK/AKVzir
- 1UvSWWHlp+1etZd72bfdiqpG6AakaFlSVvILIihlklXDXng1taUpjHAqbc1ZGnwiH7iZiv
- 2Ju3qEZUL2+Bwf6OEpVcyAWjZn1LeCE=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=+a+ZchBSphuAXQvcuIUOn9Rh82lP2Y2KDctoB7uZ/q8=;
+ b=iIwrKLcvqi4UuU2BSzWG5/Zjb42BQEjXGjh/tkqLH47/pCQt708Op/ZbijuE2PhISECEmi
+ fnJjy7mcOuWyL4SNkSoBbwzThc2I+t/jX0FowURqZIjuTFyAHPSYNenxAE3G10zcCUn9IN
+ VXXQUaclyMauCUxogpp24l/aPLEtM+g=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1620142411;
+ s=mimecast20190719; t=1620143535;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HLdHIElXsh+Br5DFDsP1+YjonXAJx6g75JUakM7EhX0=;
- b=L7sp14P3Ja5xwEFUVLYLsX2NGR06TKzmsEbTOiAfIdKi3b9dqjYrubdwY1/rjUK/AKVzir
- 1UvSWWHlp+1etZd72bfdiqpG6AakaFlSVvILIihlklXDXng1taUpjHAqbc1ZGnwiH7iZiv
- 2Ju3qEZUL2+Bwf6OEpVcyAWjZn1LeCE=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=+a+ZchBSphuAXQvcuIUOn9Rh82lP2Y2KDctoB7uZ/q8=;
+ b=iIwrKLcvqi4UuU2BSzWG5/Zjb42BQEjXGjh/tkqLH47/pCQt708Op/ZbijuE2PhISECEmi
+ fnJjy7mcOuWyL4SNkSoBbwzThc2I+t/jX0FowURqZIjuTFyAHPSYNenxAE3G10zcCUn9IN
+ VXXQUaclyMauCUxogpp24l/aPLEtM+g=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-586-oGqKZBKrOxqxLaLvFcQSeQ-1; Tue, 04 May 2021 11:33:28 -0400
-X-MC-Unique: oGqKZBKrOxqxLaLvFcQSeQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
+ us-mta-406-NU7xVnh-M1OmVkmm_ha7eA-1; Tue, 04 May 2021 11:52:11 -0400
+X-MC-Unique: NU7xVnh-M1OmVkmm_ha7eA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C45CF1922039;
- Tue,  4 May 2021 15:33:26 +0000 (UTC)
-Received: from redhat.com (ovpn-113-225.phx2.redhat.com [10.3.113.225])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 13D425C230;
- Tue,  4 May 2021 15:33:25 +0000 (UTC)
-Date: Tue, 4 May 2021 09:33:24 -0600
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0CD041074640;
+ Tue,  4 May 2021 15:52:10 +0000 (UTC)
+Received: from [172.30.42.188] (ovpn-113-225.phx2.redhat.com [10.3.113.225])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0064C60C0F;
+ Tue,  4 May 2021 15:52:02 +0000 (UTC)
+Subject: [PATCH] vfio/pci: Revert nvlink removal uAPI breakage
 From: Alex Williamson <alex.williamson@redhat.com>
-To: Greg Kurz <groug@kaod.org>
-Subject: Re: remove the nvlink2 pci_vfio subdriver v2
-Message-ID: <20210504093324.4f0cafc7@redhat.com>
-In-Reply-To: <20210504161131.2ed74d7b@bahia.lan>
-References: <20210326061311.1497642-1-hch@lst.de>
- <20210504142236.76994047@bahia.lan> <YJFFG1tSP0dUCxcX@kroah.com>
- <20210504152034.18e41ec3@bahia.lan> <YJFMZ8KYVCDwUBPU@kroah.com>
- <20210504161131.2ed74d7b@bahia.lan>
+To: kvm@vger.kernel.org, groug@kaod.org, hch@lst.de,
+ gregkh@linuxfoundation.org, daniel@ffwll.ch
+Date: Tue, 04 May 2021 09:52:02 -0600
+Message-ID: <162014341432.3807030.11054087109120670135.stgit@omen>
+User-Agent: StGit/1.0-8-g6af9-dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,97 +82,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Vetter <daniel@ffwll.ch>, kvm@vger.kernel.org,
- David Airlie <airlied@linux.ie>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, qemu-devel@nongnu.org, Paul
- Mackerras <paulus@samba.org>, Jason Gunthorpe <jgg@nvidia.com>,
- qemu-ppc@nongnu.org, linux-api@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>
+Cc: qemu-ppc@nongnu.org, linux-api@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ qemu-devel@nongnu.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 4 May 2021 16:11:31 +0200
-Greg Kurz <groug@kaod.org> wrote:
+Revert the uAPI changes from the below commit with notice that these
+regions and capabilities are no longer provided.
 
-> On Tue, 4 May 2021 15:30:15 +0200
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> 
-> > On Tue, May 04, 2021 at 03:20:34PM +0200, Greg Kurz wrote:  
-> > > On Tue, 4 May 2021 14:59:07 +0200
-> > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > >   
-> > > > On Tue, May 04, 2021 at 02:22:36PM +0200, Greg Kurz wrote:  
-> > > > > On Fri, 26 Mar 2021 07:13:09 +0100
-> > > > > Christoph Hellwig <hch@lst.de> wrote:
-> > > > >   
-> > > > > > Hi all,
-> > > > > > 
-> > > > > > the nvlink2 vfio subdriver is a weird beast.  It supports a hardware
-> > > > > > feature without any open source component - what would normally be
-> > > > > > the normal open source userspace that we require for kernel drivers,
-> > > > > > although in this particular case user space could of course be a
-> > > > > > kernel driver in a VM.  It also happens to be a complete mess that
-> > > > > > does not properly bind to PCI IDs, is hacked into the vfio_pci driver
-> > > > > > and also pulles in over 1000 lines of code always build into powerpc
-> > > > > > kernels that have Power NV support enabled.  Because of all these
-> > > > > > issues and the lack of breaking userspace when it is removed I think
-> > > > > > the best idea is to simply kill.
-> > > > > > 
-> > > > > > Changes since v1:
-> > > > > >  - document the removed subtypes as reserved
-> > > > > >  - add the ACK from Greg
-> > > > > > 
-> > > > > > Diffstat:
-> > > > > >  arch/powerpc/platforms/powernv/npu-dma.c     |  705 ---------------------------
-> > > > > >  b/arch/powerpc/include/asm/opal.h            |    3 
-> > > > > >  b/arch/powerpc/include/asm/pci-bridge.h      |    1 
-> > > > > >  b/arch/powerpc/include/asm/pci.h             |    7 
-> > > > > >  b/arch/powerpc/platforms/powernv/Makefile    |    2 
-> > > > > >  b/arch/powerpc/platforms/powernv/opal-call.c |    2 
-> > > > > >  b/arch/powerpc/platforms/powernv/pci-ioda.c  |  185 -------
-> > > > > >  b/arch/powerpc/platforms/powernv/pci.c       |   11 
-> > > > > >  b/arch/powerpc/platforms/powernv/pci.h       |   17 
-> > > > > >  b/arch/powerpc/platforms/pseries/pci.c       |   23 
-> > > > > >  b/drivers/vfio/pci/Kconfig                   |    6 
-> > > > > >  b/drivers/vfio/pci/Makefile                  |    1 
-> > > > > >  b/drivers/vfio/pci/vfio_pci.c                |   18 
-> > > > > >  b/drivers/vfio/pci/vfio_pci_private.h        |   14 
-> > > > > >  b/include/uapi/linux/vfio.h                  |   38 -  
-> > > > > 
-> > > > > 
-> > > > > Hi Christoph,
-> > > > > 
-> > > > > FYI, these uapi changes break build of QEMU.  
-> > > > 
-> > > > What uapi changes?
-> > > >   
-> > > 
-> > > All macros and structure definitions that are being removed
-> > > from include/uapi/linux/vfio.h by patch 1.
-> > >   
-> > > > What exactly breaks?
-> > > >   
-> > > 
-> > > These macros and types are used by the current QEMU code base.
-> > > Next time the QEMU source tree updates its copy of the kernel
-> > > headers, the compilation of affected code will fail.  
-> > 
-> > So does QEMU use this api that is being removed, or does it just have
-> > some odd build artifacts of the uapi things?
-> >   
-> 
-> These are region subtypes definition and associated capabilities.
-> QEMU basically gets information on VFIO regions from the kernel
-> driver and for those regions with a nvlink2 subtype, it tries
-> to extract some more nvlink2 related info.
+Fixes: b392a1989170 ("vfio/pci: remove vfio_pci_nvlink2")
+Reported-by: Greg Kurz <groug@kaod.org>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+---
 
+Greg (Kurz), please double check this resolves the issue.  Thanks!
 
-Urgh, let's put the uapi header back in place with a deprecation
-notice.  Userspace should never have a dependency on the existence of a
-given region, but clearly will have code to parse the data structure
-describing that region.  I'll post a patch.  Thanks,
+ include/uapi/linux/vfio.h |   46 +++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 42 insertions(+), 4 deletions(-)
 
-Alex
+diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+index 34b1f53a3901..ef33ea002b0b 100644
+--- a/include/uapi/linux/vfio.h
++++ b/include/uapi/linux/vfio.h
+@@ -333,10 +333,21 @@ struct vfio_region_info_cap_type {
+ #define VFIO_REGION_SUBTYPE_INTEL_IGD_LPC_CFG	(3)
+ 
+ /* 10de vendor PCI sub-types */
+-/* subtype 1 was VFIO_REGION_SUBTYPE_NVIDIA_NVLINK2_RAM, don't use */
++/*
++ * NVIDIA GPU NVlink2 RAM is coherent RAM mapped onto the host address space.
++ *
++ * Deprecated, region no longer provided
++ */
++#define VFIO_REGION_SUBTYPE_NVIDIA_NVLINK2_RAM	(1)
+ 
+ /* 1014 vendor PCI sub-types */
+-/* subtype 1 was VFIO_REGION_SUBTYPE_IBM_NVLINK2_ATSD, don't use */
++/*
++ * IBM NPU NVlink2 ATSD (Address Translation Shootdown) register of NPU
++ * to do TLB invalidation on a GPU.
++ *
++ * Deprecated, region no longer provided
++ */
++#define VFIO_REGION_SUBTYPE_IBM_NVLINK2_ATSD	(1)
+ 
+ /* sub-types for VFIO_REGION_TYPE_GFX */
+ #define VFIO_REGION_SUBTYPE_GFX_EDID            (1)
+@@ -630,9 +641,36 @@ struct vfio_device_migration_info {
+  */
+ #define VFIO_REGION_INFO_CAP_MSIX_MAPPABLE	3
+ 
+-/* subtype 4 was VFIO_REGION_INFO_CAP_NVLINK2_SSATGT, don't use */
++/*
++ * Capability with compressed real address (aka SSA - small system address)
++ * where GPU RAM is mapped on a system bus. Used by a GPU for DMA routing
++ * and by the userspace to associate a NVLink bridge with a GPU.
++ *
++ * Deprecated, capability no longer provided
++ */
++#define VFIO_REGION_INFO_CAP_NVLINK2_SSATGT	4
++
++struct vfio_region_info_cap_nvlink2_ssatgt {
++	struct vfio_info_cap_header header;
++	__u64 tgt;
++};
+ 
+-/* subtype 5 was VFIO_REGION_INFO_CAP_NVLINK2_LNKSPD, don't use */
++/*
++ * Capability with an NVLink link speed. The value is read by
++ * the NVlink2 bridge driver from the bridge's "ibm,nvlink-speed"
++ * property in the device tree. The value is fixed in the hardware
++ * and failing to provide the correct value results in the link
++ * not working with no indication from the driver why.
++ *
++ * Deprecated, capability no longer provided
++ */
++#define VFIO_REGION_INFO_CAP_NVLINK2_LNKSPD	5
++
++struct vfio_region_info_cap_nvlink2_lnkspd {
++	struct vfio_info_cap_header header;
++	__u32 link_speed;
++	__u32 __pad;
++};
+ 
+ /**
+  * VFIO_DEVICE_GET_IRQ_INFO - _IOWR(VFIO_TYPE, VFIO_BASE + 9,
+
 
