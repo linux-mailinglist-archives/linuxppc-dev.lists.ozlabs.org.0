@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED553740B5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 18:36:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E893740B8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 18:36:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb2R42JqXz3dT1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 02:36:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb2RW6q3Zz3dgv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 02:36:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xem00VX2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XV+mVvnv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,36 +17,37 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Xem00VX2; 
+ header.s=k20201202 header.b=XV+mVvnv; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb2QD3rwJz3d4T
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 02:35:48 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4D3DB61925;
- Wed,  5 May 2021 16:35:45 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb2QZ6m5sz3dDk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 02:36:06 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1C42B61936;
+ Wed,  5 May 2021 16:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1620232546;
- bh=K1Ad5LIEd+gqJ8BD+O00ND/QWNDl+hwMAp3Bhh7hrOc=;
+ s=k20201202; t=1620232564;
+ bh=AVW9KZQZQ/6kb1WJZhlXCTs6EReUWd4bDpcgMXxWuCs=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Xem00VX2KMb0yrScWYlYZx9TVr/7h6MZlXErZjY4aWKHumGGY0U0QNdQ7mz9tLCwZ
- UyfoBccksh04Toa8JN4mzrxTfvBdlVAKNgUZ3OUOfWcQaDCGsTo/E4OjPqJyx8MBrL
- 5clkEwVcyD7LYG82ho5mm67c+GTL6gktmiUZRcqK1UVZenxnv7CjFaruTEUFpiScWD
- jEfLeGgRqxJuc7SyaTVxl4dcbyJ1o8P1Z/7pCPp00BgM8QfwS24OI6anrcMriZSiAL
- 07tcuLLtG1qFWIwj88hjOvb44530fV/Ktg5VLnW3TJgMtt2lgJ792ShH3o2/EVD84V
- tZoe3iVQeObLw==
+ b=XV+mVvnvcr+F3taWXeZCfpdch5wrxb7nIYP3QEGt9DieByfvQBkF8YtAHfKZ6xXGc
+ qYt0vVIkT+F/lt6CzVm+3Af7wcfIVjfE3hIFPgXMpGNs8sMT19ibCa10yd+pM4ucLW
+ ham7NtDs8+ILV6T/Ym02o8D7qmPA74ghAy7DmWAOPHS9IOLkRKh+//uAW0vo59LZvH
+ LxoqmR48WW0pyLur1rTDZiyPOU5lyF4woOKAhbnVl3yJ5TW+7Otjtwmy83ZCFPmCQ9
+ bB264/ijKp4e3kfaG4vkUe3p/mCJPNr0qjw9gdTCD7uDGGmgm+tHfRyGIlT7JcxnLe
+ k7sFHLUnIxrMg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.11 064/104] powerpc/mm: Add cond_resched() while
- removing hpte mappings
-Date: Wed,  5 May 2021 12:33:33 -0400
-Message-Id: <20210505163413.3461611-64-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.11 076/104] powerpc/xive: Use the "ibm,
+ chip-id" property only under PowerNV
+Date: Wed,  5 May 2021 12:33:45 -0400
+Message-Id: <20210505163413.3461611-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210505163413.3461611-1-sashal@kernel.org>
 References: <20210505163413.3461611-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -61,92 +62,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
+From: Cédric Le Goater <clg@kaod.org>
 
-[ Upstream commit a5d6a3e73acbd619dd5b7b831762b755f9e2db80 ]
+[ Upstream commit e9e16917bc388846163b8566a298a291d71e44c9 ]
 
-While removing large number of mappings from hash page tables for
-large memory systems as soft-lockup is reported because of the time
-spent inside htap_remove_mapping() like one below:
+The 'chip_id' field of the XIVE CPU structure is used to choose a
+target for a source located on the same chip. For that, the XIVE
+driver queries the chip identifier from the "ibm,chip-id" property
+and compares it to a 'src_chip' field identifying the chip of a
+source. This information is only available on the PowerNV platform,
+'src_chip' being assigned to XIVE_INVALID_CHIP_ID under pSeries.
 
- watchdog: BUG: soft lockup - CPU#8 stuck for 23s!
- <snip>
- NIP plpar_hcall+0x38/0x58
- LR  pSeries_lpar_hpte_invalidate+0x68/0xb0
- Call Trace:
-  0x1fffffffffff000 (unreliable)
-  pSeries_lpar_hpte_removebolted+0x9c/0x230
-  hash__remove_section_mapping+0xec/0x1c0
-  remove_section_mapping+0x28/0x3c
-  arch_remove_memory+0xfc/0x150
-  devm_memremap_pages_release+0x180/0x2f0
-  devm_action_release+0x30/0x50
-  release_nodes+0x28c/0x300
-  device_release_driver_internal+0x16c/0x280
-  unbind_store+0x124/0x170
-  drv_attr_store+0x44/0x60
-  sysfs_kf_write+0x64/0x90
-  kernfs_fop_write+0x1b0/0x290
-  __vfs_write+0x3c/0x70
-  vfs_write+0xd4/0x270
-  ksys_write+0xdc/0x130
-  system_call+0x5c/0x70
+The "ibm,chip-id" property is also not available on all platforms. It
+was first introduced on PowerNV and later, under QEMU for pSeries/KVM.
+However, the property is not part of PAPR and does not exist under
+pSeries/PowerVM.
 
-Fix this by adding a cond_resched() to the loop in
-htap_remove_mapping() that issues hcall to remove hpte mapping. The
-call to cond_resched() is issued every HZ jiffies which should prevent
-the soft-lockup from being reported.
+Assign 'chip_id' to XIVE_INVALID_CHIP_ID by default and let the
+PowerNV platform override the value with the "ibm,chip-id" property.
 
-Suggested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210404163148.321346-1-vaibhav@linux.ibm.com
+Link: https://lore.kernel.org/r/20210413130352.1183267-1-clg@kaod.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/book3s64/hash_utils.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/powerpc/sysdev/xive/common.c        | 9 +++------
+ arch/powerpc/sysdev/xive/native.c        | 6 ++++++
+ arch/powerpc/sysdev/xive/xive-internal.h | 1 +
+ 3 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 73b06adb6eeb..f81b09769e0b 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -337,7 +337,7 @@ int htab_bolt_mapping(unsigned long vstart, unsigned long vend,
- int htab_remove_mapping(unsigned long vstart, unsigned long vend,
- 		      int psize, int ssize)
- {
--	unsigned long vaddr;
-+	unsigned long vaddr, time_limit;
- 	unsigned int step, shift;
- 	int rc;
- 	int ret = 0;
-@@ -350,8 +350,19 @@ int htab_remove_mapping(unsigned long vstart, unsigned long vend,
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index 595310e056f4..e897c3bab371 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -1335,17 +1335,14 @@ static int xive_prepare_cpu(unsigned int cpu)
  
- 	/* Unmap the full range specificied */
- 	vaddr = ALIGN_DOWN(vstart, step);
-+	time_limit = jiffies + HZ;
+ 	xc = per_cpu(xive_cpu, cpu);
+ 	if (!xc) {
+-		struct device_node *np;
+-
+ 		xc = kzalloc_node(sizeof(struct xive_cpu),
+ 				  GFP_KERNEL, cpu_to_node(cpu));
+ 		if (!xc)
+ 			return -ENOMEM;
+-		np = of_get_cpu_node(cpu, NULL);
+-		if (np)
+-			xc->chip_id = of_get_ibm_chip_id(np);
+-		of_node_put(np);
+ 		xc->hw_ipi = XIVE_BAD_IRQ;
++		xc->chip_id = XIVE_INVALID_CHIP_ID;
++		if (xive_ops->prepare_cpu)
++			xive_ops->prepare_cpu(cpu, xc);
+ 
+ 		per_cpu(xive_cpu, cpu) = xc;
+ 	}
+diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
+index 05a800a3104e..57e3f1540435 100644
+--- a/arch/powerpc/sysdev/xive/native.c
++++ b/arch/powerpc/sysdev/xive/native.c
+@@ -380,6 +380,11 @@ static void xive_native_update_pending(struct xive_cpu *xc)
+ 	}
+ }
+ 
++static void xive_native_prepare_cpu(unsigned int cpu, struct xive_cpu *xc)
++{
++	xc->chip_id = cpu_to_chip_id(cpu);
++}
 +
- 	for (;vaddr < vend; vaddr += step) {
- 		rc = mmu_hash_ops.hpte_removebolted(vaddr, psize, ssize);
-+
-+		/*
-+		 * For large number of mappings introduce a cond_resched()
-+		 * to prevent softlockup warnings.
-+		 */
-+		if (time_after(jiffies, time_limit)) {
-+			cond_resched();
-+			time_limit = jiffies + HZ;
-+		}
- 		if (rc == -ENOENT) {
- 			ret = -ENOENT;
- 			continue;
+ static void xive_native_setup_cpu(unsigned int cpu, struct xive_cpu *xc)
+ {
+ 	s64 rc;
+@@ -462,6 +467,7 @@ static const struct xive_ops xive_native_ops = {
+ 	.match			= xive_native_match,
+ 	.shutdown		= xive_native_shutdown,
+ 	.update_pending		= xive_native_update_pending,
++	.prepare_cpu		= xive_native_prepare_cpu,
+ 	.setup_cpu		= xive_native_setup_cpu,
+ 	.teardown_cpu		= xive_native_teardown_cpu,
+ 	.sync_source		= xive_native_sync_source,
+diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysdev/xive/xive-internal.h
+index 9cf57c722faa..6478be19b4d3 100644
+--- a/arch/powerpc/sysdev/xive/xive-internal.h
++++ b/arch/powerpc/sysdev/xive/xive-internal.h
+@@ -46,6 +46,7 @@ struct xive_ops {
+ 				  u32 *sw_irq);
+ 	int	(*setup_queue)(unsigned int cpu, struct xive_cpu *xc, u8 prio);
+ 	void	(*cleanup_queue)(unsigned int cpu, struct xive_cpu *xc, u8 prio);
++	void	(*prepare_cpu)(unsigned int cpu, struct xive_cpu *xc);
+ 	void	(*setup_cpu)(unsigned int cpu, struct xive_cpu *xc);
+ 	void	(*teardown_cpu)(unsigned int cpu, struct xive_cpu *xc);
+ 	bool	(*match)(struct device_node *np);
 -- 
 2.30.2
 
