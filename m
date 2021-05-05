@@ -1,100 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171F4373EF2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 17:50:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72009373F0C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 17:56:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb1PW17BJz3cJs
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 01:50:07 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q2KiSjxE;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb1Xk2yFDz3bV2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 01:56:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Q2KiSjxE; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb1L9247Pz300c
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 01:47:13 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 145FYAA1039387; Wed, 5 May 2021 11:47:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=z9Vh5oqfjNcaQ4+yibQumCzEi+6NffoQB0vFEodl8U4=;
- b=Q2KiSjxES6Cpfxozqu+gXZLFJQLUEG4Bkq8MnXcqwRitEX7SZy5lF3nzzhNehodL5sze
- 0qgyv+u2+8vSzJXuTiDvHPGPYbfmFHIcYCXmuEUuUZ5Cuj7PmwGnvub4FeJCJ1Kc8f8h
- FSzckN6r8bkx3hO6/b+I/1cHTZxBDp9xQ90puOQzxlc5FDayQL8/wM+/dVRQEH8S+I1v
- zHmJqPGzwIggrJfhz2yI8RR/mmHwituMK0iCUApwyHmc70Tv8t5KunKE9XzVViqod+f3
- ypAh0fH2fNf2OfVauT3NP5w+tLPU2vIC9+HfTWbQQZfEIdVX6sKxct2nIAGATifQ2Yvv vw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38bum4wnb9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 May 2021 11:47:06 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 145FYILf040297;
- Wed, 5 May 2021 11:47:05 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38bum4wnap-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 May 2021 11:47:05 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 145FcdYu020416;
- Wed, 5 May 2021 15:47:04 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma02fra.de.ibm.com with ESMTP id 38bee2g7ck-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 May 2021 15:47:03 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 145Fl0O351511732
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 5 May 2021 15:47:01 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC695AE04D;
- Wed,  5 May 2021 15:47:00 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 10D7CAE045;
- Wed,  5 May 2021 15:46:59 +0000 (GMT)
-Received: from bharata.ibmuc.com (unknown [9.85.85.70])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  5 May 2021 15:46:58 +0000 (GMT)
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v7 6/6] KVM: PPC: Book3S HV: Use H_RPT_INVALIDATE in nested KVM
-Date: Wed,  5 May 2021 21:16:42 +0530
-Message-Id: <20210505154642.178702-7-bharata@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210505154642.178702-1-bharata@linux.ibm.com>
-References: <20210505154642.178702-1-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb1XK4BPQz2xZH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 01:56:00 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id B6ABFB04F;
+ Wed,  5 May 2021 15:55:57 +0000 (UTC)
+Date: Wed, 5 May 2021 17:55:56 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3] powerpc/64: Option to use ELFv2 ABI for big-endian
+ kernels
+Message-ID: <20210505155556.GB6564@kitsune.suse.cz>
+References: <20210503110713.751840-1-npiggin@gmail.com>
+ <20210505152337.GA6564@kitsune.suse.cz>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: kWb9nHgEba737jpB4RTFJUrDbfm_Y1Db
-X-Proofpoint-GUID: iVOE45iPYzmJyD2EU5C1NXc7HAIm2dbp
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-05_09:2021-05-05,
- 2021-05-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- bulkscore=0 spamscore=0 adultscore=0 malwarescore=0 mlxlogscore=999
- phishscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2105050112
+In-Reply-To: <20210505152337.GA6564@kitsune.suse.cz>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,107 +47,279 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
- Bharata B Rao <bharata@linux.ibm.com>, david@gibson.dropbear.id.au
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the nested KVM case, replace H_TLB_INVALIDATE by the new hcall
-H_RPT_INVALIDATE if available. The availability of this hcall
-is determined from "hcall-rpt-invalidate" string in ibm,hypertas-functions
-DT property.
+On Wed, May 05, 2021 at 05:23:37PM +0200, Michal Suchánek wrote:
+> Hello,
+> 
+> looks like the ABI flags are not correctly applied when cross-compiling.
+> 
+> While building natively success of BTFIDS depends on the kernel ABI but
+> when cross-compiling success of BTFIDS depends on the default toolchain
+> ABI.
+> 
+> It's problem independent of this patch - the problem exists both before
+> and after.
 
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
----
- arch/powerpc/kvm/book3s_64_mmu_radix.c | 27 +++++++++++++++++++++-----
- arch/powerpc/kvm/book3s_hv_nested.c    | 12 ++++++++++--
- 2 files changed, 32 insertions(+), 7 deletions(-)
+Actually this is not the case. Now retested with LE toolchain and BTFIDS
+fails on BE v2 kernel with either one but earlier the default LE
+toolchain produced BTFIDS on BE v1 kernel.
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index ec4f58fa9f5a..6980f8ef08f9 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -21,6 +21,7 @@
- #include <asm/pte-walk.h>
- #include <asm/ultravisor.h>
- #include <asm/kvm_book3s_uvmem.h>
-+#include <asm/plpar_wrappers.h>
- 
- /*
-  * Supported radix tree geometry.
-@@ -318,9 +319,19 @@ void kvmppc_radix_tlbie_page(struct kvm *kvm, unsigned long addr,
- 	}
- 
- 	psi = shift_to_mmu_psize(pshift);
--	rb = addr | (mmu_get_ap(psi) << PPC_BITLSHIFT(58));
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(0, 0, 1),
--				lpid, rb);
-+
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE)) {
-+		rb = addr | (mmu_get_ap(psi) << PPC_BITLSHIFT(58));
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(0, 0, 1),
-+					lpid, rb);
-+	} else {
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_TLB,
-+					    psize_to_rpti_pgsize(psi),
-+					    addr, addr + psize);
-+	}
-+
- 	if (rc)
- 		pr_err("KVM: TLB page invalidation hcall failed, rc=%ld\n", rc);
- }
-@@ -334,8 +345,14 @@ static void kvmppc_radix_flush_pwc(struct kvm *kvm, unsigned int lpid)
- 		return;
- 	}
- 
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(1, 0, 1),
--				lpid, TLBIEL_INVAL_SET_LPID);
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE))
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(1, 0, 1),
-+					lpid, TLBIEL_INVAL_SET_LPID);
-+	else
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_PWC, H_RPTI_PAGE_ALL,
-+					    0, -1UL);
- 	if (rc)
- 		pr_err("KVM: TLB PWC invalidation hcall failed, rc=%ld\n", rc);
- }
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 91f10290130d..d1529251b078 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -19,6 +19,7 @@
- #include <asm/pgalloc.h>
- #include <asm/pte-walk.h>
- #include <asm/reg.h>
-+#include <asm/plpar_wrappers.h>
- 
- static struct patb_entry *pseries_partition_tb;
- 
-@@ -467,8 +468,15 @@ static void kvmhv_flush_lpid(unsigned int lpid)
- 		return;
- 	}
- 
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(2, 0, 1),
--				lpid, TLBIEL_INVAL_SET_LPID);
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE))
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(2, 0, 1),
-+					lpid, TLBIEL_INVAL_SET_LPID);
-+	else
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
-+					    H_RPTI_TYPE_PAT,
-+					    H_RPTI_PAGE_ALL, 0, -1UL);
- 	if (rc)
- 		pr_err("KVM: TLB LPID invalidation hcall failed, rc=%ld\n", rc);
- }
--- 
-2.26.2
+No idea what is going on except the general issue that success/failure
+of BTFIDS when cross-compiling ppc64 is not representative of
+success/failure when building natively. Don't even want to know what
+would happen if I tried to link a BPF program with the kernel code using
+that info.
 
+Thanks
+
+Michal
+
+> 
+> Thanks
+> 
+> Michal
+> 
+> On Mon, May 03, 2021 at 09:07:13PM +1000, Nicholas Piggin wrote:
+> > Provide an option to build big-endian kernels using the ELFv2 ABI. This
+> > works on GCC only so far, although it is rumored to work with clang
+> > that's not been tested yet.
+> > 
+> > This can give big-endian kernels some useful advantages of the ELFv2 ABI
+> > (e.g., less stack usage, -mprofile-kernel, better compatibility with bpf
+> > tools).
+> > 
+> > BE+ELFv2 is not officially supported by the GNU toolchain, but it works
+> > fine in testing and has been used by some userspace for some time (e.g.,
+> > Void Linux).
+> > 
+> > Tested-by: Michal Suchánek <msuchanek@suse.de>
+> > Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> > 
+> > I didn't add the -mprofile-kernel change but I think it would be a good
+> > one that can be merged independently if it works.
+> > 
+> > Since v2:
+> > - Rebased, tweaked changelog.
+> > - Changed ELF_V2 to ELF_V2_ABI in config options, to be clearer.
+> > 
+> > Since v1:
+> > - Improved the override flavour name suggested by Segher.
+> > - Improved changelog wording.
+> > 
+> >  arch/powerpc/Kconfig                | 22 ++++++++++++++++++++++
+> >  arch/powerpc/Makefile               | 18 ++++++++++++------
+> >  arch/powerpc/boot/Makefile          |  4 +++-
+> >  arch/powerpc/kernel/vdso64/Makefile | 13 +++++++++++++
+> >  drivers/crypto/vmx/Makefile         |  8 ++++++--
+> >  drivers/crypto/vmx/ppc-xlate.pl     | 10 ++++++----
+> >  6 files changed, 62 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > index 1e6230bea09d..d3f78d3d574d 100644
+> > --- a/arch/powerpc/Kconfig
+> > +++ b/arch/powerpc/Kconfig
+> > @@ -160,6 +160,7 @@ config PPC
+> >  	select ARCH_WEAK_RELEASE_ACQUIRE
+> >  	select BINFMT_ELF
+> >  	select BUILDTIME_TABLE_SORT
+> > +	select PPC64_BUILD_ELF_V2_ABI		if PPC64 && CPU_LITTLE_ENDIAN
+> >  	select CLONE_BACKWARDS
+> >  	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
+> >  	select DMA_OPS				if PPC64
+> > @@ -568,6 +569,27 @@ config KEXEC_FILE
+> >  config ARCH_HAS_KEXEC_PURGATORY
+> >  	def_bool KEXEC_FILE
+> >  
+> > +config PPC64_BUILD_ELF_V2_ABI
+> > +	bool
+> > +
+> > +config PPC64_BUILD_BIG_ENDIAN_ELF_V2_ABI
+> > +	bool "Build big-endian kernel using ELF ABI V2 (EXPERIMENTAL)"
+> > +	depends on PPC64 && CPU_BIG_ENDIAN && EXPERT
+> > +	depends on CC_IS_GCC && LD_VERSION >= 22400
+> > +	default n
+> > +	select PPC64_BUILD_ELF_V2_ABI
+> > +	help
+> > +	  This builds the kernel image using the "Power Architecture 64-Bit ELF
+> > +	  V2 ABI Specification", which has a reduced stack overhead and faster
+> > +	  function calls. This internal kernel ABI option does not affect
+> > +          userspace compatibility.
+> > +
+> > +	  The V2 ABI is standard for 64-bit little-endian, but for big-endian
+> > +	  it is less well tested by kernel and toolchain. However some distros
+> > +	  build userspace this way, and it can produce a functioning kernel.
+> > +
+> > +	  This requires GCC and binutils 2.24 or newer.
+> > +
+> >  config RELOCATABLE
+> >  	bool "Build a relocatable kernel"
+> >  	depends on PPC64 || (FLATMEM && (44x || FSL_BOOKE))
+> > diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> > index 3212d076ac6a..b90b5cb799aa 100644
+> > --- a/arch/powerpc/Makefile
+> > +++ b/arch/powerpc/Makefile
+> > @@ -91,10 +91,14 @@ endif
+> >  
+> >  ifdef CONFIG_PPC64
+> >  ifndef CONFIG_CC_IS_CLANG
+> > -cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
+> > -cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mcall-aixdesc)
+> > -aflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
+> > -aflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -mabi=elfv2
+> > +ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
+> > +cflags-y				+= $(call cc-option,-mabi=elfv2)
+> > +aflags-y				+= $(call cc-option,-mabi=elfv2)
+> > +else
+> > +cflags-y				+= $(call cc-option,-mabi=elfv1)
+> > +cflags-y				+= $(call cc-option,-mcall-aixdesc)
+> > +aflags-y				+= $(call cc-option,-mabi=elfv1)
+> > +endif
+> >  endif
+> >  endif
+> >  
+> > @@ -142,15 +146,17 @@ endif
+> >  
+> >  CFLAGS-$(CONFIG_PPC64)	:= $(call cc-option,-mtraceback=no)
+> >  ifndef CONFIG_CC_IS_CLANG
+> > -ifdef CONFIG_CPU_LITTLE_ENDIAN
+> > -CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2,$(call cc-option,-mcall-aixdesc))
+> > +ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
+> > +CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2)
+> >  AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2)
+> >  else
+> > +# Keep these in synch with arch/powerpc/kernel/vdso64/Makefile
+> >  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
+> >  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcall-aixdesc)
+> >  AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
+> >  endif
+> >  endif
+> > +
+> >  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcmodel=medium,$(call cc-option,-mminimal-toc))
+> >  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mno-pointers-to-nested-functions)
+> >  
+> > diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+> > index 2b8da923ceca..be84a72f8258 100644
+> > --- a/arch/powerpc/boot/Makefile
+> > +++ b/arch/powerpc/boot/Makefile
+> > @@ -40,6 +40,9 @@ BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+> >  
+> >  ifdef CONFIG_PPC64_BOOT_WRAPPER
+> >  BOOTCFLAGS	+= -m64
+> > +ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
+> > +BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
+> > +endif
+> >  else
+> >  BOOTCFLAGS	+= -m32
+> >  endif
+> > @@ -50,7 +53,6 @@ ifdef CONFIG_CPU_BIG_ENDIAN
+> >  BOOTCFLAGS	+= -mbig-endian
+> >  else
+> >  BOOTCFLAGS	+= -mlittle-endian
+> > -BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
+> >  endif
+> >  
+> >  BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
+> > diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
+> > index 2813e3f98db6..d783c07e558f 100644
+> > --- a/arch/powerpc/kernel/vdso64/Makefile
+> > +++ b/arch/powerpc/kernel/vdso64/Makefile
+> > @@ -25,6 +25,19 @@ KCOV_INSTRUMENT := n
+> >  UBSAN_SANITIZE := n
+> >  KASAN_SANITIZE := n
+> >  
+> > +# Always build vdso64 with ELFv1 ABI for BE kernels
+> > +ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
+> > +ifdef CONFIG_CPU_BIG_ENDIAN
+> > +KBUILD_CFLAGS := $(filter-out -mabi=elfv2,$(KBUILD_CFLAGS))
+> > +KBUILD_AFLAGS := $(filter-out -mabi=elfv2,$(KBUILD_AFLAGS))
+> > +
+> > +# These are derived from arch/powerpc/Makefile
+> > +KBUILD_CFLAGS += $(call cc-option,-mabi=elfv1)
+> > +KBUILD_CFLAGS += $(call cc-option,-mcall-aixdesc)
+> > +KBUILD_AFLAGS += $(call cc-option,-mabi=elfv1)
+> > +endif
+> > +endif
+> > +
+> >  ccflags-y := -shared -fno-common -fno-builtin -nostdlib \
+> >  	-Wl,-soname=linux-vdso64.so.1 -Wl,--hash-style=both
+> >  asflags-y := -D__VDSO64__ -s
+> > diff --git a/drivers/crypto/vmx/Makefile b/drivers/crypto/vmx/Makefile
+> > index 709670d2b553..d9ccf9fc3483 100644
+> > --- a/drivers/crypto/vmx/Makefile
+> > +++ b/drivers/crypto/vmx/Makefile
+> > @@ -5,18 +5,22 @@ vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes
+> >  ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
+> >  override flavour := linux-ppc64le
+> >  else
+> > +ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
+> > +override flavour := linux-ppc64-elfv2
+> > +else
+> >  override flavour := linux-ppc64
+> >  endif
+> > +endif
+> >  
+> >  quiet_cmd_perl = PERL $@
+> >        cmd_perl = $(PERL) $(<) $(flavour) > $(@)
+> >  
+> >  targets += aesp8-ppc.S ghashp8-ppc.S
+> >  
+> > -$(obj)/aesp8-ppc.S: $(src)/aesp8-ppc.pl FORCE
+> > +$(obj)/aesp8-ppc.S: $(src)/aesp8-ppc.pl $(src)/ppc-xlate.pl FORCE
+> >  	$(call if_changed,perl)
+> >    
+> > -$(obj)/ghashp8-ppc.S: $(src)/ghashp8-ppc.pl FORCE
+> > +$(obj)/ghashp8-ppc.S: $(src)/ghashp8-ppc.pl $(src)/ppc-xlate.pl FORCE
+> >  	$(call if_changed,perl)
+> >  
+> >  clean-files := aesp8-ppc.S ghashp8-ppc.S
+> > diff --git a/drivers/crypto/vmx/ppc-xlate.pl b/drivers/crypto/vmx/ppc-xlate.pl
+> > index 36db2ef09e5b..b583898c11ae 100644
+> > --- a/drivers/crypto/vmx/ppc-xlate.pl
+> > +++ b/drivers/crypto/vmx/ppc-xlate.pl
+> > @@ -9,6 +9,8 @@ open STDOUT,">$output" || die "can't open $output: $!";
+> >  
+> >  my %GLOBALS;
+> >  my $dotinlocallabels=($flavour=~/linux/)?1:0;
+> > +my $elfv2abi=(($flavour =~ /linux-ppc64le/) or ($flavour =~ /linux-ppc64-elfv2/))?1:0;
+> > +my $dotfunctions=($elfv2abi=~1)?0:1;
+> >  
+> >  ################################################################
+> >  # directives which need special treatment on different platforms
+> > @@ -40,7 +42,7 @@ my $globl = sub {
+> >  };
+> >  my $text = sub {
+> >      my $ret = ($flavour =~ /aix/) ? ".csect\t.text[PR],7" : ".text";
+> > -    $ret = ".abiversion	2\n".$ret	if ($flavour =~ /linux.*64le/);
+> > +    $ret = ".abiversion	2\n".$ret	if ($elfv2abi);
+> >      $ret;
+> >  };
+> >  my $machine = sub {
+> > @@ -56,8 +58,8 @@ my $size = sub {
+> >      if ($flavour =~ /linux/)
+> >      {	shift;
+> >  	my $name = shift; $name =~ s|^[\.\_]||;
+> > -	my $ret  = ".size	$name,.-".($flavour=~/64$/?".":"").$name;
+> > -	$ret .= "\n.size	.$name,.-.$name" if ($flavour=~/64$/);
+> > +	my $ret  = ".size	$name,.-".($dotfunctions?".":"").$name;
+> > +	$ret .= "\n.size	.$name,.-.$name" if ($dotfunctions);
+> >  	$ret;
+> >      }
+> >      else
+> > @@ -142,7 +144,7 @@ my $vmr = sub {
+> >  
+> >  # Some ABIs specify vrsave, special-purpose register #256, as reserved
+> >  # for system use.
+> > -my $no_vrsave = ($flavour =~ /linux-ppc64le/);
+> > +my $no_vrsave = ($elfv2abi);
+> >  my $mtspr = sub {
+> >      my ($f,$idx,$ra) = @_;
+> >      if ($idx == 256 && $no_vrsave) {
+> > -- 
+> > 2.23.0
+> > 
