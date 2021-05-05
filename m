@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF30D3740A2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 18:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 599AD3740A5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 18:35:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb2Ph5TCcz3cZ5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 02:35:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb2Q82l9Bz3d3h
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 02:35:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kBYZc88L;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bGVTDQ5o;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=kBYZc88L; 
+ header.s=k20201202 header.b=bGVTDQ5o; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb2N13GXtz3c2C
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 02:33:53 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5E2A861481;
- Wed,  5 May 2021 16:33:50 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb2PF5FMnz2yxY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 02:34:57 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 79C6A616EC;
+ Wed,  5 May 2021 16:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1620232431;
- bh=vkhSz1ZTKlNOYzE0WNy3Upzc4zgTQBrymtxywf8XbVA=;
+ s=k20201202; t=1620232495;
+ bh=IjQ16PaiznQ+DmnopLdAcuaE4WZWyIOLV2kE1mYF6KM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=kBYZc88LJl8e6c7ZEyDJ4TocNlq/2e3TV5S7ftnf7u4h/jUGH/PaXJk9QAU/42v7H
- PPR5p+RcJtZkt4DY4iqJZyk4YwJlNKQxIE7RxoPJYL3B9wkXOCgbmSGegGmRsz0QO4
- L/oIFg4Gu33gEIWQszxBnc/uTi4qPFj027OAJ1I/lOHzttbbVOg7U2Bp2Oo5LDnpSD
- AZvjL/AYcWJhW0Og3Ti3qWyiLGWs9Zu33wouSeo2t7esQ9//D3HBXCBtLjgDrB+azs
- vR+GqXRzg0VQShjd1Efap9pY/6aECE5+tUvjxNLFoqRLyZLS+xXK1r2hyIJBWrBam0
- WGtsCiZVrrLbg==
+ b=bGVTDQ5owRSMZRLf446ePHSSuriH3edY5nxxx0rTmscJus52AmluUywBDUF/lx+aj
+ Ym5pWfwwQhaPBECD2QHQkht4fadNExvokSkS8AZZ6FzQxqhJcUDhUGSa71QLky+UKh
+ uekF9z6UawNKPadB8Gq22a3CrG8A96MC4k5d5gguH50EtacBzwvRqwvLlX0OBAS3hG
+ sHyeThWyhi6Ox6CA4oAFtTF9239y9gzF98OcDqdy8QGSyQY2yqD4uQJs7r92bQm+rE
+ Jkf1icdEYfrrpJPHkaky55JFO4sMsutDD5OaFrEoS2EyoXM8Vzh5iOzFZCrk0Y13XE
+ FLiTTB2eclRaA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 103/116] powerpc/iommu: Annotate nested lock for
- lockdep
-Date: Wed,  5 May 2021 12:31:11 -0400
-Message-Id: <20210505163125.3460440-103-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.11 029/104] selftests/powerpc: Fix L1D flushing
+ tests for Power10
+Date: Wed,  5 May 2021 12:32:58 -0400
+Message-Id: <20210505163413.3461611-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210505163125.3460440-1-sashal@kernel.org>
-References: <20210505163125.3460440-1-sashal@kernel.org>
+In-Reply-To: <20210505163413.3461611-1-sashal@kernel.org>
+References: <20210505163413.3461611-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,74 +61,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linux-kselftest@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
+From: Russell Currey <ruscur@russell.cc>
 
-[ Upstream commit cc7130bf119add37f36238343a593b71ef6ecc1e ]
+[ Upstream commit 3a72c94ebfb1f171eba0715998010678a09ec796 ]
 
-The IOMMU table is divided into pools for concurrent mappings and each
-pool has a separate spinlock. When taking the ownership of an IOMMU group
-to pass through a device to a VM, we lock these spinlocks which triggers
-a false negative warning in lockdep (below).
+The rfi_flush and entry_flush selftests work by using the PM_LD_MISS_L1
+perf event to count L1D misses.  The value of this event has changed
+over time:
 
-This fixes it by annotating the large pool's spinlock as a nest lock
-which makes lockdep not complaining when locking nested locks if
-the nest lock is locked already.
+- Power7 uses 0x400f0
+- Power8 and Power9 use both 0x400f0 and 0x3e054
+- Power10 uses only 0x3e054
 
-===
-WARNING: possible recursive locking detected
-5.11.0-le_syzkaller_a+fstn1 #100 Not tainted
---------------------------------------------
-qemu-system-ppc/4129 is trying to acquire lock:
-c0000000119bddb0 (&(p->lock)/1){....}-{2:2}, at: iommu_take_ownership+0xac/0x1e0
+Rather than relying on raw values, configure perf to count L1D read
+misses in the most explicit way available.
 
-but task is already holding lock:
-c0000000119bdd30 (&(p->lock)/1){....}-{2:2}, at: iommu_take_ownership+0xac/0x1e0
+This fixes the selftests to work on systems without 0x400f0 as
+PM_LD_MISS_L1, and should change no behaviour for systems that the tests
+already worked on.
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
+The only potential downside is that referring to a specific perf event
+requires PMU support implemented in the kernel for that platform.
 
-       CPU0
-       ----
-  lock(&(p->lock)/1);
-  lock(&(p->lock)/1);
-===
-
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Acked-by: Daniel Axtens <dja@axtens.net>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210301063653.51003-1-aik@ozlabs.ru
+Link: https://lore.kernel.org/r/20210223070227.2916871-1-ruscur@russell.cc
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/iommu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/powerpc/security/entry_flush.c | 2 +-
+ tools/testing/selftests/powerpc/security/flush_utils.h | 4 ++++
+ tools/testing/selftests/powerpc/security/rfi_flush.c   | 2 +-
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index c00214a4355c..4023f91defa6 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -1096,7 +1096,7 @@ int iommu_take_ownership(struct iommu_table *tbl)
+diff --git a/tools/testing/selftests/powerpc/security/entry_flush.c b/tools/testing/selftests/powerpc/security/entry_flush.c
+index 78cf914fa321..68ce377b205e 100644
+--- a/tools/testing/selftests/powerpc/security/entry_flush.c
++++ b/tools/testing/selftests/powerpc/security/entry_flush.c
+@@ -53,7 +53,7 @@ int entry_flush_test(void)
  
- 	spin_lock_irqsave(&tbl->large_pool.lock, flags);
- 	for (i = 0; i < tbl->nr_pools; i++)
--		spin_lock(&tbl->pools[i].lock);
-+		spin_lock_nest_lock(&tbl->pools[i].lock, &tbl->large_pool.lock);
+ 	entry_flush = entry_flush_orig;
  
- 	iommu_table_release_pages(tbl);
+-	fd = perf_event_open_counter(PERF_TYPE_RAW, /* L1d miss */ 0x400f0, -1);
++	fd = perf_event_open_counter(PERF_TYPE_HW_CACHE, PERF_L1D_READ_MISS_CONFIG, -1);
+ 	FAIL_IF(fd < 0);
  
-@@ -1124,7 +1124,7 @@ void iommu_release_ownership(struct iommu_table *tbl)
+ 	p = (char *)memalign(zero_size, CACHELINE_SIZE);
+diff --git a/tools/testing/selftests/powerpc/security/flush_utils.h b/tools/testing/selftests/powerpc/security/flush_utils.h
+index 07a5eb301466..7a3d60292916 100644
+--- a/tools/testing/selftests/powerpc/security/flush_utils.h
++++ b/tools/testing/selftests/powerpc/security/flush_utils.h
+@@ -9,6 +9,10 @@
  
- 	spin_lock_irqsave(&tbl->large_pool.lock, flags);
- 	for (i = 0; i < tbl->nr_pools; i++)
--		spin_lock(&tbl->pools[i].lock);
-+		spin_lock_nest_lock(&tbl->pools[i].lock, &tbl->large_pool.lock);
+ #define CACHELINE_SIZE 128
  
- 	memset(tbl->it_map, 0, sz);
++#define PERF_L1D_READ_MISS_CONFIG	((PERF_COUNT_HW_CACHE_L1D) | 		\
++					(PERF_COUNT_HW_CACHE_OP_READ << 8) |	\
++					(PERF_COUNT_HW_CACHE_RESULT_MISS << 16))
++
+ void syscall_loop(char *p, unsigned long iterations,
+ 		  unsigned long zero_size);
  
+diff --git a/tools/testing/selftests/powerpc/security/rfi_flush.c b/tools/testing/selftests/powerpc/security/rfi_flush.c
+index 7565fd786640..f73484a6470f 100644
+--- a/tools/testing/selftests/powerpc/security/rfi_flush.c
++++ b/tools/testing/selftests/powerpc/security/rfi_flush.c
+@@ -54,7 +54,7 @@ int rfi_flush_test(void)
+ 
+ 	rfi_flush = rfi_flush_orig;
+ 
+-	fd = perf_event_open_counter(PERF_TYPE_RAW, /* L1d miss */ 0x400f0, -1);
++	fd = perf_event_open_counter(PERF_TYPE_HW_CACHE, PERF_L1D_READ_MISS_CONFIG, -1);
+ 	FAIL_IF(fd < 0);
+ 
+ 	p = (char *)memalign(zero_size, CACHELINE_SIZE);
 -- 
 2.30.2
 
