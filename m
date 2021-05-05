@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D842E3740DF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 18:39:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B053740E7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 18:39:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb2VP5ns3z3bvP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 02:39:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb2Vt02NVz3bTv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 02:39:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dCEQB0U9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ndg+Ybs2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=dCEQB0U9; 
+ header.s=k20201202 header.b=ndg+Ybs2; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb2Sn195qz3dw7
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 02:38:01 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D1E0D61975;
- Wed,  5 May 2021 16:37:57 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb2T74P2Cz3dy7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 02:38:19 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 530F361976;
+ Wed,  5 May 2021 16:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1620232678;
- bh=qoEZcu9Gg1vnb7VlqlhbrblSKsVzoXIk8Jm9lF0iyjY=;
+ s=k20201202; t=1620232697;
+ bh=a8OnDeZAFFz7ubJpjcjMdhRe4VR5bbHqxjDper2nd44=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=dCEQB0U9v+BrShdA9B1zy/DRQ3lkDlypS/WavM9RmJ06ajWavCqomKIUlaY9fgn51
- Ukm2AWSX8mOQ4r0lDj4koxKT2WGBoKpaJnq+pmTv8GegQWt7CTPbDzDJh1e9p7i0Xj
- CcePuBqhg6+sfzlQ0AJK4tZf4+4DBJ9aSB1tXB5Qz6LErhbRxTcS0pruJsONeQCaIb
- NEBp++urr96tj+L6TkJ/d2SXlDwKXoB8HTIvMQuPYOkSDyj+6uvSBChZIiebIjJpC1
- VfBGaH6mDgwq6bXFx02wB9Ivlnl+P9Sx2lcm47V5Ad8yIIRtQZLVOEdkUM0EWhmUUW
- oRHjYkk7UD/Dw==
+ b=ndg+Ybs2vXhWHhRkxTcL+ytzxOZR/K8g/sAkklNVOJ8R5q0OXi9YX3yPmwV5gF7GB
+ 96Pn7N8sCqWtm09mwgp9loL1L4cFq0cuhvAMt86E1fYjSRblTg0byFCGerlpLZgJAm
+ 9Bp5XqPY8BRtRm3Yx5BY0N1Yp3bNWVc1VPdZ/N/iPEt3O1zNy2z55NrrXlnY0vwyHb
+ bvEgnlmKTsnbY5oImVMARr94bqeF1A53gjk2Ip6Yf9oQ3WjeqjAGDaW39768Khgm3C
+ 8ainqceCPCdChHBpwi14I4Vw3rU6SjgaqqfKQKhjrUIqLT9cWF5MAhxHDGFmsCWo3+
+ B5c8eWlY2sGiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 48/85] powerpc/mm: Add cond_resched() while
- removing hpte mappings
-Date: Wed,  5 May 2021 12:36:11 -0400
-Message-Id: <20210505163648.3462507-48-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 60/85] powerpc/smp: Set numa node before updating
+ mask
+Date: Wed,  5 May 2021 12:36:23 -0400
+Message-Id: <20210505163648.3462507-60-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210505163648.3462507-1-sashal@kernel.org>
 References: <20210505163648.3462507-1-sashal@kernel.org>
@@ -61,92 +61,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Sasha Levin <sashal@kernel.org>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-[ Upstream commit a5d6a3e73acbd619dd5b7b831762b755f9e2db80 ]
+[ Upstream commit 6980d13f0dd189846887bbbfa43793d9a41768d3 ]
 
-While removing large number of mappings from hash page tables for
-large memory systems as soft-lockup is reported because of the time
-spent inside htap_remove_mapping() like one below:
+Geethika reported a trace when doing a dlpar CPU add.
 
- watchdog: BUG: soft lockup - CPU#8 stuck for 23s!
- <snip>
- NIP plpar_hcall+0x38/0x58
- LR  pSeries_lpar_hpte_invalidate+0x68/0xb0
- Call Trace:
-  0x1fffffffffff000 (unreliable)
-  pSeries_lpar_hpte_removebolted+0x9c/0x230
-  hash__remove_section_mapping+0xec/0x1c0
-  remove_section_mapping+0x28/0x3c
-  arch_remove_memory+0xfc/0x150
-  devm_memremap_pages_release+0x180/0x2f0
-  devm_action_release+0x30/0x50
-  release_nodes+0x28c/0x300
-  device_release_driver_internal+0x16c/0x280
-  unbind_store+0x124/0x170
-  drv_attr_store+0x44/0x60
-  sysfs_kf_write+0x64/0x90
-  kernfs_fop_write+0x1b0/0x290
-  __vfs_write+0x3c/0x70
-  vfs_write+0xd4/0x270
-  ksys_write+0xdc/0x130
-  system_call+0x5c/0x70
+------------[ cut here ]------------
+WARNING: CPU: 152 PID: 1134 at kernel/sched/topology.c:2057
+CPU: 152 PID: 1134 Comm: kworker/152:1 Not tainted 5.12.0-rc5-master #5
+Workqueue: events cpuset_hotplug_workfn
+NIP:  c0000000001cfc14 LR: c0000000001cfc10 CTR: c0000000007e3420
+REGS: c0000034a08eb260 TRAP: 0700   Not tainted  (5.12.0-rc5-master+)
+MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28828422  XER: 00000020
+CFAR: c0000000001fd888 IRQMASK: 0 #012GPR00: c0000000001cfc10
+c0000034a08eb500 c000000001f35400 0000000000000027 #012GPR04:
+c0000035abaa8010 c0000035abb30a00 0000000000000027 c0000035abaa8018
+#012GPR08: 0000000000000023 c0000035abaaef48 00000035aa540000
+c0000035a49dffe8 #012GPR12: 0000000028828424 c0000035bf1a1c80
+0000000000000497 0000000000000004 #012GPR16: c00000000347a258
+0000000000000140 c00000000203d468 c000000001a1a490 #012GPR20:
+c000000001f9c160 c0000034adf70920 c0000034aec9fd20 0000000100087bd3
+#012GPR24: 0000000100087bd3 c0000035b3de09f8 0000000000000030
+c0000035b3de09f8 #012GPR28: 0000000000000028 c00000000347a280
+c0000034aefe0b00 c0000000010a2a68
+NIP [c0000000001cfc14] build_sched_domains+0x6a4/0x1500
+LR [c0000000001cfc10] build_sched_domains+0x6a0/0x1500
+Call Trace:
+[c0000034a08eb500] [c0000000001cfc10] build_sched_domains+0x6a0/0x1500 (unreliable)
+[c0000034a08eb640] [c0000000001d1e6c] partition_sched_domains_locked+0x3ec/0x530
+[c0000034a08eb6e0] [c0000000002936d4] rebuild_sched_domains_locked+0x524/0xbf0
+[c0000034a08eb7e0] [c000000000296bb0] rebuild_sched_domains+0x40/0x70
+[c0000034a08eb810] [c000000000296e74] cpuset_hotplug_workfn+0x294/0xe20
+[c0000034a08ebc30] [c000000000178dd0] process_one_work+0x300/0x670
+[c0000034a08ebd10] [c0000000001791b8] worker_thread+0x78/0x520
+[c0000034a08ebda0] [c000000000185090] kthread+0x1a0/0x1b0
+[c0000034a08ebe10] [c00000000000ccec] ret_from_kernel_thread+0x5c/0x70
+Instruction dump:
+7d2903a6 4e800421 e8410018 7f67db78 7fe6fb78 7f45d378 7f84e378 7c681b78
+3c62ff1a 3863c6f8 4802dc35 60000000 <0fe00000> 3920fff4 f9210070 e86100a0
+---[ end trace 532d9066d3d4d7ec ]---
 
-Fix this by adding a cond_resched() to the loop in
-htap_remove_mapping() that issues hcall to remove hpte mapping. The
-call to cond_resched() is issued every HZ jiffies which should prevent
-the soft-lockup from being reported.
+Some of the per-CPU masks use cpu_cpu_mask as a filter to limit the search
+for related CPUs. On a dlpar add of a CPU, update cpu_cpu_mask before
+updating the per-CPU masks. This will ensure the cpu_cpu_mask is updated
+correctly before its used in setting the masks. Setting the numa_node will
+ensure that when cpu_cpu_mask() gets called, the correct node number is
+used. This code movement helped fix the above call trace.
 
-Suggested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reported-by: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
+Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Reviewed-by: Nathan Lynch <nathanl@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210404163148.321346-1-vaibhav@linux.ibm.com
+Link: https://lore.kernel.org/r/20210401154200.150077-1-srikar@linux.vnet.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/book3s64/hash_utils.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/smp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 24702c0a92e0..0141d571476c 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -336,7 +336,7 @@ int htab_bolt_mapping(unsigned long vstart, unsigned long vend,
- int htab_remove_mapping(unsigned long vstart, unsigned long vend,
- 		      int psize, int ssize)
- {
--	unsigned long vaddr;
-+	unsigned long vaddr, time_limit;
- 	unsigned int step, shift;
- 	int rc;
- 	int ret = 0;
-@@ -349,8 +349,19 @@ int htab_remove_mapping(unsigned long vstart, unsigned long vend,
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 7d6cf75a7fd8..85a1a2a9d8ed 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -1417,6 +1417,9 @@ void start_secondary(void *unused)
  
- 	/* Unmap the full range specificied */
- 	vaddr = ALIGN_DOWN(vstart, step);
-+	time_limit = jiffies + HZ;
+ 	vdso_getcpu_init();
+ #endif
++	set_numa_node(numa_cpu_lookup_table[cpu]);
++	set_numa_mem(local_memory_node(numa_cpu_lookup_table[cpu]));
 +
- 	for (;vaddr < vend; vaddr += step) {
- 		rc = mmu_hash_ops.hpte_removebolted(vaddr, psize, ssize);
-+
-+		/*
-+		 * For large number of mappings introduce a cond_resched()
-+		 * to prevent softlockup warnings.
-+		 */
-+		if (time_after(jiffies, time_limit)) {
-+			cond_resched();
-+			time_limit = jiffies + HZ;
-+		}
- 		if (rc == -ENOENT) {
- 			ret = -ENOENT;
- 			continue;
+ 	/* Update topology CPU masks */
+ 	add_cpu_to_masks(cpu);
+ 
+@@ -1435,9 +1438,6 @@ void start_secondary(void *unused)
+ 			shared_caches = true;
+ 	}
+ 
+-	set_numa_node(numa_cpu_lookup_table[cpu]);
+-	set_numa_mem(local_memory_node(numa_cpu_lookup_table[cpu]));
+-
+ 	smp_wmb();
+ 	notify_cpu_starting(cpu);
+ 	set_cpu_online(cpu, true);
 -- 
 2.30.2
 
