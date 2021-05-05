@@ -2,40 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72009373F0C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 17:56:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBD7373F26
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 18:03:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb1Xk2yFDz3bV2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 01:56:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb1jB5Wynz30Q8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 02:03:42 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ObZoeRAu;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SU7T0LAk;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
  receiver=<UNKNOWN>)
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=ObZoeRAu; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=SU7T0LAk; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb1XK4BPQz2xZH
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 01:56:00 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id B6ABFB04F;
- Wed,  5 May 2021 15:55:57 +0000 (UTC)
-Date: Wed, 5 May 2021 17:55:56 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3] powerpc/64: Option to use ELFv2 ABI for big-endian
- kernels
-Message-ID: <20210505155556.GB6564@kitsune.suse.cz>
-References: <20210503110713.751840-1-npiggin@gmail.com>
- <20210505152337.GA6564@kitsune.suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb1hd3Zywz2yjH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 02:03:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1620230585;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1n5eBCPheirTlmkO/V8Dkx+9HIwI6ouJJXoWwQgrT24=;
+ b=ObZoeRAu0wbJOA1hXfCZOcJMONp34goI7hUeVIjtL/dnuJNFkpgFsbmHCgqxUzu+9CNxn7
+ u2cjCrdyQxSmfSZVVO6AVDEGBo1MKVc8wrfIr5zSEaIuIoVqBR0c6DyZd9bYSUjzB0gcoV
+ D2Yn4Rn/hpe8nCh2o2mc6NYRwubEWqo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1620230586;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1n5eBCPheirTlmkO/V8Dkx+9HIwI6ouJJXoWwQgrT24=;
+ b=SU7T0LAk2bp8jRfRsCqmKc868SL0C47ZmDZ5k/4UawwcCNDHMe/PCRSQAGXfaMRbYR9m/z
+ RChlvtTdl2x6ovwILi3p9NwQP0QjX+hTRq/Sy20y5J01AILYowS2YG+lHWO80VUa8dot/h
+ q43HKFOUBFiX/fD0s175Bgn2meMlQVE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-477-NHWi4wOuOxK3NeGv1Z0ryQ-1; Wed, 05 May 2021 12:03:03 -0400
+X-MC-Unique: NHWi4wOuOxK3NeGv1Z0ryQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ 4-20020adf80040000b029010cab735fdeso878053wrk.14
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 May 2021 09:03:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=1n5eBCPheirTlmkO/V8Dkx+9HIwI6ouJJXoWwQgrT24=;
+ b=ggfa7mvG00fV32sx/PxlbBjR1gklKMLIPY9HX1fEQH3k54jmT7MavKQp7aKVbkV05Y
+ 4u7bGv17VXQpoVxxMJnOpht5fe7HNywBpnPZLcTii9hrok7cqnnrbKSCQLxFCceBK8jH
+ RfiD9rQ546WJgUhJ7bjbiKQJeXJQzYCsU/TY6IJ465+/IFP1E3iyDyh4e1wHw2KnnBUh
+ sz2HQi/AYOjeffTiu2xlOlsf9j+Kjs0Vuezz26XrZswL39xrDZl7a4ahxuQYG6QnY8ID
+ FO8mYnbSNcozJXCzi1rkoxoJkImYn3MEzuPMDZdEYQNHYUmwiJhw/0w0M8kNjoAy/OKT
+ Vs1A==
+X-Gm-Message-State: AOAM532gMol8TsRCPF3yKXNmuwqTuWZnKoC8zc0BoD/ZFZNWiUgHz5zG
+ hEvH5rO+81FinWM5XLZNb5IL9SjF7jVMfpejPSCBQSAapsoggoEE0FVPY0LKBF3J4/6MUCGlDub
+ fSjqDtvmv4sqmAXV1g9mSHVcXvw==
+X-Received: by 2002:a5d:6386:: with SMTP id p6mr38971807wru.36.1620230581735; 
+ Wed, 05 May 2021 09:03:01 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx5h2Nhmgyt5a32/b5XL3k/4nl0ybMktVvwzYVFkUPnV2uAcTzu0ZxPk4ltILLR23enPmxrcw==
+X-Received: by 2002:a5d:6386:: with SMTP id p6mr38971784wru.36.1620230581465; 
+ Wed, 05 May 2021 09:03:01 -0700 (PDT)
+Received: from ?IPv6:2001:b07:6468:f312:c8dd:75d4:99ab:290a?
+ ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
+ by smtp.gmail.com with ESMTPSA id d22sm21146171wrc.50.2021.05.05.09.03.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 May 2021 09:03:01 -0700 (PDT)
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix conversion to gfn-based MMU
+ notifier callbacks
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+References: <20210505121509.1470207-1-npiggin@gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <9e0a256b-fb5a-4468-ed21-68d524d6ea56@redhat.com>
+Date: Wed, 5 May 2021 18:02:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210505152337.GA6564@kitsune.suse.cz>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <20210505121509.1470207-1-npiggin@gmail.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pbonzini@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,279 +110,176 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Sean Christopherson <seanjc@google.com>,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 05, 2021 at 05:23:37PM +0200, Michal Suchánek wrote:
-> Hello,
+On 05/05/21 14:15, Nicholas Piggin wrote:
+> Commit b1c5356e873c ("KVM: PPC: Convert to the gfn-based MMU notifier
+> callbacks") causes unmap_gfn_range and age_gfn callbacks to only work
+> on the first gfn in the range. It also makes the aging callbacks call
+> into both radix and hash aging functions for radix guests. Fix this.
 > 
-> looks like the ABI flags are not correctly applied when cross-compiling.
+> Add warnings for the single-gfn calls that have been converted to range
+> callbacks, in case they ever receieve ranges greater than 1.
 > 
-> While building natively success of BTFIDS depends on the kernel ABI but
-> when cross-compiling success of BTFIDS depends on the default toolchain
-> ABI.
-> 
-> It's problem independent of this patch - the problem exists both before
-> and after.
+> Fixes: b1c5356e873c ("KVM: PPC: Convert to the gfn-based MMU notifier callbacks")
+> Reported-by: Bharata B Rao <bharata@linux.ibm.com>
+> Tested-by: Bharata B Rao <bharata@linux.ibm.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Actually this is not the case. Now retested with LE toolchain and BTFIDS
-fails on BE v2 kernel with either one but earlier the default LE
-toolchain produced BTFIDS on BE v1 kernel.
+Sorry for the breakage.  I queued this patch.
 
-No idea what is going on except the general issue that success/failure
-of BTFIDS when cross-compiling ppc64 is not representative of
-success/failure when building natively. Don't even want to know what
-would happen if I tried to link a BPF program with the kernel code using
-that info.
+Paolo
 
-Thanks
-
-Michal
-
+> ---
+> The e500 change in that commit also looks suspicious, why is it okay
+> to remove kvm_flush_remote_tlbs() there? Also is the the change from
+> returning false to true intended?
 > 
-> Thanks
+> Thanks,
+> Nick
 > 
-> Michal
+>   arch/powerpc/include/asm/kvm_book3s.h  |  2 +-
+>   arch/powerpc/kvm/book3s_64_mmu_hv.c    | 46 ++++++++++++++++++--------
+>   arch/powerpc/kvm/book3s_64_mmu_radix.c |  5 ++-
+>   3 files changed, 36 insertions(+), 17 deletions(-)
 > 
-> On Mon, May 03, 2021 at 09:07:13PM +1000, Nicholas Piggin wrote:
-> > Provide an option to build big-endian kernels using the ELFv2 ABI. This
-> > works on GCC only so far, although it is rumored to work with clang
-> > that's not been tested yet.
-> > 
-> > This can give big-endian kernels some useful advantages of the ELFv2 ABI
-> > (e.g., less stack usage, -mprofile-kernel, better compatibility with bpf
-> > tools).
-> > 
-> > BE+ELFv2 is not officially supported by the GNU toolchain, but it works
-> > fine in testing and has been used by some userspace for some time (e.g.,
-> > Void Linux).
-> > 
-> > Tested-by: Michal Suchánek <msuchanek@suse.de>
-> > Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> > 
-> > I didn't add the -mprofile-kernel change but I think it would be a good
-> > one that can be merged independently if it works.
-> > 
-> > Since v2:
-> > - Rebased, tweaked changelog.
-> > - Changed ELF_V2 to ELF_V2_ABI in config options, to be clearer.
-> > 
-> > Since v1:
-> > - Improved the override flavour name suggested by Segher.
-> > - Improved changelog wording.
-> > 
-> >  arch/powerpc/Kconfig                | 22 ++++++++++++++++++++++
-> >  arch/powerpc/Makefile               | 18 ++++++++++++------
-> >  arch/powerpc/boot/Makefile          |  4 +++-
-> >  arch/powerpc/kernel/vdso64/Makefile | 13 +++++++++++++
-> >  drivers/crypto/vmx/Makefile         |  8 ++++++--
-> >  drivers/crypto/vmx/ppc-xlate.pl     | 10 ++++++----
-> >  6 files changed, 62 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > index 1e6230bea09d..d3f78d3d574d 100644
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -160,6 +160,7 @@ config PPC
-> >  	select ARCH_WEAK_RELEASE_ACQUIRE
-> >  	select BINFMT_ELF
-> >  	select BUILDTIME_TABLE_SORT
-> > +	select PPC64_BUILD_ELF_V2_ABI		if PPC64 && CPU_LITTLE_ENDIAN
-> >  	select CLONE_BACKWARDS
-> >  	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
-> >  	select DMA_OPS				if PPC64
-> > @@ -568,6 +569,27 @@ config KEXEC_FILE
-> >  config ARCH_HAS_KEXEC_PURGATORY
-> >  	def_bool KEXEC_FILE
-> >  
-> > +config PPC64_BUILD_ELF_V2_ABI
-> > +	bool
-> > +
-> > +config PPC64_BUILD_BIG_ENDIAN_ELF_V2_ABI
-> > +	bool "Build big-endian kernel using ELF ABI V2 (EXPERIMENTAL)"
-> > +	depends on PPC64 && CPU_BIG_ENDIAN && EXPERT
-> > +	depends on CC_IS_GCC && LD_VERSION >= 22400
-> > +	default n
-> > +	select PPC64_BUILD_ELF_V2_ABI
-> > +	help
-> > +	  This builds the kernel image using the "Power Architecture 64-Bit ELF
-> > +	  V2 ABI Specification", which has a reduced stack overhead and faster
-> > +	  function calls. This internal kernel ABI option does not affect
-> > +          userspace compatibility.
-> > +
-> > +	  The V2 ABI is standard for 64-bit little-endian, but for big-endian
-> > +	  it is less well tested by kernel and toolchain. However some distros
-> > +	  build userspace this way, and it can produce a functioning kernel.
-> > +
-> > +	  This requires GCC and binutils 2.24 or newer.
-> > +
-> >  config RELOCATABLE
-> >  	bool "Build a relocatable kernel"
-> >  	depends on PPC64 || (FLATMEM && (44x || FSL_BOOKE))
-> > diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> > index 3212d076ac6a..b90b5cb799aa 100644
-> > --- a/arch/powerpc/Makefile
-> > +++ b/arch/powerpc/Makefile
-> > @@ -91,10 +91,14 @@ endif
-> >  
-> >  ifdef CONFIG_PPC64
-> >  ifndef CONFIG_CC_IS_CLANG
-> > -cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
-> > -cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mcall-aixdesc)
-> > -aflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
-> > -aflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -mabi=elfv2
-> > +ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-> > +cflags-y				+= $(call cc-option,-mabi=elfv2)
-> > +aflags-y				+= $(call cc-option,-mabi=elfv2)
-> > +else
-> > +cflags-y				+= $(call cc-option,-mabi=elfv1)
-> > +cflags-y				+= $(call cc-option,-mcall-aixdesc)
-> > +aflags-y				+= $(call cc-option,-mabi=elfv1)
-> > +endif
-> >  endif
-> >  endif
-> >  
-> > @@ -142,15 +146,17 @@ endif
-> >  
-> >  CFLAGS-$(CONFIG_PPC64)	:= $(call cc-option,-mtraceback=no)
-> >  ifndef CONFIG_CC_IS_CLANG
-> > -ifdef CONFIG_CPU_LITTLE_ENDIAN
-> > -CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2,$(call cc-option,-mcall-aixdesc))
-> > +ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-> > +CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2)
-> >  AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2)
-> >  else
-> > +# Keep these in synch with arch/powerpc/kernel/vdso64/Makefile
-> >  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
-> >  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcall-aixdesc)
-> >  AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
-> >  endif
-> >  endif
-> > +
-> >  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcmodel=medium,$(call cc-option,-mminimal-toc))
-> >  CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mno-pointers-to-nested-functions)
-> >  
-> > diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-> > index 2b8da923ceca..be84a72f8258 100644
-> > --- a/arch/powerpc/boot/Makefile
-> > +++ b/arch/powerpc/boot/Makefile
-> > @@ -40,6 +40,9 @@ BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-> >  
-> >  ifdef CONFIG_PPC64_BOOT_WRAPPER
-> >  BOOTCFLAGS	+= -m64
-> > +ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-> > +BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
-> > +endif
-> >  else
-> >  BOOTCFLAGS	+= -m32
-> >  endif
-> > @@ -50,7 +53,6 @@ ifdef CONFIG_CPU_BIG_ENDIAN
-> >  BOOTCFLAGS	+= -mbig-endian
-> >  else
-> >  BOOTCFLAGS	+= -mlittle-endian
-> > -BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
-> >  endif
-> >  
-> >  BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
-> > diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
-> > index 2813e3f98db6..d783c07e558f 100644
-> > --- a/arch/powerpc/kernel/vdso64/Makefile
-> > +++ b/arch/powerpc/kernel/vdso64/Makefile
-> > @@ -25,6 +25,19 @@ KCOV_INSTRUMENT := n
-> >  UBSAN_SANITIZE := n
-> >  KASAN_SANITIZE := n
-> >  
-> > +# Always build vdso64 with ELFv1 ABI for BE kernels
-> > +ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-> > +ifdef CONFIG_CPU_BIG_ENDIAN
-> > +KBUILD_CFLAGS := $(filter-out -mabi=elfv2,$(KBUILD_CFLAGS))
-> > +KBUILD_AFLAGS := $(filter-out -mabi=elfv2,$(KBUILD_AFLAGS))
-> > +
-> > +# These are derived from arch/powerpc/Makefile
-> > +KBUILD_CFLAGS += $(call cc-option,-mabi=elfv1)
-> > +KBUILD_CFLAGS += $(call cc-option,-mcall-aixdesc)
-> > +KBUILD_AFLAGS += $(call cc-option,-mabi=elfv1)
-> > +endif
-> > +endif
-> > +
-> >  ccflags-y := -shared -fno-common -fno-builtin -nostdlib \
-> >  	-Wl,-soname=linux-vdso64.so.1 -Wl,--hash-style=both
-> >  asflags-y := -D__VDSO64__ -s
-> > diff --git a/drivers/crypto/vmx/Makefile b/drivers/crypto/vmx/Makefile
-> > index 709670d2b553..d9ccf9fc3483 100644
-> > --- a/drivers/crypto/vmx/Makefile
-> > +++ b/drivers/crypto/vmx/Makefile
-> > @@ -5,18 +5,22 @@ vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes
-> >  ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
-> >  override flavour := linux-ppc64le
-> >  else
-> > +ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-> > +override flavour := linux-ppc64-elfv2
-> > +else
-> >  override flavour := linux-ppc64
-> >  endif
-> > +endif
-> >  
-> >  quiet_cmd_perl = PERL $@
-> >        cmd_perl = $(PERL) $(<) $(flavour) > $(@)
-> >  
-> >  targets += aesp8-ppc.S ghashp8-ppc.S
-> >  
-> > -$(obj)/aesp8-ppc.S: $(src)/aesp8-ppc.pl FORCE
-> > +$(obj)/aesp8-ppc.S: $(src)/aesp8-ppc.pl $(src)/ppc-xlate.pl FORCE
-> >  	$(call if_changed,perl)
-> >    
-> > -$(obj)/ghashp8-ppc.S: $(src)/ghashp8-ppc.pl FORCE
-> > +$(obj)/ghashp8-ppc.S: $(src)/ghashp8-ppc.pl $(src)/ppc-xlate.pl FORCE
-> >  	$(call if_changed,perl)
-> >  
-> >  clean-files := aesp8-ppc.S ghashp8-ppc.S
-> > diff --git a/drivers/crypto/vmx/ppc-xlate.pl b/drivers/crypto/vmx/ppc-xlate.pl
-> > index 36db2ef09e5b..b583898c11ae 100644
-> > --- a/drivers/crypto/vmx/ppc-xlate.pl
-> > +++ b/drivers/crypto/vmx/ppc-xlate.pl
-> > @@ -9,6 +9,8 @@ open STDOUT,">$output" || die "can't open $output: $!";
-> >  
-> >  my %GLOBALS;
-> >  my $dotinlocallabels=($flavour=~/linux/)?1:0;
-> > +my $elfv2abi=(($flavour =~ /linux-ppc64le/) or ($flavour =~ /linux-ppc64-elfv2/))?1:0;
-> > +my $dotfunctions=($elfv2abi=~1)?0:1;
-> >  
-> >  ################################################################
-> >  # directives which need special treatment on different platforms
-> > @@ -40,7 +42,7 @@ my $globl = sub {
-> >  };
-> >  my $text = sub {
-> >      my $ret = ($flavour =~ /aix/) ? ".csect\t.text[PR],7" : ".text";
-> > -    $ret = ".abiversion	2\n".$ret	if ($flavour =~ /linux.*64le/);
-> > +    $ret = ".abiversion	2\n".$ret	if ($elfv2abi);
-> >      $ret;
-> >  };
-> >  my $machine = sub {
-> > @@ -56,8 +58,8 @@ my $size = sub {
-> >      if ($flavour =~ /linux/)
-> >      {	shift;
-> >  	my $name = shift; $name =~ s|^[\.\_]||;
-> > -	my $ret  = ".size	$name,.-".($flavour=~/64$/?".":"").$name;
-> > -	$ret .= "\n.size	.$name,.-.$name" if ($flavour=~/64$/);
-> > +	my $ret  = ".size	$name,.-".($dotfunctions?".":"").$name;
-> > +	$ret .= "\n.size	.$name,.-.$name" if ($dotfunctions);
-> >  	$ret;
-> >      }
-> >      else
-> > @@ -142,7 +144,7 @@ my $vmr = sub {
-> >  
-> >  # Some ABIs specify vrsave, special-purpose register #256, as reserved
-> >  # for system use.
-> > -my $no_vrsave = ($flavour =~ /linux-ppc64le/);
-> > +my $no_vrsave = ($elfv2abi);
-> >  my $mtspr = sub {
-> >      my ($f,$idx,$ra) = @_;
-> >      if ($idx == 256 && $no_vrsave) {
-> > -- 
-> > 2.23.0
-> > 
+> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
+> index a6e9a5585e61..e6b53c6e21e3 100644
+> --- a/arch/powerpc/include/asm/kvm_book3s.h
+> +++ b/arch/powerpc/include/asm/kvm_book3s.h
+> @@ -210,7 +210,7 @@ extern void kvmppc_free_pgtable_radix(struct kvm *kvm, pgd_t *pgd,
+>   				      unsigned int lpid);
+>   extern int kvmppc_radix_init(void);
+>   extern void kvmppc_radix_exit(void);
+> -extern bool kvm_unmap_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
+> +extern void kvm_unmap_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
+>   			    unsigned long gfn);
+>   extern bool kvm_age_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
+>   			  unsigned long gfn);
+> diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> index b7bd9ca040b8..2d9193cd73be 100644
+> --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> @@ -795,7 +795,7 @@ static void kvmppc_unmap_hpte(struct kvm *kvm, unsigned long i,
+>   	}
+>   }
+>   
+> -static bool kvm_unmap_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+> +static void kvm_unmap_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+>   			    unsigned long gfn)
+>   {
+>   	unsigned long i;
+> @@ -829,15 +829,21 @@ static bool kvm_unmap_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+>   		unlock_rmap(rmapp);
+>   		__unlock_hpte(hptep, be64_to_cpu(hptep[0]));
+>   	}
+> -	return false;
+>   }
+>   
+>   bool kvm_unmap_gfn_range_hv(struct kvm *kvm, struct kvm_gfn_range *range)
+>   {
+> -	if (kvm_is_radix(kvm))
+> -		return kvm_unmap_radix(kvm, range->slot, range->start);
+> +	gfn_t gfn;
+> +
+> +	if (kvm_is_radix(kvm)) {
+> +		for (gfn = range->start; gfn < range->end; gfn++)
+> +			kvm_unmap_radix(kvm, range->slot, gfn);
+> +	} else {
+> +		for (gfn = range->start; gfn < range->end; gfn++)
+> +			kvm_unmap_rmapp(kvm, range->slot, range->start);
+> +	}
+>   
+> -	return kvm_unmap_rmapp(kvm, range->slot, range->start);
+> +	return false;
+>   }
+>   
+>   void kvmppc_core_flush_memslot_hv(struct kvm *kvm,
+> @@ -924,10 +930,18 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+>   
+>   bool kvm_age_gfn_hv(struct kvm *kvm, struct kvm_gfn_range *range)
+>   {
+> -	if (kvm_is_radix(kvm))
+> -		kvm_age_radix(kvm, range->slot, range->start);
+> +	gfn_t gfn;
+> +	bool ret = false;
+>   
+> -	return kvm_age_rmapp(kvm, range->slot, range->start);
+> +	if (kvm_is_radix(kvm)) {
+> +		for (gfn = range->start; gfn < range->end; gfn++)
+> +			ret |= kvm_age_radix(kvm, range->slot, gfn);
+> +	} else {
+> +		for (gfn = range->start; gfn < range->end; gfn++)
+> +			ret |= kvm_age_rmapp(kvm, range->slot, gfn);
+> +	}
+> +
+> +	return ret;
+>   }
+>   
+>   static bool kvm_test_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+> @@ -965,18 +979,24 @@ static bool kvm_test_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+>   
+>   bool kvm_test_age_gfn_hv(struct kvm *kvm, struct kvm_gfn_range *range)
+>   {
+> -	if (kvm_is_radix(kvm))
+> -		kvm_test_age_radix(kvm, range->slot, range->start);
+> +	WARN_ON(range->start + 1 != range->end);
+>   
+> -	return kvm_test_age_rmapp(kvm, range->slot, range->start);
+> +	if (kvm_is_radix(kvm))
+> +		return kvm_test_age_radix(kvm, range->slot, range->start);
+> +	else
+> +		return kvm_test_age_rmapp(kvm, range->slot, range->start);
+>   }
+>   
+>   bool kvm_set_spte_gfn_hv(struct kvm *kvm, struct kvm_gfn_range *range)
+>   {
+> +	WARN_ON(range->start + 1 != range->end);
+> +
+>   	if (kvm_is_radix(kvm))
+> -		return kvm_unmap_radix(kvm, range->slot, range->start);
+> +		kvm_unmap_radix(kvm, range->slot, range->start);
+> +	else
+> +		kvm_unmap_rmapp(kvm, range->slot, range->start);
+>   
+> -	return kvm_unmap_rmapp(kvm, range->slot, range->start);
+> +	return false;
+>   }
+>   
+>   static int vcpus_running(struct kvm *kvm)
+> diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+> index ec4f58fa9f5a..d909c069363e 100644
+> --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
+> +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+> @@ -993,7 +993,7 @@ int kvmppc_book3s_radix_page_fault(struct kvm_vcpu *vcpu,
+>   }
+>   
+>   /* Called with kvm->mmu_lock held */
+> -bool kvm_unmap_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
+> +void kvm_unmap_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
+>   		     unsigned long gfn)
+>   {
+>   	pte_t *ptep;
+> @@ -1002,14 +1002,13 @@ bool kvm_unmap_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
+>   
+>   	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE) {
+>   		uv_page_inval(kvm->arch.lpid, gpa, PAGE_SHIFT);
+> -		return false;
+> +		return;
+>   	}
+>   
+>   	ptep = find_kvm_secondary_pte(kvm, gpa, &shift);
+>   	if (ptep && pte_present(*ptep))
+>   		kvmppc_unmap_pte(kvm, ptep, gpa, shift, memslot,
+>   				 kvm->arch.lpid);
+> -	return false;
+>   }
+>   
+>   /* Called with kvm->mmu_lock held */
+> 
+
