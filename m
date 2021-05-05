@@ -2,67 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936B63733A3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 03:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C453733C2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 04:44:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZfdN4knZz30FK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 11:44:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=LnLUvEXT;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZgyh6xd9z30Jb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 12:44:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::730;
- helo=mail-qk1-x730.google.com; envelope-from=joel.stan@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=LnLUvEXT; dkim-atps=neutral
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com
- [IPv6:2607:f8b0:4864:20::730])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZfcw60Vvz2y0L
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 11:43:43 +1000 (AEST)
-Received: by mail-qk1-x730.google.com with SMTP id i17so180223qki.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 18:43:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=UufFEkemTLqezkOFJuyAIvngoBVqC1wvHF7o4ZpqwQY=;
- b=LnLUvEXTxqsR7h20KgtvBmCyA7fmtnS18g4OPMiifa99Nsg9uqrHVjv8DcW6wCTmek
- n1zN6spbPYCaOMtBiHmdN0zKqSiX8i5xYw61f4r4G2xe33/1kZYHRELaEe4uc35Za/qp
- 9+iJSUaH2nVAfdX3srOLqKaRm15fK9YoxpqVM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=UufFEkemTLqezkOFJuyAIvngoBVqC1wvHF7o4ZpqwQY=;
- b=LNnctVEoFx1h2Is0ZU7KuBGX53prz2PPhI15uxOkoQDCasUG54mrrI6NMaTxBm6Ez8
- Z8xoOYOh3AqEXehQtM7PfaPxKDILzJOrOryA3fLcYDXFXJ4AUUGiG30u8rGNa3ZSxo/G
- R7E5M48C6ikPi2pJMvOTPdO5KDGO7hRXBr46+c22jMaE1SLEc1gEZSFfBJqTt9+SC7fh
- hgZPZBqdYb+ye9EmjVC+LHfL0IT9vSTYId4nuDMF9xMdfTYJ+zDi75EKq10hf5IeoOrb
- v/rVMazHP4RjfNnLQWHAOxvMDmcLnKhjnL1dp6xBMYkZwLk3Zd2jTb4/+YIDVcv6zfQh
- Rd0g==
-X-Gm-Message-State: AOAM533l1HGn9vLty1Q5pbNM7VCkiUdZVoEkJ/Z3cxqoQoeKxqTF+XzA
- sKZSy4Rs8xeLFZvsc55lR4urWx/MykW3oLTHl2g=
-X-Google-Smtp-Source: ABdhPJzH8yxq6Jb0cRrKrlr5nYIS0LRQjdX0dp/UR/vSh/Ce6TR/lv6NUEcVlt3FkzovyRax616yFnOmhDvpn4eM58Y=
-X-Received: by 2002:a37:317:: with SMTP id 23mr16206074qkd.66.1620179019917;
- Tue, 04 May 2021 18:43:39 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZgyJ5x5bz2xgJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 12:43:48 +1000 (AEST)
+IronPort-SDR: FmnDnrqK3TlVaDtsO5RRSQHZfBQPi6+hgtJ0Su8bHgk1lIdVS9eEXKZ54qkVX2j9P1fq2enSM6
+ kka3t95iZ/FQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9974"; a="196074303"
+X-IronPort-AV: E=Sophos;i="5.82,273,1613462400"; d="scan'208";a="196074303"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2021 19:43:44 -0700
+IronPort-SDR: cYT8Qvghio5w2T0GTUAN9Fd1Z7h4jWwauVvVga85ILG5nqkBTGoqW2Lb7vW+qCcpv15GN6ORnj
+ h6WrXrRpohCg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,273,1613462400"; d="scan'208";a="451509282"
+Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
+ by fmsmga004.fm.intel.com with ESMTP; 04 May 2021 19:43:43 -0700
+Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1le7Vm-0009om-MG; Wed, 05 May 2021 02:43:42 +0000
+Date: Wed, 05 May 2021 10:43:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 7619d98e5041d5c25aba5428704dba6121237a9a
+Message-ID: <6092064a.Alafu0H29qBkxtf7%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20210503130243.891868-1-npiggin@gmail.com>
- <20210503130243.891868-5-npiggin@gmail.com>
- <CACPK8XekEXgqA1bML6A+NbsshzsLe+pLTzGJzRLdC+QKrV5T9Q@mail.gmail.com>
- <1620119643.r94ggot8r7.astroid@bobo.none>
-In-Reply-To: <1620119643.r94ggot8r7.astroid@bobo.none>
-From: Joel Stanley <joel@jms.id.au>
-Date: Wed, 5 May 2021 01:43:27 +0000
-Message-ID: <CACPK8XeyEaj-0LUa=YMT1WXn=_cQkDXH9xLiVARGCwZANsRk=A@mail.gmail.com>
-Subject: Re: [PATCH 4/4] powerpc/powernv: Remove POWER9 PVR version check for
- entry and uaccess flushes
-To: Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,37 +53,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 4 May 2021 at 09:16, Nicholas Piggin <npiggin@gmail.com> wrote:
->
-> Excerpts from Joel Stanley's message of May 4, 2021 10:51 am:
-> > On Mon, 3 May 2021 at 13:04, Nicholas Piggin <npiggin@gmail.com> wrote:
-> >>
-> >> These aren't necessarily POWER9 only, and it's not to say some new
-> >> vulnerability may not get discovered on other processors for which
-> >> we would like the flexibility of having the workaround enabled by
-> >> firmware.
-> >>
-> >> Remove the restriction that they only apply to POWER9.
-> >
-> > I was wondering how these worked which led me to reviewing your patch.
-> > From what I could see, these are enabled by default (SEC_FTR_DEFAULT
-> > in arch/powerpc/include/asm/security_features.h), so unless all
-> > non-POWER9 machines have set the "please don't" bit in their firmware
-> > this patch will enable the feature for those machines. Is that what
-> > you wanted?
->
-> Yes. POWER7/8 should be affected (it's similar mechanism that requires
-> the meltdown RFI flush, which those processors need).
->
-> POWER10 we haven't released a bare metal firmware with the right bits
-> yet. Not urgent at the moment but wouldn't hurt to specify them and
-> add the Linux code for them.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 7619d98e5041d5c25aba5428704dba6121237a9a  Automatic merge of 'next' into merge (2021-05-04 11:06)
 
-Thanks for the explanation. This could go in the commit message if you re-spin.
+elapsed time: 723m
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+configs tested: 151
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+i386                             allyesconfig
+riscv                            allyesconfig
+arm                             mxs_defconfig
+mips                             allyesconfig
+mips                    maltaup_xpa_defconfig
+arm                           viper_defconfig
+arm                          imote2_defconfig
+arm                       imx_v6_v7_defconfig
+arm                          pcm027_defconfig
+powerpc                     tqm8560_defconfig
+sh                        sh7763rdp_defconfig
+arm                        mvebu_v5_defconfig
+powerpc                  storcenter_defconfig
+sparc                       sparc32_defconfig
+sh                          rsk7201_defconfig
+mips                            ar7_defconfig
+powerpc                     asp8347_defconfig
+sparc64                          alldefconfig
+mips                            e55_defconfig
+mips                        vocore2_defconfig
+powerpc                        icon_defconfig
+arm                            zeus_defconfig
+sh                          landisk_defconfig
+powerpc                      mgcoge_defconfig
+arm                           h3600_defconfig
+mips                      pic32mzda_defconfig
+mips                           xway_defconfig
+powerpc                    socrates_defconfig
+powerpc                     tqm5200_defconfig
+sh                          sdk7780_defconfig
+m68k                          atari_defconfig
+m68k                        mvme147_defconfig
+arm                      integrator_defconfig
+ia64                          tiger_defconfig
+m68k                       bvme6000_defconfig
+powerpc                     tqm8548_defconfig
+m68k                        m5272c3_defconfig
+mips                           ip22_defconfig
+powerpc                      makalu_defconfig
+powerpc                    adder875_defconfig
+powerpc                      ppc64e_defconfig
+riscv                    nommu_virt_defconfig
+arm                          ixp4xx_defconfig
+sh                        sh7757lcr_defconfig
+xtensa                  cadence_csp_defconfig
+powerpc                     powernv_defconfig
+arm                           sama5_defconfig
+arm                           spitz_defconfig
+powerpc                        cell_defconfig
+powerpc                 mpc837x_mds_defconfig
+powerpc                     ppa8548_defconfig
+arm                    vt8500_v6_v7_defconfig
+mips                         tb0219_defconfig
+parisc                           alldefconfig
+nios2                         10m50_defconfig
+arm                        spear3xx_defconfig
+arm                          pxa3xx_defconfig
+mips                          rm200_defconfig
+arc                         haps_hs_defconfig
+sh                           se7712_defconfig
+arm                          collie_defconfig
+arm                          gemini_defconfig
+arm                        spear6xx_defconfig
+parisc                           allyesconfig
+m68k                        stmark2_defconfig
+sh                           se7780_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a003-20210504
+i386                 randconfig-a006-20210504
+i386                 randconfig-a001-20210504
+i386                 randconfig-a005-20210504
+i386                 randconfig-a004-20210504
+i386                 randconfig-a002-20210504
+i386                 randconfig-a003-20210503
+i386                 randconfig-a006-20210503
+i386                 randconfig-a001-20210503
+i386                 randconfig-a005-20210503
+i386                 randconfig-a004-20210503
+i386                 randconfig-a002-20210503
+x86_64               randconfig-a014-20210504
+x86_64               randconfig-a015-20210504
+x86_64               randconfig-a012-20210504
+x86_64               randconfig-a013-20210504
+x86_64               randconfig-a011-20210504
+x86_64               randconfig-a016-20210504
+i386                 randconfig-a015-20210504
+i386                 randconfig-a013-20210504
+i386                 randconfig-a016-20210504
+i386                 randconfig-a014-20210504
+i386                 randconfig-a012-20210504
+i386                 randconfig-a011-20210504
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a001-20210504
+x86_64               randconfig-a003-20210504
+x86_64               randconfig-a005-20210504
+x86_64               randconfig-a002-20210504
+x86_64               randconfig-a006-20210504
+x86_64               randconfig-a004-20210504
+x86_64               randconfig-a014-20210503
+x86_64               randconfig-a015-20210503
+x86_64               randconfig-a012-20210503
+x86_64               randconfig-a011-20210503
+x86_64               randconfig-a013-20210503
+x86_64               randconfig-a016-20210503
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
