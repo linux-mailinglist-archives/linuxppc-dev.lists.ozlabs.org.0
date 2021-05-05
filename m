@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A09373FFA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 18:32:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1588373FFB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 18:32:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb2LR2DQPz30BH
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 02:32:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fb2Lt60kDz30C3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 02:32:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EnUingzC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k8gUZTaP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=EnUingzC; 
+ header.s=k20201202 header.b=k8gUZTaP; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb2Kz6ZLTz2ysr
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 02:32:07 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2AB0D613C7;
- Wed,  5 May 2021 16:32:04 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fb2L12Ldlz2ysr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 02:32:09 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F192461410;
+ Wed,  5 May 2021 16:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1620232325;
- bh=IjQ16PaiznQ+DmnopLdAcuaE4WZWyIOLV2kE1mYF6KM=;
+ s=k20201202; t=1620232327;
+ bh=u+7H3tecFBn74PvO0+rdTTNUktlPn9S2gEwqwcxkwdc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=EnUingzC/vnsEtw1EfGUZf84TwjQCsz+ewri5CbZepjAr2toskJSNvmcSK/xIkqE9
- ZV5zRO0bH2gqUm+Sy4O7I8FChWJVwcvaOQe7W/wxbSA10DaGAiCpVN3m71xB9aA95w
- FZyh71J9+aU5MIFp5HLucGydzTkJDLn6Kgu5L/kjOBn0/hx6o4qA7gyglj/pzC2oxd
- gWbZMut9z9p/MPOQ6PZfqeiU2HvnOi8RA1NMNX9UFmaDDJF5yQ+1fGOb8J4KEknpxo
- o5kapqpSHZ95/T/2dkKMrmFPBtKK+0IXaYs55VaKZaL29BQIFMhv9SERg6FAxmPKH/
- mrMmLuwh+kymg==
+ b=k8gUZTaPBymDKOeFu+voOiKZDCrd4mP7iY65ErHZq5l8TabGNHCfXvB9cCrN/AYSs
+ c0uYa9xJHRfzhnOt3VV4w2dp9Nd6JBrUAUQR19b7F8v+dAC2icYFiCukwUamOsQicY
+ D93YtFMVSuxybYapILGtqMgbh+Byk4WTjdS8pvtKSaTPlpB6YG1y+HcLIKCjoct3AS
+ GO/5Ye2hx3Ab9EkJiOz2hsg1Y0+fPveGARePv8DU//H/duCgijFQ7cGs0v5MwICg30
+ nMyZob3ek9eBNDsjcHJsadtV7HjlNg5z3C2bH/jJTKv+yIjKZ6OOsaZ8Otv5CYu5tA
+ mgsDbl31SL3kA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 029/116] selftests/powerpc: Fix L1D flushing
- tests for Power10
-Date: Wed,  5 May 2021 12:29:57 -0400
-Message-Id: <20210505163125.3460440-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.12 031/116] powerpc/32: Statically initialise first
+ emergency context
+Date: Wed,  5 May 2021 12:29:59 -0400
+Message-Id: <20210505163125.3460440-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210505163125.3460440-1-sashal@kernel.org>
 References: <20210505163125.3460440-1-sashal@kernel.org>
@@ -61,86 +61,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kselftest@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Russell Currey <ruscur@russell.cc>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 3a72c94ebfb1f171eba0715998010678a09ec796 ]
+[ Upstream commit a4719f5bb6d7dc220bffdc1b9f5ce5eaa5543581 ]
 
-The rfi_flush and entry_flush selftests work by using the PM_LD_MISS_L1
-perf event to count L1D misses.  The value of this event has changed
-over time:
+The check of the emergency context initialisation in
+vmap_stack_overflow is buggy for the SMP case, as it
+compares r1 with 0 while in the SMP case r1 is offseted
+by the CPU id.
 
-- Power7 uses 0x400f0
-- Power8 and Power9 use both 0x400f0 and 0x3e054
-- Power10 uses only 0x3e054
+Instead of fixing it, just perform static initialisation
+of the first emergency context.
 
-Rather than relying on raw values, configure perf to count L1D read
-misses in the most explicit way available.
-
-This fixes the selftests to work on systems without 0x400f0 as
-PM_LD_MISS_L1, and should change no behaviour for systems that the tests
-already worked on.
-
-The only potential downside is that referring to a specific perf event
-requires PMU support implemented in the kernel for that platform.
-
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Acked-by: Daniel Axtens <dja@axtens.net>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210223070227.2916871-1-ruscur@russell.cc
+Link: https://lore.kernel.org/r/4a67ba422be75713286dca0c86ee0d3df2eb6dfa.1615552867.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/security/entry_flush.c | 2 +-
- tools/testing/selftests/powerpc/security/flush_utils.h | 4 ++++
- tools/testing/selftests/powerpc/security/rfi_flush.c   | 2 +-
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/head_32.h  | 6 +-----
+ arch/powerpc/kernel/setup_32.c | 2 +-
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/security/entry_flush.c b/tools/testing/selftests/powerpc/security/entry_flush.c
-index 78cf914fa321..68ce377b205e 100644
---- a/tools/testing/selftests/powerpc/security/entry_flush.c
-+++ b/tools/testing/selftests/powerpc/security/entry_flush.c
-@@ -53,7 +53,7 @@ int entry_flush_test(void)
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index 5d4706c14572..cf8ca08295bf 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -261,11 +261,7 @@
+ 	lis	r1, emergency_ctx@ha
+ #endif
+ 	lwz	r1, emergency_ctx@l(r1)
+-	cmpwi	cr1, r1, 0
+-	bne	cr1, 1f
+-	lis	r1, init_thread_union@ha
+-	addi	r1, r1, init_thread_union@l
+-1:	addi	r1, r1, THREAD_SIZE - INT_FRAME_SIZE
++	addi	r1, r1, THREAD_SIZE - INT_FRAME_SIZE
+ 	EXCEPTION_PROLOG_2
+ 	SAVE_NVGPRS(r11)
+ 	addi	r3, r1, STACK_FRAME_OVERHEAD
+diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.c
+index 8ba49a6bf515..d7c1f92152af 100644
+--- a/arch/powerpc/kernel/setup_32.c
++++ b/arch/powerpc/kernel/setup_32.c
+@@ -164,7 +164,7 @@ void __init irqstack_early_init(void)
+ }
  
- 	entry_flush = entry_flush_orig;
+ #ifdef CONFIG_VMAP_STACK
+-void *emergency_ctx[NR_CPUS] __ro_after_init;
++void *emergency_ctx[NR_CPUS] __ro_after_init = {[0] = &init_stack};
  
--	fd = perf_event_open_counter(PERF_TYPE_RAW, /* L1d miss */ 0x400f0, -1);
-+	fd = perf_event_open_counter(PERF_TYPE_HW_CACHE, PERF_L1D_READ_MISS_CONFIG, -1);
- 	FAIL_IF(fd < 0);
- 
- 	p = (char *)memalign(zero_size, CACHELINE_SIZE);
-diff --git a/tools/testing/selftests/powerpc/security/flush_utils.h b/tools/testing/selftests/powerpc/security/flush_utils.h
-index 07a5eb301466..7a3d60292916 100644
---- a/tools/testing/selftests/powerpc/security/flush_utils.h
-+++ b/tools/testing/selftests/powerpc/security/flush_utils.h
-@@ -9,6 +9,10 @@
- 
- #define CACHELINE_SIZE 128
- 
-+#define PERF_L1D_READ_MISS_CONFIG	((PERF_COUNT_HW_CACHE_L1D) | 		\
-+					(PERF_COUNT_HW_CACHE_OP_READ << 8) |	\
-+					(PERF_COUNT_HW_CACHE_RESULT_MISS << 16))
-+
- void syscall_loop(char *p, unsigned long iterations,
- 		  unsigned long zero_size);
- 
-diff --git a/tools/testing/selftests/powerpc/security/rfi_flush.c b/tools/testing/selftests/powerpc/security/rfi_flush.c
-index 7565fd786640..f73484a6470f 100644
---- a/tools/testing/selftests/powerpc/security/rfi_flush.c
-+++ b/tools/testing/selftests/powerpc/security/rfi_flush.c
-@@ -54,7 +54,7 @@ int rfi_flush_test(void)
- 
- 	rfi_flush = rfi_flush_orig;
- 
--	fd = perf_event_open_counter(PERF_TYPE_RAW, /* L1d miss */ 0x400f0, -1);
-+	fd = perf_event_open_counter(PERF_TYPE_HW_CACHE, PERF_L1D_READ_MISS_CONFIG, -1);
- 	FAIL_IF(fd < 0);
- 
- 	p = (char *)memalign(zero_size, CACHELINE_SIZE);
+ void __init emergency_stack_init(void)
+ {
 -- 
 2.30.2
 
