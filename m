@@ -1,98 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95ED837328A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 00:45:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B743C3733A2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 03:40:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZZgK3q4mz30FX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 08:45:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZfYJ65fzz30Cw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 11:40:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mWI1xu45;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=CVxSpwfp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=canb.auug.org.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=mWI1xu45; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=CVxSpwfp; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZZfs3NbYz2xZS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 08:45:08 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 144MXoBa184915; Tue, 4 May 2021 18:45:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=FHS90ZiOBAArdLFFMK4n60ADRW/8VFKEmgGuWDWC860=;
- b=mWI1xu45qBTfkEadkVYPBqyyHFN34NlW9nxUvbtirFr9D/yHbXhVUUrrpGIIp0wntF+o
- ItVw6pYaDExpyEPo0OG7gz7jba2y9Pr0mRafzCWyTHKHwGq+EGixrUxMQ9va7tVpz4Fl
- TAIpfP5x/MnjCGoemEQrwlEAwdYXltQlF6AMf0h8Bl++PQbjKMlRN1WyE0pwB978Ob03
- 1XJb4RPkoIy1jxMq2XgOMk12MtHTh5ExiF/JWCLM90BY2hr3jwlWb+mg2nwH3SURDUnU
- snoMt13gKzwqcW4gLYTPStsD1MXuEdRqyIxcDEQi4r8DT4bWjxS/VD5dTC+6eWqX0qd+ 1Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38bearh8k0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 May 2021 18:45:02 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 144MY3f7188075;
- Tue, 4 May 2021 18:45:01 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38bearh8jt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 May 2021 18:45:01 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 144MblIh006030;
- Tue, 4 May 2021 22:45:01 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma05wdc.us.ibm.com with ESMTP id 38bedw894p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 May 2021 22:45:01 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 144Mj03T46137652
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 May 2021 22:45:00 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D9706E04C;
- Tue,  4 May 2021 22:45:00 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3EF4F6E04E;
- Tue,  4 May 2021 22:45:00 +0000 (GMT)
-Received: from localhost (unknown [9.211.126.236])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue,  4 May 2021 22:44:59 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc/64s: Fix crashes when toggling stf barrier
-In-Reply-To: <20210504134250.890401-1-mpe@ellerman.id.au>
-References: <20210504134250.890401-1-mpe@ellerman.id.au>
-Date: Tue, 04 May 2021 17:44:59 -0500
-Message-ID: <878s4uf79w.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZfXl4yvBz2xgJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 11:40:06 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FZfXf1YScz9sT6;
+ Wed,  5 May 2021 11:40:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1620178803;
+ bh=gUSh3LSMd3wpKS0RGRX5FWNUp0KUTQowKKxok5YAWo0=;
+ h=Date:From:To:Cc:Subject:From;
+ b=CVxSpwfpH8W0E+PI8RIRghItEmCa8x4Qaht3XBqMLSsorUKMfcwiAbE4Oz+qoIx9E
+ 85sviWp3YBeCd9yHI29tlIgAoFFa09bKbsjJEDisNze1CUs2Khn7vaSsMC5zxPLbiR
+ YGeddby5SAOmkJwlAvCANASHHKZnemRKKdIKmsUhXQEZS6eWKdZiCrcTZv8TO1l7+r
+ sG4/0lzjCgL394GVDeay0x5ZbUSrtHz/nBhurATalPFzyBA1EYN5F34TFt3wSeqvkx
+ kH5SfaiY/95n+5ekBD9mb9AjS88akn3m+S5lTHkBSnoqEUxpNNzwGg7VPX2NfnAqzG
+ 6UxcBWE37pz6g==
+Date: Wed, 5 May 2021 11:39:59 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman
+ <mpe@ellerman.id.au>, PowerPC <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: manual merge of the akpm-current tree with the powerpc
+ tree
+Message-ID: <20210505113959.43340f19@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: byTQLb-KAwMh3ijAfnIwdsl3481CZYQr
-X-Proofpoint-GUID: lKMFd__cZHIadN3SHnRtBIVCC5I5A43-
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-04_15:2021-05-04,
- 2021-05-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0
- mlxscore=0 priorityscore=1501 mlxlogscore=851 lowpriorityscore=0
- adultscore=0 clxscore=1011 malwarescore=0 impostorscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2105040152
+Content-Type: multipart/signed; boundary="Sig_/.W9zcxspq/EztUcH6lziHSj";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,49 +62,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, anton@samba.org, npiggin@gmail.com,
- dja@axtens.net
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> -void do_stf_barrier_fixups(enum stf_barrier_type types)
-> +static int __do_stf_barrier_fixups(void *data)
->  {
-> +	enum stf_barrier_type types = (enum stf_barrier_type)data;
-> +
->  	do_stf_entry_barrier_fixups(types);
->  	do_stf_exit_barrier_fixups(types);
-> +
-> +	return 0;
-> +}
-> +
-> +void do_stf_barrier_fixups(enum stf_barrier_type types)
-> +{
-> +	/*
-> +	 * The call to the fallback entry flush, and the fallback/sync-ori exit
-> +	 * flush can not be safely patched in/out while other CPUs are executing
-> +	 * them. So call __do_stf_barrier_fixups() on one CPU while all other CPUs
-> +	 * spin in the stop machine core with interrupts hard disabled.
-> +	 */
-> +	stop_machine_cpuslocked(__do_stf_barrier_fixups, (void *)types, NULL);
+--Sig_/.W9zcxspq/EztUcH6lziHSj
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Would it be preferable to avoid the explicit casts:
+Hi all,
 
-	stop_machine_cpuslocked(__do_stf_barrier_fixups, &types, NULL);
+Today's linux-next merge of the akpm-current tree got a conflict in:
 
-...
+  arch/powerpc/Kconfig
 
-static int __do_stf_barrier_fixups(void *data)
-{
-	enum stf_barrier_type *types = data;
+between commit:
 
- 	do_stf_entry_barrier_fixups(*types);
- 	do_stf_exit_barrier_fixups(*types);
+  c6b05f4e233c ("powerpc/kconfig: Restore alphabetic order of the selects u=
+nder CONFIG_PPC")
 
-?
+from the powerpc tree and commits:
 
-post_mobility_fixup() does cpus_read_unlock() before calling
-pseries_setup_security_mitigations(), I think that will need to be
-changed?
+  fd7d5c273c43 ("mm: generalize HUGETLB_PAGE_SIZE_VARIABLE")
+  301ba77ae03c ("mm: generalize ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE]")
+
+from the akpm-current tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc arch/powerpc/Kconfig
+index ab17a56c3d10,d4333049b813..000000000000
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@@ -118,11 -118,10 +118,13 @@@ config PP
+  	# Please keep this list sorted alphabetically.
+  	#
+  	select ARCH_32BIT_OFF_T if PPC32
++ 	select ARCH_ENABLE_MEMORY_HOTPLUG
++ 	select ARCH_ENABLE_MEMORY_HOTREMOVE
+ +	select ARCH_HAS_COPY_MC			if PPC64
+  	select ARCH_HAS_DEBUG_VIRTUAL
+ +	select ARCH_HAS_DEBUG_VM_PGTABLE
+  	select ARCH_HAS_DEVMEM_IS_ALLOWED
+ +	select ARCH_HAS_DMA_MAP_DIRECT 		if PPC_PSERIES
+  	select ARCH_HAS_ELF_RANDOMIZE
+  	select ARCH_HAS_FORTIFY_SOURCE
+  	select ARCH_HAS_GCOV_PROFILE_ALL
+@@@ -163,8 -162,9 +165,8 @@@
+  	select BUILDTIME_TABLE_SORT
+  	select CLONE_BACKWARDS
+  	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
+- 	select DMA_OPS_BYPASS			if PPC64
+  	select DMA_OPS				if PPC64
++ 	select DMA_OPS_BYPASS			if PPC64
+ -	select ARCH_HAS_DMA_MAP_DIRECT 		if PPC64 && PPC_PSERIES
+  	select DYNAMIC_FTRACE			if FUNCTION_TRACER
+  	select EDAC_ATOMIC_SCRUB
+  	select EDAC_SUPPORT
+@@@ -182,15 -181,12 +184,15 @@@
+  	select GENERIC_STRNCPY_FROM_USER
+  	select GENERIC_STRNLEN_USER
+  	select GENERIC_TIME_VSYSCALL
+ -	select GENERIC_GETTIMEOFDAY
+ +	select GENERIC_VDSO_TIME_NS
+  	select HAVE_ARCH_AUDITSYSCALL
+- 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
+ +	select HAVE_ARCH_HUGE_VMALLOC		if HAVE_ARCH_HUGE_VMAP
++ 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
+  	select HAVE_ARCH_JUMP_LABEL
+ +	select HAVE_ARCH_JUMP_LABEL_RELATIVE
+  	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <=3D 14
+  	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <=3D 14
+ +	select HAVE_ARCH_KFENCE			if PPC32
+  	select HAVE_ARCH_KGDB
+  	select HAVE_ARCH_MMAP_RND_BITS
+  	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+@@@ -231,19 -227,23 +233,20 @@@
+  	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS
+  	select HAVE_MOD_ARCH_SPECIFIC
+  	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
+ -	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if (PPC64 && PPC_BOOK3S)
+ -	select HAVE_OPTPROBES			if PPC64
+ +	select HAVE_OPTPROBES
+  	select HAVE_PERF_EVENTS
+  	select HAVE_PERF_EVENTS_NMI		if PPC64
+ -	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_=
+NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
+  	select HAVE_PERF_REGS
+  	select HAVE_PERF_USER_STACK_DUMP
+ -	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
+ -	select MMU_GATHER_RCU_TABLE_FREE
+ -	select MMU_GATHER_PAGE_SIZE
+  	select HAVE_REGS_AND_STACK_ACCESS_API
+ -	select HAVE_RELIABLE_STACKTRACE		if PPC_BOOK3S_64 && CPU_LITTLE_ENDIAN
+ +	select HAVE_RELIABLE_STACKTRACE
+ +	select HAVE_RSEQ
+  	select HAVE_SOFTIRQ_ON_OWN_STACK
+ +	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-gu=
+ard=3Dtls -mstack-protector-guard-reg=3Dr2)
+ +	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-gu=
+ard=3Dtls -mstack-protector-guard-reg=3Dr13)
+  	select HAVE_SYSCALL_TRACEPOINTS
+  	select HAVE_VIRT_CPU_ACCOUNTING
+ -	select HAVE_IRQ_TIME_ACCOUNTING
+ -	select HAVE_RSEQ
+++	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
+  	select IOMMU_HELPER			if PPC64
+  	select IRQ_DOMAIN
+  	select IRQ_FORCED_THREADING
+
+--Sig_/.W9zcxspq/EztUcH6lziHSj
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmCR928ACgkQAVBC80lX
+0Gw4EAf/Yi8XHzVXWZpxR9XTs6RyVOU5rQM+bdB8yJi4LV8257+m4yj3eLJx04tG
+oYL+Rg/foCGPP/FAF0/ZA0oLuj/NNIAWZqktED8OdoSyikvkHwoTFisAcOapRNwF
+8DYmt82SAByq9crkbBqRIcct5OnXV6IwTR9tzCKVJhJGBFE74390u453BkC4Fx2F
+xcFyICV+/Fug1Z8NjAPUFZ7XOPFRailSw//TvVzbfKZomwaSMlXMEfMG5/AHOBqL
+QAvsOpuJmJg1bWD3mC1ouCs0MmfJARBlo/kKelzyD/L5gEb9OegsWzVw/IQIwwqB
+mVn4aXgzMkKnGo+dOvTANjm77WyUnA==
+=Uuqv
+-----END PGP SIGNATURE-----
+
+--Sig_/.W9zcxspq/EztUcH6lziHSj--
