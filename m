@@ -1,57 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502E1373483
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 06:57:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE023734B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 07:22:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FZkwv2zFqz303x
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 14:57:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FZlTr6MS5z3026
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 May 2021 15:22:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Vaj1/IoR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=cEuLYBD6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b32;
+ helo=mail-yb1-xb32.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Vaj1/IoR; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=cEuLYBD6; dkim-atps=neutral
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com
+ [IPv6:2607:f8b0:4864:20::b32])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FZkwQ23xrz2yjH
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 14:57:25 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4FZkwM092gz9sRR;
- Wed,  5 May 2021 14:57:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1620190644;
- bh=AuqytXgyTjzcSaZ5rxKrOKGocPS1zQRYvPHDmGYeViM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Vaj1/IoRbMmQkNvWsi22fvZ+66dpKVAlm7aZOE3dak7B2BJLuYDEo/QaBzW+TKNN0
- BLnRKnOrH/Hre5uRF3gMkcv9kBwt/akEb+RoCVMjgZT7tKxM1nn/KnbK2Tn0D6baQJ
- uHHjWq60B5QVnYD8KtXPl5CQ1lYqAUlOHRDSZ/LHSULLGDIegCDNh7ImEhH72leep/
- odMFHy6ywpF5EiNM5Ty5FYIcP1B+YZToe8bn+G9q8yGeRS4awtuxVjK2p0dlFoovCd
- wiZZQTmilomX2RwoJWos/JiifwBzlyCQZnJEkRpc5W7X0rTN1T9ghXvfwQmJbNH1i1
- Be7da62j1p5iA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Andrew Morton
- <akpm@linux-foundation.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: linux-next: manual merge of the akpm-current tree with the
- powerpc tree
-In-Reply-To: <20210505113959.43340f19@canb.auug.org.au>
-References: <20210505113959.43340f19@canb.auug.org.au>
-Date: Wed, 05 May 2021 14:57:18 +1000
-Message-ID: <87wnsd93rl.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FZlTN6w3Nz2xg1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 May 2021 15:22:31 +1000 (AEST)
+Received: by mail-yb1-xb32.google.com with SMTP id 82so1103822yby.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 May 2021 22:22:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=BR9c5nY5fJmdREpZe13rR06AMNplq21mXI1KGGRnlQM=;
+ b=cEuLYBD6F9ImDKjQCyfvhUhb2ByLw+e5zL7hNMxHM8jaNW6VEwD8rKxsuRX1/3xuMY
+ qrdS4JQayvsSc//XiNLMTa7XJq+B3yxWCYH420nOQTkyi2+1Aluoh2ny582Ai4PxwsiW
+ p1rjpz4gagR1wrqrRyvHDevCWYxELDw5hM0zH+5ISyoESxV6qfRWsQSNtbguLUOyd9Ln
+ e0KQdN0IjKu5Lr5QAka/CZ91kRyiqDu0YW9okAvfsGFmBGnqmLwA2VhBk5GEGBCLf42K
+ vDAtNeVRrEg/1xvEh85yARUeJdf/AbiGOpMWy3+alSkIy7YHK88nHS+F4kqyOdZqxYto
+ CkDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=BR9c5nY5fJmdREpZe13rR06AMNplq21mXI1KGGRnlQM=;
+ b=lrMQ4kKXY9+fpcJVVGqw3KGpVPg8gNBnfjKsgqQNtWSO0XQCplzsBxDNWU5JSVUy7t
+ ZcLMQXyxj8zGaq4gTpYLxOMdoDIygGaz92Od/oa8r9ZPr1tClS+Zif+hQgc9oTL3gEMC
+ jgQoQ2cQaAODO7SnL4TKQtZwPpIqekzFXu40Y6BK5g4R9xZBlejmvpSzPnEY5drNkh2G
+ H2UsEy8j+1/CDkpKDdCqNwZkjYzmii0QNDvj6oaqU2klR+A/pCFUtS/6DOID3soGQuZG
+ eg0GVJXkZXUmku8c8R5bcHwyC2xB387tSm8raBmBk2WOXhCam5FLk4OKdgzj2pHNRzcR
+ L4Cw==
+X-Gm-Message-State: AOAM533QwM9u52KY/fFWYIxIZwtmSEAcSSR0q7vRcatVxtfopizpSMAU
+ sidfytP3LWGK88ypJD6AlRSl13kL4POeyc6uueU=
+X-Google-Smtp-Source: ABdhPJyoFPJQWojxR9vvZoAOkmvSCD4rj87G9eS/UrsFl+vzO7TCsbs1kGRvp6Df/D6Y4ClqEiaaAaUG9rpZelsUwCk=
+X-Received: by 2002:a25:a87:: with SMTP id 129mr26135403ybk.377.1620192148637; 
+ Tue, 04 May 2021 22:22:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20210429031602.2606654-1-jniethe5@gmail.com>
+ <20210429031602.2606654-3-jniethe5@gmail.com>
+ <d7f28ca3-bf4b-01c4-9706-b4f2061314b1@csgroup.eu>
+In-Reply-To: <d7f28ca3-bf4b-01c4-9706-b4f2061314b1@csgroup.eu>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Wed, 5 May 2021 15:22:17 +1000
+Message-ID: <CACzsE9qSFNqYD7kf5G_6s8evDdjBJbsczBHHiZUvdTPWEvCz7g@mail.gmail.com>
+Subject: Re: [PATCH v11 2/9] powerpc/lib/code-patching: Set up Strict RWX
+ patching earlier
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,120 +78,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: ajd@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, cmr@codefail.de,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, naveen.n.rao@linux.ibm.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> Hi all,
+On Thu, Apr 29, 2021 at 2:53 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
 >
-> Today's linux-next merge of the akpm-current tree got a conflict in:
 >
->   arch/powerpc/Kconfig
 >
-> between commit:
+> Le 29/04/2021 =C3=A0 05:15, Jordan Niethe a =C3=A9crit :
+> > setup_text_poke_area() is a late init call so it runs before
+> > mark_rodata_ro() and after the init calls. This lets all the init code
+> > patching simply write to their locations. In the future, kprobes is
+> > going to allocate its instruction pages RO which means they will need
+> > setup_text__poke_area() to have been already called for their code
+> > patching. However, init_kprobes() (which allocates and patches some
+> > instruction pages) is an early init call so it happens before
+> > setup_text__poke_area().
+> >
+> > start_kernel() calls poking_init() before any of the init calls. On
+> > powerpc, poking_init() is currently a nop. setup_text_poke_area() relie=
+s
+> > on kernel virtual memory, cpu hotplug and per_cpu_areas being setup.
+> > setup_per_cpu_areas(), boot_cpu_hotplug_init() and mm_init() are called
+> > before poking_init().
+> >
+> > Turn setup_text_poke_area() into poking_init().
 >
->   c6b05f4e233c ("powerpc/kconfig: Restore alphabetic order of the selects under CONFIG_PPC")
->
-> from the powerpc tree and commits:
->
->   fd7d5c273c43 ("mm: generalize HUGETLB_PAGE_SIZE_VARIABLE")
->   301ba77ae03c ("mm: generalize ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE]")
->
-> from the akpm-current tree.
->
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
+> I can't remember, maybe I already asked the question:
+> Have you done some performance measurement or at least some performance a=
+nalysis ?
+No I don't think you have asked and it is a good question.
 
-Urgh, I did check linux-next to see if that patch would conflict but
-didn't think it would conflict *that* badly.
+Here are some results on a Power9 (T2P9D01 REV 1.01) running powernv_defcon=
+fig
+Timestamp at "Run /init as init process"
+Before: ~1.059326
+After: ~1.273105
 
-I guess I'll leave it for now, but I can drop it if necessary.
+Turning on more testing the difference is greater:
+For example, turning on CONFIG_FTRACE_STARTUP_TEST
+Timestamp at "Run /init as init process"
+Before: ~7.176759
+After: ~15.967576
 
-cheers
+Running with initcall_debug:
+Before: initcall init_trace_selftests+0x0/0x1b4 returned 0 after 2880859 us=
+ecs
+After: initcall init_trace_selftests+0x0/0x1b4 returned 0 after 10048828 us=
+ecs
 
+So it does slow it down.
+But it also might be a good thing for testing that these tests using
+code patching now will use the same code path for patching that would
+be used on a fully booted system.
 
-> diff --cc arch/powerpc/Kconfig
-> index ab17a56c3d10,d4333049b813..000000000000
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@@ -118,11 -118,10 +118,13 @@@ config PP
->   	# Please keep this list sorted alphabetically.
->   	#
->   	select ARCH_32BIT_OFF_T if PPC32
-> + 	select ARCH_ENABLE_MEMORY_HOTPLUG
-> + 	select ARCH_ENABLE_MEMORY_HOTREMOVE
->  +	select ARCH_HAS_COPY_MC			if PPC64
->   	select ARCH_HAS_DEBUG_VIRTUAL
->  +	select ARCH_HAS_DEBUG_VM_PGTABLE
->   	select ARCH_HAS_DEVMEM_IS_ALLOWED
->  +	select ARCH_HAS_DMA_MAP_DIRECT 		if PPC_PSERIES
->   	select ARCH_HAS_ELF_RANDOMIZE
->   	select ARCH_HAS_FORTIFY_SOURCE
->   	select ARCH_HAS_GCOV_PROFILE_ALL
-> @@@ -163,8 -162,9 +165,8 @@@
->   	select BUILDTIME_TABLE_SORT
->   	select CLONE_BACKWARDS
->   	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
-> - 	select DMA_OPS_BYPASS			if PPC64
->   	select DMA_OPS				if PPC64
-> + 	select DMA_OPS_BYPASS			if PPC64
->  -	select ARCH_HAS_DMA_MAP_DIRECT 		if PPC64 && PPC_PSERIES
->   	select DYNAMIC_FTRACE			if FUNCTION_TRACER
->   	select EDAC_ATOMIC_SCRUB
->   	select EDAC_SUPPORT
-> @@@ -182,15 -181,12 +184,15 @@@
->   	select GENERIC_STRNCPY_FROM_USER
->   	select GENERIC_STRNLEN_USER
->   	select GENERIC_TIME_VSYSCALL
->  -	select GENERIC_GETTIMEOFDAY
->  +	select GENERIC_VDSO_TIME_NS
->   	select HAVE_ARCH_AUDITSYSCALL
-> - 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
->  +	select HAVE_ARCH_HUGE_VMALLOC		if HAVE_ARCH_HUGE_VMAP
-> + 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
->   	select HAVE_ARCH_JUMP_LABEL
->  +	select HAVE_ARCH_JUMP_LABEL_RELATIVE
->   	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
->   	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
->  +	select HAVE_ARCH_KFENCE			if PPC32
->   	select HAVE_ARCH_KGDB
->   	select HAVE_ARCH_MMAP_RND_BITS
->   	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
-> @@@ -231,19 -227,23 +233,20 @@@
->   	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS
->   	select HAVE_MOD_ARCH_SPECIFIC
->   	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
->  -	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if (PPC64 && PPC_BOOK3S)
->  -	select HAVE_OPTPROBES			if PPC64
->  +	select HAVE_OPTPROBES
->   	select HAVE_PERF_EVENTS
->   	select HAVE_PERF_EVENTS_NMI		if PPC64
->  -	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
->   	select HAVE_PERF_REGS
->   	select HAVE_PERF_USER_STACK_DUMP
->  -	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
->  -	select MMU_GATHER_RCU_TABLE_FREE
->  -	select MMU_GATHER_PAGE_SIZE
->   	select HAVE_REGS_AND_STACK_ACCESS_API
->  -	select HAVE_RELIABLE_STACKTRACE		if PPC_BOOK3S_64 && CPU_LITTLE_ENDIAN
->  +	select HAVE_RELIABLE_STACKTRACE
->  +	select HAVE_RSEQ
->   	select HAVE_SOFTIRQ_ON_OWN_STACK
->  +	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
->  +	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
->   	select HAVE_SYSCALL_TRACEPOINTS
->   	select HAVE_VIRT_CPU_ACCOUNTING
->  -	select HAVE_IRQ_TIME_ACCOUNTING
->  -	select HAVE_RSEQ
-> ++	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
->   	select IOMMU_HELPER			if PPC64
->   	select IRQ_DOMAIN
->   	select IRQ_FORCED_THREADING
+>
+> Christophe
+>
+> >
+> > Reviewed-by: Russell Currey <ruscur@russell.cc>
+> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> > ---
+> > v9: New to series
+> > ---
+> >   arch/powerpc/lib/code-patching.c | 12 ++++--------
+> >   1 file changed, 4 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-p=
+atching.c
+> > index 870b30d9be2f..15296207e1ba 100644
+> > --- a/arch/powerpc/lib/code-patching.c
+> > +++ b/arch/powerpc/lib/code-patching.c
+> > @@ -70,14 +70,11 @@ static int text_area_cpu_down(unsigned int cpu)
+> >   }
+> >
+> >   /*
+> > - * Run as a late init call. This allows all the boot time patching to =
+be done
+> > - * simply by patching the code, and then we're called here prior to
+> > - * mark_rodata_ro(), which happens after all init calls are run. Altho=
+ugh
+> > - * BUG_ON() is rude, in this case it should only happen if ENOMEM, and=
+ we judge
+> > - * it as being preferable to a kernel that will crash later when someo=
+ne tries
+> > - * to use patch_instruction().
+> > + * Although BUG_ON() is rude, in this case it should only happen if EN=
+OMEM, and
+> > + * we judge it as being preferable to a kernel that will crash later w=
+hen
+> > + * someone tries to use patch_instruction().
+> >    */
+> > -static int __init setup_text_poke_area(void)
+> > +int __init poking_init(void)
+> >   {
+> >       BUG_ON(!cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
+> >               "powerpc/text_poke:online", text_area_cpu_up,
+> > @@ -85,7 +82,6 @@ static int __init setup_text_poke_area(void)
+> >
+> >       return 0;
+> >   }
+> > -late_initcall(setup_text_poke_area);
+> >
+> >   /*
+> >    * This can be called for kernel text or a module.
+> >
