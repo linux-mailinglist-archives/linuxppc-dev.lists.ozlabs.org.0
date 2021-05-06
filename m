@@ -1,107 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB803374D8F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 04:30:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9592374DB6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 04:53:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FbHcq6SWtz30HD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 12:30:51 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j6pI8n7z;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FbJ705cl6z3bSw
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 12:53:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=j6pI8n7z; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FbHcK5J6Fz2yYl
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 12:30:25 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14623PuL099470; Wed, 5 May 2021 22:30:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=zVJIP4Vr3vYoks5fNrjKys6fTQaLjWRrc40xCBL/L1A=;
- b=j6pI8n7zzIhv2A9GYDh49psG9zlPAmU/bIfUFv0NcJr+okNT0qumI43NLX41VjDVse3D
- MWsgYsWyQu7ONrCvmuhb5Pvia/1rsGFyCJlYb829SYPkMStDabuu/UjJF7UpfqftBhJZ
- htSZxK4oXpyuj/SJlnGgkjlaq7+p8xl+W+xx9JHhptpWUo85FpsjNs3Ms/p+djNj0YI6
- PsQLbEQyXzcOlfrkG48rNAktXa3r/apwvN+Z5PDWk0oAA2EGt9tZG7nhZpC84GIpUm5f
- oDnRLsm1IfvPANXcVC9R8iYVhjPt4pus9hSfuWV8lyLoZJBrx9b4t1mkbuHUteI5jiqz Jw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38c69asqvq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 May 2021 22:30:14 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14623NMj099371;
- Wed, 5 May 2021 22:30:14 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38c69asqv2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 May 2021 22:30:14 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1462Qr2F020795;
- Thu, 6 May 2021 02:30:12 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma01fra.de.ibm.com with ESMTP id 38bee88axx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 May 2021 02:30:12 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1462U9Av57410018
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 6 May 2021 02:30:09 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 498D05205F;
- Thu,  6 May 2021 02:30:09 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E93C752059;
- Thu,  6 May 2021 02:30:08 +0000 (GMT)
-Received: from [9.102.44.218] (unknown [9.102.44.218])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 10924605DB;
- Thu,  6 May 2021 12:30:03 +1000 (AEST)
-Subject: Re: [PATCH] cxl: Fix an error message
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, fbarrat@linux.ibm.com, 
- arnd@arndb.de, gregkh@linuxfoundation.org, mpe@ellerman.id.au,
- imunsie@au1.ibm.com, mikey@neuling.org
-References: <fa2b2c9c72335ab4c3d5e6a33415e7f020b1d51b.1620243401.git.christophe.jaillet@wanadoo.fr>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Message-ID: <2d898a2a-fc3c-a804-ce13-cbfc58565cfb@linux.ibm.com>
-Date: Thu, 6 May 2021 12:29:57 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
-MIME-Version: 1.0
-In-Reply-To: <fa2b2c9c72335ab4c3d5e6a33415e7f020b1d51b.1620243401.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VSghf0rnEQ14vYNIMtTSdUOwaviH6ala
-X-Proofpoint-GUID: E86YZwJNrf2pBY55GnvTwxdXP9pAeMwV
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-05_11:2021-05-05,
- 2021-05-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1011
- phishscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0 spamscore=0
- suspectscore=0 priorityscore=1501 mlxlogscore=999 bulkscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2105060012
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FbJ6c0cYpz2xZS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 12:53:10 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 54BEF20065A;
+ Thu,  6 May 2021 04:53:07 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3F71320067D;
+ Thu,  6 May 2021 04:53:03 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id C6AE44034D;
+ Thu,  6 May 2021 04:46:35 +0200 (CEST)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org
+Subject: [PATCH] ASoC: imx-pcm-rpmsg: Fix warning of incorrect type in
+ assignment
+Date: Thu,  6 May 2021 10:30:40 +0800
+Message-Id: <1620268240-1005-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,39 +50,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/5/21 5:38 am, Christophe JAILLET wrote:
-> 'rc' is known to be 0 here.
-> Initialize 'rc' with the expected error code before using it.
+The format in rpmsg is defained as unsigned char, there is warning
+when convert snd_pcm_format_t to it.
 
-I would prefer:
+sound/soc/fsl/imx-pcm-rpmsg.c:164:43: sparse: warning: incorrect type in assignment (different base types)
+sound/soc/fsl/imx-pcm-rpmsg.c:164:43: sparse:    expected unsigned char format
+sound/soc/fsl/imx-pcm-rpmsg.c:164:43: sparse:    got restricted snd_pcm_format_t [usertype]
+sound/soc/fsl/imx-pcm-rpmsg.c:167:43: sparse: warning: incorrect type in assignment (different base types)
+sound/soc/fsl/imx-pcm-rpmsg.c:167:43: sparse:    expected unsigned char format
+sound/soc/fsl/imx-pcm-rpmsg.c:167:43: sparse:    got restricted snd_pcm_format_t [usertype]
 
-"In cxl_add_chardev(), if the call to device_create() fails, we print 
-the error message before 'rc' is set correctly, and therefore always 
-print 0. Move the error message after setting 'rc'."
+Refine the unused RPMSG_DSD_U16_LE and RPMSG_DSD_U32_LE for these
+case to fix this sparse warning.
 
-> 
-> While at it, avoid the affectation of 'rc' in a 'if' to make things more
-> obvious and linux style.
+Fixes: 3c00eceb2a53 ("ASoC: imx-pcm-rpmsg: Add platform driver for audio base on rpmsg")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/imx-pcm-rpmsg.c | 4 ++--
+ sound/soc/fsl/imx-pcm-rpmsg.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-I strongly agree with this, some of the other cxl developers don't but 
-they are wrong :)
-
-> 
-> Fixes: f204e0b8ce ("cxl: Driver code for powernv PCIe based cards for userspace access")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Apart from my comment above:
-
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
-
-Thanks for catching this!
-
+diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
+index 875c0d6df339..3f5913adbfb0 100644
+--- a/sound/soc/fsl/imx-pcm-rpmsg.c
++++ b/sound/soc/fsl/imx-pcm-rpmsg.c
+@@ -161,10 +161,10 @@ static int imx_rpmsg_pcm_hw_params(struct snd_soc_component *component,
+ 		msg->s_msg.param.format   = RPMSG_S24_LE;
+ 		break;
+ 	case SNDRV_PCM_FORMAT_DSD_U16_LE:
+-		msg->s_msg.param.format   = SNDRV_PCM_FORMAT_DSD_U16_LE;
++		msg->s_msg.param.format   = RPMSG_DSD_U16_LE;
+ 		break;
+ 	case SNDRV_PCM_FORMAT_DSD_U32_LE:
+-		msg->s_msg.param.format   = SNDRV_PCM_FORMAT_DSD_U32_LE;
++		msg->s_msg.param.format   = RPMSG_DSD_U32_LE;
+ 		break;
+ 	default:
+ 		msg->s_msg.param.format   = RPMSG_S32_LE;
+diff --git a/sound/soc/fsl/imx-pcm-rpmsg.h b/sound/soc/fsl/imx-pcm-rpmsg.h
+index 308d153920a3..8286b55f00ae 100644
+--- a/sound/soc/fsl/imx-pcm-rpmsg.h
++++ b/sound/soc/fsl/imx-pcm-rpmsg.h
+@@ -328,9 +328,9 @@
+ #define	RPMSG_S16_LE		0x0
+ #define	RPMSG_S24_LE		0x1
+ #define	RPMSG_S32_LE		0x2
+-#define	RPMSG_DSD_U16_LE	0x3
++#define	RPMSG_DSD_U16_LE	49  /* SNDRV_PCM_FORMAT_DSD_U16_LE */
+ #define	RPMSG_DSD_U24_LE	0x4
+-#define	RPMSG_DSD_U32_LE	0x5
++#define	RPMSG_DSD_U32_LE	50  /* SNDRV_PCM_FORMAT_DSD_U32_LE */
+ 
+ #define	RPMSG_CH_LEFT		0x0
+ #define	RPMSG_CH_RIGHT		0x1
 -- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+2.17.1
+
