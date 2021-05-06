@@ -2,110 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC28375BDB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 21:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D72375D03
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 23:54:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FbkRN3CWDz3bSn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 05:39:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FbnRF0Ygcz309c
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 07:54:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XImLsgWo;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BPAD6O3l;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=AtvbOwdd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.23;
+ helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=XImLsgWo; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=BPAD6O3l; 
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=AtvbOwdd; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
+ [85.215.255.23])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FbkQt6g0Fz2yjK
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 05:38:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1620329922;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mD9rk0OEj0XYhxeQH5IDJPNbrX+PSqo6PoFdlh4Fuj4=;
- b=XImLsgWo+QKlmyFO/XlEDIt+Ur0g+yEHU0vNvIGZicLxOMFTDhm1SMaHO6kHyvo+R96HLJ
- n8OuKEvm76zWoLN1ebZLdUs0FWjwaxGFUmckZConLy9xqNBdCPnXixRPsDjCcUVmbTzaR/
- j4eieEbJSRhovwhXNb5AA0XnCwnN1kY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1620329923;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mD9rk0OEj0XYhxeQH5IDJPNbrX+PSqo6PoFdlh4Fuj4=;
- b=BPAD6O3l9g7o2RiF0PCpsQx/VHW8+cqU8AnJeERpuOobj02DP6YcC9bkyj/aXj/t2k6d3w
- mV69N6Ft6xP/K8IDRA2lTHYc/UQImxgWK7bpKtJIHLSg355cIEdtKNJKP9bH3mnlJ39k6w
- UfLHeUZX62Xp99+6yTRn+MPcQXJDSAU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-487-_fg3IvWFP3eVciKxHVgPyw-1; Thu, 06 May 2021 15:38:40 -0400
-X-MC-Unique: _fg3IvWFP3eVciKxHVgPyw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- y184-20020a1ce1c10000b0290143299f39d7so3027834wmg.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 May 2021 12:38:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:organization
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=mD9rk0OEj0XYhxeQH5IDJPNbrX+PSqo6PoFdlh4Fuj4=;
- b=I9kdMf1+UoMjNThTEfQKC2A+XGUr+N/Qnql0Ze17CYdaQ+k0K1g4V/oXPWhvz/E3K+
- nFTQeO9I6X53ZXXNnGKOczVIGFm42JLYyvfJP1QCpNDEI5egiklLDqG2lmF7FQd+TOzh
- cyQlY1LpklfQHbH/QEhJBEVUKy4CS2VK92ifUo7ouue6CsfGPeALlYJEnLxHu8f8skfw
- 4HdEnz0JysSo/lOe+HWZIh2R3skR9BjQRrKZ9f6eFewETyM9RmxQggTWom+LFvZqThp/
- RbQTBfGgpEtftO7dNhJIuHeeTCkRSMYnScVsdzDAP0+24mGPtmKesP2Bvlz2wCkwr+Mn
- tfOg==
-X-Gm-Message-State: AOAM533gc+i13YoEMQOfMuGWbm7579jNOp3Kb9BtC40wnZQ2NCFnTU35
- H9h9oWaMVrCWwrB4YBlt7aKqthjl5UDEHQ9xdXxgQrplSLcLWd2A8VE2zUIz3vxJaZadI7D4r6J
- zyeRlDYS+erxLJzBQhc7319wnAg==
-X-Received: by 2002:a5d:51d2:: with SMTP id n18mr7392203wrv.69.1620329919135; 
- Thu, 06 May 2021 12:38:39 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxOC06i3MicUKjMNEqxEnGDL/rTRmiJEviad77ONpxe7ogE7ETHVYywYhvhoyD41LPb0MdTmQ==
-X-Received: by 2002:a5d:51d2:: with SMTP id n18mr7392182wrv.69.1620329918917; 
- Thu, 06 May 2021 12:38:38 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c64ae.dip0.t-ipconnect.de. [91.12.100.174])
- by smtp.gmail.com with ESMTPSA id q10sm4494733wmc.31.2021.05.06.12.38.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 May 2021 12:38:38 -0700 (PDT)
-Subject: Re: [RFC PATCH 0/7] Memory hotplug/hotremove at subsection size
-To: Matthew Wilcox <willy@infradead.org>
-References: <20210506152623.178731-1-zi.yan@sent.com>
- <fb60eabd-f8ef-2cb1-7338-7725efe3c286@redhat.com>
- <9D7FD316-988E-4B11-AC1C-64FF790BA79E@nvidia.com>
- <3a51f564-f3d1-c21f-93b5-1b91639523ec@redhat.com>
- <16962E62-7D1E-4E06-B832-EC91F54CC359@nvidia.com>
- <f3a2152c-685b-2141-3e33-b2bcab8b6010@redhat.com>
- <3A6D54CF-76F4-4401-A434-84BEB813A65A@nvidia.com>
- <0e850dcb-c69a-188b-7ab9-09e6644af3ab@redhat.com>
- <20210506193026.GE388843@casper.infradead.org>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Message-ID: <d2e3c89d-a1fe-e7bc-c2ec-586df2073951@redhat.com>
-Date: Thu, 6 May 2021 21:38:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
-MIME-Version: 1.0
-In-Reply-To: <20210506193026.GE388843@casper.infradead.org>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FbZvV029Fz300P
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 23:59:31 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1620309540; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=JjCFP4VtV0Z1FCj7cnlvCxM/iQdS+h4RX2wiMdzocjdTywBrAg8J4E5o8/nw3skIRJ
+ 0QIe8Knf/DUs5cPmUdzvgCCmls1R1K5bTkS/PPJ8BtJo0Fx+Mj4vGqP+9xa6bb6HbwFw
+ VkTklxbUkI3bIBm3wy6TT9rWbdPJB8AxlmZHGgi+Ba4RCG2+uIpxZXd+foZ9c6s5dJ9j
+ YrmBuXC+Xy47eIaLqmkr9t1aMpesbr39SnkTG97e0VFv24wTjos4D6Oognn3A/yiSAV5
+ MIzsW8HUsAVKSYLY3KQXMclr+K6bTgOjxS77A1hFdwVHj6Cf98p+iagY7RZozHAoU8Dk
+ V42g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620309540;
+ s=strato-dkim-0002; d=strato.com;
+ h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+ From:Subject:Sender;
+ bh=MfTthyJEvvQsiSH3O5jxq+kKsnipGdddvIlWvIZ/sTo=;
+ b=lEkLHoGqSB+WeaWgzNQzB06mlo1fcu929F/Fzcvzx2wMrpd23gG1Z/hz8qHUB/8M0v
+ owY/taLPYmo58uEi+zzO0s45suYHR8N810juIkKzRWlKzAAm0N3znMNcCVn5kDS3nLOZ
+ 0AOg01f/hIsbW/9C0U8gVN9ShMNgytOFzpDNFFU5m5Fy8RmQcNqhYdQnmJkTGCTg1Yt+
+ LJq3Vy+/fSEOO9/3ZzGiKBmpbcIgU06AcUzf5PW60k2dnZLFS8Z9sFG6SMCtRY4oIJEV
+ j1Vy+QOOdtZ0Ve9iFYBuWIXaJeO+AqRSQrldNXOtlzfjxs60sZRKsfNp+AnTslyiAcrS
+ lhZg==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620309540;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+ From:Subject:Sender;
+ bh=MfTthyJEvvQsiSH3O5jxq+kKsnipGdddvIlWvIZ/sTo=;
+ b=AtvbOwddHvdNX/scRd6z/QgWJzkoi+c5bKJx7ft5VKOKD09DQGGYroe9cPs/PNNZIF
+ 1gQkQ3Mx13AQx7CGMN+Y/hjFf/Plkm3eO7+FLxDMDYtiK9vVsxmlrYKuoxVhvscLLlUd
+ 5Y6g5Ax3GuMo5H9Ea4umbmqfO2asPcHe3LAGNv/byn3sZzPl1F0ey/IX0KdlqS+qwQyM
+ gb2A2i8Z/bybzhtobmVnzVXRRdEnyDbQ3AbBPU7BsWZpi0iS3VEZLZnLbD4Za8MZCsw/
+ TGSKe31Yk0ARpBDEgKUQYwMNYgy4CSfNfqH39TGJUyVyGDLayF+PD64v+ZdGFwLxx2JW
+ VjAA==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7aWdxjLpjxHFPxZKbaToUWhlh2ylomqGkEIuZkAk="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a01:598:d007:6076:ac57:57c:c0c7:3c0a]
+ by smtp.strato.de (RZmta 47.25.6 AUTH)
+ with ESMTPSA id j00d01x46Dwx624
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Thu, 6 May 2021 15:58:59 +0200 (CEST)
+Content-Type: multipart/alternative;
+ boundary=Apple-Mail-7A341AC6-A75B-4D44-BE0E-91BAD62D6702
 Content-Transfer-Encoding: 7bit
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [FSL P50x0] Xorg always restarts again and again after the the
+ PowerPC updates 5.13-1
+Date: Thu, 6 May 2021 15:58:58 +0200
+Message-Id: <0A8D70F6-CBD4-44FD-9DB1-69097AEB5FA3@xenosoft.de>
+References: <1b0134d4-4235-b294-8112-dcd5468564bf@csgroup.eu>
+In-Reply-To: <1b0134d4-4235-b294-8112-dcd5468564bf@csgroup.eu>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+X-Mailer: iPhone Mail (18D70)
+X-Mailman-Approved-At: Fri, 07 May 2021 07:53:51 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,64 +94,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>,
- Wei Yang <richard.weiyang@linux.alibaba.com>,
- Andy Lutomirski <luto@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>, x86@kernel.org,
- Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>, linux-ia64@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Oscar Salvador <osalvador@suse.de>
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ mad skateman <madskateman@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 06.05.21 21:30, Matthew Wilcox wrote:
-> On Thu, May 06, 2021 at 09:10:52PM +0200, David Hildenbrand wrote:
->> I have to admit that I am not really a friend of that. I still think our
->> target goal should be to have gigantic THP *in addition to* ordinary THP.
->> Use gigantic THP where enabled and possible, and just use ordinary THP
->> everywhere else. Having one pageblock granularity is a real limitation IMHO
->> and requires us to hack the system to support it to some degree.
-> 
-> You're thinking too small with only two THP sizes ;-)  I'm aiming to
 
-Well, I raised in my other mail that we will have multiple different use 
-cases, including multiple different THP e.g., on aarch64 ;)
+--Apple-Mail-7A341AC6-A75B-4D44-BE0E-91BAD62D6702
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> support arbitrary power-of-two memory allocations.  I think there's a
-> fruitful discussion to be had about how that works for anonymous memory --
-> with page cache, we have readahead to tell us when our predictions of use
-> are actually fulfilled.  It doesn't tell us what percentage of the pages
+I have started bisecting again.
 
-Right, and I think we have to think about a better approach than just 
-increasing the pageblock_order.
-
-> allocated were actually used, but it's a hint.  It's a big lift to go from
-> 2MB all the way to 1GB ... if you can look back to see that the previous
-> 1GB was basically fully populated, then maybe jump up from allocating
-> 2MB folios to allocating a 1GB folio, but wow, that's a big step.
-> 
-> This goal really does mean that we want to allocate from the page
-> allocator, and so we do want to grow MAX_ORDER.  I suppose we could
-> do somethig ugly like
-> 
-> 	if (order <= MAX_ORDER)
-> 		alloc_page()
-> 	else
-> 		alloc_really_big_page()
-> 
-> but that feels like unnecessary hardship to place on the user.
-
-I had something similar for the sort term in mind, relying on 
-alloc_contig_pages() (and maybe ZONE_MOVABLE to make allocations more 
-likely to succeed). Devil's in the details (page migration, ...).
+Link: https://forum.hyperion-entertainment.com/viewtopic.php?p=3D53106#p5310=
+6
 
 
--- 
-Thanks,
+> On 6. May 2021, at 10:09, Christophe Leroy <christophe.leroy@csgroup.eu> w=
+rote:
+>=20
+> =EF=BB=BFHi,
+>=20
+>> Le 06/05/2021 =C3=A0 09:56, Christian Zigotzky a =C3=A9crit :
+>> Hi Christophe,
+>> Ok, so let's summarise from my side.
+>> The issue is in the PowerPC updates 5.13-1. I reverted these and after th=
+at the issue is gone.
+>> We know that only BookE machines are affected. Book3S machines are workin=
+g with the PowerPC updates.
+>> I think it=E2=80=99s not directly an Xorg issue. It=E2=80=99s more a symp=
+tom that Xorg restarts again and again. In my point of view the changes for B=
+ookE machines in the PowerPC updates are responsible for this issue.
+>> Bisecting costs a lot of time and I don=E2=80=99t have time for my main w=
+ork anymore.
+>> Bisecting is good but sometime you have to check your code yourself. We k=
+now all facts and now it=E2=80=99s time to check the code because of BookE c=
+ompatibility.
+>> @All
+>> You can test it with QEMU as well. I provide some virtual machines and ke=
+rnels for testing. Guys, it is really important that you test your changes b=
+efore you release them.
+>=20
+>=20
+> So, summary from my side:
+>=20
+> You popped up telling that commit 887f3ceb51cd was the reason of your prob=
+lem. As I am the one who released that commit, I took a look, and identified=
+ that 525642624783 should have fixed it.
+>=20
+> You are working with a 64 bits kernel. My domain is 32 bits kernels.
+>=20
+> I have no problem at all with corenet64_smp_defconfig booting QEMU with an=
+y of the commits you pointed.
+>=20
+> On my side QEMU doesn't work at all with the configuration you provided, I=
+ don't get any output at all on the screen.
+>=20
+>=20
+> So how can we progress ?
+>=20
+> I know bisecting is not always easy, and for sure you must have spend a lo=
+t of time with all those skipped steps. But it provided us good information a=
+nyway and I'm sure we could progress quickly if you can do the few tests I s=
+uggested in my last email:
+>=20
+> - Can you check that 887f3ceb51cd with cherry-picked 525642624783 has Xorg=
+ working ?
+> - Can you bisect between 887f3ceb51cd[good] and 56bec2f9d4d0[bad] to ident=
+ify first bad commit that stops after loading the dtb and uImage ?
+> - Once that first bad commit is identified, can you check whether the prec=
+eeding commit with cherry-picked 525642624783 has Xorg working or not ?
+>=20
+> Thanks
+> Christophe
 
-David / dhildenb
+--Apple-Mail-7A341AC6-A75B-4D44-BE0E-91BAD62D6702
+Content-Type: text/html;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
+utf-8"></head><body dir=3D"auto">I have started bisecting again.<div><br></d=
+iv><div>Link:&nbsp;<a href=3D"https://forum.hyperion-entertainment.com/viewt=
+opic.php?p=3D53106#p53106">https://forum.hyperion-entertainment.com/viewtopi=
+c.php?p=3D53106#p53106</a><br><br><div dir=3D"ltr"><br><blockquote type=3D"c=
+ite">On 6. May 2021, at 10:09, Christophe Leroy &lt;christophe.leroy@csgroup=
+.eu&gt; wrote:<br><br></blockquote></div><blockquote type=3D"cite"><div dir=3D=
+"ltr">=EF=BB=BF<span>Hi,</span><br><span></span><br><span>Le 06/05/2021 =C3=A0=
+ 09:56, Christian Zigotzky a =C3=A9crit&nbsp;:</span><br><blockquote type=3D=
+"cite"><span>Hi Christophe,</span><br></blockquote><blockquote type=3D"cite"=
+><span>Ok, so let's summarise from my side.</span><br></blockquote><blockquo=
+te type=3D"cite"><span>The issue is in the PowerPC updates 5.13-1. I reverte=
+d these and after that the issue is gone.</span><br></blockquote><blockquote=
+ type=3D"cite"><span>We know that only BookE machines are affected. Book3S m=
+achines are working with the PowerPC updates.</span><br></blockquote><blockq=
+uote type=3D"cite"><span>I think it=E2=80=99s not directly an Xorg issue. It=
+=E2=80=99s more a symptom that Xorg restarts again and again. In my point of=
+ view the changes for BookE machines in the PowerPC updates are responsible f=
+or this issue.</span><br></blockquote><blockquote type=3D"cite"><span>Bisect=
+ing costs a lot of time and I don=E2=80=99t have time for my main work anymo=
+re.</span><br></blockquote><blockquote type=3D"cite"><span>Bisecting is good=
+ but sometime you have to check your code yourself. We know all facts and no=
+w it=E2=80=99s time to check the code because of BookE compatibility.</span>=
+<br></blockquote><blockquote type=3D"cite"><span>@All</span><br></blockquote=
+><blockquote type=3D"cite"><span>You can test it with QEMU as well. I provid=
+e some virtual machines and kernels for testing. Guys, it is really importan=
+t that you test your changes before you release them.</span><br></blockquote=
+><span></span><br><span></span><br><span>So, summary from my side:</span><br=
+><span></span><br><span>You popped up telling that commit 887f3ceb51cd was t=
+he reason of your problem. As I am the one who released that commit, I took a=
+ look, and identified that 525642624783 should have fixed it.</span><br><spa=
+n></span><br><span>You are working with a 64 bits kernel. My domain is 32 bi=
+ts kernels.</span><br><span></span><br><span>I have no problem at all with c=
+orenet64_smp_defconfig booting QEMU with any of the commits you pointed.</sp=
+an><br><span></span><br><span>On my side QEMU doesn't work at all with the c=
+onfiguration you provided, I don't get any output at all on the screen.</spa=
+n><br><span></span><br><span></span><br><span>So how can we progress ?</span=
+><br><span></span><br><span>I know bisecting is not always easy, and for sur=
+e you must have spend a lot of time with all those skipped steps. But it pro=
+vided us good information anyway and I'm sure we could progress quickly if y=
+ou can do the few tests I suggested in my last email:</span><br><span></span=
+><br><span>- Can you check that 887f3ceb51cd with cherry-picked 525642624783=
+ has Xorg working ?</span><br><span>- Can you bisect between 887f3ceb51cd[go=
+od] and 56bec2f9d4d0[bad] to identify first bad commit that stops after load=
+ing the dtb and uImage ?</span><br><span>- Once that first bad commit is ide=
+ntified, can you check whether the preceeding commit with cherry-picked 5256=
+42624783 has Xorg working or not ?</span><br><span></span><br><span>Thanks</=
+span><br><span>Christophe</span><br></div></blockquote></div></body></html>=
+
+--Apple-Mail-7A341AC6-A75B-4D44-BE0E-91BAD62D6702--
