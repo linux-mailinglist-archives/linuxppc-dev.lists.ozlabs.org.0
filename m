@@ -1,68 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB8B374DC7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 05:00:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4D3374EA5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 06:41:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FbJH42fzqz30Gl
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 13:00:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FbLWY66nkz3dDK
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 14:41:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=bV0lkOJU;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ae/U2dyG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::729;
- helo=mail-qk1-x729.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=cmr@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=bV0lkOJU; dkim-atps=neutral
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com
- [IPv6:2607:f8b0:4864:20::729])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Ae/U2dyG; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FbJGK0qcSz2yxj
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 12:59:50 +1000 (AEST)
-Received: by mail-qk1-x729.google.com with SMTP id v20so3713188qkv.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 May 2021 19:59:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=5nU1vgirtCThHvyYn1ZRBNMbOfWAmoUamSH+LcH56a8=;
- b=bV0lkOJUu5s4BbJ6rOBiItcFnuvbF+pPAhICL7Ag0S8hMCilMdMA4h1XNFzN990UGg
- DXxyd2rDycv94LpUuP9K+XIGsdJ1jE+FBVWhinoriPc6FS1PJXhNiJa+KmYAtD0QNcox
- YLOG2tCqtb7TWLtLkt8HjH2rDcpiHVLukewopVAnLSow3YvNLj2nBXP7VkfM7YxKtGOw
- mhiFBao0G/SVg/yiavea5HiyXhCvruWpuNQvaMkzX0uhfbHillZsPq/yeJ3D8BNUfmB2
- y0L8qmXCaTVRTsv6ycs+qIsaDYZKvFy8If6GsPAX7q5kidOzd2hB/HHRbPHw1h8BHqEm
- h7BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=5nU1vgirtCThHvyYn1ZRBNMbOfWAmoUamSH+LcH56a8=;
- b=VNgkkbMIMjA4mvqcEUZPfuBw8fGBroRIojRHQ/GNLhS1165mwIEYBFwLtoBeluLpHz
- rahE6zrhc6iFXoBahb2pWvfhKjALY92DZUjjo2z+9BFGqKCYEGoHva9EKWMolPsi7t5q
- DKi8m97jO0/VI7Ds4/JnMLCJFOrS79iAO4TYM0wmvmX42fbEgFbIRbL5qWdvw/4Wbee2
- FRjzcSLB0sgV5ljUIx4RZnekLcDRFGNLQlX2LPQNHb4ttLipINfUoyC05fwBwFeqrBa0
- lDge5V94jFXpbdassOxzIDThutq6piIFA0h4JOZJxASVIoIVtcsP+8kwI88o0CTteYQn
- bU+Q==
-X-Gm-Message-State: AOAM530Z+j77TaVl5encghh/oPAPrqt7DGb08b9BbC28LRbCr9lbJ9yj
- 4Y9hrcb+u5BohAo8klzMxefy8UwasxZnA1aXkq4=
-X-Google-Smtp-Source: ABdhPJzDff6nOz49nsVXQ8WHxc36EDEAfLfOpn0EAONrS6s8pZ5dBpXMkQjbHpcdA6HIl/tZ0mtx4etMgnd41dZYB7w=
-X-Received: by 2002:a05:620a:2903:: with SMTP id
- m3mr1886281qkp.37.1620269986820; 
- Wed, 05 May 2021 19:59:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FbLTy54Vbz3cbG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 14:40:06 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 1464XWt2080391; Thu, 6 May 2021 00:40:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=cmRt8SjQt3QiWz4AHEfctbcrW7tJKjSSMea/ZF9W3NM=;
+ b=Ae/U2dyGrAIyzzo8xFOful/Pu8pcmI9FEi7wMqIoq+focyrLp4y0XsQsIem104vIFrtl
+ EkqIMHDYMxOS/FgNQP53YkxndszLuAX8X7XmRIJ5xPAmzZVbtV0VvzWmnZDI8QKH7DVp
+ jiijbMn4xM4AKU5mZRp6tGKRM/hZ8n09yoCNJaFl800c90qkHm0TnplhGJNNF9vU/6ib
+ /ndy6EyaoK8isXGsQar3IzSF5Hsz4eV2+3LtiTOLDTjZdeLoQSh5GmQDFHVah70d2tpD
+ QjdfAIL39UgYVtXKY/bs7ZcYcpqeoasZxGKULzZ6fwNPd8J1pM0xmsMM5jrCyEbMPdoE qg== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 38c9f2r5uy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 May 2021 00:40:00 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1464W3Ye006541;
+ Thu, 6 May 2021 04:35:00 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com
+ (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+ by ppma02dal.us.ibm.com with ESMTP id 38c1mxu822-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 May 2021 04:35:00 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1464Yw6932899336
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 May 2021 04:34:58 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B51766A04D;
+ Thu,  6 May 2021 04:34:58 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 935886A047;
+ Thu,  6 May 2021 04:34:57 +0000 (GMT)
+Received: from oc8246131445.ibm.com (unknown [9.160.168.222])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with SMTP;
+ Thu,  6 May 2021 04:34:57 +0000 (GMT)
+Received: from oc8246131445.ibm.com (localhost.localdomain [127.0.0.1])
+ by oc8246131445.ibm.com (Postfix) with ESMTP id 60E6CBC0A1D;
+ Wed,  5 May 2021 23:34:53 -0500 (CDT)
+From: "Christopher M. Riedl" <cmr@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RESEND PATCH v4 00/11] Use per-CPU temporary mappings for patching
+Date: Wed,  5 May 2021 23:34:41 -0500
+Message-Id: <20210506043452.9674-1-cmr@linux.ibm.com>
+X-Mailer: git-send-email 2.26.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8vouhhUlhpGnbPtJrpwOYUG8c-hGufEK
+X-Proofpoint-ORIG-GUID: 8vouhhUlhpGnbPtJrpwOYUG8c-hGufEK
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20210506022452.5762-1-wanjiabing@vivo.com>
-In-Reply-To: <20210506022452.5762-1-wanjiabing@vivo.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 6 May 2021 10:59:35 +0800
-Message-ID: <CAA+D8AOLyjnjD2gc=a20zYCfJp1EoJ9En4Q9JQXR5qbV9Mpzyg@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_xcvr: Remove unneeded semicolon
-To: Wan Jiabing <wanjiabing@vivo.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-06_03:2021-05-05,
+ 2021-05-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
+ mlxlogscore=999 adultscore=0 impostorscore=0 suspectscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2105060029
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,44 +100,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Mark Brown <broonie@kernel.org>, kael_w@yeah.net,
- Fabio Estevam <festevam@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>
+Cc: tglx@linutronix.de, x86@kernel.org, linux-hardening@vger.kernel.org,
+ keescook@chromium.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 6, 2021 at 10:26 AM Wan Jiabing <wanjiabing@vivo.com> wrote:
->
-> Fix the following coccicheck warning:
->
-> ./sound/soc/fsl/fsl_xcvr.c:739:2-3: Unneeded semicolon
->
-> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+When compiled with CONFIG_STRICT_KERNEL_RWX, the kernel must create
+temporary mappings when patching itself. These mappings temporarily
+override the strict RWX text protections to permit a write. Currently,
+powerpc allocates a per-CPU VM area for patching. Patching occurs as
+follows:
 
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+	1. Map page in per-CPU VM area w/ PAGE_KERNEL protection
+	2. Patch text
+	3. Remove the temporary mapping
 
-> ---
->  sound/soc/fsl/fsl_xcvr.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-> index 6cb558165848..df7c189d97dd 100644
-> --- a/sound/soc/fsl/fsl_xcvr.c
-> +++ b/sound/soc/fsl/fsl_xcvr.c
-> @@ -736,7 +736,7 @@ static int fsl_xcvr_load_firmware(struct fsl_xcvr *xcvr)
->                         /* clean current page, including data memory */
->                         memset_io(xcvr->ram_addr, 0, size);
->                 }
-> -       };
-> +       }
->
->  err_firmware:
->         release_firmware(fw);
-> --
-> 2.25.1
->
+While the VM area is per-CPU, the mapping is actually inserted into the
+kernel page tables. Presumably, this could allow another CPU to access
+the normally write-protected text - either malicously or accidentally -
+via this same mapping if the address of the VM area is known. Ideally,
+the mapping should be kept local to the CPU doing the patching [0].
+
+x86 introduced "temporary mm" structs which allow the creation of
+mappings local to a particular CPU [1]. This series intends to bring the
+notion of a temporary mm to powerpc and harden powerpc by using such a
+mapping for patching a kernel with strict RWX permissions.
+
+The first four patches implement an LKDTM test "proof-of-concept" which
+exploits the potential vulnerability (ie. the temporary mapping during
+patching is exposed in the kernel page tables and accessible by other
+CPUs) using a simple brute-force approach. This test is implemented for
+both powerpc and x86_64. The test passes on powerpc with this new
+series, fails on upstream powerpc, passes on upstream x86_64, and fails
+on an older (ancient) x86_64 tree without the x86_64 temporary mm
+patches. The remaining patches add support for and use a temporary mm
+for code patching on powerpc.
+
+Tested boot, ftrace, and repeated LKDTM "hijack":
+	- QEMU+KVM (host: POWER9 Blackbird): Radix MMU w/ KUAP
+	- QEMU+KVM (host: POWER9 Blackbird): Hash MMU w/o KUAP
+	- QEMU+KVM (host: POWER9 Blackbird): Hash MMU w/ KUAP
+
+Tested repeated LKDTM "hijack":
+	- QEMU+KVM (host: AMD desktop): x86_64 upstream
+	- QEMU+KVM (host: AMD desktop): x86_64 w/o percpu temp mm to
+	  verify the LKDTM "hijack" fails
+
+Tested boot and ftrace:
+	- QEMU+TCG: ppc44x (bamboo)
+	- QEMU+TCG: g5 (mac99)
+
+I also tested with various extra config options enabled as suggested in
+section 12) in Documentation/process/submit-checklist.rst.
+
+	[ Apologies about the resend - some of the patches were dropped by
+          the CC'd linux-hardening list due to tls problems between mailbox=
+.org
+          and vger.kernel.org. I re-signed my patches w/ my IBM email; no o=
+ther
+          changes. ]
+
+v4:	* It's time to revisit this series again since @jpn and @mpe fixed
+	  our known STRICT_*_RWX bugs on powerpc/64s.
+	* Rebase on linuxppc/next:
+          commit ee1bc694fbaec ("powerpc/kvm: Fix build error when PPC_MEM_=
+KEYS/PPC_PSERIES=3Dn")
+	* Completely rework how map_patch() works on book3s64 Hash MMU
+	* Split the LKDTM x86_64 and powerpc bits into separate patches
+	* Annotate commit messages with changes from v3 instead of
+	  listing them here completely out-of context...
+
+v3:	* Rebase on linuxppc/next: commit 9123e3a74ec7 ("Linux 5.9-rc1")
+	* Move temporary mm implementation into code-patching.c where it
+	  belongs
+	* Implement LKDTM hijacker test on x86_64 (on IBM time oof) Do
+	* not use address zero for the patching address in the
+	  temporary mm (thanks @dja for pointing this out!)
+	* Wrap the LKDTM test w/ CONFIG_SMP as suggested by Christophe
+	  Leroy
+	* Comments to clarify PTE pre-allocation and patching addr
+	  selection
+
+v2:	* Rebase on linuxppc/next:
+	  commit 105fb38124a4 ("powerpc/8xx: Modify ptep_get()")
+	* Always dirty pte when mapping patch
+	* Use `ppc_inst_len` instead of `sizeof` on instructions
+	* Declare LKDTM patching addr accessor in header where it belongs=09
+
+v1:	* Rebase on linuxppc/next (4336b9337824)
+	* Save and restore second hw watchpoint
+	* Use new ppc_inst_* functions for patching check and in LKDTM test
+
+rfc-v2:	* Many fixes and improvements mostly based on extensive feedback
+          and testing by Christophe Leroy (thanks!).
+	* Make patching_mm and patching_addr static and move
+	  '__ro_after_init' to after the variable name (more common in
+	  other parts of the kernel)
+	* Use 'asm/debug.h' header instead of 'asm/hw_breakpoint.h' to
+	  fix PPC64e compile
+	* Add comment explaining why we use BUG_ON() during the init
+	  call to setup for patching later
+	* Move ptep into patch_mapping to avoid walking page tables a
+	  second time when unmapping the temporary mapping
+	* Use KUAP under non-radix, also manually dirty the PTE for patch
+	  mapping on non-BOOK3S_64 platforms
+	* Properly return any error from __patch_instruction
+        * Do not use 'memcmp' where a simple comparison is appropriate
+	* Simplify expression for patch address by removing pointer maths
+	* Add LKDTM test
+
+[0]: https://github.com/linuxppc/issues/issues/224
+[1]: https://lore.kernel.org/kernel-hardening/20190426232303.28381-1-nadav.=
+amit@gmail.com/
+
+Christopher M. Riedl (11):
+  powerpc: Add LKDTM accessor for patching addr
+  lkdtm/powerpc: Add test to hijack a patch mapping
+  x86_64: Add LKDTM accessor for patching addr
+  lkdtm/x86_64: Add test to hijack a patch mapping
+  powerpc/64s: Add ability to skip SLB preload
+  powerpc: Introduce temporary mm
+  powerpc/64s: Make slb_allocate_user() non-static
+  powerpc: Initialize and use a temporary mm for patching
+  lkdtm/powerpc: Fix code patching hijack test
+  powerpc: Protect patching_mm with a lock
+  powerpc: Use patch_instruction_unlocked() in loops
+
+ arch/powerpc/include/asm/book3s/64/mmu-hash.h |   1 +
+ arch/powerpc/include/asm/book3s/64/mmu.h      |   3 +
+ arch/powerpc/include/asm/code-patching.h      |   8 +
+ arch/powerpc/include/asm/debug.h              |   1 +
+ arch/powerpc/include/asm/mmu_context.h        |  13 +
+ arch/powerpc/kernel/epapr_paravirt.c          |   9 +-
+ arch/powerpc/kernel/optprobes.c               |  22 +-
+ arch/powerpc/kernel/process.c                 |   5 +
+ arch/powerpc/lib/code-patching.c              | 348 +++++++++++++-----
+ arch/powerpc/lib/feature-fixups.c             | 114 ++++--
+ arch/powerpc/mm/book3s64/mmu_context.c        |   2 +
+ arch/powerpc/mm/book3s64/slb.c                |  60 +--
+ arch/powerpc/xmon/xmon.c                      |  22 +-
+ arch/x86/include/asm/text-patching.h          |   4 +
+ arch/x86/kernel/alternative.c                 |   7 +
+ drivers/misc/lkdtm/core.c                     |   1 +
+ drivers/misc/lkdtm/lkdtm.h                    |   1 +
+ drivers/misc/lkdtm/perms.c                    | 149 ++++++++
+ 18 files changed, 608 insertions(+), 162 deletions(-)
+
+--=20
+2.26.1
+
