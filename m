@@ -2,108 +2,119 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E8F375874
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 18:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C18B7375999
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 19:43:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FbfDD31rcz30N5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 02:29:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FbgtL5rHNz3bTl
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 03:43:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OYVUBX/K;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OYVUBX/K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kq3LqVEf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=srs0=phps=kb=linux.ibm.com=mahesh@ozlabs.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=OYVUBX/K; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=OYVUBX/K; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=kq3LqVEf; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fbgsq3865z2yyP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 03:43:26 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by ozlabs.org (Postfix) with ESMTP id 4Fbgsp0Wq8z9sWY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 03:43:26 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4Fbgsp0LTXz9sWk; Fri,  7 May 2021 03:43:26 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=kq3LqVEf; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FbfCg24gHz2yx4
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 02:28:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1620318521;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=u6Yy2DeoFV2q1M9s+whrk/gaR4i+2vEmv7two1Af1Zg=;
- b=OYVUBX/KWMpTVaFdnOHO2+1dPv0y2kxPyidIu+DIPyrcv14npuZcKdRfgRwQAtPvTTCUwb
- AK5ZeyUkTkKuG01cMIoOfnXw/Hf0OY6lnDHOvYE/ZwLML7mhfy+Akurs9fPR8S2zJs+zN1
- 95vc1utFOnkCht5wu2mZL2uk6WmIPPk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1620318521;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=u6Yy2DeoFV2q1M9s+whrk/gaR4i+2vEmv7two1Af1Zg=;
- b=OYVUBX/KWMpTVaFdnOHO2+1dPv0y2kxPyidIu+DIPyrcv14npuZcKdRfgRwQAtPvTTCUwb
- AK5ZeyUkTkKuG01cMIoOfnXw/Hf0OY6lnDHOvYE/ZwLML7mhfy+Akurs9fPR8S2zJs+zN1
- 95vc1utFOnkCht5wu2mZL2uk6WmIPPk=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-603-6YNObpMVPrW79eUiLZg4vA-1; Thu, 06 May 2021 12:28:39 -0400
-X-MC-Unique: 6YNObpMVPrW79eUiLZg4vA-1
-Received: by mail-ej1-f69.google.com with SMTP id
- h9-20020a1709063c09b0290393e97fec0fso1926236ejg.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 May 2021 09:28:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:to:cc:references:from:organization:subject
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=u6Yy2DeoFV2q1M9s+whrk/gaR4i+2vEmv7two1Af1Zg=;
- b=tacYR4rW92f4WRfUyQJ40X1LVwIa+SLLamZPapNoVmLDAs0CcsSjxijg34pjn9kOU7
- 0fEmIs2LU/MPh+mgwVeYprky7FavTApJ3uoqL+K8LeoeVQ66b8AjfV3+NzkGWbCuDNFc
- v5nvJzV6ZdLZumMSgoKAuMTwvjY5zVEOE5THmj4oYsRFPgslWXIuw8phHJD2qh8AHWej
- cCc7lzOetmfqBA3u5zBt/IM+Jn7Uc7DKy3v/rFUlTBWf3UJJHkYQPrZ0SipQHydK9hlI
- JXsyhLdszqa/W3mA5GgCm09ZgO6wsTentxEY+UJTo375NQpk3i2dFGQjE49rlSLXRQV9
- AXxg==
-X-Gm-Message-State: AOAM531Oiyiwygk16Q7XCsA3xKOH3o2qm3cHqOb/BvX3eFTh/83kvxDc
- UF7sKVCyxULvDI7oPDshqppECqjZi3JO11+TS2NcADN2G3nY4O+OHxC5kCatwQLeAQECLsWle//
- zDrHotxF7VuGntDlhoXrcq95/Rg==
-X-Received: by 2002:a17:906:c40f:: with SMTP id
- u15mr5291057ejz.11.1620318517804; 
- Thu, 06 May 2021 09:28:37 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyIBstwIoHL3+1II6XHx8KFDHdJwSWiiY8FJejBQ6M4H/9tCY0WFC2mPVvB4tI88ziJezvAaw==
-X-Received: by 2002:a17:906:c40f:: with SMTP id
- u15mr5291031ejz.11.1620318517505; 
- Thu, 06 May 2021 09:28:37 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c64ae.dip0.t-ipconnect.de. [91.12.100.174])
- by smtp.gmail.com with ESMTPSA id 9sm1668199ejv.73.2021.05.06.09.28.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 May 2021 09:28:37 -0700 (PDT)
-To: Zi Yan <ziy@nvidia.com>
-References: <20210506152623.178731-1-zi.yan@sent.com>
- <fb60eabd-f8ef-2cb1-7338-7725efe3c286@redhat.com>
- <9D7FD316-988E-4B11-AC1C-64FF790BA79E@nvidia.com>
- <3a51f564-f3d1-c21f-93b5-1b91639523ec@redhat.com>
- <16962E62-7D1E-4E06-B832-EC91F54CC359@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [RFC PATCH 0/7] Memory hotplug/hotremove at subsection size
-Message-ID: <f3a2152c-685b-2141-3e33-b2bcab8b6010@redhat.com>
-Date: Thu, 6 May 2021 18:28:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by ozlabs.org (Postfix) with ESMTPS id 4Fbgsn2Xf8z9sWY
+ for <linuxppc-dev@ozlabs.org>; Fri,  7 May 2021 03:43:24 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 146HXbul049153
+ for <linuxppc-dev@ozlabs.org>; Thu, 6 May 2021 13:43:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : from : to : cc
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=AT2/QYEDBz3wV1OVYJYd19jHQbAV3LUgbpxbMon0LAI=;
+ b=kq3LqVEfPcCydnuxfyqgcKMTo/zcHRsLV3cY5ZZztw18Ks/Dpk9w4JVTVq8ZmjeAJCla
+ AcA2wzQ6/Iux1I0eEU5i5Y2pG3tz2kZkYrJuXme0u3/jp9/bmiVSQEV8VR0PuolkXT6I
+ PhnJEK5Z7UIx5kdKXwF8rWlVMctZFTtGgKlCkbZEWxHexeeQOg20CQPGZVR1CMCO09Um
+ wgqsBGBymauBJj4faRHDikIylVhYrzDubRBBxOHFWDCmE2vwmPu4BquKeFjuAq0fHeMW
+ UTC9HOYxQVv8BeLeTHQ3yV2UeQNVH+pQJnpVOgiCHAqX2CMknK2D4DxiPnTXe4xBxxJ4 iw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 38cmbs9a5k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Thu, 06 May 2021 13:43:22 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 146HYFkS057066
+ for <linuxppc-dev@ozlabs.org>; Thu, 6 May 2021 13:43:21 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 38cmbs9a5a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 May 2021 13:43:21 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 146HbvVo021411;
+ Thu, 6 May 2021 17:43:20 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma01fra.de.ibm.com with ESMTP id 38bee88m0y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 May 2021 17:43:19 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 146HhHmf32899448
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 May 2021 17:43:17 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6712DA4053;
+ Thu,  6 May 2021 17:43:17 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E67B0A4051;
+ Thu,  6 May 2021 17:43:16 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.199.58.100])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  6 May 2021 17:43:16 +0000 (GMT)
+Subject: [PATCH] powerpc/eeh: skip slot presence check when PE is temporarily
+ unavailable.
+From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@ozlabs.org>
+Date: Thu, 06 May 2021 23:13:15 +0530
+Message-ID: <162032297784.225551.1220900342102038880.stgit@jupiter>
+User-Agent: StGit/0.23
 MIME-Version: 1.0
-In-Reply-To: <16962E62-7D1E-4E06-B832-EC91F54CC359@nvidia.com>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qzNIxp5zGbCoyHlKDNdf_WgI2lSRIUhM
+X-Proofpoint-ORIG-GUID: ShfBDr2uK6Q2K0NTOLKaKWCsBcAsRLI6
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-06_10:2021-05-06,
+ 2021-05-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 bulkscore=0
+ mlxscore=0 priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2105060120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,117 +126,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
- Wei Yang <richard.weiyang@linux.alibaba.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>, x86@kernel.org,
- Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Oscar Salvador <osalvador@suse.de>
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 06.05.21 17:50, Zi Yan wrote:
-> On 6 May 2021, at 11:40, David Hildenbrand wrote:
-> 
->>>>> The last patch increases SECTION_SIZE_BITS to demonstrate the use of memory
->>>>> hotplug/hotremove subsection, but is not intended to be merged as is. It is
->>>>> there in case one wants to try this out and will be removed during the final
->>>>> submission.
->>>>>
->>>>> Feel free to give suggestions and comments. I am looking forward to your
->>>>> feedback.
->>>>
->>>> Please not like this.
->>>
->>> Do you mind sharing more useful feedback instead of just saying a lot of No?
->>
->> I remember reasoning about this already in another thread, no? Either you're ignoring my previous feedback or my mind is messing with me.
-> 
-> I definitely remember all your suggestions:
-> 
-> 1. do not use CMA allocation for 1GB THP.
-> 2. section size defines the minimum size in which we can add_memory(), so we cannot increase it.
-> 
-> I am trying an alternative here. I am not using CMA allocation and not increasing the minimum size of add_memory() by decoupling the memory block size from section size, so that add_memory() can add a memory block smaller (as small as 2MB, the subsection size) than section size. In this way, section size can be increased freely. I do not see the strong tie between add_memory() and section size, especially we have subsection bitmap support.
+When certain PHB HW failure causes phyp to recover PHB, it marks the PE
+state as temporarily unavailable. In this case, per PAPR, rtas call
+ibm,read-slot-reset-state2 returns a PE state as temporarily unavailable(5)
+and OS has to wait until that recovery is complete. During this state the
+slot presence check 'get-sensor-state(dr-entity-sense)' returns as DR
+connector empty which leads to assumption that the device has been
+hot-removed. This results into no EEH recovery on this device and it stays
+in failed state forever.
 
-Okay, let me express my thoughts, I could have sworn I explained back 
-then why I am not a friend of messing with the existing pageblock size:
+This patch fixes this issue by skipping slot presence check only if device
+PE state is temporarily unavailable(5).
 
-1. Pageblock size
+Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+---
+ arch/powerpc/include/asm/eeh.h   |    1 +
+ arch/powerpc/kernel/eeh.c        |   14 ++++++++++++--
+ arch/powerpc/kernel/eeh_driver.c |   18 ++++++++++++++++++
+ 3 files changed, 31 insertions(+), 2 deletions(-)
 
-There are a couple of features that rely on the pageblock size to be 
-reasonably small to work as expected. One example is virtio-balloon free 
-page reporting, then there is virtio-mem (still also glued MAX_ORDER) 
-and we have CMA (still also glued to MAX_ORDER). Most probably there are 
-more. We track movability/ page isolation per pageblock; it's the 
-smallest granularity you can effectively isolate pages or mark them as 
-CMA (MIGRATE_ISOLATE, MIGRATE_CMA). Well, and there are "ordinary" THP / 
-huge pages most of our applications use and will use, especially on 
-smallish systems.
+diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
+index b1a5bba2e0b94..5dc5538e39b62 100644
+--- a/arch/powerpc/include/asm/eeh.h
++++ b/arch/powerpc/include/asm/eeh.h
+@@ -64,6 +64,7 @@ struct pci_dn;
+ #define EEH_PE_RECOVERING	(1 << 1)	/* Recovering PE	*/
+ #define EEH_PE_CFG_BLOCKED	(1 << 2)	/* Block config access	*/
+ #define EEH_PE_RESET		(1 << 3)	/* PE reset in progress */
++#define EEH_PE_TEMP_UNAVAIL	(1 << 4)	/* PE is temporarily unavailable */
+ 
+ #define EEH_PE_KEEP		(1 << 8)	/* Keep PE on hotplug	*/
+ #define EEH_PE_CFG_RESTRICTED	(1 << 9)	/* Block config on error */
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index 7040e430a1249..7fcbf3df18583 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -405,7 +405,8 @@ static int eeh_phb_check_failure(struct eeh_pe *pe)
+ 	    (ret == EEH_STATE_NOT_SUPPORT) || eeh_state_active(ret)) {
+ 		ret = 0;
+ 		goto out;
+-	}
++	} else if (ret == EEH_STATE_UNAVAILABLE)
++		eeh_pe_state_mark(phb_pe, EEH_PE_TEMP_UNAVAIL);
+ 
+ 	/* Isolate the PHB and send event */
+ 	eeh_pe_mark_isolated(phb_pe);
+@@ -519,14 +520,23 @@ int eeh_dev_check_failure(struct eeh_dev *edev)
+ 	 * We will punt with the following conditions: Failure to get
+ 	 * PE's state, EEH not support and Permanently unavailable
+ 	 * state, PE is in good state.
++	 *
++	 * Certain PHB HW failure causes phyp/hypervisor to recover PHB and
++	 * until that recovery completes, the PE's state is temporarily
++	 * unavailable (EEH_STATE_UNAVAILABLE). In this state the slot
++	 * presence check must be avoided since it may not return valid
++	 * status. Mark this PE status as temporarily unavailable so
++	 * that we can check it later.
+ 	 */
++
+ 	if ((ret < 0) ||
+ 	    (ret == EEH_STATE_NOT_SUPPORT) || eeh_state_active(ret)) {
+ 		eeh_stats.false_positives++;
+ 		pe->false_positives++;
+ 		rc = 0;
+ 		goto dn_unlock;
+-	}
++	} else if (ret == EEH_STATE_UNAVAILABLE)
++		eeh_pe_state_mark(pe, EEH_PE_TEMP_UNAVAIL);
+ 
+ 	/*
+ 	 * It should be corner case that the parent PE has been
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 3eff6a4888e79..a0913768f33de 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -851,6 +851,17 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		return;
+ 	}
+ 
++	/*
++	 * When PE's state is temporarily unavailable, the slot
++	 * presence check returns as DR connector empty. This leads
++	 * to assumption that the device is hot-removed and causes EEH
++	 * recovery to stop leaving the device in failed state forever.
++	 * Hence skip the slot presence check if PE's state is
++	 * temporarily unavailable and go down EEH recovery path.
++	 */
++	if (pe->state & EEH_PE_TEMP_UNAVAIL)
++		goto skip_slot_presence_check;
++
+ 	/*
+ 	 * When devices are hot-removed we might get an EEH due to
+ 	 * a driver attempting to touch the MMIO space of a removed
+@@ -871,6 +882,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		goto out; /* nothing to recover */
+ 	}
+ 
++skip_slot_presence_check:
+ 	/* Log the event */
+ 	if (pe->type & EEH_PE_PHB) {
+ 		pr_err("EEH: Recovering PHB#%x, location: %s\n",
+@@ -953,6 +965,12 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		}
+ 	}
+ 
++	/*
++	 * Now that we finished waiting for PE state as per PAPR,
++	 * clear the PE temporarily unavailable state.
++	 */
++	eeh_pe_state_clear(pe, EEH_PE_TEMP_UNAVAIL, true);
++
+ 	/* Since rtas may enable MMIO when posting the error log,
+ 	 * don't post the error log until after all dev drivers
+ 	 * have been informed.
 
-Assume you bump up the pageblock order to 1G. Small VMs won't be able to 
-report any free pages to the hypervisor. You'll take the "fine-grained" 
-out of virtio-mem. Each CMA area will have to be at least 1G big, which 
-turns CMA essentially useless on smallish systems (like we have on arm64 
-with 64k base pages -- pageblock_size is 512MB and I hate it).
-
-Then, imagine systems that have like 4G of main memory. By stopping 
-grouping at 2M and instead grouping at 1G you can very easily find 
-yourself in the system where all your 4 pageblocks are unmovable and you 
-essentially don't optimize for huge pages in that environment any more.
-
-Long story short: we need a different mechanism on top and shall leave 
-the pageblock size untouched, it's too tightly integrated with page 
-isolation, ordinary THP, and CMA.
-
-2. Section size
-
-I assume the only reason you want to touch that is because 
-pageblock_size <= section_size, and I guess that's one of the reasons I 
-dislike it so much. Messing with the section size really only makes 
-sense when we want to manage metadata for larger granularity within a 
-section.
-
-We allocate metadata per section. We mark whole sections 
-early/online/present/.... Yes, in case of vmemmap, we manage the memmap 
-in smaller granularity using the sub-section map, some kind of hack to 
-support some ZONE_DEVICE cases better.
-
-Let's assume we introduce something new "gigapage_order", corresponding 
-to 1G. We could either decide to squeeze the metadata into sections, 
-having to increase the section size, or manage that metadata differently.
-
-Managing it differently certainly makes the necessary changes easier. 
-Instead of adding more hacks into sections, rather manage that metadata 
-at differently place / in a different way.
-
-See [1] for an alternative. Not necessarily what I would dream off, but 
-just to showcase that there might be alternative to group pages.
-
-3. Grouping pages > pageblock_order
-
-There are other approaches that would benefit from grouping at > 
-pageblock_order and having bigger MAX_ORDER. And that doesn't 
-necessarily mean to form gigantic pages only, we might want to group in 
-multiple granularity on a single system. Memory hot(un)plug is one 
-example, but also optimizing memory consumption by powering down DIMM 
-banks. Also, some architectures support differing huge page sizes 
-(aarch64) that could be improved without CMA. Why not have more than 2 
-THP sizes on these systems?
-
-Ideally, we'd have a mechanism that tries grouping on different 
-granularity, like for every order in pageblock_order ... 
-max_pageblock_order (e.g., 1 GiB), and not only add one new level of 
-grouping (or increase the single grouping size).
-
-[1] https://lkml.kernel.org/r/20210414023803.937-1-lipeifeng@oppo.com
-
--- 
-Thanks,
-
-David / dhildenb
 
