@@ -2,45 +2,110 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FAC0375BB8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 21:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC28375BDB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 21:39:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FbkHq2tlYz3bpt
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 05:32:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FbkRN3CWDz3bSn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 05:39:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XImLsgWo;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BPAD6O3l;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
- envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=XImLsgWo; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=BPAD6O3l; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FbkHT1tP5z2yxY
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 05:32:20 +1000 (AEST)
-Received: from [192.168.0.3] (ip5f5aef15.dynamic.kabel-deutschland.de
- [95.90.239.21])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id 52FE961E5FE02;
- Thu,  6 May 2021 21:32:18 +0200 (CEST)
-Subject: UBSAN: array-index-out-of-bounds in
- arch/powerpc/kernel/legacy_serial.c:359:56
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-References: <9f1e8f9a-9ccd-fc96-04cc-30137dbe9011@molgen.mpg.de>
-Message-ID: <a7467e08-1e53-e974-d14b-13e6ff558dae@molgen.mpg.de>
-Date: Thu, 6 May 2021 21:32:18 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FbkQt6g0Fz2yjK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 05:38:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1620329922;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mD9rk0OEj0XYhxeQH5IDJPNbrX+PSqo6PoFdlh4Fuj4=;
+ b=XImLsgWo+QKlmyFO/XlEDIt+Ur0g+yEHU0vNvIGZicLxOMFTDhm1SMaHO6kHyvo+R96HLJ
+ n8OuKEvm76zWoLN1ebZLdUs0FWjwaxGFUmckZConLy9xqNBdCPnXixRPsDjCcUVmbTzaR/
+ j4eieEbJSRhovwhXNb5AA0XnCwnN1kY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1620329923;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mD9rk0OEj0XYhxeQH5IDJPNbrX+PSqo6PoFdlh4Fuj4=;
+ b=BPAD6O3l9g7o2RiF0PCpsQx/VHW8+cqU8AnJeERpuOobj02DP6YcC9bkyj/aXj/t2k6d3w
+ mV69N6Ft6xP/K8IDRA2lTHYc/UQImxgWK7bpKtJIHLSg355cIEdtKNJKP9bH3mnlJ39k6w
+ UfLHeUZX62Xp99+6yTRn+MPcQXJDSAU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-487-_fg3IvWFP3eVciKxHVgPyw-1; Thu, 06 May 2021 15:38:40 -0400
+X-MC-Unique: _fg3IvWFP3eVciKxHVgPyw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ y184-20020a1ce1c10000b0290143299f39d7so3027834wmg.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 May 2021 12:38:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:organization
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=mD9rk0OEj0XYhxeQH5IDJPNbrX+PSqo6PoFdlh4Fuj4=;
+ b=I9kdMf1+UoMjNThTEfQKC2A+XGUr+N/Qnql0Ze17CYdaQ+k0K1g4V/oXPWhvz/E3K+
+ nFTQeO9I6X53ZXXNnGKOczVIGFm42JLYyvfJP1QCpNDEI5egiklLDqG2lmF7FQd+TOzh
+ cyQlY1LpklfQHbH/QEhJBEVUKy4CS2VK92ifUo7ouue6CsfGPeALlYJEnLxHu8f8skfw
+ 4HdEnz0JysSo/lOe+HWZIh2R3skR9BjQRrKZ9f6eFewETyM9RmxQggTWom+LFvZqThp/
+ RbQTBfGgpEtftO7dNhJIuHeeTCkRSMYnScVsdzDAP0+24mGPtmKesP2Bvlz2wCkwr+Mn
+ tfOg==
+X-Gm-Message-State: AOAM533gc+i13YoEMQOfMuGWbm7579jNOp3Kb9BtC40wnZQ2NCFnTU35
+ H9h9oWaMVrCWwrB4YBlt7aKqthjl5UDEHQ9xdXxgQrplSLcLWd2A8VE2zUIz3vxJaZadI7D4r6J
+ zyeRlDYS+erxLJzBQhc7319wnAg==
+X-Received: by 2002:a5d:51d2:: with SMTP id n18mr7392203wrv.69.1620329919135; 
+ Thu, 06 May 2021 12:38:39 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxOC06i3MicUKjMNEqxEnGDL/rTRmiJEviad77ONpxe7ogE7ETHVYywYhvhoyD41LPb0MdTmQ==
+X-Received: by 2002:a5d:51d2:: with SMTP id n18mr7392182wrv.69.1620329918917; 
+ Thu, 06 May 2021 12:38:38 -0700 (PDT)
+Received: from [192.168.3.132] (p5b0c64ae.dip0.t-ipconnect.de. [91.12.100.174])
+ by smtp.gmail.com with ESMTPSA id q10sm4494733wmc.31.2021.05.06.12.38.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 May 2021 12:38:38 -0700 (PDT)
+Subject: Re: [RFC PATCH 0/7] Memory hotplug/hotremove at subsection size
+To: Matthew Wilcox <willy@infradead.org>
+References: <20210506152623.178731-1-zi.yan@sent.com>
+ <fb60eabd-f8ef-2cb1-7338-7725efe3c286@redhat.com>
+ <9D7FD316-988E-4B11-AC1C-64FF790BA79E@nvidia.com>
+ <3a51f564-f3d1-c21f-93b5-1b91639523ec@redhat.com>
+ <16962E62-7D1E-4E06-B832-EC91F54CC359@nvidia.com>
+ <f3a2152c-685b-2141-3e33-b2bcab8b6010@redhat.com>
+ <3A6D54CF-76F4-4401-A434-84BEB813A65A@nvidia.com>
+ <0e850dcb-c69a-188b-7ab9-09e6644af3ab@redhat.com>
+ <20210506193026.GE388843@casper.infradead.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Message-ID: <d2e3c89d-a1fe-e7bc-c2ec-586df2073951@redhat.com>
+Date: Thu, 6 May 2021 21:38:37 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <9f1e8f9a-9ccd-fc96-04cc-30137dbe9011@molgen.mpg.de>
+In-Reply-To: <20210506193026.GE388843@casper.infradead.org>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,59 +117,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Michal Hocko <mhocko@suse.com>,
+ Wei Yang <richard.weiyang@linux.alibaba.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, x86@kernel.org,
+ Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>, linux-ia64@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[corrected subject]
+On 06.05.21 21:30, Matthew Wilcox wrote:
+> On Thu, May 06, 2021 at 09:10:52PM +0200, David Hildenbrand wrote:
+>> I have to admit that I am not really a friend of that. I still think our
+>> target goal should be to have gigantic THP *in addition to* ordinary THP.
+>> Use gigantic THP where enabled and possible, and just use ordinary THP
+>> everywhere else. Having one pageblock granularity is a real limitation IMHO
+>> and requires us to hack the system to support it to some degree.
+> 
+> You're thinking too small with only two THP sizes ;-)  I'm aiming to
 
-Am 06.05.21 um 21:31 schrieb Paul Menzel:
-> Dear Linux folks,
+Well, I raised in my other mail that we will have multiple different use 
+cases, including multiple different THP e.g., on aarch64 ;)
+
+> support arbitrary power-of-two memory allocations.  I think there's a
+> fruitful discussion to be had about how that works for anonymous memory --
+> with page cache, we have readahead to tell us when our predictions of use
+> are actually fulfilled.  It doesn't tell us what percentage of the pages
+
+Right, and I think we have to think about a better approach than just 
+increasing the pageblock_order.
+
+> allocated were actually used, but it's a hint.  It's a big lift to go from
+> 2MB all the way to 1GB ... if you can look back to see that the previous
+> 1GB was basically fully populated, then maybe jump up from allocating
+> 2MB folios to allocating a 1GB folio, but wow, that's a big step.
 > 
+> This goal really does mean that we want to allocate from the page
+> allocator, and so we do want to grow MAX_ORDER.  I suppose we could
+> do somethig ugly like
 > 
-> On the POWER8 system IBM S822LC, Linux 5.13+, built with USSAN, logs the 
-> warning below.
+> 	if (order <= MAX_ORDER)
+> 		alloc_page()
+> 	else
+> 		alloc_really_big_page()
 > 
-> ```
-> [    0.030091] 
-> ================================================================================ 
-> 
-> [    0.030295] UBSAN: array-index-out-of-bounds in arch/powerpc/kernel/legacy_serial.c:359:56
-> [    0.030325] index -1 is out of range for type 'legacy_serial_info [8]'
-> [    0.030350] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.12.0+ #2
-> [    0.030360] Call Trace:
-> [    0.030363] [c000000024f1bad0] [c0000000009f4330] dump_stack+0xc4/0x114 (unreliable)
-> [    0.030386] [c000000024f1bb20] [c0000000009efed0] ubsan_epilogue+0x18/0x78
-> [    0.030400] [c000000024f1bb80] [c0000000009efafc] __ubsan_handle_out_of_bounds+0xac/0xd0
-> [    0.030414] [c000000024f1bc20] [c000000001711588] ioremap_legacy_serial_console+0x54/0x144
-> [    0.030430] [c000000024f1bc70] [c0000000000123c0] do_one_initcall+0x60/0x2c0
-> [    0.030444] [c000000024f1bd40] [c000000001704bc4] kernel_init_freeable+0x19c/0x25c
-> [    0.030458] [c000000024f1bda0] [c000000000012a2c] kernel_init+0x2c/0x180
-> [    0.030471] [c000000024f1be10] [c00000000000d6ec] ret_from_kernel_thread+0x5c/0x70
-> [    0.030484] 
-> ================================================================================ 
-> 
-> [    0.030641] 
-> ================================================================================ 
-> 
-> [    0.030668] UBSAN: array-index-out-of-bounds in arch/powerpc/kernel/legacy_serial.c:360:58
-> [    0.030697] index -1 is out of range for type 'plat_serial8250_port [9]'
-> [    0.030721] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.12.0+ #2
-> [    0.030730] Call Trace:
-> [    0.030733] [c000000024f1bad0] [c0000000009f4330] dump_stack+0xc4/0x114 (unreliable)
-> [    0.030749] [c000000024f1bb20] [c0000000009efed0] ubsan_epilogue+0x18/0x78
-> [    0.030762] [c000000024f1bb80] [c0000000009efafc] __ubsan_handle_out_of_bounds+0xac/0xd0
-> [    0.030775] [c000000024f1bc20] [c0000000017115a0] ioremap_legacy_serial_console+0x6c/0x144
-> [    0.030790] [c000000024f1bc70] [c0000000000123c0] do_one_initcall+0x60/0x2c0
-> [    0.030802] [c000000024f1bd40] [c000000001704bc4] kernel_init_freeable+0x19c/0x25c
-> [    0.030816] [c000000024f1bda0] [c000000000012a2c] kernel_init+0x2c/0x180
-> [    0.030829] [c000000024f1be10] [c00000000000d6ec] ret_from_kernel_thread+0x5c/0x70
-> [    0.030842] 
-> ================================================================================ 
-> ```
-> 
-> 
-> Kind regards,
-> 
-> Paul
+> but that feels like unnecessary hardship to place on the user.
+
+I had something similar for the sort term in mind, relying on 
+alloc_contig_pages() (and maybe ZONE_MOVABLE to make allocations more 
+likely to succeed). Devil's in the details (page migration, ...).
+
+
+-- 
+Thanks,
+
+David / dhildenb
+
