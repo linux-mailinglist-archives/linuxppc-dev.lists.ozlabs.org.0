@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79DAA37508F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 10:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E19337514C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 11:10:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FbR7k3s69z30Gg
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 18:09:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FbSV02ZKCz3bTm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 19:10:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,43 +16,36 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FbR7H32WJz304R
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 18:09:11 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FbSTZ3tb9z300P
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 May 2021 19:10:05 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FbR784Hqpz9sTC;
- Thu,  6 May 2021 10:09:08 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FbSTQ2frfz9sTC;
+ Thu,  6 May 2021 11:10:02 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id lAZD1k47T6gl; Thu,  6 May 2021 10:09:08 +0200 (CEST)
+ with ESMTP id 84Jh_hPK5OFm; Thu,  6 May 2021 11:10:02 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FbR783HTCz9sSD;
- Thu,  6 May 2021 10:09:08 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FbSTQ1jkgz9sSD;
+ Thu,  6 May 2021 11:10:02 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 378D98B7F6;
- Thu,  6 May 2021 10:09:08 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1748E8B7F1;
+ Thu,  6 May 2021 11:10:02 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id sp9gSccG3Nsj; Thu,  6 May 2021 10:09:08 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B31138B7EC;
- Thu,  6 May 2021 10:09:07 +0200 (CEST)
-Subject: Re: [FSL P50x0] Xorg always restarts again and again after the the
- PowerPC updates 5.13-1
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-References: <b5a2b9b7-6f1e-8dcb-8466-053b8ff8241d@csgroup.eu>
- <B67668EF-EDC8-45F9-A340-5B453065166C@xenosoft.de>
+ with ESMTP id 4nw4S1JpHMM8; Thu,  6 May 2021 11:10:02 +0200 (CEST)
+Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DA4788B7EC;
+ Thu,  6 May 2021 11:10:01 +0200 (CEST)
+Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 99FA564884; Thu,  6 May 2021 09:10:01 +0000 (UTC)
+Message-Id: <13f7532f21df3196e8c78b4f82a9c8d5487aca35.1620292185.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <1b0134d4-4235-b294-8112-dcd5468564bf@csgroup.eu>
-Date: Thu, 6 May 2021 10:09:06 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
-MIME-Version: 1.0
-In-Reply-To: <B67668EF-EDC8-45F9-A340-5B453065166C@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH] powerpc/32s: Remove m8260_gorom()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Thu,  6 May 2021 09:10:01 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,56 +57,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- mad skateman <madskateman@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Last user of m8260_gorom() was removed by
+Commit 917f0af9e5a9 ("powerpc: Remove arch/ppc and include/asm-ppc")
+removed last user of m8260_gorom().
 
-Le 06/05/2021 à 09:56, Christian Zigotzky a écrit :
-> Hi Christophe,
-> 
-> Ok, so let's summarise from my side.
-> 
-> The issue is in the PowerPC updates 5.13-1. I reverted these and after that the issue is gone.
-> We know that only BookE machines are affected. Book3S machines are working with the PowerPC updates.
-> I think it’s not directly an Xorg issue. It’s more a symptom that Xorg restarts again and again. In my point of view the changes for BookE machines in the PowerPC updates are responsible for this issue.
-> Bisecting costs a lot of time and I don’t have time for my main work anymore.
-> Bisecting is good but sometime you have to check your code yourself. We know all facts and now it’s time to check the code because of BookE compatibility.
-> 
-> @All
-> You can test it with QEMU as well. I provide some virtual machines and kernels for testing. Guys, it is really important that you test your changes before you release them.
-> 
+In fact m8260_gorom() was ported to arch/powerpc/ but the
+platform using it died with arch/ppc/
 
+Remove it.
 
-So, summary from my side:
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/head_book3s_32.S | 36 ----------------------------
+ 1 file changed, 36 deletions(-)
 
-You popped up telling that commit 887f3ceb51cd was the reason of your problem. As I am the one who 
-released that commit, I took a look, and identified that 525642624783 should have fixed it.
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index c1d2f0d1d6b2..74296708b35e 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -1204,42 +1204,6 @@ setup_usbgecko_bat:
+ 	blr
+ #endif
+ 
+-#ifdef CONFIG_8260
+-/* Jump into the system reset for the rom.
+- * We first disable the MMU, and then jump to the ROM reset address.
+- *
+- * r3 is the board info structure, r4 is the location for starting.
+- * I use this for building a small kernel that can load other kernels,
+- * rather than trying to write or rely on a rom monitor that can tftp load.
+- */
+-       .globl  m8260_gorom
+-m8260_gorom:
+-	mfmsr	r0
+-	rlwinm	r0,r0,0,17,15	/* clear MSR_EE in r0 */
+-	sync
+-	mtmsr	r0
+-	sync
+-	mfspr	r11, SPRN_HID0
+-	lis	r10, 0
+-	ori	r10,r10,HID0_ICE|HID0_DCE
+-	andc	r11, r11, r10
+-	mtspr	SPRN_HID0, r11
+-	isync
+-	li	r5, MSR_ME|MSR_RI
+-	lis	r6,2f@h
+-	addis	r6,r6,-KERNELBASE@h
+-	ori	r6,r6,2f@l
+-	mtspr	SPRN_SRR0,r6
+-	mtspr	SPRN_SRR1,r5
+-	isync
+-	sync
+-	rfi
+-2:
+-	mtlr	r4
+-	blr
+-#endif
+-
+-
+ /*
+  * We put a few things here that have to be page-aligned.
+  * This stuff goes at the beginning of the data segment,
+-- 
+2.25.0
 
-You are working with a 64 bits kernel. My domain is 32 bits kernels.
-
-I have no problem at all with corenet64_smp_defconfig booting QEMU with any of the commits you pointed.
-
-On my side QEMU doesn't work at all with the configuration you provided, I don't get any output at 
-all on the screen.
-
-
-So how can we progress ?
-
-I know bisecting is not always easy, and for sure you must have spend a lot of time with all those 
-skipped steps. But it provided us good information anyway and I'm sure we could progress quickly if 
-you can do the few tests I suggested in my last email:
-
-- Can you check that 887f3ceb51cd with cherry-picked 525642624783 has Xorg working ?
-- Can you bisect between 887f3ceb51cd[good] and 56bec2f9d4d0[bad] to identify first bad commit that 
-stops after loading the dtb and uImage ?
-- Once that first bad commit is identified, can you check whether the preceeding commit with 
-cherry-picked 525642624783 has Xorg working or not ?
-
-Thanks
-Christophe
