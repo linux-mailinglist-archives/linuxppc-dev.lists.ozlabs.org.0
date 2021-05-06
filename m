@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E28375786
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 17:37:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503F637579F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 17:39:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fbd4J69w0z3bTM
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 01:37:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fbd6K2Rtpz3cMk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 01:39:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256 header.s=fm3 header.b=ERr+ibPO;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Gy0HBk0D;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256 header.s=fm3 header.b=BkIRKQSF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=csxIPwzr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,69 +19,68 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256
- header.s=fm3 header.b=ERr+ibPO; 
+ header.s=fm3 header.b=BkIRKQSF; 
  dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=Gy0HBk0D; 
+ header.a=rsa-sha256 header.s=fm2 header.b=csxIPwzr; 
  dkim-atps=neutral
 Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com
  [66.111.4.230])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fbd2q1g3gz3018
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 01:36:02 +1000 (AEST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailnew.nyi.internal (Postfix) with ESMTP id 46CE9580B98;
- Thu,  6 May 2021 11:27:16 -0400 (EDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fbd2t4KtCz3022
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 01:36:06 +1000 (AEST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+ by mailnew.nyi.internal (Postfix) with ESMTP id E4276580B9A;
+ Thu,  6 May 2021 11:27:20 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Thu, 06 May 2021 11:27:16 -0400
+ by compute3.internal (MEProxy); Thu, 06 May 2021 11:27:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sent.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references:reply-to
- :mime-version:content-transfer-encoding; s=fm3; bh=CNhCM5piZYB3R
- G0DYNDKizi7nXlnPEa9s7srXlj6PXg=; b=ERr+ibPOf0zVPcQflUsZusng7IDBt
- Ly+me/4A5/4jPSYelctQuWumPKZHomt2odPjYpof3hzY459tKjcCPONvUILkhh/t
- 6OC9a5HPpB2Yyq0o5us8PKWmCvW0mQg0f8aYcFxatzcRQYA+Eo0sWo/ZiTzuKXmI
- Hd01N3Fw2jIv2f2YFBMQkjq8B1pc4vuSxr0UIiQSeIIs85G/OdYyaHjWXBC+xCAX
- K6LBqXwl30RHi/8Vt2uTdqBmdlqpltiukvdWtro7EpYqNBN3iugBknXl6MwpGfFA
- mQRSO5ILaqStJXxGzBc3QKabgCtMhBgDXKM1Wk3hGtyex3njKiN0j6RfQ==
+ :mime-version:content-transfer-encoding; s=fm3; bh=0Vqh/12D+7ItZ
+ 7+wzTeDhhxcr5RV//7A5m31qLjOfhE=; b=BkIRKQSF6Dj8QO06+XBWBvzR5nZik
+ byXGdMgWl3jqK4k07zyusfxS8vwwBDf3X8JVIyGTHojUCrO/pqmnXZYwAEdtPG0H
+ xJGZA7QD07YPi3V/NMj7MiFrot7KDNjvh47wE8VEAYoRYgVFYS8lWv0Dj6H8ZLIg
+ RyDDax4M1r5NV/NeVqNzLk3iSOVCTej2v7AObHUrTAJ4euJTQZhtn7O3spb9Ai65
+ rvKVUjvfjYtg0CAplyv5jPDw1rE2F3N1+de9tDp0L9kY8aZ8igSp8Dmn9QNVhVqI
+ P6qyAtpw5SKHltxVmiHt5RbY2wzaq7jzZpprjAQDmSAxLP3N/ywCr6p2g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:content-transfer-encoding:date:from
  :in-reply-to:message-id:mime-version:references:reply-to:subject
  :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; bh=CNhCM5piZYB3RG0DYNDKizi7nXlnPEa9s7srXlj6PXg=; b=Gy0HBk0D
- anbxcrn2TuZswDhEOR9nzUkL2OpRqP+G0E19ruuqkPdfG2QaMkjbgAmYgQDs2PYh
- X+u9gTjbgqnObnMCUoj+FaA95NZ9nq3dqUJghdetX+vfhI75COOAIVu45MvktsRp
- uN67O1drDk5ZvdUy0NP/n2xtAuMwihR7u7jxaIwFEFvS+Lf0X7Bu8G20EewqgnkQ
- wNmhoLBgWiIJ2Q+gcJfXE7xX9ZnkMm45EiNdfx6VxiK0pMrKHq//PZK0Gj78wkXb
- vHLLIqaG6XGkdvhTQPQ92lb9hweVk9danextwxInKDS/il/3M6ZqnGhSpbXu1q+P
- JNOnDyTiAoP7aA==
-X-ME-Sender: <xms:1AqUYCulhFTFCq1TuIitxSwjbJhsysFyDWUIdrqlrydF-otZD2kHpA>
- <xme:1AqUYHcRef67m2nBpQTonTKTcKYIJ7CXSm2um39PI8T4RYV45KzrCen5CiNaIHCew
- pmrlofvEXwhQdEu2Q>
+ fm2; bh=0Vqh/12D+7ItZ7+wzTeDhhxcr5RV//7A5m31qLjOfhE=; b=csxIPwzr
+ uonvNWIgSug9hpDXXfqy4EzlgPzuRdyfFxsm8km04obBGxRyJPAJKc1zadJpqFw8
+ xBtdwrq4dZ7jTDkVZpvMZ6P9OEZsNBkYWBA+0boS0zvBT2j/WiSfsug1FFpaWnQl
+ 1BT25nopWrPRsCDc0sKIN8YkY2+t4JK1biwATAYCPZSe6YmWJZRlfVSwzPfsuKz7
+ UAHZctYWYsW3cCHhyRjllbxtI0XoxBBruJxbVbf8JKVB1yR6pxHVckG7kXe7+nnq
+ r8i15j/XQSk9IrDc9woctBo7NDyxhwqc2L+BwH0NVPlkT5y8Bq5WHgpowuMnJjaF
+ m6SJ4+pFlsE3MQ==
+X-ME-Sender: <xms:2AqUYDMB5i5zj_M9PMQ5YkbShTNfpGKdoTUJ5zVl5TwqxwCo2GgOyg>
+ <xme:2AqUYN9w_Dlj5yU_UD6wypwx4MYlBAfMcIsIedipELMJrlnHgfZ34s8QYNILZ9nIa
+ rku4bVct6pLMwa83g>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdegtddgkeelucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
  cujfgurhephffvufffkffojghfrhgggfestdhqredtredttdenucfhrhhomhepkghiucgj
  rghnuceoiihirdihrghnsehsvghnthdrtghomheqnecuggftrfgrthhtvghrnhepieejue
  dvueduuefhgefhheeiuedvtedvuefgieegveetueeiueehtdegudehfeelnecukfhppeef
- hedrudeigedrvdegiedrfeegnecuvehluhhsthgvrhfuihiivgepgeenucfrrghrrghmpe
+ hedrudeigedrvdegiedrfeegnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpe
  hmrghilhhfrhhomhepiihirdihrghnsehsvghnthdrtghomh
-X-ME-Proxy: <xmx:1AqUYNyxUWL3vkssN2aKr6C1w4NWi4ijMS6vzUobtCsaH6Se0wUjcg>
- <xmx:1AqUYNPOR0aPhbs12_rW4UBrnh8mhESTe0nMFBQzvCJJkG8ka3lF1w>
- <xmx:1AqUYC9mLFHQjMskumASj7jqaORsqmWfp5qx_O7C4l9zV6VhU2vw6Q>
- <xmx:1AqUYCN8ya_kW4otEza_yHf29kFghE0pN4XXQgR62DB2F1X4flPr8w>
+X-ME-Proxy: <xmx:2AqUYCTB2ORm8xJjUjVXYPh4K4jZLFNI4e0JREsDs8Gi-ygzPfWDew>
+ <xmx:2AqUYHsA5LclMx9V_-selLiZPJ0XCv8Xe-NKxI50tTToe7y1ggWeBw>
+ <xmx:2AqUYLd6Knz4_vW9KlvspzoQ20x7t_nR0Pg1ITpYY2LdoglMyhecdg>
+ <xmx:2AqUYGvOxKS9uFrz7bdHtdarp3eCO3yJPv2vZKeb6MQ79-B1qAcr9Q>
 Received: from Threadripper.local
  (ec2-35-164-246-34.us-west-2.compute.amazonaws.com [35.164.246.34])
  by mail.messagingengine.com (Postfix) with ESMTPA;
- Thu,  6 May 2021 11:27:12 -0400 (EDT)
+ Thu,  6 May 2021 11:27:16 -0400 (EDT)
 From: Zi Yan <zi.yan@sent.com>
 To: David Hildenbrand <david@redhat.com>,
 	Oscar Salvador <osalvador@suse.de>
-Subject: [RFC PATCH 6/7] arch: x86: no MAX_ORDER exceeds SECTION_SIZE check
- for 32bit vdso.
-Date: Thu,  6 May 2021 11:26:22 -0400
-Message-Id: <20210506152623.178731-7-zi.yan@sent.com>
+Subject: [RFC PATCH 7/7] [not for merge] mm: increase SECTION_SIZE_BITS to 31
+Date: Thu,  6 May 2021 11:26:23 -0400
+Message-Id: <20210506152623.178731-8-zi.yan@sent.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210506152623.178731-1-zi.yan@sent.com>
 References: <20210506152623.178731-1-zi.yan@sent.com>
@@ -114,48 +113,56 @@ Sender: "Linuxppc-dev"
 
 From: Zi Yan <ziy@nvidia.com>
 
-For x86_64, 32bit vdso is compiled for compatibility reason and 32bit
-SECTION_SIZE_BITS value is used during compilation. It causes
-compilation time error when MAX_ORDER is increased in the 64bit
-environment even if it is OK for 64bit SECTION_SIZE_BITS. Remove the
-check during 32bit vdso compilation. It will be checked when other
-kernel components are compiled.
+This is only used to test onlining/offlining subsection memory in
+a x86_64 system by increasing section size to 2GB and pageblock size to
+1GB when MAX_ORDER is set to 20.
 
 Signed-off-by: Zi Yan <ziy@nvidia.com>
 ---
- arch/x86/entry/vdso/Makefile | 1 +
- include/linux/mmzone.h       | 2 ++
- 2 files changed, 3 insertions(+)
+ arch/x86/Kconfig                 | 15 +++++++++++++++
+ arch/x86/include/asm/sparsemem.h |  2 +-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-index 05c4abc2fdfd..cad339136ed1 100644
---- a/arch/x86/entry/vdso/Makefile
-+++ b/arch/x86/entry/vdso/Makefile
-@@ -156,6 +156,7 @@ KBUILD_CFLAGS_32 +=3D -fno-stack-protector
- KBUILD_CFLAGS_32 +=3D $(call cc-option, -foptimize-sibling-calls)
- KBUILD_CFLAGS_32 +=3D -fno-omit-frame-pointer
- KBUILD_CFLAGS_32 +=3D -DDISABLE_BRANCH_PROFILING
-+KBUILD_CFLAGS_32 +=3D -DNO_MAX_ORDER_CHECK
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 0045e1b44190..d8faf59fa5ff 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1654,6 +1654,21 @@ config X86_PMEM_LEGACY
 =20
- ifdef CONFIG_RETPOLINE
- ifneq ($(RETPOLINE_VDSO_CFLAGS),)
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 965a0cd5eac1..fb5a0c2ab528 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1211,9 +1211,11 @@ static inline struct zoneref *first_zones_zonelist(s=
-truct zonelist *zonelist,
- #define SECTION_BLOCKFLAGS_BITS \
- 	((1UL << (PFN_SECTION_SHIFT - pageblock_order)) * NR_PAGEBLOCK_BITS)
+ 	  Say Y if unsure.
 =20
-+#ifndef NO_MAX_ORDER_CHECK
- #if (MAX_ORDER - 1 + PAGE_SHIFT) > SECTION_SIZE_BITS
- #error Allocator MAX_ORDER exceeds SECTION_SIZE
++config FORCE_MAX_ZONEORDER
++	int "Maximum zone order"
++	range 11 20
++	default "20"
++	help
++	  The kernel memory allocator divides physically contiguous memory
++	  blocks into "zones", where each zone is a power of two number of
++	  pages.  This option selects the largest power of two that the kernel
++	  keeps in the memory allocator.  If you need to allocate very large
++	  blocks of physically contiguous memory, then you may need to
++	  increase this value.
++
++	  This config option is actually maximum order plus one. For example,
++	  a value of 11 means that the largest free memory block is 2^10 pages.
++
+ config HIGHPTE
+ 	bool "Allocate 3rd-level pagetables from highmem"
+ 	depends on HIGHMEM
+diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparse=
+mem.h
+index 6a9ccc1b2be5..c5a9d498a7e7 100644
+--- a/arch/x86/include/asm/sparsemem.h
++++ b/arch/x86/include/asm/sparsemem.h
+@@ -23,7 +23,7 @@
+ #  define MAX_PHYSMEM_BITS	32
+ # endif
+ #else /* CONFIG_X86_32 */
+-# define SECTION_SIZE_BITS	27 /* matt - 128 is convenient right now */
++# define SECTION_SIZE_BITS	31 /* matt - 128 is convenient right now */
+ # define MAX_PHYSMEM_BITS	(pgtable_l5_enabled() ? 52 : 46)
  #endif
-+#endif
 =20
- static inline unsigned long pfn_to_section_nr(unsigned long pfn)
- {
 --=20
 2.30.2
 
