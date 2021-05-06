@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52FC3757A7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 17:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 263E1375788
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 May 2021 17:37:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fbd6q5p5nz3cXp
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 01:39:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fbd4p1Dqwz3c3B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 01:37:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256 header.s=fm3 header.b=Zg+hQIwW;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=BMvmeNAr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256 header.s=fm3 header.b=g19R6QCB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=FjUx3ehA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,46 +19,48 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256
- header.s=fm3 header.b=Zg+hQIwW; 
+ header.s=fm3 header.b=g19R6QCB; 
  dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=BMvmeNAr; 
+ header.a=rsa-sha256 header.s=fm2 header.b=FjUx3ehA; 
  dkim-atps=neutral
+X-Greylist: delayed 549 seconds by postgrey-1.36 at boromir;
+ Fri, 07 May 2021 01:36:02 AEST
 Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com
  [66.111.4.230])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fbd2t49xRz3019
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 01:36:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fbd2p6DCVz2yxj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 01:36:02 +1000 (AEST)
 Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailnew.nyi.internal (Postfix) with ESMTP id C1697580B92;
- Thu,  6 May 2021 11:27:04 -0400 (EDT)
+ by mailnew.nyi.internal (Postfix) with ESMTP id 98937580B93;
+ Thu,  6 May 2021 11:27:08 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Thu, 06 May 2021 11:27:04 -0400
+ by compute4.internal (MEProxy); Thu, 06 May 2021 11:27:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sent.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references:reply-to
- :mime-version:content-transfer-encoding; s=fm3; bh=WM/6yw4DbUOeZ
- Qua2xBOphgta4VgYuLUaDHBkJrEgcU=; b=Zg+hQIwW1OH4i+LZYZkg6EMPR2e/z
- mwHnFDj5A3p1witMQW6QJ5AKdqQ2x5hE6ru7DK5DhvlmRC4ohNCZUwnZ7mbMVWJ/
- vedp69BcjkrriRFJJ0EYUXOLcgjjb7by74IbDooOPu7WRP2pfwsfOz9aFv5xzohi
- DAK4M4MMBTBJg909uvnOyQQwFnVGvJTwZ78Sqy+r00ReBx2AdYlD3HC1Xn+nejpm
- aVAPnFyjG/F6HQTL+11bsp4f4EuYJeORcAKkjyl1vM46kzqpURLPIRuDrWxSgInG
- Lktr4oXw+03sv39JRvm/NC1A4nCjNJAJvX9eKSBJehplGZtKvIR4smHgg==
+ :mime-version:content-transfer-encoding; s=fm3; bh=FbRZXE7bST17Y
+ nSdlcP8bsWaivyCC5qvTsiLA/pmPMU=; b=g19R6QCBByhaWnAudNOcOPg0FC8GF
+ BYLgrbe2GpFbn8aiFMbJfkjfAP7I+idIgloc1puvSRm5QXSPjXc1FVYCRsWuxy3N
+ 4+RdTjNwWmB4CDQ9BruYX948D0TJQ7ABUpYoUhhNDJmpRabw6UHFIoR/yztt4C1x
+ jpAA2fru8FeUtiUKkrUzkALe/+j95KJ8I5jQTIkECmLIobzung+2zJOXPFXI4iBG
+ 2gwK0c3pZYRSF4+H5QqwYqBPWxNVngm+qGjsDU7emPnuw3TXZCFsu2JQDIJN3tAa
+ sUqKNHPtEjsUl+OLVjPjY46yYWmnCFI6q0K3OHn4Xh3LcGb3ffvyvUOSA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:content-transfer-encoding:date:from
  :in-reply-to:message-id:mime-version:references:reply-to:subject
  :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; bh=WM/6yw4DbUOeZQua2xBOphgta4VgYuLUaDHBkJrEgcU=; b=BMvmeNAr
- Ze+uMLX0HnQ+fxidLY20Gi/maR2IIbkK7Ip1rXT2+OVXEBl8fgmuQKiIVqkxrAp3
- UKcjtwhNXJWDVbPhL+cnj0KUe/QighhpeZnOL7iLe9m1cx3yDv6OgLXqt7NHChCt
- b7YBnTNUss1+2Zz8cXpgZAEWvb76k2DIJ31Oo3IVKBpdGMh3neMIXK0pa3BNmm7e
- efWgEKQTSmJXiY6pH+hTu6r52iPcRXqzNzrMbWRr1NAr5tgfMZtUBBWuDJ4dIKE8
- C61XlFdIqvkXCKNND2nQElVlEKRe0lL51usBbG6TwoMSIuBRo2gzFT0MULRz/oL4
- PsE/Em6unM3rBA==
-X-ME-Sender: <xms:yAqUYOhX6llbT-5X17OxGs-xYUWrKL2LazPZXnDcGZx2GFPwa2LlOw>
- <xme:yAqUYPD5l1X-qxymzuOaLkO4uekCksfc3j92KshqhmSprvhXUS017K1qSl5DYw9M-
- LMSsT2IGWNe_UnDGw>
+ fm2; bh=FbRZXE7bST17YnSdlcP8bsWaivyCC5qvTsiLA/pmPMU=; b=FjUx3ehA
+ KBXkLVqnp+CZgmPRqcpQ+a4y2H1eLHkJBnxQMiHDRcENbL7f27xoAS6B5espCQYU
+ NF2xKMFW65O1OIeUY877OfVjH8emx+SzWdRNe1gDdnYe/C8nSvrjkfvw29kGE8/o
+ DY/Zm2uJyCRGCzGWOrC0W26OtOhpNOA4Kw30vahuL77+MWAKa9v9Cfr2QWt1rsoJ
+ 0ieOXX+7dnt17NcaXTVN0OqsKkVng1XtD/8uGsOpgbsIwKxus4ibj5pUEgOuZh+K
+ 2/5Yh68QoW2EWy933c+61oDgf4cgy5Zf9oXSEeXzueyp65r7quse/nt1Rm+wU1yT
+ /S++4wnJppjsRg==
+X-ME-Sender: <xms:zAqUYOOnOiRbBSl5OB9YcO0Y4aovjh6tGC8iL5ukxXeRCrA76fyiTg>
+ <xme:zAqUYM-JCQcq2ZjpnpVsZydUZKshm49oClbOBd8HWBaD3HkOEQD9OinFPj0QciK1B
+ 2MR6aM2F2jlIaeR7A>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdegtddgkeelucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
@@ -67,21 +69,21 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdegtddgkeelucetufdoteggod
  dvueduuefhgefhheeiuedvtedvuefgieegveetueeiueehtdegudehfeelnecukfhppeef
  hedrudeigedrvdegiedrfeegnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpe
  hmrghilhhfrhhomhepiihirdihrghnsehsvghnthdrtghomh
-X-ME-Proxy: <xmx:yAqUYGFj43yl8inbsEruX7yRgQnIrN6DM0k525AmMeuyReQs0qDm_Q>
- <xmx:yAqUYHTiaXgKff6E8wDNHLqnxoeXWJFrrridMDPobjfy0wWC3PDDgA>
- <xmx:yAqUYLxnvf3-5n7DjdyAmR49vh_yj994LkFtBAt3pXvakn0InUTPEQ>
- <xmx:yAqUYIiMaUdpa5Pjw8ZETBk5x_8Yx2ZoP2Gd9E0ZBWcCMqgYJLeZfQ>
+X-ME-Proxy: <xmx:zAqUYFT_ExVQa2U_3lG95ThdKyH5vQK1qbyb7faVKHhn4K5UYJJb2g>
+ <xmx:zAqUYOuaPG9Z859Ro4ezAJtkZmoMwnYw3vgYxGvzh0vOc1IfjRVZtg>
+ <xmx:zAqUYGfc5Ka1GtmZM3FvWqm9oXRydfPeXErhg7kjo2yGzuGzVU0q0Q>
+ <xmx:zAqUYJsOFQ0-JbHaq7kNFbpgJr7Pe7UmIX9DMhZnWL78WxJN7iRX0Q>
 Received: from Threadripper.local
  (ec2-35-164-246-34.us-west-2.compute.amazonaws.com [35.164.246.34])
  by mail.messagingengine.com (Postfix) with ESMTPA;
- Thu,  6 May 2021 11:27:00 -0400 (EDT)
+ Thu,  6 May 2021 11:27:04 -0400 (EDT)
 From: Zi Yan <zi.yan@sent.com>
 To: David Hildenbrand <david@redhat.com>,
 	Oscar Salvador <osalvador@suse.de>
-Subject: [RFC PATCH 3/7] mm: memory_hotplug: decouple memory_block size with
- section size.
-Date: Thu,  6 May 2021 11:26:19 -0400
-Message-Id: <20210506152623.178731-4-zi.yan@sent.com>
+Subject: [RFC PATCH 4/7] mm: pageblock: allow set/unset migratetype for
+ partial pageblock
+Date: Thu,  6 May 2021 11:26:20 -0400
+Message-Id: <20210506152623.178731-5-zi.yan@sent.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210506152623.178731-1-zi.yan@sent.com>
 References: <20210506152623.178731-1-zi.yan@sent.com>
@@ -114,393 +116,242 @@ Sender: "Linuxppc-dev"
 
 From: Zi Yan <ziy@nvidia.com>
 
-To enable subsection memory online/offline, we need to remove the
-assumption of memory_block size being greater or equal to section size.
-
-The following changes are made:
-1. use (start_pfn, nr_pages) pair to specify memory_block size instead of
-   start_section_nr.
-2. calculate memory_block id using phys / memory_block_size_bytes()
-   instead of section number.
-
-The memory_block minimum size is set to the smaller of 128MB (the old
-x86_64 section size) and section size instead.
+When we online subsections and pageblock size is larger than
+a subsection, we should be able to change migratetype for partial
+pageblocks. We also change the assumption that all pageblocks are in
+a whole.
 
 Signed-off-by: Zi Yan <ziy@nvidia.com>
 ---
- drivers/base/memory.c  | 176 ++++++++++++++++++++---------------------
- drivers/base/node.c    |   2 +-
- include/linux/memory.h |   8 +-
- mm/memory_hotplug.c    |   6 +-
- 4 files changed, 98 insertions(+), 94 deletions(-)
+ include/linux/page-isolation.h |  8 ++++++--
+ mm/page_alloc.c                | 27 ++++++++++++++++++---------
+ mm/page_isolation.c            | 26 ++++++++++++++------------
+ 3 files changed, 38 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index b31b3af5c490..141431eb64a4 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -50,19 +50,15 @@ int mhp_online_type_from_str(const char *str)
+diff --git a/include/linux/page-isolation.h b/include/linux/page-isolation.h
+index 572458016331..308b540865b7 100644
+--- a/include/linux/page-isolation.h
++++ b/include/linux/page-isolation.h
+@@ -33,11 +33,15 @@ static inline bool is_migrate_isolate(int migratetype)
+ #define MEMORY_OFFLINE	0x1
+ #define REPORT_FAILURE	0x2
 =20
- static int sections_per_block;
-=20
--static inline unsigned long memory_block_id(unsigned long section_nr)
-+static inline unsigned long phys_to_block_id(unsigned long phys)
- {
--	return section_nr / sections_per_block;
-+	return phys / memory_block_size_bytes();
- }
-=20
- static inline unsigned long pfn_to_block_id(unsigned long pfn)
- {
--	return memory_block_id(pfn_to_section_nr(pfn));
--}
--
--static inline unsigned long phys_to_block_id(unsigned long phys)
--{
--	return pfn_to_block_id(PFN_DOWN(phys));
-+	/* calculate using memory_block_size_bytes() */
-+	return phys_to_block_id(PFN_PHYS(pfn));
- }
-=20
- static int memory_subsys_online(struct device *dev);
-@@ -118,7 +114,7 @@ static ssize_t phys_index_show(struct device *dev,
- 	struct memory_block *mem =3D to_memory_block(dev);
- 	unsigned long phys_index;
-=20
--	phys_index =3D mem->start_section_nr / sections_per_block;
-+	phys_index =3D pfn_to_section_nr(mem->start_pfn);
-=20
- 	return sysfs_emit(buf, "%08lx\n", phys_index);
- }
-@@ -171,8 +167,8 @@ int memory_notify(unsigned long val, void *v)
-=20
- static int memory_block_online(struct memory_block *mem)
- {
--	unsigned long start_pfn =3D section_nr_to_pfn(mem->start_section_nr);
--	unsigned long nr_pages =3D PAGES_PER_SECTION * sections_per_block;
-+	unsigned long start_pfn =3D mem->start_pfn;
-+	unsigned long nr_pages =3D mem->nr_pages;
- 	unsigned long nr_vmemmap_pages =3D mem->nr_vmemmap_pages;
- 	struct zone *zone;
- 	int ret;
-@@ -212,8 +208,8 @@ static int memory_block_online(struct memory_block *mem)
-=20
- static int memory_block_offline(struct memory_block *mem)
- {
--	unsigned long start_pfn =3D section_nr_to_pfn(mem->start_section_nr);
--	unsigned long nr_pages =3D PAGES_PER_SECTION * sections_per_block;
-+	unsigned long start_pfn =3D mem->start_pfn;
-+	unsigned long nr_pages =3D mem->nr_pages;
- 	unsigned long nr_vmemmap_pages =3D mem->nr_vmemmap_pages;
- 	struct zone *zone;
- 	int ret;
-@@ -260,7 +256,7 @@ memory_block_action(struct memory_block *mem, unsigned =
-long action)
- 		break;
- 	default:
- 		WARN(1, KERN_WARNING "%s(%ld, %ld) unknown action: "
--		     "%ld\n", __func__, mem->start_section_nr, action, action);
-+		     "%ld\n", __func__, mem->start_pfn, mem->nr_pages, action);
- 		ret =3D -EINVAL;
- 	}
-=20
-@@ -366,7 +362,7 @@ static ssize_t phys_device_show(struct device *dev,
- 				struct device_attribute *attr, char *buf)
- {
- 	struct memory_block *mem =3D to_memory_block(dev);
--	unsigned long start_pfn =3D section_nr_to_pfn(mem->start_section_nr);
-+	unsigned long start_pfn =3D mem->start_pfn;
-=20
- 	return sysfs_emit(buf, "%d\n",
- 			  arch_get_memory_phys_device(start_pfn));
-@@ -390,8 +386,8 @@ static ssize_t valid_zones_show(struct device *dev,
- 				struct device_attribute *attr, char *buf)
- {
- 	struct memory_block *mem =3D to_memory_block(dev);
--	unsigned long start_pfn =3D section_nr_to_pfn(mem->start_section_nr);
--	unsigned long nr_pages =3D PAGES_PER_SECTION * sections_per_block;
-+	unsigned long start_pfn =3D mem->start_pfn;
-+	unsigned long nr_pages =3D mem->nr_pages;
- 	struct zone *default_zone;
- 	int len =3D 0;
- 	int nid;
-@@ -575,16 +571,6 @@ static struct memory_block *find_memory_block_by_id(un=
-signed long block_id)
- 	return mem;
- }
-=20
--/*
-- * Called under device_hotplug_lock.
-- */
--struct memory_block *find_memory_block(struct mem_section *section)
--{
--	unsigned long block_id =3D memory_block_id(__section_nr(section));
--
--	return find_memory_block_by_id(block_id);
--}
--
- static struct attribute *memory_memblk_attrs[] =3D {
- 	&dev_attr_phys_index.attr,
- 	&dev_attr_state.attr,
-@@ -614,7 +600,7 @@ int register_memory(struct memory_block *memory)
- 	int ret;
-=20
- 	memory->dev.bus =3D &memory_subsys;
--	memory->dev.id =3D memory->start_section_nr / sections_per_block;
-+	memory->dev.id =3D memory->start_pfn / (memory_block_size_bytes() >> PAGE=
-_SHIFT);
- 	memory->dev.release =3D memory_block_release;
- 	memory->dev.groups =3D memory_memblk_attr_groups;
- 	memory->dev.offline =3D memory->state =3D=3D MEM_OFFLINE;
-@@ -633,57 +619,89 @@ int register_memory(struct memory_block *memory)
- 	return ret;
- }
-=20
--static int init_memory_block(unsigned long block_id, unsigned long state,
-+static void unregister_memory(struct memory_block *memory)
-+{
-+	if (WARN_ON_ONCE(memory->dev.bus !=3D &memory_subsys))
-+		return;
-+
-+	WARN_ON(xa_erase(&memory_blocks, memory->dev.id) =3D=3D NULL);
-+
-+	/* drop the ref. we got via find_memory_block() */
-+	put_device(&memory->dev);
-+	device_unregister(&memory->dev);
-+}
-+
-+static int init_memory_blocks(unsigned long start_pfn, unsigned long num_p=
-ages, unsigned long state,
- 			     unsigned long nr_vmemmap_pages)
- {
- 	struct memory_block *mem;
- 	int ret =3D 0;
-+	unsigned long block_nr_pages =3D memory_block_size_bytes() / PAGE_SIZE;
-+	unsigned long block_start_pfn;
-=20
--	mem =3D find_memory_block_by_id(block_id);
--	if (mem) {
--		put_device(&mem->dev);
--		return -EEXIST;
--	}
--	mem =3D kzalloc(sizeof(*mem), GFP_KERNEL);
--	if (!mem)
--		return -ENOMEM;
--
--	mem->start_section_nr =3D block_id * sections_per_block;
--	mem->state =3D state;
--	mem->nid =3D NUMA_NO_NODE;
--	mem->nr_vmemmap_pages =3D nr_vmemmap_pages;
-+	for (block_start_pfn =3D start_pfn; num_pages !=3D 0; block_start_pfn +=
-=3D block_nr_pages) {
-+		unsigned long block_id =3D pfn_to_block_id(block_start_pfn);
-=20
--	ret =3D register_memory(mem);
--
--	return ret;
-+		mem =3D find_memory_block_by_id(block_id);
-+		if (mem) {
-+			put_device(&mem->dev);
-+			return -EEXIST;
-+		}
-+		mem =3D kzalloc(sizeof(*mem), GFP_KERNEL);
-+		if (!mem)
-+			return -ENOMEM;
-+
-+		mem->start_pfn =3D block_start_pfn;
-+		mem->nr_pages =3D min(num_pages, block_nr_pages);
-+		mem->state =3D state;
-+		mem->nid =3D NUMA_NO_NODE;
-+		mem->nr_vmemmap_pages =3D nr_vmemmap_pages;
-+
-+		ret =3D register_memory(mem);
-+
-+		if (ret) {
-+			unsigned long unregister_block_pfn;
-+
-+			for (unregister_block_pfn =3D start_pfn;
-+			     unregister_block_pfn < block_start_pfn;
-+			     unregister_block_pfn -=3D block_nr_pages) {
-+				block_id =3D pfn_to_block_id(unregister_block_pfn);
-+				mem =3D find_memory_block_by_id(block_id);
-+				if (WARN_ON_ONCE(!mem))
-+					continue;
-+				unregister_memory(mem);
-+			}
-+			return -EINVAL;
-+		}
-+		if (num_pages > block_nr_pages)
-+			num_pages -=3D block_nr_pages;
-+		else
-+			num_pages =3D 0;
-+	}
-+	return 0;
- }
-=20
--static int add_memory_block(unsigned long base_section_nr)
-+static void add_whole_section_memory_block(unsigned long base_section_nr)
- {
--	int section_count =3D 0;
--	unsigned long nr;
-+	int ret;
-+	unsigned long start_pfn =3D section_nr_to_pfn(base_section_nr);
-+	unsigned long nr_pages =3D 0;
-+	struct mem_section *ms =3D __nr_to_section(base_section_nr);
-=20
--	for (nr =3D base_section_nr; nr < base_section_nr + sections_per_block;
--	     nr++)
--		if (present_section_nr(nr))
--			section_count++;
-+	if (bitmap_full(ms->usage->subsection_map, SUBSECTIONS_PER_SECTION))
-+		nr_pages =3D PAGES_PER_SECTION;
-+	else
-+		nr_pages =3D PAGES_PER_SUBSECTION *
-+			bitmap_weight(ms->usage->subsection_map, SUBSECTIONS_PER_SECTION);
-=20
--	if (section_count =3D=3D 0)
--		return 0;
--	return init_memory_block(memory_block_id(base_section_nr),
--				 MEM_ONLINE, 0);
--}
-=20
--static void unregister_memory(struct memory_block *memory)
--{
--	if (WARN_ON_ONCE(memory->dev.bus !=3D &memory_subsys))
-+	if (!nr_pages)
- 		return;
-=20
--	WARN_ON(xa_erase(&memory_blocks, memory->dev.id) =3D=3D NULL);
--
--	/* drop the ref. we got via find_memory_block() */
--	put_device(&memory->dev);
--	device_unregister(&memory->dev);
-+	ret =3D init_memory_blocks(start_pfn, nr_pages, MEM_ONLINE, 0);
-+	if (ret)
-+		panic("%s() failed to add memory block: %d\n", __func__,
-+		      ret);
- }
+-struct page *has_unmovable_pages(struct zone *zone, struct page *page,
+-				 int migratetype, int flags);
++struct page *has_unmovable_pages(struct zone *zone, unsigned long start_pf=
+n,
++				 unsigned long end_pfn, int migratetype,
++				 int flags);
+ void set_pageblock_migratetype(struct page *page, int migratetype);
+ int move_freepages_block(struct zone *zone, struct page *page,
+ 				int migratetype, int *num_movable);
++int move_freepages(struct zone *zone,
++			  unsigned long start_pfn, unsigned long end_pfn,
++			  int migratetype, int *num_movable);
 =20
  /*
-@@ -696,31 +714,16 @@ static void unregister_memory(struct memory_block *me=
-mory)
- int create_memory_block_devices(unsigned long start, unsigned long size,
- 				unsigned long vmemmap_pages)
+  * Changes migrate type in [start_pfn, end_pfn) to be MIGRATE_ISOLATE.
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 72bb4a300e03..bc410f45c355 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2433,7 +2433,7 @@ static inline struct page *__rmqueue_cma_fallback(str=
+uct zone *zone,
+  * Note that start_page and end_pages are not aligned on a pageblock
+  * boundary. If alignment is required, use move_freepages_block()
+  */
+-static int move_freepages(struct zone *zone,
++int move_freepages(struct zone *zone,
+ 			  unsigned long start_pfn, unsigned long end_pfn,
+ 			  int migratetype, int *num_movable)
  {
--	const unsigned long start_block_id =3D pfn_to_block_id(PFN_DOWN(start));
--	unsigned long end_block_id =3D pfn_to_block_id(PFN_DOWN(start + size));
--	struct memory_block *mem;
--	unsigned long block_id;
-+	unsigned long start_pfn =3D PFN_DOWN(start);
-+	unsigned long end_pfn =3D PFN_DOWN(start + size);
- 	int ret =3D 0;
-=20
- 	if (WARN_ON_ONCE(!IS_ALIGNED(start, memory_block_size_bytes()) ||
- 			 !IS_ALIGNED(size, memory_block_size_bytes())))
- 		return -EINVAL;
-=20
--	for (block_id =3D start_block_id; block_id !=3D end_block_id; block_id++)=
+@@ -6328,6 +6328,7 @@ void __meminit memmap_init_range(unsigned long size, =
+int nid, unsigned long zone
  {
--		ret =3D init_memory_block(block_id, MEM_OFFLINE, vmemmap_pages);
--		if (ret)
--			break;
--	}
--	if (ret) {
--		end_block_id =3D block_id;
--		for (block_id =3D start_block_id; block_id !=3D end_block_id;
--		     block_id++) {
--			mem =3D find_memory_block_by_id(block_id);
--			if (WARN_ON_ONCE(!mem))
--				continue;
--			unregister_memory(mem);
--		}
--	}
-+	ret =3D init_memory_blocks(start_pfn, end_pfn - start_pfn, MEM_OFFLINE, v=
-memmap_pages);
-+
- 	return ret;
+ 	unsigned long pfn, end_pfn =3D start_pfn + size;
+ 	struct page *page;
++	bool set_migratetype =3D false;
+=20
+ 	if (highest_memmap_pfn < end_pfn - 1)
+ 		highest_memmap_pfn =3D end_pfn - 1;
+@@ -6374,10 +6375,16 @@ void __meminit memmap_init_range(unsigned long size=
+, int nid, unsigned long zone
+ 		 */
+ 		if (IS_ALIGNED(pfn, pageblock_nr_pages)) {
+ 			set_pageblock_migratetype(page, migratetype);
++			set_migratetype =3D true;
+ 			cond_resched();
+ 		}
+ 		pfn++;
+ 	}
++	/* in case the range is smaller than a pageblock */
++	if (!set_migratetype && context =3D=3D MEMINIT_HOTPLUG) {
++		page =3D pfn_to_page(start_pfn);
++		set_pageblock_migratetype(page, migratetype);
++	}
  }
 =20
-@@ -807,10 +810,7 @@ void __init memory_dev_init(void)
+ #ifdef CONFIG_ZONE_DEVICE
+@@ -8524,12 +8531,14 @@ void *__init alloc_large_system_hash(const char *ta=
+blename,
+  * cannot get removed (e.g., via memory unplug) concurrently.
+  *
+  */
+-struct page *has_unmovable_pages(struct zone *zone, struct page *page,
+-				 int migratetype, int flags)
++struct page *has_unmovable_pages(struct zone *zone, unsigned long start_pf=
+n,
++				 unsigned long end_pfn, int migratetype,
++				 int flags)
+ {
+ 	unsigned long iter =3D 0;
+-	unsigned long pfn =3D page_to_pfn(page);
+-	unsigned long offset =3D pfn % pageblock_nr_pages;
++	unsigned long pfn =3D start_pfn;
++	struct page *page =3D pfn_to_page(pfn);
++
+=20
+ 	if (is_migrate_cma_page(page)) {
+ 		/*
+@@ -8543,11 +8552,11 @@ struct page *has_unmovable_pages(struct zone *zone,=
+ struct page *page,
+ 		return page;
+ 	}
+=20
+-	for (; iter < pageblock_nr_pages - offset; iter++) {
+-		if (!pfn_valid_within(pfn + iter))
++	for (pfn =3D start_pfn; pfn < end_pfn; pfn++) {
++		if (!pfn_valid_within(pfn))
+ 			continue;
+=20
+-		page =3D pfn_to_page(pfn + iter);
++		page =3D pfn_to_page(pfn);
+=20
+ 		/*
+ 		 * Both, bootmem allocations and memory holes are marked
+@@ -8596,7 +8605,7 @@ struct page *has_unmovable_pages(struct zone *zone, s=
+truct page *page,
+ 		 */
+ 		if (!page_ref_count(page)) {
+ 			if (PageBuddy(page))
+-				iter +=3D (1 << buddy_order(page)) - 1;
++				pfn +=3D (1 << buddy_order(page)) - 1;
+ 			continue;
+ 		}
+=20
+diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+index bddf788f45bf..c1b9b8848382 100644
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -15,8 +15,10 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/page_isolation.h>
+=20
+-static int set_migratetype_isolate(struct page *page, int migratetype, int=
+ isol_flags)
++static int set_migratetype_isolate(unsigned long start_pfn, unsigned long =
+end_pfn,
++				   int migratetype, int isol_flags)
+ {
++	struct page *page =3D pfn_to_page(start_pfn);
+ 	struct zone *zone =3D page_zone(page);
+ 	struct page *unmovable;
+ 	unsigned long flags;
+@@ -37,15 +39,14 @@ static int set_migratetype_isolate(struct page *page, i=
+nt migratetype, int isol_
+ 	 * FIXME: Now, memory hotplug doesn't call shrink_slab() by itself.
+ 	 * We just check MOVABLE pages.
  	 */
- 	for (nr =3D 0; nr <=3D __highest_present_section_nr;
- 	     nr +=3D sections_per_block) {
--		ret =3D add_memory_block(nr);
--		if (ret)
--			panic("%s() failed to add memory block: %d\n", __func__,
--			      ret);
-+		add_whole_section_memory_block(nr);
+-	unmovable =3D has_unmovable_pages(zone, page, migratetype, isol_flags);
++	unmovable =3D has_unmovable_pages(zone, start_pfn, end_pfn, migratetype, =
+isol_flags);
+ 	if (!unmovable) {
+ 		unsigned long nr_pages;
+ 		int mt =3D get_pageblock_migratetype(page);
+=20
+ 		set_pageblock_migratetype(page, MIGRATE_ISOLATE);
+ 		zone->nr_isolate_pageblock++;
+-		nr_pages =3D move_freepages_block(zone, page, MIGRATE_ISOLATE,
+-									NULL);
++		nr_pages =3D move_freepages(zone, start_pfn, end_pfn, MIGRATE_ISOLATE, N=
+ULL);
+=20
+ 		__mod_zone_freepage_state(zone, -nr_pages, mt);
+ 		spin_unlock_irqrestore(&zone->lock, flags);
+@@ -64,7 +65,8 @@ static int set_migratetype_isolate(struct page *page, int=
+ migratetype, int isol_
+ 	return -EBUSY;
+ }
+=20
+-static void unset_migratetype_isolate(struct page *page, unsigned migratet=
+ype)
++static void unset_migratetype_isolate(unsigned long start_pfn, unsigned lo=
+ng end_pfn,
++				unsigned migratetype)
+ {
+ 	struct zone *zone;
+ 	unsigned long flags, nr_pages;
+@@ -72,6 +74,7 @@ static void unset_migratetype_isolate(struct page *page, =
+unsigned migratetype)
+ 	unsigned int order;
+ 	unsigned long pfn, buddy_pfn;
+ 	struct page *buddy;
++	struct page *page =3D pfn_to_page(start_pfn);
+=20
+ 	zone =3D page_zone(page);
+ 	spin_lock_irqsave(&zone->lock, flags);
+@@ -112,7 +115,7 @@ static void unset_migratetype_isolate(struct page *page=
+, unsigned migratetype)
+ 	 * allocation.
+ 	 */
+ 	if (!isolated_page) {
+-		nr_pages =3D move_freepages_block(zone, page, migratetype, NULL);
++		nr_pages =3D move_freepages(zone, start_pfn, end_pfn, migratetype, NULL);
+ 		__mod_zone_freepage_state(zone, nr_pages, migratetype);
+ 	}
+ 	set_pageblock_migratetype(page, migratetype);
+@@ -195,7 +198,8 @@ int start_isolate_page_range(unsigned long start_pfn, u=
+nsigned long end_pfn,
+ 	     pfn +=3D pageblock_nr_pages) {
+ 		page =3D __first_valid_page(pfn, pageblock_nr_pages);
+ 		if (page) {
+-			if (set_migratetype_isolate(page, migratetype, flags)) {
++			if (set_migratetype_isolate(pfn, min(end_pfn, pfn + pageblock_nr_pages),
++				migratetype, flags)) {
+ 				undo_pfn =3D pfn;
+ 				goto undo;
+ 			}
+@@ -209,7 +213,8 @@ int start_isolate_page_range(unsigned long start_pfn, u=
+nsigned long end_pfn,
+ 		struct page *page =3D pfn_to_online_page(pfn);
+ 		if (!page)
+ 			continue;
+-		unset_migratetype_isolate(page, migratetype);
++		unset_migratetype_isolate(pfn, min(pfn + pageblock_nr_pages, undo_pfn),
++					migratetype);
+ 	}
+=20
+ 	return -EBUSY;
+@@ -224,16 +229,13 @@ void undo_isolate_page_range(unsigned long start_pfn,=
+ unsigned long end_pfn,
+ 	unsigned long pfn;
+ 	struct page *page;
+=20
+-	BUG_ON(!IS_ALIGNED(start_pfn, pageblock_nr_pages));
+-	BUG_ON(!IS_ALIGNED(end_pfn, pageblock_nr_pages));
+-
+ 	for (pfn =3D start_pfn;
+ 	     pfn < end_pfn;
+ 	     pfn +=3D pageblock_nr_pages) {
+ 		page =3D __first_valid_page(pfn, pageblock_nr_pages);
+ 		if (!page || !is_migrate_isolate_page(page))
+ 			continue;
+-		unset_migratetype_isolate(page, migratetype);
++		unset_migratetype_isolate(pfn, min(pfn + pageblock_nr_pages, end_pfn), m=
+igratetype);
  	}
  }
-=20
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 2c36f61d30bc..76d67b8ddf1b 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -809,7 +809,7 @@ static int register_mem_block_under_node_early(struct m=
-emory_block *mem_blk,
- 					       void *arg)
- {
- 	unsigned long memory_block_pfns =3D memory_block_size_bytes() / PAGE_SIZE;
--	unsigned long start_pfn =3D section_nr_to_pfn(mem_blk->start_section_nr);
-+	unsigned long start_pfn =3D mem_blk->start_pfn;
- 	unsigned long end_pfn =3D start_pfn + memory_block_pfns - 1;
- 	int nid =3D *(int *)arg;
- 	unsigned long pfn;
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index 97e92e8b556a..e9590c7c6a9e 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -21,10 +21,15 @@
- #include <linux/mutex.h>
- #include <linux/notifier.h>
-=20
-+#if SECTION_SIZE_BITS > 27  /* 128MB */
-+#define MIN_MEMORY_BLOCK_SIZE     (1UL << 27)
-+#else
- #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
-+#endif
-=20
- struct memory_block {
--	unsigned long start_section_nr;
-+	unsigned long start_pfn;
-+	unsigned long nr_pages;
- 	unsigned long state;		/* serialized by the dev->lock */
- 	int online_type;		/* for passing data to online routine */
- 	int nid;			/* NID for this memory block */
-@@ -90,7 +95,6 @@ int create_memory_block_devices(unsigned long start, unsi=
-gned long size,
- void remove_memory_block_devices(unsigned long start, unsigned long size);
- extern void memory_dev_init(void);
- extern int memory_notify(unsigned long val, void *v);
--extern struct memory_block *find_memory_block(struct mem_section *);
- typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
- extern int walk_memory_blocks(unsigned long start, unsigned long size,
- 			      void *arg, walk_memory_blocks_func_t func);
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 70620d0dd923..6e93b0ecc5cb 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1872,8 +1872,8 @@ static int check_memblock_offlined_cb(struct memory_b=
-lock *mem, void *arg)
- 	if (unlikely(ret)) {
- 		phys_addr_t beginpa, endpa;
-=20
--		beginpa =3D PFN_PHYS(section_nr_to_pfn(mem->start_section_nr));
--		endpa =3D beginpa + memory_block_size_bytes() - 1;
-+		beginpa =3D PFN_PHYS(mem->start_pfn);
-+		endpa =3D beginpa + mem->nr_pages * PAGE_SIZE - 1;
- 		pr_warn("removing memory fails, because memory [%pa-%pa] is onlined\n",
- 			&beginpa, &endpa);
-=20
-@@ -2079,7 +2079,7 @@ static int try_offline_memory_block(struct memory_blo=
-ck *mem, void *arg)
- 	 * with multiple zones within one memory block will be rejected
- 	 * by offlining code ... so we don't care about that.
- 	 */
--	page =3D pfn_to_online_page(section_nr_to_pfn(mem->start_section_nr));
-+	page =3D pfn_to_online_page(mem->start_pfn);
- 	if (page && zone_idx(page_zone(page)) =3D=3D ZONE_MOVABLE)
- 		online_type =3D MMOP_ONLINE_MOVABLE;
-=20
+ /*
 --=20
 2.30.2
 
