@@ -1,94 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E6837649A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 13:41:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C863437649C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 13:41:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fc7nL42hgz3bwX
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 21:41:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fc7nq5NNVz3c1R
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 21:41:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ifrq7IhQ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=H6ddmzxg;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=H6ddmzxg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=omosnace@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ifrq7IhQ; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=H6ddmzxg; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=H6ddmzxg; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fc7mZ6JJyz2yYY
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 21:40:30 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 147BYNeJ068051; Fri, 7 May 2021 07:40:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- mime-version; s=pp1; bh=PtwQDcFQrAR9ORlRZ8P8EWSi1K14i40ORCzOajR6KB0=;
- b=ifrq7IhQjgZX37UX3yUx5ejqIcaYCB6R5iGOcYLajPQapjKt01AssznvKN/U1Yjbhx/L
- 2hPsLQKa2AKPRgfGiS4ih3TK/GIN+jCHssY8qq4gtV7CVvD/L0DTqkCbcWTmT9+yEw2G
- JDN0je0F9k9AYAfTSs1gGVqx+MigFxCzXlaFX9z+GnWT0HPy6CkZl+bcvLIgCgpx4vPN
- VZ2/rMGWv0wml06KduBTKbvDxsU4sM4Px6BTF+BLMPCEd5MaEOa8Q2uYbu4zDxQUg8+C
- QZAxwRAdOXnf6+Ip3rg8e2P86FqYN8YYfCwTwOHigIDLA3EXXXk/5vkUg0V87wPkBH60 mA== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38d4pcr8fd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 May 2021 07:40:23 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 147BWOUP031108;
- Fri, 7 May 2021 11:40:22 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma01fra.de.ibm.com with ESMTP id 38csqgr4ye-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 May 2021 11:40:22 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 147Bdre025035132
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 May 2021 11:39:53 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC17452059;
- Fri,  7 May 2021 11:40:19 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.85.69.191])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id C06DD52054;
- Fri,  7 May 2021 11:40:17 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
- Fri, 07 May 2021 17:10:16 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
-Subject: Re: [PATCH] powerpc/papr_scm: Make 'perf_stats' invisible if
- perf-stats unavailable
-In-Reply-To: <8735v078v7.fsf@linux.ibm.com>
-References: <20210505191708.51939-1-vaibhav@linux.ibm.com>
- <8735v078v7.fsf@linux.ibm.com>
-Date: Fri, 07 May 2021 17:10:16 +0530
-Message-ID: <87fsyyu5zz.fsf@vajain21.in.ibm.com>
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Vj0Qn2Zti5J-WUpx-72ijWzc8pz_LZzb
-X-Proofpoint-ORIG-GUID: Vj0Qn2Zti5J-WUpx-72ijWzc8pz_LZzb
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fc7n75xMLz3bsw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 21:40:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1620387656;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LspZM+MkqQ3DiGR0xkhvj8Q5WxoRLe1cqgKeSBtf40g=;
+ b=H6ddmzxgCNxbQ1bXQFGZGJ7aYfD9nc3T4uUPlvQQfGATXfyMyst4Ep5NFJXllJm/+boxiq
+ Su/YXhDt3omHgls96oHWlUZhZ98O1aPiXeHEQk5wno7NfhRut69WN1QJpM2gaDSfB8nx1e
+ 8Pszpd6hLPDzdIf0SugXcHd0XXV8wjo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1620387656;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LspZM+MkqQ3DiGR0xkhvj8Q5WxoRLe1cqgKeSBtf40g=;
+ b=H6ddmzxgCNxbQ1bXQFGZGJ7aYfD9nc3T4uUPlvQQfGATXfyMyst4Ep5NFJXllJm/+boxiq
+ Su/YXhDt3omHgls96oHWlUZhZ98O1aPiXeHEQk5wno7NfhRut69WN1QJpM2gaDSfB8nx1e
+ 8Pszpd6hLPDzdIf0SugXcHd0XXV8wjo=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-520-uVrYU92aOeK0HPl3Hh9kzQ-1; Fri, 07 May 2021 07:40:54 -0400
+X-MC-Unique: uVrYU92aOeK0HPl3Hh9kzQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ gt39-20020a1709072da7b02903a8f7736a08so1775419ejc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 May 2021 04:40:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=LspZM+MkqQ3DiGR0xkhvj8Q5WxoRLe1cqgKeSBtf40g=;
+ b=mrYWeva8U85Ki3m0GoufCjGxLX4UJegSF7UX7nPFwDYSyqSA3rnbay8fKNDg37Wdy6
+ 0NfV6RdMrtUnrHfAL5/hMrhsrAQRgqwYZbVZkymbyNSZQK5maQ3hbBmYMv0x/IIbRhPy
+ rjMFUBUpxQMJqNc+FSQDgtHBzfhO58a6xBFFzFbYvydSdMTwoy8+e8uBAVX+lkKQM/Yn
+ ZWgalfHFeEnuo2Y2jSN+2oNr2i8rZPPWB1brr2HjHF0c0H30cpiUXHzYqR8IGMY1Yfes
+ CmUVxFSAleZ1yFbpaDvvRJPj07yqyhOJe/dfvC6uOGmkjfs9TqrMR242mQO/7pTgexAi
+ 6L4g==
+X-Gm-Message-State: AOAM531Ts98Mf5wYdbs7jNCdWb6nQyXISO0R/r3oUy75K/Nph/BXAIjb
+ hXzOJ7ww6TkL3BoMnFAPelY4QccJFUKgkGBMo+P+iazFcFwhc1vM5W7nhQbp1yTwSLc1Pt9Ya5G
+ 8nSAljjgAEMOUwEo2Q+R4fhgbvQ==
+X-Received: by 2002:a17:906:a103:: with SMTP id
+ t3mr9641311ejy.334.1620387653029; 
+ Fri, 07 May 2021 04:40:53 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJywdR6MRssJqrq0gs7f9Bj2ljf47LHUQteWxO5byrxHZ0BFN+xLVaNVcjuKxvdjBE/ZCBSWWw==
+X-Received: by 2002:a17:906:a103:: with SMTP id
+ t3mr9641289ejy.334.1620387652773; 
+ Fri, 07 May 2021 04:40:52 -0700 (PDT)
+Received: from localhost.localdomain
+ ([2a02:8308:b105:dd00:277b:6436:24db:9466])
+ by smtp.gmail.com with ESMTPSA id l26sm3349312ejz.27.2021.05.07.04.40.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 07 May 2021 04:40:52 -0700 (PDT)
+From: Ondrej Mosnacek <omosnace@redhat.com>
+To: linux-security-module@vger.kernel.org,
+	James Morris <jmorris@namei.org>
+Subject: [PATCH] lockdown,
+ selinux: fix bogus SELinux lockdown permission checks
+Date: Fri,  7 May 2021 13:40:48 +0200
+Message-Id: <20210507114048.138933-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-07_04:2021-05-06,
- 2021-05-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015
- lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0
- mlxlogscore=999 priorityscore=1501 bulkscore=0 malwarescore=0 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105070079
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=omosnace@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,128 +106,214 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: selinux@vger.kernel.org, netdev@vger.kernel.org,
+ Stephen Smalley <stephen.smalley.work@gmail.com>, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
+lockdown") added an implementation of the locked_down LSM hook to
+SELinux, with the aim to restrict which domains are allowed to perform
+operations that would breach lockdown.
 
-> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->
->> In case performance stats for an nvdimm are not available, reading the
->> 'perf_stats' sysfs file returns an -ENOENT error. A better approach is
->> to make the 'perf_stats' file entirely invisible to indicate that
->> performance stats for an nvdimm are unavailable.
->>
->> So this patch updates 'papr_nd_attribute_group' to add a 'is_visible'
->> callback implemented as newly introduced 'papr_nd_attribute_visible()'
->> that returns an appropriate mode in case performance stats aren't
->> supported in a given nvdimm.
->>
->> Also the initialization of 'papr_scm_priv.stat_buffer_len' is moved
->> from papr_scm_nvdimm_init() to papr_scm_probe() so that it value is
->> available when 'papr_nd_attribute_visible()' is called during nvdimm
->> initialization.
->>
->> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
->> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->> ---
->>  arch/powerpc/platforms/pseries/papr_scm.c | 37 ++++++++++++++++-------
->>  1 file changed, 26 insertions(+), 11 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->> index 12f1513f0fca..90f0af8fefe8 100644
->> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->> @@ -907,6 +907,20 @@ static ssize_t flags_show(struct device *dev,
->>  }
->>  DEVICE_ATTR_RO(flags);
->>  
->> +umode_t papr_nd_attribute_visible(struct kobject *kobj, struct attribute *attr,
->> +				  int n)
->> +{
->> +	struct device *dev = container_of(kobj, typeof(*dev), kobj);
->> +	struct nvdimm *nvdimm = to_nvdimm(dev);
->> +	struct papr_scm_priv *p = nvdimm_provider_data(nvdimm);
->> +
->> +	/* For if perf-stats not available remove perf_stats sysfs */
->> +	if (attr == &dev_attr_perf_stats.attr && p->stat_buffer_len == 0)
->> +		return 0;
->> +
->> +	return attr->mode;
->> +}
->> +
->>  /* papr_scm specific dimm attributes */
->>  static struct attribute *papr_nd_attributes[] = {
->>  	&dev_attr_flags.attr,
->> @@ -916,6 +930,7 @@ static struct attribute *papr_nd_attributes[] = {
->>  
->>  static struct attribute_group papr_nd_attribute_group = {
->>  	.name = "papr",
->> +	.is_visible = papr_nd_attribute_visible,
->>  	.attrs = papr_nd_attributes,
->>  };
->>  
->> @@ -931,7 +946,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->>  	struct nd_region_desc ndr_desc;
->>  	unsigned long dimm_flags;
->>  	int target_nid, online_nid;
->> -	ssize_t stat_size;
->>  
->>  	p->bus_desc.ndctl = papr_scm_ndctl;
->>  	p->bus_desc.module = THIS_MODULE;
->> @@ -1016,16 +1030,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->>  	list_add_tail(&p->region_list, &papr_nd_regions);
->>  	mutex_unlock(&papr_ndr_lock);
->>  
->> -	/* Try retriving the stat buffer and see if its supported */
->> -	stat_size = drc_pmem_query_stats(p, NULL, 0);
->> -	if (stat_size > 0) {
->> -		p->stat_buffer_len = stat_size;
->> -		dev_dbg(&p->pdev->dev, "Max perf-stat size %lu-bytes\n",
->> -			p->stat_buffer_len);
->> -	} else {
->> -		dev_info(&p->pdev->dev, "Dimm performance stats unavailable\n");
->> -	}
->> -
->>  	return 0;
->>  
->>  err:	nvdimm_bus_unregister(p->bus);
->> @@ -1102,6 +1106,7 @@ static int papr_scm_probe(struct platform_device *pdev)
->>  	u64 blocks, block_size;
->>  	struct papr_scm_priv *p;
->>  	const char *uuid_str;
->> +	ssize_t stat_size;
->>  	u64 uuid[2];
->>  	int rc;
->>  
->> @@ -1179,6 +1184,16 @@ static int papr_scm_probe(struct platform_device *pdev)
->>  	p->res.name  = pdev->name;
->>  	p->res.flags = IORESOURCE_MEM;
->>  
->> +	/* Try retriving the stat buffer and see if its supported */
->> +	stat_size = drc_pmem_query_stats(p, NULL, 0);
->> +	if (stat_size > 0) {
->> +		p->stat_buffer_len = stat_size;
->> +		dev_dbg(&p->pdev->dev, "Max perf-stat size %lu-bytes\n",
->> +			p->stat_buffer_len);
->> +	} else {
->> +		dev_info(&p->pdev->dev, "Dimm performance stats unavailable\n");
->> +	}
->
-> With this patch https://lore.kernel.org/linuxppc-dev/20210505191606.51666-1-vaibhav@linux.ibm.com
-> We are adding details of whyy performance stat query hcall failed. Do we
-> need to print again here?  Are we being more verbose here?
->
-Yes agree this looks more verbose with the other patch you mentioned. I
-have sent out a v2 of this patch with this dev_info removed.
+However, in several places the security_locked_down() hook is called in
+situations where the current task isn't doing any action that would
+directly breach lockdown, leading to SELinux checks that are basically
+bogus.
 
+Since in most of these situations converting the callers such that
+security_locked_down() is called in a context where the current task
+would be meaningful for SELinux is impossible or very non-trivial (and
+could lead to TOCTOU issues for the classic Lockdown LSM
+implementation), fix this by adding a separate hook
+security_locked_down_globally() that is to be used in such situations
+and convert all these problematic callers to call this hook instead. The
+new hook is then left unimplemented in SELinux and in Lockdown LSM it is
+backed by the same implementation as the locked_down hook.
 
-> -aneesh
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+The callers migrated to the new hook are:
+1. arch/powerpc/xmon/xmon.c
+     Here the hook seems to be called from non-task context and is only
+     used for redacting some sensitive values from output sent to
+     userspace.
+2. fs/tracefs/inode.c:tracefs_create_file()
+     Here the call is used to prevent creating new tracefs entries when
+     the kernel is locked down. Assumes that locking down is one-way -
+     i.e. if the hook returns non-zero once, it will never return zero
+     again, thus no point in creating these files.
+3. kernel/trace/bpf_trace.c:bpf_probe_read_kernel{,_str}_common()
+     Called when a BPF program calls a helper that could leak kernel
+     memory. The task context is not relevant here, since the program
+     may very well be run in the context of a different task than the
+     consumer of the data.
+     See: https://bugzilla.redhat.com/show_bug.cgi?id=1955585
+4. net/xfrm/xfrm_user.c:copy_to_user_*()
+     Here a cryptographic secret is redacted based on the value returned
+     from the hook. There are two possible actions that may lead here:
+     a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
+        task context is relevant, since the dumped data is sent back to
+        the current task.
+     b) When deleting an SA via XFRM_MSG_DELSA, the dumped SAs are
+        broadcasted to tasks subscribed to XFRM events - here the
+        SELinux check is not meningful as the current task's creds do
+        not represent the tasks that could potentially see the secret.
+     It really doesn't seem worth it to try to preserve the check in the
+     a) case, since the eventual leak can be circumvented anyway via b),
+     plus there is no way for the task to indicate that it doesn't care
+     about the actual key value, so the check could generate a lot of
+     noise.
 
+Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
+ arch/powerpc/xmon/xmon.c      | 4 ++--
+ fs/tracefs/inode.c            | 2 +-
+ include/linux/lsm_hook_defs.h | 1 +
+ include/linux/security.h      | 5 +++++
+ kernel/trace/bpf_trace.c      | 4 ++--
+ net/xfrm/xfrm_user.c          | 2 +-
+ security/lockdown/lockdown.c  | 1 +
+ security/security.c           | 6 ++++++
+ 8 files changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 3fe37495f63d..a4bad825d424 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -298,7 +298,7 @@ static bool xmon_is_locked_down(void)
+ 	static bool lockdown;
+ 
+ 	if (!lockdown) {
+-		lockdown = !!security_locked_down(LOCKDOWN_XMON_RW);
++		lockdown = !!security_locked_down_globally(LOCKDOWN_XMON_RW);
+ 		if (lockdown) {
+ 			printf("xmon: Disabled due to kernel lockdown\n");
+ 			xmon_is_ro = true;
+@@ -306,7 +306,7 @@ static bool xmon_is_locked_down(void)
+ 	}
+ 
+ 	if (!xmon_is_ro) {
+-		xmon_is_ro = !!security_locked_down(LOCKDOWN_XMON_WR);
++		xmon_is_ro = !!security_locked_down_globally(LOCKDOWN_XMON_WR);
+ 		if (xmon_is_ro)
+ 			printf("xmon: Read-only due to kernel lockdown\n");
+ 	}
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index 4b83cbded559..07241435efec 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -396,7 +396,7 @@ struct dentry *tracefs_create_file(const char *name, umode_t mode,
+ 	struct dentry *dentry;
+ 	struct inode *inode;
+ 
+-	if (security_locked_down(LOCKDOWN_TRACEFS))
++	if (security_locked_down_globally(LOCKDOWN_TRACEFS))
+ 		return NULL;
+ 
+ 	if (!(mode & S_IFMT))
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index 477a597db013..d6e2a6b59277 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -390,6 +390,7 @@ LSM_HOOK(void, LSM_RET_VOID, bpf_prog_free_security, struct bpf_prog_aux *aux)
+ #endif /* CONFIG_BPF_SYSCALL */
+ 
+ LSM_HOOK(int, 0, locked_down, enum lockdown_reason what)
++LSM_HOOK(int, 0, locked_down_globally, enum lockdown_reason what)
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ LSM_HOOK(int, 0, perf_event_open, struct perf_event_attr *attr, int type)
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 8aeebd6646dc..e683dee84f46 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -468,6 +468,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+ int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
+ int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen);
+ int security_locked_down(enum lockdown_reason what);
++int security_locked_down_globally(enum lockdown_reason what);
+ #else /* CONFIG_SECURITY */
+ 
+ static inline int call_blocking_lsm_notifier(enum lsm_event event, void *data)
+@@ -1329,6 +1330,10 @@ static inline int security_locked_down(enum lockdown_reason what)
+ {
+ 	return 0;
+ }
++static inline int security_locked_down_globally(enum lockdown_reason what)
++{
++	return 0;
++}
+ #endif	/* CONFIG_SECURITY */
+ 
+ #if defined(CONFIG_SECURITY) && defined(CONFIG_WATCH_QUEUE)
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index b0c45d923f0f..f43bca95b261 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -215,7 +215,7 @@ const struct bpf_func_proto bpf_probe_read_user_str_proto = {
+ static __always_inline int
+ bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
+ {
+-	int ret = security_locked_down(LOCKDOWN_BPF_READ);
++	int ret = security_locked_down_globally(LOCKDOWN_BPF_READ);
+ 
+ 	if (unlikely(ret < 0))
+ 		goto fail;
+@@ -246,7 +246,7 @@ const struct bpf_func_proto bpf_probe_read_kernel_proto = {
+ static __always_inline int
+ bpf_probe_read_kernel_str_common(void *dst, u32 size, const void *unsafe_ptr)
+ {
+-	int ret = security_locked_down(LOCKDOWN_BPF_READ);
++	int ret = security_locked_down_globally(LOCKDOWN_BPF_READ);
+ 
+ 	if (unlikely(ret < 0))
+ 		goto fail;
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 5a0ef4361e43..5a56f74262d8 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -851,7 +851,7 @@ static int copy_user_offload(struct xfrm_state_offload *xso, struct sk_buff *skb
+ static bool xfrm_redact(void)
+ {
+ 	return IS_ENABLED(CONFIG_SECURITY) &&
+-		security_locked_down(LOCKDOWN_XFRM_SECRET);
++		security_locked_down_globally(LOCKDOWN_XFRM_SECRET);
+ }
+ 
+ static int copy_to_user_auth(struct xfrm_algo_auth *auth, struct sk_buff *skb)
+diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
+index 87cbdc64d272..4ac172eaa4b7 100644
+--- a/security/lockdown/lockdown.c
++++ b/security/lockdown/lockdown.c
+@@ -73,6 +73,7 @@ static int lockdown_is_locked_down(enum lockdown_reason what)
+ 
+ static struct security_hook_list lockdown_hooks[] __lsm_ro_after_init = {
+ 	LSM_HOOK_INIT(locked_down, lockdown_is_locked_down),
++	LSM_HOOK_INIT(locked_down_globally, lockdown_is_locked_down),
+ };
+ 
+ static int __init lockdown_lsm_init(void)
+diff --git a/security/security.c b/security/security.c
+index 5ac96b16f8fa..b9b990681ae9 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -2547,6 +2547,12 @@ int security_locked_down(enum lockdown_reason what)
+ }
+ EXPORT_SYMBOL(security_locked_down);
+ 
++int security_locked_down_globally(enum lockdown_reason what)
++{
++	return call_int_hook(locked_down_globally, 0, what);
++}
++EXPORT_SYMBOL(security_locked_down_globally);
++
+ #ifdef CONFIG_PERF_EVENTS
+ int security_perf_event_open(struct perf_event_attr *attr, int type)
+ {
 -- 
-Cheers
-~ Vaibhav
+2.31.1
+
