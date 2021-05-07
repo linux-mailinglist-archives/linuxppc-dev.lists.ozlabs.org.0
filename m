@@ -1,54 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D478F3760E5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 09:05:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298BB376116
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 09:25:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fc1fj43Lsz2ymZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 17:05:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fc2621MkYz2ymQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 17:25:14 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=JhxJBXe7;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32a;
+ helo=mail-wm1-x32a.google.com; envelope-from=lijunp213@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=JhxJBXe7; dkim-atps=neutral
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com
+ [IPv6:2a00:1450:4864:20::32a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fc1d522zmz306Y
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 17:03:37 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Fc1ck5k6Dz9sZW;
- Fri,  7 May 2021 09:03:18 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id U3k5b2q0CRK9; Fri,  7 May 2021 09:03:18 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Fc1cj0fjsz9sZQ;
- Fri,  7 May 2021 09:03:17 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B293F8B81A;
- Fri,  7 May 2021 09:03:16 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id g3WkuwK_Hg4C; Fri,  7 May 2021 09:03:16 +0200 (CEST)
-Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 533F48B764;
- Fri,  7 May 2021 09:03:16 +0200 (CEST)
-Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 32C1964909; Fri,  7 May 2021 07:03:16 +0000 (UTC)
-Message-Id: <7192b82166cf45a20493c2f03e19789db7b5949f.1620370984.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <9c5f23642ac5900c8e83da795afac7041bf87cf6.1620370984.git.christophe.leroy@csgroup.eu>
-References: <9c5f23642ac5900c8e83da795afac7041bf87cf6.1620370984.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 5/5] powerpc/32s: Simplify calculation of segment register
- content
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Fri,  7 May 2021 07:03:16 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fc25W2Sczz2yXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 17:24:46 +1000 (AEST)
+Received: by mail-wm1-x32a.google.com with SMTP id
+ k4-20020a7bc4040000b02901331d89fb83so4277457wmi.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 May 2021 00:24:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=K42tngszNSdkaHIJaExOS3M8P/GdvDfzingPlFrUO8M=;
+ b=JhxJBXe7c46BVXHMdifT13YizrYqt7E/iTew+fYZJxlQec/CQ5T5gz/zzpZf8kNyMX
+ /ufjLdbMPtYbShxA0IMTKayOFKl/rOkAWEYHB/QOd3IZB67EMe26Ewn927d3wpZR0mfP
+ dYPmRPkD6eHyB7uJYgBzOMfSbx6zBaFWTQl2PJaXdGBGBkKSX7umfsyDzRwhCG9kh00f
+ 6H2rPUdgDxkX35rrZZLVsnGRzRqs8/l6ws7lnhT1JtK/+DB3/T/Ko1+XEuLT/z1C9GQn
+ UPy/gXjyrV8yLf+AB7AQ6v+n13SwoA9FTVYmmIxM6gWI3fte1GbG3otRG6PvJ3oxup73
+ m4gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=K42tngszNSdkaHIJaExOS3M8P/GdvDfzingPlFrUO8M=;
+ b=M35Ow/yfTt2ZvA2hAzGqUTrgY2SHVEFlT50UyiM7KLRf/mCIUTNL9E1cesHpmoAogE
+ ehjUKozPTsztCVY2MSQXPH0deCK+Fe+bJ1ObkwXge/2BTJ7RCLCOfna9BdnrqJVBtUsm
+ /RY7GDkKPYexlWKTBAQDbm5YVcgIg3bF52HMwR01CFar875lzUaXp7z/rdnHhPkahVYs
+ l+1FiSSOcswFQB4WUPtDuz0SiFJXC0Cao1CAVj6btUzQieNJLkfEKrnm2okZsv60VCy5
+ tb821dEVi4pFOdOOnoaR64kZd0oXJpB3sgYc0BVr7ErqtKck7zs0iirF6Y+Vm+2+jMZg
+ hsnQ==
+X-Gm-Message-State: AOAM533O8qOvH0BIsFPCm7CUgRywM//p/MzQJMbmlyfq3vmDZV9D8XST
+ 2fNc8DaRQ8JhdCbN8NqQpi7PWigrEJXfMBN2YBU=
+X-Google-Smtp-Source: ABdhPJxgj3g+lVjMSuTxpErj8fIA9nSaCWRKVuHWeO+sh4LXI9mFDhcsLJc9TKcSP/zT7zoEOrf+cHayuXXcOd+UGHA=
+X-Received: by 2002:a05:600c:3643:: with SMTP id
+ y3mr19183472wmq.159.1620372279560; 
+ Fri, 07 May 2021 00:24:39 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210504191142.2872696-1-drt@linux.ibm.com>
+ <CAOhMmr5T_BLkqGspnzck=xtiX0rPABv8oX4=LCRbH00T8-B6qw@mail.gmail.com>
+ <CAOhMmr5ucF3pa4jp9RLEzJNs29oVT0qAXmywNnd+Xe2seoRJfg@mail.gmail.com>
+ <54060bf8c570a52eaa74a034b6096c99@imap.linux.ibm.com>
+In-Reply-To: <54060bf8c570a52eaa74a034b6096c99@imap.linux.ibm.com>
+From: Lijun Pan <lijunp213@gmail.com>
+Date: Fri, 7 May 2021 02:24:28 -0500
+Message-ID: <CAOhMmr5vwZv6Dv2pegx8Uvq_iTvhRLoHbigdiADBaE7L2Gtf2A@mail.gmail.com>
+Subject: Re: [PATCH net v3] ibmvnic: Continue with reset if set link down
+ failed
+To: Dany Madden <drt@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,80 +79,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Thomas Falcon <tlfalcon@linux.ibm.com>, netdev@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Jakub Kicinski <kuba@kernel.org>,
+ Sukadev Bhattiprolu <sukadev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-segment register has VSID on bits 8-31.
-Bits 4-7 are reserved, there is no requirement to set them to 0.
+On Tue, May 4, 2021 at 3:24 PM Dany Madden <drt@linux.ibm.com> wrote:
+>
+> On 2021-05-04 12:31, Lijun Pan wrote:
+> > On Tue, May 4, 2021 at 2:27 PM Lijun Pan <lijunp213@gmail.com> wrote:
+> >>
+> >> On Tue, May 4, 2021 at 2:14 PM Dany Madden <drt@linux.ibm.com> wrote:
+> >> >
+> >> > When ibmvnic gets a FATAL error message from the vnicserver, it marks
+> >> > the Command Respond Queue (CRQ) inactive and resets the adapter. If this
+> >> > FATAL reset fails and a transmission timeout reset follows, the CRQ is
+> >> > still inactive, ibmvnic's attempt to set link down will also fail. If
+> >> > ibmvnic abandons the reset because of this failed set link down and this
+> >> > is the last reset in the workqueue, then this adapter will be left in an
+> >> > inoperable state.
+> >> >
+> >> > Instead, make the driver ignore this link down failure and continue to
+> >> > free and re-register CRQ so that the adapter has an opportunity to
+> >> > recover.
+> >> >
+> >> > Fixes: ed651a10875f ("ibmvnic: Updated reset handling")
+> >> > Signed-off-by: Dany Madden <drt@linux.ibm.com>
+> >> > Reviewed-by: Rick Lindsley <ricklind@linux.ibm.com>
+> >> > Reviewed-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+> >> > ---
+> >> > Changes in V2:
+> >> > - Update description to clarify background for the patch
+> >> > - Include Reviewed-by tags
+> >> > Changes in V3:
+> >> > - Add comment above the code change
+> >> > ---
+> >> >  drivers/net/ethernet/ibm/ibmvnic.c | 11 +++++++++--
+> >> >  1 file changed, 9 insertions(+), 2 deletions(-)
+> >> >
+> >> > diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+> >> > index 5788bb956d73..9e005a08d43b 100644
+> >> > --- a/drivers/net/ethernet/ibm/ibmvnic.c
+> >> > +++ b/drivers/net/ethernet/ibm/ibmvnic.c
+> >> > @@ -2017,8 +2017,15 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+> >> >                         rtnl_unlock();
+> >> >                         rc = set_link_state(adapter, IBMVNIC_LOGICAL_LNK_DN);
+> >> >                         rtnl_lock();
+> >> > -                       if (rc)
+> >> > -                               goto out;
+> >> > +
+> >> > +                       /* Attempted to set the link down. It could fail if the
+> >> > +                        * vnicserver has already torn down the CRQ. We will
+> >> > +                        * note it and continue with reset to reinit the CRQ.
+> >> > +                        */
+> >> > +                       if (rc) {
+> >> > +                               netdev_dbg(netdev,
+> >> > +                                          "Setting link down failed rc=%d. Continue anyway\n", rc);
+> >> > +                       }
+> >>
+> >> There are other places which check and rely on the return value of
+> >> this function. Your change makes that inconsistent. Can you stop
+> >
+> > To be more specific, __ibmvnic_close, __ibmvnic_open both call this
+> > set_link_state.
+> Inconsistent would have been not checking for the rc at all. Here we
+> checked and noted it that there are times that it's ok to continue.
+>
+> >
+> >> posting new versions and soliciting the maintainer to accept it before
+> >> there is material change? There are many ways to make reset
+> >> successful. I think this is the worst approach of all.
+>
+> Can you show me a patch that is better than this one, that has gone thru
+> a 30+ hours of testing?
 
-VSIDs are calculated from VSID of SR0 by adding 0x111.
-
-Even with highest possible VSID which would be 0xFFFFF0,
-adding 16 times 0x111 results in 0x1001100.
-
-So, the reserved bits are never overflowed, no need to clear
-the reserved bits after each calculation.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/book3s/32/mmu-hash.h | 37 ++++++++++---------
- 1 file changed, 20 insertions(+), 17 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-index cc0284bbac86..6f83dbfc7cfa 100644
---- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-+++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-@@ -105,28 +105,31 @@ extern s32 patch__flush_hash_B;
- #include <asm/reg.h>
- #include <asm/task_size_32.h>
- 
--#define UPDATE_TWO_USER_SEGMENTS(n) do {		\
-+#define UPDATE_USER_SEGMENT(n, val) do {		\
- 	if (TASK_SIZE > ((n) << 28))			\
--		mtsr(val1, (n) << 28);			\
--	if (TASK_SIZE > (((n) + 1) << 28))		\
--		mtsr(val2, ((n) + 1) << 28);		\
--	val1 = (val1 + 0x222) & 0xf0ffffff;		\
--	val2 = (val2 + 0x222) & 0xf0ffffff;		\
-+		mtsr(val + (n) * 0x111, (n) << 28);	\
- } while (0)
- 
- static __always_inline void update_user_segments(u32 val)
- {
--	int val1 = val;
--	int val2 = (val + 0x111) & 0xf0ffffff;
--
--	UPDATE_TWO_USER_SEGMENTS(0);
--	UPDATE_TWO_USER_SEGMENTS(2);
--	UPDATE_TWO_USER_SEGMENTS(4);
--	UPDATE_TWO_USER_SEGMENTS(6);
--	UPDATE_TWO_USER_SEGMENTS(8);
--	UPDATE_TWO_USER_SEGMENTS(10);
--	UPDATE_TWO_USER_SEGMENTS(12);
--	UPDATE_TWO_USER_SEGMENTS(14);
-+	val &= 0xf0ffffff;
-+
-+	UPDATE_USER_SEGMENT(0, val);
-+	UPDATE_USER_SEGMENT(1, val);
-+	UPDATE_USER_SEGMENT(2, val);
-+	UPDATE_USER_SEGMENT(3, val);
-+	UPDATE_USER_SEGMENT(4, val);
-+	UPDATE_USER_SEGMENT(5, val);
-+	UPDATE_USER_SEGMENT(6, val);
-+	UPDATE_USER_SEGMENT(7, val);
-+	UPDATE_USER_SEGMENT(8, val);
-+	UPDATE_USER_SEGMENT(9, val);
-+	UPDATE_USER_SEGMENT(10, val);
-+	UPDATE_USER_SEGMENT(11, val);
-+	UPDATE_USER_SEGMENT(12, val);
-+	UPDATE_USER_SEGMENT(13, val);
-+	UPDATE_USER_SEGMENT(14, val);
-+	UPDATE_USER_SEGMENT(15, val);
- }
- 
- #endif /* !__ASSEMBLY__ */
--- 
-2.25.0
-
+The patch review convention is: community review the patch, and the
+patch author modifies the patch and resend. We are talking about the
+patch itself, you came up with something about testing. You do not
+take the reviewer's opinions but ask the reviewer to write a patch,
+which is a little bit odd.
