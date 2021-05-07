@@ -1,86 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058993760A2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 08:44:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 621523760D4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 09:03:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fc1BS6TcCz308N
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 16:44:00 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=O1D/Yj31;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fc1d731Fnz2yYJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 17:03:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.52;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=O1D/Yj31; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [85.215.255.52])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fc19x5lBCz2yXH
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 16:43:32 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1620369801; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=IFw8N0rUAKzI1j7TsJw4X0OlxX9wCflppoc1GTFA/+oxUviaalvVUZFYceQli0SnyQ
- s4mHYnGpEXZlIG0dg2QRmCpv2bVWeXjprgHovImO4oMZ7Lmt+jc2VzkeF8P5EDAq4O39
- VQIX8MTT1bNwdvnHGitM7CfQNfmwetLcX+JEHP71d2H7kRMM7R6HW5iUJ7vMKFKMH5Zq
- jHeKiJuRqWiwITI+BKmha0w93Krdg5xALFNkbPb2JhfU7QhOWjEuxnpFWXFfz0/8JDsT
- FDYYs3oNTUcF2tbO43RGm0sZuYy1exQ41buBQRO6wfW+ThI+zhAREoZ+1IkDoKGHjDkX
- UIUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620369801;
- s=strato-dkim-0002; d=strato.com;
- h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
- From:Subject:Sender;
- bh=Z4g5xLdo2AUU3hfIJq+UpEKrJf3kQecUTcH9Yk9QqjI=;
- b=EkCaa4BRhDZhnU4cws3cDWBpBh128k6sTRUqNEQUb4XZGIXb36LtGx5seJWvbXRPqW
- FBEP5SZmz3dnoA+pXwmFwYpt1o8aEGtMdRW0HBNHXL29Ys7AiKkChcWCuPWMMEvuj/LN
- igcquwNC6JtqWGVNtHBMRy3qDQSCqmtwIvN0OuIH8O/snIKApcgxtHUuO3rcPLuK5BLt
- shByIGTw1NOHLSJTv2m8rz7/E0c30O0Mbi+/G/GO/xTckC7uH5O50JgGzfJzIfSJY2aE
- KUj7yUjn6GmkpIMloFXsLKKZ6iuEbQcYnTnXssxe8R+zL0AJK01tiCPXaNet8u3+UwLO
- oReQ==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620369801;
- s=strato-dkim-0002; d=xenosoft.de;
- h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
- From:Subject:Sender;
- bh=Z4g5xLdo2AUU3hfIJq+UpEKrJf3kQecUTcH9Yk9QqjI=;
- b=O1D/Yj31aez6HE2xk7xPdYWN4nto1gTebNz/vbqA0us4uc0myqp4pSD+MKyMWATeY3
- DyYqxPz2m9OqeJQAtUPfrlpxlYL7mVIZsHZAjP59oU3eJ89yoDcUup7DOJfYPjkHkjNe
- DQnah17k7CWDA2gam2AE+LVDZ2JADOk/NapdYutCZLsH6+ze1ZJbgQegP11QuFccZAKY
- mR4A0jYFOljMM0U3/4qvgm+l57Y8CxIeY1caYc0ionnuFZ9yqybQ5y7XqOcyBRoC6xnG
- Hv34BY+QEF3km+LD7HLc3pFNm14lbYBYE5r5CRG+hxvnqMGmC9ry0bGo8s0LJY5Q9eYZ
- 5DgQ==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7aWdx2ro2lX6VRVv1hIt0Bw6yRXRdf973HsSmXlXo"
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a01:598:d00a:ca80:8591:65ad:8e80:a8a0]
- by smtp.strato.de (RZmta 47.25.6 AUTH)
- with ESMTPSA id L0ba16x476hK15A
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Fri, 7 May 2021 08:43:20 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Mime-Version: 1.0 (1.0)
-Subject: Re: Radeon NI: GIT kernel with the nislands_smc commit doesn't boot
- on a Freescale P5040 board and P.A.Semi Nemo board
-Date: Fri, 7 May 2021 08:43:19 +0200
-Message-Id: <10D1983F-33EF-46C3-976E-463D1CB5A6E9@xenosoft.de>
-References: <a1d9e09b-f533-5e2c-7a13-af96647e1a71@embeddedor.com>
-In-Reply-To: <a1d9e09b-f533-5e2c-7a13-af96647e1a71@embeddedor.com>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-X-Mailer: iPhone Mail (18D70)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fc1cl5mXbz2xg5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 17:03:16 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Fc1cd4WxFz9sZS;
+ Fri,  7 May 2021 09:03:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id wMZTNxvu6BM1; Fri,  7 May 2021 09:03:13 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Fc1cd39dTz9sZQ;
+ Fri,  7 May 2021 09:03:13 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E584E8B764;
+ Fri,  7 May 2021 09:03:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id viMKpTybTuHA; Fri,  7 May 2021 09:03:12 +0200 (CEST)
+Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 407528B81A;
+ Fri,  7 May 2021 09:03:12 +0200 (CEST)
+Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 1930864909; Fri,  7 May 2021 07:03:12 +0000 (UTC)
+Message-Id: <9c5f23642ac5900c8e83da795afac7041bf87cf6.1620370984.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 1/5] powerpc/nohash: Refactor update of BDI2000 pointers in
+ switch_mmu_context()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri,  7 May 2021 07:03:12 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,87 +58,237 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- =?utf-8?Q?Michel_D=C3=A4nzer?= <michel@daenzer.net>, gustavoars@kernel.org,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- Olof Johansson <olof@lixom.net>, mad skateman <madskateman@gmail.com>,
- alexander.deucher@amd.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Gustavo,
+Instead of duplicating the update of BDI2000 pointers in
+set_context(), do it directly from switch_mmu_context().
 
-Great! I will test it. Many thanks for your help.
+Define a helper in mmu.h that can be re-used later by book3s/32.
 
-Cheers,
-Christian
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/mmu.h       |  8 ++++++++
+ arch/powerpc/kernel/head_40x.S       | 14 --------------
+ arch/powerpc/kernel/head_44x.S       | 16 ----------------
+ arch/powerpc/kernel/head_8xx.S       |  7 -------
+ arch/powerpc/kernel/head_book3s_32.S |  6 ------
+ arch/powerpc/kernel/head_fsl_booke.S | 16 ----------------
+ arch/powerpc/mm/nohash/8xx.c         |  6 ------
+ arch/powerpc/mm/nohash/mmu_context.c |  1 +
+ arch/powerpc/mm/nohash/tlb_low.S     |  8 --------
+ arch/powerpc/mm/pgtable_32.c         |  6 ++++++
+ 10 files changed, 15 insertions(+), 73 deletions(-)
 
-
-> On 7. May 2021, at 01:55, Gustavo A. R. Silva <gustavo@embeddedor.com> wro=
-te:
->=20
-> =EF=BB=BFHi Christian,
->=20
->> On 4/30/21 06:59, Christian Zigotzky wrote:
->> Hello,
->>=20
->> The Nemo board (A-EON AmigaOne X1000) [1] and the FSL P5040 Cyrus+ board (=
-A-EON AmigaOne X5000) [2] with installed AMD Radeon HD6970 NI graphics cards=
- (Cayman
->> XT) [3] don't boot with the latest git kernel anymore after the commit "d=
-rm/radeon/nislands_smc.h: Replace one-element array with flexible-array memb=
-er in
->> struct NISLANDS_SMC_SWSTATE branch" [4].  This git kernel boots in a virt=
-ual e5500 QEMU machine with a VirtIO-GPU [5].
->>=20
->> I bisected today [6].
->>=20
->> Result: drm/radeon/nislands_smc.h: Replace one-element array with flexibl=
-e-array member in struct NISLANDS_SMC_SWSTATE branch
->> (434fb1e7444a2efc3a4ebd950c7f771ebfcffa31) [4] is the first bad commit.
->=20
-> I have a fix ready for this bug:
-> https://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux.git/commi=
-t/?h=3Dtesting/drm-nislands
->=20
-> I wonder if you could help me to test it with your environment, please.
-> It should be applied on top of mainline.
->=20
-> Thank you!
-> --
-> Gustavo
->=20
->>=20
->> I was able to revert this commit [7] and after a new compiling, the kerne=
-l boots without any problems on my AmigaOnes.
->>=20
->> After that I created a patch for reverting this commit for new git test k=
-ernels. [3]
->>=20
->> The kernel compiles and boots with this patch on my AmigaOnes. Please fin=
-d attached the kernel config files.
->>=20
->> Please check the first bad commit.
->>=20
->> Thanks,
->> Christian
->>=20
->> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
->> [2] http://wiki.amiga.org/index.php?title=3DX5000
->> [3] https://forum.hyperion-entertainment.com/viewtopic.php?f=3D35&t=3D437=
-7
->> [4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
-mmit/?id=3D434fb1e7444a2efc3a4ebd950c7f771ebfcffa31
->> [5] qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage -drive=
- format=3Draw,file=3DMintPPC32-X5000.img,index=3D0,if=3Dvirtio -netdev user,=
-id=3Dmynet0 -device
->> virtio-net-pci,netdev=3Dmynet0 -append "rw root=3D/dev/vda" -device virti=
-o-vga -usb -device usb-ehci,id=3Dehci -device usb-tablet -device virtio-keyb=
-oard-pci -smp 4
->> -vnc :1
->> [6] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D53074#p530=
-74
->> [7] git revert 434fb1e7444a2efc3a4ebd950c7f771ebfcffa3
+diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+index 998fe01dd1a8..c37bfe7695d9 100644
+--- a/arch/powerpc/include/asm/mmu.h
++++ b/arch/powerpc/include/asm/mmu.h
+@@ -401,6 +401,14 @@ static inline void mmu_early_init_devtree(void) { }
+ static inline void pkey_early_init_devtree(void) {}
+ 
+ extern void *abatron_pteptrs[2];
++
++/* Context switch the PTE pointer for the Abatron BDI2000. */
++static inline void switch_abatron_pteptrs(pgd_t *pgd)
++{
++	if (IS_ENABLED(CONFIG_BDI_SWITCH))
++		abatron_pteptrs[1] = pgd;
++}
++
+ #endif /* __ASSEMBLY__ */
+ #endif
+ 
+diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
+index e1360b88b6cb..7ef1bbc23bed 100644
+--- a/arch/powerpc/kernel/head_40x.S
++++ b/arch/powerpc/kernel/head_40x.S
+@@ -703,14 +703,6 @@ _GLOBAL(abort)
+         mtspr   SPRN_DBCR0,r13
+ 
+ _GLOBAL(set_context)
+-
+-#ifdef CONFIG_BDI_SWITCH
+-	/* Context switch the PTE pointer for the Abatron BDI2000.
+-	 * The PGDIR is the second parameter.
+-	 */
+-	lis	r5, abatron_pteptrs@ha
+-	stw	r4, abatron_pteptrs@l + 0x4(r5)
+-#endif
+ 	sync
+ 	mtspr	SPRN_PID,r3
+ 	isync				/* Need an isync to flush shadow */
+@@ -731,9 +723,3 @@ EXPORT_SYMBOL(empty_zero_page)
+ 	.globl	swapper_pg_dir
+ swapper_pg_dir:
+ 	.space	PGD_TABLE_SIZE
+-
+-/* Room for two PTE pointers, usually the kernel and current user pointers
+- * to their respective root page table.
+- */
+-abatron_pteptrs:
+-	.space	8
+diff --git a/arch/powerpc/kernel/head_44x.S b/arch/powerpc/kernel/head_44x.S
+index 5c106ac36626..57509d90e409 100644
+--- a/arch/powerpc/kernel/head_44x.S
++++ b/arch/powerpc/kernel/head_44x.S
+@@ -781,15 +781,6 @@ _GLOBAL(__fixup_440A_mcheck)
+ 	blr
+ 
+ _GLOBAL(set_context)
+-
+-#ifdef CONFIG_BDI_SWITCH
+-	/* Context switch the PTE pointer for the Abatron BDI2000.
+-	 * The PGDIR is the second parameter.
+-	 */
+-	lis	r5, abatron_pteptrs@h
+-	ori	r5, r5, abatron_pteptrs@l
+-	stw	r4, 0x4(r5)
+-#endif
+ 	mtspr	SPRN_PID,r3
+ 	isync			/* Force context change */
+ 	blr
+@@ -1259,13 +1250,6 @@ EXPORT_SYMBOL(empty_zero_page)
+ swapper_pg_dir:
+ 	.space	PGD_TABLE_SIZE
+ 
+-/*
+- * Room for two PTE pointers, usually the kernel and current user pointers
+- * to their respective root page table.
+- */
+-abatron_pteptrs:
+-	.space	8
+-
+ #ifdef CONFIG_SMP
+ 	.align	12
+ temp_boot_stack:
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 7d445e4342c0..817df9fe7fb3 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -804,10 +804,3 @@ EXPORT_SYMBOL(empty_zero_page)
+ 	.globl	swapper_pg_dir
+ swapper_pg_dir:
+ 	.space	PGD_TABLE_SIZE
+-
+-/* Room for two PTE table pointers, usually the kernel and current user
+- * pointer to their respective root page table (pgdir).
+- */
+-	.globl	abatron_pteptrs
+-abatron_pteptrs:
+-	.space	8
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index 326262030279..32c27dac9b80 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -1282,9 +1282,3 @@ EXPORT_SYMBOL(empty_zero_page)
+ 	.globl	swapper_pg_dir
+ swapper_pg_dir:
+ 	.space	PGD_TABLE_SIZE
+-
+-/* Room for two PTE pointers, usually the kernel and current user pointers
+- * to their respective root page table.
+- */
+-abatron_pteptrs:
+-	.space	8
+diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
+index a1a5c3f10dc4..590f34cc5bb2 100644
+--- a/arch/powerpc/kernel/head_fsl_booke.S
++++ b/arch/powerpc/kernel/head_fsl_booke.S
+@@ -986,15 +986,6 @@ _GLOBAL(abort)
+ 	isync
+ 
+ _GLOBAL(set_context)
+-
+-#ifdef CONFIG_BDI_SWITCH
+-	/* Context switch the PTE pointer for the Abatron BDI2000.
+-	 * The PGDIR is the second parameter.
+-	 */
+-	lis	r5, abatron_pteptrs@h
+-	ori	r5, r5, abatron_pteptrs@l
+-	stw	r4, 0x4(r5)
+-#endif
+ 	mtspr	SPRN_PID,r3
+ 	isync			/* Force context change */
+ 	blr
+@@ -1242,10 +1233,3 @@ EXPORT_SYMBOL(empty_zero_page)
+ 	.globl	swapper_pg_dir
+ swapper_pg_dir:
+ 	.space	PGD_TABLE_SIZE
+-
+-/*
+- * Room for two PTE pointers, usually the kernel and current user pointers
+- * to their respective root page table.
+- */
+-abatron_pteptrs:
+-	.space	8
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index 71bfdbedacee..f749acba5473 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -224,12 +224,6 @@ void set_context(unsigned long id, pgd_t *pgd)
+ {
+ 	s16 offset = (s16)(__pa(swapper_pg_dir));
+ 
+-	/* Context switch the PTE pointer for the Abatron BDI2000.
+-	 * The PGDIR is passed as second argument.
+-	 */
+-	if (IS_ENABLED(CONFIG_BDI_SWITCH))
+-		abatron_pteptrs[1] = pgd;
+-
+ 	/* Register M_TWB will contain base address of level 1 table minus the
+ 	 * lower part of the kernel PGDIR base address, so that all accesses to
+ 	 * level 1 table are done relative to lower part of kernel PGDIR base
+diff --git a/arch/powerpc/mm/nohash/mmu_context.c b/arch/powerpc/mm/nohash/mmu_context.c
+index aac81c9f84a5..5d9758e1d95f 100644
+--- a/arch/powerpc/mm/nohash/mmu_context.c
++++ b/arch/powerpc/mm/nohash/mmu_context.c
+@@ -357,6 +357,7 @@ void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next,
+ 
+ 	/* Flick the MMU and release lock */
+ 	pr_hardcont(" -> %d\n", id);
++	switch_abatron_pteptrs(next->pgd);
+ 	set_context(id, next->pgd);
+ 	raw_spin_unlock(&context_lock);
+ }
+diff --git a/arch/powerpc/mm/nohash/tlb_low.S b/arch/powerpc/mm/nohash/tlb_low.S
+index 68797e072f55..b3d0f0127828 100644
+--- a/arch/powerpc/mm/nohash/tlb_low.S
++++ b/arch/powerpc/mm/nohash/tlb_low.S
+@@ -362,14 +362,6 @@ _GLOBAL(_tlbivax_bcast)
+ 	blr
+ 
+ _GLOBAL(set_context)
+-#ifdef CONFIG_BDI_SWITCH
+-	/* Context switch the PTE pointer for the Abatron BDI2000.
+-	 * The PGDIR is the second parameter.
+-	 */
+-	lis	r5, abatron_pteptrs@h
+-	ori	r5, r5, abatron_pteptrs@l
+-	stw	r4, 0x4(r5)
+-#endif
+ 	mtspr	SPRN_PID,r3
+ 	isync			/* Force context change */
+ 	blr
+diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
+index e0ec67a16887..42251ef3a2b4 100644
+--- a/arch/powerpc/mm/pgtable_32.c
++++ b/arch/powerpc/mm/pgtable_32.c
+@@ -36,6 +36,12 @@ extern char etext[], _stext[], _sinittext[], _einittext[];
+ 
+ static u8 early_fixmap_pagetable[FIXMAP_PTE_SIZE] __page_aligned_data;
+ 
++/*
++ * Room for two PTE table pointers, usually the kernel and current user
++ * pointer to their respective root page table (pgdir).
++ */
++void *abatron_pteptrs[2];
++
+ notrace void __init early_ioremap_init(void)
+ {
+ 	unsigned long addr = ALIGN_DOWN(FIXADDR_START, PGDIR_SIZE);
+-- 
+2.25.0
 
