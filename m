@@ -2,85 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1B4375E04
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 02:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D267375F99
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 07:02:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fbs9v4zPNz3c7Z
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 10:42:59 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Z5h06f2c;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FbyxM1Z7Wz307l
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 May 2021 15:02:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=srs0=oywf=kc=gmail.com=oohall@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Z5h06f2c; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fbs8s17z1z3bxf
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 10:42:04 +1000 (AEST)
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by ozlabs.org (Postfix) with ESMTP id 4Fbs8m71Jxz9sW1
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 10:42:00 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4Fbs8m6ld8z9sW7; Fri,  7 May 2021 10:42:00 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::836;
- helo=mail-qt1-x836.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Z5h06f2c; dkim-atps=neutral
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com
- [IPv6:2607:f8b0:4864:20::836])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4Fbs8m6GGYz9sW1
- for <linuxppc-dev@ozlabs.org>; Fri,  7 May 2021 10:42:00 +1000 (AEST)
-Received: by mail-qt1-x836.google.com with SMTP id c11so5419218qth.2
- for <linuxppc-dev@ozlabs.org>; Thu, 06 May 2021 17:42:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=8HUE7PAIPnOALLusVDIGByaTeHyb/UFOK9tOUgvJeO8=;
- b=Z5h06f2c0hRp0AWrUr6ObkRhDTRLY7AMYMRb/1VtKZHsvUBj2iL4qc+p0oZ6gIL49k
- h9PqkQXh14q9KMhGNpNBXUAvSrXQhCRIsmJCCxAlsUkTx5HF0Iw63ZiRMKnGg5kqf/yc
- aobW+LFJ6XmQfedc4M5mSQPlQAIgUdPjZk8mUvmrKxN+9cmEG2ZYwFRVoVXDcLIuPQhq
- VJmMujpEaktEMn+RHmJpB+4AhN1NsCIf8f5u6QZ3Hlay/3+UJfxwHCP333wmDJRL3c6Q
- fDu0jmGZL3HibFTSAq/ORv33+ZN/WTKY3LXRux1R8X+h3ti5ddzTXbnFlQa/DiV6ZUqZ
- T9mA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=8HUE7PAIPnOALLusVDIGByaTeHyb/UFOK9tOUgvJeO8=;
- b=sFwm+r/jNRN22N4wxydIla3ArKAZ1MPER6c0yFxKk7uHCXF4fb5jBhppMzJuPlO0Vz
- m5NtmryfIpnrDoPeDjTtlGg0Y1A93tW0WrmXh9d/IeCa/F07BzsxagOvG6AtjFysYtrO
- exQtkzEaRpHOsf9YaXfYzTC3OxCeIl0YA0Xlf/dXnV21Fvet9PQCBlLTpkOOjHv9HNEu
- OCrT0u7eoe3tBGsfsrM11224ERqZhHY/N5ay34WRKegHzYZ+ueUth0IIWiXKh+O/ARvS
- qZ4VbEqMp1PCErWTyFMNYHQIaaLbwBzNOFCGn7wIvofTI84farRDPwQ33JQWC+fw9vuo
- Camg==
-X-Gm-Message-State: AOAM532rb9JZ0hgUnd7HSqcqjYPzz7C5jvGqU/JY7EjF0C3hK1Kwh0ow
- Gb7q5dOMwMNQrXlsxb5PVfs19QQj5xwITTncX1I=
-X-Google-Smtp-Source: ABdhPJx69Xc5fMqyFEfh+CSkYpNtTtlFN3hea8y4ZQS4ixx9h5Ago8wc/KhS8wr70XG7VdqT2zsD2Z4G3QiOWmNlzhA=
-X-Received: by 2002:ac8:6044:: with SMTP id k4mr7085390qtm.374.1620348117256; 
- Thu, 06 May 2021 17:41:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <162032297784.225551.1220900342102038880.stgit@jupiter>
-In-Reply-To: <162032297784.225551.1220900342102038880.stgit@jupiter>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Fri, 7 May 2021 10:41:46 +1000
-Message-ID: <CAOSf1CG4H2GrxV5C=55vcNue4taSAkgFOUg32yVspgw9+meDAg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/eeh: skip slot presence check when PE is
- temporarily unavailable.
-To: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fbywz5T2Xz2xvJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 May 2021 15:02:07 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Fbywq6kJXz9sZN;
+ Fri,  7 May 2021 07:02:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id tY7tSNZsE6nd; Fri,  7 May 2021 07:02:03 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Fbywq5q8Cz9sZL;
+ Fri,  7 May 2021 07:02:03 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0D5098B80D;
+ Fri,  7 May 2021 07:02:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id mqdM4eBXc__4; Fri,  7 May 2021 07:02:02 +0200 (CEST)
+Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 870218B764;
+ Fri,  7 May 2021 07:02:02 +0200 (CEST)
+Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 442C2648FD; Fri,  7 May 2021 05:02:02 +0000 (UTC)
+Message-Id: <603725297466959419628ef7964aaf3417fb647d.1620363691.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/603: Avoid a pile of NOPs when not using SW LRU in
+ TLB exceptions
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri,  7 May 2021 05:02:02 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,63 +58,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 7, 2021 at 3:43 AM Mahesh Salgaonkar <mahesh@linux.ibm.com> wrote:
->
-> When certain PHB HW failure causes phyp to recover PHB, it marks the PE
-> state as temporarily unavailable. In this case, per PAPR, rtas call
-> ibm,read-slot-reset-state2 returns a PE state as temporarily unavailable(5)
-> and OS has to wait until that recovery is complete. During this state the
-> slot presence check 'get-sensor-state(dr-entity-sense)' returns as DR
-> connector empty which leads to assumption that the device has been
-> hot-removed. This results into no EEH recovery on this device and it stays
-> in failed state forever.
->
-> This patch fixes this issue by skipping slot presence check only if device
-> PE state is temporarily unavailable(5).
->
-> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> ---
-> * snip*
->
->         /*
->          * It should be corner case that the parent PE has been
-> diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-> index 3eff6a4888e79..a0913768f33de 100644
-> --- a/arch/powerpc/kernel/eeh_driver.c
-> +++ b/arch/powerpc/kernel/eeh_driver.c
-> @@ -851,6 +851,17 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
->                 return;
->         }
->
-> +       /*
-> +        * When PE's state is temporarily unavailable, the slot
-> +        * presence check returns as DR connector empty.
+The SW LRU is in an MMU feature section. When not used, that's a
+dozen of NOPs to fetch for nothing.
 
-That sounds like a bug in either RTAS or the hotplug slot driver (or
-both). The presence check is there largely to filter out events that
-we can guarantee are not recoverable (i.e. surprise hot-unplug). In
-every other case (especially if we can't determine the state) we
-should be going down the recovery path. If the hotplug slot driver is
-incorrectly reporting the card has been removed then you should be
-fixing the slot driver.
+Define an ALT section that does the few remaining operations.
 
-> +        * to assumption that the device is hot-removed and causes EEH
-> +        * recovery to stop leaving the device in failed state forever.
-> +        * Hence skip the slot presence check if PE's state is
-> +        * temporarily unavailable and go down EEH recovery path.
-> +        */
-> +       if (pe->state & EEH_PE_TEMP_UNAVAIL)
-> +               goto skip_slot_presence_check;
+That also avoids a double read on SRR1 in the SW LRU case.
 
-There's a time-of-check-vs-time-of-use error here. You're setting this
-flag at the point of detection, but there can be a significant lag
-time between when an EEH is initially detected and when it's handled
-by the recovery thread (usually due to other events being recovered).
-Transitioning the PE into and out of PE_TEMP_UNAVAILABLE is handled
-autonomously by the hypervisor so by the time we get to recovery the
-PE may be back into a normal state where the slot check works fine.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/head_book3s_32.S | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index 065178f19a3d..f2a5ceff52b2 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -518,8 +518,6 @@ BEGIN_FTR_SECTION
+ 	rlwinm	r1,r1,0,~_PAGE_COHERENT	/* clear M (coherence not required) */
+ END_FTR_SECTION_IFCLR(CPU_FTR_NEED_COHERENT)
+ 	mtspr	SPRN_RPA,r1
+-	mfspr	r2,SPRN_SRR1		/* Need to restore CR0 */
+-	mtcrf	0x80,r2
+ BEGIN_MMU_FTR_SECTION
+ 	li	r0,1
+ 	mfspr	r1,SPRN_SPRG_603_LRU
+@@ -531,9 +529,15 @@ BEGIN_MMU_FTR_SECTION
+ 	mfspr	r2,SPRN_SRR1
+ 	rlwimi	r2,r0,31-14,14,14
+ 	mtspr   SPRN_SRR1,r2
+-END_MMU_FTR_SECTION_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
++	mtcrf	0x80,r2
++	tlbld	r3
++	rfi
++MMU_FTR_SECTION_ELSE
++	mfspr	r2,SPRN_SRR1		/* Need to restore CR0 */
++	mtcrf	0x80,r2
+ 	tlbld	r3
+ 	rfi
++ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
+ DataAddressInvalid:
+ 	mfspr	r3,SPRN_SRR1
+ 	rlwinm	r1,r3,9,6,6	/* Get load/store bit */
+@@ -607,9 +611,15 @@ BEGIN_MMU_FTR_SECTION
+ 	mfspr	r2,SPRN_SRR1
+ 	rlwimi	r2,r0,31-14,14,14
+ 	mtspr   SPRN_SRR1,r2
+-END_MMU_FTR_SECTION_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
++	mtcrf	0x80,r2
++	tlbld	r3
++	rfi
++MMU_FTR_SECTION_ELSE
++	mfspr	r2,SPRN_SRR1		/* Need to restore CR0 */
++	mtcrf	0x80,r2
+ 	tlbld	r3
+ 	rfi
++ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
+ 
+ #ifndef CONFIG_ALTIVEC
+ #define altivec_assist_exception	unknown_exception
+-- 
+2.25.0
+
