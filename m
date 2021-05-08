@@ -2,46 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50956377285
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 17:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC163772E5
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 18:10:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FcrQH2qfHz308g
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 May 2021 01:12:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FcsjY5Kh1z308G
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 May 2021 02:10:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iSgIC9lX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=iSgIC9lX; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FcrPr6pPpz2yYV
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 May 2021 01:11:39 +1000 (AEST)
-IronPort-SDR: gykglH7irlP4kuMQjQH4TTxnzfa3DhZ4+XEsNfQ1GAn98muWSAaMGBQ+N56aYl5Z9J9dBnpVNq
- JcI2Ihbw4p1A==
-X-IronPort-AV: E=McAfee;i="6200,9189,9978"; a="186376798"
-X-IronPort-AV: E=Sophos;i="5.82,283,1613462400"; d="scan'208";a="186376798"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2021 08:11:33 -0700
-IronPort-SDR: v0IxB0OVabyrdXvmG070D8sDxtMPisZuxqlscS2UBywrGOWr5pmkX4wOPWThazHWlep5JWFlLW
- ne1wEoftkyhw==
-X-IronPort-AV: E=Sophos;i="5.82,283,1613462400"; d="scan'208";a="435407452"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2021 08:11:32 -0700
-Date: Sat, 8 May 2021 08:11:30 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH v3] powerpc/papr_scm: Reduce error severity if nvdimm
- stats inaccessible
-Message-ID: <20210508151130.GK1904484@iweiny-DESK2.sc.intel.com>
-References: <20210508043642.114076-1-vaibhav@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210508043642.114076-1-vaibhav@linux.ibm.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fcshz0zFlz2yYQ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 May 2021 02:09:54 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id ECF3061448;
+ Sat,  8 May 2021 16:09:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1620490192;
+ bh=3O5IDpKDY83jcoMzg8ba634383UgeT4Y+6bHxHaUleM=;
+ h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+ b=iSgIC9lXV8hwX1YtZq0SKTCx9a8bTA9kexWQtuMTo6XZM/KCMrtjlQFDqsIekjtV4
+ dR+E1cGB6R5FpWfM46g7zzEf/91QXzwRDe+e2vYeviJM8QQNlD3eRXTc0XDH472d38
+ K0Wj2L/RSUvwM7ZX9/jW6ecJ6qStDHlKLCNLskjmiBVwbN3Zhw0vLkmnp0m7XoQBmx
+ JxwmnRjTz/rp1hW3sz5wg3U5QrqsUIhUPn+2H3BFV32YhtEEbUcShB/dfVc0Mxt+E7
+ anD1nb/KBTPWVtF0wxMEjSi20JdB2lX7i2AuXgHru3bu/ORCpsyNkgiDkbOOWav7fW
+ sqe1ZezVkUolw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
+ [127.0.0.1])
+ by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id E5AD960A01;
+ Sat,  8 May 2021 16:09:51 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.13-2 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <87y2cpxrir.fsf@mpe.ellerman.id.au>
+References: <87y2cpxrir.fsf@mpe.ellerman.id.au>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <87y2cpxrir.fsf@mpe.ellerman.id.au>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+ tags/powerpc-5.13-2
+X-PR-Tracked-Commit-Id: f96271cefe6dfd1cb04195b76f4a33e185cd7f92
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: ab159ac569fddf812c0a217d6dbffaa5d93ef88f
+Message-Id: <162049019193.24889.5964565284286637928.pr-tracker-bot@kernel.org>
+Date: Sat, 08 May 2021 16:09:51 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,75 +66,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>, linux-nvdimm@lists.01.org,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, npiggin@gmail.com,
+ Paolo Bonzini <pbonzini@redhat.com>, sourabhjain@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de, sandipan@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 08, 2021 at 10:06:42AM +0530, Vaibhav Jain wrote:
-> Currently drc_pmem_qeury_stats() generates a dev_err in case
-> "Enable Performance Information Collection" feature is disabled from
-> HMC or performance stats are not available for an nvdimm. The error is
-> of the form below:
-> 
-> papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
-> 	 performance stats, Err:-10
-> 
-> This error message confuses users as it implies a possible problem
-> with the nvdimm even though its due to a disabled/unavailable
-> feature. We fix this by explicitly handling the H_AUTHORITY and
-> H_UNSUPPORTED errors from the H_SCM_PERFORMANCE_STATS hcall.
-> 
-> In case of H_AUTHORITY error an info message is logged instead of an
-> error, saying that "Permission denied while accessing performance
-> stats" and an EPERM error is returned back.
-> 
-> In case of H_UNSUPPORTED error we return a EOPNOTSUPP error back from
-> drc_pmem_query_stats() indicating that performance stats-query
-> operation is not supported on this nvdimm.
-> 
-> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+The pull request you sent on Sat, 08 May 2021 23:51:40 +1000:
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.13-2
 
-> ---
-> Changelog
-> 
-> v3:
-> * Return EOPNOTSUPP error in case of H_UNSUPPORTED [ Ira ]
-> * Return EPERM in case of H_AUTHORITY [ Ira ]
-> * Updated patch description
-> 
-> v2:
-> * Updated the message logged in case of H_AUTHORITY error [ Ira ]
-> * Switched from dev_warn to dev_info in case of H_AUTHORITY error.
-> * Instead of -EPERM return -EACCESS for H_AUTHORITY error.
-> * Added explicit handling of H_UNSUPPORTED error.
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index ef26fe40efb0..e2b69cc3beaf 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -310,6 +310,13 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
->  		dev_err(&p->pdev->dev,
->  			"Unknown performance stats, Err:0x%016lX\n", ret[0]);
->  		return -ENOENT;
-> +	} else if (rc == H_AUTHORITY) {
-> +		dev_info(&p->pdev->dev,
-> +			 "Permission denied while accessing performance stats");
-> +		return -EPERM;
-> +	} else if (rc == H_UNSUPPORTED) {
-> +		dev_dbg(&p->pdev->dev, "Performance stats unsupported\n");
-> +		return -EOPNOTSUPP;
->  	} else if (rc != H_SUCCESS) {
->  		dev_err(&p->pdev->dev,
->  			"Failed to query performance stats, Err:%lld\n", rc);
-> -- 
-> 2.31.1
-> 
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/ab159ac569fddf812c0a217d6dbffaa5d93ef88f
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
