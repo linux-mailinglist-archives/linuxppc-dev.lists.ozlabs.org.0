@@ -1,88 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA0F37716F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 13:34:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9993771A9
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 14:22:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FclZm40Jfz309H
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 21:34:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=DLu2j0ma;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FcmfY1h6Dz3bnW
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 22:22:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.167;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=DLu2j0ma; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [81.169.146.167])
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=srs0=9lys=kd=arndb.de=arnd@ozlabs.org; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FclZG3qzQz2xvJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 May 2021 21:33:40 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1620473584; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=D7YuKPxXsKeFXvAYA95enHLKpMEs4t73syLyt+LYCSdEBz9la49v/3Yudpi1rCb1hb
- 1jsnIZGkT/Sd2ZO4OePtlQ/z4P64RYnGzg0lB4LMNGq4EozUfHZ4E90yTOjH9g/SMWNX
- vUoNXlfxpmjebqejstQgKZ/AMj0YcoCi7OS/bm1BZQoLMjhAy8nxRSvmWjlYtVsZGUTP
- TbUBaiOIqCUVGfUBlH28znuo1uGM+OFcDUHCeNy+nDSStEoEdVviAj8vyt+eF7LCboY1
- /BmBcxV3BHkhI34a3TE5icytGX1ryNuSnSSLmSEfdP63evm33fpdKj+xY1MBkF2rgPJh
- y6BA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620473584;
- s=strato-dkim-0002; d=strato.com;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
- From:Subject:Sender;
- bh=zXeLgkAjA9yOJQBu6A8doWAg7AhdlmEivCv++PGr85c=;
- b=SX9OzBiiTydmrGaCp1gzfZOhz9CQ3UQkNj//trriKVE0QLOWBGfI65nM9uvuLauEDX
- 3fNSzP+gGLZTF5eQaWBikCHIMkqfuDvz/QLKRWUcyqv+lVs4GgLwjNSszSmG/e+EQAeZ
- Png53/FUiDnVckzDRDJuky6WLz4xsBhcLMtzI8Cck7ZBuvD2VspjsE8dNGkUlLZkPWLS
- ZHV5RPvBVNvgzHPNfrzT0gz5lUiUou6h/D+G2WZkw83bjzCNeA0oFf75vozTR2BruIz4
- PM6O2PNcNEyDtFdY0q0/x8qgrjr+CuL/z7e6lyyq2bRRR4DtNfosjYixAagKVcKuPrhd
- rOIQ==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620473584;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
- From:Subject:Sender;
- bh=zXeLgkAjA9yOJQBu6A8doWAg7AhdlmEivCv++PGr85c=;
- b=DLu2j0maC2+gIbVUSJlZ9sSApqnJc6Ik78gMOAx1y480UVneqAvkxk7nK4Q1MPtI5/
- Q4/gg6abZZTam9hxWxdh4/aC87gqxIbOYDIseHuqIOddwfsMXpSo3iu8A/JQyfxIinI8
- 6r2i/O6Ovz1/0IPBZ2EETFLFMjtAFXEVr7sQNTCE4+Sd5ZnYD5QefBmunVlzz4qSz5K4
- Q51qKNpDDuqkSOe/frwUow6BmsAxKBN8/5Ya+H+Wj1veptLoGWNZoTtuyrFlpVvjRdmS
- ddHoVqXV/7vXgoa+b4cBjnNv92uRco++2aZ/2JgP48JOK+ecHAuTz+AD10t5owAJBjol
- oczA==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhRcm65Dcd5OChdKI1UkbsHSLBp7w=="
-X-RZG-CLASS-ID: mo00
-Received: from Christians-iMac.fritz.box by smtp.strato.de (RZmta 47.25.6 AUTH)
- with ESMTPSA id L0ba16x48BX358r
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Sat, 8 May 2021 13:33:03 +0200 (CEST)
-Subject: Re: Radeon NI: GIT kernel with the nislands_smc commit doesn't boot
- on a Freescale P5040 board and P.A.Semi Nemo board
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-References: <a1d9e09b-f533-5e2c-7a13-af96647e1a71@embeddedor.com>
- <10D1983F-33EF-46C3-976E-463D1CB5A6E9@xenosoft.de>
-Message-ID: <9bb5fcbd-daf5-1669-b3e7-b8624b3c36f9@xenosoft.de>
-Date: Sat, 8 May 2021 13:33:02 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FcmfB3d5Qz2yXp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 May 2021 22:22:09 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by ozlabs.org (Postfix) with ESMTP id 4Fcmf43N7tz9vFL
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 May 2021 22:22:04 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4Fcmf33Ykgz9vFT; Sat,  8 May 2021 22:22:03 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.131; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4Fcmf20JxFz9vFL
+ for <linuxppc-dev@ozlabs.org>; Sat,  8 May 2021 22:22:00 +1000 (AEST)
+Received: from mail-oi1-f174.google.com ([209.85.167.174]) by
+ mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MPXxi-1ls5Oo0Kna-00MYGO for <linuxppc-dev@ozlabs.org>; Sat, 08 May 2021
+ 14:21:56 +0200
+Received: by mail-oi1-f174.google.com with SMTP id u16so11335169oiu.7
+ for <linuxppc-dev@ozlabs.org>; Sat, 08 May 2021 05:21:55 -0700 (PDT)
+X-Gm-Message-State: AOAM5329LL81iEWSSI9pPWjL8gom0RDoAsF2hZuU4iqyC/bu1wAOaSq1
+ h9JQaOq390XK6Mb5yM3VJpEPXpnFqlRrZIR5YmE=
+X-Google-Smtp-Source: ABdhPJz8wjHfRS+/Q+eZ+vgK5sEvCpSm4dvIu5Sef0q3jBRWfZmkWGhCQDA/zgL7Q/iZwER5KOp+F1w4rmg6peADUK4=
+X-Received: by 2002:aca:3389:: with SMTP id z131mr18447887oiz.11.1620476514018; 
+ Sat, 08 May 2021 05:21:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <10D1983F-33EF-46C3-976E-463D1CB5A6E9@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+References: <be7c92b2-43c2-0d8a-6e8c-ac92e7e07bfc@csgroup.eu>
+ <CAK8P3a3OdcSQQGKxRob3A6qfh8tVD1JtLdcTp9i25SizqWpiXA@mail.gmail.com>
+ <19e791d9-3226-4c13-b6e8-cdabdaaa0268@csgroup.eu>
+ <CAK8P3a3V=y8tHkN6JSpA54bKAOZv9RK04WcVE9LPL0r-WE0Nmw@mail.gmail.com>
+ <b6fad6f3-6390-54a3-f0c8-30b7476c686a@csgroup.eu>
+In-Reply-To: <b6fad6f3-6390-54a3-f0c8-30b7476c686a@csgroup.eu>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Sat, 8 May 2021 14:21:04 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0vpqKiTUqK2zf4WeV9RcPVgz1f97Y0a5Z9-ciY4Tsmag@mail.gmail.com>
+Message-ID: <CAK8P3a0vpqKiTUqK2zf4WeV9RcPVgz1f97Y0a5Z9-ciY4Tsmag@mail.gmail.com>
+Subject: Re: Kernel crosscompilers
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:lroNIRMKOvjsR8wYBjXMWLSH71UxTu9wBbsKRcITrSXUqCRmIfp
+ uvo2Eptag3vFKLotwAxZe1XGo0/MJ49QvEMRplgy73fsCnpvWc0ifb4Q0Gg5JXaTAHiF8DM
+ bEI3dMrX+8n5fYnp1fKnW86Ravs/hAT8FfHoZGs2ARuEVdi7ejkra/2wSW182N6qlbb+8g9
+ WYF7gVieq5jf8FuahWSXw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:UJ8xSrd8d20=:J0S7ZerF/EuO3xEjZDTfES
+ EOVWh2bxNEzZpstIWpapd7wxPdlHG6iyOmzHXJrLflZZSdNzgMGwulG54DJ1vbAfkin00oEmB
+ whKN0/v5erWiyH2oj7sYFhjpicgMZ21rK5xjOy/UqvuIUD04nrFpJHI1oC/Rc3C2AJDb6K15H
+ I1MBRQiZhxdcArJZbuV3QJAJRjlVIiLNPP2DddJeIid4ViJUJQP6OtRjDcjGA1XnuA6FAA7NG
+ qA5XorFoZLimMOJ94GMvzM62FeEHcmeNqR93JIlaW7ShpcZkOFr83tRE3dKUvSt4+w6+QWkvr
+ zn2XO6i4cL//xcBW/MI8uYeOQs44dttCUtwYkuVo2VON/lRzylRHZCq5U9GUkIMGpi7bu9aa9
+ oKm/MgsVf1l8Ljnfsu6WOeboO8u1DbnNfuiKBW0hljKqTYmpHLaPfSEn9dR6dbp/un5GzWVD0
+ zZV/vIEU264H9q1t/fCD06q20s7hZM/XG5XXkECXm119DMEbsuUIOrusR37paway+VY7BHpaj
+ Rb2bvVYuyF7iUcfzS4fnVXpeRidavTe9rs7EJoRX3kzrJADgd7v3haLJpMLgooEhs+fVmrgaw
+ 1c6Hu+dr7jJ/eT6RpRmoxocVvU9XpBeRTItsjLqcn0v/sRnsPrC063f23ooLfgmP6qjUrXEjz
+ wFp0=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,79 +87,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>, gustavoars@kernel.org,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- Olof Johansson <olof@lixom.net>, mad skateman <madskateman@gmail.com>,
- alexander.deucher@amd.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Gustavo,
-
-Your patch works! Thanks a lot! I tested it with my Freescale P5040 
-board and P.A.Semi Nemo board with a connected AMD Radeon HD6970 NI 
-graphics cards (Cayman
-XT) today.
-
-Have a nice day,
-Christian
-
-
-On 07 May 2021 at 08:43am, Christian Zigotzky wrote:
-> Hi Gustavo,
+On Sat, May 8, 2021 at 12:15 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+> Le 08/05/2021 =C3=A0 11:43, Arnd Bergmann a =C3=A9crit :
+> > On Sat, May 8, 2021 at 8:46 AM Christophe Leroy
+> > <christophe.leroy@csgroup.eu> wrote:
+> >>
+> >> Something is going wrong with asm goto output. I implemented get_user(=
+) helpers with asm goto this
+> >> cycle (commit 5cd29b1fd3e8). I tested it with CLANG before submitting,=
+ it was working.
+> >
+> > BTW, can you point me to those patches? I think it would be nice if we
+> > could eventually
+> > converge parts of get_user()/put_user() implementation on something
+> > that works for all
+> > architectures, we do seem to rewrite these way too often. Ideally we'd
+> > have something
+> > in asm-generic that provides all the wrappers, and just requires an
+> > architecture to
+> > implement the inline asm helpers for each of the sizes.
+> >
 >
-> Great! I will test it. Many thanks for your help.
+> The series that is merged for 5.13 is here:
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D233250&s=
+tate=3D*
 >
-> Cheers,
-> Christian
->
->
->> On 7. May 2021, at 01:55, Gustavo A. R. Silva <gustavo@embeddedor.com> wrote:
->>
->> ﻿Hi Christian,
->>
->>> On 4/30/21 06:59, Christian Zigotzky wrote:
->>> Hello,
->>>
->>> The Nemo board (A-EON AmigaOne X1000) [1] and the FSL P5040 Cyrus+ board (A-EON AmigaOne X5000) [2] with installed AMD Radeon HD6970 NI graphics cards (Cayman
->>> XT) [3] don't boot with the latest git kernel anymore after the commit "drm/radeon/nislands_smc.h: Replace one-element array with flexible-array member in
->>> struct NISLANDS_SMC_SWSTATE branch" [4].  This git kernel boots in a virtual e5500 QEMU machine with a VirtIO-GPU [5].
->>>
->>> I bisected today [6].
->>>
->>> Result: drm/radeon/nislands_smc.h: Replace one-element array with flexible-array member in struct NISLANDS_SMC_SWSTATE branch
->>> (434fb1e7444a2efc3a4ebd950c7f771ebfcffa31) [4] is the first bad commit.
->> I have a fix ready for this bug:
->> https://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux.git/commit/?h=testing/drm-nislands
->>
->> I wonder if you could help me to test it with your environment, please.
->> It should be applied on top of mainline.
->>
->> Thank you!
->> --
->> Gustavo
->>
->>> I was able to revert this commit [7] and after a new compiling, the kernel boots without any problems on my AmigaOnes.
->>>
->>> After that I created a patch for reverting this commit for new git test kernels. [3]
->>>
->>> The kernel compiles and boots with this patch on my AmigaOnes. Please find attached the kernel config files.
->>>
->>> Please check the first bad commit.
->>>
->>> Thanks,
->>> Christian
->>>
->>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
->>> [2] http://wiki.amiga.org/index.php?title=X5000
->>> [3] https://forum.hyperion-entertainment.com/viewtopic.php?f=35&t=4377
->>> [4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=434fb1e7444a2efc3a4ebd950c7f771ebfcffa31
->>> [5] qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage -drive format=raw,file=MintPPC32-X5000.img,index=0,if=virtio -netdev user,id=mynet0 -device
->>> virtio-net-pci,netdev=mynet0 -append "rw root=/dev/vda" -device virtio-vga -usb -device usb-ehci,id=ehci -device usb-tablet -device virtio-keyboard-pci -smp 4
->>> -vnc :1
->>> [6] https://forum.hyperion-entertainment.com/viewtopic.php?p=53074#p53074
->>> [7] git revert 434fb1e7444a2efc3a4ebd950c7f771ebfcffa3
+> And of course the result is just
+> https://github.com/linuxppc/linux/blob/master/arch/powerpc/include/asm/ua=
+ccess.h
+> and all its history at
+> https://github.com/linuxppc/linux/commits/master/arch/powerpc/include/asm=
+/uaccess.h
 
+Ah, I should have looked there first ;-)
+
+> The fix from today here:
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/cf0a050d124d4f426=
+cdc7a74009d17b01d8d8969.1620465917.git.christophe.leroy@csgroup.eu/
+>
+> I made a try to use asm-generic/uaccess.h a few weeks ago, but it was not=
+ conclusive. I can't
+> remember the details, but I can have a new look at it next week if you ar=
+e interested with the details.
+
+I hope you didn't waste too much time on that. The current asm-generic/uacc=
+ess.h
+code is not helpful anywhere and needs to be rewritten before we can have
+normal architectures using it.
+
+        Arnd
