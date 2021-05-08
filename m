@@ -1,70 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6F837715F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 13:15:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA0F37716F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 13:34:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fcl915FmZz3074
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 21:15:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FclZm40Jfz309H
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 21:34:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=MEaQk6XP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=DLu2j0ma;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::831;
- helo=mail-qt1-x831.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.167;
+ helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=MEaQk6XP; dkim-atps=neutral
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com
- [IPv6:2607:f8b0:4864:20::831])
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=DLu2j0ma; 
+ dkim-atps=neutral
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
+ [81.169.146.167])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fcl8S405vz2yXN
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 May 2021 21:14:48 +1000 (AEST)
-Received: by mail-qt1-x831.google.com with SMTP id t20so4250379qtx.8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 May 2021 04:14:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=pXbSQAyhG6W2ZQ5ums5vjGpNRe3vyzAhG3D2OB6FJtA=;
- b=MEaQk6XPhXourlRG1ktFxx9flPigPi5AhTwrHElyyTSb6GnddHT2NBqQzAk7pfHBGh
- bxeC3+pH57tIvA67Zb42zGAcZKXFca8aAOfP6/GgJwC3zsVMuMFVYGKdHUVUh9x9fxRz
- AuqV344d7kd4prNGA6D5wBzbTIUZfWhDs1A7RiMm+8zxj1b5bv6/VA94Lmp2cEaF8qvP
- brtOwOdEzI1+3uPAV2G4hmFqWHImm3SpA7dyouODAAP8Mjio6LclJl4ZGBtVrPq4Fi8p
- 0+/pQsi16Tp9y3Q1qRTOfWp4qnx2ADsyVbfSyZmqK613n4bOlpNGMAeYOsMaUVGML0CG
- kQOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=pXbSQAyhG6W2ZQ5ums5vjGpNRe3vyzAhG3D2OB6FJtA=;
- b=FcoQ4ybW2rA0g3tiFOntC8KlYZ0fkB1E54k0dLFrxUGuGGAvW3H/J8w8psR1kn3IMM
- X777TGjq7SlExifbxlI6p6lSiRDMOFqSW9v/YyjgrKmQxVkzxF+41PB9d+DW9brxf/U9
- QNYUcedtztdg7kv/Xy4sE+LNagub4TtvocaQ44GLYdPPt3RY34dgPXp3Y0EZ9IMWcqfm
- 9Smsh7hAYHrNJiSwQdwW1tdNZdi+TVOV3YwKfBZS9acMouoTXCCT8atQuP9V35dM9NiP
- 6HupSsruKtKYG/VN3zqkwNxPAzOqGHz9kIkVvjgdqMO1seLFlA6SdrdNojYi/vriAt+v
- edGg==
-X-Gm-Message-State: AOAM531/CuZsBin7bav9BmJtjxjk+7IN3yEpWEJ5dilmfSrjv8v2pgGq
- FuETYdPyTPOAIbLc9Tf8IR6IgUnpqfEalRp6Z6Q=
-X-Google-Smtp-Source: ABdhPJyRCbYhCpRfDI8+hasLkF4yP7yMUxLuTdvAzoQoMJyQJahYYgoI6qqRk4w4Lw9Mgcet1WmcDyaHhNNKa/rS4Jc=
-X-Received: by 2002:ac8:47da:: with SMTP id d26mr13187735qtr.292.1620472484696; 
- Sat, 08 May 2021 04:14:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FclZG3qzQz2xvJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 May 2021 21:33:40 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1620473584; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=D7YuKPxXsKeFXvAYA95enHLKpMEs4t73syLyt+LYCSdEBz9la49v/3Yudpi1rCb1hb
+ 1jsnIZGkT/Sd2ZO4OePtlQ/z4P64RYnGzg0lB4LMNGq4EozUfHZ4E90yTOjH9g/SMWNX
+ vUoNXlfxpmjebqejstQgKZ/AMj0YcoCi7OS/bm1BZQoLMjhAy8nxRSvmWjlYtVsZGUTP
+ TbUBaiOIqCUVGfUBlH28znuo1uGM+OFcDUHCeNy+nDSStEoEdVviAj8vyt+eF7LCboY1
+ /BmBcxV3BHkhI34a3TE5icytGX1ryNuSnSSLmSEfdP63evm33fpdKj+xY1MBkF2rgPJh
+ y6BA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620473584;
+ s=strato-dkim-0002; d=strato.com;
+ h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=zXeLgkAjA9yOJQBu6A8doWAg7AhdlmEivCv++PGr85c=;
+ b=SX9OzBiiTydmrGaCp1gzfZOhz9CQ3UQkNj//trriKVE0QLOWBGfI65nM9uvuLauEDX
+ 3fNSzP+gGLZTF5eQaWBikCHIMkqfuDvz/QLKRWUcyqv+lVs4GgLwjNSszSmG/e+EQAeZ
+ Png53/FUiDnVckzDRDJuky6WLz4xsBhcLMtzI8Cck7ZBuvD2VspjsE8dNGkUlLZkPWLS
+ ZHV5RPvBVNvgzHPNfrzT0gz5lUiUou6h/D+G2WZkw83bjzCNeA0oFf75vozTR2BruIz4
+ PM6O2PNcNEyDtFdY0q0/x8qgrjr+CuL/z7e6lyyq2bRRR4DtNfosjYixAagKVcKuPrhd
+ rOIQ==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620473584;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=zXeLgkAjA9yOJQBu6A8doWAg7AhdlmEivCv++PGr85c=;
+ b=DLu2j0maC2+gIbVUSJlZ9sSApqnJc6Ik78gMOAx1y480UVneqAvkxk7nK4Q1MPtI5/
+ Q4/gg6abZZTam9hxWxdh4/aC87gqxIbOYDIseHuqIOddwfsMXpSo3iu8A/JQyfxIinI8
+ 6r2i/O6Ovz1/0IPBZ2EETFLFMjtAFXEVr7sQNTCE4+Sd5ZnYD5QefBmunVlzz4qSz5K4
+ Q51qKNpDDuqkSOe/frwUow6BmsAxKBN8/5Ya+H+Wj1veptLoGWNZoTtuyrFlpVvjRdmS
+ ddHoVqXV/7vXgoa+b4cBjnNv92uRco++2aZ/2JgP48JOK+ecHAuTz+AD10t5owAJBjol
+ oczA==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhRcm65Dcd5OChdKI1UkbsHSLBp7w=="
+X-RZG-CLASS-ID: mo00
+Received: from Christians-iMac.fritz.box by smtp.strato.de (RZmta 47.25.6 AUTH)
+ with ESMTPSA id L0ba16x48BX358r
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Sat, 8 May 2021 13:33:03 +0200 (CEST)
+Subject: Re: Radeon NI: GIT kernel with the nislands_smc commit doesn't boot
+ on a Freescale P5040 board and P.A.Semi Nemo board
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+References: <a1d9e09b-f533-5e2c-7a13-af96647e1a71@embeddedor.com>
+ <10D1983F-33EF-46C3-976E-463D1CB5A6E9@xenosoft.de>
+Message-ID: <9bb5fcbd-daf5-1669-b3e7-b8624b3c36f9@xenosoft.de>
+Date: Sat, 8 May 2021 13:33:02 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.10.1
 MIME-Version: 1.0
-References: <1619157107-3734-1-git-send-email-shengjiu.wang@nxp.com>
- <1619157107-3734-2-git-send-email-shengjiu.wang@nxp.com>
- <20210503170030.GA1987906@robh.at.kernel.org>
-In-Reply-To: <20210503170030.GA1987906@robh.at.kernel.org>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Sat, 8 May 2021 19:14:33 +0800
-Message-ID: <CAA+D8ANFmegm2CgOs8u5+FCrR0gGyA_tQHcPCrh3Sikcm_g47Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ASoC: dt-bindings: imx-akcodec: Add binding doc for
- akcodec machine driver
-To: Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <10D1983F-33EF-46C3-976E-463D1CB5A6E9@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,137 +94,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, alsa-devel@alsa-project.org,
- Fabio Estevam <festevam@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Mark Brown <broonie@kernel.org>, NXP Linux Team <linux-imx@nxp.com>,
- Sascha Hauer <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>, gustavoars@kernel.org,
+ Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
+ Olof Johansson <olof@lixom.net>, mad skateman <madskateman@gmail.com>,
+ alexander.deucher@amd.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+Hi Gustavo,
 
-On Tue, May 4, 2021 at 1:01 AM Rob Herring <robh@kernel.org> wrote:
->
-> On Fri, Apr 23, 2021 at 01:51:47PM +0800, Shengjiu Wang wrote:
-> > Imx-akcodec is a new added machine driver for supporting
-> > ak4458/ak5558/ak5552/ak4497 codec on i.MX platforms.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  .../bindings/sound/imx-audio-akcodec.yaml     | 60 +++++++++++++++++++
-> >  1 file changed, 60 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml b/Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml
-> > new file mode 100644
-> > index 000000000000..7419bf7224e9
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml
-> > @@ -0,0 +1,60 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/sound/imx-audio-akcodec.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: NXP i.MX audio complex with AK4458/AK5558/AK5552/AK4497 codec
->
-> Looks like the existing fsl-asoc-card.txt? You should convert to schema
-> and use that. Otherwise, my comments are based on this all being 'new'.
+Your patch works! Thanks a lot! I tested it with my Freescale P5040 
+board and P.A.Semi Nemo board with a connected AMD Radeon HD6970 NI 
+graphics cards (Cayman
+XT) today.
 
-Ok, let's treat it as 'new'
+Have a nice day,
+Christian
 
->
-> > +
-> > +maintainers:
-> > +  - Shengjiu Wang <shengjiu.wang@nxp.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - fsl,imx8mq-audio-ak4458
-> > +      - fsl,imx8mq-audio-ak4497
-> > +      - fsl,imx8mq-audio-ak5558
-> > +      - fsl,imx-audio-ak4497
-> > +      - fsl,imx-audio-ak4458
-> > +      - fsl,imx-audio-ak5558
-> > +      - fsl,imx-audio-ak5552
->
-> I continue to not understand why audio bindings need the codec(s) in the
-> compatible strings. Can't you look up the codec thru the audio-codec
-> property?
 
-I will try to remove the codecs type from the compatible string and check
-the codec type in driver.
-
+On 07 May 2021 at 08:43am, Christian Zigotzky wrote:
+> Hi Gustavo,
 >
-> > +
-> > +  model:
-> > +    $ref: /schemas/types.yaml#/definitions/string
-> > +    description: User specified audio sound card name
-> > +
-> > +  audio-cpu:
-> > +    $ref: /schemas/types.yaml#/definitions/phandle
-> > +    description: The phandle of a CPU DAI controller
-> > +
-> > +  audio-codec:
-> > +    description: The phandle of Codec DAI controllers, there are two
-> > +                 controllers maximum.
+> Great! I will test it. Many thanks for your help.
 >
-> We have the common 'sound-dai' property. See the simple-card.yaml
-> binding.
-
-ok, will use sound-dai.
-
+> Cheers,
+> Christian
 >
-> > +
-> > +  audio-asrc:
-> > +    $ref: /schemas/types.yaml#/definitions/phandle
-> > +    description: The phandle of ASRC. It can be absent if there's no
-> > +                 need to add ASRC support via DPCM.
 >
-> Needs a vendor prefix.
+>> On 7. May 2021, at 01:55, Gustavo A. R. Silva <gustavo@embeddedor.com> wrote:
+>>
+>> ﻿Hi Christian,
+>>
+>>> On 4/30/21 06:59, Christian Zigotzky wrote:
+>>> Hello,
+>>>
+>>> The Nemo board (A-EON AmigaOne X1000) [1] and the FSL P5040 Cyrus+ board (A-EON AmigaOne X5000) [2] with installed AMD Radeon HD6970 NI graphics cards (Cayman
+>>> XT) [3] don't boot with the latest git kernel anymore after the commit "drm/radeon/nislands_smc.h: Replace one-element array with flexible-array member in
+>>> struct NISLANDS_SMC_SWSTATE branch" [4].  This git kernel boots in a virtual e5500 QEMU machine with a VirtIO-GPU [5].
+>>>
+>>> I bisected today [6].
+>>>
+>>> Result: drm/radeon/nislands_smc.h: Replace one-element array with flexible-array member in struct NISLANDS_SMC_SWSTATE branch
+>>> (434fb1e7444a2efc3a4ebd950c7f771ebfcffa31) [4] is the first bad commit.
+>> I have a fix ready for this bug:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux.git/commit/?h=testing/drm-nislands
+>>
+>> I wonder if you could help me to test it with your environment, please.
+>> It should be applied on top of mainline.
+>>
+>> Thank you!
+>> --
+>> Gustavo
+>>
+>>> I was able to revert this commit [7] and after a new compiling, the kernel boots without any problems on my AmigaOnes.
+>>>
+>>> After that I created a patch for reverting this commit for new git test kernels. [3]
+>>>
+>>> The kernel compiles and boots with this patch on my AmigaOnes. Please find attached the kernel config files.
+>>>
+>>> Please check the first bad commit.
+>>>
+>>> Thanks,
+>>> Christian
+>>>
+>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+>>> [2] http://wiki.amiga.org/index.php?title=X5000
+>>> [3] https://forum.hyperion-entertainment.com/viewtopic.php?f=35&t=4377
+>>> [4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=434fb1e7444a2efc3a4ebd950c7f771ebfcffa31
+>>> [5] qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage -drive format=raw,file=MintPPC32-X5000.img,index=0,if=virtio -netdev user,id=mynet0 -device
+>>> virtio-net-pci,netdev=mynet0 -append "rw root=/dev/vda" -device virtio-vga -usb -device usb-ehci,id=ehci -device usb-tablet -device virtio-keyboard-pci -smp 4
+>>> -vnc :1
+>>> [6] https://forum.hyperion-entertainment.com/viewtopic.php?p=53074#p53074
+>>> [7] git revert 434fb1e7444a2efc3a4ebd950c7f771ebfcffa3
 
-ok,  can be removed in the next version.
-
->
-> > +
-> > +  fsl,tdm:
-> > +    $ref: /schemas/types.yaml#/definitions/flag
-> > +    description: |
-> > +      This is a boolean property. If present, the TDM mode is enabled.
->
-> But this one seems like something that could or should be common.
-
-Ok, I will use the common one in the next version.
-
->
-> > +
-> > +required:
-> > +  - compatible
-> > +  - model
-> > +  - audio-cpu
-> > +  - audio-codec
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    sound-ak4458 {
-> > +        compatible = "fsl,imx-audio-ak4458";
-> > +        model = "ak4458-audio";
-> > +        audio-cpu = <&sai1>;
-> > +        audio-codec = <&ak4458_1>, <&ak4458_2>;
-> > +    };
-> > --
-> > 2.17.1
-> >
