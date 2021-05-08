@@ -2,75 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CFE37712F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 12:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF23377130
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 12:17:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fcjt66D3Gz3cD2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 20:17:18 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=VETU5Pmg;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FcjtT5bzgz3cNP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 May 2021 20:17:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=srs0=qqpx=kd=csgroup.eu=christophe.leroy@ozlabs.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VETU5Pmg; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fcjqn5zKJz2yxn
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 May 2021 20:15:17 +1000 (AEST)
-Received: by mail-pj1-x1032.google.com with SMTP id
- l10-20020a17090a850ab0290155b06f6267so6812481pjn.5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 May 2021 03:15:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=ptlMcBDWcssXFzxYZbffEn+kF4lLgbECIyuV9dbqyUE=;
- b=VETU5PmgWqPT9wkHQwd2cTDCqWo/komATP7v841czInCv+jgXK0cxYzc1EmPQaDAmU
- M5uFfIdTq2p4oMqoTl6nsMpcFWsBrnqgA8vWEJvRKGMS+WS4UgUtwGbzLaqLVBwmOBxn
- dSMcb+bSuDUJSbNOzHADwXa6wn0pRzC/sWKaBjPz3cg8HseEwoPzMV501BL4n7EG8eVR
- xYUNq0s+bMJTZrdp6eyEVgq0s2a/oXEIUduB5pxRNbIglEfHGAo6gRaptrxNp4DyYv1n
- 331uk4ps6cnXJ4QuGtoBa07VydHdz+3xzbcPTU+6OGLj7jZuXP4npKIx+thQL1S3jlIt
- tbtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=ptlMcBDWcssXFzxYZbffEn+kF4lLgbECIyuV9dbqyUE=;
- b=RPbr7+J8YKQv5VuLt+wYhZSxkhFwGdsVa1n3zDi0Pg78eHrA2V+oKWz/8pYw3sIMk6
- 72BPyYeX/BUcQoDs+y/br7qq/J4VMS1CRk+6CSm7f33K0bImNFB9pH0VXBGvB++1U6Vl
- yuaiY8DdnNpBPxZz4jNipo5NtWV/aDIOyWuWOXLbM6I+G6OWvqU/MzU4OLffaX5Qj6wk
- F7ri+HhNomq3JztyIoysBVNTdkywf+vy3zKfWaCBMU8HR7Z5CjVLD7Fj4V56iCk67Kqc
- cGsNI4spqW2BpH3Sb5qQwYdL6YflPVU4A0/gsAFOwwRvJl6QBxD4J/Y0Xlw8D774oTdJ
- hSuw==
-X-Gm-Message-State: AOAM532GJqwsA2PTZ8WZQZHG5qpvxSdObwJ+2j9svBejZsxgUNdRdird
- qhxa4iXQmV4CaBtw3gIBkQPtKfe7FRABTQ==
-X-Google-Smtp-Source: ABdhPJxBxbxD102H8yGDvvJLFY48fiTDQmiaSWB9TXOBd+4NEVv8dQlQH946DbbDkGEmjJiGVC2c0w==
-X-Received: by 2002:a17:902:b487:b029:ee:d04b:741e with SMTP id
- y7-20020a170902b487b02900eed04b741emr14293651plr.45.1620468915047; 
- Sat, 08 May 2021 03:15:15 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (60-241-47-46.tpgi.com.au. [60.241.47.46])
- by smtp.gmail.com with ESMTPSA id
- c13sm6608465pfl.212.2021.05.08.03.15.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 May 2021 03:15:14 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 4/4] powerpc/pseries: warn if recursing into the hcall
- tracing code
-Date: Sat,  8 May 2021 20:14:55 +1000
-Message-Id: <20210508101455.1578318-5-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20210508101455.1578318-1-npiggin@gmail.com>
-References: <20210508101455.1578318-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FcjrX5Wcpz305y
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 May 2021 20:15:56 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by ozlabs.org (Postfix) with ESMTP id 4FcjrQ4w5Bz9sX1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 May 2021 20:15:50 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4FcjrQ4Wk4z9sX2; Sat,  8 May 2021 20:15:50 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4FcjrQ1wQvz9sX1
+ for <linuxppc-dev@ozlabs.org>; Sat,  8 May 2021 20:15:48 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4FcjrK11TFz9sbl;
+ Sat,  8 May 2021 12:15:45 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id vTPLGFDN1VI3; Sat,  8 May 2021 12:15:45 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FcjrJ70pMz9sbk;
+ Sat,  8 May 2021 12:15:44 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CAFA88B774;
+ Sat,  8 May 2021 12:15:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id vhUBODFnxePy; Sat,  8 May 2021 12:15:44 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7E13A8B76B;
+ Sat,  8 May 2021 12:15:44 +0200 (CEST)
+Subject: Re: Kernel crosscompilers
+To: Arnd Bergmann <arnd@arndb.de>
+References: <be7c92b2-43c2-0d8a-6e8c-ac92e7e07bfc@csgroup.eu>
+ <CAK8P3a3OdcSQQGKxRob3A6qfh8tVD1JtLdcTp9i25SizqWpiXA@mail.gmail.com>
+ <19e791d9-3226-4c13-b6e8-cdabdaaa0268@csgroup.eu>
+ <CAK8P3a3V=y8tHkN6JSpA54bKAOZv9RK04WcVE9LPL0r-WE0Nmw@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <b6fad6f3-6390-54a3-f0c8-30b7476c686a@csgroup.eu>
+Date: Sat, 8 May 2021 12:15:32 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
+In-Reply-To: <CAK8P3a3V=y8tHkN6JSpA54bKAOZv9RK04WcVE9LPL0r-WE0Nmw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,67 +81,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hcall tracing code has a recursion check built in, which skips
-tracing if we are already tracing an hcall.
 
-However if the tracing code has problems with recursion, this check
-may not catch all cases because the tracing code could be invoked from
-a different tracepoint first, then make an hcall that gets traced,
-then recurse.
 
-Add an explicit warning if recursion is detected here, which might help
-to notice tracing code making hcalls. Really the core trace code should
-have its own recursion checking and warnings though.
+Le 08/05/2021 à 11:43, Arnd Bergmann a écrit :
+> On Sat, May 8, 2021 at 8:46 AM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>> Something is going wrong with asm goto output. I implemented get_user() helpers with asm goto this
+>> cycle (commit 5cd29b1fd3e8). I tested it with CLANG before submitting, it was working.
+> 
+> BTW, can you point me to those patches? I think it would be nice if we
+> could eventually
+> converge parts of get_user()/put_user() implementation on something
+> that works for all
+> architectures, we do seem to rewrite these way too often. Ideally we'd
+> have something
+> in asm-generic that provides all the wrappers, and just requires an
+> architecture to
+> implement the inline asm helpers for each of the sizes.
+> 
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/platforms/pseries/lpar.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+The series that is merged for 5.13 is here: 
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=233250&state=*
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index ad1cec80019b..dab356e3ff87 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -1829,8 +1829,14 @@ void hcall_tracepoint_unregfunc(void)
- #endif
- 
- /*
-- * Since the tracing code might execute hcalls we need to guard against
-- * recursion.
-+ * Keep track of hcall tracing depth and prevent recursion. Warn if any is
-+ * detected because it may indicate a problem. This will not catch all
-+ * problems with tracing code making hcalls, because the tracing might have
-+ * been invoked from a non-hcall, so the first hcall could recurse into it
-+ * without warning here, but this better than nothing.
-+ *
-+ * Hcalls with specific problems being traced should use the _notrace
-+ * plpar_hcall variants.
-  */
- static DEFINE_PER_CPU(unsigned int, hcall_trace_depth);
- 
-@@ -1844,7 +1850,7 @@ notrace void __trace_hcall_entry(unsigned long opcode, unsigned long *args)
- 
- 	depth = this_cpu_ptr(&hcall_trace_depth);
- 
--	if (*depth)
-+	if (WARN_ON_ONCE(*depth))
- 		goto out;
- 
- 	(*depth)++;
-@@ -1865,7 +1871,7 @@ notrace void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
- 
- 	depth = this_cpu_ptr(&hcall_trace_depth);
- 
--	if (*depth)
-+	if (*depth) /* Don't warn again on the way out */
- 		goto out;
- 
- 	(*depth)++;
--- 
-2.23.0
+And of course the result is just 
+https://github.com/linuxppc/linux/blob/master/arch/powerpc/include/asm/uaccess.h
+and all its history at 
+https://github.com/linuxppc/linux/commits/master/arch/powerpc/include/asm/uaccess.h
 
+The fix from today here: 
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/cf0a050d124d4f426cdc7a74009d17b01d8d8969.1620465917.git.christophe.leroy@csgroup.eu/
+
+I made a try to use asm-generic/uaccess.h a few weeks ago, but it was not conclusive. I can't 
+remember the details, but I can have a new look at it next week if you are interested with the details.
+
+Christophe
