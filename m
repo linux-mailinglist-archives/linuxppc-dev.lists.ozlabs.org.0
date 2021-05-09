@@ -2,56 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018EE377453
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 May 2021 00:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC073774D9
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 May 2021 03:40:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fd1rN4CRSz306H
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 May 2021 08:16:52 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=noureddine.xyz header.i=@noureddine.xyz header.a=rsa-sha256 header.s=mail header.b=OtaRo+vb;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fd6Ll2Q2lz3byk
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 May 2021 11:39:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=noureddine.xyz (client-ip=64.52.23.98; helo=mail.noureddine.xyz;
- envelope-from=contact@noureddine.xyz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=noureddine.xyz header.i=@noureddine.xyz
- header.a=rsa-sha256 header.s=mail header.b=OtaRo+vb; 
- dkim-atps=neutral
-X-Greylist: delayed 455 seconds by postgrey-1.36 at boromir;
- Sun, 09 May 2021 07:45:47 AEST
-Received: from mail.noureddine.xyz (unknown [64.52.23.98])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fd18W1Htjz2yYK
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 May 2021 07:45:46 +1000 (AEST)
-Received: from [192.168.1.102] (unknown [105.191.3.241])
- by mail.noureddine.xyz (Postfix) with ESMTPSA id 770C01405F9;
- Sat,  8 May 2021 21:37:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=noureddine.xyz;
- s=mail; t=1620509858;
- bh=CdBDoEVxNcdj1d8lrKJjyhicLwdsZOU5WWW/useIVxo=;
- h=To:Cc:From:Subject:Date:From;
- b=OtaRo+vbhf+UMfP+nypWu+bKwcZ4k8T2hND0VloPMvbgI76VuGvP4dZDdeDCMykLw
- 17U0EZ18DkAmQBjUaeUDhUMCTRbaWzRuIT9b/jB0z8lvjnjOGfjYwlLfy8mBHXG79V
- Cz2mGHJtXg/5wz7Y5R1lppjh+hummjpW6d4L9uVqq4MO+nsLwzwKr6b6ei09dMjqVf
- BHX+RwlHSOJVyX2lagFUFg90lUcr7zyyQ2S0SL90F/5c60XeGXRJupoediDhFvRWjW
- AgGklFcrv6wMJVVVOG3/PqeQ7IODX6bAEqSwbn1SexN8qGoeNtT+iaUZF7TuB4NuTE
- 9Vf0MhEPSyCbQ==
-To: paulus@ozlabs.org, mpe@ellerman.id.au, benh@kernel.crashing.org
-From: Nour-eddine Taleb <contact@noureddine.xyz>
-Subject: [PATCH] arch: powerpc: kvm: remove unnecessary casting
-Message-ID: <34d93da2-4b0c-8806-54e7-5bcaeab4f2d5@noureddine.xyz>
-Date: Sat, 8 May 2021 21:37:27 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fd6L14tbcz2yYV
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 May 2021 11:39:19 +1000 (AEST)
+IronPort-SDR: M2SNmRWENkj0SX07y+uxq/7Oh65xLWlIPXOIAWxz1sSM9WlKK/jm+m03jjOFgPeENcYOnu5LXQ
+ 2vwHNaeags2w==
+X-IronPort-AV: E=McAfee;i="6200,9189,9978"; a="260241208"
+X-IronPort-AV: E=Sophos;i="5.82,284,1613462400"; d="scan'208";a="260241208"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2021 18:39:12 -0700
+IronPort-SDR: 1PmRjFas/zXJnrNQtpIDm8cSRQfJuZrxiTpVOWtonN8LDCK7k/MgU4PnOtiinCLufqPwyJVUs/
+ 7HKYtRPj3SVA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,284,1613462400"; d="scan'208";a="470341822"
+Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
+ by orsmga001.jf.intel.com with ESMTP; 08 May 2021 18:39:11 -0700
+Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lfYPW-000BsL-Pn; Sun, 09 May 2021 01:39:10 +0000
+Date: Sun, 09 May 2021 09:38:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS fcc98c6d0289241dded10b74f8198fc4ecb22bd1
+Message-ID: <60973d19.9tiV//dJZRuSW+sX%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Sun, 09 May 2021 08:16:31 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,64 +53,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: noureddine <contact@noureddine.xyz>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-remove unnecessary castings, from "void *" to "struct kvmppc_xics *"
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: fcc98c6d0289241dded10b74f8198fc4ecb22bd1  Automatic merge of 'next' into merge (2021-05-08 21:19)
 
-Signed-off-by: Nour-eddine Taleb <contact@noureddine.xyz>
+elapsed time: 721m
+
+configs tested: 96
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+i386                             allyesconfig
+riscv                            allyesconfig
+powerpc                     tqm8540_defconfig
+arm                          simpad_defconfig
+sh                        edosk7705_defconfig
+powerpc                      mgcoge_defconfig
+powerpc                     tqm5200_defconfig
+mips                        maltaup_defconfig
+sh                            migor_defconfig
+sh                         ecovec24_defconfig
+arm                         socfpga_defconfig
+m68k                        mvme16x_defconfig
+powerpc                      ppc6xx_defconfig
+arm                      jornada720_defconfig
+arc                            hsdk_defconfig
+um                               allyesconfig
+arc                           tb10x_defconfig
+arm                        magician_defconfig
+arm                            dove_defconfig
+arc                          axs103_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a003-20210508
+i386                 randconfig-a006-20210508
+i386                 randconfig-a001-20210508
+i386                 randconfig-a005-20210508
+i386                 randconfig-a004-20210508
+i386                 randconfig-a002-20210508
+x86_64               randconfig-a014-20210508
+x86_64               randconfig-a015-20210508
+x86_64               randconfig-a011-20210508
+x86_64               randconfig-a013-20210508
+x86_64               randconfig-a012-20210508
+x86_64               randconfig-a016-20210508
+i386                 randconfig-a013-20210508
+i386                 randconfig-a015-20210508
+i386                 randconfig-a014-20210508
+i386                 randconfig-a016-20210508
+i386                 randconfig-a011-20210508
+i386                 randconfig-a012-20210508
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+um                               allmodconfig
+um                                allnoconfig
+um                                  defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a005-20210508
+x86_64               randconfig-a003-20210508
+x86_64               randconfig-a001-20210508
+x86_64               randconfig-a002-20210508
+x86_64               randconfig-a006-20210508
+x86_64               randconfig-a004-20210508
+
 ---
-  arch/powerpc/kvm/book3s_xics.c        | 2 +-
-  arch/powerpc/kvm/book3s_xive.c        | 2 +-
-  arch/powerpc/kvm/book3s_xive_native.c | 2 +-
-  3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/kvm/book3s_xics.c b/arch/powerpc/kvm/book3s_xics.c
-index 303e3cb096db..9ae74fa551a6 100644
---- a/arch/powerpc/kvm/book3s_xics.c
-+++ b/arch/powerpc/kvm/book3s_xics.c
-@@ -1440,7 +1440,7 @@ static int kvmppc_xics_create(struct kvm_device 
-*dev, u32 type)
-
-  static void kvmppc_xics_init(struct kvm_device *dev)
-  {
--	struct kvmppc_xics *xics = (struct kvmppc_xics *)dev->private;
-+	struct kvmppc_xics *xics = dev->private;
-
-  	xics_debugfs_init(xics);
-  }
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index e7219b6f5f9a..05bcaf81a90a 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -2242,7 +2242,7 @@ static void xive_debugfs_init(struct kvmppc_xive 
-*xive)
-
-  static void kvmppc_xive_init(struct kvm_device *dev)
-  {
--	struct kvmppc_xive *xive = (struct kvmppc_xive *)dev->private;
-+	struct kvmppc_xive *xive = dev->private;
-
-  	/* Register some debug interfaces */
-  	xive_debugfs_init(xive);
-diff --git a/arch/powerpc/kvm/book3s_xive_native.c 
-b/arch/powerpc/kvm/book3s_xive_native.c
-index 76800c84f2a3..2703432cea78 100644
---- a/arch/powerpc/kvm/book3s_xive_native.c
-+++ b/arch/powerpc/kvm/book3s_xive_native.c
-@@ -1265,7 +1265,7 @@ static void xive_native_debugfs_init(struct 
-kvmppc_xive *xive)
-
-  static void kvmppc_xive_native_init(struct kvm_device *dev)
-  {
--	struct kvmppc_xive *xive = (struct kvmppc_xive *)dev->private;
-+	struct kvmppc_xive *xive = dev->private;
-
-  	/* Register some debug interfaces */
-  	xive_native_debugfs_init(xive);
--- 
-2.30.2
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
