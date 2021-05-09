@@ -1,66 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B99377902
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 00:24:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7ACA37795A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 01:50:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FddyC2yJ0z306S
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 08:24:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdgss5Pssz3065
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 09:50:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=o1U7LHIo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=mNly2mz7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::133;
- helo=mail-il1-x133.google.com; envelope-from=1337.noureddine@gmail.com;
+ smtp.mailfrom=embeddedor.com (client-ip=192.185.47.179;
+ helo=gateway22.websitewelcome.com; envelope-from=gustavo@embeddedor.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=o1U7LHIo; dkim-atps=neutral
-Received: from mail-il1-x133.google.com (mail-il1-x133.google.com
- [IPv6:2607:f8b0:4864:20::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=embeddedor.com header.i=@embeddedor.com
+ header.a=rsa-sha256 header.s=default header.b=mNly2mz7; 
+ dkim-atps=neutral
+X-Greylist: delayed 1499 seconds by postgrey-1.36 at boromir;
+ Mon, 10 May 2021 09:49:53 AEST
+Received: from gateway22.websitewelcome.com (gateway22.websitewelcome.com
+ [192.185.47.179])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FdN6l6nvyz2yXW
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 May 2021 22:00:29 +1000 (AEST)
-Received: by mail-il1-x133.google.com with SMTP id j12so11692575ils.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 05:00:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:from:date:message-id:subject:to:cc;
- bh=kTx7GsVUFbgNj4CE0ebZKgVk3lgKoqAHGQKzwKjpOTo=;
- b=o1U7LHIoILUMAKsu3Ff3u1/xNS1wn1G0pYDZnS8MFQxnPBmV6xnAJrwAYYsg8j7asq
- SD2hchkVH4BiazilUD8Uv3VHCVVLgKplOZ6IizO2/VicDHODdjTF9gEhaHhS0yXO8hlm
- fho+krDPMQFAPJJ+SlHhyyS6PbNpEoDSGTVksa5YeUaTc9IASJoQvAyaSXsCTugHNVEp
- PjeojXRE+ISwXshc/Ah7ngTBVgnll/17CRb/FV43maq56TDiUQziZThShSGrxcwnrXoU
- bV41slefQTRltwI6SfmFm4Z5zpgn0geIhyvZlzHEHajqtUK8+3c1YUJ0ukB2Hm6d1HS4
- sG4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
- bh=kTx7GsVUFbgNj4CE0ebZKgVk3lgKoqAHGQKzwKjpOTo=;
- b=R7G6DaR++dTodCok2bwH/4WuZUgOJzk+UJSFeHT003ajYixChRDWlpgePqB0mc3w9j
- 1hNiBBW0gnEC+b9PE3YcGFWIVBri6BrKxSUYyCi6bAmpGy0ksbs9d6Iw3VNNuB95fsWd
- UA6ys4i6Wwg/H22tXFCY89xJK02g2q+EXgKjPQpWpuXWYoHf+fm4/tzNDa9qgft1p83p
- mVEdlTEOXjS5lqPw1YllSY+ihDWgYxsRf58iLCi8t10gWnXpwpIykKzIsGuT4qT0nuU3
- pBL6AgnySxDGNnJ3YjAylomLC27pFD9Y4vxjJHqUD37KHOepY2yREW+drqUi2d9XdEJi
- e3Cg==
-X-Gm-Message-State: AOAM532PmWaqCR666bVegGHfQl6H4ZII3fz0c+VdajwzdDg/20xE6HIW
- z/+flhK7Pk3+ykKp5DbdwOywHA7x+KnnE+lXqBg=
-X-Google-Smtp-Source: ABdhPJxHWZ09Z3PyFi+Vxhf1zbM0wtuvfiwJ26dMwg1qAhPy7R05jGaIUlv+ZLXQXeRAllHhAF8Gkn7AEe12UokWC2E=
-X-Received: by 2002:a05:6e02:1212:: with SMTP id
- a18mr17861723ilq.2.1620561621669; 
- Sun, 09 May 2021 05:00:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FdgsF3d6zz2yXK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 09:49:53 +1000 (AEST)
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+ by gateway22.websitewelcome.com (Postfix) with ESMTP id 358095F1A
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 May 2021 18:03:55 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22]) by cmsmtp with SMTP
+ id fsSpli96cDedffsSplzV9O; Sun, 09 May 2021 18:03:55 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+ :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=zDKJQW5cIvnIvm8lZyRC/G4lR2JzgQSng4VYgkLxRNM=; b=mNly2mz7dxR5U+X89Rsbc4l+Mt
+ VEEyjREu/fyLvFixsrkT0KuATJlkp11ZjNaimTJJ41iGoJc4iZHfp0bjKjypvJzt+8rTGfYBiktrJ
+ WAQsG4ux25EoryX2P83JQEhyt8BI9HQA9lqNb7hUuwor8sYEXYQH1DOImWTNqZ/fjnYjPPbcyIwwp
+ ha1fQtjEoqOdwB0tX7Vzp8p4TZ5oFlB9UQJ73YKQvJFqLzxWOkRKg2VQLi7gvNoKKSTAEGPAV77A6
+ MDYIbabcObkxttwUeX0FmOPHTOa938e3R6IZTn5v2mfsw9FbH7NHC6ih1JN5y3GarFzC5Mz8GSvCG
+ 02znlLmg==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:58004
+ helo=[192.168.15.8])
+ by gator4166.hostgator.com with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <gustavo@embeddedor.com>)
+ id 1lfsSk-002y5H-JC; Sun, 09 May 2021 18:03:50 -0500
+Subject: Re: Radeon NI: GIT kernel with the nislands_smc commit doesn't boot
+ on a Freescale P5040 board and P.A.Semi Nemo board
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+References: <a1d9e09b-f533-5e2c-7a13-af96647e1a71@embeddedor.com>
+ <10D1983F-33EF-46C3-976E-463D1CB5A6E9@xenosoft.de>
+ <9bb5fcbd-daf5-1669-b3e7-b8624b3c36f9@xenosoft.de>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Message-ID: <bd98c13d-6f9d-9d5d-12b9-b866e41237ab@embeddedor.com>
+Date: Sun, 9 May 2021 18:04:18 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-From: Nour-eddine Taleb <1337.noureddine@gmail.com>
-Date: Sun, 9 May 2021 12:00:10 +0000
-Message-ID: <CAJO4vZwtVrYoMPZ9XoEAUJYgo-rND21eGorPrRF5m6rW4WT76w@mail.gmail.com>
-Subject: [PATCH] arch: powerpc: kvm: remove unnecessary casting
-To: paulus@ozlabs.org, mpe@ellerman.id.au, benh@kernel.crashing.org
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Mon, 10 May 2021 08:23:42 +1000
+In-Reply-To: <9bb5fcbd-daf5-1669-b3e7-b8624b3c36f9@xenosoft.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - lists.ozlabs.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1lfsSk-002y5H-JC
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8])
+ [187.162.31.110]:58004
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 10
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,62 +98,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>, gustavoars@kernel.org,
+ Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
+ Olof Johansson <olof@lixom.net>, mad skateman <madskateman@gmail.com>,
+ alexander.deucher@amd.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-remove unnecessary castings, from "void *" to "struct kvmppc_xics *"
+Hi Christian,
 
-Signed-off-by: Nour-eddine Taleb <1337.noureddine@gmail.com>
----
- arch/powerpc/kvm/book3s_xics.c        | 2 +-
- arch/powerpc/kvm/book3s_xive.c        | 2 +-
- arch/powerpc/kvm/book3s_xive_native.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+On 5/8/21 06:33, Christian Zigotzky wrote:
+> Hi Gustavo,
+> 
+> Your patch works! Thanks a lot! I tested it with my Freescale P5040 board and P.A.Semi Nemo board with a connected AMD Radeon HD6970 NI graphics cards (Cayman
+> XT) today.
 
-diff --git a/arch/powerpc/kvm/book3s_xics.c b/arch/powerpc/kvm/book3s_xics.c
-index 303e3cb096db..9ae74fa551a6 100644
---- a/arch/powerpc/kvm/book3s_xics.c
-+++ b/arch/powerpc/kvm/book3s_xics.c
-@@ -1440,7 +1440,7 @@ static int kvmppc_xics_create(struct kvm_device
-*dev, u32 type)
+Awesome! :)
 
- static void kvmppc_xics_init(struct kvm_device *dev)
- {
--    struct kvmppc_xics *xics = (struct kvmppc_xics *)dev->private;
-+    struct kvmppc_xics *xics = dev->private;
+Thank you!
+--
+Gustavo
 
-     xics_debugfs_init(xics);
- }
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index e7219b6f5f9a..05bcaf81a90a 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -2242,7 +2242,7 @@ static void xive_debugfs_init(struct kvmppc_xive *xive)
-
- static void kvmppc_xive_init(struct kvm_device *dev)
- {
--    struct kvmppc_xive *xive = (struct kvmppc_xive *)dev->private;
-+    struct kvmppc_xive *xive = dev->private;
-
-     /* Register some debug interfaces */
-     xive_debugfs_init(xive);
-diff --git a/arch/powerpc/kvm/book3s_xive_native.c
-b/arch/powerpc/kvm/book3s_xive_native.c
-index 76800c84f2a3..2703432cea78 100644
---- a/arch/powerpc/kvm/book3s_xive_native.c
-+++ b/arch/powerpc/kvm/book3s_xive_native.c
-@@ -1265,7 +1265,7 @@ static void xive_native_debugfs_init(struct
-kvmppc_xive *xive)
-
- static void kvmppc_xive_native_init(struct kvm_device *dev)
- {
--    struct kvmppc_xive *xive = (struct kvmppc_xive *)dev->private;
-+    struct kvmppc_xive *xive = dev->private;
-
-     /* Register some debug interfaces */
-     xive_native_debugfs_init(xive);
--- 
-2.30.2
+> 
+> Have a nice day,
+> Christian
+> 
+> 
+> On 07 May 2021 at 08:43am, Christian Zigotzky wrote:
+>> Hi Gustavo,
+>>
+>> Great! I will test it. Many thanks for your help.
+>>
+>> Cheers,
+>> Christian
+>>
+>>
+>>> On 7. May 2021, at 01:55, Gustavo A. R. Silva <gustavo@embeddedor.com> wrote:
+>>>
+>>> ﻿Hi Christian,
+>>>
+>>>> On 4/30/21 06:59, Christian Zigotzky wrote:
+>>>> Hello,
+>>>>
+>>>> The Nemo board (A-EON AmigaOne X1000) [1] and the FSL P5040 Cyrus+ board (A-EON AmigaOne X5000) [2] with installed AMD Radeon HD6970 NI graphics cards (Cayman
+>>>> XT) [3] don't boot with the latest git kernel anymore after the commit "drm/radeon/nislands_smc.h: Replace one-element array with flexible-array member in
+>>>> struct NISLANDS_SMC_SWSTATE branch" [4].  This git kernel boots in a virtual e5500 QEMU machine with a VirtIO-GPU [5].
+>>>>
+>>>> I bisected today [6].
+>>>>
+>>>> Result: drm/radeon/nislands_smc.h: Replace one-element array with flexible-array member in struct NISLANDS_SMC_SWSTATE branch
+>>>> (434fb1e7444a2efc3a4ebd950c7f771ebfcffa31) [4] is the first bad commit.
+>>> I have a fix ready for this bug:
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux.git/commit/?h=testing/drm-nislands
+>>>
+>>> I wonder if you could help me to test it with your environment, please.
+>>> It should be applied on top of mainline.
+>>>
+>>> Thank you!
+>>> -- 
+>>> Gustavo
+>>>
+>>>> I was able to revert this commit [7] and after a new compiling, the kernel boots without any problems on my AmigaOnes.
+>>>>
+>>>> After that I created a patch for reverting this commit for new git test kernels. [3]
+>>>>
+>>>> The kernel compiles and boots with this patch on my AmigaOnes. Please find attached the kernel config files.
+>>>>
+>>>> Please check the first bad commit.
+>>>>
+>>>> Thanks,
+>>>> Christian
+>>>>
+>>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+>>>> [2] http://wiki.amiga.org/index.php?title=X5000
+>>>> [3] https://forum.hyperion-entertainment.com/viewtopic.php?f=35&t=4377
+>>>> [4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=434fb1e7444a2efc3a4ebd950c7f771ebfcffa31
+>>>> [5] qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage -drive format=raw,file=MintPPC32-X5000.img,index=0,if=virtio -netdev user,id=mynet0 -device
+>>>> virtio-net-pci,netdev=mynet0 -append "rw root=/dev/vda" -device virtio-vga -usb -device usb-ehci,id=ehci -device usb-tablet -device virtio-keyboard-pci -smp 4
+>>>> -vnc :1
+>>>> [6] https://forum.hyperion-entertainment.com/viewtopic.php?p=53074#p53074
+>>>> [7] git revert 434fb1e7444a2efc3a4ebd950c7f771ebfcffa3
+> 
