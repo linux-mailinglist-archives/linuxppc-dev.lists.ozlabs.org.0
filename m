@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368C53791AE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 16:58:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADBB3791B3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 16:59:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ff4251ld9z3089
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 May 2021 00:58:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ff42d4ZnWz3bxV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 May 2021 00:59:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ff41g3CTQz2xvW
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 May 2021 00:58:30 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ff42J0HhPz2xvZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 May 2021 00:59:04 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 7F6AC67373; Mon, 10 May 2021 16:58:23 +0200 (CEST)
-Date: Mon, 10 May 2021 16:58:23 +0200
+ id 621D667373; Mon, 10 May 2021 16:59:00 +0200 (CEST)
+Date: Mon, 10 May 2021 16:59:00 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v6 01/15] swiotlb: Refactor swiotlb init functions
-Message-ID: <20210510145823.GA28066@lst.de>
+Subject: Re: [PATCH v6 02/15] swiotlb: Refactor swiotlb_create_debugfs
+Message-ID: <20210510145900.GB28066@lst.de>
 References: <20210510095026.3477496-1-tientzu@chromium.org>
- <20210510095026.3477496-2-tientzu@chromium.org>
+ <20210510095026.3477496-3-tientzu@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210510095026.3477496-2-tientzu@chromium.org>
+In-Reply-To: <20210510095026.3477496-3-tientzu@chromium.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
