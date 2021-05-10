@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30A6377B95
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 07:38:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248CA377BF5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 07:53:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdqb66VBgz307Q
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 15:38:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FdqwK0nMdz3c6j
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 15:53:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=XQ+XbY+e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=l0gP6hOH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d;
- helo=mail-pf1-x42d.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=XQ+XbY+e; dkim-atps=neutral
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
- [IPv6:2607:f8b0:4864:20::42d])
+ header.s=20161025 header.b=l0gP6hOH; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FdqZg4Yjjz30BP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 15:37:47 +1000 (AEST)
-Received: by mail-pf1-x42d.google.com with SMTP id p4so12878542pfo.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 22:37:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdqqq3KTgz308R
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 15:49:10 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id q15so8264446pgg.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 22:49:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=pGYundZh3DMkJO/27D5JZK0KI0HXvrAdOMOppV9+t9g=;
- b=XQ+XbY+eazUK4qe8iY755dRv9YEe8GiiJ5wPzdyI96Ciwesg8GtfETlGk3gEnXP7kF
- ucGMcC5yxabMLfPPEKLA5Cw8LXJWiNOJ73EqIxMW9wLFgJyMatF1NgJeWaYDvVgV8ddw
- qI0dtd1LnUN11azGl9Q2DNozWxRP8yNnZ5TOuqZE9H1G8VAx+zd6XXYIQ7V1cMgqsFWf
- Zhv4GcwyWc+ofocW8E8AsmK9UkL+JKonJWL/szf207uFjlzIISF94pgKduvNnMLYLm8N
- eqXqbLYZ0F2mG6EGpkcJLmES/lVQnKWFU/B/qx+JgXd6jY3efQiow2hP02K76QRI7obB
- jIKQ==
+ bh=RCOq1bK6jzBD5n7Izz4k/SW9DNNYxjFxMPItnne+XwQ=;
+ b=l0gP6hOHG7yQnnj7bQwHy7B6EaoSuvWpVLSuJVkh1clal3jmbodqizUaVPWGYmRgNy
+ WVKW04WFWnEmJdcUq0pBy+8uVEHEA/YrOMu20jHxq0SToOk9xhfbN6vNuzpVekl88JGq
+ tsD3XbFslQao7oCf6AwOujDIPvhQcMq44mHs2uFvshxtmDDzHwfSb6zEt7mSkKM98lCZ
+ kNALr6g5KsXygKRtWOcgKDMrEZ/ykMKlRU+iauNUN0SBCLAYlk9jcDyvSHcVAErQRxne
+ yWwFBAs0dl8P+lV0Mn1RH7sVdIt3n1JptkGvGaqAIdPziwGyWsyAgEaa7TVcybS1q1bC
+ y40g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=pGYundZh3DMkJO/27D5JZK0KI0HXvrAdOMOppV9+t9g=;
- b=ZdME1yCX511z3frGIwzjCBIkPs68MGKKtuUju9Wjq8HrhhOgdKEdq+Yr8BX92Wdn0J
- XWXr9/4Xoh5hMcI0moyuc8Ks4HHafyB6YBh4eo2dl9t6iJn6k5lfoXAL9ao/XlSJAXd6
- WVfp2jRl4SFvTWWPs7tDXYUMJbF6m1Qhmk1SD9fi2erpfrSoQTCq1vgzzjAp5CmUVd9z
- rEGS1CtE+2MHxUzi6imxh2LCzqP3G3xkMvT7/ldirab32JCr79ORLNOJB9DfbqjabQxq
- VIH4xtG1PCHbd0nhclJPN/R7PaQUTytdQZ2J4ijVAWFue/FN8o4Wpegn7FWI5ssA23Xo
- wYdw==
-X-Gm-Message-State: AOAM5314eco0yvxMWuR8OzM4bEAlBOVC9yQA2dRQq+pgCd61sd3IqEZ1
- dHpfqANheOMKEQX10Ri7gEcNrsGkbZw=
-X-Google-Smtp-Source: ABdhPJxF0/bbM2o8V0Qg7RAgNBJ7jcdJM6pJxcim7Dfi8jAEWTN6O5/hlt0JwcmSnKKIeshmiuMtRg==
-X-Received: by 2002:a62:1481:0:b029:2c1:1e90:c54 with SMTP id
- 123-20020a6214810000b02902c11e900c54mr2559336pfu.55.1620625063877; 
- Sun, 09 May 2021 22:37:43 -0700 (PDT)
+ bh=RCOq1bK6jzBD5n7Izz4k/SW9DNNYxjFxMPItnne+XwQ=;
+ b=AbP7P4eQrvbFrhL9nXguJB1/RVS4iNfwFvszkW6OtmdA5z2pvGWZhtmQ+BwWoDLsVq
+ yOwfse1J9MryDckiiHOxzCLl9gkpPuL4mzuyP9YnvNnzs7LjftKvHSotmnw7n5Bkk+Pm
+ +61lyqLpwtey4y6hxfTgrlaTP5atfdr9UfpeDo7Cu5X1JorrF3NqbFtxH6WafvaD7g3S
+ JLjpRxSw9FiwD2PD5ycAVDjcvdE36j+0KOLO/lZaQmD9+tR/odofcRomkp56Bg5MMeVs
+ CbMfu/m38x2DpGTLeuudUK/Jb5nWgkyjdVDT5or3igICxbkZ0RJ5edKFnVvJHmGCyaMA
+ 1URA==
+X-Gm-Message-State: AOAM530B7OtNk92HzzATW6NM70+JykFAAM7EqLNN8j/C0LD7prKtCRFD
+ 8I+CGwmL/6BpSZWmg1iT+Ig=
+X-Google-Smtp-Source: ABdhPJz7BUU3qFBw/o6DTLVN/NZ14YuJpLDc24lINBkOrZg7+mRw5k0opg0W4TvsGVyv6QIPuN5KOw==
+X-Received: by 2002:a62:6202:0:b029:208:f11c:2143 with SMTP id
+ w2-20020a6262020000b0290208f11c2143mr23545434pfb.32.1620625746747; 
+ Sun, 09 May 2021 22:49:06 -0700 (PDT)
 Received: from localhost (60-241-47-46.tpgi.com.au. [60.241.47.46])
- by smtp.gmail.com with ESMTPSA id l21sm9949324pfc.114.2021.05.09.22.37.43
+ by smtp.gmail.com with ESMTPSA id l64sm10535928pgd.20.2021.05.09.22.49.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 May 2021 22:37:43 -0700 (PDT)
-Date: Mon, 10 May 2021 15:37:38 +1000
+ Sun, 09 May 2021 22:49:06 -0700 (PDT)
+Date: Mon, 10 May 2021 15:49:01 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [V3 PATCH 05/16] powerpc/vas:  Define and use common vas_window
- struct
+Subject: Re: [V3 PATCH 06/16] powerpc/pseries/vas: Define VAS/NXGZIP HCALLs
+ and structs
 To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
  linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  mpe@ellerman.id.au
 References: <a910e5bd3f3398b4bd430b25a856500735b993c3.camel@linux.ibm.com>
- <293d2b3ba726c8e2a61ccca52165c4fb1e9e593e.camel@linux.ibm.com>
-In-Reply-To: <293d2b3ba726c8e2a61ccca52165c4fb1e9e593e.camel@linux.ibm.com>
+ <286ae5f4fdc4fd5620470cb0bf452e827e1f3864.camel@linux.ibm.com>
+In-Reply-To: <286ae5f4fdc4fd5620470cb0bf452e827e1f3864.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1620625034.ib9vm2fvp0.astroid@bobo.none>
+Message-Id: <1620625091.ey2jdts2en.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,11 +88,212 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of April 18, 2021 7:04 am:
+Excerpts from Haren Myneni's message of April 18, 2021 7:05 am:
+>=20
+> This patch adds HCALLs and other definitions. Also define structs
+> that are used in VAS implementation on powerVM.
+>=20
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/hvcall.h    |  7 ++
+>  arch/powerpc/include/asm/vas.h       | 28 ++++++++
+>  arch/powerpc/platforms/pseries/vas.h | 96 ++++++++++++++++++++++++++++
+>  3 files changed, 131 insertions(+)
+>  create mode 100644 arch/powerpc/platforms/pseries/vas.h
+>=20
+> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm=
+/hvcall.h
+> index ed6086d57b22..accbb7f6f272 100644
+> --- a/arch/powerpc/include/asm/hvcall.h
+> +++ b/arch/powerpc/include/asm/hvcall.h
+> @@ -294,6 +294,13 @@
+>  #define H_RESIZE_HPT_COMMIT	0x370
+>  #define H_REGISTER_PROC_TBL	0x37C
+>  #define H_SIGNAL_SYS_RESET	0x380
+> +#define	H_ALLOCATE_VAS_WINDOW	0x388
+> +#define	H_MODIFY_VAS_WINDOW	0x38C
+> +#define	H_DEALLOCATE_VAS_WINDOW	0x390
+> +#define	H_QUERY_VAS_WINDOW	0x394
+> +#define	H_QUERY_VAS_CAPABILITIES	0x398
+> +#define	H_QUERY_NX_CAPABILITIES	0x39C
+> +#define	H_GET_NX_FAULT		0x3A0
+
+These should be spaces.
+
+>  #define H_INT_GET_SOURCE_INFO   0x3A8
+>  #define H_INT_SET_SOURCE_CONFIG 0x3AC
+>  #define H_INT_GET_SOURCE_CONFIG 0x3B0
+> diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/va=
+s.h
+> index f928bf4c7e98..d15784506a54 100644
+> --- a/arch/powerpc/include/asm/vas.h
+> +++ b/arch/powerpc/include/asm/vas.h
+> @@ -179,6 +179,7 @@ struct vas_tx_win_attr {
+>  	bool rx_win_ord_mode;
+>  };
+> =20
+> +#ifdef CONFIG_PPC_POWERNV
+>  /*
+>   * Helper to map a chip id to VAS id.
+>   * For POWER9, this is a 1:1 mapping. In the future this maybe a 1:N
+> @@ -243,6 +244,33 @@ int vas_paste_crb(struct vas_window *win, int offset=
+, bool re);
+>  int vas_register_api_powernv(struct module *mod, enum vas_cop_type cop_t=
+ype,
+>  			     const char *name);
+>  void vas_unregister_api_powernv(void);
+> +#endif
+> +
+> +#ifdef CONFIG_PPC_PSERIES
+> +
+> +/* VAS Capabilities */
+> +#define VAS_GZIP_QOS_FEAT	0x1
+> +#define VAS_GZIP_DEF_FEAT	0x2
+> +#define VAS_GZIP_QOS_FEAT_BIT	(1UL << (63 - VAS_GZIP_QOS_FEAT)) /* Bit 1=
+ */
+> +#define VAS_GZIP_DEF_FEAT_BIT	(1UL << (63 - VAS_GZIP_DEF_FEAT)) /* Bit 2=
+ */
+
+Use PPC_BIT for these.
+
+> +
+> +/* NX Capabilities */
+> +#define	VAS_NX_GZIP_FEAT	0x1
+> +#define	VAS_NX_GZIP_FEAT_BIT	(1UL << (63 - VAS_NX_GZIP_FEAT)) /* Bit 1 *=
+/
+> +#define	VAS_DESCR_LEN		8
+> +
+> +struct vas_all_capabs_be {
+> +		__be64  descriptor;
+> +		__be64  feat_type;
+> +} __packed __aligned(0x1000);
+> +
+> +struct vas_all_capabs {
+> +	char	name[VAS_DESCR_LEN + 1];
+> +	u64     descriptor;
+> +	u64     feat_type;
+> +};
+
+You're using _be for the struct that is passed to the hcall, and a=20
+non-postfixed one for something the driver uses internally? It seems
+like buf or buffer, or hv_ prefix is typically used rather than be (host=20
+kernel could be BE).
+
+struct hv_query_vas_capabilities_buffer for example.
+
+Does the hcall really require 0x1000 alignment?
+
+> +
+> +#endif
+> =20
+>  /*
+>   * Register / unregister coprocessor type to VAS API which will be expor=
+ted
+> diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platform=
+s/pseries/vas.h
+> new file mode 100644
+> index 000000000000..208682fffa57
+> --- /dev/null
+> +++ b/arch/powerpc/platforms/pseries/vas.h
+> @@ -0,0 +1,96 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Copyright 2020-21 IBM Corp.
+> + */
+> +
+> +#ifndef _VAS_H
+> +#define _VAS_H
+> +#include <asm/vas.h>
+> +#include <linux/mutex.h>
+> +#include <linux/stringify.h>
+> +
+> +/*
+> + * VAS window modify flags
+> + */
+> +#define	VAS_MOD_WIN_CLOSE	(1UL << 63)
+> +#define	VAS_MOD_WIN_JOBS_KILL	(1UL << (63 - 1))
+> +#define	VAS_MOD_WIN_DR		(1UL << (63 - 3))
+> +#define	VAS_MOD_WIN_PR		(1UL << (63 - 4))
+> +#define	VAS_MOD_WIN_SF		(1UL << (63 - 5))
+> +#define	VAS_MOD_WIN_TA		(1UL << (63 - 6))
+> +#define	VAS_MOD_WIN_FLAGS	(VAS_MOD_WIN_JOBS_KILL | VAS_MOD_WIN_DR | \
+> +				VAS_MOD_WIN_PR | VAS_MOD_WIN_SF)
+> +
+> +#define	VAS_WIN_ACTIVE		0x0
+> +#define	VAS_WIN_CLOSED		0x1
+> +#define	VAS_WIN_INACTIVE	0x2	/* Inactive due to HW failure */
+> +/* Process of being modified, deallocated, or quiesced */
+> +#define	VAS_WIN_MOD_IN_PROCESS	0x3
+> +
+> +#define	VAS_COPY_PASTE_USER_MODE	0x00000001
+> +#define	VAS_COP_OP_USER_MODE		0x00000010
+> +
+> +/*
+> + * Co-processor feature - GZIP QoS windows or GZIP default windows
+> + */
+> +enum vas_cop_feat_type {
+> +	VAS_GZIP_QOS_FEAT_TYPE,
+> +	VAS_GZIP_DEF_FEAT_TYPE,
+> +	VAS_MAX_FEAT_TYPE,
+> +};
+> +
+> +struct vas_ct_capabs_be {
+> +	__be64	descriptor;
+> +	u8	win_type;		/* Default or QoS type */
+> +	u8	user_mode;
+> +	__be16	max_lpar_creds;
+> +	__be16	max_win_creds;
+> +	union {
+> +		__be16	reserved;
+> +		__be16	def_lpar_creds; /* Used for default capabilities */
+> +	};
+> +	__be16	target_lpar_creds;
+> +} __packed __aligned(0x1000);
+> +
+> +struct vas_ct_capabs {
+> +	char		name[VAS_DESCR_LEN + 1];
+> +	u64		descriptor;
+> +	u8		win_type;	/* Default or QoS type */
+> +	u8		user_mode;	/* User mode copy/paste or COP HCALL */
+> +	u16		max_lpar_creds;	/* Max credits available in LPAR */
+> +	/* Max credits can be assigned per window */
+> +	u16		max_win_creds;
+> +	union {
+> +		u16	reserved;	/* Used for QoS credit type */
+> +		u16	def_lpar_creds; /* Used for default credit type */
+> +	};
+> +	/* Total LPAR available credits. Can be different from max LPAR */
+> +	/* credits due to DLPAR operation */
+> +	atomic_t	target_lpar_creds;
+> +	atomic_t	used_lpar_creds; /* Used credits so far */
+> +	u16		avail_lpar_creds; /* Remaining available credits */
+> +};
+> +
+> +struct vas_capabs {
+> +	struct vas_ct_capabs capab;
+> +	struct list_head list;
+> +};
+> +
+> +struct vas_win_lpar_be {
+> +	__be16	version;
+> +	u8	win_type;
+> +	u8	status;
+> +	__be16	credits;	/* No of credits assigned to this window */
+> +	__be16	reserved;
+> +	__be32	pid;		/* LPAR Process ID */
+> +	__be32	tid;		/* LPAR Thread ID */
+> +	__be64	win_addr;
+> +	__be32	interrupt;	/* Interrupt when NX request completes */
+> +	__be32	fault;		/* Interrupt when NX sees fault */
+> +	/* Associativity Domain Identifiers as returned in */
+> +	/* H_HOME_NODE_ASSOCIATIVITY */
+> +	__be64	domain[6];
+> +	__be64	win_util;	/* Number of bytes processed */
+> +} __packed __aligned(0x1000);
+> +
+> +#endif /* _VAS_H */
+> --=20
+> 2.18.2
 >=20
 >=20
-
-Empty email?
-
-Thanks,
-Nick
+>=20
