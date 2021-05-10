@@ -1,77 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7BB377C1C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 08:13:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAD0377C38
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 08:19:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FdrN72X7Bz2ykM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 16:13:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FdrVh6Gqjz2ymM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 16:19:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=MLYxti87;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=gG+2CR8A;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
- helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
+ helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=MLYxti87; dkim-atps=neutral
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
- [IPv6:2607:f8b0:4864:20::1031])
+ header.s=20161025 header.b=gG+2CR8A; dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FdrMg6Mv7z2xZN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 16:13:17 +1000 (AEST)
-Received: by mail-pj1-x1031.google.com with SMTP id
- lj11-20020a17090b344bb029015bc3073608so9667876pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 23:13:17 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FdrVF0g4rz2xv3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 16:18:58 +1000 (AEST)
+Received: by mail-pg1-x532.google.com with SMTP id t193so12180pgb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 23:18:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=E7fPAyDsgNQKBABIpTTisqqIXxwzsczxL2R06rfhFDI=;
- b=MLYxti87ppq5UVUY92+gj95tRCUV6P8JqTHWQTq/eOgrUOqnU9TGVfcdv2VhjNHp2A
- JPxyqiJFYlwmIRdE1rjJxnc/g9fNe+su2as26eBKgL/Ghy+2VGJ287WU8SJMJqhSx9ci
- HX+dtfTELKu5MpEEx9Bq5kPiFAKlDlntVlkAmWb2Z+Fvl1oEk6GgZNsjEnOI6BsynOmg
- MxbgCcOW+6f66Q8ngo9FW5v8B+XLko4ZEhwCeesYmo/NVyQsBKFxaZhHD8HxVWcDSzcH
- 1+Vngl9Zcv5hwryA2ALO86Uez8ILT5uFMXCAZ9/9Rc47JJIJSDOlqymdxBt+z1dde7/B
- fMDw==
+ bh=iMj5Um8f+G5xPbwOX4gj2TuSJu85tSxJ1UAz8uEezeM=;
+ b=gG+2CR8A4ijBIDqvpLcEE5kvSqUx5iwX4wy6GnmwelZXhsbmVkX5tHOb5S/HGeh9jo
+ bGJRPMNAeSFI3jKEVH+YGqlTm4+NDq8oAO+2U+BUNQ6BzY7Y7eaUFAO6RrygwhTod5g/
+ 8G+1Qy8L0uH9R3V3LAtKSCqq85IKfoa3Lo3wu6dxV/lFADfcSY3eih2huXjtd1bcjNO7
+ Ijrm3psdgUpOdOJxdSPZXr74N0FcKi3YV5IRKzOLAB5pmFehwDfkd+7PDK78qcuvEI9m
+ tqMyYfuvk/DZ9mDClrKyUefaBEJcBlY78lSVVGczSzjTYwhcxEAS9FBOlKf1JeHe7aR8
+ PfFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=E7fPAyDsgNQKBABIpTTisqqIXxwzsczxL2R06rfhFDI=;
- b=RKptalWH7bmXF9wh6t9N45B+HDNmOxE0dFAm5aILv7EDFAaywFuToZiUqvtMleamaB
- NyWeOeMrW121znY7B3RPn5hsynNR+z68WHCVFcKgvbXtb0VugxOlDxEYXiOYFJ9HMueS
- evhpSsGbxcBzMYY/uIHcAa5XRx5lZ695scL8tuT6ZaHom/nXiq8RBGR/hgcBcoZytRfc
- MM7cCXfpGrWem/LuWzsduVCmKwkerUHszKpIktyd/czvvGhD6fBrDHcSvw9vYE70KgJU
- iphBUkEwkQFmvMfkvlSghCghSrvbxoeDRL1HZA7uuhcdwlyRpy0IfwHuRDX4RusXJbbz
- 6pvg==
-X-Gm-Message-State: AOAM530tN4gFCovqMa9jhyZklyuxX/svZ8hnBd4EdQrNeyGez2fdVDQK
- V3E4fBLvC9sipXTZNLVKHAY=
-X-Google-Smtp-Source: ABdhPJwi86LG1rzD1jOShk01HO2vYrZCiIN2edLT4WMXIsU2NwDWZMYkV7ZDvJ8aD7+egzmA5LYN7Q==
-X-Received: by 2002:a17:90a:390d:: with SMTP id
- y13mr2687166pjb.133.1620627194006; 
- Sun, 09 May 2021 23:13:14 -0700 (PDT)
+ bh=iMj5Um8f+G5xPbwOX4gj2TuSJu85tSxJ1UAz8uEezeM=;
+ b=o6QPRdxdS/+WfbS8wCltuSN1CsmhsZkxxjUBxZMaLBcpF3Cqlk+kAdcWa4l4seL/Cv
+ VW3MfXKPwukTqTJo4hHAVBnJsnInX5V7av9CzOubOw/1FMx8WZ3bdov1DcNfW1v3AlTM
+ QS62nlunXbD6h0Pw238nVeUqyykKukCCKBj08yqk5Mg3iwuR7XIvXI1KgLGJEQaLf3CF
+ bCopIvg/PoPsngaP7+6/9i9nAB+yOp9Im4D1Yk1veiAwZ/Yv8DmPgsCZAtEOxAetMQ8P
+ 5WOhsf/e1Fs4oiUwe2gwDPnz/pqAzGJFV2+SMO8+ovOKML+1xsU4ARFcSFzfCx5XXVyz
+ PW9A==
+X-Gm-Message-State: AOAM531CzMbILC2Vw3GpgwoFubVICkX8FezHMN5PHvcUyqwRNLkRs6Pz
+ bv3HyjcQIWK6ezIIonxgaTW7C9psAPU=
+X-Google-Smtp-Source: ABdhPJyDaq2sgoKaRT41RqK20giwj8q8m/idFMKEcSXPqqEdbLg5ye+EPXVnmx+shMjcg2u9YMv5pg==
+X-Received: by 2002:a63:130b:: with SMTP id i11mr2817250pgl.267.1620627535151; 
+ Sun, 09 May 2021 23:18:55 -0700 (PDT)
 Received: from localhost (60-241-47-46.tpgi.com.au. [60.241.47.46])
- by smtp.gmail.com with ESMTPSA id v123sm10164091pfb.80.2021.05.09.23.13.12
+ by smtp.gmail.com with ESMTPSA id bx12sm18488375pjb.1.2021.05.09.23.18.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 May 2021 23:13:13 -0700 (PDT)
-Date: Mon, 10 May 2021 16:13:08 +1000
+ Sun, 09 May 2021 23:18:54 -0700 (PDT)
+Date: Mon, 10 May 2021 16:18:49 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [V3 PATCH 09/16] powerpc/pseries/vas: Implement to get all
- capabilities
+Subject: Re: [V3 PATCH 10/16] powerpc/pseries/vas: Integrate API with
+ open/close windows
 To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
  linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  mpe@ellerman.id.au
 References: <a910e5bd3f3398b4bd430b25a856500735b993c3.camel@linux.ibm.com>
- <f6cdf811a29c22056740d48fa3de010f4ea4b848.camel@linux.ibm.com>
-In-Reply-To: <f6cdf811a29c22056740d48fa3de010f4ea4b848.camel@linux.ibm.com>
+ <4b66c4eea2c0213be658180c987d81f3bb82293d.camel@linux.ibm.com>
+In-Reply-To: <4b66c4eea2c0213be658180c987d81f3bb82293d.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1620626553.7v3m168yl3.astroid@bobo.none>
+Message-Id: <1620627261.4i7ukw5i5a.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -91,196 +89,305 @@ Sender: "Linuxppc-dev"
 
 Excerpts from Haren Myneni's message of April 18, 2021 7:08 am:
 >=20
-> pHyp provides various VAS capabilities such as GZIP default and QoS
-> capabilities which are used to determine total number of credits
-> available in LPAR, maximum window credits, maximum LPAR credits,
-> whether usermode copy/paste is supported, and etc.
+> This patch adds VAS window allocatioa/close with the corresponding
+> HCALLs. Also changes to integrate with the existing user space VAS
+> API and provide register/unregister functions to NX pseries driver.
 >=20
-> So first retrieve overall vas capabilities using
-> H_QUERY_VAS_CAPABILITIES HCALL which tells the specific features that
-> are available. Then retrieve the specific capabilities by using the
-> feature type in H_QUERY_VAS_CAPABILITIES HCALL.
+> The driver register function is used to create the user space
+> interface (/dev/crypto/nx-gzip) and unregister to remove this entry.
 >=20
-> pHyp supports only GZIP default and GZIP QoS capabilities right now.
-
-Changelog and title could use a bit of work.
-
+> The user space process opens this device node and makes an ioctl
+> to allocate VAS window. The close interface is used to deallocate
+> window.
 >=20
 > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 > ---
->  arch/powerpc/platforms/pseries/vas.c | 130 +++++++++++++++++++++++++++
->  1 file changed, 130 insertions(+)
+>  arch/powerpc/include/asm/vas.h          |   5 +
+>  arch/powerpc/platforms/book3s/Kconfig   |   2 +-
+>  arch/powerpc/platforms/pseries/Makefile |   1 +
+>  arch/powerpc/platforms/pseries/vas.c    | 212 ++++++++++++++++++++++++
+>  4 files changed, 219 insertions(+), 1 deletion(-)
 >=20
+> diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/va=
+s.h
+> index d15784506a54..aa1974aba27e 100644
+> --- a/arch/powerpc/include/asm/vas.h
+> +++ b/arch/powerpc/include/asm/vas.h
+> @@ -270,6 +270,11 @@ struct vas_all_capabs {
+>  	u64     feat_type;
+>  };
+> =20
+> +int plpar_vas_query_capabilities(const u64 hcall, u8 query_type,
+> +				 u64 result);
+> +int vas_register_api_pseries(struct module *mod,
+> +			     enum vas_cop_type cop_type, const char *name);
+> +void vas_unregister_api_pseries(void);
+>  #endif
+> =20
+>  /*
+> diff --git a/arch/powerpc/platforms/book3s/Kconfig b/arch/powerpc/platfor=
+ms/book3s/Kconfig
+> index 51e14db83a79..bed21449e8e5 100644
+> --- a/arch/powerpc/platforms/book3s/Kconfig
+> +++ b/arch/powerpc/platforms/book3s/Kconfig
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  config PPC_VAS
+>  	bool "IBM Virtual Accelerator Switchboard (VAS)"
+> -	depends on PPC_POWERNV && PPC_64K_PAGES
+> +	depends on (PPC_POWERNV || PPC_PSERIES) && PPC_64K_PAGES
+>  	default y
+>  	help
+>  	  This enables support for IBM Virtual Accelerator Switchboard (VAS).
+> diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platf=
+orms/pseries/Makefile
+> index c8a2b0b05ac0..4cda0ef87be0 100644
+> --- a/arch/powerpc/platforms/pseries/Makefile
+> +++ b/arch/powerpc/platforms/pseries/Makefile
+> @@ -30,3 +30,4 @@ obj-$(CONFIG_PPC_SVM)		+=3D svm.o
+>  obj-$(CONFIG_FA_DUMP)		+=3D rtas-fadump.o
+> =20
+>  obj-$(CONFIG_SUSPEND)		+=3D suspend.o
+> +obj-$(CONFIG_PPC_VAS)		+=3D vas.o
 > diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platform=
 s/pseries/vas.c
-> index 06960151477c..35946fb02995 100644
+> index 35946fb02995..0ade0d6d728f 100644
 > --- a/arch/powerpc/platforms/pseries/vas.c
 > +++ b/arch/powerpc/platforms/pseries/vas.c
-> @@ -30,6 +30,13 @@
->  /* phyp allows one credit per window right now */
->  #define DEF_WIN_CREDS		1
-> =20
-> +static struct vas_all_capabs capabs_all;
-
-Does this name come from PAPR? If not, capabilities or caps are better=20
-for readability than capabs.
-
-> +static int copypaste_feat;
-
-Should be a bool? And what does it mean? copy-paste is a host core=20
-capability.
-
-> +
-> +struct vas_capabs vcapabs[VAS_MAX_FEAT_TYPE];
-> +
-> +DEFINE_MUTEX(vas_pseries_mutex);
-
-Can these be made static if they're only used here, and export them if a=20
-future patch uses them (or add the header declaration now).
-
-
-> +
->  static int64_t hcall_return_busy_check(int64_t rc)
->  {
->  	/* Check if we are stalled for some time */
-> @@ -215,3 +222,126 @@ int plpar_vas_query_capabilities(const u64 hcall, u=
+> @@ -222,6 +222,218 @@ int plpar_vas_query_capabilities(const u64 hcall, u=
 8 query_type,
 >  		return -EIO;
 >  	}
 >  }
+> +EXPORT_SYMBOL_GPL(plpar_vas_query_capabilities);
 > +
 > +/*
-> + * Get the specific capabilities based on the feature type.
-> + * Right now supports GZIP default and GZIP QoS capabilities.
+> + * Allocate window and setup IRQ mapping.
 > + */
-> +static int get_vas_capabilities(u8 feat, enum vas_cop_feat_type type,
-> +				struct vas_ct_capabs_be *capab_be)
+> +static int allocate_setup_window(struct vas_window *txwin,
+> +				 u64 *domain, u8 wintype)
 > +{
-> +	struct vas_ct_capabs *capab;
-> +	struct vas_capabs *vcapab;
-> +	int rc =3D 0;
+> +	int rc;
 > +
-> +	vcapab =3D &vcapabs[type];
-> +	memset(vcapab, 0, sizeof(*vcapab));
-> +	INIT_LIST_HEAD(&vcapab->list);
-> +
-> +	capab =3D &vcapab->capab;
-> +
-> +	rc =3D plpar_vas_query_capabilities(H_QUERY_VAS_CAPABILITIES, feat,
-> +					  (u64)virt_to_phys(capab_be));
+> +	rc =3D plpar_vas_allocate_window(txwin, domain, wintype, DEF_WIN_CREDS)=
+;
 > +	if (rc)
 > +		return rc;
 > +
-> +	capab->user_mode =3D capab_be->user_mode;
-> +	if (!(capab->user_mode & VAS_COPY_PASTE_USER_MODE)) {
-> +		pr_err("User space COPY/PASTE is not supported\n");
-> +		return -ENOTSUPP;
-> +	}
-> +
-> +	snprintf(capab->name, VAS_DESCR_LEN + 1, "%.8s",
-> +		 (char *)&capab_be->descriptor);
-> +	capab->descriptor =3D be64_to_cpu(capab_be->descriptor);
-> +	capab->win_type =3D capab_be->win_type;
-> +	if (capab->win_type >=3D VAS_MAX_FEAT_TYPE) {
-> +		pr_err("Unsupported window type %u\n", capab->win_type);
-> +		return -EINVAL;
-> +	}
-> +	capab->max_lpar_creds =3D be16_to_cpu(capab_be->max_lpar_creds);
-> +	capab->max_win_creds =3D be16_to_cpu(capab_be->max_win_creds);
-> +	atomic_set(&capab->target_lpar_creds,
-> +		   be16_to_cpu(capab_be->target_lpar_creds));
-> +	if (feat =3D=3D VAS_GZIP_DEF_FEAT) {
-> +		capab->def_lpar_creds =3D be16_to_cpu(capab_be->def_lpar_creds);
-> +
-> +		if (capab->max_win_creds < DEF_WIN_CREDS) {
-> +			pr_err("Window creds(%u) > max allowed window creds(%u)\n",
-> +			       DEF_WIN_CREDS, capab->max_win_creds);
-> +			return -EINVAL;
-> +		}
-> +	}
-> +
-> +	copypaste_feat =3D 1;
+> +	txwin->wcreds_max =3D DEF_WIN_CREDS;
 > +
 > +	return 0;
 > +}
 > +
-> +static int __init pseries_vas_init(void)
+> +static struct vas_window *vas_allocate_window(struct vas_tx_win_open_att=
+r *uattr,
+> +					      enum vas_cop_type cop_type)
 > +{
-> +	struct vas_ct_capabs_be *ct_capabs_be;
-> +	struct vas_all_capabs_be *capabs_be;
+> +	long domain[PLPAR_HCALL9_BUFSIZE] =3D {VAS_DEFAULT_DOMAIN_ID};
+> +	struct vas_ct_capabs *ct_capab;
+> +	struct vas_capabs *capabs;
+> +	struct vas_window *txwin;
 > +	int rc;
 > +
-> +	/*
-> +	 * Linux supports user space COPY/PASTE only with Radix
-> +	 */
-> +	if (!radix_enabled()) {
-> +		pr_err("API is supported only with radix page tables\n");
-> +		return -ENOTSUPP;
-> +	}
+> +	txwin =3D kzalloc(sizeof(*txwin), GFP_KERNEL);
+> +	if (!txwin)
+> +		return ERR_PTR(-ENOMEM);
 > +
-> +	capabs_be =3D kmalloc(sizeof(*capabs_be), GFP_KERNEL);
-> +	if (!capabs_be)
-> +		return -ENOMEM;
 > +	/*
-> +	 * Get VAS overall capabilities by passing 0 to feature type.
+> +	 * A VAS window can have many credits which means that many
+> +	 * requests can be issued simultaneously. But phyp restricts
+> +	 * one credit per window.
+> +	 * phyp introduces 2 different types of credits:
+> +	 * Default credit type (Uses normal priority FIFO):
+> +	 *	A limited number of credits are assigned to partitions
+> +	 *	based on processor entitlement. But these credits may be
+> +	 *	over-committed on a system depends on whether the CPUs
+> +	 *	are in shared or dedicated modes - that is, more requests
+> +	 *	may be issued across the system than NX can service at
+> +	 *	once which can result in paste command failure (RMA_busy).
+> +	 *	Then the process has to resend requests or fall-back to
+> +	 *	SW compression.
+> +	 * Quality of Service (QoS) credit type (Uses high priority FIFO):
+> +	 *	To avoid NX HW contention, the system admins can assign
+> +	 *	QoS credits for each LPAR so that this partition is
+> +	 *	guaranteed access to NX resources. These credits are
+> +	 *	assigned to partitions via the HMC.
+> +	 *	Refer PAPR for more information.
+> +	 *
+> +	 * Allocate window with QoS credits if user requested. Otherwise
+> +	 * default credits are used.
 > +	 */
-> +	rc =3D plpar_vas_query_capabilities(H_QUERY_VAS_CAPABILITIES, 0,
-> +					  (u64)virt_to_phys(capabs_be));
-> +	if (rc)
+> +	if (uattr->flags & VAS_WIN_QOS_CREDITS)
+> +		capabs =3D &vcapabs[VAS_GZIP_QOS_FEAT_TYPE];
+> +	else
+> +		capabs =3D &vcapabs[VAS_GZIP_DEF_FEAT_TYPE];
+> +
+> +	ct_capab =3D &capabs->capab;
+> +
+> +	if (atomic_inc_return(&ct_capab->used_lpar_creds) >
+> +			atomic_read(&ct_capab->target_lpar_creds)) {
+> +		pr_err("Credits are not available to allocate window\n");
+> +		rc =3D -EINVAL;
 > +		goto out;
-> +
-> +	snprintf(capabs_all.name, VAS_DESCR_LEN, "%.7s",
-> +		 (char *)&capabs_be->descriptor);
-> +	capabs_all.descriptor =3D be64_to_cpu(capabs_be->descriptor);
-> +	capabs_all.feat_type =3D be64_to_cpu(capabs_be->feat_type);
-> +
-> +	ct_capabs_be =3D kmalloc(sizeof(*ct_capabs_be), GFP_KERNEL);
-> +	if (!ct_capabs_be) {
-> +		rc =3D -ENOMEM;
-> +		goto out;
 > +	}
+> +
 > +	/*
-> +	 * QOS capabilities available
+> +	 * The user space is requesting to allocate a window on a VAS
+> +	 * instance (or chip) where the process is executing.
+> +	 * On powerVM, domain values are passed to pHyp to select chip /
+> +	 * VAS instance. Useful if the process is affinity to NUMA node.
+> +	 * pHyp selects VAS instance if VAS_DEFAULT_DOMAIN_ID (-1) is
+> +	 * passed for domain values.
 > +	 */
-> +	if (capabs_all.feat_type & VAS_GZIP_QOS_FEAT_BIT) {
-> +		rc =3D get_vas_capabilities(VAS_GZIP_QOS_FEAT,
-> +					  VAS_GZIP_QOS_FEAT_TYPE, ct_capabs_be);
-> +
-> +		if (rc)
-> +			goto out_ct;
+> +	if (uattr->vas_id =3D=3D -1) {
+> +		/*
+> +		 * To allocate VAS window, pass same domain values returned
+> +		 * from this HCALL.
+> +		 */
+> +		rc =3D plpar_hcall9(H_HOME_NODE_ASSOCIATIVITY, domain,
+> +				  VPHN_FLAG_VCPU, smp_processor_id());
+> +		if (rc !=3D H_SUCCESS) {
+> +			pr_err("HCALL(%x): failed with ret(%d)\n",
+> +			       H_HOME_NODE_ASSOCIATIVITY, rc);
+> +			goto out;
+> +		}
 > +	}
+> +
 > +	/*
-> +	 * Default capabilities available
+> +	 * Allocate / Deallocate window HCALLs and setup / free IRQs
+> +	 * have to be protected with mutex. Otherwise, since IRQ is freed
+> +	 * after deallocate HCALL, may see the case where window ID and
+> +	 * fault interrupt could be reused before free IRQ (for the old
+> +	 * window) in kernel. It can result in setup IRQ fail for the
+> +	 * new window.
 > +	 */
-> +	if (capabs_all.feat_type & VAS_GZIP_DEF_FEAT_BIT) {
-> +		rc =3D get_vas_capabilities(VAS_GZIP_DEF_FEAT,
-> +					  VAS_GZIP_DEF_FEAT_TYPE, ct_capabs_be);
-> +		if (rc)
-> +			goto out_ct;
-> +	}
 
-Using the same buffer for two hcalls? Do they fill in different parts of=20
-it?
+It's a bit difficult to understand that comment.
 
-> +
-> +	if (!copypaste_feat)
-> +		pr_err("GZIP feature is not supported\n");
+The window deallocate is protected with the mutex, then the mutex
+gets dropped. Some time later presumably the IRQ gets freed.
 
-This is dead code AFAIKS, because errors will always branch to out.
+What prevents the window ID from being reused in between?
 
 Thanks,
 Nick
 
+> +	mutex_lock(&vas_pseries_mutex);
+> +	rc =3D allocate_setup_window(txwin, (u64 *)&domain[0],
+> +				   ct_capab->win_type);
+> +	mutex_unlock(&vas_pseries_mutex);
+> +	if (rc)
+> +		goto out;
 > +
-> +	pr_info("GZIP feature is available\n");
+> +	/*
+> +	 * Modify window and it is ready to use.
+> +	 */
+> +	rc =3D plpar_vas_modify_window(txwin);
+> +	if (!rc)
+> +		rc =3D vas_reference_task(&txwin->task);
+> +	if (rc)
+> +		goto out_free;
 > +
-> +out_ct:
-> +	kfree(ct_capabs_be);
+> +	txwin->lpar.win_type =3D ct_capab->win_type;
+> +	mutex_lock(&vas_pseries_mutex);
+> +	list_add(&txwin->lpar.win_list, &capabs->list);
+> +	mutex_unlock(&vas_pseries_mutex);
+> +
+> +	return txwin;
+> +
+> +out_free:
+> +	plpar_vas_deallocate_window(txwin->winid);
 > +out:
-> +	kfree(capabs_be);
+> +	atomic_dec(&ct_capab->used_lpar_creds);
+> +	kfree(txwin);
+> +	return ERR_PTR(rc);
+> +}
+> +
+> +static u64 vas_paste_address(void *addr)
+> +{
+> +	struct vas_window *win =3D addr;
+> +
+> +	return win->lpar.win_addr;
+> +}
+> +
+> +static int deallocate_free_window(struct vas_window *win)
+> +{
+> +	int rc =3D 0;
+> +
+> +	rc =3D plpar_vas_deallocate_window(win->winid);
+> +	if (!rc)
+> +		kfree(win->lpar.name);
+> +
 > +	return rc;
 > +}
-> +machine_device_initcall(pseries, pseries_vas_init);
+> +
+> +static int vas_deallocate_window(void *addr)
+> +{
+> +	struct vas_window *win =3D (struct vas_window *)addr;
+> +	struct vas_ct_capabs *capabs;
+> +	int rc =3D 0;
+> +
+> +	if (!win)
+> +		return -EINVAL;
+> +
+> +	/* Should not happen */
+> +	if (win->lpar.win_type >=3D VAS_MAX_FEAT_TYPE) {
+> +		pr_err("Window (%u): Invalid window type %u\n",
+> +				win->winid, win->lpar.win_type);
+> +		return -EINVAL;
+> +	}
+> +
+> +	capabs =3D &vcapabs[win->lpar.win_type].capab;
+> +	mutex_lock(&vas_pseries_mutex);
+> +	rc =3D deallocate_free_window(win);
+> +	if (rc) {
+> +		mutex_unlock(&vas_pseries_mutex);
+> +		return rc;
+> +	}
+> +
+> +	list_del(&win->lpar.win_list);
+> +	atomic_dec(&capabs->used_lpar_creds);
+> +	mutex_unlock(&vas_pseries_mutex);
+> +
+> +	vas_drop_reference_task(&win->task);
+> +
+> +	kfree(win);
+> +	return 0;
+> +}
+> +
+> +static struct vas_user_win_ops vops_pseries =3D {
+> +	.open_win	=3D vas_allocate_window,	/* Open and configure window */
+> +	.paste_addr	=3D vas_paste_address,	/* To do copy/paste */
+> +	.close_win	=3D vas_deallocate_window, /* Close window */
+> +};
+> +
+> +/*
+> + * Supporting only nx-gzip coprocessor type now, but this API code
+> + * extended to other coprocessor types later.
+> + */
+> +int vas_register_api_pseries(struct module *mod, enum vas_cop_type cop_t=
+ype,
+> +			     const char *name)
+> +{
+> +	int rc;
+> +
+> +	if (!copypaste_feat)
+> +		return -ENOTSUPP;
+> +
+> +	rc =3D vas_register_coproc_api(mod, cop_type, name, &vops_pseries);
+> +
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_GPL(vas_register_api_pseries);
+> +
+> +void vas_unregister_api_pseries(void)
+> +{
+> +	vas_unregister_coproc_api();
+> +}
+> +EXPORT_SYMBOL_GPL(vas_unregister_api_pseries);
+> =20
+>  /*
+>   * Get the specific capabilities based on the feature type.
 > --=20
 > 2.18.2
 >=20
