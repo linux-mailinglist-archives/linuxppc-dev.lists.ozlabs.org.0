@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74069377AF7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 06:17:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215D4377AF8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 06:18:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FdnpQ35BKz3dYd
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 14:17:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdnpq1X0dz3df5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 14:18:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.218.41; helo=mail-ej1-f41.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.50; helo=mail-ej1-f50.google.com;
  envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com
- [209.85.218.41])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com
+ [209.85.218.50])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdnkk0t7sz2ykQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 14:14:37 +1000 (AEST)
-Received: by mail-ej1-f41.google.com with SMTP id t4so22489074ejo.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 21:14:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdnkl0pdgz2yyF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 14:14:39 +1000 (AEST)
+Received: by mail-ej1-f50.google.com with SMTP id a4so22442218ejk.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 21:14:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=DdJ+gi3kfx5UscQD8MEmkjatX64t7LAuyBsCWTQVyR4=;
- b=iCEV9fe83WwQ935COoPCOuk/PQytPElq9fXtXgTA8HZj4jOC1x6t+ixsPoPrdLbE+Q
- IryZfrO1V+8eeohLWRYqcqAE9Wnd/zvtC7VOh59+1Y20DmGxiDQ8Ss2Mzmsh1dpKR3Pi
- R28u+mugu3npnrmMBXGprVC6cgtRquR1APZ2fkeqIMLid5Ne0DH3O1moJ+JnAFZ3vZs9
- 2cRb/ILcSGZVgUwbtTq5kfK44NiVTWVOgqPy8FNVykx41LohKHEx2UQvjhb3+29bnZZH
- zZ9jEvtsZZjs6ZX7xmBTXRHlMtXW6o0vaUY/b+2zm5RA5+Eut9wtAJi6UwhUo+1ywyeh
- AMDQ==
-X-Gm-Message-State: AOAM532bNBgTJM74a18YP9GoFPJkrEoZ57kY78SyieiIZAcql54ZXtfm
- L+sYxJbqe6C1eT1rOSHVmo0=
-X-Google-Smtp-Source: ABdhPJzQfHOmwxaUAAA/yt6AGTtGTnJzQboG84wpMWkla3kP1bDDdqnRsuymn/mXmRv8Z4Fc2V9tUw==
-X-Received: by 2002:a17:906:e2d6:: with SMTP id
- gr22mr24241114ejb.356.1620620074968; 
- Sun, 09 May 2021 21:14:34 -0700 (PDT)
+ bh=O4j5vWKcpf1/fXayhp3JqEGpiyWg4HsxhuOtNpqA8wo=;
+ b=a05q0gyiJEnlfy7BsYHfSLlF8xUGXE9+5QpMRTj0Bg0pDqkZGuRrOCr/k6QOOK/iWx
+ R2vfx4AaqfFqZSxh8UuNOAvQzKk0idqJeA0iQgOW5HdgMQqjz+Osx9M0b8zBc7GiIUXI
+ CxDBhAZqn8V6nKq/rRvzQQTAxIRE5b+dZ5xWN81YDvTFXDweBMMAJ6WRVHyAxCWJY4DI
+ BTx5hW9H0qYBQyC7CcnCYwHjKdl2uhcxV+Y/lzWhaJsm7siUj1/9aexPJ8ioI4EHyzY1
+ sR0L7bUN8Td+8ltu+egCzctTouhA14Sk/FN2RcDc5vDH1iPtdLx4wTNNWx5K1qAFM7/l
+ p6aw==
+X-Gm-Message-State: AOAM531j9LP1ff/rAH3y6GRQ4M0FvSDbMv/Bz3o33gV7B8ecu+YPkZ7o
+ dkfDv6NhAVHOhMkt+ribaDw=
+X-Google-Smtp-Source: ABdhPJxAMYMmdFA8LcrGyx+Esmofgetxmn7HIC4ymO123FV0i4E2XHOiD2QzhPJk97n5J1FaLHqY5A==
+X-Received: by 2002:a17:907:100e:: with SMTP id
+ ox14mr24169542ejb.484.1620620075998; 
+ Sun, 09 May 2021 21:14:35 -0700 (PDT)
 Received: from workstation.lan ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id e4sm8165006ejh.98.2021.05.09.21.14.34
+ by smtp.gmail.com with ESMTPSA id e4sm8165006ejh.98.2021.05.09.21.14.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 May 2021 21:14:34 -0700 (PDT)
+ Sun, 09 May 2021 21:14:35 -0700 (PDT)
 From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 10/11] PCI: hotplug: Use sysfs_emit() and sysfs_emit_at() in
+Subject: [PATCH 11/11] PCI: shpchp: Use sysfs_emit() and sysfs_emit_at() in
  "show" functions
-Date: Mon, 10 May 2021 04:14:23 +0000
-Message-Id: <20210510041424.233565-10-kw@linux.com>
+Date: Mon, 10 May 2021 04:14:24 +0000
+Message-Id: <20210510041424.233565-11-kw@linux.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210510041424.233565-1-kw@linux.com>
 References: <20210510041424.233565-1-kw@linux.com>
@@ -92,49 +92,85 @@ Related to:
 
 Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 ---
- drivers/pci/hotplug/pci_hotplug_core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/hotplug/shpchp_sysfs.c | 38 +++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/pci/hotplug/pci_hotplug_core.c b/drivers/pci/hotplug/pci_hotplug_core.c
-index 5ac31f683b85..058d5937d8a9 100644
---- a/drivers/pci/hotplug/pci_hotplug_core.c
-+++ b/drivers/pci/hotplug/pci_hotplug_core.c
-@@ -73,7 +73,7 @@ static ssize_t power_read_file(struct pci_slot *pci_slot, char *buf)
- 	if (retval)
- 		return retval;
+diff --git a/drivers/pci/hotplug/shpchp_sysfs.c b/drivers/pci/hotplug/shpchp_sysfs.c
+index 45658bb5c554..64beed7a26be 100644
+--- a/drivers/pci/hotplug/shpchp_sysfs.c
++++ b/drivers/pci/hotplug/shpchp_sysfs.c
+@@ -24,50 +24,54 @@
+ static ssize_t show_ctrl(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+ 	struct pci_dev *pdev;
+-	char *out = buf;
+ 	int index, busnr;
+ 	struct resource *res;
+ 	struct pci_bus *bus;
++	size_t len = 0;
  
--	return sprintf(buf, "%d\n", value);
-+	return sysfs_emit(buf, "%d\n", value);
+ 	pdev = to_pci_dev(dev);
+ 	bus = pdev->subordinate;
+ 
+-	out += sprintf(buf, "Free resources: memory\n");
++	len += sysfs_emit_at(buf, len, "Free resources: memory\n");
+ 	pci_bus_for_each_resource(bus, res, index) {
+ 		if (res && (res->flags & IORESOURCE_MEM) &&
+ 				!(res->flags & IORESOURCE_PREFETCH)) {
+-			out += sprintf(out, "start = %8.8llx, length = %8.8llx\n",
+-				       (unsigned long long)res->start,
+-				       (unsigned long long)resource_size(res));
++			len += sysfs_emit_at(buf, len,
++					     "start = %8.8llx, length = %8.8llx\n",
++					     (unsigned long long)res->start,
++					     (unsigned long long)resource_size(res));
+ 		}
+ 	}
+-	out += sprintf(out, "Free resources: prefetchable memory\n");
++	len += sysfs_emit_at(buf, len, "Free resources: prefetchable memory\n");
+ 	pci_bus_for_each_resource(bus, res, index) {
+ 		if (res && (res->flags & IORESOURCE_MEM) &&
+ 			       (res->flags & IORESOURCE_PREFETCH)) {
+-			out += sprintf(out, "start = %8.8llx, length = %8.8llx\n",
+-				       (unsigned long long)res->start,
+-				       (unsigned long long)resource_size(res));
++			len += sysfs_emit_at(buf, len,
++					     "start = %8.8llx, length = %8.8llx\n",
++					     (unsigned long long)res->start,
++					     (unsigned long long)resource_size(res));
+ 		}
+ 	}
+-	out += sprintf(out, "Free resources: IO\n");
++	len += sysfs_emit_at(buf, len, "Free resources: IO\n");
+ 	pci_bus_for_each_resource(bus, res, index) {
+ 		if (res && (res->flags & IORESOURCE_IO)) {
+-			out += sprintf(out, "start = %8.8llx, length = %8.8llx\n",
+-				       (unsigned long long)res->start,
+-				       (unsigned long long)resource_size(res));
++			len += sysfs_emit_at(buf, len,
++					     "start = %8.8llx, length = %8.8llx\n",
++					     (unsigned long long)res->start,
++					     (unsigned long long)resource_size(res));
+ 		}
+ 	}
+-	out += sprintf(out, "Free resources: bus numbers\n");
++	len += sysfs_emit_at(buf, len, "Free resources: bus numbers\n");
+ 	for (busnr = bus->busn_res.start; busnr <= bus->busn_res.end; busnr++) {
+ 		if (!pci_find_bus(pci_domain_nr(bus), busnr))
+ 			break;
+ 	}
+ 	if (busnr < bus->busn_res.end)
+-		out += sprintf(out, "start = %8.8x, length = %8.8x\n",
+-				busnr, (int)(bus->busn_res.end - busnr));
++		len += sysfs_emit_at(buf, len,
++				     "start = %8.8x, length = %8.8x\n",
++				     busnr, (int)(bus->busn_res.end - busnr));
+ 
+-	return out - buf;
++	return len;
  }
+ static DEVICE_ATTR(ctrl, S_IRUGO, show_ctrl, NULL);
  
- static ssize_t power_write_file(struct pci_slot *pci_slot, const char *buf,
-@@ -130,7 +130,7 @@ static ssize_t attention_read_file(struct pci_slot *pci_slot, char *buf)
- 	if (retval)
- 		return retval;
- 
--	return sprintf(buf, "%d\n", value);
-+	return sysfs_emit(buf, "%d\n", value);
- }
- 
- static ssize_t attention_write_file(struct pci_slot *pci_slot, const char *buf,
-@@ -175,7 +175,7 @@ static ssize_t latch_read_file(struct pci_slot *pci_slot, char *buf)
- 	if (retval)
- 		return retval;
- 
--	return sprintf(buf, "%d\n", value);
-+	return sysfs_emit(buf, "%d\n", value);
- }
- 
- static struct pci_slot_attribute hotplug_slot_attr_latch = {
-@@ -192,7 +192,7 @@ static ssize_t presence_read_file(struct pci_slot *pci_slot, char *buf)
- 	if (retval)
- 		return retval;
- 
--	return sprintf(buf, "%d\n", value);
-+	return sysfs_emit(buf, "%d\n", value);
- }
- 
- static struct pci_slot_attribute hotplug_slot_attr_presence = {
 -- 
 2.31.1
 
