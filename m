@@ -2,76 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47979377C08
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 08:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D70377C13
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 08:07:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdr6P2fXFz2yy9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 16:01:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FdrF86zMlz3046
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 16:07:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=CCyemtN9;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Uyv+Ky9Y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e;
- helo=mail-pg1-x52e.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=CCyemtN9; dkim-atps=neutral
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
- [IPv6:2607:f8b0:4864:20::52e])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Uyv+Ky9Y; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdr5w05DVz2xg5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 16:01:21 +1000 (AEST)
-Received: by mail-pg1-x52e.google.com with SMTP id i5so7775076pgm.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 23:01:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=tXVn144jSK+ewNBXIfRc1vswjU0ygw+IvP0ezkJ5gPE=;
- b=CCyemtN9DSPP5OKs4PRCf9dceKAvEMIJxRoVZ1mQcymbYR38qWNgbqH4S0utc3mO5v
- q1hcAVduynTqmCdaj1LX9+txhHG9VAfd/Wu6EBClS5+wqo9IDdaiJmE20vJN3M4XBB0E
- NRX6muynj+Ur4i6PVvwnaDj5+xBp7lfVlcTY/3TjkKn2Kv/ts7jXrkutt7bwaK8FsFEc
- wXGhOCwospqBkWgriicuOEPzu6uIIK0PtZ/mN9bnN092w/shxwE9ZUrqAuOkDbJCpZWA
- gzO5bWUwpxUejukkpNyuh3encgzHk9casegePzmZjsLhy8I28DVNJTw1CPeTalcKDh9G
- TZkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=tXVn144jSK+ewNBXIfRc1vswjU0ygw+IvP0ezkJ5gPE=;
- b=QDfjD6+sAqU67uxuz9Jpg7I6tyk+Jg9Wg3BAQL0rbAhn52M17Dc8hNPwr/Cjc+amUo
- 2lL//cacFV4R5wn1FoKtdRRJ8ctAAbEqe/tdJyfc2pQKZE89gVxzIA1cO5f50+/uFvkG
- n8dGBka9qU6yR5bZN069ILV2bxbyDvGGJBQe/0iqh76U1rbx72vONMe1m7z8+rh31g9z
- A5WNPYOprOTvOepyTxmGflkMARI/QPNw9Hs92WEoHmhryKY7aI8fvGLx7adlKE7X98Sv
- 51pu705n9G1dTYK4Fyfei+l9QqSNo3l59ZNCKtJjeyiodkv/rzKOCavS96dSQKZKzWnm
- zo5w==
-X-Gm-Message-State: AOAM531uFk8n6ZhN1XMtQxukLXwqmUg8SaKfpHJ4Dh/8lyOTrtKIsJ4H
- GHWVTg3avHvZYFDm2c8Ua/I=
-X-Google-Smtp-Source: ABdhPJwBfVh9w60qYmp539k/2WBl/l0dUIHocwsEPbgXEkj1DTGGQDBObJ5YUWYGIAHpOq6n0EosvQ==
-X-Received: by 2002:a05:6a00:16c2:b029:228:964e:8b36 with SMTP id
- l2-20020a056a0016c2b0290228964e8b36mr23839229pfc.11.1620626477727; 
- Sun, 09 May 2021 23:01:17 -0700 (PDT)
-Received: from localhost (60-241-47-46.tpgi.com.au. [60.241.47.46])
- by smtp.gmail.com with ESMTPSA id e6sm10110148pfd.219.2021.05.09.23.01.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 May 2021 23:01:17 -0700 (PDT)
-Date: Mon, 10 May 2021 16:01:12 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [V3 PATCH 08/16] powerpc/pseries/VAS: Implement
- allocate/modify/deallocate HCALLS
-To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
- linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <a910e5bd3f3398b4bd430b25a856500735b993c3.camel@linux.ibm.com>
- <e4c29e44cabee9197caa379e1260d2d7e33b20c7.camel@linux.ibm.com>
-In-Reply-To: <e4c29e44cabee9197caa379e1260d2d7e33b20c7.camel@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FdrDj4rgVz2xYf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 16:07:17 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4FdrDc1W18z9vFs; Mon, 10 May 2021 16:07:12 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FdrDb1mY2z9vFm;
+ Mon, 10 May 2021 16:07:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1620626832;
+ bh=Yzja3K7uRIUABi7GBIX5dL62HoAN6D1O9BQnvdraIZ4=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=Uyv+Ky9Ypc+QjAGa7FmtzxRXPfO6bhbA5xeXTUbLMamBTDGAuZpCOxWxMA7I5vzbw
+ t88XKIHDRelacp9MrKd2XYKLf1NqbVo6DixuBWaVpV9dDu6vSWwVJgzKrm9CBV2xms
+ sVSDwuM7HuDZLP8S2E/K/B+IK/TceMMDD4Zega+T1buYDWL8SOsxxjmzLZo9Gq67tm
+ xtUWIjBxa0pX4k7XjN0u+LF9zrxwdqVCQdT2br7RMt2G8hUxoQbz4VWzMSyqXUsyQb
+ cN8PjturEjoUl/z0Q1MdLd940eXKEDkH6ochw9k+FYforGB42h5gsAz6w1tWyVe5eJ
+ 52lQOCJzP6ahQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
+ <arnd@arndb.de>, "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>,
+ Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: Kernel crosscompilers
+In-Reply-To: <1bf8523a-848a-7686-c179-7bedb18979ac@csgroup.eu>
+References: <be7c92b2-43c2-0d8a-6e8c-ac92e7e07bfc@csgroup.eu>
+ <CAK8P3a3OdcSQQGKxRob3A6qfh8tVD1JtLdcTp9i25SizqWpiXA@mail.gmail.com>
+ <19e791d9-3226-4c13-b6e8-cdabdaaa0268@csgroup.eu>
+ <1bf8523a-848a-7686-c179-7bedb18979ac@csgroup.eu>
+Date: Mon, 10 May 2021 16:07:06 +1000
+Message-ID: <87v97rxgtx.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1620626049.bn914ucmrk.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -88,263 +74,96 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of April 18, 2021 7:07 am:
->=20
-> This patch adds the following HCALLs which are used to allocate,
-> modify and deallocate VAS windows.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 08/05/2021 =C3=A0 08:46, Christophe Leroy a =C3=A9crit=C2=A0:
+>> Le 06/05/2021 =C3=A0 16:17, Arnd Bergmann a =C3=A9crit=C2=A0:
+>>> On Thu, May 6, 2021 at 2:42 PM Christophe Leroy
+>>> <christophe.leroy@csgroup.eu> wrote:
+>>>>
+>>>> Hello Arnd,
+>>>>
+>>>> May I ask you whether you plan to build cross compilers based on GCC 1=
+1.1 at
+>>>> https://mirrors.edge.kernel.org/pub/tools/crosstool/ ?
+>>>
+>>> Hi Christophe,
+>>>
+>>> I've built a snapshot a few days before the release, that one is
+>>> identical to 11.1
+>>> except for the reported version number. I've tried to ask around for
+>>> help testing
+>>> this, but so far I have not heard from anyone.
+>>>
+>>> Building a new set of compilers takes around a day on my build box, so =
+I want
+>>> to make sure I don't have to do it more often than necessary. If you ar=
+e able
+>>> to give the binaries a spin, preferably on a ppc64le or arm64 host, ple=
+ase let
+>>> me know how it goes and I'll rebuilt them on the release tag.
+>>>
+>>=20
+>> Hi Arnd,
+>>=20
+>> I don't have any ppc or arm host I can build on.
+>> I'm building on x86 for powerpc embedded boards.
+>>=20
+>> I have tried your GCC 11 snapshot, I get something booting but it crashe=
+s when launching init.
+>>=20
+>> [=C2=A0=C2=A0=C2=A0 7.368410] init[1]: bad frame in sys_sigreturn: 7fb2f=
+d60 nip 001083cc lr 001083c4
+>> [=C2=A0=C2=A0=C2=A0 7.376283] Kernel panic - not syncing: Attempted to k=
+ill init! exitcode=3D0x0000000b
+>> [=C2=A0=C2=A0=C2=A0 7.383680] CPU: 0 PID: 1 Comm: init Not tainted 5.12.=
+0-s3k-dev-16316-g9e799d5df185 #5054
+>> [=C2=A0=C2=A0=C2=A0 7.391767] Call Trace:
+>> [=C2=A0=C2=A0=C2=A0 7.394174] [c9023db0] [c00211e8] panic+0x130/0x304 (u=
+nreliable)
+>> [=C2=A0=C2=A0=C2=A0 7.400112] [c9023e10] [c0024e68] do_exit+0x874/0x910
+>> [=C2=A0=C2=A0=C2=A0 7.405104] [c9023e50] [c0024f80] do_group_exit+0x40/0=
+xc4
+>> [=C2=A0=C2=A0=C2=A0 7.410440] [c9023e60] [c0033334] get_signal+0x1d8/0x9=
+3c
+>> [=C2=A0=C2=A0=C2=A0 7.415689] [c9023ec0] [c0007f34] do_notify_resume+0x6=
+c/0x314
+>> [=C2=A0=C2=A0=C2=A0 7.421369] [c9023f20] [c000d580] syscall_exit_prepare=
++0x120/0x184
+>> [=C2=A0=C2=A0=C2=A0 7.427479] [c9023f30] [c001101c] ret_from_syscall+0xc=
+/0x28
+>>=20
+>> Something is going wrong with asm goto output. I implemented get_user() =
+helpers with asm goto this=20
+>> cycle (commit 5cd29b1fd3e8). I tested it with CLANG before submitting, i=
+t was working.
+>>=20
+>> Seems like there is something wrong with it with GCC11. When forcing CON=
+FIG_CC_HAS_ASM_GOTO_OUTPUT=20
+>> to 'n', the kernel boots ok.
+>>=20
+>
+> I found the problem, that's due to r10 register being reused by GCC in th=
+e copy loop below:
+>
+>    10:	7d 09 03 a6 	mtctr   r8
+>    14:	80 ca 00 00 	lwz     r6,0(r10)
+>    18:	80 ea 00 04 	lwz     r7,4(r10)
+>    1c:	90 c9 00 08 	stw     r6,8(r9)
+>    20:	90 e9 00 0c 	stw     r7,12(r9)
+>    24:	39 0a 00 08 	addi    r8,r10,8
+>    28:	39 29 00 08 	addi    r9,r9,8
+> =3D>2c:	81 4a 00 08 	lwz     r10,8(r10)
+>    30:	81 6a 00 0c 	lwz     r11,12(r10)
+>    34:	91 49 00 08 	stw     r10,8(r9)
+>    38:	91 69 00 0c 	stw     r11,12(r9)
+>    3c:	39 48 00 08 	addi    r10,r8,8
+>    40:	39 29 00 08 	addi    r9,r9,8
+>    44:	42 00 ff d0 	bdnz    14 <__unsafe_restore_general_regs+0x14>
+>
+> earlyclobber modifier is missing in the CONFIG_CC_HAS_ASM_GOTO_OUTPUT ver=
+sion of __get_user_asm2_goto().
 
-I don't like to be nitpicky about the language, but this is adding the=20
-hcall wrappers. Implementing the hcall would be adding it to KVM.=20
-Otherwise looks okay I think.
+Thanks for tracking that down. I hit it last week when testing Arnd's
+compilers but hadn't had time to find the root cause.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-> H_ALLOCATE_VAS_WINDOW: Allocate VAS window
-> H_DEALLOCATE_VAS_WINDOW: Close VAS window
-> H_MODIFY_VAS_WINDOW: Setup window before using
->=20
-> Also adds phyp call (H_QUERY_VAS_CAPABILITIES) to get all VAS
-> capabilities that phyp provides.
-
-"PAPR hcall to get VAS capabilities provided by the hypervisor"
-
-Thanks,
-Nick
-
->=20
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/vas.c | 217 +++++++++++++++++++++++++++
->  1 file changed, 217 insertions(+)
->  create mode 100644 arch/powerpc/platforms/pseries/vas.c
->=20
-> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platform=
-s/pseries/vas.c
-> new file mode 100644
-> index 000000000000..06960151477c
-> --- /dev/null
-> +++ b/arch/powerpc/platforms/pseries/vas.c
-> @@ -0,0 +1,217 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright 2020-21 IBM Corp.
-> + */
-> +
-> +#define pr_fmt(fmt) "vas: " fmt
-> +
-> +#include <linux/module.h>
-> +#include <linux/kernel.h>
-> +#include <linux/export.h>
-> +#include <linux/types.h>
-> +#include <linux/delay.h>
-> +#include <linux/slab.h>
-> +#include <linux/irqdomain.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/sched/mm.h>
-> +#include <linux/mmu_context.h>
-> +#include <asm/hvcall.h>
-> +#include <asm/hvconsole.h>
-> +#include <asm/machdep.h>
-> +#include <asm/plpar_wrappers.h>
-> +#include <asm/vas.h>
-> +#include "vas.h"
-> +
-> +#define	VAS_INVALID_WIN_ADDRESS	0xFFFFFFFFFFFFFFFFul
-> +#define	VAS_DEFAULT_DOMAIN_ID	0xFFFFFFFFFFFFFFFFul
-> +/* Authority Mask Register (AMR) value is not supported in */
-> +/* linux implementation. So pass '0' to modify window HCALL */
-> +#define	VAS_AMR_VALUE	0
-> +/* phyp allows one credit per window right now */
-> +#define DEF_WIN_CREDS		1
-> +
-> +static int64_t hcall_return_busy_check(int64_t rc)
-> +{
-> +	/* Check if we are stalled for some time */
-> +	if (H_IS_LONG_BUSY(rc)) {
-> +		msleep(get_longbusy_msecs(rc));
-> +		rc =3D H_BUSY;
-> +	} else if (rc =3D=3D H_BUSY) {
-> +		cond_resched();
-> +	}
-> +
-> +	return rc;
-> +}
-> +
-> +/*
-> + * Allocate VAS window HCALL
-> + */
-> +static int plpar_vas_allocate_window(struct vas_window *win, u64 *domain=
-,
-> +				     u8 wintype, u16 credits)
-> +{
-> +	long retbuf[PLPAR_HCALL9_BUFSIZE] =3D {0};
-> +	int64_t rc;
-> +
-> +	do {
-> +		rc =3D plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf, wintype,
-> +				  credits, domain[0], domain[1], domain[2],
-> +				  domain[3], domain[4], domain[5]);
-> +
-> +		rc =3D hcall_return_busy_check(rc);
-> +	} while (rc =3D=3D H_BUSY);
-> +
-> +	switch (rc) {
-> +	case H_SUCCESS:
-> +		win->winid =3D retbuf[0];
-> +		win->lpar.win_addr =3D retbuf[1];
-> +		win->lpar.complete_irq =3D retbuf[2];
-> +		win->lpar.fault_irq =3D retbuf[3];
-> +		if (win->lpar.win_addr =3D=3D VAS_INVALID_WIN_ADDRESS) {
-> +			pr_err("HCALL(%x): COPY/PASTE is not supported\n",
-> +				H_ALLOCATE_VAS_WINDOW);
-> +			return -ENOTSUPP;
-> +		}
-> +		return 0;
-> +	case H_PARAMETER:
-> +		pr_err("HCALL(%x): Invalid window type (%u)\n",
-> +			H_ALLOCATE_VAS_WINDOW, wintype);
-> +		return -EINVAL;
-> +	case H_P2:
-> +		pr_err("HCALL(%x): Credits(%u) exceed maximum window credits\n",
-> +			H_ALLOCATE_VAS_WINDOW, credits);
-> +		return -EINVAL;
-> +	case H_COP_HW:
-> +		pr_err("HCALL(%x): User-mode COPY/PASTE is not supported\n",
-> +			H_ALLOCATE_VAS_WINDOW);
-> +		return -ENOTSUPP;
-> +	case H_RESOURCE:
-> +		pr_err("HCALL(%x): LPAR credit limit exceeds window limit\n",
-> +			H_ALLOCATE_VAS_WINDOW);
-> +		return -EPERM;
-> +	case H_CONSTRAINED:
-> +		pr_err("HCALL(%x): Credits (%u) are not available\n",
-> +			H_ALLOCATE_VAS_WINDOW, credits);
-> +		return -EPERM;
-> +	default:
-> +		pr_err("HCALL(%x): Unexpected error %lld\n",
-> +			H_ALLOCATE_VAS_WINDOW, rc);
-> +		return -EIO;
-> +	}
-> +}
-> +
-> +/*
-> + * Deallocate VAS window HCALL.
-> + */
-> +static int plpar_vas_deallocate_window(u64 winid)
-> +{
-> +	int64_t rc;
-> +
-> +	do {
-> +		rc =3D plpar_hcall_norets(H_DEALLOCATE_VAS_WINDOW, winid);
-> +
-> +		rc =3D hcall_return_busy_check(rc);
-> +	} while (rc =3D=3D H_BUSY);
-> +
-> +	switch (rc) {
-> +	case H_SUCCESS:
-> +		return 0;
-> +	case H_PARAMETER:
-> +		pr_err("HCALL(%x): Invalid window ID %llu\n",
-> +			H_DEALLOCATE_VAS_WINDOW, winid);
-> +		return -EINVAL;
-> +	case H_STATE:
-> +		pr_err("HCALL(%x): Window(%llu): Invalid page table entries\n",
-> +			H_DEALLOCATE_VAS_WINDOW, winid);
-> +		return -EPERM;
-> +	default:
-> +		pr_err("HCALL(%x): Unexpected error %lld for window(%llu)\n",
-> +			H_DEALLOCATE_VAS_WINDOW, rc, winid);
-> +		return -EIO;
-> +	}
-> +}
-> +
-> +/*
-> + * Modify VAS window.
-> + * After the window is opened with allocate window HCALL, configure it
-> + * with flags and LPAR PID before using.
-> + */
-> +static int plpar_vas_modify_window(struct vas_window *win)
-> +{
-> +	int64_t rc;
-> +	u32 lpid =3D mfspr(SPRN_PID);
-> +
-> +	/*
-> +	 * AMR value is not supported in Linux implementation
-> +	 * phyp ignores it if 0 is passed.
-> +	 */
-> +	do {
-> +		rc =3D plpar_hcall_norets(H_MODIFY_VAS_WINDOW, win->winid,
-> +					lpid, 0, VAS_MOD_WIN_FLAGS,
-> +					VAS_AMR_VALUE);
-> +
-> +		rc =3D hcall_return_busy_check(rc);
-> +	} while (rc =3D=3D H_BUSY);
-> +
-> +	switch (rc) {
-> +	case H_SUCCESS:
-> +		return 0;
-> +	case H_PARAMETER:
-> +		pr_err("HCALL(%x): Invalid window ID %u\n",
-> +			H_MODIFY_VAS_WINDOW, win->winid);
-> +		return -EINVAL;
-> +	case H_P2:
-> +		pr_err("HCALL(%x): Window(%d): Invalid LPAR Process ID %u\n",
-> +			H_MODIFY_VAS_WINDOW, lpid, win->winid);
-> +		return -EINVAL;
-> +	case H_P3:
-> +		/* LPAR thread ID is deprecated on P10 */
-> +		pr_err("HCALL(%x): Invalid LPAR Thread ID for window(%u)\n",
-> +			H_MODIFY_VAS_WINDOW, win->winid);
-> +		return -EINVAL;
-> +	case H_STATE:
-> +		pr_err("HCALL(%x): Jobs in progress, Can't modify window(%u)\n",
-> +			H_MODIFY_VAS_WINDOW, win->winid);
-> +		return -EBUSY;
-> +	default:
-> +		pr_err("HCALL(%x): Unexpected error %lld for window(%u)\n",
-> +			H_MODIFY_VAS_WINDOW, rc, win->winid);
-> +		return -EIO;
-> +	}
-> +}
-> +
-> +/*
-> + * This HCALL is used to determine the capabilities that pHyp provides.
-> + * @hcall: H_QUERY_VAS_CAPABILITIES or H_QUERY_NX_CAPABILITIES
-> + * @query_type: If 0 is passed, phyp returns the overall capabilities
-> + *		which provides all feature(s) that are available. Then
-> + *		query phyp to get the corresponding capabilities for
-> + *		the specific feature.
-> + *		Example: H_QUERY_VAS_CAPABILITIES provides VAS GZIP QoS
-> + *			and VAS GZIP Default capabilities.
-> + *			H_QUERY_NX_CAPABILITIES provides NX GZIP
-> + *			capabilities.
-> + * @result: Return buffer to save capabilities.
-> + */
-> +int plpar_vas_query_capabilities(const u64 hcall, u8 query_type,
-> +					u64 result)
-> +{
-> +	int64_t rc;
-> +
-> +	rc =3D plpar_hcall_norets(hcall, query_type, result);
-> +
-> +	switch (rc) {
-> +	case H_SUCCESS:
-> +		return 0;
-> +	case H_PARAMETER:
-> +		pr_err("HCALL(%llx): Invalid query type %u\n", hcall,
-> +			query_type);
-> +		return -EINVAL;
-> +	case H_PRIVILEGE:
-> +		pr_err("HCALL(%llx): Invalid result buffer 0x%llx\n",
-> +			hcall, result);
-> +		return -EACCES;
-> +	default:
-> +		pr_err("HCALL(%llx): Unexpected error %lld\n", hcall, rc);
-> +		return -EIO;
-> +	}
-> +}
-> --=20
-> 2.18.2
->=20
->=20
->=20
+cheers
