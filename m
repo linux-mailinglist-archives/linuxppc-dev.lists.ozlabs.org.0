@@ -1,92 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7ACA37795A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 01:50:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 885AB37798F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 02:52:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdgss5Pssz3065
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 09:50:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FdjFy4jfWz308k
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 10:52:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=mNly2mz7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=T5Iu/IJ7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=embeddedor.com (client-ip=192.185.47.179;
- helo=gateway22.websitewelcome.com; envelope-from=gustavo@embeddedor.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2a;
+ helo=mail-yb1-xb2a.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=embeddedor.com header.i=@embeddedor.com
- header.a=rsa-sha256 header.s=default header.b=mNly2mz7; 
- dkim-atps=neutral
-X-Greylist: delayed 1499 seconds by postgrey-1.36 at boromir;
- Mon, 10 May 2021 09:49:53 AEST
-Received: from gateway22.websitewelcome.com (gateway22.websitewelcome.com
- [192.185.47.179])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=T5Iu/IJ7; dkim-atps=neutral
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com
+ [IPv6:2607:f8b0:4864:20::b2a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FdgsF3d6zz2yXK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 09:49:53 +1000 (AEST)
-Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
- by gateway22.websitewelcome.com (Postfix) with ESMTP id 358095F1A
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 May 2021 18:03:55 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22]) by cmsmtp with SMTP
- id fsSpli96cDedffsSplzV9O; Sun, 09 May 2021 18:03:55 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
- :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=zDKJQW5cIvnIvm8lZyRC/G4lR2JzgQSng4VYgkLxRNM=; b=mNly2mz7dxR5U+X89Rsbc4l+Mt
- VEEyjREu/fyLvFixsrkT0KuATJlkp11ZjNaimTJJ41iGoJc4iZHfp0bjKjypvJzt+8rTGfYBiktrJ
- WAQsG4ux25EoryX2P83JQEhyt8BI9HQA9lqNb7hUuwor8sYEXYQH1DOImWTNqZ/fjnYjPPbcyIwwp
- ha1fQtjEoqOdwB0tX7Vzp8p4TZ5oFlB9UQJ73YKQvJFqLzxWOkRKg2VQLi7gvNoKKSTAEGPAV77A6
- MDYIbabcObkxttwUeX0FmOPHTOa938e3R6IZTn5v2mfsw9FbH7NHC6ih1JN5y3GarFzC5Mz8GSvCG
- 02znlLmg==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:58004
- helo=[192.168.15.8])
- by gator4166.hostgator.com with esmtpsa (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <gustavo@embeddedor.com>)
- id 1lfsSk-002y5H-JC; Sun, 09 May 2021 18:03:50 -0500
-Subject: Re: Radeon NI: GIT kernel with the nislands_smc commit doesn't boot
- on a Freescale P5040 board and P.A.Semi Nemo board
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-References: <a1d9e09b-f533-5e2c-7a13-af96647e1a71@embeddedor.com>
- <10D1983F-33EF-46C3-976E-463D1CB5A6E9@xenosoft.de>
- <9bb5fcbd-daf5-1669-b3e7-b8624b3c36f9@xenosoft.de>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Message-ID: <bd98c13d-6f9d-9d5d-12b9-b866e41237ab@embeddedor.com>
-Date: Sun, 9 May 2021 18:04:18 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FdjFQ5ZKrz2yWF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 10:52:24 +1000 (AEST)
+Received: by mail-yb1-xb2a.google.com with SMTP id g38so19430431ybi.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 17:52:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=sLEkmJof5EdacSHbmVgVRjOV0khSkiUhWJSJqR0UdxY=;
+ b=T5Iu/IJ7ztpcO+qNPS5Dqr9AC5Cv8C2tX/a0lNKQ4fSwGRNPUpDkVnI6VLMPWkLwBJ
+ dwoqzO+e66IJjlcfLB0teVHiqC0oH/AAhIOx+Hrq3MB3/vmyXH1Oghf3cxl/IQKFBCyJ
+ 93NxO2xBdb8EEhU6kKKHVg7+D1XO9wPZwWjtgpsze6xBg8mo345QLHbXc02FlAoGxPz9
+ qPJ4iYlyn0o5OH6IytlbkNy3f88rOSAoXO6QbvrS9qaTKfU48lnDvNBMMckVgfkP1kBr
+ ZJwIBmtPpDKORPy94atN5eMdTVOgHwYUhBLHTJEsf46JLF5pfs8nG4iC4+ZBFjH0y4vA
+ tCNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=sLEkmJof5EdacSHbmVgVRjOV0khSkiUhWJSJqR0UdxY=;
+ b=Nx9mqKul6wmlM8bx23k86fENzrZ6sYRsny4FnduAa4tcPw3JY5QO9JR6gkg9is+9WV
+ EOBjRB7SJ0vzlXD/cellEO5zCiJOvO6DFn7IEJQLVkvtxK1vODwGo/PwqDdl87FzQ34C
+ kTBo20P3jSdfEZdmT6/0D/IDyVFUoQJE+FSOK+PB+sx2ExF2dUK/hjnRLZDLGHHMThdc
+ xolbd53x2MNTXH4Ul6UKG2oo9IzqJgYLJXkavEfwSAM3wmyhGn9XDZziHgZRzZrmhRcN
+ iKKHQuMh8LsRDpFyac9tOGOEcIBIFsuMUxLWm8H+BDjyKrVOy0tB1bIdTQtokZFu8xPt
+ Xlag==
+X-Gm-Message-State: AOAM530Sye72VZG4F6UNwV69lcmzHyNVOTnICt25E3CH9rqm9T7sd4Xu
+ j7yK99KAK+3zN9awRgmfm+0deMlCSrvMTQKv0/E=
+X-Google-Smtp-Source: ABdhPJzL6q4js6UfNNlUuDgQ/2uao5FLHWXiESxTqrzaR1oZPI/5pcAt+W5dqlBkd2b4iEFOAq7WLD+cd6fkrYMT1A0=
+X-Received: by 2002:a25:1009:: with SMTP id 9mr3567080ybq.386.1620607939354;
+ Sun, 09 May 2021 17:52:19 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <9bb5fcbd-daf5-1669-b3e7-b8624b3c36f9@xenosoft.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1lfsSk-002y5H-JC
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8])
- [187.162.31.110]:58004
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 10
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+References: <20210506023449.3568630-1-jniethe5@gmail.com>
+ <20210506023449.3568630-7-jniethe5@gmail.com>
+ <3a1eef8c-a982-5321-bb1a-7a4ebe73f1d2@csgroup.eu>
+In-Reply-To: <3a1eef8c-a982-5321-bb1a-7a4ebe73f1d2@csgroup.eu>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Mon, 10 May 2021 10:52:07 +1000
+Message-ID: <CACzsE9pw2Sxp7mLz=SjuW-RMLrFtTU7HhPeNZ9c5GzC7NbxMzg@mail.gmail.com>
+Subject: Re: [PATCH v12 6/8] powerpc: Set ARCH_HAS_STRICT_MODULE_RWX
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,87 +77,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>, gustavoars@kernel.org,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- Olof Johansson <olof@lixom.net>, mad skateman <madskateman@gmail.com>,
- alexander.deucher@amd.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: ajd@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, cmr@codefail.de,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, naveen.n.rao@linux.ibm.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christian,
-
-On 5/8/21 06:33, Christian Zigotzky wrote:
-> Hi Gustavo,
-> 
-> Your patch works! Thanks a lot! I tested it with my Freescale P5040 board and P.A.Semi Nemo board with a connected AMD Radeon HD6970 NI graphics cards (Cayman
-> XT) today.
-
-Awesome! :)
-
-Thank you!
---
-Gustavo
-
-> 
-> Have a nice day,
-> Christian
-> 
-> 
-> On 07 May 2021 at 08:43am, Christian Zigotzky wrote:
->> Hi Gustavo,
->>
->> Great! I will test it. Many thanks for your help.
->>
->> Cheers,
->> Christian
->>
->>
->>> On 7. May 2021, at 01:55, Gustavo A. R. Silva <gustavo@embeddedor.com> wrote:
->>>
->>> ﻿Hi Christian,
->>>
->>>> On 4/30/21 06:59, Christian Zigotzky wrote:
->>>> Hello,
->>>>
->>>> The Nemo board (A-EON AmigaOne X1000) [1] and the FSL P5040 Cyrus+ board (A-EON AmigaOne X5000) [2] with installed AMD Radeon HD6970 NI graphics cards (Cayman
->>>> XT) [3] don't boot with the latest git kernel anymore after the commit "drm/radeon/nislands_smc.h: Replace one-element array with flexible-array member in
->>>> struct NISLANDS_SMC_SWSTATE branch" [4].  This git kernel boots in a virtual e5500 QEMU machine with a VirtIO-GPU [5].
->>>>
->>>> I bisected today [6].
->>>>
->>>> Result: drm/radeon/nislands_smc.h: Replace one-element array with flexible-array member in struct NISLANDS_SMC_SWSTATE branch
->>>> (434fb1e7444a2efc3a4ebd950c7f771ebfcffa31) [4] is the first bad commit.
->>> I have a fix ready for this bug:
->>> https://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux.git/commit/?h=testing/drm-nislands
->>>
->>> I wonder if you could help me to test it with your environment, please.
->>> It should be applied on top of mainline.
->>>
->>> Thank you!
->>> -- 
->>> Gustavo
->>>
->>>> I was able to revert this commit [7] and after a new compiling, the kernel boots without any problems on my AmigaOnes.
->>>>
->>>> After that I created a patch for reverting this commit for new git test kernels. [3]
->>>>
->>>> The kernel compiles and boots with this patch on my AmigaOnes. Please find attached the kernel config files.
->>>>
->>>> Please check the first bad commit.
->>>>
->>>> Thanks,
->>>> Christian
->>>>
->>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
->>>> [2] http://wiki.amiga.org/index.php?title=X5000
->>>> [3] https://forum.hyperion-entertainment.com/viewtopic.php?f=35&t=4377
->>>> [4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=434fb1e7444a2efc3a4ebd950c7f771ebfcffa31
->>>> [5] qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage -drive format=raw,file=MintPPC32-X5000.img,index=0,if=virtio -netdev user,id=mynet0 -device
->>>> virtio-net-pci,netdev=mynet0 -append "rw root=/dev/vda" -device virtio-vga -usb -device usb-ehci,id=ehci -device usb-tablet -device virtio-keyboard-pci -smp 4
->>>> -vnc :1
->>>> [6] https://forum.hyperion-entertainment.com/viewtopic.php?p=53074#p53074
->>>> [7] git revert 434fb1e7444a2efc3a4ebd950c7f771ebfcffa3
-> 
+On Fri, May 7, 2021 at 3:35 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 06/05/2021 =C3=A0 04:34, Jordan Niethe a =C3=A9crit :
+> > From: Russell Currey <ruscur@russell.cc>
+> >
+> > To enable strict module RWX on powerpc, set:
+> >
+> >      CONFIG_STRICT_MODULE_RWX=3Dy
+> >
+> > You should also have CONFIG_STRICT_KERNEL_RWX=3Dy set to have any real
+> > security benefit.
+> >
+> > ARCH_HAS_STRICT_MODULE_RWX is set to require ARCH_HAS_STRICT_KERNEL_RWX=
+.
+> > This is due to a quirk in arch/Kconfig and arch/powerpc/Kconfig that
+> > makes STRICT_MODULE_RWX *on by default* in configurations where
+> > STRICT_KERNEL_RWX is *unavailable*.
+> >
+> > Since this doesn't make much sense, and module RWX without kernel RWX
+> > doesn't make much sense, having the same dependencies as kernel RWX
+> > works around this problem.
+> >
+> > With STRICT_MODULE_RWX, now make module_alloc() allocate pages with
+> > KERNEL_PAGE protection rather than KERNEL_PAGE_EXEC.
+> >
+> > Book32s/32 processors with a hash mmu (i.e. 604 core) can not set memor=
+y
+> > protection on a page by page basis so do not enable.
+> >
+> > Signed-off-by: Russell Currey <ruscur@russell.cc>
+> > [jpn: - predicate on !PPC_BOOK3S_604
+> >        - make module_alloc() use PAGE_KERNEL protection]
+> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> > ---
+> > v10: - Predicate on !PPC_BOOK3S_604
+> >       - Make module_alloc() use PAGE_KERNEL protection
+> > v11: - Neaten up
+> > ---
+> >   arch/powerpc/Kconfig         | 1 +
+> >   arch/powerpc/kernel/module.c | 4 +++-
+> >   2 files changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > index cce0a137b046..cb5d9d862c35 100644
+> > --- a/arch/powerpc/Kconfig
+> > +++ b/arch/powerpc/Kconfig
+> > @@ -140,6 +140,7 @@ config PPC
+> >       select ARCH_HAS_SCALED_CPUTIME          if VIRT_CPU_ACCOUNTING_NA=
+TIVE && PPC_BOOK3S_64
+> >       select ARCH_HAS_SET_MEMORY
+> >       select ARCH_HAS_STRICT_KERNEL_RWX       if ((PPC_BOOK3S_64 || PPC=
+32) && !HIBERNATION)
+> > +     select ARCH_HAS_STRICT_MODULE_RWX       if ARCH_HAS_STRICT_KERNEL=
+_RWX && !PPC_BOOK3S_604
+> >       select ARCH_HAS_TICK_BROADCAST          if GENERIC_CLOCKEVENTS_BR=
+OADCAST
+> >       select ARCH_HAS_UACCESS_FLUSHCACHE
+> >       select ARCH_HAS_COPY_MC                 if PPC64
+> > diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.=
+c
+> > index 3f35c8d20be7..33e4011228b0 100644
+> > --- a/arch/powerpc/kernel/module.c
+> > +++ b/arch/powerpc/kernel/module.c
+> > @@ -92,12 +92,14 @@ int module_finalize(const Elf_Ehdr *hdr,
+> >   static __always_inline void *
+> >   __module_alloc(unsigned long size, unsigned long start, unsigned long=
+ end)
+> >   {
+> > +     pgprot_t prot =3D IS_ENABLED(CONFIG_STRICT_MODULE_RWX) ? PAGE_KER=
+NEL :
+> > +                                                            PAGE_KERNE=
+L_EXEC;
+>
+> I'm not sure this test is OK, because strict kernel/module rwx can be dis=
+abled at boottime.
+> There is a global variable 'rodata_enabled' to reflect that.
+>
+> We have a helper in powerpc asm/mmu.h called strict_kernel_rwx_enabled() =
+to check it.
+Thanks, I will change to that.
+>
+>
+> >       /*
+> >        * Don't do huge page allocations for modules yet until more test=
+ing
+> >        * is done. STRICT_MODULE_RWX may require extra work to support t=
+his
+> >        * too.
+> >        */
+> > -     return __vmalloc_node_range(size, 1, start, end, GFP_KERNEL, PAGE=
+_KERNEL_EXEC,
+> > +     return __vmalloc_node_range(size, 1, start, end, GFP_KERNEL, prot=
+,
+> >                                   VM_FLUSH_RESET_PERMS | VM_NO_HUGE_VMA=
+P,
+> >                                   NUMA_NO_NODE, __builtin_return_addres=
+s(0));
+> >   }
+> >
