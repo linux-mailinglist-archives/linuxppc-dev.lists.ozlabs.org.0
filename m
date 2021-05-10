@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B49377AF5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 06:17:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A19377AF6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 06:17:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdnnj3sgcz3d6n
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 14:17:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdnp36Dc2z3dGZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 14:17:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.218.42; helo=mail-ej1-f42.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.53; helo=mail-ej1-f53.google.com;
  envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com
- [209.85.218.42])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com
+ [209.85.218.53])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdnkh2wl9z2yRX
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdnkh4k1Jz2yRX
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 14:14:36 +1000 (AEST)
-Received: by mail-ej1-f42.google.com with SMTP id s20so16907786ejr.9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 21:14:35 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id zg3so22419687ejb.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 21:14:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=9Gp2LJL1lW12f9o9B/z7t/PXSY/mDvHIuRVwQfasUic=;
- b=LzorGm97X+Y8lKjWD7XWHnDXcCSPmpcE41NGEPud/jyYC1YfXevyhU57h4ZWJkiBV8
- qCSXvKHw9Nzdv0PV6SbPgZMSPgQlKB5W0YtF6tVZkH1QTyJ9sDeGI5L48GH97LD1UZl5
- ErA2BoSho1tB79LAboBhSxIvNwYXsr+09k+tPxdhArAibrqPDs8d/9gkReMcKmP0hrnL
- iMpazSJMW6ShpNCZE44W0gKMgRvbcrBNX2oJxi7hePqw7eZv0++YhcnU/SKcQ6Kyzw55
- TDdgtN4Y1pH0BpaXSgdbrWDOYLqGPIpQnPMguyJ9jSPt5f4/2eBSHoaP9PqaitFEqPiK
- Mi6g==
-X-Gm-Message-State: AOAM530NB8EVjyD6jaz4i65P2vJIePT4gzHp1J+BmSA6M+N2gb9aBK+c
- nIZ5p0QQ5wtXHyjdnp1dU4c=
-X-Google-Smtp-Source: ABdhPJwJ4Rea4lOE0vfRhtwPMTbWS+QEFGyHMU8cb9HK5mSiaGWryeJuMSKKk+UKs8vqI0wORAaRSA==
-X-Received: by 2002:a17:907:11db:: with SMTP id
- va27mr23200346ejb.174.1620620073083; 
- Sun, 09 May 2021 21:14:33 -0700 (PDT)
+ bh=JeL2FUARGxszhpfrtswg3uTFL3yp7K/KDjvHQpNvygA=;
+ b=DtpcSq3IGqmYaKlteMoejIrdll9HC6LyBmELWzi2juTv9lNPEfjVobBX2XC/iP5kX/
+ dy7VLb44cIt0l7oPl/G6wFB+QC6Ya8NBK/jozOtTR6lGyD2u6uXr9aakjc4RQeVgb0uP
+ Qut4R3gAsBR+cmCjVM6QcOREtEhJI1dsHysRnlgSqhI5i9zoRD9L0W72ugjkaqzQhFzc
+ nvKQu6sWz8sCrgLEVQDBdB5FfGJ9/pUBZ3tdIt19qlxs+ZsNXNr9r46oXCh2ZV1mJe4l
+ 08PetGTlQLalfBCWDwsJN4MlxEdi0wLpWXzw/8Kkr/Vsjbj13Hp00W2wsALn9j2Tx5/L
+ EurQ==
+X-Gm-Message-State: AOAM533CPXRzYPDb3agaI6Fbitmos180XMsCOXoiC+f+5baAzPgyt59q
+ ur5vG7L3jl2JufrUm5hEg90=
+X-Google-Smtp-Source: ABdhPJws1APHRRa1UWb9NsEgDv3LVgdap2nv9ZT1B1HRkR88aNny+SIIgzZqUzA5rUM83wj3tLM7tA==
+X-Received: by 2002:a17:907:62a7:: with SMTP id
+ nd39mr23674832ejc.502.1620620074022; 
+ Sun, 09 May 2021 21:14:34 -0700 (PDT)
 Received: from workstation.lan ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id e4sm8165006ejh.98.2021.05.09.21.14.32
+ by smtp.gmail.com with ESMTPSA id e4sm8165006ejh.98.2021.05.09.21.14.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 May 2021 21:14:32 -0700 (PDT)
+ Sun, 09 May 2021 21:14:33 -0700 (PDT)
 From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 08/11] PCI: switchtec: Use sysfs_emit() and sysfs_emit_at() in
+Subject: [PATCH 09/11] PCI: rpadlpar: Use sysfs_emit() and sysfs_emit_at() in
  "show" functions
-Date: Mon, 10 May 2021 04:14:21 +0000
-Message-Id: <20210510041424.233565-8-kw@linux.com>
+Date: Mon, 10 May 2021 04:14:22 +0000
+Message-Id: <20210510041424.233565-9-kw@linux.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210510041424.233565-1-kw@linux.com>
 References: <20210510041424.233565-1-kw@linux.com>
@@ -92,82 +92,31 @@ Related to:
 
 Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 ---
- drivers/pci/switch/switchtec.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/pci/hotplug/rpadlpar_sysfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/switch/switchtec.c b/drivers/pci/switch/switchtec.c
-index ba52459928f7..0b301f8be9ed 100644
---- a/drivers/pci/switch/switchtec.c
-+++ b/drivers/pci/switch/switchtec.c
-@@ -280,7 +280,7 @@ static ssize_t device_version_show(struct device *dev,
- 
- 	ver = ioread32(&stdev->mmio_sys_info->device_version);
- 
--	return sprintf(buf, "%x\n", ver);
-+	return sysfs_emit(buf, "%x\n", ver);
- }
- static DEVICE_ATTR_RO(device_version);
- 
-@@ -292,7 +292,7 @@ static ssize_t fw_version_show(struct device *dev,
- 
- 	ver = ioread32(&stdev->mmio_sys_info->firmware_version);
- 
--	return sprintf(buf, "%08x\n", ver);
-+	return sysfs_emit(buf, "%08x\n", ver);
- }
- static DEVICE_ATTR_RO(fw_version);
- 
-@@ -344,7 +344,7 @@ static ssize_t component_vendor_show(struct device *dev,
- 
- 	/* component_vendor field not supported after gen3 */
- 	if (stdev->gen != SWITCHTEC_GEN3)
--		return sprintf(buf, "none\n");
-+		return sysfs_emit(buf, "none\n");
- 
- 	return io_string_show(buf, &si->gen3.component_vendor,
- 			      sizeof(si->gen3.component_vendor));
-@@ -359,9 +359,9 @@ static ssize_t component_id_show(struct device *dev,
- 
- 	/* component_id field not supported after gen3 */
- 	if (stdev->gen != SWITCHTEC_GEN3)
--		return sprintf(buf, "none\n");
-+		return sysfs_emit(buf, "none\n");
- 
--	return sprintf(buf, "PM%04X\n", id);
-+	return sysfs_emit(buf, "PM%04X\n", id);
- }
- static DEVICE_ATTR_RO(component_id);
- 
-@@ -373,9 +373,9 @@ static ssize_t component_revision_show(struct device *dev,
- 
- 	/* component_revision field not supported after gen3 */
- 	if (stdev->gen != SWITCHTEC_GEN3)
--		return sprintf(buf, "255\n");
-+		return sysfs_emit(buf, "255\n");
- 
--	return sprintf(buf, "%d\n", rev);
-+	return sysfs_emit(buf, "%d\n", rev);
- }
- static DEVICE_ATTR_RO(component_revision);
- 
-@@ -384,7 +384,7 @@ static ssize_t partition_show(struct device *dev,
+diff --git a/drivers/pci/hotplug/rpadlpar_sysfs.c b/drivers/pci/hotplug/rpadlpar_sysfs.c
+index dbfa0b55d31a..068b7810a574 100644
+--- a/drivers/pci/hotplug/rpadlpar_sysfs.c
++++ b/drivers/pci/hotplug/rpadlpar_sysfs.c
+@@ -50,7 +50,7 @@ static ssize_t add_slot_store(struct kobject *kobj, struct kobj_attribute *attr,
+ static ssize_t add_slot_show(struct kobject *kobj,
+ 			     struct kobj_attribute *attr, char *buf)
  {
- 	struct switchtec_dev *stdev = to_stdev(dev);
- 
--	return sprintf(buf, "%d\n", stdev->partition);
-+	return sysfs_emit(buf, "%d\n", stdev->partition);
+-	return sprintf(buf, "0\n");
++	return sysfs_emit(buf, "0\n");
  }
- static DEVICE_ATTR_RO(partition);
  
-@@ -393,7 +393,7 @@ static ssize_t partition_count_show(struct device *dev,
+ static ssize_t remove_slot_store(struct kobject *kobj,
+@@ -80,7 +80,7 @@ static ssize_t remove_slot_store(struct kobject *kobj,
+ static ssize_t remove_slot_show(struct kobject *kobj,
+ 				struct kobj_attribute *attr, char *buf)
  {
- 	struct switchtec_dev *stdev = to_stdev(dev);
- 
--	return sprintf(buf, "%d\n", stdev->partition_count);
-+	return sysfs_emit(buf, "%d\n", stdev->partition_count);
+-	return sprintf(buf, "0\n");
++	return sysfs_emit(buf, "0\n");
  }
- static DEVICE_ATTR_RO(partition_count);
  
+ static struct kobj_attribute add_slot_attr =
 -- 
 2.31.1
 
