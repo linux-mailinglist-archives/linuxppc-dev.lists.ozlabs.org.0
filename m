@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBE73779B5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 03:20:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EB513779B6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 03:20:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FdjsS0H0rz3c1Y
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 11:20:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdjsx31tHz3c6v
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 11:20:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=DmezKq78;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=UWDWF6Hy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
+ helo=mail-pj1-x1029.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DmezKq78; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
+ header.s=20161025 header.b=UWDWF6Hy; dkim-atps=neutral
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdjqx5xh5z2yjJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 11:18:53 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id md17so8806521pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 18:18:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdjr23zmBz2ymb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 11:18:58 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id md17so8806618pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 18:18:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=xGhjnXn/C0qTfkhl0tEeiHCLhVCbdYoTtED7Ch6E9ZU=;
- b=DmezKq788wp7yFFnXKq/q3twGi//MZ4tPWmHLGek4++1nAF55OwGP9UauCkkIrP6dD
- EI1mArYZck2kGcOk1fENb5qpUMphZcwUz6Kg+GRsbsfKNghaZ7MWmTSAFlhn0FL6gcYU
- JBH2MYN/fVDAIfcVtDSJC6uGQOIhD8fXnbBku5cxM8NHjznaNnR3AWxfc5pBTDzT9SMF
- +0joMHFCRF9TYXHjwNVHSp1zOVUoL4sx6fVfKwUgVPqhyb9ca90X46rg56rDKQze9yfw
- ipX17sEa434qOD2D73wM99Jh9uu/QrPMsKqNNXMqFIg3A99f4lTvG7z+HCA0lkkJ9FC4
- e4BQ==
+ bh=GA52Jv9q7qKK+uuh6zGFDaKth+K49Bn+vh0CMt36g6k=;
+ b=UWDWF6HyzOYuDlumJHLFaUHVPqoBDK7TjnA4SCqwE4/jrOiZxx6uDdDE3a+stezzb/
+ QAMK0jG3QT2rd3BW1guyRD1PBvG1QKvPxgHxJh41UhKa8CTOQ9sZOpflOv+9cEIb64+8
+ 3hTBNOxkILToCWRF0VJGjGY3hxE0mN+nfWVXT5qxqcrg3A0kF86+fpUjVjPz7OecTyu9
+ 3s1SzdR1ojWDypUREC5eW8z6ZDhCuUmsJHcf0Aix/uGsfo6FbQtxc4RF87cZfxRmjWFm
+ mtpRpkxg8AOjHQ0VhjzCtsMvMBT+G11dO7WQ95lt9MtRR53dRSt8A5BXVxJwggQmOEii
+ nXJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=xGhjnXn/C0qTfkhl0tEeiHCLhVCbdYoTtED7Ch6E9ZU=;
- b=Yb/oEMyjOyEyFjN4bEfGbfU/Ygkue6NdOiyoIT+twC6gIqSu7nlPj3UR8hnj4M7fEo
- FxLsvDLYfMzs4dWbPEk2n/Cj9gth3czcDm9yFBl4PMzdUk7mk8zGLXhbjHsBER3OkQlP
- UVg6j2mIc0Jq+x2pwtwU9l1HvFyXNs5Vsf7RzC4DpbqnrZOF/uvloj5ATSYG4J7rQZYB
- WW0odnGnAXLiKQIUwnTb6Aaid54QBK0OQDDagwudBfanFxNzvoLnhXhp7wasHcrhAIvK
- /8Ajt5aBBoqP5HSni1sPaGoZfg8rjLyNlCcdxuWh1/the5O4+POtf9vY5fGMetZlHJXG
- D5Qg==
-X-Gm-Message-State: AOAM533FKhKKpY8SZsFvYZAqR4lacQ8zJZBgLFmRiMDjDWmtdBXcfQA7
- ke3qpKDGOAqV61O32vFukDG6N26ross=
-X-Google-Smtp-Source: ABdhPJz/QFsVLt4dqN50LXP14Lru1rZSBlL3FvBYJwsiut4l0hpvQbXcWxFXgQNffFVbOC70D5m+/Q==
-X-Received: by 2002:a17:90a:1a43:: with SMTP id
- 3mr5414307pjl.154.1620609530718; 
- Sun, 09 May 2021 18:18:50 -0700 (PDT)
+ bh=GA52Jv9q7qKK+uuh6zGFDaKth+K49Bn+vh0CMt36g6k=;
+ b=Jzq6hmusZmhu4wYZCZrO+adzy7PDZtCLa5AQrSKKxjRp02KGGOdPo01lNivWQbf9To
+ 7E3cX6oRBQMIHiDiF98ySGGiabe5gOXZT9HJXcTnmZOvtN8DPr+3WCyND9uvO+uW9/on
+ 8L7S72+iHDYNr1/HiLtPl0qW0hsn8iAVLsSoO4IMVo+RUVVxJ4k3n0uOwAqBO0eeQ1wH
+ NRbWzp3g7SdHLJX2OSWqYMCvYoyyXcSZSfaYdEvfA7dCt3iXhcWrfp7p5V4UD8CantB+
+ Lp9rxeDpWycyKzlN87UPnJ5npQRiMyx92WjwzqqgNBaH1CytUofcgLJSeFCtMp+M6CZ7
+ bZlg==
+X-Gm-Message-State: AOAM532yFtNIqfMSycLztkRIEyXAO3VFL5IZxKpRjyhjDOrfC8fnxZFK
+ M3o8LFhLLcxnnMbsWqZSx1BjUKdSMWY=
+X-Google-Smtp-Source: ABdhPJxa4akQGisS57oPTWrZSewj1xTu9j9RsuPbjTfOh5BAW52chXJQFfhnc3sSQ96fNq8aeOcylA==
+X-Received: by 2002:a17:90a:d78c:: with SMTP id
+ z12mr37290139pju.106.1620609535418; 
+ Sun, 09 May 2021 18:18:55 -0700 (PDT)
 Received: from tee480.ozlabs.ibm.com
  (159-196-117-139.9fc475.syd.nbn.aussiebb.net. [159.196.117.139])
- by smtp.gmail.com with ESMTPSA id n129sm9887649pfn.54.2021.05.09.18.18.46
+ by smtp.gmail.com with ESMTPSA id n129sm9887649pfn.54.2021.05.09.18.18.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 May 2021 18:18:50 -0700 (PDT)
+ Sun, 09 May 2021 18:18:55 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v13 2/8] powerpc/lib/code-patching: Set up Strict RWX patching
- earlier
-Date: Mon, 10 May 2021 11:18:22 +1000
-Message-Id: <20210510011828.4006623-3-jniethe5@gmail.com>
+Subject: [PATCH v13 3/8] powerpc/kprobes: Mark newly allocated probes as ROX
+Date: Mon, 10 May 2021 11:18:23 +1000
+Message-Id: <20210510011828.4006623-4-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210510011828.4006623-1-jniethe5@gmail.com>
 References: <20210510011828.4006623-1-jniethe5@gmail.com>
@@ -89,63 +88,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-setup_text_poke_area() is a late init call so it runs before
-mark_rodata_ro() and after the init calls. This lets all the init code
-patching simply write to their locations. In the future, kprobes is
-going to allocate its instruction pages RO which means they will need
-setup_text__poke_area() to have been already called for their code
-patching. However, init_kprobes() (which allocates and patches some
-instruction pages) is an early init call so it happens before
-setup_text__poke_area().
+From: Russell Currey <ruscur@russell.cc>
 
-start_kernel() calls poking_init() before any of the init calls. On
-powerpc, poking_init() is currently a nop. setup_text_poke_area() relies
-on kernel virtual memory, cpu hotplug and per_cpu_areas being setup.
-setup_per_cpu_areas(), boot_cpu_hotplug_init() and mm_init() are called
-before poking_init().
+Add the arch specific insn page allocator for powerpc. This allocates
+ROX pages if STRICT_KERNEL_RWX is enabled. These pages are only written
+to with patch_instruction() which is able to write RO pages.
 
-Turn setup_text_poke_area() into poking_init().
-
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Russell Currey <ruscur@russell.cc>
+Reviewed-by: Daniel Axtens <dja@axtens.net>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+[jpn: Reword commit message, switch to __vmalloc_node_range()]
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v9: New to series
+v9: - vmalloc_exec() no longer exists
+    - Set the page to RW before freeing it
+v10: - use __vmalloc_node_range()
+v11: - Neaten up
+v12: - Switch from __vmalloc_node_range() to module_alloc()
+v13: Use strict_kernel_rwx_enabled()
 ---
- arch/powerpc/lib/code-patching.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/kprobes.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 870b30d9be2f..15296207e1ba 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -70,14 +70,11 @@ static int text_area_cpu_down(unsigned int cpu)
+diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+index 01ab2163659e..b517f3e6e7c5 100644
+--- a/arch/powerpc/kernel/kprobes.c
++++ b/arch/powerpc/kernel/kprobes.c
+@@ -19,11 +19,13 @@
+ #include <linux/extable.h>
+ #include <linux/kdebug.h>
+ #include <linux/slab.h>
++#include <linux/moduleloader.h>
+ #include <asm/code-patching.h>
+ #include <asm/cacheflush.h>
+ #include <asm/sstep.h>
+ #include <asm/sections.h>
+ #include <asm/inst.h>
++#include <asm/set_memory.h>
+ #include <linux/uaccess.h>
+ 
+ DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
+@@ -103,6 +105,21 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name, unsigned int offset)
+ 	return addr;
  }
  
- /*
-- * Run as a late init call. This allows all the boot time patching to be done
-- * simply by patching the code, and then we're called here prior to
-- * mark_rodata_ro(), which happens after all init calls are run. Although
-- * BUG_ON() is rude, in this case it should only happen if ENOMEM, and we judge
-- * it as being preferable to a kernel that will crash later when someone tries
-- * to use patch_instruction().
-+ * Although BUG_ON() is rude, in this case it should only happen if ENOMEM, and
-+ * we judge it as being preferable to a kernel that will crash later when
-+ * someone tries to use patch_instruction().
-  */
--static int __init setup_text_poke_area(void)
-+int __init poking_init(void)
++void *alloc_insn_page(void)
++{
++	void *page;
++
++	page = module_alloc(PAGE_SIZE);
++	if (!page)
++		return NULL;
++
++	if (strict_kernel_rwx_enabled()) {
++		set_memory_ro((unsigned long)page, 1);
++		set_memory_x((unsigned long)page, 1);
++	}
++	return page;
++}
++
+ int arch_prepare_kprobe(struct kprobe *p)
  {
- 	BUG_ON(!cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
- 		"powerpc/text_poke:online", text_area_cpu_up,
-@@ -85,7 +82,6 @@ static int __init setup_text_poke_area(void)
- 
- 	return 0;
- }
--late_initcall(setup_text_poke_area);
- 
- /*
-  * This can be called for kernel text or a module.
+ 	int ret = 0;
 -- 
 2.25.1
 
