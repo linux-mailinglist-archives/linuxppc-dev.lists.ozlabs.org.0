@@ -2,75 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84CC7377C4A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 08:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D796377C71
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 08:38:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdrrl46Xvz3017
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 16:35:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdrx74wg8z308f
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 16:38:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=FSkP6wfY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=nVk4cdEF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b;
- helo=mail-pf1-x42b.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436;
+ helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FSkP6wfY; dkim-atps=neutral
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
- [IPv6:2607:f8b0:4864:20::42b])
+ header.s=20161025 header.b=nVk4cdEF; dkim-atps=neutral
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com
+ [IPv6:2607:f8b0:4864:20::436])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FdrrF2llQz2xtx
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 16:34:36 +1000 (AEST)
-Received: by mail-pf1-x42b.google.com with SMTP id x188so12914470pfd.7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 23:34:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdrwj4GcSz2yXH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 16:38:29 +1000 (AEST)
+Received: by mail-pf1-x436.google.com with SMTP id q2so12869656pfh.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 23:38:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=HGBIj8xUCvLd4pR92wcGs7mrQ/wDR/glW14gv4YWYBo=;
- b=FSkP6wfYfoiAqoFvwcrgIlb23ul8X3ysCcFJFTMF5SkPwiSpWGAwpDdGazSHkyjpry
- 3HWhIJt8eE2wzfExp8DekB/vPL/66FIDevxZbocnKC7eVumawLEMNhdb+QQvmOqPDQDn
- RAIq9BKjJeLsY25YtIDLKef7run85JCrFhgwBZoc6PpIDcNY2XbD1Ldt3QUVcy7xA1OY
- oNLES/7XtUXULfoZuH5m3wUM/qYFz6bzhl3B5K4FEd/uGoGCMJBh5zwMXFtpWxnwCn6L
- 0FgB3nzDfwdrA2/yLbyI/CkND0sQhV+RXehT5qYgpiij4KQCo//LNsbzcQ9LiBBUimcr
- 0kAA==
+ bh=avMmQkqPq3ZK6KdqTCGnz6Br6PUKj5adgsHq71kJhzU=;
+ b=nVk4cdEFN02eydxyUSfohHQMO6Tulawffbm1sjoFbg6eFJM58XESIJdbvolpJjxhyu
+ iMLPLw9Kb+ZHtSkQi0slf0hOJL2wjpBVqJ9uAx+YWqYNT1NyNdYagsMZ3BQMQfV4NK5R
+ SOJdZGi47PKEhwbW6g+pQ/GFMA3205yY41mcV2bPoGdO4YXSZNg6mBocHHyfCVjoP5zm
+ 8MtFJ8gvN3+QE/mmdib4H6hVuLU10imWTaALViyCPLUUikvdD0iBs6YCv1fR1HYH5K/a
+ Jq+YYTFOLaaTyYhS8FHzISgCPXmFvs2nCplsuUnQB61/TvtrTz64C8rMtzkBeCRuYodo
+ OcDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=HGBIj8xUCvLd4pR92wcGs7mrQ/wDR/glW14gv4YWYBo=;
- b=mTwBjuwOoKsMDaF9/VJ1z9xNTde5DHz6bt5SEzoOZPqMFC1Jq/wAC6oKdZHDKTWBTS
- RgwKGh2IVfKqp+eZrMUWvW1uDcBPzwGTh0/OHYrzDWVIZBeEWn+xRrrdh5d7Hu6f45Fj
- pS9LMOHT6sgwwK2K/UGDTcR4cADqwH+OiRjaX8InfW9drv/a1u1Y2epr9H/n93IMqobi
- 7T/Fzpc+r32ZyRuKV4JQhvOaMxkafwSrsX+3y2ESxV/tY9IkNVAarrBzvNaICf5iTXQ3
- 57jNQE6YNLut9nLWoaKagN/2YH5ski4o7W+XRCxcoeM+rkGV+gG2MZct9yLQmB0th5js
- faQA==
-X-Gm-Message-State: AOAM5328sD/i/LjWqRwY85CwaDP0/wknvgHsb9x2g4eRmAPv//a9RLtE
- z4ybYPZlI2IUsV0Sdj2fbJo=
-X-Google-Smtp-Source: ABdhPJzKjkEWER95RQjk6gSGm+pfadu3RCzIx7RnZbs6Tbke3SB1wLEpbFBChpx80zNtTXx1WGBJnw==
-X-Received: by 2002:a62:1b88:0:b029:1fb:d3d0:343a with SMTP id
- b130-20020a621b880000b02901fbd3d0343amr23667445pfb.76.1620628472772; 
- Sun, 09 May 2021 23:34:32 -0700 (PDT)
+ bh=avMmQkqPq3ZK6KdqTCGnz6Br6PUKj5adgsHq71kJhzU=;
+ b=bIEjkr2BOguaqy0HcG2XXtdLo+OYGn8aJZ4rz1H0XGIJacBtbdACGCTvUUWGzKKf8y
+ dBUTdd02geMds52LDmVVJEoy0+y7kX61zft8IbU4Gkb8QIiHJuqPj+pT/eCJtiZEubiW
+ 79fI486/pouiwP/dfNjCgJ2V8IqaB+hl8URvBNLYo1ovQoN5iYL7EpcdqwXf+8mT2YCQ
+ RjHhm4aHWC9+pZHxxF9o0fX/9inp6A/nwUCV08Hiqg7AxM9Kz6sP+vvJ4djBSfK5365z
+ XoIAfsmeXPebRwG1kZoyjUyDykascB3U3Y14ANO/XZO3DpzZJzVQUbHG/DPAdOcbDeR9
+ 1zmQ==
+X-Gm-Message-State: AOAM5311rWJ2eFgzsxEtp5xDgb670ovwoqRzoZ9/Jm+SED0e0EBC1OnY
+ MNf8gzN60EyB4XTjnFxTKcw=
+X-Google-Smtp-Source: ABdhPJzFZ7yfyn6/TMczNFF0hvFQIl4wu2x+s6wTrCFq0vTlrKVVcrR3rP6beVQcr+nuVYmqxaRFSw==
+X-Received: by 2002:a05:6a00:d4e:b029:291:19f7:ddd4 with SMTP id
+ n14-20020a056a000d4eb029029119f7ddd4mr24057721pfv.52.1620628706008; 
+ Sun, 09 May 2021 23:38:26 -0700 (PDT)
 Received: from localhost (60-241-47-46.tpgi.com.au. [60.241.47.46])
- by smtp.gmail.com with ESMTPSA id y23sm9999389pfb.83.2021.05.09.23.34.31
+ by smtp.gmail.com with ESMTPSA id k7sm10289263pfc.16.2021.05.09.23.38.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 May 2021 23:34:32 -0700 (PDT)
-Date: Mon, 10 May 2021 16:34:27 +1000
+ Sun, 09 May 2021 23:38:25 -0700 (PDT)
+Date: Mon, 10 May 2021 16:38:20 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [V3 PATCH 12/16] powerpc/pseries/vas: sysfs interface to export
- capabilities
+Subject: Re: [V3 PATCH 15/16] crypto/nx: Get NX capabilities for GZIP
+ coprocessor type
 To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
  linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  mpe@ellerman.id.au
 References: <a910e5bd3f3398b4bd430b25a856500735b993c3.camel@linux.ibm.com>
- <60176ad795219afbeaf51ad596af4bae710617b7.camel@linux.ibm.com>
-In-Reply-To: <60176ad795219afbeaf51ad596af4bae710617b7.camel@linux.ibm.com>
+ <e5fff6adbf3ce7769b0efe4846f39dbc6c795dd1.camel@linux.ibm.com>
+In-Reply-To: <e5fff6adbf3ce7769b0efe4846f39dbc6c795dd1.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1620628126.jezp40t2h6.astroid@bobo.none>
+Message-Id: <1620628516.4xglqwl3t1.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,23 +88,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of April 18, 2021 7:10 am:
+Excerpts from Haren Myneni's message of April 18, 2021 7:12 am:
 >=20
-> pHyp provides GZIP default and GZIP QoS capabilities which gives
-> the total number of credits are available in LPAR. This patch
-> creates sysfs entries and exports LPAR credits, the currently used
-> and the available credits for each feature.
+> phyp provides NX capabilities which gives recommended minimum
+> compression / decompression length and maximum request buffer size
+> in bytes.
 >=20
-> /sys/kernel/vas/VasCaps/VDefGzip: (default GZIP capabilities)
-> 	avail_lpar_creds /* Available credits to use */
-> 	target_lpar_creds /* Total credits available which can be
-> 			 /* changed with DLPAR operation */
-> 	used_lpar_creds  /* Used credits */
+> Changes to get NX overall capabilities which points to the specific
+> features phyp supports. Then retrieve NXGZIP specific capabilities.
+>=20
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> ---
+>  drivers/crypto/nx/nx-common-pseries.c | 83 +++++++++++++++++++++++++++
+>  1 file changed, 83 insertions(+)
+>=20
+> diff --git a/drivers/crypto/nx/nx-common-pseries.c b/drivers/crypto/nx/nx=
+-common-pseries.c
+> index 9a40fca8a9e6..49224870d05e 100644
+> --- a/drivers/crypto/nx/nx-common-pseries.c
+> +++ b/drivers/crypto/nx/nx-common-pseries.c
+> @@ -9,6 +9,7 @@
+>   */
+> =20
+>  #include <asm/vio.h>
+> +#include <asm/hvcall.h>
+>  #include <asm/vas.h>
+> =20
+>  #include "nx-842.h"
+> @@ -20,6 +21,24 @@ MODULE_DESCRIPTION("842 H/W Compression driver for IBM=
+ Power processors");
+>  MODULE_ALIAS_CRYPTO("842");
+>  MODULE_ALIAS_CRYPTO("842-nx");
+> =20
+> +struct nx_ct_capabs_be {
 
-/sys/kernel/ is not an appropriate directory to put it in. Also camel=20
-case is not thought very highly of these days.
+What does "ct" mean? I've seen it in a few other places too.
 
-And s/capabs/caps/g applies here (and all other patches).
+> +	__be64	descriptor;
+> +	__be64	req_max_processed_len;	/* Max bytes in one GZIP request */
+> +	__be64	min_compress_len;	/* Min compression size in bytes */
+> +	__be64	min_decompress_len;	/* Min decompression size in bytes */
+> +} __packed __aligned(0x1000);
+> +
+> +struct nx_ct_capabs {
+> +	char	name[VAS_DESCR_LEN + 1];
+> +	u64	descriptor;
+> +	u64	req_max_processed_len;	/* Max bytes in one GZIP request */
+> +	u64	min_compress_len;	/* Min compression in bytes */
+> +	u64	min_decompress_len;	/* Min decompression in bytes */
+> +};
+> +
+> +u64 capab_feat =3D 0;
+
+Why is this here and not a local variable?
+
+> +struct nx_ct_capabs nx_ct_capab;
+
+It's okay and generally better to use the same name as the struct name
+in this situation, i.e.,
+
+"struct nx_ct_capabs nx_ct_capabs"
+
+(modulo static / caps / etc)
 
 Thanks,
 Nick
