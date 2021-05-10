@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9D2377AF1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 06:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 944B8377AF2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 06:16:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fdnmz0SK9z3bnR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 14:16:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FdnnK42LKz3bnR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 14:16:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.218.53; helo=mail-ej1-f53.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.46; helo=mail-ed1-f46.google.com;
  envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com
- [209.85.218.53])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com
+ [209.85.208.46])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdnkf1FGLz2yRX
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 14:14:33 +1000 (AEST)
-Received: by mail-ej1-f53.google.com with SMTP id m12so22437805eja.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 21:14:33 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdnkf55b9z2yRX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 14:14:34 +1000 (AEST)
+Received: by mail-ed1-f46.google.com with SMTP id v5so6018183edc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 21:14:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=1ES7VTSt0mLOOOtyK1uMH/ESz61Of936G331zCp64LY=;
- b=HoJjrp2ViVZbRZAU44i7HKifwFakcCqHL+vysnRFsWrKXFIC7FmmghrdoLUogoYcCA
- FP4Je9EowHA15Z5pBc/plV7T0KDj1fKtraz1L0nylUAcJe70pGfeWGS3FCEHF1yUL/uN
- dKm4YUh6LokrKrA5V51othRjw4RokZ2+ouwppNxhtkUNBX4FhbvQtmnX8fZFcxJS+tmX
- QFCyAwVMETOG+2vvz0busFRlRb/cRSMFjPLSxRFWq0HcLx6qpOcqTC7Cf9O4zGgtwMP7
- fqttdTE2pNyVeKQEGgguv9BP4ryOZ29NzTIpFqLV/OYOTXBNi+Xbsy173Ea+VVJSj1+W
- 6AJQ==
-X-Gm-Message-State: AOAM530OcblCz9ObwI03msgPDGYFE+EqZkEfNI9hpxAr+O21IVmGkX4a
- Fy37I29O6BoBG2Ikwn+PItw=
-X-Google-Smtp-Source: ABdhPJzvYeZB0gJ8Hd40URzIwWVyTAi3VNFUZmxcR/jxN5TjnMZNduHfimEhYp/9YuEV8weCphuT1w==
-X-Received: by 2002:a17:906:35d2:: with SMTP id
- p18mr23354318ejb.339.1620620070916; 
- Sun, 09 May 2021 21:14:30 -0700 (PDT)
+ bh=NDGawuhAJJmz73B7uj32A5EHuzQVuuXCnB1idlmDenc=;
+ b=YumWkW9gfMLgwMCSWB9A9/wXHIsj2I0zIjWlxCrlpcqru+yVbMheyBixAfMTy/k5bg
+ OuBKwJ3dR0ZclkeO+ZdbQJHvLbJmY37OwV7FObq0Z/J1VUfgmO99ZIpELgCW2Ec5tkkf
+ EbKqPbv/IxToK4s7ObyiGCGzbew6pe6ZQlD8y4+0y/diwMKrQacpTTDuNk35RTUU2FPB
+ l9dJllAmSJMowmpyI0Bi3Mt8mbzYDKH6nmeaRz6UaiBnMwcmhpH8AayvBs98jUPq9uyr
+ suYGEl/m8brnI3wv31Ygmda3CKwFXbz/8dSvQw6NMQgOE0nc0SwjpPzx0hfMPWGuX9Mh
+ t3iQ==
+X-Gm-Message-State: AOAM531L+JdIrXjpzqW/7Eqy9c7cn4qOqds8BBtbrL5bon7TxnhW4Ytc
+ sZv21a/L5yKnrT8xvqGSIgs=
+X-Google-Smtp-Source: ABdhPJw8BjAeTOvXx1PzuicEvr2+9Hf6xbz/9p3ioUyMet+u4++O7hAY0Cmr1uZkz9NsrtS4fa+y9Q==
+X-Received: by 2002:a05:6402:702:: with SMTP id
+ w2mr12541384edx.85.1620620072032; 
+ Sun, 09 May 2021 21:14:32 -0700 (PDT)
 Received: from workstation.lan ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id e4sm8165006ejh.98.2021.05.09.21.14.30
+ by smtp.gmail.com with ESMTPSA id e4sm8165006ejh.98.2021.05.09.21.14.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 May 2021 21:14:30 -0700 (PDT)
+ Sun, 09 May 2021 21:14:31 -0700 (PDT)
 From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 06/11] PCI/P2PDMA: Use sysfs_emit() and sysfs_emit_at() in
+Subject: [PATCH 07/11] PCI/ASPM: Use sysfs_emit() and sysfs_emit_at() in
  "show" functions
-Date: Mon, 10 May 2021 04:14:19 +0000
-Message-Id: <20210510041424.233565-6-kw@linux.com>
+Date: Mon, 10 May 2021 04:14:20 +0000
+Message-Id: <20210510041424.233565-7-kw@linux.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210510041424.233565-1-kw@linux.com>
 References: <20210510041424.233565-1-kw@linux.com>
@@ -92,41 +92,31 @@ Related to:
 
 Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 ---
- drivers/pci/p2pdma.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/pci/pcie/aspm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 196382630363..a1351b3e2c4c 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -53,7 +53,7 @@ static ssize_t size_show(struct device *dev, struct device_attribute *attr,
- 	if (pdev->p2pdma->pool)
- 		size = gen_pool_size(pdev->p2pdma->pool);
- 
--	return scnprintf(buf, PAGE_SIZE, "%zd\n", size);
-+	return sysfs_emit(buf, "%zd\n", size);
- }
- static DEVICE_ATTR_RO(size);
- 
-@@ -66,7 +66,7 @@ static ssize_t available_show(struct device *dev, struct device_attribute *attr,
- 	if (pdev->p2pdma->pool)
- 		avail = gen_pool_avail(pdev->p2pdma->pool);
- 
--	return scnprintf(buf, PAGE_SIZE, "%zd\n", avail);
-+	return sysfs_emit(buf, "%zd\n", avail);
- }
- static DEVICE_ATTR_RO(available);
- 
-@@ -75,8 +75,7 @@ static ssize_t published_show(struct device *dev, struct device_attribute *attr,
- {
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index ac0557a305af..013a47f587ce 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1208,7 +1208,7 @@ static ssize_t aspm_attr_show_common(struct device *dev,
  	struct pci_dev *pdev = to_pci_dev(dev);
+ 	struct pcie_link_state *link = pcie_aspm_get_link(pdev);
  
--	return scnprintf(buf, PAGE_SIZE, "%d\n",
--			 pdev->p2pdma->p2pmem_published);
-+	return sysfs_emit(buf, "%d\n", pdev->p2pdma->p2pmem_published);
+-	return sprintf(buf, "%d\n", (link->aspm_enabled & state) ? 1 : 0);
++	return sysfs_emit(buf, "%d\n", (link->aspm_enabled & state) ? 1 : 0);
  }
- static DEVICE_ATTR_RO(published);
  
+ static ssize_t aspm_attr_store_common(struct device *dev,
+@@ -1265,7 +1265,7 @@ static ssize_t clkpm_show(struct device *dev,
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+ 	struct pcie_link_state *link = pcie_aspm_get_link(pdev);
+ 
+-	return sprintf(buf, "%d\n", link->clkpm_enabled);
++	return sysfs_emit(buf, "%d\n", link->clkpm_enabled);
+ }
+ 
+ static ssize_t clkpm_store(struct device *dev,
 -- 
 2.31.1
 
