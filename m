@@ -1,75 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073C33779C0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 03:22:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C3A377AED
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 06:15:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FdjwQ0lbkz3d5Y
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 11:22:46 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=I3KWvaz8;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FdnlS1GwMz3082
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 14:15:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
- helo=mail-pj1-x102b.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=I3KWvaz8; dkim-atps=neutral
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
- [IPv6:2607:f8b0:4864:20::102b])
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.44; helo=mail-ej1-f44.google.com;
+ envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com
+ [209.85.218.44])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FdjrT64zLz3bsv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 11:19:21 +1000 (AEST)
-Received: by mail-pj1-x102b.google.com with SMTP id
- cl24-20020a17090af698b0290157efd14899so9318217pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 18:19:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=s0CtcMDYsFJeK2HIudgA+Uky01mskMES4MW4Sd7s+yo=;
- b=I3KWvaz8xL+2XeltvxWZwkLzvSyXmQXe4+WRTQd2j0QhLL3XfrXOpbv4huXHQHUDFu
- etclRC4YusikxhGzoOp2HUWVMKR2NVMlwXTLQmOlfaI/ChcvopM8nrkNv+AD65oypBOq
- 5ho/lG9XWIKShgQK1L5fNKj9LQesD+Nh/ivO2AgqGAE9JHy7RtDeGVuudWlNoGoiLotb
- Lo1plPOBGL0u3y2zaG0oV3WSJ4OXMAgw0huJziJhGjoNZXe2oWBHY+51ikTcO3xH+9Vn
- OobS57oNJMCX/WpeOIkpbrXXaErPVrhnxcEK7VE9ERy5yKUDPRarC2o+IZ6G86raPRx4
- fJsA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fdnkc0wJfz2yRX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 May 2021 14:14:31 +1000 (AEST)
+Received: by mail-ej1-f44.google.com with SMTP id a4so22441859ejk.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 May 2021 21:14:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=s0CtcMDYsFJeK2HIudgA+Uky01mskMES4MW4Sd7s+yo=;
- b=s8Hxcj1QbDTvnmEWH5+0MoxuMAfScTO86Fg7HLxG2MmoN0+IXfV07PWrrx9pmc9ad8
- CXUhgZV9mQKC01w3bYmRyGkqnDH1v2dQ/1zSqPy794pXtQ5dFNfR3f5S+H0LEUfJLxD3
- 6ntv9AV7aSAt6B9gfKHmTY0moN8AaOt83G08qE2IU1foSkyGxPrmsD0d6liaQnZvdLS9
- 572+4dodFjdBWakRaD0s40uKYwH0U6Hfrp5Hw8R+ik85efldeDeJ2So+qEk1/oIbT8Qc
- sY7QZcA61BqUZBYqg5vFvbExUbk/kIiqDSBFolOQ2YE06AmHg3Ao3Ubn/jWp9iN9PRpL
- S3Tw==
-X-Gm-Message-State: AOAM533JCBkN8BwRQXZXTvsiJfW0jf4ibicW9nKTPfEXvrmz7xABxgLp
- 4T0KwFfN5TW007JvMHN6zjU6ZYcjt7E=
-X-Google-Smtp-Source: ABdhPJxw6wbcLBGzP09d6GCcjIBdIqylZPxAGhQqXGGNZYYXdtn5+MJFeNc3mBeySKCUZXZr+ul0Ng==
-X-Received: by 2002:a17:90b:234d:: with SMTP id
- ms13mr36267542pjb.152.1620609559946; 
- Sun, 09 May 2021 18:19:19 -0700 (PDT)
-Received: from tee480.ozlabs.ibm.com
- (159-196-117-139.9fc475.syd.nbn.aussiebb.net. [159.196.117.139])
- by smtp.gmail.com with ESMTPSA id n129sm9887649pfn.54.2021.05.09.18.19.15
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=yG00XpORYp9fWIwYNYumtIx0DbQmOEgAaM8O8RiTCBg=;
+ b=HQHTCpaAHNG1ClsXLFgrNnjBpOFqhJvCj/LynSkzd977ffZq4V34UWLpXlwxIrdebs
+ I90kBPPtg0N4gxgItBHVWk+fdaxn0Dr03w7GNzmddbXy2IBNGWpVVxFLX0ahk2pBtSta
+ g/LMS/N4YkkNziCMmJYC5cG/ZTIxN8QqiCW1mYv/L512PK7zOgta2O6oCPnRpgZ6UMey
+ XhX/yp5g94fyvfKKtF5sYMHlVhwP06/eo5jMfE5lvFv/E2wBjfHiiTe3gibkS7z5M1+7
+ 4tfbr0Ma81gUhDE/AjGJgcIMSLfxUFBYu+YruNwHcGiANPTC1qNBqZfG5YWtovn7u5jx
+ nsgA==
+X-Gm-Message-State: AOAM531VbzBdVu0UgitAepcbSnW0TkM0lnLWLTtkACjUjj3GkurMil+h
+ u5mJxUsvbt0/YXOHOapmynA=
+X-Google-Smtp-Source: ABdhPJyJeQPSRJV9jJWYAjEQGkNIBh1uh1Jil7dgPsc1o2RkXPUJpNn61pvdKGmYpGTBlGGSR+C90w==
+X-Received: by 2002:a17:907:7216:: with SMTP id
+ dr22mr23759582ejc.185.1620620065913; 
+ Sun, 09 May 2021 21:14:25 -0700 (PDT)
+Received: from workstation.lan ([95.155.85.46])
+ by smtp.gmail.com with ESMTPSA id e4sm8165006ejh.98.2021.05.09.21.14.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 May 2021 18:19:19 -0700 (PDT)
-From: Jordan Niethe <jniethe5@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v13 8/8] powerpc/32: use set_memory_attr()
-Date: Mon, 10 May 2021 11:18:28 +1000
-Message-Id: <20210510011828.4006623-9-jniethe5@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210510011828.4006623-1-jniethe5@gmail.com>
-References: <20210510011828.4006623-1-jniethe5@gmail.com>
+ Sun, 09 May 2021 21:14:25 -0700 (PDT)
+From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 01/11] PCI: Use sysfs_emit() and sysfs_emit_at() in "show"
+ functions
+Date: Mon, 10 May 2021 04:14:14 +0000
+Message-Id: <20210510041424.233565-1-kw@linux.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,147 +63,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, cmr@codefail.de, npiggin@gmail.com,
- aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com,
- Jordan Niethe <jniethe5@gmail.com>, dja@axtens.net
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ Logan Gunthorpe <logang@deltatee.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+The sysfs_emit() and sysfs_emit_at() functions were introduced to make
+it less ambiguous which function is preferred when writing to the output
+buffer in a device attribute's "show" callback [1].
 
-Use set_memory_attr() instead of the PPC32 specific change_page_attr()
+Convert the PCI sysfs object "show" functions from sprintf(), snprintf()
+and scnprintf() to sysfs_emit() and sysfs_emit_at() accordingly, as the
+latter is aware of the PAGE_SIZE buffer and correctly returns the number
+of bytes written into the buffer.
 
-change_page_attr() was checking that the address was not mapped by
-blocks and was handling highmem, but that's unneeded because the
-affected pages can't be in highmem and block mapping verification
-is already done by the callers.
+No functional change intended.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-[ruscur: rebase on powerpc/merge with Christophe's new patches]
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+[1] Documentation/filesystems/sysfs.rst
+
+Related to:
+  commit ad025f8e46f3 ("PCI/sysfs: Use sysfs_emit() and sysfs_emit_at() in "show" functions")
+
+Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 ---
- arch/powerpc/mm/pgtable_32.c | 60 ++++++------------------------------
- 1 file changed, 10 insertions(+), 50 deletions(-)
+ drivers/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-index e0ec67a16887..dcf5ecca19d9 100644
---- a/arch/powerpc/mm/pgtable_32.c
-+++ b/arch/powerpc/mm/pgtable_32.c
-@@ -23,6 +23,7 @@
- #include <linux/highmem.h>
- #include <linux/memblock.h>
- #include <linux/slab.h>
-+#include <linux/set_memory.h>
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index b717680377a9..5ed316ea5831 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -6439,7 +6439,7 @@ static ssize_t resource_alignment_show(struct bus_type *bus, char *buf)
  
- #include <asm/pgalloc.h>
- #include <asm/fixmap.h>
-@@ -132,64 +133,20 @@ void __init mapin_ram(void)
- 	}
- }
+ 	spin_lock(&resource_alignment_lock);
+ 	if (resource_alignment_param)
+-		count = scnprintf(buf, PAGE_SIZE, "%s", resource_alignment_param);
++		count = sysfs_emit(buf, "%s", resource_alignment_param);
+ 	spin_unlock(&resource_alignment_lock);
  
--static int __change_page_attr_noflush(struct page *page, pgprot_t prot)
--{
--	pte_t *kpte;
--	unsigned long address;
--
--	BUG_ON(PageHighMem(page));
--	address = (unsigned long)page_address(page);
--
--	if (v_block_mapped(address))
--		return 0;
--	kpte = virt_to_kpte(address);
--	if (!kpte)
--		return -EINVAL;
--	__set_pte_at(&init_mm, address, kpte, mk_pte(page, prot), 0);
--
--	return 0;
--}
--
--/*
-- * Change the page attributes of an page in the linear mapping.
-- *
-- * THIS DOES NOTHING WITH BAT MAPPINGS, DEBUG USE ONLY
-- */
--static int change_page_attr(struct page *page, int numpages, pgprot_t prot)
--{
--	int i, err = 0;
--	unsigned long flags;
--	struct page *start = page;
--
--	local_irq_save(flags);
--	for (i = 0; i < numpages; i++, page++) {
--		err = __change_page_attr_noflush(page, prot);
--		if (err)
--			break;
--	}
--	wmb();
--	local_irq_restore(flags);
--	flush_tlb_kernel_range((unsigned long)page_address(start),
--			       (unsigned long)page_address(page));
--	return err;
--}
--
- void mark_initmem_nx(void)
- {
--	struct page *page = virt_to_page(_sinittext);
- 	unsigned long numpages = PFN_UP((unsigned long)_einittext) -
- 				 PFN_DOWN((unsigned long)_sinittext);
- 
- 	if (v_block_mapped((unsigned long)_sinittext))
- 		mmu_mark_initmem_nx();
- 	else
--		change_page_attr(page, numpages, PAGE_KERNEL);
-+		set_memory_attr((unsigned long)_sinittext, numpages, PAGE_KERNEL);
- }
- 
- #ifdef CONFIG_STRICT_KERNEL_RWX
- void mark_rodata_ro(void)
- {
--	struct page *page;
- 	unsigned long numpages;
- 
- 	if (v_block_mapped((unsigned long)_stext + 1)) {
-@@ -198,20 +155,18 @@ void mark_rodata_ro(void)
- 		return;
- 	}
- 
--	page = virt_to_page(_stext);
- 	numpages = PFN_UP((unsigned long)_etext) -
- 		   PFN_DOWN((unsigned long)_stext);
- 
--	change_page_attr(page, numpages, PAGE_KERNEL_ROX);
-+	set_memory_attr((unsigned long)_stext, numpages, PAGE_KERNEL_ROX);
  	/*
- 	 * mark .rodata as read only. Use __init_begin rather than __end_rodata
- 	 * to cover NOTES and EXCEPTION_TABLE.
- 	 */
--	page = virt_to_page(__start_rodata);
- 	numpages = PFN_UP((unsigned long)__init_begin) -
- 		   PFN_DOWN((unsigned long)__start_rodata);
- 
--	change_page_attr(page, numpages, PAGE_KERNEL_RO);
-+	set_memory_attr((unsigned long)__start_rodata, numpages, PAGE_KERNEL_RO);
- 
- 	// mark_initmem_nx() should have already run by now
- 	ptdump_check_wx();
-@@ -221,9 +176,14 @@ void mark_rodata_ro(void)
- #ifdef CONFIG_DEBUG_PAGEALLOC
- void __kernel_map_pages(struct page *page, int numpages, int enable)
- {
-+	unsigned long addr = (unsigned long)page_address(page);
-+
- 	if (PageHighMem(page))
- 		return;
- 
--	change_page_attr(page, numpages, enable ? PAGE_KERNEL : __pgprot(0));
-+	if (enable)
-+		set_memory_attr(addr, numpages, PAGE_KERNEL);
-+	else
-+		set_memory_attr(addr, numpages, __pgprot(0));
- }
- #endif /* CONFIG_DEBUG_PAGEALLOC */
 -- 
-2.25.1
+2.31.1
 
