@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A223791DB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 17:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 397EC3791EA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 May 2021 17:05:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ff4864xqlz2yx3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 May 2021 01:04:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ff49t1xRGz3c2c
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 May 2021 01:05:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ff47l3KByz2y0B
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 May 2021 01:03:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ff49X68Kyz2xtk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 May 2021 01:05:20 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 3764D68AFE; Mon, 10 May 2021 17:03:43 +0200 (CEST)
-Date: Mon, 10 May 2021 17:03:42 +0200
+ id 2DAB567373; Mon, 10 May 2021 17:05:17 +0200 (CEST)
+Date: Mon, 10 May 2021 17:05:16 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v6 05/15] swiotlb: Add a new get_io_tlb_mem getter
-Message-ID: <20210510150342.GD28066@lst.de>
+Subject: Re: [PATCH v6 08/15] swiotlb: Bounce data from/to restricted DMA
+ pool if available
+Message-ID: <20210510150516.GE28066@lst.de>
 References: <20210510095026.3477496-1-tientzu@chromium.org>
- <20210510095026.3477496-6-tientzu@chromium.org>
+ <20210510095026.3477496-9-tientzu@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210510095026.3477496-6-tientzu@chromium.org>
+In-Reply-To: <20210510095026.3477496-9-tientzu@chromium.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,15 +74,24 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> +static inline struct io_tlb_mem *get_io_tlb_mem(struct device *dev)
+> +static inline bool is_dev_swiotlb_force(struct device *dev)
 > +{
 > +#ifdef CONFIG_DMA_RESTRICTED_POOL
-> +	if (dev && dev->dma_io_tlb_mem)
-> +		return dev->dma_io_tlb_mem;
+> +	if (dev->dma_io_tlb_mem)
+> +		return true;
 > +#endif /* CONFIG_DMA_RESTRICTED_POOL */
+> +	return false;
+> +}
 > +
-> +	return io_tlb_default_mem;
 
-Given that we're also looking into a not addressing restricted pool
-I'd rather always assign the active pool to dev->dma_io_tlb_mem and
-do away with this helper.
+>  	/* If SWIOTLB is active, use its maximum mapping size */
+>  	if (is_swiotlb_active(dev) &&
+> -	    (dma_addressing_limited(dev) || swiotlb_force == SWIOTLB_FORCE))
+> +	    (dma_addressing_limited(dev) || swiotlb_force == SWIOTLB_FORCE ||
+> +	     is_dev_swiotlb_force(dev)))
+
+This is a mess.  I think the right way is to have an always_bounce flag
+in the io_tlb_mem structure instead.  Then the global swiotlb_force can
+go away and be replace with this and the fact that having no
+io_tlb_mem structure at all means forced no buffering (after a little
+refactoring).
