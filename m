@@ -1,55 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D7237B54E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 07:03:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C29C37B597
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 07:48:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fg2jn6pZJz3080
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 15:03:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fg3jw0xWLz309L
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 15:48:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=QG7HcZsq;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=QG7HcZsq; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fg2gt2nC9z307R
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 May 2021 15:01:30 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Fg2gN39fvz9sf6;
- Wed, 12 May 2021 07:01:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id w1RGZNF_GKyD; Wed, 12 May 2021 07:01:04 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Fg2gN238Rz9sdw;
- Wed, 12 May 2021 07:01:04 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C5C878B7D6;
- Wed, 12 May 2021 07:01:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id fIl-CQcZAHcL; Wed, 12 May 2021 07:01:03 +0200 (CEST)
-Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1EA098B769;
- Wed, 12 May 2021 07:01:03 +0200 (CEST)
-Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E55FE64164; Wed, 12 May 2021 05:01:02 +0000 (UTC)
-Message-Id: <8b972f1c03fb6bd59953035f0a3e4d26659de4f8.1620795204.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1620795204.git.christophe.leroy@csgroup.eu>
-References: <cover.1620795204.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 5/5] powerpc/8xx: Add support for huge pages on VMAP and
- VMALLOC
-To: Andrew Morton <akpm@linux-foundation.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Mike Kravetz <mike.kravetz@oracle.com>, Mike Rapoport <rppt@kernel.org>
-Date: Wed, 12 May 2021 05:01:02 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fff1g69J5z2yWm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 May 2021 23:30:28 +1000 (AEST)
+Received: by mail-pj1-x102f.google.com with SMTP id
+ z6-20020a17090a1706b0290155e8a752d8so324259pjd.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 May 2021 06:30:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=from:to:cc:date:message-id:in-reply-to:references:user-agent
+ :subject:mime-version;
+ bh=TMkyCU3xEE//swwTt+8ovMpUkBNd5F1bX6i4khQ7i/4=;
+ b=QG7HcZsqAWoaCj3S0h6xFR6FjP5W5SFzVi2iJncDGccPe6ofY15kFu3quvER2fKrnG
+ 9lvt16HkYS9aK8rJ/eeRHTYCFce2z6WQ9eGt6CnRqkPCxS5ecuDbw/Xa382JV/wuLwiu
+ v45OxaManIs7X4fQQlNUF7zqQkdU+U9Ule6jxO3kcPnRJGPPs850YMA7iAFc5WnxrcJe
+ nQlfbVkC0+kX0MlEVEbkfOysJoiAfGLBxL3SPcRm8dGStRHig+/CTVcxN6R65T6VbgE/
+ oyq0FunMRYCJElVOhUQGoC1d6JEGVVJ5GILW/7sqBird6duCaIrBkRohlTMz4IZhmTu2
+ xuIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
+ :references:user-agent:subject:mime-version;
+ bh=TMkyCU3xEE//swwTt+8ovMpUkBNd5F1bX6i4khQ7i/4=;
+ b=d+TM+eYOALsykpJKyGNNniKf7DWyk67ekuvW94ITdsQWTHPHguJVgauBrSMUNgCswQ
+ LOtF2Y9CRwCI1o5lzbFaK4OhuV3AcltAxoQB8/13qf0Aw99sBQ9K576hgmNIaSxXCLvr
+ F5tzREU4R60KYw02b2FlULiJHofnN2NpDv0dLOu4Z6I+gcTMpG9zwLbAYzzWrrO3wsom
+ dgycTs9ucUwX42iVGHM0xeuDbIXq/s/lPVHCjbBMig+dnCJYwapLC2SdsPSTqkyrrGbM
+ vUXHN751yf6AGm2rRN858aUyCazKz/UP+JerU4dBLw4MDbaYEXDvegeMHUYlwhEJnLCI
+ N4tg==
+X-Gm-Message-State: AOAM532kVwywEvKY21SYuRUa4E6btXcV7glpbkVpjuTgOtFk6Z95lvp6
+ 3Bn9nVOFNxW72sKtQm1uJv8mQg==
+X-Google-Smtp-Source: ABdhPJw2dIHevnRCTw6DrzL7smP/E+jxmUw1zXUTFUuuVWXxoHDHCvmYhTir8uqRDWerB6fDGWOH0w==
+X-Received: by 2002:a17:90a:4b0e:: with SMTP id
+ g14mr5055331pjh.48.1620739823420; 
+ Tue, 11 May 2021 06:30:23 -0700 (PDT)
+Received: from [192.168.10.95]
+ (ppp121-45-194-51.cbr-trn-nor-bras38.tpg.internode.on.net. [121.45.194.51])
+ by smtp.gmail.com with ESMTPSA id ms2sm14027460pjb.8.2021.05.11.06.30.19
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 11 May 2021 06:30:22 -0700 (PDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Date: Tue, 11 May 2021 23:30:17 +1000
+Message-ID: <1795b9efa40.27bb.1ca38dd7e845b990cd13d431eb58563d@ozlabs.ru>
+In-Reply-To: <20210511112019.GK10366@gate.crashing.org>
+References: <20210511044812.267965-1-aik@ozlabs.ru>
+ <20210511112019.GK10366@gate.crashing.org>
+User-Agent: AquaMail/1.27.0-1705 (build: 102700004)
+Subject: Re: [PATCH kernel v2] powerpc/makefile: Do not redefine $(CPP) for
+ preprocessor
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="----------1795b9efe921a4027bb955e6ea"
+X-Mailman-Approved-At: Wed, 12 May 2021 15:47:53 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,111 +88,181 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
+ Masahiro Yamada <masahiroy@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
+ clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc 8xx has 4 page sizes:
-- 4k
-- 16k
-- 512k
-- 8M
+This is a multi-part message in MIME format.
+------------1795b9efe921a4027bb955e6ea
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-At the time being, vmalloc and vmap only support huge pages which are
-leaf at PMD level.
 
-Here the PMD level is 4M, it doesn't correspond to any supported
-page size.
 
-For now, implement use of 16k and 512k pages which is done
-at PTE level.
+On 11 May 2021 21:24:55 Segher Boessenkool <segher@kernel.crashing.org> wrote:
 
-Support of 8M pages will be implemented later, it requires vmalloc to
-support hugepd tables.
+> Hi!
+>
+> On Tue, May 11, 2021 at 02:48:12PM +1000, Alexey Kardashevskiy wrote:
+>> --- a/arch/powerpc/kernel/vdso32/Makefile
+>> +++ b/arch/powerpc/kernel/vdso32/Makefile
+>> @@ -44,7 +44,7 @@ asflags-y := -D__VDSO32__ -s
+>>
+>> obj-y += vdso32_wrapper.o
+>> targets += vdso32.lds
+>> -CPPFLAGS_vdso32.lds += -P -C -Upowerpc
+>> +CPPFLAGS_vdso32.lds += -C
+>>
+>> # link rule for the .so file, .lds has to be first
+>> $(obj)/vdso32.so.dbg: $(src)/vdso32.lds $(obj-vdso32) 
+>> $(obj)/vgettimeofday.o FORCE
+>
+>> --- a/arch/powerpc/kernel/vdso64/Makefile
+>> +++ b/arch/powerpc/kernel/vdso64/Makefile
+>> @@ -30,7 +30,7 @@ ccflags-y := -shared -fno-common -fno-builtin -nostdlib \
+>> asflags-y := -D__VDSO64__ -s
+>>
+>> targets += vdso64.lds
+>> -CPPFLAGS_vdso64.lds += -P -C -U$(ARCH)
+>> +CPPFLAGS_vdso64.lds += -C
+>>
+>> # link rule for the .so file, .lds has to be first
+>> $(obj)/vdso64.so.dbg: $(src)/vdso64.lds $(obj-vdso64) 
+>> $(obj)/vgettimeofday.o FORCE
+>
+> Why are you removing -P and -Upowerpc here?  "powerpc" is a predefined
+> macro on powerpc-linux (no underscores or anything, just the bareword).
+> This is historical, like "unix" and "linux".  If you use the C
+> preprocessor for things that are not C code (like the kernel does here)
+> you need to undefine these macros, if anything in the files you run
+> through the preprocessor contains those words, or funny / strange / bad
+> things will happen.  Presumably at some time in the past it did contain
+> "powerpc" somewhere.
+>
+> -P is to inhibit line number output.  Whatever consumes the
+> preprocessor output will have to handle line directives if you remove
+> this flag.  Did you check if this will work for everything that uses
+> $(CPP)?
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/Kconfig                         |  2 +-
- arch/powerpc/include/asm/nohash/32/mmu-8xx.h | 43 ++++++++++++++++++++
- 2 files changed, 44 insertions(+), 1 deletion(-)
+i don't know about everything for sure but i checked few configs and in all 
+cases (except vdso) $CPP was receiving cflags.
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 088dd2afcfe4..ce3f59531b51 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -187,7 +187,7 @@ config PPC
- 	select GENERIC_VDSO_TIME_NS
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_HUGE_VMALLOC		if HAVE_ARCH_HUGE_VMAP
--	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
-+	select HAVE_ARCH_HUGE_VMAP		if PPC_RADIX_MMU || PPC_8xx
- 	select HAVE_ARCH_JUMP_LABEL
- 	select HAVE_ARCH_JUMP_LABEL_RELATIVE
- 	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
-diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-index 6e4faa0a9b35..997cec973406 100644
---- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-@@ -178,6 +178,7 @@
- #ifndef __ASSEMBLY__
- 
- #include <linux/mmdebug.h>
-+#include <linux/sizes.h>
- 
- void mmu_pin_tlb(unsigned long top, bool readonly);
- 
-@@ -225,6 +226,48 @@ static inline unsigned int mmu_psize_to_shift(unsigned int mmu_psize)
- 	BUG();
- }
- 
-+static inline bool arch_vmap_try_size(unsigned long addr, unsigned long end, u64 pfn,
-+				      unsigned int max_page_shift, unsigned long size)
-+{
-+	if (end - addr < size)
-+		return false;
-+
-+	if ((1UL << max_page_shift) < size)
-+		return false;
-+
-+	if (!IS_ALIGNED(addr, size))
-+		return false;
-+
-+	if (!IS_ALIGNED(PFN_PHYS(pfn), size))
-+		return false;
-+
-+	return true;
-+}
-+
-+static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr, unsigned long end,
-+							 u64 pfn, unsigned int max_page_shift)
-+{
-+	if (arch_vmap_try_size(addr, end, pfn, max_page_shift, SZ_512K))
-+		return SZ_512K;
-+	if (PAGE_SIZE == SZ_16K)
-+		return SZ_16K;
-+	if (arch_vmap_try_size(addr, end, pfn, max_page_shift, SZ_16K))
-+		return SZ_16K;
-+	return PAGE_SIZE;
-+}
-+#define arch_vmap_pte_range_map_size arch_vmap_pte_range_map_size
-+
-+static inline int arch_vmap_pte_supported_shift(unsigned long size)
-+{
-+	if (size >= SZ_512K)
-+		return 19;
-+	else if (size >= SZ_16K)
-+		return 14;
-+	else
-+		return PAGE_SHIFT;
-+}
-+#define arch_vmap_pte_supported_shift arch_vmap_pte_supported_shift
-+
- /* patch sites */
- extern s32 patch__itlbmiss_exit_1, patch__dtlbmiss_exit_1;
- extern s32 patch__itlbmiss_perf, patch__dtlbmiss_perf;
--- 
-2.25.0
+>
+> In any case, please mention the reasoning (and the fact that you are
+> removing these flags!) in the commit message.  Thanks!
+
+
+but i did mention this, the last paragraph... they are duplicated.
+
+>
+>
+> Segher
+
+
+------------1795b9efe921a4027bb955e6ea
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+<html>
+<body>
+<div dir=3D"auto">
+<div dir=3D"auto"><br></div><div dir=3D"auto"><br></div>
+<div id=3D"aqm-original" style=3D"color: black;">
+<div dir=3D"auto">On 11 May 2021 21:24:55 Segher Boessenkool &lt;segher@ker=
+nel.crashing.org&gt; wrote:</div>
+<div><br></div>
+<blockquote type=3D"cite" class=3D"gmail_quote" style=3D"margin: 0 0 0 0.75=
+ex; border-left: 1px solid #808080; padding-left: 0.75ex;">
+<div dir=3D"auto">Hi!</div>
+<div dir=3D"auto"><br></div>
+<div dir=3D"auto">On Tue, May 11, 2021 at 02:48:12PM +1000, Alexey Kardashe=
+vskiy wrote:</div>
+<blockquote type=3D"cite" class=3D"gmail_quote" style=3D"margin: 0 0 0 0.75=
+ex; border-left: 1px solid #0099CC; padding-left: 0.75ex;">
+<div dir=3D"auto">--- a/arch/powerpc/kernel/vdso32/Makefile</div>
+<div dir=3D"auto">+++ b/arch/powerpc/kernel/vdso32/Makefile</div>
+<div dir=3D"auto">@@ -44,7 +44,7 @@ asflags-y :=3D -D__VDSO32__ -s</div>
+<div dir=3D"auto"><br></div>
+<div dir=3D"auto">obj-y +=3D vdso32_wrapper.o</div>
+<div dir=3D"auto">targets +=3D vdso32.lds</div>
+<div dir=3D"auto">-CPPFLAGS_vdso32.lds +=3D -P -C -Upowerpc</div>
+<div dir=3D"auto">+CPPFLAGS_vdso32.lds +=3D -C</div>
+<div dir=3D"auto"><br></div>
+<div dir=3D"auto"># link rule for the .so file, .lds has to be first</div>
+<div dir=3D"auto">$(obj)/vdso32.so.dbg: $(src)/vdso32.lds $(obj-vdso32) $(o=
+bj)/vgettimeofday.o FORCE</div>
+</blockquote>
+<div dir=3D"auto"><br></div>
+<blockquote type=3D"cite" class=3D"gmail_quote" style=3D"margin: 0 0 0 0.75=
+ex; border-left: 1px solid #0099CC; padding-left: 0.75ex;">
+<div dir=3D"auto">--- a/arch/powerpc/kernel/vdso64/Makefile</div>
+<div dir=3D"auto">+++ b/arch/powerpc/kernel/vdso64/Makefile</div>
+<div dir=3D"auto">@@ -30,7 +30,7 @@ ccflags-y :=3D -shared -fno-common -fno=
+-builtin -nostdlib \</div>
+<div dir=3D"auto">asflags-y :=3D -D__VDSO64__ -s</div>
+<div dir=3D"auto"><br></div>
+<div dir=3D"auto">targets +=3D vdso64.lds</div>
+<div dir=3D"auto">-CPPFLAGS_vdso64.lds +=3D -P -C -U$(ARCH)</div>
+<div dir=3D"auto">+CPPFLAGS_vdso64.lds +=3D -C</div>
+<div dir=3D"auto"><br></div>
+<div dir=3D"auto"># link rule for the .so file, .lds has to be first</div>
+<div dir=3D"auto">$(obj)/vdso64.so.dbg: $(src)/vdso64.lds $(obj-vdso64) $(o=
+bj)/vgettimeofday.o FORCE</div>
+</blockquote>
+<div dir=3D"auto"><br></div>
+<div dir=3D"auto">Why are you removing -P and -Upowerpc here? &nbsp;"powerp=
+c" is a predefined</div>
+<div dir=3D"auto">macro on powerpc-linux (no underscores or anything, just =
+the bareword).</div>
+<div dir=3D"auto">This is historical, like "unix" and "linux". &nbsp;If you=
+ use the C</div>
+<div dir=3D"auto">preprocessor for things that are not C code (like the ker=
+nel does here)</div>
+<div dir=3D"auto">you need to undefine these macros, if anything in the fil=
+es you run</div>
+<div dir=3D"auto">through the preprocessor contains those words, or funny /=
+ strange / bad</div>
+<div dir=3D"auto">things will happen. &nbsp;Presumably at some time in the =
+past it did contain</div>
+<div dir=3D"auto">"powerpc" somewhere.</div>
+<div dir=3D"auto"><br></div>
+<div dir=3D"auto">-P is to inhibit line number output. &nbsp;Whatever consu=
+mes the</div>
+<div dir=3D"auto">preprocessor output will have to handle line directives i=
+f you remove</div>
+<div dir=3D"auto">this flag. &nbsp;Did you check if this will work for ever=
+ything that uses</div>
+<div dir=3D"auto">$(CPP)?</div></blockquote></div><div dir=3D"auto"><br></d=
+iv><div dir=3D"auto">i don't know about everything for sure but i checked f=
+ew configs and in all cases (except vdso) $CPP was receiving cflags.</div><=
+div dir=3D"auto"><br></div><div id=3D"aqm-original" style=3D"color: black;"=
+ dir=3D"auto"><blockquote type=3D"cite" class=3D"gmail_quote" style=3D"marg=
+in: 0 0 0 0.75ex; border-left: 1px solid #808080; padding-left: 0.75ex;"><d=
+iv dir=3D"auto"></div>
+<div dir=3D"auto"><br></div>
+<div dir=3D"auto">In any case, please mention the reasoning (and the fact t=
+hat you are</div>
+<div dir=3D"auto">removing these flags!) in the commit message. &nbsp;Thank=
+s!</div></blockquote></div><div dir=3D"auto"><br></div><div dir=3D"auto"><b=
+r></div><div dir=3D"auto">but i did mention this, the last paragraph... the=
+y are duplicated.</div><div dir=3D"auto"><br></div><div id=3D"aqm-original"=
+ style=3D"color: black;" dir=3D"auto"><blockquote type=3D"cite" class=3D"gm=
+ail_quote" style=3D"margin: 0 0 0 0.75ex; border-left: 1px solid #808080; p=
+adding-left: 0.75ex;"><div dir=3D"auto"></div>
+<div dir=3D"auto"><br></div>
+<div dir=3D"auto"><br></div>
+<div dir=3D"auto">Segher</div>
+</blockquote>
+</div><div dir=3D"auto"><br></div>
+</div></body>
+</html>
+
+------------1795b9efe921a4027bb955e6ea--
 
