@@ -1,51 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FDA4379F8B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 May 2021 08:08:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C291137A0D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 May 2021 09:32:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FfSCh216sz302c
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 May 2021 16:08:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FfV4K68TFz309P
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 May 2021 17:32:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tgbhQ4QX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=tgbhQ4QX; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FfSCL5320z2xfy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 May 2021 16:08:10 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FfSCC6tq1z9sdc;
- Tue, 11 May 2021 08:08:07 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id yc6tN5eH3jks; Tue, 11 May 2021 08:08:07 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FfSCC5vYHz9sdb;
- Tue, 11 May 2021 08:08:07 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A6C1E8B7A0;
- Tue, 11 May 2021 08:08:07 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id CSUn8zOMSxbO; Tue, 11 May 2021 08:08:07 +0200 (CEST)
-Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2DFC28B766;
- Tue, 11 May 2021 08:08:07 +0200 (CEST)
-Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E5E386492B; Tue, 11 May 2021 06:08:06 +0000 (UTC)
-Message-Id: <f7f4d4e364de6e473da874468b903da6e5d97adc.1620713272.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc: Force inlining of csum_add()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 11 May 2021 06:08:06 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FfV3p5h9Hz2y6F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 May 2021 17:31:50 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14B75CWW134387; Tue, 11 May 2021 03:31:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=MIqjaZO00c7j96e3E5odnRjvjW8XfjRSMn2eBpvgxrI=;
+ b=tgbhQ4QXHblEWshgsoq+Jv1TJ2u+55ZDak+wVdyyunnmPTBuhZPKXpmN+k/6bL+3iOLK
+ nDbEFhwqhDmRJBtNZ03UKul3/RCez04esu5jc/vjXwE0fx/AnxUNIS3H7amAvy/2mH1C
+ SU8Eiji68W2SDnUBzSumiCasjaGqDnSD9i/mWld7IpQb9m5EXvod1uMM2j2MX1usL4yL
+ cIyiHQkWbGvhci/P2LThmi0enb8VV0npBN4dBeBfGXFggE/mlgLfD7E1u9eJ84etYJFd
+ K5kJ5qUDHekG9yg1FLLryV9fvuysH/0u8IUgNxyrzqNoK6X1u6Uv+BwFGb57ifDTVPaZ OA== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 38fm1tag1h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 May 2021 03:31:42 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14B7MW0a004054;
+ Tue, 11 May 2021 07:31:40 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06ams.nl.ibm.com with ESMTP id 38dhwh9gyt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 May 2021 07:31:40 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14B7VcbM33030500
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 May 2021 07:31:38 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 01AED4C05C;
+ Tue, 11 May 2021 07:31:38 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A71774C07E;
+ Tue, 11 May 2021 07:31:37 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.34.120])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 11 May 2021 07:31:37 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org
+Subject: [PATCH v2] ppc64/numa: consider the max numa node for migratable LPAR
+Date: Tue, 11 May 2021 09:31:36 +0200
+Message-Id: <20210511073136.17795-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 3N0Xa6K1QIt-ipkp-Nt-4r7gxQiD8Eoy
+X-Proofpoint-GUID: 3N0Xa6K1QIt-ipkp-Nt-4r7gxQiD8Eoy
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-11_02:2021-05-10,
+ 2021-05-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 mlxscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
+ mlxlogscore=999 spamscore=0 impostorscore=0 adultscore=0 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105110053
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,128 +96,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: nathanl@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 328e7e487a46 ("powerpc: force inlining of csum_partial() to
-avoid multiple csum_partial() with GCC10") inlined csum_partial().
+When a LPAR is migratable, we should consider the maximum possible NUMA
+node instead the number of NUMA node from the actual system.
 
-Now that csum_partial() is inlined, GCC outlines csum_add() when
-called by csum_partial().
+The DT property 'ibm,current-associativity-domains' is defining the maximum
+number of nodes the LPAR can see when running on that box. But if the LPAR
+is being migrated on another box, it may seen up to the nodes defined by
+'ibm,max-associativity-domains'. So if a LPAR is migratable, that value
+should be used.
 
-c064fb28 <csum_add>:
-c064fb28:	7c 63 20 14 	addc    r3,r3,r4
-c064fb2c:	7c 63 01 94 	addze   r3,r3
-c064fb30:	4e 80 00 20 	blr
+Unfortunately, there is no easy way to know if a LPAR is migratable or
+not. The hypervisor is exporting the property 'ibm,migratable-partition' in
+the case it set to migrate partition, but that would not mean that the
+current partition is migratable.
 
-c0665fb8 <csum_add>:
-c0665fb8:	7c 63 20 14 	addc    r3,r3,r4
-c0665fbc:	7c 63 01 94 	addze   r3,r3
-c0665fc0:	4e 80 00 20 	blr
+Without this patch, when a LPAR is started on a 2 nodes box and then
+migrated to a 3 nodes box, the hypervisor may spread the LPAR's CPUs on the
+3rd node. In that case if a CPU from that 3rd node is added to the LPAR, it
+will be wrongly assigned to the node because the kernel has been set to use
+up to 2 nodes (the configuration of the departure node). With this patch
+applies, the CPU is correctly added to the 3rd node.
 
-c066719c:	7c 9a c0 2e 	lwzx    r4,r26,r24
-c06671a0:	38 60 00 00 	li      r3,0
-c06671a4:	7f 1a c2 14 	add     r24,r26,r24
-c06671a8:	4b ff ee 11 	bl      c0665fb8 <csum_add>
-c06671ac:	80 98 00 04 	lwz     r4,4(r24)
-c06671b0:	4b ff ee 09 	bl      c0665fb8 <csum_add>
-c06671b4:	80 98 00 08 	lwz     r4,8(r24)
-c06671b8:	4b ff ee 01 	bl      c0665fb8 <csum_add>
-c06671bc:	a0 98 00 0c 	lhz     r4,12(r24)
-c06671c0:	4b ff ed f9 	bl      c0665fb8 <csum_add>
-c06671c4:	7c 63 18 f8 	not     r3,r3
-c06671c8:	81 3f 00 68 	lwz     r9,104(r31)
-c06671cc:	81 5f 00 a0 	lwz     r10,160(r31)
-c06671d0:	7d 29 18 14 	addc    r9,r9,r3
-c06671d4:	7d 29 01 94 	addze   r9,r9
-c06671d8:	91 3f 00 68 	stw     r9,104(r31)
-c06671dc:	7d 1a 50 50 	subf    r8,r26,r10
-c06671e0:	83 01 00 10 	lwz     r24,16(r1)
-c06671e4:	83 41 00 18 	lwz     r26,24(r1)
-
-The sum with 0 is useless, should have been skipped.
-And there is even one completely unused instance of csum_add().
-
-In file included from ./include/net/checksum.h:22,
-                 from ./include/linux/skbuff.h:28,
-                 from ./include/linux/icmp.h:16,
-                 from net/ipv6/ip6_tunnel.c:23:
-./arch/powerpc/include/asm/checksum.h: In function '__ip6_tnl_rcv':
-./arch/powerpc/include/asm/checksum.h:94:22: warning: inlining failed in call to 'csum_add': call is unlikely and code size would grow [-Winline]
-   94 | static inline __wsum csum_add(__wsum csum, __wsum addend)
-      |                      ^~~~~~~~
-./arch/powerpc/include/asm/checksum.h:172:31: note: called from here
-  172 |                         sum = csum_add(sum, (__force __wsum)*(const u32 *)buff);
-      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./arch/powerpc/include/asm/checksum.h:94:22: warning: inlining failed in call to 'csum_add': call is unlikely and code size would grow [-Winline]
-   94 | static inline __wsum csum_add(__wsum csum, __wsum addend)
-      |                      ^~~~~~~~
-./arch/powerpc/include/asm/checksum.h:177:31: note: called from here
-  177 |                         sum = csum_add(sum, (__force __wsum)
-      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  178 |                                             *(const u32 *)(buff + 4));
-      |                                             ~~~~~~~~~~~~~~~~~~~~~~~~~
-./arch/powerpc/include/asm/checksum.h:94:22: warning: inlining failed in call to 'csum_add': call is unlikely and code size would grow [-Winline]
-   94 | static inline __wsum csum_add(__wsum csum, __wsum addend)
-      |                      ^~~~~~~~
-./arch/powerpc/include/asm/checksum.h:183:31: note: called from here
-  183 |                         sum = csum_add(sum, (__force __wsum)
-      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  184 |                                             *(const u32 *)(buff + 8));
-      |                                             ~~~~~~~~~~~~~~~~~~~~~~~~~
-./arch/powerpc/include/asm/checksum.h:94:22: warning: inlining failed in call to 'csum_add': call is unlikely and code size would grow [-Winline]
-   94 | static inline __wsum csum_add(__wsum csum, __wsum addend)
-      |                      ^~~~~~~~
-./arch/powerpc/include/asm/checksum.h:186:31: note: called from here
-  186 |                         sum = csum_add(sum, (__force __wsum)
-      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  187 |                                             *(const u16 *)(buff + 12));
-      |                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Force inlining of csum_add().
-
-     94c:	80 df 00 a0 	lwz     r6,160(r31)
-     950:	7d 28 50 2e 	lwzx    r9,r8,r10
-     954:	7d 48 52 14 	add     r10,r8,r10
-     958:	80 aa 00 04 	lwz     r5,4(r10)
-     95c:	80 ff 00 68 	lwz     r7,104(r31)
-     960:	7d 29 28 14 	addc    r9,r9,r5
-     964:	7d 29 01 94 	addze   r9,r9
-     968:	7d 08 30 50 	subf    r8,r8,r6
-     96c:	80 aa 00 08 	lwz     r5,8(r10)
-     970:	a1 4a 00 0c 	lhz     r10,12(r10)
-     974:	7d 29 28 14 	addc    r9,r9,r5
-     978:	7d 29 01 94 	addze   r9,r9
-     97c:	7d 29 50 14 	addc    r9,r9,r10
-     980:	7d 29 01 94 	addze   r9,r9
-     984:	7d 29 48 f8 	not     r9,r9
-     988:	7c e7 48 14 	addc    r7,r7,r9
-     98c:	7c e7 01 94 	addze   r7,r7
-     990:	90 ff 00 68 	stw     r7,104(r31)
-
-In the non-inlined version, the first sum with 0 was performed.
-Here it is skipped.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: f9f130ff2ec9 ("powerpc/numa: Detect support for coregroup")
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
 ---
- arch/powerpc/include/asm/checksum.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+V2: Address Srikar's comments
+ - Fix the commit message
+ - Use pr_info instead printk(KERN_INFO..)
+---
+ arch/powerpc/mm/numa.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/checksum.h b/arch/powerpc/include/asm/checksum.h
-index d5da7ddbf0fc..350de8f90250 100644
---- a/arch/powerpc/include/asm/checksum.h
-+++ b/arch/powerpc/include/asm/checksum.h
-@@ -91,7 +91,7 @@ static inline __sum16 csum_tcpudp_magic(__be32 saddr, __be32 daddr, __u32 len,
- }
- 
- #define HAVE_ARCH_CSUM_ADD
--static inline __wsum csum_add(__wsum csum, __wsum addend)
-+static __always_inline __wsum csum_add(__wsum csum, __wsum addend)
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index f2bf98bdcea2..094a1076fd1f 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -893,7 +893,7 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
+ static void __init find_possible_nodes(void)
  {
- #ifdef __powerpc64__
- 	u64 res = (__force u64)csum;
+ 	struct device_node *rtas;
+-	const __be32 *domains;
++	const __be32 *domains = NULL;
+ 	int prop_length, max_nodes;
+ 	u32 i;
+ 
+@@ -909,9 +909,14 @@ static void __init find_possible_nodes(void)
+ 	 * it doesn't exist, then fallback on ibm,max-associativity-domains.
+ 	 * Current denotes what the platform can support compared to max
+ 	 * which denotes what the Hypervisor can support.
++	 *
++	 * If the LPAR is migratable, new nodes might be activated after a LPM,
++	 * so we should consider the max number in that case.
+ 	 */
+-	domains = of_get_property(rtas, "ibm,current-associativity-domains",
+-					&prop_length);
++	if (!of_get_property(of_root, "ibm,migratable-partition", NULL))
++		domains = of_get_property(rtas,
++					  "ibm,current-associativity-domains",
++					  &prop_length);
+ 	if (!domains) {
+ 		domains = of_get_property(rtas, "ibm,max-associativity-domains",
+ 					&prop_length);
+@@ -920,6 +925,8 @@ static void __init find_possible_nodes(void)
+ 	}
+ 
+ 	max_nodes = of_read_number(&domains[min_common_depth], 1);
++	pr_info("Partition configured for %d NUMA nodes.\n", max_nodes);
++
+ 	for (i = 0; i < max_nodes; i++) {
+ 		if (!node_possible(i))
+ 			node_set(i, node_possible_map);
 -- 
-2.25.0
+2.31.1
 
