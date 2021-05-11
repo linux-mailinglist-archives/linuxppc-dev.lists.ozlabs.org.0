@@ -2,70 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C4637D3F4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 21:49:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D078A37D415
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 22:07:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FgQNH1JSPz30C1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 05:49:19 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=WURZ5Dp9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FgQmj3klPz3bnS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 06:07:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::52b;
- helo=mail-ed1-x52b.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.180;
+ helo=mail-oi1-f180.google.com; envelope-from=robherring2@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=WURZ5Dp9; dkim-atps=neutral
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com
- [IPv6:2a00:1450:4864:20::52b])
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com
+ [209.85.167.180])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FgQMm6894z2y8F
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 05:48:42 +1000 (AEST)
-Received: by mail-ed1-x52b.google.com with SMTP id v5so17400886edc.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 May 2021 12:48:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=04u7NSFLCuoAEZTpNwtklAwY/LZiHtSbD3GHe1TrSXc=;
- b=WURZ5Dp9TLRM7pOryIseYUDP5G2ijGH4U67h3EYXg9MnF+15Y9iepy7FlDqXMig4gg
- meu0ctBC4yu+3xx+7/wPVvYjry/o73VCkzs6Dy+LUXKUVGOfrIs2QCcXy9/UDJE5+5PQ
- bbAd5uktx0ajURzTUfAvj1nElYoUyy585b2UxPzwQWSqUBjRvUvpYD3UW6jWS0C1Udyk
- KqMRGpkJFoUQUhWn+0v2nw+8jaHiDZ4u51XS7I8fXPGlmpWFBRgd/4oXeHdT68YW/zM2
- BTIE+7bTCwNJEbnnCNqi3lnDJvS8EXyqxVh0YiwgxZEveW1mywo/3Wygj9MglrG6uhj/
- KbOA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FgQmJ2zcBz2yRW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 06:06:38 +1000 (AEST)
+Received: by mail-oi1-f180.google.com with SMTP id c3so23334313oic.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 May 2021 13:06:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=04u7NSFLCuoAEZTpNwtklAwY/LZiHtSbD3GHe1TrSXc=;
- b=RiyKJCKNauRDyr6RMcZZrEAYX33XzUnB2mei45ALsHpnzJ1LsIYhBmMtMMtqxq7jAe
- 7WxD+2O9YLk7NWME0JhZlachi0mzb0WfalUtxTYz/NqnEiXjKu9grqarSuGNOmwg5gdW
- VGh93i3dvgucTWw1xp4FIWywcZat0KjZjo/Aw25PnYWQ8h8p72DKT4KUzFPaM+RtCpq4
- Tyt4n95Q4DwcHmRsOwBP3xOXBmBRWCMBLyShOl0r1qZnKUMFoPRRaVonOUJgQOUgryPu
- ToH8EpH5uggrF4Tqdt4nvPXxfrRo5Pe4ORgXjn0f1DmPMboe6byLQ4IXbk1MmDcDZcCj
- mhMQ==
-X-Gm-Message-State: AOAM533CKH6Ek41QZh9VrPgh/p6dGZgffNC40XHtclWAhlxPrQ58YzV6
- tJ1HWIjSD2uYNP847wO2kC1nwyqoDbB/6ZFq5Q6b3A==
-X-Google-Smtp-Source: ABdhPJx6vO+FpOhLvZ667PCFBJZ7nO93kAqvqyrdi7l+TpEsN2G1c7U+ERyiDWueE92+mc+LTS1rVrsVOJhHKxKlkpk=
-X-Received: by 2002:a05:6402:54e:: with SMTP id
- i14mr46899040edx.210.1620848915486; 
- Wed, 12 May 2021 12:48:35 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=QZOu937T06FGYysrX40DfRIEifPnkgP2wpT5ChbrOLM=;
+ b=D8RbgZIjk5k9OkQs+dXbjwsxmQq8E3wnmZFL0+XNtsYPx7zLDJhUhhC6dIXW9a8sQF
+ YBTvhVLDlkdDcg7I4IO9k1r4Pfz9he08ZqAN5M9MeLk0R1fCOKyDcQnThQwrQPolNzQC
+ DE/K/6LgelohPXxR0XlDMvbQ/LHF/0ofBWCueDzX+viMrkMLKiN1tmTHy1au3lRZY6Cb
+ i8ha/gJwYRhTj/Zh8AT9YuFJkZa3lMolf58K0pRWuBXdajd061dzziurQibL/nGdDuJz
+ 0o+bxfwkknDKC5QDwIPKQG+aFnM6Z6XNkji+qpPt1B0WdcCFfk+hF6Sp5Ia9jg/wvpAP
+ /FIQ==
+X-Gm-Message-State: AOAM531JntVP5DMaecjNF0w/opNPbZBIuXSALvLswkiCGf7SKOU4/dto
+ M3cW0DKt2DUhVONmEUFaMQ==
+X-Google-Smtp-Source: ABdhPJyFestwfEyHgdtvQESLKDKYdJEwVqw5rAmNlfsvq9xl609Ay/5t03I4TO2cGO9CWGnLqGNXZg==
+X-Received: by 2002:a05:6808:561:: with SMTP id j1mr189039oig.24.1620849994987; 
+ Wed, 12 May 2021 13:06:34 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net.
+ [24.155.109.49])
+ by smtp.gmail.com with ESMTPSA id d19sm172127oti.57.2021.05.12.13.06.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 12 May 2021 13:06:34 -0700 (PDT)
+Received: (nullmailer pid 2429755 invoked by uid 1000);
+ Tue, 11 May 2021 19:00:57 -0000
+Date: Tue, 11 May 2021 14:00:57 -0500
+From: Rob Herring <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2 2/2] ASoC: dt-bindings: imx-akcodec: Add binding doc
+ for akcodec machine driver
+Message-ID: <20210511190057.GA2416585@robh.at.kernel.org>
+References: <1620630441-14358-1-git-send-email-shengjiu.wang@nxp.com>
+ <1620630441-14358-2-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-References: <20210507113948.38950-1-vaibhav@linux.ibm.com>
-In-Reply-To: <20210507113948.38950-1-vaibhav@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 12 May 2021 12:48:26 -0700
-Message-ID: <CAPcyv4g7E39Hqe+fuv-J3gX1kiNVuenUfV4td_k9QtCNMV=C1w@mail.gmail.com>
-Subject: Re: [PATCH v2] powerpc/papr_scm: Make 'perf_stats' invisible if
- perf-stats unavailable
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1620630441-14358-2-git-send-email-shengjiu.wang@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,142 +68,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>, Ira Weiny <ira.weiny@intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, linuxppc-dev@lists.ozlabs.org,
+ tiwai@suse.com, lgirdwood@gmail.com, nicoleotsuka@gmail.com,
+ broonie@kernel.org, linux-imx@nxp.com, kernel@pengutronix.de, perex@perex.cz,
+ festevam@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 7, 2021 at 4:40 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
->
-> In case performance stats for an nvdimm are not available, reading the
-> 'perf_stats' sysfs file returns an -ENOENT error. A better approach is
-> to make the 'perf_stats' file entirely invisible to indicate that
-> performance stats for an nvdimm are unavailable.
->
-> So this patch updates 'papr_nd_attribute_group' to add a 'is_visible'
-> callback implemented as newly introduced 'papr_nd_attribute_visible()'
-> that returns an appropriate mode in case performance stats aren't
-> supported in a given nvdimm.
->
-> Also the initialization of 'papr_scm_priv.stat_buffer_len' is moved
-> from papr_scm_nvdimm_init() to papr_scm_probe() so that it value is
-> available when 'papr_nd_attribute_visible()' is called during nvdimm
-> initialization.
->
-> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
-
-Since this has been the exposed ABI since v5.9 perhaps a note /
-analysis is needed here that the disappearance of this file will not
-break any existing scripts/tools.
-
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+On Mon, May 10, 2021 at 03:07:21PM +0800, Shengjiu Wang wrote:
+> Imx-akcodec is a new added machine driver for supporting
+> ak4458/ak5558/ak5552/ak4497 codec on i.MX platforms.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > ---
-> Changelog:
->
-> v2:
-> * Removed a redundant dev_info() from pap_scm_nvdimm_init() [ Aneesh ]
-> * Marked papr_nd_attribute_visible() as static which also fixed the
->   build warning reported by kernel build robot
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 35 ++++++++++++++++-------
->  1 file changed, 24 insertions(+), 11 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index e2b69cc3beaf..11e7b90a3360 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -907,6 +907,20 @@ static ssize_t flags_show(struct device *dev,
->  }
->  DEVICE_ATTR_RO(flags);
->
-> +static umode_t papr_nd_attribute_visible(struct kobject *kobj,
-> +                                        struct attribute *attr, int n)
-> +{
-> +       struct device *dev = container_of(kobj, typeof(*dev), kobj);
-
-This can use the kobj_to_dev() helper.
-
-> +       struct nvdimm *nvdimm = to_nvdimm(dev);
-> +       struct papr_scm_priv *p = nvdimm_provider_data(nvdimm);
+> changes in v2:
+> - update doc accoring to Rob's comment, use the common porperties.
+> 
+>  .../bindings/sound/imx-audio-akcodec.yaml     | 107 ++++++++++++++++++
+>  1 file changed, 107 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml b/Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml
+> new file mode 100644
+> index 000000000000..0812c4779b59
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/sound/imx-audio-akcodec.yaml
+> @@ -0,0 +1,107 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/sound/imx-audio-akcodec.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +       /* For if perf-stats not available remove perf_stats sysfs */
-> +       if (attr == &dev_attr_perf_stats.attr && p->stat_buffer_len == 0)
-> +               return 0;
+> +title: NXP i.MX audio complex with AK4458/AK5558/AK5552/AK4497 codec
 > +
-> +       return attr->mode;
-> +}
+> +maintainers:
+> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
 > +
->  /* papr_scm specific dimm attributes */
->  static struct attribute *papr_nd_attributes[] = {
->         &dev_attr_flags.attr,
-> @@ -916,6 +930,7 @@ static struct attribute *papr_nd_attributes[] = {
->
->  static struct attribute_group papr_nd_attribute_group = {
->         .name = "papr",
-> +       .is_visible = papr_nd_attribute_visible,
->         .attrs = papr_nd_attributes,
->  };
->
-> @@ -931,7 +946,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->         struct nd_region_desc ndr_desc;
->         unsigned long dimm_flags;
->         int target_nid, online_nid;
-> -       ssize_t stat_size;
->
->         p->bus_desc.ndctl = papr_scm_ndctl;
->         p->bus_desc.module = THIS_MODULE;
-> @@ -1016,16 +1030,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->         list_add_tail(&p->region_list, &papr_nd_regions);
->         mutex_unlock(&papr_ndr_lock);
->
-> -       /* Try retriving the stat buffer and see if its supported */
-> -       stat_size = drc_pmem_query_stats(p, NULL, 0);
-> -       if (stat_size > 0) {
-> -               p->stat_buffer_len = stat_size;
-> -               dev_dbg(&p->pdev->dev, "Max perf-stat size %lu-bytes\n",
-> -                       p->stat_buffer_len);
-> -       } else {
-> -               dev_info(&p->pdev->dev, "Dimm performance stats unavailable\n");
-> -       }
-> -
->         return 0;
->
->  err:   nvdimm_bus_unregister(p->bus);
-> @@ -1102,6 +1106,7 @@ static int papr_scm_probe(struct platform_device *pdev)
->         u64 blocks, block_size;
->         struct papr_scm_priv *p;
->         const char *uuid_str;
-> +       ssize_t stat_size;
->         u64 uuid[2];
->         int rc;
->
-> @@ -1179,6 +1184,14 @@ static int papr_scm_probe(struct platform_device *pdev)
->         p->res.name  = pdev->name;
->         p->res.flags = IORESOURCE_MEM;
->
-> +       /* Try retriving the stat buffer and see if its supported */
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,imx8mq-audio-akcodec
+> +      - fsl,imx-audio-akcodec
 
-s/retriving/retrieving/
+We gone from individual codecs to a family of codecs. Is there something 
+specific for the machine driver about this set of codecs? Why can't it 
+be *any* codec?
 
-> +       stat_size = drc_pmem_query_stats(p, NULL, 0);
-> +       if (stat_size > 0) {
-> +               p->stat_buffer_len = stat_size;
-> +               dev_dbg(&p->pdev->dev, "Max perf-stat size %lu-bytes\n",
-> +                       p->stat_buffer_len);
-> +       }
 > +
->         rc = papr_scm_nvdimm_init(p);
->         if (rc)
->                 goto err2;
-> --
-> 2.31.1
->
-
-After the minor fixups above you can add:
-
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-
-...I assume this will go through the PPC tree.
+> +  model:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    description: User specified audio sound card name
+> +
+> +  audio-routing:
+> +    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
+> +    description:
+> +      A list of the connections between audio components. Each entry is a
+> +      pair of strings, the first being the connection's sink, the second
+> +      being the connection's source. Valid names could be power supplies,
+> +      MicBias of codec and the jacks on the board.
+> +
+> +patternProperties:
+> +  ".*-dai-link$":
+> +    description:
+> +      Each subnode represents a dai link. Subnodes of each dai links would be
+> +      cpu/codec dais.
+> +
+> +    type: object
+> +
+> +    properties:
+> +      link-name:
+> +        description: Indicates dai-link name and PCM stream name.
+> +        $ref: /schemas/types.yaml#/definitions/string
+> +        maxItems: 1
+> +
+> +      format:
+> +        description: audio format.
+> +        items:
+> +          enum:
+> +            - i2s
+> +            - dsp_b
+> +
+> +      cpu:
+> +        description: Holds subnode which indicates cpu dai.
+> +        type: object
+> +        properties:
+> +          sound-dai: true
+> +
+> +      codec:
+> +        description: Holds subnode which indicates codec dai.
+> +        type: object
+> +        properties:
+> +          sound-dai: true
+> +
+> +    required:
+> +      - link-name
+> +      - cpu
+> +
+> +    additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - model
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    sound-ak4458 {
+> +        compatible = "fsl,imx-audio-akcodec";
+> +        model = "ak4458-audio";
+> +        pri-dai-link {
+> +            link-name = "akcodec";
+> +            format = "i2s";
+> +            cpu {
+> +                 sound-dai = <&sai1>;
+> +            };
+> +            codec {
+> +                 sound-dai = <&ak4458_1>, <&ak4458_2>;
+> +            };
+> +        };
+> +        fe-dai-link {
+> +            link-name = "HiFi-ASRC-FE";
+> +            format = "i2s";
+> +            cpu {
+> +                sound-dai = <&easrc>;
+> +            };
+> +        };
+> +        be-dai-link {
+> +            link-name = "HiFi-ASRC-BE";
+> +            format = "dsp_b";
+> +            cpu {
+> +                sound-dai = <&sai1>;
+> +            };
+> +            codec {
+> +                sound-dai = <&ak4458_1>, <&ak4458_2>;
+> +            };
+> +        };
+> +    };
+> -- 
+> 2.27.0
+> 
