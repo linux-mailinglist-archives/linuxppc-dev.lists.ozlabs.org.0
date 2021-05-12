@@ -1,44 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BEB37C03B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 16:33:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E4637C085
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 16:44:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FgHNM6sSPz303J
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 00:33:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FgHc93kcpz308f
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 00:44:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FgHMy73Nlz2xZN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 00:33:34 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 14CEV6Yp018137;
- Wed, 12 May 2021 09:31:06 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 14CEV5SC018136;
- Wed, 12 May 2021 09:31:05 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Wed, 12 May 2021 09:31:05 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FgHbq0HHrz2xv1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 00:43:48 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4FgHbh5mDJz9sdw;
+ Wed, 12 May 2021 16:43:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id XhpERfMAMcjt; Wed, 12 May 2021 16:43:44 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FgHbh4nsRz9sdc;
+ Wed, 12 May 2021 16:43:44 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 83D6C8B7F4;
+ Wed, 12 May 2021 16:43:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id KNm8b5FGVtrW; Wed, 12 May 2021 16:43:44 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 10B2E8B7F3;
+ Wed, 12 May 2021 16:43:44 +0200 (CEST)
 Subject: Re: [PATCH] powerpc: Force inlining of csum_add()
-Message-ID: <20210512143105.GW10366@gate.crashing.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>
 References: <f7f4d4e364de6e473da874468b903da6e5d97adc.1620713272.git.christophe.leroy@csgroup.eu>
  <20210511105154.GJ10366@gate.crashing.org>
  <e996ef13-c25c-5e9c-edd2-444eded88802@csgroup.eu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ <20210512143105.GW10366@gate.crashing.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <2623fe98-7a73-f7a2-bcba-2d668d00ffd0@csgroup.eu>
+Date: Wed, 12 May 2021 16:43:33 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+MIME-Version: 1.0
+In-Reply-To: <20210512143105.GW10366@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e996ef13-c25c-5e9c-edd2-444eded88802@csgroup.eu>
-User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,50 +71,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 12, 2021 at 02:56:56PM +0200, Christophe Leroy wrote:
-> Le 11/05/2021 � 12:51, Segher Boessenkool a �crit�:
-> >Something seems to have decided this asm is more expensive than it is.
-> >That isn't always avoidable -- the compiler cannot look inside asms --
-> >but it seems it could be improved here.
-> >
-> >Do you have (or can make) a self-contained testcase?
+
+
+Le 12/05/2021 à 16:31, Segher Boessenkool a écrit :
+> On Wed, May 12, 2021 at 02:56:56PM +0200, Christophe Leroy wrote:
+>> Le 11/05/2021 à 12:51, Segher Boessenkool a écrit :
+>>> Something seems to have decided this asm is more expensive than it is.
+>>> That isn't always avoidable -- the compiler cannot look inside asms --
+>>> but it seems it could be improved here.
+>>>
+>>> Do you have (or can make) a self-contained testcase?
+>>
+>> I have not tried, and I fear it might be difficult, because on a kernel
+>> build with dozens of calls to csum_add(), only ip6_tunnel.o exhibits such
+>> an issue.
 > 
-> I have not tried, and I fear it might be difficult, because on a kernel 
-> build with dozens of calls to csum_add(), only ip6_tunnel.o exhibits such 
-> an issue.
-
-Yeah.  Sometimes you can force some of the decisions, but that usually
-requires knowing too many GCC internals :-/
-
-> >>And there is even one completely unused instance of csum_add().
-> >
-> >That is strange, that should never happen.
+> Yeah.  Sometimes you can force some of the decisions, but that usually
+> requires knowing too many GCC internals :-/
 > 
-> It seems that several .o include unused versions of csum_add. After the 
-> final link, one remains (in addition to the used one) in vmlinux.
-
-But it is a static function, so it should not end up in any object file
-where it isn't used.
-
-> >>In the non-inlined version, the first sum with 0 was performed.
-> >>Here it is skipped.
-> >
-> >That is because of how __builtin_constant_p works, most likely.  As we
-> >discussed elsewhere it is evaluated before all forms of loop unrolling.
+>>>> And there is even one completely unused instance of csum_add().
+>>>
+>>> That is strange, that should never happen.
+>>
+>> It seems that several .o include unused versions of csum_add. After the
+>> final link, one remains (in addition to the used one) in vmlinux.
 > 
-> But we are not talking about loop unrolling here, are we ?
+> But it is a static function, so it should not end up in any object file
+> where it isn't used.
 
-Oh, right you are, but that doesn't change much.  The
-_builtin_constant_p(len) is evaluated long before the compiler sees len
-is a constant here.
+Well .... did I dream ?
 
-> It seems that the reason here is that __builtin_constant_p() is evaluated 
-> long after GCC decided to not inline that call to csum_add().
+Now I only find one extra .o with unused csum_add() : That's net/ipv6/exthdrs.o
+It matches the one found in vmlinux.
 
-Yes, it seems we do not currently do even trivial inlining except very
-early in the compiler.
+Are you interested in -fdump-tree-einline-all for that one as well ?
 
-Thanks,
-
-
-Segher
+Christophe
