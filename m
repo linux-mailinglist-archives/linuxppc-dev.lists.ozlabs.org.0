@@ -1,55 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F9537C02F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 16:30:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BEB37C03B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 16:33:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FgHJD51K9z3bwS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 00:30:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FgHNM6sSPz303J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 00:33:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FgHHN5xdFz2xxn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 00:29:36 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FgHHD1DK6z9sfK;
- Wed, 12 May 2021 16:29:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id iyVlUkZJ4Brm; Wed, 12 May 2021 16:29:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FgHHC5qKkz9sdc;
- Wed, 12 May 2021 16:29:27 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A18B38B7F5;
- Wed, 12 May 2021 16:29:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id PhcWGk4GTMnw; Wed, 12 May 2021 16:29:27 +0200 (CEST)
-Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6D40A8B7F3;
- Wed, 12 May 2021 16:29:27 +0200 (CEST)
-Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 4BD5D64173; Wed, 12 May 2021 14:29:27 +0000 (UTC)
-Message-Id: <46998c941d0a5664daaeb92998391aace015eddf.1620829724.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <472c597cc8cc8f74f037acf971f7799fb381a647.1620829724.git.christophe.leroy@csgroup.eu>
-References: <472c597cc8cc8f74f037acf971f7799fb381a647.1620829724.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 2/2] powerpc/kprobes: Replace ppc_optinsn by common optinsn
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- naveen.n.rao@linux.ibm.com, anil.s.keshavamurthy@intel.com,
- davem@davemloft.net, mhiramat@kernel.org
-Date: Wed, 12 May 2021 14:29:27 +0000 (UTC)
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FgHMy73Nlz2xZN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 00:33:34 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 14CEV6Yp018137;
+ Wed, 12 May 2021 09:31:06 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 14CEV5SC018136;
+ Wed, 12 May 2021 09:31:05 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 12 May 2021 09:31:05 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc: Force inlining of csum_add()
+Message-ID: <20210512143105.GW10366@gate.crashing.org>
+References: <f7f4d4e364de6e473da874468b903da6e5d97adc.1620713272.git.christophe.leroy@csgroup.eu>
+ <20210511105154.GJ10366@gate.crashing.org>
+ <e996ef13-c25c-5e9c-edd2-444eded88802@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e996ef13-c25c-5e9c-edd2-444eded88802@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,103 +50,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org,
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 51c9c0843993 ("powerpc/kprobes: Implement Optprobes")
-implemented a powerpc specific version of optinsn in order
-to workaround the 32Mb limitation for direct branches.
+On Wed, May 12, 2021 at 02:56:56PM +0200, Christophe Leroy wrote:
+> Le 11/05/2021 à 12:51, Segher Boessenkool a écrit :
+> >Something seems to have decided this asm is more expensive than it is.
+> >That isn't always avoidable -- the compiler cannot look inside asms --
+> >but it seems it could be improved here.
+> >
+> >Do you have (or can make) a self-contained testcase?
+> 
+> I have not tried, and I fear it might be difficult, because on a kernel 
+> build with dozens of calls to csum_add(), only ip6_tunnel.o exhibits such 
+> an issue.
 
-Instead of implementing a dedicated powerpc version, use the
-common optinsn and override the allocation and freeing functions.
+Yeah.  Sometimes you can force some of the decisions, but that usually
+requires knowing too many GCC internals :-/
 
-This also indirectly remove the CLANG warning about
-is_kprobe_ppc_optinsn_slot() not being use, and the powerpc will
-now benefit from commit 5b485629ba0d ("kprobes, extable: Identify
-kprobes trampolines as kernel text area")
+> >>And there is even one completely unused instance of csum_add().
+> >
+> >That is strange, that should never happen.
+> 
+> It seems that several .o include unused versions of csum_add. After the 
+> final link, one remains (in addition to the used one) in vmlinux.
 
-Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/optprobes.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+But it is a static function, so it should not end up in any object file
+where it isn't used.
 
-diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
-index cdf87086fa33..a370190cd02a 100644
---- a/arch/powerpc/kernel/optprobes.c
-+++ b/arch/powerpc/kernel/optprobes.c
-@@ -31,11 +31,9 @@
- #define TMPL_END_IDX		\
- 	(optprobe_template_end - optprobe_template_entry)
- 
--DEFINE_INSN_CACHE_OPS(ppc_optinsn);
--
- static bool insn_page_in_use;
- 
--static void *__ppc_alloc_insn_page(void)
-+void *alloc_optinsn_page(void)
- {
- 	if (insn_page_in_use)
- 		return NULL;
-@@ -43,20 +41,11 @@ static void *__ppc_alloc_insn_page(void)
- 	return &optinsn_slot;
- }
- 
--static void __ppc_free_insn_page(void *page __maybe_unused)
-+void free_optinsn_page(void *page)
- {
- 	insn_page_in_use = false;
- }
- 
--struct kprobe_insn_cache kprobe_ppc_optinsn_slots = {
--	.mutex = __MUTEX_INITIALIZER(kprobe_ppc_optinsn_slots.mutex),
--	.pages = LIST_HEAD_INIT(kprobe_ppc_optinsn_slots.pages),
--	/* insn_size initialized later */
--	.alloc = __ppc_alloc_insn_page,
--	.free = __ppc_free_insn_page,
--	.nr_garbage = 0,
--};
--
- /*
-  * Check if we can optimize this probe. Returns NIP post-emulation if this can
-  * be optimized and 0 otherwise.
-@@ -136,7 +125,7 @@ NOKPROBE_SYMBOL(optimized_callback);
- void arch_remove_optimized_kprobe(struct optimized_kprobe *op)
- {
- 	if (op->optinsn.insn) {
--		free_ppc_optinsn_slot(op->optinsn.insn, 1);
-+		free_optinsn_slot(op->optinsn.insn, 1);
- 		op->optinsn.insn = NULL;
- 	}
- }
-@@ -203,14 +192,12 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 	unsigned long nip, size;
- 	int rc, i;
- 
--	kprobe_ppc_optinsn_slots.insn_size = MAX_OPTINSN_SIZE;
--
- 	nip = can_optimize(p);
- 	if (!nip)
- 		return -EILSEQ;
- 
- 	/* Allocate instruction slot for detour buffer */
--	buff = get_ppc_optinsn_slot();
-+	buff = get_optinsn_slot();
- 	if (!buff)
- 		return -ENOMEM;
- 
-@@ -297,7 +284,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 	return 0;
- 
- error:
--	free_ppc_optinsn_slot(buff, 0);
-+	free_optinsn_slot(buff, 0);
- 	return -ERANGE;
- 
- }
--- 
-2.25.0
+> >>In the non-inlined version, the first sum with 0 was performed.
+> >>Here it is skipped.
+> >
+> >That is because of how __builtin_constant_p works, most likely.  As we
+> >discussed elsewhere it is evaluated before all forms of loop unrolling.
+> 
+> But we are not talking about loop unrolling here, are we ?
 
+Oh, right you are, but that doesn't change much.  The
+_builtin_constant_p(len) is evaluated long before the compiler sees len
+is a constant here.
+
+> It seems that the reason here is that __builtin_constant_p() is evaluated 
+> long after GCC decided to not inline that call to csum_add().
+
+Yes, it seems we do not currently do even trivial inlining except very
+early in the compiler.
+
+Thanks,
+
+
+Segher
