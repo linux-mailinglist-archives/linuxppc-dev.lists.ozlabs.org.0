@@ -1,59 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E4637C085
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 16:44:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 646D437C18D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 May 2021 17:01:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FgHc93kcpz308f
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 00:44:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FgJ0d33WLz309H
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 01:01:53 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c/0LG8JR;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=c/0LG8JR; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FgHbq0HHrz2xv1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 00:43:48 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FgHbh5mDJz9sdw;
- Wed, 12 May 2021 16:43:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id XhpERfMAMcjt; Wed, 12 May 2021 16:43:44 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FgHbh4nsRz9sdc;
- Wed, 12 May 2021 16:43:44 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 83D6C8B7F4;
- Wed, 12 May 2021 16:43:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id KNm8b5FGVtrW; Wed, 12 May 2021 16:43:44 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 10B2E8B7F3;
- Wed, 12 May 2021 16:43:44 +0200 (CEST)
-Subject: Re: [PATCH] powerpc: Force inlining of csum_add()
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <f7f4d4e364de6e473da874468b903da6e5d97adc.1620713272.git.christophe.leroy@csgroup.eu>
- <20210511105154.GJ10366@gate.crashing.org>
- <e996ef13-c25c-5e9c-edd2-444eded88802@csgroup.eu>
- <20210512143105.GW10366@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <2623fe98-7a73-f7a2-bcba-2d668d00ffd0@csgroup.eu>
-Date: Wed, 12 May 2021 16:43:33 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FgJ085Zpyz2y07
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 01:01:28 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 272C261447;
+ Wed, 12 May 2021 15:01:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1620831684;
+ bh=eVJIJPQRut7K9Tu8mkfXxVF3G+ycqC5k1sE42YbMqek=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=c/0LG8JRxfEogycKZwPikQR2FSRaY8mYTVNlj0kpvzGT4vBoJazp+qHlrCrKRiYyS
+ szXytK/8Kd2+8YxKYesZ2j+TTsP1xWg+l7Ljb+6oUhgWb59z4iOmC7yIR1MmgNA2BG
+ WiDhShGGqolDFtrTLlToBMa9r8Bp1h5JDg+ZI3B7CfZlj8Q15rKIHL4WRoEk8d8YZs
+ lND2A3hZlX0yZgZGuAY06l5+/BYeaaclG55FuVDCoYB//vIYbfcDNfUD2N7Mv+PPwm
+ ebd115sfs2YX9WF5Sw8Lf+XpOFHPx4jJPV+18kiJ2yDnoNiOhPRfd3Bll6z9GfsFuz
+ CcG+OwV8n7Z9g==
+Date: Wed, 12 May 2021 17:01:18 +0200
+From: "wsa@kernel.org" <wsa@kernel.org>
+To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+Subject: Re: [PATCH v3 0/4] P2040/P2041 i2c recovery erratum
+Message-ID: <20210512150118.GA1004@ninjato>
+References: <20210511212052.27242-1-chris.packham@alliedtelesis.co.nz>
+ <b90f48cfdc31af08190e7a8eaa71b7bd488fcbaa.camel@infinera.com>
+ <ec3cdcc8-5869-9e7d-30c0-59ff4ec67a58@alliedtelesis.co.nz>
+ <4e96247275d559bab133d6c318276fa6be4d7be0.camel@infinera.com>
 MIME-Version: 1.0
-In-Reply-To: <20210512143105.GW10366@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="pWyiEgJYm5f9v55/"
+Content-Disposition: inline
+In-Reply-To: <4e96247275d559bab133d6c318276fa6be4d7be0.camel@infinera.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,45 +61,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+ "Chris.Packham@alliedtelesis.co.nz" <Chris.Packham@alliedtelesis.co.nz>,
+ "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--pWyiEgJYm5f9v55/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Le 12/05/2021 à 16:31, Segher Boessenkool a écrit :
-> On Wed, May 12, 2021 at 02:56:56PM +0200, Christophe Leroy wrote:
->> Le 11/05/2021 à 12:51, Segher Boessenkool a écrit :
->>> Something seems to have decided this asm is more expensive than it is.
->>> That isn't always avoidable -- the compiler cannot look inside asms --
->>> but it seems it could be improved here.
->>>
->>> Do you have (or can make) a self-contained testcase?
->>
->> I have not tried, and I fear it might be difficult, because on a kernel
->> build with dozens of calls to csum_add(), only ip6_tunnel.o exhibits such
->> an issue.
-> 
-> Yeah.  Sometimes you can force some of the decisions, but that usually
-> requires knowing too many GCC internals :-/
-> 
->>>> And there is even one completely unused instance of csum_add().
->>>
->>> That is strange, that should never happen.
->>
->> It seems that several .o include unused versions of csum_add. After the
->> final link, one remains (in addition to the used one) in vmlinux.
-> 
-> But it is a static function, so it should not end up in any object file
-> where it isn't used.
 
-Well .... did I dream ?
+> > I've been doing my recent work with a P2040 and prior to that I did tes=
+t=20
+> > out the recovery on a T2081 (which isn't documented to have this=20
+> > erratum) when I was re-working the driver. The "new" recovery actually=
+=20
+> > seems better but I don't have a reliably faulty i2c device so that's=20
+> > only based on me writing some code to manually trigger the recovery=20
+> > (using the snippet below) and observing it with an oscilloscope.
+>=20
+> You don't need a faulty device, just an aborted I2C read/write op.
 
-Now I only find one extra .o with unused csum_add() : That's net/ipv6/exthdrs.o
-It matches the one found in vmlinux.
+If you can wire GPIOs to the bus, you can use the I2C fault injector:
 
-Are you interested in -fdump-tree-einline-all for that one as well ?
+	Documentation/i2c/gpio-fault-injection.rst
 
-Christophe
+There are already two "incomplete transfer" injectors.
+
+
+--pWyiEgJYm5f9v55/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmCb7boACgkQFA3kzBSg
+KbZ2cA/6ArsdZ8oeQnb4ZdE6P2n/iEJan1gFTBse4voG84wLXndcRs9ylZRRy6gU
+kn+ZRsP8i3eRyJrYHd4a5s9IAfxYlOplIm6VvNLQRe7sMsjNkIxYdCQPwqUA02wy
+1jrYOPhAFBnggzP6k5eTtvnf2k9yuma2hJtvu3tzaBs8x0eSx/LEu+K74mPFTkys
+nmRI2IbgXxkhLw9eVP652bqPkX/kkT2oiABwMw9m9m2qv4Ce/VflEYPq/Ie+9gIt
+ktbAg/E9UlGMQMzhPZQ0trOdstvXU3U7gD9RoCSnJiUjJaDM2iBtWfM07V86Pptf
+VOKjbWR2POER3llDyDxdkNVW1bUFh38zprWRkDfQd9pD+F63pTrcwo+iKwST0Lc0
+BLGWw1OElr3IaXHSI/bCMtgpUQxplq5unc/+bXydd/DvIw1X0/f0dJMihjbHDYy1
+fXa1Ac7plZGHxEdrt4wRLimgjoA/A0eOC1Ixkoc7pKylUjAdOlA7mC7O5tcJ2fg9
+p0CuWascBRY/F+UEAtI10Fc9E5q/uLrmmWUPtIvivm+wQx8frIeZS002yeArsvvR
++J4NQRv9VPbg+sgDxtX2AHJZnGsKJ22+htHkHE4RfkiNUYEzjNgYwAjd+Fu/cMOw
+0tj3LuG1uhYsmHwVwdLC2/MwNh3qVGL1/rbp5aFICBDcF6EZ5D0=
+=ar4h
+-----END PGP SIGNATURE-----
+
+--pWyiEgJYm5f9v55/--
