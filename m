@@ -1,52 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A6637F545
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 12:04:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892AF37F572
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 12:15:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FgnLP6h9Gz3bwt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 20:03:57 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=muXNug23;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fgnc549Ykz30DG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 20:15:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
- envelope-from=jgross@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=muXNug23; dkim-atps=neutral
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FgnKT649Pz2xVt
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 20:03:09 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1620900187; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=j+l5tq5M/f1kECXbl74yHxqhOUkbjQkUE4NZC677IzI=;
- b=muXNug23i8D8WshIzxtjKc3x9GnLaAOKXKGlzsXTDl/23evlPFNCHKHd4a4SVRdSANqXEp
- icn4g/Bx1ghMjx9o1JXTxQFB4zJLnEvn3Te0fnTR9PVC/fhKkMdndGrcacL/hxHOGrnzad
- pwoTCoUMnAz3BRbea9XDOTFJf6ozUQ4=
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 0DC46B15E;
- Thu, 13 May 2021 10:03:07 +0000 (UTC)
-From: Juergen Gross <jgross@suse.com>
-To: xen-devel@lists.xenproject.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH 8/8] xen/hvc: replace BUG_ON() with negative return value
-Date: Thu, 13 May 2021 12:03:02 +0200
-Message-Id: <20210513100302.22027-9-jgross@suse.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210513100302.22027-1-jgross@suse.com>
-References: <20210513100302.22027-1-jgross@suse.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fgnbh10Rzz2xfy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 20:15:21 +1000 (AEST)
+IronPort-SDR: Z5TZWdKBcJamM4L0wv4vsEweykqYfZKsVU+eu0W11p7nOf4tApCLWJfpvQnUq9H2/yYypv3wmF
+ Sd+hvEdu0UYA==
+X-IronPort-AV: E=McAfee;i="6200,9189,9982"; a="199968539"
+X-IronPort-AV: E=Sophos;i="5.82,296,1613462400"; d="scan'208";a="199968539"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2021 03:15:17 -0700
+IronPort-SDR: q8aNSOt3xN1jVZuKdLZaA5momhPIURCtqM1LhatIjA71iRCwchmzcO0sgVoVfCGb7YoWR5gZSA
+ O50w4oiUuaHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,296,1613462400"; d="scan'208";a="456196666"
+Received: from lkp-server01.sh.intel.com (HELO ddd90b05c979) ([10.239.97.150])
+ by fmsmga004.fm.intel.com with ESMTP; 13 May 2021 03:15:16 -0700
+Received: from kbuild by ddd90b05c979 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lh8NA-0000C2-9G; Thu, 13 May 2021 10:15:16 +0000
+Date: Thu, 13 May 2021 18:14:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ da3bb206c9ceb0736d9e2897ea697acabad35833
+Message-ID: <609cfc07.d/ljnUSYJg3uPkdw%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,62 +54,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Xen frontends shouldn't BUG() in case of illegal data received from
-their backends. So replace the BUG_ON()s when reading illegal data from
-the ring page with negative return values.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: da3bb206c9ceb0736d9e2897ea697acabad35833  KVM: PPC: Book3S HV: Fix kvm_unmap_gfn_range_hv() for Hash MMU
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
+elapsed time: 1183m
+
+configs tested: 9
+configs skipped: 83
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
 ---
- drivers/tty/hvc/hvc_xen.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
-index 92c9a476defc..30d7ffb1e04c 100644
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -86,6 +86,11 @@ static int __write_console(struct xencons_info *xencons,
- 	cons = intf->out_cons;
- 	prod = intf->out_prod;
- 	mb();			/* update queue values before going on */
-+
-+	if (WARN_ONCE((prod - cons) > sizeof(intf->out),
-+		      "Illegal ring page indices"))
-+		return -EINVAL;
-+
- 	BUG_ON((prod - cons) > sizeof(intf->out));
- 
- 	while ((sent < len) && ((prod - cons) < sizeof(intf->out)))
-@@ -114,7 +119,10 @@ static int domU_write_console(uint32_t vtermno, const char *data, int len)
- 	 */
- 	while (len) {
- 		int sent = __write_console(cons, data, len);
--		
-+
-+		if (sent < 0)
-+			return sent;
-+
- 		data += sent;
- 		len -= sent;
- 
-@@ -138,7 +146,10 @@ static int domU_read_console(uint32_t vtermno, char *buf, int len)
- 	cons = intf->in_cons;
- 	prod = intf->in_prod;
- 	mb();			/* get pointers before reading ring */
--	BUG_ON((prod - cons) > sizeof(intf->in));
-+
-+	if (WARN_ONCE((prod - cons) > sizeof(intf->in),
-+		      "Illegal ring page indices"))
-+		return -EINVAL;
- 
- 	while (cons != prod && recv < len)
- 		buf[recv++] = intf->in[MASK_XENCONS_IDX(cons++, intf->in)];
--- 
-2.26.2
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
