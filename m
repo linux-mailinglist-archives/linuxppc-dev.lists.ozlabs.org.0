@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9343837F292
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 07:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD1137F290
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 07:23:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fgg7Z3t03z3c2G
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 15:24:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fgg6f6x67z30Cs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 May 2021 15:23:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=GCRnulqc;
+	dkim=pass (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=QIkdJEuT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,36 +17,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=GCRnulqc; 
+ header.a=rsa-sha256 header.s=201602 header.b=QIkdJEuT; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fgg662CrMz2yXp
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fgg662wc1z2ydJ
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 May 2021 15:22:53 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1007)
- id 4Fgg653Yhlz9sWl; Thu, 13 May 2021 15:22:53 +1000 (AEST)
+ id 4Fgg654NTnz9sXS; Thu, 13 May 2021 15:22:53 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=gibson.dropbear.id.au; s=201602; t=1620883373;
- bh=J4k9I4n3CR3C0H3LQG5hxgKnqKlDCFBVodj2HfgEWsY=;
+ bh=eDYcq8BCjjX3D7pQTXkqLxntqLy5Xsc3SFw9biOwJVE=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=GCRnulqcNX27PvXULRAe/yJiKGM2J97NWRkT1oe7Y+Z95r3iJPPnzu35P+ZyihZDv
- yT4u8qprfq1pXhqPXzz0eVkMZdnooReTsVH96C0uOyPJHhuekPsrfnUTkrtPwqVuHT
- SQXwVYppGJU8srBL49c3KyhSAQ7Kv5ySuR30wNd4=
-Date: Thu, 13 May 2021 15:21:26 +1000
+ b=QIkdJEuTQQRooy4iYBVJRP0Vh87xgrl6aG/BtVgFUHhJwLK6utpLNjOkNKLgY7jL7
+ v7v84wzmoLFuPk2ENGB0xYGfaIIoU6m1t66ZVXUrO4ybKYirW2P1HLXhhOYzR9hTEd
+ QbWqep/aWF/PO/b9abIf8zBmN6NsToXZQER8v3EE=
+Date: Thu, 13 May 2021 15:22:46 +1000
 From: David Gibson <david@gibson.dropbear.id.au>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH v2 4/4] powerpc/pseries: minor enhancements in
- dlpar_memory_remove_by_ic()
-Message-ID: <YJy3VmuwZIBdZ68/@yekko>
-References: <20210512202809.95363-1-danielhb413@gmail.com>
- <20210512202809.95363-5-danielhb413@gmail.com>
+Subject: Re: [PATCH 2/3] hotplug-memory.c: enhance dlpar_memory_remove* LMB
+ checks
+Message-ID: <YJy3pv/gZz/aeqMw@yekko>
+References: <20210430120917.217951-1-danielhb413@gmail.com>
+ <20210430120917.217951-3-danielhb413@gmail.com>
+ <YJCdNJRSLCOV59dE@yekko>
+ <c735c4ad-7477-b07a-e84b-86eccd8d9978@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="bHEP+XUHHoT9NjaT"
+ protocol="application/pgp-signature"; boundary="JzQ2d4KKlWLAayb6"
 Content-Disposition: inline
-In-Reply-To: <20210512202809.95363-5-danielhb413@gmail.com>
+In-Reply-To: <c735c4ad-7477-b07a-e84b-86eccd8d9978@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,81 +66,91 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---bHEP+XUHHoT9NjaT
-Content-Type: text/plain; charset=us-ascii
+--JzQ2d4KKlWLAayb6
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 12, 2021 at 05:28:09PM -0300, Daniel Henrique Barboza wrote:
-> We don't need the 'lmbs_available' variable to count the valid LMBs and
-> to check if we have less than 'lmbs_to_remove'. We must ensure that the
-> entire LMB range must be removed, so we can error out immediately if any
-> LMB in the range is marked as reserved.
+On Wed, May 12, 2021 at 05:35:39PM -0300, Daniel Henrique Barboza wrote:
 >=20
-> Add a couple of comments explaining the reasoning behind the differences
-> we have in this function in contrast to what it is done in its sister
-> function, dlpar_memory_remove_by_count().
+> On 5/3/21 10:02 PM, David Gibson wrote:
+> > On Fri, Apr 30, 2021 at 09:09:16AM -0300, Daniel Henrique Barboza wrote:
+> > > dlpar_memory_remove_by_ic() validates the amount of LMBs to be removed
+> > > by checking !DRCONF_MEM_RESERVED, and in the following loop before
+> > > dlpar_remove_lmb() a check for DRCONF_MEM_ASSIGNED is made before
+> > > removing it. This means that a LMB that is both !DRCONF_MEM_RESERVED =
+and
+> > > !DRCONF_MEM_ASSIGNED will be counted as valid, but then not being
+> > > removed.  The function will end up not removing all 'lmbs_to_remove'
+> > > LMBs while also not reporting any errors.
+> > >=20
+> > > Comparing it to dlpar_memory_remove_by_count(), the validation is done
+> > > via lmb_is_removable(), which checks for DRCONF_MEM_ASSIGNED and fadu=
+mp
+> > > constraints. No additional check is made afterwards, and
+> > > DRCONF_MEM_RESERVED is never checked before dlpar_remove_lmb(). The
+> > > function doesn't have the same 'check A for validation, then B for
+> > > removal' issue as remove_by_ic(), but it's not checking if the LMB is
+> > > reserved.
+> > >=20
+> > > There is no reason for these functions to validate the same operation=
+ in
+> > > two different manners.
+> >=20
+> > Actually, I think there is: remove_by_ic() is handling a request to
+> > remove a specific range of LMBs.  If any are reserved, they can't be
+> > removed and so this needs to fail.  But if they are !ASSIGNED, that
+> > essentially means they're *already* removed (or never added), so
+> > "removing" them is, correctly, a no-op.
+> >=20
+> > remove_by_count(), in contrast, is being asked to remove a fixed
+> > number of LMBs from wherever they can be found, and for that it needs
+> > to find LMBs that haven't already been removed.
+> >=20
+> > Basically remove_by_ic() is an absolute request: "make this set of
+> > LMBs be not-plugged", whereas remove_by_count() is a relative request
+> > "make N less LMBs be plugged".
+> >=20
+> >=20
+> > So I think remove_by_ic()s existing handling is correct.  I'm less
+> > sure if remove_by_count() ignoring RESERVED is correct - I couldn't
+> > quickly find under what circumstances RESERVED gets set.
 >=20
-> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+> RESERVED is never set by the kernel. It is written in the DT by the
+> firmware/hypervisor and the kernel just checks its value. QEMU sets it in
+> spapr_dt_dynamic_memory() with the following comment:
+>=20
+>=20
+>             /*
+>              * LMB information for RMA, boot time RAM and gap b/n RAM and
+>              * device memory region -- all these are marked as reserved
+>              * and as having no valid DRC.
+>              */
+>             dynamic_memory[0] =3D cpu_to_be32(addr >> 32);
+>             dynamic_memory[1] =3D cpu_to_be32(addr & 0xffffffff);
+>             dynamic_memory[2] =3D cpu_to_be32(0);
+>             dynamic_memory[3] =3D cpu_to_be32(0); /* reserved */
+>             dynamic_memory[4] =3D cpu_to_be32(-1);
+>             dynamic_memory[5] =3D cpu_to_be32(SPAPR_LMB_FLAGS_RESERVED |
+>                                             SPAPR_LMB_FLAGS_DRC_INVALID);
+>=20
+>=20
+> The flag is formally described in LOPAR section 4.2.8, "Reserved Memory":
+>=20
+> "Memory nodes marked with the special value of the =E2=80=9Cstatus=E2=80=
+=9D property of
+> =E2=80=9Creserved=E2=80=9D is not to be used or altered by the base OS."
+>=20
+>=20
+> This makes me confident that we should check DRCONF_MEM_RESERVED in
+> remove_by_count() as well, since phyp needs do adhere to these semantics =
+and
+> shouldn't be able to remove a LMB marked as RESERVED.
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+Right.  I doubt it would have caused a problem in practice, because
+I'm pretty sure we should never get an LMB which is RESERVED &&
+ASSIGNED, but it's probably safer to make it explicit.
 
-> ---
->  .../platforms/pseries/hotplug-memory.c        | 28 +++++++++++++------
->  1 file changed, 19 insertions(+), 9 deletions(-)
->=20
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/power=
-pc/platforms/pseries/hotplug-memory.c
-> index 3c7ce5361ce3..ee88c1540fba 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -517,7 +517,6 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
->  static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
->  {
->  	struct drmem_lmb *lmb, *start_lmb, *end_lmb;
-> -	int lmbs_available =3D 0;
->  	int rc;
-> =20
->  	pr_info("Attempting to hot-remove %u LMB(s) at %x\n",
-> @@ -530,18 +529,29 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_re=
-move, u32 drc_index)
->  	if (rc)
->  		return -EINVAL;
-> =20
-> -	/* Validate that there are enough LMBs to satisfy the request */
-> +	/*
-> +	 * Validate that all LMBs in range are not reserved. Note that it
-> +	 * is ok if they are !ASSIGNED since our goal here is to remove the
-> +	 * LMB range, regardless of whether some LMBs were already removed
-> +	 * by any other reason.
-> +	 *
-> +	 * This is a contrast to what is done in remove_by_count() where we
-> +	 * check for both RESERVED and !ASSIGNED (via lmb_is_removable()),
-> +	 * because we want to remove a fixed amount of LMBs in that function.
-> +	 */
->  	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
-> -		if (lmb->flags & DRCONF_MEM_RESERVED)
-> -			break;
-> -
-> -		lmbs_available++;
-> +		if (lmb->flags & DRCONF_MEM_RESERVED) {
-> +			pr_err("Memory at %llx (drc index %x) is reserved\n",
-> +				lmb->base_addr, lmb->drc_index);
-> +			return -EINVAL;
-> +		}
->  	}
-> =20
-> -	if (lmbs_available < lmbs_to_remove)
-> -		return -EINVAL;
-> -
->  	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
-> +		/*
-> +		 * dlpar_remove_lmb() will error out if the LMB is already
-> +		 * !ASSIGNED, but this case is a no-op for us.
-> +		 */
->  		if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
->  			continue;
-> =20
 
 --=20
 David Gibson			| I'll have my music baroque, and my code
@@ -146,24 +158,24 @@ david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
 				| _way_ _around_!
 http://www.ozlabs.org/~dgibson
 
---bHEP+XUHHoT9NjaT
+--JzQ2d4KKlWLAayb6
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmCct1YACgkQbDjKyiDZ
-s5Ku3Q/7BhET9h5R0LDptpTNC0rNSdE1w5t8VvDE/0XFcyLQevq9Bt1pBd9AmVvH
-1tBa1fXfdR15CuBqL3h1jMb/5Qeih7NHc6I+D0GURE9BWzHnfzAEyv2Ws5WoX0Ad
-bQPDuwufZhRj6pEpm0B9MNU1ygOllYLKqptmKDpwC2cwTCtc53uMInLs0dHf29M+
-f9AI54UmbgBIdIrn+h8sPgsIq5hFoAkoLMKMbkCrGSJFfWAhfbIsQPWEUeXWHjWS
-MuRGzauAky6CH8o1XTSsqJAR1Ywu83Q096Ra/uG0434B+xqwqaHhlLr/Odax0x5Y
-QTyB8rKHgTuNDeJ3KHpE7ouLuSqwxm1VRiJfXpWwVez9iL2qWd5UGkVopDOuhZzU
-DUHaJrZ+htjcQaJvatK3l/6cdhUvCkQZ9CGe+QGf0KzkvJQo32Ros4IaMRd/Keq/
-GUbES9FumwGsYPRYQOeGu2h5rEXr7QMrA6Dyp3/sUm3MgdeLJlNFE5E49QWOyekW
-J4CgrZxA/6rQky8wv8K+OCp19LFvJ6vLEd5tUkwfxW5aoqiRlqHFy0ZeGqY72Qy4
-EzWJibgevwoJwtKMoHsyLvrj0j3LFX+/D5dA2i4BNzLW819xI2X5yBhb0sB2sMvy
-mHMv0ttKc2KqrfLILSx9UdC5y1vhGfgYdNb0sxUprnGVCQ9T6ZA=
-=zWc/
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmCct6YACgkQbDjKyiDZ
+s5I0hQ/9GoIQT3pfPFW1C84uJ4XUmkAaSE3Z7YxvFch6RqeLA+ypHgqEuMAARyom
+pgOyhWDrku+2p8Ph7l4fu3YjwaFDtmWyK+5z9mQDiuqWuM9zplLlx5SsDzl49EJQ
+VDDV5NjLzRBVwAPVKLD5/pWb1hBT8koIHPjH9gRIci0t5rbq4Leydyv7unAnQRst
+yszGb6QE8g9lj8sNkP+JjQr8s7zOD5//P/cnzkgjrCdvAw6Tl+/9e6p5LiK09KFO
+HePHrPDLW7rJIu7mkSJo3j3jcrhOt0bRsMaly6BqqOnn3LU3b4nNlCZpYWlvT6iG
+SZ58DViT2ZzXBi5y3MdcKCzmyYlKSC26yLqPM1lHB41WyNH97Bg0Bww7EToNMu5Z
+XT87N9IIAP4xxRqbM5/tRFqiVtwxnJKtp8yjBnUVcOP17BF/BcXQQiI8F99z6cEq
+aRpS443FiDJ2kNhzqy9r2dAJjXOIkmBoP4rh9Mv8E3C5ma7l30vHQ4kRohZKP8fj
+rZHqY9+Bqg1tgTg+cgbfrOUiSPCZqdEyqgi1hVWNTfp/nzZMsd9JzPFZCd/eRXgD
+oGvK+QI1w3qUTdT/4m0KsXgdFi6P+aZdcCUKrsSb/TufXactFxApaydkbFb6V6L1
+WwxjfDVqsWE0pNS2Bt2CdOJ5eiCFoCzTaLO91DEZOs0FTfyz/io=
+=7Bx7
 -----END PGP SIGNATURE-----
 
---bHEP+XUHHoT9NjaT--
+--JzQ2d4KKlWLAayb6--
