@@ -2,41 +2,175 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11033810F1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 May 2021 21:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E38D381119
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 May 2021 21:46:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhf0Y6PsYz3bsy
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 05:36:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FhfCt1Dk6z30NR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 05:46:18 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=mail header.b=EbEeU8FK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=selector1 header.b=pqbBrRsd;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=synopsys.com (client-ip=149.117.73.133;
+ helo=smtprelay-out1.synopsys.com; envelope-from=vineet.gupta1@synopsys.com;
  receiver=<UNKNOWN>)
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256
+ header.s=mail header.b=EbEeU8FK; 
+ dkim=fail reason="signature verification failed" (1024-bit key;
+ unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256
+ header.s=selector1 header.b=pqbBrRsd; 
+ dkim-atps=neutral
+Received: from smtprelay-out1.synopsys.com (smtprelay-out1.synopsys.com
+ [149.117.73.133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhf093qkgz2yY7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 05:36:09 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 8317AB114;
- Fri, 14 May 2021 19:36:05 +0000 (UTC)
-Date: Fri, 14 May 2021 21:36:03 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v3] powerpc/64: Option to use ELFv2 ABI for big-endian
- kernels
-Message-ID: <20210514193603.GJ8544@kitsune.suse.cz>
-References: <20210503110713.751840-1-npiggin__45037.8389026568$1620040079$gmane$org@gmail.com>
- <87eeeooxnu.fsf@igel.home> <20210503143841.GN6564@kitsune.suse.cz>
- <87tunh8jum.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FhfCF33YSz2ykL
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 05:45:42 +1000 (AEST)
+Received: from mailhost.synopsys.com (sv1-mailhost1.synopsys.com
+ [10.205.2.131])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+ (Client CN "mailhost.synopsys.com", Issuer "SNPSica2" (verified OK))
+ by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id B5C25400E5;
+ Fri, 14 May 2021 19:45:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
+ t=1621021540; bh=XmG4n8vJxbRH7bBrVjUXsvPsTWs/midRcduQpFfikI0=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+ b=EbEeU8FKtL/UmcNdyOSAK6Qg7k4N1z2b6T9DoMNKXhBVvX+RwPpyMWpQ21GJNYZnu
+ jUaOkIKGbLB6f8wGIKd1Xr2Eqpw9S/p5d/hr+wQ9sASVER4s8epDNb405MxXaraFMw
+ 6lOyCVi6X5ETslJJVjy3JCqDoeyHuMJ0wzAh2aB+t/gtH/wG50lcISuABeCehG1yMS
+ moeu9Di2xjRTv9Od87ioybFzxiN+wVbCwR+bzOueFeJIHiWANK783loiizH6LXJ/0f
+ baHiiFUo3bqjt4lMn0Bi1GO5L446Tnye7VTJL9STzgZMzSD8QmhgWH1bN3ikeb4KU7
+ nWdLOkv0uXMFg==
+Received: from o365relay-in.synopsys.com (us03-o365relay1.synopsys.com
+ [10.4.161.137])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mailhost.synopsys.com (Postfix) with ESMTPS id 7C07AA006A;
+ Fri, 14 May 2021 19:45:30 +0000 (UTC)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2174.outbound.protection.outlook.com [104.47.56.174])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client CN "mail.protection.outlook.com",
+ Issuer "DigiCert Cloud Services CA-1" (verified OK))
+ by o365relay-in.synopsys.com (Postfix) with ESMTPS id 3A359800C4;
+ Fri, 14 May 2021 19:45:19 +0000 (UTC)
+Authentication-Results: o365relay-in.synopsys.com;
+ dmarc=pass (p=reject dis=none) header.from=synopsys.com
+Authentication-Results: o365relay-in.synopsys.com;
+ spf=pass smtp.mailfrom=vgupta@synopsys.com
+Authentication-Results: o365relay-in.synopsys.com; dkim=pass (1024-bit key;
+ unprotected) header.d=synopsys.com header.i=@synopsys.com header.b="pqbBrRsd";
+ dkim-atps=neutral
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g13J+ZE7cmd6aASpzItin32ziGymgtzESlEeEd8thP7kezQriRJHclLAlKPp8qskuY0fYRdAb+7+nOWeMNbwBtxqiealsifYm78UhORxMLi6auDwguOlbeKg5VIael9N4hzai87CLZuBWzmgEaCwpeP9Q4d28t7OxfogcLeEDHVi+cjK8SCu8cXF3DOHO/FOil0bv86osG79u4drogl+NaiQJW/YMtO4Vt2gFeQHxYJcQWDSWDkX7oh70gcI5E2l2zHR0sY/wJxymouSqNfCaQEOFP9fgnd7C3dbwsAmAJaP/eM4vjQIfUWNmKdTdkgWIlKY5XMk+hI9+dIVW47iEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XmG4n8vJxbRH7bBrVjUXsvPsTWs/midRcduQpFfikI0=;
+ b=iFGm0APjAMam7MLwEK5NzQT8lQdk22rwGZU1f0Zzyzq/QDv7vRfxkC1oRkLD6wx1y+IaaGWhSGJ4yRG171xFBv3MT3GDUARJVE8rfWikgC5YZBfr50OLXVQuR0r01u6/uQvdGC69haNnsUS0gnCpg5OyG7ZY/D3rnscn0kbfnHwVi4Uh+lpzyZj8ME1eKcVqPezdHdR6BvSe1QWiO8jdUWlGneY3K4TEU7xZMmTnzB37hileFSq6dRpk32IpcTgeWzktZTlg0tMELwjEHbig1yqPr+n6mHb5+ddAgY+iZCUoQb3Dd4R+Cprke35GahKHh5IOgODm/Axr8CA5qU0nww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
+ dkim=pass header.d=synopsys.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XmG4n8vJxbRH7bBrVjUXsvPsTWs/midRcduQpFfikI0=;
+ b=pqbBrRsdzHkve5erFrn0KJX/6qveXM1TqPgoVVT1JKF5QGfHFgQobm8LxAzkmtYlamCs2rvx2LkcyWpscvLqwc8WYViqvo/9GrvVsFzHGnpiirxBi7JBVRLfZTNbkJ9NHSrdBUYoKth1xECtgiiP7Tj0pqzGJLeW34yDI9E48WI=
+Received: from BYAPR12MB3479.namprd12.prod.outlook.com (2603:10b6:a03:dc::26)
+ by BY5PR12MB4918.namprd12.prod.outlook.com (2603:10b6:a03:1df::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4129.25; Fri, 14 May
+ 2021 19:45:17 +0000
+Received: from BYAPR12MB3479.namprd12.prod.outlook.com
+ ([fe80::d1a0:ed05:b9cc:e94d]) by BYAPR12MB3479.namprd12.prod.outlook.com
+ ([fe80::d1a0:ed05:b9cc:e94d%7]) with mapi id 15.20.4108.036; Fri, 14 May 2021
+ 19:45:17 +0000
+X-SNPS-Relay: synopsys.com
+From: Vineet Gupta <Vineet.Gupta1@synopsys.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Vineet Gupta <Vineet.Gupta1@synopsys.com>
+Subject: Re: [PATCH v2 00/13] Unify asm/unaligned.h around struct helper
+Thread-Topic: [PATCH v2 00/13] Unify asm/unaligned.h around struct helper
+Thread-Index: AQHXSKg19FKoFxcBX0+yXT8p8kMtfqrjPPKAgAAWKgCAAAiYAIAABkwA
+Date: Fri, 14 May 2021 19:45:16 +0000
+Message-ID: <14016937-b9c3-c131-db18-f97081806c7f@synopsys.com>
+References: <20210514100106.3404011-1-arnd@kernel.org>
+ <CAHk-=whGObOKruA_bU3aPGZfoDqZM1_9wBkwREp0H0FgR-90uQ@mail.gmail.com>
+ <2408c893-4ae7-4f53-f58c-497c91f5b034@synopsys.com>
+ <CAHk-=wih8UHDwJ8x6m-p0PQ7o4S4gOBwGNs=w=q10GNY7A-70w@mail.gmail.com>
+In-Reply-To: <CAHk-=wih8UHDwJ8x6m-p0PQ7o4S4gOBwGNs=w=q10GNY7A-70w@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+authentication-results: linux-foundation.org; dkim=none (message not signed)
+ header.d=none;linux-foundation.org; dmarc=none action=none
+ header.from=synopsys.com;
+x-originating-ip: [149.117.75.11]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 5aff8a86-dc2f-4587-f7be-08d91710ccd4
+x-ms-traffictypediagnostic: BY5PR12MB4918:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BY5PR12MB49187A75ECC97544DAF92C2AB6509@BY5PR12MB4918.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3968;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: BYaXSC3TslWRkzsViqCiF1+Wxp9ZRdRQeChNpCHqFojES9rxJcWKNb0aQn3ba1j1eHw1lhWLivOzkP7ST7eqae7VyAlocuyIm7zFVSWFwC573EHkc9ysVGP1OT57JYg4lhGRB+zUL/QN8/gxAlW3aaTN25UIc4zo9QJaEY8IJ1oNRP483/bqXJ6e0eGRvrtLBSxI7qGscKgJPnAA7+LXqcHlvCU/1JbMMmbNA2EpRvk3ANPp6HhgROzFjtSQxpov1LbDn7uf7vd5G954cpAp/ByoLyLc0a7eX1tUb7Ts9aUhxpLmHAmpsX8ZlUg0dpGrXYKdPQUqmXhYgaBjZlTphwRh1VCD/pQ+v3DGwN1USDB8meAh8zTuVBMY8cF8/6TZdvVeConeAGm7YRuAKJKTGbSyF8Qe4IuODHZxB8AZJshJo+SLxmLhjieKUtfnRe18hx1fvpxNjMuy9pvUMdBJGHgxPLuJ/oSro+muliSqkS9peSV5ftb4i4VrCXhE/qx81Uw9T9fWlTX9BadBDKUY183cgt25W3InSN4DApd8UlTYN03fUPxaC0wMIwIbkMaFgAeZICX+/tXpb16+gLxh/mO68owoJcmkIhFDzzvY9xb6vJWCFIBPZr1fh8S0X7LvxseKYAcuO3UK8dhxg4/X9M+Qk1+9pLtWuW2iFA2BiHFNEvGWGetGFVRrYuQaj2aq
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BYAPR12MB3479.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(136003)(366004)(346002)(376002)(396003)(39850400004)(31696002)(36756003)(86362001)(38100700002)(66946007)(66476007)(83380400001)(26005)(7416002)(7406005)(66556008)(71200400001)(64756008)(2616005)(2906002)(4326008)(54906003)(316002)(6512007)(110136005)(122000001)(6486002)(8676002)(186003)(478600001)(66446008)(8936002)(31686004)(6506007)(53546011)(5660300002)(76116006)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata: =?utf-8?B?eXpKSWxoSEtpUWlxU0x0OElweWd4YnlKVGNubEVaZDI1OTBKTTNXdGFNR1RZ?=
+ =?utf-8?B?R01Kcnd5MEhXbldycDlDNDdla050UmJmNkc5WnBBTFZXYXVVVUhpUnM3VGty?=
+ =?utf-8?B?OGNFOVVkZ2pTVm1NZ2dIckt0TTdyUHhDa2ZKRGp4M0krckJRYnlZOHUwQ1Yr?=
+ =?utf-8?B?UlRBZktOQlFQNHB5VlkzcEZrclB5U25Mcjl3U1ZBM0RFYVJiOGtyL1NzQWMr?=
+ =?utf-8?B?OEFsTFdzNTd0T0xVazZPM0Z1NWR2Z0JldnFkOUpLZlgySGl0LzFxcXJlNFBL?=
+ =?utf-8?B?ejlwU05tMjkzcGozNkFwWFBFa3A3RzN4elloa1VKenRya3dpWE9NN0szWFlu?=
+ =?utf-8?B?ZTFXN1VLaHdRdmdYRFltN3B3dHZxOWNZaFF2UEYwcjk1bkI0cEV6cDF6ZWVo?=
+ =?utf-8?B?dGRqMS8rK0R5NU15d1VWM1BZME04MTZ6QVg4N1doUndhKy9lQlp2Q2M2TmVC?=
+ =?utf-8?B?aldpQk5YUEsrS2FCMEhSd2ZmajNJRnBDR0xPdW55RXhTanNXUEllTGpDa2pU?=
+ =?utf-8?B?ZnlicW51dlBxRGFJUDNXRU9EVitiSTBGcXgxWG9TYTV0eDFXVmI2MmcwS2FY?=
+ =?utf-8?B?VUlUTnlaN3JPR0NFOGhoeDhheWxUdTNJUjdoZ2l2L2FqcFkyQTlhaGppV0lr?=
+ =?utf-8?B?b1RPdldzSHZIYXI0MUFxMmVkanhTNjNCZUJnOHE3cERLU2doT01kZytBV1p2?=
+ =?utf-8?B?aldhZjBkWitsQndUMkhuMXhuUlVNNzk4RlJhVVc2Z1F4RXAvUVI5ODJLaXNh?=
+ =?utf-8?B?K25kR0xBbHdIZndOazdYdk9FN0VjOGdndks5SUc5UExic0M2SWJqSkM3SHAr?=
+ =?utf-8?B?NTRKOGxUakVJSy9ZSVNId1I3M0M2aTVDOEZNSUxDVlpzeCtBWS8zWDk5YXVR?=
+ =?utf-8?B?YVY0dS9Nem0xVEVQUmUxbjlLRGtOeE50QzdrRnpzbWV2TnI3OWMzc3Z6eDB6?=
+ =?utf-8?B?UllDUlRJaVhCSGJ5MHRqeXNQSDRJN2tZblkzVE00M1ZzaXhaaTU4Tk5MS042?=
+ =?utf-8?B?eU9JcFpySk15WUx2SXQ2K1diQWZnZjhoLzRmRTN6U2R2N0NndFVMUHBzb0k2?=
+ =?utf-8?B?VUZ0TnFkYW5sN1dWYURpWjBuM0VjQVRtNkdib2VqNGlCaTVKZGdKUVBLc0VN?=
+ =?utf-8?B?K1NxYnF4NUVQOVc4RWM5NjR0a0dzNUVGY1ZQYTdSZzdyUGMyRWdibmFmaGZB?=
+ =?utf-8?B?NWhNMFpyNmtiRzFPckR0blBiSnpqMWhrVXpnTnZ0OC9KRTgxV01iaTUzRTJq?=
+ =?utf-8?B?VEJuYTgrQkNJTVVhek83REQ3ZE04N3NFUStUS2JYZmZ5M0E4Wm0yTDhDZy80?=
+ =?utf-8?B?OFZKcFZKaFBZLzdXcEdVYlBUb1N5NVo2S2w3di85SWpNWnVhb1BQZ1pDQXZX?=
+ =?utf-8?B?L3k5d2F3QURTMW1USVNqWmt5WS93QWhOa0dVeW5PQnlQYXplYzI4MGN1VlJB?=
+ =?utf-8?B?VVI5cmNJTllLZVZrZE4xbEhkSUZCaWlqZ3poV2c1R1ZTRUlDWVNSOHV5bDY2?=
+ =?utf-8?B?T0tnV1N0Z0s0L284TUNTaWtSVVRzalRJQThBd2hVSm9jSDJnMEFzbGFsZXVD?=
+ =?utf-8?B?dXlMR3hPVGpsQ1hobmdHdXVPMTUxOEtmeUUrQWVCdUtqZFdlUmN0blluN2la?=
+ =?utf-8?B?ZUVsUjJteHdKSmxQRlRWR0ErVE84aGM5bGlseHhqN0FKR1JrejRpa010KzN2?=
+ =?utf-8?B?cHlCUmswbXhIbEhrd3dSbkZZUldHWGtISUl1Ry94Zi9yNGV5MjVZcTlRZnI0?=
+ =?utf-8?Q?EObv19a7YEYIAM6Ebg=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <280212593F4F8844BA7CA332FCBE0B2A@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87tunh8jum.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-OriginatorOrg: synopsys.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3479.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5aff8a86-dc2f-4587-f7be-08d91710ccd4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 May 2021 19:45:16.9872 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VNdnXkbVpoFAdxneSiaJHaxdJz58kbCGlzZbu2j6F9WUrz8DCRRNO202snd5252dKG1PqcAqjBeu5v4ac9n/IQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4918
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,117 +182,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Andreas Schwab <schwab@linux-m68k.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Rich Felker <dalias@libc.org>, Linux-sh list <linux-sh@vger.kernel.org>,
+ "Richard Russon \(FlatCap\)" <ldm@flatcap.org>,
+ Amitkumar Karwar <amitkarwar@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-sparc <sparclinux@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arch <linux-arch@vger.kernel.org>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ the arch/x86 maintainers <x86@kernel.org>, James Morris <jmorris@namei.org>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Jakub Kicinski <kuba@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Jonas Bonn <jonas@southpole.se>, Arnd Bergmann <arnd@arndb.de>,
+ Ganapathi Bhat <ganapathi017@gmail.com>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ linux-block <linux-block@vger.kernel.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
+ Borislav Petkov <bp@alien8.de>, Stafford Horne <shorne@gmail.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Jens Axboe <axboe@kernel.dk>,
+ Arnd Bergmann <arnd@kernel.org>, John Johansen <john.johansen@canonical.com>,
+ Xinming Hu <huxinming820@gmail.com>, Netdev <netdev@vger.kernel.org>,
+ linux-wireless <linux-wireless@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ "linux-ntfs-dev@lists.sourceforge.net" <linux-ntfs-dev@lists.sourceforge.net>,
+ LSM List <linux-security-module@vger.kernel.org>,
+ Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Sharvari Harisangam <sharvari.harisangam@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 05, 2021 at 10:07:29PM +1000, Michael Ellerman wrote:
-> Michal Suchánek <msuchanek@suse.de> writes:
-> > On Mon, May 03, 2021 at 01:37:57PM +0200, Andreas Schwab wrote:
-> >> Should this add a tag to the module vermagic?
-> >
-> > Would the modues link even if the vermagic was not changed?
-> 
-> Most modules will require some symbols from the kernel, and those will
-> be dot symbols, which won't resolve.
-> 
-> But there are a few small modules that don't rely on any kernel symbols,
-> which can load.
-> 
-> > I suppose something like this might do it.
-> 
-> It would, but I feel like we should be handling this at the ELF level.
-> ie. we don't allow loading modules with a different ELF machine type, so
-> neither should we allow loading a module with the wrong ELF ABI.
-> 
-> And you can build the kernel without MODVERSIONS, so relying on
-> MODVERSIONS still leaves a small exposure (same kernel version
-> with/without ELFv2).
-> 
-> I don't see an existing hook that would do what we want. There's
-> elf_check_arch(), but that also applies to userspace binaries, which is
-> not what we want.
-> 
-> Maybe something like below.
-
-The below patch works for me.
-
-Tested-by: Michal Suchánek <msuchanek@suse.de>
-
-Built a Hello World module for both v1 and v2 ABI, and kernels built
-with v1 and v2 ABI rejected module with the other ABI.
-
-[  100.602943] Module has invalid ELF structures
-insmod: ERROR: could not insert module moin_v1.ko: Invalid module format
-
-Thanks
-
-Michal
-> 
-> cheers
-> 
-> 
-> diff --git a/arch/powerpc/include/asm/module.h b/arch/powerpc/include/asm/module.h
-> index 857d9ff24295..d0e9368982d8 100644
-> --- a/arch/powerpc/include/asm/module.h
-> +++ b/arch/powerpc/include/asm/module.h
-> @@ -83,5 +83,28 @@ static inline int module_finalize_ftrace(struct module *mod, const Elf_Shdr *sec
->  }
->  #endif
->  
-> +#ifdef CONFIG_PPC64
-> +static inline bool elf_check_module_arch(Elf_Ehdr *hdr)
-> +{
-> +	unsigned long flags;
-> +
-> +	if (!elf_check_arch(hdr))
-> +		return false;
-> +
-> +	flags = hdr->e_flags & 0x3;
-> +
-> +#ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
-> +	if (flags == 2)
-> +		return true;
-> +#else
-> +	if (flags < 2)
-> +		return true;
-> +#endif
-> +	return false;
-> +}
-> +
-> +#define elf_check_module_arch elf_check_module_arch
-> +#endif /* CONFIG_PPC64 */
-> +
->  #endif /* __KERNEL__ */
->  #endif	/* _ASM_POWERPC_MODULE_H */
-> diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
-> index 9e09d11ffe5b..fdc042a84562 100644
-> --- a/include/linux/moduleloader.h
-> +++ b/include/linux/moduleloader.h
-> @@ -13,6 +13,11 @@
->   * must be implemented by each architecture.
->   */
->  
-> +// Allow arch to optionally do additional checking of module ELF header
-> +#ifndef elf_check_module_arch
-> +#define elf_check_module_arch elf_check_arch
-> +#endif
-> +
->  /* Adjust arch-specific sections.  Return 0 on success.  */
->  int module_frob_arch_sections(Elf_Ehdr *hdr,
->  			      Elf_Shdr *sechdrs,
-> diff --git a/kernel/module.c b/kernel/module.c
-> index b5dd92e35b02..c71889107226 100644
-> --- a/kernel/module.c
-> +++ b/kernel/module.c
-> @@ -2941,7 +2941,7 @@ static int elf_validity_check(struct load_info *info)
->  
->  	if (memcmp(info->hdr->e_ident, ELFMAG, SELFMAG) != 0
->  	    || info->hdr->e_type != ET_REL
-> -	    || !elf_check_arch(info->hdr)
-> +	    || !elf_check_module_arch(info->hdr)
->  	    || info->hdr->e_shentsize != sizeof(Elf_Shdr))
->  		return -ENOEXEC;
->  
+T24gNS8xNC8yMSAxMjoyMiBQTSwgTGludXMgVG9ydmFsZHMgd3JvdGU6DQo+IE9uIEZyaSwgTWF5
+IDE0LCAyMDIxIGF0IDExOjUyIEFNIFZpbmVldCBHdXB0YQ0KPiA8VmluZWV0Lkd1cHRhMUBzeW5v
+cHN5cy5jb20+IHdyb3RlOg0KPj4gV2Fzbid0IHRoZSBuZXcgemxpYiBjb2RlIHNsYXRlZCBmb3Ig
+NS4xNC4gSSBkb24ndCBzZWUgaXQgaW4geW91ciBtYXN0ZXIgeWV0DQo+IFlvdSdyZSByaWdodCwg
+SSBuZXZlciBhY3R1YWxseSBjb21taXR0ZWQgaXQsIHNpbmNlIGl0IHdhcyBzcGVjaWZpYyB0bw0K
+PiBBUkMgYW5kIC1PMw0KDQpXZWxsLCBub3QgcmVhbGx5LCB0aGUgaXNzdWUgbWFuaWZlc3RlZCBp
+biBBUkMgTzMgdGVzdGluZywgYnV0IEkgc2hvd2VkIA0KdGhlIHByb2JsZW0gZXhpc3RlZCBmb3Ig
+YXJtNjQgZ2NjIHRvby4NCg0KPiBhbmQgSSB3YXNuJ3QgZW50aXJlbHkgaGFwcHkgd2l0aCB0aGUg
+YW1vdW50IG9mIHRlc3RpbmcgaXQNCj4gZ290ICh3aXRoIEhlaWtvIHBvaW50aW5nIG91dCB0aGF0
+IHRoZSBzMzkwIHN0dWZmIG5lZWRlZCBtb3JlIGZpeGVzIGZvcg0KPiB0aGUgY2hhbmdlKS4NCg0K
+V2l0aCBoaXMgYWRkb24gcGF0Y2ggZXZlcnl0aGluZyBzZWVtZWQgaHVua3kgZG9yeS4NCg0KPiBU
+aGUgcGF0Y2ggYmVsb3cgaXMgcmVxdWlyZWQgb24gdG9wIG9mIHlvdXIgcGF0Y2ggdG8gbWFrZSBp
+dCBjb21waWxlDQo+IGZvciBzMzkwIGFzIHdlbGwuDQo+IFRlc3RlZCB3aXRoIGtlcm5lbCBpbWFn
+ZSBkZWNvbXByZXNzaW9uLCBhbmQgYWxzbyBidHJmcyB3aXRoIGZpbGUNCj4gY29tcHJlc3Npb247
+IGJvdGggc29mdHdhcmUgYW5kIGhhcmR3YXJlIGNvbXByZXNzaW9uLg0KPiBFdmVyeXRoaW5nIHNl
+ZW1zIHRvIHdvcmsuDQoNCj4gU28gaW4gZmFjdCBpdCdzIG5vdCBldmVuIHF1ZXVlZCB1cCBmb3Ig
+NS4xNCBkdWUgdG8gdGhpcyBhbGwsIEkganVzdCBkcm9wcGVkIGl0Lg0KDQpCdXQgV2h5LiBDYW4n
+dCB3ZSB0aHJvdyBpdCBpbiBsaW51eC1uZXh0IGZvciA1LjE0LiBJIHByb21pc2UgdG8gdGVzdCBp
+dCANCi0gYW5kIHdpbGwgbGlrZWx5IGhpdCBhbnkgY29ybmVyIGNhc2VzLiBBbHNvIGZvciB0aGUg
+dGltZSBiZWluZyB3ZSBjb3VsZCANCmZvcmNlIGp1c3QgdGhhdCBmaWxlL2ZpbGVzIHRvIGJ1aWxk
+IGZvciAtTzMgdG8gc3RyZXNzIHRlc3QgdGhlIGFzcGVjdHMgDQp0aGF0IHdlcmUgZnJhZ2lsZS4N
+Cg0KPj4+ICAgIGFuZCB0aGUgYmlnZ3kNCj4+PiBjYXNlIGRpZG4ndCBldmVuIHVzZSAiZ2V0X3Vu
+YWxpZ25lZCgpIikuDQo+PiBJbmRlZWQgdGhpcyBzZXJpZXMgaXMgc29ydCBvZiBvcnRob2dvbmFs
+IHRvIHRoYXQgYnVnLCBidXQgSU1PIHRoYXQgYnVnDQo+PiBzdGlsbCBleGlzdHMgaW4gNS4xMyBm
+b3IgLU8zIGJ1aWxkLCBncmFudGVkIHRoYXQgaXMgbm90IGVuYWJsZWQgZm9yICFBUkMuDQo+IFJp
+Z2h0LCB0aGUgemxpYiBidWcgaXMgc3RpbGwgdGhlcmUuDQo+DQo+IEJ1dCBBcm5kJ3Mgc2VyaWVz
+IHdvdWxkbid0IGV2ZW4gZml4IGl0OiByaWdodCBub3cgaW5mZmFzdCBoYXMgaXRzIG93bg0KPiAt
+IHVnbHkgYW5kIHNsb3cgLSBzcGVjaWFsIDItYnl0ZS1vbmx5IHZlcnNpb24gb2YgImdldF91bmFs
+aWduZWQoKSIsDQo+IGNhbGxlZCAiZ2V0X3VuYWxpZ25lZDE2KCkiLg0KDQpJIGtub3cgdGhhdCdz
+IHdoeSBzYWlkIHRoZXkgYXJlIG9ydGhvZ29uYWwuDQoNCg0KPiBBbmQgYmVjYXVzZSBpdCdzIHVn
+bHkgYW5kIHNsb3csIGl0J3Mgbm90IGFjdHVhbGx5IHVzZWQgZm9yDQo+IENPTkZJR19IQVZFX0VG
+RklDSUVOVF9VTkFMSUdORURfQUNDRVNTLg0KPg0KPiBWaW5lZXQgLSBtYXliZSB0aGUgZml4IGlz
+IHRvIG5vdCB0YWtlIG15IHBhdGNoIHRvIHVwZGF0ZSB0byBhIG5ld2VyDQo+IHpsaWIsIGJ1dCB0
+byBqdXN0IGZpeCBpbmZmYXN0IHRvIHVzZSB0aGUgcHJvcGVyIGdldF91bmFsaWduZWQoKS4gVGhl
+bg0KPiBBcm5kJ3Mgc2VyaWVzIF93b3VsZF8gYWN0dWFsbHkgZml4IGFsbCB0aGlzLi4NCg0KT0sg
+aWYgeW91IHNheSBzby4NCg0KLVZpbmVldA0K
