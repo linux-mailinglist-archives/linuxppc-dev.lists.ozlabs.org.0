@@ -2,96 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72E0380E1B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 May 2021 18:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B5B380F0A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 May 2021 19:33:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FhYm55zM3z3btr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 02:25:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FhbGt47Q9z306g
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 03:33:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A8r/JWDq;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=OCUpNcjg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::533;
+ helo=mail-ed1-x533.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=A8r/JWDq; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=OCUpNcjg; 
+ dkim-atps=neutral
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com
+ [IPv6:2a00:1450:4864:20::533])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FhYl60C2Xz308h
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 02:24:33 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14EG5Ves160386; Fri, 14 May 2021 12:24:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=bYr6QF3voySYOmTdo7spaCnuNbBou+TZ5GERpGuCFqs=;
- b=A8r/JWDqxkdKOCiYFbYth71ZjL9y24dWvttRUBb85xILrcFXAww4y/MctbdybSoPXMFr
- +kkHs5w5iyhLpEUcXp858vE6ukgMtj6FncPGuz5TA9wAWVG7THeaWbh4iJg/5ZAwza6p
- zXYbSRTtbHwnmAHg3GA0z4Kxv8aQbpTsnj//izCroGKhnJcb3Ksbh2IxEy9VG2CSaAze
- XCx3/9NE+B1RI5lScbhgSpYxjCsXhaCXycNMJrulSeFlmy6az0s9r+0tb27lGfYmad5e
- jAE7qT1yKzMyFWE+Dc7ul/pQEsVjRD8FkeBbMxmbKPjByiz0sPsbVCwtit5gmrGGL1rs +Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38hvak0kfy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 May 2021 12:24:22 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14EG626C165832;
- Fri, 14 May 2021 12:24:22 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38hvak0kfr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 May 2021 12:24:22 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14EGNC53013159;
- Fri, 14 May 2021 16:24:21 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma03dal.us.ibm.com with ESMTP id 38hc766qpv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 May 2021 16:24:21 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14EGOKGI16187848
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 May 2021 16:24:20 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 937566A04F;
- Fri, 14 May 2021 16:24:20 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 791706A047;
- Fri, 14 May 2021 16:24:20 +0000 (GMT)
-Received: from localhost (unknown [9.211.51.49])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 14 May 2021 16:24:20 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/xmon: make dumping log buffer contents more reliable
-Date: Fri, 14 May 2021 11:24:20 -0500
-Message-Id: <20210514162420.2911458-1-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.30.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FhbGM4ztCz2yY7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 03:33:13 +1000 (AEST)
+Received: by mail-ed1-x533.google.com with SMTP id f1so13323143edt.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 10:33:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=3bmbAftPboaY7hu+DnMgt2b6hH50EmPqKJHrC7bAGn8=;
+ b=OCUpNcjguSpqlmqGqLclnsNCOhgzU3pBtJ+0aWvCc2SR59QNIHWTyn2iHNnFIXoHb/
+ IlrJnYgxa3QKa7TD5DPjuhh0hv9dsnnG2SJC44eepw5A/YU6NsZQR/5smJrlWciM7Uz7
+ oY/UTgSqeb9/fYqELWpyA+6END7cpdJzA1bkA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=3bmbAftPboaY7hu+DnMgt2b6hH50EmPqKJHrC7bAGn8=;
+ b=hO2LFwbTUnFB/UrTRKp7AVl5B7FZBKiAJ/YTF54xmfSchY3ICm3J/tCrY74M6Lifjq
+ pDb2SE8SiOepyFO/VIsnjZyuP3pVbjQP3U1/lpPDmhkbbIL4b+JfWokHEEbZMD4Ppsw0
+ QGQq3DsLoxYPXOvYYq80YIdivJ/QNWuRr8Yol4OlAfSA5D4hfAYRqI5nRACTX6mywLvN
+ Y+3nuNehHNtFQo7bx+sJDp/61tfWjWAwiWrvGwLc7WyNw42tZEPeO1FHpDGkSVcGZ66t
+ VehsRRhsrUIGa1nnzGZzED/AKuNXWcaKPfmllZk2N1cqVOy3oYIj0ZDtKnVM0TBiSH4L
+ j23w==
+X-Gm-Message-State: AOAM533qjzMKvyqB8JE73m6PBJmMmiq8g/MkegIG4IgHJXQmAmboOMZC
+ q4ZS6BrV8d7U6ZViEXKzNUZRL0eJLklrJlXybh0=
+X-Google-Smtp-Source: ABdhPJydT+ca0gyhMoZa6XtP3G5a70bns6oRiW3hz9VkAl7uj9etY1CQs0M/6OcV0YGL3dSlQshE5g==
+X-Received: by 2002:aa7:c44b:: with SMTP id n11mr56423783edr.214.1621013585798; 
+ Fri, 14 May 2021 10:33:05 -0700 (PDT)
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com.
+ [209.85.218.48])
+ by smtp.gmail.com with ESMTPSA id v12sm5008480edb.81.2021.05.14.10.33.04
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 14 May 2021 10:33:04 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id n2so45695266ejy.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 10:33:04 -0700 (PDT)
+X-Received: by 2002:a2e:9251:: with SMTP id v17mr38807472ljg.507.1621013573543; 
+ Fri, 14 May 2021 10:32:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nviCESeGlj_27nUoxkTuP6zQpoLjunmN
-X-Proofpoint-ORIG-GUID: B6DPpIPNJL7fMjdP3VePrTKu3b1zXVEy
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-14_07:2021-05-12,
- 2021-05-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- suspectscore=0 spamscore=0 clxscore=1015 priorityscore=1501 adultscore=0
- mlxlogscore=889 bulkscore=0 lowpriorityscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105140127
+References: <20210514100106.3404011-1-arnd@kernel.org>
+In-Reply-To: <20210514100106.3404011-1-arnd@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 14 May 2021 10:32:37 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whGObOKruA_bU3aPGZfoDqZM1_9wBkwREp0H0FgR-90uQ@mail.gmail.com>
+Message-ID: <CAHk-=whGObOKruA_bU3aPGZfoDqZM1_9wBkwREp0H0FgR-90uQ@mail.gmail.com>
+Subject: Re: [PATCH v2 00/13] Unify asm/unaligned.h around struct helper
+To: Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,44 +83,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, jniethe5@gmail.com
+Cc: Rich Felker <dalias@libc.org>, Linux-sh list <linux-sh@vger.kernel.org>,
+ "Richard Russon \(FlatCap\)" <ldm@flatcap.org>,
+ Amitkumar Karwar <amitkarwar@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-sparc <sparclinux@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arch <linux-arch@vger.kernel.org>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ the arch/x86 maintainers <x86@kernel.org>, James Morris <jmorris@namei.org>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Jakub Kicinski <kuba@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Jonas Bonn <jonas@southpole.se>, Arnd Bergmann <arnd@arndb.de>,
+ Ganapathi Bhat <ganapathi017@gmail.com>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ linux-block <linux-block@vger.kernel.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>, openrisc@lists.librecores.org,
+ Borislav Petkov <bp@alien8.de>, Stafford Horne <shorne@gmail.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Jens Axboe <axboe@kernel.dk>,
+ John Johansen <john.johansen@canonical.com>,
+ Xinming Hu <huxinming820@gmail.com>, Vineet Gupta <vgupta@synopsys.com>,
+ linux-wireless <linux-wireless@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ linux-ntfs-dev@lists.sourceforge.net,
+ LSM List <linux-security-module@vger.kernel.org>,
+ Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+ Netdev <netdev@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Sharvari Harisangam <sharvari.harisangam@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Log buffer entries that are too long for dump_log_buf()'s small
-local buffer are:
+On Fri, May 14, 2021 at 3:02 AM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> I've included this version in the asm-generic tree for 5.14 already,
+> addressing the few issues that were pointed out in the RFC. If there
+> are any remaining problems, I hope those can be addressed as follow-up
+> patches.
 
-* silently discarded when a single-line entry is too long;
-  kmsg_dump_get_line() returns true but sets &len to 0.
-* silently truncated to the last fitting new line when a multi-line
-  entry is too long, e.g. register dumps from __show_regs(); this
-  seems undetectable via the kmsg_dump API.
+This continues to look great to me, and now has the even simpler
+remaining implementation.
 
-xmon_printf()'s internal buffer is already 1KB; enlarge
-dump_log_buf()'s own buffer to match and make it statically
-allocated. Verified that this allows complete printing of register
-dumps on ppc64le with both CONFIG_PRINTK_TIME=y and
-CONFIG_PRINTK_CALLER=y.
+I'd be tempted to just pull it in for 5.13, but I guess we don't
+actually have any _outstanding_ bug in this area (the bug was in our
+zlib code, required -O3 to trigger, has been fixed now, and the biggy
+case didn't even use "get_unaligned()").
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
----
- arch/powerpc/xmon/xmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+So I guess your 5.14 timing is the right thing to do.
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index c8173e92f19d..f73c10869e64 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -2975,7 +2975,7 @@ static void
- dump_log_buf(void)
- {
- 	struct kmsg_dump_iter iter;
--	unsigned char buf[128];
-+	static unsigned char buf[1024];
- 	size_t len;
- 
- 	if (setjmp(bus_error_jmp) != 0) {
--- 
-2.30.2
-
+        Linus
