@@ -1,61 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DACE9380A19
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 May 2021 15:04:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECC9380A40
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 May 2021 15:15:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FhTJY71JBz3bs9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 May 2021 23:04:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ovF/DZ6v;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FhTXn6qbrz3bsW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 May 2021 23:15:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=ovF/DZ6v; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FhTJ53vMlz2ymX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 23:04:21 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 018C26145E
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 13:03:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1620997427;
- bh=KjRucVq9b2NKDaj10nQp3ecBtpjWikZo5h6VILTp9TQ=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=ovF/DZ6vdNyVMSH9t0zjMiEagYR721FRrBVU2xZxXX/OUhYjI4DoeKwouVrElnjNo
- H2LSDPkvaHREyrn1HyHd22hBkz3doo6H4OkJrDEXpJxqK/vktxIuA+Y7acAYuukBaa
- 8O0eESoVXTaqfbi08ympBP0C9YMyag7kUEqEptmhtLOP4nWQVjNY971q4Zvmp63YMt
- FApG43bQoRmB4kFdndQzCDNsl0JV6NwuAMLOJTgNrK92jp4knsyOUt4/jlG789UKl4
- nQaqjm0JUA5D0nUp8/StBDRTX5A//K7DIJJsrFgQEHzMgV0l+g4iKzmuREdaMda1QZ
- 5UKkdWqvLttRg==
-Received: by mail-wr1-f42.google.com with SMTP id v12so29941105wrq.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 06:03:46 -0700 (PDT)
-X-Gm-Message-State: AOAM532BdWbJfrNUfK7gRQAFwk5KuwStoIMnp3xNEzSxXr1I0JISVBIP
- DU/pTZaeW95iTnKXisS5od/CAzb0lcUaADM0AAs=
-X-Google-Smtp-Source: ABdhPJzlvCIkpR1F+kgydYHRKzdkFDddvZpYrU9rVtIDsh8sEqa4UTJsy0hLf91X5lxvVhxcxulzbSr4KB+n1tMKazY=
-X-Received: by 2002:a5d:6dc4:: with SMTP id d4mr60213997wrz.105.1620997425625; 
- Fri, 14 May 2021 06:03:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210514100106.3404011-1-arnd@kernel.org>
- <20210514100106.3404011-6-arnd@kernel.org>
- <20210514114813.GJ10366@gate.crashing.org>
-In-Reply-To: <20210514114813.GJ10366@gate.crashing.org>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Fri, 14 May 2021 15:02:43 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a04OZzSwV0039GiA0x=Kmp_mUvNz_CEyVFo8NJHTv2smg@mail.gmail.com>
-Message-ID: <CAK8P3a04OZzSwV0039GiA0x=Kmp_mUvNz_CEyVFo8NJHTv2smg@mail.gmail.com>
-Subject: Re: [PATCH v2 05/13] powerpc: use linux/unaligned/le_struct.h on LE
- power7
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FhTXM6LTcz2xZh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 23:14:57 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4FhTXG3rqlz9scF;
+ Fri, 14 May 2021 15:14:54 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Oyp1Hn-2RozU; Fri, 14 May 2021 15:14:54 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FhTXG2gThz9sc8;
+ Fri, 14 May 2021 15:14:54 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E13CC8B7FA;
+ Fri, 14 May 2021 15:14:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 6k6HjmO-OR8H; Fri, 14 May 2021 15:14:53 +0200 (CEST)
+Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9454C8B7F8;
+ Fri, 14 May 2021 15:14:53 +0200 (CEST)
+Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 6DF49641C0; Fri, 14 May 2021 13:14:53 +0000 (UTC)
+Message-Id: <8ab21fd93d6e0047aa71e6509e5e312f14b2991b.1620998075.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc: Don't handle ALTIVEC/SPE in ASM in _switch(). Do it
+ in C.
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 14 May 2021 13:14:53 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,37 +58,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 14, 2021 at 1:48 PM Segher Boessenkool
-<segher@kernel.crashing.org> wrote:
-> On Fri, May 14, 2021 at 12:00:53PM +0200, Arnd Bergmann wrote:
-> > Little-endian POWER7 kernels disable
-> > CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS because that is not supported on
-> > the hardware, but the kernel still uses direct load/store for explicti
-> > get_unaligned()/put_unaligned().
-> >
-> > I assume this is a mistake that leads to power7 having to trap and fix
-> > up all these unaligned accesses at a noticeable performance cost.
-> >
-> > The fix is completely trivial, just remove the file and use the
-> > generic version that gets it right.
->
-> LE p7 isn't supported (it requires special firmware), and no one uses it
-> anymore, also not for development.  It was used for powerpc64le-linux
-> development before p8 was widely available.
+_switch() saves and restores ALTIVEC and SPE status.
+For altivec this is redundant with what __switch_to() does with
+save_sprs() and restore_sprs() and giveup_all() before
+calling _switch().
 
-Ok, thanks for the clarification.
+Add support for SPI in save_sprs() and restore_sprs() and
+remove things from _switch().
 
-Should we just remove the Kconfig option for it then as further cleanup?
-Is there any other code such as alignment trap handling that could be
-removed if LE POWER7 gets dropped?
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/asm-offsets.c |  2 --
+ arch/powerpc/kernel/entry_32.S    | 35 -------------------------------
+ arch/powerpc/kernel/process.c     |  9 ++++++++
+ 3 files changed, 9 insertions(+), 37 deletions(-)
 
-      Arnd
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index 28af4efb4587..5573da9a20d1 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -119,7 +119,6 @@ int main(void)
+ #ifdef CONFIG_ALTIVEC
+ 	OFFSET(THREAD_VRSTATE, thread_struct, vr_state.vr);
+ 	OFFSET(THREAD_VRSAVEAREA, thread_struct, vr_save_area);
+-	OFFSET(THREAD_VRSAVE, thread_struct, vrsave);
+ 	OFFSET(THREAD_USED_VR, thread_struct, used_vr);
+ 	OFFSET(VRSTATE_VSCR, thread_vr_state, vscr);
+ 	OFFSET(THREAD_LOAD_VEC, thread_struct, load_vec);
+@@ -150,7 +149,6 @@ int main(void)
+ #ifdef CONFIG_SPE
+ 	OFFSET(THREAD_EVR0, thread_struct, evr[0]);
+ 	OFFSET(THREAD_ACC, thread_struct, acc);
+-	OFFSET(THREAD_SPEFSCR, thread_struct, spefscr);
+ 	OFFSET(THREAD_USED_SPE, thread_struct, used_spe);
+ #endif /* CONFIG_SPE */
+ #endif /* CONFIG_PPC64 */
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 9160285cb2f4..6c09ebb853ec 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -176,28 +176,6 @@ _GLOBAL(_switch)
+ 	/* r3-r12 are caller saved -- Cort */
+ 	SAVE_NVGPRS(r1)
+ 	stw	r0,_NIP(r1)	/* Return to switch caller */
+-	mfmsr	r11
+-	li	r0,MSR_FP	/* Disable floating-point */
+-#ifdef CONFIG_ALTIVEC
+-BEGIN_FTR_SECTION
+-	oris	r0,r0,MSR_VEC@h	/* Disable altivec */
+-	mfspr	r12,SPRN_VRSAVE	/* save vrsave register value */
+-	stw	r12,THREAD+THREAD_VRSAVE(r2)
+-END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+-#endif /* CONFIG_ALTIVEC */
+-#ifdef CONFIG_SPE
+-BEGIN_FTR_SECTION
+-	oris	r0,r0,MSR_SPE@h	 /* Disable SPE */
+-	mfspr	r12,SPRN_SPEFSCR /* save spefscr register value */
+-	stw	r12,THREAD+THREAD_SPEFSCR(r2)
+-END_FTR_SECTION_IFSET(CPU_FTR_SPE)
+-#endif /* CONFIG_SPE */
+-	and.	r0,r0,r11	/* FP or altivec or SPE enabled? */
+-	beq+	1f
+-	andc	r11,r11,r0
+-	mtmsr	r11
+-	isync
+-1:	stw	r11,_MSR(r1)
+ 	mfcr	r10
+ 	stw	r10,_CCR(r1)
+ 	stw	r1,KSP(r3)	/* Set old stack pointer */
+@@ -218,19 +196,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_SPE)
+ 	mr	r3,r2
+ 	addi	r2,r4,-THREAD	/* Update current */
+ 
+-#ifdef CONFIG_ALTIVEC
+-BEGIN_FTR_SECTION
+-	lwz	r0,THREAD+THREAD_VRSAVE(r2)
+-	mtspr	SPRN_VRSAVE,r0		/* if G4, restore VRSAVE reg */
+-END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+-#endif /* CONFIG_ALTIVEC */
+-#ifdef CONFIG_SPE
+-BEGIN_FTR_SECTION
+-	lwz	r0,THREAD+THREAD_SPEFSCR(r2)
+-	mtspr	SPRN_SPEFSCR,r0		/* restore SPEFSCR reg */
+-END_FTR_SECTION_IFSET(CPU_FTR_SPE)
+-#endif /* CONFIG_SPE */
+-
+ 	lwz	r0,_CCR(r1)
+ 	mtcrf	0xFF,r0
+ 	/* r3-r12 are destroyed -- Cort */
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 89e34aa273e2..2bd30acc843c 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1129,6 +1129,10 @@ static inline void save_sprs(struct thread_struct *t)
+ 	if (cpu_has_feature(CPU_FTR_ALTIVEC))
+ 		t->vrsave = mfspr(SPRN_VRSAVE);
+ #endif
++#ifdef CONFIG_SPE
++	if (cpu_has_feature(CPU_FTR_SPE))
++		t->spefscr = mfspr(SPRN_SPEFSCR);
++#endif
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	if (cpu_has_feature(CPU_FTR_DSCR))
+ 		t->dscr = mfspr(SPRN_DSCR);
+@@ -1159,6 +1163,11 @@ static inline void restore_sprs(struct thread_struct *old_thread,
+ 	    old_thread->vrsave != new_thread->vrsave)
+ 		mtspr(SPRN_VRSAVE, new_thread->vrsave);
+ #endif
++#ifdef CONFIG_SPE
++	if (cpu_has_feature(CPU_FTR_SPE) &&
++	    old_thread->spefscr != new_thread->spefscr)
++		mtspr(SPRN_SPEFSCR, new_thread->spefscr);
++#endif
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	if (cpu_has_feature(CPU_FTR_DSCR)) {
+ 		u64 dscr = get_paca()->dscr_default;
+-- 
+2.25.0
+
