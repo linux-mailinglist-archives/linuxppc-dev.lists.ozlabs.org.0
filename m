@@ -1,59 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448E23810F0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 May 2021 21:33:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11033810F1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 May 2021 21:36:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FhdxK23PYz3bnl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 05:33:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YWd0pM7Q;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhf0Y6PsYz3bsy
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 05:36:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=YWd0pM7Q; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhdws4gGpz2xyG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 05:33:17 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C64EA61462
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 19:33:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621020793;
- bh=sx6RnRTXG/HkUYbZ66bme4Ihr6YCIRDKjve7uvyFxHE=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=YWd0pM7Qd2nlsjaPkIRTJ5udrslEU7xXsi06oSIcsLnD1V5WI8/TfAXneH0KcFY8T
- nBogmfBN+h/aFpslo+cnHvQ8Rwy08zH6Al87wLwvEeafd8WdEh0bV2oU8Cs9HWFjrK
- +IFBO7yhwQcamBDl971iDFD98TuuMvZkClT3fAc1DSUUu1vK944smhZ5eh7CfPcWBO
- Rp0VR0a5L/yQ7yiyoruUe+GAynieMsFb0kVsGIexodXAUvw1AZ088wq671w1OAOunx
- B58Vfuz8+MbbnSDHy1vpfgrsnEOb+y4bbkL2rk3FazqvsV6EVs434a0RQz0uHRaA/x
- mhTO/Nwft9bdw==
-Received: by mail-wr1-f47.google.com with SMTP id h4so275713wrt.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 12:33:13 -0700 (PDT)
-X-Gm-Message-State: AOAM532DWmDaBbgfSROyszlwmEEHH4yTU7a4YT4bkUx+QM3S8SznI/Rf
- anshyVoXUClIWzZjZbz0OuDjbYraXTCvgyi4Veg=
-X-Google-Smtp-Source: ABdhPJwCQ1F0CBUPxIsNYOfoW01L5a5C+nTIh8ZsdXu8MlaXBtReQ+mP8NigDxBA9czvxj+u/ONPbc8umn+Z9hfl/zY=
-X-Received: by 2002:a5d:6dc4:: with SMTP id d4mr62128225wrz.105.1621020781452; 
- Fri, 14 May 2021 12:33:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhf093qkgz2yY7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 05:36:09 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 8317AB114;
+ Fri, 14 May 2021 19:36:05 +0000 (UTC)
+Date: Fri, 14 May 2021 21:36:03 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v3] powerpc/64: Option to use ELFv2 ABI for big-endian
+ kernels
+Message-ID: <20210514193603.GJ8544@kitsune.suse.cz>
+References: <20210503110713.751840-1-npiggin__45037.8389026568$1620040079$gmane$org@gmail.com>
+ <87eeeooxnu.fsf@igel.home> <20210503143841.GN6564@kitsune.suse.cz>
+ <87tunh8jum.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20210514100106.3404011-1-arnd@kernel.org>
- <CAHk-=whGObOKruA_bU3aPGZfoDqZM1_9wBkwREp0H0FgR-90uQ@mail.gmail.com>
-In-Reply-To: <CAHk-=whGObOKruA_bU3aPGZfoDqZM1_9wBkwREp0H0FgR-90uQ@mail.gmail.com>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Fri, 14 May 2021 21:31:59 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2q8zEy+eQ1RJHT7UbD9E+KofKNjKxMHJ6hreHN0J_mEQ@mail.gmail.com>
-Message-ID: <CAK8P3a2q8zEy+eQ1RJHT7UbD9E+KofKNjKxMHJ6hreHN0J_mEQ@mail.gmail.com>
-Subject: Re: [PATCH v2 00/13] Unify asm/unaligned.h around struct helper
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87tunh8jum.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,68 +48,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Linux-sh list <linux-sh@vger.kernel.org>,
- "Richard Russon \(FlatCap\)" <ldm@flatcap.org>,
- Amitkumar Karwar <amitkarwar@gmail.com>, Russell King <linux@armlinux.org.uk>,
- Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-sparc <sparclinux@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arch <linux-arch@vger.kernel.org>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- the arch/x86 maintainers <x86@kernel.org>, James Morris <jmorris@namei.org>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Jakub Kicinski <kuba@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Jonas Bonn <jonas@southpole.se>, Ganapathi Bhat <ganapathi017@gmail.com>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- linux-block <linux-block@vger.kernel.org>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Openrisc <openrisc@lists.librecores.org>, Borislav Petkov <bp@alien8.de>,
- Stafford Horne <shorne@gmail.com>, Kalle Valo <kvalo@codeaurora.org>,
- Jens Axboe <axboe@kernel.dk>, John Johansen <john.johansen@canonical.com>,
- Xinming Hu <huxinming820@gmail.com>, Vineet Gupta <vgupta@synopsys.com>,
- linux-wireless <linux-wireless@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- linux-ntfs-dev@lists.sourceforge.net,
- LSM List <linux-security-module@vger.kernel.org>,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- Netdev <netdev@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Sharvari Harisangam <sharvari.harisangam@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Andreas Schwab <schwab@linux-m68k.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 14, 2021 at 7:32 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Fri, May 14, 2021 at 3:02 AM Arnd Bergmann <arnd@kernel.org> wrote:
+On Wed, May 05, 2021 at 10:07:29PM +1000, Michael Ellerman wrote:
+> Michal Suchánek <msuchanek@suse.de> writes:
+> > On Mon, May 03, 2021 at 01:37:57PM +0200, Andreas Schwab wrote:
+> >> Should this add a tag to the module vermagic?
 > >
-> > I've included this version in the asm-generic tree for 5.14 already,
-> > addressing the few issues that were pointed out in the RFC. If there
-> > are any remaining problems, I hope those can be addressed as follow-up
-> > patches.
->
-> This continues to look great to me, and now has the even simpler
-> remaining implementation.
->
-> I'd be tempted to just pull it in for 5.13, but I guess we don't
-> actually have any _outstanding_ bug in this area (the bug was in our
-> zlib code, required -O3 to trigger, has been fixed now, and the biggy
-> case didn't even use "get_unaligned()").
->
-> So I guess your 5.14 timing is the right thing to do.
+> > Would the modues link even if the vermagic was not changed?
+> 
+> Most modules will require some symbols from the kernel, and those will
+> be dot symbols, which won't resolve.
+> 
+> But there are a few small modules that don't rely on any kernel symbols,
+> which can load.
+> 
+> > I suppose something like this might do it.
+> 
+> It would, but I feel like we should be handling this at the ELF level.
+> ie. we don't allow loading modules with a different ELF machine type, so
+> neither should we allow loading a module with the wrong ELF ABI.
+> 
+> And you can build the kernel without MODVERSIONS, so relying on
+> MODVERSIONS still leaves a small exposure (same kernel version
+> with/without ELFv2).
+> 
+> I don't see an existing hook that would do what we want. There's
+> elf_check_arch(), but that also applies to userspace binaries, which is
+> not what we want.
+> 
+> Maybe something like below.
 
-Yes, I think that's best, just in case something does come up. While all the
-object code I looked at does appear better, this is one of those areas that
-can be hard to pinpoint if we hit a regression in a particular combination of
-architecture+compiler+source file.
+The below patch works for me.
 
-I have pushed a signed tag to
-https://git.kernel.org/pub/scm/linux/kernel/git/arnd/asm-generic.git
-asm-generic-unaligned-5.14
+Tested-by: Michal Suchánek <msuchanek@suse.de>
 
-and plan to send that in the 5.14 merge window unless you decide to
-take it now after all.
+Built a Hello World module for both v1 and v2 ABI, and kernels built
+with v1 and v2 ABI rejected module with the other ABI.
 
-        Arnd
+[  100.602943] Module has invalid ELF structures
+insmod: ERROR: could not insert module moin_v1.ko: Invalid module format
+
+Thanks
+
+Michal
+> 
+> cheers
+> 
+> 
+> diff --git a/arch/powerpc/include/asm/module.h b/arch/powerpc/include/asm/module.h
+> index 857d9ff24295..d0e9368982d8 100644
+> --- a/arch/powerpc/include/asm/module.h
+> +++ b/arch/powerpc/include/asm/module.h
+> @@ -83,5 +83,28 @@ static inline int module_finalize_ftrace(struct module *mod, const Elf_Shdr *sec
+>  }
+>  #endif
+>  
+> +#ifdef CONFIG_PPC64
+> +static inline bool elf_check_module_arch(Elf_Ehdr *hdr)
+> +{
+> +	unsigned long flags;
+> +
+> +	if (!elf_check_arch(hdr))
+> +		return false;
+> +
+> +	flags = hdr->e_flags & 0x3;
+> +
+> +#ifdef CONFIG_PPC64_BUILD_ELF_V2_ABI
+> +	if (flags == 2)
+> +		return true;
+> +#else
+> +	if (flags < 2)
+> +		return true;
+> +#endif
+> +	return false;
+> +}
+> +
+> +#define elf_check_module_arch elf_check_module_arch
+> +#endif /* CONFIG_PPC64 */
+> +
+>  #endif /* __KERNEL__ */
+>  #endif	/* _ASM_POWERPC_MODULE_H */
+> diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
+> index 9e09d11ffe5b..fdc042a84562 100644
+> --- a/include/linux/moduleloader.h
+> +++ b/include/linux/moduleloader.h
+> @@ -13,6 +13,11 @@
+>   * must be implemented by each architecture.
+>   */
+>  
+> +// Allow arch to optionally do additional checking of module ELF header
+> +#ifndef elf_check_module_arch
+> +#define elf_check_module_arch elf_check_arch
+> +#endif
+> +
+>  /* Adjust arch-specific sections.  Return 0 on success.  */
+>  int module_frob_arch_sections(Elf_Ehdr *hdr,
+>  			      Elf_Shdr *sechdrs,
+> diff --git a/kernel/module.c b/kernel/module.c
+> index b5dd92e35b02..c71889107226 100644
+> --- a/kernel/module.c
+> +++ b/kernel/module.c
+> @@ -2941,7 +2941,7 @@ static int elf_validity_check(struct load_info *info)
+>  
+>  	if (memcmp(info->hdr->e_ident, ELFMAG, SELFMAG) != 0
+>  	    || info->hdr->e_type != ET_REL
+> -	    || !elf_check_arch(info->hdr)
+> +	    || !elf_check_module_arch(info->hdr)
+>  	    || info->hdr->e_shentsize != sizeof(Elf_Shdr))
+>  		return -ENOEXEC;
+>  
