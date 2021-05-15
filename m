@@ -2,81 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CECB381BB5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 01:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 798C9381BBD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 01:36:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FjLbQ1RX7z3bnZ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 09:05:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FjMGS3xlgz3bV0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 09:36:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=B/uIdQOy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=oIgBD3Bi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::834;
- helo=mail-qt1-x834.google.com; envelope-from=groeck7@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=B/uIdQOy; dkim-atps=neutral
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com
- [IPv6:2607:f8b0:4864:20::834])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=oIgBD3Bi; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FjLZw3pRxz2yXS
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 09:05:09 +1000 (AEST)
-Received: by mail-qt1-x834.google.com with SMTP id y12so2300693qtx.11
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 16:05:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=uoo0qXdDxgLvDQ6O3zd/SIJRl7VC+uLuxoa4iDl46SM=;
- b=B/uIdQOyaCH2JuF/j0KRQ1IkQXG3dUU3vPPcp37i1LHk2YJ/OzjzwHruzoGP4j+3qw
- pLRfBTcw5ANthLrQMZYJsU1u9I4Jofx+wVh/R8e04vqOUU1CsQUy81anwrW8oNNl0SyG
- vRAM1R2yDLttd7b4pvUrUfApu7/w861wlWIeyhrzV2AaD5O3sXO9NfayzmXGXllzm5T4
- dai7kErDuHnaFl0APAnRjvdBDhC0esQkNySdEumPWEDMeU3sPOwZdiWZ7mlKkk1BWacm
- ku0Pwp3iGrebF/zP6EHlUzxrSNXpJF6G0bUDustOPRoMdLkoqUHKjVn4FeUIwsyXVB/I
- APLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
- :date:user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=uoo0qXdDxgLvDQ6O3zd/SIJRl7VC+uLuxoa4iDl46SM=;
- b=FEdLeesynjH3YoI0i5jR/Y+NB7IrC6IfX5COwpO3pGD/T/mYNhca7orHmX+28Yq/mR
- XVC6mqRaM/+VO6X3Dfr8SinButeQXpPWfPKqTkEoBQ970iq7KicjSHLGLNmQbIOOzRly
- rCCJ0J9/t2crSa2pEU9aOEmUYx6v791AiVpisUzFbfSexJ2y5Fco13RG7+W4bsAC0fHj
- Ku8GXwpT6pgqgYJJ+jAFzEXMB3jasP0HEuy2RxN8qLphlfR3rWYvegaz26pna9qKpugZ
- /b/XzFliTkMimEfIX4qavZLvPLRkaGITihBhPeI+O3jXUkiQVHrVVTG4bg7R9a0tHhlj
- I0gA==
-X-Gm-Message-State: AOAM5334D1RT3bt3kl2D7HWKCGLIATaIXY/WxSvziGw6dH9qX49Yu7NE
- hRR5bJNnC4T+zcj3SXoI/IU=
-X-Google-Smtp-Source: ABdhPJyuzpRNgj2PdyTmuCTqw+goRfaazw+9D4ESaV8KAA5fApck7lRw6T07DdsxBH0HeeNBZ7zqfA==
-X-Received: by 2002:ac8:5790:: with SMTP id v16mr22366187qta.301.1621119905496; 
- Sat, 15 May 2021 16:05:05 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- 189sm7505298qkd.51.2021.05.15.16.05.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 15 May 2021 16:05:04 -0700 (PDT)
-Subject: Re: [PATCH v5 5/9] powerpc/mm/book3s64: Update tlb flush routines to
- take a page walk cache flush argument
-To: Andrew Morton <akpm@linux-foundation.org>
-References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
- <20210422054323.150993-6-aneesh.kumar@linux.ibm.com>
- <20210515163525.GA1106462@roeck-us.net>
- <20210515134141.b719412dc9dc46bdf2a8ced2@linux-foundation.org>
-From: Guenter Roeck <linux@roeck-us.net>
-Message-ID: <5df3f31f-17d5-ac4d-927c-6b90f31e1311@roeck-us.net>
-Date: Sat, 15 May 2021 16:05:02 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FjMG20ZQZz2y6C
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 09:35:36 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FjMFy6pSJz9sW5;
+ Sun, 16 May 2021 09:35:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1621121735;
+ bh=cB4uQsyeluAvOPHPhJHcqQT2zJO+FjnOdWi3nB1+Kqs=;
+ h=From:To:Cc:Subject:Date:From;
+ b=oIgBD3BiESfDwLI70prK2WkcPMJXlbHTQHVtr6lO0ypwwz1eTh1Xs8Xy98UXsFLAm
+ v9/VaWJXVof8K1iFA9lHOIeDYnOhn3u7o2qdumpu3JaEP7SQq9yaa78si4c6wjArsK
+ /9tmwMTNeuhiELupk4d8/zZO8SHU1SVaP+PZXA1LxktZa98EA9PgVhlD3MeGT3t2do
+ ZK5rHbRRbaS/SD4YOjCN08zQyA28go74czb0JHw/eCIME8tA35DEbp5YPrjewFI0ta
+ 41Lwb9GIjMWSPlX5NuKFDFp4KaVvRvyPU26PUH/U2asWRvpQHtuhbMgTirms3l0XtY
+ 9IwZFQqOD8rew==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.13-3 tag
+Date: Sun, 16 May 2021 09:35:30 +1000
+Message-ID: <871ra7lge5.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20210515134141.b719412dc9dc46bdf2a8ced2@linux-foundation.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,39 +60,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com,
- linux-mm@kvack.org, kaleshsingh@google.com, joel@joelfernandes.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/15/21 1:41 PM, Andrew Morton wrote:
-> On Sat, 15 May 2021 09:35:25 -0700 Guenter Roeck <linux@roeck-us.net> wrote:
-> 
->>>   
->>>   #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
->>>   static inline void flush_pmd_tlb_range(struct vm_area_struct *vma,
->>                   ^^^^
->>>   				       unsigned long start, unsigned long end)
->>> +{
->>> +	return flush_pmd_tlb_pwc_range(vma, start, end, false);
->>          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->>
->> Doesn't that cause build warnings/errors all over the place ?
-> 
-> It will, thanks.  I queued a fix.
-> 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Also in mm/mremap.c, in case you didn't see it:
+Hi Linus,
 
-#ifndef flush_pte_tlb_pwc_range
-#define flush_pte_tlb_pwc_range flush_pte_tlb_pwc_range
-static inline void flush_pte_tlb_pwc_range(struct vm_area_struct *vma,
-               ^^^^
-                                            unsigned long start,
-                                            unsigned long end)
-{
-         return flush_tlb_range(vma, start, end);
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-}
+Please pull some more powerpc fixes for 5.13:
+
+The following changes since commit 6efb943b8616ec53a5e444193dccf1af9ad627b5:
+
+  Linux 5.13-rc1 (2021-05-09 14:17:44 -0700)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
+werpc-5.13-3
+
+for you to fetch changes up to c6ac667b07996929835b512de0e9a988977e6abc:
+
+  powerpc/64e/interrupt: Fix nvgprs being clobbered (2021-05-14 17:28:54 +1=
+000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.13 #3
+
+ - Fix a regression in the conversion of the 64-bit BookE interrupt entry t=
+o C.
+
+ - Fix KVM hosts running with the hash MMU since the recent KVM gfn changes.
+
+ - Fix a deadlock in our paravirt spinlocks when hcall tracing is enabled.
+
+ - Several fixes for oopses in our runtime code patching for security mitig=
+ations.
+
+ - A couple of minor fixes for the recent conversion of 32-bit interrupt en=
+try/exit to C.
+
+ - Fix __get_user() causing spurious crashes in sigreturn due to a bad inli=
+ne asm
+   constraint, spotted with GCC 11.
+
+ - A fix for the way we track IRQ masking state vs NMI interrupts when usin=
+g the new scv
+   system call entry path.
+
+ - A couple more minor fixes.
+
+Thanks to: C=C3=A9dric Le Goater, Christian Zigotzky, Christophe Leroy, Nav=
+een N. Rao, Nicholas
+Piggin Paul Menzel, Sean Christopherson.
+
+- ------------------------------------------------------------------
+Christophe Leroy (5):
+      powerpc/interrupts: Fix kuep_unlock() call
+      powerpc/syscall: Calling kuap_save_and_lock() is wrong
+      powerpc/uaccess: Fix __get_user() with CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+      powerpc/signal: Fix possible build failure with unsafe_copy_fpr_{to/f=
+rom}_user
+      powerpc/legacy_serial: Fix UBSAN: array-index-out-of-bounds
+
+Michael Ellerman (5):
+      KVM: PPC: Book3S HV: Fix kvm_unmap_gfn_range_hv() for Hash MMU
+      powerpc/64s: Fix crashes when toggling stf barrier
+      powerpc/64s: Fix crashes when toggling entry flush barrier
+      powerpc/64s: Fix entry flush patching w/strict RWX & hash
+      powerpc/64s: Fix stf mitigation patching w/strict RWX & hash
+
+Nicholas Piggin (6):
+      powerpc/pseries: Fix hcall tracing recursion in pv queued spinlocks
+      powerpc/pseries: Don't trace hcall tracing wrapper
+      powerpc/pseries: use notrace hcall variant for H_CEDE idle
+      powerpc/pseries: warn if recursing into the hcall tracing code
+      powerpc/64s: Make NMI record implicitly soft-masked code as irqs disa=
+bled
+      powerpc/64e/interrupt: Fix nvgprs being clobbered
+
+
+ arch/powerpc/include/asm/hvcall.h         |   3 +
+ arch/powerpc/include/asm/interrupt.h      |   9 +-
+ arch/powerpc/include/asm/paravirt.h       |  22 +++-
+ arch/powerpc/include/asm/plpar_wrappers.h |   6 +-
+ arch/powerpc/include/asm/uaccess.h        |   2 +-
+ arch/powerpc/kernel/exceptions-64e.S      |  38 ++++---
+ arch/powerpc/kernel/interrupt.c           |   4 +-
+ arch/powerpc/kernel/legacy_serial.c       |   7 +-
+ arch/powerpc/kernel/signal.h              |   4 +-
+ arch/powerpc/kvm/book3s_64_mmu_hv.c       |   2 +-
+ arch/powerpc/lib/feature-fixups.c         | 114 +++++++++++++++-----
+ arch/powerpc/platforms/pseries/hvCall.S   |  10 ++
+ arch/powerpc/platforms/pseries/lpar.c     |  29 +++--
+ 13 files changed, 175 insertions(+), 75 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmCgWe8ACgkQUevqPMjh
+pYDZqg//RzF68ywTKG51T3JmOjVfvkptpEWZOQ52LCwpMQYvMQc+CSnBjEFoNyuS
+bIA0xlg0/1xBXNMtPVgNVk7WgDa/yvahVlX3rIuWt4Uhqv6u6Z1fw7aYaGIDH3b2
+akRvSvVWYyv87LlMEtxDOHncH1u8Q6E3YW4JM6eaQwjD2XqqeiTYKXUaZATTmepc
+GruEdNK5239LkmxMnyFvxCDDyHb8YyCZORHp/l4U+l005/dkM7ZyzHSA1LMekVSB
+LrW5q/KjdQW3EC2WDLijSCcshWujOf2MGvaZkmB/TvPtqxsOf3tLZAeEfaObbUrX
+6mqe93CtUk1CRNECkqCxF/sO5wq2SJmKx1XTfVR2CvDDg1ZmisesiRHtYk6Dl2Bw
+84+5IKwthgTauib3YKyoqXUpfIL8j8qg3M/9WVI6LG+ujPoSD0whPHdqTymqFfwA
+ONDT4cSDvBMAtw63cVnWEDgqdrAwTFAr0i+7loWkKeKJv9mxxfGX7MgiglQobDys
+xGAOjLnetsD4+JWJMqqrm0ilAKDb+m4stvU7bo/gpWcs6kvxDt2JCOEbJCoqujzQ
+B0Tl9H6cyoxhfEnZ7AKzQrGdFg+zUNQ0w5AWslriE5OZcq6vKlgYyVQFeX7t+6vb
+Me/YIEBbhPefVZdDD4KZp49PDw+5DgqVJgvMpsrqaRoorZEHni0=3D
+=3DVnK3
+-----END PGP SIGNATURE-----
