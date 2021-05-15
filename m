@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A7A381621
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 07:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72495381622
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 07:28:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhv6Z6pXZz3dGs
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 15:27:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhv733TVVz3dbd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 15:27:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.208.52; helo=mail-ed1-f52.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.47; helo=mail-ed1-f47.google.com;
  envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com
- [209.85.208.52])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com
+ [209.85.208.47])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhv3M3Z5Fz303t
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 15:24:47 +1000 (AEST)
-Received: by mail-ed1-f52.google.com with SMTP id b17so906738ede.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 22:24:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhv3P0kpXz307v
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 15:24:49 +1000 (AEST)
+Received: by mail-ed1-f47.google.com with SMTP id r11so817570edt.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 22:24:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=JeL2FUARGxszhpfrtswg3uTFL3yp7K/KDjvHQpNvygA=;
- b=AFxuR8npQUJSgrBni7eW+TfL0pSS2plR2N2LZd8TUv96nJ+lNAioLPvVUJzWkyL+rp
- uXLeFZQOmbLQFL3Kqh4itwJY/oc1ViY+u6ylouUFdnbu/jrnZRJK9K38UbFjJ1UF+nJh
- UpJKIqb7ulogSjVMiGhtaw5sqndqAXtsBf0UeSDrDZ31ItPp4GnmEW8+xf8SEaOeg/1m
- sa5R48LavP2FMR5CLYCHvWuOeLC9xW2vaeaW7FZIIUKC0vS/9xhXOuYF6SrVcSqxEW8K
- JbXE6Kmsbbg9OSUUb5X/N/w5xlUUav6HV/SyFnmt1sOfxqxOeCS+mcrZ5NrjOuGIvxTq
- sKig==
-X-Gm-Message-State: AOAM532ZKRJcte5m/v/0M15RoLxtpeINRZ08i6lI6mCi6djkSiDLW2PC
- 2mvtyV+NDEyeiL4JtEqaUbc=
-X-Google-Smtp-Source: ABdhPJx+4BP4JtYzZtC8In7d/GJnnFuTFXS/SOuG81dzRIapdNn/ATBw6N6OxyoSxAEY6QITNhVGvw==
-X-Received: by 2002:aa7:cc10:: with SMTP id q16mr39814486edt.53.1621056284880; 
- Fri, 14 May 2021 22:24:44 -0700 (PDT)
+ bh=DdJ+gi3kfx5UscQD8MEmkjatX64t7LAuyBsCWTQVyR4=;
+ b=ra7vo2eOJ/ioEp9D9ubApjEchRuqeD/dMaKbgFIK4m0EP23sUpMrVA5kJ9wafV9oQZ
+ YYX2iyqpeYPn985OFDvtNxC1iPG+X7PhkiTYoT8xSef95QCdMVyQThxbjGDWW+oCoWQY
+ PbcY3RdBOoHWeZjmdpHym6Xxfylet+vV1pVGjEsNGK/lE/n8SR/hbX9QZzcSjYtgczkv
+ 8gRfm3Vw7e1FlyxeRjZfm+wy/DvwHLaYiN/3Sbm1QmKklegBrBhpqMgLn8bZBFTP0lrP
+ FuW3rG6fOaL5SZppPT9NJ3zzVOXmASjgfLZFOa+pD0plFxuRvSFcQ9cGyzmtgoTN9BX7
+ uMhQ==
+X-Gm-Message-State: AOAM532JvxVNLnDRvloHh3v881SxyE5dXhiniD+epHwXHvvoUCOuw+oI
+ qz2/aAH9O6cbdhnUAvAj/08=
+X-Google-Smtp-Source: ABdhPJwUFEaurmP9EKuuMm+T/D2jN40L9mLA9g5wzTrmHUIny74d+EPyB5vutIYIvhUmd0UAv1N90w==
+X-Received: by 2002:a50:ab06:: with SMTP id s6mr50742980edc.100.1621056285971; 
+ Fri, 14 May 2021 22:24:45 -0700 (PDT)
 Received: from workstation.lan ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id kt21sm4821487ejb.5.2021.05.14.22.24.43
+ by smtp.gmail.com with ESMTPSA id kt21sm4821487ejb.5.2021.05.14.22.24.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 May 2021 22:24:44 -0700 (PDT)
+ Fri, 14 May 2021 22:24:45 -0700 (PDT)
 From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2 09/14] PCI: rpadlpar: Use sysfs_emit() and sysfs_emit_at()
+Subject: [PATCH v2 10/14] PCI: hotplug: Use sysfs_emit() and sysfs_emit_at()
  in "show" functions
-Date: Sat, 15 May 2021 05:24:29 +0000
-Message-Id: <20210515052434.1413236-9-kw@linux.com>
+Date: Sat, 15 May 2021 05:24:30 +0000
+Message-Id: <20210515052434.1413236-10-kw@linux.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210515052434.1413236-1-kw@linux.com>
 References: <20210515052434.1413236-1-kw@linux.com>
@@ -93,31 +93,49 @@ Related to:
 
 Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 ---
- drivers/pci/hotplug/rpadlpar_sysfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/hotplug/pci_hotplug_core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/hotplug/rpadlpar_sysfs.c b/drivers/pci/hotplug/rpadlpar_sysfs.c
-index dbfa0b55d31a..068b7810a574 100644
---- a/drivers/pci/hotplug/rpadlpar_sysfs.c
-+++ b/drivers/pci/hotplug/rpadlpar_sysfs.c
-@@ -50,7 +50,7 @@ static ssize_t add_slot_store(struct kobject *kobj, struct kobj_attribute *attr,
- static ssize_t add_slot_show(struct kobject *kobj,
- 			     struct kobj_attribute *attr, char *buf)
- {
--	return sprintf(buf, "0\n");
-+	return sysfs_emit(buf, "0\n");
+diff --git a/drivers/pci/hotplug/pci_hotplug_core.c b/drivers/pci/hotplug/pci_hotplug_core.c
+index 5ac31f683b85..058d5937d8a9 100644
+--- a/drivers/pci/hotplug/pci_hotplug_core.c
++++ b/drivers/pci/hotplug/pci_hotplug_core.c
+@@ -73,7 +73,7 @@ static ssize_t power_read_file(struct pci_slot *pci_slot, char *buf)
+ 	if (retval)
+ 		return retval;
+ 
+-	return sprintf(buf, "%d\n", value);
++	return sysfs_emit(buf, "%d\n", value);
  }
  
- static ssize_t remove_slot_store(struct kobject *kobj,
-@@ -80,7 +80,7 @@ static ssize_t remove_slot_store(struct kobject *kobj,
- static ssize_t remove_slot_show(struct kobject *kobj,
- 				struct kobj_attribute *attr, char *buf)
- {
--	return sprintf(buf, "0\n");
-+	return sysfs_emit(buf, "0\n");
+ static ssize_t power_write_file(struct pci_slot *pci_slot, const char *buf,
+@@ -130,7 +130,7 @@ static ssize_t attention_read_file(struct pci_slot *pci_slot, char *buf)
+ 	if (retval)
+ 		return retval;
+ 
+-	return sprintf(buf, "%d\n", value);
++	return sysfs_emit(buf, "%d\n", value);
  }
  
- static struct kobj_attribute add_slot_attr =
+ static ssize_t attention_write_file(struct pci_slot *pci_slot, const char *buf,
+@@ -175,7 +175,7 @@ static ssize_t latch_read_file(struct pci_slot *pci_slot, char *buf)
+ 	if (retval)
+ 		return retval;
+ 
+-	return sprintf(buf, "%d\n", value);
++	return sysfs_emit(buf, "%d\n", value);
+ }
+ 
+ static struct pci_slot_attribute hotplug_slot_attr_latch = {
+@@ -192,7 +192,7 @@ static ssize_t presence_read_file(struct pci_slot *pci_slot, char *buf)
+ 	if (retval)
+ 		return retval;
+ 
+-	return sprintf(buf, "%d\n", value);
++	return sysfs_emit(buf, "%d\n", value);
+ }
+ 
+ static struct pci_slot_attribute hotplug_slot_attr_presence = {
 -- 
 2.31.1
 
