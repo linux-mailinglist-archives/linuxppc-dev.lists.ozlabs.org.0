@@ -1,61 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA12B38163F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 08:01:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF0D381650
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 08:28:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhvss5l3vz3btL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 16:01:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FhwTQ0B0Lz3bt2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 16:28:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.52; helo=mail-wr1-f52.google.com;
- envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
- [209.85.221.52])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FhvsR3L2Pz2xv0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 16:01:15 +1000 (AEST)
-Received: by mail-wr1-f52.google.com with SMTP id d11so1154717wrw.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 23:01:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=JkSeLIOi1XsqvtB3PIN4CWiYL7hLWk6kcS/roE9DJ7s=;
- b=pa0KoSocsrfxlJAGXUFIbtL/eQrt28RUDgiyhTthSTqZSRtHQFhDti1dWQ3wgltr9Y
- 5A7ny9kILrSqMZdh9A4C1aKV1ccn6PmuvZCvduGv8jJHDJuKyWWhALvruQmGjPOv+H1t
- lb4n4BsU+RbWvzgNb4OjRmoY35pAZL0hoj9hRf58BifCEUxj7SmNuuP/cufcpSk6VFtc
- RwsMooDYUgc0fyC8e552vTfLeRHtlPZ++ViZGI8gEIKwM3toRtP6zYLUX02Kzcu1YEhI
- Brv2dLKSr0HtrcV+4OxDQBxBE9XSYxoI/6QD7icBfBgE64eQ3STIcCxOxbs1rVhLKnks
- bDpg==
-X-Gm-Message-State: AOAM531Pudd1wQK7V8PNn9MoHqolptA4TDtRDBDbxAKXS4YaFMQ8kl1K
- FgztPPkWsEI5XCONtaJMPew=
-X-Google-Smtp-Source: ABdhPJxHpUO8jCc/3XDGsSvDOb3m3mGWo5EJbgLdFGqxSSCd5zfY0gS/R12Oz3bbIYAWMo1NwHxbjA==
-X-Received: by 2002:adf:e944:: with SMTP id m4mr20272312wrn.10.1621058472167; 
- Fri, 14 May 2021 23:01:12 -0700 (PDT)
-Received: from rocinante.localdomain ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id d15sm5238372wrv.84.2021.05.14.23.01.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 May 2021 23:01:11 -0700 (PDT)
-Date: Sat, 15 May 2021 08:01:10 +0200
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Joe Perches <joe@perches.com>
-Subject: Re: [PATCH v2 04/14] PCI/MSI: Use sysfs_emit() and sysfs_emit_at()
- in "show" functions
-Message-ID: <20210515060110.GB73551@rocinante.localdomain>
-References: <20210515052434.1413236-1-kw@linux.com>
- <20210515052434.1413236-4-kw@linux.com>
- <d156a893bae41967e9fadddb3397cf47bcdde239.camel@perches.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FhwT03yCWz2xvH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 16:28:32 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4FhwSs2YMvz9sbb;
+ Sat, 15 May 2021 08:28:29 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id zEapEaUkxjZf; Sat, 15 May 2021 08:28:29 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FhwSs1YWcz9sbT;
+ Sat, 15 May 2021 08:28:29 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1A8538B76E;
+ Sat, 15 May 2021 08:28:29 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id TQ3BUIWyNMAO; Sat, 15 May 2021 08:28:29 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5554B8B765;
+ Sat, 15 May 2021 08:28:28 +0200 (CEST)
+Subject: Re: [PATCH] arm64: Define only {pud/pmd}_{set/clear}_huge when usefull
+To: Andrew Morton <akpm@linux-foundation.org>
+References: <73ec95f40cafbbb69bdfb43a7f53876fd845b0ce.1620990479.git.christophe.leroy@csgroup.eu>
+ <20210514144200.b49ee77c9b2a7f9998ffbf22@linux-foundation.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <ae1be8a1-8412-1288-31d4-23dc2cf4e5e7@csgroup.eu>
+Date: Sat, 15 May 2021 08:28:25 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <20210514144200.b49ee77c9b2a7f9998ffbf22@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d156a893bae41967e9fadddb3397cf47bcdde239.camel@perches.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,40 +63,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Vidya Sagar <vidyas@nvidia.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Paul Mackerras <paulus@samba.org>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- Logan Gunthorpe <logang@deltatee.com>,
- Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Cc: linux-arch@vger.kernel.org, naresh.kamboju@linaro.org,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Joe,
 
-[...]
-> >  	if (entry)
-> > -		return sprintf(buf, "%s\n",
-> > -				entry->msi_attrib.is_msix ? "msix" : "msi");
-> > +		return sysfs_emit(buf, "%s\n",
-> > +				  entry->msi_attrib.is_msix ? "msix" : "msi");
-> >  
-> > 
-> >  	return -ENODEV;
-> >  }
+
+Le 14/05/2021 à 23:42, Andrew Morton a écrit :
+> On Fri, 14 May 2021 11:08:53 +0000 (UTC) Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 > 
-> trivia: reversing the test would be more common style
+>> When PUD and/or PMD are folded, those functions are useless
+>> and we now have a stub in linux/pgtable.h
 > 
-> 	if (!entry)
-> 		return -ENODEV;
+> OK, help me out here please.  What patch does this fix?
 > 
-> 	return sysfs_emit(...);
-> }
 
-Excellent point.  I will send v3 later that includes this style change.
+Both this one and the x86 one from the day before fix 1cff41494b15cd82c1ec418bb5c ("mm/pgtable: add 
+stubs for {pmd/pub}_{set/clear}_huge")
 
-Thank you!
+I think both the x86 fix and the arm64 fix should be squashed into that patch at the end.
 
-Krzysztof
+I checked, the only other architecture involving pud_set_huge() and friends is powerpc, and powerpc 
+doesn't have this problem as it only defined those for book3s/64 platforms which have 4 level page 
+tables by definition.
+
+Thanks
+Christophe
