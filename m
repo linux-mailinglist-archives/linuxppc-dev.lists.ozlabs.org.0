@@ -1,71 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29AE38196D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 16:50:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A223819E7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 18:36:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fj7cc4q3zz308S
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 00:50:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fj9xr4CkSz3079
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 02:36:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k6huVDef;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Y10XP702;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::835;
+ helo=mail-qt1-x835.google.com; envelope-from=groeck7@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=k6huVDef; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Y10XP702; dkim-atps=neutral
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com
+ [IPv6:2607:f8b0:4864:20::835])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fj7c33Hxzz2y6F
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 00:50:27 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 33468613BC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 14:50:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621090224;
- bh=DblqBpSZ9DtgL8xuVILZ6vtEycmWWAICZaopcfTsEMw=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=k6huVDefspkOhZ0cuPq4FhgPqOBDJHun6kzNex8V5oUyKzK2QaCiP/UkejpbI1x64
- sLD1GPrqAIOvg/0anbY3GSKCUp68c2uxyz2+bAr3SEf21UzhY9iArfKYP+0P5tGXYi
- ovMGwSHQl00T/ILZJD1qNlGXq8x2/xiq1RexhCzYKGdC23GDCcQT5hKKg3Hw0hHVdt
- cgKP6kQmPOcIwM1F26seb93Dv0XsVT7GxqU12vJqbBCl0NOjyRxUWK2h37EMrfLPob
- jcExOT3QtojC/d52s8AusX4JcGvhcWE+l0B30VbPtfzim3ddPcSZkI42pdo+SaA4w+
- ZaIw48iim9W/A==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 2156161026; Sat, 15 May 2021 14:50:24 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 213079] IRQ problems and crashes on a PowerMac G5 with 5.12.3
-Date: Sat, 15 May 2021 14:50:23 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cf_kernel_version short_desc
-Message-ID: <bug-213079-206035-sXP5mtkrIk@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-213079-206035@https.bugzilla.kernel.org/>
-References: <bug-213079-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fj9xM5pLSz2xvH
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 02:35:33 +1000 (AEST)
+Received: by mail-qt1-x835.google.com with SMTP id k19so1909935qta.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 09:35:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=6rKLntZO/5o/apLZQWKMZB3LLHw2NcASFdCosdEebqk=;
+ b=Y10XP7028Bj4GuwdZNSMPJrk432ozPJfeEL2CFeMvEglPxMYjvqwJeCRf6QLrLtIyd
+ 85jD+EnfGKX9ltzNTP311imyU6L6StDDBetJK1o5uj5bdU2KA5lXX8OKrhM/DubsmI8R
+ yaUwH7cxsxeX6SEPxYYz98UeBG+/72iNf+gUAOw2anc5gwUIO8IomC5PYa9JQdjkp3YM
+ qzKbr3N33S8KaS+HVuz1EyLv97YY37kgaLh+OGyWd2t8hV/mgxMNStlgVzlrQ4wN+6cG
+ yKorGYYcQaG0A2f0i8a6HVq7lb4x5+8zBE1U/0JeDw7oC1mIFqVrHtRAx+7sgFC7J+D4
+ /HAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to;
+ bh=6rKLntZO/5o/apLZQWKMZB3LLHw2NcASFdCosdEebqk=;
+ b=Rwxmw70+hc/eySzfxEbpwOHhSdKcOw6+DeEdLgcJrTRfnl5PWdG4D/AGAfeZoSDdI4
+ VAXeEfBEzMQeEQUpvJdn3ld5dxNqbjp9L31kZFyVyEi8TYVN3bBtgRzbvSxmFfMU4m2k
+ OZ5RAM8V5eixsXFaEGtTiP/Nf8UsFZahXhA+U9kSSRmLm/f60e/+0iowOuKK305srknM
+ Tn7gRRqCKnNSNboUGrw80tMb1+8piERIBb3Ku9YPPH3BL080LhT0SM+8yNsnI6M2vP7o
+ csOoPaFlPzEYLIb5LJTj9QIekj3cctFdga32Q0wJSQWg3sCeDHs4KpJFNdsUtkLW9s1e
+ 4M5A==
+X-Gm-Message-State: AOAM532/FPqVhvZrZwWN9jggsKPY5MlBFc6NvLJRg7bJHlMn+t8kOxhI
+ pAgTfXhL/ynsfS6Wi5mGMSs=
+X-Google-Smtp-Source: ABdhPJxG1LjipH9fLU+4E7UOxNVGIx4NgmwkDEqV22ni2orbdercqv/dxVNLyw9KmqrBYtc5BFZMvg==
+X-Received: by 2002:ac8:5553:: with SMTP id o19mr1755021qtr.308.1621096527754; 
+ Sat, 15 May 2021 09:35:27 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id 7sm6981495qkd.20.2021.05.15.09.35.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 15 May 2021 09:35:27 -0700 (PDT)
+Date: Sat, 15 May 2021 09:35:25 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v5 5/9] powerpc/mm/book3s64: Update tlb flush routines to
+ take a page walk cache flush argument
+Message-ID: <20210515163525.GA1106462@roeck-us.net>
+References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
+ <20210422054323.150993-6-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210422054323.150993-6-aneesh.kumar@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,45 +81,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: npiggin@gmail.com, linux-mm@kvack.org, kaleshsingh@google.com,
+ joel@joelfernandes.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D213079
+On Thu, Apr 22, 2021 at 11:13:19AM +0530, Aneesh Kumar K.V wrote:
+> No functional change in this patch
+> 
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  .../include/asm/book3s/64/tlbflush-radix.h    | 19 +++++++-----
+>  arch/powerpc/include/asm/book3s/64/tlbflush.h | 23 ++++++++++++---
+>  arch/powerpc/mm/book3s64/radix_hugetlbpage.c  |  4 +--
+>  arch/powerpc/mm/book3s64/radix_tlb.c          | 29 +++++++------------
+>  4 files changed, 42 insertions(+), 33 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+> index 8b33601cdb9d..171441a43b35 100644
+> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+> @@ -56,15 +56,18 @@ static inline void radix__flush_all_lpid_guest(unsigned int lpid)
+>  }
+>  #endif
+>  
+> -extern void radix__flush_hugetlb_tlb_range(struct vm_area_struct *vma,
+> -					   unsigned long start, unsigned long end);
+> -extern void radix__flush_tlb_range_psize(struct mm_struct *mm, unsigned long start,
+> -					 unsigned long end, int psize);
+> -extern void radix__flush_pmd_tlb_range(struct vm_area_struct *vma,
+> -				       unsigned long start, unsigned long end);
+> -extern void radix__flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+> +void radix__flush_hugetlb_tlb_range(struct vm_area_struct *vma,
+> +				    unsigned long start, unsigned long end,
+> +				    bool flush_pwc);
+> +void radix__flush_pmd_tlb_range(struct vm_area_struct *vma,
+> +				unsigned long start, unsigned long end,
+> +				bool flush_pwc);
+> +void radix__flush_tlb_pwc_range_psize(struct mm_struct *mm, unsigned long start,
+> +				      unsigned long end, int psize, bool flush_pwc);
+> +void radix__flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+>  			    unsigned long end);
+> -extern void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end);
+> +void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end);
+> +
+>  
+>  extern void radix__local_flush_tlb_mm(struct mm_struct *mm);
+>  extern void radix__local_flush_all_mm(struct mm_struct *mm);
+> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+> index 215973b4cb26..f9f8a3a264f7 100644
+> --- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
+> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+> @@ -45,13 +45,30 @@ static inline void tlbiel_all_lpid(bool radix)
+>  		hash__tlbiel_all(TLB_INVAL_SCOPE_LPID);
+>  }
+>  
+> +static inline void flush_pmd_tlb_pwc_range(struct vm_area_struct *vma,
+                 ^^^^
+> +					   unsigned long start,
+> +					   unsigned long end,
+> +					   bool flush_pwc)
+> +{
+> +	if (radix_enabled())
+> +		return radix__flush_pmd_tlb_range(vma, start, end, flush_pwc);
+> +	return hash__flush_tlb_range(vma, start, end);
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Erhard F. (erhard_f@mailbox.org) changed:
+> +}
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-     Kernel Version|5.13-rc1                    |5.12.3
-            Summary|IRQ problems and crashes on |IRQ problems and crashes on
-                   |a PowerMac G5 with 5.13-rc1 |a PowerMac G5 with 5.12.3
+>  
+>  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
+>  static inline void flush_pmd_tlb_range(struct vm_area_struct *vma,
+                 ^^^^
+>  				       unsigned long start, unsigned long end)
+> +{
+> +	return flush_pmd_tlb_pwc_range(vma, start, end, false);
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
---- Comment #3 from Erhard F. (erhard_f@mailbox.org) ---
-Some time after the "irq 63: nobody cared" on 5.12.3:
+Doesn't that cause build warnings/errors all over the place ?
 
-[...]
---- interrupt: 500
-[<000000000e5af612>] .nvme_irq
-[<000000000e5af612>] .nvme_irq
-Disabling IRQ #63
-Call Trace:
-Kernel panic - not syncing: corrupted stack end detected inside scheduler
-CPU: 0 PID: 105549 Comm: kworker/u4:1 Tainted: G        W=20=20=20=20=20=20=
-=20=20
-5.12.3-gentoo-PowerMacG5 #2
-Workqueue:  0x0 (flush-259:0)
-[c000000078dc79f0] [c00000000053950c] .dump_stack+0xe0/0x13c (unreliable)
-[c000000078dc7a90] [c000000000066074] .panic+0x168/0x430
-[c000000078dc7b40] [c0000000007f19f0] .__schedule+0x80/0x848
-[c000000078dc7c20] [c0000000007f2270] .schedule+0xb8/0x110
-[c000000078dc7ca0] [c000000000086d18] .worker_thread+0x278/0x290
-[c000000078dc7d60] [c00000000008e75c] .kthread+0x134/0x13c
-[c000000078dc7e10] [c00000000000b1f4] .ret_from_kernel_thread+0x58/0x64
-Rebooting in 120 seconds..
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Guenter
