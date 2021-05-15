@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD6D381B88
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 00:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D8D381B8B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 00:48:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FjLBq43vmz3ccK
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 08:47:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FjLCr1vFwz2yYP
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 08:48:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,17 +16,17 @@ Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FjL8W1KP5z2y0C
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 08:45:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4FjL8Y16qnz302K
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 08:45:49 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FjL8V5C2tz9sjB; Sun, 16 May 2021 08:45:46 +1000 (AEST)
+ id 4FjL8X6DLYz9ssP; Sun, 16 May 2021 08:45:48 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20210511105459.800788-1-mpe@ellerman.id.au>
-References: <20210511105459.800788-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix kvm_unmap_gfn_range_hv() for
- Hash MMU
-Message-Id: <162111863429.1890426.10684298398002879085.b4-ty@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210503111708.758261-1-npiggin@gmail.com>
+References: <20210503111708.758261-1-npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/64s: Make NMI record implicitly soft-masked code
+ as irqs disabled
+Message-Id: <162111863488.1890426.15623689321545527511.b4-ty@ellerman.id.au>
 Date: Sun, 16 May 2021 08:43:54 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,25 +42,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, pbonzini@redhat.com, npiggin@gmail.com,
- kvm@vger.kernel.org, seanjc@google.com
+Cc: Cédric Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 11 May 2021 20:54:59 +1000, Michael Ellerman wrote:
-> Commit 32b48bf8514c ("KVM: PPC: Book3S HV: Fix conversion to gfn-based
-> MMU notifier callbacks") fixed kvm_unmap_gfn_range_hv() by adding a for
-> loop over each gfn in the range.
+On Mon, 3 May 2021 21:17:08 +1000, Nicholas Piggin wrote:
+> scv support introduced the notion of code that implicitly soft-masks
+> irqs due to the instruction addresses. This is required because scv
+> enters the kernel with MSR[EE]=1.
 > 
-> But for the Hash MMU it repeatedly calls kvm_unmap_rmapp() with the
-> first gfn of the range, rather than iterating through the range.
+> If a NMI (including soft-NMI) interrupt hits when we are implicitly
+> soft-masked then its regs->softe does not reflect this because it is
+> derived from the explicit soft mask state (paca->irq_soft_mask). This
+> makes arch_irq_disabled_regs(regs) return false.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] KVM: PPC: Book3S HV: Fix kvm_unmap_gfn_range_hv() for Hash MMU
-      https://git.kernel.org/powerpc/c/da3bb206c9ceb0736d9e2897ea697acabad35833
+[1/1] powerpc/64s: Make NMI record implicitly soft-masked code as irqs disabled
+      https://git.kernel.org/powerpc/c/4ec5feec1ad029bdf7d49bc50ccc0c195eeabe93
 
 cheers
