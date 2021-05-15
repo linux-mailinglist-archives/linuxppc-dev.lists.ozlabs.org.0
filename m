@@ -2,51 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F663815A2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 05:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5626538160A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 07:25:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhs8z6jTgz3bsC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 13:59:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AJGtllVD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhv3g1q6Sz300K
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 15:25:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=AJGtllVD; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.43; helo=mail-ej1-f43.google.com;
+ envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com
+ [209.85.218.43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhs8X2Nqvz2yWr
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 13:59:08 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F220613F6;
- Sat, 15 May 2021 03:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621051144;
- bh=Z1sccg2vrpIeTClwluNbqzKfuQ+iCA6YJXcgWJREDvo=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=AJGtllVDTxzsfnQoqk8BsCbL64losT+Ty47Mg00VeF0nf6O82MPJ4NXwclyYvMmjU
- 6To2isk6gBN6F7TMXgX3O8djMUZfQn6d2WNAOfFd2afdfKBNfYGfuEHSiKRQT8Q984
- ImdElmlY38m5D0beV6Ke2Gkbgyor8Kfx1/LnuM81Fi6X9ghxMu/2J4wek/8dVZ998P
- f1JqGJTkRYzzXMKKduiP/OHQM/m56qOQcav6Jt//03j3VosRZ77UWA5SZdukjMT/39
- 3MqPRJ2WKfoOXg+d7S1Puls51F/EiiR0wRlp1htvcOFmyrWwq7yB6acKq7gw4x0K/2
- UqF1mdOKHOuRQ==
-Date: Fri, 14 May 2021 20:58:58 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] arm64: Define only {pud/pmd}_{set/clear}_huge when usefull
-Message-ID: <YJ9HAg+o8nd2xmix@archlinux-ax161>
-References: <73ec95f40cafbbb69bdfb43a7f53876fd845b0ce.1620990479.git.christophe.leroy@csgroup.eu>
- <20210514144200.b49ee77c9b2a7f9998ffbf22@linux-foundation.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhv3F1D4Xz2xg5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 15:24:40 +1000 (AEST)
+Received: by mail-ej1-f43.google.com with SMTP id lg14so1565618ejb.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 22:24:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=f/Vo3vzWm4D00TYgfRuuEzVZKXz3CRt/yuqfwwH8YIU=;
+ b=n14uIwRHZNqj+OM6VEX05f45ndXg+Bv/akxtl3aIcDpMfoaamNakctJXX7AAdWWDXV
+ ho1LF4ZPCGaTpYHkgkhn6oNnoVQpQLdX5y2wQss62erGkupeayrCPveBsYMcBJMUUUvt
+ Sbdeoqn9DlM+egVkE5I0kT8AKhiRlhedNKqCldWqh9JgliJV96lP/uejkrl1nxlyGhu+
+ WsvXY3XcDhGHXTzebX/5IDeBYNUSBF7ws+OPRVQSiL5MGnjFJvKzS2DEx8Pqtj3ZcA5E
+ zJKQMMLahhv6QuwaEW3bXysUT/bFlbHmjfeHsTcj2pmJZklmGn1PhPlMacqUnBwglR8P
+ Bn0w==
+X-Gm-Message-State: AOAM530uZ3JugM6dklJCS7rE28BVeVOCtmH3c0u2lP681LD3kWoLulGd
+ h9TxDcFvcWp/ZsO5v0u0szM=
+X-Google-Smtp-Source: ABdhPJwvfP1drkhLOi+o1WZL+eJ9323MVgRNp8o3OCPnzYBWrwDvAHI0LcagZhbnOoFcGoXpLrERxQ==
+X-Received: by 2002:a17:906:b0d:: with SMTP id
+ u13mr8097847ejg.159.1621056276491; 
+ Fri, 14 May 2021 22:24:36 -0700 (PDT)
+Received: from workstation.lan ([95.155.85.46])
+ by smtp.gmail.com with ESMTPSA id kt21sm4821487ejb.5.2021.05.14.22.24.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 14 May 2021 22:24:35 -0700 (PDT)
+From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH v2 01/14] PCI: Use sysfs_emit() and sysfs_emit_at() in "show"
+ functions
+Date: Sat, 15 May 2021 05:24:21 +0000
+Message-Id: <20210515052434.1413236-1-kw@linux.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210514144200.b49ee77c9b2a7f9998ffbf22@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,30 +63,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- naresh.kamboju@linaro.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
- sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Vidya Sagar <vidyas@nvidia.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Joe Perches <joe@perches.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+ Logan Gunthorpe <logang@deltatee.com>,
+ Xiongfeng Wang <wangxiongfeng2@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 14, 2021 at 02:42:00PM -0700, Andrew Morton wrote:
-> On Fri, 14 May 2021 11:08:53 +0000 (UTC) Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
-> 
-> > When PUD and/or PMD are folded, those functions are useless
-> > and we now have a stub in linux/pgtable.h
-> 
-> OK, help me out here please.  What patch does this fix?
-> 
+The sysfs_emit() and sysfs_emit_at() functions were introduced to make
+it less ambiguous which function is preferred when writing to the output
+buffer in a device attribute's "show" callback [1].
 
-Naresh's original report is here it seems:
+Convert the PCI sysfs object "show" functions from sprintf(), snprintf()
+and scnprintf() to sysfs_emit() and sysfs_emit_at() accordingly, as the
+latter is aware of the PAGE_SIZE buffer and correctly returns the number
+of bytes written into the buffer.
 
-https://lore.kernel.org/r/CA+G9fYv79t0+2W4Rt3wDkBShc4eY3M3utC5BHqUgGDwMYExYMw@mail.gmail.com/
+No functional change intended.
 
-I can reproduce the failure that he reported with
-ARCH=arm64 allmodconfig and this patch resolves it for me.
+[1] Documentation/filesystems/sysfs.rst
 
-Cheers,
-Nathan
+Related to:
+  commit ad025f8e46f3 ("PCI/sysfs: Use sysfs_emit() and sysfs_emit_at() in "show" functions")
+
+Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+---
+ drivers/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index b717680377a9..5ed316ea5831 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -6439,7 +6439,7 @@ static ssize_t resource_alignment_show(struct bus_type *bus, char *buf)
+ 
+ 	spin_lock(&resource_alignment_lock);
+ 	if (resource_alignment_param)
+-		count = scnprintf(buf, PAGE_SIZE, "%s", resource_alignment_param);
++		count = sysfs_emit(buf, "%s", resource_alignment_param);
+ 	spin_unlock(&resource_alignment_lock);
+ 
+ 	/*
+-- 
+2.31.1
+
