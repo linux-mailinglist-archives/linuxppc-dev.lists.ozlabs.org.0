@@ -2,53 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5626538160A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 07:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF81A38160B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 07:25:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhv3g1q6Sz300K
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 15:25:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhv454h9nz3c0K
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 15:25:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.218.43; helo=mail-ej1-f43.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.45; helo=mail-ed1-f45.google.com;
  envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com
- [209.85.218.43])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com
+ [209.85.208.45])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhv3F1D4Xz2xg5
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhv3F1f6Sz2xvP
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 15:24:40 +1000 (AEST)
-Received: by mail-ej1-f43.google.com with SMTP id lg14so1565618ejb.9
+Received: by mail-ed1-f45.google.com with SMTP id i13so838672edb.9
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 22:24:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=f/Vo3vzWm4D00TYgfRuuEzVZKXz3CRt/yuqfwwH8YIU=;
- b=n14uIwRHZNqj+OM6VEX05f45ndXg+Bv/akxtl3aIcDpMfoaamNakctJXX7AAdWWDXV
- ho1LF4ZPCGaTpYHkgkhn6oNnoVQpQLdX5y2wQss62erGkupeayrCPveBsYMcBJMUUUvt
- Sbdeoqn9DlM+egVkE5I0kT8AKhiRlhedNKqCldWqh9JgliJV96lP/uejkrl1nxlyGhu+
- WsvXY3XcDhGHXTzebX/5IDeBYNUSBF7ws+OPRVQSiL5MGnjFJvKzS2DEx8Pqtj3ZcA5E
- zJKQMMLahhv6QuwaEW3bXysUT/bFlbHmjfeHsTcj2pmJZklmGn1PhPlMacqUnBwglR8P
- Bn0w==
-X-Gm-Message-State: AOAM530uZ3JugM6dklJCS7rE28BVeVOCtmH3c0u2lP681LD3kWoLulGd
- h9TxDcFvcWp/ZsO5v0u0szM=
-X-Google-Smtp-Source: ABdhPJwvfP1drkhLOi+o1WZL+eJ9323MVgRNp8o3OCPnzYBWrwDvAHI0LcagZhbnOoFcGoXpLrERxQ==
-X-Received: by 2002:a17:906:b0d:: with SMTP id
- u13mr8097847ejg.159.1621056276491; 
- Fri, 14 May 2021 22:24:36 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=3ZSUDlxK2gpwJ+aSZRfjJrhrQ1Sy5cBzVVlZ7n5R5NA=;
+ b=COokUfYnYFMlQ3ak/fL3/QT3+aluWMVK3LESt8gLFD8L6kxOdCn4eqOxKDG9D2tt/k
+ U41UjNo/oo/MrA2/SUfU8vxSC9/OmFp5MIoUP0+wWFh24eoinhcrAVQ0KoGy8yceCfWY
+ wd3jPti1zKLr9tH/HPzMxkPCaMC6q9/ACSvAoGb5TXd28LIf0nUC2PjNB3clIubcG1s5
+ zX7Srf12qz79YAHTaVH/cyiWc5fTIC4hGyT4ZGAyyIEhr0EHqmTQNHX+6r3YSNr5YXEl
+ GymuZlzL2vUKSCOGcFan+SEo+SazGh9pNiLUae4Y7QiG7r4cjhpEMGscqeiprO1XMqvp
+ togw==
+X-Gm-Message-State: AOAM531RT4OWZk5MLMgKbSmoc9Hhj1ddzLgT5yFiXVlbVhV02JYkHL9E
+ fJJWzJHYwDRJXEt8TtHISTc=
+X-Google-Smtp-Source: ABdhPJyJzte6sbq66cNBekFBaDvvmVsrMqZqq1jO2TycXOtmpJpIHsRHKWSWGExUVijx0zjm8m/GsA==
+X-Received: by 2002:a05:6402:2750:: with SMTP id
+ z16mr61413471edd.355.1621056277499; 
+ Fri, 14 May 2021 22:24:37 -0700 (PDT)
 Received: from workstation.lan ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id kt21sm4821487ejb.5.2021.05.14.22.24.34
+ by smtp.gmail.com with ESMTPSA id kt21sm4821487ejb.5.2021.05.14.22.24.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 May 2021 22:24:35 -0700 (PDT)
+ Fri, 14 May 2021 22:24:37 -0700 (PDT)
 From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2 01/14] PCI: Use sysfs_emit() and sysfs_emit_at() in "show"
- functions
-Date: Sat, 15 May 2021 05:24:21 +0000
-Message-Id: <20210515052434.1413236-1-kw@linux.com>
+Subject: [PATCH v2 02/14] PCI/AER: Use sysfs_emit() and sysfs_emit_at() in
+ "show" functions
+Date: Sat, 15 May 2021 05:24:22 +0000
+Message-Id: <20210515052434.1413236-2-kw@linux.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210515052434.1413236-1-kw@linux.com>
+References: <20210515052434.1413236-1-kw@linux.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -91,24 +93,55 @@ Related to:
   commit ad025f8e46f3 ("PCI/sysfs: Use sysfs_emit() and sysfs_emit_at() in "show" functions")
 
 Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
 ---
- drivers/pci/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pcie/aer.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index b717680377a9..5ed316ea5831 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -6439,7 +6439,7 @@ static ssize_t resource_alignment_show(struct bus_type *bus, char *buf)
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index ec943cee5ecc..40ef7bed7a77 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -529,21 +529,23 @@ static const char *aer_agent_string[] = {
+ 		     char *buf)						\
+ {									\
+ 	unsigned int i;							\
+-	char *str = buf;						\
+ 	struct pci_dev *pdev = to_pci_dev(dev);				\
+ 	u64 *stats = pdev->aer_stats->stats_array;			\
++	size_t len = 0;							\
+ 									\
+ 	for (i = 0; i < ARRAY_SIZE(strings_array); i++) {		\
+ 		if (strings_array[i])					\
+-			str += sprintf(str, "%s %llu\n",		\
+-				       strings_array[i], stats[i]);	\
++			len += sysfs_emit_at(buf, len, "%s %llu\n",	\
++					     strings_array[i],		\
++					     stats[i]);			\
+ 		else if (stats[i])					\
+-			str += sprintf(str, #stats_array "_bit[%d] %llu\n",\
+-				       i, stats[i]);			\
++			len += sysfs_emit_at(buf, len,			\
++					     #stats_array "_bit[%d] %llu\n",\
++					     i, stats[i]);		\
+ 	}								\
+-	str += sprintf(str, "TOTAL_%s %llu\n", total_string,		\
+-		       pdev->aer_stats->total_field);			\
+-	return str-buf;							\
++	len += sysfs_emit_at(buf, len, "TOTAL_%s %llu\n", total_string,	\
++			     pdev->aer_stats->total_field);		\
++	return len;							\
+ }									\
+ static DEVICE_ATTR_RO(name)
  
- 	spin_lock(&resource_alignment_lock);
- 	if (resource_alignment_param)
--		count = scnprintf(buf, PAGE_SIZE, "%s", resource_alignment_param);
-+		count = sysfs_emit(buf, "%s", resource_alignment_param);
- 	spin_unlock(&resource_alignment_lock);
+@@ -563,7 +565,7 @@ aer_stats_dev_attr(aer_dev_nonfatal, dev_nonfatal_errs,
+ 		     char *buf)						\
+ {									\
+ 	struct pci_dev *pdev = to_pci_dev(dev);				\
+-	return sprintf(buf, "%llu\n", pdev->aer_stats->field);		\
++	return sysfs_emit(buf, "%llu\n", pdev->aer_stats->field);	\
+ }									\
+ static DEVICE_ATTR_RO(name)
  
- 	/*
 -- 
 2.31.1
 
