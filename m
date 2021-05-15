@@ -2,43 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D63381529
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 04:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C9838152A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 04:28:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhq7G62Chz306C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 12:27:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhq7f0ckpz300K
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 12:28:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhq6v6qHVz2xtx
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhq6w1ThFz2xv7
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 12:27:31 +1000 (AEST)
-IronPort-SDR: E3FIe7EjGEDtSBFfVl0lTxyDBxXyoN5EyMqFZ7cZX8ki+bRNSpDBlDP3qFC3HRCgiql+k1oS2o
- NRVKf9xBraaQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9984"; a="179856162"
-X-IronPort-AV: E=Sophos;i="5.82,300,1613462400"; d="scan'208";a="179856162"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+IronPort-SDR: 4Eeo2xNRlSQzyr+JN8TchKbPbn2HNQZtZITGEMBi7u+/QGqHr+QoCfYyyQEfyQZO1fwV3RGcmS
+ 3ljEvjo97WyA==
+X-IronPort-AV: E=McAfee;i="6200,9189,9984"; a="199948574"
+X-IronPort-AV: E=Sophos;i="5.82,300,1613462400"; d="scan'208";a="199948574"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 May 2021 19:27:27 -0700
-IronPort-SDR: NRob1Z9uAA3h3NYnXzTDPSA+wYTaSPAmS80RflvVLBj3jM/qrOcO6naFvQ0GU+NoDtFbB0wz5X
- gT6hAA7NGqSQ==
+IronPort-SDR: uJQyAPJYzh6FNzpOc3gBRgLAqOslI4CVS5PY2IyvWUDf8ebvG91ZQjQtxqJSMv6oKvNQ7CltxH
+ +GygR0GyYQrA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,300,1613462400"; d="scan'208";a="402636584"
+X-IronPort-AV: E=Sophos;i="5.82,300,1613462400"; d="scan'208";a="610948628"
 Received: from lkp-server01.sh.intel.com (HELO ddd90b05c979) ([10.239.97.150])
- by fmsmga007.fm.intel.com with ESMTP; 14 May 2021 19:27:26 -0700
+ by orsmga005.jf.intel.com with ESMTP; 14 May 2021 19:27:26 -0700
 Received: from kbuild by ddd90b05c979 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1lhk1W-0000zT-2z; Sat, 15 May 2021 02:27:26 +0000
-Date: Sat, 15 May 2021 10:27:11 +0800
+ id 1lhk1V-0000zQ-V3; Sat, 15 May 2021 02:27:25 +0000
+Date: Sat, 15 May 2021 10:27:13 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- c6ac667b07996929835b512de0e9a988977e6abc
-Message-ID: <609f317f.qlQuCp2zlrrWJOVv%lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS b68d19e1abdbafef9481c7c0b0bcaff34d7af17d
+Message-ID: <609f3181.3xx4/psrh2hF+C4B%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -59,13 +58,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: c6ac667b07996929835b512de0e9a988977e6abc  powerpc/64e/interrupt: Fix nvgprs being clobbered
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: b68d19e1abdbafef9481c7c0b0bcaff34d7af17d  Automatic merge of 'master' into merge (2021-05-10 08:23)
 
-elapsed time: 726m
+elapsed time: 723m
 
-configs tested: 114
-configs skipped: 31
+configs tested: 109
+configs skipped: 3
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -92,11 +91,6 @@ sh                        apsh4ad0a_defconfig
 arm                        keystone_defconfig
 um                               alldefconfig
 sh                        edosk7705_defconfig
-arm                     davinci_all_defconfig
-mips                         tb0219_defconfig
-sh                           sh2007_defconfig
-m68k                        m5272c3_defconfig
-powerpc                 mpc836x_mds_defconfig
 arm                       imx_v4_v5_defconfig
 powerpc                     tqm5200_defconfig
 sh                   sh7770_generic_defconfig
@@ -125,9 +119,6 @@ nios2                            allyesconfig
 csky                                defconfig
 alpha                               defconfig
 alpha                            allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
 xtensa                           allyesconfig
 h8300                            allyesconfig
 sh                               allmodconfig
@@ -140,23 +131,26 @@ i386                             allyesconfig
 sparc                            allyesconfig
 sparc                               defconfig
 i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
 mips                             allyesconfig
 mips                             allmodconfig
 powerpc                          allyesconfig
 powerpc                          allmodconfig
 powerpc                           allnoconfig
-i386                 randconfig-a003-20210514
-i386                 randconfig-a001-20210514
-i386                 randconfig-a004-20210514
-i386                 randconfig-a005-20210514
-i386                 randconfig-a002-20210514
-i386                 randconfig-a006-20210514
 x86_64               randconfig-a004-20210514
 x86_64               randconfig-a003-20210514
 x86_64               randconfig-a001-20210514
 x86_64               randconfig-a005-20210514
 x86_64               randconfig-a002-20210514
 x86_64               randconfig-a006-20210514
+i386                 randconfig-a003-20210514
+i386                 randconfig-a001-20210514
+i386                 randconfig-a004-20210514
+i386                 randconfig-a005-20210514
+i386                 randconfig-a002-20210514
+i386                 randconfig-a006-20210514
 i386                 randconfig-a016-20210514
 i386                 randconfig-a014-20210514
 i386                 randconfig-a011-20210514
