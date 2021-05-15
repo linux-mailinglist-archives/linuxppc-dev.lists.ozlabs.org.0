@@ -1,40 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E247338168B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 09:20:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5627B381692
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 09:28:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhxd43XsMz3bsH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 17:20:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhxnq2lWSz3bsL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 17:28:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ucw.cz
- (client-ip=46.255.230.98; helo=jabberwock.ucw.cz; envelope-from=pavel@ucw.cz;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 354 seconds by postgrey-1.36 at boromir;
- Sat, 15 May 2021 17:20:13 AEST
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+ spf=none (no SPF record) smtp.mailfrom=perches.com
+ (client-ip=216.40.44.33; helo=smtprelay.hostedemail.com;
+ envelope-from=joe@perches.com; receiver=<UNKNOWN>)
+Received: from smtprelay.hostedemail.com (smtprelay0033.hostedemail.com
+ [216.40.44.33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FhxcY51fKz2yYY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 17:20:13 +1000 (AEST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
- id 6324B1C0B80; Sat, 15 May 2021 09:14:11 +0200 (CEST)
-Date: Sat, 15 May 2021 09:14:10 +0200
-From: Pavel Machek <pavel@ucw.cz>
-To: Masahiro Yamada <masahiroy@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FhxnS4vfKz2xfN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 17:27:55 +1000 (AEST)
+Received: from omf06.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+ by smtprelay04.hostedemail.com (Postfix) with ESMTP id 6060118026A05;
+ Sat, 15 May 2021 07:27:51 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by
+ omf06.hostedemail.com (Postfix) with ESMTPA id B36F22448B4; 
+ Sat, 15 May 2021 07:27:46 +0000 (UTC)
+Message-ID: <acff710e1cde66db686273d430a0798c4ea4f41e.camel@perches.com>
 Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-Message-ID: <20210515071410.GA27201@amd>
+From: Joe Perches <joe@perches.com>
+To: Pavel Machek <pavel@ucw.cz>, Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 15 May 2021 00:27:45 -0700
+In-Reply-To: <20210515071410.GA27201@amd>
 References: <20210501151538.145449-1-masahiroy@kernel.org>
+ <20210515071410.GA27201@amd>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature"; boundary="2fHTh5uZTiUOsy+g"
-Content-Disposition: inline
-In-Reply-To: <20210501151538.145449-1-masahiroy@kernel.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.60
+X-Rspamd-Server: rspamout05
+X-Rspamd-Queue-Id: B36F22448B4
+X-Stat-Signature: sk6bp1su8mgpmhdudeekd6zmd57nm8uk
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX18VobztuKx5cPb+cCAmoDLIOZAXmsA6C+8=
+X-HE-Tag: 1621063666-295586
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,45 +69,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, 2021-05-15 at 09:14 +0200, Pavel Machek wrote:
+> On Sun 2021-05-02 00:15:38, Masahiro Yamada wrote:
+> > The current minimum GCC version is 4.9 except ARCH=arm64 requiring
+> > GCC 5.1.
+> 
+> Please don't. I'm still on 4.9 on machine I can't easily update,
 
---2fHTh5uZTiUOsy+g
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Why is that?  Later compiler versions are available.
+http://cdn.kernel.org/pub/tools/crosstool/
 
-On Sun 2021-05-02 00:15:38, Masahiro Yamada wrote:
-> The current minimum GCC version is 4.9 except ARCH=3Darm64 requiring
-> GCC 5.1.
+Is there some other reason your machine can not have the compiler
+version updated?
 
-Please don't. I'm still on 4.9 on machine I can't easily update,
 
->  Documentation/process/changes.rst | 2 +-
->  arch/arm64/Kconfig                | 2 +-
->  arch/powerpc/Kconfig              | 2 +-
->  arch/riscv/Kconfig                | 2 +-
->  include/linux/compiler-gcc.h      | 6 +-----
->  lib/Kconfig.debug                 | 2 +-
->  scripts/min-tool-version.sh       | 8 +-------
->  7 files changed, 7 insertions(+), 17 deletions(-)
-
-and 10 lines of cleanups is really not worth that.
-
-Best regards,
-								Pavel
-
---=20
-http://www.livejournal.com/~pavelmachek
-
---2fHTh5uZTiUOsy+g
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmCfdMIACgkQMOfwapXb+vJRuQCgkvFNWySx/cRHndnAzB2BNEcE
-fUgAoLeFGahKOr8VmTLEps0tT667xra4
-=bRN/
------END PGP SIGNATURE-----
-
---2fHTh5uZTiUOsy+g--
