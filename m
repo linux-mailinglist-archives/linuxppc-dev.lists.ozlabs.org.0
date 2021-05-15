@@ -2,58 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BAFF38163C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 07:59:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA12B38163F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 08:01:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhvqr1J73z3bsq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 15:59:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhvss5l3vz3btL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 16:01:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.218.43; helo=mail-ej1-f43.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.221.52; helo=mail-wr1-f52.google.com;
  envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com
- [209.85.218.43])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
+ [209.85.221.52])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FhvqV1JSGz2xxq
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 15:59:32 +1000 (AEST)
-Received: by mail-ej1-f43.google.com with SMTP id s22so1436935ejv.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 22:59:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FhvsR3L2Pz2xv0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 16:01:15 +1000 (AEST)
+Received: by mail-wr1-f52.google.com with SMTP id d11so1154717wrw.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 23:01:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=CxU+SMLsQzcRdf8JW3f+lBwp7dAmZ2RclEuJzkIt4jg=;
- b=gFE9C7xAn9yuGhIsRVotO4IVQW9FWY9KLkT8HXY/n55fr+FmtSBUMJ+Phn+TJPYCZ1
- Qk/AwYzrozhHWL7D6vNWBWJ4gSLzFP22BZl3URKzErU/Z+YOgL8gI66oNAnm9zOslRCq
- 1F3turbzNDW32vYCrbN1Oc+Ax3OHSlGEt9a6IJLKz8iVVpVqxzEAwHrGzDrEEigs9Zv5
- I5DuLxgNUkmJNsZMxzj3v4OLCt74gloWiXqUFH00GfEsw86aVhkUXwVcoyyoBYZIYZYj
- idHXyFkLKZrL7mwZjyp0yhwp0Vb12tvjICLuW1HTc8ZxFNlo6yF3bZqe8NzSgSjt4pxb
- bQuA==
-X-Gm-Message-State: AOAM533dpZRUZVAx13n7KnhrVlkNGoRlbDBFZrlAHiSIgyLcFfn8kekl
- E/2E7VIO7zGHqshbYjtXlZ8=
-X-Google-Smtp-Source: ABdhPJyqXWDNaPpiTdS/BVFGCZr4ufv48fdcgnBwFabbOiHJAvq8/l70JH1/M9vbwnAfYahZo6lewQ==
-X-Received: by 2002:a17:906:e08c:: with SMTP id
- gh12mr53261236ejb.115.1621058369429; 
- Fri, 14 May 2021 22:59:29 -0700 (PDT)
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=JkSeLIOi1XsqvtB3PIN4CWiYL7hLWk6kcS/roE9DJ7s=;
+ b=pa0KoSocsrfxlJAGXUFIbtL/eQrt28RUDgiyhTthSTqZSRtHQFhDti1dWQ3wgltr9Y
+ 5A7ny9kILrSqMZdh9A4C1aKV1ccn6PmuvZCvduGv8jJHDJuKyWWhALvruQmGjPOv+H1t
+ lb4n4BsU+RbWvzgNb4OjRmoY35pAZL0hoj9hRf58BifCEUxj7SmNuuP/cufcpSk6VFtc
+ RwsMooDYUgc0fyC8e552vTfLeRHtlPZ++ViZGI8gEIKwM3toRtP6zYLUX02Kzcu1YEhI
+ Brv2dLKSr0HtrcV+4OxDQBxBE9XSYxoI/6QD7icBfBgE64eQ3STIcCxOxbs1rVhLKnks
+ bDpg==
+X-Gm-Message-State: AOAM531Pudd1wQK7V8PNn9MoHqolptA4TDtRDBDbxAKXS4YaFMQ8kl1K
+ FgztPPkWsEI5XCONtaJMPew=
+X-Google-Smtp-Source: ABdhPJxHpUO8jCc/3XDGsSvDOb3m3mGWo5EJbgLdFGqxSSCd5zfY0gS/R12Oz3bbIYAWMo1NwHxbjA==
+X-Received: by 2002:adf:e944:: with SMTP id m4mr20272312wrn.10.1621058472167; 
+ Fri, 14 May 2021 23:01:12 -0700 (PDT)
 Received: from rocinante.localdomain ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id n11sm4926927ejg.43.2021.05.14.22.59.28
+ by smtp.gmail.com with ESMTPSA id d15sm5238372wrv.84.2021.05.14.23.01.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 May 2021 22:59:29 -0700 (PDT)
-Date: Sat, 15 May 2021 07:59:28 +0200
+ Fri, 14 May 2021 23:01:11 -0700 (PDT)
+Date: Sat, 15 May 2021 08:01:10 +0200
 From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
 To: Joe Perches <joe@perches.com>
-Subject: Re: [PATCH v2 01/14] PCI: Use sysfs_emit() and sysfs_emit_at() in
- "show" functions
-Message-ID: <20210515055928.GA73551@rocinante.localdomain>
+Subject: Re: [PATCH v2 04/14] PCI/MSI: Use sysfs_emit() and sysfs_emit_at()
+ in "show" functions
+Message-ID: <20210515060110.GB73551@rocinante.localdomain>
 References: <20210515052434.1413236-1-kw@linux.com>
- <985813cafbbe58cd899737ee49b44798210a69f6.camel@perches.com>
+ <20210515052434.1413236-4-kw@linux.com>
+ <d156a893bae41967e9fadddb3397cf47bcdde239.camel@perches.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <985813cafbbe58cd899737ee49b44798210a69f6.camel@perches.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d156a893bae41967e9fadddb3397cf47bcdde239.camel@perches.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,23 +81,26 @@ Sender: "Linuxppc-dev"
 Hi Joe,
 
 [...]
-> Ideally, the additional newline check below this would use sysfs_emit_at
+> >  	if (entry)
+> > -		return sprintf(buf, "%s\n",
+> > -				entry->msi_attrib.is_msix ? "msix" : "msi");
+> > +		return sysfs_emit(buf, "%s\n",
+> > +				  entry->msi_attrib.is_msix ? "msix" : "msi");
+> >  
+> > 
+> >  	return -ENODEV;
+> >  }
 > 
-> drivers/pci/pci.c-      /*
-> drivers/pci/pci.c:       * When set by the command line, resource_alignment_param will not
-> drivers/pci/pci.c-       * have a trailing line feed, which is ugly. So conditionally add
-> drivers/pci/pci.c-       * it here.
-> drivers/pci/pci.c-       */
-> drivers/pci/pci.c-      if (count >= 2 && buf[count - 2] != '\n' && count < PAGE_SIZE - 1) {
-> drivers/pci/pci.c-              buf[count - 1] = '\n';
-> drivers/pci/pci.c-              buf[count++] = 0;
-> drivers/pci/pci.c-      }
-> drivers/pci/pci.c-
-> drivers/pci/pci.c-      return count;
+> trivia: reversing the test would be more common style
+> 
+> 	if (!entry)
+> 		return -ENODEV;
+> 
+> 	return sysfs_emit(...);
+> }
 
-I found some inconsistencies with adding newline this way, and decided
-to change the code slightly, see:
+Excellent point.  I will send v3 later that includes this style change.
 
-  https://lore.kernel.org/linux-pci/20210515052434.1413236-12-kw@linux.com/
+Thank you!
 
 Krzysztof
