@@ -1,53 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1431C381611
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 07:26:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C786738161B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 07:26:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhv5B0S4fz3cBs
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 15:26:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhv5W68m5z3cQY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 15:26:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.208.44; helo=mail-ed1-f44.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.43; helo=mail-ed1-f43.google.com;
  envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com
- [209.85.208.44])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com
+ [209.85.208.43])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhv3J0FHlz2xvP
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 15:24:43 +1000 (AEST)
-Received: by mail-ed1-f44.google.com with SMTP id t15so828167edr.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 22:24:43 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhv3K0lcQz2xvP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 15:24:44 +1000 (AEST)
+Received: by mail-ed1-f43.google.com with SMTP id r11so817482edt.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 22:24:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=XaBjjWzOw5dvTDC+qJZK86V8BlRmiuqHS5dgLumUkUo=;
- b=inAVWLoOV895EekYGg3YvR1cdfblweYAbU1tzOnLC1hhwX8KIYvVBMlHkxSfzwGHLU
- mTUldGmlXHcrkdaJgxfwD2T6IXEe2Fb4e9LZStSTq9KfLTs8W/LBCGm/IHes5LGX4nAP
- cFq0Ie440STpJEf/HNPptvUyc26MvCAH5bKGBlqIVbEXhLNTiCgW3ujjyGyJPUIfpu4b
- FycH2uAVlWPOldGK75BgzhXvP0/hwZOW3jP9iNEaOBSVvyJuQVmyhiFC3ioDNFLvjuIr
- xVd/MXhOb2vA6iT3HnYvzmYu+Scfjo05dwXGp+6tE00zKb9hGMoFxG++NJWcA2rTut2x
- l32A==
-X-Gm-Message-State: AOAM532nzdM+K2ptSgRtc45OyO+0o2Ixn51ofl+Zi7c3p+M5l3pYmwgV
- 7fJslrNYofhXpFTal13OsNo=
-X-Google-Smtp-Source: ABdhPJyAvW2Dm++VEmuqwcgqr9Jm9cUso1ruNLB2gDuMwnIl6aOLUg/209jLCyYGsCqG4kFGPH3syQ==
-X-Received: by 2002:a05:6402:4392:: with SMTP id
- o18mr20003141edc.58.1621056280892; 
- Fri, 14 May 2021 22:24:40 -0700 (PDT)
+ bh=1ES7VTSt0mLOOOtyK1uMH/ESz61Of936G331zCp64LY=;
+ b=ZyP1U3R892i7BLAxgHhmvTd7I9NMgi8cjyHtC5tQ19m7mntwN7hBKWV6kqNHJzy5/L
+ +7c4tbbgIiK1RkIrc7jP14vwvhw+c1HZb3IlopzuL9gVVewSts7fAkuzQgAaPJ/bUo/n
+ SmsEBtpV/t3sH4e9UHyZQahN2DUvp8StmCl8kjHfbss2aLlqZRx0VK5lNL5qMKSZhyo/
+ c6Mg1/GKgSHbKD2T6roNLAV7zieNRks2KOzWPm3n3w10LNZf6669GnFIIHNnADcaPJmC
+ +N2Um7WDqcT5Ft2tgnPCF5jfeTQcHmMY1lHrUkwYYBGC46M/T+Lqt+jfDWWEa7q4BpAQ
+ BPPA==
+X-Gm-Message-State: AOAM531NRurdWodBwTEiRBZiSuB45UKjQ8KIbxtNrsqHmsFurByUt0YE
+ dAscKyoBdvkcgXYGSGuygEw=
+X-Google-Smtp-Source: ABdhPJygPIcpBCKLUs50yfnaIlQr7YwzdjdoLmzwNRzphOsHpcVXycakggcgTJ5RAMyt0x096OU7mw==
+X-Received: by 2002:aa7:d893:: with SMTP id u19mr15024467edq.258.1621056281879; 
+ Fri, 14 May 2021 22:24:41 -0700 (PDT)
 Received: from workstation.lan ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id kt21sm4821487ejb.5.2021.05.14.22.24.39
+ by smtp.gmail.com with ESMTPSA id kt21sm4821487ejb.5.2021.05.14.22.24.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 May 2021 22:24:40 -0700 (PDT)
+ Fri, 14 May 2021 22:24:41 -0700 (PDT)
 From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2 05/14] PCI/IOV: Use sysfs_emit() and sysfs_emit_at() in
+Subject: [PATCH v2 06/14] PCI/P2PDMA: Use sysfs_emit() and sysfs_emit_at() in
  "show" functions
-Date: Sat, 15 May 2021 05:24:25 +0000
-Message-Id: <20210515052434.1413236-5-kw@linux.com>
+Date: Sat, 15 May 2021 05:24:26 +0000
+Message-Id: <20210515052434.1413236-6-kw@linux.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210515052434.1413236-1-kw@linux.com>
 References: <20210515052434.1413236-1-kw@linux.com>
@@ -94,67 +93,41 @@ Related to:
 
 Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 ---
- drivers/pci/iov.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/pci/p2pdma.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
-index afc06e6ce115..a71258347323 100644
---- a/drivers/pci/iov.c
-+++ b/drivers/pci/iov.c
-@@ -346,7 +346,7 @@ static ssize_t sriov_totalvfs_show(struct device *dev,
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 196382630363..a1351b3e2c4c 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -53,7 +53,7 @@ static ssize_t size_show(struct device *dev, struct device_attribute *attr,
+ 	if (pdev->p2pdma->pool)
+ 		size = gen_pool_size(pdev->p2pdma->pool);
+ 
+-	return scnprintf(buf, PAGE_SIZE, "%zd\n", size);
++	return sysfs_emit(buf, "%zd\n", size);
+ }
+ static DEVICE_ATTR_RO(size);
+ 
+@@ -66,7 +66,7 @@ static ssize_t available_show(struct device *dev, struct device_attribute *attr,
+ 	if (pdev->p2pdma->pool)
+ 		avail = gen_pool_avail(pdev->p2pdma->pool);
+ 
+-	return scnprintf(buf, PAGE_SIZE, "%zd\n", avail);
++	return sysfs_emit(buf, "%zd\n", avail);
+ }
+ static DEVICE_ATTR_RO(available);
+ 
+@@ -75,8 +75,7 @@ static ssize_t published_show(struct device *dev, struct device_attribute *attr,
  {
  	struct pci_dev *pdev = to_pci_dev(dev);
  
--	return sprintf(buf, "%u\n", pci_sriov_get_totalvfs(pdev));
-+	return sysfs_emit(buf, "%u\n", pci_sriov_get_totalvfs(pdev));
+-	return scnprintf(buf, PAGE_SIZE, "%d\n",
+-			 pdev->p2pdma->p2pmem_published);
++	return sysfs_emit(buf, "%d\n", pdev->p2pdma->p2pmem_published);
  }
+ static DEVICE_ATTR_RO(published);
  
- static ssize_t sriov_numvfs_show(struct device *dev,
-@@ -361,7 +361,7 @@ static ssize_t sriov_numvfs_show(struct device *dev,
- 	num_vfs = pdev->sriov->num_VFs;
- 	device_unlock(&pdev->dev);
- 
--	return sprintf(buf, "%u\n", num_vfs);
-+	return sysfs_emit(buf, "%u\n", num_vfs);
- }
- 
- /*
-@@ -435,7 +435,7 @@ static ssize_t sriov_offset_show(struct device *dev,
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 
--	return sprintf(buf, "%u\n", pdev->sriov->offset);
-+	return sysfs_emit(buf, "%u\n", pdev->sriov->offset);
- }
- 
- static ssize_t sriov_stride_show(struct device *dev,
-@@ -444,7 +444,7 @@ static ssize_t sriov_stride_show(struct device *dev,
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 
--	return sprintf(buf, "%u\n", pdev->sriov->stride);
-+	return sysfs_emit(buf, "%u\n", pdev->sriov->stride);
- }
- 
- static ssize_t sriov_vf_device_show(struct device *dev,
-@@ -453,7 +453,7 @@ static ssize_t sriov_vf_device_show(struct device *dev,
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 
--	return sprintf(buf, "%x\n", pdev->sriov->vf_device);
-+	return sysfs_emit(buf, "%x\n", pdev->sriov->vf_device);
- }
- 
- static ssize_t sriov_drivers_autoprobe_show(struct device *dev,
-@@ -462,7 +462,7 @@ static ssize_t sriov_drivers_autoprobe_show(struct device *dev,
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 
--	return sprintf(buf, "%u\n", pdev->sriov->drivers_autoprobe);
-+	return sysfs_emit(buf, "%u\n", pdev->sriov->drivers_autoprobe);
- }
- 
- static ssize_t sriov_drivers_autoprobe_store(struct device *dev,
 -- 
 2.31.1
 
