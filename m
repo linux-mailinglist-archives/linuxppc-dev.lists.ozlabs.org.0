@@ -1,35 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AAB381B84
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 00:46:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD6D381B88
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 00:47:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FjL9V5gkkz3c5G
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 08:46:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FjLBq43vmz3ccK
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 May 2021 08:47:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FjL8Q6MQBz2xg1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 08:45:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FjL8W1KP5z2y0C
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 08:45:47 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4FjL8Q2VYGz9sXN; Sun, 16 May 2021 08:45:42 +1000 (AEST)
+ id 4FjL8V5C2tz9sjB; Sun, 16 May 2021 08:45:46 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Paul Mackerras <paulus@samba.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <cadc0a328bc8e6c5bf133193e7547d5c10ae7895.1620465920.git.christophe.leroy@csgroup.eu>
-References: <cadc0a328bc8e6c5bf133193e7547d5c10ae7895.1620465920.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/signal: Fix possible build failure with
- unsafe_copy_fpr_{to/from}_user
-Message-Id: <162111863409.1890426.10647570427178264099.b4-ty@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210511105459.800788-1-mpe@ellerman.id.au>
+References: <20210511105459.800788-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix kvm_unmap_gfn_range_hv() for
+ Hash MMU
+Message-Id: <162111863429.1890426.10684298398002879085.b4-ty@ellerman.id.au>
 Date: Sun, 16 May 2021 08:43:54 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -45,24 +42,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kvm-ppc@vger.kernel.org, pbonzini@redhat.com, npiggin@gmail.com,
+ kvm@vger.kernel.org, seanjc@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 8 May 2021 09:25:44 +0000 (UTC), Christophe Leroy wrote:
-> When neither CONFIG_VSX nor CONFIG_PPC_FPU_REGS are selected,
-> unsafe_copy_fpr_to_user() and unsafe_copy_fpr_from_user() are
-> doing nothing.
+On Tue, 11 May 2021 20:54:59 +1000, Michael Ellerman wrote:
+> Commit 32b48bf8514c ("KVM: PPC: Book3S HV: Fix conversion to gfn-based
+> MMU notifier callbacks") fixed kvm_unmap_gfn_range_hv() by adding a for
+> loop over each gfn in the range.
 > 
-> Then, unless the 'label' operand is used elsewhere, GCC complains
-> about it being defined but not used.
+> But for the Hash MMU it repeatedly calls kvm_unmap_rmapp() with the
+> first gfn of the range, rather than iterating through the range.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/signal: Fix possible build failure with unsafe_copy_fpr_{to/from}_user
-      https://git.kernel.org/powerpc/c/bc581dbab26edf0b6acc98c76943b4a0c7d672a2
+[1/1] KVM: PPC: Book3S HV: Fix kvm_unmap_gfn_range_hv() for Hash MMU
+      https://git.kernel.org/powerpc/c/da3bb206c9ceb0736d9e2897ea697acabad35833
 
 cheers
