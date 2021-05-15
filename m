@@ -1,53 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC2C381625
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 07:28:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89300381626
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 07:29:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhv862SPyz3drG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 15:28:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhv8b4PsRz3dwk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 15:29:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.218.54; helo=mail-ej1-f54.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.41; helo=mail-ed1-f41.google.com;
  envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com
- [209.85.218.54])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com
+ [209.85.208.41])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhv3S0mTgz30CT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 15:24:51 +1000 (AEST)
-Received: by mail-ej1-f54.google.com with SMTP id z12so158816ejw.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 22:24:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fhv3T0vgdz3063
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 15:24:52 +1000 (AEST)
+Received: by mail-ed1-f41.google.com with SMTP id i13so838927edb.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 May 2021 22:24:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=8I9eAMgW1d5+6SXiSWDrf1uaChlCS5v9S4POj4RPQdA=;
- b=TdbWR8/AU0HVm8uX6i9HSh+j5ezM8yLcSO7KD0MSwyHfZoxYj/SJBGKAOKdr7u+Eyy
- v++wnnlLKdnB+uMi++FYHFAFaOSMiQqfZpARYnrofSDBb4/GKSLGITyUi7Uc/ZmJPJSX
- rd1HybcqLbNMS80sABxQal9CTFeSne6YDqelM3L7Y91iMcBl+EPYzxfbHj4uT2PwyycB
- ThDmfgja7WkaDp/VjtbuyQmglOVjLbTRxjheFgqgajOSQqL1ViP4fyD18IGFt/3NkN39
- WsUz69l4UTGn+IrWGDKSwLTEvXLggM53cK1+DoJtXEgD6v/XCbNC+GFy0Kw/ICNM3Nqd
- ZXgQ==
-X-Gm-Message-State: AOAM531HnePJXucPnykdPqlWxSpDMJ6RBGpIS66EX8pQ1sH/tvMnBs9M
- sSKRiWMMb6QWXlL/9acwYH0=
-X-Google-Smtp-Source: ABdhPJxvwuJ+Vc4f4aGryEC1IiRJpvd+1xHQx7CFoqRNrxuoykeL0ShP0qNJDTfuYBVia8rDk6gJDQ==
-X-Received: by 2002:a17:907:a06d:: with SMTP id
- ia13mr18482816ejc.484.1621056288974; 
- Fri, 14 May 2021 22:24:48 -0700 (PDT)
+ bh=l65J0VP8+dF+CzFmmf34XzBwKUAccEC4aN+sTYjEOtI=;
+ b=KvxLsIIaWi0Jqn/6MKy8ZNgtOOny90lx1EnsVjhrYmTqhJJoO/embesJn/AFCV5kR2
+ 3bf29MFqan8qwAbD7+TS7ncBGbGqaoxl3WPSa9OrxkMNG4BoyeSg8h5V6zlQQXA0+25r
+ IGZiOBNSOds9UfwYR9XARm/pZUgwNQoVNrTuT5oDHpwpwC6PhSz0TYebttO3zXmRw5s6
+ /+5oUZr6YNjpgH5qxqx3k2kpHbjLFoCwXCPszwodBsVw0ef+usKrJ069PqM5WDfor/je
+ TXMBFEPee8LOhcbivnvoIKjIMGUBfMrPkTStCRA/Rdm+MWC2xgjrgp6u6b+d90+vvLM/
+ ynYQ==
+X-Gm-Message-State: AOAM531lJaBZwb57EHT7+PzcUGnW0j0a/gnLGLKJvac0wtAaQTsvTnvN
+ azMrw3RNx8ChGApHd/DQugs=
+X-Google-Smtp-Source: ABdhPJxKOWt67s3c4arbmA4eCFVxbLX2nJU5TzBTB1JhkMEU3nW9uORpfOz85iSHSHEdXWViuNcVeA==
+X-Received: by 2002:a50:fc0b:: with SMTP id i11mr61231380edr.259.1621056289994; 
+ Fri, 14 May 2021 22:24:49 -0700 (PDT)
 Received: from workstation.lan ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id kt21sm4821487ejb.5.2021.05.14.22.24.48
+ by smtp.gmail.com with ESMTPSA id kt21sm4821487ejb.5.2021.05.14.22.24.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 May 2021 22:24:48 -0700 (PDT)
+ Fri, 14 May 2021 22:24:49 -0700 (PDT)
 From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2 13/14] PCI/sysfs: Add missing trailing newline to
- devspec_show()
-Date: Sat, 15 May 2021 05:24:33 +0000
-Message-Id: <20210515052434.1413236-13-kw@linux.com>
+Subject: [PATCH v2 14/14] PCI/sysfs: Only show value when driver_override is
+ not NULL
+Date: Sat, 15 May 2021 05:24:34 +0000
+Message-Id: <20210515052434.1413236-14-kw@linux.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210515052434.1413236-1-kw@linux.com>
 References: <20210515052434.1413236-1-kw@linux.com>
@@ -76,31 +75,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-At the moment, when the value of the "devspec" sysfs object is read from
-the user space there will be no newline present, and the utilities such
-as the "cat" command won't display the result of the read correctly in
-a shell, as the trailing newline is currently missing.
-
-To fix this, append a newline character in the show() function.
+Only expose the value of the "driver_override" variable through the
+corresponding sysfs object when a value is actually set.
 
 Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 ---
- drivers/pci/pci-sysfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pci-sysfs.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index beb8d1f4fafe..5d63df7c1820 100644
+index 5d63df7c1820..4e9f582ca10f 100644
 --- a/drivers/pci/pci-sysfs.c
 +++ b/drivers/pci/pci-sysfs.c
-@@ -537,7 +537,7 @@ static ssize_t devspec_show(struct device *dev,
+@@ -580,10 +580,11 @@ static ssize_t driver_override_show(struct device *dev,
+ 				    struct device_attribute *attr, char *buf)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+-	ssize_t len;
++	ssize_t len = 0;
  
- 	if (np == NULL)
- 		return 0;
--	return sysfs_emit(buf, "%pOF", np);
-+	return sysfs_emit(buf, "%pOF\n", np);
+ 	device_lock(dev);
+-	len = sysfs_emit(buf, "%s\n", pdev->driver_override);
++	if (pdev->driver_override)
++		len = sysfs_emit(buf, "%s\n", pdev->driver_override);
+ 	device_unlock(dev);
+ 	return len;
  }
- static DEVICE_ATTR_RO(devspec);
- #endif
 -- 
 2.31.1
 
