@@ -2,49 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5627B381692
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 09:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD4F381754
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 11:48:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fhxnq2lWSz3bsL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 17:28:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fj0w66sN9z30GR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 19:48:54 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Ygv9nlc1;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=perches.com
- (client-ip=216.40.44.33; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
-Received: from smtprelay.hostedemail.com (smtprelay0033.hostedemail.com
- [216.40.44.33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50;
+ helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=Ygv9nlc1; 
+ dkim-atps=neutral
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
+ [85.215.255.50])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FhxnS4vfKz2xfN
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 17:27:55 +1000 (AEST)
-Received: from omf06.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
- by smtprelay04.hostedemail.com (Postfix) with ESMTP id 6060118026A05;
- Sat, 15 May 2021 07:27:51 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by
- omf06.hostedemail.com (Postfix) with ESMTPA id B36F22448B4; 
- Sat, 15 May 2021 07:27:46 +0000 (UTC)
-Message-ID: <acff710e1cde66db686273d430a0798c4ea4f41e.camel@perches.com>
-Subject: Re: [PATCH] Raise the minimum GCC version to 5.2
-From: Joe Perches <joe@perches.com>
-To: Pavel Machek <pavel@ucw.cz>, Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 15 May 2021 00:27:45 -0700
-In-Reply-To: <20210515071410.GA27201@amd>
-References: <20210501151538.145449-1-masahiroy@kernel.org>
- <20210515071410.GA27201@amd>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fj0vb58hxz2yYP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 19:48:25 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1621072097; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=bsgISamXjnx3jvMilwi69anrF8BIO19ElQSD/WoZgtgw1nczLuE2GONfUeDrCW6T3l
+ dCWWnN3ytvlEfPyALWhuh84MD4yfoYNgR4oYo86Wph/kwzoFq7YVrD0r/AaUhTS8aQfy
+ 8W2Zb3Xta6pOTh4D3iT+lIBCayWTOfpq4RWSWsKrVe5cEnyk6RSZzYQ7IwVVUXJlnS/v
+ U4k6GOPsQBFs8lJReqlhy5PqTrQKg3aehEqeUteTTKxD2RFb3EcliDJ7YQAQ+25Dz8Zs
+ I22dQKsyjfcq5BXX+I7jZr4qSPUAx1IBbgKnNA0FRfVW33j5sFANMREwo7CtfA5QN47t
+ Q/MQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1621072097;
+ s=strato-dkim-0002; d=strato.com;
+ h=In-Reply-To:Date:Message-ID:Cc:References:To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=DooonvsnXQrUosdrhbUqCbyxjMDxSKv7u3E4sbwbDKI=;
+ b=rWqbkKKH5iN32c/XZXEGWtzHhRtmBknD9PxKWCh6wApCgn/oKZPCokc3Iw0bYn7M4E
+ vkO6FUbt02KUEYZuBrXIK9hqF/DVGZmawvuTJkikeJfDylJauvDV17KfQwAFcNlTP4W8
+ /sicq0p7oQhzXPE0N/Ar89JvseT/1P79CNjvAR02YntclOuyWJkzQcYSuQlulxltp3dP
+ qSEmzn4SdrvXcADWcEI0VS3PeIdcmVmKjQuJ8KE/3r4JWU3vA05E43d0H5JcpyNZ0LI6
+ yOnXSKPTBPYTO7Cfw9DCNDE/+UHmuZw/K+CsNqt6gtMUmNt2Bap+OWc30gQGXKx1u0bG
+ zlbg==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1621072097;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:Cc:References:To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=DooonvsnXQrUosdrhbUqCbyxjMDxSKv7u3E4sbwbDKI=;
+ b=Ygv9nlc1qzVaS9B7YrEbX7C45lBWXQB/CCS5LfyWLqXkjdpzoKqlpOAzl+c60vA54g
+ 3Tssb7nrI294k5om7HmEr1BFpDD2pwmByrJkXggJUVTHVK1Ar8shpHhJPnJuh7qIwSpm
+ Kzyz0X4EqQ/J5hxNOu2MVLr991f48WwlfUuWMJNn7n39EWYRb0jC6DDjXPFozepz1h9d
+ LA+kByg8CE8zWOFRgc3wUVNa6LKGz7oFfn/MF5CgkjMR9ZeNjXzkXbGbnqCN739FeOQR
+ iEJlYo+Chups8FoWXVoU8uOVzMo3nIfs0D06cKKgBF5yQ9s+f9sg7W3c8Z+TvnrVxEhD
+ tqEw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhXJ7dKjcwcOiBaUbwe0R4Xq9qUgw=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:41e6:8089:8f38:3ee8]
+ by smtp.strato.de (RZmta 47.25.9 AUTH)
+ with ESMTPSA id n06826x4F9mG07S
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Sat, 15 May 2021 11:48:16 +0200 (CEST)
+Subject: Re: [FSL P50x0] KVM HV doesn't work anymore
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>
+References: <04526309-4653-3349-b6de-e7640c2258d6@xenosoft.de>
+Message-ID: <34617b1b-e213-668b-05f6-6fce7b549bf0@xenosoft.de>
+Date: Sat, 15 May 2021 11:48:16 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <04526309-4653-3349-b6de-e7640c2258d6@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.60
-X-Rspamd-Server: rspamout05
-X-Rspamd-Queue-Id: B36F22448B4
-X-Stat-Signature: sk6bp1su8mgpmhdudeekd6zmd57nm8uk
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX18VobztuKx5cPb+cCAmoDLIOZAXmsA6C+8=
-X-HE-Tag: 1621063666-295586
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,30 +94,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- linux-kbuild@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>,
- Paul Mackerras <paulus@samba.org>, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, Will Deacon <will@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: Darren Stevens <darren@stevens-zone.net>,
+ mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2021-05-15 at 09:14 +0200, Pavel Machek wrote:
-> On Sun 2021-05-02 00:15:38, Masahiro Yamada wrote:
-> > The current minimum GCC version is 4.9 except ARCH=arm64 requiring
-> > GCC 5.1.
-> 
-> Please don't. I'm still on 4.9 on machine I can't easily update,
+Hi All,
 
-Why is that?  Later compiler versions are available.
-http://cdn.kernel.org/pub/tools/crosstool/
+I bisected today [1] and the bisecting itself was OK but the reverting 
+of the bad commit doesn't solve the issue. Do you have an idea which 
+commit could be resposible for this issue? Maybe the bisecting wasn't 
+successful. I will look in the kernel git log. Maybe there is a commit 
+that affected KVM HV on FSL P50x0 machines.
 
-Is there some other reason your machine can not have the compiler
-version updated?
+Thanks,
+Christian
 
+[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=53209#p53209
+
+On 14 May 2021 at 10:10 am, Christian Zigotzky wrote:
+> Hi All,
+>
+> The RC1 of kernel 5.13 doesn't boot in a virtual e5500 QEMU machine 
+> with KVM HV anymore. I see in the serial console that the uImage 
+> doesn't load. I use the following QEMU command for booting:
+>
+> qemu-system-ppc64 -M ppce500 -cpu e5500 -enable-kvm -m 1024 -kernel 
+> uImage-5.13 -drive 
+> format=raw,file=MintPPC32-X5000.img,index=0,if=virtio -netdev 
+> user,id=mynet0 -device e1000,netdev=mynet0 -append "rw root=/dev/vda" 
+> -device virtio-vga -device virtio-mouse-pci -device 
+> virtio-keyboard-pci -device pci-ohci,id=newusb -device 
+> usb-audio,bus=newusb.0 -smp 4
+>
+> The kernel boots without KVM HV.
+>
+> Have you already tested KVM HV with the kernel 5.13?
+>
+> Thanks,
+> Christian
+>
+>
 
