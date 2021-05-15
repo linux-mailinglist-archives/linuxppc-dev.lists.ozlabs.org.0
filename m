@@ -1,59 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4005E381777
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 12:08:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E183817A3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 12:21:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fj1M21RdCz3bsw
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 20:08:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fj1dH13Ryz3bTv
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 May 2021 20:21:07 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KlUSbh7X;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=KlUSbh7X; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fj1Lf0CNyz2yYP
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 20:08:21 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Fj1LW2Hc7z9sZx;
- Sat, 15 May 2021 12:08:19 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 71uUNgqQvqJQ; Sat, 15 May 2021 12:08:19 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Fj1LW17l1z9sZw;
- Sat, 15 May 2021 12:08:19 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F03318B76E;
- Sat, 15 May 2021 12:08:18 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id DW0Ta4PfXQm9; Sat, 15 May 2021 12:08:18 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 67E7A8B765;
- Sat, 15 May 2021 12:08:18 +0200 (CEST)
-Subject: Re: [FSL P50x0] KVM HV doesn't work anymore
-To: Christian Zigotzky <chzigotzky@xenosoft.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>
-References: <04526309-4653-3349-b6de-e7640c2258d6@xenosoft.de>
- <34617b1b-e213-668b-05f6-6fce7b549bf0@xenosoft.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <9af2c1c9-2caf-120b-2f97-c7722274eee3@csgroup.eu>
-Date: Sat, 15 May 2021 12:08:10 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fj1cn3r4kz2xyC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 20:20:41 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 84332613ED
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 May 2021 10:20:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1621074038;
+ bh=Fd5xrJQ6VIPyVEKzRKvpXOg+Gjet7mwqDnrFMPRIFeQ=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=KlUSbh7XAdjYUj1IuN4nfttkEpGhR/ubcMeXtL5P/iBz0jNbhx+JbimOl2FcjcmyV
+ lj8J61oGegZ/X3OhC/cy46U/kT2b/KJsVJkgsIIkcv555OjzSdMv4wHiKIThTWbUDs
+ +DKAi75fpG3M79+y4CdHhLr3V4zTjVRNIPNcxaSq2XNI+r/fmQCTkuTjMlh1PjhU5v
+ SIqo2dTVX4KH4ZmBBKyl9x9Xd3q0n25697z0yovrdcIFDqm5bq8omB4hBfkhzrggGM
+ NIreIHzzEbL+Ka29q9Tb+Z3qZL3xLEwi30215K37boKPTTaE5SIxcPHZgYInc8YAG9
+ 4Ptj9zi+z4V1A==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id 729DD61026; Sat, 15 May 2021 10:20:38 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 213069] kernel BUG at
+ arch/powerpc/include/asm/book3s/64/hash-4k.h:147! Oops: Exception in kernel
+ mode, sig: 5 [#1]
+Date: Sat, 15 May 2021 10:20:38 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-213069-206035-ypXNsIZBVl@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-213069-206035@https.bugzilla.kernel.org/>
+References: <bug-213069-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <34617b1b-e213-668b-05f6-6fce7b549bf0@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,57 +79,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D213069
 
+--- Comment #1 from Erhard F. (erhard_f@mailbox.org) ---
+The bug occurs with DEBUG_VM_PGTABLE=3Dy. When DEBUG_VM_PGTABLE is not set =
+the
+kernel boots fine.
 
-Le 15/05/2021 à 11:48, Christian Zigotzky a écrit :
-> Hi All,
-> 
-> I bisected today [1] and the bisecting itself was OK but the reverting of the bad commit doesn't 
-> solve the issue. Do you have an idea which commit could be resposible for this issue? Maybe the 
-> bisecting wasn't successful. I will look in the kernel git log. Maybe there is a commit that 
-> affected KVM HV on FSL P50x0 machines.
+--=20
+You may reply to this email to add a comment.
 
-If the uImage doesn't load, it may be because of the size of uImage.
-
-See https://github.com/linuxppc/issues/issues/208
-
-Is there a significant size difference with and without KVM HV ?
-
-Maybe you can try to remove another option to reduce the size of the uImage.
-
-Or if you are using gzipped uImage you can try with an lzma uImage. You can find a way to get an 
-lzma uImage here: https://github.com/linuxppc/issues/issues/208#issuecomment-477479951
-
-Christophe
-
-> 
-> Thanks,
-> Christian
-> 
-> [1] https://forum.hyperion-entertainment.com/viewtopic.php?p=53209#p53209
-> 
-> On 14 May 2021 at 10:10 am, Christian Zigotzky wrote:
->> Hi All,
->>
->> The RC1 of kernel 5.13 doesn't boot in a virtual e5500 QEMU machine with KVM HV anymore. I see in 
->> the serial console that the uImage doesn't load. I use the following QEMU command for booting:
->>
->> qemu-system-ppc64 -M ppce500 -cpu e5500 -enable-kvm -m 1024 -kernel uImage-5.13 -drive 
->> format=raw,file=MintPPC32-X5000.img,index=0,if=virtio -netdev user,id=mynet0 -device 
->> e1000,netdev=mynet0 -append "rw root=/dev/vda" -device virtio-vga -device virtio-mouse-pci -device 
->> virtio-keyboard-pci -device pci-ohci,id=newusb -device usb-audio,bus=newusb.0 -smp 4
->>
->> The kernel boots without KVM HV.
->>
->> Have you already tested KVM HV with the kernel 5.13?
->>
->> Thanks,
->> Christian
->>
->>
+You are receiving this mail because:
+You are watching the assignee of the bug.=
