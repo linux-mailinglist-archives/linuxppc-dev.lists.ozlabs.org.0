@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A2E38231F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 05:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E603B382321
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 05:38:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fk4Zp6xyXz3d5g
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 13:37:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fk4bH6Srzz3c4S
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 13:38:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Qxn0R3mJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=BIXwN1SX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f;
- helo=mail-pl1-x62f.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
+ helo=mail-pf1-x42c.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Qxn0R3mJ; dkim-atps=neutral
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
- [IPv6:2607:f8b0:4864:20::62f])
+ header.s=20161025 header.b=BIXwN1SX; dkim-atps=neutral
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
+ [IPv6:2607:f8b0:4864:20::42c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fk4Vm6jdtz3bsF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 13:34:08 +1000 (AEST)
-Received: by mail-pl1-x62f.google.com with SMTP id b21so2386111plz.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 20:34:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fk4Vt0j11z3btS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 13:34:13 +1000 (AEST)
+Received: by mail-pf1-x42c.google.com with SMTP id e19so4031038pfv.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 20:34:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=73lCnqrVhO1Rqxiqs9OGNpEuWzRE3MRG2Lu6lmhZPKo=;
- b=Qxn0R3mJ1DXFbfPOS0rqR9LqVVbGnL5iH4EakKLZrv+yxqDCGr06wrEdvSdWKJ8tou
- eApAYwEzWuROr7jmEoERGtJlA9sU6fKJrPEN/vWCHJb9ipj+79wmSsC5zwJbb8dDmUJQ
- VgjDp6zQmb3psLsnJiDeUI3BHofdLdy1VSWYDFW8zQVg69XcdoWxtbfoA/eFoC3PIGPA
- HYiaBW7CDKgLxWkdPD66sFsNECAQ0WuwYezDn4CImI+z+DFzipT+mduTaTkfoxac36I7
- ij+o42Q6svCLtyDAm2yMckwuWe60Fek55Z75QchX/K6b/Wq4eMyc5DV4slavj2CngzY/
- QXiA==
+ bh=s0CtcMDYsFJeK2HIudgA+Uky01mskMES4MW4Sd7s+yo=;
+ b=BIXwN1SXExgrkQQa492Mvu8s8f8QaOghwKc7TDUtOkHBrUEGsws4M0pN2aSXKruIVI
+ sUTOp50shND98iPxgdWPPzxi8kflp/uc25Ez3nJOpiDUc09DRB25OwILKt8572UNAfjM
+ CMhxUdQswsAciLn9dIsw5RAjP0BSpl90Ye+GtqTKsZwpDyomguAMmMCEhRIWHcx2vQPg
+ f/yw4H2aj7Ql/qzThPMYOLDxOiya1eOwjnhx7XPcFrGzbCcoUwAVgfsZj1K53kWzHWLv
+ iOpyDgpDm0r5R8+qrxbxpCzSVbYNA/YYsYYWmUKSoZn2D8pvJoR1Xp1tCdqeMagiVRqu
+ fGuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=73lCnqrVhO1Rqxiqs9OGNpEuWzRE3MRG2Lu6lmhZPKo=;
- b=hFbRXHE/4RVAegqPa+9YVV+RECL9Te186Xd0KrMzTaVzUQa3AMBk1AsVi6ucPVjUgm
- UBplQ9xcdw+3fYxWkfUJkC/d9lY9doDbyfXXPAFTnQQggnijvTevfxaW6k3RPLVib4MI
- GjSTz5JSMhv2He7SCRABWmPqpMNe9hILwJUIbqXaDT/w9VetfYQqkztjckLI77wbuwSG
- 6oBKnpQwd//I2/GipquIkQ3X/msZZ6ynKp/lxJEaeFViKxa7KKpJ/wTk7D7qybvDtD0m
- 8Tfl0sfdaGgayc4ivAGS67cqi6T04sANqIKT6unNktSWPQvWVp8iS/mwooGRr/bhsy/I
- ehqw==
-X-Gm-Message-State: AOAM533MgLetuX0JGLm0LleAO1zUHBt2l8yflq4HD5QxPKQgWRgdmA1I
- n8jdufSDB4rKknbUu20qDP4PpeI3QVU=
-X-Google-Smtp-Source: ABdhPJznWr92PADFOTrKUw4h19YJbeSY4n5XIj4T+rr8C5DsMUYbqFcbm2Q7foOnfa4s1h/jPFdgzQ==
-X-Received: by 2002:a17:903:2403:b029:ee:eaf1:848d with SMTP id
- e3-20020a1709032403b02900eeeaf1848dmr58148756plo.63.1621222446354; 
- Sun, 16 May 2021 20:34:06 -0700 (PDT)
+ bh=s0CtcMDYsFJeK2HIudgA+Uky01mskMES4MW4Sd7s+yo=;
+ b=PuBWyPJCIxx5QWu29jiBBDnV8QnfwOo4cwni/0MoMFzn9692h+VW1NHhyo+pYMiU3p
+ NA3ORvLwF54tw/fo1++8sx1P37rop+q5KpAAVC3zujR3/uTjdP33XGBovSStFWsaGhof
+ N+3YUZDj27dYEmABfG+NT0Ach8sUzKRd1c+ZDgm49gdfi0eQmtdKE7ln/4rF9cghS3wd
+ KiCXj6Ra/CaZ566/jW/WMjuoZwFHhN/II65H7mb1pd41ytzqwXwMxzS0rDYEiN3WapW+
+ +O6Int69rQ9C1s2XB2b5m/SJkQgNwd5Q8YUKFmeiFUFhEm1yWlzyBdBYq9GBPrut3rPr
+ RLPQ==
+X-Gm-Message-State: AOAM532c3AQnQD/64NL2tKxi4TFdyMiMv/UoYNtr/b4grTMWJm+hgVl4
+ /JJLV6BLfJPh4/KPeCy9e5uRl/vxUW0=
+X-Google-Smtp-Source: ABdhPJwjITjLKI9E2I2ipjGZ7Ms2j/NL+ZbFB7urWQ7tLsQCuZBHcyKc33+qtAheyz4l22TRhtEP3g==
+X-Received: by 2002:a62:2e04:0:b029:2db:4c99:614f with SMTP id
+ u4-20020a622e040000b02902db4c99614fmr4792700pfu.47.1621222451357; 
+ Sun, 16 May 2021 20:34:11 -0700 (PDT)
 Received: from tee480.ibm.com (159-196-117-139.9fc475.syd.nbn.aussiebb.net.
  [159.196.117.139])
- by smtp.gmail.com with ESMTPSA id s3sm9785418pgs.62.2021.05.16.20.34.01
+ by smtp.gmail.com with ESMTPSA id s3sm9785418pgs.62.2021.05.16.20.34.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 May 2021 20:34:06 -0700 (PDT)
+ Sun, 16 May 2021 20:34:11 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v14 8/9] powerpc/mm: implement set_memory_attr()
-Date: Mon, 17 May 2021 13:28:09 +1000
-Message-Id: <20210517032810.129949-9-jniethe5@gmail.com>
+Subject: [PATCH v14 9/9] powerpc/32: use set_memory_attr()
+Date: Mon, 17 May 2021 13:28:10 +1000
+Message-Id: <20210517032810.129949-10-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210517032810.129949-1-jniethe5@gmail.com>
 References: <20210517032810.129949-1-jniethe5@gmail.com>
@@ -81,8 +81,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, cmr@codefail.de, kbuild test robot <lkp@intel.com>,
- npiggin@gmail.com, aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com,
+Cc: ajd@linux.ibm.com, cmr@codefail.de, npiggin@gmail.com,
+ aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com,
  Jordan Niethe <jniethe5@gmail.com>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
@@ -90,80 +90,138 @@ Sender: "Linuxppc-dev"
 
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-In addition to the set_memory_xx() functions which allows to change
-the memory attributes of not (yet) used memory regions, implement a
-set_memory_attr() function to:
-- set the final memory protection after init on currently used
-kernel regions.
-- enable/disable kernel memory regions in the scope of DEBUG_PAGEALLOC.
+Use set_memory_attr() instead of the PPC32 specific change_page_attr()
 
-Unlike the set_memory_xx() which can act in three step as the regions
-are unused, this function must modify 'on the fly' as the kernel is
-executing from them. At the moment only PPC32 will use it and changing
-page attributes on the fly is not an issue.
+change_page_attr() was checking that the address was not mapped by
+blocks and was handling highmem, but that's unneeded because the
+affected pages can't be in highmem and block mapping verification
+is already done by the callers.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reported-by: kbuild test robot <lkp@intel.com>
-[ruscur: cast "data" to unsigned long instead of int]
+[ruscur: rebase on powerpc/merge with Christophe's new patches]
 Signed-off-by: Russell Currey <ruscur@russell.cc>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/include/asm/set_memory.h |  2 ++
- arch/powerpc/mm/pageattr.c            | 33 +++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
+ arch/powerpc/mm/pgtable_32.c | 60 ++++++------------------------------
+ 1 file changed, 10 insertions(+), 50 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
-index 64011ea444b4..b040094f7920 100644
---- a/arch/powerpc/include/asm/set_memory.h
-+++ b/arch/powerpc/include/asm/set_memory.h
-@@ -29,4 +29,6 @@ static inline int set_memory_x(unsigned long addr, int numpages)
- 	return change_memory_attr(addr, numpages, SET_MEMORY_X);
+diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
+index e0ec67a16887..dcf5ecca19d9 100644
+--- a/arch/powerpc/mm/pgtable_32.c
++++ b/arch/powerpc/mm/pgtable_32.c
+@@ -23,6 +23,7 @@
+ #include <linux/highmem.h>
+ #include <linux/memblock.h>
+ #include <linux/slab.h>
++#include <linux/set_memory.h>
+ 
+ #include <asm/pgalloc.h>
+ #include <asm/fixmap.h>
+@@ -132,64 +133,20 @@ void __init mapin_ram(void)
+ 	}
  }
  
-+int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot);
-+
- #endif
-diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-index 5e5ae50a7f23..0876216ceee6 100644
---- a/arch/powerpc/mm/pageattr.c
-+++ b/arch/powerpc/mm/pageattr.c
-@@ -99,3 +99,36 @@ int change_memory_attr(unsigned long addr, int numpages, long action)
- 	return apply_to_existing_page_range(&init_mm, start, size,
- 					    change_page_attr, (void *)action);
+-static int __change_page_attr_noflush(struct page *page, pgprot_t prot)
+-{
+-	pte_t *kpte;
+-	unsigned long address;
+-
+-	BUG_ON(PageHighMem(page));
+-	address = (unsigned long)page_address(page);
+-
+-	if (v_block_mapped(address))
+-		return 0;
+-	kpte = virt_to_kpte(address);
+-	if (!kpte)
+-		return -EINVAL;
+-	__set_pte_at(&init_mm, address, kpte, mk_pte(page, prot), 0);
+-
+-	return 0;
+-}
+-
+-/*
+- * Change the page attributes of an page in the linear mapping.
+- *
+- * THIS DOES NOTHING WITH BAT MAPPINGS, DEBUG USE ONLY
+- */
+-static int change_page_attr(struct page *page, int numpages, pgprot_t prot)
+-{
+-	int i, err = 0;
+-	unsigned long flags;
+-	struct page *start = page;
+-
+-	local_irq_save(flags);
+-	for (i = 0; i < numpages; i++, page++) {
+-		err = __change_page_attr_noflush(page, prot);
+-		if (err)
+-			break;
+-	}
+-	wmb();
+-	local_irq_restore(flags);
+-	flush_tlb_kernel_range((unsigned long)page_address(start),
+-			       (unsigned long)page_address(page));
+-	return err;
+-}
+-
+ void mark_initmem_nx(void)
+ {
+-	struct page *page = virt_to_page(_sinittext);
+ 	unsigned long numpages = PFN_UP((unsigned long)_einittext) -
+ 				 PFN_DOWN((unsigned long)_sinittext);
+ 
+ 	if (v_block_mapped((unsigned long)_sinittext))
+ 		mmu_mark_initmem_nx();
+ 	else
+-		change_page_attr(page, numpages, PAGE_KERNEL);
++		set_memory_attr((unsigned long)_sinittext, numpages, PAGE_KERNEL);
  }
+ 
+ #ifdef CONFIG_STRICT_KERNEL_RWX
+ void mark_rodata_ro(void)
+ {
+-	struct page *page;
+ 	unsigned long numpages;
+ 
+ 	if (v_block_mapped((unsigned long)_stext + 1)) {
+@@ -198,20 +155,18 @@ void mark_rodata_ro(void)
+ 		return;
+ 	}
+ 
+-	page = virt_to_page(_stext);
+ 	numpages = PFN_UP((unsigned long)_etext) -
+ 		   PFN_DOWN((unsigned long)_stext);
+ 
+-	change_page_attr(page, numpages, PAGE_KERNEL_ROX);
++	set_memory_attr((unsigned long)_stext, numpages, PAGE_KERNEL_ROX);
+ 	/*
+ 	 * mark .rodata as read only. Use __init_begin rather than __end_rodata
+ 	 * to cover NOTES and EXCEPTION_TABLE.
+ 	 */
+-	page = virt_to_page(__start_rodata);
+ 	numpages = PFN_UP((unsigned long)__init_begin) -
+ 		   PFN_DOWN((unsigned long)__start_rodata);
+ 
+-	change_page_attr(page, numpages, PAGE_KERNEL_RO);
++	set_memory_attr((unsigned long)__start_rodata, numpages, PAGE_KERNEL_RO);
+ 
+ 	// mark_initmem_nx() should have already run by now
+ 	ptdump_check_wx();
+@@ -221,9 +176,14 @@ void mark_rodata_ro(void)
+ #ifdef CONFIG_DEBUG_PAGEALLOC
+ void __kernel_map_pages(struct page *page, int numpages, int enable)
+ {
++	unsigned long addr = (unsigned long)page_address(page);
 +
-+/*
-+ * Set the attributes of a page:
-+ *
-+ * This function is used by PPC32 at the end of init to set final kernel memory
-+ * protection. It includes changing the maping of the page it is executing from
-+ * and data pages it is using.
-+ */
-+static int set_page_attr(pte_t *ptep, unsigned long addr, void *data)
-+{
-+	pgprot_t prot = __pgprot((unsigned long)data);
-+
-+	spin_lock(&init_mm.page_table_lock);
-+
-+	set_pte_at(&init_mm, addr, ptep, pte_modify(*ptep, prot));
-+	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-+
-+	spin_unlock(&init_mm.page_table_lock);
-+
-+	return 0;
-+}
-+
-+int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot)
-+{
-+	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
-+	unsigned long sz = numpages * PAGE_SIZE;
-+
-+	if (numpages <= 0)
-+		return 0;
-+
-+	return apply_to_existing_page_range(&init_mm, start, sz, set_page_attr,
-+					    (void *)pgprot_val(prot));
-+}
+ 	if (PageHighMem(page))
+ 		return;
+ 
+-	change_page_attr(page, numpages, enable ? PAGE_KERNEL : __pgprot(0));
++	if (enable)
++		set_memory_attr(addr, numpages, PAGE_KERNEL);
++	else
++		set_memory_attr(addr, numpages, __pgprot(0));
+ }
+ #endif /* CONFIG_DEBUG_PAGEALLOC */
 -- 
 2.25.1
 
