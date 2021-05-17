@@ -1,73 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD26F382430
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 08:21:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E529382477
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 08:38:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fk8D46jwjz3bxj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 16:21:40 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I8WJRMAT;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fk8bC6VJ5z30D6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 16:38:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=I8WJRMAT; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fk8CZ1NyFz2xgN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 16:21:14 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 6D75861221
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 06:21:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621232469;
- bh=eZCA5a91xEXYITRRlFq8s8S47/suiy5RVH/PV/p4pzc=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=I8WJRMAThylaHok2MCUsoktuTKN9OersvJcvkyHR6lt0AkSoFDFFVIn4UEXfv3fuV
- CKifkFmW0ZPLKOl5SWac6bnmT8aZmMvuXIhBXNWAcQd+5EgI1X8alIFEVn15U0DAA9
- UwEjHL7w8AAG7FUQEzjp5l6UnWCdiCdnJC2FpQFMbwZfyjKXBJcSbG+pOHm51teika
- L469Pfq+QUoDC/fGzFkDUzBRRMNWhFtKeuFIMRypjMt+hCGVzy17riNuqYbPYxWdDF
- VnsVT9P8qH8TW81SE2dTAbd35EKS8mRKKrv+OTCKWHE4FxZLaYcMEBgJjqZ0xgSzy1
- gGyku/GIkP7KQ==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 5B8F161105; Mon, 17 May 2021 06:21:09 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 213069] kernel BUG at
- arch/powerpc/include/asm/book3s/64/hash-4k.h:147! Oops: Exception in kernel
- mode, sig: 5 [#1]
-Date: Mon, 17 May 2021 06:21:09 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: christophe.leroy@csgroup.eu
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-213069-206035-Dy9D6J7JJz@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-213069-206035@https.bugzilla.kernel.org/>
-References: <bug-213069-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fk8Zs2pXqz2xtr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 16:37:54 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Fk8Zl3qFqz9sYq;
+ Mon, 17 May 2021 08:37:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id v3pCbAgC_8q6; Mon, 17 May 2021 08:37:51 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Fk8Zl2qX1z9sYN;
+ Mon, 17 May 2021 08:37:51 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 44B5C8B784;
+ Mon, 17 May 2021 08:37:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id oDG8ORIn4yZo; Mon, 17 May 2021 08:37:51 +0200 (CEST)
+Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0575E8B783;
+ Mon, 17 May 2021 08:37:51 +0200 (CEST)
+Subject: Re: [PATCH v14 3/9] powerpc/modules: Make module_alloc() Strict
+ Module RWX aware
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210517032810.129949-1-jniethe5@gmail.com>
+ <20210517032810.129949-4-jniethe5@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <04311ba7-8b91-6837-2bc5-1f55f49da253@csgroup.eu>
+Date: Mon, 17 May 2021 08:36:57 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
+In-Reply-To: <20210517032810.129949-4-jniethe5@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,33 +64,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: ajd@linux.ibm.com, npiggin@gmail.com, cmr@codefail.de,
+ aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D213069
 
-Christophe Leroy (christophe.leroy@csgroup.eu) changed:
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |christophe.leroy@csgroup.eu
+Le 17/05/2021 à 05:28, Jordan Niethe a écrit :
+> Make module_alloc() use PAGE_KERNEL protections instead of
+> PAGE_KERNEL_EXEX if Strict Module RWX is enabled.
+> 
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v14: - Split out from powerpc: Set ARCH_HAS_STRICT_MODULE_RWX
+>       - Add and use strict_module_rwx_enabled() helper
+> ---
+>   arch/powerpc/include/asm/mmu.h | 5 +++++
+>   arch/powerpc/kernel/module.c   | 4 +++-
+>   2 files changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+> index 607168b1aef4..7710bf0cbf8a 100644
+> --- a/arch/powerpc/include/asm/mmu.h
+> +++ b/arch/powerpc/include/asm/mmu.h
+> @@ -357,6 +357,11 @@ static inline bool strict_kernel_rwx_enabled(void)
+>   	return false;
+>   }
+>   #endif
+> +
+> +static inline bool strict_module_rwx_enabled(void)
+> +{
+> +	return IS_ENABLED(CONFIG_STRICT_MODULE_RWX) && strict_kernel_rwx_enabled();
+> +}
 
---- Comment #2 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
-The bug is not in powerpc but in function pmd_basic_tests() in
-mm/debug_vm_pgtable.c
-(https://elixir.bootlin.com/linux/v5.13-rc1/source/mm/debug_vm_pgtable.c#L1=
-46)
+Looking at arch/Kconfig, I have the feeling that it is possible to select CONFIG_STRICT_MODULE_RWX 
+without selecting CONFIG_STRICT_KERNEL_RWX.
 
-pfn_pmd() should not be called before the has_transparent_hugepage()
-verification.
+In that case, strict_kernel_rwx_enabled() will return false.
 
-Same problem in pmd_advanced_tests()
-
-And there is the exact same issue with PUD tests with pfn_pud() function.
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+>   #endif /* !__ASSEMBLY__ */
+>   
+>   /* The kernel use the constants below to index in the page sizes array.
+> diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.c
+> index 3f35c8d20be7..ed04a3ba66fe 100644
+> --- a/arch/powerpc/kernel/module.c
+> +++ b/arch/powerpc/kernel/module.c
+> @@ -92,12 +92,14 @@ int module_finalize(const Elf_Ehdr *hdr,
+>   static __always_inline void *
+>   __module_alloc(unsigned long size, unsigned long start, unsigned long end)
+>   {
+> +	pgprot_t prot = strict_module_rwx_enabled() ? PAGE_KERNEL : PAGE_KERNEL_EXEC;
+> +
+>   	/*
+>   	 * Don't do huge page allocations for modules yet until more testing
+>   	 * is done. STRICT_MODULE_RWX may require extra work to support this
+>   	 * too.
+>   	 */
+> -	return __vmalloc_node_range(size, 1, start, end, GFP_KERNEL, PAGE_KERNEL_EXEC,
+> +	return __vmalloc_node_range(size, 1, start, end, GFP_KERNEL, prot,
+>   				    VM_FLUSH_RESET_PERMS | VM_NO_HUGE_VMAP,
+>   				    NUMA_NO_NODE, __builtin_return_address(0));
+>   }
+> 
