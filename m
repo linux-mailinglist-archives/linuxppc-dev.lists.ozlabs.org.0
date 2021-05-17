@@ -1,102 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58C6382E01
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 15:52:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7301A382E0F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 15:56:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkLDf6LnZz2yyM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 23:52:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkLK31xT6z30L4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 23:56:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WWvt0XHV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mXPHfhSR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=WWvt0XHV; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=mXPHfhSR; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FkLD74VXKz2yYK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:52:23 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14HDWnFQ027049; Mon, 17 May 2021 09:52:09 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FkLJW1grWz2xv0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:56:10 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14HDWvgp032222; Mon, 17 May 2021 09:55:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- in-reply-to : references : date : message-id : mime-version : content-type
- : content-transfer-encoding; s=pp1;
- bh=kdXF6jEvBAmo3Lc0xsbbySEV8VmbYVv7BSCauJaZv1U=;
- b=WWvt0XHVNKEeNsriRa7WaDkqMGv1KdPzQ5g311mL2Uh8T91jXq6rLyYLljhx6/Lfxubd
- OPJ/hwe2cpyaajPqtPLifqLJWEmfiNXdwPRSLQaZHGRZwuvtjpOI2ruA9aRlj38G75P6
- lXSRQhxYrJNaUaLWOvANflh78dCr1pbvEj2uGLpJRHwx3sFRrvDOLjZGhAVAGdcfAIJR
- PXVD2PAfCXpadGcCgprDzIFp5u8u0t1G6XCxXli+O85dQqDiFE94sBI83TQb4nah4ZeK
- zaKusAbO2DurzL4xqLqvyd80lMQqfZu/NBRAOj0Dr5tpi45S8yRAeLrImZN1TR8lDpUN Kg== 
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=Us9UKM1phQm8WG0lDFhJ4ywiIounM6yTagUbweo+Yz0=;
+ b=mXPHfhSRW7asfKCJTIohzx1mPjAhng1Ti8CIbkvFKLmQDeC/LpGxn9JcKSc3m5wlT5oL
+ 0jUHiDNVW496/gv24QfH+bGftI3SVi9QGAEVrf/5zC4E86aEpHC4kldAP3HA9sSleDRy
+ 391dS9UAOCoRID3nhwzKi/qxTe0EOXZF95o3YKr4rTM83dLB1ihjvtfqE+EK1lGet+/d
+ sptpsGCsbAdil8DscFyFdn+CapWGAtYMT13FY4o2zIca4ygPOpgPfti/poyfpL4qyZe6
+ XlHII5YLo8/FKYVMig9frXIgbYKrn5HOIhTDxS3pJdymyY4KAY3YkFzQWLJIQDAVZxVa qA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 38krxj1wxu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 May 2021 09:55:54 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14HDXbwm034065;
+ Mon, 17 May 2021 09:55:54 -0400
 Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
  [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38krr7t6s3-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 38krxj1wxp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 May 2021 09:52:09 -0400
+ Mon, 17 May 2021 09:55:54 -0400
 Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14HDmZ2J006816;
- Mon, 17 May 2021 13:52:08 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com
- (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
- by ppma04dal.us.ibm.com with ESMTP id 38j5x9kcck-1
+ by ppma04dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14HDqWFM014822;
+ Mon, 17 May 2021 13:55:53 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma04dal.us.ibm.com with ESMTP id 38j5x9kd2e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 May 2021 13:52:08 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14HDq7kC32833902
+ Mon, 17 May 2021 13:55:53 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14HDtqDO32375066
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 May 2021 13:52:07 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 67C076E084;
- Mon, 17 May 2021 13:52:07 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1AF4F6E064;
- Mon, 17 May 2021 13:52:06 +0000 (GMT)
+ Mon, 17 May 2021 13:55:52 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 38A92BE079;
+ Mon, 17 May 2021 13:55:52 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B7FF2BE069;
+ Mon, 17 May 2021 13:55:48 +0000 (GMT)
 Received: from skywalker.linux.ibm.com (unknown [9.199.40.240])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 17 May 2021 13:52:05 +0000 (GMT)
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 17 May 2021 13:55:48 +0000 (GMT)
 X-Mailer: emacs 28.0.50 (via feedmail 11-beta-1 I)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: Fwd: [Bug 213069] New: kernel BUG at
- arch/powerpc/include/asm/book3s/64/hash-4k.h:147! Oops: Exception in
- kernel mode, sig: 5 [#1]
-In-Reply-To: <6fcdf4f2-9bed-4b0f-8ed8-74cb25484ea6@arm.com>
-References: <bug-213069-206035@https.bugzilla.kernel.org/>
- <4deb5cd5-c713-b020-9143-c74a031e3fd5@csgroup.eu>
- <a8841b4e-3bff-f600-eac7-501f78ced54b@arm.com>
- <7ebc28ad-61e3-ef43-d670-9b80a61268c4@csgroup.eu>
- <e9558e0a-314e-ddfd-6776-84c1bfe6f01f@linux.ibm.com>
- <6fcdf4f2-9bed-4b0f-8ed8-74cb25484ea6@arm.com>
-Date: Mon, 17 May 2021 19:22:03 +0530
-Message-ID: <87tun1qxh8.fsf@linux.ibm.com>
-MIME-Version: 1.0
+To: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v5 5/9] powerpc/mm/book3s64: Update tlb flush routines
+ to take a page walk cache flush argument
+In-Reply-To: <d830fce9-c00a-e879-4115-94a2346a806f@roeck-us.net>
+References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
+ <20210422054323.150993-6-aneesh.kumar@linux.ibm.com>
+ <20210515163525.GA1106462@roeck-us.net>
+ <e0eba73a-c2df-71c3-e03d-d4074d908fca@linux.ibm.com>
+ <d830fce9-c00a-e879-4115-94a2346a806f@roeck-us.net>
+Date: Mon, 17 May 2021 19:25:46 +0530
+Message-ID: <87pmxpqxb1.fsf@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: LVpzxbaxcmVLl_hiAI-dwiu8EeP4SwOd
-X-Proofpoint-GUID: LVpzxbaxcmVLl_hiAI-dwiu8EeP4SwOd
+X-Proofpoint-ORIG-GUID: AAIc0caZr1voZgopm7zPOn0y3KoI9oAF
+X-Proofpoint-GUID: 28_3rmCyY6EIbEGvsKbm1T0JpgCp8-3M
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-05-17_05:2021-05-17,
  2021-05-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0
- mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 phishscore=0
- impostorscore=0 clxscore=1015 mlxscore=0 spamscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ bulkscore=0 spamscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ phishscore=0 mlxlogscore=999 clxscore=1015 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104190000 definitions=main-2105170096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -109,116 +113,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: npiggin@gmail.com, linux-mm@kvack.org, kaleshsingh@google.com,
+ joel@joelfernandes.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Anshuman Khandual <anshuman.khandual@arm.com> writes:
+Guenter Roeck <linux@roeck-us.net> writes:
 
-> On 5/17/21 11:25 AM, Aneesh Kumar K.V wrote:
->> On 5/17/21 11:17 AM, Christophe Leroy wrote:
->>> +aneesh
->>> +linuxppc-dev list
+> On 5/17/21 1:40 AM, Aneesh Kumar K.V wrote:
+>> On 5/15/21 10:05 PM, Guenter Roeck wrote:
+>>> On Thu, Apr 22, 2021 at 11:13:19AM +0530, Aneesh Kumar K.V wrote:
+
+...
+
+>>> =C2=A0 extern void radix__local_flush_all_mm(struct mm_struct *mm);
+>>>> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powe=
+rpc/include/asm/book3s/64/tlbflush.h
+>>>> index 215973b4cb26..f9f8a3a264f7 100644
+>>>> --- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
+>>>> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+>>>> @@ -45,13 +45,30 @@ static inline void tlbiel_all_lpid(bool radix)
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hash__tlbiel_al=
+l(TLB_INVAL_SCOPE_LPID);
+>>>> =C2=A0 }
+>>>> +static inline void flush_pmd_tlb_pwc_range(struct vm_area_struct *vma,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned lo=
+ng start,
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned lo=
+ng end,
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool flush_=
+pwc)
+>>>> +{
+>>>> +=C2=A0=C2=A0=C2=A0 if (radix_enabled())
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return radix__flush_pmd_tl=
+b_range(vma, start, end, flush_pwc);
+>>>> +=C2=A0=C2=A0=C2=A0 return hash__flush_tlb_range(vma, start, end);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^
 >>>
->>> Le 17/05/2021 =C3=A0 07:44, Anshuman Khandual a =C3=A9crit=C2=A0:
->>>> Hello Christophe,
->>>>
->>>> DEBUG_VM_PGTABLE has now been re-enabled on powerpc recently ? was not
->>>> aware about this. From the error log, it failed explicitly on 4K page
->>>> size hash config.
->>>>
->>>> static inline pmd_t hash__pmd_mkhuge(pmd_t pmd)
->>>> {
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BUG();=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 ------> Failed
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return pmd;
->>>> }
->>>>
->>>> static inline pmd_t __pmd_mkhuge(pmd_t pmd)
->>>> {
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (radix_enabled())
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 return radix__pmd_mkhuge(pmd);
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return hash__pmd_mkhu=
-ge(pmd);
->>>> }
->>>>
->>>> pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot)
->>>> {
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long pmdv;
->>>>
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pmdv =3D (pfn << PAGE=
-_SHIFT) & PTE_RPN_MASK;
->>>>
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return __pmd_mkhuge(p=
-md_set_protbits(__pmd(pmdv), pgprot));
->>>> }
->>>>
->>>> It seems like on powerpc, where pfn_pmd() makes a huge page but which
->>>> is not supported on 4K hash config thus triggering the BUG(). But all
->>>> pfn_pmd() call sites inside the debug_vm_pgtable() test are protected
->>>> with CONFIG_TRANSPARENT_HUGEPAGE. IIUC unlike powerpc, pfn_pmd() does
->>>> not directly make a huge page on other platforms.
->>>>
->>>> Looking at arch/powerpc/include/asm/book3s/64/hash-4k.h, all relevant
->>>> THP helpers has BUG() or 0 which indicates THP might not be supported
->>>> on 4K page size hash config ?
->>>>
->>>> But looking at arch/powerpc/platforms/Kconfig.cputype, it seems like
->>>> HAVE_ARCH_TRANSPARENT_HUGEPAGE is invariably selected on PPC_BOOK3S_64
->>>> platforms which I assume includes 4K page size hash config as well.
->>>>
->>>> Is THP some how getting enabled on this 4K page size hash config where
->>>> it should not be (thus triggering the BUG) ? OR am I missing something
->>>> here.
->>>>
->>>
+>>>> +}
 >>=20
->> We should put those=C2=A0 pfn_pmd()=C2=A0 and pfn_pud() after
+>> In this specific case we won't have=C2=A0 build errors because,
 >>=20
->> =C2=A0=C2=A0=C2=A0=C2=A0if (!has_transparent_hugepage())
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+>> static inline void hash__flush_tlb_range(struct vm_area_struct *vma,
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long start, un=
+signed long end)
+>> {
+>>=20
 >
-> The following patch has been lightly tested on arm64 and x86 platforms.
-> Could you please verify if this solves the problem on powerpc 4K hash
-> config ? Thank you.
+> Sorry, you completely lost me.
+>
+> Building parisc:allnoconfig ... failed
+> --------------
+> Error log:
+> In file included from arch/parisc/include/asm/cacheflush.h:7,
+>                   from include/linux/highmem.h:12,
+>                   from include/linux/pagemap.h:11,
+>                   from include/linux/ksm.h:13,
+>                   from mm/mremap.c:14:
+> mm/mremap.c: In function 'flush_pte_tlb_pwc_range':
+> arch/parisc/include/asm/tlbflush.h:20:2: error: 'return' with a value, in=
+ function returning void
 
-Tested the patch with the below additional change.
+As replied here
+https://lore.kernel.org/mm-commits/8eedb441-a612-1ec8-8bf7-b40184de9f6f@lin=
+ux.ibm.com/
 
-modified   mm/debug_vm_pgtable.c
-@@ -186,12 +186,13 @@ static void __init pmd_advanced_tests(struct mm_struc=
-t *mm,
- 				      unsigned long pfn, unsigned long vaddr,
- 				      pgprot_t prot, pgtable_t pgtable)
- {
--	pmd_t pmd =3D pfn_pmd(pfn, prot);
-+	pmd_t pmd;
-=20
- 	if (!has_transparent_hugepage())
- 		return;
-=20
- 	pr_debug("Validating PMD advanced\n");
-+	pmd =3D pfn_pmd(pfn, prot);
- 	/* Align the address wrt HPAGE_PMD_SIZE */
- 	vaddr =3D (vaddr & HPAGE_PMD_MASK) + HPAGE_PMD_SIZE;
-=20
-@@ -334,12 +335,13 @@ static void __init pud_advanced_tests(struct mm_struc=
-t *mm,
- 				      unsigned long pfn, unsigned long vaddr,
- 				      pgprot_t prot)
- {
--	pud_t pud =3D pfn_pud(pfn, prot);
-+	pud_t pud;
-=20
- 	if (!has_transparent_hugepage())
- 		return;
-=20
- 	pr_debug("Validating PUD advanced\n");
-+	pud =3D pfn_pud(pfn, prot);
- 	/* Align the address wrt HPAGE_PUD_SIZE */
- 	vaddr =3D (vaddr & HPAGE_PUD_MASK) + HPAGE_PUD_SIZE;
-=20
-
-
+That was the generic header change in the patch. I was commenting about the
+ppc64 specific change causing build failures.
 
 -aneesh
+
