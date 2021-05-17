@@ -1,56 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB54382F6B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 16:15:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0203C382FB0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 16:19:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkLkn0w86z304C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 00:15:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkLqB6hwcz3bsC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 00:19:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AH+rpM7l;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=d+ScgR4y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=johan@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82d;
+ helo=mail-qt1-x82d.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=AH+rpM7l; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=d+ScgR4y; dkim-atps=neutral
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com
+ [IPv6:2607:f8b0:4864:20::82d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FkLkM3y0Gz2ym4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 00:15:07 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A05EF616ED;
- Mon, 17 May 2021 14:15:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621260904;
- bh=UiFMXSRuVmmK2AdeQooSJ00/WD/WTu2bQsu3juWAFvs=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=AH+rpM7lRDsvRy6hN78bapKSTbRFQ00On0HKFsS5K+/6NBDpEn5A7Hp0sWXd0yTvs
- hg59vnRTZeii/H24mf16Pk3JU+bXeZ54mSpxAHbRC7t1ocjoo/5u6CEVtNtK6VhAlR
- PBQdESytERsO/EhkyqWivLo5nzV9JJ5nIb+KEQojqBNasY3NEcWm0uLSrs5p1aYhu5
- mommExuT2XSTbCTC7iCUz5NUg2H19kPkZ15oPTI4p+KdczS1bYS8SKvReKoVTQ0yHH
- qZl9qS/FgvWdUy89AIVHEHrTE/Tez2NPt/w3EcDMqFGieF3yDysS5QyWP2sslOKAY8
- t8R0wMW40VbHw==
-Received: from johan by xi.lan with local (Exim 4.94.2)
- (envelope-from <johan@kernel.org>)
- id 1lie1O-0004IP-HI; Mon, 17 May 2021 16:15:03 +0200
-Date: Mon, 17 May 2021 16:15:02 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: Re: [PATCH 6/9] tty: hvc_console: Fix coding style issues of block
- comments
-Message-ID: <YKJ6ZjT8o5xJmBCr@hovoldconsulting.com>
-References: <1621233433-27094-1-git-send-email-tanxiaofei@huawei.com>
- <1621233433-27094-7-git-send-email-tanxiaofei@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FkLph3ltzz2xtx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 00:18:51 +1000 (AEST)
+Received: by mail-qt1-x82d.google.com with SMTP id f8so4924027qth.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 07:18:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:to:cc:references:from:subject:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=z7CDwn4Z3RrKMrbWWCsrq5EqlMuh7Sh4qQd1tbXNXs4=;
+ b=d+ScgR4ycbRnxWoZykRDU2LDfqhErabnJvfpKTIgRAr1AmDp0umL4CeMYzq/sv0Wet
+ 2liKCiBvzMq19LML/5vzrm6L81QlNwPQN+NIH2//RgWHLZQbPBIlE+NVrjEXSdQDXoe5
+ tTnwZu8ffwNx65fOu01aAwihWpgLcr17so3WyFLEWJN9DQ5QMCvk6Tg/737d1ug4kXVU
+ Yed+HjINWpPGIemP+UkDkS0p0JBZnvEz3HrQr+i5WtExpU3IcAWK+dg1LQbeU+HoBDi7
+ iU/M9kOzuXrYQDY9GhnEv6bKyPuoJgfh29EBF2lI0JfuhilOrPdzszFlPW+KzClkwK9X
+ 6FdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:to:cc:references:from:subject:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=z7CDwn4Z3RrKMrbWWCsrq5EqlMuh7Sh4qQd1tbXNXs4=;
+ b=NJxnAAHat7ExYagoaohw42dodOFTG/ET/I3eDyC7AwXRt+EwEPq+CLursme8gP8Qp6
+ uh5rDcKP9RAGEDh0BG+EA5ibb+M7aNns5ulAG0xVpxVLasmDQ0h5EpRnsfYZDOLuoeNm
+ umdlWJoipb4A4gby+5dJljunrsXqkFA8FSXExC63UUZoqPxFwZLmPhqhta447q54U0Mb
+ /BA5ptCP6QtA/21oPfucWXEGtSulqAADm9aC4LSfx0QhcYXPDUigu6MKZBWJh1Y2ng11
+ yh7cSL6gAh3zcEiM0G2bfpernP44tAImr0IWrvyuPwIz0fJg5P8nM/ECuAp93OeSSYlh
+ ScMw==
+X-Gm-Message-State: AOAM532i+Px8HwmNdtr1ThVKMAMlPle7CL9Y7RSetYagz4gogfRbptKO
+ kGfXnuddPTLfnZ/XlvigaNg=
+X-Google-Smtp-Source: ABdhPJzjbNMc/kjFVZ7Bf3esLT+CT3khD0KKBjg6Zlm6WHCkoweAfgQAu7OxTQnZA0QXggjPubmoiw==
+X-Received: by 2002:ac8:6605:: with SMTP id c5mr24120956qtp.21.1621261126038; 
+ Mon, 17 May 2021 07:18:46 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ q7sm10534903qki.17.2021.05.17.07.18.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 May 2021 07:18:45 -0700 (PDT)
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
+ <20210422054323.150993-6-aneesh.kumar@linux.ibm.com>
+ <20210515163525.GA1106462@roeck-us.net>
+ <e0eba73a-c2df-71c3-e03d-d4074d908fca@linux.ibm.com>
+ <d830fce9-c00a-e879-4115-94a2346a806f@roeck-us.net>
+ <87pmxpqxb1.fsf@linux.ibm.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v5 5/9] powerpc/mm/book3s64: Update tlb flush routines to
+ take a page walk cache flush argument
+Message-ID: <a7dd34f3-7d79-c933-fb62-eaad5c83d37a@roeck-us.net>
+Date: Mon, 17 May 2021 07:18:42 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1621233433-27094-7-git-send-email-tanxiaofei@huawei.com>
+In-Reply-To: <87pmxpqxb1.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,49 +90,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- jirislaby@kernel.org, linux-kernel@vger.kernel.org, linuxarm@openeuler.org
+Cc: npiggin@gmail.com, linux-mm@kvack.org, kaleshsingh@google.com,
+ joel@joelfernandes.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 17, 2021 at 02:37:10PM +0800, Xiaofei Tan wrote:
-> Fix coding style issues of block comments, reported by checkpatch.pl.
-> Besides, add a period at the end of the sentenses.
+On 5/17/21 6:55 AM, Aneesh Kumar K.V wrote:
+> Guenter Roeck <linux@roeck-us.net> writes:
 > 
-> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
-> ---
->  drivers/tty/hvc/hvc_console.c | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
+>> On 5/17/21 1:40 AM, Aneesh Kumar K.V wrote:
+>>> On 5/15/21 10:05 PM, Guenter Roeck wrote:
+>>>> On Thu, Apr 22, 2021 at 11:13:19AM +0530, Aneesh Kumar K.V wrote:
 > 
-> diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
-> index 39018e5..a61cdf0 100644
-> --- a/drivers/tty/hvc/hvc_console.c
-> +++ b/drivers/tty/hvc/hvc_console.c
-> @@ -177,7 +177,8 @@ static void hvc_console_print(struct console *co, const char *b,
->  			r = cons_ops[index]->put_chars(vtermnos[index], c, i);
->  			if (r <= 0) {
->  				/* throw away characters on error
-> -				 * but spin in case of -EAGAIN */
-> +				 * but spin in case of -EAGAIN.
-> +				 */
+> ...
+> 
+>>>>    extern void radix__local_flush_all_mm(struct mm_struct *mm);
+>>>>> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+>>>>> index 215973b4cb26..f9f8a3a264f7 100644
+>>>>> --- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
+>>>>> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+>>>>> @@ -45,13 +45,30 @@ static inline void tlbiel_all_lpid(bool radix)
+>>>>>            hash__tlbiel_all(TLB_INVAL_SCOPE_LPID);
+>>>>>    }
+>>>>> +static inline void flush_pmd_tlb_pwc_range(struct vm_area_struct *vma,
+>>>>                    ^^^^
+>>>>> +                       unsigned long start,
+>>>>> +                       unsigned long end,
+>>>>> +                       bool flush_pwc)
+>>>>> +{
+>>>>> +    if (radix_enabled())
+>>>>> +        return radix__flush_pmd_tlb_range(vma, start, end, flush_pwc);
+>>>>> +    return hash__flush_tlb_range(vma, start, end);
+>>>>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>>>
+>>>>> +}
+>>>
+>>> In this specific case we won't have  build errors because,
+>>>
+>>> static inline void hash__flush_tlb_range(struct vm_area_struct *vma,
+>>>                        unsigned long start, unsigned long end)
+>>> {
+>>>
+>>
+>> Sorry, you completely lost me.
+>>
+>> Building parisc:allnoconfig ... failed
+>> --------------
+>> Error log:
+>> In file included from arch/parisc/include/asm/cacheflush.h:7,
+>>                    from include/linux/highmem.h:12,
+>>                    from include/linux/pagemap.h:11,
+>>                    from include/linux/ksm.h:13,
+>>                    from mm/mremap.c:14:
+>> mm/mremap.c: In function 'flush_pte_tlb_pwc_range':
+>> arch/parisc/include/asm/tlbflush.h:20:2: error: 'return' with a value, in function returning void
+> 
+> As replied here
+> https://lore.kernel.org/mm-commits/8eedb441-a612-1ec8-8bf7-b40184de9f6f@linux.ibm.com/
+> 
+> That was the generic header change in the patch. I was commenting about the
+> ppc64 specific change causing build failures.
+> 
 
-How is this an improvement? First, the multi-line comment style is
+Ah, sorry. I wasn't aware that the following is valid C code
 
-	/*
-	 * ...
-	 */
+void f1()
+{
+     return f2();
+     ^^^^^^
+}
 
-Second, that sentence is not capitalised so why do add a period?
+as long as f2() is void as well. Confusing, but we live and learn.
 
-Third, why are you sending checkpatch.pl cleanups for files outside of
-staging?
-
-Unless doing some real changes to the files in question as well this is
-mostly just churn and noise that makes it harder to backport fixes and
-do code forensics for no real gain.
-
-Greg may disagree, but I don't think we should be encouraging this kind
-of patches.
-
-Johan
+Guenter
