@@ -2,49 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2242D382D09
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 15:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B714A382D81
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 15:34:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkKLP0lvHz3017
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 23:12:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkKr01gJ0z3bnb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 23:34:56 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bcLvZc4k;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4FkKKy07jhz2yZF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:12:20 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1E22212FC;
- Mon, 17 May 2021 06:12:18 -0700 (PDT)
-Received: from [192.168.0.130] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 02B303F73B;
- Mon, 17 May 2021 06:12:16 -0700 (PDT)
-Subject: Re: Fwd: [Bug 213069] New: kernel BUG at
- arch/powerpc/include/asm/book3s/64/hash-4k.h:147! Oops: Exception in kernel
- mode, sig: 5 [#1]
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <bug-213069-206035@https.bugzilla.kernel.org/>
- <4deb5cd5-c713-b020-9143-c74a031e3fd5@csgroup.eu>
- <a8841b4e-3bff-f600-eac7-501f78ced54b@arm.com>
- <7ebc28ad-61e3-ef43-d670-9b80a61268c4@csgroup.eu>
- <e9558e0a-314e-ddfd-6776-84c1bfe6f01f@linux.ibm.com>
- <6fcdf4f2-9bed-4b0f-8ed8-74cb25484ea6@arm.com>
- <52ab4861-3a77-14da-1179-3ea79964c950@csgroup.eu>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <69fb90be-8b30-aadc-0fcf-b1ce9fc1a68f@arm.com>
-Date: Mon, 17 May 2021 18:42:59 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=bcLvZc4k; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FkKqR1TSlz2yhr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:34:26 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14HDYDJo017498; Mon, 17 May 2021 09:34:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=W1DlbnS0U8AhHJWiOAyleQU0QcIIpNVgr8s9+D5r7CY=;
+ b=bcLvZc4kJR4cX9+0MgQc/7Xnpl7JQ2jVrTEqOd115F+esMkE5HwaXr9AC0VaqomQiyvo
+ plmIG2m/HYSff6W0DnhDIvzhB6amPE9J/foH3gXnpxgD40rYBi/e34WKUbxU51TOLd+f
+ 7P50A25ZXM0wa0rfm0hpO/94m580oFUB4dB1PDH8crI9GSf7V6QeCmBo7JIQBvW1rPK4
+ wfNmxg58VxWrAz6QWf5PaOfakUVIYn0PEl9mDhNZhoytF+c+FFci3q66YnBi7rtU8yOc
+ tMVuCKoro2Uy5ko5YRh0LAK0r25AywN58qdsS47xDhuzwpiPo5jwkEHkPa+j+b8+LSqe KQ== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38knhqfdqb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 May 2021 09:34:14 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14HDWo10016825;
+ Mon, 17 May 2021 13:34:06 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04ams.nl.ibm.com with ESMTP id 38j5x88txw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 May 2021 13:34:06 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14HDY40k28115398
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 17 May 2021 13:34:04 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 76E374203F;
+ Mon, 17 May 2021 13:34:04 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F06FC42041;
+ Mon, 17 May 2021 13:34:03 +0000 (GMT)
+Received: from localhost (unknown [9.85.118.46])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 17 May 2021 13:34:03 +0000 (GMT)
+Date: Mon, 17 May 2021 19:04:02 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH v2 1/2] powerpc/sstep: Add emulation support for
+ =?CP1251?B?kXNldGKS?= instruction
+To: linuxppc-dev@lists.ozlabs.org, Sathvika Vasireddy
+ <sathvika@linux.vnet.ibm.com>
+References: <cover.1620727160.git.sathvika@linux.vnet.ibm.com>
+ <7b735b0c898da0db2af8628a64df2f5114596f22.1620727160.git.sathvika@linux.vnet.ibm.com>
+In-Reply-To: <7b735b0c898da0db2af8628a64df2f5114596f22.1620727160.git.sathvika@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <52ab4861-3a77-14da-1179-3ea79964c950@csgroup.eu>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/v0.15-23-gcdc62b30 (https://github.com/astroidmail/astroid)
+Message-Id: <1621258377.pltyv2jfwk.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Q8vOXmpzvVeWhKpc7heaWsAkKeS5fK6s
+X-Proofpoint-GUID: Q8vOXmpzvVeWhKpc7heaWsAkKeS5fK6s
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-17_05:2021-05-17,
+ 2021-05-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 mlxlogscore=999
+ malwarescore=0 lowpriorityscore=0 impostorscore=0 mlxscore=0 phishscore=0
+ spamscore=0 adultscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
+ definitions=main-2105170096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,85 +102,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Sathvika Vasireddy wrote:
+> This adds emulation support for the following instruction:
+>    * Set Boolean (setb)
+>=20
+> Signed-off-by: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>
+> ---
+>  arch/powerpc/lib/sstep.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 
+Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 
-On 5/17/21 6:29 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 17/05/2021 à 14:49, Anshuman Khandual a écrit :
->>
->>
->> On 5/17/21 11:25 AM, Aneesh Kumar K.V wrote:
->>> On 5/17/21 11:17 AM, Christophe Leroy wrote:
->>>> +aneesh
->>>> +linuxppc-dev list
->>>>
->>>> Le 17/05/2021 à 07:44, Anshuman Khandual a écrit :
->>>>> Hello Christophe,
->>>>>
->>>>> DEBUG_VM_PGTABLE has now been re-enabled on powerpc recently ? was not
->>>>> aware about this. From the error log, it failed explicitly on 4K page
->>>>> size hash config.
->>>>>
->>>>> static inline pmd_t hash__pmd_mkhuge(pmd_t pmd)
->>>>> {
->>>>>           BUG();        ------> Failed
->>>>>           return pmd;
->>>>> }
->>>>>
->>>>> static inline pmd_t __pmd_mkhuge(pmd_t pmd)
->>>>> {
->>>>>           if (radix_enabled())
->>>>>                   return radix__pmd_mkhuge(pmd);
->>>>>           return hash__pmd_mkhuge(pmd);
->>>>> }
->>>>>
->>>>> pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot)
->>>>> {
->>>>>           unsigned long pmdv;
->>>>>
->>>>>           pmdv = (pfn << PAGE_SHIFT) & PTE_RPN_MASK;
->>>>>
->>>>>           return __pmd_mkhuge(pmd_set_protbits(__pmd(pmdv), pgprot));
->>>>> }
->>>>>
->>>>> It seems like on powerpc, where pfn_pmd() makes a huge page but which
->>>>> is not supported on 4K hash config thus triggering the BUG(). But all
->>>>> pfn_pmd() call sites inside the debug_vm_pgtable() test are protected
->>>>> with CONFIG_TRANSPARENT_HUGEPAGE. IIUC unlike powerpc, pfn_pmd() does
->>>>> not directly make a huge page on other platforms.
->>>>>
->>>>> Looking at arch/powerpc/include/asm/book3s/64/hash-4k.h, all relevant
->>>>> THP helpers has BUG() or 0 which indicates THP might not be supported
->>>>> on 4K page size hash config ?
->>>>>
->>>>> But looking at arch/powerpc/platforms/Kconfig.cputype, it seems like
->>>>> HAVE_ARCH_TRANSPARENT_HUGEPAGE is invariably selected on PPC_BOOK3S_64
->>>>> platforms which I assume includes 4K page size hash config as well.
->>>>>
->>>>> Is THP some how getting enabled on this 4K page size hash config where
->>>>> it should not be (thus triggering the BUG) ? OR am I missing something
->>>>> here.
->>>>>
->>>>
->>>
->>> We should put those  pfn_pmd()  and pfn_pud() after
->>>
->>>      if (!has_transparent_hugepage())
->>>          return;
->>
->> The following patch has been lightly tested on arm64 and x86 platforms.
->> Could you please verify if this solves the problem on powerpc 4K hash
->> config ? Thank you.
-> 
-> No need to update pmd_advanced_tests() and pud_advanced_tests() ?
-
-They already have has_transparent_hugepage() check and all pfn_pxx()
-instances are after that check. Do you see any other concern ?
-
-> 
-> Christophe
+>=20
+> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> index 45bda2520755..aee42bcc775b 100644
+> --- a/arch/powerpc/lib/sstep.c
+> +++ b/arch/powerpc/lib/sstep.c
+> @@ -1700,6 +1700,28 @@ int analyse_instr(struct instruction_op *op, const=
+ struct pt_regs *regs,
+>  			op->val =3D regs->ccr & imm;
+>  			goto compute_done;
+> =20
+> +		case 128:	/* setb */
+> +			if (!cpu_has_feature(CPU_FTR_ARCH_300))
+> +				goto unknown_opcode;
+> +			/*
+> +			 * 'ra' encodes the CR field number (bfa) in the top 3 bits.
+> +			 * Since each CR field is 4 bits,
+> +			 * we can simply mask off the bottom two bits (bfa * 4)
+> +			 * to yield the first bit in the CR field.
+> +			 */
+> +			ra =3D ra & ~0x3;
+> +			/* 'val' stores bits of the CR field (bfa) */
+> +			val =3D regs->ccr >> (CR0_SHIFT - ra);
+> +			/* checks if the LT bit of CR field (bfa) is set */
+> +			if (val & 8)
+> +				op->val =3D -1;
+> +			/* checks if the GT bit of CR field (bfa) is set */
+> +			else if (val & 4)
+> +				op->val =3D 1;
+> +			else
+> +				op->val =3D 0;
+> +			goto compute_done;
+> +
+>  		case 144:	/* mtcrf */
+>  			op->type =3D COMPUTE + SETCC;
+>  			imm =3D 0xf0000000UL;
+> --=20
+> 2.16.4
+>=20
+>=20
