@@ -1,96 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50819382D84
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 15:35:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8FD382D97
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 15:39:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkKrX1rhHz3bxY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 23:35:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkKws6KK8z3bry
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 23:39:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UOWOxux9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=JoliJRMj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72e;
+ helo=mail-qk1-x72e.google.com; envelope-from=groeck7@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=UOWOxux9; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=JoliJRMj; dkim-atps=neutral
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com
+ [IPv6:2607:f8b0:4864:20::72e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FkKqz1Tc6z302f
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:34:54 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14HDY8cc134155; Mon, 17 May 2021 09:34:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=uxQIAl+YJ2As1gV6dFAs9aQ7vVcZZ6dGBOQ4WkI+VEo=;
- b=UOWOxux9PLKkMtBIOJ24pQt13OANhxuTwZXQac7LOTnr35Cvoj/Fv6H2Y3tVnyHlvLiR
- SdBsQXdyu0gy/DtLI9QIFPcRw0iWbzDOCielaXmuBvFZMHdo181mCZ7l356NXC3MrrzA
- 17tsQ95/veYH6Px795sQ+26IQPN3fuM7dSHXTMbZJJtzF8+yMJ3VTF3n8bo1+HHDbFwk
- q+ydRFU3ixIPlsf1BQxQn7fZ/MxtHg9LvNIYFhhZpXKDEKwXeuHezlS4FDPDx8Vcmbjv
- mo+mC1iuMhHDMS+6x02SzrSxFREk7lLaIhp4+g2QZsSd1QUA2aJqdmQRlAGbgfOk2N7M iA== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38krrtsmp0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 May 2021 09:34:43 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14HDXadY031504;
- Mon, 17 May 2021 13:34:42 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 38j5jgru4p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 May 2021 13:34:41 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14HDYdij31654286
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 May 2021 13:34:39 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9A9DCA4053;
- Mon, 17 May 2021 13:34:39 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 30433A4051;
- Mon, 17 May 2021 13:34:39 +0000 (GMT)
-Received: from localhost (unknown [9.85.118.46])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 17 May 2021 13:34:38 +0000 (GMT)
-Date: Mon, 17 May 2021 19:04:38 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: [PATCH v2 2/2] powerpc/sstep: Add tests for setb instruction
-To: linuxppc-dev@lists.ozlabs.org, Sathvika Vasireddy
- <sathvika@linux.vnet.ibm.com>
-References: <cover.1620727160.git.sathvika@linux.vnet.ibm.com>
- <b05b61ccb5f10279d46fed490796f32ea2ccc270.1620727160.git.sathvika@linux.vnet.ibm.com>
-In-Reply-To: <b05b61ccb5f10279d46fed490796f32ea2ccc270.1620727160.git.sathvika@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FkKwL1rPQz2xvc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:38:41 +1000 (AEST)
+Received: by mail-qk1-x72e.google.com with SMTP id o27so5675680qkj.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 06:38:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=mSevgqLkwFjJJ3znA3S2Bzcdr9oY0/kEsDuFSkTBZYo=;
+ b=JoliJRMjU6W3g7ScapsPY0yIWSoABH1V9Agb56/kOXUJJ42HAQL/+8spk0tiO8EjHn
+ lnhXqJA3FC7JojyyOMdy+IVnc6hsMz0wBI2yfz5/F6CJqAaeTYNMqrRS9p/TepOtTDS2
+ gre7N6DNXovrYYoZRyGyTyJvBnG0h8eTmaE5pKdLGpaM6u0gJETNkhyd3XgQQWKZ4YMy
+ Bct9FsyKpIB/OsI/j5d3VjiEuP49hMyc46VmEi+RYcO/atswUwRYB5qFLzZzQsFmTrrn
+ PrYgg97dAXc8YyWy54PAqbOjjJ8E10/YOkuT8BK7eHqsumGrnQ1Vl9Gqb4P1vX+WIFB8
+ SG4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=mSevgqLkwFjJJ3znA3S2Bzcdr9oY0/kEsDuFSkTBZYo=;
+ b=HEoEVF/OPO5zossF6cMqSnJJ8+NtWPUjWx8eSvDAFjCfW7hvRZlQ+TyvKRvkHRigRx
+ 89yJM0NN6/ZtecoHkXazki1qO3UovB5EiJNwi8GBdgCWeqvuuYUGcf7z2UzG1fIuoNdK
+ RYiHgfkScNCDoVbuQQ8kwfpzSZzTuEtGRzC10JkwDEpTyEmPpAffow3uQ/7Cd8MHxaCL
+ RFVsnuh50R7wFNNAKM+OU/bQe2yjwwsZnqVoZTe74N46cqFir4o2Sn1ZlymJyhnePpNc
+ r+u/YXaIR85s6Td61uNTcG5BeTLa0kywojbniRATs2Bpcm/1iF/h2/MOjdIrwKGzWGfC
+ ZtKg==
+X-Gm-Message-State: AOAM531q8DO9vPew9seoAsqF4QB5B06WN/qbU8ZUf8B00lmobNHzmiaE
+ TPpkc0MtSHdWrxNnEw0+xlU=
+X-Google-Smtp-Source: ABdhPJxibVYkxZSg1rKPxlp9tnrNyS45y+0GPZ97agBX5bjFzhj1OWRQs06n4vGUdtRnP8zFmt0Xxg==
+X-Received: by 2002:a05:620a:29c4:: with SMTP id
+ s4mr19567637qkp.22.1621258717580; 
+ Mon, 17 May 2021 06:38:37 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ 25sm376207qtd.51.2021.05.17.06.38.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 May 2021 06:38:36 -0700 (PDT)
+Subject: Re: [PATCH v5 5/9] powerpc/mm/book3s64: Update tlb flush routines to
+ take a page walk cache flush argument
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
+ <20210422054323.150993-6-aneesh.kumar@linux.ibm.com>
+ <20210515163525.GA1106462@roeck-us.net>
+ <e0eba73a-c2df-71c3-e03d-d4074d908fca@linux.ibm.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Message-ID: <d830fce9-c00a-e879-4115-94a2346a806f@roeck-us.net>
+Date: Mon, 17 May 2021 06:38:34 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-User-Agent: astroid/v0.15-23-gcdc62b30 (https://github.com/astroidmail/astroid)
-Message-Id: <1621258449.ca00c9oo1k.naveen@linux.ibm.com>
+In-Reply-To: <e0eba73a-c2df-71c3-e03d-d4074d908fca@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yQmmQ6_ktnnSCHZoOuFv0Fo2lgYwPqNI
-X-Proofpoint-ORIG-GUID: yQmmQ6_ktnnSCHZoOuFv0Fo2lgYwPqNI
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-17_05:2021-05-17,
- 2021-05-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015
- impostorscore=0 bulkscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105170096
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,87 +89,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dja@axtens.net
+Cc: npiggin@gmail.com, linux-mm@kvack.org, kaleshsingh@google.com,
+ joel@joelfernandes.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sathvika Vasireddy wrote:
-> This adds selftests for setb instruction.
->=20
-> Signed-off-by: Sathvika Vasireddy <sathvika@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/include/asm/ppc-opcode.h |  1 +
->  arch/powerpc/lib/test_emulate_step.c  | 29 +++++++++++++++++++++++++++++
->  2 files changed, 30 insertions(+)
+On 5/17/21 1:40 AM, Aneesh Kumar K.V wrote:
+> On 5/15/21 10:05 PM, Guenter Roeck wrote:
+>> On Thu, Apr 22, 2021 at 11:13:19AM +0530, Aneesh Kumar K.V wrote:
+>>> No functional change in this patch
+>>>
+>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>> ---
+>>>   .../include/asm/book3s/64/tlbflush-radix.h    | 19 +++++++-----
+>>>   arch/powerpc/include/asm/book3s/64/tlbflush.h | 23 ++++++++++++---
+>>>   arch/powerpc/mm/book3s64/radix_hugetlbpage.c  |  4 +--
+>>>   arch/powerpc/mm/book3s64/radix_tlb.c          | 29 +++++++------------
+>>>   4 files changed, 42 insertions(+), 33 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+>>> index 8b33601cdb9d..171441a43b35 100644
+>>> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+>>> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+>>> @@ -56,15 +56,18 @@ static inline void radix__flush_all_lpid_guest(unsigned int lpid)
+>>>   }
+>>>   #endif
+>>> -extern void radix__flush_hugetlb_tlb_range(struct vm_area_struct *vma,
+>>> -                       unsigned long start, unsigned long end);
+>>> -extern void radix__flush_tlb_range_psize(struct mm_struct *mm, unsigned long start,
+>>> -                     unsigned long end, int psize);
+>>> -extern void radix__flush_pmd_tlb_range(struct vm_area_struct *vma,
+>>> -                       unsigned long start, unsigned long end);
+>>> -extern void radix__flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+>>> +void radix__flush_hugetlb_tlb_range(struct vm_area_struct *vma,
+>>> +                    unsigned long start, unsigned long end,
+>>> +                    bool flush_pwc);
+>>> +void radix__flush_pmd_tlb_range(struct vm_area_struct *vma,
+>>> +                unsigned long start, unsigned long end,
+>>> +                bool flush_pwc);
+>>> +void radix__flush_tlb_pwc_range_psize(struct mm_struct *mm, unsigned long start,
+>>> +                      unsigned long end, int psize, bool flush_pwc);
+>>> +void radix__flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+>>>                   unsigned long end);
+>>> -extern void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end);
+>>> +void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end);
+>>> +
+>>>   extern void radix__local_flush_tlb_mm(struct mm_struct *mm);
+>>>   extern void radix__local_flush_all_mm(struct mm_struct *mm);
+>>> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+>>> index 215973b4cb26..f9f8a3a264f7 100644
+>>> --- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
+>>> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+>>> @@ -45,13 +45,30 @@ static inline void tlbiel_all_lpid(bool radix)
+>>>           hash__tlbiel_all(TLB_INVAL_SCOPE_LPID);
+>>>   }
+>>> +static inline void flush_pmd_tlb_pwc_range(struct vm_area_struct *vma,
+>>                   ^^^^
+>>> +                       unsigned long start,
+>>> +                       unsigned long end,
+>>> +                       bool flush_pwc)
+>>> +{
+>>> +    if (radix_enabled())
+>>> +        return radix__flush_pmd_tlb_range(vma, start, end, flush_pwc);
+>>> +    return hash__flush_tlb_range(vma, start, end);
+>>          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>
+>>> +}
+> 
+> In this specific case we won't have  build errors because,
+> 
+> static inline void hash__flush_tlb_range(struct vm_area_struct *vma,
+>                       unsigned long start, unsigned long end)
+> {
+> 
 
-Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Sorry, you completely lost me.
 
+Building parisc:allnoconfig ... failed
+--------------
+Error log:
+In file included from arch/parisc/include/asm/cacheflush.h:7,
+                  from include/linux/highmem.h:12,
+                  from include/linux/pagemap.h:11,
+                  from include/linux/ksm.h:13,
+                  from mm/mremap.c:14:
+mm/mremap.c: In function 'flush_pte_tlb_pwc_range':
+arch/parisc/include/asm/tlbflush.h:20:2: error: 'return' with a value, in function returning void
 
->=20
-> diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include=
-/asm/ppc-opcode.h
-> index ac41776661e9..927551dd870b 100644
-> --- a/arch/powerpc/include/asm/ppc-opcode.h
-> +++ b/arch/powerpc/include/asm/ppc-opcode.h
-> @@ -245,6 +245,7 @@
->  #define PPC_INST_STRING			0x7c00042a
->  #define PPC_INST_STRING_MASK		0xfc0007fe
->  #define PPC_INST_STRING_GEN_MASK	0xfc00067e
-> +#define PPC_INST_SETB			0x7c000100
->  #define PPC_INST_STSWI			0x7c0005aa
->  #define PPC_INST_STSWX			0x7c00052a
->  #define PPC_INST_TRECHKPT		0x7c0007dd
-> diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test=
-_emulate_step.c
-> index 783d1b85ecfe..a0a52fe5e979 100644
-> --- a/arch/powerpc/lib/test_emulate_step.c
-> +++ b/arch/powerpc/lib/test_emulate_step.c
-> @@ -53,6 +53,8 @@
->  	ppc_inst_prefix(PPC_PREFIX_MLS | __PPC_PRFX_R(pr) | IMM_H(i), \
->  			PPC_RAW_ADDI(t, a, i))
-> =20
-> +#define TEST_SETB(t, bfa)       ppc_inst(PPC_INST_SETB | ___PPC_RT(t) | =
-___PPC_RA((bfa & 0x7) << 2))
-> +
-> =20
->  static void __init init_pt_regs(struct pt_regs *regs)
->  {
-> @@ -929,6 +931,33 @@ static struct compute_test compute_tests[] =3D {
->  			}
->  		}
->  	},
-> +	{
-> +		.mnemonic =3D "setb",
-> +		.cpu_feature =3D CPU_FTR_ARCH_300,
-> +		.subtests =3D {
-> +			{
-> +				.descr =3D "BFA =3D 1, CR =3D GT",
-> +				.instr =3D TEST_SETB(20, 1),
-> +				.regs =3D {
-> +					.ccr =3D 0x4000000,
-> +				}
-> +			},
-> +			{
-> +				.descr =3D "BFA =3D 4, CR =3D LT",
-> +				.instr =3D TEST_SETB(20, 4),
-> +				.regs =3D {
-> +					.ccr =3D 0x8000,
-> +				}
-> +			},
-> +			{
-> +				.descr =3D "BFA =3D 5, CR =3D EQ",
-> +				.instr =3D TEST_SETB(20, 5),
-> +				.regs =3D {
-> +					.ccr =3D 0x200,
-> +				}
-> +			}
-> +		}
-> +	},
->  	{
->  		.mnemonic =3D "add",
->  		.subtests =3D {
-> --=20
-> 2.16.4
->=20
->=20
+Guenter
+
+> 
+> But I agree the below is better to read.
+> 
+> static inline void flush_pmd_tlb_pwc_range(struct vm_area_struct *vma,
+>                         unsigned long start,
+>                         unsigned long end,
+>                         bool flush_pwc)
+> {
+>      if (radix_enabled())
+>          radix__flush_pmd_tlb_range(vma, start, end, flush_pwc);
+>      else
+>          hash__flush_tlb_range(vma, start, end);
+>      return
+> }
+> 
+>>
+>>>   #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
+>>>   static inline void flush_pmd_tlb_range(struct vm_area_struct *vma,
+>>                   ^^^^
+>>>                          unsigned long start, unsigned long end)
+>>> +{
+>>> +    return flush_pmd_tlb_pwc_range(vma, start, end, false);
+>>          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>
+>> Doesn't that cause build warnings/errors all over the place ?
+>>
+>> Guenter
+>>
+> 
+> 
+> -aneesh
+
