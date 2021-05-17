@@ -1,103 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DF73823D9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 07:56:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A99393823E5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 07:58:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fk7fv6KHgz308w
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 15:56:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fk7jC2PlZz308t
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 15:58:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gtXHityc;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=GDCBgC/D;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gtXHityc; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=GDCBgC/D; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fk7fM2Z6yz2xvT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 15:55:54 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14H5YFXq185628; Mon, 17 May 2021 01:55:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=HE9+U6VXKlLDZ96Dhj3/3TC1N6EmBi6MwAzmbalrBvg=;
- b=gtXHitycahuN/vqsu6qHtVRx8N24SxDpyAavU0hTIBAMJdSJK7WhA35K+ldIn7mNOED8
- e9tB1+tDuOK9faLrcURrMX57imvnwvX0heWvmgrhMP31Wi++S0blMRDs+qijL6Dy1NqU
- b0yGX6gOytjn4/+V5POPj53DBYGD8mtW+QUgWYZ6bgP4KHqkn1LILOCNcltVWQy3uuMy
- BoCHVQPPOUJAEy0It5HGfKTmZs9fTo/uQWXjgt13NvxKx3UvFuhUutVeMf2/yW5jlumO
- aAwlAV9jCF6bvqwxL/R8GOoySWSw7/bXaZQPnF+09mmiFTh+/casPz4n2uQA0cchJkk8 pA== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38kf3fv6hm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 May 2021 01:55:42 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14H5qSbn004032;
- Mon, 17 May 2021 05:55:39 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04fra.de.ibm.com with ESMTP id 38j5x80apx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 May 2021 05:55:39 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 14H5t9n428115282
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 May 2021 05:55:09 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0CE2911C050;
- Mon, 17 May 2021 05:55:37 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44DDC11C04A;
- Mon, 17 May 2021 05:55:36 +0000 (GMT)
-Received: from [9.199.40.240] (unknown [9.199.40.240])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 17 May 2021 05:55:36 +0000 (GMT)
-Subject: Re: Fwd: [Bug 213069] New: kernel BUG at
- arch/powerpc/include/asm/book3s/64/hash-4k.h:147! Oops: Exception in kernel
- mode, sig: 5 [#1]
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <bug-213069-206035@https.bugzilla.kernel.org/>
- <4deb5cd5-c713-b020-9143-c74a031e3fd5@csgroup.eu>
- <a8841b4e-3bff-f600-eac7-501f78ced54b@arm.com>
- <7ebc28ad-61e3-ef43-d670-9b80a61268c4@csgroup.eu>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <e9558e0a-314e-ddfd-6776-84c1bfe6f01f@linux.ibm.com>
-Date: Mon, 17 May 2021 11:25:35 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fk7hk5sWfz2xvT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 15:57:58 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Fk7hc0mXSz9sV5;
+ Mon, 17 May 2021 15:57:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1621231073;
+ bh=23IxQnM2rd7cPGZcKn0tcckrg/JRDK/oIHWajK2PHyI=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=GDCBgC/Dg+s41CCHmGYd+4n2TML+KIXYY2kyYsBVxK1131LyXmhlErOx6xeYg2C8y
+ Ul1yT3LuFEmFNLtn1XO0PfDM47geet4+mfJLLv1Aidqmhrs3VNoiXjUKwkYHZNYfWR
+ qb90ygKHiqs0wkwSXFPjOvC+fi0e8BCCOCv5j7y9goAhbXm1mYV7I8BDUhk6FnP1Fs
+ h9ujBu1ezavkfdOPYnEIWWOO8t8fF1PWNKwSxfhllkJvH9F6xpGm+YrthwgCBZ+giA
+ nbhgIyXtgOy4Hof8EBfqaivhYgNPImd8SBiMkU0YD8MwGISrKJLtAdYJy/Hno9eO9g
+ Q+NvyZeQuuCNg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Wan Jiabing <wanjiabing@vivo.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Shuah Khan
+ <shuah@kernel.org>, Jordan Niethe <jniethe5@gmail.com>, Michael Neuling
+ <mikey@neuling.org>, Wan Jiabing <wanjiabing@vivo.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [v2] selftests: powerpc: Remove unneeded variables
+In-Reply-To: <20210412125746.2766-1-wanjiabing@vivo.com>
+References: <20210412125746.2766-1-wanjiabing@vivo.com>
+Date: Mon, 17 May 2021 15:57:48 +1000
+Message-ID: <87r1i5kilf.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <7ebc28ad-61e3-ef43-d670-9b80a61268c4@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qa7Qprig4BaZcRHKpjZakZ3sBrF79pvk
-X-Proofpoint-GUID: qa7Qprig4BaZcRHKpjZakZ3sBrF79pvk
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-17_01:2021-05-12,
- 2021-05-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- clxscore=1011 impostorscore=0 suspectscore=0 adultscore=0 mlxlogscore=999
- malwarescore=0 mlxscore=0 spamscore=0 phishscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105170039
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,70 +66,187 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kael_w@yeah.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/17/21 11:17 AM, Christophe Leroy wrote:
-> +aneesh
-> +linuxppc-dev list
-> 
-> Le 17/05/2021 à 07:44, Anshuman Khandual a écrit :
->> Hello Christophe,
->>
->> DEBUG_VM_PGTABLE has now been re-enabled on powerpc recently ? was not
->> aware about this. From the error log, it failed explicitly on 4K page
->> size hash config.
->>
->> static inline pmd_t hash__pmd_mkhuge(pmd_t pmd)
->> {
->>          BUG();        ------> Failed
->>          return pmd;
->> }
->>
->> static inline pmd_t __pmd_mkhuge(pmd_t pmd)
->> {
->>          if (radix_enabled())
->>                  return radix__pmd_mkhuge(pmd);
->>          return hash__pmd_mkhuge(pmd);
->> }
->>
->> pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot)
->> {
->>          unsigned long pmdv;
->>
->>          pmdv = (pfn << PAGE_SHIFT) & PTE_RPN_MASK;
->>
->>          return __pmd_mkhuge(pmd_set_protbits(__pmd(pmdv), pgprot));
->> }
->>
->> It seems like on powerpc, where pfn_pmd() makes a huge page but which
->> is not supported on 4K hash config thus triggering the BUG(). But all
->> pfn_pmd() call sites inside the debug_vm_pgtable() test are protected
->> with CONFIG_TRANSPARENT_HUGEPAGE. IIUC unlike powerpc, pfn_pmd() does
->> not directly make a huge page on other platforms.
->>
->> Looking at arch/powerpc/include/asm/book3s/64/hash-4k.h, all relevant
->> THP helpers has BUG() or 0 which indicates THP might not be supported
->> on 4K page size hash config ?
->>
->> But looking at arch/powerpc/platforms/Kconfig.cputype, it seems like
->> HAVE_ARCH_TRANSPARENT_HUGEPAGE is invariably selected on PPC_BOOK3S_64
->> platforms which I assume includes 4K page size hash config as well.
->>
->> Is THP some how getting enabled on this 4K page size hash config where
->> it should not be (thus triggering the BUG) ? OR am I missing something
->> here.
->>
+Wan Jiabing <wanjiabing@vivo.com> writes:
+> Fix coccicheck warning:
 >
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:539:5-7:
+> Unneeded variable: "rc". Return "0" on line 562
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:567:5-7:
+> Unneeded variable: "rc". Return "0" on line 580
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:585:5-7:
+> Unneeded variable: "rc". Return "0" on line 594
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:600:5-7:
+> Unneeded variable: "rc". Return "0" on line 611
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:416:5-7:
+> Unneeded variable: "rc". Return "0" on line 470
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:475:5-7:
+> Unneeded variable: "rc". Return "0" on line 485
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:490:5-7:
+> Unneeded variable: "rc". Return "0" on line 506
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:511:5-7:
+> Unneeded variable: "rc". Return "0" on line 534
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:331:5-7:
+> Unneeded variable: "rc". Return "0" on line 344
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:349:5-7:
+> Unneeded variable: "rc". Return "0" on line 360
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:365:5-7:
+> Unneeded variable: "rc". Return "0" on line 392
+> ./tools/testing/selftests/powerpc/alignment/alignment_handler.c:397:5-7:
+> Unneeded variable: "rc". Return "0" on line 411
+>
+> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+> ---
+> Changelog:
+> v2:
+> - Modify the subject line.
+> ---
+>  .../powerpc/alignment/alignment_handler.c     | 48 +++++--------------
+>  1 file changed, 12 insertions(+), 36 deletions(-)
 
-We should put those  pfn_pmd()  and pfn_pud() after
+This breaks the build. Please don't send selftest patches you haven't
+even build tested.
 
-	if (!has_transparent_hugepage())
-		return;
+cheers
 
 
-On hash with 4K page size, we can't support leaf page table entry and 
-PMD and PUD level. Hence we don't support THP for them.
-
--aneesh
+powerpc64le-linux-gnu-gcc -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"v5.13-rc2-30-g0510571fcf78"' -I/linux/tools/testing/selftests/powerpc/include     alignment_handler.c ../harness.c ../utils.c  -o /output/kselftest/powerpc/alignment/alignment_handler
+alignment_handler.c: In function 'test_alignment_handler_vsx_206':
+alignment_handler.c:93:2: error: 'rc' undeclared (first use in this function)
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:106:33: note: in expansion of macro 'TEST'
+  106 | #define LOAD_VSX_XFORM_TEST(op) TEST(op, op, stxvd2x, XFORM, 32, 32)
+      |                                 ^~~~
+alignment_handler.c:326:2: note: in expansion of macro 'LOAD_VSX_XFORM_TEST'
+  326 |  LOAD_VSX_XFORM_TEST(lxvd2x);
+      |  ^~~~~~~~~~~~~~~~~~~
+alignment_handler.c:93:2: note: each undeclared identifier is reported only once for each function it appears in
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:106:33: note: in expansion of macro 'TEST'
+  106 | #define LOAD_VSX_XFORM_TEST(op) TEST(op, op, stxvd2x, XFORM, 32, 32)
+      |                                 ^~~~
+alignment_handler.c:326:2: note: in expansion of macro 'LOAD_VSX_XFORM_TEST'
+  326 |  LOAD_VSX_XFORM_TEST(lxvd2x);
+      |  ^~~~~~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_vsx_207':
+alignment_handler.c:93:2: error: 'rc' undeclared (first use in this function)
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:106:33: note: in expansion of macro 'TEST'
+  106 | #define LOAD_VSX_XFORM_TEST(op) TEST(op, op, stxvd2x, XFORM, 32, 32)
+      |                                 ^~~~
+alignment_handler.c:342:2: note: in expansion of macro 'LOAD_VSX_XFORM_TEST'
+  342 |  LOAD_VSX_XFORM_TEST(lxsspx);
+      |  ^~~~~~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_vsx_300':
+alignment_handler.c:93:2: error: 'rc' undeclared (first use in this function)
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:112:33: note: in expansion of macro 'TEST'
+  112 | #define LOAD_VMX_DFORM_TEST(op) TEST(op, op, stxv, DFORM, 0, 32)
+      |                                 ^~~~
+alignment_handler.c:356:2: note: in expansion of macro 'LOAD_VMX_DFORM_TEST'
+  356 |  LOAD_VMX_DFORM_TEST(lxsd);
+      |  ^~~~~~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_vsx_prefix':
+alignment_handler.c:104:2: error: 'rc' undeclared (first use in this function)
+  104 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:134:44: note: in expansion of macro 'TESTP'
+  134 | #define LOAD_VSX_8LS_PREFIX_TEST(op, tail) TESTP(op, op, PSTXV ## tail, 0, 32)
+      |                                            ^~~~~
+alignment_handler.c:386:2: note: in expansion of macro 'LOAD_VSX_8LS_PREFIX_TEST'
+  386 |  LOAD_VSX_8LS_PREFIX_TEST(PLXSD, 0);
+      |  ^~~~~~~~~~~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_integer':
+alignment_handler.c:93:2: error: 'rc' undeclared (first use in this function)
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:117:29: note: in expansion of macro 'TEST'
+  117 | #define LOAD_DFORM_TEST(op) TEST(op, op, std, DFORM, 31, 31)
+      |                             ^~~~
+alignment_handler.c:402:2: note: in expansion of macro 'LOAD_DFORM_TEST'
+  402 |  LOAD_DFORM_TEST(lbz);
+      |  ^~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_integer_206':
+alignment_handler.c:93:2: error: 'rc' undeclared (first use in this function)
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:115:29: note: in expansion of macro 'TEST'
+  115 | #define LOAD_XFORM_TEST(op) TEST(op, op, stdx, XFORM, 31, 31)
+      |                             ^~~~
+alignment_handler.c:461:2: note: in expansion of macro 'LOAD_XFORM_TEST'
+  461 |  LOAD_XFORM_TEST(ldbrx);
+      |  ^~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_integer_prefix':
+alignment_handler.c:104:2: error: 'rc' undeclared (first use in this function)
+  104 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:125:34: note: in expansion of macro 'TESTP'
+  125 | #define LOAD_MLS_PREFIX_TEST(op) TESTP(op, op, PSTD, 31, 31)
+      |                                  ^~~~~
+alignment_handler.c:473:2: note: in expansion of macro 'LOAD_MLS_PREFIX_TEST'
+  473 |  LOAD_MLS_PREFIX_TEST(PLBZ);
+      |  ^~~~~~~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_vmx':
+alignment_handler.c:93:2: error: 'rc' undeclared (first use in this function)
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:110:33: note: in expansion of macro 'TEST'
+  110 | #define LOAD_VMX_XFORM_TEST(op) TEST(op, op, stxvd2x, XFORM, 0, 32)
+      |                                 ^~~~
+alignment_handler.c:492:2: note: in expansion of macro 'LOAD_VMX_XFORM_TEST'
+  492 |  LOAD_VMX_XFORM_TEST(lvx);
+      |  ^~~~~~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_fp':
+alignment_handler.c:93:2: error: 'rc' undeclared (first use in this function)
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:120:36: note: in expansion of macro 'TEST'
+  120 | #define LOAD_FLOAT_DFORM_TEST(op)  TEST(op, op, stfd, DFORM, 0, 0)
+      |                                    ^~~~
+alignment_handler.c:517:2: note: in expansion of macro 'LOAD_FLOAT_DFORM_TEST'
+  517 |  LOAD_FLOAT_DFORM_TEST(lfd);
+      |  ^~~~~~~~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_fp_205':
+alignment_handler.c:93:2: error: 'rc' undeclared (first use in this function)
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:120:36: note: in expansion of macro 'TEST'
+  120 | #define LOAD_FLOAT_DFORM_TEST(op)  TEST(op, op, stfd, DFORM, 0, 0)
+      |                                    ^~~~
+alignment_handler.c:545:2: note: in expansion of macro 'LOAD_FLOAT_DFORM_TEST'
+  545 |  LOAD_FLOAT_DFORM_TEST(lfdp);
+      |  ^~~~~~~~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_fp_206':
+alignment_handler.c:93:2: error: 'rc' undeclared (first use in this function)
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:122:36: note: in expansion of macro 'TEST'
+  122 | #define LOAD_FLOAT_XFORM_TEST(op)  TEST(op, op, stfdx, XFORM, 0, 0)
+      |                                    ^~~~
+alignment_handler.c:561:2: note: in expansion of macro 'LOAD_FLOAT_XFORM_TEST'
+  561 |  LOAD_FLOAT_XFORM_TEST(lfiwzx);
+      |  ^~~~~~~~~~~~~~~~~~~~~
+alignment_handler.c: In function 'test_alignment_handler_fp_prefix':
+alignment_handler.c:93:2: error: 'rc' undeclared (first use in this function)
+   93 |  rc |= do_test(#name, test_##name)
+      |  ^~
+alignment_handler.c:120:36: note: in expansion of macro 'TEST'
+  120 | #define LOAD_FLOAT_DFORM_TEST(op)  TEST(op, op, stfd, DFORM, 0, 0)
+      |                                    ^~~~
+alignment_handler.c:573:2: note: in expansion of macro 'LOAD_FLOAT_DFORM_TEST'
+  573 |  LOAD_FLOAT_DFORM_TEST(lfs);
+      |  ^~~~~~~~~~~~~~~~~~~~~
+make[2]: *** [../../lib.mk:144: /output/kselftest/powerpc/alignment/alignment_handler] Error 1
+make[2]: Target 'all' not remade because of errors.
+make[2]: Leaving directory '/linux/tools/testing/selftests/powerpc/alignment'
+make[1]: *** [Makefile:41: alignment] Error 2
+make[1]: Leaving directory '/linux/tools/testing/selftests/powerpc'
+make: *** [Makefile:159: all] Error 2
