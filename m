@@ -1,93 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AED8638289E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 11:43:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159D7382A2A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 12:49:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkDhz4d73z30Dl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 19:43:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkG8t0jCLz3bx3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 20:49:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=b8luP57g;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=nselector3 header.b=ZSgOk8cr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=b8luP57g; 
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=nselector3 header.b=ZSgOk8cr; 
  dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [85.215.255.54])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FkDhT6xZ3z2xxn
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 19:43:03 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1621244566; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=Bb80fHfWsl2as0Bzja3tmAaZ9msvugut1/sG21fSivbAd+Ci5k77xAo1vY49KvSfgL
- 0p1ngQsBhhrOgCyHGtGJt7POPNMLCrSwCP7FmFYtj4UEeG6UrKB+2V+THYr5/sTQ8pHg
- r1L90+LASdtNq/zM+pNkqkVifhFFcZNc02UaNyRHHBg3dCBrC3uLnqAEmO7NC9UcYjw+
- kjnO3Xq+09ADSVK4eWN86kCuCWI3x8UVM5XBeSFnS0YgZ8OpPqU6PMDrTyDUgQgRe7l/
- MohnAOn0DN8gIkZEQjGd9HC8NIaespq7X2HMW7tchJRsGvqXKX0Qj9s83U0Wr0t4glAH
- f80Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1621244566;
- s=strato-dkim-0002; d=strato.com;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
- From:Subject:Sender;
- bh=Rl/Gdkc7egQWIBOSMIJX1XaY9AiyuXx2nuAj0o6wsks=;
- b=GbXH6pkiDdNME/8kFE6Qgu3m1019Wh/liU76uViiBP95222qAhDpDa7NJlV6Vqev71
- fOXPzyMrQ/nf3aiYwmn6NSitros3S/UylHr5EKMGOZ3SZJ73f4iibNixWEPo+x40cmaI
- 2WmN9/vcSZztAAE6GSJXwK7JXvqLs+O25/zMM5IO3+k/vIHJoHebeEIONdAxTQHk5nax
- z97Ga1P153ZgFz4kaLzGY/HPejuGbojafCwD94sykMSX3SLV2FMGAb6C7sL4PZLC5w+m
- TFpjwvmyjw1b00bhuL2aSf/qz7yPAOTL8hyTBbJL5eGCecSnh4q84O7QVEFbjLPcx8Qc
- b6WQ==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1621244566;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
- From:Subject:Sender;
- bh=Rl/Gdkc7egQWIBOSMIJX1XaY9AiyuXx2nuAj0o6wsks=;
- b=b8luP57gpmrZBcfUwwdMzFRTcocewx8zMH8sYzg/rMu7djzRfVaOPgagdkh2b2hNk1
- IXPyIVybF5pmseiY4Psw66sZ818HgedyFsIG/8uG38vhnYXAEy3rhgKMzDEx9OxsOo2b
- JolbvIS4ZDkobhCeK0QWL34vUXsTsvkq2mXdAR6FklDAcfMQc4Iblh1hTtCV6qMcV9zy
- CSj1XROYuldh+sNEcqgp0QDVL9iTKYrZr08jpsJJBIoFnj1yXqP2tEof4WxxpO6vJVN9
- e91+l1MaKn+s6p8rmBMBbXIr6Qvw0Eixs3N/6pnbS6tkJHYh2udlv9zYAZEq3RQbMaZ2
- wyXw==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhbL1/HFNrQWNLFP5JgxJd3+MH2JA=="
-X-RZG-CLASS-ID: mo00
-Received: from Christians-iMac.fritz.box by smtp.strato.de (RZmta 47.26.0 AUTH)
- with ESMTPSA id f051dfx4H9gj0nU
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Mon, 17 May 2021 11:42:45 +0200 (CEST)
-Subject: Re: [FSL P50x0] KVM HV doesn't work anymore
-To: Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <04526309-4653-3349-b6de-e7640c2258d6@xenosoft.de>
- <34617b1b-e213-668b-05f6-6fce7b549bf0@xenosoft.de>
- <9af2c1c9-2caf-120b-2f97-c7722274eee3@csgroup.eu>
- <199da427-9511-34fe-1a9e-08e24995ea85@xenosoft.de>
- <1621236734.xfc1uw04eb.astroid@bobo.none>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <e6ed7674-3df9-ec3e-8bcf-dcd8ff0fecf8@xenosoft.de>
-Date: Mon, 17 May 2021 11:42:45 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <1621236734.xfc1uw04eb.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FkG7q3Q5jz2yX2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 20:48:22 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 15EBC1A0A12;
+ Mon, 17 May 2021 12:48:19 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 inva020.eu-rdc02.nxp.com 15EBC1A0A12
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com;
+ s=nselector3; t=1621248499;
+ bh=Im5JodYbpOO68PyPNbm9SHNQGqEZEAD/9V5qHFtCRc0=;
+ h=From:To:Subject:Date:From;
+ b=ZSgOk8crfOlyKbfm1KA1QIohQUU4aafWPnznyk4kNOIcaIgYGI6pCpKAMuOLJbqWP
+ t9g9xcaVba2Ld7dvYP8zR0lwfbD2u9LNJytQZ7KLGgcMRQGiiz7BitBf3s3MvhlcyJ
+ 6vkZWaW+6Uhsg3lGloKlKH3Q5KXfv+wiiLfd18C4bKDRo1y9UgS2EWM0zqGx/X4DN+
+ d6sUP33JhHSWYrPRD2ayD8ZdX7ULBLTK2qCoCMEldY+hyYG9xMRFduyeEtHq+kw/gO
+ rLVQROZPdWpEQbPYFo8gsddCqyDBaDA58KdaCeVKYlUJQcfOi1egXFE77QU8estoug
+ PN0L7oecv/nHg==
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0C2E21A0A01;
+ Mon, 17 May 2021 12:48:12 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 inva020.eu-rdc02.nxp.com 0C2E21A0A01
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id A1987402D9;
+ Mon, 17 May 2021 18:48:02 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, linux-imx@nxp.com, linux-kernel@vger.kernel.org,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, robh+dt@kernel.org,
+ devicetree@vger.kernel.org
+Subject: [PATCH v3 1/2] ASoC: dt-bindings: imx-card: Add binding doc for imx
+ sound card
+Date: Mon, 17 May 2021 18:31:27 +0800
+Message-Id: <1621247488-21412-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,60 +73,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 17 May 2021 at 09:42am, Nicholas Piggin wrote:
-> Excerpts from Christian Zigotzky's message of May 15, 2021 11:46 pm:
->> On 15 May 2021 at 12:08pm Christophe Leroy wrote:
->>>
->>> Le 15/05/2021 à 11:48, Christian Zigotzky a écrit :
->>>> Hi All,
->>>>
->>>> I bisected today [1] and the bisecting itself was OK but the
->>>> reverting of the bad commit doesn't solve the issue. Do you have an
->>>> idea which commit could be resposible for this issue? Maybe the
->>>> bisecting wasn't successful. I will look in the kernel git log. Maybe
->>>> there is a commit that affected KVM HV on FSL P50x0 machines.
->>> If the uImage doesn't load, it may be because of the size of uImage.
->>>
->>> See https://github.com/linuxppc/issues/issues/208
->>>
->>> Is there a significant size difference with and without KVM HV ?
->>>
->>> Maybe you can try to remove another option to reduce the size of the
->>> uImage.
->> I tried it but it doesn't solve the issue. The uImage works without KVM
->> HV in a virtual e5500 QEMU machine.
-> Any more progress with this? I would say that bisect might have just
-> been a bit unstable and maybe by chance some things did not crash so
-> it's pointing to the wrong patch.
->
-> Upstream merge of powerpc-5.13-1 was good and powerpc-5.13-2 was bad?
->
-> Between that looks like some KVM MMU rework. You could try the patch
-> before this one b1c5356e873c ("KVM: PPC: Convert to the gfn-based MMU
-> notifier callbacks"). That won't revert cleanly so just try run the
-> tree at that point. If it works, test the patch and see if it fails.
->
-> Thanks,
-> Nick
-Hi Nick,
+Imx-card is a new added machine driver for supporting
+ak4458/ak5558/ak5552/ak4497 codec on i.MX platforms. But these
+DAC/ADCs are not only supported codecs. This machine driver is
+designed to be a more common machine driver for i.MX platform,
+it can support widely cpu dai interface and codec dai interface.
 
-Thanks a lot for your answer. Yes, there is a little bit of progress. 
-The RC2 of kernel 5.13 successfully boots with -smp 3 in a virtual e5500 
-QEMU machine.
--smp 4 doesn't work anymore since the PowerPC updates 5.13-2. I used 
--smp 4 before 5.13 because my FSL P5040 machine has 4 cores.
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+changes in v3:
+- use a generic compatible string as Rob's comments.
+- change the file name
 
-Could you please post a patch for reverting the commit before 
-b1c5356e873c ("KVM: PPC: Convert to the gfn-based MMU notifier callbacks")?
+changes in v2:
+- update doc accoring to Rob's comment, use the common porperties.
 
-Thanks in advance,
+ .../bindings/sound/imx-audio-card.yaml        | 122 ++++++++++++++++++
+ 1 file changed, 122 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sound/imx-audio-card.yaml
 
-Christian
-
+diff --git a/Documentation/devicetree/bindings/sound/imx-audio-card.yaml b/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
+new file mode 100644
+index 000000000000..d1816dd061cf
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
+@@ -0,0 +1,122 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sound/imx-audio-card.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP i.MX audio sound card.
++
++maintainers:
++  - Shengjiu Wang <shengjiu.wang@nxp.com>
++
++properties:
++  compatible:
++    enum:
++      - fsl,imx-audio-card
++
++  model:
++    $ref: /schemas/types.yaml#/definitions/string
++    description: User specified audio sound card name
++
++  audio-routing:
++    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
++    description:
++      A list of the connections between audio components. Each entry is a
++      pair of strings, the first being the connection's sink, the second
++      being the connection's source. Valid names could be power supplies,
++      MicBias of codec and the jacks on the board.
++
++patternProperties:
++  ".*-dai-link$":
++    description:
++      Each subnode represents a dai link. Subnodes of each dai links would be
++      cpu/codec dais.
++
++    type: object
++
++    properties:
++      link-name:
++        description: Indicates dai-link name and PCM stream name.
++        $ref: /schemas/types.yaml#/definitions/string
++        maxItems: 1
++
++      format:
++        description: audio format.
++        items:
++          enum:
++            - i2s
++            - dsp_b
++
++      dai-tdm-slot-num:
++        description: see tdm-slot.txt.
++        $ref: /schemas/types.yaml#/definitions/uint32
++
++      dai-tdm-slot-width:
++        description: see tdm-slot.txt.
++        $ref: /schemas/types.yaml#/definitions/uint32
++
++      cpu:
++        description: Holds subnode which indicates cpu dai.
++        type: object
++        properties:
++          sound-dai: true
++
++      codec:
++        description: Holds subnode which indicates codec dai.
++        type: object
++        properties:
++          sound-dai: true
++
++      fsl,mclk-equal-bclk:
++        description: Indicates mclk can be equal to bclk, especially for sai interface
++        $ref: /schemas/types.yaml#/definitions/flag
++
++    required:
++      - link-name
++      - cpu
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - model
++
++additionalProperties: false
++
++examples:
++  - |
++    sound-ak4458 {
++        compatible = "fsl,imx-audio-card";
++        model = "ak4458-audio";
++        pri-dai-link {
++            link-name = "akcodec";
++            format = "i2s";
++            fsl,mclk-equal-bclk;
++            cpu {
++                 sound-dai = <&sai1>;
++            };
++            codec {
++                 sound-dai = <&ak4458_1>, <&ak4458_2>;
++            };
++        };
++        fe-dai-link {
++            link-name = "HiFi-ASRC-FE";
++            format = "i2s";
++            cpu {
++                sound-dai = <&easrc>;
++            };
++        };
++        be-dai-link {
++            link-name = "HiFi-ASRC-BE";
++            format = "dsp_b";
++            dai-tdm-slot-num = <8>;
++            dai-tdm-slot-width = <32>;
++            fsl,mclk-equal-bclk;
++            cpu {
++                sound-dai = <&sai1>;
++            };
++            codec {
++                sound-dai = <&ak4458_1>, <&ak4458_2>;
++            };
++        };
++    };
+-- 
+2.27.0
 
