@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7095F38269E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 10:18:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B366B38269B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 10:17:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkBpm3j3Jz3bwZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 18:18:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkBp251f3z2xtv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 18:17:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,13 +15,13 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fk8dz5SS0z2ymD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 16:40:38 +1000 (AEST)
-Received: from dggems703-chm.china.huawei.com (unknown [172.30.72.58])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Fk8Yq3YH2zQp98;
- Mon, 17 May 2021 14:37:03 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fk8dy1WZVz2ymD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 16:40:37 +1000 (AEST)
+Received: from dggems705-chm.china.huawei.com (unknown [172.30.72.58])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Fk8Zg3CyKzmWHb;
+ Mon, 17 May 2021 14:37:47 +0800 (CST)
 Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggems703-chm.china.huawei.com (10.3.19.180) with Microsoft SMTP Server
+ dggems705-chm.china.huawei.com (10.3.19.182) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2176.2; Mon, 17 May 2021 14:40:31 +0800
 Received: from localhost.localdomain (10.67.165.24) by
@@ -30,9 +30,10 @@ Received: from localhost.localdomain (10.67.165.24) by
  15.1.2176.2; Mon, 17 May 2021 14:40:31 +0800
 From: Xiaofei Tan <tanxiaofei@huawei.com>
 To: <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>
-Subject: [PATCH 7/9] tty: hvc_console: Add a blank line after declarations
-Date: Mon, 17 May 2021 14:37:11 +0800
-Message-ID: <1621233433-27094-8-git-send-email-tanxiaofei@huawei.com>
+Subject: [PATCH 8/9] tty: hvc_console: Remove the repeated words 'no' and
+ 'from'
+Date: Mon, 17 May 2021 14:37:12 +0800
+Message-ID: <1621233433-27094-9-git-send-email-tanxiaofei@huawei.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1621233433-27094-1-git-send-email-tanxiaofei@huawei.com>
 References: <1621233433-27094-1-git-send-email-tanxiaofei@huawei.com>
@@ -60,25 +61,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a blank line after declarations, reported by checkpatch.pl.
+Remove the repeated words 'no' and 'from', reported by checkpatch.pl.
 
 Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
 ---
- drivers/tty/hvc/hvc_console.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/hvc/hvc_console.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
-index a61cdf0..f31efeb 100644
+index f31efeb..b6720b0 100644
 --- a/drivers/tty/hvc/hvc_console.c
 +++ b/drivers/tty/hvc/hvc_console.c
-@@ -922,6 +922,7 @@ struct hvc_struct *hvc_alloc(uint32_t vtermno, int data,
- 	/* We wait until a driver actually comes along */
- 	if (atomic_inc_not_zero(&hvc_needs_init)) {
- 		int err = hvc_init();
-+
- 		if (err)
- 			return ERR_PTR(err);
- 	}
+@@ -293,7 +293,7 @@ int hvc_instantiate(uint32_t vtermno, int index, const struct hv_ops *ops)
+ 	if (vtermnos[index] != -1)
+ 		return -1;
+ 
+-	/* make sure no no tty has been registered in this index */
++	/* make sure no tty has been registered in this index */
+ 	hp = hvc_get_by_index(index);
+ 	if (hp) {
+ 		tty_port_put(&hp->port);
+@@ -622,7 +622,7 @@ static u32 timeout = MIN_TIMEOUT;
+ /*
+  * Maximum number of bytes to get from the console driver if hvc_poll is
+  * called from driver (and can't sleep). Any more than this and we break
+- * and start polling with khvcd. This value was derived from from an OpenBMC
++ * and start polling with khvcd. This value was derived from an OpenBMC
+  * console with the OPAL driver that results in about 0.25ms interrupts off
+  * latency.
+  */
 -- 
 2.8.1
 
