@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930C438231C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 05:36:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E61938231D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 05:36:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fk4YG46Kkz3cHD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 13:36:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fk4Yl334Wz3cTV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 13:36:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=J7lw4EVm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lGaHC6Q/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d;
- helo=mail-pj1-x102d.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631;
+ helo=mail-pl1-x631.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=J7lw4EVm; dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
- [IPv6:2607:f8b0:4864:20::102d])
+ header.s=20161025 header.b=lGaHC6Q/; dkim-atps=neutral
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com
+ [IPv6:2607:f8b0:4864:20::631])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fk4VT1lz0z308p
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 13:33:52 +1000 (AEST)
-Received: by mail-pj1-x102d.google.com with SMTP id t11so2917353pjm.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 20:33:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fk4VY5wGJz2yyL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 13:33:57 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id 69so2362731plc.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 May 2021 20:33:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=zwESIBZpnR2m975fHalvCep9CeFwEanqy1akHv4NJIU=;
- b=J7lw4EVm7AC9ahoMtQkOYSo+707+XcWiq+0qwiknJ80mnPZ9BPBl+OUU2RLD8eB30g
- uztA2WI6cohxJzasaRlkZB7/0X+GKFjWgT69BYDIX/OJj4n4CQBZyAMRS5TL/Ux+Cw2i
- IxYNotxJU3DsFbVcCXdvUem1nic7vU05yZPusKZUMpurd7j0D+7IEvSiI8JH9neoccsY
- 2v7Dt1EZQ5TF1fNGmUxkV2fflV9J7W9MCwzVkcspUF1ozzBLUNRgtdkLpPxK1MCO3EPw
- t64SqR+/gGl3mImvDifkazfyfZYAj0lwMeLRTU6+o4nUWUgRyuBmNLnsU3vsG73InQpr
- 5SxA==
+ bh=hn7unOXRknxUolKeI3R/RYUkNJ1IJ3Em4zYkxuuGOMo=;
+ b=lGaHC6Q/JYRei0Y+jn2Wh5MpDK9oRT5GHJusOo3rl5sfJn/FPOxKJ6SHZ7cQ09E54l
+ UTZyi0YSTiOlItepSmU9Bb+uSEwePJ6bI7rvDYAY/VGLBwjWgRbBdWHMW5jzY009A29L
+ LR1154TVVU5QFzD92B9ZSDPROHb6tPp6v/BOJHeZ+pLMXk6Y6vj5Xv4MZ2NP9DcI7sZY
+ 9bdsL8OuQ87RtZDYIAGI0khCnCravq2m53lxLuA0nIje+iP2+udqFyVInre4ix8p7VOT
+ DTm3Qpoe1zkgW5Cq97BzqSosYEnHE1QzCAmWD4kT2dqGV06Hu1Wf8KoGfKhGaeDPLMNT
+ FYBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=zwESIBZpnR2m975fHalvCep9CeFwEanqy1akHv4NJIU=;
- b=hytVV6lJvK2USuUWq7nHwGwFmhBwhnQJouggh7sAMU7ToxKsWBWaB5/ztrlClL+oC2
- hMsBxBvfr3A+YlbTPy24rJcv/LoS4MjaDDyx7GB6uLyzx1JoZpCcjVrUkpCzwVayi0vL
- gqOPFvA0jz+7+wloh987a6XKFiwOo/0DtkTsvwss4XlDlboeBcnjC4tgpHkqsReBmMkt
- QTIdZVGNGPA+mxHWVIWjIPEu+gfoJEiJOS992qFr/EaWMWuKJkcYI+gTV9mRYgOLsRvl
- pScX2LZJQIyUWZGZrOCspRcRX7ouHGVaXtI/HI1i0yLBNbzk5dyiZehoo6wmipefm60y
- LWzQ==
-X-Gm-Message-State: AOAM533h2tSQQxnl6nsPj/Fw0ktMdDhqbvmxJ3T86wedxbWMWAPFlTB7
- XAo0q5q1NyDpKofQFDFPftMSBa7IJMI=
-X-Google-Smtp-Source: ABdhPJwviFL6uWapgv6dPFvplwxHbjylI/ubSTRklJ/d7X//zJ+LJEW3Mu6tCdN+iVdE6UuTakchnw==
-X-Received: by 2002:a17:90a:1782:: with SMTP id
- q2mr65065666pja.73.1621222431024; 
- Sun, 16 May 2021 20:33:51 -0700 (PDT)
+ bh=hn7unOXRknxUolKeI3R/RYUkNJ1IJ3Em4zYkxuuGOMo=;
+ b=Z/qZ5klWimyx1PUv/uA+/k1Wo5pnr71Zv83/nBx4FvAkQxOI4p5eegb4AINp8DmWFc
+ YizEcnrl/7fxvE7YLzrDvU8YElXFmtNmMu5dozS9PWDbqUWHKDxcb0C7hqb/ll4KlTKe
+ deAUeyNyy2M/J2bodsfdZVUKjTtMNe8nDTKAa+z+6U2Ku8GrvrKS4MHLYzfqGvGYl3hC
+ yFh7gTMOaY816oBYMBCa7bds1ptJBH2sbeSmdnBYuie9tUVFk4BlOUpoUrd06iBQkh9I
+ 27gGgzMgWLVKM0IQA2LC/wILR/RpykCWboksytynTBzVbUgIE+7sbDxThsY6zloRi48N
+ huPA==
+X-Gm-Message-State: AOAM531/0pej+9jPFAWSS5vlCQK0xsVWiMWASBNKTLfozHX6sV1e9FaP
+ sC46SFbDjP0RxKS1IgC3rviSbf9e//c=
+X-Google-Smtp-Source: ABdhPJzXDyDVZmaaEpbHjNvBlLBs4R8+us2uiQgWBbazu3lVyZhk5soIV9FGlicjR+n2rvfqi6cxyQ==
+X-Received: by 2002:a17:90a:ee89:: with SMTP id
+ i9mr1117265pjz.57.1621222435985; 
+ Sun, 16 May 2021 20:33:55 -0700 (PDT)
 Received: from tee480.ibm.com (159-196-117-139.9fc475.syd.nbn.aussiebb.net.
  [159.196.117.139])
- by smtp.gmail.com with ESMTPSA id s3sm9785418pgs.62.2021.05.16.20.33.46
+ by smtp.gmail.com with ESMTPSA id s3sm9785418pgs.62.2021.05.16.20.33.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 May 2021 20:33:50 -0700 (PDT)
+ Sun, 16 May 2021 20:33:55 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v14 5/9] powerpc/bpf: Remove bpf_jit_free()
-Date: Mon, 17 May 2021 13:28:06 +1000
-Message-Id: <20210517032810.129949-6-jniethe5@gmail.com>
+Subject: [PATCH v14 6/9] powerpc/bpf: Write protect JIT code
+Date: Mon, 17 May 2021 13:28:07 +1000
+Message-Id: <20210517032810.129949-7-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210517032810.129949-1-jniethe5@gmail.com>
 References: <20210517032810.129949-1-jniethe5@gmail.com>
@@ -88,45 +88,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 74451e66d516 ("bpf: make jited programs visible in traces") added
-a default bpf_jit_free() implementation. Powerpc did not use the default
-bpf_jit_free() as powerpc did not set the images read-only. The default
-bpf_jit_free() called bpf_jit_binary_unlock_ro() is why it could not be
-used for powerpc.
+Add the necessary call to bpf_jit_binary_lock_ro() to remove write and
+add exec permissions to the JIT image after it has finished being
+written.
 
-Commit d53d2f78cead ("bpf: Use vmalloc special flag") moved keeping
-track of read-only memory to vmalloc. This included removing
-bpf_jit_binary_unlock_ro(). Therefore there is no reason powerpc needs
-its own bpf_jit_free(). Remove it.
+Without CONFIG_STRICT_MODULE_RWX the image will be writable and
+executable until the call to bpf_jit_binary_lock_ro().
 
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v11: New to series
+v10: New to series
+v11: Remove CONFIG_STRICT_MODULE_RWX conditional
 ---
- arch/powerpc/net/bpf_jit_comp.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ arch/powerpc/net/bpf_jit_comp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index 798ac4350a82..6c8c268e4fe8 100644
+index 6c8c268e4fe8..53aefee3fe70 100644
 --- a/arch/powerpc/net/bpf_jit_comp.c
 +++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -257,15 +257,3 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+@@ -237,6 +237,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+ 	fp->jited_len = alloclen;
  
- 	return fp;
- }
--
--/* Overriding bpf_jit_free() as we don't set images read-only. */
--void bpf_jit_free(struct bpf_prog *fp)
--{
--	unsigned long addr = (unsigned long)fp->bpf_func & PAGE_MASK;
--	struct bpf_binary_header *bpf_hdr = (void *)addr;
--
--	if (fp->jited)
--		bpf_jit_binary_free(bpf_hdr);
--
--	bpf_prog_unlock_free(fp);
--}
+ 	bpf_flush_icache(bpf_hdr, (u8 *)bpf_hdr + (bpf_hdr->pages * PAGE_SIZE));
++	bpf_jit_binary_lock_ro(bpf_hdr);
+ 	if (!fp->is_func || extra_pass) {
+ 		bpf_prog_fill_jited_linfo(fp, addrs);
+ out_addrs:
 -- 
 2.25.1
 
