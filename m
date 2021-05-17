@@ -1,90 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497DD3827CD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 11:06:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3983A382823
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 11:20:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkCtd2glJz30DG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 19:06:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkDBp19qzz308v
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 May 2021 19:20:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZO8ifUUw;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KCAt18vj;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OsBVHm5a;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=omosnace@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ZO8ifUUw; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=KCAt18vj; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=OsBVHm5a; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FkCt61873z2yWt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 19:06:21 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14H946fj130520; Mon, 17 May 2021 05:06:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=8EXARiZEoT3iTe39dh1mxbDV1Pl2itAv6C3+ldEnrXo=;
- b=ZO8ifUUwJRMGEt7SOUazukqMJfBaMvZbkfEgB5MkTrZs4zASFE3koauPyHLRB7qtYb/9
- AVGnGCo7nIYa7Co3ibkPXicvCvMf1m8DvimhfzE4ubuK+SjuS47mLoSH/9OzTPAe3wFm
- Mg/h6XdJG2BBtu1KkP8w/F7PfdM7jnSKk0Fx0fnBGkKy0pniiSDApn5I5H+47bJNT3WY
- mF0CWCqQdL0QSZqSdVCkU+caOSYESuRJJ+GCU+h942/CeUl5PhzeV+yuTWmGH12T8mTa
- +DpzacsrE4v2+G5cVL7LsI8RYe3mWMWlwewRZndVI0sswtWzW/JAdGz6k8ITXUDmeluS ug== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38kna7gdhd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 May 2021 05:06:14 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14H93KYs032509;
- Mon, 17 May 2021 09:06:12 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 38j5jgrpj8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 May 2021 09:06:12 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14H969pM40632670
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 May 2021 09:06:09 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 56B91A4060;
- Mon, 17 May 2021 09:06:09 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EEA3FA4054;
- Mon, 17 May 2021 09:06:08 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.145.23.115])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 17 May 2021 09:06:08 +0000 (GMT)
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org
-Subject: [PATCH v5] pseries/drmem: update LMBs after LPM
-Date: Mon, 17 May 2021 11:06:06 +0200
-Message-Id: <20210517090606.56930-1-ldufour@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FkDBD02DPz2xg6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 19:20:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1621243215;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Lh52OqTC2uVe5TI8Cj5aeQ7Ezjtu05JjDHOo/9GMNws=;
+ b=KCAt18vjFzusjVVXxTjsC56D1Xs+Rzjb70lW3bQI2mIxqI3lOo2/AMVmVUuEky3Iy7Irwc
+ LAtk4VAgDMsxP7YYfTBH41OwE3repu/VVoNRTI86nRbxZ5Ax/St+0wrIKP6LBu1+cT7jg6
+ ajqZpV043MFXsxa6HbZNARFgtPwGPyU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1621243216;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Lh52OqTC2uVe5TI8Cj5aeQ7Ezjtu05JjDHOo/9GMNws=;
+ b=OsBVHm5awbgRM3Vaz/cBf00Sy9iI2jyRHMQPtbSuIPf6l2ilYlrDTYWdJV/RuQDy9UQzuk
+ Q6/Ex9oljBob1TVnUtRoq2Sd1c7naGJeyrHopzV7dAdvMZv8IXXL2nAh0y3hWByiFaPrVc
+ w4AehM6eE5BqAc4SEiv2qnQOfAeOg2c=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-324-2IYbZXJ3OQKnERai_gUhng-1; Mon, 17 May 2021 05:20:12 -0400
+X-MC-Unique: 2IYbZXJ3OQKnERai_gUhng-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ h4-20020a1709067184b02903cbbd4c3d8fso796035ejk.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 02:20:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Lh52OqTC2uVe5TI8Cj5aeQ7Ezjtu05JjDHOo/9GMNws=;
+ b=ZcJ+4fLOhSUEeH3Rtyr6csQX4Xduzd9E/LFtr3Y3sei1imbDO0LqeB0xo2UM06wv2l
+ UQD5S3TcC+UGdUZC99h1L0QqsCItnrIUgNueg0ZdO4phGA1tR6bVtXzqCPpk4cwPewTi
+ rN3zS9/pLB1brwO3aVOF057g722tGIwlc/Y0I85TRsbkjlzr34uIgHHUM+HIGYRxl4Dj
+ p6p3lpBBH0sTmlokJ0BO6/woIt4rZ/5J2CgfCvNkAqYwIh6zK1sh0LULZ0jVJ9znGay1
+ brwTjG/DWmxYhddAdt0Er7YUyh7y3115MIj8gLR6AM3FzcrGUoistqVdRJmy+RRXhOSv
+ 8beA==
+X-Gm-Message-State: AOAM530puicTjVkwEpQAnG687x8MR9sSIN8tNK6cfYMbuZ3qK2qy4doN
+ VuCH3cKNEfp5CB+bR0aCdm1VHXckso8ZnFDJlmpcGn/byF1AB4Hntd81kGuFGvnNxrtknq3tZ3+
+ zlBhssjdfEjlaW1wzEDxveMPZgQ==
+X-Received: by 2002:aa7:d9c8:: with SMTP id v8mr15061162eds.186.1621243210383; 
+ Mon, 17 May 2021 02:20:10 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzaCV4robSlfb92PPbNHj/c+tEG3xQ7HbJnmq6teN5zQAr/K9LMUZ4/D22Dap+04FeLklzF3Q==
+X-Received: by 2002:aa7:d9c8:: with SMTP id v8mr15061143eds.186.1621243210166; 
+ Mon, 17 May 2021 02:20:10 -0700 (PDT)
+Received: from localhost.localdomain
+ ([2a02:8308:b105:dd00:277b:6436:24db:9466])
+ by smtp.gmail.com with ESMTPSA id b9sm1905323edt.71.2021.05.17.02.20.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 May 2021 02:20:09 -0700 (PDT)
+From: Ondrej Mosnacek <omosnace@redhat.com>
+To: linux-security-module@vger.kernel.org,
+	James Morris <jmorris@namei.org>
+Subject: [PATCH v2] lockdown,
+ selinux: avoid bogus SELinux lockdown permission checks
+Date: Mon, 17 May 2021 11:20:06 +0200
+Message-Id: <20210517092006.803332-1-omosnace@redhat.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=omosnace@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tv1JFUG0LjxzGcz5UPXT1cgab1DkVD3R
-X-Proofpoint-ORIG-GUID: tv1JFUG0LjxzGcz5UPXT1cgab1DkVD3R
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-17_03:2021-05-12,
- 2021-05-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxlogscore=999
- impostorscore=0 mlxscore=0 spamscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 phishscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105170064
+Content-Type: text/plain; charset="US-ASCII"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,164 +104,323 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: selinux@vger.kernel.org, netdev@vger.kernel.org,
+ Stephen Smalley <stephen.smalley.work@gmail.com>, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>, Casey Schaufler <casey@schaufler-ca.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-fsdevel@vger.kernel.org,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-After a LPM, the device tree node ibm,dynamic-reconfiguration-memory may be
-updated by the hypervisor in the case the NUMA topology of the LPAR's
-memory is updated.
+Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
+lockdown") added an implementation of the locked_down LSM hook to
+SELinux, with the aim to restrict which domains are allowed to perform
+operations that would breach lockdown.
 
-This is handled by the kernel, but the memory's node is not updated because
-there is no way to move a memory block between nodes from the Linux kernel
-point of view.
+However, in several places the security_locked_down() hook is called in
+situations where the current task isn't doing any action that would
+directly breach lockdown, leading to SELinux checks that are basically
+bogus.
 
-If later a memory block is added or removed, drmem_update_dt() is called
-and it is overwriting the DT node ibm,dynamic-reconfiguration-memory to
-match the added or removed LMB. But the LMB's associativity node has not
-been updated after the DT node update and thus the node is overwritten by
-the Linux's topology instead of the hypervisor one.
+Since in most of these situations converting the callers such that
+security_locked_down() is called in a context where the current task
+would be meaningful for SELinux is impossible or very non-trivial (and
+could lead to TOCTOU issues for the classic Lockdown LSM
+implementation), fix this by modifying the hook to accept a struct cred
+pointer as argument, where NULL will be interpreted as a request for a
+"global", task-independent lockdown decision only. Then modify SELinux
+to ignore calls with cred == NULL.
 
-Introduce a hook called when the ibm,dynamic-reconfiguration-memory node is
-updated to force an update of the LMB's associativity. However, ignore the
-call to that hook when the update has been triggered by drmem_update_dt().
-Because, in that case, the LMB tree has been used to set the DT property
-and thus it doesn't need to be updated back. Since drmem_update_dt() is
-called under the protection of the device_hotplug_lock and the hook is
-called in the same context, use a simple boolean variable to detect that
-call.
+Since most callers will just want to pass current_cred() as the cred
+parameter, rename the hook to security_cred_locked_down() and provide
+the original security_locked_down() function as a simple wrapper around
+the new hook.
 
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+The callers migrated to the new hook, passing NULL as cred:
+1. arch/powerpc/xmon/xmon.c
+     Here the hook seems to be called from non-task context and is only
+     used for redacting some sensitive values from output sent to
+     userspace.
+2. fs/tracefs/inode.c:tracefs_create_file()
+     Here the call is used to prevent creating new tracefs entries when
+     the kernel is locked down. Assumes that locking down is one-way -
+     i.e. if the hook returns non-zero once, it will never return zero
+     again, thus no point in creating these files.
+3. kernel/trace/bpf_trace.c:bpf_probe_read_kernel{,_str}_common()
+     Called when a BPF program calls a helper that could leak kernel
+     memory. The task context is not relevant here, since the program
+     may very well be run in the context of a different task than the
+     consumer of the data.
+     See: https://bugzilla.redhat.com/show_bug.cgi?id=1955585
+4. net/xfrm/xfrm_user.c:copy_to_user_*()
+     Here a cryptographic secret is redacted based on the value returned
+     from the hook. There are two possible actions that may lead here:
+     a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
+        task context is relevant, since the dumped data is sent back to
+        the current task.
+     b) When deleting an SA via XFRM_MSG_DELSA, the dumped SAs are
+        broadcasted to tasks subscribed to XFRM events - here the
+        SELinux check is not meningful as the current task's creds do
+        not represent the tasks that could potentially see the secret.
+     It really doesn't seem worth it to try to preserve the check in the
+     a) case, since the eventual leak can be circumvented anyway via b),
+     plus there is no way for the task to indicate that it doesn't care
+     about the actual key value, so the check could generate a lot of
+     noise.
+
+Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
+Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 ---
 
-V5:
- - Reword the commit's description to address Nathan's comments.
-V4:
- - Prevent the LMB to be updated back in the case the request came from the
- LMB tree's update.
-V3:
- - Check rd->dn->name instead of rd->dn->full_name
-V2:
- - Take Tyrel's idea to rely on OF_RECONFIG_UPDATE_PROPERTY instead of
- introducing a new hook mechanism.
----
- arch/powerpc/include/asm/drmem.h              |  1 +
- arch/powerpc/mm/drmem.c                       | 46 +++++++++++++++++++
- .../platforms/pseries/hotplug-memory.c        |  4 ++
- 3 files changed, 51 insertions(+)
+v2:
+- change to a single hook based on suggestions by Casey Schaufler
 
-diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
-index bf2402fed3e0..4265d5e95c2c 100644
---- a/arch/powerpc/include/asm/drmem.h
-+++ b/arch/powerpc/include/asm/drmem.h
-@@ -111,6 +111,7 @@ int drmem_update_dt(void);
- int __init
- walk_drmem_lmbs_early(unsigned long node, void *data,
- 		      int (*func)(struct drmem_lmb *, const __be32 **, void *));
-+void drmem_update_lmbs(struct property *prop);
- #endif
+v1: https://lore.kernel.org/lkml/20210507114048.138933-1-omosnace@redhat.com/
+
+ arch/powerpc/xmon/xmon.c      |  4 ++--
+ fs/tracefs/inode.c            |  2 +-
+ include/linux/lsm_hook_defs.h |  3 ++-
+ include/linux/lsm_hooks.h     |  3 ++-
+ include/linux/security.h      | 11 ++++++++---
+ kernel/trace/bpf_trace.c      |  4 ++--
+ net/xfrm/xfrm_user.c          |  2 +-
+ security/lockdown/lockdown.c  |  5 +++--
+ security/security.c           |  6 +++---
+ security/selinux/hooks.c      | 12 +++++++++---
+ 10 files changed, 33 insertions(+), 19 deletions(-)
+
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index c8173e92f19d..90992793b4c5 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -299,7 +299,7 @@ static bool xmon_is_locked_down(void)
+ 	static bool lockdown;
  
- static inline void invalidate_lmb_associativity_index(struct drmem_lmb *lmb)
-diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
-index 9af3832c9d8d..22197b18d85e 100644
---- a/arch/powerpc/mm/drmem.c
-+++ b/arch/powerpc/mm/drmem.c
-@@ -18,6 +18,7 @@ static int n_root_addr_cells, n_root_size_cells;
+ 	if (!lockdown) {
+-		lockdown = !!security_locked_down(LOCKDOWN_XMON_RW);
++		lockdown = !!security_cred_locked_down(NULL, LOCKDOWN_XMON_RW);
+ 		if (lockdown) {
+ 			printf("xmon: Disabled due to kernel lockdown\n");
+ 			xmon_is_ro = true;
+@@ -307,7 +307,7 @@ static bool xmon_is_locked_down(void)
+ 	}
  
- static struct drmem_lmb_info __drmem_info;
- struct drmem_lmb_info *drmem_info = &__drmem_info;
-+static bool in_drmem_update;
+ 	if (!xmon_is_ro) {
+-		xmon_is_ro = !!security_locked_down(LOCKDOWN_XMON_WR);
++		xmon_is_ro = !!security_cred_locked_down(NULL, LOCKDOWN_XMON_WR);
+ 		if (xmon_is_ro)
+ 			printf("xmon: Read-only due to kernel lockdown\n");
+ 	}
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index 1261e8b41edb..7edde3fc22f5 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -396,7 +396,7 @@ struct dentry *tracefs_create_file(const char *name, umode_t mode,
+ 	struct dentry *dentry;
+ 	struct inode *inode;
  
- u64 drmem_lmb_memory_max(void)
+-	if (security_locked_down(LOCKDOWN_TRACEFS))
++	if (security_cred_locked_down(NULL, LOCKDOWN_TRACEFS))
+ 		return NULL;
+ 
+ 	if (!(mode & S_IFMT))
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index 2adeea44c0d5..0115d7e3db55 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -393,7 +393,8 @@ LSM_HOOK(int, 0, bpf_prog_alloc_security, struct bpf_prog_aux *aux)
+ LSM_HOOK(void, LSM_RET_VOID, bpf_prog_free_security, struct bpf_prog_aux *aux)
+ #endif /* CONFIG_BPF_SYSCALL */
+ 
+-LSM_HOOK(int, 0, locked_down, enum lockdown_reason what)
++LSM_HOOK(int, 0, cred_locked_down, const struct cred *cred,
++	 enum lockdown_reason what)
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ LSM_HOOK(int, 0, perf_event_open, struct perf_event_attr *attr, int type)
+diff --git a/include/linux/lsm_hooks.h b/include/linux/lsm_hooks.h
+index 5c4c5c0602cb..2d2d82ffea34 100644
+--- a/include/linux/lsm_hooks.h
++++ b/include/linux/lsm_hooks.h
+@@ -1539,10 +1539,11 @@
+  * @bpf_prog_free_security:
+  *	Clean up the security information stored inside bpf prog.
+  *
+- * @locked_down:
++ * @cred_locked_down:
+  *     Determine whether a kernel feature that potentially enables arbitrary
+  *     code execution in kernel space should be permitted.
+  *
++ *     @cred: credential asociated with the operation, or NULL if not applicable
+  *     @what: kernel feature being accessed
+  *
+  * Security hooks for perf events
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 24eda04221e9..6a609787a03a 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -26,6 +26,7 @@
+ #include <linux/kernel_read_file.h>
+ #include <linux/key.h>
+ #include <linux/capability.h>
++#include <linux/cred.h>
+ #include <linux/fs.h>
+ #include <linux/slab.h>
+ #include <linux/err.h>
+@@ -33,7 +34,6 @@
+ #include <linux/mm.h>
+ 
+ struct linux_binprm;
+-struct cred;
+ struct rlimit;
+ struct kernel_siginfo;
+ struct sembuf;
+@@ -470,7 +470,7 @@ void security_inode_invalidate_secctx(struct inode *inode);
+ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+ int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
+ int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen);
+-int security_locked_down(enum lockdown_reason what);
++int security_cred_locked_down(const struct cred *cred, enum lockdown_reason what);
+ #else /* CONFIG_SECURITY */
+ 
+ static inline int call_blocking_lsm_notifier(enum lsm_event event, void *data)
+@@ -1343,12 +1343,17 @@ static inline int security_inode_getsecctx(struct inode *inode, void **ctx, u32
  {
-@@ -178,6 +179,11 @@ int drmem_update_dt(void)
- 	if (!memory)
- 		return -1;
+ 	return -EOPNOTSUPP;
+ }
+-static inline int security_locked_down(enum lockdown_reason what)
++static inline int security_cred_locked_down(struct cred *cred, enum lockdown_reason what)
+ {
+ 	return 0;
+ }
+ #endif	/* CONFIG_SECURITY */
  
-+	/*
-+	 * Set in_drmem_update to prevent the notifier callback to process the
-+	 * DT property back since the change is coming from the LMB tree.
-+	 */
-+	in_drmem_update = true;
- 	prop = of_find_property(memory, "ibm,dynamic-memory", NULL);
- 	if (prop) {
- 		rc = drmem_update_dt_v1(memory, prop);
-@@ -186,6 +192,7 @@ int drmem_update_dt(void)
- 		if (prop)
- 			rc = drmem_update_dt_v2(memory, prop);
- 	}
-+	in_drmem_update = false;
++static inline int security_locked_down(enum lockdown_reason what)
++{
++	return security_cred_locked_down(current_cred(), what);
++}
++
+ #if defined(CONFIG_SECURITY) && defined(CONFIG_WATCH_QUEUE)
+ int security_post_notification(const struct cred *w_cred,
+ 			       const struct cred *cred,
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index d2d7cf6cfe83..d8a242837c1e 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -215,7 +215,7 @@ const struct bpf_func_proto bpf_probe_read_user_str_proto = {
+ static __always_inline int
+ bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
+ {
+-	int ret = security_locked_down(LOCKDOWN_BPF_READ);
++	int ret = security_cred_locked_down(NULL, LOCKDOWN_BPF_READ);
  
- 	of_node_put(memory);
- 	return rc;
-@@ -307,6 +314,45 @@ int __init walk_drmem_lmbs_early(unsigned long node, void *data,
- 	return ret;
+ 	if (unlikely(ret < 0))
+ 		goto fail;
+@@ -246,7 +246,7 @@ const struct bpf_func_proto bpf_probe_read_kernel_proto = {
+ static __always_inline int
+ bpf_probe_read_kernel_str_common(void *dst, u32 size, const void *unsafe_ptr)
+ {
+-	int ret = security_locked_down(LOCKDOWN_BPF_READ);
++	int ret = security_cred_locked_down(NULL, LOCKDOWN_BPF_READ);
+ 
+ 	if (unlikely(ret < 0))
+ 		goto fail;
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index f0aecee4d539..5f45848c4ff3 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -851,7 +851,7 @@ static int copy_user_offload(struct xfrm_state_offload *xso, struct sk_buff *skb
+ static bool xfrm_redact(void)
+ {
+ 	return IS_ENABLED(CONFIG_SECURITY) &&
+-		security_locked_down(LOCKDOWN_XFRM_SECRET);
++		security_cred_locked_down(NULL, LOCKDOWN_XFRM_SECRET);
  }
  
-+/*
-+ * Update the LMB associativity index.
-+ */
-+static int update_lmb(struct drmem_lmb *updated_lmb,
-+		      __maybe_unused const __be32 **usm,
-+		      __maybe_unused void *data)
-+{
-+	struct drmem_lmb *lmb;
-+
-+	for_each_drmem_lmb(lmb) {
-+		if (lmb->drc_index != updated_lmb->drc_index)
-+			continue;
-+
-+		lmb->aa_index = updated_lmb->aa_index;
-+		break;
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * Update the LMB associativity index.
-+ *
-+ * This needs to be called when the hypervisor is updating the
-+ * dynamic-reconfiguration-memory node property.
-+ */
-+void drmem_update_lmbs(struct property *prop)
-+{
-+	/*
-+	 * Don't update the LMBs if triggered by the update done in
-+	 * drmem_update_dt(), the LMB values have been used to the update the DT
-+	 * property in that case.
-+	 */
-+	if (in_drmem_update)
-+		return;
-+	if (!strcmp(prop->name, "ibm,dynamic-memory"))
-+		__walk_drmem_v1_lmbs(prop->value, NULL, NULL, update_lmb);
-+	else if (!strcmp(prop->name, "ibm,dynamic-memory-v2"))
-+		__walk_drmem_v2_lmbs(prop->value, NULL, NULL, update_lmb);
-+}
+ static int copy_to_user_auth(struct xfrm_algo_auth *auth, struct sk_buff *skb)
+diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
+index 87cbdc64d272..2a13c866c22a 100644
+--- a/security/lockdown/lockdown.c
++++ b/security/lockdown/lockdown.c
+@@ -55,7 +55,8 @@ early_param("lockdown", lockdown_param);
+  * lockdown_is_locked_down - Find out if the kernel is locked down
+  * @what: Tag to use in notice generated if lockdown is in effect
+  */
+-static int lockdown_is_locked_down(enum lockdown_reason what)
++static int lockdown_is_locked_down(const struct cred *cred,
++				   enum lockdown_reason what)
+ {
+ 	if (WARN(what >= LOCKDOWN_CONFIDENTIALITY_MAX,
+ 		 "Invalid lockdown reason"))
+@@ -72,7 +73,7 @@ static int lockdown_is_locked_down(enum lockdown_reason what)
+ }
+ 
+ static struct security_hook_list lockdown_hooks[] __lsm_ro_after_init = {
+-	LSM_HOOK_INIT(locked_down, lockdown_is_locked_down),
++	LSM_HOOK_INIT(cred_locked_down, lockdown_is_locked_down),
+ };
+ 
+ static int __init lockdown_lsm_init(void)
+diff --git a/security/security.c b/security/security.c
+index 0c1c9796e3e4..c987b70bc16c 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -2592,11 +2592,11 @@ void security_bpf_prog_free(struct bpf_prog_aux *aux)
+ }
+ #endif /* CONFIG_BPF_SYSCALL */
+ 
+-int security_locked_down(enum lockdown_reason what)
++int security_cred_locked_down(const struct cred *cred, enum lockdown_reason what)
+ {
+-	return call_int_hook(locked_down, 0, what);
++	return call_int_hook(cred_locked_down, 0, cred, what);
+ }
+-EXPORT_SYMBOL(security_locked_down);
++EXPORT_SYMBOL(security_cred_locked_down);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ int security_perf_event_open(struct perf_event_attr *attr, int type)
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index eaea837d89d1..c415e3ca4f24 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -7017,10 +7017,10 @@ static void selinux_bpf_prog_free(struct bpf_prog_aux *aux)
+ }
  #endif
  
- static int init_drmem_lmb_size(struct device_node *dn)
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 8377f1f7c78e..672ffbee2e78 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -949,6 +949,10 @@ static int pseries_memory_notifier(struct notifier_block *nb,
- 	case OF_RECONFIG_DETACH_NODE:
- 		err = pseries_remove_mem_node(rd->dn);
- 		break;
-+	case OF_RECONFIG_UPDATE_PROPERTY:
-+		if (!strcmp(rd->dn->name,
-+			    "ibm,dynamic-reconfiguration-memory"))
-+			drmem_update_lmbs(rd->prop);
+-static int selinux_lockdown(enum lockdown_reason what)
++static int selinux_lockdown(const struct cred *cred, enum lockdown_reason what)
+ {
+ 	struct common_audit_data ad;
+-	u32 sid = current_sid();
++	u32 sid;
+ 	int invalid_reason = (what <= LOCKDOWN_NONE) ||
+ 			     (what == LOCKDOWN_INTEGRITY_MAX) ||
+ 			     (what >= LOCKDOWN_CONFIDENTIALITY_MAX);
+@@ -7032,6 +7032,12 @@ static int selinux_lockdown(enum lockdown_reason what)
+ 		return -EINVAL;
  	}
- 	return notifier_from_errno(err);
- }
+ 
++	/* Ignore if there is no relevant cred to check against */
++	if (!cred)
++		return 0;
++
++	sid = cred_sid(cred);
++
+ 	ad.type = LSM_AUDIT_DATA_LOCKDOWN;
+ 	ad.u.reason = what;
+ 
+@@ -7353,7 +7359,7 @@ static struct security_hook_list selinux_hooks[] __lsm_ro_after_init = {
+ 	LSM_HOOK_INIT(perf_event_write, selinux_perf_event_write),
+ #endif
+ 
+-	LSM_HOOK_INIT(locked_down, selinux_lockdown),
++	LSM_HOOK_INIT(cred_locked_down, selinux_lockdown),
+ 
+ 	/*
+ 	 * PUT "CLONING" (ACCESSING + ALLOCATING) HOOKS HERE
 -- 
 2.31.1
 
