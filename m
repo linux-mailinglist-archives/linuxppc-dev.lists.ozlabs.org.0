@@ -2,75 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C100D3872A3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 08:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27FAA3872BD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 08:57:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fkmpq5KXtz3cTk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 16:50:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkmzM0Ztwz3byK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 16:57:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=LETfA+HN;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=KvboTWH6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d2f;
- helo=mail-io1-xd2f.google.com; envelope-from=tientzu@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::429;
+ helo=mail-pf1-x429.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=LETfA+HN; dkim-atps=neutral
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com
- [IPv6:2607:f8b0:4864:20::d2f])
+ header.s=google header.b=KvboTWH6; dkim-atps=neutral
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
+ [IPv6:2607:f8b0:4864:20::429])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FkmnC5Yc7z3cFP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 16:49:02 +1000 (AEST)
-Received: by mail-io1-xd2f.google.com with SMTP id a8so269322ioa.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:49:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fkmyv50Vbz2xZH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 16:57:24 +1000 (AEST)
+Received: by mail-pf1-x429.google.com with SMTP id q2so6681478pfh.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:57:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=3HopsH6N9F8FpkG4FSoTMtRMwuiSWSuF3ZB9X+VJCjU=;
- b=LETfA+HNnfbbscLemZLHMHTU1ucDVUTbar59Z+Ip1n1aOSxU2vCiyi6AnzZ7ISe1Ci
- d5+6nDZp7u09C4wccj2HMQoLbhxVgGmyilxSsMMqy6XnJ9Gh0XN/+XAYDZzV88am1gOT
- FB7ehF0SoAEZFAQ80iPByl3CmJPeIGWiXIdbM=
+ :cc; bh=okFGSzwxy3Xl1EDwrbsZ6bJWGdPaUEKxSezi4/SE71A=;
+ b=KvboTWH6SCfdQ7LLxm6vH9xhTNNbPkylAhr3iqPQWH1QNODKOLIbMt/OYjboWMwVvr
+ +KD/UQeQoUETk6OK7TCWS0Utmt5EvBfWbA4IzzRRuwJkDy5Qi3ICeWOTChp1Py6zaNQt
+ fa1WHS9ymuIo1ivMcIga1N5vVpkmfX46UnGI0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=3HopsH6N9F8FpkG4FSoTMtRMwuiSWSuF3ZB9X+VJCjU=;
- b=CuGvxUlYfcoGMBZJgJxpNCdC1S/ZDhOs8p5bTlu+Zcdls4vGqM3+QHJ5EypVuCueDo
- tMv+GDn5CiHhwS8Iy/9bjym75mnS08y+jDmwXLyI289riO/0mQKu3HlcmGQw8SkplkS2
- IQc311o0hwmJA7xHEHB1wyTuUHlFRfnLKbNynciWp4Zja0gPFoyX0d5H3ViQ91UjXNeX
- pPMJWv1w+3lLT6SlMjxpEZW35joC6VlYxXfGAOEKnPyqNTYn/HxNAMQ5cWsNx5PbNahr
- MRY09lMGBxBo9QrbNW37b/kyHw7LOpJMCt5bXkagVCWCGxrg0Z1JpEMAScrTwYkH704b
- Gimg==
-X-Gm-Message-State: AOAM531EhkMpvpT4vEKmOcAQQPCcFw077zw7C/gVLUZ+1kAITzlckUpx
- B54FWl9vw9NPJVjDj0jn8fc/VpCBP3EbHw==
-X-Google-Smtp-Source: ABdhPJz/fCAjQ8JICdoDoFhgGY6mG5RJNk0c9wUnB7iOE2ecA92VVijaDbBPBPUOaHkVbcKtqntsGQ==
-X-Received: by 2002:a05:6638:3290:: with SMTP id
- f16mr3987485jav.49.1621320539057; 
- Mon, 17 May 2021 23:48:59 -0700 (PDT)
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com.
- [209.85.166.53])
- by smtp.gmail.com with ESMTPSA id c6sm8650865ile.43.2021.05.17.23.48.57
+ bh=okFGSzwxy3Xl1EDwrbsZ6bJWGdPaUEKxSezi4/SE71A=;
+ b=t6Bn5yb+JdfSDI+Km5gCnRqBSNYX6erbYomBHMdwgIefloPVEhNMUOBHYey3yLpiat
+ 3ZDg9yyVHQWCC9Xvg9h4aq8aN2VVa0ar4Ifvk3+ZV8K6I6hZk+kdDL0ZU2u/0EgMDC/V
+ L5WlBhpRlUrLOBzBPEGZCFlIY8mfhTFEHw77nuexU8/R9QNz/XgBBmxdIVYt2MrFbh6a
+ tTN4I3mzYtQFjAOcZNZi73GOz1srSGj1+zuA3zBq1HyUPCOUJdoBgamsC3BWltnA4HIM
+ 8dJe+ZXLZ14C6KUmK2a6DO3pB/BMhjV4J/14vzqXPyDRLe1syY3Dy/8FoyYzQn08cGYJ
+ eJzQ==
+X-Gm-Message-State: AOAM530Zk0eJWAkyBCPSmrVVu5zNZbCVYgT0xXJMCxj88nJDq0nNg5sC
+ 4tCvTyqHXMangs0rdRpdl2IADDEWjbyKIg==
+X-Google-Smtp-Source: ABdhPJyuizGjJYJEy7sUo1pROBeUfCefWidQMLix1IxO9obpBlMJW68ZgIdcUPG1q20NSvRAvSDVLQ==
+X-Received: by 2002:a63:b206:: with SMTP id x6mr3574967pge.341.1621321040826; 
+ Mon, 17 May 2021 23:57:20 -0700 (PDT)
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com.
+ [209.85.215.174])
+ by smtp.gmail.com with ESMTPSA id u6sm10988928pfi.44.2021.05.17.23.57.20
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 May 2021 23:48:58 -0700 (PDT)
-Received: by mail-io1-f53.google.com with SMTP id d11so8364194iod.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:48:57 -0700 (PDT)
-X-Received: by 2002:a05:6638:32a8:: with SMTP id
- f40mr3969029jav.84.1621320526895; 
- Mon, 17 May 2021 23:48:46 -0700 (PDT)
+ Mon, 17 May 2021 23:57:20 -0700 (PDT)
+Received: by mail-pg1-f174.google.com with SMTP id k15so6321068pgb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:57:20 -0700 (PDT)
+X-Received: by 2002:a05:6e02:1a4d:: with SMTP id
+ u13mr3011800ilv.64.1621320723564; 
+ Mon, 17 May 2021 23:52:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210518064215.2856977-1-tientzu@chromium.org>
- <20210518064215.2856977-5-tientzu@chromium.org>
-In-Reply-To: <20210518064215.2856977-5-tientzu@chromium.org>
+ <20210518064215.2856977-6-tientzu@chromium.org>
+In-Reply-To: <20210518064215.2856977-6-tientzu@chromium.org>
 From: Claire Chang <tientzu@chromium.org>
-Date: Tue, 18 May 2021 14:48:35 +0800
-X-Gmail-Original-Message-ID: <CALiNf2_AWsnGqCnh02ZAGt+B-Ypzs1=-iOG2owm4GZHz2JAc4A@mail.gmail.com>
-Message-ID: <CALiNf2_AWsnGqCnh02ZAGt+B-Ypzs1=-iOG2owm4GZHz2JAc4A@mail.gmail.com>
-Subject: Re: [PATCH v7 04/15] swiotlb: Add restricted DMA pool initialization
+Date: Tue, 18 May 2021 14:51:52 +0800
+X-Gmail-Original-Message-ID: <CALiNf28ke3c91Y7xaHUgvJePKXqYA7UmsYJV9yaeZc3-4Lzs8Q@mail.gmail.com>
+Message-ID: <CALiNf28ke3c91Y7xaHUgvJePKXqYA7UmsYJV9yaeZc3-4Lzs8Q@mail.gmail.com>
+Subject: Re: [PATCH v7 05/15] swiotlb: Add a new get_io_tlb_mem getter
 To: Rob Herring <robh+dt@kernel.org>, mpe@ellerman.id.au,
  Joerg Roedel <joro@8bytes.org>, 
  Will Deacon <will@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
@@ -115,8 +114,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I didn't move this to a separate file because I feel it might be
-confusing for swiotlb_alloc/free (and need more functions to be
-non-static).
-Maybe instead of moving to a separate file, we can try to come up with
-a better naming?
+Still keep this function because directly using dev->dma_io_tlb_mem
+will cause issues for memory allocation for existing devices. The pool
+can't support atomic coherent allocation so we need to distinguish the
+per device pool and the default pool in swiotlb_alloc.
