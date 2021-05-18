@@ -2,52 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0D6386EF2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 03:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F70C386F8B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 03:43:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkdHG31YYz30L4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 11:11:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fkf142NgZz3bTv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 11:43:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sBRWvqae;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HYfPXXBs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=sBRWvqae; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=HYfPXXBs; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FkdG06ygdz300C
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 11:10:00 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1510661396;
- Tue, 18 May 2021 01:09:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621300198;
- bh=QEy0KRw8VajZyTOxPvZTSchBWwsGca12LIzpS3tWvsE=;
- h=From:To:Cc:Subject:Date:From;
- b=sBRWvqaeR49oMgE31OMZ0kFI5FZM/zNqlmDgFijL2EwlSBAaoJHgjL9mdGzJ3Ixv2
- UJDXOXe/fGRD1FjkRFpDZ6PiCEWQ59/MZwwkjT39aHR3P/YibQjfRxvH5YGOMzcd2v
- kKw8VVb6qsnT3vo6b7nIOKYzD17Ompn16/Rjgy3+ybYNBBna0R4KMHrB7iGXZXvTvs
- ILIlsi5A3B319gy8VAUylBe4f5VvjNumIH+TQ8lqraQrMRWjZGWYriW5hcTCueefq6
- f1KWX7Dlwk+gPYWdX4zvlqvCNjlkCytolzxbVXqVsccqAKd0mZanFTykk71/ectUTv
- yNyFWAd8IZSTg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 1/3] powerpc/pseries: Fix hcall tracing recursion
- in pv queued spinlocks
-Date: Mon, 17 May 2021 21:09:54 -0400
-Message-Id: <20210518010956.1485782-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fkf0b2jcGz2xxp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 11:43:26 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Fkf0W3DsMz9sW7;
+ Tue, 18 May 2021 11:43:22 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1621302204;
+ bh=MELaYUpC5ly3VlBnFkjsexeqoKnK1KYBd5YFbY5yxKc=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=HYfPXXBsgIAxCYG3a9ljJm56qp0IsVzey/NYdWNeifg8CMsOaOze0CdQHJ0m0WVpz
+ RmPgu5ElykGxG0TdEQiRTDUu3J44HniiFqpeIARBgsCcjWGklHXmdTzFVIZWVAVTfv
+ vkZO/8hqSZ885DfMi1hklSNKDxkxxMyVi/Gxw1xXRm5g3jvZN69TmiEKzVHC27XvUI
+ XgkdfjTlTxLwrcz6NoCEXkZP4GiI+vbJKGESLsgs4LRe5qBLsMbFBrpFSuMSh+Bkld
+ QMDMCafWsofSBHsQ1aO2jqehm7WncGW/n7jYSnEqhXzQ9BjL1bFr90oZpdYp1RWEjy
+ a3Oa/mZ4eT4iQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Jordan Niethe
+ <jniethe5@gmail.com>
+Subject: Re: [PATCH v14 3/9] powerpc/modules: Make module_alloc() Strict
+ Module RWX aware
+In-Reply-To: <27d15f13-c6bd-86d7-c4fc-2c4c495f54b3@csgroup.eu>
+References: <20210517032810.129949-1-jniethe5@gmail.com>
+ <20210517032810.129949-4-jniethe5@gmail.com>
+ <04311ba7-8b91-6837-2bc5-1f55f49da253@csgroup.eu>
+ <CACzsE9rk7D_ocSsf74C1vX=oXgLa_pQTSusncXRPeGBVe+48Nw@mail.gmail.com>
+ <87lf8dk4iw.fsf@mpe.ellerman.id.au>
+ <27d15f13-c6bd-86d7-c4fc-2c4c495f54b3@csgroup.eu>
+Date: Tue, 18 May 2021 11:43:18 +1000
+Message-ID: <87fsykkea1.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,158 +69,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- virtualization@lists.linux-foundation.org,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: ajd@linux.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, cmr@codefail.de,
+ naveen.n.rao@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 17/05/2021 =C3=A0 13:01, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Jordan Niethe <jniethe5@gmail.com> writes:
+>>> On Mon, May 17, 2021 at 4:37 PM Christophe Leroy
+>>> <christophe.leroy@csgroup.eu> wrote:
+>>>> Le 17/05/2021 =C3=A0 05:28, Jordan Niethe a =C3=A9crit :
+>>>>> Make module_alloc() use PAGE_KERNEL protections instead of
+>>>>> PAGE_KERNEL_EXEX if Strict Module RWX is enabled.
+>>>>>
+>>>>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+>>>>> ---
+>>>>> v14: - Split out from powerpc: Set ARCH_HAS_STRICT_MODULE_RWX
+>>>>>        - Add and use strict_module_rwx_enabled() helper
+>>>>> ---
+>>>>>    arch/powerpc/include/asm/mmu.h | 5 +++++
+>>>>>    arch/powerpc/kernel/module.c   | 4 +++-
+>>>>>    2 files changed, 8 insertions(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/as=
+m/mmu.h
+>>>>> index 607168b1aef4..7710bf0cbf8a 100644
+>>>>> --- a/arch/powerpc/include/asm/mmu.h
+>>>>> +++ b/arch/powerpc/include/asm/mmu.h
+>>>>> @@ -357,6 +357,11 @@ static inline bool strict_kernel_rwx_enabled(voi=
+d)
+>>>>>        return false;
+>>>>>    }
+>>>>>    #endif
+>>>>> +
+>>>>> +static inline bool strict_module_rwx_enabled(void)
+>>>>> +{
+>>>>> +     return IS_ENABLED(CONFIG_STRICT_MODULE_RWX) && strict_kernel_rw=
+x_enabled();
+>>>>> +}
+>>>>
+>>>> Looking at arch/Kconfig, I have the feeling that it is possible to sel=
+ect CONFIG_STRICT_MODULE_RWX
+>>>> without selecting CONFIG_STRICT_KERNEL_RWX.
+>>>>
+>>>> In that case, strict_kernel_rwx_enabled() will return false.
+>>=20
+>>> Ok, if someone did that currently it would break things, e.g. code
+>>> patching. I think it should it be made impossible to
+>>> CONFIG_STRICT_MODULE_RWX without CONFIG_STRICT_KERNEL_RWX?
+>>=20
+>> Yeah I don't see any reason to support that combination.
+>>=20
+>> We should be moving to a world where both are on by default, or in fact
+>> are always enabled.
+>
+> Would it work if we add the following in arch/powerpc/Kconfig ? :
+>
+> 	select STRICT_KERNEL_RWX if STRICT_MODULE_RWX
+>
+> There should be no dependency issue as powerpc only selects ARCH_HAS_STRI=
+CT_MODULE_RWX when=20
+> ARCH_HAS_STRICT_KERNEL_RWX is also selected.
 
-[ Upstream commit 2c8c89b95831f46a2fb31a8d0fef4601694023ce ]
+I think it will work. It's slightly rude to select things like that, but
+I think it's OK for something like this.
 
-The paravit queued spinlock slow path adds itself to the queue then
-calls pv_wait to wait for the lock to become free. This is implemented
-by calling H_CONFER to donate cycles.
+Medium term we can possibly just have the generic STRICT_MODULE_RWX
+depend on STRICT_KERNEL_RWX.
 
-When hcall tracing is enabled, this H_CONFER call can lead to a spin
-lock being taken in the tracing code, which will result in the lock to
-be taken again, which will also go to the slow path because it queues
-behind itself and so won't ever make progress.
-
-An example trace of a deadlock:
-
-  __pv_queued_spin_lock_slowpath
-  trace_clock_global
-  ring_buffer_lock_reserve
-  trace_event_buffer_lock_reserve
-  trace_event_buffer_reserve
-  trace_event_raw_event_hcall_exit
-  __trace_hcall_exit
-  plpar_hcall_norets_trace
-  __pv_queued_spin_lock_slowpath
-  trace_clock_global
-  ring_buffer_lock_reserve
-  trace_event_buffer_lock_reserve
-  trace_event_buffer_reserve
-  trace_event_raw_event_rcu_dyntick
-  rcu_irq_exit
-  irq_exit
-  __do_irq
-  call_do_irq
-  do_IRQ
-  hardware_interrupt_common_virt
-
-Fix this by introducing plpar_hcall_norets_notrace(), and using that to
-make SPLPAR virtual processor dispatching hcalls by the paravirt
-spinlock code.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210508101455.1578318-2-npiggin@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/include/asm/hvcall.h       |  3 +++
- arch/powerpc/include/asm/paravirt.h     | 22 +++++++++++++++++++---
- arch/powerpc/platforms/pseries/hvCall.S | 10 ++++++++++
- arch/powerpc/platforms/pseries/lpar.c   |  3 +--
- 4 files changed, 33 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index c1fbccb04390..3e8e19f5746c 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -437,6 +437,9 @@
-  */
- long plpar_hcall_norets(unsigned long opcode, ...);
- 
-+/* Variant which does not do hcall tracing */
-+long plpar_hcall_norets_notrace(unsigned long opcode, ...);
-+
- /**
-  * plpar_hcall: - Make a pseries hypervisor call
-  * @opcode: The hypervisor call to make.
-diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
-index 9362c94fe3aa..588bfb9a0579 100644
---- a/arch/powerpc/include/asm/paravirt.h
-+++ b/arch/powerpc/include/asm/paravirt.h
-@@ -24,19 +24,35 @@ static inline u32 yield_count_of(int cpu)
- 	return be32_to_cpu(yield_count);
- }
- 
-+/*
-+ * Spinlock code confers and prods, so don't trace the hcalls because the
-+ * tracing code takes spinlocks which can cause recursion deadlocks.
-+ *
-+ * These calls are made while the lock is not held: the lock slowpath yields if
-+ * it can not acquire the lock, and unlock slow path might prod if a waiter has
-+ * yielded). So this may not be a problem for simple spin locks because the
-+ * tracing does not technically recurse on the lock, but we avoid it anyway.
-+ *
-+ * However the queued spin lock contended path is more strictly ordered: the
-+ * H_CONFER hcall is made after the task has queued itself on the lock, so then
-+ * recursing on that lock will cause the task to then queue up again behind the
-+ * first instance (or worse: queued spinlocks use tricks that assume a context
-+ * never waits on more than one spinlock, so such recursion may cause random
-+ * corruption in the lock code).
-+ */
- static inline void yield_to_preempted(int cpu, u32 yield_count)
- {
--	plpar_hcall_norets(H_CONFER, get_hard_smp_processor_id(cpu), yield_count);
-+	plpar_hcall_norets_notrace(H_CONFER, get_hard_smp_processor_id(cpu), yield_count);
- }
- 
- static inline void prod_cpu(int cpu)
- {
--	plpar_hcall_norets(H_PROD, get_hard_smp_processor_id(cpu));
-+	plpar_hcall_norets_notrace(H_PROD, get_hard_smp_processor_id(cpu));
- }
- 
- static inline void yield_to_any(void)
- {
--	plpar_hcall_norets(H_CONFER, -1, 0);
-+	plpar_hcall_norets_notrace(H_CONFER, -1, 0);
- }
- #else
- static inline bool is_shared_processor(void)
-diff --git a/arch/powerpc/platforms/pseries/hvCall.S b/arch/powerpc/platforms/pseries/hvCall.S
-index 2136e42833af..8a2b8d64265b 100644
---- a/arch/powerpc/platforms/pseries/hvCall.S
-+++ b/arch/powerpc/platforms/pseries/hvCall.S
-@@ -102,6 +102,16 @@ END_FTR_SECTION(0, 1);						\
- #define HCALL_BRANCH(LABEL)
- #endif
- 
-+_GLOBAL_TOC(plpar_hcall_norets_notrace)
-+	HMT_MEDIUM
-+
-+	mfcr	r0
-+	stw	r0,8(r1)
-+	HVSC				/* invoke the hypervisor */
-+	lwz	r0,8(r1)
-+	mtcrf	0xff,r0
-+	blr				/* return r3 = status */
-+
- _GLOBAL_TOC(plpar_hcall_norets)
- 	HMT_MEDIUM
- 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 764170fdb0f7..1c3ac0f66336 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -1827,8 +1827,7 @@ void hcall_tracepoint_unregfunc(void)
- 
- /*
-  * Since the tracing code might execute hcalls we need to guard against
-- * recursion. One example of this are spinlocks calling H_YIELD on
-- * shared processor partitions.
-+ * recursion.
-  */
- static DEFINE_PER_CPU(unsigned int, hcall_trace_depth);
- 
--- 
-2.30.2
-
+cheers
