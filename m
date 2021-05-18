@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F87386ED0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 03:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD287386ED1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 03:10:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkdGK1s8pz306s
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 11:10:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkdGn50TPz3bw1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 11:10:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dp1s1+qx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J5keRasc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Dp1s1+qx; 
+ header.s=k20201202 header.b=J5keRasc; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FkdFm1nxsz2yXh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 11:09:48 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E7CF061396;
- Tue, 18 May 2021 01:09:43 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FkdFt63Rhz303t
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 11:09:54 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8A53F61396;
+ Tue, 18 May 2021 01:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621300184;
- bh=i/k9sDwLtgjF9ZDK+tYLppWwTyek+Su3iUDSGJxFHZ0=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Dp1s1+qxJEtxReLQX1dJ4SI41c308aoHtDa6o/C5VaFaoPf0MBEKOKJsZ2a0uzdaG
- PU3xc+jtlybyEHqmc/NdzHxY6l4Ef4q6B2ieyDjjzJCiVtqa9bg2ee8VBulgCY/0EB
- 4IPmbQ/zf0P2lcZsEqhA1MdQJYGVc/hQJPG80ZD9V2JUpo9NPp8TMnSQj7asfOMbXn
- wDFYwEFqEb4yaQcqZiUU3PHZ3KMa4DEhwtW5jf+ryD+l0sd506xhiQkKG3Q94N33AK
- i+ff+cJmAKtCqOrLe2lxsiKHE5/kI8j8q9PhS2x/x2d+bC7C7/TbBZab97cBaXKdr7
- g8hcWLkvCsdVQ==
+ s=k20201202; t=1621300192;
+ bh=4Uwbo0gfhMFUq6mLsIEwG/ISxNQkeMeFnQoaIeZqoS4=;
+ h=From:To:Cc:Subject:Date:From;
+ b=J5keRascX5XvRed3WvgzNZ2Hlq5pK5emAtoAog1lv2KoZjLv9Y+89FJKxQlMyGVSh
+ LLYcnouZa3b2SQiKZ80jS7cjvVl0dSxHOuH11kCcwutEJRnqKnGUSYzkwzIDn9JtyM
+ F2h2XDnfJVCU4lXVTik98ivj3ObVgHKleE5ihZFF4bcD91Dg7lpWUDt/NIpPujS/aS
+ 4xzQtmeHaPqmSWHPAHzy1LwNgqiMMLEbxbhJ0IUzlyF4anNCDhzxDLthF0HfafJeQ1
+ 37nbQ8dnHbuE9ATZIkExqgShN7O4vhiYnG0mm64frQzG02PZi4aMVMAaNVxMfI6D6G
+ 8fFKsXWmEc8DQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 2/5] powerpc/pseries: Fix hcall tracing recursion
+Subject: [PATCH AUTOSEL 5.11 1/3] powerpc/pseries: Fix hcall tracing recursion
  in pv queued spinlocks
-Date: Mon, 17 May 2021 21:09:37 -0400
-Message-Id: <20210518010940.1485417-2-sashal@kernel.org>
+Date: Mon, 17 May 2021 21:09:47 -0400
+Message-Id: <20210518010950.1485574-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210518010940.1485417-1-sashal@kernel.org>
-References: <20210518010940.1485417-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -122,7 +120,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  4 files changed, 33 insertions(+), 5 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index ed6086d57b22..0c92b01a3c3c 100644
+index c98f5141e3fc..dd89aa3aea8f 100644
 --- a/arch/powerpc/include/asm/hvcall.h
 +++ b/arch/powerpc/include/asm/hvcall.h
 @@ -446,6 +446,9 @@
