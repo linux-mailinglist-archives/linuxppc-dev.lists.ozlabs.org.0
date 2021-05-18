@@ -1,29 +1,27 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33559387651
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 12:20:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7B3387645
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 12:16:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FksSd6Rxgz303Q
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 20:20:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FksNq3W8Sz3bs5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 20:16:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=ghiti.fr
- (client-ip=217.70.178.240; helo=mslow1.mail.gandi.net;
+ (client-ip=217.70.183.197; helo=relay5-d.mail.gandi.net;
  envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FksSD6pp3z309M
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 20:19:40 +1000 (AEST)
-Received: from relay10.mail.gandi.net (unknown [217.70.178.230])
- by mslow1.mail.gandi.net (Postfix) with ESMTP id ABBD7E00B8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 10:15:40 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FksNR3vBLz2xff
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 20:16:22 +1000 (AEST)
 Received: (Authenticated sender: alex@ghiti.fr)
- by relay10.mail.gandi.net (Postfix) with ESMTPSA id 2B23C24000D;
- Tue, 18 May 2021 10:15:09 +0000 (UTC)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 5D02D1C0005;
+ Tue, 18 May 2021 10:16:16 +0000 (UTC)
 From: Alexandre Ghiti <alex@ghiti.fr>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -32,15 +30,13 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
  linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  linux-riscv@lists.infradead.org
-Subject: [PATCH v6 2/3] powerpc: Move script to check relocations at compile
- time in scripts/
-Date: Tue, 18 May 2021 12:12:51 +0200
-Message-Id: <20210518101252.1484465-3-alex@ghiti.fr>
+Subject: [PATCH v6 3/3] riscv: Check relocations at compile time
+Date: Tue, 18 May 2021 12:12:52 +0200
+Message-Id: <20210518101252.1484465-4-alex@ghiti.fr>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210518101252.1484465-1-alex@ghiti.fr>
 References: <20210518101252.1484465-1-alex@ghiti.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,81 +58,92 @@ Relocating kernel at runtime is done very early in the boot process, so
 it is not convenient to check for relocations there and react in case a
 relocation was not expected.
 
-Powerpc architecture has a script that allows to check at compile time
-for such unexpected relocations: extract the common logic to scripts/
-so that other architectures can take advantage of it.
+There exists a script in scripts/ that extracts the relocations from
+vmlinux that is then used at postlink to check the relocations.
 
 Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 Reviewed-by: Anup Patel <anup@brainfault.org>
 ---
- arch/powerpc/tools/relocs_check.sh | 18 ++----------------
- scripts/relocs_check.sh            | 20 ++++++++++++++++++++
- 2 files changed, 22 insertions(+), 16 deletions(-)
- create mode 100755 scripts/relocs_check.sh
+ arch/riscv/Makefile.postlink     | 36 ++++++++++++++++++++++++++++++++
+ arch/riscv/tools/relocs_check.sh | 26 +++++++++++++++++++++++
+ 2 files changed, 62 insertions(+)
+ create mode 100644 arch/riscv/Makefile.postlink
+ create mode 100755 arch/riscv/tools/relocs_check.sh
 
-diff --git a/arch/powerpc/tools/relocs_check.sh b/arch/powerpc/tools/relocs_check.sh
-index 014e00e74d2b..e367895941ae 100755
---- a/arch/powerpc/tools/relocs_check.sh
-+++ b/arch/powerpc/tools/relocs_check.sh
-@@ -15,21 +15,8 @@ if [ $# -lt 3 ]; then
- 	exit 1
- fi
- 
--# Have Kbuild supply the path to objdump and nm so we handle cross compilation.
--objdump="$1"
--nm="$2"
--vmlinux="$3"
--
--# Remove from the bad relocations those that match an undefined weak symbol
--# which will result in an absolute relocation to 0.
--# Weak unresolved symbols are of that form in nm output:
--# "                  w _binary__btf_vmlinux_bin_end"
--undef_weak_symbols=$($nm "$vmlinux" | awk '$1 ~ /w/ { print $2 }')
--
- bad_relocs=$(
--$objdump -R "$vmlinux" |
--	# Only look at relocation lines.
--	grep -E '\<R_' |
-+${srctree}/scripts/relocs_check.sh "$@" |
- 	# These relocations are okay
- 	# On PPC64:
- 	#	R_PPC64_RELATIVE, R_PPC64_NONE
-@@ -43,8 +30,7 @@ R_PPC_ADDR16_LO
- R_PPC_ADDR16_HI
- R_PPC_ADDR16_HA
- R_PPC_RELATIVE
--R_PPC_NONE' |
--	([ "$undef_weak_symbols" ] && grep -F -w -v "$undef_weak_symbols" || cat)
-+R_PPC_NONE'
- )
- 
- if [ -z "$bad_relocs" ]; then
-diff --git a/scripts/relocs_check.sh b/scripts/relocs_check.sh
-new file mode 100755
-index 000000000000..137c660499f3
+diff --git a/arch/riscv/Makefile.postlink b/arch/riscv/Makefile.postlink
+new file mode 100644
+index 000000000000..bf2b2bca1845
 --- /dev/null
-+++ b/scripts/relocs_check.sh
-@@ -0,0 +1,20 @@
++++ b/arch/riscv/Makefile.postlink
+@@ -0,0 +1,36 @@
++# SPDX-License-Identifier: GPL-2.0
++# ===========================================================================
++# Post-link riscv pass
++# ===========================================================================
++#
++# Check that vmlinux relocations look sane
++
++PHONY := __archpost
++__archpost:
++
++-include include/config/auto.conf
++include scripts/Kbuild.include
++
++quiet_cmd_relocs_check = CHKREL  $@
++cmd_relocs_check = 							\
++	$(CONFIG_SHELL) $(srctree)/arch/riscv/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@"
++
++# `@true` prevents complaint when there is nothing to be done
++
++vmlinux: FORCE
++	@true
++ifdef CONFIG_RELOCATABLE
++	$(call if_changed,relocs_check)
++endif
++
++%.ko: FORCE
++	@true
++
++clean:
++	@true
++
++PHONY += FORCE clean
++
++FORCE:
++
++.PHONY: $(PHONY)
+diff --git a/arch/riscv/tools/relocs_check.sh b/arch/riscv/tools/relocs_check.sh
+new file mode 100755
+index 000000000000..baeb2e7b2290
+--- /dev/null
++++ b/arch/riscv/tools/relocs_check.sh
+@@ -0,0 +1,26 @@
 +#!/bin/sh
 +# SPDX-License-Identifier: GPL-2.0-or-later
++# Based on powerpc relocs_check.sh
 +
-+# Get a list of all the relocations, remove from it the relocations
-+# that are known to be legitimate and return this list to arch specific
-+# script that will look for suspicious relocations.
++# This script checks the relocations of a vmlinux for "suspicious"
++# relocations.
 +
-+objdump="$1"
-+nm="$2"
-+vmlinux="$3"
++if [ $# -lt 3 ]; then
++        echo "$0 [path to objdump] [path to nm] [path to vmlinux]" 1>&2
++        exit 1
++fi
 +
-+# Remove from the possible bad relocations those that match an undefined
-+# weak symbol which will result in an absolute relocation to 0.
-+# Weak unresolved symbols are of that form in nm output:
-+# "                  w _binary__btf_vmlinux_bin_end"
-+undef_weak_symbols=$($nm "$vmlinux" | awk '$1 ~ /w/ { print $2 }')
++bad_relocs=$(
++${srctree}/scripts/relocs_check.sh "$@" |
++	# These relocations are okay
++	#	R_RISCV_RELATIVE
++	grep -F -w -v 'R_RISCV_RELATIVE'
++)
 +
-+$objdump -R "$vmlinux" |
-+	grep -E '\<R_' |
-+	([ "$undef_weak_symbols" ] && grep -F -w -v "$undef_weak_symbols" || cat)
++if [ -z "$bad_relocs" ]; then
++	exit 0
++fi
++
++num_bad=$(echo "$bad_relocs" | wc -l)
++echo "WARNING: $num_bad bad relocations"
++echo "$bad_relocs"
 -- 
 2.30.2
 
