@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD287386ED1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 03:10:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0D6386EF2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 03:11:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkdGn50TPz3bw1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 11:10:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkdHG31YYz30L4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 11:11:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J5keRasc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sBRWvqae;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=J5keRasc; 
+ header.s=k20201202 header.b=sBRWvqae; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FkdFt63Rhz303t
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 11:09:54 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8A53F61396;
- Tue, 18 May 2021 01:09:51 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FkdG06ygdz300C
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 11:10:00 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1510661396;
+ Tue, 18 May 2021 01:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621300192;
- bh=4Uwbo0gfhMFUq6mLsIEwG/ISxNQkeMeFnQoaIeZqoS4=;
+ s=k20201202; t=1621300198;
+ bh=QEy0KRw8VajZyTOxPvZTSchBWwsGca12LIzpS3tWvsE=;
  h=From:To:Cc:Subject:Date:From;
- b=J5keRascX5XvRed3WvgzNZ2Hlq5pK5emAtoAog1lv2KoZjLv9Y+89FJKxQlMyGVSh
- LLYcnouZa3b2SQiKZ80jS7cjvVl0dSxHOuH11kCcwutEJRnqKnGUSYzkwzIDn9JtyM
- F2h2XDnfJVCU4lXVTik98ivj3ObVgHKleE5ihZFF4bcD91Dg7lpWUDt/NIpPujS/aS
- 4xzQtmeHaPqmSWHPAHzy1LwNgqiMMLEbxbhJ0IUzlyF4anNCDhzxDLthF0HfafJeQ1
- 37nbQ8dnHbuE9ATZIkExqgShN7O4vhiYnG0mm64frQzG02PZi4aMVMAaNVxMfI6D6G
- 8fFKsXWmEc8DQ==
+ b=sBRWvqaeR49oMgE31OMZ0kFI5FZM/zNqlmDgFijL2EwlSBAaoJHgjL9mdGzJ3Ixv2
+ UJDXOXe/fGRD1FjkRFpDZ6PiCEWQ59/MZwwkjT39aHR3P/YibQjfRxvH5YGOMzcd2v
+ kKw8VVb6qsnT3vo6b7nIOKYzD17Ompn16/Rjgy3+ybYNBBna0R4KMHrB7iGXZXvTvs
+ ILIlsi5A3B319gy8VAUylBe4f5VvjNumIH+TQ8lqraQrMRWjZGWYriW5hcTCueefq6
+ f1KWX7Dlwk+gPYWdX4zvlqvCNjlkCytolzxbVXqVsccqAKd0mZanFTykk71/ectUTv
+ yNyFWAd8IZSTg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.11 1/3] powerpc/pseries: Fix hcall tracing recursion
+Subject: [PATCH AUTOSEL 5.10 1/3] powerpc/pseries: Fix hcall tracing recursion
  in pv queued spinlocks
-Date: Mon, 17 May 2021 21:09:47 -0400
-Message-Id: <20210518010950.1485574-1-sashal@kernel.org>
+Date: Mon, 17 May 2021 21:09:54 -0400
+Message-Id: <20210518010956.1485782-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 X-stable: review
@@ -120,10 +120,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  4 files changed, 33 insertions(+), 5 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index c98f5141e3fc..dd89aa3aea8f 100644
+index c1fbccb04390..3e8e19f5746c 100644
 --- a/arch/powerpc/include/asm/hvcall.h
 +++ b/arch/powerpc/include/asm/hvcall.h
-@@ -446,6 +446,9 @@
+@@ -437,6 +437,9 @@
   */
  long plpar_hcall_norets(unsigned long opcode, ...);
  
@@ -134,10 +134,10 @@ index c98f5141e3fc..dd89aa3aea8f 100644
   * plpar_hcall: - Make a pseries hypervisor call
   * @opcode: The hypervisor call to make.
 diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
-index 5d1726bb28e7..bcb7b5f917be 100644
+index 9362c94fe3aa..588bfb9a0579 100644
 --- a/arch/powerpc/include/asm/paravirt.h
 +++ b/arch/powerpc/include/asm/paravirt.h
-@@ -28,19 +28,35 @@ static inline u32 yield_count_of(int cpu)
+@@ -24,19 +24,35 @@ static inline u32 yield_count_of(int cpu)
  	return be32_to_cpu(yield_count);
  }
  
@@ -198,10 +198,10 @@ index 2136e42833af..8a2b8d64265b 100644
  	HMT_MEDIUM
  
 diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index cd38bd421f38..d4aa6a46e1fa 100644
+index 764170fdb0f7..1c3ac0f66336 100644
 --- a/arch/powerpc/platforms/pseries/lpar.c
 +++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -1830,8 +1830,7 @@ void hcall_tracepoint_unregfunc(void)
+@@ -1827,8 +1827,7 @@ void hcall_tracepoint_unregfunc(void)
  
  /*
   * Since the tracing code might execute hcalls we need to guard against
