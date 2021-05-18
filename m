@@ -1,43 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7B3387645
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 12:16:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 966093876F5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 12:53:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FksNq3W8Sz3bs5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 20:16:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FktCX4Rjdz3byZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 20:53:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ghiti.fr
- (client-ip=217.70.183.197; helo=relay5-d.mail.gandi.net;
- envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [217.70.183.197])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FksNR3vBLz2xff
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 20:16:22 +1000 (AEST)
-Received: (Authenticated sender: alex@ghiti.fr)
- by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 5D02D1C0005;
- Tue, 18 May 2021 10:16:16 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org
-Subject: [PATCH v6 3/3] riscv: Check relocations at compile time
-Date: Tue, 18 May 2021 12:12:52 +0200
-Message-Id: <20210518101252.1484465-4-alex@ghiti.fr>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210518101252.1484465-1-alex@ghiti.fr>
-References: <20210518101252.1484465-1-alex@ghiti.fr>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=mediatek.com (client-ip=210.61.82.184;
+ helo=mailgw02.mediatek.com; envelope-from=miles.chen@mediatek.com;
+ receiver=<UNKNOWN>)
+Received: from mailgw02.mediatek.com (mailgw02.mediatek.com [210.61.82.184])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Fkrhf2L1Gz2xZg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 19:45:22 +1000 (AEST)
+X-UUID: c8d085b27e6f43a3b8daca99f7e1c1a8-20210518
+X-UUID: c8d085b27e6f43a3b8daca99f7e1c1a8-20210518
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
+ (envelope-from <miles.chen@mediatek.com>)
+ (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+ with ESMTP id 1650008695; Tue, 18 May 2021 17:40:10 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 18 May 2021 17:40:08 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via
+ Frontend Transport; Tue, 18 May 2021 17:40:08 +0800
+From: Miles Chen <miles.chen@mediatek.com>
+To: Dave Young <dyoung@redhat.com>, Baoquan He <bhe@redhat.com>, Vivek Goyal
+ <vgoyal@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul
+ Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>, Mike
+ Rapoport <rppt@kernel.org>
+Subject: [PATCH v2 0/2] mm: unify the allocation of pglist_data instances
+Date: Tue, 18 May 2021 17:24:44 +0800
+Message-ID: <20210518092446.16382-1-miles.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
+X-Mailman-Approved-At: Tue, 18 May 2021 20:53:09 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,101 +53,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anup Patel <anup@brainfault.org>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: linux-doc@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org,
+ Miles Chen <miles.chen@mediatek.com>, linux-mediatek@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Relocating kernel at runtime is done very early in the boot process, so
-it is not convenient to check for relocations there and react in case a
-relocation was not expected.
+This patches is created to fix the __pa() warning messages when
+CONFIG_DEBUG_VIRTUAL=y by unifying the allocation of pglist_data
+instances.
 
-There exists a script in scripts/ that extracts the relocations from
-vmlinux that is then used at postlink to check the relocations.
+In current implementation of node_data, if CONFIG_NEED_MULTIPLE_NODES=y,
+pglist_data is allocated by a memblock API. If CONFIG_NEED_MULTIPLE_NODES=n,
+we use a global variable named "contig_page_data".
 
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-Reviewed-by: Anup Patel <anup@brainfault.org>
----
- arch/riscv/Makefile.postlink     | 36 ++++++++++++++++++++++++++++++++
- arch/riscv/tools/relocs_check.sh | 26 +++++++++++++++++++++++
- 2 files changed, 62 insertions(+)
- create mode 100644 arch/riscv/Makefile.postlink
- create mode 100755 arch/riscv/tools/relocs_check.sh
+If CONFIG_DEBUG_VIRTUAL is not enabled. __pa() can handle both
+allocation and symbol cases. But if CONFIG_DEBUG_VIRTUAL is set,
+we will have the "virt_to_phys used for non-linear address" warning
+when booting.
 
-diff --git a/arch/riscv/Makefile.postlink b/arch/riscv/Makefile.postlink
-new file mode 100644
-index 000000000000..bf2b2bca1845
---- /dev/null
-+++ b/arch/riscv/Makefile.postlink
-@@ -0,0 +1,36 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# ===========================================================================
-+# Post-link riscv pass
-+# ===========================================================================
-+#
-+# Check that vmlinux relocations look sane
-+
-+PHONY := __archpost
-+__archpost:
-+
-+-include include/config/auto.conf
-+include scripts/Kbuild.include
-+
-+quiet_cmd_relocs_check = CHKREL  $@
-+cmd_relocs_check = 							\
-+	$(CONFIG_SHELL) $(srctree)/arch/riscv/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@"
-+
-+# `@true` prevents complaint when there is nothing to be done
-+
-+vmlinux: FORCE
-+	@true
-+ifdef CONFIG_RELOCATABLE
-+	$(call if_changed,relocs_check)
-+endif
-+
-+%.ko: FORCE
-+	@true
-+
-+clean:
-+	@true
-+
-+PHONY += FORCE clean
-+
-+FORCE:
-+
-+.PHONY: $(PHONY)
-diff --git a/arch/riscv/tools/relocs_check.sh b/arch/riscv/tools/relocs_check.sh
-new file mode 100755
-index 000000000000..baeb2e7b2290
---- /dev/null
-+++ b/arch/riscv/tools/relocs_check.sh
-@@ -0,0 +1,26 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+# Based on powerpc relocs_check.sh
-+
-+# This script checks the relocations of a vmlinux for "suspicious"
-+# relocations.
-+
-+if [ $# -lt 3 ]; then
-+        echo "$0 [path to objdump] [path to nm] [path to vmlinux]" 1>&2
-+        exit 1
-+fi
-+
-+bad_relocs=$(
-+${srctree}/scripts/relocs_check.sh "$@" |
-+	# These relocations are okay
-+	#	R_RISCV_RELATIVE
-+	grep -F -w -v 'R_RISCV_RELATIVE'
-+)
-+
-+if [ -z "$bad_relocs" ]; then
-+	exit 0
-+fi
-+
-+num_bad=$(echo "$bad_relocs" | wc -l)
-+echo "WARNING: $num_bad bad relocations"
-+echo "$bad_relocs"
+To fix the warning, always allocate pglist_data by memblock APIs and
+remove the usage of contig_page_data.
+
+Warning message:
+[    0.000000] ------------[ cut here ]------------
+[    0.000000] virt_to_phys used for non-linear address: (____ptrval____) (contig_page_data+0x0/0x1c00)
+[    0.000000] WARNING: CPU: 0 PID: 0 at arch/arm64/mm/physaddr.c:15 __virt_to_phys+0x58/0x68
+[    0.000000] Modules linked in:
+[    0.000000] CPU: 0 PID: 0 Comm: swapper Tainted: G        W         5.13.0-rc1-00074-g1140ab592e2e #3
+[    0.000000] Hardware name: linux,dummy-virt (DT)
+[    0.000000] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO BTYPE=--)
+[    0.000000] pc : __virt_to_phys+0x58/0x68
+[    0.000000] lr : __virt_to_phys+0x54/0x68
+[    0.000000] sp : ffff800011833e70
+[    0.000000] x29: ffff800011833e70 x28: 00000000418a0018 x27: 0000000000000000
+[    0.000000] x26: 000000000000000a x25: ffff800011b70000 x24: ffff800011b70000
+[    0.000000] x23: fffffc0001c00000 x22: ffff800011b70000 x21: 0000000047ffffb0
+[    0.000000] x20: 0000000000000008 x19: ffff800011b082c0 x18: ffffffffffffffff
+[    0.000000] x17: 0000000000000000 x16: ffff800011833bf9 x15: 0000000000000004
+[    0.000000] x14: 0000000000000fff x13: ffff80001186a548 x12: 0000000000000000
+[    0.000000] x11: 0000000000000000 x10: 00000000ffffffff x9 : 0000000000000000
+[    0.000000] x8 : ffff8000115c9000 x7 : 737520737968705f x6 : ffff800011b62ef8
+[    0.000000] x5 : 0000000000000000 x4 : 0000000000000001 x3 : 0000000000000000
+[    0.000000] x2 : 0000000000000000 x1 : ffff80001159585e x0 : 0000000000000058
+[    0.000000] Call trace:
+[    0.000000]  __virt_to_phys+0x58/0x68
+[    0.000000]  check_usemap_section_nr+0x50/0xfc
+[    0.000000]  sparse_init_nid+0x1ac/0x28c
+[    0.000000]  sparse_init+0x1c4/0x1e0
+[    0.000000]  bootmem_init+0x60/0x90
+[    0.000000]  setup_arch+0x184/0x1f0
+[    0.000000]  start_kernel+0x78/0x488
+[    0.000000] ---[ end trace f68728a0d3053b60 ]---
+
+[1] https://lore.kernel.org/patchwork/patch/1425110/
+
+Change since v1:
+- use memblock_alloc() to create pglist_data when CONFIG_NUMA=n
+
+Miles Chen (2):
+  mm: introduce prepare_node_data
+  mm: replace contig_page_data with node_data
+
+ Documentation/admin-guide/kdump/vmcoreinfo.rst | 13 -------------
+ arch/powerpc/kexec/core.c                      |  5 -----
+ include/linux/gfp.h                            |  3 ---
+ include/linux/mm.h                             |  2 ++
+ include/linux/mmzone.h                         |  4 ++--
+ kernel/crash_core.c                            |  1 -
+ mm/memblock.c                                  |  3 +--
+ mm/page_alloc.c                                | 16 ++++++++++++++++
+ mm/sparse.c                                    |  2 ++
+ 9 files changed, 23 insertions(+), 26 deletions(-)
+
+
+base-commit: 8ac91e6c6033ebc12c5c1e4aa171b81a662bd70f
 -- 
-2.30.2
+2.18.0
 
