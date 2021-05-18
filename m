@@ -2,86 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F163E3871F7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 08:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C710738721F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 08:43:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FkmRt5zgSz305w
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 16:34:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FkmfB5FSgz30Gt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 May 2021 16:42:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=fyCdx9xT;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VtOmdjwV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.164;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=fyCdx9xT; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [81.169.146.164])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=VtOmdjwV; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FkmRQ24Jzz2xvH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 16:33:36 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1621319607; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=PBUelKX9f52bDZRaB2BR+uZaZFU9h/R6aVZw6YK+2osCe1jHpRS3iLoGhWJCPOwdXI
- bqlDv9cVLcX5Z9RmH6CLW8xem89Gs+e47JLrcWLkt4FwnqqX8T/gpjzCl1z64ngsZbMy
- 0wnBTuwCI6e+rfxviTvW1O2Hjhrj/J19HUSPfAp5TlOP3PXno6aaWaLKQz9ZQ2sVjfPD
- Hf1Qo9HzNz+dmiC+07x9eb5SMRuV+5Hkislmc+uqcdxieKEk76teuCh7iIASFeWdKfbb
- w3qYO61y/4MuucLg4zVx2ViNv0lbGaC1ORKP3Hz01u4mUp6KalrOjMCiTP3yo5cB50Wo
- eXvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1621319607;
- s=strato-dkim-0002; d=strato.com;
- h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
- From:Subject:Sender;
- bh=/jlMH/n0JB9K6U94RowhlQ5JqXu9HQE9ziGYRVgBXLY=;
- b=LhvBvXLBcwg20SVbjFOOvgpxEd43RYtzZL2tUpVFlqNJWGw4i1AG1LlDNw9cC6Sixb
- cSbaZyA+2w4hRPxgl93KGdUtvWf4L6j8OhOVJRlAS0UvTC0nZfft/nG+/9wc+6/GchV2
- z8OTkWc4HbFgLaB79HMBXa7L2noDzuOWzp0cwsQzj9J8H2/yCHWgeWS38lW5Qpixt+Jn
- 0P7ZEBAfqVDTeQRx1O5h+1ByKJg6d1X2sfoGPfGKBLjmndecYSrQGgR4oXLoWyTsYpQp
- Ai1a9WsBgILYaoH9Gad46C28o5Kirx9e46sC54hQrlaVTR7OGAWs227Ec4RwjmqHQ0Yn
- yBtg==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1621319607;
- s=strato-dkim-0002; d=xenosoft.de;
- h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
- From:Subject:Sender;
- bh=/jlMH/n0JB9K6U94RowhlQ5JqXu9HQE9ziGYRVgBXLY=;
- b=fyCdx9xTBxmI0jmMPuT2PKn3YJx7Sy97fNrg8NkaOIStqewzi2tithC1pguNzXIVua
- 0KC+gSsJNCqTzNdKwHS0m7G0iBoZqHsBCttjaY+yYLRj5T2sLZqgZipDOGph+CcIy769
- QXaLwA3hvpMp9k+ssSJAVr8Sq9JMdE9i9ipgt+dsAMc6OEWZukIgMOuxz2c52/cQIuTw
- 7IfDDQrjs4RiE3MDmeX+CuM3y5YHQay0V+sRFoSCtEQ63Qgs5dbxftfkWcempwxEc3Ms
- Mv5yNYqC6PWhh8FGuK2R0e1BQ693ghHIFOiivJA/2rs4HOTDXMvyIRs7MGL7ZYNOUbZU
- h1vg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7bGdwirpmzSCRZBtmg048aXyW7fONJ6crnoXUaLVc"
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a01:598:a011:39f7:79a7:a762:c241:3bc0]
- by smtp.strato.de (RZmta 47.26.1 AUTH)
- with ESMTPSA id K01586x4I6XR1Ue
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 18 May 2021 08:33:27 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [FSL P50x0] KVM HV doesn't work anymore
-Date: Tue, 18 May 2021 08:33:26 +0200
-Message-Id: <F193DA31-4C74-4239-8F9B-E318F49BA3F0@xenosoft.de>
-References: <e6ed7674-3df9-ec3e-8bcf-dcd8ff0fecf8@xenosoft.de>
-In-Reply-To: <e6ed7674-3df9-ec3e-8bcf-dcd8ff0fecf8@xenosoft.de>
-To: Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, kvm-ppc@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: iPhone Mail (18D70)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fkmdh2wBjz2yWs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 16:42:31 +1000 (AEST)
+Received: by mail-pj1-x1031.google.com with SMTP id k5so4985595pjj.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 May 2021 23:42:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=PDyrwk3dKvoxKjer/W/nKoHZ25xkHMzcXLNqNVSjI98=;
+ b=VtOmdjwVV5WinnYM8kjIEP+f3T2dP4qhZew2qo2b8rOixnhhoKqE73hDfXFYiPhVG+
+ U6BAIa1KXGyc+Nw/pBnyzHhaT1tIpO8FD1D5RuU3Fbq8THMadmNoknnSwKB9hGOx3JSo
+ 9OgCVPZ0ChLJsVYfXDyAbZmg8Bo+ncPHVka+o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=PDyrwk3dKvoxKjer/W/nKoHZ25xkHMzcXLNqNVSjI98=;
+ b=gQlpkKLTKArl6oqk3SWeoOQxWwjB2Mv1AupE0lJA8xTgAEDOmt/Wd4TrlVdkAffRMn
+ WMsNhI9RH82HAAAMbC4NEygK1Qg8vlQZqwIVfb2w7EHX+KaWXzoL+FjbnCTHSZ4vT+F3
+ 7/ypJO/ChoY7xz85lI/dwqMxpMs/LXJ+QHJMCO64eiw2QAMQdAvIjA4EMu/2+kDl565e
+ G29SNg8JVmQ4qxqmxlAi+4taUhsIeRoX54GBJX6ZcIAgFDaot1txlIulOcmMzeks/CBo
+ ruTTVYRzj9BRO/7GkYSzXBuFl/tApW9S3QL3Ww/+CtB/BEW5CPY73O9xy45jLjRekJ9M
+ Givw==
+X-Gm-Message-State: AOAM531wh6F8JzMuEA8i8s/UcOlSfZzZqkxEQd0AkHdUYk//lAQyHl6a
+ CuzuGUN5m7t0dC7fSKIQra1hbA==
+X-Google-Smtp-Source: ABdhPJw/3HNuoTaSGjywqAr2hcme1ypfuSgw3ugqZ0Om4CEwcZ/8hmi6P3tglXLSkIpe+RJxzArq6w==
+X-Received: by 2002:a17:902:b408:b029:ec:e879:bbd8 with SMTP id
+ x8-20020a170902b408b02900ece879bbd8mr2877299plr.65.1621320149869; 
+ Mon, 17 May 2021 23:42:29 -0700 (PDT)
+Received: from localhost ([2401:fa00:95:205:f284:b819:54ca:c198])
+ by smtp.gmail.com with UTF8SMTPSA id f21sm7240386pjt.11.2021.05.17.23.42.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 May 2021 23:42:29 -0700 (PDT)
+From: Claire Chang <tientzu@chromium.org>
+To: Rob Herring <robh+dt@kernel.org>, mpe@ellerman.id.au,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Frank Rowand <frowand.list@gmail.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, boris.ostrovsky@oracle.com,
+ jgross@suse.com, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH v7 00/15] Restricted DMA 
+Date: Tue, 18 May 2021 14:42:00 +0800
+Message-Id: <20210518064215.2856977-1-tientzu@chromium.org>
+X-Mailer: git-send-email 2.31.1.751.gd2f1c929bd-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,71 +80,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, mingo@kernel.org, jxgao@google.com,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ xypron.glpk@gmx.de, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ daniel@ffwll.ch, airlied@linux.ie, maarten.lankhorst@linux.intel.com,
+ linuxppc-dev@lists.ozlabs.org, jani.nikula@linux.intel.com,
+ Nicolas Boichat <drinkcat@chromium.org>, rodrigo.vivi@intel.com,
+ bhelgaas@google.com, tientzu@chromium.org,
+ Dan Williams <dan.j.williams@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ lkml <linux-kernel@vger.kernel.org>, tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This series implements mitigations for lack of DMA access control on
+systems without an IOMMU, which could result in the DMA accessing the
+system memory at unexpected times and/or unexpected addresses, possibly
+leading to data leakage or corruption.
 
+For example, we plan to use the PCI-e bus for Wi-Fi and that PCI-e bus is
+not behind an IOMMU. As PCI-e, by design, gives the device full access to
+system memory, a vulnerability in the Wi-Fi firmware could easily escalate
+to a full system exploit (remote wifi exploits: [1a], [1b] that shows a
+full chain of exploits; [2], [3]).
 
-> On 17. May 2021, at 11:43, Christian Zigotzky <chzigotzky@xenosoft.de> wro=
-te:
->=20
-> =EF=BB=BFOn 17 May 2021 at 09:42am, Nicholas Piggin wrote:
->> Excerpts from Christian Zigotzky's message of May 15, 2021 11:46 pm:
->>> On 15 May 2021 at 12:08pm Christophe Leroy wrote:
->>>>=20
->>>>> Le 15/05/2021 =C3=A0 11:48, Christian Zigotzky a =C3=A9crit :
->>>>>> Hi All,
->>>>>>=20
->>>>>> I bisected today [1] and the bisecting itself was OK but the
->>>>>> reverting of the bad commit doesn't solve the issue. Do you have an
->>>>>> idea which commit could be resposible for this issue? Maybe the
->>>>>> bisecting wasn't successful. I will look in the kernel git log. Maybe=
+To mitigate the security concerns, we introduce restricted DMA. Restricted
+DMA utilizes the existing swiotlb to bounce streaming DMA in and out of a
+specially allocated region and does memory allocation from the same region.
+The feature on its own provides a basic level of protection against the DMA
+overwriting buffer contents at unexpected times. However, to protect
+against general data leakage and system memory corruption, the system needs
+to provide a way to restrict the DMA to a predefined memory region (this is
+usually done at firmware level, e.g. MPU in ATF on some ARM platforms [4]).
 
->>>>>> there is a commit that affected KVM HV on FSL P50x0 machines.
->>>>> If the uImage doesn't load, it may be because of the size of uImage.
->>>>>=20
->>>>> See https://github.com/linuxppc/issues/issues/208
->>>>>=20
->>>>> Is there a significant size difference with and without KVM HV ?
->>>>>=20
->>>>> Maybe you can try to remove another option to reduce the size of the
->>>>> uImage.
->>> I tried it but it doesn't solve the issue. The uImage works without KVM
->>> HV in a virtual e5500 QEMU machine.
->> Any more progress with this? I would say that bisect might have just
->> been a bit unstable and maybe by chance some things did not crash so
->> it's pointing to the wrong patch.
->>=20
->> Upstream merge of powerpc-5.13-1 was good and powerpc-5.13-2 was bad?
->>=20
->> Between that looks like some KVM MMU rework. You could try the patch
->> before this one b1c5356e873c ("KVM: PPC: Convert to the gfn-based MMU
->> notifier callbacks"). That won't revert cleanly so just try run the
->> tree at that point. If it works, test the patch and see if it fails.
->>=20
->> Thanks,
->> Nick
-> Hi Nick,
->=20
-> Thanks a lot for your answer. Yes, there is a little bit of progress. The R=
-C2 of kernel 5.13 successfully boots with -smp 3 in a virtual e5500 QEMU mac=
-hine.
-> -smp 4 doesn't work anymore since the PowerPC updates 5.13-2. I used -smp 4=
- before 5.13 because my FSL P5040 machine has 4 cores.
->=20
-> Could you please post a patch for reverting the commit before b1c5356e873c=
- ("KVM: PPC: Convert to the gfn-based MMU notifier callbacks")?
->=20
-> Thanks in advance,
->=20
-> Christian
->=20
->=20
-For me it is ok to work with -smp 1, 2, and 3 but I am curious why -smp 4 do=
-esn=E2=80=99t work.
+[1a] https://googleprojectzero.blogspot.com/2017/04/over-air-exploiting-broadcoms-wi-fi_4.html
+[1b] https://googleprojectzero.blogspot.com/2017/04/over-air-exploiting-broadcoms-wi-fi_11.html
+[2] https://blade.tencent.com/en/advisories/qualpwn/
+[3] https://www.bleepingcomputer.com/news/security/vulnerabilities-found-in-highly-popular-firmware-for-wifi-chips/
+[4] https://github.com/ARM-software/arm-trusted-firmware/blob/master/plat/mediatek/mt8183/drivers/emi_mpu/emi_mpu.c#L132
 
--Christian=
+v7:
+Fix debugfs, PageHighMem and comment style in rmem_swiotlb_device_init
+
+v6:
+Address the comments in v5
+https://lore.kernel.org/patchwork/cover/1423201/
+
+v5:
+Rebase on latest linux-next
+https://lore.kernel.org/patchwork/cover/1416899/
+
+v4:
+- Fix spinlock bad magic
+- Use rmem->name for debugfs entry
+- Address the comments in v3
+https://lore.kernel.org/patchwork/cover/1378113/
+
+v3:
+Using only one reserved memory region for both streaming DMA and memory
+allocation.
+https://lore.kernel.org/patchwork/cover/1360992/
+
+v2:
+Building on top of swiotlb.
+https://lore.kernel.org/patchwork/cover/1280705/
+
+v1:
+Using dma_map_ops.
+https://lore.kernel.org/patchwork/cover/1271660/
+
+Claire Chang (15):
+  swiotlb: Refactor swiotlb init functions
+  swiotlb: Refactor swiotlb_create_debugfs
+  swiotlb: Add DMA_RESTRICTED_POOL
+  swiotlb: Add restricted DMA pool initialization
+  swiotlb: Add a new get_io_tlb_mem getter
+  swiotlb: Update is_swiotlb_buffer to add a struct device argument
+  swiotlb: Update is_swiotlb_active to add a struct device argument
+  swiotlb: Bounce data from/to restricted DMA pool if available
+  swiotlb: Move alloc_size to find_slots
+  swiotlb: Refactor swiotlb_tbl_unmap_single
+  dma-direct: Add a new wrapper __dma_direct_free_pages()
+  swiotlb: Add restricted DMA alloc/free support.
+  dma-direct: Allocate memory from restricted DMA pool if available
+  dt-bindings: of: Add restricted DMA pool
+  of: Add plumbing for restricted DMA pool
+
+ .../reserved-memory/reserved-memory.txt       |  27 ++
+ drivers/gpu/drm/i915/gem/i915_gem_internal.c  |   2 +-
+ drivers/gpu/drm/nouveau/nouveau_ttm.c         |   2 +-
+ drivers/iommu/dma-iommu.c                     |  12 +-
+ drivers/of/address.c                          |  25 ++
+ drivers/of/device.c                           |   3 +
+ drivers/of/of_private.h                       |   5 +
+ drivers/pci/xen-pcifront.c                    |   2 +-
+ drivers/xen/swiotlb-xen.c                     |   2 +-
+ include/linux/device.h                        |   4 +
+ include/linux/swiotlb.h                       |  41 ++-
+ kernel/dma/Kconfig                            |  14 +
+ kernel/dma/direct.c                           |  63 +++--
+ kernel/dma/direct.h                           |   9 +-
+ kernel/dma/swiotlb.c                          | 242 +++++++++++++-----
+ 15 files changed, 356 insertions(+), 97 deletions(-)
+
+-- 
+2.31.1.751.gd2f1c929bd-goog
 
