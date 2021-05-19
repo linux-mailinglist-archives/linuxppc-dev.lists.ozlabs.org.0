@@ -1,102 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A36B388C0E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 12:50:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B8E388C38
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 12:59:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlV5M2NVBz3cKK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 20:50:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlVHx53Qjz305q
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 20:59:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mfBeOBwr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=UTkT1J4s;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
+ helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=mfBeOBwr; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=UTkT1J4s; dkim-atps=neutral
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
+ [IPv6:2607:f8b0:4864:20::42e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlV2Y6HxKz3068
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 20:48:05 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14JAhYFv038721; Wed, 19 May 2021 06:47:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=n72zeEhlfmLyVDF+mvHpIAVNMFr/sI9GKBbqisuuxNI=;
- b=mfBeOBwrNcGTZTFpby5xTHhBm87NSH1vf0wYtKVTlKzT0TZnPwRCsvtRdrmv8TrGuEt4
- W3FQDmHIP80KQNXvvU2dRNyytBwH5bIl2Ldu3GfPLXzbsUdAvYEAJdvV9vMN9FQhy2mW
- cyeJgv6CPrXmP/AhbLrggzaw4nbmxpe08MAOR2IldiCroOXlwpa1k1MAYP578o7xPCz+
- 1GIbAEtHFx1Wkev2GdpMN8hQEV7iy5cyCBaIfExS9vrR7GkxNPdlfvaxKRP61Uw3k84Z
- jdsIUFDbQj8j0vqsx+OuJTPb8RBdW4vme2ZUSJqVwZg8NYmRD3Og9ajhsJIiwJIYpbrF 7A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38n0sp8rrc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 May 2021 06:47:52 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14JAhoKd039324;
- Wed, 19 May 2021 06:47:52 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38n0sp8rqb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 May 2021 06:47:52 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14JASPQ6029796;
- Wed, 19 May 2021 10:47:49 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03fra.de.ibm.com with ESMTP id 38j5x894dt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 May 2021 10:47:49 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14JAllwg16712066
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 May 2021 10:47:47 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 431BAA404D;
- Wed, 19 May 2021 10:47:47 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 50FB1A4040;
- Wed, 19 May 2021 10:47:45 +0000 (GMT)
-Received: from naverao1-tp.in.ibm.com (unknown [9.85.72.228])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 19 May 2021 10:47:45 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Jordan Niethe <jniethe5@gmail.com>
-Subject: [PATCH 5/5] powerpc/kprobes: Warn if instruction patching failed
-Date: Wed, 19 May 2021 16:17:21 +0530
-Message-Id: <18d7b1309f938c08ce07738100932b551bdd3a52.1621416666.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1621416666.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1621416666.git.naveen.n.rao@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FlVHV1bg9z2xZS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 20:59:15 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id d78so8755601pfd.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 03:59:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=qSDquWF5C/3kPSaisv5VvJ1hs65zlvqZ/KYndLXZBHA=;
+ b=UTkT1J4sM7q+60Slm44Nc34SGgZppdCky+kG+U0w6IHxdZqOozXUhBnDf634kQsZE9
+ stagF2SzjdN6bP1a0sdhTYCyvFmhZrzLDUdTBz6Ddm+lpmnVBanrYxO/3KZwENLBPCc1
+ yO0Ys0hlwSwIMmwDKupVUe87eTPQe1IF+BPKUZJtKIHJpb2jOWtZCIUSV1ayH6RU5AZI
+ B/+OTymu/jC771VJ7deDGbNi77c3hegXjZU1FXeAX4OtGBfRjrkYTY2GuHXyXi+E2K3i
+ +uuYCpchPxOn+EaiU6hyDpwdgBymfQopity5cUs4T3KiB8J5sFPP5jKiqgtOh1JZLgtX
+ g1lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=qSDquWF5C/3kPSaisv5VvJ1hs65zlvqZ/KYndLXZBHA=;
+ b=iDUBhFt5NlLP8TESKNRcb6tg4X7XRFa5DM9F8f4s6sLr5aBNQiiCZPjlz4wKqDQoGD
+ Lw6XvFLUvoxCunNskvE1DZW1GH/0Qa7Ahw1tXlj+2xEIGNN5MkEToi5TKJD4HC6QbEVn
+ c3crvbl8MGK4XTiKkx2J+uOxPZsttFiCSPa+Q2MAcpkM4Pgd3Edqq5/EXRKBe2HIXxoj
+ XlGdUZPcHnz6QLz30t9v6IXsBm3+P5TJSJQSOyLWuTaNpds5iKB3yg8Lz89RqFaFwBDU
+ BXHJ5tAd266EB8xJegXFlfo9kNfqTE14+OQKqyEmBXIiykdKzb6vpIvSZgxZ0gsdYDP2
+ 3Jsg==
+X-Gm-Message-State: AOAM5322V0syYZKnPKb4De5/9XfAsqKxmYCCJcB6ZeLDfm6OfLLFGYG+
+ 3wPwSZUYjiBkmbKz8TULZTk=
+X-Google-Smtp-Source: ABdhPJzasKvvWtp1iiKJ1oNvcHYkSjfgkycSA7T5giWeXtEipqymW1BGFzU8Y2yuUSLENyMzmOaqLg==
+X-Received: by 2002:aa7:8a56:0:b029:27d:957f:5993 with SMTP id
+ n22-20020aa78a560000b029027d957f5993mr9862449pfa.27.1621421950920; 
+ Wed, 19 May 2021 03:59:10 -0700 (PDT)
+Received: from localhost (14-201-155-8.tpgi.com.au. [14.201.155.8])
+ by smtp.gmail.com with ESMTPSA id o3sm15095254pgh.22.2021.05.19.03.59.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 May 2021 03:59:10 -0700 (PDT)
+Date: Wed, 19 May 2021 20:59:05 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: Linux powerpc new system call instruction and ABI
+To: "Dmitry V. Levin" <ldv@altlinux.org>
+References: <20200611081203.995112-1-npiggin@gmail.com>
+ <20210518231331.GA8464@altlinux.org>
+ <1621385544.nttlk5qugb.astroid@bobo.none>
+ <20210519102403.GA15207@altlinux.org>
+In-Reply-To: <20210519102403.GA15207@altlinux.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yHbHOP_Zy5g3pIrVmUfY3Lr-ZrL743qe
-X-Proofpoint-ORIG-GUID: M5xa1Sf0YOzOuzmlWtf6aOTBRv2PHa0W
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-19_04:2021-05-19,
- 2021-05-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- priorityscore=1501 lowpriorityscore=0 phishscore=0 impostorscore=0
- bulkscore=0 adultscore=0 spamscore=0 clxscore=1015 suspectscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105190072
+Message-Id: <1621421721.r9fefebis8.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,40 +83,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: libc-alpha@sourceware.org, Matheus Castanho <msc@linux.ibm.com>,
+ musl@lists.openwall.com, linux-api@vger.kernel.org, libc-dev@lists.llvm.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When arming and disarming probes, we currently assume that instruction
-patching can never fail, and don't have a mechanism to surface errors.
-Add a warning in case instruction patching ever fails.
+Excerpts from Dmitry V. Levin's message of May 19, 2021 8:24 pm:
+> On Wed, May 19, 2021 at 12:50:24PM +1000, Nicholas Piggin wrote:
+> [...]
+>> With this patch, I think the ptrace ABI should mostly be fixed. I think=20
+>> a problem remains with applications that look at system call return=20
+>> registers directly and have powerpc specific error cases. Those probably
+>> will just need to be updated unfortunately. Michael thought it might be
+>> possible to return an indication via ptrace somehow that the syscall is
+>> using a new ABI, so such apps can be updated to test for it. I don't=20
+>> know how that would be done.
+>=20
+> Is there any sane way for these applications to handle the scv case?
+> How can they tell that the scv semantics is being used for the given
+> syscall invocation?  Can this information be obtained e.g. from struct
+> pt_regs?
 
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
- arch/powerpc/kernel/kprobes.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Not that I know of. Michael suggested there might be a way to add=20
+something. ptrace_syscall_info has some pad bytes, could
+we use one for flags bits and set a bit for "new system call ABI"?
 
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index 7195162362941f..e0190e75a221eb 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -158,13 +158,13 @@ NOKPROBE_SYMBOL(arch_prepare_kprobe);
- 
- void arch_arm_kprobe(struct kprobe *p)
- {
--	patch_instruction((struct ppc_inst *)p->addr, ppc_inst(BREAKPOINT_INSTRUCTION));
-+	WARN_ON_ONCE(patch_instruction((struct ppc_inst *)p->addr, ppc_inst(BREAKPOINT_INSTRUCTION)));
- }
- NOKPROBE_SYMBOL(arch_arm_kprobe);
- 
- void arch_disarm_kprobe(struct kprobe *p)
- {
--	patch_instruction((struct ppc_inst *)p->addr, ppc_inst(p->opcode));
-+	WARN_ON_ONCE(patch_instruction((struct ppc_inst *)p->addr, ppc_inst(p->opcode)));
- }
- NOKPROBE_SYMBOL(arch_disarm_kprobe);
- 
--- 
-2.30.2
+As a more hacky thing you could make a syscall with -1 and see how
+the error looks, and then assume all syscalls will be the same.
 
+Thanks,
+Nick
+
+>=20
+> For example, in strace we have the following powerpc-specific code used
+> for syscall tampering:
+>=20
+> $ cat src/linux/powerpc/set_error.c
+> /*
+>  * Copyright (c) 2016-2021 The strace developers.
+>  * All rights reserved.
+>  *
+>  * SPDX-License-Identifier: LGPL-2.1-or-later
+>  */
+>=20
+> static int
+> arch_set_r3_ccr(struct tcb *tcp, const unsigned long r3,
+> 		const unsigned long ccr_set, const unsigned long ccr_clear)
+> {
+> 	if (ptrace_syscall_info_is_valid() &&
+> 	    upeek(tcp, sizeof(long) * PT_CCR, &ppc_regs.ccr))
+>                 return -1;
+> 	const unsigned long old_ccr =3D ppc_regs.ccr;
+> 	ppc_regs.gpr[3] =3D r3;
+> 	ppc_regs.ccr |=3D ccr_set;
+> 	ppc_regs.ccr &=3D ~ccr_clear;
+> 	if (ppc_regs.ccr !=3D old_ccr &&
+> 	    upoke(tcp, sizeof(long) * PT_CCR, ppc_regs.ccr))
+> 		return -1;
+> 	return upoke(tcp, sizeof(long) * (PT_R0 + 3), ppc_regs.gpr[3]);
+> }
+>=20
+> static int
+> arch_set_error(struct tcb *tcp)
+> {
+> 	return arch_set_r3_ccr(tcp, tcp->u_error, 0x10000000, 0);
+> }
+>=20
+> static int
+> arch_set_success(struct tcb *tcp)
+> {
+> 	return arch_set_r3_ccr(tcp, tcp->u_rval, 0, 0x10000000);
+> }
+>=20
+>=20
+> --=20
+> ldv
+>=20
