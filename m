@@ -2,79 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5AFE3889A0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 10:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C40388B42
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 12:02:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlRGX4f84z3086
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 18:43:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlT1Y651pz303j
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 20:02:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=bMvtBjab;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=lS+G+OpQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
- helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=bMvtBjab; dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=lS+G+OpQ; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlRG263Dnz2xv9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 18:42:49 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id
- h20-20020a17090aa894b029015db8f3969eso2430922pjq.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 01:42:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=65fGzdiHYqhXvVbJhIHcIGq1TKdRRhD4v1EI2Qzj/O4=;
- b=bMvtBjabQN3eFsv0N5aOWD4yHdxmHSz2tAvyzebsOfh42lhs0YRzuE9fo2BurrzTy6
- yE5sELMIWjVjxjQQs2IJMy0NtS5JIGMhRdD2QH5zMLH9zFLizEk0zYOVUGxPh64DK/EW
- GAXkCixB0SU3IT3ZoAewXekanzhYWrppbBoDexfyImyL5OqufZhfib3Vz01Wahn3qhBg
- Qv0q0ciR0zlzUorAXTYP2NxVaO/pA5CMWffAMXfu+EIXuQNBI3sGyaLBDPQ/NH5fieVv
- SN0u/0X540RAlmL4nbnFbrD27mY2+Tw/CJhoM1yNFp2y99/0EzrGO3cyUOCea1rlvXZU
- E8uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=65fGzdiHYqhXvVbJhIHcIGq1TKdRRhD4v1EI2Qzj/O4=;
- b=apwVn2bUN2//B7yKtNlASPxcNBcWKn/WuPK1KDr1e2mxbbhsWauDsXbVp/x+50Fiur
- Zm+0vwCzlOcJuYaHs9e0ZDRNmms3hye6eNugs5Dlq5N7hUrEPYZGPFOQKPNj5u+eChrs
- qhd6CAiNX+5EAP0hov06rqiQjibreP+/jzPiKRnXCnpaQ60t5jAq2z5dpzReIEkKzb9a
- 5SgVmUQh0YlI0rIzRKcqUraFNbcfYfFf9fZDC2wY2XjGSE72XDv0XWHHGvrRv4ntDQlL
- AEsVu4Re7hVEmAb9rzhDknBfqI7stYPRnmNkvRhHGBEvJ5bLPu2sTQvZGb9zIrBfEpuY
- SnJg==
-X-Gm-Message-State: AOAM532S+nflFdYMVxkBIBs4J1EKZwfgwF6GpuBbdJka7DgFW9ugY8yX
- UKqTh21r8ZG7enxpNPrzOzk=
-X-Google-Smtp-Source: ABdhPJyzdFSda9iEveEfmRNG4skSZvA4vZ1nhegSlYSuhYx5bmD0VkIKrMZjt/hRsVyA5O6u7V3nmA==
-X-Received: by 2002:a17:902:8d83:b029:ef:9dd8:4d9 with SMTP id
- v3-20020a1709028d83b02900ef9dd804d9mr9794872plo.40.1621413766014; 
- Wed, 19 May 2021 01:42:46 -0700 (PDT)
-Received: from localhost (14-201-155-8.tpgi.com.au. [14.201.155.8])
- by smtp.gmail.com with ESMTPSA id z24sm7310002pfk.150.2021.05.19.01.42.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 May 2021 01:42:45 -0700 (PDT)
-Date: Wed, 19 May 2021 18:42:40 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: Linux powerpc new system call instruction and ABI
-To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>, "ldv@altlinux.org"
- <ldv@altlinux.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>
-References: <20200611081203.995112-1-npiggin@gmail.com>
- <20210518231331.GA8464@altlinux.org>
- <9b5ea7059c5a5d4e9ccccd7d73ce2c66b2203f52.camel@infinera.com>
- <1621410291.c7si38sa9q.astroid@bobo.none>
- <fb9b6a6099855bd00efc6ffe540ccad14dd9a365.camel@infinera.com>
-In-Reply-To: <fb9b6a6099855bd00efc6ffe540ccad14dd9a365.camel@infinera.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FlT105KbRz2ykH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 20:01:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=lrHTtWU2Ja7nq7tAFCmZ0NQCnlRMgHJkSLhsHTyzMuU=; b=lS+G+OpQvvcFXjenkTv1ldJDnr
+ B4Q4qVOuxxMhkD2R+LrFAVHJKlytN6en2k2jhVL/kym2Bt7QRjnx194vrRVV2SudHKSPuC0scNVty
+ eoxH53MZc2nEtr86TfNBpTRUjPr9nw76ihYoqKyuLF23Lkdqf+5nHou+FLaWtk0H/1SgtVPoWLqtU
+ jM43fuW1Fsr1+wIUJ3bg60zzs8Fhp7+FfvbgrGIg5UxYXK7ZoiXUTqMrCd3F5EMjAfmqk4bljvLhi
+ 5jqHXNFT057VW9tasa1HSTNHGlmeQyPX1uxu4Nj885xew/XxBUAtcOwuU2wOerFHXT+/Cc9n6Y0CK
+ pVKxBQdA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1ljIzX-00EpPQ-67; Wed, 19 May 2021 10:00:09 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id CFBDE30022C;
+ Wed, 19 May 2021 11:59:48 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 8BECA284C274E; Wed, 19 May 2021 11:59:48 +0200 (CEST)
+Date: Wed, 19 May 2021 11:59:48 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Subject: Re: [PATCH v3 5/6] sched/fair: Consider SMT in ASYM_PACKING load
+ balance
+Message-ID: <YKThlA2yZBT2KuvW@hirez.programming.kicks-ass.net>
+References: <20210513154909.6385-1-ricardo.neri-calderon@linux.intel.com>
+ <20210513154909.6385-6-ricardo.neri-calderon@linux.intel.com>
+ <YJ5HQR943rSFsLxw@hirez.programming.kicks-ass.net>
+ <20210515021415.GB14212@ranerica-svr.sc.intel.com>
+ <20210518190740.GA15251@ranerica-svr.sc.intel.com>
 MIME-Version: 1.0
-Message-Id: <1621413143.oec64jaci5.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210518190740.GA15251@ranerica-svr.sc.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,51 +76,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "libc-dev@lists.llvm.org" <libc-dev@lists.llvm.org>,
- "musl@lists.openwall.com" <musl@lists.openwall.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>, Len Brown <len.brown@intel.com>,
+ Quentin Perret <qperret@google.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ "Ravi V. Shankar" <ravi.v.shankar@intel.com>, linux-kernel@vger.kernel.org,
+ Aubrey Li <aubrey.li@linux.intel.com>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>,
+ Ricardo Neri <ricardo.neri@intel.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>,
+ linuxppc-dev@lists.ozlabs.org, Mel Gorman <mgorman@suse.de>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ "Joel Fernandes \(Google\)" <joel@joelfernandes.org>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
+ Aubrey Li <aubrey.li@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Joakim Tjernlund's message of May 19, 2021 6:08 pm:
-> On Wed, 2021-05-19 at 17:55 +1000, Nicholas Piggin wrote:
->> Excerpts from Joakim Tjernlund's message of May 19, 2021 5:33 pm:
->> > On Wed, 2021-05-19 at 02:13 +0300, Dmitry V. Levin wrote:
->> > > Hi,
->> > >=20
->> > > On Thu, Jun 11, 2020 at 06:12:01PM +1000, Nicholas Piggin wrote:
->> > > [...]
->> > > > - Error handling: The consensus among kernel, glibc, and musl is t=
-o move to
->> > > > =C2=A0=C2=A0using negative return values in r3 rather than CR0[SO]=
-=3D1 to indicate error,
->> > > > =C2=A0=C2=A0which matches most other architectures, and is closer =
-to a function call.
->> >=20
->> > What about syscalls like times(2) which can return -1 without it being=
- an error?
->>=20
->> They do become errors / indistinguishable and have to be dealt with by=20
->> libc or userspace. Which does follow what most architectures do (all=20
->> except ia64, mips, sparc, and powerpc actually).
->>=20
->> Interesting question though, it should have been noted.
->>=20
->> Thanks,
->> Nick
->=20
-> I always figured the ppc way was superior. It begs the question if not th=
-e other archs should
-> change instead?
+On Tue, May 18, 2021 at 12:07:40PM -0700, Ricardo Neri wrote:
+> On Fri, May 14, 2021 at 07:14:15PM -0700, Ricardo Neri wrote:
+> > On Fri, May 14, 2021 at 11:47:45AM +0200, Peter Zijlstra wrote:
 
-It is superior in some ways, not enough to be worth being different.
+> > > So I'm thinking that this is a property of having ASYM_PACKING at a core
+> > > level, rather than some arch special. Wouldn't something like this be
+> > > more appropriate?
 
-Other archs are unlikely to change because it would be painful for
-not much benefit. New system calls just should be made to not return
-error numbers. If we ever had a big new version of syscall ABI in
-Linux, we can always use another scv vector number for it.
+> > Thanks Peter for the quick review! This makes sense to me. The only
+> > reason we proposed arch_asym_check_smt_siblings() is because we were
+> > about breaking powerpc (I need to study how they set priorities for SMT,
+> > if applicable). If you think this is not an issue I can post a
+> > v4 with this update.
+> 
+> As far as I can see, priorities in powerpc are set by the CPU number.
+> However, I am not sure how CPUs are enumerated? If CPUs in brackets are
+> SMT sibling, Does an enumeration looks like A) [0, 1], [2, 3] or B) [0, 2],
+> [1, 3]? I guess B is the right answer. Otherwise, both SMT siblings of a
+> core would need to be busy before a new core is used.
+> 
+> Still, I think the issue described in the cover letter may be
+> reproducible in powerpc as well. If CPU3 is offlined, and [0, 2] pulled
+> tasks from [1, -] so that both CPU0 and CPU2 become busy, CPU1 would not be
+> able to help since CPU0 has the highest priority.
+> 
+> I am cc'ing the linuxppc list to get some feedback.
 
-Thanks,
-Nick
+IIRC the concern with Power is that their Cores can go faster if the
+higher SMT siblings are unused.
+
+That is, suppose you have an SMT4 Core with only a single active task,
+then if only SMT0 is used it can reach max performance, but if the
+active sibling is SMT1 it can not reach max performance, and if the only
+active sibling is SMT2 it goes slower still.
+
+So they need to pack the tasks to the lowest SMT siblings, and have the
+highest SMT siblings idle (where possible) in order to increase
+performance.
+
+
