@@ -1,65 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC5F38967F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 21:20:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B811389684
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 21:20:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FljPb5c7Vz3095
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 05:20:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FljQ41C3Mz30BC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 05:20:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=rcLYOAKu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Yg91ASxZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
- helo=mail-pf1-x42e.google.com; envelope-from=f.fainelli@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b;
+ helo=mail-pf1-x42b.google.com; envelope-from=f.fainelli@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rcLYOAKu; dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
- [IPv6:2607:f8b0:4864:20::42e])
+ header.s=20161025 header.b=Yg91ASxZ; dkim-atps=neutral
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
+ [IPv6:2607:f8b0:4864:20::42b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FljP14xzqz2xtn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 05:19:49 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id 10so10607596pfl.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 12:19:49 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FljPQ3g87z3084
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 05:20:10 +1000 (AEST)
+Received: by mail-pf1-x42b.google.com with SMTP id 10so10608154pfl.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 12:20:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=ghVDOoMvorTJdaMzHQG/RIv5BmHhyL6sw4dTSHsJEnU=;
- b=rcLYOAKu9u/Pk2N2pIINoWg7Qql5CHIaTXPW1rmbbrFNRBJ17e6P88xZ/Yr3+K40Vg
- KFK9I+oMG/IgtitN6mi8iqL0UX94lczwdh7i0nBMb8jue1bBvD+G4ynJruy5PLRKgM8v
- 188V9tFxrPE9B0B1aPKzXgftN+LtzT071WIlfZD+1U+hRwMChhgRPMvMzKYVh5Q7yJyY
- X233KhJbv3QXKhh18IR7fU0ZBHQkRzKr/brYbrWfvUGYpz9WfdE1CfhVQ0XA+pTrnR5x
- VWSQyHCExyqYP4xFwbo2E8+nGlIJeknoGezPntMeUW6YyiidoBVXS6cxaKILk/O3+EJK
- 3+Jg==
+ bh=uMIDYXiQCge+lCPg7jWJZVlhfPYt5aTIXixKF3xFdtw=;
+ b=Yg91ASxZAaNzg/r8+0Ydre6wM45Ae3A1iPokHrBnYytUGLfpFnHdf3IFz8HESX0/2+
+ g821YtdozGCEBqe5IWPqRoORjgSuvSUsnUJvkFHQmi1Z8EyDysdL0ajJwNlL5xiTuXsv
+ wFEKThjSNrz9xGLrgbp/gM/UJUw8aKgxniG4Yn3LJ2CAh4MiM/s09DXVGVwgC1M7Lc1O
+ mqFqDRB1Z5q6tLXZhXMkex5oVmrXUvI0/xcrkwhwr72xMCAoZJcgyVejktim5H+sPgp9
+ TLPqhl56m5cKFfFNduokObt8ZVxO6KXBoFBtUzi8i8SumVh20RnjYnxygdSMJ5gi3qzx
+ uvlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=ghVDOoMvorTJdaMzHQG/RIv5BmHhyL6sw4dTSHsJEnU=;
- b=sBvDPmjK9Lj27xE5kKZlQrHC040yqAiN2hu2N5YFfWVBl31qZ58xwMMn+RPTxM/Pji
- NA2bEUKRWqtFv21ZiyzKZkmvWFkJ4AT6F4BgZ9xbvinE/GA8wrNA+AVFgUd1JAMGzmfY
- xPK1g4FQit6yc1dqP/kbXlwHCUkPDXuBacu9l0bjB1glBFA+IknzaR78Y1WaWPwbgU2C
- uJ1qvp4WWQlbpT/XHWTw2sdVNi8uKjPB26/BcGK/QVXxEq/v8+OZT6gwQZtf80caqp/a
- OWcdCO1aZfnyT3YYhYBi5dCgQGWBcCOjhURTsbFOwpf+LwrVsj4viN3dCSasqA8mbiJv
- 9ExQ==
-X-Gm-Message-State: AOAM532odgrcxLxDTrSTI2Mb59mgJdPthtNKGV/ZWLAMtbPex4AlALiY
- Yo54FgklSRnSk1uq4nssyF8=
-X-Google-Smtp-Source: ABdhPJwjgDsBVD45dTtfq/CuwPFV8Nn9xvyX5u2jGlIQAuONAFWU5ZnSLNw+gRQXo9RnVxq5dGzq7g==
-X-Received: by 2002:a63:4e01:: with SMTP id c1mr645397pgb.265.1621451987803;
- Wed, 19 May 2021 12:19:47 -0700 (PDT)
+ bh=uMIDYXiQCge+lCPg7jWJZVlhfPYt5aTIXixKF3xFdtw=;
+ b=NMrZ3u98rIHAPXIpA+d7Q0sGRrPHm15e15gwbtTUHKVlGkOzlVqSZ2Oz8+/uEfe+Ag
+ A+VXEbMjmfhD2U8dP+hgHcnaEujpGVaUWs3A9JaoAvOI9Ss1AlPqaLTKyBQnF9wYYCWx
+ 3qV9ak55QWrxghM6t4dpO1PpGQswxRuLV49CcU1ccKSNsdwQxLtQfA2deY/d6A2+kc1l
+ PGrBODd7mAM36GeB/wZrCY/bSp7VocpS4CB2SLdP790SxtGcRkSJgo8Md4hKvfU0k1IF
+ f4IoltLhyxCATnQq90KRI3snUJG2DY5bS3shnzBCesLE+yoeuU/xor5rinWLAwvNA78Z
+ vzzg==
+X-Gm-Message-State: AOAM5323HEE8RtANHXeBDj+anch1H8PAwx4a/tjlM3Env1N97EmWrhiG
+ mB/46Dn0rn3bV02aqfHlmN3+j6125uk=
+X-Google-Smtp-Source: ABdhPJylNyq7yX8wc3qiI92uMNP4dk54r6bNs8/LZR+DzeCwuyO2pJ1p5Agdk04xE/qvY5oPdEYXRQ==
+X-Received: by 2002:aa7:90d4:0:b029:28e:b912:acf with SMTP id
+ k20-20020aa790d40000b029028eb9120acfmr661343pfk.43.1621452007052; 
+ Wed, 19 May 2021 12:20:07 -0700 (PDT)
 Received: from [10.230.29.202] ([192.19.223.252])
- by smtp.gmail.com with ESMTPSA id y66sm128104pgb.14.2021.05.19.12.19.42
+ by smtp.gmail.com with ESMTPSA id m5sm109361pgl.75.2021.05.19.12.20.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 May 2021 12:19:47 -0700 (PDT)
-Subject: Re: [PATCH v7 06/15] swiotlb: Update is_swiotlb_buffer to add a
+ Wed, 19 May 2021 12:20:06 -0700 (PDT)
+Subject: Re: [PATCH v7 07/15] swiotlb: Update is_swiotlb_active to add a
  struct device argument
 To: Claire Chang <tientzu@chromium.org>, Rob Herring <robh+dt@kernel.org>,
  mpe@ellerman.id.au, Joerg Roedel <joro@8bytes.org>,
@@ -68,14 +69,14 @@ To: Claire Chang <tientzu@chromium.org>, Rob Herring <robh+dt@kernel.org>,
  jgross@suse.com, Christoph Hellwig <hch@lst.de>,
  Marek Szyprowski <m.szyprowski@samsung.com>
 References: <20210518064215.2856977-1-tientzu@chromium.org>
- <20210518064215.2856977-7-tientzu@chromium.org>
+ <20210518064215.2856977-8-tientzu@chromium.org>
 From: Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <e825f332-eabe-4a82-1528-8bc9d1e60625@gmail.com>
-Date: Wed, 19 May 2021 12:19:41 -0700
+Message-ID: <6cae5ffa-f31b-ba08-c2cf-4a3dd76afb3b@gmail.com>
+Date: Wed, 19 May 2021 12:20:00 -0700
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Firefox/78.0 Thunderbird/78.10.2
 MIME-Version: 1.0
-In-Reply-To: <20210518064215.2856977-7-tientzu@chromium.org>
+In-Reply-To: <20210518064215.2856977-8-tientzu@chromium.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -117,7 +118,7 @@ Sender: "Linuxppc-dev"
 
 
 On 5/17/2021 11:42 PM, Claire Chang wrote:
-> Update is_swiotlb_buffer to add a struct device argument. This will be
+> Update is_swiotlb_active to add a struct device argument. This will be
 > useful later to allow for restricted DMA pool.
 > 
 > Signed-off-by: Claire Chang <tientzu@chromium.org>
