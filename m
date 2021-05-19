@@ -1,38 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53B6388D80
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 14:06:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD4C388D81
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 14:06:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlWmp5ztfz3ddq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 22:06:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlWn80RP3z3dlh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 22:06:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linkmauve.fr (client-ip=82.65.109.163; helo=luna.linkmauve.fr;
- envelope-from=linkmauve@linkmauve.fr; receiver=<UNKNOWN>)
-Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net
- [82.65.109.163])
+ smtp.mailfrom=linkmauve.fr (client-ip=2a01:e0a:828:c7c0:49:5ff:fe41:d261;
+ helo=luna.linkmauve.fr; envelope-from=linkmauve@linkmauve.fr;
+ receiver=<UNKNOWN>)
+Received: from luna.linkmauve.fr (unknown
+ [IPv6:2a01:e0a:828:c7c0:49:5ff:fe41:d261])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlSfx32sWz2ydJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 19:46:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FlSfy5f6nz2yhf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 19:46:02 +1000 (AEST)
 Received: by luna.linkmauve.fr (Postfix, from userid 1000)
- id 39540F40629; Wed, 19 May 2021 11:45:57 +0200 (CEST)
+ id 2FA0EF4066B; Wed, 19 May 2021 11:45:59 +0200 (CEST)
 From: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
 To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
  linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org
-Subject: [PATCH 2/4] =?UTF-8?q?dt-bindings:=20nintendo-otp:=20Document=20t?=
- =?UTF-8?q?he=20Wii=20and=20Wii=C2=A0U=20OTP=20support?=
-Date: Wed, 19 May 2021 11:45:44 +0200
-Message-Id: <20210519094546.3954-3-linkmauve@linkmauve.fr>
+Subject: [PATCH 3/4] powerpc: wii.dts: Expose the OTP on this platform
+Date: Wed, 19 May 2021 11:45:45 +0200
+Message-Id: <20210519094546.3954-4-linkmauve@linkmauve.fr>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210519094546.3954-1-linkmauve@linkmauve.fr>
 References: <20210519094546.3954-1-linkmauve@linkmauve.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Wed, 19 May 2021 22:03:54 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -54,36 +53,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Both of these consoles use the exact same two registers, even at the
-same address, but the Wii U has eight banks of 128 bytes memory while
-the Wii only has one, hence the two compatible strings.
+This can be used by the newly-added nintendo-otp nvmem module.
 
 Signed-off-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
 ---
- .../devicetree/bindings/nvmem/nintendo-otp.txt     | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/nvmem/nintendo-otp.txt
+ arch/powerpc/boot/dts/wii.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/nvmem/nintendo-otp.txt b/Documentation/devicetree/bindings/nvmem/nintendo-otp.txt
-new file mode 100644
-index 000000000000..b26d705ec52d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/nvmem/nintendo-otp.txt
-@@ -0,0 +1,14 @@
-+Nintendo Wii and Wii U OTP
+diff --git a/arch/powerpc/boot/dts/wii.dts b/arch/powerpc/boot/dts/wii.dts
+index aaa381da1906..7837c4a3f09c 100644
+--- a/arch/powerpc/boot/dts/wii.dts
++++ b/arch/powerpc/boot/dts/wii.dts
+@@ -219,6 +219,11 @@ control@d800100 {
+ 			reg = <0x0d800100 0x300>;
+ 		};
+ 
++		otp@d8001ec {
++			compatible = "nintendo,hollywood-otp";
++			reg = <0x0d8001ec 0x8>;
++		};
 +
-+Required Properties:
-+- compatible: depending on the console this should be one of:
-+	- "nintendo,hollywood-otp" for the Wii
-+	- "nintendo,latte-otp" for the Wii U
-+- reg: base address and size of the OTP registers
-+
-+
-+Example:
-+	otp@d8001ec {
-+		compatible = "nintendo,latte-otp";
-+		reg = <0x0d8001ec 0x8>;
-+	};
+ 		disk@d806000 {
+ 			compatible = "nintendo,hollywood-di";
+ 			reg = <0x0d806000 0x40>;
 -- 
 2.31.1
 
