@@ -1,81 +1,137 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3564D389218
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 16:58:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3131D389236
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 17:07:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlbZy0tXQz30Bw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 00:58:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Flbnn1NPbz30DQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 01:07:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=XMaatkUy;
+	dkim=pass (1024-bit key; unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256 header.s=selector2 header.b=JNYLBoHI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::52c;
- helo=mail-pg1-x52c.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=XMaatkUy; dkim-atps=neutral
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
- [IPv6:2607:f8b0:4864:20::52c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=infinera.com (client-ip=40.107.220.63;
+ helo=nam11-co1-obe.outbound.protection.outlook.com;
+ envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
+ header.s=selector2 header.b=JNYLBoHI; 
+ dkim-atps=neutral
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2063.outbound.protection.outlook.com [40.107.220.63])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlbZS41tZz2xYs
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 00:57:33 +1000 (AEST)
-Received: by mail-pg1-x52c.google.com with SMTP id f22so8700959pgb.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 07:57:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=fVahKLjhQR6w9YEu/iIUhR87O8vnOphv8dCD1jgEVFs=;
- b=XMaatkUyTuQSg8cEqw8JY/+QYAyqz/LWB7V6cVEIkJULEevSQIOobzw6FQ/OFxmY47
- F35yy10kMVSMRh0nu2MXkR7aj81SEsujN3fpTLE0qq4+5SYNO8AkN8o0WgOwBdbvS2fH
- mQnoREDSWil63mPsS2vLv7JnAS0f/SKDWWkHuFkYG79g4y1J0P8YC1mTha5uLBy5kLM4
- 2EeaC2H54XqL4dr6NhgeRaKENC0d/DESKfeSirlIhJnyZ8MdxcsBGEzwBAkc9+uBS+z8
- eeRu/3e8BJ9c3viXPCowksXaWvdWzOWKkAda7mdOHw1tk2DXlfAiD00AKtYShqeJaJGv
- 6M9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=fVahKLjhQR6w9YEu/iIUhR87O8vnOphv8dCD1jgEVFs=;
- b=RtAMLvqE2T5y3TJTOwqezTip3lZ4Jujw6FwJvgH5yiuIUDXca2PT6FO0m1zPNB4yU0
- eshsY7zj7To1wz6HFt7GkM3qxX4n8+y/rx3YTffq05LvFNmcT91d9F9G87DLRZEyNWLf
- ajrSa6n2E6+3FZ9HdBvmUoQRjHySDu9sZ7C9BoTc37Bpqb/gPMTO3GLNSoR6+pKIsnwn
- sJT8rQclzcYe8IRLt1tv9yXv1hIgrc7UK/WBSVi6bcGan8xgyD/TRVB/O2L6AQY63l/Y
- Mc/QyiMYQlIbEGNzMeXyHcbU6pQNtcZnqGIZ556Y5mj62PZJDXsNn0pWaiGRasUrfcpB
- qLNg==
-X-Gm-Message-State: AOAM5336kCE/VBrRmdvVr9wIbHrHL1cO3tE2hHPxAaTBHfdRV68JgaJY
- w2VHjQdk8PbCinz03m58qTQW2g==
-X-Google-Smtp-Source: ABdhPJx79MI7Hi+bJlq76qQhld11ZDCycxVB2zyUylIL/r+K36HqxOxICez+TeRJvDpXpDb3frrFjg==
-X-Received: by 2002:a65:414d:: with SMTP id x13mr11296094pgp.86.1621436249600; 
- Wed, 19 May 2021 07:57:29 -0700 (PDT)
-Received: from [192.168.10.23]
- (ppp121-45-194-51.cbr-trn-nor-bras38.tpg.internode.on.net. [121.45.194.51])
- by smtp.gmail.com with UTF8SMTPSA id e186sm6496714pfa.145.2021.05.19.07.57.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 May 2021 07:57:28 -0700 (PDT)
-Message-ID: <45533d24-46e6-7d3b-09cc-0fe674404d78@ozlabs.ru>
-Date: Thu, 20 May 2021 00:57:23 +1000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:89.0) Gecko/20100101
- Thunderbird/89.0
-Subject: Re: [PATCH v2 2/2] powerpc/legacy_serial: Use early_ioremap()
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FlbnD2c8fz2xdM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 01:06:54 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I9Ygoz6cJujAR13Cjjcxqp8qOTrk7zMKyy99ifXq3yDPq4ZruVd0DTG22FTkncz+ZH4p8dKfo+T9I2m3MeGg21XuxRQjyEiaI1si8TxnHfwlS1PPKOpcXqXyLeAD1AFN19rUE2NerOb31BKCg8CaUXKdCjVP14d2uAU52PI8uNfi1jUCeo5mSxvOHUiQZFbLfyFDrWUuuaIi3jvfxKYvxDqvkvaLxSBWrz4OE0swC8K7AvDhEeHDgpYHfIdQfSpuiBMGm09aaQnN09yHtP0TRW9jaP8WL2bvElr0mBvlYE/DPdY8kcKDXt2hyfYIZCJ/Mx7g5s0mCpUDw0nOC2uKtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4ijFUELZ8pSSXiQx2WytB/1aPVLFg585xvaeT3Gj5eY=;
+ b=QgUMfQrnisNzV0HPAHRznEg/5YstfxVIiwQtp7Wn2nVVRUKcIKF94NVWTYKbj6XV5AGM2r0jNgnWPQk0SRWA1fpj4E4A16i/RX1Xwt0KndZHlW22uERhmVcUVnkuYj3AwrgnAQVXuoPZ5KrVZ2YmXjTATkNbmGN2jTPJoPWq7ZTC2A9kKcDI2MJpCgOQBrimkHrvstyvmrB9BG1BRCAmpOkIFYavKXC2uInyGWI31uisTvtRIOPUF/TG5+pPOum1HFFawnOB4yJxv+i6j1lRpvf+51fOsmny+XPkZKw3SNLAO9dA4aS9R8rkN1yC34HEZcT6ifdwm/8mbXQBjDm2GA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
+ dkim=pass header.d=infinera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4ijFUELZ8pSSXiQx2WytB/1aPVLFg585xvaeT3Gj5eY=;
+ b=JNYLBoHIle4MEqjU94hRGe5xnsyjdMoFnJ1hvMc/wNHKFoCKmXeDcUz0yMTP10TYvJzgd9HhSWlU0yL+X3EoLQBeUtJIBRMY+V2La5/yj3VvqrU9eGOIX8Uy5/YKT0UFT7Tvw87oQekaW4LU3kvc/g0Ggnt6ssoOPu47i4BUoUQ=
+Received: from PH0PR10MB4615.namprd10.prod.outlook.com (2603:10b6:510:36::24)
+ by PH0PR10MB4789.namprd10.prod.outlook.com (2603:10b6:510:3c::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4129.28; Wed, 19 May
+ 2021 15:06:50 +0000
+Received: from PH0PR10MB4615.namprd10.prod.outlook.com
+ ([fe80::5021:f762:e76f:d567]) by PH0PR10MB4615.namprd10.prod.outlook.com
+ ([fe80::5021:f762:e76f:d567%7]) with mapi id 15.20.4129.033; Wed, 19 May 2021
+ 15:06:50 +0000
+From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+To: "segher@kernel.crashing.org" <segher@kernel.crashing.org>,
+ "npiggin@gmail.com" <npiggin@gmail.com>
+Subject: Re: Linux powerpc new system call instruction and ABI
+Thread-Topic: Linux powerpc new system call instruction and ABI
+Thread-Index: AQHXTDxnjXzNFE+v10y5IiWAVxRCH6rqahwAgAAGHYCAAAN7AIAACa0AgABjcgCAAAfggA==
+Date: Wed, 19 May 2021 15:06:49 +0000
+Message-ID: <11d62aa2488e51ec00fe77f24a1d7cdcc21af0b8.camel@infinera.com>
+References: <20200611081203.995112-1-npiggin@gmail.com>
+ <20210518231331.GA8464@altlinux.org>
+ <9b5ea7059c5a5d4e9ccccd7d73ce2c66b2203f52.camel@infinera.com>
+ <1621410291.c7si38sa9q.astroid@bobo.none>
+ <fb9b6a6099855bd00efc6ffe540ccad14dd9a365.camel@infinera.com>
+ <1621413143.oec64jaci5.astroid@bobo.none>
+ <20210519143836.GJ10366@gate.crashing.org>
+In-Reply-To: <20210519143836.GJ10366@gate.crashing.org>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <0d51620eacf036d683d1a3c41328f69adb601dc0.1618925560.git.christophe.leroy@csgroup.eu>
- <103ed8ee9e5973c958ec1da2d0b0764f69395d01.1618925560.git.christophe.leroy@csgroup.eu>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <103ed8ee9e5973c958ec1da2d0b0764f69395d01.1618925560.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.40.0 
+authentication-results: kernel.crashing.org; dkim=none (message not signed)
+ header.d=none;kernel.crashing.org; dmarc=none action=none
+ header.from=infinera.com;
+x-originating-ip: [88.131.87.201]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: e600d8a8-854e-4577-c472-08d91ad7ba92
+x-ms-traffictypediagnostic: PH0PR10MB4789:
+x-microsoft-antispam-prvs: <PH0PR10MB478919153C99B129B5A0C2D3F42B9@PH0PR10MB4789.namprd10.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: OEzQ0OHhhjdGSJqDMpMJSsUlyjntykjCqtPdqReuml7lPtJqnOevmtRWV1gwuWGYfi83Am1/8QXaO8FdvEtCmzxUftSIpXM/KVufdPvZYWt3tsUSZC4RagyDld8SCsOw+EUcGW/KF4N+gzf1Bpz/p7ckjB+NVbvGEM4hb5qBEj4jaSDFyJro2OCQe3tWDS1gP48DKdV/jUU771w4j6Gar8WgrKL3gRwwIk9nIOWbkPFAJ1ijY4RsPWgjMHfxJQPJ/O+e/FxnEtayGjOLWkhbxQdP2RbnlxR436jRX1fMaqmPhE830ExiG0OylN08/pkj5d6uvJ0JtrbZjlypWJ/9w7B+R/uZoGDSQ7eE7tv0C9wzEcUFWZZ0hXr/MosE760/na9yuh/6cT9PtQbyO8jBFrCwXrk3M1d4mrKuMWmDoQ3kzhJIC6YPPnwVx0QAlI6KhFA5M9OHLpQnkTrp12LfCZ8yS7PHy1NPwCqFOdfS+EY6Un+j7ox2ewiXfNwkpJBbRn5H0vLxcE7E+LJUnTKK8eF7QqJbyVKuWpk2QF9Zg2u/zsYAEjaVVENRq8vPKFbtuhSqUuvD1BFEE/wkahmB6xHmYcVwqO3YTks/AY91xg0=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB4615.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(136003)(39850400004)(396003)(366004)(376002)(346002)(110136005)(6506007)(54906003)(5660300002)(83380400001)(36756003)(86362001)(26005)(6512007)(71200400001)(66946007)(66476007)(64756008)(122000001)(4326008)(66446008)(66556008)(316002)(38100700002)(478600001)(186003)(2616005)(8676002)(91956017)(4744005)(76116006)(8936002)(6486002)(2906002);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata: =?utf-8?B?Tk12Zm1Ka1VOV2F3OXEzazFFalc1YlNmTTRyT3ZDRHdvUXE3WThwUVdjYTUy?=
+ =?utf-8?B?SEhUbkFNUTF4WTY0R0RiSkNmREE3M2JOTEpNeHl3RDhxNU56NnhKZTRvM0Vw?=
+ =?utf-8?B?UnZaTEo2QVZEc1ZhVVljS0EvdXZrR3ZGbTV1OFpORGtzNDUybHUzVVZZOVY5?=
+ =?utf-8?B?ZXFERC9NaVpDZ3ZTWTc3aFpMZ3dhZSsvR2xEUVJUV1lXcmZLUUE3QnZ4U21G?=
+ =?utf-8?B?WEFPSVBNa253WW5oa3kxMU9GdGxCU2ZzUVduUGFGeUpLYlRvTE1TRHNtNktu?=
+ =?utf-8?B?REFqOHJaUDk4bkFVOVRBM2VKUXpzaGV0cGxtdFh1UE9mNGRnZm5BN3dKSW1C?=
+ =?utf-8?B?SDJ2MFhjUTF6MzhlQ1lvQzIvMXpDMEw1Mld2QjFDekgxZzFDVXN2MmdWb1NI?=
+ =?utf-8?B?TFhuM0xGZmlpME9sMHB1NFU0WjVvem80ejZTRVFzWG03TGxVdkhtQ0FwMFd0?=
+ =?utf-8?B?WTIzVzJwTFFCN1VWaHFVdDc1dFJ1a3J4eENyNjBhZlkzOVNLUE1KcGI0OERx?=
+ =?utf-8?B?bTJZNDdGOTBENUt1enNKM2FwU2VTTE5JMVpGekxUaVB2UWJzeVdnTEpWcnhG?=
+ =?utf-8?B?b1ZDS3FKUzB4OTRYUEwzRW42N0NLY0pzWmhISC8zRDB6WFNjQlR6TFJsV2Yx?=
+ =?utf-8?B?eFZlcjdiSklQVXp2aE9ody83bi95V0RGVllkNzJxcVNGcEJIWTQ5L0psRTRy?=
+ =?utf-8?B?T3Y1alMzRWJVVXRTVGdDMGdKUGwxNDYvWFk2NllyeDJCOUo5RlhMZ095NnJp?=
+ =?utf-8?B?Y2N5V1JlU2krQk91bk1ZK3JMSUoydHR3VjFmcTNSWUtmZDdxYXUxTEwrZytq?=
+ =?utf-8?B?TGVHZlhHeDZ6WnVMRW02bU9yMEl6Vkx0cUdwNERnNlk3bUxrTDFOY0QzandY?=
+ =?utf-8?B?QjJ3Rllma1hpUFRjYWVRL2YwSmtGWmwzZEJSRWpOYS9SdDU0Z0N4MGRJN0sw?=
+ =?utf-8?B?c0hYSUhsbzBxVExXT1FtTURPNFpPbW9EeVZUeVgwWXBFM0pVay9hMGozdnYv?=
+ =?utf-8?B?UkRvVXZ3bXptYjZiV01XbnN4TWd0MzcvSWJnT0Z6cVVzOEJVMXk3QXp6cWZD?=
+ =?utf-8?B?N2NZTHczcHV5VjNxYWUyUWEwdFE4aFpmMDVFYzM2L0ZObW9Qcm5Ha2lzekJp?=
+ =?utf-8?B?U2Q3T3NlWjJtTzFOck52TVRqMzhhcW5hbmhHY1I5YllQR0w5eUVBMjdkaFZz?=
+ =?utf-8?B?bWlhZDM0dFQxZ1dNNDluWStidU50RGxRQlFPMktDOEFQNmVhSVk3UU85NFRt?=
+ =?utf-8?B?Rm8wM3pReElaVE04cHpoRVNYeElpQ3QrT29lYzh2eEg4T3Zabm9QR2xFMXIv?=
+ =?utf-8?B?OGVWcHhKbmE4UWNGMUdDeTdtMnZ0LzJ5bzNIa3FYNndEaEdmTlNkVkhWb1B5?=
+ =?utf-8?B?b3hZcEhSVXJWSkhQbU8vbTBlRGx3SHRUd2p2My9uQ3R3a1U3MXBmeDZaajhL?=
+ =?utf-8?B?VS91ZHpjT28wRlgzYmFZeG5oNVNPUlpjT0ZRNEYyYWZvVnQ5T01uSTQvZGVM?=
+ =?utf-8?B?TElpeDlQeSs3elVMQUVxN2l6Nm1ZTFNnSFhnTWQ3YkRBMUFLM3h1SFRvVDM1?=
+ =?utf-8?B?YkpNWDZ5WFdCOTBZSzE2SWxaNFRveUJ0dHRqb0FETEh2ZGhsNStVbURDVkZx?=
+ =?utf-8?B?WWNuZjFVMGc4d0lLQ0xaS094MFdidWthNzhKaWtRQ3E4WFB5ZU9kMUppWHJQ?=
+ =?utf-8?B?ZkUxdWUxVU1TS1BSRUpJZVgxRkJGU3pGT0htZG9DaVB4VDc2ZU5lTS8vTFYr?=
+ =?utf-8?Q?TiiJSdf13EzmTA8yPGJZjw0rf+DASCQRs3Ci7+F?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9599865831E8BB47BC25377FCE4F13A0@namprd10.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: infinera.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4615.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e600d8a8-854e-4577-c472-08d91ad7ba92
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 May 2021 15:06:49.8892 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JplSRkI3sR+fUr72z76I7h9FLJAY1XJn1z52dTzXWj/M26ejPbxQnlNaUJzSRcgNKnxtWJJimLclvYPK8Okx0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4789
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,145 +143,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "musl@lists.openwall.com" <musl@lists.openwall.com>,
+ "ldv@altlinux.org" <ldv@altlinux.org>,
+ "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
+ "libc-dev@lists.llvm.org" <libc-dev@lists.llvm.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 20/04/2021 23:32, Christophe Leroy wrote:
-> From: Christophe Leroy <christophe.leroy@c-s.fr>
-> 
-> [    0.000000] ioremap() called early from find_legacy_serial_ports+0x3cc/0x474. Use early_ioremap() instead
-> 
-> find_legacy_serial_ports() is called early from setup_arch(), before
-> paging_init(). vmalloc is not available yet, ioremap shouldn't be
-> used that early.
-> 
-> Use early_ioremap() and switch to a regular ioremap() later.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-My POWER9 box silently reboots with the upstream kernel which has this.
-
-This hunk:
-
-diff --git a/arch/powerpc/kernel/legacy_serial.c 
-b/arch/powerpc/kernel/legacy_serial.c
-index f061e06e9f51..6bdb3f5f64e3 100644
---- a/arch/powerpc/kernel/legacy_serial.c
-+++ b/arch/powerpc/kernel/legacy_serial.c
-@@ -336,6 +336,16 @@ static void __init setup_legacy_serial_console(int 
-console)
-                 if (addr == NULL)
-                         return;
-                 udbg_uart_init_mmio(addr, stride);
-+
-+
-+               {
-+                       void *ea = early_ioremap(info->taddr, 0x1000);
-+                       pr_err("___K___ (%u) %s %u: ior=%lx early=%lx\n",
-+                               smp_processor_id(), __func__, __LINE__,
-+                                       (unsigned long) addr, (unsigned 
-long) ea);
-+                       early_iounmap(ea, 0x1000);
-+               }
-+
-
-
-produced:
-
-[    0.000000] ___K___ (0) setup_legacy_serial_console 345: 
-ior=c00a0000800003f8 early=ffffffffffc003f8 
-
-
-
-The early address just does not look right - ffffffffffc003f8. Do you 
-have a quick idea what is exactly wrong before I wake up and dig more? 
-:)  It is powernv_defconfig. Thanks,
-
-
-
-> ---
->   arch/powerpc/kernel/legacy_serial.c | 33 +++++++++++++++++++++++++----
->   1 file changed, 29 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/legacy_serial.c b/arch/powerpc/kernel/legacy_serial.c
-> index f061e06e9f51..8b2c1a8553a0 100644
-> --- a/arch/powerpc/kernel/legacy_serial.c
-> +++ b/arch/powerpc/kernel/legacy_serial.c
-> @@ -15,6 +15,7 @@
->   #include <asm/udbg.h>
->   #include <asm/pci-bridge.h>
->   #include <asm/ppc-pci.h>
-> +#include <asm/early_ioremap.h>
->   
->   #undef DEBUG
->   
-> @@ -34,6 +35,7 @@ static struct legacy_serial_info {
->   	unsigned int			clock;
->   	int				irq_check_parent;
->   	phys_addr_t			taddr;
-> +	void __iomem			*early_addr;
->   } legacy_serial_infos[MAX_LEGACY_SERIAL_PORTS];
->   
->   static const struct of_device_id legacy_serial_parents[] __initconst = {
-> @@ -325,17 +327,16 @@ static void __init setup_legacy_serial_console(int console)
->   {
->   	struct legacy_serial_info *info = &legacy_serial_infos[console];
->   	struct plat_serial8250_port *port = &legacy_serial_ports[console];
-> -	void __iomem *addr;
->   	unsigned int stride;
->   
->   	stride = 1 << port->regshift;
->   
->   	/* Check if a translated MMIO address has been found */
->   	if (info->taddr) {
-> -		addr = ioremap(info->taddr, 0x1000);
-> -		if (addr == NULL)
-> +		info->early_addr = early_ioremap(info->taddr, 0x1000);
-> +		if (info->early_addr == NULL)
->   			return;
-> -		udbg_uart_init_mmio(addr, stride);
-> +		udbg_uart_init_mmio(info->early_addr, stride);
->   	} else {
->   		/* Check if it's PIO and we support untranslated PIO */
->   		if (port->iotype == UPIO_PORT && isa_io_special)
-> @@ -353,6 +354,30 @@ static void __init setup_legacy_serial_console(int console)
->   	udbg_uart_setup(info->speed, info->clock);
->   }
->   
-> +static int __init ioremap_legacy_serial_console(void)
-> +{
-> +	struct legacy_serial_info *info = &legacy_serial_infos[legacy_serial_console];
-> +	struct plat_serial8250_port *port = &legacy_serial_ports[legacy_serial_console];
-> +	void __iomem *vaddr;
-> +
-> +	if (legacy_serial_console < 0)
-> +		return 0;
-> +
-> +	if (!info->early_addr)
-> +		return 0;
-> +
-> +	vaddr = ioremap(info->taddr, 0x1000);
-> +	if (WARN_ON(!vaddr))
-> +		return -ENOMEM;
-> +
-> +	udbg_uart_init_mmio(vaddr, 1 << port->regshift);
-> +	early_iounmap(info->early_addr, 0x1000);
-> +	info->early_addr = NULL;
-> +
-> +	return 0;
-> +}
-> +early_initcall(ioremap_legacy_serial_console);
-> +
->   /*
->    * This is called very early, as part of setup_system() or eventually
->    * setup_arch(), basically before anything else in this file. This function
-> 
-
--- 
-Alexey
+T24gV2VkLCAyMDIxLTA1LTE5IGF0IDA5OjM4IC0wNTAwLCBTZWdoZXIgQm9lc3Nlbmtvb2wgd3Jv
+dGU6DQo+IE9uIFdlZCwgTWF5IDE5LCAyMDIxIGF0IDA2OjQyOjQwUE0gKzEwMDAsIE5pY2hvbGFz
+IFBpZ2dpbiB3cm90ZToNCj4gPiBFeGNlcnB0cyBmcm9tIEpvYWtpbSBUamVybmx1bmQncyBtZXNz
+YWdlIG9mIE1heSAxOSwgMjAyMSA2OjA4IHBtOg0KPiA+ID4gSSBhbHdheXMgZmlndXJlZCB0aGUg
+cHBjIHdheSB3YXMgc3VwZXJpb3IuIEl0IGJlZ3MgdGhlIHF1ZXN0aW9uIGlmIG5vdCB0aGUgb3Ro
+ZXIgYXJjaHMgc2hvdWxkDQo+ID4gPiBjaGFuZ2UgaW5zdGVhZD8NCj4gPiANCj4gPiBJdCBpcyBz
+dXBlcmlvciBpbiBzb21lIHdheXMsIG5vdCBlbm91Z2ggdG8gYmUgd29ydGggYmVpbmcgZGlmZmVy
+ZW50Lg0KPiANCj4gVGhlIFBvd2VyUEMgc3lzY2FsbCBBQkkgKnJlcXVpcmVzKiB1c2luZyBjcjAu
+MyBmb3IgaW5kaWNhdGluZyBlcnJvcnMsDQo+IHlvdSB3aWxsIGhhdmUgdG8gZG8gdGhhdCB3aGV0
+aGVyIHlvdSBjb25mbGF0ZSB0aGUgY29uY2VwdHMgb2YgcmV0dXJuDQo+IGNvZGUgYW5kIGVycm9y
+IGluZGljYXRvciBvciBub3QhDQo+IA0KPiA+IE90aGVyIGFyY2hzIGFyZSB1bmxpa2VseSB0byBj
+aGFuZ2UgYmVjYXVzZSBpdCB3b3VsZCBiZSBwYWluZnVsIGZvcg0KPiA+IG5vdCBtdWNoIGJlbmVm
+aXQuDQo+IA0KPiBPdGhlciBhcmNocyBjYW5ub3QgZWFzaWx5IGNoYW5nZSBmb3IgbXVjaCB0aGUg
+c2FtZSByZWFzb24gOi0pDQoNClJlYWxseT8gSSBmaWd1cmVkIHlvdSBjb3VsZCBqdXN0IGFkZCBl
+eHRyYSBlcnJvciBpbmRpY2F0aW9uIGluIGtlcm5lbCBzeXNjYWxsIEkvRi4NCkV2ZW50dWFsbHkg
+dXNlciBzcGFjZSBjb3VsZCBtaWdyYXRlIHRvIHRoZSBuZXcgaW5kaWNhdGlvbi4NCg0KIEpvY2tl
+DQo=
