@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5FF3891D0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 16:47:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79CAF3891D2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 16:47:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlbLY6qlBz3dgW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 00:47:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlbLw2vWcz3dmT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 00:47:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,39 +16,39 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlbH81lBxz3c08
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 00:44:20 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FlbHC6P6jz3c1R
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 00:44:23 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FlbGM3W42z9sX6;
- Wed, 19 May 2021 16:43:39 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FlbGN17Lrz9sWf;
+ Wed, 19 May 2021 16:43:40 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Ay4mlZa3r2pw; Wed, 19 May 2021 16:43:39 +0200 (CEST)
+ with ESMTP id tq2cS00HBgsH; Wed, 19 May 2021 16:43:40 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FlbGL2Zf9z9sWf;
- Wed, 19 May 2021 16:43:38 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FlbGM34q9z9sWx;
+ Wed, 19 May 2021 16:43:39 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3F5568B7F5;
- Wed, 19 May 2021 16:43:38 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4AD858B7FC;
+ Wed, 19 May 2021 16:43:39 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 0YMn1Rwtryah; Wed, 19 May 2021 16:43:38 +0200 (CEST)
+ with ESMTP id F7nsBOkmkrUk; Wed, 19 May 2021 16:43:39 +0200 (CEST)
 Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E95008B7E0;
- Wed, 19 May 2021 16:43:37 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0557F8B7F5;
+ Wed, 19 May 2021 16:43:39 +0200 (CEST)
 Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C4C0164C3A; Wed, 19 May 2021 14:43:37 +0000 (UTC)
-Message-Id: <fbd8a6e6f44366cd005efa45839ebad381b8d8d7.1621435024.git.christophe.leroy@csgroup.eu>
+ id D597A64C3A; Wed, 19 May 2021 14:43:38 +0000 (UTC)
+Message-Id: <d80629d55a4189befc1d7521e4cfa635b053d034.1621435024.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1621435024.git.christophe.leroy@csgroup.eu>
 References: <cover.1621435024.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v1 10/12] powerpc/optprobes: Minimise casts
+Subject: [PATCH v1 11/12] powerpc/optprobes: Compact code source a bit.
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  naveen.n.rao@linux.vnet.ibm.com, jniethe5@gmail.com
-Date: Wed, 19 May 2021 14:43:37 +0000 (UTC)
+Date: Wed, 19 May 2021 14:43:38 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,102 +65,86 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-nip is already an unsigned long, no cast needed.
-
-op_callback_addr and emulate_step_addr are kprobe_opcode_t *.
-There value is obtained with ppc_kallsyms_lookup_name() which
-returns 'unsigned long', and there values are used create_branch()
-which expects 'unsigned long'. So change them to 'unsigned long'
-to avoid casting them back and forth.
-
-can_optimize() used p->addr several times as 'unsigned long'.
-Use a local 'unsigned long' variable and avoid casting multiple times.
+Now that lines can be up to 100 chars long, minimise the
+amount of split lines to increase readability.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/optprobes.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ arch/powerpc/kernel/optprobes.c | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
 
 diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
-index adaf31157f6d..8c08ca15faf3 100644
+index 8c08ca15faf3..9c1c8de8c06d 100644
 --- a/arch/powerpc/kernel/optprobes.c
 +++ b/arch/powerpc/kernel/optprobes.c
-@@ -66,6 +66,7 @@ static unsigned long can_optimize(struct kprobe *p)
- 	struct pt_regs regs;
- 	struct instruction_op op;
- 	unsigned long nip = 0;
-+	unsigned long addr = (unsigned long)p->addr;
+@@ -18,18 +18,12 @@
+ #include <asm/ppc-opcode.h>
+ #include <asm/inst.h>
  
- 	/*
- 	 * kprobe placed for kretprobe during boot time
-@@ -73,7 +74,7 @@ static unsigned long can_optimize(struct kprobe *p)
- 	 * So further checks can be skipped.
+-#define TMPL_CALL_HDLR_IDX	\
+-	(optprobe_template_call_handler - optprobe_template_entry)
+-#define TMPL_EMULATE_IDX	\
+-	(optprobe_template_call_emulate - optprobe_template_entry)
+-#define TMPL_RET_IDX		\
+-	(optprobe_template_ret - optprobe_template_entry)
+-#define TMPL_OP_IDX		\
+-	(optprobe_template_op_address - optprobe_template_entry)
+-#define TMPL_INSN_IDX		\
+-	(optprobe_template_insn - optprobe_template_entry)
+-#define TMPL_END_IDX		\
+-	(optprobe_template_end - optprobe_template_entry)
++#define TMPL_CALL_HDLR_IDX	(optprobe_template_call_handler - optprobe_template_entry)
++#define TMPL_EMULATE_IDX	(optprobe_template_call_emulate - optprobe_template_entry)
++#define TMPL_RET_IDX		(optprobe_template_ret - optprobe_template_entry)
++#define TMPL_OP_IDX		(optprobe_template_op_address - optprobe_template_entry)
++#define TMPL_INSN_IDX		(optprobe_template_insn - optprobe_template_entry)
++#define TMPL_END_IDX		(optprobe_template_end - optprobe_template_entry)
+ 
+ DEFINE_INSN_CACHE_OPS(ppc_optinsn);
+ 
+@@ -280,8 +274,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
  	 */
- 	if (p->addr == (kprobe_opcode_t *)&kretprobe_trampoline)
--		return (unsigned long)p->addr + sizeof(kprobe_opcode_t);
-+		return addr + sizeof(kprobe_opcode_t);
+ 	patch_branch(buff + TMPL_RET_IDX, nip, 0);
  
- 	/*
- 	 * We only support optimizing kernel addresses, but not
-@@ -81,11 +82,11 @@ static unsigned long can_optimize(struct kprobe *p)
- 	 *
- 	 * FIXME: Optimize kprobes placed in module addresses.
- 	 */
--	if (!is_kernel_addr((unsigned long)p->addr))
-+	if (!is_kernel_addr(addr))
- 		return 0;
+-	flush_icache_range((unsigned long)buff,
+-			   (unsigned long)(&buff[TMPL_END_IDX]));
++	flush_icache_range((unsigned long)buff, (unsigned long)(&buff[TMPL_END_IDX]));
  
- 	memset(&regs, 0, sizeof(struct pt_regs));
--	regs.nip = (unsigned long)p->addr;
-+	regs.nip = addr;
- 	regs.trap = 0x0;
- 	regs.msr = MSR_KERNEL;
+ 	op->optinsn.insn = buff;
  
-@@ -195,7 +196,8 @@ static void patch_imm_load_insns(unsigned long val, int reg, kprobe_opcode_t *ad
- int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- {
- 	struct ppc_inst branch_op_callback, branch_emulate_step, temp;
--	kprobe_opcode_t *op_callback_addr, *emulate_step_addr, *buff;
-+	unsigned long op_callback_addr, emulate_step_addr;
-+	kprobe_opcode_t *buff;
- 	long b_offset;
- 	unsigned long nip, size;
- 	int rc, i;
-@@ -225,8 +227,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 		goto error;
- 
- 	/* Check if the return address is also within 32MB range */
--	b_offset = (unsigned long)(buff + TMPL_RET_IDX) -
--			(unsigned long)nip;
-+	b_offset = (unsigned long)(buff + TMPL_RET_IDX) - nip;
- 	if (!is_offset_in_branch_range(b_offset))
- 		goto error;
- 
-@@ -249,20 +250,18 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 	/*
- 	 * 2. branch to optimized_callback() and emulate_step()
- 	 */
--	op_callback_addr = (kprobe_opcode_t *)ppc_kallsyms_lookup_name("optimized_callback");
--	emulate_step_addr = (kprobe_opcode_t *)ppc_kallsyms_lookup_name("emulate_step");
-+	op_callback_addr = ppc_kallsyms_lookup_name("optimized_callback");
-+	emulate_step_addr = ppc_kallsyms_lookup_name("emulate_step");
- 	if (!op_callback_addr || !emulate_step_addr) {
- 		WARN(1, "Unable to lookup optimized_callback()/emulate_step()\n");
- 		goto error;
+@@ -319,10 +312,8 @@ void arch_optimize_kprobes(struct list_head *oplist)
+ 		 * Backup instructions which will be replaced
+ 		 * by jump address
+ 		 */
+-		memcpy(op->optinsn.copied_insn, op->kp.addr,
+-					       RELATIVEJUMP_SIZE);
+-		create_branch(&instr, op->kp.addr,
+-			      (unsigned long)op->optinsn.insn, 0);
++		memcpy(op->optinsn.copied_insn, op->kp.addr, RELATIVEJUMP_SIZE);
++		create_branch(&instr, op->kp.addr, (unsigned long)op->optinsn.insn, 0);
+ 		patch_instruction(op->kp.addr, instr);
+ 		list_del_init(&op->list);
  	}
+@@ -333,8 +324,7 @@ void arch_unoptimize_kprobe(struct optimized_kprobe *op)
+ 	arch_arm_kprobe(&op->kp);
+ }
  
- 	rc = create_branch(&branch_op_callback, buff + TMPL_CALL_HDLR_IDX,
--			   (unsigned long)op_callback_addr,
--			   BRANCH_SET_LINK);
-+			   op_callback_addr, BRANCH_SET_LINK);
+-void arch_unoptimize_kprobes(struct list_head *oplist,
+-			     struct list_head *done_list)
++void arch_unoptimize_kprobes(struct list_head *oplist, struct list_head *done_list)
+ {
+ 	struct optimized_kprobe *op;
+ 	struct optimized_kprobe *tmp;
+@@ -345,8 +335,7 @@ void arch_unoptimize_kprobes(struct list_head *oplist,
+ 	}
+ }
  
- 	rc |= create_branch(&branch_emulate_step, buff + TMPL_EMULATE_IDX,
--			    (unsigned long)emulate_step_addr,
--			    BRANCH_SET_LINK);
-+			    emulate_step_addr, BRANCH_SET_LINK);
- 
- 	if (rc)
- 		goto error;
+-int arch_within_optimized_kprobe(struct optimized_kprobe *op,
+-				 unsigned long addr)
++int arch_within_optimized_kprobe(struct optimized_kprobe *op, unsigned long addr)
+ {
+ 	return ((unsigned long)op->kp.addr <= addr &&
+ 		(unsigned long)op->kp.addr + RELATIVEJUMP_SIZE > addr);
 -- 
 2.25.0
 
