@@ -2,59 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6483885CD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 05:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF7F388623
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 06:47:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlJvP05MGz2ykG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 13:56:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlL1t2Gygz30BR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 14:46:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.a=rsa-sha256 header.s=dk header.b=UhEODi1C;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KuHRfUvU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=mediatek.com (client-ip=210.61.82.184;
- helo=mailgw02.mediatek.com; envelope-from=miles.chen@mediatek.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=mediatek.com header.i=@mediatek.com header.a=rsa-sha256
- header.s=dk header.b=UhEODi1C; dkim-atps=neutral
-Received: from mailgw02.mediatek.com (mailgw02.mediatek.com [210.61.82.184])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=KuHRfUvU; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlJts59Bbz2yWv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 13:55:48 +1000 (AEST)
-X-UUID: 198d4eae015548bc964e0d68dc629dfb-20210519
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
- s=dk; 
- h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID;
- bh=S/KAedclNU8qmnqec3Ml95ZT6h/23axBf0ZQuILgxHU=; 
- b=UhEODi1CAV1trzS9be4WcS2xYe0b4vG6NkkI3YPaMzfmWOvVK5Weyu7BDJRXczZWVbhyHlBQjawXf5NgRha8xvUrGwLJZQtQFZuWKww4S5TyP7l6nMIkoHJCLQmkkjWttLmEIApc++w5NfMnUEs0vViyT6rJDS4BDnBNGHrC8nE=;
-X-UUID: 198d4eae015548bc964e0d68dc629dfb-20210519
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
- (envelope-from <miles.chen@mediatek.com>)
- (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
- with ESMTP id 8210983; Wed, 19 May 2021 11:55:41 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 19 May 2021 11:55:40 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 19 May 2021 11:55:39 +0800
-Message-ID: <1621396540.12301.7.camel@mtkswgap22>
-Subject: Re: [PATCH v2 0/2] mm: unify the allocation of pglist_data instances
-From: Miles Chen <miles.chen@mediatek.com>
-To: Mike Rapoport <rppt@kernel.org>
-Date: Wed, 19 May 2021 11:55:40 +0800
-In-Reply-To: <YKSKq68E9Ompn0vE@kernel.org>
-References: <20210518092446.16382-1-miles.chen@mediatek.com>
- <YKPmxEu6YFDXRyTg@kernel.org> <1621383126.12301.4.camel@mtkswgap22>
- <YKSKq68E9Ompn0vE@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FlL1N5nsyz2xZh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 14:46:32 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14J4X5GU180940; Wed, 19 May 2021 00:46:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=uMu4Zt3VLKqG7ISF1FyL53KTvJ0ivy4Qtu+wMipQtK0=;
+ b=KuHRfUvUoSrbUXKW+6yCYEjVOwfsrP+Irt2HvztYkcuRkn46nUJAUedAgJ0BUAdz+/Ks
+ 74zsr5blSEYkEKBpQcgB1ngseaFUppK0qE9Fx7NSfedgSxFu+V1LQVDf5gX+MhGkOtxl
+ 06ET2+K7TVM+fdQgHUJMupwUSc0/KzlobG6qFokAshMPex7C9au1BCicNZz+gguPUeIJ
+ 5JsSY/aHdqbfOEnvD8Oftj4Q/69NWCLx0whmk7bNlqnZl1VWN1fOuIMGN5b3CTTI0f53
+ EsaX6//gzaaI5GdFENzAFn0NL2cOBMMQ1n0xIHw82R6//AUiTDFPcR6RD38J3BCdTdLQ BA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 38mry3k9w5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 May 2021 00:46:14 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14J4ZTLD193638;
+ Wed, 19 May 2021 00:46:13 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 38mry3k9w1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 May 2021 00:46:13 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14J4go2G002317;
+ Wed, 19 May 2021 04:46:13 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma04wdc.us.ibm.com with ESMTP id 38j5x9c8he-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 May 2021 04:46:13 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14J4kCGU29295040
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 19 May 2021 04:46:12 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9F6A52805E;
+ Wed, 19 May 2021 04:46:12 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8FDCD2806E;
+ Wed, 19 May 2021 04:46:09 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.75.184])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 19 May 2021 04:46:09 +0000 (GMT)
+X-Mailer: emacs 28.0.50 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH v5 3/9] mm/mremap: Use pmd/pud_poplulate to update page
+ table entries
+In-Reply-To: <YKQdxpHVYB9H0M0j@Ryzen-9-3900X.localdomain>
+References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
+ <20210422054323.150993-4-aneesh.kumar@linux.ibm.com>
+ <YKQdxpHVYB9H0M0j@Ryzen-9-3900X.localdomain>
+Date: Wed, 19 May 2021 10:16:07 +0530
+Message-ID: <87mtsrqqk0.fsf@linux.ibm.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: BGelQXxG50I6NdXuLuxlAdFvU8MINFSg
+X-Proofpoint-ORIG-GUID: 5x1SUHmSiol1fqSoUdimuK6owJNcTpd1
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-MTK: N
-Content-Transfer-Encoding: base64
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-19_01:2021-05-18,
+ 2021-05-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 mlxscore=0
+ phishscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
+ suspectscore=0 spamscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105190033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,105 +108,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, kexec@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- Dave Young <dyoung@redhat.com>, Vivek Goyal <vgoyal@redhat.com>
+Cc: npiggin@gmail.com, linux-mm@kvack.org, kaleshsingh@google.com,
+ joel@joelfernandes.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gV2VkLCAyMDIxLTA1LTE5IGF0IDA2OjQ4ICswMzAwLCBNaWtlIFJhcG9wb3J0IHdyb3RlOg0K
-PiBPbiBXZWQsIE1heSAxOSwgMjAyMSBhdCAwODoxMjowNkFNICswODAwLCBNaWxlcyBDaGVuIHdy
-b3RlOg0KPiA+IE9uIFR1ZSwgMjAyMS0wNS0xOCBhdCAxOTowOSArMDMwMCwgTWlrZSBSYXBvcG9y
-dCB3cm90ZToNCj4gPiA+IEhlbGxvIE1pbGVzLA0KPiA+ID4gDQo+ID4gPiBPbiBUdWUsIE1heSAx
-OCwgMjAyMSBhdCAwNToyNDo0NFBNICswODAwLCBNaWxlcyBDaGVuIHdyb3RlOg0KPiA+ID4gPiBU
-aGlzIHBhdGNoZXMgaXMgY3JlYXRlZCB0byBmaXggdGhlIF9fcGEoKSB3YXJuaW5nIG1lc3NhZ2Vz
-IHdoZW4NCj4gPiA+ID4gQ09ORklHX0RFQlVHX1ZJUlRVQUw9eSBieSB1bmlmeWluZyB0aGUgYWxs
-b2NhdGlvbiBvZiBwZ2xpc3RfZGF0YQ0KPiA+ID4gPiBpbnN0YW5jZXMuDQo+ID4gPiA+IA0KPiA+
-ID4gPiBJbiBjdXJyZW50IGltcGxlbWVudGF0aW9uIG9mIG5vZGVfZGF0YSwgaWYgQ09ORklHX05F
-RURfTVVMVElQTEVfTk9ERVM9eSwNCj4gPiA+ID4gcGdsaXN0X2RhdGEgaXMgYWxsb2NhdGVkIGJ5
-IGEgbWVtYmxvY2sgQVBJLiBJZiBDT05GSUdfTkVFRF9NVUxUSVBMRV9OT0RFUz1uLA0KPiA+ID4g
-PiB3ZSB1c2UgYSBnbG9iYWwgdmFyaWFibGUgbmFtZWQgImNvbnRpZ19wYWdlX2RhdGEiLg0KPiA+
-ID4gPiANCj4gPiA+ID4gSWYgQ09ORklHX0RFQlVHX1ZJUlRVQUwgaXMgbm90IGVuYWJsZWQuIF9f
-cGEoKSBjYW4gaGFuZGxlIGJvdGgNCj4gPiA+ID4gYWxsb2NhdGlvbiBhbmQgc3ltYm9sIGNhc2Vz
-LiBCdXQgaWYgQ09ORklHX0RFQlVHX1ZJUlRVQUwgaXMgc2V0LA0KPiA+ID4gPiB3ZSB3aWxsIGhh
-dmUgdGhlICJ2aXJ0X3RvX3BoeXMgdXNlZCBmb3Igbm9uLWxpbmVhciBhZGRyZXNzIiB3YXJuaW5n
-DQo+ID4gPiA+IHdoZW4gYm9vdGluZy4NCj4gPiA+ID4gDQo+ID4gPiA+IFRvIGZpeCB0aGUgd2Fy
-bmluZywgYWx3YXlzIGFsbG9jYXRlIHBnbGlzdF9kYXRhIGJ5IG1lbWJsb2NrIEFQSXMgYW5kDQo+
-ID4gPiA+IHJlbW92ZSB0aGUgdXNhZ2Ugb2YgY29udGlnX3BhZ2VfZGF0YS4NCj4gPiA+IA0KPiA+
-ID4gU29tZWhvdyBJIHdhcyBzdXJlIHRoYXQgd2UgY2FuIGFsbG9jYXRlIHBnbGlzdF9kYXRhIGJl
-Zm9yZSBpdCBpcyBhY2Nlc3NlZA0KPiA+ID4gaW4gc3BhcnNlX2luaXQoKSBzb21ld2hlcmUgb3V0
-c2lkZSBtbS9zcGFyc2UuYy4gSXQncyByZWFsbHkgbm90IHRoZSBjYXNlDQo+ID4gPiBhbmQgaGF2
-aW5nIHR3byBwbGFjZXMgdGhhdCBtYXkgYWxsb2NhdGVkIHRoaXMgc3RydWN0dXJlIGlzIHN1cmVs
-eSB3b3J0aA0KPiA+ID4gdGhhbiB5b3VyIHByZXZpb3VzIHN1Z2dlc3Rpb24uDQo+ID4gPiANCj4g
-PiA+IFNvcnJ5IGFib3V0IHRoYXQuDQo+ID4gDQo+ID4gRG8geW91IG1lYW4gdGFodCB0byBjYWxs
-IGFsbG9jYXRpb24gZnVuY3Rpb24gYXJjaC8qLCBzb21ld2hlcmUgYWZ0ZXINCj4gPiBwYWdpbmdf
-aW5pdCgpIChzbyB3ZSBjYW4gYWNjZXNzIHBnbGlzdF9kYXRhKSBhbmQgYmVmb3JlIHNwYXJzZV9p
-bml0KCkNCj4gPiBhbmQgZnJlZV9hcmVhX2luaXQoKT8NCj4gDQo+IE5vLCBJIG1lYW50IHRoYXQg
-eW91ciBvcmlnaW5hbCBwYXRjaCBpcyBiZXR0ZXIgdGhhbiBhZGRpbmcgYWxsb2NhdGlvbiBvZg0K
-PiBOT0RFX0RBVEEoMCkgaW4gdHdvIHBsYWNlcy4NCg0KR290IGl0LiB3aWxsIHlvdSByZS1yZXZp
-ZXcgdGhlIG9yaWdpbmFsIHBhdGNoPw0KDQoNCj4gIA0KPiA+IE1pbGVzDQo+ID4gDQo+ID4gPiAg
-DQo+ID4gPiA+IFdhcm5pbmcgbWVzc2FnZToNCj4gPiA+ID4gWyAgICAwLjAwMDAwMF0gLS0tLS0t
-LS0tLS0tWyBjdXQgaGVyZSBdLS0tLS0tLS0tLS0tDQo+ID4gPiA+IFsgICAgMC4wMDAwMDBdIHZp
-cnRfdG9fcGh5cyB1c2VkIGZvciBub24tbGluZWFyIGFkZHJlc3M6IChfX19fcHRydmFsX19fXykg
-KGNvbnRpZ19wYWdlX2RhdGErMHgwLzB4MWMwMCkNCj4gPiA+ID4gWyAgICAwLjAwMDAwMF0gV0FS
-TklORzogQ1BVOiAwIFBJRDogMCBhdCBhcmNoL2FybTY0L21tL3BoeXNhZGRyLmM6MTUgX192aXJ0
-X3RvX3BoeXMrMHg1OC8weDY4DQo+ID4gPiA+IFsgICAgMC4wMDAwMDBdIE1vZHVsZXMgbGlua2Vk
-IGluOg0KPiA+ID4gPiBbICAgIDAuMDAwMDAwXSBDUFU6IDAgUElEOiAwIENvbW06IHN3YXBwZXIg
-VGFpbnRlZDogRyAgICAgICAgVyAgICAgICAgIDUuMTMuMC1yYzEtMDAwNzQtZzExNDBhYjU5MmUy
-ZSAjMw0KPiA+ID4gPiBbICAgIDAuMDAwMDAwXSBIYXJkd2FyZSBuYW1lOiBsaW51eCxkdW1teS12
-aXJ0IChEVCkNCj4gPiA+ID4gWyAgICAwLjAwMDAwMF0gcHN0YXRlOiA2MDAwMDBjNSAoblpDdiBk
-YUlGIC1QQU4gLVVBTyAtVENPIEJUWVBFPS0tKQ0KPiA+ID4gPiBbICAgIDAuMDAwMDAwXSBwYyA6
-IF9fdmlydF90b19waHlzKzB4NTgvMHg2OA0KPiA+ID4gPiBbICAgIDAuMDAwMDAwXSBsciA6IF9f
-dmlydF90b19waHlzKzB4NTQvMHg2OA0KPiA+ID4gPiBbICAgIDAuMDAwMDAwXSBzcCA6IGZmZmY4
-MDAwMTE4MzNlNzANCj4gPiA+ID4gWyAgICAwLjAwMDAwMF0geDI5OiBmZmZmODAwMDExODMzZTcw
-IHgyODogMDAwMDAwMDA0MThhMDAxOCB4Mjc6IDAwMDAwMDAwMDAwMDAwMDANCj4gPiA+ID4gWyAg
-ICAwLjAwMDAwMF0geDI2OiAwMDAwMDAwMDAwMDAwMDBhIHgyNTogZmZmZjgwMDAxMWI3MDAwMCB4
-MjQ6IGZmZmY4MDAwMTFiNzAwMDANCj4gPiA+ID4gWyAgICAwLjAwMDAwMF0geDIzOiBmZmZmZmMw
-MDAxYzAwMDAwIHgyMjogZmZmZjgwMDAxMWI3MDAwMCB4MjE6IDAwMDAwMDAwNDdmZmZmYjANCj4g
-PiA+ID4gWyAgICAwLjAwMDAwMF0geDIwOiAwMDAwMDAwMDAwMDAwMDA4IHgxOTogZmZmZjgwMDAx
-MWIwODJjMCB4MTg6IGZmZmZmZmZmZmZmZmZmZmYNCj4gPiA+ID4gWyAgICAwLjAwMDAwMF0geDE3
-OiAwMDAwMDAwMDAwMDAwMDAwIHgxNjogZmZmZjgwMDAxMTgzM2JmOSB4MTU6IDAwMDAwMDAwMDAw
-MDAwMDQNCj4gPiA+ID4gWyAgICAwLjAwMDAwMF0geDE0OiAwMDAwMDAwMDAwMDAwZmZmIHgxMzog
-ZmZmZjgwMDAxMTg2YTU0OCB4MTI6IDAwMDAwMDAwMDAwMDAwMDANCj4gPiA+ID4gWyAgICAwLjAw
-MDAwMF0geDExOiAwMDAwMDAwMDAwMDAwMDAwIHgxMDogMDAwMDAwMDBmZmZmZmZmZiB4OSA6IDAw
-MDAwMDAwMDAwMDAwMDANCj4gPiA+ID4gWyAgICAwLjAwMDAwMF0geDggOiBmZmZmODAwMDExNWM5
-MDAwIHg3IDogNzM3NTIwNzM3OTY4NzA1ZiB4NiA6IGZmZmY4MDAwMTFiNjJlZjgNCj4gPiA+ID4g
-WyAgICAwLjAwMDAwMF0geDUgOiAwMDAwMDAwMDAwMDAwMDAwIHg0IDogMDAwMDAwMDAwMDAwMDAw
-MSB4MyA6IDAwMDAwMDAwMDAwMDAwMDANCj4gPiA+ID4gWyAgICAwLjAwMDAwMF0geDIgOiAwMDAw
-MDAwMDAwMDAwMDAwIHgxIDogZmZmZjgwMDAxMTU5NTg1ZSB4MCA6IDAwMDAwMDAwMDAwMDAwNTgN
-Cj4gPiA+ID4gWyAgICAwLjAwMDAwMF0gQ2FsbCB0cmFjZToNCj4gPiA+ID4gWyAgICAwLjAwMDAw
-MF0gIF9fdmlydF90b19waHlzKzB4NTgvMHg2OA0KPiA+ID4gPiBbICAgIDAuMDAwMDAwXSAgY2hl
-Y2tfdXNlbWFwX3NlY3Rpb25fbnIrMHg1MC8weGZjDQo+ID4gPiA+IFsgICAgMC4wMDAwMDBdICBz
-cGFyc2VfaW5pdF9uaWQrMHgxYWMvMHgyOGMNCj4gPiA+ID4gWyAgICAwLjAwMDAwMF0gIHNwYXJz
-ZV9pbml0KzB4MWM0LzB4MWUwDQo+ID4gPiA+IFsgICAgMC4wMDAwMDBdICBib290bWVtX2luaXQr
-MHg2MC8weDkwDQo+ID4gPiA+IFsgICAgMC4wMDAwMDBdICBzZXR1cF9hcmNoKzB4MTg0LzB4MWYw
-DQo+ID4gPiA+IFsgICAgMC4wMDAwMDBdICBzdGFydF9rZXJuZWwrMHg3OC8weDQ4OA0KPiA+ID4g
-PiBbICAgIDAuMDAwMDAwXSAtLS1bIGVuZCB0cmFjZSBmNjg3MjhhMGQzMDUzYjYwIF0tLS0NCj4g
-PiA+ID4gDQo+ID4gPiA+IFsxXSBodHRwczovL3VybGRlZmVuc2UuY29tL3YzL19faHR0cHM6Ly9s
-b3JlLmtlcm5lbC5vcmcvcGF0Y2h3b3JrL3BhdGNoLzE0MjUxMTAvX187ISFDVFJOS0E5d01nMEFS
-YncheC13R0ZFQzF3THpYaG8ya0kxQ3JDMmZqWE5hUW01Zi1uMEFEUXlKRGNrQ09LWkhBUF9xMDU1
-RENTV1ljUTdaZGN3JCANCj4gPiA+ID4gDQo+ID4gPiA+IENoYW5nZSBzaW5jZSB2MToNCj4gPiA+
-ID4gLSB1c2UgbWVtYmxvY2tfYWxsb2MoKSB0byBjcmVhdGUgcGdsaXN0X2RhdGEgd2hlbiBDT05G
-SUdfTlVNQT1uDQo+ID4gPiA+IA0KPiA+ID4gPiBNaWxlcyBDaGVuICgyKToNCj4gPiA+ID4gICBt
-bTogaW50cm9kdWNlIHByZXBhcmVfbm9kZV9kYXRhDQo+ID4gPiA+ICAgbW06IHJlcGxhY2UgY29u
-dGlnX3BhZ2VfZGF0YSB3aXRoIG5vZGVfZGF0YQ0KPiA+ID4gPiANCj4gPiA+ID4gIERvY3VtZW50
-YXRpb24vYWRtaW4tZ3VpZGUva2R1bXAvdm1jb3JlaW5mby5yc3QgfCAxMyAtLS0tLS0tLS0tLS0t
-DQo+ID4gPiA+ICBhcmNoL3Bvd2VycGMva2V4ZWMvY29yZS5jICAgICAgICAgICAgICAgICAgICAg
-IHwgIDUgLS0tLS0NCj4gPiA+ID4gIGluY2x1ZGUvbGludXgvZ2ZwLmggICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfCAgMyAtLS0NCj4gPiA+ID4gIGluY2x1ZGUvbGludXgvbW0uaCAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgMiArKw0KPiA+ID4gPiAgaW5jbHVkZS9saW51eC9tbXpv
-bmUuaCAgICAgICAgICAgICAgICAgICAgICAgICB8ICA0ICsrLS0NCj4gPiA+ID4gIGtlcm5lbC9j
-cmFzaF9jb3JlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMSAtDQo+ID4gPiA+ICBt
-bS9tZW1ibG9jay5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDMgKy0tDQo+
-ID4gPiA+ICBtbS9wYWdlX2FsbG9jLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
-MTYgKysrKysrKysrKysrKysrKw0KPiA+ID4gPiAgbW0vc3BhcnNlLmMgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8ICAyICsrDQo+ID4gPiA+ICA5IGZpbGVzIGNoYW5nZWQsIDIz
-IGluc2VydGlvbnMoKyksIDI2IGRlbGV0aW9ucygtKQ0KPiA+ID4gPiANCj4gPiA+ID4gDQo+ID4g
-PiA+IGJhc2UtY29tbWl0OiA4YWM5MWU2YzYwMzNlYmMxMmM1YzFlNGFhMTcxYjgxYTY2MmJkNzBm
-DQo+ID4gPiA+IC0tIA0KPiA+ID4gPiAyLjE4LjANCj4gPiA+ID4gDQo+ID4gPiANCj4gPiANCj4g
-DQoNCg==
+Nathan Chancellor <nathan@kernel.org> writes:
+
+> Hi Aneesh,
+>
+> On Thu, Apr 22, 2021 at 11:13:17AM +0530, Aneesh Kumar K.V wrote:
+>> pmd/pud_populate is the right interface to be used to set the respective
+>> page table entries. Some architectures like ppc64 do assume that set_pmd/pud_at
+>> can only be used to set a hugepage PTE. Since we are not setting up a hugepage
+>> PTE here, use the pmd/pud_populate interface.
+>> 
+>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>> ---
+>>  mm/mremap.c | 7 +++----
+>>  1 file changed, 3 insertions(+), 4 deletions(-)
+>> 
+>> diff --git a/mm/mremap.c b/mm/mremap.c
+>> index ec8f840399ed..574287f9bb39 100644
+>> --- a/mm/mremap.c
+>> +++ b/mm/mremap.c
+>> @@ -26,6 +26,7 @@
+>>  
+>>  #include <asm/cacheflush.h>
+>>  #include <asm/tlbflush.h>
+>> +#include <asm/pgalloc.h>
+>>  
+>>  #include "internal.h"
+>>  
+>> @@ -257,9 +258,8 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>>  	pmd_clear(old_pmd);
+>>  
+>>  	VM_BUG_ON(!pmd_none(*new_pmd));
+>> +	pmd_populate(mm, new_pmd, (pgtable_t)pmd_page_vaddr(pmd));
+>>  
+>> -	/* Set the new pmd */
+>> -	set_pmd_at(mm, new_addr, new_pmd, pmd);
+>>  	flush_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
+>>  	if (new_ptl != old_ptl)
+>>  		spin_unlock(new_ptl);
+>> @@ -306,8 +306,7 @@ static bool move_normal_pud(struct vm_area_struct *vma, unsigned long old_addr,
+>>  
+>>  	VM_BUG_ON(!pud_none(*new_pud));
+>>  
+>> -	/* Set the new pud */
+>> -	set_pud_at(mm, new_addr, new_pud, pud);
+>> +	pud_populate(mm, new_pud, (pmd_t *)pud_page_vaddr(pud));
+>>  	flush_tlb_range(vma, old_addr, old_addr + PUD_SIZE);
+>>  	if (new_ptl != old_ptl)
+>>  		spin_unlock(new_ptl);
+>> -- 
+>> 2.30.2
+>> 
+>> 
+>
+> This commit causes my WSL2 VM to close when compiling something memory
+> intensive, such as an x86_64_defconfig + CONFIG_LTO_CLANG_FULL=y kernel
+> or LLVM/Clang. Unfortunately, I do not have much further information to
+> provide since I do not see any sort of splat in dmesg right before it
+> closes and I have found zero information about getting the previous
+> kernel message in WSL2 (custom init so no systemd or anything).
+>
+> The config file is the stock one from Microsoft:
+>
+> https://github.com/microsoft/WSL2-Linux-Kernel/blob/a571dc8cedc8e0e56487c0dc93243e0b5db8960a/Microsoft/config-wsl
+>
+> I have attached my .config anyways, which includes CONFIG_DEBUG_VM,
+> which does not appear to show anything out of the ordinary. I have also
+> attached a dmesg just in case anything sticks out. I am happy to provide
+> any additional information or perform additional debugging steps as
+> needed.
+>
+
+Can you try this change?
+
+modified   mm/mremap.c
+@@ -279,7 +279,7 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 	pmd_clear(old_pmd);
+ 
+ 	VM_BUG_ON(!pmd_none(*new_pmd));
+-	pmd_populate(mm, new_pmd, (pgtable_t)pmd_page_vaddr(pmd));
++	pmd_populate(mm, new_pmd, pmd_pgtable(pmd));
+ 
+ 	if (new_ptl != old_ptl)
+ 		spin_unlock(new_ptl);
 
