@@ -2,87 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE39A38843A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 03:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4A938843C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 03:10:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlF9w6gN3z306j
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 11:08:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlFCp428rz301p
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 11:10:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=m3OIwlA0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jNMRRWQ5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::732;
- helo=mail-qk1-x732.google.com; envelope-from=groeck7@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=m3OIwlA0; dkim-atps=neutral
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com
- [IPv6:2607:f8b0:4864:20::732])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=jNMRRWQ5; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlF9T05cFz2xvT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 11:08:11 +1000 (AEST)
-Received: by mail-qk1-x732.google.com with SMTP id l129so11239504qke.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 May 2021 18:08:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:to:cc:references:from:subject:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=wzaOEPoeplUtFr+bx07YfPsYQXn27XlOClZpXD7nWjc=;
- b=m3OIwlA0EZsKS8DLew1TasFW8h34lvraZii9hpzHOdcp9QsKj9+qKJs1fD+UYaZxas
- bb0QWGeuKKjp5TgwwoFh/OovDpArjlPTZNEVyqvAlbqKVxbANVYi11rKzXOuS5oFS4Ka
- 7oiVmR7x9Xd+gxpEpsYuSqTt+Ssl2Cb5WWEbPfOp1Vwp5dC2gP7rP2g3I/XGCfJ+Lty9
- IDi141tAnpgvvLjdZAN3weRIfTDFzw7wuhUt3Y+3h37Jk4OgtSEqKMISZfIRvXtq9uA6
- IVz9g+ie2W2YvxHNut0GKwo0hyZc+ElvejoP9VXcCOlpCv7QRpvRj1QmJET4pMOx+O25
- eTlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:to:cc:references:from:subject:message-id
- :date:user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=wzaOEPoeplUtFr+bx07YfPsYQXn27XlOClZpXD7nWjc=;
- b=uCPuuthwIt+WPhg++8GeAOP+88QjA90IllJ//28HdeyCvZa3H4f0YB299tpw+0/Hml
- qjedONb9RpI7aau2aUQu1a5Gmj3dXkjyJvagXaIbssNGy+IM3IfHrmjBFBKkNdewRm6o
- DQMTJrOtqEJHJ47XhLLFY6ufvIjMo8JJ9QImW1mywdAHk/BrTIMmSufOa0dzbPMOYNtV
- XVb3C29953dLaKGgvqeXu4RVxH8X3/NkuyTOHad9i7FE5lhUsoAYOoSn5urASpE+NThv
- YVUcMx7mSJawfObxxrJdQ/WSkRVYo80cu5cJ7dQEdpTJnxbOdLDmLSSPkfg4UAtRxTWZ
- 1e0g==
-X-Gm-Message-State: AOAM531zehRYPqUAM+69UAQ3QWqkshs+JywdKamXTkY2o4OC4U30hBOn
- XvYCM/c0OIDBJkDW0ZM6elU=
-X-Google-Smtp-Source: ABdhPJxKp16WWVK1lz2JKZEYLcLF8Bz5hWIVjTB4qvYne9t6GWyJOyqDhFNnOBeULlhxJwn4osCdWg==
-X-Received: by 2002:a05:620a:13d2:: with SMTP id
- g18mr8911355qkl.233.1621386488422; 
- Tue, 18 May 2021 18:08:08 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- f132sm14525505qke.104.2021.05.18.18.08.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 May 2021 18:08:07 -0700 (PDT)
-To: Michael Ellerman <mpe@ellerman.id.au>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
- <20210422054323.150993-6-aneesh.kumar@linux.ibm.com>
- <20210515163525.GA1106462@roeck-us.net>
- <e0eba73a-c2df-71c3-e03d-d4074d908fca@linux.ibm.com>
- <d830fce9-c00a-e879-4115-94a2346a806f@roeck-us.net>
- <87pmxpqxb1.fsf@linux.ibm.com>
- <a7dd34f3-7d79-c933-fb62-eaad5c83d37a@roeck-us.net>
- <87a6ork1qp.fsf@mpe.ellerman.id.au>
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v5 5/9] powerpc/mm/book3s64: Update tlb flush routines to
- take a page walk cache flush argument
-Message-ID: <969f377f-fddb-c2de-781c-fde37d121a4d@roeck-us.net>
-Date: Tue, 18 May 2021 18:08:05 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FlFCH4JpMz2xvT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 11:09:47 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4FlFCD2wYLz9sTD;
+ Wed, 19 May 2021 11:09:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1621386586;
+ bh=UCeiL9QFW+a7PCn8oeEp01d3KWoBysRALLIYZbpvvyE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=jNMRRWQ5yquDKv5DX8yudzgOyHyXimeCXk58EnQLYq8E47ViUTgZH9w+5HYVDjLF4
+ mntXHpaeTTUZFgzsBaReFbLJf6trEFog30nCXNXdpx0x1gsPCRGT6CaM37uKpj2hgK
+ QDATBwXulF1TDjeCzpMIxpGOswxnEUEg0uqMjh9RQbKRELZjt+RGu9RH6BUH9Osu6D
+ k4TTNX7Y+eZ1oHS6UxOzZZOmUA3SQ/KhO5pZQ29763NNKcQy77CSQiQgQ4MN1D2gcb
+ MWdS64ItBYLx7Z7q7y6ZBNd9kaZSkMrIfH76llm0HO0lP6OnYKXgK9g/vaiX0fzyJ4
+ wGvrtp4K4Q1NQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Alexandre Ghiti <alex@ghiti.fr>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Paul
+ Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v6 2/3] powerpc: Move script to check relocations at
+ compile time in scripts/
+In-Reply-To: <20210518101252.1484465-3-alex@ghiti.fr>
+References: <20210518101252.1484465-1-alex@ghiti.fr>
+ <20210518101252.1484465-3-alex@ghiti.fr>
+Date: Wed, 19 May 2021 11:09:39 +1000
+Message-ID: <877djvjzqk.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <87a6ork1qp.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,58 +68,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, linux-mm@kvack.org, kaleshsingh@google.com,
- joel@joelfernandes.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Anup Patel <anup@brainfault.org>, Alexandre Ghiti <alex@ghiti.fr>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/18/21 5:26 PM, Michael Ellerman wrote:
-[ ... ]
->>> That was the generic header change in the patch. I was commenting about the
->>> ppc64 specific change causing build failures.
->>
->> Ah, sorry. I wasn't aware that the following is valid C code
->>
->> void f1()
->> {
->>       return f2();
->>       ^^^^^^
->> }
->>
->> as long as f2() is void as well. Confusing, but we live and learn.
-> 
-> It might be valid, but it's still bad IMHO.
-> 
-> It's confusing to readers, and serves no useful purpose.
-> 
+Alexandre Ghiti <alex@ghiti.fr> writes:
+> Relocating kernel at runtime is done very early in the boot process, so
+> it is not convenient to check for relocations there and react in case a
+> relocation was not expected.
+>
+> Powerpc architecture has a script that allows to check at compile time
+> for such unexpected relocations: extract the common logic to scripts/
+> so that other architectures can take advantage of it.
+>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> Reviewed-by: Anup Patel <anup@brainfault.org>
+> ---
+>  arch/powerpc/tools/relocs_check.sh | 18 ++----------------
+>  scripts/relocs_check.sh            | 20 ++++++++++++++++++++
+>  2 files changed, 22 insertions(+), 16 deletions(-)
+>  create mode 100755 scripts/relocs_check.sh
 
-Agreed, but it is surprisingly wide-spread. Try to run the coccinelle
-script below, just for fun. The script doesn't even catch instances
-in include files, yet there are more than 450 hits.
+I'm not sure that script is really big/complicated enough to warrant
+sharing vs just copying, but I don't mind either.
 
-Guenter
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
----
-virtual report
+cheers
 
-@d@
-identifier f;
-expression e;
-position p;
-@@
-
-void f(...)
-{
-<...
-   return e@p;
-...>
-}
-
-@script:python depends on report@
-f << d.f;
-p << d.p;
-@@
-
-print "void function %s:%s() with non-void return in line %s" % (p[0].file, f, p[0].line)
+> diff --git a/arch/powerpc/tools/relocs_check.sh b/arch/powerpc/tools/relo=
+cs_check.sh
+> index 014e00e74d2b..e367895941ae 100755
+> --- a/arch/powerpc/tools/relocs_check.sh
+> +++ b/arch/powerpc/tools/relocs_check.sh
+> @@ -15,21 +15,8 @@ if [ $# -lt 3 ]; then
+>  	exit 1
+>  fi
+>=20=20
+> -# Have Kbuild supply the path to objdump and nm so we handle cross compi=
+lation.
+> -objdump=3D"$1"
+> -nm=3D"$2"
+> -vmlinux=3D"$3"
+> -
+> -# Remove from the bad relocations those that match an undefined weak sym=
+bol
+> -# which will result in an absolute relocation to 0.
+> -# Weak unresolved symbols are of that form in nm output:
+> -# "                  w _binary__btf_vmlinux_bin_end"
+> -undef_weak_symbols=3D$($nm "$vmlinux" | awk '$1 ~ /w/ { print $2 }')
+> -
+>  bad_relocs=3D$(
+> -$objdump -R "$vmlinux" |
+> -	# Only look at relocation lines.
+> -	grep -E '\<R_' |
+> +${srctree}/scripts/relocs_check.sh "$@" |
+>  	# These relocations are okay
+>  	# On PPC64:
+>  	#	R_PPC64_RELATIVE, R_PPC64_NONE
+> @@ -43,8 +30,7 @@ R_PPC_ADDR16_LO
+>  R_PPC_ADDR16_HI
+>  R_PPC_ADDR16_HA
+>  R_PPC_RELATIVE
+> -R_PPC_NONE' |
+> -	([ "$undef_weak_symbols" ] && grep -F -w -v "$undef_weak_symbols" || ca=
+t)
+> +R_PPC_NONE'
+>  )
+>=20=20
+>  if [ -z "$bad_relocs" ]; then
+> diff --git a/scripts/relocs_check.sh b/scripts/relocs_check.sh
+> new file mode 100755
+> index 000000000000..137c660499f3
+> --- /dev/null
+> +++ b/scripts/relocs_check.sh
+> @@ -0,0 +1,20 @@
+> +#!/bin/sh
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +# Get a list of all the relocations, remove from it the relocations
+> +# that are known to be legitimate and return this list to arch specific
+> +# script that will look for suspicious relocations.
+> +
+> +objdump=3D"$1"
+> +nm=3D"$2"
+> +vmlinux=3D"$3"
+> +
+> +# Remove from the possible bad relocations those that match an undefined
+> +#=C2=A0weak symbol which will result in an absolute relocation to 0.
+> +# Weak unresolved symbols are of that form in nm output:
+> +# "                  w _binary__btf_vmlinux_bin_end"
+> +undef_weak_symbols=3D$($nm "$vmlinux" | awk '$1 ~ /w/ { print $2 }')
+> +
+> +$objdump -R "$vmlinux" |
+> +	grep -E '\<R_' |
+> +	([ "$undef_weak_symbols" ] && grep -F -w -v "$undef_weak_symbols" || ca=
+t)
+> --=20
+> 2.30.2
+>
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
