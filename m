@@ -2,77 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E101389757
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 22:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C514738997C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 00:52:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlkMC6bqhz3cBQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 06:03:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Flp6M50rrz3bnY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 08:52:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=K+iBEDJ+;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Mwdjp3wV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Li4+10qZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=rgb@redhat.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
+ helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=K+iBEDJ+; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Mwdjp3wV; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Li4+10qZ; dkim-atps=neutral
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
+ [IPv6:2607:f8b0:4864:20::1030])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlkKm4StZz3035
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 06:02:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1621454521;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=f7T9aLqrx+WYbyPRM3LwcFHcVrzA2+BAlsehdrjCsI0=;
- b=K+iBEDJ+xDUlbQVlVEtPgJiKw6qVMzmrMRqEX/ahefhwm11EpBhAubuPQIwHr06R58Tdv6
- 5G87CvWDGFTwSAwxizUUz2RnEmDBTS6W4c8TKBmwlCi2NF4z/ac2/WpatyR5d/n69YZW6h
- yH528uVRVr1I33SdDjtzTOplaLtp2Uw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1621454522;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=f7T9aLqrx+WYbyPRM3LwcFHcVrzA2+BAlsehdrjCsI0=;
- b=Mwdjp3wVqFC48QEHvulbDfKWnTg6joK+zut6zYTmphSy86a9U3OxhhhqCm0H93GX1qIemL
- JsQGHqoNfOjsNE/qQyUkH4DFTT49U7jYjnTlPvV7dC6WpJ5dykrKHGO2lDqUt4jzDtNTUU
- jn6MO5D5J95uNzjcIuHLwBNtd0ghcY4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-564-F72dnzk3PQGBwZp_HGWHQA-1; Wed, 19 May 2021 16:01:58 -0400
-X-MC-Unique: F72dnzk3PQGBwZp_HGWHQA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CCFD56D4EC;
- Wed, 19 May 2021 20:01:56 +0000 (UTC)
-Received: from madcap2.tricolour.ca (unknown [10.3.128.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1335B60BF1;
- Wed, 19 May 2021 20:01:52 +0000 (UTC)
-From: Richard Guy Briggs <rgb@redhat.com>
-To: Linux-Audit Mailing List <linux-audit@redhat.com>,
- LKML <linux-kernel@vger.kernel.org>, linux-fsdevel@vger.kernel.org
-Subject: [PATCH v4 2/3] audit: add support for the openat2 syscall
-Date: Wed, 19 May 2021 16:00:21 -0400
-Message-Id: <f5f1a4d8699613f8c02ce762807228c841c2e26f.1621363275.git.rgb@redhat.com>
-In-Reply-To: <cover.1621363275.git.rgb@redhat.com>
-References: <cover.1621363275.git.rgb@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Flp5v5crzz2yWv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 08:52:02 +1000 (AEST)
+Received: by mail-pj1-x1030.google.com with SMTP id
+ pi6-20020a17090b1e46b029015cec51d7cdso4211890pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 15:52:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=K/gtSQyGUSDU2Jx3SxY9nAC3F0K9RnJVQwhiYzkSGHo=;
+ b=Li4+10qZfuoAIzSIdJugbWgsSwoc1VZ1cdDPmdYg/YSbcOh/JRR+H6pZrgwFRDnUEo
+ HGaEbrAhJe7+B5Glo+itY5TnswaO/K7rPHq1jJQgzhgX0leCQtJnPES6l9+tlC3YieE6
+ S/HQtpfeC3os3GwDdARMl27O8ubM/rlGmyZG+G3jzHM6KrPuGba3wdNYRwYki08XnMi0
+ A8UEKrOacg2Wrxx4Rejhv55B3yAwt1CynTgNc2c052ybYVpUHufFmowo4uNohnQBLZIF
+ hFYytl+q3SuIuwV+yhuVmt2BTZz+wY1e/lgWlrCUXqSojnpw3nx66trf6xWhBWA2W1VE
+ HbTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=K/gtSQyGUSDU2Jx3SxY9nAC3F0K9RnJVQwhiYzkSGHo=;
+ b=KW3i2eRNvxQMA+5reSPvyidq47NDR2acowQKtGwfmqJ4PiVKrDSJkeyf+rlCEUxHIc
+ CntX3/CZ674EawQgKafr/rgYVyFr7xsVEQ055bH/uKb8I4s44TgM0HbEIuriZ3mSYgVs
+ AncoQ2kr2OYve5zrzT/94qixGkxux5t08Rmty6yeHDa1inm6n9bNlcZt5Nc2SslvkwJ2
+ RHNuYot867Db3+mgxf3uBsrE0ZfU4yDvpQnkf+8VYrfg8fk6Jqxh8PZWCtLghY79s50+
+ cM6PQHIeN7Ob7YsnQ9IzwSE1ElH2EapJ7kASZ7Mqrwh70QVbpMjIA+rtPWpmzO26qMqv
+ otgg==
+X-Gm-Message-State: AOAM533WABcUavoynLLzcQV+2v5R8fkBJVJAOkL2Ok5KSQCyhdbrh3z2
+ VtOwUibzUbXtjcpyP68Nbv8=
+X-Google-Smtp-Source: ABdhPJwwHW0r8aMTiKvsh1z2gjgvHDbBcxnmnURC+BE3zkCPCR2+LFtab8vdgFm6O8pyoHn65LB4gQ==
+X-Received: by 2002:a17:902:a40e:b029:e9:7253:8198 with SMTP id
+ p14-20020a170902a40eb02900e972538198mr2160441plq.82.1621464720134; 
+ Wed, 19 May 2021 15:52:00 -0700 (PDT)
+Received: from localhost (60-241-27-127.tpgi.com.au. [60.241.27.127])
+ by smtp.gmail.com with ESMTPSA id gg10sm364500pjb.49.2021.05.19.15.51.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 May 2021 15:51:59 -0700 (PDT)
+Date: Thu, 20 May 2021 08:51:53 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: Linux powerpc new system call instruction and ABI
+To: "Dmitry V. Levin" <ldv@altlinux.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <20210519132656.GA17204@altlinux.org>
+In-Reply-To: <20210519132656.GA17204@altlinux.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Message-Id: <1621464056.o9t21cquw8.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,264 +81,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- Paul Moore <paul@paul-moore.com>, linux-parisc@vger.kernel.org,
- Arnd Bergmann <arnd@kernel.org>, Richard Guy Briggs <rgb@redhat.com>,
- x86@kernel.org, Eric Paris <eparis@redhat.com>,
- Aleksa Sarai <cyphar@cyphar.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
- Eric Paris <eparis@parisplace.org>, Steve Grubb <sgrubb@redhat.com>,
+Cc: libc-alpha@sourceware.org, Matheus Castanho <msc@linux.ibm.com>,
+ linux-api@vger.kernel.org, musl@lists.openwall.com, libc-dev@lists.llvm.org,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
-("open: introduce openat2(2) syscall")
+Excerpts from Dmitry V. Levin's message of May 19, 2021 11:26 pm:
+> On Wed, May 19, 2021 at 08:59:05PM +1000, Nicholas Piggin wrote:
+>> Excerpts from Dmitry V. Levin's message of May 19, 2021 8:24 pm:
+>> > On Wed, May 19, 2021 at 12:50:24PM +1000, Nicholas Piggin wrote:
+>> > [...]
+>> >> With this patch, I think the ptrace ABI should mostly be fixed. I thi=
+nk=20
+>> >> a problem remains with applications that look at system call return=20
+>> >> registers directly and have powerpc specific error cases. Those proba=
+bly
+>> >> will just need to be updated unfortunately. Michael thought it might =
+be
+>> >> possible to return an indication via ptrace somehow that the syscall =
+is
+>> >> using a new ABI, so such apps can be updated to test for it. I don't=20
+>> >> know how that would be done.
+>> >=20
+>> > Is there any sane way for these applications to handle the scv case?
+>> > How can they tell that the scv semantics is being used for the given
+>> > syscall invocation?  Can this information be obtained e.g. from struct
+>> > pt_regs?
+>>=20
+>> Not that I know of. Michael suggested there might be a way to add=20
+>> something. ptrace_syscall_info has some pad bytes, could
+>> we use one for flags bits and set a bit for "new system call ABI"?
+>=20
+> PTRACE_GET_SYSCALL_INFO is an architecture-agnostic API, it hides all
+> architecture-specific details behind struct ptrace_syscall_info which has
+> the same meaning on all architectures.  ptrace_syscall_info.exit contains
+> both rval and is_error fields to support every architecture regardless of
+> its syscall ABI.
+>=20
+> ptrace_syscall_info.exit is extensible, but every architecture would have
+> to define a method of telling whether the system call follows the "new
+> system call ABI" conventions to export this bit of information.
 
-Add the openat2(2) syscall to the audit syscall classifier.
+It's already architecture speicfic if you look at registers of syscall=20
+exit state so I don't see a problem with a flag that ppc can use for
+ABI.
 
-Link: https://github.com/linux-audit/audit-kernel/issues/67
-Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
-Link: https://lore.kernel.org/r/f5f1a4d8699613f8c02ce762807228c841c2e26f.1621363275.git.rgb@redhat.com
----
- arch/alpha/kernel/audit.c           | 2 ++
- arch/ia64/kernel/audit.c            | 2 ++
- arch/parisc/kernel/audit.c          | 2 ++
- arch/parisc/kernel/compat_audit.c   | 2 ++
- arch/powerpc/kernel/audit.c         | 2 ++
- arch/powerpc/kernel/compat_audit.c  | 2 ++
- arch/s390/kernel/audit.c            | 2 ++
- arch/s390/kernel/compat_audit.c     | 2 ++
- arch/sparc/kernel/audit.c           | 2 ++
- arch/sparc/kernel/compat_audit.c    | 2 ++
- arch/x86/ia32/audit.c               | 2 ++
- arch/x86/kernel/audit_64.c          | 2 ++
- include/linux/auditsc_classmacros.h | 1 +
- kernel/auditsc.c                    | 3 +++
- lib/audit.c                         | 4 ++++
- lib/compat_audit.c                  | 4 ++++
- 16 files changed, 36 insertions(+)
+>=20
+> This essentially means implementing something like
+> static inline long syscall_get_error_abi(struct task_struct *task, struct=
+ pt_regs *regs)
+> for every architecture, and using it along with syscall_get_error
+> in ptrace_get_syscall_info_exit to initialize the new field in
+> ptrace_syscall_info.exit structure.
 
-diff --git a/arch/alpha/kernel/audit.c b/arch/alpha/kernel/audit.c
-index 81cbd804e375..3ab04709784a 100644
---- a/arch/alpha/kernel/audit.c
-+++ b/arch/alpha/kernel/audit.c
-@@ -42,6 +42,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 		return AUDITSC_OPENAT;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/ia64/kernel/audit.c b/arch/ia64/kernel/audit.c
-index dba6a74c9ab3..ec61f20ca61f 100644
---- a/arch/ia64/kernel/audit.c
-+++ b/arch/ia64/kernel/audit.c
-@@ -43,6 +43,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 		return AUDITSC_OPENAT;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/parisc/kernel/audit.c b/arch/parisc/kernel/audit.c
-index 14244e83db75..f420b5552140 100644
---- a/arch/parisc/kernel/audit.c
-+++ b/arch/parisc/kernel/audit.c
-@@ -52,6 +52,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 		return AUDITSC_OPENAT;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/parisc/kernel/compat_audit.c b/arch/parisc/kernel/compat_audit.c
-index 1d6347d37d92..3ec490c28656 100644
---- a/arch/parisc/kernel/compat_audit.c
-+++ b/arch/parisc/kernel/compat_audit.c
-@@ -36,6 +36,8 @@ int parisc32_classify_syscall(unsigned syscall)
- 		return AUDITSC_OPENAT;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
-diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
-index 6eb18ef77dff..1bcfca5fdf67 100644
---- a/arch/powerpc/kernel/audit.c
-+++ b/arch/powerpc/kernel/audit.c
-@@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
-index b1dc2d1c4bad..251abf79d536 100644
---- a/arch/powerpc/kernel/compat_audit.c
-+++ b/arch/powerpc/kernel/compat_audit.c
-@@ -39,6 +39,8 @@ int ppc32_classify_syscall(unsigned syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
-diff --git a/arch/s390/kernel/audit.c b/arch/s390/kernel/audit.c
-index 7e331e1831d4..02051a596b87 100644
---- a/arch/s390/kernel/audit.c
-+++ b/arch/s390/kernel/audit.c
-@@ -54,6 +54,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/s390/kernel/compat_audit.c b/arch/s390/kernel/compat_audit.c
-index fc3d1c7ad21c..4b3d463e7d97 100644
---- a/arch/s390/kernel/compat_audit.c
-+++ b/arch/s390/kernel/compat_audit.c
-@@ -40,6 +40,8 @@ int s390_classify_syscall(unsigned syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
-diff --git a/arch/sparc/kernel/audit.c b/arch/sparc/kernel/audit.c
-index 50fab35bdaba..b092274eca79 100644
---- a/arch/sparc/kernel/audit.c
-+++ b/arch/sparc/kernel/audit.c
-@@ -55,6 +55,8 @@ int audit_classify_syscall(int abi, unsigned int syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/arch/sparc/kernel/compat_audit.c b/arch/sparc/kernel/compat_audit.c
-index 1c1b6d075421..2a3f71206fc5 100644
---- a/arch/sparc/kernel/compat_audit.c
-+++ b/arch/sparc/kernel/compat_audit.c
-@@ -40,6 +40,8 @@ int sparc32_classify_syscall(unsigned int syscall)
- 		return AUDITSC_SOCKETCALL;
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
-diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
-index eedc37a1ee13..efc7d832fefb 100644
---- a/arch/x86/ia32/audit.c
-+++ b/arch/x86/ia32/audit.c
-@@ -40,6 +40,8 @@ int ia32_classify_syscall(unsigned syscall)
- 	case __NR_execve:
- 	case __NR_execveat:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
-diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
-index 2a6cc9c9c881..44c3601cfdc4 100644
---- a/arch/x86/kernel/audit_64.c
-+++ b/arch/x86/kernel/audit_64.c
-@@ -53,6 +53,8 @@ int audit_classify_syscall(int abi, unsigned syscall)
- 	case __NR_execve:
- 	case __NR_execveat:
- 		return AUDITSC_EXECVE;
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/include/linux/auditsc_classmacros.h b/include/linux/auditsc_classmacros.h
-index 18757d270961..dc8e72536dbd 100644
---- a/include/linux/auditsc_classmacros.h
-+++ b/include/linux/auditsc_classmacros.h
-@@ -16,6 +16,7 @@ enum auditsc_class_t {
- 	AUDITSC_OPENAT,
- 	AUDITSC_SOCKETCALL,
- 	AUDITSC_EXECVE,
-+	AUDITSC_OPENAT2,
- 
- 	AUDITSC_NVALS /* count */
- };
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index d775ea16505b..3f59ab209dfd 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -76,6 +76,7 @@
- #include <linux/fsnotify_backend.h>
- #include <uapi/linux/limits.h>
- #include <uapi/linux/netfilter/nf_tables.h>
-+#include <uapi/linux/openat2.h>
- 
- #include "audit.h"
- 
-@@ -196,6 +197,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
- 		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
- 	case AUDITSC_EXECVE:
- 		return mask & AUDIT_PERM_EXEC;
-+	case AUDITSC_OPENAT2:
-+		return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
- 	default:
- 		return 0;
- 	}
-diff --git a/lib/audit.c b/lib/audit.c
-index 3ec1a94d8d64..738bda22dd39 100644
---- a/lib/audit.c
-+++ b/lib/audit.c
-@@ -60,6 +60,10 @@ int audit_classify_syscall(int abi, unsigned syscall)
- #endif
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+#ifdef __NR_openat2
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
-+#endif
- 	default:
- 		return AUDITSC_NATIVE;
- 	}
-diff --git a/lib/compat_audit.c b/lib/compat_audit.c
-index a38b282d353f..e2a0f914d8b6 100644
---- a/lib/compat_audit.c
-+++ b/lib/compat_audit.c
-@@ -46,6 +46,10 @@ int audit_classify_compat_syscall(int abi, unsigned syscall)
- #endif
- 	case __NR_execve:
- 		return AUDITSC_EXECVE;
-+#ifdef __NR_openat2
-+	case __NR_openat2:
-+		return AUDITSC_OPENAT2;
-+#endif
- 	default:
- 		return AUDITSC_COMPAT;
- 	}
--- 
-2.27.0
+Yes this could work. Other architectures can just use a generic
+implementation if they don't define their own so that's easy. And
+in userspace they can continue to ignore the flag.
 
+>=20
+>> As a more hacky thing you could make a syscall with -1 and see how
+>> the error looks, and then assume all syscalls will be the same.
+>=20
+> This would be very unreliable because sc and scv are allowed to interming=
+le,
+> so every syscall invocation can follow any of these two error handling
+> conventions.
+>=20
+>> Or... is it possible at syscall entry to peek the address of
+>> the instruction which caused the call and see if that was a
+>> scv instruction? That would be about as reliable as possible
+>> without having that new flag bit.
+>=20
+> No other architecture requires peeking into tracee memory just to find ou=
+t
+> the syscall ABI.  This would make powerpc the most ugly architecture for
+> ptracing.
+>=20
+> I wonder why can't this information be just exported to the tracer via
+> struct pt_regs?
+
+It might be able to, I don't see why that would be superior though.
+
+Where could you put it... I guess it could go in the trap field in a=20
+high bit. But could that break things that just test for syscall=20
+trap number (and don't care about register ABI)? I'm not sure.
+
+Thanks,
+Nick
