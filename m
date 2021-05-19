@@ -2,81 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A527388E5F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 14:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61860388F0F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 15:27:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlXjj1Wsgz301W
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 22:48:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=ascii.art.br header.i=@ascii.art.br header.a=rsa-sha1 header.s=ascii.art.br header.b=TI2OTUkb;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlYZH2Tnpz30Dv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 23:27:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ascii.art.br (client-ip=23.83.212.17;
- helo=bird.elm.relay.mailchannels.net; envelope-from=tuliom@ascii.art.br;
+ smtp.mailfrom=altlinux.org (client-ip=194.107.17.57;
+ helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=ascii.art.br header.i=@ascii.art.br header.a=rsa-sha1
- header.s=ascii.art.br header.b=TI2OTUkb; 
- dkim-atps=neutral
-Received: from bird.elm.relay.mailchannels.net
- (bird.elm.relay.mailchannels.net [23.83.212.17])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlXj80tWDz2yRy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 22:48:09 +1000 (AEST)
-X-Sender-Id: dreamhost|x-authsender|tuliom@ascii.art.br
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id D9342342272;
- Wed, 19 May 2021 12:39:41 +0000 (UTC)
-Received: from pdx1-sub0-mail-a6.g.dreamhost.com
- (100-96-16-62.trex.outbound.svc.cluster.local [100.96.16.62])
- (Authenticated sender: dreamhost)
- by relay.mailchannels.net (Postfix) with ESMTPA id 1BE5B34255C;
- Wed, 19 May 2021 12:39:41 +0000 (UTC)
-X-Sender-Id: dreamhost|x-authsender|tuliom@ascii.art.br
-Received: from pdx1-sub0-mail-a6.g.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384)
- by 100.96.16.62 (trex/6.2.1); Wed, 19 May 2021 12:39:41 +0000
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|tuliom@ascii.art.br
-X-MailChannels-Auth-Id: dreamhost
-X-Harmony-Bottle: 414366c233488d91_1621427981418_23098169
-X-MC-Loop-Signature: 1621427981418:425922509
-X-MC-Ingress-Time: 1621427981418
-Received: from pdx1-sub0-mail-a6.g.dreamhost.com (localhost [127.0.0.1])
- by pdx1-sub0-mail-a6.g.dreamhost.com (Postfix) with ESMTP id D053587870;
- Wed, 19 May 2021 05:39:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=ascii.art.br; h=from:to:cc
- :subject:in-reply-to:references:date:message-id:mime-version
- :content-type; s=ascii.art.br; bh=Moiw1J8H3kFxYbF9Og3ijiVM3XY=; b=
- TI2OTUkb2gOk2/7xGzALPcJAIQiK+aa2a2Xcsj0Ub7UyauxJc5A2N2962czBl/nX
- QG18QIdDGFE1Wt5XFvq9ia/CnpPWTjl7a6Oyv2xAV9bE8m5JibK1tGCVCW1Igctb
- dvmp2xy1ygBzlKUeZdXMk8VhoioaFduOrZvLhbSueI8=
-Received: from ascii.art.br (ip-131-161-4-75.isp.valenet.com.br [131.161.4.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- (Authenticated sender: tuliom@ascii.art.br)
- by pdx1-sub0-mail-a6.g.dreamhost.com (Postfix) with ESMTPSA id 393D47FFC7;
- Wed, 19 May 2021 05:39:37 -0700 (PDT)
-X-DH-BACKEND: pdx1-sub0-mail-a6
-From: Tulio Magno Quites Machado Filho <tuliom@ascii.art.br>
-To: Nicholas Piggin <npiggin@gmail.com>, "Dmitry V. Levin" <ldv@altlinux.org>
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FlYYv45Ngz2ydJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 23:26:58 +1000 (AEST)
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+ by vmicros1.altlinux.org (Postfix) with ESMTP id B264A72C8BA;
+ Wed, 19 May 2021 16:26:56 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+ id 9CC517CC8A6; Wed, 19 May 2021 16:26:56 +0300 (MSK)
+Date: Wed, 19 May 2021 16:26:56 +0300
+From: "Dmitry V. Levin" <ldv@altlinux.org>
+To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: Linux powerpc new system call instruction and ABI
-In-Reply-To: <1621421721.r9fefebis8.astroid@bobo.none>
-References: <20200611081203.995112-1-npiggin@gmail.com>
- <20210518231331.GA8464@altlinux.org>
- <1621385544.nttlk5qugb.astroid@bobo.none>
- <20210519102403.GA15207@altlinux.org>
- <1621421721.r9fefebis8.astroid@bobo.none>
-User-Agent: Notmuch/0.31.3 (http://notmuchmail.org) Emacs/27.2
- (x86_64-redhat-linux-gnu)
-Date: Wed, 19 May 2021 09:39:33 -0300
-Message-ID: <87r1i2kid6.fsf@linux.ibm.com>
+Message-ID: <20210519132656.GA17204@altlinux.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1621422559.vsmpjhjqzq.astroid@bobo.none>
+ <1621421721.r9fefebis8.astroid@bobo.none>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,20 +42,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: musl@lists.openwall.com, linuxppc-dev@lists.ozlabs.org,
- libc-alpha@sourceware.org, libc-dev@lists.llvm.org, linux-api@vger.kernel.org
+Cc: libc-alpha@sourceware.org, Matheus Castanho <msc@linux.ibm.com>,
+ linux-api@vger.kernel.org, musl@lists.openwall.com, libc-dev@lists.llvm.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin via Libc-alpha <libc-alpha@sourceware.org> writes:
+On Wed, May 19, 2021 at 08:59:05PM +1000, Nicholas Piggin wrote:
+> Excerpts from Dmitry V. Levin's message of May 19, 2021 8:24 pm:
+> > On Wed, May 19, 2021 at 12:50:24PM +1000, Nicholas Piggin wrote:
+> > [...]
+> >> With this patch, I think the ptrace ABI should mostly be fixed. I think 
+> >> a problem remains with applications that look at system call return 
+> >> registers directly and have powerpc specific error cases. Those probably
+> >> will just need to be updated unfortunately. Michael thought it might be
+> >> possible to return an indication via ptrace somehow that the syscall is
+> >> using a new ABI, so such apps can be updated to test for it. I don't 
+> >> know how that would be done.
+> > 
+> > Is there any sane way for these applications to handle the scv case?
+> > How can they tell that the scv semantics is being used for the given
+> > syscall invocation?  Can this information be obtained e.g. from struct
+> > pt_regs?
+> 
+> Not that I know of. Michael suggested there might be a way to add 
+> something. ptrace_syscall_info has some pad bytes, could
+> we use one for flags bits and set a bit for "new system call ABI"?
+
+PTRACE_GET_SYSCALL_INFO is an architecture-agnostic API, it hides all
+architecture-specific details behind struct ptrace_syscall_info which has
+the same meaning on all architectures.  ptrace_syscall_info.exit contains
+both rval and is_error fields to support every architecture regardless of
+its syscall ABI.
+
+ptrace_syscall_info.exit is extensible, but every architecture would have
+to define a method of telling whether the system call follows the "new
+system call ABI" conventions to export this bit of information.
+
+This essentially means implementing something like
+static inline long syscall_get_error_abi(struct task_struct *task, struct pt_regs *regs)
+for every architecture, and using it along with syscall_get_error
+in ptrace_get_syscall_info_exit to initialize the new field in
+ptrace_syscall_info.exit structure.
 
 > As a more hacky thing you could make a syscall with -1 and see how
 > the error looks, and then assume all syscalls will be the same.
 
-I'm not sure this would work.
-Even in glibc, it's expected that early syscalls will use sc while scv is used
-later in the execution.
+This would be very unreliable because sc and scv are allowed to intermingle,
+so every syscall invocation can follow any of these two error handling
+conventions.
+
+> Or... is it possible at syscall entry to peek the address of
+> the instruction which caused the call and see if that was a
+> scv instruction? That would be about as reliable as possible
+> without having that new flag bit.
+
+No other architecture requires peeking into tracee memory just to find out
+the syscall ABI.  This would make powerpc the most ugly architecture for
+ptracing.
+
+I wonder why can't this information be just exported to the tracer via
+struct pt_regs?
+
 
 -- 
-Tulio Magno
+ldv
