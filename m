@@ -1,73 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E496D38849E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 03:57:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C203884F1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 04:49:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlGFk59Y7z30G8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 11:56:58 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UvACKmU+;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlHQC72CHz2yys
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 12:49:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=UvACKmU+; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=szxga06-in.huawei.com;
+ envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 1189 seconds by postgrey-1.36 at boromir;
+ Wed, 19 May 2021 12:49:03 AEST
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlGFC2Jn7z2xxn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 11:56:31 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id B63CD61361
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 01:56:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621389387;
- bh=WRS4Ow7GMwwXuaRWdIzdD6YtIdTP5pzXOBl/b/KdmIw=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=UvACKmU+LmSo9aS3ZlPx38y8CkxITeK9h6OYM7YwyWRgraBXGvbvEYKAMUUtBYxlq
- ERyvxEgzCcy8dx6pZtgtiV/kBDQUZBnRpEhsxcR3km2DDqdOhfMfkZd1mMNsy/id9r
- bCkm7XgN0mECDET3kpqKjhru7ZF/IBbMsyCCFRvyZOZulvv1o7BYspzyWuLc+73PZ6
- PfJ7Uu8ghGQjYZa7A/qK3IbodyyTJI/Amwz0BvgVj4XxOvbPSkn6Z+GT9OmGOfc3fv
- AWbFWsT2fo9oOPujH/1awVrFmGdfg9js4kzqMdPDutK4jzSnv+MAlqrZjbjUmd67v2
- f08inV5RbzaJQ==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id A5A4461249; Wed, 19 May 2021 01:56:27 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 213069] kernel BUG at
- arch/powerpc/include/asm/book3s/64/hash-4k.h:147! Oops: Exception in kernel
- mode, sig: 5 [#1]
-Date: Wed, 19 May 2021 01:56:27 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: CODE_FIX
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-213069-206035-Y7ZcSS4wnN@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-213069-206035@https.bugzilla.kernel.org/>
-References: <bug-213069-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FlHPq4n4tz2xxk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 12:49:00 +1000 (AEST)
+Received: from dggems706-chm.china.huawei.com (unknown [172.30.72.58])
+ by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FlGw70HcMzmWdP;
+ Wed, 19 May 2021 10:26:47 +0800 (CST)
+Received: from dggema769-chm.china.huawei.com (10.1.198.211) by
+ dggems706-chm.china.huawei.com (10.3.19.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Wed, 19 May 2021 10:29:02 +0800
+Received: from localhost (10.174.179.215) by dggema769-chm.china.huawei.com
+ (10.1.198.211) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 19
+ May 2021 10:29:02 +0800
+From: YueHaibing <yuehaibing@huawei.com>
+To: <benh@kernel.crashing.org>, <paulus@samba.org>, <cforno12@linux.ibm.com>, 
+ <davem@davemloft.net>, <kuba@kernel.org>, <dwilder@us.ibm.com>
+Subject: [PATCH net-next] ibmveth: fix kobj_to_dev.cocci warnings
+Date: Wed, 19 May 2021 10:28:49 +0800
+Message-ID: <20210519022849.12752-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggema769-chm.china.huawei.com (10.1.198.211)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,21 +54,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: netdev@vger.kernel.org, YueHaibing <yuehaibing@huawei.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D213069
+Use kobj_to_dev() instead of container_of()
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+Generated by: scripts/coccinelle/api/kobj_to_dev.cocci
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|ASSIGNED                    |RESOLVED
-         Resolution|---                         |CODE_FIX
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/ethernet/ibm/ibmveth.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---=20
-You may reply to this email to add a comment.
+diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+index 7fea9ae60f13..bc67a7ee872b 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -1799,8 +1799,7 @@ static ssize_t veth_pool_store(struct kobject *kobj, struct attribute *attr,
+ 	struct ibmveth_buff_pool *pool = container_of(kobj,
+ 						      struct ibmveth_buff_pool,
+ 						      kobj);
+-	struct net_device *netdev = dev_get_drvdata(
+-	    container_of(kobj->parent, struct device, kobj));
++	struct net_device *netdev = dev_get_drvdata(kobj_to_dev(kobj->parent));
+ 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+ 	long value = simple_strtol(buf, NULL, 10);
+ 	long rc;
+-- 
+2.17.1
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
