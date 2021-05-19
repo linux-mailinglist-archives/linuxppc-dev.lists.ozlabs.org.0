@@ -2,37 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B24388D90
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 14:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5ECA388D99
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 14:09:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlWqC0Sn7z3fRv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 22:08:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlWrm69Hlz3c4j
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 May 2021 22:09:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linkmauve.fr (client-ip=82.65.109.163; helo=luna.linkmauve.fr;
- envelope-from=linkmauve@linkmauve.fr; receiver=<UNKNOWN>)
-Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net
- [82.65.109.163])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlSmd4R9Rz2ykG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 19:50:57 +1000 (AEST)
-Received: by luna.linkmauve.fr (Postfix, from userid 1000)
- id 662CAF4068A; Wed, 19 May 2021 11:50:51 +0200 (CEST)
-From: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org
-Subject: [PATCH v2 4/4] powerpc: wii_defconfig: Enable OTP by default
-Date: Wed, 19 May 2021 11:50:44 +0200
-Message-Id: <20210519095044.4109-5-linkmauve@linkmauve.fr>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210519095044.4109-1-linkmauve@linkmauve.fr>
-References: <20210519095044.4109-1-linkmauve@linkmauve.fr>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 19 May 2021 22:03:54 +1000
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FlWrP38QCz2yxB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 May 2021 22:09:24 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 14JC39Wa013687;
+ Wed, 19 May 2021 07:03:09 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 14JC36gU013684;
+ Wed, 19 May 2021 07:03:06 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 19 May 2021 07:03:06 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v5 5/9] powerpc/mm/book3s64: Update tlb flush routines to
+ take a page walk cache flush argument
+Message-ID: <20210519120306.GD10366@gate.crashing.org>
+References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
+ <20210422054323.150993-6-aneesh.kumar@linux.ibm.com>
+ <20210515163525.GA1106462@roeck-us.net>
+ <e0eba73a-c2df-71c3-e03d-d4074d908fca@linux.ibm.com>
+ <d830fce9-c00a-e879-4115-94a2346a806f@roeck-us.net>
+ <87pmxpqxb1.fsf@linux.ibm.com>
+ <a7dd34f3-7d79-c933-fb62-eaad5c83d37a@roeck-us.net>
+ <87a6ork1qp.fsf@mpe.ellerman.id.au>
+ <20210519004514.GC10366@gate.crashing.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210519004514.GC10366@gate.crashing.org>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,34 +56,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>, linux-kernel@vger.kernel.org,
- Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Ash Logan <ash@heyquark.com>,
- =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.ne@posteo.net>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com,
+ linux-mm@kvack.org, kaleshsingh@google.com, joel@joelfernandes.org,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This selects the nintendo-otp module when building for this platform, if
-CONFIG_NVMEM is also selected.
+On Tue, May 18, 2021 at 07:45:14PM -0500, Segher Boessenkool wrote:
+> On Wed, May 19, 2021 at 10:26:22AM +1000, Michael Ellerman wrote:
+> > Guenter Roeck <linux@roeck-us.net> writes:
+> > > Ah, sorry. I wasn't aware that the following is valid C code
+> > >
+> > > void f1()
+> > > {
+> > >      return f2();
+> > >      ^^^^^^
+> > > }
+> > >
+> > > as long as f2() is void as well. Confusing, but we live and learn.
+> > 
+> > It might be valid, but it's still bad IMHO.
+> > 
+> > It's confusing to readers, and serves no useful purpose.
+> 
+> And it actually explicitly is undefined behaviour in C90 already
+> (3.6.6.4 in C90, 6.8.6.4 in C99 and later).
 
-Signed-off-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
----
- arch/powerpc/configs/wii_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+... but there is a GCC extension that allows this by default:
+<https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreturn-type>
+  For C only, warn about a 'return' statement with an expression in a
+  function whose return type is 'void', unless the expression type is
+  also 'void'.  As a GNU extension, the latter case is accepted
+  without a warning unless '-Wpedantic' is used.
 
-diff --git a/arch/powerpc/configs/wii_defconfig b/arch/powerpc/configs/wii_defconfig
-index 379c171f3ddd..a0c45bf2bfb1 100644
---- a/arch/powerpc/configs/wii_defconfig
-+++ b/arch/powerpc/configs/wii_defconfig
-@@ -99,6 +99,7 @@ CONFIG_LEDS_TRIGGER_HEARTBEAT=y
- CONFIG_LEDS_TRIGGER_PANIC=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_GENERIC=y
-+CONFIG_NVMEM_NINTENDO_OTP=y
- CONFIG_EXT2_FS=y
- CONFIG_EXT4_FS=y
- CONFIG_FUSE_FS=m
--- 
-2.31.1
 
+Segher
