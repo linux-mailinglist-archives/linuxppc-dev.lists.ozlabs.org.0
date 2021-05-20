@@ -2,38 +2,30 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670BF389B9C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 05:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 987FD389BDB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 05:29:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlvlV32Yqz2ywx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 13:06:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlwGQ4KGrz3brw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 13:29:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=altlinux.org (client-ip=194.107.17.57;
- helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org;
- receiver=<UNKNOWN>)
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Flvl90sPcz2xZP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 13:06:13 +1000 (AEST)
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
- by vmicros1.altlinux.org (Postfix) with ESMTP id A429572C8BA;
- Thu, 20 May 2021 06:06:11 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
- id 9778A7CC8A6; Thu, 20 May 2021 06:06:11 +0300 (MSK)
-Date: Thu, 20 May 2021 06:06:11 +0300
-From: "Dmitry V. Levin" <ldv@altlinux.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: Linux powerpc new system call instruction and ABI
-Message-ID: <20210520030611.GB27081@altlinux.org>
-References: <20210519132656.GA17204@altlinux.org>
- <1621464056.o9t21cquw8.astroid@bobo.none>
- <20210519232726.GA24134@altlinux.org>
- <1621478238.xha1ow4ujh.astroid@bobo.none>
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FlwG43fYBz2xv5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 13:29:30 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id 1AEBFAE8000E;
+ Wed, 19 May 2021 23:29:21 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH kernel] powerpc: Fix early setup to make early_ioremap work
+Date: Thu, 20 May 2021 13:29:19 +1000
+Message-Id: <20210520032919.358935-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1621478238.xha1ow4ujh.astroid@bobo.none>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,28 +37,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-alpha@sourceware.org, Matheus Castanho <msc@linux.ibm.com>,
- musl@lists.openwall.com, linux-api@vger.kernel.org, libc-dev@lists.llvm.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 20, 2021 at 12:40:36PM +1000, Nicholas Piggin wrote:
-[...]
-> > Looks like struct pt_regs.trap already contains the information that could
-> > be used to tell 'sc' from 'scv': if (pt_regs.trap & ~0xf) == 0x3000, then
-> > it's scv.  Is my reading of arch/powerpc/include/asm/ptrace.h correct?
-> 
-> Hmm, I think it is. Certainly in the kernel regs struct it is, I had in 
-> my mind that we put it to 0xc00 when populating the user struct for
-> compatibility, but it seems not. So I guess this would work.
+The immediate problem is that after
+0bd3f9e953bd ("powerpc/legacy_serial: Use early_ioremap()")
+the kernel silently reboots. The reason is that early_ioremap() returns
+broken addresses as it uses slot_virt[] array which initialized with
+offsets from FIXADDR_TOP == IOREMAP_END+FIXADDR_SIZE ==
+KERN_IO_END- FIXADDR_SIZ + FIXADDR_SIZE == __kernel_io_end which is 0
+when early_ioremap_setup() is called. __kernel_io_end is initialized
+little bit later in early_init_mmu().
 
-OK, can we state that (pt_regs.trap & ~0xf) == 0x3000 is a part of the scv
-ABI, so it's not going to change and could be relied upon by userspace?
-Could this be documented in Documentation/powerpc/syscall64-abi.rst,
-please?
+This fixes the initialization by swapping early_ioremap_setup and
+early_init_mmu.
 
+This also fixes IOREMAP_END to use FIXADDR_SIZE defined just next to it,
+seems to make sense, unless there is some weird logic with redefining
+FIXADDR_SIZE as the compiling goes.
 
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 2 +-
+ arch/powerpc/kernel/setup_64.c               | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index a666d561b44d..54a06129794b 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -325,8 +325,8 @@ extern unsigned long pci_io_base;
+ #define  PHB_IO_END	(KERN_IO_START + FULL_IO_SIZE)
+ #define IOREMAP_BASE	(PHB_IO_END)
+ #define IOREMAP_START	(ioremap_bot)
+-#define IOREMAP_END	(KERN_IO_END - FIXADDR_SIZE)
+ #define FIXADDR_SIZE	SZ_32M
++#define IOREMAP_END	(KERN_IO_END - FIXADDR_SIZE)
+ 
+ /* Advertise special mapping type for AGP */
+ #define HAVE_PAGE_AGP
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index b779d25761cf..ce09fe5debf4 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -369,11 +369,12 @@ void __init early_setup(unsigned long dt_ptr)
+ 	apply_feature_fixups();
+ 	setup_feature_keys();
+ 
+-	early_ioremap_setup();
+ 
+ 	/* Initialize the hash table or TLB handling */
+ 	early_init_mmu();
+ 
++	early_ioremap_setup();
++
+ 	/*
+ 	 * After firmware and early platform setup code has set things up,
+ 	 * we note the SPR values for configurable control/performance
 -- 
-ldv
+2.30.2
+
