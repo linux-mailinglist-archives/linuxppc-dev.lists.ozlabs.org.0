@@ -2,58 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175C038B8CA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 23:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A432238B9BA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 00:50:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmMmQ4Yl8z3bvs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 07:08:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmQ1q3B6Lz3bt6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:50:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EbMNMGWo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KSSGI9av;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=EbMNMGWo; 
+ header.s=k20201202 header.b=KSSGI9av; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmMlx6rq3z2yRy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 07:08:29 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 865D561353;
- Thu, 20 May 2021 21:08:26 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmQ1L523Xz2yYv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 08:50:14 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 80825613AE;
+ Thu, 20 May 2021 22:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621544907;
- bh=LG9V/TQafsoAsE88DwTNEoOzd9py69hLE9jxEkJQCPU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=EbMNMGWokIwMGVWGnzQ6B+yMcpTNPUl9VU02RDoGJAUjKWfdRVyoIus65bfiMQnbL
- L1micb+F1YUSYQHmtXAt84+JpWWAT8CmSMPTIw4YdENcJ9zrsL2t0s0w7wzHWP/o70
- 7KwKB+7x1U4vOs/vG5TpIuoFRxXWQmihTEnUFAk2gQd8nvU5VA7Z/iFoBJSy9OnxTa
- Ez6fNGw1yupI+1xIpvwgYzUbkIM8b+E10bDeOW6ucfcXROjM0IhsL8lPQyBi5kj58T
- PvncV6jUEBkpvh2Yi9TbRV6Hr8XAbSOnKrjLqzkRvDz9/ozc6UiQBSMisTnlNNOFfg
- ZMdvDdS0F5v2w==
-From: Mark Brown <broonie@kernel.org>
-To: linux-imx@nxp.com, perex@perex.cz, linux-arm-kernel@lists.infradead.org,
- nicoleotsuka@gmail.com, festevam@gmail.com, shawnguo@kernel.org,
- Xiubo.Lee@gmail.com, alsa-devel@alsa-project.org, timur@kernel.org,
- s.hauer@pengutronix.de, Shengjiu Wang <shengjiu.wang@nxp.com>,
- robh+dt@kernel.org, kernel@pengutronix.de, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- lgirdwood@gmail.com, tiwai@suse.com
-Subject: Re: [PATCH v3 1/2] ASoC: dt-bindings: imx-card: Add binding doc for
- imx sound card
-Date: Thu, 20 May 2021 22:08:06 +0100
-Message-Id: <162154465460.5161.5323165215525240615.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <1621247488-21412-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1621247488-21412-1-git-send-email-shengjiu.wang@nxp.com>
-MIME-Version: 1.0
+ s=k20201202; t=1621551011;
+ bh=4n0PcuduYHajRHSW49fRgqymQt+G8zdf0b7qAbPcecw=;
+ h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+ b=KSSGI9avqu9m9Ne/IAFmNzxkQxadnFNcxE74DZ3j0gsI90nB+kBrdwuDn65JD2KMm
+ yJLsGXZCOAo0HIV5ndQkCwUletSt/5zTZ43A7wz0v+xdDy9Ct9rqj9mXaBCpNdaIr8
+ eYuFckls4HA86lF4ehcw0Nu39MNssj/oq6j0+OXRS5n0BKV2zLUsLSr+z3vBbuMucK
+ Yh4SMnorso3m9EK0UwWfcyjRP/j5T+poKo/EvSCNohvoI4nI0NmlDqa8W8NwCe2BUY
+ 0r7K/ONcmoWr5I+ej2SWGc9WrPTvJ7/r6BXs4b6LcDLU8WJdr9ZHE0dCnFaTeTxWnw
+ 5SNIIYq9XZ72g==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
+ [127.0.0.1])
+ by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 75A3260A56;
+ Thu, 20 May 2021 22:50:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net-next resend] ibmvnic: remove default label from
+ to_string switch
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162155101147.27401.5665625357028273375.git-patchwork-notify@kernel.org>
+Date: Thu, 20 May 2021 22:50:11 +0000
+References: <20210520065034.5912-1-msuchanek@suse.de>
+In-Reply-To: <20210520065034.5912-1-msuchanek@suse.de>
+To: Michal Suchanek <msuchanek@suse.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,44 +62,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Brown <broonie@kernel.org>
+Cc: lijunp213@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ tlfalcon@linux.ibm.com, paulus@samba.org, drt@linux.ibm.com, kuba@kernel.org,
+ sukadev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 17 May 2021 18:31:27 +0800, Shengjiu Wang wrote:
-> Imx-card is a new added machine driver for supporting
-> ak4458/ak5558/ak5552/ak4497 codec on i.MX platforms. But these
-> DAC/ADCs are not only supported codecs. This machine driver is
-> designed to be a more common machine driver for i.MX platform,
-> it can support widely cpu dai interface and codec dai interface.
+Hello:
 
-Applied to
+This patch was applied to netdev/net-next.git (refs/heads/master):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+On Thu, 20 May 2021 08:50:34 +0200 you wrote:
+> This way the compiler warns when a new value is added to the enum but
+> not to the string translation like:
+> 
+> drivers/net/ethernet/ibm/ibmvnic.c: In function 'adapter_state_to_string':
+> drivers/net/ethernet/ibm/ibmvnic.c:832:2: warning: enumeration value 'VNIC_FOOBAR' not handled in switch [-Wswitch]
+>   switch (state) {
+>   ^~~~~~
+> drivers/net/ethernet/ibm/ibmvnic.c: In function 'reset_reason_to_string':
+> drivers/net/ethernet/ibm/ibmvnic.c:1935:2: warning: enumeration value 'VNIC_RESET_FOOBAR' not handled in switch [-Wswitch]
+>   switch (reason) {
+>   ^~~~~~
+> 
+> [...]
 
-Thanks!
+Here is the summary with links:
+  - [v2,net-next,resend] ibmvnic: remove default label from to_string switch
+    https://git.kernel.org/netdev/net-next/c/07b5dc1d515a
 
-[1/2] ASoC: dt-bindings: imx-card: Add binding doc for imx sound card
-      commit: 623cd9cfcac522647e3624e48bf0661a39e8502a
-[2/2] ASoC: imx-card: Add imx-card machine driver
-      commit: aa736700f42fa0813e286ca2f9274ffaa25163b9
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
