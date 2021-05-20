@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71C238A611
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 12:23:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A9C38A612
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 12:23:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm5RY4yc3z308D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 20:23:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm5Rv4Dkjz3c0v
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 20:23:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,41 +14,43 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm5RF07pDz2xtn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 20:23:03 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm5RK0L18z306G
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 20:23:08 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Fm5R86kxbz9sVZ;
- Thu, 20 May 2021 12:23:00 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4Fm5RB15MHz9sVj;
+ Thu, 20 May 2021 12:23:02 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ngyOS56h54P6; Thu, 20 May 2021 12:23:00 +0200 (CEST)
+ with ESMTP id MHABFbcuXNWq; Thu, 20 May 2021 12:23:02 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Fm5R85VQBz9sVM;
- Thu, 20 May 2021 12:23:00 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Fm5RB0BhMz9sVM;
+ Thu, 20 May 2021 12:23:02 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 991348B811;
- Thu, 20 May 2021 12:23:00 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A90A38B811;
+ Thu, 20 May 2021 12:23:01 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id JEWw6BsujQTs; Thu, 20 May 2021 12:23:00 +0200 (CEST)
+ with ESMTP id 70b0Ye7lVSFy; Thu, 20 May 2021 12:23:01 +0200 (CEST)
 Received: from po15610vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.105])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C7DC8B80D;
- Thu, 20 May 2021 12:23:00 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 58BD98B80D;
+ Thu, 20 May 2021 12:23:01 +0200 (CEST)
 Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 3D58964C44; Thu, 20 May 2021 10:23:00 +0000 (UTC)
-Message-Id: <5d146b31b943e7ad674894421db4feef54804b9b.1621506159.git.christophe.leroy@csgroup.eu>
+ id 4206E64C44; Thu, 20 May 2021 10:23:01 +0000 (UTC)
+Message-Id: <ec34d92b7c2f810622261acfeeed4b0a0f4d01bd.1621506159.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <5d146b31b943e7ad674894421db4feef54804b9b.1621506159.git.christophe.leroy@csgroup.eu>
+References: <5d146b31b943e7ad674894421db4feef54804b9b.1621506159.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v1 01/12] powerpc: Rework PPC_RAW_xxx() macros for prefixed
- instructions
+Subject: [PATCH v1 02/12] powerpc/opcodes: Add shorter macros for registers
+ for use with PPC_RAW_xx()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  naveen.n.rao@linux.vnet.ibm.com, jniethe5@gmail.com
-Date: Thu, 20 May 2021 10:23:00 +0000 (UTC)
+Date: Thu, 20 May 2021 10:23:01 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,62 +67,66 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-At the time being, we have PPC_RAW_PLXVP() and PPC_RAW_PSTXVP() which
-provide a 64 bits value, and then it gets split by open coding to
-format it into a 'struct ppc_inst' instruction.
+Today we have __REG_Rx macros . They are mainly meant for
+internal use by macros __PPC_RA() and friends macros which
+allows uses like __PPC_RA(R12).
 
-Instead, define a PPC_RAW_xxx_P() and a PPC_RAW_xxx_S() to be used
-as is.
+When used with PPC_RAW_xx() macros, it gives a result which is
+not very readable.
+
+Add shorter macros _Rx in order to improve readability when
+used with PPC_RAW_xx() macros.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/ppc-opcode.h | 8 ++++----
- arch/powerpc/lib/test_emulate_step.c  | 6 ++----
- 2 files changed, 6 insertions(+), 8 deletions(-)
+ arch/powerpc/include/asm/ppc-opcode.h | 34 +++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
 diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-index ac41776661e9..403067ba170e 100644
+index 403067ba170e..efabbeb48f4e 100644
 --- a/arch/powerpc/include/asm/ppc-opcode.h
 +++ b/arch/powerpc/include/asm/ppc-opcode.h
-@@ -404,10 +404,10 @@
- #define PPC_RAW_STXVP(xsp, a, i)	(0x18000001 | __PPC_XSP(xsp) | ___PPC_RA(a) | IMM_DQ(i))
- #define PPC_RAW_LXVPX(xtp, a, b)	(0x7c00029a | __PPC_XTP(xtp) | ___PPC_RA(a) | ___PPC_RB(b))
- #define PPC_RAW_STXVPX(xsp, a, b)	(0x7c00039a | __PPC_XSP(xsp) | ___PPC_RA(a) | ___PPC_RB(b))
--#define PPC_RAW_PLXVP(xtp, i, a, pr) \
--	((PPC_PREFIX_8LS | __PPC_PRFX_R(pr) | IMM_D0(i)) << 32 | (0xe8000000 | __PPC_XTP(xtp) | ___PPC_RA(a) | IMM_D1(i)))
--#define PPC_RAW_PSTXVP(xsp, i, a, pr) \
--	((PPC_PREFIX_8LS | __PPC_PRFX_R(pr) | IMM_D0(i)) << 32 | (0xf8000000 | __PPC_XSP(xsp) | ___PPC_RA(a) | IMM_D1(i)))
-+#define PPC_RAW_PLXVP_P(xtp, i, a, pr)	(PPC_PREFIX_8LS | __PPC_PRFX_R(pr) | IMM_D0(i))
-+#define PPC_RAW_PLXVP_S(xtp, i, a, pr)	(0xe8000000 | __PPC_XTP(xtp) | ___PPC_RA(a) | IMM_D1(i))
-+#define PPC_RAW_PSTXVP_P(xsp, i, a, pr)	(PPC_PREFIX_8LS | __PPC_PRFX_R(pr) | IMM_D0(i))
-+#define PPC_RAW_PSTXVP_S(xsp, i, a, pr)	(0xf8000000 | __PPC_XSP(xsp) | ___PPC_RA(a) | IMM_D1(i))
- #define PPC_RAW_NAP			(0x4c000364)
- #define PPC_RAW_SLEEP			(0x4c0003a4)
- #define PPC_RAW_WINKLE			(0x4c0003e4)
-diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test_emulate_step.c
-index 783d1b85ecfe..f7c74f4f684b 100644
---- a/arch/powerpc/lib/test_emulate_step.c
-+++ b/arch/powerpc/lib/test_emulate_step.c
-@@ -824,8 +824,7 @@ static void __init test_plxvp_pstxvp(void)
- 	 * XTp = 32xTX + 2xTp
- 	 * let RA=3 R=0 D=d0||d1=0 R=0 Tp=1 TX=1
- 	 */
--	instr = ppc_inst_prefix(PPC_RAW_PLXVP(34, 0, 3, 0) >> 32,
--			PPC_RAW_PLXVP(34, 0, 3, 0) & 0xffffffff);
-+	instr = ppc_inst_prefix(PPC_RAW_PLXVP_P(34, 0, 3, 0), PPC_RAW_PLXVP_S(34, 0, 3, 0));
+@@ -76,6 +76,40 @@
+ #define	__REGA0_R30	30
+ #define	__REGA0_R31	31
  
- 	stepped = emulate_step(&regs, instr);
- 	if (stepped == 1 && cpu_has_feature(CPU_FTR_VSX)) {
-@@ -853,8 +852,7 @@ static void __init test_plxvp_pstxvp(void)
- 	 * XSp = 32xSX + 2xSp
- 	 * let RA=3 D=d0||d1=0 R=0 Sp=1 SX=1
- 	 */
--	instr = ppc_inst_prefix(PPC_RAW_PSTXVP(34, 0, 3, 0) >> 32,
--			PPC_RAW_PSTXVP(34, 0, 3, 0) & 0xffffffff);
-+	instr = ppc_inst_prefix(PPC_RAW_PSTXVP_P(34, 0, 3, 0), PPC_RAW_PSTXVP_S(34, 0, 3, 0));
- 
- 	stepped = emulate_step(&regs, instr);
- 
++/* For use with PPC_RAW_() macros */
++#define	_R0	0
++#define	_R1	1
++#define	_R2	2
++#define	_R3	3
++#define	_R4	4
++#define	_R5	5
++#define	_R6	6
++#define	_R7	7
++#define	_R8	8
++#define	_R9	9
++#define	_R10	10
++#define	_R11	11
++#define	_R12	12
++#define	_R13	13
++#define	_R14	14
++#define	_R15	15
++#define	_R16	16
++#define	_R17	17
++#define	_R18	18
++#define	_R19	19
++#define	_R20	20
++#define	_R21	21
++#define	_R22	22
++#define	_R23	23
++#define	_R24	24
++#define	_R25	25
++#define	_R26	26
++#define	_R27	27
++#define	_R28	28
++#define	_R29	29
++#define	_R30	30
++#define	_R31	31
++
+ #define IMM_L(i)               ((uintptr_t)(i) & 0xffff)
+ #define IMM_DS(i)              ((uintptr_t)(i) & 0xfffc)
+ #define IMM_DQ(i)              ((uintptr_t)(i) & 0xfff0)
 -- 
 2.25.0
 
