@@ -2,64 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2E2389F01
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 09:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4928389F24
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 09:51:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm1md3QDMz3bnY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 17:37:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=E2NI0V8g;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm2495Jrrz3bTb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 17:51:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=E2NI0V8g; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=i1uu=kp=ubuntu.com=christian.brauner@kernel.org;
+ receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm1m835mPz2xtn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 17:37:27 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Fm1m53cSsz9sTD;
- Thu, 20 May 2021 17:37:24 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1621496246;
- bh=YNXG/fdEW6nOHmkEz2qCjN8pOuAjRqPCQKPeccBNqi0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=E2NI0V8gMrs+8omD0srVpFZyvRCj0GIp2sLRuLZWAyDWo0my2IIWqmITIQVq3fQ62
- VMg03LiTgDTQRxDMOvP1QNks5ahwUfv2UskTcqFutkHQAfHl64sKmq2OGrBeq95aiK
- Bm5pWR6uSSu+VWe3P3FCDMsAzRkNy/67oxdzkoVeN8ngQb0Gt7hLrF2tdOtT2lpcRZ
- T7XMkJ07GHIwLr6xNdQa04xT8VtMR/mZs3V4iog8qHkR6ZQY3LykPey6viZfHARDUE
- xlaRLTKKw2vGHZgKvlPXZg8DEFRWkuM0kovL8NlLiAr4kMo9t5KvEyPjk8YLdeECOg
- ky02tUlUBIiOw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH v5 5/9] powerpc/mm/book3s64: Update tlb flush routines
- to take a page walk cache flush argument
-In-Reply-To: <20210519120306.GD10366@gate.crashing.org>
-References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
- <20210422054323.150993-6-aneesh.kumar@linux.ibm.com>
- <20210515163525.GA1106462@roeck-us.net>
- <e0eba73a-c2df-71c3-e03d-d4074d908fca@linux.ibm.com>
- <d830fce9-c00a-e879-4115-94a2346a806f@roeck-us.net>
- <87pmxpqxb1.fsf@linux.ibm.com>
- <a7dd34f3-7d79-c933-fb62-eaad5c83d37a@roeck-us.net>
- <87a6ork1qp.fsf@mpe.ellerman.id.au>
- <20210519004514.GC10366@gate.crashing.org>
- <20210519120306.GD10366@gate.crashing.org>
-Date: Thu, 20 May 2021 17:37:20 +1000
-Message-ID: <87y2c9j1ov.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm23m5jThz2xv8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 17:51:00 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7EE0B611AE;
+ Thu, 20 May 2021 07:50:53 +0000 (UTC)
+Date: Thu, 20 May 2021 09:50:50 +0200
+From: Christian Brauner <christian.brauner@ubuntu.com>
+To: Richard Guy Briggs <rgb@redhat.com>
+Subject: Re: [PATCH v4 1/3] audit: replace magic audit syscall class numbers
+ with macros
+Message-ID: <20210520075050.2u5rl3tjrn2i6bze@wittgenstein>
+References: <cover.1621363275.git.rgb@redhat.com>
+ <2300b1083a32aade7ae7efb95826e8f3f260b1df.1621363275.git.rgb@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2300b1083a32aade7ae7efb95826e8f3f260b1df.1621363275.git.rgb@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,46 +43,536 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com,
- linux-mm@kvack.org, kaleshsingh@google.com, joel@joelfernandes.org,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- Guenter Roeck <linux@roeck-us.net>
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ Paul Moore <paul@paul-moore.com>, linux-parisc@vger.kernel.org,
+ Arnd Bergmann <arnd@kernel.org>, x86@kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Eric Paris <eparis@redhat.com>,
+ sparclinux@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
+ Linux-Audit Mailing List <linux-audit@redhat.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
+ Steve Grubb <sgrubb@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Segher Boessenkool <segher@kernel.crashing.org> writes:
-> On Tue, May 18, 2021 at 07:45:14PM -0500, Segher Boessenkool wrote:
->> On Wed, May 19, 2021 at 10:26:22AM +1000, Michael Ellerman wrote:
->> > Guenter Roeck <linux@roeck-us.net> writes:
->> > > Ah, sorry. I wasn't aware that the following is valid C code
->> > >
->> > > void f1()
->> > > {
->> > >      return f2();
->> > >      ^^^^^^
->> > > }
->> > >
->> > > as long as f2() is void as well. Confusing, but we live and learn.
->> > 
->> > It might be valid, but it's still bad IMHO.
->> > 
->> > It's confusing to readers, and serves no useful purpose.
->> 
->> And it actually explicitly is undefined behaviour in C90 already
->> (3.6.6.4 in C90, 6.8.6.4 in C99 and later).
+On Wed, May 19, 2021 at 04:00:20PM -0400, Richard Guy Briggs wrote:
+> Replace audit syscall class magic numbers with macros.
+> 
+> This required putting the macros into new header file
+> include/linux/auditsc_classmacros.h since the syscall macros were
+> included for both 64 bit and 32 bit in any compat code, causing
+> redefinition warnings.
+> 
+> Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+> Link: https://lore.kernel.org/r/2300b1083a32aade7ae7efb95826e8f3f260b1df.1621363275.git.rgb@redhat.com
 
-We use gnu89, which presumably does not make it UB.
+Looks good.
+Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
 
-> ... but there is a GCC extension that allows this by default:
-> <https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreturn-type>
->   For C only, warn about a 'return' statement with an expression in a
->   function whose return type is 'void', unless the expression type is
->   also 'void'.  As a GNU extension, the latter case is accepted
->   without a warning unless '-Wpedantic' is used.
+Fwiw, I would explicitly number all enum values in auditsc_class_t not
+just the first one.
 
-There's no chance we'll ever enable -Wpedantic, so I guess it's allowed
-for practical purposes. I guess clang must accept it too or we'd be
-seeing warnings from it.
-
-cheers
+> ---
+>  MAINTAINERS                         |  1 +
+>  arch/alpha/kernel/audit.c           |  8 ++++----
+>  arch/ia64/kernel/audit.c            |  8 ++++----
+>  arch/parisc/kernel/audit.c          |  8 ++++----
+>  arch/parisc/kernel/compat_audit.c   |  9 +++++----
+>  arch/powerpc/kernel/audit.c         | 10 +++++-----
+>  arch/powerpc/kernel/compat_audit.c  | 11 ++++++-----
+>  arch/s390/kernel/audit.c            | 10 +++++-----
+>  arch/s390/kernel/compat_audit.c     | 11 ++++++-----
+>  arch/sparc/kernel/audit.c           | 10 +++++-----
+>  arch/sparc/kernel/compat_audit.c    | 11 ++++++-----
+>  arch/x86/ia32/audit.c               | 11 ++++++-----
+>  arch/x86/kernel/audit_64.c          |  8 ++++----
+>  include/linux/audit.h               |  1 +
+>  include/linux/auditsc_classmacros.h | 23 +++++++++++++++++++++++
+>  kernel/auditsc.c                    | 12 ++++++------
+>  lib/audit.c                         | 10 +++++-----
+>  lib/compat_audit.c                  | 11 ++++++-----
+>  18 files changed, 102 insertions(+), 71 deletions(-)
+>  create mode 100644 include/linux/auditsc_classmacros.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index bd7aff0c120f..3348d12019f9 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3036,6 +3036,7 @@ W:	https://github.com/linux-audit
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/audit.git
+>  F:	include/asm-generic/audit_*.h
+>  F:	include/linux/audit.h
+> +F:	include/linux/auditsc_classmacros.h
+>  F:	include/uapi/linux/audit.h
+>  F:	kernel/audit*
+>  F:	lib/*audit.c
+> diff --git a/arch/alpha/kernel/audit.c b/arch/alpha/kernel/audit.c
+> index 96a9d18ff4c4..81cbd804e375 100644
+> --- a/arch/alpha/kernel/audit.c
+> +++ b/arch/alpha/kernel/audit.c
+> @@ -37,13 +37,13 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  {
+>  	switch(syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 0;
+> +		return AUDITSC_NATIVE;
+>  	}
+>  }
+>  
+> diff --git a/arch/ia64/kernel/audit.c b/arch/ia64/kernel/audit.c
+> index 5192ca899fe6..dba6a74c9ab3 100644
+> --- a/arch/ia64/kernel/audit.c
+> +++ b/arch/ia64/kernel/audit.c
+> @@ -38,13 +38,13 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  {
+>  	switch(syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 0;
+> +		return AUDITSC_NATIVE;
+>  	}
+>  }
+>  
+> diff --git a/arch/parisc/kernel/audit.c b/arch/parisc/kernel/audit.c
+> index 9eb47b2225d2..14244e83db75 100644
+> --- a/arch/parisc/kernel/audit.c
+> +++ b/arch/parisc/kernel/audit.c
+> @@ -47,13 +47,13 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  #endif
+>  	switch (syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 0;
+> +		return AUDITSC_NATIVE;
+>  	}
+>  }
+>  
+> diff --git a/arch/parisc/kernel/compat_audit.c b/arch/parisc/kernel/compat_audit.c
+> index 20c39c9d86a9..1d6347d37d92 100644
+> --- a/arch/parisc/kernel/compat_audit.c
+> +++ b/arch/parisc/kernel/compat_audit.c
+> @@ -1,4 +1,5 @@
+>  // SPDX-License-Identifier: GPL-2.0
+> +#include <linux/auditsc_classmacros.h>
+>  #include <asm/unistd.h>
+>  
+>  unsigned int parisc32_dir_class[] = {
+> @@ -30,12 +31,12 @@ int parisc32_classify_syscall(unsigned syscall)
+>  {
+>  	switch (syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 1;
+> +		return AUDITSC_COMPAT;
+>  	}
+>  }
+> diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
+> index a2dddd7f3d09..6eb18ef77dff 100644
+> --- a/arch/powerpc/kernel/audit.c
+> +++ b/arch/powerpc/kernel/audit.c
+> @@ -47,15 +47,15 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  #endif
+>  	switch(syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_socketcall:
+> -		return 4;
+> +		return AUDITSC_SOCKETCALL;
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 0;
+> +		return AUDITSC_NATIVE;
+>  	}
+>  }
+>  
+> diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
+> index 55c6ccda0a85..b1dc2d1c4bad 100644
+> --- a/arch/powerpc/kernel/compat_audit.c
+> +++ b/arch/powerpc/kernel/compat_audit.c
+> @@ -1,5 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  #undef __powerpc64__
+> +#include <linux/auditsc_classmacros.h>
+>  #include <asm/unistd.h>
+>  
+>  unsigned ppc32_dir_class[] = {
+> @@ -31,14 +32,14 @@ int ppc32_classify_syscall(unsigned syscall)
+>  {
+>  	switch(syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_socketcall:
+> -		return 4;
+> +		return AUDITSC_SOCKETCALL;
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 1;
+> +		return AUDITSC_COMPAT;
+>  	}
+>  }
+> diff --git a/arch/s390/kernel/audit.c b/arch/s390/kernel/audit.c
+> index d395c6c9944c..7e331e1831d4 100644
+> --- a/arch/s390/kernel/audit.c
+> +++ b/arch/s390/kernel/audit.c
+> @@ -47,15 +47,15 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  #endif
+>  	switch(syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_socketcall:
+> -		return 4;
+> +		return AUDITSC_SOCKETCALL;
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 0;
+> +		return AUDITSC_NATIVE;
+>  	}
+>  }
+>  
+> diff --git a/arch/s390/kernel/compat_audit.c b/arch/s390/kernel/compat_audit.c
+> index 444fb1f66944..fc3d1c7ad21c 100644
+> --- a/arch/s390/kernel/compat_audit.c
+> +++ b/arch/s390/kernel/compat_audit.c
+> @@ -1,5 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  #undef __s390x__
+> +#include <linux/auditsc_classmacros.h>
+>  #include <asm/unistd.h>
+>  #include "audit.h"
+>  
+> @@ -32,14 +33,14 @@ int s390_classify_syscall(unsigned syscall)
+>  {
+>  	switch(syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_socketcall:
+> -		return 4;
+> +		return AUDITSC_SOCKETCALL;
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 1;
+> +		return AUDITSC_COMPAT;
+>  	}
+>  }
+> diff --git a/arch/sparc/kernel/audit.c b/arch/sparc/kernel/audit.c
+> index a6e91bf34d48..50fab35bdaba 100644
+> --- a/arch/sparc/kernel/audit.c
+> +++ b/arch/sparc/kernel/audit.c
+> @@ -48,15 +48,15 @@ int audit_classify_syscall(int abi, unsigned int syscall)
+>  #endif
+>  	switch(syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_socketcall:
+> -		return 4;
+> +		return AUDITSC_SOCKETCALL;
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 0;
+> +		return AUDITSC_NATIVE;
+>  	}
+>  }
+>  
+> diff --git a/arch/sparc/kernel/compat_audit.c b/arch/sparc/kernel/compat_audit.c
+> index 10eeb4f15b20..1c1b6d075421 100644
+> --- a/arch/sparc/kernel/compat_audit.c
+> +++ b/arch/sparc/kernel/compat_audit.c
+> @@ -1,5 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  #define __32bit_syscall_numbers__
+> +#include <linux/auditsc_classmacros.h>
+>  #include <asm/unistd.h>
+>  #include "kernel.h"
+>  
+> @@ -32,14 +33,14 @@ int sparc32_classify_syscall(unsigned int syscall)
+>  {
+>  	switch(syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_socketcall:
+> -		return 4;
+> +		return AUDITSC_SOCKETCALL;
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 1;
+> +		return AUDITSC_COMPAT;
+>  	}
+>  }
+> diff --git a/arch/x86/ia32/audit.c b/arch/x86/ia32/audit.c
+> index 6efe6cb3768a..eedc37a1ee13 100644
+> --- a/arch/x86/ia32/audit.c
+> +++ b/arch/x86/ia32/audit.c
+> @@ -1,4 +1,5 @@
+>  // SPDX-License-Identifier: GPL-2.0
+> +#include <linux/auditsc_classmacros.h>
+>  #include <asm/unistd_32.h>
+>  #include <asm/audit.h>
+>  
+> @@ -31,15 +32,15 @@ int ia32_classify_syscall(unsigned syscall)
+>  {
+>  	switch (syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_socketcall:
+> -		return 4;
+> +		return AUDITSC_SOCKETCALL;
+>  	case __NR_execve:
+>  	case __NR_execveat:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 1;
+> +		return AUDITSC_COMPAT;
+>  	}
+>  }
+> diff --git a/arch/x86/kernel/audit_64.c b/arch/x86/kernel/audit_64.c
+> index 83d9cad4e68b..2a6cc9c9c881 100644
+> --- a/arch/x86/kernel/audit_64.c
+> +++ b/arch/x86/kernel/audit_64.c
+> @@ -47,14 +47,14 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  #endif
+>  	switch(syscall) {
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  	case __NR_execve:
+>  	case __NR_execveat:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 0;
+> +		return AUDITSC_NATIVE;
+>  	}
+>  }
+>  
+> diff --git a/include/linux/audit.h b/include/linux/audit.h
+> index 82b7c1116a85..283bc91a6932 100644
+> --- a/include/linux/audit.h
+> +++ b/include/linux/audit.h
+> @@ -11,6 +11,7 @@
+>  
+>  #include <linux/sched.h>
+>  #include <linux/ptrace.h>
+> +#include <linux/auditsc_classmacros.h> /* syscall class macros */
+>  #include <uapi/linux/audit.h>
+>  #include <uapi/linux/netfilter/nf_tables.h>
+>  
+> diff --git a/include/linux/auditsc_classmacros.h b/include/linux/auditsc_classmacros.h
+> new file mode 100644
+> index 000000000000..18757d270961
+> --- /dev/null
+> +++ b/include/linux/auditsc_classmacros.h
+> @@ -0,0 +1,23 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/* auditsc_classmacros.h -- Auditing support syscall macros
+> + *
+> + * Copyright 2021 Red Hat Inc., Durham, North Carolina.
+> + * All Rights Reserved.
+> + *
+> + * Author: Richard Guy Briggs <rgb@redhat.com>
+> + */
+> +#ifndef _LINUX_AUDITSCM_H_
+> +#define _LINUX_AUDITSCM_H_
+> +
+> +enum auditsc_class_t {
+> +	AUDITSC_NATIVE = 0,
+> +	AUDITSC_COMPAT,
+> +	AUDITSC_OPEN,
+> +	AUDITSC_OPENAT,
+> +	AUDITSC_SOCKETCALL,
+> +	AUDITSC_EXECVE,
+> +
+> +	AUDITSC_NVALS /* count */
+> +};
+> +
+> +#endif
+> diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> index 0a9a1569f1ea..d775ea16505b 100644
+> --- a/kernel/auditsc.c
+> +++ b/kernel/auditsc.c
+> @@ -166,7 +166,7 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+>  	n = ctx->major;
+>  
+>  	switch (audit_classify_syscall(ctx->arch, n)) {
+> -	case 0:	/* native */
+> +	case AUDITSC_NATIVE:
+>  		if ((mask & AUDIT_PERM_WRITE) &&
+>  		     audit_match_class(AUDIT_CLASS_WRITE, n))
+>  			return 1;
+> @@ -177,7 +177,7 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+>  		     audit_match_class(AUDIT_CLASS_CHATTR, n))
+>  			return 1;
+>  		return 0;
+> -	case 1: /* 32bit on biarch */
+> +	case AUDITSC_COMPAT: /* 32bit on biarch */
+>  		if ((mask & AUDIT_PERM_WRITE) &&
+>  		     audit_match_class(AUDIT_CLASS_WRITE_32, n))
+>  			return 1;
+> @@ -188,13 +188,13 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+>  		     audit_match_class(AUDIT_CLASS_CHATTR_32, n))
+>  			return 1;
+>  		return 0;
+> -	case 2: /* open */
+> +	case AUDITSC_OPEN:
+>  		return mask & ACC_MODE(ctx->argv[1]);
+> -	case 3: /* openat */
+> +	case AUDITSC_OPENAT:
+>  		return mask & ACC_MODE(ctx->argv[2]);
+> -	case 4: /* socketcall */
+> +	case AUDITSC_SOCKETCALL:
+>  		return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+> -	case 5: /* execve */
+> +	case AUDITSC_EXECVE:
+>  		return mask & AUDIT_PERM_EXEC;
+>  	default:
+>  		return 0;
+> diff --git a/lib/audit.c b/lib/audit.c
+> index 5004bff928a7..3ec1a94d8d64 100644
+> --- a/lib/audit.c
+> +++ b/lib/audit.c
+> @@ -45,23 +45,23 @@ int audit_classify_syscall(int abi, unsigned syscall)
+>  	switch(syscall) {
+>  #ifdef __NR_open
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  #endif
+>  #ifdef __NR_openat
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  #endif
+>  #ifdef __NR_socketcall
+>  	case __NR_socketcall:
+> -		return 4;
+> +		return AUDITSC_SOCKETCALL;
+>  #endif
+>  #ifdef __NR_execveat
+>  	case __NR_execveat:
+>  #endif
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 0;
+> +		return AUDITSC_NATIVE;
+>  	}
+>  }
+>  
+> diff --git a/lib/compat_audit.c b/lib/compat_audit.c
+> index 77eabad69b4a..a38b282d353f 100644
+> --- a/lib/compat_audit.c
+> +++ b/lib/compat_audit.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  #include <linux/init.h>
+>  #include <linux/types.h>
+> +#include <linux/auditsc_classmacros.h>
+>  #include <asm/unistd32.h>
+>  
+>  unsigned compat_dir_class[] = {
+> @@ -33,19 +34,19 @@ int audit_classify_compat_syscall(int abi, unsigned syscall)
+>  	switch (syscall) {
+>  #ifdef __NR_open
+>  	case __NR_open:
+> -		return 2;
+> +		return AUDITSC_OPEN;
+>  #endif
+>  #ifdef __NR_openat
+>  	case __NR_openat:
+> -		return 3;
+> +		return AUDITSC_OPENAT;
+>  #endif
+>  #ifdef __NR_socketcall
+>  	case __NR_socketcall:
+> -		return 4;
+> +		return AUDITSC_SOCKETCALL;
+>  #endif
+>  	case __NR_execve:
+> -		return 5;
+> +		return AUDITSC_EXECVE;
+>  	default:
+> -		return 1;
+> +		return AUDITSC_COMPAT;
+>  	}
+>  }
+> -- 
+> 2.27.0
+> 
