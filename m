@@ -1,57 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809A2389D41
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 07:46:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179C4389D51
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 07:48:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FlzJQ3L7Bz307D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 15:46:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FlzLH0cn4z2yxx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 15:48:23 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=FYbTINiD;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=FYbTINiD; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FlzJ50zJsz2xfw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 15:46:26 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FlzJ011JVz9sVp;
- Thu, 20 May 2021 07:46:24 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Alfvr71Etuz1; Thu, 20 May 2021 07:46:24 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FlzJ0054Tz9sVn;
- Thu, 20 May 2021 07:46:24 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DA9948B804;
- Thu, 20 May 2021 07:46:23 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id GW8cKQj9goTz; Thu, 20 May 2021 07:46:23 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 81A4F8B7E0;
- Thu, 20 May 2021 07:46:23 +0200 (CEST)
-Subject: Re: [RFC PATCH kernel] powerpc: Fix early setup to make early_ioremap
- work
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-References: <20210520032919.358935-1-aik@ozlabs.ru>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <467a5a5f-7fab-b6b1-e81f-85518378f4b8@csgroup.eu>
-Date: Thu, 20 May 2021 07:46:22 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FlzKr51Bqz2xfw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 15:48:00 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 97ACD6108D;
+ Thu, 20 May 2021 05:47:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1621489678;
+ bh=1Cf5cc1LRNKo+zO8NlQy2hSrIB+APVWfdL5tadPG43w=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=FYbTINiDv635zTC9y5P26D/jwXf8i18ov+MHjO8zJWYD8c5nBtTqA6mJB3RO5MM3/
+ BDkd9HCdPYK5wVgVVxhJs8yTxaiCwdDzDlV4Jsvf0p9HmR3JwBbihmPGgbD9Bp/9uJ
+ DAkgvGC+6YQbauNTzD9aZ1G3fT8y/IFlv+9xSKMk=
+Date: Thu, 20 May 2021 07:47:54 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: Conflict between arch/powerpc/include/asm/disassemble.h and
+ drivers/staging/rtl8723bs/include/wifi.h
+Message-ID: <YKX4ChOvYjPjOwco@kroah.com>
+References: <6954e633-3908-d175-3030-3e913980af78@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <20210520032919.358935-1-aik@ozlabs.ru>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6954e633-3908-d175-3030-3e913980af78@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,79 +56,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Hans de Goede <hdegoede@redhat.com>, fabioaiuto83@gmail.com,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 20/05/2021 à 05:29, Alexey Kardashevskiy a écrit :
-> The immediate problem is that after
-> 0bd3f9e953bd ("powerpc/legacy_serial: Use early_ioremap()")
-> the kernel silently reboots. The reason is that early_ioremap() returns
-> broken addresses as it uses slot_virt[] array which initialized with
-> offsets from FIXADDR_TOP == IOREMAP_END+FIXADDR_SIZE ==
-> KERN_IO_END- FIXADDR_SIZ + FIXADDR_SIZE == __kernel_io_end which is 0
-> when early_ioremap_setup() is called. __kernel_io_end is initialized
-> little bit later in early_init_mmu().
+On Thu, May 20, 2021 at 07:30:49AM +0200, Christophe Leroy wrote:
+> Hello,
 > 
-> This fixes the initialization by swapping early_ioremap_setup and
-> early_init_mmu.
-
-Hum ... Chris tested it on a T2080RDB, that must be a book3e.
-
-So we missed it. I guess your fix is right.
-
+> I was trying to include powerpc asm/disassemble.h in some more widely used
+> headers in order to reduce open coding, and I'm facing the following
+> problem:
 > 
-> This also fixes IOREMAP_END to use FIXADDR_SIZE defined just next to it,
-> seems to make sense, unless there is some weird logic with redefining
-> FIXADDR_SIZE as the compiling goes.
-
-Well, I don't think the order of defines matters, the change should be kept out of the fix.
-But if you want it anyway, then I'd suggest to move it before IOREMAP_BASE in order to keep the 3 
-IOREMAP_xxx together.
-
+> drivers/staging/rtl8723bs/include/wifi.h:237:30: error: conflicting types for 'get_ra'
+> drivers/staging/rtl8723bs/include/wifi.h:237:30: error: conflicting types for 'get_ra'
+> make[4]: *** [scripts/Makefile.build:272: drivers/staging/rtl8723bs/core/rtw_btcoex.o] Error 1
+> make[4]: *** [scripts/Makefile.build:272: drivers/staging/rtl8723bs/core/rtw_ap.o] Error 1
+> make[3]: *** [scripts/Makefile.build:515: drivers/staging/rtl8723bs] Error 2
 > 
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-> ---
->   arch/powerpc/include/asm/book3s/64/pgtable.h | 2 +-
->   arch/powerpc/kernel/setup_64.c               | 3 ++-
->   2 files changed, 3 insertions(+), 2 deletions(-)
+> (More details at http://kisskb.ellerman.id.au/kisskb/head/ee2dedcaaf3fe176e68498018632767d02639d03/)
 > 
-> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> index a666d561b44d..54a06129794b 100644
-> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> @@ -325,8 +325,8 @@ extern unsigned long pci_io_base;
->   #define  PHB_IO_END	(KERN_IO_START + FULL_IO_SIZE)
->   #define IOREMAP_BASE	(PHB_IO_END)
->   #define IOREMAP_START	(ioremap_bot)
-> -#define IOREMAP_END	(KERN_IO_END - FIXADDR_SIZE)
->   #define FIXADDR_SIZE	SZ_32M
-> +#define IOREMAP_END	(KERN_IO_END - FIXADDR_SIZE)
->   
->   /* Advertise special mapping type for AGP */
->   #define HAVE_PAGE_AGP
-> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-> index b779d25761cf..ce09fe5debf4 100644
-> --- a/arch/powerpc/kernel/setup_64.c
-> +++ b/arch/powerpc/kernel/setup_64.c
-> @@ -369,11 +369,12 @@ void __init early_setup(unsigned long dt_ptr)
->   	apply_feature_fixups();
->   	setup_feature_keys();
->   
-> -	early_ioremap_setup();
->   
->   	/* Initialize the hash table or TLB handling */
->   	early_init_mmu();
->   
-> +	early_ioremap_setup();
-> +
->   	/*
->   	 * After firmware and early platform setup code has set things up,
->   	 * we note the SPR values for configurable control/performance
-> 
+> Taking into account that asm/disassemble.h has been existing since 2008
+> while rtl8723bs/include/wifi.h was created in 2017, and that the get_ra()
+> defined in the later is used at exactly one place only, would it be possible
+> to change it there ?
+> (https://elixir.bootlin.com/linux/v5.13-rc2/A/ident/get_ra)
+
+Yes, the staging code can change, I'll make a patch for it after
+coffee...
+
