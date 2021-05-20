@@ -2,101 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3762738AEEE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 14:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42ABD38AF5C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 14:58:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm8dT0w5tz3bsN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 22:47:09 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d4QuOoug;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d4QuOoug;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm8tW1KsYz3062
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 22:58:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=d4QuOoug; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=d4QuOoug; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm8d141Fjz2xg6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 22:46:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1621514801;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=e4Fywv1ENiQVYa4wbDxfInSTJhNzcF1YbxHx9cQFq/I=;
- b=d4QuOougWAhbhCRx2V2EGZmoEh8sL+QdswEkKYCFuwAxL/Wk/BsCJMDW04O+lK1qYpSANX
- WCjunSKn7tSJ6dC9nVweVtPs11yXtBE4T8WqAi/u1t/tuzoNddLjJD3rZSzGBv8lkeqehb
- //VyohoD5Fe4oiLBZIojw6AB9UtdL4Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1621514801;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=e4Fywv1ENiQVYa4wbDxfInSTJhNzcF1YbxHx9cQFq/I=;
- b=d4QuOougWAhbhCRx2V2EGZmoEh8sL+QdswEkKYCFuwAxL/Wk/BsCJMDW04O+lK1qYpSANX
- WCjunSKn7tSJ6dC9nVweVtPs11yXtBE4T8WqAi/u1t/tuzoNddLjJD3rZSzGBv8lkeqehb
- //VyohoD5Fe4oiLBZIojw6AB9UtdL4Q=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-507-k8u03jr9NvmLjxr1H5XHwA-1; Thu, 20 May 2021 08:46:39 -0400
-X-MC-Unique: k8u03jr9NvmLjxr1H5XHwA-1
-Received: by mail-qk1-f198.google.com with SMTP id
- z12-20020a05620a08ccb02902ea1e4a963dso12338754qkz.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 05:46:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=e4Fywv1ENiQVYa4wbDxfInSTJhNzcF1YbxHx9cQFq/I=;
- b=huo24eNlCc40D/VjnwHW4dz7jFctbnEToizso4nJqrZp7RnwwmMJ5UzG+a9K/ye+pL
- 8QEBYwVAygBV5JSR/J0TUDtlWzd/enrGbLqHnGIDkjOEcMBhLPelt7soNwPoA1+g3Oul
- ziDiW4qd7bUjuuz+oFt8CCaPVfRKV/S3uX4mzSxAsHwJ6u6nr2UB7N5pt0k1Es8XwqQl
- ECw/+tWRwnRO0Y8KD0MvsPF5NP3noVz+3os8p/B1W62s3Jpcs/usdo8t2iLdjbhYi/oW
- 4a3/Jf6HLRCDnjahKi5d41cveTKXn/4k9W0hf4wkb9GxCb+i61guZ3u9U+xu+A61OZMN
- /AjQ==
-X-Gm-Message-State: AOAM5315ud2/2jQt6sogRJumzdxPwnNFwSrvqMJd36yxz5aHMEE4cMkN
- HGBWbTpWFFur7EmkOPG5s7f0T9NSKEXdoYvMCy5XZ+SKfXAw6WQVqEo1budr5jBWnU36Bpgej8l
- ulTXthG1vTOMCudsT7+bwhNh7ww==
-X-Received: by 2002:a0c:a9db:: with SMTP id c27mr5484597qvb.50.1621514799222; 
- Thu, 20 May 2021 05:46:39 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJykH36WPuvRGC1ihzQ0iEIBjEHESz262HbbXiVKUFg4El15AaxsQh3dm6Y8Q9wTut0JQgl2Mg==
-X-Received: by 2002:a0c:a9db:: with SMTP id c27mr5484570qvb.50.1621514798898; 
- Thu, 20 May 2021 05:46:38 -0700 (PDT)
-Received: from t490s (bras-base-toroon474qw-grc-72-184-145-4-219.dsl.bell.ca.
- [184.145.4.219])
- by smtp.gmail.com with ESMTPSA id t17sm1690165qto.92.2021.05.20.05.46.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 May 2021 05:46:38 -0700 (PDT)
-Date: Thu, 20 May 2021 08:46:36 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v5 3/9] mm/mremap: Use pmd/pud_poplulate to update page
- table entries
-Message-ID: <YKZaLHurH9nJWvbj@t490s>
-References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
- <20210422054323.150993-4-aneesh.kumar@linux.ibm.com>
- <YKQdxpHVYB9H0M0j@Ryzen-9-3900X.localdomain>
- <87mtsrqqk0.fsf@linux.ibm.com> <YKXHA8/HmP6HXngO@t490s>
- <6e0dbb76-2b33-53f1-246e-30cec2b871e2@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.131; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm8t80g4yz2yjK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 22:58:07 +1000 (AEST)
+Received: from mail-wr1-f42.google.com ([209.85.221.42]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MnaY1-1l13i343mP-00jcOW for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May
+ 2021 14:58:03 +0200
+Received: by mail-wr1-f42.google.com with SMTP id j14so15834900wrq.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 05:58:02 -0700 (PDT)
+X-Gm-Message-State: AOAM5325vF+kRfjime9Bq5lq1llROFLNvfQpLYTgE1IKFw46LGTAOVAZ
+ RyPl5Pwxee71vIzVErbixMnIECMJCNq1lkCHB60=
+X-Google-Smtp-Source: ABdhPJzjF6dsH5HoZqJvsW8Z8vuY/KQcYke0jL+BR2nKnLRzRk59Q8j7MY6u03gtUYt403a0Fz/TtBgmPs8YgE0TcrY=
+X-Received: by 2002:a05:6000:18a:: with SMTP id
+ p10mr4175890wrx.99.1621515471669; 
+ Thu, 20 May 2021 05:57:51 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <6e0dbb76-2b33-53f1-246e-30cec2b871e2@linux.ibm.com>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=peterx@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20210520121347.3467794-1-lee.jones@linaro.org>
+In-Reply-To: <20210520121347.3467794-1-lee.jones@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Thu, 20 May 2021 14:56:36 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0VujuG8eU_CEVSvzbk4nAJz8fStedM5eMUrLAr9EJxDQ@mail.gmail.com>
+Message-ID: <CAK8P3a0VujuG8eU_CEVSvzbk4nAJz8fStedM5eMUrLAr9EJxDQ@mail.gmail.com>
+Subject: Re: [PATCH 00/16] Rid W=1 warnings from Char
+To: Lee Jones <lee.jones@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:20c6Xf9KOtvhlAGgThCMfcb6P7Y2Oiw+2Gc60CYM3h0/OnQKa5C
+ 1y4/r9N2J6Y89TwF97+H2Z4ERSgZ6KoYaQg/tNQfEToxMs5UIDS5PqEpcCLtTQstq1ewGVC
+ wDV+1zzsOBCIZLgjaPrTu9HKOrBhDjF+6sPjI3a+rtiwMQxzQe7TJulDD+v4bzGjNlxbX90
+ gqwxRwqU7FVsihSBd3nmw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:IBE8t81oDrY=:YxP1bUg3rkKVieCw4+QCt7
+ FWTnjMjGOkl13bZnvDNAhmqwQ1T+UqaBjd3JiXJWGlP6eZHYeNIHPTMcqUgBL3mm1GY5kvjTl
+ qyEfKH7UVEAaL/XYipr0OGzzPu50UKTC+ApdqKcDxGU7a1N6jtL4yxOQjXtJravKE8q2iJdMN
+ thd6sAi1kfgDB0P8wjTDRD+2zbYJXNK6qakyAsheQ6RTTztYit6uCnqPuKiU5JuiIXKfD1Vwc
+ qQgmK+OUOYQF44j8k8wl6gDIq0ocLC9MCEkLHVDTq/Za39ybX2Yh3NDbVj5THuOyjFbm8Zl6v
+ AnR1qULO5hKgUjm50+7IqGBw/vO9+5LGnlnushSWpuFQrYPNVuQU8o4o4EHk39bMlF/zq+oB2
+ Ss2v0soKbtks2neg7KRGfWWs6R327eFtC0mWEO4HBzPcyjeIRTEZcVowNGifegHGrydlRJxOu
+ rktWmBxnxbBjYNm9YE1pR0dkha/KsLyezDUyDdBJKWMWLv++i5oJkik+POeXTxmHghOqmsLED
+ +6oPrpNYvin2PGSZp4OjXplIhRRfI1XsrM2o+043/o3mMjb+QJPNfGOykOLW0RL3gcNhQCy07
+ eW0dfQgV2EY6C3cTJC4rm7F8+ZVmNAJ4By+HT/wkD2Ha8Ppnc9/Hypf0l3GzYx5vE2SvyctxP
+ WaYA=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,24 +68,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, Nathan Chancellor <nathan@kernel.org>,
- linux-mm@kvack.org, kaleshsingh@google.com, joel@joelfernandes.org,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, David Airlie <airlied@linux.ie>,
+ Clemens Ladisch <clemens@ladisch.de>,
+ "C. Scott Ananian" <cananian@alumni.princeton.edu>,
+ Paul Mackerras <paulus@samba.org>, Kylene Hall <kjhall@us.ibm.com>,
+ Jerome Glisse <j.glisse@gmail.com>, Peter Huewe <peterhuewe@gmx.de>,
+ Michael Neuling <mikey@neuling.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Dave Safford <safford@watson.ibm.com>, Harald Welte <laforge@gnumonks.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kanoj Sarcar <kanoj@sgi.com>,
+ David Woodhouse <dwmw2@infradead.org>, Bob Picco <robert.picco@hp.com>,
+ =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <uwe@kleine-koenig.org>,
+ Thirupathaiah Annapureddy <thiruan@microsoft.com>,
+ "cs.c" <support.linux@omnikey.com>, Lijun Pan <ljp@linux.ibm.com>,
+ Reiner Sailer <sailer@watson.ibm.com>, Matt Mackall <mpm@selenic.com>,
+ van Doorn <leendert@watson.ibm.com>, Theodore Ts'o <tytso@mit.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Fulghum <paulkf@microgate.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ "open list:HARDWARE RANDOM NUMBER GENERATOR CORE"
+ <linux-crypto@vger.kernel.org>, linux-integrity@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 20, 2021 at 01:56:54PM +0530, Aneesh Kumar K.V wrote:
-> > This seems to work at least for my userfaultfd test on shmem, however I don't
-> > fully understand the commit message [1] on: How do we guarantee we're not
-> > moving a thp pte?
-> > 
-> 
-> move_page_tables() checks for pmd_trans_huge() and ends up calling
-> move_huge_pmd if it is a THP entry.
+On Thu, May 20, 2021 at 2:13 PM Lee Jones <lee.jones@linaro.org> wrote:
+>
+> This set is part of a larger effort attempting to clean-up W=1
+> kernel builds, which are currently overwhelmingly riddled with
+> niggly little warnings.
+>
+> Lee Jones (16):
+>   char: pcmcia: cm4000_cs: Remove unused variable 'tmp'
+>   char: pcmcia: cm4040_cs: Remove unused variable 'uc'
+>   char: random: Include header containing our prototypes
+>   char: pcmcia: synclink_cs: Fix a bunch of kernel-doc issues
+>   char: pcmcia: synclink_cs: Fix a bunch of kernel-doc issues
+>   char: applicom: Remove 3 unused variables 'ret' and 2 instances of
+>     'byte_reset_it'
+>   char: tpm: tpm1-cmd: Fix a couple of misnamed functions
+>   char: tpm: tpm_ftpm_tee: Fix a couple of kernel-doc misdemeanours
+>   char: agp: backend: Demote some non-conformant kernel-doc headers
+>   char: agp: frontend: Include header file containing our prototypes
+>   char: agp: via-agp: Remove unused variable 'current_size'
+>   char: hpet: Remove unused variable 'm'
+>   char: agp: generic: Place braces around optimised out function in if()
+>   char: agp: uninorth-agp: Remove unused variable 'size'
+>   char: hw_random: pseries-rng: Demote non-conformant kernel-doc header
+>   char: mem: Provide local prototype for non-static function
 
-Sorry to be unclear: what if a huge pud thp?
+Thanks a lot!
 
--- 
-Peter Xu
+I've looked all the patches now and commented on patches 6 and 16.
+With my comments addressed
 
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+
+       Arnd
