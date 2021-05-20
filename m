@@ -2,59 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EF138B095
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 15:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC6C38B24F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 16:55:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmB892fWYz3f1V
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 23:55:21 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HA6pEpqr;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmCTy060Vz3082
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 00:55:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=johan@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=HA6pEpqr; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=kaod.org (client-ip=46.105.48.137; helo=9.mo51.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 6612 seconds by postgrey-1.36 at boromir;
+ Fri, 21 May 2021 00:55:28 AEST
+Received: from 9.mo51.mail-out.ovh.net (9.mo51.mail-out.ovh.net
+ [46.105.48.137])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmB4c6KRgz3cNl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 23:52:16 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AE10A611AB;
- Thu, 20 May 2021 13:52:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621518732;
- bh=tb813muLIdvtkuBQsEk+ZysD5iGQyfTsaX6Hfs4zPlU=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=HA6pEpqrRUl7cKhILqDuKlsepXsh+JJSfQwDIvw/o0Q4uzWGRIqY3xFSr2Bbc85eK
- XIIGYyQ/e7lsGYtuILwdwMkh5MCTmOXY9+IkJbUeae5AUT1pbRliYZM8EdSHBnBy/N
- JLjKvQpt2zlpm1GD90i51q40/tFdxltC9bAIchY5znU4B31qBM4ljMk0uVOihJ+r12
- IV7VoXNbZrJAoC8/3XJaiLoL+LbcPhT7kWC5cHs5whfLtiwvmc0BtTZsnFS+wNJuDZ
- hdaJG7UqHl8mLn9B7mnhXZbLmaq75TLGEdyaDZyiw7ety1/Pxad39mKMCYq7F/KEqv
- f16ltZyfntTDw==
-Received: from johan by xi.lan with local (Exim 4.94.2)
- (envelope-from <johan@kernel.org>)
- id 1ljj5v-0003Bd-SF; Thu, 20 May 2021 15:52:12 +0200
-Date: Thu, 20 May 2021 15:52:11 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: Re: [PATCH 6/9] tty: hvc_console: Fix coding style issues of block
- comments
-Message-ID: <YKZpi8cmH3mtXT99@hovoldconsulting.com>
-References: <1621233433-27094-1-git-send-email-tanxiaofei@huawei.com>
- <1621233433-27094-7-git-send-email-tanxiaofei@huawei.com>
- <YKJ6ZjT8o5xJmBCr@hovoldconsulting.com>
- <e88b6fcd-bfe1-9812-905a-862825f420ce@huawei.com>
- <YKYcFfKiHT39Gyey@hovoldconsulting.com>
- <7e63a708-64c4-b369-066b-7f83d65bf178@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmCTX4plJz2xfr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 00:55:26 +1000 (AEST)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.146.192])
+ by mo51.mail-out.ovh.net (Postfix) with ESMTPS id 1A76629D677;
+ Thu, 20 May 2021 14:27:11 +0200 (CEST)
+Received: from kaod.org (37.59.142.103) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.10; Thu, 20 May
+ 2021 14:27:11 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-103G00519fae841-2a46-42a8-9273-0eeeffdc5bf7,
+ 2C87984337330801490BFDABE922B5CE11A7A10A) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 176.145.65.252
+Subject: Re: [PATCH 31/31] genirq: Improve "hwirq" output in /proc and /sys/
+To: Thomas Gleixner <tglx@linutronix.de>, <linuxppc-dev@lists.ozlabs.org>
+References: <20210430080407.4030767-1-clg@kaod.org>
+ <20210430080407.4030767-32-clg@kaod.org>
+ <87mtsx2g7l.ffs@nanos.tec.linutronix.de>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <14b71a4b-fac6-a1c0-1707-436c86b9b6ec@kaod.org>
+Date: Thu, 20 May 2021 14:27:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7e63a708-64c4-b369-066b-7f83d65bf178@huawei.com>
+In-Reply-To: <87mtsx2g7l.ffs@nanos.tec.linutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.103]
+X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: fa3c8968-2b80-4b8b-beaf-2916292170ad
+X-Ovh-Tracer-Id: 6169650017286458333
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdejuddghedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefuvfhfhffkffgfgggjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeejkeduueduveelgeduueegkeelffevledujeetffeivdelvdfgkeeufeduheehfeenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggv
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,34 +65,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- jirislaby@kernel.org, linux-kernel@vger.kernel.org, linuxarm@openeuler.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 20, 2021 at 09:21:25PM +0800, Xiaofei Tan wrote:
-
-> > Checkpatch already has too many checks IMO and I'm a bit surprised that
-> > it doesn't check this already. Perhaps it's because you used the -f to
-> > run checkpatch on in-kernel code, which you should not.
-> >
-> >>> Second, that sentence is not capitalised so why do add a period?
-> >>>
-> >>
-> >> How about capitalize the sentence, or just remove the period ?
-> >
-> > How about just leaving this unchanged?
+On 5/14/21 10:49 PM, Thomas Gleixner wrote:
+> On Fri, Apr 30 2021 at 10:04, Cédric Le Goater wrote:
+>> The HW IRQ numbers generated by the PCI MSI layer can be quite large
+>> on a pSeries machine when running under the IBM Hypervisor and they
+>> appear as negative. Use '%u' to show them correctly.
+>>
+>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>  kernel/irq/irqdesc.c | 2 +-
+>>  kernel/irq/proc.c    | 2 +-
+>>  2 files changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+>> index cc1a09406c6e..85054eb2ae51 100644
+>> --- a/kernel/irq/irqdesc.c
+>> +++ b/kernel/irq/irqdesc.c
+>> @@ -188,7 +188,7 @@ static ssize_t hwirq_show(struct kobject *kobj,
+>>  
+>>  	raw_spin_lock_irq(&desc->lock);
+>>  	if (desc->irq_data.domain)
+>> -		ret = sprintf(buf, "%d\n", (int)desc->irq_data.hwirq);
+>> +		ret = sprintf(buf, "%u\n", (int)desc->irq_data.hwirq);
 > 
-> OK
-> And I will keep the patch 8/9, and combine space issues into
-> one new patch, and remove the others.
+> Which makes the (int) cast pointless, right?
 
-Yeah, 8/9 is arguably a fix even if it's for a very minor issue
-(repeated words in a comment).
+Well, hwirq is a long. Would you prefer a "%lu" for both ?
 
-It doesn't look like any of the white space issues are worth fixing,
-though. Such pedantry can usually be addressed when the code in question
-is being modified for other reasons.
+Thanks,
 
-Johan
+C.
+
+> 
+>>  	raw_spin_unlock_irq(&desc->lock);
+>>  
+>>  	return ret;
+>> diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
+>> index 98138788cb04..e2392f05da04 100644
+>> --- a/kernel/irq/proc.c
+>> +++ b/kernel/irq/proc.c
+>> @@ -513,7 +513,7 @@ int show_interrupts(struct seq_file *p, void *v)
+>>  		seq_printf(p, " %8s", "None");
+>>  	}
+>>  	if (desc->irq_data.domain)
+>> -		seq_printf(p, " %*d", prec, (int) desc->irq_data.hwirq);
+>> +		seq_printf(p, " %*u", prec, (int)desc->irq_data.hwirq);
+> 
+> ditto.
+> 
+> Thanks,
+> 
+>         tglx
+> 
+
