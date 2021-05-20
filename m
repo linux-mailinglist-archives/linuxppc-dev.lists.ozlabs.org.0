@@ -2,107 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0615F38AFE8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 15:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A28D238B054
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 15:47:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm9S501Hzz3brt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 23:24:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J391MNd8;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm9zd4p6bz3bsg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 23:47:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=J391MNd8; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm9RV6lK7z2xg6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 23:23:34 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14KD39xN031621; Thu, 20 May 2021 09:23:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=ZHASfIHMuDTKSWoa/Eltfhocg2O9MUkKTNAbdBxqjyc=;
- b=J391MNd8BOXpS9cCuSVf9eFOfU0gMUn+S10+4AgsEGnJ9QkEQzF2+9DeVcuJ/ss/XH15
- rYYgOVM9aWKAyoyMhFTlgfxkXpR3FlYvlGFJ5uJgBdxiXxAQw4h+yzb9aXZESUcE8wuQ
- KSu9F0bK3c64j94bakJ0hr5HghDzlGQ+oQndWqxs29hwJoIVN1Ve+nn4/Crj/N3GrdOf
- Yz4BCFzmaFkCgCQ+F7DRtGkl96JSHa5v4WmYaAxtqswVlNhFvQMh5MGPYjYokHKDa1QC
- 5EtIvOXtCyt8eFubi00hcO5KhRG3/z4Vz6sJbo9uIr5YkL8Sl6uEjON+7LtAozVSAZUk hw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38nr1k98nj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 May 2021 09:23:16 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14KD3Icc032848;
- Thu, 20 May 2021 09:23:15 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38nr1k98fh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 May 2021 09:23:15 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14KDJWF6010192;
- Thu, 20 May 2021 13:23:07 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma01fra.de.ibm.com with ESMTP id 38m1gv0uas-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 May 2021 13:23:07 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14KDN5IG57606556
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 20 May 2021 13:23:05 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E622AA405B;
- Thu, 20 May 2021 13:23:04 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C234CA4053;
- Thu, 20 May 2021 13:23:02 +0000 (GMT)
-Received: from [9.85.101.109] (unknown [9.85.101.109])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 20 May 2021 13:23:02 +0000 (GMT)
-Subject: Re: [PATCH v5 3/9] mm/mremap: Use pmd/pud_poplulate to update page
- table entries
-To: Peter Xu <peterx@redhat.com>
-References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
- <20210422054323.150993-4-aneesh.kumar@linux.ibm.com>
- <YKQdxpHVYB9H0M0j@Ryzen-9-3900X.localdomain> <87mtsrqqk0.fsf@linux.ibm.com>
- <YKXHA8/HmP6HXngO@t490s> <6e0dbb76-2b33-53f1-246e-30cec2b871e2@linux.ibm.com>
- <YKZaLHurH9nJWvbj@t490s>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <e6525655-2e51-a0c0-fe54-596cfae9ce21@linux.ibm.com>
-Date: Thu, 20 May 2021 18:53:01 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm9zG4rlTz2yXR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 23:47:34 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Fm9z66Tqqz9skP;
+ Thu, 20 May 2021 15:47:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 6ozqqUpZeOOu; Thu, 20 May 2021 15:47:30 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Fm9z65YZDz9skN;
+ Thu, 20 May 2021 15:47:30 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9EE318B808;
+ Thu, 20 May 2021 15:47:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id K2nJQd2ClYP4; Thu, 20 May 2021 15:47:30 +0200 (CEST)
+Received: from [172.25.230.105] (po15451.idsi0.si.c-s.fr [172.25.230.105])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 74AFE8B767;
+ Thu, 20 May 2021 15:47:30 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/kprobes: Pass ppc_inst as a pointer to
+ emulate_step() on ppc32
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20210520072909.2901326-1-naveen.n.rao@linux.vnet.ibm.com>
+ <8a0cfd88-a98d-711c-b80b-916a99ada2c8@csgroup.eu>
+ <1621507675.1o3860b85w.naveen@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <cb7d49dc-3980-2d2b-ee4e-480b89a04b0a@csgroup.eu>
+Date: Thu, 20 May 2021 14:55:14 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.2
 MIME-Version: 1.0
-In-Reply-To: <YKZaLHurH9nJWvbj@t490s>
+In-Reply-To: <1621507675.1o3860b85w.naveen@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0NefKFqc_RrteoODt-XNaqjUeFfSwJb7
-X-Proofpoint-GUID: gNLOnfwhuZ6StLcViYF3ETu0IAh8eLSt
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-20_03:2021-05-20,
- 2021-05-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- mlxscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0 phishscore=0
- bulkscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2105200097
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,36 +66,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, Nathan Chancellor <nathan@kernel.org>,
- linux-mm@kvack.org, kaleshsingh@google.com, joel@joelfernandes.org,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/20/21 6:16 PM, Peter Xu wrote:
-> On Thu, May 20, 2021 at 01:56:54PM +0530, Aneesh Kumar K.V wrote:
->>> This seems to work at least for my userfaultfd test on shmem, however I don't
->>> fully understand the commit message [1] on: How do we guarantee we're not
->>> moving a thp pte?
->>>
+
+
+Le 20/05/2021 à 12:54, Naveen N. Rao a écrit :
+> Christophe Leroy wrote:
 >>
->> move_page_tables() checks for pmd_trans_huge() and ends up calling
->> move_huge_pmd if it is a THP entry.
+>>
+>> Le 20/05/2021 à 09:29, Naveen N. Rao a écrit :
+>>> Trying to use a kprobe on ppc32 results in the below splat:
+>>>      BUG: Unable to handle kernel data access on read at 0x7c0802a6
+>>>      Faulting instruction address: 0xc002e9f0
+>>>      Oops: Kernel access of bad area, sig: 11 [#1]
+>>>      BE PAGE_SIZE=4K PowerPC 44x Platform
+>>>      Modules linked in:
+>>>      CPU: 0 PID: 89 Comm: sh Not tainted 5.13.0-rc1-01824-g3a81c0495fdb #7
+>>>      NIP:  c002e9f0 LR: c0011858 CTR: 00008a47
+>>>      REGS: c292fd50 TRAP: 0300   Not tainted  (5.13.0-rc1-01824-g3a81c0495fdb)
+>>>      MSR:  00009000 <EE,ME>  CR: 24002002  XER: 20000000
+>>>      DEAR: 7c0802a6 ESR: 00000000
+>>>      <snip>
+>>>      NIP [c002e9f0] emulate_step+0x28/0x324
+>>>      LR [c0011858] optinsn_slot+0x128/0x10000
+>>>      Call Trace:
+>>>       opt_pre_handler+0x7c/0xb4 (unreliable)
+>>>       optinsn_slot+0x128/0x10000
+>>>       ret_from_syscall+0x0/0x28
+>>
+>> I remember running some kprobe tests before submitting the patch, how did I miss that ?
+>> Is there anything special to do to activate the use of optprobes and/or to hit this bug ?
 > 
-> Sorry to be unclear: what if a huge pud thp?
+> Yeah, I was surprised when I hit this. One of the requirements we have for optprobes on powerpc is 
+> that the instruction should be a compute instruction (no load/store -- emulate_update_regs() should 
+> be enough) with the exception of conditional branches. It's possible that you ended up probing an 
+> instruction that couldn't be optimized.
+> 
+> An easy way to confirm if a probe has been optimized is to look at kprobes/list in debugfs, and to 
+> watch out for [OPTIMIZED] flag there.
+> 
+>>> diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
+>>> index cdf87086fa33a0..2bc53fa48a1b33 100644
+>>> --- a/arch/powerpc/kernel/optprobes.c
+>>> +++ b/arch/powerpc/kernel/optprobes.c
+>>> @@ -281,8 +281,12 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe 
+>>> *p)
+>>>       /*
+>>>        * 3. load instruction to be emulated into relevant register, and
+>>>        */
+>>> -    temp = ppc_inst_read((struct ppc_inst *)p->ainsn.insn);
+>>> -    patch_imm_load_insns(ppc_inst_as_ulong(temp), 4, buff + TMPL_INSN_IDX);
+>>> +    if (IS_ENABLED(CONFIG_PPC64)) {
+>>> +        temp = ppc_inst_read((struct ppc_inst *)p->ainsn.insn);
+>>> +        patch_imm_load_insns(ppc_inst_as_ulong(temp), 4, buff + TMPL_INSN_IDX);
+>>> +    } else {
+>>> +        patch_imm_load_insns((unsigned long)p->ainsn.insn, 4, buff + TMPL_INSN_IDX);
+>>> +    }
+>>
+>> It means commit https://github.com/linuxppc/linux/commit/693557ebf407a85ea400a0b501bb97687d8f4856 
+>> was not necessary and may be reverted.
+> 
+> Indeed, I will send a revert for it.
 > 
 
-I am still checking. Looking at the code before commit 
-c49dd340180260c6239e453263a9a244da9a7c85, I don't see kernel handling 
-huge pud thp. I haven't studied huge pud thp enough to understand 
-whether c49dd340180260c6239e453263a9a244da9a7c85 intent to add that 
-support.
+I'm not completely sure it is worth reverting, on an other hand it is pointless anyway to have 
+something to convert to a u64 something that cannot be more than 32 bits on a PPC32, so now that we 
+have ppc_inst_as_ulong() it is as good I think.
 
-We can do a move_huge_pud() like we do for huge pmd thp. But I am not 
-sure whether we handle those VMA's earlier and restrict mremap on them?
-
-Are huge pud thp only allowed with DAX vmas?
-
-
--aneesh
+Christophe
