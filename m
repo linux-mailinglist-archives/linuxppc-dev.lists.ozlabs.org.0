@@ -1,69 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A408E38ADC4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 14:14:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D126038ADC7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 14:14:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm7vq4KgRz3089
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 22:14:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm7wH5xhBz3070
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 22:14:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cR3MbNlH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=FwbLKM2K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::330;
- helo=mail-wm1-x330.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::335;
+ helo=mail-wm1-x335.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=cR3MbNlH; dkim-atps=neutral
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com
- [IPv6:2a00:1450:4864:20::330])
+ header.s=google header.b=FwbLKM2K; dkim-atps=neutral
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com
+ [IPv6:2a00:1450:4864:20::335])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm7vK6jPWz2xv2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 22:14:03 +1000 (AEST)
-Received: by mail-wm1-x330.google.com with SMTP id b7so8452376wmh.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 05:14:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm7vY1wfwz3090
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 22:14:16 +1000 (AEST)
+Received: by mail-wm1-x335.google.com with SMTP id
+ l18-20020a1ced120000b029014c1adff1edso5277028wmh.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 05:14:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=N+rsDWAMv4x1ZiNx5AapS5e6MR/cbmzAQ/wF+EUOxGU=;
- b=cR3MbNlHRY+hSafJx7VAjfSope7BFgR94/44HuaDrveC1bGEnVAaWRp72T7xvM0XoU
- OTDDqMvOLczZa0Yvp5vjEaVW5Exg5f5iypjfSszL7Pv/7/5oSjatQAHxdeMrD/CSxPmP
- 8XbqrDRkkfYJAlnaICjiZD7MIHTWYiFNH0cEy/lXgNFMkwo28P57IbtdVRsrhxAn+q9p
- S5SSJBsrkkm8/LbtosRlsbtzn7QgwanZfaqwoxfOHC69k6CHIljV5dyJ9RWYnRzTlG6R
- v1m1BolGX8TjunA9APuGjMSeBGGGxaMaO6jVTKKwGm+M2rQw3SEwbNWRVcLOeUzuHSC3
- YHhg==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=63aR0ApZJ3bwroQWXqAaSkH9cV6NbSWgeKUqcgHI7+A=;
+ b=FwbLKM2KkOv0flbvtj3nJnPuN0+A2r3yE/1kP07JVzwHo5CAewGS3FlOHT47wv+eje
+ Ukb+qynmxWBL1JoL3mzRQiWF+x5dTlrdiwmyJ1CelSy6zUItrLRiDVyOfMFbL7uj7hon
+ waxf4ZxdWSpAi2zOuJAXJ0NcgWVnl7PXa7AePVpn/y5ZdvWmSqVp1aflW3D9V9+i0Smu
+ ALyRNqMW9E3jjT1z1bLSeRAlyh22qBbRn3ci9A+j298IVUCYzQo/vZEkvDm2KeUd0mX2
+ lUWLleyUEqIDi8dwHDGlDdxoey80XmBjZKrw+PwTLvI1LP87RDpDU+HjgP8iSc/+8PBJ
+ GPOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=N+rsDWAMv4x1ZiNx5AapS5e6MR/cbmzAQ/wF+EUOxGU=;
- b=W4FO2q6aQtZrvWw2+pibkOmmmMNbUK6r0bGuDgPjvBw7OWZWIe1hFp/83ey27CxaZa
- wCl9EhpRcTNHqanXd3gHgpHwRbLE9H0uvvp8CSLekizodoFWeqzyhzgaOhQdxmd9Lr+N
- WcHQPbEp5xnJHAf4OmukU1IUCK7PcZe8LGi1Vt375PWx7K2zyQs5rpE172gNUVAjVOrL
- JV7cwgBlgbSxdQTXC2aYkv3fA4/O3D8dbXqsqOohD9qkAtwH+JQXIJeYSIAqX6XrdD36
- o7YMtq9gSm+0Wwos4u15qAJEaK0jDnNjmT7Wsb/8Kc9Jr4y/9avs4rrH7/vtEyrVourL
- 0I4Q==
-X-Gm-Message-State: AOAM531i1jveKc5ISzOl+JkHdnHMGNghm8iQRHNJonZnZqp1V68d2rGg
- 9cbmgalp1wV9gYHx0ByMTw6Evg==
-X-Google-Smtp-Source: ABdhPJyASSt/x1V8q95MVvVq2U/YMyWW3NXlYBCB6FmxOMXdwlT2RPBDCPtfjX12ceL8X8BK7YpF8Q==
-X-Received: by 2002:a7b:c34a:: with SMTP id l10mr3390379wmj.46.1621512835550; 
- Thu, 20 May 2021 05:13:55 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=63aR0ApZJ3bwroQWXqAaSkH9cV6NbSWgeKUqcgHI7+A=;
+ b=kCRlnPjDKF9m05/UXB5vzXJJuerrGKal0/Dt+KJCZh2LwQkY3rYOWLU/9iJlMq4+4c
+ H0kEXj9N5hNZZkZ7P0OcBbHfKMxyU5Peesx4byuyVB2my5AuMOJfGoDcWpCOjwACovzo
+ iUu7cKXy9ZF5gQ1fNQnFcQqP3QwmbCyRSdy9V/vHfSyAiP9TiemFSrC9+o3TMguSI+IR
+ 6bwcvLwsYGydERNA/nvjOR6obklR6sxU2jGw3xOieI21aarx6BMieuTWW5zx4YRSh/rT
+ ZdPrdH7iFRMcfOrPzVR16Dqpgi4RDaCiASZQkk1ZKMw4dSxkuLERZZJZ4Cq8zZ8ThssB
+ eBfw==
+X-Gm-Message-State: AOAM532EDyqGQQZmP30nVWFVyA1lR+2QdFfQG9ir9v0MMBsVdeXkNFyG
+ HoSSpYeCVL0Wdm2YHsTbC9sNfA==
+X-Google-Smtp-Source: ABdhPJw1Fp+Jmjls9UkJh6YCn4HHFBXPq5pRCzpBsC65iVfftho44k60NMHVqYTzgP4lBPc3lSuE+g==
+X-Received: by 2002:a05:600c:410a:: with SMTP id
+ j10mr3730747wmi.26.1621512853737; 
+ Thu, 20 May 2021 05:14:13 -0700 (PDT)
 Received: from dell.default ([91.110.221.215])
- by smtp.gmail.com with ESMTPSA id 61sm3393704wrm.52.2021.05.20.05.13.54
+ by smtp.gmail.com with ESMTPSA id 61sm3393704wrm.52.2021.05.20.05.14.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 May 2021 05:13:55 -0700 (PDT)
+ Thu, 20 May 2021 05:14:13 -0700 (PDT)
 From: Lee Jones <lee.jones@linaro.org>
 To: lee.jones@linaro.org
-Subject: [PATCH 00/16] Rid W=1 warnings from Char
-Date: Thu, 20 May 2021 13:13:31 +0100
-Message-Id: <20210520121347.3467794-1-lee.jones@linaro.org>
+Subject: [PATCH 15/16] char: hw_random: pseries-rng: Demote non-conformant
+ kernel-doc header
+Date: Thu, 20 May 2021 13:13:46 +0100
+Message-Id: <20210520121347.3467794-16-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210520121347.3467794-1-lee.jones@linaro.org>
+References: <20210520121347.3467794-1-lee.jones@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -78,105 +83,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>, David Airlie <airlied@linux.ie>,
- Clemens Ladisch <clemens@ladisch.de>,
- "C. Scott Ananian" <cananian@alumni.princeton.edu>,
- Paul Mackerras <paulus@samba.org>, Kylene Hall <kjhall@us.ibm.com>,
- Jerome Glisse <j.glisse@gmail.com>, Peter Huewe <peterhuewe@gmx.de>,
- Michael Neuling <mikey@neuling.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- Dave Safford <safford@watson.ibm.com>, Harald Welte <laforge@gnumonks.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Kanoj Sarcar <kanoj@sgi.com>,
- Bob Picco <robert.picco@hp.com>, Arnd Bergmann <arnd@arndb.de>,
- linuxppc-dev@lists.ozlabs.org,
- Thirupathaiah Annapureddy <thiruan@microsoft.com>,
- "cs.c" <support.linux@omnikey.com>, Lijun Pan <ljp@linux.ibm.com>,
- Reiner Sailer <sailer@watson.ibm.com>, Matt Mackall <mpm@selenic.com>,
- van Doorn <leendert@watson.ibm.com>, Theodore Ts'o <tytso@mit.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- paulkf@microgate.com, Jarkko Sakkinen <jarkko@kernel.org>,
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Michael Neuling <mikey@neuling.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
  =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
- linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
- dwmw2@infradead.org
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Matt Mackall <mpm@selenic.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linux-crypto@vger.kernel.org,
+ Lijun Pan <ljp@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This set is part of a larger effort attempting to clean-up W=1
-kernel builds, which are currently overwhelmingly riddled with
-niggly little warnings.
+Fixes the following W=1 kernel build warning(s):
 
-Lee Jones (16):
-  char: pcmcia: cm4000_cs: Remove unused variable 'tmp'
-  char: pcmcia: cm4040_cs: Remove unused variable 'uc'
-  char: random: Include header containing our prototypes
-  char: pcmcia: synclink_cs: Fix a bunch of kernel-doc issues
-  char: pcmcia: synclink_cs: Fix a bunch of kernel-doc issues
-  char: applicom: Remove 3 unused variables 'ret' and 2 instances of
-    'byte_reset_it'
-  char: tpm: tpm1-cmd: Fix a couple of misnamed functions
-  char: tpm: tpm_ftpm_tee: Fix a couple of kernel-doc misdemeanours
-  char: agp: backend: Demote some non-conformant kernel-doc headers
-  char: agp: frontend: Include header file containing our prototypes
-  char: agp: via-agp: Remove unused variable 'current_size'
-  char: hpet: Remove unused variable 'm'
-  char: agp: generic: Place braces around optimised out function in if()
-  char: agp: uninorth-agp: Remove unused variable 'size'
-  char: hw_random: pseries-rng: Demote non-conformant kernel-doc header
-  char: mem: Provide local prototype for non-static function
+ drivers/char/hw_random/pseries-rng.c:42: warning: Function parameter or member 'vdev' not described in 'pseries_rng_get_desired_dma'
 
- drivers/char/agp/backend.c           |  4 +-
- drivers/char/agp/frontend.c          |  1 +
- drivers/char/agp/generic.c           |  3 +-
- drivers/char/agp/uninorth-agp.c      |  3 --
- drivers/char/agp/via-agp.c           |  3 --
- drivers/char/applicom.c              | 10 ++--
- drivers/char/hpet.c                  |  4 +-
- drivers/char/hw_random/pseries-rng.c |  2 +-
- drivers/char/mem.c                   |  2 +
- drivers/char/pcmcia/cm4000_cs.c      |  3 +-
- drivers/char/pcmcia/cm4040_cs.c      |  3 +-
- drivers/char/pcmcia/synclink_cs.c    | 74 +++++++++++++++-------------
- drivers/char/random.c                |  1 +
- drivers/char/tpm/tpm1-cmd.c          |  4 +-
- drivers/char/tpm/tpm_ftpm_tee.c      |  6 +--
- 15 files changed, 60 insertions(+), 63 deletions(-)
-
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Bob Picco <robert.picco@hp.com>
-Cc: Clemens Ladisch <clemens@ladisch.de>
-Cc: "C. Scott Ananian" <cananian@alumni.princeton.edu>
-Cc: "cs.c" <support.linux@omnikey.com>
-Cc: Dave Safford <safford@watson.ibm.com>
-Cc: David Airlie <airlied@linux.ie>
-Cc: dwmw2@infradead.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Harald Welte <laforge@gnumonks.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jerome Glisse <j.glisse@gmail.com>
-Cc: Kanoj Sarcar <kanoj@sgi.com>
-Cc: Kylene Hall <kjhall@us.ibm.com>
-Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Lijun Pan <ljp@linux.ibm.com>
-Cc: linux-crypto@vger.kernel.org
-Cc: linux-integrity@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
 Cc: Matt Mackall <mpm@selenic.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michael Neuling <mikey@neuling.org>
-Cc: paulkf@microgate.com
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: Paul Mackerras <paulus@samba.org>
-Cc: Peter Huewe <peterhuewe@gmx.de>
-Cc: Reiner Sailer <sailer@watson.ibm.com>
-Cc: "Theodore Ts'o" <tytso@mit.edu>
-Cc: Thirupathaiah Annapureddy <thiruan@microsoft.com>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: Lijun Pan <ljp@linux.ibm.com>
 Cc: "Uwe Kleine-König" <uwe@kleine-koenig.org>
-Cc: van Doorn <leendert@watson.ibm.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Michael Neuling <mikey@neuling.org>
+Cc: linux-crypto@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ drivers/char/hw_random/pseries-rng.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/char/hw_random/pseries-rng.c b/drivers/char/hw_random/pseries-rng.c
+index f4949b689bd5a..62bdd5af1339f 100644
+--- a/drivers/char/hw_random/pseries-rng.c
++++ b/drivers/char/hw_random/pseries-rng.c
+@@ -29,7 +29,7 @@ static int pseries_rng_read(struct hwrng *rng, void *data, size_t max, bool wait
+ 	return 8;
+ }
+ 
+-/**
++/*
+  * pseries_rng_get_desired_dma - Return desired DMA allocate for CMO operations
+  *
+  * This is a required function for a driver to operate in a CMO environment
 -- 
 2.31.1
 
