@@ -1,108 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3AD389FC4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 10:27:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF1D38A0B2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 11:19:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm2tG4Zh7z3brt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 18:27:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm41Q5qxrz3062
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 19:19:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sLwql3Xp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Vcp9ME0H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=sLwql3Xp; dkim-atps=neutral
+ header.s=pp1 header.b=Vcp9ME0H; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm2sn3ftmz2xvK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 18:27:24 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm40t6Jrpz2yXk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 19:18:38 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14K84J4E004573; Thu, 20 May 2021 04:27:02 -0400
+ 14K93HYJ138017; Thu, 20 May 2021 05:18:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=YX41XFWu+zMPNKf6mrGnpPlK/sRCym1SIXpEM84+Hsk=;
- b=sLwql3XpLLfoiFxH9g6Mn6xOGcQ01FnLw5+SB+wIG7uZr0/L2m4Ygcz3vLdvq38hzyYi
- IDjmvJCAc2xPgyQPeqrmz04AaDoe38MlAYymobIVvQqjnnBV0NTWqula9oLwKNs8rdQi
- KQrByn18H2CkA2VnKd8rtsRdk9/9i3mm3XrK67/ZLvvbi1MgGC2ETOQiSxYnRSddLwZE
- IZtu2kM4vDczWgRfzoop4iw9c9vzE/Iie2BwlxT0JmYZPk+wnYmisF/tNcrOyGPcwWBV
- 68a7qjOewCXNX4ZSwBd6TWHZiKYiFwjy1VNWVgD0GcT+s7jbuHcGGJy94qSs6Z7daxMr Fg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38nksgrwhk-1
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=tleZC2hya9RBqm4qrAUzBWw8YcdKoAgMUeBDZ71H3H8=;
+ b=Vcp9ME0HjVQtCHWyeE/V/PSD10WekATW4F97ZXtvqM5NmUu0/x6vI2XKiIqeuvJ+6yKZ
+ kLFjxaJZKkVEr7pY6RY9NaZF1kzKogCgB5c2eyXtHc4Y18YxxLWfNEy0hd03Aru8/xQr
+ NbldsRqQOEA3W8QFLGQT43kZN3Wy6CuFuGBqk5L5IJl1+rg9hMwSic5NgUgw8MCm0s39
+ DtgrvLXMJd83DAYkpmFBu/tsaNKyHCEtQYO3fDVLDuff6HLezhsgbDraEV/A/lCltXzn
+ rzhipu+F0l4QBFK79V/TV/k/gSZIQMlUkB7y/6hg9VQXd2wQWZtEl0CDeJZ6jhhEOer/ QQ== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38nmqygkjr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 May 2021 04:27:02 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14K84OiI005266;
- Thu, 20 May 2021 04:27:02 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38nksgrwgt-1
+ Thu, 20 May 2021 05:18:20 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14K998mq008871;
+ Thu, 20 May 2021 09:18:17 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04fra.de.ibm.com with ESMTP id 38j5x81dat-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 May 2021 04:27:02 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14K8NEtN013466;
- Thu, 20 May 2021 08:26:59 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06fra.de.ibm.com with ESMTP id 38j5jh1d0e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 May 2021 08:26:59 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14K8Qvom28311864
+ Thu, 20 May 2021 09:18:17 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14K9IFoQ59113976
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 20 May 2021 08:26:57 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 40B51A4040;
- Thu, 20 May 2021 08:26:57 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 41B94A4057;
- Thu, 20 May 2021 08:26:55 +0000 (GMT)
-Received: from [9.85.101.109] (unknown [9.85.101.109])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 20 May 2021 08:26:55 +0000 (GMT)
-Subject: Re: [PATCH v5 3/9] mm/mremap: Use pmd/pud_poplulate to update page
- table entries
-To: Peter Xu <peterx@redhat.com>
-References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
- <20210422054323.150993-4-aneesh.kumar@linux.ibm.com>
- <YKQdxpHVYB9H0M0j@Ryzen-9-3900X.localdomain> <87mtsrqqk0.fsf@linux.ibm.com>
- <YKXHA8/HmP6HXngO@t490s>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <6e0dbb76-2b33-53f1-246e-30cec2b871e2@linux.ibm.com>
-Date: Thu, 20 May 2021 13:56:54 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-In-Reply-To: <YKXHA8/HmP6HXngO@t490s>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ppsnSJx0qftr1M4U6zU4uGqR3s2-kcSm
-X-Proofpoint-ORIG-GUID: s1cYGwc5XAE62YHudVR4gHmSPkDQaQ0C
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ Thu, 20 May 2021 09:18:15 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27F03AE045;
+ Thu, 20 May 2021 09:18:15 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A05AAAE053;
+ Thu, 20 May 2021 09:18:14 +0000 (GMT)
+Received: from localhost (unknown [9.85.120.117])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 20 May 2021 09:18:14 +0000 (GMT)
+Date: Thu, 20 May 2021 14:48:12 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH v2 1/2] kprobes: Allow architectures to override optinsn
+ page allocation
+To: anil.s.keshavamurthy@intel.com, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, davem@davemloft.net,
+ mhiramat@kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <40a43d6df1fdf41ade36e9a46e60a4df774ca9f6.1620896780.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <40a43d6df1fdf41ade36e9a46e60a4df774ca9f6.1620896780.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
+User-Agent: astroid/v0.15-23-gcdc62b30 (https://github.com/astroidmail/astroid)
+Message-Id: <1621502039.xhb8rgk83c.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: TN-9W2ygPmu9Z093LdAE_EPBFOKaiAbE
+X-Proofpoint-GUID: TN-9W2ygPmu9Z093LdAE_EPBFOKaiAbE
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-05-20_01:2021-05-20,
  2021-05-19 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- mlxlogscore=999 phishscore=0 malwarescore=0 impostorscore=0 clxscore=1015
- bulkscore=0 priorityscore=1501 mlxscore=0 adultscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105200060
+ mlxlogscore=999
+ suspectscore=0 mlxscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0 clxscore=1011
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105200069
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,48 +105,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, Nathan Chancellor <nathan@kernel.org>,
- linux-mm@kvack.org, kaleshsingh@google.com, joel@joelfernandes.org,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/20/21 7:48 AM, Peter Xu wrote:
-> On Wed, May 19, 2021 at 10:16:07AM +0530, Aneesh Kumar K.V wrote:
->>> On Thu, Apr 22, 2021 at 11:13:17AM +0530, Aneesh Kumar K.V wrote:
->>>> pmd/pud_populate is the right interface to be used to set the respective
->>>> page table entries. Some architectures like ppc64 do assume that set_pmd/pud_at
->>>> can only be used to set a hugepage PTE. Since we are not setting up a hugepage
->>>> PTE here, use the pmd/pud_populate interface.
-> 
-> [1]
-> 
->> Can you try this change?
->>
->> modified   mm/mremap.c
->> @@ -279,7 +279,7 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
->>   	pmd_clear(old_pmd);
->>   
->>   	VM_BUG_ON(!pmd_none(*new_pmd));
->> -	pmd_populate(mm, new_pmd, (pgtable_t)pmd_page_vaddr(pmd));
->> +	pmd_populate(mm, new_pmd, pmd_pgtable(pmd));
->>   
->>   	if (new_ptl != old_ptl)
->>   		spin_unlock(new_ptl);
-> 
-> I reported this issue today somewhere else:
-> 
-> https://lore.kernel.org/linux-mm/YKVemB5DuSqLFmmz@t490s/
-> 
-> And came to this same line after the bisection.
-> 
-> This seems to work at least for my userfaultfd test on shmem, however I don't
-> fully understand the commit message [1] on: How do we guarantee we're not
-> moving a thp pte?
-> 
+Christophe Leroy wrote:
+> Some architectures like powerpc require a non standard
+> allocation of optinsn page, because module pages are
+> too far from the kernel for direct branches.
+>=20
+> Define weak alloc_optinsn_page() and free_optinsn_page(), that
+> fall back on alloc_insn_page() and free_insn_page() when not
+> overriden by the architecture.
+  ^^^^^^^^^
+  overridden - courtesy of checkpatch.
 
-move_page_tables() checks for pmd_trans_huge() and ends up calling 
-move_huge_pmd if it is a THP entry.
+>=20
+> Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+> ---
+> v2: Added missing prototypes in linux/kprobes.h
+> ---
+>  include/linux/kprobes.h |  3 +++
+>  kernel/kprobes.c        | 14 ++++++++++++--
+>  2 files changed, 15 insertions(+), 2 deletions(-)
 
--aneesh
+LGTM. For the series:
+Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+
+
+- Naveen
