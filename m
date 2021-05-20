@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9736438A5B0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 12:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C71C238A611
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 12:23:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm5Kq3gPKz30H2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 20:18:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm5RY4yc3z308D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 20:23:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,43 +16,39 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm5KM4cc2z3bw0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 20:17:56 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm5RF07pDz2xtn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 20:23:03 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Fm5KG1BwLz9sVl;
- Thu, 20 May 2021 12:17:54 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4Fm5R86kxbz9sVZ;
+ Thu, 20 May 2021 12:23:00 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id V02iu2pkl3v1; Thu, 20 May 2021 12:17:54 +0200 (CEST)
+ with ESMTP id ngyOS56h54P6; Thu, 20 May 2021 12:23:00 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Fm5KG07tTz9sVj;
- Thu, 20 May 2021 12:17:54 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Fm5R85VQBz9sVM;
+ Thu, 20 May 2021 12:23:00 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CAED28B80D;
- Thu, 20 May 2021 12:17:53 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 991348B811;
+ Thu, 20 May 2021 12:23:00 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id OTfgYiBQ5XPk; Thu, 20 May 2021 12:17:53 +0200 (CEST)
-Received: from [172.25.230.105] (po15451.idsi0.si.c-s.fr [172.25.230.105])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8BA468B767;
- Thu, 20 May 2021 12:17:53 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/kprobes: Pass ppc_inst as a pointer to
- emulate_step() on ppc32
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20210520072909.2901326-1-naveen.n.rao@linux.vnet.ibm.com>
+ with ESMTP id JEWw6BsujQTs; Thu, 20 May 2021 12:23:00 +0200 (CEST)
+Received: from po15610vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.105])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C7DC8B80D;
+ Thu, 20 May 2021 12:23:00 +0200 (CEST)
+Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 3D58964C44; Thu, 20 May 2021 10:23:00 +0000 (UTC)
+Message-Id: <5d146b31b943e7ad674894421db4feef54804b9b.1621506159.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <8a0cfd88-a98d-711c-b80b-916a99ada2c8@csgroup.eu>
-Date: Thu, 20 May 2021 12:17:53 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
-MIME-Version: 1.0
-In-Reply-To: <20210520072909.2901326-1-naveen.n.rao@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH v1 01/12] powerpc: Rework PPC_RAW_xxx() macros for prefixed
+ instructions
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ naveen.n.rao@linux.vnet.ibm.com, jniethe5@gmail.com
+Date: Thu, 20 May 2021 10:23:00 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,78 +60,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+At the time being, we have PPC_RAW_PLXVP() and PPC_RAW_PSTXVP() which
+provide a 64 bits value, and then it gets split by open coding to
+format it into a 'struct ppc_inst' instruction.
 
+Instead, define a PPC_RAW_xxx_P() and a PPC_RAW_xxx_S() to be used
+as is.
 
-Le 20/05/2021 à 09:29, Naveen N. Rao a écrit :
-> Trying to use a kprobe on ppc32 results in the below splat:
->      BUG: Unable to handle kernel data access on read at 0x7c0802a6
->      Faulting instruction address: 0xc002e9f0
->      Oops: Kernel access of bad area, sig: 11 [#1]
->      BE PAGE_SIZE=4K PowerPC 44x Platform
->      Modules linked in:
->      CPU: 0 PID: 89 Comm: sh Not tainted 5.13.0-rc1-01824-g3a81c0495fdb #7
->      NIP:  c002e9f0 LR: c0011858 CTR: 00008a47
->      REGS: c292fd50 TRAP: 0300   Not tainted  (5.13.0-rc1-01824-g3a81c0495fdb)
->      MSR:  00009000 <EE,ME>  CR: 24002002  XER: 20000000
->      DEAR: 7c0802a6 ESR: 00000000
->      <snip>
->      NIP [c002e9f0] emulate_step+0x28/0x324
->      LR [c0011858] optinsn_slot+0x128/0x10000
->      Call Trace:
->       opt_pre_handler+0x7c/0xb4 (unreliable)
->       optinsn_slot+0x128/0x10000
->       ret_from_syscall+0x0/0x28
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/ppc-opcode.h | 8 ++++----
+ arch/powerpc/lib/test_emulate_step.c  | 6 ++----
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-I remember running some kprobe tests before submitting the patch, how did I miss that ?
-Is there anything special to do to activate the use of optprobes and/or to hit this bug ?
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index ac41776661e9..403067ba170e 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -404,10 +404,10 @@
+ #define PPC_RAW_STXVP(xsp, a, i)	(0x18000001 | __PPC_XSP(xsp) | ___PPC_RA(a) | IMM_DQ(i))
+ #define PPC_RAW_LXVPX(xtp, a, b)	(0x7c00029a | __PPC_XTP(xtp) | ___PPC_RA(a) | ___PPC_RB(b))
+ #define PPC_RAW_STXVPX(xsp, a, b)	(0x7c00039a | __PPC_XSP(xsp) | ___PPC_RA(a) | ___PPC_RB(b))
+-#define PPC_RAW_PLXVP(xtp, i, a, pr) \
+-	((PPC_PREFIX_8LS | __PPC_PRFX_R(pr) | IMM_D0(i)) << 32 | (0xe8000000 | __PPC_XTP(xtp) | ___PPC_RA(a) | IMM_D1(i)))
+-#define PPC_RAW_PSTXVP(xsp, i, a, pr) \
+-	((PPC_PREFIX_8LS | __PPC_PRFX_R(pr) | IMM_D0(i)) << 32 | (0xf8000000 | __PPC_XSP(xsp) | ___PPC_RA(a) | IMM_D1(i)))
++#define PPC_RAW_PLXVP_P(xtp, i, a, pr)	(PPC_PREFIX_8LS | __PPC_PRFX_R(pr) | IMM_D0(i))
++#define PPC_RAW_PLXVP_S(xtp, i, a, pr)	(0xe8000000 | __PPC_XTP(xtp) | ___PPC_RA(a) | IMM_D1(i))
++#define PPC_RAW_PSTXVP_P(xsp, i, a, pr)	(PPC_PREFIX_8LS | __PPC_PRFX_R(pr) | IMM_D0(i))
++#define PPC_RAW_PSTXVP_S(xsp, i, a, pr)	(0xf8000000 | __PPC_XSP(xsp) | ___PPC_RA(a) | IMM_D1(i))
+ #define PPC_RAW_NAP			(0x4c000364)
+ #define PPC_RAW_SLEEP			(0x4c0003a4)
+ #define PPC_RAW_WINKLE			(0x4c0003e4)
+diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test_emulate_step.c
+index 783d1b85ecfe..f7c74f4f684b 100644
+--- a/arch/powerpc/lib/test_emulate_step.c
++++ b/arch/powerpc/lib/test_emulate_step.c
+@@ -824,8 +824,7 @@ static void __init test_plxvp_pstxvp(void)
+ 	 * XTp = 32xTX + 2xTp
+ 	 * let RA=3 R=0 D=d0||d1=0 R=0 Tp=1 TX=1
+ 	 */
+-	instr = ppc_inst_prefix(PPC_RAW_PLXVP(34, 0, 3, 0) >> 32,
+-			PPC_RAW_PLXVP(34, 0, 3, 0) & 0xffffffff);
++	instr = ppc_inst_prefix(PPC_RAW_PLXVP_P(34, 0, 3, 0), PPC_RAW_PLXVP_S(34, 0, 3, 0));
+ 
+ 	stepped = emulate_step(&regs, instr);
+ 	if (stepped == 1 && cpu_has_feature(CPU_FTR_VSX)) {
+@@ -853,8 +852,7 @@ static void __init test_plxvp_pstxvp(void)
+ 	 * XSp = 32xSX + 2xSp
+ 	 * let RA=3 D=d0||d1=0 R=0 Sp=1 SX=1
+ 	 */
+-	instr = ppc_inst_prefix(PPC_RAW_PSTXVP(34, 0, 3, 0) >> 32,
+-			PPC_RAW_PSTXVP(34, 0, 3, 0) & 0xffffffff);
++	instr = ppc_inst_prefix(PPC_RAW_PSTXVP_P(34, 0, 3, 0), PPC_RAW_PSTXVP_S(34, 0, 3, 0));
+ 
+ 	stepped = emulate_step(&regs, instr);
+ 
+-- 
+2.25.0
 
-> 
-> The offending instruction is:
->      81 24 00 00     lwz     r9,0(r4)
-> 
-> Here, we are trying to load the second argument to emulate_step():
-> struct ppc_inst, which is the instruction to be emulated. On ppc64,
-> structures are passed in registers when passed by value. However, per
-> the ppc32 ABI, structures are always passed to functions as pointers.
-
-Yes, and that was one of the reasons I was reluctant to that new 'struct ppc_inst', as it means 
-stack frames, copies, etc ... whereas we could have just changed it from 'unsigned int' to 'unsigned 
-long'.
-Ok, now we have it, so let's use it, but use it correctly, see my clean-up series 
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=244719&state=* (v2 on the way).
-
-> This isn't being adhered to when setting up the call to emulate_step()
-> in the optprobe trampoline. Fix the same.
-> 
-> Fixes: eacf4c0202654a ("powerpc: Enable OPTPROBES on PPC32")
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> ---
->   arch/powerpc/kernel/optprobes.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
-> index cdf87086fa33a0..2bc53fa48a1b33 100644
-> --- a/arch/powerpc/kernel/optprobes.c
-> +++ b/arch/powerpc/kernel/optprobes.c
-> @@ -281,8 +281,12 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
->   	/*
->   	 * 3. load instruction to be emulated into relevant register, and
->   	 */
-> -	temp = ppc_inst_read((struct ppc_inst *)p->ainsn.insn);
-> -	patch_imm_load_insns(ppc_inst_as_ulong(temp), 4, buff + TMPL_INSN_IDX);
-> +	if (IS_ENABLED(CONFIG_PPC64)) {
-> +		temp = ppc_inst_read((struct ppc_inst *)p->ainsn.insn);
-> +		patch_imm_load_insns(ppc_inst_as_ulong(temp), 4, buff + TMPL_INSN_IDX);
-> +	} else {
-> +		patch_imm_load_insns((unsigned long)p->ainsn.insn, 4, buff + TMPL_INSN_IDX);
-> +	}
-
-It means commit https://github.com/linuxppc/linux/commit/693557ebf407a85ea400a0b501bb97687d8f4856 
-was not necessary and may be reverted.
-
-Christophe
