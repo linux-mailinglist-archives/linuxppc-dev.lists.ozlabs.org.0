@@ -2,57 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF01389FB4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 10:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3AD389FC4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 10:27:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm2lj2YFbz3brs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 18:22:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm2tG4Zh7z3brt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 18:27:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EtLMNXiV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sLwql3Xp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=johan@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=EtLMNXiV; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=sLwql3Xp; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm2lF1MRKz2yWw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 18:21:45 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 706FD60FDB;
- Thu, 20 May 2021 08:21:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1621498902;
- bh=oWxI169wjo2M8TXbBtnWbk/CC+L/aPQaBjR392b98q4=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=EtLMNXiVjiEK+Dph+zxyljcXqY595W4KwG1mako/NR+gZoWAzlpd+SBHfUuLkUtaw
- M7FzRLyftRzcOpAxTKgl2IrqrRb0Y7OGo+zgaRUvM/mfFHx4wkxj9cc5XfbQkqg/86
- Eu4NQPjMUIU2Mtd2VG8SGVDgtEY3So3/6up2xxC+JGF1MBdmp1JFdJ0eTRNtf+DdMJ
- yLO8N1v2YbgPvt4oZNPRAoTPyD30God8QmAS+OQekZsvw6uHFhZ8ufiQ3On5F+nwDJ
- LmnVhc/OZZjnIuNZgXqUood6bcTwp/lPZZIyMO8RG6YK7fKl0ed3euZ/haAUg0HUx/
- hgNYYOa8yWTjw==
-Received: from johan by xi.lan with local (Exim 4.94.2)
- (envelope-from <johan@kernel.org>)
- id 1ljdw5-0001rd-1N; Thu, 20 May 2021 10:21:41 +0200
-Date: Thu, 20 May 2021 10:21:41 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: Re: [PATCH 6/9] tty: hvc_console: Fix coding style issues of block
- comments
-Message-ID: <YKYcFfKiHT39Gyey@hovoldconsulting.com>
-References: <1621233433-27094-1-git-send-email-tanxiaofei@huawei.com>
- <1621233433-27094-7-git-send-email-tanxiaofei@huawei.com>
- <YKJ6ZjT8o5xJmBCr@hovoldconsulting.com>
- <e88b6fcd-bfe1-9812-905a-862825f420ce@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm2sn3ftmz2xvK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 18:27:24 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14K84J4E004573; Thu, 20 May 2021 04:27:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=YX41XFWu+zMPNKf6mrGnpPlK/sRCym1SIXpEM84+Hsk=;
+ b=sLwql3XpLLfoiFxH9g6Mn6xOGcQ01FnLw5+SB+wIG7uZr0/L2m4Ygcz3vLdvq38hzyYi
+ IDjmvJCAc2xPgyQPeqrmz04AaDoe38MlAYymobIVvQqjnnBV0NTWqula9oLwKNs8rdQi
+ KQrByn18H2CkA2VnKd8rtsRdk9/9i3mm3XrK67/ZLvvbi1MgGC2ETOQiSxYnRSddLwZE
+ IZtu2kM4vDczWgRfzoop4iw9c9vzE/Iie2BwlxT0JmYZPk+wnYmisF/tNcrOyGPcwWBV
+ 68a7qjOewCXNX4ZSwBd6TWHZiKYiFwjy1VNWVgD0GcT+s7jbuHcGGJy94qSs6Z7daxMr Fg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38nksgrwhk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 20 May 2021 04:27:02 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14K84OiI005266;
+ Thu, 20 May 2021 04:27:02 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38nksgrwgt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 20 May 2021 04:27:02 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14K8NEtN013466;
+ Thu, 20 May 2021 08:26:59 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06fra.de.ibm.com with ESMTP id 38j5jh1d0e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 20 May 2021 08:26:59 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14K8Qvom28311864
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 20 May 2021 08:26:57 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40B51A4040;
+ Thu, 20 May 2021 08:26:57 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 41B94A4057;
+ Thu, 20 May 2021 08:26:55 +0000 (GMT)
+Received: from [9.85.101.109] (unknown [9.85.101.109])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 20 May 2021 08:26:55 +0000 (GMT)
+Subject: Re: [PATCH v5 3/9] mm/mremap: Use pmd/pud_poplulate to update page
+ table entries
+To: Peter Xu <peterx@redhat.com>
+References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
+ <20210422054323.150993-4-aneesh.kumar@linux.ibm.com>
+ <YKQdxpHVYB9H0M0j@Ryzen-9-3900X.localdomain> <87mtsrqqk0.fsf@linux.ibm.com>
+ <YKXHA8/HmP6HXngO@t490s>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <6e0dbb76-2b33-53f1-246e-30cec2b871e2@linux.ibm.com>
+Date: Thu, 20 May 2021 13:56:54 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+In-Reply-To: <YKXHA8/HmP6HXngO@t490s>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ppsnSJx0qftr1M4U6zU4uGqR3s2-kcSm
+X-Proofpoint-ORIG-GUID: s1cYGwc5XAE62YHudVR4gHmSPkDQaQ0C
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e88b6fcd-bfe1-9812-905a-862825f420ce@huawei.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-20_01:2021-05-20,
+ 2021-05-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ mlxlogscore=999 phishscore=0 malwarescore=0 impostorscore=0 clxscore=1015
+ bulkscore=0 priorityscore=1501 mlxscore=0 adultscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105200060
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,93 +114,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- jirislaby@kernel.org, linux-kernel@vger.kernel.org, linuxarm@openeuler.org
+Cc: npiggin@gmail.com, Nathan Chancellor <nathan@kernel.org>,
+ linux-mm@kvack.org, kaleshsingh@google.com, joel@joelfernandes.org,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 18, 2021 at 12:01:22PM +0800, Xiaofei Tan wrote:
-> Hi Johan,
+On 5/20/21 7:48 AM, Peter Xu wrote:
+> On Wed, May 19, 2021 at 10:16:07AM +0530, Aneesh Kumar K.V wrote:
+>>> On Thu, Apr 22, 2021 at 11:13:17AM +0530, Aneesh Kumar K.V wrote:
+>>>> pmd/pud_populate is the right interface to be used to set the respective
+>>>> page table entries. Some architectures like ppc64 do assume that set_pmd/pud_at
+>>>> can only be used to set a hugepage PTE. Since we are not setting up a hugepage
+>>>> PTE here, use the pmd/pud_populate interface.
 > 
-> Thanks for reviewing this patch.
+> [1]
 > 
-> On 2021/5/17 22:15, Johan Hovold wrote:
-> > On Mon, May 17, 2021 at 02:37:10PM +0800, Xiaofei Tan wrote:
-> >> Fix coding style issues of block comments, reported by checkpatch.pl.
-> >> Besides, add a period at the end of the sentenses.
-> >>
-> >> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
-> >> ---
-> >>  drivers/tty/hvc/hvc_console.c | 15 ++++++++++-----
-> >>  1 file changed, 10 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
-> >> index 39018e5..a61cdf0 100644
-> >> --- a/drivers/tty/hvc/hvc_console.c
-> >> +++ b/drivers/tty/hvc/hvc_console.c
-> >> @@ -177,7 +177,8 @@ static void hvc_console_print(struct console *co, const char *b,
-> >>  			r = cons_ops[index]->put_chars(vtermnos[index], c, i);
-> >>  			if (r <= 0) {
-> >>  				/* throw away characters on error
-> >> -				 * but spin in case of -EAGAIN */
-> >> +				 * but spin in case of -EAGAIN.
-> >> +				 */
-> >
-> > How is this an improvement? First, the multi-line comment style is
-> >
-> > 	/*
-> > 	 * ...
-> > 	 */
-> >
+>> Can you try this change?
+>>
+>> modified   mm/mremap.c
+>> @@ -279,7 +279,7 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>>   	pmd_clear(old_pmd);
+>>   
+>>   	VM_BUG_ON(!pmd_none(*new_pmd));
+>> -	pmd_populate(mm, new_pmd, (pgtable_t)pmd_page_vaddr(pmd));
+>> +	pmd_populate(mm, new_pmd, pmd_pgtable(pmd));
+>>   
+>>   	if (new_ptl != old_ptl)
+>>   		spin_unlock(new_ptl);
 > 
-> Yes, mostly we use this style. I can follow it if new version is needed.
-
-This is the preferred style outside of networking.
-
-> BTW, How about add the '/*' check into checkpatch.pl?
-
-Checkpatch already has too many checks IMO and I'm a bit surprised that
-it doesn't check this already. Perhaps it's because you used the -f to
-run checkpatch on in-kernel code, which you should not.
-
-> > Second, that sentence is not capitalised so why do add a period?
-> >
+> I reported this issue today somewhere else:
 > 
-> How about capitalize the sentence, or just remove the period ?
-
-How about just leaving this unchanged?
-
-> > Third, why are you sending checkpatch.pl cleanups for files outside of
-> > staging?
-> >
+> https://lore.kernel.org/linux-mm/YKVemB5DuSqLFmmz@t490s/
 > 
-> I'm sorry, Is this a rule, or kind of tradition? I've never heard of 
-> this before.
-
-Many subsystems reject pure style changes unless you're also doing some
-real changes to the code in question. This is a good default rule, even
-if some maintainers may occasionally accept churn like this.
-
-You appear to be paid to do kernel work. Why don't you start fixing bugs
-or help out reviewing new code instead of sending trivial patches like
-this? We can always need another hand.
-
-But if all you you want is to increase your company patch count then
-please go work in drivers/staging where most trivial style changes are
-currently accepted.
-
-> > Unless doing some real changes to the files in question as well this is
-> > mostly just churn and noise that makes it harder to backport fixes and
-> > do code forensics for no real gain.
+> And came to this same line after the bisection.
 > 
-> I'm not sure. But if cleanup patches have made it hard to backport fixes 
-> and do code forensics, then the code quality may not be
-> good enough.
+> This seems to work at least for my userfaultfd test on shmem, however I don't
+> fully understand the commit message [1] on: How do we guarantee we're not
+> moving a thp pte?
+> 
 
-No, that has nothing to do with code quality, it's just that you
-introduce noise in the logs and do pointless changes of context which
-makes it harder to use tools like git blame and makes backporting harder
-for no good reason.
+move_page_tables() checks for pmd_trans_huge() and ends up calling 
+move_huge_pmd if it is a THP entry.
 
-Johan
+-aneesh
