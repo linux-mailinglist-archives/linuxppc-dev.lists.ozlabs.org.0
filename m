@@ -1,61 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7181838ADDC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 14:18:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A408E38ADC4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 14:14:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm80D38NTz30JY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 22:18:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm7vq4KgRz3089
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 22:14:31 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cR3MbNlH;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::330;
+ helo=mail-wm1-x330.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 488 seconds by postgrey-1.36 at boromir;
- Thu, 20 May 2021 22:18:00 AEST
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=cR3MbNlH; dkim-atps=neutral
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com
+ [IPv6:2a00:1450:4864:20::330])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm7zr32Mpz2xvG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 22:17:59 +1000 (AEST)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.4.141])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 9CBFAA60B8ED;
- Thu, 20 May 2021 14:09:43 +0200 (CEST)
-Received: from kaod.org (37.59.142.105) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.10; Thu, 20 May
- 2021 14:09:42 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-105G006626da0d7-f5c3-497a-ba31-8c8936d191c4,
- 2C87984337330801490BFDABE922B5CE11A7A10A) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 176.145.65.252
-Subject: Re: [PATCH 15/31] KVM: PPC: Book3S HV: XIVE: Fix mapping of
- passthrough interrupts
-To: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
-References: <20210430080407.4030767-1-clg@kaod.org>
- <20210430080407.4030767-16-clg@kaod.org>
- <87im3l2g48.ffs@nanos.tec.linutronix.de> <878s4g5lfs.wl-maz@kernel.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <638e0250-b8c3-33a4-1b88-02d29d7a80b0@kaod.org>
-Date: Thu, 20 May 2021 14:09:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm7vK6jPWz2xv2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 22:14:03 +1000 (AEST)
+Received: by mail-wm1-x330.google.com with SMTP id b7so8452376wmh.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 05:14:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=N+rsDWAMv4x1ZiNx5AapS5e6MR/cbmzAQ/wF+EUOxGU=;
+ b=cR3MbNlHRY+hSafJx7VAjfSope7BFgR94/44HuaDrveC1bGEnVAaWRp72T7xvM0XoU
+ OTDDqMvOLczZa0Yvp5vjEaVW5Exg5f5iypjfSszL7Pv/7/5oSjatQAHxdeMrD/CSxPmP
+ 8XbqrDRkkfYJAlnaICjiZD7MIHTWYiFNH0cEy/lXgNFMkwo28P57IbtdVRsrhxAn+q9p
+ S5SSJBsrkkm8/LbtosRlsbtzn7QgwanZfaqwoxfOHC69k6CHIljV5dyJ9RWYnRzTlG6R
+ v1m1BolGX8TjunA9APuGjMSeBGGGxaMaO6jVTKKwGm+M2rQw3SEwbNWRVcLOeUzuHSC3
+ YHhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=N+rsDWAMv4x1ZiNx5AapS5e6MR/cbmzAQ/wF+EUOxGU=;
+ b=W4FO2q6aQtZrvWw2+pibkOmmmMNbUK6r0bGuDgPjvBw7OWZWIe1hFp/83ey27CxaZa
+ wCl9EhpRcTNHqanXd3gHgpHwRbLE9H0uvvp8CSLekizodoFWeqzyhzgaOhQdxmd9Lr+N
+ WcHQPbEp5xnJHAf4OmukU1IUCK7PcZe8LGi1Vt375PWx7K2zyQs5rpE172gNUVAjVOrL
+ JV7cwgBlgbSxdQTXC2aYkv3fA4/O3D8dbXqsqOohD9qkAtwH+JQXIJeYSIAqX6XrdD36
+ o7YMtq9gSm+0Wwos4u15qAJEaK0jDnNjmT7Wsb/8Kc9Jr4y/9avs4rrH7/vtEyrVourL
+ 0I4Q==
+X-Gm-Message-State: AOAM531i1jveKc5ISzOl+JkHdnHMGNghm8iQRHNJonZnZqp1V68d2rGg
+ 9cbmgalp1wV9gYHx0ByMTw6Evg==
+X-Google-Smtp-Source: ABdhPJyASSt/x1V8q95MVvVq2U/YMyWW3NXlYBCB6FmxOMXdwlT2RPBDCPtfjX12ceL8X8BK7YpF8Q==
+X-Received: by 2002:a7b:c34a:: with SMTP id l10mr3390379wmj.46.1621512835550; 
+ Thu, 20 May 2021 05:13:55 -0700 (PDT)
+Received: from dell.default ([91.110.221.215])
+ by smtp.gmail.com with ESMTPSA id 61sm3393704wrm.52.2021.05.20.05.13.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 May 2021 05:13:55 -0700 (PDT)
+From: Lee Jones <lee.jones@linaro.org>
+To: lee.jones@linaro.org
+Subject: [PATCH 00/16] Rid W=1 warnings from Char
+Date: Thu, 20 May 2021 13:13:31 +0100
+Message-Id: <20210520121347.3467794-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <878s4g5lfs.wl-maz@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.105]
-X-ClientProxiedBy: DAG5EX2.mxp5.local (172.16.2.42) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: afaecca4-bc4a-4e53-bb12-1bd74470d8e1
-X-Ovh-Tracer-Id: 5874664239050492835
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdejuddggeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehmrgiisehkvghrnhgvlhdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,117 +78,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, David Airlie <airlied@linux.ie>,
+ Clemens Ladisch <clemens@ladisch.de>,
+ "C. Scott Ananian" <cananian@alumni.princeton.edu>,
+ Paul Mackerras <paulus@samba.org>, Kylene Hall <kjhall@us.ibm.com>,
+ Jerome Glisse <j.glisse@gmail.com>, Peter Huewe <peterhuewe@gmx.de>,
+ Michael Neuling <mikey@neuling.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Dave Safford <safford@watson.ibm.com>, Harald Welte <laforge@gnumonks.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kanoj Sarcar <kanoj@sgi.com>,
+ Bob Picco <robert.picco@hp.com>, Arnd Bergmann <arnd@arndb.de>,
+ linuxppc-dev@lists.ozlabs.org,
+ Thirupathaiah Annapureddy <thiruan@microsoft.com>,
+ "cs.c" <support.linux@omnikey.com>, Lijun Pan <ljp@linux.ibm.com>,
+ Reiner Sailer <sailer@watson.ibm.com>, Matt Mackall <mpm@selenic.com>,
+ van Doorn <leendert@watson.ibm.com>, Theodore Ts'o <tytso@mit.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ paulkf@microgate.com, Jarkko Sakkinen <jarkko@kernel.org>,
+ =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+ linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+ dwmw2@infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/15/21 12:40 PM, Marc Zyngier wrote:
-> On Fri, 14 May 2021 21:51:51 +0100,
-> Thomas Gleixner <tglx@linutronix.de> wrote:
->>
->> On Fri, Apr 30 2021 at 10:03, Cédric Le Goater wrote:
->>
->> CC: +Marc
-> 
-> Thanks Thomas.
-> 
->>
->>> PCI MSI interrupt numbers are now mapped in a PCI-MSI domain but the
->>> underlying calls handling the passthrough of the interrupt in the
->>> guest need a number in the XIVE IRQ domain.
->>>
->>> Use the IRQ data mapped in the XIVE IRQ domain and not the one in the
->>> PCI-MSI domain.
->>>
->>> Exporting irq_get_default_host() might not be the best solution.
->>>
->>> Cc: Thomas Gleixner <tglx@linutronix.de>
->>> Cc: Paul Mackerras <paulus@ozlabs.org>
->>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->>> ---
->>>  arch/powerpc/kvm/book3s_xive.c | 3 ++-
->>>  kernel/irq/irqdomain.c         | 1 +
->>>  2 files changed, 3 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
->>> index 3a7da42bed57..81b9f4fc3978 100644
->>> --- a/arch/powerpc/kvm/book3s_xive.c
->>> +++ b/arch/powerpc/kvm/book3s_xive.c
->>> @@ -861,7 +861,8 @@ int kvmppc_xive_set_mapped(struct kvm *kvm, unsigned long guest_irq,
->>>  	struct kvmppc_xive *xive = kvm->arch.xive;
->>>  	struct kvmppc_xive_src_block *sb;
->>>  	struct kvmppc_xive_irq_state *state;
->>> -	struct irq_data *host_data = irq_get_irq_data(host_irq);
->>> +	struct irq_data *host_data =
->>> +		irq_domain_get_irq_data(irq_get_default_host(), host_irq);
->>>  	unsigned int hw_irq = (unsigned int)irqd_to_hwirq(host_data);
->>>  	u16 idx;
->>>  	u8 prio;
->>> diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
->>> index d10ab1d689d5..8a073d1ce611 100644
->>> --- a/kernel/irq/irqdomain.c
->>> +++ b/kernel/irq/irqdomain.c
->>> @@ -481,6 +481,7 @@ struct irq_domain *irq_get_default_host(void)
->>>  {
->>>  	return irq_default_domain;
->>>  }
->>> +EXPORT_SYMBOL_GPL(irq_get_default_host);
->>>  
->>>  static void irq_domain_clear_mapping(struct irq_domain *domain,
->>>  				     irq_hw_number_t hwirq)
->>
-> 
-> Is there any reason why we should add more users of the "default host"
-> fallback? I would really hope that new code would actually track their
-> irqdomain in a more fine-grained way, specially when using the
-> hierarchical MSi setup, which seems to be the goal of this series.
-> 
-> Don't you have enough topology information that you can make use of to
-> correctly assign a domain identifier (of_node or otherwise)?
+This set is part of a larger effort attempting to clean-up W=1
+kernel builds, which are currently overwhelmingly riddled with
+niggly little warnings.
 
+Lee Jones (16):
+  char: pcmcia: cm4000_cs: Remove unused variable 'tmp'
+  char: pcmcia: cm4040_cs: Remove unused variable 'uc'
+  char: random: Include header containing our prototypes
+  char: pcmcia: synclink_cs: Fix a bunch of kernel-doc issues
+  char: pcmcia: synclink_cs: Fix a bunch of kernel-doc issues
+  char: applicom: Remove 3 unused variables 'ret' and 2 instances of
+    'byte_reset_it'
+  char: tpm: tpm1-cmd: Fix a couple of misnamed functions
+  char: tpm: tpm_ftpm_tee: Fix a couple of kernel-doc misdemeanours
+  char: agp: backend: Demote some non-conformant kernel-doc headers
+  char: agp: frontend: Include header file containing our prototypes
+  char: agp: via-agp: Remove unused variable 'current_size'
+  char: hpet: Remove unused variable 'm'
+  char: agp: generic: Place braces around optimised out function in if()
+  char: agp: uninorth-agp: Remove unused variable 'size'
+  char: hw_random: pseries-rng: Demote non-conformant kernel-doc header
+  char: mem: Provide local prototype for non-static function
 
-PHB have a node ID and this is taken into account by the MSI domains.
-However, one thing PPC (pSeries and PowerNV) lacks is an interrupt
-controller node per chip which makes the IRQ domain hierarchy a bit
-incomplete.
+ drivers/char/agp/backend.c           |  4 +-
+ drivers/char/agp/frontend.c          |  1 +
+ drivers/char/agp/generic.c           |  3 +-
+ drivers/char/agp/uninorth-agp.c      |  3 --
+ drivers/char/agp/via-agp.c           |  3 --
+ drivers/char/applicom.c              | 10 ++--
+ drivers/char/hpet.c                  |  4 +-
+ drivers/char/hw_random/pseries-rng.c |  2 +-
+ drivers/char/mem.c                   |  2 +
+ drivers/char/pcmcia/cm4000_cs.c      |  3 +-
+ drivers/char/pcmcia/cm4040_cs.c      |  3 +-
+ drivers/char/pcmcia/synclink_cs.c    | 74 +++++++++++++++-------------
+ drivers/char/random.c                |  1 +
+ drivers/char/tpm/tpm1-cmd.c          |  4 +-
+ drivers/char/tpm/tpm_ftpm_tee.c      |  6 +--
+ 15 files changed, 60 insertions(+), 63 deletions(-)
 
-It will be difficult to change the pseries platform (VM) since the
-PAPR architecture only specifies a single interrupt domain for the
-whole machine. The PowerNV platform is designed in a similar way
-(because the pseries platform preexisted) and the OPAL firmware hides
-the interrupt controllers of each chip behind a single node. The
-underlying topology is encoded in HW interrupt numbers. This is a bit
-unfortunate since some PowerNV Linux drivers need that information.
-Rewriting a new interrupt controller driver in OPAL would be a lot of
-work and it won't happen any time soon. But it's feasible.
-
-All that to say that we have a default IRQ domain on these platforms
-and not one  IRQ domain per node/chip.
-
-Also, there are two types of interrupt models to consider: the older
-XICS (for P8/P7 processors) and the newer XIVE (for P9/P10).
-
-Regarding MSI passthrough, the XIVE side is simpler (I can't believe I
-am saying that, XIVE is anything but simple) and I think we can rework
-kvmppc_xive_set_mapped() and xive_irq_set_vcpu_affinity() to remove
-the IRQ domain bypass. 
-
-XICS adds optimizations for passthrough done in real mode:
-
- e3c13e56a471 ("KVM: PPC: Book3S HV: Handle passthrough interrupts in guest")
- 5d375199ea96 ("KVM: PPC: Book3S HV: Set server for passed-through interrupts")
-
-That's a ~10% bandwidth improvements on CX5 adapters, it's good to
-have but they are much more complex to rework. I took some time to
-look for a solution for these because of the use of irq_to_desc() and
-the use of the host IRQ in the XICS domain which are ugly but nothing
-comes to mind yet.
-
-For the time being, I think these changes bypassing the IRQ domains
-are fine. I need some more time to mature an alternative.
-
-Thanks,
-
-C. 
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Bob Picco <robert.picco@hp.com>
+Cc: Clemens Ladisch <clemens@ladisch.de>
+Cc: "C. Scott Ananian" <cananian@alumni.princeton.edu>
+Cc: "cs.c" <support.linux@omnikey.com>
+Cc: Dave Safford <safford@watson.ibm.com>
+Cc: David Airlie <airlied@linux.ie>
+Cc: dwmw2@infradead.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Harald Welte <laforge@gnumonks.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jerome Glisse <j.glisse@gmail.com>
+Cc: Kanoj Sarcar <kanoj@sgi.com>
+Cc: Kylene Hall <kjhall@us.ibm.com>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Lijun Pan <ljp@linux.ibm.com>
+Cc: linux-crypto@vger.kernel.org
+Cc: linux-integrity@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Matt Mackall <mpm@selenic.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michael Neuling <mikey@neuling.org>
+Cc: paulkf@microgate.com
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Peter Huewe <peterhuewe@gmx.de>
+Cc: Reiner Sailer <sailer@watson.ibm.com>
+Cc: "Theodore Ts'o" <tytso@mit.edu>
+Cc: Thirupathaiah Annapureddy <thiruan@microsoft.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: "Uwe Kleine-König" <uwe@kleine-koenig.org>
+Cc: van Doorn <leendert@watson.ibm.com>
+-- 
+2.31.1
 
