@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A9C38A612
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 12:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2484538A613
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 12:24:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm5Rv4Dkjz3c0v
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 20:23:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fm5SG0ykKz3082
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 20:23:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,41 +16,40 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm5RK0L18z306G
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 20:23:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fm5RN4rF8z309g
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 20:23:12 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Fm5RB15MHz9sVj;
- Thu, 20 May 2021 12:23:02 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4Fm5RC5TXYz9sVv;
+ Thu, 20 May 2021 12:23:03 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id MHABFbcuXNWq; Thu, 20 May 2021 12:23:02 +0200 (CEST)
+ with ESMTP id 1MWlCUDGc9fC; Thu, 20 May 2021 12:23:03 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Fm5RB0BhMz9sVM;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Fm5RB5Y0pz9sVM;
  Thu, 20 May 2021 12:23:02 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A90A38B811;
- Thu, 20 May 2021 12:23:01 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A2FEA8B811;
+ Thu, 20 May 2021 12:23:02 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 70b0Ye7lVSFy; Thu, 20 May 2021 12:23:01 +0200 (CEST)
+ with ESMTP id x1AVz3B6ZgJe; Thu, 20 May 2021 12:23:02 +0200 (CEST)
 Received: from po15610vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.105])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 58BD98B80D;
- Thu, 20 May 2021 12:23:01 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5FC648B80D;
+ Thu, 20 May 2021 12:23:02 +0200 (CEST)
 Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 4206E64C44; Thu, 20 May 2021 10:23:01 +0000 (UTC)
-Message-Id: <ec34d92b7c2f810622261acfeeed4b0a0f4d01bd.1621506159.git.christophe.leroy@csgroup.eu>
+ id 4908C64C44; Thu, 20 May 2021 10:23:02 +0000 (UTC)
+Message-Id: <8c92f1d9e825ee47c6f88fe43ad42d2a8cc2ab4a.1621506159.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <5d146b31b943e7ad674894421db4feef54804b9b.1621506159.git.christophe.leroy@csgroup.eu>
 References: <5d146b31b943e7ad674894421db4feef54804b9b.1621506159.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v1 02/12] powerpc/opcodes: Add shorter macros for registers
- for use with PPC_RAW_xx()
+Subject: [PATCH v1 03/12] powerpc/lib/code-patching: Use PPC_RAW_() macros
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  naveen.n.rao@linux.vnet.ibm.com, jniethe5@gmail.com
-Date: Thu, 20 May 2021 10:23:01 +0000 (UTC)
+Date: Thu, 20 May 2021 10:23:02 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,66 +66,60 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Today we have __REG_Rx macros . They are mainly meant for
-internal use by macros __PPC_RA() and friends macros which
-allows uses like __PPC_RA(R12).
-
-When used with PPC_RAW_xx() macros, it gives a result which is
-not very readable.
-
-Add shorter macros _Rx in order to improve readability when
-used with PPC_RAW_xx() macros.
+Instead of open coding with PPC_INST_ defines, use
+PPC_RAW_() macros. It improves readability.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/ppc-opcode.h | 34 +++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ arch/powerpc/include/asm/code-patching.h | 12 +++++-------
+ arch/powerpc/kernel/trace/ftrace.c       |  2 +-
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-index 403067ba170e..efabbeb48f4e 100644
---- a/arch/powerpc/include/asm/ppc-opcode.h
-+++ b/arch/powerpc/include/asm/ppc-opcode.h
-@@ -76,6 +76,40 @@
- #define	__REGA0_R30	30
- #define	__REGA0_R31	31
+diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
+index f1d029bf906e..22957c6068c8 100644
+--- a/arch/powerpc/include/asm/code-patching.h
++++ b/arch/powerpc/include/asm/code-patching.h
+@@ -73,9 +73,9 @@ void __patch_exception(int exc, unsigned long addr);
+ #endif
  
-+/* For use with PPC_RAW_() macros */
-+#define	_R0	0
-+#define	_R1	1
-+#define	_R2	2
-+#define	_R3	3
-+#define	_R4	4
-+#define	_R5	5
-+#define	_R6	6
-+#define	_R7	7
-+#define	_R8	8
-+#define	_R9	9
-+#define	_R10	10
-+#define	_R11	11
-+#define	_R12	12
-+#define	_R13	13
-+#define	_R14	14
-+#define	_R15	15
-+#define	_R16	16
-+#define	_R17	17
-+#define	_R18	18
-+#define	_R19	19
-+#define	_R20	20
-+#define	_R21	21
-+#define	_R22	22
-+#define	_R23	23
-+#define	_R24	24
-+#define	_R25	25
-+#define	_R26	26
-+#define	_R27	27
-+#define	_R28	28
-+#define	_R29	29
-+#define	_R30	30
-+#define	_R31	31
-+
- #define IMM_L(i)               ((uintptr_t)(i) & 0xffff)
- #define IMM_DS(i)              ((uintptr_t)(i) & 0xfffc)
- #define IMM_DQ(i)              ((uintptr_t)(i) & 0xfff0)
+ #define OP_RT_RA_MASK	0xffff0000UL
+-#define LIS_R2		(PPC_INST_ADDIS | __PPC_RT(R2))
+-#define ADDIS_R2_R12	(PPC_INST_ADDIS | __PPC_RT(R2) | __PPC_RA(R12))
+-#define ADDI_R2_R2	(PPC_INST_ADDI  | __PPC_RT(R2) | __PPC_RA(R2))
++#define LIS_R2		(PPC_RAW_LIS(_R2, 0))
++#define ADDIS_R2_R12	(PPC_RAW_ADDIS(_R2, _R12, 0))
++#define ADDI_R2_R2	(PPC_RAW_ADDI(_R2, _R2, 0))
+ 
+ 
+ static inline unsigned long ppc_function_entry(void *func)
+@@ -180,12 +180,10 @@ static inline unsigned long ppc_kallsyms_lookup_name(const char *name)
+ #define R2_STACK_OFFSET         40
+ #endif
+ 
+-#define PPC_INST_LD_TOC		(PPC_INST_LD  | ___PPC_RT(__REG_R2) | \
+-				 ___PPC_RA(__REG_R1) | R2_STACK_OFFSET)
++#define PPC_INST_LD_TOC		PPC_RAW_LD(_R2, _R1, R2_STACK_OFFSET)
+ 
+ /* usually preceded by a mflr r0 */
+-#define PPC_INST_STD_LR		(PPC_INST_STD | ___PPC_RS(__REG_R0) | \
+-				 ___PPC_RA(__REG_R1) | PPC_LR_STKOFF)
++#define PPC_INST_STD_LR		PPC_RAW_STD(_R0, _R1, PPC_LR_STKOFF)
+ #endif /* CONFIG_PPC64 */
+ 
+ #endif /* _ASM_POWERPC_CODE_PATCHING_H */
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index ffe9537195aa..937220310f99 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -203,7 +203,7 @@ __ftrace_make_nop(struct module *mod,
+ 	}
+ 
+ 	if (!ppc_inst_equal(op,  ppc_inst(PPC_INST_LD_TOC))) {
+-		pr_err("Expected %08x found %s\n", PPC_INST_LD_TOC, ppc_inst_as_str(op));
++		pr_err("Expected %08lx found %s\n", PPC_INST_LD_TOC, ppc_inst_as_str(op));
+ 		return -EINVAL;
+ 	}
+ #endif /* CONFIG_MPROFILE_KERNEL */
 -- 
 2.25.0
 
