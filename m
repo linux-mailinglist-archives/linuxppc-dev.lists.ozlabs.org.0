@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FC638B083
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 15:52:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF8538B087
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 15:52:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmB4d08q4z3cDC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 23:52:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmB4y5wCJz3ccX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 May 2021 23:52:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,41 +16,41 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmB344drRz3btL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 23:50:56 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmB3854PHz3bvh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 23:51:00 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4FmB2t15v4z9sTf;
- Thu, 20 May 2021 15:50:46 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FmB2x1FX6z9sV0;
+ Thu, 20 May 2021 15:50:49 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 21_5S86CRXlc; Thu, 20 May 2021 15:50:46 +0200 (CEST)
+ with ESMTP id 9BEWmOeTRV8w; Thu, 20 May 2021 15:50:49 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4FmB2n5yy8z9sTW;
- Thu, 20 May 2021 15:50:41 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4FmB2q032xz9sTd;
+ Thu, 20 May 2021 15:50:43 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8C4B88B814;
- Thu, 20 May 2021 15:50:41 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C84ED8B819;
+ Thu, 20 May 2021 15:50:42 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id j0dMyGrBYeQj; Thu, 20 May 2021 15:50:41 +0200 (CEST)
+ with ESMTP id MnFqMZZHvmmN; Thu, 20 May 2021 15:50:42 +0200 (CEST)
 Received: from po15610vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.105])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 693A98B808;
- Thu, 20 May 2021 15:50:41 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5AF6D8B808;
+ Thu, 20 May 2021 15:50:42 +0200 (CEST)
 Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 332F764C40; Thu, 20 May 2021 13:50:41 +0000 (UTC)
-Message-Id: <d8b155e930b7a9708ca110e8ff0ace6713a7af75.1621516826.git.christophe.leroy@csgroup.eu>
+ id 39F5064C40; Thu, 20 May 2021 13:50:42 +0000 (UTC)
+Message-Id: <c9a1201dd0a66b4a0f91f0fb46d9385cbf030feb.1621516826.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1621516826.git.christophe.leroy@csgroup.eu>
 References: <cover.1621516826.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 04/12] powerpc/inst: Avoid pointer dereferencing in
- ppc_inst_equal()
+Subject: [PATCH v2 05/12] powerpc: Do not dereference code as 'struct
+ ppc_inst' (uprobe, code-patching, feature-fixups)
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  naveen.n.rao@linux.vnet.ibm.com, jniethe5@gmail.com
-Date: Thu, 20 May 2021 13:50:41 +0000 (UTC)
+Date: Thu, 20 May 2021 13:50:42 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,74 +67,87 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Avoid casting/dereferencing ppc_inst() as u64* , check each member
-of the struct when relevant.
+'struct ppc_inst' is an internal structure to represent an instruction,
+it is not directly the representation of that instruction in text code.
+It is not meant to map and dereference code.
 
-And remove the 0xff initialisation of the suffix for non
-prefixed instruction. An instruction with 0xff as a suffix
-might be invalid, but still is a prefixed instruction and
-has to be considered as this.
+Dereferencing code directly through 'struct ppc_inst' has two main issues:
+- On powerpc, structs are expected to be 8 bytes aligned while code is
+spread every 4 byte.
+- Should a non prefixed instruction lie at the end of the page and the
+following page not be mapped, it would generate a page fault.
+
+In-memory code must be accessed with ppc_inst_read().
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/inst.h | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ arch/powerpc/kernel/uprobes.c     | 2 +-
+ arch/powerpc/lib/code-patching.c  | 8 ++++----
+ arch/powerpc/lib/feature-fixups.c | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-index fc6adef528a5..5a0740ebf132 100644
---- a/arch/powerpc/include/asm/inst.h
-+++ b/arch/powerpc/include/asm/inst.h
-@@ -61,7 +61,7 @@ static inline int ppc_inst_primary_opcode(struct ppc_inst x)
- }
+diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
+index 186f69b11e94..46971bb41d05 100644
+--- a/arch/powerpc/kernel/uprobes.c
++++ b/arch/powerpc/kernel/uprobes.c
+@@ -42,7 +42,7 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe,
+ 		return -EINVAL;
  
- #ifdef CONFIG_PPC64
--#define ppc_inst(x) ((struct ppc_inst){ .val = (x), .suffix = 0xff })
-+#define ppc_inst(x) ((struct ppc_inst){ .val = (x) })
- 
- #define ppc_inst_prefix(x, y) ((struct ppc_inst){ .val = (x), .suffix = (y) })
- 
-@@ -72,7 +72,7 @@ static inline u32 ppc_inst_suffix(struct ppc_inst x)
- 
- static inline bool ppc_inst_prefixed(struct ppc_inst x)
+ 	if (cpu_has_feature(CPU_FTR_ARCH_31) &&
+-	    ppc_inst_prefixed(auprobe->insn) &&
++	    ppc_inst_prefixed(ppc_inst_read(&auprobe->insn)) &&
+ 	    (addr & 0x3f) == 60) {
+ 		pr_info_ratelimited("Cannot register a uprobe on 64 byte unaligned prefixed instruction\n");
+ 		return -EINVAL;
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 870b30d9be2f..0308429b0d1a 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -329,13 +329,13 @@ static unsigned long branch_iform_target(const struct ppc_inst *instr)
  {
--	return ppc_inst_primary_opcode(x) == OP_PREFIX && ppc_inst_suffix(x) != 0xff;
-+	return ppc_inst_primary_opcode(x) == OP_PREFIX;
- }
+ 	signed long imm;
  
- static inline struct ppc_inst ppc_inst_swab(struct ppc_inst x)
-@@ -93,11 +93,6 @@ static inline struct ppc_inst ppc_inst_read(const struct ppc_inst *ptr)
- 	}
- }
+-	imm = ppc_inst_val(*instr) & 0x3FFFFFC;
++	imm = ppc_inst_val(ppc_inst_read(instr)) & 0x3FFFFFC;
  
--static inline bool ppc_inst_equal(struct ppc_inst x, struct ppc_inst y)
--{
--	return *(u64 *)&x == *(u64 *)&y;
--}
--
- #else
+ 	/* If the top bit of the immediate value is set this is negative */
+ 	if (imm & 0x2000000)
+ 		imm -= 0x4000000;
  
- #define ppc_inst(x) ((struct ppc_inst){ .val = x })
-@@ -124,13 +119,17 @@ static inline struct ppc_inst ppc_inst_read(const struct ppc_inst *ptr)
- 	return *ptr;
- }
+-	if ((ppc_inst_val(*instr) & BRANCH_ABSOLUTE) == 0)
++	if ((ppc_inst_val(ppc_inst_read(instr)) & BRANCH_ABSOLUTE) == 0)
+ 		imm += (unsigned long)instr;
  
-+#endif /* CONFIG_PPC64 */
-+
- static inline bool ppc_inst_equal(struct ppc_inst x, struct ppc_inst y)
+ 	return (unsigned long)imm;
+@@ -345,13 +345,13 @@ static unsigned long branch_bform_target(const struct ppc_inst *instr)
  {
--	return ppc_inst_val(x) == ppc_inst_val(y);
-+	if (ppc_inst_val(x) != ppc_inst_val(y))
-+		return false;
-+	if (!ppc_inst_prefixed(x))
-+		return true;
-+	return ppc_inst_suffix(x) == ppc_inst_suffix(y);
- }
+ 	signed long imm;
  
--#endif /* CONFIG_PPC64 */
--
- static inline int ppc_inst_len(struct ppc_inst x)
- {
- 	return ppc_inst_prefixed(x) ? 8 : 4;
+-	imm = ppc_inst_val(*instr) & 0xFFFC;
++	imm = ppc_inst_val(ppc_inst_read(instr)) & 0xFFFC;
+ 
+ 	/* If the top bit of the immediate value is set this is negative */
+ 	if (imm & 0x8000)
+ 		imm -= 0x10000;
+ 
+-	if ((ppc_inst_val(*instr) & BRANCH_ABSOLUTE) == 0)
++	if ((ppc_inst_val(ppc_inst_read(instr)) & BRANCH_ABSOLUTE) == 0)
+ 		imm += (unsigned long)instr;
+ 
+ 	return (unsigned long)imm;
+diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
+index fe26f2fa0f3f..8905b53109bc 100644
+--- a/arch/powerpc/lib/feature-fixups.c
++++ b/arch/powerpc/lib/feature-fixups.c
+@@ -51,7 +51,7 @@ static int patch_alt_instruction(struct ppc_inst *src, struct ppc_inst *dest,
+ 
+ 	instr = ppc_inst_read(src);
+ 
+-	if (instr_is_relative_branch(*src)) {
++	if (instr_is_relative_branch(ppc_inst_read(src))) {
+ 		struct ppc_inst *target = (struct ppc_inst *)branch_target(src);
+ 
+ 		/* Branch within the section doesn't need translating */
 -- 
 2.25.0
 
