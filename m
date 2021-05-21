@@ -2,37 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8404F38BF3A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 317DB38C007
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:50:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fmc4N3vRvz30DG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 16:23:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmcgM1gF7z2y88
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 16:50:23 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k/i2Nm0O;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=k/i2Nm0O; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fmc3y1XQsz2xfY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 16:23:09 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id C508C6736F; Fri, 21 May 2021 08:23:01 +0200 (CEST)
-Date: Fri, 21 May 2021 08:23:01 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Coly Li <colyli@suse.de>
-Subject: Re: [PATCH 12/26] bcache: convert to blk_alloc_disk/blk_cleanup_disk
-Message-ID: <20210521062301.GA10244@lst.de>
-References: <20210521055116.1053587-1-hch@lst.de>
- <20210521055116.1053587-13-hch@lst.de>
- <d4f1c005-2ce0-51b5-c861-431f0ffb3dcf@suse.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fmcfb3Fxbz2xvZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 16:49:42 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14L6YFmR106565; Fri, 21 May 2021 02:49:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=fhRc3BkXCs3ZqMsO26JgcfxuYISciLEocDO32kiLUWQ=;
+ b=k/i2Nm0Oi9o8kGP8g7Uuzye/y397+fbwTLGXeZWkjlmInePly0qwchqcLZrC6c5a1Wtn
+ VkgR3lNKCmfCZPWCHJx9dJIiEtgejv6VoRcfwGp8jvytNLRcOfg/yoiKflHGWU3b5VHe
+ yKcNEb8mSfSkuXRUkXH2bJ3B0egnLsn7l0s+jcO+S8ZHNAu8cQ3WtsU5agmBPhAj03J+
+ ASPonm5kg85EWnxjExIid8fIMBolQCVQpp57xIGcw5LqfDTlV7j8I88ZzrVOLMKSes8H
+ n9sqizXMHniMUW1qoqbwRZ9XT3OBmCSfVugEIgErLJwBFT2ZvDUQQrzNzgntIwAmL/X2 Kg== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38p7pkrbuj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 21 May 2021 02:49:09 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14L6mrrq013764;
+ Fri, 21 May 2021 06:49:06 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 38j5x7u06n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 21 May 2021 06:49:06 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14L6n4bD24248738
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 21 May 2021 06:49:04 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 628464204D;
+ Fri, 21 May 2021 06:49:04 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 50D5E4204B;
+ Fri, 21 May 2021 06:49:01 +0000 (GMT)
+Received: from naverao1-tp.in.ibm.com (unknown [9.85.72.15])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 21 May 2021 06:49:00 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Steven Rostedt <rostedt@goodmis.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Suchanek <msuchanek@suse.de>, Torsten Duwe <duwe@suse.de>
+Subject: [RFC PATCH 0/6] powerpc: Stack tracer fixes
+Date: Fri, 21 May 2021 12:18:35 +0530
+Message-Id: <cover.1621577151.git.naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d4f1c005-2ce0-51b5-c861-431f0ffb3dcf@suse.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: EAPLSbJ8WZVe1n9DKp4hOH65WZwc9nj8
+X-Proofpoint-ORIG-GUID: EAPLSbJ8WZVe1n9DKp4hOH65WZwc9nj8
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-21_03:2021-05-20,
+ 2021-05-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0
+ phishscore=0 impostorscore=0 bulkscore=0 clxscore=1011 suspectscore=0
+ spamscore=0 mlxlogscore=999 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105210043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,36 +97,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>,
- Mike Snitzer <snitzer@redhat.com>, linux-nvme@lists.infradead.org,
- Philipp Reisner <philipp.reisner@linbit.com>,
- Max Filippov <jcmvbkbc@gmail.com>, dm-devel@redhat.com,
- Joshua Morris <josh.h.morris@us.ibm.com>, drbd-dev@lists.linbit.com,
- linux-s390@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>,
- Maxim Levitsky <maximlevitsky@gmail.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Christoph Hellwig <hch@lst.de>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Matias Bjorling <mb@lightnvm.io>,
- Nitin Gupta <ngupta@vflare.org>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-xtensa@linux-xtensa.org, Alex Dubov <oakad@yahoo.com>,
- Heiko Carstens <hca@linux.ibm.com>, linux-raid@vger.kernel.org,
- linux-bcache@vger.kernel.org, linux-block@vger.kernel.org,
- Philip Kelleher <pjk1939@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, Jens Axboe <axboe@kernel.dk>,
- Chris Zankel <chris@zankel.net>, Song Liu <song@kernel.org>,
- linux-mmc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- Jim Paris <jim@jtan.com>, Minchan Kim <minchan@kernel.org>,
- Lars Ellenberg <lars.ellenberg@linbit.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 21, 2021 at 02:15:32PM +0800, Coly Li wrote:
-> The  above 2 lines are added on purpose to prevent an refcount
-> underflow. It is from commit 86da9f736740 ("bcache: fix refcount
-> underflow in bcache_device_free()").
-> 
-> Maybe add a parameter to blk_cleanup_disk() or checking (disk->flags &
-> GENHD_FL_UP) inside blk_cleanup_disk() ?
+While the stack tracer worked fine with ppc64 ELFv1 ABI, it was never 
+ported/enabled to run properly with ppc64 ELFv2 ABI, -mprofile-kernel in 
+particular. The primary issue is that the call to ftrace happens before 
+a function sets up its own stackframe. Due to this, the traced function 
+never shows up in the stack trace. This produces confusing results, 
+especially with the stack trace filter and is evident with the selftest 
+failure. This is also an issue on ppc32.
 
-Please take a look at patch 4 in the series.
+The first two commits add support to the stack tracer for powerpc. This 
+support utilizes the powerpc ABI to produce reliable stack traces, as 
+well as to determine stackframe sizes.
+
+Patches 3, 4 and 6 add support for decoding the traced function name in 
+various stack traces and to show the same.
+
+Patch 5 makes this change for livepatching and I am a bit unsure of this 
+change. More details in patch 5.
+
+- Naveen
+
+
+Naveen N. Rao (6):
+  trace/stack: Move code to save the stack trace into a separate
+    function
+  powerpc/trace: Add support for stack tracer
+  powerpc: Indicate traced function name in show_stack()
+  powerpc/perf: Include traced function in the callchain
+  powerpc/stacktrace: Include ftraced function in
+    arch_stack_walk_reliable()
+  powerpc/stacktrace: Include ftraced function in arch_stack_walk()
+
+ arch/powerpc/include/asm/ftrace.h  | 18 ++++++
+ arch/powerpc/kernel/process.c      |  3 +
+ arch/powerpc/kernel/stacktrace.c   |  8 +++
+ arch/powerpc/kernel/trace/ftrace.c | 70 +++++++++++++++++++++
+ arch/powerpc/perf/callchain.c      |  5 ++
+ include/linux/ftrace.h             |  8 +++
+ kernel/trace/trace_stack.c         | 98 ++++++++++++++++--------------
+ 7 files changed, 164 insertions(+), 46 deletions(-)
+
+
+base-commit: 258eb1f3aaa9face35e613c229c1337263491ea0
+-- 
+2.30.2
+
