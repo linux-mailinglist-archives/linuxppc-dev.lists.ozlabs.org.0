@@ -1,103 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B1A38BCF5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 05:29:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F87D38BEA1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 07:53:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmXCg3JQwz3btF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 13:29:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmbPQ3xrFz3c4S
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 15:53:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZMqfIB5M;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=yVac5N8y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+940d4f53d1157bf1ee93+6480+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ZMqfIB5M; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=yVac5N8y; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmXC869MZz2xYp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 13:29:08 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14L332Ff086023; Thu, 20 May 2021 23:28:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=BDtIoiQUxTbyuOnUSSwWoQxRurIDpZufH5SHZlL8KTE=;
- b=ZMqfIB5M+8xgYXRKbOt3QMqPkC5PYovlRT/7/pRR5G8olB5YaaSnFt6zhn4pBEVryDcW
- W2VfftM1U0Ni9WsHl8Ye8Ir5vyTL34KAMGCx/4vfHPLXGXqZtP7ca1XiiDb10JJOV0AP
- /v5WSpYyDRTQM9M0XEPDufs9TGhsBMoaSvpsMM34RE0lc14f4FgsJVqsoKim7YhaaJ6d
- LGaRbkI53qx35r0MbkQFkj284L0AneZf71qukKXD54fbvaCtQHvhuqsK0xqjU43JOFQM
- TKrzL15YUvkNU9lzlhKJczl/JNiKybyW0n+2SUqKtIKFSyOlcInHzQ8vgPPXPSE6P4xK ZA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38p2kujmbf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 May 2021 23:28:57 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14L3Os1R159886;
- Thu, 20 May 2021 23:28:56 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38p2kujmbb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 May 2021 23:28:56 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14L3SUX4015605;
- Fri, 21 May 2021 03:28:56 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma01wdc.us.ibm.com with ESMTP id 38j5x9mqdg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 03:28:56 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14L3StHs31261138
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 May 2021 03:28:55 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CBCE3AE063;
- Fri, 21 May 2021 03:28:55 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C1A04AE068;
- Fri, 21 May 2021 03:28:52 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.42.28])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 21 May 2021 03:28:52 +0000 (GMT)
-X-Mailer: emacs 28.0.50 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v5 7/9] mm/mremap: Move TLB flush outside page table lock
-In-Reply-To: <f676b053-bda4-a1f5-321e-f00fb3de8a40@linux.ibm.com>
-References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
- <20210422054323.150993-8-aneesh.kumar@linux.ibm.com>
- <b3047082-fc82-b326-dbdb-835b88df78d0@linux.ibm.com>
- <2eafd7df-65fd-1e2c-90b6-d143557a1fdc@linux.ibm.com>
- <CAHk-=wjq8thag3uNv-2MMu75OgX5ybMon7gZDUHYwzeTwcZHoA@mail.gmail.com>
- <f676b053-bda4-a1f5-321e-f00fb3de8a40@linux.ibm.com>
-Date: Fri, 21 May 2021 08:58:50 +0530
-Message-ID: <877djsn4st.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbMv2S9Fz2yyM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 15:51:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=1uf84BS8Q7NSBXg1yQR5EC+qaCg2ZgLYmuXoDkaPjCQ=; b=yVac5N8yUOzpUTxL5O1tvL86te
+ m3UAUEPJY/af59veHnMPwBOnJ7BRLcZrKIKt8Dh7YPbjkftLfLGTS4VhKOyyyjq3VjpC44ktitdB9
+ IGcelhE3Oa213g7yVLse3bazcfqBPE0AjzvZkAoIGc9XTXbidpJpsbluOmOOc3JrOP6KXc8MYblK4
+ oHQQgY+u4rceYmhcSMGEEbuC03JwZPicLhzcbKv5cdyhrdklHJY1gLYGuEEO6TAkLoGvvppviy5Hp
+ K3tkB8PLSkhH6CJEnd2fuR+rb3FAaFtYutga3kk4PwncNu4+e+dofRaE7iKfkJNVvZr+BYooXFvLx
+ bVfJReyA==;
+Received: from [2001:4bb8:180:5add:4fd7:4137:d2f2:46e6] (helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1ljy3s-00Gpw6-Eq; Fri, 21 May 2021 05:51:04 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Jens Axboe <axboe@kernel.dk>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+ Philipp Reisner <philipp.reisner@linbit.com>,
+ Lars Ellenberg <lars.ellenberg@linbit.com>, Jim Paris <jim@jtan.com>,
+ Joshua Morris <josh.h.morris@us.ibm.com>,
+ Philip Kelleher <pjk1939@linux.ibm.com>, Minchan Kim <minchan@kernel.org>,
+ Nitin Gupta <ngupta@vflare.org>, Matias Bjorling <mb@lightnvm.io>,
+ Coly Li <colyli@suse.de>, Mike Snitzer <snitzer@redhat.com>,
+ Song Liu <song@kernel.org>, Maxim Levitsky <maximlevitsky@gmail.com>,
+ Alex Dubov <oakad@yahoo.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>
+Subject: simplify gendisk and request_queue allocation for bio based drivers
+Date: Fri, 21 May 2021 07:50:35 +0200
+Message-Id: <20210521055102.1053529-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: X-WFiMnOPC3rVK5TMEXJKbgXIMiaQPMS
-X-Proofpoint-ORIG-GUID: jGoVescxMIQr_u6OvbdRbUNwbY03BzW7
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-21_02:2021-05-20,
- 2021-05-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 mlxscore=0 mlxlogscore=999 phishscore=0 spamscore=0
- malwarescore=0 bulkscore=0 clxscore=1015 suspectscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105210021
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,88 +75,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
- Kalesh Singh <kaleshsingh@google.com>, Joel Fernandes <joel@joelfernandes.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-bcache@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ linux-raid@vger.kernel.org, nvdimm@lists.linux.dev, linux-s390@vger.kernel.org,
+ linux-mmc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-nvme@lists.infradead.org, linux-block@vger.kernel.org,
+ dm-devel@redhat.com,
+ "open list:PS3 PLATFORM SUPPORT" <linuxppc-dev@lists.ozlabs.org>,
+ drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+Hi all,
 
-> On 5/21/21 8:10 AM, Linus Torvalds wrote:
->> On Thu, May 20, 2021 at 6:57 AM Aneesh Kumar K.V
->> <aneesh.kumar@linux.ibm.com> wrote:
->>>
->>> Wondering whether this is correct considering we are holding mmap_sem in
->>> write mode in mremap.
->> 
->> Right. So *normally* the rule is to EITHER
->> 
->>   - hold the mmap_sem for writing
->> 
->> OR
->> 
->>   - hold the page table lock
->> 
->> and that the TLB flush needs to happen before you release that lock.
->> 
->> But as that commit message of commit eb66ae030829 ("mremap: properly
->> flush TLB before releasing the page") says, "mremap()" is a bit
->> special. It's special because mremap() didn't take ownership of the
->> page - it only moved it somewhere else. So now the page-out logic -
->> that relies on the page table lock - can free the page immediately
->> after we've released the page table lock.
->> 
->> So basically, in order to delay the TLB flush after releasing the page
->> table lock, it's not really sufficient to _just_ hold the mmap_sem for
->> writing. You also need to guarantee that the lifetime of the page
->> itself is held until after the TLB flush.
->> 
->> For normal operations like "munmap()", this happens naturally, because
->> we remove the page from the page table, and add it to the list of
->> pages to be freed after the TLB flush.
->> 
->> But mremap never did that "remove the page and add it to a list to be
->> free'd later". Instead, it just moved the page somewhere else. And
->> thus there is no guarantee that the page that got moved will continue
->> to exist until a TLB flush is done.
->> 
->> So mremap does need to flush the TLB before releasing the page table
->> lock, because that's the lifetime boundary for the page that got
->> moved.
->
-> How will we avoid that happening with 
-> c49dd340180260c6239e453263a9a244da9a7c85 / 
-> 2c91bd4a4e2e530582d6fd643ea7b86b27907151 . The commit improves mremap 
-> performance by moving level3/level2 page table entries. When doing so we 
-> are not holding level 4 ptl lock (pte_lock()). But rather we are holding 
-> pmd_lock or pud_lock(). So if we move pages around without holding the 
-> pte lock, won't the above issue happen even if we do a tlb flush with 
-> holding pmd lock/pud lock?
+this series is the first part of cleaning up lifetimes and allocation of
+the gendisk and request_queue structure.  It adds a new interface to
+allocate the disk and queue together for bio based drivers, and a helper
+for cleanup/free them when a driver is unloaded or a device is removed.
 
-This should help? ie, we flush tlb before we move pagetables to the new
-address? 
+Together this removes the need to treat the gendisk and request_queue
+as separate entities for bio based drivers.
 
-modified   mm/mremap.c
-@@ -277,11 +277,14 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 	/* Clear the pmd */
- 	pmd = *old_pmd;
- 	pmd_clear(old_pmd);
--
-+	/*
-+	 * flush the TLB before we move the page table entries.
-+	 * TLB flush includes necessary barriers.
-+	 */
-+	flush_pte_tlb_pwc_range(vma, old_addr, old_addr + PMD_SIZE);
- 	VM_BUG_ON(!pmd_none(*new_pmd));
- 	pmd_populate(mm, new_pmd, pmd_pgtable(pmd));
- 
--	flush_pte_tlb_pwc_range(vma, old_addr, old_addr + PMD_SIZE);
- 	if (new_ptl != old_ptl)
- 		spin_unlock(new_ptl);
- 	spin_unlock(old_ptl);
-
-
--aneesh
+Diffstat:
+ arch/m68k/emu/nfblock.c             |   20 +---
+ arch/xtensa/platforms/iss/simdisk.c |   29 +------
+ block/blk-core.c                    |    1 
+ block/blk.h                         |    6 -
+ block/genhd.c                       |  149 +++++++++++++++++++-----------------
+ block/partitions/core.c             |   19 ++--
+ drivers/block/brd.c                 |   94 +++++++---------------
+ drivers/block/drbd/drbd_main.c      |   23 +----
+ drivers/block/n64cart.c             |    8 -
+ drivers/block/null_blk/main.c       |   38 ++++-----
+ drivers/block/pktcdvd.c             |   11 --
+ drivers/block/ps3vram.c             |   31 +------
+ drivers/block/rsxx/dev.c            |   39 +++------
+ drivers/block/rsxx/rsxx_priv.h      |    1 
+ drivers/block/zram/zram_drv.c       |   19 ----
+ drivers/lightnvm/core.c             |   24 +----
+ drivers/md/bcache/super.c           |   15 ---
+ drivers/md/dm.c                     |   16 +--
+ drivers/md/md.c                     |   25 ++----
+ drivers/memstick/core/ms_block.c    |    1 
+ drivers/nvdimm/blk.c                |   27 +-----
+ drivers/nvdimm/btt.c                |   25 +-----
+ drivers/nvdimm/btt.h                |    2 
+ drivers/nvdimm/pmem.c               |   17 +---
+ drivers/nvme/host/core.c            |    1 
+ drivers/nvme/host/multipath.c       |   46 +++--------
+ drivers/s390/block/dcssblk.c        |   26 +-----
+ drivers/s390/block/xpram.c          |   26 ++----
+ include/linux/blkdev.h              |    1 
+ include/linux/genhd.h               |   23 +++++
+ 30 files changed, 297 insertions(+), 466 deletions(-)
