@@ -2,81 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1508238BF24
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BF538BF2B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:16:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fmbsn6hkZz3cGC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 16:14:21 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=ZcDfkX6D;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fmbvs1rf1z3byK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 16:16:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::235;
- helo=mail-lj1-x235.google.com; envelope-from=torvalds@linuxfoundation.org;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=ZcDfkX6D; 
- dkim-atps=neutral
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com
- [IPv6:2a00:1450:4864:20::235])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbsG5tvvz2xZp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 16:13:54 +1000 (AEST)
-Received: by mail-lj1-x235.google.com with SMTP id s25so22583896ljo.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 23:13:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=JYeTnt817j0hDOsZg2+6QbAqKD9XseJ4wF7q34isKW0=;
- b=ZcDfkX6DiOjHo/ORJtlZsNPW3AhYiDjdZv3t2+5SASSeC3nXlV3uPxfkE1ZzgFGi7n
- QP3Etv5YCRCh3Mk1agO/XzUjJQ/5zQ030ZiFzpg0YzWVlRUbdXyrgWvYRnu1xLwm4PWT
- 1FT1Cxm2cKaLXtGFxz2BVR6Q9tQIL3TmwHeJA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=JYeTnt817j0hDOsZg2+6QbAqKD9XseJ4wF7q34isKW0=;
- b=phLF08dQGe4iTOYWwyxAdrEZFsntuGlhvLcd5JyxNA9qt24HaB4eHYTKh9W+7zwKx6
- M8Wm+hBTTauCMEqTDawWd+AunMQMxzxe1R9ZtR7Iz0GNUOOp4zXlvhECCF7YH4kcdjOn
- 7Lfv4QTGVGG9WnEHVskr9VdkwJ3pQ0w7rNj204boazqjrbzbhErqkxdlikDf6Z0ial6R
- KeXh4/epv7bZAVK+F70t4KNZLcsknMZqaOo1mDmKl5Lc2PuONs8QIQcKTnDIo5bi4+O2
- 0yuyR/046gW3bOx5ko7m45bD80MT7NjNtxm0s+S0iW3V1tkiXKsJdEzQWTjz+TGOuHsv
- MAeQ==
-X-Gm-Message-State: AOAM5335DW2iQ8qsM1gNDG0JUpQumBBg0LLMWgXz80BjdKOvListsecA
- S8zmlG6f+mxhFxrwqV0vd3eFVkq0DainPX3A
-X-Google-Smtp-Source: ABdhPJybosm86UNyha/BbNnH4D5yfZIjDL8WuaPCxbWEflc/dvFAT4zf7ptoChzWwLfZPZy1+Uj8Cg==
-X-Received: by 2002:a2e:b0d0:: with SMTP id g16mr5793206ljl.390.1621577629777; 
- Thu, 20 May 2021 23:13:49 -0700 (PDT)
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com.
- [209.85.167.42])
- by smtp.gmail.com with ESMTPSA id v1sm518670lfg.141.2021.05.20.23.13.48
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 May 2021 23:13:49 -0700 (PDT)
-Received: by mail-lf1-f42.google.com with SMTP id a2so27973359lfc.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 23:13:48 -0700 (PDT)
-X-Received: by 2002:ac2:4a9d:: with SMTP id l29mr1012167lfp.201.1621577628649; 
- Thu, 20 May 2021 23:13:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbvP5SsWz2xYp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 16:15:45 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id C9DB4AC87;
+ Fri, 21 May 2021 06:15:41 +0000 (UTC)
+To: Christoph Hellwig <hch@lst.de>
+References: <20210521055116.1053587-1-hch@lst.de>
+ <20210521055116.1053587-13-hch@lst.de>
+From: Coly Li <colyli@suse.de>
+Subject: Re: [PATCH 12/26] bcache: convert to blk_alloc_disk/blk_cleanup_disk
+Message-ID: <d4f1c005-2ce0-51b5-c861-431f0ffb3dcf@suse.de>
+Date: Fri, 21 May 2021 14:15:32 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.10.1
 MIME-Version: 1.0
-References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
- <20210422054323.150993-8-aneesh.kumar@linux.ibm.com>
- <b3047082-fc82-b326-dbdb-835b88df78d0@linux.ibm.com>
- <2eafd7df-65fd-1e2c-90b6-d143557a1fdc@linux.ibm.com>
- <CAHk-=wjq8thag3uNv-2MMu75OgX5ybMon7gZDUHYwzeTwcZHoA@mail.gmail.com>
- <f676b053-bda4-a1f5-321e-f00fb3de8a40@linux.ibm.com>
-In-Reply-To: <f676b053-bda4-a1f5-321e-f00fb3de8a40@linux.ibm.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 20 May 2021 20:13:32 -1000
-X-Gmail-Original-Message-ID: <CAHk-=wgXVR04eBNtxQfevontWnP6FDm+oj5vauQXP3S-huwbPw@mail.gmail.com>
-Message-ID: <CAHk-=wgXVR04eBNtxQfevontWnP6FDm+oj5vauQXP3S-huwbPw@mail.gmail.com>
-Subject: Re: [PATCH v5 7/9] mm/mremap: Move TLB flush outside page table lock
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210521055116.1053587-13-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,81 +47,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
- Kalesh Singh <kaleshsingh@google.com>, Joel Fernandes <joel@joelfernandes.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: nvdimm@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>,
+ Mike Snitzer <snitzer@redhat.com>, linux-nvme@lists.infradead.org,
+ Philipp Reisner <philipp.reisner@linbit.com>, Song Liu <song@kernel.org>,
+ dm-devel@redhat.com, Joshua Morris <josh.h.morris@us.ibm.com>,
+ drbd-dev@lists.linbit.com, linux-s390@vger.kernel.org,
+ Dave Jiang <dave.jiang@intel.com>, Maxim Levitsky <maximlevitsky@gmail.com>,
+ Vishal Verma <vishal.l.verma@intel.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Matias Bjorling <mb@lightnvm.io>,
+ Nitin Gupta <ngupta@vflare.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-xtensa@linux-xtensa.org, Alex Dubov <oakad@yahoo.com>,
+ Heiko Carstens <hca@linux.ibm.com>, linux-raid@vger.kernel.org,
+ linux-bcache@vger.kernel.org, linux-block@vger.kernel.org,
+ Philip Kelleher <pjk1939@linux.ibm.com>,
+ Dan Williams <dan.j.williams@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+ linux-mmc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ Jim Paris <jim@jtan.com>, Minchan Kim <minchan@kernel.org>,
+ Lars Ellenberg <lars.ellenberg@linbit.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 20, 2021 at 5:03 PM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 5/21/21 8:10 AM, Linus Torvalds wrote:
-> >
-> > So mremap does need to flush the TLB before releasing the page table
-> > lock, because that's the lifetime boundary for the page that got
-> > moved.
->
-> How will we avoid that happening with
-> c49dd340180260c6239e453263a9a244da9a7c85 /
-> 2c91bd4a4e2e530582d6fd643ea7b86b27907151 . The commit improves mremap
-> performance by moving level3/level2 page table entries. When doing so we
-> are not holding level 4 ptl lock (pte_lock()). But rather we are holding
-> pmd_lock or pud_lock(). So if we move pages around without holding the
-> pte lock, won't the above issue happen even if we do a tlb flush with
-> holding pmd lock/pud lock?
+On 5/21/21 1:51 PM, Christoph Hellwig wrote:
+> Convert the bcache driver to use the blk_alloc_disk and blk_cleanup_disk
+> helpers to simplify gendisk and request_queue allocation.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  drivers/md/bcache/super.c | 15 ++++-----------
+>  1 file changed, 4 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+> index bea8c4429ae8..185246a0d855 100644
+> --- a/drivers/md/bcache/super.c
+> +++ b/drivers/md/bcache/super.c
+> @@ -890,13 +890,9 @@ static void bcache_device_free(struct bcache_device *d)
+>  		if (disk_added)
+>  			del_gendisk(disk);
+>  
+> -		if (disk->queue)
+> -			blk_cleanup_queue(disk->queue);
+> -
+> +		blk_cleanup_disk(disk);
+>  		ida_simple_remove(&bcache_device_idx,
+>  				  first_minor_to_idx(disk->first_minor));
+> -		if (disk_added)
+> -			put_disk(disk);
 
-Hmm. Interesting.
+The  above 2 lines are added on purpose to prevent an refcount
+underflow. It is from commit 86da9f736740 ("bcache: fix refcount
+underflow in bcache_device_free()").
 
-Your patch (to flush the TLB after clearing the old location, and
-before inserting it into the new one) looks like an "obvious" fix.
+Maybe add a parameter to blk_cleanup_disk() or checking (disk->flags &
+GENHD_FL_UP) inside blk_cleanup_disk() ?
 
-But I'm putting that "obvious" in quotes, because I'm now wondering if
-it actually fixes anything.
+Coly Li
 
-Lookie here:
 
- - CPU1 does a mremap of a pmd or pud.
+>  	}
+>  
+>  	bioset_exit(&d->bio_split);
+> @@ -946,7 +942,7 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
+>  			BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER))
+>  		goto err;
+>  
+> -	d->disk = alloc_disk(BCACHE_MINORS);
+> +	d->disk = blk_alloc_disk(NUMA_NO_NODE);
+>  	if (!d->disk)
+>  		goto err;
+>  
+> @@ -955,14 +951,11 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
+>  
+>  	d->disk->major		= bcache_major;
+>  	d->disk->first_minor	= idx_to_first_minor(idx);
+> +	d->disk->minors		= BCACHE_MINORS;
+>  	d->disk->fops		= ops;
+>  	d->disk->private_data	= d;
+>  
+> -	q = blk_alloc_queue(NUMA_NO_NODE);
+> -	if (!q)
+> -		return -ENOMEM;
+> -
+> -	d->disk->queue			= q;
+> +	q = d->disk->queue;
+>  	q->limits.max_hw_sectors	= UINT_MAX;
+>  	q->limits.max_sectors		= UINT_MAX;
+>  	q->limits.max_segment_size	= UINT_MAX;
+> 
 
-    It clears the old pmd/pud, flushes the old TLB range, and then
-inserts the pmd/pud at the new location.
+The rested looks fine to me.
 
- - CPU2 does a page shrinker, which calls try_to_unmap, which calls
-try_to_unmap_one.
+Thanks.
 
-These are entirely asynchronous, because they have no shared lock. The
-mremap uses the pmd lock, the try_to_unmap_one() does the rmap walk,
-which does the pte lock.
-
-Now, imagine that the following ordering happens with the two
-operations above, and a CPU3 that does accesses:
-
- - CPU2 follows (and sees) the old page tables in the old location and
-the took the pte lock
-
- - the mremap on CPU1 starts - cleared the old pmd, flushed the tlb,
-*and* inserts in the new place.
-
- - a user thread on CPU3 accesses the new location and fills the TLB
-of the *new* address
-
- - only now does CPU2 get to the "pte_get_and_clear()" to remove one page
-
- - CPU2 does a TLB flush and frees the page
-
-End result:
-
- - both CPU1 _and_ CPU2 have flushed the TLB.
-
- - but both flushed the *OLD* address
-
- - the page is freed
-
- - CPU3 still has the stale TLB entry pointing to the page that is now
-free and might be reused for something else
-
-Am I missing something?
-
-               Linus
+Coly Li
