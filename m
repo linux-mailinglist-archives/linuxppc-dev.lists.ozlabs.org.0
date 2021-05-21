@@ -1,84 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A00E838C36A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 11:39:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A17C38C36D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 11:39:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmhQD42nMz3c2h
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 19:39:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmhQt41Qdz3c58
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 19:39:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ssHPUPhF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IcXM3OXZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ssHPUPhF; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=IcXM3OXZ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmhPl5m36z2xxk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 19:38:51 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14L9YKRE135909; Fri, 21 May 2021 05:38:44 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmhQR4kQpz2yWK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 19:39:27 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14L9YEP9175177; Fri, 21 May 2021 05:39:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : subject :
  from : to : cc : date : in-reply-to : references : content-type :
  mime-version : content-transfer-encoding; s=pp1;
- bh=6qpsYRM7SdSzsr/04hAGbz0BvbpaZjVFG1T/rcUESMg=;
- b=ssHPUPhFqrZZqOslu+ukYiL7IHU7br0MuPzPdXcr4mo8TPk6WwnG+n3JdUNrVhUpRHBj
- of4VisSHIi1o64f8KD9mRZ0EmS2Yht3IkQZLBWeaFMuKZ17me7L5GH3zrnWl9GMGkFRk
- XeetKeKX7mixz/t/L/dMtWmbPElu7whNQFmn9FvIxTRuogndKRIPTrafnMOIIsZ9JzWk
- AFC6phFhKbt7hlxUqkMRDS+Op0DNVX+cxK3fVmr5GUfe7VI8iDh4huJf0w/azk7n6SVn
- HXiSfucCIWv68sgps2BEOY7N7wFNMsgYDDQhdaK26zB1BzR7Fa47GzE8D+AY/xft8RaM Fg== 
+ bh=gcAQ3ZEjixB7Vmk+mCTeGe5mnwr0OfTzHDi7YupFGFo=;
+ b=IcXM3OXZns8vM2JILvXwpMDicsoTSTWTJ7I2Wogk6x+U2XOz5BNEzaZiDKkyNvWLCp6V
+ aviTcF7IaS/FgmetpBbPjrPWkyB8NgEWrrU9lhCsqCsYu6+YzKEjzO1RCo/2FXntnKnw
+ Ny1fLPKbDu9cMnMxppznFjIW0tQK5fJwkM4H45nByZEGzRnC4F2mtf12H6V2SFpGtu7z
+ LlcmuJeQykvG/YbUt+ItURw7AexBCr6X1px1pGEkbwFAAFb9Mn4kFuKYkhn9nlFPQgUN
+ k510RT+vcnt3n+9QapRTRnhbkw0HrGueWDdZ34lJR2glXrvtQzoy8vxDCZAKsiHYu3FO sw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38pa92g7nn-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38p4bfh68h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 05:38:44 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14L9ZK22142931;
- Fri, 21 May 2021 05:38:44 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38pa92g7nd-1
+ Fri, 21 May 2021 05:39:21 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14L9ZqXl183334;
+ Fri, 21 May 2021 05:39:21 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38p4bfh680-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 05:38:44 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14L9X57G003222;
- Fri, 21 May 2021 09:38:43 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma05wdc.us.ibm.com with ESMTP id 38j7tbp2vw-1
+ Fri, 21 May 2021 05:39:20 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14L9X0hg015062;
+ Fri, 21 May 2021 09:39:19 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma04wdc.us.ibm.com with ESMTP id 38j5x9xk6c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 09:38:43 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14L9chYB30933498
+ Fri, 21 May 2021 09:39:19 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14L9dJDj23789848
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 May 2021 09:38:43 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 27B2EB2065;
- Fri, 21 May 2021 09:38:43 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D6DD4B205F;
- Fri, 21 May 2021 09:38:41 +0000 (GMT)
+ Fri, 21 May 2021 09:39:19 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 49E2AAC05F;
+ Fri, 21 May 2021 09:39:19 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5C81DAC059;
+ Fri, 21 May 2021 09:39:18 +0000 (GMT)
 Received: from sig-9-65-94-165.ibm.com (unknown [9.65.94.165])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 21 May 2021 09:38:41 +0000 (GMT)
-Message-ID: <38548221cc275e0ab7c88fc545fb2f087830af3a.camel@linux.ibm.com>
-Subject: [PATCH v4 10/16] powerpc/pseries/vas: Implement getting
- capabilities from hypervisor
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 21 May 2021 09:39:18 +0000 (GMT)
+Message-ID: <9adb88bca74e927f97e29b3ad8415f284ae5b1dc.camel@linux.ibm.com>
+Subject: [PATCH v4 11/16] powerpc/pseries/vas: Integrate API with open/close
+ windows
 From: Haren Myneni <haren@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
  mpe@ellerman.id.au, herbert@gondor.apana.org.au, npiggin@gmail.com
-Date: Fri, 21 May 2021 02:38:39 -0700
+Date: Fri, 21 May 2021 02:39:16 -0700
 In-Reply-To: <8d219c0816133a8643d650709066cf04c9c77322.camel@linux.ibm.com>
 References: <8d219c0816133a8643d650709066cf04c9c77322.camel@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -86,17 +86,17 @@ User-Agent: Evolution 3.36.2 (3.36.2-1.fc32)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: U8vppd0CtucjqDK9B6bUQDshxRJYI5d7
-X-Proofpoint-GUID: ad4lcpXEwQZzKCkc9p0i5g35Vwz0UeMf
+X-Proofpoint-ORIG-GUID: 5wAd6AVjNHfFSl7eciDNqZ-y2xZOrlr1
+X-Proofpoint-GUID: eI9ccRccGGJO0DMqolWH5_Cq1nWO2Lny
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-05-21_03:2021-05-20,
  2021-05-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- phishscore=0 mlxlogscore=999 spamscore=0 clxscore=1015 lowpriorityscore=0
- adultscore=0 impostorscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2105210061
+ mlxlogscore=999
+ malwarescore=0 phishscore=0 bulkscore=0 spamscore=0 suspectscore=0
+ mlxscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104190000 definitions=main-2105210061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,165 +113,277 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-The hypervisor provides VAS capabilities for GZIP default and QoS
-features. These capabilities gives information for the specific
-features such as total number of credits available in LPAR,
-maximum credits allowed per window, maximum credits allowed in
-LPAR, whether usermode copy/paste is supported, and etc.
+This patch adds VAS window allocatioa/close with the corresponding
+HCALLs. Also changes to integrate with the existing user space VAS
+API and provide register/unregister functions to NX pseries driver.
 
-This patch adds the following:
-- Retrieve all features that are provided by hypervisor using
-  H_QUERY_VAS_CAPABILITIES hcall with 0 as feature type.
-- Retrieve capabilities for the specific feature using the same
-  hcall and the feature type (1 for QoS and 2 for default type).
+The driver register function is used to create the user space
+interface (/dev/crypto/nx-gzip) and unregister to remove this entry.
+
+The user space process opens this device node and makes an ioctl
+to allocate VAS window. The close interface is used to deallocate
+window.
 
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 ---
- arch/powerpc/platforms/pseries/vas.c | 127 +++++++++++++++++++++++++++
- 1 file changed, 127 insertions(+)
+ arch/powerpc/include/asm/vas.h          |   5 +
+ arch/powerpc/platforms/pseries/Makefile |   1 +
+ arch/powerpc/platforms/pseries/vas.c    | 217 ++++++++++++++++++++++++
+ 3 files changed, 223 insertions(+)
 
+diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
+index 371f62d99174..d38372bcb3f8 100644
+--- a/arch/powerpc/include/asm/vas.h
++++ b/arch/powerpc/include/asm/vas.h
+@@ -279,6 +279,11 @@ struct vas_all_caps {
+ 	u64     feat_type;
+ };
+ 
++int plpar_vas_query_capabilities(const u64 hcall, u8 query_type,
++				 u64 result);
++int vas_register_api_pseries(struct module *mod,
++			     enum vas_cop_type cop_type, const char *name);
++void vas_unregister_api_pseries(void);
+ #endif
+ 
+ /*
+diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
+index c8a2b0b05ac0..4cda0ef87be0 100644
+--- a/arch/powerpc/platforms/pseries/Makefile
++++ b/arch/powerpc/platforms/pseries/Makefile
+@@ -30,3 +30,4 @@ obj-$(CONFIG_PPC_SVM)		+= svm.o
+ obj-$(CONFIG_FA_DUMP)		+= rtas-fadump.o
+ 
+ obj-$(CONFIG_SUSPEND)		+= suspend.o
++obj-$(CONFIG_PPC_VAS)		+= vas.o
 diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 06960151477c..9976f6b614b9 100644
+index 9976f6b614b9..ef0c455f6e93 100644
 --- a/arch/powerpc/platforms/pseries/vas.c
 +++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -30,6 +30,13 @@
- /* phyp allows one credit per window right now */
- #define DEF_WIN_CREDS		1
- 
-+static struct vas_all_caps caps_all;
-+static bool copypaste_feat;
-+
-+static struct vas_caps vascaps[VAS_MAX_FEAT_TYPE];
-+
-+static DEFINE_MUTEX(vas_pseries_mutex);
-+
- static int64_t hcall_return_busy_check(int64_t rc)
- {
- 	/* Check if we are stalled for some time */
-@@ -215,3 +222,123 @@ int plpar_vas_query_capabilities(const u64 hcall, u8 query_type,
+@@ -222,6 +222,223 @@ int plpar_vas_query_capabilities(const u64 hcall, u8 query_type,
  		return -EIO;
  	}
  }
++EXPORT_SYMBOL_GPL(plpar_vas_query_capabilities);
 +
 +/*
-+ * Get the specific capabilities based on the feature type.
-+ * Right now supports GZIP default and GZIP QoS capabilities.
++ * Allocate window and setup IRQ mapping.
 + */
-+static int get_vas_capabilities(u8 feat, enum vas_cop_feat_type type,
-+				struct hv_vas_ct_caps *hv_caps)
++static int allocate_setup_window(struct vas_window *txwin,
++				 u64 *domain, u8 wintype)
 +{
-+	struct vas_ct_caps *caps;
-+	struct vas_caps *vcaps;
-+	int rc = 0;
++	int rc;
 +
-+	vcaps = &vascaps[type];
-+	memset(vcaps, 0, sizeof(*vcaps));
-+	INIT_LIST_HEAD(&vcaps->list);
-+
-+	caps = &vcaps->caps;
-+
-+	rc = plpar_vas_query_capabilities(H_QUERY_VAS_CAPABILITIES, feat,
-+					  (u64)virt_to_phys(hv_caps));
++	rc = plpar_vas_allocate_window(txwin, domain, wintype, DEF_WIN_CREDS);
 +	if (rc)
 +		return rc;
 +
-+	caps->user_mode = hv_caps->user_mode;
-+	if (!(caps->user_mode & VAS_COPY_PASTE_USER_MODE)) {
-+		pr_err("User space COPY/PASTE is not supported\n");
-+		return -ENOTSUPP;
-+	}
-+
-+	snprintf(caps->name, VAS_DESCR_LEN + 1, "%.8s",
-+		 (char *)&hv_caps->descriptor);
-+	caps->descriptor = be64_to_cpu(hv_caps->descriptor);
-+	caps->win_type = hv_caps->win_type;
-+	if (caps->win_type >= VAS_MAX_FEAT_TYPE) {
-+		pr_err("Unsupported window type %u\n", caps->win_type);
-+		return -EINVAL;
-+	}
-+	caps->max_lpar_creds = be16_to_cpu(hv_caps->max_lpar_creds);
-+	caps->max_win_creds = be16_to_cpu(hv_caps->max_win_creds);
-+	atomic_set(&caps->target_lpar_creds,
-+		   be16_to_cpu(hv_caps->target_lpar_creds));
-+	if (feat == VAS_GZIP_DEF_FEAT) {
-+		caps->def_lpar_creds = be16_to_cpu(hv_caps->def_lpar_creds);
-+
-+		if (caps->max_win_creds < DEF_WIN_CREDS) {
-+			pr_err("Window creds(%u) > max allowed window creds(%u)\n",
-+			       DEF_WIN_CREDS, caps->max_win_creds);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	copypaste_feat = true;
++	txwin->wcreds_max = DEF_WIN_CREDS;
 +
 +	return 0;
 +}
 +
-+static int __init pseries_vas_init(void)
++static struct vas_window *vas_allocate_window(struct vas_tx_win_open_attr *uattr,
++					      enum vas_cop_type cop_type)
 +{
-+	struct hv_vas_ct_caps *hv_ct_caps;
-+	struct hv_vas_all_caps *hv_caps;
++	long domain[PLPAR_HCALL9_BUFSIZE] = {VAS_DEFAULT_DOMAIN_ID};
++	struct vas_ct_caps *ct_caps;
++	struct vas_caps *caps;
++	struct vas_window *txwin;
 +	int rc;
 +
++	txwin = kzalloc(sizeof(*txwin), GFP_KERNEL);
++	if (!txwin)
++		return ERR_PTR(-ENOMEM);
++
 +	/*
-+	 * Linux supports user space COPY/PASTE only with Radix
++	 * A VAS window can have many credits which means that many
++	 * requests can be issued simultaneously. But phyp restricts
++	 * one credit per window.
++	 * phyp introduces 2 different types of credits:
++	 * Default credit type (Uses normal priority FIFO):
++	 *	A limited number of credits are assigned to partitions
++	 *	based on processor entitlement. But these credits may be
++	 *	over-committed on a system depends on whether the CPUs
++	 *	are in shared or dedicated modes - that is, more requests
++	 *	may be issued across the system than NX can service at
++	 *	once which can result in paste command failure (RMA_busy).
++	 *	Then the process has to resend requests or fall-back to
++	 *	SW compression.
++	 * Quality of Service (QoS) credit type (Uses high priority FIFO):
++	 *	To avoid NX HW contention, the system admins can assign
++	 *	QoS credits for each LPAR so that this partition is
++	 *	guaranteed access to NX resources. These credits are
++	 *	assigned to partitions via the HMC.
++	 *	Refer PAPR for more information.
++	 *
++	 * Allocate window with QoS credits if user requested. Otherwise
++	 * default credits are used.
 +	 */
-+	if (!radix_enabled()) {
-+		pr_err("API is supported only with radix page tables\n");
-+		return -ENOTSUPP;
++	if (uattr->flags & VAS_TX_WIN_FLAG_QOS_CREDIT)
++		caps = &vascaps[VAS_GZIP_QOS_FEAT_TYPE];
++	else
++		caps = &vascaps[VAS_GZIP_DEF_FEAT_TYPE];
++
++	ct_caps = &caps->caps;
++
++	if (atomic_inc_return(&ct_caps->used_lpar_creds) >
++			atomic_read(&ct_caps->target_lpar_creds)) {
++		pr_err("Credits are not available to allocate window\n");
++		rc = -EINVAL;
++		goto out;
 +	}
 +
-+	hv_caps = kmalloc(sizeof(*hv_caps), GFP_KERNEL);
-+	if (!hv_caps)
-+		return -ENOMEM;
 +	/*
-+	 * Get VAS overall capabilities by passing 0 to feature type.
++	 * The user space is requesting to allocate a window on a VAS
++	 * instance (or chip) where the process is executing.
++	 * On powerVM, domain values are passed to pHyp to select chip /
++	 * VAS instance. Useful if the process is affinity to NUMA node.
++	 * pHyp selects VAS instance if VAS_DEFAULT_DOMAIN_ID (-1) is
++	 * passed for domain values.
 +	 */
-+	rc = plpar_vas_query_capabilities(H_QUERY_VAS_CAPABILITIES, 0,
-+					  (u64)virt_to_phys(hv_caps));
++	if (uattr->vas_id == -1) {
++		/*
++		 * To allocate VAS window, pass same domain values returned
++		 * from this HCALL.
++		 */
++		rc = plpar_hcall9(H_HOME_NODE_ASSOCIATIVITY, domain,
++				  VPHN_FLAG_VCPU, smp_processor_id());
++		if (rc != H_SUCCESS) {
++			pr_err("HCALL(%x): failed with ret(%d)\n",
++			       H_HOME_NODE_ASSOCIATIVITY, rc);
++			goto out;
++		}
++	}
++
++	/*
++	 * Allocate / Deallocate window HCALLs and setup / free IRQs
++	 * have to be protected with mutex.
++	 * Open VAS window: Allocate window HCALL and setup IRQ
++	 * Close VAS window: Deallocate window HCALL and free IRQ
++	 *	The hypervisor waits until all NX requests are
++	 *	completed before closing the window. So expects OS
++	 *	to handle NX faults, means IRQ can be freed only
++	 *	after the deallocate window HCALL is returned.
++	 * So once the window is closed with deallocate HCALL before
++	 * the IRQ is freed, it can be assigned to new allocate
++	 * HCALL with the same fault IRQ by the hypervisor. It can
++	 * result in setup IRQ fail for the new window since the
++	 * same fault IRQ is not freed by the OS.
++	 */
++	mutex_lock(&vas_pseries_mutex);
++	rc = allocate_setup_window(txwin, (u64 *)&domain[0],
++				   ct_caps->win_type);
++	mutex_unlock(&vas_pseries_mutex);
 +	if (rc)
 +		goto out;
 +
-+	snprintf(caps_all.name, VAS_DESCR_LEN, "%.7s",
-+		 (char *)&hv_caps->descriptor);
-+	caps_all.descriptor = be64_to_cpu(hv_caps->descriptor);
-+	caps_all.feat_type = be64_to_cpu(hv_caps->feat_type);
-+
-+	hv_ct_caps = kmalloc(sizeof(*hv_ct_caps), GFP_KERNEL);
-+	if (!hv_ct_caps) {
-+		rc = -ENOMEM;
-+		goto out;
-+	}
 +	/*
-+	 * QOS capabilities available
++	 * Modify window and it is ready to use.
 +	 */
-+	if (caps_all.feat_type & VAS_GZIP_QOS_FEAT_BIT) {
-+		rc = get_vas_capabilities(VAS_GZIP_QOS_FEAT,
-+					  VAS_GZIP_QOS_FEAT_TYPE, hv_ct_caps);
++	rc = plpar_vas_modify_window(txwin);
++	if (!rc)
++		rc = vas_reference_pid_mm(&txwin->task_ref);
++	if (rc)
++		goto out_free;
 +
-+		if (rc)
-+			goto out_ct;
-+	}
-+	/*
-+	 * Default capabilities available
-+	 */
-+	if (caps_all.feat_type & VAS_GZIP_DEF_FEAT_BIT) {
-+		rc = get_vas_capabilities(VAS_GZIP_DEF_FEAT,
-+					  VAS_GZIP_DEF_FEAT_TYPE, hv_ct_caps);
-+		if (rc)
-+			goto out_ct;
-+	}
++	txwin->lpar.win_type = ct_caps->win_type;
++	mutex_lock(&vas_pseries_mutex);
++	list_add(&txwin->lpar.win_list, &caps->list);
++	mutex_unlock(&vas_pseries_mutex);
 +
-+	pr_info("GZIP feature is available\n");
++	return txwin;
 +
-+out_ct:
-+	kfree(hv_ct_caps);
++out_free:
++	plpar_vas_deallocate_window(txwin->winid);
 +out:
-+	kfree(hv_caps);
++	atomic_dec(&ct_caps->used_lpar_creds);
++	kfree(txwin);
++	return ERR_PTR(rc);
++}
++
++static u64 vas_paste_address(void *addr)
++{
++	struct vas_window *win = addr;
++
++	return win->lpar.win_addr;
++}
++
++static int deallocate_free_window(struct vas_window *win)
++{
++	int rc = 0;
++
++	rc = plpar_vas_deallocate_window(win->winid);
++
 +	return rc;
 +}
-+machine_device_initcall(pseries, pseries_vas_init);
++
++static int vas_deallocate_window(void *addr)
++{
++	struct vas_window *win = (struct vas_window *)addr;
++	struct vas_ct_caps *caps;
++	int rc = 0;
++
++	if (!win)
++		return -EINVAL;
++
++	/* Should not happen */
++	if (win->lpar.win_type >= VAS_MAX_FEAT_TYPE) {
++		pr_err("Window (%u): Invalid window type %u\n",
++				win->winid, win->lpar.win_type);
++		return -EINVAL;
++	}
++
++	caps = &vascaps[win->lpar.win_type].caps;
++	mutex_lock(&vas_pseries_mutex);
++	rc = deallocate_free_window(win);
++	if (rc) {
++		mutex_unlock(&vas_pseries_mutex);
++		return rc;
++	}
++
++	list_del(&win->lpar.win_list);
++	atomic_dec(&caps->used_lpar_creds);
++	mutex_unlock(&vas_pseries_mutex);
++
++	vas_drop_reference_pid_mm(&win->task_ref);
++
++	kfree(win);
++	return 0;
++}
++
++static struct vas_user_win_ops vops_pseries = {
++	.open_win	= vas_allocate_window,	/* Open and configure window */
++	.paste_addr	= vas_paste_address,	/* To do copy/paste */
++	.close_win	= vas_deallocate_window, /* Close window */
++};
++
++/*
++ * Supporting only nx-gzip coprocessor type now, but this API code
++ * extended to other coprocessor types later.
++ */
++int vas_register_api_pseries(struct module *mod, enum vas_cop_type cop_type,
++			     const char *name)
++{
++	int rc;
++
++	if (!copypaste_feat)
++		return -ENOTSUPP;
++
++	rc = vas_register_coproc_api(mod, cop_type, name, &vops_pseries);
++
++	return rc;
++}
++EXPORT_SYMBOL_GPL(vas_register_api_pseries);
++
++void vas_unregister_api_pseries(void)
++{
++	vas_unregister_coproc_api();
++}
++EXPORT_SYMBOL_GPL(vas_unregister_api_pseries);
+ 
+ /*
+  * Get the specific capabilities based on the feature type.
 -- 
 2.18.2
 
