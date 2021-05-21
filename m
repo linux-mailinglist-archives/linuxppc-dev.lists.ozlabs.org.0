@@ -2,95 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B70138C314
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 11:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6972838C326
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 11:31:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmhBp71npz3c0L
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 19:29:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmhDx320Rz3btv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 19:31:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iR3HEmec;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P5ocjvpn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=iR3HEmec; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=P5ocjvpn; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmhBH2663z302W
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 19:28:54 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmhDR18bZz2xvc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 19:30:46 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14L92uAL182996; Fri, 21 May 2021 05:28:39 -0400
+ 14L942x1055978; Fri, 21 May 2021 05:30:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=foFX5uG2drEyduNJ3Tgh1RU5ffaSklAThpUPDcjCejw=;
- b=iR3HEmecJCYALqf73H+Jxh2aRzaY2BUjJpl2PjRQE8Uqn8N3+/elO8LxravkuqUXOhNq
- vSV9BJJvpyRNNrTPS651w5p1JZHXPbWR8mwPZRBAt6YZJRejt30iGsDY7WBpLnOWPkIJ
- LBZXTsC3QRnwJZqICKxzA+MZcP2qGmOwlY0bhoiM/UIPCpmpusJGf7ClvjZ97Q5cTXX+
- mTiiyp8yOgs01mzPBFgmcToPfzBmvsQGJNYdux0/PQ1GrSn5py7DJabe4jqL24pGUcQR
- jDHp8nUIOkF0IUvdJM5EmADwK0g1M4QeDu/+l5NYuoHjfzc7V4fhDUWOUbjnF5sfSRZX ag== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38p9kvs3tf-1
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=x7QU9NTpAp3HyPx6jpSHnUv3olMqJJPp0fMyEyuap6g=;
+ b=P5ocjvpnge4OEx1vdCLT5FBB3hgPkZ5ZNrHbnt6OyTcbvuV6CJiABj9oyFBTIkdfj289
+ iPlH9aTYU+mxVF8FYwDidylwM6pwwO3vAI3iUcU7h91ui0J0dKGkcNZB84Dx2RPJbklz
+ etbLJcp4xI4lvl5sirik/w6H/xVBpObXrt0FAW7BpP9/9LmL78HTKTpR1SOZ4RfiskJ4
+ 86q+9oI/vAjyiTLvCRc9AUjMeGkbN7M4KN2K4fjUcZ8vUcnIMHvYGwJwnFiEMmuskayv
+ B+lSUVZFbATLWZdAMhBYbyOKdPXhph9QdfrF3B6Zm3cnberAjA8fjsMIdpBreAjz0KAB 3A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38p4bfgy6h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 05:28:39 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14L9EIHg005473;
- Fri, 21 May 2021 09:28:37 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06fra.de.ibm.com with ESMTP id 38j5jh1q1v-1
+ Fri, 21 May 2021 05:30:39 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14L95moC066070;
+ Fri, 21 May 2021 05:30:38 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38p4bfgy68-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 09:28:37 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14L9SYjU58261988
+ Fri, 21 May 2021 05:30:38 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14L9DgS0014021;
+ Fri, 21 May 2021 09:30:37 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma03dal.us.ibm.com with ESMTP id 38j5xaa5d9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 21 May 2021 09:30:37 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14L9UaZq28246498
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 May 2021 09:28:34 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E48C44C040;
- Fri, 21 May 2021 09:28:33 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 750024C04A;
- Fri, 21 May 2021 09:28:31 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri, 21 May 2021 09:28:31 +0000 (GMT)
-Date: Fri, 21 May 2021 14:58:30 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 1/3] sched/topology: Allow archs to populate distance map
-Message-ID: <20210521092830.GF2633526@linux.vnet.ibm.com>
-References: <20210520154427.1041031-1-srikar@linux.vnet.ibm.com>
- <20210520154427.1041031-2-srikar@linux.vnet.ibm.com>
- <YKaw33d71FpHjGnR@hirez.programming.kicks-ass.net>
- <20210521023802.GE2633526@linux.vnet.ibm.com>
- <YKdr0g6+eIHncqej@hirez.programming.kicks-ass.net>
+ Fri, 21 May 2021 09:30:36 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 76B4CB2066;
+ Fri, 21 May 2021 09:30:36 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 731A4B2064;
+ Fri, 21 May 2021 09:30:35 +0000 (GMT)
+Received: from sig-9-65-94-165.ibm.com (unknown [9.65.94.165])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 21 May 2021 09:30:35 +0000 (GMT)
+Message-ID: <f4fb4b7bb98580ae3c025d83148a6406541de892.camel@linux.ibm.com>
+Subject: [PATCH v4 03/16] powerpc/vas: Add platform specific user window
+ operations
+From: Haren Myneni <haren@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
+ mpe@ellerman.id.au, herbert@gondor.apana.org.au, npiggin@gmail.com
+Date: Fri, 21 May 2021 02:30:33 -0700
+In-Reply-To: <8d219c0816133a8643d650709066cf04c9c77322.camel@linux.ibm.com>
+References: <8d219c0816133a8643d650709066cf04c9c77322.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <YKdr0g6+eIHncqej@hirez.programming.kicks-ass.net>
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PPkuMta7RXpOMjsA5m7WIph8DClgTN0C
-X-Proofpoint-ORIG-GUID: PPkuMta7RXpOMjsA5m7WIph8DClgTN0C
+X-Proofpoint-ORIG-GUID: qIDOychJVE6Z-xMZhW2dqstXyLU7T4xT
+X-Proofpoint-GUID: sg11XH0HZRb1lh02lIKg8VJH4c1NcgyT
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-05-21_03:2021-05-20,
  2021-05-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=978
- impostorscore=0 suspectscore=0 clxscore=1015 bulkscore=0 adultscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105210059
+ mlxlogscore=999
+ malwarescore=0 phishscore=0 bulkscore=0 spamscore=0 suspectscore=0
+ mlxscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104190000 definitions=main-2105210059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,109 +108,250 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
- linuxppc-dev@lists.ozlabs.org, Scott Cheloha <cheloha@linux.ibm.com>,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
- LKML <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Mel Gorman <mgorman@techsingularity.net>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Peter Zijlstra <peterz@infradead.org> [2021-05-21 10:14:10]:
 
-> On Fri, May 21, 2021 at 08:08:02AM +0530, Srikar Dronamraju wrote:
-> > * Peter Zijlstra <peterz@infradead.org> [2021-05-20 20:56:31]:
-> > 
-> > > On Thu, May 20, 2021 at 09:14:25PM +0530, Srikar Dronamraju wrote:
-> > > > Currently scheduler populates the distance map by looking at distance
-> > > > of each node from all other nodes. This should work for most
-> > > > architectures and platforms.
-> > > > 
-> > > > However there are some architectures like POWER that may not expose
-> > > > the distance of nodes that are not yet onlined because those resources
-> > > > are not yet allocated to the OS instance. Such architectures have
-> > > > other means to provide valid distance data for the current platform.
-> > > > 
-> > > > For example distance info from numactl from a fully populated 8 node
-> > > > system at boot may look like this.
-> > > > 
-> > > > node distances:
-> > > > node   0   1   2   3   4   5   6   7
-> > > >   0:  10  20  40  40  40  40  40  40
-> > > >   1:  20  10  40  40  40  40  40  40
-> > > >   2:  40  40  10  20  40  40  40  40
-> > > >   3:  40  40  20  10  40  40  40  40
-> > > >   4:  40  40  40  40  10  20  40  40
-> > > >   5:  40  40  40  40  20  10  40  40
-> > > >   6:  40  40  40  40  40  40  10  20
-> > > >   7:  40  40  40  40  40  40  20  10
-> > > > 
-> > > > However the same system when only two nodes are online at boot, then the
-> > > > numa topology will look like
-> > > > node distances:
-> > > > node   0   1
-> > > >   0:  10  20
-> > > >   1:  20  10
-> > > > 
-> > > > It may be implementation dependent on what node_distance(0,3) where
-> > > > node 0 is online and node 3 is offline. In POWER case, it returns
-> > > > LOCAL_DISTANCE(10). Here at boot the scheduler would assume that the max
-> > > > distance between nodes is 20. However that would not be true.
-> > > > 
-> > > > When Nodes are onlined and CPUs from those nodes are hotplugged,
-> > > > the max node distance would be 40.
-> > > > 
-> > > > To handle such scenarios, let scheduler allow architectures to populate
-> > > > the distance map. Architectures that like to populate the distance map
-> > > > can overload arch_populate_distance_map().
-> > > 
-> > > Why? Why can't your node_distance() DTRT? The arch interface is
-> > > nr_node_ids and node_distance(), I don't see why we need something new
-> > > and then replace one special use of it.
-> > > 
-> > > By virtue of you being able to actually implement this new hook, you
-> > > supposedly can actually do node_distance() right too.
-> > 
-> > Since for an offline node, arch interface code doesn't have the info.
-> > As far as I know/understand, in POWER, unless there is an active memory or
-> > CPU that's getting onlined, arch can't fetch the correct node distance.
-> > 
-> > Taking the above example: node 3 is offline, then node_distance of (3,X)
-> > where X is anything other than 3, is not reliable. The moment node 3 is
-> > onlined, the node distance is reliable.
-> > 
-> > This problem will not happen even on POWER if all the nodes have either
-> > memory or CPUs active at the time of boot.
-> 
-> But then how can you implement this new hook? Going by the fact that
-> both nr_node_ids and distance_ref_points_depth are fixed, how many
-> possible __node_distance() configurations are there left?
-> 
+PowerNV uses registers to open/close VAS windows, and getting the
+paste address. Whereas the hypervisor calls are used on PowerVM.
 
-distance_ref_point_depth is provided as a different property and is readily
-available at boot. The new api will use just use that. So based on the
-distance_ref_point_depth, we know all possible node distances for that
-platform.
+This patch adds the platform specific user space window operations
+and register with the common VAS user space interface.
 
-For an offline node, we don't have that specific nodes distance_lookup_table
-array entries. Each array would be of distance_ref_point_depth entries.
-Without the distance_lookup_table for an array populated, we will not be
-able to tell how far the node is with respect to other nodes.
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+---
+ arch/powerpc/include/asm/vas.h              | 14 +++++-
+ arch/powerpc/platforms/book3s/vas-api.c     | 52 ++++++++++++---------
+ arch/powerpc/platforms/powernv/vas-window.c | 46 +++++++++++++++++-
+ 3 files changed, 89 insertions(+), 23 deletions(-)
 
-We can lookup the correct distance_lookup_table for a node based on memory
-or the CPUs attached to that node. Since in an offline node, both of them
-would not be around, the distance_lookup_table will have stale values.
-
-> The example provided above does not suggest there's much room for
-> alternatives, and hence for actual need of this new interface.
-> 
-
+diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
+index 6076adf9ab4f..668303198772 100644
+--- a/arch/powerpc/include/asm/vas.h
++++ b/arch/powerpc/include/asm/vas.h
+@@ -5,6 +5,7 @@
+ 
+ #ifndef _ASM_POWERPC_VAS_H
+ #define _ASM_POWERPC_VAS_H
++#include <uapi/asm/vas-api.h>
+ 
+ struct vas_window;
+ 
+@@ -48,6 +49,16 @@ enum vas_cop_type {
+ 	VAS_COP_TYPE_MAX,
+ };
+ 
++/*
++ * User space window operations used for powernv and powerVM
++ */
++struct vas_user_win_ops {
++	struct vas_window * (*open_win)(struct vas_tx_win_open_attr *,
++				enum vas_cop_type);
++	u64 (*paste_addr)(void *);
++	int (*close_win)(void *);
++};
++
+ /*
+  * Receive window attributes specified by the (in-kernel) owner of window.
+  */
+@@ -177,7 +188,8 @@ void vas_unregister_api_powernv(void);
+  * used for others in future.
+  */
+ int vas_register_coproc_api(struct module *mod, enum vas_cop_type cop_type,
+-				const char *name);
++			    const char *name,
++			    struct vas_user_win_ops *vops);
+ void vas_unregister_coproc_api(void);
+ 
+ #endif /* __ASM_POWERPC_VAS_H */
+diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
+index 72c126d87216..6c39320bfb9b 100644
+--- a/arch/powerpc/platforms/book3s/vas-api.c
++++ b/arch/powerpc/platforms/book3s/vas-api.c
+@@ -42,6 +42,7 @@ static struct coproc_dev {
+ 	dev_t devt;
+ 	struct class *class;
+ 	enum vas_cop_type cop_type;
++	struct vas_user_win_ops *vops;
+ } coproc_device;
+ 
+ struct coproc_instance {
+@@ -72,11 +73,10 @@ static int coproc_open(struct inode *inode, struct file *fp)
+ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
+ {
+ 	void __user *uptr = (void __user *)arg;
+-	struct vas_tx_win_attr txattr = {};
+ 	struct vas_tx_win_open_attr uattr;
+ 	struct coproc_instance *cp_inst;
+ 	struct vas_window *txwin;
+-	int rc, vasid;
++	int rc;
+ 
+ 	cp_inst = fp->private_data;
+ 
+@@ -93,27 +93,20 @@ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
+ 	}
+ 
+ 	if (uattr.version != 1) {
+-		pr_err("Invalid version\n");
++		pr_err("Invalid window open API version\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	vasid = uattr.vas_id;
+-
+-	vas_init_tx_win_attr(&txattr, cp_inst->coproc->cop_type);
+-
+-	txattr.lpid = mfspr(SPRN_LPID);
+-	txattr.pidr = mfspr(SPRN_PID);
+-	txattr.user_win = true;
+-	txattr.rsvd_txbuf_count = false;
+-	txattr.pswid = false;
+-
+-	pr_devel("Pid %d: Opening txwin, PIDR %ld\n", txattr.pidr,
+-				mfspr(SPRN_PID));
++	if (!cp_inst->coproc->vops && !cp_inst->coproc->vops->open_win) {
++		pr_err("VAS API is not registered\n");
++		return -EACCES;
++	}
+ 
+-	txwin = vas_tx_win_open(vasid, cp_inst->coproc->cop_type, &txattr);
++	txwin = cp_inst->coproc->vops->open_win(&uattr,
++						cp_inst->coproc->cop_type);
+ 	if (IS_ERR(txwin)) {
+-		pr_err("%s() vas_tx_win_open() failed, %ld\n", __func__,
+-					PTR_ERR(txwin));
++		pr_err("%s() VAS window open failed, %ld\n", __func__,
++				PTR_ERR(txwin));
+ 		return PTR_ERR(txwin);
+ 	}
+ 
+@@ -125,9 +118,15 @@ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
+ static int coproc_release(struct inode *inode, struct file *fp)
+ {
+ 	struct coproc_instance *cp_inst = fp->private_data;
++	int rc;
+ 
+ 	if (cp_inst->txwin) {
+-		vas_win_close(cp_inst->txwin);
++		if (cp_inst->coproc->vops &&
++			cp_inst->coproc->vops->close_win) {
++			rc = cp_inst->coproc->vops->close_win(cp_inst->txwin);
++			if (rc)
++				return rc;
++		}
+ 		cp_inst->txwin = NULL;
+ 	}
+ 
+@@ -168,7 +167,17 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
+ 		return -EINVAL;
+ 	}
+ 
+-	vas_win_paste_addr(txwin, &paste_addr, NULL);
++	if (!cp_inst->coproc->vops && !cp_inst->coproc->vops->paste_addr) {
++		pr_err("%s(): VAS API is not registered\n", __func__);
++		return -EACCES;
++	}
++
++	paste_addr = cp_inst->coproc->vops->paste_addr(txwin);
++	if (!paste_addr) {
++		pr_err("%s(): Window paste address failed\n", __func__);
++		return -EINVAL;
++	}
++
+ 	pfn = paste_addr >> PAGE_SHIFT;
+ 
+ 	/* flags, page_prot from cxl_mmap(), except we want cachable */
+@@ -208,7 +217,7 @@ static struct file_operations coproc_fops = {
+  * extended to other coprocessor types later.
+  */
+ int vas_register_coproc_api(struct module *mod, enum vas_cop_type cop_type,
+-				const char *name)
++			    const char *name, struct vas_user_win_ops *vops)
+ {
+ 	int rc = -EINVAL;
+ 	dev_t devno;
+@@ -230,6 +239,7 @@ int vas_register_coproc_api(struct module *mod, enum vas_cop_type cop_type,
+ 	}
+ 	coproc_device.class->devnode = coproc_devnode;
+ 	coproc_device.cop_type = cop_type;
++	coproc_device.vops = vops;
+ 
+ 	coproc_fops.owner = mod;
+ 	cdev_init(&coproc_device.cdev, &coproc_fops);
+diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
+index 2fc0fbc4a3d1..3ccd3edcaf1a 100644
+--- a/arch/powerpc/platforms/powernv/vas-window.c
++++ b/arch/powerpc/platforms/powernv/vas-window.c
+@@ -16,6 +16,7 @@
+ #include <linux/mmu_context.h>
+ #include <asm/switch_to.h>
+ #include <asm/ppc-opcode.h>
++#include <asm/vas.h>
+ #include "vas.h"
+ #include "copy-paste.h"
+ 
+@@ -1442,6 +1443,49 @@ struct vas_window *vas_pswid_to_window(struct vas_instance *vinst,
+ 	return window;
+ }
+ 
++static struct vas_window *vas_user_win_open(struct vas_tx_win_open_attr *uattr,
++				enum vas_cop_type cop_type)
++{
++	struct vas_tx_win_attr txattr = {};
++
++	vas_init_tx_win_attr(&txattr, cop_type);
++
++	txattr.lpid = mfspr(SPRN_LPID);
++	txattr.pidr = mfspr(SPRN_PID);
++	txattr.user_win = true;
++	txattr.rsvd_txbuf_count = false;
++	txattr.pswid = false;
++
++	pr_devel("Pid %d: Opening txwin, PIDR %ld\n", txattr.pidr,
++				mfspr(SPRN_PID));
++
++	return vas_tx_win_open(uattr->vas_id, cop_type, &txattr);
++}
++
++static u64 vas_user_win_paste_addr(void *addr)
++{
++	u64 paste_addr;
++
++	vas_win_paste_addr((struct vas_window *)addr, &paste_addr, NULL);
++
++	return paste_addr;
++}
++
++static int vas_user_win_close(void *addr)
++{
++	struct vas_window *txwin = addr;
++
++	vas_win_close(txwin);
++
++	return 0;
++}
++
++static struct vas_user_win_ops vops =  {
++	.open_win	=	vas_user_win_open,
++	.paste_addr	=	vas_user_win_paste_addr,
++	.close_win	=	vas_user_win_close,
++};
++
+ /*
+  * Supporting only nx-gzip coprocessor type now, but this API code
+  * extended to other coprocessor types later.
+@@ -1450,7 +1494,7 @@ int vas_register_api_powernv(struct module *mod, enum vas_cop_type cop_type,
+ 			     const char *name)
+ {
+ 
+-	return vas_register_coproc_api(mod, cop_type, name);
++	return vas_register_coproc_api(mod, cop_type, name, &vops);
+ }
+ EXPORT_SYMBOL_GPL(vas_register_api_powernv);
+ 
 -- 
-Thanks and Regards
-Srikar Dronamraju
+2.18.2
+
+
