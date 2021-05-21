@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E15F38C5FC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 13:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D2A38C5FF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 13:49:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmlHb48Y6z3dN1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 21:48:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmlJ32Hc3z3c85
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 21:49:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=DtgdVZS6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=IXUDWY4u;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
- helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
+ helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DtgdVZS6; dkim-atps=neutral
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
+ header.s=20161025 header.b=IXUDWY4u; dkim-atps=neutral
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
+ [IPv6:2607:f8b0:4864:20::629])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmlC84Sxjz30BG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 21:44:52 +1000 (AEST)
-Received: by mail-pf1-x434.google.com with SMTP id x18so10429658pfi.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 04:44:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmlCB4LkKz3bty
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 21:44:54 +1000 (AEST)
+Received: by mail-pl1-x629.google.com with SMTP id a7so2142961plh.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 04:44:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=YPyZqpgHAEnDqkW/sBWNetojKoAwBnsHpHs5S7PF2lo=;
- b=DtgdVZS6U9OFWqGA9TODLrVfhAwSOCvPWA8Z+RXkRmNCOWZ0fsm/gFxLkA2RR6iXQw
- 5p4V6m3B1R2TDQoA07C1Rm2vknEZ1WcsZL8Br7+JLbSkBgith3sqJLyZ1GChEqIyP7QS
- dN9qlb84uUcxZg+UMHMDl0DeAY7D78O75VN+gatshC4Lmoej7W3PzaDoYochAQuEpzd3
- pOdRf/s0IIJyGoXau2/XpdvGMUVwIf4SFCuR5DPPpfsdsYcIVZIRvJnq2kOjBJC0+R8Y
- HjM8lftkg63LRF+SXRJ2HwDtt4wL0Shu8px0OQreUE9UWV60P0sWCWuYr3Z2FquJAPXs
- jXCQ==
+ bh=jKBLKbTL/paPO2FwgAKP+94tHeiniX65QBApQUMf3UI=;
+ b=IXUDWY4u1Y6KF9NEWuic7exVDl8/YoA6T241kHAg8PYK3ieYcIxQKMD1LG2XnRjAhg
+ 6R2JgmMtM9f6HMl1OyHexchcP0sdy7MxdhFFe2YRgKFHoHsE0cUaiYWMvM4StofqRCwi
+ qHmcPPBeuPBfM2dK4vRAtLlNBON2shd6o1ybXHBLQjBigystbWxkTHYpNqiS2GRzNUMu
+ cvGdqPrU9K0U2ctmlGcMV65HjfjbUFSw1uNwBMFRUl691fZJ6AZ+GR3i7MMKnvPq6Wbu
+ Qpju8mSRpwTQG51ULZycVMqN2YGOsa8LsBKDY5Lazw0ZcC+yaLaAivtaMwiOQZBGYR/U
+ 2Uow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=YPyZqpgHAEnDqkW/sBWNetojKoAwBnsHpHs5S7PF2lo=;
- b=jQkV97rF8as9KmHhobc9xsLxrYLCPi+CQcAGcz01ewjfAjhgVrbpUTenDKbrmptF/a
- BYb6G3k8KewsKked8+NogqNh6uO6ahhY/JYSqdHtVL0AMTK7HlXsftaXDMDclbDbge7R
- +oxPVivp6ZyEvITUI1jSOi2YOcrgw4aTFUELGWWm7kuQB6nclGZKhcnKHsv3RG8UmffF
- O/nkKV1AUkQgImVrpuy8q29ayuDjCjUgh516Mxkn0g1M/HiRcpEKOQrBEwS3p9TKeL6c
- iLRDLWNfFlGUvXe4JhH6FngXyx2lUJJbLN2OhVgR6Vu9pCuqs65rMLGEMu+ONY7FNVw8
- groQ==
-X-Gm-Message-State: AOAM533T50kuJhI7Q84mD5aQFcC0zcLDiKRAawOX+Rt/7eO2qxSrVB1h
- YtgpUstJReQyAf+WJiU5Gq24CQcDCmw=
-X-Google-Smtp-Source: ABdhPJz4iuqpWEx2/4Y87vviAKsdC0OTkXY8k3s/YV4viuO4k+8G1CoiFKNhLUTUM4dw4mFqsvZy7w==
-X-Received: by 2002:a63:7a0f:: with SMTP id v15mr9466393pgc.100.1621597490227; 
- Fri, 21 May 2021 04:44:50 -0700 (PDT)
+ bh=jKBLKbTL/paPO2FwgAKP+94tHeiniX65QBApQUMf3UI=;
+ b=Af/jnlXyhyVydPL8F7SSwMt8ATmqq0V9Y4uOLCUjjyu+wrvdswo3f03dIda3fYHvaj
+ umF47DKjjqkvR5wgI9nBy/egWixNTD7F94cglQ/HZPoyuJFAMwqD8YX1/358VY+ooxQ2
+ fW0QK/41Z54wx3c/DWLsdODd6xNaJjOjuxsObN2M0JdvncnK96VQzeL4RW1sw+dJFdKX
+ Sog1D15KlOVORo9OuOj4JxIWKbo0bf3jQ5sT/qyLwOl+YTXorJMh8GNdGxxJkUnynxov
+ R7Cla2SWiFZ7suoy15jg/yqYm/Cfq4bCyE4JbqHjKqPKNTg2+JAPTvhC6O+a0/uh8uxm
+ bkHg==
+X-Gm-Message-State: AOAM532HXIZjpdoA8klwQCDS3Myc8mrcECDZIrngf1RkmB8Zh9VyjCyr
+ gI/EiSD/ClM/8jRLcr7i1FlGlPyutBY=
+X-Google-Smtp-Source: ABdhPJzXztTwuj+9VGYn4lheAkCJ15AklwcDOjHJ7DMExW7xLbNIGkhKB3LXcbBo6SleVikBhUlofA==
+X-Received: by 2002:a17:90a:ab8c:: with SMTP id
+ n12mr10355089pjq.201.1621597492231; 
+ Fri, 21 May 2021 04:44:52 -0700 (PDT)
 Received: from bobo.ibm.com (60-241-27-127.tpgi.com.au. [60.241.27.127])
- by smtp.gmail.com with ESMTPSA id f5sm8681390pjp.37.2021.05.21.04.44.48
+ by smtp.gmail.com with ESMTPSA id f5sm8681390pjp.37.2021.05.21.04.44.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 May 2021 04:44:50 -0700 (PDT)
+ Fri, 21 May 2021 04:44:52 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 08/11] powerpc/64: allow alternate return locations for
- soft-masked interrupts
-Date: Fri, 21 May 2021 21:44:19 +1000
-Message-Id: <20210521114422.3179350-9-npiggin@gmail.com>
+Subject: [PATCH v2 09/11] powerpc/64: interrupt soft-enable race fix
+Date: Fri, 21 May 2021 21:44:20 +1000
+Message-Id: <20210521114422.3179350-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210521114422.3179350-1-npiggin@gmail.com>
 References: <20210521114422.3179350-1-npiggin@gmail.com>
@@ -85,289 +85,132 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The exception table fixup adjusts a failed page fault's interrupt return
-location if it was taken at an address specified in the exception table,
-to a corresponding fixup handler address.
+Prevent interrupt restore from allowing racing hard interrupts going
+ahead of previous soft-pending ones, by using the soft-masked restart
+handler to allow a store to clear the soft-mask while knowing nothing
+is soft-pending.
 
-Introduce a variation of that idea which adds a fixup table for NMIs and
-soft-masked asynchronous interrupts. This will be used to protect
-certain critical sections that are sensitive to being clobbered by
-interrupts coming in (due to using the same SPRs and/or irq soft-mask
-state).
+This probably doesn't matter much in practice, but it's a simple
+demonstrator / test case to exercise the restart table logic.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/interrupt.h | 13 +++++++++
- arch/powerpc/include/asm/ppc_asm.h   |  8 ++++++
- arch/powerpc/kernel/exceptions-64e.S | 37 +++++++++++++++++++++++--
- arch/powerpc/kernel/exceptions-64s.S | 41 ++++++++++++++++++++++++++++
- arch/powerpc/kernel/vmlinux.lds.S    | 10 +++++++
- arch/powerpc/lib/Makefile            |  2 +-
- arch/powerpc/lib/restart_table.c     | 29 ++++++++++++++++++++
- 7 files changed, 137 insertions(+), 3 deletions(-)
- create mode 100644 arch/powerpc/lib/restart_table.c
+ arch/powerpc/kernel/irq.c | 95 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 95 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index b9c510187b58..49d9a6fd1bb9 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -73,6 +73,11 @@
- #include <asm/kprobes.h>
- #include <asm/runlatch.h>
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 72cb45393ef2..8428caf3194e 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -217,6 +217,100 @@ static inline void replay_soft_interrupts_irqrestore(void)
+ #define replay_soft_interrupts_irqrestore() replay_soft_interrupts()
+ #endif
  
-+#ifdef CONFIG_PPC64
-+extern char __end_soft_masked[];
-+unsigned long search_kernel_restart_table(unsigned long addr);
-+#endif
-+
- #ifdef CONFIG_PPC_BOOK3S_64
- static inline void srr_regs_clobbered(void)
- {
-@@ -287,6 +292,14 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
- 	 * new work to do (must use irq_work for that).
- 	 */
- 
-+#ifdef CONFIG_PPC64
-+	if (arch_irq_disabled_regs(regs)) {
-+		unsigned long rst = search_kernel_restart_table(regs->nip);
-+		if (rst)
-+			regs_set_return_ip(regs, rst);
-+	}
-+#endif
-+
- #ifdef CONFIG_PPC64
- 	if (nmi_disables_ftrace(regs))
- 		this_cpu_set_ftrace_enabled(state->ftrace_enabled);
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index d6739d700f0a..c9c2c36c1f8f 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -762,6 +762,14 @@ END_FTR_SECTION_NESTED(CPU_FTR_CELL_TB_BUG, CPU_FTR_CELL_TB_BUG, 96)
- 	stringify_in_c(.long (_target) - . ;)	\
- 	stringify_in_c(.previous)
- 
-+#define RESTART_TABLE(_start, _end, _target)	\
-+	stringify_in_c(.section __restart_table,"a";)\
-+	stringify_in_c(.balign 8;)		\
-+	stringify_in_c(.llong (_start);)	\
-+	stringify_in_c(.llong (_end);)		\
-+	stringify_in_c(.llong (_target);)	\
-+	stringify_in_c(.previous)
-+
- #ifdef CONFIG_PPC_FSL_BOOK3E
- #define BTB_FLUSH(reg)			\
- 	lis reg,BUCSR_INIT@h;		\
-diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-index b35c97c7082f..1b79f8a75298 100644
---- a/arch/powerpc/kernel/exceptions-64e.S
-+++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -901,6 +901,28 @@ kernel_dbg_exc:
- 	bl	unknown_exception
- 	b	interrupt_return
- 
-+.macro SEARCH_RESTART_TABLE
-+	LOAD_REG_IMMEDIATE_SYM(r14, r11, __start___restart_table)
-+	LOAD_REG_IMMEDIATE_SYM(r15, r11, __stop___restart_table)
-+300:
-+	cmpd	r14,r15
-+	beq	302f
-+	ld	r11,0(r14)
-+	cmpld	r10,r11
-+	blt	301f
-+	ld	r11,8(r14)
-+	cmpld	r10,r11
-+	bge	301f
-+	ld	r11,16(r14)
-+	b	303f
-+301:
-+	addi	r14,r14,24
-+	b	300b
-+302:
-+	li	r11,0
-+303:
-+.endm
-+
- /*
-  * An interrupt came in while soft-disabled; We mark paca->irq_happened
-  * accordingly and if the interrupt is level sensitive, we hard disable
-@@ -909,6 +931,9 @@ kernel_dbg_exc:
-  */
- 
- .macro masked_interrupt_book3e paca_irq full_mask
-+	std	r14,PACA_EXGEN+EX_R14(r13)
-+	std	r15,PACA_EXGEN+EX_R15(r13)
-+
- 	lbz	r10,PACAIRQHAPPENED(r13)
- 	.if \full_mask == 1
- 	ori	r10,r10,\paca_irq | PACA_IRQ_HARD_DIS
-@@ -918,15 +943,23 @@ kernel_dbg_exc:
- 	stb	r10,PACAIRQHAPPENED(r13)
- 
- 	.if \full_mask == 1
--	rldicl	r10,r11,48,1		/* clear MSR_EE */
--	rotldi	r11,r10,16
-+	xori	r11,r11,MSR_EE		/* clear MSR_EE */
- 	mtspr	SPRN_SRR1,r11
- 	.endif
- 
-+	mfspr	r10,SPRN_SRR0
-+	SEARCH_RESTART_TABLE
-+	cmpdi	r11,0
-+	beq	1f
-+	mtspr	SPRN_SRR0,r11		/* return to restart address */
-+1:
-+
- 	lwz	r11,PACA_EXGEN+EX_CR(r13)
- 	mtcr	r11
- 	ld	r10,PACA_EXGEN+EX_R10(r13)
- 	ld	r11,PACA_EXGEN+EX_R11(r13)
-+	ld	r14,PACA_EXGEN+EX_R14(r13)
-+	ld	r15,PACA_EXGEN+EX_R15(r13)
- 	mfspr	r13,SPRN_SPRG_GEN_SCRATCH
- 	rfi
- 	b	.
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 0ba8c2387aac..17a213f25c92 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -664,6 +664,36 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
- 	__GEN_COMMON_BODY \name
- .endm
- 
-+.macro SEARCH_RESTART_TABLE
-+#ifdef CONFIG_RELOCATABLE
-+	mr	r12,r2
-+	ld	r2,PACATOC(r13)
-+	LOAD_REG_ADDR(r9, __start___restart_table)
-+	LOAD_REG_ADDR(r10, __stop___restart_table)
-+	mr	r2,r12
-+#else
-+	LOAD_REG_IMMEDIATE_SYM(r9, r12, __start___restart_table)
-+	LOAD_REG_IMMEDIATE_SYM(r10, r12, __stop___restart_table)
-+#endif
-+300:
-+	cmpd	r9,r10
-+	beq	302f
-+	ld	r12,0(r9)
-+	cmpld	r11,r12
-+	blt	301f
-+	ld	r12,8(r9)
-+	cmpld	r11,r12
-+	bge	301f
-+	ld	r12,16(r9)
-+	b	303f
-+301:
-+	addi	r9,r9,24
-+	b	300b
-+302:
-+	li	r12,0
-+303:
-+.endm
-+
- /*
-  * Restore all registers including H/SRR0/1 saved in a stack frame of a
-  * standard exception.
-@@ -2771,6 +2801,7 @@ EXC_COMMON_BEGIN(soft_nmi_common)
- 	mtmsrd	r9,1
- 
- 	kuap_kernel_restore r9, r10
-+
- 	EXCEPTION_RESTORE_REGS hsrr=0
- 	RFI_TO_KERNEL
- 
-@@ -2828,6 +2859,16 @@ masked_interrupt:
- 	stb	r9,PACASRR_VALID(r13)
- 	.endif
- 
-+	SEARCH_RESTART_TABLE
-+	cmpdi	r12,0
-+	beq	3f
-+	.if \hsrr
-+	mtspr	SPRN_HSRR0,r12
-+	.else
-+	mtspr	SPRN_SRR0,r12
-+	.endif
-+3:
-+
- 	ld	r9,PACA_EXGEN+EX_CTR(r13)
- 	mtctr	r9
- 	lwz	r9,PACA_EXGEN+EX_CCR(r13)
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 72fa3c00229a..16c5e13e00c4 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -9,6 +9,14 @@
- #define EMITS_PT_NOTE
- #define RO_EXCEPTION_TABLE_ALIGN	0
- 
-+#define RESTART_TABLE(align)						\
-+	. = ALIGN(align);						\
-+	__restart_table : AT(ADDR(__restart_table) - LOAD_OFFSET) {	\
-+		__start___restart_table = .;				\
-+		KEEP(*(__restart_table))				\
-+		__stop___restart_table = .;				\
-+	}
-+
- #include <asm/page.h>
- #include <asm-generic/vmlinux.lds.h>
- #include <asm/cache.h>
-@@ -124,6 +132,8 @@ SECTIONS
- 	RO_DATA(PAGE_SIZE)
- 
- #ifdef CONFIG_PPC64
-+	RESTART_TABLE(8)
-+
- 	. = ALIGN(8);
- 	__stf_entry_barrier_fixup : AT(ADDR(__stf_entry_barrier_fixup) - LOAD_OFFSET) {
- 		__start___stf_entry_barrier_fixup = .;
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index cc1a8a0f311e..4c92c80454f3 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -42,7 +42,7 @@ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
- 			       memcpy_power7.o
- 
- obj64-y	+= copypage_64.o copyuser_64.o mem_64.o hweight_64.o \
--	   memcpy_64.o copy_mc_64.o
-+	   memcpy_64.o copy_mc_64.o restart_table.o
- 
- ifndef CONFIG_PPC_QUEUED_SPINLOCKS
- obj64-$(CONFIG_SMP)	+= locks.o
-diff --git a/arch/powerpc/lib/restart_table.c b/arch/powerpc/lib/restart_table.c
-new file mode 100644
-index 000000000000..3ccb31914036
---- /dev/null
-+++ b/arch/powerpc/lib/restart_table.c
-@@ -0,0 +1,29 @@
-+#include <asm/kprobes.h>
-+
-+struct restart_table_entry {
-+	unsigned long start;
-+	unsigned long end;
-+	unsigned long fixup;
-+};
-+
-+extern struct restart_table_entry __start___restart_table[];
-+extern struct restart_table_entry __stop___restart_table[];
-+
-+/* Given an address, look for it in the kernel exception table */
-+unsigned long search_kernel_restart_table(unsigned long addr)
++#ifdef CONFIG_CC_HAS_ASM_GOTO
++notrace void arch_local_irq_restore(unsigned long mask)
 +{
-+	struct restart_table_entry *rte = __start___restart_table;
++	unsigned char irq_happened;
 +
-+	while (rte < __stop___restart_table) {
-+		unsigned long start = rte->start;
-+		unsigned long end = rte->end;
-+		unsigned long fixup = rte->fixup;
-+
-+		if (addr >= start && addr < end)
-+			return fixup;
-+
-+		rte++;
++	/* Write the new soft-enabled value if it is a disable */
++	if (mask) {
++		irq_soft_mask_set(mask);
++		return;
 +	}
-+	return 0;
++
++	/*
++	 * After the stb, interrupts are unmasked and there are no interrupts
++	 * pending replay. The restart sequence makes this atomic with
++	 * respect to soft-masked interrupts. If this was just a simple code
++	 * sequence, a soft-masked interrupt could become pending right after
++	 * the comparison and before the stb.
++	 *
++	 * This allows interrupts to be unmasked without hard disabling, and
++	 * also without new hard interrupts coming in ahead of pending ones.
++	 */
++	asm_volatile_goto(
++"1:					\n"
++"		lbz	9,%0(13)	\n"
++"		cmpwi	9,0		\n"
++"		bne	%l[happened]	\n"
++"		stb	9,%1(13)	\n"
++"2:					\n"
++		RESTART_TABLE(1b, 2b, 1b)
++	: : "i" (offsetof(struct paca_struct, irq_happened)),
++	    "i" (offsetof(struct paca_struct, irq_soft_mask))
++	: "cr0", "r9"
++	: happened);
++
++	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
++		WARN_ON_ONCE(!(mfmsr() & MSR_EE));
++
++	return;
++
++happened:
++	irq_happened = get_irq_happened();
++	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
++		WARN_ON_ONCE(!irq_happened);
++
++	if (irq_happened == PACA_IRQ_HARD_DIS) {
++		if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
++			WARN_ON_ONCE(mfmsr() & MSR_EE);
++		irq_soft_mask_set(IRQS_ENABLED);
++		local_paca->irq_happened = 0;
++		__hard_irq_enable();
++		return;
++	}
++
++	/* Have interrupts to replay, need to hard disable first */
++	if (!(irq_happened & PACA_IRQ_HARD_DIS)) {
++		if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
++			if (!(mfmsr() & MSR_EE)) {
++				/*
++				 * An interrupt could have come in and cleared
++				 * MSR[EE] and set IRQ_HARD_DIS, so check
++				 * IRQ_HARD_DIS again and warn if it is still
++				 * clear.
++				 */
++				irq_happened = get_irq_happened();
++				WARN_ON_ONCE(!(irq_happened & PACA_IRQ_HARD_DIS));
++			}
++		}
++		__hard_irq_disable();
++		local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
++	} else {
++		if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
++			if (WARN_ON_ONCE(mfmsr() & MSR_EE))
++				__hard_irq_disable();
++		}
++	}
++
++	/*
++	 * Disable preempt here, so that the below preempt_enable will
++	 * perform resched if required (a replayed interrupt may set
++	 * need_resched).
++	 */
++	preempt_disable();
++	irq_soft_mask_set(IRQS_ALL_DISABLED);
++	trace_hardirqs_off();
++
++	replay_soft_interrupts_irqrestore();
++	local_paca->irq_happened = 0;
++
++	trace_hardirqs_on();
++	irq_soft_mask_set(IRQS_ENABLED);
++	__hard_irq_enable();
++	preempt_enable();
 +}
-+NOKPROBE_SYMBOL(search_kernel_restart_table);
++#else
+ notrace void arch_local_irq_restore(unsigned long mask)
+ {
+ 	unsigned char irq_happened;
+@@ -288,6 +382,7 @@ notrace void arch_local_irq_restore(unsigned long mask)
+ 	__hard_irq_enable();
+ 	preempt_enable();
+ }
++#endif
+ EXPORT_SYMBOL(arch_local_irq_restore);
+ 
+ /*
 -- 
 2.23.0
 
