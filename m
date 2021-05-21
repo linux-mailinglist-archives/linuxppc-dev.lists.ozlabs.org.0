@@ -2,68 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1E238CA97
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 18:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7759038CAFF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 18:29:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fms0Q3tzPz3c1D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 May 2021 02:05:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmsX23QzDz3bwb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 May 2021 02:29:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=G3iYeUln;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rBif/QQT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::12e;
- helo=mail-lf1-x12e.google.com; envelope-from=torvalds@linuxfoundation.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=G3iYeUln; 
- dkim-atps=neutral
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com
- [IPv6:2a00:1450:4864:20::12e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=rBif/QQT; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fmrzy4D32z2xYv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 May 2021 02:05:34 +1000 (AEST)
-Received: by mail-lf1-x12e.google.com with SMTP id w33so22492549lfu.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 09:05:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=dtlfB3jKZO3PrjflKCPyB/i4mJYyJi11nH+YNdsIumg=;
- b=G3iYeUln/SMVQdtoLyWBf9Ooe3OmWnICHMyL61f8J0P9p5P7wIRaopb+HJeHIp6zOi
- 2pcL71aOT8vsZT2zeheavW/7IrRyCLToEtvCHLzjTA6PLJC51M1o519zv/J0ULvm+gMO
- wZD3jIXrMfwoz0fl73Qy1SjQSIrxtOKDbXf2o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=dtlfB3jKZO3PrjflKCPyB/i4mJYyJi11nH+YNdsIumg=;
- b=R1xSvrxw5dFDdHUnrv+olDGk9XkXooUJv0hlmnyFKYYna8G64qVYPD7Z07mvD7M//O
- 9lSqIpMcqBcz8BW4Tulem6KAik8CLD7WNKX34Pjt+u6QR3EnKF3jTnP0sghBiIxhcncG
- eqAvj5zCWjiCPH+hbhjVatgKcj0QykGiQRtAM1W9anooNPtdFWyixxff0S5avewG7pLm
- IFULUSlz28fsVxTvltIRSPAgmljROIyyCdsUeGCsyfYIu5ic08zQZAfF7mHj20NeY9iW
- VhTbTCi0aT/sKGse/Q6t4dgU9MFjODDzVup/jWtae8x7T5Osd2Qp/zC/s0+BUsW4YtsP
- fHAw==
-X-Gm-Message-State: AOAM531DUx9FsIxOhK4Hsi8oJVKHnTXN/go/3eSruAtdBnaFS/E3O+kz
- KndoMgWextJeRVq3h7gG0Pk8JI+ZqQw4zDXD
-X-Google-Smtp-Source: ABdhPJyvwcV+CLxBvRee0li+899zeHzP1pFtjglzX2KvftHcRcNsNTP2TVGg1qh7l4rkwEze45Cdeg==
-X-Received: by 2002:a19:c49:: with SMTP id 70mr2699685lfm.555.1621613129752;
- Fri, 21 May 2021 09:05:29 -0700 (PDT)
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com.
- [209.85.167.45])
- by smtp.gmail.com with ESMTPSA id c7sm660318lfv.27.2021.05.21.09.05.27
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 May 2021 09:05:28 -0700 (PDT)
-Received: by mail-lf1-f45.google.com with SMTP id m11so30469961lfg.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 09:05:27 -0700 (PDT)
-X-Received: by 2002:a05:6512:374b:: with SMTP id
- a11mr2612700lfs.377.1621613127369; 
- Fri, 21 May 2021 09:05:27 -0700 (PDT)
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmsWX6kS1z2yWm
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 May 2021 02:29:28 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14LGKkQr056179; Fri, 21 May 2021 12:29:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=3aPqdUh7k6cI41nT0el/8npsI4WQUKG/CHjqZr5cUYg=;
+ b=rBif/QQT8y1q++IwzwR9QkYCwU8ras/kO2yuL2JFnjeDHo0ZdVgbWj9df5CcZLi6Kh/q
+ Cp5fQQ7zFDReEauYJNVPA2cfwYW4RjC2s1gEW/fNzp7R5Jwy4U4T9R341aHfn+dfHCtq
+ ynZGh80kw6hfLtxVI2w0P+rXkH3FW/eaJJRJ5CNjCOU4gaylfCxHyb68oJveRiUImxbV
+ Z88aSZkSOksMY/QXYgbF2zEjHgrqcRl0duX1x7lqRCIaiH3GSNaA4IS8Lrhyam7bmbXt
+ +yX2Fgh9t0a0QHjZifQXcT0K0EWQXb7hSB1NFrGh4nCBEbrGhyDK+K56235kklc8bYoj 9g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38pga5r5gm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 21 May 2021 12:29:12 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14LGQT7P086760;
+ Fri, 21 May 2021 12:29:11 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38pga5r5fk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 21 May 2021 12:29:11 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14LGSuxu021150;
+ Fri, 21 May 2021 16:29:09 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04fra.de.ibm.com with ESMTP id 38j5x81tf2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 21 May 2021 16:29:09 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14LGT75x33620372
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 21 May 2021 16:29:07 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0108EA404D;
+ Fri, 21 May 2021 16:29:07 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA8B5A4040;
+ Fri, 21 May 2021 16:29:04 +0000 (GMT)
+Received: from [9.199.42.28] (unknown [9.199.42.28])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 21 May 2021 16:29:04 +0000 (GMT)
+Subject: Re: [PATCH v5 7/9] mm/mremap: Move TLB flush outside page table lock
+To: Linus Torvalds <torvalds@linux-foundation.org>
 References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
  <20210422054323.150993-8-aneesh.kumar@linux.ibm.com>
  <b3047082-fc82-b326-dbdb-835b88df78d0@linux.ibm.com>
@@ -72,15 +83,30 @@ References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
  <f676b053-bda4-a1f5-321e-f00fb3de8a40@linux.ibm.com>
  <CAHk-=wgXVR04eBNtxQfevontWnP6FDm+oj5vauQXP3S-huwbPw@mail.gmail.com>
  <5ea8fa4f-a5a2-7dc4-7958-23df6a2c1f3a@linux.ibm.com>
- <20210521152438.jczhe6nxnz5woxpl@revolver>
-In-Reply-To: <20210521152438.jczhe6nxnz5woxpl@revolver>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 21 May 2021 06:05:11 -1000
-X-Gmail-Original-Message-ID: <CAHk-=whOMg3jQCY23J9xzVWT9y--x3DRWd__Z8kiE-eoiK8oOg@mail.gmail.com>
-Message-ID: <CAHk-=whOMg3jQCY23J9xzVWT9y--x3DRWd__Z8kiE-eoiK8oOg@mail.gmail.com>
-Subject: Re: [PATCH v5 7/9] mm/mremap: Move TLB flush outside page table lock
-To: Liam Howlett <liam.howlett@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+ <874kewme7a.fsf@linux.ibm.com>
+ <CAHk-=whUHnm1CQ3LC0Qz=BBkhBRZkNW6ZmQZvSac2vju7gfeVg@mail.gmail.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <6686eca2-e41e-1235-cb86-6e6f8d5bb8bf@linux.ibm.com>
+Date: Fri, 21 May 2021 21:59:04 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+MIME-Version: 1.0
+In-Reply-To: <CAHk-=whUHnm1CQ3LC0Qz=BBkhBRZkNW6ZmQZvSac2vju7gfeVg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: FwGuZhTcPhmTUNzAhYDQmltUHYeQp4ZM
+X-Proofpoint-ORIG-GUID: z_J8eyVjMLNW3nOcpDeqdCti-NLgmmKB
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-21_07:2021-05-20,
+ 2021-05-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 phishscore=0 malwarescore=0 spamscore=0 clxscore=1015
+ suspectscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105210084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,8 +118,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Nick Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+Cc: Nick Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
  Kalesh Singh <kaleshsingh@google.com>, Joel Fernandes <joel@joelfernandes.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
@@ -101,15 +126,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 21, 2021 at 5:25 AM Liam Howlett <liam.howlett@oracle.com> wrote:
->
-> mremap holds the mmap_sem in write mode as well, doesn't it?  How is the user thread
-> getting the new location?
+On 5/21/21 9:33 PM, Linus Torvalds wrote:
+> On Fri, May 21, 2021 at 3:04 AM Aneesh Kumar K.V
+> <aneesh.kumar@linux.ibm.com> wrote:
+>>
+>> We could do MOVE_PMD with something like below? A equivalent MOVE_PUD
+>> will be costlier which makes me wonder whether we should even support that?
+> 
+> Well, without USE_SPLIT_PTE_PTLOCKS the pud case would be trivial too.
+> But everybody uses split pte locks in practice.
+> 
 
-No amount of locking protects against the HW page table walker (or,
-indeed, software ones, but they are irrelevant).
+Ok I can get a patch series enabling MOVE_PUD only with 
+SPLIT_PTE_PTLOCKS disabled.
 
-And an attacker _knows_ the new address, because that's who would be
-doing the mremap() in the first place - to trigger this bug.
+> I get the feeling that the rmap code might have to use
+> pud_lock/pmd_lock. I wonder how painful that would be.
+> 
 
-             Linus
+and work long term on that? The lock/unlocking can get complicated 
+because the page_vma_walk now need to return all the held locks.
+
+
+-aneesh
