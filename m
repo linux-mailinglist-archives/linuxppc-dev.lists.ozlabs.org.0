@@ -1,71 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6118038BF02
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:04:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1508238BF24
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:14:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmbfP2c6Dz3g0y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 16:04:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fmbsn6hkZz3cGC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 16:14:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Hx8+vU+9;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=ZcDfkX6D;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+940d4f53d1157bf1ee93+6480+infradead.org+hch@bombadil.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::235;
+ helo=mail-lj1-x235.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=Hx8+vU+9; 
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=ZcDfkX6D; 
  dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com
+ [IPv6:2a00:1450:4864:20::235])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbPB55Yyz3c3s
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 15:53:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=g3lrORorOGdlA+chhXFoiRZ083wZZP/c6LDvo2P6/hA=; b=Hx8+vU+9P2K36yQ0fT1qbYbTtq
- yirGfRIknOCtiXRt/vnn4dIFJns8tfyH6dBItpgN6uR7pEYfx6LlbhKMLF0kdz7ZhBIylIKKM7yH9
- hGyRo+/4ktzM1LfhQvqtepRp8CkrTFBnWY56Md0SbPS/JDONzNUP7liIckX3mfrRTfbbULVpSg4S+
- VYdVdJ1t9Oz+ia/vjUXJTCMWZnBD0/hpkLzXXajvdMWrxEpyZIpUygPwv/KeKlY86FVoDS5wFCllh
- M6oJj8Wk0MOkR6vK7ZODkzykR5XMrTLgJJM82nK9TloNiCbG+kw4aqQ6F8PGn723aFIqoGvcChblj
- zEkBOQTw==;
-Received: from [2001:4bb8:180:5add:4fd7:4137:d2f2:46e6] (helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1ljy5W-00GqHh-Vr; Fri, 21 May 2021 05:52:47 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Jens Axboe <axboe@kernel.dk>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
- Philipp Reisner <philipp.reisner@linbit.com>,
- Lars Ellenberg <lars.ellenberg@linbit.com>, Jim Paris <jim@jtan.com>,
- Joshua Morris <josh.h.morris@us.ibm.com>,
- Philip Kelleher <pjk1939@linux.ibm.com>, Minchan Kim <minchan@kernel.org>,
- Nitin Gupta <ngupta@vflare.org>, Matias Bjorling <mb@lightnvm.io>,
- Coly Li <colyli@suse.de>, Mike Snitzer <snitzer@redhat.com>,
- Song Liu <song@kernel.org>, Maxim Levitsky <maximlevitsky@gmail.com>,
- Alex Dubov <oakad@yahoo.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>
-Subject: [PATCH 26/26] block: unexport blk_alloc_queue
-Date: Fri, 21 May 2021 07:51:16 +0200
-Message-Id: <20210521055116.1053587-27-hch@lst.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210521055116.1053587-1-hch@lst.de>
-References: <20210521055116.1053587-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbsG5tvvz2xZp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 16:13:54 +1000 (AEST)
+Received: by mail-lj1-x235.google.com with SMTP id s25so22583896ljo.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 23:13:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=JYeTnt817j0hDOsZg2+6QbAqKD9XseJ4wF7q34isKW0=;
+ b=ZcDfkX6DiOjHo/ORJtlZsNPW3AhYiDjdZv3t2+5SASSeC3nXlV3uPxfkE1ZzgFGi7n
+ QP3Etv5YCRCh3Mk1agO/XzUjJQ/5zQ030ZiFzpg0YzWVlRUbdXyrgWvYRnu1xLwm4PWT
+ 1FT1Cxm2cKaLXtGFxz2BVR6Q9tQIL3TmwHeJA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=JYeTnt817j0hDOsZg2+6QbAqKD9XseJ4wF7q34isKW0=;
+ b=phLF08dQGe4iTOYWwyxAdrEZFsntuGlhvLcd5JyxNA9qt24HaB4eHYTKh9W+7zwKx6
+ M8Wm+hBTTauCMEqTDawWd+AunMQMxzxe1R9ZtR7Iz0GNUOOp4zXlvhECCF7YH4kcdjOn
+ 7Lfv4QTGVGG9WnEHVskr9VdkwJ3pQ0w7rNj204boazqjrbzbhErqkxdlikDf6Z0ial6R
+ KeXh4/epv7bZAVK+F70t4KNZLcsknMZqaOo1mDmKl5Lc2PuONs8QIQcKTnDIo5bi4+O2
+ 0yuyR/046gW3bOx5ko7m45bD80MT7NjNtxm0s+S0iW3V1tkiXKsJdEzQWTjz+TGOuHsv
+ MAeQ==
+X-Gm-Message-State: AOAM5335DW2iQ8qsM1gNDG0JUpQumBBg0LLMWgXz80BjdKOvListsecA
+ S8zmlG6f+mxhFxrwqV0vd3eFVkq0DainPX3A
+X-Google-Smtp-Source: ABdhPJybosm86UNyha/BbNnH4D5yfZIjDL8WuaPCxbWEflc/dvFAT4zf7ptoChzWwLfZPZy1+Uj8Cg==
+X-Received: by 2002:a2e:b0d0:: with SMTP id g16mr5793206ljl.390.1621577629777; 
+ Thu, 20 May 2021 23:13:49 -0700 (PDT)
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com.
+ [209.85.167.42])
+ by smtp.gmail.com with ESMTPSA id v1sm518670lfg.141.2021.05.20.23.13.48
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 20 May 2021 23:13:49 -0700 (PDT)
+Received: by mail-lf1-f42.google.com with SMTP id a2so27973359lfc.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 May 2021 23:13:48 -0700 (PDT)
+X-Received: by 2002:ac2:4a9d:: with SMTP id l29mr1012167lfp.201.1621577628649; 
+ Thu, 20 May 2021 23:13:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <20210422054323.150993-1-aneesh.kumar@linux.ibm.com>
+ <20210422054323.150993-8-aneesh.kumar@linux.ibm.com>
+ <b3047082-fc82-b326-dbdb-835b88df78d0@linux.ibm.com>
+ <2eafd7df-65fd-1e2c-90b6-d143557a1fdc@linux.ibm.com>
+ <CAHk-=wjq8thag3uNv-2MMu75OgX5ybMon7gZDUHYwzeTwcZHoA@mail.gmail.com>
+ <f676b053-bda4-a1f5-321e-f00fb3de8a40@linux.ibm.com>
+In-Reply-To: <f676b053-bda4-a1f5-321e-f00fb3de8a40@linux.ibm.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 20 May 2021 20:13:32 -1000
+X-Gmail-Original-Message-ID: <CAHk-=wgXVR04eBNtxQfevontWnP6FDm+oj5vauQXP3S-huwbPw@mail.gmail.com>
+Message-ID: <CAHk-=wgXVR04eBNtxQfevontWnP6FDm+oj5vauQXP3S-huwbPw@mail.gmail.com>
+Subject: Re: [PATCH v5 7/9] mm/mremap: Move TLB flush outside page table lock
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,60 +88,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-bcache@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- linux-raid@vger.kernel.org, nvdimm@lists.linux.dev, linux-s390@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-nvme@lists.infradead.org, linux-block@vger.kernel.org,
- dm-devel@redhat.com, linuxppc-dev@lists.ozlabs.org, drbd-dev@lists.linbit.com
+Cc: Nick Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+ Kalesh Singh <kaleshsingh@google.com>, Joel Fernandes <joel@joelfernandes.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-blk_alloc_queue is just an internal helper now, unexport it and remove
-it from the public header.
+On Thu, May 20, 2021 at 5:03 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> On 5/21/21 8:10 AM, Linus Torvalds wrote:
+> >
+> > So mremap does need to flush the TLB before releasing the page table
+> > lock, because that's the lifetime boundary for the page that got
+> > moved.
+>
+> How will we avoid that happening with
+> c49dd340180260c6239e453263a9a244da9a7c85 /
+> 2c91bd4a4e2e530582d6fd643ea7b86b27907151 . The commit improves mremap
+> performance by moving level3/level2 page table entries. When doing so we
+> are not holding level 4 ptl lock (pte_lock()). But rather we are holding
+> pmd_lock or pud_lock(). So if we move pages around without holding the
+> pte lock, won't the above issue happen even if we do a tlb flush with
+> holding pmd lock/pud lock?
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- block/blk-core.c       | 1 -
- block/blk.h            | 2 ++
- include/linux/blkdev.h | 1 -
- 3 files changed, 2 insertions(+), 2 deletions(-)
+Hmm. Interesting.
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index 689aac2625d2..3515a66022d7 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -599,7 +599,6 @@ struct request_queue *blk_alloc_queue(int node_id)
- 	kmem_cache_free(blk_requestq_cachep, q);
- 	return NULL;
- }
--EXPORT_SYMBOL(blk_alloc_queue);
- 
- /**
-  * blk_get_queue - increment the request_queue refcount
-diff --git a/block/blk.h b/block/blk.h
-index cba3a94aabfa..3440142f029b 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -359,4 +359,6 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
- 		struct page *page, unsigned int len, unsigned int offset,
- 		unsigned int max_sectors, bool *same_page);
- 
-+struct request_queue *blk_alloc_queue(int node_id);
-+
- #endif /* BLK_INTERNAL_H */
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 2c28577b50f4..d66d0da72529 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1213,7 +1213,6 @@ static inline int blk_rq_map_sg(struct request_queue *q, struct request *rq,
- extern void blk_dump_rq_flags(struct request *, char *);
- 
- bool __must_check blk_get_queue(struct request_queue *);
--struct request_queue *blk_alloc_queue(int node_id);
- extern void blk_put_queue(struct request_queue *);
- extern void blk_set_queue_dying(struct request_queue *);
- 
--- 
-2.30.2
+Your patch (to flush the TLB after clearing the old location, and
+before inserting it into the new one) looks like an "obvious" fix.
 
+But I'm putting that "obvious" in quotes, because I'm now wondering if
+it actually fixes anything.
+
+Lookie here:
+
+ - CPU1 does a mremap of a pmd or pud.
+
+    It clears the old pmd/pud, flushes the old TLB range, and then
+inserts the pmd/pud at the new location.
+
+ - CPU2 does a page shrinker, which calls try_to_unmap, which calls
+try_to_unmap_one.
+
+These are entirely asynchronous, because they have no shared lock. The
+mremap uses the pmd lock, the try_to_unmap_one() does the rmap walk,
+which does the pte lock.
+
+Now, imagine that the following ordering happens with the two
+operations above, and a CPU3 that does accesses:
+
+ - CPU2 follows (and sees) the old page tables in the old location and
+the took the pte lock
+
+ - the mremap on CPU1 starts - cleared the old pmd, flushed the tlb,
+*and* inserts in the new place.
+
+ - a user thread on CPU3 accesses the new location and fills the TLB
+of the *new* address
+
+ - only now does CPU2 get to the "pte_get_and_clear()" to remove one page
+
+ - CPU2 does a TLB flush and frees the page
+
+End result:
+
+ - both CPU1 _and_ CPU2 have flushed the TLB.
+
+ - but both flushed the *OLD* address
+
+ - the page is freed
+
+ - CPU3 still has the stale TLB entry pointing to the page that is now
+free and might be reused for something else
+
+Am I missing something?
+
+               Linus
