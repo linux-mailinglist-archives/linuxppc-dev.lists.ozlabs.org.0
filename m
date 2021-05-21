@@ -2,93 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F7B38C574
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 13:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E53FF38C5EB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 13:45:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmkST5GXgz3091
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 21:11:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmlCN5n0yz30BJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 21:45:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SRpiI4jH;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ROA7sQAD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633;
+ helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=SRpiI4jH; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ROA7sQAD; dkim-atps=neutral
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
+ [IPv6:2607:f8b0:4864:20::633])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmkRx0hlFz302G
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 21:10:52 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14LB4IJL116803; Fri, 21 May 2021 07:10:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=hWT09L9ljNy4yORz3gVXW0/71Ki9gDCCpOc9kh8bEeU=;
- b=SRpiI4jHI+Z7jXDFIflaxN2rWIgAzX+9Makc6yovQTl2OcvTRLdZl2y1bnZQdbYIfS4h
- BFvfHpvGPDqvz2MPw95P8qaV615PVTj8KyHFryCPjua/Y4hKEVkcdPRfBVoJUCsh/74z
- Rl6aiuAq8Ia0MZfpi9bK5SHa8DshyzpArox0NrYWIB9U+ZcVIEtSzdRfYK1pCMO1FjNU
- LIVunLW3nU2fVyFvNpC4gqAz3UljyjgErpHIXBXbvp5fSNaYIKnMJ4/Z3LBK3c3l4U0P
- gzRbY+brne2ZE8dDB0FD1K9qzby466yB8SechamcM7EEfrSBcmrDf2G6NJMvtJbeZIZE dA== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38pb21141m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 07:10:34 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14LB8Odi025900;
- Fri, 21 May 2021 11:10:32 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03ams.nl.ibm.com with ESMTP id 38j5x7u3th-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 11:10:32 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 14LBA0Dm31392058
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 May 2021 11:10:00 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1345911C054;
- Fri, 21 May 2021 11:10:29 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6842711C04A;
- Fri, 21 May 2021 11:10:26 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.102.3.140])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri, 21 May 2021 11:10:26 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
- Fri, 21 May 2021 16:40:25 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: nvdimm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/papr_scm: Add support for reporting
- dirty-shutdown-count
-Date: Fri, 21 May 2021 16:40:23 +0530
-Message-Id: <20210521111023.413732-1-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: y_8j6DILhaXMkoDtjVEIzK7urMLy_z7C
-X-Proofpoint-GUID: y_8j6DILhaXMkoDtjVEIzK7urMLy_z7C
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmlBs4hTwz303P
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 21:44:36 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id v12so10823723plo.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 04:44:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Ibt0b0FVCHliSzvlaYNqLZTAr6k3wCUyfIKCmHkIsF8=;
+ b=ROA7sQADBV1Ah5ikfnaxV9z/oSbLuCk76AxRYSi5nizwZQuQxf0rw4rUZIY2y7iMmh
+ v4fueofVIXbGYmnQXMl6R8XvbeLv9FAjYFmVEE5y9AwCPeXVZVA0ky1o2LBWT07FaLLI
+ d33yycA/Sp7Axj11oNdK9CM0a1DZojIxzGSkfK0anGJF2FfSY02v6/VB2e2wXpeVhfiY
+ eKkuRYR2/JViFiliE22TAJqFO+GUXQzJYiL4xIraEt2gEJjc7Y9SIO0+IstIFOdSLmgL
+ ZnVRw1m3c5deSld9e6zx0HLm057ro7r1OO3mKx4g3CNKNYminIS17ogujiykE7JIuSDT
+ NQaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Ibt0b0FVCHliSzvlaYNqLZTAr6k3wCUyfIKCmHkIsF8=;
+ b=PYJm0CyzNamUkv/JQ4WTOhme3e5ndjO/4T4aCtMHV+LohzyQil37RR9d76CbiLjyp/
+ 4xnJ/eNMeh9Uv3d7csUsgh7daLIqAZmhv1wRlVpQvLBwuc7+gM6Lmpbtmya2Fi07un+u
+ PCr7y8sHyIlo8ycPm8CUYHFnroWMWPyujWaE5tS1x7j7TMZkyB/UuxfEqpYBH+lCk7ng
+ 99qvW5qon7TCzoANTeAWwAPkMin0Wyoj6PsF6v8t9bFaltt3T16zj3BaGohtrTYqigH6
+ vw8mf1RhUfgtUo2xAbGjBxpluullOtq9zf90FtcswBajTpf5YR3KaGSmnKIiXY8UcqlJ
+ sBiw==
+X-Gm-Message-State: AOAM530LsVvr1sogVSsIF8eEe9Jh/Ci4rYDXenmhsIV48/bQedeLWMRy
+ KxeYQg5JVlwGndEqIHeNTzWKX/HNvfs=
+X-Google-Smtp-Source: ABdhPJxJDtJsW2CylmxWXixM1cMQ6MBTORtxJvjtaF5sf4gq5RgeIrq70raI/stv1BZFAjcmKel+vg==
+X-Received: by 2002:a17:902:c94a:b029:f4:ad23:7e59 with SMTP id
+ i10-20020a170902c94ab02900f4ad237e59mr11546375pla.73.1621597472788; 
+ Fri, 21 May 2021 04:44:32 -0700 (PDT)
+Received: from bobo.ibm.com (60-241-27-127.tpgi.com.au. [60.241.27.127])
+ by smtp.gmail.com with ESMTPSA id f5sm8681390pjp.37.2021.05.21.04.44.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 21 May 2021 04:44:32 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 00/11] powerpc/64: fast interrupt exits
+Date: Fri, 21 May 2021 21:44:11 +1000
+Message-Id: <20210521114422.3179350-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-21_04:2021-05-20,
- 2021-05-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0 mlxscore=0
- mlxlogscore=999 bulkscore=0 phishscore=0 malwarescore=0 adultscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105210069
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,146 +78,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>,
- Ira Weiny <ira.weiny@intel.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Persistent memory devices like NVDIMMs can loose cached writes in case
-something prevents flush on power-fail. Such situations are termed as
-dirty shutdown and are exposed to applications as
-last-shutdown-state (LSS) flag and a dirty-shutdown-counter(DSC) as
-described at [1]. The latter being useful in conditions where multiple
-applications want to detect a dirty shutdown event without racing with
-one another.
+This series attempts to improve the speed of interrupts and system calls
+in three major ways.
 
-PAPR-NVDIMMs have so far only exposed LSS style flags to indicate a
-dirty-shutdown-state. This patch further adds support for DSC via the
-"ibm,persistence-failed-count" device tree property of an NVDIMM. This
-property is a monotonic increasing 64-bit counter thats an indication
-of number of times an NVDIMM has encountered a dirty-shutdown event
-causing persistence loss.
+Firstly, the SRR/HSRR registers do not need to be reloaded if they were
+clobbered for the duration of the interrupt and the return NIP and MSR
+did not changed. 64e does not implement this part, but it could quite
+easily.
 
-Since this value is not expected to change after system-boot hence
-papr_scm reads & caches its value during NVDIMM probe and exposes it
-as a PAPR sysfs attributed named 'dirty_shutdown' to match the name of
-similarly named NFIT sysfs attribute. Also this value is available to
-libnvdimm via PAPR_PDSM_HEALTH payload. 'struct nd_papr_pdsm_health'
-has been extended to add a new member called 'dimm_dsc' presence of
-which is indicated by the newly introduced PDSM_DIMM_DSC_VALID flag.
+Secondly, mtmsrd and mtspr are reduced by various means, this is mostly
+specific to 64s.
 
-References:
-[1] https://pmem.io/documents/Dirty_Shutdown_Handling-V1.0.pdf
+Lastly, an alternate interrupt return location facility is added for
+soft-masked asynchronous interrupts, and then that's used to set
+everything up for return without having to disable MSR RI or EE.
 
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- arch/powerpc/include/uapi/asm/papr_pdsm.h |  6 +++++
- arch/powerpc/platforms/pseries/papr_scm.c | 30 +++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
+After this series, the entire system call / interrupt handler fast path
+can execute with no mtsprs and one mtmsrd to enable interrupts
+initially, and the system call vectored path doesn't even need to do
+that. This gives a decent performance benefit. On POWER9 with a
+powernv_defconfig without VIRT_CPU_ACCOUNTING_NATIVE, no meltdown
+workarounds, gettid sc system call goes from 481 -> 344 cycles, gettid
+scv 345->299 cycles, and page fault 1225->1064 cycles.
 
-diff --git a/arch/powerpc/include/uapi/asm/papr_pdsm.h b/arch/powerpc/include/uapi/asm/papr_pdsm.h
-index 50ef95e2f5b1..82488b1e7276 100644
---- a/arch/powerpc/include/uapi/asm/papr_pdsm.h
-+++ b/arch/powerpc/include/uapi/asm/papr_pdsm.h
-@@ -77,6 +77,9 @@
- /* Indicate that the 'dimm_fuel_gauge' field is valid */
- #define PDSM_DIMM_HEALTH_RUN_GAUGE_VALID 1
- 
-+/* Indicate that the 'dimm_dsc' field is valid */
-+#define PDSM_DIMM_DSC_VALID 2
-+
- /*
-  * Struct exchanged between kernel & ndctl in for PAPR_PDSM_HEALTH
-  * Various flags indicate the health status of the dimm.
-@@ -105,6 +108,9 @@ struct nd_papr_pdsm_health {
- 
- 			/* Extension flag PDSM_DIMM_HEALTH_RUN_GAUGE_VALID */
- 			__u16 dimm_fuel_gauge;
-+
-+			/* Extension flag PDSM_DIMM_DSC_VALID */
-+			__u64 dimm_dsc;
- 		};
- 		__u8 buf[ND_PDSM_PAYLOAD_MAX_SIZE];
- 	};
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 11e7b90a3360..68f0d3d5e899 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -114,6 +114,9 @@ struct papr_scm_priv {
- 	/* Health information for the dimm */
- 	u64 health_bitmap;
- 
-+	/* Holds the last known dirty shutdown counter value */
-+	u64 dirty_shutdown_counter;
-+
- 	/* length of the stat buffer as expected by phyp */
- 	size_t stat_buffer_len;
- };
-@@ -603,6 +606,16 @@ static int papr_pdsm_fuel_gauge(struct papr_scm_priv *p,
- 	return rc;
- }
- 
-+/* Add the dirty-shutdown-counter value to the pdsm */
-+static int papr_psdm_dsc(struct papr_scm_priv *p,
-+			 union nd_pdsm_payload *payload)
-+{
-+	payload->health.extension_flags |= PDSM_DIMM_DSC_VALID;
-+	payload->health.dimm_dsc = p->dirty_shutdown_counter;
-+
-+	return sizeof(struct nd_papr_pdsm_health);
-+}
-+
- /* Fetch the DIMM health info and populate it in provided package. */
- static int papr_pdsm_health(struct papr_scm_priv *p,
- 			    union nd_pdsm_payload *payload)
-@@ -646,6 +659,8 @@ static int papr_pdsm_health(struct papr_scm_priv *p,
- 
- 	/* Populate the fuel gauge meter in the payload */
- 	papr_pdsm_fuel_gauge(p, payload);
-+	/* Populate the dirty-shutdown-counter field */
-+	papr_psdm_dsc(p, payload);
- 
- 	rc = sizeof(struct nd_papr_pdsm_health);
- 
-@@ -907,6 +922,16 @@ static ssize_t flags_show(struct device *dev,
- }
- DEVICE_ATTR_RO(flags);
- 
-+static ssize_t dirty_shutdown_show(struct device *dev,
-+			  struct device_attribute *attr, char *buf)
-+{
-+	struct nvdimm *dimm = to_nvdimm(dev);
-+	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
-+
-+	return sysfs_emit(buf, "%llu\n", p->dirty_shutdown_counter);
-+}
-+DEVICE_ATTR_RO(dirty_shutdown);
-+
- static umode_t papr_nd_attribute_visible(struct kobject *kobj,
- 					 struct attribute *attr, int n)
- {
-@@ -925,6 +950,7 @@ static umode_t papr_nd_attribute_visible(struct kobject *kobj,
- static struct attribute *papr_nd_attributes[] = {
- 	&dev_attr_flags.attr,
- 	&dev_attr_perf_stats.attr,
-+	&dev_attr_dirty_shutdown.attr,
- 	NULL,
- };
- 
-@@ -1149,6 +1175,10 @@ static int papr_scm_probe(struct platform_device *pdev)
- 	p->is_volatile = !of_property_read_bool(dn, "ibm,cache-flush-required");
- 	p->hcall_flush_required = of_property_read_bool(dn, "ibm,hcall-flush-required");
- 
-+	if (of_property_read_u64(dn, "ibm,persistence-failed-count",
-+				 &p->dirty_shutdown_counter))
-+		p->dirty_shutdown_counter = 0;
-+
- 	/* We just need to ensure that set cookies are unique across */
- 	uuid_parse(uuid_str, (uuid_t *) uuid);
- 	/*
+Changes since v1: 
+- Rebased to upstream
+- Reordered paches, updated comments and changelogs.
+- Clean ups, fixed ppc32 compile breakage.
+- Fixed missing srr invalidations in KVM guest entry/exit.
+- Dropped the security fallback rework from the start of the series
+  because it's quite complicated to change. Instead for now the
+  incompatible fallbacks just disable the interrupts-enabled exits.
+
+Thanks,
+Nick
+
+Nicholas Piggin (11):
+  powerpc: remove interrupt exit helpers unused argument
+  powerpc/64s: introduce different functions to return from SRR vs HSRR
+    interrupts
+  powerpc/64s: avoid reloading (H)SRR registers if they are still valid
+  powerpc/64: handle MSR EE and RI in interrupt entry wrapper
+  powerpc/64: move interrupt return asm to interrupt_64.S
+  powerpc/64s: system call avoid setting MSR[RI] until we set MSR[EE]
+  powerpc/64s: save one more register in the masked interrupt handler
+  powerpc/64: allow alternate return locations for soft-masked
+    interrupts
+  powerpc/64: interrupt soft-enable race fix
+  powerpc/64: treat low kernel text as irqs soft-masked
+  powerpc/64: use interrupt restart table to speed up return from
+    interrupt
+
+ arch/powerpc/Kconfig.debug                 |   5 +
+ arch/powerpc/include/asm/asm-prototypes.h  |   4 +-
+ arch/powerpc/include/asm/head-64.h         |   2 +-
+ arch/powerpc/include/asm/hw_irq.h          |  23 +-
+ arch/powerpc/include/asm/interrupt.h       |  57 +-
+ arch/powerpc/include/asm/paca.h            |   7 +
+ arch/powerpc/include/asm/ppc_asm.h         |   8 +
+ arch/powerpc/include/asm/ptrace.h          |  75 ++-
+ arch/powerpc/kernel/asm-offsets.c          |   7 +
+ arch/powerpc/kernel/entry_64.S             | 516 --------------
+ arch/powerpc/kernel/exceptions-64e.S       |  53 +-
+ arch/powerpc/kernel/exceptions-64s.S       | 219 +++---
+ arch/powerpc/kernel/fpu.S                  |   2 +
+ arch/powerpc/kernel/head_64.S              |   5 +-
+ arch/powerpc/kernel/interrupt.c            | 389 +++++++----
+ arch/powerpc/kernel/interrupt_64.S         | 749 +++++++++++++++++++++
+ arch/powerpc/kernel/irq.c                  |  95 +++
+ arch/powerpc/kernel/kgdb.c                 |   2 +-
+ arch/powerpc/kernel/kprobes-ftrace.c       |   2 +-
+ arch/powerpc/kernel/kprobes.c              |  10 +-
+ arch/powerpc/kernel/process.c              |  26 +-
+ arch/powerpc/kernel/rtas.c                 |  14 +-
+ arch/powerpc/kernel/signal.c               |   2 +-
+ arch/powerpc/kernel/signal_64.c            |   9 +
+ arch/powerpc/kernel/syscalls.c             |   3 +-
+ arch/powerpc/kernel/traps.c                |  18 +-
+ arch/powerpc/kernel/vector.S               |   6 +-
+ arch/powerpc/kernel/vmlinux.lds.S          |  10 +
+ arch/powerpc/kvm/book3s_hv.c               |   3 +
+ arch/powerpc/kvm/book3s_pr.c               |   1 +
+ arch/powerpc/lib/Makefile                  |   2 +-
+ arch/powerpc/lib/feature-fixups.c          |  38 +-
+ arch/powerpc/lib/restart_table.c           |  29 +
+ arch/powerpc/lib/sstep.c                   |   4 +-
+ arch/powerpc/math-emu/math.c               |   2 +-
+ arch/powerpc/platforms/powernv/opal-call.c |   4 +
+ arch/powerpc/sysdev/fsl_pci.c              |   2 +-
+ 37 files changed, 1596 insertions(+), 807 deletions(-)
+ create mode 100644 arch/powerpc/kernel/interrupt_64.S
+ create mode 100644 arch/powerpc/lib/restart_table.c
+
 -- 
-2.31.1
+2.23.0
 
