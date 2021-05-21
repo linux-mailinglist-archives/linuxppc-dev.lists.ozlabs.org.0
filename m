@@ -1,97 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E2738C041
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 09:02:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E03838C0A7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 09:23:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fmcxd31MJz3btY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 17:02:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmdPH1b7nz3bvb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 17:23:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f2whFDBO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zxBkF2Rp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::333;
+ helo=mail-wm1-x333.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=f2whFDBO; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=zxBkF2Rp; dkim-atps=neutral
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com
+ [IPv6:2a00:1450:4864:20::333])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fmcx92b4qz2xxk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 17:02:20 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14L6isOj082356; Fri, 21 May 2021 03:02:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : message-id : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=y5bENCOf6w9xrHmuvXUU+DOFUaRTdG/J0a6ngQTIPj4=;
- b=f2whFDBOG9Qvf75Mk4c9mactvd8ArhGYLN7+FXuZCzHgBkVb/jVoEFXAlLc9JJPG3jwc
- Elpm8uCvD2v98oi+MIQCMnk4YMgHPcuirmoFLBjx+sbQRuKijtRwKX1HtjOPiOV/s0H+
- ZU1aBwh/5lTsHZ/ObfSDzN4oIDpjINy2LtGHpwaIOcdpE7b8DWApPDLUqstfK9V/t0z9
- wSc+3NPAT9TBqzYPcFirnc4W1VhhLV+orU52R8LocNeItdy55TeomEVwf5q+FHszQB5h
- raPjiSMRcU5+iaIhDyR/UQrMiH27NxP40Gcbw7x24x/KS6zHKkVxTuY+VUu1cifFpnU8 7w== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38p7v58db3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 03:02:04 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14L6mBRQ031858;
- Fri, 21 May 2021 07:02:01 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma02fra.de.ibm.com with ESMTP id 38mceh8w1a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 07:02:01 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14L71xkA33620366
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 May 2021 07:01:59 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 188FD52050;
- Fri, 21 May 2021 07:01:59 +0000 (GMT)
-Received: from localhost (unknown [9.85.72.15])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 54FD052057;
- Fri, 21 May 2021 07:01:58 +0000 (GMT)
-Date: Fri, 21 May 2021 12:31:54 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/kprobes: Pass ppc_inst as a pointer to
- emulate_step() on ppc32
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman
- <mpe@ellerman.id.au>
-References: <20210520072909.2901326-1-naveen.n.rao@linux.vnet.ibm.com>
- <8a0cfd88-a98d-711c-b80b-916a99ada2c8@csgroup.eu>
- <1621507675.1o3860b85w.naveen@linux.ibm.com>
- <cb7d49dc-3980-2d2b-ee4e-480b89a04b0a@csgroup.eu>
-In-Reply-To: <cb7d49dc-3980-2d2b-ee4e-480b89a04b0a@csgroup.eu>
-User-Agent: astroid/v0.15-23-gcdc62b30 (https://github.com/astroidmail/astroid)
-Message-Id: <1621580436.oscey0zhvn.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: DBcQ8cKOCK0ZfB_JF-iECCbfRb12if5x
-X-Proofpoint-ORIG-GUID: DBcQ8cKOCK0ZfB_JF-iECCbfRb12if5x
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmdNn6Znvz2xMw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 17:22:48 +1000 (AEST)
+Received: by mail-wm1-x333.google.com with SMTP id z130so10539960wmg.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 00:22:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to;
+ bh=Ue4q25tfYI5RxLcBXPlMjiSrTwgCV0DfcVN25afL2bA=;
+ b=zxBkF2RpmykF6ze5xWEoQ0Sr0EVVAWgufL4N4uYCEfvvr/9dBYRwNyhiILH7xolYIM
+ mUMpEc0xXBJpplnd2Ws45Umks7zwOxUWKpLSks7U3bsdswos3yo/TMqCb97EECv4oO9i
+ nPR3MbzV+M8Ol9Hmhi9U7j556tKkgEURhOKEJ/ZmzIh4muKbO6krDSxmt3Mv2RYCjfFw
+ SNhb3NzpB5FQ50Ylct/Z3K/asq2FOTFjZf9FGqtQMB038gZT8Vu7p5RSiGdzGms2OD8X
+ yPYCJ7kZe/aC4GAdyvCUeySQ3fymFp3DS+oe58blNwY5pF5JgI3E7v419huXJyQo0bbH
+ XGvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=Ue4q25tfYI5RxLcBXPlMjiSrTwgCV0DfcVN25afL2bA=;
+ b=lYifJSxCN2X7pTJqdIJisjepWxYYlx4/oBsKTtRbiTSxvLeMspZwSZX+BUamHpLXVP
+ uXELgJ9wF3uq19DHzvzOKYTRhVMgg28/JDUX00mT9UE0af75exb3Ox/NkEydUMAvRmp4
+ H0rAh4G4hIphoRK61ecStDzcXDU32gN6K1bdLn7SgIRZaGxWdCVQmbWfOsxGCijxq59L
+ 5rflrAEnzLHfkuJSetTWiwQbsQ6O0MTzspr3LM3t/vkVnlVlXYNyXPJbksjpzZE92fZ/
+ BAmA9SeIEDErsQKDo1LusmifR/6w4IK0D8he5xLnjXdzsEU3Ab68S+ku/faCs+fCSBZK
+ NLsA==
+X-Gm-Message-State: AOAM533+XDq2JqVGEsGECpK6rWkC4UcZ0xzdQi/uErDC77FK3tJRkInd
+ zvG9iIgSJj0710S1oaCpjfJ4ZA==
+X-Google-Smtp-Source: ABdhPJzAs4JWDKxcLcuodJXaj7alnXNl7eWaJK+ZI+9Sb3ggP4ft8Mue6yj3TwDmFJ/1VFJt4AdOjA==
+X-Received: by 2002:a1c:2985:: with SMTP id p127mr7390963wmp.165.1621581759653; 
+ Fri, 21 May 2021 00:22:39 -0700 (PDT)
+Received: from dell ([91.110.221.215])
+ by smtp.gmail.com with ESMTPSA id c15sm1041514wro.21.2021.05.21.00.22.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 21 May 2021 00:22:39 -0700 (PDT)
+Date: Fri, 21 May 2021 08:22:36 +0100
+From: Lee Jones <lee.jones@linaro.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 00/16] Rid W=1 warnings from Char
+Message-ID: <20210521072236.GX2549456@dell>
+References: <20210520121347.3467794-1-lee.jones@linaro.org>
+ <CAK8P3a0VujuG8eU_CEVSvzbk4nAJz8fStedM5eMUrLAr9EJxDQ@mail.gmail.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-21_03:2021-05-20,
- 2021-05-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 mlxlogscore=999 impostorscore=0 adultscore=0
- malwarescore=0 bulkscore=0 mlxscore=0 spamscore=0 phishscore=0
- suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104190000 definitions=main-2105210043
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK8P3a0VujuG8eU_CEVSvzbk4nAJz8fStedM5eMUrLAr9EJxDQ@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,60 +82,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, David Airlie <airlied@linux.ie>,
+ Clemens Ladisch <clemens@ladisch.de>,
+ "C. Scott Ananian" <cananian@alumni.princeton.edu>,
+ Paul Mackerras <paulus@samba.org>, Kylene Hall <kjhall@us.ibm.com>,
+ Jerome Glisse <j.glisse@gmail.com>, Peter Huewe <peterhuewe@gmx.de>,
+ Michael Neuling <mikey@neuling.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Dave Safford <safford@watson.ibm.com>, Harald Welte <laforge@gnumonks.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kanoj Sarcar <kanoj@sgi.com>,
+ David Woodhouse <dwmw2@infradead.org>, Bob Picco <robert.picco@hp.com>,
+ Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>,
+ Thirupathaiah Annapureddy <thiruan@microsoft.com>,
+ "cs.c" <support.linux@omnikey.com>, Lijun Pan <ljp@linux.ibm.com>,
+ Reiner Sailer <sailer@watson.ibm.com>, Matt Mackall <mpm@selenic.com>,
+ van Doorn <leendert@watson.ibm.com>, Theodore Ts'o <tytso@mit.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Fulghum <paulkf@microgate.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ "open list:HARDWARE RANDOM NUMBER GENERATOR CORE"
+ <linux-crypto@vger.kernel.org>, linux-integrity@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
->=20
->=20
-> Le 20/05/2021 =C3=A0 12:54, Naveen N. Rao a =C3=A9crit=C2=A0:
->> Christophe Leroy wrote:
->>>
->>>
->>> Le 20/05/2021 =C3=A0 09:29, Naveen N. Rao a =C3=A9crit=C2=A0:
->>>> diff --git a/arch/powerpc/kernel/optprobes.c=20
->>>> b/arch/powerpc/kernel/optprobes.c
->>>> index cdf87086fa33a0..2bc53fa48a1b33 100644
->>>> --- a/arch/powerpc/kernel/optprobes.c
->>>> +++ b/arch/powerpc/kernel/optprobes.c
->>>> @@ -281,8 +281,12 @@ int arch_prepare_optimized_kprobe(struct optimize=
-d_kprobe *op, struct kprobe=20
->>>> *p)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * 3. load instruction to be emula=
-ted into relevant register, and
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
->>>> -=C2=A0=C2=A0=C2=A0 temp =3D ppc_inst_read((struct ppc_inst *)p->ainsn=
-.insn);
->>>> -=C2=A0=C2=A0=C2=A0 patch_imm_load_insns(ppc_inst_as_ulong(temp), 4, b=
-uff + TMPL_INSN_IDX);
->>>> +=C2=A0=C2=A0=C2=A0 if (IS_ENABLED(CONFIG_PPC64)) {
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 temp =3D ppc_inst_read((st=
-ruct ppc_inst *)p->ainsn.insn);
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 patch_imm_load_insns(ppc_i=
-nst_as_ulong(temp), 4, buff + TMPL_INSN_IDX);
->>>> +=C2=A0=C2=A0=C2=A0 } else {
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 patch_imm_load_insns((unsi=
-gned long)p->ainsn.insn, 4, buff + TMPL_INSN_IDX);
->>>> +=C2=A0=C2=A0=C2=A0 }
->>>
->>> It means commit https://github.com/linuxppc/linux/commit/693557ebf407a8=
-5ea400a0b501bb97687d8f4856=20
->>> was not necessary and may be reverted.
->>=20
->> Indeed, I will send a revert for it.
->>=20
->=20
-> I'm not completely sure it is worth reverting, on an other hand it is poi=
-ntless anyway to have=20
-> something to convert to a u64 something that cannot be more than 32 bits =
-on a PPC32, so now that we=20
-> have ppc_inst_as_ulong() it is as good I think.
+On Thu, 20 May 2021, Arnd Bergmann wrote:
 
-Sure. If necessary, the revert can go in separately as part of your=20
-other cleanup series.
+> On Thu, May 20, 2021 at 2:13 PM Lee Jones <lee.jones@linaro.org> wrote:
+> >
+> > This set is part of a larger effort attempting to clean-up W=1
+> > kernel builds, which are currently overwhelmingly riddled with
+> > niggly little warnings.
+> >
+> > Lee Jones (16):
+> >   char: pcmcia: cm4000_cs: Remove unused variable 'tmp'
+> >   char: pcmcia: cm4040_cs: Remove unused variable 'uc'
+> >   char: random: Include header containing our prototypes
+> >   char: pcmcia: synclink_cs: Fix a bunch of kernel-doc issues
+> >   char: pcmcia: synclink_cs: Fix a bunch of kernel-doc issues
+> >   char: applicom: Remove 3 unused variables 'ret' and 2 instances of
+> >     'byte_reset_it'
+> >   char: tpm: tpm1-cmd: Fix a couple of misnamed functions
+> >   char: tpm: tpm_ftpm_tee: Fix a couple of kernel-doc misdemeanours
+> >   char: agp: backend: Demote some non-conformant kernel-doc headers
+> >   char: agp: frontend: Include header file containing our prototypes
+> >   char: agp: via-agp: Remove unused variable 'current_size'
+> >   char: hpet: Remove unused variable 'm'
+> >   char: agp: generic: Place braces around optimised out function in if()
+> >   char: agp: uninorth-agp: Remove unused variable 'size'
+> >   char: hw_random: pseries-rng: Demote non-conformant kernel-doc header
+> >   char: mem: Provide local prototype for non-static function
+> 
+> Thanks a lot!
+> 
+> I've looked all the patches now and commented on patches 6 and 16.
+> With my comments addressed
+> 
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-- Naveen
+Thanks Arnd.
 
+Would it be possible for the remaining 14 patches to be taken in
+please?  I will work on the 2 Arnd commented on in due course and
+resubmit them independently.
+
+TIA.
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
