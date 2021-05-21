@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0DA38C5FA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 13:47:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C952B38C5FB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 13:48:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmlGX2Hhhz3ccb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 21:47:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmlH05ttHz3c60
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 21:48:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=RtWwnSvH;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=joV9mSn/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631;
+ helo=mail-pl1-x631.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=RtWwnSvH; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
+ header.s=20161025 header.b=joV9mSn/; dkim-atps=neutral
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com
+ [IPv6:2607:f8b0:4864:20::631])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmlC44qcTz3090
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 21:44:48 +1000 (AEST)
-Received: by mail-pj1-x1032.google.com with SMTP id
- pi6-20020a17090b1e46b029015cec51d7cdso7010773pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 04:44:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmlC64cQqz3bnS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 21:44:50 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id b7so6675522plg.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 04:44:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=TeyS9kPcmx97lrUqGTx0Je7SbGB1d6EDJmtcigtvCHQ=;
- b=RtWwnSvHtoioNrGf7w4cBZDsQJN9qh0A/O1uWjDVIj/7UXdGWl9/4PpxpsbM2xfY4A
- W2t677lt3tMhlU0/Yx6LcSkB9wzh4bogtbsFoO8WTnhgn53GjSwuCOFv2fimWPPty1aY
- obCa5arYD+k7bJEZTGi07jpjMg6LdH05mkOdQcl5p/kCym0EyzgG8rvvCcacSw1u99gp
- tpleBWY3S/9T5bl00Dnz1sNB3OBmSdtWU7YK86Smt+xNcikfHSll2Jf9VRN7zxT4ymaU
- bVTtvABdzUyg/7+OHNb/6Xm+RUAZOwLa2WIfq8xyyUlf+iCe2E1ucHZKvttFWZrEMtpl
- kAtw==
+ bh=Hhd+fuGqJUuQW2nqlOscXLPZPLQdJPLVzy4+rL5BTdM=;
+ b=joV9mSn/6GzJeYoZ8YdaNxa5ex0wthkKNb19LFDaqduRJ2ux22Cq17HV8OK03TTOqw
+ 7aPw/xmfObcz0Gws3RuvhiMm7EYrwFqHbr0M5A0l703IlHPVbQAtkJ1dCs/4RLMEWVi3
+ i6NEDwpPu6GM1s/xuyvdl2UxcD65sIzCY0X4qH4D6IHT3I2xejbrIk9VTaqg96zH+G3Z
+ +ApsfvRXtfU7ZJLyX27OPTvM//ds/PHMYAVotRm9dPZmxjlraNKexcp2wKuQsXK8DYs4
+ yG5CZLnSzekAPdAH3Ik9z0xp8sz1SFNn4C7FFB6v7MB2Umh0z5k7/3yRvQrC7gGGPaY7
+ mZIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=TeyS9kPcmx97lrUqGTx0Je7SbGB1d6EDJmtcigtvCHQ=;
- b=gxLTce4r1PDz1T1HfOLRWJB6CWZ+oYSY1Q7murTT9gsV8d+/5pOrUhTLpVk1cVgTL1
- CMG76/4UHqY0Omjj3ugLKWsB1MsS7/8PO3apAsh9c5IxFbsGQfpBgICsttYedHVvNqwh
- 269Z9BjQpOdgGgEr/XOYDpMtKlIMUpyKqOMYNXx7UOJxIRd9gqoW0xGAPAaaFYyCOA4g
- /jKFI1o4P+t+LerqKXmuufz9hgqY4NyKuVd/08w4qfS4gpv1mgoleTvZU6WExjFCliag
- M3NRTtcs6Lpxaip4exkm4y8bqnwT79p+ylOisb9kZBOPnv/Ij2d3QbKhZ4lBECk6+g+Y
- SqnQ==
-X-Gm-Message-State: AOAM532L51rTyW88NvtWa1DmNp/oDkRH4H3OojE9Mi1sR1LVe3z3Voeu
- Vw3MCKdrJ3kxX5doMDAqjnmzKNq1IMw=
-X-Google-Smtp-Source: ABdhPJzml+0PbYr2uVNxCrBmm4ihovo7zdazUXEUd5EMce8MoXD8bqjHg+RgUmslDch0jLx3AO94Yg==
-X-Received: by 2002:a17:90a:cc05:: with SMTP id
- b5mr10450387pju.6.1621597486162; 
- Fri, 21 May 2021 04:44:46 -0700 (PDT)
+ bh=Hhd+fuGqJUuQW2nqlOscXLPZPLQdJPLVzy4+rL5BTdM=;
+ b=L1yxM1RCdG8wcxiddQTHRWVCu+CxMC06vHiQjGBe3NPuSvey6ZrlMcMgClFzcR8Rwa
+ yGq5FecXw4RxF2gIs5J837Vl26m1CskdPajKk/BfK0c2k9MaE8qzGH/zJws6NGehpFSy
+ d91KWwgUh2CJf8QCJy1sYSOB9unPiGBG/axgMiffk2aYxXjmK/LiYtg43Y59bY3w06EP
+ TBAptJaOJFjuHcaaTxJS+BkR/xqC9XZsM2eB83zZlRFiSZmFklShCYaod4Wa8sMccx9r
+ rd8dDfr/kB+XCrBz+8auwzpDYdS6uh39ErSJ+5Y4mmyIN200zw0yx5JlPhVDcuRPMviA
+ mI+A==
+X-Gm-Message-State: AOAM5314rNUl5ALE0cEiaaPU1HDt43zZhjgfZATMVQ3eVHVvnBrizo2o
+ A0IN+loGxecw2Tn9nObl3WaHJ3cvcZ8=
+X-Google-Smtp-Source: ABdhPJxADxhgEBMMwAtnryZathg+5yjvNnMyF5mPDGJAahm0gz9o70iuYUDky+9c/gbFIvfaYrySUw==
+X-Received: by 2002:a17:90a:7442:: with SMTP id
+ o2mr10647081pjk.44.1621597488184; 
+ Fri, 21 May 2021 04:44:48 -0700 (PDT)
 Received: from bobo.ibm.com (60-241-27-127.tpgi.com.au. [60.241.27.127])
- by smtp.gmail.com with ESMTPSA id f5sm8681390pjp.37.2021.05.21.04.44.44
+ by smtp.gmail.com with ESMTPSA id f5sm8681390pjp.37.2021.05.21.04.44.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 May 2021 04:44:45 -0700 (PDT)
+ Fri, 21 May 2021 04:44:48 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 06/11] powerpc/64s: system call avoid setting MSR[RI] until
- we set MSR[EE]
-Date: Fri, 21 May 2021 21:44:17 +1000
-Message-Id: <20210521114422.3179350-7-npiggin@gmail.com>
+Subject: [PATCH v2 07/11] powerpc/64s: save one more register in the masked
+ interrupt handler
+Date: Fri, 21 May 2021 21:44:18 +1000
+Message-Id: <20210521114422.3179350-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210521114422.3179350-1-npiggin@gmail.com>
 References: <20210521114422.3179350-1-npiggin@gmail.com>
@@ -87,44 +86,86 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This extends the MSR[RI]=0 window a little further into the system
-call in order to pair RI and EE enabling with a single mtmsrd.
+This frees up one more register (and takes advantage of that to
+clean things up a little bit).
+
+This register will be used in the following patch.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 2 --
- arch/powerpc/kernel/interrupt_64.S   | 4 ++--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 34 ++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index a2ae14d0600e..b6e1c46c97d0 100644
+index b6e1c46c97d0..0ba8c2387aac 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1942,8 +1942,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
- 	mtctr	r10
- 	bctr
+@@ -2758,7 +2758,6 @@ INT_DEFINE_END(soft_nmi)
+  * and run it entirely with interrupts hard disabled.
+  */
+ EXC_COMMON_BEGIN(soft_nmi_common)
+-	mfspr	r11,SPRN_SRR0
+ 	mr	r10,r1
+ 	ld	r1,PACAEMERGSP(r13)
+ 	subi	r1,r1,INT_FRAME_SIZE
+@@ -2793,19 +2792,24 @@ masked_Hinterrupt:
  	.else
--	li	r10,MSR_RI
--	mtmsrd 	r10,1			/* Set RI (EE=0) */
- #ifdef CONFIG_RELOCATABLE
- 	__LOAD_HANDLER(r10, system_call_common)
- 	mtctr	r10
-diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-index 83826775d239..3038c831fc5f 100644
---- a/arch/powerpc/kernel/interrupt_64.S
-+++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -284,9 +284,9 @@ END_BTB_FLUSH_SECTION
- 	 * trace_hardirqs_off().
- 	 */
- 	li	r11,IRQS_ALL_DISABLED
--	li	r12,PACA_IRQ_HARD_DIS
-+	li	r12,-1 /* Set MSR_EE and MSR_RI */
- 	stb	r11,PACAIRQSOFTMASK(r13)
--	stb	r12,PACAIRQHAPPENED(r13)
-+	mtmsrd	r12,1
- 
- 	/* Calling convention has r9 = orig r0, r10 = regs */
- 	mr	r9,r0
+ masked_interrupt:
+ 	.endif
+-	lbz	r11,PACAIRQHAPPENED(r13)
+-	or	r11,r11,r10
+-	stb	r11,PACAIRQHAPPENED(r13)
++	stw	r9,PACA_EXGEN+EX_CCR(r13)
++	lbz	r9,PACAIRQHAPPENED(r13)
++	or	r9,r9,r10
++	stb	r9,PACAIRQHAPPENED(r13)
++
++	.if ! \hsrr
+ 	cmpwi	r10,PACA_IRQ_DEC
+ 	bne	1f
+-	lis	r10,0x7fff
+-	ori	r10,r10,0xffff
+-	mtspr	SPRN_DEC,r10
++	LOAD_REG_IMMEDIATE(r9, 0x7fffffff)
++	mtspr	SPRN_DEC,r9
+ #ifdef CONFIG_PPC_WATCHDOG
++	lwz	r9,PACA_EXGEN+EX_CCR(r13)
+ 	b	soft_nmi_common
+ #else
+ 	b	2f
+ #endif
++	.endif
++
+ 1:	andi.	r10,r10,PACA_IRQ_MUST_HARD_MASK
+ 	beq	2f
+ 	xori	r12,r12,MSR_EE	/* clear MSR_EE */
+@@ -2814,17 +2818,19 @@ masked_interrupt:
+ 	.else
+ 	mtspr	SPRN_SRR1,r12
+ 	.endif
+-	ori	r11,r11,PACA_IRQ_HARD_DIS
+-	stb	r11,PACAIRQHAPPENED(r13)
++	ori	r9,r9,PACA_IRQ_HARD_DIS
++	stb	r9,PACAIRQHAPPENED(r13)
+ 2:	/* done */
+-	li	r10,0
++	li	r9,0
+ 	.if \hsrr
+-	stb	r10,PACAHSRR_VALID(r13)
++	stb	r9,PACAHSRR_VALID(r13)
+ 	.else
+-	stb	r10,PACASRR_VALID(r13)
++	stb	r9,PACASRR_VALID(r13)
+ 	.endif
+-	ld	r10,PACA_EXGEN+EX_CTR(r13)
+-	mtctr	r10
++
++	ld	r9,PACA_EXGEN+EX_CTR(r13)
++	mtctr	r9
++	lwz	r9,PACA_EXGEN+EX_CCR(r13)
+ 	mtcrf	0x80,r9
+ 	std	r1,PACAR1(r13)
+ 	ld	r9,PACA_EXGEN+EX_R9(r13)
 -- 
 2.23.0
 
