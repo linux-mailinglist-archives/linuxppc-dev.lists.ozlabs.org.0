@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C340438BECC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB78E38BECE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:01:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmbZH4sJ5z3fJG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 16:00:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmbZp5nlcz3fN4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 16:01:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=zbuRIfQx;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=NaUBiOvZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,28 +19,28 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=zbuRIfQx; 
+ header.s=bombadil.20210309 header.b=NaUBiOvZ; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbNc173Dz3bxZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 15:52:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbNd5W12z308m
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 15:52:33 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=Dqzt1SgIuEv7176F2n2goXjtUgv5IYzpCnDSj1m18LI=; b=zbuRIfQxiNNx1Xt4keqjwvqG5+
- GpYWX+tYMl+zszl52DxPUhNljjrHazBTMZAsVnGGdP7pTPmVqt8MOybyaoFJ2sZ2WnpP09U+9rq2W
- kAR9KJuaSq8hqiT8PfZbqlpDd7Yu9tLXZxXNzJ1OlIomaoDXWhS1BIrrDbOu5sJL3RkgOM81Ee79j
- Ftg0HdTx2tJqsgrNqv8ugfIYFFqJCJFQO837B5dgogpmBiwJWJ3Yl7YOHQ6g/qHWYzhhe7MJZOPsj
- d6S5vZ60k9oOpp3j45PrXSGfcrmSAFFLyW+IkR1IijgDzLCdYYPyAdPt/Qsol4+8QJzXgwbvQoZss
- 3hrezbFA==;
+ bh=KHHZw3fJkb5lyIBH/y6U6F8KkPbsCmVPB+g7PKF3Z6o=; b=NaUBiOvZ1MiDe2/hyhzsLhJYY2
+ cwExPApTCPwU6iWE8GCK+lMo2qgBs9hT/ZNqSqjMa6S6QQeqGTsGjDc9wY94PATlgDfoA6GxwuhY+
+ S/v0G7SydFsc6gjF+rymV3/sYmu3GbVhenVRTlaNyLcezNDOcvwl38gxEVk7qzYPSqPlJ9a4AXnYI
+ v6e9yGZeCYldwLFqKXmb/iHJFJJTntW1nCFh6XT3cMndCj3swRnYosPplAJ1CCzERBqCd69/niB/x
+ 3awnmhYkCsMQKpyRu46wJM3MId9bJi5KkWqP5K4nXAs94dRvmvDNz6Y5Y2kzKArkRCv5GgAKfLUxn
+ qkj6SXRg==;
 Received: from [2001:4bb8:180:5add:4fd7:4137:d2f2:46e6] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1ljy50-00Gq7o-Ng; Fri, 21 May 2021 05:52:15 +0000
+ id 1ljy54-00Gq9J-Po; Fri, 21 May 2021 05:52:19 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>, Geert Uytterhoeven <geert@linux-m68k.org>,
  Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
@@ -56,10 +56,9 @@ To: Jens Axboe <axboe@kernel.dk>, Geert Uytterhoeven <geert@linux-m68k.org>,
  Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
  Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
  Christian Borntraeger <borntraeger@de.ibm.com>
-Subject: [PATCH 18/26] nvme-multipath: convert to
- blk_alloc_disk/blk_cleanup_disk
-Date: Fri, 21 May 2021 07:51:08 +0200
-Message-Id: <20210521055116.1053587-19-hch@lst.de>
+Subject: [PATCH 19/26] nfblock: convert to blk_alloc_disk/blk_cleanup_disk
+Date: Fri, 21 May 2021 07:51:09 +0200
+Message-Id: <20210521055116.1053587-20-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210521055116.1053587-1-hch@lst.de>
 References: <20210521055116.1053587-1-hch@lst.de>
@@ -87,104 +86,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Convert the nvme-multipath driver to use the blk_alloc_disk and
-blk_cleanup_disk helpers to simplify gendisk and request_queue
-allocation.
+Convert the nfblock driver to use the blk_alloc_disk and blk_cleanup_disk
+helpers to simplify gendisk and request_queue allocation.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/nvdimm/pmem.c         |  1 -
- drivers/nvme/host/multipath.c | 45 ++++++++++-------------------------
- 2 files changed, 13 insertions(+), 33 deletions(-)
+ arch/m68k/emu/nfblock.c | 20 +++++---------------
+ 1 file changed, 5 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index 9fcd05084564..31f3c4bd6f72 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -472,7 +472,6 @@ static int pmem_attach_disk(struct device *dev,
- 		blk_queue_flag_set(QUEUE_FLAG_DAX, q);
+diff --git a/arch/m68k/emu/nfblock.c b/arch/m68k/emu/nfblock.c
+index ba808543161a..9a8394e96388 100644
+--- a/arch/m68k/emu/nfblock.c
++++ b/arch/m68k/emu/nfblock.c
+@@ -55,7 +55,6 @@ struct nfhd_device {
+ 	int id;
+ 	u32 blocks, bsize;
+ 	int bshift;
+-	struct request_queue *queue;
+ 	struct gendisk *disk;
+ };
  
- 	disk->fops		= &pmem_fops;
--	disk->queue		= q;
- 	disk->private_data	= pmem;
- 	nvdimm_namespace_disk_name(ndns, disk->disk_name);
- 	set_capacity(disk, (pmem->size - pmem->pfn_pad - pmem->data_offset)
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index a5d02f236cca..b5fbdb416022 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -427,7 +427,6 @@ static void nvme_requeue_work(struct work_struct *work)
+@@ -119,32 +118,24 @@ static int __init nfhd_init_one(int id, u32 blocks, u32 bsize)
+ 	dev->bsize = bsize;
+ 	dev->bshift = ffs(bsize) - 10;
  
- int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
- {
--	struct request_queue *q;
- 	bool vwc = false;
- 
- 	mutex_init(&head->lock);
-@@ -443,33 +442,24 @@ int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
- 	if (!(ctrl->subsys->cmic & NVME_CTRL_CMIC_MULTI_CTRL) || !multipath)
- 		return 0;
- 
--	q = blk_alloc_queue(ctrl->numa_node);
--	if (!q)
--		goto out;
--	blk_queue_flag_set(QUEUE_FLAG_NONROT, q);
--	/* set to a default value for 512 until disk is validated */
--	blk_queue_logical_block_size(q, 512);
--	blk_set_stacking_limits(&q->limits);
+-	dev->queue = blk_alloc_queue(NUMA_NO_NODE);
+-	if (dev->queue == NULL)
+-		goto free_dev;
 -
--	/* we need to propagate up the VMC settings */
--	if (ctrl->vwc & NVME_CTRL_VWC_PRESENT)
--		vwc = true;
--	blk_queue_write_cache(q, vwc, vwc);
+-	blk_queue_logical_block_size(dev->queue, bsize);
 -
--	head->disk = alloc_disk(0);
-+	head->disk = blk_alloc_disk(ctrl->numa_node);
- 	if (!head->disk)
--		goto out_cleanup_queue;
-+		return -ENOMEM;
- 	head->disk->fops = &nvme_ns_head_ops;
- 	head->disk->private_data = head;
--	head->disk->queue = q;
- 	sprintf(head->disk->disk_name, "nvme%dn%d",
- 			ctrl->subsys->instance, head->instance);
--	return 0;
+-	dev->disk = alloc_disk(16);
++	dev->disk = blk_alloc_disk(NUMA_NO_NODE);
+ 	if (!dev->disk)
+-		goto free_queue;
++		goto free_dev;
  
--out_cleanup_queue:
--	blk_cleanup_queue(q);
--out:
--	return -ENOMEM;
-+	blk_queue_flag_set(QUEUE_FLAG_NONROT, head->disk->queue);
-+	/* set to a default value of 512 until the disk is validated */
-+	blk_queue_logical_block_size(head->disk->queue, 512);
-+	blk_set_stacking_limits(&head->disk->queue->limits);
-+
-+	/* we need to propagate up the VMC settings */
-+	if (ctrl->vwc & NVME_CTRL_VWC_PRESENT)
-+		vwc = true;
-+	blk_queue_write_cache(head->disk->queue, vwc, vwc);
-+	return 0;
- }
+ 	dev->disk->major = major_num;
+ 	dev->disk->first_minor = dev_id * 16;
++	dev->disk->minors = 16;
+ 	dev->disk->fops = &nfhd_ops;
+ 	dev->disk->private_data = dev;
+ 	sprintf(dev->disk->disk_name, "nfhd%u", dev_id);
+ 	set_capacity(dev->disk, (sector_t)blocks * (bsize / 512));
+-	dev->disk->queue = dev->queue;
+-
++	blk_queue_logical_block_size(dev->disk->queue, bsize);
+ 	add_disk(dev->disk);
  
- static void nvme_mpath_set_live(struct nvme_ns *ns)
-@@ -768,16 +758,7 @@ void nvme_mpath_remove_disk(struct nvme_ns_head *head)
- 	/* make sure all pending bios are cleaned up */
- 	kblockd_schedule_work(&head->requeue_work);
- 	flush_work(&head->requeue_work);
--	blk_cleanup_queue(head->disk->queue);
--	if (!test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags)) {
--		/*
--		 * if device_add_disk wasn't called, prevent
--		 * disk release to put a bogus reference on the
--		 * request queue
--		 */
--		head->disk->queue = NULL;
--	}
--	put_disk(head->disk);
-+	blk_cleanup_disk(head->disk);
- }
+ 	list_add_tail(&dev->list, &nfhd_list);
  
- void nvme_mpath_init_ctrl(struct nvme_ctrl *ctrl)
+ 	return 0;
+ 
+-free_queue:
+-	blk_cleanup_queue(dev->queue);
+ free_dev:
+ 	kfree(dev);
+ out:
+@@ -186,8 +177,7 @@ static void __exit nfhd_exit(void)
+ 	list_for_each_entry_safe(dev, next, &nfhd_list, list) {
+ 		list_del(&dev->list);
+ 		del_gendisk(dev->disk);
+-		put_disk(dev->disk);
+-		blk_cleanup_queue(dev->queue);
++		blk_cleanup_disk(dev->disk);
+ 		kfree(dev);
+ 	}
+ 	unregister_blkdev(major_num, "nfhd");
 -- 
 2.30.2
 
