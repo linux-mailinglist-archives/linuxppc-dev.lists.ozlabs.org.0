@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0106C38BEC4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 07:58:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96A338BEC5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 07:58:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmbWN6yBjz3dvH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 15:58:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmbWr4sWVz3f1c
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 15:58:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=FP2W445o;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=YcXSW1gn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,28 +19,28 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=FP2W445o; 
+ header.s=bombadil.20210309 header.b=YcXSW1gn; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbNM3v11z3btB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 15:52:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbNQ1glvz3btn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 15:52:22 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=4szuJYmR11pD2G4fH+QS+nxV5W8Ptmu52A+D0MN3nXg=; b=FP2W445ofVpl9uQMnmJieRiFy+
- QSv42mqlYEUVOOs+asx3KXcv0geXkpNMKZYXZAXP5p2y5+O45wO/WtFx3rDgToiWABOEyDIVtpmjr
- nAetv60YXcfz7h3701O7QfQp/Bh4cTEotj4KGj86xIr/Lve1UUvC0q2IezjSHzTn2KDLMeiOuXjg6
- +Iw/b/oJzQZCMYctV7ZGw1Y/0OMW33VtBV8Dy8/TxvYxqHcuMiKyU0A8q93uIeEgKcBHabIySrOrl
- cCkjZfAGYIJjd+8jz6ouAlw4OTY1qfClEpJxeB07hWIxuyvo4rDSuofjhAY5KzCvn1EOjHXQWVmcd
- uR3swFoA==;
+ bh=0RRqRr3mXJO2Ltpsb28euSdgSg07f0NC5QBt8ZO/n70=; b=YcXSW1gnCLEme161Dx7XfccPf1
+ zO8OQkJSl/bkHgc7eiHANqmbFDtrWLuHr+omsOGEqwToc4gQDOeCcet0ay4h9iOpnkykUp4cUFudc
+ YbCns/tVeye/L3n1qDMfo9BzablMFCmqhi3DIkWtJgfEXw+qFe97BtcsFalaeukN3bghnTTywj2J+
+ x4LyzzcfA19SZk5ZoZ9vGCULNnoAvZ1lfjXLZefmveiveW3IIntcTBUb6c7iO5VS2ISvcTruCRNYv
+ HtrRWAJikjcH4NxQNLn8u6dFncBQlrYLKaUKkKqLBP8VeojEAsVtVpqsuPtC/74ri/HwNIAwBrkc0
+ ZPge7Nmw==;
 Received: from [2001:4bb8:180:5add:4fd7:4137:d2f2:46e6] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1ljy4l-00Gq2r-6Q; Fri, 21 May 2021 05:51:59 +0000
+ id 1ljy4o-00Gq3c-AO; Fri, 21 May 2021 05:52:02 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>, Geert Uytterhoeven <geert@linux-m68k.org>,
  Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
@@ -56,9 +56,9 @@ To: Jens Axboe <axboe@kernel.dk>, Geert Uytterhoeven <geert@linux-m68k.org>,
  Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
  Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
  Christian Borntraeger <borntraeger@de.ibm.com>
-Subject: [PATCH 13/26] dm: convert to blk_alloc_disk/blk_cleanup_disk
-Date: Fri, 21 May 2021 07:51:03 +0200
-Message-Id: <20210521055116.1053587-14-hch@lst.de>
+Subject: [PATCH 14/26] md: convert to blk_alloc_disk/blk_cleanup_disk
+Date: Fri, 21 May 2021 07:51:04 +0200
+Message-Id: <20210521055116.1053587-15-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210521055116.1053587-1-hch@lst.de>
 References: <20210521055116.1053587-1-hch@lst.de>
@@ -86,60 +86,69 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Convert the dm driver to use the blk_alloc_disk and blk_cleanup_disk
+Convert the md driver to use the blk_alloc_disk and blk_cleanup_disk
 helpers to simplify gendisk and request_queue allocation.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/md/dm.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ drivers/md/md.c | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index ca2aedd8ee7d..3c7c2d257018 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -1801,13 +1801,13 @@ static void cleanup_mapped_device(struct mapped_device *md)
- 		md->disk->private_data = NULL;
- 		spin_unlock(&_minor_lock);
- 		del_gendisk(md->disk);
--		put_disk(md->disk);
- 	}
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 49f897fbb89b..d806be8cc210 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -5598,12 +5598,10 @@ static void md_free(struct kobject *ko)
+ 	if (mddev->sysfs_level)
+ 		sysfs_put(mddev->sysfs_level);
  
--	if (md->queue) {
-+	if (md->queue)
- 		dm_queue_destroy_keyslot_manager(md->queue);
--		blk_cleanup_queue(md->queue);
--	}
-+
-+	if (md->disk)
-+		blk_cleanup_disk(md->disk);
+-	if (mddev->gendisk)
++	if (mddev->gendisk) {
+ 		del_gendisk(mddev->gendisk);
+-	if (mddev->queue)
+-		blk_cleanup_queue(mddev->queue);
+-	if (mddev->gendisk)
+-		put_disk(mddev->gendisk);
++		blk_cleanup_disk(mddev->gendisk);
++	}
+ 	percpu_ref_exit(&mddev->writes_pending);
  
- 	cleanup_srcu_struct(&md->io_barrier);
+ 	bioset_exit(&mddev->bio_set);
+@@ -5711,20 +5709,13 @@ static int md_alloc(dev_t dev, char *name)
+ 		goto abort;
  
-@@ -1869,13 +1869,10 @@ static struct mapped_device *alloc_dev(int minor)
- 	 * established. If request-based table is loaded: blk-mq will
- 	 * override accordingly.
- 	 */
--	md->queue = blk_alloc_queue(numa_node_id);
--	if (!md->queue)
--		goto bad;
+ 	error = -ENOMEM;
+-	mddev->queue = blk_alloc_queue(NUMA_NO_NODE);
+-	if (!mddev->queue)
++	disk = blk_alloc_disk(NUMA_NO_NODE);
++	if (!disk)
+ 		goto abort;
+ 
+-	blk_set_stacking_limits(&mddev->queue->limits);
 -
--	md->disk = alloc_disk_node(1, md->numa_node_id);
-+	md->disk = blk_alloc_disk(md->numa_node_id);
- 	if (!md->disk)
- 		goto bad;
-+	md->queue = md->disk->queue;
- 
- 	init_waitqueue_head(&md->wait);
- 	INIT_WORK(&md->work, dm_wq_work);
-@@ -1888,6 +1885,7 @@ static struct mapped_device *alloc_dev(int minor)
- 
- 	md->disk->major = _major;
- 	md->disk->first_minor = minor;
-+	md->disk->minors = 1;
- 	md->disk->fops = &dm_blk_dops;
- 	md->disk->queue = md->queue;
- 	md->disk->private_data = md;
+-	disk = alloc_disk(1 << shift);
+-	if (!disk) {
+-		blk_cleanup_queue(mddev->queue);
+-		mddev->queue = NULL;
+-		goto abort;
+-	}
+ 	disk->major = MAJOR(mddev->unit);
+ 	disk->first_minor = unit << shift;
++	disk->minors = 1 << shift;
+ 	if (name)
+ 		strcpy(disk->disk_name, name);
+ 	else if (partitioned)
+@@ -5733,7 +5724,9 @@ static int md_alloc(dev_t dev, char *name)
+ 		sprintf(disk->disk_name, "md%d", unit);
+ 	disk->fops = &md_fops;
+ 	disk->private_data = mddev;
+-	disk->queue = mddev->queue;
++
++	mddev->queue = disk->queue;
++	blk_set_stacking_limits(&mddev->queue->limits);
+ 	blk_queue_write_cache(mddev->queue, true, true);
+ 	/* Allow extended partitions.  This makes the
+ 	 * 'mdp' device redundant, but we can't really
 -- 
 2.30.2
 
