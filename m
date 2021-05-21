@@ -2,61 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA8338CC7B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 19:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACEE938CC71
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 19:43:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmvB84X4fz3bxW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 May 2021 03:44:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fmv8N42hNz3bvp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 May 2021 03:43:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.215.182;
- helo=mail-pg1-f182.google.com; envelope-from=mcgrof@gmail.com;
- receiver=<UNKNOWN>)
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com
- [209.85.215.182])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fmv9m2fsHz2xv2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 May 2021 03:44:11 +1000 (AEST)
-Received: by mail-pg1-f182.google.com with SMTP id v14so12074772pgi.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 10:44:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=lcP+zO2F1IGQjzr8jBvO9rG6CcCMMr/Whp/T20TGCRM=;
- b=DizJw4nSDQuXGA18xC49fQqeIhcOipDI1nAFCaST6Gh0VYnotfv3432GUZFyiWJu4V
- ym2B8iUKGl7k7ZKxo3Ui0RgBl/WePhVi+7GVHRVw1HquALis7BPcT0sLLhqfARwEdwjT
- ShTPtKJHGOqkJqAx+ODm4mbbVN1xM9OIf1HBDXwZHeThskQ6TbZN5Fyd8TL0KjTfwuT+
- oHE8s4Mp9DNVYhPCANuaija8m0+Qx8VdQn9dqliscKdDica15GbJ0zRQj4GSwDT1AQdw
- SeCt+cl5HNa72AI+K7IFT23wIIztV0kyOZXn9AGm4SjGV8jfTppEOLCS5HmSN3RidmiW
- o9tQ==
-X-Gm-Message-State: AOAM530fJPCybEiOGsXzliwpSNVB2oEGT2gncGZdjunWzgf6CUGeEZl5
- 9AbmVm2u4qXawt2byrrWEBY=
-X-Google-Smtp-Source: ABdhPJx2cr14kVfs56RCS6Lg1N9a0F2CxWXa6sTYNwZ2wWHW3RuCIJw00Zxq6x/ufjwVbJsYm0Ya2A==
-X-Received: by 2002:a05:6a00:15d4:b029:2de:a538:c857 with SMTP id
- o20-20020a056a0015d4b02902dea538c857mr11480779pfu.51.1621619049288; 
- Fri, 21 May 2021 10:44:09 -0700 (PDT)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
- by smtp.gmail.com with ESMTPSA id o3sm4974976pgh.22.2021.05.21.10.44.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 May 2021 10:44:08 -0700 (PDT)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
- id 766BF423A3; Fri, 21 May 2021 17:44:07 +0000 (UTC)
-Date: Fri, 21 May 2021 17:44:07 +0000
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [dm-devel] [PATCH 05/26] block: add blk_alloc_disk and
- blk_cleanup_disk APIs
-Message-ID: <20210521174407.GA25291@42.do-not-panic.com>
-References: <20210521055116.1053587-1-hch@lst.de>
- <20210521055116.1053587-6-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fmv834Nrxz2xyC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 May 2021 03:42:39 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4Fmv7t405xzBBKd;
+ Fri, 21 May 2021 19:42:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id sGQ2atNXMHyd; Fri, 21 May 2021 19:42:34 +0200 (CEST)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Fmv7t2td7zBBKC;
+ Fri, 21 May 2021 19:42:34 +0200 (CEST)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 828B3427; Fri, 21 May 2021 19:46:56 +0200 (CEST)
+Received: from 37-169-24-72.coucou-networks.fr
+ (37-169-24-72.coucou-networks.fr [37.169.24.72]) by messagerie.c-s.fr (Horde
+ Framework) with HTTP; Fri, 21 May 2021 19:46:56 +0200
+Date: Fri, 21 May 2021 19:46:56 +0200
+Message-ID: <20210521194656.Horde.hiP1EHfMBv05hLGgUhTorg1@messagerie.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 01/11] powerpc: remove interrupt exit helpers unused
+ argument
+References: <20210521114422.3179350-1-npiggin@gmail.com>
+ <20210521114422.3179350-2-npiggin@gmail.com>
+In-Reply-To: <20210521114422.3179350-2-npiggin@gmail.com>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210521055116.1053587-6-hch@lst.de>
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,72 +58,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>,
- Mike Snitzer <snitzer@redhat.com>, linux-m68k@vger.kernel.org,
- linux-nvme@lists.infradead.org, Song Liu <song@kernel.org>,
- dm-devel@redhat.com, Joshua Morris <josh.h.morris@us.ibm.com>,
- linux-s390@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>,
- Maxim Levitsky <maximlevitsky@gmail.com>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Matias Bjorling <mb@lightnvm.io>,
- Nitin Gupta <ngupta@vflare.org>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-xtensa@linux-xtensa.org, Alex Dubov <oakad@yahoo.com>,
- Heiko Carstens <hca@linux.ibm.com>, Coly Li <colyli@suse.de>,
- linux-raid@vger.kernel.org, linux-bcache@vger.kernel.org,
- linux-block@vger.kernel.org, drbd-dev@tron.linbit.com,
- Philip Kelleher <pjk1939@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, Jens Axboe <axboe@kernel.dk>,
- Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
- linux-mmc@vger.kernel.org, Philipp Reisner <philipp.reisner@linbit.com>,
- Jim Paris <jim@jtan.com>, Minchan Kim <minchan@kernel.org>,
- Lars Ellenberg <lars.ellenberg@linbit.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 21, 2021 at 07:50:55AM +0200, Christoph Hellwig wrote:
-> Add two new APIs to allocate and free a gendisk including the
-> request_queue for use with BIO based drivers.  This is to avoid
-> boilerplate code in drivers.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+Nicholas Piggin <npiggin@gmail.com> a =C3=A9crit=C2=A0:
+
+> The msr argument is not used, remove it.
+
+Why not keep and use that msr argument instead of re-reading regs->msr ?
+
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  block/genhd.c         | 35 +++++++++++++++++++++++++++++++++++
->  include/linux/genhd.h | 22 ++++++++++++++++++++++
->  2 files changed, 57 insertions(+)
-> 
-> diff --git a/block/genhd.c b/block/genhd.c
-> index e4974af3d729..6d4ce962866d 100644
-> --- a/block/genhd.c
-> +++ b/block/genhd.c
-> @@ -1302,6 +1302,25 @@ struct gendisk *__alloc_disk_node(int minors, int node_id)
+>  arch/powerpc/include/asm/asm-prototypes.h | 4 ++--
+>  arch/powerpc/kernel/interrupt.c           | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/asm-prototypes.h=20=20
+>=20b/arch/powerpc/include/asm/asm-prototypes.h
+> index 1c7b75834e04..95492655462e 100644
+> --- a/arch/powerpc/include/asm/asm-prototypes.h
+> +++ b/arch/powerpc/include/asm/asm-prototypes.h
+> @@ -71,8 +71,8 @@ void __init machine_init(u64 dt_ptr);
+>  #endif
+>  long system_call_exception(long r3, long r4, long r5, long r6, long=20=
+=20
+>=20r7, long r8, unsigned long r0, struct pt_regs *regs);
+>  notrace unsigned long syscall_exit_prepare(unsigned long r3, struct=20=
+=20
+>=20pt_regs *regs, long scv);
+> -notrace unsigned long interrupt_exit_user_prepare(struct pt_regs=20=20
+>=20*regs, unsigned long msr);
+> -notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs=20=20
+>=20*regs, unsigned long msr);
+> +notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs);
+> +notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs=
+);
+>
+>  long ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32 offset_lo=
+w,
+>  		      u32 len_high, u32 len_low);
+> diff --git a/arch/powerpc/kernel/interrupt.c=20=20
+>=20b/arch/powerpc/kernel/interrupt.c
+> index e0938ba298f2..38ae7057d6c2 100644
+> --- a/arch/powerpc/kernel/interrupt.c
+> +++ b/arch/powerpc/kernel/interrupt.c
+> @@ -352,7 +352,7 @@ notrace unsigned long=20=20
+>=20syscall_exit_prepare(unsigned long r3,
+>  	return ret;
 >  }
->  EXPORT_SYMBOL(__alloc_disk_node);
->  
-> +struct gendisk *__blk_alloc_disk(int node)
-> +{
-> +	struct request_queue *q;
-> +	struct gendisk *disk;
-> +
-> +	q = blk_alloc_queue(node);
-> +	if (!q)
-> +		return NULL;
-> +
-> +	disk = __alloc_disk_node(0, node);
-> +	if (!disk) {
-> +		blk_cleanup_queue(q);
-> +		return NULL;
-> +	}
-> +	disk->queue = q;
-> +	return disk;
-> +}
-> +EXPORT_SYMBOL(__blk_alloc_disk);
+>
+> -notrace unsigned long interrupt_exit_user_prepare(struct pt_regs=20=20
+>=20*regs, unsigned long msr)
+> +notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs)
+>  {
+>  	unsigned long ti_flags;
+>  	unsigned long flags;
+> @@ -431,7 +431,7 @@ notrace unsigned long=20=20
+>=20interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
+>
+>  void preempt_schedule_irq(void);
+>
+> -notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs=20=20
+>=20*regs, unsigned long msr)
+> +notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs=
+)
+>  {
+>  	unsigned long flags;
+>  	unsigned long ret =3D 0;
+> --
+> 2.23.0
 
-Its not obvious to me why using this new API requires you then to
-set minors explicitly to 1, and yet here underneath we see the minors
-argument passed is 0.
 
-Nor is it clear from the documentation.
-
-  Luis
