@@ -1,61 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717D438CC24
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 19:29:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA8338CC7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 19:44:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmtrK2VrRz308N
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 May 2021 03:29:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmvB84X4fz3bxW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 May 2021 03:44:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.216.48; helo=mail-pj1-f48.google.com;
- envelope-from=mcgrof@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com
- [209.85.216.48])
+ smtp.mailfrom=gmail.com (client-ip=209.85.215.182;
+ helo=mail-pg1-f182.google.com; envelope-from=mcgrof@gmail.com;
+ receiver=<UNKNOWN>)
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com
+ [209.85.215.182])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fmtqy4HsKz305w
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 May 2021 03:28:45 +1000 (AEST)
-Received: by mail-pj1-f48.google.com with SMTP id kr9so3258547pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 10:28:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fmv9m2fsHz2xv2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 May 2021 03:44:11 +1000 (AEST)
+Received: by mail-pg1-f182.google.com with SMTP id v14so12074772pgi.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 10:44:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=B30rffgHFLYBI6xwi77IEdIESyslCgwa8HluqL6arQs=;
- b=XWppWywbOuN8mRgCa8blE9LAix2Z4rf8lAxBEVnDrqFq8CcSPT/eoy/lncD/cSgWqn
- mp2ktZZvqk403pJQBfzZiFXVVopzc8GxXVEUsfso1zSeubAD9NDLL6ayrcFlU2NhckV/
- ZtF6Q+OB0hD7oC7BHv0sXYkIbuP6BIpZyU1s1AeSTBnz8kUBa5D7OdkN6NtFt43Ilx8o
- BaeZuwJmbkfjsDpA3BsrSIkzyZSPOnOvul1sWHKjP9fOqyYKyVmvNBxGh/6pzn9BDLa4
- JQTb1Z2YVz3pWkHRw6WN6BmfxMlylNFTAyAQeB7DxtmZQ1yfRIqv0CUY20Cc7XI2MYWM
- 5UZg==
-X-Gm-Message-State: AOAM530ETN79RfvptiGNr6JSAnkKE2SdDvbVix66S3m7kT2XJTpf3FgY
- Cx4TlrbDpQOzbDxFRMpzRSY=
-X-Google-Smtp-Source: ABdhPJyrNWjuuiPeUt5pQpc8nPl0WeqbdGuJLCj1G2mOrwbN4glaACuKyX0vSa0sudDl68ZR50luTQ==
-X-Received: by 2002:a17:902:e8c8:b029:ee:f249:e416 with SMTP id
- v8-20020a170902e8c8b02900eef249e416mr13149158plg.3.1621618124047; 
- Fri, 21 May 2021 10:28:44 -0700 (PDT)
+ bh=lcP+zO2F1IGQjzr8jBvO9rG6CcCMMr/Whp/T20TGCRM=;
+ b=DizJw4nSDQuXGA18xC49fQqeIhcOipDI1nAFCaST6Gh0VYnotfv3432GUZFyiWJu4V
+ ym2B8iUKGl7k7ZKxo3Ui0RgBl/WePhVi+7GVHRVw1HquALis7BPcT0sLLhqfARwEdwjT
+ ShTPtKJHGOqkJqAx+ODm4mbbVN1xM9OIf1HBDXwZHeThskQ6TbZN5Fyd8TL0KjTfwuT+
+ oHE8s4Mp9DNVYhPCANuaija8m0+Qx8VdQn9dqliscKdDica15GbJ0zRQj4GSwDT1AQdw
+ SeCt+cl5HNa72AI+K7IFT23wIIztV0kyOZXn9AGm4SjGV8jfTppEOLCS5HmSN3RidmiW
+ o9tQ==
+X-Gm-Message-State: AOAM530fJPCybEiOGsXzliwpSNVB2oEGT2gncGZdjunWzgf6CUGeEZl5
+ 9AbmVm2u4qXawt2byrrWEBY=
+X-Google-Smtp-Source: ABdhPJx2cr14kVfs56RCS6Lg1N9a0F2CxWXa6sTYNwZ2wWHW3RuCIJw00Zxq6x/ufjwVbJsYm0Ya2A==
+X-Received: by 2002:a05:6a00:15d4:b029:2de:a538:c857 with SMTP id
+ o20-20020a056a0015d4b02902dea538c857mr11480779pfu.51.1621619049288; 
+ Fri, 21 May 2021 10:44:09 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
- by smtp.gmail.com with ESMTPSA id p19sm2008772pgi.59.2021.05.21.10.28.42
+ by smtp.gmail.com with ESMTPSA id o3sm4974976pgh.22.2021.05.21.10.44.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 May 2021 10:28:42 -0700 (PDT)
+ Fri, 21 May 2021 10:44:08 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
- id 77877423A3; Fri, 21 May 2021 17:28:41 +0000 (UTC)
-Date: Fri, 21 May 2021 17:28:41 +0000
+ id 766BF423A3; Fri, 21 May 2021 17:44:07 +0000 (UTC)
+Date: Fri, 21 May 2021 17:44:07 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [dm-devel] [PATCH 04/26] block: add a flag to make put_disk on
- partially initalized disks safer
-Message-ID: <20210521172841.GA25211@42.do-not-panic.com>
+Subject: Re: [dm-devel] [PATCH 05/26] block: add blk_alloc_disk and
+ blk_cleanup_disk APIs
+Message-ID: <20210521174407.GA25291@42.do-not-panic.com>
 References: <20210521055116.1053587-1-hch@lst.de>
- <20210521055116.1053587-5-hch@lst.de>
+ <20210521055116.1053587-6-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210521055116.1053587-5-hch@lst.de>
+In-Reply-To: <20210521055116.1053587-6-hch@lst.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,14 +92,48 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 21, 2021 at 07:50:54AM +0200, Christoph Hellwig wrote:
-> Add a flag to indicate that __device_add_disk did grab a queue reference
-> so that disk_release only drops it if we actually had it.  This sort
-> out one of the major pitfals with partially initialized gendisk that
-> a lot of drivers did get wrong or still do.
+On Fri, May 21, 2021 at 07:50:55AM +0200, Christoph Hellwig wrote:
+> Add two new APIs to allocate and free a gendisk including the
+> request_queue for use with BIO based drivers.  This is to avoid
+> boilerplate code in drivers.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  block/genhd.c         | 35 +++++++++++++++++++++++++++++++++++
+>  include/linux/genhd.h | 22 ++++++++++++++++++++++
+>  2 files changed, 57 insertions(+)
+> 
+> diff --git a/block/genhd.c b/block/genhd.c
+> index e4974af3d729..6d4ce962866d 100644
+> --- a/block/genhd.c
+> +++ b/block/genhd.c
+> @@ -1302,6 +1302,25 @@ struct gendisk *__alloc_disk_node(int minors, int node_id)
+>  }
+>  EXPORT_SYMBOL(__alloc_disk_node);
+>  
+> +struct gendisk *__blk_alloc_disk(int node)
+> +{
+> +	struct request_queue *q;
+> +	struct gendisk *disk;
+> +
+> +	q = blk_alloc_queue(node);
+> +	if (!q)
+> +		return NULL;
+> +
+> +	disk = __alloc_disk_node(0, node);
+> +	if (!disk) {
+> +		blk_cleanup_queue(q);
+> +		return NULL;
+> +	}
+> +	disk->queue = q;
+> +	return disk;
+> +}
+> +EXPORT_SYMBOL(__blk_alloc_disk);
 
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Its not obvious to me why using this new API requires you then to
+set minors explicitly to 1, and yet here underneath we see the minors
+argument passed is 0.
+
+Nor is it clear from the documentation.
 
   Luis
