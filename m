@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB1038BECF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:01:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305C538BED0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 08:02:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmbbH2pZ1z3fRc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 16:01:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fmbbq17czz3fX1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 16:02:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=RQ5YIAs+;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=IhLQ/YsN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,28 +19,28 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=RQ5YIAs+; 
+ header.s=bombadil.20210309 header.b=IhLQ/YsN; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbNs587Yz3c0M
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 15:52:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmbNw5Ljxz3c1Z
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 15:52:48 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=ZAV8JJrVAUnXoR6OurR4mkqtEg3WMlk+fF6tHo9g/7A=; b=RQ5YIAs+5mbK/6S6SBFGzZCoIL
- klS1hFKw/i99aVf05vtzIoxFkY9Pr4PV68y0ey4X1pxQeLS1H2oxzRVBvyxMkzTmtQ8Tjd+4x9Khu
- K6yj+9nam8JNpySJVCeLpQQSqwCFPjU4PCDX/OdiMX4O3i7h4UdjcJoKBF+x5YUvGod3RZR/ri1u2
- BqvyxGfPsXvxjbaujNo64BgtrBXZUF8OftT5Zr2U7XTw//ip/+RAmDe/baxIm9bt/TI8qX8nkYqhH
- q1Vso2McvdCTWgsaaG1voMKJyWtCve2lkdzuSMfNcr5tHawk3RWp5284MWXyV/KmX6NvgUxNrY5hk
- 1N9pV/6A==;
+ bh=vGGmPVsg0Hwe3PzyV/3vzWDaoNkxLSJwA2Ye8FU/Xsg=; b=IhLQ/YsNSSUaMfPV9LePQHzZG2
+ Iy11LbmI1sSm+9idhhzNqC6Gfvduf0n7DD/sJemhA0c1G6gZtAPG+NgPwB14oKpDsHbFSv6wqBGYD
+ z9NlRBYO7hqe4boYDX3qNLCP4SbaTEyoaFArMuKVD/E5z3RyTZPfs0Ksre+VjArTMK0OCsTLRsl3e
+ k+gZcg+pC3d86mLa4BbUNZHOAO14SQUeiC907RPGSCiihb8QAhmciozca1qxluSs9Fr70l2NacxpU
+ YduJVosXj+jsBg92Mla8olP9CbCdZKujA0wBD8gEQetNm/e7QvJTi8aCRsmG8S2/DYpea4hjHjssP
+ FETQIesg==;
 Received: from [2001:4bb8:180:5add:4fd7:4137:d2f2:46e6] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1ljy58-00GqAV-Tf; Fri, 21 May 2021 05:52:23 +0000
+ id 1ljy5C-00GqC1-R7; Fri, 21 May 2021 05:52:27 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>, Geert Uytterhoeven <geert@linux-m68k.org>,
  Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
@@ -56,9 +56,9 @@ To: Jens Axboe <axboe@kernel.dk>, Geert Uytterhoeven <geert@linux-m68k.org>,
  Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
  Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
  Christian Borntraeger <borntraeger@de.ibm.com>
-Subject: [PATCH 20/26] simdisk: convert to blk_alloc_disk/blk_cleanup_disk
-Date: Fri, 21 May 2021 07:51:10 +0200
-Message-Id: <20210521055116.1053587-21-hch@lst.de>
+Subject: [PATCH 21/26] n64cart: convert to blk_alloc_disk
+Date: Fri, 21 May 2021 07:51:11 +0200
+Message-Id: <20210521055116.1053587-22-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210521055116.1053587-1-hch@lst.de>
 References: <20210521055116.1053587-1-hch@lst.de>
@@ -86,79 +86,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Convert the simdisk driver to use the blk_alloc_disk and blk_cleanup_disk
-helpers to simplify gendisk and request_queue allocation.
+Convert the n64cart driver to use the blk_alloc_disk helper to simplify
+gendisk and request_queue allocation.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/xtensa/platforms/iss/simdisk.c | 29 +++++++----------------------
- 1 file changed, 7 insertions(+), 22 deletions(-)
+ drivers/block/n64cart.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/xtensa/platforms/iss/simdisk.c b/arch/xtensa/platforms/iss/simdisk.c
-index fc09be7b1347..3cdfa00738e0 100644
---- a/arch/xtensa/platforms/iss/simdisk.c
-+++ b/arch/xtensa/platforms/iss/simdisk.c
-@@ -27,7 +27,6 @@
- struct simdisk {
- 	const char *filename;
- 	spinlock_t lock;
--	struct request_queue *queue;
- 	struct gendisk *gd;
- 	struct proc_dir_entry *procfile;
- 	int users;
-@@ -266,21 +265,13 @@ static int __init simdisk_setup(struct simdisk *dev, int which,
- 	spin_lock_init(&dev->lock);
- 	dev->users = 0;
+diff --git a/drivers/block/n64cart.c b/drivers/block/n64cart.c
+index 3dae4b631dea..7b4dd10af9ec 100644
+--- a/drivers/block/n64cart.c
++++ b/drivers/block/n64cart.c
+@@ -132,14 +132,10 @@ static int __init n64cart_probe(struct platform_device *pdev)
+ 	if (!reg_base)
+ 		return -EINVAL;
  
--	dev->queue = blk_alloc_queue(NUMA_NO_NODE);
--	if (dev->queue == NULL) {
--		pr_err("blk_alloc_queue failed\n");
--		goto out_alloc_queue;
--	}
+-	disk = alloc_disk(0);
++	disk = blk_alloc_disk(NUMA_NO_NODE);
+ 	if (!disk)
+ 		return -ENOMEM;
+ 
+-	disk->queue = blk_alloc_queue(NUMA_NO_NODE);
+-	if (!disk->queue)
+-		return -ENOMEM;
 -
--	dev->gd = alloc_disk(SIMDISK_MINORS);
--	if (dev->gd == NULL) {
--		pr_err("alloc_disk failed\n");
--		goto out_alloc_disk;
--	}
-+	dev->gd = blk_alloc_disk(NUMA_NO_NODE);
-+	if (!dev->gd)
-+		return -ENOMEM;
- 	dev->gd->major = simdisk_major;
- 	dev->gd->first_minor = which;
-+	dev->gd->minors = SIMDISK_MINORS;
- 	dev->gd->fops = &simdisk_ops;
--	dev->gd->queue = dev->queue;
- 	dev->gd->private_data = dev;
- 	snprintf(dev->gd->disk_name, 32, "simdisk%d", which);
- 	set_capacity(dev->gd, 0);
-@@ -288,12 +279,6 @@ static int __init simdisk_setup(struct simdisk *dev, int which,
- 
- 	dev->procfile = proc_create_data(tmp, 0644, procdir, &simdisk_proc_ops, dev);
- 	return 0;
--
--out_alloc_disk:
--	blk_cleanup_queue(dev->queue);
--	dev->queue = NULL;
--out_alloc_queue:
--	return -ENOMEM;
- }
- 
- static int __init simdisk_init(void)
-@@ -343,10 +328,10 @@ static void simdisk_teardown(struct simdisk *dev, int which,
- 	char tmp[2] = { '0' + which, 0 };
- 
- 	simdisk_detach(dev);
--	if (dev->gd)
-+	if (dev->gd) {
- 		del_gendisk(dev->gd);
--	if (dev->queue)
--		blk_cleanup_queue(dev->queue);
-+		blk_cleanup_disk(dev->gd);
-+	}
- 	remove_proc_entry(tmp, procdir);
- }
- 
+ 	disk->first_minor = 0;
+ 	disk->flags = GENHD_FL_NO_PART_SCAN;
+ 	disk->fops = &n64cart_fops;
 -- 
 2.30.2
 
