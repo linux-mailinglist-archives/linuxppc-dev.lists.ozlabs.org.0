@@ -1,102 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C213E38C312
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 11:28:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B70138C314
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 11:29:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FmhB54pZSz30Gt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 19:28:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FmhBp71npz3c0L
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 May 2021 19:29:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pd6+CT8z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iR3HEmec;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=pd6+CT8z; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=iR3HEmec; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fmh9d11Gjz2ykP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 19:28:20 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FmhBH2663z302W
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 May 2021 19:28:54 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14L9DoNd075405; Fri, 21 May 2021 05:28:15 -0400
+ 14L92uAL182996; Fri, 21 May 2021 05:28:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=w0E3E4AVY3KCTpUe8XtkiCkXDxyxEUyjCtRABnUD21M=;
- b=pd6+CT8zsEtE7Jo3aGZiTAD1yglcqM7RF/nBPZ+hEvbiW/ChJ9Wy+cgEQve+RQB03zOK
- 4YmZv4kkqJ2/vWk0NRkT654xm2gX3PAjVQ/Ro7mnffKodVyIKhVkvpceSwS04Rfwllxq
- +FXWsMJG/C4NFbOJ4On+qI+2VJ70qg+aAzwNy2BvsepMN6+oBLqiWjaq3Zk413IIw/4q
- fRxWTsxtOSEpflMHS59bLTYm0isMAwEeLQ7lklgTVTLf0/qCmQ+W1qJ3z7CrPZtQnuui
- QHxkqrjKOE79OSW4a3TtBZjd68aK6+UtJOqsSyUAtJXwsgSPBI1iuhOAQw+R8rd7w78/ ZA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38pa2109uy-1
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=foFX5uG2drEyduNJ3Tgh1RU5ffaSklAThpUPDcjCejw=;
+ b=iR3HEmecJCYALqf73H+Jxh2aRzaY2BUjJpl2PjRQE8Uqn8N3+/elO8LxravkuqUXOhNq
+ vSV9BJJvpyRNNrTPS651w5p1JZHXPbWR8mwPZRBAt6YZJRejt30iGsDY7WBpLnOWPkIJ
+ LBZXTsC3QRnwJZqICKxzA+MZcP2qGmOwlY0bhoiM/UIPCpmpusJGf7ClvjZ97Q5cTXX+
+ mTiiyp8yOgs01mzPBFgmcToPfzBmvsQGJNYdux0/PQ1GrSn5py7DJabe4jqL24pGUcQR
+ jDHp8nUIOkF0IUvdJM5EmADwK0g1M4QeDu/+l5NYuoHjfzc7V4fhDUWOUbjnF5sfSRZX ag== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38p9kvs3tf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 05:28:14 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14L9EPlK076363;
- Fri, 21 May 2021 05:28:14 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38pa2109u6-1
+ Fri, 21 May 2021 05:28:39 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14L9EIHg005473;
+ Fri, 21 May 2021 09:28:37 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06fra.de.ibm.com with ESMTP id 38j5jh1q1v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 05:28:14 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14L9CiQJ005624;
- Fri, 21 May 2021 09:28:12 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma03wdc.us.ibm.com with ESMTP id 38j5x9xj2t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 May 2021 09:28:12 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14L9SBNZ10813794
+ Fri, 21 May 2021 09:28:37 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14L9SYjU58261988
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 May 2021 09:28:12 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E63E2136053;
- Fri, 21 May 2021 09:28:11 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 78DAD136055;
- Fri, 21 May 2021 09:28:10 +0000 (GMT)
-Received: from sig-9-65-94-165.ibm.com (unknown [9.65.94.165])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 21 May 2021 09:28:10 +0000 (GMT)
-Message-ID: <5933dd793bf0d0d1389877715d936cc321ee86d1.camel@linux.ibm.com>
-Subject: [PATCH v4 01/16] powerpc/vas: Move VAS API to book3s common platform
-From: Haren Myneni <haren@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
- mpe@ellerman.id.au, herbert@gondor.apana.org.au, npiggin@gmail.com
-Date: Fri, 21 May 2021 02:28:08 -0700
-In-Reply-To: <8d219c0816133a8643d650709066cf04c9c77322.camel@linux.ibm.com>
-References: <8d219c0816133a8643d650709066cf04c9c77322.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+ Fri, 21 May 2021 09:28:34 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E48C44C040;
+ Fri, 21 May 2021 09:28:33 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 750024C04A;
+ Fri, 21 May 2021 09:28:31 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri, 21 May 2021 09:28:31 +0000 (GMT)
+Date: Fri, 21 May 2021 14:58:30 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 1/3] sched/topology: Allow archs to populate distance map
+Message-ID: <20210521092830.GF2633526@linux.vnet.ibm.com>
+References: <20210520154427.1041031-1-srikar@linux.vnet.ibm.com>
+ <20210520154427.1041031-2-srikar@linux.vnet.ibm.com>
+ <YKaw33d71FpHjGnR@hirez.programming.kicks-ass.net>
+ <20210521023802.GE2633526@linux.vnet.ibm.com>
+ <YKdr0g6+eIHncqej@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <YKdr0g6+eIHncqej@hirez.programming.kicks-ass.net>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: O4GwibBLQnZS6sKJBVkBYK_5h6yRe9jn
-X-Proofpoint-ORIG-GUID: RNJT-UYBPfiz1-jkkHiTUbWOJjusj2es
+X-Proofpoint-GUID: PPkuMta7RXpOMjsA5m7WIph8DClgTN0C
+X-Proofpoint-ORIG-GUID: PPkuMta7RXpOMjsA5m7WIph8DClgTN0C
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-05-21_03:2021-05-20,
  2021-05-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- adultscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0 lowpriorityscore=0
- spamscore=0 malwarescore=0 priorityscore=1501 phishscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2105210059
+ phishscore=0 mlxlogscore=978
+ impostorscore=0 suspectscore=0 clxscore=1015 bulkscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105210059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,151 +102,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
+ linuxppc-dev@lists.ozlabs.org, Scott Cheloha <cheloha@linux.ibm.com>,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Mel Gorman <mgorman@techsingularity.net>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+* Peter Zijlstra <peterz@infradead.org> [2021-05-21 10:14:10]:
 
-Using the same /dev/crypto/nx-gzip interface for both powerNV and
-pseries. So this patch creates platforms/book3s/ and moves VAS API
-to that directory. The actual functionality is not changed.
+> On Fri, May 21, 2021 at 08:08:02AM +0530, Srikar Dronamraju wrote:
+> > * Peter Zijlstra <peterz@infradead.org> [2021-05-20 20:56:31]:
+> > 
+> > > On Thu, May 20, 2021 at 09:14:25PM +0530, Srikar Dronamraju wrote:
+> > > > Currently scheduler populates the distance map by looking at distance
+> > > > of each node from all other nodes. This should work for most
+> > > > architectures and platforms.
+> > > > 
+> > > > However there are some architectures like POWER that may not expose
+> > > > the distance of nodes that are not yet onlined because those resources
+> > > > are not yet allocated to the OS instance. Such architectures have
+> > > > other means to provide valid distance data for the current platform.
+> > > > 
+> > > > For example distance info from numactl from a fully populated 8 node
+> > > > system at boot may look like this.
+> > > > 
+> > > > node distances:
+> > > > node   0   1   2   3   4   5   6   7
+> > > >   0:  10  20  40  40  40  40  40  40
+> > > >   1:  20  10  40  40  40  40  40  40
+> > > >   2:  40  40  10  20  40  40  40  40
+> > > >   3:  40  40  20  10  40  40  40  40
+> > > >   4:  40  40  40  40  10  20  40  40
+> > > >   5:  40  40  40  40  20  10  40  40
+> > > >   6:  40  40  40  40  40  40  10  20
+> > > >   7:  40  40  40  40  40  40  20  10
+> > > > 
+> > > > However the same system when only two nodes are online at boot, then the
+> > > > numa topology will look like
+> > > > node distances:
+> > > > node   0   1
+> > > >   0:  10  20
+> > > >   1:  20  10
+> > > > 
+> > > > It may be implementation dependent on what node_distance(0,3) where
+> > > > node 0 is online and node 3 is offline. In POWER case, it returns
+> > > > LOCAL_DISTANCE(10). Here at boot the scheduler would assume that the max
+> > > > distance between nodes is 20. However that would not be true.
+> > > > 
+> > > > When Nodes are onlined and CPUs from those nodes are hotplugged,
+> > > > the max node distance would be 40.
+> > > > 
+> > > > To handle such scenarios, let scheduler allow architectures to populate
+> > > > the distance map. Architectures that like to populate the distance map
+> > > > can overload arch_populate_distance_map().
+> > > 
+> > > Why? Why can't your node_distance() DTRT? The arch interface is
+> > > nr_node_ids and node_distance(), I don't see why we need something new
+> > > and then replace one special use of it.
+> > > 
+> > > By virtue of you being able to actually implement this new hook, you
+> > > supposedly can actually do node_distance() right too.
+> > 
+> > Since for an offline node, arch interface code doesn't have the info.
+> > As far as I know/understand, in POWER, unless there is an active memory or
+> > CPU that's getting onlined, arch can't fetch the correct node distance.
+> > 
+> > Taking the above example: node 3 is offline, then node_distance of (3,X)
+> > where X is anything other than 3, is not reliable. The moment node 3 is
+> > onlined, the node distance is reliable.
+> > 
+> > This problem will not happen even on POWER if all the nodes have either
+> > memory or CPUs active at the time of boot.
+> 
+> But then how can you implement this new hook? Going by the fact that
+> both nr_node_ids and distance_ref_points_depth are fixed, how many
+> possible __node_distance() configurations are there left?
+> 
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- arch/powerpc/include/asm/vas.h                    |  3 +++
- arch/powerpc/platforms/Kconfig                    |  1 +
- arch/powerpc/platforms/Makefile                   |  1 +
- arch/powerpc/platforms/book3s/Kconfig             | 15 +++++++++++++++
- arch/powerpc/platforms/book3s/Makefile            |  2 ++
- .../platforms/{powernv => book3s}/vas-api.c       |  2 +-
- arch/powerpc/platforms/powernv/Kconfig            | 14 --------------
- arch/powerpc/platforms/powernv/Makefile           |  2 +-
- 8 files changed, 24 insertions(+), 16 deletions(-)
- create mode 100644 arch/powerpc/platforms/book3s/Kconfig
- create mode 100644 arch/powerpc/platforms/book3s/Makefile
- rename arch/powerpc/platforms/{powernv => book3s}/vas-api.c (99%)
+distance_ref_point_depth is provided as a different property and is readily
+available at boot. The new api will use just use that. So based on the
+distance_ref_point_depth, we know all possible node distances for that
+platform.
 
-diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
-index e33f80b0ea81..3be76e813e2d 100644
---- a/arch/powerpc/include/asm/vas.h
-+++ b/arch/powerpc/include/asm/vas.h
-@@ -162,6 +162,9 @@ int vas_copy_crb(void *crb, int offset);
-  */
- int vas_paste_crb(struct vas_window *win, int offset, bool re);
- 
-+void vas_win_paste_addr(struct vas_window *window, u64 *addr,
-+			int *len);
-+
- /*
-  * Register / unregister coprocessor type to VAS API which will be exported
-  * to user space. Applications can use this API to open / close window
-diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
-index 7a5e8f4541e3..594544a65b02 100644
---- a/arch/powerpc/platforms/Kconfig
-+++ b/arch/powerpc/platforms/Kconfig
-@@ -20,6 +20,7 @@ source "arch/powerpc/platforms/embedded6xx/Kconfig"
- source "arch/powerpc/platforms/44x/Kconfig"
- source "arch/powerpc/platforms/40x/Kconfig"
- source "arch/powerpc/platforms/amigaone/Kconfig"
-+source "arch/powerpc/platforms/book3s/Kconfig"
- 
- config KVM_GUEST
- 	bool "KVM Guest support"
-diff --git a/arch/powerpc/platforms/Makefile b/arch/powerpc/platforms/Makefile
-index 143d4417f6cc..0e75d7df387b 100644
---- a/arch/powerpc/platforms/Makefile
-+++ b/arch/powerpc/platforms/Makefile
-@@ -22,3 +22,4 @@ obj-$(CONFIG_PPC_CELL)		+= cell/
- obj-$(CONFIG_PPC_PS3)		+= ps3/
- obj-$(CONFIG_EMBEDDED6xx)	+= embedded6xx/
- obj-$(CONFIG_AMIGAONE)		+= amigaone/
-+obj-$(CONFIG_PPC_BOOK3S)	+= book3s/
-diff --git a/arch/powerpc/platforms/book3s/Kconfig b/arch/powerpc/platforms/book3s/Kconfig
-new file mode 100644
-index 000000000000..bed21449e8e5
---- /dev/null
-+++ b/arch/powerpc/platforms/book3s/Kconfig
-@@ -0,0 +1,15 @@
-+# SPDX-License-Identifier: GPL-2.0
-+config PPC_VAS
-+	bool "IBM Virtual Accelerator Switchboard (VAS)"
-+	depends on (PPC_POWERNV || PPC_PSERIES) && PPC_64K_PAGES
-+	default y
-+	help
-+	  This enables support for IBM Virtual Accelerator Switchboard (VAS).
-+
-+	  VAS allows accelerators in co-processors like NX-GZIP and NX-842
-+	  to be accessible to kernel subsystems and user processes.
-+	  VAS adapters are found in POWER9 and later based systems.
-+	  The user mode NX-GZIP support is added on P9 for powerNV and on
-+	  P10 for powerVM.
-+
-+	  If unsure, say "N".
-diff --git a/arch/powerpc/platforms/book3s/Makefile b/arch/powerpc/platforms/book3s/Makefile
-new file mode 100644
-index 000000000000..e790f1910f61
---- /dev/null
-+++ b/arch/powerpc/platforms/book3s/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_PPC_VAS)	+= vas-api.o
-diff --git a/arch/powerpc/platforms/powernv/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-similarity index 99%
-rename from arch/powerpc/platforms/powernv/vas-api.c
-rename to arch/powerpc/platforms/book3s/vas-api.c
-index 98ed5d8c5441..cfc9d7dd65ab 100644
---- a/arch/powerpc/platforms/powernv/vas-api.c
-+++ b/arch/powerpc/platforms/book3s/vas-api.c
-@@ -10,9 +10,9 @@
- #include <linux/fs.h>
- #include <linux/slab.h>
- #include <linux/uaccess.h>
-+#include <linux/io.h>
- #include <asm/vas.h>
- #include <uapi/asm/vas-api.h>
--#include "vas.h"
- 
- /*
-  * The driver creates the device node that can be used as follows:
-diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
-index 619b093a0657..043eefbbdd28 100644
---- a/arch/powerpc/platforms/powernv/Kconfig
-+++ b/arch/powerpc/platforms/powernv/Kconfig
-@@ -33,20 +33,6 @@ config PPC_MEMTRACE
- 	  Enabling this option allows for runtime allocation of memory (RAM)
- 	  for hardware tracing.
- 
--config PPC_VAS
--	bool "IBM Virtual Accelerator Switchboard (VAS)"
--	depends on PPC_POWERNV && PPC_64K_PAGES
--	default y
--	help
--	  This enables support for IBM Virtual Accelerator Switchboard (VAS).
--
--	  VAS allows accelerators in co-processors like NX-GZIP and NX-842
--	  to be accessible to kernel subsystems and user processes.
--
--	  VAS adapters are found in POWER9 based systems.
--
--	  If unsure, say N.
--
- config SCOM_DEBUGFS
- 	bool "Expose SCOM controllers via debugfs"
- 	depends on DEBUG_FS
-diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
-index be2546b96816..dc7b37c23b60 100644
---- a/arch/powerpc/platforms/powernv/Makefile
-+++ b/arch/powerpc/platforms/powernv/Makefile
-@@ -18,7 +18,7 @@ obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
- obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
- obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
- obj-$(CONFIG_PPC_MEMTRACE)	+= memtrace.o
--obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o vas-api.o
-+obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o
- obj-$(CONFIG_OCXL_BASE)	+= ocxl.o
- obj-$(CONFIG_SCOM_DEBUGFS) += opal-xscom.o
- obj-$(CONFIG_PPC_SECURE_BOOT) += opal-secvar.o
+For an offline node, we don't have that specific nodes distance_lookup_table
+array entries. Each array would be of distance_ref_point_depth entries.
+Without the distance_lookup_table for an array populated, we will not be
+able to tell how far the node is with respect to other nodes.
+
+We can lookup the correct distance_lookup_table for a node based on memory
+or the CPUs attached to that node. Since in an offline node, both of them
+would not be around, the distance_lookup_table will have stale values.
+
+> The example provided above does not suggest there's much room for
+> alternatives, and hence for actual need of this new interface.
+> 
+
 -- 
-2.18.2
-
-
+Thanks and Regards
+Srikar Dronamraju
