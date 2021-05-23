@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1319238D9FC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 10:11:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E8F38DA08
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 10:13:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FntMW74Vsz30L4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 18:11:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FntQ73kKxz3bs4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 18:13:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=D1NxWkYm;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=er1d+U01;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=bmLKYtBm;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=TpSTAzMP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,43 +19,44 @@ Authentication-Results: lists.ozlabs.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=D1NxWkYm; 
+ header.s=susede2_rsa header.b=bmLKYtBm; 
  dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=er1d+U01; 
+ header.s=susede2_ed25519 header.b=TpSTAzMP; 
  dkim-atps=neutral
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FntM345XCz2xfm
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 May 2021 18:10:39 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FntPd53Cvz2xfm
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 May 2021 18:12:53 +1000 (AEST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1621757436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1621757571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a6ZAhxnlslJAzzx7sKAzPpcSbekXBLAV3/YPtrS6OLY=;
- b=D1NxWkYmjMQpRiSLlKY8Sja0G/IpCIx6G/gcHzmCMSOHVzwjfIe5W+xcM9lcW/dMxuvn6J
- GX9L8uskVnxXEmhBzlzW/erIxAktXG6bzgw2aEH1RbZTk0dusDk3QXHn4Y/CDQ3r1VNe4S
- ZEYuEFIXysdiuYaC/dwFArCRQpU9tfE=
+ bh=+QPb9JWvY5Mv2CQaqhfS/CQ9rp49Qt1b0dGLtKqWAHI=;
+ b=bmLKYtBm8+NBy0rlZh5vgGqGnuUZQLXD5BUZHEsC9KLWeRov/Kd6myZf3F/3Hji8xMjQ4e
+ XjNGXj+P/iVCSJDfUijcHK/6GnQs8Q24V+00sjOXcvV369Y7JMbEdHVZbnUo2wP5SwFvtR
+ NE9Ud+kiuo+RtjyO7YO79/Vtotp8i1o=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1621757436;
+ s=susede2_ed25519; t=1621757571;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a6ZAhxnlslJAzzx7sKAzPpcSbekXBLAV3/YPtrS6OLY=;
- b=er1d+U01C9aUpwZ6Y7V+oivz26INFThTuDK5a2cmXuzpBgQNZaStW/8o6Izga5eq8QPu/J
- kmLlzNehZilQrADA==
+ bh=+QPb9JWvY5Mv2CQaqhfS/CQ9rp49Qt1b0dGLtKqWAHI=;
+ b=TpSTAzMPXkVgQoDLdk+dThL13YkgxTUpmMsPvWCAi0674zr0yAyJez4vAZgVjbOQTqHQTY
+ aFmfGWmflFT7I3Ag==
 Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 6FA31AB6D;
- Sun, 23 May 2021 08:10:36 +0000 (UTC)
-Subject: Re: [PATCH 13/26] dm: convert to blk_alloc_disk/blk_cleanup_disk
+ by mx2.suse.de (Postfix) with ESMTP id 009B9AC3A;
+ Sun, 23 May 2021 08:12:51 +0000 (UTC)
+Subject: Re: [PATCH 14/26] md: convert to blk_alloc_disk/blk_cleanup_disk
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
  Geert Uytterhoeven <geert@linux-m68k.org>, Chris Zankel <chris@zankel.net>,
  Max Filippov <jcmvbkbc@gmail.com>,
  Philipp Reisner <philipp.reisner@linbit.com>,
  Lars Ellenberg <lars.ellenberg@linbit.com>, Jim Paris <jim@jtan.com>,
+ Joshua Morris <josh.h.morris@us.ibm.com>,
  Philip Kelleher <pjk1939@linux.ibm.com>, Minchan Kim <minchan@kernel.org>,
  Nitin Gupta <ngupta@vflare.org>, Matias Bjorling <mb@lightnvm.io>,
  Coly Li <colyli@suse.de>, Mike Snitzer <snitzer@redhat.com>,
@@ -66,14 +67,14 @@ To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
  Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
  Christian Borntraeger <borntraeger@de.ibm.com>
 References: <20210521055116.1053587-1-hch@lst.de>
- <20210521055116.1053587-14-hch@lst.de>
+ <20210521055116.1053587-15-hch@lst.de>
 From: Hannes Reinecke <hare@suse.de>
-Message-ID: <de3b0976-1299-17d8-240a-2ecd8b9fbc2d@suse.de>
-Date: Sun, 23 May 2021 10:10:34 +0200
+Message-ID: <e65de9e6-337c-3e41-b5c2-d033ff236582@suse.de>
+Date: Sun, 23 May 2021 10:12:49 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210521055116.1053587-14-hch@lst.de>
+In-Reply-To: <20210521055116.1053587-15-hch@lst.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -98,77 +99,74 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 5/21/21 7:51 AM, Christoph Hellwig wrote:
-> Convert the dm driver to use the blk_alloc_disk and blk_cleanup_disk
+> Convert the md driver to use the blk_alloc_disk and blk_cleanup_disk
 > helpers to simplify gendisk and request_queue allocation.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->   drivers/md/dm.c | 16 +++++++---------
->   1 file changed, 7 insertions(+), 9 deletions(-)
+>   drivers/md/md.c | 25 +++++++++----------------
+>   1 file changed, 9 insertions(+), 16 deletions(-)
 > 
-> diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-> index ca2aedd8ee7d..3c7c2d257018 100644
-> --- a/drivers/md/dm.c
-> +++ b/drivers/md/dm.c
-> @@ -1801,13 +1801,13 @@ static void cleanup_mapped_device(struct mapped_device *md)
->   		md->disk->private_data = NULL;
->   		spin_unlock(&_minor_lock);
->   		del_gendisk(md->disk);
-> -		put_disk(md->disk);
->   	}
+> diff --git a/drivers/md/md.c b/drivers/md/md.c
+> index 49f897fbb89b..d806be8cc210 100644
+> --- a/drivers/md/md.c
+> +++ b/drivers/md/md.c
+> @@ -5598,12 +5598,10 @@ static void md_free(struct kobject *ko)
+>   	if (mddev->sysfs_level)
+>   		sysfs_put(mddev->sysfs_level);
 >   
-> -	if (md->queue) {
-> +	if (md->queue)
->   		dm_queue_destroy_keyslot_manager(md->queue);
-> -		blk_cleanup_queue(md->queue);
-> -	}
-> +
-> +	if (md->disk)
-> +		blk_cleanup_disk(md->disk);
+> -	if (mddev->gendisk)
+> +	if (mddev->gendisk) {
+>   		del_gendisk(mddev->gendisk);
+> -	if (mddev->queue)
+> -		blk_cleanup_queue(mddev->queue);
+> -	if (mddev->gendisk)
+> -		put_disk(mddev->gendisk);
+> +		blk_cleanup_disk(mddev->gendisk);
+> +	}
+>   	percpu_ref_exit(&mddev->writes_pending);
 >   
->   	cleanup_srcu_struct(&md->io_barrier);
+>   	bioset_exit(&mddev->bio_set);
+> @@ -5711,20 +5709,13 @@ static int md_alloc(dev_t dev, char *name)
+>   		goto abort;
 >   
-
-Can't these conditionals be merged into a single 'if (md->disk)'?
-Eg like:
-
-	if (md->disk) {
-		spin_lock(&_minor_lock);
-		md->disk->private_data = NULL;
-		spin_unlock(&_minor_lock);
-		del_gendisk(md->disk);
-		dm_queue_destroy_keyslot_manager(md->queue);
-		blk_cleanup_disk(md->queue);
-	}
-
-We're now always allocating 'md->disk' and 'md->queue' together,
-so how can we end up in a situation where one is set without the other?
-
-> @@ -1869,13 +1869,10 @@ static struct mapped_device *alloc_dev(int minor)
->   	 * established. If request-based table is loaded: blk-mq will
->   	 * override accordingly.
->   	 */
-> -	md->queue = blk_alloc_queue(numa_node_id);
-> -	if (!md->queue)
-> -		goto bad;
+>   	error = -ENOMEM;
+> -	mddev->queue = blk_alloc_queue(NUMA_NO_NODE);
+> -	if (!mddev->queue)
+> +	disk = blk_alloc_disk(NUMA_NO_NODE);
+> +	if (!disk)
+>   		goto abort;
+>   
+> -	blk_set_stacking_limits(&mddev->queue->limits);
 > -
-> -	md->disk = alloc_disk_node(1, md->numa_node_id);
-> +	md->disk = blk_alloc_disk(md->numa_node_id);
->   	if (!md->disk)
->   		goto bad;
-> +	md->queue = md->disk->queue;
->   
->   	init_waitqueue_head(&md->wait);
->   	INIT_WORK(&md->work, dm_wq_work);
-> @@ -1888,6 +1885,7 @@ static struct mapped_device *alloc_dev(int minor)
->   
->   	md->disk->major = _major;
->   	md->disk->first_minor = minor;
-> +	md->disk->minors = 1;
->   	md->disk->fops = &dm_blk_dops;
->   	md->disk->queue = md->queue;
->   	md->disk->private_data = md;
+> -	disk = alloc_disk(1 << shift);
+> -	if (!disk) {
+> -		blk_cleanup_queue(mddev->queue);
+> -		mddev->queue = NULL;
+> -		goto abort;
+> -	}
+>   	disk->major = MAJOR(mddev->unit);
+>   	disk->first_minor = unit << shift;
+> +	disk->minors = 1 << shift;
+>   	if (name)
+>   		strcpy(disk->disk_name, name);
+>   	else if (partitioned)
+> @@ -5733,7 +5724,9 @@ static int md_alloc(dev_t dev, char *name)
+>   		sprintf(disk->disk_name, "md%d", unit);
+>   	disk->fops = &md_fops;
+>   	disk->private_data = mddev;
+> -	disk->queue = mddev->queue;
+> +
+> +	mddev->queue = disk->queue;
+> +	blk_set_stacking_limits(&mddev->queue->limits);
+>   	blk_queue_write_cache(mddev->queue, true, true);
+>   	/* Allow extended partitions.  This makes the
+>   	 * 'mdp' device redundant, but we can't really
 > 
+Wouldn't it make sense to introduce a helper 'blk_queue_from_disk()' or 
+somesuch to avoid having to keep an explicit 'queue' pointer?
+
+
 Cheers,
 
 Hannes
