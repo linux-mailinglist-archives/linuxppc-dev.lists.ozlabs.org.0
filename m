@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6AA38DA61
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 10:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8FE38DA6B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 10:25:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fntfr30mmz3cDL
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 18:24:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fntgk1n3qz2yXX
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 18:25:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Xc2Q9q6l;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=fPtwmd7g;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Aw/uiaBC;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=z70kjI4Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,38 +19,38 @@ Authentication-Results: lists.ozlabs.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=Xc2Q9q6l; 
+ header.s=susede2_rsa header.b=Aw/uiaBC; 
  dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=fPtwmd7g; 
+ header.s=susede2_ed25519 header.b=z70kjI4Q; 
  dkim-atps=neutral
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FntfN4wdCz2xvM
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 May 2021 18:23:56 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FntgC02Clz2xtt
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 May 2021 18:24:38 +1000 (AEST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1621758234; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1621758276; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eqgBxhr+CLxOQHpukvozRDbUi8kz/VebSB0hHvs7Tpc=;
- b=Xc2Q9q6lOtgSy8EvnsHjQZ+SUsx712uGI6btn5hqshkkU/fRF+wRikXpp8g2O3s8GVUO79
- dnLhqyYGzqBO8n+cxFISTQ/f6YhNSM7QEZiZY5f+rEJosDuz1jGdpwEfoFUtdmiCBl/HKT
- 9AcYsgt9+N4isEgb+bQ5Z+NrlYReNKs=
+ bh=rHaPEulm75eOtmQBS3jT+CIxqrRtkMyN9T/zk2d7aBE=;
+ b=Aw/uiaBCTHiYR7wZknFX3ZrNy+FuQG/90R6ET5GUngnmF1rsW+c54JGLg4NGMZGyFZm7bk
+ zSkNaTh3CZISc2AWaGIxmHdXD35EvYuKkB1LwY3AoL8NPsBdg9oITCNAFs4MmAwyxwOSWm
+ vGdt/1tbKd1A2eIeTcSf/snGJP7Yh+g=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1621758234;
+ s=susede2_ed25519; t=1621758276;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eqgBxhr+CLxOQHpukvozRDbUi8kz/VebSB0hHvs7Tpc=;
- b=fPtwmd7gX2/waYH6aivw5ttDSz6d7iQ8WJXWzr1tlf5JLdchp4YUT6jQpPP2gQxF8pM04M
- 1ou9FkCSAU2TPlAQ==
+ bh=rHaPEulm75eOtmQBS3jT+CIxqrRtkMyN9T/zk2d7aBE=;
+ b=z70kjI4QDmuupsMeG6a3Lr58gb7AtKFqTVP9C1YsAzllkw6wa6Q5uFAYQN3iTvSJ7vLmFs
+ n3AiTDiVeWq6jnCg==
 Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 40059AB6D;
- Sun, 23 May 2021 08:23:54 +0000 (UTC)
-Subject: Re: [PATCH 23/26] dcssblk: convert to blk_alloc_disk/blk_cleanup_disk
+ by mx2.suse.de (Postfix) with ESMTP id 8D438AB7C;
+ Sun, 23 May 2021 08:24:36 +0000 (UTC)
+Subject: Re: [PATCH 24/26] xpram: convert to blk_alloc_disk/blk_cleanup_disk
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
  Geert Uytterhoeven <geert@linux-m68k.org>, Chris Zankel <chris@zankel.net>,
  Max Filippov <jcmvbkbc@gmail.com>,
@@ -66,14 +66,14 @@ To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
  Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
  Christian Borntraeger <borntraeger@de.ibm.com>
 References: <20210521055116.1053587-1-hch@lst.de>
- <20210521055116.1053587-24-hch@lst.de>
+ <20210521055116.1053587-25-hch@lst.de>
 From: Hannes Reinecke <hare@suse.de>
-Message-ID: <28b4fd12-ea61-0ef5-3386-f2925baf757a@suse.de>
-Date: Sun, 23 May 2021 10:23:52 +0200
+Message-ID: <5521aff7-47d2-ef99-1abb-cdc6e58f3a96@suse.de>
+Date: Sun, 23 May 2021 10:24:35 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210521055116.1053587-24-hch@lst.de>
+In-Reply-To: <20210521055116.1053587-25-hch@lst.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -98,13 +98,13 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 5/21/21 7:51 AM, Christoph Hellwig wrote:
-> Convert the dcssblk driver to use the blk_alloc_disk and blk_cleanup_disk
+> Convert the xpram driver to use the blk_alloc_disk and blk_cleanup_disk
 > helpers to simplify gendisk and request_queue allocation.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->   drivers/s390/block/dcssblk.c | 26 ++++++++------------------
->   1 file changed, 8 insertions(+), 18 deletions(-)
+>   drivers/s390/block/xpram.c | 26 +++++++++-----------------
+>   1 file changed, 9 insertions(+), 17 deletions(-)
 > 
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 
