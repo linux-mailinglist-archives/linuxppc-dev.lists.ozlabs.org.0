@@ -1,83 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0DAF38D9AB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 09:55:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656FB38D9D0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 10:01:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fnt1n6KRGz3btT
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 17:55:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=PSmQUQUS;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=fZhiHl3U;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fnt8J2QSxz3c6v
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 18:01:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=hare@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=PSmQUQUS; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=fZhiHl3U; 
- dkim-atps=neutral
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com;
+ envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fnt1J2Vpnz2xfd
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 May 2021 17:55:16 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1621756514; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=QbwAHhPm9GLJVETYtpBk/OiPxHo7G68rDTDzgn19Fsc=;
- b=PSmQUQUSmMpj8AgljcgmgvL48ZfLtdYVEBYnr/42zGZ587TI08SIxLsO+5NgrgkRI6vOro
- Rm9c5OX+h9MIqppjBKupzHAd2Hs8vdT54gqpBdwAJEMlDjOBjYSv4EUUYou8Q+e3SZufbZ
- b+SB6HU5XHXIUV9ekpUjUtbJZggckAE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1621756514;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=QbwAHhPm9GLJVETYtpBk/OiPxHo7G68rDTDzgn19Fsc=;
- b=fZhiHl3U98WLdlRqZwGpFkK44Ry0eiyLSe/ReleypzZZcEqglw2fxQ310pZYIGfwu8Lozw
- zLLo4mb7f9mH0FDg==
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id E7E30AC46;
- Sun, 23 May 2021 07:55:13 +0000 (UTC)
-Subject: Re: [PATCH 05/26] block: add blk_alloc_disk and blk_cleanup_disk APIs
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Chris Zankel <chris@zankel.net>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Philipp Reisner <philipp.reisner@linbit.com>,
- Lars Ellenberg <lars.ellenberg@linbit.com>, Jim Paris <jim@jtan.com>,
- Joshua Morris <josh.h.morris@us.ibm.com>,
- Philip Kelleher <pjk1939@linux.ibm.com>, Minchan Kim <minchan@kernel.org>,
- Nitin Gupta <ngupta@vflare.org>, Matias Bjorling <mb@lightnvm.io>,
- Coly Li <colyli@suse.de>, Mike Snitzer <snitzer@redhat.com>,
- Song Liu <song@kernel.org>, Maxim Levitsky <maximlevitsky@gmail.com>,
- Alex Dubov <oakad@yahoo.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>
-References: <20210521055116.1053587-1-hch@lst.de>
- <20210521055116.1053587-6-hch@lst.de>
-From: Hannes Reinecke <hare@suse.de>
-Message-ID: <04082e94-5180-2363-4479-a09cdfdc466d@suse.de>
-Date: Sun, 23 May 2021 09:55:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fnt7X16FZz308T
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 May 2021 18:00:39 +1000 (AEST)
+Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.59])
+ by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4Fnt48321tzCvy3;
+ Sun, 23 May 2021 15:57:44 +0800 (CST)
+Received: from dggema769-chm.china.huawei.com (10.1.198.211) by
+ dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Sun, 23 May 2021 16:00:34 +0800
+Received: from localhost (10.174.179.215) by dggema769-chm.china.huawei.com
+ (10.1.198.211) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Sun, 23
+ May 2021 16:00:33 +0800
+From: YueHaibing <yuehaibing@huawei.com>
+To: <leoyang.li@nxp.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+ <rasmus.villemoes@prevas.dk>
+Subject: [PATCH net-next] ethernet: ucc_geth: Use kmemdup() rather than
+ kmalloc+memcpy
+Date: Sun, 23 May 2021 15:56:16 +0800
+Message-ID: <20210523075616.14792-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-In-Reply-To: <20210521055116.1053587-6-hch@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggema769-chm.china.huawei.com (10.1.198.211)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,33 +53,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-bcache@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- linux-raid@vger.kernel.org, nvdimm@lists.linux.dev, linux-s390@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-nvme@lists.infradead.org, linux-block@vger.kernel.org,
- dm-devel@redhat.com, linuxppc-dev@lists.ozlabs.org, drbd-dev@lists.linbit.com
+Cc: netdev@vger.kernel.org, YueHaibing <yuehaibing@huawei.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/21/21 7:50 AM, Christoph Hellwig wrote:
-> Add two new APIs to allocate and free a gendisk including the
-> request_queue for use with BIO based drivers.  This is to avoid
-> boilerplate code in drivers.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->   block/genhd.c         | 35 +++++++++++++++++++++++++++++++++++
->   include/linux/genhd.h | 22 ++++++++++++++++++++++
->   2 files changed, 57 insertions(+)
-> 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+Issue identified with Coccinelle.
 
-Cheers,
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/ethernet/freescale/ucc_geth.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Hannes
+diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
+index e0936510fa34..51206272cc25 100644
+--- a/drivers/net/ethernet/freescale/ucc_geth.c
++++ b/drivers/net/ethernet/freescale/ucc_geth.c
+@@ -3590,10 +3590,10 @@ static int ucc_geth_probe(struct platform_device* ofdev)
+ 	if ((ucc_num < 0) || (ucc_num > 7))
+ 		return -ENODEV;
+ 
+-	ug_info = kmalloc(sizeof(*ug_info), GFP_KERNEL);
++	ug_info = kmemdup(&ugeth_primary_info, sizeof(*ug_info),
++			  GFP_KERNEL);
+ 	if (ug_info == NULL)
+ 		return -ENOMEM;
+-	memcpy(ug_info, &ugeth_primary_info, sizeof(*ug_info));
+ 
+ 	ug_info->uf_info.ucc_num = ucc_num;
+ 
 -- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+2.17.1
+
