@@ -1,49 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A3A38DB39
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 15:25:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BA738DB5B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 16:02:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fp1LZ0WN3z3bx4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 23:25:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fp29M650Xz3bnq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 00:02:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Nqe1Si+8;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Nqe1Si+8; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fp1LC4Vp4z2xZD
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 May 2021 23:25:19 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4Fp1L224XdzB6pT;
- Sun, 23 May 2021 15:25:14 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id dsG_czGrW-V2; Sun, 23 May 2021 15:25:14 +0200 (CEST)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Fp1L212RgzB6hw;
- Sun, 23 May 2021 15:25:14 +0200 (CEST)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id C951716D; Sun, 23 May 2021 15:29:37 +0200 (CEST)
-Received: from 37-164-13-85.coucou-networks.fr
- (37-164-13-85.coucou-networks.fr [37.164.13.85]) by messagerie.c-s.fr (Horde
- Framework) with HTTP; Sun, 23 May 2021 15:29:37 +0200
-Date: Sun, 23 May 2021 15:29:37 +0200
-Message-ID: <20210523152937.Horde.5kC0kzvaP3No5BC63LlZ_A7@messagerie.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: YueHaibing <yuehaibing@huawei.com>
-Subject: Re: [PATCH net-next] ethernet: ucc_geth: Use kmemdup() rather than
- kmalloc+memcpy
-In-Reply-To: <20210523075616.14792-1-yuehaibing@huawei.com>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fp28s4X3Dz2yRS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 00:02:20 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id q6so13367776pjj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 May 2021 07:02:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:cc:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=1/FeozxHRfVpleVaZSH9JCIqWkiRJTS5gM5GLQ+G1WY=;
+ b=Nqe1Si+8L6X4kAdBMNtvSUWX2K9vuEAtbhGHaCgOFgiWFVkgWq6/uWmEZ5NICuopRM
+ SFLy9Jtltmgcwnt483yP0XyqSlEHLfky1aU6vL+2yXGi7kkZvG9cZ7NpU6hSxI31bfxm
+ ZU0XZtLnKljXUDYq9/DaKOAfyoFMkyLGf3qFohwQnzYX+T1LbpqPo693BZtT9CMy5Fla
+ YfBvroAv4vKPEgE0D0xr28yOD+VJnDg/A8xoeGD0CuGMfUagTW7ubcKROgAqobnDZVzq
+ cvgY3a7sYUzG+kGe9L0LYDWylH0A6W1Cng2fMyJJmnWUSt6pcRYschJjSgfN/DlHOBfa
+ 4j3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=1/FeozxHRfVpleVaZSH9JCIqWkiRJTS5gM5GLQ+G1WY=;
+ b=VudwpYs/BGsHDZ4B755T7sBU+fshDKx3jFQz5ahw4AuRjGP9uxbnYZcCXMtgZ6P3Sf
+ a4aRtAHff0xE0ta3FbrNBi9diFWiiQ9LMMdz9X8l1/NlEL6TOc4ar4lZ4wdDwRvrMtl2
+ tG8IT5oPbQc+Nt6DhhgnI4MANdtFyN8WusxAi2kiAv2ebmBeqxvN/SirUE1+lsmCHrf8
+ ZTslw7cj6YTkxgSy6oL2CQ72iGPGNh+4deV+JLW0Jh09Ps23kN0bLQhhwwFqFFZNLBIs
+ BPcvFXC59/xzg4DbkMdYsQ8huiNp9m5T0NJqmdwh2/dS+yv/4jMUI11sHNrQRDiOAZzH
+ y70g==
+X-Gm-Message-State: AOAM5317cX6J6l6HflXKd4sposvwyJwNjAq2ug5mD9ylqGcXyitgnJ7f
+ HI+4clLn8GdVuuMIfgajD8Y=
+X-Google-Smtp-Source: ABdhPJyQ1myZY8wmPQTpUqCXjc7D31Sm72H5tntQMZ8fQ5yAIkd0hxgaM1iN6+dMqk24BmU0EgYrIg==
+X-Received: by 2002:a17:902:9685:b029:ef:70fd:a5a2 with SMTP id
+ n5-20020a1709029685b02900ef70fda5a2mr21004700plp.20.1621778536859; 
+ Sun, 23 May 2021 07:02:16 -0700 (PDT)
+Received: from localhost ([210.185.78.224])
+ by smtp.gmail.com with ESMTPSA id 136sm8698589pfu.195.2021.05.23.07.02.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 23 May 2021 07:02:16 -0700 (PDT)
+Date: Mon, 24 May 2021 00:02:10 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Save host FSCR in the P7/8 path
+References: <20210523122101.3247232-1-npiggin@gmail.com>
+In-Reply-To: <20210523122101.3247232-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
+Message-Id: <1621778273.kjvbvpehfw.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -56,46 +79,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rasmus.villemoes@prevas.dk, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, leoyang.li@nxp.com, kuba@kernel.org,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Michael Neuling <mikey@neuling.org>, linuxppc-dev@lists.ozlabs.org,
+ kvm-ppc@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-YueHaibing <yuehaibing@huawei.com> a =C3=A9crit=C2=A0:
-
-> Issue identified with Coccinelle.
->
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Excerpts from Nicholas Piggin's message of May 23, 2021 10:21 pm:
+> Similar to commit 25edcc50d76c ("KVM: PPC: Book3S HV: Save and restore
+> FSCR in the P9 path"), ensure the P7/8 path saves and restores the host
+> FSCR. The logic explained in that patch actually applies there to the
+> old path well: a context switch can be made before kvmppc_vcpu_run_hv
+> restores the host FSCR and returns.
+>=20
+> Fixes: b005255e12a3 ("KVM: PPC: Book3S HV: Context-switch new POWER8 SPRs=
+")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  drivers/net/ethernet/freescale/ucc_geth.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/freescale/ucc_geth.c=20=20
->=20b/drivers/net/ethernet/freescale/ucc_geth.c
-> index e0936510fa34..51206272cc25 100644
-> --- a/drivers/net/ethernet/freescale/ucc_geth.c
-> +++ b/drivers/net/ethernet/freescale/ucc_geth.c
-> @@ -3590,10 +3590,10 @@ static int ucc_geth_probe(struct=20=20
->=20platform_device* ofdev)
->  	if ((ucc_num < 0) || (ucc_num > 7))
->  		return -ENODEV;
->
-> -	ug_info =3D kmalloc(sizeof(*ug_info), GFP_KERNEL);
-> +	ug_info =3D kmemdup(&ugeth_primary_info, sizeof(*ug_info),
-> +			  GFP_KERNEL);
+>  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/b=
+ook3s_hv_rmhandlers.S
+> index 5e634db4809b..2b98e710c7a1 100644
+> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> @@ -44,7 +44,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
+>  #define NAPPING_UNSPLIT	3
+> =20
+>  /* Stack frame offsets for kvmppc_hv_entry */
+> -#define SFS			208
+> +#define SFS			216
+>  #define STACK_SLOT_TRAP		(SFS-4)
+>  #define STACK_SLOT_SHORT_PATH	(SFS-8)
+>  #define STACK_SLOT_TID		(SFS-16)
+> @@ -59,8 +59,9 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
+>  #define STACK_SLOT_UAMOR	(SFS-88)
+>  #define STACK_SLOT_DAWR1	(SFS-96)
+>  #define STACK_SLOT_DAWRX1	(SFS-104)
+> +#define STACK_SLOT_FSCR		(SFS-112)
+>  /* the following is used by the P9 short path */
+> -#define STACK_SLOT_NVGPRS	(SFS-152)	/* 18 gprs */
+> +#define STACK_SLOT_NVGPRS	(SFS-160)	/* 18 gprs */
 
-Can you keep that as a single line ? The tolerance is 100 chars per line no=
-w.
+Actually, hmm.. this is wrong because nvgprs are subtracted from
+this offset. But then I can't work out why 95a6432ce9038 raised
+SFS from 160 to 208.
 
->  	if (ug_info =3D=3D NULL)
->  		return -ENOMEM;
-> -	memcpy(ug_info, &ugeth_primary_info, sizeof(*ug_info));
->
->  	ug_info->uf_info.ucc_num =3D ucc_num;
->
-> --
-> 2.17.1
-
-
+Thanks,
+Nick
