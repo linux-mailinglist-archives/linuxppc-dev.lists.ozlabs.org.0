@@ -2,49 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8E038DBCD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 18:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E88138DBD6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 18:15:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fp4wd24HKz308T
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 02:06:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fp56V0Kgnz30Gt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 02:15:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J659Svmm;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=J659Svmm; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fp4wF4fhjz2yx2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 02:06:34 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4Fp4w710KqzB6nY;
- Sun, 23 May 2021 18:06:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Skq_akrOTQYD; Sun, 23 May 2021 18:06:31 +0200 (CEST)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Fp4w705qFzB6nW;
- Sun, 23 May 2021 18:06:31 +0200 (CEST)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id C62A359; Sun, 23 May 2021 18:10:54 +0200 (CEST)
-Received: from 37-164-13-85.coucou-networks.fr
- (37-164-13-85.coucou-networks.fr [37.164.13.85]) by messagerie.c-s.fr (Horde
- Framework) with HTTP; Sun, 23 May 2021 18:10:54 +0200
-Date: Sun, 23 May 2021 18:10:54 +0200
-Message-ID: <20210523181054.Horde.1K8Ldhm0aj339_vHlUQCkQ1@messagerie.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix reverse map real-mode address
- lookup with huge vmalloc
-In-Reply-To: <20210523155338.3254465-1-npiggin@gmail.com>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
-MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fp55x1hSfz2yx2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 02:15:00 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id C61DD61166;
+ Sun, 23 May 2021 16:14:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1621786496;
+ bh=Tr4CcQgjnIdsIXv2LMLCXOXbYnpnXMkfhBRnrigX1ag=;
+ h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+ b=J659SvmmYHqD2RHsUA58LdVADCicL1QnzafhPE+nbNmtQm3Tr4rkUiMXgSit7hS+r
+ ENGziVxDy35ogsKPjPMcnehGWYduM2a2gMlop5bb4ZBMHJLMFD/cN3tuuPx5Kqm3XB
+ DubLVMtui4AguOxC2NMbeU5bZEi+IqXxV4guesTxW2mMuxDzxGltjPnRrhUA1mjvR8
+ hF5EjiB5EwBKxAm7KZdpzcmv4NP5wzx+A1YrUDqpRcXC3MSBJS/RGi+oyZuSzHOywQ
+ E9sT/oqsjbOJwqJfMVtlE2Z81JBhKlywW73DbfTtKiaXkzLHOIWe2vfzYVNWwkJmZj
+ 11OF+91PUVVzA==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
+ [127.0.0.1])
+ by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id B2A5160A0B;
+ Sun, 23 May 2021 16:14:56 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.13-4 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <87pmxhivw1.fsf@mpe.ellerman.id.au>
+References: <87pmxhivw1.fsf@mpe.ellerman.id.au>
+X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List
+ <linuxppc-dev.lists.ozlabs.org>
+X-PR-Tracked-Message-Id: <87pmxhivw1.fsf@mpe.ellerman.id.au>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+ tags/powerpc-5.13-4
+X-PR-Tracked-Commit-Id: d72500f992849d31ebae8f821a023660ddd0dcc2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 28ceac6959e1db015729c52ec74e0a4ff496c2b8
+Message-Id: <162178649665.14510.12044359947385635542.pr-tracker-bot@kernel.org>
+Date: Sun, 23 May 2021 16:14:56 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,68 +67,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: Kees Cook <keescook@chromium.org>, aik@ozlabs.ru,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
+ "Dmitry V. Levin" <ldv@altlinux.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> a =C3=A9crit=C2=A0:
+The pull request you sent on Sun, 23 May 2021 20:31:42 +1000:
 
-> real_vmalloc_addr() does not currently work for huge vmalloc, which is
-> what the reverse map can be allocated with for radix host, hash guest.
->
-> Add huge page awareness to the function.
->
-> Fixes: 8abddd968a30 ("powerpc/64s/radix: Enable huge vmalloc mappings")
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/kvm/book3s_hv_rm_mmu.c | 17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c=20=20
->=20b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> index 7af7c70f1468..5f68cb5cc009 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> +++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> @@ -26,16 +26,23 @@
->  static void *real_vmalloc_addr(void *x)
->  {
->  	unsigned long addr =3D (unsigned long) x;
-> +	unsigned long mask;
-> +	int shift;
->  	pte_t *p;
-> +
->  	/*
-> -	 * assume we don't have huge pages in vmalloc space...
-> -	 * So don't worry about THP collapse/split. Called
-> -	 * Only in realmode with MSR_EE =3D 0, hence won't need irq_save/restor=
-e.
-> +	 * This is called only in realmode with MSR_EE =3D 0, hence won't need
-> +	 * irq_save/restore around find_init_mm_pte.
->  	 */
-> -	p =3D find_init_mm_pte(addr, NULL);
-> +	p =3D find_init_mm_pte(addr, &shift);
->  	if (!p || !pte_present(*p))
->  		return NULL;
-> -	addr =3D (pte_pfn(*p) << PAGE_SHIFT) | (addr & ~PAGE_MASK);
-> +	if (!shift)
-> +		shift =3D PAGE_SHIFT;
-> +
-> +	mask =3D (1UL << shift) - 1;
-> +	addr =3D (pte_pfn(*p) << PAGE_SHIFT) | (addr & mask);
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.13-4
 
-Looks strange, before we have ~MASK now we have mask without the ~
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/28ceac6959e1db015729c52ec74e0a4ff496c2b8
 
-Also use PFN_PHYS() instead of open coding ?
+Thank you!
 
-
-
-
-> +
->  	return __va(addr);
->  }
->
-> --
-> 2.23.0
-
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
