@@ -2,79 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FA138DBE3
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 18:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D0238DCCF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 May 2021 22:16:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fp5FB0xC2z3btK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 02:21:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FpBT33dL6z3bvK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 06:16:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=xIMCLEuw;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=OjWXQORh;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=VAGw2mZ6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=xIMCLEuw; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=OjWXQORh; 
- dkim-atps=neutral
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fp5Dc5Xxjz2xtx
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 02:20:48 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1621786845; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iFkWHMko4nu73I8bffz46LtF778hJacVhJlqbZzQwF8=;
- b=xIMCLEuwtEJ3ZYLVT1jAFLSlmekHbIbar2TdYds2f7pJgux+ASXt64k09tx/I3VzYVSQbd
- jYbEua8uhBBK1QtJJhgUBirelGonk+/REbn1EZdyuTOztWNmc/243wGZRrn0BpiSJnEF/k
- 3o6nC8QrS3eMOcehdY1jqcN3GUtqNzU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1621786845;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iFkWHMko4nu73I8bffz46LtF778hJacVhJlqbZzQwF8=;
- b=OjWXQORh1AHg1yI5pLimYhJCE0/GNAVfRs6jLZKfmf7Vpd71K+gfdYi9LvcDAJhupXh6Tf
- ZrcrurNwYt+dptBg==
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id DA2BFAAFD;
- Sun, 23 May 2021 16:20:44 +0000 (UTC)
-Subject: Re: [PATCH 12/26] bcache: convert to blk_alloc_disk/blk_cleanup_disk
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Chris Zankel <chris@zankel.net>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Philipp Reisner <philipp.reisner@linbit.com>,
- Lars Ellenberg <lars.ellenberg@linbit.com>, Jim Paris <jim@jtan.com>,
- Joshua Morris <josh.h.morris@us.ibm.com>,
- Philip Kelleher <pjk1939@linux.ibm.com>, Minchan Kim <minchan@kernel.org>,
- Nitin Gupta <ngupta@vflare.org>, Matias Bjorling <mb@lightnvm.io>,
- Mike Snitzer <snitzer@redhat.com>, Song Liu <song@kernel.org>,
- Maxim Levitsky <maximlevitsky@gmail.com>, Alex Dubov <oakad@yahoo.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, Dan Williams
- <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>,
- Dave Jiang <dave.jiang@intel.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>
-References: <20210521055116.1053587-1-hch@lst.de>
- <20210521055116.1053587-13-hch@lst.de>
-From: Coly Li <colyli@suse.de>
-Message-ID: <19e05358-abc2-a577-d3bd-d4ae89f6316e@suse.de>
-Date: Mon, 24 May 2021 00:20:34 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FpBSV4GwRz2ymb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 06:16:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
+ Reply-To:Cc:Content-ID:Content-Description;
+ bh=QtptusBK2DFZU5U4EUUFQ9qW5NSJ3yH22QnaKY4zaAY=; b=VAGw2mZ61u752//F59aPLNqwx4
+ Pt/23nEcmrKiiB4e+miug4z5GYkHUw/B66NoVFVSEbauoH7qKPV2vYFwuyppfeWEIroo43Qci1FpX
+ 9k0b+zLfnStQ/VgyVPemuSiWZeVhGRu1jAGfS6UuAkSMSoHosTO6fMoMicwGFcSwXBksmBL/anjUe
+ XxOH7IFliQXpCxUOphDwQ1kTRhmwRE51N+GkEWkk0V4eBzF1PfsZhjP8ve7GFvyjs0C3l/Tg4Q09H
+ R+J1rzv7MjAZmDL+XIbDv76aH5JXdp+oPepa4LkCib2ABw9RFis+huEXw6xsorcSZMrQJpM8q/R4Y
+ 0lOEYA7Q==;
+Received: from 108-90-42-56.lightspeed.sntcca.sbcglobal.net ([108.90.42.56]
+ helo=[192.168.1.130])
+ by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1lkuVz-001kRn-AP; Sun, 23 May 2021 20:16:05 +0000
+Subject: Re: [PATCH 1/1] powerpc/ps3: Fix error return code in
+ ps3_register_devices()
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Zhen Lei <thunder.leizhen@huawei.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <20210518065853.7590-1-thunder.leizhen@huawei.com>
+ <87tumxioki.fsf@mpe.ellerman.id.au>
+From: Geoff Levand <geoff@infradead.org>
+Message-ID: <71764790-4be0-d177-37fc-a2d91d47a0da@infradead.org>
+Date: Sun, 23 May 2021 13:15:54 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <20210521055116.1053587-13-hch@lst.de>
+In-Reply-To: <87tumxioki.fsf@mpe.ellerman.id.au>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -89,76 +67,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-bcache@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- linux-raid@vger.kernel.org, nvdimm@lists.linux.dev, linux-s390@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-nvme@lists.infradead.org, linux-block@vger.kernel.org,
- dm-devel@redhat.com, linuxppc-dev@lists.ozlabs.org, drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/21/21 1:51 PM, Christoph Hellwig wrote:
-> Convert the bcache driver to use the blk_alloc_disk and blk_cleanup_disk
-> helpers to simplify gendisk and request_queue allocation.
+Hi,
+
+On 5/20/21 5:20 AM, Michael Ellerman wrote:
+> Zhen Lei <thunder.leizhen@huawei.com> writes:
+>> When call ps3_start_probe_thread() failed, further initialization should
+>> be stopped and the returned error code should be propagated.
+...
+>> --- a/arch/powerpc/platforms/ps3/device-init.c
+>>  
+>>  	result = ps3_start_probe_thread(PS3_BUS_TYPE_STORAGE);
+>> +	if (result < 0)
+>> +		return result;
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Acked-by: Coly Li <colyli@suse.de>
-
-Thanks.
-
-
-Coly Li
-
-> ---
->  drivers/md/bcache/super.c | 15 ++++-----------
->  1 file changed, 4 insertions(+), 11 deletions(-)
+> If you bail out here you skip:
 > 
-> diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-> index bea8c4429ae8..185246a0d855 100644
-> --- a/drivers/md/bcache/super.c
-> +++ b/drivers/md/bcache/super.c
-> @@ -890,13 +890,9 @@ static void bcache_device_free(struct bcache_device *d)
->  		if (disk_added)
->  			del_gendisk(disk);
->  
-> -		if (disk->queue)
-> -			blk_cleanup_queue(disk->queue);
-> -
-> +		blk_cleanup_disk(disk);
->  		ida_simple_remove(&bcache_device_idx,
->  				  first_minor_to_idx(disk->first_minor));
-> -		if (disk_added)
-> -			put_disk(disk);
->  	}
->  
->  	bioset_exit(&d->bio_split);
-> @@ -946,7 +942,7 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
->  			BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER))
->  		goto err;
->  
-> -	d->disk = alloc_disk(BCACHE_MINORS);
-> +	d->disk = blk_alloc_disk(NUMA_NO_NODE);
->  	if (!d->disk)
->  		goto err;
->  
-> @@ -955,14 +951,11 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
->  
->  	d->disk->major		= bcache_major;
->  	d->disk->first_minor	= idx_to_first_minor(idx);
-> +	d->disk->minors		= BCACHE_MINORS;
->  	d->disk->fops		= ops;
->  	d->disk->private_data	= d;
->  
-> -	q = blk_alloc_queue(NUMA_NO_NODE);
-> -	if (!q)
-> -		return -ENOMEM;
-> -
-> -	d->disk->queue			= q;
-> +	q = d->disk->queue;
->  	q->limits.max_hw_sectors	= UINT_MAX;
->  	q->limits.max_sectors		= UINT_MAX;
->  	q->limits.max_segment_size	= UINT_MAX;
+>>  	ps3_register_vuart_devices();
 > 
+> Which I suspect means there will be no console output?
+> 
+> Presumably the system won't boot if the probe thread fails, but it might
+> at least print an oops, whereas if we return we might get nothing at
+> all. Though I'm just guessing, I don't know this code that well.
 
+That probe is for the storage devices (PS3_BUS_TYPE_STORAGE).
+
+There are cases where the system is usable even if the storage
+devices are not available, for example, when using an NFS root
+filesystem.
+
+ps3_start_probe_thread was made to be quite verbose on error
+to make up for it's return value not being checked.
+
+> Anyway please leave this code alone unless you're willing to test your
+> changes, or at least provide a more thorough justification for them.
+
+Agreed, this change should not be merged.
+
+-Geoff
