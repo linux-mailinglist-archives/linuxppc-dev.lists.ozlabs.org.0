@@ -1,71 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7993438E248
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 10:27:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D623638E2DF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 11:02:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FpVhN5fsWz305w
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 18:27:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FpWS569Q9z3bsH
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 19:02:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=hWbnJCzr;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/Ey/RBTr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=stueDBEJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=hare@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=hWbnJCzr; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=/Ey/RBTr; 
- dkim-atps=neutral
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=stueDBEJ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FpVgt5V6vz2yXB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 18:27:22 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1621844838; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Q1F35rBDncf+ODcVO5jTKQ+c6J+Bpaijj4tb+WLiO1U=;
- b=hWbnJCzrn8D8sq7QiamSboM/nv6TN+2iWleusnloao35oVE4OyeDX0eKAMzya8OGGThQFh
- zl1nxRchNuFxstuajSgFtmryku8O1hRGBIRcM0SbrM2Dt3hLAz/KodIIf9vgrdWDs21AJk
- 09tFtAADDGOyfSpK1oh2IZudvgHfbuQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1621844838;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Q1F35rBDncf+ODcVO5jTKQ+c6J+Bpaijj4tb+WLiO1U=;
- b=/Ey/RBTrd/apAViE3Xd9DP0Lfre1LBpPPlJZl5IzG70TmMypTfoLUolyItvUQoIO9R6YkJ
- B6psOuCyZCUW50Cw==
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id CBD6EAB6D;
- Mon, 24 May 2021 08:27:17 +0000 (UTC)
-Subject: Re: [PATCH 14/26] md: convert to blk_alloc_disk/blk_cleanup_disk
-To: Christoph Hellwig <hch@lst.de>
-References: <20210521055116.1053587-1-hch@lst.de>
- <20210521055116.1053587-15-hch@lst.de>
- <e65de9e6-337c-3e41-b5c2-d033ff236582@suse.de>
- <20210524072642.GF23890@lst.de>
-From: Hannes Reinecke <hare@suse.de>
-Message-ID: <1360c598-44a9-e0c5-dd81-695cb1ec8ccf@suse.de>
-Date: Mon, 24 May 2021 10:27:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FpWRW70dyz2ymH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 19:01:43 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14O8XRx2046191; Mon, 24 May 2021 05:01:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=A8zS+6ks+4msCap+BbNsl0yzY/XER61FE6fOz7GrFDU=;
+ b=stueDBEJ/LNrteyRgpWQtgR28dwUMNNz+TvP0E+5Td0fIaXPT5BbLRVaYFZxYcXF9p2X
+ ImGV6YBnAoS2SU4VZQX9dS1bNwfb+Ze8Vx0vR2tp8jr3K/gjdXYYUfPEisgDB/9UI0Qj
+ lCff4nUoa5j1pF1zzMwmIlSAZSroyRRVme2IEeg5LPiqu4bl0YUhg5SN3h8UAFGvyUkm
+ 1j2TTJUj98KIERjV7Rwfu/3XIfx+E8TC53DrOTbsPUaLzf03ysvQ6YkY2OZ8f+nykDdu
+ 2OJ2LMRypf0uGdmR3Vhqf5PmGNGCSByBzca+Bn686oT+wmVGjrixW6/rL+PMzCh86JCl HA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38r7k5jhe9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 May 2021 05:01:29 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14O8YHXf048357;
+ Mon, 24 May 2021 05:01:28 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38r7k5jhdk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 May 2021 05:01:28 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14O8nDWi028784;
+ Mon, 24 May 2021 09:01:27 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma05wdc.us.ibm.com with ESMTP id 38q65s2a9d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 May 2021 09:01:27 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14O91QkE22282520
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 24 May 2021 09:01:26 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 96E08AE067;
+ Mon, 24 May 2021 09:01:26 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 48C6FAE060;
+ Mon, 24 May 2021 09:01:23 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.102.1.240])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 24 May 2021 09:01:22 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-mm@kvack.org, akpm@linux-foundation.org
+Subject: [PATCH v6 00/11] Speedup mremap on ppc64
+Date: Mon, 24 May 2021 14:31:03 +0530
+Message-Id: <20210524090114.63446-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <20210524072642.GF23890@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: jW6UQk9mwQX33Y0WF5iH-NX4xO4NrZCq
+X-Proofpoint-GUID: 3p4L0LrVl2RRN5HaWiEDm2JiyPI0XBNS
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-24_04:2021-05-20,
+ 2021-05-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ suspectscore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ priorityscore=1501 mlxlogscore=999 adultscore=0 spamscore=0 malwarescore=0
+ phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105240067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,52 +104,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>,
- Mike Snitzer <snitzer@redhat.com>, linux-nvme@lists.infradead.org,
- Song Liu <song@kernel.org>, dm-devel@redhat.com, linux-bcache@vger.kernel.org,
- Joshua Morris <josh.h.morris@us.ibm.com>, drbd-dev@lists.linbit.com,
- linux-s390@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>,
- Maxim Levitsky <maximlevitsky@gmail.com>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Matias Bjorling <mb@lightnvm.io>,
- Nitin Gupta <ngupta@vflare.org>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-xtensa@linux-xtensa.org, Alex Dubov <oakad@yahoo.com>,
- Heiko Carstens <hca@linux.ibm.com>, Coly Li <colyli@suse.de>,
- linux-block@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- Philip Kelleher <pjk1939@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, Jens Axboe <axboe@kernel.dk>,
- Chris Zankel <chris@zankel.net>, linux-raid@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>, linux-mmc@vger.kernel.org,
- Philipp Reisner <philipp.reisner@linbit.com>, Jim Paris <jim@jtan.com>,
- Minchan Kim <minchan@kernel.org>, Lars Ellenberg <lars.ellenberg@linbit.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, npiggin@gmail.com,
+ kaleshsingh@google.com, joel@joelfernandes.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/24/21 9:26 AM, Christoph Hellwig wrote:
-> On Sun, May 23, 2021 at 10:12:49AM +0200, Hannes Reinecke wrote:
->>> +	blk_set_stacking_limits(&mddev->queue->limits);
->>>    	blk_queue_write_cache(mddev->queue, true, true);
->>>    	/* Allow extended partitions.  This makes the
->>>    	 * 'mdp' device redundant, but we can't really
->>>
->> Wouldn't it make sense to introduce a helper 'blk_queue_from_disk()' or
->> somesuch to avoid having to keep an explicit 'queue' pointer?
-> 
-> My rought plan is that a few series from now bio based drivers will
-> never directly deal with the request_queue at all.
-> 
-Go for it.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+This patchset enables MOVE_PMD/MOVE_PUD support on power. This requires
+the platform to support updating higher-level page tables without
+updating page table entries. This also needs to invalidate the Page Walk
+Cache on architecture supporting the same.
 
-Cheers,
+Changes from v5:
+* Drop patch mm/mremap: Move TLB flush outside page table lock
+* Add fixes for race between optimized mremap and page out
 
-Hannes
+Changes from v4:
+* Change function name and arguments based on review feedback.
+
+Changes from v3:
+* Fix build error reported by kernel test robot
+* Address review feedback.
+
+Changes from v2:
+* switch from using mmu_gather to flush_pte_tlb_pwc_range() 
+
+Changes from v1:
+* Rebase to recent upstream
+* Fix build issues with tlb_gather_mmu changes
+
+
+
+Aneesh Kumar K.V (11):
+  selftest/mremap_test: Update the test to handle pagesize other than 4K
+  selftest/mremap_test: Avoid crash with static build
+  mm/mremap: Convert huge PUD move to separate helper
+  mm/mremap: Use pmd/pud_poplulate to update page table entries
+  powerpc/mm/book3s64: Fix possible build error
+  powerpc/mm/book3s64: Update tlb flush routines to take a page walk
+    cache flush argument
+  mm/mremap: Use range flush that does TLB and page walk cache flush
+  mm/mremap: properly flush the TLB on mremap.
+  mm/mremap: Fix race between mremap and pageout
+  mm/mremap: Allow arch runtime override
+  powerpc/mm: Enable HAVE_MOVE_PMD support
+
+ .../include/asm/book3s/64/tlbflush-radix.h    |  19 ++-
+ arch/powerpc/include/asm/book3s/64/tlbflush.h |  29 +++-
+ arch/powerpc/include/asm/tlb.h                |   6 +
+ arch/powerpc/mm/book3s64/radix_hugetlbpage.c  |   4 +-
+ arch/powerpc/mm/book3s64/radix_tlb.c          |  55 ++++---
+ arch/powerpc/platforms/Kconfig.cputype        |   2 +
+ mm/mremap.c                                   | 145 ++++++++++++++++--
+ tools/testing/selftests/vm/mremap_test.c      | 118 +++++++-------
+ 8 files changed, 269 insertions(+), 109 deletions(-)
+
 -- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+2.31.1
+
