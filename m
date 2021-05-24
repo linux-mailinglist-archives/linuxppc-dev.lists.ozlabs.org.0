@@ -1,100 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943FB38E7D2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 15:39:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A883738E882
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 16:16:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FpdcF3b2qz3byq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 23:39:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n/E1ZXol;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FpfQs50BCz2xb1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 May 2021 00:16:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=n/E1ZXol; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fpdbl3NXbz3btL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 23:39:15 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14ODXRDw139449; Mon, 24 May 2021 09:39:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=ugsgz2obaKuedwBCRj91TY4HhC5/482f7ENXtAmnK2w=;
- b=n/E1ZXolAU5bNFwsaR4Ab5hkIqD73loifxqWVc7RN/oYtKSqNl6cJiJkrS4GjPiQW863
- qKwO30dvN5cCbZFDt5fLdLvXbtnf4wkKFRXotsF4+KpLFcfxxcQLuT152AJMft4Tygep
- BT12o/BRVwHcnFAlN5PXFGPa7b/9F9ZZaEQlEk1yIZhbpx3deut0kFArIf7wSaFsHgEl
- 9HM53uNLp4+CCB1beOzuRwpAbRPqHsGnHRVZquMdGaiPGspbyZfg4zQXSDBdhhenPI6N
- 0t+u/d9U5w8yhDibJ85o1DntVqZ3d2ICKNV9nq+7ImF706oItg7WRy57oS9coBvIHlPu Kg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38rcgu98r1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 May 2021 09:39:05 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14ODXvMN141865;
- Mon, 24 May 2021 09:39:05 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38rcgu98qe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 May 2021 09:39:05 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14ODNSQG020704;
- Mon, 24 May 2021 13:39:04 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02dal.us.ibm.com with ESMTP id 38psk8u1dj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 May 2021 13:39:04 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14ODd38b27394478
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 May 2021 13:39:03 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4DEAC6A054;
- Mon, 24 May 2021 13:39:03 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CC75A6A047;
- Mon, 24 May 2021 13:38:59 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.102.1.240])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 24 May 2021 13:38:59 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: [PATCH v6 updated 9/11] mm/mremap: Fix race between mremap and pageout
-Date: Mon, 24 May 2021 19:08:56 +0530
-Message-Id: <20210524133856.85060-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210524090114.63446-10-aneesh.kumar@linux.ibm.com>
-References: <20210524090114.63446-10-aneesh.kumar@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ZMIo2oSZLa3SlIEogR_ezslEp-Nfn8OE
-X-Proofpoint-GUID: Y7hg8dV-3ybF8o8kB9jUmNTKce0VaVzI
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=valentin.schneider@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4FpfQW2sSSz2xtn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 May 2021 00:16:17 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 59F5BED1;
+ Mon, 24 May 2021 07:16:15 -0700 (PDT)
+Received: from e113632-lin (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 696243F719;
+ Mon, 24 May 2021 07:16:13 -0700 (PDT)
+From: Valentin Schneider <valentin.schneider@arm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 1/3] sched/topology: Allow archs to populate distance map
+In-Reply-To: <20210521092830.GF2633526@linux.vnet.ibm.com>
+References: <20210520154427.1041031-1-srikar@linux.vnet.ibm.com>
+ <20210520154427.1041031-2-srikar@linux.vnet.ibm.com>
+ <YKaw33d71FpHjGnR@hirez.programming.kicks-ass.net>
+ <20210521023802.GE2633526@linux.vnet.ibm.com>
+ <YKdr0g6+eIHncqej@hirez.programming.kicks-ass.net>
+ <20210521092830.GF2633526@linux.vnet.ibm.com>
+Date: Mon, 24 May 2021 15:16:09 +0100
+Message-ID: <87k0no6wuu.mognet@arm.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-24_07:2021-05-24,
- 2021-05-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0
- adultscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105240086
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,121 +48,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, npiggin@gmail.com,
- kaleshsingh@google.com, joel@joelfernandes.org, linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
+ linuxppc-dev@lists.ozlabs.org, Scott Cheloha <cheloha@linux.ibm.com>,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Mel Gorman <mgorman@techsingularity.net>,
+ Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CPU 1				CPU 2					CPU 3
+On 21/05/21 14:58, Srikar Dronamraju wrote:
+> * Peter Zijlstra <peterz@infradead.org> [2021-05-21 10:14:10]:
+>
+>> On Fri, May 21, 2021 at 08:08:02AM +0530, Srikar Dronamraju wrote:
+>> > * Peter Zijlstra <peterz@infradead.org> [2021-05-20 20:56:31]:
+>> >
+>> > > On Thu, May 20, 2021 at 09:14:25PM +0530, Srikar Dronamraju wrote:
+>> > > > Currently scheduler populates the distance map by looking at distance
+>> > > > of each node from all other nodes. This should work for most
+>> > > > architectures and platforms.
+>> > > >
+>> > > > However there are some architectures like POWER that may not expose
+>> > > > the distance of nodes that are not yet onlined because those resources
+>> > > > are not yet allocated to the OS instance. Such architectures have
+>> > > > other means to provide valid distance data for the current platform.
+>> > > >
+>> > > > For example distance info from numactl from a fully populated 8 node
+>> > > > system at boot may look like this.
+>> > > >
+>> > > > node distances:
+>> > > > node   0   1   2   3   4   5   6   7
+>> > > >   0:  10  20  40  40  40  40  40  40
+>> > > >   1:  20  10  40  40  40  40  40  40
+>> > > >   2:  40  40  10  20  40  40  40  40
+>> > > >   3:  40  40  20  10  40  40  40  40
+>> > > >   4:  40  40  40  40  10  20  40  40
+>> > > >   5:  40  40  40  40  20  10  40  40
+>> > > >   6:  40  40  40  40  40  40  10  20
+>> > > >   7:  40  40  40  40  40  40  20  10
+>> > > >
+>> > > > However the same system when only two nodes are online at boot, then the
+>> > > > numa topology will look like
+>> > > > node distances:
+>> > > > node   0   1
+>> > > >   0:  10  20
+>> > > >   1:  20  10
+>> > > >
+>> > > > It may be implementation dependent on what node_distance(0,3) where
+>> > > > node 0 is online and node 3 is offline. In POWER case, it returns
+>> > > > LOCAL_DISTANCE(10). Here at boot the scheduler would assume that the max
+>> > > > distance between nodes is 20. However that would not be true.
+>> > > >
+>> > > > When Nodes are onlined and CPUs from those nodes are hotplugged,
+>> > > > the max node distance would be 40.
+>> > > >
+>> > > > To handle such scenarios, let scheduler allow architectures to populate
+>> > > > the distance map. Architectures that like to populate the distance map
+>> > > > can overload arch_populate_distance_map().
+>> > >
+>> > > Why? Why can't your node_distance() DTRT? The arch interface is
+>> > > nr_node_ids and node_distance(), I don't see why we need something new
+>> > > and then replace one special use of it.
+>> > >
+>> > > By virtue of you being able to actually implement this new hook, you
+>> > > supposedly can actually do node_distance() right too.
+>> >
+>> > Since for an offline node, arch interface code doesn't have the info.
+>> > As far as I know/understand, in POWER, unless there is an active memory or
+>> > CPU that's getting onlined, arch can't fetch the correct node distance.
+>> >
+>> > Taking the above example: node 3 is offline, then node_distance of (3,X)
+>> > where X is anything other than 3, is not reliable. The moment node 3 is
+>> > onlined, the node distance is reliable.
+>> >
+>> > This problem will not happen even on POWER if all the nodes have either
+>> > memory or CPUs active at the time of boot.
+>>
+>> But then how can you implement this new hook? Going by the fact that
+>> both nr_node_ids and distance_ref_points_depth are fixed, how many
+>> possible __node_distance() configurations are there left?
+>>
+>
+> distance_ref_point_depth is provided as a different property and is readily
+> available at boot. The new api will use just use that. So based on the
+> distance_ref_point_depth, we know all possible node distances for that
+> platform.
+>
+> For an offline node, we don't have that specific nodes distance_lookup_table
+> array entries. Each array would be of distance_ref_point_depth entries.
+> Without the distance_lookup_table for an array populated, we will not be
+> able to tell how far the node is with respect to other nodes.
+>
+> We can lookup the correct distance_lookup_table for a node based on memory
+> or the CPUs attached to that node. Since in an offline node, both of them
+> would not be around, the distance_lookup_table will have stale values.
+>
 
-mremap(old_addr, new_addr)      page_shrinker/try_to_unmap_one
+Ok so from your arch you can figure out the *size* of the set of unique
+distances, but not the individual node_distance(a, b)... That's quite
+unfortunate.
 
-				addr = old_addr
-				lock(pte_ptl)
-lock(pmd_ptl)
-pmd = *old_pmd
-pmd_clear(old_pmd)
-flush_tlb_range(old_addr)
+I suppose one way to avoid the hook would be to write some "fake" distance
+values into your distance_lookup_table[] for offline nodes using your
+distance_ref_point_depth thing, i.e. ensure an iteration of
+node_distance(a, b) covers all distance values [1]. You can then keep patch
+3 around, and that should roughly be it.
 
-*new_pmd = pmd
-									*new_addr = 10; and fills
-									TLB with new addr
-									and old pfn
 
-unlock(pmd_ptl)
-				ptep_get_and_clear()
-				flush_tlb_range(old_addr)
-
-				old pfn is free.
-									Stale TLB entry
-
-Avoid the above race with MOVE_PMD by holding pte ptl in mremap and waiting for
-parallel pagetable walk to finish operating on pte before updating new_pmd
-
-With MOVE_PUD only enable MOVE_PUD only if USE_SPLIT_PTE_PTLOCKS is disabled.
-In this case both pte ptl and pud ptl points to mm->page_table_lock.
-
-Fixes: c49dd3401802 ("mm: speedup mremap on 1GB or larger regions")
-Fixes: 2c91bd4a4e2e ("mm: speed up mremap by 20x on large regions")
-Link: https://lore.kernel.org/linux-mm/CAHk-=wgXVR04eBNtxQfevontWnP6FDm+oj5vauQXP3S-huwbPw@mail.gmail.com
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
-Change:
-* Check for split PTL before taking pte ptl lock.
-
- mm/mremap.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 8967a3707332..2fa3e0cb6176 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -224,7 +224,7 @@ static inline void flush_pte_tlb_pwc_range(struct vm_area_struct *vma,
- static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 		  unsigned long new_addr, pmd_t *old_pmd, pmd_t *new_pmd)
- {
--	spinlock_t *old_ptl, *new_ptl;
-+	spinlock_t *pte_ptl, *old_ptl, *new_ptl;
- 	struct mm_struct *mm = vma->vm_mm;
- 	pmd_t pmd;
- 
-@@ -254,6 +254,7 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
- 		return false;
- 
-+
- 	/*
- 	 * We don't have to worry about the ordering of src and dst
- 	 * ptlocks because exclusive mmap_lock prevents deadlock.
-@@ -263,6 +264,10 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 	if (new_ptl != old_ptl)
- 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
- 
-+	if (pmd_none(*old_pmd))
-+		goto unlock_out;
-+
-+	pte_ptl = pte_lockptr(mm, old_pmd);
- 	/* Clear the pmd */
- 	pmd = *old_pmd;
- 	pmd_clear(old_pmd);
-@@ -270,9 +275,20 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 	 * flush the TLB before we move the page table entries.
- 	 */
- 	flush_pte_tlb_pwc_range(vma, old_addr, old_addr + PMD_SIZE);
-+
-+	/*
-+	 * Take the ptl here so that we wait for parallel page table walk
-+	 * and operations (eg: pageout)using old addr to finish.
-+	 */
-+	if (USE_SPLIT_PTE_PTLOCKS)
-+		spin_lock(pte_ptl);
-+
- 	VM_BUG_ON(!pmd_none(*new_pmd));
- 	pmd_populate(mm, new_pmd, pmd_pgtable(pmd));
-+	if (USE_SPLIT_PTE_PTLOCKS)
-+		spin_unlock(pte_ptl);
- 
-+unlock_out:
- 	if (new_ptl != old_ptl)
- 		spin_unlock(new_ptl);
- 	spin_unlock(old_ptl);
-@@ -296,6 +312,14 @@ static bool move_normal_pud(struct vm_area_struct *vma, unsigned long old_addr,
- 	struct mm_struct *mm = vma->vm_mm;
- 	pud_t pud;
- 
-+	/*
-+	 * Disable MOVE_PUD until we get the pageout done with all
-+	 * higher level page table locks held. With SPLIT_PTE_PTLOCKS
-+	 * we use mm->page_table_lock for both pte ptl and pud ptl
-+	 */
-+	if (USE_SPLIT_PTE_PTLOCKS)
-+		return false;
-+
- 	/*
- 	 * The destination pud shouldn't be established, free_pgtables()
- 	 * should have released it.
--- 
-2.31.1
-
+>> The example provided above does not suggest there's much room for
+>> alternatives, and hence for actual need of this new interface.
+>>
+>
+> --
+> Thanks and Regards
+> Srikar Dronamraju
