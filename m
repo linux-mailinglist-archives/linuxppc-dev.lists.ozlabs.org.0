@@ -2,50 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E06238E765
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 15:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA5E38E7D0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 15:39:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FpdJ11hXsz3bnn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 23:25:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fpdbj38w9z3bsp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 23:39:13 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R4jtBeSu;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com;
- envelope-from=weiyongjun1@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FpdHb2Cwnz2yWv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 23:25:08 +1000 (AEST)
-Received: from dggems702-chm.china.huawei.com (unknown [172.30.72.58])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FpdC91vxczml0H;
- Mon, 24 May 2021 21:21:25 +0800 (CST)
-Received: from dggeml759-chm.china.huawei.com (10.1.199.138) by
- dggems702-chm.china.huawei.com (10.3.19.179) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Mon, 24 May 2021 21:25:00 +0800
-Received: from localhost.localdomain (10.175.102.38) by
- dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Mon, 24 May 2021 21:24:59 +0800
-From: Wei Yongjun <weiyongjun1@huawei.com>
-To: <weiyongjun1@huawei.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, "Timur
- Tabi" <timur@kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>, Xiubo Li
- <Xiubo.Lee@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
- <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>
-Subject: [PATCH -next] ASoC: imx-card: Make some symbols static
-Date: Mon, 24 May 2021 13:35:53 +0000
-Message-ID: <20210524133553.2366502-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=R4jtBeSu; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fpdb90hT8z2yWs
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 23:38:44 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14ODXRlD139448; Mon, 24 May 2021 09:38:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=ugsgz2obaKuedwBCRj91TY4HhC5/482f7ENXtAmnK2w=;
+ b=R4jtBeSuRIGk2AgJ5b4MLAZS+fM/K5vPVrazz6Qx8jg5gAjHOMcDT6NK3vypoVP1fMAw
+ xHXsaKoNLNtUDuRSS+K08N79lnhCRR9g0HDgO5nx565XeSasDqiNV/DSP1sTUDrY6ICs
+ bxNqBFsI8rgS9KgyJGjC/6XKYoe/sk1eYNK0JHBH8Ui4wV09aqEwuse45mFUEqzXuPaO
+ skvlWto3ThzRysADy2+4BUpRqfjlqYr8E6PwOFGd7THOcaid/uGYI06JoUFMNdJetB8+
+ 4WlUIDzgpL9P/3EW7vbwrXz4HYWlXn/hIb8RE9FJrKcOgomGsTr97WCjt8hwiT1TG+6A MQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38rcgu987a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 May 2021 09:38:30 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14ODXY3N140320;
+ Mon, 24 May 2021 09:38:29 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38rcgu986u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 May 2021 09:38:29 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14ODN3wt027501;
+ Mon, 24 May 2021 13:38:28 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma04dal.us.ibm.com with ESMTP id 38psk8u13r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 May 2021 13:38:28 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14ODcRMR28180984
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 24 May 2021 13:38:27 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B279178060;
+ Mon, 24 May 2021 13:38:27 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2F3E47805F;
+ Mon, 24 May 2021 13:38:24 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.102.1.240])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 24 May 2021 13:38:23 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-mm@kvack.org, akpm@linux-foundation.org
+Subject: [PATCH v6 updated 9/11] mm/mremap: Fix race between mremap and pageout
+Date: Mon, 24 May 2021 19:08:18 +0530
+Message-Id: <20210524133818.84955-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <id:20210524090114.63446-10-aneesh.kumar@linux.ibm.com>
+References: <id:20210524090114.63446-10-aneesh.kumar@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: PHdm73f7Ll78QZq8PX7nQF9KrDZwJMRx
+X-Proofpoint-GUID: EpkhFge_ZHvrEaO4GT1IaS0u3OgTILMb
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.175.102.38]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggeml759-chm.china.huawei.com (10.1.199.138)
-X-CFilter-Loop: Reflected
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-24_07:2021-05-24,
+ 2021-05-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0
+ adultscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105240086
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,83 +106,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org,
- linux-kernel@vger.kernel.org, Hulk Robot <hulkci@huawei.com>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, npiggin@gmail.com,
+ kaleshsingh@google.com, joel@joelfernandes.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The sparse tool complains as follows:
+CPU 1				CPU 2					CPU 3
 
-sound/soc/fsl/imx-card.c:121:27: warning:
- symbol 'ak4458_fs_mul' was not declared. Should it be static?
-sound/soc/fsl/imx-card.c:138:31: warning:
- symbol 'ak4458_tdm_fs_mul' was not declared. Should it be static?
-sound/soc/fsl/imx-card.c:149:27: warning:
- symbol 'ak4497_fs_mul' was not declared. Should it be static?
-sound/soc/fsl/imx-card.c:166:27: warning:
- symbol 'ak5558_fs_mul' was not declared. Should it be static?
-sound/soc/fsl/imx-card.c:180:31: warning:
- symbol 'ak5558_tdm_fs_mul' was not declared. Should it be static?
+mremap(old_addr, new_addr)      page_shrinker/try_to_unmap_one
 
-Those symbols are not used outside of imx-card.c, so marks
-them static.
+				addr = old_addr
+				lock(pte_ptl)
+lock(pmd_ptl)
+pmd = *old_pmd
+pmd_clear(old_pmd)
+flush_tlb_range(old_addr)
 
-Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+*new_pmd = pmd
+									*new_addr = 10; and fills
+									TLB with new addr
+									and old pfn
+
+unlock(pmd_ptl)
+				ptep_get_and_clear()
+				flush_tlb_range(old_addr)
+
+				old pfn is free.
+									Stale TLB entry
+
+Avoid the above race with MOVE_PMD by holding pte ptl in mremap and waiting for
+parallel pagetable walk to finish operating on pte before updating new_pmd
+
+With MOVE_PUD only enable MOVE_PUD only if USE_SPLIT_PTE_PTLOCKS is disabled.
+In this case both pte ptl and pud ptl points to mm->page_table_lock.
+
+Fixes: c49dd3401802 ("mm: speedup mremap on 1GB or larger regions")
+Fixes: 2c91bd4a4e2e ("mm: speed up mremap by 20x on large regions")
+Link: https://lore.kernel.org/linux-mm/CAHk-=wgXVR04eBNtxQfevontWnP6FDm+oj5vauQXP3S-huwbPw@mail.gmail.com
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- sound/soc/fsl/imx-card.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Change:
+* Check for split PTL before taking pte ptl lock.
 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index ab424735bbfe..58fd0639a069 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -118,7 +118,7 @@ struct imx_card_data {
- 	u32 asrc_format;
- };
+ mm/mremap.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 8967a3707332..2fa3e0cb6176 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -224,7 +224,7 @@ static inline void flush_pte_tlb_pwc_range(struct vm_area_struct *vma,
+ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 		  unsigned long new_addr, pmd_t *old_pmd, pmd_t *new_pmd)
+ {
+-	spinlock_t *old_ptl, *new_ptl;
++	spinlock_t *pte_ptl, *old_ptl, *new_ptl;
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pmd_t pmd;
  
--struct imx_akcodec_fs_mul ak4458_fs_mul[] = {
-+static struct imx_akcodec_fs_mul ak4458_fs_mul[] = {
- 	/* Normal, < 32kHz */
- 	{ .rmin = 8000,   .rmax = 24000,  .wmin = 1024, .wmax = 1024, },
- 	/* Normal, 32kHz */
-@@ -135,7 +135,7 @@ struct imx_akcodec_fs_mul ak4458_fs_mul[] = {
- 	{ .rmin = 705600, .rmax = 768000, .wmin = 16,   .wmax = 64,   },
- };
+@@ -254,6 +254,7 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
+ 		return false;
  
--struct imx_akcodec_tdm_fs_mul ak4458_tdm_fs_mul[] = {
-+static struct imx_akcodec_tdm_fs_mul ak4458_tdm_fs_mul[] = {
++
  	/*
- 	 * Table 13	- Audio Interface Format
- 	 * For TDM mode, MCLK should is set to
-@@ -146,7 +146,7 @@ struct imx_akcodec_tdm_fs_mul ak4458_tdm_fs_mul[] = {
- 	{ .min = 512,	.max = 512,	.mul = 1024  }, /* TDM512 */
- };
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
+@@ -263,6 +264,10 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 	if (new_ptl != old_ptl)
+ 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
  
--struct imx_akcodec_fs_mul ak4497_fs_mul[] = {
-+static struct imx_akcodec_fs_mul ak4497_fs_mul[] = {
- 	/**
- 	 * Table 7      - mapping multiplier and speed mode
- 	 * Tables 8 & 9 - mapping speed mode and LRCK fs
-@@ -163,7 +163,7 @@ struct imx_akcodec_fs_mul ak4497_fs_mul[] = {
-  * Auto MCLK selection based on LRCK for Normal Mode
-  * (Table 4 from datasheet)
-  */
--struct imx_akcodec_fs_mul ak5558_fs_mul[] = {
-+static struct imx_akcodec_fs_mul ak5558_fs_mul[] = {
- 	{ .rmin = 8000,   .rmax = 32000,  .wmin = 1024, .wmax = 1024, },
- 	{ .rmin = 44100,  .rmax = 48000,  .wmin = 512,  .wmax = 512, },
- 	{ .rmin = 88200,  .rmax = 96000,  .wmin = 256,  .wmax = 256, },
-@@ -177,7 +177,7 @@ struct imx_akcodec_fs_mul ak5558_fs_mul[] = {
-  * because of SAI we also add the restriction: MCLK >= 2 * BCLK
-  * (Table 9 from datasheet)
-  */
--struct imx_akcodec_tdm_fs_mul ak5558_tdm_fs_mul[] = {
-+static struct imx_akcodec_tdm_fs_mul ak5558_tdm_fs_mul[] = {
- 	{ .min = 128,	.max = 128,	.mul = 256 },
- 	{ .min = 256,	.max = 256,	.mul = 512 },
- 	{ .min = 512,	.max = 512,	.mul = 1024 },
++	if (pmd_none(*old_pmd))
++		goto unlock_out;
++
++	pte_ptl = pte_lockptr(mm, old_pmd);
+ 	/* Clear the pmd */
+ 	pmd = *old_pmd;
+ 	pmd_clear(old_pmd);
+@@ -270,9 +275,20 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 	 * flush the TLB before we move the page table entries.
+ 	 */
+ 	flush_pte_tlb_pwc_range(vma, old_addr, old_addr + PMD_SIZE);
++
++	/*
++	 * Take the ptl here so that we wait for parallel page table walk
++	 * and operations (eg: pageout)using old addr to finish.
++	 */
++	if (USE_SPLIT_PTE_PTLOCKS)
++		spin_lock(pte_ptl);
++
+ 	VM_BUG_ON(!pmd_none(*new_pmd));
+ 	pmd_populate(mm, new_pmd, pmd_pgtable(pmd));
++	if (USE_SPLIT_PTE_PTLOCKS)
++		spin_unlock(pte_ptl);
+ 
++unlock_out:
+ 	if (new_ptl != old_ptl)
+ 		spin_unlock(new_ptl);
+ 	spin_unlock(old_ptl);
+@@ -296,6 +312,14 @@ static bool move_normal_pud(struct vm_area_struct *vma, unsigned long old_addr,
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pud_t pud;
+ 
++	/*
++	 * Disable MOVE_PUD until we get the pageout done with all
++	 * higher level page table locks held. With SPLIT_PTE_PTLOCKS
++	 * we use mm->page_table_lock for both pte ptl and pud ptl
++	 */
++	if (USE_SPLIT_PTE_PTLOCKS)
++		return false;
++
+ 	/*
+ 	 * The destination pud shouldn't be established, free_pgtables()
+ 	 * should have released it.
+-- 
+2.31.1
 
