@@ -1,104 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0009F38F471
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 22:34:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8441938F610
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 May 2021 01:04:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fpppg5xhSz306T
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 May 2021 06:34:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fpt8Q41qHz30BG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 May 2021 09:04:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gzA11SQ/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=QQB024vh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=msc@linux.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=paul-moore.com
+ (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com;
+ envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gzA11SQ/; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
+ header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=QQB024vh; dkim-atps=neutral
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com
+ [IPv6:2a00:1450:4864:20::62c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fppp75Xqcz2yhF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 May 2021 06:33:51 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14OK3nfj185241; Mon, 24 May 2021 16:33:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=references : from : to :
- cc : subject : in-reply-to : date : message-id : mime-version :
- content-type; s=pp1; bh=FZyIYp++kLFd7+FZB7WEKrumdZ2aEQqCESOGbyT5Kxg=;
- b=gzA11SQ/YmnbE/fTjFn3zFl6e4vEnPt3lXbRRoYCVuYBcdi6mi3FYoUOLGIL3LQaVTlO
- MZ8ZBOV6Ku6HNxyalbBbGi1F5QVVAYJ5T8LN5AWOVAjrr0dXiElnI/OBa8fEFf+rzKQZ
- JgmyOdUyvrWc8UaTObizkwtGwemhCKutQVf6oUj3u+gEp0QQ6TbJWeeU0nf2g+rjP29M
- i8/T0hr5RsrAgO1+qUM/0xyRjIzR1cRluaiUYFUgwHpL+niwB/VkFKfDqzrL1sbk3iPK
- p6iZfxNVMMQW2Rw4QB0xoBS0CE57L2QBcMq28SnKQWrMajB5iDt5/0cqP6Sn3DriDBIg yw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38rjjp0yqt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 May 2021 16:33:32 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14OK3ohP185380;
- Mon, 24 May 2021 16:33:31 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38rjjp0yqj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 May 2021 16:33:31 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14OKHPkF018856;
- Mon, 24 May 2021 20:33:30 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02wdc.us.ibm.com with ESMTP id 38psk99ta7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 May 2021 20:33:30 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14OKXTHR21496212
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 May 2021 20:33:29 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8741CBE053;
- Mon, 24 May 2021 20:33:29 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 743DFBE058;
- Mon, 24 May 2021 20:33:26 +0000 (GMT)
-Received: from TP480.linux.ibm.com (unknown [9.65.94.141])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 24 May 2021 20:33:26 +0000 (GMT)
-References: <20200611081203.995112-1-npiggin@gmail.com>
- <20210518231331.GA8464@altlinux.org>
- <1621385544.nttlk5qugb.astroid@bobo.none>
- <1621400263.gf0mbqhkrf.astroid@bobo.none> <87a6oo4312.fsf@linux.ibm.com>
- <87k0nr6ezw.fsf@oldenburg.str.redhat.com> <87eedz3li3.fsf@linux.ibm.com>
- <20210521205204.GA24309@altlinux.org> <87a6ok2uxx.fsf@linux.ibm.com>
-User-agent: mu4e 1.4.10; emacs 27.2
-From: Matheus Castanho <msc@linux.ibm.com>
-To: Matheus Castanho <msc@linux.ibm.com>
-Subject: Re: Linux powerpc new system call instruction and ABI
-In-reply-to: <87a6ok2uxx.fsf@linux.ibm.com>
-Date: Mon, 24 May 2021 17:33:24 -0300
-Message-ID: <87im3727or.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fpt7w2wxKz2yYc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 May 2021 09:04:26 +1000 (AEST)
+Received: by mail-ej1-x62c.google.com with SMTP id gb17so26219264ejc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 16:04:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=uHnwU/8zVxK9/bfw4gLk9ClQH8SbH6WwTZFdoRwbAtE=;
+ b=QQB024vhpmn4hq25e6Gkh0zhdrnh3KHdtxH6hg6RDKH7CnpR3mYJd6drz35kPPn+vq
+ h6264Me+UgyGvlpwu30FVPeTMz+AEc12Q0M+XUT2JohzSMatCOapVMLXEXEiejzFf7ti
+ ktfb2nZNhIlo275VOb2O2BOnbc3ySbclEou9yYwi6+PYR4gUlNFMkKIpexQj+R7biYK9
+ xXDP+mzIofYbIEFKZVe3ZXLMSxK2QP8MWFHo5cfoJS3ZJay5Rqyq5UdBp1+zLKULS08J
+ lwUq6hGqLZp80Ar+2xFbnq6NvtyQI7K0uQTTZPi/naCAAye6mC44N7eH6EQPj41saYzr
+ cNUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=uHnwU/8zVxK9/bfw4gLk9ClQH8SbH6WwTZFdoRwbAtE=;
+ b=M1z4OakADSJBLq44GgkQpwYH1HVCr7d/6T7kCVrs7UQ57ji3o1IsdPn6XWKi8rE+tS
+ psm8oxxHPwlVgjIBUma02rfUuLgO//QMXiiuvXNItVjKeYvk5cwNex2HFojL2vrD/IsX
+ dLqZGes3hpwiY/JbgVui3wr7uBCA9uMC25GhxqEcW+QRNLHB2bWMMAoEyxF8uUtAnISf
+ C6/tp0Ox3dThM3CSey5RlwQWuPnBCrxoA3ve3JV3smfzAkXnb7YGsqNTFwUglzrINtcF
+ NsUiBt1/2MlcJssWb8iwtYvr1J5lg0txHAz1NrDXeDgr74T2FWua9ykPj6PgPHlD3IlA
+ RwGg==
+X-Gm-Message-State: AOAM531QdQthexdG7psZIqc7gSsrpjyOWO43azx8x17sQOQh1SEXwLT+
+ 860zHSOTAE8tMuPBX83OUXiVI8kWKRjpKZBPvvJs
+X-Google-Smtp-Source: ABdhPJzHdwSaxqdMgKRFDcoSWE+vBddUp/NzMoTBPda3nQNAVt0QAUQEdTUit8AXk9QB29Wy0DPtdDjKh5nmDnbZhoc=
+X-Received: by 2002:a17:907:10d8:: with SMTP id
+ rv24mr25356059ejb.542.1621897458726; 
+ Mon, 24 May 2021 16:04:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ER5I-gxskURqA0q20yF-IAm9RBLnInl_
-X-Proofpoint-ORIG-GUID: eAxo70sIvYvIrIANrjlNpsJk6RtF1TSC
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-24_09:2021-05-24,
- 2021-05-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- priorityscore=1501 lowpriorityscore=0 mlxscore=0 mlxlogscore=999
- phishscore=0 spamscore=0 bulkscore=0 clxscore=1015 suspectscore=0
- malwarescore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104190000 definitions=main-2105240118
+References: <cover.1621363275.git.rgb@redhat.com>
+ <f5f1a4d8699613f8c02ce762807228c841c2e26f.1621363275.git.rgb@redhat.com>
+ <20210520075842.vnbwbw6yffkybk6z@wittgenstein>
+In-Reply-To: <20210520075842.vnbwbw6yffkybk6z@wittgenstein>
+From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 24 May 2021 19:04:07 -0400
+Message-ID: <CAHC9VhTyAFou=_Xu7ZSZSY+19Yii=hQ1NW1LPisk49Ot9wg7rg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] audit: add support for the openat2 syscall
+To: Christian Brauner <christian.brauner@ubuntu.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,51 +78,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Florian Weimer <fweimer@redhat.com>,
- Matheus Castanho via Libc-alpha <libc-alpha@sourceware.org>,
- linux-api@vger.kernel.org, musl@lists.openwall.com,
- Nicholas Piggin <npiggin@gmail.com>, "Dmitry V. Levin" <ldv@altlinux.org>,
- libc-dev@lists.llvm.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+ Richard Guy Briggs <rgb@redhat.com>, x86@kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Eric Paris <eparis@redhat.com>,
+ sparclinux@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
+ Linux-Audit Mailing List <linux-audit@redhat.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
+ Steve Grubb <sgrubb@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, May 20, 2021 at 3:58 AM Christian Brauner
+<christian.brauner@ubuntu.com> wrote:
+> On Wed, May 19, 2021 at 04:00:21PM -0400, Richard Guy Briggs wrote:
+> > The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
+> > ("open: introduce openat2(2) syscall")
+> >
+> > Add the openat2(2) syscall to the audit syscall classifier.
+> >
+> > Link: https://github.com/linux-audit/audit-kernel/issues/67
+> > Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+> > Link: https://lore.kernel.org/r/f5f1a4d8699613f8c02ce762807228c841c2e26f.1621363275.git.rgb@redhat.com
+> > ---
+> >  arch/alpha/kernel/audit.c           | 2 ++
+> >  arch/ia64/kernel/audit.c            | 2 ++
+> >  arch/parisc/kernel/audit.c          | 2 ++
+> >  arch/parisc/kernel/compat_audit.c   | 2 ++
+> >  arch/powerpc/kernel/audit.c         | 2 ++
+> >  arch/powerpc/kernel/compat_audit.c  | 2 ++
+> >  arch/s390/kernel/audit.c            | 2 ++
+> >  arch/s390/kernel/compat_audit.c     | 2 ++
+> >  arch/sparc/kernel/audit.c           | 2 ++
+> >  arch/sparc/kernel/compat_audit.c    | 2 ++
+> >  arch/x86/ia32/audit.c               | 2 ++
+> >  arch/x86/kernel/audit_64.c          | 2 ++
+> >  include/linux/auditsc_classmacros.h | 1 +
+> >  kernel/auditsc.c                    | 3 +++
+> >  lib/audit.c                         | 4 ++++
+> >  lib/compat_audit.c                  | 4 ++++
+> >  16 files changed, 36 insertions(+)
 
-Matheus Castanho <msc@linux.ibm.com> writes:
+...
 
-> Dmitry V. Levin <ldv@altlinux.org> writes:
+> > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> > index d775ea16505b..3f59ab209dfd 100644
+> > --- a/kernel/auditsc.c
+> > +++ b/kernel/auditsc.c
+> > @@ -76,6 +76,7 @@
+> >  #include <linux/fsnotify_backend.h>
+> >  #include <uapi/linux/limits.h>
+> >  #include <uapi/linux/netfilter/nf_tables.h>
+> > +#include <uapi/linux/openat2.h>
+> >
+> >  #include "audit.h"
+> >
+> > @@ -196,6 +197,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+> >               return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+> >       case AUDITSC_EXECVE:
+> >               return mask & AUDIT_PERM_EXEC;
+> > +     case AUDITSC_OPENAT2:
+> > +             return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
 >
->> On Fri, May 21, 2021 at 05:00:36PM -0300, Matheus Castanho wrote:
->>> Florian Weimer <fweimer@redhat.com> writes:
->>> > * Matheus Castanho via Libc-alpha:
->>> >> From: Nicholas Piggin <npiggin@gmail.com>
->>> >> Subject: [PATCH 1/1] powerpc: Fix handling of scv return error codes
->>> >>
->>> >> When using scv on templated ASM syscalls, current code interprets any
->>> >> negative return value as error, but the only valid error codes are in
->>> >> the range -4095..-1 according to the ABI.
->>> >>
->>> >> Reviewed-by: Matheus Castanho <msc@linux.ibm.com>
->>> >
->>> > Please reference bug 27892 in the commit message.  I'd also appreciate a
->>> > backport to the 2.33 release branch (where you need to add NEWS manually
->>> > to add the bug reference).
->>>
->>> No problem. [BZ #27892] appended to the commit title. I'll make sure to
->>> backport to 2.33 as well.
->>
->> Could you also mention in the commit message that the change fixes
->> 'signal.gen.test' strace test where it was observed initially?
+> That's a lot of dereferncing, casting and masking all at once. Maybe a
+> small static inline helper would be good for the sake of legibility? Sm
+> like:
 >
-> Sure, no problem. I'll commit it later today.
+> static inline u32 audit_openat2_acc(struct open_how *how, int mask)
+> {
+>         u32 flags = how->flags;
+>         return mask & ACC_MODE(flags);
+> }
+>
+> but not sure. Just seems more legible to me.
+> Otherwise.
 
-Since the patch falls into the less-than-15-LOC category and this is
-Nick's first contribution to glibc, looks like he doesn't need a
-copyright assignment.
+I'm on the fence about this.  I understand Christian's concern, but I
+have a bit of hatred towards single caller functions like this.  Since
+this function isn't really high-touch, and I don't expect that to
+change in the near future, let's leave the casting mess as-is.
 
-Pushed to master as 7de36744ee1325f35d3fe0ca079dd33c40b12267
-
-Backported to 2.33 via commit 0ef0e6de7fdfa18328b09ba2afb4f0112d4bdab4
-
-Thanks,
-Matheus Castanho
+-- 
+paul moore
+www.paul-moore.com
