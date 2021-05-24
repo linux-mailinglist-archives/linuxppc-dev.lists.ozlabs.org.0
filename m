@@ -2,53 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C6F38DEC8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 03:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05BDD38DED9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 03:21:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FpJx91hlXz308d
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 11:08:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FpKDh6R7bz3btt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 May 2021 11:21:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=wVz1tZsk;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com;
- envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FpJwp1qpZz2yY8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 11:07:51 +1000 (AEST)
-Received: from dggems705-chm.china.huawei.com (unknown [172.30.72.58])
- by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FpJsH0VrrzBtrf;
- Mon, 24 May 2021 09:04:51 +0800 (CST)
-Received: from dggema769-chm.china.huawei.com (10.1.198.211) by
- dggems705-chm.china.huawei.com (10.3.19.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Mon, 24 May 2021 09:07:41 +0800
-Received: from [10.174.179.215] (10.174.179.215) by
- dggema769-chm.china.huawei.com (10.1.198.211) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Mon, 24 May 2021 09:07:40 +0800
-Subject: Re: [PATCH net-next] ethernet: ucc_geth: Use kmemdup() rather than
- kmalloc+memcpy
-To: Andrew Lunn <andrew@lunn.ch>, Christophe Leroy
- <christophe.leroy@csgroup.eu>
-References: <20210523075616.14792-1-yuehaibing@huawei.com>
- <20210523152937.Horde.5kC0kzvaP3No5BC63LlZ_A7@messagerie.c-s.fr>
- <YKpmKln1Z/UvZgZQ@lunn.ch>
-From: YueHaibing <yuehaibing@huawei.com>
-Message-ID: <cb42d735-e540-2ea4-2cd2-fc3e1bccd526@huawei.com>
-Date: Mon, 24 May 2021 09:07:40 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch
+ (client-ip=185.16.172.187; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256
+ header.s=20171124 header.b=wVz1tZsk; dkim-atps=neutral
+Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FpKDF0RSmz2yY8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 May 2021 11:21:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+ s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+ Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+ Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+ bh=El+XZLB92OFWSNNtDA3CExs5QoARTgqBFwrJ+abZcbI=; b=wVz1tZsk4uVfYWfxhScxy8WxbG
+ uDf3vohtq+lri3NoaDwd5mfH4kGPGjjg+OaxxHb2QmJRwp/5+UcIVPUu/t+lt0X8vwL8WeAuQ9TXY
+ heDO2rAhc+03Hn/W0nnuP56sWvom59PH/uzByo5FzyKCkowVZqvdXRZOptdxbF3xCyO8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+ (envelope-from <andrew@lunn.ch>)
+ id 1lkzH9-005tzT-LY; Mon, 24 May 2021 03:20:59 +0200
+Date: Mon, 24 May 2021 03:20:59 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: YueHaibing <yuehaibing@huawei.com>
+Subject: Re: [PATCH v2 net-next] ethernet: ucc_geth: Use kmemdup() rather
+ than kmalloc+memcpy
+Message-ID: <YKr/e4H0fPEyK8px@lunn.ch>
+References: <20210524010701.24596-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <YKpmKln1Z/UvZgZQ@lunn.ch>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggema769-chm.china.huawei.com (10.1.198.211)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210524010701.24596-1-yuehaibing@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,38 +65,11 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/5/23 22:26, Andrew Lunn wrote:
-> On Sun, May 23, 2021 at 03:29:37PM +0200, Christophe Leroy wrote:
->> YueHaibing <yuehaibing@huawei.com> a écrit :
->>
->>> Issue identified with Coccinelle.
->>>
->>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->>> ---
->>>  drivers/net/ethernet/freescale/ucc_geth.c | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/net/ethernet/freescale/ucc_geth.c
->>> b/drivers/net/ethernet/freescale/ucc_geth.c
->>> index e0936510fa34..51206272cc25 100644
->>> --- a/drivers/net/ethernet/freescale/ucc_geth.c
->>> +++ b/drivers/net/ethernet/freescale/ucc_geth.c
->>> @@ -3590,10 +3590,10 @@ static int ucc_geth_probe(struct
->>> platform_device* ofdev)
->>>  	if ((ucc_num < 0) || (ucc_num > 7))
->>>  		return -ENODEV;
->>>
->>> -	ug_info = kmalloc(sizeof(*ug_info), GFP_KERNEL);
->>> +	ug_info = kmemdup(&ugeth_primary_info, sizeof(*ug_info),
->>> +			  GFP_KERNEL);
->>
->> Can you keep that as a single line ? The tolerance is 100 chars per line now.
+On Mon, May 24, 2021 at 09:07:01AM +0800, YueHaibing wrote:
+> Issue identified with Coccinelle.
 > 
-> Networking prefers 80. If it fits a single 80 char line, please use a single line.
-> Otherwise please leave it as it is.
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Ok, will send v2.
-> 
-> 	   Andrew
-> .
-> 
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
