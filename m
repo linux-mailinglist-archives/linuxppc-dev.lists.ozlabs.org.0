@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A15390222
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 May 2021 15:24:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC366390224
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 May 2021 15:24:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FqFCg6SJyz3btV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 May 2021 23:23:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FqFD86dKrz3c1l
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 May 2021 23:24:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dMlJ9DUe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nRLWV7SE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,69 +18,70 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=dMlJ9DUe; dkim-atps=neutral
+ header.s=pp1 header.b=nRLWV7SE; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FqFCB3KF7z2ymM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 May 2021 23:23:34 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FqFCC75Nrz2ymM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 May 2021 23:23:35 +1000 (AEST)
 Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14PD42IW042049; Tue, 25 May 2021 09:23:21 -0400
+ 14PD42ct042079; Tue, 25 May 2021 09:23:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=BoB/3YjtiKj2Y2isOrE5t/hcDWnKYQeOaWns+D2hnVU=;
- b=dMlJ9DUe4uhRY62zf1RoE5LhFA4//1nAyEqT2PfP9uvCjJtQbGGWbwl8QZk1hmDblQ0a
- QXGKiHnPQca5EWBom5n5dtJJrHwQYkvPXJ2wFBP21+ptM5f77kSooD8YTc//epemHYBt
- bqOo1VhG3ws64h/lZKWrGpm9ev8qBITCvvgc2ZWD+eh/7vLcBrupcR8kPiSXU+j5q/VU
- 90l8r7oN10VH5A3EnUfWHgrNmrsqkh65CT1gnGwkls6EaQNL6iXLclkZYRoT7dfXd9h1
- P8PwcgfdaGA3Ea8GZdajthXcOFmQPNOtIkEAG792J6fNxcTXg7CgsAwKiIrmeLAsJ8o9 vA== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38s1gthds6-1
+ bh=2eORf1uetKTZhE+iYx2J48YcxbUH3HfWUHaj1yJ8fj4=;
+ b=nRLWV7SE9RTwzyVO7jr32+4Po0eXIqkFXbZwJP2WRBEO/F3PKkU8gD4Xf4c28TbVqqBX
+ 0xaCJH+B16RswAYK48sPCZqkQDhYpsX+T1+8IGyutv0xU6gUyu0sI89UWrp/tEeunw69
+ gxhPuqc3smJi+r+HdkNkGcE9jXxN3TTeLbm1KMnswbvJnlIJ4fzsqOVuqX+xONV8kwat
+ WmreOtNQU5dRORlnJ2QQQplEXJWRipP2aiOIcRluGFfnOHmbUxqiXdcA0y2Xq3kvAjnM
+ KXKluV2rBxvqSveJHv1X+pEtyP6zjtF8Ha+n3DSdRA37YYfoRP9ekcELXi9pro7YNKOn kA== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38s1gthdv3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 May 2021 09:23:20 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 14PDFGi4008073;
- Tue, 25 May 2021 13:23:18 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 38s1jn80u5-1
+ Tue, 25 May 2021 09:23:26 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 14PDFncQ005980;
+ Tue, 25 May 2021 13:23:23 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04fra.de.ibm.com with ESMTP id 38s1ht00e3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 May 2021 13:23:18 +0000
+ Tue, 25 May 2021 13:23:23 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
  [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14PDNFFu20119808
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14PDNK0J33947904
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 May 2021 13:23:15 GMT
+ Tue, 25 May 2021 13:23:20 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B97B6AE051;
- Tue, 25 May 2021 13:23:15 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A415FAE055;
+ Tue, 25 May 2021 13:23:20 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44CB4AE04D;
- Tue, 25 May 2021 13:23:12 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1F30DAE04D;
+ Tue, 25 May 2021 13:23:16 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.199.34.186])
  by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 25 May 2021 13:23:12 +0000 (GMT)
+ Tue, 25 May 2021 13:23:15 +0000 (GMT)
 From: Kajol Jain <kjain@linux.ibm.com>
 To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
  linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
  peterz@infradead.org
-Subject: [RFC v2 2/4] powerpc/papr_scm: Add perf interface support
-Date: Tue, 25 May 2021 18:52:14 +0530
-Message-Id: <20210525132216.1239259-3-kjain@linux.ibm.com>
+Subject: [RFC v2 3/4] powerpc/papr_scm: Document papr_scm sysfs event format
+ entries
+Date: Tue, 25 May 2021 18:52:15 +0530
+Message-Id: <20210525132216.1239259-4-kjain@linux.ibm.com>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20210525132216.1239259-1-kjain@linux.ibm.com>
 References: <20210525132216.1239259-1-kjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: qOKZvsewkX3gvKQxaqBgGvsuYokbjN6j
-X-Proofpoint-ORIG-GUID: qOKZvsewkX3gvKQxaqBgGvsuYokbjN6j
+X-Proofpoint-GUID: JoqM9lKzNK_73hpXoPBL1OyaeNCnwy42
+X-Proofpoint-ORIG-GUID: JoqM9lKzNK_73hpXoPBL1OyaeNCnwy42
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-05-25_06:2021-05-25,
  2021-05-25 signatures=0
@@ -109,477 +110,47 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Patch adds support for performance monitoring of papr-scm
-nvdimm devices via perf interface. It adds pmu functions
-like add/del/read/event_init for nvdimm_pmu struture.
-
-Patch adds a new parameter 'priv' in pdev_archdata structure to save
-nvdimm_pmu device pointer, to handle the unregistering of pmu device.
-
-papr_scm_pmu_register function populates the nvdimm_pmu structure
-with events, attribute groups along with event handling functions.
-Finally the populated nvdimm_pmu structure is passed to register
-the pmu device.
-Event handling functions internally uses hcall to get events and
-counter data.
-
-Result in power9 machine with 2 nvdimm device:
-
-Ex: List all event by perf list
-
-command:# perf list nmem
-
-  nmem0/cchrhcnt/                                    [Kernel PMU event]
-  nmem0/cchwhcnt/                                    [Kernel PMU event]
-  nmem0/critrscu/                                    [Kernel PMU event]
-  nmem0/ctlresct/                                    [Kernel PMU event]
-  nmem0/ctlrestm/                                    [Kernel PMU event]
-  nmem0/fastwcnt/                                    [Kernel PMU event]
-  nmem0/hostlcnt/                                    [Kernel PMU event]
-  nmem0/hostldur/                                    [Kernel PMU event]
-  nmem0/hostscnt/                                    [Kernel PMU event]
-  nmem0/hostsdur/                                    [Kernel PMU event]
-  nmem0/medrcnt/                                     [Kernel PMU event]
-  nmem0/medrdur/                                     [Kernel PMU event]
-  nmem0/medwcnt/                                     [Kernel PMU event]
-  nmem0/medwdur/                                     [Kernel PMU event]
-  nmem0/memlife/                                     [Kernel PMU event]
-  nmem0/noopstat/                                    [Kernel PMU event]
-  nmem0/ponsecs/                                     [Kernel PMU event]
-  nmem1/cchrhcnt/                                    [Kernel PMU event]
-  nmem1/cchwhcnt/                                    [Kernel PMU event]
-  nmem1/critrscu/                                    [Kernel PMU event]
-  ...
-  nmem1/noopstat/                                    [Kernel PMU event]
-  nmem1/ponsecs/                                     [Kernel PMU event]
+This patch add event format and events details in ABI
+documentation
 
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- arch/powerpc/include/asm/device.h         |   5 +
- arch/powerpc/platforms/pseries/papr_scm.c | 358 ++++++++++++++++++++++
- 2 files changed, 363 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-papr-pmem | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/device.h b/arch/powerpc/include/asm/device.h
-index 219559d65864..47ed639f3b8f 100644
---- a/arch/powerpc/include/asm/device.h
-+++ b/arch/powerpc/include/asm/device.h
-@@ -48,6 +48,11 @@ struct dev_archdata {
- 
- struct pdev_archdata {
- 	u64 dma_mask;
-+	/*
-+	 * Pointer to nvdimm_pmu structure, to handle the unregistering
-+	 * of pmu device
-+	 */
-+	void *priv;
- };
- 
- #endif /* _ASM_POWERPC_DEVICE_H */
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index ef26fe40efb0..f2d57da98ff4 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -18,6 +18,8 @@
- #include <asm/plpar_wrappers.h>
- #include <asm/papr_pdsm.h>
- #include <asm/mce.h>
-+#include <linux/perf_event.h>
-+#include <linux/ctype.h>
- 
- #define BIND_ANY_ADDR (~0ul)
- 
-@@ -67,6 +69,8 @@
- #define PAPR_SCM_PERF_STATS_EYECATCHER __stringify(SCMSTATS)
- #define PAPR_SCM_PERF_STATS_VERSION 0x1
- 
-+#define to_nvdimm_pmu(_pmu)	container_of(_pmu, struct nvdimm_pmu, pmu)
-+
- /* Struct holding a single performance metric */
- struct papr_scm_perf_stat {
- 	u8 stat_id[8];
-@@ -116,6 +120,12 @@ struct papr_scm_priv {
- 
- 	/* length of the stat buffer as expected by phyp */
- 	size_t stat_buffer_len;
-+
-+	 /* array to have event_code and stat_id mappings */
-+	char **nvdimm_events_map;
-+
-+	/* count of supported events */
-+	u32 total_events;
- };
- 
- static int papr_scm_pmem_flush(struct nd_region *nd_region,
-@@ -329,6 +339,347 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
- 	return 0;
- }
- 
-+PMU_FORMAT_ATTR(event, "config:0-4");
-+
-+static struct attribute *nvdimm_pmu_format_attr[] = {
-+	&format_attr_event.attr,
-+	NULL,
-+};
-+
-+static struct attribute_group nvdimm_pmu_format_group = {
-+	.name = "format",
-+	.attrs = nvdimm_pmu_format_attr,
-+};
-+
-+static int papr_scm_pmu_get_value(struct perf_event *event, struct device *dev, u64 *count)
-+{
-+	struct papr_scm_perf_stat *stat;
-+	struct papr_scm_perf_stats *stats;
-+	struct papr_scm_priv *p = (struct papr_scm_priv *)dev->driver_data;
-+	int rc, size;
-+
-+	/* Allocate request buffer enough to hold single performance stat */
-+	size = sizeof(struct papr_scm_perf_stats) +
-+		sizeof(struct papr_scm_perf_stat);
-+
-+	if (!p || !p->nvdimm_events_map)
-+		return -EINVAL;
-+
-+	stats = kzalloc(size, GFP_KERNEL);
-+	if (!stats)
-+		return -ENOMEM;
-+
-+	stat = &stats->scm_statistic[0];
-+	memcpy(&stat->stat_id,
-+	       p->nvdimm_events_map[event->attr.config - 1],
-+		sizeof(stat->stat_id));
-+	stat->stat_val = 0;
-+
-+	rc = drc_pmem_query_stats(p, stats, 1);
-+	if (rc < 0) {
-+		kfree(stats);
-+		return rc;
-+	}
-+
-+	*count = be64_to_cpu(stat->stat_val);
-+	kfree(stats);
-+	return 0;
-+}
-+
-+static int papr_scm_pmu_event_init(struct perf_event *event)
-+{
-+	struct nvdimm_pmu *nd_pmu = to_nvdimm_pmu(event->pmu);
-+	struct papr_scm_priv *p;
-+
-+	if (!nd_pmu)
-+		return -EINVAL;
-+
-+	/* test the event attr type for PMU enumeration */
-+	if (event->attr.type != event->pmu->type)
-+		return -ENOENT;
-+
-+	/* it does not support event sampling mode */
-+	if (is_sampling_event(event))
-+		return -EOPNOTSUPP;
-+
-+	/* no branch sampling */
-+	if (has_branch_stack(event))
-+		return -EOPNOTSUPP;
-+
-+	p = (struct papr_scm_priv *)nd_pmu->dev->driver_data;
-+	if (!p)
-+		return -EINVAL;
-+
-+	/* Invalid eventcode */
-+	if (event->attr.config == 0 || event->attr.config > p->total_events)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static int papr_scm_pmu_add(struct perf_event *event, int flags)
-+{
-+	u64 count;
-+	int rc;
-+	struct nvdimm_pmu *nd_pmu = to_nvdimm_pmu(event->pmu);
-+
-+	if (!nd_pmu)
-+		return -EINVAL;
-+
-+	if (flags & PERF_EF_START) {
-+		rc = papr_scm_pmu_get_value(event, nd_pmu->dev, &count);
-+		if (rc)
-+			return rc;
-+
-+		local64_set(&event->hw.prev_count, count);
-+	}
-+
-+	return 0;
-+}
-+
-+static void papr_scm_pmu_read(struct perf_event *event)
-+{
-+	u64 prev, now;
-+	int rc;
-+	struct nvdimm_pmu *nd_pmu = to_nvdimm_pmu(event->pmu);
-+
-+	if (!nd_pmu)
-+		return;
-+
-+	rc = papr_scm_pmu_get_value(event, nd_pmu->dev, &now);
-+	if (rc)
-+		return;
-+
-+	prev = local64_xchg(&event->hw.prev_count, now);
-+	local64_add(now - prev, &event->count);
-+}
-+
-+static void papr_scm_pmu_del(struct perf_event *event, int flags)
-+{
-+	papr_scm_pmu_read(event);
-+}
-+
-+static ssize_t device_show_string(struct device *dev, struct device_attribute *attr,
-+				  char *buf)
-+{
-+	struct perf_pmu_events_attr *d;
-+
-+	d = container_of(attr, struct perf_pmu_events_attr, attr);
-+
-+	return sysfs_emit(buf, "%s\n", (char *)d->event_str);
-+}
-+
-+static char *strtolower(char *updated_name)
-+{
-+	int i = 0;
-+
-+	while (updated_name[i]) {
-+		if (isupper(updated_name[i]))
-+			updated_name[i] = tolower(updated_name[i]);
-+		i++;
-+	}
-+	updated_name[i] = '\0';
-+	return strim(updated_name);
-+}
-+
-+/* device_str_attr_create : Populate event "name" and string "str" in attribute */
-+static struct attribute *device_str_attr_create_(char *name, char *str)
-+{
-+	struct perf_pmu_events_attr *attr;
-+
-+	attr = kzalloc(sizeof(*attr), GFP_KERNEL);
-+
-+	if (!attr)
-+		return NULL;
-+
-+	sysfs_attr_init(&attr->attr.attr);
-+	attr->event_str = str;
-+	attr->attr.attr.name = strtolower(name);
-+	attr->attr.attr.mode = 0444;
-+	attr->attr.show = device_show_string;
-+
-+	return &attr->attr.attr;
-+}
-+
-+static int papr_scm_pmu_check_events(struct papr_scm_priv *p, struct nvdimm_pmu *nd_pmu)
-+{
-+	struct papr_scm_perf_stat *stat;
-+	struct papr_scm_perf_stats *stats, *single_stats;
-+	int index, size, rc, count;
-+	u32 available_events;
-+	struct attribute **events;
-+	char *eventcode, *eventname, *statid;
-+	struct attribute_group *nvdimm_pmu_events_group;
-+
-+	if (!p->stat_buffer_len)
-+		return -ENOENT;
-+
-+	available_events = (p->stat_buffer_len  - sizeof(struct papr_scm_perf_stats))
-+			/ sizeof(struct papr_scm_perf_stat);
-+
-+	/* Allocate memory for events attribute group */
-+	nvdimm_pmu_events_group = kzalloc(sizeof(*nvdimm_pmu_events_group), GFP_KERNEL);
-+	if (!nvdimm_pmu_events_group)
-+		return -ENOMEM;
-+
-+	/* Allocate the buffer for phyp where stats are written */
-+	stats = kzalloc(p->stat_buffer_len, GFP_KERNEL);
-+	if (!stats) {
-+		rc = -ENOMEM;
-+		goto out_nvdimm_pmu_events_group;
-+	}
-+
-+	/* Allocate memory to nvdimm_event_map */
-+	p->nvdimm_events_map = kcalloc(available_events, sizeof(char *), GFP_KERNEL);
-+	if (!p->nvdimm_events_map) {
-+		rc = -ENOMEM;
-+		goto out_stats;
-+	}
-+
-+	/* Called to get list of events supported */
-+	rc = drc_pmem_query_stats(p, stats, 0);
-+	if (rc)
-+		goto out_nvdimm_events_map;
-+
-+	/* Allocate buffer to hold single performance stat */
-+	size = sizeof(struct papr_scm_perf_stats) + sizeof(struct papr_scm_perf_stat);
-+
-+	single_stats = kzalloc(size, GFP_KERNEL);
-+	if (!single_stats) {
-+		rc = -ENOMEM;
-+		goto out_nvdimm_events_map;
-+	}
-+
-+	events = kzalloc(available_events * sizeof(struct attribute *), GFP_KERNEL);
-+	if (!events) {
-+		rc = -ENOMEM;
-+		goto out_single_stats;
-+	}
-+
-+	for (index = 0, stat = stats->scm_statistic, count = 0;
-+		     index < available_events; index++, ++stat) {
-+
-+		single_stats->scm_statistic[0] = *stat;
-+		rc = drc_pmem_query_stats(p, single_stats, 1);
-+
-+		if (rc < 0) {
-+			pr_info("Event not supported %s for device %s\n",
-+				stat->stat_id, nvdimm_name(p->nvdimm));
-+		} else {
-+			eventcode = kasprintf(GFP_KERNEL, "event=0x%x", count + 1);
-+			eventname = kzalloc(strlen(stat->stat_id) + 1, GFP_KERNEL);
-+			statid = kzalloc(strlen(stat->stat_id) + 1, GFP_KERNEL);
-+
-+			if (!eventname || !statid || !eventcode)
-+				goto out;
-+
-+			strcpy(eventname, stat->stat_id);
-+			events[count] = device_str_attr_create_(eventname,
-+								eventcode);
-+			if (!events[count])
-+				goto out;
-+
-+			strcpy(statid, stat->stat_id);
-+			p->nvdimm_events_map[count] = statid;
-+			count++;
-+			continue;
-+out:
-+			kfree(eventcode);
-+			kfree(eventname);
-+			kfree(statid);
-+		}
-+	}
-+
-+	if (!count)
-+		goto out_events;
-+
-+	events[count] = NULL;
-+	p->nvdimm_events_map[count] = NULL;
-+	p->total_events = count;
-+
-+	nvdimm_pmu_events_group->name = "events";
-+	nvdimm_pmu_events_group->attrs = events;
-+
-+	/* Fill attribute groups for the nvdimm pmu device */
-+	nd_pmu->attr_groups[NVDIMM_PMU_FORMAT_ATTR] = &nvdimm_pmu_format_group;
-+	nd_pmu->attr_groups[NVDIMM_PMU_EVENT_ATTR] = nvdimm_pmu_events_group;
-+	nd_pmu->attr_groups[NVDIMM_PMU_NULL_ATTR] = NULL;
-+
-+	kfree(single_stats);
-+	kfree(stats);
-+	return 0;
-+
-+out_events:
-+	kfree(events);
-+out_single_stats:
-+	kfree(single_stats);
-+out_nvdimm_events_map:
-+	kfree(p->nvdimm_events_map);
-+out_stats:
-+	kfree(stats);
-+out_nvdimm_pmu_events_group:
-+	kfree(nvdimm_pmu_events_group);
-+	return rc;
-+}
-+
-+/* Function to free the attr_groups which are dynamically allocated */
-+static void nvdimm_pmu_mem_free(struct nvdimm_pmu *nd_pmu)
-+{
-+	if (nd_pmu) {
-+		if (nd_pmu->attr_groups[NVDIMM_PMU_EVENT_ATTR])
-+			kfree(nd_pmu->attr_groups[NVDIMM_PMU_EVENT_ATTR]->attrs);
-+		kfree(nd_pmu->attr_groups[NVDIMM_PMU_EVENT_ATTR]);
-+	}
-+}
-+
-+static void papr_scm_pmu_register(struct papr_scm_priv *p)
-+{
-+	struct nvdimm_pmu *nd_pmu;
-+	int rc;
-+
-+	nd_pmu = kzalloc(sizeof(*nd_pmu), GFP_KERNEL);
-+	if (!nd_pmu) {
-+		rc = -ENOMEM;
-+		goto pmu_err_print;
-+	}
-+
-+	rc = papr_scm_pmu_check_events(p, nd_pmu);
-+	if (rc)
-+		goto pmu_check_events_err;
-+
-+	nd_pmu->name = nvdimm_name(p->nvdimm);
-+	nd_pmu->event_init = papr_scm_pmu_event_init;
-+	nd_pmu->read = papr_scm_pmu_read;
-+	nd_pmu->add = papr_scm_pmu_add;
-+	nd_pmu->del = papr_scm_pmu_del;
-+
-+	rc = register_nvdimm_pmu(nd_pmu, p->pdev);
-+	if (rc)
-+		goto pmu_register_err;
-+
-+	/*
-+	 * Set archdata.priv value to nvdimm_pmu structure, to handle the
-+	 * unregistering of pmu device.
-+	 */
-+	p->pdev->archdata.priv = nd_pmu;
-+	return;
-+
-+pmu_register_err:
-+	nvdimm_pmu_mem_free(nd_pmu);
-+	kfree(p->nvdimm_events_map);
-+pmu_check_events_err:
-+	kfree(nd_pmu);
-+pmu_err_print:
-+	dev_info(&p->pdev->dev, "nvdimm pmu didn't register rc=%d\n", rc);
-+}
-+
-+static void nvdimm_pmu_uinit(struct nvdimm_pmu *nd_pmu)
-+{
-+	unregister_nvdimm_pmu(&nd_pmu->pmu);
-+	nvdimm_pmu_mem_free(nd_pmu);
-+	kfree(nd_pmu);
-+}
-+
- /*
-  * Issue hcall to retrieve dimm health info and populate papr_scm_priv with the
-  * health information.
-@@ -1177,6 +1528,7 @@ static int papr_scm_probe(struct platform_device *pdev)
- 		goto err2;
- 
- 	platform_set_drvdata(pdev, p);
-+	papr_scm_pmu_register(p);
- 
- 	return 0;
- 
-@@ -1195,7 +1547,13 @@ static int papr_scm_remove(struct platform_device *pdev)
- 
- 	nvdimm_bus_unregister(p->bus);
- 	drc_pmem_unbind(p);
-+
-+	if (pdev->archdata.priv)
-+		nvdimm_pmu_uinit(pdev->archdata.priv);
-+
-+	pdev->archdata.priv = NULL;
- 	kfree(p->bus_desc.provider_name);
-+	kfree(p->nvdimm_events_map);
- 	kfree(p);
- 
- 	return 0;
+diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
+index 92e2db0e2d3d..38c4daf65af2 100644
+--- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
++++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
+@@ -59,3 +59,28 @@ Description:
+ 		* "CchRHCnt" : Cache Read Hit Count
+ 		* "CchWHCnt" : Cache Write Hit Count
+ 		* "FastWCnt" : Fast Write Count
++
++What:		/sys/devices/nmemX/format
++Date:		May 2021
++Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-nvdimm@lists.01.org,
++Description:	(RO) Attribute group to describe the magic bits
++                that go into perf_event_attr.config for a particular pmu.
++                (See ABI/testing/sysfs-bus-event_source-devices-format).
++
++                Each attribute under this group defines a bit range of the
++                perf_event_attr.config. Supported attribute is listed
++                below::
++
++		    event  = "config:0-4"  - event ID
++
++		For example::
++		    noopstat = "event=0x1"
++
++What:		/sys/devices/nmemX/events
++Date:		May 2021
++Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-nvdimm@lists.01.org,
++Description:    (RO) Attribute group to describe performance monitoring
++                events specific to papr-scm. Each attribute in this group describes
++                a single performance monitoring event supported by this nvdimm pmu.
++                The name of the file is the name of the event.
++                (See ABI/testing/sysfs-bus-event_source-devices-events).
 -- 
 2.27.0
 
