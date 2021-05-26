@@ -1,91 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBCB391A9C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 May 2021 16:46:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DB5391C80
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 May 2021 17:54:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fqv0759Dqz3096
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 May 2021 00:46:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FqwVJ4Yg6z3092
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 May 2021 01:54:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ackABWeR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B4UuFsxu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ackABWeR; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=B4UuFsxu; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fqtzf3SlHz2xvZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 May 2021 00:45:50 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14QEYunU094511; Wed, 26 May 2021 10:45:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=JLLQK5U1iGPdy6tfyd/TpIUVbT4W6O5VHoqCVhZiQFY=;
- b=ackABWeRFYs0ohuvIb1cjUT3M6y+/L6/uCmF/goUM9W6kmKQ/TEmFuFPMWoxUoatFnS0
- GqSCcpJs+PIiUdgJAiQJHjWOFPJXdEOyVOxpyDd5DR43yB25fZ85akIGTx9B8oIcfA87
- 4AAwc6Kr8Dd4HPFeXGiEkf6r9LdLuAanBSKU0FQNlE5wDk21rgtLMDqj4REE+10CDD/L
- 333oAz+m9H4k2s7y9O1t3i5iXuYXgzSOPsJEEC/kRPNH4D4uDav4rh3z8XAxhJQ6lh5H
- T51SafK/8JvxNFWZvZNmNpGBvBi4AcdH4DpCPqW+TmC+FdgCkypWktuZL9dm0x1JUg+R VQ== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38snh1p1kq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 May 2021 10:45:46 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 14QEjiQp013972;
- Wed, 26 May 2021 14:45:44 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06fra.de.ibm.com with ESMTP id 38s1rp0b46-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 May 2021 14:45:44 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14QEjfUd30933354
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 May 2021 14:45:41 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4DCB84C050;
- Wed, 26 May 2021 14:45:41 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1FFCE4C044;
- Wed, 26 May 2021 14:45:41 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.145.83.74])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 26 May 2021 14:45:41 +0000 (GMT)
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, aik@ozlabs.ru
-Subject: [PATCH] Revert "powerpc/kernel/iommu: Align size for
- IOMMU_PAGE_SIZE() to save TCEs"
-Date: Wed, 26 May 2021 16:45:40 +0200
-Message-Id: <20210526144540.117795-1-fbarrat@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FqwTq5tRyz2xvb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 May 2021 01:53:35 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 063E7611CD;
+ Wed, 26 May 2021 15:53:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1622044412;
+ bh=OnL/4Jq+LKq6vWvDBS0xA9CvVYxTMOTBjml/zh+3Ar0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=B4UuFsxu1r3HigmEjVwQF/otX4DrMd38lSSUyIbdumWlwAz4mqWFVwTfX3tV+cLTK
+ ezumxJCPuSoiNTejbR/1l7Q+EyQuGnIdMF026YW9wZDBrp0Etki3m3VqLD3t52Z+ML
+ aIGQuwBPRYJXDmtAfPisyQiC2L9qX6xiRg823CR+7DK1ZJFKUWOyliFfy6nu3kEBra
+ 72iE6bgTyqyaVJ438e+wldUwZTA5bJjB+laj7DX9kULouD8NbVtF/6oVvQWdjQCza8
+ vTg4CtjTc7cs0vgmNuLf7hWhlxI/bnFdiE1zs5zIETRjnoBXmZKSOwwvGM2DpAYygJ
+ B11ILWs8v9zvg==
+Date: Wed, 26 May 2021 16:53:21 +0100
+From: Will Deacon <will@kernel.org>
+To: Claire Chang <tientzu@chromium.org>
+Subject: Re: [PATCH v7 14/15] dt-bindings: of: Add restricted DMA pool
+Message-ID: <20210526155321.GA19633@willie-the-truck>
+References: <20210518064215.2856977-1-tientzu@chromium.org>
+ <20210518064215.2856977-15-tientzu@chromium.org>
+ <20210526121322.GA19313@willie-the-truck>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: j3eDkfPCAksp0W90Ix6Jy4eThI6E_fHo
-X-Proofpoint-ORIG-GUID: j3eDkfPCAksp0W90Ix6Jy4eThI6E_fHo
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-26_09:2021-05-26,
- 2021-05-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- mlxscore=0 adultscore=0 mlxlogscore=999 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 impostorscore=0 clxscore=1011 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2105260098
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210526121322.GA19313@willie-the-truck>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,64 +60,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: zdai@linux.ibm.com
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
+ mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ jxgao@google.com, daniel@ffwll.ch,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ maarten.lankhorst@linux.intel.com, airlied@linux.ie,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, bhelgaas@google.com, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
+ tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
+ Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This reverts commit 3c0468d4451eb6b4f6604370639f163f9637a479.
+On Wed, May 26, 2021 at 01:13:22PM +0100, Will Deacon wrote:
+> On Tue, May 18, 2021 at 02:42:14PM +0800, Claire Chang wrote:
+> > @@ -138,4 +160,9 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
+> >  		memory-region = <&multimedia_reserved>;
+> >  		/* ... */
+> >  	};
+> > +
+> > +	pcie_device: pcie_device@0,0 {
+> > +		memory-region = <&restricted_dma_mem_reserved>;
+> > +		/* ... */
+> > +	};
+> 
+> I still don't understand how this works for individual PCIe devices -- how
+> is dev->of_node set to point at the node you have above?
+> 
+> I tried adding the memory-region to the host controller instead, and then
+> I see it crop up in dmesg:
+> 
+>   | pci-host-generic 40000000.pci: assigned reserved memory node restricted_dma_mem_reserved
+> 
+> but none of the actual PCI devices end up with 'dma_io_tlb_mem' set, and
+> so the restricted DMA area is not used. In fact, swiotlb isn't used at all.
+> 
+> What am I missing to make this work with PCIe devices?
 
-That commit was breaking alignment guarantees for the DMA address when
-allocating coherent mappings, as described in
-Documentation/core-api/dma-api-howto.rst
+Aha, looks like we're just missing the logic to inherit the DMA
+configuration. The diff below gets things working for me.
 
-It was also noticed by Mellanox' driver:
-[ 1515.763621] mlx5_core c002:01:00.0: mlx5_frag_buf_alloc_node:146:(pid 13402): unexpected map alignment: 0x0800000000c61000, page_shift=16
-[ 1515.763635] mlx5_core c002:01:00.0: mlx5_cqwq_create:181:(pid
-13402): mlx5_frag_buf_alloc_node() failed, -12
+Will
 
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
----
- arch/powerpc/kernel/iommu.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+--->8
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index 57d6b85e9b96..2af89a5e379f 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -898,7 +898,6 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
- 	unsigned int order;
- 	unsigned int nio_pages, io_order;
- 	struct page *page;
--	size_t size_io = size;
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index c562a9ff5f0b..bf499fdd6e93 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -1113,25 +1113,25 @@ bool of_dma_is_coherent(struct device_node *np)
+ }
+ EXPORT_SYMBOL_GPL(of_dma_is_coherent);
  
- 	size = PAGE_ALIGN(size);
- 	order = get_order(size);
-@@ -925,9 +924,8 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
- 	memset(ret, 0, size);
- 
- 	/* Set up tces to cover the allocated range */
--	size_io = IOMMU_PAGE_ALIGN(size_io, tbl);
--	nio_pages = size_io >> tbl->it_page_shift;
--	io_order = get_iommu_order(size_io, tbl);
-+	nio_pages = size >> tbl->it_page_shift;
-+	io_order = get_iommu_order(size, tbl);
- 	mapping = iommu_alloc(dev, tbl, ret, nio_pages, DMA_BIDIRECTIONAL,
- 			      mask >> tbl->it_page_shift, io_order, 0);
- 	if (mapping == DMA_MAPPING_ERROR) {
-@@ -942,9 +940,10 @@ void iommu_free_coherent(struct iommu_table *tbl, size_t size,
- 			 void *vaddr, dma_addr_t dma_handle)
+-int of_dma_set_restricted_buffer(struct device *dev)
++int of_dma_set_restricted_buffer(struct device *dev, struct device_node *np)
  {
- 	if (tbl) {
--		size_t size_io = IOMMU_PAGE_ALIGN(size, tbl);
--		unsigned int nio_pages = size_io >> tbl->it_page_shift;
-+		unsigned int nio_pages;
+-	struct device_node *node;
+ 	int count, i;
  
-+		size = PAGE_ALIGN(size);
-+		nio_pages = size >> tbl->it_page_shift;
- 		iommu_free(tbl, dma_handle, nio_pages);
- 		size = PAGE_ALIGN(size);
- 		free_pages((unsigned long)vaddr, get_order(size));
--- 
-2.31.1
-
+-	if (!dev->of_node)
++	if (!np)
+ 		return 0;
+ 
+-	count = of_property_count_elems_of_size(dev->of_node, "memory-region",
++	count = of_property_count_elems_of_size(np, "memory-region",
+ 						sizeof(phandle));
+ 	for (i = 0; i < count; i++) {
+-		node = of_parse_phandle(dev->of_node, "memory-region", i);
++		struct device_node *node;
++
++		node = of_parse_phandle(np, "memory-region", i);
+ 		/* There might be multiple memory regions, but only one
+-		 * restriced-dma-pool region is allowed.
++		 * restricted-dma-pool region is allowed.
+ 		 */
+ 		if (of_device_is_compatible(node, "restricted-dma-pool") &&
+ 		    of_device_is_available(node))
+-			return of_reserved_mem_device_init_by_idx(
+-				dev, dev->of_node, i);
++			return of_reserved_mem_device_init_by_idx(dev, np, i);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index d8d865223e51..2defdca418ec 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -166,7 +166,7 @@ int of_dma_configure_id(struct device *dev, struct device_node *np,
+ 	arch_setup_dma_ops(dev, dma_start, size, iommu, coherent);
+ 
+ 	if (!iommu)
+-		return of_dma_set_restricted_buffer(dev);
++		return of_dma_set_restricted_buffer(dev, np);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
+index 9fc874548528..8fde97565d11 100644
+--- a/drivers/of/of_private.h
++++ b/drivers/of/of_private.h
+@@ -163,14 +163,15 @@ struct bus_dma_region;
+ #if defined(CONFIG_OF_ADDRESS) && defined(CONFIG_HAS_DMA)
+ int of_dma_get_range(struct device_node *np,
+ 		const struct bus_dma_region **map);
+-int of_dma_set_restricted_buffer(struct device *dev);
++int of_dma_set_restricted_buffer(struct device *dev, struct device_node *np);
+ #else
+ static inline int of_dma_get_range(struct device_node *np,
+ 		const struct bus_dma_region **map)
+ {
+ 	return -ENODEV;
+ }
+-static inline int of_dma_set_restricted_buffer(struct device *dev)
++static inline int of_dma_set_restricted_buffer(struct device *dev,
++					       struct device_node *np)
+ {
+ 	return -ENODEV;
+ }
