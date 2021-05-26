@@ -1,53 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F331839172B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 May 2021 14:14:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B45B39183A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 May 2021 14:59:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FqqcX073jz306W
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 May 2021 22:14:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fqrcz0Z6Pz300J
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 May 2021 22:59:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dD4raOXl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Qi4KZV+F;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=dD4raOXl; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Qi4KZV+F; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fqqc06rqqz2xfk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 May 2021 22:13:36 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7DB6A613D6;
- Wed, 26 May 2021 12:13:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1622031214;
- bh=6cgAAAry3KXjHYICFlfgug7HP7MtfiezqAbh5vyjbAk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=dD4raOXl4m/1dmUYxCXd+9Zhh/XbrtQC52Qny8ZwVBaqmrNGpiCc5ZIU1b4WjGm8H
- uJa3jIZybN6M6kTMpAfuccsLT4/wRQbg2MVSjmE1yL01mC3lcM16NVvL5naGjFRQ57
- RUc8/qmG6+LKY4mt6jNuAHGXfU60PflHdIRn81RXVX/L8quJSpzl4wYs9fdYRMYSyz
- TDHUTCxqGOaTMeMxI6d2iUlniRYHOiu06+32s75wchffQ8s3cbbJwvz7Jm6fWP5KI+
- RznUS6G8WImqfu6sIHm02R4cmQSm1/c2dk4BLfXSL89hrwovsmQduosVw5UITnC7eb
- z+DGv0xJWhG6g==
-Date: Wed, 26 May 2021 13:13:23 +0100
-From: Will Deacon <will@kernel.org>
-To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v7 14/15] dt-bindings: of: Add restricted DMA pool
-Message-ID: <20210526121322.GA19313@willie-the-truck>
-References: <20210518064215.2856977-1-tientzu@chromium.org>
- <20210518064215.2856977-15-tientzu@chromium.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FqrcV4zkNz2xtp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 May 2021 22:59:05 +1000 (AEST)
+Received: by mail-pj1-x1036.google.com with SMTP id t11so757683pjm.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 May 2021 05:59:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=vxiCQ/dRV0Krfx+r0SoICDlOrL4kF9ou2YVb/r4kcAg=;
+ b=Qi4KZV+Fz1jfZwmQQLjz7Y9pTXAWcB4Nhpbi8tMbkb6Bzf0IV5ZhhaKgJWsbPPqr63
+ JVt4FW7AfN6fg59WAJ1sHHG2krzZwsM7VGfeiPKHo/GQB6ET+uYvuqb99TSASm8nDYqO
+ wwTdClSGlH1/+55PQ5dOcB2bRS7n3P/wJInBz34URqpqYkY6qsiBz5xmXIgdtHdFNuWe
+ A+p6wFFanHVsFWUmbzIHo2r7L9agnkX2k7ZH4/sN/W3uLF1GQzQu83IE3ULaEZ6QRrZ+
+ 6A1YSvTGWsIZHQGF6zvAesxYVgk/sKzBbkjgKl4QAiZd40Amvuvimckrp2T8m3rwpZrU
+ X6oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=vxiCQ/dRV0Krfx+r0SoICDlOrL4kF9ou2YVb/r4kcAg=;
+ b=bkx6yyReqbZ8qrfb0SAgKkBK+9E9R022j8QUIqDdLBVJnNEpnTiv9jFMiXDInp6Lpf
+ PPODEPxIUdWJ8Atvm46SuItL6SfwclNuPuvtFvLzjKU9jBO+kuMVHgrfyK8j8beUT7j+
+ 0o6UDpKQzAnuAViCVs38c+5XJZkSDt61xDkLgMx+D2fZHBbLwZKNa0INZflQP9U1lp/N
+ TZeKgtBjQ/ewScJOS7Pum/Hs/3BqWo/6zhNzrxz5VTg6NFY0hTwljKuqrCp2Opf3KJ/0
+ HjxWF4kZw3ilLIkkj7jXWqYBnMAGlRf1vYnOmCDtyvlI2SOEcJrDRFM4XAT+DAQYGhj1
+ Eatw==
+X-Gm-Message-State: AOAM531RW6scoVukMohYkWJXUG1Kyj5bf3c4/1yJzQDbRih6Lw9j0dAU
+ mtgp94eBfEexOSVzZhsTWJc=
+X-Google-Smtp-Source: ABdhPJz0fzfxG6UiWQFqptNQ7oK7usGFx8c4WW0LrwbKAvBiW4ou/lDvYpmuH4Uv2LyAc9VyNxj6tA==
+X-Received: by 2002:a17:90a:3948:: with SMTP id
+ n8mr36896088pjf.32.1622033941300; 
+ Wed, 26 May 2021 05:59:01 -0700 (PDT)
+Received: from bobo.ibm.com (124-169-110-219.tpgi.com.au. [124.169.110.219])
+ by smtp.gmail.com with ESMTPSA id e6sm4364773pjt.1.2021.05.26.05.58.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 26 May 2021 05:59:01 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: kvm-ppc@vger.kernel.org
+Subject: [PATCH v2] KVM: PPC: Book3S HV: Save host FSCR in the P7/8 path
+Date: Wed, 26 May 2021 22:58:51 +1000
+Message-Id: <20210526125851.3436735-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210518064215.2856977-15-tientzu@chromium.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,115 +78,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
- peterz@infradead.org, joonas.lahtinen@linux.intel.com,
- dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
- grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
- mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
- sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
- Joerg Roedel <joro@8bytes.org>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Christoph Hellwig <hch@lst.de>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
- matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
- jxgao@google.com, daniel@ffwll.ch,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- maarten.lankhorst@linux.intel.com, airlied@linux.ie,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
- jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
- rodrigo.vivi@intel.com, bhelgaas@google.com, boris.ostrovsky@oracle.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
- Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
- tfiga@chromium.org,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
- Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Claire,
+Similar to commit 25edcc50d76c ("KVM: PPC: Book3S HV: Save and restore
+FSCR in the P9 path"), ensure the P7/8 path saves and restores the host
+FSCR. The logic explained in that patch actually applies there to the
+old path well: a context switch can be made before kvmppc_vcpu_run_hv
+restores the host FSCR and returns.
 
-On Tue, May 18, 2021 at 02:42:14PM +0800, Claire Chang wrote:
-> Introduce the new compatible string, restricted-dma-pool, for restricted
-> DMA. One can specify the address and length of the restricted DMA memory
-> region by restricted-dma-pool in the reserved-memory node.
-> 
-> Signed-off-by: Claire Chang <tientzu@chromium.org>
-> ---
->  .../reserved-memory/reserved-memory.txt       | 27 +++++++++++++++++++
->  1 file changed, 27 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> index e8d3096d922c..284aea659015 100644
-> --- a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> +++ b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> @@ -51,6 +51,23 @@ compatible (optional) - standard definition
->            used as a shared pool of DMA buffers for a set of devices. It can
->            be used by an operating system to instantiate the necessary pool
->            management subsystem if necessary.
-> +        - restricted-dma-pool: This indicates a region of memory meant to be
-> +          used as a pool of restricted DMA buffers for a set of devices. The
-> +          memory region would be the only region accessible to those devices.
-> +          When using this, the no-map and reusable properties must not be set,
-> +          so the operating system can create a virtual mapping that will be used
-> +          for synchronization. The main purpose for restricted DMA is to
-> +          mitigate the lack of DMA access control on systems without an IOMMU,
-> +          which could result in the DMA accessing the system memory at
-> +          unexpected times and/or unexpected addresses, possibly leading to data
-> +          leakage or corruption. The feature on its own provides a basic level
-> +          of protection against the DMA overwriting buffer contents at
-> +          unexpected times. However, to protect against general data leakage and
-> +          system memory corruption, the system needs to provide way to lock down
-> +          the memory access, e.g., MPU. Note that since coherent allocation
-> +          needs remapping, one must set up another device coherent pool by
-> +          shared-dma-pool and use dma_alloc_from_dev_coherent instead for atomic
-> +          coherent allocation.
->          - vendor specific string in the form <vendor>,[<device>-]<usage>
->  no-map (optional) - empty property
->      - Indicates the operating system must not create a virtual mapping
-> @@ -120,6 +137,11 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
->  			compatible = "acme,multimedia-memory";
->  			reg = <0x77000000 0x4000000>;
->  		};
-> +
-> +		restricted_dma_mem_reserved: restricted_dma_mem_reserved {
-> +			compatible = "restricted-dma-pool";
-> +			reg = <0x50000000 0x400000>;
-> +		};
+Now both the p9 and the p7/8 paths now save and restore their FSCR, it
+no longer needs to be restored at the end of kvmppc_vcpu_run_hv
 
-nit: You need to update the old text that states "This example defines 3
-contiguous regions ...".
+Fixes: b005255e12a3 ("KVM: PPC: Book3S HV: Context-switch new POWER8 SPRs")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+Since v1:
+- Remove the now unnecessary FSCR restore at vcpu_run exit [Fabiano]
+ arch/powerpc/kvm/book3s_hv.c            | 1 -
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S | 7 +++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
->  	};
->  
->  	/* ... */
-> @@ -138,4 +160,9 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
->  		memory-region = <&multimedia_reserved>;
->  		/* ... */
->  	};
-> +
-> +	pcie_device: pcie_device@0,0 {
-> +		memory-region = <&restricted_dma_mem_reserved>;
-> +		/* ... */
-> +	};
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 28a80d240b76..13728495ac66 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4455,7 +4455,6 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
+ 		mtspr(SPRN_EBBRR, ebb_regs[1]);
+ 		mtspr(SPRN_BESCR, ebb_regs[2]);
+ 		mtspr(SPRN_TAR, user_tar);
+-		mtspr(SPRN_FSCR, current->thread.fscr);
+ 	}
+ 	mtspr(SPRN_VRSAVE, user_vrsave);
+ 
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index 5e634db4809b..004f0d4e665f 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -59,6 +59,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
+ #define STACK_SLOT_UAMOR	(SFS-88)
+ #define STACK_SLOT_DAWR1	(SFS-96)
+ #define STACK_SLOT_DAWRX1	(SFS-104)
++#define STACK_SLOT_FSCR		(SFS-112)
+ /* the following is used by the P9 short path */
+ #define STACK_SLOT_NVGPRS	(SFS-152)	/* 18 gprs */
+ 
+@@ -686,6 +687,8 @@ BEGIN_FTR_SECTION
+ 	std	r6, STACK_SLOT_DAWR0(r1)
+ 	std	r7, STACK_SLOT_DAWRX0(r1)
+ 	std	r8, STACK_SLOT_IAMR(r1)
++	mfspr	r5, SPRN_FSCR
++	std	r5, STACK_SLOT_FSCR(r1)
+ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
+ BEGIN_FTR_SECTION
+ 	mfspr	r6, SPRN_DAWR1
+@@ -1663,6 +1666,10 @@ FTR_SECTION_ELSE
+ 	ld	r7, STACK_SLOT_HFSCR(r1)
+ 	mtspr	SPRN_HFSCR, r7
+ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
++BEGIN_FTR_SECTION
++	ld	r5, STACK_SLOT_FSCR(r1)
++	mtspr	SPRN_FSCR, r5
++END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
+ 	/*
+ 	 * Restore various registers to 0, where non-zero values
+ 	 * set by the guest could disrupt the host.
+-- 
+2.23.0
 
-I still don't understand how this works for individual PCIe devices -- how
-is dev->of_node set to point at the node you have above?
-
-I tried adding the memory-region to the host controller instead, and then
-I see it crop up in dmesg:
-
-  | pci-host-generic 40000000.pci: assigned reserved memory node restricted_dma_mem_reserved
-
-but none of the actual PCI devices end up with 'dma_io_tlb_mem' set, and
-so the restricted DMA area is not used. In fact, swiotlb isn't used at all.
-
-What am I missing to make this work with PCIe devices?
-
-Thanks,
-
-Will
