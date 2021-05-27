@@ -1,52 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D837392C55
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 May 2021 13:07:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A79EA392C5E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 May 2021 13:10:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FrQ5147zKz3060
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 May 2021 21:07:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FrQ984qvpz309L
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 May 2021 21:10:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Rw9eANvj;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=zou_wei@huawei.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 1076 seconds by postgrey-1.36 at boromir;
- Thu, 27 May 2021 21:06:56 AEST
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FrQ4c4QJGz2yXk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 May 2021 21:06:53 +1000 (AEST)
-Received: from dggeml709-chm.china.huawei.com (unknown [172.30.72.55])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4FrPcd5Z44zYqrN;
- Thu, 27 May 2021 18:46:09 +0800 (CST)
-Received: from dggemi762-chm.china.huawei.com (10.1.198.148) by
- dggeml709-chm.china.huawei.com (10.3.17.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Thu, 27 May 2021 18:48:49 +0800
-Received: from linux-lmwb.huawei.com (10.175.103.112) by
- dggemi762-chm.china.huawei.com (10.1.198.148) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Thu, 27 May 2021 18:48:48 +0800
-From: Zou Wei <zou_wei@huawei.com>
-To: <timur@kernel.org>, <nicoleotsuka@gmail.com>, <Xiubo.Lee@gmail.com>,
- <festevam@gmail.com>, <shengjiu.wang@gmail.com>, <lgirdwood@gmail.com>,
- <broonie@kernel.org>, <perex@perex.cz>, <tiwai@suse.com>,
- <shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
- <linux-imx@nxp.com>
-Subject: [PATCH -next] ASoC: imx-rpmsg: fix platform_no_drv_owner.cocci
- warnings
-Date: Thu, 27 May 2021 19:07:32 +0800
-Message-ID: <1622113652-56646-1-git-send-email-zou_wei@huawei.com>
-X-Mailer: git-send-email 2.6.2
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=Rw9eANvj; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FrQ8h6hCCz2xfn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 May 2021 21:10:28 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2F1F561028;
+ Thu, 27 May 2021 11:10:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1622113825;
+ bh=M3DIHT756xXhbeiWHhuicNBdTbcwyCz9skDBLtVxm5k=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Rw9eANvjxWl1Odcz8PbgicIBK5gDbzfhfAPerFRKhTAgwHAkJfk9WMGaBQWoO39eb
+ PG+CUcrmGQAxWWSe2TG+7BvH0yhVfxhH8Gy28ug2ajgBweAbRIYsH8IHoKytprQw+e
+ OtwbAE9hT7mNWWnyjcOTYohFFGh9mpJD0xj5vB+E=
+Date: Thu, 27 May 2021 13:10:23 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/udbg_hvc: retry putc on -EAGAIN
+Message-ID: <YK9+HyS3zE09iUSe@kroah.com>
+References: <20210514214422.3019105-1-nathanl@linux.ibm.com>
+ <YKer6KPaHDgaWS8k@kroah.com> <87mtsliuzm.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.103.112]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggemi762-chm.china.huawei.com (10.1.198.148)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87mtsliuzm.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,36 +56,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zou Wei <zou_wei@huawei.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, jirislaby@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-./sound/soc/fsl/imx-rpmsg.c:140:3-8: No need to set .owner here. The core will do it.
+On Sun, May 23, 2021 at 08:51:09PM +1000, Michael Ellerman wrote:
+> Greg KH <gregkh@linuxfoundation.org> writes:
+> > On Fri, May 14, 2021 at 04:44:22PM -0500, Nathan Lynch wrote:
+> >> hvterm_raw_put_chars() calls hvc_put_chars(), which may return -EAGAIN
+> >> when the underlying hcall returns a "busy" status, but udbg_hvc_putc()
+> >> doesn't handle this. When using xmon on a PowerVM guest, this can
+> >> result in incomplete or garbled output when printing relatively large
+> >> amounts of data quickly, such as when dumping the kernel log buffer.
+> >> 
+> >> Call again on -EAGAIN.
+> >> 
+> >> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+> >> ---
+> >>  drivers/tty/hvc/hvc_vio.c | 2 +-
+> >
+> > Subject line does not match up with this file name.
+> >
+> > Don't you want "tty" and "hvc" in there somewhere?
+> 
+> It's a powerpc only driver, but I guess the subject should still be
+> "tty: hvc: ..." to match convention.
+> 
+> I was planning to take this via the powerpc tree, but I can drop it if
+> you'd rather take it.
 
- Remove .owner field if calls are used which set it automatically
+No problem, feel free to take it yourself!
 
-Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zou Wei <zou_wei@huawei.com>
----
- sound/soc/fsl/imx-rpmsg.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
-index 5a9a470..f0cae8c 100644
---- a/sound/soc/fsl/imx-rpmsg.c
-+++ b/sound/soc/fsl/imx-rpmsg.c
-@@ -137,7 +137,6 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
- static struct platform_driver imx_rpmsg_driver = {
- 	.driver = {
- 		.name = "imx-audio-rpmsg",
--		.owner = THIS_MODULE,
- 		.pm = &snd_soc_pm_ops,
- 	},
- 	.probe = imx_rpmsg_probe,
--- 
-2.6.2
-
+greg k-h
